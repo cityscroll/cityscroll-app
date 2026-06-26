@@ -868,7 +868,25 @@ const NL = {
   },
   property: nlFeed("property","e.g. land in Queens, NYPD auction in Brooklyn"),
   rules:    nlFeed("rules","e.g. sanitation rules, sidewalk café licensing"),
-  meetings: nlFeed("meetings","e.g. upcoming landmarks hearings, Brooklyn community board")
+  meetings: nlFeed("meetings","e.g. upcoming landmarks hearings, Brooklyn community board"),
+  alerts: {
+    placeholder:"e.g. email me awards over $1M, or construction RFPs",
+    chips:f=>{
+      if(!f.watchType) return [];
+      const lbl = f.watchType==='bigaward' ? `awards ≥ <b>${money(f.threshold||1000000)}</b>`
+                : f.watchType==='rfpkw' ? `RFPs matching <b>${f.keyword||'…'}</b>`
+                : `rezonings near <b>${f.place||'…'}</b>`;
+      return [`<span class="qchip">${lbl}</span>`];
+    },
+    apply:f=>{
+      const w=f.watchType||"bigaward";
+      let p;
+      if(w==="bigaward"){ const opts=[1000000,5000000,10000000,50000000]; const t=f.threshold||1000000; p=opts.filter(o=>o<=t).pop()||opts[0]; }
+      else if(w==="rfpkw"){ p=f.keyword||""; }
+      else { p=f.place||""; }
+      applySuggestion(w, String(p));
+    }
+  }
 };
 
 function nlFeed(key, placeholder){
@@ -901,7 +919,8 @@ const NL_SAMPLES = {
   land: ["rezonings in Brooklyn", "affordable housing in the Bronx", "Gowanus rezonings"],
   property: ["land in Queens", "NYPD auctions", "HPD property sales"],
   rules: ["sanitation rules", "sidewalk café licensing", "rent regulation changes"],
-  meetings: ["upcoming landmarks hearings", "Brooklyn community board", "city council hearings"]
+  meetings: ["upcoming landmarks hearings", "Brooklyn community board", "city council hearings"],
+  alerts: ["awards over $1M", "construction RFPs", "rezonings near 79 Rivington"]
 };
 
 function renderNLSamples(lens, el){
@@ -917,10 +936,10 @@ function renderNLSamples(lens, el){
 }
 
 function injectNLBoxes(){
-  const tabs={people:"#tab-people",land:"#tab-land",property:"#tab-property",rules:"#tab-rules",meetings:"#tab-meetings"};
-  Object.entries(tabs).forEach(([lens,sel])=>{
+  const tabs={people:["#tab-people",".controls"],land:["#tab-land",".controls"],property:["#tab-property",".controls"],rules:["#tab-rules",".controls"],meetings:["#tab-meetings",".controls"],alerts:["#tab-alerts",".grid"]};
+  Object.entries(tabs).forEach(([lens,[sel,anchorSel]])=>{
     const wrap=document.querySelector(sel+" .wrap"); if(!wrap) return;
-    const anchor=wrap.querySelector(".controls"); if(!anchor) return;
+    const anchor=wrap.querySelector(anchorSel); if(!anchor) return;
     const box=document.createElement("div"); box.className="nlbox";
     box.innerHTML='<label class="nllabel">✨ Ask in plain English</label>'+
       '<div class="nlrow"><input type="text" id="nlq-'+lens+'" placeholder="'+NL[lens].placeholder+'">'+
