@@ -52,7 +52,9 @@
   .center{text-align:center}
 
   /* controls */
-  .controls{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;background:var(--card);border:1px solid var(--rule);border-radius:14px;padding:16px;box-shadow:var(--shadow);margin-top:18px}
+  .controls{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;background:transparent;border:1px solid var(--rule);border-radius:12px;padding:10px 14px;margin-top:14px}
+  .controls button{background:#fff;color:var(--ink);border:1px solid var(--rule);font-weight:600}
+  .controls label{color:var(--muted)}
   .field{display:flex;flex-direction:column;gap:5px;flex:1 1 150px}
   .field.kw{flex:2 1 220px}
   .field label{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
@@ -255,7 +257,6 @@
 <!-- ============ MONEY ============ -->
 <section id="tab-money" class="tabpane active">
   <div class="wrap">
-    <p class="deck">Follow a contract from <b>RFP → award → dollars</b> — and see exactly how to respond.</p>
     <div class="stagepill">
       <span><i class="dot" style="background:var(--blue)"></i>Solicitation (RFP)</span><span class="arrow">→</span>
       <span><i class="dot" style="background:var(--amber)"></i>Intent to Award</span><span class="arrow">→</span>
@@ -263,7 +264,6 @@
     </div>
 
     <div class="nlbox">
-      <label class="nllabel">✨ Ask in plain English</label>
       <div class="nlrow">
         <input type="text" id="nlq" placeholder="describe what you're looking for…">
         <button id="nlgo">✨ Ask</button>
@@ -326,7 +326,6 @@
 <!-- ============ PEOPLE ============ -->
 <section id="tab-people" class="tabpane">
   <div class="wrap">
-    <p class="deck">Decode any city job: official title, whether it needs an <b>exam</b>, the <b>salary band</b>, and the career ladder.</p>
 
     <div class="controls">
       <div class="field">
@@ -340,14 +339,6 @@
       <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button id="pgo">Filter</button></div>
     </div>
 
-    <div class="tryrow">Try:
-      <button class="trychip" data-pm="role" data-q="police officer">Police Officer</button>
-      <button class="trychip" data-pm="role" data-q="emergency medical">EMT / Paramedic</button>
-      <button class="trychip" data-pm="role" data-q="administrative staff analyst">Admin Staff Analyst</button>
-      <button class="trychip" data-pm="role" data-q="attorney">Attorney</button>
-      <button class="trychip" data-pm="role" data-q="teacher">Teacher</button>
-      <button class="trychip" data-pm="person" data-q="Rodriguez">a person → Rodriguez</button>
-    </div>
 
     <div class="grid">
       <div class="panel">
@@ -355,7 +346,7 @@
         <div class="list" id="plist"><div class="empty">Try a title like <b>“emergency medical”</b> — or switch to a person.</div></div>
       </div>
       <div class="panel">
-        <h2>Demystified</h2>
+        <h2>Listing</h2>
         <div class="detail" id="pdetail"><div class="empty">Pick a role to see its official title, whether it needs an exam, its salary band, and the career ladder.</div></div>
       </div>
     </div>
@@ -365,7 +356,6 @@
 <!-- ============ LAND ============ -->
 <section id="tab-land" class="tabpane">
   <div class="wrap">
-    <p class="deck">Rezonings in plain English — applicant, what's being built, affordable housing — cross-referenced to <a href="https://zap.planning.nyc.gov/" target="_blank" rel="noopener">ZAP</a> and pinned on a map.</p>
     <div class="controls">
       <div class="field">
         <label for="lboro">Borough</label>
@@ -390,7 +380,7 @@
         <div class="list" id="llist"><div class="empty"><span class="loading"></span> loading…</div></div>
       </div>
       <div class="panel">
-        <h2>Decoded</h2>
+        <h2>Listing</h2>
         <div class="detail" id="ldetail"><div class="empty">Pick a rezoning to see it in plain English — applicant, what's being built, affordable units, status — and on a map. Try “79 Rivington” or “Gowanus”.</div></div>
       </div>
     </div>
@@ -400,7 +390,6 @@
 <!-- ============ PROPERTY / RULES / MEETINGS (feed lenses) ============ -->
 <section id="tab-property" class="tabpane">
   <div class="wrap">
-    <p class="deck">City property being <b>sold, auctioned, or disposed</b> — what's on the block, the sale date, and where. <span class="muted">(NYPD auctions · HPD sales · DEP land)</span></p>
     <div class="controls">
       <div class="field"><label for="propertyagency">Agency</label><select id="propertyagency"><option value="">All agencies</option></select></div>
       <div class="field kw"><label for="propertykw">Search</label><input type="text" id="propertykw" placeholder="address, neighborhood…"></div>
@@ -412,7 +401,6 @@
 
 <section id="tab-rules" class="tabpane">
   <div class="wrap">
-    <p class="deck"><b>Rules that are changing</b> — proposed &amp; adopted city regulations, by agency, with the public-comment hearing date. <span class="muted">Add it to your calendar before the window closes.</span></p>
     <div class="controls">
       <div class="field"><label for="rulesagency">Agency</label><select id="rulesagency"><option value="">All agencies</option></select></div>
       <div class="field kw"><label for="ruleskw">Search</label><input type="text" id="ruleskw" placeholder="sanitation, licensing, rent, sidewalk…"></div>
@@ -424,7 +412,6 @@
 
 <section id="tab-meetings" class="tabpane">
   <div class="wrap">
-    <p class="deck"><b>Public meetings</b> — Community Boards, City Council, Landmarks, Board of Standards &amp; Appeals, and more. Filter, then add to your calendar.</p>
     <div class="controls">
       <div class="field"><label for="meetingswhen">Show</label><select id="meetingswhen"><option value="upcoming">Upcoming</option><option value="all">All (recent)</option></select></div>
       <div class="field"><label for="meetingsagency">Agency</label><select id="meetingsagency"><option value="">All agencies</option></select></div>
@@ -438,7 +425,6 @@
 <!-- ============ ALERTS (mock) ============ -->
 <section id="tab-alerts" class="tabpane">
   <div class="wrap">
-    <p class="deck">Subscribe to a slice of the City Record — a digest of just what you care about.</p>
     <div class="grid">
       <div class="panel">
         <h2>Build an alert</h2>
@@ -942,8 +928,7 @@ function injectNLBoxes(){
     const wrap=document.querySelector(sel+" .wrap"); if(!wrap) return;
     const anchor=wrap.querySelector(anchorSel); if(!anchor) return;
     const box=document.createElement("div"); box.className="nlbox";
-    box.innerHTML='<label class="nllabel">✨ Ask in plain English</label>'+
-      '<div class="nlrow"><input type="text" id="nlq-'+lens+'" placeholder="'+NL[lens].placeholder+'">'+
+    box.innerHTML='<div class="nlrow"><input type="text" id="nlq-'+lens+'" placeholder="'+NL[lens].placeholder+'">'+
       '<button id="nlgo-'+lens+'">✨ Ask</button></div>'+
       '<div id="nltry-'+lens+'" class="nltry"></div><div id="nltrans-'+lens+'"></div>';
     anchor.parentNode.insertBefore(box, anchor);
@@ -1468,8 +1453,6 @@ $("#kw").addEventListener("keydown", e=>{ if(e.key==="Enter") search(); });
 $("#pgo").addEventListener("click", pSearch);
 $("#pkw").addEventListener("keydown", e=>{ if(e.key==="Enter") pSearch(); });
 $("#pmode").addEventListener("change", ()=>{ $("#pkwlabel").textContent = $("#pmode").value==="role"?"Title keyword":"Person's name"; $("#pkw").placeholder = $("#pmode").value==="role"?"emergency medical, attorney, engineer…":"last name, e.g. Rodriguez"; });
-function applyPSuggestion(pm, q){ $("#pmode").value=pm; $("#pmode").dispatchEvent(new Event("change")); $("#pkw").value=q; pSearch(); }
-document.querySelectorAll(".trychip").forEach(b=>b.addEventListener("click",()=>applyPSuggestion(b.dataset.pm, b.dataset.q)));
 
 $("#awatch").addEventListener("change", aWatchChange);
 $("#apreview").addEventListener("click", aPreview);

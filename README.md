@@ -65,9 +65,3 @@ The only data committed here is two small precomputed snapshots used as seed/ref
 | Planning Labs GeoSearch | `geosearch.planninglabs.nyc` | Land, Property (geocoding) |
 | MapPLUTO (ArcGIS) | `services5.arcgis.com/…/MAPPLUTO` | Land (tax-lot polygons) |
 | DOB job filings | `w9ak-ipjd`, `ic3t-wcy2` | Property ("Still standing?") |
-
-## Run it
-
-```
-open index.html      # double-click — no server, no build, no keys
-```
