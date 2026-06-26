@@ -859,16 +859,16 @@ const NL = {
                $("#pkw").value=(f.keywords||[]).join(" "); pSearch(); }
   },
   land: {
-    placeholder:"e.g. rezonings in Brooklyn, affordable housing in the Bronx",
+    placeholder:"e.g. rezonings in Brooklyn, or 79 Rivington",
     chips:f=>[ f.boro?`<span class="qchip">in <b>${f.boro}</b></span>`:"",
                (f.keywords&&f.keywords.length)?`<span class="qchip">about <b>${f.keywords.join(' / ')}</b></span>`:"",
                f.status==='all'?`<span class="qchip"><b>all</b> · incl. closed</span>`:"" ],
     apply:f=>{ if(f.boro) $("#lboro").value=f.boro; if(f.status) $("#lstatus").value=f.status;
                $("#lkw").value=(f.keywords||[]).join(" "); landSearch(); }
   },
-  property: nlFeed("property","e.g. land in Queens, NYPD auction in Brooklyn"),
-  rules:    nlFeed("rules","e.g. sanitation rules, sidewalk café licensing"),
-  meetings: nlFeed("meetings","e.g. upcoming landmarks hearings, Brooklyn community board"),
+  property: nlFeed("property","e.g. HPD property sales, DEP land"),
+  rules:    nlFeed("rules","e.g. buildings rules, sanitation rules"),
+  meetings: nlFeed("meetings","e.g. recent landmarks hearings, city council"),
   alerts: {
     placeholder:"e.g. email me awards over $1M, or construction RFPs",
     chips:f=>{
@@ -914,12 +914,12 @@ async function nlTranslateLens(lens){
 }
 
 const NL_SAMPLES = {
-  money: ["affordable housing construction over $500k", "open IT consulting RFPs", "shelter services contracts"],
+  money: ["construction contracts over $500k", "IT consulting RFPs", "shelter services contracts"],
   people: ["paramedic roles", "look up someone named Rodriguez", "attorney titles"],
-  land: ["rezonings in Brooklyn", "affordable housing in the Bronx", "Gowanus rezonings"],
-  property: ["land in Queens", "NYPD auctions", "HPD property sales"],
-  rules: ["sanitation rules", "sidewalk café licensing", "rent regulation changes"],
-  meetings: ["upcoming landmarks hearings", "Brooklyn community board", "city council hearings"],
+  land: ["rezonings in Brooklyn", "rezonings in Queens", "79 Rivington"],
+  property: ["HPD property sales", "environmental protection land", "police department property"],
+  rules: ["buildings rules", "sanitation rules", "taxi rules"],
+  meetings: ["recent landmarks hearings", "recent city council hearings", "recent community board meetings"],
   alerts: ["awards over $1M", "construction RFPs", "rezonings near 79 Rivington"]
 };
 
