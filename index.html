@@ -649,6 +649,7 @@ function renderList(){
     </div>`;
   }).join("");
   document.querySelectorAll("#list .row").forEach(el=>el.addEventListener("click",()=>select(+el.dataset.i, el)));
+  document.querySelector("#list .row")?.click(); // auto-open the first result — don't make the user click the obvious
 }
 
 async function select(i, el){
@@ -1023,6 +1024,7 @@ async function pSearchRoles(kw){
     </div>`;
   }).join("");
   document.querySelectorAll("#plist .row").forEach(el=>el.addEventListener("click",()=>pSelectRole(+el.dataset.i, el)));
+  document.querySelector("#plist .row")?.click();
 }
 
 function pSelectRole(i, el){
@@ -1072,6 +1074,7 @@ async function pSearchPeople(kw){
       <p class="rmeta"><span class="ragency">${p.agency}</span> · ${p.actions.length} notice${p.actions.length>1?'s':''}</p>
     </div>`).join("");
   document.querySelectorAll("#plist .row").forEach(el=>el.addEventListener("click",()=>pSelectPerson(+el.dataset.i, el)));
+  document.querySelector("#plist .row")?.click();
 }
 
 async function pSelectPerson(i, el){
@@ -1171,6 +1174,7 @@ function landRenderList(kw){
       ${r.current_milestone?cleanText(r.current_milestone)+(r.current_milestone_date?" · "+fdate(r.current_milestone_date):""):""}</p>
   </div>`).join("");
   document.querySelectorAll("#llist .row").forEach(el=>el.addEventListener("click",()=>landSelect(+el.dataset.i, el)));
+  document.querySelector("#llist .row")?.click();
 }
 
 async function geocode(q){
