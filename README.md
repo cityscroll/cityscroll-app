@@ -1,12 +1,10 @@
 # CROL-List
 
-**NYC's official record (The City Record), made browsable.** The classifieds of city government.
-
 [The City Record](https://a856-cityrecord.nyc.gov/) is the official daily journal of the City of
 New York — by City Charter §1066 every agency must publish its contracts, personnel changes,
-hearings, and rezonings there. It's the city's daily newspaper of government, and almost nobody can
-read it: a dense stream of disconnected legal notices. **CROL-List** re-links them into something a
-person can actually follow.
+hearings, and rezonings there.
+
+**CROL-List** is an interface for searching this information by interest.
 
 ## What it does — seven lenses
 
@@ -22,46 +20,26 @@ person can actually follow.
 - **📋 Rules** — **rules that are changing**: proposed & adopted agency regulations, by agency, with the public-comment **hearing date**.
 - **🗓 Meetings** — **public meetings**: Community Boards, City Council, Landmarks, Board of Standards & Appeals, and more.
 
-**And alerts to keep it coming:**
+**And alerts:**
 
-- **🔔 Alerts** — subscribe to a slice (e.g. "rezonings near 79 Rivington," "awards over $1M") and preview the digest, with one-tap **✍ Respond** / **✉** / **☎** built from the notice's own data.
+- **🔔 Alerts** — *(in progress; scheduled email delivery is not yet live)* compose a watch (e.g. "rezonings near 79 Rivington," "awards over $1M") and preview the digest in the browser, with one-tap **✍ Respond** / **✉** / **☎** built from the notice's own data.
 
 Every lens has an **✨ Ask in plain English** box — type what you want (or tap a sample) and a small model fills the filters and runs the search, with an on-device fallback if the helper is unavailable.
 
 ## Architecture
 
-CROL-List is **one self-contained `index.html`** — inline CSS + vanilla JS, no build step — served as a static file on GitHub Pages. **Every query is a live API call from the browser at runtime:** no cached bulk data, no scheduled download, no copy of the datasets in this repo, so it's as fresh as the City publishes (each business day).
+CROL-List is one self-contained `index.html` — inline CSS and vanilla JS, no build step — served as a static file on GitHub Pages. Every query is a live API call from the browser, so there is no cached bulk data and nothing to keep in sync; results are as fresh as the City publishes. The open-data APIs are CORS-open and need no key.
 
-```
- ┌────────── index.html (static, GitHub Pages) ──────────┐
- │  vanilla JS ─fetch()→  NYC Open Data / Socrata SODA    │
- │                        • City Record   dg92-zbpx       │
- │                        • Citywide Payroll  k397-673e   │
- │                        • Civil Service List  vx8i-nprf │
- │                        • ZAP projects  hgx4-8ukb       │
- │                        • DOB filings  w9ak-ipjd/ic3t…  │
- │             ─fetch()→  Planning Labs GeoSearch         │
- │             ─query──→  MapPLUTO (ArcGIS) lot polygons  │
- │             ─tiles──→  Leaflet + CARTO basemap         │
- │             ─fetch()→  crol-worker  (optional)         │
- └───────────────────────────────────────────────────────┘
-```
-
-The open-data APIs are **CORS-open and need no key**. The one held secret — the model key behind the
-plain-English search — lives in **crol-worker**, a tiny separate Cloudflare Worker; the site falls back
-to an on-device parser whenever it's absent, so the static page never hard-depends on it.
-
-The only data committed here is two small precomputed snapshots used as seed/reference:
-`data/title_crosswalk.json` (~250 roles) and `data/people_examples.json` (~16 seed roles).
+The plain-English search is the one part that needs a secret (a model key), so it runs in an optional separate Cloudflare Worker, **crol-worker**. When that is unavailable the page falls back to an on-device parser (covered by `test/fallback.test.mjs`), so it never hard-depends on the Worker. The only committed data is two small seed files, `data/title_crosswalk.json` and `data/people_examples.json`.
 
 ## Data sources
 
 | Source | ID / endpoint | Used by |
 |---|---|---|
-| City Record Online | `dg92-zbpx` (Socrata) | Money · People · Property · Rules · Meetings · Alerts |
-| Citywide Payroll | `k397-673e` | People |
-| Civil Service List | `vx8i-nprf` | People (exam status) |
-| ZAP Projects | `hgx4-8ukb` | Land, Alerts |
-| Planning Labs GeoSearch | `geosearch.planninglabs.nyc` | Land, Property (geocoding) |
-| MapPLUTO (ArcGIS) | `services5.arcgis.com/…/MAPPLUTO` | Land (tax-lot polygons) |
-| DOB job filings | `w9ak-ipjd`, `ic3t-wcy2` | Property ("Still standing?") |
+| [City Record Online](https://data.cityofnewyork.us/d/dg92-zbpx) | `dg92-zbpx` (Socrata) | Money · People · Property · Rules · Meetings · Alerts |
+| [Citywide Payroll](https://data.cityofnewyork.us/d/k397-673e) | `k397-673e` | People |
+| [Civil Service List](https://data.cityofnewyork.us/d/vx8i-nprf) | `vx8i-nprf` | People (exam status) |
+| [ZAP Projects](https://data.cityofnewyork.us/d/hgx4-8ukb) | `hgx4-8ukb` | Land, Alerts |
+| [Planning Labs GeoSearch](https://geosearch.planninglabs.nyc/) | `geosearch.planninglabs.nyc` | Land, Property (geocoding) |
+| [MapPLUTO (ArcGIS)](https://www.nyc.gov/site/planning/data-maps/open-data/dwn-pluto-mappluto.page) | `services5.arcgis.com/…/MAPPLUTO` | Land (tax-lot polygons) |
+| [DOB job filings](https://data.cityofnewyork.us/d/w9ak-ipjd) | `w9ak-ipjd`, `ic3t-wcy2` | Property ("Still standing?") |
