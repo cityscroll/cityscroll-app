@@ -796,7 +796,7 @@ async function nlResolve(text, lens){
   if(API){
     try{
       const r=await fetch(API.replace(/\/+$/,"")+"/nl",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text, lens})});
-      if(r.ok){const j=await r.json(); if(j&&j.filter&&!j.degraded) return {source:"model",...j.filter};}
+      if(r.ok){const j=await r.json(); if(j&&j.filter&&!j.degraded) return {source:"model",...withPersonName(text, lens, j.filter)};}
     }catch(e){}
   }
   return {source:"device",...deviceParse(text, lens)};
@@ -824,6 +824,24 @@ async function nlTranslate(){
 
 function nlWorkingHTML(){ return `<div class="nlworking"><span class="spark">✨</span><span>translating…</span></div>`; }
 
+// "look up someone named X" → the model sets lookupType:"person" but often omits the name
+// (it reads a surname as not a "topic keyword"), so #pkw ends up empty and the search bails.
+// Recover the name from the raw text. Used by both the model path and the device fallback.
+function personName(text){
+  const t=(text||"").trim();
+  let m=t.match(/(?:named|name of|called)\s+([A-Za-z][A-Za-z'’.\-]+)/i);
+  if(!m) m=t.match(/(?:look\s*up|find|search for|about)\s+(?:someone|somebody|a person|the person|person|mr\.?|ms\.?|mrs\.?)?\s*([A-Za-z][A-Za-z'’.\-]+)/i);
+  if(m) return m[1];
+  const stop=new Set("look up lookup someone somebody person people named name find search for a an the of about mr ms mrs role title".split(" "));
+  const cand=t.replace(/[^A-Za-z'’.\- ]/g," ").split(/\s+/).filter(w=>w.length>2 && !stop.has(w.toLowerCase()));
+  return cand.length ? cand[cand.length-1] : null;
+}
+function withPersonName(text, lens, f){
+  if(lens==="people" && f && f.lookupType==="person" && (!f.keywords || !f.keywords.length)){
+    const nm=personName(text); if(nm) return {...f, keywords:[nm]};
+  }
+  return f;
+}
 function deviceParse(text, lens){
   if(lens==="money") return parseNL(text);
   const out={keywords:[]};
@@ -831,6 +849,13 @@ function deviceParse(text, lens){
   if(lens==="land"){
     const boros=["Manhattan","Brooklyn","Queens","Bronx","Staten Island"];
     out.boro=boros.find(b=>low.includes(" "+b.toLowerCase()+" "))||null;
+  }
+  if(lens==="people"){
+    const personish=/\b(person|people|someone|somebody|individual|named|name of|mr|ms|mrs)\b/.test(low);
+    const roleish=/\b(role|roles|title|titles|position|job|jobs)\b/.test(low);
+    const nm=personName(text);
+    if((personish || nm) && !roleish){ out.lookupType="person"; if(nm) out.keywords=[nm]; return out; }
+    out.lookupType="role";
   }
   const stop=new Set("the a an of in on for to and or with show me find list all near over under within new nyc city our your their about that this".split(" "));
   out.keywords=[...new Set(text.toLowerCase().replace(/[^a-z0-9 ]/g," ").split(/\s+/).filter(w=>w.length>3&&!stop.has(w)))].slice(0,4);
@@ -1407,7 +1432,7 @@ async function aPreview(){
   if(aChannel==="email"){
     const body = rows.length ? rows.map(r=>digItemHTML(data.kind,r)).join("") : '<div class="empty">No matching notices today — so you&#39;d get nothing. (That&#39;s the point: signal, not noise.)</div>';
     $("#apreviewbox").innerHTML = `<div class="emailmock">
-      <div class="ehead"><div class="efrom">City Record, Decoded &lt;alerts@cityrecord.demo&gt; → ${dest}</div>
+      <div class="ehead"><div class="efrom">CROL-List &lt;alerts@crol-list.org&gt; → ${dest}</div>
       <div class="esubj">Your ${subj}</div></div>
       <div class="ebody">${body}
         <div style="margin-top:12px;font:12px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted)">${rows.length} notice${rows.length===1?"":"s"} today · from The City Record · <a href="https://a856-cityrecord.nyc.gov/" target="_blank" rel="noopener">manage / unsubscribe</a></div>
