@@ -1538,11 +1538,9 @@ aWatchChange();
 updateAWhen();
 aRenderSaved();
 </script>
-<!-- Cloudflare Web Analytics — cookieless, aggregate. crol-list.org is served DIRECTLY by GitHub Pages
-     (verified: response header `server: GitHub.com`, no cf-ray — NOT proxied through Cloudflare), so
-     zone-level "Automatic Setup" collects nothing; the beacon must be embedded manually. TODO(James):
-     paste the token from Cloudflare dash → Web Analytics → (your site) → Manage site / Manual → token.
-     Inert until set. Alternative: orange-cloud crol-list.org (SSL mode Full), then delete this block. -->
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "PLACEHOLDER_CF_WEB_ANALYTICS_TOKEN"}'></script>
+<!-- Cloudflare Web Analytics — cookieless, aggregate. Manual JS beacon: crol-list.org is served
+     directly by GitHub Pages (not proxied through Cloudflare), so zone-level Automatic Setup collects
+     nothing — the snippet must live here. Token is a public site id, safe to commit. -->
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "5d81fb4366b848dea15fb1862391909c"}'></script>
 </body>
 </html>
