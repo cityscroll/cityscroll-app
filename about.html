@@ -173,9 +173,7 @@ async function sendFeedback(){
 }
 $("#fbsend").addEventListener("click", sendFeedback);
 </script>
-<!-- Cloudflare Web Analytics — cookieless, aggregate, no PII. Same token/setup as index.html; keep both
-     pages and the "Privacy" section above in sync. TODO(James): paste the token, or delete if you enable
-     Web Analytics at the zone level (orange-cloud) with no snippet. Inert until the token is set. -->
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "PLACEHOLDER_CF_WEB_ANALYTICS_TOKEN"}'></script>
+<!-- Cloudflare Web Analytics runs via zone-level Automatic Setup (edge-injected beacon), so there's no
+     snippet or token here. Cookieless + aggregate; keep the "Privacy" section above in sync. -->
 </body>
 </html>

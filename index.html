@@ -1538,11 +1538,8 @@ aWatchChange();
 updateAWhen();
 aRenderSaved();
 </script>
-<!-- Cloudflare Web Analytics — cookieless, aggregate, no PII (privacy-preserving unique-visitor counts).
-     TODO(James): paste the real token from Cloudflare dash → Analytics & Logs → Web Analytics →
-     Add a site (crol-list.org) → JS snippet. Until the token is set this beacon is inert. If crol-list.org
-     is proxied through Cloudflare (orange cloud) you can instead enable it in the dash with no snippet —
-     then delete this block. Keep the About-page "Privacy" section in sync with whatever you choose. -->
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "PLACEHOLDER_CF_WEB_ANALYTICS_TOKEN"}'></script>
+<!-- Cloudflare Web Analytics runs via zone-level Automatic Setup (crol-list.org is proxied), so the
+     beacon is injected at the edge — no snippet or token here. Cookieless + aggregate; keep the
+     About-page "Privacy" section in sync if that ever changes. -->
 </body>
 </html>
