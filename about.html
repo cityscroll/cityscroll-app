@@ -110,13 +110,17 @@ contracts, hearings, rule changes, rezonings, and personnel moves. CROL-List mak
 
   <button class="btn" id="fbsend">Send feedback →</button>
   <div id="fbmsg"></div>
-  <p class="note">We only keep your email if you give it (to reply). Nothing else is tracked.</p>
+  <p class="note">If you add your email, we keep it only to reply. Each submission also records basic request metadata — your IP address and browser — kept briefly to block spam. See <a href="#privacy">Privacy</a>.</p>
 </div>
 
-<h2>Privacy</h2>
-<p class="src">No accounts, no tracking, no analytics. Search queries go directly from your browser to NYC Open
-Data. The only personal data CROL-List ever holds is an email you choose to give it — to subscribe to an alert,
-or to get a reply to feedback — and every alert email has a one-click unsubscribe.</p>
+<h2 id="privacy">Privacy</h2>
+<p class="src">No accounts, no cookies, no cross-site tracking, no ad tech. Here is exactly what CROL-List does with your data:</p>
+<ul class="src" style="margin:8px 0;padding-left:20px">
+  <li><b>Searches and filters</b> go straight from your browser to NYC Open Data — CROL-List's server never sees them.</li>
+  <li><b>The “Ask” box</b> (plain-English search) sends your text to our worker, which forwards it to Anthropic's Claude to turn it into filters. We don't store the text — only a daily tally, to cap costs.</li>
+  <li><b>Subscribing or sending feedback</b> stores what you submit — your alert or message, and your email if you give one — plus basic request metadata (IP address and browser) kept briefly to block spam and abuse. Every alert email has one-click unsubscribe.</li>
+  <li><b>Page views</b> are measured with Cloudflare Web Analytics: cookieless and aggregate. It counts visits; it does not identify you or follow you across sites.</li>
+</ul>
 
 <div class="foot">CROL-List · a search interface over <a href="https://a856-cityrecord.nyc.gov/" target="_blank" rel="noopener">The City Record</a> · <a href="index.html">Home</a></div>
 </div>
@@ -169,5 +173,9 @@ async function sendFeedback(){
 }
 $("#fbsend").addEventListener("click", sendFeedback);
 </script>
+<!-- Cloudflare Web Analytics — cookieless, aggregate, no PII. Same token/setup as index.html; keep both
+     pages and the "Privacy" section above in sync. TODO(James): paste the token, or delete if you enable
+     Web Analytics at the zone level (orange-cloud) with no snippet. Inert until the token is set. -->
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "PLACEHOLDER_CF_WEB_ANALYTICS_TOKEN"}'></script>
 </body>
 </html>

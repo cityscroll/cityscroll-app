@@ -463,6 +463,7 @@
           <div class="afield">
             <label>Frequency</label>
             <select id="afreq"><option>Daily</option><option>Weekly</option></select>
+            <div id="awhen" style="margin-top:6px;font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted)"></div>
           </div>
           <button id="apreview">Preview today's digest</button>
           <div id="asubwrap" style="margin-top:16px;border-top:1px solid var(--rule);padding-top:14px">
@@ -1369,6 +1370,14 @@ function aDescribe(){
   if(w==="rfpkw") return `${freq} digest of open RFPs matching “${$("#aparam").value||"…"}”`;
   return `${freq} digest of rezonings near “${$("#aparam").value||"…"}”`;
 }
+// When the digest actually goes out. Cron is "0 13 * * *" (13:00 UTC daily); weekly fires only on
+// Mondays. 13:00 UTC = ~9 AM in New York during EDT, 8 AM during EST — hence the winter note.
+function aWhenText(){
+  return $("#afreq").value.toLowerCase()==="weekly"
+    ? "New matches are emailed Monday mornings, around 9 AM New York time (8 AM Nov–Mar)."
+    : "New matches are emailed each morning, around 9 AM New York time (8 AM Nov–Mar).";
+}
+function updateAWhen(){ const el=$("#awhen"); if(el) el.textContent=aWhenText(); }
 
 async function aFetch(){
   const w=$("#awatch").value;
@@ -1501,6 +1510,7 @@ $("#pkw").addEventListener("keydown", e=>{ if(e.key==="Enter") pSearch(); });
 $("#pmode").addEventListener("change", ()=>{ $("#pkwlabel").textContent = $("#pmode").value==="role"?"Title keyword":"Person's name"; $("#pkw").placeholder = $("#pmode").value==="role"?"emergency medical, attorney, engineer…":"last name, e.g. Rodriguez"; });
 
 $("#awatch").addEventListener("change", aWatchChange);
+$("#afreq").addEventListener("change", updateAWhen);
 $("#apreview").addEventListener("click", aPreview);
 $("#asubscribe").addEventListener("click", aSubscribe);
 function applySuggestion(w, p){ $("#awatch").value=w; aWatchChange(); if(w==="bigaward") $("#athresh").value=p; else $("#aparam").value=p; aPreview(); }
@@ -1525,7 +1535,14 @@ $("#lkw").addEventListener("keydown", e=>{ if(e.key==="Enter") landSearch(); });
 loadAgencies();
 search();
 aWatchChange();
+updateAWhen();
 aRenderSaved();
 </script>
+<!-- Cloudflare Web Analytics — cookieless, aggregate, no PII (privacy-preserving unique-visitor counts).
+     TODO(James): paste the real token from Cloudflare dash → Analytics & Logs → Web Analytics →
+     Add a site (crol-list.org) → JS snippet. Until the token is set this beacon is inert. If crol-list.org
+     is proxied through Cloudflare (orange cloud) you can instead enable it in the dash with no snippet —
+     then delete this block. Keep the About-page "Privacy" section in sync with whatever you choose. -->
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "PLACEHOLDER_CF_WEB_ANALYTICS_TOKEN"}'></script>
 </body>
 </html>
