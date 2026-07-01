@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About · CROL-List</title>
+<meta name="description" content="What CROL-List is, where its data comes from, how to send feedback, and its privacy stance.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4efe4; --paper-2:#efe7d6; --ink:#1a1714; --ink-soft:#3b342c; --muted:#5c5349;
+    --rule:#cdbfa6; --rule-strong:#8a7c64; --card:#fbf7ed;
+    --shadow:0 1px 2px rgba(40,30,10,.05),0 6px 20px rgba(40,30,10,.06);
+    --blue:#1f3a5f; --green:#2f4a32; --oxblood:#7a1f1f;
+    --font-nameplate:'Playfair Display',Georgia,serif; --font-body:'Spectral',Georgia,serif;
+    --font-sc:'Spectral SC','Spectral',Georgia,serif; --ui:ui-sans-serif,system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--font-body);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px 80px}
+  a{color:var(--oxblood)}
+  .cr-rule{border-top:3px solid var(--ink)} .cr-rule--bottom{border-top:3px double var(--ink);margin-top:8px}
+  header{padding-top:18px;text-align:center}
+  .home{display:inline-flex;align-items:center;gap:9px;text-decoration:none;color:var(--ink)}
+  .home:hover .cr-title{color:var(--oxblood)}
+  .cr-seal{width:34px;height:34px;color:var(--ink)}
+  .cr-title{font-family:var(--font-nameplate);font-weight:900;font-size:1.5rem;letter-spacing:.01em;margin:0}
+  .kicker{font-family:var(--font-sc);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-top:14px}
+  h1{font-family:var(--font-nameplate);font-weight:900;font-size:clamp(2rem,6vw,3rem);text-transform:uppercase;line-height:.95;margin:.06em 0 .12em}
+  .backhome{display:inline-block;margin-top:12px;font:600 13px/1 var(--ui);text-decoration:none;color:var(--oxblood)}
+  .backhome:hover{text-decoration:underline}
+  h2{font-family:var(--font-sc);font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--oxblood);margin:34px 0 8px;border-top:1px solid var(--rule);padding-top:18px}
+  p{margin:10px 0}
+  .src{font:14px/1.7 var(--ui);color:var(--ink-soft)}
+  /* form */
+  .card{background:var(--card);border:1px solid var(--rule);border-radius:14px;box-shadow:var(--shadow);padding:18px 20px;margin-top:12px}
+  label{display:block;font:600 11px/1 var(--ui);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
+  .chips{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{font:600 13px/1 var(--ui);padding:9px 14px;border:1px solid var(--rule);border-radius:999px;background:#fff;color:var(--ink-soft);cursor:pointer}
+  .chip.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+  textarea,input[type=text],input[type=email]{width:100%;font:15px/1.5 Georgia,serif;padding:11px;border:1px solid var(--rule);border-radius:9px;background:#fff;color:var(--ink);resize:vertical}
+  textarea{min-height:120px}
+  .opt{font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted)}
+  .btn{font:700 14px/1 var(--ui);padding:12px 20px;border-radius:9px;border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer;margin-top:6px}
+  .btn:disabled{opacity:.55;cursor:default}
+  .note{font:13px/1.6 var(--ui);color:var(--muted);margin-top:10px}
+  #fbmsg{font:14px/1.6 var(--ui);margin-top:12px;min-height:1.2em}
+  .loading{display:inline-block;width:12px;height:12px;border:2px solid var(--rule);border-top-color:var(--oxblood);border-radius:50%;animation:spin .8s linear infinite;vertical-align:-2px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .foot{margin-top:40px;border-top:1px solid var(--rule);padding-top:14px;font:13px/1.6 var(--ui);color:var(--muted);text-align:center}
+  .foot a{color:var(--oxblood)}
+</style>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="cr-rule"></div>
+  <a class="home" href="index.html" aria-label="Back to CROL-List home">
+    <svg class="cr-seal" viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="0.6"/>
+      <path d="M50 18 L74 30 V58 Q74 76 50 86 Q26 76 26 58 V30 Z" fill="none" stroke="currentColor" stroke-width="1.3"/>
+      <line x1="26" y1="48" x2="74" y2="48" stroke="currentColor" stroke-width="0.6"/>
+      <path d="M50 30 L50 46 M42 38 L58 38" stroke="currentColor" stroke-width="1.1"/>
+    </svg>
+    <span class="cr-title">CROL-List</span>
+  </a>
+  <div class="kicker">The City Record, searchable</div>
+  <h1>About</h1>
+  <div class="cr-rule cr-rule--bottom"></div>
+  <a class="backhome" href="index.html">← Back to CROL-List</a>
+</header>
+
+<h2>What this is</h2>
+<p>CROL-List is a search interface over <a href="https://a856-cityrecord.nyc.gov/" target="_blank" rel="noopener">The City Record</a> — the
+City of New York's official daily journal, where (by City Charter §1066) every agency must publish its
+contracts, hearings, rule changes, rezonings, and personnel moves. CROL-List makes that record searchable
+<em>by interest</em>: follow a contract, decode a job title, track a rezoning, or get an email when something new matches.</p>
+
+<h2>Where the data comes from</h2>
+<p class="src">Everything is live, public data — queried straight from your browser, nothing cached:
+<a href="https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx" target="_blank" rel="noopener">City Record Online (dg92-zbpx)</a> ·
+<a href="https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e" target="_blank" rel="noopener">Citywide Payroll (k397-673e)</a> ·
+<a href="https://data.cityofnewyork.us/resource/vx8i-nprf" target="_blank" rel="noopener">Civil Service List (vx8i-nprf)</a> ·
+<a href="https://data.cityofnewyork.us/City-Government/Zoning-Application-Portal-ZAP-Project-Data/hgx4-8ukb" target="_blank" rel="noopener">ZAP Projects (hgx4-8ukb)</a> ·
+<a href="https://a0333-passportpublic.nyc.gov/" target="_blank" rel="noopener">PASSPort</a> ·
+<a href="https://www.checkbooknyc.com/" target="_blank" rel="noopener">Checkbook NYC</a>.</p>
+
+<h2>Send feedback</h2>
+<p class="src">Found a bug, want a feature, or have a thought? Send it here. We read everything. No account needed.</p>
+<div class="card">
+  <input type="hidden" id="fbcategory" value="bug">
+  <label>What kind?</label>
+  <div class="chips" id="fbchips">
+    <span class="chip active" data-cat="bug">🐞 Bug</span>
+    <span class="chip" data-cat="feature">💡 Feature idea</span>
+    <span class="chip" data-cat="general">💬 General</span>
+  </div>
+
+  <label for="fbmessage">Your message</label>
+  <textarea id="fbmessage" maxlength="2000" placeholder="What happened, what you'd want, or anything else — the more specific the better."></textarea>
+
+  <label for="fbemail">Email <span class="opt">— optional, only if you'd like a reply</span></label>
+  <input type="email" id="fbemail" autocomplete="email" placeholder="you@example.com">
+
+  <div class="cf-turnstile" data-sitekey="0x4AAAAAADtj-Mskk_RnVd5K" data-action="feedback-v1" style="margin:14px 0 6px"></div>
+
+  <button class="btn" id="fbsend">Send feedback →</button>
+  <div id="fbmsg"></div>
+  <p class="note">We only keep your email if you give it (to reply). Nothing else is tracked.</p>
+</div>
+
+<h2>Privacy</h2>
+<p class="src">No accounts, no tracking, no analytics. Search queries go directly from your browser to NYC Open
+Data. The only personal data CROL-List ever holds is an email you choose to give it — to subscribe to an alert,
+or to get a reply to feedback — and every alert email has a one-click unsubscribe.</p>
+
+<div class="foot">CROL-List · a search interface over <a href="https://a856-cityrecord.nyc.gov/" target="_blank" rel="noopener">The City Record</a> · <a href="index.html">Home</a></div>
+</div>
+
+<script>
+const API = "https://crol-worker.crol-worker.workers.dev";
+const $ = s => document.querySelector(s);
+
+// category chips (single-select)
+document.querySelectorAll("#fbchips .chip").forEach(c=>c.addEventListener("click",()=>{
+  document.querySelectorAll("#fbchips .chip").forEach(x=>x.classList.remove("active"));
+  c.classList.add("active");
+  $("#fbcategory").value = c.dataset.cat;
+}));
+
+function fbIsEmail(s){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s||""); }
+
+async function sendFeedback(){
+  const msg=$("#fbmsg");
+  const category=$("#fbcategory").value;
+  const message=$("#fbmessage").value.trim();
+  const email=$("#fbemail").value.trim();
+  if(message.length<10){ msg.innerHTML="Add a little more detail — at least a sentence."; return; }
+  if(message.length>2000){ msg.innerHTML="That's a bit long — please keep it under 2,000 characters."; return; }
+  if(email && !fbIsEmail(email)){ msg.innerHTML="That email address looks off — leave it blank if you don't want a reply."; return; }
+  const token=(window.turnstile&&turnstile.getResponse)?(turnstile.getResponse()||""):"";
+  if(!token){ msg.innerHTML="Complete the “I'm human” check above first."; return; }
+  const btn=$("#fbsend"); btn.disabled=true; msg.innerHTML='<span class="loading"></span> sending…';
+  try{
+    const r=await fetch(API.replace(/\/+$/,"")+"/feedback",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({category,message,email,turnstileToken:token})});
+    const j=await r.json().catch(()=>({}));
+    if(j.ok){
+      msg.innerHTML="✅ <b>Thank you — got it.</b>"+(email?" We'll reply if there's anything to add.":"");
+      $("#fbmessage").value=""; $("#fbemail").value="";
+      if(window.turnstile) turnstile.reset();
+    } else {
+      const why={
+        turnstile:"The human check didn't pass — try it again.",
+        "rate-limited":"Too many messages — give it a little while.",
+        "bad-email":"That email address looks off — leave it blank if you don't want a reply.",
+        "bad-message":"The message was empty, too short, or too long.",
+        "bad-category":"Pick a category — Bug, Feature idea, or General.",
+        "not-configured":"Feedback isn't switched on yet.",
+        "send-failed":"Couldn't record that just now — try again in a moment."
+      }[j.reason]||"Something went wrong — please try again.";
+      msg.innerHTML="⚠️ "+why; if(window.turnstile) turnstile.reset();
+    }
+  }catch(e){ msg.innerHTML="⚠️ Couldn't reach the server — try again."; if(window.turnstile) turnstile.reset(); }
+  btn.disabled=false;
+}
+$("#fbsend").addEventListener("click", sendFeedback);
+</script>
+</body>
+</html>
