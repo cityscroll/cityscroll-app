@@ -76,7 +76,7 @@
 
 <h2>What this is</h2>
 <p>CROL-List is a search interface over <a href="https://a856-cityrecord.nyc.gov/" target="_blank" rel="noopener">The City Record</a> — the
-City of New York's official daily journal, where (by City Charter §1066) every agency must publish its
+City of New York's official daily journal, where <a href="https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-3113" target="_blank" rel="noopener">every agency must publish</a> its
 contracts, hearings, rule changes, rezonings, and personnel moves. CROL-List makes that record searchable
 <em>by interest</em>: follow a contract, decode a job title, track a rezoning, or get an email when something new matches.</p>
 
@@ -173,7 +173,10 @@ async function sendFeedback(){
 }
 $("#fbsend").addEventListener("click", sendFeedback);
 </script>
-<!-- Cloudflare Web Analytics runs via zone-level Automatic Setup (edge-injected beacon), so there's no
-     snippet or token here. Cookieless + aggregate; keep the "Privacy" section above in sync. -->
+<!-- Cloudflare Web Analytics — cookieless, aggregate. crol-list.org is served DIRECTLY by GitHub Pages
+     (NOT proxied through Cloudflare), so zone-level "Automatic Setup" collects nothing; the beacon must
+     be embedded manually. TODO(James): paste the token (Web Analytics → your site → Manual). Inert until
+     set. Alternative: orange-cloud crol-list.org (SSL mode Full), then delete this block. -->
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "PLACEHOLDER_CF_WEB_ANALYTICS_TOKEN"}'></script>
 </body>
 </html>
