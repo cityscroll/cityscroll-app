@@ -35,7 +35,9 @@ function extractFn(name) {
 // we inject those as params to drive each fallback branch deterministically.
 const make = (API, fetchImpl) =>
   new Function("API", "fetch",
-    [extractFn("parseNL"), extractFn("deviceParse"), extractFn("nlResolve"),
+    ["const API_FALLBACK = API; let apiBase = API;", // fallback base mirrors the injected one in tests
+     extractFn("workerFetch"), extractFn("personName"), extractFn("withPersonName"),
+     extractFn("parseNL"), extractFn("deviceParse"), extractFn("nlResolve"),
      "return { parseNL, deviceParse, nlResolve };"].join("\n")
   )(API, fetchImpl);
 
