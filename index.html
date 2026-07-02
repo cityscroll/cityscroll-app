@@ -118,6 +118,7 @@
   .tag.closed{background:#f6e7e4;color:var(--rose)}
   .tag.hot{background:var(--oxblood);color:#fff}
   .tag.amt{background:#fbf0dc;color:#8a5c12}
+  .tag.asset{background:#e4e9f0;color:var(--blue)}
 
   .detail{padding:18px 18px 22px;min-height:320px}
   .empty{color:var(--muted);font-style:italic;padding:40px 18px;text-align:center}
@@ -436,6 +437,8 @@
       <div class="field kw"><label for="propertykw">Search</label><input type="text" id="propertykw" placeholder="address, neighborhood…"></div>
       <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button id="propertygo">Filter</button></div>
     </div>
+    <div class="chiprow" id="assettabs"></div>
+    <div class="chiprow" id="liferail" style="margin-top:8px"></div>
     <div class="feed" id="propertyfeed"><div class="empty"><span class="loading"></span> loading…</div></div>
   </div>
 </section>
@@ -1441,13 +1444,65 @@ async function loadSection(key){
   let where=`section_name='${cfg.section}'`, order="start_date DESC";
   const ag=$("#"+key+"agency")?$("#"+key+"agency").value:""; if(ag) where+=` AND agency_name='${ag.replace(/'/g,"''")}'`;
   if(cfg.upcoming && (!whenSel || whenSel.value==="upcoming")){ where+=` AND event_date > '${todayISO()}'`; order="event_date ASC"; }
-  const p={"$select":FEED_SELECT,"$where":where,"$order":order,"$limit":"40"};
+  // Property is a small section (~250 rows) whose value is the derived taxonomy — fetch wide, classify client-side.
+  const p={"$select":FEED_SELECT,"$where":where,"$order":order,"$limit":key==="property"?"300":"40"};
   if(kw) p["$q"]=kw;
   $("#"+key+"feed").innerHTML='<div class="empty"><span class="loading"></span> searching…</div>';
   try{
     const rows=await soda(p); feedRows[key]={}; rows.forEach(r=>feedRows[key][r.request_id]=r);
-    renderFeed(key, rows);
+    if(key==="property"){ propAll=rows; renderPropExplorer(); }
+    else renderFeed(key, rows);
   }catch(e){ $("#"+key+"feed").innerHTML='<div class="empty">Could not reach NYC Open Data. Retry.</div>'; }
+}
+
+/* ===== Property explorer: asset-type tabs + lifecycle rail (design: property-ux report §2–3).
+   Asset type is derived from the notice text (no category column exists — 98% coverage on the
+   validation set); dollar figures are shown only as LABELED badges, never a filter (§2b). ===== */
+const ASSET_BUCKETS=[["realty","Real property"],["forest","Forest / timber"],["vehequip","Vehicles + equipment"],["medallion","Medallions"],["seized","Seized / unclaimed"],["other","Other"]];
+const ASSET_LABEL=Object.fromEntries(ASSET_BUCKETS);
+function classifyAsset(rec){
+  const t=(cleanText(rec.short_title)+" "+cleanText(rec.additional_description_1)).toLowerCase();
+  const has=(...k)=>k.some(w=>t.includes(w));
+  if(has("forest management","board feet","sawtimber","cordwood","timber")) return "forest";
+  if(has("medallion")) return "medallion";
+  if(has("auto auction","heavy machinery","fleet","iaai")) return "vehequip";
+  if(has("unauthorized","tobacco","forfeiture","pending destruction")) return "seized";
+  if(has("property clerk","owners are wanted","in the custody")) return "seized";
+  if(has("surplus assets","machine tools","furniture","publicsurplus")) return "vehequip";
+  if(t.includes("easement")) return "other";
+  if(has("mortgage and note","outstanding debt") && t.includes("mortgage")) return "other";
+  if(has("disposition area","city-owned property","block/lot","residential property","public auction","premises","reversionary")) return "realty";
+  if(has("rfp","request for proposal","redevelopment","lease auction","lease","license")) return "realty";
+  return "other";
+}
+function propStage(r){
+  const dl=daysLeft(r.event_date);
+  if(dl!==null && dl>=0) return dl<=30 ? "soon" : "upcoming";
+  if(/hearing/i.test(r.type_of_notice_description||"")) return "proposed";
+  return "past";
+}
+const PROP_STAGES=[["all","All stages"],["proposed","● Proposed (hearing)"],["soon","◷ Closing soon"],["upcoming","◷ Upcoming"],["past","✓ Past / decided"]];
+function dollarBadge(r){
+  const t=cleanText(r.short_title)+" "+cleanText(r.additional_description_1);
+  let m=t.match(/upset price[^$]{0,80}\$\s?([\d][\d,.]*)/i); if(m) return "upset price $"+m[1];
+  m=t.match(/minimum bid[^$]{0,80}\$\s?([\d][\d,.]*)/i); if(m) return "min bid $"+m[1];
+  m=t.match(/appraised[^$]{0,120}\$\s?([\d][\d,.]*)/i); if(m) return "appraised $"+m[1];
+  if(/(?:sold for|consideration of)\s+(?:one dollar|\$\s?1(?:\.00)?\b)/i.test(t)) return "$1 nominal";
+  return null;
+}
+let propAll=[], propAsset="all", propStageSel="all";
+function renderPropExplorer(){
+  propAll.forEach(r=>{ if(!r._asset){ r._asset=classifyAsset(r); r._stage=propStage(r); r._badge=dollarBadge(r); } });
+  const ac={all:propAll.length}, sc={all:propAll.length};
+  propAll.forEach(r=>{ ac[r._asset]=(ac[r._asset]||0)+1; sc[r._stage]=(sc[r._stage]||0)+1; });
+  $("#assettabs").innerHTML=[["all","All types"],...ASSET_BUCKETS].map(([k,l])=>
+    `<button type="button" class="chip ${propAsset===k?'on':''}" data-a="${k}">${l}<span class="ct">${ac[k]||0}</span></button>`).join("");
+  $("#liferail").innerHTML=PROP_STAGES.map(([k,l])=>
+    `<button type="button" class="chip ${propStageSel===k?'on':''}" data-s="${k}">${l}<span class="ct">${sc[k]||0}</span></button>`).join("");
+  $("#assettabs").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{ propAsset=b.dataset.a; renderPropExplorer(); updateHash(); }));
+  $("#liferail").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{ propStageSel=b.dataset.s; renderPropExplorer(); updateHash(); }));
+  const subset=propAll.filter(r=>(propAsset==="all"||r._asset===propAsset) && (propStageSel==="all"||r._stage===propStageSel));
+  renderFeed("property", subset);
 }
 
 async function loadSectionAgencies(key){
@@ -1471,8 +1526,11 @@ function renderFeed(key, rows){
     if(ev) acts+=`<button class="act" type="button" data-ev="${key}:${r.request_id}">📅 Add ${fdt(ev)}</button>`;
     if(addr) acts+=`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(addr+' New York NY')}" target="_blank" rel="noopener">🗺 Map</a>`;
     if(addr && key==="property") acts+=`<button class="act" type="button" data-demo="${r.request_id}">🏚 Still standing?</button>`;
+    const pbadges = key==="property" && (r._asset || r._badge)
+      ? `<div>${r._asset?`<span class="tag asset">${ASSET_LABEL[r._asset]||""}</span>`:""}${r._badge?`<span class="tag amt">${r._badge}</span>`:""}</div>` : "";
     return `<div class="fcard" style="border-top-color:${cfg.topBorder}">
       <div class="ftype">${r.type_of_notice_description||""}${r.agency_name?" · "+r.agency_name:""}${ev?` · <b style="color:var(--ink)">${fdt(ev)}</b>${eventTag(ev)}`:""}</div>
+      ${pbadges}
       <div class="ftitle">${cleanText(r.short_title)||"(untitled)"}</div>
       ${addr?`<div class="faddr">📍 ${addr}</div>`:""}
       ${scope?`<div class="fscope">${scope}${scope.length>=200?"…":""}</div>`:""}
@@ -1749,6 +1807,10 @@ function serializeState(){
     const ag=$("#"+tab+"agency"); if(ag && ag.value) q.set("agency", ag.value);
     const kw=$("#"+tab+"kw"); if(kw && kw.value.trim()) q.set("q", kw.value.trim());
     const w=$("#"+tab+"when"); if(w && w.value !== "upcoming") q.set("when", w.value);
+    if(tab === "property"){
+      if(propAsset !== "all") q.set("asset", propAsset);
+      if(propStageSel !== "all") q.set("stage", propStageSel);
+    }
   }
   const qs = q.toString();
   return "#" + tab + (qs ? "?" + qs : "");
@@ -1797,6 +1859,7 @@ function applyHash(){
       forceSelect("#"+tab+"agency", q.get("agency"));
       $("#"+tab+"kw").value = q.get("q") || "";
       const w=$("#"+tab+"when"); if(w && q.get("when")) w.value = q.get("when");
+      if(tab === "property"){ propAsset = q.get("asset") || "all"; propStageSel = q.get("stage") || "all"; }
       const was = feedLoaded[tab]; showTab(tab); if(was) loadSection(tab);
     } else {
       showTab(tab); // alerts
