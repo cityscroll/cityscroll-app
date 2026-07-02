@@ -32,7 +32,8 @@ notice.
 
 **And alerts:**
 
-- **🔔 Alerts** — every lens toolbar has **"🔔 Watch this search"**, which carries the current filters into a prefilled watch; a **60-second onboarding quiz** (topic chips → optional narrowing → frequency) builds one from scratch. Preview the digest live, then **subscribe by email** — double opt-in, one-click unsubscribe. The same watch is also available as **RSS/Atom, JSON Feed, and a subscribable `.ics` calendar** via the worker's `/feed.*` routes.
+- **📌 Investigation workspace** — a Pin button on every notice, vendor, agency, and matter page collects items into a named local workspace (`#investigation`, localStorage — nothing leaves the browser) with per-item notes; exports citation-grade CSV/JSON (permalink + pin date per item), prints as a dossier, and shares as a read-only 90-day link via the worker. `api.html` documents all open endpoints and hosts a live **batch cross-reference** tool (paste names → award/mention hit matrix).
+- **🔔 Alerts** — **follow any vendor or agency** from its entity page (name-stem matched, so "Sinergia Inc" alerts also catch "Sinergia Incorporated"); every lens toolbar has **"🔔 Watch this search"**, which carries the current filters into a prefilled watch; a **60-second onboarding quiz** (topic chips → optional narrowing → frequency) builds one from scratch. Preview the digest live, then **subscribe by email** — double opt-in, one-click unsubscribe. The same watch is also available as **RSS/Atom, JSON Feed, and a subscribable `.ics` calendar** via the worker's `/feed.*` routes.
 
 **Cross-cutting:**
 
