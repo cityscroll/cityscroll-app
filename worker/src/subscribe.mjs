@@ -11,7 +11,7 @@
 
 import { sanitize, LENSES } from "./lib/filter.mjs";
 import { isValidEmail, buildSubscription } from "./lib/subscriptions.mjs";
-import { signToken } from "./lib/token.mjs";
+import { signToken } from "optin-token";
 import { confirmSubject, confirmEmailHtml } from "./lib/confirm_email.mjs";
 
 const ALLOW = new Set([

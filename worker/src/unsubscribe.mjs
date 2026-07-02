@@ -3,7 +3,7 @@
 // POST (RFC 8058 List-Unsubscribe-Post one-click → empty 200). Idempotent: deleting an already-
 // gone key is fine, so a replayed link just shows "unsubscribed" again.
 
-import { verifyToken } from "./lib/token.mjs";
+import { verifyToken } from "optin-token";
 import { htmlPage } from "./lib/confirm_email.mjs";
 
 export async function handleUnsubscribe(req, env) {
