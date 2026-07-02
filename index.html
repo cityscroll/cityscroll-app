@@ -490,6 +490,13 @@
   </div>
 </section>
 
+<!-- ============ SINGLE NOTICE (permalink view, reached via #notice/<request_id>) ============ -->
+<section id="tab-notice" class="tabpane">
+  <div class="wrap">
+    <div id="noticeview"><div class="empty"><span class="loading"></span> loading notice…</div></div>
+  </div>
+</section>
+
 <footer>
   <div class="wrap">
     <p style="margin:0">CROL-List searches the City Record Open Data — <b><span id="editionspan">2003 to present</span></b>, 1M+ notices. <a href="about.html" style="color:var(--oxblood)">About</a></p>
@@ -573,21 +580,26 @@ function eventTag(ev){
 }
 
 /* ===================== TABS ===================== */
-function showTab(name){
+function showTab(name, push){
   document.querySelectorAll(".tabpane").forEach(p=>p.classList.toggle("active", p.id === "tab-"+name));
   document.querySelectorAll(".tabbtn").forEach(b=>b.classList.toggle("active", b.dataset.tab === name));
+  // Push BEFORE any lazy load below runs updateHash(), or the load's replaceState
+  // rewrites the prior entry and the push turns into a no-op (Back would skip a tab).
+  if(push) pushHash();
   if(name==="land"){ if(!landLoaded){ landLoaded=true; landSearch(); } if(landMap) setTimeout(()=>landMap.invalidateSize(),120); }
   if(name==="people") seedPeople();
   if(SECTIONS[name] && !feedLoaded[name]){ feedLoaded[name]=true; loadSectionAgencies(name); loadSection(name); }
 }
-document.querySelectorAll(".tabbtn").forEach(b=>b.addEventListener("click",()=>showTab(b.dataset.tab)));
+document.querySelectorAll(".tabbtn").forEach(b=>b.addEventListener("click",()=>showTab(b.dataset.tab, true)));
 
 /* ===================== MONEY ===================== */
 async function loadAgencies(){
   try{
     const rows = await soda({"$select":"agency_name","$where":"section_name='Procurement' AND agency_name IS NOT NULL",
       "$group":"agency_name","$order":"agency_name","$limit":"600"});
+    const cur = $("#agency").value; // a permalink may have selected an agency before this resolved
     $("#agency").innerHTML = '<option value="">All agencies</option>' + rows.map(r=>`<option>${r.agency_name}</option>`).join("");
+    if(cur) forceSelect("#agency", cur);
   }catch(e){ $("#agency").innerHTML = '<option value="">All agencies</option>'; }
 }
 
@@ -613,6 +625,7 @@ async function search(){
   else if(sort === "newest") order = "start_date DESC";
   else order = mode === "award" ? "start_date DESC" : "due_date ASC";
 
+  updateHash();
   const heads = {open:"Open RFPs", allrfp:"All RFPs", award:"Recent Awards"};
   $("#reshead").textContent = heads[mode] + (mode==="open" && closingWeek ? " · closing this week" : "") + (agency ? " · " + agency : "");
   $("#rescount").textContent = "";
@@ -752,18 +765,9 @@ function buildApply(r){
   </div></div>`;
 }
 
-function renderDetail(r, chain, stats){
-  let html = "";
-  if(stats && stats.n){
-    html += `<div class="agencybar">
-      <div><div class="big">${money(stats.total)||"—"}</div><div class="lbl">${r.agency_name}<br>total awarded, on record</div></div>
-      <div><div class="big">${(+stats.n).toLocaleString()}</div><div class="lbl">contract awards<br>published</div></div>
-    </div>`;
-  }
-  if(r.type_of_notice_description === "Solicitation") html += buildApply(r);
-
+function chainHTML(r, chain){
   const blanket = chain.length > 5 && chain.every(c=>c.type_of_notice_description==="Award");
-  html += '<div class="chain-h">The paper trail (notices sharing this PIN)</div><div class="chain">';
+  let html = '<div class="chain-h">The paper trail (notices sharing this PIN)</div><div class="chain">';
   chain.forEach((c,idx)=>{
     const amt = money(c.contract_amount);
     html += `<div class="stage"><div class="box ${boxClass(c.type_of_notice_description)}">
@@ -785,11 +789,26 @@ function renderDetail(r, chain, stats){
   } else if(blanket){
     html += `<div class="note warn">PIN <code>${r.pin}</code> is a <b>blanket code</b>: it bundles ${chain.length} separate awards (common for emergency declarations). Each box is a distinct contract under the same code.</div>`;
   }
+  return html;
+}
+
+function renderDetail(r, chain, stats){
+  let html = `<div class="actions" style="margin:0 0 12px"><button class="act" type="button" id="dcopy">🔗 Copy link to this notice</button></div>`;
+  if(stats && stats.n){
+    html += `<div class="agencybar">
+      <div><div class="big">${money(stats.total)||"—"}</div><div class="lbl">${r.agency_name}<br>total awarded, on record</div></div>
+      <div><div class="big">${(+stats.n).toLocaleString()}</div><div class="lbl">contract awards<br>published</div></div>
+    </div>`;
+  }
+  if(r.type_of_notice_description === "Solicitation") html += buildApply(r);
+
+  html += chainHTML(r, chain);
 
   const scope = cleanText(r.additional_description_1);
   if(scope) html += `<div class="scope"><span class="lbl">What they want</span>${scope.slice(0,900)}${scope.length>900?"…":""}</div>`;
   $("#detail").innerHTML = html;
   const ib = $("#icsbtn"); if(ib) ib.addEventListener("click", downloadICS);
+  const dc = $("#dcopy"); if(dc) dc.addEventListener("click", ()=>copyText(noticeLink(r.request_id), dc));
 }
 
 function parseNL(text){
@@ -1060,6 +1079,7 @@ function pExample(i){
 async function pSearch(keepDetail){
   pMode = $("#pmode").value;
   const kw = $("#pkw").value.trim();
+  updateHash();
   $("#preshead").textContent = pMode === "role" ? "Roles" : "People";
   $("#prescount").textContent = "";
   if(keepDetail !== true) $("#pdetail").innerHTML = '<div class="empty">Pick a result on the left.</div>';
@@ -1197,6 +1217,7 @@ function zapWhere(status){ return "ulurp_non='ULURP'"+(status==="active"?" AND p
 
 async function landSearch(){
   const boro=$("#lboro").value, kw=$("#lkw").value.trim(), status=$("#lstatus").value;
+  updateHash();
   $("#lreshead").textContent = "Rezonings" + (boro?" · "+boro:"") + (kw?` · “${kw}”`:"");
   $("#lrescount").textContent=""; landBanner="";
   $("#llist").innerHTML='<div class="empty"><span class="loading"></span> searching…</div>';
@@ -1320,7 +1341,7 @@ function landShowLots(gj, n){
 }
 
 function landToAlert(term){
-  showTab("alerts");
+  showTab("alerts", true);
   $("#awatch").value="rezone"; aWatchChange();
   if(term) $("#aparam").value=term;
   aPreview();
@@ -1339,6 +1360,7 @@ function goodAddr(a){ return a && !/not listed|^n\/?a$|^none$|^various|^see /i.t
 async function loadSection(key){
   const cfg=SECTIONS[key];
   const kw=($("#"+key+"kw").value||"").trim();
+  updateHash();
   const whenSel=$("#"+key+"when");
   let where=`section_name='${cfg.section}'`, order="start_date DESC";
   const ag=$("#"+key+"agency")?$("#"+key+"agency").value:""; if(ag) where+=` AND agency_name='${ag.replace(/'/g,"''")}'`;
@@ -1356,7 +1378,9 @@ async function loadSectionAgencies(key){
   const sel=$("#"+key+"agency"); if(!sel) return;
   try{
     const rows=await soda({"$select":"agency_name","$where":`section_name='${SECTIONS[key].section}' AND agency_name IS NOT NULL`,"$group":"agency_name","$order":"agency_name","$limit":"200"});
+    const cur=sel.value;
     sel.innerHTML='<option value="">All agencies</option>'+rows.map(r=>`<option>${r.agency_name}</option>`).join("");
+    if(cur) forceSelect("#"+key+"agency", cur);
   }catch(e){}
 }
 
@@ -1367,6 +1391,7 @@ function renderFeed(key, rows){
     const ev=r.event_date, addr=cfg.showAddr&&goodAddr(r.street_address_1)?cleanText(r.street_address_1):"";
     const scope=cleanText(r.additional_description_1).slice(0,200);
     let acts=`<a class="act" href="${REQ_URL(r.request_id)}" target="_blank" rel="noopener">↗ City Record</a>`;
+    acts+=`<button class="act" type="button" data-link="${r.request_id}">🔗 Link</button>`;
     if(ev) acts+=`<button class="act" type="button" data-ev="${key}:${r.request_id}">📅 Add ${fdt(ev)}</button>`;
     if(addr) acts+=`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(addr+' New York NY')}" target="_blank" rel="noopener">🗺 Map</a>`;
     if(addr && key==="property") acts+=`<button class="act" type="button" data-demo="${r.request_id}">🏚 Still standing?</button>`;
@@ -1378,6 +1403,7 @@ function renderFeed(key, rows){
       <div class="factions">${acts}</div>
     </div>`;
   }).join("");
+  el.querySelectorAll("[data-link]").forEach(b=>b.addEventListener("click",()=>copyText(noticeLink(b.dataset.link), b)));
   el.querySelectorAll("[data-ev]").forEach(b=>b.addEventListener("click",()=>{ const i=b.dataset.ev.indexOf(":"); downloadEventICS(feedRows[b.dataset.ev.slice(0,i)][b.dataset.ev.slice(i+1)]); }));
   el.querySelectorAll("[data-demo]").forEach(b=>b.addEventListener("click",()=>checkDemolition(feedRows.property[b.dataset.demo], b)));
 }
@@ -1558,6 +1584,154 @@ async function aSubscribe(){
   btn.disabled=false;
 }
 
+/* ===================== PERMALINKS & URL STATE =====================
+   #<tab>?<filters> mirrors the active lens (shareable, bookmarkable, back-button-safe);
+   #notice/<request_id> is a canonical address for one notice. The router reads/writes the
+   same control values the NL layer and hand-set filters use — three spellings of one state. */
+const noticeLink = id => location.origin + location.pathname + "#notice/" + encodeURIComponent(id);
+let hashLock = false;
+
+async function copyText(t, btn){
+  let ok = false;
+  try{ await navigator.clipboard.writeText(t); ok = true; }
+  catch(e){
+    try{ const ta=document.createElement("textarea"); ta.value=t; document.body.appendChild(ta); ta.select(); ok=document.execCommand("copy"); ta.remove(); }catch(_){}
+  }
+  if(btn){ const old=btn.innerHTML; btn.innerHTML = ok ? "✓ Copied" : "⚠ Couldn't copy"; setTimeout(()=>{ btn.innerHTML = old; }, 1800); }
+}
+
+// Select an option that may not be loaded yet (agency lists populate async).
+function forceSelect(sel, val){
+  const s = $(sel); if(!s || !val) return;
+  if(![...s.options].some(o=>o.value===val)){ const o=document.createElement("option"); o.textContent=val; s.appendChild(o); }
+  s.value = val;
+}
+
+function serializeState(){
+  const tab = document.querySelector(".tabbtn.active")?.dataset.tab;
+  if(!tab) return location.hash || "#money"; // notice view keeps its own hash
+  const q = new URLSearchParams();
+  if(tab === "money"){
+    if($("#mode").value !== "open") q.set("mode", $("#mode").value);
+    if($("#agency").value) q.set("agency", $("#agency").value);
+    if($("#kw").value.trim()) q.set("q", $("#kw").value.trim());
+    if($("#sort").value !== "deadline") q.set("sort", $("#sort").value);
+    if($("#minamt").value) q.set("min", $("#minamt").value);
+    if(closingWeek) q.set("closing", "week");
+  } else if(tab === "people"){
+    if($("#pmode").value !== "role") q.set("mode", $("#pmode").value);
+    if($("#pkw").value.trim()) q.set("q", $("#pkw").value.trim());
+  } else if(tab === "land"){
+    if($("#lboro").value) q.set("boro", $("#lboro").value);
+    if($("#lkw").value.trim()) q.set("q", $("#lkw").value.trim());
+    if($("#lstatus").value !== "active") q.set("status", $("#lstatus").value);
+  } else if(SECTIONS[tab]){
+    const ag=$("#"+tab+"agency"); if(ag && ag.value) q.set("agency", ag.value);
+    const kw=$("#"+tab+"kw"); if(kw && kw.value.trim()) q.set("q", kw.value.trim());
+    const w=$("#"+tab+"when"); if(w && w.value !== "upcoming") q.set("when", w.value);
+  }
+  const qs = q.toString();
+  return "#" + tab + (qs ? "?" + qs : "");
+}
+function updateHash(){ // filter changes rewrite the current entry
+  if(hashLock) return;
+  const h = serializeState();
+  if(!location.hash && h === "#money") return; // don't decorate a fresh default load
+  if(location.hash !== h) history.replaceState(null, "", h);
+}
+function pushHash(){ // tab changes create a history entry (back returns to the prior tab)
+  if(hashLock) return;
+  const h = serializeState();
+  if(location.hash !== h) history.pushState(null, "", h);
+}
+
+function applyHash(){
+  const raw = location.hash.slice(1);
+  if(!raw) return false;
+  if(raw.startsWith("notice/")){ showNotice(decodeURIComponent(raw.slice(7))); return true; }
+  const qi = raw.indexOf("?"), tab = qi < 0 ? raw : raw.slice(0, qi);
+  if(tab === "notice" || !document.getElementById("tab-"+tab)) return false;
+  const q = new URLSearchParams(qi < 0 ? "" : raw.slice(qi+1));
+  hashLock = true;
+  try{
+    if(tab === "money"){
+      if(q.get("mode")) $("#mode").value = q.get("mode");
+      forceSelect("#agency", q.get("agency"));
+      $("#kw").value = q.get("q") || "";
+      if(q.get("sort")) $("#sort").value = q.get("sort");
+      if(q.get("min")) $("#minamt").value = q.get("min");
+      closingWeek = q.get("closing") === "week";
+      $("#closingweek").classList.toggle("on", closingWeek);
+      showTab("money"); search();
+    } else if(tab === "people"){
+      if(q.get("mode")){ $("#pmode").value = q.get("mode"); $("#pmode").dispatchEvent(new Event("change")); }
+      $("#pkw").value = q.get("q") || "";
+      showTab("people");
+      if($("#pkw").value.trim()) pSearch();
+    } else if(tab === "land"){
+      if(q.get("boro")) $("#lboro").value = q.get("boro");
+      $("#lkw").value = q.get("q") || "";
+      if(q.get("status")) $("#lstatus").value = q.get("status");
+      const was = landLoaded; showTab("land"); if(was) landSearch();
+    } else if(SECTIONS[tab]){
+      forceSelect("#"+tab+"agency", q.get("agency"));
+      $("#"+tab+"kw").value = q.get("q") || "";
+      const w=$("#"+tab+"when"); if(w && q.get("when")) w.value = q.get("when");
+      const was = feedLoaded[tab]; showTab(tab); if(was) loadSection(tab);
+    } else {
+      showTab(tab); // alerts
+    }
+  } finally { hashLock = false; }
+  return true;
+}
+
+const NOTICE_SELECT = SELECT + ",event_date,street_address_1,section_name";
+async function showNotice(id){
+  showTab("notice");
+  const box = $("#noticeview");
+  const safeId = String(id).replace(/[<>&]/g,"");
+  box.innerHTML = `<div class="empty"><span class="loading"></span> fetching notice ${safeId}…</div>`;
+  let r = null;
+  try{
+    const rows = await soda({"$select":NOTICE_SELECT, "$where":`request_id='${String(id).replace(/'/g,"''")}'`, "$limit":"1"});
+    r = rows[0];
+  }catch(e){}
+  if(!r){
+    box.innerHTML = `<div class="empty">Notice <code>${safeId}</code> wasn't found in the City Record Open Data — it may be very new, or the ID may be mistyped. <br><br><a href="#money">← Browse CROL-List</a> · <a href="${REQ_URL(id)}" target="_blank" rel="noopener">try it in the City Record ↗</a></div>`;
+    return;
+  }
+  const link = noticeLink(r.request_id);
+  const dates = [];
+  if(r.start_date) dates.push(`published <b>${fdt(r.start_date)}</b>`);
+  if(r.due_date) dates.push(`responses due <b>${fdt(r.due_date)}</b> ${deadlineTag(r.due_date)}`);
+  if(r.event_date) dates.push(`event <b>${fdt(r.event_date)}</b>${eventTag(r.event_date)}`);
+  const scope = cleanText(r.additional_description_1);
+  box.innerHTML = `<div style="max-width:880px;margin:0 auto">
+    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CROL-List</a></p>
+    <div class="panel" style="padding:22px 24px">
+      <div class="ftype" style="margin-bottom:6px">${r.type_of_notice_description||"Notice"}${r.section_name?" · "+r.section_name:""}${r.agency_name?" · "+r.agency_name:""}</div>
+      <div class="rolename">${cleanText(r.short_title)||"(untitled notice)"}</div>
+      ${dates.length?`<div class="rmeta2">${dates.join(" · ")}</div>`:""}
+      ${goodAddr(r.street_address_1)?`<div class="rmeta2">📍 ${cleanText(r.street_address_1)}</div>`:""}
+      <div class="actions" style="margin-top:14px">
+        <button class="act primary" type="button" id="ncopy">🔗 Copy link</button>
+        <a class="act" href="mailto:?subject=${encodeURIComponent("City Record notice: "+(cleanText(r.short_title)||r.request_id))}&body=${encodeURIComponent(link+"\n\nVia CROL-List — The City Record, searchable.")}">✉ Email</a>
+        <button class="act" type="button" id="nprint">🖨 Print</button>
+        ${(r.due_date||r.event_date)?'<button class="act" type="button" id="nics">📅 Add to calendar</button>':""}
+        <a class="act" href="${REQ_URL(r.request_id)}" target="_blank" rel="noopener">↗ View in City Record</a>
+      </div>
+      ${r.type_of_notice_description==="Solicitation"?buildApply(r):""}
+      ${scope?`<div class="scope"><span class="lbl">Full notice text</span>${scope.slice(0,4000)}${scope.length>4000?"…":""}</div>`:""}
+      <div id="nchain"></div>
+      <div class="note" style="margin-top:14px">Permalink: <code>${link}</code> · request ID <code>${r.request_id}</code> · from NYC Open Data</div>
+    </div></div>`;
+  $("#ncopy").addEventListener("click", ()=>copyText(link, $("#ncopy")));
+  $("#nprint").addEventListener("click", ()=>window.print());
+  const ni=$("#nics"); if(ni) ni.addEventListener("click", ()=>{ if(r.due_date){ selectedRFP=r; downloadICS(); } else downloadEventICS(r); });
+  const ib=$("#icsbtn"); if(ib){ ib.addEventListener("click", ()=>{ selectedRFP=r; downloadICS(); }); }
+  if(usablePin(r.pin)){ loadChain(r).then(chain=>{ if(chain.length>1) $("#nchain").innerHTML = chainHTML(r, chain); }).catch(()=>{}); }
+}
+
 /* ===================== INIT ===================== */
 $("#go").addEventListener("click", search);
 $("#nlgo").addEventListener("click", nlTranslate);
@@ -1598,7 +1772,8 @@ $("#lkw").addEventListener("keydown", e=>{ if(e.key==="Enter") landSearch(); });
   const ag=$("#"+k+"agency"); if(ag) ag.addEventListener("change",()=>loadSection(k));
 });
 loadAgencies();
-search();
+window.addEventListener("hashchange", ()=>{ if(!hashLock && !applyHash()) showTab("money"); }); // empty/unknown hash (e.g. Back to the first entry) → default view
+if(!applyHash()) search(); // an incoming permalink wins over the default Money load
 aWatchChange();
 updateAWhen();
 aRenderSaved();
