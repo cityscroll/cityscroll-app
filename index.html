@@ -1016,6 +1016,7 @@ function chainHTML(r, chain){
 
 function renderDetail(r, chain, stats){
   let html = `<div class="actions" style="margin:0 0 12px"><button class="act" type="button" id="dcopy">🔗 Copy link to this notice</button></div>`;
+  html += `<div id="dcontext"></div>`;
   // Solicitations get the richer how-to-respond panel below; everything else gets the glance box.
   if(r.type_of_notice_description !== "Solicitation") html += glanceFor(r);
   if(stats && stats.n){
@@ -1033,6 +1034,7 @@ function renderDetail(r, chain, stats){
   $("#detail").innerHTML = html;
   const ib = $("#icsbtn"); if(ib) ib.addEventListener("click", downloadICS);
   const dc = $("#dcopy"); if(dc) dc.addEventListener("click", ()=>copyText(noticeLink(r.request_id), dc));
+  fillContext(r, $("#dcontext"));
 }
 
 function parseNL(text){
@@ -1944,6 +1946,97 @@ function renderToday(d){
   $("#todaystrip").hidden = false;
 }
 
+/* ===================== RED FLAGS & BENCHMARKS (context, never accusations) =====================
+   OCP/Opentender-style computable signals + comparative stats, computed live per view from small
+   SODA aggregates and cached per agency for the session. Formulas + false-positive modes are
+   documented on about.html#context, which every flag links to. */
+const BM_CACHE = {};
+const yearCut = () => new Date(Date.now()-365*86400000).toISOString().slice(0,10) + "T00:00:00";
+function ordinal(n){ const s=["th","st","nd","rd"], v=n%100; return n+(s[(v-20)%10]||s[v]||s[0]); }
+
+function agencyNorms(agency){
+  if(BM_CACHE[agency]) return BM_CACHE[agency];
+  const q = agency.replace(/'/g,"''");
+  BM_CACHE[agency] = (async ()=>{
+    const out = {adMedian:null, adN:0, awardTotal:0, awardCount:0};
+    try{
+      const sol = await soda({"$select":"start_date,due_date","$where":`agency_name='${q}' AND type_of_notice_description='Solicitation' AND due_date IS NOT NULL`,"$order":"start_date DESC","$limit":"200"}, 8000);
+      const ws = sol.map(r=>Math.round((new Date(r.due_date)-new Date(r.start_date))/86400000)).filter(d=>d>0&&d<400).sort((a,b)=>a-b);
+      if(ws.length>=8){ out.adMedian = ws[Math.floor(ws.length/2)]; out.adN = ws.length; }
+    }catch(e){}
+    try{
+      const [a] = await soda({"$select":"count(1) as n, sum(contract_amount) as t","$where":`agency_name='${q}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < 5000000000 AND start_date > '${yearCut()}'`}, 8000);
+      if(a){ out.awardCount = +a.n||0; out.awardTotal = +a.t||0; }
+    }catch(e){}
+    return out;
+  })();
+  return BM_CACHE[agency];
+}
+
+const NONCOMP_RE = /negotiated|sole source|emergency|demonstration project/i;
+async function noticeFlags(r){
+  const flags = [];
+  if(!r || !r.agency_name) return flags;
+  if(NONCOMP_RE.test(r.selection_method_description||""))
+    flags.push({lvl:"soon", t:`⚑ non-competitive method: ${cleanText(r.selection_method_description)}`});
+  if(r.type_of_notice_description === "Solicitation" && r.due_date && r.start_date){
+    const w = Math.round((new Date(r.due_date)-new Date(r.start_date))/86400000);
+    if(w > 0 && w <= 10){
+      const n = await agencyNorms(r.agency_name);
+      if(n.adMedian && w < n.adMedian/2)
+        flags.push({lvl:"hot", t:`⚑ short ad window: ${w} day${w===1?"":"s"} (agency median ${n.adMedian})`});
+    }
+  }
+  if(r.type_of_notice_description === "Award" && r.vendor_name){
+    try{
+      const cut90 = new Date(Date.now()-90*86400000).toISOString().slice(0,10) + "T00:00:00";
+      const [c] = await soda({"$select":"count(1) as n","$where":`agency_name='${r.agency_name.replace(/'/g,"''")}' AND vendor_name='${cleanText(r.vendor_name).replace(/'/g,"''")}' AND type_of_notice_description='Award' AND start_date > '${cut90}'`}, 8000);
+      if(c && +c.n >= 3) flags.push({lvl:"soon", t:`⚑ ${ordinal(+c.n)} award to this vendor at this agency in 90 days`});
+    }catch(e){}
+  }
+  return flags;
+}
+
+async function awardContext(r){
+  if(!r || r.type_of_notice_description !== "Award" || !r.agency_name) return "";
+  const X = +r.contract_amount;
+  if(!X || X <= 0 || X >= 5e9) return "";
+  const q = r.agency_name.replace(/'/g,"''");
+  const base = `agency_name='${q}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < 5000000000 AND start_date > '${yearCut()}'`;
+  const bits = [];
+  try{
+    const [[le],[tot]] = await Promise.all([
+      soda({"$select":"count(1) as n","$where":base+` AND contract_amount <= ${X}`}, 8000),
+      soda({"$select":"count(1) as n","$where":base}, 8000)
+    ]);
+    if(tot && +tot.n >= 20) bits.push(`larger than <b>${Math.round((+le.n/+tot.n)*100)}%</b> of this agency's awards (last 12 mo, n=${(+tot.n).toLocaleString()})`);
+  }catch(e){}
+  if(r.vendor_name){
+    try{
+      const n = await agencyNorms(r.agency_name);
+      if(n.awardTotal > 0){
+        const [v] = await soda({"$select":"sum(contract_amount) as t","$where":base+` AND vendor_name='${cleanText(r.vendor_name).replace(/'/g,"''")}'`}, 8000);
+        if(v && +v.t > 0){
+          const share = Math.round((+v.t/n.awardTotal)*100);
+          if(share >= 1) bits.push(`this vendor holds <b>${share}%</b> of the agency's award $ (12 mo)`);
+        }
+      }
+    }catch(e){}
+  }
+  return bits.length ? `<div class="glance" style="border-left-color:var(--amber)"><div class="gl"><b>Context</b><span>${bits.join(" · ")} · <a href="about.html#context">how computed</a></span></div></div>` : "";
+}
+
+// Fill a placeholder div asynchronously; bail if the view moved on while queries ran.
+async function fillContext(r, el){
+  if(!el) return;
+  const [flags, ctx] = await Promise.all([noticeFlags(r), awardContext(r)]);
+  if(!document.contains(el)) return; // a newer selection replaced this panel
+  let html = "";
+  if(flags.length) html += `<div style="margin:6px 0 4px">${flags.map(f=>`<span class="tag ${f.lvl}" style="margin-bottom:4px">${f.t}</span>`).join(" ")} <a class="pivot" style="font:12px/1.6 ui-sans-serif,system-ui,sans-serif;color:var(--muted)" href="about.html#context">what flags mean</a></div>`;
+  html += ctx;
+  if(html) el.innerHTML = html;
+}
+
 /* ===================== ENTITY PAGES (vendor / agency) =====================
    The pivot layer: every agency or vendor mention links here, and each page is a hub of
    further pivots — the search → entity → pivot loop. Vendor identity is resolved at read
@@ -2219,6 +2312,7 @@ async function showNotice(id){
     <div class="panel" style="padding:22px 24px">
       <div class="ftype" style="margin-bottom:6px">${r.type_of_notice_description||"Notice"}${r.section_name?" · "+r.section_name:""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}</div>
       <div class="rolename">${cleanText(r.short_title)||"(untitled notice)"}</div>
+      <div id="ncontext"></div>
       ${glanceFor(r)}
       <div class="actions" style="margin-top:14px">
         <button class="act primary" type="button" id="ncopy">🔗 Copy link</button>
@@ -2236,6 +2330,7 @@ async function showNotice(id){
   $("#nprint").addEventListener("click", ()=>window.print());
   const ni=$("#nics"); if(ni) ni.addEventListener("click", ()=>{ if(r.due_date){ selectedRFP=r; downloadICS(); } else downloadEventICS(r); });
   const ib=$("#icsbtn"); if(ib){ ib.addEventListener("click", ()=>{ selectedRFP=r; downloadICS(); }); }
+  fillContext(r, $("#ncontext"));
   if(usablePin(r.pin)){ loadChain(r).then(chain=>{ if(chain.length>1) $("#nchain").innerHTML = chainHTML(r, chain); }).catch(()=>{}); }
 }
 
