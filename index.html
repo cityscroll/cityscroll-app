@@ -247,6 +247,23 @@
   .loading{display:inline-block;width:14px;height:14px;border:2px solid var(--rule);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;vertical-align:-2px}
   @keyframes spin{to{transform:rotate(360deg)}}
 
+  /* accessibility & mobile */
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+  .skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--ink);color:#fff;padding:11px 18px;border-radius:0 0 9px 0;font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none}
+  .skip:focus{left:0}
+  :is(button,.act,.chip,.wandchip,.trychip,a,select,input,summary):focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
+  .tabbtn:focus-visible{outline:2px solid var(--oxblood);outline-offset:-2px}
+  .row:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+  .filtertoggle{display:none}
+  @media(max-width:680px){
+    .filtertoggle{display:block;width:100%;margin-top:14px}
+    .controls{display:none}
+    .controls.open{display:flex}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation-duration:.001s !important;animation-iteration-count:1 !important;transition-duration:.001s !important}
+  }
+
   footer{border-top:3px double var(--ink);margin-top:46px;padding:26px 0 60px;font:13px/1.6 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
   footer h3{font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 8px;color:var(--ink)}
   .caveat{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:14px 16px;margin-top:14px}
@@ -256,6 +273,8 @@
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
+<div id="srstatus" class="sr-only" role="status" aria-live="polite"></div>
 <header class="masthead">
   <div class="wrap">
     <div class="cr-rule cr-rule--top"></div>
@@ -288,6 +307,7 @@
     <div class="cr-rule cr-rule--bottom"></div>
   </div>
 </header>
+<div id="main" tabindex="-1"></div>
 
 <!-- ============ MONEY ============ -->
 <section id="tab-money" class="tabpane active">
@@ -615,9 +635,17 @@ function eventTag(ev){
 }
 
 /* ===================== TABS ===================== */
+function announce(msg){ const el=$("#srstatus"); if(el) el.textContent = msg; }
+function syncTabAria(){
+  const btns=[...document.querySelectorAll(".tabbtn")];
+  let any=false;
+  btns.forEach(b=>{ const on=b.classList.contains("active"); b.setAttribute("aria-selected", String(on)); b.tabIndex = on ? 0 : -1; if(on) any=true; });
+  if(!any && btns[0]) btns[0].tabIndex = 0; // notice view: no tab selected — keep the tablist reachable
+}
 function showTab(name, push){
   document.querySelectorAll(".tabpane").forEach(p=>p.classList.toggle("active", p.id === "tab-"+name));
   document.querySelectorAll(".tabbtn").forEach(b=>b.classList.toggle("active", b.dataset.tab === name));
+  syncTabAria();
   // Push BEFORE any lazy load below runs updateHash(), or the load's replaceState
   // rewrites the prior entry and the push turns into a no-op (Back would skip a tab).
   if(push) pushHash();
@@ -626,6 +654,46 @@ function showTab(name, push){
   if(SECTIONS[name] && !feedLoaded[name]){ feedLoaded[name]=true; loadSectionAgencies(name); loadSection(name); }
 }
 document.querySelectorAll(".tabbtn").forEach(b=>b.addEventListener("click",()=>showTab(b.dataset.tab, true)));
+
+/* ARIA tab semantics (WAI-ARIA Authoring Practices "tabs" pattern) + arrow-key navigation */
+(function(){
+  const nav=document.querySelector(".tabs"); if(!nav) return;
+  nav.setAttribute("role","tablist"); nav.setAttribute("aria-label","Lenses");
+  document.querySelectorAll(".tabbtn").forEach(b=>{
+    b.id="tabbtn-"+b.dataset.tab; b.setAttribute("role","tab"); b.setAttribute("aria-controls","tab-"+b.dataset.tab);
+  });
+  document.querySelectorAll(".tabpane").forEach(p=>{
+    p.setAttribute("role","tabpanel");
+    const btn=document.getElementById("tabbtn-"+p.id.slice(4)); if(btn) p.setAttribute("aria-labelledby", btn.id);
+  });
+  nav.addEventListener("keydown", e=>{
+    const tabs=[...nav.querySelectorAll(".tabbtn")];
+    const i=tabs.indexOf(document.activeElement); if(i<0) return;
+    let j=null;
+    if(e.key==="ArrowRight") j=(i+1)%tabs.length;
+    else if(e.key==="ArrowLeft") j=(i-1+tabs.length)%tabs.length;
+    else if(e.key==="Home") j=0;
+    else if(e.key==="End") j=tabs.length-1;
+    if(j!==null){ e.preventDefault(); tabs[j].focus(); tabs[j].click(); }
+  });
+  syncTabAria();
+})();
+
+/* Result-list rows are keyboard-operable: Enter/Space activates the focused row */
+["#list","#plist","#llist"].forEach(sel=>{
+  const el=$(sel); if(!el) return;
+  el.addEventListener("keydown", e=>{
+    if((e.key==="Enter"||e.key===" ") && e.target.classList && e.target.classList.contains("row")){ e.preventDefault(); e.target.click(); }
+  });
+});
+
+/* Mobile: filters collapse behind a toggle (NN/g mobile faceted-search tray, lite) */
+document.querySelectorAll(".tabpane .controls").forEach(c=>{
+  const b=document.createElement("button");
+  b.type="button"; b.className="filtertoggle"; b.textContent="☰ Filters"; b.setAttribute("aria-expanded","false");
+  c.parentNode.insertBefore(b,c);
+  b.addEventListener("click",()=>{ const open=c.classList.toggle("open"); b.setAttribute("aria-expanded", String(open)); });
+});
 
 /* ===================== MONEY ===================== */
 async function loadAgencies(){
@@ -679,6 +747,7 @@ async function search(){
     }
   }catch(e){ $("#list").innerHTML = '<div class="empty">Could not reach NYC Open Data. Retry in a moment.</div>'; return; }
   $("#rescount").textContent = currentRows.length === 40 ? "40+" : currentRows.length;
+  announce(`${currentRows.length===40?"40 or more":currentRows.length} results — ${$("#reshead").textContent}`);
   renderList();
   if(narrowed) $("#list").insertAdjacentHTML("afterbegin",
     `<div class="note warn" style="margin:10px 12px 0">Full-history search was slow — showing <b>recent editions only</b> (since ${recentCutLabel()}). Add an agency or keyword to search all years faster.</div>`);
@@ -691,7 +760,7 @@ function renderList(){
     const lead = isAward
       ? (money(r.contract_amount) ? `<span class="tag amt">${money(r.contract_amount)}</span>` : "")
       : deadlineTag(r.due_date);
-    return `<div class="row" data-i="${i}">
+    return `<div class="row" data-i="${i}" tabindex="0" role="button">
       <p class="rtitle">${cleanText(r.short_title) || "(untitled notice)"}</p>
       <p class="rmeta">${lead}<span class="ragency">${r.agency_name||""}</span> · ${fdate(r.start_date)}
         ${r.category_description? " · "+r.category_description : ""}<br>
@@ -1179,10 +1248,11 @@ async function pSearchRoles(kw){
   competitiveSet = new Set(comp.map(c=>(c.list_title_desc||"").toUpperCase().trim()));
   pRows = pay;
   $("#prescount").textContent = pay.length === 40 ? "40+" : pay.length;
+  announce(`${pay.length===40?"40 or more":pay.length} matching roles`);
   if(!pay.length){ $("#plist").innerHTML = '<div class="empty">No titles match. Try a broader word.</div>'; return; }
   $("#plist").innerHTML = pay.map((r,i)=>{
     const comp2 = competitiveSet.has((r.title_description||"").toUpperCase().trim());
-    return `<div class="row" data-i="${i}">
+    return `<div class="row" data-i="${i}" tabindex="0" role="button">
       <p class="rtitle">${r.title_description}</p>
       <p class="rmeta"><span class="tag ${comp2?'open':'soon'}">${comp2?'exam title':'no-exam title'}</span>
         ${(+r.n).toLocaleString()} people · ${money(r.mn)}–${money(r.mx)}</p>
@@ -1234,7 +1304,7 @@ async function pSearchPeople(kw){
   pRows = [...people.values()].sort((a,b)=>b.actions.length-a.actions.length);
   $("#prescount").textContent = pRows.length;
   if(!pRows.length){ $("#plist").innerHTML = '<div class="empty">No personnel notices match that name. Try a last name.</div>'; return; }
-  $("#plist").innerHTML = pRows.map((p,i)=>`<div class="row" data-i="${i}">
+  $("#plist").innerHTML = pRows.map((p,i)=>`<div class="row" data-i="${i}" tabindex="0" role="button">
       <p class="rtitle">${p.name}</p>
       <p class="rmeta"><span class="ragency">${p.agency}</span> · ${p.actions.length} notice${p.actions.length>1?'s':''}</p>
     </div>`).join("");
@@ -1319,6 +1389,7 @@ async function landSearch(){
       lRows=await api(ZAP,p);
     }
     $("#lrescount").textContent=lRows.length>=40?"40+":lRows.length;
+    announce(`${lRows.length>=40?"40 or more":lRows.length} rezonings`);
     landRenderList(kw);
   }catch(e){ $("#llist").innerHTML='<div class="empty">Could not reach the data. Retry.</div>'; }
 }
@@ -1334,7 +1405,7 @@ function landRenderList(kw){
     $("#llist").innerHTML=head+`<div class="empty">No ZAP rezonings${kw?` for “${kw}”`:""}. ZAP indexes by <i>project</i>, not address — a notice about your block can be missing here while still in <a href="https://a856-cityrecord.nyc.gov/Search/Advanced" target="_blank" rel="noopener">The City Record</a>.</div>`;
     return;
   }
-  $("#llist").innerHTML=head+lRows.map((r,i)=>`<div class="row" data-i="${i}">
+  $("#llist").innerHTML=head+lRows.map((r,i)=>`<div class="row" data-i="${i}" tabindex="0" role="button">
     <p class="rtitle">${r.project_name||"(unnamed project)"}</p>
     <p class="rmeta">${mihOn(r.mih_flag)?'<span class="tag soon">affordable housing</span>':''}<span class="ragency">${r.borough||""}${r.community_district?" · CD "+r.community_district:""}</span> · ${r.public_status||r.project_status||""}<br>
       ${r.current_milestone?cleanText(r.current_milestone)+(r.current_milestone_date?" · "+fdate(r.current_milestone_date):""):""}</p>
@@ -1451,7 +1522,7 @@ async function loadSection(key){
   try{
     const rows=await soda(p); feedRows[key]={}; rows.forEach(r=>feedRows[key][r.request_id]=r);
     if(key==="property"){ propAll=rows; renderPropExplorer(); }
-    else renderFeed(key, rows);
+    else { announce(`${rows.length} notices`); renderFeed(key, rows); }
   }catch(e){ $("#"+key+"feed").innerHTML='<div class="empty">Could not reach NYC Open Data. Retry.</div>'; }
 }
 
@@ -1502,6 +1573,7 @@ function renderPropExplorer(){
   $("#assettabs").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{ propAsset=b.dataset.a; renderPropExplorer(); updateHash(); }));
   $("#liferail").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{ propStageSel=b.dataset.s; renderPropExplorer(); updateHash(); }));
   const subset=propAll.filter(r=>(propAsset==="all"||r._asset===propAsset) && (propStageSel==="all"||r._stage===propStageSel));
+  announce(`${subset.length} property notices`);
   renderFeed("property", subset);
 }
 
