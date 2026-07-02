@@ -69,11 +69,11 @@ test("an un-offered lens compiles to null (cron skips it)", () => {
   assert.equal(compileSub({ lens: "nonsense", filter: {} }, "2026-06-30"), null);
 });
 
-test("entity/vendor → stem-prefix query + exact-stem postFilter", () => {
+test("entity/vendor → full-text stem query + exact-stem postFilter", () => {
   const q = compileSub({ lens: "entity", filter: { kind: "vendor", name: "Sinergia Inc" } }, "2026-07-02");
   assert.equal(q.kind, "entity");
   assert.equal(q.idField, "request_id");
-  assert.match(q.params["$where"], /upper\(vendor_name\) like 'SINERGIA%'/);
+  assert.equal(q.params["$q"], "SINERGIA"); // $q not LIKE: punctuated vendor_names must still match
   assert.equal(typeof q.postFilter, "function");
   assert.ok(q.postFilter({ vendor_name: "Sinergia Incorporated" }), "variant matches stem");
   assert.ok(q.postFilter({ vendor_name: "SINERGIA, INC." }), "punctuation variant matches");
@@ -90,4 +90,21 @@ test("entity/agency → exact agency query, all sections", () => {
 test("entity: empty or too-short names compile to null", () => {
   assert.equal(compileSub({ lens: "entity", filter: { kind: "vendor", name: "" } }, "2026-07-02"), null);
   assert.equal(compileSub({ lens: "entity", filter: { kind: "vendor", name: "AB" } }, "2026-07-02"), null);
+});
+
+test("entityvendor: a punctuated vendor name must match its own row (DEMATTEIS bug)", () => {
+  const q = compileSub({ lens: "entity", filter: { kind: "vendor", name: "Leon D. Dematteis Construction Corp" } }, "2026-06-30");
+  // The compiled query must be able to select the vendor's own row. The stem strips
+  // punctuation but vendor_name keeps it, so a stem-prefix LIKE can never match
+  // "LEON D. DEMATTEIS CONSTRUCTION CORP" — the watch silently matched nothing.
+  const row = { vendor_name: "LEON D. DEMATTEIS CONSTRUCTION CORP" };
+  const toks = (s) => String(s).toUpperCase().replace(/[^A-Z0-9 ]/g, " ").split(/\s+/).filter(Boolean);
+  if (q.params.$q) {
+    const hay = new Set(toks(row.vendor_name));
+    assert.ok(toks(q.params.$q).every(t => hay.has(t)), "$q tokens all present in the vendor's own name");
+  } else {
+    const m = /upper\(vendor_name\) like '([^']*)%'/.exec(q.params.$where || "");
+    assert.ok(m && row.vendor_name.toUpperCase().startsWith(m[1]), "server-side match must accept the vendor's own name");
+  }
+  assert.ok(!q.postFilter || q.postFilter(row), "postFilter keeps the vendor's own row");
 });

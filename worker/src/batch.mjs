@@ -47,10 +47,12 @@ export async function handleBatch(req, env) {
     const stem = vendorStem(name);
     let awards = 0, mentions = 0;
     try {
-      // Grouped by exact vendor_name so we can refine the stem-prefix overmatch precisely.
+      // Grouped by exact vendor_name so the stem filter below can refine precisely. $q, not a
+      // stem-prefix LIKE — the stem strips punctuation that vendor_name keeps, so the LIKE
+      // missed every punctuated vendor ("LEON D. DEMATTEIS…").
       const variants = await soda({
         "$select": "vendor_name, count(1) as n",
-        "$where": `upper(vendor_name) like '${stem.replace(/'/g, "''")}%'`,
+        "$where": "vendor_name IS NOT NULL", "$q": stem,
         "$group": "vendor_name", "$limit": "100",
       });
       awards = variants.filter(v => vendorStem(v.vendor_name) === stem).reduce((s, v) => s + (+v.n || 0), 0);

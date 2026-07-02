@@ -1883,7 +1883,9 @@ async function aFetch(){
   if(w==="entityvendor"){
     const stem=vendorStem($("#aparam").value.trim());
     if(stem.length<3) return {kind:"notice", rows:[]};
-    const rows=await soda({"$select":SELECT,"$where":`upper(vendor_name) like '${stem.replace(/'/g,"''")}%'`,"$order":"start_date DESC","$limit":"25"});
+    // $q, not a stem-prefix LIKE — mirrors the worker's compileSub (punctuated vendors never
+    // prefix-match their own stem); the exact-stem filter keeps precision.
+    const rows=await soda({"$select":SELECT,"$where":"vendor_name IS NOT NULL","$q":stem,"$order":"start_date DESC","$limit":"25"});
     return {kind:"notice", rows: rows.filter(r=>vendorStem(r.vendor_name)===stem).slice(0,5)};
   }
   if(w==="entityagency"){
@@ -2326,12 +2328,14 @@ async function showVendor(name){
   const stem = vendorStem(name), safe = cleanText(name).replace(/[<>&]/g,"");
   box.innerHTML = `<div class="empty"><span class="loading"></span> resolving vendor: ${safe}…</div>`;
   if(stem.length < 3){ box.innerHTML = `<div class="empty">“${safe}” is too short to resolve to a vendor. <a href="#money">← Browse</a></div>`; return; }
-  const like = stem.replace(/'/g,"''");
+  // Full-text $q, not a stem-prefix LIKE: the stem strips punctuation but vendor_name keeps it,
+  // so the LIKE never matched punctuated vendors ("LEON D. DEMATTEIS…") and their pages 404'd.
+  // $q tokenizes punctuation away on both sides; the exact-stem filter below keeps precision.
   let variants = [];
   try{
     variants = await soda({"$select":"vendor_name, count(1) as n, sum(contract_amount) as t, min(start_date) as first, max(start_date) as last",
-      "$where":`upper(vendor_name) like '${like}%' AND type_of_notice_description='Award' AND contract_amount < 5000000000`,
-      "$group":"vendor_name","$limit":"100"});
+      "$where":"vendor_name IS NOT NULL AND type_of_notice_description='Award' AND contract_amount < 5000000000",
+      "$q":stem,"$group":"vendor_name","$limit":"100"});
   }catch(e){}
   variants = variants.filter(v => vendorStem(v.vendor_name) === stem);
   if(!variants.length){

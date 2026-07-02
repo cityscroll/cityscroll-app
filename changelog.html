@@ -70,6 +70,17 @@
 tells the truth where a version number would be theater. A tool that watches the city's public record should keep
 a public record of itself. Live usage numbers: <a href="stats.html">stats</a>.</p>
 
+<section class="rel" id="2026-07-02d">
+  <h2>2026.07.02 · Fix: vendors with punctuated names resolve again</h2>
+  <div class="foryou"><b>For you</b> — Vendor pages and vendor watches now work for names like
+  "Leon D. Dematteis Construction Corp." Before this fix, clicking such a vendor showed "no awards
+  on record" and a watch on them matched nothing — despite their awards being right there.</div>
+  <ul>
+    <li>Root cause: entity resolution normalizes a name to a punctuation-free stem, but the server-side lookup prefix-matched that stem against the <em>raw</em> <code>vendor_name</code> column — so any vendor with mid-name punctuation could never match its own stem. Fixed by switching the lookup to Socrata full-text <code>$q</code> (punctuation-insensitive on both sides); the exact-stem filter still guarantees precision. Same fix in the site, the worker's entity watches, and the batch cross-reference tool.</li>
+    <li>Caught by functional spec 05; a new unit test pins the invariant (a vendor's own row must satisfy the compiled query).</li>
+  </ul>
+</section>
+
 <section class="rel" id="2026-07-02c">
   <h2>2026.07.02 · Snap + crisp: the round-four speed-and-declutter pass</h2>
   <div class="foryou"><b>For you</b> — The site looks calmer and feels immediate. Lists show
