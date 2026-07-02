@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CROL-List: track RFPs, rezonings, meetings</title>
+<link rel="alternate" type="application/atom+xml" title="CROL-List — new procurement notices" href="https://crol-worker.crol-worker.workers.dev/feed.xml?lens=money">
+<link rel="alternate" type="application/feed+json" title="CROL-List — new procurement notices (JSON)" href="https://crol-worker.crol-worker.workers.dev/feed.json?lens=money">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Libre+Caslon+Text:ital@0;1&family=Spectral:ital,wght@0,400;0,600;1,400&family=Spectral+SC:wght@500;600&display=swap" rel="stylesheet">
@@ -71,6 +73,7 @@
   /* controls */
   .controls{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;background:transparent;border:1px solid var(--rule);border-radius:12px;padding:10px 14px;margin-top:14px}
   .controls button{background:#fff;color:var(--ink);border:1px solid var(--rule);font-weight:600}
+  .controls .watchbtn{color:var(--oxblood);border-color:var(--oxblood)}
   .controls label{color:var(--muted)}
   .field{display:flex;flex-direction:column;gap:5px;flex:1 1 150px}
   .field.kw{flex:2 1 220px}
@@ -220,10 +223,8 @@
   /* alerts */
   .afield{margin-bottom:14px}
   .afield label{display:block;font:600 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
-  .seg{display:inline-flex;border:1px solid var(--rule);border-radius:9px;overflow:hidden}
-  .segbtn{font:600 13px/1 ui-sans-serif,system-ui,sans-serif;padding:9px 14px;background:#fff;color:var(--muted);border:none;border-right:1px solid var(--rule);cursor:pointer}
-  .segbtn:last-child{border-right:none}
-  .segbtn.active{background:var(--ink);color:#fff}
+  .qstep{display:inline-block;font:700 11px/18px ui-sans-serif,system-ui,sans-serif;background:var(--blue);color:#fff;border-radius:50%;width:18px;height:18px;text-align:center;margin-right:6px;letter-spacing:0}
+  #quizpanel .chiprow{margin-top:6px}
   .muted{color:var(--muted)}
   .emailmock{border:1px solid var(--rule);border-radius:12px;overflow:hidden;background:#fff;box-shadow:var(--shadow)}
   .emailmock .ehead{padding:12px 14px;border-bottom:1px solid var(--rule);background:#faf6ee}
@@ -237,10 +238,6 @@
   .digitem .da{font:800 16px/1 var(--font-display);color:var(--green)}
   .digitem .dc{font:12px/1.5 ui-sans-serif,system-ui,sans-serif;margin-top:3px}
   .digitem .dc a{color:var(--oxblood);text-decoration:none}
-  .phone{max-width:300px;margin:6px auto 0;background:#0d1117;border-radius:28px;padding:14px 12px;box-shadow:var(--shadow)}
-  .phone .screen{background:#0b141a;border-radius:18px;padding:16px 11px;min-height:190px}
-  .bubble{background:var(--blue);color:#fff;border-radius:16px 16px 16px 5px;padding:10px 12px;font-size:13px;line-height:1.45;margin-bottom:8px}
-  .bubble .src{display:block;font:600 10px/1 ui-sans-serif,system-ui,sans-serif;opacity:.75;margin-bottom:5px;letter-spacing:.04em}
   .savedalert{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#faf6ee;border:1px solid var(--rule);border-radius:9px;padding:9px 12px;margin-top:8px;font-size:13px}
   .savedalert button{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;padding:5px 9px;background:#fff;color:var(--rose);border:1px solid var(--rule);border-radius:6px;cursor:pointer}
 
@@ -363,6 +360,7 @@
         </select>
       </div>
       <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button id="go">Filter</button></div>
+      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="money">🔔 Watch this search</button></div>
     </div>
 
     <div class="chiprow" id="moneyquick">
@@ -435,6 +433,7 @@
         <select id="lstatus"><option value="active">In review / active</option><option value="all">All</option></select>
       </div>
       <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button id="lgo">Filter</button></div>
+      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="land">🔔 Watch this search</button></div>
     </div>
     <div class="grid">
       <div class="panel">
@@ -456,6 +455,7 @@
       <div class="field"><label for="propertyagency">Agency</label><select id="propertyagency"><option value="">All agencies</option></select></div>
       <div class="field kw"><label for="propertykw">Search</label><input type="text" id="propertykw" placeholder="address, neighborhood…"></div>
       <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button id="propertygo">Filter</button></div>
+      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="property">🔔 Watch this search</button></div>
     </div>
     <div class="chiprow" id="assettabs"></div>
     <div class="chiprow" id="liferail" style="margin-top:8px"></div>
@@ -469,6 +469,7 @@
       <div class="field"><label for="rulesagency">Agency</label><select id="rulesagency"><option value="">All agencies</option></select></div>
       <div class="field kw"><label for="ruleskw">Search</label><input type="text" id="ruleskw" placeholder="sanitation, licensing, rent, sidewalk…"></div>
       <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button id="rulesgo">Filter</button></div>
+      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="rules">🔔 Watch this search</button></div>
     </div>
     <div class="feed" id="rulesfeed"><div class="empty"><span class="loading"></span> loading…</div></div>
   </div>
@@ -481,14 +482,44 @@
       <div class="field"><label for="meetingsagency">Agency</label><select id="meetingsagency"><option value="">All agencies</option></select></div>
       <div class="field kw"><label for="meetingskw">Search</label><input type="text" id="meetingskw" placeholder="Community Board, Brooklyn, landmark…"></div>
       <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button id="meetingsgo">Filter</button></div>
+      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="meetings">🔔 Watch this search</button></div>
     </div>
     <div class="feed" id="meetingsfeed"><div class="empty"><span class="loading"></span> loading…</div></div>
   </div>
 </section>
 
-<!-- ============ ALERTS (mock) ============ -->
+<!-- ============ ALERTS ============ -->
 <section id="tab-alerts" class="tabpane">
   <div class="wrap">
+
+    <div class="panel" id="quizpanel" style="margin-top:18px;padding:16px 18px 18px">
+      <h2 style="border:0;padding:0 0 4px">Get your digest in 60 seconds</h2>
+      <div class="afield" style="margin-top:10px">
+        <label><span class="qstep">1</span> What should we watch for you?</label>
+        <div class="chiprow" id="quizwhat" style="margin-top:6px">
+          <button type="button" class="chip" data-w="rfpkw">City contracts &amp; RFPs</button>
+          <button type="button" class="chip" data-w="bigaward">Big contract awards</button>
+          <button type="button" class="chip" data-w="rezone">Rezonings near me</button>
+          <button type="button" class="chip" data-w="property">Property sales</button>
+          <button type="button" class="chip" data-w="rules">Rule changes</button>
+          <button type="button" class="chip" data-w="meetings">Hearings &amp; meetings</button>
+        </div>
+      </div>
+      <div class="afield">
+        <label for="quiznarrow"><span class="qstep">2</span> Narrow it (optional)</label>
+        <input type="text" id="quiznarrow" placeholder="pick a topic above first…">
+      </div>
+      <div class="afield">
+        <label><span class="qstep">3</span> How often?</label>
+        <div class="chiprow" id="quizfreq" style="margin-top:6px">
+          <button type="button" class="chip on" data-f="Daily">Daily (~9am)</button>
+          <button type="button" class="chip" data-f="Weekly">Weekly (Mondays)</button>
+        </div>
+      </div>
+      <button id="quizgo" type="button">Preview my digest →</button>
+      <span class="muted" style="margin-left:10px;font:13px/1.4 ui-sans-serif,system-ui,sans-serif">No account — just an email confirmation.</span>
+    </div>
+
     <div class="grid">
       <div class="panel">
         <h2>Build an alert</h2>
@@ -507,6 +538,9 @@
               <option value="bigaward">Contract awards over a threshold</option>
               <option value="rfpkw">Open RFPs matching a keyword</option>
               <option value="rezone">Rezonings near a neighborhood</option>
+              <option value="property">Property sale notices</option>
+              <option value="rules">Rule changes (Agency Rules)</option>
+              <option value="meetings">Public hearings &amp; meetings</option>
             </select>
           </div>
           <div class="afield">
@@ -518,6 +552,7 @@
               <option value="50000000">$50M+</option>
             </select>
             <input type="text" id="aparam" placeholder="" style="display:none">
+            <input type="text" id="aagency" placeholder="agency (optional) — e.g. Buildings" style="display:none;margin-top:6px">
           </div>
           <div class="afield">
             <label id="adestlabel">Email address</label>
@@ -533,6 +568,7 @@
             <div class="cf-turnstile" data-sitekey="0x4AAAAAADtj-Mskk_RnVd5K" data-action="turnstile-spin-v1" style="margin-bottom:10px"></div>
             <button id="asubscribe">Subscribe →</button>
             <div id="asubmsg" class="muted" style="margin-top:10px;font:13px/1.5 ui-sans-serif,system-ui,sans-serif">We email a confirmation link — alerts begin only after you click it, so no one can sign you up but you.</div>
+            <div id="afeeds" class="muted" style="margin-top:12px;font:12.5px/1.6 ui-sans-serif,system-ui,sans-serif"></div>
           </div>
           <div id="asaved"></div>
         </div>
@@ -650,6 +686,7 @@ function showTab(name, push){
   // rewrites the prior entry and the push turns into a no-op (Back would skip a tab).
   if(push) pushHash();
   if(name==="land"){ if(!landLoaded){ landLoaded=true; landSearch(); } if(landMap) setTimeout(()=>landMap.invalidateSize(),120); }
+  if(name==="money" && !moneyLoaded) search(); // deep links land on other tabs; Money lazy-loads like the rest
   if(name==="people") seedPeople();
   if(SECTIONS[name] && !feedLoaded[name]){ feedLoaded[name]=true; loadSectionAgencies(name); loadSection(name); }
 }
@@ -706,9 +743,10 @@ async function loadAgencies(){
   }catch(e){ $("#agency").innerHTML = '<option value="">All agencies</option>'; }
 }
 
-let currentRows = [], mode = "open", selectedRFP = null, closingWeek = false;
+let currentRows = [], mode = "open", selectedRFP = null, closingWeek = false, moneyLoaded = false;
 const weekOutISO = () => new Date(Date.now()+7*86400000).toISOString().slice(0,10) + "T23:59:59";
 async function search(){
+  moneyLoaded = true;
   mode = $("#mode").value;
   const agency = $("#agency").value, kw = $("#kw").value.trim();
   const sort = $("#sort").value, minamt = $("#minamt").value;
@@ -1645,18 +1683,20 @@ function downloadEventICS(r){
   a.href=URL.createObjectURL(blob); a.download=`crol-${r.request_id}.ics`; document.body.appendChild(a); a.click(); a.remove();
 }
 
-/* ===================== ALERTS (mock) ===================== */
-let aChannel = "email";
+/* ===================== ALERTS ===================== */
 const AKEY = "crd_alerts_v1";
+const SECTION_WATCH_LABEL = {property:"property sale notices", rules:"rule changes", meetings:"public hearings & meetings"};
 function aStore(){ try{ return JSON.parse(localStorage.getItem(AKEY)||"[]"); }catch(e){ return []; } }
 function aSet(v){ try{ localStorage.setItem(AKEY, JSON.stringify(v)); }catch(e){} }
 
 function aWatchChange(){
   const w = $("#awatch").value;
+  $("#aagency").style.display = SECTION_WATCH_LABEL[w] ? "" : "none";
   if(w==="bigaward"){ $("#aparamlabel").textContent="Minimum award"; $("#athresh").style.display=""; $("#aparam").style.display="none"; }
   else {
     $("#athresh").style.display="none"; $("#aparam").style.display="";
     if(w==="rfpkw"){ $("#aparamlabel").textContent="Keyword"; $("#aparam").placeholder="construction, IT, security…"; }
+    else if(SECTION_WATCH_LABEL[w]){ $("#aparamlabel").textContent="Keyword (optional)"; $("#aparam").placeholder=w==="rules"?"e-bike, sidewalk, licensing…":w==="meetings"?"community board, landmarks…":"Brooklyn, auction, HPD…"; }
     else { $("#aparamlabel").textContent="ZIP, address, or neighborhood"; $("#aparam").placeholder="79 Rivington, Allen Street, Bushwick…"; if(!$("#aparam").value.trim()) $("#aparam").value="79 Rivington"; }
   }
 }
@@ -1664,6 +1704,10 @@ function aDescribe(){
   const w=$("#awatch").value, freq=$("#afreq").value.toLowerCase();
   if(w==="bigaward") return `${freq} digest of NYC contract awards over ${money($("#athresh").value)}`;
   if(w==="rfpkw") return `${freq} digest of open RFPs matching “${$("#aparam").value||"…"}”`;
+  if(SECTION_WATCH_LABEL[w]){
+    const bits=[$("#aparam").value.trim()?`matching “${$("#aparam").value.trim()}”`:"", $("#aagency").value.trim()?`from ${$("#aagency").value.trim()}`:""].filter(Boolean).join(" ");
+    return `${freq} digest of ${SECTION_WATCH_LABEL[w]}${bits?" "+bits:""}`;
+  }
   return `${freq} digest of rezonings near “${$("#aparam").value||"…"}”`;
 }
 // When the digest actually goes out. Cron is "0 13 * * *" (13:00 UTC daily); weekly fires only on
@@ -1677,6 +1721,15 @@ function updateAWhen(){ const el=$("#awhen"); if(el) el.textContent=aWhenText();
 
 async function aFetch(){
   const w=$("#awatch").value;
+  if(SECTION_WATCH_LABEL[w]){
+    // Mirrors the worker's compileSub() for these lenses, so the preview matches the digest.
+    let where=`section_name='${SECTIONS[w].section}'`, order="start_date DESC";
+    if(w==="meetings"){ where+=` AND event_date > '${todayISO()}'`; order="event_date ASC"; }
+    const ag=$("#aagency").value.trim(); if(ag) where+=` AND agency_name='${ag.replace(/'/g,"''")}'`;
+    const p={"$select":FEED_SELECT,"$where":where,"$order":order,"$limit":"5"};
+    if($("#aparam").value.trim()) p["$q"]=$("#aparam").value.trim();
+    return { kind:"notice", rows: await soda(p) };
+  }
   if(w==="bigaward"){
     const t=$("#athresh").value;
     return { kind:"award", rows: await soda({"$select":SELECT,"$where":`type_of_notice_description='Award' AND contract_amount >= ${t} AND contract_amount < 5000000000`,"$order":"start_date DESC","$limit":"5"}) };
@@ -1705,6 +1758,12 @@ function digItemHTML(kind, r){
   if(kind==="award") return `<div class="digitem"><div class="dt">${cleanText(r.short_title)||"(untitled)"}</div>
     <div class="dm">${r.agency_name} · ${fdate(r.start_date)}${r.vendor_name? " · "+cleanText(r.vendor_name):""}</div>
     <div class="da">${money(r.contract_amount)||""}</div>${digContact(r)}</div>`;
+  if(kind==="notice"){
+    const meta=[r.agency_name, r.type_of_notice_description, fdate(r.start_date), r.event_date?`event ${fdate(r.event_date)}`:""].filter(Boolean).join(" · ");
+    return `<div class="digitem"><div class="dt">${cleanText(r.short_title)||"(untitled)"}</div>
+    <div class="dm">${meta}</div>
+    <div class="dc"><a href="#notice/${encodeURIComponent(r.request_id)}">↗ View on CROL-List</a></div></div>`;
+  }
   if(kind==="rfp"){ const dl=daysLeft(r.due_date);
     const tel=String(r.contact_phone||"").replace(/[^0-9+]/g,""); const acts=[];
     if(r.email) acts.push(`<a href="${mailtoFor(r)}"><b>✍ Respond</b></a>`);
@@ -1718,33 +1777,39 @@ function digItemHTML(kind, r){
     <div class="dc"><a href="https://zap.planning.nyc.gov/projects/${r.project_id}" target="_blank" rel="noopener">↗ View &amp; comment on ZAP</a> · <a href="https://a856-cityrecord.nyc.gov/Search/Advanced" target="_blank" rel="noopener">hearing notice in City Record</a></div></div>`;
 }
 
+function feedURLs(){
+  if(!API) return null;
+  const {lens,filter}=aLensFilter();
+  const q=new URLSearchParams({lens});
+  if(filter.keywords && filter.keywords.length) q.set("q", filter.keywords.join(" "));
+  if(filter.agency) q.set("agency", filter.agency);
+  if(filter.minAmount) q.set("min", String(filter.minAmount));
+  const base=API.replace(/\/+$/,""), qs=q.toString();
+  return {atom:`${base}/feed.xml?${qs}`, json:`${base}/feed.json?${qs}`, ics:`${base}/feed.ics?${qs}`};
+}
+function renderFeedLinks(){
+  const el=$("#afeeds"); if(!el) return;
+  const u=feedURLs(); if(!u){ el.innerHTML=""; return; }
+  el.innerHTML=`Prefer feeds? This watch is also
+    <a href="${u.atom}" target="_blank" rel="noopener">📡 RSS/Atom</a> ·
+    <a href="${u.json}" target="_blank" rel="noopener">{ } JSON Feed</a> ·
+    <a href="${u.ics}" target="_blank" rel="noopener">📅 Calendar (.ics)</a> — no email needed.`;
+}
 async function aPreview(){
   $("#apreviewbox").innerHTML='<div class="empty"><span class="loading"></span> fetching today&#39;s matching notices…</div>';
+  renderFeedLinks();
   let data;
   try{ data = await aFetch(); }catch(e){ $("#apreviewbox").innerHTML='<div class="empty">Could not reach NYC Open Data. Retry.</div>'; return; }
   const rows=data.rows||[];
-  const dest=$("#adest").value.trim() || (aChannel==="email"?"you@example.com":"+1 (555) 012-3456");
+  const dest=$("#adest").value.trim() || "you@example.com";
   const subj=aDescribe();
-  if(aChannel==="email"){
-    const body = rows.length ? rows.map(r=>digItemHTML(data.kind,r)).join("") : '<div class="empty">No matching notices today — so you&#39;d get nothing. (That&#39;s the point: signal, not noise.)</div>';
-    $("#apreviewbox").innerHTML = `<div class="emailmock">
-      <div class="ehead"><div class="efrom">CROL-List &lt;alerts@crol-list.org&gt; → ${dest}</div>
-      <div class="esubj">Your ${subj}</div></div>
-      <div class="ebody">${body}
-        <div style="margin-top:12px;font:12px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted)">${rows.length} notice${rows.length===1?"":"s"} today · from The City Record · <a href="https://a856-cityrecord.nyc.gov/" target="_blank" rel="noopener">manage / unsubscribe</a></div>
-      </div></div>
-      <div class="note">Mock preview, built from <b>live</b> NYC Open Data. No email was sent.</div>`;
-  } else {
-    const top = rows.slice(0,3).map(r=>{
-      if(data.kind==="award") return `${money(r.contract_amount)} — ${cleanText(r.short_title).slice(0,38)} (${r.agency_name})`;
-      if(data.kind==="rfp") return `RFP due ${fdate(r.due_date)} — ${cleanText(r.short_title).slice(0,38)}`;
-      return `${(r.project_name||"rezoning").slice(0,40)} (${r.borough||""})`;
-    });
-    const msg = rows.length ? `NYC City Record — ${subj}:\n• ${top.join("\n• ")}\nmore: cityrecord.nyc.gov` : `NYC City Record: no matches today for your alert.`;
-    $("#apreviewbox").innerHTML = `<div class="phone"><div class="screen">
-      <div class="bubble"><span class="src">City Record Decoded · now</span>${msg.replace(/\n/g,"<br>")}</div>
-    </div></div><div class="note">Mock text to ${dest}, built from <b>live</b> data. No SMS was sent.</div>`;
-  }
+  const body = rows.length ? rows.map(r=>digItemHTML(data.kind,r)).join("") : '<div class="empty">No matching notices today — so you&#39;d get nothing. (That&#39;s the point: signal, not noise.)</div>';
+  $("#apreviewbox").innerHTML = `<div class="emailmock">
+    <div class="ehead"><div class="efrom">CROL-List &lt;alerts@crol-list.org&gt; → ${dest}</div>
+    <div class="esubj">Your ${subj}</div></div>
+    <div class="ebody">${body}
+      <div style="margin-top:12px;font:12px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted)">${rows.length} notice${rows.length===1?"":"s"} today · from The City Record · unsubscribe any time (one click)</div>
+    </div></div>`;
 }
 
 function aRenderSaved(){
@@ -1756,8 +1821,8 @@ function aRenderSaved(){
   document.querySelectorAll("#asaved .savedalert button").forEach(b=>b.addEventListener("click",()=>{ const l=aStore(); l.splice(+b.dataset.i,1); aSet(l); aRenderSaved(); }));
 }
 function aSave(){
-  const dest=$("#adest").value.trim() || (aChannel==="email"?"you@example.com":"+1 555-0123");
-  const l=aStore(); l.push({desc:aDescribe(), dest, channel:aChannel}); aSet(l); aRenderSaved();
+  const dest=$("#adest").value.trim() || "you@example.com";
+  const l=aStore(); l.push({desc:aDescribe(), dest}); aSet(l); aRenderSaved();
 }
 
 // Map the alert builder to a real content-lens query the worker re-sanitizes + the cron replays.
@@ -1765,12 +1830,12 @@ function aLensFilter(){
   const w=$("#awatch").value, p=$("#aparam").value.trim().toLowerCase();
   if(w==="bigaward") return {lens:"money", filter:{minAmount:Number($("#athresh").value)||1000000}};
   if(w==="rfpkw")    return {lens:"money", filter:{keywords:p?[p]:[]}};
+  if(SECTION_WATCH_LABEL[w]) return {lens:w, filter:{keywords:p?[p]:[], agency:$("#aagency").value.trim()||null}};
   return {lens:"land", filter:{keywords:p?[p]:[], status:"all"}}; // rezonings — text match on the place
 }
 function aIsEmail(s){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s||""); }
 async function aSubscribe(){
   const msg=$("#asubmsg");
-  if(aChannel!=="email"){ msg.innerHTML="📱 Text alerts are coming soon — choose Email for now."; return; }
   const email=$("#adest").value.trim();
   if(!aIsEmail(email)){ msg.innerHTML="Enter a valid email address."; return; }
   const token=(window.turnstile&&turnstile.getResponse)?(turnstile.getResponse()||""):"";
@@ -2004,12 +2069,55 @@ $("#apreview").addEventListener("click", aPreview);
 $("#asubscribe").addEventListener("click", aSubscribe);
 function applySuggestion(w, p){ $("#awatch").value=w; aWatchChange(); if(w==="bigaward") $("#athresh").value=p; else $("#aparam").value=p; aPreview(); }
 document.querySelectorAll(".wandchip").forEach(b=>b.addEventListener("click",()=>applySuggestion(b.dataset.w, b.dataset.p)));
-document.querySelectorAll(".segbtn").forEach(b=>b.addEventListener("click",()=>{
-  aChannel = b.dataset.ch;
-  document.querySelectorAll(".segbtn").forEach(x=>x.classList.toggle("active", x===b));
-  $("#adestlabel").textContent = aChannel==="email" ? "Email address" : "Phone number";
-  $("#adest").placeholder = aChannel==="email" ? "you@example.com" : "+1 (555) 012-3456";
+
+/* "Watch this search" — carry the current lens filters into a prefilled alert (SAM.gov's
+   saved-search→digest move, without the account). */
+function watchFromFilters(lens){
+  showTab("alerts", true);
+  if(lens==="money"){
+    if(mode==="award" && $("#minamt").value){
+      $("#awatch").value="bigaward"; aWatchChange();
+      const t=Number($("#minamt").value), opts=[1000000,5000000,10000000,50000000];
+      $("#athresh").value=String(opts.filter(o=>o<=t).pop()||opts[0]);
+    } else {
+      $("#awatch").value="rfpkw"; aWatchChange();
+      $("#aparam").value=$("#kw").value.trim();
+    }
+  } else if(lens==="land"){
+    $("#awatch").value="rezone"; aWatchChange();
+    if($("#lkw").value.trim()) $("#aparam").value=$("#lkw").value.trim();
+  } else {
+    $("#awatch").value=lens; aWatchChange();
+    $("#aparam").value=$("#"+lens+"kw").value.trim();
+    const ag=$("#"+lens+"agency"); $("#aagency").value=(ag&&ag.value)||"";
+  }
+  aPreview();
+}
+document.querySelectorAll(".watchbtn").forEach(b=>b.addEventListener("click",()=>watchFromFilters(b.dataset.lens)));
+
+/* 60-second onboarding: chips → prefilled builder → live preview (Meet-Your-Mayor pattern) */
+const QUIZ_PLACEHOLDER={rfpkw:"keyword — construction, IT, catering…", bigaward:"(uses the $1M+ threshold — tune it below)",
+  rezone:"place — 79 Rivington, Bushwick…", property:"keyword — Brooklyn, auction…", rules:"keyword — e-bike, sidewalk…", meetings:"keyword — community board, landmarks…"};
+let quizW=null;
+$("#quizwhat").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{
+  quizW=b.dataset.w;
+  $("#quizwhat").querySelectorAll(".chip").forEach(x=>x.classList.toggle("on", x===b));
+  $("#quiznarrow").placeholder=QUIZ_PLACEHOLDER[quizW]||"";
+  $("#quiznarrow").disabled = quizW==="bigaward";
 }));
+$("#quizfreq").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{
+  $("#quizfreq").querySelectorAll(".chip").forEach(x=>x.classList.toggle("on", x===b));
+}));
+$("#quizgo").addEventListener("click",()=>{
+  if(!quizW){ $("#quiznarrow").placeholder="← pick a topic first"; return; }
+  $("#awatch").value=quizW; aWatchChange();
+  const narrow=$("#quiznarrow").value.trim();
+  if(narrow && quizW!=="bigaward") $("#aparam").value=narrow;
+  const f=$("#quizfreq").querySelector(".chip.on"); if(f) $("#afreq").value=f.dataset.f;
+  updateAWhen();
+  aPreview();
+  $("#apreviewbox").scrollIntoView({behavior:"smooth", block:"start"});
+});
 
 $("#lgo").addEventListener("click", landSearch);
 $("#lkw").addEventListener("keydown", e=>{ if(e.key==="Enter") landSearch(); });
