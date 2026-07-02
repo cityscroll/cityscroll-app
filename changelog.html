@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Changelog · CROL-List</title>
+<meta name="description" content="What changed on CROL-List, when, and what it means for you — including the mistakes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4efe4; --paper-2:#efe7d6; --ink:#1a1714; --ink-soft:#3b342c; --muted:#5c5349;
+    --rule:#cdbfa6; --rule-strong:#8a7c64; --card:#fbf7ed;
+    --shadow:0 1px 2px rgba(40,30,10,.05),0 6px 20px rgba(40,30,10,.06);
+    --blue:#1f3a5f; --green:#2f4a32; --oxblood:#7a1f1f; --amber:#8a5a00;
+    --font-nameplate:'Playfair Display',Georgia,serif; --font-body:'Spectral',Georgia,serif;
+    --font-sc:'Spectral SC','Spectral',Georgia,serif; --ui:ui-sans-serif,system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--font-body);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px 80px}
+  a{color:var(--oxblood)}
+  .cr-rule{border-top:3px solid var(--ink)} .cr-rule--bottom{border-top:3px double var(--ink);margin-top:8px}
+  header{padding-top:18px;text-align:center}
+  .home{display:inline-flex;align-items:center;gap:9px;text-decoration:none;color:var(--ink)}
+  .home:hover .cr-title{color:var(--oxblood)}
+  .cr-seal{width:34px;height:34px;color:var(--ink)}
+  .cr-title{font-family:var(--font-nameplate);font-weight:900;font-size:1.5rem;letter-spacing:.01em;margin:0}
+  .kicker{font-family:var(--font-sc);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-top:14px}
+  h1{font-family:var(--font-nameplate);font-weight:900;font-size:clamp(2rem,6vw,3rem);text-transform:uppercase;line-height:.95;margin:.06em 0 .12em}
+  .backhome{display:inline-block;margin-top:12px;font:600 13px/1 var(--ui);text-decoration:none;color:var(--oxblood)}
+  .backhome:hover{text-decoration:underline}
+  .lede{font-size:16px;color:var(--ink-soft);margin:22px 0 6px}
+  .rel{margin-top:34px;border-top:1px solid var(--rule);padding-top:16px}
+  .rel h2{font-family:var(--font-sc);font-size:16px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);margin:0}
+  .rel .foryou{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--green);border-radius:0 9px 9px 0;box-shadow:var(--shadow);padding:10px 14px;margin:12px 0;font-size:15.5px}
+  .rel .foryou b{font-family:var(--font-sc);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--green)}
+  .rel ul{margin:10px 0;padding-left:20px;font:15px/1.65 var(--ui);color:var(--ink-soft)}
+  .rel li{margin:5px 0}
+  code{font:12.5px/1 ui-monospace,Menlo,monospace;background:var(--paper-2);border:1px solid var(--rule);border-radius:4px;padding:1px 5px;color:var(--ink-soft)}
+  .incident{background:#f7efe8;border:1px solid var(--rule);border-left:4px solid var(--oxblood);border-radius:0 9px 9px 0;padding:10px 14px;margin:12px 0;font:14.5px/1.6 var(--ui);color:var(--ink-soft)}
+  .incident b{font-family:var(--font-sc);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--oxblood)}
+  .foot{margin-top:40px;border-top:1px solid var(--rule);padding-top:14px;font:13px/1.6 var(--ui);color:var(--muted);text-align:center}
+  .foot a{color:var(--oxblood)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="cr-rule"></div>
+  <a class="home" href="index.html" aria-label="Back to CROL-List home">
+    <svg class="cr-seal" viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="0.6"/>
+      <path d="M50 18 L74 30 V58 Q74 76 50 86 Q26 76 26 58 V30 Z" fill="none" stroke="currentColor" stroke-width="1.3"/>
+      <line x1="26" y1="48" x2="74" y2="48" stroke="currentColor" stroke-width="0.6"/>
+      <path d="M50 30 L50 46 M42 38 L58 38" stroke="currentColor" stroke-width="1.1"/>
+    </svg>
+    <span class="cr-title">CROL-List</span>
+  </a>
+  <div class="kicker">The City Record, searchable</div>
+  <h1>Changelog</h1>
+  <div class="cr-rule cr-rule--bottom"></div>
+  <a class="backhome" href="index.html">← Back to CROL-List</a>
+</header>
+
+<p class="lede">What changed, when, and what it means for you — including the mistakes. Versions are dates
+(<a href="https://calver.org/" target="_blank" rel="noopener">CalVer</a>): the site ships continuously, so a date
+tells the truth where a version number would be theater. A tool that watches the city's public record should keep
+a public record of itself. Live usage numbers: <a href="stats.html">stats</a>.</p>
+
+<section class="rel" id="2026-07-02b">
+  <h2>2026.07.02 · Enablement: public stats, honest click counts, this page</h2>
+  <div class="foryou"><b>For you</b> — You can now see the project's own usage numbers at
+  <a href="stats.html">/stats</a> (aggregate counts only — no accounts, no cookies, nobody tracked). Email-digest
+  links now pass through a count-only redirect so we can tell digests are useful; it counts <em>clicks per day</em>,
+  never who clicked, and every digest footer says so.</div>
+  <ul>
+    <li>Public <code>/stats</code> endpoint + this site's <a href="stats.html">stats page</a>: active subscriptions (a count, not a list), digests sent, digest links followed, feed/batch/share activity, plain-English-search calls. <code>a5dbc18</code> (worker)</li>
+    <li>Count-only digest click-through <code>/r/&lt;kind&gt;/&lt;id&gt;</code> — validated ids only, cannot redirect off-site, junk paths fall to the homepage uncounted. <code>a5dbc18</code></li>
+    <li>This changelog; the maintenance rule now includes it (every shipped change lands an entry in the same session).</li>
+    <li>The backend went open source: the worker's code now lives in this repo's <code>worker/</code>
+    (fresh tree; secrets were never in git — see <a href="https://github.com/jimdc/crol-list/blob/main/docs/decisions/004-monorepo-open-worker.md">decision 004</a>). One clone is the whole system; SECURITY.md documents the threat model.</li>
+    <li>Governance files landed: <a href="https://github.com/jimdc/crol-list/blob/main/MISSION.md">MISSION.md</a>, CONTRIBUTING.md, and a decision log.</li>
+  </ul>
+</section>
+
+<section class="rel" id="2026-07-02">
+  <h2>2026.07.02 · Follow the dollars, matter timelines, follows, workspace, API</h2>
+  <div class="foryou"><b>For you</b> — Awards now show what was <em>actually paid</em> (live from Checkbook NYC),
+  any procurement matter reads as one timeline, you can follow a vendor or agency and get emailed when they
+  reappear, pin anything into a citable investigation workspace, and use every view as an API.</div>
+  <ul>
+    <li>Checkbook NYC join, deterministic by PIN: committed vs. paid-to-date with a progress bar, amended-from, M/WBE, vendor-mismatch warning; <code>#matter/&lt;pin&gt;</code> timelines. <code>943a858</code></li>
+    <li>Follow-an-entity alerts (name-stem matched) + Follow buttons on entity pages; investigation workspace — pin · annotate · export CSV/JSON · print dossier · 90-day share links; <code>api.html</code> docs + live batch cross-reference (<code>POST /batch</code>). <code>c794015</code> (site) · <code>3176ec2</code> (worker)</li>
+    <li>All user-visible worker URLs now read <code>api.crol-list.org</code>. <code>03ed286</code></li>
+    <li>Test coverage across all twenty features; fixed a case-sensitivity bug it caught in junk-PIN filtering. <code>dc8499e</code></li>
+  </ul>
+  <div class="incident"><b>Incident</b> — Adding the custom domain silently disabled the <code>workers.dev</code>
+  fallback alias (Cloudflare error 1042): cached pages and in-flight email-confirm links would have broken. Caught
+  by live probes minutes after deploy; fixed by keeping the alias explicitly enabled, and the site now fails over
+  between the two hostnames automatically. <code>d75626e</code></div>
+</section>
+
+<section class="rel" id="2026-07-01">
+  <h2>2026.07.01 · Entity pages, red flags in context — and the first ten, all in one day</h2>
+  <div class="foryou"><b>For you</b> — Every vendor and agency became a page (with totals, top partners, and open
+  RFPs), procurement notices carry statistical context instead of bare text, and the whole
+  search-and-subscribe layer landed: watch any search, get a morning email digest, grab any view as RSS/calendar,
+  share any notice by URL, and see deadlines as countdowns instead of dates.</div>
+  <ul>
+    <li>Entity pages: <code>#vendor/&lt;name&gt;</code> (name variants resolved — "Sinergia Inc" and "Sinergia Incorporated" are one profile) and <code>#agency/&lt;name&gt;</code>; every name on the site became a link. <code>d0db6c1</code> · <code>ad43b56</code></li>
+    <li>Red-flag badges (non-competitive method, short ad window, repeat vendor) + benchmarks ("larger than 94% of this agency's awards"), with the formulas and false-positive modes published on <a href="about.html#context">About</a>. <code>6708c33</code></li>
+    <li>Round one, all ten: watch-this-search on every lens + 60-second onboarding quiz <code>b217895</code>; RSS/Atom/JSON/calendar feeds <code>27e8b1e</code> (worker); permalinks everywhere <code>ef8c3b6</code>; deadline countdown chips <code>55087c6</code>; the who/what/when/act glance box <code>74de73e</code>; Today's Edition front page <code>d28b7d4</code>; the People lens's instant examples <code>2c0f72b</code>; the Property asset-type explorer <code>2ed20ee</code>; the accessibility & mobile pass <code>a46c2fa</code>.</li>
+    <li>The daily digest cron went <b>live</b>; cookieless Cloudflare Web Analytics beacon installed. <code>aec7673</code></li>
+  </ul>
+  <div class="incident"><b>Incident</b> — The new vendor pages' full-text mentions query initially ran unbounded
+  over the 1M-row archive (slow, expensive). Caught by the browser test harness before it shipped; the query is
+  now scoped to recent editions with a hard timeout. <code>7fbe726</code></div>
+</section>
+
+<section class="rel" id="2026-06-30">
+  <h2>2026.06.30 · Real subscriptions</h2>
+  <div class="foryou"><b>For you</b> — Email alerts became real: double opt-in (nothing is stored until you click
+  the confirmation link), one-click unsubscribe, and your address is only ever used to send you your own digest.</div>
+  <ul>
+    <li>Turnstile-gated <code>/subscribe</code> → signed confirm link → KV; RFC-8058 one-click unsubscribe. <code>6b2b30d</code></li>
+  </ul>
+</section>
+
+<section class="rel" id="2026-06-26">
+  <h2>2026.06.26 · crol-list.org</h2>
+  <div class="foryou"><b>For you</b> — The site got its own domain and a real "ask in plain English" box on every
+  lens (with an on-device fallback, so search works even if the helper is down).</div>
+  <ul>
+    <li>Domain cutover to <code>crol-list.org</code> <code>cc8192a</code>; plain-English search wired to the worker <code>e32f3fa</code>; interface declutter <code>827fb9b</code>.</li>
+  </ul>
+</section>
+
+<section class="rel" id="2026-06-24">
+  <h2>2026.06.24–25 · The seven lenses</h2>
+  <div class="foryou"><b>For you</b> — The tool took its shape: Money, People, Land, Property, Rules, Meetings, and
+  Alerts, in the letterpress design, over live open data with nothing cached.</div>
+  <ul>
+    <li>Money/People/Land deep lenses; Property, Rules, Meetings feed lenses <code>d0670b7</code>; real rezoned tax-lot polygons on the Land map <code>38b648e</code>; the "Still standing?" demolition check <code>7cd5a96</code>; the City Record letterpress redesign <code>f2c4033</code>.</li>
+  </ul>
+</section>
+
+<div class="foot">
+  <p>CROL-List is an unofficial, free interface to public data. <a href="about.html">About</a> ·
+  <a href="stats.html">Stats</a> · <a href="api.html">API &amp; feeds</a> · <a href="index.html">Home</a></p>
+</div>
+</div>
+<!-- Cloudflare Web Analytics — cookieless, aggregate. -->
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "5d81fb4366b848dea15fb1862391909c"}'></script>
+</body>
+</html>
