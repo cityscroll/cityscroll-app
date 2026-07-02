@@ -97,8 +97,9 @@ in its own package instead of inline here:
 - **[`sendcap`](https://github.com/jimdc/sendcap)** — the alert-mailer spend guard (`MAX_PER_RUN`
   + `MAX_SENDS_PER_DAY`). A pure "may I make one more paid send?" decision.
 
-They're wired as tag-pinned git deps (`github:jimdc/optin-token#v1.0.0`,
-`github:jimdc/sendcap#v1.0.0`) — the lockfile pins each to its exact release commit. The tests
+They're published on npm — [`optin-token`](https://www.npmjs.com/package/optin-token) and
+[`@jimdc/sendcap`](https://www.npmjs.com/package/@jimdc/sendcap) (scoped because npm's
+name-similarity filter reserves the bare `sendcap`) — and pulled in as `^1.0.0` deps. The tests
 under `test/token.*`, `test/unsub.*`, and `test/caps.*` are now **integration regression guards**
 over these packages — they fail here if a swap ever regresses crol's contract.
 

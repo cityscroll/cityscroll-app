@@ -16,7 +16,7 @@
 // the `sendcap` package (a pure "may I make one more paid action?" decision).
 
 import cfg from "../alerts.config.json";
-import { capDecision } from "sendcap";
+import { capDecision } from "@jimdc/sendcap";
 import { signToken, listUnsubscribe } from "optin-token";
 import { compileSub } from "./lib/compile.mjs";
 import { describeFilter } from "./lib/confirm_email.mjs";

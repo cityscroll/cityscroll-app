@@ -5,7 +5,7 @@
 // "a test or a teammate can't run up a bill" stays a tested property.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { capDecision } from "sendcap";
+import { capDecision } from "@jimdc/sendcap";
 
 // Mirror of alerts.mjs's call shape, so this test breaks if that mapping drifts.
 const decide = ({ fresh = true, live = true, hasEmail = true, sentThisRun = 0, sentToday = 0, maxPerRun = 25, maxPerDay = 50 } = {}) =>

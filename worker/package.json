@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Thin serverless backend for CROL-List: NL\u2192query (Claude Haiku), a Checkbook NYC proxy, and a scheduled alert digest. Deployed as a single Cloudflare Worker.",
+  "description": "Thin serverless backend for CROL-List: NL→query (Claude Haiku), a Checkbook NYC proxy, and a scheduled alert digest. Deployed as a single Cloudflare Worker.",
   "engines": {
     "node": ">=18"
   },
   "dependencies": {
-    "optin-token": "github:jimdc/optin-token#v1.0.0",
-    "sendcap": "github:jimdc/sendcap#v1.0.0"
+    "@jimdc/sendcap": "^1.0.0",
+    "optin-token": "^1.0.0"
   },
   "scripts": {
     "dev": "wrangler dev",
