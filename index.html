@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CROL-List: track RFPs, rezonings, meetings</title>
-<link rel="alternate" type="application/atom+xml" title="CROL-List — new procurement notices" href="https://crol-worker.crol-worker.workers.dev/feed.xml?lens=money">
-<link rel="alternate" type="application/feed+json" title="CROL-List — new procurement notices (JSON)" href="https://crol-worker.crol-worker.workers.dev/feed.json?lens=money">
+<link rel="alternate" type="application/atom+xml" title="CROL-List — new procurement notices" href="https://api.crol-list.org/feed.xml?lens=money">
+<link rel="alternate" type="application/feed+json" title="CROL-List — new procurement notices (JSON)" href="https://api.crol-list.org/feed.json?lens=money">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Libre+Caslon+Text:ital@0;1&family=Spectral:ital,wght@0,400;0,600;1,400&family=Spectral+SC:wght@500;600&display=swap" rel="stylesheet">
@@ -610,11 +610,11 @@ const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const PAY  = "https://data.cityofnewyork.us/resource/k397-673e.json";
 const CSL  = "https://data.cityofnewyork.us/resource/vx8i-nprf.json";
 const PAYFY = "2025";
-// Optional backend (crol-worker on Netlify). Empty = fully client-side: the NL box uses the
-// on-device heuristic, Checkbook $-paid stays hidden, alerts are preview-only. Set to the
-// deployed worker URL (e.g. "https://crol-worker.netlify.app") to light up the model-backed
-// features; every one of them falls back to the static behavior if the worker is unreachable.
-const API = "https://crol-worker.crol-worker.workers.dev";
+// Optional backend (crol-worker, a Cloudflare Worker on our own subdomain — user-visible URLs
+// like feeds and confirm links should read crol-list.org, never *.workers.dev). Empty = fully
+// client-side: the NL box uses the on-device heuristic, Checkbook $-paid stays hidden, alerts
+// are preview-only. Every worker-backed feature falls back to static behavior if unreachable.
+const API = "https://api.crol-list.org";
 const REQ_URL = id => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
 const PASSPORT = "https://a0333-passportpublic.nyc.gov/";
 const STAGE_RANK = {"Solicitation":0,"Intent to Negotiate":1,"Vendor List":2,"Intent to Award":3,"Award":4};
