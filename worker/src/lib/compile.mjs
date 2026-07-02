@@ -67,9 +67,13 @@ export function compileSub(sub, todayISO) {
     }
     const stem = vendorStem(name);
     if (stem.length < 3) return null;
+    // Full-text $q, not a stem-prefix LIKE: the stem strips punctuation but vendor_name keeps
+    // it ("LEON D. DEMATTEIS…" never starts with "LEON D DEMATTEIS…"), so the LIKE silently
+    // matched nothing for punctuated vendors. $q tokenizes punctuation away on both sides;
+    // the exact-stem postFilter keeps precision.
     return {
       url: SODA, idField: "request_id", kind: "entity",
-      params: { "$select": CR_SELECT_EV, "$where": `upper(vendor_name) like '${stem.replace(/'/g, "''")}%'`, "$order": "start_date DESC", "$limit": "25" },
+      params: { "$select": CR_SELECT_EV, "$where": "vendor_name IS NOT NULL", "$q": stem, "$order": "start_date DESC", "$limit": "25" },
       postFilter: (row) => vendorStem(row.vendor_name) === stem,
     };
   }
