@@ -35,9 +35,9 @@ client-side (NL search uses the on-device heuristic, subscriptions/feeds are hid
 | `/nl` | POST | Claude Haiku decodes English → lens filters | `ANTHROPIC_API_KEY`; degrades to `{degraded:true}` |
 | `/checkbook` | POST | CORS proxy to checkbooknyc.com/api | none |
 | `/feed.xml` `/feed.json` `/feed.ics` | GET | **Any saved search as a standing feed** — Atom / JSON Feed 1.1 / subscribable calendar. Params: `lens=money\|land\|property\|rules\|meetings`, `q=`, `agency=`, `min=`. Same `compileSub()` queries the cron replays; entry links land on `crol-list.org/#notice/<id>` permalinks; edge-cached 15 min; no paid key on the path | none |
-| `/subscribe` | POST | Double-opt-in signup (Turnstile + per-IP/per-address rate limits); emails a signed confirm link, stores nothing until clicked | fails closed 503 until `TURNSTILE_SECRET` + `TOKEN_SECRET` + `RESEND_API_KEY` + `SUBS` |
-| `/confirm` | GET | Verifies the token, writes the ACTIVE sub to KV | `TOKEN_SECRET` + `SUBS` |
-| `/unsubscribe` | GET/POST | Removes a sub; POST = RFC 8058 one-click | `TOKEN_SECRET` + `SUBS` |
+| `/subscribe` | POST | Double-opt-in signup (Turnstile + per-IP/per-address rate limits); emails a signed [`optin-token`](https://github.com/jimdc/optin-token) confirm link, stores nothing until clicked | fails closed 503 until `TURNSTILE_SECRET` + `TOKEN_SECRET` + `RESEND_API_KEY` + `SUBS` |
+| `/confirm` | GET | Verifies the `optin-token`, writes the ACTIVE sub to KV | `TOKEN_SECRET` + `SUBS` |
+| `/unsubscribe` | GET/POST | Removes a sub; POST = RFC 8058 one-click (`optin-token`) | `TOKEN_SECRET` + `SUBS` |
 | `/feedback` | POST | Stores + emails operator feedback (Turnstile, rate-limited; rows keep IP+UA) | fails closed 503 |
 | `/batch` | POST | Watchlist cross-reference: `{names:[…]}` (≤10) → per-name award/mention counts + vendor-profile links; 30/day/IP | none |
 | `/inv` · `/inv/<id>` | POST/GET | Share an investigation snapshot (clamped, ≤32KB, 90-day TTL, 10/day/IP; SUBS KV `inv:` prefix) | none |
@@ -73,20 +73,40 @@ ever the subscriber's own opted-in address. Never sends as a person.
 (`MAX_CALLS_PER_DAY=300`, KV counter in `NL_METER`), tiny `max_tokens`, and
 `{degraded:true}` on every failure path — worst case a few tens of cents/day by
 construction. Alert sending is bounded by `MAX_PER_RUN=25` and `MAX_SENDS_PER_DAY=50`
-(under Resend's free 100/day); capped watches **defer** to the next run rather than dropping
-notices. Subscribe/feedback have Turnstile + per-IP/per-address daily rate limits and fail
-closed when unconfigured. Feeds hold no key and are edge-cached.
+(under Resend's free 100/day) via the [`sendcap`](https://github.com/jimdc/sendcap) spend
+guard; capped watches **defer** to the next run rather than dropping notices. Subscribe/feedback
+have Turnstile + per-IP/per-address daily rate limits and fail closed when unconfigured. Feeds
+hold no key and are edge-cached.
 
 ## Storage — Cloudflare KV (no D1/R2)
 
 `NL_METER` (NL daily counters) · `ALERT_STATE` (seen-IDs, send counters — 40-day TTL so /stats can window them, last-sent dates, and `stats:<metric>:<day>` outcome counters) ·
 `SUBS` (confirmed subs + subscribe rate limits) · `FEEDBACK` (feedback rows + rate limits).
 
+## Dependencies — two libraries extracted from this worker
+
+This worker is otherwise dependency-free; its only runtime deps are two small, general-purpose
+libraries that were **extracted out of it** (2026-07-02) so anyone can reuse them, then pulled
+back in — so the opt-in and denial-of-wallet logic now lives (and is exhaustively unit-tested)
+in its own package instead of inline here:
+
+- **[`optin-token`](https://github.com/jimdc/optin-token)** — the double-opt-in confirmation
+  tokens (`signToken`/`verifyToken` behind `/subscribe`, `/confirm`, `/unsubscribe`) and the
+  `List-Unsubscribe` / RFC 8058 one-click headers on every digest. Web Crypto only, which is why
+  it bundles for Workers with no `nodejs_compat`.
+- **[`sendcap`](https://github.com/jimdc/sendcap)** — the alert-mailer spend guard (`MAX_PER_RUN`
+  + `MAX_SENDS_PER_DAY`). A pure "may I make one more paid send?" decision.
+
+They're wired as tag-pinned git deps (`github:jimdc/optin-token#v1.0.0`,
+`github:jimdc/sendcap#v1.0.0`) — the lockfile pins each to its exact release commit. The tests
+under `test/token.*`, `test/unsub.*`, and `test/caps.*` are now **integration regression guards**
+over these packages — they fail here if a swap ever regresses crol's contract.
+
 ## Develop, test, deploy
 
 ```sh
-npm install
-npm test                  # node --test — 97 unit tests, no network
+npm install               # pulls wrangler + the two file: deps (optin-token, sendcap)
+npm test                  # node --test — 106 unit tests, no network
 npm run dev               # wrangler dev → http://localhost:8787 (secrets in .dev.vars)
 npx wrangler deploy       # deploy (free); cron + KV bindings come from wrangler.toml
 CROL_WORKER_URL=https://api.crol-list.org npm run test:live   # live e2e over every public route

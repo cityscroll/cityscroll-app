@@ -7,6 +7,10 @@
   "engines": {
     "node": ">=18"
   },
+  "dependencies": {
+    "optin-token": "github:jimdc/optin-token#v1.0.0",
+    "sendcap": "github:jimdc/sendcap#v1.0.0"
+  },
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",

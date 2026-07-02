@@ -2,7 +2,7 @@
 // (issued by /subscribe) and only THEN writes the ACTIVE subscription to KV. Replaying an
 // expired/forged token does nothing. Returns a small HTML page (it's clicked from an email).
 
-import { verifyToken } from "./lib/token.mjs";
+import { verifyToken } from "optin-token";
 import { buildSubscription, subCanonical } from "./lib/subscriptions.mjs";
 import { describeFilter, htmlPage } from "./lib/confirm_email.mjs";
 

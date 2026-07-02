@@ -12,13 +12,13 @@
 //
 // SPEND GUARDS: MAX_PER_RUN + MAX_SENDS_PER_DAY (KV-counted) bound how much this can ever
 // send, so a bug, a test, or a stuffed config can't run up a bill. A capped watch DEFERS to
-// the next run (left unseen) rather than dropping its notices silently. See lib/sendcap.mjs.
+// the next run (left unseen) rather than dropping its notices silently. The guard itself is
+// the `sendcap` package (a pure "may I make one more paid action?" decision).
 
 import cfg from "../alerts.config.json";
-import { capDecision } from "./lib/sendcap.mjs";
-import { listUnsubscribe } from "./lib/unsub.mjs";
+import { capDecision } from "sendcap";
+import { signToken, listUnsubscribe } from "optin-token";
 import { compileSub } from "./lib/compile.mjs";
-import { signToken } from "./lib/token.mjs";
 import { describeFilter } from "./lib/confirm_email.mjs";
 import { digestDecision, shortDate } from "./lib/digest.mjs";
 
@@ -42,9 +42,10 @@ export async function runAlerts(env, watches = cfg.watches || []) {
       const seen = await getSeen(env, w.id);
       const fresh = rows.filter((r) => r.request_id && !seen.has(r.request_id));
 
-      const { send, capped } = capDecision({
-        hasFresh: fresh.length > 0, live: LIVE, hasEmail: !!w.email,
-        sentThisRun, sentToday, maxPerRun, maxPerDay,
+      const { allow: send, capped } = capDecision({
+        want: fresh.length > 0 && LIVE && !!w.email,
+        counts: { "per-run": sentThisRun, daily: sentToday },
+        caps: { "per-run": maxPerRun, daily: maxPerDay },
       });
 
       if (send) {
@@ -83,9 +84,10 @@ export async function runAlerts(env, watches = cfg.watches || []) {
       const since = (await getLastSent(env, s.key)) || s.createdAt || null;
       const decision = digestDecision({ freshCount: fresh.length, freq: s.freq, lastSentDate: since, today, heartbeatDays });
 
-      const { send, capped } = capDecision({
-        hasFresh: decision.action !== "none", live: LIVE, hasEmail: !!s.email,
-        sentThisRun, sentToday, maxPerRun, maxPerDay,
+      const { allow: send, capped } = capDecision({
+        want: decision.action !== "none" && LIVE && !!s.email,
+        counts: { "per-run": sentThisRun, daily: sentToday },
+        caps: { "per-run": maxPerRun, daily: maxPerDay },
       });
 
       if (send) {
