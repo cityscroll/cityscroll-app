@@ -1,0 +1,59 @@
+name = "crol-worker"
+main = "src/worker.mjs"
+compatibility_date = "2026-01-01"
+# No nodejs_compat needed — the Worker uses only fetch + Web APIs (no npm runtime deps).
+
+# Branded public hostname: user-visible URLs (feed links, confirm links) read api.crol-list.org,
+# not *.workers.dev. Custom Domain — Cloudflare creates the DNS record + certificate in the
+# crol-list.org zone on deploy; the workers.dev URL keeps working as an alias.
+routes = [
+  { pattern = "api.crol-list.org", custom_domain = true }
+]
+# Adding routes implicitly DISABLES workers.dev unless this is explicit — keep the alias alive
+# so older cached pages and any in-flight confirm links (24h TTL) don't break.
+workers_dev = true
+
+# Daily alerts digest. Dry-run until ALERTS_LIVE="true". 13:00 UTC ≈ 9am ET.
+[triggers]
+crons = ["0 13 * * *"]
+
+# Non-secret config. Secrets (ANTHROPIC_API_KEY, RESEND_API_KEY, USAGE_KEY) go via
+# `wrangler secret put`. USAGE_KEY gates the read-only /usage endpoint; unset → /usage 404s.
+[vars]
+ALERTS_LIVE = "true"
+ALERTS_FROM = "CROL-List <alerts@crol-list.org>"
+# Spend guards (denial-of-wallet ceiling). MAX_SENDS_PER_DAY stays under Resend's free 100/day.
+MAX_PER_RUN = "25"
+MAX_SENDS_PER_DAY = "50"
+# Confidence feature: quiet days before a DAILY sub gets a "still watching" heartbeat (weekly subs
+# always get their weekly email). So silence never looks like a broken alert. Default 14.
+HEARTBEAT_DAYS = "14"
+# Operator inbox for /feedback notifications (non-secret → a var, not a secret). The Cloudflare
+# Email Routing catch-all already routes any *@crol-list.org here, so no new routing rule is
+# strictly required; a dedicated feedback@ rule just enables plus-alias auto-filtering.
+FEEDBACK_TO = "feedback@crol-list.org"
+
+# KV namespaces. Create them once, then paste the printed ids below:
+#   npx wrangler kv namespace create NL_METER
+#   npx wrangler kv namespace create ALERT_STATE
+[[kv_namespaces]]
+binding = "NL_METER"
+id = "f410ee870b954e2980ee646312704014"
+
+[[kv_namespaces]]
+binding = "ALERT_STATE"
+id = "451ce64e616b49b6837682e75cb07756"
+
+# Confirmed subscriptions + per-IP/per-address rate-limit counters for /subscribe.
+# /subscribe FAILS CLOSED (503) until TURNSTILE_SECRET + TOKEN_SECRET are also set, so this
+# binding existing is harmless until Turnstile is provisioned.
+[[kv_namespaces]]
+binding = "SUBS"
+id = "a7addee904774e7c90f9be447f927b20"
+
+# Stored feedback rows (fb:<ts>:<rand>) + /feedback per-IP/per-address rate-limit counters.
+# /feedback FAILS CLOSED (503) until TURNSTILE_SECRET + RESEND_API_KEY are also set, so this
+# binding existing is harmless on its own. Created via `wrangler kv namespace create FEEDBACK`.
+[[kv_namespaces]]
+binding = "FEEDBACK"
+id = "75d85d23ec914d8ea44bc3e9bb540afd"

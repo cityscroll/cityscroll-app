@@ -1,0 +1,12 @@
+# crol-worker — local secrets for `wrangler dev`. Copy to `.dev.vars` (gitignored).
+# In production these are NOT here — set them with `wrangler secret put <NAME>`.
+
+# /nl (model-backed natural-language search). Without it, /nl returns { degraded:true }.
+ANTHROPIC_API_KEY=
+
+# alerts (only when ALERTS_LIVE=true). https://resend.com → API Keys.
+RESEND_API_KEY=
+
+# /usage (read-only spend report). Shared secret the caller passes as ?key=, Authorization:
+# Bearer, or X-Usage-Key. UNSET → the endpoint 404s (inert). Prod: `wrangler secret put USAGE_KEY`.
+USAGE_KEY=

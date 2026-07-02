@@ -1,0 +1,21 @@
+{
+  "_comment": "Each watch is one saved slice of the City Record. The scheduled function (netlify/functions/alerts.mjs) re-runs each query daily, diffs against last run, and emails NEW notices to `email`. Leave `email` empty to skip sending. Nothing sends until the ALERTS_LIVE env var is set to \"true\".",
+  "watches": [
+    {
+      "id": "awards-1m",
+      "label": "Contract awards over $1M",
+      "email": "",
+      "type": "awards",
+      "min": 1000000,
+      "limit": 25
+    },
+    {
+      "id": "rivington",
+      "label": "Anything mentioning Rivington",
+      "email": "",
+      "type": "search",
+      "q": "Rivington",
+      "limit": 20
+    }
+  ]
+}

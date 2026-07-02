@@ -6,6 +6,16 @@ hearings, and rezonings there.
 
 **CROL-List** is an interface for searching this information by interest.
 
+**The whole system is in this repo** — a dependency-free static site (`index.html`) plus its
+Cloudflare Worker backend (`worker/`) — and it's built to be forked: most cities publish
+similar records on a Socrata/open-data portal, and the city-specific parts are the SODA
+queries and lens definitions. Clone it, point it at your city, and you have a
+your-city-record watcher. Start with [MISSION.md](MISSION.md) and
+[CONTRIBUTING.md](CONTRIBUTING.md); consequential design choices are logged in
+[docs/decisions/](docs/decisions/). What changed and when: the public
+[changelog](https://crol-list.org/changelog.html) · live usage:
+[stats](https://crol-list.org/stats.html).
+
 > Maintenance rule: this README is updated with every significant feature change — if a lens,
 > route, or behavior ships, its description lands here in the same session.
 
@@ -50,9 +60,13 @@ notice.
 CROL-List is one self-contained `index.html` — inline CSS and vanilla JS, no build step — served as a static file on GitHub Pages. Every query is a live API call from the browser, so there is no cached bulk data and nothing to keep in sync; results are as fresh as the City publishes. The open-data APIs are CORS-open and need no key.
 
 The parts that need a secret or a server — plain-English search (a model key), **email-alert
-subscriptions** (double opt-in; the address is only ever the subscriber's own), and the
-**`/feed.xml` / `/feed.json` / `/feed.ics`** feed routes — run in a separate Cloudflare Worker,
-**crol-worker** (sibling repo; see its README for routes and the daily digest cron). When it's
+subscriptions** (double opt-in; the address is only ever the subscriber's own), the
+**`/feed.xml` / `/feed.json` / `/feed.ics`** feed routes, the public **`/stats`** counters, and
+the count-only **`/r`** digest redirect — run in one Cloudflare Worker whose source lives in
+[`worker/`](worker/) in this repo (open-sourced 2026-07-02, see
+[docs/decisions/004](docs/decisions/004-monorepo-open-worker.md); routes, defenses, and the
+daily digest cron are documented in [`worker/README.md`](worker/README.md)). All secrets live
+in Cloudflare's secret store — nothing in this repo can spend money or read subscriber data. When it's
 unavailable the search falls back to an on-device parser (covered by `test/fallback.test.mjs`),
 so the page never hard-depends on the Worker. The only committed data is two small seed files,
 `data/title_crosswalk.json` and `data/people_examples.json`, which power the People lens's

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stats · CROL-List</title>
+<meta name="description" content="CROL-List's own usage, published: aggregate outcome counts — subscriptions, digests, clicks, feeds. No accounts, no cookies, nobody tracked.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4efe4; --paper-2:#efe7d6; --ink:#1a1714; --ink-soft:#3b342c; --muted:#5c5349;
+    --rule:#cdbfa6; --card:#fbf7ed;
+    --shadow:0 1px 2px rgba(40,30,10,.05),0 6px 20px rgba(40,30,10,.06);
+    --green:#2f4a32; --oxblood:#7a1f1f;
+    --font-nameplate:'Playfair Display',Georgia,serif; --font-body:'Spectral',Georgia,serif;
+    --font-sc:'Spectral SC','Spectral',Georgia,serif; --ui:ui-sans-serif,system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--font-body);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px 80px}
+  a{color:var(--oxblood)}
+  .cr-rule{border-top:3px solid var(--ink)} .cr-rule--bottom{border-top:3px double var(--ink);margin-top:8px}
+  header{padding-top:18px;text-align:center}
+  .home{display:inline-flex;align-items:center;gap:9px;text-decoration:none;color:var(--ink)}
+  .home:hover .cr-title{color:var(--oxblood)}
+  .cr-seal{width:34px;height:34px;color:var(--ink)}
+  .cr-title{font-family:var(--font-nameplate);font-weight:900;font-size:1.5rem;letter-spacing:.01em;margin:0}
+  .kicker{font-family:var(--font-sc);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-top:14px}
+  h1{font-family:var(--font-nameplate);font-weight:900;font-size:clamp(2rem,6vw,3rem);text-transform:uppercase;line-height:.95;margin:.06em 0 .12em}
+  .backhome{display:inline-block;margin-top:12px;font:600 13px/1 var(--ui);text-decoration:none;color:var(--oxblood)}
+  .backhome:hover{text-decoration:underline}
+  .lede{font-size:16px;color:var(--ink-soft);margin:22px 0 8px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin:20px 0}
+  .stat{background:var(--card);border:1px solid var(--rule);border-radius:12px;box-shadow:var(--shadow);padding:16px 18px}
+  .stat .n{font-family:var(--font-nameplate);font-weight:900;font-size:2.2rem;line-height:1;color:var(--ink)}
+  .stat .l{font-family:var(--font-sc);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+  .stat .d{font:13px/1.5 var(--ui);color:var(--ink-soft);margin-top:8px}
+  h2{font-family:var(--font-sc);font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--oxblood);margin:30px 0 8px;border-top:1px solid var(--rule);padding-top:16px}
+  p{margin:10px 0}
+  .src{font:14px/1.7 var(--ui);color:var(--ink-soft)}
+  #msg{font:14px/1.6 var(--ui);color:var(--muted);min-height:1.2em}
+  .foot{margin-top:40px;border-top:1px solid var(--rule);padding-top:14px;font:13px/1.6 var(--ui);color:var(--muted);text-align:center}
+  .foot a{color:var(--oxblood)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="cr-rule"></div>
+  <a class="home" href="index.html" aria-label="Back to CROL-List home">
+    <svg class="cr-seal" viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="0.6"/>
+      <path d="M50 18 L74 30 V58 Q74 76 50 86 Q26 76 26 58 V30 Z" fill="none" stroke="currentColor" stroke-width="1.3"/>
+      <line x1="26" y1="48" x2="74" y2="48" stroke="currentColor" stroke-width="0.6"/>
+      <path d="M50 30 L50 46 M42 38 L58 38" stroke="currentColor" stroke-width="1.1"/>
+    </svg>
+    <span class="cr-title">CROL-List</span>
+  </a>
+  <div class="kicker">The City Record, searchable</div>
+  <h1>Stats</h1>
+  <div class="cr-rule cr-rule--bottom"></div>
+  <a class="backhome" href="index.html">← Back to CROL-List</a>
+</header>
+
+<p class="lede">A transparency tool should publish its own usage. These are CROL-List's live operating numbers —
+<b>aggregate counts only</b>: the site has no accounts and no cookies, and neither we nor anyone else can see who
+did what. We measure outcomes (watches that fired, digests that got read), not people.</p>
+<p id="msg" role="status">Loading live counters…</p>
+
+<div class="grid" id="grid" hidden>
+  <div class="stat"><div class="n" id="s-subs">–</div><div class="l">Active subscriptions</div><div class="d">Confirmed standing watches — the number that matters most to us.</div></div>
+  <div class="stat"><div class="n" id="s-digests">–</div><div class="l">Digests sent · 7 days</div><div class="d"><span id="s-digests-today">–</span> today. Only when something new matched (plus honest "still watching" check-ins).</div></div>
+  <div class="stat"><div class="n" id="s-clicks">–</div><div class="l">Digest links followed · 7 days</div><div class="d">Counted by a redirect that records a number, never a person — <a href="changelog.html#2026-07-02b">how this works</a>.</div></div>
+  <div class="stat"><div class="n" id="s-feeds">–</div><div class="l">Feed fetches · 7 days</div><div class="d">RSS/Atom/JSON/calendar pulls, as seen at the origin (edge-cached hits aren't counted).</div></div>
+  <div class="stat"><div class="n" id="s-batch">–</div><div class="l">Batch cross-references · 7 days</div><div class="d">Watchlists checked through the <a href="api.html">open API</a>.</div></div>
+  <div class="stat"><div class="n" id="s-inv">–</div><div class="l">Investigations shared · 7 days</div><div class="d">Read-only workspace snapshots created.</div></div>
+  <div class="stat"><div class="n" id="s-nl">–</div><div class="l">Plain-English searches · today</div><div class="d">"Ask in plain English" calls against the daily spending ceiling.</div></div>
+</div>
+
+<h2>What we deliberately don't know</h2>
+<p class="src">Who you are, what you searched, which notices you read, or which emails you opened. Page-view
+totals come from Cloudflare's cookieless analytics (aggregate, no fingerprinting — <a href="about.html">privacy
+notes</a>); everything above comes from plain per-day counters. There is nothing else.</p>
+
+<div class="foot">
+  <p>Raw JSON: <a href="https://api.crol-list.org/stats">api.crol-list.org/stats</a> (cached ~15 min) ·
+  <a href="changelog.html">Changelog</a> · <a href="about.html">About</a> · <a href="index.html">Home</a></p>
+</div>
+</div>
+
+<script>
+(async () => {
+  const msg = document.getElementById("msg"), grid = document.getElementById("grid");
+  const put = (id, v) => { document.getElementById(id).textContent = (v == null ? "–" : Number(v).toLocaleString("en-US")); };
+  const bases = ["https://api.crol-list.org", "https://crol-worker.crol-worker.workers.dev"];
+  for (const base of bases) {
+    try {
+      const r = await fetch(base + "/stats", { signal: AbortSignal.timeout(8000) });
+      if (!r.ok) continue;
+      const d = await r.json();
+      put("s-subs", d.subscriptions?.active);
+      put("s-digests", d.digests?.sent_last7d);
+      put("s-digests-today", d.digests?.sent_today);
+      put("s-clicks", d.digest_clicks?.last7d);
+      put("s-feeds", d.feeds?.fetches_last7d);
+      put("s-batch", d.batch?.calls_last7d);
+      put("s-inv", d.shared_investigations?.created_last7d);
+      put("s-nl", d.nl_search?.calls_today);
+      msg.textContent = "As of " + new Date(d.generated).toLocaleString() + " (refreshes every 15 minutes).";
+      grid.hidden = false;
+      return;
+    } catch { /* try the alias */ }
+  }
+  msg.textContent = "Live counters are unreachable right now — the raw JSON lives at api.crol-list.org/stats.";
+})();
+</script>
+<!-- Cloudflare Web Analytics — cookieless, aggregate. -->
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "5d81fb4366b848dea15fb1862391909c"}'></script>
+</body>
+</html>

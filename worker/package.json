@@ -1,0 +1,21 @@
+{
+  "name": "crol-worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Thin serverless backend for CROL-List: NL\u2192query (Claude Haiku), a Checkbook NYC proxy, and a scheduled alert digest. Deployed as a single Cloudflare Worker.",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "cf:kv": "wrangler kv namespace create NL_METER && wrangler kv namespace create ALERT_STATE",
+    "test": "node --test",
+    "test:live": "node --test e2e/nl.mjs e2e/usage.mjs e2e/routes.mjs",
+    "usage:live": "node --test e2e/usage.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}
