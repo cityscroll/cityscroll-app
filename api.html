@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API &amp; feeds · CROL-List</title>
+<meta name="description" content="CROL-List's open endpoints: RSS/JSON/calendar feeds for any search, batch watchlist cross-reference, permalinks, and the upstream open datasets.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4efe4; --ink:#1a1714; --ink-soft:#3b342c; --muted:#5c5349;
+    --rule:#cdbfa6; --rule-strong:#8a7c64; --card:#fbf7ed;
+    --shadow:0 1px 2px rgba(40,30,10,.05),0 6px 20px rgba(40,30,10,.06);
+    --blue:#1f3a5f; --green:#2f4a32; --oxblood:#7a1f1f;
+    --font-nameplate:'Playfair Display',Georgia,serif; --font-body:'Spectral',Georgia,serif;
+    --font-sc:'Spectral SC','Spectral',Georgia,serif; --ui:ui-sans-serif,system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--font-body);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px 80px}
+  a{color:var(--oxblood)}
+  .cr-rule{border-top:3px solid var(--ink)} .cr-rule--bottom{border-top:3px double var(--ink);margin-top:8px}
+  header{padding-top:18px;text-align:center}
+  .home{display:inline-flex;align-items:center;gap:9px;text-decoration:none;color:var(--ink)}
+  .cr-title{font-family:var(--font-nameplate);font-weight:900;font-size:1.5rem;margin:0}
+  .kicker{font-family:var(--font-sc);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-top:14px}
+  h1{font-family:var(--font-nameplate);font-weight:900;font-size:clamp(2rem,6vw,3rem);text-transform:uppercase;line-height:.95;margin:.06em 0 .12em}
+  .backhome{display:inline-block;margin-top:12px;font:600 13px/1 var(--ui);text-decoration:none;color:var(--oxblood)}
+  h2{font-family:var(--font-sc);font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--oxblood);margin:34px 0 8px;border-top:1px solid var(--rule);padding-top:18px}
+  p{margin:10px 0}
+  .src{font:14px/1.7 var(--ui);color:var(--ink-soft)}
+  code{font:13px/1.5 ui-monospace,Menlo,monospace;background:#efe8d8;padding:1px 5px;border-radius:4px}
+  pre{background:#2b2620;color:#f3eee2;padding:13px 15px;border-radius:8px;overflow-x:auto;font:12.5px/1.55 ui-monospace,Menlo,monospace}
+  pre a{color:#9cc3d5}
+  table{border-collapse:collapse;width:100%;font:13.5px/1.5 var(--ui);margin:10px 0}
+  th,td{border:1px solid var(--rule);padding:7px 9px;text-align:left;vertical-align:top}
+  th{background:#efe8d8;font-weight:600}
+  .card{background:var(--card);border:1px solid var(--rule);border-radius:14px;box-shadow:var(--shadow);padding:18px 20px;margin-top:12px}
+  textarea{width:100%;font:14px/1.6 ui-monospace,Menlo,monospace;padding:11px;border:1px solid var(--rule);border-radius:9px;background:#fff;color:var(--ink);min-height:110px;resize:vertical}
+  .btn{font:700 14px/1 var(--ui);padding:12px 20px;border-radius:9px;border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer;margin-top:10px}
+  .btn:disabled{opacity:.55}
+  .note{font:13px/1.6 var(--ui);color:var(--muted);margin-top:10px}
+  .loading{display:inline-block;width:12px;height:12px;border:2px solid var(--rule);border-top-color:var(--oxblood);border-radius:50%;animation:spin .8s linear infinite;vertical-align:-2px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .foot{margin-top:40px;border-top:1px solid var(--rule);padding-top:14px;font:13px/1.6 var(--ui);color:var(--muted);text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="cr-rule"></div>
+  <a class="home" href="index.html"><span class="cr-title">CROL-List</span></a>
+  <div class="kicker">The City Record, searchable</div>
+  <h1>API &amp; feeds</h1>
+  <div class="cr-rule cr-rule--bottom"></div>
+  <a class="backhome" href="index.html">← Back to CROL-List</a>
+</header>
+
+<p class="src">Every view on CROL-List has a machine-readable twin. No key, no account; endpoints are
+rate-limited and cached, and none touches a paid service. Base URL: <code>https://api.crol-list.org</code>.</p>
+
+<h2>Feeds — any search as RSS / JSON / calendar</h2>
+<p class="src"><code>GET /feed.xml</code> (Atom) · <code>GET /feed.json</code> (JSON Feed 1.1) ·
+<code>GET /feed.ics</code> (subscribable calendar — one event per dated notice). Edge-cached 15 minutes.</p>
+<table>
+  <tr><th>Param</th><th>Meaning</th></tr>
+  <tr><td><code>lens</code></td><td><code>money</code> · <code>land</code> · <code>property</code> · <code>rules</code> · <code>meetings</code> · <code>entity</code></td></tr>
+  <tr><td><code>q</code></td><td>keywords (up to 4)</td></tr>
+  <tr><td><code>agency</code></td><td>agency name as printed in the record</td></tr>
+  <tr><td><code>min</code></td><td>minimum award $ (money lens → award feed)</td></tr>
+  <tr><td><code>kind</code> + <code>name</code></td><td>entity lens: <code>kind=vendor|agency</code>, <code>name=…</code> — vendor names are matched by normalized stem, so suffix/case variants are included</td></tr>
+</table>
+<pre>https://api.crol-list.org/feed.xml?lens=rules&amp;agency=Buildings
+https://api.crol-list.org/feed.ics?lens=meetings&amp;q=community%20board
+https://api.crol-list.org/feed.json?lens=entity&amp;kind=vendor&amp;name=Sinergia%20Inc</pre>
+
+<h2>Batch cross-reference</h2>
+<p class="src"><code>POST /batch</code> with <code>{"names": ["…", …]}</code> (≤10 names/request, 30 requests/day/IP).
+For each name: <b>awards</b> = award/intent notices naming that vendor (name-stem matched, all years);
+<b>mentions</b> = full-text hits in the last two years of editions; <b>entity</b> = the vendor-profile permalink when awards exist.</p>
+<div class="card">
+  <label for="bnames" style="display:block;font:600 11px/1 var(--ui);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Try it — one name per line</label>
+  <textarea id="bnames" placeholder="Sinergia Inc&#10;Consolidated Scaffolding&#10;Acme Elevator"></textarea>
+  <button class="btn" id="brun">Cross-reference →</button>
+  <div id="bmsg" class="note"></div>
+  <div id="bout"></div>
+</div>
+
+<h2>Permalinks</h2>
+<p class="src">Everything on the site has a stable address you can link or cite:</p>
+<table>
+  <tr><td><code>/#notice/&lt;request_id&gt;</code></td><td>one notice — at-a-glance summary, flags, Checkbook dollars, full text</td></tr>
+  <tr><td><code>/#vendor/&lt;name&gt;</code></td><td>vendor profile (name variants resolved by stem)</td></tr>
+  <tr><td><code>/#agency/&lt;name&gt;</code></td><td>agency profile</td></tr>
+  <tr><td><code>/#matter/&lt;pin&gt;</code></td><td>a procurement matter as a timeline, Checkbook payments included</td></tr>
+  <tr><td><code>/#money?agency=…&amp;q=…&amp;m=…</code></td><td>any filtered view — the URL is the state</td></tr>
+</table>
+
+<h2>Shared investigations</h2>
+<p class="src"><code>POST /inv</code> stores a pin-list snapshot (structured fields only, ≤32KB, 90-day TTL,
+10/day/IP) and returns an id; <code>GET /inv/&lt;id&gt;</code> reads it back. The site renders these at
+<code>/#investigation/shared/&lt;id&gt;</code>.</p>
+
+<h2>Upstream data</h2>
+<p class="src">CROL-List republishes and joins public datasets — for bulk work, go straight to the sources:
+<a href="https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx" target="_blank" rel="noopener">City Record Online (dg92-zbpx, Socrata SODA)</a> ·
+<a href="https://www.checkbooknyc.com/data-feeds/api" target="_blank" rel="noopener">Checkbook NYC API</a> ·
+<a href="https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e" target="_blank" rel="noopener">Citywide Payroll</a> ·
+<a href="https://data.cityofnewyork.us/City-Government/Zoning-Application-Portal-ZAP-Project-Data/hgx4-8ukb" target="_blank" rel="noopener">ZAP</a>.</p>
+
+<div class="foot">CROL-List · <a href="index.html">Home</a> · <a href="about.html">About</a></div>
+</div>
+
+<script>
+const API = "https://api.crol-list.org";
+const $ = s => document.querySelector(s);
+$("#brun").addEventListener("click", async ()=>{
+  const names = $("#bnames").value.split(/\n/).map(s=>s.trim()).filter(Boolean).slice(0,10);
+  const msg=$("#bmsg"), out=$("#bout"), btn=$("#brun");
+  if(!names.length){ msg.textContent="Add at least one name (3+ characters)."; return; }
+  btn.disabled=true; msg.innerHTML='<span class="loading"></span> cross-referencing…'; out.innerHTML="";
+  try{
+    const r = await fetch(API+"/batch",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({names})});
+    const j = await r.json();
+    if(!j.ok) throw new Error(j.reason||"failed");
+    const esc = s => String(s).replace(/[<>&]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;"}[c]));
+    out.innerHTML = '<table><tr><th>Name</th><th>Awards (vendor of record)</th><th>Mentions (last 2 yrs)</th><th></th></tr>'+
+      Object.entries(j.results).map(([n,v])=>`<tr><td>${esc(n)}</td><td>${v.awards}</td><td>${v.mentions}</td>
+        <td>${v.entity?`<a href="${esc(v.entity)}">vendor profile →</a>`:(v.mentions?`<a href="index.html#money?q=${encodeURIComponent(n)}">search →</a>`:"—")}</td></tr>`).join("")+'</table>';
+    msg.textContent="";
+  }catch(e){ msg.textContent = String(e.message)==="rate-limited" ? "Daily limit reached — try tomorrow." : "Couldn't cross-reference — try again."; }
+  btn.disabled=false;
+});
+</script>
+<!-- Cloudflare Web Analytics — cookieless, aggregate (manual beacon; site is GitHub-Pages-direct). -->
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "5d81fb4366b848dea15fb1862391909c"}'></script>
+</body>
+</html>

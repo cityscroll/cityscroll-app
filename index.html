@@ -545,6 +545,8 @@
               <option value="property">Property sale notices</option>
               <option value="rules">Rule changes (Agency Rules)</option>
               <option value="meetings">Public hearings &amp; meetings</option>
+              <option value="entityvendor">A vendor — anything naming them</option>
+              <option value="entityagency">An agency — anything they publish</option>
             </select>
           </div>
           <div class="afield">
@@ -601,7 +603,7 @@
 
 <footer>
   <div class="wrap">
-    <p style="margin:0">CROL-List searches the City Record Open Data — <b><span id="editionspan">2003 to present</span></b>, 1M+ notices. <a href="about.html" style="color:var(--oxblood)">About</a></p>
+    <p style="margin:0">CROL-List searches the City Record Open Data — <b><span id="editionspan">2003 to present</span></b>, 1M+ notices. <a href="about.html" style="color:var(--oxblood)">About</a> · <a href="#investigation" style="color:var(--oxblood)">📌 My investigation</a> · <a href="api.html" style="color:var(--oxblood)">API &amp; feeds</a></p>
   </div>
 </footer>
 
@@ -1016,7 +1018,7 @@ function chainHTML(r, chain){
 }
 
 function renderDetail(r, chain, stats){
-  let html = `<div class="actions" style="margin:0 0 12px"><button class="act" type="button" id="dcopy">🔗 Copy link to this notice</button></div>`;
+  let html = `<div class="actions" style="margin:0 0 12px"><button class="act" type="button" id="dcopy">🔗 Copy link to this notice</button>${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}</div>`;
   html += `<div id="dcontext"></div><div id="ddollars"></div>`;
   // Solicitations get the richer how-to-respond panel below; everything else gets the glance box.
   if(r.type_of_notice_description !== "Solicitation") html += glanceFor(r);
@@ -1744,6 +1746,8 @@ function aWatchChange(){
   else {
     $("#athresh").style.display="none"; $("#aparam").style.display="";
     if(w==="rfpkw"){ $("#aparamlabel").textContent="Keyword (optional)"; $("#aparam").placeholder="construction, IT, security…"; }
+    else if(w==="entityvendor"){ $("#aparamlabel").textContent="Vendor name"; $("#aparam").placeholder="Consolidated Scaffolding, Sinergia…"; }
+    else if(w==="entityagency"){ $("#aparamlabel").textContent="Agency name (as printed)"; $("#aparam").placeholder="Design and Construction, Buildings…"; }
     else if(SECTION_WATCH_LABEL[w]){ $("#aparamlabel").textContent="Keyword (optional)"; $("#aparam").placeholder=w==="rules"?"e-bike, sidewalk, licensing…":w==="meetings"?"community board, landmarks…":"Brooklyn, auction, HPD…"; }
     else { $("#aparamlabel").textContent="ZIP, address, or neighborhood (optional)"; $("#aparam").placeholder="79 Rivington, Allen Street, Bushwick…"; }
   }
@@ -1752,6 +1756,8 @@ function aDescribe(){
   const w=$("#awatch").value, freq=$("#afreq").value.toLowerCase();
   if(w==="bigaward") return `${freq} digest of NYC contract awards over ${money($("#athresh").value)}`;
   if(w==="rfpkw") return `${freq} digest of open RFPs matching “${$("#aparam").value||"…"}”`;
+  if(w==="entityvendor") return `${freq} digest — every new notice naming vendor “${$("#aparam").value.trim()||"…"}”`;
+  if(w==="entityagency") return `${freq} digest — anything “${$("#aparam").value.trim()||"…"}” publishes`;
   if(SECTION_WATCH_LABEL[w]){
     const bits=[$("#aparam").value.trim()?`matching “${$("#aparam").value.trim()}”`:"", $("#aagency").value.trim()?`from ${$("#aagency").value.trim()}`:""].filter(Boolean).join(" ");
     return `${freq} digest of ${SECTION_WATCH_LABEL[w]}${bits?" "+bits:""}`;
@@ -1770,6 +1776,17 @@ function updateAWhen(){ const el=$("#awhen"); if(el) el.textContent=aWhenText();
 
 async function aFetch(){
   const w=$("#awatch").value;
+  if(w==="entityvendor"){
+    const stem=vendorStem($("#aparam").value.trim());
+    if(stem.length<3) return {kind:"notice", rows:[]};
+    const rows=await soda({"$select":SELECT,"$where":`upper(vendor_name) like '${stem.replace(/'/g,"''")}%'`,"$order":"start_date DESC","$limit":"25"});
+    return {kind:"notice", rows: rows.filter(r=>vendorStem(r.vendor_name)===stem).slice(0,5)};
+  }
+  if(w==="entityagency"){
+    const nm=$("#aparam").value.trim();
+    if(!nm) return {kind:"notice", rows:[]};
+    return {kind:"notice", rows: await soda({"$select":SELECT,"$where":`agency_name='${nm.replace(/'/g,"''")}'`,"$order":"start_date DESC","$limit":"5"})};
+  }
   if(SECTION_WATCH_LABEL[w]){
     // Mirrors the worker's compileSub() for these lenses, so the preview matches the digest.
     let where=`section_name='${SECTIONS[w].section}'`, order="start_date DESC";
@@ -1833,6 +1850,8 @@ function feedURLs(){
   if(filter.keywords && filter.keywords.length) q.set("q", filter.keywords.join(" "));
   if(filter.agency) q.set("agency", filter.agency);
   if(filter.minAmount) q.set("min", String(filter.minAmount));
+  if(filter.kind) q.set("kind", filter.kind);
+  if(filter.name) q.set("name", filter.name);
   const base=API.replace(/\/+$/,""), qs=q.toString();
   return {atom:`${base}/feed.xml?${qs}`, json:`${base}/feed.json?${qs}`, ics:`${base}/feed.ics?${qs}`};
 }
@@ -1879,6 +1898,8 @@ function aLensFilter(){
   const w=$("#awatch").value, p=$("#aparam").value.trim().toLowerCase();
   if(w==="bigaward") return {lens:"money", filter:{minAmount:Number($("#athresh").value)||1000000}};
   if(w==="rfpkw")    return {lens:"money", filter:{keywords:p?[p]:[]}};
+  if(w==="entityvendor") return {lens:"entity", filter:{kind:"vendor", name:$("#aparam").value.trim()||null}};
+  if(w==="entityagency") return {lens:"entity", filter:{kind:"agency", name:$("#aparam").value.trim()||null}};
   if(SECTION_WATCH_LABEL[w]) return {lens:w, filter:{keywords:p?[p]:[], agency:$("#aagency").value.trim()||null}};
   return {lens:"land", filter:{keywords:p?[p]:[], status:"all"}}; // rezonings — text match on the place
 }
@@ -2175,11 +2196,12 @@ async function showAgency(name){
       ${rfps.length?`<div class="chain-h">Open solicitations</div><div class="timeline">${rfpItems}</div>`:""}
       ${events.length?`<div class="chain-h">Upcoming hearings &amp; events</div><div class="timeline">${evItems}</div>`:""}
       <div class="actions" style="margin-top:16px">
-        <button class="act primary" type="button" id="ecopy">🔗 Copy link</button>
-        <button class="act" type="button" data-aw="rules">🔔 Watch their rules</button>
-        <button class="act" type="button" data-aw="meetings">🔔 Watch their meetings</button>
-        <button class="act" type="button" data-aw="property">🔔 Watch their property sales</button>
-        ${API?`<a class="act" href="${API.replace(/\/+$/,"")}/feed.xml?lens=rules&agency=${encodeURIComponent(nm)}" target="_blank" rel="noopener">📡 RSS</a>`:""}
+        <button class="act primary" type="button" data-follow="agency" data-name="${nm.replace(/"/g,"&quot;")}">🔔 Follow: anything new from them</button>
+        <button class="act" type="button" id="ecopy">🔗 Copy link</button>
+        ${pinBtn("agency", nm, agencyWho(nm), "agency profile")}
+        <button class="act" type="button" data-aw="rules">Watch rules only</button>
+        <button class="act" type="button" data-aw="meetings">Watch meetings only</button>
+        ${API?`<a class="act" href="${API.replace(/\/+$/,"")}/feed.xml?lens=entity&kind=agency&name=${encodeURIComponent(nm)}" target="_blank" rel="noopener">📡 RSS</a>`:""}
       </div>
       <div class="note">Figures are what this agency has <b>published in the City Record</b> (2003→present for procurement) — registration and payment lag; a per-entity follow across all lenses arrives with the entity-watch feature.</div>
     </div></div>`;
@@ -2244,13 +2266,155 @@ async function showVendor(name){
       ${rows.length?`<div class="chain-h">On the record — notices naming this vendor</div><div class="timeline">${rowItems}</div>`:""}
       ${mentions.length?`<div class="chain-h">Mentioned in other notices (text match)</div><div class="timeline">${mentionItems}</div>`:""}
       <div class="actions" style="margin-top:16px">
-        <button class="act primary" type="button" id="ecopy">🔗 Copy link</button>
-        ${API?`<a class="act" href="${API.replace(/\/+$/,"")}/feed.xml?lens=money&q=${encodeURIComponent(stem.toLowerCase())}" target="_blank" rel="noopener">📡 RSS: solicitations mentioning them</a>`:""}
+        <button class="act primary" type="button" data-follow="vendor" data-name="${cleanText(display).replace(/"/g,"&quot;")}">🔔 Follow this vendor</button>
+        <button class="act" type="button" id="ecopy">🔗 Copy link</button>
+        ${pinBtn("vendor", cleanText(display), cleanText(display), "vendor profile")}
+        ${API?`<a class="act" href="${API.replace(/\/+$/,"")}/feed.xml?lens=entity&kind=vendor&name=${encodeURIComponent(cleanText(display))}" target="_blank" rel="noopener">📡 RSS</a>`:""}
       </div>
       <div class="note">Identity is resolved by name normalization (case, punctuation, legal suffixes) — variants listed above; distinct companies sharing a name stem would be merged, so treat totals as <b>“published under this name,”</b> not a legal entity. Awards as published in the City Record; actual payments differ (Checkbook join coming).</div>
     </div></div>`;
   $("#ecopy").addEventListener("click", ()=>copyText(link, $("#ecopy")));
   announce(`Vendor profile: ${cleanText(display)}`);
+}
+
+/* ===================== INVESTIGATION WORKSPACE (#investigation) =====================
+   Aleph's Investigations, account-free: pin notices/entities/matters into a named local
+   workspace (localStorage — nothing leaves the device), annotate, export citation-grade
+   CSV/JSON, print a dossier, or share a read-only snapshot via the worker's /inv store. */
+const INVKEY = "crd_invs_v1";
+function invStore(){
+  try{ const s = JSON.parse(localStorage.getItem(INVKEY)||"null"); if(s && s.invs && s.invs[s.current]) return s; }catch(e){}
+  return {current:"inv1", invs:{inv1:{name:"My investigation", created:new Date().toISOString().slice(0,10), items:[]}}};
+}
+function invSave(s){ try{ localStorage.setItem(INVKEY, JSON.stringify(s)); }catch(e){} }
+const INV_HREF = {notice:"#notice/", vendor:"#vendor/", agency:"#agency/", matter:"#matter/"};
+const INV_ICON = {notice:"📄", vendor:"🏢", agency:"🏛", matter:"⏱"};
+const invItemHref = it => (INV_HREF[it.t]||"#notice/") + encodeURIComponent(it.id);
+function pinBtn(t, id, title, meta){
+  const d = JSON.stringify({t, id, title:String(title).slice(0,300), meta:String(meta||"").slice(0,300)})
+    .replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
+  return `<button class="act" type="button" data-pin="${d}">📌 Pin</button>`;
+}
+document.addEventListener("click", e=>{
+  const b = e.target.closest("[data-pin]");
+  if(b){
+    let p; try{ p = JSON.parse(b.dataset.pin); }catch(_){ return; }
+    const s = invStore(), inv = s.invs[s.current];
+    if(!inv.items.some(i=>i.t===p.t && i.id===p.id)){
+      inv.items.push({...p, note:"", added:new Date().toISOString().slice(0,10)});
+      invSave(s);
+    }
+    b.outerHTML = `<a class="act" href="#investigation">✓ Pinned — open investigation (${s.invs[s.current].items.length})</a>`;
+    return;
+  }
+  const f = e.target.closest("[data-follow]");
+  if(f){
+    showTab("alerts", true);
+    $("#awatch").value = f.dataset.follow==="agency" ? "entityagency" : "entityvendor";
+    aWatchChange();
+    $("#aparam").value = f.dataset.name || "";
+    aPreview();
+  }
+});
+
+function invCsv(inv){
+  const esc = v => `"${String(v==null?"":v).replace(/"/g,'""')}"`;
+  const base = location.origin + location.pathname;
+  const lines = [["Type","Title","Meta","Note","Added","Permalink"].map(esc).join(",")];
+  inv.items.forEach(i=>lines.push([i.t,i.title,i.meta,i.note,i.added,base+invItemHref(i)].map(esc).join(",")));
+  return "﻿"+lines.join("\r\n");
+}
+function invDownload(name, content, type){
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob([content],{type}));
+  a.download=name; document.body.appendChild(a); a.click(); a.remove();
+}
+function invItemsHtml(items, readonly){
+  const acc = new Date().toISOString().slice(0,10);
+  return items.map((i,idx)=>`<div class="tl" data-idx="${idx}" style="align-items:flex-start">
+    <span style="flex:0 0 auto">${INV_ICON[i.t]||"📄"}</span>
+    <span style="flex:1 1 300px;min-width:220px">
+      <b>${pivotA(invItemHref(i), i.title.replace(/[<>&]/g,""))}</b>
+      <span class="rmeta" style="display:block;margin:2px 0 0">${(i.meta||"").replace(/[<>&]/g,"")} · pinned ${i.added}</span>
+      ${readonly
+        ? (i.note?`<span class="rmeta2" style="display:block">📝 ${i.note.replace(/[<>&]/g,"")}</span>`:"")
+        : `<input type="text" class="invnote" data-idx="${idx}" value="${(i.note||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;")}" placeholder="add a note…" style="margin-top:6px;font-size:13px;padding:7px 9px">`}
+    </span>
+    ${readonly?"":`<button class="act invdel" data-idx="${idx}" type="button" style="padding:6px 9px">✕</button>`}
+  </div>`).join("");
+}
+
+async function showInvestigation(){
+  showTab("entity");
+  const s = invStore(), inv = s.invs[s.current];
+  const box = $("#entityview");
+  box.innerHTML = `<div style="max-width:880px;margin:0 auto">
+    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CROL-List</a></p>
+    <div class="panel" style="padding:22px 24px">
+      <div class="ftype" style="margin-bottom:6px">Investigation workspace · stored only in this browser</div>
+      <input type="text" id="invname" value="${inv.name.replace(/"/g,"&quot;")}" style="font:800 22px/1.2 var(--font-display);border:none;background:transparent;padding:0;width:100%">
+      <div class="rmeta2">${inv.items.length} pinned item${inv.items.length===1?"":"s"} · started ${inv.created}</div>
+      <div class="timeline" style="margin-top:14px" id="invitems">
+        ${inv.items.length ? invItemsHtml(inv.items,false) : '<div class="empty">Nothing pinned yet — use the 📌 Pin button on any notice, vendor, agency, or matter page.</div>'}
+      </div>
+      <div class="actions" style="margin-top:16px">
+        <button class="act primary" type="button" id="invshare">🔗 Share (read-only link)</button>
+        <button class="act" type="button" id="invcsv">⬇ .csv</button>
+        <button class="act" type="button" id="invjson">⬇ .json</button>
+        <button class="act" type="button" id="invprint">🖨 Print dossier</button>
+        <button class="act" type="button" id="invclear" style="color:var(--rose)">Clear all</button>
+      </div>
+      <div id="invmsg" class="muted" style="margin-top:10px;font:13px/1.5 ui-sans-serif,system-ui,sans-serif"></div>
+      <div class="note">Every exported item carries its permalink + the date you pinned it — citation-grade by construction. Sharing uploads a read-only snapshot (90-day link); nothing else ever leaves this browser.</div>
+    </div></div>`;
+  $("#invname").addEventListener("change", ()=>{ const s2=invStore(); s2.invs[s2.current].name=$("#invname").value.slice(0,80)||"My investigation"; invSave(s2); });
+  box.querySelectorAll(".invnote").forEach(inp=>inp.addEventListener("change", ()=>{
+    const s2=invStore(); s2.invs[s2.current].items[+inp.dataset.idx].note=inp.value.slice(0,1000); invSave(s2);
+  }));
+  box.querySelectorAll(".invdel").forEach(b=>b.addEventListener("click", ()=>{
+    const s2=invStore(); s2.invs[s2.current].items.splice(+b.dataset.idx,1); invSave(s2); showInvestigation();
+  }));
+  $("#invcsv").addEventListener("click", ()=>invDownload("investigation.csv", invCsv(invStore().invs[s.current]), "text/csv;charset=utf-8"));
+  $("#invjson").addEventListener("click", ()=>invDownload("investigation.json", JSON.stringify(invStore().invs[s.current],null,2), "application/json"));
+  $("#invprint").addEventListener("click", ()=>window.print());
+  $("#invclear").addEventListener("click", ()=>{ const s2=invStore(); s2.invs[s2.current].items=[]; invSave(s2); showInvestigation(); });
+  $("#invshare").addEventListener("click", async ()=>{
+    const msg=$("#invmsg"), cur=invStore().invs[s.current];
+    if(!cur.items.length){ msg.textContent="Pin something first."; return; }
+    if(!API){ msg.textContent="Sharing needs the backend."; return; }
+    msg.innerHTML='<span class="loading"></span> uploading snapshot…';
+    try{
+      const r=await fetch(API.replace(/\/+$/,"")+"/inv",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:cur.name, items:cur.items})});
+      const j=await r.json();
+      if(j.ok){
+        const url=location.origin+location.pathname+"#investigation/shared/"+j.id;
+        msg.innerHTML=`Read-only link (lives ${j.ttlDays} days): <a href="${url}">${url}</a> <button class="act" type="button" style="padding:5px 9px" onclick="copyText('${url}', this)">copy</button>`;
+      } else msg.textContent = j.reason==="rate-limited" ? "Too many shares today — try tomorrow." : "Couldn't share — try again.";
+    }catch(e){ msg.textContent="Couldn't reach the server — try again."; }
+  });
+  announce("Investigation workspace");
+}
+
+async function showSharedInv(id){
+  showTab("entity");
+  const box = $("#entityview");
+  box.innerHTML = '<div class="empty"><span class="loading"></span> fetching shared investigation…</div>';
+  let j=null;
+  try{ const r=await fetch(API.replace(/\/+$/,"")+"/inv/"+encodeURIComponent(id)); if(r.ok) j=await r.json(); }catch(e){}
+  if(!j || !j.items){ box.innerHTML='<div class="empty">This shared investigation doesn\'t exist or has expired (links live 90 days). <a href="#money">← Browse CROL-List</a></div>'; return; }
+  box.innerHTML = `<div style="max-width:880px;margin:0 auto">
+    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CROL-List</a></p>
+    <div class="panel" style="padding:22px 24px">
+      <div class="ftype" style="margin-bottom:6px">Shared investigation · read-only · snapshot of ${j.sharedAt||"—"}</div>
+      <div class="rolename">${String(j.name||"Untitled").replace(/[<>&]/g,"")}</div>
+      <div class="timeline" style="margin-top:14px">${invItemsHtml(j.items,true)}</div>
+      <div class="actions" style="margin-top:16px"><button class="act primary" type="button" id="invimport">📌 Import into my investigation</button></div>
+    </div></div>`;
+  $("#invimport").addEventListener("click", ()=>{
+    const s=invStore(), inv=s.invs[s.current];
+    j.items.forEach(p=>{ if(!inv.items.some(i=>i.t===p.t&&i.id===p.id)) inv.items.push({...p, added:p.added||new Date().toISOString().slice(0,10)}); });
+    invSave(s); location.hash="#investigation";
+  });
 }
 
 /* ===================== MATTER TIMELINE (#matter/<pin>) =====================
@@ -2302,6 +2466,7 @@ async function showMatter(pin){
       </div>
       <div class="actions" style="margin-top:16px">
         <button class="act primary" type="button" id="ecopy">🔗 Copy link</button>
+        ${pinBtn("matter", pin, `Matter — PIN ${safe}`, [agency, vendor?cleanText(vendor):null].filter(Boolean).join(" × "))}
         <a class="act" href="${REQ_URL(rows[rows.length-1].request_id)}" target="_blank" rel="noopener">↗ Latest notice in City Record</a>
       </div>
       <div class="note">The spine is every City Record notice sharing this PIN, in order; Checkbook events join deterministically on the same PIN. Public-hearing notices rarely carry PINs, so hearings may be missing from the chronology.</div>
@@ -2383,6 +2548,8 @@ function applyHash(){
   if(raw.startsWith("vendor/")){ showVendor(decodeURIComponent(raw.slice(7))); return true; }
   if(raw.startsWith("agency/")){ showAgency(decodeURIComponent(raw.slice(7))); return true; }
   if(raw.startsWith("matter/")){ showMatter(decodeURIComponent(raw.slice(7))); return true; }
+  if(raw.startsWith("investigation/shared/")){ showSharedInv(decodeURIComponent(raw.slice(21))); return true; }
+  if(raw === "investigation"){ showInvestigation(); return true; }
   const qi = raw.indexOf("?"), tab = qi < 0 ? raw : raw.slice(0, qi);
   if(tab === "notice" || tab === "entity" || !document.getElementById("tab-"+tab)) return false;
   const q = new URLSearchParams(qi < 0 ? "" : raw.slice(qi+1));
@@ -2451,6 +2618,7 @@ async function showNotice(id){
         <a class="act" href="mailto:?subject=${encodeURIComponent("City Record notice: "+(cleanText(r.short_title)||r.request_id))}&body=${encodeURIComponent(link+"\n\nVia CROL-List — The City Record, searchable.")}">✉ Email</a>
         <button class="act" type="button" id="nprint">🖨 Print</button>
         ${(r.due_date||r.event_date)?'<button class="act" type="button" id="nics">📅 Add to calendar</button>':""}
+        ${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}
         <a class="act" href="${REQ_URL(r.request_id)}" target="_blank" rel="noopener">↗ View in City Record</a>
       </div>
       ${r.type_of_notice_description==="Solicitation"?buildApply(r):""}
