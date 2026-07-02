@@ -36,6 +36,7 @@ notice.
 
 **Cross-cutting:**
 
+- **Entity pages & pivots** — every agency and vendor mention on the site is a link. `#agency/<name>` profiles an agency (awarded totals, notices by section deep-linking into each lens, top vendors with share bars, open RFPs, upcoming hearings, prefilled watch buttons); `#vendor/<name>` profiles a vendor with **read-time name resolution** (case/punctuation/legal-suffix stems — "Sinergia Inc" and "Sinergia Incorporated" resolve to one profile, variants listed), totals, agencies-they-win-from, and notices naming them. Money also has a **selection-method facet** (live counts, Datasette-style; round-trips through the URL).
 - **Permalinks everywhere** — every tab + filter state mirrors into the URL (`#rules?agency=Buildings&q=scaffold`), and every notice has a canonical address (`#notice/<request_id>`) rendering a single-notice view with a utility bar (copy link / email / print / add-to-calendar / City Record) and the PIN paper trail. Digest emails and feeds link here.
 - **At-a-glance box** — notice details open with a deterministic **Who / What / When / Act** summary extracted from the record's own fields (agency acronyms spelled out, deadlines as countdown chips); the original legalese sits below a "Read the full notice" fold. Deadline chips run site-wide (oxblood ≤3 days, amber ≤14).
 - **✨ Ask in plain English** on every lens — a small model fills the filters and runs the search, with an on-device fallback if the helper is unavailable.
