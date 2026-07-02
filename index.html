@@ -37,6 +37,23 @@
   .nameplate{padding:9px 0 5px}
   .cr-seal{width:44px;height:44px;color:var(--ink);display:block;margin:0 auto 3px}
   .cr-title{font-family:var(--font-nameplate);font-weight:900;font-size:clamp(2.5rem,8vw,4.8rem);line-height:.9;letter-spacing:.01em;text-transform:uppercase;color:var(--ink);margin:.04em 0 .1em}
+  /* Today's Edition strip (front page) */
+  #todaystrip{padding:10px 0 8px;border-bottom:1px solid var(--rule)}
+  .t-dateline{font-family:var(--font-sc);font-weight:600;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+  .t-big{font-family:var(--font-display);font-weight:900;font-size:21px;margin:4px 0 3px}
+  .t-big b{color:var(--oxblood)}
+  .t-counts{font-family:var(--font-sc);font-size:12.5px;letter-spacing:.06em;color:var(--muted);display:flex;gap:5px 16px;justify-content:center;flex-wrap:wrap}
+  .t-counts a{color:var(--ink);text-decoration:none;border-bottom:1px dotted var(--rule-strong)}
+  .t-counts a:hover{color:var(--oxblood);border-bottom-color:var(--oxblood)}
+  .t-counts b{color:var(--oxblood)}
+  .t-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;max-width:860px;margin:11px auto 3px;text-align:left}
+  .t-card{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:9px 12px;box-shadow:var(--shadow);display:block;text-decoration:none;color:var(--ink)}
+  .t-card:hover{border-color:var(--rule-strong)}
+  .t-card .tlbl{font:600 9.5px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
+  .t-card .tttl{font-weight:700;font-size:13.5px;line-height:1.3;display:block}
+  .t-card .tmeta{font:11.5px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:3px;display:block}
+  @media(max-width:680px){.t-cards{grid-template-columns:1fr}.t-big{font-size:18px}}
+
   .tabs{display:flex;gap:.2rem;justify-content:center;flex-wrap:wrap;margin-top:4px}
   .tabbtn{font-family:var(--font-sc);font-weight:600;font-size:13px;letter-spacing:.15em;text-transform:uppercase;padding:9px 18px;border:0;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent}
   .tabbtn.active{color:var(--oxblood);border-bottom-color:var(--oxblood)}
@@ -252,6 +269,12 @@
       <h1 class="cr-title">CROL-List</h1>
     </div>
     <div class="cr-rule cr-rule--mid"></div>
+    <div id="todaystrip" hidden>
+      <div class="t-dateline" id="tdate"></div>
+      <div class="t-big" id="tbig"></div>
+      <div class="t-counts" id="tcounts"></div>
+      <div class="t-cards" id="tcards"></div>
+    </div>
     <nav class="tabs">
       <button class="tabbtn active" data-tab="money">Money</button>
       <button class="tabbtn" data-tab="people">People</button>
@@ -1637,6 +1660,50 @@ async function aSubscribe(){
   btn.disabled=false;
 }
 
+/* ===================== TODAY'S EDITION (front-page strip) =====================
+   One aggregate pass over the latest edition date, cached in sessionStorage for an hour.
+   Degrades to invisible on any failure — same pattern as the NL box. */
+const SECTION_LENS = {"Procurement":"money","Public Hearings and Meetings":"meetings","Agency Rules":"rules","Property Disposition":"property","Changes in Personnel":"people"};
+async function loadToday(){
+  const KEY = "crol_today_v1";
+  let d = null;
+  try{ const c = JSON.parse(sessionStorage.getItem(KEY)||"null"); if(c && Date.now()-c.at < 3600000) d = c.d; }catch(e){}
+  if(!d){
+    try{
+      const [maxr] = await soda({"$select":"max(start_date) as m"});
+      const ed = (maxr && maxr.m || "").slice(0,10); if(!ed) return;
+      const iso = ed + "T00:00:00";
+      const [counts, agencies, award, closing, hearing] = await Promise.all([
+        soda({"$select":"section_name, count(1) as n","$where":`start_date='${iso}'`,"$group":"section_name","$order":"n DESC"}),
+        soda({"$select":"agency_name","$where":`start_date='${iso}'`,"$group":"agency_name","$limit":"300"}),
+        soda({"$select":"request_id,short_title,agency_name,contract_amount","$where":`start_date='${iso}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < 5000000000`,"$order":"contract_amount DESC","$limit":"1"}),
+        soda({"$select":"request_id,short_title,agency_name,due_date","$where":`type_of_notice_description='Solicitation' AND due_date > '${todayISO()}' AND due_date <= '${weekOutISO()}'`,"$order":"due_date ASC","$limit":"1"}),
+        soda({"$select":"request_id,short_title,agency_name,event_date","$where":`section_name='Public Hearings and Meetings' AND event_date > '${todayISO()}'`,"$order":"event_date ASC","$limit":"1"})
+      ]);
+      d = {ed, counts, nAgencies: agencies.length, award: award[0]||null, closing: closing[0]||null, hearing: hearing[0]||null};
+      try{ sessionStorage.setItem(KEY, JSON.stringify({at: Date.now(), d})); }catch(e){}
+    }catch(e){ return; }
+  }
+  try{ renderToday(d); }catch(e){}
+}
+function renderToday(d){
+  const total = (d.counts||[]).reduce((s,c)=>s+(+c.n||0),0);
+  if(!total) return;
+  $("#tdate").textContent = new Date(d.ed+"T12:00:00").toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric",year:"numeric"}).toUpperCase() + " · LATEST EDITION";
+  $("#tbig").innerHTML = `<b>${total.toLocaleString()}</b> notices from <b>${d.nAgencies}</b> agencies`;
+  $("#tcounts").innerHTML = d.counts.map(c=>{
+    const lens = SECTION_LENS[c.section_name];
+    const label = `${c.section_name} <b>${(+c.n).toLocaleString()}</b>`;
+    return lens ? `<a href="#${lens}">${label}</a>` : `<span>${label}</span>`;
+  }).join("");
+  const cards = [];
+  if(d.closing) cards.push({lbl:"⏳ Closing soon", t:d.closing, meta:`${d.closing.agency_name} · due ${fdt(d.closing.due_date)} ${deadlineTag(d.closing.due_date)}`});
+  if(d.award) cards.push({lbl:"💰 Largest award, this edition", t:d.award, meta:`${money(d.award.contract_amount)} — ${d.award.agency_name}`});
+  if(d.hearing) cards.push({lbl:"🗣 Next public hearing", t:d.hearing, meta:`${d.hearing.agency_name} · ${fdt(d.hearing.event_date)}${eventTag(d.hearing.event_date)}`});
+  $("#tcards").innerHTML = cards.map(c=>`<a class="t-card" href="#notice/${encodeURIComponent(c.t.request_id)}"><span class="tlbl">${c.lbl}</span><span class="tttl">${cleanText(c.t.short_title)||"(untitled)"}</span><span class="tmeta">${c.meta}</span></a>`).join("");
+  $("#todaystrip").hidden = false;
+}
+
 /* ===================== PERMALINKS & URL STATE =====================
    #<tab>?<filters> mirrors the active lens (shareable, bookmarkable, back-button-safe);
    #notice/<request_id> is a canonical address for one notice. The router reads/writes the
@@ -1820,6 +1887,7 @@ $("#lkw").addEventListener("keydown", e=>{ if(e.key==="Enter") landSearch(); });
   const ag=$("#"+k+"agency"); if(ag) ag.addEventListener("change",()=>loadSection(k));
 });
 loadAgencies();
+loadToday();
 window.addEventListener("hashchange", ()=>{ if(!hashLock && !applyHash()) showTab("money"); }); // empty/unknown hash (e.g. Back to the first entry) → default view
 if(!applyHash()) search(); // an incoming permalink wins over the default Money load
 aWatchChange();
