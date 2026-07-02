@@ -30,7 +30,7 @@ notice.
 
 **Three deep lenses** re-stitch a single thread and decode it:
 
-- **💵 Money** — follow a contract from **RFP → Intent to Award → Award ($)**, stitched by PIN, with how-to-respond (deadline, contact, PASSPort), filters, a **⏳ Closing this week** quick filter, and CSV export.
+- **💵 Money** — follow a contract from **RFP → Intent to Award → Award ($)**, stitched by PIN, with how-to-respond (deadline, contact, PASSPort), filters, a **Closing this week** quick filter, and CSV export.
 - **👤 People** — opens with **16 example role chips** (from committed seed data — instant, no network) plus a 250-title typeahead; decode any city job: official civil-service title, **competitive (exam) vs non-competitive**, salary band, and a career ladder. Or look up a person → appointment history + payroll.
 - **🏗 Land** — rezonings in plain English, cross-referenced to **ZAP** (applicant, what's being built, affordable housing, status) and drawn as the real rezoned tax-lot polygons on a map.
 
@@ -43,7 +43,7 @@ notice.
 **And alerts:**
 
 - **📌 Investigation workspace** — a Pin button on every notice, vendor, agency, and matter page collects items into a named local workspace (`#investigation`, localStorage — nothing leaves the browser) with per-item notes; exports citation-grade CSV/JSON (permalink + pin date per item), prints as a dossier, and shares as a read-only 90-day link via the worker. `api.html` documents all open endpoints and hosts a live **batch cross-reference** tool (paste names → award/mention hit matrix).
-- **🔔 Alerts** — **follow any vendor or agency** from its entity page (name-stem matched, so "Sinergia Inc" alerts also catch "Sinergia Incorporated"); every lens toolbar has **"🔔 Watch this search"**, which carries the current filters into a prefilled watch; a **60-second onboarding quiz** (topic chips → optional narrowing → frequency) builds one from scratch. Preview the digest live, then **subscribe by email** — double opt-in, one-click unsubscribe. The same watch is also available as **RSS/Atom, JSON Feed, and a subscribable `.ics` calendar** via the worker's `/feed.*` routes.
+- **🔔 Alerts** — **follow any vendor or agency** from its entity page (name-stem matched, so "Sinergia Inc" alerts also catch "Sinergia Incorporated"); every lens toolbar has **"Watch this search"**, which carries the current filters into a prefilled watch; a **60-second onboarding quiz** (topic chips → optional narrowing → frequency) builds one from scratch. Preview the digest live, then **subscribe by email** — double opt-in, one-click unsubscribe. The same watch is also available as **RSS/Atom, JSON Feed, and a subscribable `.ics` calendar** via the worker's `/feed.*` routes.
 
 **Cross-cutting:**
 
@@ -58,6 +58,18 @@ notice.
 ## Architecture
 
 CROL-List is one self-contained `index.html` — inline CSS and vanilla JS, no build step — served as a static file on GitHub Pages. Every query is a live API call from the browser, so there is no cached bulk data and nothing to keep in sync; results are as fresh as the City publishes. The open-data APIs are CORS-open and need no key.
+
+**Design & responsiveness ground rules** (round four, 2026-07-02 — full rationale in
+[docs/decisions/005](docs/decisions/005-snap-crisp-design-grounding.md)): the interface is
+anchored to citymeetings.nyc/craigslist restraint and Tufte's data-ink rule — one accent color
+(color marks *signals*: deadlines, warnings, red flags), no decorative emoji or shadows, no
+legends where direct labels do the work. Perceived speed is engineered, not hoped for: a
+read-side query cache with request coalescing (revisits render from memory), skeleton
+placeholders instead of spinner-blanks, refetches dim the existing list rather than blanking it,
+row clicks paint the detail instantly from the record already in memory (the PIN chain hydrates
+in), Today's Edition renders on first frame from the last visit's copy, search applies as you
+type, and Leaflet lazy-loads on first Land-lens use instead of blocking every visitor's first
+paint.
 
 The parts that need a secret or a server — plain-English search (a model key), **email-alert
 subscriptions** (double opt-in; the address is only ever the subscriber's own), the

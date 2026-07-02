@@ -8,18 +8,19 @@
 <link rel="alternate" type="application/feed+json" title="CROL-List — new procurement notices (JSON)" href="https://api.crol-list.org/feed.json?lens=money">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Libre+Caslon+Text:ital@0;1&family=Spectral:ital,wght@0,400;0,600;1,400&family=Spectral+SC:wght@500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://data.cityofnewyork.us">
+<link rel="preconnect" href="https://api.crol-list.org">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;1,400&family=Spectral+SC:wght@500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     --paper:#f4efe4; --paper-2:#efe7d6; --ink:#1a1714; --ink-soft:#3b342c; --muted:#5c5349;
     --rule:#cdbfa6; --rule-strong:#8a7c64;
-    --card:#fbf7ed; --shadow:0 1px 2px rgba(40,30,10,.05),0 6px 20px rgba(40,30,10,.06);
+    --card:#fbf7ed; --shadow:none; /* flat: hairlines carry the structure, nothing floats */
     --blue:#1f3a5f; --amber:#6b4e16; --green:#2f4a32; --rose:#7a1f1f; --oxblood:#7a1f1f;
     --font-nameplate:'Playfair Display',Georgia,'Times New Roman',serif;
     --font-display:'Playfair Display',Georgia,serif;
     --font-body:'Spectral',Georgia,'Times New Roman',serif;
     --font-sc:'Spectral SC','Spectral',Georgia,serif;
-    --font-caslon:'Libre Caslon Text',Georgia,serif;
     --maxw:1120px;
   }
   *{box-sizing:border-box}
@@ -49,7 +50,7 @@
   .t-counts a:hover{color:var(--oxblood);border-bottom-color:var(--oxblood)}
   .t-counts b{color:var(--oxblood)}
   .t-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;max-width:860px;margin:11px auto 3px;text-align:left}
-  .t-card{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:9px 12px;box-shadow:var(--shadow);display:block;text-decoration:none;color:var(--ink)}
+  .t-card{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:9px 12px;box-shadow:var(--shadow);display:block;text-decoration:none;color:var(--ink)}
   .t-card:hover{border-color:var(--rule-strong)}
   .t-card .tlbl{font:600 9.5px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
   .t-card .tttl{font-weight:700;font-size:13.5px;line-height:1.3;display:block}
@@ -64,35 +65,29 @@
   .tabpane.active{display:block}
   .deck{max-width:820px;margin:0 auto 4px;text-align:center;color:#4a4338}
   .deck b{color:var(--ink)}
-  .stagepill{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;margin:12px 0 2px;font:600 12px/1 ui-sans-serif,system-ui,sans-serif;width:100%}
-  .stagepill span{padding:5px 10px;border-radius:999px;border:1px solid var(--rule);background:var(--card)}
-  .stagepill .arrow{border:none;background:none;color:var(--muted);padding:0}
-  .dot{width:9px;height:9px;border-radius:50%;display:inline-block;vertical-align:middle;margin-right:5px}
   .center{text-align:center}
 
   /* controls */
-  .controls{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;background:transparent;border:1px solid var(--rule);border-radius:12px;padding:10px 14px;margin-top:14px}
+  .controls{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;background:transparent;border:1px solid var(--rule);border-radius:8px;padding:10px 14px;margin-top:14px}
   .controls button{background:#fff;color:var(--ink);border:1px solid var(--rule);font-weight:600}
   .controls .watchbtn{color:var(--oxblood);border-color:var(--oxblood)}
   .controls label{color:var(--muted)}
   .field{display:flex;flex-direction:column;gap:5px;flex:1 1 150px}
   .field.kw{flex:2 1 220px}
   .field label{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-  select,input[type=text]{font:15px/1.3 Georgia,serif;padding:10px 11px;border:1px solid var(--rule);border-radius:9px;background:#fff;color:var(--ink);width:100%}
-  button{font:600 14px/1 ui-sans-serif,system-ui,sans-serif;padding:11px 18px;border-radius:9px;border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer}
+  select,input[type=text]{font:15px/1.3 Georgia,serif;padding:10px 11px;border:1px solid var(--rule);border-radius:7px;background:#fff;color:var(--ink);width:100%}
+  button{font:600 14px/1 ui-sans-serif,system-ui,sans-serif;padding:11px 18px;border-radius:7px;border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer}
   button:active{transform:translateY(1px)}
   button.mini{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;padding:6px 10px;background:#fff;color:var(--ink);border:1px solid var(--rule);border-radius:7px}
   .wand{display:flex;flex-wrap:wrap;gap:7px}
   .wandchip{font-family:var(--font-sc);font-weight:600;letter-spacing:.04em;font-size:12px;padding:7px 12px;border:1px solid var(--rule);border-radius:999px;background:#fff;color:var(--ink-soft);cursor:pointer}
   .wandchip:hover{border-color:var(--oxblood);color:var(--oxblood)}
-  .nlbox{background:var(--card);border:1px solid var(--rule);border-radius:14px;padding:14px 16px;margin-top:18px;box-shadow:var(--shadow)}
+  .nlbox{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:14px 16px;margin-top:18px;box-shadow:var(--shadow)}
   .nllabel{font-family:var(--font-sc);text-transform:uppercase;letter-spacing:.13em;font-size:12px;color:var(--ink-soft);display:block;margin-bottom:8px}
   .nlworking{display:inline-flex;align-items:center;gap:8px;margin-top:8px;font-family:var(--font-sc);text-transform:uppercase;letter-spacing:.1em;font-size:12px;color:var(--oxblood)}
-  .nlworking .spark{font-size:15px;display:inline-block;animation:twinkle .9s ease-in-out infinite}
-  @keyframes twinkle{0%,100%{opacity:.35;transform:scale(.8) rotate(0)}50%{opacity:1;transform:scale(1.15) rotate(18deg)}}
   .nltry{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
   .nlrow{display:flex;gap:10px;flex-wrap:wrap}
-  .nlrow input{flex:1 1 320px;font:15px/1.3 var(--font-body);padding:10px 11px;border:1px solid var(--rule);border-radius:9px;background:#fff;color:var(--ink)}
+  .nlrow input{flex:1 1 320px;font:15px/1.3 var(--font-body);padding:10px 11px;border:1px solid var(--rule);border-radius:7px;background:#fff;color:var(--ink)}
   .qchip{display:inline-block;font-family:var(--font-sc);font-size:12px;letter-spacing:.04em;text-transform:uppercase;background:var(--paper-2);border:1px solid var(--rule);border-radius:6px;padding:5px 9px;margin:0 6px 6px 0;color:var(--ink-soft)}
   .qchip b{color:var(--oxblood)}
   .qcode{font-family:ui-monospace,Menlo,monospace;font-size:12px;line-height:1.5;background:var(--paper-2);border:1px solid var(--rule);border-radius:8px;padding:10px 12px;white-space:pre-wrap;color:var(--ink-soft);margin-top:4px}
@@ -103,7 +98,7 @@
   /* layout */
   .grid{display:grid;grid-template-columns:minmax(290px,380px) 1fr;gap:22px;margin-top:22px;align-items:start}
   @media(max-width:820px){.grid{grid-template-columns:1fr}}
-  .panel{background:var(--card);border:1px solid var(--rule);border-radius:14px;box-shadow:var(--shadow)}
+  .panel{background:var(--card);border:1px solid var(--rule);border-radius:8px;box-shadow:var(--shadow)}
   .panel h2{font:600 14px/1 var(--font-sc);letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft);margin:0;padding:14px 16px;border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;gap:8px}
   .panel h2 .count{font-weight:600;color:var(--blue);letter-spacing:0;text-transform:none}
 
@@ -120,21 +115,23 @@
   .tag.soon{background:#fbf0dc;color:var(--amber)}
   .tag.closed{background:#f6e7e4;color:var(--rose)}
   .tag.hot{background:var(--oxblood);color:#fff}
-  .tag.amt{background:#fbf0dc;color:#8a5c12}
-  .tag.asset{background:#e4e9f0;color:var(--blue)}
+  /* Non-urgency facts read as quiet ink — color is reserved for what needs acting on (Tufte:
+     color as signal). Dollar amounts and asset types are information, not alarms. */
+  .tag.amt{background:var(--paper-2);color:var(--ink-soft)}
+  .tag.asset{background:var(--paper-2);color:var(--ink-soft)}
   a.pivot{color:inherit;text-decoration:none;border-bottom:1px dotted var(--rule-strong)}
   a.pivot:hover{color:var(--oxblood);border-bottom-color:var(--oxblood)}
   .facetlbl{font:600 11px/2.4 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-right:4px}
 
   .detail{padding:18px 18px 22px;min-height:320px}
   .empty{color:var(--muted);font-style:italic;padding:40px 18px;text-align:center}
-  .agencybar{display:flex;gap:22px;flex-wrap:wrap;align-items:baseline;padding:14px 16px;border:1px solid var(--rule);border-radius:12px;background:#fbf6ea;margin-bottom:16px}
+  .agencybar{display:flex;gap:22px;flex-wrap:wrap;align-items:baseline;padding:14px 16px;border:1px solid var(--rule);border-radius:8px;background:#fbf6ea;margin-bottom:16px}
   .agencybar .big{font:800 24px/1.05 var(--font-display);color:var(--amber)}
   .agencybar .lbl{font:600 11px/1.3 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 
   /* apply panel (money) */
-  .apply{border:1px solid var(--blue);border-radius:12px;background:#fff;margin-bottom:16px;overflow:hidden}
-  .apply h3{font:700 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:var(--blue);margin:0;padding:10px 14px}
+  .apply{border:1px solid var(--rule-strong);border-radius:8px;background:#fff;margin-bottom:16px;overflow:hidden}
+  .apply h3{font:700 12px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);background:var(--paper-2);border-bottom:1px solid var(--rule);margin:0;padding:10px 14px}
   .apply .body{padding:14px}
   .apply .due{display:flex;align-items:baseline;gap:10px;margin-bottom:12px;flex-wrap:wrap}
   .apply .due .d{font:800 18px/1 var(--font-display)}
@@ -144,15 +141,15 @@
   .apply .passport{margin-top:14px;display:inline-block;font:600 13px/1 ui-sans-serif,system-ui,sans-serif;background:var(--ink);color:#fff;padding:10px 15px;border-radius:8px;text-decoration:none}
   .apply .pnote{font:12px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:10px}
   .actions{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 14px}
-  .act{font:600 13px/1 ui-sans-serif,system-ui,sans-serif;padding:10px 13px;border-radius:9px;border:1px solid var(--rule);background:#fff;color:var(--ink);text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+  .act{font:600 13px/1 ui-sans-serif,system-ui,sans-serif;padding:10px 13px;border-radius:7px;border:1px solid var(--rule);background:#fff;color:var(--ink);text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
   .act.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
   .act:hover{filter:brightness(.97)}
 
-  .scope{font-size:14.5px;line-height:1.6;color:#3f3930;background:#faf6ee;border:1px solid var(--rule);border-radius:10px;padding:13px 15px;margin-top:16px}
+  .scope{font-size:14.5px;line-height:1.6;color:#3f3930;background:#faf6ee;border:1px solid var(--rule);border-radius:8px;padding:13px 15px;margin-top:16px}
   .scope .lbl{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
 
   /* at-a-glance (who/what/when/act) — deterministic re-presentation of the record's own fields */
-  .glance{background:#f6f1e4;border:1px solid var(--rule);border-left:4px solid var(--blue);border-radius:0 10px 10px 0;padding:10px 14px;margin:12px 0;font-size:14px}
+  .glance{background:#f6f1e4;border:1px solid var(--rule);border-left:3px solid var(--rule-strong);border-radius:0 8px 8px 0;padding:10px 14px;margin:12px 0;font-size:14px}
   .glance .gl{display:flex;gap:12px;padding:3px 0;align-items:baseline}
   .glance .gl b:first-child{font:700 10px/1.7 ui-sans-serif,system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);min-width:46px;flex:0 0 auto}
   .glance .gl span{min-width:0}
@@ -164,9 +161,8 @@
   .chain-h{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:18px 0 10px}
   .chain{display:flex;gap:0;flex-wrap:wrap;align-items:stretch}
   .stage{flex:1 1 220px;min-width:200px;display:flex;align-items:stretch}
-  .box{flex:1;border:1px solid var(--rule);border-top:4px solid var(--blue);border-radius:11px;background:#fff;padding:13px 14px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:6px}
-  .box.award{border-top-color:var(--green)}
-  .box.intent{border-top-color:var(--amber)}
+  /* Stage boxes are directly labeled (.stage-name) — no color code to learn. */
+  .box{flex:1;border:1px solid var(--rule);border-top:3px solid var(--rule-strong);border-radius:8px;background:#fff;padding:13px 14px;display:flex;flex-direction:column;gap:6px}
   .box .stage-name{font:700 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
   .box .when{font:12px/1 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
   .box .bt{font-weight:700;font-size:14px;line-height:1.3}
@@ -191,26 +187,26 @@
   .lval{font:700 13px/1 ui-monospace,Menlo,monospace;color:#5a5142;text-align:right}
   .rmeta2{font-size:13px;color:#4a4338;margin:2px 0 4px}
   .timeline{display:flex;flex-direction:column;gap:8px}
-  .tl{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:13px;padding:8px 11px;border:1px solid var(--rule);border-radius:9px;background:#fff}
+  .tl{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:13px;padding:8px 11px;border:1px solid var(--rule);border-radius:7px;background:#fff}
   .tldate{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;color:var(--muted);min-width:92px}
   .tlreason{font-weight:700}
   .tlsal{font:700 13px/1 var(--font-display);color:var(--green)}
 
   /* land stub */
-  .landcard{background:var(--card);border:1px solid var(--rule);border-radius:14px;box-shadow:var(--shadow);padding:22px;margin-top:18px}
+  .landcard{background:var(--card);border:1px solid var(--rule);border-radius:8px;box-shadow:var(--shadow);padding:22px;margin-top:18px}
   .landcard h3{font:700 13px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
-  .example{background:#faf6ee;border:1px solid var(--rule);border-radius:10px;padding:14px 16px;margin:14px 0}
+  .example{background:#faf6ee;border:1px solid var(--rule);border-radius:8px;padding:14px 16px;margin:14px 0}
   .example .leg{font-style:italic;color:var(--muted)}
   .example .arrow{display:block;text-align:center;color:var(--amber);font-weight:700;margin:6px 0}
   .roadmap{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:14px}
-  .rm{border:1px solid var(--rule);border-radius:10px;padding:13px 14px;background:#fff}
+  .rm{border:1px solid var(--rule);border-radius:8px;padding:13px 14px;background:#fff}
   .rm b{display:block;margin-bottom:4px}
   .rm.done{border-left:3px solid var(--green)}
-  #landmap{display:none;height:300px;border:1px solid var(--rule);border-radius:10px;margin-top:14px;overflow:hidden;background:#eee}
+  #landmap{display:none;height:300px;border:1px solid var(--rule);border-radius:8px;margin-top:14px;overflow:hidden;background:#eee}
   #landmapnote{margin-top:8px}
   .landbanner{font:13px/1.5 ui-sans-serif,system-ui,sans-serif;background:#faf6ee;border-left:3px solid var(--oxblood);padding:9px 12px;color:var(--ink-soft);margin-bottom:2px}
   .feed{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-top:22px}
-  .fcard{background:var(--card);border:1px solid var(--rule);border-top:3px solid var(--blue);border-radius:12px;box-shadow:var(--shadow);padding:14px 15px;display:flex;flex-direction:column;gap:7px}
+  .fcard{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:14px 15px;display:flex;flex-direction:column;gap:7px}
   .fcard .ftype{font:600 11px/1.35 ui-sans-serif,system-ui,sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
   .fcard .ftitle{font-weight:700;font-size:15px;line-height:1.3}
   .fcard .faddr{font:13px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft)}
@@ -229,7 +225,7 @@
   .qstep{display:inline-block;font:700 11px/18px ui-sans-serif,system-ui,sans-serif;background:var(--blue);color:#fff;border-radius:50%;width:18px;height:18px;text-align:center;margin-right:6px;letter-spacing:0}
   #quizpanel .chiprow{margin-top:6px}
   .muted{color:var(--muted)}
-  .emailmock{border:1px solid var(--rule);border-radius:12px;overflow:hidden;background:#fff;box-shadow:var(--shadow)}
+  .emailmock{border:1px solid var(--rule);border-radius:8px;overflow:hidden;background:#fff;box-shadow:var(--shadow)}
   .emailmock .ehead{padding:12px 14px;border-bottom:1px solid var(--rule);background:#faf6ee}
   .emailmock .efrom{font:600 12.5px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
   .emailmock .esubj{font:800 17px/1.3 var(--font-display);margin-top:3px;color:var(--ink)}
@@ -241,11 +237,23 @@
   .digitem .da{font:800 16px/1 var(--font-display);color:var(--green)}
   .digitem .dc{font:12px/1.5 ui-sans-serif,system-ui,sans-serif;margin-top:3px}
   .digitem .dc a{color:var(--oxblood);text-decoration:none}
-  .savedalert{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#faf6ee;border:1px solid var(--rule);border-radius:9px;padding:9px 12px;margin-top:8px;font-size:13px}
+  .savedalert{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#faf6ee;border:1px solid var(--rule);border-radius:7px;padding:9px 12px;margin-top:8px;font-size:13px}
   .savedalert button{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;padding:5px 9px;background:#fff;color:var(--rose);border:1px solid var(--rule);border-radius:6px;cursor:pointer}
 
   .loading{display:inline-block;width:14px;height:14px;border:2px solid var(--rule);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;vertical-align:-2px}
   @keyframes spin{to{transform:rotate(360deg)}}
+  /* Skeleton placeholders: content-shaped, so the wait reads as progress, not absence.
+     Lists get these; the spinner stays for short button-level actions only. */
+  .empty.skel{padding:0;text-align:left;font-style:normal}
+  .empty.skel .loading{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);border:0;margin:-1px} /* structural hook (.empty:has(.loading)) without the ring */
+  .skl{display:block;padding:13px 16px;border-bottom:1px solid var(--rule)}
+  .skl i{display:block;height:12px;border-radius:4px;background:var(--paper-2);animation:skpulse 1.2s ease-in-out infinite}
+  .skl i:first-child{width:62%;height:14px;margin-bottom:8px}
+  .skl i:last-child{width:38%}
+  @keyframes skpulse{0%,100%{opacity:1}50%{opacity:.45}}
+  /* Stale-while-revalidate: during a refetch the previous rows stay put, dimmed — no blanking,
+     no scroll loss, no spinner flash. */
+  .list.busy,.feed.busy{opacity:.55;pointer-events:none;transition:opacity .12s}
 
   /* accessibility & mobile */
   .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
@@ -266,10 +274,10 @@
 
   footer{border-top:3px double var(--ink);margin-top:46px;padding:26px 0 60px;font:13px/1.6 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
   footer h3{font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 8px;color:var(--ink)}
-  .caveat{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:14px 16px;margin-top:14px}
+  .caveat{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:14px 16px;margin-top:14px}
 </style>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
+     JS for a map most visits never open has no business on the critical path. -->
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
@@ -312,16 +320,10 @@
 <!-- ============ MONEY ============ -->
 <section id="tab-money" class="tabpane active">
   <div class="wrap">
-    <div class="stagepill">
-      <span><i class="dot" style="background:var(--blue)"></i>Solicitation (RFP)</span><span class="arrow">→</span>
-      <span><i class="dot" style="background:var(--amber)"></i>Intent to Award</span><span class="arrow">→</span>
-      <span><i class="dot" style="background:var(--green)"></i>Award ($)</span>
-    </div>
-
     <div class="nlbox">
       <div class="nlrow">
         <input type="text" id="nlq" placeholder="describe what you're looking for…">
-        <button id="nlgo">✨ Ask</button>
+        <button id="nlgo">Ask</button>
       </div>
       <div id="nltry" class="nltry"></div>
       <div id="nltrans"></div>
@@ -362,19 +364,18 @@
           <option value="100000000">$100M+</option>
         </select>
       </div>
-      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button id="go">Filter</button></div>
-      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="money">🔔 Watch this search</button></div>
+      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="money">Watch this search</button></div>
     </div>
 
     <div class="chiprow" id="moneyquick">
-      <button type="button" class="chip" id="closingweek">⏳ Closing this week</button>
+      <button type="button" class="chip" id="closingweek">Closing this week</button>
     </div>
     <div class="chiprow" id="methodfacet" style="display:none"></div>
 
     <div class="grid">
       <div class="panel">
-        <h2><span><span id="reshead">Open RFPs</span> <span class="count" id="rescount"></span></span><button id="export" class="mini">⬇ Export CSV</button></h2>
-        <div class="list" id="list"><div class="empty"><span class="loading"></span> loading…</div></div>
+        <h2><span><span id="reshead">Open RFPs</span> <span class="count" id="rescount"></span></span><button id="export" class="mini">Export CSV</button></h2>
+        <div class="list" id="list"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
       </div>
       <div class="panel">
         <h2>Money trail</h2>
@@ -398,7 +399,6 @@
         <input type="text" id="pkw" list="ptitles" placeholder="emergency medical, attorney, engineer…">
         <datalist id="ptitles"></datalist>
       </div>
-      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button id="pgo">Filter</button></div>
     </div>
 
     <div class="chiprow" id="pchips"></div>
@@ -436,13 +436,12 @@
         <label for="lstatus">Status</label>
         <select id="lstatus"><option value="active">In review / active</option><option value="all">All</option></select>
       </div>
-      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button id="lgo">Filter</button></div>
-      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="land">🔔 Watch this search</button></div>
+      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="land">Watch this search</button></div>
     </div>
     <div class="grid">
       <div class="panel">
         <h2><span><span id="lreshead">Recent rezonings</span> <span class="count" id="lrescount"></span></span></h2>
-        <div class="list" id="llist"><div class="empty"><span class="loading"></span> loading…</div></div>
+        <div class="list" id="llist"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
       </div>
       <div class="panel">
         <h2>Listing</h2>
@@ -458,12 +457,11 @@
     <div class="controls">
       <div class="field"><label for="propertyagency">Agency</label><select id="propertyagency"><option value="">All agencies</option></select></div>
       <div class="field kw"><label for="propertykw">Search</label><input type="text" id="propertykw" placeholder="address, neighborhood…"></div>
-      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button id="propertygo">Filter</button></div>
-      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="property">🔔 Watch this search</button></div>
+      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="property">Watch this search</button></div>
     </div>
     <div class="chiprow" id="assettabs"></div>
     <div class="chiprow" id="liferail" style="margin-top:8px"></div>
-    <div class="feed" id="propertyfeed"><div class="empty"><span class="loading"></span> loading…</div></div>
+    <div class="feed" id="propertyfeed"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
   </div>
 </section>
 
@@ -472,10 +470,9 @@
     <div class="controls">
       <div class="field"><label for="rulesagency">Agency</label><select id="rulesagency"><option value="">All agencies</option></select></div>
       <div class="field kw"><label for="ruleskw">Search</label><input type="text" id="ruleskw" placeholder="sanitation, licensing, rent, sidewalk…"></div>
-      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button id="rulesgo">Filter</button></div>
-      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="rules">🔔 Watch this search</button></div>
+      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="rules">Watch this search</button></div>
     </div>
-    <div class="feed" id="rulesfeed"><div class="empty"><span class="loading"></span> loading…</div></div>
+    <div class="feed" id="rulesfeed"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
   </div>
 </section>
 
@@ -485,10 +482,9 @@
       <div class="field"><label for="meetingswhen">Show</label><select id="meetingswhen"><option value="upcoming">Upcoming</option><option value="all">All (recent)</option></select></div>
       <div class="field"><label for="meetingsagency">Agency</label><select id="meetingsagency"><option value="">All agencies</option></select></div>
       <div class="field kw"><label for="meetingskw">Search</label><input type="text" id="meetingskw" placeholder="Community Board, Brooklyn, landmark…"></div>
-      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button id="meetingsgo">Filter</button></div>
-      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="meetings">🔔 Watch this search</button></div>
+      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="meetings">Watch this search</button></div>
     </div>
-    <div class="feed" id="meetingsfeed"><div class="empty"><span class="loading"></span> loading…</div></div>
+    <div class="feed" id="meetingsfeed"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
   </div>
 </section>
 
@@ -529,7 +525,7 @@
         <h2>Build an alert</h2>
         <div style="padding:16px">
           <div class="afield">
-            <label>✨ Quick suggestions</label>
+            <label>Quick suggestions</label>
             <div class="wand">
               <button type="button" class="wandchip" data-w="rezone" data-p="79 Rivington">Rezonings near 79 Rivington</button>
               <button type="button" class="wandchip" data-w="bigaward" data-p="1000000">Awards over $1M</button>
@@ -591,6 +587,7 @@
 <section id="tab-notice" class="tabpane">
   <div class="wrap">
     <div id="noticeview"><div class="empty"><span class="loading"></span> loading notice…</div></div>
+    <!-- permalink views keep the inline spinner: a one-shot fetch with no prior layout to skeleton -->
   </div>
 </section>
 
@@ -603,7 +600,7 @@
 
 <footer>
   <div class="wrap">
-    <p style="margin:0">CROL-List searches the City Record Open Data — <b><span id="editionspan">2003 to present</span></b>, 1M+ notices. <a href="about.html" style="color:var(--oxblood)">About</a> · <a href="#investigation" style="color:var(--oxblood)">📌 My investigation</a> · <a href="api.html" style="color:var(--oxblood)">API &amp; feeds</a> · <a href="changelog.html" style="color:var(--oxblood)">Changelog</a> · <a href="stats.html" style="color:var(--oxblood)">Stats</a></p>
+    <p style="margin:0">CROL-List searches the City Record Open Data — <b><span id="editionspan">2003 to present</span></b>, 1M+ notices. <a href="about.html" style="color:var(--oxblood)">About</a> · <a href="#investigation" style="color:var(--oxblood)">My investigation</a> · <a href="api.html" style="color:var(--oxblood)">API &amp; feeds</a> · <a href="changelog.html" style="color:var(--oxblood)">Changelog</a> · <a href="stats.html" style="color:var(--oxblood)">Stats</a></p>
   </div>
 </footer>
 
@@ -652,16 +649,55 @@ const RECENT_DAYS = 730, SLOW_MS = 7000;
 const recentCut = () => new Date(Date.now()-RECENT_DAYS*86400000).toISOString().slice(0,10) + "T00:00:00";
 const recentCutLabel = () => new Date(Date.now()-RECENT_DAYS*86400000).toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"});
 
+/* Read-side cache + in-flight coalescing for the open-data GETs. Repeating a query the session
+   already ran (tab A→B→A, re-selecting a row, re-clicking a facet) renders from memory instead
+   of re-paying a network round-trip; two callers racing for the same URL share one request.
+   Editions change once a day — a 5-minute TTL is conservatively fresh. */
+const API_CACHE = new Map(), API_TTL = 300000;
 async function api(base, params, timeoutMs){
-  const ctl = timeoutMs ? new AbortController() : null;
-  const t = ctl ? setTimeout(()=>ctl.abort(), timeoutMs) : null;
+  const key = base + "?" + new URLSearchParams(params).toString();
+  const hit = API_CACHE.get(key);
+  if(hit){
+    if(hit.p) return hit.p;                       // same request already in flight — share it
+    if(Date.now() - hit.at < API_TTL) return hit.rows;
+    API_CACHE.delete(key);
+  }
+  const p = (async ()=>{
+    const ctl = timeoutMs ? new AbortController() : null;
+    const t = ctl ? setTimeout(()=>ctl.abort(), timeoutMs) : null;
+    try{
+      const r = await fetch(key, ctl ? {signal:ctl.signal} : undefined);
+      if(!r.ok) throw new Error("API " + r.status);
+      return await r.json();
+    } finally { if(t) clearTimeout(t); }
+  })();
+  API_CACHE.set(key, {p});
   try{
-    const r = await fetch(base + "?" + new URLSearchParams(params).toString(), ctl ? {signal:ctl.signal} : undefined);
-    if(!r.ok) throw new Error("API " + r.status);
-    return await r.json();
-  } finally { if(t) clearTimeout(t); }
+    const rows = await p;
+    API_CACHE.set(key, {rows, at: Date.now()});
+    return rows;
+  }catch(e){ API_CACHE.delete(key); throw e; }    // failures (incl. timeouts) are never cached
 }
 const soda = (params, timeoutMs) => api(SODA, params, timeoutMs);
+
+/* Perceived-speed helpers. busyList: keep what's on screen, dimmed, while fresh rows load —
+   only skeleton when there's nothing real to keep. staleGuard: interactions can overlap
+   (type, click a chip, switch back); each lens keeps a sequence number and late responses
+   from superseded requests are dropped instead of clobbering the newest render. */
+function listSkeleton(n){
+  let s = '<div class="empty skel" aria-hidden="true"><span class="loading"></span>';
+  for(let i=0;i<(n||4);i++) s += '<span class="skl"><i></i><i></i></span>';
+  return s + '</div>';
+}
+function busyList(sel, n){
+  const el = $(sel); if(!el) return;
+  if(el.querySelector(".row, .fcard")) el.classList.add("busy");
+  else el.innerHTML = listSkeleton(n);
+}
+function unbusy(sel){ const el = $(sel); if(el) el.classList.remove("busy"); }
+const SEQ = {};
+function staleGuard(lens){ const my = (SEQ[lens]||0) + 1; SEQ[lens] = my; return ()=> SEQ[lens] !== my; }
+function debounce(fn, ms){ let t; return (...a)=>{ clearTimeout(t); t = setTimeout(()=>fn(...a), ms); }; }
 
 function usablePin(p){
   if(!p) return false;
@@ -691,7 +727,7 @@ function deadlineTag(due){
   const dl = daysLeft(due);
   if(dl === null) return "";
   if(dl < 0) return `<span class="tag closed">closed</span>`;
-  if(dl <= 3) return `<span class="tag hot">⏳ ${dl===0?"closes today":`closes in ${dl} day${dl===1?"":"s"}`}</span>`;
+  if(dl <= 3) return `<span class="tag hot">${dl===0?"closes today":`closes in ${dl} day${dl===1?"":"s"}`}</span>`;
   if(dl <= 14) return `<span class="tag soon">closes in ${dl} day${dl===1?"":"s"}</span>`;
   return `<span class="tag open">open · ${dl} days left</span>`;
 }
@@ -700,7 +736,7 @@ function deadlineTag(due){
 function eventTag(ev){
   const dl = daysLeft(ev);
   if(dl === null || dl < 0) return "";
-  if(dl <= 3) return ` <span class="tag hot">⏳ ${dl===0?"today":`in ${dl} day${dl===1?"":"s"}`}</span>`;
+  if(dl <= 3) return ` <span class="tag hot">${dl===0?"today":`in ${dl} day${dl===1?"":"s"}`}</span>`;
   if(dl <= 14) return ` <span class="tag soon">in ${dl} days</span>`;
   return ` <span class="tag open">in ${dl} days</span>`;
 }
@@ -720,7 +756,7 @@ function showTab(name, push){
   // Push BEFORE any lazy load below runs updateHash(), or the load's replaceState
   // rewrites the prior entry and the push turns into a no-op (Back would skip a tab).
   if(push) pushHash();
-  if(name==="land"){ if(!landLoaded){ landLoaded=true; landSearch(); } if(landMap) setTimeout(()=>landMap.invalidateSize(),120); }
+  if(name==="land"){ loadLeaflet().catch(()=>{}); if(!landLoaded){ landLoaded=true; landSearch(); } if(landMap) setTimeout(()=>landMap.invalidateSize(),120); }
   if(name==="money" && !moneyLoaded) search(); // deep links land on other tabs; Money lazy-loads like the rest
   if(name==="people") seedPeople();
   if(SECTIONS[name] && !feedLoaded[name]){ feedLoaded[name]=true; loadSectionAgencies(name); loadSection(name); }
@@ -808,20 +844,28 @@ async function search(){
   const heads = {open:"Open RFPs", allrfp:"All RFPs", award:"Recent Awards"};
   $("#reshead").textContent = heads[mode] + (mode==="open" && closingWeek ? " · closing this week" : "") + (methodSel ? " · " + methodSel : "") + (agency ? " · " + agency : "");
   $("#rescount").textContent = "";
-  $("#list").innerHTML = '<div class="empty"><span class="loading"></span> searching…</div>';
+  busyList("#list");
+  const stale = staleGuard("money");
   const p = {"$select":SELECT,"$where":where,"$order":order,"$limit":"40"};
   if(kw) p["$q"] = kw;
-  let narrowed = false;
+  let narrowed = false, rows;
   try{
     try{
-      currentRows = await soda(p, SLOW_MS);
+      rows = await soda(p, SLOW_MS);
     }catch(err){
       if(err.name !== "AbortError") throw err;
       // Full-history search ran past SLOW_MS — fall back to recent editions only.
       narrowed = true;
-      currentRows = await soda({...p, "$where": where + " AND start_date > '" + recentCut() + "'"}, SLOW_MS + 4000);
+      rows = await soda({...p, "$where": where + " AND start_date > '" + recentCut() + "'"}, SLOW_MS + 4000);
     }
-  }catch(e){ $("#list").innerHTML = '<div class="empty">Could not reach NYC Open Data. Retry in a moment.</div>'; return; }
+  }catch(e){
+    if(stale()) return;
+    unbusy("#list");
+    $("#list").innerHTML = '<div class="empty">Could not reach NYC Open Data. Retry in a moment.</div>'; return;
+  }
+  if(stale()) return; // a newer search superseded this one
+  currentRows = rows;
+  unbusy("#list");
   $("#rescount").textContent = currentRows.length === 40 ? "40+" : currentRows.length;
   announce(`${currentRows.length===40?"40 or more":currentRows.length} results — ${$("#reshead").textContent}`);
   renderList();
@@ -875,8 +919,11 @@ async function select(i, el){
   el.classList.add("sel");
   const r = currentRows[i];
   selectedRFP = r;
-  $("#detail").innerHTML = '<div class="empty"><span class="loading"></span> tracing…</div>';
+  // The row's full record is already in memory — paint it now (title, glance, how-to-respond),
+  // and hydrate the chain + agency stats in place when they land. Clicking feels instant.
+  renderDetail(r, null, null);
   const [chain, stats] = await Promise.all([ loadChain(r), loadAgencyStats(r.agency_name) ]);
+  if(selectedRFP !== r) return; // user moved on to another notice
   renderDetail(r, chain, stats);
 }
 
@@ -937,12 +984,12 @@ function glanceFor(r){
     r.event_date ? `event <b>${fdt(r.event_date)}</b>${eventTag(r.event_date)}` : null
   ].filter(Boolean).join(" · ");
   const act = [];
-  if(r.email) act.push(`<a href="mailto:${r.email}">✉ ${r.email}</a>`);
-  const tel = telHref(r.contact_phone); if(tel) act.push(`<a href="${tel}">☎ ${cleanText(r.contact_phone)}</a>`);
+  if(r.email) act.push(`<a href="mailto:${r.email}">${r.email}</a>`);
+  const tel = telHref(r.contact_phone); if(tel) act.push(`<a href="${tel}">${cleanText(r.contact_phone)}</a>`);
   if(r.contact_name) act.push(cleanText(r.contact_name));
   const where = cleanText(r.address_to_request) || (goodAddr(r.street_address_1) ? cleanText(r.street_address_1) : "");
-  if(where) act.push(`📍 ${where}`);
-  if(r.type_of_notice_description === "Solicitation") act.push(`<a href="${PASSPORT}" target="_blank" rel="noopener">↗ PASSPort</a>`);
+  if(where) act.push(where);
+  if(r.type_of_notice_description === "Solicitation") act.push(`<a href="${PASSPORT}" target="_blank" rel="noopener">PASSPort ↗</a>`);
   const body = row("Who", who) + row("What", what) + row("When", when) + row("Act", act.join(" · "));
   return body ? `<div class="glance">${body}</div>` : "";
 }
@@ -995,15 +1042,15 @@ function buildApply(r){
   let due = "";
   if(r.due_date){
     const tag = dl === null ? "" : (dl < 0 ? `<span class="tag closed">closed</span>` :
-      dl <= 3 ? `<span class="tag hot">⏳ ${dl===0?"due today":dl+" day"+(dl===1?"":"s")+" left"}</span>` :
+      dl <= 3 ? `<span class="tag hot">${dl===0?"due today":dl+" day"+(dl===1?"":"s")+" left"}</span>` :
       dl <= 14 ? `<span class="tag soon">${dl} day${dl===1?"":"s"} left</span>` : `<span class="tag open">${dl} days left</span>`);
     due = `<div class="due"><span class="d">Respond by ${fdt(r.due_date)}</span>${tag}</div>`;
   }
   let acts = '<div class="actions">';
-  if(r.email) acts += `<a class="act primary" href="${mailtoFor(r)}">✉️ Email a response</a>`;
-  if(tel) acts += `<a class="act" href="${tel}">📞 Call ${cleanText(r.contact_phone)}</a>`;
-  if(r.due_date) acts += `<button class="act" id="icsbtn" type="button">📅 Add deadline</button>`;
-  acts += `<a class="act" href="${PASSPORT}" target="_blank" rel="noopener">↗ Bid on PASSPort</a>`;
+  if(r.email) acts += `<a class="act primary" href="${mailtoFor(r)}">Email a response</a>`;
+  if(tel) acts += `<a class="act" href="${tel}">Call ${cleanText(r.contact_phone)}</a>`;
+  if(r.due_date) acts += `<button class="act" id="icsbtn" type="button">Add deadline to calendar</button>`;
+  acts += `<a class="act" href="${PASSPORT}" target="_blank" rel="noopener">Bid on PASSPort ↗</a>`;
   acts += '</div>';
   return `<div class="apply"><h3>How to respond to this RFP</h3><div class="body">
     ${due}${acts}${dts?`<dl>${dts}</dl>`:""}
@@ -1013,7 +1060,7 @@ function buildApply(r){
 
 function chainHTML(r, chain){
   const blanket = chain.length > 5 && chain.every(c=>c.type_of_notice_description==="Award");
-  const tlink = usablePin(r.pin) ? ` · <a class="pivot" href="#matter/${encodeURIComponent(r.pin)}">⏱ full timeline with payments</a>` : "";
+  const tlink = usablePin(r.pin) ? ` · <a class="pivot" href="#matter/${encodeURIComponent(r.pin)}">full timeline with payments</a>` : "";
   let html = `<div class="chain-h">The paper trail (notices sharing this PIN)${tlink}</div><div class="chain">`;
   chain.forEach((c,idx)=>{
     const amt = money(c.contract_amount);
@@ -1040,7 +1087,8 @@ function chainHTML(r, chain){
 }
 
 function renderDetail(r, chain, stats){
-  let html = `<div class="actions" style="margin:0 0 12px"><button class="act" type="button" id="dcopy">🔗 Copy link to this notice</button>${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}</div>`;
+  const pending = chain === null; // first paint from the in-memory record; chain/stats hydrate in
+  let html = `<div class="actions" style="margin:0 0 12px"><button class="act" type="button" id="dcopy">Copy link to this notice</button>${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}</div>`;
   html += `<div id="dcontext"></div><div id="ddollars"></div>`;
   // Solicitations get the richer how-to-respond panel below; everything else gets the glance box.
   if(r.type_of_notice_description !== "Solicitation") html += glanceFor(r);
@@ -1052,13 +1100,16 @@ function renderDetail(r, chain, stats){
   }
   if(r.type_of_notice_description === "Solicitation") html += buildApply(r);
 
-  html += chainHTML(r, chain);
+  html += pending
+    ? `<div class="chain-h">The paper trail (notices sharing this PIN)</div>${listSkeleton(2)}`
+    : chainHTML(r, chain);
 
   const scope = cleanText(r.additional_description_1);
   if(scope) html += `<div class="scope"><span class="lbl">What they want</span>${scope.slice(0,900)}${scope.length>900?"…":""}</div>`;
   $("#detail").innerHTML = html;
   const ib = $("#icsbtn"); if(ib) ib.addEventListener("click", downloadICS);
   const dc = $("#dcopy"); if(dc) dc.addEventListener("click", ()=>copyText(noticeLink(r.request_id), dc));
+  if(pending) return; // context/dollars fetch once, on the hydrated render
   fillContext(r, $("#dcontext"));
   followDollars(r, $("#ddollars"));
 }
@@ -1110,7 +1161,7 @@ async function nlTranslate(){
   search();
 }
 
-function nlWorkingHTML(){ return `<div class="nlworking"><span class="spark">✨</span><span>translating…</span></div>`; }
+function nlWorkingHTML(){ return `<div class="nlworking"><span class="loading"></span><span>translating…</span></div>`; }
 
 // "look up someone named X" → the model sets lookupType:"person" but often omits the name
 // (it reads a surname as not a "topic keyword"), so #pkw ends up empty and the search bails.
@@ -1242,7 +1293,7 @@ function injectNLBoxes(){
     const anchor=wrap.querySelector(anchorSel); if(!anchor) return;
     const box=document.createElement("div"); box.className="nlbox";
     box.innerHTML='<div class="nlrow"><input type="text" id="nlq-'+lens+'" placeholder="'+NL[lens].placeholder+'">'+
-      '<button id="nlgo-'+lens+'">✨ Ask</button></div>'+
+      '<button id="nlgo-'+lens+'">Ask</button></div>'+
       '<div id="nltry-'+lens+'" class="nltry"></div><div id="nltrans-'+lens+'"></div>';
     anchor.parentNode.insertBefore(box, anchor);
     $("#nlgo-"+lens).addEventListener("click",()=>nlTranslateLens(lens));
@@ -1336,12 +1387,16 @@ async function pSearch(keepDetail){
   $("#prescount").textContent = "";
   if(keepDetail !== true) $("#pdetail").innerHTML = '<div class="empty">Pick a result on the left.</div>';
   if(!kw){ $("#plist").innerHTML = '<div class="empty">Type a keyword to search.</div>'; return; }
-  $("#plist").innerHTML = '<div class="empty"><span class="loading"></span> searching…</div>';
-  try{ pMode === "role" ? await pSearchRoles(kw) : await pSearchPeople(kw); }
-  catch(e){ $("#plist").innerHTML = '<div class="empty">Could not reach NYC Open Data. Retry.</div>'; }
+  busyList("#plist", 3);
+  const stale = staleGuard("people");
+  try{
+    pMode === "role" ? await pSearchRoles(kw, stale) : await pSearchPeople(kw, stale);
+    unbusy("#plist");
+  }
+  catch(e){ if(!stale()){ unbusy("#plist"); $("#plist").innerHTML = '<div class="empty">Could not reach NYC Open Data. Retry.</div>'; } }
 }
 
-async function pSearchRoles(kw){
+async function pSearchRoles(kw, stale){
   const up = kw.toUpperCase().replace(/'/g,"''");
   const [pay, comp] = await Promise.all([
     api(PAY, {"$select":"title_description, count(1) as n, min(base_salary) as mn, max(base_salary) as mx, avg(base_salary) as avg",
@@ -1349,6 +1404,7 @@ async function pSearchRoles(kw){
       "$group":"title_description","$order":"avg DESC","$limit":"40"}),
     api(CSL, {"$select":"list_title_desc","$where":`upper(list_title_desc) like '%${up}%'`,"$group":"list_title_desc","$limit":"300"})
   ]);
+  if(stale && stale()) return;
   competitiveSet = new Set(comp.map(c=>(c.list_title_desc||"").toUpperCase().trim()));
   pRows = pay;
   $("#prescount").textContent = pay.length === 40 ? "40+" : pay.length;
@@ -1394,9 +1450,10 @@ function pSelectRole(i, el){
   $("#pdetail").innerHTML = html;
 }
 
-async function pSearchPeople(kw){
+async function pSearchPeople(kw, stale){
   const rows = await soda({"$select":"request_id,start_date,agency_name,short_title,additional_description_1",
     "$where":"section_name='Changes in Personnel'","$q":kw,"$order":"start_date DESC","$limit":"100"});
+  if(stale && stale()) return;
   const people = new Map();
   rows.forEach(r=>{
     const p = parsePersonnel(r.additional_description_1);
@@ -1473,29 +1530,34 @@ async function landSearch(){
   updateHash();
   $("#lreshead").textContent = "Rezonings" + (boro?" · "+boro:"") + (kw?` · “${kw}”`:"");
   $("#lrescount").textContent=""; landBanner="";
-  $("#llist").innerHTML='<div class="empty"><span class="loading"></span> searching…</div>';
+  busyList("#llist", 3);
+  const stale = staleGuard("land");
   let geo=null, block=null;
   if(kw){ geo=await geocode(kw); if(geo&&geo.bbl&&/^\d{10}$/.test(geo.bbl)) block=geo.bbl.slice(0,6); }
   try{
+    let rows, banner="";
     if(block){
       const lo=block+"0000", hi=block+"9999";
       const onLot=await api(ZAPBBL,{"$select":"project_id","$where":`bbl between ${lo} and ${hi}`,"$group":"project_id","$limit":"60"});
       const ids=[...new Set(onLot.map(b=>b.project_id))].filter(Boolean).slice(0,30);
       if(ids.length){
         const inList=ids.map(i=>`'${i.replace(/'/g,"''")}'`).join(",");
-        lRows=await api(ZAP,{"$select":ZAP_SELECT,"$where":`${zapWhere(status)} AND project_id in(${inList})`,"$order":"current_milestone_date DESC","$limit":"40"});
-        landBanner=`📍 On this block — ${geo.label}.`;
-        if(!lRows.length){ lRows=await landNearby(geo,status); landBanner=`No ${status==="active"?"active ":""}rezoning on this block. Nearest in <b>${geo.neighbourhood||geo.borough}</b>:`; }
-      } else { lRows=await landNearby(geo,status); landBanner=`No rezoning filed on this lot (${geo.label}). Active rezonings near <b>${geo.neighbourhood||geo.borough}</b>:`; }
+        rows=await api(ZAP,{"$select":ZAP_SELECT,"$where":`${zapWhere(status)} AND project_id in(${inList})`,"$order":"current_milestone_date DESC","$limit":"40"});
+        banner=`On this block — ${geo.label}.`;
+        if(!rows.length){ rows=await landNearby(geo,status); banner=`No ${status==="active"?"active ":""}rezoning on this block. Nearest in <b>${geo.neighbourhood||geo.borough}</b>:`; }
+      } else { rows=await landNearby(geo,status); banner=`No rezoning filed on this lot (${geo.label}). Active rezonings near <b>${geo.neighbourhood||geo.borough}</b>:`; }
     } else {
       let w=zapWhere(status); if(boro) w+=` AND borough='${boro.replace(/'/g,"''")}'`;
       const p={"$select":ZAP_SELECT,"$where":w,"$order":"current_milestone_date DESC","$limit":"40"}; if(kw) p["$q"]=kw;
-      lRows=await api(ZAP,p);
+      rows=await api(ZAP,p);
     }
+    if(stale()) return;
+    lRows=rows; landBanner=banner;
+    unbusy("#llist");
     $("#lrescount").textContent=lRows.length>=40?"40+":lRows.length;
     announce(`${lRows.length>=40?"40 or more":lRows.length} rezonings`);
     landRenderList(kw);
-  }catch(e){ $("#llist").innerHTML='<div class="empty">Could not reach the data. Retry.</div>'; }
+  }catch(e){ if(!stale()){ unbusy("#llist"); $("#llist").innerHTML='<div class="empty">Could not reach the data. Retry.</div>'; } }
 }
 
 async function landNearby(geo,status){
@@ -1546,8 +1608,8 @@ async function landSelect(i, el){
   if(actList.length) html+=`<div class="rmeta2" style="margin-top:10px"><b>Actions:</b> ${actList.join(" · ")}</div>`;
   const area=(r.project_name||r.borough||"").replace(/(rezoning|demapping|rezone|special permit|special district|text amendment|mapping actions?|modification|disposition|non-?ulurp).*/i,"").trim().split(/\s+/).slice(0,3).join(" ")||r.borough||"";
   html+=`<div class="actions" style="margin-top:12px">
-    <a class="act primary" href="https://zap.planning.nyc.gov/projects/${r.project_id}" target="_blank" rel="noopener">↗ Full project on ZAP</a>
-    <button class="act" type="button" id="landalert" data-q="${area.replace(/"/g,'')}">🔔 Alert me about this area</button>
+    <a class="act primary" href="https://zap.planning.nyc.gov/projects/${r.project_id}" target="_blank" rel="noopener">Full project on ZAP ↗</a>
+    <button class="act" type="button" id="landalert" data-q="${area.replace(/"/g,'')}">Alert me about this area</button>
     <a class="act" id="crfind" href="https://a856-cityrecord.nyc.gov/Search/Advanced" target="_blank" rel="noopener">Search the City Record</a>
   </div>
   <div id="landmap"></div><div class="note" id="landmapnote"><span class="loading"></span> locating…</div>`;
@@ -1572,9 +1634,24 @@ async function landSelect(i, el){
   }
 }
 
-function landShowMap(lat, lon, label){
+/* Leaflet loads on demand: the map is a detail of one lens, not a cost every visitor pays.
+   showTab("land") warms it in the background, so it's usually ready before a row is picked. */
+let leafletP=null;
+function loadLeaflet(){
+  if(window.L) return Promise.resolve();
+  if(!leafletP) leafletP = new Promise((res,rej)=>{
+    const l=document.createElement("link"); l.rel="stylesheet"; l.href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+    document.head.appendChild(l);
+    const s=document.createElement("script"); s.src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
+    s.onload=res; s.onerror=()=>{ leafletP=null; rej(new Error("leaflet")); };
+    document.head.appendChild(s);
+  });
+  return leafletP;
+}
+async function landShowMap(lat, lon, label){
   const el=$("#landmap"); if(!el) return; el.style.display="block";
-  $("#landmapnote").innerHTML=`📍 ${label}. <span class="muted">Approximate — confirm exact lots on <a href="https://zola.planning.nyc.gov/" target="_blank" rel="noopener">ZoLa</a>.</span>`;
+  $("#landmapnote").innerHTML=`${label}. <span class="muted">Approximate — confirm exact lots on <a href="https://zola.planning.nyc.gov/" target="_blank" rel="noopener">ZoLa</a>.</span>`;
+  try{ await loadLeaflet(); }catch(e){}
   if(typeof L==="undefined"){ el.innerHTML='<div class="empty">Map needs a connection.</div>'; return; }
   landMap=L.map(el).setView([lat,lon],15);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap © CARTO',subdomains:'abcd',maxZoom:19}).addTo(landMap);
@@ -1583,9 +1660,10 @@ function landShowMap(lat, lon, label){
   setTimeout(()=>{ if(landMap) landMap.invalidateSize(); },150);
 }
 
-function landShowLots(gj, n){
+async function landShowLots(gj, n){
   const el=$("#landmap"); if(!el) return; el.style.display="block";
   $("#landmapnote").innerHTML=`Showing ${n} rezoned tax lot${n===1?"":"s"} (NYC MapPLUTO). <span class="muted">Confirm on <a href="https://zola.planning.nyc.gov/" target="_blank" rel="noopener">ZoLa</a>.</span>`;
+  try{ await loadLeaflet(); }catch(e){}
   if(typeof L==="undefined"){ el.innerHTML='<div class="empty">Map needs a connection.</div>'; return; }
   landMap=L.map(el);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap © CARTO · lots © NYC MapPLUTO',subdomains:'abcd',maxZoom:19}).addTo(landMap);
@@ -1603,9 +1681,9 @@ function landToAlert(term){
 
 /* ===================== FEED LENSES (Property / Rules / Meetings) ===================== */
 const SECTIONS={
-  property:{section:"Property Disposition", topBorder:"var(--green)", showAddr:true},
-  rules:{section:"Agency Rules", topBorder:"var(--blue)"},
-  meetings:{section:"Public Hearings and Meetings", topBorder:"var(--amber)", upcoming:true}
+  property:{section:"Property Disposition", showAddr:true},
+  rules:{section:"Agency Rules"},
+  meetings:{section:"Public Hearings and Meetings", upcoming:true}
 };
 const feedRows={}, feedLoaded={};
 const FEED_SELECT="request_id,start_date,event_date,agency_name,type_of_notice_description,short_title,street_address_1,additional_description_1";
@@ -1622,12 +1700,16 @@ async function loadSection(key){
   // Property is a small section (~250 rows) whose value is the derived taxonomy — fetch wide, classify client-side.
   const p={"$select":FEED_SELECT,"$where":where,"$order":order,"$limit":key==="property"?"300":"40"};
   if(kw) p["$q"]=kw;
-  $("#"+key+"feed").innerHTML='<div class="empty"><span class="loading"></span> searching…</div>';
+  busyList("#"+key+"feed", 3);
+  const stale = staleGuard("feed:"+key);
   try{
-    const rows=await soda(p); feedRows[key]={}; rows.forEach(r=>feedRows[key][r.request_id]=r);
+    const rows=await soda(p);
+    if(stale()) return;
+    unbusy("#"+key+"feed");
+    feedRows[key]={}; rows.forEach(r=>feedRows[key][r.request_id]=r);
     if(key==="property"){ propAll=rows; renderPropExplorer(); }
     else { announce(`${rows.length} notices`); renderFeed(key, rows); }
-  }catch(e){ $("#"+key+"feed").innerHTML='<div class="empty">Could not reach NYC Open Data. Retry.</div>'; }
+  }catch(e){ if(!stale()){ unbusy("#"+key+"feed"); $("#"+key+"feed").innerHTML='<div class="empty">Could not reach NYC Open Data. Retry.</div>'; } }
 }
 
 /* ===== Property explorer: asset-type tabs + lifecycle rail (design: property-ux report §2–3).
@@ -1697,18 +1779,18 @@ function renderFeed(key, rows){
   el.innerHTML=rows.map(r=>{
     const ev=r.event_date, addr=cfg.showAddr&&goodAddr(r.street_address_1)?cleanText(r.street_address_1):"";
     const scope=cleanText(r.additional_description_1).slice(0,200);
-    let acts=`<a class="act" href="${REQ_URL(r.request_id)}" target="_blank" rel="noopener">↗ City Record</a>`;
-    acts+=`<button class="act" type="button" data-link="${r.request_id}">🔗 Link</button>`;
-    if(ev) acts+=`<button class="act" type="button" data-ev="${key}:${r.request_id}">📅 Add ${fdt(ev)}</button>`;
-    if(addr) acts+=`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(addr+' New York NY')}" target="_blank" rel="noopener">🗺 Map</a>`;
-    if(addr && key==="property") acts+=`<button class="act" type="button" data-demo="${r.request_id}">🏚 Still standing?</button>`;
+    let acts=`<a class="act" href="${REQ_URL(r.request_id)}" target="_blank" rel="noopener">City Record ↗</a>`;
+    acts+=`<button class="act" type="button" data-link="${r.request_id}">Copy link</button>`;
+    if(ev) acts+=`<button class="act" type="button" data-ev="${key}:${r.request_id}">Add ${fdt(ev)}</button>`;
+    if(addr) acts+=`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(addr+' New York NY')}" target="_blank" rel="noopener">Map ↗</a>`;
+    if(addr && key==="property") acts+=`<button class="act" type="button" data-demo="${r.request_id}">Still standing?</button>`;
     const pbadges = key==="property" && (r._asset || r._badge)
       ? `<div>${r._asset?`<span class="tag asset">${ASSET_LABEL[r._asset]||""}</span>`:""}${r._badge?`<span class="tag amt">${r._badge}</span>`:""}</div>` : "";
-    return `<div class="fcard" style="border-top-color:${cfg.topBorder}">
+    return `<div class="fcard">
       <div class="ftype">${r.type_of_notice_description||""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}${ev?` · <b style="color:var(--ink)">${fdt(ev)}</b>${eventTag(ev)}`:""}</div>
       ${pbadges}
       <div class="ftitle">${cleanText(r.short_title)||"(untitled)"}</div>
-      ${addr?`<div class="faddr">📍 ${addr}</div>`:""}
+      ${addr?`<div class="faddr">${addr}</div>`:""}
       ${scope?`<div class="fscope">${scope}${scope.length>=200?"…":""}</div>`:""}
       <div class="factions">${acts}</div>
     </div>`;
@@ -1722,7 +1804,7 @@ async function checkDemolition(r, btn){
   if(!r||!r.street_address_1) return;
   btn.textContent="… checking DOB"; btn.disabled=true;
   const geo=await geocode(cleanText(r.street_address_1)+" New York NY");
-  if(!geo||!geo.bbl||!/^\d{10}$/.test(geo.bbl)){ btn.textContent="🏚 lot not resolved"; btn.disabled=false; return; }
+  if(!geo||!geo.bbl||!/^\d{10}$/.test(geo.bbl)){ btn.textContent="lot not resolved"; btn.disabled=false; return; }
   const boro={"1":"MANHATTAN","2":"BRONX","3":"BROOKLYN","4":"QUEENS","5":"STATEN ISLAND"}[geo.bbl[0]]||"";
   const blkIn=`'${String(parseInt(geo.bbl.slice(1,6),10))}','${geo.bbl.slice(1,6)}'`;
   const lot4=geo.bbl.slice(6,10), lotIn=`'${String(parseInt(lot4,10))}','${lot4.padStart(5,"0")}','${lot4}'`;
@@ -1730,7 +1812,7 @@ async function checkDemolition(r, btn){
   try{ const n=await api("https://data.cityofnewyork.us/resource/w9ak-ipjd.json",{"$select":"filing_status,job_type","$where":`borough='${boro}' AND block in(${blkIn}) AND lot in(${lotIn}) AND upper(job_type) like '%DEMOLITION%'`,"$limit":"1"}); if(n&&n[0]) hit={status:n[0].filing_status||n[0].job_type,src:"DOB NOW"}; }catch(e){}
   if(!hit){ try{ const l=await api("https://data.cityofnewyork.us/resource/ic3t-wcy2.json",{"$select":"job_status_descrp,latest_action_date","$where":`borough='${boro}' AND block in(${blkIn}) AND lot in(${lotIn}) AND job_type='DM'`,"$order":"latest_action_date DESC","$limit":"1"}); if(l&&l[0]) hit={status:l[0].job_status_descrp,date:(l[0].latest_action_date||"").slice(0,10),src:"DOB"}; }catch(e){} }
   const span=document.createElement("span"); span.className="act demoresult";
-  span.innerHTML = hit ? `🏚 Demolition: <b>${cleanText(hit.status)}</b>${hit.date?` (${hit.date})`:""} <span class="muted">· ${hit.src}</span>` : `✅ No demolition permit on this lot`;
+  span.innerHTML = hit ? `Demolition: <b>${cleanText(hit.status)}</b>${hit.date?` (${hit.date})`:""} <span class="muted">· ${hit.src}</span>` : `✓ No demolition permit on this lot`;
   btn.replaceWith(span);
 }
 
@@ -1838,8 +1920,8 @@ async function aFetch(){
 function digContact(r){
   const tel=String(r.contact_phone||"").replace(/[^0-9+]/g,""); const parts=[];
   if(r.contact_name) parts.push(cleanText(r.contact_name));
-  if(r.email) parts.push(`<a href="mailto:${r.email}">✉ ${r.email}</a>`);
-  if(tel.length>=7) parts.push(`<a href="tel:${tel}">☎ ${cleanText(r.contact_phone)}</a>`);
+  if(r.email) parts.push(`<a href="mailto:${r.email}">${r.email}</a>`);
+  if(tel.length>=7) parts.push(`<a href="tel:${tel}">${cleanText(r.contact_phone)}</a>`);
   return parts.length?`<div class="dc">${parts.join(" · ")}</div>`:"";
 }
 function digItemHTML(kind, r){
@@ -1854,9 +1936,9 @@ function digItemHTML(kind, r){
   }
   if(kind==="rfp"){ const dl=daysLeft(r.due_date);
     const tel=String(r.contact_phone||"").replace(/[^0-9+]/g,""); const acts=[];
-    if(r.email) acts.push(`<a href="${mailtoFor(r)}"><b>✍ Respond</b></a>`);
-    if(r.email) acts.push(`<a href="mailto:${r.email}">✉ ${r.email}</a>`);
-    if(tel.length>=7) acts.push(`<a href="tel:${tel}">☎ ${cleanText(r.contact_phone)}</a>`);
+    if(r.email) acts.push(`<a href="${mailtoFor(r)}"><b>Respond</b></a>`);
+    if(r.email) acts.push(`<a href="mailto:${r.email}">${r.email}</a>`);
+    if(tel.length>=7) acts.push(`<a href="tel:${tel}">${cleanText(r.contact_phone)}</a>`);
     const dc=acts.length?`<div class="dc">${acts.join(" · ")}</div>`:"";
     return `<div class="digitem"><div class="dt">${cleanText(r.short_title)||"(untitled)"}</div>
     <div class="dm">${r.agency_name} · due ${fdt(r.due_date)}${dl!=null?` (${dl} days)`:""}</div>${dc}</div>`; }
@@ -1881,9 +1963,9 @@ function renderFeedLinks(){
   const el=$("#afeeds"); if(!el) return;
   const u=feedURLs(); if(!u){ el.innerHTML=""; return; }
   el.innerHTML=`Prefer feeds? This watch is also
-    <a href="${u.atom}" target="_blank" rel="noopener">📡 RSS/Atom</a> ·
-    <a href="${u.json}" target="_blank" rel="noopener">{ } JSON Feed</a> ·
-    <a href="${u.ics}" target="_blank" rel="noopener">📅 Calendar (.ics)</a> — no email needed.`;
+    <a href="${u.atom}" target="_blank" rel="noopener">RSS/Atom</a> ·
+    <a href="${u.json}" target="_blank" rel="noopener">JSON Feed</a> ·
+    <a href="${u.ics}" target="_blank" rel="noopener">Calendar (.ics)</a> — no email needed.`;
 }
 async function aPreview(){
   $("#apreviewbox").innerHTML='<div class="empty"><span class="loading"></span> fetching today&#39;s matching notices…</div>';
@@ -1938,7 +2020,7 @@ async function aSubscribe(){
   try{
     const r=await workerFetch("/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,lens,filter,freq,turnstileToken:token})});
     const j=await r.json().catch(()=>({}));
-    if(j.ok){ msg.innerHTML="📬 <b>Check your inbox.</b> We sent a confirmation link to <b>"+email.replace(/[<>&]/g," ")+"</b> — your alert starts once you click it."; }
+    if(j.ok){ msg.innerHTML="<b>Check your inbox.</b> We sent a confirmation link to <b>"+email.replace(/[<>&]/g," ")+"</b> — your alert starts once you click it."; }
     else {
       const why={turnstile:"The human check didn't pass — try it again.","rate-limited":"Too many attempts — give it a minute.","bad-email":"That email address looks off.","channel-unsupported":"Text alerts aren't available yet — choose Email.","not-configured":"Subscriptions aren't switched on yet.","send-failed":"Couldn't send the email just now — try again."}[j.reason]||"Something went wrong — please try again.";
       msg.innerHTML="⚠️ "+why; if(window.turnstile) turnstile.reset();
@@ -1948,13 +2030,17 @@ async function aSubscribe(){
 }
 
 /* ===================== TODAY'S EDITION (front-page strip) =====================
-   One aggregate pass over the latest edition date, cached in sessionStorage for an hour.
+   One aggregate pass over the latest edition date, cached in localStorage for an hour.
    Degrades to invisible on any failure — same pattern as the NL box. */
 const SECTION_LENS = {"Procurement":"money","Public Hearings and Meetings":"meetings","Agency Rules":"rules","Property Disposition":"property","Changes in Personnel":"people"};
 async function loadToday(){
-  const KEY = "crol_today_v1";
-  let d = null;
-  try{ const c = JSON.parse(sessionStorage.getItem(KEY)||"null"); if(c && Date.now()-c.at < 3600000) d = c.d; }catch(e){}
+  // localStorage (not session): a returning visitor gets yesterday's strip painted on first
+  // frame — no pop-in, no layout shift — while a fresh copy loads behind it if it's stale.
+  const KEY = "crol_today_v2";
+  let cached = null;
+  try{ cached = JSON.parse(localStorage.getItem(KEY)||"null"); }catch(e){}
+  if(cached && cached.d){ try{ renderToday(cached.d); }catch(e){} }
+  let d = cached && Date.now()-cached.at < 3600000 ? cached.d : null;
   if(!d){
     try{
       const [maxr] = await soda({"$select":"max(start_date) as m"});
@@ -1968,10 +2054,10 @@ async function loadToday(){
         soda({"$select":"request_id,short_title,agency_name,event_date","$where":`section_name='Public Hearings and Meetings' AND event_date > '${todayISO()}'`,"$order":"event_date ASC","$limit":"1"})
       ]);
       d = {ed, counts, nAgencies: agencies.length, award: award[0]||null, closing: closing[0]||null, hearing: hearing[0]||null};
-      try{ sessionStorage.setItem(KEY, JSON.stringify({at: Date.now(), d})); }catch(e){}
+      try{ localStorage.setItem(KEY, JSON.stringify({at: Date.now(), d})); }catch(e){}
     }catch(e){ return; }
+    try{ renderToday(d); }catch(e){} // fresh copy replaces the cached strip in place
   }
-  try{ renderToday(d); }catch(e){}
 }
 function renderToday(d){
   const total = (d.counts||[]).reduce((s,c)=>s+(+c.n||0),0);
@@ -1984,9 +2070,9 @@ function renderToday(d){
     return lens ? `<a href="#${lens}">${label}</a>` : `<span>${label}</span>`;
   }).join("");
   const cards = [];
-  if(d.closing) cards.push({lbl:"⏳ Closing soon", t:d.closing, meta:`${d.closing.agency_name} · due ${fdt(d.closing.due_date)} ${deadlineTag(d.closing.due_date)}`});
-  if(d.award) cards.push({lbl:"💰 Largest award, this edition", t:d.award, meta:`${money(d.award.contract_amount)} — ${d.award.agency_name}`});
-  if(d.hearing) cards.push({lbl:"🗣 Next public hearing", t:d.hearing, meta:`${d.hearing.agency_name} · ${fdt(d.hearing.event_date)}${eventTag(d.hearing.event_date)}`});
+  if(d.closing) cards.push({lbl:"Closing soon", t:d.closing, meta:`${d.closing.agency_name} · due ${fdt(d.closing.due_date)} ${deadlineTag(d.closing.due_date)}`});
+  if(d.award) cards.push({lbl:"Largest award, this edition", t:d.award, meta:`${money(d.award.contract_amount)} — ${d.award.agency_name}`});
+  if(d.hearing) cards.push({lbl:"Next public hearing", t:d.hearing, meta:`${d.hearing.agency_name} · ${fdt(d.hearing.event_date)}${eventTag(d.hearing.event_date)}`});
   $("#tcards").innerHTML = cards.map(c=>`<a class="t-card" href="#notice/${encodeURIComponent(c.t.request_id)}"><span class="tlbl">${c.lbl}</span><span class="tttl">${cleanText(c.t.short_title)||"(untitled)"}</span><span class="tmeta">${c.meta}</span></a>`).join("");
   $("#todaystrip").hidden = false;
 }
@@ -2081,7 +2167,7 @@ async function fillAddressLinks(r, el){
   if(!document.contains(el)) return;
   if(!geo || !geo.bbl || !/^\d{10}$/.test(geo.bbl)) return;
   const b = geo.bbl[0], block = String(parseInt(geo.bbl.slice(1,6),10)), lot = String(parseInt(geo.bbl.slice(6),10));
-  el.innerHTML = `<div class="rmeta2" style="margin:8px 0">📍 This address elsewhere:
+  el.innerHTML = `<div class="rmeta2" style="margin:8px 0">This address elsewhere:
     <a href="https://zola.planning.nyc.gov/l/lot/${b}/${block}/${lot}" target="_blank" rel="noopener">ZoLa zoning</a> ·
     <a href="https://a836-acris.nyc.gov/bblsearch/bblsearch.asp?borough=${b}&block=${block}&lot=${lot}" target="_blank" rel="noopener">ACRIS deeds</a> ·
     <a href="https://whoownswhat.justfix.org/bbl/${geo.bbl}" target="_blank" rel="noopener">Who Owns What portfolio</a>
@@ -2133,18 +2219,18 @@ async function followDollars(r, el){
   if(!document.contains(el)) return;
   if(!rows) return; // proxy unreachable → say nothing rather than something wrong
   if(!rows.length){
-    el.innerHTML = `<div class="note" style="margin-top:12px">💵 <b>Follow the dollars:</b> no registered contract in Checkbook NYC for PIN <code>${r.pin}</code> yet — registration typically lags the award notice by weeks. <a href="https://www.checkbooknyc.com/contract_search" target="_blank" rel="noopener">Search Checkbook ↗</a></div>`;
+    el.innerHTML = `<div class="note" style="margin-top:12px"><b>Follow the dollars:</b> no registered contract in Checkbook NYC for PIN <code>${r.pin}</code> yet — registration typically lags the award notice by weeks. <a href="https://www.checkbooknyc.com/contract_search" target="_blank" rel="noopener">Search Checkbook ↗</a></div>`;
     return;
   }
   const c = rows[0];
   const pct = c.current > 0 ? Math.min(100, Math.round((c.spent/c.current)*100)) : 0;
   const amended = c.original > 0 && Math.abs(c.current - c.original) > 1;
   const vendorMismatch = r.vendor_name && c.vendor && vendorStem(c.vendor) !== vendorStem(r.vendor_name);
-  el.innerHTML = `<div class="apply" style="border-color:var(--green);margin-top:14px"><h3 style="background:var(--green)">💵 Follow the dollars — Checkbook NYC</h3><div class="body">
+  el.innerHTML = `<div class="apply" style="margin-top:14px"><h3>Follow the dollars — Checkbook NYC</h3><div class="body">
     <dl>
       <dt>Contract</dt><dd><code>${c.id}</code> · registered ${c.registered?fdt(c.registered):"—"}${rows.length>1?` · <b>+${rows.length-1} more</b> under this PIN`:""}</dd>
       <dt>Committed</dt><dd><b>${money(c.current)||"$0"}</b>${amended?` <span class="tag soon">amended from ${money(c.original)}</span>`:""}</dd>
-      <dt>Paid to date</dt><dd><b>${money(c.spent)||"$0"}</b> (${pct}%)<div class="lbar" style="max-width:220px;margin-top:5px"><span style="width:${pct}%;background:var(--green)"></span></div></dd>
+      <dt>Paid to date</dt><dd><b>${money(c.spent)||"$0"}</b> (${pct}%)<div class="lbar" style="max-width:220px;margin-top:5px"><span style="width:${pct}%"></span></div></dd>
       <dt>Term</dt><dd>${fdate(c.start)||"—"} → ${fdate(c.end)||"—"}</dd>
       <dt>M/WBE</dt><dd>${c.mwbe||"—"}${c.subs && c.subs!=="N/A" ? ` · sub-vendors: ${c.subs}` : ""}</dd>
     </dl>
@@ -2218,12 +2304,12 @@ async function showAgency(name){
       ${rfps.length?`<div class="chain-h">Open solicitations</div><div class="timeline">${rfpItems}</div>`:""}
       ${events.length?`<div class="chain-h">Upcoming hearings &amp; events</div><div class="timeline">${evItems}</div>`:""}
       <div class="actions" style="margin-top:16px">
-        <button class="act primary" type="button" data-follow="agency" data-name="${nm.replace(/"/g,"&quot;")}">🔔 Follow: anything new from them</button>
-        <button class="act" type="button" id="ecopy">🔗 Copy link</button>
+        <button class="act primary" type="button" data-follow="agency" data-name="${nm.replace(/"/g,"&quot;")}">Follow: anything new from them</button>
+        <button class="act" type="button" id="ecopy">Copy link</button>
         ${pinBtn("agency", nm, agencyWho(nm), "agency profile")}
         <button class="act" type="button" data-aw="rules">Watch rules only</button>
         <button class="act" type="button" data-aw="meetings">Watch meetings only</button>
-        ${API?`<a class="act" href="${API.replace(/\/+$/,"")}/feed.xml?lens=entity&kind=agency&name=${encodeURIComponent(nm)}" target="_blank" rel="noopener">📡 RSS</a>`:""}
+        ${API?`<a class="act" href="${API.replace(/\/+$/,"")}/feed.xml?lens=entity&kind=agency&name=${encodeURIComponent(nm)}" target="_blank" rel="noopener">RSS</a>`:""}
       </div>
       <div class="note">Figures are what this agency has <b>published in the City Record</b> (2003→present for procurement) — registration and payment lag; a per-entity follow across all lenses arrives with the entity-watch feature.</div>
     </div></div>`;
@@ -2288,10 +2374,10 @@ async function showVendor(name){
       ${rows.length?`<div class="chain-h">On the record — notices naming this vendor</div><div class="timeline">${rowItems}</div>`:""}
       ${mentions.length?`<div class="chain-h">Mentioned in other notices (text match)</div><div class="timeline">${mentionItems}</div>`:""}
       <div class="actions" style="margin-top:16px">
-        <button class="act primary" type="button" data-follow="vendor" data-name="${cleanText(display).replace(/"/g,"&quot;")}">🔔 Follow this vendor</button>
-        <button class="act" type="button" id="ecopy">🔗 Copy link</button>
+        <button class="act primary" type="button" data-follow="vendor" data-name="${cleanText(display).replace(/"/g,"&quot;")}">Follow this vendor</button>
+        <button class="act" type="button" id="ecopy">Copy link</button>
         ${pinBtn("vendor", cleanText(display), cleanText(display), "vendor profile")}
-        ${API?`<a class="act" href="${API.replace(/\/+$/,"")}/feed.xml?lens=entity&kind=vendor&name=${encodeURIComponent(cleanText(display))}" target="_blank" rel="noopener">📡 RSS</a>`:""}
+        ${API?`<a class="act" href="${API.replace(/\/+$/,"")}/feed.xml?lens=entity&kind=vendor&name=${encodeURIComponent(cleanText(display))}" target="_blank" rel="noopener">RSS</a>`:""}
       </div>
       <div class="note">Identity is resolved by name normalization (case, punctuation, legal suffixes) — variants listed above; distinct companies sharing a name stem would be merged, so treat totals as <b>“published under this name,”</b> not a legal entity. Awards as published in the City Record; actual payments differ (Checkbook join coming).</div>
     </div></div>`;
@@ -2310,12 +2396,11 @@ function invStore(){
 }
 function invSave(s){ try{ localStorage.setItem(INVKEY, JSON.stringify(s)); }catch(e){} }
 const INV_HREF = {notice:"#notice/", vendor:"#vendor/", agency:"#agency/", matter:"#matter/"};
-const INV_ICON = {notice:"📄", vendor:"🏢", agency:"🏛", matter:"⏱"};
 const invItemHref = it => (INV_HREF[it.t]||"#notice/") + encodeURIComponent(it.id);
 function pinBtn(t, id, title, meta){
   const d = JSON.stringify({t, id, title:String(title).slice(0,300), meta:String(meta||"").slice(0,300)})
     .replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
-  return `<button class="act" type="button" data-pin="${d}">📌 Pin</button>`;
+  return `<button class="act" type="button" data-pin="${d}">Pin</button>`;
 }
 document.addEventListener("click", e=>{
   const b = e.target.closest("[data-pin]");
@@ -2354,12 +2439,12 @@ function invDownload(name, content, type){
 function invItemsHtml(items, readonly){
   const acc = new Date().toISOString().slice(0,10);
   return items.map((i,idx)=>`<div class="tl" data-idx="${idx}" style="align-items:flex-start">
-    <span style="flex:0 0 auto">${INV_ICON[i.t]||"📄"}</span>
+    <span class="pin" style="flex:0 0 auto">${i.t||"notice"}</span>
     <span style="flex:1 1 300px;min-width:220px">
       <b>${pivotA(invItemHref(i), i.title.replace(/[<>&]/g,""))}</b>
       <span class="rmeta" style="display:block;margin:2px 0 0">${(i.meta||"").replace(/[<>&]/g,"")} · pinned ${i.added}</span>
       ${readonly
-        ? (i.note?`<span class="rmeta2" style="display:block">📝 ${i.note.replace(/[<>&]/g,"")}</span>`:"")
+        ? (i.note?`<span class="rmeta2" style="display:block">${i.note.replace(/[<>&]/g,"")}</span>`:"")
         : `<input type="text" class="invnote" data-idx="${idx}" value="${(i.note||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;")}" placeholder="add a note…" style="margin-top:6px;font-size:13px;padding:7px 9px">`}
     </span>
     ${readonly?"":`<button class="act invdel" data-idx="${idx}" type="button" style="padding:6px 9px">✕</button>`}
@@ -2377,13 +2462,13 @@ async function showInvestigation(){
       <input type="text" id="invname" value="${inv.name.replace(/"/g,"&quot;")}" style="font:800 22px/1.2 var(--font-display);border:none;background:transparent;padding:0;width:100%">
       <div class="rmeta2">${inv.items.length} pinned item${inv.items.length===1?"":"s"} · started ${inv.created}</div>
       <div class="timeline" style="margin-top:14px" id="invitems">
-        ${inv.items.length ? invItemsHtml(inv.items,false) : '<div class="empty">Nothing pinned yet — use the 📌 Pin button on any notice, vendor, agency, or matter page.</div>'}
+        ${inv.items.length ? invItemsHtml(inv.items,false) : '<div class="empty">Nothing pinned yet — use the Pin button on any notice, vendor, agency, or matter page.</div>'}
       </div>
       <div class="actions" style="margin-top:16px">
-        <button class="act primary" type="button" id="invshare">🔗 Share (read-only link)</button>
-        <button class="act" type="button" id="invcsv">⬇ .csv</button>
-        <button class="act" type="button" id="invjson">⬇ .json</button>
-        <button class="act" type="button" id="invprint">🖨 Print dossier</button>
+        <button class="act primary" type="button" id="invshare">Share (read-only link)</button>
+        <button class="act" type="button" id="invcsv">Export .csv</button>
+        <button class="act" type="button" id="invjson">Export .json</button>
+        <button class="act" type="button" id="invprint">Print dossier</button>
         <button class="act" type="button" id="invclear" style="color:var(--rose)">Clear all</button>
       </div>
       <div id="invmsg" class="muted" style="margin-top:10px;font:13px/1.5 ui-sans-serif,system-ui,sans-serif"></div>
@@ -2430,7 +2515,7 @@ async function showSharedInv(id){
       <div class="ftype" style="margin-bottom:6px">Shared investigation · read-only · snapshot of ${j.sharedAt||"—"}</div>
       <div class="rolename">${String(j.name||"Untitled").replace(/[<>&]/g,"")}</div>
       <div class="timeline" style="margin-top:14px">${invItemsHtml(j.items,true)}</div>
-      <div class="actions" style="margin-top:16px"><button class="act primary" type="button" id="invimport">📌 Import into my investigation</button></div>
+      <div class="actions" style="margin-top:16px"><button class="act primary" type="button" id="invimport">Import into my investigation</button></div>
     </div></div>`;
   $("#invimport").addEventListener("click", ()=>{
     const s=invStore(), inv=s.invs[s.current];
@@ -2443,7 +2528,6 @@ async function showSharedInv(id){
    One procurement matter as a chronology: every City Record stage sharing the PIN, then the
    Checkbook events (registration, paid-to-date) stitched onto the same spine. Cross-section
    stitching (hearings) isn't in the data — only ~8 of 10.5K hearing rows carry a PIN. */
-const STAGE_ICON = {"Solicitation":"📢","Intent to Negotiate":"🤝","Vendor List":"📋","Intent to Award":"✍️","Award":"💰"};
 async function showMatter(pin){
   showTab("entity");
   const box = $("#entityview"), safe = String(pin).replace(/[<>&]/g,"");
@@ -2465,14 +2549,13 @@ async function showMatter(pin){
   const c = cb && cb[0];
   const items = rows.map(r=>({
     date: r.start_date,
-    icon: STAGE_ICON[r.type_of_notice_description] || "📄",
     label: `<b>${r.type_of_notice_description||"Notice"}</b> — ${pivotA("#notice/"+encodeURIComponent(r.request_id), cleanText(r.short_title)||"(untitled)")}`,
     extra: [money(r.contract_amount), r.vendor_name?"→ "+pivotA(vendorHref(r.vendor_name), cleanText(r.vendor_name)):null,
             r.due_date?"responses due "+fdate(r.due_date):null].filter(Boolean).join(" · ")
   }));
-  if(c && c.registered) items.push({date:c.registered, icon:"🏛", label:`<b>Contract registered</b> — <code>${c.id}</code> (Checkbook NYC)`, extra:`committed ${money(c.current)||"—"}`});
+  if(c && c.registered) items.push({date:c.registered, label:`<b>Contract registered</b> — <code>${c.id}</code> (Checkbook NYC)`, extra:`committed ${money(c.current)||"—"}`});
   items.sort((a,b)=>(a.date||"9999").localeCompare(b.date||"9999"));
-  if(c) items.push({date:null, icon:"💵", label:`<b>Paid to date: ${money(c.spent)||"$0"}</b> of ${money(c.current)||"—"} committed`,
+  if(c) items.push({date:null, label:`<b>Paid to date: ${money(c.spent)||"$0"}</b> of ${money(c.current)||"—"} committed`,
     extra:`term ${fdate(c.start)||"—"} → ${fdate(c.end)||"—"} · <a href="https://www.checkbooknyc.com/smart_search/${encodeURIComponent(c.id)}" target="_blank" rel="noopener">Checkbook ↗</a>`});
   const link = location.origin + location.pathname + "#matter/" + encodeURIComponent(pin);
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
@@ -2482,14 +2565,13 @@ async function showMatter(pin){
       <div class="rolename">${agency?pivotA(agencyHref(agency), agencyWho(agency)):""}${vendor?` × ${pivotA(vendorHref(vendor), cleanText(vendor))}`:""}</div>
       <div class="timeline" style="margin-top:14px">
         ${items.map(it=>`<div class="tl"><span class="tldate">${it.date?fdate(it.date):"today"}</span>
-          <span style="flex:0 0 auto">${it.icon}</span>
           <span class="tlreason" style="font-weight:400">${it.label}</span>
           ${it.extra?`<span class="rmeta" style="margin:0">${it.extra}</span>`:""}</div>`).join("")}
       </div>
       <div class="actions" style="margin-top:16px">
-        <button class="act primary" type="button" id="ecopy">🔗 Copy link</button>
+        <button class="act primary" type="button" id="ecopy">Copy link</button>
         ${pinBtn("matter", pin, `Matter — PIN ${safe}`, [agency, vendor?cleanText(vendor):null].filter(Boolean).join(" × "))}
-        <a class="act" href="${REQ_URL(rows[rows.length-1].request_id)}" target="_blank" rel="noopener">↗ Latest notice in City Record</a>
+        <a class="act" href="${REQ_URL(rows[rows.length-1].request_id)}" target="_blank" rel="noopener">Latest notice in City Record ↗</a>
       </div>
       <div class="note">The spine is every City Record notice sharing this PIN, in order; Checkbook events join deterministically on the same PIN. Public-hearing notices rarely carry PINs, so hearings may be missing from the chronology.</div>
     </div></div>`;
@@ -2636,12 +2718,12 @@ async function showNotice(id){
       ${glanceFor(r)}
       <div id="naddr"></div><div id="ndollars"></div>
       <div class="actions" style="margin-top:14px">
-        <button class="act primary" type="button" id="ncopy">🔗 Copy link</button>
-        <a class="act" href="mailto:?subject=${encodeURIComponent("City Record notice: "+(cleanText(r.short_title)||r.request_id))}&body=${encodeURIComponent(link+"\n\nVia CROL-List — The City Record, searchable.")}">✉ Email</a>
-        <button class="act" type="button" id="nprint">🖨 Print</button>
-        ${(r.due_date||r.event_date)?'<button class="act" type="button" id="nics">📅 Add to calendar</button>':""}
+        <button class="act primary" type="button" id="ncopy">Copy link</button>
+        <a class="act" href="mailto:?subject=${encodeURIComponent("City Record notice: "+(cleanText(r.short_title)||r.request_id))}&body=${encodeURIComponent(link+"\n\nVia CROL-List — The City Record, searchable.")}">Email</a>
+        <button class="act" type="button" id="nprint">Print</button>
+        ${(r.due_date||r.event_date)?'<button class="act" type="button" id="nics">Add to calendar</button>':""}
         ${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}
-        <a class="act" href="${REQ_URL(r.request_id)}" target="_blank" rel="noopener">↗ View in City Record</a>
+        <a class="act" href="${REQ_URL(r.request_id)}" target="_blank" rel="noopener">View in City Record ↗</a>
       </div>
       ${r.type_of_notice_description==="Solicitation"?buildApply(r):""}
       ${scope?`<details class="fulltext"${scope.length<=600?" open":""}><summary>Read the full notice (original City Record text)</summary><div class="scope" style="margin-top:10px">${scope.slice(0,6000)}${scope.length>6000?"…":""}</div></details>`:""}
@@ -2658,8 +2740,10 @@ async function showNotice(id){
   if(usablePin(r.pin)){ loadChain(r).then(chain=>{ if(chain.length>1) $("#nchain").innerHTML = chainHTML(r, chain); }).catch(()=>{}); }
 }
 
-/* ===================== INIT ===================== */
-$("#go").addEventListener("click", search);
+/* ===================== INIT =====================
+   No "Filter" buttons: selects apply on change, text applies as you type (debounced — the
+   query cache + stale guards make overlapping keystrokes safe) or on Enter. Craigslist rule:
+   the fastest control is the one you don't have to click. */
 $("#nlgo").addEventListener("click", nlTranslate);
 $("#nlq").addEventListener("keydown", e=>{ if(e.key==="Enter") nlTranslate(); });
 injectNLBoxes();
@@ -2667,11 +2751,12 @@ renderNLSamples("money", $("#nltry"));
 $("#export").addEventListener("click", exportCSV);
 soda({"$select":"min(start_date) as a, max(start_date) as b"}).then(r=>{ const el=$("#editionspan"); if(el&&r&&r[0]){ const f=s=>new Date(s).toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"}); el.textContent=f(r[0].a)+" – "+f(r[0].b); } }).catch(()=>{});
 $("#kw").addEventListener("keydown", e=>{ if(e.key==="Enter") search(); });
+$("#kw").addEventListener("input", debounce(search, 500));
 ["#mode","#agency","#sort","#minamt"].forEach(s=>$(s).addEventListener("change", search));
 $("#closingweek").addEventListener("click", ()=>{ closingWeek = !closingWeek; $("#closingweek").classList.toggle("on", closingWeek); search(); });
 
-$("#pgo").addEventListener("click", pSearch);
 $("#pkw").addEventListener("keydown", e=>{ if(e.key==="Enter") pSearch(); });
+$("#pkw").addEventListener("input", debounce(pSearch, 500));
 $("#pmode").addEventListener("change", ()=>{ $("#pkwlabel").textContent = $("#pmode").value==="role"?"Title keyword":"Person's name"; $("#pkw").placeholder = $("#pmode").value==="role"?"emergency medical, attorney, engineer…":"last name, e.g. Rodriguez"; });
 
 $("#awatch").addEventListener("change", aWatchChange);
@@ -2731,13 +2816,13 @@ $("#quizgo").addEventListener("click",()=>{
   $("#apreviewbox").scrollIntoView({behavior:"smooth", block:"start"});
 });
 
-$("#lgo").addEventListener("click", landSearch);
 $("#lkw").addEventListener("keydown", e=>{ if(e.key==="Enter") landSearch(); });
+$("#lkw").addEventListener("input", debounce(landSearch, 700)); // geocoding behind it — a touch lazier
 ["#lboro","#lstatus"].forEach(s=>$(s).addEventListener("change", landSearch));
 
 ["property","rules","meetings"].forEach(k=>{
-  $("#"+k+"go").addEventListener("click",()=>loadSection(k));
   $("#"+k+"kw").addEventListener("keydown",e=>{ if(e.key==="Enter") loadSection(k); });
+  $("#"+k+"kw").addEventListener("input", debounce(()=>loadSection(k), 500));
   const w=$("#"+k+"when"); if(w) w.addEventListener("change",()=>loadSection(k));
   const ag=$("#"+k+"agency"); if(ag) ag.addEventListener("change",()=>loadSection(k));
 });
