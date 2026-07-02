@@ -103,6 +103,13 @@ For each name: <b>awards</b> = award/intent notices naming that vendor (name-ste
 10/day/IP) and returns an id; <code>GET /inv/&lt;id&gt;</code> reads it back. The site renders these at
 <code>/#investigation/shared/&lt;id&gt;</code>.</p>
 
+<h2>Public stats</h2>
+<p class="src"><code>GET /stats</code> — the project's own usage as aggregate counts (active subscriptions,
+digests sent, digest links followed, feed/batch/share activity). No personal data exists behind it; cached
+~15&nbsp;minutes. Human-readable version: <a href="stats.html">stats</a>. Related: digest emails link notices via
+<code>GET /r/&lt;kind&gt;/&lt;request_id&gt;</code>, a count-only redirect to the notice permalink — it accepts a
+validated id (never a URL, so it can't redirect off-site) and records a per-day number, never a person.</p>
+
 <h2>Upstream data</h2>
 <p class="src">CROL-List republishes and joins public datasets — for bulk work, go straight to the sources:
 <a href="https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx" target="_blank" rel="noopener">City Record Online (dg92-zbpx, Socrata SODA)</a> ·
