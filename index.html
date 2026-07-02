@@ -754,7 +754,7 @@ async function loadAgencies(){
   }catch(e){ $("#agency").innerHTML = '<option value="">All agencies</option>'; }
 }
 
-let currentRows = [], mode = "open", selectedRFP = null, closingWeek = false, moneyLoaded = false;
+let currentRows = [], mode = "open", selectedRFP = null, closingWeek = false, moneyLoaded = false, methodSel = "";
 const weekOutISO = () => new Date(Date.now()+7*86400000).toISOString().slice(0,10) + "T23:59:59";
 async function search(){
   moneyLoaded = true;
@@ -771,6 +771,8 @@ async function search(){
   if(mode === "open" && closingWeek) where += ` AND due_date <= '${weekOutISO()}'`;
   if(agency) where += ` AND agency_name='${agency.replace(/'/g,"''")}'`;
   if(mode === "award" && minamt) where += ` AND contract_amount >= ${minamt} AND contract_amount < 5000000000`;
+  const facetWhere = where; // method-facet counts are computed WITHOUT the method clause (Datasette-style)
+  if(methodSel) where += ` AND selection_method_description='${methodSel.replace(/'/g,"''")}'`;
 
   let order;
   if(sort === "amount") order = "contract_amount DESC";
@@ -778,8 +780,9 @@ async function search(){
   else order = mode === "award" ? "start_date DESC" : "due_date ASC";
 
   updateHash();
+  loadMethodFacet(facetWhere, kw); // fire-and-forget; the rail renders when it lands
   const heads = {open:"Open RFPs", allrfp:"All RFPs", award:"Recent Awards"};
-  $("#reshead").textContent = heads[mode] + (mode==="open" && closingWeek ? " · closing this week" : "") + (agency ? " · " + agency : "");
+  $("#reshead").textContent = heads[mode] + (mode==="open" && closingWeek ? " · closing this week" : "") + (methodSel ? " · " + methodSel : "") + (agency ? " · " + agency : "");
   $("#rescount").textContent = "";
   $("#list").innerHTML = '<div class="empty"><span class="loading"></span> searching…</div>';
   const p = {"$select":SELECT,"$where":where,"$order":order,"$limit":"40"};
@@ -800,6 +803,29 @@ async function search(){
   renderList();
   if(narrowed) $("#list").insertAdjacentHTML("afterbegin",
     `<div class="note warn" style="margin:10px 12px 0">Full-history search was slow — showing <b>recent editions only</b> (since ${recentCutLabel()}). Add an agency or keyword to search all years faster.</div>`);
+}
+
+/* Selection-method facet — every value is a pivot with a live count; counts reflect the
+   current filters minus the method clause itself, so clicking narrows, re-clicking clears. */
+async function loadMethodFacet(where, kw){
+  const el = $("#methodfacet");
+  try{
+    const p = {"$select":"selection_method_description, count(1) as n",
+      "$where": where + " AND selection_method_description IS NOT NULL",
+      "$group":"selection_method_description","$order":"n DESC","$limit":"7"};
+    if(kw) p["$q"] = kw;
+    const rows = (await soda(p)).filter(r=>r.selection_method_description && r.selection_method_description.trim());
+    if(rows.length < 2 && !methodSel){ el.style.display="none"; return; }
+    el.style.display = "";
+    el.innerHTML = '<span class="facetlbl">Method:</span>' + rows.map(r=>{
+      const m = r.selection_method_description;
+      return `<button type="button" class="chip ${methodSel===m?'on':''}" data-m="${m.replace(/"/g,"&quot;")}">${m}<span class="ct">${(+r.n).toLocaleString()}</span></button>`;
+    }).join("");
+    el.querySelectorAll(".chip").forEach(b=>b.addEventListener("click", ()=>{
+      methodSel = methodSel === b.dataset.m ? "" : b.dataset.m;
+      search();
+    }));
+  }catch(e){ el.style.display = "none"; }
 }
 
 function renderList(){
@@ -876,7 +902,8 @@ function agencyWho(name){ const a = AGENCY_ABBR[String(name||"").trim()]; return
 
 function glanceFor(r){
   const row = (k,v) => v ? `<div class="gl"><b>${k}</b><span>${v}</span></div>` : "";
-  const who = agencyWho(r.agency_name) + (r.vendor_name ? ` → awarded to <b>${cleanText(r.vendor_name)}</b>` : "");
+  const who = (r.agency_name ? pivotA(agencyHref(r.agency_name), agencyWho(r.agency_name)) : "")
+    + (r.vendor_name ? ` → awarded to <b>${pivotA(vendorHref(r.vendor_name), cleanText(r.vendor_name))}</b>` : "");
   const amt = money(r.contract_amount);
   const what = [r.type_of_notice_description, r.category_description || r.section_name].filter(Boolean).join(" — ")
     + (amt ? ` · <b>${amt}</b>` : "");
@@ -970,7 +997,7 @@ function chainHTML(r, chain){
         <div class="when">${fdate(c.start_date)}</div>
         <div class="bt">${cleanText(c.short_title)||"(untitled)"}</div>
         ${amt? `<div class="amt">${amt}</div>`:""}
-        ${c.vendor_name? `<div class="vend">→ ${cleanText(c.vendor_name)}</div>`:""}
+        ${c.vendor_name? `<div class="vend">→ ${pivotA(vendorHref(c.vendor_name), cleanText(c.vendor_name))}</div>`:""}
         <a class="view" href="${REQ_URL(c.request_id)}" target="_blank" rel="noopener">View in City Record ↗</a>
       </div></div>`;
     if(idx < chain.length-1) html += '<div class="connector">→</div>';
@@ -993,7 +1020,7 @@ function renderDetail(r, chain, stats){
   if(r.type_of_notice_description !== "Solicitation") html += glanceFor(r);
   if(stats && stats.n){
     html += `<div class="agencybar">
-      <div><div class="big">${money(stats.total)||"—"}</div><div class="lbl">${r.agency_name}<br>total awarded, on record</div></div>
+      <div><div class="big">${money(stats.total)||"—"}</div><div class="lbl">${pivotA(agencyHref(r.agency_name), r.agency_name)}<br>total awarded, on record</div></div>
       <div><div class="big">${(+stats.n).toLocaleString()}</div><div class="lbl">contract awards<br>published</div></div>
     </div>`;
   }
@@ -1650,7 +1677,7 @@ function renderFeed(key, rows){
     const pbadges = key==="property" && (r._asset || r._badge)
       ? `<div>${r._asset?`<span class="tag asset">${ASSET_LABEL[r._asset]||""}</span>`:""}${r._badge?`<span class="tag amt">${r._badge}</span>`:""}</div>` : "";
     return `<div class="fcard" style="border-top-color:${cfg.topBorder}">
-      <div class="ftype">${r.type_of_notice_description||""}${r.agency_name?" · "+r.agency_name:""}${ev?` · <b style="color:var(--ink)">${fdt(ev)}</b>${eventTag(ev)}`:""}</div>
+      <div class="ftype">${r.type_of_notice_description||""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}${ev?` · <b style="color:var(--ink)">${fdt(ev)}</b>${eventTag(ev)}`:""}</div>
       ${pbadges}
       <div class="ftitle">${cleanText(r.short_title)||"(untitled)"}</div>
       ${addr?`<div class="faddr">📍 ${addr}</div>`:""}
@@ -2092,6 +2119,7 @@ function serializeState(){
     if($("#sort").value !== "deadline") q.set("sort", $("#sort").value);
     if($("#minamt").value) q.set("min", $("#minamt").value);
     if(closingWeek) q.set("closing", "week");
+    if(methodSel) q.set("m", methodSel);
   } else if(tab === "people"){
     if($("#pmode").value !== "role") q.set("mode", $("#pmode").value);
     if($("#pkw").value.trim()) q.set("q", $("#pkw").value.trim());
@@ -2142,6 +2170,7 @@ function applyHash(){
       if(q.get("min")) $("#minamt").value = q.get("min");
       closingWeek = q.get("closing") === "week";
       $("#closingweek").classList.toggle("on", closingWeek);
+      methodSel = q.get("m") || "";
       showTab("money"); search();
     } else if(tab === "people"){
       if(q.get("mode")){ $("#pmode").value = q.get("mode"); $("#pmode").dispatchEvent(new Event("change")); }
@@ -2186,7 +2215,7 @@ async function showNotice(id){
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CROL-List</a></p>
     <div class="panel" style="padding:22px 24px">
-      <div class="ftype" style="margin-bottom:6px">${r.type_of_notice_description||"Notice"}${r.section_name?" · "+r.section_name:""}${r.agency_name?" · "+r.agency_name:""}</div>
+      <div class="ftype" style="margin-bottom:6px">${r.type_of_notice_description||"Notice"}${r.section_name?" · "+r.section_name:""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}</div>
       <div class="rolename">${cleanText(r.short_title)||"(untitled notice)"}</div>
       ${glanceFor(r)}
       <div class="actions" style="margin-top:14px">
