@@ -1689,15 +1689,21 @@ const SECTION_WATCH_LABEL = {property:"property sale notices", rules:"rule chang
 function aStore(){ try{ return JSON.parse(localStorage.getItem(AKEY)||"[]"); }catch(e){ return []; } }
 function aSet(v){ try{ localStorage.setItem(AKEY, JSON.stringify(v)); }catch(e){} }
 
+let lastWatch = null;
 function aWatchChange(){
   const w = $("#awatch").value;
+  // The param means something different per watch type (place vs keyword) — switching types
+  // clears it so a value never leaks from one topic into another. Each type's empty state is
+  // parallel: "all matching notices", with the placeholder suggesting how to narrow.
+  if(lastWatch !== null && lastWatch !== w){ $("#aparam").value=""; $("#aagency").value=""; }
+  lastWatch = w;
   $("#aagency").style.display = SECTION_WATCH_LABEL[w] ? "" : "none";
   if(w==="bigaward"){ $("#aparamlabel").textContent="Minimum award"; $("#athresh").style.display=""; $("#aparam").style.display="none"; }
   else {
     $("#athresh").style.display="none"; $("#aparam").style.display="";
-    if(w==="rfpkw"){ $("#aparamlabel").textContent="Keyword"; $("#aparam").placeholder="construction, IT, security…"; }
+    if(w==="rfpkw"){ $("#aparamlabel").textContent="Keyword (optional)"; $("#aparam").placeholder="construction, IT, security…"; }
     else if(SECTION_WATCH_LABEL[w]){ $("#aparamlabel").textContent="Keyword (optional)"; $("#aparam").placeholder=w==="rules"?"e-bike, sidewalk, licensing…":w==="meetings"?"community board, landmarks…":"Brooklyn, auction, HPD…"; }
-    else { $("#aparamlabel").textContent="ZIP, address, or neighborhood"; $("#aparam").placeholder="79 Rivington, Allen Street, Bushwick…"; if(!$("#aparam").value.trim()) $("#aparam").value="79 Rivington"; }
+    else { $("#aparamlabel").textContent="ZIP, address, or neighborhood (optional)"; $("#aparam").placeholder="79 Rivington, Allen Street, Bushwick…"; }
   }
 }
 function aDescribe(){
@@ -1708,7 +1714,8 @@ function aDescribe(){
     const bits=[$("#aparam").value.trim()?`matching “${$("#aparam").value.trim()}”`:"", $("#aagency").value.trim()?`from ${$("#aagency").value.trim()}`:""].filter(Boolean).join(" ");
     return `${freq} digest of ${SECTION_WATCH_LABEL[w]}${bits?" "+bits:""}`;
   }
-  return `${freq} digest of rezonings near “${$("#aparam").value||"…"}”`;
+  const place=$("#aparam").value.trim();
+  return place ? `${freq} digest of rezonings near “${place}”` : `${freq} digest of new rezonings citywide`;
 }
 // When the digest actually goes out. Cron is "0 13 * * *" (13:00 UTC daily); weekly fires only on
 // Mondays. 13:00 UTC = ~9 AM in New York during EDT, 8 AM during EST — hence the winter note.
@@ -2111,8 +2118,9 @@ $("#quizfreq").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",(
 $("#quizgo").addEventListener("click",()=>{
   if(!quizW){ $("#quiznarrow").placeholder="← pick a topic first"; return; }
   $("#awatch").value=quizW; aWatchChange();
-  const narrow=$("#quiznarrow").value.trim();
-  if(narrow && quizW!=="bigaward") $("#aparam").value=narrow;
+  // Always assign — every topic gets the same treatment: your narrowing, or the topic's
+  // own "all notices" default. Never a value left over from a previous topic.
+  if(quizW!=="bigaward") $("#aparam").value=$("#quiznarrow").value.trim();
   const f=$("#quizfreq").querySelector(".chip.on"); if(f) $("#afreq").value=f.dataset.f;
   updateAWhen();
   aPreview();
