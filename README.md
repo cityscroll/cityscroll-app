@@ -69,3 +69,17 @@ instant example chips and title typeahead.
 | [Planning Labs GeoSearch](https://geosearch.planninglabs.nyc/) | `geosearch.planninglabs.nyc` | Land, Property (geocoding) |
 | [MapPLUTO (ArcGIS)](https://www.nyc.gov/site/planning/data-maps/open-data/dwn-pluto-mappluto.page) | `services5.arcgis.com/…/MAPPLUTO` | Land (tax-lot polygons) |
 | [DOB job filings](https://data.cityofnewyork.us/d/w9ak-ipjd) | `w9ak-ipjd`, `ic3t-wcy2` | Property ("Still standing?") |
+
+## Testing
+
+Three layers, all runnable from the repo root:
+
+- **Unit** — `node --test` · pure functions extracted from `index.html` by brace-matching so
+  tests can't drift from the source (`test/unit.test.mjs`, `test/fallback.test.mjs`): entity-name
+  stems, the property classifier, deadline/urgency tags, dollar badges, `workerFetch` failover,
+  NL device-parse fallback.
+- **Functional** — `./test/functional/run.sh` · nine headless-Chromium specs driving every
+  shipped feature against a local server (started for you), including regression specs for the
+  quiz-parallelism and stale-DNS-share bugs. Needs `pip install playwright && playwright install chromium`.
+- **E2E** — `CROL_BASE=https://crol-list.org/ ./test/functional/run.sh` · the same specs against
+  production. The worker's own live suite is `npm run test:live` in the sibling repo.
