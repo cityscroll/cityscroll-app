@@ -99,6 +99,7 @@
   .tag.open{background:#e9f2ea;color:var(--green)}
   .tag.soon{background:#fbf0dc;color:var(--amber)}
   .tag.closed{background:#f6e7e4;color:var(--rose)}
+  .tag.hot{background:var(--oxblood);color:#fff}
   .tag.amt{background:#fbf0dc;color:#8a5c12}
 
   .detail{padding:18px 18px 22px;min-height:320px}
@@ -309,6 +310,10 @@
         </select>
       </div>
       <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button id="go">Filter</button></div>
+    </div>
+
+    <div class="chiprow" id="moneyquick">
+      <button type="button" class="chip" id="closingweek">⏳ Closing this week</button>
     </div>
 
     <div class="grid">
@@ -553,8 +558,18 @@ function deadlineTag(due){
   const dl = daysLeft(due);
   if(dl === null) return "";
   if(dl < 0) return `<span class="tag closed">closed</span>`;
+  if(dl <= 3) return `<span class="tag hot">⏳ ${dl===0?"closes today":`closes in ${dl} day${dl===1?"":"s"}`}</span>`;
   if(dl <= 14) return `<span class="tag soon">closes in ${dl} day${dl===1?"":"s"}</span>`;
   return `<span class="tag open">open · ${dl} days left</span>`;
+}
+// Countdown chip for event dates (hearings, meetings, sales). Past events get no chip —
+// the date itself still shows; urgency chips are for what the reader can still attend.
+function eventTag(ev){
+  const dl = daysLeft(ev);
+  if(dl === null || dl < 0) return "";
+  if(dl <= 3) return ` <span class="tag hot">⏳ ${dl===0?"today":`in ${dl} day${dl===1?"":"s"}`}</span>`;
+  if(dl <= 14) return ` <span class="tag soon">in ${dl} days</span>`;
+  return ` <span class="tag open">in ${dl} days</span>`;
 }
 
 /* ===================== TABS ===================== */
@@ -576,15 +591,20 @@ async function loadAgencies(){
   }catch(e){ $("#agency").innerHTML = '<option value="">All agencies</option>'; }
 }
 
-let currentRows = [], mode = "open", selectedRFP = null;
+let currentRows = [], mode = "open", selectedRFP = null, closingWeek = false;
+const weekOutISO = () => new Date(Date.now()+7*86400000).toISOString().slice(0,10) + "T23:59:59";
 async function search(){
   mode = $("#mode").value;
   const agency = $("#agency").value, kw = $("#kw").value.trim();
   const sort = $("#sort").value, minamt = $("#minamt").value;
   $("#minwrap").style.opacity = mode === "award" ? "1" : ".45";
+  // The closing-week quick filter only makes sense for open RFPs.
+  if(mode !== "open" && closingWeek){ closingWeek = false; $("#closingweek").classList.remove("on"); }
+  $("#moneyquick").style.display = mode === "open" ? "" : "none";
 
   let where = mode === "award" ? "type_of_notice_description='Award'" : "type_of_notice_description='Solicitation'";
   if(mode === "open") where += ` AND due_date > '${todayISO()}'`;
+  if(mode === "open" && closingWeek) where += ` AND due_date <= '${weekOutISO()}'`;
   if(agency) where += ` AND agency_name='${agency.replace(/'/g,"''")}'`;
   if(mode === "award" && minamt) where += ` AND contract_amount >= ${minamt} AND contract_amount < 5000000000`;
 
@@ -594,7 +614,7 @@ async function search(){
   else order = mode === "award" ? "start_date DESC" : "due_date ASC";
 
   const heads = {open:"Open RFPs", allrfp:"All RFPs", award:"Recent Awards"};
-  $("#reshead").textContent = heads[mode] + (agency ? " · " + agency : "");
+  $("#reshead").textContent = heads[mode] + (mode==="open" && closingWeek ? " · closing this week" : "") + (agency ? " · " + agency : "");
   $("#rescount").textContent = "";
   $("#list").innerHTML = '<div class="empty"><span class="loading"></span> searching…</div>';
   const p = {"$select":SELECT,"$where":where,"$order":order,"$limit":"40"};
@@ -716,6 +736,7 @@ function buildApply(r){
   let due = "";
   if(r.due_date){
     const tag = dl === null ? "" : (dl < 0 ? `<span class="tag closed">closed</span>` :
+      dl <= 3 ? `<span class="tag hot">⏳ ${dl===0?"due today":dl+" day"+(dl===1?"":"s")+" left"}</span>` :
       dl <= 14 ? `<span class="tag soon">${dl} day${dl===1?"":"s"} left</span>` : `<span class="tag open">${dl} days left</span>`);
     due = `<div class="due"><span class="d">Respond by ${fdt(r.due_date)}</span>${tag}</div>`;
   }
@@ -1350,7 +1371,7 @@ function renderFeed(key, rows){
     if(addr) acts+=`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(addr+' New York NY')}" target="_blank" rel="noopener">🗺 Map</a>`;
     if(addr && key==="property") acts+=`<button class="act" type="button" data-demo="${r.request_id}">🏚 Still standing?</button>`;
     return `<div class="fcard" style="border-top-color:${cfg.topBorder}">
-      <div class="ftype">${r.type_of_notice_description||""}${r.agency_name?" · "+r.agency_name:""}${ev?` · <b style="color:var(--ink)">${fdt(ev)}</b>`:""}</div>
+      <div class="ftype">${r.type_of_notice_description||""}${r.agency_name?" · "+r.agency_name:""}${ev?` · <b style="color:var(--ink)">${fdt(ev)}</b>${eventTag(ev)}`:""}</div>
       <div class="ftitle">${cleanText(r.short_title)||"(untitled)"}</div>
       ${addr?`<div class="faddr">📍 ${addr}</div>`:""}
       ${scope?`<div class="fscope">${scope}${scope.length>=200?"…":""}</div>`:""}
@@ -1547,6 +1568,7 @@ $("#export").addEventListener("click", exportCSV);
 soda({"$select":"min(start_date) as a, max(start_date) as b"}).then(r=>{ const el=$("#editionspan"); if(el&&r&&r[0]){ const f=s=>new Date(s).toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"}); el.textContent=f(r[0].a)+" – "+f(r[0].b); } }).catch(()=>{});
 $("#kw").addEventListener("keydown", e=>{ if(e.key==="Enter") search(); });
 ["#mode","#agency","#sort","#minamt"].forEach(s=>$(s).addEventListener("change", search));
+$("#closingweek").addEventListener("click", ()=>{ closingWeek = !closingWeek; $("#closingweek").classList.toggle("on", closingWeek); search(); });
 
 $("#pgo").addEventListener("click", pSearch);
 $("#pkw").addEventListener("keydown", e=>{ if(e.key==="Enter") pSearch(); });
