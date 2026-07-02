@@ -70,6 +70,21 @@
 tells the truth where a version number would be theater. A tool that watches the city's public record should keep
 a public record of itself. Live usage numbers: <a href="stats.html">stats</a>.</p>
 
+<section class="rel" id="2026-07-02c">
+  <h2>2026.07.02 · Snap + crisp: the round-four speed-and-declutter pass</h2>
+  <div class="foryou"><b>For you</b> — The site looks calmer and feels immediate. Lists show
+  content-shaped placeholders instead of spinners; filtering keeps your place instead of blanking
+  the list; going back to a tab you already loaded is instant; clicking a notice paints its detail
+  at once (the paper trail fills in a beat later). Search runs as you type — the Filter buttons
+  are gone because you no longer need them.</div>
+  <ul>
+    <li>~150KB of map code (Leaflet) no longer blocks first paint — it loads only when the Land lens needs it. Unused font weight dropped; the browser now pre-connects to the data APIs.</li>
+    <li>A read-side query cache (5-minute TTL) with request coalescing: revisiting a tab, filter, or notice renders from memory.</li>
+    <li>Today's Edition renders instantly from your last visit's copy and refreshes behind itself — no more masthead reflow.</li>
+    <li>Declutter, per <a href="https://github.com/jimdc/crol-list/blob/main/docs/decisions/005-snap-crisp-design-grounding.md">decision 005</a>: one accent color (urgency and red flags keep theirs), ~40 decorative emoji removed, shadows off, the stage-legend strip retired. The design is now formally anchored to citymeetings.nyc/craigslist restraint and Tufte's data-ink rule.</li>
+  </ul>
+</section>
+
 <section class="rel" id="2026-07-02b">
   <h2>2026.07.02 · Enablement: public stats, honest click counts, this page</h2>
   <div class="foryou"><b>For you</b> — You can now see the project's own usage numbers at
