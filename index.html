@@ -989,7 +989,8 @@ function buildApply(r){
 
 function chainHTML(r, chain){
   const blanket = chain.length > 5 && chain.every(c=>c.type_of_notice_description==="Award");
-  let html = '<div class="chain-h">The paper trail (notices sharing this PIN)</div><div class="chain">';
+  const tlink = usablePin(r.pin) ? ` · <a class="pivot" href="#matter/${encodeURIComponent(r.pin)}">⏱ full timeline with payments</a>` : "";
+  let html = `<div class="chain-h">The paper trail (notices sharing this PIN)${tlink}</div><div class="chain">`;
   chain.forEach((c,idx)=>{
     const amt = money(c.contract_amount);
     html += `<div class="stage"><div class="box ${boxClass(c.type_of_notice_description)}">
@@ -1016,7 +1017,7 @@ function chainHTML(r, chain){
 
 function renderDetail(r, chain, stats){
   let html = `<div class="actions" style="margin:0 0 12px"><button class="act" type="button" id="dcopy">🔗 Copy link to this notice</button></div>`;
-  html += `<div id="dcontext"></div>`;
+  html += `<div id="dcontext"></div><div id="ddollars"></div>`;
   // Solicitations get the richer how-to-respond panel below; everything else gets the glance box.
   if(r.type_of_notice_description !== "Solicitation") html += glanceFor(r);
   if(stats && stats.n){
@@ -1035,6 +1036,7 @@ function renderDetail(r, chain, stats){
   const ib = $("#icsbtn"); if(ib) ib.addEventListener("click", downloadICS);
   const dc = $("#dcopy"); if(dc) dc.addEventListener("click", ()=>copyText(noticeLink(r.request_id), dc));
   fillContext(r, $("#dcontext"));
+  followDollars(r, $("#ddollars"));
 }
 
 function parseNL(text){
@@ -2026,6 +2028,23 @@ async function awardContext(r){
   return bits.length ? `<div class="glance" style="border-left-color:var(--amber)"><div class="gl"><b>Context</b><span>${bits.join(" · ")} · <a href="about.html#context">how computed</a></span></div></div>` : "";
 }
 
+/* Address cross-links: geocode → BBL → deep links into the city's other property records.
+   The Datasette lesson — cheap outbound joins deliver most of a warehouse's value. */
+async function fillAddressLinks(r, el){
+  if(!el || !goodAddr(r.street_address_1)) return;
+  const addr = cleanText(r.street_address_1);
+  let geo = null;
+  try{ geo = await geocode(addr + " New York NY"); }catch(e){}
+  if(!document.contains(el)) return;
+  if(!geo || !geo.bbl || !/^\d{10}$/.test(geo.bbl)) return;
+  const b = geo.bbl[0], block = String(parseInt(geo.bbl.slice(1,6),10)), lot = String(parseInt(geo.bbl.slice(6),10));
+  el.innerHTML = `<div class="rmeta2" style="margin:8px 0">📍 This address elsewhere:
+    <a href="https://zola.planning.nyc.gov/l/lot/${b}/${block}/${lot}" target="_blank" rel="noopener">ZoLa zoning</a> ·
+    <a href="https://a836-acris.nyc.gov/bblsearch/bblsearch.asp?borough=${b}&block=${block}&lot=${lot}" target="_blank" rel="noopener">ACRIS deeds</a> ·
+    <a href="https://whoownswhat.justfix.org/bbl/${geo.bbl}" target="_blank" rel="noopener">Who Owns What portfolio</a>
+    <span class="muted" style="font-size:12px">· lot ${geo.bbl} via GeoSearch — verify the match</span></div>`;
+}
+
 // Fill a placeholder div asynchronously; bail if the view moved on while queries ran.
 async function fillContext(r, el){
   if(!el) return;
@@ -2035,6 +2054,60 @@ async function fillContext(r, el){
   if(flags.length) html += `<div style="margin:6px 0 4px">${flags.map(f=>`<span class="tag ${f.lvl}" style="margin-bottom:4px">${f.t}</span>`).join(" ")} <a class="pivot" style="font:12px/1.6 ui-sans-serif,system-ui,sans-serif;color:var(--muted)" href="about.html#context">what flags mean</a></div>`;
   html += ctx;
   if(html) el.innerHTML = html;
+}
+
+/* ===================== FOLLOW THE DOLLARS (Checkbook NYC join) =====================
+   The award says $X — was it paid? Checkbook's Contracts API accepts the City Record's own
+   PIN as a search criterion (verified live: exact 1:1 matches), so this join is deterministic,
+   not fuzzy. Calls go through the worker's /checkbook CORS proxy; no key on the path. */
+const escXml = s => String(s).replace(/[<>&'"]/g, c=>({"<":"&lt;",">":"&gt;","&":"&amp;","'":"&apos;",'"':"&quot;"}[c]));
+async function checkbookByPin(pin){
+  if(!API) return null;
+  const xml = `<request><type_of_data>Contracts</type_of_data><records_from>1</records_from><max_records>5</max_records><search_criteria>`
+    + `<criteria><name>status</name><type>value</type><value>registered</value></criteria>`
+    + `<criteria><name>category</name><type>value</type><value>expense</value></criteria>`
+    + `<criteria><name>pin</name><type>value</type><value>${escXml(pin)}</value></criteria>`
+    + `</search_criteria></request>`;
+  const r = await fetch(API.replace(/\/+$/,"")+"/checkbook", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({xml})});
+  const doc = new DOMParser().parseFromString(await r.text(), "application/xml");
+  if((doc.querySelector("response > status > result")||{}).textContent !== "success") return null;
+  const g = (el,tag)=>{ const n=el.getElementsByTagName(tag)[0]; return n ? n.textContent : ""; };
+  return [...doc.getElementsByTagName("transaction")].map(el=>({
+    id: g(el,"prime_contract_id"), vendor: g(el,"prime_vendor"),
+    current: +g(el,"prime_contract_current_amount")||0, original: +g(el,"prime_contract_original_amount")||0,
+    spent: +g(el,"prime_vendor_spent_to_date")||0,
+    start: g(el,"prime_contract_start_date"), end: g(el,"prime_contract_end_date"),
+    registered: g(el,"prime_contract_registration_date"),
+    mwbe: g(el,"prime_vendor_mwbe_category"), subs: g(el,"contract_includes_sub_vendors")
+  }));
+}
+
+async function followDollars(r, el){
+  if(!el || !usablePin(r.pin)) return;
+  if(!/^(Award|Intent to Award)$/.test(r.type_of_notice_description||"")) return;
+  let rows = null;
+  try{ rows = await checkbookByPin(String(r.pin).trim()); }catch(e){}
+  if(!document.contains(el)) return;
+  if(!rows) return; // proxy unreachable → say nothing rather than something wrong
+  if(!rows.length){
+    el.innerHTML = `<div class="note" style="margin-top:12px">💵 <b>Follow the dollars:</b> no registered contract in Checkbook NYC for PIN <code>${r.pin}</code> yet — registration typically lags the award notice by weeks. <a href="https://www.checkbooknyc.com/contract_search" target="_blank" rel="noopener">Search Checkbook ↗</a></div>`;
+    return;
+  }
+  const c = rows[0];
+  const pct = c.current > 0 ? Math.min(100, Math.round((c.spent/c.current)*100)) : 0;
+  const amended = c.original > 0 && Math.abs(c.current - c.original) > 1;
+  const vendorMismatch = r.vendor_name && c.vendor && vendorStem(c.vendor) !== vendorStem(r.vendor_name);
+  el.innerHTML = `<div class="apply" style="border-color:var(--green);margin-top:14px"><h3 style="background:var(--green)">💵 Follow the dollars — Checkbook NYC</h3><div class="body">
+    <dl>
+      <dt>Contract</dt><dd><code>${c.id}</code> · registered ${c.registered?fdt(c.registered):"—"}${rows.length>1?` · <b>+${rows.length-1} more</b> under this PIN`:""}</dd>
+      <dt>Committed</dt><dd><b>${money(c.current)||"$0"}</b>${amended?` <span class="tag soon">amended from ${money(c.original)}</span>`:""}</dd>
+      <dt>Paid to date</dt><dd><b>${money(c.spent)||"$0"}</b> (${pct}%)<div class="lbar" style="max-width:220px;margin-top:5px"><span style="width:${pct}%;background:var(--green)"></span></div></dd>
+      <dt>Term</dt><dd>${fdate(c.start)||"—"} → ${fdate(c.end)||"—"}</dd>
+      <dt>M/WBE</dt><dd>${c.mwbe||"—"}${c.subs && c.subs!=="N/A" ? ` · sub-vendors: ${c.subs}` : ""}</dd>
+    </dl>
+    ${vendorMismatch?`<div class="note warn" style="margin-top:10px">⚠ Checkbook's vendor (<b>${cleanText(c.vendor)}</b>) differs from the notice's (<b>${cleanText(r.vendor_name)}</b>) — a PIN can cover multiple awards; treat with care.</div>`:""}
+    <div class="pnote">Live from <a href="https://www.checkbooknyc.com/smart_search/${encodeURIComponent(c.id)}" target="_blank" rel="noopener">Checkbook NYC ↗</a>, matched by PIN <code>${r.pin}</code>. Payments lag invoicing — $0 paid on a freshly registered contract is normal.</div>
+  </div></div>`;
 }
 
 /* ===================== ENTITY PAGES (vendor / agency) =====================
@@ -2180,6 +2253,63 @@ async function showVendor(name){
   announce(`Vendor profile: ${cleanText(display)}`);
 }
 
+/* ===================== MATTER TIMELINE (#matter/<pin>) =====================
+   One procurement matter as a chronology: every City Record stage sharing the PIN, then the
+   Checkbook events (registration, paid-to-date) stitched onto the same spine. Cross-section
+   stitching (hearings) isn't in the data — only ~8 of 10.5K hearing rows carry a PIN. */
+const STAGE_ICON = {"Solicitation":"📢","Intent to Negotiate":"🤝","Vendor List":"📋","Intent to Award":"✍️","Award":"💰"};
+async function showMatter(pin){
+  showTab("entity");
+  const box = $("#entityview"), safe = String(pin).replace(/[<>&]/g,"");
+  box.innerHTML = `<div class="empty"><span class="loading"></span> assembling the matter: PIN ${safe}…</div>`;
+  let rows = [];
+  try{
+    rows = await soda({"$select":SELECT,"$where":`pin='${String(pin).replace(/'/g,"''")}'`,"$order":"start_date ASC","$limit":"60"}, 15000);
+  }catch(e){}
+  if(!rows.length){
+    box.innerHTML = `<div class="empty">No City Record notices carry PIN <code>${safe}</code>. <a href="#money">← Browse CROL-List</a></div>`;
+    return;
+  }
+  rows.sort((a,b)=>(a.start_date||"").localeCompare(b.start_date||"") ||
+    (STAGE_RANK[a.type_of_notice_description]??9)-(STAGE_RANK[b.type_of_notice_description]??9));
+  const agency = rows[rows.length-1].agency_name || rows[0].agency_name || "";
+  const vendor = rows.map(r=>r.vendor_name).filter(Boolean).pop() || "";
+  let cb = null;
+  try{ cb = await checkbookByPin(String(pin).trim()); }catch(e){}
+  const c = cb && cb[0];
+  const items = rows.map(r=>({
+    date: r.start_date,
+    icon: STAGE_ICON[r.type_of_notice_description] || "📄",
+    label: `<b>${r.type_of_notice_description||"Notice"}</b> — ${pivotA("#notice/"+encodeURIComponent(r.request_id), cleanText(r.short_title)||"(untitled)")}`,
+    extra: [money(r.contract_amount), r.vendor_name?"→ "+pivotA(vendorHref(r.vendor_name), cleanText(r.vendor_name)):null,
+            r.due_date?"responses due "+fdate(r.due_date):null].filter(Boolean).join(" · ")
+  }));
+  if(c && c.registered) items.push({date:c.registered, icon:"🏛", label:`<b>Contract registered</b> — <code>${c.id}</code> (Checkbook NYC)`, extra:`committed ${money(c.current)||"—"}`});
+  items.sort((a,b)=>(a.date||"9999").localeCompare(b.date||"9999"));
+  if(c) items.push({date:null, icon:"💵", label:`<b>Paid to date: ${money(c.spent)||"$0"}</b> of ${money(c.current)||"—"} committed`,
+    extra:`term ${fdate(c.start)||"—"} → ${fdate(c.end)||"—"} · <a href="https://www.checkbooknyc.com/smart_search/${encodeURIComponent(c.id)}" target="_blank" rel="noopener">Checkbook ↗</a>`});
+  const link = location.origin + location.pathname + "#matter/" + encodeURIComponent(pin);
+  box.innerHTML = `<div style="max-width:880px;margin:0 auto">
+    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CROL-List</a></p>
+    <div class="panel" style="padding:22px 24px">
+      <div class="ftype" style="margin-bottom:6px">Matter timeline · PIN <code>${safe}</code></div>
+      <div class="rolename">${agency?pivotA(agencyHref(agency), agencyWho(agency)):""}${vendor?` × ${pivotA(vendorHref(vendor), cleanText(vendor))}`:""}</div>
+      <div class="timeline" style="margin-top:14px">
+        ${items.map(it=>`<div class="tl"><span class="tldate">${it.date?fdate(it.date):"today"}</span>
+          <span style="flex:0 0 auto">${it.icon}</span>
+          <span class="tlreason" style="font-weight:400">${it.label}</span>
+          ${it.extra?`<span class="rmeta" style="margin:0">${it.extra}</span>`:""}</div>`).join("")}
+      </div>
+      <div class="actions" style="margin-top:16px">
+        <button class="act primary" type="button" id="ecopy">🔗 Copy link</button>
+        <a class="act" href="${REQ_URL(rows[rows.length-1].request_id)}" target="_blank" rel="noopener">↗ Latest notice in City Record</a>
+      </div>
+      <div class="note">The spine is every City Record notice sharing this PIN, in order; Checkbook events join deterministically on the same PIN. Public-hearing notices rarely carry PINs, so hearings may be missing from the chronology.</div>
+    </div></div>`;
+  $("#ecopy").addEventListener("click", ()=>copyText(link, $("#ecopy")));
+  announce(`Matter timeline: ${items.length} events`);
+}
+
 /* ===================== PERMALINKS & URL STATE =====================
    #<tab>?<filters> mirrors the active lens (shareable, bookmarkable, back-button-safe);
    #notice/<request_id> is a canonical address for one notice. The router reads/writes the
@@ -2252,6 +2382,7 @@ function applyHash(){
   if(raw.startsWith("notice/")){ showNotice(decodeURIComponent(raw.slice(7))); return true; }
   if(raw.startsWith("vendor/")){ showVendor(decodeURIComponent(raw.slice(7))); return true; }
   if(raw.startsWith("agency/")){ showAgency(decodeURIComponent(raw.slice(7))); return true; }
+  if(raw.startsWith("matter/")){ showMatter(decodeURIComponent(raw.slice(7))); return true; }
   const qi = raw.indexOf("?"), tab = qi < 0 ? raw : raw.slice(0, qi);
   if(tab === "notice" || tab === "entity" || !document.getElementById("tab-"+tab)) return false;
   const q = new URLSearchParams(qi < 0 ? "" : raw.slice(qi+1));
@@ -2314,6 +2445,7 @@ async function showNotice(id){
       <div class="rolename">${cleanText(r.short_title)||"(untitled notice)"}</div>
       <div id="ncontext"></div>
       ${glanceFor(r)}
+      <div id="naddr"></div><div id="ndollars"></div>
       <div class="actions" style="margin-top:14px">
         <button class="act primary" type="button" id="ncopy">🔗 Copy link</button>
         <a class="act" href="mailto:?subject=${encodeURIComponent("City Record notice: "+(cleanText(r.short_title)||r.request_id))}&body=${encodeURIComponent(link+"\n\nVia CROL-List — The City Record, searchable.")}">✉ Email</a>
@@ -2331,6 +2463,8 @@ async function showNotice(id){
   const ni=$("#nics"); if(ni) ni.addEventListener("click", ()=>{ if(r.due_date){ selectedRFP=r; downloadICS(); } else downloadEventICS(r); });
   const ib=$("#icsbtn"); if(ib){ ib.addEventListener("click", ()=>{ selectedRFP=r; downloadICS(); }); }
   fillContext(r, $("#ncontext"));
+  followDollars(r, $("#ndollars"));
+  fillAddressLinks(r, $("#naddr"));
   if(usablePin(r.pin)){ loadChain(r).then(chain=>{ if(chain.length>1) $("#nchain").innerHTML = chainHTML(r, chain); }).catch(()=>{}); }
 }
 
