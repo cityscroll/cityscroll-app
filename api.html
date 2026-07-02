@@ -115,6 +115,11 @@ For each name: <b>awards</b> = award/intent notices naming that vendor (name-ste
 
 <script>
 const API = "https://api.crol-list.org";
+const API_FALLBACK = "https://crol-worker.crol-worker.workers.dev"; // stale-DNS fallback
+async function workerFetch(path, opts){
+  try{ return await fetch(API+path, opts); }
+  catch(e){ return fetch(API_FALLBACK+path, opts); }
+}
 const $ = s => document.querySelector(s);
 $("#brun").addEventListener("click", async ()=>{
   const names = $("#bnames").value.split(/\n/).map(s=>s.trim()).filter(Boolean).slice(0,10);
@@ -122,7 +127,7 @@ $("#brun").addEventListener("click", async ()=>{
   if(!names.length){ msg.textContent="Add at least one name (3+ characters)."; return; }
   btn.disabled=true; msg.innerHTML='<span class="loading"></span> cross-referencing…'; out.innerHTML="";
   try{
-    const r = await fetch(API+"/batch",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({names})});
+    const r = await workerFetch("/batch",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({names})});
     const j = await r.json();
     if(!j.ok) throw new Error(j.reason||"failed");
     const esc = s => String(s).replace(/[<>&]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;"}[c]));

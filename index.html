@@ -617,6 +617,28 @@ const PAYFY = "2025";
 // client-side: the NL box uses the on-device heuristic, Checkbook $-paid stays hidden, alerts
 // are preview-only. Every worker-backed feature falls back to static behavior if unreachable.
 const API = "https://api.crol-list.org";
+// The branded subdomain is young — resolvers with a stale NXDOMAIN (or flaky DNS) would
+// otherwise kill every worker feature. workerFetch() fails over to the workers.dev alias
+// and remembers which base worked for the rest of the session. Non-idempotent POSTs get no
+// timeout (an abort+retry could double-send); the DNS failure mode rejects immediately anyway.
+const API_FALLBACK = "https://crol-worker.crol-worker.workers.dev";
+let apiBase = API;
+async function workerFetch(path, opts, timeoutMs){
+  const attempt = async (base) => {
+    if(!timeoutMs) return fetch(base + path, opts);
+    const ctl = new AbortController();
+    const t = setTimeout(()=>ctl.abort(), timeoutMs);
+    try{ return await fetch(base + path, {...(opts||{}), signal: ctl.signal}); }
+    finally{ clearTimeout(t); }
+  };
+  try{ return await attempt(apiBase); }
+  catch(e){
+    const other = apiBase === API ? API_FALLBACK : API;
+    const r = await attempt(other);
+    apiBase = other;
+    return r;
+  }
+}
 const REQ_URL = id => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
 const PASSPORT = "https://a0333-passportpublic.nyc.gov/";
 const STAGE_RANK = {"Solicitation":0,"Intent to Negotiate":1,"Vendor List":2,"Intent to Award":3,"Award":4};
@@ -1061,7 +1083,7 @@ async function nlResolve(text, lens){
   // Prefer the model-backed worker when API is set; fall back to the on-device heuristic.
   if(API){
     try{
-      const r=await fetch(API.replace(/\/+$/,"")+"/nl",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text, lens})});
+      const r=await workerFetch("/nl",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text, lens})}, 12000);
       if(r.ok){const j=await r.json(); if(j&&j.filter&&!j.degraded) return {source:"model",...withPersonName(text, lens, j.filter)};}
     }catch(e){}
   }
@@ -1914,7 +1936,7 @@ async function aSubscribe(){
   const {lens,filter}=aLensFilter(), freq=$("#afreq").value.toLowerCase();
   const btn=$("#asubscribe"); btn.disabled=true; msg.innerHTML='<span class="loading"></span> sending your confirmation link…';
   try{
-    const r=await fetch(API.replace(/\/+$/,"")+"/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,lens,filter,freq,turnstileToken:token})});
+    const r=await workerFetch("/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,lens,filter,freq,turnstileToken:token})});
     const j=await r.json().catch(()=>({}));
     if(j.ok){ msg.innerHTML="📬 <b>Check your inbox.</b> We sent a confirmation link to <b>"+email.replace(/[<>&]/g," ")+"</b> — your alert starts once you click it."; }
     else {
@@ -2089,7 +2111,7 @@ async function checkbookByPin(pin){
     + `<criteria><name>category</name><type>value</type><value>expense</value></criteria>`
     + `<criteria><name>pin</name><type>value</type><value>${escXml(pin)}</value></criteria>`
     + `</search_criteria></request>`;
-  const r = await fetch(API.replace(/\/+$/,"")+"/checkbook", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({xml})});
+  const r = await workerFetch("/checkbook", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({xml})}, 25000);
   const doc = new DOMParser().parseFromString(await r.text(), "application/xml");
   if((doc.querySelector("response > status > result")||{}).textContent !== "success") return null;
   const g = (el,tag)=>{ const n=el.getElementsByTagName(tag)[0]; return n ? n.textContent : ""; };
@@ -2384,7 +2406,7 @@ async function showInvestigation(){
     if(!API){ msg.textContent="Sharing needs the backend."; return; }
     msg.innerHTML='<span class="loading"></span> uploading snapshot…';
     try{
-      const r=await fetch(API.replace(/\/+$/,"")+"/inv",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:cur.name, items:cur.items})});
+      const r=await workerFetch("/inv",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:cur.name, items:cur.items})});
       const j=await r.json();
       if(j.ok){
         const url=location.origin+location.pathname+"#investigation/shared/"+j.id;
@@ -2400,7 +2422,7 @@ async function showSharedInv(id){
   const box = $("#entityview");
   box.innerHTML = '<div class="empty"><span class="loading"></span> fetching shared investigation…</div>';
   let j=null;
-  try{ const r=await fetch(API.replace(/\/+$/,"")+"/inv/"+encodeURIComponent(id)); if(r.ok) j=await r.json(); }catch(e){}
+  try{ const r=await workerFetch("/inv/"+encodeURIComponent(id), null, 12000); if(r.ok) j=await r.json(); }catch(e){}
   if(!j || !j.items){ box.innerHTML='<div class="empty">This shared investigation doesn\'t exist or has expired (links live 90 days). <a href="#money">← Browse CROL-List</a></div>'; return; }
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CROL-List</a></p>

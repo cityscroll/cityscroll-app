@@ -149,6 +149,11 @@ payment. Nothing here asserts wrongdoing; it saves you the arithmetic.</p>
 
 <script>
 const API = "https://api.crol-list.org";
+const API_FALLBACK = "https://crol-worker.crol-worker.workers.dev"; // stale-DNS fallback
+async function workerFetch(path, opts){
+  try{ return await fetch(API+path, opts); }
+  catch(e){ return fetch(API_FALLBACK+path, opts); }
+}
 const $ = s => document.querySelector(s);
 
 // category chips (single-select)
@@ -172,7 +177,7 @@ async function sendFeedback(){
   if(!token){ msg.innerHTML="Complete the “I'm human” check above first."; return; }
   const btn=$("#fbsend"); btn.disabled=true; msg.innerHTML='<span class="loading"></span> sending…';
   try{
-    const r=await fetch(API.replace(/\/+$/,"")+"/feedback",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({category,message,email,turnstileToken:token})});
+    const r=await workerFetch("/feedback",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({category,message,email,turnstileToken:token})});
     const j=await r.json().catch(()=>({}));
     if(j.ok){
       msg.innerHTML="✅ <b>Thank you — got it.</b>"+(email?" We'll reply if there's anything to add.":"");
