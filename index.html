@@ -335,10 +335,13 @@
       </div>
       <div class="field kw">
         <label for="pkw" id="pkwlabel">Title keyword</label>
-        <input type="text" id="pkw" placeholder="emergency medical, attorney, engineer…">
+        <input type="text" id="pkw" list="ptitles" placeholder="emergency medical, attorney, engineer…">
+        <datalist id="ptitles"></datalist>
       </div>
       <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button id="pgo">Filter</button></div>
     </div>
+
+    <div class="chiprow" id="pchips"></div>
 
 
     <div class="grid">
@@ -559,6 +562,7 @@ function showTab(name){
   document.querySelectorAll(".tabpane").forEach(p=>p.classList.toggle("active", p.id === "tab-"+name));
   document.querySelectorAll(".tabbtn").forEach(b=>b.classList.toggle("active", b.dataset.tab === name));
   if(name==="land"){ if(!landLoaded){ landLoaded=true; landSearch(); } if(landMap) setTimeout(()=>landMap.invalidateSize(),120); }
+  if(name==="people") seedPeople();
   if(SECTIONS[name] && !feedLoaded[name]){ feedLoaded[name]=true; loadSectionAgencies(name); loadSection(name); }
 }
 document.querySelectorAll(".tabbtn").forEach(b=>b.addEventListener("click",()=>showTab(b.dataset.tab)));
@@ -993,12 +997,51 @@ function parsePersonnel(desc){
   };
 }
 
-async function pSearch(){
+/* Committed seed data (data/people_examples.json + data/title_crosswalk.json): example chips
+   and an instant answer card render before any network call; the live search then overwrites. */
+let peopleSeeded = false, pExamples = [];
+async function seedPeople(){
+  if(peopleSeeded) return; peopleSeeded = true;
+  try{ pExamples = await fetch("data/people_examples.json").then(r=>r.ok?r.json():[]); }catch(e){ pExamples=[]; }
+  const box = $("#pchips");
+  if(box && pExamples.length){
+    box.innerHTML = '<span style="font:600 11px/2.4 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Try:</span>' +
+      pExamples.map((x,i)=>`<button type="button" class="chip" data-i="${i}" title="${String(x.note||"").replace(/"/g,"&quot;")}">${x.label}<span class="ct">${money(x.base_median)||""}${x.competitive?" · exam":""}</span></button>`).join("");
+    box.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>pExample(+b.dataset.i)));
+  }
+  try{
+    const cw = await fetch("data/title_crosswalk.json").then(r=>r.ok?r.json():null);
+    const dl = $("#ptitles");
+    if(dl && Array.isArray(cw)){
+      const names = [...new Set(cw.map(t=>t.official_title||t.payroll_title).filter(Boolean))].sort();
+      dl.innerHTML = names.map(n=>`<option value="${String(n).replace(/"/g,"&quot;")}">`).join("");
+    }
+  }catch(e){}
+}
+function pExample(i){
+  const x = pExamples[i]; if(!x) return;
+  $("#pmode").value = "role"; $("#pmode").dispatchEvent(new Event("change"));
+  $("#pkw").value = x.keyword;
+  const maxAvg = Math.max.apply(null,(x.ladder||[]).map(l=>+l.avg||0)) || 1;
+  $("#pdetail").innerHTML = `<div class="rolename">${x.official_title}</div>
+    <div class="badges"><span class="tag ${x.competitive?'open':'soon'}">${x.competitive?'Competitive — civil-service exam required':'Non-competitive — no exam'}</span></div>
+    <div class="agencybar">
+      <div><div class="big">${money(x.base_median)||"—"}</div><div class="lbl">median base · FY${PAYFY}</div></div>
+      <div><div class="big">${money(x.base_min)||"—"}–${money(x.base_max)||"—"}</div><div class="lbl">base range</div></div>
+      <div><div class="big">${(+x.headcount||0).toLocaleString()}</div><div class="lbl">people</div></div>
+    </div>
+    ${x.ladder&&x.ladder.length?`<div class="chain-h">Career ladder — top titles by average pay</div><div class="ladder">${x.ladder.map(l=>`<div class="lrow ${l.title===x.official_title?'me':''}"><div class="lname">${l.title}</div><div class="lbar"><span style="width:${Math.round((+l.avg/maxAvg)*100)}%"></span></div><div class="lval">${money(l.avg)}</div></div>`).join("")}</div>`:""}
+    ${x.note?`<div class="note">${x.note}</div>`:""}
+    <div class="rmeta2" style="margin-top:10px"><span class="loading"></span> refreshing from live payroll…</div>`;
+  pSearch(true);
+}
+
+async function pSearch(keepDetail){
   pMode = $("#pmode").value;
   const kw = $("#pkw").value.trim();
   $("#preshead").textContent = pMode === "role" ? "Roles" : "People";
   $("#prescount").textContent = "";
-  $("#pdetail").innerHTML = '<div class="empty">Pick a result on the left.</div>';
+  if(keepDetail !== true) $("#pdetail").innerHTML = '<div class="empty">Pick a result on the left.</div>';
   if(!kw){ $("#plist").innerHTML = '<div class="empty">Type a keyword to search.</div>'; return; }
   $("#plist").innerHTML = '<div class="empty"><span class="loading"></span> searching…</div>';
   try{ pMode === "role" ? await pSearchRoles(kw) : await pSearchPeople(kw); }
