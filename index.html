@@ -122,6 +122,9 @@
   .tag.hot{background:var(--oxblood);color:#fff}
   .tag.amt{background:#fbf0dc;color:#8a5c12}
   .tag.asset{background:#e4e9f0;color:var(--blue)}
+  a.pivot{color:inherit;text-decoration:none;border-bottom:1px dotted var(--rule-strong)}
+  a.pivot:hover{color:var(--oxblood);border-bottom-color:var(--oxblood)}
+  .facetlbl{font:600 11px/2.4 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-right:4px}
 
   .detail{padding:18px 18px 22px;min-height:320px}
   .empty{color:var(--muted);font-style:italic;padding:40px 18px;text-align:center}
@@ -366,6 +369,7 @@
     <div class="chiprow" id="moneyquick">
       <button type="button" class="chip" id="closingweek">⏳ Closing this week</button>
     </div>
+    <div class="chiprow" id="methodfacet" style="display:none"></div>
 
     <div class="grid">
       <div class="panel">
@@ -585,6 +589,13 @@
 <section id="tab-notice" class="tabpane">
   <div class="wrap">
     <div id="noticeview"><div class="empty"><span class="loading"></span> loading notice…</div></div>
+  </div>
+</section>
+
+<!-- ============ ENTITY PAGES (vendor / agency pivots, reached via #vendor/<name> · #agency/<name>) ============ -->
+<section id="tab-entity" class="tabpane">
+  <div class="wrap">
+    <div id="entityview"><div class="empty"><span class="loading"></span> building profile…</div></div>
   </div>
 </section>
 
@@ -1906,6 +1917,147 @@ function renderToday(d){
   $("#todaystrip").hidden = false;
 }
 
+/* ===================== ENTITY PAGES (vendor / agency) =====================
+   The pivot layer: every agency or vendor mention links here, and each page is a hub of
+   further pivots — the search → entity → pivot loop. Vendor identity is resolved at read
+   time (v1): normalize to a stem (case/punctuation/legal suffixes), prefix-match server-side,
+   then keep only rows whose own stem matches exactly. Honest and zero-infrastructure; a
+   nightly clustered alias table can replace it without changing this page. */
+const agencyHref = name => "#agency/" + encodeURIComponent(String(name||"").trim());
+const vendorHref = name => "#vendor/" + encodeURIComponent(cleanText(name));
+const pivotA = (href, text) => `<a class="pivot" href="${href}">${text}</a>`;
+
+const VENDOR_SUFFIX = /\s+(INCORPORATED|INC|LLC|L\.L\.C|CORPORATION|CORP|COMPANY|CO|LTD|LIMITED|LP|LLP|PLLC|P\.C|PC|USA|OF NY|OF NEW YORK)\.?$/;
+function vendorStem(name){
+  let s = cleanText(name).toUpperCase().replace(/[.,'’&]/g, " ").replace(/\s+/g, " ").trim();
+  let prev;
+  do { prev = s; s = s.replace(VENDOR_SUFFIX, "").trim(); } while (s !== prev && s.length > 3);
+  return s;
+}
+
+async function showAgency(name){
+  showTab("entity");
+  const box = $("#entityview");
+  const nm = String(name||"").trim(), safe = nm.replace(/[<>&]/g,""), q = nm.replace(/'/g,"''");
+  box.innerHTML = `<div class="empty"><span class="loading"></span> building profile: ${safe}…</div>`;
+  const [stats, sections, vendors, rfps, events] = await Promise.all([
+    loadAgencyStats(nm),
+    soda({"$select":"section_name, count(1) as n","$where":`agency_name='${q}'`,"$group":"section_name","$order":"n DESC"}).catch(()=>[]),
+    soda({"$select":"vendor_name, count(1) as n, sum(contract_amount) as t","$where":`agency_name='${q}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < 5000000000 AND vendor_name IS NOT NULL`,"$group":"vendor_name","$order":"t DESC","$limit":"8"}).catch(()=>[]),
+    soda({"$select":SELECT,"$where":`agency_name='${q}' AND type_of_notice_description='Solicitation' AND due_date > '${todayISO()}'`,"$order":"due_date ASC","$limit":"5"}).catch(()=>[]),
+    soda({"$select":FEED_SELECT,"$where":`agency_name='${q}' AND event_date > '${todayISO()}'`,"$order":"event_date ASC","$limit":"5"}).catch(()=>[])
+  ]);
+  if(!(stats && +stats.n) && !sections.length){
+    box.innerHTML = `<div class="empty">No City Record notices found for agency “${safe}”. <a href="#money">← Browse CROL-List</a></div>`;
+    return;
+  }
+  const link = location.origin + location.pathname + agencyHref(nm);
+  const maxT = Math.max.apply(null, vendors.map(v=>+v.t||0)) || 1;
+  const vendorRows = vendors.map(v=>`<div class="lrow">
+      <div class="lname">${pivotA(vendorHref(v.vendor_name), cleanText(v.vendor_name))}</div>
+      <div class="lbar"><span style="width:${Math.round((+v.t/maxT)*100)}%"></span></div>
+      <div class="lval">${money(v.t)||"—"}</div></div>`).join("");
+  const secChips = sections.map(c=>{
+    const lens = SECTION_LENS[c.section_name];
+    const label = `${c.section_name}<span class="ct">${(+c.n).toLocaleString()}</span>`;
+    return lens ? `<a class="chip" style="text-decoration:none" href="#${lens}?agency=${encodeURIComponent(nm)}">${label}</a>` : `<span class="chip" style="cursor:default">${label}</span>`;
+  }).join("");
+  const rfpItems = rfps.map(r=>`<div class="tl"><span class="tldate">due ${fdate(r.due_date)}</span>
+      <span class="tlreason">${pivotA("#notice/"+encodeURIComponent(r.request_id), cleanText(r.short_title)||"(untitled)")}</span>${deadlineTag(r.due_date)}</div>`).join("");
+  const evItems = events.map(r=>`<div class="tl"><span class="tldate">${fdate(r.event_date)}</span>
+      <span class="tlreason">${pivotA("#notice/"+encodeURIComponent(r.request_id), cleanText(r.short_title)||"(untitled)")}</span>${eventTag(r.event_date)}</div>`).join("");
+  box.innerHTML = `<div style="max-width:880px;margin:0 auto">
+    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CROL-List</a></p>
+    <div class="panel" style="padding:22px 24px">
+      <div class="ftype" style="margin-bottom:6px">Agency profile · City Record on record</div>
+      <div class="rolename">${agencyWho(nm)}</div>
+      <div class="agencybar">
+        <div><div class="big">${money(stats && stats.total)||"—"}</div><div class="lbl">total awarded,<br>on record</div></div>
+        <div><div class="big">${stats ? (+stats.n).toLocaleString() : "—"}</div><div class="lbl">contract awards<br>published</div></div>
+        <div><div class="big">${rfps.length}${rfps.length===5?"+":""}</div><div class="lbl">open RFPs<br>right now</div></div>
+      </div>
+      <div class="chain-h">Notices by section — click to browse that lens, filtered to this agency</div>
+      <div class="chiprow" style="margin-top:6px">${secChips}</div>
+      ${vendors.length?`<div class="chain-h">Top vendors by awarded $ (click to pivot)</div><div class="ladder">${vendorRows}</div>`:""}
+      ${rfps.length?`<div class="chain-h">Open solicitations</div><div class="timeline">${rfpItems}</div>`:""}
+      ${events.length?`<div class="chain-h">Upcoming hearings &amp; events</div><div class="timeline">${evItems}</div>`:""}
+      <div class="actions" style="margin-top:16px">
+        <button class="act primary" type="button" id="ecopy">🔗 Copy link</button>
+        <button class="act" type="button" data-aw="rules">🔔 Watch their rules</button>
+        <button class="act" type="button" data-aw="meetings">🔔 Watch their meetings</button>
+        <button class="act" type="button" data-aw="property">🔔 Watch their property sales</button>
+        ${API?`<a class="act" href="${API.replace(/\/+$/,"")}/feed.xml?lens=rules&agency=${encodeURIComponent(nm)}" target="_blank" rel="noopener">📡 RSS</a>`:""}
+      </div>
+      <div class="note">Figures are what this agency has <b>published in the City Record</b> (2003→present for procurement) — registration and payment lag; a per-entity follow across all lenses arrives with the entity-watch feature.</div>
+    </div></div>`;
+  $("#ecopy").addEventListener("click", ()=>copyText(link, $("#ecopy")));
+  box.querySelectorAll("[data-aw]").forEach(b=>b.addEventListener("click", ()=>{
+    showTab("alerts", true); $("#awatch").value=b.dataset.aw; aWatchChange(); $("#aagency").value=nm; aPreview();
+  }));
+  announce(`Agency profile: ${nm}`);
+}
+
+async function showVendor(name){
+  showTab("entity");
+  const box = $("#entityview");
+  const stem = vendorStem(name), safe = cleanText(name).replace(/[<>&]/g,"");
+  box.innerHTML = `<div class="empty"><span class="loading"></span> resolving vendor: ${safe}…</div>`;
+  if(stem.length < 3){ box.innerHTML = `<div class="empty">“${safe}” is too short to resolve to a vendor. <a href="#money">← Browse</a></div>`; return; }
+  const like = stem.replace(/'/g,"''");
+  let variants = [];
+  try{
+    variants = await soda({"$select":"vendor_name, count(1) as n, sum(contract_amount) as t, min(start_date) as first, max(start_date) as last",
+      "$where":`upper(vendor_name) like '${like}%' AND type_of_notice_description='Award' AND contract_amount < 5000000000`,
+      "$group":"vendor_name","$limit":"100"});
+  }catch(e){}
+  variants = variants.filter(v => vendorStem(v.vendor_name) === stem);
+  if(!variants.length){
+    box.innerHTML = `<div class="empty">No awards on record for “${safe}”. <a href="#money?q=${encodeURIComponent(stem.toLowerCase())}">Search notices mentioning them →</a></div>`;
+    return;
+  }
+  const names = variants.map(v=>v.vendor_name);
+  const inList = names.slice(0,20).map(n=>`'${n.replace(/'/g,"''")}'`).join(",");
+  const total = variants.reduce((s,v)=>s+(+v.t||0),0), nAwards = variants.reduce((s,v)=>s+(+v.n||0),0);
+  const first = variants.map(v=>v.first).filter(Boolean).sort()[0];
+  const last = variants.map(v=>v.last).filter(Boolean).sort().pop();
+  const display = variants.slice().sort((a,b)=>(+b.n)-(+a.n))[0].vendor_name;
+  const [agencies, rows, mentions] = await Promise.all([
+    soda({"$select":"agency_name, count(1) as n, sum(contract_amount) as t","$where":`vendor_name in(${inList}) AND type_of_notice_description='Award' AND contract_amount < 5000000000`,"$group":"agency_name","$order":"t DESC","$limit":"10"}).catch(()=>[]),
+    soda({"$select":SELECT,"$where":`vendor_name in(${inList})`,"$order":"start_date DESC","$limit":"15"}).catch(()=>[]),
+    soda({"$select":SELECT,"$where":`vendor_name IS NULL`,"$q":stem,"$order":"start_date DESC","$limit":"8"}).catch(()=>[])
+  ]);
+  const link = location.origin + location.pathname + vendorHref(display);
+  const agChips = agencies.map(a=>`<a class="chip" style="text-decoration:none" href="${agencyHref(a.agency_name)}">${a.agency_name}<span class="ct">${money(a.t)||a.n}</span></a>`).join("");
+  const rowItems = rows.map(r=>`<div class="tl"><span class="tldate">${fdate(r.start_date)}</span>
+      <span class="tlreason">${pivotA("#notice/"+encodeURIComponent(r.request_id), cleanText(r.short_title)||"(untitled)")}</span>
+      <span class="rmeta" style="margin:0">${r.type_of_notice_description||""} · ${pivotA(agencyHref(r.agency_name), r.agency_name||"")}</span>
+      ${money(r.contract_amount)?`<span class="tlsal">${money(r.contract_amount)}</span>`:""}</div>`).join("");
+  const mentionItems = mentions.map(r=>`<div class="tl"><span class="tldate">${fdate(r.start_date)}</span>
+      <span class="tlreason">${pivotA("#notice/"+encodeURIComponent(r.request_id), cleanText(r.short_title)||"(untitled)")}</span>
+      <span class="rmeta" style="margin:0">${r.section_name||r.type_of_notice_description||""}</span></div>`).join("");
+  box.innerHTML = `<div style="max-width:880px;margin:0 auto">
+    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CROL-List</a></p>
+    <div class="panel" style="padding:22px 24px">
+      <div class="ftype" style="margin-bottom:6px">Vendor profile · ${variants.length} name variant${variants.length===1?"":"s"} resolved${variants.length>1?` <span title="${names.map(n=>cleanText(n)).join(" · ").replace(/"/g,"&quot;")}" style="cursor:help;border-bottom:1px dotted var(--rule-strong)">which?</span>`:""}</div>
+      <div class="rolename">${cleanText(display)}</div>
+      <div class="agencybar">
+        <div><div class="big">${money(total)||"—"}</div><div class="lbl">total awarded,<br>on record</div></div>
+        <div><div class="big">${nAwards.toLocaleString()}</div><div class="lbl">award notice${nAwards===1?"":"s"}</div></div>
+        <div><div class="big" style="font-size:17px">${first?fdate(first):"—"} – ${last?fdate(last):"—"}</div><div class="lbl">first / latest<br>award published</div></div>
+      </div>
+      ${agencies.length?`<div class="chain-h">Agencies they win from (click to pivot)</div><div class="chiprow" style="margin-top:6px">${agChips}</div>`:""}
+      ${rows.length?`<div class="chain-h">On the record — notices naming this vendor</div><div class="timeline">${rowItems}</div>`:""}
+      ${mentions.length?`<div class="chain-h">Mentioned in other notices (text match)</div><div class="timeline">${mentionItems}</div>`:""}
+      <div class="actions" style="margin-top:16px">
+        <button class="act primary" type="button" id="ecopy">🔗 Copy link</button>
+        ${API?`<a class="act" href="${API.replace(/\/+$/,"")}/feed.xml?lens=money&q=${encodeURIComponent(stem.toLowerCase())}" target="_blank" rel="noopener">📡 RSS: solicitations mentioning them</a>`:""}
+      </div>
+      <div class="note">Identity is resolved by name normalization (case, punctuation, legal suffixes) — variants listed above; distinct companies sharing a name stem would be merged, so treat totals as <b>“published under this name,”</b> not a legal entity. Awards as published in the City Record; actual payments differ (Checkbook join coming).</div>
+    </div></div>`;
+  $("#ecopy").addEventListener("click", ()=>copyText(link, $("#ecopy")));
+  announce(`Vendor profile: ${cleanText(display)}`);
+}
+
 /* ===================== PERMALINKS & URL STATE =====================
    #<tab>?<filters> mirrors the active lens (shareable, bookmarkable, back-button-safe);
    #notice/<request_id> is a canonical address for one notice. The router reads/writes the
@@ -1975,8 +2127,10 @@ function applyHash(){
   const raw = location.hash.slice(1);
   if(!raw) return false;
   if(raw.startsWith("notice/")){ showNotice(decodeURIComponent(raw.slice(7))); return true; }
+  if(raw.startsWith("vendor/")){ showVendor(decodeURIComponent(raw.slice(7))); return true; }
+  if(raw.startsWith("agency/")){ showAgency(decodeURIComponent(raw.slice(7))); return true; }
   const qi = raw.indexOf("?"), tab = qi < 0 ? raw : raw.slice(0, qi);
-  if(tab === "notice" || !document.getElementById("tab-"+tab)) return false;
+  if(tab === "notice" || tab === "entity" || !document.getElementById("tab-"+tab)) return false;
   const q = new URLSearchParams(qi < 0 ? "" : raw.slice(qi+1));
   hashLock = true;
   try{
