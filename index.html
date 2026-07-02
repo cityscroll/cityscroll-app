@@ -127,6 +127,15 @@
   .scope{font-size:14.5px;line-height:1.6;color:#3f3930;background:#faf6ee;border:1px solid var(--rule);border-radius:10px;padding:13px 15px;margin-top:16px}
   .scope .lbl{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
 
+  /* at-a-glance (who/what/when/act) — deterministic re-presentation of the record's own fields */
+  .glance{background:#f6f1e4;border:1px solid var(--rule);border-left:4px solid var(--blue);border-radius:0 10px 10px 0;padding:10px 14px;margin:12px 0;font-size:14px}
+  .glance .gl{display:flex;gap:12px;padding:3px 0;align-items:baseline}
+  .glance .gl b:first-child{font:700 10px/1.7 ui-sans-serif,system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);min-width:46px;flex:0 0 auto}
+  .glance .gl span{min-width:0}
+  .fulltext{margin-top:16px}
+  .fulltext summary{cursor:pointer;font:600 13px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--oxblood)}
+  .fulltext summary:hover{text-decoration:underline}
+
   /* chain (money) */
   .chain-h{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:18px 0 10px}
   .chain{display:flex;gap:0;flex-wrap:wrap;align-items:stretch}
@@ -700,6 +709,48 @@ async function loadAgencyStats(agency){
 function boxClass(t){ return t==="Award" ? "award" : (t==="Intent to Award" ? "intent" : ""); }
 
 function telHref(phone){ const d = String(phone||"").replace(/[^0-9+]/g,""); return d.length>=7 ? "tel:"+d : null; }
+
+/* ===== At-a-glance: who / what / when / act, extracted from fields the record already has.
+   No model call — field re-presentation can't hallucinate and costs nothing per view. ===== */
+const AGENCY_ABBR = {
+  "Housing Preservation and Development":"HPD","Citywide Administrative Services":"DCAS",
+  "Design and Construction":"DDC","Environmental Protection":"DEP","Police Department":"NYPD",
+  "Transportation":"DOT","Parks and Recreation":"Parks","Health and Mental Hygiene":"DOHMH",
+  "Education":"DOE","Fire Department":"FDNY","Sanitation":"DSNY","Buildings":"DOB",
+  "Homeless Services":"DHS","Housing Authority":"NYCHA","School Construction Authority":"SCA",
+  "Economic Development Corporation":"EDC","Taxi and Limousine Commission":"TLC",
+  "City Planning":"DCP","Law Department":"Law Dept","Finance":"DOF",
+  "Information Technology and Telecommunications":"OTI","Small Business Services":"SBS",
+  "Youth and Community Development":"DYCD","Correction":"DOC","Probation":"DOP",
+  "Administration for Children's Services":"ACS","Human Resources Administration":"HRA",
+  "Emergency Management":"NYCEM","Landmarks Preservation Commission":"LPC",
+  "City University of New York":"CUNY","District Attorney - New York County":"DANY",
+  "Environmental Protection Administration":"DEP","Health and Hospitals Corporation":"H+H",
+  "Mayor's Office of Contract Services":"MOCS","Board of Standards and Appeals":"BSA"
+};
+function agencyWho(name){ const a = AGENCY_ABBR[String(name||"").trim()]; return a ? `${name} (${a})` : (name||""); }
+
+function glanceFor(r){
+  const row = (k,v) => v ? `<div class="gl"><b>${k}</b><span>${v}</span></div>` : "";
+  const who = agencyWho(r.agency_name) + (r.vendor_name ? ` → awarded to <b>${cleanText(r.vendor_name)}</b>` : "");
+  const amt = money(r.contract_amount);
+  const what = [r.type_of_notice_description, r.category_description || r.section_name].filter(Boolean).join(" — ")
+    + (amt ? ` · <b>${amt}</b>` : "");
+  const when = [
+    r.start_date ? `published ${fdt(r.start_date)}` : null,
+    r.due_date ? `responses due <b>${fdt(r.due_date)}</b> ${deadlineTag(r.due_date)}` : null,
+    r.event_date ? `event <b>${fdt(r.event_date)}</b>${eventTag(r.event_date)}` : null
+  ].filter(Boolean).join(" · ");
+  const act = [];
+  if(r.email) act.push(`<a href="mailto:${r.email}">✉ ${r.email}</a>`);
+  const tel = telHref(r.contact_phone); if(tel) act.push(`<a href="${tel}">☎ ${cleanText(r.contact_phone)}</a>`);
+  if(r.contact_name) act.push(cleanText(r.contact_name));
+  const where = cleanText(r.address_to_request) || (goodAddr(r.street_address_1) ? cleanText(r.street_address_1) : "");
+  if(where) act.push(`📍 ${where}`);
+  if(r.type_of_notice_description === "Solicitation") act.push(`<a href="${PASSPORT}" target="_blank" rel="noopener">↗ PASSPort</a>`);
+  const body = row("Who", who) + row("What", what) + row("When", when) + row("Act", act.join(" · "));
+  return body ? `<div class="glance">${body}</div>` : "";
+}
 function mailtoFor(r){
   const subj = `Intent to respond: ${cleanText(r.short_title)}${r.pin?` (PIN ${r.pin})`:""}`;
   const body =
@@ -794,6 +845,8 @@ function chainHTML(r, chain){
 
 function renderDetail(r, chain, stats){
   let html = `<div class="actions" style="margin:0 0 12px"><button class="act" type="button" id="dcopy">🔗 Copy link to this notice</button></div>`;
+  // Solicitations get the richer how-to-respond panel below; everything else gets the glance box.
+  if(r.type_of_notice_description !== "Solicitation") html += glanceFor(r);
   if(stats && stats.n){
     html += `<div class="agencybar">
       <div><div class="big">${money(stats.total)||"—"}</div><div class="lbl">${r.agency_name}<br>total awarded, on record</div></div>
@@ -1701,18 +1754,13 @@ async function showNotice(id){
     return;
   }
   const link = noticeLink(r.request_id);
-  const dates = [];
-  if(r.start_date) dates.push(`published <b>${fdt(r.start_date)}</b>`);
-  if(r.due_date) dates.push(`responses due <b>${fdt(r.due_date)}</b> ${deadlineTag(r.due_date)}`);
-  if(r.event_date) dates.push(`event <b>${fdt(r.event_date)}</b>${eventTag(r.event_date)}`);
   const scope = cleanText(r.additional_description_1);
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CROL-List</a></p>
     <div class="panel" style="padding:22px 24px">
       <div class="ftype" style="margin-bottom:6px">${r.type_of_notice_description||"Notice"}${r.section_name?" · "+r.section_name:""}${r.agency_name?" · "+r.agency_name:""}</div>
       <div class="rolename">${cleanText(r.short_title)||"(untitled notice)"}</div>
-      ${dates.length?`<div class="rmeta2">${dates.join(" · ")}</div>`:""}
-      ${goodAddr(r.street_address_1)?`<div class="rmeta2">📍 ${cleanText(r.street_address_1)}</div>`:""}
+      ${glanceFor(r)}
       <div class="actions" style="margin-top:14px">
         <button class="act primary" type="button" id="ncopy">🔗 Copy link</button>
         <a class="act" href="mailto:?subject=${encodeURIComponent("City Record notice: "+(cleanText(r.short_title)||r.request_id))}&body=${encodeURIComponent(link+"\n\nVia CROL-List — The City Record, searchable.")}">✉ Email</a>
@@ -1721,7 +1769,7 @@ async function showNotice(id){
         <a class="act" href="${REQ_URL(r.request_id)}" target="_blank" rel="noopener">↗ View in City Record</a>
       </div>
       ${r.type_of_notice_description==="Solicitation"?buildApply(r):""}
-      ${scope?`<div class="scope"><span class="lbl">Full notice text</span>${scope.slice(0,4000)}${scope.length>4000?"…":""}</div>`:""}
+      ${scope?`<details class="fulltext"${scope.length<=600?" open":""}><summary>Read the full notice (original City Record text)</summary><div class="scope" style="margin-top:10px">${scope.slice(0,6000)}${scope.length>6000?"…":""}</div></details>`:""}
       <div id="nchain"></div>
       <div class="note" style="margin-top:14px">Permalink: <code>${link}</code> · request ID <code>${r.request_id}</code> · from NYC Open Data</div>
     </div></div>`;
