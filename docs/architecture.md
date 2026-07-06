@@ -68,3 +68,26 @@ KV namespaces: SUBS (subscriptions), stats counters
 - **Consumes:** NYC Open Data Socrata SODA, Checkbook NYC API, NYC GeoSearch / MapPLUTO / ZAP, Anthropic Claude Haiku (NL search), Resend (email digest), Cloudflare Turnstile (spam gate), Cloudflare KV, Cloudflare Cron Triggers.
 - **Feeds:** subscriber email inboxes (daily/weekly digests); public stats at `crol-list.org/stats.html`; RSS/Atom/JSON Feed/iCal consumers.
 - **Sister repo (archived):** `crol-worker` — pre-move history of the worker before it was open-sourced into this monorepo (2026-07-02).
+
+## TL;DR
+
+1 static site (`index.html`) + 1 Cloudflare Worker, 7 lenses, ~8 worker routes, 1 daily Cron digest, 2 KV namespaces (SUBS + stats), 4 worker secrets — under one hard rule: no accounts, no per-user tracking, no hard backend dependency, so every feature degrades gracefully when the worker is absent.
+
+1. A visitor loads `index.html` (inline CSS + vanilla JS) served static from GitHub Pages at `crol-list.org` — no backend required.
+2. Picking a lens (Money/People/Land/Property/Rules/Meetings/Alerts) fires queries direct from the browser to CORS-open public APIs: Socrata SODA for City Record notices, Checkbook NYC for contract payments, NYC GeoSearch/MapPLUTO for BBL and rezoning geometry.
+3. Server-only features route to the Cloudflare Worker at `api.crol-list.org`: `/nl` turns plain English into lens filters via Claude Haiku, `/subscribe` `/confirm` `/unsubscribe` run double-opt-in email, `/feed.xml` `/feed.json` `/feed.ics` serve standing feeds, `/batch` cross-references a watchlist, `/inv[/<id>]` stores investigation snapshots, `/stats` exposes aggregate counters, and `/r/<kind>/<id>` counts a digest click-through then 302-redirects.
+4. Subscriptions land in KV namespace `SUBS` (`sub:<token>` → `{email, lens, filters, frequency}`); aggregate integers (digests sent, click-throughs, feed hits, NL calls) accrue in the stats counters — no personal data.
+5. The visitor's own workspace (pinned notices, notes, saved searches, plain/rigor toggle) persists in `index.html` localStorage, client-side only.
+6. A Cloudflare Cron trigger fires daily, replays every active subscription, and sends the matching digest email via Resend the morning after publication.
+7. Deploy is manual from the MacBook: `index.html` ships to GitHub Pages; the worker ships via `wrangler deploy` from `worker/` with secrets `ANTHROPIC_API_KEY`, `TURNSTILE_SECRET`, `TOKEN_SECRET`, `RESEND_API_KEY`. There is no CI/CD.
+
+## Check yourself
+
+**Q:** Which four subscription/alert routes and which three feed routes does the worker expose?
+**A:** Subscription routes: `/subscribe`, `/confirm`, `/unsubscribe` (double-opt-in email) plus `/batch` for watchlist cross-reference; feeds: `/feed.xml`, `/feed.json`, `/feed.ics`, each turning any saved search into a standing feed.
+
+**Q:** The Cloudflare Worker is down or never deployed — what still works for a visitor?
+**A:** Essentially the whole feature surface: `index.html` holds ~100% of it and queries Socrata, Checkbook NYC, and GeoSearch/MapPLUTO direct from the browser, with the workspace in localStorage. Only the worker-backed extras go dark — email alerts, feeds, plain-English `/nl` search, and the stats counter.
+
+**Q:** What is the one hard constraint every feature is designed around?
+**A:** No accounts, no per-user tracking, no hard backend dependency — every feature must degrade gracefully when the worker is absent.
