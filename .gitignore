@@ -4,4 +4,5 @@ node_modules/
 # internal planning + ops notes — 
 internal/
 tasks/
+backlog/
 *.local.md
