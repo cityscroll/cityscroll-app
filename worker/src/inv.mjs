@@ -4,6 +4,7 @@
 
 import { validInvPayload, INV_TTL } from "./lib/inv.mjs";
 import { bumpStat } from "./lib/stats.mjs";
+import { vendorStem } from "./lib/compile.mjs";
 
 const MAX_SHARES_PER_IP_DAY = 10;
 
@@ -17,13 +18,37 @@ export async function handleInv(req, env, pathname) {
   const cors = corsHeaders(req.headers.get("origin") || "");
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
 
-  // GET /inv/<id> — public read of a shared snapshot
-  const m = pathname.match(/^\/inv\/([a-z0-9]{8,20})$/);
-  if (req.method === "GET" && m) {
-    if (!env.SUBS) return json({ ok: false, reason: "not-configured" }, 503, cors);
-    const raw = await env.SUBS.get(`inv:${m[1]}`);
-    if (!raw) return json({ ok: false, reason: "not-found" }, 404, cors);
-    return new Response(raw, { status: 200, headers: { ...cors, "Content-Type": "application/json", "Cache-Control": "public, max-age=300" } });
+  // GET /inv/<id> — public read of a shared snapshot or agency/vendor forecast
+  if (req.method === "GET" && pathname.startsWith("/inv/")) {
+    const id = pathname.slice(5); // strip "/inv/"
+    
+    // 1. Try to fetch as share snapshot first
+    if (env.SUBS) {
+      const raw = await env.SUBS.get(`inv:${id}`);
+      if (raw) {
+        return new Response(raw, { status: 200, headers: { ...cors, "Content-Type": "application/json", "Cache-Control": "public, max-age=300" } });
+      }
+    }
+
+    // 2. If not found in SUBS as a share snapshot, treat as agency/vendor entity stem!
+    const stem = vendorStem(decodeURIComponent(id));
+    if (stem.length >= 3 && env.ALERT_STATE) {
+      const fcRaw = await env.ALERT_STATE.get(`fc:${stem}`);
+      const planRaw = await env.ALERT_STATE.get(`plan:${stem}`);
+      const forecasts = [];
+      if (fcRaw) forecasts.push(...JSON.parse(fcRaw));
+      if (planRaw) forecasts.push(...JSON.parse(planRaw));
+      
+      forecasts.sort((a, b) => {
+        const dateA = a.expiration_date || a.release_quarter || "";
+        const dateB = b.expiration_date || b.release_quarter || "";
+        return dateA.localeCompare(dateB);
+      });
+
+      return json({ id: stem, forecasts }, 200, cors);
+    }
+
+    return json({ ok: false, reason: "not-found" }, 404, cors);
   }
 
   if (req.method !== "POST" || pathname !== "/inv") return json({ ok: false, reason: "method" }, 405, cors);
