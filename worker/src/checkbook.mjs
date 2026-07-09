@@ -229,3 +229,57 @@ export async function runCheckbookPipeline(env, watches, subs) {
 
   return { status: "success", updated: results };
 }
+
+export async function handleForecast(req, env) {
+  const origin = req.headers.get("origin") || "";
+  const cors = {
+    "Access-Control-Allow-Origin": ALLOW.has(origin) ? origin : "https://crol-list.org",
+    "Access-Control-Allow-Methods": "GET, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Vary": "Origin"
+  };
+
+  if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
+  if (req.method !== "GET") return new Response("GET only", { status: 405, headers: cors });
+
+  const { searchParams } = new URL(req.url);
+  const q = searchParams.get("q") || "";
+  const stem = vendorStem(q);
+
+  const forecasts = [];
+  if (env.ALERT_STATE && stem.length >= 3) {
+    const fcRaw = await env.ALERT_STATE.get(`fc:${stem}`);
+    const planRaw = await env.ALERT_STATE.get(`plan:${stem}`);
+    if (fcRaw) forecasts.push(...JSON.parse(fcRaw));
+    if (planRaw) forecasts.push(...JSON.parse(planRaw));
+
+    try {
+      const fcList = await env.ALERT_STATE.list({ prefix: `fc:${stem}` });
+      for (const key of fcList.keys) {
+        if (key.name === `fc:${stem}`) continue;
+        const raw = await env.ALERT_STATE.get(key.name);
+        if (raw) forecasts.push(...JSON.parse(raw));
+      }
+      const planList = await env.ALERT_STATE.list({ prefix: `plan:${stem}` });
+      for (const key of planList.keys) {
+        if (key.name === `plan:${stem}`) continue;
+        const raw = await env.ALERT_STATE.get(key.name);
+        if (raw) forecasts.push(...JSON.parse(raw));
+      }
+    } catch (e) {
+      // ignore list errors
+    }
+  }
+
+  // Sort forecasts chronologically by predicted expiration/warning/quarter
+  forecasts.sort((a, b) => {
+    const dateA = a.expiration_date || a.release_quarter || "";
+    const dateB = b.expiration_date || b.release_quarter || "";
+    return dateA.localeCompare(dateB);
+  });
+
+  return new Response(JSON.stringify(forecasts), {
+    status: 200,
+    headers: { ...cors, "Content-Type": "application/json" }
+  });
+}

@@ -2264,12 +2264,13 @@ async function showAgency(name){
   const box = $("#entityview");
   const nm = String(name||"").trim(), safe = nm.replace(/[<>&]/g,""), q = nm.replace(/'/g,"''");
   box.innerHTML = `<div class="empty"><span class="loading"></span> building profile: ${safe}…</div>`;
-  const [stats, sections, vendors, rfps, events] = await Promise.all([
+  const [stats, sections, vendors, rfps, events, forecastData] = await Promise.all([
     loadAgencyStats(nm),
     soda({"$select":"section_name, count(1) as n","$where":`agency_name='${q}'`,"$group":"section_name","$order":"n DESC"}).catch(()=>[]),
     soda({"$select":"vendor_name, count(1) as n, sum(contract_amount) as t","$where":`agency_name='${q}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < 5000000000 AND vendor_name IS NOT NULL`,"$group":"vendor_name","$order":"t DESC","$limit":"8"}).catch(()=>[]),
     soda({"$select":SELECT,"$where":`agency_name='${q}' AND type_of_notice_description='Solicitation' AND due_date > '${todayISO()}'`,"$order":"due_date ASC","$limit":"5"}).catch(()=>[]),
-    soda({"$select":FEED_SELECT,"$where":`agency_name='${q}' AND event_date > '${todayISO()}'`,"$order":"event_date ASC","$limit":"5"}).catch(()=>[])
+    soda({"$select":FEED_SELECT,"$where":`agency_name='${q}' AND event_date > '${todayISO()}'`,"$order":"event_date ASC","$limit":"5"}).catch(()=>[]),
+    workerFetch("/inv/" + encodeURIComponent(nm), null, 8000).then(r => r.ok ? r.json() : null).catch(() => null)
   ]);
   if(!(stats && +stats.n) && !sections.length){
     box.innerHTML = `<div class="empty">No City Record notices found for agency “${safe}”. <a href="#money">← Browse CROL-List</a></div>`;
@@ -2290,6 +2291,34 @@ async function showAgency(name){
       <span class="tlreason">${pivotA("#notice/"+encodeURIComponent(r.request_id), cleanText(r.short_title)||"(untitled)")}</span>${deadlineTag(r.due_date)}</div>`).join("");
   const evItems = events.map(r=>`<div class="tl"><span class="tldate">${fdate(r.event_date)}</span>
       <span class="tlreason">${pivotA("#notice/"+encodeURIComponent(r.request_id), cleanText(r.short_title)||"(untitled)")}</span>${eventTag(r.event_date)}</div>`).join("");
+
+  const esc = (s) => String(s == null ? "" : s).replace(/[<>&'"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", "'": "&#39;", "\"": "&quot;" }[c]));
+  const forecasts = forecastData ? (forecastData.forecasts || []) : [];
+  const forecastItems = forecasts.map(f => {
+    const isCheckbook = f.source === "checkbook";
+    const badgeText = isCheckbook ? "Estimated Renewal" : "MOCS Plan Notice";
+    const badgeColor = isCheckbook ? "#e3f2fd" : "#f1f8e9";
+    const badgeTextCol = isCheckbook ? "#0d47a1" : "#33691e";
+    const title = isCheckbook ? (f.vendor_name || "Vendor Expiration") : (f.description || "Planned Solicitation");
+    const sub = isCheckbook ? `${f.agency_name} · Amount ${money(f.amount) || "—"}` : `${f.agency} · Value Band ${f.value_band}`;
+    const dateText = isCheckbook ? `Predicted Expiration: ${f.expiration_date}` : `Expected RFP Quarter: ${f.release_quarter}`;
+    const watchKind = isCheckbook ? "vendor" : "agency";
+    const watchName = isCheckbook ? f.vendor_name : f.agency_name || f.agency;
+
+    return `<div class="tl" style="margin-bottom:20px;position:relative;padding-left:24px">
+      <div style="position:absolute;left:0;top:4px;width:10px;height:10px;border-radius:50%;background:var(--oxblood)"></div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <span class="badge" style="background:${badgeColor};color:${badgeTextCol};font-size:11px;font-weight:600;padding:2px 6px;border-radius:4px">${badgeText}</span>
+        <span style="font-size:12px;color:#777">${dateText}</span>
+      </div>
+      <div style="font-weight:600;font-size:14px;color:#111">${esc(title)}</div>
+      <div style="font-size:13px;color:#555;margin-bottom:8px">${esc(sub)}</div>
+      <button class="act mini-sub-btn" type="button" data-watch-kind="${watchKind}" data-watch-name="${esc(watchName)}" style="font-size:11px;padding:3px 8px;margin:0">Subscribe to Alert</button>
+    </div>`;
+  }).join("");
+
+  const hasForecasts = forecasts.length > 0;
+
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CROL-List</a></p>
     <div class="panel" style="padding:22px 24px">
@@ -2300,11 +2329,25 @@ async function showAgency(name){
         <div><div class="big">${stats ? (+stats.n).toLocaleString() : "—"}</div><div class="lbl">contract awards<br>published</div></div>
         <div><div class="big">${rfps.length}${rfps.length===5?"+":""}</div><div class="lbl">open RFPs<br>right now</div></div>
       </div>
-      <div class="chain-h">Notices by section — click to browse that lens, filtered to this agency</div>
-      <div class="chiprow" style="margin-top:6px">${secChips}</div>
-      ${vendors.length?`<div class="chain-h">Top vendors by awarded $ (click to pivot)</div><div class="ladder">${vendorRows}</div>`:""}
-      ${rfps.length?`<div class="chain-h">Open solicitations</div><div class="timeline">${rfpItems}</div>`:""}
-      ${events.length?`<div class="chain-h">Upcoming hearings &amp; events</div><div class="timeline">${evItems}</div>`:""}
+      
+      ${hasForecasts ? `<div class="subtabs" style="display:flex;gap:16px;border-bottom:1px solid #ddd;margin:16px 0 20px">
+        <button class="subtab active" id="btn-overview" style="font-family:var(--font-sc);font-weight:600;font-size:12px;letter-spacing:.15em;text-transform:uppercase;padding:9px 0;border:none;background:none;color:var(--oxblood);border-bottom:2px solid var(--oxblood);cursor:pointer">Overview</button>
+        <button class="subtab" id="btn-forecast" style="font-family:var(--font-sc);font-weight:600;font-size:12px;letter-spacing:.15em;text-transform:uppercase;padding:9px 0;border:none;background:none;color:var(--muted);border-bottom:2px solid transparent;cursor:pointer">Procurement Forecast (${forecasts.length})</button>
+      </div>` : ""}
+
+      <div id="overview-content">
+        <div class="chain-h">Notices by section — click to browse that lens, filtered to this agency</div>
+        <div class="chiprow" style="margin-top:6px">${secChips}</div>
+        ${vendors.length?`<div class="chain-h">Top vendors by awarded $ (click to pivot)</div><div class="ladder">${vendorRows}</div>`:""}
+        ${rfps.length?`<div class="chain-h">Open solicitations</div><div class="timeline">${rfpItems}</div>`:""}
+        ${events.length?`<div class="chain-h">Upcoming hearings &amp; events</div><div class="timeline">${evItems}</div>`:""}
+      </div>
+
+      ${hasForecasts ? `<div id="forecast-content" style="display:none">
+        <div class="chain-h">Predicted Expirations &amp; Planned schedules</div>
+        <div class="timeline" style="margin-top:10px">${forecastItems}</div>
+      </div>` : ""}
+
       <div class="actions" style="margin-top:16px">
         <button class="act primary" type="button" data-follow="agency" data-name="${nm.replace(/"/g,"&quot;")}">Follow: anything new from them</button>
         <button class="act" type="button" id="ecopy">Copy link</button>
@@ -2315,10 +2358,51 @@ async function showAgency(name){
       </div>
       <div class="note">Figures are what this agency has <b>published in the City Record</b> (2003→present for procurement) — registration and payment lag; a per-entity follow across all lenses arrives with the entity-watch feature.</div>
     </div></div>`;
+
   $("#ecopy").addEventListener("click", ()=>copyText(link, $("#ecopy")));
   box.querySelectorAll("[data-aw]").forEach(b=>b.addEventListener("click", ()=>{
     showTab("alerts", true); $("#awatch").value=b.dataset.aw; aWatchChange(); $("#aagency").value=nm; aPreview();
   }));
+
+  if (hasForecasts) {
+    const btnOverview = $("#btn-overview");
+    const btnForecast = $("#btn-forecast");
+    const paneOverview = $("#overview-content");
+    const paneForecast = $("#forecast-content");
+
+    btnOverview.addEventListener("click", () => {
+      btnOverview.style.color = "var(--oxblood)";
+      btnOverview.style.borderBottomColor = "var(--oxblood)";
+      btnForecast.style.color = "var(--muted)";
+      btnForecast.style.borderBottomColor = "transparent";
+      paneOverview.style.display = "block";
+      paneForecast.style.display = "none";
+    });
+
+    btnForecast.addEventListener("click", () => {
+      btnForecast.style.color = "var(--oxblood)";
+      btnForecast.style.borderBottomColor = "var(--oxblood)";
+      btnOverview.style.color = "var(--muted)";
+      btnOverview.style.borderBottomColor = "transparent";
+      paneOverview.style.display = "none";
+      paneForecast.style.display = "block";
+    });
+
+    box.querySelectorAll(".mini-sub-btn").forEach(b => b.addEventListener("click", () => {
+      const kind = b.dataset.watchKind;
+      const watchName = b.dataset.watchName;
+      showTab("alerts", true);
+      $("#awatch").value = "entity";
+      aWatchChange();
+      if (kind === "agency") {
+        $("#aagency").value = watchName;
+      } else {
+        $("#avendor").value = watchName;
+      }
+      aPreview();
+    }));
+  }
+
   announce(`Agency profile: ${nm}`);
 }
 
@@ -2328,9 +2412,6 @@ async function showVendor(name){
   const stem = vendorStem(name), safe = cleanText(name).replace(/[<>&]/g,"");
   box.innerHTML = `<div class="empty"><span class="loading"></span> resolving vendor: ${safe}…</div>`;
   if(stem.length < 3){ box.innerHTML = `<div class="empty">“${safe}” is too short to resolve to a vendor. <a href="#money">← Browse</a></div>`; return; }
-  // Full-text $q, not a stem-prefix LIKE: the stem strips punctuation but vendor_name keeps it,
-  // so the LIKE never matched punctuated vendors ("LEON D. DEMATTEIS…") and their pages 404'd.
-  // $q tokenizes punctuation away on both sides; the exact-stem filter below keeps precision.
   let variants = [];
   try{
     variants = await soda({"$select":"vendor_name, count(1) as n, sum(contract_amount) as t, min(start_date) as first, max(start_date) as last",
@@ -2348,12 +2429,11 @@ async function showVendor(name){
   const first = variants.map(v=>v.first).filter(Boolean).sort()[0];
   const last = variants.map(v=>v.last).filter(Boolean).sort().pop();
   const display = variants.slice().sort((a,b)=>(+b.n)-(+a.n))[0].vendor_name;
-  const [agencies, rows, mentions] = await Promise.all([
+  const [agencies, rows, mentions, forecastData] = await Promise.all([
     soda({"$select":"agency_name, count(1) as n, sum(contract_amount) as t","$where":`vendor_name in(${inList}) AND type_of_notice_description='Award' AND contract_amount < 5000000000`,"$group":"agency_name","$order":"t DESC","$limit":"10"}, 15000).catch(()=>[]),
     soda({"$select":SELECT,"$where":`vendor_name in(${inList})`,"$order":"start_date DESC","$limit":"15"}, 15000).catch(()=>[]),
-    // Full-text "mentions" over the whole record is expensive — scope it to recent editions
-    // and give it a hard timeout; the section is optional garnish, never worth blocking the page.
-    soda({"$select":SELECT,"$where":`vendor_name IS NULL AND start_date > '${recentCut()}'`,"$q":stem,"$order":"start_date DESC","$limit":"8"}, 8000).catch(()=>[])
+    soda({"$select":SELECT,"$where":`vendor_name IS NULL AND start_date > '${recentCut()}'`,"$q":stem,"$order":"start_date DESC","$limit":"8"}, 8000).catch(()=>[]),
+    workerFetch("/inv/" + encodeURIComponent(display), null, 8000).then(r => r.ok ? r.json() : null).catch(() => null)
   ]);
   const link = location.origin + location.pathname + vendorHref(display);
   const agChips = agencies.map(a=>`<a class="chip" style="text-decoration:none" href="${agencyHref(a.agency_name)}">${a.agency_name}<span class="ct">${money(a.t)||a.n}</span></a>`).join("");
@@ -2364,6 +2444,34 @@ async function showVendor(name){
   const mentionItems = mentions.map(r=>`<div class="tl"><span class="tldate">${fdate(r.start_date)}</span>
       <span class="tlreason">${pivotA("#notice/"+encodeURIComponent(r.request_id), cleanText(r.short_title)||"(untitled)")}</span>
       <span class="rmeta" style="margin:0">${r.section_name||r.type_of_notice_description||""}</span></div>`).join("");
+
+  const esc = (s) => String(s == null ? "" : s).replace(/[<>&'"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", "'": "&#39;", "\"": "&quot;" }[c]));
+  const forecasts = forecastData ? (forecastData.forecasts || []) : [];
+  const forecastItems = forecasts.map(f => {
+    const isCheckbook = f.source === "checkbook";
+    const badgeText = isCheckbook ? "Estimated Renewal" : "MOCS Plan Notice";
+    const badgeColor = isCheckbook ? "#e3f2fd" : "#f1f8e9";
+    const badgeTextCol = isCheckbook ? "#0d47a1" : "#33691e";
+    const title = isCheckbook ? (f.vendor_name || "Vendor Expiration") : (f.description || "Planned Solicitation");
+    const sub = isCheckbook ? `${f.agency_name} · Amount ${money(f.amount) || "—"}` : `${f.agency} · Value Band ${f.value_band}`;
+    const dateText = isCheckbook ? `Predicted Expiration: ${f.expiration_date}` : `Expected RFP Quarter: ${f.release_quarter}`;
+    const watchKind = isCheckbook ? "vendor" : "agency";
+    const watchName = isCheckbook ? f.vendor_name : f.agency_name || f.agency;
+
+    return `<div class="tl" style="margin-bottom:20px;position:relative;padding-left:24px">
+      <div style="position:absolute;left:0;top:4px;width:10px;height:10px;border-radius:50%;background:var(--oxblood)"></div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <span class="badge" style="background:${badgeColor};color:${badgeTextCol};font-size:11px;font-weight:600;padding:2px 6px;border-radius:4px">${badgeText}</span>
+        <span style="font-size:12px;color:#777">${dateText}</span>
+      </div>
+      <div style="font-weight:600;font-size:14px;color:#111">${esc(title)}</div>
+      <div style="font-size:13px;color:#555;margin-bottom:8px">${esc(sub)}</div>
+      <button class="act mini-sub-btn" type="button" data-watch-kind="${watchKind}" data-watch-name="${esc(watchName)}" style="font-size:11px;padding:3px 8px;margin:0">Subscribe to Alert</button>
+    </div>`;
+  }).join("");
+
+  const hasForecasts = forecasts.length > 0;
+
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CROL-List</a></p>
     <div class="panel" style="padding:22px 24px">
@@ -2374,9 +2482,23 @@ async function showVendor(name){
         <div><div class="big">${nAwards.toLocaleString()}</div><div class="lbl">award notice${nAwards===1?"":"s"}</div></div>
         <div><div class="big" style="font-size:17px">${first?fdate(first):"—"} – ${last?fdate(last):"—"}</div><div class="lbl">first / latest<br>award published</div></div>
       </div>
-      ${agencies.length?`<div class="chain-h">Agencies they win from (click to pivot)</div><div class="chiprow" style="margin-top:6px">${agChips}</div>`:""}
-      ${rows.length?`<div class="chain-h">On the record — notices naming this vendor</div><div class="timeline">${rowItems}</div>`:""}
-      ${mentions.length?`<div class="chain-h">Mentioned in other notices (text match)</div><div class="timeline">${mentionItems}</div>`:""}
+      
+      ${hasForecasts ? `<div class="subtabs" style="display:flex;gap:16px;border-bottom:1px solid #ddd;margin:16px 0 20px">
+        <button class="subtab active" id="btn-overview" style="font-family:var(--font-sc);font-weight:600;font-size:12px;letter-spacing:.15em;text-transform:uppercase;padding:9px 0;border:none;background:none;color:var(--oxblood);border-bottom:2px solid var(--oxblood);cursor:pointer">Overview</button>
+        <button class="subtab" id="btn-forecast" style="font-family:var(--font-sc);font-weight:600;font-size:12px;letter-spacing:.15em;text-transform:uppercase;padding:9px 0;border:none;background:none;color:var(--muted);border-bottom:2px solid transparent;cursor:pointer">Procurement Forecast (${forecasts.length})</button>
+      </div>` : ""}
+
+      <div id="overview-content">
+        ${agencies.length?`<div class="chain-h">Agencies they win from (click to pivot)</div><div class="chiprow" style="margin-top:6px">${agChips}</div>`:""}
+        ${rows.length?`<div class="chain-h">On the record — notices naming this vendor</div><div class="timeline">${rowItems}</div>`:""}
+        ${mentions.length?`<div class="chain-h">Mentioned in other notices (text match)</div><div class="timeline">${mentionItems}</div>`:""}
+      </div>
+
+      ${hasForecasts ? `<div id="forecast-content" style="display:none">
+        <div class="chain-h">Predicted Expirations &amp; Planned schedules</div>
+        <div class="timeline" style="margin-top:10px">${forecastItems}</div>
+      </div>` : ""}
+
       <div class="actions" style="margin-top:16px">
         <button class="act primary" type="button" data-follow="vendor" data-name="${cleanText(display).replace(/"/g,"&quot;")}">Follow this vendor</button>
         <button class="act" type="button" id="ecopy">Copy link</button>
@@ -2385,7 +2507,48 @@ async function showVendor(name){
       </div>
       <div class="note">Identity is resolved by name normalization (case, punctuation, legal suffixes) — variants listed above; distinct companies sharing a name stem would be merged, so treat totals as <b>“published under this name,”</b> not a legal entity. Awards as published in the City Record; actual payments differ (Checkbook join coming).</div>
     </div></div>`;
+
   $("#ecopy").addEventListener("click", ()=>copyText(link, $("#ecopy")));
+
+  if (hasForecasts) {
+    const btnOverview = $("#btn-overview");
+    const btnForecast = $("#btn-forecast");
+    const paneOverview = $("#overview-content");
+    const paneForecast = $("#forecast-content");
+
+    btnOverview.addEventListener("click", () => {
+      btnOverview.style.color = "var(--oxblood)";
+      btnOverview.style.borderBottomColor = "var(--oxblood)";
+      btnForecast.style.color = "var(--muted)";
+      btnForecast.style.borderBottomColor = "transparent";
+      paneOverview.style.display = "block";
+      paneForecast.style.display = "none";
+    });
+
+    btnForecast.addEventListener("click", () => {
+      btnForecast.style.color = "var(--oxblood)";
+      btnForecast.style.borderBottomColor = "var(--oxblood)";
+      btnOverview.style.color = "var(--muted)";
+      btnOverview.style.borderBottomColor = "transparent";
+      paneOverview.style.display = "none";
+      paneForecast.style.display = "block";
+    });
+
+    box.querySelectorAll(".mini-sub-btn").forEach(b => b.addEventListener("click", () => {
+      const kind = b.dataset.watchKind;
+      const watchName = b.dataset.watchName;
+      showTab("alerts", true);
+      $("#awatch").value = "entity";
+      aWatchChange();
+      if (kind === "agency") {
+        $("#aagency").value = watchName;
+      } else {
+        $("#avendor").value = watchName;
+      }
+      aPreview();
+    }));
+  }
+
   announce(`Vendor profile: ${cleanText(display)}`);
 }
 

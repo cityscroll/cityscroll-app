@@ -15,13 +15,14 @@
 // the next run (left unseen) rather than dropping its notices silently. The guard itself is
 // the `sendcap` package (a pure "may I make one more paid action?" decision).
 
-import cfg from "../alerts.config.json";
+import cfg from "../alerts.config.json" with { type: "json" };
 import { capDecision } from "@jimdc/sendcap";
 import { signToken, listUnsubscribe } from "optin-token";
-import { compileSub } from "./lib/compile.mjs";
+import { compileSub, vendorStem } from "./lib/compile.mjs";
 import { describeFilter } from "./lib/confirm_email.mjs";
 import { digestDecision, shortDate } from "./lib/digest.mjs";
 import { runCheckbookPipeline } from "./checkbook.mjs";
+import { runMocsPlanPipeline } from "./mocs_plan.mjs";
 
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const REQ_URL = (id) => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
@@ -37,12 +38,13 @@ export async function runAlerts(env, watches = cfg.watches || []) {
   let sentThisRun = 0;
   const results = [];
 
-  // Trigger checkbook forecasting pipeline
+  // Trigger checkbook and MOCS forecasting pipelines
   try {
     const subs = await subWatches(env);
     await runCheckbookPipeline(env, watches, subs);
+    await runMocsPlanPipeline(env);
   } catch (e) {
-    console.error("alerts: runCheckbookPipeline error:", e);
+    console.error("alerts: forecasting pipelines error:", e);
   }
 
 
@@ -83,6 +85,8 @@ export async function runAlerts(env, watches = cfg.watches || []) {
       const q = compileSub(s, today);
       if (!q) { results.push({ sub: maskKey(s.key), skipped: `lens:${s.lens}` }); continue; }
 
+      const forecasts = await matchForecasts(env, s, today);
+
       let rows = await fetchRows(q.url, q.params);
       if (q.postFilter) rows = rows.filter(q.postFilter); // e.g. entity watches refine stem-prefix matches
       const seen = await getSeen(env, s.key);
@@ -92,10 +96,11 @@ export async function runAlerts(env, watches = cfg.watches || []) {
       // with no fresh notices, so a quiet inbox never looks like a broken alert. `since` = when we
       // last emailed this sub (falls back to signup), rendered as "since <date>".
       const since = (await getLastSent(env, s.key)) || s.createdAt || null;
-      const decision = digestDecision({ freshCount: fresh.length, freq: s.freq, lastSentDate: since, today, heartbeatDays });
+      const effectiveCount = fresh.length + forecasts.length;
+      const decision = digestDecision({ freshCount: effectiveCount, freq: s.freq, lastSentDate: since, today, heartbeatDays });
 
       const { allow: send, capped } = capDecision({
-        want: decision.action !== "none" && LIVE && !!s.email,
+        want: (decision.action !== "none" || forecasts.length > 0) && LIVE && !!s.email,
         counts: { "per-run": sentThisRun, daily: sentToday },
         caps: { "per-run": maxPerRun, daily: maxPerDay },
       });
@@ -104,9 +109,14 @@ export async function runAlerts(env, watches = cfg.watches || []) {
         const label = describeFilter(s.lens, s.filter);
         const unsubUrl = await unsubLink(env, s.key);
         let subject, html;
-        if (decision.action === "match") {
-          subject = `CROL-List: ${fresh.length} new — ${label}`;
-          html = subDigestHtml(label, q.kind, fresh, unsubUrl, since, env.CONFIRM_BASE || "https://api.crol-list.org");
+        
+        const hasActivity = fresh.length > 0 || forecasts.length > 0;
+        if (hasActivity) {
+          const freshLabel = fresh.length > 0 ? `${fresh.length} new` : "";
+          const forecastLabel = forecasts.length > 0 ? `${forecasts.length} forecast(s)` : "";
+          const parts = [freshLabel, forecastLabel].filter(Boolean).join(" & ");
+          subject = `CROL-List: ${parts} — ${label}`;
+          html = subDigestHtml(label, q.kind, fresh, unsubUrl, since, env.CONFIRM_BASE || "https://api.crol-list.org", forecasts);
         } else {
           subject = decision.action === "weekly-empty"
             ? `CROL-List: nothing new this week — ${label}`
@@ -120,7 +130,7 @@ export async function runAlerts(env, watches = cfg.watches || []) {
       }
 
       if (rows.length && !capped) await markSeen(env, s.key, rows.map((r) => r[q.idField]).filter(Boolean));
-      results.push({ sub: maskKey(s.key), lens: s.lens, found: rows.length, new: fresh.length, action: decision.action, sent: send, capped });
+      results.push({ sub: maskKey(s.key), lens: s.lens, found: rows.length, new: fresh.length, forecasts: forecasts.length, action: decision.action, sent: send, capped });
     } catch (e) {
       results.push({ sub: maskKey(s.key), error: String(e?.message || e) });
     }
@@ -283,7 +293,7 @@ function maskKey(n) {
 }
 
 // Digest for a self-serve sub — award / rfp (City Record) or rezone (ZAP) items.
-function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.crol-list.org") {
+function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.crol-list.org", forecasts = []) {
   const usd = (n) => (n == null || n === "" ? "" : "$" + Number(n).toLocaleString("en-US"));
   const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
   const cr = (id) => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
@@ -311,11 +321,33 @@ function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.c
       <span style="color:#555;font-size:13px">${meta}</span><br>
       <span style="font-size:13px">${acts.join(" &nbsp; ")}</span></li>`;
   };
+
+  let forecastsHtml = "";
+  if (forecasts.length > 0) {
+    const fItems = forecasts.map(f => {
+      if (f.source === "checkbook") {
+        return `<li style="margin:0 0 14px"><b>Estimated Renewal: ${esc(f.vendor_name || "Vendor")}</b><br>
+          <span style="color:#555;font-size:13px">${esc(f.agency_name)} · Amount ${usd(f.amount)}</span><br>
+          <span style="color:#a42;font-size:13px">Predicted Expiration: ${f.expiration_date} · 6-Month Warning: ${f.warning_date}</span></li>`;
+      } else {
+        return `<li style="margin:0 0 14px"><b>MOCS Plan Notice: ${esc(f.description)}</b><br>
+          <span style="color:#555;font-size:13px">${esc(f.agency)} · Value Band ${esc(f.value_band)}</span><br>
+          <span style="color:#a42;font-size:13px">Anticipated Release: ${f.release_quarter}</span></li>`;
+      }
+    }).join("");
+    forecastsHtml = `<h3 style="margin-top:20px;border-top:1px solid #ddd;padding-top:15px;font-family:system-ui">Upcoming Procurement Forecasts (Early Warning)</h3>
+      <p style="font-size:13px;color:#666;font-style:italic;margin-bottom:12px">These are predicted upcoming contract expirations and planned schedules, not active open solicitations.</p>
+      <ul style="list-style:none;padding:0">${fItems}</ul>`;
+  }
+
+  const listHtml = rows.length > 0 ? `<ul style="list-style:none;padding:0">${rows.map(item).join("")}</ul>` : `<p style="color:#666;font-style:italic">No new active notices matching your criteria.</p>`;
+
   return `<div style="font-family:Georgia,serif;max-width:620px">
     <h2 style="font-family:system-ui">CROL-List — ${esc(label)}</h2>
     <p style="color:#555">${rows.length} new ${rows.length === 1 ? "item" : "items"}${since ? ` since ${shortDate(since)}` : ""}.</p>
-    <ul style="list-style:none;padding:0">${rows.map(item).join("")}</ul>
-    <p style="color:#999;font-size:12px">You subscribed to this on crol-list.org. <a href="${esc(unsubUrl)}">Unsubscribe</a> (one-click).<br>
+    ${listHtml}
+    ${forecastsHtml}
+    <p style="color:#999;font-size:12px;margin-top:20px">You subscribed to this on crol-list.org. <a href="${esc(unsubUrl)}">Unsubscribe</a> (one-click).<br>
     Notice links go via a count-only redirect (${esc(base.replace(/^https?:\/\//, ""))}/r) so we can tell digests are useful — it counts clicks per day, never who clicked. Aggregates: <a href="https://crol-list.org/stats.html">crol-list.org/stats</a>.</p>
   </div>`;
 }
@@ -334,4 +366,60 @@ function quietHtml(label, action, since, unsubUrl) {
     <p style="color:#666;font-size:13px">This note just confirms your alert is working — we'll email the moment something matches.</p>
     <p style="color:#999;font-size:12px">You subscribed to this on crol-list.org. <a href="${esc(unsubUrl)}">Unsubscribe</a> (one-click).</p>
   </div>`;
+}
+
+export async function matchForecasts(env, s, today) {
+  const matched = [];
+  if (!env.ALERT_STATE) return matched;
+
+  const stems = [];
+  if (s.lens === "entity" && s.filter && s.filter.name) {
+    stems.push(vendorStem(s.filter.name));
+  }
+  if (s.lens === "money" && s.filter && s.filter.agency) {
+    stems.push(vendorStem(s.filter.agency));
+  }
+
+  const LIVE = env.ALERTS_LIVE === "true";
+
+  for (const stem of stems) {
+    if (stem.length < 3) continue;
+
+    // Checkbook expirations
+    const fcRaw = await env.ALERT_STATE.get(`fc:${stem}`);
+    if (fcRaw) {
+      const list = JSON.parse(fcRaw);
+      for (const fx of list) {
+        if (fx.warning_date === today) {
+          const forecastId = `fc:${fx.contract_id}:${s.key}`;
+          const sent = await env.ALERT_STATE.get(`sent:${forecastId}`);
+          if (!sent) {
+            matched.push(fx);
+            if (LIVE) {
+              await env.ALERT_STATE.put(`sent:${forecastId}`, "1");
+            }
+          }
+        }
+      }
+    }
+
+    // MOCS plans
+    const planRaw = await env.ALERT_STATE.get(`plan:${stem}`);
+    if (planRaw) {
+      const list = JSON.parse(planRaw);
+      for (const px of list) {
+        const descId = String(px.description).replace(/\s+/g, "_").slice(0, 50);
+        const forecastId = `plan:${stem}:${descId}:${s.key}`;
+        const sent = await env.ALERT_STATE.get(`sent:${forecastId}`);
+        if (!sent) {
+          matched.push(px);
+          if (LIVE) {
+            await env.ALERT_STATE.put(`sent:${forecastId}`, "1");
+          }
+        }
+      }
+    }
+  }
+
+  return matched;
 }
