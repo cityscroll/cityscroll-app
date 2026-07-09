@@ -69,6 +69,16 @@
 (<a href="https://calver.org/" target="_blank" rel="noopener">CalVer</a>): the site ships continuously, so a date
 tells the truth where a version number would be theater. A tool that watches the city's public record should keep
 a public record of itself. Live usage numbers: <a href="stats.html">stats</a>.</p>
+<section class="rel" id="2026-07-09">
+  <h2>2026.07.09 · Predictive Procurement: Checkbook Expirations, MOCS Plans, &amp; Early-Warning Timelines</h2>
+  <div class="foryou"><b>For you</b> — CROL-List now alerts you 6 months <em>before</em> contracts expire or new RFPs are published. Agency and vendor profiles show a new <b>"Procurement Forecast"</b> tab with a vertical chronological timeline, uniting predicted contract renewals (from Checkbook NYC) and official agency-planned solicitations (from Charter §112 MOCS datasets). Digests now deliver early-warning notifications for upcoming forecasts matching your watches.</div>
+  <ul>
+    <li>Checkbook NYC contract end-date calculations to estimate renewal timelines; 180-day early warning triggers with single-send de-duplication.</li>
+    <li>Ingestion pipeline for annual Charter §112 MOCS agency procurement plans, normalizing value bands and expected RFP release quarters.</li>
+    <li>New unified <code>GET /forecast</code> API search endpoint and extended <code>GET /inv/:id</code> details, grouping future timeline milestones chronologically.</li>
+    <li>A visual vertical timeline component on vendor/agency profiles showing estimated renewals and planned solicitations, complete with direct alert subscriptions.</li>
+  </ul>
+</section>
 
 <section class="rel" id="2026-07-02d">
   <h2>2026.07.02 · Fix: vendors with punctuated names resolve again</h2>
