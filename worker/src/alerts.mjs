@@ -21,6 +21,7 @@ import { signToken, listUnsubscribe } from "optin-token";
 import { compileSub } from "./lib/compile.mjs";
 import { describeFilter } from "./lib/confirm_email.mjs";
 import { digestDecision, shortDate } from "./lib/digest.mjs";
+import { runCheckbookPipeline } from "./checkbook.mjs";
 
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const REQ_URL = (id) => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
@@ -35,6 +36,15 @@ export async function runAlerts(env, watches = cfg.watches || []) {
   let sentToday = await getSendCount(env, day);
   let sentThisRun = 0;
   const results = [];
+
+  // Trigger checkbook forecasting pipeline
+  try {
+    const subs = await subWatches(env);
+    await runCheckbookPipeline(env, watches, subs);
+  } catch (e) {
+    console.error("alerts: runCheckbookPipeline error:", e);
+  }
+
 
   for (const w of watches) {
     try {
