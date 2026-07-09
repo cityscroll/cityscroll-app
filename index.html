@@ -2237,7 +2237,7 @@ async function followDollars(r, el){
       <dt>M/WBE</dt><dd>${c.mwbe||"—"}${c.subs && c.subs!=="N/A" ? ` · sub-vendors: ${c.subs}` : ""}</dd>
     </dl>
     ${vendorMismatch?`<div class="note warn" style="margin-top:10px">⚠ Checkbook's vendor (<b>${cleanText(c.vendor)}</b>) differs from the notice's (<b>${cleanText(r.vendor_name)}</b>) — a PIN can cover multiple awards; treat with care.</div>`:""}
-    <div class="pnote">Live from <a href="https://www.checkbooknyc.com/smart_search/${encodeURIComponent(c.id)}" target="_blank" rel="noopener">Checkbook NYC ↗</a>, matched by PIN <code>${r.pin}</code>. Payments lag invoicing — $0 paid on a freshly registered contract is normal.</div>
+    <div class="pnote">Live from <a href="https://www.checkbooknyc.com/smart_search/citywide?search_term=${encodeURIComponent(c.id)}" target="_blank" rel="noopener">Checkbook NYC ↗</a>, matched by PIN <code>${r.pin}</code>. Payments lag invoicing — $0 paid on a freshly registered contract is normal.</div>
   </div></div>`;
 }
 
@@ -2723,7 +2723,7 @@ async function showMatter(pin){
   if(c && c.registered) items.push({date:c.registered, label:`<b>Contract registered</b> — <code>${c.id}</code> (Checkbook NYC)`, extra:`committed ${money(c.current)||"—"}`});
   items.sort((a,b)=>(a.date||"9999").localeCompare(b.date||"9999"));
   if(c) items.push({date:null, label:`<b>Paid to date: ${money(c.spent)||"$0"}</b> of ${money(c.current)||"—"} committed`,
-    extra:`term ${fdate(c.start)||"—"} → ${fdate(c.end)||"—"} · <a href="https://www.checkbooknyc.com/smart_search/${encodeURIComponent(c.id)}" target="_blank" rel="noopener">Checkbook ↗</a>`});
+    extra:`term ${fdate(c.start)||"—"} → ${fdate(c.end)||"—"} · <a href="https://www.checkbooknyc.com/smart_search/citywide?search_term=${encodeURIComponent(c.id)}" target="_blank" rel="noopener">Checkbook ↗</a>`});
   const link = location.origin + location.pathname + "#matter/" + encodeURIComponent(pin);
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CROL-List</a></p>
