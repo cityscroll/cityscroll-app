@@ -52,6 +52,11 @@ This repository contains the complete system: a single-file static client (`inde
 
 ## Testing & Development
 
+[![CI](https://github.com/jimdc/crol-list/actions/workflows/ci.yml/badge.svg)](https://github.com/jimdc/crol-list/actions/workflows/ci.yml)
+
+Both unit layers run automatically in CI on every pull request and push to `main`
+(`.github/workflows/ci.yml`); the Playwright functional suite runs on manual dispatch.
+
 Run tests from the repository root:
 
 *   **Unit Tests:** Run `node --test` to verify entity stem compilers, name resolution, and date logic.
