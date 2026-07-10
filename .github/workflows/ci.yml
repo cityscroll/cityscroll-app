@@ -24,7 +24,9 @@ jobs:
           cache: npm
           cache-dependency-path: worker/package-lock.json
       - name: Site unit tests
-        run: node --test
+        # Scoped to test/ — a bare `node --test` also recurses into worker/test/,
+        # which needs worker/node_modules (installed in the next step).
+        run: node --test test/*.test.mjs
       - name: Worker dependencies
         run: npm ci
         working-directory: worker
