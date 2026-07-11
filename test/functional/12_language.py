@@ -63,6 +63,78 @@ with sync_playwright() as pw:
     assert page.evaluate("document.documentElement.lang") == "en"
     step("OK", "switches back to English")
 
+    # ===== COVERAGE GATE: residual-English sentinel check =====
+    # Switch back to Spanish for the coverage check.
+    es_btn = page.locator('#langSwitcher .lang-btn[data-lang="es"]')
+    es_btn.click()
+    page.wait_for_timeout(500)
+
+    # Collect visible text OUTSIDE translate="no" containers.
+    # We query all text nodes that are visible and NOT inside a translate="no" element.
+    page_text = page.evaluate("""() => {
+        const walker = document.createTreeWalker(
+            document.body,
+            NodeFilter.SHOW_TEXT,
+            {
+                acceptNode(node) {
+                    const el = node.parentElement;
+                    if (!el) return NodeFilter.FILTER_REJECT;
+                    // Skip hidden elements
+                    const s = window.getComputedStyle(el);
+                    if (s.display === 'none' || s.visibility === 'hidden') return NodeFilter.FILTER_REJECT;
+                    // Skip translate=no subtrees
+                    let p = el;
+                    while (p && p !== document.body) {
+                        if (p.getAttribute && p.getAttribute('translate') === 'no') return NodeFilter.FILTER_REJECT;
+                        p = p.parentElement;
+                    }
+                    return NodeFilter.FILTER_ACCEPT;
+                }
+            }
+        );
+        const parts = [];
+        let node;
+        while ((node = walker.nextNode())) {
+            const txt = node.textContent.trim();
+            if (txt) parts.push(txt);
+        }
+        return parts.join(' ');
+    }""")
+
+    # Sentinel strings that must NOT appear in the translated UI chrome.
+    # These are high-visibility English strings that should be translated in es mode.
+    SENTINELS = [
+        "Pick a role",
+        "Try a title like",
+        "describe what you",
+        "No account",
+        "Build an alert",
+        "Watch for",
+        "Email address",
+        "Frequency",
+        "Preview today",
+        "Subscribe",
+        "Get your digest",
+        "What should we watch",
+        "Narrow it",
+        "How often",
+        "Quick suggestions",
+    ]
+    failed_sentinels = [s for s in SENTINELS if s.lower() in page_text.lower()]
+    if failed_sentinels:
+        step("FAIL", "residual English sentinels found", str(failed_sentinels))
+        raise AssertionError(f"English sentinels still visible in es mode: {failed_sentinels}")
+    step("OK", "residual-English sentinel check passed", f"{len(SENTINELS)} sentinels absent")
+
+    # Coverage stat: count data-i18n elements vs total visible text-bearing elements.
+    coverage = page.evaluate("""() => {
+        const i18n = document.querySelectorAll('[data-i18n]').length;
+        const placeholder = document.querySelectorAll('[data-i18n-placeholder]').length;
+        return {i18n, placeholder, total: i18n + placeholder};
+    }""")
+    step("STAT", "i18n coverage",
+         f"data-i18n: {coverage['i18n']}, data-i18n-placeholder: {coverage['placeholder']}, total: {coverage['total']}")
+
     browser.close()
 
 print("✅ language switcher spec green")
