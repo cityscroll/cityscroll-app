@@ -56,7 +56,7 @@ This repository contains the complete system: a single-file static client (`inde
 
 ## Testing & Development
 
-[![CI](https://github.com/jimdc/crol-list/actions/workflows/ci.yml/badge.svg)](https://github.com/jimdc/crol-list/actions/workflows/ci.yml)
+[![CI](https://github.com/cityscroll/crol-list/actions/workflows/ci.yml/badge.svg)](https://github.com/cityscroll/crol-list/actions/workflows/ci.yml)
 
 Both unit layers run automatically in CI on every pull request and push to `main`
 (`.github/workflows/ci.yml`); the Playwright functional suite runs on manual dispatch.
