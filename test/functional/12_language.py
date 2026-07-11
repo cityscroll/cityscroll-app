@@ -127,6 +127,7 @@ with sync_playwright() as pw:
     # Sentinel strings that must NOT appear in the translated UI chrome.
     # These are high-visibility English strings that should be translated in es mode.
     SENTINELS = [
+    "Look up someone named", "My investigation", "All agencies", "searches the City Record Open Data",
         "Pick a role",
         "Try a title like",
         "describe what you",

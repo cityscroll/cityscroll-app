@@ -285,7 +285,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=121bfaff"></script>
+<script src="i18n.js?v=6f615862"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
@@ -336,7 +336,7 @@
     <div class="nlbox">
       <div class="nlrow">
         <input type="text" id="nlq" aria-label="Describe what you're looking for in plain English" placeholder="describe what you're looking for…" data-i18n-placeholder="nl_placeholder_money">
-        <button id="nlgo">Ask</button>
+        <button id="nlgo" data-i18n="ask_btn">Ask</button>
       </div>
       <div id="nltry" class="nltry"></div>
       <div id="nltrans"></div>
@@ -353,7 +353,7 @@
       </div>
       <div class="field">
         <label for="agency" data-i18n="agency_label">Agency</label>
-        <select id="agency"><option value="">All agencies — loading…</option></select>
+        <select id="agency"><option value="" data-i18n="all_agencies_loading">All agencies — loading…</option></select>
       </div>
       <div class="field kw">
         <label for="kw" data-i18n="keyword_label">Keyword</label>
@@ -613,7 +613,7 @@
 
 <footer>
   <div class="wrap">
-    <p style="margin:0">CROL-List searches the City Record Open Data — <b><span id="editionspan">2003 to present</span></b>, 1M+ notices. <a href="about.html" style="color:var(--oxblood)">About</a> · <a href="#investigation" style="color:var(--oxblood)">My investigation</a> · <a href="api.html" style="color:var(--oxblood)">API &amp; feeds</a> · <a href="changelog.html" style="color:var(--oxblood)">Changelog</a> · <a href="stats.html" style="color:var(--oxblood)">Stats</a></p>
+    <p style="margin:0"><span data-i18n="footer_lede">CROL-List searches the City Record Open Data</span> — <b><span id="editionspan">2003 to present</span></b>, <span data-i18n="footer_notices">1M+ notices</span>. <a href="about.html" style="color:var(--oxblood)" data-i18n="footer_about">About</a> · <a href="#investigation" style="color:var(--oxblood)" data-i18n="footer_investigation">My investigation</a> · <a href="api.html" style="color:var(--oxblood)" data-i18n="footer_api">API &amp; feeds</a> · <a href="changelog.html" style="color:var(--oxblood)" data-i18n="footer_changelog">Changelog</a> · <a href="stats.html" style="color:var(--oxblood)" data-i18n="footer_stats">Stats</a></p>
   </div>
 </footer>
 
@@ -826,9 +826,9 @@ async function loadAgencies(){
     const rows = await soda({"$select":"agency_name","$where":"section_name='Procurement' AND agency_name IS NOT NULL",
       "$group":"agency_name","$order":"agency_name","$limit":"600"});
     const cur = $("#agency").value; // a permalink may have selected an agency before this resolved
-    $("#agency").innerHTML = '<option value="">All agencies</option>' + rows.map(r=>`<option>${r.agency_name}</option>`).join("");
+    $("#agency").innerHTML = `<option value="">${t("all_agencies")}</option>` + rows.map(r=>`<option>${r.agency_name}</option>`).join("");
     if(cur) forceSelect("#agency", cur);
-  }catch(e){ $("#agency").innerHTML = '<option value="">All agencies</option>'; }
+  }catch(e){ $("#agency").innerHTML = `<option value="">${t("all_agencies")}</option>`; }
 }
 
 let currentRows = [], mode = "open", selectedRFP = null, closingWeek = false, moneyLoaded = false, methodSel = "";
@@ -1295,11 +1295,11 @@ const NL_SAMPLES = {
 function renderNLSamples(lens, el){
   if(!el) return;
   const s = NL_SAMPLES[lens] || [];
-  el.innerHTML = s.map((t,i)=>`<button type="button" class="trychip" data-i="${i}">${t}</button>`).join("");
+  el.innerHTML = s.map((txt,i)=>`<button type="button" class="trychip" data-i="${i}" data-i18n="sugg_${lens}_${i}">${txt}</button>`).join("");
   el.querySelectorAll(".trychip").forEach(b=>b.addEventListener("click",()=>{
     const i=+b.dataset.i;
     const inp = lens==="money" ? $("#nlq") : $("#nlq-"+lens);
-    if(inp) inp.value = s[i];
+    if(inp) inp.value = b.textContent;
     lens==="money" ? nlTranslate() : nlTranslateLens(lens);
   }));
 }
@@ -1310,8 +1310,8 @@ function injectNLBoxes(){
     const wrap=document.querySelector(sel+" .wrap"); if(!wrap) return;
     const anchor=wrap.querySelector(anchorSel); if(!anchor) return;
     const box=document.createElement("div"); box.className="nlbox";
-    box.innerHTML='<div class="nlrow"><input type="text" id="nlq-'+lens+'" placeholder="'+NL[lens].placeholder+'">'+
-      '<button id="nlgo-'+lens+'">Ask</button></div>'+
+    box.innerHTML='<div class="nlrow"><input type="text" id="nlq-'+lens+'" data-i18n-placeholder="nl_placeholder_'+lens+'" placeholder="'+NL[lens].placeholder+'">'+
+      '<button id="nlgo-'+lens+'" data-i18n="ask_btn">Ask</button></div>'+
       '<div id="nltry-'+lens+'" class="nltry"></div><div id="nltrans-'+lens+'"></div>';
     anchor.parentNode.insertBefore(box, anchor);
     $("#nlgo-"+lens).addEventListener("click",()=>nlTranslateLens(lens));
@@ -1786,7 +1786,7 @@ async function loadSectionAgencies(key){
   try{
     const rows=await soda({"$select":"agency_name","$where":`section_name='${SECTIONS[key].section}' AND agency_name IS NOT NULL`,"$group":"agency_name","$order":"agency_name","$limit":"200"});
     const cur=sel.value;
-    sel.innerHTML='<option value="">All agencies</option>'+rows.map(r=>`<option>${r.agency_name}</option>`).join("");
+    sel.innerHTML=`<option value="">${t("all_agencies")}</option>`+rows.map(r=>`<option>${r.agency_name}</option>`).join("");
     if(cur) forceSelect("#"+key+"agency", cur);
   }catch(e){}
 }
