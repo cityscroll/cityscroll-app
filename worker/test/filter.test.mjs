@@ -45,7 +45,8 @@ test("people: lookupType constrained to role|person", () => {
 test("meetings: when constrained; unknown lens falls back to money shape", () => {
   assert.equal(sanitize("meetings", { when: "upcoming" }).when, "upcoming");
   assert.equal(sanitize("meetings", { when: "someday" }).when, null);
-  assert.deepEqual(Object.keys(sanitize("bogus", {})).sort(), ["agency", "excludeSpecial", "keywords", "minAmount", "months"]);
+  // maxAmount + category joined the money lens in the crol-alert vocab merge (issue #1 PR-3).
+  assert.deepEqual(Object.keys(sanitize("bogus", {})).sort(), ["agency", "category", "excludeSpecial", "keywords", "maxAmount", "minAmount", "months"]);
 });
 
 test("alerts: watchType constrained; threshold floored", () => {

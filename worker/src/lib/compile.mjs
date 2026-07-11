@@ -34,21 +34,27 @@ export function compileSub(sub, todayISO) {
   const kws = (Array.isArray(f.keywords) ? f.keywords : []).filter(Boolean);
 
   if (sub.lens === "money") {
-    if (f.minAmount) {
+    // Verbatim dataset value; single-quote-escaped for SODA.
+    const catClause = f.category ? ` AND category_description='${String(f.category).replace(/'/g, "''")}'` : "";
+    if (f.minAmount || f.maxAmount) {
+      // Amount-validity cap per the crol-analyzer EDA: rows >= $10B are data-entry
+      // errors (max legitimate award ≈ $6.68B — the old $5B cap wrongly excluded it).
+      // Note: only Award notices carry amounts — open bids do not (EDA), so any
+      // amount bound implies the award query.
+      let where = `type_of_notice_description='Award' AND contract_amount >= ${Number(f.minAmount) || 1} AND contract_amount < 10000000000`;
+      if (f.maxAmount) where += ` AND contract_amount <= ${Number(f.maxAmount)}`;
       return {
         url: SODA, idField: "request_id", kind: "award",
         params: {
           "$select": CR_SELECT,
-          // Amount-validity cap per the crol-analyzer EDA: rows >= $10B are data-entry
-          // errors (max legitimate award ≈ $6.68B — the old $5B cap wrongly excluded it).
-          "$where": `type_of_notice_description='Award' AND contract_amount >= ${Number(f.minAmount)} AND contract_amount < 10000000000`,
+          "$where": where + catClause,
           "$order": "start_date DESC", "$limit": "25",
         },
       };
     }
     const params = {
       "$select": CR_SELECT,
-      "$where": `type_of_notice_description='Solicitation' AND due_date > '${todayISO}'`,
+      "$where": `type_of_notice_description='Solicitation' AND due_date > '${todayISO}'` + catClause,
       "$order": "due_date ASC", "$limit": "25",
     };
     if (kws.length) params["$q"] = kws.join(" ");
