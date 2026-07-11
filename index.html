@@ -289,7 +289,7 @@
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
-<a class="skip" href="#main">Skip to content</a>
+<a class="skip" href="#main" data-i18n="skip_to_content">Skip to content</a>
 <div id="srstatus" class="sr-only" role="status" aria-live="polite"></div>
 <header class="masthead">
   <div class="wrap">
@@ -335,7 +335,7 @@
   <div class="wrap">
     <div class="nlbox">
       <div class="nlrow">
-        <input type="text" id="nlq" aria-label="Describe what you're looking for in plain English" placeholder="describe what you're looking for…">
+        <input type="text" id="nlq" aria-label="Describe what you're looking for in plain English" placeholder="describe what you're looking for…" data-i18n-placeholder="nl_placeholder_money">
         <button id="nlgo">Ask</button>
       </div>
       <div id="nltry" class="nltry"></div>
@@ -344,55 +344,55 @@
 
     <div class="controls">
       <div class="field">
-        <label for="mode">Show</label>
+        <label for="mode" data-i18n="show_label">Show</label>
         <select id="mode">
-          <option value="open">Open Requests for Proposals (RFPs) — accepting now</option>
-          <option value="allrfp">All RFPs</option>
-          <option value="award">Recent Awards ($)</option>
+          <option value="open" data-i18n="mode_open">Open Requests for Proposals (RFPs) — accepting now</option>
+          <option value="allrfp" data-i18n="mode_allrfp">All RFPs</option>
+          <option value="award" data-i18n="mode_award">Recent Awards ($)</option>
         </select>
       </div>
       <div class="field">
-        <label for="agency">Agency</label>
+        <label for="agency" data-i18n="agency_label">Agency</label>
         <select id="agency"><option value="">All agencies — loading…</option></select>
       </div>
       <div class="field kw">
-        <label for="kw">Keyword</label>
-        <input type="text" id="kw" placeholder="shelter, IT, construction, security…">
+        <label for="kw" data-i18n="keyword_label">Keyword</label>
+        <input type="text" id="kw" placeholder="shelter, IT, construction, security…" data-i18n-placeholder="kw_placeholder_money">
       </div>
       <div class="field">
-        <label for="sort">Sort by</label>
+        <label for="sort" data-i18n="sort_label">Sort by</label>
         <select id="sort">
-          <option value="deadline">Deadline: soonest</option>
-          <option value="newest">Newest posted</option>
-          <option value="amount">Largest $</option>
+          <option value="deadline" data-i18n="sort_deadline">Deadline: soonest</option>
+          <option value="newest" data-i18n="sort_newest">Newest posted</option>
+          <option value="amount" data-i18n="sort_amount">Largest $</option>
         </select>
       </div>
       <div class="field" id="minwrap">
-        <label for="minamt">Min award $</label>
+        <label for="minamt" data-i18n="min_award_label">Min award $</label>
         <select id="minamt">
-          <option value="">Any</option>
+          <option value="" data-i18n="min_award_any">Any</option>
           <option value="100000">$100K+</option>
           <option value="1000000">$1M+</option>
           <option value="10000000">$10M+</option>
           <option value="100000000">$100M+</option>
         </select>
       </div>
-      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="money">Watch this search</button></div>
+      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="money" data-i18n="watch_this_search">Watch this search</button></div>
     </div>
 
     <div class="chiprow" id="moneyquick">
-      <button type="button" class="chip" id="closingweek">Closing this week</button>
+      <button type="button" class="chip" id="closingweek" data-i18n="closing_this_week">Closing this week</button>
     </div>
     <div class="chiprow" id="methodfacet" style="display:none"></div>
 
     <div class="grid">
       <div class="panel">
-        <h2><span><span id="reshead">Open Requests for Proposals (RFPs)</span> <span class="count" id="rescount"></span></span><button id="export" class="mini">Export CSV</button></h2>
+        <h2><span><span id="reshead" data-i18n="open_rfps_heading">Open Requests for Proposals (RFPs)</span> <span class="count" id="rescount"></span></span><button id="export" class="mini" data-i18n="export_csv">Export CSV</button></h2>
         <div class="list" id="list" translate="no"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
       </div>
       <div class="panel">
-        <h2>Money trail</h2>
-        <div class="detail" id="detail" translate="no"><div class="empty">Pick a notice on the left to trace it — for an RFP you'll see <b>how to respond</b> (deadline, contact, where to submit) and the full notice → award → dollars chain.</div></div>
+        <h2 data-i18n="money_trail_heading">Money trail</h2>
+        <div class="detail" id="detail" translate="no"><div class="empty" data-i18n-html="pick_notice_empty">Pick a notice on the left to trace it — for an RFP you'll see <b>how to respond</b> (deadline, contact, where to submit) and the full notice → award → dollars chain.</div></div>
       </div>
     </div>
   </div>
@@ -404,12 +404,12 @@
 
     <div class="controls">
       <div class="field">
-        <label for="pmode">Look up</label>
-        <select id="pmode"><option value="role">A role / title</option><option value="person">A person</option></select>
+        <label for="pmode" data-i18n="look_up_label">Look up</label>
+        <select id="pmode"><option value="role" data-i18n="pmode_role">A role / title</option><option value="person" data-i18n="pmode_person">A person</option></select>
       </div>
       <div class="field kw">
-        <label for="pkw" id="pkwlabel">Title keyword</label>
-        <input type="text" id="pkw" list="ptitles" placeholder="emergency medical, attorney, engineer…">
+        <label for="pkw" id="pkwlabel" data-i18n="title_keyword_label">Title keyword</label>
+        <input type="text" id="pkw" list="ptitles" placeholder="emergency medical, attorney, engineer…" data-i18n-placeholder="kw_placeholder_people_role">
         <datalist id="ptitles"></datalist>
       </div>
     </div>
@@ -419,12 +419,12 @@
 
     <div class="grid">
       <div class="panel">
-        <h2><span><span id="preshead">Roles</span> <span class="count" id="prescount"></span></span></h2>
-        <div class="list" id="plist" translate="no"><div class="empty">Try a title like <b>"emergency medical"</b> — or switch to a person.</div></div>
+        <h2><span><span id="preshead" data-i18n="roles_heading">Roles</span> <span class="count" id="prescount"></span></span></h2>
+        <div class="list" id="plist" translate="no"><div class="empty" data-i18n="try_a_title_empty">Try a title like <b>"emergency medical"</b> — or switch to a person.</div></div>
       </div>
       <div class="panel">
-        <h2>Listing</h2>
-        <div class="detail" id="pdetail" translate="no"><div class="empty">Pick a role to see its official title, whether it needs an exam, its salary band, and the career ladder.</div></div>
+        <h2 data-i18n="listing_heading">Listing</h2>
+        <div class="detail" id="pdetail" translate="no"><div class="empty" data-i18n="pick_role_empty">Pick a role to see its official title, whether it needs an exam, its salary band, and the career ladder.</div></div>
       </div>
     </div>
   </div>
@@ -435,30 +435,30 @@
   <div class="wrap">
     <div class="controls">
       <div class="field">
-        <label for="lboro">Borough</label>
+        <label for="lboro" data-i18n="borough_label">Borough</label>
         <select id="lboro">
-          <option value="">All boroughs</option>
+          <option value="" data-i18n="all_boroughs">All boroughs</option>
           <option>Manhattan</option><option>Brooklyn</option><option>Queens</option><option>Bronx</option><option>Staten Island</option>
         </select>
       </div>
       <div class="field kw">
-        <label for="lkw">ZIP, address, or neighborhood</label>
-        <input type="text" id="lkw" placeholder="Bushwick, 79 Rivington, Gowanus…">
+        <label for="lkw" data-i18n="zip_addr_neighborhood">ZIP, address, or neighborhood</label>
+        <input type="text" id="lkw" placeholder="Bushwick, 79 Rivington, Gowanus…" data-i18n-placeholder="kw_placeholder_land">
       </div>
       <div class="field">
-        <label for="lstatus">Status</label>
-        <select id="lstatus"><option value="active">In review / active</option><option value="all">All</option></select>
+        <label for="lstatus" data-i18n="status_label">Status</label>
+        <select id="lstatus"><option value="active" data-i18n="status_active">In review / active</option><option value="all" data-i18n="status_all">All</option></select>
       </div>
-      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="land">Watch this search</button></div>
+      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="land" data-i18n="watch_this_search">Watch this search</button></div>
     </div>
     <div class="grid">
       <div class="panel">
-        <h2><span><span id="lreshead">Recent rezonings</span> <span class="count" id="lrescount"></span></span></h2>
+        <h2><span><span id="lreshead" data-i18n="recent_rezonings_heading">Recent rezonings</span> <span class="count" id="lrescount"></span></span></h2>
         <div class="list" id="llist" translate="no"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
       </div>
       <div class="panel">
-        <h2>Listing</h2>
-        <div class="detail" id="ldetail" translate="no"><div class="empty">Pick a rezoning to see it in plain English — applicant, what's being built, affordable units, status — and on a map. Try "79 Rivington" or "Gowanus".</div></div>
+        <h2 data-i18n="land_listing_heading">Listing</h2>
+        <div class="detail" id="ldetail" translate="no"><div class="empty" data-i18n="pick_rezoning_empty">Pick a rezoning to see it in plain English — applicant, what's being built, affordable units, status — and on a map. Try "79 Rivington" or "Gowanus".</div></div>
       </div>
     </div>
   </div>
@@ -468,9 +468,9 @@
 <section id="tab-property" class="tabpane">
   <div class="wrap">
     <div class="controls">
-      <div class="field"><label for="propertyagency">Agency</label><select id="propertyagency"><option value="">All agencies</option></select></div>
-      <div class="field kw"><label for="propertykw">Search</label><input type="text" id="propertykw" placeholder="address, neighborhood…"></div>
-      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="property">Watch this search</button></div>
+      <div class="field"><label for="propertyagency" data-i18n="agency_label">Agency</label><select id="propertyagency"><option value="" data-i18n="all_agencies">All agencies</option></select></div>
+      <div class="field kw"><label for="propertykw" data-i18n="search_label">Search</label><input type="text" id="propertykw" placeholder="address, neighborhood…" data-i18n-placeholder="kw_placeholder_property"></div>
+      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="property" data-i18n="watch_this_search">Watch this search</button></div>
     </div>
     <div class="chiprow" id="assettabs"></div>
     <div class="chiprow" id="liferail" style="margin-top:8px"></div>
@@ -481,9 +481,9 @@
 <section id="tab-rules" class="tabpane">
   <div class="wrap">
     <div class="controls">
-      <div class="field"><label for="rulesagency">Agency</label><select id="rulesagency"><option value="">All agencies</option></select></div>
-      <div class="field kw"><label for="ruleskw">Search</label><input type="text" id="ruleskw" placeholder="sanitation, licensing, rent, sidewalk…"></div>
-      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="rules">Watch this search</button></div>
+      <div class="field"><label for="rulesagency" data-i18n="agency_label">Agency</label><select id="rulesagency"><option value="" data-i18n="all_agencies">All agencies</option></select></div>
+      <div class="field kw"><label for="ruleskw" data-i18n="search_label">Search</label><input type="text" id="ruleskw" placeholder="sanitation, licensing, rent, sidewalk…" data-i18n-placeholder="kw_placeholder_rules"></div>
+      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="rules" data-i18n="watch_this_search">Watch this search</button></div>
     </div>
     <div class="feed" id="rulesfeed" translate="no"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
   </div>
@@ -492,10 +492,10 @@
 <section id="tab-meetings" class="tabpane">
   <div class="wrap">
     <div class="controls">
-      <div class="field"><label for="meetingswhen">Show</label><select id="meetingswhen"><option value="upcoming">Upcoming</option><option value="all">All (recent)</option></select></div>
-      <div class="field"><label for="meetingsagency">Agency</label><select id="meetingsagency"><option value="">All agencies</option></select></div>
-      <div class="field kw"><label for="meetingskw">Search</label><input type="text" id="meetingskw" placeholder="Community Board, Brooklyn, landmark…"></div>
-      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="meetings">Watch this search</button></div>
+      <div class="field"><label for="meetingswhen" data-i18n="show_label_meetings">Show</label><select id="meetingswhen"><option value="upcoming" data-i18n="mode_upcoming">Upcoming</option><option value="all" data-i18n="mode_all_recent">All (recent)</option></select></div>
+      <div class="field"><label for="meetingsagency" data-i18n="agency_label">Agency</label><select id="meetingsagency"><option value="" data-i18n="all_agencies">All agencies</option></select></div>
+      <div class="field kw"><label for="meetingskw" data-i18n="search_label">Search</label><input type="text" id="meetingskw" placeholder="Community Board, Brooklyn, landmark…" data-i18n-placeholder="kw_placeholder_meetings"></div>
+      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="meetings" data-i18n="watch_this_search">Watch this search</button></div>
     </div>
     <div class="feed" id="meetingsfeed" translate="no"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
   </div>
@@ -506,56 +506,56 @@
   <div class="wrap">
 
     <div class="panel" id="quizpanel" style="margin-top:18px;padding:16px 18px 18px">
-      <h2 style="border:0;padding:0 0 4px">Get your digest in 60 seconds</h2>
+      <h2 style="border:0;padding:0 0 4px" data-i18n="quiz_heading">Get your digest in 60 seconds</h2>
       <div class="afield" style="margin-top:10px">
-        <label><span class="qstep">1</span> What should we watch for you?</label>
+        <label><span class="qstep">1</span> <span data-i18n="quiz_step1">What should we watch for you?</span></label>
         <div class="chiprow" id="quizwhat" style="margin-top:6px">
-          <button type="button" class="chip" data-w="rfpkw">City contracts &amp; RFPs</button>
-          <button type="button" class="chip" data-w="bigaward">Big contract awards</button>
-          <button type="button" class="chip" data-w="rezone">Rezonings near me</button>
-          <button type="button" class="chip" data-w="property">Property sales</button>
-          <button type="button" class="chip" data-w="rules">Rule changes</button>
-          <button type="button" class="chip" data-w="meetings">Hearings &amp; meetings</button>
+          <button type="button" class="chip" data-w="rfpkw" data-i18n="quiz_rfpkw">City contracts &amp; RFPs</button>
+          <button type="button" class="chip" data-w="bigaward" data-i18n="quiz_bigaward">Big contract awards</button>
+          <button type="button" class="chip" data-w="rezone" data-i18n="quiz_rezone">Rezonings near me</button>
+          <button type="button" class="chip" data-w="property" data-i18n="quiz_property">Property sales</button>
+          <button type="button" class="chip" data-w="rules" data-i18n="quiz_rules">Rule changes</button>
+          <button type="button" class="chip" data-w="meetings" data-i18n="quiz_meetings">Hearings &amp; meetings</button>
         </div>
       </div>
       <div class="afield">
-        <label for="quiznarrow"><span class="qstep">2</span> Narrow it (optional)</label>
-        <input type="text" id="quiznarrow" placeholder="pick a topic above first…">
+        <label for="quiznarrow"><span class="qstep">2</span> <span data-i18n="quiz_step2">Narrow it (optional)</span></label>
+        <input type="text" id="quiznarrow" placeholder="pick a topic above first…" data-i18n-placeholder="quiz_narrow_placeholder">
       </div>
       <div class="afield">
-        <label><span class="qstep">3</span> How often?</label>
+        <label><span class="qstep">3</span> <span data-i18n="quiz_step3">How often?</span></label>
         <div class="chiprow" id="quizfreq" style="margin-top:6px">
           <button type="button" class="chip on" data-f="Daily" data-i18n="quiz_daily">Daily (around 9 a.m.)</button>
           <button type="button" class="chip" data-f="Weekly" data-i18n="quiz_weekly">Weekly (Mondays)</button>
         </div>
       </div>
-      <button id="quizgo" type="button">Preview my digest →</button>
-      <span class="muted" style="margin-left:10px;font:13px/1.4 ui-sans-serif,system-ui,sans-serif">No account — just an email confirmation.</span>
+      <button id="quizgo" type="button" data-i18n="quiz_preview_btn">Preview my digest →</button>
+      <span class="muted" style="margin-left:10px;font:13px/1.4 ui-sans-serif,system-ui,sans-serif" data-i18n="quiz_no_account">No account — just an email confirmation.</span>
     </div>
 
     <div class="grid">
       <div class="panel">
-        <h2>Build an alert</h2>
+        <h2 data-i18n="build_alert_heading">Build an alert</h2>
         <div style="padding:16px">
           <div class="afield">
-            <label>Quick suggestions</label>
+            <label data-i18n="quick_suggestions">Quick suggestions</label>
             <div class="wand">
-              <button type="button" class="wandchip" data-w="rezone" data-p="79 Rivington">Rezonings near 79 Rivington</button>
-              <button type="button" class="wandchip" data-w="bigaward" data-p="1000000">Awards over $1M</button>
-              <button type="button" class="wandchip" data-w="rfpkw" data-p="construction">Construction RFPs</button>
+              <button type="button" class="wandchip" data-w="rezone" data-p="79 Rivington" data-i18n="sugg_rezone_rivington">Rezonings near 79 Rivington</button>
+              <button type="button" class="wandchip" data-w="bigaward" data-p="1000000" data-i18n="sugg_awards_1m">Awards over $1M</button>
+              <button type="button" class="wandchip" data-w="rfpkw" data-p="construction" data-i18n="sugg_construction_rfp">Construction RFPs</button>
             </div>
           </div>
           <div class="afield">
-            <label>Watch for</label>
+            <label data-i18n="watch_for_label">Watch for</label>
             <select id="awatch">
-              <option value="bigaward">Contract awards over a threshold</option>
-              <option value="rfpkw">Open RFPs matching a keyword</option>
-              <option value="rezone">Rezonings near a neighborhood</option>
-              <option value="property">Property sale notices</option>
-              <option value="rules">Rule changes (Agency Rules)</option>
-              <option value="meetings">Public hearings &amp; meetings</option>
-              <option value="entityvendor">A vendor — anything naming them</option>
-              <option value="entityagency">An agency — anything they publish</option>
+              <option value="bigaward" data-i18n="watch_bigaward">Contract awards over a threshold</option>
+              <option value="rfpkw" data-i18n="watch_rfpkw">Open RFPs matching a keyword</option>
+              <option value="rezone" data-i18n="watch_rezone">Rezonings near a neighborhood</option>
+              <option value="property" data-i18n="watch_property">Property sale notices</option>
+              <option value="rules" data-i18n="watch_rules">Rule changes (Agency Rules)</option>
+              <option value="meetings" data-i18n="watch_meetings">Public hearings &amp; meetings</option>
+              <option value="entityvendor" data-i18n="watch_entityvendor">A vendor — anything naming them</option>
+              <option value="entityagency" data-i18n="watch_entityagency">An agency — anything they publish</option>
             </select>
           </div>
           <div class="afield">
@@ -570,27 +570,27 @@
             <input type="text" id="aagency" placeholder="agency (optional) — e.g. Buildings" style="display:none;margin-top:6px">
           </div>
           <div class="afield">
-            <label id="adestlabel">Email address</label>
-            <input type="text" id="adest" placeholder="you@example.com">
+            <label id="adestlabel" data-i18n="email_label">Email address</label>
+            <input type="text" id="adest" placeholder="you@example.com" data-i18n-placeholder="email_placeholder">
           </div>
           <div class="afield">
-            <label>Frequency</label>
-            <select id="afreq"><option>Daily</option><option>Weekly</option></select>
+            <label data-i18n="freq_label">Frequency</label>
+            <select id="afreq"><option data-i18n="afreq_daily_opt">Daily</option><option data-i18n="afreq_weekly_opt">Weekly</option></select>
             <div id="awhen" style="margin-top:6px;font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted)"></div>
           </div>
-          <button id="apreview">Preview today's digest</button>
+          <button id="apreview" data-i18n="preview_digest_btn">Preview today's digest</button>
           <div id="asubwrap" style="margin-top:16px;border-top:1px solid var(--rule);padding-top:14px">
             <div class="cf-turnstile" data-sitekey="0x4AAAAAADtj-Mskk_RnVd5K" data-action="turnstile-spin-v1" style="margin-bottom:10px"></div>
-            <button id="asubscribe">Subscribe →</button>
-            <div id="asubmsg" class="muted" style="margin-top:10px;font:13px/1.5 ui-sans-serif,system-ui,sans-serif">We email a confirmation link — alerts begin only after you click it, so no one can sign you up but you.</div>
+            <button id="asubscribe" data-i18n="subscribe_btn">Subscribe →</button>
+            <div id="asubmsg" class="muted" style="margin-top:10px;font:13px/1.5 ui-sans-serif,system-ui,sans-serif" data-i18n="subscribe_confirm_note">We email a confirmation link — alerts begin only after you click it, so no one can sign you up but you.</div>
             <div id="afeeds" class="muted" style="margin-top:12px;font:12.5px/1.6 ui-sans-serif,system-ui,sans-serif"></div>
           </div>
           <div id="asaved"></div>
         </div>
       </div>
       <div class="panel">
-        <h2>Preview</h2>
-        <div class="detail" id="apreviewbox" translate="no"><div class="empty">Build an alert and hit <b>Preview</b> to see the digest, populated with today's real notices.</div></div>
+        <h2 data-i18n="preview_panel_heading">Preview</h2>
+        <div class="detail" id="apreviewbox" translate="no"><div class="empty" data-i18n="empty_preview">Build an alert and hit <b>Preview</b> to see the digest, populated with today's real notices.</div></div>
       </div>
     </div>
   </div>
@@ -815,7 +815,7 @@ document.querySelectorAll(".tabbtn").forEach(b=>b.addEventListener("click",()=>s
 /* Mobile: filters collapse behind a toggle (NN/g mobile faceted-search tray, lite) */
 document.querySelectorAll(".tabpane .controls").forEach(c=>{
   const b=document.createElement("button");
-  b.type="button"; b.className="filtertoggle"; b.textContent="☰ Filters"; b.setAttribute("aria-expanded","false");
+  b.type="button"; b.className="filtertoggle"; b.textContent="☰ " + t("filters_toggle"); b.setAttribute("aria-expanded","false");
   c.parentNode.insertBefore(b,c);
   b.addEventListener("click",()=>{ const open=c.classList.toggle("open"); b.setAttribute("aria-expanded", String(open)); });
 });
@@ -859,8 +859,8 @@ async function search(){
 
   updateHash();
   loadMethodFacet(facetWhere, kw); // fire-and-forget; the rail renders when it lands
-  const heads = {open:"Open Requests for Proposals (RFPs)", allrfp:"All RFPs", award:"Recent Awards"};
-  $("#reshead").textContent = heads[mode] + (mode==="open" && closingWeek ? " · closing this week" : "") + (methodSel ? " · " + methodSel : "") + (agency ? " · " + agency : "");
+  const heads = {open:t("head_open"), allrfp:t("head_allrfp"), award:t("head_award")};
+  $("#reshead").textContent = heads[mode] + (mode==="open" && closingWeek ? t("head_closing_this_week") : "") + (methodSel ? " · " + methodSel : "") + (agency ? " · " + agency : "");
   $("#rescount").textContent = "";
   busyList("#list");
   const stale = staleGuard("money");
@@ -1179,7 +1179,7 @@ async function nlTranslate(){
   search();
 }
 
-function nlWorkingHTML(){ return `<div class="nlworking"><span class="loading"></span><span>translating…</span></div>`; }
+function nlWorkingHTML(){ return '<div class="nlworking"><span class="loading"></span><span>' + t("translating") + '</span></div>'; }
 
 // "look up someone named X" → the model sets lookupType:"person" but often omits the name
 // (it reads a surname as not a "topic keyword"), so #pkw ends up empty and the search bails.
@@ -1401,17 +1401,17 @@ async function pSearch(keepDetail){
   pMode = $("#pmode").value;
   const kw = $("#pkw").value.trim();
   updateHash();
-  $("#preshead").textContent = pMode === "role" ? "Roles" : "People";
+  $("#preshead").textContent = pMode === "role" ? t("roles_heading") : t("people_heading");
   $("#prescount").textContent = "";
-  if(keepDetail !== true) $("#pdetail").innerHTML = '<div class="empty">Pick a result on the left.</div>';
-  if(!kw){ $("#plist").innerHTML = '<div class="empty">Type a keyword to search.</div>'; return; }
+  if(keepDetail !== true) $("#pdetail").innerHTML = '<div class="empty">' + t("pick_result_empty") + '</div>';
+  if(!kw){ $("#plist").innerHTML = '<div class="empty">' + t("type_keyword_empty") + '</div>'; return; }
   busyList("#plist", 3);
   const stale = staleGuard("people");
   try{
     pMode === "role" ? await pSearchRoles(kw, stale) : await pSearchPeople(kw, stale);
     unbusy("#plist");
   }
-  catch(e){ if(!stale()){ unbusy("#plist"); $("#plist").innerHTML = '<div class="empty">Could not reach NYC Open Data. Retry.</div>'; } }
+  catch(e){ if(!stale()){ unbusy("#plist"); $("#plist").innerHTML = '<div class="empty">' + t("could_not_reach") + '</div>'; } }
 }
 
 async function pSearchRoles(kw, stale){
@@ -1427,7 +1427,7 @@ async function pSearchRoles(kw, stale){
   pRows = pay;
   $("#prescount").textContent = pay.length === 40 ? "40+" : pay.length;
   announce(`${pay.length===40?"40 or more":pay.length} matching roles`);
-  if(!pay.length){ $("#plist").innerHTML = '<div class="empty">No titles match. Try a broader word.</div>'; return; }
+  if(!pay.length){ $("#plist").innerHTML = '<div class="empty">' + t("no_titles_match") + '</div>'; return; }
   $("#plist").innerHTML = pay.map((r,i)=>{
     const comp2 = competitiveSet.has((r.title_description||"").toUpperCase().trim());
     return `<div class="row" data-i="${i}" tabindex="0" role="button">
@@ -1482,7 +1482,7 @@ async function pSearchPeople(kw, stale){
   });
   pRows = [...people.values()].sort((a,b)=>b.actions.length-a.actions.length);
   $("#prescount").textContent = pRows.length;
-  if(!pRows.length){ $("#plist").innerHTML = '<div class="empty">No personnel notices match that name. Try a last name.</div>'; return; }
+  if(!pRows.length){ $("#plist").innerHTML = '<div class="empty">' + t("no_personnel") + '</div>'; return; }
   $("#plist").innerHTML = pRows.map((p,i)=>`<div class="row" data-i="${i}" tabindex="0" role="button">
       <p class="rtitle">${p.name}</p>
       <p class="rmeta"><span class="ragency">${p.agency}</span> · ${p.actions.length} notice${p.actions.length>1?'s':''}</p>
@@ -1495,7 +1495,7 @@ async function pSelectPerson(i, el){
   document.querySelectorAll("#plist .row.sel").forEach(e=>e.classList.remove("sel"));
   el.classList.add("sel");
   const p = pRows[i];
-  $("#pdetail").innerHTML = '<div class="empty"><span class="loading"></span> pulling payroll…</div>';
+  $("#pdetail").innerHTML = '<div class="empty"><span class="loading"></span> ' + t("pulling_payroll") + '</div>';
   const parts = p.name.split(",");
   const last = (parts[0]||"").trim().toUpperCase();
   const first = (parts[1]||"").trim().split(/\s+/)[0].toUpperCase();
@@ -1575,7 +1575,7 @@ async function landSearch(){
     $("#lrescount").textContent=lRows.length>=40?"40+":lRows.length;
     announce(`${lRows.length>=40?"40 or more":lRows.length} rezonings`);
     landRenderList(kw);
-  }catch(e){ if(!stale()){ unbusy("#llist"); $("#llist").innerHTML='<div class="empty">Could not reach the data. Retry.</div>'; } }
+  }catch(e){ if(!stale()){ unbusy("#llist"); $("#llist").innerHTML='<div class="empty">' + t("could_not_reach") + '</div>'; } }
 }
 
 async function landNearby(geo,status){
@@ -1727,7 +1727,7 @@ async function loadSection(key){
     feedRows[key]={}; rows.forEach(r=>feedRows[key][r.request_id]=r);
     if(key==="property"){ propAll=rows; renderPropExplorer(); }
     else { announce(`${rows.length} notices`); renderFeed(key, rows); }
-  }catch(e){ if(!stale()){ unbusy("#"+key+"feed"); $("#"+key+"feed").innerHTML='<div class="empty">Could not reach NYC Open Data. Retry.</div>'; } }
+  }catch(e){ if(!stale()){ unbusy("#"+key+"feed"); $("#"+key+"feed").innerHTML='<div class="empty">' + t("could_not_reach") + '</div>'; } }
 }
 
 /* ===== Property explorer: asset-type tabs + lifecycle rail (design: property-ux report §2–3).
@@ -1793,7 +1793,7 @@ async function loadSectionAgencies(key){
 
 function renderFeed(key, rows){
   const cfg=SECTIONS[key], el=$("#"+key+"feed");
-  if(!rows.length){ el.innerHTML='<div class="empty">Nothing found. Try a broader search.</div>'; return; }
+  if(!rows.length){ el.innerHTML='<div class="empty">' + t("nothing_found_feed") + '</div>'; return; }
   el.innerHTML=rows.map(r=>{
     const ev=r.event_date, addr=cfg.showAddr&&goodAddr(r.street_address_1)?cleanText(r.street_address_1):"";
     const scope=cleanText(r.additional_description_1).slice(0,200);
@@ -1864,14 +1864,14 @@ function aWatchChange(){
   if(lastWatch !== null && lastWatch !== w){ $("#aparam").value=""; $("#aagency").value=""; }
   lastWatch = w;
   $("#aagency").style.display = SECTION_WATCH_LABEL[w] ? "" : "none";
-  if(w==="bigaward"){ $("#aparamlabel").textContent="Minimum award"; $("#athresh").style.display=""; $("#aparam").style.display="none"; }
+  if(w==="bigaward"){ $("#aparamlabel").textContent=t("param_label_min_award"); $("#athresh").style.display=""; $("#aparam").style.display="none"; }
   else {
     $("#athresh").style.display="none"; $("#aparam").style.display="";
-    if(w==="rfpkw"){ $("#aparamlabel").textContent="Keyword (optional)"; $("#aparam").placeholder="construction, IT, security…"; }
-    else if(w==="entityvendor"){ $("#aparamlabel").textContent="Vendor name"; $("#aparam").placeholder="Consolidated Scaffolding, Sinergia…"; }
-    else if(w==="entityagency"){ $("#aparamlabel").textContent="Agency name (as printed)"; $("#aparam").placeholder="Design and Construction, Buildings…"; }
-    else if(SECTION_WATCH_LABEL[w]){ $("#aparamlabel").textContent="Keyword (optional)"; $("#aparam").placeholder=w==="rules"?"e-bike, sidewalk, licensing…":w==="meetings"?"community board, landmarks…":"Brooklyn, auction, HPD…"; }
-    else { $("#aparamlabel").textContent="ZIP, address, or neighborhood (optional)"; $("#aparam").placeholder="79 Rivington, Allen Street, Bushwick…"; }
+    if(w==="rfpkw"){ $("#aparamlabel").textContent=t("param_label_keyword"); $("#aparam").placeholder=t("param_placeholder_rfpkw"); }
+    else if(w==="entityvendor"){ $("#aparamlabel").textContent=t("param_label_vendor"); $("#aparam").placeholder=t("param_placeholder_vendor"); }
+    else if(w==="entityagency"){ $("#aparamlabel").textContent=t("param_label_agency_name"); $("#aparam").placeholder=t("param_placeholder_agency"); }
+    else if(SECTION_WATCH_LABEL[w]){ $("#aparamlabel").textContent=t("param_label_keyword"); $("#aparam").placeholder=w==="rules"?t("param_placeholder_rules"):w==="meetings"?t("param_placeholder_meetings"):t("param_placeholder_property"); }
+    else { $("#aparamlabel").textContent=t("param_label_place"); $("#aparam").placeholder=t("param_placeholder_rezone"); }
   }
 }
 function aDescribe(){
@@ -1988,10 +1988,10 @@ function renderFeedLinks(){
     <a href="${u.ics}" target="_blank" rel="noopener">Calendar (.ics)</a> — no email needed.`;
 }
 async function aPreview(){
-  $("#apreviewbox").innerHTML='<div class="empty"><span class="loading"></span> fetching today&#39;s matching notices…</div>';
+  $("#apreviewbox").innerHTML='<div class="empty"><span class="loading"></span> ' + t("fetching_today") + '</div>';
   renderFeedLinks();
   let data;
-  try{ data = await aFetch(); }catch(e){ $("#apreviewbox").innerHTML='<div class="empty">Could not reach NYC Open Data. Retry.</div>'; return; }
+  try{ data = await aFetch(); }catch(e){ $("#apreviewbox").innerHTML='<div class="empty">' + t("could_not_reach") + '</div>'; return; }
   const rows=data.rows||[];
   const dest=$("#adest").value.trim() || "you@example.com";
   const subj=aDescribe();
@@ -2082,7 +2082,7 @@ async function loadToday(){
 function renderToday(d){
   const total = (d.counts||[]).reduce((s,c)=>s+(+c.n||0),0);
   if(!total) return;
-  $("#tdate").textContent = new Date(d.ed+"T12:00:00").toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric",year:"numeric"}).toUpperCase() + " · LATEST EDITION";
+  const _lm=(window.LANG_META||{})[window.LANG||"en"]; const _loc=_lm?_lm.intlDate:"en-US"; $("#tdate").textContent = new Date(d.ed+"T12:00:00").toLocaleDateString(_loc,{weekday:"long",month:"long",day:"numeric",year:"numeric"}).toUpperCase() + " " + t("latest_edition_suffix");
   $("#tbig").innerHTML = `<b>${total.toLocaleString()}</b> notices from <b>${d.nAgencies}</b> agencies`;
   $("#tcounts").innerHTML = d.counts.map(c=>{
     const lens = SECTION_LENS[c.section_name];
@@ -2090,9 +2090,9 @@ function renderToday(d){
     return lens ? `<a href="#${lens}">${label}</a>` : `<span>${label}</span>`;
   }).join("");
   const cards = [];
-  if(d.closing) cards.push({lbl:"Closing soon", t:d.closing, meta:`${d.closing.agency_name} · due ${fdt(d.closing.due_date)} ${deadlineTag(d.closing.due_date)}`});
-  if(d.award) cards.push({lbl:"Largest award, this edition", t:d.award, meta:`${money(d.award.contract_amount)} — ${d.award.agency_name}`});
-  if(d.hearing) cards.push({lbl:"Next public hearing", t:d.hearing, meta:`${d.hearing.agency_name} · ${fdt(d.hearing.event_date)}${eventTag(d.hearing.event_date)}`});
+  if(d.closing) cards.push({lbl:t("closing_soon_lbl"), t:d.closing, meta:`${d.closing.agency_name} · due ${fdt(d.closing.due_date)} ${deadlineTag(d.closing.due_date)}`});
+  if(d.award) cards.push({lbl:t("largest_award_lbl"), t:d.award, meta:`${money(d.award.contract_amount)} — ${d.award.agency_name}`});
+  if(d.hearing) cards.push({lbl:t("next_hearing_lbl"), t:d.hearing, meta:`${d.hearing.agency_name} · ${fdt(d.hearing.event_date)}${eventTag(d.hearing.event_date)}`});
   $("#tcards").innerHTML = cards.map(c=>`<a class="t-card" href="#notice/${encodeURIComponent(c.t.request_id)}"><span class="tlbl">${c.lbl}</span><span class="tttl">${cleanText(c.t.short_title)||"(untitled)"}</span><span class="tmeta">${c.meta}</span></a>`).join("");
   $("#todaystrip").hidden = false;
 }
@@ -2942,7 +2942,7 @@ $("#closingweek").addEventListener("click", ()=>{ closingWeek = !closingWeek; $(
 
 $("#pkw").addEventListener("keydown", e=>{ if(e.key==="Enter") pSearch(); });
 $("#pkw").addEventListener("input", debounce(pSearch, 500));
-$("#pmode").addEventListener("change", ()=>{ $("#pkwlabel").textContent = $("#pmode").value==="role"?"Title keyword":"Person's name"; $("#pkw").placeholder = $("#pmode").value==="role"?"emergency medical, attorney, engineer…":"last name, e.g. Rodriguez"; });
+$("#pmode").addEventListener("change", ()=>{ $("#pkwlabel").textContent = $("#pmode").value==="role"?t("title_keyword_label"):t("person_name_label"); $("#pkw").placeholder = $("#pmode").value==="role"?t("kw_placeholder_people_role"):t("kw_placeholder_people_person"); });
 
 $("#awatch").addEventListener("change", aWatchChange);
 $("#afreq").addEventListener("change", updateAWhen);
