@@ -22,6 +22,7 @@ import { compileSub, vendorStem } from "./lib/compile.mjs";
 import { compileSub_d1, toDigestRow, OFF_MIRROR_LENSES } from "./lib/compile_d1.mjs";
 import { buildNoticesQuery, searchNotices } from "./lib/notices.mjs";
 import { describeFilter } from "./lib/confirm_email.mjs";
+import { emailT } from "./lib/i18n.mjs";
 import { digestDecision, shortDate } from "./lib/digest.mjs";
 import { runCheckbookPipeline } from "./checkbook.mjs";
 import { runMocsPlanPipeline } from "./mocs_plan.mjs";
@@ -175,18 +176,19 @@ export async function processOneSub(env, s, ctx) {
       const unsubUrl = await unsubLink(env, s.key);
       let subject, html;
 
+      const lang = s.lang || "en";
       const hasActivity = fresh.length > 0 || forecasts.length > 0;
       if (hasActivity) {
         const freshLabel = fresh.length > 0 ? `${fresh.length} new` : "";
         const forecastLabel = forecasts.length > 0 ? `${forecasts.length} forecast(s)` : "";
         const parts = [freshLabel, forecastLabel].filter(Boolean).join(" & ");
         subject = `CROL-List: ${parts} — ${label}`;
-        html = subDigestHtml(label, q.kind, fresh, unsubUrl, since, env.CONFIRM_BASE || "https://api.crol-list.org", forecasts);
+        html = subDigestHtml(label, q.kind, fresh, unsubUrl, since, env.CONFIRM_BASE || "https://api.crol-list.org", forecasts, lang);
       } else {
         subject = decision.action === "weekly-empty"
           ? `CROL-List: nothing new this week — ${label}`
           : `CROL-List: still watching — ${label}`;
-        html = quietHtml(label, decision.action, since, unsubUrl);
+        html = quietHtml(label, decision.action, since, unsubUrl, lang);
       }
       await sendEmail(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true);
       await ctx.onSent();
@@ -411,7 +413,7 @@ function maskKey(n) {
 }
 
 // Digest for a self-serve sub — award / rfp (City Record) or rezone (ZAP) items.
-function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.crol-list.org", forecasts = []) {
+function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.crol-list.org", forecasts = [], lang = "en") {
   const usd = (n) => (n == null || n === "" ? "" : "$" + Number(n).toLocaleString("en-US"));
   const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
   const cr = (id) => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
@@ -460,29 +462,37 @@ function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.c
 
   const listHtml = rows.length > 0 ? `<ul style="list-style:none;padding:0">${rows.map(item).join("")}</ul>` : `<p style="color:#666;font-style:italic">No new active notices matching your criteria.</p>`;
 
+  const itemWord = rows.length === 1
+    ? emailT(lang, "digest_new_item_singular")
+    : emailT(lang, "digest_new_item_plural");
+  const countLine = since
+    ? emailT(lang, "digest_new_items", { n: rows.length, item: itemWord, date: shortDate(since) })
+    : emailT(lang, "digest_no_date", { n: rows.length, item: itemWord });
+
   return `<div style="font-family:Georgia,serif;max-width:620px">
     <h2 style="font-family:system-ui">CROL-List — ${esc(label)}</h2>
-    <p style="color:#555">${rows.length} new ${rows.length === 1 ? "item" : "items"}${since ? ` since ${shortDate(since)}` : ""}.</p>
+    <p style="color:#555">${esc(countLine)}</p>
     ${listHtml}
     ${forecastsHtml}
-    <p style="color:#999;font-size:12px;margin-top:20px">You subscribed to this on crol-list.org. <a href="${esc(unsubUrl)}">Unsubscribe</a> (one-click).<br>
+    <p style="color:#999;font-size:12px;margin-top:20px">${esc(emailT(lang, "digest_subscribed"))} <a href="${esc(unsubUrl)}">${esc(emailT(lang, "digest_unsubscribe"))}</a> (one-click).<br>
     Notice links go via a count-only redirect (${esc(base.replace(/^https?:\/\//, ""))}/r) so we can tell digests are useful — it counts clicks per day, never who clicked. Aggregates: <a href="https://crol-list.org/stats.html">crol-list.org/stats</a>.</p>
   </div>`;
 }
 
 // The "no news" email — a weekly check-in or a daily heartbeat. Same house style as the digest so
 // silence never reads as a malfunction: the subscriber hears from us on a predictable cadence.
-function quietHtml(label, action, since, unsubUrl) {
+function quietHtml(label, action, since, unsubUrl, lang = "en") {
   const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
   const sinceStr = since ? `since ${shortDate(since)}` : "so far";
-  const lead = action === "weekly-empty"
-    ? `No new items this week for <b>${esc(label)}</b> — nothing new ${sinceStr}.`
-    : `Still watching <b>${esc(label)}</b> — nothing new ${sinceStr}.`;
+  const leadKey = action === "weekly-empty" ? "quiet_nothing_week" : "quiet_still_watching";
+  const leadTpl = emailT(lang, leadKey, { label, since: sinceStr });
+  // Replace the label placeholder with bold markup (emailT escapes nothing; we escape the label)
+  const lead = leadTpl.replace(esc(label), `<b>${esc(label)}</b>`);
   return `<div style="font-family:Georgia,serif;max-width:620px">
     <h2 style="font-family:system-ui">CROL-List</h2>
     <p style="color:#333">${lead}</p>
-    <p style="color:#666;font-size:13px">This note just confirms your alert is working — we'll email the moment something matches.</p>
-    <p style="color:#999;font-size:12px">You subscribed to this on crol-list.org. <a href="${esc(unsubUrl)}">Unsubscribe</a> (one-click).</p>
+    <p style="color:#666;font-size:13px">${esc(emailT(lang, "quiet_working"))}</p>
+    <p style="color:#999;font-size:12px">${esc(emailT(lang, "quiet_subscribed"))} <a href="${esc(unsubUrl)}">${esc(emailT(lang, "digest_unsubscribe"))}</a> (one-click).</p>
   </div>`;
 }
 

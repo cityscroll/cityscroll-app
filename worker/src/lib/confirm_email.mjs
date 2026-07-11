@@ -2,6 +2,7 @@
 // landing pages. describeFilter() renders a stored lens filter back into plain English so the
 // confirm email restates exactly what the user asked for — catching a model misread before the
 // alert ever goes live. No I/O, so it's unit-tested on its own.
+import { emailT } from "./i18n.mjs";
 
 const LENS_LABEL = {
   money: "contract money",
@@ -35,20 +36,20 @@ export function describeFilter(lens, filter) {
   return `${LENS_LABEL[lens] || lens} — ${detail}`;
 }
 
-export function confirmSubject() {
-  return "Confirm your CROL-List alert";
+export function confirmSubject(lang = "en") {
+  return emailT(lang, "confirm_subject");
 }
 
-export function confirmEmailHtml({ confirmUrl, lens, filter, freq = "daily" }) {
+export function confirmEmailHtml({ confirmUrl, lens, filter, freq = "daily", lang = "en" }) {
   const desc = esc(describeFilter(lens, filter));
   return `<div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;color:#1a1714">
-    <h2 style="font-family:system-ui">Confirm your CROL-List alert</h2>
-    <p>You (or someone using this address) asked CROL-List to send:</p>
+    <h2 style="font-family:system-ui">${esc(emailT(lang, "confirm_heading"))}</h2>
+    <p>${esc(emailT(lang, "confirm_someone_asked"))}</p>
     <p style="background:#faf6ee;border:1px solid #cdbfa6;border-radius:8px;padding:12px 14px;font-weight:bold">${desc}<br>
       <span style="font-weight:normal;color:#5c5349">${esc(freq)} · by email</span></p>
-    <p><a href="${esc(confirmUrl)}" style="display:inline-block;background:#7a1f1f;color:#fff;text-decoration:none;font-family:system-ui;font-weight:bold;padding:13px 24px;border-radius:8px">Confirm my alert →</a></p>
-    <p style="color:#5c5349;font-size:13px">This link expires in 24 hours and can be used once.</p>
-    <p style="color:#5c5349;font-size:12px;border-top:1px solid #cdbfa6;padding-top:10px"><b>Didn't ask for this?</b> Just ignore this email — nothing will be sent, and your address is not stored.</p>
+    <p><a href="${esc(confirmUrl)}" style="display:inline-block;background:#7a1f1f;color:#fff;text-decoration:none;font-family:system-ui;font-weight:bold;padding:13px 24px;border-radius:8px">${esc(emailT(lang, "confirm_btn"))}</a></p>
+    <p style="color:#5c5349;font-size:13px">${esc(emailT(lang, "confirm_expires"))}</p>
+    <p style="color:#5c5349;font-size:12px;border-top:1px solid #cdbfa6;padding-top:10px">${esc(emailT(lang, "confirm_didnt_ask"))}</p>
   </div>`;
 }
 
