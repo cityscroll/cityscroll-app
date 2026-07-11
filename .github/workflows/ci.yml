@@ -23,6 +23,10 @@ jobs:
           node-version: 20
           cache: npm
           cache-dependency-path: worker/package-lock.json
+      - name: Script syntax gate (all pages + i18n.js)
+        run: python3 test/standards/js_syntax.py
+      - name: i18n key parity
+        run: python3 test/standards/i18n_keys.py
       - name: Site unit tests
         # Scoped to test/ — a bare `node --test` also recurses into worker/test/,
         # which needs worker/node_modules (installed in the next step).
