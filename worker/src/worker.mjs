@@ -6,7 +6,7 @@
 // Secrets via `wrangler secret put` (ANTHROPIC_API_KEY, RESEND_API_KEY); see README.
 
 import { handleNl } from "./nl.mjs";
-import { handleCheckbook, handleForecast } from "./checkbook.mjs";
+import { handleCheckbook, handleForecast, handleForecastAccuracy } from "./checkbook.mjs";
 import { handleUsage } from "./usage.mjs";
 import { handleSubscribe } from "./subscribe.mjs";
 import { handleConfirm } from "./confirm.mjs";
@@ -30,6 +30,7 @@ export default {
     if (pathname === "/mcp") return handleMcp(request, env);
     if (pathname === "/checkbook") return handleCheckbook(request, env);
     if (pathname === "/forecast") return handleForecast(request, env);
+    if (pathname === "/forecast/accuracy") return handleForecastAccuracy(request, env);
     if (pathname === "/usage") return handleUsage(request, env);
     if (pathname === "/subscribe") return handleSubscribe(request, env);
     if (pathname === "/confirm") return handleConfirm(request, env);
