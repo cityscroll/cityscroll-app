@@ -33,8 +33,8 @@ function confirmReq(token) {
   return new Request(`https://api.crol-list.org/confirm?token=${encodeURIComponent(token)}`);
 }
 
-async function confirmWatch(env, { email, lens, filter, freq = "daily" }) {
-  const token = await signToken(env.TOKEN_SECRET, { e: email, l: lens, f: filter, c: "email", q: freq }, { ttlSeconds: 3600 });
+async function confirmWatch(env, { email, lens, filter, freq = "daily", lang = "en" }) {
+  const token = await signToken(env.TOKEN_SECRET, { e: email, l: lens, f: filter, c: "email", q: freq, lng: lang }, { ttlSeconds: 3600 });
   const res = await handleConfirm(confirmReq(token), env);
   assert.equal(res.status, 200, "confirm should succeed");
 }
@@ -95,6 +95,17 @@ test("digest listing (prefix sub:) sees every watch for an address", async () =>
   const res = await env.SUBS.list({ prefix: "sub:" });
   assert.equal(res.keys.length, 3);
   assert.equal(res.keys.filter((k) => k.name.startsWith("sub:anna@example.com:")).length, 2);
+});
+
+test("changing language does NOT create a duplicate watch (lang excluded from id hash)", async () => {
+  const env = { TOKEN_SECRET: SECRET, SUBS: new MockKV() };
+  const watch = { email: "anna@example.com", lens: "money", filter: { q: "affordable housing" } };
+  await confirmWatch(env, { ...watch, lang: "en" });
+  await confirmWatch(env, { ...watch, lang: "es" });
+  const keys = subKeys(env);
+  assert.equal(keys.length, 1, "en→es lang switch must not duplicate the watch; got: " + keys.join(", "));
+  const stored = JSON.parse(env.SUBS.store.get(keys[0]));
+  assert.equal(stored.lang, "es", "the newer lang wins on re-confirm");
 });
 
 test("sharp edge (by design): failed subscribe ATTEMPTS consume the per-address daily quota", async () => {

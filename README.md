@@ -24,7 +24,8 @@ This repository contains the complete system: a single-file static client (`inde
 *   **Subscription Quiz:** Build tailored watches via an onboarding wizard.
 *   **Subscribe by Email:** Write to `subscribe@crol-list.org` in plain English; an LLM parses it into a watch and replies with a double-opt-in confirmation link.
 *   **MCP for AI Assistants:** Point any MCP client at `api.crol-list.org/mcp` to search notices and create/preview watches programmatically ([docs](https://crol-list.org/api.html)).
-*   **Proactive Alerts:** Receive morning email digests (queued per-subscriber delivery with independent retries) or subscribe to live RSS/Atom, JSON, and iCal feeds.
+*   **Proactive Alerts:** Receive morning email digests (queued per-subscriber delivery with independent retries) or subscribe to live RSS/Atom, JSON, and iCal feeds. Alerts deliver in English or Spanish based on your language preference.
+*   **Spanish UI:** Switch the interface to Spanish via the header language selector; your preference is remembered. City Record notices remain in English (the official source language).
 *   **[The Data](https://crol-list.org/data.html):** the City Record at a glance — sections, volume, procurement mix, top agencies/vendors by cleaned dollars — computed live in the browser.
 *   **Unified Workspace:** Pin records, write local notes, export CSV/JSON dossiers, and generate shareable snapshot links.
 

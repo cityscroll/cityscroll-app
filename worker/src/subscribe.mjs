@@ -48,18 +48,19 @@ export async function handleSubscribe(req, env) {
   if (await overLimit(env, ip, email)) return json({ ok: false, reason: "rate-limited" }, 429, cors);
   if (!(await verifyTurnstile(env, body.turnstileToken, ip))) return json({ ok: false, reason: "turnstile" }, 403, cors);
 
+  const lang = typeof body.lang === "string" ? body.lang : "en";
   const filter = sanitize(lens, body.filter);
-  const sub = buildSubscription({ email, lens, filter, channel: "email", freq: body.freq });
+  const sub = buildSubscription({ email, lens, filter, channel: "email", freq: body.freq, lang });
   const token = await signToken(
     env.TOKEN_SECRET,
-    { e: sub.email, l: lens, f: filter, c: "email", q: sub.freq },
+    { e: sub.email, l: lens, f: filter, c: "email", q: sub.freq, lng: sub.lang },
     { ttlSeconds: CONFIRM_TTL }
   );
   const base = env.CONFIRM_BASE || new URL(req.url).origin;
   const confirmUrl = `${base}/confirm?token=${encodeURIComponent(token)}`;
 
   try {
-    await sendConfirm(env, sub.email, lens, filter, sub.freq, confirmUrl);
+    await sendConfirm(env, sub.email, lens, filter, sub.freq, confirmUrl, sub.lang);
   } catch {
     return json({ ok: false, reason: "send-failed" }, 502, cors);
   }
@@ -68,12 +69,12 @@ export async function handleSubscribe(req, env) {
 
 // Exported: /mcp create_watch and the inbound-email handler reuse the same
 // double-opt-in confirmation email (one sender identity, one template).
-export async function sendConfirm(env, to, lens, filter, freq, confirmUrl) {
+export async function sendConfirm(env, to, lens, filter, freq, confirmUrl, lang = "en") {
   const from = env.ALERTS_FROM || "CROL-List <alerts@crol-list.org>";
   const r = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: { "content-type": "application/json", authorization: `Bearer ${env.RESEND_API_KEY}` },
-    body: JSON.stringify({ from, to, subject: confirmSubject(), html: confirmEmailHtml({ confirmUrl, lens, filter, freq }) }),
+    body: JSON.stringify({ from, to, subject: confirmSubject(lang), html: confirmEmailHtml({ confirmUrl, lens, filter, freq, lang }) }),
   });
   if (!r.ok) throw new Error(`Resend ${r.status}: ${await r.text()}`);
 }
