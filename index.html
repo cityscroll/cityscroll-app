@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Track NYC contract opportunities, rezonings, and public meetings. Search open Requests for Proposals (RFPs), follow vendors, watch for rule changes — free email alerts.">
 <title>CROL-List: track RFPs, rezonings, meetings</title>
 <link rel="alternate" type="application/atom+xml" title="CROL-List — new procurement notices" href="https://api.crol-list.org/feed.xml?lens=money">
 <link rel="alternate" type="application/feed+json" title="CROL-List — new procurement notices (JSON)" href="https://api.crol-list.org/feed.json?lens=money">
@@ -276,9 +277,15 @@
   footer{border-top:3px double var(--ink);margin-top:46px;padding:26px 0 60px;font:13px/1.6 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
   footer h3{font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 8px;color:var(--ink)}
   .caveat{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:14px 16px;margin-top:14px}
+  /* language switcher — CSS logical properties for future RTL support */
+  .lang-switcher{display:flex;gap:.4rem;justify-content:center;margin-block-start:5px;flex-wrap:wrap}
+  .lang-btn{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;padding:3px 10px;border-radius:12px;border:1px solid var(--rule-strong);background:transparent;color:var(--muted);cursor:pointer}
+  .lang-btn[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .lang-notice{font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);text-align:center;margin-block-start:4px;padding-inline:22px}
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
+<script src="i18n.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
@@ -305,14 +312,19 @@
       <div class="t-cards" id="tcards"></div>
     </div>
     <nav class="tabs">
-      <button class="tabbtn active" data-tab="money">Money</button>
-      <button class="tabbtn" data-tab="people">People</button>
-      <button class="tabbtn" data-tab="land">Land</button>
-      <button class="tabbtn" data-tab="property">Property</button>
-      <button class="tabbtn" data-tab="rules">Rules</button>
-      <button class="tabbtn" data-tab="meetings">Meetings</button>
-      <button class="tabbtn" data-tab="alerts">Alerts</button>
+      <button class="tabbtn active" data-tab="money" data-i18n="tab_money">Money</button>
+      <button class="tabbtn" data-tab="people" data-i18n="tab_people">People</button>
+      <button class="tabbtn" data-tab="land" data-i18n="tab_land">Land</button>
+      <button class="tabbtn" data-tab="property" data-i18n="tab_property">Property</button>
+      <button class="tabbtn" data-tab="rules" data-i18n="tab_rules">Rules</button>
+      <button class="tabbtn" data-tab="meetings" data-i18n="tab_meetings">Meetings</button>
+      <button class="tabbtn" data-tab="alerts" data-i18n="tab_alerts">Alerts</button>
     </nav>
+    <div class="lang-switcher" id="langSwitcher" role="group" aria-label="Language / Idioma">
+      <button class="lang-btn" data-lang="en" aria-pressed="true"><span lang="en">English</span></button>
+      <button class="lang-btn" data-lang="es" aria-pressed="false"><span lang="es">Español</span></button>
+    </div>
+    <div id="langNotice" class="lang-notice" hidden></div>
     <div class="cr-rule cr-rule--bottom"></div>
   </div>
 </header>
@@ -334,7 +346,7 @@
       <div class="field">
         <label for="mode">Show</label>
         <select id="mode">
-          <option value="open">Open RFPs (accepting now)</option>
+          <option value="open">Open Requests for Proposals (RFPs) — accepting now</option>
           <option value="allrfp">All RFPs</option>
           <option value="award">Recent Awards ($)</option>
         </select>
@@ -375,12 +387,12 @@
 
     <div class="grid">
       <div class="panel">
-        <h2><span><span id="reshead">Open RFPs</span> <span class="count" id="rescount"></span></span><button id="export" class="mini">Export CSV</button></h2>
-        <div class="list" id="list"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
+        <h2><span><span id="reshead">Open Requests for Proposals (RFPs)</span> <span class="count" id="rescount"></span></span><button id="export" class="mini">Export CSV</button></h2>
+        <div class="list" id="list" translate="no"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
       </div>
       <div class="panel">
         <h2>Money trail</h2>
-        <div class="detail" id="detail"><div class="empty">Pick a notice on the left to trace it — for an RFP you'll see <b>how to respond</b> (deadline, contact, where to submit) and the full notice → award → dollars chain.</div></div>
+        <div class="detail" id="detail" translate="no"><div class="empty">Pick a notice on the left to trace it — for an RFP you'll see <b>how to respond</b> (deadline, contact, where to submit) and the full notice → award → dollars chain.</div></div>
       </div>
     </div>
   </div>
@@ -408,11 +420,11 @@
     <div class="grid">
       <div class="panel">
         <h2><span><span id="preshead">Roles</span> <span class="count" id="prescount"></span></span></h2>
-        <div class="list" id="plist"><div class="empty">Try a title like <b>“emergency medical”</b> — or switch to a person.</div></div>
+        <div class=”list” id=”plist” translate=”no”><div class=”empty”>Try a title like <b>”emergency medical”</b> — or switch to a person.</div></div>
       </div>
-      <div class="panel">
+      <div class=”panel”>
         <h2>Listing</h2>
-        <div class="detail" id="pdetail"><div class="empty">Pick a role to see its official title, whether it needs an exam, its salary band, and the career ladder.</div></div>
+        <div class=”detail” id=”pdetail” translate=”no”><div class=”empty”>Pick a role to see its official title, whether it needs an exam, its salary band, and the career ladder.</div></div>
       </div>
     </div>
   </div>
@@ -442,11 +454,11 @@
     <div class="grid">
       <div class="panel">
         <h2><span><span id="lreshead">Recent rezonings</span> <span class="count" id="lrescount"></span></span></h2>
-        <div class="list" id="llist"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
+        <div class=”list” id=”llist” translate=”no”><div class=”empty skel” aria-hidden=”true”><span class=”loading”></span><span class=”skl”><i></i><i></i></span><span class=”skl”><i></i><i></i></span><span class=”skl”><i></i><i></i></span></div></div>
       </div>
-      <div class="panel">
+      <div class=”panel”>
         <h2>Listing</h2>
-        <div class="detail" id="ldetail"><div class="empty">Pick a rezoning to see it in plain English — applicant, what's being built, affordable units, status — and on a map. Try “79 Rivington” or “Gowanus”.</div></div>
+        <div class=”detail” id=”ldetail” translate=”no”><div class=”empty”>Pick a rezoning to see it in plain English — applicant, what's being built, affordable units, status — and on a map. Try “79 Rivington” or “Gowanus”.</div></div>
       </div>
     </div>
   </div>
@@ -462,7 +474,7 @@
     </div>
     <div class="chiprow" id="assettabs"></div>
     <div class="chiprow" id="liferail" style="margin-top:8px"></div>
-    <div class="feed" id="propertyfeed"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
+    <div class="feed" id="propertyfeed" translate="no"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
   </div>
 </section>
 
@@ -473,7 +485,7 @@
       <div class="field kw"><label for="ruleskw">Search</label><input type="text" id="ruleskw" placeholder="sanitation, licensing, rent, sidewalk…"></div>
       <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="rules">Watch this search</button></div>
     </div>
-    <div class="feed" id="rulesfeed"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
+    <div class="feed" id="rulesfeed" translate="no"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
   </div>
 </section>
 
@@ -485,7 +497,7 @@
       <div class="field kw"><label for="meetingskw">Search</label><input type="text" id="meetingskw" placeholder="Community Board, Brooklyn, landmark…"></div>
       <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="meetings">Watch this search</button></div>
     </div>
-    <div class="feed" id="meetingsfeed"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
+    <div class="feed" id="meetingsfeed" translate="no"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
   </div>
 </section>
 
@@ -513,8 +525,8 @@
       <div class="afield">
         <label><span class="qstep">3</span> How often?</label>
         <div class="chiprow" id="quizfreq" style="margin-top:6px">
-          <button type="button" class="chip on" data-f="Daily">Daily (~9am)</button>
-          <button type="button" class="chip" data-f="Weekly">Weekly (Mondays)</button>
+          <button type="button" class="chip on" data-f="Daily" data-i18n="quiz_daily">Daily (around 9 a.m.)</button>
+          <button type="button" class="chip" data-f="Weekly" data-i18n="quiz_weekly">Weekly (Mondays)</button>
         </div>
       </div>
       <button id="quizgo" type="button">Preview my digest →</button>
@@ -578,7 +590,7 @@
       </div>
       <div class="panel">
         <h2>Preview</h2>
-        <div class="detail" id="apreviewbox"><div class="empty">Build an alert and hit <b>Preview</b> to see the digest, populated with today's real notices.</div></div>
+        <div class="detail" id="apreviewbox" translate="no"><div class="empty">Build an alert and hit <b>Preview</b> to see the digest, populated with today's real notices.</div></div>
       </div>
     </div>
   </div>
@@ -587,7 +599,7 @@
 <!-- ============ SINGLE NOTICE (permalink view, reached via #notice/<request_id>) ============ -->
 <section id="tab-notice" class="tabpane">
   <div class="wrap">
-    <div id="noticeview"><div class="empty"><span class="loading"></span> loading notice…</div></div>
+    <div id="noticeview" translate="no"><div class="empty"><span class="loading"></span> loading notice…</div></div>
     <!-- permalink views keep the inline spinner: a one-shot fetch with no prior layout to skeleton -->
   </div>
 </section>
@@ -722,14 +734,18 @@ function money(v){
   return "$" + n.toLocaleString("en-US",{maximumFractionDigits:0});
 }
 function fdate(s){ return s ? String(s).slice(0,10) : ""; }
-function fdt(s){ if(!s) return ""; const d = new Date(s); return d.toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"}); }
+function fdt(s){ if(!s) return ""; const d = new Date(s); const _lm=(window.LANG_META||{})[window.LANG||"en"]; const _loc=_lm?_lm.intlDate:"en-US"; return d.toLocaleDateString(_loc,{year:"numeric",month:"long",day:"numeric"}); }
 function daysLeft(s){ if(!s) return null; return Math.ceil((new Date(s) - new Date())/86400000); }
+const _SPELL = ["zero","one","two","three","four","five","six","seven","eight","nine"];
+function _spellNum(n){ return n < 10 ? _SPELL[n] : String(n); }
 function deadlineTag(due){
   const dl = daysLeft(due);
   if(dl === null) return "";
   if(dl < 0) return `<span class="tag closed">closed</span>`;
-  if(dl <= 3) return `<span class="tag hot">${dl===0?"closes today":`closes in ${dl} day${dl===1?"":"s"}`}</span>`;
-  if(dl <= 14) return `<span class="tag soon">closes in ${dl} day${dl===1?"":"s"}</span>`;
+  if(dl === 0) return `<span class="tag hot">${t("closes_today")}</span>`;
+  if(dl === 1) return `<span class="tag hot">${t("closes_in_1_day")}</span>`;
+  if(dl <= 3) return `<span class="tag hot">${t("closes_in_n_days",{n:_spellNum(dl)})}</span>`;
+  if(dl <= 14) return `<span class="tag soon">${t("closes_in_n_days",{n:dl<10?_spellNum(dl):dl})}</span>`;
   return `<span class="tag open">open · ${dl} days left</span>`;
 }
 // Countdown chip for event dates (hearings, meetings, sales). Past events get no chip —
@@ -843,7 +859,7 @@ async function search(){
 
   updateHash();
   loadMethodFacet(facetWhere, kw); // fire-and-forget; the rail renders when it lands
-  const heads = {open:"Open RFPs", allrfp:"All RFPs", award:"Recent Awards"};
+  const heads = {open:"Open Requests for Proposals (RFPs)", allrfp:"All RFPs", award:"Recent Awards"};
   $("#reshead").textContent = heads[mode] + (mode==="open" && closingWeek ? " · closing this week" : "") + (methodSel ? " · " + methodSel : "") + (agency ? " · " + agency : "");
   $("#rescount").textContent = "";
   busyList("#list");
@@ -863,7 +879,7 @@ async function search(){
   }catch(e){
     if(stale()) return;
     unbusy("#list");
-    $("#list").innerHTML = '<div class="empty">Could not reach NYC Open Data. Retry in a moment.</div>'; return;
+    $("#list").innerHTML = '<div class="empty">' + t("retry_open_data") + '</div>'; return;
   }
   if(stale()) return; // a newer search superseded this one
   currentRows = rows;
@@ -899,7 +915,7 @@ async function loadMethodFacet(where, kw){
 }
 
 function renderList(){
-  if(!currentRows.length){ $("#list").innerHTML = '<div class="empty">Nothing found. Try a broader keyword or "All RFPs".</div>'; return; }
+  if(!currentRows.length){ $("#list").innerHTML = '<div class="empty">' + t("nothing_found") + '</div>'; return; }
   $("#list").innerHTML = currentRows.map((r,i)=>{
     const isAward = r.type_of_notice_description === "Award";
     const lead = isAward
@@ -1570,7 +1586,7 @@ async function landNearby(geo,status){
 function landRenderList(kw){
   const head=landBanner?`<div class="landbanner">${landBanner}</div>`:"";
   if(!lRows.length){
-    $("#llist").innerHTML=head+`<div class="empty">No ZAP rezonings${kw?` for “${kw}”`:""}. ZAP indexes by <i>project</i>, not address — a notice about your block can be missing here while still in <a href="https://a856-cityrecord.nyc.gov/Search/Advanced" target="_blank" rel="noopener">The City Record</a>.</div>`;
+    $(“#llist”).innerHTML=head+`<div class=”empty”>No Zoning Application Portal (ZAP) rezonings${kw?` for “${kw}”`:””}. ZAP indexes by <i>project</i>, not address — a notice about your block can be missing here while still in <a href=”https://a856-cityrecord.nyc.gov/Search/Advanced” target=”_blank” rel=”noopener”>The City Record</a>.</div>`;
     return;
   }
   $("#llist").innerHTML=head+lRows.map((r,i)=>`<div class="row" data-i="${i}" tabindex="0" role="button">
@@ -1610,7 +1626,7 @@ async function landSelect(i, el){
   if(actList.length) html+=`<div class="rmeta2" style="margin-top:10px"><b>Actions:</b> ${actList.join(" · ")}</div>`;
   const area=(r.project_name||r.borough||"").replace(/(rezoning|demapping|rezone|special permit|special district|text amendment|mapping actions?|modification|disposition|non-?ulurp).*/i,"").trim().split(/\s+/).slice(0,3).join(" ")||r.borough||"";
   html+=`<div class="actions" style="margin-top:12px">
-    <a class="act primary" href="https://zap.planning.nyc.gov/projects/${r.project_id}" target="_blank" rel="noopener">Full project on ZAP ↗</a>
+    <a class="act primary" href="https://zap.planning.nyc.gov/projects/${r.project_id}" target="_blank" rel="noopener">Full project on Zoning Application Portal (ZAP) ↗</a>
     <button class="act" type="button" id="landalert" data-q="${area.replace(/"/g,'')}">Alert me about this area</button>
     <a class="act" id="crfind" href="https://a856-cityrecord.nyc.gov/Search/Advanced" target="_blank" rel="noopener">Search the City Record</a>
   </div>
@@ -1872,11 +1888,11 @@ function aDescribe(){
   return place ? `${freq} digest of rezonings near “${place}”` : `${freq} digest of new rezonings citywide`;
 }
 // When the digest actually goes out. Cron is "0 13 * * *" (13:00 UTC daily); weekly fires only on
-// Mondays. 13:00 UTC = ~9 AM in New York during EDT, 8 AM during EST — hence the winter note.
+// Mondays. 13:00 UTC = around 9 a.m. in New York during EDT, 8 a.m. during EST — hence the winter note.
 function aWhenText(){
   return $("#afreq").value.toLowerCase()==="weekly"
-    ? "New matches are emailed Monday mornings, around 9 AM New York time (8 AM Nov–Mar)."
-    : "New matches are emailed each morning, around 9 AM New York time (8 AM Nov–Mar).";
+    ? t("when_weekly")
+    : t("when_daily");
 }
 function updateAWhen(){ const el=$("#awhen"); if(el) el.textContent=aWhenText(); }
 
@@ -2017,19 +2033,19 @@ async function aSubscribe(){
   const email=$("#adest").value.trim();
   if(!aIsEmail(email)){ msg.innerHTML="Enter a valid email address."; return; }
   const token=(window.turnstile&&turnstile.getResponse)?(turnstile.getResponse()||""):"";
-  if(!token){ msg.innerHTML="Complete the “I'm human” check above first."; return; }
-  if(!API){ msg.innerHTML="Subscriptions need the backend, which isn't wired in this build."; return; }
-  const {lens,filter}=aLensFilter(), freq=$("#afreq").value.toLowerCase();
-  const btn=$("#asubscribe"); btn.disabled=true; msg.innerHTML='<span class="loading"></span> sending your confirmation link…';
+  if(!token){ msg.innerHTML=t(“complete_human_check”); return; }
+  if(!API){ msg.innerHTML=”Subscriptions need the backend, which isn't wired in this build.”; return; }
+  const {lens,filter}=aLensFilter(), freq=$(“#afreq”).value.toLowerCase();
+  const btn=$(“#asubscribe”); btn.disabled=true; msg.innerHTML='<span class=”loading”></span> ' + t(“sending_confirm_link”);
   try{
-    const r=await workerFetch("/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,lens,filter,freq,turnstileToken:token})});
+    const r=await workerFetch(“/subscribe”,{method:”POST”,headers:{“Content-Type”:”application/json”},body:JSON.stringify({email,lens,filter,freq,lang:window.LANG||”en”,turnstileToken:token})});
     const j=await r.json().catch(()=>({}));
-    if(j.ok){ msg.innerHTML="<b>Check your inbox.</b> We sent a confirmation link to <b>"+email.replace(/[<>&]/g," ")+"</b> — your alert starts once you click it."; }
+    if(j.ok){ msg.innerHTML=”<b>” + t(“check_inbox”) + “</b> “ + t(“sent_confirm_to”,{email:email.replace(/[<>&]/g,” “)}); }
     else {
-      const why={turnstile:"The human check didn't pass — try it again.","rate-limited":"Too many attempts — give it a minute.","bad-email":"That email address looks off.","channel-unsupported":"Text alerts aren't available yet — choose Email.","not-configured":"Subscriptions aren't switched on yet.","send-failed":"Couldn't send the email just now — try again."}[j.reason]||"Something went wrong — please try again.";
-      msg.innerHTML="⚠️ "+why; if(window.turnstile) turnstile.reset();
+      const why={turnstile:t(“turnstile_fail”),”rate-limited”:t(“rate_limited”),”bad-email”:t(“bad_email”),”channel-unsupported”:t(“channel_unsupported”),”not-configured”:t(“not_configured”),”send-failed”:t(“send_failed”)}[j.reason]||t(“generic_error”);
+      msg.innerHTML=”⚠️ “+why; if(window.turnstile) turnstile.reset();
     }
-  }catch(e){ msg.innerHTML="⚠️ Couldn't reach the server — try again."; if(window.turnstile) turnstile.reset(); }
+  }catch(e){ msg.innerHTML=”⚠️ “ + t(“cant_reach_server”); if(window.turnstile) turnstile.reset(); }
   btn.disabled=false;
 }
 
@@ -2236,7 +2252,7 @@ async function followDollars(r, el){
       <dt>Committed</dt><dd><b>${money(c.current)||"$0"}</b>${amended?` <span class="tag soon">amended from ${money(c.original)}</span>`:""}</dd>
       <dt>Paid to date</dt><dd><b>${money(c.spent)||"$0"}</b> (${pct}%)<div class="lbar" style="max-width:220px;margin-top:5px"><span style="width:${pct}%"></span></div></dd>
       <dt>Term</dt><dd>${fdate(c.start)||"—"} → ${fdate(c.end)||"—"}</dd>
-      <dt>M/WBE</dt><dd>${c.mwbe||"—"}${c.subs && c.subs!=="N/A" ? ` · sub-vendors: ${c.subs}` : ""}</dd>
+      <dt>Minority/Women-Owned Business Enterprise (M/WBE)</dt><dd>${c.mwbe||"—"}${c.subs && c.subs!=="N/A" ? ` · sub-vendors: ${c.subs}` : ""}</dd>
     </dl>
     ${vendorMismatch?`<div class="note warn" style="margin-top:10px">⚠ Checkbook's vendor (<b>${cleanText(c.vendor)}</b>) differs from the notice's (<b>${cleanText(r.vendor_name)}</b>) — a PIN can cover multiple awards; treat with care.</div>`:""}
     <div class="pnote">Live from <a href="https://www.checkbooknyc.com/smart_search/citywide?search_term=${encodeURIComponent(c.id)}" target="_blank" rel="noopener">Checkbook NYC ↗</a>, matched by PIN <code>${r.pin}</code>. Payments lag invoicing — $0 paid on a freshly registered contract is normal.</div>
@@ -3002,6 +3018,49 @@ if(!applyHash()) search(); // an incoming permalink wins over the default Money 
 aWatchChange();
 updateAWhen();
 aRenderSaved();
+
+// Language switcher init — runs after DOM is built; i18n.js already loaded in <head>.
+(function(){
+  function initLangSwitcher(){
+    const btns = document.querySelectorAll(".lang-btn");
+    const notice = document.getElementById("langNotice");
+    const saved = window.LANG || "en";
+
+    // Reflect saved preference on buttons
+    btns.forEach(function(b){
+      const active = b.dataset.lang === saved;
+      b.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+    if(saved !== "en" && notice){
+      notice.textContent = t("notices_in_english_note");
+      notice.hidden = false;
+    }
+    if(window.applyStrings) applyStrings();
+
+    btns.forEach(function(btn){
+      btn.addEventListener("click", function(){
+        const lang = btn.dataset.lang;
+        setLang(lang);
+        btns.forEach(function(b){
+          b.setAttribute("aria-pressed", b.dataset.lang === lang ? "true" : "false");
+        });
+        if(notice){
+          if(lang !== "en"){
+            notice.textContent = t("notices_in_english_note");
+            notice.hidden = false;
+          } else {
+            notice.hidden = true;
+          }
+        }
+      });
+    });
+  }
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", initLangSwitcher);
+  } else {
+    initLangSwitcher();
+  }
+})();
 </script>
 <!-- Cloudflare Web Analytics — cookieless, aggregate. Manual JS beacon: crol-list.org is served
      directly by GitHub Pages (not proxied through Cloudflare), so zone-level Automatic Setup collects

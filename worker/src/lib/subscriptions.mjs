@@ -8,6 +8,9 @@
 
 export const CHANNELS = ["email", "sms"];
 export const FREQS = ["daily", "weekly"];
+// Supported language codes for subscriptions (clamp unknown → "en").
+// Extend as new languages ship in i18n.js; email templates must have matching entries.
+export const SUPPORTED_LANGS = ["en", "es"];
 
 export function normalizeEmail(raw) {
   return String(raw == null ? "" : raw).trim().toLowerCase();
@@ -21,21 +24,25 @@ export function isValidEmail(raw) {
   return e.length > 0 && e.length <= 254 && EMAIL_RE.test(e);
 }
 
-// Build the stored record from validated parts. Channel/freq clamp to safe defaults; the
-// caller is responsible for having already sanitize()d `filter` for its lens.
-export function buildSubscription({ email, lens, filter, channel = "email", freq = "daily", now = Date.now() }) {
+// Build the stored record from validated parts. Channel/freq/lang clamp to safe defaults;
+// the caller is responsible for having already sanitize()d `filter` for its lens.
+// NOTE: `lang` is intentionally excluded from subCanonical — changing language must not
+// create a duplicate watch; it updates the existing record in place (see confirm.mjs).
+export function buildSubscription({ email, lens, filter, channel = "email", freq = "daily", lang = "en", now = Date.now() }) {
   return {
     email: normalizeEmail(email),
     lens,
     filter: filter || {},
     channel: CHANNELS.includes(channel) ? channel : "email",
     freq: FREQS.includes(freq) ? freq : "daily",
+    lang: SUPPORTED_LANGS.includes(lang) ? lang : "en",
     createdAt: new Date(now).toISOString(),
   };
 }
 
 // Canonical string for a (email, lens, filter) triple — hash it for a stable KV id so the
 // same alert isn't stored twice. (Hashing is done by the caller via Web Crypto.)
+// IMPORTANT: `lang` is deliberately excluded — changing language must not duplicate a watch.
 export function subCanonical({ email, lens, filter }) {
   return JSON.stringify({ email: normalizeEmail(email), lens, filter: filter || {} });
 }

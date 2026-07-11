@@ -69,6 +69,28 @@
 (<a href="https://calver.org/" target="_blank" rel="noopener">CalVer</a>): the site ships continuously, so a date
 tells the truth where a version number would be theater. A tool that watches the city's public record should keep
 a public record of itself. Live usage numbers: <a href="stats.html">stats</a>.</p>
+<section class="rel" id="2026-07-10d">
+  <h2>2026.07.10 · Spanish support + style-guide copy pass</h2>
+  <div class="foryou"><b>For you</b> — A language switcher now appears in the header (English
+  / Espanol). Choosing Spanish translates all tabs, chips, and messages in the UI; notices
+  themselves stay in English, which is the official language of the City Record. Your preference
+  is remembered across visits. Separately, time chips, deadline chips, and the feedback-category
+  selector were updated to follow the NYC Web Content Style Guide: "9 a.m." (not "9 AM"), spelled-out
+  numbers ("closes in two days"), and acronym expansions on first use (RFP, M/WBE, ZAP).
+  City Record content is now marked <code>translate="no"</code> so machine-translation tools
+  leave it intact.</div>
+  <ul>
+    <li>Language switcher (English / Espanol) with USWDS-pattern native-language labels, stored
+      in localStorage, and <code>aria-pressed</code> for keyboard users.</li>
+    <li>Runtime dictionary (<code>i18n.js</code>) with 98 keys in English and Spanish — no build
+      step, plain script tag. Spanish is machine-translated and pending native review through
+      community partners.</li>
+    <li>Confirmation and digest emails deliver in the subscriber's chosen language.</li>
+    <li><code>translate="no"</code> on all notice-data containers; <code>lang</code> attribute
+      on all language-labeled spans and UI chrome.</li>
+    <li>Key parity lint added to CI: a missing translation key fails the build.</li>
+  </ul>
+</section>
 <section class="rel" id="2026-07-10c">
   <h2>2026.07.10 · Accessibility: an enforced floor, not a promise</h2>
   <div class="foryou"><b>For you</b> — If you use a keyboard or a screen reader, the rough edges

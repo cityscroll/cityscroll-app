@@ -18,8 +18,8 @@ export async function handleConfirm(req, env) {
     return page("Link not valid", msg, 400);
   }
 
-  const p = res.payload; // { e, l, f, c, q }
-  const sub = buildSubscription({ email: p.e, lens: p.l, filter: p.f, channel: p.c, freq: p.q });
+  const p = res.payload; // { e, l, f, c, q, lng? }
+  const sub = buildSubscription({ email: p.e, lens: p.l, filter: p.f, channel: p.c, freq: p.q, lang: p.lng || "en" });
   const key = `sub:${sub.email}:${await subId(sub)}`;
   try {
     await env.SUBS.put(key, JSON.stringify(sub));
