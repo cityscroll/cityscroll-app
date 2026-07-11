@@ -21,6 +21,7 @@ import { handleRedirect } from "./redirect.mjs";
 import { runAlerts, consumeDigestJob } from "./alerts.mjs";
 import { ingestNotices } from "./ingest.mjs";
 import { handleMcp } from "./mcp.mjs";
+import { handleBoardHook } from "./boardhook.mjs";
 import { handleInboundEmail } from "./inbound.mjs";
 
 export default {
@@ -28,6 +29,7 @@ export default {
     const { pathname } = new URL(request.url);
     if (pathname === "/nl") return handleNl(request, env);
     if (pathname === "/mcp") return handleMcp(request, env);
+    if (pathname === "/board-hook") return handleBoardHook(request, env);
     if (pathname === "/checkbook") return handleCheckbook(request, env);
     if (pathname === "/forecast") return handleForecast(request, env);
     if (pathname === "/forecast/accuracy") return handleForecastAccuracy(request, env);

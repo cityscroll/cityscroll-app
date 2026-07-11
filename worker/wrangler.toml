@@ -40,6 +40,11 @@ MCP_MAX_CALLS_PER_DAY = "200"
 MCP_MAX_PER_IP_DAY = "300"
 # Digest delivery mode: "true" = queue fan-out (see [[queues.*]]), unset/other = inline.
 QUEUE_DIGESTS = "true"
+# Board-notification bridge (org webhook projects_v2_item -> issue comments).
+# Secrets: BOARD_HOOK_SECRET (HMAC), .
+BOARD_PROJECT_ID = "PVT_kwDOEgVDsM4BdE22"
+BOARD_HOOK_DRY = "false"
+BOARD_HOOK_MAX_PER_DAY = "100"
 
 # Digest delivery queue. QUEUE_DIGESTS="true" switches the cron from
 # the inline send loop to one-job-per-subscription fan-out: independently retryable,
