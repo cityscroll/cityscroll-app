@@ -29,6 +29,8 @@ const FIELD_DEFS = {
   keywords: { type: "array", items: { type: "string" }, description: "1–4 short lowercase topic/trade keywords for full-text search (e.g. 'electrical', 'affordable housing', 'landmark'). Short terms a keyword search matches — not whole sentences. Empty if none implied." },
   agency: { type: ["string", "null"], description: "A specific NYC agency name if one is named (e.g. 'Department of Transportation'), else null." },
   minAmount: { type: ["number", "null"], description: "Minimum contract dollar value if a floor is stated ('over $1M' → 1000000), else null." },
+  maxAmount: { type: ["number", "null"], description: "Maximum contract dollar value if a ceiling is stated ('under $500k' → 500000), else null." },
+  category: { type: ["string", "null"], enum: ["Goods", "Goods and Services", "Services (other than human services)", "Human Services/Client Services", "Construction/Construction Services", "Construction Related Services", null], description: "Procurement category, exactly one of the allowed values if clearly implied (e.g. a construction company → 'Construction/Construction Services'), else null." },
   months: { type: ["number", "null"], description: "If they want results due within N months/weeks, the number of MONTHS (round weeks up), else null." },
   excludeSpecial: { type: "boolean", description: "true only if they want to avoid special/restricted selection methods ('standard requirements only')." },
   boro: { type: ["string", "null"], description: "NYC borough if named or clearly implied by a neighborhood: Manhattan, Brooklyn, Queens, Bronx, or Staten Island; else null." },
@@ -64,24 +66,15 @@ function buildTool(lens) {
 const buildSystem = (lens) =>
   `You convert a user's plain-English description into structured search filters for ${LENS_HINT[lens]}. Be conservative: only set a field when the text clearly implies it. Keywords are short topic terms a full-text search would match, not whole phrases. Call build_filter exactly once.`;
 
-export async function handleNl(req, env) {
-  const origin = req.headers.get("origin") || "";
-  const cors = corsHeaders(origin);
-
-  if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
-  if (req.method !== "POST") return json({ error: "POST only" }, 405, cors);
-
-  let body = {};
-  try { body = await req.json(); } catch { /* ignore bad body */ }
-  const text = String(body.text || "").slice(0, MAX_INPUT).trim();
-  const lens = LENSES[body.lens] ? body.lens : "money"; // unknown/missing → money (back-compat)
-  if (!text) return json({ error: "empty" }, 400, cors);
-
-  // Denial-of-wallet ceiling. Over cap → client uses its on-device heuristic.
-  if (await overDailyCap(env)) return json({ degraded: true, reason: "daily-cap" }, 200, cors);
-
+// Core NL→filter parse, shared by /nl, /mcp, and the inbound-email handler. Each
+// caller meters itself BEFORE calling (this function spends Anthropic tokens).
+// Returns { filter, lens, model } or { degraded: true, reason }.
+export async function parseLensFilter(env, lens, rawText) {
+  const text = String(rawText || "").slice(0, MAX_INPUT).trim();
+  if (!text) return { degraded: true, reason: "empty" };
+  if (!LENSES[lens]) return { degraded: true, reason: "bad-lens" };
   const apiKey = env.ANTHROPIC_API_KEY;
-  if (!apiKey) return json({ degraded: true, reason: "no-key" }, 200, cors);
+  if (!apiKey) return { degraded: true, reason: "no-key" };
 
   try {
     const r = await fetch("https://api.anthropic.com/v1/messages", {
@@ -100,15 +93,35 @@ export async function handleNl(req, env) {
         messages: [{ role: "user", content: text }],
       }),
     });
-    if (!r.ok) return json({ degraded: true, reason: `api-${r.status}` }, 200, cors);
+    if (!r.ok) return { degraded: true, reason: `api-${r.status}` };
     const data = await r.json();
     const block = (data.content || []).find((b) => b.type === "tool_use");
-    if (!block) return json({ degraded: true, reason: "no-tool" }, 200, cors);
-    return json({ filter: sanitize(lens, block.input), lens, model: MODEL }, 200, cors);
+    if (!block) return { degraded: true, reason: "no-tool" };
+    return { filter: sanitize(lens, block.input), lens, model: MODEL };
   } catch (e) {
-    // Graceful degradation: the browser falls back to its on-device parser.
-    return json({ degraded: true, reason: "error", message: String(e?.message || e) }, 200, cors);
+    return { degraded: true, reason: "error", message: String(e?.message || e) };
   }
+}
+
+export async function handleNl(req, env) {
+  const origin = req.headers.get("origin") || "";
+  const cors = corsHeaders(origin);
+
+  if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
+  if (req.method !== "POST") return json({ error: "POST only" }, 405, cors);
+
+  let body = {};
+  try { body = await req.json(); } catch { /* ignore bad body */ }
+  const text = String(body.text || "").slice(0, MAX_INPUT).trim();
+  const lens = LENSES[body.lens] ? body.lens : "money"; // unknown/missing → money (back-compat)
+  if (!text) return json({ error: "empty" }, 400, cors);
+
+  // Denial-of-wallet ceiling. Over cap → client uses its on-device heuristic.
+  if (await overDailyCap(env)) return json({ degraded: true, reason: "daily-cap" }, 200, cors);
+
+  const res = await parseLensFilter(env, lens, text);
+  // Graceful degradation either way: the browser falls back to its on-device parser.
+  return json(res, 200, cors);
 }
 
 // Daily call ceiling via Workers KV. Eventual consistency means concurrent calls could

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Data · CROL-List</title>
+<meta name="description" content="The City Record dataset at a glance: what gets published, by whom, for how much — live aggregates straight from NYC Open Data, honestly labeled.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4efe4; --paper-2:#efe7d6; --ink:#1a1714; --ink-soft:#3b342c; --muted:#5c5349;
+    --rule:#cdbfa6; --card:#fbf7ed;
+    --shadow:0 1px 2px rgba(40,30,10,.05),0 6px 20px rgba(40,30,10,.06);
+    --green:#2f4a32; --oxblood:#7a1f1f;
+    --font-nameplate:'Playfair Display',Georgia,serif; --font-body:'Spectral',Georgia,serif;
+    --font-sc:'Spectral SC','Spectral',Georgia,serif; --ui:ui-sans-serif,system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--font-body);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px 80px}
+  a{color:var(--oxblood)}
+  .cr-rule{border-top:3px solid var(--ink)} .cr-rule--bottom{border-top:3px double var(--ink);margin-top:8px}
+  header{padding-top:18px;text-align:center}
+  .home{display:inline-flex;align-items:center;gap:9px;text-decoration:none;color:var(--ink)}
+  .home:hover .cr-title{color:var(--oxblood)}
+  .cr-seal{width:34px;height:34px;color:var(--ink)}
+  .cr-title{font-family:var(--font-nameplate);font-weight:900;font-size:1.5rem;letter-spacing:.01em;margin:0}
+  .kicker{font-family:var(--font-sc);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-top:14px}
+  h1{font-family:var(--font-nameplate);font-weight:900;font-size:clamp(2rem,6vw,3rem);text-transform:uppercase;line-height:.95;margin:.06em 0 .12em}
+  .backhome{display:inline-block;margin-top:12px;font:600 13px/1 var(--ui);text-decoration:none;color:var(--oxblood)}
+  .backhome:hover{text-decoration:underline}
+  .lede{font-size:16px;color:var(--ink-soft);margin:22px 0 8px}
+  h2{font-family:var(--font-sc);font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--oxblood);margin:30px 0 8px;border-top:1px solid var(--rule);padding-top:16px}
+  p{margin:10px 0}
+  .src{font:14px/1.7 var(--ui);color:var(--ink-soft)}
+  .note{font:13px/1.6 var(--ui);color:var(--muted)}
+  .bars{margin:12px 0}
+  .bar{display:grid;grid-template-columns:minmax(140px,38%) 1fr auto;gap:10px;align-items:center;margin:5px 0;font:14px/1.35 var(--ui)}
+  .bar .lbl{color:var(--ink-soft);text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .bar .trk{background:var(--paper-2);border:1px solid var(--rule);border-radius:3px;height:16px;position:relative}
+  .bar .fil{background:var(--green);height:100%;border-radius:2px;min-width:2px}
+  .bar .val{color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .loading{font:14px/1.6 var(--ui);color:var(--muted);padding:8px 0}
+  .foot{margin-top:40px;border-top:1px solid var(--rule);padding-top:14px;font:13px/1.6 var(--ui);color:var(--muted);text-align:center}
+  .foot a{color:var(--oxblood)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="cr-rule"></div>
+  <a class="home" href="index.html" aria-label="Back to CROL-List home">
+    <svg class="cr-seal" viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="0.6"/>
+      <path d="M50 18 L74 30 V58 Q74 76 50 86 Q26 76 26 58 V30 Z" fill="none" stroke="currentColor" stroke-width="1.3"/>
+      <line x1="26" y1="48" x2="74" y2="48" stroke="currentColor" stroke-width="0.6"/>
+      <path d="M50 30 L50 46 M42 38 L58 38" stroke="currentColor" stroke-width="1.1"/>
+    </svg>
+    <span class="cr-title">CROL-List</span>
+  </a>
+  <div class="kicker">The City Record, searchable</div>
+  <h1>The Data</h1>
+  <div class="cr-rule cr-rule--bottom"></div>
+  <a class="backhome" href="index.html">← Back to CROL-List</a>
+</header>
+
+<p class="lede">The City Record dataset, at a glance — live aggregates queried straight from
+<a href="https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx" target="_blank" rel="noopener">NYC Open Data</a>
+by your browser, nothing cached server-side. Numbers here follow the
+<a href="about.html#data">honesty rules</a>: statistics stay within their section, apparent
+data-entry errors (amounts ≥&nbsp;$10B) are excluded, and placeholder deadlines aren't counted
+as real.</p>
+
+<h2>What the record actually contains <span class="note">(all time, by section)</span></h2>
+<p class="note">Most of the City Record is civil-service personnel paperwork — the civic-interest
+notices are the minority. This is why every number on this site is per-section.</p>
+<div class="bars" id="sections"><div class="loading">Counting 1M+ notices…</div></div>
+
+<h2>Publication volume <span class="note">(last 12 months)</span></h2>
+<div class="bars" id="volume"><div class="loading">Loading…</div></div>
+
+<h2>Procurement mix <span class="note">(last 12 months, by notice type)</span></h2>
+<div class="bars" id="procmix"><div class="loading">Loading…</div></div>
+
+<h2>Top agencies by awarded dollars <span class="note">(last 12 months, cleaned)</span></h2>
+<p class="note">"Cleaned" = amounts over $10B excluded as data-entry errors; see
+<a href="about.html#data">the underlying data</a>.</p>
+<div class="bars" id="agencies"><div class="loading">Loading…</div></div>
+
+<h2>Top vendors by awarded dollars <span class="note">(last 12 months, cleaned)</span></h2>
+<p class="note">Vendor names aren't canonicalized in the source — near-duplicate spellings
+appear as separate rows here.</p>
+<div class="bars" id="vendors"><div class="loading">Loading…</div></div>
+
+<div class="foot">
+  Every number computes live in your browser from the public dataset — reload for fresh data.
+  Methodology: <a href="about.html#data">about → the underlying data</a> ·
+  <a href="stats.html">site usage stats</a> · <a href="changelog.html">changelog</a>
+</div>
+</div>
+
+<script>
+(function () {
+  var SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
+  var esc = function (s) { return String(s == null ? "" : s).replace(/[<>&]/g, function (c) { return { "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]; }); };
+  var fmtN = function (n) { return Number(n).toLocaleString("en-US"); };
+  var fmtMoney = function (n) {
+    n = Number(n);
+    if (n >= 1e9) return "$" + (n / 1e9).toFixed(2) + "B";
+    if (n >= 1e6) return "$" + (n / 1e6).toFixed(1) + "M";
+    return "$" + Math.round(n).toLocaleString("en-US");
+  };
+  var yearAgo = new Date(Date.now() - 365 * 86400000).toISOString().slice(0, 10);
+
+  function soda(params) {
+    return fetch(SODA + "?" + new URLSearchParams(params).toString()).then(function (r) {
+      if (!r.ok) throw new Error("open-data " + r.status);
+      return r.json();
+    });
+  }
+
+  function bars(el, rows, lblKey, valKey, fmt) {
+    var max = rows.reduce(function (m, r) { return Math.max(m, Number(r[valKey]) || 0); }, 0) || 1;
+    el.innerHTML = rows.map(function (r) {
+      var v = Number(r[valKey]) || 0;
+      return '<div class="bar"><span class="lbl" title="' + esc(r[lblKey]) + '">' + esc(r[lblKey] || "—") +
+        '</span><span class="trk"><span class="fil" style="width:' + Math.max(1, Math.round((v / max) * 100)) + '%"></span></span>' +
+        '<span class="val">' + fmt(v) + "</span></div>";
+    }).join("");
+  }
+
+  function fail(el) { el.innerHTML = '<div class="loading">Couldn’t reach NYC Open Data just now — reload to retry.</div>'; }
+
+  // Sections, all time.
+  soda({ "$select": "section_name,count(request_id) AS n", "$group": "section_name", "$order": "n DESC" })
+    .then(function (rows) { bars(document.getElementById("sections"), rows.filter(function (r) { return r.section_name; }), "section_name", "n", fmtN); })
+    .catch(function () { fail(document.getElementById("sections")); });
+
+  // Volume by month, last 12 months.
+  soda({ "$select": "date_trunc_ym(start_date) AS m,count(request_id) AS n", "$where": "start_date >= '" + yearAgo + "T00:00:00'", "$group": "m", "$order": "m ASC" })
+    .then(function (rows) {
+      rows = rows.filter(function (r) { return r.m; }).map(function (r) { return { m: String(r.m).slice(0, 7), n: r.n }; });
+      bars(document.getElementById("volume"), rows, "m", "n", fmtN);
+    })
+    .catch(function () { fail(document.getElementById("volume")); });
+
+  // Procurement mix, last 12 months.
+  soda({ "$select": "type_of_notice_description AS t,count(request_id) AS n", "$where": "section_name='Procurement' AND start_date >= '" + yearAgo + "T00:00:00'", "$group": "t", "$order": "n DESC" })
+    .then(function (rows) { bars(document.getElementById("procmix"), rows.filter(function (r) { return r.t; }), "t", "n", fmtN); })
+    .catch(function () { fail(document.getElementById("procmix")); });
+
+  // Awarded $ filters: Award notices, positive, below the $10B error line.
+  var CLEAN = "type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < 10000000000 AND start_date >= '" + yearAgo + "T00:00:00'";
+
+  soda({ "$select": "agency_name,sum(contract_amount) AS total", "$where": CLEAN, "$group": "agency_name", "$order": "total DESC", "$limit": "10" })
+    .then(function (rows) { bars(document.getElementById("agencies"), rows.filter(function (r) { return r.agency_name; }), "agency_name", "total", fmtMoney); })
+    .catch(function () { fail(document.getElementById("agencies")); });
+
+  soda({ "$select": "vendor_name,sum(contract_amount) AS total", "$where": CLEAN + " AND vendor_name IS NOT NULL", "$group": "vendor_name", "$order": "total DESC", "$limit": "10" })
+    .then(function (rows) { bars(document.getElementById("vendors"), rows, "vendor_name", "total", fmtMoney); })
+    .catch(function () { fail(document.getElementById("vendors")); });
+})();
+</script>
+</body>
+</html>

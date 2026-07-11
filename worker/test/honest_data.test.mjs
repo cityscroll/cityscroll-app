@@ -61,3 +61,15 @@ test("toRecord: invalid amount nulled, rolling due date becomes deadline_note", 
   assert.equal(rec.deadline_note, "rolling / no fixed deadline (e.g. pre-qualified list)");
   assert.deepEqual(rec.documents, ["https://a.example/f"]);
 });
+
+test("compileSub money vocab merge: maxAmount bounds and category filters (both branches)", () => {
+  const award = compileSub({ lens: "money", filter: { minAmount: 100000, maxAmount: 900000, category: "Construction/Construction Services" } }, "2026-06-30");
+  assert.equal(award.kind, "award");
+  assert.match(award.params["$where"], /contract_amount <= 900000/);
+  assert.match(award.params["$where"], /category_description='Construction\/Construction Services'/);
+  const maxOnly = compileSub({ lens: "money", filter: { maxAmount: 500000 } }, "2026-06-30");
+  assert.equal(maxOnly.kind, "award"); // any amount bound implies the Award query (open bids carry no amounts)
+  const rfp = compileSub({ lens: "money", filter: { keywords: ["hvac"], category: "Goods" } }, "2026-06-30");
+  assert.equal(rfp.kind, "rfp");
+  assert.match(rfp.params["$where"], /category_description='Goods'/);
+});
