@@ -110,6 +110,22 @@ digests sent, digest links followed, feed/batch/share activity). No personal dat
 <code>GET /r/&lt;kind&gt;/&lt;request_id&gt;</code>, a count-only redirect to the notice permalink — it accepts a
 validated id (never a URL, so it can't redirect off-site) and records a per-day number, never a person.</p>
 
+<h2>Subscribe by email</h2>
+<p class="src">Email <a href="mailto:subscribe@crol-list.org"><code>subscribe@crol-list.org</code></a>
+describing what you want in plain English — e.g. <em>"construction contract awards over $500k"</em> or
+<em>"rezoning notices in Brooklyn"</em>. You'll get back a confirmation link describing how we understood
+your request; the watch starts only after you click it (double opt-in). Daily ceilings apply; nothing is
+stored until you confirm.</p>
+
+<h2>MCP — for AI assistants</h2>
+<p class="src"><code>POST /mcp</code> (Streamable HTTP, JSON-RPC) — point an MCP client at
+<code>https://api.crol-list.org/mcp</code>. Tools: <code>search_notices</code> and <code>get_notice</code>
+(the daily-refreshed notices mirror, honest-data rules applied), <code>preview_watch</code> (plain English →
+what a standing watch would deliver, without subscribing), and <code>create_watch</code> (plain English →
+a double-opt-in confirmation email; digests start only after the address confirms). Watch management stays
+behind the emailed unsubscribe links — knowing an address never reveals or controls its subscriptions.
+Per-IP and daily model-call ceilings apply.</p>
+
 <h2>Upstream data</h2>
 <p class="src">CROL-List republishes and joins public datasets — for bulk work, go straight to the sources:
 <a href="https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx" target="_blank" rel="noopener">City Record Online (dg92-zbpx, Socrata SODA)</a> ·

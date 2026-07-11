@@ -32,6 +32,30 @@ HEARTBEAT_DAYS = "14"
 # Email Routing catch-all already routes any *@crol-list.org here, so no new routing rule is
 # strictly required; a dedicated feedback@ rule just enables plus-alias auto-filtering.
 FEEDBACK_TO = "feedback@crol-list.org"
+# Inbound subscribe-by-email (Email Routing route: SUBSCRIBE_ADDRESS -> this Worker;
+# set the route in the dashboard). Spend ceilings for the LLM-backed surfaces:
+SUBSCRIBE_ADDRESS = "subscribe@crol-list.org"
+INBOUND_MAX_PER_DAY = "100"
+MCP_MAX_CALLS_PER_DAY = "200"
+MCP_MAX_PER_IP_DAY = "300"
+# Digest delivery mode: "true" = queue fan-out (see [[queues.*]]), unset/other = inline.
+QUEUE_DIGESTS = "true"
+
+# Digest delivery queue. QUEUE_DIGESTS="true" switches the cron from
+# the inline send loop to one-job-per-subscription fan-out: independently retryable,
+# poison subs -> DLQ, daily send cap still enforced in the consumer. max_concurrency=1
+# keeps the shared daily counter honest.
+[[queues.producers]]
+binding = "DIGEST_QUEUE"
+queue = "crol-digests"
+
+[[queues.consumers]]
+queue = "crol-digests"
+max_batch_size = 10
+max_batch_timeout = 30
+max_retries = 3
+max_concurrency = 1
+dead_letter_queue = "crol-digests-dlq"
 
 # D1 mirror of City Record notices (Socrata stays the source of truth; the daily cron
 # refreshes it -- see src/ingest.mjs). Created via `wrangler d1 create crol-notices`;

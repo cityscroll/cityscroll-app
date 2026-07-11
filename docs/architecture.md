@@ -8,14 +8,17 @@ summary: >-
   The site works fully without the worker; the worker adds email alerts, feeds,
   plain-English search, forecasting, and the stats counter. A D1 mirror of
   recent notices (daily ingest; Socrata stays the source of truth) backs alert
-  matching and server-side search.
+  matching and server-side search; new front doors: subscribe-by-inbound-email
+  and an MCP endpoint for AI assistants (both spend-metered), plus a public
+  data.html page of live dataset aggregates. Digest delivery fans out through
+  a Cloudflare Queue (per-subscriber retries, DLQ; daily send caps unchanged).
 updated: 2026-07-10
 sources:
   - README.md
   - MISSION.md
   - worker/wrangler.toml
   - worker/src/worker.mjs
-sources_hash: 2afa37557310358e074b3d3e7c387db5ee349966c5651c4768c489d49567aa0c
+sources_hash: ced4dd771f8cc69746a0b3b63e0c13e33326d1755c5032e385d97a0fdbdf273a
 ---
 
 # crol-list — architecture
@@ -39,6 +42,7 @@ Browser (crol-list.org — static on GitHub Pages)
   api.crol-list.org  (Cloudflare Worker "crol-worker" — worker/ in this repo;
                       workers.dev alias kept alive for in-flight confirm links)
         ├──  /nl                plain-English → lens filters (Claude Haiku, NL_METER-capped)
+        ├──  /mcp               MCP for AI assistants: search/get/preview_watch/create_watch (metered)
         ├──  /checkbook         Checkbook NYC proxy + expiration pipeline (fc:* cache)
         ├──  /forecast          unified forecast timeline (expirations + §112 MOCS plans)
         ├──  /subscribe /confirm /unsubscribe   double-opt-in email (Turnstile-gated)
@@ -50,10 +54,12 @@ Browser (crol-list.org — static on GitHub Pages)
         ├──  /r/<kind>/<id>     count-only digest click-through → 302
         └──  /admin/subs /admin/feedback        keyed operator views
 
+Inbound email (Email Routing: subscribe@crol-list.org → this worker): plain
+  English → LLM-parsed watch → double-opt-in confirm reply (metered, loop-guarded)
 Cron (daily 13:00 UTC): (1) Socrata→D1 ingest refresh (fail-soft), then
-  (2) digest replay over active subscriptions + proactive early-warning emails
-  for forecast milestones matching a watch — via Resend, hard-capped at
-  MAX_PER_RUN=25 / MAX_SENDS_PER_DAY=50
+  (2) digest fan-out — QUEUE_DIGESTS=true enqueues one job per subscription to
+  Queue crol-digests (consumer sends with retries, poison → crol-digests-dlq);
+  send caps unchanged: MAX_PER_RUN=25 / MAX_SENDS_PER_DAY=50 via Resend
 KV: SUBS · NL_METER · ALERT_STATE (incl. fc:/plan: forecast cache) · FEEDBACK
 D1: crol-notices — mirror of recent City Record notices + ingest cursor
 ```
@@ -82,6 +88,9 @@ Bottom-up, the way it's built: Socrata/Checkbook are the ground truth; `index.ht
 - **Seven lenses:** Money (RFP→Award pipeline + forecast timeline), People (title decoder + payroll), Land (rezonings + map), Property (asset lifecycle), Rules, Meetings, Alerts (subscriptions + watchlist).
 - **Forecasting UI:** vertical timeline widget on vendor/agency profile panels — official §112 plan entries and calculated expirations carry distinct badges.
 - **API:** `api.html` documents all worker routes and hosts the live batch cross-reference tool; `/api` on the worker 302s there.
+- **MCP:** `POST /mcp` — `search_notices` / `get_notice` (D1 mirror) + `preview_watch` / `create_watch` (LLM, metered; double opt-in preserved). Optional bearer token; per-IP daily ceiling.
+- **Subscribe by email:** `subscribe@crol-list.org` (Email Routing → the worker's `email()` handler) — plain English → LLM-parsed watch → confirm reply. Metered + per-sender-limited + loop-guarded.
+- **The Data:** `data.html` — live dataset aggregates (sections, monthly volume, procurement mix, top agencies/vendors by cleaned dollars), browser→Socrata direct, honesty rules applied.
 - **Feeds:** `/feed.xml`, `/feed.json`, `/feed.ics` — any saved search as a standing feed.
 - **CLI:** none; the worker is deployed via `wrangler deploy`.
 
@@ -93,7 +102,7 @@ Bottom-up, the way it's built: Socrata/Checkbook are the ground truth; `index.ht
 
 ## TL;DR
 
-1 static site (`index.html`) + 1 Cloudflare Worker (17 source modules), 7 lenses, 17 worker routes, 1 daily cron (ingest → digest), 4 KV namespaces + 1 D1 mirror, 5 secrets, 2 hard send caps — under one hard rule: no accounts, no tracking, no hard backend dependency; everything degrades gracefully when the worker is absent.
+1 static site (`index.html` + `data.html`) + 1 Cloudflare Worker (20 source modules + 11 lib), 7 lenses, 18 worker routes + an inbound-email handler + a queue consumer, 1 daily cron (ingest → queue fan-out), 4 KV namespaces + 1 D1 mirror + 2 queues, 5 secrets, 2 hard send caps — under one hard rule: no accounts, no tracking, no hard backend dependency; everything degrades gracefully when the worker is absent.
 
 1. A visitor loads `index.html` (inline CSS + vanilla JS) served static from GitHub Pages at `crol-list.org` — no backend required.
 2. Picking a lens fires queries direct from the browser to CORS-open public APIs: Socrata SODA for City Record notices, Checkbook NYC for contract payments, GeoSearch/MapPLUTO for BBL and rezoning geometry.

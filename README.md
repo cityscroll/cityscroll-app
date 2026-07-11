@@ -22,7 +22,10 @@ This repository contains the complete system: a single-file static client (`inde
 
 ### 2. Search & Alerts
 *   **Subscription Quiz:** Build tailored watches via an onboarding wizard.
-*   **Proactive Alerts:** Receive morning email digests or subscribe to live RSS/Atom, JSON, and iCal feeds.
+*   **Subscribe by Email:** Write to `subscribe@crol-list.org` in plain English; an LLM parses it into a watch and replies with a double-opt-in confirmation link.
+*   **MCP for AI Assistants:** Point any MCP client at `api.crol-list.org/mcp` to search notices and create/preview watches programmatically ([docs](https://crol-list.org/api.html)).
+*   **Proactive Alerts:** Receive morning email digests (queued per-subscriber delivery with independent retries) or subscribe to live RSS/Atom, JSON, and iCal feeds.
+*   **[The Data](https://crol-list.org/data.html):** the City Record at a glance — sections, volume, procurement mix, top agencies/vendors by cleaned dollars — computed live in the browser.
 *   **Unified Workspace:** Pin records, write local notes, export CSV/JSON dossiers, and generate shareable snapshot links.
 
 ---
@@ -45,7 +48,7 @@ This repository contains the complete system: a single-file static client (`inde
 ## Architecture
 
 *   **Frontend:** A single [index.html](index.html) built with vanilla JavaScript and CSS. Requests are executed directly from the browser to the open-data APIs.
-*   **Backend:** A Cloudflare Worker ([worker/src/](worker/src/)) that manages email alert subscriptions (double opt-in), feed generation, public metrics, and daily digest cron dispatches. A D1 mirror of recent notices (refreshed daily from NYC Open Data, which remains the source of truth) backs alert matching and server-side search; each raw source row is stored alongside the parsed columns so upstream schema changes are recoverable.
+*   **Backend:** A Cloudflare Worker ([worker/src/](worker/src/)) that manages email alert subscriptions (double opt-in), feed generation, public metrics, an MCP endpoint, inbound-email signup, and queued daily digest dispatches. One-time setup for email signup: an Email Routing route sending `subscribe@` to the Worker (Cloudflare dashboard → Email Routing → Routing rules). A D1 mirror of recent notices (refreshed daily from NYC Open Data, which remains the source of truth) backs alert matching and server-side search; each raw source row is stored alongside the parsed columns so upstream schema changes are recoverable.
 *   **Performance:** Uses an in-memory query cache with request coalescing, skeleton placeholders, and lazy-loaded dependencies (e.g., Leaflet maps) to maximize load speed and visual stability.
 
 ---

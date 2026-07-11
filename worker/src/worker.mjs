@@ -18,13 +18,16 @@ import { handleBatch } from "./batch.mjs";
 import { handleInv } from "./inv.mjs";
 import { handleStats } from "./stats.mjs";
 import { handleRedirect } from "./redirect.mjs";
-import { runAlerts } from "./alerts.mjs";
+import { runAlerts, consumeDigestJob } from "./alerts.mjs";
 import { ingestNotices } from "./ingest.mjs";
+import { handleMcp } from "./mcp.mjs";
+import { handleInboundEmail } from "./inbound.mjs";
 
 export default {
   async fetch(request, env, ctx) {
     const { pathname } = new URL(request.url);
     if (pathname === "/nl") return handleNl(request, env);
+    if (pathname === "/mcp") return handleMcp(request, env);
     if (pathname === "/checkbook") return handleCheckbook(request, env);
     if (pathname === "/forecast") return handleForecast(request, env);
     if (pathname === "/usage") return handleUsage(request, env);
@@ -58,5 +61,23 @@ export default {
     // Await directly (not ctx.waitUntil) so the runtime keeps the worker alive until the whole
     // digest run — config watches + every KV subscription — completes.
     await runAlerts(env);
+  },
+
+  // Inbound subscribe-by-email (Cloudflare Email Routing route → this Worker).
+  async email(message, env, ctx) {
+    ctx.waitUntil(handleInboundEmail(message, env));
+  },
+
+  // Digest queue consumer: one subscription per message (see alerts.mjs).
+  async queue(batch, env) {
+    for (const msg of batch.messages) {
+      try {
+        await consumeDigestJob(env, msg.body.key);
+        msg.ack();
+      } catch (e) {
+        console.error("digest job failed", String(e?.message || e));
+        msg.retry();
+      }
+    }
   },
 };

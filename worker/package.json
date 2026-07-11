@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "@jimdc/sendcap": "^1.0.0",
-    "optin-token": "^1.0.0"
+    "optin-token": "^1.0.0",
+    "postal-mime": "^2.7.5"
   },
   "scripts": {
     "dev": "wrangler dev",

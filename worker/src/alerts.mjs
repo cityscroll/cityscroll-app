@@ -77,62 +77,29 @@ export async function runAlerts(env, watches = cfg.watches || []) {
   }
 
   // ---- replay confirmed subscriptions from SUBS KV (the self-serve path) ----
+  // Two delivery modes, same per-sub logic (processOneSub):
+  //   inline (default): the loop below, per-run + daily caps enforced in-run.
+  //   queue  (QUEUE_DIGESTS="true" + DIGEST_QUEUE bound): one job per sub — each
+  //   independently retryable, poison subs land in the DLQ; the DAILY cap remains
+  //   the hard spend ceiling (per-run pacing becomes queue delivery itself).
   const today = day;
   const isMonday = new Date().getUTCDay() === 1;
-  for (const s of await subWatches(env)) {
-    try {
-      if (s.freq === "weekly" && !isMonday) { results.push({ sub: maskKey(s.key), skipped: "weekly" }); continue; }
-      const q = compileSub(s, today);
-      if (!q) { results.push({ sub: maskKey(s.key), skipped: `lens:${s.lens}` }); continue; }
-
-      const forecasts = await matchForecasts(env, s, today);
-
-      let rows = await fetchRows(q.url, q.params);
-      if (q.postFilter) rows = rows.filter(q.postFilter); // e.g. entity watches refine stem-prefix matches
-      const seen = await getSeen(env, s.key);
-      const fresh = rows.filter((r) => r[q.idField] && !seen.has(r[q.idField]));
-
-      // Confidence: decide whether to break silence (a weekly check-in or a daily heartbeat) even
-      // with no fresh notices, so a quiet inbox never looks like a broken alert. `since` = when we
-      // last emailed this sub (falls back to signup), rendered as "since <date>".
-      const since = (await getLastSent(env, s.key)) || s.createdAt || null;
-      const effectiveCount = fresh.length + forecasts.length;
-      const decision = digestDecision({ freshCount: effectiveCount, freq: s.freq, lastSentDate: since, today, heartbeatDays });
-
-      const { allow: send, capped } = capDecision({
-        want: (decision.action !== "none" || forecasts.length > 0) && LIVE && !!s.email,
-        counts: { "per-run": sentThisRun, daily: sentToday },
-        caps: { "per-run": maxPerRun, daily: maxPerDay },
-      });
-
-      if (send) {
-        const label = describeFilter(s.lens, s.filter);
-        const unsubUrl = await unsubLink(env, s.key);
-        let subject, html;
-        
-        const hasActivity = fresh.length > 0 || forecasts.length > 0;
-        if (hasActivity) {
-          const freshLabel = fresh.length > 0 ? `${fresh.length} new` : "";
-          const forecastLabel = forecasts.length > 0 ? `${forecasts.length} forecast(s)` : "";
-          const parts = [freshLabel, forecastLabel].filter(Boolean).join(" & ");
-          subject = `CROL-List: ${parts} — ${label}`;
-          html = subDigestHtml(label, q.kind, fresh, unsubUrl, since, env.CONFIRM_BASE || "https://api.crol-list.org", forecasts);
-        } else {
-          subject = decision.action === "weekly-empty"
-            ? `CROL-List: nothing new this week — ${label}`
-            : `CROL-List: still watching — ${label}`;
-          html = quietHtml(label, decision.action, since, unsubUrl);
-        }
-        await sendEmail(env, FROM, s.email, subject, html, `<${unsubUrl}>`, true);
-        sentThisRun++; sentToday++;
-        await setSendCount(env, day, sentToday);
-        await setLastSent(env, s.key, today);   // only on a real send, so the heartbeat clock tracks actual email
-      }
-
-      if (rows.length && !capped) await markSeen(env, s.key, rows.map((r) => r[q.idField]).filter(Boolean));
-      results.push({ sub: maskKey(s.key), lens: s.lens, found: rows.length, new: fresh.length, forecasts: forecasts.length, action: decision.action, sent: send, capped });
-    } catch (e) {
-      results.push({ sub: maskKey(s.key), error: String(e?.message || e) });
+  const ctx = {
+    FROM, LIVE, heartbeatDays, today, isMonday,
+    counts: () => ({ "per-run": sentThisRun, daily: sentToday }),
+    caps: { "per-run": maxPerRun, daily: maxPerDay },
+    onSent: async () => { sentThisRun++; sentToday++; await setSendCount(env, day, sentToday); },
+  };
+  if (env.QUEUE_DIGESTS === "true" && env.DIGEST_QUEUE) {
+    let enqueued = 0;
+    for (const s of await subWatches(env)) {
+      await env.DIGEST_QUEUE.send({ key: s.key });
+      enqueued++;
+    }
+    results.push({ mode: "queue", enqueued });
+  } else {
+    for (const s of await subWatches(env)) {
+      results.push(await processOneSub(env, s, ctx));
     }
   }
 
@@ -141,6 +108,98 @@ export async function runAlerts(env, watches = cfg.watches || []) {
   const summary = { ranAt: new Date().toISOString(), live: LIVE, sentThisRun, sentToday, caps: { perRun: maxPerRun, perDay: maxPerDay }, results };
   console.log("alerts run:", JSON.stringify(summary));
   return summary;
+}
+
+// One subscription, end to end: compile → fetch → forecasts → confidence decision →
+// cap check → send → bookkeeping. ctx supplies identity, caps, counters, and clock so
+// the inline loop and the queue consumer share this logic exactly.
+export async function processOneSub(env, s, ctx) {
+  try {
+    if (s.freq === "weekly" && !ctx.isMonday) return { sub: maskKey(s.key), skipped: "weekly" };
+    const q = compileSub(s, ctx.today);
+    if (!q) return { sub: maskKey(s.key), skipped: `lens:${s.lens}` };
+
+    const forecasts = await matchForecasts(env, s, ctx.today);
+
+    let rows = await fetchRows(q.url, q.params);
+    if (q.postFilter) rows = rows.filter(q.postFilter); // e.g. entity watches refine stem-prefix matches
+    const seen = await getSeen(env, s.key);
+    const fresh = rows.filter((r) => r[q.idField] && !seen.has(r[q.idField]));
+
+    // Confidence: decide whether to break silence (a weekly check-in or a daily heartbeat) even
+    // with no fresh notices, so a quiet inbox never looks like a broken alert. `since` = when we
+    // last emailed this sub (falls back to signup), rendered as "since <date>".
+    const since = (await getLastSent(env, s.key)) || s.createdAt || null;
+    const effectiveCount = fresh.length + forecasts.length;
+    const decision = digestDecision({ freshCount: effectiveCount, freq: s.freq, lastSentDate: since, today: ctx.today, heartbeatDays: ctx.heartbeatDays });
+
+    const { allow: send, capped } = capDecision({
+      want: (decision.action !== "none" || forecasts.length > 0) && ctx.LIVE && !!s.email,
+      counts: ctx.counts(),
+      caps: ctx.caps,
+    });
+
+    if (send) {
+      const label = describeFilter(s.lens, s.filter);
+      const unsubUrl = await unsubLink(env, s.key);
+      let subject, html;
+
+      const hasActivity = fresh.length > 0 || forecasts.length > 0;
+      if (hasActivity) {
+        const freshLabel = fresh.length > 0 ? `${fresh.length} new` : "";
+        const forecastLabel = forecasts.length > 0 ? `${forecasts.length} forecast(s)` : "";
+        const parts = [freshLabel, forecastLabel].filter(Boolean).join(" & ");
+        subject = `CROL-List: ${parts} — ${label}`;
+        html = subDigestHtml(label, q.kind, fresh, unsubUrl, since, env.CONFIRM_BASE || "https://api.crol-list.org", forecasts);
+      } else {
+        subject = decision.action === "weekly-empty"
+          ? `CROL-List: nothing new this week — ${label}`
+          : `CROL-List: still watching — ${label}`;
+        html = quietHtml(label, decision.action, since, unsubUrl);
+      }
+      await sendEmail(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true);
+      await ctx.onSent();
+      await setLastSent(env, s.key, ctx.today);   // only on a real send, so the heartbeat clock tracks actual email
+    }
+
+    if (rows.length && !capped) await markSeen(env, s.key, rows.map((r) => r[q.idField]).filter(Boolean));
+    return { sub: maskKey(s.key), lens: s.lens, found: rows.length, new: fresh.length, forecasts: forecasts.length, action: decision.action, sent: send, capped };
+  } catch (e) {
+    return { sub: maskKey(s.key), error: String(e?.message || e) };
+  }
+}
+
+// Queue consumer entry: one digest job = one subscription key. Reads the daily send
+// count fresh per job (consumer max_concurrency=1 keeps the counter honest).
+export async function consumeDigestJob(env, key) {
+  const s = await loadSub(env, key);
+  if (!s) return { sub: maskKey(key), skipped: "gone" };
+  const day = new Date().toISOString().slice(0, 10);
+  let daily = await getSendCount(env, day);
+  const ctx = {
+    FROM: env.ALERTS_FROM || "CROL-List <alerts@crol-list.org>",
+    LIVE: env.ALERTS_LIVE === "true",
+    heartbeatDays: Number(env.HEARTBEAT_DAYS) || 14,
+    today: day,
+    isMonday: new Date().getUTCDay() === 1,
+    // Per-run pacing is the queue's job now; the DAILY ceiling stays hard.
+    counts: () => ({ "per-run": 0, daily }),
+    caps: { "per-run": Number(env.MAX_PER_RUN) || 25, daily: Number(env.MAX_SENDS_PER_DAY) || 50 },
+    onSent: async () => { daily++; await setSendCount(env, day, daily); },
+  };
+  const r = await processOneSub(env, s, ctx);
+  console.log("digest job:", JSON.stringify(r));
+  return r;
+}
+
+async function loadSub(env, key) {
+  if (!env.SUBS) return null;
+  try {
+    const v = JSON.parse(await env.SUBS.get(key));
+    return v && v.email ? { key, ...v } : null;
+  } catch {
+    return null;
+  }
 }
 
 // ---- query a watch against the City Record -------------------------------
