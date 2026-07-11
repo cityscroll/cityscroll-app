@@ -19,6 +19,8 @@ import cfg from "../alerts.config.json" with { type: "json" };
 import { capDecision } from "@jimdc/sendcap";
 import { signToken, listUnsubscribe } from "optin-token";
 import { compileSub, vendorStem } from "./lib/compile.mjs";
+import { compileSub_d1, toDigestRow, OFF_MIRROR_LENSES } from "./lib/compile_d1.mjs";
+import { buildNoticesQuery, searchNotices } from "./lib/notices.mjs";
 import { describeFilter } from "./lib/confirm_email.mjs";
 import { digestDecision, shortDate } from "./lib/digest.mjs";
 import { runCheckbookPipeline } from "./checkbook.mjs";
@@ -121,8 +123,37 @@ export async function processOneSub(env, s, ctx) {
 
     const forecasts = await matchForecasts(env, s, ctx.today);
 
-    let rows = await fetchRows(q.url, q.params);
-    if (q.postFilter) rows = rows.filter(q.postFilter); // e.g. entity watches refine stem-prefix matches
+    // D1 fast path: use the notices mirror when DB is bound and its cursor is within 2 days
+    // of today (mirror is fresh). Falls back to the live-SODA path on any failure or when the
+    // mirror is stale — graceful degradation per the mission rule.
+    // land/ZAP lenses are NOT in the D1 mirror and always use the SODA path (explicit, not accidental).
+    let rows;
+    let usedD1 = false;
+    if (env.DB && !OFF_MIRROR_LENSES.has(s.lens)) {
+      try {
+        const fresh = await isMirrorFresh(env.DB, ctx.today);
+        if (fresh) {
+          const d1 = compileSub_d1(s, ctx.today);
+          if (d1) {
+            const { results: d1Rows } = await (async () => {
+              const { sql, params } = buildNoticesQuery(d1.opts);
+              const res = await env.DB.prepare(sql).bind(...params).all();
+              return res;
+            })();
+            let mapped = (d1Rows ?? []).map(toDigestRow);
+            if (d1.postFilter) mapped = mapped.filter(d1.postFilter);
+            rows = mapped;
+            usedD1 = true;
+          }
+        }
+      } catch (e) {
+        console.warn("alerts: D1 fast path failed, falling back to SODA:", String(e?.message || e));
+      }
+    }
+    if (!usedD1) {
+      rows = await fetchRows(q.url, q.params);
+      if (q.postFilter) rows = rows.filter(q.postFilter); // e.g. entity watches refine stem-prefix matches
+    }
     const seen = await getSeen(env, s.key);
     const fresh = rows.filter((r) => r[q.idField] && !seen.has(r[q.idField]));
 
@@ -349,6 +380,22 @@ async function fetchRows(url, params) {
   const r = await fetch(`${url}?${new URLSearchParams(params).toString()}`);
   if (!r.ok) throw new Error(`open-data ${r.status}`);
   return r.json();
+}
+
+// Check whether the D1 notices mirror is fresh enough to trust for digest matching.
+// "Fresh" = the ingest_cursor (max ingested start_date) is within 2 days of today.
+// A stale or missing cursor means the mirror hasn't been updated recently; fall back to SODA.
+async function isMirrorFresh(db, todayISO) {
+  try {
+    const row = await db.prepare("SELECT v FROM ingest_state WHERE k = ?").bind("ingest_cursor").first();
+    if (!row || !row.v) return false;
+    const cursor = String(row.v).slice(0, 10);
+    const cursorMs = new Date(cursor + "T00:00:00Z").getTime();
+    const todayMs  = new Date(todayISO  + "T00:00:00Z").getTime();
+    return (todayMs - cursorMs) <= 2 * 86400_000; // within 2 days
+  } catch {
+    return false; // any error → treat as stale, use SODA
+  }
 }
 
 // A one-click unsubscribe URL: a long-lived signed token carrying the sub's KV key.
