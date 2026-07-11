@@ -39,7 +39,9 @@ export function compileSub(sub, todayISO) {
         url: SODA, idField: "request_id", kind: "award",
         params: {
           "$select": CR_SELECT,
-          "$where": `type_of_notice_description='Award' AND contract_amount >= ${Number(f.minAmount)} AND contract_amount < 5000000000`,
+          // Amount-validity cap per the crol-analyzer EDA: rows >= $10B are data-entry
+          // errors (max legitimate award ≈ $6.68B — the old $5B cap wrongly excluded it).
+          "$where": `type_of_notice_description='Award' AND contract_amount >= ${Number(f.minAmount)} AND contract_amount < 10000000000`,
           "$order": "start_date DESC", "$limit": "25",
         },
       };

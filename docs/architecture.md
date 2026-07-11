@@ -6,14 +6,16 @@ summary: >-
   live Socrata open-data APIs, with a Wave-5 forecasting layer that predicts
   contract renewals from Checkbook NYC durations and Charter §112 MOCS plans.
   The site works fully without the worker; the worker adds email alerts, feeds,
-  plain-English search, forecasting, and the stats counter.
+  plain-English search, forecasting, and the stats counter. A D1 mirror of
+  recent notices (daily ingest; Socrata stays the source of truth) backs alert
+  matching and server-side search.
 updated: 2026-07-10
 sources:
   - README.md
   - MISSION.md
   - worker/wrangler.toml
   - worker/src/worker.mjs
-sources_hash: bce193fe22c1ca2c4ae1ebc16aac35a8d54df404c178fa426224d4ce3317776c
+sources_hash: 2afa37557310358e074b3d3e7c387db5ee349966c5651c4768c489d49567aa0c
 ---
 
 # crol-list — architecture
@@ -48,10 +50,12 @@ Browser (crol-list.org — static on GitHub Pages)
         ├──  /r/<kind>/<id>     count-only digest click-through → 302
         └──  /admin/subs /admin/feedback        keyed operator views
 
-Cron (daily 13:00 UTC): digest replay over active subscriptions + proactive
-  early-warning emails for forecast milestones matching a watch — via Resend,
-  hard-capped at MAX_PER_RUN=25 / MAX_SENDS_PER_DAY=50
+Cron (daily 13:00 UTC): (1) Socrata→D1 ingest refresh (fail-soft), then
+  (2) digest replay over active subscriptions + proactive early-warning emails
+  for forecast milestones matching a watch — via Resend, hard-capped at
+  MAX_PER_RUN=25 / MAX_SENDS_PER_DAY=50
 KV: SUBS · NL_METER · ALERT_STATE (incl. fc:/plan: forecast cache) · FEEDBACK
+D1: crol-notices — mirror of recent City Record notices + ingest cursor
 ```
 
 Bottom-up, the way it's built: Socrata/Checkbook are the ground truth; `index.html` renders them directly; the worker exists only for what a browser can't hold — secrets (Claude, Resend), shared state (subscriptions, counters), and scheduled work (the digest cron). The Wave-5 forecasting layer sits inside the worker because it needs both a cache and the cron.
@@ -63,12 +67,13 @@ Bottom-up, the way it's built: Socrata/Checkbook are the ground truth; `index.ht
 - **KV `ALERT_STATE`** — digest/cron bookkeeping plus the forecast cache: `fc:<stem>` → computed contract-expiration forecasts (from Checkbook award durations), `plan:<stem>` → parsed §112 MOCS plan rows (Socrata `whpb-ebtd`).
 - **KV `FEEDBACK`** — stored feedback rows (`fb:<ts>:<rand>`) + rate-limit counters.
 - **`index.html` localStorage** — client-side only: investigation workspace (pinned notices + notes), query cache, saved searches, plain/rigor toggle.
+- **D1 `crol-notices`** — mirror of recent notices (`notices` table: parsed columns + honest-data fields `contract_amount_valid`, `due_year`, plus the raw source row for schema-drift recovery) and `ingest_state` (Socrata ingest cursor). Refreshed by the daily cron (`worker/src/ingest.mjs`); Socrata remains the source of truth.
 - **`data/`** — committed seed data for People-lens role chips (instant, no network).
 
 ## Serving & deploy
 
 - `index.html` served as a GitHub Pages static site at `crol-list.org` (CNAME in repo).
-- Worker deployed via `wrangler deploy` from `worker/` to the custom domain `api.crol-list.org` (workers.dev alias intentionally kept alive). Cron trigger `0 13 * * *` (~9am ET).
+- Worker deployed via `wrangler deploy` from `worker/` to the custom domain `api.crol-list.org` (workers.dev alias intentionally kept alive). Cron trigger `0 13 * * *` (~9am ET). D1 schema versioned in `worker/migrations/`, applied with `wrangler d1 migrations apply crol-notices --remote`.
 - Secrets via `wrangler secret put`: `ANTHROPIC_API_KEY`, `RESEND_API_KEY`, `TURNSTILE_SECRET`, `TOKEN_SECRET`, `USAGE_KEY`. Spend guards are vars in `wrangler.toml`: `MAX_PER_RUN=25`, `MAX_SENDS_PER_DAY=50` (under Resend's free 100/day); `/subscribe` and `/feedback` fail closed (503) if their secrets are absent.
 - No CI/CD pipeline; deploy is manual from the MacBook.
 
@@ -88,14 +93,14 @@ Bottom-up, the way it's built: Socrata/Checkbook are the ground truth; `index.ht
 
 ## TL;DR
 
-1 static site (`index.html`) + 1 Cloudflare Worker (16 source modules), 7 lenses, 17 worker routes, 1 daily cron, 4 KV namespaces, 5 secrets, 2 hard send caps — under one hard rule: no accounts, no tracking, no hard backend dependency; everything degrades gracefully when the worker is absent.
+1 static site (`index.html`) + 1 Cloudflare Worker (17 source modules), 7 lenses, 17 worker routes, 1 daily cron (ingest → digest), 4 KV namespaces + 1 D1 mirror, 5 secrets, 2 hard send caps — under one hard rule: no accounts, no tracking, no hard backend dependency; everything degrades gracefully when the worker is absent.
 
 1. A visitor loads `index.html` (inline CSS + vanilla JS) served static from GitHub Pages at `crol-list.org` — no backend required.
 2. Picking a lens fires queries direct from the browser to CORS-open public APIs: Socrata SODA for City Record notices, Checkbook NYC for contract payments, GeoSearch/MapPLUTO for BBL and rezoning geometry.
 3. Server-only features route to `api.crol-list.org`: `/nl` (plain English → filters via Claude Haiku, metered by `NL_METER`), `/subscribe`→`/confirm`→`/unsubscribe` (double-opt-in, Turnstile-gated, fails closed), feeds, `/batch`, `/inv`, `/stats`, `/feedback`, keyed `/admin/*` and `/usage`.
 4. The forecasting layer (`/checkbook` + `/forecast`) parses historical Checkbook NYC award term lengths into projected expirations (`fc:<stem>` in `ALERT_STATE`) and merges them with scraped Charter §112 MOCS agency plans (`plan:<stem>`) into one chronological timeline, rendered as the profile-page timeline widget.
 5. Subscriptions land in KV `SUBS`; aggregate integers accrue in stats counters — no personal data beyond the double-opted-in email itself.
-6. The daily cron (13:00 UTC) replays active subscriptions and forecast milestones, sending digests and early-warning emails via Resend — hard-capped at 25/run, 50/day.
+6. The daily cron (13:00 UTC) first refreshes the D1 notices mirror from Socrata (cursored, fail-soft — a failed ingest never blocks alerts), then replays active subscriptions and forecast milestones, sending digests and early-warning emails via Resend — hard-capped at 25/run, 50/day. Money digests exclude data-entry-error amounts (≥ $10B) and label rolling year-2090 deadlines honestly.
 7. Deploy is manual from the MacBook: `index.html` to GitHub Pages, worker via `wrangler deploy`. There is no CI/CD.
 
 ## Check yourself

@@ -89,6 +89,28 @@ contracts, hearings, rule changes, rezonings, and personnel moves. CROL-List mak
 <a href="https://a0333-passportpublic.nyc.gov/" target="_blank" rel="noopener">PASSPort</a> ·
 <a href="https://www.checkbooknyc.com/" target="_blank" rel="noopener">Checkbook NYC</a>.</p>
 
+<h2 id="data">The underlying data, honestly</h2>
+<p>The City Record dataset is <b>1.09 million notices back to 2003</b> — and it is not what it
+looks like at first glance. Our team's exploratory analysis of the full dataset found quirks
+that would silently mislead if we didn't correct for them, so here is exactly what we do:</p>
+<ul>
+  <li><b>87.5% of all rows are civil-service personnel changes</b>, not civic notices. Every
+    statistic on this site is computed within its own section — a "global" City Record number
+    would really be a personnel-file number.</li>
+  <li><b>A few contract amounts are data-entry errors</b> — three rows claim $10&nbsp;billion or
+    more, topping out at $96 <em>trillion</em> (the largest verified real award is ≈$6.68B).
+    Money filters and amount-sorted digests exclude amounts ≥ $10B rather than let one typo
+    dominate every ranking.</li>
+  <li><b>Some "due dates" aren't deadlines.</b> Pre-qualified-list notices carry placeholder
+    dates in the year 2090+; we label these "no fixed deadline (rolling)" instead of showing a
+    date no one should calendar.</li>
+  <li><b>Agency names come in two conventions</b> (legacy ALL-CAPS and Title Case — 312 raw
+    strings for ~150 real agencies); our name resolution treats them as one.</li>
+</ul>
+<p class="src">To keep alerts fast, our server keeps a mirror of recent notices, refreshed
+daily from the same public dataset — NYC Open Data remains the source of truth, and searches
+on this site always query it live.</p>
+
 <h2 id="context">Flags &amp; context, explained</h2>
 <p class="src">Procurement notices carry two kinds of computed annotation. Both are <b>statistical context, not
 findings or accusations</b> — a flag means "worth a closer look," and every formula has innocent explanations
