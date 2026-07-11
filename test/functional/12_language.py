@@ -56,6 +56,29 @@ with sync_playwright() as pw:
     assert page.locator('[data-i18n="tab_money"]').first.inner_text().strip() == money_tab_es.strip(), "es must survive reload"
     step("OK", "persists across reload")
 
+    # Generalized raw-key gate (2026-07-11 incident): no visible chrome text may be a
+    # bare snake_case key — catches missing keys AND dynamically-constructed t() names
+    # the static i18n_refs gate can't see. Notice content (translate="no") is excluded
+    # because real City Record PINs are key-shaped.
+    import re as _re
+    for tag in ("es", "en"):
+        page.locator(f'#langSwitcher .lang-btn[data-lang="{tag}"]').click()
+        page.wait_for_timeout(400)
+        chrome_text = page.evaluate("""() => {
+          const out = [];
+          const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+          while (walker.nextNode()) {
+            const n = walker.currentNode;
+            if (n.parentElement && n.parentElement.closest('[translate="no"],script,style')) continue;
+            const t = n.textContent.trim();
+            if (t) out.push(t);
+          }
+          return out;
+        }""")
+        raw = sorted({t.strip() for t in chrome_text if _re.fullmatch(r"[a-z][a-z0-9]*(?:_[a-z0-9]+)+", t.strip(), _re.I)})
+        assert not raw, f"raw i18n keys visible in {tag} mode: {raw}"
+        step("OK", f"no raw keys visible ({tag})")
+
     # And back to English.
     page.locator('#langSwitcher .lang-btn[data-lang="en"]').click()
     page.wait_for_timeout(400)
