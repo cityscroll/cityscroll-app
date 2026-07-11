@@ -69,6 +69,23 @@
 (<a href="https://calver.org/" target="_blank" rel="noopener">CalVer</a>): the site ships continuously, so a date
 tells the truth where a version number would be theater. A tool that watches the city's public record should keep
 a public record of itself. Live usage numbers: <a href="stats.html">stats</a>.</p>
+<section class="rel" id="2026-07-10c">
+  <h2>2026.07.10 · Accessibility: an enforced floor, not a promise</h2>
+  <div class="foryou"><b>For you</b> — If you use a keyboard or a screen reader, the rough edges
+  are getting fixed for real: the feedback form's category picker now works without a mouse, the
+  plain-English search box announces itself properly, low-contrast text is corrected site-wide,
+  and the "minimum award" filter genuinely disables when it doesn't apply instead of just fading.
+  From now on, an automated accessibility check (axe) runs against every page in our test
+  harness — a change that breaks accessibility fails the build. CONTRIBUTING and SECURITY were
+  also rewritten to describe how the project is actually governed and defended.</div>
+  <ul>
+    <li>The gate immediately earned its keep: it caught a third contrast violation (chip count
+      badges at 55% opacity, ratio 3.2:1) that two human passes had missed. All six public pages
+      now pass with zero critical/serious violations.</li>
+    <li>Per the NYC Web Content Style Guide we're aligning to (WCAG 2.2 + plain language) — more
+      of that standard becomes automated checks next.</li>
+  </ul>
+</section>
 <section class="rel" id="2026-07-10b">
   <h2>2026.07.10 · Three new front doors: email-in, MCP, and The Data</h2>
   <div class="foryou"><b>For you</b> — Three new ways in. <b>Subscribe by email:</b> write to
@@ -151,7 +168,7 @@ a public record of itself. Live usage numbers: <a href="stats.html">stats</a>.</
     <li>~150KB of map code (Leaflet) no longer blocks first paint — it loads only when the Land lens needs it. Unused font weight dropped; the browser now pre-connects to the data APIs.</li>
     <li>A read-side query cache (5-minute TTL) with request coalescing: revisiting a tab, filter, or notice renders from memory.</li>
     <li>Today's Edition renders instantly from your last visit's copy and refreshes behind itself — no more masthead reflow.</li>
-    <li>Declutter, per <a href="https://github.com/jimdc/crol-list/blob/main/docs/decisions/005-snap-crisp-design-grounding.md">decision 005</a>: one accent color (urgency and red flags keep theirs), ~40 decorative emoji removed, shadows off, the stage-legend strip retired. The design is now formally anchored to citymeetings.nyc/craigslist restraint and Tufte's data-ink rule.</li>
+    <li>Declutter, per decision 005 (internal design log): one accent color (urgency and red flags keep theirs), ~40 decorative emoji removed, shadows off, the stage-legend strip retired. The design is now formally anchored to citymeetings.nyc/craigslist restraint and Tufte's data-ink rule.</li>
   </ul>
 </section>
 
@@ -166,7 +183,7 @@ a public record of itself. Live usage numbers: <a href="stats.html">stats</a>.</
     <li>Count-only digest click-through <code>/r/&lt;kind&gt;/&lt;id&gt;</code> — validated ids only, cannot redirect off-site, junk paths fall to the homepage uncounted. <code>a5dbc18</code></li>
     <li>This changelog; the maintenance rule now includes it (every shipped change lands an entry in the same session).</li>
     <li>The backend went open source: the worker's code now lives in this repo's <code>worker/</code>
-    (fresh tree; secrets were never in git — see <a href="https://github.com/jimdc/crol-list/blob/main/docs/decisions/004-monorepo-open-worker.md">decision 004</a>). One clone is the whole system; SECURITY.md documents the threat model.</li>
+    (fresh tree; secrets were never in git — see decision 004 (internal design log)). One clone is the whole system; SECURITY.md documents the threat model.</li>
     <li>Governance files landed: <a href="https://github.com/jimdc/crol-list/blob/main/MISSION.md">MISSION.md</a>, CONTRIBUTING.md, and a decision log.</li>
   </ul>
 </section>
