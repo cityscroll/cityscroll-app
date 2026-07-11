@@ -45,7 +45,7 @@ This repository contains the complete system: a single-file static client (`inde
 ## Architecture
 
 *   **Frontend:** A single [index.html](index.html) built with vanilla JavaScript and CSS. Requests are executed directly from the browser to the open-data APIs.
-*   **Backend:** A Cloudflare Worker ([worker/src/](worker/src/)) that manages email alert subscriptions (double opt-in), feed generation, public metrics, and daily digest cron dispatches.
+*   **Backend:** A Cloudflare Worker ([worker/src/](worker/src/)) that manages email alert subscriptions (double opt-in), feed generation, public metrics, and daily digest cron dispatches. A D1 mirror of recent notices (refreshed daily from NYC Open Data, which remains the source of truth) backs alert matching and server-side search; each raw source row is stored alongside the parsed columns so upstream schema changes are recoverable.
 *   **Performance:** Uses an in-memory query cache with request coalescing, skeleton placeholders, and lazy-loaded dependencies (e.g., Leaflet maps) to maximize load speed and visual stability.
 
 ---
