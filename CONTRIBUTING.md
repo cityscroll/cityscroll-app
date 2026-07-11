@@ -1,8 +1,24 @@
 # Contributing
 
 Start with [MISSION.md](MISSION.md) — it's short, and it's the tiebreaker for every design
-argument. Consequential choices are recorded in [docs/decisions/](docs/decisions/); read those
-before proposing to reverse one (then propose away — that's what the log is for).
+argument.
+
+## How this project is governed
+
+CROL-List is built by a small team with maintainer governance — the code is public because
+transparency builds trust in a civic tool, not because development is crowd-sourced. In
+practice:
+
+- **Write access is by invitation.** The maintainers review and merge everything; changes to
+  the worker's paid or sending routes, or to anything MISSION.md constrains, always get a
+  second maintainer's eyes.
+- **Issues are the front door** for everyone else — bug reports, use cases ("as a vendor I
+  need to…"), UX feedback, and data corrections steer the roadmap more than code does.
+- **Unsolicited PRs** are welcome for small, verifiable fixes; open an issue first for
+  anything larger so we can agree on the shape before you spend the time.
+- **Standards are enforced by CI**, not by convention: unit suites on every PR, and an
+  accessibility gate (axe) in the functional harness. What the checks require is the floor,
+  not the ceiling.
 
 ## The working agreement
 
@@ -47,9 +63,29 @@ cd worker && npx wrangler deploy        # deploy (needs Cloudflare auth)
 - **Code** — the site is one dependency-free `index.html` (inline CSS, vanilla JS, no build
   step); the backend is one Cloudflare Worker under `worker/`. Keep both boring: no frameworks,
   no build steps, graceful degradation everywhere.
-- **Adapting this to another city** — very welcome; open an issue and we'll help you find the
-  seams (the SODA queries and the lens definitions are the city-specific parts).
+- **Adapting this to another city** — fork it; the SODA queries and the lens definitions are
+  the city-specific parts. Open an issue if you get stuck and we'll point you at the seams
+  (as time permits — your fork is your project).
 
 ## Security
 
 See [SECURITY.md](SECURITY.md) for the threat model and how to report a vulnerability.
+
+## Geography of index.html
+
+The site is deliberately one dependency-free file (~3,000 lines). It reads top to bottom:
+
+| Lines (approx) | Region |
+|---|---|
+| 1–279 | All CSS — design tokens in `:root` (use `var(--muted)` etc., never hardcoded grays) |
+| 280–607 | Static markup: masthead, lens tabs, each lens's controls and empty containers |
+| 608–~800 | JS foundations: `$` helpers, SODA query builders, the read-side cache |
+| ~800–1690 | The Money lens: `loadAgencies`, facets, entity chains, Checkbook joins, maps loader |
+| ~1690–2040 | Other lenses: `loadSection` (rules/meetings/property), land/ZAP |
+| ~2040–2300 | Today's Edition + cross-lens rendering helpers |
+| ~2300–2980 | Notice detail rendering, workspace (pins/notes, localStorage), feeds/share |
+| ~2980–end | The subscription quiz and boot sequence |
+
+To find a lens's code, search for its container id (e.g. `#minwrap`, `#fbchips`) or its
+loader (`loadSection`, `loadToday`). Unit-testable logic gets *extracted* to plain functions
+(see `test/unit.test.mjs`) rather than tested through the DOM.
