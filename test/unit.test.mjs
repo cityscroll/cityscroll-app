@@ -81,8 +81,13 @@ test("dollarBadge: labeled figures only, never a bare number", () => {
 });
 
 // ---------- deadline chips (round1 #5) ----------
+// deadlineTag uses t() (i18n) and _spellNum(); provide stubs so the eval is self-contained.
+const _spellConst = src.match(/^const _SPELL = \[[^\]]*\];/m)[0];
 const tagEnv = new Function(
-  extractFn("daysLeft") + extractFn("deadlineTag") + extractFn("eventTag") + "return { deadlineTag, eventTag };"
+  "function t(k,v){ return k; }\n" +
+  _spellConst + "\n" +
+  extractFn("_spellNum") + extractFn("daysLeft") + extractFn("deadlineTag") + extractFn("eventTag") +
+  "return { deadlineTag, eventTag };"
 )();
 const inDays = (n) => new Date(Date.now() + n * 86400000 + 3600000).toISOString();
 

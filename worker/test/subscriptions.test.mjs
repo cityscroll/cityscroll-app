@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { isValidEmail, normalizeEmail, buildSubscription, redactEmail } from "../src/lib/subscriptions.mjs";
+import { isValidEmail, normalizeEmail, buildSubscription, redactEmail, subCanonical, SUPPORTED_LANGS } from "../src/lib/subscriptions.mjs";
 
 test("isValidEmail accepts well-formed and rejects junk", () => {
   for (const ok of ["a@b.co", "Jane.Doe@example.com", "x+y@sub.domain.org"]) {
@@ -37,4 +37,26 @@ test("buildSubscription keeps valid channel/freq", () => {
 test("redactEmail hides the local part for logs", () => {
   assert.equal(redactEmail("janedoe@example.com"), "ja***@example.com");
   assert.equal(redactEmail("ab@x.co"), "a***@x.co");
+});
+
+test("SUPPORTED_LANGS exports at least en and es", () => {
+  assert.ok(Array.isArray(SUPPORTED_LANGS), "SUPPORTED_LANGS must be an array");
+  assert.ok(SUPPORTED_LANGS.includes("en"), "must include en");
+  assert.ok(SUPPORTED_LANGS.includes("es"), "must include es");
+});
+
+test("buildSubscription stores valid lang and clamps unknown to en", () => {
+  const es = buildSubscription({ email: "a@b.com", lens: "money", filter: {}, lang: "es", now: 0 });
+  assert.equal(es.lang, "es");
+  const bad = buildSubscription({ email: "a@b.com", lens: "money", filter: {}, lang: "klingon", now: 0 });
+  assert.equal(bad.lang, "en", "unknown lang must clamp to en");
+  const def = buildSubscription({ email: "a@b.com", lens: "money", filter: {}, now: 0 });
+  assert.equal(def.lang, "en", "default lang must be en");
+});
+
+test("subCanonical excludes lang — changing language does not produce a different id", () => {
+  const base = { email: "a@b.com", lens: "money", filter: { q: "affordable housing" } };
+  const en = subCanonical({ ...base });
+  const es = subCanonical({ ...base, lang: "es" });
+  assert.equal(en, es, "subCanonical must be identical regardless of lang");
 });
