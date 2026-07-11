@@ -8,6 +8,7 @@
 // Build the XML in the browser to keep this proxy schema-agnostic; it just relays.
 
 import { vendorStem } from "./lib/compile.mjs";
+import { scoreForecastAccuracy } from "./lib/forecast_score.mjs";
 
 const CHECKBOOK = "https://www.checkbooknyc.com/api";
 
@@ -281,5 +282,66 @@ export async function handleForecast(req, env) {
   return new Response(JSON.stringify(forecasts), {
     status: 200,
     headers: { ...cors, "Content-Type": "application/json" }
+  });
+}
+
+// ============================================================================
+// GET /forecast/accuracy  (w6-07 — forecast accuracy scoring)
+//
+// Public, no secrets. Scores how often fc:* / plan:* predictions from ALERT_STATE
+// matched an actual Solicitation in the D1 mirror within ±30 days.
+// Cached in KV for ~6 hours to avoid hammering D1 on every request.
+// Requires both env.DB (D1) and env.ALERT_STATE (KV) to be bound; returns a
+// scored=0 result with a note when either is absent.
+// ============================================================================
+const ACCURACY_CACHE_KEY = "forecast_accuracy_cache";
+const ACCURACY_CACHE_TTL = 6 * 3600; // 6 hours
+
+export async function handleForecastAccuracy(req, env) {
+  const origin = req.headers.get("origin") || "";
+  const cors = {
+    "Access-Control-Allow-Origin": ALLOW.has(origin) ? origin : "https://crol-list.org",
+    "Access-Control-Allow-Methods": "GET, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Vary": "Origin",
+  };
+
+  if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
+  if (req.method !== "GET") return new Response("GET only", { status: 405, headers: cors });
+
+  // Try the KV cache first (6-hour TTL avoids hammering D1 on every request)
+  if (env.ALERT_STATE) {
+    try {
+      const cached = await env.ALERT_STATE.get(ACCURACY_CACHE_KEY);
+      if (cached) {
+        return new Response(cached, {
+          status: 200,
+          headers: { ...cors, "Content-Type": "application/json", "X-Cache": "HIT" },
+        });
+      }
+    } catch { /* cache miss → compute fresh */ }
+  }
+
+  // Missing bindings → honest empty result, never an error
+  if (!env.DB || !env.ALERT_STATE) {
+    const empty = { scored: 0, hits: 0, hit_rate: null, window_days: 30, note: "D1 or KV not bound" };
+    return new Response(JSON.stringify(empty), {
+      status: 200,
+      headers: { ...cors, "Content-Type": "application/json" },
+    });
+  }
+
+  const todayISO = new Date().toISOString().slice(0, 10);
+  const result = await scoreForecastAccuracy(env, env.DB, todayISO);
+
+  const body = JSON.stringify(result);
+  // Write back to cache (fail-soft: a cache write failure must never break the response)
+  try {
+    await env.ALERT_STATE.put(ACCURACY_CACHE_KEY, body, { expirationTtl: ACCURACY_CACHE_TTL });
+  } catch { /* ignore */ }
+
+  return new Response(body, {
+    status: 200,
+    headers: { ...cors, "Content-Type": "application/json", "X-Cache": "MISS" },
   });
 }
