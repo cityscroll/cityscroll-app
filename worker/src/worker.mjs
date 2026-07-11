@@ -19,6 +19,7 @@ import { handleInv } from "./inv.mjs";
 import { handleStats } from "./stats.mjs";
 import { handleRedirect } from "./redirect.mjs";
 import { runAlerts } from "./alerts.mjs";
+import { ingestNotices } from "./ingest.mjs";
 
 export default {
   async fetch(request, env, ctx) {
@@ -46,6 +47,14 @@ export default {
   },
 
   async scheduled(event, env, ctx) {
+    // Refresh the D1 notices mirror first (fail-soft: an ingest failure must never
+    // block the digest run — alerts fall back to querying Socrata live anyway).
+    try {
+      const r = await ingestNotices(env);
+      console.log("ingest:", JSON.stringify(r));
+    } catch (e) {
+      console.error("ingest failed (alerts continue):", String(e?.message || e));
+    }
     // Await directly (not ctx.waitUntil) so the runtime keeps the worker alive until the whole
     // digest run — config watches + every KV subscription — completes.
     await runAlerts(env);

@@ -69,6 +69,31 @@
 (<a href="https://calver.org/" target="_blank" rel="noopener">CalVer</a>): the site ships continuously, so a date
 tells the truth where a version number would be theater. A tool that watches the city's public record should keep
 a public record of itself. Live usage numbers: <a href="stats.html">stats</a>.</p>
+<section class="rel" id="2026-07-10">
+  <h2>2026.07.10 · Honest data rules + a faster backbone (with Dev Doshi)</h2>
+  <div class="foryou"><b>For you</b> — Money filters and digests can no longer be hijacked by
+  the dataset's data-entry errors: amounts ≥ $10B (there's a $96 <em>trillion</em> typo in the
+  official record) are excluded, while real multi-billion awards now correctly appear — the old
+  cutoff silently dropped everything above $5B, including the largest legitimate award (≈$6.68B).
+  Pre-qualified-list notices with placeholder year-2090 dates now say <b>"no fixed deadline
+  (rolling)"</b> instead of a date no one should calendar. The <a href="about.html#data">About
+  page documents the dataset's quirks</a> — what the City Record actually contains and how we
+  correct for it.</div>
+  <ul>
+    <li>Data-honesty rules grounded in Dev Doshi's exploratory analysis of the full 1.09M-row
+      dataset (87.5% personnel-change skew, corrupt amount tail, rolling-deadline placeholders,
+      dual agency-name conventions) — thanks Dev.</li>
+    <li>New server-side mirror of recent notices (Cloudflare D1), refreshed by the daily cron
+      from NYC Open Data — the source of truth is unchanged and site searches still query it
+      live; the mirror makes alert matching and upcoming features fast, and stores each raw
+      source row so upstream schema changes are recoverable.</li>
+    <li>Groundwork from the same analysis: a shared notice-search engine over the mirror
+      (AND-of-ORs keyword matching with the honesty rules enforced in SQL), powering the next
+      round of subscription features.</li>
+    <li>Continuous integration now runs both unit-test layers on every change (previous entry's
+      multi-watch regression suite included).</li>
+  </ul>
+</section>
 <section class="rel" id="2026-07-09">
   <h2>2026.07.09 · Predictive Procurement: Checkbook Expirations, MOCS Plans, &amp; Early-Warning Timelines</h2>
   <div class="foryou"><b>For you</b> — CROL-List now alerts you 6 months <em>before</em> contracts expire or new RFPs are published. Agency and vendor profiles show a new <b>"Procurement Forecast"</b> tab with a vertical chronological timeline, uniting predicted contract renewals (from Checkbook NYC) and official agency-planned solicitations (from Charter §112 MOCS datasets). Digests now deliver early-warning notifications for upcoming forecasts matching your watches.</div>

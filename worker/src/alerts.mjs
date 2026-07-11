@@ -145,6 +145,16 @@ export async function runAlerts(env, watches = cfg.watches || []) {
 
 // ---- query a watch against the City Record -------------------------------
 
+// Honest deadline label: due dates in year >= 2090 are rolling placeholders (EDA:
+// pre-qualified-list entries), not real deadlines — never render them as dates.
+export function dueLabel(dueDate) {
+  if (!dueDate) return "";
+  const s = String(dueDate);
+  const year = Number(s.slice(0, 4));
+  if (Number.isFinite(year) && year >= 2090) return "no fixed deadline (rolling)";
+  return "due " + s.slice(0, 10);
+}
+
 async function runWatch(w) {
   const params = new URLSearchParams();
   params.set("$select", "request_id,start_date,agency_name,short_title,pin,contract_amount,vendor_name,due_date,contact_name,contact_phone,email,street_address_1,section_name");
@@ -152,7 +162,9 @@ async function runWatch(w) {
   params.set("$order", "start_date DESC");
 
   if (w.type === "awards") {
-    params.set("$where", `type_of_notice_description='Award' AND contract_amount >= ${Number(w.min) || 1000000}`);
+    // Cap excludes data-entry errors (EDA: 3 rows >= $10B, max legit ≈ $6.68B) which
+    // would otherwise dominate any amount-sorted digest.
+    params.set("$where", `type_of_notice_description='Award' AND contract_amount >= ${Number(w.min) || 1000000} AND contract_amount < 10000000000`);
   } else if (w.where || w.q) {
     if (w.where) params.set("$where", w.where);
     if (w.q) params.set("$q", w.q);
@@ -174,7 +186,7 @@ function digestHtml(w, rows) {
       if (r.email) acts.push(`<a href="mailto:${esc(r.email)}">✉ Email</a>`);
       if (r.contact_phone) acts.push(`<a href="tel:${esc(String(r.contact_phone).replace(/[^0-9+]/g, ""))}">☎ Call</a>`);
       acts.push(`<a href="${REQ_URL(r.request_id)}">↗ View in City Record</a>`);
-      const sub = [r.agency_name, r.pin ? "PIN " + r.pin : "", money(r.contract_amount), r.due_date ? "due " + String(r.due_date).slice(0, 10) : ""]
+      const sub = [r.agency_name, r.pin ? "PIN " + r.pin : "", money(r.contract_amount), dueLabel(r.due_date)]
         .filter(Boolean).map(esc).join(" · ");
       return `<li style="margin:0 0 14px"><b>${esc(r.short_title || r.section_name || "Notice")}</b><br>
         <span style="color:#555;font-size:13px">${sub}</span><br>
@@ -314,7 +326,7 @@ function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.c
     acts.push(`<a href="${base}/r/${encodeURIComponent(kind)}/${encodeURIComponent(r.request_id)}">↗ View on CROL-List</a>`);
     acts.push(`<a href="${cr(r.request_id)}">City Record</a>`);
     const meta = [r.agency_name, usd(r.contract_amount),
-      r.due_date ? "due " + String(r.due_date).slice(0, 10) : "",
+      dueLabel(r.due_date),
       r.event_date ? "event " + String(r.event_date).slice(0, 10) : ""]
       .filter(Boolean).map(esc).join(" · ");
     return `<li style="margin:0 0 14px"><b>${esc(r.short_title || "Notice")}</b><br>

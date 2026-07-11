@@ -33,6 +33,15 @@ HEARTBEAT_DAYS = "14"
 # strictly required; a dedicated feedback@ rule just enables plus-alias auto-filtering.
 FEEDBACK_TO = "feedback@crol-list.org"
 
+# D1 mirror of City Record notices (Socrata stays the source of truth; the daily cron
+# refreshes it -- see src/ingest.mjs). Created via `wrangler d1 create crol-notices`;
+# apply schema with `npx wrangler d1 migrations apply crol-notices --remote`.
+[[d1_databases]]
+binding = "DB"
+database_name = "crol-notices"
+database_id = "df70a39c-6465-4b4a-b108-a792c79e74e8"
+migrations_dir = "migrations"
+
 # KV namespaces. Create them once, then paste the printed ids below:
 #   npx wrangler kv namespace create NL_METER
 #   npx wrangler kv namespace create ALERT_STATE
