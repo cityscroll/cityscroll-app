@@ -420,11 +420,11 @@
     <div class="grid">
       <div class="panel">
         <h2><span><span id="preshead">Roles</span> <span class="count" id="prescount"></span></span></h2>
-        <div class=”list” id=”plist” translate=”no”><div class=”empty”>Try a title like <b>”emergency medical”</b> — or switch to a person.</div></div>
+        <div class="list" id="plist" translate="no"><div class="empty">Try a title like <b>"emergency medical"</b> — or switch to a person.</div></div>
       </div>
-      <div class=”panel”>
+      <div class="panel">
         <h2>Listing</h2>
-        <div class=”detail” id=”pdetail” translate=”no”><div class=”empty”>Pick a role to see its official title, whether it needs an exam, its salary band, and the career ladder.</div></div>
+        <div class="detail" id="pdetail" translate="no"><div class="empty">Pick a role to see its official title, whether it needs an exam, its salary band, and the career ladder.</div></div>
       </div>
     </div>
   </div>
@@ -454,11 +454,11 @@
     <div class="grid">
       <div class="panel">
         <h2><span><span id="lreshead">Recent rezonings</span> <span class="count" id="lrescount"></span></span></h2>
-        <div class=”list” id=”llist” translate=”no”><div class=”empty skel” aria-hidden=”true”><span class=”loading”></span><span class=”skl”><i></i><i></i></span><span class=”skl”><i></i><i></i></span><span class=”skl”><i></i><i></i></span></div></div>
+        <div class="list" id="llist" translate="no"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
       </div>
-      <div class=”panel”>
+      <div class="panel">
         <h2>Listing</h2>
-        <div class=”detail” id=”ldetail” translate=”no”><div class=”empty”>Pick a rezoning to see it in plain English — applicant, what's being built, affordable units, status — and on a map. Try “79 Rivington” or “Gowanus”.</div></div>
+        <div class="detail" id="ldetail" translate="no"><div class="empty">Pick a rezoning to see it in plain English — applicant, what's being built, affordable units, status — and on a map. Try "79 Rivington" or "Gowanus".</div></div>
       </div>
     </div>
   </div>
@@ -1586,7 +1586,7 @@ async function landNearby(geo,status){
 function landRenderList(kw){
   const head=landBanner?`<div class="landbanner">${landBanner}</div>`:"";
   if(!lRows.length){
-    $(“#llist”).innerHTML=head+`<div class=”empty”>No Zoning Application Portal (ZAP) rezonings${kw?` for “${kw}”`:””}. ZAP indexes by <i>project</i>, not address — a notice about your block can be missing here while still in <a href=”https://a856-cityrecord.nyc.gov/Search/Advanced” target=”_blank” rel=”noopener”>The City Record</a>.</div>`;
+    $("#llist").innerHTML=head+`<div class="empty">No Zoning Application Portal (ZAP) rezonings${kw?` for "${kw}"`:""}. ZAP indexes by <i>project</i>, not address — a notice about your block can be missing here while still in <a href="https://a856-cityrecord.nyc.gov/Search/Advanced" target="_blank" rel="noopener">The City Record</a>.</div>`;
     return;
   }
   $("#llist").innerHTML=head+lRows.map((r,i)=>`<div class="row" data-i="${i}" tabindex="0" role="button">
@@ -2033,19 +2033,19 @@ async function aSubscribe(){
   const email=$("#adest").value.trim();
   if(!aIsEmail(email)){ msg.innerHTML="Enter a valid email address."; return; }
   const token=(window.turnstile&&turnstile.getResponse)?(turnstile.getResponse()||""):"";
-  if(!token){ msg.innerHTML=t(“complete_human_check”); return; }
-  if(!API){ msg.innerHTML=”Subscriptions need the backend, which isn't wired in this build.”; return; }
-  const {lens,filter}=aLensFilter(), freq=$(“#afreq”).value.toLowerCase();
-  const btn=$(“#asubscribe”); btn.disabled=true; msg.innerHTML='<span class=”loading”></span> ' + t(“sending_confirm_link”);
+  if(!token){ msg.innerHTML=t("complete_human_check"); return; }
+  if(!API){ msg.innerHTML="Subscriptions need the backend, which isn't wired in this build."; return; }
+  const {lens,filter}=aLensFilter(), freq=$("#afreq").value.toLowerCase();
+  const btn=$("#asubscribe"); btn.disabled=true; msg.innerHTML='<span class="loading"></span> ' + t("sending_confirm_link");
   try{
-    const r=await workerFetch(“/subscribe”,{method:”POST”,headers:{“Content-Type”:”application/json”},body:JSON.stringify({email,lens,filter,freq,lang:window.LANG||”en”,turnstileToken:token})});
+    const r=await workerFetch("/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,lens,filter,freq,lang:window.LANG||"en",turnstileToken:token})});
     const j=await r.json().catch(()=>({}));
-    if(j.ok){ msg.innerHTML=”<b>” + t(“check_inbox”) + “</b> “ + t(“sent_confirm_to”,{email:email.replace(/[<>&]/g,” “)}); }
+    if(j.ok){ msg.innerHTML="<b>" + t("check_inbox") + "</b> " + t("sent_confirm_to",{email:email.replace(/[<>&]/g," ")}); }
     else {
-      const why={turnstile:t(“turnstile_fail”),”rate-limited”:t(“rate_limited”),”bad-email”:t(“bad_email”),”channel-unsupported”:t(“channel_unsupported”),”not-configured”:t(“not_configured”),”send-failed”:t(“send_failed”)}[j.reason]||t(“generic_error”);
-      msg.innerHTML=”⚠️ “+why; if(window.turnstile) turnstile.reset();
+      const why={turnstile:t("turnstile_fail"),"rate-limited":t("rate_limited"),"bad-email":t("bad_email"),"channel-unsupported":t("channel_unsupported"),"not-configured":t("not_configured"),"send-failed":t("send_failed")}[j.reason]||t("generic_error");
+      msg.innerHTML="⚠️ "+why; if(window.turnstile) turnstile.reset();
     }
-  }catch(e){ msg.innerHTML=”⚠️ “ + t(“cant_reach_server”); if(window.turnstile) turnstile.reset(); }
+  }catch(e){ msg.innerHTML="⚠️ " + t("cant_reach_server"); if(window.turnstile) turnstile.reset(); }
   btn.disabled=false;
 }
 
