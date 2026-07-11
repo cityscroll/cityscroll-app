@@ -61,7 +61,7 @@ const STRINGS = {
     closing_this_week:"Closing this week",
     money_trail_heading: "Money trail",
     export_csv:       "Export CSV",
-    pick_notice_empty:"Pick a notice on the left to trace it — for an RFP you'll see how to respond (deadline, contact, where to submit) and the full notice → award → dollars chain.",
+    pick_notice_empty:"Pick a notice on the left to trace it — for an RFP you'll see <b>how to respond</b> (deadline, contact, where to submit) and the full notice → award → dollars chain.",
 
     // People lens
     look_up_label:       "Look up",
@@ -149,6 +149,145 @@ const STRINGS = {
 
     // Language switcher
     lang_switcher_label: "Language",
+
+    // Controls / labels
+    show_label_meetings: "Show",
+    mode_upcoming:       "Upcoming",
+    mode_all_recent:     "All (recent)",
+    search_label:        "Search",
+    borough_label:       "Borough",
+    all_boroughs:        "All boroughs",
+    zip_addr_neighborhood: "ZIP, address, or neighborhood",
+    status_label:        "Status",
+    status_active:       "In review / active",
+    status_all:          "All",
+    look_up_pmode:       "Look up",
+    filters_toggle:      "Filters",
+
+    // Keyword placeholders
+    kw_placeholder_money:   "shelter, IT, construction, security…",
+    kw_placeholder_land:    "Bushwick, 79 Rivington, Gowanus…",
+    kw_placeholder_property: "address, neighborhood…",
+    kw_placeholder_rules:   "sanitation, licensing, rent, sidewalk…",
+    kw_placeholder_meetings: "Community Board, Brooklyn, landmark…",
+    kw_placeholder_people_role:   "emergency medical, attorney, engineer…",
+    kw_placeholder_people_person: "last name, e.g. Rodriguez",
+    nl_placeholder_people:   "e.g. paramedic roles, or look up someone named Rodriguez",
+    nl_placeholder_land:     "e.g. rezonings in Brooklyn, or 79 Rivington",
+    nl_placeholder_property: "e.g. HPD property sales, DEP land",
+    nl_placeholder_rules:    "e.g. buildings rules, sanitation rules",
+    nl_placeholder_meetings: "e.g. recent landmarks hearings, city council",
+    nl_placeholder_alerts:   "e.g. email me awards over $1M, or construction RFPs",
+
+    // People panel
+    roles_heading:       "Roles",
+    people_heading:      "People",
+    listing_heading:     "Listing",
+    land_listing_heading: "Listing",
+    try_a_title_empty:   "Try a title like \"emergency medical\" -- or switch to a person.",
+    pick_role_empty:     "Pick a role to see its official title, whether it needs an exam, its salary band, and the career ladder.",
+    pick_result_empty:   "Pick a result on the left.",
+    type_keyword_empty:  "Type a keyword to search.",
+
+    // Land panel
+    recent_rezonings_heading: "Recent rezonings",
+    pick_rezoning_empty: "Pick a rezoning to see it in plain English -- applicant, what's being built, affordable units, status -- and on a map. Try \"79 Rivington\" or \"Gowanus\".",
+
+    // Money panel
+    open_rfps_heading:   "Open Requests for Proposals (RFPs)",
+    all_rfps_heading:    "All RFPs",
+    recent_awards_heading: "Recent Awards",
+    pick_notice_panel_heading: "Money trail",
+    preview_panel_heading: "Preview",
+
+    // Quiz panel
+    quiz_narrow_placeholder: "pick a topic above first…",
+    quiz_param_agency:   "agency (optional) -- e.g. Buildings",
+
+    // Alert builder labels
+    param_label_min_award:    "Minimum award",
+    param_label_keyword:      "Keyword (optional)",
+    param_label_vendor:       "Vendor name",
+    param_label_agency_name:  "Agency name (as printed)",
+    param_label_place:        "ZIP, address, or neighborhood (optional)",
+    param_placeholder_rfpkw:  "construction, IT, security…",
+    param_placeholder_vendor: "Consolidated Scaffolding, Sinergia…",
+    param_placeholder_agency: "Design and Construction, Buildings…",
+    param_placeholder_rezone: "79 Rivington, Allen Street, Bushwick…",
+    param_placeholder_rules:  "e-bike, sidewalk, licensing…",
+    param_placeholder_meetings: "community board, landmarks…",
+    param_placeholder_property: "Brooklyn, auction, HPD…",
+    afreq_daily_opt:  "Daily",
+    afreq_weekly_opt: "Weekly",
+
+    // Today's Edition strip
+    latest_edition_suffix: "· LATEST EDITION",
+    closing_soon_lbl:      "Closing soon",
+    largest_award_lbl:     "Largest award, this edition",
+    next_hearing_lbl:      "Next public hearing",
+
+    // Loading / status
+    loading_notice:   "loading notice…",
+    building_profile: "building profile…",
+    pulling_payroll:  "pulling payroll…",
+    fetching_today:   "fetching today's matching notices…",
+    translating:      "translating…",
+
+    // Dynamic headings (search())
+    head_open:              "Open Requests for Proposals (RFPs)",
+    head_allrfp:            "All RFPs",
+    head_award:             "Recent Awards",
+    head_closing_this_week: " · closing this week",
+
+    // Empty states
+    no_titles_match:   "No titles match. Try a broader word.",
+    no_personnel:      "No personnel notices match that name. Try a last name.",
+    no_zap:            "No Zoning Application Portal (ZAP) rezonings",
+    nothing_found_feed: "Nothing found. Try a broader search.",
+    could_not_reach:   "Could not reach NYC Open Data. Retry.",
+
+    // Feed card actions
+    city_record_link:       "City Record ↗",
+    copy_link_btn:          "Copy link",
+    map_link:               "Map ↗",
+    still_standing_btn:     "Still standing?",
+
+    // Footer
+    footer_lede:       "CROL-List searches the City Record Open Data",
+    footer_about:      "About",
+    footer_investigation: "My investigation",
+    footer_api:        "API & feeds",
+    footer_changelog:  "Changelog",
+    footer_stats:      "Stats",
+
+    // Skip link
+    skip_to_content: "Skip to content",
+
+    // Announcements (sr-only)
+    or_more_results: "{n} or more results",
+    results_count: "{n} results",
+
+    // Event countdown (eventTag)
+    event_today: "today",
+    event_in_n_days: "in {n} day{s}",
+
+    // Deadline
+    due_today_tag: "due today",
+    deadline_respond_by: "Respond by {date}",
+
+    // Detail panel actions
+    copy_link: "Copy link",
+    copied: "Copied",
+    add_deadline_calendar: "Add deadline to calendar",
+    email_a_response: "Email a response",
+    bid_on_passport: "Bid on PASSPort",
+    how_to_respond_heading: "How to respond to this RFP",
+
+    // Alerts / feeds area
+    prefer_feeds_html: "Prefer feeds? This watch is also",
+
+    // Notices-in-English
+    notices_in_english_note_inline: "Notice text appears in the original English.",
   },
 
   es: {
@@ -269,6 +408,145 @@ const STRINGS = {
 
     // Language switcher
     lang_switcher_label: "Idioma",
+
+    // Controls / labels
+    show_label_meetings: "Mostrar",
+    mode_upcoming:       "Proximos",
+    mode_all_recent:     "Todos (recientes)",
+    search_label:        "Buscar",
+    borough_label:       "Distrito",
+    all_boroughs:        "Todos los distritos",
+    zip_addr_neighborhood: "Codigo postal, direccion o vecindario",
+    status_label:        "Estado",
+    status_active:       "En revision / activo",
+    status_all:          "Todos",
+    look_up_pmode:       "Buscar",
+    filters_toggle:      "Filtros",
+
+    // Keyword placeholders
+    kw_placeholder_money:   "refugio, TI, construccion, seguridad…",
+    kw_placeholder_land:    "Bushwick, 79 Rivington, Gowanus…",
+    kw_placeholder_property: "direccion, vecindario…",
+    kw_placeholder_rules:   "saneamiento, licencias, alquiler, acera…",
+    kw_placeholder_meetings: "Junta Comunitaria, Brooklyn, patrimonio…",
+    kw_placeholder_people_role:   "paramedico de emergencias, abogado, ingeniero…",
+    kw_placeholder_people_person: "apellido, p. ej. Rodriguez",
+    nl_placeholder_people:   "p. ej. roles de paramedico, o buscar a alguien llamado Rodriguez",
+    nl_placeholder_land:     "p. ej. rezonificaciones en Brooklyn, o 79 Rivington",
+    nl_placeholder_property: "p. ej. ventas de propiedades de HPD, terrenos de DEP",
+    nl_placeholder_rules:    "p. ej. reglas de edificios, reglas de saneamiento",
+    nl_placeholder_meetings: "p. ej. audiencias recientes de patrimonio, concejo municipal",
+    nl_placeholder_alerts:   "p. ej. alertarme de adjudicaciones sobre $1M, o RFP de construccion",
+
+    // People panel
+    roles_heading:       "Cargos",
+    people_heading:      "Personas",
+    listing_heading:     "Listado",
+    land_listing_heading: "Listado",
+    try_a_title_empty:   "Pruebe un titulo como \"paramedico de emergencias\" -- o cambie a persona.",
+    pick_role_empty:     "Seleccione un cargo para ver su titulo oficial, si requiere examen, su banda salarial y la escalera profesional.",
+    pick_result_empty:   "Seleccione un resultado a la izquierda.",
+    type_keyword_empty:  "Escriba una palabra clave para buscar.",
+
+    // Land panel
+    recent_rezonings_heading: "Rezonificaciones recientes",
+    pick_rezoning_empty: "Seleccione una rezonificacion para verla en lenguaje claro -- solicitante, que se va a construir, unidades asequibles, estado -- y en un mapa. Pruebe \"79 Rivington\" o \"Gowanus\".",
+
+    // Money panel
+    open_rfps_heading:   "Solicitudes de propuestas (RFP) abiertas",
+    all_rfps_heading:    "Todas las RFP",
+    recent_awards_heading: "Adjudicaciones recientes",
+    pick_notice_panel_heading: "Rastro del dinero",
+    preview_panel_heading: "Vista previa",
+
+    // Quiz panel
+    quiz_narrow_placeholder: "primero elija un tema arriba…",
+    quiz_param_agency:   "agencia (opcional) -- p. ej. Buildings",
+
+    // Alert builder labels
+    param_label_min_award:    "Monto minimo",
+    param_label_keyword:      "Palabra clave (opcional)",
+    param_label_vendor:       "Nombre del proveedor",
+    param_label_agency_name:  "Nombre de la agencia (como aparece impreso)",
+    param_label_place:        "Codigo postal, direccion o vecindario (opcional)",
+    param_placeholder_rfpkw:  "construccion, TI, seguridad…",
+    param_placeholder_vendor: "Consolidated Scaffolding, Sinergia…",
+    param_placeholder_agency: "Design and Construction, Buildings…",
+    param_placeholder_rezone: "79 Rivington, Allen Street, Bushwick…",
+    param_placeholder_rules:  "bicicleta electrica, acera, licencias…",
+    param_placeholder_meetings: "junta comunitaria, patrimonio…",
+    param_placeholder_property: "Brooklyn, subasta, HPD…",
+    afreq_daily_opt:  "Diario",
+    afreq_weekly_opt: "Semanal",
+
+    // Today's Edition strip
+    latest_edition_suffix: "· ULTIMA EDICION",
+    closing_soon_lbl:      "Cierra pronto",
+    largest_award_lbl:     "Mayor adjudicacion, esta edicion",
+    next_hearing_lbl:      "Proxima audiencia publica",
+
+    // Loading / status
+    loading_notice:   "cargando aviso…",
+    building_profile: "construyendo perfil…",
+    pulling_payroll:  "consultando nomina…",
+    fetching_today:   "consultando avisos de hoy…",
+    translating:      "traduciendo…",
+
+    // Dynamic headings
+    head_open:              "Solicitudes de propuestas (RFP) abiertas",
+    head_allrfp:            "Todas las RFP",
+    head_award:             "Adjudicaciones recientes",
+    head_closing_this_week: " · cierra esta semana",
+
+    // Empty states
+    no_titles_match:   "Ningun titulo coincide. Pruebe con una palabra mas amplia.",
+    no_personnel:      "Ningun aviso de personal coincide con ese nombre. Pruebe con un apellido.",
+    no_zap:            "No hay rezonificaciones en el Portal de Solicitudes de Zonificacion (ZAP)",
+    nothing_found_feed: "No se encontro nada. Pruebe con una busqueda mas amplia.",
+    could_not_reach:   "No se pudo conectar a NYC Open Data. Intente de nuevo.",
+
+    // Feed card actions
+    city_record_link:       "Registro municipal ↗",
+    copy_link_btn:          "Copiar enlace",
+    map_link:               "Mapa ↗",
+    still_standing_btn:     "¿Sigue en pie?",
+
+    // Footer
+    footer_lede:       "CROL-List busca en el Registro Municipal de Datos Abiertos",
+    footer_about:      "Acerca de",
+    footer_investigation: "Mi investigacion",
+    footer_api:        "API y fuentes",
+    footer_changelog:  "Registro de cambios",
+    footer_stats:      "Estadisticas",
+
+    // Skip link
+    skip_to_content: "Ir al contenido",
+
+    // Announcements (sr-only)
+    or_more_results: "{n} o mas resultados",
+    results_count: "{n} resultados",
+
+    // Event countdown
+    event_today: "hoy",
+    event_in_n_days: "en {n} dia{s}",
+
+    // Deadline
+    due_today_tag: "vence hoy",
+    deadline_respond_by: "Responder antes del {date}",
+
+    // Detail panel actions
+    copy_link: "Copiar enlace",
+    copied: "Copiado",
+    add_deadline_calendar: "Agregar fecha limite al calendario",
+    email_a_response: "Enviar respuesta por correo",
+    bid_on_passport: "Licitar en PASSPort",
+    how_to_respond_heading: "Como responder a esta RFP",
+
+    // Alerts / feeds area
+    prefer_feeds_html: "Prefiere fuentes? Este seguimiento tambien esta disponible como",
+
+    // Notices-in-English
+    notices_in_english_note_inline: "El texto de los avisos aparece en ingles original.",
   },
 
   // Stubs for remaining LL30 languages — translations pending (wave 6 phases 2–4)
@@ -295,7 +573,9 @@ function t(key, vars) {
 }
 window.t = t;
 
-// applyStrings() — walk data-i18n elements and replace textContent.
+// applyStrings() — walk data-i18n elements and replace textContent;
+// data-i18n-html elements get innerHTML replaced (allows inline markup in translations);
+// also update placeholder attributes on data-i18n-placeholder elements.
 function applyStrings() {
   const lang = window.LANG || "en";
   document.querySelectorAll("[data-i18n]").forEach(function(el) {
@@ -304,6 +584,12 @@ function applyStrings() {
     if (el.children.length === 0) {
       el.textContent = translated;
     }
+  });
+  document.querySelectorAll("[data-i18n-html]").forEach(function(el) {
+    el.innerHTML = t(el.dataset.i18nHtml);
+  });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(function(el) {
+    el.placeholder = t(el.dataset.i18nPlaceholder);
   });
   document.documentElement.lang = lang;
   const meta = LANG_META[lang];

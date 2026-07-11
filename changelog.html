@@ -69,6 +69,26 @@
 (<a href="https://calver.org/" target="_blank" rel="noopener">CalVer</a>): the site ships continuously, so a date
 tells the truth where a version number would be theater. A tool that watches the city's public record should keep
 a public record of itself. Live usage numbers: <a href="stats.html">stats</a>.</p>
+<section class="rel" id="2026-07-10e">
+  <h2>2026.07.10 · Espanol coverage: the whole interface, not just the chrome</h2>
+  <div class="foryou"><b>Para usted</b> — Phase 2 of Spanish support: the entire visible interface
+  now translates when you switch to Espanol. Phase 1 covered tabs, buttons, and short labels (98 keys).
+  Phase 2 adds the empty states, search placeholders, panel headings, the Today's Edition strip,
+  alert builder labels and parameters, loading messages, and all control labels across every lens
+  (Money, People, Land, Property, Rules, Meetings, Alerts) -- growing the dictionary from 98 to
+  over 200 keys. A new residual-English coverage gate in the test suite verifies 15 high-visibility
+  sentinel strings are absent in Espanol mode.</div>
+  <ul>
+    <li>Dictionary grows from 98 to 200+ keys; all new keys carry full en + es translations.</li>
+    <li>Static HTML: <code>data-i18n</code> attributes on all translatable labels, options, buttons,
+      and headings. New <code>data-i18n-placeholder</code> attribute pattern for search inputs.</li>
+    <li>JavaScript: hardcoded English strings in <code>renderToday</code>, loading states,
+      empty states, and dynamic label assignments replaced with <code>t()</code> calls.</li>
+    <li>Test spec <code>12_language.py</code> extended with a residual-English sentinel gate:
+      15 high-visibility phrases must be absent in Espanol mode.</li>
+    <li>Machine-translated; pending native review through community partners.</li>
+  </ul>
+</section>
 <section class="rel" id="2026-07-10d">
   <h2>2026.07.10 · Spanish support + style-guide copy pass</h2>
   <div class="foryou"><b>For you</b> — A language switcher now appears in the header (English
