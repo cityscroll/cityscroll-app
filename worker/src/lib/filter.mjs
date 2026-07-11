@@ -6,8 +6,19 @@ export const MAX_CALLS_PER_DAY = 300;  // denial-of-wallet ceiling
 
 // Which filter fields each lens cares about. The /nl tool schema is built from these,
 // and sanitize() clamps exactly these fields — so one model, many lenses.
+// Procurement categories as they appear verbatim in the dataset (vocab merged from
+// Dev's crol-alert filter enums, grounded in the EDA value counts).
+export const CATEGORIES = [
+  "Goods",
+  "Goods and Services",
+  "Services (other than human services)",
+  "Human Services/Client Services",
+  "Construction/Construction Services",
+  "Construction Related Services",
+];
+
 export const LENSES = {
-  money:    ["keywords", "agency", "minAmount", "months", "excludeSpecial"],
+  money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "excludeSpecial"],
   people:   ["keywords", "lookupType"],
   land:     ["keywords", "boro", "status"],
   property: ["keywords", "agency"],
@@ -28,6 +39,10 @@ function clampField(name, v) {
       return typeof v === "string" && v.trim() ? v.trim() : null;
     case "minAmount":
       return typeof v === "number" && v >= 1000 ? Math.round(v) : null;
+    case "maxAmount":
+      return typeof v === "number" && v >= 1000 ? Math.round(v) : null;
+    case "category":
+      return CATEGORIES.includes(v) ? v : null;
     case "months":
       return typeof v === "number" && v > 0 && v <= 60 ? Math.round(v) : null;
     case "excludeSpecial":

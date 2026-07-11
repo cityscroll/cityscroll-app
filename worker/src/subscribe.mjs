@@ -66,7 +66,9 @@ export async function handleSubscribe(req, env) {
   return json({ ok: true }, 200, cors);
 }
 
-async function sendConfirm(env, to, lens, filter, freq, confirmUrl) {
+// Exported: /mcp create_watch and the inbound-email handler reuse the same
+// double-opt-in confirmation email (one sender identity, one template).
+export async function sendConfirm(env, to, lens, filter, freq, confirmUrl) {
   const from = env.ALERTS_FROM || "CROL-List <alerts@crol-list.org>";
   const r = await fetch("https://api.resend.com/emails", {
     method: "POST",

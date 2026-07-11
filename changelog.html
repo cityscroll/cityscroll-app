@@ -69,6 +69,30 @@
 (<a href="https://calver.org/" target="_blank" rel="noopener">CalVer</a>): the site ships continuously, so a date
 tells the truth where a version number would be theater. A tool that watches the city's public record should keep
 a public record of itself. Live usage numbers: <a href="stats.html">stats</a>.</p>
+<section class="rel" id="2026-07-10b">
+  <h2>2026.07.10 · Three new front doors: email-in, MCP, and The Data</h2>
+  <div class="foryou"><b>For you</b> — Three new ways in. <b>Subscribe by email:</b> write to
+  <a href="mailto:subscribe@crol-list.org">subscribe@crol-list.org</a> in plain English
+  ("construction awards over $500k") and you'll get a confirmation link back — no form, no
+  CAPTCHA, just your words. <b>For AI assistants:</b> point any MCP client at
+  <code>api.crol-list.org/mcp</code> to search notices and set up watches programmatically
+  (double opt-in still applies — nothing sends without the address confirming).
+  <b><a href="data.html">The Data</a>:</b> a new page showing the City Record at a glance —
+  what's actually in it, publication volume, procurement mix, top agencies and vendors by
+  cleaned dollars — computed live in your browser from NYC Open Data.</div>
+  <ul>
+    <li>Inbound email → LLM-parsed watch with the same double-opt-in confirm flow as the site;
+      hard daily ceilings and per-sender limits on every model-backed path, failing closed.</li>
+    <li>MCP tools: <code>search_notices</code>, <code>get_notice</code> (the daily-refreshed
+      mirror), <code>preview_watch</code>, <code>create_watch</code> — documented on
+      <a href="api.html">the API page</a>.</li>
+    <li>Plain-English money searches understand more: amount ceilings ("under $500k") and
+      procurement categories ("construction", "human services").</li>
+    <li>Digest delivery moved to a queue: each subscriber's digest retries independently, so
+      one bad address can't block a run; daily send caps unchanged. (Groundwork from Dev
+      Doshi's crol-alert.)</li>
+  </ul>
+</section>
 <section class="rel" id="2026-07-10">
   <h2>2026.07.10 · Honest data rules + a faster backbone (with Dev Doshi)</h2>
   <div class="foryou"><b>For you</b> — Money filters and digests can no longer be hijacked by
@@ -81,7 +105,7 @@ a public record of itself. Live usage numbers: <a href="stats.html">stats</a>.</
   correct for it.</div>
   <ul>
     <li>Data-honesty rules grounded in Dev Doshi's exploratory analysis of the full 1.09M-row
-      dataset (87.5% personnel-change skew, corrupt amount tail, rolling-deadline placeholders,
+      dataset (87.5% personnel-change skew, a data-entry-error amount tail, rolling-deadline placeholders,
       dual agency-name conventions) — thanks Dev.</li>
     <li>New server-side mirror of recent notices (Cloudflare D1), refreshed by the daily cron
       from NYC Open Data — the source of truth is unchanged and site searches still query it
