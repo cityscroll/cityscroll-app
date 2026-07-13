@@ -23,10 +23,20 @@
     --font-body:'Spectral',Georgia,'Times New Roman',serif;
     --font-sc:'Spectral SC','Spectral',Georgia,serif;
     --maxw:1120px;
+    /* w8-06: script-aware typography. Set per-language by applyStrings() (i18n.js) via
+       LANG_META[lang].fontStack/lineHeightScale; unset languages get "inherit" (an invalid
+       font-family list entry, so the rule below silently no-ops) and scale 1 (a no-op). */
+    --lang-font-stack: inherit;
+    --lang-line-height-scale: 1;
   }
   *{box-sizing:border-box}
   html,body{margin:0}
   body{background:var(--paper);color:var(--ink);font:17px/1.55 var(--font-body);-webkit-font-smoothing:antialiased}
+  body{font-family:var(--lang-font-stack),var(--font-body);line-height:calc(1.55 * var(--lang-line-height-scale))}
+  /* CJK has no letter-casing and the masthead's tracked/uppercased chrome devices are a
+     Latin-typography convention — small-caps/letter-spacing/uppercase read as noise (or
+     worse, are simply ignored) on Chinese text, so :lang() neutralizes them site-wide. */
+  :lang(zh-Hans){letter-spacing:normal !important;text-transform:none !important}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px}
   a{color:var(--oxblood)}
   code{font:12px/1 ui-monospace,Menlo,monospace;background:#efe8d8;padding:1px 5px;border-radius:4px}
@@ -298,7 +308,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=bf264f62"></script>
+<script src="i18n.js?v=943805da"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
@@ -336,6 +346,8 @@
     <div class="lang-switcher" id="langSwitcher" role="group" aria-label="Language / Idioma">
       <button class="lang-btn" data-lang="en" aria-pressed="true"><span lang="en">English</span></button>
       <button class="lang-btn" data-lang="es" aria-pressed="false"><span lang="es">Español</span></button>
+      <button class="lang-btn" data-lang="zh-Hans" aria-pressed="false"><span lang="zh-Hans">中文（简体）</span></button>
+      <button class="lang-btn" data-lang="ru" aria-pressed="false"><span lang="ru">Русский</span></button>
     </div>
     <div id="langNotice" class="lang-notice" hidden></div>
     <div class="cr-rule cr-rule--bottom"></div>
@@ -778,9 +790,9 @@ function deadlineTag(due){
 function eventTag(ev){
   const dl = daysLeft(ev);
   if(dl === null || dl < 0) return "";
-  if(dl <= 3) return ` <span class="tag hot">${dl===0?t("event_today"):t("event_in_n_days",{n:dl,s:dl===1?"":"s"})}</span>`;
-  if(dl <= 14) return ` <span class="tag soon">${t("event_in_n_days",{n:dl,s:"s"})}</span>`;
-  return ` <span class="tag open">${t("event_in_n_days",{n:dl,s:"s"})}</span>`;
+  if(dl <= 3) return ` <span class="tag hot">${dl===0?t("event_today"):tn("event_in_n_days",dl)}</span>`;
+  if(dl <= 14) return ` <span class="tag soon">${tn("event_in_n_days",dl)}</span>`;
+  return ` <span class="tag open">${tn("event_in_n_days",dl)}</span>`;
 }
 
 /* ===================== TABS ===================== */
@@ -1088,8 +1100,8 @@ function buildApply(r){
   let due = "";
   if(r.due_date){
     const tag = dl === null ? "" : (dl < 0 ? `<span class="tag closed">${t("closed_tag")}</span>` :
-      dl <= 3 ? `<span class="tag hot">${dl===0?t("due_today_tag"):(dl===1?t("days_left_1"):t("days_left_n",{n:dl}))}</span>` :
-      dl <= 14 ? `<span class="tag soon">${dl===1?t("days_left_1"):t("days_left_n",{n:dl})}</span>` : `<span class="tag open">${t("days_left_n",{n:dl})}</span>`);
+      dl <= 3 ? `<span class="tag hot">${dl===0?t("due_today_tag"):tn("days_left",dl)}</span>` :
+      dl <= 14 ? `<span class="tag soon">${tn("days_left",dl)}</span>` : `<span class="tag open">${tn("days_left",dl)}</span>`);
     due = `<div class="due"><span class="d">${t("deadline_respond_by",{date:fdt(r.due_date)})}</span>${tag}</div>`;
   }
   let acts = '<div class="actions">';
@@ -1512,7 +1524,7 @@ async function pSearchPeople(kw, stale){
   if(!pRows.length){ $("#plist").innerHTML = '<div class="empty">' + t("no_personnel") + '</div>'; return; }
   $("#plist").innerHTML = pRows.map((p,i)=>`<div class="row" data-i="${i}" tabindex="0" role="button">
       <p class="rtitle">${enTitle(p.name)}</p>
-      <p class="rmeta"><span class="ragency" lang="en">${p.agency}</span> · ${t("n_notices_meta",{n:p.actions.length,s:p.actions.length>1?"s":""})}</p>
+      <p class="rmeta"><span class="ragency" lang="en">${p.agency}</span> · ${tn("n_notices_meta",p.actions.length)}</p>
     </div>`).join("");
   document.querySelectorAll("#plist .row").forEach(el=>el.addEventListener("click",()=>pSelectPerson(+el.dataset.i, el)));
   document.querySelector("#plist .row")?.click();
@@ -2032,7 +2044,7 @@ async function aPreview(){
     <div class="ehead"><div class="efrom">CROL-List &lt;alerts@crol-list.org&gt; → ${dest}</div>
     <div class="esubj">${t("your_digest_subject",{desc:aDescribe()})}</div></div>
     <div class="ebody">${body}
-      <div style="margin-top:12px;font:12px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted)">${t("digest_footer",{n:rows.length, s:rows.length===1?"":"s"})}</div>
+      <div style="margin-top:12px;font:12px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted)">${tn("digest_footer",rows.length)}</div>
     </div></div>`;
 }
 
@@ -3090,7 +3102,6 @@ function rerenderForLang(){
 (function(){
   function initLangSwitcher(){
     const btns = document.querySelectorAll(".lang-btn");
-    const notice = document.getElementById("langNotice");
     const saved = window.LANG || "en";
 
     // Reflect saved preference on buttons
@@ -3098,29 +3109,25 @@ function rerenderForLang(){
       const active = b.dataset.lang === saved;
       b.setAttribute("aria-pressed", active ? "true" : "false");
     });
-    if(saved !== "en" && notice){
-      notice.textContent = t("notices_in_english_note");
-      notice.hidden = false;
-    }
+    // applyStrings() also runs updateLangNotice() (i18n.js), which shows the "notices stay
+    // English" + machine-translation-disclosure banner — no manual #langNotice wiring here.
     if(window.applyStrings) applyStrings();
 
     btns.forEach(function(btn){
       btn.addEventListener("click", function(){
         const lang = btn.dataset.lang;
         const changed = lang !== window.LANG;
-        setLang(lang);
+        // rerenderForLang() repaints DYNAMICALLY-BUILT content (search results, today-strip,
+        // detail panel — all t()/tn() template literals, invisible to applyStrings()'s
+        // [data-i18n] walk). setLang()'s second param re-runs it once a lazily-loaded
+        // shipping language's dictionary finishes fetching (it may not be loaded yet on the
+        // FIRST switch to a given language this session) — without this, content painted
+        // before the network request resolves would stay in English forever.
+        setLang(lang, changed ? rerenderForLang : null);
         if(changed) rerenderForLang();
         btns.forEach(function(b){
           b.setAttribute("aria-pressed", b.dataset.lang === lang ? "true" : "false");
         });
-        if(notice){
-          if(lang !== "en"){
-            notice.textContent = t("notices_in_english_note");
-            notice.hidden = false;
-          } else {
-            notice.hidden = true;
-          }
-        }
       });
     });
   }
