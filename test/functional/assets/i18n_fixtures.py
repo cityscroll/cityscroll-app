@@ -13,6 +13,7 @@ guard can allow them. section_name is deliberately NOT exported: section names a
 rendered as navigation chrome (the Today strip, agency profiles) and MUST translate.
 """
 import json
+import re
 from datetime import datetime, timedelta
 from urllib.parse import urlparse, parse_qs
 
@@ -64,6 +65,22 @@ AWARD_ROW = {
     "pin": "8262026EP0007", "contract_amount": "12500000", "vendor_name": "EXAMPLE BUILDERS INC",
     "selection_method_description": "Competitive Sealed Bids",
     "additional_description_1": "Award of contract for rehabilitation of water tunnel shafts.",
+}
+# Dedicated #notice/ permalink fixture (crol-hotfix3-m8): a Solicitation with every
+# how-to-respond field populated (contact/address/email, like RFP_OPEN) so the guard's
+# deep-link walk exercises the full glance + action-button + how-to-respond chrome. due_date
+# is deliberately >14 days out -- deadlineTag()'s dl<=14 branch spells single digits as
+# hardcoded English words via _spellNum() (a separate, pre-existing i18n gap, out of this
+# hotfix's class-focused scope) which would make this fixture fail the guard for an
+# unrelated reason if due_date landed inside that window.
+NOTICE_PERMALINK_ROW = {
+    "request_id": "20260701099", "start_date": _iso(-1), "agency_name": "Housing Preservation and Development",
+    "type_of_notice_description": "Solicitation", "category_description": "Construction Services",
+    "short_title": "REHABILITATION OF PUBLIC RESTROOMS, CITYWIDE",
+    "pin": "8502026HP0099", "due_date": _iso(25), "address_to_request": "100 Gold Street, New York, NY 10038",
+    "contact_name": "Jane Roe", "contact_phone": "(212) 555-0100", "email": "rfp@hpd.nyc.gov",
+    "selection_method_description": "Competitive Sealed Proposals",
+    "additional_description_1": "The Department of Housing Preservation and Development requests proposals for the rehabilitation of public restrooms citywide.",
 }
 CHAIN_ROWS = [
     dict(RFP_OPEN),
@@ -142,7 +159,7 @@ FORECAST_ROWS = {"forecasts": [
 
 # Every fixture string value that may surface in the UI as DATA (legitimately English).
 # section_name is intentionally omitted — sections render as chrome and must translate.
-_DATA_ROWS = ([RFP_OPEN, RFP_OPEN_2, AWARD_ROW, HEARING_ROW] + CHAIN_ROWS + PROPERTY_ROWS
+_DATA_ROWS = ([RFP_OPEN, RFP_OPEN_2, AWARD_ROW, HEARING_ROW, NOTICE_PERMALINK_ROW] + CHAIN_ROWS + PROPERTY_ROWS
               + RULES_ROWS + MEETINGS_ROWS + ZAP_ROWS + PAY_ROLES + CSL_ROLES
               + AGENCIES_TODAY + METHOD_FACET + FORECAST_ROWS["forecasts"])
 _DATA_FIELDS_EXCLUDED = {"section_name"}
@@ -185,6 +202,13 @@ def _soda_response(url):
         return [{"t": "1200000"}]
     if sel == "start_date,due_date":
         return []  # agencyNorms ad-window sample: too small → no flag
+    if "request_id='" in where:
+        m = re.search(r"request_id='([^']*)'", where)
+        rid = m.group(1) if m else None
+        for row in (RFP_OPEN, RFP_OPEN_2, AWARD_ROW, NOTICE_PERMALINK_ROW):
+            if row.get("request_id") == rid:
+                return [row]
+        return []
     if "pin='" in where:
         return CHAIN_ROWS
     if "section_name='Public Hearings and Meetings'" in where:
