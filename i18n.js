@@ -509,6 +509,7 @@ const STRINGS = {
     // Investigation workspace (2026-07-13 hotfix 2: localStorage-gated panel shipped English-only)
     inv_ws_heading: "Investigation workspace · stored only in this browser",
     inv_default_name: "My investigation",
+    inv_name_aria: "Investigation name",
     inv_pinned_meta: "{n} pinned item{s} · started {date}",
     inv_empty: "Nothing pinned yet — use the Pin button on any notice, vendor, agency, or matter page.",
     inv_share_btn: "Share (read-only link)",
@@ -1180,6 +1181,7 @@ const STRINGS = {
     // Investigation workspace (2026-07-13 hotfix 2)
     inv_ws_heading: "Espacio de investigación · guardado solo en este navegador",
     inv_default_name: "Mi investigación",
+    inv_name_aria: "Nombre de la investigación",
     inv_pinned_meta: "{n} elemento{s} fijado{s} · iniciada el {date}",
     inv_empty: "Aún no hay nada fijado — use el botón Fijar en cualquier página de aviso, proveedor, agencia o expediente.",
     inv_share_btn: "Compartir (enlace de solo lectura)",
