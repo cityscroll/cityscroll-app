@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "80eb2e3c",
-  "zh-Hans": "a949190c",
-  ru: "e1606a67",
-  bn: "42501ba1",
-  ht: "9a3a4d24",
-  ko: "aaf1a4cf",
-  fr: "1895c87a",
-  pl: "90b23ece",
-  ar: "df2923a5",
-  ur: "dec91931",
+  es: "eced72cf",
+  "zh-Hans": "9b00ce68",
+  ru: "61096775",
+  bn: "fe38b7a2",
+  ht: "d09bc231",
+  ko: "e64e7e7f",
+  fr: "db3f342c",
+  pl: "243b8870",
+  ar: "12502276",
+  ur: "0a099f02",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -366,6 +366,9 @@ const STRINGS = {
     footer_changelog:  "Changelog",
     footer_stats:      "Stats",
 
+    // Front-page masthead
+    site_tagline: "Track NYC contracts, rezonings, and hearings — in plain English.",
+
     // Skip link
     skip_to_content: "Skip to content",
 
@@ -400,7 +403,7 @@ const STRINGS = {
     // template literals bypassed the dictionary; every builder now routes here) ----
 
     // Today strip
-    today_summary: "<b>{n}</b> notices from <b>{a}</b> agencies",
+    today_summary: "<b>{n}</b> notices today, from <b>{a}</b> agencies",
     due_on: "due {date}",
     untitled: "(untitled)",
     untitled_notice: "(untitled notice)",

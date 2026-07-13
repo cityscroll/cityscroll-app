@@ -212,7 +212,7 @@ def regression_fixtures(page, lang, strings, violations):
             violations.append({"view": f"REGRESSION-FIXTURE ({name})", "sel": "-",
                                "text": actual.replace("\n", " ")[:120], "kind": "fixture",
                                "english_words": [f"expected substring {must_contain!r}"]})
-    pin("hotfix-1 bug a: today-strip summary", page.locator("#tbig").inner_text(), "avisos de")
+    pin("hotfix-1 bug a: today-strip summary", page.locator("#tbig").inner_text(), "avisos hoy")
     pin("hotfix-1 bug b: section names translate", page.locator("#tcounts").inner_text(), "Adquisiciones")
     pin("hotfix-1: deadline tags translate", page.locator("#list").first.inner_text(), "cierra")
     pin("hotfix-2: diacritic 'Mi investigación'",
