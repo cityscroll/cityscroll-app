@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Data · CROL-List</title>
 <meta name="description" content="The City Record dataset at a glance: what gets published, by whom, for how much — live aggregates straight from NYC Open Data, honestly labeled.">
-<script src="i18n.js?v=14c58f59"></script>
+<script src="i18n.js?v=bf264f62"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
@@ -81,25 +81,25 @@
 </header>
 
 <main id="main" tabindex="-1">
-<p class="lede" data-i18n-html="data_p_lede_html">The City Record dataset, at a glance — live aggregates queried straight from
-<a href="https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx">NYC Open Data</a>
-by your browser, nothing cached server-side. Numbers here follow the
-<a href="about.html#data">honesty rules</a>: statistics stay within their section, apparent
-data-entry errors (amounts ≥&nbsp;$10B) are excluded, and placeholder deadlines aren't counted
-as real.</p>
+<p class="lede" data-i18n-html="data_p_lede_html">The City Record dataset at a glance. Your browser pulls live totals from
+<a href="https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx">NYC Open Data</a>.
+Nothing is saved on the server. The numbers follow the
+<a href="about.html#data">honesty rules</a>. Stats stay in their own section. Likely
+data-entry errors are excluded — amounts of $10B or more. Placeholder deadlines
+aren't counted as real.</p>
 
-<h2 data-i18n-html="data_h_sections_html">What the record actually contains <span class="note">(all time, by section)</span></h2>
+<h2 data-i18n-html="data_h_sections_html">What the record really shows <span class="note">(all time, by section)</span></h2>
 <p class="note" data-i18n="data_note_sections_body">Most of the City Record is paperwork about civil-service jobs. The notices that matter to the public are only a small part of it. That is why every number on this site is shown per section.</p>
 <div class="bars" id="sections"><div class="loading" data-i18n="data_loading_counting">Counting 1M+ notices…</div></div>
 
-<h2 data-i18n-html="data_h_volume_html">Publication volume <span class="note">(last 12 months)</span></h2>
+<h2 data-i18n-html="data_h_volume_html">How many were published <span class="note">(last 12 months)</span></h2>
 <div class="bars" id="volume"><div class="loading" data-i18n="loading_data">Loading…</div></div>
 
 <h2 data-i18n-html="data_h_procmix_html">Procurement mix <span class="note">(last 12 months, by notice type)</span></h2>
 <div class="bars" id="procmix"><div class="loading" data-i18n="loading_data">Loading…</div></div>
 
 <h2 data-i18n-html="data_h_agencies_html">Top agencies by awarded dollars <span class="note">(last 12 months, cleaned)</span></h2>
-<p class="note" data-i18n-html="data_note_agencies_html">"Cleaned" = amounts over $10B excluded as data-entry errors; see
+<p class="note" data-i18n-html="data_note_agencies_html">"Cleaned" means we took out amounts over $10B. We think those are data-entry errors. See
 <a href="about.html#data">the underlying data</a>.</p>
 <div class="bars" id="agencies"><div class="loading" data-i18n="loading_data">Loading…</div></div>
 
@@ -109,7 +109,7 @@ as real.</p>
 
 </main>
 <footer class="foot" data-i18n-html="data_foot_html">
-  Every number computes live in your browser from the public dataset — reload for fresh data.
+  Every number is worked out live in your browser from the public dataset. Reload the page for new data.
   Methodology: <a href="about.html#data">about → the underlying data</a> ·
   <a href="stats.html">site usage stats</a> · <a href="changelog.html">changelog</a>
 </footer>
