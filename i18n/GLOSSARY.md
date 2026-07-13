@@ -11,18 +11,18 @@ correct" alternative — consistency with what an LEP reader sees on official pa
 correctness. Where no official City translation exists, `glossary.json` records the judgment call
 and the reasoning, so a later reviewer can revisit it with actual sourcing.
 
-| Term | en | es | zh-Hans | ru |
-|---|---|---|---|---|
-| RFP | Request for Proposals (RFP) | Solicitud de Propuestas (RFP) | 征求建议书 (RFP) | Запрос предложений (RFP) |
-| Award | award | adjudicación | 中标（授予合同） | присуждение контракта |
-| Procurement | Procurement | Adquisiciones | 采购 | Закупки |
-| Rezoning | rezoning | rezonificación | 重新分区 | изменение зонирования |
-| City Record (chrome) | The City Record | Registro Municipal | 市政公报 | Городской вестник |
-| PIN | PIN | PIN | PIN | PIN |
-| Community Board | Community Board | Junta Comunitaria | 社区委员会 | Общественный совет |
-| Upset price | upset price | precio mínimo | 保留价 | минимальная цена |
-| Borough/place names | Brooklyn, Gowanus, 79 Rivington, … | unchanged (English) | unchanged (English) | unchanged (English) |
-| Mandatory Inclusionary Housing | Mandatory Inclusionary Housing | Vivienda Inclusiva Obligatoria (MIH) | 强制性包容性住房 (MIH) | Обязательное инклюзивное жильё (MIH) |
+| Term | en | es | zh-Hans | ru | bn | ht | ko | fr | pl |
+|---|---|---|---|---|---|---|---|---|---|
+| RFP | Request for Proposals (RFP) | Solicitud de Propuestas (RFP) | 征求建议书 (RFP) | Запрос предложений (RFP) | প্রস্তাবের অনুরোধ (RFP) | Demann Pwopozisyon (RFP) | 제안요청서 (RFP) | Demande de propositions (RFP) | Zapytanie ofertowe (RFP) |
+| Award | award | adjudicación | 中标（授予合同） | присуждение контракта | প্রদান | akòdman | 낙찰 | attribution | przyznanie |
+| Procurement | Procurement | Adquisiciones | 采购 | Закупки | ক্রয় | Akizisyon | 조달 | Approvisionnement | Zamówienia |
+| Rezoning | rezoning | rezonificación | 重新分区 | изменение зонирования | অঞ্চল পুনর্বিন্যাস | chanjman zonaj | 구역 재지정 | rezonage | zmiana stref |
+| City Record (chrome) | The City Record | Registro Municipal | 市政公报 | Городской вестник | নগর নথি | Rejis Minisipal | 시정 기록부 | Registre municipal | Rejestr Miejski |
+| PIN | PIN | PIN | PIN | PIN | PIN | PIN | PIN | PIN | PIN |
+| Community Board | Community Board | Junta Comunitaria | 社区委员会 | Общественный совет | কমিউনিটি বোর্ড | Konsèy Kominotè | 지역위원회 | Conseil communautaire | Rada Dzielnicowa |
+| Upset price | upset price | precio mínimo | 保留价 | минимальная цена | সর্বনিম্ন মূল্য | pri minimòm | 최저 가격 | prix minimum | cena minimalna |
+| Borough/place names | Brooklyn, Gowanus, 79 Rivington, … | unchanged (English) | unchanged (English) | unchanged (English) | unchanged (English) | unchanged (English) | unchanged (English) | unchanged (English) | unchanged (English) |
+| Mandatory Inclusionary Housing | Mandatory Inclusionary Housing | Vivienda Inclusiva Obligatoria (MIH) | 强制性包容性住房 (MIH) | Обязательное инклюзивное жильё (MIH) | বাধ্যতামূলক অন্তর্ভুক্তিমূলক আবাসন (MIH) | Lojman Enklizif Obligatwa (MIH) | 의무 포용주택 (MIH) | Logement inclusif obligatoire (MIH) | Obowiązkowe Mieszkalnictwo Inkluzywne (MIH) |
 
 See `glossary.json` for per-term sourcing and notes (why a term was chosen, and which strings it
 governs). `test/standards/i18n_glossary.py` enforces: (1) every `{placeholder}` and inline HTML
@@ -34,6 +34,7 @@ that language's dictionary.
 
 Per-language review state lives in each dictionary file's header comment (`i18n/lang/<lang>.js`),
 not here — see that file for `review_state` / `reviewed_by` / `reviewed_date`. As of wave 8, es,
-zh-Hans, and ru are all `machine-drafted` (glossary-pinned, placeholder-verified, **not yet**
-native-reviewed) — the UI shows a machine-translation disclosure banner for any language in that
-state until a native reviewer signs off and the frontmatter is updated to `native-reviewed`.
+zh-Hans, ru, bn, ht, ko, fr, and pl are all `machine-drafted` (glossary-pinned, placeholder-
+verified, **not yet** native-reviewed) — the UI shows a machine-translation disclosure banner for
+any language in that state until a native reviewer signs off and the frontmatter is updated to
+`native-reviewed`.
