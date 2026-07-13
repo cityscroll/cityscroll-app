@@ -50,10 +50,16 @@ test("vendorStem: strips chained suffixes, keeps short names intact", () => {
 });
 
 // ---------- property explorer (round1 #9) ----------
+// dollarBadge routes its labels through t() (2026-07-13 i18n hotfix) — evaluate the REAL
+// dictionary from i18n.js so the assertions stay pinned to the shipped English strings.
+const i18nSrc = readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "i18n.js"), "utf8");
+const realT = new Function("window", i18nSrc + "\nreturn window.t;")({});
+
 const propEnv = new Function(
+  "t",
   extractFn("cleanText") + extractFn("daysLeft") + extractFn("classifyAsset") + extractFn("propStage") + extractFn("dollarBadge")
   + "return { classifyAsset, propStage, dollarBadge };"
-)();
+)(realT);
 
 test("classifyAsset: distinctive vocabularies route to the right bucket", () => {
   const c = (title, desc="") => propEnv.classifyAsset({ short_title: title, additional_description_1: desc });
