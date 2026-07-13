@@ -6,7 +6,8 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 
 - **Split-file architecture, not one monolith.** `i18n.js` is now the CORE file only: LANG_META,
   `SHIPPING_LANGS` (the one declaration selector/guard/parity-gate all read — `["es", "zh-Hans",
-  "ru"]` as of wave 8), `LANG_FILE_HASHES`, `I18N_PROVENANCE`, the runtime (`t`/`tn`/`tSection`/
+  "ru", "bn", "ht", "ko", "fr", "pl"]` as of wave 8 batch 2; ar/ur (RTL) remain LANG_META stubs,
+  not yet shipping), `LANG_FILE_HASHES`, `I18N_PROVENANCE`, the runtime (`t`/`tn`/`tSection`/
   `applyStrings`/`setLang`/`ensureLangLoaded`), and the **`en` dictionary inline** (en is the
   fallback, must load with zero network round-trips). Every other shipping language's
   `STRINGS`/`SECTION_I18N` table lives in its own `i18n/lang/<lang>.js`, loaded on demand: a
@@ -40,8 +41,9 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - **Machine-translation disclosure**: `I18N_PROVENANCE[lang].state` (`machine-drafted` |
   `glossary-checked` | `native-reviewed`) drives `updateLangNotice()` (i18n.js), which shows
   the `mt_disclaimer` string alongside the existing "notices stay English" note for any
-  non-`native-reviewed` language — es, zh-Hans, and ru are ALL `machine-drafted` today
-  (formalizing what was previously an undocumented, unreviewed state for es too).
+  non-`native-reviewed` language — all eight shipping languages (es, zh-Hans, ru, bn, ht, ko,
+  fr, pl) are `machine-drafted` today (formalizing what was previously an undocumented,
+  unreviewed state for es too).
 - **Every page loads `i18n.js` and carries the shared header language switcher** (`#langSwitcher
   .lang-btn`) — index.html plus about/data/stats/api/changelog.html. `crol_lang` in localStorage
   is one preference honored by every page on load (i18n.js's own bottom IIFE sets `window.LANG`
@@ -57,10 +59,25 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   full lens-driving one; approved translations are shared across pages automatically since
   `dict_fragments()` scans the whole `STRINGS[lang]` table (which the guard gets by literally
   `require()`-ing i18n.js in Node — the split-file Node shim above is load-bearing for this).
-  Non-Latin-script languages (zh-Hans, ru) are structurally exempt from the English-word-list
-  collision risk the guard's curation step guards against (`test/standards/english_words.py`'s
-  `ENGLISH_WORDS` set only ever matches ASCII `[A-Za-z]` runs) — that curation stays load-bearing
-  for any future Latin-script addition (fr, ht, pl).
+  Non-Latin-script languages (zh-Hans, ru, bn, ko) are structurally exempt from the
+  English-word-list collision risk the guard's curation step guards against
+  (`test/standards/english_words.py`'s `ENGLISH_WORDS` set only ever matches ASCII `[A-Za-z]`
+  runs) — that curation stays load-bearing for any Latin-script addition (fr, ht, pl shipped in
+  wave 8 batch 2; the collision risk is real, not theoretical — French's own glossary pin for
+  "Procurement" was originally "Marchés publics", which the guard's `[A-Za-z]+` word matcher
+  reads as bare `March` once the accented `é` breaks the run, colliding with the curated
+  month-name entry; re-pinned to "Approvisionnement" instead of extending the allowlist, since
+  a different equally-correct term was available with no collision — prefer that over widening
+  the curated list when a clean alternative exists).
+  **Sharp edge — `SECTION_I18N` isn't in the guard's "approved fragments" pool.** The runtime
+  guard's self-maintaining "approved translations" bucket (`dict_fragments()`) only reads
+  `window.STRINGS`, not `window.SECTION_I18N` — so a short, standalone `SECTION_I18N[lang]`
+  label (a City Record section name rendered alone in a chart/legend, with no surrounding
+  prose to self-match against) gets ZERO benefit from that self-approval mechanism and must
+  independently avoid every `ENGLISH_WORDS` collision on its own. Ordinary `STRINGS[lang]`
+  prose effectively self-approves (the rendered text always substring-matches its own source
+  fragment), which is why `SECTION_I18N` values are the highest-collision-risk surface in the
+  whole catalog for a new Latin-script language.
 - **Sharp edge — `t` shadowing:** never name a function parameter or local `t`
   (`pinBtn(t,…)` and `copyText(t,…)` both silently broke rendering, 2026-07-13 hotfixes).
 - **Changing i18n.js (core) requires a `?v=` hash bump** on EVERY page's script tag
