@@ -18,14 +18,20 @@
 // English guard (test/functional/13_stray_english.py) all read language lists from.
 //
 // Per-language dictionary files carry their own review-state frontmatter (a JS comment +
-// window.I18N_PROVENANCE entry — see I18N_PROVENANCE below and i18n/GLOSSARY.md) — all eight
-// shipping languages (es, zh-Hans, ru, bn, ht, ko, fr, pl) are `machine-drafted` (glossary-
-// pinned, placeholder-verified, not yet native-reviewed); the UI shows a disclosure banner
-// (`updateLangNotice()`) for any language in that state, alongside the notices-stay-English note.
+// window.I18N_PROVENANCE entry — see I18N_PROVENANCE below and i18n/GLOSSARY.md) — all ten
+// shipping languages (es, zh-Hans, ru, bn, ht, ko, fr, pl, ar, ur) are `machine-drafted`
+// (glossary-pinned, placeholder-verified, not yet native-reviewed); the UI shows a disclosure
+// banner (`updateLangNotice()`) for any language in that state, alongside the notices-stay-
+// English note.
 //
 // fr-HT: Haitian Creole has no Intl locale; date/number formatting uses fr-HT.
-// RTL note: Arabic (ar) and Urdu (ur) require dir="rtl" — scaffolded here as future work;
-// use CSS logical properties in any NEW css (not retrofitted from existing physical properties).
+// RTL wave (w8-03): Arabic (ar) and Urdu (ur) ship dir="rtl" chrome — logical CSS properties
+// throughout index.html (retrofit, not just new code), bidi isolation on English data islands
+// (see the enTitle()/lang="en" dir="ltr" pairing in index.html), and a pinned Western-digit
+// policy (`intlDate: "ar-u-nu-latn"` / `"ur-u-nu-latn"` below) — MOIA's own Arabic/Urdu print
+// materials use Western digits, and the `-u-nu-latn` Unicode locale extension pins that
+// regardless of a browser's default numbering system for the bare "ar"/"ur" macrolocale
+// (which varies — do not remove the extension even if it looks redundant in one browser).
 // Bengali note: bn uses 2-2-3 digit grouping; Intl.NumberFormat('bn') handles this automatically.
 
 // Supported language codes: BCP 47 locale, native label, layout direction, Intl date locale.
@@ -47,8 +53,12 @@ const LANG_META = {
               lineHeightScale: 1.15 },
   "zh-Hant":{ locale: "zh-Hant", label: "中文（繁體）",      dir: "ltr", intlDate: "zh-Hant"  },
   ko:       { locale: "ko",      label: "한국어",            dir: "ltr", intlDate: "ko"       },
-  ar:       { locale: "ar",      label: "العربية",          dir: "rtl", intlDate: "ar"       },
-  ur:       { locale: "ur",      label: "اردو",             dir: "rtl", intlDate: "ur"       },
+  ar:       { locale: "ar",      label: "العربية",          dir: "rtl", intlDate: "ar-u-nu-latn",
+              fontStack: "'Geeza Pro','Noto Naskh Arabic','Noto Sans Arabic',sans-serif",
+              lineHeightScale: 1.3 },
+  ur:       { locale: "ur",      label: "اردو",             dir: "rtl", intlDate: "ur-u-nu-latn",
+              fontStack: "'Noto Nastaliq Urdu','Noto Nastaliq Urdu Draft','Geeza Pro','Noto Naskh Arabic',sans-serif",
+              lineHeightScale: 1.9 },
   pl:       { locale: "pl",      label: "Polski",           dir: "ltr", intlDate: "pl"       },
 };
 const SUPPORTED_LANGS = Object.keys(LANG_META);
@@ -57,8 +67,10 @@ const SUPPORTED_LANGS = Object.keys(LANG_META);
 // in LANG_META is a stub (empty STRINGS[lang] === {}) reserved for a future wave. This is the
 // ONE declaration i18n_keys.py's REQUIRED_FULL, the selector buttons, and the CI guard matrix
 // all derive from — add a language here only after its dictionary + guard activation ship.
-// w8 batch 2: bn/ht/ko/fr/pl join es/zh-Hans/ru. ar/ur (RTL) are explicitly out of scope here.
-const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl"];
+// w8 batch 2: bn/ht/ko/fr/pl join es/zh-Hans/ru. w8-03: ar/ur (RTL) join the roster too — see
+// the RTL wave note above for the dir/digit-policy specifics that make these two different
+// from every LTR language before them. All ten LL30 languages now ship.
+const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar", "ur"];
 
 // Per-file cache-skew hashes (w8-01 AC #1): sha256(i18n/lang/<lang>.js)[:8], checked by
 // test/standards/i18n_refs.py. Changing ONE language's file changes only its own hash here —
@@ -73,6 +85,8 @@ const LANG_FILE_HASHES = {
   ko: "aaf1a4cf",
   fr: "1895c87a",
   pl: "90b23ece",
+  ar: "df2923a5",
+  ur: "dec91931",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -89,6 +103,8 @@ const I18N_PROVENANCE = {
   ko: { state: "machine-drafted", reviewed_by: null, reviewed_date: null },
   fr: { state: "machine-drafted", reviewed_by: null, reviewed_date: null },
   pl: { state: "machine-drafted", reviewed_by: null, reviewed_date: null },
+  ar: { state: "machine-drafted", reviewed_by: null, reviewed_date: null },
+  ur: { state: "machine-drafted", reviewed_by: null, reviewed_date: null },
 };
 
 // Full string table — en + es. Keys cover all translatable UI chrome in index.html.
@@ -795,10 +811,10 @@ const STRINGS = {
   // Shipping languages: full dictionaries live in i18n/lang/<lang>.js (loaded on
   // demand — see the file header above). Populated at runtime via
   // Object.assign(window.STRINGS.<lang>, {...}); stays {} here until then.
-  es: {}, ru: {}, "zh-Hans": {}, bn: {}, ht: {}, ko: {}, fr: {}, pl: {},
+  es: {}, ru: {}, "zh-Hans": {}, bn: {}, ht: {}, ko: {}, fr: {}, pl: {}, ar: {}, ur: {},
 
-  // Stubs for remaining LL30 languages — translations pending (RTL wave)
-  "zh-Hant": {}, ar: {}, ur: {},
+  // Stub for the one remaining LL30 language — translation pending (a future wave)
+  "zh-Hant": {},
 };
 
 // City Record section names arrive as DATA VALUES (section_name in the open dataset) but are

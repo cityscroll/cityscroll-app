@@ -11,6 +11,8 @@
       "ko": "제안요청서 (RFP)",
       "fr": "Demande de propositions (RFP)",
       "pl": "Zapytanie ofertowe (RFP)",
+      "ar": "طلب تقديم عروض (RFP)",
+      "ur": "درخواستِ تجاویز (RFP)",
       "source": "es: NYC MOCS/PASSPort public-facing Spanish procurement materials use \"Solicitud de Propuestas\"; all other shipping languages: no official City translation found — chose the standard local government-procurement term and kept the English acronym parenthetical, matching the existing es convention of keeping the acronym visible on first use."
     },
     "award": {
@@ -23,6 +25,8 @@
       "ko": "낙찰",
       "fr": "attribution",
       "pl": "przyznanie",
+      "ar": "ترسية",
+      "ur": "ایوارڈ",
       "note": "Used as both noun (\"an award\") and verb (\"awarded to\") in en; es collapses both onto \"adjudicación\"/\"adjudicado\". Every shipping-language dictionary must do the same collapse — do not introduce a second synonym for the verb form."
     },
     "procurement": {
@@ -35,6 +39,8 @@
       "ko": "조달",
       "fr": "Approvisionnement",
       "pl": "Zamówienia",
+      "ar": "المشتريات",
+      "ur": "خریداری",
       "source": "es: chosen by judgment call in the wave-6 hotfix (i18n.js SECTION_I18N.es); all other shipping languages: no official City translation found — mirrored the same judgment-call posture, using the standard civic-procurement term in each language. fr originally pinned \"Marchés publics\", but that renders as bare ASCII \"March\" once the accent on \"Marchés\" is stripped by the stray-English guard's [A-Za-z]+ word matcher — a literal collision with the curated month-name entry in test/standards/english_words.py (see that file's own \"Latin-script addition\" warning). Re-pinned to \"Approvisionnement\", which has no such collision and is an equally standard francophone government-procurement term."
     },
     "rezoning": {
@@ -47,6 +53,8 @@
       "ko": "구역 재지정",
       "fr": "rezonage",
       "pl": "zmiana stref",
+      "ar": "إعادة تقسيم المناطق",
+      "ur": "دوبارہ زوننگ",
       "note": "ULURP (Uniform Land Use Review Procedure) itself is never expanded/translated inline in any shipping language today — it stays an English acronym in body copy, same as PIN. This glossary entry covers the plain-language word \"rezoning\", not the ULURP acronym."
     },
     "city_record": {
@@ -59,7 +67,9 @@
       "ko": "시정 기록부 / The City Record",
       "fr": "Registre municipal / The City Record",
       "pl": "Rejestr Miejski / The City Record",
-      "note": "The proper noun \"The City Record\" itself is never fully replaced — es keeps it as a citable link text (e.g. about.html) while using \"Registro Municipal\" for descriptive chrome (footer_lede, city_record_link). Every other shipping language follows the same split: descriptive chrome translates, the linked proper-noun citation keeps \"The City Record\"."
+      "ar": "السجل البلدي / The City Record",
+      "ur": "City Record (unchanged) / The City Record",
+      "note": "The proper noun \"The City Record\" itself is never fully replaced — es keeps it as a citable link text (e.g. about.html) while using \"Registro Municipal\" for descriptive chrome (footer_lede, city_record_link). Every other shipping language follows the same split: descriptive chrome translates, the linked proper-noun citation keeps \"The City Record\" — except ur, which keeps the English institutional name in Latin script even for descriptive chrome (South Asian civic-register Urdu commonly keeps such names untransliterated) rather than translating it, a deliberate per-language variance from the split pattern, not an oversight."
     },
     "pin": {
       "en": "PIN",
@@ -71,6 +81,8 @@
       "ko": "PIN",
       "fr": "PIN",
       "pl": "PIN",
+      "ar": "PIN",
+      "ur": "PIN",
       "note": "Procurement Identification Number. Kept as the untranslated acronym in every shipping language — es never expands or translates it, so none of the others do either."
     },
     "community_board": {
@@ -83,7 +95,9 @@
       "ko": "지역위원회",
       "fr": "Conseil communautaire",
       "pl": "Rada Dzielnicowa",
-      "source": "no official City translation found for the non-es shipping languages — chose the standard civic-body term in each language, mirroring es's \"Junta Comunitaria\"."
+      "ar": "مجلس مجتمعي",
+      "ur": "کمیونٹی بورڈ",
+      "source": "no official City translation found for the non-es shipping languages — chose the standard civic-body term in each language (ur transliterates rather than translates, a common register choice for this specific civic term in South Asian Urdu), mirroring es's \"Junta Comunitaria\"."
     },
     "upset_price": {
       "en": "upset price",
@@ -95,6 +109,8 @@
       "ko": "최저 가격",
       "fr": "prix minimum",
       "pl": "cena minimalna",
+      "ar": "السعر الأدنى",
+      "ur": "کم از کم قیمت",
       "note": "DCAS auction term for the minimum acceptable bid. es already renders it as a plain-language \"minimum price\" rather than a literal translation of \"upset\"; every other shipping language follows the same plain-language approach (reserve/minimum price), not a literal rendering."
     },
     "borough_names": {
@@ -107,7 +123,9 @@
       "ko": "Brooklyn / Queens / Manhattan / Bronx / Staten Island (unchanged)",
       "fr": "Brooklyn / Queens / Manhattan / Bronx / Staten Island (unchanged)",
       "pl": "Brooklyn / Queens / Manhattan / Bronx / Staten Island (unchanged)",
-      "note": "Borough and neighborhood proper nouns (Brooklyn, Gowanus, 79 Rivington, …) stay in English/Latin script in es today (see i18n.js sugg_land_0/1/2) even though some LL30 languages' NYC press sometimes uses exonyms or transliterations. Every shipping language follows the existing es precedent — proper nouns are not translated — for consistency with how the site already handles place names, not because exonyms don't exist."
+      "ar": "Brooklyn / Queens / Manhattan / Bronx / Staten Island (unchanged)",
+      "ur": "Brooklyn / Queens / Manhattan / Bronx / Staten Island (unchanged)",
+      "note": "Borough and neighborhood proper nouns (Brooklyn, Gowanus, 79 Rivington, …) stay in English/Latin script in es today (see i18n.js sugg_land_0/1/2) even though some LL30 languages' NYC press sometimes uses exonyms (e.g. Chinese-language press: 布鲁克林, 皇后区) or transliterations (e.g. Russian-language press: Бруклин, Куинс). Every shipping language follows the existing es precedent — proper nouns are not translated — for consistency with how the site already handles place names, not because exonyms/transliterations don't exist for any of these languages' press."
     },
     "mandatory_inclusionary_housing": {
       "en": "Mandatory Inclusionary Housing",
@@ -119,6 +137,8 @@
       "ko": "의무 포용주택 (MIH)",
       "fr": "Logement inclusif obligatoire (MIH)",
       "pl": "Obowiązkowe Mieszkalnictwo Inkluzywne (MIH)",
+      "ar": "الإسكان الشامل الإلزامي (MIH)",
+      "ur": "لازمی جامع رہائش (MIH)",
       "source": "no official City translation found for the non-es shipping languages — mirrored es's pattern of a descriptive translation plus the (MIH) acronym parenthetical."
     }
   }

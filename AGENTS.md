@@ -6,8 +6,9 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 
 - **Split-file architecture, not one monolith.** `i18n.js` is now the CORE file only: LANG_META,
   `SHIPPING_LANGS` (the one declaration selector/guard/parity-gate all read — `["es", "zh-Hans",
-  "ru", "bn", "ht", "ko", "fr", "pl"]` as of wave 8 batch 2; ar/ur (RTL) remain LANG_META stubs,
-  not yet shipping), `LANG_FILE_HASHES`, `I18N_PROVENANCE`, the runtime (`t`/`tn`/`tSection`/
+  "ru", "bn", "ht", "ko", "fr", "pl", "ar", "ur"]` as of wave 8 — all ten LL30 languages now
+  ship; only zh-Hant remains a LANG_META stub), `LANG_FILE_HASHES`, `I18N_PROVENANCE`, the
+  runtime (`t`/`tn`/`tSection`/
   `applyStrings`/`setLang`/`ensureLangLoaded`), and the **`en` dictionary inline** (en is the
   fallback, must load with zero network round-trips). Every other shipping language's
   `STRINGS`/`SECTION_I18N` table lives in its own `i18n/lang/<lang>.js`, loaded on demand: a
@@ -41,8 +42,8 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - **Machine-translation disclosure**: `I18N_PROVENANCE[lang].state` (`machine-drafted` |
   `glossary-checked` | `native-reviewed`) drives `updateLangNotice()` (i18n.js), which shows
   the `mt_disclaimer` string alongside the existing "notices stay English" note for any
-  non-`native-reviewed` language — all eight shipping languages (es, zh-Hans, ru, bn, ht, ko,
-  fr, pl) are `machine-drafted` today (formalizing what was previously an undocumented,
+  non-`native-reviewed` language — all ten shipping languages (es, zh-Hans, ru, bn, ht, ko,
+  fr, pl, ar, ur) are `machine-drafted` today (formalizing what was previously an undocumented,
   unreviewed state for es too).
 - **Every page loads `i18n.js` and carries the shared header language switcher** (`#langSwitcher
   .lang-btn`) — index.html plus about/data/stats/api/changelog.html. `crol_lang` in localStorage
@@ -59,7 +60,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   full lens-driving one; approved translations are shared across pages automatically since
   `dict_fragments()` scans the whole `STRINGS[lang]` table (which the guard gets by literally
   `require()`-ing i18n.js in Node — the split-file Node shim above is load-bearing for this).
-  Non-Latin-script languages (zh-Hans, ru, bn, ko) are structurally exempt from the
+  Non-Latin-script languages (zh-Hans, ru, bn, ko, ar, ur) are structurally exempt from the
   English-word-list collision risk the guard's curation step guards against
   (`test/standards/english_words.py`'s `ENGLISH_WORDS` set only ever matches ASCII `[A-Za-z]`
   runs) — that curation stays load-bearing for any Latin-script addition (fr, ht, pl shipped in
@@ -138,24 +139,80 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - Notice CONTENT stays English (official source) with a per-language disclaimer; chrome and
   derived UI text always translate. Full key parity across ALL `SHIPPING_LANGS` enforced by
   `i18n_keys.py` (reads the shipping list from i18n.js, checks each `i18n/lang/<lang>.js`).
-- **w8-06 (script rendering) shipped only the zh-Hans subset**: `LANG_META["zh-Hans"]` carries
-  `fontStack`/`lineHeightScale`, applied as `--lang-font-stack`/`--lang-line-height-scale` CSS
-  custom properties by `applyStrings()`; a page-level `:lang(zh-Hans){letter-spacing:normal
-  !important;text-transform:none !important}` rule neutralizes the masthead's Latin-typography
-  devices (small-caps, tracking, forced uppercase) site-wide, since CJK has no letter-casing.
-  ru needs no script-rendering changes (Cyrillic cases normally, tracking doesn't break
-  cursive joining the way it does for Arabic). Full CJK/Bengali/Arabic rendering spec
-  (RTL, Nastaliq, conjunct line-height) is still w8-06's remaining scope for later languages.
+- **w8-06 (script rendering) has shipped piecemeal, one language at a time, not as its own
+  card**: `LANG_META[lang].fontStack`/`lineHeightScale`, applied as `--lang-font-stack`/
+  `--lang-line-height-scale` CSS custom properties by `applyStrings()`, exist today for
+  zh-Hans, bn, ar, and ur; a page-level `:lang(zh-Hans),:lang(ko),:lang(bn),:lang(ar),
+  :lang(ur){letter-spacing:normal !important;text-transform:none !important}` rule
+  neutralizes the masthead's Latin-typography devices (small-caps, tracking, forced
+  uppercase) site-wide, since none of those scripts have letter-casing. ru/ht/fr/pl need no
+  script-rendering changes (Latin/Cyrillic case normally, tracking doesn't break cursive
+  joining the way it does for Arabic). ko needs the neutralization rule but no font stack
+  (system Hangul rendering is fine as-is). ar/ur need it for a stronger reason than CJK/
+  Bengali: letter-spacing doesn't just look wrong on Arabic script, it breaks the cursive
+  joining between letters outright. The full regression-tested script-rendering spec
+  (per-script joining/line-height screenshots, `test/functional/15_script_rendering.py`) is
+  still unwritten — this is all still ad hoc per-language additions, not that card's scope.
 - **Cross-gate tension, readable-or-else + non-English content**: readable-or-else's Flesch-
   Kincaid extractor (`extract_visible_text`) has no `lang`-attribute awareness — it feeds
-  ALL visible page text (including a page's own zh-Hans/ru language-switcher button labels)
-  through the English-only syllable/sentence heuristic. Adding a language's native-script
-  button label can therefore nudge a page's measured grade by a hair with zero actual change
-  to English readability (index.html's baseline moved 14.809 → 14.881 when the zh-Hans + ru
-  buttons were added) — same class of "known interaction, not a regression" as the ↗-icon
-  case below; the baseline entry needs a hand-edit (the tool's own `baseline` command refuses
-  to raise a value) with the reasoning recorded in the commit, not prose simplification to
-  compensate.
+  ALL visible page text (including a page's own language-switcher button labels, in every
+  shipping language's native script) through the English-only syllable/sentence heuristic.
+  Adding a language's native-script button label can therefore nudge a page's measured grade
+  by a hair with zero actual change to English readability (index.html's baseline moved
+  14.809 → 14.881 when zh-Hans/ru shipped, then → 15.02 when bn/ht/ko/fr/pl shipped, then →
+  15.04 when ar/ur shipped — about/data/stats/api/changelog moved by similar hairs each
+  round) — same class of "known interaction, not a regression" as the ↗-icon case below; the
+  baseline entry needs a hand-edit (the tool's own `baseline` command refuses to raise a
+  value) with the reasoning recorded in the commit, not
+  prose simplification to compensate.
+
+## RTL support (wave 8: ar + ur)
+
+- **Logical CSS properties, not a parallel RTL stylesheet.** index.html's ~15 physical
+  `left`/`right`/`margin-left`/`padding-left`/`border-left`/`text-align:left|right` declarations
+  were converted in place to `inline-start`/`inline-end`/`inset-inline-start`/logical
+  `border-*-radius` (e.g. `border-start-end-radius`) — the browser derives the physical side
+  from `dir` automatically, so there is no `[dir=rtl] { ... }` override stylesheet to keep in
+  sync. Any NEW physical left/right CSS added to index.html going forward is a regression;
+  `test/functional/15_rtl.py` spot-checks two of these (the `.skip` skip-link's mirrored
+  off-screen side, `.tag`'s mirrored margin) as a canary, not an exhaustive audit — grep for
+  `left:|right:|margin-left|padding-left|border-left|text-align:\s*(left|right)` before
+  merging further index.html CSS changes.
+- **Bidi isolation of English data islands.** Notice titles/agency names are English data
+  rendered inside RTL (ar/ur) chrome — `enTitle()` and every hand-written `lang="en"` span/
+  heading (`.ragency`, `h2.rolename`, the vendor-variants span) now pair `lang="en"` with
+  `dir="ltr"`. This isn't cosmetic: an explicit `dir` attribute gets `unicode-bidi: isolate`
+  for free from the browser's UA stylesheet (verified empirically, not assumed — see
+  `test/functional/15_rtl.py`'s bidi check), which is what actually stops a title's trailing
+  punctuation/numerals from reordering against the surrounding Arabic/Urdu text (WCAG 1.3.2).
+  `lang="en"` alone (the pre-existing wave-9 convention) does NOT isolate — don't drop the
+  `dir="ltr"` half of the pair when adding a new English-data span. The global `code{}` rule
+  also carries `unicode-bidi:isolate` for PIN/id snippets, which are always-English data too.
+- **Digit policy: Western (Latin) digits, pinned via the `-u-nu-latn` Unicode locale
+  extension** (`LANG_META.ar/ur.intlDate = "ar-u-nu-latn"` / `"ur-u-nu-latn"`), not the bare
+  `"ar"`/`"ur"` macrolocale — verified empirically that a bare locale's default numbering
+  system varies (Node's bundled ICU resolves plain `"ar"` to Latin digits already, but
+  `"ar-SA"`/`"ar-EG"` resolve to Arabic-Indic; don't assume a browser's ICU agrees with
+  Node's — the extension makes the choice explicit regardless). Matches NYC MOIA's own
+  Arabic/Urdu print materials, which use Western digits.
+- **Arrow-mirroring convention for ar/ur translations**: any directional glyph (`→`/`←`/`↗`)
+  in an English string is mirrored in the Arabic/Urdu translation, keeping the same
+  leading/trailing POSITION in the string but flipping the glyph — a trailing `→` (forward,
+  e.g. "Subscribe →") becomes a trailing `←`; a leading `←` (back) becomes a leading `→`; `↗`
+  becomes `↖`. This is a per-string translator judgment call (Unicode doesn't auto-mirror
+  arrow glyphs the way it does parentheses/brackets), not something a gate enforces — a
+  future translation fix should preserve this convention by hand.
+- **Selector placement stayed centered, not top-right/top-left** — the w8-04 design note
+  about USWDS's top-right/top-left RTL flip describes a header layout this site never
+  actually used (`#langSwitcher` is a centered flex row under the masthead); flex row order
+  already mirrors automatically under `dir=rtl` with zero extra CSS, so there was nothing to
+  flip. Each option still carries its own `lang`+`dir` (WCAG 3.1.2) regardless of container
+  layout.
+- **`test/functional/15_rtl.py`** (hermetic, joins the `i18n-guard` CI job) is the RTL-specific
+  gate: dir/lang propagation, the two logical-property mirror spot-checks above, bidi
+  isolation of an `enTitle()` span, and no horizontal overflow at 375px/1280px. It does NOT
+  re-check translation completeness — that's `test/functional/13_stray_english.py` (now
+  parameterized with `ar,ur` in `CROL_GUARD_LANGS` alongside es/zh-Hans/ru).
 
 ## Test layers (what runs where)
 

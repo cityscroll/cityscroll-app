@@ -35,14 +35,16 @@
   body{font-family:var(--lang-font-stack),var(--font-body);line-height:calc(1.55 * var(--lang-line-height-scale))}
   /* CJK has no letter-casing and the masthead's tracked/uppercased chrome devices are a
      Latin-typography convention — small-caps/letter-spacing/uppercase read as noise (or
-     worse, are simply ignored) on Chinese text, so :lang() neutralizes them site-wide. */
-  /* zh-Hans/ko/bn: none of these scripts have letter-casing, so forced uppercase +
-     tracking (small-caps look) on nameplate/kicker text just distorts glyphs (CJK
-     characters, Hangul syllable blocks, Bengali conjuncts) — neutralize both. */
-  :lang(zh-Hans),:lang(ko),:lang(bn){letter-spacing:normal !important;text-transform:none !important}
+     worse, are simply ignored) on Chinese text, so :lang() neutralizes them site-wide.
+     Same reasoning covers ko/bn (no letter-casing either); Arabic/Urdu need it for a
+     stronger reason still: letter-spacing doesn't just look wrong on Arabic script, it
+     breaks the cursive joining between letters outright. */
+  :lang(zh-Hans),:lang(ko),:lang(bn),:lang(ar),:lang(ur){letter-spacing:normal !important;text-transform:none !important}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px}
   a{color:var(--oxblood)}
-  code{font:12px/1 ui-monospace,Menlo,monospace;background:#efe8d8;padding:1px 5px;border-radius:4px}
+  /* code/PIN/id snippets are verbatim data, not translated chrome — isolate them so a
+     hyphenated identifier can't get bidi-reordered inside RTL (ar/ur) surrounding text. */
+  code{font:12px/1 ui-monospace,Menlo,monospace;background:#efe8d8;padding:1px 5px;border-radius:4px;unicode-bidi:isolate}
 
   /* masthead + tabs (City Record letterpress) */
   header.masthead{background:var(--paper)}
@@ -63,7 +65,7 @@
   .t-counts a{color:var(--ink);text-decoration:none;border-bottom:1px dotted var(--rule-strong)}
   .t-counts a:hover{color:var(--oxblood);border-bottom-color:var(--oxblood)}
   .t-counts b{color:var(--oxblood)}
-  .t-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;max-width:860px;margin:11px auto 3px;text-align:left}
+  .t-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;max-width:860px;margin:11px auto 3px;text-align:start}
   .t-card{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:9px 12px;box-shadow:var(--shadow);display:block;text-decoration:none;color:var(--ink)}
   .t-card:hover{border-color:var(--rule-strong)}
   .t-card .tlbl{font:600 9.5px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
@@ -133,7 +135,7 @@
      var(--muted) on the unchanged solid background is 6.57:1; the dashed border keeps the
      de-emphasis legible without a contrast hit. */
   .pin.muted{color:var(--muted);border-style:dashed}
-  .tag{display:inline-block;font:700 11px/1 ui-sans-serif,system-ui,sans-serif;padding:3px 7px;border-radius:999px;margin-right:6px}
+  .tag{display:inline-block;font:700 11px/1 ui-sans-serif,system-ui,sans-serif;padding:3px 7px;border-radius:999px;margin-inline-end:6px}
   .tag.open{background:#e9f2ea;color:var(--green)}
   .tag.soon{background:#fbf0dc;color:var(--amber)}
   .tag.closed{background:#f6e7e4;color:var(--rose)}
@@ -144,7 +146,7 @@
   .tag.asset{background:var(--paper-2);color:var(--ink-soft)}
   a.pivot{color:inherit;text-decoration:none;border-bottom:1px dotted var(--rule-strong)}
   a.pivot:hover{color:var(--oxblood);border-bottom-color:var(--oxblood)}
-  .facetlbl{font:600 11px/2.4 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-right:4px}
+  .facetlbl{font:600 11px/2.4 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-inline-end:4px}
 
   .detail{padding:18px 18px 22px;min-height:320px}
   .empty{color:var(--muted);font-style:italic;padding:40px 18px;text-align:center}
@@ -172,7 +174,7 @@
   .scope .lbl{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
 
   /* at-a-glance (who/what/when/act) — deterministic re-presentation of the record's own fields */
-  .glance{background:#f6f1e4;border:1px solid var(--rule);border-left:3px solid var(--rule-strong);border-radius:0 8px 8px 0;padding:10px 14px;margin:12px 0;font-size:14px}
+  .glance{background:#f6f1e4;border:1px solid var(--rule);border-inline-start:3px solid var(--rule-strong);border-start-end-radius:8px;border-end-end-radius:8px;padding:10px 14px;margin:12px 0;font-size:14px}
   .glance .gl{display:flex;gap:12px;padding:3px 0;align-items:baseline}
   .glance .gl b:first-child{font:700 10px/1.7 ui-sans-serif,system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);min-width:46px;flex:0 0 auto}
   .glance .gl span{min-width:0}
@@ -196,8 +198,8 @@
   .box a.view{margin-top:auto;font:600 12px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none;display:inline-block;padding:8px 0}
   .connector{display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:24px;flex:0 0 30px}
   @media(max-width:560px){.connector{transform:rotate(90deg);height:24px}.stage{flex-basis:100%}}
-  .note{font:13px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted);background:#f4eee2;border-left:3px solid var(--rule);padding:10px 12px;border-radius:0 8px 8px 0;margin-top:14px}
-  .note.warn{border-left-color:var(--rose)}
+  .note{font:13px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted);background:#f4eee2;border-inline-start:3px solid var(--rule);padding:10px 12px;border-start-end-radius:8px;border-end-end-radius:8px;margin-top:14px}
+  .note.warn{border-inline-start-color:var(--rose)}
 
   /* people lens */
   .rolename{font:800 22px/1.15 var(--font-display);margin-bottom:8px}
@@ -209,7 +211,7 @@
   .lbar span{display:block;height:100%;background:var(--amber)}
   .lrow.me{font-weight:700}
   .lrow.me .lbar span{background:var(--green)}
-  .lval{font:700 13px/1 ui-monospace,Menlo,monospace;color:#5a5142;text-align:right}
+  .lval{font:700 13px/1 ui-monospace,Menlo,monospace;color:#5a5142;text-align:end}
   .rmeta2{font-size:13px;color:#4a4338;margin:2px 0 4px}
   .timeline{display:flex;flex-direction:column;gap:8px}
   .tl{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:13px;padding:8px 11px;border:1px solid var(--rule);border-radius:7px;background:#fff}
@@ -226,10 +228,10 @@
   .roadmap{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:14px}
   .rm{border:1px solid var(--rule);border-radius:8px;padding:13px 14px;background:#fff}
   .rm b{display:block;margin-bottom:4px}
-  .rm.done{border-left:3px solid var(--green)}
+  .rm.done{border-inline-start:3px solid var(--green)}
   #landmap{display:none;height:300px;border:1px solid var(--rule);border-radius:8px;margin-top:14px;overflow:hidden;background:#eee}
   #landmapnote{margin-top:8px}
-  .landbanner{font:13px/1.5 ui-sans-serif,system-ui,sans-serif;background:#faf6ee;border-left:3px solid var(--oxblood);padding:9px 12px;color:var(--ink-soft);margin-bottom:2px}
+  .landbanner{font:13px/1.5 ui-sans-serif,system-ui,sans-serif;background:#faf6ee;border-inline-start:3px solid var(--oxblood);padding:9px 12px;color:var(--ink-soft);margin-bottom:2px}
   .feed{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-top:22px}
   .fcard{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:14px 15px;display:flex;flex-direction:column;gap:7px}
   .fcard .ftype{font:600 11px/1.35 ui-sans-serif,system-ui,sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
@@ -242,13 +244,13 @@
   .chiprow{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
   .chip{font-family:var(--font-sc);font-weight:600;font-size:12px;letter-spacing:.04em;padding:7px 12px;border:1px solid var(--rule);border-radius:999px;background:#fff;color:var(--ink-soft);cursor:pointer}
   .chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
-  .chip .ct{color:var(--muted);font-weight:400;margin-left:5px}
+  .chip .ct{color:var(--muted);font-weight:400;margin-inline-start:5px}
   .chip.on .ct{color:#d9d2c2}
 
   /* alerts */
   .afield{margin-bottom:14px}
   .afield label{display:block;font:600 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
-  .qstep{display:inline-block;font:700 11px/18px ui-sans-serif,system-ui,sans-serif;background:var(--blue);color:#fff;border-radius:50%;width:18px;height:18px;text-align:center;margin-right:6px;letter-spacing:0}
+  .qstep{display:inline-block;font:700 11px/18px ui-sans-serif,system-ui,sans-serif;background:var(--blue);color:#fff;border-radius:50%;width:18px;height:18px;text-align:center;margin-inline-end:6px;letter-spacing:0}
   #quizpanel .chiprow{margin-top:6px}
   .muted{color:var(--muted)}
   .emailmock{border:1px solid var(--rule);border-radius:8px;overflow:hidden;background:#fff;box-shadow:var(--shadow)}
@@ -270,7 +272,7 @@
   @keyframes spin{to{transform:rotate(360deg)}}
   /* Skeleton placeholders: content-shaped, so the wait reads as progress, not absence.
      Lists get these; the spinner stays for short button-level actions only. */
-  .empty.skel{padding:0;text-align:left;font-style:normal}
+  .empty.skel{padding:0;text-align:start;font-style:normal}
   .empty.skel .loading{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);border:0;margin:-1px} /* structural hook (.empty:has(.loading)) without the ring */
   .skl{display:block;padding:13px 16px;border-bottom:1px solid var(--rule)}
   .skl i{display:block;height:12px;border-radius:4px;background:var(--paper-2);animation:skpulse 1.2s ease-in-out infinite}
@@ -283,8 +285,8 @@
 
   /* accessibility & mobile */
   .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
-  .skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--ink);color:#fff;padding:11px 18px;border-radius:0 0 9px 0;font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none}
-  .skip:focus{left:0}
+  .skip{position:absolute;inset-inline-start:-9999px;top:0;z-index:99;background:var(--ink);color:#fff;padding:11px 18px;border-end-end-radius:9px;font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none}
+  .skip:focus{inset-inline-start:0}
   :is(button,.act,.chip,.wandchip,.trychip,a,select,input,summary):focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
   .tabbtn:focus-visible{outline:2px solid var(--oxblood);outline-offset:-2px}
   .row:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
@@ -311,7 +313,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=964b410e"></script>
+<script src="i18n.js?v=73d840de"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
@@ -347,15 +349,17 @@
       <button class="tabbtn" data-tab="alerts" data-i18n="tab_alerts">Alerts</button>
     </nav>
     <div class="lang-switcher" id="langSwitcher" role="group" aria-label="Language / Idioma">
-      <button class="lang-btn" data-lang="en" aria-pressed="true"><span lang="en">English</span></button>
-      <button class="lang-btn" data-lang="es" aria-pressed="false"><span lang="es">Español</span></button>
-      <button class="lang-btn" data-lang="zh-Hans" aria-pressed="false"><span lang="zh-Hans">中文（简体）</span></button>
-      <button class="lang-btn" data-lang="ru" aria-pressed="false"><span lang="ru">Русский</span></button>
-      <button class="lang-btn" data-lang="bn" aria-pressed="false"><span lang="bn">বাংলা</span></button>
-      <button class="lang-btn" data-lang="ht" aria-pressed="false"><span lang="ht">Kreyòl ayisyen</span></button>
-      <button class="lang-btn" data-lang="ko" aria-pressed="false"><span lang="ko">한국어</span></button>
-      <button class="lang-btn" data-lang="fr" aria-pressed="false"><span lang="fr">Français</span></button>
-      <button class="lang-btn" data-lang="pl" aria-pressed="false"><span lang="pl">Polski</span></button>
+      <button class="lang-btn" data-lang="en" aria-pressed="true"><span lang="en" dir="ltr">English</span></button>
+      <button class="lang-btn" data-lang="es" aria-pressed="false"><span lang="es" dir="ltr">Español</span></button>
+      <button class="lang-btn" data-lang="zh-Hans" aria-pressed="false"><span lang="zh-Hans" dir="ltr">中文（简体）</span></button>
+      <button class="lang-btn" data-lang="ru" aria-pressed="false"><span lang="ru" dir="ltr">Русский</span></button>
+      <button class="lang-btn" data-lang="bn" aria-pressed="false"><span lang="bn" dir="ltr">বাংলা</span></button>
+      <button class="lang-btn" data-lang="ht" aria-pressed="false"><span lang="ht" dir="ltr">Kreyòl ayisyen</span></button>
+      <button class="lang-btn" data-lang="ko" aria-pressed="false"><span lang="ko" dir="ltr">한국어</span></button>
+      <button class="lang-btn" data-lang="fr" aria-pressed="false"><span lang="fr" dir="ltr">Français</span></button>
+      <button class="lang-btn" data-lang="pl" aria-pressed="false"><span lang="pl" dir="ltr">Polski</span></button>
+      <button class="lang-btn" data-lang="ar" aria-pressed="false"><span lang="ar" dir="rtl">العربية</span></button>
+      <button class="lang-btn" data-lang="ur" aria-pressed="false"><span lang="ur" dir="rtl">اردو</span></button>
     </div>
     <div id="langNotice" class="lang-notice" hidden></div>
     <div class="cr-rule cr-rule--bottom"></div>
@@ -566,7 +570,7 @@
         </div>
       </div>
       <button id="quizgo" type="button" data-i18n="quiz_preview_btn">Preview my digest →</button>
-      <span class="muted" style="margin-left:10px;font:13px/1.4 ui-sans-serif,system-ui,sans-serif" data-i18n="quiz_no_account">No account — just an email confirmation.</span>
+      <span class="muted" style="margin-inline-start:10px;font:13px/1.4 ui-sans-serif,system-ui,sans-serif" data-i18n="quiz_no_account">No account — just an email confirmation.</span>
     </div>
 
     <div class="grid">
@@ -769,7 +773,10 @@ function cleanText(s){
 // are always English, regardless of UI language -- wrap them so es-mode screen readers don't
 // apply Spanish phonetics. Chrome/labels around them stay translated; only the data span here
 // gets tagged. No-op (returns the raw string) when there's nothing to wrap.
-function enTitle(s){ return s ? `<span lang="en">${s}</span>` : s; }
+// dir="ltr" (w8-03): under ar/ur RTL chrome this same span also needs bidi isolation, so a
+// title's punctuation/numerals don't reorder against the surrounding RTL text (WCAG 1.3.2) --
+// an explicit dir attribute gets the browser's UA-stylesheet unicode-bidi:isolate for free.
+function enTitle(s){ return s ? `<span lang="en" dir="ltr">${s}</span>` : s; }
 function money(v){
   const n = Number(v);
   if(!v || isNaN(n) || n === 0) return null;
@@ -971,7 +978,7 @@ function renderList(){
       : deadlineTag(r.due_date);
     return `<div class="row" data-i="${i}" tabindex="0" role="button">
       <p class="rtitle">${cleanText(r.short_title) ? enTitle(cleanText(r.short_title)) : t("untitled_notice")}</p>
-      <p class="rmeta">${lead}<span class="ragency" lang="en">${r.agency_name||""}</span> · ${fdate(r.start_date)}
+      <p class="rmeta">${lead}<span class="ragency" lang="en" dir="ltr">${r.agency_name||""}</span> · ${fdate(r.start_date)}
         ${r.category_description? " · "+r.category_description : ""}<br>
         ${usablePin(r.pin)? `<span class="pin">PIN ${r.pin}</span>` : `<span class="pin muted">${t("no_linkable_pin")}</span>`}</p>
     </div>`;
@@ -1495,7 +1502,7 @@ function pSelectRole(i, el){
   const comp = competitiveSet.has((r.title_description||"").toUpperCase().trim());
   const ladder = [...pRows].sort((a,b)=>(+a.avg)-(+b.avg));
   const maxAvg = Math.max.apply(null, ladder.map(x=>+x.avg||0)) || 1;
-  let html = `<h2 class="rolename" lang="en">${r.title_description}</h2>
+  let html = `<h2 class="rolename" lang="en" dir="ltr">${r.title_description}</h2>
     <div class="badges"><span class="tag ${comp?'open':'soon'}">${comp?t("competitive_badge"):t("noncompetitive_badge")}</span></div>
     <div class="agencybar">
       <div><div class="big">${money(r.mn)}–${money(r.mx)}</div><div class="lbl">${t("base_salary_band_lbl")}</div></div>
@@ -1532,7 +1539,7 @@ async function pSearchPeople(kw, stale){
   if(!pRows.length){ $("#plist").innerHTML = '<div class="empty">' + t("no_personnel") + '</div>'; return; }
   $("#plist").innerHTML = pRows.map((p,i)=>`<div class="row" data-i="${i}" tabindex="0" role="button">
       <p class="rtitle">${enTitle(p.name)}</p>
-      <p class="rmeta"><span class="ragency" lang="en">${p.agency}</span> · ${tn("n_notices_meta",p.actions.length)}</p>
+      <p class="rmeta"><span class="ragency" lang="en" dir="ltr">${p.agency}</span> · ${tn("n_notices_meta",p.actions.length)}</p>
     </div>`).join("");
   document.querySelectorAll("#plist .row").forEach(el=>el.addEventListener("click",()=>pSelectPerson(+el.dataset.i, el)));
   document.querySelector("#plist .row")?.click();
@@ -1554,7 +1561,7 @@ async function pSelectPerson(i, el){
       "$order":"fiscal_year DESC","$limit":"4"});
   }catch(e){}
   const cur = pay[0];
-  let html = `<h2 class="rolename" lang="en">${p.name}</h2><div class="badges"><span class="tag">${p.agency}</span></div>`;
+  let html = `<h2 class="rolename" lang="en" dir="ltr">${p.name}</h2><div class="badges"><span class="tag">${p.agency}</span></div>`;
   if(cur){
     html += `<div class="agencybar">
       <div><div class="big">${money(cur.base_salary)||"—"}</div><div class="lbl">${t("base_salary_fy_lbl",{fy:cur.fiscal_year})}</div></div>
@@ -1571,7 +1578,7 @@ async function pSelectPerson(i, el){
       <span class="tlreason">${a.reason||""}</span>
       ${a.salary && a.salary!=="1.00" && a.salary!=="1"? `<span class="tlsal">${money(a.salary)}</span>`:""}
       ${a.code? `<span class="pin">${t("code_label",{code:a.code})}</span>`:""}
-      <a class="view" href="${REQ_URL(a.req)}" style="margin-left:auto">${t("view_in_city_record")}</a></div>`;
+      <a class="view" href="${REQ_URL(a.req)}" style="margin-inline-start:auto">${t("view_in_city_record")}</a></div>`;
   });
   html += `</div>`;
   $("#pdetail").innerHTML = html;
@@ -1661,7 +1668,7 @@ async function landSelect(i, el){
   if(landMap){ try{landMap.remove();}catch(e){} landMap=null; landMarker=null; }
   const ZAPACT_KEY={ZM:"zapact_zm",ZR:"zapact_zr",ZA:"zapact_za",ZC:"zapact_zc",ZS:"zapact_zs",HA:"zapact_ha",PC:"zapact_pc",PQ:"zapact_pc",HG:"zapact_hg"};
   const actList=(r.actions||"").split(/[;,]/).map(a=>ZAPACT_KEY[a.trim()]?t(ZAPACT_KEY[a.trim()]):(a.trim()||null)).filter(Boolean);
-  let html=`<h2 class="rolename" lang="en">${r.project_name||t("unnamed")}</h2>
+  let html=`<h2 class="rolename" lang="en" dir="ltr">${r.project_name||t("unnamed")}</h2>
     <div class="badges">
       <span class="tag ${r.project_status==='Active'?'open':'closed'}">${r.public_status||r.project_status||t("status_na")}</span>
       ${mihOn(r.mih_flag)?`<span class="tag soon">${t("mih_tag")}</span>`:''}
@@ -2227,7 +2234,7 @@ async function awardContext(r){
       }
     }catch(e){}
   }
-  return bits.length ? `<div class="glance" style="border-left-color:var(--amber)"><div class="gl"><b>Context</b><span>${bits.join(" · ")} · <a href="about.html#context">how computed</a></span></div></div>` : "";
+  return bits.length ? `<div class="glance" style="border-inline-start-color:var(--amber)"><div class="gl"><b>Context</b><span>${bits.join(" · ")} · <a href="about.html#context">how computed</a></span></div></div>` : "";
 }
 
 /* Address cross-links: geocode → BBL → deep links into the city's other property records.
@@ -2376,8 +2383,8 @@ async function showAgency(name){
     const watchKind = isCheckbook ? "vendor" : "agency";
     const watchName = isCheckbook ? f.vendor_name : f.agency_name || f.agency;
 
-    return `<div class="tl" style="margin-bottom:20px;position:relative;padding-left:24px">
-      <div style="position:absolute;left:0;top:4px;width:10px;height:10px;border-radius:50%;background:var(--oxblood)"></div>
+    return `<div class="tl" style="margin-bottom:20px;position:relative;padding-inline-start:24px">
+      <div style="position:absolute;inset-inline-start:0;top:4px;width:10px;height:10px;border-radius:50%;background:var(--oxblood)"></div>
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
         <span class="badge" style="background:${badgeColor};color:${badgeTextCol};font-size:11px;font-weight:600;padding:2px 6px;border-radius:4px">${badgeText}</span>
         <span style="font-size:12px;color:var(--muted)">${dateText}</span>
@@ -2394,7 +2401,7 @@ async function showAgency(name){
     <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CROL-List</a></p>
     <div class="panel" style="padding:22px 24px">
       <div class="ftype" style="margin-bottom:6px">Agency profile · City Record on record</div>
-      <h2 class="rolename" lang="en">${agencyWho(nm)}</h2>
+      <h2 class="rolename" lang="en" dir="ltr">${agencyWho(nm)}</h2>
       <div class="agencybar">
         <div><div class="big">${money(stats && stats.total)||"—"}</div><div class="lbl">total awarded,<br>on record</div></div>
         <div><div class="big">${stats ? (+stats.n).toLocaleString() : "—"}</div><div class="lbl">contract awards<br>published</div></div>
@@ -2529,8 +2536,8 @@ async function showVendor(name){
     const watchKind = isCheckbook ? "vendor" : "agency";
     const watchName = isCheckbook ? f.vendor_name : f.agency_name || f.agency;
 
-    return `<div class="tl" style="margin-bottom:20px;position:relative;padding-left:24px">
-      <div style="position:absolute;left:0;top:4px;width:10px;height:10px;border-radius:50%;background:var(--oxblood)"></div>
+    return `<div class="tl" style="margin-bottom:20px;position:relative;padding-inline-start:24px">
+      <div style="position:absolute;inset-inline-start:0;top:4px;width:10px;height:10px;border-radius:50%;background:var(--oxblood)"></div>
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
         <span class="badge" style="background:${badgeColor};color:${badgeTextCol};font-size:11px;font-weight:600;padding:2px 6px;border-radius:4px">${badgeText}</span>
         <span style="font-size:12px;color:var(--muted)">${dateText}</span>
@@ -2546,8 +2553,8 @@ async function showVendor(name){
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CROL-List</a></p>
     <div class="panel" style="padding:22px 24px">
-      <div class="ftype" style="margin-bottom:6px">${t("vendor_profile_variants",{n:variants.length,s:variants.length===1?"":"s"})}${variants.length>1?` <details style="display:inline"><summary style="display:inline;cursor:pointer;border-bottom:1px dotted var(--rule-strong)">${t("which_variants_btn")}</summary> <span lang="en">${names.map(n=>cleanText(n).replace(/&/g,"&amp;")).join(" · ")}</span></details>`:""}</div>
-      <h2 class="rolename" lang="en">${cleanText(display)}</h2>
+      <div class="ftype" style="margin-bottom:6px">${t("vendor_profile_variants",{n:variants.length,s:variants.length===1?"":"s"})}${variants.length>1?` <details style="display:inline"><summary style="display:inline;cursor:pointer;border-bottom:1px dotted var(--rule-strong)">${t("which_variants_btn")}</summary> <span lang="en" dir="ltr">${names.map(n=>cleanText(n).replace(/&/g,"&amp;")).join(" · ")}</span></details>`:""}</div>
+      <h2 class="rolename" lang="en" dir="ltr">${cleanText(display)}</h2>
       <div class="agencybar">
         <div><div class="big">${money(total)||"—"}</div><div class="lbl">total awarded,<br>on record</div></div>
         <div><div class="big">${nAwards.toLocaleString()}</div><div class="lbl">award notice${nAwards===1?"":"s"}</div></div>
@@ -2808,7 +2815,7 @@ async function showMatter(pin){
     <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CROL-List</a></p>
     <div class="panel" style="padding:22px 24px">
       <div class="ftype" style="margin-bottom:6px">Matter timeline · PIN <code>${safe}</code></div>
-      <h2 class="rolename" lang="en">${agency?pivotA(agencyHref(agency), agencyWho(agency)):""}${vendor?` × ${pivotA(vendorHref(vendor), cleanText(vendor))}`:""}</h2>
+      <h2 class="rolename" lang="en" dir="ltr">${agency?pivotA(agencyHref(agency), agencyWho(agency)):""}${vendor?` × ${pivotA(vendorHref(vendor), cleanText(vendor))}`:""}</h2>
       <div class="timeline" style="margin-top:14px">
         ${items.map(it=>`<div class="tl"><span class="tldate">${it.date?fdate(it.date):"today"}</span>
           <span class="tlreason" style="font-weight:400">${it.label}</span>
@@ -2960,7 +2967,7 @@ async function showNotice(id){
     <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("back_browse")}</a></p>
     <div class="panel" style="padding:22px 24px">
       <div class="ftype" style="margin-bottom:6px">${r.type_of_notice_description||t("notice_fallback")}${r.section_name?" · "+tSection(r.section_name):""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}</div>
-      <h2 class="rolename" lang="en">${cleanText(r.short_title)||t("untitled_notice")}</h2>
+      <h2 class="rolename" lang="en" dir="ltr">${cleanText(r.short_title)||t("untitled_notice")}</h2>
       <div id="ncontext"></div>
       ${glanceFor(r)}
       <div id="naddr"></div><div id="ndollars"></div>
