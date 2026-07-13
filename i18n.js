@@ -1,16 +1,37 @@
-// i18n.js — CROL-List runtime string dictionary
-// Architecture: plain-JS runtime dictionary, no build step. Loaded via <script src="i18n.js">
-// in index.html. All LL30 languages are represented as stubs so the key structure is stable
-// before new language translations are added.
+// i18n.js — CROL-List runtime string catalog: CORE file.
+// Architecture (w8-01): this file holds the runtime (t/tn/tSection/applyStrings/setLang),
+// LANG_META, and the `en` dictionary INLINE (en is the fallback — it must always be
+// available with zero network round-trips). Every other language's STRINGS/SECTION_I18N
+// table lives in its own `i18n/lang/<lang>.js` file and is loaded on demand:
+//   - Node/tooling (tests, hash-checking scripts): loaded synchronously via require() at
+//     the bottom of this file, so `node -e "require('./i18n.js')"` sees every shipping
+//     language's full table with no browser involved.
+//   - Browser, saved preference != en: injected via document.write() while this script is
+//     still executing in <head> (before first paint — the WCAG "no English flash" rule),
+//     so the active language's dictionary is present before the body renders.
+//   - Browser, user switches language after load: ensureLangLoaded() appends a <script>
+//     tag on demand; t()/tn() fall back to English until it resolves (or forever, if the
+//     network request fails — the 2026-07-11 "no raw keys" rule, satisfied by the
+//     existing STRINGS.en fallback chain either way).
+// No bundler either way — every file is a plain classic <script>, `SHIPPING_LANGS` below is
+// the one declaration the selector (index.html + subpages), i18n_keys.py, and the stray-
+// English guard (test/functional/13_stray_english.py) all read language lists from.
 //
-// es: machine-translated, pending native review (Anna's CBO network, wave 6).
+// Per-language dictionary files carry their own review-state frontmatter (a JS comment +
+// window.I18N_PROVENANCE entry — see I18N_PROVENANCE below and i18n/GLOSSARY.md) — es,
+// zh-Hans, and ru are all `machine-drafted` (glossary-pinned, placeholder-verified, not yet
+// native-reviewed); the UI shows a disclosure banner (`updateLangNotice()`) for any language
+// in that state, alongside the notices-stay-English note.
+//
 // fr-HT: Haitian Creole has no Intl locale; date/number formatting uses fr-HT.
 // RTL note: Arabic (ar) and Urdu (ur) require dir="rtl" — scaffolded here as future work;
 // use CSS logical properties in any NEW css (not retrofitted from existing physical properties).
 // Bengali note: bn uses 2-2-3 digit grouping; Intl.NumberFormat('bn') handles this automatically.
 
 // Supported language codes: BCP 47 locale, native label, layout direction, Intl date locale.
-// Haitian Creole uses fr-HT for Intl (ht has no CLDR support).
+// Haitian Creole uses fr-HT for Intl (ht has no CLDR support). `fontStack`/`lineHeightScale`
+// (w8-06) are optional per-language CSS custom-property overrides for script rendering —
+// only set once a language actually ships (unset = the default Latin stack in index.html).
 const LANG_META = {
   en:       { locale: "en-US",   label: "English",          dir: "ltr", intlDate: "en-US"   },
   es:       { locale: "es",      label: "Español",          dir: "ltr", intlDate: "es"       },
@@ -19,7 +40,9 @@ const LANG_META = {
   ht:       { locale: "fr-HT",   label: "Kreyòl ayisyen",  dir: "ltr", intlDate: "fr-HT"    },
   ru:       { locale: "ru",      label: "Русский",          dir: "ltr", intlDate: "ru"       },
   bn:       { locale: "bn",      label: "বাংলা",            dir: "ltr", intlDate: "bn"       },
-  "zh-Hans":{ locale: "zh-Hans", label: "中文（简体）",      dir: "ltr", intlDate: "zh-Hans"  },
+  "zh-Hans":{ locale: "zh-Hans", label: "中文（简体）",      dir: "ltr", intlDate: "zh-Hans",
+              fontStack: "'PingFang SC','Noto Sans CJK SC','Microsoft YaHei',sans-serif",
+              lineHeightScale: 1.15 },
   "zh-Hant":{ locale: "zh-Hant", label: "中文（繁體）",      dir: "ltr", intlDate: "zh-Hant"  },
   ko:       { locale: "ko",      label: "한국어",            dir: "ltr", intlDate: "ko"       },
   ar:       { locale: "ar",      label: "العربية",          dir: "rtl", intlDate: "ar"       },
@@ -27,6 +50,33 @@ const LANG_META = {
   pl:       { locale: "pl",      label: "Polski",           dir: "ltr", intlDate: "pl"       },
 };
 const SUPPORTED_LANGS = Object.keys(LANG_META);
+
+// Shipping languages: full key coverage, guard-activated, selectable today. Everything else
+// in LANG_META is a stub (empty STRINGS[lang] === {}) reserved for a future wave. This is the
+// ONE declaration i18n_keys.py's REQUIRED_FULL, the selector buttons, and the CI guard matrix
+// all derive from — add a language here only after its dictionary + guard activation ship.
+const SHIPPING_LANGS = ["es", "zh-Hans", "ru"];
+
+// Per-file cache-skew hashes (w8-01 AC #1): sha256(i18n/lang/<lang>.js)[:8], checked by
+// test/standards/i18n_refs.py. Changing ONE language's file changes only its own hash here —
+// a Polish fix (once pl ships) never invalidates nine other dictionaries' cache entries.
+// Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
+const LANG_FILE_HASHES = {
+  es: "d697ecaf",
+  "zh-Hans": "d154b709",
+  ru: "1214bcf0",
+};
+
+// Translation review-state (w8-02): drives the machine-translation disclosure banner
+// (updateLangNotice(), below). `state` is one of "machine-drafted" | "glossary-checked" |
+// "native-reviewed" — only "native-reviewed" suppresses the banner. Each per-language file
+// also carries this same state in its own header comment so provenance travels with the
+// dictionary even if this table is ever regenerated from a manifest.
+const I18N_PROVENANCE = {
+  es: { state: "machine-drafted", reviewed_by: null, reviewed_date: null },
+  "zh-Hans": { state: "machine-drafted", reviewed_by: null, reviewed_date: null },
+  ru: { state: "machine-drafted", reviewed_by: null, reviewed_date: null },
+};
 
 // Full string table — en + es. Keys cover all translatable UI chrome in index.html.
 // Notice content (City Record titles, agency names, notice bodies) is NEVER in this table.
@@ -172,6 +222,10 @@ const STRINGS = {
 
     // Language switcher
     lang_switcher_label: "Language",
+    // Machine-translation disclosure (w8-02, DCAS Language Access Plan convention) — shown
+    // via updateLangNotice() for any active language whose I18N_PROVENANCE state isn't
+    // "native-reviewed" yet.
+    mt_disclaimer: "This translation was machine-drafted and has not yet been reviewed by a native speaker.",
 
     // Controls / labels
     show_label_meetings: "Show",
@@ -292,7 +346,8 @@ const STRINGS = {
 
     // Event countdown (eventTag)
     event_today: "today",
-    event_in_n_days: "in {n} day{s}",
+    event_in_n_days_one: "in {n} day",
+    event_in_n_days_other: "in {n} days",
 
     // Deadline
     due_today_tag: "due today",
@@ -324,8 +379,8 @@ const STRINGS = {
     // Deadline / event tags
     closed_tag: "closed",
     open_days_left: "open · {n} days left",
-    days_left_1: "1 day left",
-    days_left_n: "{n} days left",
+    days_left_one: "1 day left",
+    days_left_other: "{n} days left",
 
     // Money list + facet
     no_linkable_pin: "no linkable PIN",
@@ -384,7 +439,8 @@ const STRINGS = {
     exam_title_tag: "exam title",
     no_exam_title_tag: "no-exam title",
     salary_note_html: "Salary band from <a href=\"https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e\">Citywide Payroll FY{fy}</a>; exam status from the <a href=\"https://data.cityofnewyork.us/resource/vx8i-nprf\">Civil Service List</a>, which lists competitive (exam) titles only — a title absent there is treated as no-exam.",
-    n_notices_meta: "{n} notice{s}",
+    n_notices_meta_one: "{n} notice",
+    n_notices_meta_other: "{n} notices",
     base_salary_fy_lbl: "base salary · FY{fy}",
     gross_paid_lbl: "gross paid",
     overtime_lbl: "overtime",
@@ -469,7 +525,8 @@ const STRINGS = {
     desc_rezone_city: "{freq} digest of new rezonings citywide",
     your_digest_subject: "Your {desc}",
     no_matches_today_html: "No matching notices today — so you&#39;d get nothing. (That&#39;s the point: signal, not noise.)",
-    digest_footer: "{n} notice{s} today · from The City Record · unsubscribe any time (one click)",
+    digest_footer_one: "{n} notice today · from The City Record · unsubscribe any time (one click)",
+    digest_footer_other: "{n} notices today · from The City Record · unsubscribe any time (one click)",
     event_meta: "event {date}",
     days_paren: " ({n} days)",
     respond_lbl: "Respond",
@@ -722,696 +779,10 @@ const STRINGS = {
     map_marker_alt: "Rezoning project location",
   },
 
-  es: {
-    footer_notices: "más de un millón de avisos",
-    sugg_money_0: "contratos de construcción de más de $500k",
-    sugg_money_1: "solicitudes de propuestas de consultoría informática",
-    sugg_money_2: "contratos de servicios de albergue",
-    sugg_people_0: "puestos de paramédico",
-    sugg_people_1: "buscar a alguien llamado Rodríguez",
-    sugg_people_2: "títulos de abogado",
-    sugg_land_0: "rezonificaciones en Brooklyn",
-    sugg_land_1: "rezonificaciones en Queens",
-    sugg_land_2: "79 Rivington",
-    sugg_property_0: "ventas de propiedades de HPD",
-    sugg_property_1: "terrenos de protección ambiental",
-    sugg_property_2: "propiedades del departamento de policía",
-    sugg_rules_0: "reglas de edificios",
-    sugg_rules_1: "reglas de sanidad",
-    sugg_rules_2: "reglas de taxis",
-    sugg_meetings_0: "audiencias recientes de monumentos",
-    sugg_meetings_1: "audiencias recientes del concejo municipal",
-    sugg_meetings_2: "reuniones recientes de juntas comunitarias",
-    sugg_alerts_0: "adjudicaciones de más de $1M",
-    sugg_alerts_1: "solicitudes de propuestas de construcción",
-    sugg_alerts_2: "rezonificaciones cerca de 79 Rivington",
-    all_agencies_loading: "Todas las agencias — cargando…",
-    // Tab labels
-    tab_money:    "Dinero",
-    tab_people:   "Personas",
-    tab_land:     "Terrenos",
-    tab_property: "Propiedades",
-    tab_rules:    "Reglas",
-    tab_meetings: "Reuniones",
-    tab_alerts:   "Alertas",
-
-    // Money lens controls
-    nl_placeholder_money: "describa lo que busca…",
-    ask_btn:          "Buscar",
-    show_label:       "Mostrar",
-    mode_open:        "Solicitudes de propuestas (RFP) abiertas — aceptando ahora",
-    mode_allrfp:      "Todas las RFP",
-    mode_award:       "Adjudicaciones recientes ($)",
-    agency_label:     "Agencia",
-    all_agencies:     "Todas las agencias",
-    keyword_label:    "Palabra clave",
-    sort_label:       "Ordenar por",
-    sort_deadline:    "Fecha límite: más próxima",
-    sort_newest:      "Más reciente",
-    sort_amount:      "Mayor monto $",
-    min_award_label:  "Monto mínimo $",
-    min_award_any:    "Cualquiera",
-    watch_this_search:"Vigilar esta búsqueda",
-    closing_this_week:"Cierra esta semana",
-    money_trail_heading: "Rastro del dinero",
-    export_csv:       "Exportar CSV",
-    pick_notice_empty:"Seleccione un aviso a la izquierda para rastrearlo — para una RFP verá cómo responder (fecha límite, contacto, dónde enviar) y la cadena completa aviso → adjudicación → dinero.",
-
-    // People lens
-    look_up_label:       "Buscar",
-    pmode_role:          "Un cargo / título",
-    pmode_person:        "Una persona",
-    title_keyword_label: "Palabra clave del título",
-    person_name_label:   "Nombre",
-    agency_filter_label: "Agencia (opcional)",
-
-    // Alerts / quiz section
-    quiz_heading:       "Configure su resumen en 60 segundos",
-    quiz_step1:         "¿Qué debemos vigilar por usted?",
-    quiz_step2:         "Refinar (opcional)",
-    quiz_step3:         "¿Con qué frecuencia?",
-    quiz_rfpkw:         "Contratos y RFP municipales",
-    quiz_bigaward:      "Grandes adjudicaciones de contratos",
-    quiz_rezone:        "Rezonificaciones cerca de mí",
-    quiz_property:      "Ventas de propiedades",
-    quiz_rules:         "Cambios de reglas",
-    quiz_meetings:      "Audiencias y reuniones",
-    quiz_daily:         "Diario (alrededor de las 9 a.m.)",
-    quiz_weekly:        "Semanal (los lunes)",
-    quiz_preview_btn:   "Ver mi resumen →",
-    quiz_no_account:    "Sin cuenta — solo una confirmación por correo.",
-    build_alert_heading:"Crear una alerta",
-    quick_suggestions:  "Sugerencias rápidas",
-    sugg_rezone_rivington: "Rezonificaciones cerca de 79 Rivington",
-    sugg_awards_1m:     "Adjudicaciones superiores a $1M",
-    sugg_construction_rfp: "RFP de construcción",
-    watch_for_label:    "Vigilar",
-    watch_bigaward:     "Adjudicaciones de contratos sobre un umbral",
-    watch_rfpkw:        "RFP abiertas que coincidan con una palabra clave",
-    watch_rezone:       "Rezonificaciones cerca de un barrio",
-    watch_property:     "Avisos de venta de propiedades",
-    watch_rules:        "Cambios de reglas (Reglas de Agencias)",
-    watch_meetings:     "Audiencias y reuniones públicas",
-    watch_entityvendor: "Un proveedor — todo aviso que lo nombre",
-    watch_entityagency: "Una agencia — todo lo que publique",
-    email_label:        "Dirección de correo electrónico",
-    email_placeholder:  "usted@ejemplo.com",
-    freq_label:         "Frecuencia",
-    freq_daily:         "Diario",
-    freq_weekly:        "Semanal",
-    preview_digest_btn: "Ver el resumen de hoy",
-    subscribe_btn:      "Suscribirse →",
-    subscribe_confirm_note: "Le enviamos un enlace de confirmación — las alertas comienzan solo después de que lo haga clic, así que nadie puede suscribirle excepto usted.",
-    empty_preview:      "Cree una alerta y presione Vista previa para ver el resumen con los avisos reales de hoy.",
-
-    // Time/schedule strings
-    when_daily:  "Los nuevos resultados se envían cada mañana, alrededor de las 9 a.m. hora de Nueva York (8 a.m. nov–mar).",
-    when_weekly: "Los nuevos resultados se envían los lunes por la mañana, alrededor de las 9 a.m. hora de Nueva York (8 a.m. nov–mar).",
-
-    // Status / error messages
-    loading_data:           "Cargando…",
-    retry_open_data:        "No se pudo conectar a NYC Open Data. Intente de nuevo en un momento.",
-    nothing_found:          "No se encontró nada. Pruebe con una palabra clave más amplia o \"Todas las RFP\".",
-    check_inbox:            "Revise su bandeja de entrada.",
-    sent_confirm_to:        "Le enviamos un enlace de confirmación a {email} — su alerta comienza cuando lo haga clic.",
-    turnstile_fail:         "La verificación de humano no pasó — inténtelo de nuevo.",
-    rate_limited:           "Demasiados intentos — espere un momento.",
-    bad_email:              "Esa dirección de correo no parece correcta.",
-    channel_unsupported:    "Las alertas por SMS aún no están disponibles — elija Correo.",
-    not_configured:         "Las suscripciones aún no están activadas.",
-    send_failed:            "No se pudo enviar el correo ahora — inténtelo de nuevo.",
-    generic_error:          "Algo salió mal — inténtelo de nuevo.",
-    complete_human_check:   "Complete la verificación “Soy humano” de arriba primero.",
-    sending_confirm_link:   "Enviando su enlace de confirmación…",
-    cant_reach_server:      "No se pudo conectar al servidor — inténtelo de nuevo.",
-
-    // Deadline chips
-    closes_today:     "cierra hoy",
-    closes_in_1_day:  "cierra en un día",
-    closes_in_n_days: "cierra en {n} días",
-
-    // Notice content language note
-    notices_in_english_note: "El texto de los avisos aparece en inglés original.",
-    notices_in_english_es:   "Los avisos aparecen en inglés original.",
-
-    // Footer / nav
-    about_link:     "Acerca de",
-    stats_link:     "Estadísticas",
-    data_link:      "Datos",
-    api_link:       "API",
-    changelog_link: "Registro de cambios",
-
-    // Language switcher
-    lang_switcher_label: "Idioma",
-
-    // Controls / labels
-    show_label_meetings: "Mostrar",
-    mode_upcoming:       "Próximos",
-    mode_all_recent:     "Todos (recientes)",
-    search_label:        "Buscar",
-    borough_label:       "Distrito",
-    all_boroughs:        "Todos los distritos",
-    zip_addr_neighborhood: "Código postal, dirección o vecindario",
-    status_label:        "Estado",
-    status_active:       "En revisión / activo",
-    status_all:          "Todos",
-    look_up_pmode:       "Buscar",
-    filters_toggle:      "Filtros",
-
-    // Keyword placeholders
-    kw_placeholder_money:   "refugio, TI, construcción, seguridad…",
-    kw_placeholder_land:    "Bushwick, 79 Rivington, Gowanus…",
-    kw_placeholder_property: "dirección, vecindario…",
-    kw_placeholder_rules:   "saneamiento, licencias, alquiler, acera…",
-    kw_placeholder_meetings: "Junta Comunitaria, Brooklyn, patrimonio…",
-    kw_placeholder_people_role:   "paramédico de emergencias, abogado, ingeniero…",
-    kw_placeholder_people_person: "apellido, p. ej. Rodriguez",
-    nl_placeholder_people:   "p. ej. roles de paramédico, o buscar a alguien llamado Rodriguez",
-    nl_placeholder_land:     "p. ej. rezonificaciones en Brooklyn, o 79 Rivington",
-    nl_placeholder_property: "p. ej. ventas de propiedades de HPD, terrenos de DEP",
-    nl_placeholder_rules:    "p. ej. reglas de edificios, reglas de saneamiento",
-    nl_placeholder_meetings: "p. ej. audiencias recientes de patrimonio, concejo municipal",
-    nl_placeholder_alerts:   "p. ej. alertarme de adjudicaciones sobre $1M, o RFP de construcción",
-
-    // People panel
-    roles_heading:       "Cargos",
-    people_heading:      "Personas",
-    listing_heading:     "Listado",
-    land_listing_heading: "Listado",
-    try_a_title_empty:   "Pruebe un título como \"paramédico de emergencias\" -- o cambie a persona.",
-    pick_role_empty:     "Seleccione un cargo para ver su título oficial, si requiere examen, su banda salarial y la escalera profesional.",
-    pick_result_empty:   "Seleccione un resultado a la izquierda.",
-    type_keyword_empty:  "Escriba una palabra clave para buscar.",
-
-    // Land panel
-    recent_rezonings_heading: "Rezonificaciones recientes",
-    pick_rezoning_empty: "Seleccione una rezonificación para verla en lenguaje claro — solicitante, qué se va a construir, unidades asequibles, estado -- y en un mapa. Pruebe \"79 Rivington\" o \"Gowanus\".",
-
-    // Money panel
-    open_rfps_heading:   "Solicitudes de propuestas (RFP) abiertas",
-    all_rfps_heading:    "Todas las RFP",
-    recent_awards_heading: "Adjudicaciones recientes",
-    pick_notice_panel_heading: "Rastro del dinero",
-    preview_panel_heading: "Vista previa",
-
-    // Quiz panel
-    quiz_narrow_placeholder: "primero elija un tema arriba…",
-    quiz_param_agency:   "agencia (opcional) -- p. ej. Buildings",
-
-    // Alert builder labels
-    param_label_min_award:    "Monto minimo",
-    param_label_keyword:      "Palabra clave (opcional)",
-    param_label_vendor:       "Nombre del proveedor",
-    param_label_agency_name:  "Nombre de la agencia (como aparece impreso)",
-    param_label_place:        "Código postal, dirección o vecindario (opcional)",
-    param_placeholder_rfpkw:  "construcción, TI, seguridad…",
-    param_placeholder_vendor: "Consolidated Scaffolding, Sinergia…",
-    param_placeholder_agency: "Design and Construction, Buildings…",
-    param_placeholder_rezone: "79 Rivington, Allen Street, Bushwick…",
-    param_placeholder_rules:  "bicicleta eléctrica, acera, licencias…",
-    param_placeholder_meetings: "junta comunitaria, patrimonio…",
-    param_placeholder_property: "Brooklyn, subasta, HPD…",
-    afreq_daily_opt:  "Diario",
-    afreq_weekly_opt: "Semanal",
-
-    // Today's Edition strip
-    latest_edition_suffix: "· última edición",
-    closing_soon_lbl:      "Cierra pronto",
-    largest_award_lbl:     "Mayor adjudicación, esta edición",
-    next_hearing_lbl:      "Próxima audiencia pública",
-
-    // Loading / status
-    loading_notice:   "cargando aviso…",
-    building_profile: "construyendo perfil…",
-    pulling_payroll:  "consultando nómina…",
-    fetching_today:   "consultando avisos de hoy…",
-    translating:      "traduciendo…",
-
-    // Dynamic headings
-    head_open:              "Solicitudes de propuestas (RFP) abiertas",
-    head_allrfp:            "Todas las RFP",
-    head_award:             "Adjudicaciones recientes",
-    head_closing_this_week: " · cierra esta semana",
-
-    // Empty states
-    no_titles_match:   "Ningún título coincide. Pruebe con una palabra más amplia.",
-    no_personnel:      "Ningún aviso de personal coincide con ese nombre. Pruebe con un apellido.",
-    no_zap:            "No hay rezonificaciones en el Portal de Solicitudes de Zonificación (ZAP)",
-    nothing_found_feed: "No se encontró nada. Pruebe con una búsqueda más amplia.",
-    could_not_reach:   "No se pudo conectar a NYC Open Data. Intente de nuevo.",
-
-    // Feed card actions
-    city_record_link:       "Registro municipal",
-    copy_link_btn:          "Copiar enlace",
-    map_link:               "Mapa",
-    still_standing_btn:     "¿Sigue en pie?",
-
-    // Footer
-    footer_lede:       "CROL-List busca en el Registro Municipal de Datos Abiertos",
-    footer_about:      "Acerca de",
-    footer_investigation: "Mi investigación",
-    footer_api:        "API y fuentes",
-    footer_changelog:  "Registro de cambios",
-    footer_stats:      "Estadísticas",
-
-    // Skip link
-    skip_to_content: "Ir al contenido",
-
-    // Announcements (sr-only)
-    or_more_results: "{n} o más resultados",
-    results_count: "{n} resultados",
-
-    // Event countdown
-    event_today: "hoy",
-    event_in_n_days: "en {n} día{s}",
-
-    // Deadline
-    due_today_tag: "vence hoy",
-    deadline_respond_by: "Responder antes del {date}",
-
-    // Detail panel actions
-    copy_link: "Copiar enlace",
-    copied: "Copiado",
-    add_deadline_calendar: "Agregar fecha limite al calendario",
-    email_a_response: "Enviar respuesta por correo",
-    bid_on_passport: "Licitar en PASSPort",
-    how_to_respond_heading: "Cómo responder a esta RFP",
-
-    // Alerts / feeds area
-    prefer_feeds_html: "¿Prefiere fuentes? Este seguimiento también está disponible como",
-
-    // Notices-in-English
-    notices_in_english_note_inline: "El texto de los avisos aparece en inglés original.",
-
-    // ---- Dynamically-built chrome (2026-07-13 hotfix) ----
-    // es: machine-translated, pending native review (Anna's CBO network, wave 6).
-
-    // Today strip
-    today_summary: "<b>{n}</b> avisos de <b>{a}</b> agencias",
-    due_on: "vence el {date}",
-    untitled: "(sin título)",
-    untitled_notice: "(aviso sin título)",
-
-    // Deadline / event tags
-    closed_tag: "cerrada",
-    open_days_left: "abierta · quedan {n} días",
-    days_left_1: "queda 1 día",
-    days_left_n: "quedan {n} días",
-
-    // Money list + facet
-    no_linkable_pin: "sin PIN enlazable",
-    method_facet_label: "Método:",
-    narrowed_note: "La búsqueda del historial completo fue lenta — mostrando <b>solo ediciones recientes</b> (desde {date}). Agregue una agencia o palabra clave para buscar todos los años más rápido.",
-
-    // Money detail / chain / glance / how-to-respond
-    copy_link_notice: "Copiar enlace a este aviso",
-    pin_btn: "Fijar",
-    pinned_open_inv: "✓ Fijado — abrir investigación ({n})",
-    total_awarded_lbl: "total adjudicado,<br>registrado",
-    awards_published_lbl: "adjudicaciones de contratos<br>publicadas",
-    glance_who: "Quién",
-    glance_what: "Qué",
-    glance_when: "Cuándo",
-    glance_act: "Actuar",
-    awarded_to: "→ adjudicado a",
-    published_on: "publicado el {date}",
-    responses_due_html: "respuestas antes del <b>{date}</b>",
-    event_on_html: "evento el <b>{date}</b>",
-    paper_trail_heading: "El rastro documental (avisos que comparten este PIN)",
-    full_timeline_link: "cronología completa con pagos",
-    notice_fallback: "Aviso",
-    view_in_city_record: "Ver en el Registro Municipal",
-    pin_unusable_note: "El PIN de este aviso no sirve para enlazar (<code>{pin}</code>), así que su adjudicación no puede rastrearse automáticamente. Ábralo en el City Record para leer el texto completo.",
-    only_notice_note: "Solo este aviso consta hasta ahora — todavía no se ha publicado una etapa posterior para el PIN <code>{pin}</code>. ",
-    award_pending_note: "La adjudicación puede estar aún pendiente.",
-    blanket_note: "El PIN <code>{pin}</code> es un <b>código global</b>: agrupa {n} adjudicaciones separadas (común en declaraciones de emergencia). Cada caja es un contrato distinto bajo el mismo código.",
-    what_they_want: "Qué buscan",
-    apply_method_lbl: "Método",
-    apply_contact_lbl: "Contacto",
-    apply_submit_lbl: "Enviar / solicitar a",
-    call_btn: "Llamar al {phone}",
-    apply_pnote_html: "<b>Enviar respuesta por correo</b> abre una carta de intención prellenada al contacto indicado — edítela antes de enviar. Las ofertas competitivas se presentan finalmente a través de <b>PASSPort</b>. Nada sale de su dispositivo hasta que pulse enviar.",
-
-    // Screen-reader announcements
-    matching_roles_announce: "{n} cargos coincidentes",
-    rezonings_announce: "{n} rezonificaciones",
-    property_notices_announce: "{n} avisos de propiedades",
-    notices_announce: "{n} avisos",
-
-    // People lens
-    try_label: "Pruebe:",
-    exam_suffix: " · examen",
-    competitive_badge: "Competitivo — requiere examen del servicio civil",
-    noncompetitive_badge: "No competitivo — sin examen",
-    median_base_lbl: "base mediana · año fiscal {fy}",
-    base_range_lbl: "rango de base",
-    people_lbl: "personas",
-    base_salary_band_lbl: "banda salarial base",
-    average_base_lbl: "base promedio",
-    people_fy_lbl: "personas · año fiscal {fy}",
-    career_ladder_top: "Escalera profesional — principales títulos por salario promedio",
-    career_ladder_matching: "Escalera profesional — títulos coincidentes por salario promedio",
-    refreshing_payroll: "actualizando desde la nómina en vivo…",
-    exam_title_tag: "título con examen",
-    no_exam_title_tag: "título sin examen",
-    salary_note_html: "Banda salarial de la <a href=\"https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e\">Nómina Municipal año fiscal {fy}</a>; el estado de examen proviene de la <a href=\"https://data.cityofnewyork.us/resource/vx8i-nprf\">Lista del Servicio Civil</a>, que solo incluye títulos competitivos (con examen) — un título ausente allí se trata como sin examen.",
-    n_notices_meta: "{n} aviso{s}",
-    base_salary_fy_lbl: "salario base · año fiscal {fy}",
-    gross_paid_lbl: "bruto pagado",
-    overtime_lbl: "horas extra",
-    payroll_title_lbl: "Título en nómina:",
-    no_payroll_match_note: "No hay registro coincidente en la Nómina Municipal (las nuevas contrataciones tardan un año fiscal, o el nombre difiere entre conjuntos de datos).",
-    city_record_history: "Historial en el Registro Municipal",
-    code_label: "código {code}",
-
-    // Land lens
-    rezonings_heading: "Rezonificaciones",
-    banner_on_block: "En esta manzana — {label}.",
-    banner_none_nearest: "No hay rezonificación en esta manzana. La más cercana en <b>{area}</b>:",
-    banner_none_active_nearest: "No hay rezonificación activa en esta manzana. La más cercana en <b>{area}</b>:",
-    banner_none_lot: "No hay rezonificación registrada en este lote ({label}). Rezonificaciones activas cerca de <b>{area}</b>:",
-    no_zap_kw: " para “{kw}”",
-    zap_explainer_html: "ZAP indexa por <i>proyecto</i>, no por dirección — un aviso sobre su manzana puede faltar aquí y aun así estar en <a href=\"https://a856-cityrecord.nyc.gov/Search/Advanced\">The City Record</a>.",
-    affordable_housing_tag: "vivienda asequible",
-    unnamed_project: "(proyecto sin nombre)",
-    unnamed: "(sin nombre)",
-    status_na: "estado n/d",
-    mih_tag: "Vivienda Inclusiva Obligatoria (MIH)",
-    applicant_lbl: "solicitante",
-    where_lbl: "dónde",
-    in_plain_english: "En lenguaje claro",
-    actions_lbl: "Acciones:",
-    zap_full_project: "Proyecto completo en el Portal de Solicitudes de Zonificación (ZAP)",
-    alert_me_area: "Avisarme sobre esta zona",
-    search_city_record: "Buscar en el Registro Municipal",
-    rezoning_notice_link: "El aviso de esta rezonificación en el Registro Municipal",
-    locating: "localizando…",
-    map_approx_note_html: "{label}. <span class=\"muted\">Aproximado — confirme los lotes exactos en <a href=\"https://zola.planning.nyc.gov/\">ZoLa</a>.</span>",
-    showing_lots_note_html: "Mostrando {n} lote{s} rezonificado{s} (NYC MapPLUTO). <span class=\"muted\">Confirme en <a href=\"https://zola.planning.nyc.gov/\">ZoLa</a>.</span>",
-    map_needs_connection: "El mapa necesita conexión.",
-    location_not_resolved: "Ubicación no resuelta.",
-    lot_not_geocoded: "{boro} — lote exacto no geocodificado",
-    zapact_zm: "Enmienda al mapa de zonificación",
-    zapact_zr: "Enmienda al texto de zonificación",
-    zapact_za: "Autorización",
-    zapact_zc: "Certificación",
-    zapact_zs: "Permiso especial",
-    zapact_ha: "Disposición (HPD)",
-    zapact_pc: "Adquisición",
-    zapact_hg: "Renovación urbana",
-
-    // Property explorer
-    all_types: "Todos los tipos",
-    asset_realty: "Bienes inmuebles",
-    asset_forest: "Bosques / madera",
-    asset_vehequip: "Vehículos y equipos",
-    asset_medallion: "Medallones",
-    asset_seized: "Incautados / no reclamados",
-    asset_other: "Otros",
-    stage_all: "Todas las etapas",
-    stage_proposed: "● Propuesto (audiencia)",
-    stage_soon: "◷ Cierra pronto",
-    stage_upcoming: "◷ Próximos",
-    stage_past: "✓ Pasado / decidido",
-    badge_upset_price: "precio mínimo ${amt}",
-    badge_min_bid: "oferta mínima ${amt}",
-    badge_appraised: "tasado ${amt}",
-    badge_nominal: "$1 nominal",
-    add_date_btn: "Agregar {date}",
-    checking_dob: "… consultando DOB",
-    lot_not_resolved: "lote no resuelto",
-    demolition_status_html: "Demolición: <b>{status}</b>",
-    no_demo_permit: "✓ Sin permiso de demolición en este lote",
-
-    // Alerts / digest preview
-    watchlbl_property: "avisos de venta de propiedades",
-    watchlbl_rules: "cambios de reglas",
-    watchlbl_meetings: "audiencias y reuniones públicas",
-    freq_daily_lc: "diario",
-    freq_weekly_lc: "semanal",
-    desc_bigaward: "resumen {freq} de adjudicaciones de contratos de NYC superiores a {amt}",
-    desc_rfpkw: "resumen {freq} de RFP abiertas que coincidan con “{kw}”",
-    desc_vendor: "resumen {freq} — cada aviso nuevo que nombre al proveedor “{name}”",
-    desc_agency_watch: "resumen {freq} — todo lo que publique “{name}”",
-    desc_section: "resumen {freq} de {what}{bits}",
-    desc_matching: " que coincidan con “{kw}”",
-    desc_from_agency: " de {agency}",
-    desc_rezone_near: "resumen {freq} de rezonificaciones cerca de “{place}”",
-    desc_rezone_city: "resumen {freq} de nuevas rezonificaciones en toda la ciudad",
-    your_digest_subject: "Su {desc}",
-    no_matches_today_html: "No hay avisos coincidentes hoy — así que no recibiría nada. (Esa es la idea: señal, no ruido.)",
-    digest_footer: "{n} aviso{s} hoy · del Registro Municipal · cancele la suscripción cuando quiera (un clic)",
-    event_meta: "evento {date}",
-    days_paren: " ({n} días)",
-    respond_lbl: "Responder",
-    view_on_crol: "↗ Ver en CROL-List",
-    unnamed_rezoning: "(rezonificación sin nombre)",
-    view_comment_zap: "Ver y comentar en ZAP",
-    hearing_notice_cr: "aviso de audiencia en el Registro Municipal",
-    feeds_suffix: "— sin necesidad de correo.",
-    calendar_ics: "Calendario (.ics)",
-    saved_alerts_heading: "Alertas guardadas (demo)",
-    remove_btn: "eliminar",
-    enter_valid_email: "Ingrese una dirección de correo válida.",
-    subs_need_backend: "Las suscripciones necesitan el backend, que no está conectado en esta versión.",
-    quizph_rfpkw: "palabra clave — construcción, TI, catering…",
-    quizph_bigaward: "(usa el umbral de $1M+ — ajústelo abajo)",
-    quizph_rezone: "lugar — 79 Rivington, Bushwick…",
-    quizph_property: "palabra clave — Brooklyn, subasta…",
-    quizph_rules: "palabra clave — bicicleta eléctrica, acera…",
-    quizph_meetings: "palabra clave — junta comunitaria, patrimonio…",
-    pick_topic_first: "← primero elija un tema",
-
-    // Clipboard
-    copied_check: "✓ Copiado",
-    copy_failed: "⚠ No se pudo copiar",
-
-    // Notice permalink shell (showNotice)
-    fetching_notice_id: "consultando el aviso {id}…",
-    notice_not_found_html: "El aviso <code>{id}</code> no se encontró en los Datos Abiertos del City Record — puede ser muy reciente, o el ID puede estar mal escrito.",
-    back_browse: "← Volver a CROL-List",
-    try_city_record: "búsquelo en el City Record",
-    notice_email_btn: "Correo",
-    notice_print_btn: "Imprimir",
-    add_to_calendar_btn: "Agregar al calendario",
-    read_full_notice: "Leer el aviso completo (texto original del City Record en inglés)",
-    permalink_note_html: "Enlace permanente: <code>{link}</code> · ID de solicitud <code>{id}</code> · de NYC Open Data",
-
-    // Investigation workspace (2026-07-13 hotfix 2)
-    inv_ws_heading: "Espacio de investigación · guardado solo en este navegador",
-    inv_default_name: "Mi investigación",
-    inv_name_aria: "Nombre de la investigación",
-    inv_pinned_meta: "{n} elemento{s} fijado{s} · iniciada el {date}",
-    inv_empty: "Aún no hay nada fijado — use el botón Fijar en cualquier página de aviso, proveedor, agencia o expediente.",
-    inv_share_btn: "Compartir (enlace de solo lectura)",
-    inv_export_csv: "Exportar .csv",
-    inv_export_json: "Exportar .json",
-    inv_print_btn: "Imprimir expediente",
-    inv_clear_btn: "Borrar todo",
-    inv_footer_note_html: "Cada elemento exportado lleva su enlace permanente + la fecha en que lo fijó — con calidad de cita por construcción. Compartir sube una instantánea de solo lectura (enlace de 90 días); nada más sale de este navegador.",
-    inv_pinned_on: "fijado el {date}",
-    inv_note_placeholder: "agregar una nota…",
-    pintype_notice: "aviso",
-    pintype_vendor: "proveedor",
-    pintype_agency: "agencia",
-    pintype_matter: "expediente",
-    inv_pin_first: "Primero fije algo.",
-    inv_share_needs_backend: "Compartir requiere el backend.",
-    inv_uploading: "subiendo la instantánea…",
-    inv_readonly_link: "Enlace de solo lectura (dura {n} días):",
-    inv_copy_btn: "copiar",
-    inv_too_many_shares: "Demasiados enlaces compartidos hoy — intente mañana.",
-    inv_share_failed: "No se pudo compartir — inténtelo de nuevo.",
-    inv_fetching_shared: "consultando la investigación compartida…",
-    inv_shared_heading: "Investigación compartida · solo lectura · instantánea del {date}",
-    inv_shared_missing_html: "Esta investigación compartida no existe o ha expirado (los enlaces duran 90 días).",
-    inv_import_btn: "Importar a mi investigación",
-    untitled_name: "Sin título",
-    meta_agency_profile: "perfil de agencia",
-    meta_vendor_profile: "perfil de proveedor",
-    meta_matter: "Expediente — PIN {pin}",
-    // Accessible names (aria-label via data-i18n-aria)
-    nl_aria: "Describa lo que busca en lenguaje claro",
-    invnote_aria: "Nota para este elemento fijado",
-
-    // ---- Subpage chrome + content (about/data/stats/api/changelog) — crol-subpages-es ----
-    site_kicker: "El Registro Municipal, con búsqueda",
-    back_home_aria: "Volver al inicio de CROL-List",
-    back_to_crol: "← Volver a CROL-List",
-    home_link: "Inicio",
-    data_page_h1: "Los datos",
-
-    // about.html
-    about_h_what: "Qué es esto",
-    about_p_what_html: "CROL-List es una herramienta de búsqueda para <a href=\"https://a856-cityrecord.nyc.gov/\">The City Record</a>. Ese es el diario oficial de la Ciudad de Nueva York. En él, <a href=\"https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-3113\">toda agencia debe publicar</a> sus contratos, audiencias, cambios de reglas, rezonificaciones y movimientos de personal. CROL-List le permite buscar el registro <em>por interés</em>. Puede seguir un contrato, buscar un título de puesto, rastrear una rezonificación, o recibir un correo cuando algo nuevo coincida.",
-    about_h_content: "Sobre nuestro contenido",
-    about_p_content: "Un asistente de IA (Claude) redacta el texto de este sitio — títulos, explicaciones, páginas como esta. Un editor humano lo revisa antes de publicarlo. Los datos no son generados por IA. Cada aviso, cifra y fecha proviene directamente de NYC Open Data, sin editar.",
-    about_h_source: "De dónde vienen los datos",
-    about_p_source_html: "Todo son datos públicos en vivo — consultados directamente desde su navegador, sin nada almacenado en caché: <a href=\"https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx\">City Record Online (dg92-zbpx)</a> · <a href=\"https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e\">Nómina Municipal (k397-673e)</a> · <a href=\"https://data.cityofnewyork.us/resource/vx8i-nprf\">Lista del Servicio Civil (vx8i-nprf)</a> · <a href=\"https://data.cityofnewyork.us/City-Government/Zoning-Application-Portal-ZAP-Project-Data/hgx4-8ukb\">Proyectos ZAP (hgx4-8ukb)</a> · <a href=\"https://a0333-passportpublic.nyc.gov/\">PASSPort</a> · <a href=\"https://www.checkbooknyc.com/\">Checkbook NYC</a>.",
-    about_h_honest: "Los datos, para ser honestos",
-    about_p_honest_intro_html: "El conjunto de datos del City Record tiene <b>1.09 millones de avisos desde 2003</b> — y no es lo que parece a primera vista. El análisis exploratorio de nuestro equipo sobre el conjunto completo encontró peculiaridades que engañarían silenciosamente si no las corrigiéramos, así que esto es exactamente lo que hacemos:",
-    about_li_honest_html: "<li><b>El 87.5% de todas las filas son cambios de personal del servicio civil</b>, no avisos cívicos. Cada estadística de este sitio se cuenta dentro de su propia sección — una cifra \"global\" del City Record sería en realidad una cifra de expedientes de personal.</li><li><b>Algunos montos de contratos son errores de entrada de datos</b> — tres filas indican $10&nbsp;mil millones o más, llegando hasta <a href=\"index.html#notice/20210524108\">$96 <em>billones</em>, un aviso de servicios de vivienda cuyo campo de monto es claramente un error de tecleo</a> (el mayor premio real verificado es <a href=\"index.html#notice/20180109010\">≈$6.68 mil millones, el contrato eléctrico de la ciudad con NYPA a 10 años</a>). Los filtros de dinero y los resúmenes ordenados por monto excluyen cantidades ≥ $10 mil millones para que una sola errata no domine cada clasificación.</li><li><b>Algunas \"fechas límite\" no son fechas límite.</b> Los avisos de listas precalificadas usan fechas falsas en el año 2090 o después. Las marcamos como \"sin fecha límite fija (continua)\" para que nadie anote en su calendario una fecha que no es real.</li><li><b>Los nombres de las agencias vienen en dos convenciones</b> (MAYÚSCULAS antiguas y Formato de Título — 312 cadenas sin depurar para unas 150 agencias reales). Nuestra herramienta de nombres las trata como una sola.</li>",
-    about_p_honest_footer_html: "Para que las alertas sean rápidas, nuestro servidor mantiene un espejo de los avisos recientes, actualizado a diario desde el mismo conjunto de datos públicos — NYC Open Data sigue siendo la fuente autorizada, y las búsquedas en este sitio siempre la consultan en vivo. ¿Quiere ver los números en sí? <a href=\"data.html\"><b>Los datos</b></a> muestra el registro de un vistazo — secciones, volumen, combinación de adquisiciones, principales agencias y proveedores — calculado en vivo con estas mismas reglas.",
-    about_h_flags: "Marcadores y contexto, explicados",
-    about_p_flags_intro_html: "Los avisos de adquisiciones llevan dos tipos de notas calculadas. Ambas son <b>contexto estadístico, no hallazgos ni culpas</b>. Un marcador solo significa \"vale la pena revisarlo más de cerca\". Cada fórmula tiene una razón válida detrás. Las emergencias sí ocurren. Algunos mercados son especializados y tienen pocos postores. La coincidencia de nombres no es perfecta. Este método sigue dos guías. Una es <a href=\"https://www.open-contracting.org/resources/red-flags-in-public-procurement-a-guide-to-using-data-to-detect-and-mitigate-risks/\">la guía de marcadores rojos de Open Contracting Partnership</a>. La otra es la guía de integridad de <a href=\"https://opentender.eu/\">Opentender</a>.",
-    about_li_flags_html: "<li><b>⚑ Ventana de anuncio corta</b> — los días entre la publicación de un aviso y el vencimiento de su respuesta. Lo marcamos cuando son 10 días o menos <em>y</em> menos de la mitad de la mediana propia de la agencia. La mediana viene de los últimos 200 avisos de esa agencia. Las ventanas cortas favorecen a quienes ya sabían que el trabajo venía.</li><li><b>⚑ Método no competitivo</b> — el aviso dice que elegirá un proveedor sin una competencia completa. Puede ser un trato hecho por negociación, una fuente única elegida, una compra urgente, o un proyecto de prueba. Esto puede ser justo a veces. Pero siempre vale la pena saberlo.</li><li><b>⚑ Adjudicaciones repetidas</b> — el mismo nombre de proveedor aparece en 3 o más avisos de adjudicación en la misma agencia dentro de 90 días. Esto puede señalar órdenes de tarea bajo un contrato general tanto como favoritismo. El marcador solo las cuenta — usted decide qué significa.</li><li><b>Franja de contexto</b> — qué tan grande es una adjudicación, mostrada como percentil de las adjudicaciones de esa agencia en los últimos 12 meses (se muestra solo cuando la agencia tiene 20 o más adjudicaciones en ese periodo). También muestra la participación del proveedor en los dólares adjudicados por la agencia en el mismo periodo. Usamos el nombre exacto publicado. No combinamos variantes de nombre aquí.</li>",
-    about_p_flags_footer_html: "Todos los números vienen en vivo de <a href=\"https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx\">City Record Open Data</a> en el momento en que usted ve el aviso. Son adjudicaciones <em>tal como se publicaron</em>. Los números pueden ir con retraso respecto al registro del contrato y al pago real. Nada aquí dice que alguien actuó mal. Solo le ahorra la aritmética.",
-    about_h_feedback: "Enviar comentarios",
-    about_p_feedback: "¿Encontró un error, quiere una función, o tiene una idea? Envíela aquí. Leemos todo. No se necesita cuenta.",
-    about_label_kind: "¿Qué tipo?",
-    fb_cat_bug: "Error",
-    fb_cat_feature: "Idea de función",
-    fb_cat_general: "General",
-    about_label_message: "Su mensaje",
-    about_ph_message: "Qué pasó, qué le gustaría, o cualquier otra cosa — mientras más específico, mejor.",
-    about_label_email: "Correo electrónico",
-    about_label_email_opt: "— opcional, solo si desea una respuesta",
-    about_btn_send: "Enviar comentarios →",
-    about_note_feedback_html: "Si agrega su correo, solo lo usamos para responder. Cada envío también guarda información básica — su dirección IP y navegador. Guardamos esta información por poco tiempo para bloquear spam. Vea <a href=\"#privacy\">Privacidad</a>.",
-    about_err_short: "Agregue un poco más de detalle — al menos una oración.",
-    about_err_long: "Eso es un poco largo — manténgalo bajo 2,000 caracteres.",
-    about_err_bademail: "Esa dirección de correo se ve incorrecta — déjela en blanco si no desea una respuesta.",
-    about_sending: "enviando…",
-    about_thanks_html: "<b>Gracias — lo recibimos.</b>",
-    about_thanks_reply: " Responderemos si hay algo que añadir.",
-    about_reason_ratelimited: "Demasiados mensajes — espere un momento.",
-    about_reason_badmessage: "El mensaje estaba vacío, era muy corto, o muy largo.",
-    about_reason_badcategory: "Elija una categoría — Error, Idea de función, o General.",
-    about_reason_notconfigured: "Los comentarios aún no están activados.",
-    about_reason_sendfailed: "No se pudo registrar eso ahora — inténtelo de nuevo en un momento.",
-    about_foot_html: "CROL-List · una interfaz de búsqueda sobre <a href=\"https://a856-cityrecord.nyc.gov/\">The City Record</a> · <a href=\"changelog.html\">Registro de cambios</a> · <a href=\"stats.html\">Estadísticas</a> · <a href=\"index.html\">Inicio</a>",
-    about_h_privacy: "Privacidad",
-    about_p_privacy_intro: "Sin cuentas, sin cookies, sin rastreo entre sitios, sin tecnología publicitaria. Esto es exactamente lo que CROL-List hace con sus datos:",
-    about_li_privacy_html: "<li><b>Las búsquedas y filtros</b> van directamente desde su navegador a NYC Open Data. El servidor de CROL-List nunca los ve.</li><li><b>El cuadro \"Preguntar\"</b> le permite buscar en lenguaje llano. Envía su texto a nuestro worker. El worker luego lo envía a Claude de Anthropic, que convierte sus palabras en filtros. No guardamos su texto. Solo llevamos un conteo diario, para limitar costos.</li><li><b>Suscribirse o enviar comentarios</b> guarda lo que usted nos envía. Esto incluye su alerta o mensaje, y su correo, si comparte uno. También guardamos información básica sobre su solicitud, como su dirección IP y navegador. Guardamos esto por poco tiempo para bloquear spam y abuso. Cada correo de alerta tiene un enlace de cancelación con un clic.</li><li><b>Las visitas a la página</b> se rastrean con Cloudflare Web Analytics. No usa cookies y solo muestra totales. Cuenta visitas. No sabe quién es usted ni lo sigue a otros sitios.</li>",
-
-    // data.html
-    data_p_lede_html: "El conjunto de datos del City Record, de un vistazo. Su navegador obtiene totales en vivo de <a href=\"https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx\">NYC Open Data</a>. Nada se guarda en el servidor. Los números siguen las <a href=\"about.html#data\">reglas de honestidad</a>. Las estadísticas permanecen dentro de su propia sección. Los probables errores de entrada de datos se excluyen — montos de $10 mil millones o más. Las fechas límite de marcador de posición no se cuentan como reales.",
-    data_h_sections_html: "Qué muestra realmente el registro <span class=\"note\">(todo el historial, por sección)</span>",
-    data_note_sections_body: "La mayor parte del City Record es papeleo sobre empleos del servicio civil. Los avisos que le importan al público son solo una pequeña parte. Por eso cada número de este sitio se muestra por sección.",
-    data_h_volume_html: "Cuántos se publicaron <span class=\"note\">(últimos 12 meses)</span>",
-    data_h_procmix_html: "Combinación de adquisiciones <span class=\"note\">(últimos 12 meses, por tipo de aviso)</span>",
-    data_h_agencies_html: "Principales agencias por dólares adjudicados <span class=\"note\">(últimos 12 meses, depurado)</span>",
-    data_note_agencies_html: "\"Depurado\" significa que quitamos los montos superiores a $10 mil millones. Creemos que son errores de entrada de datos. Vea <a href=\"about.html#data\">los datos subyacentes</a>.",
-    data_h_vendors_html: "Principales proveedores por dólares adjudicados <span class=\"note\">(últimos 12 meses, depurado)</span>",
-    data_note_vendors: "Los nombres de proveedores no están normalizados en la fuente. Pequeñas diferencias de ortografía aparecen como filas separadas aquí.",
-    data_loading_counting: "Contando más de 1M de avisos…",
-    data_fail: "No se pudo conectar a NYC Open Data en este momento — recargue para reintentar.",
-    data_foot_html: "Cada número se calcula en vivo en su navegador a partir del conjunto de datos público. Recargue la página para obtener datos nuevos. Metodología: <a href=\"about.html#data\">acerca de → los datos subyacentes</a> · <a href=\"stats.html\">estadísticas de uso del sitio</a> · <a href=\"changelog.html\">registro de cambios</a>",
-
-    // stats.html
-    stats_p_lede_html: "Una herramienta de transparencia debería publicar su propio uso. Estos son los números operativos en vivo de CROL-List — <b>solo conteos agregados</b>: el sitio no tiene cuentas ni cookies, y ni nosotros ni nadie más puede ver quién hizo qué. Medimos resultados (alertas que se activaron, resúmenes que se leyeron), no personas.",
-    stats_loading: "Cargando contadores en vivo…",
-    stats_lbl_subs: "Suscripciones activas",
-    stats_desc_subs: "Alertas permanentes confirmadas — el número que más nos importa.",
-    stats_lbl_digests: "Resúmenes enviados · 7 días",
-    stats_desc_digests_html: "<span id=\"s-digests-today\">–</span> hoy. Solo cuando algo nuevo coincidió (más chequeos honestos de \"seguimos vigilando\").",
-    stats_lbl_clicks: "Enlaces de resúmenes seguidos · 7 días",
-    stats_desc_clicks_html: "Contado por una redirección que registra un número, nunca una persona — <a href=\"changelog.html#2026-07-02b\">cómo funciona esto</a>.",
-    stats_lbl_feeds: "Descargas de fuentes · 7 días",
-    stats_desc_feeds: "Descargas de RSS/Atom/JSON/calendario, vistas en el origen (los aciertos en caché de borde no se cuentan).",
-    stats_lbl_batch: "Verificaciones cruzadas por lotes · 7 días",
-    stats_desc_batch_html: "Listas de vigilancia verificadas a través de la <a href=\"api.html\">API abierta</a>.",
-    stats_lbl_inv: "Investigaciones compartidas · 7 días",
-    stats_desc_inv: "Instantáneas de solo lectura del espacio de trabajo creadas.",
-    stats_lbl_nl: "Búsquedas en lenguaje llano · hoy",
-    stats_desc_nl: "Llamadas de \"Preguntar en lenguaje llano\" contra el límite diario de gasto.",
-    stats_h_dontknow: "Lo que deliberadamente no sabemos",
-    stats_p_dontknow_html: "Quién es usted, qué buscó, qué avisos leyó, o qué correos abrió. Los totales de vistas de página provienen de las analíticas sin cookies de Cloudflare (agregadas, sin huella digital — <a href=\"about.html\">notas de privacidad</a>); todo lo anterior proviene de simples contadores diarios. No hay nada más.",
-    stats_foot_html: "JSON sin procesar: <a href=\"https://api.crol-list.org/stats\">api.crol-list.org/stats</a> (en caché ~15 min) · <a href=\"changelog.html\">Registro de cambios</a> · <a href=\"about.html\">Acerca de</a> · <a href=\"index.html\">Inicio</a>",
-    stats_asof: "Al {date} (se actualiza cada 15 minutos).",
-    stats_unreachable: "Los contadores en vivo no están disponibles en este momento — el JSON sin procesar está en api.crol-list.org/stats.",
-
-    // api.html
-    api_p_intro_html: "Cada vista de CROL-List tiene un equivalente legible por máquina. Sin clave, sin cuenta; los endpoints tienen límite de frecuencia y caché, y ninguno usa un servicio de pago. URL base: <code>https://api.crol-list.org</code>.",
-    api_h_feeds: "Fuentes — cualquier búsqueda como RSS / JSON / calendario",
-    api_p_feeds_html: "<code>GET /feed.xml</code> (Atom) · <code>GET /feed.json</code> (JSON Feed 1.1) · <code>GET /feed.ics</code> (calendario suscribible — un evento por aviso con fecha). En caché de borde 15 minutos.",
-    api_th_param: "Parámetro",
-    api_th_meaning: "Significado",
-    api_row_q: "palabras clave (hasta 4)",
-    api_row_agency: "nombre de la agencia tal como aparece en el registro",
-    api_row_min: "monto mínimo de adjudicación $ (lente de dinero → fuente de adjudicaciones)",
-    api_row_kindname_html: "lente de entidad: <code>kind=vendor|agency</code>, <code>name=…</code> — los nombres de proveedores se comparan por raíz normalizada, así que se incluyen variantes de sufijo/mayúsculas",
-    api_h_batch: "Verificación cruzada por lotes",
-    api_p_batch_html: "<code>POST /batch</code> con <code>{\"names\": [\"…\", …]}</code> (≤10 nombres/solicitud, 30 solicitudes/día/IP). Para cada nombre: <b>adjudicaciones</b> = avisos de adjudicación/intención que nombran a ese proveedor (coincidencia por raíz del nombre, todos los años); <b>menciones</b> = coincidencias de texto completo en las últimas dos ediciones anuales; <b>entidad</b> = el enlace permanente del perfil del proveedor cuando existen adjudicaciones.",
-    api_label_try: "Pruébelo — un nombre por línea",
-    api_btn_batch: "Verificar cruzado →",
-    api_err_noname: "Agregue al menos un nombre (3+ caracteres).",
-    api_crossreferencing: "verificando en cruce…",
-    api_res_name: "Nombre",
-    api_res_awards: "Adjudicaciones (proveedor registrado)",
-    api_res_mentions: "Menciones (últimos 2 años)",
-    api_link_vendorprofile: "perfil de proveedor →",
-    api_link_search: "buscar →",
-    api_err_ratelimited: "Límite diario alcanzado — intente mañana.",
-    api_err_generic: "No se pudo verificar en cruce — inténtelo de nuevo.",
-    api_h_permalinks: "Enlaces permanentes",
-    api_p_permalinks: "Todo en el sitio tiene una dirección estable que puede enlazar o citar:",
-    api_row_notice: "un aviso — resumen de un vistazo, marcadores, dólares de Checkbook, texto completo",
-    api_row_vendor: "perfil de proveedor (las variantes de nombre se resuelven por raíz)",
-    api_row_matter: "un expediente de adquisiciones como una cronología, con pagos de Checkbook incluidos",
-    api_row_anyview: "cualquier vista filtrada — la URL es el estado",
-    api_h_sharedinv: "Investigaciones compartidas",
-    api_p_sharedinv_html: "<code>POST /inv</code> almacena una instantánea de la lista de fijados (solo campos estructurados, ≤32KB, TTL de 90 días, 10/día/IP) y devuelve un id; <code>GET /inv/&lt;id&gt;</code> lo lee de vuelta. El sitio los muestra en <code>/#investigation/shared/&lt;id&gt;</code>.",
-    api_h_stats: "Estadísticas públicas",
-    api_p_stats_html: "<code>GET /stats</code> — el uso propio del proyecto como conteos agregados (suscripciones activas, resúmenes enviados, enlaces de resumen seguidos, actividad de fuentes/lotes/compartidos). No hay datos personales detrás de esto; en caché ~15 minutos. Versión legible: <a href=\"stats.html\">estadísticas</a>. Relacionado: los correos de resumen enlazan avisos mediante <code>GET /r/&lt;kind&gt;/&lt;request_id&gt;</code>, una redirección de solo conteo al enlace permanente del aviso — acepta un id validado (nunca una URL, por lo que no puede redirigir fuera del sitio) y registra un número por día, nunca una persona.",
-    api_h_subscribe: "Suscribirse por correo",
-    api_p_subscribe_html: "Envíe un correo a <a href=\"mailto:subscribe@crol-list.org\"><code>subscribe@crol-list.org</code></a> describiendo lo que quiere en lenguaje llano — por ejemplo, <em>\"adjudicaciones de contratos de construcción de más de $500k\"</em> o <em>\"avisos de rezonificación en Brooklyn\"</em>. Recibirá de vuelta un enlace de confirmación que describe cómo entendimos su solicitud; la alerta comienza solo después de que haga clic (doble confirmación). Se aplican límites diarios; nada se almacena hasta que confirme.",
-    api_h_mcp: "MCP — para asistentes de IA",
-    api_p_mcp_html: "<code>POST /mcp</code> (Streamable HTTP, JSON-RPC) — apunte cualquier cliente MCP a <code>https://api.crol-list.org/mcp</code>. Herramientas: <code>search_notices</code> y <code>get_notice</code> (el espejo de avisos actualizado a diario, con las reglas de datos honestos aplicadas), <code>preview_watch</code> (lenguaje llano → lo que entregaría una alerta permanente, sin suscribirse), y <code>create_watch</code> (lenguaje llano → un correo de confirmación de doble opt-in; los resúmenes comienzan solo después de que la dirección confirma). La gestión de alertas permanece detrás de los enlaces de cancelación enviados por correo — conocer una dirección nunca revela ni controla sus suscripciones. Se aplican límites por IP y por modelo al día.",
-    api_h_upstream: "Datos de origen",
-    api_p_upstream_html: "CROL-List republica y combina conjuntos de datos públicos — para trabajo masivo, vaya directo a las fuentes: <a href=\"https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx\">City Record Online (dg92-zbpx, Socrata SODA)</a> · <a href=\"https://www.checkbooknyc.com/data-feeds/api\">API de Checkbook NYC</a> · <a href=\"https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e\">Nómina Municipal</a> · <a href=\"https://data.cityofnewyork.us/City-Government/Zoning-Application-Portal-ZAP-Project-Data/hgx4-8ukb\">ZAP</a>.",
-    api_foot_html: "CROL-List · <a href=\"index.html\">Inicio</a> · <a href=\"about.html\">Acerca de</a>",
-
-    // changelog.html
-    chg_p_lede_html: "Qué cambió, cuándo, y qué significa para usted — incluidos los errores. Las versiones son fechas (<a href=\"https://calver.org/\">CalVer</a>): el sitio se publica de forma continua, así que una fecha dice la verdad donde un número de versión sería teatro. Una herramienta que vigila el registro público de la ciudad debería mantener un registro público de sí misma. Números de uso en vivo: <a href=\"stats.html\">estadísticas</a>.",
-    chg_detail_note: "Las notas técnicas detalladas debajo de cada versión (listas con viñetas, informes de incidentes) permanecen en inglés por ahora.",
-    chg_foot_html: "CROL-List es una interfaz gratuita y no oficial de datos públicos. <a href=\"about.html\">Acerca de</a> · <a href=\"stats.html\">Estadísticas</a> · <a href=\"api.html\">API y fuentes</a> · <a href=\"index.html\">Inicio</a>",
-    chg_0710e_h2: "2026.07.10 · Cobertura de español: toda la interfaz, no solo el marco",
-    chg_0710e_foryou_html: "<b>Para usted</b> — Fase 2 del soporte en español: toda la interfaz visible ahora se traduce al cambiar a español. La fase 1 cubrió pestañas, botones y etiquetas cortas (98 claves). La fase 2 agrega los estados vacíos, los marcadores de posición de búsqueda, los encabezados de panel, la franja de la Edición de Hoy, las etiquetas y parámetros del creador de alertas, los mensajes de carga, y todas las etiquetas de control en cada lente (Dinero, Personas, Terrenos, Propiedades, Reglas, Reuniones, Alertas) — haciendo crecer el diccionario de 98 a más de 200 claves. Una nueva verificación de cobertura de inglés residual en la batería de pruebas confirma que 15 frases centinela de alta visibilidad están ausentes en modo español.",
-    chg_0710d_h2: "2026.07.10 · Soporte en español + revisión de estilo de textos",
-    chg_0710d_foryou_html: "<b>Para usted</b> — Ahora aparece un selector de idioma en el encabezado (English / Español). Elegir español traduce todas las pestañas, chips y mensajes de la interfaz; los avisos en sí permanecen en inglés, que es el idioma oficial del City Record. Su preferencia se recuerda entre visitas. Además, los chips de horario, los chips de fecha límite y el selector de categoría de comentarios se actualizaron para seguir la Guía de Estilo de Contenido Web de NYC: \"9 a.m.\" (no \"9 AM\"), números escritos en palabras (\"cierra en dos días\"), y expansión de siglas en su primer uso (RFP, M/WBE, ZAP). El contenido del City Record ahora está marcado con <code>translate=\"no\"</code> para que las herramientas de traducción automática lo dejen intacto.",
-    chg_0710c_h2: "2026.07.10 · Accesibilidad: un piso exigido, no una promesa",
-    chg_0710c_foryou_html: "<b>Para usted</b> — Si usa un teclado o un lector de pantalla, las asperezas se están corrigiendo de verdad: el selector de categoría del formulario de comentarios ahora funciona sin mouse, el cuadro de búsqueda en lenguaje llano se anuncia correctamente, el texto de bajo contraste se corrigió en todo el sitio, y el filtro de \"monto mínimo\" ahora se deshabilita de verdad cuando no aplica, en vez de solo atenuarse. De ahora en adelante, una verificación automatizada de accesibilidad (axe) se ejecuta contra cada página en nuestra batería de pruebas — un cambio que rompe la accesibilidad hace fallar la compilación. CONTRIBUTING y SECURITY también se reescribieron para describir cómo se gobierna y se defiende el proyecto en la práctica.",
-    chg_0710b_h2: "2026.07.10 · Tres nuevas puertas de entrada: correo entrante, MCP y Los Datos",
-    chg_0710b_foryou_html: "<b>Para usted</b> — Tres nuevas formas de entrar. <b>Suscríbase por correo:</b> escriba a <a href=\"mailto:subscribe@crol-list.org\">subscribe@crol-list.org</a> en lenguaje llano (\"adjudicaciones de construcción de más de $500k\") y recibirá de vuelta un enlace de confirmación — sin formulario, sin CAPTCHA, solo sus palabras. <b>Para asistentes de IA:</b> apunte cualquier cliente MCP a <code>api.crol-list.org/mcp</code> para buscar avisos y configurar alertas de forma programática (la doble confirmación sigue aplicando — nada se envía sin que la dirección confirme). <b><a href=\"data.html\">Los Datos</a>:</b> una nueva página que muestra el City Record de un vistazo — qué contiene realmente, volumen de publicación, combinación de adquisiciones, principales agencias y proveedores por dólares depurados — calculado en vivo en su navegador desde NYC Open Data.",
-    chg_0710_h2: "2026.07.10 · Reglas de datos honestos + una base más rápida (con Dev Doshi)",
-    chg_0710_foryou_html: "<b>Para usted</b> — Los filtros y resúmenes de dinero ya no pueden ser secuestrados por los errores de entrada de datos del conjunto de datos: se excluyen los montos ≥ $10 mil millones (hay una errata de $96 billones en el registro oficial), mientras que las adjudicaciones reales de varios miles de millones ahora aparecen correctamente — el límite anterior descartaba silenciosamente todo por encima de $5 mil millones, incluida la mayor adjudicación legítima (≈$6.68 mil millones). Los avisos de listas precalificadas con fechas de marcador de posición del año 2090 ahora dicen \"sin fecha límite fija (continua)\" en vez de una fecha que nadie debería anotar en su calendario. La <a href=\"about.html#data\">página Acerca de documenta las peculiaridades del conjunto de datos</a> — qué contiene realmente el City Record y cómo lo corregimos.",
-    chg_0709_h2: "2026.07.09 · Adquisiciones predictivas: vencimientos de Checkbook, planes MOCS y cronologías de alerta temprana",
-    chg_0709_foryou_html: "<b>Para usted</b> — CROL-List ahora le alerta 6 meses <em>antes</em> de que los contratos venzan o se publiquen nuevas RFP. Los perfiles de agencias y proveedores muestran una nueva pestaña <b>\"Pronóstico de Adquisiciones\"</b> con una cronología vertical, que une las renovaciones de contrato previstas (de Checkbook NYC) y las solicitudes oficiales planeadas por la agencia (de los conjuntos de datos MOCS del Estatuto §112). Los resúmenes ahora entregan notificaciones de alerta temprana para los pronósticos próximos que coincidan con sus alertas.",
-    chg_0702d_h2: "2026.07.02 · Corrección: los proveedores con nombres con puntuación vuelven a resolverse",
-    chg_0702d_foryou_html: "<b>Para usted</b> — Las páginas de proveedores y las alertas de proveedores ahora funcionan para nombres como \"Leon D. Dematteis Construction Corp.\" Antes de esta corrección, hacer clic en un proveedor así mostraba \"sin adjudicaciones registradas\" y una alerta sobre ellos no coincidía con nada — a pesar de que sus adjudicaciones estaban justo ahí.",
-    chg_0702c_h2: "2026.07.02 · Ágil y nítido: la ronda cuatro de velocidad y simplificación",
-    chg_0702c_foryou_html: "<b>Para usted</b> — El sitio se ve más tranquilo y se siente inmediato. Las listas muestran marcadores de posición con la forma del contenido en vez de indicadores de carga giratorios; filtrar mantiene su lugar en vez de vaciar la lista; volver a una pestaña que ya cargó es instantáneo; hacer clic en un aviso pinta su detalle de inmediato (el rastro documental se completa un instante después). La búsqueda se ejecuta mientras escribe — los botones de Filtros desaparecieron porque ya no los necesita.",
-    chg_0702b_h2: "2026.07.02 · Habilitación: estadísticas públicas, conteos de clics honestos, esta página",
-    chg_0702b_foryou_html: "<b>Para usted</b> — Ahora puede ver los números de uso propios del proyecto en <a href=\"stats.html\">/stats</a> (solo conteos agregados — sin cuentas, sin cookies, nadie es rastreado). Los enlaces de resúmenes por correo ahora pasan por una redirección de solo conteo para que podamos saber que los resúmenes son útiles; cuenta <em>clics por día</em>, nunca quién hizo clic, y cada pie de resumen lo dice.",
-    chg_0702_h2: "2026.07.02 · Siga el dinero, cronologías de expedientes, seguimientos, espacio de trabajo, API",
-    chg_0702_foryou_html: "<b>Para usted</b> — Las adjudicaciones ahora muestran lo que <em>realmente se pagó</em> (en vivo desde Checkbook NYC), cualquier expediente de adquisiciones se lee como una sola cronología, puede seguir a un proveedor o agencia y recibir un correo cuando reaparezcan, fijar cualquier cosa en un espacio de trabajo de investigación citable, y usar cada vista como una API.",
-    chg_0701_h2: "2026.07.01 · Páginas de entidades, marcadores rojos en contexto — y las primeras diez, todo en un día",
-    chg_0701_foryou_html: "<b>Para usted</b> — Cada proveedor y agencia se convirtió en una página (con totales, principales socios, y RFP abiertas), los avisos de adquisiciones llevan contexto estadístico en vez de texto desnudo, y llegó toda la capa de búsqueda y suscripción: vigile cualquier búsqueda, reciba un resumen matutino por correo, tome cualquier vista como RSS/calendario, comparta cualquier aviso por URL, y vea las fechas límite como cuentas regresivas en vez de fechas.",
-    chg_0630_h2: "2026.06.30 · Suscripciones reales",
-    chg_0630_foryou_html: "<b>Para usted</b> — Las alertas por correo se volvieron reales: doble confirmación (nada se almacena hasta que hace clic en el enlace de confirmación), cancelación de suscripción con un clic, y su dirección solo se usa para enviarle su propio resumen.",
-    chg_0626_h2: "2026.06.26 · crol-list.org",
-    chg_0626_foryou_html: "<b>Para usted</b> — El sitio obtuvo su propio dominio y un cuadro real de \"preguntar en lenguaje llano\" en cada lente (con un respaldo en el dispositivo, para que la búsqueda funcione incluso si el asistente falla).",
-    chg_0624_h2: "2026.06.24–25 · Las siete lentes",
-    chg_0624_foryou_html: "<b>Para usted</b> — La herramienta tomó su forma: Dinero, Personas, Terrenos, Propiedades, Reglas, Reuniones y Alertas, en el diseño tipográfico, sobre datos abiertos en vivo sin nada en caché.",
-
-    // wave 9: es SR surface (L1-L6) + page titles + toggle/vendor-disclosure copy
-    tablist_label: "Lentes",
-    fb_kind_label: "¿Qué tipo de comentario?",
-    meta_agency_profile_announce: "Perfil de agencia: {name}",
-    meta_vendor_profile_announce: "Perfil de proveedor: {name}",
-    meta_matter_timeline_announce: "Cronología del expediente: {n} eventos",
-    mini_subscribe_btn: "Suscribirse a la alerta",
-    vendor_profile_variants: "Perfil de proveedor · {n} variante{s} de nombre resuelta{s}",
-    which_variants_btn: "¿cuáles?",
-    index_title: "CROL-List · rastree RFP, rezonificaciones, reuniones",
-    about_title: "Acerca de · CROL-List",
-    data_title: "Los datos · CROL-List",
-    stats_title: "Estadísticas · CROL-List",
-    changelog_title: "Registro de cambios · CROL-List",
-    api_title: "API y fuentes · CROL-List",
-    map_marker_alt: "Ubicación del proyecto de rezonificación",
-  },
+  // es, ru, zh-Hans: full dictionaries live in i18n/lang/<lang>.js (loaded on
+  // demand — see the file header above). Populated at runtime via
+  // Object.assign(window.STRINGS.<lang>, {...}); stays {} here until then.
+  es: {},
 
   // Stubs for remaining LL30 languages — translations pending (wave 6 phases 2–4)
   fr: {}, ht: {}, ru: {}, bn: {}, "zh-Hans": {}, "zh-Hant": {}, ko: {}, ar: {}, ur: {}, pl: {},
@@ -1420,18 +791,8 @@ const STRINGS = {
 // City Record section names arrive as DATA VALUES (section_name in the open dataset) but are
 // rendered as navigation chrome (Today strip, agency profiles) — so they translate here, with
 // English fallback for any section the dataset adds before we do (2026-07-13 hotfix, bug b).
-const SECTION_I18N = {
-  es: {
-    "Procurement": "Adquisiciones",
-    "Public Comment on Contract Awards": "Comentario público sobre adjudicaciones de contratos",
-    "Public Hearings and Meetings": "Audiencias y reuniones públicas",
-    "Agency Rules": "Reglas de agencias",
-    "Property Disposition": "Disposición de propiedades",
-    "Changes in Personnel": "Cambios de personal",
-    "Special Materials": "Materiales especiales",
-    "Court Notices": "Avisos judiciales",
-  },
-};
+// Populated per-language by i18n/lang/<lang>.js (SECTION_I18N.es = {...}; etc).
+const SECTION_I18N = {};
 function tSection(name) {
   const lang = window.LANG || "en";
   const map = SECTION_I18N[lang];
@@ -1442,6 +803,9 @@ function tSection(name) {
 window.STRINGS = STRINGS;
 window.LANG_META = LANG_META;
 window.SUPPORTED_LANGS = SUPPORTED_LANGS;
+window.SHIPPING_LANGS = SHIPPING_LANGS;
+window.LANG_FILE_HASHES = LANG_FILE_HASHES;
+window.I18N_PROVENANCE = I18N_PROVENANCE;
 window.SECTION_I18N = SECTION_I18N;
 window.tSection = tSection;
 
@@ -1459,6 +823,39 @@ function t(key, vars) {
   return str;
 }
 window.t = t;
+
+// tn(base, n, vars) — CLDR-correct pluralized lookup (w8-01 AC #2), backed by
+// Intl.PluralRules. Looks up "<base>_<category>" (one/few/many/other, per CLDR), falling
+// back to "<base>_other", then to the same chain under English, then to a raw key string —
+// the same no-raw-key-crash posture as t(). {n} is auto-substituted from the count passed;
+// extra `vars` behave like t()'s vars. English/Spanish output is unchanged byte-for-byte
+// from the pre-tn() {s}-suffix hack (both only ever select "one" or "other").
+function pluralCategory(lang, n) {
+  try {
+    const locale = (LANG_META[lang] && LANG_META[lang].intlDate) || lang;
+    return new Intl.PluralRules(locale).select(n);
+  } catch (e) {
+    return n === 1 ? "one" : "other";
+  }
+}
+window.pluralCategory = pluralCategory;
+
+function tn(base, n, vars) {
+  const lang = window.LANG || "en";
+  const cat = pluralCategory(lang, n);
+  const dict = STRINGS[lang] || {};
+  let str = dict[base + "_" + cat];
+  if (str === undefined) str = dict[base + "_other"];
+  if (str === undefined) str = STRINGS.en[base + "_" + cat];
+  if (str === undefined) str = STRINGS.en[base + "_other"];
+  if (str === undefined) str = base + "_" + cat;
+  const allVars = Object.assign({ n: n }, vars || {});
+  Object.entries(allVars).forEach(function(kv) {
+    str = str.replace(new RegExp("\\{" + kv[0] + "\\}", "g"), kv[1]);
+  });
+  return str;
+}
+window.tn = tn;
 
 // applyStrings() — walk data-i18n elements and replace textContent;
 // data-i18n-html elements get innerHTML replaced (allows inline markup in translations);
@@ -1489,15 +886,89 @@ function applyStrings() {
   document.documentElement.lang = lang;
   const meta = LANG_META[lang];
   if (meta) document.documentElement.dir = meta.dir;
+  // w8-06: per-language font stack + line-height as CSS custom properties (CJK/Bengali/
+  // Arabic typography needs a script-aware stack; the :lang() rules in each page's CSS do
+  // the case/tracking neutralization, this just supplies the stack the rules reference).
+  document.documentElement.style.setProperty("--lang-font-stack", (meta && meta.fontStack) || "inherit");
+  document.documentElement.style.setProperty("--lang-line-height-scale", (meta && meta.lineHeightScale) || 1);
+  updateLangNotice();
 }
 window.applyStrings = applyStrings;
 
-// setLang(lang) — switch language, persist to localStorage, re-apply strings.
-function setLang(lang) {
+// updateLangNotice() — shared #langNotice banner (index.html + all subpages): discloses (a)
+// that notice CONTENT stays English (only meaningful on pages that render notices) and (b)
+// machine-translation-quality disclosure for any active language whose I18N_PROVENANCE state
+// isn't yet "native-reviewed" (w8-02 AC). Centralizing this in applyStrings() means every
+// page gets both disclosures for free — no per-page wiring needed.
+function updateLangNotice() {
+  const notice = document.getElementById("langNotice");
+  if (!notice) return;
+  const lang = window.LANG || "en";
+  if (lang === "en") { notice.hidden = true; notice.textContent = ""; return; }
+  const parts = [];
+  if (document.getElementById("list")) parts.push(t("notices_in_english_note"));
+  const prov = I18N_PROVENANCE[lang];
+  if (prov && prov.state !== "native-reviewed") parts.push(t("mt_disclaimer"));
+  if (parts.length) { notice.textContent = parts.join(" "); notice.hidden = false; }
+  else { notice.hidden = true; notice.textContent = ""; }
+}
+window.updateLangNotice = updateLangNotice;
+
+// ensureLangLoaded(lang, cb) — lazy-load a shipping language's dictionary file (browser
+// only; Node/tooling already has every shipping language via the require() shim at the
+// bottom of this file). cb runs once the dictionary is available (or immediately, if it
+// already is, or if `lang` isn't a lazy-loadable shipping language). On network failure,
+// STRINGS[lang] simply stays {} forever and t()/tn() fall back to complete English — the
+// 2026-07-11 "no raw keys" rule — so there is no error path to handle here.
+const _langLoadState = {}; // lang -> "loading" | "loaded"
+function ensureLangLoaded(lang, cb) {
+  if (lang === "en" || !SHIPPING_LANGS.includes(lang) || (STRINGS[lang] && Object.keys(STRINGS[lang]).length)) {
+    if (cb) cb();
+    return;
+  }
+  if (_langLoadState[lang] === "loading") {
+    document.addEventListener("crol:langloaded:" + lang, function handler() {
+      document.removeEventListener("crol:langloaded:" + lang, handler);
+      if (cb) cb();
+    });
+    return;
+  }
+  _langLoadState[lang] = "loading";
+  const hash = LANG_FILE_HASHES[lang];
+  const s = document.createElement("script");
+  s.src = "i18n/lang/" + lang + ".js" + (hash ? ("?v=" + hash) : "");
+  function done() {
+    _langLoadState[lang] = "loaded";
+    document.dispatchEvent(new Event("crol:langloaded:" + lang));
+    if (cb) cb();
+  }
+  s.onload = done;
+  s.onerror = done; // fall back to English silently — no raw keys, no thrown error
+  document.head.appendChild(s);
+}
+window.ensureLangLoaded = ensureLangLoaded;
+
+// setLang(lang, onReady) — switch language, persist to localStorage, re-apply strings.
+// Renders immediately with whatever is loaded (falls back to English for any missing key —
+// static [data-i18n] chrome only), then re-applies once a lazily-loaded shipping language's
+// dictionary finishes fetching. `onReady`, if given, runs both immediately AND again once
+// the dictionary loads — callers with DYNAMICALLY-BUILT content (search results, today-strip
+// cards, a subpage's live-fetched data) pass their repaint function here, because
+// applyStrings() only ever touches [data-i18n]-tagged static elements: content already
+// stamped out via t()/tn() template literals before the dictionary arrived would otherwise
+// stay in English forever even after the network request completes (the load race this
+// callback exists to close).
+function setLang(lang, onReady) {
   if (!SUPPORTED_LANGS.includes(lang)) lang = "en";
   window.LANG = lang;
   try { localStorage.setItem("crol_lang", lang); } catch(e) {}
   applyStrings();
+  ensureLangLoaded(lang, function() {
+    if (window.LANG === lang) {
+      applyStrings();
+      if (onReady) onReady();
+    }
+  });
 }
 window.setLang = setLang;
 
@@ -1532,7 +1003,7 @@ function initSubpageLangSwitcher(onChange) {
     btns.forEach(function(btn){
       btn.addEventListener("click", function(){
         var lang = btn.dataset.lang;
-        setLang(lang);
+        setLang(lang, onChange ? function(){ onChange(lang); } : null);
         btns.forEach(function(b){ b.setAttribute("aria-pressed", b.dataset.lang === lang ? "true" : "false"); });
         if (onChange) onChange(lang);
       });
@@ -1543,9 +1014,27 @@ function initSubpageLangSwitcher(onChange) {
 }
 window.initSubpageLangSwitcher = initSubpageLangSwitcher;
 
+// Node/tooling shim: when this file is require()'d outside a browser (tests, the hash-
+// checking gate in i18n_refs.py, es_diacritics.py, etc.), synchronously require() every
+// shipping language's dictionary file too, so window.STRINGS/SECTION_I18N come back
+// complete with NO browser involved. `require`/`module` only exist in Node — this branch
+// is dead code (never even parsed as reachable) in the browser.
+if (typeof module !== "undefined" && module.exports !== undefined && typeof require === "function") {
+  const path = require("path");
+  SHIPPING_LANGS.forEach(function(lang) {
+    require(path.join(__dirname, "i18n", "lang", lang + ".js"));
+  });
+}
+
 // Init: restore saved language preference on module load (before DOMContentLoaded), and set
 // the html lang/dir attributes immediately (i18n.js loads in <head>, so this runs before body
 // paints — the WCAG 3.1.1 "no English flash" requirement, satisfied without a separate script).
+// w8-01: if the saved preference is a lazily-loaded shipping language, document.write() its
+// dictionary file's <script> tag NOW, while this script is still executing during <head>
+// parsing — the browser fetches+runs it synchronously before the rest of the page parses, so
+// the FIRST render already has the dictionary (no translated-text flash either, not just the
+// lang/dir attributes). This only fires once, at initial load; a later in-session language
+// switch uses ensureLangLoaded()'s async <script> injection instead (setLang(), above).
 (function() {
   var saved = "en";
   try { saved = localStorage.getItem("crol_lang") || "en"; } catch(e) {}
@@ -1555,5 +1044,10 @@ window.initSubpageLangSwitcher = initSubpageLangSwitcher;
     document.documentElement.lang = saved;
     var meta = LANG_META[saved];
     if (meta) document.documentElement.dir = meta.dir;
+    if (saved !== "en" && SHIPPING_LANGS.includes(saved) && typeof document.write === "function") {
+      var hash = LANG_FILE_HASHES[saved];
+      document.write('<script src="i18n/lang/' + saved + '.js' + (hash ? ('?v=' + hash) : '') + '"><\/script>');
+      _langLoadState[saved] = "loaded"; // document.write blocks until it runs — no async race
+    }
   }
 })();

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>About · CROL-List</title>
 <meta name="description" content="What CROL-List is, where its data comes from, how flags and context work, how to send feedback, and its privacy and data-retention stance.">
-<script src="i18n.js?v=bf264f62"></script>
+<script src="i18n.js?v=943805da"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
@@ -56,6 +56,8 @@
   .lang-switcher{display:flex;gap:.4rem;justify-content:center;margin-block-start:10px;flex-wrap:wrap}
   .lang-btn{font:600 11px/1 var(--ui);padding:3px 10px;min-height:32px;display:inline-flex;align-items:center;border-radius:12px;border:1px solid var(--rule-strong);background:transparent;color:var(--muted);cursor:pointer}
   .lang-btn[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .lang-notice{font:12px/1.4 var(--ui);color:var(--muted);text-align:center;margin-block-start:4px;padding-inline:22px}
+  :lang(zh-Hans){letter-spacing:normal !important;text-transform:none !important}
   .skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--ink);color:#fff;padding:11px 18px;border-radius:0 0 9px 0;font:600 13px/1 var(--ui);text-decoration:none}
   .skip:focus{left:0}
   :is(a,button,select,input,textarea,summary):focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
@@ -82,7 +84,10 @@
   <div class="lang-switcher" id="langSwitcher" role="group" aria-label="Language / Idioma">
     <button class="lang-btn" data-lang="en" aria-pressed="true"><span lang="en">English</span></button>
     <button class="lang-btn" data-lang="es" aria-pressed="false"><span lang="es">Español</span></button>
+    <button class="lang-btn" data-lang="zh-Hans" aria-pressed="false"><span lang="zh-Hans">中文（简体）</span></button>
+    <button class="lang-btn" data-lang="ru" aria-pressed="false"><span lang="ru">Русский</span></button>
   </div>
+  <div id="langNotice" class="lang-notice" hidden></div>
   <div class="cr-rule cr-rule--bottom"></div>
   <a class="backhome" href="index.html" data-i18n="back_to_crol">← Back to CROL-List</a>
 </header>
