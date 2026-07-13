@@ -15,6 +15,14 @@ idea, normal, region, natural, editions, digital… (Spanish/French/Polish colli
 
 Extending to a new language: check every entry against that language's dictionary before
 activating its guard run; drop collisions here (the guard is conservative by design).
+
+w8-07 (zh-Hans, ru activation): WORD_RE in the guard/lint only ever extracts ASCII [A-Za-z]
+letter runs, so a non-Latin-script language's own prose (Chinese characters, Cyrillic
+letters) can NEVER collide with this list — there is no ASCII substring to match. The
+curation step above is a no-op for zh-Hans/ru specifically (and for any future CJK, Cyrillic,
+Arabic, Bengali-script language); it stays load-bearing for fr, ht, pl, and any other
+Latin-script addition, where letter-for-letter collisions are the real risk this file guards
+against.
 """
 
 ENGLISH_WORDS = frozenset("""

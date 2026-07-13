@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-"""i18n key parity lint — fails if any shipping translated language in i18n.js
-is missing keys that 'en' has. Wired into the CI unit job via .github/workflows/ci.yml.
+"""i18n key parity lint — fails if any shipping language is missing keys that 'en' has.
+Wired into the CI unit job via .github/workflows/ci.yml.
 
-Shipping languages (must have full key coverage): es
-Stub languages (allowed to be empty {}): fr, ht, ru, bn, zh-Hans, zh-Hant, ko, ar, ur, pl
+w8-01: shipping languages now live in i18n.js's SHIPPING_LANGS declaration (the ONE place
+this list is authored — the selector, the guard's CI matrix, and this gate all read it,
+directly or by convention) and their dictionaries live in i18n/lang/<lang>.js, not inline
+in i18n.js (only 'en' stays inline there). Stub languages (LANG_META entries not in
+SHIPPING_LANGS) are allowed to have no file / an empty dictionary at all.
 """
 import re
 import sys
@@ -19,76 +22,87 @@ if not I18N.exists():
 src = I18N.read_text(encoding="utf-8")
 
 
-def _find_strings_block(src):
-    """Return the content of the `const STRINGS = { ... }` block."""
-    m = re.search(r'\bconst STRINGS\s*=\s*\{', src)
+def extract_en_keys(src):
+    """Return the set of string keys in i18n.js's inline `en: { ... }` block (inside
+    `const STRINGS = {...}` — NOT LANG_META's `en: { locale: ..., ... }`, a different object
+    that also happens to have an `en:` property)."""
+    strings_m = re.search(r"\bconst STRINGS\s*=\s*\{", src)
+    if not strings_m:
+        return None
+    strings_start = src.index("{", strings_m.start())
+    m = re.search(r"(?:^|\n)\s+en\s*:\s*\{", src[strings_start:])
     if not m:
         return None
-    start = src.index("{", m.start())
+    m_start = strings_start + m.start()
+    open_brace = src.index("{", m_start)
     depth = 0
-    for i in range(start, len(src)):
+    end = open_brace
+    for i in range(open_brace, len(src)):
         if src[i] == "{":
             depth += 1
         elif src[i] == "}":
             depth -= 1
             if depth == 0:
-                return src[start : i + 1]
-    return None
+                end = i
+                break
+    block = src[open_brace:end + 1]
+    return set(re.findall(r"^\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*:", block, re.MULTILINE))
 
 
-def extract_lang_keys(src, lang):
-    """Extract the set of string keys defined for `lang` inside STRINGS."""
-    strings_block = _find_strings_block(src)
-    if strings_block is None:
-        return None
-
-    # Inside STRINGS, find `lang: {` or `"lang": {`
-    quoted = re.escape(lang)
-    pattern = re.compile(
-        r'(?:^|\n)\s+(?:"' + quoted + r'"|' + quoted + r')\s*:\s*\{',
-        re.MULTILINE,
-    )
-    m = pattern.search(strings_block)
+def extract_shipping_langs(src):
+    m = re.search(r"SHIPPING_LANGS\s*=\s*\[(.*?)\]", src, re.S)
     if not m:
         return None
+    return re.findall(r'"([^"]+)"', m.group(1))
 
-    open_brace = strings_block.index("{", m.start())
+
+def extract_lang_file_keys(lang):
+    """Extract the set of keys assigned in i18n/lang/<lang>.js's Object.assign(...) call."""
+    path = ROOT / "i18n" / "lang" / f"{lang}.js"
+    if not path.exists():
+        return None
+    text = path.read_text(encoding="utf-8")
+    m = re.search(r"Object\.assign\(W\.STRINGS\[[^\]]+\],\s*\{", text)
+    if not m:
+        return None
+    open_brace = text.index("{", m.start())
     depth = 0
     end = open_brace
-    for i in range(open_brace, len(strings_block)):
-        if strings_block[i] == "{":
+    for i in range(open_brace, len(text)):
+        if text[i] == "{":
             depth += 1
-        elif strings_block[i] == "}":
+        elif text[i] == "}":
             depth -= 1
             if depth == 0:
                 end = i
                 break
-    lang_block = strings_block[open_brace : end + 1]
-
-    # Extract property keys: `    key_name:` (identifiers only, not nested objects)
-    keys = re.findall(r"^\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*:", lang_block, re.MULTILINE)
-    return set(keys)
+    block = text[open_brace:end + 1]
+    keys = re.findall(r'^\s+(?:"([^"]+)"|([a-zA-Z_][a-zA-Z0-9_]*))\s*:', block, re.MULTILINE)
+    return {a or b for a, b in keys}
 
 
-en_keys = extract_lang_keys(src, "en")
+en_keys = extract_en_keys(src)
 if en_keys is None:
     print("ERROR: 'en' block not found in i18n.js", file=sys.stderr)
     sys.exit(1)
 
-# Languages that MUST have full key coverage (shipping languages)
-REQUIRED_FULL = ["es"]
+REQUIRED_FULL = extract_shipping_langs(src)
+if REQUIRED_FULL is None:
+    print("ERROR: SHIPPING_LANGS not found in i18n.js", file=sys.stderr)
+    sys.exit(1)
 
 failures = []
+report = []
 for lang in REQUIRED_FULL:
-    lang_keys = extract_lang_keys(src, lang)
+    lang_keys = extract_lang_file_keys(lang)
     if lang_keys is None:
-        failures.append(f"{lang}: block not found in STRINGS")
+        failures.append(f"{lang}: i18n/lang/{lang}.js not found or unparseable")
         continue
     missing = en_keys - lang_keys
     if missing:
-        failures.append(
-            f"{lang}: missing {len(missing)} key(s): {sorted(missing)}"
-        )
+        failures.append(f"{lang}: missing {len(missing)} key(s): {sorted(missing)}")
+    else:
+        report.append(f"{lang}: full coverage ({len(lang_keys)} keys)")
 
 if failures:
     print("i18n key parity lint FAILED:", file=sys.stderr)
@@ -96,4 +110,4 @@ if failures:
         print(f"  {f}", file=sys.stderr)
     sys.exit(1)
 
-print(f"i18n keys OK — en: {len(en_keys)} keys; es: full coverage ({len(en_keys)} keys)")
+print(f"i18n keys OK — en: {len(en_keys)} keys; " + "; ".join(report))

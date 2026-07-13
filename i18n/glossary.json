@@ -1,0 +1,75 @@
+{
+  "_comment": "Civic-terms glossary (w8-02). Pins the translation for hard civic terms BEFORE bulk drafting, so a term is consistent everywhere it appears instead of translated ad hoc per string. `source` cites where the City's own translation of the term comes from (MOIA Language Access materials, an agency Language Access Plan) when one exists; otherwise it records the judgment call. `note` records any nuance a translator/reviewer should know. Extend this file — never a per-string ad hoc choice — when a new civic term needs pinning for a new language.",
+  "terms": {
+    "rfp": {
+      "en": "Request for Proposals (RFP)",
+      "es": "Solicitud de Propuestas (RFP)",
+      "zh-Hans": "征求建议书 (RFP)",
+      "ru": "Запрос предложений (RFP)",
+      "source": "es: NYC MOCS/PASSPort public-facing Spanish procurement materials use \"Solicitud de Propuestas\"; zh-Hans/ru: no official City translation found — chose the standard PRC/CIS government-procurement term and kept the English acronym parenthetical, matching the existing es convention of keeping the acronym visible on first use."
+    },
+    "award": {
+      "en": "award",
+      "es": "adjudicación",
+      "zh-Hans": "中标（授予合同）",
+      "ru": "присуждение контракта",
+      "note": "Used as both noun (\"an award\") and verb (\"awarded to\") in en; es collapses both onto \"adjudicación\"/\"adjudicado\". zh-Hans and ru dictionaries must do the same collapse — do not introduce a second synonym for the verb form."
+    },
+    "procurement": {
+      "en": "Procurement",
+      "es": "Adquisiciones",
+      "zh-Hans": "采购",
+      "ru": "Закупки",
+      "source": "es: chosen by judgment call in the wave-6 hotfix (i18n.js SECTION_I18N.es); zh-Hans/ru: no official City translation found — mirrored the same judgment-call posture, using the standard civic-procurement term in each language."
+    },
+    "rezoning": {
+      "en": "rezoning",
+      "es": "rezonificación",
+      "zh-Hans": "重新分区",
+      "ru": "изменение зонирования",
+      "note": "ULURP (Uniform Land Use Review Procedure) itself is never expanded/translated inline in any shipping language today — it stays an English acronym in body copy, same as PIN. This glossary entry covers the plain-language word \"rezoning\", not the ULURP acronym."
+    },
+    "city_record": {
+      "en": "The City Record",
+      "es": "El Registro Municipal / The City Record",
+      "zh-Hans": "市政公报 / The City Record",
+      "ru": "Городской вестник / The City Record",
+      "note": "The proper noun \"The City Record\" itself is never fully replaced — es keeps it as a citable link text (e.g. about.html) while using \"Registro Municipal\" for descriptive chrome (footer_lede, city_record_link). zh-Hans/ru follow the same split: descriptive chrome translates, the linked proper-noun citation keeps \"The City Record\"."
+    },
+    "pin": {
+      "en": "PIN",
+      "es": "PIN",
+      "zh-Hans": "PIN",
+      "ru": "PIN",
+      "note": "Procurement Identification Number. Kept as the untranslated acronym in every shipping language — es never expands or translates it, so zh-Hans/ru don't either."
+    },
+    "community_board": {
+      "en": "Community Board",
+      "es": "Junta Comunitaria",
+      "zh-Hans": "社区委员会",
+      "ru": "Общественный совет",
+      "source": "no official City translation found for zh-Hans/ru — chose the standard civic-body term in each language, mirroring es's \"Junta Comunitaria\"."
+    },
+    "upset_price": {
+      "en": "upset price",
+      "es": "precio mínimo",
+      "zh-Hans": "保留价",
+      "ru": "минимальная цена",
+      "note": "DCAS auction term for the minimum acceptable bid. es already renders it as a plain-language \"minimum price\" rather than a literal translation of \"upset\"; zh-Hans/ru follow the same plain-language approach (reserve/minimum price), not a literal rendering."
+    },
+    "borough_names": {
+      "en": "Brooklyn / Queens / Manhattan / Bronx / Staten Island",
+      "es": "Brooklyn / Queens / Manhattan / Bronx / Staten Island (unchanged)",
+      "zh-Hans": "Brooklyn / Queens / Manhattan / Bronx / Staten Island (unchanged)",
+      "ru": "Brooklyn / Queens / Manhattan / Bronx / Staten Island (unchanged)",
+      "note": "Borough and neighborhood proper nouns (Brooklyn, Gowanus, 79 Rivington, …) stay in English/Latin script in es today (see i18n.js sugg_land_0/1/2) even though Chinese-language NYC press sometimes uses exonyms (布鲁克林, 皇后区, …) and Russian-language press sometimes transliterates (Бруклин, Куинс, …). zh-Hans and ru follow the existing es precedent — proper nouns are not translated — for consistency with how the site already handles place names, not because the exonyms don't exist."
+    },
+    "mandatory_inclusionary_housing": {
+      "en": "Mandatory Inclusionary Housing",
+      "es": "Vivienda Inclusiva Obligatoria (MIH)",
+      "zh-Hans": "强制性包容性住房 (MIH)",
+      "ru": "Обязательное инклюзивное жильё (MIH)",
+      "source": "no official City translation found for zh-Hans/ru — mirrored es's pattern of a descriptive translation plus the (MIH) acronym parenthetical."
+    }
+  }
+}
