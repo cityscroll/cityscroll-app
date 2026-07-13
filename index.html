@@ -285,7 +285,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=207f3877"></script>
+<script src="i18n.js?v=73b5f111"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
@@ -2371,7 +2371,7 @@ async function showAgency(name){
       <div class="actions" style="margin-top:16px">
         <button class="act primary" type="button" data-follow="agency" data-name="${nm.replace(/"/g,"&quot;")}">Follow: anything new from them</button>
         <button class="act" type="button" id="ecopy">Copy link</button>
-        ${pinBtn("agency", nm, agencyWho(nm), "agency profile")}
+        ${pinBtn("agency", nm, agencyWho(nm), t("meta_agency_profile"))}
         <button class="act" type="button" data-aw="rules">Watch rules only</button>
         <button class="act" type="button" data-aw="meetings">Watch meetings only</button>
         ${API?`<a class="act" href="${API.replace(/\/+$/,"")}/feed.xml?lens=entity&kind=agency&name=${encodeURIComponent(nm)}" target="_blank" rel="noopener">RSS</a>`:""}
@@ -2522,7 +2522,7 @@ async function showVendor(name){
       <div class="actions" style="margin-top:16px">
         <button class="act primary" type="button" data-follow="vendor" data-name="${cleanText(display).replace(/"/g,"&quot;")}">Follow this vendor</button>
         <button class="act" type="button" id="ecopy">Copy link</button>
-        ${pinBtn("vendor", cleanText(display), cleanText(display), "vendor profile")}
+        ${pinBtn("vendor", cleanText(display), cleanText(display), t("meta_vendor_profile"))}
         ${API?`<a class="act" href="${API.replace(/\/+$/,"")}/feed.xml?lens=entity&kind=vendor&name=${encodeURIComponent(cleanText(display))}" target="_blank" rel="noopener">RSS</a>`:""}
       </div>
       <div class="note">Identity is resolved by name normalization (case, punctuation, legal suffixes) — variants listed above; distinct companies sharing a name stem would be merged, so treat totals as <b>“published under this name,”</b> not a legal entity. Awards as published in the City Record; actual payments differ (Checkbook join coming).</div>
@@ -2579,7 +2579,7 @@ async function showVendor(name){
 const INVKEY = "crd_invs_v1";
 function invStore(){
   try{ const s = JSON.parse(localStorage.getItem(INVKEY)||"null"); if(s && s.invs && s.invs[s.current]) return s; }catch(e){}
-  return {current:"inv1", invs:{inv1:{name:"My investigation", created:new Date().toISOString().slice(0,10), items:[]}}};
+  return {current:"inv1", invs:{inv1:{name:t("inv_default_name"), created:new Date().toISOString().slice(0,10), items:[]}}};
 }
 function invSave(s){ try{ localStorage.setItem(INVKEY, JSON.stringify(s)); }catch(e){} }
 const INV_HREF = {notice:"#notice/", vendor:"#vendor/", agency:"#agency/", matter:"#matter/"};
@@ -2623,16 +2623,17 @@ function invDownload(name, content, type){
   a.href=URL.createObjectURL(new Blob([content],{type}));
   a.download=name; document.body.appendChild(a); a.click(); a.remove();
 }
+const PINTYPE_KEY = {notice:"pintype_notice", vendor:"pintype_vendor", agency:"pintype_agency", matter:"pintype_matter"};
 function invItemsHtml(items, readonly){
   const acc = new Date().toISOString().slice(0,10);
   return items.map((i,idx)=>`<div class="tl" data-idx="${idx}" style="align-items:flex-start">
-    <span class="pin" style="flex:0 0 auto">${i.t||"notice"}</span>
+    <span class="pin" style="flex:0 0 auto">${t(PINTYPE_KEY[i.t]||"pintype_notice")}</span>
     <span style="flex:1 1 300px;min-width:220px">
       <b>${pivotA(invItemHref(i), i.title.replace(/[<>&]/g,""))}</b>
-      <span class="rmeta" style="display:block;margin:2px 0 0">${(i.meta||"").replace(/[<>&]/g,"")} · pinned ${i.added}</span>
+      <span class="rmeta" style="display:block;margin:2px 0 0">${(i.meta||"").replace(/[<>&]/g,"")} · ${t("inv_pinned_on",{date:i.added})}</span>
       ${readonly
         ? (i.note?`<span class="rmeta2" style="display:block">${i.note.replace(/[<>&]/g,"")}</span>`:"")
-        : `<input type="text" class="invnote" data-idx="${idx}" value="${(i.note||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;")}" placeholder="add a note…" style="margin-top:6px;font-size:13px;padding:7px 9px">`}
+        : `<input type="text" class="invnote" data-idx="${idx}" value="${(i.note||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;")}" placeholder="${t("inv_note_placeholder")}" style="margin-top:6px;font-size:13px;padding:7px 9px">`}
     </span>
     ${readonly?"":`<button class="act invdel" data-idx="${idx}" type="button" style="padding:6px 9px">✕</button>`}
   </div>`).join("");
@@ -2643,25 +2644,25 @@ async function showInvestigation(){
   const s = invStore(), inv = s.invs[s.current];
   const box = $("#entityview");
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
-    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CROL-List</a></p>
+    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("back_browse")}</a></p>
     <div class="panel" style="padding:22px 24px">
-      <div class="ftype" style="margin-bottom:6px">Investigation workspace · stored only in this browser</div>
+      <div class="ftype" style="margin-bottom:6px">${t("inv_ws_heading")}</div>
       <input type="text" id="invname" value="${inv.name.replace(/"/g,"&quot;")}" style="font:800 22px/1.2 var(--font-display);border:none;background:transparent;padding:0;width:100%">
-      <div class="rmeta2">${inv.items.length} pinned item${inv.items.length===1?"":"s"} · started ${inv.created}</div>
+      <div class="rmeta2">${t("inv_pinned_meta",{n:inv.items.length, s:inv.items.length===1?"":"s", date:inv.created})}</div>
       <div class="timeline" style="margin-top:14px" id="invitems">
-        ${inv.items.length ? invItemsHtml(inv.items,false) : '<div class="empty">Nothing pinned yet — use the Pin button on any notice, vendor, agency, or matter page.</div>'}
+        ${inv.items.length ? invItemsHtml(inv.items,false) : `<div class="empty">${t("inv_empty")}</div>`}
       </div>
       <div class="actions" style="margin-top:16px">
-        <button class="act primary" type="button" id="invshare">Share (read-only link)</button>
-        <button class="act" type="button" id="invcsv">Export .csv</button>
-        <button class="act" type="button" id="invjson">Export .json</button>
-        <button class="act" type="button" id="invprint">Print dossier</button>
-        <button class="act" type="button" id="invclear" style="color:var(--rose)">Clear all</button>
+        <button class="act primary" type="button" id="invshare">${t("inv_share_btn")}</button>
+        <button class="act" type="button" id="invcsv">${t("inv_export_csv")}</button>
+        <button class="act" type="button" id="invjson">${t("inv_export_json")}</button>
+        <button class="act" type="button" id="invprint">${t("inv_print_btn")}</button>
+        <button class="act" type="button" id="invclear" style="color:var(--rose)">${t("inv_clear_btn")}</button>
       </div>
       <div id="invmsg" class="muted" style="margin-top:10px;font:13px/1.5 ui-sans-serif,system-ui,sans-serif"></div>
-      <div class="note">Every exported item carries its permalink + the date you pinned it — citation-grade by construction. Sharing uploads a read-only snapshot (90-day link); nothing else ever leaves this browser.</div>
+      <div class="note">${t("inv_footer_note_html")}</div>
     </div></div>`;
-  $("#invname").addEventListener("change", ()=>{ const s2=invStore(); s2.invs[s2.current].name=$("#invname").value.slice(0,80)||"My investigation"; invSave(s2); });
+  $("#invname").addEventListener("change", ()=>{ const s2=invStore(); s2.invs[s2.current].name=$("#invname").value.slice(0,80)||t("inv_default_name"); invSave(s2); });
   box.querySelectorAll(".invnote").forEach(inp=>inp.addEventListener("change", ()=>{
     const s2=invStore(); s2.invs[s2.current].items[+inp.dataset.idx].note=inp.value.slice(0,1000); invSave(s2);
   }));
@@ -2674,35 +2675,35 @@ async function showInvestigation(){
   $("#invclear").addEventListener("click", ()=>{ const s2=invStore(); s2.invs[s2.current].items=[]; invSave(s2); showInvestigation(); });
   $("#invshare").addEventListener("click", async ()=>{
     const msg=$("#invmsg"), cur=invStore().invs[s.current];
-    if(!cur.items.length){ msg.textContent="Pin something first."; return; }
-    if(!API){ msg.textContent="Sharing needs the backend."; return; }
-    msg.innerHTML='<span class="loading"></span> uploading snapshot…';
+    if(!cur.items.length){ msg.textContent=t("inv_pin_first"); return; }
+    if(!API){ msg.textContent=t("inv_share_needs_backend"); return; }
+    msg.innerHTML=`<span class="loading"></span> ${t("inv_uploading")}`;
     try{
       const r=await workerFetch("/inv",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:cur.name, items:cur.items})});
       const j=await r.json();
       if(j.ok){
         const url=location.origin+location.pathname+"#investigation/shared/"+j.id;
-        msg.innerHTML=`Read-only link (lives ${j.ttlDays} days): <a href="${url}">${url}</a> <button class="act" type="button" style="padding:5px 9px" onclick="copyText('${url}', this)">copy</button>`;
-      } else msg.textContent = j.reason==="rate-limited" ? "Too many shares today — try tomorrow." : "Couldn't share — try again.";
-    }catch(e){ msg.textContent="Couldn't reach the server — try again."; }
+        msg.innerHTML=`${t("inv_readonly_link",{n:j.ttlDays})} <a href="${url}">${url}</a> <button class="act" type="button" style="padding:5px 9px" onclick="copyText('${url}', this)">${t("inv_copy_btn")}</button>`;
+      } else msg.textContent = j.reason==="rate-limited" ? t("inv_too_many_shares") : t("inv_share_failed");
+    }catch(e){ msg.textContent=t("cant_reach_server"); }
   });
-  announce("Investigation workspace");
+  announce(t("inv_ws_heading"));
 }
 
 async function showSharedInv(id){
   showTab("entity");
   const box = $("#entityview");
-  box.innerHTML = '<div class="empty"><span class="loading"></span> fetching shared investigation…</div>';
+  box.innerHTML = `<div class="empty"><span class="loading"></span> ${t("inv_fetching_shared")}</div>`;
   let j=null;
   try{ const r=await workerFetch("/inv/"+encodeURIComponent(id), null, 12000); if(r.ok) j=await r.json(); }catch(e){}
-  if(!j || !j.items){ box.innerHTML='<div class="empty">This shared investigation doesn\'t exist or has expired (links live 90 days). <a href="#money">← Browse CROL-List</a></div>'; return; }
+  if(!j || !j.items){ box.innerHTML=`<div class="empty">${t("inv_shared_missing_html")} <a href="#money">${t("back_browse")}</a></div>`; return; }
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
-    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CROL-List</a></p>
+    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("back_browse")}</a></p>
     <div class="panel" style="padding:22px 24px">
-      <div class="ftype" style="margin-bottom:6px">Shared investigation · read-only · snapshot of ${j.sharedAt||"—"}</div>
-      <div class="rolename">${String(j.name||"Untitled").replace(/[<>&]/g,"")}</div>
+      <div class="ftype" style="margin-bottom:6px">${t("inv_shared_heading",{date:j.sharedAt||"—"})}</div>
+      <div class="rolename">${String(j.name||t("untitled_name")).replace(/[<>&]/g,"")}</div>
       <div class="timeline" style="margin-top:14px">${invItemsHtml(j.items,true)}</div>
-      <div class="actions" style="margin-top:16px"><button class="act primary" type="button" id="invimport">Import into my investigation</button></div>
+      <div class="actions" style="margin-top:16px"><button class="act primary" type="button" id="invimport">${t("inv_import_btn")}</button></div>
     </div></div>`;
   $("#invimport").addEventListener("click", ()=>{
     const s=invStore(), inv=s.invs[s.current];
@@ -2757,7 +2758,7 @@ async function showMatter(pin){
       </div>
       <div class="actions" style="margin-top:16px">
         <button class="act primary" type="button" id="ecopy">Copy link</button>
-        ${pinBtn("matter", pin, `Matter — PIN ${safe}`, [agency, vendor?cleanText(vendor):null].filter(Boolean).join(" × "))}
+        ${pinBtn("matter", pin, t("meta_matter",{pin:safe}), [agency, vendor?cleanText(vendor):null].filter(Boolean).join(" × "))}
         <a class="act" href="${REQ_URL(rows[rows.length-1].request_id)}" target="_blank" rel="noopener">Latest notice in City Record ↗</a>
       </div>
       <div class="note">The spine is every City Record notice sharing this PIN, in order; Checkbook events join deterministically on the same PIN. Public-hearing notices rarely carry PINs, so hearings may be missing from the chronology.</div>
