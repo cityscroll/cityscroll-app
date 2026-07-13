@@ -285,7 +285,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=6f615862"></script>
+<script src="i18n.js?v=207f3877"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
@@ -660,7 +660,7 @@ const todayISO = () => new Date().toISOString().slice(0,10) + "T00:00:00";
 // If a full-history query runs past SLOW_MS, automatically retry within this recent window.
 const RECENT_DAYS = 730, SLOW_MS = 7000;
 const recentCut = () => new Date(Date.now()-RECENT_DAYS*86400000).toISOString().slice(0,10) + "T00:00:00";
-const recentCutLabel = () => new Date(Date.now()-RECENT_DAYS*86400000).toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"});
+const recentCutLabel = () => { const _lm=(window.LANG_META||{})[window.LANG||"en"]; return new Date(Date.now()-RECENT_DAYS*86400000).toLocaleDateString(_lm?_lm.intlDate:"en-US",{month:"long",day:"numeric",year:"numeric"}); };
 
 /* Read-side cache + in-flight coalescing for the open-data GETs. Repeating a query the session
    already ran (tab A→B→A, re-selecting a row, re-clicking a facet) renders from memory instead
@@ -741,21 +741,21 @@ function _spellNum(n){ return n < 10 ? _SPELL[n] : String(n); }
 function deadlineTag(due){
   const dl = daysLeft(due);
   if(dl === null) return "";
-  if(dl < 0) return `<span class="tag closed">closed</span>`;
+  if(dl < 0) return `<span class="tag closed">${t("closed_tag")}</span>`;
   if(dl === 0) return `<span class="tag hot">${t("closes_today")}</span>`;
   if(dl === 1) return `<span class="tag hot">${t("closes_in_1_day")}</span>`;
   if(dl <= 3) return `<span class="tag hot">${t("closes_in_n_days",{n:_spellNum(dl)})}</span>`;
   if(dl <= 14) return `<span class="tag soon">${t("closes_in_n_days",{n:dl<10?_spellNum(dl):dl})}</span>`;
-  return `<span class="tag open">open · ${dl} days left</span>`;
+  return `<span class="tag open">${t("open_days_left",{n:dl})}</span>`;
 }
 // Countdown chip for event dates (hearings, meetings, sales). Past events get no chip —
 // the date itself still shows; urgency chips are for what the reader can still attend.
 function eventTag(ev){
   const dl = daysLeft(ev);
   if(dl === null || dl < 0) return "";
-  if(dl <= 3) return ` <span class="tag hot">${dl===0?"today":`in ${dl} day${dl===1?"":"s"}`}</span>`;
-  if(dl <= 14) return ` <span class="tag soon">in ${dl} days</span>`;
-  return ` <span class="tag open">in ${dl} days</span>`;
+  if(dl <= 3) return ` <span class="tag hot">${dl===0?t("event_today"):t("event_in_n_days",{n:dl,s:dl===1?"":"s"})}</span>`;
+  if(dl <= 14) return ` <span class="tag soon">${t("event_in_n_days",{n:dl,s:"s"})}</span>`;
+  return ` <span class="tag open">${t("event_in_n_days",{n:dl,s:"s"})}</span>`;
 }
 
 /* ===================== TABS ===================== */
@@ -885,10 +885,10 @@ async function search(){
   currentRows = rows;
   unbusy("#list");
   $("#rescount").textContent = currentRows.length === 40 ? "40+" : currentRows.length;
-  announce(`${currentRows.length===40?"40 or more":currentRows.length} results — ${$("#reshead").textContent}`);
+  announce(t(currentRows.length===40?"or_more_results":"results_count",{n:currentRows.length}) + ` — ${$("#reshead").textContent}`);
   renderList();
   if(narrowed) $("#list").insertAdjacentHTML("afterbegin",
-    `<div class="note warn" style="margin:10px 12px 0">Full-history search was slow — showing <b>recent editions only</b> (since ${recentCutLabel()}). Add an agency or keyword to search all years faster.</div>`);
+    `<div class="note warn" style="margin:10px 12px 0">${t("narrowed_note",{date:recentCutLabel()})}</div>`);
 }
 
 /* Selection-method facet — every value is a pivot with a live count; counts reflect the
@@ -903,7 +903,7 @@ async function loadMethodFacet(where, kw){
     const rows = (await soda(p)).filter(r=>r.selection_method_description && r.selection_method_description.trim());
     if(rows.length < 2 && !methodSel){ el.style.display="none"; return; }
     el.style.display = "";
-    el.innerHTML = '<span class="facetlbl">Method:</span>' + rows.map(r=>{
+    el.innerHTML = `<span class="facetlbl">${t("method_facet_label")}</span>` + rows.map(r=>{
       const m = r.selection_method_description;
       return `<button type="button" class="chip ${methodSel===m?'on':''}" data-m="${m.replace(/"/g,"&quot;")}">${m}<span class="ct">${(+r.n).toLocaleString()}</span></button>`;
     }).join("");
@@ -922,10 +922,10 @@ function renderList(){
       ? (money(r.contract_amount) ? `<span class="tag amt">${money(r.contract_amount)}</span>` : "")
       : deadlineTag(r.due_date);
     return `<div class="row" data-i="${i}" tabindex="0" role="button">
-      <p class="rtitle">${cleanText(r.short_title) || "(untitled notice)"}</p>
+      <p class="rtitle">${cleanText(r.short_title) || t("untitled_notice")}</p>
       <p class="rmeta">${lead}<span class="ragency">${r.agency_name||""}</span> · ${fdate(r.start_date)}
         ${r.category_description? " · "+r.category_description : ""}<br>
-        ${usablePin(r.pin)? `<span class="pin">PIN ${r.pin}</span>` : `<span class="pin" style="opacity:.6">no linkable PIN</span>`}</p>
+        ${usablePin(r.pin)? `<span class="pin">PIN ${r.pin}</span>` : `<span class="pin" style="opacity:.6">${t("no_linkable_pin")}</span>`}</p>
     </div>`;
   }).join("");
   document.querySelectorAll("#list .row").forEach(el=>el.addEventListener("click",()=>select(+el.dataset.i, el)));
@@ -992,14 +992,14 @@ function agencyWho(name){ const a = AGENCY_ABBR[String(name||"").trim()]; return
 function glanceFor(r){
   const row = (k,v) => v ? `<div class="gl"><b>${k}</b><span>${v}</span></div>` : "";
   const who = (r.agency_name ? pivotA(agencyHref(r.agency_name), agencyWho(r.agency_name)) : "")
-    + (r.vendor_name ? ` → awarded to <b>${pivotA(vendorHref(r.vendor_name), cleanText(r.vendor_name))}</b>` : "");
+    + (r.vendor_name ? ` ${t("awarded_to")} <b>${pivotA(vendorHref(r.vendor_name), cleanText(r.vendor_name))}</b>` : "");
   const amt = money(r.contract_amount);
-  const what = [r.type_of_notice_description, r.category_description || r.section_name].filter(Boolean).join(" — ")
+  const what = [r.type_of_notice_description, r.category_description || tSection(r.section_name)].filter(Boolean).join(" — ")
     + (amt ? ` · <b>${amt}</b>` : "");
   const when = [
-    r.start_date ? `published ${fdt(r.start_date)}` : null,
-    r.due_date ? `responses due <b>${fdt(r.due_date)}</b> ${deadlineTag(r.due_date)}` : null,
-    r.event_date ? `event <b>${fdt(r.event_date)}</b>${eventTag(r.event_date)}` : null
+    r.start_date ? t("published_on",{date:fdt(r.start_date)}) : null,
+    r.due_date ? `${t("responses_due_html",{date:fdt(r.due_date)})} ${deadlineTag(r.due_date)}` : null,
+    r.event_date ? `${t("event_on_html",{date:fdt(r.event_date)})}${eventTag(r.event_date)}` : null
   ].filter(Boolean).join(" · ");
   const act = [];
   if(r.email) act.push(`<a href="mailto:${r.email}">${r.email}</a>`);
@@ -1008,7 +1008,7 @@ function glanceFor(r){
   const where = cleanText(r.address_to_request) || (goodAddr(r.street_address_1) ? cleanText(r.street_address_1) : "");
   if(where) act.push(where);
   if(r.type_of_notice_description === "Solicitation") act.push(`<a href="${PASSPORT}" target="_blank" rel="noopener">PASSPort ↗</a>`);
-  const body = row("Who", who) + row("What", what) + row("When", when) + row("Act", act.join(" · "));
+  const body = row(t("glance_who"), who) + row(t("glance_what"), what) + row(t("glance_when"), when) + row(t("glance_act"), act.join(" · "));
   return body ? `<div class="glance">${body}</div>` : "";
 }
 function mailtoFor(r){
@@ -1051,79 +1051,79 @@ function downloadICS(){
 function buildApply(r){
   const dl = daysLeft(r.due_date);
   const rows = [];
-  if(r.selection_method_description) rows.push(["Method", cleanText(r.selection_method_description)]);
-  if(r.contact_name) rows.push(["Contact", cleanText(r.contact_name)]);
-  if(r.address_to_request) rows.push(["Submit / request to", cleanText(r.address_to_request)]);
+  if(r.selection_method_description) rows.push([t("apply_method_lbl"), cleanText(r.selection_method_description)]);
+  if(r.contact_name) rows.push([t("apply_contact_lbl"), cleanText(r.contact_name)]);
+  if(r.address_to_request) rows.push([t("apply_submit_lbl"), cleanText(r.address_to_request)]);
   const tel = telHref(r.contact_phone);
   if(!r.due_date && !rows.length && !r.email && !tel) return "";
   const dts = rows.map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join("");
   let due = "";
   if(r.due_date){
-    const tag = dl === null ? "" : (dl < 0 ? `<span class="tag closed">closed</span>` :
-      dl <= 3 ? `<span class="tag hot">${dl===0?"due today":dl+" day"+(dl===1?"":"s")+" left"}</span>` :
-      dl <= 14 ? `<span class="tag soon">${dl} day${dl===1?"":"s"} left</span>` : `<span class="tag open">${dl} days left</span>`);
-    due = `<div class="due"><span class="d">Respond by ${fdt(r.due_date)}</span>${tag}</div>`;
+    const tag = dl === null ? "" : (dl < 0 ? `<span class="tag closed">${t("closed_tag")}</span>` :
+      dl <= 3 ? `<span class="tag hot">${dl===0?t("due_today_tag"):(dl===1?t("days_left_1"):t("days_left_n",{n:dl}))}</span>` :
+      dl <= 14 ? `<span class="tag soon">${dl===1?t("days_left_1"):t("days_left_n",{n:dl})}</span>` : `<span class="tag open">${t("days_left_n",{n:dl})}</span>`);
+    due = `<div class="due"><span class="d">${t("deadline_respond_by",{date:fdt(r.due_date)})}</span>${tag}</div>`;
   }
   let acts = '<div class="actions">';
-  if(r.email) acts += `<a class="act primary" href="${mailtoFor(r)}">Email a response</a>`;
-  if(tel) acts += `<a class="act" href="${tel}">Call ${cleanText(r.contact_phone)}</a>`;
-  if(r.due_date) acts += `<button class="act" id="icsbtn" type="button">Add deadline to calendar</button>`;
-  acts += `<a class="act" href="${PASSPORT}" target="_blank" rel="noopener">Bid on PASSPort ↗</a>`;
+  if(r.email) acts += `<a class="act primary" href="${mailtoFor(r)}">${t("email_a_response")}</a>`;
+  if(tel) acts += `<a class="act" href="${tel}">${t("call_btn",{phone:cleanText(r.contact_phone)})}</a>`;
+  if(r.due_date) acts += `<button class="act" id="icsbtn" type="button">${t("add_deadline_calendar")}</button>`;
+  acts += `<a class="act" href="${PASSPORT}" target="_blank" rel="noopener">${t("bid_on_passport")} ↗</a>`;
   acts += '</div>';
-  return `<div class="apply"><h3>How to respond to this RFP</h3><div class="body">
+  return `<div class="apply"><h3>${t("how_to_respond_heading")}</h3><div class="body">
     ${due}${acts}${dts?`<dl>${dts}</dl>`:""}
-    <div class="pnote"><b>Email a response</b> opens a pre-filled letter of intent to the listed contact — edit before sending. Competitive bids are ultimately submitted through <b>PASSPort</b>. Nothing leaves your device until you hit send.</div>
+    <div class="pnote">${t("apply_pnote_html")}</div>
   </div></div>`;
 }
 
 function chainHTML(r, chain){
   const blanket = chain.length > 5 && chain.every(c=>c.type_of_notice_description==="Award");
-  const tlink = usablePin(r.pin) ? ` · <a class="pivot" href="#matter/${encodeURIComponent(r.pin)}">full timeline with payments</a>` : "";
-  let html = `<div class="chain-h">The paper trail (notices sharing this PIN)${tlink}</div><div class="chain">`;
+  const tlink = usablePin(r.pin) ? ` · <a class="pivot" href="#matter/${encodeURIComponent(r.pin)}">${t("full_timeline_link")}</a>` : "";
+  let html = `<div class="chain-h">${t("paper_trail_heading")}${tlink}</div><div class="chain">`;
   chain.forEach((c,idx)=>{
     const amt = money(c.contract_amount);
     html += `<div class="stage"><div class="box ${boxClass(c.type_of_notice_description)}">
-        <div class="stage-name">${c.type_of_notice_description||"Notice"}</div>
+        <div class="stage-name">${c.type_of_notice_description||t("notice_fallback")}</div>
         <div class="when">${fdate(c.start_date)}</div>
-        <div class="bt">${cleanText(c.short_title)||"(untitled)"}</div>
+        <div class="bt">${cleanText(c.short_title)||t("untitled")}</div>
         ${amt? `<div class="amt">${amt}</div>`:""}
         ${c.vendor_name? `<div class="vend">→ ${pivotA(vendorHref(c.vendor_name), cleanText(c.vendor_name))}</div>`:""}
-        <a class="view" href="${REQ_URL(c.request_id)}" target="_blank" rel="noopener">View in City Record ↗</a>
+        <a class="view" href="${REQ_URL(c.request_id)}" target="_blank" rel="noopener">${t("view_in_city_record")}</a>
       </div></div>`;
     if(idx < chain.length-1) html += '<div class="connector">→</div>';
   });
   html += '</div>';
 
   if(chain.length === 1 && !usablePin(r.pin)){
-    html += `<div class="note warn">This notice's PIN isn't usable for linking (<code>${r.pin||"empty"}</code>), so its award can't be traced automatically. Open it in the City Record to read the full text.</div>`;
+    html += `<div class="note warn">${t("pin_unusable_note",{pin:r.pin||"—"})}</div>`;
   } else if(chain.length === 1){
-    html += `<div class="note">Only this notice is on record so far — no later stage has been published for PIN <code>${r.pin}</code> yet. ${r.type_of_notice_description==="Solicitation"?"The award may still be pending.":""}</div>`;
+    html += `<div class="note">${t("only_notice_note",{pin:r.pin})}${r.type_of_notice_description==="Solicitation"?t("award_pending_note"):""}</div>`;
   } else if(blanket){
-    html += `<div class="note warn">PIN <code>${r.pin}</code> is a <b>blanket code</b>: it bundles ${chain.length} separate awards (common for emergency declarations). Each box is a distinct contract under the same code.</div>`;
+    html += `<div class="note warn">${t("blanket_note",{pin:r.pin, n:chain.length})}</div>`;
   }
   return html;
 }
 
 function renderDetail(r, chain, stats){
   const pending = chain === null; // first paint from the in-memory record; chain/stats hydrate in
-  let html = `<div class="actions" style="margin:0 0 12px"><button class="act" type="button" id="dcopy">Copy link to this notice</button>${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}</div>`;
+  let html = `<div class="actions" style="margin:0 0 12px"><button class="act" type="button" id="dcopy">${t("copy_link_notice")}</button>${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}</div>`;
   html += `<div id="dcontext"></div><div id="ddollars"></div>`;
   // Solicitations get the richer how-to-respond panel below; everything else gets the glance box.
   if(r.type_of_notice_description !== "Solicitation") html += glanceFor(r);
   if(stats && stats.n){
     html += `<div class="agencybar">
-      <div><div class="big">${money(stats.total)||"—"}</div><div class="lbl">${pivotA(agencyHref(r.agency_name), r.agency_name)}<br>total awarded, on record</div></div>
-      <div><div class="big">${(+stats.n).toLocaleString()}</div><div class="lbl">contract awards<br>published</div></div>
+      <div><div class="big">${money(stats.total)||"—"}</div><div class="lbl">${pivotA(agencyHref(r.agency_name), r.agency_name)}<br>${t("total_awarded_lbl")}</div></div>
+      <div><div class="big">${fmtNumber(+stats.n)}</div><div class="lbl">${t("awards_published_lbl")}</div></div>
     </div>`;
   }
   if(r.type_of_notice_description === "Solicitation") html += buildApply(r);
 
   html += pending
-    ? `<div class="chain-h">The paper trail (notices sharing this PIN)</div>${listSkeleton(2)}`
+    ? `<div class="chain-h">${t("paper_trail_heading")}</div>${listSkeleton(2)}`
     : chainHTML(r, chain);
 
   const scope = cleanText(r.additional_description_1);
-  if(scope) html += `<div class="scope"><span class="lbl">What they want</span>${scope.slice(0,900)}${scope.length>900?"…":""}</div>`;
+  if(scope) html += `<div class="scope"><span class="lbl">${t("what_they_want")}</span>${scope.slice(0,900)}${scope.length>900?"…":""}</div>`;
   $("#detail").innerHTML = html;
   const ib = $("#icsbtn"); if(ib) ib.addEventListener("click", downloadICS);
   const dc = $("#dcopy"); if(dc) dc.addEventListener("click", ()=>copyText(noticeLink(r.request_id), dc));
@@ -1366,8 +1366,8 @@ async function seedPeople(){
   try{ pExamples = await fetch("data/people_examples.json").then(r=>r.ok?r.json():[]); }catch(e){ pExamples=[]; }
   const box = $("#pchips");
   if(box && pExamples.length){
-    box.innerHTML = '<span style="font:600 11px/2.4 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Try:</span>' +
-      pExamples.map((x,i)=>`<button type="button" class="chip" data-i="${i}" title="${String(x.note||"").replace(/"/g,"&quot;")}">${x.label}<span class="ct">${money(x.base_median)||""}${x.competitive?" · exam":""}</span></button>`).join("");
+    box.innerHTML = `<span style="font:600 11px/2.4 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">${t("try_label")}</span>` +
+      pExamples.map((x,i)=>`<button type="button" class="chip" data-i="${i}" title="${String(x.note||"").replace(/"/g,"&quot;")}">${x.label}<span class="ct">${money(x.base_median)||""}${x.competitive?t("exam_suffix"):""}</span></button>`).join("");
     box.querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>pExample(+b.dataset.i)));
   }
   try{
@@ -1385,15 +1385,15 @@ function pExample(i){
   $("#pkw").value = x.keyword;
   const maxAvg = Math.max.apply(null,(x.ladder||[]).map(l=>+l.avg||0)) || 1;
   $("#pdetail").innerHTML = `<div class="rolename">${x.official_title}</div>
-    <div class="badges"><span class="tag ${x.competitive?'open':'soon'}">${x.competitive?'Competitive — civil-service exam required':'Non-competitive — no exam'}</span></div>
+    <div class="badges"><span class="tag ${x.competitive?'open':'soon'}">${x.competitive?t("competitive_badge"):t("noncompetitive_badge")}</span></div>
     <div class="agencybar">
-      <div><div class="big">${money(x.base_median)||"—"}</div><div class="lbl">median base · FY${PAYFY}</div></div>
-      <div><div class="big">${money(x.base_min)||"—"}–${money(x.base_max)||"—"}</div><div class="lbl">base range</div></div>
-      <div><div class="big">${(+x.headcount||0).toLocaleString()}</div><div class="lbl">people</div></div>
+      <div><div class="big">${money(x.base_median)||"—"}</div><div class="lbl">${t("median_base_lbl",{fy:PAYFY})}</div></div>
+      <div><div class="big">${money(x.base_min)||"—"}–${money(x.base_max)||"—"}</div><div class="lbl">${t("base_range_lbl")}</div></div>
+      <div><div class="big">${fmtNumber(+x.headcount||0)}</div><div class="lbl">${t("people_lbl")}</div></div>
     </div>
-    ${x.ladder&&x.ladder.length?`<div class="chain-h">Career ladder — top titles by average pay</div><div class="ladder">${x.ladder.map(l=>`<div class="lrow ${l.title===x.official_title?'me':''}"><div class="lname">${l.title}</div><div class="lbar"><span style="width:${Math.round((+l.avg/maxAvg)*100)}%"></span></div><div class="lval">${money(l.avg)}</div></div>`).join("")}</div>`:""}
+    ${x.ladder&&x.ladder.length?`<div class="chain-h">${t("career_ladder_top")}</div><div class="ladder">${x.ladder.map(l=>`<div class="lrow ${l.title===x.official_title?'me':''}"><div class="lname">${l.title}</div><div class="lbar"><span style="width:${Math.round((+l.avg/maxAvg)*100)}%"></span></div><div class="lval">${money(l.avg)}</div></div>`).join("")}</div>`:""}
     ${x.note?`<div class="note">${x.note}</div>`:""}
-    <div class="rmeta2" style="margin-top:10px"><span class="loading"></span> refreshing from live payroll…</div>`;
+    <div class="rmeta2" style="margin-top:10px"><span class="loading"></span> ${t("refreshing_payroll")}</div>`;
   pSearch(true);
 }
 
@@ -1426,14 +1426,14 @@ async function pSearchRoles(kw, stale){
   competitiveSet = new Set(comp.map(c=>(c.list_title_desc||"").toUpperCase().trim()));
   pRows = pay;
   $("#prescount").textContent = pay.length === 40 ? "40+" : pay.length;
-  announce(`${pay.length===40?"40 or more":pay.length} matching roles`);
+  announce(t("matching_roles_announce",{n: pay.length===40 ? "40+" : pay.length}));
   if(!pay.length){ $("#plist").innerHTML = '<div class="empty">' + t("no_titles_match") + '</div>'; return; }
   $("#plist").innerHTML = pay.map((r,i)=>{
     const comp2 = competitiveSet.has((r.title_description||"").toUpperCase().trim());
     return `<div class="row" data-i="${i}" tabindex="0" role="button">
       <p class="rtitle">${r.title_description}</p>
-      <p class="rmeta"><span class="tag ${comp2?'open':'soon'}">${comp2?'exam title':'no-exam title'}</span>
-        ${(+r.n).toLocaleString()} people · ${money(r.mn)}–${money(r.mx)}</p>
+      <p class="rmeta"><span class="tag ${comp2?'open':'soon'}">${comp2?t("exam_title_tag"):t("no_exam_title_tag")}</span>
+        ${fmtNumber(+r.n)} ${t("people_lbl")} · ${money(r.mn)}–${money(r.mx)}</p>
     </div>`;
   }).join("");
   document.querySelectorAll("#plist .row").forEach(el=>el.addEventListener("click",()=>pSelectRole(+el.dataset.i, el)));
@@ -1448,13 +1448,13 @@ function pSelectRole(i, el){
   const ladder = [...pRows].sort((a,b)=>(+a.avg)-(+b.avg));
   const maxAvg = Math.max.apply(null, ladder.map(x=>+x.avg||0)) || 1;
   let html = `<div class="rolename">${r.title_description}</div>
-    <div class="badges"><span class="tag ${comp?'open':'soon'}">${comp?'Competitive — civil-service exam required':'Non-competitive — no exam'}</span></div>
+    <div class="badges"><span class="tag ${comp?'open':'soon'}">${comp?t("competitive_badge"):t("noncompetitive_badge")}</span></div>
     <div class="agencybar">
-      <div><div class="big">${money(r.mn)}–${money(r.mx)}</div><div class="lbl">base salary band</div></div>
-      <div><div class="big">${money(r.avg)}</div><div class="lbl">average base</div></div>
-      <div><div class="big">${(+r.n).toLocaleString()}</div><div class="lbl">people · FY${PAYFY}</div></div>
+      <div><div class="big">${money(r.mn)}–${money(r.mx)}</div><div class="lbl">${t("base_salary_band_lbl")}</div></div>
+      <div><div class="big">${money(r.avg)}</div><div class="lbl">${t("average_base_lbl")}</div></div>
+      <div><div class="big">${fmtNumber(+r.n)}</div><div class="lbl">${t("people_fy_lbl",{fy:PAYFY})}</div></div>
     </div>
-    <div class="chain-h">Career ladder — matching titles by average pay</div><div class="ladder">`;
+    <div class="chain-h">${t("career_ladder_matching")}</div><div class="ladder">`;
   ladder.forEach(x=>{
     const w = Math.round((+x.avg/maxAvg)*100);
     const me = x.title_description === r.title_description;
@@ -1463,8 +1463,7 @@ function pSelectRole(i, el){
       <div class="lbar"><span style="width:${w}%"></span></div>
       <div class="lval">${money(x.avg)}</div></div>`;
   });
-  html += `</div><div class="note">Salary band from <a href="https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e" target="_blank" rel="noopener">Citywide Payroll FY${PAYFY}</a>;
-    exam status from the <a href="https://data.cityofnewyork.us/resource/vx8i-nprf" target="_blank" rel="noopener">Civil Service List</a>, which lists competitive (exam) titles only — a title absent there is treated as no-exam.</div>`;
+  html += `</div><div class="note">${t("salary_note_html",{fy:PAYFY})}</div>`;
   $("#pdetail").innerHTML = html;
 }
 
@@ -1485,7 +1484,7 @@ async function pSearchPeople(kw, stale){
   if(!pRows.length){ $("#plist").innerHTML = '<div class="empty">' + t("no_personnel") + '</div>'; return; }
   $("#plist").innerHTML = pRows.map((p,i)=>`<div class="row" data-i="${i}" tabindex="0" role="button">
       <p class="rtitle">${p.name}</p>
-      <p class="rmeta"><span class="ragency">${p.agency}</span> · ${p.actions.length} notice${p.actions.length>1?'s':''}</p>
+      <p class="rmeta"><span class="ragency">${p.agency}</span> · ${t("n_notices_meta",{n:p.actions.length,s:p.actions.length>1?"s":""})}</p>
     </div>`).join("");
   document.querySelectorAll("#plist .row").forEach(el=>el.addEventListener("click",()=>pSelectPerson(+el.dataset.i, el)));
   document.querySelector("#plist .row")?.click();
@@ -1510,20 +1509,20 @@ async function pSelectPerson(i, el){
   let html = `<div class="rolename">${p.name}</div><div class="badges"><span class="tag">${p.agency}</span></div>`;
   if(cur){
     html += `<div class="agencybar">
-      <div><div class="big">${money(cur.base_salary)||"—"}</div><div class="lbl">base salary · FY${cur.fiscal_year}</div></div>
-      <div><div class="big">${money(cur.regular_gross_paid)||"—"}</div><div class="lbl">gross paid</div></div>
-      <div><div class="big">${money(cur.total_ot_paid)||"$0"}</div><div class="lbl">overtime</div></div>
-    </div><div class="rmeta2">Payroll title: <b>${cur.title_description}</b>${cur.leave_status_as_of_june_30? " · "+cur.leave_status_as_of_june_30 : ""}</div>`;
+      <div><div class="big">${money(cur.base_salary)||"—"}</div><div class="lbl">${t("base_salary_fy_lbl",{fy:cur.fiscal_year})}</div></div>
+      <div><div class="big">${money(cur.regular_gross_paid)||"—"}</div><div class="lbl">${t("gross_paid_lbl")}</div></div>
+      <div><div class="big">${money(cur.total_ot_paid)||"$0"}</div><div class="lbl">${t("overtime_lbl")}</div></div>
+    </div><div class="rmeta2">${t("payroll_title_lbl")} <b>${cur.title_description}</b>${cur.leave_status_as_of_june_30? " · "+cur.leave_status_as_of_june_30 : ""}</div>`;
   } else {
-    html += `<div class="note">No matching Citywide Payroll record (new hires lag a fiscal year, or the name differs across datasets).</div>`;
+    html += `<div class="note">${t("no_payroll_match_note")}</div>`;
   }
   const acts = p.actions.sort((a,b)=>(b.date||"").localeCompare(a.date||""));
-  html += `<div class="chain-h">City Record history</div><div class="timeline">`;
+  html += `<div class="chain-h">${t("city_record_history")}</div><div class="timeline">`;
   acts.forEach(a=>{
     html += `<div class="tl"><span class="tldate">${fdate(a.date)}</span>
       <span class="tlreason">${a.reason||""}</span>
       ${a.salary && a.salary!=="1.00" && a.salary!=="1"? `<span class="tlsal">${money(a.salary)}</span>`:""}
-      ${a.code? `<span class="pin">code ${a.code}</span>`:""}
+      ${a.code? `<span class="pin">${t("code_label",{code:a.code})}</span>`:""}
       <a class="view" href="${REQ_URL(a.req)}" target="_blank" rel="noopener" style="margin-left:auto">↗</a></div>`;
   });
   html += `</div>`;
@@ -1534,7 +1533,7 @@ async function pSelectPerson(i, el){
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";
 const GEO = "https://geosearch.planninglabs.nyc/v2/search";
 const BORO_CENTER = {Manhattan:[40.776,-73.971],Brooklyn:[40.650,-73.950],Bronx:[40.844,-73.865],Queens:[40.718,-73.806],"Staten Island":[40.580,-74.150]};
-const ZAP_ACTIONS = {ZM:"Zoning map amendment",ZR:"Zoning text amendment",ZA:"Authorization",ZC:"Certification",ZS:"Special permit",HA:"Disposition (HPD)",PC:"Acquisition",PQ:"Acquisition",HG:"Urban renewal"};
+// ZAP action labels live in i18n.js (zapact_* keys) — see ZAPACT_KEY in landSelect().
 let lRows=[], landLoaded=false, landMap=null, landMarker=null;
 const mihOn = v => v===true || v==="true";
 
@@ -1546,7 +1545,7 @@ function zapWhere(status){ return "ulurp_non='ULURP'"+(status==="active"?" AND p
 async function landSearch(){
   const boro=$("#lboro").value, kw=$("#lkw").value.trim(), status=$("#lstatus").value;
   updateHash();
-  $("#lreshead").textContent = "Rezonings" + (boro?" · "+boro:"") + (kw?` · “${kw}”`:"");
+  $("#lreshead").textContent = t("rezonings_heading") + (boro?" · "+boro:"") + (kw?` · “${kw}”`:"");
   $("#lrescount").textContent=""; landBanner="";
   busyList("#llist", 3);
   const stale = staleGuard("land");
@@ -1561,9 +1560,9 @@ async function landSearch(){
       if(ids.length){
         const inList=ids.map(i=>`'${i.replace(/'/g,"''")}'`).join(",");
         rows=await api(ZAP,{"$select":ZAP_SELECT,"$where":`${zapWhere(status)} AND project_id in(${inList})`,"$order":"current_milestone_date DESC","$limit":"40"});
-        banner=`On this block — ${geo.label}.`;
-        if(!rows.length){ rows=await landNearby(geo,status); banner=`No ${status==="active"?"active ":""}rezoning on this block. Nearest in <b>${geo.neighbourhood||geo.borough}</b>:`; }
-      } else { rows=await landNearby(geo,status); banner=`No rezoning filed on this lot (${geo.label}). Active rezonings near <b>${geo.neighbourhood||geo.borough}</b>:`; }
+        banner=t("banner_on_block",{label:geo.label});
+        if(!rows.length){ rows=await landNearby(geo,status); banner=t(status==="active"?"banner_none_active_nearest":"banner_none_nearest",{area:geo.neighbourhood||geo.borough}); }
+      } else { rows=await landNearby(geo,status); banner=t("banner_none_lot",{label:geo.label, area:geo.neighbourhood||geo.borough}); }
     } else {
       let w=zapWhere(status); if(boro) w+=` AND borough='${boro.replace(/'/g,"''")}'`;
       const p={"$select":ZAP_SELECT,"$where":w,"$order":"current_milestone_date DESC","$limit":"40"}; if(kw) p["$q"]=kw;
@@ -1573,7 +1572,7 @@ async function landSearch(){
     lRows=rows; landBanner=banner;
     unbusy("#llist");
     $("#lrescount").textContent=lRows.length>=40?"40+":lRows.length;
-    announce(`${lRows.length>=40?"40 or more":lRows.length} rezonings`);
+    announce(t("rezonings_announce",{n:lRows.length>=40?"40+":lRows.length}));
     landRenderList(kw);
   }catch(e){ if(!stale()){ unbusy("#llist"); $("#llist").innerHTML='<div class="empty">' + t("could_not_reach") + '</div>'; } }
 }
@@ -1586,12 +1585,12 @@ async function landNearby(geo,status){
 function landRenderList(kw){
   const head=landBanner?`<div class="landbanner">${landBanner}</div>`:"";
   if(!lRows.length){
-    $("#llist").innerHTML=head+`<div class="empty">No Zoning Application Portal (ZAP) rezonings${kw?` for "${kw}"`:""}. ZAP indexes by <i>project</i>, not address — a notice about your block can be missing here while still in <a href="https://a856-cityrecord.nyc.gov/Search/Advanced" target="_blank" rel="noopener">The City Record</a>.</div>`;
+    $("#llist").innerHTML=head+`<div class="empty">${t("no_zap")}${kw?t("no_zap_kw",{kw}):""}. ${t("zap_explainer_html")}</div>`;
     return;
   }
   $("#llist").innerHTML=head+lRows.map((r,i)=>`<div class="row" data-i="${i}" tabindex="0" role="button">
-    <p class="rtitle">${r.project_name||"(unnamed project)"}</p>
-    <p class="rmeta">${mihOn(r.mih_flag)?'<span class="tag soon">affordable housing</span>':''}<span class="ragency">${r.borough||""}${r.community_district?" · CD "+r.community_district:""}</span> · ${r.public_status||r.project_status||""}<br>
+    <p class="rtitle">${r.project_name||t("unnamed_project")}</p>
+    <p class="rmeta">${mihOn(r.mih_flag)?`<span class="tag soon">${t("affordable_housing_tag")}</span>`:''}<span class="ragency">${r.borough||""}${r.community_district?" · CD "+r.community_district:""}</span> · ${r.public_status||r.project_status||""}<br>
       ${r.current_milestone?cleanText(r.current_milestone)+(r.current_milestone_date?" · "+fdate(r.current_milestone_date):""):""}</p>
   </div>`).join("");
   document.querySelectorAll("#llist .row").forEach(el=>el.addEventListener("click",()=>landSelect(+el.dataset.i, el)));
@@ -1612,29 +1611,30 @@ async function landSelect(i, el){
   el.classList.add("sel");
   const r=lRows[i];
   if(landMap){ try{landMap.remove();}catch(e){} landMap=null; landMarker=null; }
-  const actList=(r.actions||"").split(/[;,]/).map(a=>ZAP_ACTIONS[a.trim()]||(a.trim()||null)).filter(Boolean);
-  let html=`<div class="rolename">${r.project_name||"(unnamed)"}</div>
+  const ZAPACT_KEY={ZM:"zapact_zm",ZR:"zapact_zr",ZA:"zapact_za",ZC:"zapact_zc",ZS:"zapact_zs",HA:"zapact_ha",PC:"zapact_pc",PQ:"zapact_pc",HG:"zapact_hg"};
+  const actList=(r.actions||"").split(/[;,]/).map(a=>ZAPACT_KEY[a.trim()]?t(ZAPACT_KEY[a.trim()]):(a.trim()||null)).filter(Boolean);
+  let html=`<div class="rolename">${r.project_name||t("unnamed")}</div>
     <div class="badges">
-      <span class="tag ${r.project_status==='Active'?'open':'closed'}">${r.public_status||r.project_status||"status n/a"}</span>
-      ${mihOn(r.mih_flag)?'<span class="tag soon">Mandatory Inclusionary Housing</span>':''}
+      <span class="tag ${r.project_status==='Active'?'open':'closed'}">${r.public_status||r.project_status||t("status_na")}</span>
+      ${mihOn(r.mih_flag)?`<span class="tag soon">${t("mih_tag")}</span>`:''}
     </div>
     <div class="agencybar">
-      <div><div class="big" style="font-size:17px">${r.primary_applicant||"—"}</div><div class="lbl">applicant</div></div>
-      <div><div class="big" style="font-size:17px">${r.borough||""}${r.community_district?" · CD "+r.community_district:""}</div><div class="lbl">where</div></div>
+      <div><div class="big" style="font-size:17px">${r.primary_applicant||"—"}</div><div class="lbl">${t("applicant_lbl")}</div></div>
+      <div><div class="big" style="font-size:17px">${r.borough||""}${r.community_district?" · CD "+r.community_district:""}</div><div class="lbl">${t("where_lbl")}</div></div>
     </div>`;
-  if(r.project_brief) html+=`<div class="scope"><span class="lbl">In plain English</span>${cleanText(r.project_brief)}</div>`;
-  if(actList.length) html+=`<div class="rmeta2" style="margin-top:10px"><b>Actions:</b> ${actList.join(" · ")}</div>`;
+  if(r.project_brief) html+=`<div class="scope"><span class="lbl">${t("in_plain_english")}</span>${cleanText(r.project_brief)}</div>`;
+  if(actList.length) html+=`<div class="rmeta2" style="margin-top:10px"><b>${t("actions_lbl")}</b> ${actList.join(" · ")}</div>`;
   const area=(r.project_name||r.borough||"").replace(/(rezoning|demapping|rezone|special permit|special district|text amendment|mapping actions?|modification|disposition|non-?ulurp).*/i,"").trim().split(/\s+/).slice(0,3).join(" ")||r.borough||"";
   html+=`<div class="actions" style="margin-top:12px">
-    <a class="act primary" href="https://zap.planning.nyc.gov/projects/${r.project_id}" target="_blank" rel="noopener">Full project on Zoning Application Portal (ZAP) ↗</a>
-    <button class="act" type="button" id="landalert" data-q="${area.replace(/"/g,'')}">Alert me about this area</button>
-    <a class="act" id="crfind" href="https://a856-cityrecord.nyc.gov/Search/Advanced" target="_blank" rel="noopener">Search the City Record</a>
+    <a class="act primary" href="https://zap.planning.nyc.gov/projects/${r.project_id}" target="_blank" rel="noopener">${t("zap_full_project")}</a>
+    <button class="act" type="button" id="landalert" data-q="${area.replace(/"/g,'')}">${t("alert_me_area")}</button>
+    <a class="act" id="crfind" href="https://a856-cityrecord.nyc.gov/Search/Advanced" target="_blank" rel="noopener">${t("search_city_record")}</a>
   </div>
-  <div id="landmap"></div><div class="note" id="landmapnote"><span class="loading"></span> locating…</div>`;
+  <div id="landmap"></div><div class="note" id="landmapnote"><span class="loading"></span> ${t("locating")}</div>`;
   $("#ldetail").innerHTML=html;
   const la=$("#landalert"); if(la) la.addEventListener("click",()=>landToAlert(la.dataset.q));
   const crterm=cleanText(r.project_name||"").replace(/\b(rezoning|demapping|rezone|special permit|special district|text amendment|mapping actions?|modification|disposition|non-?ulurp|public hearing|notice)\b/ig," ").replace(/\s+/g," ").trim();
-  if(crterm.length>3){ soda({"$select":"request_id","$where":"section_name='Public Hearings and Meetings'","$q":crterm,"$order":"start_date DESC","$limit":"1"}).then(rows=>{ const cr=$("#crfind"); if(cr&&rows&&rows[0]){ cr.href=REQ_URL(rows[0].request_id); cr.textContent="↗ This rezoning's notice in the City Record"; } }).catch(()=>{}); }
+  if(crterm.length>3){ soda({"$select":"request_id","$where":"section_name='Public Hearings and Meetings'","$q":crterm,"$order":"start_date DESC","$limit":"1"}).then(rows=>{ const cr=$("#crfind"); if(cr&&rows&&rows[0]){ cr.href=REQ_URL(rows[0].request_id); cr.textContent=t("rezoning_notice_link"); } }).catch(()=>{}); }
   let drew=false;
   try{
     const bblRows=await api(ZAPBBL,{"$select":"bbl","$where":`project_id='${(r.project_id||"").replace(/'/g,"''")}'`,"$limit":"40"});
@@ -1648,7 +1648,7 @@ async function landSelect(i, el){
     const q=(r.project_name||"").replace(/rezoning|special (mixed use )?district|text amendment|\bnos?\.?\b/ig," ").replace(/\s+/g," ").trim();
     const geo = q ? await geocode(q+" "+(r.borough||"")+" New York") : null;
     if(geo) landShowMap(geo.lat,geo.lon,geo.label);
-    else { const c=BORO_CENTER[r.borough]; if(c) landShowMap(c[0],c[1],(r.borough||"")+" — exact lot not geocoded"); else { $("#landmap").style.display="none"; $("#landmapnote").textContent="Location not resolved."; } }
+    else { const c=BORO_CENTER[r.borough]; if(c) landShowMap(c[0],c[1],t("lot_not_geocoded",{boro:r.borough||""})); else { $("#landmap").style.display="none"; $("#landmapnote").textContent=t("location_not_resolved"); } }
   }
 }
 
@@ -1668,9 +1668,9 @@ function loadLeaflet(){
 }
 async function landShowMap(lat, lon, label){
   const el=$("#landmap"); if(!el) return; el.style.display="block";
-  $("#landmapnote").innerHTML=`${label}. <span class="muted">Approximate — confirm exact lots on <a href="https://zola.planning.nyc.gov/" target="_blank" rel="noopener">ZoLa</a>.</span>`;
+  $("#landmapnote").innerHTML=t("map_approx_note_html",{label});
   try{ await loadLeaflet(); }catch(e){}
-  if(typeof L==="undefined"){ el.innerHTML='<div class="empty">Map needs a connection.</div>'; return; }
+  if(typeof L==="undefined"){ el.innerHTML=`<div class="empty">${t("map_needs_connection")}</div>`; return; }
   landMap=L.map(el).setView([lat,lon],15);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap © CARTO',subdomains:'abcd',maxZoom:19}).addTo(landMap);
   landMarker=L.marker([lat,lon]).addTo(landMap);
@@ -1680,9 +1680,9 @@ async function landShowMap(lat, lon, label){
 
 async function landShowLots(gj, n){
   const el=$("#landmap"); if(!el) return; el.style.display="block";
-  $("#landmapnote").innerHTML=`Showing ${n} rezoned tax lot${n===1?"":"s"} (NYC MapPLUTO). <span class="muted">Confirm on <a href="https://zola.planning.nyc.gov/" target="_blank" rel="noopener">ZoLa</a>.</span>`;
+  $("#landmapnote").innerHTML=t("showing_lots_note_html",{n, s:n===1?"":"s"});
   try{ await loadLeaflet(); }catch(e){}
-  if(typeof L==="undefined"){ el.innerHTML='<div class="empty">Map needs a connection.</div>'; return; }
+  if(typeof L==="undefined"){ el.innerHTML=`<div class="empty">${t("map_needs_connection")}</div>`; return; }
   landMap=L.map(el);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap © CARTO · lots © NYC MapPLUTO',subdomains:'abcd',maxZoom:19}).addTo(landMap);
   const layer=L.geoJSON(gj,{style:{color:'#7a1f1f',weight:2,fillColor:'#b5781b',fillOpacity:.35}}).addTo(landMap);
@@ -1726,14 +1726,15 @@ async function loadSection(key){
     unbusy("#"+key+"feed");
     feedRows[key]={}; rows.forEach(r=>feedRows[key][r.request_id]=r);
     if(key==="property"){ propAll=rows; renderPropExplorer(); }
-    else { announce(`${rows.length} notices`); renderFeed(key, rows); }
+    else { announce(t("notices_announce",{n:rows.length})); renderFeed(key, rows); }
   }catch(e){ if(!stale()){ unbusy("#"+key+"feed"); $("#"+key+"feed").innerHTML='<div class="empty">' + t("could_not_reach") + '</div>'; } }
 }
 
 /* ===== Property explorer: asset-type tabs + lifecycle rail (design: property-ux report §2–3).
    Asset type is derived from the notice text (no category column exists — 98% coverage on the
    validation set); dollar figures are shown only as LABELED badges, never a filter (§2b). ===== */
-const ASSET_BUCKETS=[["realty","Real property"],["forest","Forest / timber"],["vehequip","Vehicles + equipment"],["medallion","Medallions"],["seized","Seized / unclaimed"],["other","Other"]];
+// Values are i18n keys — render with t() so the explorer chrome follows the active language.
+const ASSET_BUCKETS=[["realty","asset_realty"],["forest","asset_forest"],["vehequip","asset_vehequip"],["medallion","asset_medallion"],["seized","asset_seized"],["other","asset_other"]];
 const ASSET_LABEL=Object.fromEntries(ASSET_BUCKETS);
 function classifyAsset(rec){
   const t=(cleanText(rec.short_title)+" "+cleanText(rec.additional_description_1)).toLowerCase();
@@ -1756,13 +1757,13 @@ function propStage(r){
   if(/hearing/i.test(r.type_of_notice_description||"")) return "proposed";
   return "past";
 }
-const PROP_STAGES=[["all","All stages"],["proposed","● Proposed (hearing)"],["soon","◷ Closing soon"],["upcoming","◷ Upcoming"],["past","✓ Past / decided"]];
+const PROP_STAGES=[["all","stage_all"],["proposed","stage_proposed"],["soon","stage_soon"],["upcoming","stage_upcoming"],["past","stage_past"]];
 function dollarBadge(r){
-  const t=cleanText(r.short_title)+" "+cleanText(r.additional_description_1);
-  let m=t.match(/upset price[^$]{0,80}\$\s?([\d][\d,.]*)/i); if(m) return "upset price $"+m[1];
-  m=t.match(/minimum bid[^$]{0,80}\$\s?([\d][\d,.]*)/i); if(m) return "min bid $"+m[1];
-  m=t.match(/appraised[^$]{0,120}\$\s?([\d][\d,.]*)/i); if(m) return "appraised $"+m[1];
-  if(/(?:sold for|consideration of)\s+(?:one dollar|\$\s?1(?:\.00)?\b)/i.test(t)) return "$1 nominal";
+  const txt=cleanText(r.short_title)+" "+cleanText(r.additional_description_1);
+  let m=txt.match(/upset price[^$]{0,80}\$\s?([\d][\d,.]*)/i); if(m) return t("badge_upset_price",{amt:m[1]});
+  m=txt.match(/minimum bid[^$]{0,80}\$\s?([\d][\d,.]*)/i); if(m) return t("badge_min_bid",{amt:m[1]});
+  m=txt.match(/appraised[^$]{0,120}\$\s?([\d][\d,.]*)/i); if(m) return t("badge_appraised",{amt:m[1]});
+  if(/(?:sold for|consideration of)\s+(?:one dollar|\$\s?1(?:\.00)?\b)/i.test(txt)) return t("badge_nominal");
   return null;
 }
 let propAll=[], propAsset="all", propStageSel="all";
@@ -1770,14 +1771,14 @@ function renderPropExplorer(){
   propAll.forEach(r=>{ if(!r._asset){ r._asset=classifyAsset(r); r._stage=propStage(r); r._badge=dollarBadge(r); } });
   const ac={all:propAll.length}, sc={all:propAll.length};
   propAll.forEach(r=>{ ac[r._asset]=(ac[r._asset]||0)+1; sc[r._stage]=(sc[r._stage]||0)+1; });
-  $("#assettabs").innerHTML=[["all","All types"],...ASSET_BUCKETS].map(([k,l])=>
-    `<button type="button" class="chip ${propAsset===k?'on':''}" data-a="${k}">${l}<span class="ct">${ac[k]||0}</span></button>`).join("");
+  $("#assettabs").innerHTML=[["all","all_types"],...ASSET_BUCKETS].map(([k,l])=>
+    `<button type="button" class="chip ${propAsset===k?'on':''}" data-a="${k}">${t(l)}<span class="ct">${ac[k]||0}</span></button>`).join("");
   $("#liferail").innerHTML=PROP_STAGES.map(([k,l])=>
-    `<button type="button" class="chip ${propStageSel===k?'on':''}" data-s="${k}">${l}<span class="ct">${sc[k]||0}</span></button>`).join("");
+    `<button type="button" class="chip ${propStageSel===k?'on':''}" data-s="${k}">${t(l)}<span class="ct">${sc[k]||0}</span></button>`).join("");
   $("#assettabs").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{ propAsset=b.dataset.a; renderPropExplorer(); updateHash(); }));
   $("#liferail").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{ propStageSel=b.dataset.s; renderPropExplorer(); updateHash(); }));
   const subset=propAll.filter(r=>(propAsset==="all"||r._asset===propAsset) && (propStageSel==="all"||r._stage===propStageSel));
-  announce(`${subset.length} property notices`);
+  announce(t("property_notices_announce",{n:subset.length}));
   renderFeed("property", subset);
 }
 
@@ -1797,17 +1798,17 @@ function renderFeed(key, rows){
   el.innerHTML=rows.map(r=>{
     const ev=r.event_date, addr=cfg.showAddr&&goodAddr(r.street_address_1)?cleanText(r.street_address_1):"";
     const scope=cleanText(r.additional_description_1).slice(0,200);
-    let acts=`<a class="act" href="${REQ_URL(r.request_id)}" target="_blank" rel="noopener">City Record ↗</a>`;
-    acts+=`<button class="act" type="button" data-link="${r.request_id}">Copy link</button>`;
-    if(ev) acts+=`<button class="act" type="button" data-ev="${key}:${r.request_id}">Add ${fdt(ev)}</button>`;
-    if(addr) acts+=`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(addr+' New York NY')}" target="_blank" rel="noopener">Map ↗</a>`;
-    if(addr && key==="property") acts+=`<button class="act" type="button" data-demo="${r.request_id}">Still standing?</button>`;
+    let acts=`<a class="act" href="${REQ_URL(r.request_id)}" target="_blank" rel="noopener">${t("city_record_link")}</a>`;
+    acts+=`<button class="act" type="button" data-link="${r.request_id}">${t("copy_link_btn")}</button>`;
+    if(ev) acts+=`<button class="act" type="button" data-ev="${key}:${r.request_id}">${t("add_date_btn",{date:fdt(ev)})}</button>`;
+    if(addr) acts+=`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(addr+' New York NY')}" target="_blank" rel="noopener">${t("map_link")}</a>`;
+    if(addr && key==="property") acts+=`<button class="act" type="button" data-demo="${r.request_id}">${t("still_standing_btn")}</button>`;
     const pbadges = key==="property" && (r._asset || r._badge)
-      ? `<div>${r._asset?`<span class="tag asset">${ASSET_LABEL[r._asset]||""}</span>`:""}${r._badge?`<span class="tag amt">${r._badge}</span>`:""}</div>` : "";
+      ? `<div>${r._asset?`<span class="tag asset">${ASSET_LABEL[r._asset]?t(ASSET_LABEL[r._asset]):""}</span>`:""}${r._badge?`<span class="tag amt">${r._badge}</span>`:""}</div>` : "";
     return `<div class="fcard">
       <div class="ftype">${r.type_of_notice_description||""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}${ev?` · <b style="color:var(--ink)">${fdt(ev)}</b>${eventTag(ev)}`:""}</div>
       ${pbadges}
-      <div class="ftitle">${cleanText(r.short_title)||"(untitled)"}</div>
+      <div class="ftitle">${cleanText(r.short_title)||t("untitled")}</div>
       ${addr?`<div class="faddr">${addr}</div>`:""}
       ${scope?`<div class="fscope">${scope}${scope.length>=200?"…":""}</div>`:""}
       <div class="factions">${acts}</div>
@@ -1820,9 +1821,9 @@ function renderFeed(key, rows){
 
 async function checkDemolition(r, btn){
   if(!r||!r.street_address_1) return;
-  btn.textContent="… checking DOB"; btn.disabled=true;
+  btn.textContent=t("checking_dob"); btn.disabled=true;
   const geo=await geocode(cleanText(r.street_address_1)+" New York NY");
-  if(!geo||!geo.bbl||!/^\d{10}$/.test(geo.bbl)){ btn.textContent="lot not resolved"; btn.disabled=false; return; }
+  if(!geo||!geo.bbl||!/^\d{10}$/.test(geo.bbl)){ btn.textContent=t("lot_not_resolved"); btn.disabled=false; return; }
   const boro={"1":"MANHATTAN","2":"BRONX","3":"BROOKLYN","4":"QUEENS","5":"STATEN ISLAND"}[geo.bbl[0]]||"";
   const blkIn=`'${String(parseInt(geo.bbl.slice(1,6),10))}','${geo.bbl.slice(1,6)}'`;
   const lot4=geo.bbl.slice(6,10), lotIn=`'${String(parseInt(lot4,10))}','${lot4.padStart(5,"0")}','${lot4}'`;
@@ -1830,7 +1831,7 @@ async function checkDemolition(r, btn){
   try{ const n=await api("https://data.cityofnewyork.us/resource/w9ak-ipjd.json",{"$select":"filing_status,job_type","$where":`borough='${boro}' AND block in(${blkIn}) AND lot in(${lotIn}) AND upper(job_type) like '%DEMOLITION%'`,"$limit":"1"}); if(n&&n[0]) hit={status:n[0].filing_status||n[0].job_type,src:"DOB NOW"}; }catch(e){}
   if(!hit){ try{ const l=await api("https://data.cityofnewyork.us/resource/ic3t-wcy2.json",{"$select":"job_status_descrp,latest_action_date","$where":`borough='${boro}' AND block in(${blkIn}) AND lot in(${lotIn}) AND job_type='DM'`,"$order":"latest_action_date DESC","$limit":"1"}); if(l&&l[0]) hit={status:l[0].job_status_descrp,date:(l[0].latest_action_date||"").slice(0,10),src:"DOB"}; }catch(e){} }
   const span=document.createElement("span"); span.className="act demoresult";
-  span.innerHTML = hit ? `Demolition: <b>${cleanText(hit.status)}</b>${hit.date?` (${hit.date})`:""} <span class="muted">· ${hit.src}</span>` : `✓ No demolition permit on this lot`;
+  span.innerHTML = hit ? `${t("demolition_status_html",{status:cleanText(hit.status)})}${hit.date?` (${hit.date})`:""} <span class="muted">· ${hit.src}</span>` : t("no_demo_permit");
   btn.replaceWith(span);
 }
 
@@ -1851,7 +1852,8 @@ function downloadEventICS(r){
 
 /* ===================== ALERTS ===================== */
 const AKEY = "crd_alerts_v1";
-const SECTION_WATCH_LABEL = {property:"property sale notices", rules:"rule changes", meetings:"public hearings & meetings"};
+// Values are i18n keys — render with t(SECTION_WATCH_LABEL[w]); truthiness still gates the lens routing.
+const SECTION_WATCH_LABEL = {property:"watchlbl_property", rules:"watchlbl_rules", meetings:"watchlbl_meetings"};
 function aStore(){ try{ return JSON.parse(localStorage.getItem(AKEY)||"[]"); }catch(e){ return []; } }
 function aSet(v){ try{ localStorage.setItem(AKEY, JSON.stringify(v)); }catch(e){} }
 
@@ -1875,17 +1877,18 @@ function aWatchChange(){
   }
 }
 function aDescribe(){
-  const w=$("#awatch").value, freq=$("#afreq").value.toLowerCase();
-  if(w==="bigaward") return `${freq} digest of NYC contract awards over ${money($("#athresh").value)}`;
-  if(w==="rfpkw") return `${freq} digest of open RFPs matching “${$("#aparam").value||"…"}”`;
-  if(w==="entityvendor") return `${freq} digest — every new notice naming vendor “${$("#aparam").value.trim()||"…"}”`;
-  if(w==="entityagency") return `${freq} digest — anything “${$("#aparam").value.trim()||"…"}” publishes`;
+  const w=$("#awatch").value;
+  const freq=t($("#afreq").value.toLowerCase()==="weekly" ? "freq_weekly_lc" : "freq_daily_lc");
+  if(w==="bigaward") return t("desc_bigaward",{freq, amt:money($("#athresh").value)});
+  if(w==="rfpkw") return t("desc_rfpkw",{freq, kw:$("#aparam").value||"…"});
+  if(w==="entityvendor") return t("desc_vendor",{freq, name:$("#aparam").value.trim()||"…"});
+  if(w==="entityagency") return t("desc_agency_watch",{freq, name:$("#aparam").value.trim()||"…"});
   if(SECTION_WATCH_LABEL[w]){
-    const bits=[$("#aparam").value.trim()?`matching “${$("#aparam").value.trim()}”`:"", $("#aagency").value.trim()?`from ${$("#aagency").value.trim()}`:""].filter(Boolean).join(" ");
-    return `${freq} digest of ${SECTION_WATCH_LABEL[w]}${bits?" "+bits:""}`;
+    const bits=[$("#aparam").value.trim()?t("desc_matching",{kw:$("#aparam").value.trim()}):"", $("#aagency").value.trim()?t("desc_from_agency",{agency:$("#aagency").value.trim()}):""].filter(Boolean).join("");
+    return t("desc_section",{freq, what:t(SECTION_WATCH_LABEL[w]), bits});
   }
   const place=$("#aparam").value.trim();
-  return place ? `${freq} digest of rezonings near “${place}”` : `${freq} digest of new rezonings citywide`;
+  return place ? t("desc_rezone_near",{freq, place}) : t("desc_rezone_city",{freq});
 }
 // When the digest actually goes out. Cron is "0 13 * * *" (13:00 UTC daily); weekly fires only on
 // Mondays. 13:00 UTC = around 9 a.m. in New York during EDT, 8 a.m. during EST — hence the winter note.
@@ -1945,26 +1948,26 @@ function digContact(r){
   return parts.length?`<div class="dc">${parts.join(" · ")}</div>`:"";
 }
 function digItemHTML(kind, r){
-  if(kind==="award") return `<div class="digitem"><div class="dt">${cleanText(r.short_title)||"(untitled)"}</div>
+  if(kind==="award") return `<div class="digitem"><div class="dt">${cleanText(r.short_title)||t("untitled")}</div>
     <div class="dm">${r.agency_name} · ${fdate(r.start_date)}${r.vendor_name? " · "+cleanText(r.vendor_name):""}</div>
     <div class="da">${money(r.contract_amount)||""}</div>${digContact(r)}</div>`;
   if(kind==="notice"){
-    const meta=[r.agency_name, r.type_of_notice_description, fdate(r.start_date), r.event_date?`event ${fdate(r.event_date)}`:""].filter(Boolean).join(" · ");
-    return `<div class="digitem"><div class="dt">${cleanText(r.short_title)||"(untitled)"}</div>
+    const meta=[r.agency_name, r.type_of_notice_description, fdate(r.start_date), r.event_date?t("event_meta",{date:fdate(r.event_date)}):""].filter(Boolean).join(" · ");
+    return `<div class="digitem"><div class="dt">${cleanText(r.short_title)||t("untitled")}</div>
     <div class="dm">${meta}</div>
-    <div class="dc"><a href="#notice/${encodeURIComponent(r.request_id)}">↗ View on CROL-List</a></div></div>`;
+    <div class="dc"><a href="#notice/${encodeURIComponent(r.request_id)}">${t("view_on_crol")}</a></div></div>`;
   }
   if(kind==="rfp"){ const dl=daysLeft(r.due_date);
     const tel=String(r.contact_phone||"").replace(/[^0-9+]/g,""); const acts=[];
-    if(r.email) acts.push(`<a href="${mailtoFor(r)}"><b>Respond</b></a>`);
+    if(r.email) acts.push(`<a href="${mailtoFor(r)}"><b>${t("respond_lbl")}</b></a>`);
     if(r.email) acts.push(`<a href="mailto:${r.email}">${r.email}</a>`);
     if(tel.length>=7) acts.push(`<a href="tel:${tel}">${cleanText(r.contact_phone)}</a>`);
     const dc=acts.length?`<div class="dc">${acts.join(" · ")}</div>`:"";
-    return `<div class="digitem"><div class="dt">${cleanText(r.short_title)||"(untitled)"}</div>
-    <div class="dm">${r.agency_name} · due ${fdt(r.due_date)}${dl!=null?` (${dl} days)`:""}</div>${dc}</div>`; }
-  return `<div class="digitem"><div class="dt">${r.project_name||"(unnamed rezoning)"}</div>
-    <div class="dm">${r.borough||""}${r.community_district? " · CD "+r.community_district:""} · ${r.public_status||""}${r.primary_applicant? " · "+r.primary_applicant:""}${mihOn(r.mih_flag)? " · affordable housing":""}</div>
-    <div class="dc"><a href="https://zap.planning.nyc.gov/projects/${r.project_id}" target="_blank" rel="noopener">↗ View &amp; comment on ZAP</a> · <a href="https://a856-cityrecord.nyc.gov/Search/Advanced" target="_blank" rel="noopener">hearing notice in City Record</a></div></div>`;
+    return `<div class="digitem"><div class="dt">${cleanText(r.short_title)||t("untitled")}</div>
+    <div class="dm">${r.agency_name} · ${t("due_on",{date:fdt(r.due_date)})}${dl!=null?t("days_paren",{n:dl}):""}</div>${dc}</div>`; }
+  return `<div class="digitem"><div class="dt">${r.project_name||t("unnamed_rezoning")}</div>
+    <div class="dm">${r.borough||""}${r.community_district? " · CD "+r.community_district:""} · ${r.public_status||""}${r.primary_applicant? " · "+r.primary_applicant:""}${mihOn(r.mih_flag)? " · "+t("affordable_housing_tag"):""}</div>
+    <div class="dc"><a href="https://zap.planning.nyc.gov/projects/${r.project_id}" target="_blank" rel="noopener">${t("view_comment_zap")}</a> · <a href="https://a856-cityrecord.nyc.gov/Search/Advanced" target="_blank" rel="noopener">${t("hearing_notice_cr")}</a></div></div>`;
 }
 
 function feedURLs(){
@@ -1982,10 +1985,10 @@ function feedURLs(){
 function renderFeedLinks(){
   const el=$("#afeeds"); if(!el) return;
   const u=feedURLs(); if(!u){ el.innerHTML=""; return; }
-  el.innerHTML=`Prefer feeds? This watch is also
+  el.innerHTML=`${t("prefer_feeds_html")}
     <a href="${u.atom}" target="_blank" rel="noopener">RSS/Atom</a> ·
     <a href="${u.json}" target="_blank" rel="noopener">JSON Feed</a> ·
-    <a href="${u.ics}" target="_blank" rel="noopener">Calendar (.ics)</a> — no email needed.`;
+    <a href="${u.ics}" target="_blank" rel="noopener">${t("calendar_ics")}</a> ${t("feeds_suffix")}`;
 }
 async function aPreview(){
   $("#apreviewbox").innerHTML='<div class="empty"><span class="loading"></span> ' + t("fetching_today") + '</div>';
@@ -1993,22 +1996,21 @@ async function aPreview(){
   let data;
   try{ data = await aFetch(); }catch(e){ $("#apreviewbox").innerHTML='<div class="empty">' + t("could_not_reach") + '</div>'; return; }
   const rows=data.rows||[];
-  const dest=$("#adest").value.trim() || "you@example.com";
-  const subj=aDescribe();
-  const body = rows.length ? rows.map(r=>digItemHTML(data.kind,r)).join("") : '<div class="empty">No matching notices today — so you&#39;d get nothing. (That&#39;s the point: signal, not noise.)</div>';
+  const dest=$("#adest").value.trim() || t("email_placeholder");
+  const body = rows.length ? rows.map(r=>digItemHTML(data.kind,r)).join("") : `<div class="empty">${t("no_matches_today_html")}</div>`;
   $("#apreviewbox").innerHTML = `<div class="emailmock">
     <div class="ehead"><div class="efrom">CROL-List &lt;alerts@crol-list.org&gt; → ${dest}</div>
-    <div class="esubj">Your ${subj}</div></div>
+    <div class="esubj">${t("your_digest_subject",{desc:aDescribe()})}</div></div>
     <div class="ebody">${body}
-      <div style="margin-top:12px;font:12px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted)">${rows.length} notice${rows.length===1?"":"s"} today · from The City Record · unsubscribe any time (one click)</div>
+      <div style="margin-top:12px;font:12px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted)">${t("digest_footer",{n:rows.length, s:rows.length===1?"":"s"})}</div>
     </div></div>`;
 }
 
 function aRenderSaved(){
   const list=aStore();
   $("#asaved").innerHTML = list.length
-    ? '<div style="margin-top:16px;font:600 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Saved alerts (demo)</div>' +
-      list.map((a,i)=>`<div class="savedalert"><span>${a.desc} → <b>${a.dest}</b></span><button data-i="${i}">remove</button></div>`).join("")
+    ? `<div style="margin-top:16px;font:600 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">${t("saved_alerts_heading")}</div>` +
+      list.map((a,i)=>`<div class="savedalert"><span>${a.desc} → <b>${a.dest}</b></span><button data-i="${i}">${t("remove_btn")}</button></div>`).join("")
     : "";
   document.querySelectorAll("#asaved .savedalert button").forEach(b=>b.addEventListener("click",()=>{ const l=aStore(); l.splice(+b.dataset.i,1); aSet(l); aRenderSaved(); }));
 }
@@ -2031,10 +2033,10 @@ function aIsEmail(s){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s||""); }
 async function aSubscribe(){
   const msg=$("#asubmsg");
   const email=$("#adest").value.trim();
-  if(!aIsEmail(email)){ msg.innerHTML="Enter a valid email address."; return; }
+  if(!aIsEmail(email)){ msg.innerHTML=t("enter_valid_email"); return; }
   const token=(window.turnstile&&turnstile.getResponse)?(turnstile.getResponse()||""):"";
   if(!token){ msg.innerHTML=t("complete_human_check"); return; }
-  if(!API){ msg.innerHTML="Subscriptions need the backend, which isn't wired in this build."; return; }
+  if(!API){ msg.innerHTML=t("subs_need_backend"); return; }
   const {lens,filter}=aLensFilter(), freq=$("#afreq").value.toLowerCase();
   const btn=$("#asubscribe"); btn.disabled=true; msg.innerHTML='<span class="loading"></span> ' + t("sending_confirm_link");
   try{
@@ -2083,17 +2085,17 @@ function renderToday(d){
   const total = (d.counts||[]).reduce((s,c)=>s+(+c.n||0),0);
   if(!total) return;
   const _lm=(window.LANG_META||{})[window.LANG||"en"]; const _loc=_lm?_lm.intlDate:"en-US"; $("#tdate").textContent = new Date(d.ed+"T12:00:00").toLocaleDateString(_loc,{weekday:"long",month:"long",day:"numeric",year:"numeric"}).toUpperCase() + " " + t("latest_edition_suffix");
-  $("#tbig").innerHTML = `<b>${total.toLocaleString()}</b> notices from <b>${d.nAgencies}</b> agencies`;
+  $("#tbig").innerHTML = t("today_summary", {n: fmtNumber(total), a: fmtNumber(d.nAgencies)});
   $("#tcounts").innerHTML = d.counts.map(c=>{
     const lens = SECTION_LENS[c.section_name];
-    const label = `${c.section_name} <b>${(+c.n).toLocaleString()}</b>`;
+    const label = `${tSection(c.section_name)} <b>${fmtNumber(+c.n)}</b>`;
     return lens ? `<a href="#${lens}">${label}</a>` : `<span>${label}</span>`;
   }).join("");
   const cards = [];
-  if(d.closing) cards.push({lbl:t("closing_soon_lbl"), t:d.closing, meta:`${d.closing.agency_name} · due ${fdt(d.closing.due_date)} ${deadlineTag(d.closing.due_date)}`});
+  if(d.closing) cards.push({lbl:t("closing_soon_lbl"), t:d.closing, meta:`${d.closing.agency_name} · ${t("due_on",{date:fdt(d.closing.due_date)})} ${deadlineTag(d.closing.due_date)}`});
   if(d.award) cards.push({lbl:t("largest_award_lbl"), t:d.award, meta:`${money(d.award.contract_amount)} — ${d.award.agency_name}`});
   if(d.hearing) cards.push({lbl:t("next_hearing_lbl"), t:d.hearing, meta:`${d.hearing.agency_name} · ${fdt(d.hearing.event_date)}${eventTag(d.hearing.event_date)}`});
-  $("#tcards").innerHTML = cards.map(c=>`<a class="t-card" href="#notice/${encodeURIComponent(c.t.request_id)}"><span class="tlbl">${c.lbl}</span><span class="tttl">${cleanText(c.t.short_title)||"(untitled)"}</span><span class="tmeta">${c.meta}</span></a>`).join("");
+  $("#tcards").innerHTML = cards.map(c=>`<a class="t-card" href="#notice/${encodeURIComponent(c.t.request_id)}"><span class="tlbl">${c.lbl}</span><span class="tttl">${cleanText(c.t.short_title)||t("untitled")}</span><span class="tmeta">${c.meta}</span></a>`).join("");
   $("#todaystrip").hidden = false;
 }
 
@@ -2302,7 +2304,7 @@ async function showAgency(name){
       <div class="lval">${money(v.t)||"—"}</div></div>`).join("");
   const secChips = sections.map(c=>{
     const lens = SECTION_LENS[c.section_name];
-    const label = `${c.section_name}<span class="ct">${(+c.n).toLocaleString()}</span>`;
+    const label = `${tSection(c.section_name)}<span class="ct">${fmtNumber(+c.n)}</span>`;
     return lens ? `<a class="chip" style="text-decoration:none" href="#${lens}?agency=${encodeURIComponent(nm)}">${label}</a>` : `<span class="chip" style="cursor:default">${label}</span>`;
   }).join("");
   const rfpItems = rfps.map(r=>`<div class="tl"><span class="tldate">due ${fdate(r.due_date)}</span>
@@ -2461,7 +2463,7 @@ async function showVendor(name){
       ${money(r.contract_amount)?`<span class="tlsal">${money(r.contract_amount)}</span>`:""}</div>`).join("");
   const mentionItems = mentions.map(r=>`<div class="tl"><span class="tldate">${fdate(r.start_date)}</span>
       <span class="tlreason">${pivotA("#notice/"+encodeURIComponent(r.request_id), cleanText(r.short_title)||"(untitled)")}</span>
-      <span class="rmeta" style="margin:0">${r.section_name||r.type_of_notice_description||""}</span></div>`).join("");
+      <span class="rmeta" style="margin:0">${tSection(r.section_name)||r.type_of_notice_description||""}</span></div>`).join("");
 
   const esc = (s) => String(s == null ? "" : s).replace(/[<>&'"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", "'": "&#39;", "\"": "&quot;" }[c]));
   const forecasts = forecastData ? (forecastData.forecasts || []) : [];
@@ -2585,7 +2587,7 @@ const invItemHref = it => (INV_HREF[it.t]||"#notice/") + encodeURIComponent(it.i
 function pinBtn(t, id, title, meta){
   const d = JSON.stringify({t, id, title:String(title).slice(0,300), meta:String(meta||"").slice(0,300)})
     .replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
-  return `<button class="act" type="button" data-pin="${d}">Pin</button>`;
+  return `<button class="act" type="button" data-pin="${d}">${window.t("pin_btn")}</button>`; // param `t` is the item type — use window.t
 }
 document.addEventListener("click", e=>{
   const b = e.target.closest("[data-pin]");
@@ -2596,7 +2598,7 @@ document.addEventListener("click", e=>{
       inv.items.push({...p, note:"", added:new Date().toISOString().slice(0,10)});
       invSave(s);
     }
-    b.outerHTML = `<a class="act" href="#investigation">✓ Pinned — open investigation (${s.invs[s.current].items.length})</a>`;
+    b.outerHTML = `<a class="act" href="#investigation">${t("pinned_open_inv",{n:s.invs[s.current].items.length})}</a>`;
     return;
   }
   const f = e.target.closest("[data-follow]");
@@ -2771,13 +2773,13 @@ async function showMatter(pin){
 const noticeLink = id => location.origin + location.pathname + "#notice/" + encodeURIComponent(id);
 let hashLock = false;
 
-async function copyText(t, btn){
+async function copyText(txt, btn){ // NOT `t` — that's the i18n lookup
   let ok = false;
-  try{ await navigator.clipboard.writeText(t); ok = true; }
+  try{ await navigator.clipboard.writeText(txt); ok = true; }
   catch(e){
-    try{ const ta=document.createElement("textarea"); ta.value=t; document.body.appendChild(ta); ta.select(); ok=document.execCommand("copy"); ta.remove(); }catch(_){}
+    try{ const ta=document.createElement("textarea"); ta.value=txt; document.body.appendChild(ta); ta.select(); ok=document.execCommand("copy"); ta.remove(); }catch(_){}
   }
-  if(btn){ const old=btn.innerHTML; btn.innerHTML = ok ? "✓ Copied" : "⚠ Couldn't copy"; setTimeout(()=>{ btn.innerHTML = old; }, 1800); }
+  if(btn){ const old=btn.innerHTML; btn.innerHTML = ok ? t("copied_check") : t("copy_failed"); setTimeout(()=>{ btn.innerHTML = old; }, 1800); }
 }
 
 // Select an option that may not be loaded yet (agency lists populate async).
@@ -2882,38 +2884,38 @@ async function showNotice(id){
   showTab("notice");
   const box = $("#noticeview");
   const safeId = String(id).replace(/[<>&]/g,"");
-  box.innerHTML = `<div class="empty"><span class="loading"></span> fetching notice ${safeId}…</div>`;
+  box.innerHTML = `<div class="empty"><span class="loading"></span> ${t("fetching_notice_id",{id:safeId})}</div>`;
   let r = null;
   try{
     const rows = await soda({"$select":NOTICE_SELECT, "$where":`request_id='${String(id).replace(/'/g,"''")}'`, "$limit":"1"});
     r = rows[0];
   }catch(e){}
   if(!r){
-    box.innerHTML = `<div class="empty">Notice <code>${safeId}</code> wasn't found in the City Record Open Data — it may be very new, or the ID may be mistyped. <br><br><a href="#money">← Browse CROL-List</a> · <a href="${REQ_URL(id)}" target="_blank" rel="noopener">try it in the City Record ↗</a></div>`;
+    box.innerHTML = `<div class="empty">${t("notice_not_found_html",{id:safeId})} <br><br><a href="#money">${t("back_browse")}</a> · <a href="${REQ_URL(id)}" target="_blank" rel="noopener">${t("try_city_record")}</a></div>`;
     return;
   }
   const link = noticeLink(r.request_id);
   const scope = cleanText(r.additional_description_1);
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
-    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CROL-List</a></p>
+    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("back_browse")}</a></p>
     <div class="panel" style="padding:22px 24px">
-      <div class="ftype" style="margin-bottom:6px">${r.type_of_notice_description||"Notice"}${r.section_name?" · "+r.section_name:""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}</div>
-      <div class="rolename">${cleanText(r.short_title)||"(untitled notice)"}</div>
+      <div class="ftype" style="margin-bottom:6px">${r.type_of_notice_description||t("notice_fallback")}${r.section_name?" · "+tSection(r.section_name):""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}</div>
+      <div class="rolename">${cleanText(r.short_title)||t("untitled_notice")}</div>
       <div id="ncontext"></div>
       ${glanceFor(r)}
       <div id="naddr"></div><div id="ndollars"></div>
       <div class="actions" style="margin-top:14px">
-        <button class="act primary" type="button" id="ncopy">Copy link</button>
-        <a class="act" href="mailto:?subject=${encodeURIComponent("City Record notice: "+(cleanText(r.short_title)||r.request_id))}&body=${encodeURIComponent(link+"\n\nVia CROL-List — The City Record, searchable.")}">Email</a>
-        <button class="act" type="button" id="nprint">Print</button>
-        ${(r.due_date||r.event_date)?'<button class="act" type="button" id="nics">Add to calendar</button>':""}
+        <button class="act primary" type="button" id="ncopy">${t("copy_link")}</button>
+        <a class="act" href="mailto:?subject=${encodeURIComponent("City Record notice: "+(cleanText(r.short_title)||r.request_id))}&body=${encodeURIComponent(link+"\n\nVia CROL-List — The City Record, searchable.")}">${t("notice_email_btn")}</a>
+        <button class="act" type="button" id="nprint">${t("notice_print_btn")}</button>
+        ${(r.due_date||r.event_date)?`<button class="act" type="button" id="nics">${t("add_to_calendar_btn")}</button>`:""}
         ${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}
-        <a class="act" href="${REQ_URL(r.request_id)}" target="_blank" rel="noopener">View in City Record ↗</a>
+        <a class="act" href="${REQ_URL(r.request_id)}" target="_blank" rel="noopener">${t("view_in_city_record")}</a>
       </div>
       ${r.type_of_notice_description==="Solicitation"?buildApply(r):""}
-      ${scope?`<details class="fulltext"${scope.length<=600?" open":""}><summary>Read the full notice (original City Record text)</summary><div class="scope" style="margin-top:10px">${scope.slice(0,6000)}${scope.length>6000?"…":""}</div></details>`:""}
+      ${scope?`<details class="fulltext"${scope.length<=600?" open":""}><summary>${t("read_full_notice")}</summary><div class="scope" style="margin-top:10px">${scope.slice(0,6000)}${scope.length>6000?"…":""}</div></details>`:""}
       <div id="nchain"></div>
-      <div class="note" style="margin-top:14px">Permalink: <code>${link}</code> · request ID <code>${r.request_id}</code> · from NYC Open Data</div>
+      <div class="note" style="margin-top:14px">${t("permalink_note_html",{link, id:r.request_id})}</div>
     </div></div>`;
   $("#ncopy").addEventListener("click", ()=>copyText(link, $("#ncopy")));
   $("#nprint").addEventListener("click", ()=>window.print());
@@ -2934,7 +2936,9 @@ $("#nlq").addEventListener("keydown", e=>{ if(e.key==="Enter") nlTranslate(); })
 injectNLBoxes();
 renderNLSamples("money", $("#nltry"));
 $("#export").addEventListener("click", exportCSV);
-soda({"$select":"min(start_date) as a, max(start_date) as b"}).then(r=>{ const el=$("#editionspan"); if(el&&r&&r[0]){ const f=s=>new Date(s).toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"}); el.textContent=f(r[0].a)+" – "+f(r[0].b); } }).catch(()=>{});
+let editionRange=null;
+function paintEditionSpan(){ const el=$("#editionspan"); if(el&&editionRange){ el.textContent=fdtLocale(editionRange.a)+" – "+fdtLocale(editionRange.b); } }
+soda({"$select":"min(start_date) as a, max(start_date) as b"}).then(r=>{ if(r&&r[0]){ editionRange=r[0]; paintEditionSpan(); } }).catch(()=>{});
 $("#kw").addEventListener("keydown", e=>{ if(e.key==="Enter") search(); });
 $("#kw").addEventListener("input", debounce(search, 500));
 ["#mode","#agency","#sort","#minamt"].forEach(s=>$(s).addEventListener("change", search));
@@ -2977,20 +2981,21 @@ function watchFromFilters(lens){
 document.querySelectorAll(".watchbtn").forEach(b=>b.addEventListener("click",()=>watchFromFilters(b.dataset.lens)));
 
 /* 60-second onboarding: chips → prefilled builder → live preview (Meet-Your-Mayor pattern) */
-const QUIZ_PLACEHOLDER={rfpkw:"keyword — construction, IT, catering…", bigaward:"(uses the $1M+ threshold — tune it below)",
-  rezone:"place — 79 Rivington, Bushwick…", property:"keyword — Brooklyn, auction…", rules:"keyword — e-bike, sidewalk…", meetings:"keyword — community board, landmarks…"};
+// Values are i18n keys — resolved with t() at click time so the quiz follows the active language.
+const QUIZ_PLACEHOLDER={rfpkw:"quizph_rfpkw", bigaward:"quizph_bigaward",
+  rezone:"quizph_rezone", property:"quizph_property", rules:"quizph_rules", meetings:"quizph_meetings"};
 let quizW=null;
 $("#quizwhat").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{
   quizW=b.dataset.w;
   $("#quizwhat").querySelectorAll(".chip").forEach(x=>x.classList.toggle("on", x===b));
-  $("#quiznarrow").placeholder=QUIZ_PLACEHOLDER[quizW]||"";
+  $("#quiznarrow").placeholder=QUIZ_PLACEHOLDER[quizW]?t(QUIZ_PLACEHOLDER[quizW]):"";
   $("#quiznarrow").disabled = quizW==="bigaward";
 }));
 $("#quizfreq").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{
   $("#quizfreq").querySelectorAll(".chip").forEach(x=>x.classList.toggle("on", x===b));
 }));
 $("#quizgo").addEventListener("click",()=>{
-  if(!quizW){ $("#quiznarrow").placeholder="← pick a topic first"; return; }
+  if(!quizW){ $("#quiznarrow").placeholder=t("pick_topic_first"); return; }
   $("#awatch").value=quizW; aWatchChange();
   // Always assign — every topic gets the same treatment: your narrowing, or the topic's
   // own "all notices" default. Never a value left over from a previous topic.
@@ -3019,6 +3024,27 @@ aWatchChange();
 updateAWhen();
 aRenderSaved();
 
+// Language switch must also repaint DYNAMICALLY-BUILT surfaces (2026-07-13 hotfix): applyStrings()
+// only covers data-i18n chrome, so the Today strip, lists, dropdowns and detail panels kept their
+// old language. Re-render from cache/memory — the 5-minute API cache makes the re-runs free.
+function rerenderForLang(){
+  document.querySelectorAll(".filtertoggle").forEach(b=>{ b.textContent = "☰ " + t("filters_toggle"); });
+  try{ const c = JSON.parse(localStorage.getItem("crol_today_v2")||"null"); if(c && c.d) renderToday(c.d); }catch(e){}
+  paintEditionSpan();
+  loadAgencies();
+  aWatchChange(); updateAWhen(); aRenderSaved();
+  const active = document.querySelector(".tabbtn.active");
+  const tab = active ? active.dataset.tab : null;
+  // Loaded-but-inactive lenses re-fetch on their next visit instead of re-rendering now.
+  Object.keys(feedLoaded).forEach(k=>{ if(k!==tab && feedLoaded[k]) feedLoaded[k]=false; });
+  if(tab!=="money") moneyLoaded=false;
+  if(tab!=="land") landLoaded=false;
+  if(tab==="money" && moneyLoaded) search();
+  else if(tab==="people" && $("#pkw").value.trim()) pSearch();
+  else if(tab==="land" && landLoaded) landSearch();
+  else if(tab && SECTIONS[tab] && feedLoaded[tab]){ loadSectionAgencies(tab); loadSection(tab); }
+}
+
 // Language switcher init — runs after DOM is built; i18n.js already loaded in <head>.
 (function(){
   function initLangSwitcher(){
@@ -3040,7 +3066,9 @@ aRenderSaved();
     btns.forEach(function(btn){
       btn.addEventListener("click", function(){
         const lang = btn.dataset.lang;
+        const changed = lang !== window.LANG;
         setLang(lang);
+        if(changed) rerenderForLang();
         btns.forEach(function(b){
           b.setAttribute("aria-pressed", b.dataset.lang === lang ? "true" : "false");
         });
