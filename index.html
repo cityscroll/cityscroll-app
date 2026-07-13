@@ -308,7 +308,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=943805da"></script>
+<script src="i18n.js?v=767707e4"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
@@ -597,7 +597,7 @@
               <option value="50000000">$50M+</option>
             </select>
             <input type="text" id="aparam" placeholder="" style="display:none">
-            <input type="text" id="aagency" aria-label="Agency (optional)" data-i18n-aria="agency_filter_label" placeholder="agency (optional) — e.g. Buildings" style="display:none;margin-top:6px">
+            <input type="text" id="aagency" aria-label="Agency (optional)" data-i18n-aria="agency_filter_label" placeholder="agency (optional) — for example, Buildings" style="display:none;margin-top:6px">
           </div>
           <div class="afield">
             <label id="adestlabel" for="adest" data-i18n="email_label">Email address</label>
@@ -1261,25 +1261,25 @@ function deviceParse(text, lens){
 
 const NL = {
   people: {
-    placeholder:"e.g. paramedic roles, or look up someone named Rodriguez",
+    placeholder:"for example, paramedic roles, or look up someone named Rodriguez",
     chips:f=>[ f.lookupType?`<span class="qchip">a <b>${f.lookupType==='person'?'person':'role'}</b></span>`:"",
                (f.keywords&&f.keywords.length)?`<span class="qchip">about <b>${f.keywords.join(' / ')}</b></span>`:"" ],
     apply:f=>{ if(f.lookupType){ $("#pmode").value=f.lookupType; $("#pmode").dispatchEvent(new Event("change")); }
                $("#pkw").value=(f.keywords||[]).join(" "); pSearch(); }
   },
   land: {
-    placeholder:"e.g. rezonings in Brooklyn, or 79 Rivington",
+    placeholder:"for example, rezonings in Brooklyn, or 79 Rivington",
     chips:f=>[ f.boro?`<span class="qchip">in <b>${f.boro}</b></span>`:"",
                (f.keywords&&f.keywords.length)?`<span class="qchip">about <b>${f.keywords.join(' / ')}</b></span>`:"",
                f.status==='all'?`<span class="qchip"><b>all</b> · incl. closed</span>`:"" ],
     apply:f=>{ if(f.boro) $("#lboro").value=f.boro; if(f.status) $("#lstatus").value=f.status;
                $("#lkw").value=(f.keywords||[]).join(" "); landSearch(); }
   },
-  property: nlFeed("property","e.g. HPD property sales, DEP land"),
-  rules:    nlFeed("rules","e.g. buildings rules, sanitation rules"),
-  meetings: nlFeed("meetings","e.g. recent landmarks hearings, city council"),
+  property: nlFeed("property","for example, HPD property sales, DEP land"),
+  rules:    nlFeed("rules","for example, buildings rules, sanitation rules"),
+  meetings: nlFeed("meetings","for example, recent landmarks hearings, city council"),
   alerts: {
-    placeholder:"e.g. email me awards over $1M, or construction RFPs",
+    placeholder:"for example, email me awards over $1M, or construction RFPs",
     chips:f=>{
       if(!f.watchType) return [];
       const lbl = f.watchType==='bigaward' ? `awards ≥ <b>${money(f.threshold||1000000)}</b>`
