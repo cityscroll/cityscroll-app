@@ -52,7 +52,7 @@ QUEUE_DIGESTS = "true"
 # BOARDNOTIFY_CC: comma-separated GitHub logins (no "@"), appended as "cc @a @b" on every
 # comment — mentions notify org members regardless of their own subscription state.
 # Non-secret, so it lives here rather than `wrangler secret put`. Empty = no cc line.
-BOARDNOTIFY_CC = ""
+BOARDNOTIFY_CC = "jimdc,michaeljohnsheehan-a11y,devdoshi"
 BOARD_PROJECT_ID = "PVT_kwDOEgVDsM4BdE22"
 BOARD_HOOK_DRY = "false"
 BOARD_HOOK_MAX_PER_DAY = "100"
