@@ -101,8 +101,8 @@ project_id='
 type_of_notice = 'Solicitation'
 type_of_notice_description='Award'
 type_of_notice_description='Solicitation'
-" target="_blank" rel="noopener">Checkbook NYC ↗</a>, matched by PIN <code>
-" target="_blank" rel="noopener">Latest notice in City Record ↗</a> </div> <div class="note">The spine is every City Record notice sharing this PIN, in order; Checkbook events join deterministically on the same PIN. Public-hearing notices rarely carry PINs, so hearings may be missing from the chronology.</div> </div></div>
+">Checkbook NYC</a>, matched by PIN <code>
+">Latest notice in City Record</a> </div> <div class="note">The spine is every City Record notice sharing this PIN, in order; Checkbook events join deterministically on the same PIN. Public-hearing notices rarely carry PINs, so hearings may be missing from the chronology.</div> </div></div>
 ">Follow this vendor</button> <button class="act" type="button" id="ecopy">Copy link</button>
 ">Follow: anything new from them</button> <button class="act" type="button" id="ecopy">Copy link</button>
 ">Search notices mentioning them →</a></div>

@@ -38,6 +38,10 @@ These rules built the project and they're not aspirational — every shipped fea
    minutes once — see the changelog).
 5. **Honest failure.** If something can't be verified, say so where the next person will look —
    don't stamp it shipped.
+6. **AI-drafted copy gets a human editor.** Site copy is substantially drafted with an AI
+   assistant (Claude); a human reviews it before it publishes, same as any other contribution.
+   about.html's "About our content" section carries this disclosure to readers too (NYC Web
+   Content Style Guide, GenAI tools) — `test/standards/genai_disclosure.py` gates its presence.
 
 ## Running things
 

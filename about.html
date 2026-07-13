@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>About · CROL-List</title>
-<meta name="description" content="What CROL-List is, where its data comes from, how to send feedback, and its privacy stance.">
-<script src="i18n.js?v=917986a4"></script>
+<meta name="description" content="What CROL-List is, where its data comes from, how flags and context work, how to send feedback, and its privacy and data-retention stance.">
+<script src="i18n.js?v=14c58f59"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
@@ -89,19 +89,22 @@
 
 <main id="main" tabindex="-1">
 <h2 data-i18n="about_h_what">What this is</h2>
-<p data-i18n-html="about_p_what_html">CROL-List is a search interface over <a href="https://a856-cityrecord.nyc.gov/" target="_blank" rel="noopener">The City Record</a> — the
-City of New York's official daily journal, where <a href="https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-3113" target="_blank" rel="noopener">every agency must publish</a> its
+<p data-i18n-html="about_p_what_html">CROL-List is a search interface over <a href="https://a856-cityrecord.nyc.gov/">The City Record</a> — the
+City of New York's official daily journal, where <a href="https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-3113">every agency must publish</a> its
 contracts, hearings, rule changes, rezonings, and personnel moves. CROL-List makes that record searchable
 <em>by interest</em>: follow a contract, decode a job title, track a rezoning, or get an email when something new matches.</p>
 
+<h2 data-i18n="about_h_content">About our content</h2>
+<p data-i18n="about_p_content">An AI assistant (Claude) drafts this site's copy — headings, explanations, pages like this one. A human editor checks it before it goes live. The data is not AI-generated. Every notice, dollar figure, and date comes straight from NYC Open Data, unedited.</p>
+
 <h2 data-i18n="about_h_source">Where the data comes from</h2>
 <p class="src" data-i18n-html="about_p_source_html">Everything is live, public data — queried straight from your browser, nothing cached:
-<a href="https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx" target="_blank" rel="noopener">City Record Online (dg92-zbpx)</a> ·
-<a href="https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e" target="_blank" rel="noopener">Citywide Payroll (k397-673e)</a> ·
-<a href="https://data.cityofnewyork.us/resource/vx8i-nprf" target="_blank" rel="noopener">Civil Service List (vx8i-nprf)</a> ·
-<a href="https://data.cityofnewyork.us/City-Government/Zoning-Application-Portal-ZAP-Project-Data/hgx4-8ukb" target="_blank" rel="noopener">ZAP Projects (hgx4-8ukb)</a> ·
-<a href="https://a0333-passportpublic.nyc.gov/" target="_blank" rel="noopener">PASSPort</a> ·
-<a href="https://www.checkbooknyc.com/" target="_blank" rel="noopener">Checkbook NYC</a>.</p>
+<a href="https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx">City Record Online (dg92-zbpx)</a> ·
+<a href="https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e">Citywide Payroll (k397-673e)</a> ·
+<a href="https://data.cityofnewyork.us/resource/vx8i-nprf">Civil Service List (vx8i-nprf)</a> ·
+<a href="https://data.cityofnewyork.us/City-Government/Zoning-Application-Portal-ZAP-Project-Data/hgx4-8ukb">ZAP Projects (hgx4-8ukb)</a> ·
+<a href="https://a0333-passportpublic.nyc.gov/">PASSPort</a> ·
+<a href="https://www.checkbooknyc.com/">Checkbook NYC</a>.</p>
 
 <h2 id="data" data-i18n="about_h_honest">The data, to be honest</h2>
 <p data-i18n-html="about_p_honest_intro_html">The City Record dataset is <b>1.09 million notices back to 2003</b> — and it is not what it
@@ -129,12 +132,12 @@ on this site always query it live. Want the numbers themselves?
 <a href="data.html"><b>The Data</b></a> shows the record at a glance — sections, volume,
 procurement mix, top agencies and vendors — computed live with these same rules.</p>
 
-<h2 id="context" data-i18n="about_h_flags">Flags &amp; context, explained</h2>
+<h2 id="context" data-i18n="about_h_flags">Flags and context, explained</h2>
 <p class="src" data-i18n-html="about_p_flags_intro_html">Procurement notices carry two kinds of computed annotation. Both are <b>statistical context, not
 findings or accusations</b> — a flag means "worth a closer look," and every formula has innocent explanations
 (emergencies are real, specialized markets have few bidders, name matching is imperfect). The approach follows the
-<a href="https://www.open-contracting.org/resources/red-flags-in-public-procurement-a-guide-to-using-data-to-detect-and-mitigate-risks/" target="_blank" rel="noopener">Open Contracting Partnership's red-flags methodology</a> and
-<a href="https://opentender.eu/" target="_blank" rel="noopener">Opentender's</a> integrity indicators.</p>
+<a href="https://www.open-contracting.org/resources/red-flags-in-public-procurement-a-guide-to-using-data-to-detect-and-mitigate-risks/">Open Contracting Partnership's red-flags methodology</a> and
+<a href="https://opentender.eu/">Opentender's</a> integrity indicators.</p>
 <ul class="src" style="margin:8px 0;padding-left:20px" data-i18n-html="about_li_flags_html">
   <li><b>⚑ Short ad window</b> — the days between a solicitation's publication and its response deadline, flagged
   when it is 10 days or fewer <em>and</em> less than half the agency's own median (median computed over that
@@ -147,7 +150,7 @@ findings or accusations</b> — a flag means "worth a closer look," and every fo
   (shown only when the agency has ≥20 awards in the window), and the vendor's share of the agency's award dollars
   over the same window (exact published name; name variants are not merged here).</li>
 </ul>
-<p class="src" data-i18n-html="about_p_flags_footer_html">All figures come live from the <a href="https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx" target="_blank" rel="noopener">City Record Open Data</a> at
+<p class="src" data-i18n-html="about_p_flags_footer_html">All figures come live from the <a href="https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx">City Record Open Data</a> at
 the moment you view the notice — awards <em>as published</em>, which lag contract registration and actual
 payment. Nothing here asserts wrongdoing; it saves you the arithmetic.</p>
 
@@ -185,7 +188,7 @@ payment. Nothing here asserts wrongdoing; it saves you the arithmetic.</p>
 </ul>
 
 </main>
-<footer class="foot" data-i18n-html="about_foot_html">CROL-List · a search interface over <a href="https://a856-cityrecord.nyc.gov/" target="_blank" rel="noopener">The City Record</a> · <a href="changelog.html">Changelog</a> · <a href="stats.html">Stats</a> · <a href="index.html">Home</a></footer>
+<footer class="foot" data-i18n-html="about_foot_html">CROL-List · a search interface over <a href="https://a856-cityrecord.nyc.gov/">The City Record</a> · <a href="changelog.html">Changelog</a> · <a href="stats.html">Stats</a> · <a href="index.html">Home</a></footer>
 </div>
 
 <script>

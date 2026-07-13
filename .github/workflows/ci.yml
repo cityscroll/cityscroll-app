@@ -41,6 +41,16 @@ jobs:
         run: python3 test/standards/outline_guard.py
       - name: Form-control border contrast gate (WCAG 1.4.11)
         run: python3 test/standards/form_border_contrast.py
+      - name: NYC copy lint (report-only — flips to --gate after w10-06)
+        run: python3 test/standards/nyc_copy_lint.py
+      - name: Page-metadata gate (meta description length, title format)
+        run: python3 test/standards/page_metadata.py
+      - name: External-link presentation gate (same-tab, no link icons)
+        run: python3 test/standards/link_targets.py
+      - name: Heading-punctuation lint (NYC Web Content Style Guide)
+        run: python3 test/standards/heading_punctuation.py
+      - name: GenAI content-disclosure presence gate
+        run: python3 test/standards/genai_disclosure.py
       - name: Site unit tests
         # Scoped to test/ — a bare `node --test` also recurses into worker/test/,
         # which needs worker/node_modules (installed in the next step).
