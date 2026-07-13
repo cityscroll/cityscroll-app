@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@jimdc/sendcap": "^1.0.0",
+    "board-notify": "github:jimdc/board-notify#841279f567165ae90ad2a60c18cf03bc5b4ea62b",
     "optin-token": "^1.0.0",
     "postal-mime": "^2.7.5"
   },

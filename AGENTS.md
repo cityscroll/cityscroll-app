@@ -264,12 +264,17 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   serverless backend lives entirely in `worker/` (Cloudflare Worker) — see `worker/README.md`
   for routes, secrets/vars, and the develop/test/deploy commands (`worker/` has its own
   `npm test`, independent of anything at repo root).
-- The board-notification bridge (`worker/src/boardhook.mjs`, route `/board-hook`) auths
-  App-first with a `GITHUB_BOT_TOKEN` fallback — see `worker/README.md`'s "Board-notification
-  bridge auth" section. The `board-notify` GitHub App is live (app id 4288246, installed on
-  cityscroll, installation id 146319774); its one-click creation kit stays outside this repo,
-  in the maintainer's private tooling at `` (`INSTALL.md` has the setup steps, for
-  reference if the App ever needs recreating).
+- The board-notification bridge (route `/board-hook`) is an **optional** npm dependency,
+  [`board-notify`](https://github.com/jimdc/board-notify) (`github:` dep pinned to a commit
+  SHA in `worker/package.json`, since it isn't on npm yet) — not code that lives in this
+  repo. See `worker/README.md`'s "Board notifications" section. It's a maintainers-only
+  convenience, deliberately kept out-of-tree by maintainer decision: a fork that never
+  configures its secrets ships a working crol-list with the bridge simply switched off,
+  which is the whole point of keeping crol-list cleanly cloneable. The `board-notify` GitHub
+  App is live (app id 4288246, installed on cityscroll, installation id 146319774); its
+  one-click creation kit stays outside this repo, in the maintainer's private tooling at
+  `` (`INSTALL.md` has the setup steps, for reference if the App
+  ever needs recreating).
 
 ## Maintaining this file
 
