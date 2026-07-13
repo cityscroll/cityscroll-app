@@ -40,20 +40,25 @@ MCP_MAX_CALLS_PER_DAY = "200"
 MCP_MAX_PER_IP_DAY = "300"
 # Digest delivery mode: "true" = queue fan-out (see [[queues.*]]), unset/other = inline.
 QUEUE_DIGESTS = "true"
-# Board-notification bridge (org webhook projects_v2_item -> issue comments).
-# Auth secrets (App-first, zero-downtime fallback — see boardhook.mjs top comment):
+# Board-notification bridge (org webhook projects_v2_item -> issue comments), provided by
+# the optional "board-notify" npm dependency — see worker/README.md's "Board notifications"
+# section and https://github.com/jimdc/board-notify for the full config/secret reference.
+# Auth secrets (App-first, zero-downtime fallback):
 #   BOARDNOTIFY_APP_ID, BOARDNOTIFY_APP_PRIVATE_KEY, BOARDNOTIFY_INSTALLATION_ID — the
 #     board-notify GitHub App's own bot identity. Provision via 
 #     (one-click manifest-flow creation kit) then see its INSTALL.md for the secret puts.
 #    — fallback when the App secrets above are
 #     unset; keep configured until the App path is confirmed working, or drop it after.
 #   BOARD_HOOK_SECRET (HMAC) — required regardless of auth path; the webhook fails closed
-#     without it.
+#     without it (and every var below is optional — a fork that never sets these ships a
+#     working crol-list with the bridge simply switched off).
 # BOARDNOTIFY_CC: comma-separated GitHub logins (no "@"), appended as "cc @a @b" on every
 # comment — mentions notify org members regardless of their own subscription state.
 # Non-secret, so it lives here rather than `wrangler secret put`. Empty = no cc line.
 BOARDNOTIFY_CC = "jimdc,michaeljohnsheehan-a11y,devdoshi,abannabao"
-BOARD_PROJECT_ID = "PVT_kwDOEgVDsM4BdE22"
+BOARD_PROJECT_IDS = "PVT_kwDOEgVDsM4BdE22"
+BOARD_ORG = "cityscroll"
+BOARD_URL = "https://github.com/orgs/cityscroll/projects/1"
 BOARD_HOOK_DRY = "false"
 BOARD_HOOK_MAX_PER_DAY = "100"
 
@@ -87,6 +92,12 @@ migrations_dir = "migrations"
 #   npx wrangler kv namespace create ALERT_STATE
 [[kv_namespaces]]
 binding = "NL_METER"
+id = "f410ee870b954e2980ee646312704014"
+
+# board-notify's handler reads env.METER for its daily surface cap; same namespace as
+# NL_METER (not a migration — the "boardhook" counter just keeps counting from one store).
+[[kv_namespaces]]
+binding = "METER"
 id = "f410ee870b954e2980ee646312704014"
 
 [[kv_namespaces]]
