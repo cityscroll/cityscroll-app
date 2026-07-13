@@ -174,7 +174,7 @@ def strip_markup(part):
     s = re.sub(r"<[^<>]*>", " ", part)
     # dangling tag tail at the start (literal began mid-tag): "...">visible
     m = re.match(r"^[^<>]*>", s)
-    if m and ("=" in m.group(0) or m.group(0).lstrip().startswith('"')):
+    if m and any(c in m.group(0) for c in ('=', '"', "'")):
         s = s[m.end():]
     # dangling tag opened at the end: visible<a href="...
     s = re.sub(r"<[^<>]*$", " ", s)

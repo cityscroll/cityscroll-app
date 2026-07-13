@@ -43,12 +43,15 @@ def step(tag, name, detail=""):
     print(f"{tag} {name}" + (f" -> {detail}" if detail else ""), flush=True)
 
 # ---- approved translations: every plain-text fragment of STRINGS[lang] from i18n.js ----
-def dict_fragments(lang):
+def load_strings():
     out = subprocess.check_output(
         ["node", "-e",
          "global.window={};require(process.argv[1]);console.log(JSON.stringify(window.STRINGS))",
          str(ROOT / "i18n.js")], text=True)
-    strings = json.loads(out)
+    return json.loads(out)
+
+
+def dict_fragments(strings, lang):
     frags = set()
     for v in strings.get(lang, {}).values():
         v = re.sub(r"<[^>]+>", "\x00", v)          # split at markup
@@ -126,11 +129,47 @@ def collect(page, label, frags, violations, seen):
         if hits:
             violations.append({"view": label, **item, "english_words": hits})
 
+# Named regression fixtures — the two 2026-07-13 hotfix classes, pinned by content so ANY
+# future PR (including the 10-language implementation PRs) goes red if es-mode regresses.
+def regression_fixtures(page, lang, strings, violations):
+    if lang != "es":
+        return  # the named pins are es-specific; other languages rely on the generic walk
+    def pin(name, actual, must_contain):
+        if must_contain not in actual:
+            violations.append({"view": f"REGRESSION-FIXTURE ({name})", "sel": "-",
+                               "text": actual.replace("\n", " ")[:120], "kind": "fixture",
+                               "english_words": [f"expected substring {must_contain!r}"]})
+    pin("hotfix-1 bug a: today-strip summary", page.locator("#tbig").inner_text(), "avisos de")
+    pin("hotfix-1 bug b: section names translate", page.locator("#tcounts").inner_text(), "Adquisiciones")
+    pin("hotfix-1: deadline tags translate", page.locator("#list").first.inner_text(), "cierra")
+    pin("hotfix-2: diacritic 'Mi investigación'",
+        page.locator('[data-i18n="footer_investigation"]').inner_text(), "Mi investigación")
+    pin("hotfix-2: workspace heading", page.locator("#entityview").inner_text(),
+        "Espacio de investigación")
+
+
+def workspace_seed(strings, lang):
+    """A pinned investigation item exactly as the app stores it when pinned in `lang` mode."""
+    d = strings.get(lang, {})
+    return {"current": "inv1", "invs": {"inv1": {
+        "name": d.get("inv_default_name", "My investigation"), "created": "2026-07-10",
+        "items": [{"t": "agency", "id": "Housing Preservation and Development",
+                   "title": "Housing Preservation and Development (HPD)",
+                   "meta": d.get("meta_agency_profile", "agency profile"),
+                   "note": "", "added": "2026-07-12"}]}}}
+
+
 def run_lang(pw, lang):
-    frags = dict_fragments(lang)
+    strings = load_strings()
+    frags = dict_fragments(strings, lang)
     step("··", f"guard[{lang}]", f"{len(frags)} approved fragments, {len(DATA_VALUES)} data values")
     browser = pw.chromium.launch()
-    page = browser.new_context().new_page()
+    ctx = browser.new_context()
+    # Seed a pinned item so localStorage-gated states (the hotfix-2 blind spot: the workspace
+    # only renders its full chrome with something pinned) get walked too.
+    ctx.add_init_script(
+        f"localStorage.setItem('crd_invs_v1', JSON.stringify({json.dumps(workspace_seed(strings, lang))}))")
+    page = ctx.new_page()
     install_routes(page)
     page.goto(BASE, timeout=30000)
     page.wait_for_load_state("load")
@@ -159,6 +198,16 @@ def run_lang(pw, lang):
     page.click("#apreview")
     page.wait_for_timeout(1500)
     collect(page, "alerts+digest-preview", frags, violations, seen)
+
+    # localStorage-gated states (the hotfix-2 blind spot): workspace + its share-error path
+    page.evaluate("location.hash = '#investigation'")
+    page.wait_for_timeout(800)
+    collect(page, "investigation-workspace", frags, violations, seen)
+    page.click("#invshare")  # worker is dead in fixtures → exercises the error-message strings
+    page.wait_for_timeout(1200)
+    collect(page, "investigation-share-error", frags, violations, seen)
+
+    regression_fixtures(page, lang, strings, violations)
 
     browser.close()
     return violations
