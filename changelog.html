@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Changelog · CROL-List</title>
 <meta name="description" content="What changed on CROL-List, when, and what it means for you — every release with its own plain-English summary, including the mistakes we made and fixed.">
-<script src="i18n.js?v=943805da"></script>
+<script src="i18n.js?v=51e2f1eb"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
@@ -112,7 +112,7 @@ a public record of itself. Live usage numbers: <a href="stats.html">stats</a>.</
 <section class="rel" id="2026-07-10d">
   <h2 data-i18n="chg_0710d_h2">2026.07.10 · Spanish support + style-guide copy pass</h2>
   <div class="foryou" data-i18n-html="chg_0710d_foryou_html"><b>For you</b> — A language switcher now appears in the header (English
-  / Espanol). Choosing Spanish translates all tabs, chips, and messages in the UI; notices
+  / Espanol). Choosing Spanish translates all tabs, chips, and messages in the UI. Notices
   themselves stay in English, which is the official language of the City Record. Your preference
   is remembered across visits. Separately, time chips, deadline chips, and the feedback-category
   selector were updated to follow the NYC Web Content Style Guide: "9 a.m." (not "9 AM"), spelled-out
@@ -175,9 +175,9 @@ a public record of itself. Live usage numbers: <a href="stats.html">stats</a>.</
 <section class="rel" id="2026-07-10">
   <h2 data-i18n="chg_0710_h2">2026.07.10 · Honest data rules + a faster backbone (with Dev Doshi)</h2>
   <div class="foryou" data-i18n-html="chg_0710_foryou_html"><b>For you</b> — Money filters and digests can no longer be hijacked by
-  the dataset's data-entry errors: amounts ≥ $10B (there's a $96 <em>trillion</em> typo in the
+  the dataset's data-entry errors: amounts of $10 billion or more (there's a $96 trillion typo in the
   official record) are excluded, while real multi-billion awards now correctly appear — the old
-  cutoff silently dropped everything above $5B, including the largest legitimate award (≈$6.68B).
+  cutoff silently dropped everything above $5 billion, including the largest legitimate award (about $6.68 billion).
   Pre-qualified-list notices with placeholder year-2090 dates now say <b>"no fixed deadline
   (rolling)"</b> instead of a date no one should calendar. The <a href="about.html#data">About
   page documents the dataset's quirks</a> — what the City Record actually contains and how we
@@ -199,7 +199,7 @@ a public record of itself. Live usage numbers: <a href="stats.html">stats</a>.</
 </section>
 <section class="rel" id="2026-07-09">
   <h2 data-i18n-html="chg_0709_h2">2026.07.09 · Predictive Procurement: Checkbook Expirations, MOCS Plans, &amp; Early-Warning Timelines</h2>
-  <div class="foryou" data-i18n-html="chg_0709_foryou_html"><b>For you</b> — CROL-List now alerts you 6 months <em>before</em> contracts expire or new RFPs are published. Agency and vendor profiles show a new <b>"Procurement Forecast"</b> tab with a vertical chronological timeline, uniting predicted contract renewals (from Checkbook NYC) and official agency-planned solicitations (from Charter §112 MOCS datasets). Digests now deliver early-warning notifications for upcoming forecasts matching your watches.</div>
+  <div class="foryou" data-i18n-html="chg_0709_foryou_html"><b>For you</b> — CROL-List now alerts you 6 months before contracts expire or new RFPs are published. Agency and vendor profiles show a new <b>"Procurement Forecast"</b> tab with a vertical chronological timeline, uniting predicted contract renewals (from Checkbook NYC) and official agency-planned solicitations (from Charter §112 MOCS datasets). Digests now deliver early-warning notifications for upcoming forecasts matching your watches.</div>
   <ul class="chg-detail">
     <li>Checkbook NYC contract end-date calculations to estimate renewal timelines; 180-day early warning triggers with single-send de-duplication.</li>
     <li>Ingestion pipeline for annual Charter §112 MOCS agency procurement plans, normalizing value bands and expected RFP release quarters.</li>
@@ -222,8 +222,8 @@ a public record of itself. Live usage numbers: <a href="stats.html">stats</a>.</
 <section class="rel" id="2026-07-02c">
   <h2 data-i18n="chg_0702c_h2">2026.07.02 · Snap + crisp: the round-four speed-and-declutter pass</h2>
   <div class="foryou" data-i18n-html="chg_0702c_foryou_html"><b>For you</b> — The site looks calmer and feels immediate. Lists show
-  content-shaped placeholders instead of spinners; filtering keeps your place instead of blanking
-  the list; going back to a tab you already loaded is instant; clicking a notice paints its detail
+  content-shaped placeholders instead of spinners. Filtering keeps your place instead of blanking
+  the list. Going back to a tab you already loaded is instant. Clicking a notice paints its detail
   at once (the paper trail fills in a beat later). Search runs as you type — the Filter buttons
   are gone because you no longer need them.</div>
   <ul class="chg-detail">
@@ -238,7 +238,7 @@ a public record of itself. Live usage numbers: <a href="stats.html">stats</a>.</
   <h2 data-i18n="chg_0702b_h2">2026.07.02 · Enablement: public stats, honest click counts, this page</h2>
   <div class="foryou" data-i18n-html="chg_0702b_foryou_html"><b>For you</b> — You can now see the project's own usage numbers at
   <a href="stats.html">/stats</a> (aggregate counts only — no accounts, no cookies, nobody tracked). Email-digest
-  links now pass through a count-only redirect so we can tell digests are useful; it counts <em>clicks per day</em>,
+  links now pass through a count-only redirect so we can tell digests are useful. It counts clicks per day,
   never who clicked, and every digest footer says so.</div>
   <ul class="chg-detail">
     <li>Public <code>/stats</code> endpoint + this site's <a href="stats.html">stats page</a>: active subscriptions (a count, not a list), digests sent, digest links followed, feed/batch/share activity, plain-English-search calls. <code>a5dbc18</code> (worker)</li>
@@ -252,7 +252,7 @@ a public record of itself. Live usage numbers: <a href="stats.html">stats</a>.</
 
 <section class="rel" id="2026-07-02">
   <h2 data-i18n="chg_0702_h2">2026.07.02 · Follow the dollars, matter timelines, follows, workspace, API</h2>
-  <div class="foryou" data-i18n-html="chg_0702_foryou_html"><b>For you</b> — Awards now show what was <em>actually paid</em> (live from Checkbook NYC),
+  <div class="foryou" data-i18n-html="chg_0702_foryou_html"><b>For you</b> — Awards now show what was <b>actually paid</b> (live from Checkbook NYC),
   any procurement matter reads as one timeline, you can follow a vendor or agency and get emailed when they
   reappear, pin anything into a citable investigation workspace, and use every view as an API.</div>
   <ul class="chg-detail">

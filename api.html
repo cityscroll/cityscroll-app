@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>API and feeds · CROL-List</title>
 <meta name="description" content="CROL-List's open endpoints: RSS/JSON/calendar feeds for any search, batch watchlist cross-reference, permalinks, and the upstream open datasets.">
-<script src="i18n.js?v=943805da"></script>
+<script src="i18n.js?v=51e2f1eb"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
@@ -77,7 +77,7 @@
 </header>
 
 <main id="main" tabindex="-1">
-<p class="src" data-i18n-html="api_p_intro_html">Every view on CROL-List has a machine-readable twin. No key, no account; endpoints are
+<p class="src" data-i18n-html="api_p_intro_html">Every view on CROL-List has a machine-readable twin. No key and no account are required. Endpoints are
 rate-limited and cached, and none touches a paid service. Base URL: <code>https://api.crol-list.org</code>.</p>
 
 <h2 data-i18n="api_h_feeds">Feeds — any search as RSS / JSON / calendar</h2>
@@ -97,8 +97,8 @@ https://api.crol-list.org/feed.json?lens=entity&amp;kind=vendor&amp;name=Sinergi
 
 <h2 data-i18n="api_h_batch">Batch cross-reference</h2>
 <p class="src" data-i18n-html="api_p_batch_html"><code>POST /batch</code> with <code>{"names": ["…", …]}</code> (≤10 names/request, 30 requests/day/IP).
-For each name: <b>awards</b> = award/intent notices naming that vendor (name-stem matched, all years);
-<b>mentions</b> = full-text hits in the last two years of editions; <b>entity</b> = the vendor-profile permalink when awards exist.</p>
+For each name, <b>awards</b> means award/intent notices naming that vendor (name-stem matched, all years).
+<b>Mentions</b> means full-text hits in the last two years of editions. <b>Entity</b> means the vendor-profile permalink when awards exist.</p>
 <div class="card">
   <label for="bnames" style="display:block;font:600 11px/1 var(--ui);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px" data-i18n="api_label_try">Try it — one name per line</label>
   <textarea id="bnames" placeholder="Sinergia Inc&#10;Consolidated Scaffolding&#10;Acme Elevator"></textarea>
@@ -119,21 +119,21 @@ For each name: <b>awards</b> = award/intent notices naming that vendor (name-ste
 
 <h2 data-i18n="api_h_sharedinv">Shared investigations</h2>
 <p class="src" data-i18n-html="api_p_sharedinv_html"><code>POST /inv</code> stores a pin-list snapshot (structured fields only, ≤32KB, 90-day TTL,
-10/day/IP) and returns an id; <code>GET /inv/&lt;id&gt;</code> reads it back. The site renders these at
+10/day/IP) and returns an id. <code>GET /inv/&lt;id&gt;</code> reads it back. The site renders these at
 <code>/#investigation/shared/&lt;id&gt;</code>.</p>
 
 <h2 data-i18n="api_h_stats">Public stats</h2>
 <p class="src" data-i18n-html="api_p_stats_html"><code>GET /stats</code> — the project's own usage as aggregate counts (active subscriptions,
-digests sent, digest links followed, feed/batch/share activity). No personal data exists behind it; cached
-~15&nbsp;minutes. Human-readable version: <a href="stats.html">stats</a>. Related: digest emails link notices via
+digests sent, digest links followed, feed/batch/share activity). No personal data exists behind it. It's cached
+about 15 minutes. Human-readable version: <a href="stats.html">stats</a>. Related: digest emails link notices via
 <code>GET /r/&lt;kind&gt;/&lt;request_id&gt;</code>, a count-only redirect to the notice permalink — it accepts a
 validated id (never a URL, so it can't redirect off-site) and records a per-day number, never a person.</p>
 
 <h2 data-i18n="api_h_subscribe">Subscribe by email</h2>
 <p class="src" data-i18n-html="api_p_subscribe_html">Email <a href="mailto:subscribe@crol-list.org"><code>subscribe@crol-list.org</code></a>
-describing what you want in plain English — e.g. <em>"construction contract awards over $500k"</em> or
-<em>"rezoning notices in Brooklyn"</em>. You'll get back a confirmation link describing how we understood
-your request; the watch starts only after you click it (double opt-in). Daily ceilings apply; nothing is
+describing what you want in plain English — for example, "construction contract awards over $500k" or
+"rezoning notices in Brooklyn". You'll get back a confirmation link describing how we understood
+your request. The watch starts only after you click it (double opt-in). Daily ceilings apply, and nothing is
 stored until you confirm.</p>
 
 <h2 data-i18n="api_h_mcp">MCP — for AI assistants</h2>
@@ -141,7 +141,7 @@ stored until you confirm.</p>
 <code>https://api.crol-list.org/mcp</code>. Tools: <code>search_notices</code> and <code>get_notice</code>
 (the daily-refreshed notices mirror, honest-data rules applied), <code>preview_watch</code> (plain English →
 what a standing watch would deliver, without subscribing), and <code>create_watch</code> (plain English →
-a double-opt-in confirmation email; digests start only after the address confirms). Watch management stays
+a double-opt-in confirmation email — digests start only after the address confirms). Watch management stays
 behind the emailed unsubscribe links — knowing an address never reveals or controls its subscriptions.
 Per-IP and daily model-call ceilings apply.</p>
 
