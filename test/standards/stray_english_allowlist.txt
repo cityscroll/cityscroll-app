@@ -1,0 +1,187 @@
+# stray_english_allowlist.txt — the explicit register of English string literals that
+# do NOT (yet) route through the i18n layer. Every entry is a decision; the gate fails
+# on NEW entries and on STALE ones, so this file can only shrink honestly.
+# Sections queued for the 10-language wave are marked; delete entries as they get wired.
+
+# ── NYC data-value constants — compared against dataset values, or abbreviation-map keys; never rendered as translated chrome
+Administration for Children's Services
+Mayor's Office of Contract Services
+Agency Rules
+Award
+Board of Standards and Appeals
+Changes in Personnel
+City Planning
+City University of New York
+Contact
+Days left
+Design and Construction
+Email
+Health and Hospitals Corporation
+Health and Mental Hygiene
+Housing Authority
+Housing Preservation and Development
+Information Technology and Telecommunications
+Intent to Award
+Intent to Negotiate
+MOCS Plan Notice
+Method
+Notice
+Parks and Recreation
+Procurement
+Property Disposition
+Public Hearings and Meetings
+Submit to
+Taxi and Limousine Commission
+Type
+Untitled
+Youth and Community Development
+
+# ── SODA query fragments / column expressions
+,event_date,street_address_1,section_name
+agency_name, count(1) as n, sum(contract_amount) as t
+contract_amount >=
+count(1) as n, sum(contract_amount) as t
+count(1) as n, sum(contract_amount) as total
+due_date > today
+selection_method_description, count(1) as n
+sum(contract_amount) as t
+title_description, count(1) as n, min(base_salary) as mn, max(base_salary) as mx, avg(base_salary) as avg
+vendor_name, count(1) as n, sum(contract_amount) as t
+vendor_name, count(1) as n, sum(contract_amount) as t, min(start_date) as first, max(start_date) as last
+
+# ── Key names, HTTP headers, ICS/calendar structure
+Content-Type
+DESCRIPTION:RFP response due tomorrow
+DESCRIPTION:Tomorrow
+Enter
+METHOD:PUBLISH
+RFP due:
+
+# ── Outbound email bodies (letters of intent to city offices) — English by design
+City Record notice:
+Intent to respond:
+Thank you,n[Your name — firm — phone]
+This is a letter of intent in response to the following City of New York solicitation, as published in The City Record:nn
+[One-line capability statement about your firm.]nn
+nWe intend to respond and would appreciate confirmation of (1) how to obtain the full solicitation package and (2) whether responses are submitted via PASSPort or directly to your office.nn
+nnVia CROL-List — The City Record, searchable.
+
+# ── NL ask-layer: sample queries, device-parser placeholders, translate-chips (queued: language wave)
+<span class="qchip"><b>all</b> · incl. closed</span>
+<span class="qchip">about <b>
+<span class="qchip">due within <b>
+<span class="qchip">in <b>
+<span class="qchip">notice = <b>open RFP</b></span>
+HPD property sales
+RFPs matching <b>
+attorney titles
+awards over $1M
+awards ≥ <b>
+buildings rules
+construction contracts over $500k
+days): <a href="
+e.g. HPD property sales, DEP land
+e.g. buildings rules, sanitation rules
+e.g. email me awards over $1M, or construction RFPs
+e.g. paramedic roles, or look up someone named Rodriguez
+e.g. recent landmarks hearings, city council
+e.g. rezonings in Brooklyn, or 79 Rivington
+paramedic roles
+rezonings in Brooklyn
+rezonings in Queens
+rezonings near 79 Rivington
+rezonings near <b>
+
+# ── Entity / matter / investigation / shared views + digest mock shell (queued: language wave)
+%</b> of the agency's award $ (12 mo)
+%</b> of this agency's awards (last 12 mo, n=
+</b>) differs from the notice's (<b>
+Couldn't reach the server — try again.
+Couldn't share — try again.
+project_id='
+type_of_notice = 'Solicitation'
+type_of_notice_description='Award'
+type_of_notice_description='Solicitation'
+" target="_blank" rel="noopener">Checkbook NYC ↗</a>, matched by PIN <code>
+" target="_blank" rel="noopener">Latest notice in City Record ↗</a> </div> <div class="note">The spine is every City Record notice sharing this PIN, in order; Checkbook events join deterministically on the same PIN. Public-hearing notices rarely carry PINs, so hearings may be missing from the chronology.</div> </div></div>
+">Follow this vendor</button> <button class="act" type="button" id="ecopy">Copy link</button>
+">Follow: anything new from them</button> <button class="act" type="button" id="ecopy">Copy link</button>
+">Search notices mentioning them →</a></div>
+(agency median
+(any)
+(see notice)
+(untitled)
+</b> of
+</b>) — a PIN can cover multiple awards; treat with care.</div>
+</code>. Payments lag invoicing — $0 paid on a freshly registered contract is normal.</div> </div></div>
+</dd> <dt>Paid to date</dt><dd><b>
+</div> <div class="note">Figures are what this agency has <b>published in the City Record</b> (2003→present for procurement) — registration and payment lag; a per-entity follow across all lenses arrives with the entity-watch feature.</div> </div></div>
+</div> <div class="note">Identity is resolved by name normalization (case, punctuation, legal suffixes) — variants listed above; distinct companies sharing a name stem would be merged, so treat totals as <b>“published under this name,”</b> not a legal entity. Awards as published in the City Record; actual payments differ (Checkbook join coming).</div> </div></div>
+</div><div class="lbl">award notice
+</div><div class="lbl">contract awards<br>published</div></div> <div><div class="big">
+</div><div class="lbl">first / latest<br>award published</div></div> </div>
+</div><div class="lbl">open RFPs<br>right now</div></div> </div>
+</div><div class="lbl">total awarded,<br>on record</div></div> <div><div class="big">
+<b>Contract registered</b> — <code>
+<b>Paid to date:
+<button class="act" type="button" data-aw="rules">Watch rules only</button> <button class="act" type="button" data-aw="meetings">Watch meetings only</button>
+<div class="chain-h">Mentioned in other notices (text match)</div><div class="timeline">
+<div class="chain-h">On the record — notices naming this vendor</div><div class="timeline">
+<div class="chain-h">Open solicitations</div><div class="timeline">
+<div class="chain-h">Top vendors by awarded $ (click to pivot)</div><div class="ladder">
+<div class="chain-h">Upcoming hearings &amp; events</div><div class="timeline">
+<div class="emailmock"> <div class="ehead"><div class="efrom">CROL-List &lt;alerts@crol-list.org&gt; →
+<div class="empty"><span class="loading"></span> assembling the matter: PIN
+<div class="empty"><span class="loading"></span> building profile:
+<div class="empty"><span class="loading"></span> fetching shared investigation…</div>
+<div class="empty">No City Record notices carry PIN <code>
+<div class="empty">No City Record notices found for agency “
+<div class="empty">No awards on record for “
+<div class="empty">Nothing pinned yet — use the Pin button on any notice, vendor, agency, or matter page.</div>
+<div class="empty">This shared investigation doesn't exist or has expired (links live 90 days). <a href="#money">← Browse CROL-List</a></div>
+<div class="tl"><span class="tldate">due
+<span class="tag soon">amended from
+Due:
+Pin something first.
+Read-only link (lives
+Sharing needs the backend.
+Too many shares today — try tomorrow.
+', this)">copy</button>
+affordable housing
+award to this vendor at this agency in 90 days
+block/lot
+city-owned property
+environmental protection land
+fiscal_year=
+forest management
+in the custody
+look up lookup someone somebody person people named name find search for a an the of about mr ms mrs role title
+look up someone named Rodriguez
+more</b> under this PIN
+mortgage and note
+notice/
+owners are wanted
+police department property
+property clerk
+public auction
+recent city council hearings
+recent community board meetings
+recent landmarks hearings
+request for proposal
+residential property
+response > status > result
+responses due
+sanitation rules
+shelter services contracts
+taxi rules
+text/calendar;charset=utf-8
+the a an of in on for to and or with show me find list all near over under within new nyc city our your their about that this
+the procurement officer
+this vendor holds <b>
+vendor_name in(
+via GeoSearch — verify the match</span></div>
+you@example.com
+© OpenStreetMap © CARTO · lots © NYC MapPLUTO
+· <a href="about.html#context">how computed</a></span></div></div>
+” is too short to resolve to a vendor. <a href="#money">← Browse</a></div>
+⚑ non-competitive method:
