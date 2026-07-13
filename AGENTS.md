@@ -184,11 +184,14 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   separator), `link_targets.py` (no `target="_blank"`, no decorative external-link `↗`
   icons), `heading_punctuation.py` (no colon/period in headings, `?` excepted), and
   `genai_disclosure.py` (about.html must carry the GenAI-content disclosure).
-- **`nyc_copy_lint.py` ships report-only** (always exits 0, prints findings) — pass
-  `--gate` to enforce; that flip is a separate task once the remaining prose findings
-  (mostly `e.g.`, italics, and long-form `$NM` shorthand) are fixed. Its shrink-only
-  allowlist (`nyc_copy_lint_allowlist.txt`) currently only tracks the chip/threshold
-  currency exception (numerals-in-buttons is the guide's own carve-out).
+- **`nyc_copy_lint.py` is CI-enforcing** (`--gate`, since w10-06) — default invocation with
+  no flags stays report-only (exits 0) for a quick local check. Its shrink-only allowlist
+  (`nyc_copy_lint_allowlist.txt`) tracks the chip/threshold currency exception
+  (numerals-in-buttons is the guide's own carve-out) plus one search-placeholder hint that
+  shares that UI register. The i18n.js dictionary scan decodes HTML entities before running
+  the text rules (`strip_html_value`) and skips `chg_*_h2` keys — without both, an escaped
+  `&lt;`/`&gt;`/`&amp;` abutting a stripped tag reads as a false semicolon/heading-carve-out
+  miss (caught during the w10-06 copy sweep).
 - **House decisions, both deliberate deviations from the guide's literal text**: (1) the
   title separator stays `·` (already the brand mark everywhere else) rather than switching
   to the guide's hyphen — `page_metadata.py`'s docstring has the reasoning; (2) external

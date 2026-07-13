@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>About · CROL-List</title>
 <meta name="description" content="What CROL-List is, where its data comes from, how flags and context work, how to send feedback, and its privacy and data-retention stance.">
-<script src="i18n.js?v=943805da"></script>
+<script src="i18n.js?v=767707e4"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
@@ -97,7 +97,7 @@
 <p data-i18n-html="about_p_what_html">CROL-List is a search tool for <a href="https://a856-cityrecord.nyc.gov/">The City Record</a>. That is the
 City of New York's official daily paper. In it, <a href="https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-3113">every agency must publish</a> its
 contracts, hearings, rule changes, rezonings, and staff moves. CROL-List lets you search the record
-<em>by interest</em>. You can follow a contract, look up a job title, track a rezoning, or get an email when something new matches.</p>
+by interest. You can follow a contract, look up a job title, track a rezoning, or get an email when something new matches.</p>
 
 <h2 data-i18n="about_h_source">Where the data comes from</h2>
 <p class="src" data-i18n-html="about_p_source_html">Everything is live, public data — queried straight from your browser, nothing cached:
@@ -117,11 +117,11 @@ that would silently mislead if we didn't correct for them, so here is exactly wh
     stat on this site is counted within its own section — a "global" City Record number
     would really be a personnel-file number.</li>
   <li><b>A few contract amounts are data-entry errors</b> — three rows claim $10&nbsp;billion or
-    more, topping out at <a href="index.html#notice/20210524108">$96 <em>trillion</em>, a housing-services
+    more, topping out at <a href="index.html#notice/20210524108">$96 trillion, a housing-services
     award whose amount field is plainly a typo</a> (the largest verified real award is
-    <a href="index.html#notice/20180109010">≈$6.68B, the city's 10-year electricity contract with NYPA</a>).
-    Money filters and amount-sorted digests exclude amounts ≥ $10B rather than let one typo
-    dominate every ranking.</li>
+    <a href="index.html#notice/20180109010">about $6.68 billion, the city's 10-year electricity contract with NYPA</a>).
+    Money filters and digests exclude amounts of $10 billion or more. One typo
+    can't dominate every ranking.</li>
   <li><b>Some "due dates" aren't deadlines.</b> Notices for pre-qualified lists use fake dates
     in the year 2090 or later. We mark these as "no fixed deadline (rolling)" so no one puts a
     date on their calendar that isn't real.</li>
@@ -142,7 +142,7 @@ really happen. Some markets are specialized and have few bidders. Name matching 
 <a href="https://opentender.eu/">Opentender's</a> integrity rules.</p>
 <ul class="src" style="margin:8px 0;padding-left:20px" data-i18n-html="about_li_flags_html">
   <li><b>⚑ Short ad window</b> — the days between when a notice is posted and when the answer is due. We flag
-  it when it is 10 days or fewer <em>and</em> less than half the agency's own median. The median comes from
+  it when it is 10 days or fewer and less than half the agency's own median. The median comes from
   that agency's last 200 notices. Short windows favor incumbents who already knew the work was coming.</li>
   <li><b>⚑ Non-competitive method</b> — the notice says it will pick a vendor without a full contest. It may be
   a deal made through talks, a single chosen source, an urgent buy, or a test project. This can be fair at times.
@@ -155,7 +155,7 @@ really happen. Some markets are specialized and have few bidders. Name matching 
   agency's award dollars in the same time. We use the exact published name. We do not merge name variants here.</li>
 </ul>
 <p class="src" data-i18n-html="about_p_flags_footer_html">All numbers come live from the <a href="https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx">City Record Open Data</a>
-when you view the notice. These are awards <em>as published</em>. The numbers can lag behind contract
+when you view the notice. These are awards <b>as published</b>. The numbers can lag behind contract
 registration and real payment. Nothing here says anyone did wrong. It just saves you the math.</p>
 
 <h2 data-i18n="about_h_feedback">Send feedback</h2>
