@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>About · CROL-List</title>
 <meta name="description" content="What CROL-List is, where its data comes from, how to send feedback, and its privacy stance.">
+<script src="i18n.js?v=5d81e5eb"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
@@ -51,6 +52,10 @@
   @keyframes spin{to{transform:rotate(360deg)}}
   .foot{margin-top:40px;border-top:1px solid var(--rule);padding-top:14px;font:13px/1.6 var(--ui);color:var(--muted);text-align:center}
   .foot a{color:var(--oxblood)}
+  /* language switcher — matches index.html */
+  .lang-switcher{display:flex;gap:.4rem;justify-content:center;margin-block-start:10px;flex-wrap:wrap}
+  .lang-btn{font:600 11px/1 var(--ui);padding:3px 10px;border-radius:12px;border:1px solid var(--rule-strong);background:transparent;color:var(--muted);cursor:pointer}
+  .lang-btn[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 </style>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
@@ -58,7 +63,7 @@
 <div class="wrap">
 <header>
   <div class="cr-rule"></div>
-  <a class="home" href="index.html" aria-label="Back to CROL-List home">
+  <a class="home" href="index.html" aria-label="Back to CROL-List home" data-i18n-aria="back_home_aria">
     <svg class="cr-seal" viewBox="0 0 100 100" aria-hidden="true">
       <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="1.5"/>
       <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="0.6"/>
@@ -68,20 +73,24 @@
     </svg>
     <span class="cr-title">CROL-List</span>
   </a>
-  <div class="kicker">The City Record, searchable</div>
-  <h1>About</h1>
+  <div class="kicker" data-i18n="site_kicker">The City Record, searchable</div>
+  <h1 data-i18n="about_link">About</h1>
+  <div class="lang-switcher" id="langSwitcher" role="group" aria-label="Language / Idioma">
+    <button class="lang-btn" data-lang="en" aria-pressed="true"><span lang="en">English</span></button>
+    <button class="lang-btn" data-lang="es" aria-pressed="false"><span lang="es">Español</span></button>
+  </div>
   <div class="cr-rule cr-rule--bottom"></div>
-  <a class="backhome" href="index.html">← Back to CROL-List</a>
+  <a class="backhome" href="index.html" data-i18n="back_to_crol">← Back to CROL-List</a>
 </header>
 
-<h2>What this is</h2>
-<p>CROL-List is a search interface over <a href="https://a856-cityrecord.nyc.gov/" target="_blank" rel="noopener">The City Record</a> — the
+<h2 data-i18n="about_h_what">What this is</h2>
+<p data-i18n-html="about_p_what_html">CROL-List is a search interface over <a href="https://a856-cityrecord.nyc.gov/" target="_blank" rel="noopener">The City Record</a> — the
 City of New York's official daily journal, where <a href="https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-3113" target="_blank" rel="noopener">every agency must publish</a> its
 contracts, hearings, rule changes, rezonings, and personnel moves. CROL-List makes that record searchable
 <em>by interest</em>: follow a contract, decode a job title, track a rezoning, or get an email when something new matches.</p>
 
-<h2>Where the data comes from</h2>
-<p class="src">Everything is live, public data — queried straight from your browser, nothing cached:
+<h2 data-i18n="about_h_source">Where the data comes from</h2>
+<p class="src" data-i18n-html="about_p_source_html">Everything is live, public data — queried straight from your browser, nothing cached:
 <a href="https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx" target="_blank" rel="noopener">City Record Online (dg92-zbpx)</a> ·
 <a href="https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e" target="_blank" rel="noopener">Citywide Payroll (k397-673e)</a> ·
 <a href="https://data.cityofnewyork.us/resource/vx8i-nprf" target="_blank" rel="noopener">Civil Service List (vx8i-nprf)</a> ·
@@ -89,11 +98,11 @@ contracts, hearings, rule changes, rezonings, and personnel moves. CROL-List mak
 <a href="https://a0333-passportpublic.nyc.gov/" target="_blank" rel="noopener">PASSPort</a> ·
 <a href="https://www.checkbooknyc.com/" target="_blank" rel="noopener">Checkbook NYC</a>.</p>
 
-<h2 id="data">The underlying data, honestly</h2>
-<p>The City Record dataset is <b>1.09 million notices back to 2003</b> — and it is not what it
+<h2 id="data" data-i18n="about_h_honest">The underlying data, honestly</h2>
+<p data-i18n-html="about_p_honest_intro_html">The City Record dataset is <b>1.09 million notices back to 2003</b> — and it is not what it
 looks like at first glance. Our team's exploratory analysis of the full dataset found quirks
 that would silently mislead if we didn't correct for them, so here is exactly what we do:</p>
-<ul>
+<ul data-i18n-html="about_li_honest_html">
   <li><b>87.5% of all rows are civil-service personnel changes</b>, not civic notices. Every
     statistic on this site is computed within its own section — a "global" City Record number
     would really be a personnel-file number.</li>
@@ -107,19 +116,19 @@ that would silently mislead if we didn't correct for them, so here is exactly wh
   <li><b>Agency names come in two conventions</b> (legacy ALL-CAPS and Title Case — 312 raw
     strings for ~150 real agencies); our name resolution treats them as one.</li>
 </ul>
-<p class="src">To keep alerts fast, our server keeps a mirror of recent notices, refreshed
+<p class="src" data-i18n-html="about_p_honest_footer_html">To keep alerts fast, our server keeps a mirror of recent notices, refreshed
 daily from the same public dataset — NYC Open Data remains the source of truth, and searches
 on this site always query it live. Want the numbers themselves?
 <a href="data.html"><b>The Data</b></a> shows the record at a glance — sections, volume,
 procurement mix, top agencies and vendors — computed live with these same rules.</p>
 
-<h2 id="context">Flags &amp; context, explained</h2>
-<p class="src">Procurement notices carry two kinds of computed annotation. Both are <b>statistical context, not
+<h2 id="context" data-i18n="about_h_flags">Flags &amp; context, explained</h2>
+<p class="src" data-i18n-html="about_p_flags_intro_html">Procurement notices carry two kinds of computed annotation. Both are <b>statistical context, not
 findings or accusations</b> — a flag means "worth a closer look," and every formula has innocent explanations
 (emergencies are real, specialized markets have few bidders, name matching is imperfect). The approach follows the
 <a href="https://www.open-contracting.org/resources/red-flags-in-public-procurement-a-guide-to-using-data-to-detect-and-mitigate-risks/" target="_blank" rel="noopener">Open Contracting Partnership's red-flags methodology</a> and
 <a href="https://opentender.eu/" target="_blank" rel="noopener">Opentender's</a> integrity indicators.</p>
-<ul class="src" style="margin:8px 0;padding-left:20px">
+<ul class="src" style="margin:8px 0;padding-left:20px" data-i18n-html="about_li_flags_html">
   <li><b>⚑ Short ad window</b> — the days between a solicitation's publication and its response deadline, flagged
   when it is 10 days or fewer <em>and</em> less than half the agency's own median (median computed over that
   agency's last 200 solicitations). Short windows favor incumbents who already knew the work was coming.</li>
@@ -131,44 +140,44 @@ findings or accusations</b> — a flag means "worth a closer look," and every fo
   (shown only when the agency has ≥20 awards in the window), and the vendor's share of the agency's award dollars
   over the same window (exact published name; name variants are not merged here).</li>
 </ul>
-<p class="src">All figures come live from the <a href="https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx" target="_blank" rel="noopener">City Record Open Data</a> at
+<p class="src" data-i18n-html="about_p_flags_footer_html">All figures come live from the <a href="https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx" target="_blank" rel="noopener">City Record Open Data</a> at
 the moment you view the notice — awards <em>as published</em>, which lag contract registration and actual
 payment. Nothing here asserts wrongdoing; it saves you the arithmetic.</p>
 
-<h2>Send feedback</h2>
-<p class="src">Found a bug, want a feature, or have a thought? Send it here. We read everything. No account needed.</p>
+<h2 data-i18n="about_h_feedback">Send feedback</h2>
+<p class="src" data-i18n="about_p_feedback">Found a bug, want a feature, or have a thought? Send it here. We read everything. No account needed.</p>
 <div class="card">
   <input type="hidden" id="fbcategory" value="bug">
-  <label>What kind?</label>
+  <label data-i18n="about_label_kind">What kind?</label>
   <div class="chips" id="fbchips" role="group" aria-label="What kind of feedback?">
-    <button type="button" class="chip active" data-cat="bug" aria-pressed="true">Bug</button>
-    <button type="button" class="chip" data-cat="feature" aria-pressed="false">Feature idea</button>
-    <button type="button" class="chip" data-cat="general" aria-pressed="false">General</button>
+    <button type="button" class="chip active" data-cat="bug" aria-pressed="true" data-i18n="fb_cat_bug">Bug</button>
+    <button type="button" class="chip" data-cat="feature" aria-pressed="false" data-i18n="fb_cat_feature">Feature idea</button>
+    <button type="button" class="chip" data-cat="general" aria-pressed="false" data-i18n="fb_cat_general">General</button>
   </div>
 
-  <label for="fbmessage">Your message</label>
-  <textarea id="fbmessage" maxlength="2000" placeholder="What happened, what you'd want, or anything else — the more specific the better."></textarea>
+  <label for="fbmessage" data-i18n="about_label_message">Your message</label>
+  <textarea id="fbmessage" maxlength="2000" placeholder="What happened, what you'd want, or anything else — the more specific the better." data-i18n-placeholder="about_ph_message"></textarea>
 
-  <label for="fbemail">Email <span class="opt">— optional, only if you'd like a reply</span></label>
-  <input type="email" id="fbemail" autocomplete="email" placeholder="you@example.com">
+  <label for="fbemail"><span data-i18n="about_label_email">Email</span> <span class="opt" data-i18n="about_label_email_opt">— optional, only if you'd like a reply</span></label>
+  <input type="email" id="fbemail" autocomplete="email" placeholder="you@example.com" data-i18n-placeholder="email_placeholder">
 
   <div class="cf-turnstile" data-sitekey="0x4AAAAAADtj-Mskk_RnVd5K" data-action="feedback-v1" style="margin:14px 0 6px"></div>
 
-  <button class="btn" id="fbsend">Send feedback →</button>
+  <button class="btn" id="fbsend" data-i18n="about_btn_send">Send feedback →</button>
   <div id="fbmsg"></div>
-  <p class="note">If you add your email, we keep it only to reply. Each submission also records basic request metadata — your IP address and browser — kept briefly to block spam. See <a href="#privacy">Privacy</a>.</p>
+  <p class="note" data-i18n-html="about_note_feedback_html">If you add your email, we keep it only to reply. Each submission also records basic request metadata — your IP address and browser — kept briefly to block spam. See <a href="#privacy">Privacy</a>.</p>
 </div>
 
-<h2 id="privacy">Privacy</h2>
-<p class="src">No accounts, no cookies, no cross-site tracking, no ad tech. Here is exactly what CROL-List does with your data:</p>
-<ul class="src" style="margin:8px 0;padding-left:20px">
+<h2 id="privacy" data-i18n="about_h_privacy">Privacy</h2>
+<p class="src" data-i18n="about_p_privacy_intro">No accounts, no cookies, no cross-site tracking, no ad tech. Here is exactly what CROL-List does with your data:</p>
+<ul class="src" style="margin:8px 0;padding-left:20px" data-i18n-html="about_li_privacy_html">
   <li><b>Searches and filters</b> go straight from your browser to NYC Open Data — CROL-List's server never sees them.</li>
   <li><b>The “Ask” box</b> (plain-English search) sends your text to our worker, which forwards it to Anthropic's Claude to turn it into filters. We don't store the text — only a daily tally, to cap costs.</li>
   <li><b>Subscribing or sending feedback</b> stores what you submit — your alert or message, and your email if you give one — plus basic request metadata (IP address and browser) kept briefly to block spam and abuse. Every alert email has one-click unsubscribe.</li>
   <li><b>Page views</b> are measured with Cloudflare Web Analytics: cookieless and aggregate. It counts visits; it does not identify you or follow you across sites.</li>
 </ul>
 
-<div class="foot">CROL-List · a search interface over <a href="https://a856-cityrecord.nyc.gov/" target="_blank" rel="noopener">The City Record</a> · <a href="changelog.html">Changelog</a> · <a href="stats.html">Stats</a> · <a href="index.html">Home</a></div>
+<div class="foot" data-i18n-html="about_foot_html">CROL-List · a search interface over <a href="https://a856-cityrecord.nyc.gov/" target="_blank" rel="noopener">The City Record</a> · <a href="changelog.html">Changelog</a> · <a href="stats.html">Stats</a> · <a href="index.html">Home</a></div>
 </div>
 
 <script>
@@ -195,35 +204,36 @@ async function sendFeedback(){
   const category=$("#fbcategory").value;
   const message=$("#fbmessage").value.trim();
   const email=$("#fbemail").value.trim();
-  if(message.length<10){ msg.innerHTML="Add a little more detail — at least a sentence."; return; }
-  if(message.length>2000){ msg.innerHTML="That's a bit long — please keep it under 2,000 characters."; return; }
-  if(email && !fbIsEmail(email)){ msg.innerHTML="That email address looks off — leave it blank if you don't want a reply."; return; }
+  if(message.length<10){ msg.innerHTML=t("about_err_short"); return; }
+  if(message.length>2000){ msg.innerHTML=t("about_err_long"); return; }
+  if(email && !fbIsEmail(email)){ msg.innerHTML=t("about_err_bademail"); return; }
   const token=(window.turnstile&&turnstile.getResponse)?(turnstile.getResponse()||""):"";
-  if(!token){ msg.innerHTML="Complete the “I'm human” check above first."; return; }
-  const btn=$("#fbsend"); btn.disabled=true; msg.innerHTML='<span class="loading"></span> sending…';
+  if(!token){ msg.innerHTML=t("complete_human_check"); return; }
+  const btn=$("#fbsend"); btn.disabled=true; msg.innerHTML='<span class="loading"></span> '+t("about_sending");
   try{
     const r=await workerFetch("/feedback",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({category,message,email,turnstileToken:token})});
     const j=await r.json().catch(()=>({}));
     if(j.ok){
-      msg.innerHTML="✅ <b>Thank you — got it.</b>"+(email?" We'll reply if there's anything to add.":"");
+      msg.innerHTML=t("about_thanks_html")+(email?t("about_thanks_reply"):"");
       $("#fbmessage").value=""; $("#fbemail").value="";
       if(window.turnstile) turnstile.reset();
     } else {
       const why={
-        turnstile:"The human check didn't pass — try it again.",
-        "rate-limited":"Too many messages — give it a little while.",
-        "bad-email":"That email address looks off — leave it blank if you don't want a reply.",
-        "bad-message":"The message was empty, too short, or too long.",
-        "bad-category":"Pick a category — Bug, Feature idea, or General.",
-        "not-configured":"Feedback isn't switched on yet.",
-        "send-failed":"Couldn't record that just now — try again in a moment."
-      }[j.reason]||"Something went wrong — please try again.";
+        turnstile:t("turnstile_fail"),
+        "rate-limited":t("about_reason_ratelimited"),
+        "bad-email":t("about_err_bademail"),
+        "bad-message":t("about_reason_badmessage"),
+        "bad-category":t("about_reason_badcategory"),
+        "not-configured":t("about_reason_notconfigured"),
+        "send-failed":t("about_reason_sendfailed")
+      }[j.reason]||t("generic_error");
       msg.innerHTML="⚠️ "+why; if(window.turnstile) turnstile.reset();
     }
-  }catch(e){ msg.innerHTML="⚠️ Couldn't reach the server — try again."; if(window.turnstile) turnstile.reset(); }
+  }catch(e){ msg.innerHTML="⚠️ "+t("cant_reach_server"); if(window.turnstile) turnstile.reset(); }
   btn.disabled=false;
 }
 $("#fbsend").addEventListener("click", sendFeedback);
+initSubpageLangSwitcher();
 </script>
 <!-- Cloudflare Web Analytics — cookieless, aggregate. Manual JS beacon (crol-list.org is served
      directly by GitHub Pages, not proxied through Cloudflare). Token is a public site id, safe to commit. -->

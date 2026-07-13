@@ -37,6 +37,9 @@ Youth and Community Development
 
 # ── SODA query fragments / column expressions
 ,event_date,street_address_1,section_name
+agency_name,sum(contract_amount) AS total
+type_of_notice_description AS t,count(request_id) AS n
+vendor_name,sum(contract_amount) AS total
 agency_name, count(1) as n, sum(contract_amount) as t
 contract_amount >=
 count(1) as n, sum(contract_amount) as t

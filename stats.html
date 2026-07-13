@@ -5,13 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Stats · CROL-List</title>
 <meta name="description" content="CROL-List's own usage, published: aggregate outcome counts — subscriptions, digests, clicks, feeds. No accounts, no cookies, nobody tracked.">
+<script src="i18n.js?v=5d81e5eb"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
 <style>
   :root{
     --paper:#f4efe4; --paper-2:#efe7d6; --ink:#1a1714; --ink-soft:#3b342c; --muted:#5c5349;
-    --rule:#cdbfa6; --card:#fbf7ed;
+    --rule:#cdbfa6; --rule-strong:#8a7c64; --card:#fbf7ed;
     --shadow:0 1px 2px rgba(40,30,10,.05),0 6px 20px rgba(40,30,10,.06);
     --green:#2f4a32; --oxblood:#7a1f1f;
     --font-nameplate:'Playfair Display',Georgia,serif; --font-body:'Spectral',Georgia,serif;
@@ -43,13 +44,17 @@
   #msg{font:14px/1.6 var(--ui);color:var(--muted);min-height:1.2em}
   .foot{margin-top:40px;border-top:1px solid var(--rule);padding-top:14px;font:13px/1.6 var(--ui);color:var(--muted);text-align:center}
   .foot a{color:var(--oxblood)}
+  /* language switcher — matches index.html */
+  .lang-switcher{display:flex;gap:.4rem;justify-content:center;margin-block-start:10px;flex-wrap:wrap}
+  .lang-btn{font:600 11px/1 var(--ui);padding:3px 10px;border-radius:12px;border:1px solid var(--rule-strong);background:transparent;color:var(--muted);cursor:pointer}
+  .lang-btn[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 </style>
 </head>
 <body>
 <div class="wrap">
 <header>
   <div class="cr-rule"></div>
-  <a class="home" href="index.html" aria-label="Back to CROL-List home">
+  <a class="home" href="index.html" aria-label="Back to CROL-List home" data-i18n-aria="back_home_aria">
     <svg class="cr-seal" viewBox="0 0 100 100" aria-hidden="true">
       <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="1.5"/>
       <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="0.6"/>
@@ -59,34 +64,38 @@
     </svg>
     <span class="cr-title">CROL-List</span>
   </a>
-  <div class="kicker">The City Record, searchable</div>
-  <h1>Stats</h1>
+  <div class="kicker" data-i18n="site_kicker">The City Record, searchable</div>
+  <h1 data-i18n="stats_link">Stats</h1>
+  <div class="lang-switcher" id="langSwitcher" role="group" aria-label="Language / Idioma">
+    <button class="lang-btn" data-lang="en" aria-pressed="true"><span lang="en">English</span></button>
+    <button class="lang-btn" data-lang="es" aria-pressed="false"><span lang="es">Español</span></button>
+  </div>
   <div class="cr-rule cr-rule--bottom"></div>
-  <a class="backhome" href="index.html">← Back to CROL-List</a>
+  <a class="backhome" href="index.html" data-i18n="back_to_crol">← Back to CROL-List</a>
 </header>
 
-<p class="lede">A transparency tool should publish its own usage. These are CROL-List's live operating numbers —
+<p class="lede" data-i18n-html="stats_p_lede_html">A transparency tool should publish its own usage. These are CROL-List's live operating numbers —
 <b>aggregate counts only</b>: the site has no accounts and no cookies, and neither we nor anyone else can see who
 did what. We measure outcomes (watches that fired, digests that got read), not people.</p>
-<p id="msg" role="status">Loading live counters…</p>
+<p id="msg" role="status" data-i18n="stats_loading">Loading live counters…</p>
 
 <div class="grid" id="grid" hidden>
-  <div class="stat"><div class="n" id="s-subs">–</div><div class="l">Active subscriptions</div><div class="d">Confirmed standing watches — the number that matters most to us.</div></div>
-  <div class="stat"><div class="n" id="s-digests">–</div><div class="l">Digests sent · 7 days</div><div class="d"><span id="s-digests-today">–</span> today. Only when something new matched (plus honest "still watching" check-ins).</div></div>
-  <div class="stat"><div class="n" id="s-clicks">–</div><div class="l">Digest links followed · 7 days</div><div class="d">Counted by a redirect that records a number, never a person — <a href="changelog.html#2026-07-02b">how this works</a>.</div></div>
-  <div class="stat"><div class="n" id="s-feeds">–</div><div class="l">Feed fetches · 7 days</div><div class="d">RSS/Atom/JSON/calendar pulls, as seen at the origin (edge-cached hits aren't counted).</div></div>
-  <div class="stat"><div class="n" id="s-batch">–</div><div class="l">Batch cross-references · 7 days</div><div class="d">Watchlists checked through the <a href="api.html">open API</a>.</div></div>
-  <div class="stat"><div class="n" id="s-inv">–</div><div class="l">Investigations shared · 7 days</div><div class="d">Read-only workspace snapshots created.</div></div>
-  <div class="stat"><div class="n" id="s-nl">–</div><div class="l">Plain-English searches · today</div><div class="d">"Ask in plain English" calls against the daily spending ceiling.</div></div>
+  <div class="stat"><div class="n" id="s-subs">–</div><div class="l" data-i18n="stats_lbl_subs">Active subscriptions</div><div class="d" data-i18n="stats_desc_subs">Confirmed standing watches — the number that matters most to us.</div></div>
+  <div class="stat"><div class="n" id="s-digests">–</div><div class="l" data-i18n="stats_lbl_digests">Digests sent · 7 days</div><div class="d" data-i18n-html="stats_desc_digests_html"><span id="s-digests-today">–</span> today. Only when something new matched (plus honest "still watching" check-ins).</div></div>
+  <div class="stat"><div class="n" id="s-clicks">–</div><div class="l" data-i18n="stats_lbl_clicks">Digest links followed · 7 days</div><div class="d" data-i18n-html="stats_desc_clicks_html">Counted by a redirect that records a number, never a person — <a href="changelog.html#2026-07-02b">how this works</a>.</div></div>
+  <div class="stat"><div class="n" id="s-feeds">–</div><div class="l" data-i18n="stats_lbl_feeds">Feed fetches · 7 days</div><div class="d" data-i18n="stats_desc_feeds">RSS/Atom/JSON/calendar pulls, as seen at the origin (edge-cached hits aren't counted).</div></div>
+  <div class="stat"><div class="n" id="s-batch">–</div><div class="l" data-i18n="stats_lbl_batch">Batch cross-references · 7 days</div><div class="d" data-i18n-html="stats_desc_batch_html">Watchlists checked through the <a href="api.html">open API</a>.</div></div>
+  <div class="stat"><div class="n" id="s-inv">–</div><div class="l" data-i18n="stats_lbl_inv">Investigations shared · 7 days</div><div class="d" data-i18n="stats_desc_inv">Read-only workspace snapshots created.</div></div>
+  <div class="stat"><div class="n" id="s-nl">–</div><div class="l" data-i18n="stats_lbl_nl">Plain-English searches · today</div><div class="d" data-i18n="stats_desc_nl">"Ask in plain English" calls against the daily spending ceiling.</div></div>
 </div>
 
-<h2>What we deliberately don't know</h2>
-<p class="src">Who you are, what you searched, which notices you read, or which emails you opened. Page-view
+<h2 data-i18n="stats_h_dontknow">What we deliberately don't know</h2>
+<p class="src" data-i18n-html="stats_p_dontknow_html">Who you are, what you searched, which notices you read, or which emails you opened. Page-view
 totals come from Cloudflare's cookieless analytics (aggregate, no fingerprinting — <a href="about.html">privacy
 notes</a>); everything above comes from plain per-day counters. There is nothing else.</p>
 
 <div class="foot">
-  <p>Raw JSON: <a href="https://api.crol-list.org/stats">api.crol-list.org/stats</a> (cached ~15 min) ·
+  <p data-i18n-html="stats_foot_html">Raw JSON: <a href="https://api.crol-list.org/stats">api.crol-list.org/stats</a> (cached ~15 min) ·
   <a href="changelog.html">Changelog</a> · <a href="about.html">About</a> · <a href="index.html">Home</a></p>
 </div>
 </div>
@@ -95,6 +104,19 @@ notes</a>); everything above comes from plain per-day counters. There is nothing
 (async () => {
   const msg = document.getElementById("msg"), grid = document.getElementById("grid");
   const put = (id, v) => { document.getElementById(id).textContent = (v == null ? "–" : Number(v).toLocaleString("en-US")); };
+  // applyStrings() rebuilds data-i18n-html containers (incl. the nested #s-digests-today span)
+  // on every language switch — msgState/digestsToday survive that so a switch after data loads
+  // repaints the real numbers instead of resetting to the loading/placeholder text.
+  let msgState = { kind: "loading" }, digestsToday = null;
+  function paint() {
+    msg.textContent = msgState.kind === "asof" ? t("stats_asof", { date: msgState.date })
+      : msgState.kind === "unreachable" ? t("stats_unreachable") : t("stats_loading");
+    if (digestsToday != null) put("s-digests-today", digestsToday);
+  }
+  paint();
+  // Wire the switcher immediately — it must not wait on the fetch below, or clicking it
+  // during the loading window would silently do nothing (found in manual verification).
+  initSubpageLangSwitcher(paint);
   const bases = ["https://api.crol-list.org", "https://crol-worker.crol-worker.workers.dev"];
   for (const base of bases) {
     try {
@@ -103,18 +125,22 @@ notes</a>); everything above comes from plain per-day counters. There is nothing
       const d = await r.json();
       put("s-subs", d.subscriptions?.active);
       put("s-digests", d.digests?.sent_last7d);
-      put("s-digests-today", d.digests?.sent_today);
+      digestsToday = d.digests?.sent_today;
+      put("s-digests-today", digestsToday);
       put("s-clicks", d.digest_clicks?.last7d);
       put("s-feeds", d.feeds?.fetches_last7d);
       put("s-batch", d.batch?.calls_last7d);
       put("s-inv", d.shared_investigations?.created_last7d);
       put("s-nl", d.nl_search?.calls_today);
-      msg.textContent = "As of " + new Date(d.generated).toLocaleString() + " (refreshes every 15 minutes).";
+      const loc = (window.LANG_META && window.LANG_META[window.LANG] || {}).intlDate || "en-US";
+      msgState = { kind: "asof", date: new Date(d.generated).toLocaleString(loc) };
+      paint();
       grid.hidden = false;
       return;
     } catch { /* try the alias */ }
   }
-  msg.textContent = "Live counters are unreachable right now — the raw JSON lives at api.crol-list.org/stats.";
+  msgState = { kind: "unreachable" };
+  paint();
 })();
 </script>
 <!-- Cloudflare Web Analytics — cookieless, aggregate. -->
