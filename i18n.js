@@ -541,6 +541,165 @@ const STRINGS = {
     // Accessible names (aria-label via data-i18n-aria — 2026-07-13 label-census remediation)
     nl_aria: "Describe what you're looking for in plain English",
     invnote_aria: "Note for this pinned item",
+
+    // ---- Subpage chrome + content (about/data/stats/api/changelog) — crol-subpages-es ----
+    site_kicker: "The City Record, searchable",
+    back_home_aria: "Back to CROL-List home",
+    back_to_crol: "← Back to CROL-List",
+    home_link: "Home",
+    data_page_h1: "The Data",
+
+    // about.html
+    about_h_what: "What this is",
+    about_p_what_html: "CROL-List is a search interface over <a href=\"https://a856-cityrecord.nyc.gov/\" target=\"_blank\" rel=\"noopener\">The City Record</a> — the City of New York's official daily journal, where <a href=\"https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-3113\" target=\"_blank\" rel=\"noopener\">every agency must publish</a> its contracts, hearings, rule changes, rezonings, and personnel moves. CROL-List makes that record searchable <em>by interest</em>: follow a contract, decode a job title, track a rezoning, or get an email when something new matches.",
+    about_h_source: "Where the data comes from",
+    about_p_source_html: "Everything is live, public data — queried straight from your browser, nothing cached: <a href=\"https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx\" target=\"_blank\" rel=\"noopener\">City Record Online (dg92-zbpx)</a> · <a href=\"https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e\" target=\"_blank\" rel=\"noopener\">Citywide Payroll (k397-673e)</a> · <a href=\"https://data.cityofnewyork.us/resource/vx8i-nprf\" target=\"_blank\" rel=\"noopener\">Civil Service List (vx8i-nprf)</a> · <a href=\"https://data.cityofnewyork.us/City-Government/Zoning-Application-Portal-ZAP-Project-Data/hgx4-8ukb\" target=\"_blank\" rel=\"noopener\">ZAP Projects (hgx4-8ukb)</a> · <a href=\"https://a0333-passportpublic.nyc.gov/\" target=\"_blank\" rel=\"noopener\">PASSPort</a> · <a href=\"https://www.checkbooknyc.com/\" target=\"_blank\" rel=\"noopener\">Checkbook NYC</a>.",
+    about_h_honest: "The underlying data, honestly",
+    about_p_honest_intro_html: "The City Record dataset is <b>1.09 million notices back to 2003</b> — and it is not what it looks like at first glance. Our team's exploratory analysis of the full dataset found quirks that would silently mislead if we didn't correct for them, so here is exactly what we do:",
+    about_li_honest_html: "<li><b>87.5% of all rows are civil-service personnel changes</b>, not civic notices. Every statistic on this site is computed within its own section — a \"global\" City Record number would really be a personnel-file number.</li><li><b>A few contract amounts are data-entry errors</b> — three rows claim $10&nbsp;billion or more, topping out at $96 <em>trillion</em> (the largest verified real award is ≈$6.68B). Money filters and amount-sorted digests exclude amounts ≥ $10B rather than let one typo dominate every ranking.</li><li><b>Some \"due dates\" aren't deadlines.</b> Pre-qualified-list notices carry placeholder dates in the year 2090+; we label these \"no fixed deadline (rolling)\" instead of showing a date no one should calendar.</li><li><b>Agency names come in two conventions</b> (legacy ALL-CAPS and Title Case — 312 raw strings for ~150 real agencies); our name resolution treats them as one.</li>",
+    about_p_honest_footer_html: "To keep alerts fast, our server keeps a mirror of recent notices, refreshed daily from the same public dataset — NYC Open Data remains the source of truth, and searches on this site always query it live. Want the numbers themselves? <a href=\"data.html\"><b>The Data</b></a> shows the record at a glance — sections, volume, procurement mix, top agencies and vendors — computed live with these same rules.",
+    about_h_flags: "Flags &amp; context, explained",
+    about_p_flags_intro_html: "Procurement notices carry two kinds of computed annotation. Both are <b>statistical context, not findings or accusations</b> — a flag means \"worth a closer look,\" and every formula has innocent explanations (emergencies are real, specialized markets have few bidders, name matching is imperfect). The approach follows the <a href=\"https://www.open-contracting.org/resources/red-flags-in-public-procurement-a-guide-to-using-data-to-detect-and-mitigate-risks/\" target=\"_blank\" rel=\"noopener\">Open Contracting Partnership's red-flags methodology</a> and <a href=\"https://opentender.eu/\" target=\"_blank\" rel=\"noopener\">Opentender's</a> integrity indicators.",
+    about_li_flags_html: "<li><b>⚑ Short ad window</b> — the days between a solicitation's publication and its response deadline, flagged when it is 10 days or fewer <em>and</em> less than half the agency's own median (median computed over that agency's last 200 solicitations). Short windows favor incumbents who already knew the work was coming.</li><li><b>⚑ Non-competitive method</b> — the notice's own stated selection method is a negotiated acquisition, sole-source, emergency, or demonstration-project procurement. Sometimes justified; always worth knowing.</li><li><b>⚑ Repeat awards</b> — the same vendor name has 3+ award notices at the same agency within 90 days. Can reflect a blanket contract's task orders as easily as favoritism — the flag counts, you judge.</li><li><b>Context strip</b> — an award's size as a percentile of that agency's awards over the trailing 12 months (shown only when the agency has ≥20 awards in the window), and the vendor's share of the agency's award dollars over the same window (exact published name; name variants are not merged here).</li>",
+    about_p_flags_footer_html: "All figures come live from the <a href=\"https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx\" target=\"_blank\" rel=\"noopener\">City Record Open Data</a> at the moment you view the notice — awards <em>as published</em>, which lag contract registration and actual payment. Nothing here asserts wrongdoing; it saves you the arithmetic.",
+    about_h_feedback: "Send feedback",
+    about_p_feedback: "Found a bug, want a feature, or have a thought? Send it here. We read everything. No account needed.",
+    about_label_kind: "What kind?",
+    fb_cat_bug: "Bug",
+    fb_cat_feature: "Feature idea",
+    fb_cat_general: "General",
+    about_label_message: "Your message",
+    about_ph_message: "What happened, what you'd want, or anything else — the more specific the better.",
+    about_label_email: "Email",
+    about_label_email_opt: "— optional, only if you'd like a reply",
+    about_btn_send: "Send feedback →",
+    about_note_feedback_html: "If you add your email, we keep it only to reply. Each submission also records basic request metadata — your IP address and browser — kept briefly to block spam. See <a href=\"#privacy\">Privacy</a>.",
+    about_err_short: "Add a little more detail — at least a sentence.",
+    about_err_long: "That's a bit long — please keep it under 2,000 characters.",
+    about_err_bademail: "That email address looks off — leave it blank if you don't want a reply.",
+    about_sending: "sending…",
+    about_thanks_html: "✅ <b>Thank you — got it.</b>",
+    about_thanks_reply: " We'll reply if there's anything to add.",
+    about_reason_ratelimited: "Too many messages — give it a little while.",
+    about_reason_badmessage: "The message was empty, too short, or too long.",
+    about_reason_badcategory: "Pick a category — Bug, Feature idea, or General.",
+    about_reason_notconfigured: "Feedback isn't switched on yet.",
+    about_reason_sendfailed: "Couldn't record that just now — try again in a moment.",
+    about_foot_html: "CROL-List · a search interface over <a href=\"https://a856-cityrecord.nyc.gov/\" target=\"_blank\" rel=\"noopener\">The City Record</a> · <a href=\"changelog.html\">Changelog</a> · <a href=\"stats.html\">Stats</a> · <a href=\"index.html\">Home</a>",
+    about_h_privacy: "Privacy",
+    about_p_privacy_intro: "No accounts, no cookies, no cross-site tracking, no ad tech. Here is exactly what CROL-List does with your data:",
+    about_li_privacy_html: "<li><b>Searches and filters</b> go straight from your browser to NYC Open Data — CROL-List's server never sees them.</li><li><b>The \"Ask\" box</b> (plain-English search) sends your text to our worker, which forwards it to Anthropic's Claude to turn it into filters. We don't store the text — only a daily tally, to cap costs.</li><li><b>Subscribing or sending feedback</b> stores what you submit — your alert or message, and your email if you give one — plus basic request metadata (IP address and browser) kept briefly to block spam and abuse. Every alert email has one-click unsubscribe.</li><li><b>Page views</b> are measured with Cloudflare Web Analytics: cookieless and aggregate. It counts visits; it does not identify you or follow you across sites.</li>",
+
+    // data.html
+    data_p_lede_html: "The City Record dataset, at a glance — live aggregates queried straight from <a href=\"https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx\" target=\"_blank\" rel=\"noopener\">NYC Open Data</a> by your browser, nothing cached server-side. Numbers here follow the <a href=\"about.html#data\">honesty rules</a>: statistics stay within their section, apparent data-entry errors (amounts ≥ $10B) are excluded, and placeholder deadlines aren't counted as real.",
+    data_h_sections_html: "What the record actually contains <span class=\"note\">(all time, by section)</span>",
+    data_note_sections_body: "Most of the City Record is civil-service personnel paperwork — the civic-interest notices are the minority. This is why every number on this site is per-section.",
+    data_h_volume_html: "Publication volume <span class=\"note\">(last 12 months)</span>",
+    data_h_procmix_html: "Procurement mix <span class=\"note\">(last 12 months, by notice type)</span>",
+    data_h_agencies_html: "Top agencies by awarded dollars <span class=\"note\">(last 12 months, cleaned)</span>",
+    data_note_agencies_html: "\"Cleaned\" = amounts over $10B excluded as data-entry errors; see <a href=\"about.html#data\">the underlying data</a>.",
+    data_h_vendors_html: "Top vendors by awarded dollars <span class=\"note\">(last 12 months, cleaned)</span>",
+    data_note_vendors: "Vendor names aren't canonicalized in the source — near-duplicate spellings appear as separate rows here.",
+    data_loading_counting: "Counting 1M+ notices…",
+    data_fail: "Couldn't reach NYC Open Data just now — reload to retry.",
+    data_foot_html: "Every number computes live in your browser from the public dataset — reload for fresh data. Methodology: <a href=\"about.html#data\">about → the underlying data</a> · <a href=\"stats.html\">site usage stats</a> · <a href=\"changelog.html\">changelog</a>",
+
+    // stats.html
+    stats_p_lede_html: "A transparency tool should publish its own usage. These are CROL-List's live operating numbers — <b>aggregate counts only</b>: the site has no accounts and no cookies, and neither we nor anyone else can see who did what. We measure outcomes (watches that fired, digests that got read), not people.",
+    stats_loading: "Loading live counters…",
+    stats_lbl_subs: "Active subscriptions",
+    stats_desc_subs: "Confirmed standing watches — the number that matters most to us.",
+    stats_lbl_digests: "Digests sent · 7 days",
+    stats_desc_digests_html: "<span id=\"s-digests-today\">–</span> today. Only when something new matched (plus honest \"still watching\" check-ins).",
+    stats_lbl_clicks: "Digest links followed · 7 days",
+    stats_desc_clicks_html: "Counted by a redirect that records a number, never a person — <a href=\"changelog.html#2026-07-02b\">how this works</a>.",
+    stats_lbl_feeds: "Feed fetches · 7 days",
+    stats_desc_feeds: "RSS/Atom/JSON/calendar pulls, as seen at the origin (edge-cached hits aren't counted).",
+    stats_lbl_batch: "Batch cross-references · 7 days",
+    stats_desc_batch_html: "Watchlists checked through the <a href=\"api.html\">open API</a>.",
+    stats_lbl_inv: "Investigations shared · 7 days",
+    stats_desc_inv: "Read-only workspace snapshots created.",
+    stats_lbl_nl: "Plain-English searches · today",
+    stats_desc_nl: "\"Ask in plain English\" calls against the daily spending ceiling.",
+    stats_h_dontknow: "What we deliberately don't know",
+    stats_p_dontknow_html: "Who you are, what you searched, which notices you read, or which emails you opened. Page-view totals come from Cloudflare's cookieless analytics (aggregate, no fingerprinting — <a href=\"about.html\">privacy notes</a>); everything above comes from plain per-day counters. There is nothing else.",
+    stats_foot_html: "Raw JSON: <a href=\"https://api.crol-list.org/stats\">api.crol-list.org/stats</a> (cached ~15 min) · <a href=\"changelog.html\">Changelog</a> · <a href=\"about.html\">About</a> · <a href=\"index.html\">Home</a>",
+    stats_asof: "As of {date} (refreshes every 15 minutes).",
+    stats_unreachable: "Live counters are unreachable right now — the raw JSON lives at api.crol-list.org/stats.",
+
+    // api.html
+    api_p_intro_html: "Every view on CROL-List has a machine-readable twin. No key, no account; endpoints are rate-limited and cached, and none touches a paid service. Base URL: <code>https://api.crol-list.org</code>.",
+    api_h_feeds: "Feeds — any search as RSS / JSON / calendar",
+    api_p_feeds_html: "<code>GET /feed.xml</code> (Atom) · <code>GET /feed.json</code> (JSON Feed 1.1) · <code>GET /feed.ics</code> (subscribable calendar — one event per dated notice). Edge-cached 15 minutes.",
+    api_th_param: "Param",
+    api_th_meaning: "Meaning",
+    api_row_q: "keywords (up to 4)",
+    api_row_agency: "agency name as printed in the record",
+    api_row_min: "minimum award $ (money lens → award feed)",
+    api_row_kindname_html: "entity lens: <code>kind=vendor|agency</code>, <code>name=…</code> — vendor names are matched by normalized stem, so suffix/case variants are included",
+    api_h_batch: "Batch cross-reference",
+    api_p_batch_html: "<code>POST /batch</code> with <code>{\"names\": [\"…\", …]}</code> (≤10 names/request, 30 requests/day/IP). For each name: <b>awards</b> = award/intent notices naming that vendor (name-stem matched, all years); <b>mentions</b> = full-text hits in the last two years of editions; <b>entity</b> = the vendor-profile permalink when awards exist.",
+    api_label_try: "Try it — one name per line",
+    api_btn_batch: "Cross-reference →",
+    api_err_noname: "Add at least one name (3+ characters).",
+    api_crossreferencing: "cross-referencing…",
+    api_res_name: "Name",
+    api_res_awards: "Awards (vendor of record)",
+    api_res_mentions: "Mentions (last 2 yrs)",
+    api_link_vendorprofile: "vendor profile →",
+    api_link_search: "search →",
+    api_err_ratelimited: "Daily limit reached — try tomorrow.",
+    api_err_generic: "Couldn't cross-reference — try again.",
+    api_h_permalinks: "Permalinks",
+    api_p_permalinks: "Everything on the site has a stable address you can link or cite:",
+    api_row_notice: "one notice — at-a-glance summary, flags, Checkbook dollars, full text",
+    api_row_vendor: "vendor profile (name variants resolved by stem)",
+    api_row_matter: "a procurement matter as a timeline, Checkbook payments included",
+    api_row_anyview: "any filtered view — the URL is the state",
+    api_h_sharedinv: "Shared investigations",
+    api_p_sharedinv_html: "<code>POST /inv</code> stores a pin-list snapshot (structured fields only, ≤32KB, 90-day TTL, 10/day/IP) and returns an id; <code>GET /inv/&lt;id&gt;</code> reads it back. The site renders these at <code>/#investigation/shared/&lt;id&gt;</code>.",
+    api_h_stats: "Public stats",
+    api_p_stats_html: "<code>GET /stats</code> — the project's own usage as aggregate counts (active subscriptions, digests sent, digest links followed, feed/batch/share activity). No personal data exists behind it; cached ~15 minutes. Human-readable version: <a href=\"stats.html\">stats</a>. Related: digest emails link notices via <code>GET /r/&lt;kind&gt;/&lt;request_id&gt;</code>, a count-only redirect to the notice permalink — it accepts a validated id (never a URL, so it can't redirect off-site) and records a per-day number, never a person.",
+    api_h_subscribe: "Subscribe by email",
+    api_p_subscribe_html: "Email <a href=\"mailto:subscribe@crol-list.org\"><code>subscribe@crol-list.org</code></a> describing what you want in plain English — e.g. <em>\"construction contract awards over $500k\"</em> or <em>\"rezoning notices in Brooklyn\"</em>. You'll get back a confirmation link describing how we understood your request; the watch starts only after you click it (double opt-in). Daily ceilings apply; nothing is stored until you confirm.",
+    api_h_mcp: "MCP — for AI assistants",
+    api_p_mcp_html: "<code>POST /mcp</code> (Streamable HTTP, JSON-RPC) — point an MCP client at <code>https://api.crol-list.org/mcp</code>. Tools: <code>search_notices</code> and <code>get_notice</code> (the daily-refreshed notices mirror, honest-data rules applied), <code>preview_watch</code> (plain English → what a standing watch would deliver, without subscribing), and <code>create_watch</code> (plain English → a double-opt-in confirmation email; digests start only after the address confirms). Watch management stays behind the emailed unsubscribe links — knowing an address never reveals or controls its subscriptions. Per-IP and daily model-call ceilings apply.",
+    api_h_upstream: "Upstream data",
+    api_p_upstream_html: "CROL-List republishes and joins public datasets — for bulk work, go straight to the sources: <a href=\"https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx\" target=\"_blank\" rel=\"noopener\">City Record Online (dg92-zbpx, Socrata SODA)</a> · <a href=\"https://www.checkbooknyc.com/data-feeds/api\" target=\"_blank\" rel=\"noopener\">Checkbook NYC API</a> · <a href=\"https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e\" target=\"_blank\" rel=\"noopener\">Citywide Payroll</a> · <a href=\"https://data.cityofnewyork.us/City-Government/Zoning-Application-Portal-ZAP-Project-Data/hgx4-8ukb\" target=\"_blank\" rel=\"noopener\">ZAP</a>.",
+    api_foot_html: "CROL-List · <a href=\"index.html\">Home</a> · <a href=\"about.html\">About</a>",
+
+    // changelog.html
+    chg_p_lede_html: "What changed, when, and what it means for you — including the mistakes. Versions are dates (<a href=\"https://calver.org/\" target=\"_blank\" rel=\"noopener\">CalVer</a>): the site ships continuously, so a date tells the truth where a version number would be theater. A tool that watches the city's public record should keep a public record of itself. Live usage numbers: <a href=\"stats.html\">stats</a>.",
+    chg_detail_note: "The detailed technical notes below each release (bullet lists, incident reports) remain in English for now.",
+    chg_foot_html: "CROL-List is an unofficial, free interface to public data. <a href=\"about.html\">About</a> · <a href=\"stats.html\">Stats</a> · <a href=\"api.html\">API &amp; feeds</a> · <a href=\"index.html\">Home</a>",
+    chg_0710e_h2: "2026.07.10 · Espanol coverage: the whole interface, not just the chrome",
+    chg_0710e_foryou_html: "<b>Para usted</b> — Phase 2 of Spanish support: the entire visible interface now translates when you switch to Espanol. Phase 1 covered tabs, buttons, and short labels (98 keys). Phase 2 adds the empty states, search placeholders, panel headings, the Today's Edition strip, alert builder labels and parameters, loading messages, and all control labels across every lens (Money, People, Land, Property, Rules, Meetings, Alerts) -- growing the dictionary from 98 to over 200 keys. A new residual-English coverage gate in the test suite verifies 15 high-visibility sentinel strings are absent in Espanol mode.",
+    chg_0710d_h2: "2026.07.10 · Spanish support + style-guide copy pass",
+    chg_0710d_foryou_html: "<b>For you</b> — A language switcher now appears in the header (English / Espanol). Choosing Spanish translates all tabs, chips, and messages in the UI; notices themselves stay in English, which is the official language of the City Record. Your preference is remembered across visits. Separately, time chips, deadline chips, and the feedback-category selector were updated to follow the NYC Web Content Style Guide: \"9 a.m.\" (not \"9 AM\"), spelled-out numbers (\"closes in two days\"), and acronym expansions on first use (RFP, M/WBE, ZAP). City Record content is now marked <code>translate=\"no\"</code> so machine-translation tools leave it intact.",
+    chg_0710c_h2: "2026.07.10 · Accessibility: an enforced floor, not a promise",
+    chg_0710c_foryou_html: "<b>For you</b> — If you use a keyboard or a screen reader, the rough edges are getting fixed for real: the feedback form's category picker now works without a mouse, the plain-English search box announces itself properly, low-contrast text is corrected site-wide, and the \"minimum award\" filter genuinely disables when it doesn't apply instead of just fading. From now on, an automated accessibility check (axe) runs against every page in our test harness — a change that breaks accessibility fails the build. CONTRIBUTING and SECURITY were also rewritten to describe how the project is actually governed and defended.",
+    chg_0710b_h2: "2026.07.10 · Three new front doors: email-in, MCP, and The Data",
+    chg_0710b_foryou_html: "<b>For you</b> — Three new ways in. <b>Subscribe by email:</b> write to <a href=\"mailto:subscribe@crol-list.org\">subscribe@crol-list.org</a> in plain English (\"construction awards over $500k\") and you'll get a confirmation link back — no form, no CAPTCHA, just your words. <b>For AI assistants:</b> point any MCP client at <code>api.crol-list.org/mcp</code> to search notices and set up watches programmatically (double opt-in still applies — nothing sends without the address confirming). <b><a href=\"data.html\">The Data</a>:</b> a new page showing the City Record at a glance — what's actually in it, publication volume, procurement mix, top agencies and vendors by cleaned dollars — computed live in your browser from NYC Open Data.",
+    chg_0710_h2: "2026.07.10 · Honest data rules + a faster backbone (with Dev Doshi)",
+    chg_0710_foryou_html: "<b>For you</b> — Money filters and digests can no longer be hijacked by the dataset's data-entry errors: amounts ≥ $10B (there's a $96 trillion typo in the official record) are excluded, while real multi-billion awards now correctly appear — the old cutoff silently dropped everything above $5B, including the largest legitimate award (≈$6.68B). Pre-qualified-list notices with placeholder year-2090 dates now say \"no fixed deadline (rolling)\" instead of a date no one should calendar. The <a href=\"about.html#data\">About page documents the dataset's quirks</a> — what the City Record actually contains and how we correct for it.",
+    chg_0709_h2: "2026.07.09 · Predictive Procurement: Checkbook Expirations, MOCS Plans, &amp; Early-Warning Timelines",
+    chg_0709_foryou_html: "<b>For you</b> — CROL-List now alerts you 6 months <em>before</em> contracts expire or new RFPs are published. Agency and vendor profiles show a new <b>\"Procurement Forecast\"</b> tab with a vertical chronological timeline, uniting predicted contract renewals (from Checkbook NYC) and official agency-planned solicitations (from Charter §112 MOCS datasets). Digests now deliver early-warning notifications for upcoming forecasts matching your watches.",
+    chg_0702d_h2: "2026.07.02 · Fix: vendors with punctuated names resolve again",
+    chg_0702d_foryou_html: "<b>For you</b> — Vendor pages and vendor watches now work for names like \"Leon D. Dematteis Construction Corp.\" Before this fix, clicking such a vendor showed \"no awards on record\" and a watch on them matched nothing — despite their awards being right there.",
+    chg_0702c_h2: "2026.07.02 · Snap + crisp: the round-four speed-and-declutter pass",
+    chg_0702c_foryou_html: "<b>For you</b> — The site looks calmer and feels immediate. Lists show content-shaped placeholders instead of spinners; filtering keeps your place instead of blanking the list; going back to a tab you already loaded is instant; clicking a notice paints its detail at once (the paper trail fills in a beat later). Search runs as you type — the Filter buttons are gone because you no longer need them.",
+    chg_0702b_h2: "2026.07.02 · Enablement: public stats, honest click counts, this page",
+    chg_0702b_foryou_html: "<b>For you</b> — You can now see the project's own usage numbers at <a href=\"stats.html\">/stats</a> (aggregate counts only — no accounts, no cookies, nobody tracked). Email-digest links now pass through a count-only redirect so we can tell digests are useful; it counts <em>clicks per day</em>, never who clicked, and every digest footer says so.",
+    chg_0702_h2: "2026.07.02 · Follow the dollars, matter timelines, follows, workspace, API",
+    chg_0702_foryou_html: "<b>For you</b> — Awards now show what was <em>actually paid</em> (live from Checkbook NYC), any procurement matter reads as one timeline, you can follow a vendor or agency and get emailed when they reappear, pin anything into a citable investigation workspace, and use every view as an API.",
+    chg_0701_h2: "2026.07.01 · Entity pages, red flags in context — and the first ten, all in one day",
+    chg_0701_foryou_html: "<b>For you</b> — Every vendor and agency became a page (with totals, top partners, and open RFPs), procurement notices carry statistical context instead of bare text, and the whole search-and-subscribe layer landed: watch any search, get a morning email digest, grab any view as RSS/calendar, share any notice by URL, and see deadlines as countdowns instead of dates.",
+    chg_0630_h2: "2026.06.30 · Real subscriptions",
+    chg_0630_foryou_html: "<b>For you</b> — Email alerts became real: double opt-in (nothing is stored until you click the confirmation link), one-click unsubscribe, and your address is only ever used to send you your own digest.",
+    chg_0626_h2: "2026.06.26 · crol-list.org",
+    chg_0626_foryou_html: "<b>For you</b> — The site got its own domain and a real \"ask in plain English\" box on every lens (with an on-device fallback, so search works even if the helper is down).",
+    chg_0624_h2: "2026.06.24–25 · The seven lenses",
+    chg_0624_foryou_html: "<b>For you</b> — The tool took its shape: Money, People, Land, Property, Rules, Meetings, and Alerts, in the letterpress design, over live open data with nothing cached.",
   },
 
   es: {
@@ -1053,6 +1212,165 @@ const STRINGS = {
     // Accessible names (aria-label via data-i18n-aria)
     nl_aria: "Describa lo que busca en lenguaje claro",
     invnote_aria: "Nota para este elemento fijado",
+
+    // ---- Subpage chrome + content (about/data/stats/api/changelog) — crol-subpages-es ----
+    site_kicker: "El Registro Municipal, con búsqueda",
+    back_home_aria: "Volver al inicio de CROL-List",
+    back_to_crol: "← Volver a CROL-List",
+    home_link: "Inicio",
+    data_page_h1: "Los datos",
+
+    // about.html
+    about_h_what: "Qué es esto",
+    about_p_what_html: "CROL-List es una interfaz de búsqueda sobre <a href=\"https://a856-cityrecord.nyc.gov/\" target=\"_blank\" rel=\"noopener\">The City Record</a> — el diario oficial de la Ciudad de Nueva York, donde <a href=\"https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-3113\" target=\"_blank\" rel=\"noopener\">toda agencia debe publicar</a> sus contratos, audiencias, cambios de reglas, rezonificaciones y movimientos de personal. CROL-List hace que ese registro se pueda buscar <em>por interés</em>: siga un contrato, descifre un título de puesto, rastree una rezonificación, o reciba un correo cuando algo nuevo coincida.",
+    about_h_source: "De dónde vienen los datos",
+    about_p_source_html: "Todo son datos públicos en vivo — consultados directamente desde su navegador, sin nada almacenado en caché: <a href=\"https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx\" target=\"_blank\" rel=\"noopener\">City Record Online (dg92-zbpx)</a> · <a href=\"https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e\" target=\"_blank\" rel=\"noopener\">Nómina Municipal (k397-673e)</a> · <a href=\"https://data.cityofnewyork.us/resource/vx8i-nprf\" target=\"_blank\" rel=\"noopener\">Lista del Servicio Civil (vx8i-nprf)</a> · <a href=\"https://data.cityofnewyork.us/City-Government/Zoning-Application-Portal-ZAP-Project-Data/hgx4-8ukb\" target=\"_blank\" rel=\"noopener\">Proyectos ZAP (hgx4-8ukb)</a> · <a href=\"https://a0333-passportpublic.nyc.gov/\" target=\"_blank\" rel=\"noopener\">PASSPort</a> · <a href=\"https://www.checkbooknyc.com/\" target=\"_blank\" rel=\"noopener\">Checkbook NYC</a>.",
+    about_h_honest: "Los datos subyacentes, con honestidad",
+    about_p_honest_intro_html: "El conjunto de datos del City Record tiene <b>1.09 millones de avisos desde 2003</b> — y no es lo que parece a primera vista. El análisis exploratorio de nuestro equipo sobre el conjunto completo encontró peculiaridades que engañarían silenciosamente si no las corrigiéramos, así que esto es exactamente lo que hacemos:",
+    about_li_honest_html: "<li><b>El 87.5% de todas las filas son cambios de personal del servicio civil</b>, no avisos cívicos. Cada estadística de este sitio se calcula dentro de su propia sección — una cifra \"global\" del City Record sería en realidad una cifra de expedientes de personal.</li><li><b>Algunos montos de contratos son errores de entrada de datos</b> — tres filas indican $10&nbsp;mil millones o más, llegando hasta $96 <em>billones</em> (el mayor premio real verificado es ≈$6.68 mil millones). Los filtros de dinero y los resúmenes ordenados por monto excluyen cantidades ≥ $10 mil millones para que una sola errata no domine cada clasificación.</li><li><b>Algunas \"fechas límite\" no son fechas límite.</b> Los avisos de listas precalificadas llevan fechas de marcador de posición en el año 2090 o posterior; las etiquetamos como \"sin fecha límite fija (continua)\" en vez de mostrar una fecha que nadie debería anotar en su calendario.</li><li><b>Los nombres de las agencias vienen en dos convenciones</b> (MAYÚSCULAS heredadas y Formato de Título — 312 cadenas sin depurar para ~150 agencias reales); nuestra resolución de nombres las trata como una sola.</li>",
+    about_p_honest_footer_html: "Para que las alertas sean rápidas, nuestro servidor mantiene un espejo de los avisos recientes, actualizado a diario desde el mismo conjunto de datos públicos — NYC Open Data sigue siendo la fuente autorizada, y las búsquedas en este sitio siempre la consultan en vivo. ¿Quiere ver los números en sí? <a href=\"data.html\"><b>Los datos</b></a> muestra el registro de un vistazo — secciones, volumen, combinación de adquisiciones, principales agencias y proveedores — calculado en vivo con estas mismas reglas.",
+    about_h_flags: "Marcadores y contexto, explicados",
+    about_p_flags_intro_html: "Los avisos de adquisiciones llevan dos tipos de anotación calculada. Ambas son <b>contexto estadístico, no hallazgos ni acusaciones</b> — un marcador significa \"vale la pena revisarlo más de cerca\", y cada fórmula tiene explicaciones inocentes (las emergencias son reales, los mercados especializados tienen pocos postores, la coincidencia de nombres es imperfecta). El enfoque sigue la <a href=\"https://www.open-contracting.org/resources/red-flags-in-public-procurement-a-guide-to-using-data-to-detect-and-mitigate-risks/\" target=\"_blank\" rel=\"noopener\">metodología de marcadores rojos de Open Contracting Partnership</a> y los indicadores de integridad de <a href=\"https://opentender.eu/\" target=\"_blank\" rel=\"noopener\">Opentender</a>.",
+    about_li_flags_html: "<li><b>⚑ Ventana de anuncio corta</b> — los días entre la publicación de una solicitud y su fecha límite de respuesta, marcada cuando son 10 días o menos <em>y</em> menos de la mitad de la mediana propia de la agencia (mediana calculada sobre las últimas 200 solicitudes de esa agencia). Las ventanas cortas favorecen a quienes ya sabían que el trabajo venía.</li><li><b>⚑ Método no competitivo</b> — el método de selección que el propio aviso declara es una adquisición negociada, de proveedor único, de emergencia, o un proyecto de demostración. A veces está justificado; siempre vale la pena saberlo.</li><li><b>⚑ Adjudicaciones repetidas</b> — el mismo proveedor tiene 3 o más avisos de adjudicación en la misma agencia dentro de 90 días. Puede reflejar las órdenes de tarea de un contrato general tanto como favoritismo — el marcador cuenta, usted juzga.</li><li><b>Franja de contexto</b> — el tamaño de una adjudicación como percentil de las adjudicaciones de esa agencia en los últimos 12 meses (se muestra solo cuando la agencia tiene ≥20 adjudicaciones en la ventana), y la participación del proveedor en los dólares adjudicados por la agencia durante la misma ventana (nombre exacto publicado; las variantes de nombre no se combinan aquí).</li>",
+    about_p_flags_footer_html: "Todas las cifras provienen en vivo de <a href=\"https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx\" target=\"_blank\" rel=\"noopener\">City Record Open Data</a> en el momento en que usted ve el aviso — adjudicaciones <em>tal como se publicaron</em>, que van con retraso respecto al registro del contrato y al pago real. Nada aquí afirma irregularidades; solo le ahorra la aritmética.",
+    about_h_feedback: "Enviar comentarios",
+    about_p_feedback: "¿Encontró un error, quiere una función, o tiene una idea? Envíela aquí. Leemos todo. No se necesita cuenta.",
+    about_label_kind: "¿Qué tipo?",
+    fb_cat_bug: "Error",
+    fb_cat_feature: "Idea de función",
+    fb_cat_general: "General",
+    about_label_message: "Su mensaje",
+    about_ph_message: "Qué pasó, qué le gustaría, o cualquier otra cosa — mientras más específico, mejor.",
+    about_label_email: "Correo electrónico",
+    about_label_email_opt: "— opcional, solo si desea una respuesta",
+    about_btn_send: "Enviar comentarios →",
+    about_note_feedback_html: "Si agrega su correo, lo conservamos solo para responder. Cada envío también registra metadatos básicos de la solicitud — su dirección IP y navegador — guardados brevemente para bloquear spam. Vea <a href=\"#privacy\">Privacidad</a>.",
+    about_err_short: "Agregue un poco más de detalle — al menos una oración.",
+    about_err_long: "Eso es un poco largo — manténgalo bajo 2,000 caracteres.",
+    about_err_bademail: "Esa dirección de correo se ve incorrecta — déjela en blanco si no desea una respuesta.",
+    about_sending: "enviando…",
+    about_thanks_html: "✅ <b>Gracias — lo recibimos.</b>",
+    about_thanks_reply: " Responderemos si hay algo que añadir.",
+    about_reason_ratelimited: "Demasiados mensajes — espere un momento.",
+    about_reason_badmessage: "El mensaje estaba vacío, era muy corto, o muy largo.",
+    about_reason_badcategory: "Elija una categoría — Error, Idea de función, o General.",
+    about_reason_notconfigured: "Los comentarios aún no están activados.",
+    about_reason_sendfailed: "No se pudo registrar eso ahora — inténtelo de nuevo en un momento.",
+    about_foot_html: "CROL-List · una interfaz de búsqueda sobre <a href=\"https://a856-cityrecord.nyc.gov/\" target=\"_blank\" rel=\"noopener\">The City Record</a> · <a href=\"changelog.html\">Registro de cambios</a> · <a href=\"stats.html\">Estadísticas</a> · <a href=\"index.html\">Inicio</a>",
+    about_h_privacy: "Privacidad",
+    about_p_privacy_intro: "Sin cuentas, sin cookies, sin rastreo entre sitios, sin tecnología publicitaria. Esto es exactamente lo que CROL-List hace con sus datos:",
+    about_li_privacy_html: "<li><b>Las búsquedas y filtros</b> van directamente desde su navegador a NYC Open Data — el servidor de CROL-List nunca los ve.</li><li><b>El cuadro \"Preguntar\"</b> (búsqueda en lenguaje llano) envía su texto a nuestro worker, que lo reenvía a Claude de Anthropic para convertirlo en filtros. No almacenamos el texto — solo un conteo diario, para limitar costos.</li><li><b>Suscribirse o enviar comentarios</b> almacena lo que usted envía — su alerta o mensaje, y su correo si proporciona uno — más metadatos básicos de la solicitud (dirección IP y navegador) guardados brevemente para bloquear spam y abuso. Cada correo de alerta tiene cancelación de suscripción con un clic.</li><li><b>Las visitas a la página</b> se miden con Cloudflare Web Analytics: sin cookies y agregadas. Cuenta visitas; no lo identifica ni lo sigue entre sitios.</li>",
+
+    // data.html
+    data_p_lede_html: "El conjunto de datos del City Record, de un vistazo — agregados en vivo consultados directamente desde <a href=\"https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx\" target=\"_blank\" rel=\"noopener\">NYC Open Data</a> por su navegador, sin nada almacenado en caché del lado del servidor. Los números aquí siguen las <a href=\"about.html#data\">reglas de honestidad</a>: las estadísticas permanecen dentro de su sección, los aparentes errores de entrada de datos (montos ≥ $10 mil millones) se excluyen, y las fechas límite de marcador de posición no se cuentan como reales.",
+    data_h_sections_html: "Qué contiene realmente el registro <span class=\"note\">(todo el historial, por sección)</span>",
+    data_note_sections_body: "La mayor parte del City Record es papeleo de personal del servicio civil — los avisos de interés cívico son la minoría. Por eso cada número de este sitio es por sección.",
+    data_h_volume_html: "Volumen de publicación <span class=\"note\">(últimos 12 meses)</span>",
+    data_h_procmix_html: "Combinación de adquisiciones <span class=\"note\">(últimos 12 meses, por tipo de aviso)</span>",
+    data_h_agencies_html: "Principales agencias por dólares adjudicados <span class=\"note\">(últimos 12 meses, depurado)</span>",
+    data_note_agencies_html: "\"Depurado\" = se excluyen los montos superiores a $10 mil millones por ser errores de entrada de datos; vea <a href=\"about.html#data\">los datos subyacentes</a>.",
+    data_h_vendors_html: "Principales proveedores por dólares adjudicados <span class=\"note\">(últimos 12 meses, depurado)</span>",
+    data_note_vendors: "Los nombres de proveedores no están normalizados en la fuente — las grafías casi duplicadas aparecen como filas separadas aquí.",
+    data_loading_counting: "Contando más de 1M de avisos…",
+    data_fail: "No se pudo conectar a NYC Open Data en este momento — recargue para reintentar.",
+    data_foot_html: "Cada número se calcula en vivo en su navegador a partir del conjunto de datos público — recargue para obtener datos actualizados. Metodología: <a href=\"about.html#data\">acerca de → los datos subyacentes</a> · <a href=\"stats.html\">estadísticas de uso del sitio</a> · <a href=\"changelog.html\">registro de cambios</a>",
+
+    // stats.html
+    stats_p_lede_html: "Una herramienta de transparencia debería publicar su propio uso. Estos son los números operativos en vivo de CROL-List — <b>solo conteos agregados</b>: el sitio no tiene cuentas ni cookies, y ni nosotros ni nadie más puede ver quién hizo qué. Medimos resultados (alertas que se activaron, resúmenes que se leyeron), no personas.",
+    stats_loading: "Cargando contadores en vivo…",
+    stats_lbl_subs: "Suscripciones activas",
+    stats_desc_subs: "Alertas permanentes confirmadas — el número que más nos importa.",
+    stats_lbl_digests: "Resúmenes enviados · 7 días",
+    stats_desc_digests_html: "<span id=\"s-digests-today\">–</span> hoy. Solo cuando algo nuevo coincidió (más chequeos honestos de \"seguimos vigilando\").",
+    stats_lbl_clicks: "Enlaces de resúmenes seguidos · 7 días",
+    stats_desc_clicks_html: "Contado por una redirección que registra un número, nunca una persona — <a href=\"changelog.html#2026-07-02b\">cómo funciona esto</a>.",
+    stats_lbl_feeds: "Descargas de fuentes · 7 días",
+    stats_desc_feeds: "Descargas de RSS/Atom/JSON/calendario, vistas en el origen (los aciertos en caché de borde no se cuentan).",
+    stats_lbl_batch: "Verificaciones cruzadas por lotes · 7 días",
+    stats_desc_batch_html: "Listas de vigilancia verificadas a través de la <a href=\"api.html\">API abierta</a>.",
+    stats_lbl_inv: "Investigaciones compartidas · 7 días",
+    stats_desc_inv: "Instantáneas de solo lectura del espacio de trabajo creadas.",
+    stats_lbl_nl: "Búsquedas en lenguaje llano · hoy",
+    stats_desc_nl: "Llamadas de \"Preguntar en lenguaje llano\" contra el límite diario de gasto.",
+    stats_h_dontknow: "Lo que deliberadamente no sabemos",
+    stats_p_dontknow_html: "Quién es usted, qué buscó, qué avisos leyó, o qué correos abrió. Los totales de vistas de página provienen de las analíticas sin cookies de Cloudflare (agregadas, sin huella digital — <a href=\"about.html\">notas de privacidad</a>); todo lo anterior proviene de simples contadores diarios. No hay nada más.",
+    stats_foot_html: "JSON sin procesar: <a href=\"https://api.crol-list.org/stats\">api.crol-list.org/stats</a> (en caché ~15 min) · <a href=\"changelog.html\">Registro de cambios</a> · <a href=\"about.html\">Acerca de</a> · <a href=\"index.html\">Inicio</a>",
+    stats_asof: "Al {date} (se actualiza cada 15 minutos).",
+    stats_unreachable: "Los contadores en vivo no están disponibles en este momento — el JSON sin procesar está en api.crol-list.org/stats.",
+
+    // api.html
+    api_p_intro_html: "Cada vista de CROL-List tiene un equivalente legible por máquina. Sin clave, sin cuenta; los endpoints tienen límite de frecuencia y caché, y ninguno usa un servicio de pago. URL base: <code>https://api.crol-list.org</code>.",
+    api_h_feeds: "Fuentes — cualquier búsqueda como RSS / JSON / calendario",
+    api_p_feeds_html: "<code>GET /feed.xml</code> (Atom) · <code>GET /feed.json</code> (JSON Feed 1.1) · <code>GET /feed.ics</code> (calendario suscribible — un evento por aviso con fecha). En caché de borde 15 minutos.",
+    api_th_param: "Parámetro",
+    api_th_meaning: "Significado",
+    api_row_q: "palabras clave (hasta 4)",
+    api_row_agency: "nombre de la agencia tal como aparece en el registro",
+    api_row_min: "monto mínimo de adjudicación $ (lente de dinero → fuente de adjudicaciones)",
+    api_row_kindname_html: "lente de entidad: <code>kind=vendor|agency</code>, <code>name=…</code> — los nombres de proveedores se comparan por raíz normalizada, así que se incluyen variantes de sufijo/mayúsculas",
+    api_h_batch: "Verificación cruzada por lotes",
+    api_p_batch_html: "<code>POST /batch</code> con <code>{\"names\": [\"…\", …]}</code> (≤10 nombres/solicitud, 30 solicitudes/día/IP). Para cada nombre: <b>adjudicaciones</b> = avisos de adjudicación/intención que nombran a ese proveedor (coincidencia por raíz del nombre, todos los años); <b>menciones</b> = coincidencias de texto completo en las últimas dos ediciones anuales; <b>entidad</b> = el enlace permanente del perfil del proveedor cuando existen adjudicaciones.",
+    api_label_try: "Pruébelo — un nombre por línea",
+    api_btn_batch: "Verificar cruzado →",
+    api_err_noname: "Agregue al menos un nombre (3+ caracteres).",
+    api_crossreferencing: "verificando en cruce…",
+    api_res_name: "Nombre",
+    api_res_awards: "Adjudicaciones (proveedor registrado)",
+    api_res_mentions: "Menciones (últimos 2 años)",
+    api_link_vendorprofile: "perfil de proveedor →",
+    api_link_search: "buscar →",
+    api_err_ratelimited: "Límite diario alcanzado — intente mañana.",
+    api_err_generic: "No se pudo verificar en cruce — inténtelo de nuevo.",
+    api_h_permalinks: "Enlaces permanentes",
+    api_p_permalinks: "Todo en el sitio tiene una dirección estable que puede enlazar o citar:",
+    api_row_notice: "un aviso — resumen de un vistazo, marcadores, dólares de Checkbook, texto completo",
+    api_row_vendor: "perfil de proveedor (las variantes de nombre se resuelven por raíz)",
+    api_row_matter: "un expediente de adquisiciones como una cronología, con pagos de Checkbook incluidos",
+    api_row_anyview: "cualquier vista filtrada — la URL es el estado",
+    api_h_sharedinv: "Investigaciones compartidas",
+    api_p_sharedinv_html: "<code>POST /inv</code> almacena una instantánea de la lista de fijados (solo campos estructurados, ≤32KB, TTL de 90 días, 10/día/IP) y devuelve un id; <code>GET /inv/&lt;id&gt;</code> lo lee de vuelta. El sitio los muestra en <code>/#investigation/shared/&lt;id&gt;</code>.",
+    api_h_stats: "Estadísticas públicas",
+    api_p_stats_html: "<code>GET /stats</code> — el uso propio del proyecto como conteos agregados (suscripciones activas, resúmenes enviados, enlaces de resumen seguidos, actividad de fuentes/lotes/compartidos). No hay datos personales detrás de esto; en caché ~15 minutos. Versión legible: <a href=\"stats.html\">estadísticas</a>. Relacionado: los correos de resumen enlazan avisos mediante <code>GET /r/&lt;kind&gt;/&lt;request_id&gt;</code>, una redirección de solo conteo al enlace permanente del aviso — acepta un id validado (nunca una URL, por lo que no puede redirigir fuera del sitio) y registra un número por día, nunca una persona.",
+    api_h_subscribe: "Suscribirse por correo",
+    api_p_subscribe_html: "Envíe un correo a <a href=\"mailto:subscribe@crol-list.org\"><code>subscribe@crol-list.org</code></a> describiendo lo que quiere en lenguaje llano — por ejemplo, <em>\"adjudicaciones de contratos de construcción de más de $500k\"</em> o <em>\"avisos de rezonificación en Brooklyn\"</em>. Recibirá de vuelta un enlace de confirmación que describe cómo entendimos su solicitud; la alerta comienza solo después de que haga clic (doble confirmación). Se aplican límites diarios; nada se almacena hasta que confirme.",
+    api_h_mcp: "MCP — para asistentes de IA",
+    api_p_mcp_html: "<code>POST /mcp</code> (Streamable HTTP, JSON-RPC) — apunte cualquier cliente MCP a <code>https://api.crol-list.org/mcp</code>. Herramientas: <code>search_notices</code> y <code>get_notice</code> (el espejo de avisos actualizado a diario, con las reglas de datos honestos aplicadas), <code>preview_watch</code> (lenguaje llano → lo que entregaría una alerta permanente, sin suscribirse), y <code>create_watch</code> (lenguaje llano → un correo de confirmación de doble opt-in; los resúmenes comienzan solo después de que la dirección confirma). La gestión de alertas permanece detrás de los enlaces de cancelación enviados por correo — conocer una dirección nunca revela ni controla sus suscripciones. Se aplican límites por IP y por modelo al día.",
+    api_h_upstream: "Datos de origen",
+    api_p_upstream_html: "CROL-List republica y combina conjuntos de datos públicos — para trabajo masivo, vaya directo a las fuentes: <a href=\"https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx\" target=\"_blank\" rel=\"noopener\">City Record Online (dg92-zbpx, Socrata SODA)</a> · <a href=\"https://www.checkbooknyc.com/data-feeds/api\" target=\"_blank\" rel=\"noopener\">API de Checkbook NYC</a> · <a href=\"https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e\" target=\"_blank\" rel=\"noopener\">Nómina Municipal</a> · <a href=\"https://data.cityofnewyork.us/City-Government/Zoning-Application-Portal-ZAP-Project-Data/hgx4-8ukb\" target=\"_blank\" rel=\"noopener\">ZAP</a>.",
+    api_foot_html: "CROL-List · <a href=\"index.html\">Inicio</a> · <a href=\"about.html\">Acerca de</a>",
+
+    // changelog.html
+    chg_p_lede_html: "Qué cambió, cuándo, y qué significa para usted — incluidos los errores. Las versiones son fechas (<a href=\"https://calver.org/\" target=\"_blank\" rel=\"noopener\">CalVer</a>): el sitio se publica de forma continua, así que una fecha dice la verdad donde un número de versión sería teatro. Una herramienta que vigila el registro público de la ciudad debería mantener un registro público de sí misma. Números de uso en vivo: <a href=\"stats.html\">estadísticas</a>.",
+    chg_detail_note: "Las notas técnicas detalladas debajo de cada versión (listas con viñetas, informes de incidentes) permanecen en inglés por ahora.",
+    chg_foot_html: "CROL-List es una interfaz gratuita y no oficial de datos públicos. <a href=\"about.html\">Acerca de</a> · <a href=\"stats.html\">Estadísticas</a> · <a href=\"api.html\">API y fuentes</a> · <a href=\"index.html\">Inicio</a>",
+    chg_0710e_h2: "2026.07.10 · Cobertura de español: toda la interfaz, no solo el marco",
+    chg_0710e_foryou_html: "<b>Para usted</b> — Fase 2 del soporte en español: toda la interfaz visible ahora se traduce al cambiar a español. La fase 1 cubrió pestañas, botones y etiquetas cortas (98 claves). La fase 2 agrega los estados vacíos, los marcadores de posición de búsqueda, los encabezados de panel, la franja de la Edición de Hoy, las etiquetas y parámetros del creador de alertas, los mensajes de carga, y todas las etiquetas de control en cada lente (Dinero, Personas, Terrenos, Propiedades, Reglas, Reuniones, Alertas) — haciendo crecer el diccionario de 98 a más de 200 claves. Una nueva verificación de cobertura de inglés residual en la batería de pruebas confirma que 15 frases centinela de alta visibilidad están ausentes en modo español.",
+    chg_0710d_h2: "2026.07.10 · Soporte en español + revisión de estilo de textos",
+    chg_0710d_foryou_html: "<b>Para usted</b> — Ahora aparece un selector de idioma en el encabezado (English / Español). Elegir español traduce todas las pestañas, chips y mensajes de la interfaz; los avisos en sí permanecen en inglés, que es el idioma oficial del City Record. Su preferencia se recuerda entre visitas. Además, los chips de horario, los chips de fecha límite y el selector de categoría de comentarios se actualizaron para seguir la Guía de Estilo de Contenido Web de NYC: \"9 a.m.\" (no \"9 AM\"), números escritos en palabras (\"cierra en dos días\"), y expansión de siglas en su primer uso (RFP, M/WBE, ZAP). El contenido del City Record ahora está marcado con <code>translate=\"no\"</code> para que las herramientas de traducción automática lo dejen intacto.",
+    chg_0710c_h2: "2026.07.10 · Accesibilidad: un piso exigido, no una promesa",
+    chg_0710c_foryou_html: "<b>Para usted</b> — Si usa un teclado o un lector de pantalla, las asperezas se están corrigiendo de verdad: el selector de categoría del formulario de comentarios ahora funciona sin mouse, el cuadro de búsqueda en lenguaje llano se anuncia correctamente, el texto de bajo contraste se corrigió en todo el sitio, y el filtro de \"monto mínimo\" ahora se deshabilita de verdad cuando no aplica, en vez de solo atenuarse. De ahora en adelante, una verificación automatizada de accesibilidad (axe) se ejecuta contra cada página en nuestra batería de pruebas — un cambio que rompe la accesibilidad hace fallar la compilación. CONTRIBUTING y SECURITY también se reescribieron para describir cómo se gobierna y se defiende el proyecto en la práctica.",
+    chg_0710b_h2: "2026.07.10 · Tres nuevas puertas de entrada: correo entrante, MCP y Los Datos",
+    chg_0710b_foryou_html: "<b>Para usted</b> — Tres nuevas formas de entrar. <b>Suscríbase por correo:</b> escriba a <a href=\"mailto:subscribe@crol-list.org\">subscribe@crol-list.org</a> en lenguaje llano (\"adjudicaciones de construcción de más de $500k\") y recibirá de vuelta un enlace de confirmación — sin formulario, sin CAPTCHA, solo sus palabras. <b>Para asistentes de IA:</b> apunte cualquier cliente MCP a <code>api.crol-list.org/mcp</code> para buscar avisos y configurar alertas de forma programática (la doble confirmación sigue aplicando — nada se envía sin que la dirección confirme). <b><a href=\"data.html\">Los Datos</a>:</b> una nueva página que muestra el City Record de un vistazo — qué contiene realmente, volumen de publicación, combinación de adquisiciones, principales agencias y proveedores por dólares depurados — calculado en vivo en su navegador desde NYC Open Data.",
+    chg_0710_h2: "2026.07.10 · Reglas de datos honestos + una base más rápida (con Dev Doshi)",
+    chg_0710_foryou_html: "<b>Para usted</b> — Los filtros y resúmenes de dinero ya no pueden ser secuestrados por los errores de entrada de datos del conjunto de datos: se excluyen los montos ≥ $10 mil millones (hay una errata de $96 billones en el registro oficial), mientras que las adjudicaciones reales de varios miles de millones ahora aparecen correctamente — el límite anterior descartaba silenciosamente todo por encima de $5 mil millones, incluida la mayor adjudicación legítima (≈$6.68 mil millones). Los avisos de listas precalificadas con fechas de marcador de posición del año 2090 ahora dicen \"sin fecha límite fija (continua)\" en vez de una fecha que nadie debería anotar en su calendario. La <a href=\"about.html#data\">página Acerca de documenta las peculiaridades del conjunto de datos</a> — qué contiene realmente el City Record y cómo lo corregimos.",
+    chg_0709_h2: "2026.07.09 · Adquisiciones predictivas: vencimientos de Checkbook, planes MOCS y cronologías de alerta temprana",
+    chg_0709_foryou_html: "<b>Para usted</b> — CROL-List ahora le alerta 6 meses <em>antes</em> de que los contratos venzan o se publiquen nuevas RFP. Los perfiles de agencias y proveedores muestran una nueva pestaña <b>\"Pronóstico de Adquisiciones\"</b> con una cronología vertical, que une las renovaciones de contrato previstas (de Checkbook NYC) y las solicitudes oficiales planeadas por la agencia (de los conjuntos de datos MOCS del Estatuto §112). Los resúmenes ahora entregan notificaciones de alerta temprana para los pronósticos próximos que coincidan con sus alertas.",
+    chg_0702d_h2: "2026.07.02 · Corrección: los proveedores con nombres con puntuación vuelven a resolverse",
+    chg_0702d_foryou_html: "<b>Para usted</b> — Las páginas de proveedores y las alertas de proveedores ahora funcionan para nombres como \"Leon D. Dematteis Construction Corp.\" Antes de esta corrección, hacer clic en un proveedor así mostraba \"sin adjudicaciones registradas\" y una alerta sobre ellos no coincidía con nada — a pesar de que sus adjudicaciones estaban justo ahí.",
+    chg_0702c_h2: "2026.07.02 · Ágil y nítido: la ronda cuatro de velocidad y simplificación",
+    chg_0702c_foryou_html: "<b>Para usted</b> — El sitio se ve más tranquilo y se siente inmediato. Las listas muestran marcadores de posición con la forma del contenido en vez de indicadores de carga giratorios; filtrar mantiene su lugar en vez de vaciar la lista; volver a una pestaña que ya cargó es instantáneo; hacer clic en un aviso pinta su detalle de inmediato (el rastro documental se completa un instante después). La búsqueda se ejecuta mientras escribe — los botones de Filtros desaparecieron porque ya no los necesita.",
+    chg_0702b_h2: "2026.07.02 · Habilitación: estadísticas públicas, conteos de clics honestos, esta página",
+    chg_0702b_foryou_html: "<b>Para usted</b> — Ahora puede ver los números de uso propios del proyecto en <a href=\"stats.html\">/stats</a> (solo conteos agregados — sin cuentas, sin cookies, nadie es rastreado). Los enlaces de resúmenes por correo ahora pasan por una redirección de solo conteo para que podamos saber que los resúmenes son útiles; cuenta <em>clics por día</em>, nunca quién hizo clic, y cada pie de resumen lo dice.",
+    chg_0702_h2: "2026.07.02 · Siga el dinero, cronologías de expedientes, seguimientos, espacio de trabajo, API",
+    chg_0702_foryou_html: "<b>Para usted</b> — Las adjudicaciones ahora muestran lo que <em>realmente se pagó</em> (en vivo desde Checkbook NYC), cualquier expediente de adquisiciones se lee como una sola cronología, puede seguir a un proveedor o agencia y recibir un correo cuando reaparezcan, fijar cualquier cosa en un espacio de trabajo de investigación citable, y usar cada vista como una API.",
+    chg_0701_h2: "2026.07.01 · Páginas de entidades, marcadores rojos en contexto — y las primeras diez, todo en un día",
+    chg_0701_foryou_html: "<b>Para usted</b> — Cada proveedor y agencia se convirtió en una página (con totales, principales socios, y RFP abiertas), los avisos de adquisiciones llevan contexto estadístico en vez de texto desnudo, y llegó toda la capa de búsqueda y suscripción: vigile cualquier búsqueda, reciba un resumen matutino por correo, tome cualquier vista como RSS/calendario, comparta cualquier aviso por URL, y vea las fechas límite como cuentas regresivas en vez de fechas.",
+    chg_0630_h2: "2026.06.30 · Suscripciones reales",
+    chg_0630_foryou_html: "<b>Para usted</b> — Las alertas por correo se volvieron reales: doble confirmación (nada se almacena hasta que hace clic en el enlace de confirmación), cancelación de suscripción con un clic, y su dirección solo se usa para enviarle su propio resumen.",
+    chg_0626_h2: "2026.06.26 · crol-list.org",
+    chg_0626_foryou_html: "<b>Para usted</b> — El sitio obtuvo su propio dominio y un cuadro real de \"preguntar en lenguaje llano\" en cada lente (con un respaldo en el dispositivo, para que la búsqueda funcione incluso si el asistente falla).",
+    chg_0624_h2: "2026.06.24–25 · Las siete lentes",
+    chg_0624_foryou_html: "<b>Para usted</b> — La herramienta tomó su forma: Dinero, Personas, Terrenos, Propiedades, Reglas, Reuniones y Alertas, en el diseño tipográfico, sobre datos abiertos en vivo sin nada en caché.",
   },
 
   // Stubs for remaining LL30 languages — translations pending (wave 6 phases 2–4)
@@ -1156,10 +1474,41 @@ function fmtNumber(n, lang) {
 }
 window.fmtNumber = fmtNumber;
 
-// Init: restore saved language preference on module load (before DOMContentLoaded).
+// Shared lang-switcher wiring for subpages (about/data/stats/api/changelog) — index.html
+// keeps its own richer initLangSwitcher() because it must also repaint dynamically-built
+// search results; subpages have no such state, so applyStrings() alone is enough.
+// onChange(lang), if given, runs after each switch so a page can repaint its own dynamic bits.
+function initSubpageLangSwitcher(onChange) {
+  function init() {
+    var btns = document.querySelectorAll(".lang-btn");
+    var saved = window.LANG || "en";
+    btns.forEach(function(b){ b.setAttribute("aria-pressed", b.dataset.lang === saved ? "true" : "false"); });
+    applyStrings();
+    btns.forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var lang = btn.dataset.lang;
+        setLang(lang);
+        btns.forEach(function(b){ b.setAttribute("aria-pressed", b.dataset.lang === lang ? "true" : "false"); });
+        if (onChange) onChange(lang);
+      });
+    });
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
+}
+window.initSubpageLangSwitcher = initSubpageLangSwitcher;
+
+// Init: restore saved language preference on module load (before DOMContentLoaded), and set
+// the html lang/dir attributes immediately (i18n.js loads in <head>, so this runs before body
+// paints — the WCAG 3.1.1 "no English flash" requirement, satisfied without a separate script).
 (function() {
   var saved = "en";
   try { saved = localStorage.getItem("crol_lang") || "en"; } catch(e) {}
   if (!SUPPORTED_LANGS.includes(saved)) saved = "en";
   window.LANG = saved;
+  if (typeof document !== "undefined") {
+    document.documentElement.lang = saved;
+    var meta = LANG_META[saved];
+    if (meta) document.documentElement.dir = meta.dir;
+  }
 })();

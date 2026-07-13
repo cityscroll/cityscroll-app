@@ -21,6 +21,15 @@ translate (the Today strip bug).
 
 Parameterized by language: CROL_GUARD_LANGS="es" (comma-separated) — extend as each LL30
 language's dictionary ships (wave 7). Run standalone (serves itself) or under run.sh.
+
+Parameterized by page too: CROL_GUARD_PAGES="index,about,data,stats,api,changelog"
+(comma-separated, default "index") — crol-subpages-es (2026-07-13). "index" gets the full
+lens-driving walk below (money/people/land/... tabs, investigation workspace, named
+regression fixtures); every other page gets a lighter walk (load, switch language, walk
+visible text) since subpages have no lens state to exercise. Approved translations are
+shared across pages (dict_fragments() scans the whole STRINGS[lang] table), so adding a
+subpage's es strings to i18n.js is what makes its guard cell go green — no allowlist
+change needed per page.
 """
 import json
 import os
@@ -37,6 +46,7 @@ from english_words import ENGLISH_WORDS  # noqa: E402
 ROOT = pathlib.Path(__file__).parents[2]
 BASE = os.environ.get("CROL_BASE", "")
 LANGS = [l.strip() for l in os.environ.get("CROL_GUARD_LANGS", "es").split(",") if l.strip()]
+PAGES = [p.strip() for p in os.environ.get("CROL_GUARD_PAGES", "index").split(",") if p.strip()]
 ALLOWLIST = json.loads((pathlib.Path(__file__).parent / "assets" / "stray_english_allowlist.json").read_text())
 
 def step(tag, name, detail=""):
@@ -159,10 +169,40 @@ def workspace_seed(strings, lang):
                    "note": "", "added": "2026-07-12"}]}}}
 
 
+def run_subpage(pw, lang, page, frags):
+    """Lighter walk for a non-index subpage: load, switch language, walk visible text.
+    Subpages have no lens/search state to drive — the shared header switcher + chrome/content
+    keys added in crol-subpages-es are what's under test here."""
+    browser = pw.chromium.launch()
+    ctx = browser.new_context()
+    page_obj = ctx.new_page()
+    install_routes(page_obj)
+    page_obj.goto(f"{BASE}{page}.html", timeout=30000)
+    page_obj.wait_for_load_state("load")
+    page_obj.wait_for_timeout(1000)
+
+    btn = page_obj.locator(f'#langSwitcher .lang-btn[data-lang="{lang}"]')
+    assert btn.count(), f"{page}.html: no language button for {lang!r} — add the shared switcher"
+    btn.click()
+    page_obj.wait_for_timeout(800)
+
+    violations, seen = [], set()
+    collect(page_obj, page, frags, violations, seen)
+    browser.close()
+    return violations
+
+
 def run_lang(pw, lang):
     strings = load_strings()
     frags = dict_fragments(strings, lang)
     step("··", f"guard[{lang}]", f"{len(frags)} approved fragments, {len(DATA_VALUES)} data values")
+
+    all_violations = []
+    for page in PAGES:
+        if page != "index":
+            all_violations += run_subpage(pw, lang, page, frags)
+    if "index" not in PAGES:
+        return all_violations
     browser = pw.chromium.launch()
     ctx = browser.new_context()
     # Seed a pinned item so localStorage-gated states (the hotfix-2 blind spot: the workspace
@@ -210,7 +250,7 @@ def run_lang(pw, lang):
     regression_fixtures(page, lang, strings, violations)
 
     browser.close()
-    return violations
+    return all_violations + violations
 
 def main():
     global BASE
