@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>API &amp; feeds · CROL-List</title>
 <meta name="description" content="CROL-List's open endpoints: RSS/JSON/calendar feeds for any search, batch watchlist cross-reference, permalinks, and the upstream open datasets.">
+<script src="i18n.js?v=5d81e5eb"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
@@ -45,6 +46,10 @@
   .loading{display:inline-block;width:12px;height:12px;border:2px solid var(--rule);border-top-color:var(--oxblood);border-radius:50%;animation:spin .8s linear infinite;vertical-align:-2px}
   @keyframes spin{to{transform:rotate(360deg)}}
   .foot{margin-top:40px;border-top:1px solid var(--rule);padding-top:14px;font:13px/1.6 var(--ui);color:var(--muted);text-align:center}
+  /* language switcher — matches index.html */
+  .lang-switcher{display:flex;gap:.4rem;justify-content:center;margin-block-start:10px;flex-wrap:wrap}
+  .lang-btn{font:600 11px/1 var(--ui);padding:3px 10px;border-radius:12px;border:1px solid var(--rule-strong);background:transparent;color:var(--muted);cursor:pointer}
+  .lang-btn[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 </style>
 </head>
 <body>
@@ -52,73 +57,77 @@
 <header>
   <div class="cr-rule"></div>
   <a class="home" href="index.html"><span class="cr-title">CROL-List</span></a>
-  <div class="kicker">The City Record, searchable</div>
-  <h1>API &amp; feeds</h1>
+  <div class="kicker" data-i18n="site_kicker">The City Record, searchable</div>
+  <h1 data-i18n="footer_api">API &amp; feeds</h1>
+  <div class="lang-switcher" id="langSwitcher" role="group" aria-label="Language / Idioma">
+    <button class="lang-btn" data-lang="en" aria-pressed="true"><span lang="en">English</span></button>
+    <button class="lang-btn" data-lang="es" aria-pressed="false"><span lang="es">Español</span></button>
+  </div>
   <div class="cr-rule cr-rule--bottom"></div>
-  <a class="backhome" href="index.html">← Back to CROL-List</a>
+  <a class="backhome" href="index.html" data-i18n="back_to_crol">← Back to CROL-List</a>
 </header>
 
-<p class="src">Every view on CROL-List has a machine-readable twin. No key, no account; endpoints are
+<p class="src" data-i18n-html="api_p_intro_html">Every view on CROL-List has a machine-readable twin. No key, no account; endpoints are
 rate-limited and cached, and none touches a paid service. Base URL: <code>https://api.crol-list.org</code>.</p>
 
-<h2>Feeds — any search as RSS / JSON / calendar</h2>
-<p class="src"><code>GET /feed.xml</code> (Atom) · <code>GET /feed.json</code> (JSON Feed 1.1) ·
+<h2 data-i18n="api_h_feeds">Feeds — any search as RSS / JSON / calendar</h2>
+<p class="src" data-i18n-html="api_p_feeds_html"><code>GET /feed.xml</code> (Atom) · <code>GET /feed.json</code> (JSON Feed 1.1) ·
 <code>GET /feed.ics</code> (subscribable calendar — one event per dated notice). Edge-cached 15 minutes.</p>
 <table>
-  <tr><th>Param</th><th>Meaning</th></tr>
+  <tr><th data-i18n="api_th_param">Param</th><th data-i18n="api_th_meaning">Meaning</th></tr>
   <tr><td><code>lens</code></td><td><code>money</code> · <code>land</code> · <code>property</code> · <code>rules</code> · <code>meetings</code> · <code>entity</code></td></tr>
-  <tr><td><code>q</code></td><td>keywords (up to 4)</td></tr>
-  <tr><td><code>agency</code></td><td>agency name as printed in the record</td></tr>
-  <tr><td><code>min</code></td><td>minimum award $ (money lens → award feed)</td></tr>
-  <tr><td><code>kind</code> + <code>name</code></td><td>entity lens: <code>kind=vendor|agency</code>, <code>name=…</code> — vendor names are matched by normalized stem, so suffix/case variants are included</td></tr>
+  <tr><td><code>q</code></td><td data-i18n="api_row_q">keywords (up to 4)</td></tr>
+  <tr><td><code>agency</code></td><td data-i18n="api_row_agency">agency name as printed in the record</td></tr>
+  <tr><td><code>min</code></td><td data-i18n="api_row_min">minimum award $ (money lens → award feed)</td></tr>
+  <tr><td><code>kind</code> + <code>name</code></td><td data-i18n-html="api_row_kindname_html">entity lens: <code>kind=vendor|agency</code>, <code>name=…</code> — vendor names are matched by normalized stem, so suffix/case variants are included</td></tr>
 </table>
 <pre>https://api.crol-list.org/feed.xml?lens=rules&amp;agency=Buildings
 https://api.crol-list.org/feed.ics?lens=meetings&amp;q=community%20board
 https://api.crol-list.org/feed.json?lens=entity&amp;kind=vendor&amp;name=Sinergia%20Inc</pre>
 
-<h2>Batch cross-reference</h2>
-<p class="src"><code>POST /batch</code> with <code>{"names": ["…", …]}</code> (≤10 names/request, 30 requests/day/IP).
+<h2 data-i18n="api_h_batch">Batch cross-reference</h2>
+<p class="src" data-i18n-html="api_p_batch_html"><code>POST /batch</code> with <code>{"names": ["…", …]}</code> (≤10 names/request, 30 requests/day/IP).
 For each name: <b>awards</b> = award/intent notices naming that vendor (name-stem matched, all years);
 <b>mentions</b> = full-text hits in the last two years of editions; <b>entity</b> = the vendor-profile permalink when awards exist.</p>
 <div class="card">
-  <label for="bnames" style="display:block;font:600 11px/1 var(--ui);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px">Try it — one name per line</label>
+  <label for="bnames" style="display:block;font:600 11px/1 var(--ui);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px" data-i18n="api_label_try">Try it — one name per line</label>
   <textarea id="bnames" placeholder="Sinergia Inc&#10;Consolidated Scaffolding&#10;Acme Elevator"></textarea>
-  <button class="btn" id="brun">Cross-reference →</button>
+  <button class="btn" id="brun" data-i18n="api_btn_batch">Cross-reference →</button>
   <div id="bmsg" class="note"></div>
   <div id="bout"></div>
 </div>
 
-<h2>Permalinks</h2>
-<p class="src">Everything on the site has a stable address you can link or cite:</p>
+<h2 data-i18n="api_h_permalinks">Permalinks</h2>
+<p class="src" data-i18n="api_p_permalinks">Everything on the site has a stable address you can link or cite:</p>
 <table>
-  <tr><td><code>/#notice/&lt;request_id&gt;</code></td><td>one notice — at-a-glance summary, flags, Checkbook dollars, full text</td></tr>
-  <tr><td><code>/#vendor/&lt;name&gt;</code></td><td>vendor profile (name variants resolved by stem)</td></tr>
-  <tr><td><code>/#agency/&lt;name&gt;</code></td><td>agency profile</td></tr>
-  <tr><td><code>/#matter/&lt;pin&gt;</code></td><td>a procurement matter as a timeline, Checkbook payments included</td></tr>
-  <tr><td><code>/#money?agency=…&amp;q=…&amp;m=…</code></td><td>any filtered view — the URL is the state</td></tr>
+  <tr><td><code>/#notice/&lt;request_id&gt;</code></td><td data-i18n="api_row_notice">one notice — at-a-glance summary, flags, Checkbook dollars, full text</td></tr>
+  <tr><td><code>/#vendor/&lt;name&gt;</code></td><td data-i18n="api_row_vendor">vendor profile (name variants resolved by stem)</td></tr>
+  <tr><td><code>/#agency/&lt;name&gt;</code></td><td data-i18n="meta_agency_profile">agency profile</td></tr>
+  <tr><td><code>/#matter/&lt;pin&gt;</code></td><td data-i18n="api_row_matter">a procurement matter as a timeline, Checkbook payments included</td></tr>
+  <tr><td><code>/#money?agency=…&amp;q=…&amp;m=…</code></td><td data-i18n="api_row_anyview">any filtered view — the URL is the state</td></tr>
 </table>
 
-<h2>Shared investigations</h2>
-<p class="src"><code>POST /inv</code> stores a pin-list snapshot (structured fields only, ≤32KB, 90-day TTL,
+<h2 data-i18n="api_h_sharedinv">Shared investigations</h2>
+<p class="src" data-i18n-html="api_p_sharedinv_html"><code>POST /inv</code> stores a pin-list snapshot (structured fields only, ≤32KB, 90-day TTL,
 10/day/IP) and returns an id; <code>GET /inv/&lt;id&gt;</code> reads it back. The site renders these at
 <code>/#investigation/shared/&lt;id&gt;</code>.</p>
 
-<h2>Public stats</h2>
-<p class="src"><code>GET /stats</code> — the project's own usage as aggregate counts (active subscriptions,
+<h2 data-i18n="api_h_stats">Public stats</h2>
+<p class="src" data-i18n-html="api_p_stats_html"><code>GET /stats</code> — the project's own usage as aggregate counts (active subscriptions,
 digests sent, digest links followed, feed/batch/share activity). No personal data exists behind it; cached
 ~15&nbsp;minutes. Human-readable version: <a href="stats.html">stats</a>. Related: digest emails link notices via
 <code>GET /r/&lt;kind&gt;/&lt;request_id&gt;</code>, a count-only redirect to the notice permalink — it accepts a
 validated id (never a URL, so it can't redirect off-site) and records a per-day number, never a person.</p>
 
-<h2>Subscribe by email</h2>
-<p class="src">Email <a href="mailto:subscribe@crol-list.org"><code>subscribe@crol-list.org</code></a>
+<h2 data-i18n="api_h_subscribe">Subscribe by email</h2>
+<p class="src" data-i18n-html="api_p_subscribe_html">Email <a href="mailto:subscribe@crol-list.org"><code>subscribe@crol-list.org</code></a>
 describing what you want in plain English — e.g. <em>"construction contract awards over $500k"</em> or
 <em>"rezoning notices in Brooklyn"</em>. You'll get back a confirmation link describing how we understood
 your request; the watch starts only after you click it (double opt-in). Daily ceilings apply; nothing is
 stored until you confirm.</p>
 
-<h2>MCP — for AI assistants</h2>
-<p class="src"><code>POST /mcp</code> (Streamable HTTP, JSON-RPC) — point an MCP client at
+<h2 data-i18n="api_h_mcp">MCP — for AI assistants</h2>
+<p class="src" data-i18n-html="api_p_mcp_html"><code>POST /mcp</code> (Streamable HTTP, JSON-RPC) — point an MCP client at
 <code>https://api.crol-list.org/mcp</code>. Tools: <code>search_notices</code> and <code>get_notice</code>
 (the daily-refreshed notices mirror, honest-data rules applied), <code>preview_watch</code> (plain English →
 what a standing watch would deliver, without subscribing), and <code>create_watch</code> (plain English →
@@ -126,14 +135,14 @@ a double-opt-in confirmation email; digests start only after the address confirm
 behind the emailed unsubscribe links — knowing an address never reveals or controls its subscriptions.
 Per-IP and daily model-call ceilings apply.</p>
 
-<h2>Upstream data</h2>
-<p class="src">CROL-List republishes and joins public datasets — for bulk work, go straight to the sources:
+<h2 data-i18n="api_h_upstream">Upstream data</h2>
+<p class="src" data-i18n-html="api_p_upstream_html">CROL-List republishes and joins public datasets — for bulk work, go straight to the sources:
 <a href="https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx" target="_blank" rel="noopener">City Record Online (dg92-zbpx, Socrata SODA)</a> ·
 <a href="https://www.checkbooknyc.com/data-feeds/api" target="_blank" rel="noopener">Checkbook NYC API</a> ·
 <a href="https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e" target="_blank" rel="noopener">Citywide Payroll</a> ·
 <a href="https://data.cityofnewyork.us/City-Government/Zoning-Application-Portal-ZAP-Project-Data/hgx4-8ukb" target="_blank" rel="noopener">ZAP</a>.</p>
 
-<div class="foot">CROL-List · <a href="index.html">Home</a> · <a href="about.html">About</a></div>
+<div class="foot" data-i18n-html="api_foot_html">CROL-List · <a href="index.html">Home</a> · <a href="about.html">About</a></div>
 </div>
 
 <script>
@@ -147,20 +156,21 @@ const $ = s => document.querySelector(s);
 $("#brun").addEventListener("click", async ()=>{
   const names = $("#bnames").value.split(/\n/).map(s=>s.trim()).filter(Boolean).slice(0,10);
   const msg=$("#bmsg"), out=$("#bout"), btn=$("#brun");
-  if(!names.length){ msg.textContent="Add at least one name (3+ characters)."; return; }
-  btn.disabled=true; msg.innerHTML='<span class="loading"></span> cross-referencing…'; out.innerHTML="";
+  if(!names.length){ msg.textContent=t("api_err_noname"); return; }
+  btn.disabled=true; msg.innerHTML='<span class="loading"></span> '+t("api_crossreferencing"); out.innerHTML="";
   try{
     const r = await workerFetch("/batch",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({names})});
     const j = await r.json();
     if(!j.ok) throw new Error(j.reason||"failed");
     const esc = s => String(s).replace(/[<>&]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;"}[c]));
-    out.innerHTML = '<table><tr><th>Name</th><th>Awards (vendor of record)</th><th>Mentions (last 2 yrs)</th><th></th></tr>'+
+    out.innerHTML = `<table><tr><th>${t("api_res_name")}</th><th>${t("api_res_awards")}</th><th>${t("api_res_mentions")}</th><th></th></tr>`+
       Object.entries(j.results).map(([n,v])=>`<tr><td>${esc(n)}</td><td>${v.awards}</td><td>${v.mentions}</td>
-        <td>${v.entity?`<a href="${esc(v.entity)}">vendor profile →</a>`:(v.mentions?`<a href="index.html#money?q=${encodeURIComponent(n)}">search →</a>`:"—")}</td></tr>`).join("")+'</table>';
+        <td>${v.entity?`<a href="${esc(v.entity)}">${t("api_link_vendorprofile")}</a>`:(v.mentions?`<a href="index.html#money?q=${encodeURIComponent(n)}">${t("api_link_search")}</a>`:"—")}</td></tr>`).join("")+'</table>';
     msg.textContent="";
-  }catch(e){ msg.textContent = String(e.message)==="rate-limited" ? "Daily limit reached — try tomorrow." : "Couldn't cross-reference — try again."; }
+  }catch(e){ msg.textContent = String(e.message)==="rate-limited" ? t("api_err_ratelimited") : t("api_err_generic"); }
   btn.disabled=false;
 });
+initSubpageLangSwitcher();
 </script>
 <!-- Cloudflare Web Analytics — cookieless, aggregate (manual beacon; site is GitHub-Pages-direct). -->
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "5d81fb4366b848dea15fb1862391909c"}'></script>
