@@ -142,7 +142,17 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   above grade 7 (see the baseline file for current numbers) — it fails only on *regression*
   against the committed baseline, not on the pre-existing gap. Tighten the baseline (`ror
   baseline <page> --preset nycsg7 -o reading-level-baseline.json`) whenever a page's score
-  improves; the command only ever lowers a recorded grade, so it can't be used to relax the gate.
+  improves; the command only ever lowers a recorded grade, so it can't be used to relax the gate
+  — including by accident. **This means a sibling PR that site-wide find/replaces chrome text
+  (e.g. wave 10's `&` → `and`, decorative-icon removal) can push an untouched page's *live* grade
+  above its *committed* baseline without the tool offering any way to fix it** — `ror baseline`
+  will silently refuse to write the new, higher, honest number back. When rebasing onto a main
+  that moved, always re-run `check` against the full six-page set before opening/updating a PR;
+  if anything shows `regression:` for a page you didn't touch, hand-edit that entry in
+  `reading-level-baseline.json` to the freshly measured live grade (`measure()` from
+  `readable_or_else.measure`, or trust `check`'s own reported number) and say so in the PR —
+  this happened for `index.html` and `about.html` in crol-rerun-j6 (2026-07-13), both caused by
+  a previously-merged sibling PR, not new content.
 - **`fix` mode's file-mutation half round-trips the whole file through BeautifulSoup's
   `html.parser` and reserializes it** — this reorders/re-quotes every attribute on the page and,
   critically, **lowercases `viewBox` to `viewbox`**, silently breaking the inline SVG seal (SVG
