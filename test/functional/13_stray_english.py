@@ -255,6 +255,57 @@ def run_subpage(pw, lang, page, frags):
     return violations
 
 
+NOTICE_PERMALINK_ID = "20260701099"  # i18n_fixtures.NOTICE_PERMALINK_ROW
+
+# crol-hotfix3-m8: the guard never visited a #notice/ permalink at all, so the 2026-07-13
+# regression -- notice-detail chrome (glance labels, action buttons, how-to-respond panel)
+# staying in whatever language was active when showNotice() first built the view, never
+# repainting on a later language switch -- shipped invisibly. Two distinct entry paths, both
+# now covered: (1) a fresh page load that lands directly on #notice/<id> with the language
+# preference already saved (the literal maintainer repro) -- this path was never actually
+# broken (window.LANG/STRINGS are populated synchronously via document.write() before the
+# body's router runs), but is worth pinning against a future regression; (2) navigating to a
+# #notice/<id> permalink while still in English, THEN switching language in place -- this is
+# the path that was actually broken (rerenderForLang() had no case for the #notice/#entity
+# permalink panes, which have no .tabbtn to key off of).
+def run_notice_deep_link(pw, lang, frags):
+    violations = []
+
+    # (1) fresh load, hash + saved pref both present before first paint
+    browser = pw.chromium.launch()
+    ctx = browser.new_context()
+    ctx.add_init_script(f"localStorage.setItem('crol_lang', {json.dumps(lang)})")
+    page = ctx.new_page()
+    install_routes(page)
+    page.goto(f"{BASE}#notice/{NOTICE_PERMALINK_ID}", timeout=30000)
+    page.wait_for_load_state("load")
+    page.wait_for_timeout(1500)
+    seen = set()
+    collect(page, "notice-deep-link (fresh load, pref pre-saved)", frags, violations, seen)
+    browser.close()
+
+    # (2) in-app: view the notice in English first, THEN switch language in place. Loads
+    # straight onto the #notice/ hash (rather than BASE then a hash change) so the default
+    # money-tab search() never runs and never leaves a stale #srstatus announcement behind --
+    # that would be a test artifact, not a real signal about the notice view under test.
+    browser = pw.chromium.launch()
+    ctx = browser.new_context()
+    page = ctx.new_page()
+    install_routes(page)
+    page.goto(f"{BASE}#notice/{NOTICE_PERMALINK_ID}", timeout=30000)
+    page.wait_for_load_state("load")
+    page.wait_for_timeout(1200)
+    btn = page.locator(f'#langSwitcher .lang-btn[data-lang="{lang}"]')
+    assert btn.count(), f"no language button for {lang!r} — add it before activating its guard"
+    btn.click()
+    page.wait_for_timeout(1200)
+    seen = set()
+    collect(page, "notice-deep-link (switched while viewing)", frags, violations, seen)
+    browser.close()
+
+    return violations
+
+
 def run_lang(pw, lang):
     strings = load_strings()
     frags = dict_fragments(strings, lang)
@@ -266,6 +317,7 @@ def run_lang(pw, lang):
             all_violations += run_subpage(pw, lang, page, frags)
     if "index" not in PAGES:
         return all_violations
+    all_violations += run_notice_deep_link(pw, lang, frags)
     browser = pw.chromium.launch()
     ctx = browser.new_context()
     # Seed a pinned item so localStorage-gated states (the hotfix-2 blind spot: the workspace

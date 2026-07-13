@@ -3094,6 +3094,13 @@ function rerenderForLang(){
   paintEditionSpan();
   loadAgencies();
   aWatchChange(); updateAWhen(); aRenderSaved();
+  // #notice/#vendor/#agency/#matter permalink views have no .tabbtn (comment above
+  // syncTabAria()'s role wiring), so the .tabbtn.active lookup below finds nothing for them
+  // and their chrome — built once via t() when the view was first shown — silently kept
+  // whatever language was active at that moment. Re-run the hash router instead, which
+  // dispatches back to whichever show*(id) built the currently-active pane (2026-07-13 hotfix 3).
+  const activePane = document.querySelector(".tabpane.active");
+  if(activePane && (activePane.id === "tab-notice" || activePane.id === "tab-entity")){ applyHash(); return; }
   const active = document.querySelector(".tabbtn.active");
   const tab = active ? active.dataset.tab : null;
   // Loaded-but-inactive lenses re-fetch on their next visit instead of re-rendering now.
