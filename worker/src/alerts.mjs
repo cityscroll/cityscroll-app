@@ -280,7 +280,7 @@ function digestHtml(w, rows) {
       acts.push(`<a href="${REQ_URL(r.request_id)}">↗ View in City Record</a>`);
       const sub = [r.agency_name, r.pin ? "PIN " + r.pin : "", money(r.contract_amount), dueLabel(r.due_date)]
         .filter(Boolean).map(esc).join(" · ");
-      return `<li style="margin:0 0 14px"><b>${esc(r.short_title || r.section_name || "Notice")}</b><br>
+      return `<li style="margin:0 0 14px"><b><a href="${REQ_URL(r.request_id)}">${esc(r.short_title || r.section_name || "Notice")}</a></b><br>
         <span style="color:#555;font-size:13px">${sub}</span><br>
         <span style="font-size:13px">${acts.join(" &nbsp; ")}</span></li>`;
     })
@@ -421,7 +421,7 @@ function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.c
     if (kind === "rezone") {
       const meta = [r.borough, r.community_district ? "CD " + r.community_district : "", r.public_status, r.primary_applicant, /^[ty1]/i.test(String(r.mih_flag || "")) ? "affordable housing" : ""]
         .filter(Boolean).map(esc).join(" · ");
-      return `<li style="margin:0 0 14px"><b>${esc(r.project_name || "(unnamed rezoning)")}</b><br>
+      return `<li style="margin:0 0 14px"><b><a href="https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id)}">${esc(r.project_name || "(unnamed rezoning)")}</a></b><br>
         <span style="color:#555;font-size:13px">${meta}</span><br>
         <span style="font-size:13px"><a href="https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id)}">↗ View &amp; comment on ZAP</a></span></li>`;
     }
@@ -431,13 +431,14 @@ function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.c
     if (tel.length >= 7) acts.push(`<a href="tel:${tel}">☎ Call</a>`);
     // Count-only click-through (R·B tier 3, team-approved 2026-07-02): /r bumps a per-day
     // counter and 302s to the permalink — no per-recipient tracking (see src/redirect.mjs).
-    acts.push(`<a href="${base}/r/${encodeURIComponent(kind)}/${encodeURIComponent(r.request_id)}">↗ View on CROL-List</a>`);
+    const noticeLink = `${base}/r/${encodeURIComponent(kind)}/${encodeURIComponent(r.request_id)}`;
+    acts.push(`<a href="${noticeLink}">↗ View on CROL-List</a>`);
     acts.push(`<a href="${cr(r.request_id)}">City Record</a>`);
     const meta = [r.agency_name, usd(r.contract_amount),
       dueLabel(r.due_date),
       r.event_date ? "event " + String(r.event_date).slice(0, 10) : ""]
       .filter(Boolean).map(esc).join(" · ");
-    return `<li style="margin:0 0 14px"><b>${esc(r.short_title || "Notice")}</b><br>
+    return `<li style="margin:0 0 14px"><b><a href="${noticeLink}">${esc(r.short_title || "Notice")}</a></b><br>
       <span style="color:#555;font-size:13px">${meta}</span><br>
       <span style="font-size:13px">${acts.join(" &nbsp; ")}</span></li>`;
   };

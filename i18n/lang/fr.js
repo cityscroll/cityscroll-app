@@ -277,6 +277,7 @@
     footer_stats:      "Statistiques",
 
     // Skip link
+    site_tagline: "Suivez les contrats, rezonages et auditions publiques de la Ville de New York — en langage clair.",
     skip_to_content: "Aller au contenu",
 
     // Announcements (sr-only)
@@ -310,7 +311,7 @@
     // template literals bypassed the dictionary; every builder now routes here) ----
 
     // Today strip
-    today_summary: "<b>{n}</b> avis provenant de <b>{a}</b> agences",
+    today_summary: "<b>{n}</b> avis aujourd'hui, provenant de <b>{a}</b> agences",
     due_on: "échéance le {date}",
     untitled: "(sans titre)",
     untitled_notice: "(avis sans titre)",

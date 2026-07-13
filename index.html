@@ -56,6 +56,7 @@
   .nameplate{padding:9px 0 5px}
   .cr-seal{width:44px;height:44px;color:var(--ink);display:block;margin:0 auto 3px}
   .cr-title{font-family:var(--font-nameplate);font-weight:900;font-size:clamp(2.5rem,8vw,4.8rem);line-height:.9;letter-spacing:.01em;text-transform:uppercase;color:var(--ink);margin:.04em 0 .1em}
+  .cr-tagline{font-family:var(--font-body);font-size:15px;line-height:1.4;color:var(--ink-soft);margin:0 0 8px}
   /* Today's Edition strip (front page) */
   #todaystrip{padding:10px 0 8px;border-bottom:1px solid var(--rule)}
   .t-dateline{font-family:var(--font-sc);font-weight:600;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
@@ -313,7 +314,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=73d840de"></script>
+<script src="i18n.js?v=a93f32bf"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
@@ -331,6 +332,7 @@
         <path d="M50 30 L50 46 M42 38 L58 38" stroke="currentColor" stroke-width="1.1"/>
       </svg>
       <h1 class="cr-title">CROL-List</h1>
+      <p class="cr-tagline" data-i18n="site_tagline">Track NYC contracts, rezonings, and hearings — in plain English.</p>
     </div>
     <div class="cr-rule cr-rule--mid"></div>
     <div id="todaystrip" hidden>
@@ -2005,7 +2007,7 @@ function digContact(r){
   return parts.length?`<div class="dc">${parts.join(" · ")}</div>`:"";
 }
 function digItemHTML(kind, r){
-  if(kind==="award") return `<div class="digitem"><div class="dt">${cleanText(r.short_title) ? enTitle(cleanText(r.short_title)) : t("untitled")}</div>
+  if(kind==="award") return `<div class="digitem"><div class="dt"><a href="#notice/${encodeURIComponent(r.request_id)}">${cleanText(r.short_title) ? enTitle(cleanText(r.short_title)) : t("untitled")}</a></div>
     <div class="dm">${r.agency_name} · ${fdate(r.start_date)}${r.vendor_name? " · "+cleanText(r.vendor_name):""}</div>
     <div class="da">${money(r.contract_amount)||""}</div>${digContact(r)}</div>`;
   if(kind==="notice"){
@@ -2020,7 +2022,7 @@ function digItemHTML(kind, r){
     if(r.email) acts.push(`<a href="mailto:${r.email}">${r.email}</a>`);
     if(tel.length>=7) acts.push(`<a href="tel:${tel}">${cleanText(r.contact_phone)}</a>`);
     const dc=acts.length?`<div class="dc">${acts.join(" · ")}</div>`:"";
-    return `<div class="digitem"><div class="dt">${cleanText(r.short_title) ? enTitle(cleanText(r.short_title)) : t("untitled")}</div>
+    return `<div class="digitem"><div class="dt"><a href="#notice/${encodeURIComponent(r.request_id)}">${cleanText(r.short_title) ? enTitle(cleanText(r.short_title)) : t("untitled")}</a></div>
     <div class="dm">${r.agency_name} · ${t("due_on",{date:fdt(r.due_date)})}${dl!=null?t("days_paren",{n:dl}):""}</div>${dc}</div>`; }
   return `<div class="digitem"><div class="dt">${r.project_name ? enTitle(r.project_name) : t("unnamed_rezoning")}</div>
     <div class="dm">${r.borough||""}${r.community_district? " · CD "+r.community_district:""} · ${r.public_status||""}${r.primary_applicant? " · "+r.primary_applicant:""}${mihOn(r.mih_flag)? " · "+t("affordable_housing_tag"):""}</div>
