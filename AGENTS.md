@@ -64,19 +64,31 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 ## Accessibility — the gates that keep it wired
 
 - **axe gate runs on every PR** (`a11y-pr` CI job, `test/functional/11_accessibility.py`),
-  not just manual dispatch: static pages served locally, no live-API flakiness. It walks
-  index.html's load state AND every activated `.tabbtn` tab (axe skips `display:none`
-  nodes, so an inactive tab's fields are invisible to it otherwise).
+  not just manual dispatch, and runs **hermetically** (wave 9: `i18n_fixtures.install_routes`,
+  same fixture layer the stray-English guard uses — no live-API flakiness). It walks every
+  `.tabbtn` tab (axe skips `display:none` nodes, so an inactive tab is invisible to it
+  otherwise) PLUS the dynamic states no tab-activation alone reaches — digest preview,
+  notice-detail (row click), entity-agency (permalink hash), the investigation workspace
+  (localStorage-seeded) + its share-error path — **once in English, once in Spanish**
+  (`LANGS` at the top of the file). `RATCHET_RULES` fails specific axe rule ids
+  (`landmark-one-main`, `region`) regardless of impact level, so a fixed moderate finding
+  stays guarded even though axe itself would only ever flag it as moderate. Local full run:
+  ~30s for the entire en+es matrix.
 - **Rendered-DOM census gates** (`test/standards/label_coverage.py`,
   `test/standards/heading_uniqueness.py`) also run in `a11y-pr` — they need Playwright +
   tab activation despite living under `test/standards/`, which is otherwise pure-text
   lints; they import `install_routes` from `test/functional/assets/i18n_fixtures.py` for
   the same hermetic fixture data the i18n guard uses (investigation workspace, digest
   preview, etc. all render without live network).
-- **All six pages have a `<main>` landmark** (`index.html`'s wraps every tabpane; each
-  subpage wraps its content div) — added in wave 7 to retire the axe
-  `landmark-one-main`/`region` moderate findings. Don't reintroduce a bare content `<div>`
-  outside `<main>`.
+- **All six pages have a `<main id="main" tabindex="-1">`, a skip link (`.skip`, first
+  focusable), and a `<footer>` landmark** for footer content — index got `<main>` in wave 7;
+  subpages got the full set (they had none of the three) in wave 9, sharing index's `.skip`
+  CSS and branded oxblood `:focus-visible` ring per page (no `?v=` machinery needed, it's
+  per-page CSS). Don't reintroduce a bare content `<div>` outside `<main>`, and don't nest
+  `<footer>` inside `<main>` — nested footer loses the `contentinfo` landmark role.
+- **`test/standards/form_border_contrast.py`** (unit job) fails any `input`/`select`/
+  `textarea` CSS rule bordering on `--rule` (1.58-1.81:1) instead of `--rule-strong`
+  (3.56:1+) — the border is the only indicator of a text field's extent (1.4.11).
 - **`test/functional/14_focus_visible.py`** is the focus-visible keyboard walk (NOT `13` —
   that number was already taken by `13_stray_english.py` by the time this card shipped;
   functional specs are numbered by file, not by wave, so check what's free before adding
