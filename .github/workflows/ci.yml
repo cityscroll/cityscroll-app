@@ -29,6 +29,10 @@ jobs:
         run: python3 test/standards/i18n_keys.py
       - name: i18n reference + cache-skew gate
         run: python3 test/standards/i18n_refs.py
+      - name: Stray-English static lint
+        run: python3 test/standards/stray_english.py
+      - name: Spanish diacritics gate
+        run: python3 test/standards/es_diacritics.py
       - name: Site unit tests
         # Scoped to test/ — a bare `node --test` also recurses into worker/test/,
         # which needs worker/node_modules (installed in the next step).
@@ -39,6 +43,33 @@ jobs:
       - name: Worker unit tests
         run: node --test
         working-directory: worker
+
+  # The runtime stray-English guard is hermetic (fixture dataset, every upstream stubbed),
+  # so unlike the live-API functional layer it runs on EVERY PR: untranslated chrome in a
+  # shipped language mode fails the build. Parameterized by CROL_GUARD_LANGS as LL30
+  # languages ship (wave 7 activates one run per language).
+  i18n-guard:
+    name: Stray-English guard (runtime, fixtures)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Playwright
+        run: |
+          pip install playwright
+          playwright install --with-deps chromium
+      - name: Run guard (es)
+        env:
+          CROL_GUARD_LANGS: es
+        run: python3 test/functional/13_stray_english.py
 
   functional:
     name: Functional (Playwright, manual)

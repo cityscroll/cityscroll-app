@@ -1,0 +1,27 @@
+{
+  "_comment": [
+    "Explicit allowlist for the stray-English guard (13_stray_english.py).",
+    "Every entry is a DECISION that a piece of English may face a non-English reader:",
+    "keep it short, keep it justified, and prefer fixing a string over allowing it.",
+    "content_zone_selectors: official City Record notice text — deliberately English",
+    "  (LL30 posture: notices are the official source; chrome around them translates).",
+    "allowed_terms: single tokens, CASE-SENSITIVE — acronyms and product names as printed",
+    "  ('PIN' the identifier passes; an untranslated 'Pin' button still fails).",
+    "allowed_phrases: multi-word proper nouns / official names, removed case-insensitively.",
+    "allowed_exact: whole text nodes allowed verbatim (bilingual-by-design strings)."
+  ],
+  "content_zone_selectors": [".scope", ".fscope", ".fulltext", "details.fulltext"],
+  "allowed_terms": [
+    "RFP", "RFPs", "PIN", "ZAP", "ZoLa", "PASSPort", "API", "RSS", "Atom", "JSON", "CSV",
+    "ICS", "DOB", "HPD", "DCAS", "DDC", "DEP", "NYPD", "DOT", "DOHMH", "DOE", "FDNY",
+    "DSNY", "NYC", "CUNY", "MOCS", "ULURP", "MIH", "FY", "CD"
+  ],
+  "allowed_phrases": [
+    "CROL-List", "City Record", "NYC Open Data", "Checkbook NYC",
+    "New York", "MapPLUTO", "GeoSearch",
+    "Staten Island", "alerts@crol-list.org", "crol-list.org"
+  ],
+  "allowed_exact": [
+    "English", "Español"
+  ]
+}

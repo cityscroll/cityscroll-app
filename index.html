@@ -238,7 +238,7 @@
   .digitem .dm{font:12px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
   .digitem .da{font:800 16px/1 var(--font-display);color:var(--green)}
   .digitem .dc{font:12px/1.5 ui-sans-serif,system-ui,sans-serif;margin-top:3px}
-  .digitem .dc a{color:var(--oxblood);text-decoration:none}
+  .digitem .dc a{color:var(--oxblood);text-decoration:underline;text-underline-offset:2px} /* non-color cue — WCAG 1.4.1: oxblood-vs-ink is only 1.74:1 */
   .savedalert{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#faf6ee;border:1px solid var(--rule);border-radius:7px;padding:9px 12px;margin-top:8px;font-size:13px}
   .savedalert button{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;padding:5px 9px;background:#fff;color:var(--rose);border:1px solid var(--rule);border-radius:6px;cursor:pointer}
 
@@ -285,7 +285,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=73b5f111"></script>
+<script src="i18n.js?v=7de2a717"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
@@ -335,7 +335,7 @@
   <div class="wrap">
     <div class="nlbox">
       <div class="nlrow">
-        <input type="text" id="nlq" aria-label="Describe what you're looking for in plain English" placeholder="describe what you're looking for…" data-i18n-placeholder="nl_placeholder_money">
+        <input type="text" id="nlq" aria-label="Describe what you're looking for in plain English" data-i18n-aria="nl_aria" placeholder="describe what you're looking for…" data-i18n-placeholder="nl_placeholder_money">
         <button id="nlgo" data-i18n="ask_btn">Ask</button>
       </div>
       <div id="nltry" class="nltry"></div>
@@ -546,7 +546,7 @@
             </div>
           </div>
           <div class="afield">
-            <label data-i18n="watch_for_label">Watch for</label>
+            <label for="awatch" data-i18n="watch_for_label">Watch for</label>
             <select id="awatch">
               <option value="bigaward" data-i18n="watch_bigaward">Contract awards over a threshold</option>
               <option value="rfpkw" data-i18n="watch_rfpkw">Open RFPs matching a keyword</option>
@@ -559,22 +559,24 @@
             </select>
           </div>
           <div class="afield">
-            <label id="aparamlabel">Minimum award</label>
-            <select id="athresh">
+            <label id="aparamlabel" for="aparam">Minimum award</label>
+            <!-- #athresh and #aparam swap visibility per watch type; the shared visible label
+                 names both (for= reaches #aparam, aria-labelledby reaches #athresh) -->
+            <select id="athresh" aria-labelledby="aparamlabel">
               <option value="1000000">$1M+</option>
               <option value="5000000">$5M+</option>
               <option value="10000000">$10M+</option>
               <option value="50000000">$50M+</option>
             </select>
             <input type="text" id="aparam" placeholder="" style="display:none">
-            <input type="text" id="aagency" placeholder="agency (optional) — e.g. Buildings" style="display:none;margin-top:6px">
+            <input type="text" id="aagency" aria-label="Agency (optional)" data-i18n-aria="agency_filter_label" placeholder="agency (optional) — e.g. Buildings" style="display:none;margin-top:6px">
           </div>
           <div class="afield">
-            <label id="adestlabel" data-i18n="email_label">Email address</label>
+            <label id="adestlabel" for="adest" data-i18n="email_label">Email address</label>
             <input type="text" id="adest" placeholder="you@example.com" data-i18n-placeholder="email_placeholder">
           </div>
           <div class="afield">
-            <label data-i18n="freq_label">Frequency</label>
+            <label for="afreq" data-i18n="freq_label">Frequency</label>
             <select id="afreq"><option data-i18n="afreq_daily_opt">Daily</option><option data-i18n="afreq_weekly_opt">Weekly</option></select>
             <div id="awhen" style="margin-top:6px;font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted)"></div>
           </div>
@@ -1310,7 +1312,7 @@ function injectNLBoxes(){
     const wrap=document.querySelector(sel+" .wrap"); if(!wrap) return;
     const anchor=wrap.querySelector(anchorSel); if(!anchor) return;
     const box=document.createElement("div"); box.className="nlbox";
-    box.innerHTML='<div class="nlrow"><input type="text" id="nlq-'+lens+'" data-i18n-placeholder="nl_placeholder_'+lens+'" placeholder="'+NL[lens].placeholder+'">'+
+    box.innerHTML='<div class="nlrow"><input type="text" id="nlq-'+lens+'" aria-label="'+t("nl_aria")+'" data-i18n-aria="nl_aria" data-i18n-placeholder="nl_placeholder_'+lens+'" placeholder="'+NL[lens].placeholder+'">'+
       '<button id="nlgo-'+lens+'" data-i18n="ask_btn">Ask</button></div>'+
       '<div id="nltry-'+lens+'" class="nltry"></div><div id="nltrans-'+lens+'"></div>';
     anchor.parentNode.insertBefore(box, anchor);
@@ -2633,7 +2635,7 @@ function invItemsHtml(items, readonly){
       <span class="rmeta" style="display:block;margin:2px 0 0">${(i.meta||"").replace(/[<>&]/g,"")} · ${t("inv_pinned_on",{date:i.added})}</span>
       ${readonly
         ? (i.note?`<span class="rmeta2" style="display:block">${i.note.replace(/[<>&]/g,"")}</span>`:"")
-        : `<input type="text" class="invnote" data-idx="${idx}" value="${(i.note||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;")}" placeholder="${t("inv_note_placeholder")}" style="margin-top:6px;font-size:13px;padding:7px 9px">`}
+        : `<input type="text" class="invnote" data-idx="${idx}" aria-label="${t("invnote_aria")}" data-i18n-aria="invnote_aria" value="${(i.note||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;")}" placeholder="${t("inv_note_placeholder")}" style="margin-top:6px;font-size:13px;padding:7px 9px">`}
     </span>
     ${readonly?"":`<button class="act invdel" data-idx="${idx}" type="button" style="padding:6px 9px">✕</button>`}
   </div>`).join("");
