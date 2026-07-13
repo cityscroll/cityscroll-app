@@ -126,6 +126,14 @@ WALKER_JS = """(zones) => {
     if (visible(el) && el.placeholder.trim())
       out.push({ sel: path(el), text: el.placeholder.trim(), kind: "placeholder" });
   });
+  // w9-05: aria-labels are SR-only -- invisible to the visible-text walk above, but exactly
+  // where L1/L2 (hardcoded "Lenses" / "What kind of feedback?") leaked English to es users.
+  document.querySelectorAll("[aria-label]").forEach((el) => {
+    if (zones && el.closest(zones)) return;
+    const label = el.getAttribute("aria-label").trim();
+    if (visible(el) && label && !(el.closest('[lang="en"]') && document.documentElement.lang !== "en"))
+      out.push({ sel: path(el), text: label, kind: "aria-label" });
+  });
   return out;
 }"""
 
@@ -138,6 +146,61 @@ def collect(page, label, frags, violations, seen):
         hits = english_residue(item["text"], frags)
         if hits:
             violations.append({"view": label, **item, "english_words": hits})
+
+# w9-05: entity views (agency/vendor/matter profiles) aren't otherwise walked by this guard --
+# their full visible-text content is a separate, much larger translation gap outside this
+# card's L1-L6 scope. What the card actually asks the guard to cover is the SR-only surfaces
+# those views touch: aria-labels, and #srstatus after announce() fires -- exactly the leaks
+# a visible-text-only walk can't see. Scoped narrowly so this doesn't fail on the untranslated
+# entity-page body text, which is tracked separately.
+SRSTATUS_ARIA_JS = """(zones) => {
+  const out = [];
+  const visible = (el) => { try { return el.checkVisibility(); } catch (e) { return !!(el.offsetParent || el.getClientRects().length); } };
+  document.querySelectorAll("[aria-label]").forEach((el) => {
+    if (zones && el.closest(zones)) return;
+    const label = el.getAttribute("aria-label").trim();
+    if (visible(el) && label) out.push({ sel: el.tagName.toLowerCase(), text: label, kind: "aria-label" });
+  });
+  const sr = document.getElementById("srstatus");
+  if (sr && sr.textContent.trim()) out.push({ sel: "#srstatus", text: sr.textContent.trim(), kind: "srstatus" });
+  return out;
+}"""
+
+def collect_srstatus_and_aria(page, label, frags, violations, seen):
+    for item in page.evaluate(SRSTATUS_ARIA_JS, CONTENT_ZONES or None):
+        key = (item["sel"], item["text"])
+        if key in seen:
+            continue
+        seen.add(key)
+        hits = english_residue(item["text"], frags)
+        if hits:
+            violations.append({"view": label, **item, "english_words": hits})
+
+# w9-06 (WCAG 3.1.2, "language of parts"): in es mode, City Record data values (notice
+# titles) must carry lang="en" so Spanish SR voices don't mangle them, while chrome around
+# them (deadline tags, section names) stays under the page's lang="es". Sampled, not
+# exhaustive -- this is the DOM-structure check the w9-06 card asks for, run once in es mode.
+def check_lang_of_parts(page, lang, violations):
+    if lang != "es":
+        return
+    result = page.evaluate("""() => {
+      // the lang="en" tag lives on a SPAN inside .rtitle, not the container (granularity:
+      // rows interleave translated chrome with English data values on the same line)
+      const title = document.querySelector('#list .row .rtitle');
+      const chrome = document.querySelector('#list .row .tag') || document.querySelector('#reshead');
+      const langOf = (el) => el ? (el.closest('[lang]') || document.documentElement).getAttribute('lang') : null;
+      return { titleLang: langOf(title && title.querySelector('span')), chromeLang: langOf(chrome),
+               hasTitle: !!(title && title.querySelector('span')), hasChrome: !!chrome };
+    }""")
+    if result["hasTitle"] and result["titleLang"] != "en":
+        violations.append({"view": "lang-of-parts", "sel": "#list .row .rtitle", "kind": "lang-attr",
+                           "text": f"closest [lang] resolved to {result['titleLang']!r}",
+                           "english_words": ["expected lang=\"en\" on notice-title content"]})
+    if result["hasChrome"] and result["chromeLang"] == "en":
+        violations.append({"view": "lang-of-parts", "sel": "#list .row .tag / #reshead", "kind": "lang-attr",
+                           "text": "chrome node incorrectly resolved to lang=\"en\"",
+                           "english_words": ["chrome must resolve to the page's es lang"]})
+
 
 # Named regression fixtures — the two 2026-07-13 hotfix classes, pinned by content so ANY
 # future PR (including the 10-language implementation PRs) goes red if es-mode regresses.
@@ -222,6 +285,7 @@ def run_lang(pw, lang):
 
     violations, seen = [], set()
     collect(page, "money+today", frags, violations, seen)
+    check_lang_of_parts(page, lang, violations)
 
     page.click('.tabbtn[data-tab="people"]')
     page.fill("#pkw", "attorney")
@@ -238,6 +302,15 @@ def run_lang(pw, lang):
     page.click("#apreview")
     page.wait_for_timeout(1500)
     collect(page, "alerts+digest-preview", frags, violations, seen)
+
+    # w9-05: entity view -- exercises announce()'s "Agency profile: {name}" into #srstatus
+    # (L3), scoped to the SR-only surfaces (aria-labels + #srstatus), not the entity view's
+    # full body text (a separate, larger translation gap outside this card's L1-L6 scope).
+    # Runs BEFORE the investigation states below, which overwrite #entityview and are what
+    # regression_fixtures() inspects afterward.
+    page.evaluate("location.hash = '#agency/Housing Preservation and Development'")
+    page.wait_for_timeout(1000)
+    collect_srstatus_and_aria(page, "entity-agency", frags, violations, seen)
 
     # localStorage-gated states (the hotfix-2 blind spot): workspace + its share-error path
     page.evaluate("location.hash = '#investigation'")

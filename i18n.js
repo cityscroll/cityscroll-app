@@ -701,6 +701,23 @@ const STRINGS = {
     chg_0626_foryou_html: "<b>For you</b> — The site got its own domain and a real \"ask in plain English\" box on every lens (with an on-device fallback, so search works even if the helper is down).",
     chg_0624_h2: "2026.06.24–25 · The seven lenses",
     chg_0624_foryou_html: "<b>For you</b> — The tool took its shape: Money, People, Land, Property, Rules, Meetings, and Alerts, in the letterpress design, over live open data with nothing cached.",
+
+    // wave 9: es SR surface (L1-L6) + page titles + toggle/vendor-disclosure copy
+    tablist_label: "Lenses",
+    fb_kind_label: "What kind of feedback?",
+    meta_agency_profile_announce: "Agency profile: {name}",
+    meta_vendor_profile_announce: "Vendor profile: {name}",
+    meta_matter_timeline_announce: "Matter timeline: {n} events",
+    mini_subscribe_btn: "Subscribe to Alert",
+    vendor_profile_variants: "Vendor profile · {n} name variant{s} resolved",
+    which_variants_btn: "which?",
+    index_title: "CROL-List: track RFPs, rezonings, meetings",
+    about_title: "About · CROL-List",
+    data_title: "The Data · CROL-List",
+    stats_title: "Stats · CROL-List",
+    changelog_title: "Changelog · CROL-List",
+    api_title: "API & feeds · CROL-List",
+    map_marker_alt: "Rezoning project location",
   },
 
   es: {
@@ -1373,6 +1390,23 @@ const STRINGS = {
     chg_0626_foryou_html: "<b>Para usted</b> — El sitio obtuvo su propio dominio y un cuadro real de \"preguntar en lenguaje llano\" en cada lente (con un respaldo en el dispositivo, para que la búsqueda funcione incluso si el asistente falla).",
     chg_0624_h2: "2026.06.24–25 · Las siete lentes",
     chg_0624_foryou_html: "<b>Para usted</b> — La herramienta tomó su forma: Dinero, Personas, Terrenos, Propiedades, Reglas, Reuniones y Alertas, en el diseño tipográfico, sobre datos abiertos en vivo sin nada en caché.",
+
+    // wave 9: es SR surface (L1-L6) + page titles + toggle/vendor-disclosure copy
+    tablist_label: "Lentes",
+    fb_kind_label: "¿Qué tipo de comentario?",
+    meta_agency_profile_announce: "Perfil de agencia: {name}",
+    meta_vendor_profile_announce: "Perfil de proveedor: {name}",
+    meta_matter_timeline_announce: "Cronología del expediente: {n} eventos",
+    mini_subscribe_btn: "Suscribirse a la alerta",
+    vendor_profile_variants: "Perfil de proveedor · {n} variante{s} de nombre resuelta{s}",
+    which_variants_btn: "¿cuáles?",
+    index_title: "CROL-List: rastree RFP, rezonificaciones, reuniones",
+    about_title: "Acerca de · CROL-List",
+    data_title: "Los datos · CROL-List",
+    stats_title: "Estadísticas · CROL-List",
+    changelog_title: "Registro de cambios · CROL-List",
+    api_title: "API y fuentes · CROL-List",
+    map_marker_alt: "Ubicación del proyecto de rezonificación",
   },
 
   // Stubs for remaining LL30 languages — translations pending (wave 6 phases 2–4)
@@ -1443,6 +1477,11 @@ function applyStrings() {
   document.querySelectorAll("[data-i18n-aria]").forEach(function(el) {
     el.setAttribute("aria-label", t(el.dataset.i18nAria));
   });
+  // w9-05 (L6): document.title never translated -- each page marks its <html> with the title
+  // key to use; applyStrings() runs on load and on every language switch, so this is the one
+  // place that needs to know about it.
+  var titleKey = document.documentElement.dataset.i18nTitle;
+  if (titleKey) document.title = t(titleKey);
   document.documentElement.lang = lang;
   const meta = LANG_META[lang];
   if (meta) document.documentElement.dir = meta.dir;

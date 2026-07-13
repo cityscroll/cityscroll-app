@@ -39,6 +39,8 @@ jobs:
         run: python3 test/standards/link_text.py
       - name: Static outline:none guard (focus-visible companion)
         run: python3 test/standards/outline_guard.py
+      - name: Form-control border contrast gate (WCAG 1.4.11)
+        run: python3 test/standards/form_border_contrast.py
       - name: Site unit tests
         # Scoped to test/ — a bare `node --test` also recurses into worker/test/,
         # which needs worker/node_modules (installed in the next step).
