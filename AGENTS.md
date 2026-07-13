@@ -100,6 +100,45 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   Guide descriptive-link-text lint — resolves `t("key")` calls used as link text against
   i18n.js's English dictionary before judging genericness ("click here" etc.).
 
+## Reading level — the readable-or-else ratchet gate
+
+- **`reading-level` CI job** (every PR) runs [readable-or-else](https://github.com/jimdc/readable-or-else)
+  (`pip install git+https://github.com/jimdc/readable-or-else.git` — not yet on PyPI) in
+  `--mode ratchet` against the committed `reading-level-baseline.json`, `nycsg7` preset (NYC
+  Web Content Style Guide, FK grade ≤7). Ratchet, not a hard gate: all six pages still measure
+  above grade 7 (see the baseline file for current numbers) — it fails only on *regression*
+  against the committed baseline, not on the pre-existing gap. Tighten the baseline (`ror
+  baseline <page> --preset nycsg7 -o reading-level-baseline.json`) whenever a page's score
+  improves; the command only ever lowers a recorded grade, so it can't be used to relax the gate.
+- **`fix` mode's file-mutation half round-trips the whole file through BeautifulSoup's
+  `html.parser` and reserializes it** — this reorders/re-quotes every attribute on the page and,
+  critically, **lowercases `viewBox` to `viewbox`**, silently breaking the inline SVG seal (SVG
+  attribute names are case-sensitive; `viewbox` is not a valid attribute and the seal stops
+  rendering with the intended dimensions). Never run `ror fix <page.html>` directly against a
+  real page file. Instead: run it against a scratch copy to get real LLM rewrites + denial-rule
+  verdicts (`--format json`), review each accepted rewrite for meaning drift, then hand-splice
+  only the accepted candidate text back into the real file's matching leaf element (preserves
+  exact original formatting elsewhere).
+- **`fix` mode only rewrites leaf text elements with zero nested markup** (`p`/`li`/headings/etc.
+  whose entire content is plain text — see the tool's own README "Fix mode" section). Any
+  paragraph or list item containing an inline `<a>`, `<b>`, `<em>`, etc. is structurally skipped,
+  not partially rewritten. In practice this means most of crol-list's hardest prose (the
+  data-quality caveats in about.html, the sourced asides in data.html) is **not reachable by fix
+  mode at all**, because nearly every long paragraph here carries an inline citation link — that
+  prose needs a hand-authored pass (informed by `--suggest`'s whole-page rewrite, but re-spliced
+  by a human) in a future wave, not another `fix` run.
+- **FK grade is unreliable on very short leaf text** (a lone heading word like "Privacy" or
+  "About" scores grade 8–20 on the formula despite being trivially readable) — `fix` correctly
+  denies these (`grade_target` — the LLM can't legally shorten "Privacy" further), and that's
+  expected, not a bug to chase.
+- **Suggest-mode PR annotations are opt-in via a `suggest-rewrite` label** (not on the default
+  per-PR run — it costs an LLM call per over-target passage). **`fix` mode's auto-apply-and-commit
+  loop (the README's "maintenance loop in CI" recipe) is documented, not wired** — turning it on
+  needs `READABLE_OR_ELSE_LLM_BASE` / `READABLE_OR_ELSE_LLM_KEY` / `READABLE_OR_ELSE_LLM_MODEL`
+  repo secrets pointed at an OpenAI-compatible endpoint, none of which this repo has; add them
+  and the `git-auto-commit-action` step from the tool's README before enabling it, and be aware
+  of the BeautifulSoup-reserialization caveat above before pointing `fix` at real files in CI.
+
 ## Architecture — static site + Worker backend
 
 - The site (`index.html`, `i18n.js`, `test/`) is 100% static, deployed via GitHub Pages; the
