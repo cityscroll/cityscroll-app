@@ -48,12 +48,45 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 
 ## Test layers (what runs where)
 
-- Every PR (CI "unit" + "i18n-guard" jobs): standards gates, `node --test test/*.test.mjs`,
-  worker tests, and the hermetic stray-English guard across all six pages (fixtures in
-  `test/functional/assets/i18n_fixtures.py` stub every upstream — no live network).
+- Every PR (CI "unit" + "a11y-pr" + "i18n-guard" jobs): standards gates, `node --test
+  test/*.test.mjs`, worker tests, the axe + language + focus-visible + label-coverage +
+  heading-uniqueness a11y gates (all against a plain local `http.server`, no live-API
+  traffic — see Accessibility section below), and the hermetic stray-English guard across
+  all six pages (fixtures in `test/functional/assets/i18n_fixtures.py` stub every
+  upstream — no live network).
 - Manual dispatch: full Playwright functional suite (`bash test/functional/run.sh`, live
   APIs). Serve on **port 8000** — the worker's CORS allowlist includes it; other local ports
-  make live share/subscribe steps fail with "Couldn't reach the server".
+  make live share/subscribe steps fail with "Couldn't reach the server". (When testing
+  locally alongside another worktree/session, port 8000 may already be taken by someone
+  else's server — pick a free port and pass `CROL_BASE=http://localhost:<port>/` instead of
+  fighting over 8000, and never kill a process you didn't start without checking its cwd.)
+
+## Accessibility — the gates that keep it wired
+
+- **axe gate runs on every PR** (`a11y-pr` CI job, `test/functional/11_accessibility.py`),
+  not just manual dispatch: static pages served locally, no live-API flakiness. It walks
+  index.html's load state AND every activated `.tabbtn` tab (axe skips `display:none`
+  nodes, so an inactive tab's fields are invisible to it otherwise).
+- **Rendered-DOM census gates** (`test/standards/label_coverage.py`,
+  `test/standards/heading_uniqueness.py`) also run in `a11y-pr` — they need Playwright +
+  tab activation despite living under `test/standards/`, which is otherwise pure-text
+  lints; they import `install_routes` from `test/functional/assets/i18n_fixtures.py` for
+  the same hermetic fixture data the i18n guard uses (investigation workspace, digest
+  preview, etc. all render without live network).
+- **All six pages have a `<main>` landmark** (`index.html`'s wraps every tabpane; each
+  subpage wraps its content div) — added in wave 7 to retire the axe
+  `landmark-one-main`/`region` moderate findings. Don't reintroduce a bare content `<div>`
+  outside `<main>`.
+- **`test/functional/14_focus_visible.py`** is the focus-visible keyboard walk (NOT `13` —
+  that number was already taken by `13_stray_english.py` by the time this card shipped;
+  functional specs are numbered by file, not by wave, so check what's free before adding
+  the next one). Static companion: `test/standards/outline_guard.py` (fails if
+  `outline:none` ships without a `:focus-visible` replacement on the same selector).
+- **`test/standards/attribution.py`** (pure text, unit job) asserts about.html cites all
+  four open-data dataset IDs with links, per Local Law 11/2012.
+- **`test/standards/link_text.py`** (pure text, unit job) is the NYC Web Content Style
+  Guide descriptive-link-text lint — resolves `t("key")` calls used as link text against
+  i18n.js's English dictionary before judging genericness ("click here" etc.).
 
 ## Architecture — static site + Worker backend
 

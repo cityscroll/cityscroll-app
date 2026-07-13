@@ -33,6 +33,12 @@ jobs:
         run: python3 test/standards/stray_english.py
       - name: Spanish diacritics gate
         run: python3 test/standards/es_diacritics.py
+      - name: Attribution-presence gate (open-data citation, LL11/2012)
+        run: python3 test/standards/attribution.py
+      - name: Descriptive-link-text lint (NYC Web Content Style Guide)
+        run: python3 test/standards/link_text.py
+      - name: Static outline:none guard (focus-visible companion)
+        run: python3 test/standards/outline_guard.py
       - name: Site unit tests
         # Scoped to test/ — a bare `node --test` also recurses into worker/test/,
         # which needs worker/node_modules (installed in the next step).
@@ -43,6 +49,40 @@ jobs:
       - name: Worker unit tests
         run: node --test
         working-directory: worker
+
+  # w7-01: promotes the axe gate + language gate to every PR. The pages under test are
+  # static + local (a plain http.server, no live open-data traffic), so the flakiness that
+  # parks the heavier functional suite on manual dispatch doesn't apply here.
+  a11y-pr:
+    name: Accessibility + language gate (axe on every PR)
+    # runs on pull_request per w7-01 (static local pages only, no live-API flakiness)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Playwright
+        run: |
+          pip install playwright
+          playwright install --with-deps chromium
+      - name: Serve site locally
+        run: |
+          python3 -m http.server 8000 &
+          sleep 1
+      - name: axe accessibility gate (load + every activated tab state)
+        run: python3 test/functional/11_accessibility.py
+      - name: Language switcher gate
+        run: python3 test/functional/12_language.py
+      - name: Focus-visibility keyboard-walk gate
+        run: python3 test/functional/14_focus_visible.py
+      - name: Label-coverage census (rendered DOM, incl. hidden + JS-built fields)
+        run: python3 test/standards/label_coverage.py
+      - name: Heading-uniqueness + landmark check (per rendered state)
+        run: python3 test/standards/heading_uniqueness.py
 
   # The runtime stray-English guard is hermetic (fixture dataset, every upstream stubbed),
   # so unlike the live-API functional layer it runs on EVERY PR: untranslated chrome in a
