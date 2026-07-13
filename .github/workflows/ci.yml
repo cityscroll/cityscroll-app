@@ -114,6 +114,51 @@ jobs:
           CROL_GUARD_PAGES: index,about,data,stats,api,changelog
         run: python3 test/functional/13_stray_english.py
 
+  # readable-or-else (github.com/jimdc/readable-or-else): ratchet-mode reading-level gate
+  # against the committed baseline (nycsg7 = NYC Web Content Style Guide, FK grade 7). Its
+  # own job per docs/consumers/crol-list.md in that repo, mirroring the unit / i18n-guard
+  # split — it's the first job to need textstat/beautifulsoup4, keep that isolated too.
+  # Not yet on PyPI; install straight from the (public) source repo.
+  reading-level:
+    name: Reading-level ratchet gate (readable-or-else)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install readable-or-else
+        run: pip install git+https://github.com/jimdc/readable-or-else.git
+      - name: Reading-level ratchet gate
+        run: |
+          readable-or-else check \
+            about.html api.html changelog.html data.html index.html stats.html \
+            --preset nycsg7 \
+            --mode ratchet \
+            --baseline reading-level-baseline.json \
+            --format gh-annotations
+      # Opt-in only — a manually-labeled PR gets LLM-drafted plain-language suggestions as
+      # PR-ready JSON (not auto-applied; a human reviews and accepts/discards). Needs
+      # READABLE_OR_ELSE_LLM_BASE / READABLE_OR_ELSE_LLM_KEY / READABLE_OR_ELSE_LLM_MODEL
+      # repo secrets pointed at an OpenAI-compatible endpoint — this repo doesn't have them
+      # yet, so this step never runs until they're added. `fix` mode (auto-apply, gated by
+      # readable-or-else's denial rules) is documented in that repo's README as the next step
+      # up from --suggest; wiring it as an auto-commit CI step is a separate, deliberate
+      # opt-in this repo hasn't taken — see AGENTS.md.
+      - name: Suggest simplifications (opt-in via PR label)
+        if: contains(github.event.pull_request.labels.*.name, 'suggest-rewrite')
+        env:
+          READABLE_OR_ELSE_LLM_BASE: ${{ secrets.READABLE_OR_ELSE_LLM_BASE }}
+          READABLE_OR_ELSE_LLM_KEY: ${{ secrets.READABLE_OR_ELSE_LLM_KEY }}
+          READABLE_OR_ELSE_LLM_MODEL: ${{ secrets.READABLE_OR_ELSE_LLM_MODEL }}
+        run: |
+          readable-or-else check data.html index.html \
+            --preset nycsg7 --mode warn --suggest --format json \
+            > readable-or-else-suggestions.json
+
   functional:
     name: Functional (Playwright, manual)
     if: github.event_name == 'workflow_dispatch'
