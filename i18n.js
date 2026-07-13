@@ -505,6 +505,39 @@ const STRINGS = {
     add_to_calendar_btn: "Add to calendar",
     read_full_notice: "Read the full notice (original City Record text)",
     permalink_note_html: "Permalink: <code>{link}</code> · request ID <code>{id}</code> · from NYC Open Data",
+
+    // Investigation workspace (2026-07-13 hotfix 2: localStorage-gated panel shipped English-only)
+    inv_ws_heading: "Investigation workspace · stored only in this browser",
+    inv_default_name: "My investigation",
+    inv_pinned_meta: "{n} pinned item{s} · started {date}",
+    inv_empty: "Nothing pinned yet — use the Pin button on any notice, vendor, agency, or matter page.",
+    inv_share_btn: "Share (read-only link)",
+    inv_export_csv: "Export .csv",
+    inv_export_json: "Export .json",
+    inv_print_btn: "Print dossier",
+    inv_clear_btn: "Clear all",
+    inv_footer_note_html: "Every exported item carries its permalink + the date you pinned it — citation-grade by construction. Sharing uploads a read-only snapshot (90-day link); nothing else ever leaves this browser.",
+    inv_pinned_on: "pinned {date}",
+    inv_note_placeholder: "add a note…",
+    pintype_notice: "notice",
+    pintype_vendor: "vendor",
+    pintype_agency: "agency",
+    pintype_matter: "matter",
+    inv_pin_first: "Pin something first.",
+    inv_share_needs_backend: "Sharing needs the backend.",
+    inv_uploading: "uploading snapshot…",
+    inv_readonly_link: "Read-only link (lives {n} days):",
+    inv_copy_btn: "copy",
+    inv_too_many_shares: "Too many shares today — try tomorrow.",
+    inv_share_failed: "Couldn't share — try again.",
+    inv_fetching_shared: "fetching shared investigation…",
+    inv_shared_heading: "Shared investigation · read-only · snapshot of {date}",
+    inv_shared_missing_html: "This shared investigation doesn't exist or has expired (links live 90 days).",
+    inv_import_btn: "Import into my investigation",
+    untitled_name: "Untitled",
+    meta_agency_profile: "agency profile",
+    meta_vendor_profile: "vendor profile",
+    meta_matter: "Matter — PIN {pin}",
   },
 
   es: {
@@ -651,46 +684,46 @@ const STRINGS = {
 
     // Controls / labels
     show_label_meetings: "Mostrar",
-    mode_upcoming:       "Proximos",
+    mode_upcoming:       "Próximos",
     mode_all_recent:     "Todos (recientes)",
     search_label:        "Buscar",
     borough_label:       "Distrito",
     all_boroughs:        "Todos los distritos",
-    zip_addr_neighborhood: "Codigo postal, direccion o vecindario",
+    zip_addr_neighborhood: "Código postal, dirección o vecindario",
     status_label:        "Estado",
-    status_active:       "En revision / activo",
+    status_active:       "En revisión / activo",
     status_all:          "Todos",
     look_up_pmode:       "Buscar",
     filters_toggle:      "Filtros",
 
     // Keyword placeholders
-    kw_placeholder_money:   "refugio, TI, construccion, seguridad…",
+    kw_placeholder_money:   "refugio, TI, construcción, seguridad…",
     kw_placeholder_land:    "Bushwick, 79 Rivington, Gowanus…",
-    kw_placeholder_property: "direccion, vecindario…",
+    kw_placeholder_property: "dirección, vecindario…",
     kw_placeholder_rules:   "saneamiento, licencias, alquiler, acera…",
     kw_placeholder_meetings: "Junta Comunitaria, Brooklyn, patrimonio…",
-    kw_placeholder_people_role:   "paramedico de emergencias, abogado, ingeniero…",
+    kw_placeholder_people_role:   "paramédico de emergencias, abogado, ingeniero…",
     kw_placeholder_people_person: "apellido, p. ej. Rodriguez",
-    nl_placeholder_people:   "p. ej. roles de paramedico, o buscar a alguien llamado Rodriguez",
+    nl_placeholder_people:   "p. ej. roles de paramédico, o buscar a alguien llamado Rodriguez",
     nl_placeholder_land:     "p. ej. rezonificaciones en Brooklyn, o 79 Rivington",
     nl_placeholder_property: "p. ej. ventas de propiedades de HPD, terrenos de DEP",
     nl_placeholder_rules:    "p. ej. reglas de edificios, reglas de saneamiento",
     nl_placeholder_meetings: "p. ej. audiencias recientes de patrimonio, concejo municipal",
-    nl_placeholder_alerts:   "p. ej. alertarme de adjudicaciones sobre $1M, o RFP de construccion",
+    nl_placeholder_alerts:   "p. ej. alertarme de adjudicaciones sobre $1M, o RFP de construcción",
 
     // People panel
     roles_heading:       "Cargos",
     people_heading:      "Personas",
     listing_heading:     "Listado",
     land_listing_heading: "Listado",
-    try_a_title_empty:   "Pruebe un titulo como \"paramedico de emergencias\" -- o cambie a persona.",
-    pick_role_empty:     "Seleccione un cargo para ver su titulo oficial, si requiere examen, su banda salarial y la escalera profesional.",
+    try_a_title_empty:   "Pruebe un título como \"paramédico de emergencias\" -- o cambie a persona.",
+    pick_role_empty:     "Seleccione un cargo para ver su título oficial, si requiere examen, su banda salarial y la escalera profesional.",
     pick_result_empty:   "Seleccione un resultado a la izquierda.",
     type_keyword_empty:  "Escriba una palabra clave para buscar.",
 
     // Land panel
     recent_rezonings_heading: "Rezonificaciones recientes",
-    pick_rezoning_empty: "Seleccione una rezonificacion para verla en lenguaje claro -- solicitante, que se va a construir, unidades asequibles, estado -- y en un mapa. Pruebe \"79 Rivington\" o \"Gowanus\".",
+    pick_rezoning_empty: "Seleccione una rezonificación para verla en lenguaje claro — solicitante, qué se va a construir, unidades asequibles, estado -- y en un mapa. Pruebe \"79 Rivington\" o \"Gowanus\".",
 
     // Money panel
     open_rfps_heading:   "Solicitudes de propuestas (RFP) abiertas",
@@ -708,27 +741,27 @@ const STRINGS = {
     param_label_keyword:      "Palabra clave (opcional)",
     param_label_vendor:       "Nombre del proveedor",
     param_label_agency_name:  "Nombre de la agencia (como aparece impreso)",
-    param_label_place:        "Codigo postal, direccion o vecindario (opcional)",
-    param_placeholder_rfpkw:  "construccion, TI, seguridad…",
+    param_label_place:        "Código postal, dirección o vecindario (opcional)",
+    param_placeholder_rfpkw:  "construcción, TI, seguridad…",
     param_placeholder_vendor: "Consolidated Scaffolding, Sinergia…",
     param_placeholder_agency: "Design and Construction, Buildings…",
     param_placeholder_rezone: "79 Rivington, Allen Street, Bushwick…",
-    param_placeholder_rules:  "bicicleta electrica, acera, licencias…",
+    param_placeholder_rules:  "bicicleta eléctrica, acera, licencias…",
     param_placeholder_meetings: "junta comunitaria, patrimonio…",
     param_placeholder_property: "Brooklyn, subasta, HPD…",
     afreq_daily_opt:  "Diario",
     afreq_weekly_opt: "Semanal",
 
     // Today's Edition strip
-    latest_edition_suffix: "· ULTIMA EDICION",
+    latest_edition_suffix: "· ÚLTIMA EDICIÓN",
     closing_soon_lbl:      "Cierra pronto",
-    largest_award_lbl:     "Mayor adjudicacion, esta edicion",
-    next_hearing_lbl:      "Proxima audiencia publica",
+    largest_award_lbl:     "Mayor adjudicación, esta edición",
+    next_hearing_lbl:      "Próxima audiencia pública",
 
     // Loading / status
     loading_notice:   "cargando aviso…",
     building_profile: "construyendo perfil…",
-    pulling_payroll:  "consultando nomina…",
+    pulling_payroll:  "consultando nómina…",
     fetching_today:   "consultando avisos de hoy…",
     translating:      "traduciendo…",
 
@@ -739,10 +772,10 @@ const STRINGS = {
     head_closing_this_week: " · cierra esta semana",
 
     // Empty states
-    no_titles_match:   "Ningun titulo coincide. Pruebe con una palabra mas amplia.",
-    no_personnel:      "Ningun aviso de personal coincide con ese nombre. Pruebe con un apellido.",
-    no_zap:            "No hay rezonificaciones en el Portal de Solicitudes de Zonificacion (ZAP)",
-    nothing_found_feed: "No se encontro nada. Pruebe con una busqueda mas amplia.",
+    no_titles_match:   "Ningún título coincide. Pruebe con una palabra más amplia.",
+    no_personnel:      "Ningún aviso de personal coincide con ese nombre. Pruebe con un apellido.",
+    no_zap:            "No hay rezonificaciones en el Portal de Solicitudes de Zonificación (ZAP)",
+    nothing_found_feed: "No se encontró nada. Pruebe con una búsqueda más amplia.",
     could_not_reach:   "No se pudo conectar a NYC Open Data. Intente de nuevo.",
 
     // Feed card actions
@@ -754,21 +787,21 @@ const STRINGS = {
     // Footer
     footer_lede:       "CROL-List busca en el Registro Municipal de Datos Abiertos",
     footer_about:      "Acerca de",
-    footer_investigation: "Mi investigacion",
+    footer_investigation: "Mi investigación",
     footer_api:        "API y fuentes",
     footer_changelog:  "Registro de cambios",
-    footer_stats:      "Estadisticas",
+    footer_stats:      "Estadísticas",
 
     // Skip link
     skip_to_content: "Ir al contenido",
 
     // Announcements (sr-only)
-    or_more_results: "{n} o mas resultados",
+    or_more_results: "{n} o más resultados",
     results_count: "{n} resultados",
 
     // Event countdown
     event_today: "hoy",
-    event_in_n_days: "en {n} dia{s}",
+    event_in_n_days: "en {n} día{s}",
 
     // Deadline
     due_today_tag: "vence hoy",
@@ -780,13 +813,13 @@ const STRINGS = {
     add_deadline_calendar: "Agregar fecha limite al calendario",
     email_a_response: "Enviar respuesta por correo",
     bid_on_passport: "Licitar en PASSPort",
-    how_to_respond_heading: "Como responder a esta RFP",
+    how_to_respond_heading: "Cómo responder a esta RFP",
 
     // Alerts / feeds area
-    prefer_feeds_html: "Prefiere fuentes? Este seguimiento tambien esta disponible como",
+    prefer_feeds_html: "¿Prefiere fuentes? Este seguimiento también está disponible como",
 
     // Notices-in-English
-    notices_in_english_note_inline: "El texto de los avisos aparece en ingles original.",
+    notices_in_english_note_inline: "El texto de los avisos aparece en inglés original.",
 
     // ---- Dynamically-built chrome (2026-07-13 hotfix) ----
     // es: machine-translated, pending native review (Anna's CBO network, wave 6).
@@ -981,6 +1014,39 @@ const STRINGS = {
     add_to_calendar_btn: "Agregar al calendario",
     read_full_notice: "Leer el aviso completo (texto original del City Record en inglés)",
     permalink_note_html: "Enlace permanente: <code>{link}</code> · ID de solicitud <code>{id}</code> · de NYC Open Data",
+
+    // Investigation workspace (2026-07-13 hotfix 2)
+    inv_ws_heading: "Espacio de investigación · guardado solo en este navegador",
+    inv_default_name: "Mi investigación",
+    inv_pinned_meta: "{n} elemento{s} fijado{s} · iniciada el {date}",
+    inv_empty: "Aún no hay nada fijado — use el botón Fijar en cualquier página de aviso, proveedor, agencia o expediente.",
+    inv_share_btn: "Compartir (enlace de solo lectura)",
+    inv_export_csv: "Exportar .csv",
+    inv_export_json: "Exportar .json",
+    inv_print_btn: "Imprimir expediente",
+    inv_clear_btn: "Borrar todo",
+    inv_footer_note_html: "Cada elemento exportado lleva su enlace permanente + la fecha en que lo fijó — con calidad de cita por construcción. Compartir sube una instantánea de solo lectura (enlace de 90 días); nada más sale de este navegador.",
+    inv_pinned_on: "fijado el {date}",
+    inv_note_placeholder: "agregar una nota…",
+    pintype_notice: "aviso",
+    pintype_vendor: "proveedor",
+    pintype_agency: "agencia",
+    pintype_matter: "expediente",
+    inv_pin_first: "Primero fije algo.",
+    inv_share_needs_backend: "Compartir requiere el backend.",
+    inv_uploading: "subiendo la instantánea…",
+    inv_readonly_link: "Enlace de solo lectura (dura {n} días):",
+    inv_copy_btn: "copiar",
+    inv_too_many_shares: "Demasiados enlaces compartidos hoy — intente mañana.",
+    inv_share_failed: "No se pudo compartir — inténtelo de nuevo.",
+    inv_fetching_shared: "consultando la investigación compartida…",
+    inv_shared_heading: "Investigación compartida · solo lectura · instantánea del {date}",
+    inv_shared_missing_html: "Esta investigación compartida no existe o ha expirado (los enlaces duran 90 días).",
+    inv_import_btn: "Importar a mi investigación",
+    untitled_name: "Sin título",
+    meta_agency_profile: "perfil de agencia",
+    meta_vendor_profile: "perfil de proveedor",
+    meta_matter: "Expediente — PIN {pin}",
   },
 
   // Stubs for remaining LL30 languages — translations pending (wave 6 phases 2–4)
