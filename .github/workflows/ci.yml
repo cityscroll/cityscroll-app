@@ -120,11 +120,13 @@ jobs:
         run: |
           pip install playwright
           playwright install --with-deps chromium
-      - name: Run guard (es + zh-Hans + ru + bn + ht + ko + fr + pl, all pages)
+      - name: Run guard (es + zh-Hans + ru + bn + ht + ko + fr + pl + ar + ur, all pages)
         env:
-          CROL_GUARD_LANGS: es,zh-Hans,ru,bn,ht,ko,fr,pl
+          CROL_GUARD_LANGS: es,zh-Hans,ru,bn,ht,ko,fr,pl,ar,ur
           CROL_GUARD_PAGES: index,about,data,stats,api,changelog
         run: python3 test/functional/13_stray_english.py
+      - name: RTL guard (ar + ur — dir propagation, logical-property mirroring, bidi isolation)
+        run: python3 test/functional/15_rtl.py
 
   # readable-or-else (github.com/jimdc/readable-or-else): ratchet-mode reading-level gate
   # against the committed baseline (nycsg7 = NYC Web Content Style Guide, FK grade 7). Its
