@@ -538,6 +538,9 @@ const STRINGS = {
     meta_agency_profile: "agency profile",
     meta_vendor_profile: "vendor profile",
     meta_matter: "Matter — PIN {pin}",
+    // Accessible names (aria-label via data-i18n-aria — 2026-07-13 label-census remediation)
+    nl_aria: "Describe what you're looking for in plain English",
+    invnote_aria: "Note for this pinned item",
   },
 
   es: {
@@ -1047,6 +1050,9 @@ const STRINGS = {
     meta_agency_profile: "perfil de agencia",
     meta_vendor_profile: "perfil de proveedor",
     meta_matter: "Expediente — PIN {pin}",
+    // Accessible names (aria-label via data-i18n-aria)
+    nl_aria: "Describa lo que busca en lenguaje claro",
+    invnote_aria: "Nota para este elemento fijado",
   },
 
   // Stubs for remaining LL30 languages — translations pending (wave 6 phases 2–4)
@@ -1113,6 +1119,9 @@ function applyStrings() {
   });
   document.querySelectorAll("[data-i18n-placeholder]").forEach(function(el) {
     el.placeholder = t(el.dataset.i18nPlaceholder);
+  });
+  document.querySelectorAll("[data-i18n-aria]").forEach(function(el) {
+    el.setAttribute("aria-label", t(el.dataset.i18nAria));
   });
   document.documentElement.lang = lang;
   const meta = LANG_META[lang];
