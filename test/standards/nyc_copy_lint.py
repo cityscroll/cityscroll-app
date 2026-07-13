@@ -16,9 +16,10 @@ per-release technical detail), and the changelog's dated release <h2> titles the
 (an archival register presented verbatim — same posture the heading-punctuation lint
 (w10-04) carves out for the same headings).
 
-Ships REPORT-ONLY (default: prints findings, always exits 0) until w10-06 fixes the
-confirmed prose deviations; pass --gate to fail on any finding not in the allowlist
-(and on stale allowlist entries), the mode w10-06 flips CI to.
+Default invocation (no flags) is report-only: prints findings, always exits 0 — useful for
+a local check without tripping on the allowlisted chip/threshold currency exceptions. CI
+runs with --gate (since w10-06), which fails on any finding not in the allowlist and on
+stale allowlist entries (entries no longer found in source).
 
 Rule families (matrix ids from the full-standards audit, nycdds-matrix-w3):
   acronyms       B3   banned acronym forms (e.g./i.e./etc./ASAP/FYI/RSVP/a.k.a./DIY)
@@ -39,6 +40,7 @@ Rule families (matrix ids from the full-standards audit, nycdds-matrix-w3):
   all_caps       B8   no ALL CAPS for emphasis in copy (CSS text-transform chrome is a
                       separate design idiom, not linted here)
 """
+import html
 import json
 import pathlib
 import re
@@ -95,6 +97,10 @@ ALL_CAPS_ALLOW = {
     "SODA", "NYPA", "CAPTCHA", "WCAG", "CAPS", "TTL", "SQL", "XML", "MISSION",
     "SECURITY", "CONTRIBUTING",
 }
+
+# changelog's archival per-release <h2> titles — presented verbatim, same posture as
+# heading_punctuation.py's ARCHIVAL_KEY_PREFIX carve-out for these same headings.
+ARCHIVAL_H2_RE = re.compile(r"^chg_.*_h2$")
 
 GENERIC_PHRASES = {
     "click here", "click", "here", "read more", "more", "more info", "more information",
@@ -240,7 +246,10 @@ def check_button(text, findings, source):
 
 
 def strip_html_value(value):
-    return re.sub(r"\s+", " ", TAG_RE.sub(" ", value)).strip()
+    """Strip tags and decode entities — matches the page-scan's HTMLParser(convert_charrefs=True),
+    so an entity like &lt; whose trailing ';' abuts a stripped tag doesn't read as a false
+    semicolon-rule hit (e.g. "GET /inv/&lt;id&gt;</code> reads" -> "...&gt; reads" pre-decode)."""
+    return html.unescape(re.sub(r"\s+", " ", TAG_RE.sub(" ", value)).strip())
 
 
 def main():
@@ -264,6 +273,8 @@ def main():
     strings_en = load_strings_en()
     for key, value in strings_en.items():
         if not isinstance(value, str):
+            continue
+        if ARCHIVAL_H2_RE.match(key):
             continue
         if re.search(r"<em>|<i>|<s>", value):
             findings.append(("em_i_s", f"i18n.js:{key}", strip_html_value(value)))

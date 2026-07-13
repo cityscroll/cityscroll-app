@@ -2,22 +2,22 @@
   "entries": {
     "about.html": {
       "formula": "flesch_kincaid_grade",
-      "grade": 6.434100398522908,
+      "grade": 6.210657797487066,
       "language": "en"
     },
     "api.html": {
       "formula": "flesch_kincaid_grade",
-      "grade": 10.79965145228216,
+      "grade": 9.955462116830539,
       "language": "en"
     },
     "changelog.html": {
       "formula": "flesch_kincaid_grade",
-      "grade": 11.255928831949003,
+      "grade": 10.977183865760317,
       "language": "en"
     },
     "data.html": {
       "formula": "flesch_kincaid_grade",
-      "grade": 6.89925925925926,
+      "grade": 6.887461773700306,
       "language": "en"
     },
     "index.html": {
@@ -27,7 +27,7 @@
     },
     "stats.html": {
       "formula": "flesch_kincaid_grade",
-      "grade": 7.952177132701426,
+      "grade": 7.633559790113228,
       "language": "en"
     }
   },
