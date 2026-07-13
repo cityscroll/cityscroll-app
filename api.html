@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-i18n-title="api_title">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>API &amp; feeds · CROL-List</title>
 <meta name="description" content="CROL-List's open endpoints: RSS/JSON/calendar feeds for any search, batch watchlist cross-reference, permalinks, and the upstream open datasets.">
-<script src="i18n.js?v=c56a4da2"></script>
+<script src="i18n.js?v=2cb70dd5"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
@@ -39,7 +39,7 @@
   th,td{border:1px solid var(--rule);padding:7px 9px;text-align:left;vertical-align:top}
   th{background:#efe8d8;font-weight:600}
   .card{background:var(--card);border:1px solid var(--rule);border-radius:14px;box-shadow:var(--shadow);padding:18px 20px;margin-top:12px}
-  textarea{width:100%;font:14px/1.6 ui-monospace,Menlo,monospace;padding:11px;border:1px solid var(--rule);border-radius:9px;background:#fff;color:var(--ink);min-height:110px;resize:vertical}
+  textarea{width:100%;font:14px/1.6 ui-monospace,Menlo,monospace;padding:11px;border:1px solid var(--rule-strong);border-radius:9px;background:#fff;color:var(--ink);min-height:110px;resize:vertical}
   .btn{font:700 14px/1 var(--ui);padding:12px 20px;border-radius:9px;border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer;margin-top:10px}
   .btn:disabled{opacity:.55}
   .note{font:13px/1.6 var(--ui);color:var(--muted);margin-top:10px}
@@ -48,11 +48,15 @@
   .foot{margin-top:40px;border-top:1px solid var(--rule);padding-top:14px;font:13px/1.6 var(--ui);color:var(--muted);text-align:center}
   /* language switcher — matches index.html */
   .lang-switcher{display:flex;gap:.4rem;justify-content:center;margin-block-start:10px;flex-wrap:wrap}
-  .lang-btn{font:600 11px/1 var(--ui);padding:3px 10px;border-radius:12px;border:1px solid var(--rule-strong);background:transparent;color:var(--muted);cursor:pointer}
+  .lang-btn{font:600 11px/1 var(--ui);padding:3px 10px;min-height:32px;display:inline-flex;align-items:center;border-radius:12px;border:1px solid var(--rule-strong);background:transparent;color:var(--muted);cursor:pointer}
   .lang-btn[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--ink);color:#fff;padding:11px 18px;border-radius:0 0 9px 0;font:600 13px/1 var(--ui);text-decoration:none}
+  .skip:focus{left:0}
+  :is(a,button,select,input,textarea,summary):focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
 </style>
 </head>
 <body>
+<a class="skip" href="#main" data-i18n="skip_to_content">Skip to content</a>
 <div class="wrap">
 <header>
   <div class="cr-rule"></div>
@@ -67,7 +71,7 @@
   <a class="backhome" href="index.html" data-i18n="back_to_crol">← Back to CROL-List</a>
 </header>
 
-<main>
+<main id="main" tabindex="-1">
 <p class="src" data-i18n-html="api_p_intro_html">Every view on CROL-List has a machine-readable twin. No key, no account; endpoints are
 rate-limited and cached, and none touches a paid service. Base URL: <code>https://api.crol-list.org</code>.</p>
 
@@ -75,7 +79,7 @@ rate-limited and cached, and none touches a paid service. Base URL: <code>https:
 <p class="src" data-i18n-html="api_p_feeds_html"><code>GET /feed.xml</code> (Atom) · <code>GET /feed.json</code> (JSON Feed 1.1) ·
 <code>GET /feed.ics</code> (subscribable calendar — one event per dated notice). Edge-cached 15 minutes.</p>
 <table>
-  <tr><th data-i18n="api_th_param">Param</th><th data-i18n="api_th_meaning">Meaning</th></tr>
+  <tr><th scope="col" data-i18n="api_th_param">Param</th><th scope="col" data-i18n="api_th_meaning">Meaning</th></tr>
   <tr><td><code>lens</code></td><td><code>money</code> · <code>land</code> · <code>property</code> · <code>rules</code> · <code>meetings</code> · <code>entity</code></td></tr>
   <tr><td><code>q</code></td><td data-i18n="api_row_q">keywords (up to 4)</td></tr>
   <tr><td><code>agency</code></td><td data-i18n="api_row_agency">agency name as printed in the record</td></tr>
@@ -143,8 +147,8 @@ Per-IP and daily model-call ceilings apply.</p>
 <a href="https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e" target="_blank" rel="noopener">Citywide Payroll</a> ·
 <a href="https://data.cityofnewyork.us/City-Government/Zoning-Application-Portal-ZAP-Project-Data/hgx4-8ukb" target="_blank" rel="noopener">ZAP</a>.</p>
 
-<div class="foot" data-i18n-html="api_foot_html">CROL-List · <a href="index.html">Home</a> · <a href="about.html">About</a></div>
 </main>
+<footer class="foot" data-i18n-html="api_foot_html">CROL-List · <a href="index.html">Home</a> · <a href="about.html">About</a></footer>
 </div>
 
 <script>
@@ -165,7 +169,7 @@ $("#brun").addEventListener("click", async ()=>{
     const j = await r.json();
     if(!j.ok) throw new Error(j.reason||"failed");
     const esc = s => String(s).replace(/[<>&]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;"}[c]));
-    out.innerHTML = `<table><tr><th>${t("api_res_name")}</th><th>${t("api_res_awards")}</th><th>${t("api_res_mentions")}</th><th></th></tr>`+
+    out.innerHTML = `<table><tr><th scope="col">${t("api_res_name")}</th><th scope="col">${t("api_res_awards")}</th><th scope="col">${t("api_res_mentions")}</th><th scope="col"></th></tr>`+
       Object.entries(j.results).map(([n,v])=>`<tr><td>${esc(n)}</td><td>${v.awards}</td><td>${v.mentions}</td>
         <td>${v.entity?`<a href="${esc(v.entity)}">${t("api_link_vendorprofile")}</a>`:(v.mentions?`<a href="index.html#money?q=${encodeURIComponent(n)}">${t("api_link_search")}</a>`:"—")}</td></tr>`).join("")+'</table>';
     msg.textContent="";

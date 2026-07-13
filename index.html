@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="paper">
+<html lang="en" data-theme="paper" data-i18n-title="index_title">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -76,7 +76,7 @@
   .field{display:flex;flex-direction:column;gap:5px;flex:1 1 150px}
   .field.kw{flex:2 1 220px}
   .field label{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-  select,input[type=text]{font:15px/1.3 Georgia,serif;padding:10px 11px;border:1px solid var(--rule);border-radius:7px;background:#fff;color:var(--ink);width:100%}
+  select,input[type=text],input[type=email]{font:15px/1.3 Georgia,serif;padding:10px 11px;border:1px solid var(--rule-strong);border-radius:7px;background:#fff;color:var(--ink);width:100%}
   button{font:600 14px/1 ui-sans-serif,system-ui,sans-serif;padding:11px 18px;border-radius:7px;border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer}
   button:active{transform:translateY(1px)}
   button.mini{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;padding:6px 10px;background:#fff;color:var(--ink);border:1px solid var(--rule);border-radius:7px}
@@ -88,7 +88,7 @@
   .nlworking{display:inline-flex;align-items:center;gap:8px;margin-top:8px;font-family:var(--font-sc);text-transform:uppercase;letter-spacing:.1em;font-size:12px;color:var(--oxblood)}
   .nltry{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
   .nlrow{display:flex;gap:10px;flex-wrap:wrap}
-  .nlrow input{flex:1 1 320px;font:15px/1.3 var(--font-body);padding:10px 11px;border:1px solid var(--rule);border-radius:7px;background:#fff;color:var(--ink)}
+  .nlrow input{flex:1 1 320px;font:15px/1.3 var(--font-body);padding:10px 11px;border:1px solid var(--rule-strong);border-radius:7px;background:#fff;color:var(--ink)}
   .qchip{display:inline-block;font-family:var(--font-sc);font-size:12px;letter-spacing:.04em;text-transform:uppercase;background:var(--paper-2);border:1px solid var(--rule);border-radius:6px;padding:5px 9px;margin:0 6px 6px 0;color:var(--ink-soft)}
   .qchip b{color:var(--oxblood)}
   .qcode{font-family:ui-monospace,Menlo,monospace;font-size:12px;line-height:1.5;background:var(--paper-2);border:1px solid var(--rule);border-radius:8px;padding:10px 12px;white-space:pre-wrap;color:var(--ink-soft);margin-top:4px}
@@ -102,6 +102,10 @@
   .panel{background:var(--card);border:1px solid var(--rule);border-radius:8px;box-shadow:var(--shadow)}
   .panel h2{font:600 14px/1 var(--font-sc);letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft);margin:0;padding:14px 16px;border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;gap:8px}
   .panel h2 .count{font-weight:600;color:var(--blue);letter-spacing:0;text-transform:none}
+  /* w9-02: the Export button lives beside the heading, not inside it — .panelbar takes over
+     the box styling h2 normally carries alone, so the heading's accessible name is just its text. */
+  .panel .panelbar{padding:14px 16px;border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .panel .panelbar h2{padding:0;border-bottom:0;margin:0}
 
   .list{max-height:660px;overflow:auto}
   .row{padding:13px 16px;border-bottom:1px solid var(--rule);cursor:pointer;transition:background .12s}
@@ -111,6 +115,11 @@
   .row .rmeta{font:12px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
   .row .ragency{color:var(--blue)}
   .pin{font:11px/1 ui-monospace,Menlo,monospace;background:#efe8d8;border:1px solid var(--rule);border-radius:5px;padding:2px 6px;color:#5a5142}
+  /* w9-07: de-emphasize the "no linkable PIN" badge without opacity -- opacity:.6 faded BOTH
+     text and background together, compositing down to 2.63:1 (axe serious). Full-opacity
+     var(--muted) on the unchanged solid background is 6.57:1; the dashed border keeps the
+     de-emphasis legible without a contrast hit. */
+  .pin.muted{color:var(--muted);border-style:dashed}
   .tag{display:inline-block;font:700 11px/1 ui-sans-serif,system-ui,sans-serif;padding:3px 7px;border-radius:999px;margin-right:6px}
   .tag.open{background:#e9f2ea;color:var(--green)}
   .tag.soon{background:#fbf0dc;color:var(--amber)}
@@ -169,7 +178,9 @@
   .box .bt{font-weight:700;font-size:14px;line-height:1.3}
   .box .amt{font:800 19px/1 var(--font-display);color:var(--green)}
   .box .vend{font-size:13px;color:#4a4338}
-  .box a.view{margin-top:auto;font:600 12px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none}
+  /* w9-10: 273x12px was AA-exempt (spacing) but far under the comfort bar -- vertical padding
+     brings the tappable height to ~28px without disturbing the chain-box layout. */
+  .box a.view{margin-top:auto;font:600 12px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none;display:inline-block;padding:8px 0}
   .connector{display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:24px;flex:0 0 30px}
   @media(max-width:560px){.connector{transform:rotate(90deg);height:24px}.stage{flex-basis:100%}}
   .note{font:13px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted);background:#f4eee2;border-left:3px solid var(--rule);padding:10px 12px;border-radius:0 8px 8px 0;margin-top:14px}
@@ -279,13 +290,15 @@
   .caveat{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:14px 16px;margin-top:14px}
   /* language switcher — CSS logical properties for future RTL support */
   .lang-switcher{display:flex;gap:.4rem;justify-content:center;margin-block-start:5px;flex-wrap:wrap}
-  .lang-btn{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;padding:3px 10px;border-radius:12px;border:1px solid var(--rule-strong);background:transparent;color:var(--muted);cursor:pointer}
+  /* w9-10: 62-65x19px was AA-exempt (spacing) but well under the 44px AAA / mobile-comfort
+     bar; min-height + centered padding brings it to ~32px without changing the visual chip size much. */
+  .lang-btn{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;padding:3px 10px;min-height:32px;display:inline-flex;align-items:center;border-radius:12px;border:1px solid var(--rule-strong);background:transparent;color:var(--muted);cursor:pointer}
   .lang-btn[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
   .lang-notice{font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);text-align:center;margin-block-start:4px;padding-inline:22px}
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=c56a4da2"></script>
+<script src="i18n.js?v=2cb70dd5"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
@@ -381,13 +394,16 @@
     </div>
 
     <div class="chiprow" id="moneyquick">
-      <button type="button" class="chip" id="closingweek" data-i18n="closing_this_week">Closing this week</button>
+      <button type="button" class="chip" id="closingweek" aria-pressed="false" data-i18n="closing_this_week">Closing this week</button>
     </div>
     <div class="chiprow" id="methodfacet" style="display:none"></div>
 
     <div class="grid">
       <div class="panel">
-        <h2><span><span id="reshead" data-i18n="open_rfps_heading">Open Requests for Proposals (RFPs)</span> <span class="count" id="rescount"></span></span><button id="export" class="mini" data-i18n="export_csv">Export CSV</button></h2>
+        <div class="panelbar">
+          <h2><span id="reshead" data-i18n="open_rfps_heading">Open Requests for Proposals (RFPs)</span> <span class="count" id="rescount"></span></h2>
+          <button id="export" class="mini" data-i18n="export_csv">Export CSV</button>
+        </div>
         <div class="list" id="list" translate="no"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
       </div>
       <div class="panel">
@@ -508,14 +524,14 @@
     <div class="panel" id="quizpanel" style="margin-top:18px;padding:16px 18px 18px">
       <h2 style="border:0;padding:0 0 4px" data-i18n="quiz_heading">Get your digest in 60 seconds</h2>
       <div class="afield" style="margin-top:10px">
-        <label><span class="qstep">1</span> <span data-i18n="quiz_step1">What should we watch for you?</span></label>
-        <div class="chiprow" id="quizwhat" style="margin-top:6px">
-          <button type="button" class="chip" data-w="rfpkw" data-i18n="quiz_rfpkw">City contracts &amp; RFPs</button>
-          <button type="button" class="chip" data-w="bigaward" data-i18n="quiz_bigaward">Big contract awards</button>
-          <button type="button" class="chip" data-w="rezone" data-i18n="quiz_rezone">Rezonings near me</button>
-          <button type="button" class="chip" data-w="property" data-i18n="quiz_property">Property sales</button>
-          <button type="button" class="chip" data-w="rules" data-i18n="quiz_rules">Rule changes</button>
-          <button type="button" class="chip" data-w="meetings" data-i18n="quiz_meetings">Hearings &amp; meetings</button>
+        <label id="quizwhatlbl"><span class="qstep">1</span> <span data-i18n="quiz_step1">What should we watch for you?</span></label>
+        <div class="chiprow" id="quizwhat" role="group" aria-labelledby="quizwhatlbl" style="margin-top:6px">
+          <button type="button" class="chip" data-w="rfpkw" aria-pressed="false" data-i18n="quiz_rfpkw">City contracts &amp; RFPs</button>
+          <button type="button" class="chip" data-w="bigaward" aria-pressed="false" data-i18n="quiz_bigaward">Big contract awards</button>
+          <button type="button" class="chip" data-w="rezone" aria-pressed="false" data-i18n="quiz_rezone">Rezonings near me</button>
+          <button type="button" class="chip" data-w="property" aria-pressed="false" data-i18n="quiz_property">Property sales</button>
+          <button type="button" class="chip" data-w="rules" aria-pressed="false" data-i18n="quiz_rules">Rule changes</button>
+          <button type="button" class="chip" data-w="meetings" aria-pressed="false" data-i18n="quiz_meetings">Hearings &amp; meetings</button>
         </div>
       </div>
       <div class="afield">
@@ -523,10 +539,10 @@
         <input type="text" id="quiznarrow" placeholder="pick a topic above first…" data-i18n-placeholder="quiz_narrow_placeholder">
       </div>
       <div class="afield">
-        <label><span class="qstep">3</span> <span data-i18n="quiz_step3">How often?</span></label>
-        <div class="chiprow" id="quizfreq" style="margin-top:6px">
-          <button type="button" class="chip on" data-f="Daily" data-i18n="quiz_daily">Daily (around 9 a.m.)</button>
-          <button type="button" class="chip" data-f="Weekly" data-i18n="quiz_weekly">Weekly (Mondays)</button>
+        <label id="quizfreqlbl"><span class="qstep">3</span> <span data-i18n="quiz_step3">How often?</span></label>
+        <div class="chiprow" id="quizfreq" role="group" aria-labelledby="quizfreqlbl" style="margin-top:6px">
+          <button type="button" class="chip on" data-f="Daily" aria-pressed="true" data-i18n="quiz_daily">Daily (around 9 a.m.)</button>
+          <button type="button" class="chip" data-f="Weekly" aria-pressed="false" data-i18n="quiz_weekly">Weekly (Mondays)</button>
         </div>
       </div>
       <button id="quizgo" type="button" data-i18n="quiz_preview_btn">Preview my digest →</button>
@@ -573,7 +589,7 @@
           </div>
           <div class="afield">
             <label id="adestlabel" for="adest" data-i18n="email_label">Email address</label>
-            <input type="text" id="adest" placeholder="you@example.com" data-i18n-placeholder="email_placeholder">
+            <input type="email" id="adest" autocomplete="email" placeholder="you@example.com" data-i18n-placeholder="email_placeholder" aria-describedby="asubmsg">
           </div>
           <div class="afield">
             <label for="afreq" data-i18n="freq_label">Frequency</label>
@@ -584,7 +600,7 @@
           <div id="asubwrap" style="margin-top:16px;border-top:1px solid var(--rule);padding-top:14px">
             <div class="cf-turnstile" data-sitekey="0x4AAAAAADtj-Mskk_RnVd5K" data-action="turnstile-spin-v1" style="margin-bottom:10px"></div>
             <button id="asubscribe" data-i18n="subscribe_btn">Subscribe →</button>
-            <div id="asubmsg" class="muted" style="margin-top:10px;font:13px/1.5 ui-sans-serif,system-ui,sans-serif" data-i18n="subscribe_confirm_note">We email a confirmation link — alerts begin only after you click it, so no one can sign you up but you.</div>
+            <div id="asubmsg" class="muted" role="status" style="margin-top:10px;font:13px/1.5 ui-sans-serif,system-ui,sans-serif" data-i18n="subscribe_confirm_note">We email a confirmation link — alerts begin only after you click it, so no one can sign you up but you.</div>
             <div id="afeeds" class="muted" style="margin-top:12px;font:12.5px/1.6 ui-sans-serif,system-ui,sans-serif"></div>
           </div>
           <div id="asaved"></div>
@@ -729,6 +745,11 @@ function cleanText(s){
   if(!s) return "";
   return String(s).replace(/<[^>]*>/g," ").replace(/[\u0000-\u001f\u007f]/g," ").replace(/&nbsp;/gi," ").replace(/\s+/g," ").trim();
 }
+// w9-06 (WCAG 3.1.2): City Record data values (notice titles, agency/vendor names, addresses)
+// are always English, regardless of UI language -- wrap them so es-mode screen readers don't
+// apply Spanish phonetics. Chrome/labels around them stay translated; only the data span here
+// gets tagged. No-op (returns the raw string) when there's nothing to wrap.
+function enTitle(s){ return s ? `<span lang="en">${s}</span>` : s; }
 function money(v){
   const n = Number(v);
   if(!v || isNaN(n) || n === 0) return null;
@@ -787,13 +808,16 @@ document.querySelectorAll(".tabbtn").forEach(b=>b.addEventListener("click",()=>s
 /* ARIA tab semantics (WAI-ARIA Authoring Practices "tabs" pattern) + arrow-key navigation */
 (function(){
   const nav=document.querySelector(".tabs"); if(!nav) return;
-  nav.setAttribute("role","tablist"); nav.setAttribute("aria-label","Lenses");
+  nav.setAttribute("role","tablist"); nav.setAttribute("aria-label", t("tablist_label"));
   document.querySelectorAll(".tabbtn").forEach(b=>{
     b.id="tabbtn-"+b.dataset.tab; b.setAttribute("role","tab"); b.setAttribute("aria-controls","tab-"+b.dataset.tab);
   });
   document.querySelectorAll(".tabpane").forEach(p=>{
-    p.setAttribute("role","tabpanel");
-    const btn=document.getElementById("tabbtn-"+p.id.slice(4)); if(btn) p.setAttribute("aria-labelledby", btn.id);
+    // #tab-notice/#tab-entity have no corresponding .tabbtn (reached only via permalink/pivot,
+    // never the tablist) — role=tabpanel with no owning tab is an orphan per WAI-ARIA APG, so
+    // they get no tab role at all rather than a false aria-labelledby.
+    const btn=document.getElementById("tabbtn-"+p.id.slice(4));
+    if(btn){ p.setAttribute("role","tabpanel"); p.setAttribute("aria-labelledby", btn.id); }
   });
   nav.addEventListener("keydown", e=>{
     const tabs=[...nav.querySelectorAll(".tabbtn")];
@@ -845,7 +869,7 @@ async function search(){
   $("#minwrap").style.opacity = mode === "award" ? "1" : ".6";
   $("#minamt").disabled = mode !== "award";
   // The closing-week quick filter only makes sense for open RFPs.
-  if(mode !== "open" && closingWeek){ closingWeek = false; $("#closingweek").classList.remove("on"); }
+  if(mode !== "open" && closingWeek){ closingWeek = false; $("#closingweek").classList.remove("on"); $("#closingweek").setAttribute("aria-pressed","false"); }
   $("#moneyquick").style.display = mode === "open" ? "" : "none";
 
   let where = mode === "award" ? "type_of_notice_description='Award'" : "type_of_notice_description='Solicitation'";
@@ -926,10 +950,10 @@ function renderList(){
       ? (money(r.contract_amount) ? `<span class="tag amt">${money(r.contract_amount)}</span>` : "")
       : deadlineTag(r.due_date);
     return `<div class="row" data-i="${i}" tabindex="0" role="button">
-      <p class="rtitle">${cleanText(r.short_title) || t("untitled_notice")}</p>
-      <p class="rmeta">${lead}<span class="ragency">${r.agency_name||""}</span> · ${fdate(r.start_date)}
+      <p class="rtitle">${cleanText(r.short_title) ? enTitle(cleanText(r.short_title)) : t("untitled_notice")}</p>
+      <p class="rmeta">${lead}<span class="ragency" lang="en">${r.agency_name||""}</span> · ${fdate(r.start_date)}
         ${r.category_description? " · "+r.category_description : ""}<br>
-        ${usablePin(r.pin)? `<span class="pin">PIN ${r.pin}</span>` : `<span class="pin" style="opacity:.6">${t("no_linkable_pin")}</span>`}</p>
+        ${usablePin(r.pin)? `<span class="pin">PIN ${r.pin}</span>` : `<span class="pin muted">${t("no_linkable_pin")}</span>`}</p>
     </div>`;
   }).join("");
   document.querySelectorAll("#list .row").forEach(el=>el.addEventListener("click",()=>select(+el.dataset.i, el)));
@@ -1435,7 +1459,7 @@ async function pSearchRoles(kw, stale){
   $("#plist").innerHTML = pay.map((r,i)=>{
     const comp2 = competitiveSet.has((r.title_description||"").toUpperCase().trim());
     return `<div class="row" data-i="${i}" tabindex="0" role="button">
-      <p class="rtitle">${r.title_description}</p>
+      <p class="rtitle">${enTitle(r.title_description)}</p>
       <p class="rmeta"><span class="tag ${comp2?'open':'soon'}">${comp2?t("exam_title_tag"):t("no_exam_title_tag")}</span>
         ${fmtNumber(+r.n)} ${t("people_lbl")} · ${money(r.mn)}–${money(r.mx)}</p>
     </div>`;
@@ -1451,7 +1475,7 @@ function pSelectRole(i, el){
   const comp = competitiveSet.has((r.title_description||"").toUpperCase().trim());
   const ladder = [...pRows].sort((a,b)=>(+a.avg)-(+b.avg));
   const maxAvg = Math.max.apply(null, ladder.map(x=>+x.avg||0)) || 1;
-  let html = `<div class="rolename">${r.title_description}</div>
+  let html = `<h2 class="rolename" lang="en">${r.title_description}</h2>
     <div class="badges"><span class="tag ${comp?'open':'soon'}">${comp?t("competitive_badge"):t("noncompetitive_badge")}</span></div>
     <div class="agencybar">
       <div><div class="big">${money(r.mn)}–${money(r.mx)}</div><div class="lbl">${t("base_salary_band_lbl")}</div></div>
@@ -1487,8 +1511,8 @@ async function pSearchPeople(kw, stale){
   $("#prescount").textContent = pRows.length;
   if(!pRows.length){ $("#plist").innerHTML = '<div class="empty">' + t("no_personnel") + '</div>'; return; }
   $("#plist").innerHTML = pRows.map((p,i)=>`<div class="row" data-i="${i}" tabindex="0" role="button">
-      <p class="rtitle">${p.name}</p>
-      <p class="rmeta"><span class="ragency">${p.agency}</span> · ${t("n_notices_meta",{n:p.actions.length,s:p.actions.length>1?"s":""})}</p>
+      <p class="rtitle">${enTitle(p.name)}</p>
+      <p class="rmeta"><span class="ragency" lang="en">${p.agency}</span> · ${t("n_notices_meta",{n:p.actions.length,s:p.actions.length>1?"s":""})}</p>
     </div>`).join("");
   document.querySelectorAll("#plist .row").forEach(el=>el.addEventListener("click",()=>pSelectPerson(+el.dataset.i, el)));
   document.querySelector("#plist .row")?.click();
@@ -1510,7 +1534,7 @@ async function pSelectPerson(i, el){
       "$order":"fiscal_year DESC","$limit":"4"});
   }catch(e){}
   const cur = pay[0];
-  let html = `<div class="rolename">${p.name}</div><div class="badges"><span class="tag">${p.agency}</span></div>`;
+  let html = `<h2 class="rolename" lang="en">${p.name}</h2><div class="badges"><span class="tag">${p.agency}</span></div>`;
   if(cur){
     html += `<div class="agencybar">
       <div><div class="big">${money(cur.base_salary)||"—"}</div><div class="lbl">${t("base_salary_fy_lbl",{fy:cur.fiscal_year})}</div></div>
@@ -1593,7 +1617,7 @@ function landRenderList(kw){
     return;
   }
   $("#llist").innerHTML=head+lRows.map((r,i)=>`<div class="row" data-i="${i}" tabindex="0" role="button">
-    <p class="rtitle">${r.project_name||t("unnamed_project")}</p>
+    <p class="rtitle">${r.project_name ? enTitle(r.project_name) : t("unnamed_project")}</p>
     <p class="rmeta">${mihOn(r.mih_flag)?`<span class="tag soon">${t("affordable_housing_tag")}</span>`:''}<span class="ragency">${r.borough||""}${r.community_district?" · CD "+r.community_district:""}</span> · ${r.public_status||r.project_status||""}<br>
       ${r.current_milestone?cleanText(r.current_milestone)+(r.current_milestone_date?" · "+fdate(r.current_milestone_date):""):""}</p>
   </div>`).join("");
@@ -1617,7 +1641,7 @@ async function landSelect(i, el){
   if(landMap){ try{landMap.remove();}catch(e){} landMap=null; landMarker=null; }
   const ZAPACT_KEY={ZM:"zapact_zm",ZR:"zapact_zr",ZA:"zapact_za",ZC:"zapact_zc",ZS:"zapact_zs",HA:"zapact_ha",PC:"zapact_pc",PQ:"zapact_pc",HG:"zapact_hg"};
   const actList=(r.actions||"").split(/[;,]/).map(a=>ZAPACT_KEY[a.trim()]?t(ZAPACT_KEY[a.trim()]):(a.trim()||null)).filter(Boolean);
-  let html=`<div class="rolename">${r.project_name||t("unnamed")}</div>
+  let html=`<h2 class="rolename" lang="en">${r.project_name||t("unnamed")}</h2>
     <div class="badges">
       <span class="tag ${r.project_status==='Active'?'open':'closed'}">${r.public_status||r.project_status||t("status_na")}</span>
       ${mihOn(r.mih_flag)?`<span class="tag soon">${t("mih_tag")}</span>`:''}
@@ -1677,7 +1701,9 @@ async function landShowMap(lat, lon, label){
   if(typeof L==="undefined"){ el.innerHTML=`<div class="empty">${t("map_needs_connection")}</div>`; return; }
   landMap=L.map(el).setView([lat,lon],15);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap © CARTO',subdomains:'abcd',maxZoom:19}).addTo(landMap);
-  landMarker=L.marker([lat,lon]).addTo(landMap);
+  // w9-10: Leaflet's marker icon renders as an <img> -- `alt` is its accessible name
+  // (the list view, #llist, remains the real keyboard/SR-equivalent; this is a small assist).
+  landMarker=L.marker([lat,lon],{alt:label||t("map_marker_alt")}).addTo(landMap);
   if(label) landMarker.bindPopup(label).openPopup();
   setTimeout(()=>{ if(landMap) landMap.invalidateSize(); },150);
 }
@@ -1812,7 +1838,7 @@ function renderFeed(key, rows){
     return `<div class="fcard">
       <div class="ftype">${r.type_of_notice_description||""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}${ev?` · <b style="color:var(--ink)">${fdt(ev)}</b>${eventTag(ev)}`:""}</div>
       ${pbadges}
-      <div class="ftitle">${cleanText(r.short_title)||t("untitled")}</div>
+      <div class="ftitle">${cleanText(r.short_title) ? enTitle(cleanText(r.short_title)) : t("untitled")}</div>
       ${addr?`<div class="faddr">${addr}</div>`:""}
       ${scope?`<div class="fscope">${scope}${scope.length>=200?"…":""}</div>`:""}
       <div class="factions">${acts}</div>
@@ -1952,12 +1978,12 @@ function digContact(r){
   return parts.length?`<div class="dc">${parts.join(" · ")}</div>`:"";
 }
 function digItemHTML(kind, r){
-  if(kind==="award") return `<div class="digitem"><div class="dt">${cleanText(r.short_title)||t("untitled")}</div>
+  if(kind==="award") return `<div class="digitem"><div class="dt">${cleanText(r.short_title) ? enTitle(cleanText(r.short_title)) : t("untitled")}</div>
     <div class="dm">${r.agency_name} · ${fdate(r.start_date)}${r.vendor_name? " · "+cleanText(r.vendor_name):""}</div>
     <div class="da">${money(r.contract_amount)||""}</div>${digContact(r)}</div>`;
   if(kind==="notice"){
     const meta=[r.agency_name, r.type_of_notice_description, fdate(r.start_date), r.event_date?t("event_meta",{date:fdate(r.event_date)}):""].filter(Boolean).join(" · ");
-    return `<div class="digitem"><div class="dt">${cleanText(r.short_title)||t("untitled")}</div>
+    return `<div class="digitem"><div class="dt">${cleanText(r.short_title) ? enTitle(cleanText(r.short_title)) : t("untitled")}</div>
     <div class="dm">${meta}</div>
     <div class="dc"><a href="#notice/${encodeURIComponent(r.request_id)}">${t("view_on_crol")}</a></div></div>`;
   }
@@ -1967,9 +1993,9 @@ function digItemHTML(kind, r){
     if(r.email) acts.push(`<a href="mailto:${r.email}">${r.email}</a>`);
     if(tel.length>=7) acts.push(`<a href="tel:${tel}">${cleanText(r.contact_phone)}</a>`);
     const dc=acts.length?`<div class="dc">${acts.join(" · ")}</div>`:"";
-    return `<div class="digitem"><div class="dt">${cleanText(r.short_title)||t("untitled")}</div>
+    return `<div class="digitem"><div class="dt">${cleanText(r.short_title) ? enTitle(cleanText(r.short_title)) : t("untitled")}</div>
     <div class="dm">${r.agency_name} · ${t("due_on",{date:fdt(r.due_date)})}${dl!=null?t("days_paren",{n:dl}):""}</div>${dc}</div>`; }
-  return `<div class="digitem"><div class="dt">${r.project_name||t("unnamed_rezoning")}</div>
+  return `<div class="digitem"><div class="dt">${r.project_name ? enTitle(r.project_name) : t("unnamed_rezoning")}</div>
     <div class="dm">${r.borough||""}${r.community_district? " · CD "+r.community_district:""} · ${r.public_status||""}${r.primary_applicant? " · "+r.primary_applicant:""}${mihOn(r.mih_flag)? " · "+t("affordable_housing_tag"):""}</div>
     <div class="dc"><a href="https://zap.planning.nyc.gov/projects/${r.project_id}" target="_blank" rel="noopener">${t("view_comment_zap")}</a> · <a href="https://a856-cityrecord.nyc.gov/Search/Advanced" target="_blank" rel="noopener">${t("hearing_notice_cr")}</a></div></div>`;
 }
@@ -2035,9 +2061,10 @@ function aLensFilter(){
 }
 function aIsEmail(s){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s||""); }
 async function aSubscribe(){
-  const msg=$("#asubmsg");
-  const email=$("#adest").value.trim();
-  if(!aIsEmail(email)){ msg.innerHTML=t("enter_valid_email"); return; }
+  const msg=$("#asubmsg"), dest=$("#adest");
+  const email=dest.value.trim();
+  if(!aIsEmail(email)){ msg.innerHTML=t("enter_valid_email"); dest.setAttribute("aria-invalid","true"); return; }
+  dest.removeAttribute("aria-invalid");
   const token=(window.turnstile&&turnstile.getResponse)?(turnstile.getResponse()||""):"";
   if(!token){ msg.innerHTML=t("complete_human_check"); return; }
   if(!API){ msg.innerHTML=t("subs_need_backend"); return; }
@@ -2337,7 +2364,7 @@ async function showAgency(name){
       </div>
       <div style="font-weight:600;font-size:14px;color:#111">${esc(title)}</div>
       <div style="font-size:13px;color:#555;margin-bottom:8px">${esc(sub)}</div>
-      <button class="act mini-sub-btn" type="button" data-watch-kind="${watchKind}" data-watch-name="${esc(watchName)}" style="font-size:11px;padding:3px 8px;margin:0">Subscribe to Alert</button>
+      <button class="act mini-sub-btn" type="button" data-watch-kind="${watchKind}" data-watch-name="${esc(watchName)}" style="font-size:11px;padding:3px 8px;margin:0">${t("mini_subscribe_btn")}</button>
     </div>`;
   }).join("");
 
@@ -2347,7 +2374,7 @@ async function showAgency(name){
     <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CROL-List</a></p>
     <div class="panel" style="padding:22px 24px">
       <div class="ftype" style="margin-bottom:6px">Agency profile · City Record on record</div>
-      <div class="rolename">${agencyWho(nm)}</div>
+      <h2 class="rolename" lang="en">${agencyWho(nm)}</h2>
       <div class="agencybar">
         <div><div class="big">${money(stats && stats.total)||"—"}</div><div class="lbl">total awarded,<br>on record</div></div>
         <div><div class="big">${stats ? (+stats.n).toLocaleString() : "—"}</div><div class="lbl">contract awards<br>published</div></div>
@@ -2427,7 +2454,7 @@ async function showAgency(name){
     }));
   }
 
-  announce(`Agency profile: ${nm}`);
+  announce(t("meta_agency_profile_announce",{name:nm}));
 }
 
 async function showVendor(name){
@@ -2490,7 +2517,7 @@ async function showVendor(name){
       </div>
       <div style="font-weight:600;font-size:14px;color:#111">${esc(title)}</div>
       <div style="font-size:13px;color:#555;margin-bottom:8px">${esc(sub)}</div>
-      <button class="act mini-sub-btn" type="button" data-watch-kind="${watchKind}" data-watch-name="${esc(watchName)}" style="font-size:11px;padding:3px 8px;margin:0">Subscribe to Alert</button>
+      <button class="act mini-sub-btn" type="button" data-watch-kind="${watchKind}" data-watch-name="${esc(watchName)}" style="font-size:11px;padding:3px 8px;margin:0">${t("mini_subscribe_btn")}</button>
     </div>`;
   }).join("");
 
@@ -2499,8 +2526,8 @@ async function showVendor(name){
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CROL-List</a></p>
     <div class="panel" style="padding:22px 24px">
-      <div class="ftype" style="margin-bottom:6px">Vendor profile · ${variants.length} name variant${variants.length===1?"":"s"} resolved${variants.length>1?` <span title="${names.map(n=>cleanText(n)).join(" · ").replace(/"/g,"&quot;")}" style="cursor:help;border-bottom:1px dotted var(--rule-strong)">which?</span>`:""}</div>
-      <div class="rolename">${cleanText(display)}</div>
+      <div class="ftype" style="margin-bottom:6px">${t("vendor_profile_variants",{n:variants.length,s:variants.length===1?"":"s"})}${variants.length>1?` <details style="display:inline"><summary style="display:inline;cursor:pointer;border-bottom:1px dotted var(--rule-strong)">${t("which_variants_btn")}</summary> <span lang="en">${names.map(n=>cleanText(n).replace(/&/g,"&amp;")).join(" · ")}</span></details>`:""}</div>
+      <h2 class="rolename" lang="en">${cleanText(display)}</h2>
       <div class="agencybar">
         <div><div class="big">${money(total)||"—"}</div><div class="lbl">total awarded,<br>on record</div></div>
         <div><div class="big">${nAwards.toLocaleString()}</div><div class="lbl">award notice${nAwards===1?"":"s"}</div></div>
@@ -2573,7 +2600,7 @@ async function showVendor(name){
     }));
   }
 
-  announce(`Vendor profile: ${cleanText(display)}`);
+  announce(t("meta_vendor_profile_announce",{name:cleanText(display)}));
 }
 
 /* ===================== INVESTIGATION WORKSPACE (#investigation) =====================
@@ -2602,7 +2629,14 @@ document.addEventListener("click", e=>{
       inv.items.push({...p, note:"", added:new Date().toISOString().slice(0,10)});
       invSave(s);
     }
-    b.outerHTML = `<a class="act" href="#investigation">${t("pinned_open_inv",{n:s.invs[s.current].items.length})}</a>`;
+    // w9-03 (2.4.3): b.outerHTML= would destroy the focused node (focus drops to <body>) --
+    // build the replacement and move focus onto it explicitly instead.
+    const a = document.createElement("a");
+    a.className = "act";
+    a.href = "#investigation";
+    a.textContent = t("pinned_open_inv",{n:s.invs[s.current].items.length});
+    b.replaceWith(a);
+    a.focus();
     return;
   }
   const f = e.target.closest("[data-follow]");
@@ -2651,7 +2685,7 @@ async function showInvestigation(){
     <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("back_browse")}</a></p>
     <div class="panel" style="padding:22px 24px">
       <div class="ftype" style="margin-bottom:6px">${t("inv_ws_heading")}</div>
-      <input type="text" id="invname" aria-label="${t("inv_name_aria")}" data-i18n-aria="inv_name_aria" value="${inv.name.replace(/"/g,"&quot;")}" style="font:800 22px/1.2 var(--font-display);border:none;background:transparent;padding:0;width:100%">
+      <h2 style="margin:0"><input type="text" id="invname" aria-label="${t("inv_name_aria")}" data-i18n-aria="inv_name_aria" value="${inv.name.replace(/"/g,"&quot;")}" style="font:800 22px/1.2 var(--font-display);border:none;background:transparent;padding:0;width:100%"></h2>
       <div class="rmeta2">${t("inv_pinned_meta",{n:inv.items.length, s:inv.items.length===1?"":"s", date:inv.created})}</div>
       <div class="timeline" style="margin-top:14px" id="invitems">
         ${inv.items.length ? invItemsHtml(inv.items,false) : `<div class="empty">${t("inv_empty")}</div>`}
@@ -2663,7 +2697,7 @@ async function showInvestigation(){
         <button class="act" type="button" id="invprint">${t("inv_print_btn")}</button>
         <button class="act" type="button" id="invclear" style="color:var(--rose)">${t("inv_clear_btn")}</button>
       </div>
-      <div id="invmsg" class="muted" style="margin-top:10px;font:13px/1.5 ui-sans-serif,system-ui,sans-serif"></div>
+      <div id="invmsg" class="muted" role="status" style="margin-top:10px;font:13px/1.5 ui-sans-serif,system-ui,sans-serif"></div>
       <div class="note">${t("inv_footer_note_html")}</div>
     </div></div>`;
   $("#invname").addEventListener("change", ()=>{ const s2=invStore(); s2.invs[s2.current].name=$("#invname").value.slice(0,80)||t("inv_default_name"); invSave(s2); });
@@ -2705,7 +2739,7 @@ async function showSharedInv(id){
     <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("back_browse")}</a></p>
     <div class="panel" style="padding:22px 24px">
       <div class="ftype" style="margin-bottom:6px">${t("inv_shared_heading",{date:j.sharedAt||"—"})}</div>
-      <div class="rolename">${String(j.name||t("untitled_name")).replace(/[<>&]/g,"")}</div>
+      <h2 class="rolename">${String(j.name||t("untitled_name")).replace(/[<>&]/g,"")}</h2>
       <div class="timeline" style="margin-top:14px">${invItemsHtml(j.items,true)}</div>
       <div class="actions" style="margin-top:16px"><button class="act primary" type="button" id="invimport">${t("inv_import_btn")}</button></div>
     </div></div>`;
@@ -2754,7 +2788,7 @@ async function showMatter(pin){
     <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CROL-List</a></p>
     <div class="panel" style="padding:22px 24px">
       <div class="ftype" style="margin-bottom:6px">Matter timeline · PIN <code>${safe}</code></div>
-      <div class="rolename">${agency?pivotA(agencyHref(agency), agencyWho(agency)):""}${vendor?` × ${pivotA(vendorHref(vendor), cleanText(vendor))}`:""}</div>
+      <h2 class="rolename" lang="en">${agency?pivotA(agencyHref(agency), agencyWho(agency)):""}${vendor?` × ${pivotA(vendorHref(vendor), cleanText(vendor))}`:""}</h2>
       <div class="timeline" style="margin-top:14px">
         ${items.map(it=>`<div class="tl"><span class="tldate">${it.date?fdate(it.date):"today"}</span>
           <span class="tlreason" style="font-weight:400">${it.label}</span>
@@ -2768,7 +2802,7 @@ async function showMatter(pin){
       <div class="note">The spine is every City Record notice sharing this PIN, in order; Checkbook events join deterministically on the same PIN. Public-hearing notices rarely carry PINs, so hearings may be missing from the chronology.</div>
     </div></div>`;
   $("#ecopy").addEventListener("click", ()=>copyText(link, $("#ecopy")));
-  announce(`Matter timeline: ${items.length} events`);
+  announce(t("meta_matter_timeline_announce",{n:items.length}));
 }
 
 /* ===================== PERMALINKS & URL STATE =====================
@@ -2859,6 +2893,7 @@ function applyHash(){
       if(q.get("min")) $("#minamt").value = q.get("min");
       closingWeek = q.get("closing") === "week";
       $("#closingweek").classList.toggle("on", closingWeek);
+      $("#closingweek").setAttribute("aria-pressed", String(closingWeek));
       methodSel = q.get("m") || "";
       showTab("money"); search();
     } else if(tab === "people"){
@@ -2905,7 +2940,7 @@ async function showNotice(id){
     <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("back_browse")}</a></p>
     <div class="panel" style="padding:22px 24px">
       <div class="ftype" style="margin-bottom:6px">${r.type_of_notice_description||t("notice_fallback")}${r.section_name?" · "+tSection(r.section_name):""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}</div>
-      <div class="rolename">${cleanText(r.short_title)||t("untitled_notice")}</div>
+      <h2 class="rolename" lang="en">${cleanText(r.short_title)||t("untitled_notice")}</h2>
       <div id="ncontext"></div>
       ${glanceFor(r)}
       <div id="naddr"></div><div id="ndollars"></div>
@@ -2947,7 +2982,7 @@ soda({"$select":"min(start_date) as a, max(start_date) as b"}).then(r=>{ if(r&&r
 $("#kw").addEventListener("keydown", e=>{ if(e.key==="Enter") search(); });
 $("#kw").addEventListener("input", debounce(search, 500));
 ["#mode","#agency","#sort","#minamt"].forEach(s=>$(s).addEventListener("change", search));
-$("#closingweek").addEventListener("click", ()=>{ closingWeek = !closingWeek; $("#closingweek").classList.toggle("on", closingWeek); search(); });
+$("#closingweek").addEventListener("click", ()=>{ closingWeek = !closingWeek; $("#closingweek").classList.toggle("on", closingWeek); $("#closingweek").setAttribute("aria-pressed", String(closingWeek)); search(); });
 
 $("#pkw").addEventListener("keydown", e=>{ if(e.key==="Enter") pSearch(); });
 $("#pkw").addEventListener("input", debounce(pSearch, 500));
@@ -2992,12 +3027,12 @@ const QUIZ_PLACEHOLDER={rfpkw:"quizph_rfpkw", bigaward:"quizph_bigaward",
 let quizW=null;
 $("#quizwhat").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{
   quizW=b.dataset.w;
-  $("#quizwhat").querySelectorAll(".chip").forEach(x=>x.classList.toggle("on", x===b));
+  $("#quizwhat").querySelectorAll(".chip").forEach(x=>{ x.classList.toggle("on", x===b); x.setAttribute("aria-pressed", String(x===b)); });
   $("#quiznarrow").placeholder=QUIZ_PLACEHOLDER[quizW]?t(QUIZ_PLACEHOLDER[quizW]):"";
   $("#quiznarrow").disabled = quizW==="bigaward";
 }));
 $("#quizfreq").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{
-  $("#quizfreq").querySelectorAll(".chip").forEach(x=>x.classList.toggle("on", x===b));
+  $("#quizfreq").querySelectorAll(".chip").forEach(x=>{ x.classList.toggle("on", x===b); x.setAttribute("aria-pressed", String(x===b)); });
 }));
 $("#quizgo").addEventListener("click",()=>{
   if(!quizW){ $("#quiznarrow").placeholder=t("pick_topic_first"); return; }
@@ -3034,6 +3069,7 @@ aRenderSaved();
 // old language. Re-render from cache/memory — the 5-minute API cache makes the re-runs free.
 function rerenderForLang(){
   document.querySelectorAll(".filtertoggle").forEach(b=>{ b.textContent = "☰ " + t("filters_toggle"); });
+  const nav = document.querySelector(".tabs"); if(nav) nav.setAttribute("aria-label", t("tablist_label"));
   try{ const c = JSON.parse(localStorage.getItem("crol_today_v2")||"null"); if(c && c.d) renderToday(c.d); }catch(e){}
   paintEditionSpan();
   loadAgencies();

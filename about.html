@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-i18n-title="about_title">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>About · CROL-List</title>
 <meta name="description" content="What CROL-List is, where its data comes from, how to send feedback, and its privacy stance.">
-<script src="i18n.js?v=c56a4da2"></script>
+<script src="i18n.js?v=2cb70dd5"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
@@ -41,7 +41,7 @@
   .chips{display:flex;gap:8px;flex-wrap:wrap}
   .chip{font:600 13px/1 var(--ui);padding:9px 14px;border:1px solid var(--rule);border-radius:999px;background:#fff;color:var(--ink-soft);cursor:pointer}
   .chip.active{background:var(--ink);color:#fff;border-color:var(--ink)}
-  textarea,input[type=text],input[type=email]{width:100%;font:15px/1.5 Georgia,serif;padding:11px;border:1px solid var(--rule);border-radius:9px;background:#fff;color:var(--ink);resize:vertical}
+  textarea,input[type=text],input[type=email]{width:100%;font:15px/1.5 Georgia,serif;padding:11px;border:1px solid var(--rule-strong);border-radius:9px;background:#fff;color:var(--ink);resize:vertical}
   textarea{min-height:120px}
   .opt{font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted)}
   .btn{font:700 14px/1 var(--ui);padding:12px 20px;border-radius:9px;border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer;margin-top:6px}
@@ -54,12 +54,16 @@
   .foot a{color:var(--oxblood)}
   /* language switcher — matches index.html */
   .lang-switcher{display:flex;gap:.4rem;justify-content:center;margin-block-start:10px;flex-wrap:wrap}
-  .lang-btn{font:600 11px/1 var(--ui);padding:3px 10px;border-radius:12px;border:1px solid var(--rule-strong);background:transparent;color:var(--muted);cursor:pointer}
+  .lang-btn{font:600 11px/1 var(--ui);padding:3px 10px;min-height:32px;display:inline-flex;align-items:center;border-radius:12px;border:1px solid var(--rule-strong);background:transparent;color:var(--muted);cursor:pointer}
   .lang-btn[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--ink);color:#fff;padding:11px 18px;border-radius:0 0 9px 0;font:600 13px/1 var(--ui);text-decoration:none}
+  .skip:focus{left:0}
+  :is(a,button,select,input,textarea,summary):focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
 </style>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
+<a class="skip" href="#main" data-i18n="skip_to_content">Skip to content</a>
 <div class="wrap">
 <header>
   <div class="cr-rule"></div>
@@ -83,7 +87,7 @@
   <a class="backhome" href="index.html" data-i18n="back_to_crol">← Back to CROL-List</a>
 </header>
 
-<main>
+<main id="main" tabindex="-1">
 <h2 data-i18n="about_h_what">What this is</h2>
 <p data-i18n-html="about_p_what_html">CROL-List is a search interface over <a href="https://a856-cityrecord.nyc.gov/" target="_blank" rel="noopener">The City Record</a> — the
 City of New York's official daily journal, where <a href="https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-3113" target="_blank" rel="noopener">every agency must publish</a> its
@@ -150,7 +154,7 @@ payment. Nothing here asserts wrongdoing; it saves you the arithmetic.</p>
 <div class="card">
   <input type="hidden" id="fbcategory" value="bug">
   <label data-i18n="about_label_kind">What kind?</label>
-  <div class="chips" id="fbchips" role="group" aria-label="What kind of feedback?">
+  <div class="chips" id="fbchips" role="group" aria-label="What kind of feedback?" data-i18n-aria="fb_kind_label">
     <button type="button" class="chip active" data-cat="bug" aria-pressed="true" data-i18n="fb_cat_bug">Bug</button>
     <button type="button" class="chip" data-cat="feature" aria-pressed="false" data-i18n="fb_cat_feature">Feature idea</button>
     <button type="button" class="chip" data-cat="general" aria-pressed="false" data-i18n="fb_cat_general">General</button>
@@ -165,7 +169,7 @@ payment. Nothing here asserts wrongdoing; it saves you the arithmetic.</p>
   <div class="cf-turnstile" data-sitekey="0x4AAAAAADtj-Mskk_RnVd5K" data-action="feedback-v1" style="margin:14px 0 6px"></div>
 
   <button class="btn" id="fbsend" data-i18n="about_btn_send">Send feedback →</button>
-  <div id="fbmsg"></div>
+  <div id="fbmsg" role="status"></div>
   <p class="note" data-i18n-html="about_note_feedback_html">If you add your email, we keep it only to reply. Each submission also records basic request metadata — your IP address and browser — kept briefly to block spam. See <a href="#privacy">Privacy</a>.</p>
 </div>
 
@@ -178,8 +182,8 @@ payment. Nothing here asserts wrongdoing; it saves you the arithmetic.</p>
   <li><b>Page views</b> are measured with Cloudflare Web Analytics: cookieless and aggregate. It counts visits; it does not identify you or follow you across sites.</li>
 </ul>
 
-<div class="foot" data-i18n-html="about_foot_html">CROL-List · a search interface over <a href="https://a856-cityrecord.nyc.gov/" target="_blank" rel="noopener">The City Record</a> · <a href="changelog.html">Changelog</a> · <a href="stats.html">Stats</a> · <a href="index.html">Home</a></div>
 </main>
+<footer class="foot" data-i18n-html="about_foot_html">CROL-List · a search interface over <a href="https://a856-cityrecord.nyc.gov/" target="_blank" rel="noopener">The City Record</a> · <a href="changelog.html">Changelog</a> · <a href="stats.html">Stats</a> · <a href="index.html">Home</a></footer>
 </div>
 
 <script>
