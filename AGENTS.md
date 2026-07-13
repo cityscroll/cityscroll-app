@@ -2,14 +2,51 @@
 
 This file is the project's committed home for project-intrinsic agent knowledge: build, test, release, architecture, and sharp-edge notes that should travel with the code.
 
-## i18n — the rules that keep Spanish (and the next nine languages) honest
+## i18n — string-catalog architecture (wave 8) + the rules that keep translations honest
 
+- **Split-file architecture, not one monolith.** `i18n.js` is now the CORE file only: LANG_META,
+  `SHIPPING_LANGS` (the one declaration selector/guard/parity-gate all read — `["es", "zh-Hans",
+  "ru"]` as of wave 8), `LANG_FILE_HASHES`, `I18N_PROVENANCE`, the runtime (`t`/`tn`/`tSection`/
+  `applyStrings`/`setLang`/`ensureLangLoaded`), and the **`en` dictionary inline** (en is the
+  fallback, must load with zero network round-trips). Every other shipping language's
+  `STRINGS`/`SECTION_I18N` table lives in its own `i18n/lang/<lang>.js`, loaded on demand: a
+  Node `require()` shim at i18n.js's bottom (so tests/tooling see every shipping language
+  synchronously with no browser), `document.write()` during initial `<head>` parse for the
+  saved localStorage preference (still no English flash — before first paint), or async
+  `<script>` injection (`ensureLangLoaded`) when the user switches language mid-session.
+  Adding a language means: create `i18n/lang/<lang>.js` (see any existing one for the
+  `Object.assign(window.STRINGS[lang], {...})` + `window.SECTION_I18N[lang] = {...}` shape),
+  add it to `SHIPPING_LANGS` + `LANG_FILE_HASHES` (`shasum -a 256 i18n/lang/<lang>.js | cut -c1-8`),
+  add its `I18N_PROVENANCE` entry, add its selector button to all six pages, add it to CI's
+  `CROL_GUARD_LANGS`.
+- **`tn(base, n, vars)`** (i18n.js) is the CLDR-plural helper — `Intl.PluralRules(locale).select(n)`
+  picks `<base>_one/_few/_many/_other`, falling back to `<base>_other`, then the same chain
+  under English. Migrated keys: `days_left`, `event_in_n_days`, `n_notices_meta`,
+  `digest_footer`. zh-Hans only ever needs a `_other` key (CJK has no plural category) — but
+  `i18n_keys.py`'s parity check wants literal full key-set coverage, so zh-Hans's dictionary
+  duplicates `_other`'s text under `_one` too rather than special-casing the gate. Remaining
+  `{s}`-suffix keys (`showing_lots_note_html`, `inv_pinned_meta`, `vendor_profile_variants`)
+  are NOT yet migrated — a language may legitimately omit `{s}` from its translation (no
+  plural marker needed), `i18n_glossary.py`'s placeholder check already exempts it.
+- **Civic-terms glossary** (`i18n/glossary.json` + `i18n/GLOSSARY.md`) pins RFP/award/
+  procurement/rezoning/City Record/PIN/community board/upset price/MIH BEFORE drafting a new
+  language — cite the City's own translation (MOIA materials, an agency Language Access Plan)
+  when one exists, record the judgment call when it doesn't. `test/standards/i18n_glossary.py`
+  (unit job) checks two things: every `{placeholder}` and inline-tag SET (not count — a
+  language may legitimately repeat a placeholder more than en does, e.g. Russian noun/adjective
+  agreement) survives translation, and each glossary term's pinned rendering appears somewhere
+  in that language's dictionary (a STEMMED substring check — first 5 chars — so Russian
+  declension, e.g. `совет` pinned vs `советов` shipped, doesn't false-positive).
+- **Machine-translation disclosure**: `I18N_PROVENANCE[lang].state` (`machine-drafted` |
+  `glossary-checked` | `native-reviewed`) drives `updateLangNotice()` (i18n.js), which shows
+  the `mt_disclaimer` string alongside the existing "notices stay English" note for any
+  non-`native-reviewed` language — es, zh-Hans, and ru are ALL `machine-drafted` today
+  (formalizing what was previously an undocumented, unreviewed state for es too).
 - **Every page loads `i18n.js` and carries the shared header language switcher** (`#langSwitcher
-  .lang-btn`) — index.html plus about/data/stats/api/changelog.html, since crol-subpages-es
-  (2026-07-13). `crol_lang` in localStorage is one preference honored by every page on load
-  (i18n.js's own bottom IIFE sets `window.LANG` *and* `document.documentElement.lang`/`dir`
-  synchronously, before body paint, so there's no English flash).
-- **Every user-facing string routes through `t()` / `tSection()`** (i18n.js) — including
+  .lang-btn`) — index.html plus about/data/stats/api/changelog.html. `crol_lang` in localStorage
+  is one preference honored by every page on load (i18n.js's own bottom IIFE sets `window.LANG`
+  *and* `document.documentElement.lang`/`dir` synchronously, before body paint).
+- **Every user-facing string routes through `t()` / `tn()` / `tSection()`** (i18n.js) — including
   strings built in JS template literals and labels derived from DATA VALUES (City Record
   section names → `SECTION_I18N`). Two gates enforce it; run them before calling i18n work
   done: `python3 test/standards/stray_english.py` (source lint over all pages; its allowlist
@@ -18,22 +55,39 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   parameterized by `CROL_GUARD_LANGS` and, per page, `CROL_GUARD_PAGES` — default `index`;
   CI runs all six). Subpages get a lighter walk (load → switch → walk text) than index.html's
   full lens-driving one; approved translations are shared across pages automatically since
-  `dict_fragments()` scans the whole `STRINGS[lang]` table.
+  `dict_fragments()` scans the whole `STRINGS[lang]` table (which the guard gets by literally
+  `require()`-ing i18n.js in Node — the split-file Node shim above is load-bearing for this).
+  Non-Latin-script languages (zh-Hans, ru) are structurally exempt from the English-word-list
+  collision risk the guard's curation step guards against (`test/standards/english_words.py`'s
+  `ENGLISH_WORDS` set only ever matches ASCII `[A-Za-z]` runs) — that curation stays load-bearing
+  for any future Latin-script addition (fr, ht, pl).
 - **Sharp edge — `t` shadowing:** never name a function parameter or local `t`
   (`pinBtn(t,…)` and `copyText(t,…)` both silently broke rendering, 2026-07-13 hotfixes).
-- **Changing i18n.js requires a `?v=` hash bump** on EVERY page's script tag
+- **Changing i18n.js (core) requires a `?v=` hash bump** on EVERY page's script tag
   (`shasum -a 256 i18n.js | cut -c1-8`) — `test/standards/i18n_refs.py` checks all six pages
-  and fails on any stale one (one shared file today, so all pages carry the same hash).
+  and fails on any stale one. Changing a per-language file requires bumping ONLY its own
+  `LANG_FILE_HASHES` entry in i18n.js (which itself then needs the core `?v=` bump, since
+  i18n.js's content changed) — `i18n_refs.py`'s second check verifies every shipping
+  language's declared hash matches its actual file hash.
 - **es orthography is gated:** `python3 test/standards/es_diacritics.py` fails accent-less
   forms of pinned Spanish words. Extend its map when a reviewer catches a new miss.
-- **Language switching must repaint dynamic surfaces** — index.html's `rerenderForLang()`;
-  subpages use the lighter `initSubpageLangSwitcher(onChange)` (i18n.js) — pass `onChange` when
-  a page caches live-fetched data or a translated data-value (data.html's `renderSections()`
-  re-runs `tSection()` from cached rows; stats.html's `paint()` re-renders the current async
-  status instead of resetting to the loading string). **Wire the switcher synchronously**, not
-  after an `await` — stats.html originally called `initSubpageLangSwitcher()` only inside the
-  post-fetch branches, so clicking it during the loading window silently did nothing (caught in
-  manual verification, 2026-07-13).
+- **Language switching must repaint dynamic surfaces, TWICE if the dictionary is lazy-loaded.**
+  index.html's `rerenderForLang()`; subpages use the lighter `initSubpageLangSwitcher(onChange)`
+  (i18n.js) — pass `onChange` when a page caches live-fetched data or a translated data-value
+  (data.html's `renderSections()` re-runs `tSection()` from cached rows; stats.html's `paint()`
+  re-renders the current async status). Since wave 8, `setLang(lang, onReady)` takes a SECOND
+  callback: it fires immediately (instant feedback, possibly still-English if the dictionary
+  hasn't loaded yet) AND AGAIN once a lazily-loaded shipping language's `<script>` finishes
+  fetching — `applyStrings()` alone only touches static `[data-i18n]` elements, so content
+  already stamped out via `t()`/`tn()` template literals (search results, today-strip, a
+  subpage's live data) would otherwise stay in English forever after the network request
+  resolves. Caught by the runtime guard going red for ru (which is never the initial saved
+  language in the guard's fresh browser context, so always hits the lazy-load path) even
+  though the dictionary itself was correct — a good example of why the guard exercises every
+  page/lens, not just "does the dictionary have the right strings." **Wire the switcher
+  synchronously**, not after an `await` — stats.html originally called
+  `initSubpageLangSwitcher()` only inside the post-fetch branches, so clicking it during the
+  loading window silently did nothing (caught in manual verification, 2026-07-13).
 - **Interaction-gated states count:** the runtime guard seeds a pinned investigation item and
   walks `#investigation`; a new localStorage/hash-gated panel needs the guard walk extended
   or it will ship English silently (hotfix-2's lesson).
@@ -44,7 +98,26 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   as official notice content). Chrome, ledes, and every changelog release's reader-facing "For
   you" summary DO translate; only the archival technical detail is carved out.
 - Notice CONTENT stays English (official source) with a per-language disclaimer; chrome and
-  derived UI text always translate. en/es key parity enforced by `i18n_keys.py`.
+  derived UI text always translate. Full key parity across ALL `SHIPPING_LANGS` enforced by
+  `i18n_keys.py` (reads the shipping list from i18n.js, checks each `i18n/lang/<lang>.js`).
+- **w8-06 (script rendering) shipped only the zh-Hans subset**: `LANG_META["zh-Hans"]` carries
+  `fontStack`/`lineHeightScale`, applied as `--lang-font-stack`/`--lang-line-height-scale` CSS
+  custom properties by `applyStrings()`; a page-level `:lang(zh-Hans){letter-spacing:normal
+  !important;text-transform:none !important}` rule neutralizes the masthead's Latin-typography
+  devices (small-caps, tracking, forced uppercase) site-wide, since CJK has no letter-casing.
+  ru needs no script-rendering changes (Cyrillic cases normally, tracking doesn't break
+  cursive joining the way it does for Arabic). Full CJK/Bengali/Arabic rendering spec
+  (RTL, Nastaliq, conjunct line-height) is still w8-06's remaining scope for later languages.
+- **Cross-gate tension, readable-or-else + non-English content**: readable-or-else's Flesch-
+  Kincaid extractor (`extract_visible_text`) has no `lang`-attribute awareness — it feeds
+  ALL visible page text (including a page's own zh-Hans/ru language-switcher button labels)
+  through the English-only syllable/sentence heuristic. Adding a language's native-script
+  button label can therefore nudge a page's measured grade by a hair with zero actual change
+  to English readability (index.html's baseline moved 14.809 → 14.881 when the zh-Hans + ru
+  buttons were added) — same class of "known interaction, not a regression" as the ↗-icon
+  case below; the baseline entry needs a hand-edit (the tool's own `baseline` command refuses
+  to raise a value) with the reasoning recorded in the commit, not prose simplification to
+  compensate.
 
 ## Test layers (what runs where)
 

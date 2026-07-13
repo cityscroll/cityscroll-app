@@ -88,9 +88,12 @@ test("dollarBadge: labeled figures only, never a bare number", () => {
 
 // ---------- deadline chips (round1 #5) ----------
 // deadlineTag uses t() (i18n) and _spellNum(); provide stubs so the eval is self-contained.
+// eventTag/deadlineTag call tn(base, n) (w8-01 plural helper) for their pluralized chips —
+// stub it the same shape as the real one (minus actual CLDR category selection).
 const _spellConst = src.match(/^const _SPELL = \[[^\]]*\];/m)[0];
 const tagEnv = new Function(
   "function t(k,v){ return k; }\n" +
+  "function tn(base,n){ return base + '_' + (n === 1 ? 'one' : 'other'); }\n" +
   _spellConst + "\n" +
   extractFn("_spellNum") + extractFn("daysLeft") + extractFn("deadlineTag") + extractFn("eventTag") +
   "return { deadlineTag, eventTag };"
