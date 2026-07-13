@@ -1,0 +1,36 @@
+{
+  "entries": {
+    "about.html": {
+      "formula": "flesch_kincaid_grade",
+      "grade": 10.789567554294447,
+      "language": "en"
+    },
+    "api.html": {
+      "formula": "flesch_kincaid_grade",
+      "grade": 10.808333333333334,
+      "language": "en"
+    },
+    "changelog.html": {
+      "formula": "flesch_kincaid_grade",
+      "grade": 11.256122201013426,
+      "language": "en"
+    },
+    "data.html": {
+      "formula": "flesch_kincaid_grade",
+      "grade": 11.326000000000004,
+      "language": "en"
+    },
+    "index.html": {
+      "formula": "flesch_kincaid_grade",
+      "grade": 14.809350649350652,
+      "language": "en"
+    },
+    "stats.html": {
+      "formula": "flesch_kincaid_grade",
+      "grade": 7.952177132701426,
+      "language": "en"
+    }
+  },
+  "preset": "nycsg7",
+  "version": 1
+}
