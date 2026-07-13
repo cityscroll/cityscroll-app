@@ -41,7 +41,18 @@ MCP_MAX_PER_IP_DAY = "300"
 # Digest delivery mode: "true" = queue fan-out (see [[queues.*]]), unset/other = inline.
 QUEUE_DIGESTS = "true"
 # Board-notification bridge (org webhook projects_v2_item -> issue comments).
-# Secrets: BOARD_HOOK_SECRET (HMAC), .
+# Auth secrets (App-first, zero-downtime fallback — see boardhook.mjs top comment):
+#   BOARDNOTIFY_APP_ID, BOARDNOTIFY_APP_PRIVATE_KEY, BOARDNOTIFY_INSTALLATION_ID — the
+#     board-notify GitHub App's own bot identity. Provision via 
+#     (one-click manifest-flow creation kit) then see its INSTALL.md for the secret puts.
+#    — fallback when the App secrets above are
+#     unset; keep configured until the App path is confirmed working, or drop it after.
+#   BOARD_HOOK_SECRET (HMAC) — required regardless of auth path; the webhook fails closed
+#     without it.
+# BOARDNOTIFY_CC: comma-separated GitHub logins (no "@"), appended as "cc @a @b" on every
+# comment — mentions notify org members regardless of their own subscription state.
+# Non-secret, so it lives here rather than `wrangler secret put`. Empty = no cc line.
+BOARDNOTIFY_CC = ""
 BOARD_PROJECT_ID = "PVT_kwDOEgVDsM4BdE22"
 BOARD_HOOK_DRY = "false"
 BOARD_HOOK_MAX_PER_DAY = "100"

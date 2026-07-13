@@ -46,6 +46,7 @@ client-side (NL search uses the on-device heuristic, subscriptions/feeds are hid
 | `/api` | GET | 302 → crol-list.org/api.html (the API docs) | none |
 | `/admin/subs` `/admin/feedback` | GET | Operator reads (redacted) | `ADMIN_KEY` → 404 if unset |
 | `/usage` | GET | Read-only Haiku spend report | `USAGE_KEY` → 404 if unset |
+| `/board-hook` | POST | **Board-notification bridge** (wave 6 T8): org webhook (`projects_v2_item`, org `cityscroll`) → one comment on the moved issue, so board status changes reach GitHub's native per-member notifications. See `src/boardhook.mjs` | HMAC (`BOARD_HOOK_SECRET`) fails closed; fails closed 503 with no bot/App token configured |
 | `/` `/health` | GET | liveness | none |
 
 ## The daily digest (cron `0 13 * * *` ≈ 9am ET; LIVE since 2026-07-01)
@@ -65,6 +66,29 @@ the site's `#notice/<id>` permalinks.
 **Email identity:** From is always the app's own (`ALERTS_FROM` =
 `CROL-List <alerts@crol-list.org>`, domain verified in Resend, DMARC passing); To is only
 ever the subscriber's own opted-in address. Never sends as a person.
+
+## Board-notification bridge auth (App-first, zero-downtime fallback)
+
+`/board-hook` posts as either the **board-notify GitHub App**'s own installation token or,
+absent that, the static `GITHUB_BOT_TOKEN` — whichever is configured wins, no code path
+change needed (`resolveToken()` in `src/boardhook.mjs`):
+
+1. If `BOARDNOTIFY_APP_ID` + `BOARDNOTIFY_APP_PRIVATE_KEY` + `BOARDNOTIFY_INSTALLATION_ID`
+   are all set: mint a short-lived App JWT (RS256, WebCrypto, `buildAppJwt()`), exchange it
+   for an installation access token (`POST /app/installations/{id}/access_tokens`), and use
+   that as the bearer for the GraphQL lookup + issue comment.
+2. Otherwise fall back to `GITHUB_BOT_TOKEN` (fine-grained PAT, Issues RW) — today's path,
+   unaffected by leaving the App secrets unset.
+
+Provisioning the App itself is a one-click local flow (GitHub's [manifest
+flow](https://docs.github.com/en/apps/sharing-github-apps/registering-a-github-app-from-a-manifest),
+no App has to pre-exist) — see `` (outside this repo, in the
+maintainer's private tooling) for the helper + `INSTALL.md` with the exact `wrangler secret put`
+commands and how to find the installation id.
+
+**cc-roster:** `BOARDNOTIFY_CC` (var, comma-separated GitHub logins, no `@`, default empty)
+is appended as an explicit `cc @a @b` line on every bridge comment — mentions are the one
+mechanism that notifies org members regardless of their own subscription state on the issue.
 
 ## Defense in depth (denial-of-wallet & abuse)
 
@@ -115,10 +139,13 @@ CROL_WORKER_URL=https://api.crol-list.org npm run test:live   # live e2e over ev
 ```
 
 Secrets (`wrangler secret put`): `ANTHROPIC_API_KEY`, `RESEND_API_KEY`, `TOKEN_SECRET`,
-`TURNSTILE_SECRET`, `USAGE_KEY`, `ADMIN_KEY`. Vars (in `wrangler.toml`): `ALERTS_LIVE`
-(master switch — anything but `"true"` = dry-run), `ALERTS_FROM`, `MAX_PER_RUN`,
-`MAX_SENDS_PER_DAY`, `HEARTBEAT_DAYS`, `FEEDBACK_TO`. Fire the cron locally by hitting
-`/__scheduled` under `wrangler dev`.
+`TURNSTILE_SECRET`, `USAGE_KEY`, `ADMIN_KEY`, `BOARD_HOOK_SECRET`, `GITHUB_BOT_TOKEN`,
+`BOARDNOTIFY_APP_ID`, `BOARDNOTIFY_APP_PRIVATE_KEY`, `BOARDNOTIFY_INSTALLATION_ID` (the
+last three optional — see "Board-notification bridge auth" above). Vars (in
+`wrangler.toml`): `ALERTS_LIVE` (master switch — anything but `"true"` = dry-run),
+`ALERTS_FROM`, `MAX_PER_RUN`, `MAX_SENDS_PER_DAY`, `HEARTBEAT_DAYS`, `FEEDBACK_TO`,
+`BOARD_PROJECT_ID`, `BOARD_HOOK_DRY`, `BOARD_HOOK_MAX_PER_DAY`, `BOARDNOTIFY_CC`. Fire the
+cron locally by hitting `/__scheduled` under `wrangler dev`.
 
 ## History
 

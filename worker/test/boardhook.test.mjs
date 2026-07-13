@@ -1,10 +1,14 @@
 // The board-notification bridge (T8): signature gate, payload classification,
-// dry-run behavior, and the daily cap — mocked end to end.
+// dry-run behavior, and the daily cap — mocked end to end. Plus ():
+// App-JWT auth, the App/bot-token fallback order, and the cc-roster.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { createHmac } from "node:crypto";
-import { verifySignature, classify, formatComment, handleBoardHook } from "../src/boardhook.mjs";
+import { createHmac, createVerify, generateKeyPairSync } from "node:crypto";
+import {
+  verifySignature, classify, formatComment, handleBoardHook,
+  parseCcRoster, buildAppJwt, resolveToken,
+} from "../src/boardhook.mjs";
 
 class MockKV {
   constructor() { this.store = new Map(); }
@@ -108,4 +112,134 @@ test("handler: daily cap drops with a 200 ack (webhook must not retry-storm)", a
   await handleBoardHook(req(body), env);
   const r = await handleBoardHook(req(body), env);
   assert.deepEqual(await r.json(), { ok: true, skipped: "daily-cap" });
+});
+
+test("formatComment: cc roster appended when present, absent when empty", () => {
+  const withCc = formatComment({ from: "Todo", to: "Done", mover: "devdoshi" }, ["jimdc", "devdoshi"]);
+  assert.match(withCc, /cc @jimdc @devdoshi/);
+  const noCc = formatComment({ from: "Todo", to: "Done", mover: "devdoshi" }, []);
+  assert.doesNotMatch(noCc, /\ncc /);
+  const defaulted = formatComment({ from: "Todo", to: "Done", mover: "devdoshi" });
+  assert.doesNotMatch(defaulted, /\ncc /);
+});
+
+test("parseCcRoster: comma-separated, strips '@', trims, drops empties", () => {
+  assert.deepEqual(parseCcRoster(""), []);
+  assert.deepEqual(parseCcRoster(undefined), []);
+  assert.deepEqual(parseCcRoster("jimdc"), ["jimdc"]);
+  assert.deepEqual(parseCcRoster(" @jimdc, michaeljohnsheehan-a11y ,,@devdoshi"), ["jimdc", "michaeljohnsheehan-a11y", "devdoshi"]);
+});
+
+// --- App-JWT auth ---------------------------------------------------------------
+
+function testRsaKeyPair(privateEncoding = "pkcs1") {
+  const { privateKey, publicKey } = generateKeyPairSync("rsa", {
+    modulusLength: 2048,
+    publicKeyEncoding: { type: "spki", format: "pem" },
+    privateKeyEncoding: { type: privateEncoding, format: "pem" },
+  });
+  return { privateKey, publicKey };
+}
+
+function b64urlToBuffer(s) {
+  s = s.replace(/-/g, "+").replace(/_/g, "/");
+  while (s.length % 4) s += "=";
+  return Buffer.from(s, "base64");
+}
+
+test("buildAppJwt: RS256, correct claims, verifies against the public key (PKCS#1 key)", async () => {
+  const { privateKey, publicKey } = testRsaKeyPair("pkcs1");
+  const jwt = await buildAppJwt("999888", privateKey, 1_700_000_000);
+  const [h, p, s] = jwt.split(".");
+  assert.deepEqual(JSON.parse(b64urlToBuffer(h).toString()), { alg: "RS256", typ: "JWT" });
+  assert.deepEqual(JSON.parse(b64urlToBuffer(p).toString()), {
+    iat: 1_700_000_000 - 60, exp: 1_700_000_000 + 9 * 60, iss: "999888",
+  });
+  const verifier = createVerify("RSA-SHA256");
+  verifier.update(`${h}.${p}`);
+  assert.equal(verifier.verify(publicKey, b64urlToBuffer(s)), true);
+});
+
+test("buildAppJwt: also signs correctly with a PKCS#8-encoded private key", async () => {
+  const { privateKey, publicKey } = testRsaKeyPair("pkcs8");
+  const jwt = await buildAppJwt("1", privateKey, 1_700_000_000);
+  const [h, p, s] = jwt.split(".");
+  const verifier = createVerify("RSA-SHA256");
+  verifier.update(`${h}.${p}`);
+  assert.equal(verifier.verify(publicKey, b64urlToBuffer(s)), true);
+});
+
+test("resolveToken: falls back to GITHUB_BOT_TOKEN when App secrets are absent or partial", async () => {
+  assert.equal(await resolveToken({ GITHUB_BOT_TOKEN: "bot-tok" }), "bot-tok");
+  assert.equal(await resolveToken({}), null);
+  const { privateKey } = testRsaKeyPair();
+  assert.equal(
+    await resolveToken({ BOARDNOTIFY_APP_ID: "1", BOARDNOTIFY_APP_PRIVATE_KEY: privateKey, GITHUB_BOT_TOKEN: "bot-tok" }),
+    "bot-tok",
+  ); // installation id missing -> still falls back
+});
+
+test("resolveToken: with all three App secrets, mints a JWT and exchanges it for an installation token", async () => {
+  const { privateKey } = testRsaKeyPair();
+  const env = {
+    BOARDNOTIFY_APP_ID: "42", BOARDNOTIFY_APP_PRIVATE_KEY: privateKey, BOARDNOTIFY_INSTALLATION_ID: "7777",
+    GITHUB_BOT_TOKEN: "bot-tok", // must be ignored — App path takes priority
+  };
+  const realFetch = globalThis.fetch;
+  let seenAuth;
+  globalThis.fetch = async (url, opts) => {
+    assert.match(String(url), /\/app\/installations\/7777\/access_tokens/);
+    seenAuth = opts.headers.authorization;
+    return Response.json({ token: "installation-tok-abc" }, { status: 201 });
+  };
+  try {
+    const tok = await resolveToken(env);
+    assert.equal(tok, "installation-tok-abc");
+    assert.match(seenAuth, /^Bearer eyJ/); // a JWT, not the static bot token
+  } finally { globalThis.fetch = realFetch; }
+});
+
+test("handler: App-auth live path uses the installation token and appends the cc roster", async () => {
+  const { privateKey } = testRsaKeyPair();
+  const body = JSON.stringify(payload());
+  const env = {
+    BOARD_HOOK_SECRET: SECRET, BOARD_PROJECT_ID: "PVT_test", NL_METER: new MockKV(),
+    BOARDNOTIFY_APP_ID: "42", BOARDNOTIFY_APP_PRIVATE_KEY: privateKey, BOARDNOTIFY_INSTALLATION_ID: "7777",
+    BOARDNOTIFY_CC: "jimdc, devdoshi",
+  };
+  const calls = [];
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async (url, opts) => {
+    calls.push(String(url));
+    if (String(url).includes("/access_tokens")) return Response.json({ token: "install-tok" }, { status: 201 });
+    if (String(url).endsWith("/graphql")) {
+      assert.equal(opts.headers.authorization, "Bearer install-tok");
+      return Response.json({ data: { node: { number: 5, repository: { name: "crol-list", owner: { login: "cityscroll" } } } } });
+    }
+    assert.equal(opts.headers.authorization, "Bearer install-tok");
+    assert.match(JSON.parse(opts.body).body, /cc @jimdc @devdoshi/);
+    return Response.json({ id: 1 }, { status: 201 });
+  };
+  try {
+    const r = await handleBoardHook(req(body), env);
+    assert.deepEqual(await r.json(), { ok: true, issue: 5 });
+    assert.equal(calls.length, 3); // access_tokens, graphql, comment
+  } finally { globalThis.fetch = realFetch; }
+});
+
+test("handler: App-auth failure surfaces as a 502, doesn't silently fall back mid-request", async () => {
+  const { privateKey } = testRsaKeyPair();
+  const body = JSON.stringify(payload());
+  const env = {
+    BOARD_HOOK_SECRET: SECRET, BOARD_PROJECT_ID: "PVT_test", NL_METER: new MockKV(),
+    BOARDNOTIFY_APP_ID: "42", BOARDNOTIFY_APP_PRIVATE_KEY: privateKey, BOARDNOTIFY_INSTALLATION_ID: "7777",
+  };
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async () => new Response("bad credentials", { status: 401 });
+  try {
+    const r = await handleBoardHook(req(body), env);
+    assert.equal(r.status, 502);
+    const j = await r.json();
+    assert.match(j.error, /^auth:/);
+  } finally { globalThis.fetch = realFetch; }
 });
