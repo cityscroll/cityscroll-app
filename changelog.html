@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Changelog · CROL-List</title>
 <meta name="description" content="What changed on CROL-List, when, and what it means for you — including the mistakes.">
+<script src="i18n.js?v=5d81e5eb"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
@@ -43,13 +44,17 @@
   .incident b{font-family:var(--font-sc);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--oxblood)}
   .foot{margin-top:40px;border-top:1px solid var(--rule);padding-top:14px;font:13px/1.6 var(--ui);color:var(--muted);text-align:center}
   .foot a{color:var(--oxblood)}
+  /* language switcher — matches index.html */
+  .lang-switcher{display:flex;gap:.4rem;justify-content:center;margin-block-start:10px;flex-wrap:wrap}
+  .lang-btn{font:600 11px/1 var(--ui);padding:3px 10px;border-radius:12px;border:1px solid var(--rule-strong);background:transparent;color:var(--muted);cursor:pointer}
+  .lang-btn[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 </style>
 </head>
 <body>
 <div class="wrap">
 <header>
   <div class="cr-rule"></div>
-  <a class="home" href="index.html" aria-label="Back to CROL-List home">
+  <a class="home" href="index.html" aria-label="Back to CROL-List home" data-i18n-aria="back_home_aria">
     <svg class="cr-seal" viewBox="0 0 100 100" aria-hidden="true">
       <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="1.5"/>
       <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="0.6"/>
@@ -59,26 +64,31 @@
     </svg>
     <span class="cr-title">CROL-List</span>
   </a>
-  <div class="kicker">The City Record, searchable</div>
-  <h1>Changelog</h1>
+  <div class="kicker" data-i18n="site_kicker">The City Record, searchable</div>
+  <h1 data-i18n="changelog_link">Changelog</h1>
+  <div class="lang-switcher" id="langSwitcher" role="group" aria-label="Language / Idioma">
+    <button class="lang-btn" data-lang="en" aria-pressed="true"><span lang="en">English</span></button>
+    <button class="lang-btn" data-lang="es" aria-pressed="false"><span lang="es">Español</span></button>
+  </div>
   <div class="cr-rule cr-rule--bottom"></div>
-  <a class="backhome" href="index.html">← Back to CROL-List</a>
+  <a class="backhome" href="index.html" data-i18n="back_to_crol">← Back to CROL-List</a>
 </header>
 
-<p class="lede">What changed, when, and what it means for you — including the mistakes. Versions are dates
+<p class="lede" data-i18n-html="chg_p_lede_html">What changed, when, and what it means for you — including the mistakes. Versions are dates
 (<a href="https://calver.org/" target="_blank" rel="noopener">CalVer</a>): the site ships continuously, so a date
 tells the truth where a version number would be theater. A tool that watches the city's public record should keep
 a public record of itself. Live usage numbers: <a href="stats.html">stats</a>.</p>
+<p class="note" data-i18n="chg_detail_note" style="font:13px/1.6 var(--ui);color:var(--muted);margin:6px 0 0">The detailed technical notes below each release (bullet lists, incident reports) remain in English for now.</p>
 <section class="rel" id="2026-07-10e">
-  <h2>2026.07.10 · Espanol coverage: the whole interface, not just the chrome</h2>
-  <div class="foryou"><b>Para usted</b> — Phase 2 of Spanish support: the entire visible interface
+  <h2 data-i18n="chg_0710e_h2">2026.07.10 · Espanol coverage: the whole interface, not just the chrome</h2>
+  <div class="foryou" data-i18n-html="chg_0710e_foryou_html"><b>Para usted</b> — Phase 2 of Spanish support: the entire visible interface
   now translates when you switch to Espanol. Phase 1 covered tabs, buttons, and short labels (98 keys).
   Phase 2 adds the empty states, search placeholders, panel headings, the Today's Edition strip,
   alert builder labels and parameters, loading messages, and all control labels across every lens
   (Money, People, Land, Property, Rules, Meetings, Alerts) -- growing the dictionary from 98 to
   over 200 keys. A new residual-English coverage gate in the test suite verifies 15 high-visibility
   sentinel strings are absent in Espanol mode.</div>
-  <ul>
+  <ul class="chg-detail">
     <li>Dictionary grows from 98 to 200+ keys; all new keys carry full en + es translations.</li>
     <li>Static HTML: <code>data-i18n</code> attributes on all translatable labels, options, buttons,
       and headings. New <code>data-i18n-placeholder</code> attribute pattern for search inputs.</li>
@@ -90,8 +100,8 @@ a public record of itself. Live usage numbers: <a href="stats.html">stats</a>.</
   </ul>
 </section>
 <section class="rel" id="2026-07-10d">
-  <h2>2026.07.10 · Spanish support + style-guide copy pass</h2>
-  <div class="foryou"><b>For you</b> — A language switcher now appears in the header (English
+  <h2 data-i18n="chg_0710d_h2">2026.07.10 · Spanish support + style-guide copy pass</h2>
+  <div class="foryou" data-i18n-html="chg_0710d_foryou_html"><b>For you</b> — A language switcher now appears in the header (English
   / Espanol). Choosing Spanish translates all tabs, chips, and messages in the UI; notices
   themselves stay in English, which is the official language of the City Record. Your preference
   is remembered across visits. Separately, time chips, deadline chips, and the feedback-category
@@ -99,7 +109,7 @@ a public record of itself. Live usage numbers: <a href="stats.html">stats</a>.</
   numbers ("closes in two days"), and acronym expansions on first use (RFP, M/WBE, ZAP).
   City Record content is now marked <code>translate="no"</code> so machine-translation tools
   leave it intact.</div>
-  <ul>
+  <ul class="chg-detail">
     <li>Language switcher (English / Espanol) with USWDS-pattern native-language labels, stored
       in localStorage, and <code>aria-pressed</code> for keyboard users.</li>
     <li>Runtime dictionary (<code>i18n.js</code>) with 98 keys in English and Spanish — no build
@@ -112,15 +122,15 @@ a public record of itself. Live usage numbers: <a href="stats.html">stats</a>.</
   </ul>
 </section>
 <section class="rel" id="2026-07-10c">
-  <h2>2026.07.10 · Accessibility: an enforced floor, not a promise</h2>
-  <div class="foryou"><b>For you</b> — If you use a keyboard or a screen reader, the rough edges
+  <h2 data-i18n="chg_0710c_h2">2026.07.10 · Accessibility: an enforced floor, not a promise</h2>
+  <div class="foryou" data-i18n-html="chg_0710c_foryou_html"><b>For you</b> — If you use a keyboard or a screen reader, the rough edges
   are getting fixed for real: the feedback form's category picker now works without a mouse, the
   plain-English search box announces itself properly, low-contrast text is corrected site-wide,
   and the "minimum award" filter genuinely disables when it doesn't apply instead of just fading.
   From now on, an automated accessibility check (axe) runs against every page in our test
   harness — a change that breaks accessibility fails the build. CONTRIBUTING and SECURITY were
   also rewritten to describe how the project is actually governed and defended.</div>
-  <ul>
+  <ul class="chg-detail">
     <li>The gate immediately earned its keep: it caught a third contrast violation (chip count
       badges at 55% opacity, ratio 3.2:1) that two human passes had missed. All six public pages
       now pass with zero critical/serious violations.</li>
@@ -129,8 +139,8 @@ a public record of itself. Live usage numbers: <a href="stats.html">stats</a>.</
   </ul>
 </section>
 <section class="rel" id="2026-07-10b">
-  <h2>2026.07.10 · Three new front doors: email-in, MCP, and The Data</h2>
-  <div class="foryou"><b>For you</b> — Three new ways in. <b>Subscribe by email:</b> write to
+  <h2 data-i18n="chg_0710b_h2">2026.07.10 · Three new front doors: email-in, MCP, and The Data</h2>
+  <div class="foryou" data-i18n-html="chg_0710b_foryou_html"><b>For you</b> — Three new ways in. <b>Subscribe by email:</b> write to
   <a href="mailto:subscribe@crol-list.org">subscribe@crol-list.org</a> in plain English
   ("construction awards over $500k") and you'll get a confirmation link back — no form, no
   CAPTCHA, just your words. <b>For AI assistants:</b> point any MCP client at
@@ -139,7 +149,7 @@ a public record of itself. Live usage numbers: <a href="stats.html">stats</a>.</
   <b><a href="data.html">The Data</a>:</b> a new page showing the City Record at a glance —
   what's actually in it, publication volume, procurement mix, top agencies and vendors by
   cleaned dollars — computed live in your browser from NYC Open Data.</div>
-  <ul>
+  <ul class="chg-detail">
     <li>Inbound email → LLM-parsed watch with the same double-opt-in confirm flow as the site;
       hard daily ceilings and per-sender limits on every model-backed path, failing closed.</li>
     <li>MCP tools: <code>search_notices</code>, <code>get_notice</code> (the daily-refreshed
@@ -153,8 +163,8 @@ a public record of itself. Live usage numbers: <a href="stats.html">stats</a>.</
   </ul>
 </section>
 <section class="rel" id="2026-07-10">
-  <h2>2026.07.10 · Honest data rules + a faster backbone (with Dev Doshi)</h2>
-  <div class="foryou"><b>For you</b> — Money filters and digests can no longer be hijacked by
+  <h2 data-i18n="chg_0710_h2">2026.07.10 · Honest data rules + a faster backbone (with Dev Doshi)</h2>
+  <div class="foryou" data-i18n-html="chg_0710_foryou_html"><b>For you</b> — Money filters and digests can no longer be hijacked by
   the dataset's data-entry errors: amounts ≥ $10B (there's a $96 <em>trillion</em> typo in the
   official record) are excluded, while real multi-billion awards now correctly appear — the old
   cutoff silently dropped everything above $5B, including the largest legitimate award (≈$6.68B).
@@ -162,7 +172,7 @@ a public record of itself. Live usage numbers: <a href="stats.html">stats</a>.</
   (rolling)"</b> instead of a date no one should calendar. The <a href="about.html#data">About
   page documents the dataset's quirks</a> — what the City Record actually contains and how we
   correct for it.</div>
-  <ul>
+  <ul class="chg-detail">
     <li>Data-honesty rules grounded in Dev Doshi's exploratory analysis of the full 1.09M-row
       dataset (87.5% personnel-change skew, a data-entry-error amount tail, rolling-deadline placeholders,
       dual agency-name conventions) — thanks Dev.</li>
@@ -178,9 +188,9 @@ a public record of itself. Live usage numbers: <a href="stats.html">stats</a>.</
   </ul>
 </section>
 <section class="rel" id="2026-07-09">
-  <h2>2026.07.09 · Predictive Procurement: Checkbook Expirations, MOCS Plans, &amp; Early-Warning Timelines</h2>
-  <div class="foryou"><b>For you</b> — CROL-List now alerts you 6 months <em>before</em> contracts expire or new RFPs are published. Agency and vendor profiles show a new <b>"Procurement Forecast"</b> tab with a vertical chronological timeline, uniting predicted contract renewals (from Checkbook NYC) and official agency-planned solicitations (from Charter §112 MOCS datasets). Digests now deliver early-warning notifications for upcoming forecasts matching your watches.</div>
-  <ul>
+  <h2 data-i18n-html="chg_0709_h2">2026.07.09 · Predictive Procurement: Checkbook Expirations, MOCS Plans, &amp; Early-Warning Timelines</h2>
+  <div class="foryou" data-i18n-html="chg_0709_foryou_html"><b>For you</b> — CROL-List now alerts you 6 months <em>before</em> contracts expire or new RFPs are published. Agency and vendor profiles show a new <b>"Procurement Forecast"</b> tab with a vertical chronological timeline, uniting predicted contract renewals (from Checkbook NYC) and official agency-planned solicitations (from Charter §112 MOCS datasets). Digests now deliver early-warning notifications for upcoming forecasts matching your watches.</div>
+  <ul class="chg-detail">
     <li>Checkbook NYC contract end-date calculations to estimate renewal timelines; 180-day early warning triggers with single-send de-duplication.</li>
     <li>Ingestion pipeline for annual Charter §112 MOCS agency procurement plans, normalizing value bands and expected RFP release quarters.</li>
     <li>New unified <code>GET /forecast</code> API search endpoint and extended <code>GET /inv/:id</code> details, grouping future timeline milestones chronologically.</li>
@@ -189,24 +199,24 @@ a public record of itself. Live usage numbers: <a href="stats.html">stats</a>.</
 </section>
 
 <section class="rel" id="2026-07-02d">
-  <h2>2026.07.02 · Fix: vendors with punctuated names resolve again</h2>
-  <div class="foryou"><b>For you</b> — Vendor pages and vendor watches now work for names like
+  <h2 data-i18n="chg_0702d_h2">2026.07.02 · Fix: vendors with punctuated names resolve again</h2>
+  <div class="foryou" data-i18n-html="chg_0702d_foryou_html"><b>For you</b> — Vendor pages and vendor watches now work for names like
   "Leon D. Dematteis Construction Corp." Before this fix, clicking such a vendor showed "no awards
   on record" and a watch on them matched nothing — despite their awards being right there.</div>
-  <ul>
+  <ul class="chg-detail">
     <li>Root cause: entity resolution normalizes a name to a punctuation-free stem, but the server-side lookup prefix-matched that stem against the <em>raw</em> <code>vendor_name</code> column — so any vendor with mid-name punctuation could never match its own stem. Fixed by switching the lookup to Socrata full-text <code>$q</code> (punctuation-insensitive on both sides); the exact-stem filter still guarantees precision. Same fix in the site, the worker's entity watches, and the batch cross-reference tool.</li>
     <li>Caught by functional spec 05; a new unit test pins the invariant (a vendor's own row must satisfy the compiled query).</li>
   </ul>
 </section>
 
 <section class="rel" id="2026-07-02c">
-  <h2>2026.07.02 · Snap + crisp: the round-four speed-and-declutter pass</h2>
-  <div class="foryou"><b>For you</b> — The site looks calmer and feels immediate. Lists show
+  <h2 data-i18n="chg_0702c_h2">2026.07.02 · Snap + crisp: the round-four speed-and-declutter pass</h2>
+  <div class="foryou" data-i18n-html="chg_0702c_foryou_html"><b>For you</b> — The site looks calmer and feels immediate. Lists show
   content-shaped placeholders instead of spinners; filtering keeps your place instead of blanking
   the list; going back to a tab you already loaded is instant; clicking a notice paints its detail
   at once (the paper trail fills in a beat later). Search runs as you type — the Filter buttons
   are gone because you no longer need them.</div>
-  <ul>
+  <ul class="chg-detail">
     <li>~150KB of map code (Leaflet) no longer blocks first paint — it loads only when the Land lens needs it. Unused font weight dropped; the browser now pre-connects to the data APIs.</li>
     <li>A read-side query cache (5-minute TTL) with request coalescing: revisiting a tab, filter, or notice renders from memory.</li>
     <li>Today's Edition renders instantly from your last visit's copy and refreshes behind itself — no more masthead reflow.</li>
@@ -215,12 +225,12 @@ a public record of itself. Live usage numbers: <a href="stats.html">stats</a>.</
 </section>
 
 <section class="rel" id="2026-07-02b">
-  <h2>2026.07.02 · Enablement: public stats, honest click counts, this page</h2>
-  <div class="foryou"><b>For you</b> — You can now see the project's own usage numbers at
+  <h2 data-i18n="chg_0702b_h2">2026.07.02 · Enablement: public stats, honest click counts, this page</h2>
+  <div class="foryou" data-i18n-html="chg_0702b_foryou_html"><b>For you</b> — You can now see the project's own usage numbers at
   <a href="stats.html">/stats</a> (aggregate counts only — no accounts, no cookies, nobody tracked). Email-digest
   links now pass through a count-only redirect so we can tell digests are useful; it counts <em>clicks per day</em>,
   never who clicked, and every digest footer says so.</div>
-  <ul>
+  <ul class="chg-detail">
     <li>Public <code>/stats</code> endpoint + this site's <a href="stats.html">stats page</a>: active subscriptions (a count, not a list), digests sent, digest links followed, feed/batch/share activity, plain-English-search calls. <code>a5dbc18</code> (worker)</li>
     <li>Count-only digest click-through <code>/r/&lt;kind&gt;/&lt;id&gt;</code> — validated ids only, cannot redirect off-site, junk paths fall to the homepage uncounted. <code>a5dbc18</code></li>
     <li>This changelog; the maintenance rule now includes it (every shipped change lands an entry in the same session).</li>
@@ -231,71 +241,74 @@ a public record of itself. Live usage numbers: <a href="stats.html">stats</a>.</
 </section>
 
 <section class="rel" id="2026-07-02">
-  <h2>2026.07.02 · Follow the dollars, matter timelines, follows, workspace, API</h2>
-  <div class="foryou"><b>For you</b> — Awards now show what was <em>actually paid</em> (live from Checkbook NYC),
+  <h2 data-i18n="chg_0702_h2">2026.07.02 · Follow the dollars, matter timelines, follows, workspace, API</h2>
+  <div class="foryou" data-i18n-html="chg_0702_foryou_html"><b>For you</b> — Awards now show what was <em>actually paid</em> (live from Checkbook NYC),
   any procurement matter reads as one timeline, you can follow a vendor or agency and get emailed when they
   reappear, pin anything into a citable investigation workspace, and use every view as an API.</div>
-  <ul>
+  <ul class="chg-detail">
     <li>Checkbook NYC join, deterministic by PIN: committed vs. paid-to-date with a progress bar, amended-from, M/WBE, vendor-mismatch warning; <code>#matter/&lt;pin&gt;</code> timelines. <code>943a858</code></li>
     <li>Follow-an-entity alerts (name-stem matched) + Follow buttons on entity pages; investigation workspace — pin · annotate · export CSV/JSON · print dossier · 90-day share links; <code>api.html</code> docs + live batch cross-reference (<code>POST /batch</code>). <code>c794015</code> (site) · <code>3176ec2</code> (worker)</li>
     <li>All user-visible worker URLs now read <code>api.crol-list.org</code>. <code>03ed286</code></li>
     <li>Test coverage across all twenty features; fixed a case-sensitivity bug it caught in junk-PIN filtering. <code>dc8499e</code></li>
   </ul>
-  <div class="incident"><b>Incident</b> — Adding the custom domain silently disabled the <code>workers.dev</code>
+  <div class="incident chg-detail"><b>Incident</b> — Adding the custom domain silently disabled the <code>workers.dev</code>
   fallback alias (Cloudflare error 1042): cached pages and in-flight email-confirm links would have broken. Caught
   by live probes minutes after deploy; fixed by keeping the alias explicitly enabled, and the site now fails over
   between the two hostnames automatically. <code>d75626e</code></div>
 </section>
 
 <section class="rel" id="2026-07-01">
-  <h2>2026.07.01 · Entity pages, red flags in context — and the first ten, all in one day</h2>
-  <div class="foryou"><b>For you</b> — Every vendor and agency became a page (with totals, top partners, and open
+  <h2 data-i18n="chg_0701_h2">2026.07.01 · Entity pages, red flags in context — and the first ten, all in one day</h2>
+  <div class="foryou" data-i18n-html="chg_0701_foryou_html"><b>For you</b> — Every vendor and agency became a page (with totals, top partners, and open
   RFPs), procurement notices carry statistical context instead of bare text, and the whole
   search-and-subscribe layer landed: watch any search, get a morning email digest, grab any view as RSS/calendar,
   share any notice by URL, and see deadlines as countdowns instead of dates.</div>
-  <ul>
+  <ul class="chg-detail">
     <li>Entity pages: <code>#vendor/&lt;name&gt;</code> (name variants resolved — "Sinergia Inc" and "Sinergia Incorporated" are one profile) and <code>#agency/&lt;name&gt;</code>; every name on the site became a link. <code>d0db6c1</code> · <code>ad43b56</code></li>
     <li>Red-flag badges (non-competitive method, short ad window, repeat vendor) + benchmarks ("larger than 94% of this agency's awards"), with the formulas and false-positive modes published on <a href="about.html#context">About</a>. <code>6708c33</code></li>
     <li>Round one, all ten: watch-this-search on every lens + 60-second onboarding quiz <code>b217895</code>; RSS/Atom/JSON/calendar feeds <code>27e8b1e</code> (worker); permalinks everywhere <code>ef8c3b6</code>; deadline countdown chips <code>55087c6</code>; the who/what/when/act glance box <code>74de73e</code>; Today's Edition front page <code>d28b7d4</code>; the People lens's instant examples <code>2c0f72b</code>; the Property asset-type explorer <code>2ed20ee</code>; the accessibility & mobile pass <code>a46c2fa</code>.</li>
     <li>The daily digest cron went <b>live</b>; cookieless Cloudflare Web Analytics beacon installed. <code>aec7673</code></li>
   </ul>
-  <div class="incident"><b>Incident</b> — The new vendor pages' full-text mentions query initially ran unbounded
+  <div class="incident chg-detail"><b>Incident</b> — The new vendor pages' full-text mentions query initially ran unbounded
   over the 1M-row archive (slow, expensive). Caught by the browser test harness before it shipped; the query is
   now scoped to recent editions with a hard timeout. <code>7fbe726</code></div>
 </section>
 
 <section class="rel" id="2026-06-30">
-  <h2>2026.06.30 · Real subscriptions</h2>
-  <div class="foryou"><b>For you</b> — Email alerts became real: double opt-in (nothing is stored until you click
+  <h2 data-i18n="chg_0630_h2">2026.06.30 · Real subscriptions</h2>
+  <div class="foryou" data-i18n-html="chg_0630_foryou_html"><b>For you</b> — Email alerts became real: double opt-in (nothing is stored until you click
   the confirmation link), one-click unsubscribe, and your address is only ever used to send you your own digest.</div>
-  <ul>
+  <ul class="chg-detail">
     <li>Turnstile-gated <code>/subscribe</code> → signed confirm link → KV; RFC-8058 one-click unsubscribe. <code>6b2b30d</code></li>
   </ul>
 </section>
 
 <section class="rel" id="2026-06-26">
-  <h2>2026.06.26 · crol-list.org</h2>
-  <div class="foryou"><b>For you</b> — The site got its own domain and a real "ask in plain English" box on every
+  <h2 data-i18n="chg_0626_h2">2026.06.26 · crol-list.org</h2>
+  <div class="foryou" data-i18n-html="chg_0626_foryou_html"><b>For you</b> — The site got its own domain and a real "ask in plain English" box on every
   lens (with an on-device fallback, so search works even if the helper is down).</div>
-  <ul>
+  <ul class="chg-detail">
     <li>Domain cutover to <code>crol-list.org</code> <code>cc8192a</code>; plain-English search wired to the worker <code>e32f3fa</code>; interface declutter <code>827fb9b</code>.</li>
   </ul>
 </section>
 
 <section class="rel" id="2026-06-24">
-  <h2>2026.06.24–25 · The seven lenses</h2>
-  <div class="foryou"><b>For you</b> — The tool took its shape: Money, People, Land, Property, Rules, Meetings, and
+  <h2 data-i18n="chg_0624_h2">2026.06.24–25 · The seven lenses</h2>
+  <div class="foryou" data-i18n-html="chg_0624_foryou_html"><b>For you</b> — The tool took its shape: Money, People, Land, Property, Rules, Meetings, and
   Alerts, in the letterpress design, over live open data with nothing cached.</div>
-  <ul>
+  <ul class="chg-detail">
     <li>Money/People/Land deep lenses; Property, Rules, Meetings feed lenses <code>d0670b7</code>; real rezoned tax-lot polygons on the Land map <code>38b648e</code>; the "Still standing?" demolition check <code>7cd5a96</code>; the City Record letterpress redesign <code>f2c4033</code>.</li>
   </ul>
 </section>
 
 <div class="foot">
-  <p>CROL-List is an unofficial, free interface to public data. <a href="about.html">About</a> ·
+  <p data-i18n-html="chg_foot_html">CROL-List is an unofficial, free interface to public data. <a href="about.html">About</a> ·
   <a href="stats.html">Stats</a> · <a href="api.html">API &amp; feeds</a> · <a href="index.html">Home</a></p>
 </div>
-</div>
+
+<script>
+initSubpageLangSwitcher();
+</script>
 <!-- Cloudflare Web Analytics — cookieless, aggregate. -->
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "5d81fb4366b848dea15fb1862391909c"}'></script>
 </body>

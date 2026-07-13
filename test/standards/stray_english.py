@@ -210,10 +210,15 @@ def scan_js(src):
     return findings
 
 
+HTML_PAGES = ["index.html", "about.html", "data.html", "stats.html", "api.html", "changelog.html"]
+
+
 def main():
-    src = (ROOT / "index.html").read_text(encoding="utf-8")
-    start, end = src.find("<script>"), src.rfind("</script>")
-    findings = scan_js(src[start + 8:end] if start != -1 and end != -1 else "")
+    findings = []
+    for page in HTML_PAGES:
+        src = (ROOT / page).read_text(encoding="utf-8")
+        start, end = src.find("<script>"), src.rfind("</script>")
+        findings += scan_js(src[start + 8:end] if start != -1 and end != -1 else "")
     # i18n.js: only the code AFTER the dictionaries (builders/helpers) is linted —
     # the STRINGS/SECTION_I18N tables *are* the i18n layer.
     i18n_src = (ROOT / "i18n.js").read_text(encoding="utf-8")

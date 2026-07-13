@@ -66,9 +66,10 @@ jobs:
         run: |
           pip install playwright
           playwright install --with-deps chromium
-      - name: Run guard (es)
+      - name: Run guard (es, all pages)
         env:
           CROL_GUARD_LANGS: es
+          CROL_GUARD_PAGES: index,about,data,stats,api,changelog
         run: python3 test/functional/13_stray_english.py
 
   functional:
