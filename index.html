@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Track NYC contract opportunities, rezonings, and public meetings. Search open Requests for Proposals (RFPs), follow vendors, watch for rule changes — free email alerts.">
-<title>CROL-List: track RFPs, rezonings, meetings</title>
+<meta name="description" content="Track NYC contract opportunities, rezonings, and public meetings. Search open RFPs, follow vendors, watch rule changes — free email alerts.">
+<title>CROL-List · track RFPs, rezonings, meetings</title>
 <link rel="alternate" type="application/atom+xml" title="CROL-List — new procurement notices" href="https://api.crol-list.org/feed.xml?lens=money">
 <link rel="alternate" type="application/feed+json" title="CROL-List — new procurement notices (JSON)" href="https://api.crol-list.org/feed.json?lens=money">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -298,7 +298,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=917986a4"></script>
+<script src="i18n.js?v=228564a6"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
@@ -526,12 +526,12 @@
       <div class="afield" style="margin-top:10px">
         <label id="quizwhatlbl"><span class="qstep">1</span> <span data-i18n="quiz_step1">What should we watch for you?</span></label>
         <div class="chiprow" id="quizwhat" role="group" aria-labelledby="quizwhatlbl" style="margin-top:6px">
-          <button type="button" class="chip" data-w="rfpkw" aria-pressed="false" data-i18n="quiz_rfpkw">City contracts &amp; RFPs</button>
+          <button type="button" class="chip" data-w="rfpkw" aria-pressed="false" data-i18n="quiz_rfpkw">City contracts and RFPs</button>
           <button type="button" class="chip" data-w="bigaward" aria-pressed="false" data-i18n="quiz_bigaward">Big contract awards</button>
           <button type="button" class="chip" data-w="rezone" aria-pressed="false" data-i18n="quiz_rezone">Rezonings near me</button>
           <button type="button" class="chip" data-w="property" aria-pressed="false" data-i18n="quiz_property">Property sales</button>
           <button type="button" class="chip" data-w="rules" aria-pressed="false" data-i18n="quiz_rules">Rule changes</button>
-          <button type="button" class="chip" data-w="meetings" aria-pressed="false" data-i18n="quiz_meetings">Hearings &amp; meetings</button>
+          <button type="button" class="chip" data-w="meetings" aria-pressed="false" data-i18n="quiz_meetings">Hearings and meetings</button>
         </div>
       </div>
       <div class="afield">
@@ -569,7 +569,7 @@
               <option value="rezone" data-i18n="watch_rezone">Rezonings near a neighborhood</option>
               <option value="property" data-i18n="watch_property">Property sale notices</option>
               <option value="rules" data-i18n="watch_rules">Rule changes (Agency Rules)</option>
-              <option value="meetings" data-i18n="watch_meetings">Public hearings &amp; meetings</option>
+              <option value="meetings" data-i18n="watch_meetings">Public hearings and meetings</option>
               <option value="entityvendor" data-i18n="watch_entityvendor">A vendor — anything naming them</option>
               <option value="entityagency" data-i18n="watch_entityagency">An agency — anything they publish</option>
             </select>
@@ -633,7 +633,7 @@
 
 <footer>
   <div class="wrap">
-    <p style="margin:0"><span data-i18n="footer_lede">CROL-List searches the City Record Open Data</span> — <b><span id="editionspan">2003 to present</span></b>, <span data-i18n="footer_notices">1M+ notices</span>. <a href="about.html" style="color:var(--oxblood)" data-i18n="footer_about">About</a> · <a href="#investigation" style="color:var(--oxblood)" data-i18n="footer_investigation">My investigation</a> · <a href="api.html" style="color:var(--oxblood)" data-i18n="footer_api">API &amp; feeds</a> · <a href="changelog.html" style="color:var(--oxblood)" data-i18n="footer_changelog">Changelog</a> · <a href="stats.html" style="color:var(--oxblood)" data-i18n="footer_stats">Stats</a></p>
+    <p style="margin:0"><span data-i18n="footer_lede">CROL-List searches the City Record Open Data</span> — <b><span id="editionspan">2003 to present</span></b>, <span data-i18n="footer_notices">1M+ notices</span>. <a href="about.html" style="color:var(--oxblood)" data-i18n="footer_about">About</a> · <a href="#investigation" style="color:var(--oxblood)" data-i18n="footer_investigation">My investigation</a> · <a href="api.html" style="color:var(--oxblood)" data-i18n="footer_api">API and feeds</a> · <a href="changelog.html" style="color:var(--oxblood)" data-i18n="footer_changelog">Changelog</a> · <a href="stats.html" style="color:var(--oxblood)" data-i18n="footer_stats">Stats</a></p>
   </div>
 </footer>
 
@@ -1035,7 +1035,7 @@ function glanceFor(r){
   if(r.contact_name) act.push(cleanText(r.contact_name));
   const where = cleanText(r.address_to_request) || (goodAddr(r.street_address_1) ? cleanText(r.street_address_1) : "");
   if(where) act.push(where);
-  if(r.type_of_notice_description === "Solicitation") act.push(`<a href="${PASSPORT}" target="_blank" rel="noopener">PASSPort ↗</a>`);
+  if(r.type_of_notice_description === "Solicitation") act.push(`<a href="${PASSPORT}">PASSPort</a>`);
   const body = row(t("glance_who"), who) + row(t("glance_what"), what) + row(t("glance_when"), when) + row(t("glance_act"), act.join(" · "));
   return body ? `<div class="glance">${body}</div>` : "";
 }
@@ -1096,7 +1096,7 @@ function buildApply(r){
   if(r.email) acts += `<a class="act primary" href="${mailtoFor(r)}">${t("email_a_response")}</a>`;
   if(tel) acts += `<a class="act" href="${tel}">${t("call_btn",{phone:cleanText(r.contact_phone)})}</a>`;
   if(r.due_date) acts += `<button class="act" id="icsbtn" type="button">${t("add_deadline_calendar")}</button>`;
-  acts += `<a class="act" href="${PASSPORT}" target="_blank" rel="noopener">${t("bid_on_passport")} ↗</a>`;
+  acts += `<a class="act" href="${PASSPORT}">${t("bid_on_passport")}</a>`;
   acts += '</div>';
   return `<div class="apply"><h3>${t("how_to_respond_heading")}</h3><div class="body">
     ${due}${acts}${dts?`<dl>${dts}</dl>`:""}
@@ -1116,7 +1116,7 @@ function chainHTML(r, chain){
         <div class="bt">${cleanText(c.short_title)||t("untitled")}</div>
         ${amt? `<div class="amt">${amt}</div>`:""}
         ${c.vendor_name? `<div class="vend">→ ${pivotA(vendorHref(c.vendor_name), cleanText(c.vendor_name))}</div>`:""}
-        <a class="view" href="${REQ_URL(c.request_id)}" target="_blank" rel="noopener">${t("view_in_city_record")}</a>
+        <a class="view" href="${REQ_URL(c.request_id)}">${t("view_in_city_record")}</a>
       </div></div>`;
     if(idx < chain.length-1) html += '<div class="connector">→</div>';
   });
@@ -1551,7 +1551,7 @@ async function pSelectPerson(i, el){
       <span class="tlreason">${a.reason||""}</span>
       ${a.salary && a.salary!=="1.00" && a.salary!=="1"? `<span class="tlsal">${money(a.salary)}</span>`:""}
       ${a.code? `<span class="pin">${t("code_label",{code:a.code})}</span>`:""}
-      <a class="view" href="${REQ_URL(a.req)}" target="_blank" rel="noopener" style="margin-left:auto">↗</a></div>`;
+      <a class="view" href="${REQ_URL(a.req)}" style="margin-left:auto">${t("view_in_city_record")}</a></div>`;
   });
   html += `</div>`;
   $("#pdetail").innerHTML = html;
@@ -1654,9 +1654,9 @@ async function landSelect(i, el){
   if(actList.length) html+=`<div class="rmeta2" style="margin-top:10px"><b>${t("actions_lbl")}</b> ${actList.join(" · ")}</div>`;
   const area=(r.project_name||r.borough||"").replace(/(rezoning|demapping|rezone|special permit|special district|text amendment|mapping actions?|modification|disposition|non-?ulurp).*/i,"").trim().split(/\s+/).slice(0,3).join(" ")||r.borough||"";
   html+=`<div class="actions" style="margin-top:12px">
-    <a class="act primary" href="https://zap.planning.nyc.gov/projects/${r.project_id}" target="_blank" rel="noopener">${t("zap_full_project")}</a>
+    <a class="act primary" href="https://zap.planning.nyc.gov/projects/${r.project_id}">${t("zap_full_project")}</a>
     <button class="act" type="button" id="landalert" data-q="${area.replace(/"/g,'')}">${t("alert_me_area")}</button>
-    <a class="act" id="crfind" href="https://a856-cityrecord.nyc.gov/Search/Advanced" target="_blank" rel="noopener">${t("search_city_record")}</a>
+    <a class="act" id="crfind" href="https://a856-cityrecord.nyc.gov/Search/Advanced">${t("search_city_record")}</a>
   </div>
   <div id="landmap"></div><div class="note" id="landmapnote"><span class="loading"></span> ${t("locating")}</div>`;
   $("#ldetail").innerHTML=html;
@@ -1828,10 +1828,10 @@ function renderFeed(key, rows){
   el.innerHTML=rows.map(r=>{
     const ev=r.event_date, addr=cfg.showAddr&&goodAddr(r.street_address_1)?cleanText(r.street_address_1):"";
     const scope=cleanText(r.additional_description_1).slice(0,200);
-    let acts=`<a class="act" href="${REQ_URL(r.request_id)}" target="_blank" rel="noopener">${t("city_record_link")}</a>`;
+    let acts=`<a class="act" href="${REQ_URL(r.request_id)}">${t("city_record_link")}</a>`;
     acts+=`<button class="act" type="button" data-link="${r.request_id}">${t("copy_link_btn")}</button>`;
     if(ev) acts+=`<button class="act" type="button" data-ev="${key}:${r.request_id}">${t("add_date_btn",{date:fdt(ev)})}</button>`;
-    if(addr) acts+=`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(addr+' New York NY')}" target="_blank" rel="noopener">${t("map_link")}</a>`;
+    if(addr) acts+=`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(addr+' New York NY')}">${t("map_link")}</a>`;
     if(addr && key==="property") acts+=`<button class="act" type="button" data-demo="${r.request_id}">${t("still_standing_btn")}</button>`;
     const pbadges = key==="property" && (r._asset || r._badge)
       ? `<div>${r._asset?`<span class="tag asset">${ASSET_LABEL[r._asset]?t(ASSET_LABEL[r._asset]):""}</span>`:""}${r._badge?`<span class="tag amt">${r._badge}</span>`:""}</div>` : "";
@@ -1997,7 +1997,7 @@ function digItemHTML(kind, r){
     <div class="dm">${r.agency_name} · ${t("due_on",{date:fdt(r.due_date)})}${dl!=null?t("days_paren",{n:dl}):""}</div>${dc}</div>`; }
   return `<div class="digitem"><div class="dt">${r.project_name ? enTitle(r.project_name) : t("unnamed_rezoning")}</div>
     <div class="dm">${r.borough||""}${r.community_district? " · CD "+r.community_district:""} · ${r.public_status||""}${r.primary_applicant? " · "+r.primary_applicant:""}${mihOn(r.mih_flag)? " · "+t("affordable_housing_tag"):""}</div>
-    <div class="dc"><a href="https://zap.planning.nyc.gov/projects/${r.project_id}" target="_blank" rel="noopener">${t("view_comment_zap")}</a> · <a href="https://a856-cityrecord.nyc.gov/Search/Advanced" target="_blank" rel="noopener">${t("hearing_notice_cr")}</a></div></div>`;
+    <div class="dc"><a href="https://zap.planning.nyc.gov/projects/${r.project_id}">${t("view_comment_zap")}</a> · <a href="https://a856-cityrecord.nyc.gov/Search/Advanced">${t("hearing_notice_cr")}</a></div></div>`;
 }
 
 function feedURLs(){
@@ -2016,9 +2016,9 @@ function renderFeedLinks(){
   const el=$("#afeeds"); if(!el) return;
   const u=feedURLs(); if(!u){ el.innerHTML=""; return; }
   el.innerHTML=`${t("prefer_feeds_html")}
-    <a href="${u.atom}" target="_blank" rel="noopener">RSS/Atom</a> ·
-    <a href="${u.json}" target="_blank" rel="noopener">JSON Feed</a> ·
-    <a href="${u.ics}" target="_blank" rel="noopener">${t("calendar_ics")}</a> ${t("feeds_suffix")}`;
+    <a href="${u.atom}">RSS/Atom</a> ·
+    <a href="${u.json}">JSON Feed</a> ·
+    <a href="${u.ics}">${t("calendar_ics")}</a> ${t("feeds_suffix")}`;
 }
 async function aPreview(){
   $("#apreviewbox").innerHTML='<div class="empty"><span class="loading"></span> ' + t("fetching_today") + '</div>';
@@ -2115,7 +2115,7 @@ async function loadToday(){
 function renderToday(d){
   const total = (d.counts||[]).reduce((s,c)=>s+(+c.n||0),0);
   if(!total) return;
-  const _lm=(window.LANG_META||{})[window.LANG||"en"]; const _loc=_lm?_lm.intlDate:"en-US"; $("#tdate").textContent = new Date(d.ed+"T12:00:00").toLocaleDateString(_loc,{weekday:"long",month:"long",day:"numeric",year:"numeric"}).toUpperCase() + " " + t("latest_edition_suffix");
+  const _lm=(window.LANG_META||{})[window.LANG||"en"]; const _loc=_lm?_lm.intlDate:"en-US"; $("#tdate").textContent = (new Date(d.ed+"T12:00:00").toLocaleDateString(_loc,{weekday:"long",month:"long",day:"numeric",year:"numeric"}) + " " + t("latest_edition_suffix")).toUpperCase();
   $("#tbig").innerHTML = t("today_summary", {n: fmtNumber(total), a: fmtNumber(d.nAgencies)});
   $("#tcounts").innerHTML = d.counts.map(c=>{
     const lens = SECTION_LENS[c.section_name];
@@ -2221,9 +2221,9 @@ async function fillAddressLinks(r, el){
   if(!geo || !geo.bbl || !/^\d{10}$/.test(geo.bbl)) return;
   const b = geo.bbl[0], block = String(parseInt(geo.bbl.slice(1,6),10)), lot = String(parseInt(geo.bbl.slice(6),10));
   el.innerHTML = `<div class="rmeta2" style="margin:8px 0">This address elsewhere:
-    <a href="https://zola.planning.nyc.gov/l/lot/${b}/${block}/${lot}" target="_blank" rel="noopener">ZoLa zoning</a> ·
-    <a href="https://a836-acris.nyc.gov/bblsearch/bblsearch.asp?borough=${b}&block=${block}&lot=${lot}" target="_blank" rel="noopener">ACRIS deeds</a> ·
-    <a href="https://whoownswhat.justfix.org/bbl/${geo.bbl}" target="_blank" rel="noopener">Who Owns What portfolio</a>
+    <a href="https://zola.planning.nyc.gov/l/lot/${b}/${block}/${lot}">ZoLa zoning</a> ·
+    <a href="https://a836-acris.nyc.gov/bblsearch/bblsearch.asp?borough=${b}&block=${block}&lot=${lot}">ACRIS deeds</a> ·
+    <a href="https://whoownswhat.justfix.org/bbl/${geo.bbl}">Who Owns What portfolio</a>
     <span class="muted" style="font-size:12px">· lot ${geo.bbl} via GeoSearch — verify the match</span></div>`;
 }
 
@@ -2272,7 +2272,7 @@ async function followDollars(r, el){
   if(!document.contains(el)) return;
   if(!rows) return; // proxy unreachable → say nothing rather than something wrong
   if(!rows.length){
-    el.innerHTML = `<div class="note" style="margin-top:12px"><b>Follow the dollars:</b> no registered contract in Checkbook NYC for PIN <code>${r.pin}</code> yet — registration typically lags the award notice by weeks. <a href="https://www.checkbooknyc.com/contract_search" target="_blank" rel="noopener">Search Checkbook ↗</a></div>`;
+    el.innerHTML = `<div class="note" style="margin-top:12px"><b>Follow the dollars:</b> no registered contract in Checkbook NYC for PIN <code>${r.pin}</code> yet — registration typically lags the award notice by weeks. <a href="https://www.checkbooknyc.com/contract_search">Search Checkbook</a></div>`;
     return;
   }
   const c = rows[0];
@@ -2288,7 +2288,7 @@ async function followDollars(r, el){
       <dt>Minority/Women-Owned Business Enterprise (M/WBE)</dt><dd>${c.mwbe||"—"}${c.subs && c.subs!=="N/A" ? ` · sub-vendors: ${c.subs}` : ""}</dd>
     </dl>
     ${vendorMismatch?`<div class="note warn" style="margin-top:10px">⚠ Checkbook's vendor (<b>${cleanText(c.vendor)}</b>) differs from the notice's (<b>${cleanText(r.vendor_name)}</b>) — a PIN can cover multiple awards; treat with care.</div>`:""}
-    <div class="pnote">Live from <a href="https://www.checkbooknyc.com/smart_search/citywide?search_term=${encodeURIComponent(c.id)}" target="_blank" rel="noopener">Checkbook NYC ↗</a>, matched by PIN <code>${r.pin}</code>. Payments lag invoicing — $0 paid on a freshly registered contract is normal.</div>
+    <div class="pnote">Live from <a href="https://www.checkbooknyc.com/smart_search/citywide?search_term=${encodeURIComponent(c.id)}">Checkbook NYC</a>, matched by PIN <code>${r.pin}</code>. Payments lag invoicing — $0 paid on a freshly registered contract is normal.</div>
   </div></div>`;
 }
 
@@ -2405,7 +2405,7 @@ async function showAgency(name){
         ${pinBtn("agency", nm, agencyWho(nm), t("meta_agency_profile"))}
         <button class="act" type="button" data-aw="rules">Watch rules only</button>
         <button class="act" type="button" data-aw="meetings">Watch meetings only</button>
-        ${API?`<a class="act" href="${API.replace(/\/+$/,"")}/feed.xml?lens=entity&kind=agency&name=${encodeURIComponent(nm)}" target="_blank" rel="noopener">RSS</a>`:""}
+        ${API?`<a class="act" href="${API.replace(/\/+$/,"")}/feed.xml?lens=entity&kind=agency&name=${encodeURIComponent(nm)}">RSS</a>`:""}
       </div>
       <div class="note">Figures are what this agency has <b>published in the City Record</b> (2003→present for procurement) — registration and payment lag; a per-entity follow across all lenses arrives with the entity-watch feature.</div>
     </div></div>`;
@@ -2554,7 +2554,7 @@ async function showVendor(name){
         <button class="act primary" type="button" data-follow="vendor" data-name="${cleanText(display).replace(/"/g,"&quot;")}">Follow this vendor</button>
         <button class="act" type="button" id="ecopy">Copy link</button>
         ${pinBtn("vendor", cleanText(display), cleanText(display), t("meta_vendor_profile"))}
-        ${API?`<a class="act" href="${API.replace(/\/+$/,"")}/feed.xml?lens=entity&kind=vendor&name=${encodeURIComponent(cleanText(display))}" target="_blank" rel="noopener">RSS</a>`:""}
+        ${API?`<a class="act" href="${API.replace(/\/+$/,"")}/feed.xml?lens=entity&kind=vendor&name=${encodeURIComponent(cleanText(display))}">RSS</a>`:""}
       </div>
       <div class="note">Identity is resolved by name normalization (case, punctuation, legal suffixes) — variants listed above; distinct companies sharing a name stem would be merged, so treat totals as <b>“published under this name,”</b> not a legal entity. Awards as published in the City Record; actual payments differ (Checkbook join coming).</div>
     </div></div>`;
@@ -2782,7 +2782,7 @@ async function showMatter(pin){
   if(c && c.registered) items.push({date:c.registered, label:`<b>Contract registered</b> — <code>${c.id}</code> (Checkbook NYC)`, extra:`committed ${money(c.current)||"—"}`});
   items.sort((a,b)=>(a.date||"9999").localeCompare(b.date||"9999"));
   if(c) items.push({date:null, label:`<b>Paid to date: ${money(c.spent)||"$0"}</b> of ${money(c.current)||"—"} committed`,
-    extra:`term ${fdate(c.start)||"—"} → ${fdate(c.end)||"—"} · <a href="https://www.checkbooknyc.com/smart_search/citywide?search_term=${encodeURIComponent(c.id)}" target="_blank" rel="noopener">Checkbook ↗</a>`});
+    extra:`term ${fdate(c.start)||"—"} → ${fdate(c.end)||"—"} · <a href="https://www.checkbooknyc.com/smart_search/citywide?search_term=${encodeURIComponent(c.id)}">Checkbook</a>`});
   const link = location.origin + location.pathname + "#matter/" + encodeURIComponent(pin);
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CROL-List</a></p>
@@ -2797,7 +2797,7 @@ async function showMatter(pin){
       <div class="actions" style="margin-top:16px">
         <button class="act primary" type="button" id="ecopy">Copy link</button>
         ${pinBtn("matter", pin, t("meta_matter",{pin:safe}), [agency, vendor?cleanText(vendor):null].filter(Boolean).join(" × "))}
-        <a class="act" href="${REQ_URL(rows[rows.length-1].request_id)}" target="_blank" rel="noopener">Latest notice in City Record ↗</a>
+        <a class="act" href="${REQ_URL(rows[rows.length-1].request_id)}">Latest notice in City Record</a>
       </div>
       <div class="note">The spine is every City Record notice sharing this PIN, in order; Checkbook events join deterministically on the same PIN. Public-hearing notices rarely carry PINs, so hearings may be missing from the chronology.</div>
     </div></div>`;
@@ -2931,7 +2931,7 @@ async function showNotice(id){
     r = rows[0];
   }catch(e){}
   if(!r){
-    box.innerHTML = `<div class="empty">${t("notice_not_found_html",{id:safeId})} <br><br><a href="#money">${t("back_browse")}</a> · <a href="${REQ_URL(id)}" target="_blank" rel="noopener">${t("try_city_record")}</a></div>`;
+    box.innerHTML = `<div class="empty">${t("notice_not_found_html",{id:safeId})} <br><br><a href="#money">${t("back_browse")}</a> · <a href="${REQ_URL(id)}">${t("try_city_record")}</a></div>`;
     return;
   }
   const link = noticeLink(r.request_id);
@@ -2950,7 +2950,7 @@ async function showNotice(id){
         <button class="act" type="button" id="nprint">${t("notice_print_btn")}</button>
         ${(r.due_date||r.event_date)?`<button class="act" type="button" id="nics">${t("add_to_calendar_btn")}</button>`:""}
         ${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}
-        <a class="act" href="${REQ_URL(r.request_id)}" target="_blank" rel="noopener">${t("view_in_city_record")}</a>
+        <a class="act" href="${REQ_URL(r.request_id)}">${t("view_in_city_record")}</a>
       </div>
       ${r.type_of_notice_description==="Solicitation"?buildApply(r):""}
       ${scope?`<details class="fulltext"${scope.length<=600?" open":""}><summary>${t("read_full_notice")}</summary><div class="scope" style="margin-top:10px">${scope.slice(0,6000)}${scope.length>6000?"…":""}</div></details>`:""}

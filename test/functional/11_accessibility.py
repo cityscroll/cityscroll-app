@@ -45,7 +45,9 @@ FAIL_IMPACTS = {"critical", "serious"}
 # landmark) on every page. Now that every page has both, ratchet these specific rule ids
 # into the failing set regardless of impact, so the fix stays guarded even though the rule
 # itself is only ever "moderate" impact in axe-core.
-RATCHET_RULES = {"landmark-one-main", "region"}
+# w10-04: heading-order (NYC Web Content Style Guide — heading levels "should not be
+# skipped") is also axe 'moderate', so without a ratchet entry it's invisible to the gate.
+RATCHET_RULES = {"landmark-one-main", "region", "heading-order"}
 TABS = ["people", "land", "property", "rules", "meetings", "alerts"]  # money is active on load
 LANGS = ["en", "es"]
 
