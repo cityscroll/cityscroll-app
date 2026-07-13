@@ -127,11 +127,24 @@ MEETINGS_ROWS = [dict(HEARING_ROW)]
 
 EDITION_RANGE = [{"a": "2003-09-17T00:00:00.000", "b": _iso(0)}]
 
+# w9-05 (leak L4): agency/vendor forecast cards render a "Subscribe to Alert" button that was
+# untranslated in the live site but invisible to the guard, because /inv/<name> was aborted —
+# hasForecasts stayed false and the button never rendered. A minimal real response lets the
+# guard actually walk this surface instead of silently skipping it.
+FORECAST_ROWS = {"forecasts": [
+    {"source": "checkbook", "vendor_name": "EXAMPLE BUILDERS INC",
+     "agency_name": "Housing Preservation and Development", "amount": "500000",
+     "expiration_date": _iso(60)[:10]},
+    {"source": "mocs", "description": "PLANNED ELEVATOR MAINTENANCE RFP",
+     "agency": "Housing Preservation and Development", "value_band": "$1M-$5M",
+     "release_quarter": "Q3 2026"},
+]}
+
 # Every fixture string value that may surface in the UI as DATA (legitimately English).
 # section_name is intentionally omitted — sections render as chrome and must translate.
 _DATA_ROWS = ([RFP_OPEN, RFP_OPEN_2, AWARD_ROW, HEARING_ROW] + CHAIN_ROWS + PROPERTY_ROWS
               + RULES_ROWS + MEETINGS_ROWS + ZAP_ROWS + PAY_ROLES + CSL_ROLES
-              + AGENCIES_TODAY + METHOD_FACET)
+              + AGENCIES_TODAY + METHOD_FACET + FORECAST_ROWS["forecasts"])
 _DATA_FIELDS_EXCLUDED = {"section_name"}
 
 
@@ -213,6 +226,9 @@ def install_routes(page):
     page.route("https://services5.arcgis.com/**", fixed({}))
     # Worker API and third-party scripts: dead. Every feature must degrade gracefully.
     page.route("https://api.crol-list.org/**", lambda r: r.abort())
+    # ...except /inv/<name> forecast lookups (see FORECAST_ROWS above) — registered after the
+    # catch-all abort so it wins (Playwright matches newest-registered route first).
+    page.route("https://api.crol-list.org/inv/**", fixed(FORECAST_ROWS))
     page.route("https://crol-worker.crol-worker.workers.dev/**", lambda r: r.abort())
     page.route("https://challenges.cloudflare.com/**", lambda r: r.abort())
     page.route("https://static.cloudflareinsights.com/**", lambda r: r.abort())

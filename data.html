@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-i18n-title="data_title">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Data · CROL-List</title>
 <meta name="description" content="The City Record dataset at a glance: what gets published, by whom, for how much — live aggregates straight from NYC Open Data, honestly labeled.">
-<script src="i18n.js?v=c56a4da2"></script>
+<script src="i18n.js?v=2cb70dd5"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
@@ -48,11 +48,15 @@
   .foot a{color:var(--oxblood)}
   /* language switcher — matches index.html */
   .lang-switcher{display:flex;gap:.4rem;justify-content:center;margin-block-start:10px;flex-wrap:wrap}
-  .lang-btn{font:600 11px/1 var(--ui);padding:3px 10px;border-radius:12px;border:1px solid var(--rule-strong);background:transparent;color:var(--muted);cursor:pointer}
+  .lang-btn{font:600 11px/1 var(--ui);padding:3px 10px;min-height:32px;display:inline-flex;align-items:center;border-radius:12px;border:1px solid var(--rule-strong);background:transparent;color:var(--muted);cursor:pointer}
   .lang-btn[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--ink);color:#fff;padding:11px 18px;border-radius:0 0 9px 0;font:600 13px/1 var(--ui);text-decoration:none}
+  .skip:focus{left:0}
+  :is(a,button,select,input,textarea,summary):focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
 </style>
 </head>
 <body>
+<a class="skip" href="#main" data-i18n="skip_to_content">Skip to content</a>
 <div class="wrap">
 <header>
   <div class="cr-rule"></div>
@@ -76,7 +80,7 @@
   <a class="backhome" href="index.html" data-i18n="back_to_crol">← Back to CROL-List</a>
 </header>
 
-<main>
+<main id="main" tabindex="-1">
 <p class="lede" data-i18n-html="data_p_lede_html">The City Record dataset, at a glance — live aggregates queried straight from
 <a href="https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx" target="_blank" rel="noopener">NYC Open Data</a>
 by your browser, nothing cached server-side. Numbers here follow the
@@ -105,12 +109,12 @@ notices are the minority. This is why every number on this site is per-section.<
 appear as separate rows here.</p>
 <div class="bars" id="vendors"><div class="loading" data-i18n="loading_data">Loading…</div></div>
 
-<div class="foot" data-i18n-html="data_foot_html">
+</main>
+<footer class="foot" data-i18n-html="data_foot_html">
   Every number computes live in your browser from the public dataset — reload for fresh data.
   Methodology: <a href="about.html#data">about → the underlying data</a> ·
   <a href="stats.html">site usage stats</a> · <a href="changelog.html">changelog</a>
-</div>
-</main>
+</footer>
 </div>
 
 <script>
