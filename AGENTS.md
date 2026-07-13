@@ -34,6 +34,19 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   APIs). Serve on **port 8000** — the worker's CORS allowlist includes it; other local ports
   make live share/subscribe steps fail with "Couldn't reach the server".
 
+## Architecture — static site + Worker backend
+
+- The site (`index.html`, `i18n.js`, `test/`) is 100% static, deployed via GitHub Pages; the
+  serverless backend lives entirely in `worker/` (Cloudflare Worker) — see `worker/README.md`
+  for routes, secrets/vars, and the develop/test/deploy commands (`worker/` has its own
+  `npm test`, independent of anything at repo root).
+- The board-notification bridge (`worker/src/boardhook.mjs`, route `/board-hook`) auths
+  App-first with a `GITHUB_BOT_TOKEN` fallback — see `worker/README.md`'s "Board-notification
+  bridge auth" section. The `board-notify` GitHub App is live (app id 4288246, installed on
+  cityscroll, installation id 146319774); its one-click creation kit stays outside this repo,
+  in the maintainer's private tooling at `` (`INSTALL.md` has the setup steps, for
+  reference if the App ever needs recreating).
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
