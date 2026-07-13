@@ -100,6 +100,39 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   Guide descriptive-link-text lint — resolves `t("key")` calls used as link text against
   i18n.js's English dictionary before judging genericness ("click here" etc.).
 
+## NYC Web Content Style Guide gates (wave 10)
+
+- **Five unit-job gates**, all pure-text (some shell out to `node -e` to load `STRINGS.en`
+  from i18n.js, same trick as `link_text.py`): `nyc_copy_lint.py` (banned acronyms, emoji,
+  `<em>/<i>/<s>`, ampersand-as-and, and/or, semicolons, double-space, the specific-words
+  table, inclusive-language deny-list, truncation abbreviations, PDF-link assert, currency
+  shorthand outside chip context, 12-hour time forms, generic-text/case on `<button>`),
+  `page_metadata.py` (meta description 120–160 chars, title <60 with the house `·`
+  separator), `link_targets.py` (no `target="_blank"`, no decorative external-link `↗`
+  icons), `heading_punctuation.py` (no colon/period in headings, `?` excepted), and
+  `genai_disclosure.py` (about.html must carry the GenAI-content disclosure).
+- **`nyc_copy_lint.py` ships report-only** (always exits 0, prints findings) — pass
+  `--gate` to enforce; that flip is a separate task once the remaining prose findings
+  (mostly `e.g.`, italics, and long-form `$NM` shorthand) are fixed. Its shrink-only
+  allowlist (`nyc_copy_lint_allowlist.txt`) currently only tracks the chip/threshold
+  currency exception (numerals-in-buttons is the guide's own carve-out).
+- **House decisions, both deliberate deviations from the guide's literal text**: (1) the
+  title separator stays `·` (already the brand mark everywhere else) rather than switching
+  to the guide's hyphen — `page_metadata.py`'s docstring has the reasoning; (2) external
+  links were made to CONFORM (not carve out) — same-tab, no `↗` icons, descriptive text
+  instead, applied site-wide including inside i18n.js's `*_html` strings, not just the
+  static markup.
+- **`heading_punctuation.py` and the ampersand rule both carve out changelog.html's dated
+  release `<h2>` titles** (`chg_*_h2` keys) — an archival register presented verbatim, same
+  posture as `.chg-detail`'s English-only carve-out in the stray-English guard.
+- **Cross-gate tension with the reading-level ratchet** (below): removing a link's `↗`
+  icon replaces a bare glyph with real words (e.g. a bare `↗` anchor became "View in City
+  Record"), which can nudge a whole page's Flesch-Kincaid grade by a hair even though
+  nothing got harder to read — a mechanical side effect of satisfying one style-guide rule
+  that another gate measures. If a future compliance edit trips the reading-level ratchet
+  by a trivial amount for a reason like this, that's a known interaction, not a quality
+  regression — say so in the PR rather than force-simplifying unrelated prose to compensate.
+
 ## Reading level — the readable-or-else ratchet gate
 
 - **`reading-level` CI job** (every PR) runs [readable-or-else](https://github.com/jimdc/readable-or-else)

@@ -1,0 +1,17 @@
+# nyc_copy_lint_allowlist.txt — the explicit, tracked register of NYC Web Content Style
+# Guide deviations we keep on purpose. Format: one finding per line, "rule_id<TAB>text"
+# (a lowercase rule id, then the exact flagged literal/snippet). Shrink-only — the gate
+# (--gate, not yet enabled: see w10-06) fails on entries here no longer found in source,
+# same posture as stray_english_allowlist.txt.
+#
+# ── currency (B27): the guide's own numerals-in-buttons exception — these are chip/
+#    threshold-select labels, not long-form prose, so the numeral shorthand stays.
+currency	$100K+
+currency	$100M+
+currency	$10M+
+currency	$1M+
+currency	$50M+
+currency	$5M+
+currency	Awards over $1M
+currency	awards over $1M
+currency	(uses the $1M+ threshold — tune it below)
