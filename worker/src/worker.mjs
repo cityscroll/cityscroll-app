@@ -21,7 +21,7 @@ import { handleRedirect } from "./redirect.mjs";
 import { runAlerts, consumeDigestJob } from "./alerts.mjs";
 import { ingestNotices } from "./ingest.mjs";
 import { handleMcp } from "./mcp.mjs";
-import { handleBoardHook } from "./boardhook.mjs";
+import { handleBoardHook } from "board-notify";
 import { handleInboundEmail } from "./inbound.mjs";
 
 export default {

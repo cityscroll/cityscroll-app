@@ -46,7 +46,7 @@ client-side (NL search uses the on-device heuristic, subscriptions/feeds are hid
 | `/api` | GET | 302 → crol-list.org/api.html (the API docs) | none |
 | `/admin/subs` `/admin/feedback` | GET | Operator reads (redacted) | `ADMIN_KEY` → 404 if unset |
 | `/usage` | GET | Read-only Haiku spend report | `USAGE_KEY` → 404 if unset |
-| `/board-hook` | POST | **Board-notification bridge** (wave 6 T8): org webhook (`projects_v2_item`, org `cityscroll`) → one comment on the moved issue, so board status changes reach GitHub's native per-member notifications. See `src/boardhook.mjs` | HMAC (`BOARD_HOOK_SECRET`) fails closed; fails closed 503 with no bot/App token configured |
+| `/board-hook` | POST | **Board notifications** — see below | HMAC (`BOARD_HOOK_SECRET`) fails closed; fails closed 503 with no bot/App token configured |
 | `/` `/health` | GET | liveness | none |
 
 ## The daily digest (cron `0 13 * * *` ≈ 9am ET; LIVE since 2026-07-01)
@@ -67,28 +67,16 @@ the site's `#notice/<id>` permalinks.
 `CROL-List <alerts@crol-list.org>`, domain verified in Resend, DMARC passing); To is only
 ever the subscriber's own opted-in address. Never sends as a person.
 
-## Board-notification bridge auth (App-first, zero-downtime fallback)
+## Board notifications
 
-`/board-hook` posts as either the **board-notify GitHub App**'s own installation token or,
-absent that, the static `GITHUB_BOT_TOKEN` — whichever is configured wins, no code path
-change needed (`resolveToken()` in `src/boardhook.mjs`):
-
-1. If `BOARDNOTIFY_APP_ID` + `BOARDNOTIFY_APP_PRIVATE_KEY` + `BOARDNOTIFY_INSTALLATION_ID`
-   are all set: mint a short-lived App JWT (RS256, WebCrypto, `buildAppJwt()`), exchange it
-   for an installation access token (`POST /app/installations/{id}/access_tokens`), and use
-   that as the bearer for the GraphQL lookup + issue comment.
-2. Otherwise fall back to `GITHUB_BOT_TOKEN` (fine-grained PAT, Issues RW) — today's path,
-   unaffected by leaving the App secrets unset.
-
-Provisioning the App itself is a one-click local flow (GitHub's [manifest
-flow](https://docs.github.com/en/apps/sharing-github-apps/registering-a-github-app-from-a-manifest),
-no App has to pre-exist) — see `` (outside this repo, in the
-maintainer's private tooling) for the helper + `INSTALL.md` with the exact `wrangler secret put`
-commands and how to find the installation id.
-
-**cc-roster:** `BOARDNOTIFY_CC` (var, comma-separated GitHub logins, no `@`, default empty)
-is appended as an explicit `cc @a @b` line on every bridge comment — mentions are the one
-mechanism that notifies org members regardless of their own subscription state on the issue.
+The maintainers' own board-status notifications (`/board-hook`, GitHub Projects → issue
+comments) run on [`board-notify`](https://github.com/jimdc/board-notify), a separate
+open-source package — everything about how it works (auth, HMAC, cc-roster, daily cap)
+is documented in that project's own README, not here. It's an **optional** dependency:
+this instance is scoped to project id `PVT_kwDOEgVDsM4BdE22` in the `cityscroll` org
+(set via `BOARD_PROJECT_IDS` / `BOARD_ORG` in `wrangler.toml`), but if you fork crol-list
+and never configure its secrets, `/board-hook` fails closed with no effect on anything
+else — you can ignore it entirely or point it at your own board.
 
 ## Defense in depth (denial-of-wallet & abuse)
 
@@ -107,12 +95,12 @@ hold no key and are edge-cached.
 `NL_METER` (NL daily counters) · `ALERT_STATE` (seen-IDs, send counters — 40-day TTL so /stats can window them, last-sent dates, and `stats:<metric>:<day>` outcome counters) ·
 `SUBS` (confirmed subs + subscribe rate limits) · `FEEDBACK` (feedback rows + rate limits).
 
-## Dependencies — two libraries extracted from this worker
+## Dependencies — three libraries extracted from this worker
 
-This worker is otherwise dependency-free; its only runtime deps are two small, general-purpose
-libraries that were **extracted out of it** (2026-07-02) so anyone can reuse them, then pulled
-back in — so the opt-in and denial-of-wallet logic now lives (and is exhaustively unit-tested)
-in its own package instead of inline here:
+This worker is otherwise dependency-free; its only runtime deps are small, general-purpose
+libraries that were **extracted out of it** so anyone can reuse them, then pulled back in — so
+each piece of logic now lives (and is exhaustively unit-tested) in its own package instead of
+inline here:
 
 - **[`optin-token`](https://github.com/jimdc/optin-token)** — the double-opt-in confirmation
   tokens (`signToken`/`verifyToken` behind `/subscribe`, `/confirm`, `/unsubscribe`) and the
@@ -120,18 +108,24 @@ in its own package instead of inline here:
   it bundles for Workers with no `nodejs_compat`.
 - **[`sendcap`](https://github.com/jimdc/sendcap)** — the alert-mailer spend guard (`MAX_PER_RUN`
   + `MAX_SENDS_PER_DAY`). A pure "may I make one more paid send?" decision.
+- **[`board-notify`](https://github.com/jimdc/board-notify)** — the `/board-hook` bridge (see
+  "Board notifications" above). Unlike the other two, this one is genuinely **optional** —
+  crol-list ships and works fully with it unconfigured; it exists so the maintainers don't have
+  to keep a private fork of GitHub-board-notification logic inside a public clone's worker.
 
-They're published on npm — [`optin-token`](https://www.npmjs.com/package/optin-token) and
-[`@jimdc/sendcap`](https://www.npmjs.com/package/@jimdc/sendcap) (scoped because npm's
-name-similarity filter reserves the bare `sendcap`) — and pulled in as `^1.0.0` deps. The tests
-under `test/token.*`, `test/unsub.*`, and `test/caps.*` are now **integration regression guards**
-over these packages — they fail here if a swap ever regresses crol's contract.
+`optin-token` and `sendcap` are published on npm — [`optin-token`](https://www.npmjs.com/package/optin-token)
+and [`@jimdc/sendcap`](https://www.npmjs.com/package/@jimdc/sendcap) (scoped because npm's
+name-similarity filter reserves the bare `sendcap`) — pulled in as `^1.0.0` deps. `board-notify`
+isn't on npm yet, so it's pinned to a commit SHA via a `github:` dependency instead. The tests
+under `test/token.*`, `test/unsub.*`, `test/caps.*`, and `test/board_hook_integration.*` are
+**integration regression guards** over these packages — they fail here if a swap ever regresses
+crol's contract, not reimplementations of the packages' own unit suites.
 
 ## Develop, test, deploy
 
 ```sh
-npm install               # pulls wrangler + the two file: deps (optin-token, sendcap)
-npm test                  # node --test — 106 unit tests, no network
+npm install               # pulls wrangler + optin-token, sendcap, board-notify
+npm test                  # node --test — 193 unit tests, no network
 npm run dev               # wrangler dev → http://localhost:8787 (secrets in .dev.vars)
 npx wrangler deploy       # deploy (free); cron + KV bindings come from wrangler.toml
 CROL_WORKER_URL=https://api.crol-list.org npm run test:live   # live e2e over every public route
@@ -140,12 +134,12 @@ CROL_WORKER_URL=https://api.crol-list.org npm run test:live   # live e2e over ev
 
 Secrets (`wrangler secret put`): `ANTHROPIC_API_KEY`, `RESEND_API_KEY`, `TOKEN_SECRET`,
 `TURNSTILE_SECRET`, `USAGE_KEY`, `ADMIN_KEY`, `BOARD_HOOK_SECRET`, `GITHUB_BOT_TOKEN`,
-`BOARDNOTIFY_APP_ID`, `BOARDNOTIFY_APP_PRIVATE_KEY`, `BOARDNOTIFY_INSTALLATION_ID` (the
-last three optional — see "Board-notification bridge auth" above). Vars (in
+`BOARDNOTIFY_APP_ID`, `BOARDNOTIFY_APP_PRIVATE_KEY`, `BOARDNOTIFY_INSTALLATION_ID` (all six
+board-notify secrets are optional — see "Board notifications" above). Vars (in
 `wrangler.toml`): `ALERTS_LIVE` (master switch — anything but `"true"` = dry-run),
 `ALERTS_FROM`, `MAX_PER_RUN`, `MAX_SENDS_PER_DAY`, `HEARTBEAT_DAYS`, `FEEDBACK_TO`,
-`BOARD_PROJECT_ID`, `BOARD_HOOK_DRY`, `BOARD_HOOK_MAX_PER_DAY`, `BOARDNOTIFY_CC`. Fire the
-cron locally by hitting `/__scheduled` under `wrangler dev`.
+`BOARD_PROJECT_IDS`, `BOARD_ORG`, `BOARD_URL`, `BOARD_HOOK_DRY`, `BOARD_HOOK_MAX_PER_DAY`,
+`BOARDNOTIFY_CC`. Fire the cron locally by hitting `/__scheduled` under `wrangler dev`.
 
 ## History
 
