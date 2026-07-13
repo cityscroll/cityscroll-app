@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>About · CROL-List</title>
 <meta name="description" content="What CROL-List is, where its data comes from, how flags and context work, how to send feedback, and its privacy and data-retention stance.">
-<script src="i18n.js?v=767707e4"></script>
+<script src="i18n.js?v=51e2f1eb"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
@@ -100,7 +100,7 @@ contracts, hearings, rule changes, rezonings, and staff moves. CROL-List lets yo
 by interest. You can follow a contract, look up a job title, track a rezoning, or get an email when something new matches.</p>
 
 <h2 data-i18n="about_h_source">Where the data comes from</h2>
-<p class="src" data-i18n-html="about_p_source_html">Everything is live, public data — queried straight from your browser, nothing cached:
+<p class="src" data-i18n-html="about_p_source_html">All of it comes from public, official data:
 <a href="https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx">City Record Online (dg92-zbpx)</a> ·
 <a href="https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e">Citywide Payroll (k397-673e)</a> ·
 <a href="https://data.cityofnewyork.us/resource/vx8i-nprf">Civil Service List (vx8i-nprf)</a> ·
@@ -128,9 +128,8 @@ that would silently mislead if we didn't correct for them, so here is exactly wh
   <li><b>Agency names come in two conventions</b> (old ALL-CAPS and Title Case — 312 raw
     strings for about 150 real agencies). Our name tool treats them as one.</li>
 </ul>
-<p class="src" data-i18n-html="about_p_honest_footer_html">To keep alerts fast, our server keeps a mirror of recent notices, refreshed
-daily from the same public dataset — NYC Open Data remains the source of truth, and searches
-on this site always query it live. Want the numbers themselves?
+<p class="src" data-i18n-html="about_p_honest_footer_html">Searches on this site always show live data from NYC Open Data. Email alerts check
+for new matches once a day. Want the numbers themselves?
 <a href="data.html"><b>The Data</b></a> shows the record at a glance — sections, volume,
 procurement mix, top agencies and vendors — computed live with these same rules.</p>
 
@@ -186,7 +185,7 @@ registration and real payment. Nothing here says anyone did wrong. It just saves
 <p class="src" data-i18n="about_p_privacy_intro">No accounts, no cookies, no cross-site tracking, no ad tech. Here is exactly what CROL-List does with your data:</p>
 <ul class="src" style="margin:8px 0;padding-left:20px" data-i18n-html="about_li_privacy_html">
   <li><b>Searches and filters</b> go from your browser straight to NYC Open Data. The CROL-List server never sees them.</li>
-  <li><b>The “Ask” box</b> lets you search in plain English. It sends your text to our worker. The worker then sends it to Anthropic's Claude, which turns your words into filters. We do not save your text. We only keep a daily count, so we can cap costs.</li>
+  <li><b>The “Ask” box</b> lets you search in plain English. Your text is sent to Anthropic's Claude, which turns it into filters. We do not save your text. We only keep a daily count, so we can cap costs.</li>
   <li><b>Subscribing or sending feedback</b> saves what you send us. This includes your alert or message and your email, if you share one. We also keep some basic info about your request, like your IP address and browser. We keep this for a short time to stop spam and abuse. Every alert email has a one-click unsubscribe link.</li>
   <li><b>Page views</b> are tracked with Cloudflare Web Analytics. It uses no cookies and only shows totals. It counts visits. It does not know who you are or follow you to other sites.</li>
 </ul>
