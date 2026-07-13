@@ -33,7 +33,6 @@ Public Hearings and Meetings
 Submit to
 Taxi and Limousine Commission
 Type
-Untitled
 Youth and Community Development
 
 # ── SODA query fragments / column expressions
@@ -79,7 +78,6 @@ awards over $1M
 awards ≥ <b>
 buildings rules
 construction contracts over $500k
-days): <a href="
 e.g. HPD property sales, DEP land
 e.g. buildings rules, sanitation rules
 e.g. email me awards over $1M, or construction RFPs
@@ -96,8 +94,6 @@ rezonings near <b>
 %</b> of the agency's award $ (12 mo)
 %</b> of this agency's awards (last 12 mo, n=
 </b>) differs from the notice's (<b>
-Couldn't reach the server — try again.
-Couldn't share — try again.
 project_id='
 type_of_notice = 'Solicitation'
 type_of_notice_description='Award'
@@ -133,20 +129,12 @@ type_of_notice_description='Solicitation'
 <div class="emailmock"> <div class="ehead"><div class="efrom">CROL-List &lt;alerts@crol-list.org&gt; →
 <div class="empty"><span class="loading"></span> assembling the matter: PIN
 <div class="empty"><span class="loading"></span> building profile:
-<div class="empty"><span class="loading"></span> fetching shared investigation…</div>
 <div class="empty">No City Record notices carry PIN <code>
 <div class="empty">No City Record notices found for agency “
 <div class="empty">No awards on record for “
-<div class="empty">Nothing pinned yet — use the Pin button on any notice, vendor, agency, or matter page.</div>
-<div class="empty">This shared investigation doesn't exist or has expired (links live 90 days). <a href="#money">← Browse CROL-List</a></div>
 <div class="tl"><span class="tldate">due
 <span class="tag soon">amended from
 Due:
-Pin something first.
-Read-only link (lives
-Sharing needs the backend.
-Too many shares today — try tomorrow.
-', this)">copy</button>
 affordable housing
 award to this vendor at this agency in 90 days
 block/lot

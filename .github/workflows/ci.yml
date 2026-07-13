@@ -31,6 +31,8 @@ jobs:
         run: python3 test/standards/i18n_refs.py
       - name: Stray-English static lint
         run: python3 test/standards/stray_english.py
+      - name: Spanish diacritics gate
+        run: python3 test/standards/es_diacritics.py
       - name: Site unit tests
         # Scoped to test/ — a bare `node --test` also recurses into worker/test/,
         # which needs worker/node_modules (installed in the next step).
