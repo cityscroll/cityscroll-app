@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "da5567f8",
-  "zh-Hans": "b2299b6c",
-  ru: "800d298e",
-  bn: "17153e1b",
-  ht: "110b30a3",
-  ko: "cb31963c",
-  fr: "50ba9c3c",
-  pl: "b3b27e29",
-  ar: "c62374b5",
-  ur: "cbd6cbb7",
+  es: "1b5f0fa2",
+  "zh-Hans": "994269cd",
+  ru: "0d2120af",
+  bn: "ae01cbeb",
+  ht: "cfc92cb0",
+  ko: "652d1c3f",
+  fr: "136f5a8e",
+  pl: "465101c9",
+  ar: "94eb1fec",
+  ur: "45737c45",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -446,6 +446,9 @@ const STRINGS = {
     full_timeline_link: "full timeline with payments",
     notice_fallback: "Notice",
     view_in_city_record: "View in City Record",
+    // Accessible marking for the City Record/PASSPort/Checkbook NYC new-tab carve-out
+    // (test/standards/link_targets.py). Appended as visually-hidden text inside the link.
+    ext_link_new_tab_sr: "(opens in new tab)",
     pin_unusable_note: "This notice's PIN isn't usable for linking (<code>{pin}</code>), so its award can't be traced automatically. Open it in the City Record to read the full text.",
     only_notice_note: "Only this notice is on record so far — no later stage has been published for PIN <code>{pin}</code> yet. ",
     award_pending_note: "The award may still be pending.",
@@ -677,11 +680,11 @@ const STRINGS = {
 
     // about.html
     about_h_what: "What this is",
-    about_p_what_html: "CROL-List is a search tool for <a href=\"https://a856-cityrecord.nyc.gov/\">The City Record</a>. That is the City of New York's official daily paper. In it, <a href=\"https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-3113\">every agency must publish</a> its contracts, hearings, rule changes, rezonings, and staff moves. CROL-List lets you search the record by interest. You can follow a contract, look up a job title, track a rezoning, or get an email when something new matches.",
+    about_p_what_html: "CROL-List is a search tool for <a href=\"https://a856-cityrecord.nyc.gov/\" target=\"_blank\" rel=\"noopener noreferrer\">The City Record<span class=\"sr-only\"> (opens in new tab)</span></a>. That is the City of New York's official daily paper. In it, <a href=\"https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-3113\">every agency must publish</a> its contracts, hearings, rule changes, rezonings, and staff moves. CROL-List lets you search the record by interest. You can follow a contract, look up a job title, track a rezoning, or get an email when something new matches.",
     about_h_content: "About our content",
     about_p_content: "An AI assistant (Claude) drafts this site's copy — headings, explanations, pages like this one. A human editor checks it before it goes live. The data is not AI-generated. Every notice, dollar figure, and date comes straight from NYC Open Data, unedited.",
     about_h_source: "Where the data comes from",
-    about_p_source_html: "All of it comes from public, official data: <a href=\"https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx\">City Record Online (dg92-zbpx)</a> · <a href=\"https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e\">Citywide Payroll (k397-673e)</a> · <a href=\"https://data.cityofnewyork.us/resource/vx8i-nprf\">Civil Service List (vx8i-nprf)</a> · <a href=\"https://data.cityofnewyork.us/City-Government/Zoning-Application-Portal-ZAP-Project-Data/hgx4-8ukb\">ZAP Projects (hgx4-8ukb)</a> · <a href=\"https://a0333-passportpublic.nyc.gov/\">PASSPort</a> · <a href=\"https://www.checkbooknyc.com/\">Checkbook NYC</a>.",
+    about_p_source_html: "All of it comes from public, official data: <a href=\"https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx\">City Record Online (dg92-zbpx)</a> · <a href=\"https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e\">Citywide Payroll (k397-673e)</a> · <a href=\"https://data.cityofnewyork.us/resource/vx8i-nprf\">Civil Service List (vx8i-nprf)</a> · <a href=\"https://data.cityofnewyork.us/City-Government/Zoning-Application-Portal-ZAP-Project-Data/hgx4-8ukb\">ZAP Projects (hgx4-8ukb)</a> · <a href=\"https://a0333-passportpublic.nyc.gov/\" target=\"_blank\" rel=\"noopener noreferrer\">PASSPort<span class=\"sr-only\"> (opens in new tab)</span></a> · <a href=\"https://www.checkbooknyc.com/\" target=\"_blank\" rel=\"noopener noreferrer\">Checkbook NYC<span class=\"sr-only\"> (opens in new tab)</span></a>.",
     about_h_honest: "The data, to be honest",
     about_p_honest_intro_html: "The City Record dataset is <b>1.09 million notices back to 2003</b> — and it is not what it looks like at first glance. Our team's exploratory analysis of the full dataset found quirks that would silently mislead if we didn't correct for them, so here is exactly what we do:",
     about_li_honest_html: "<li><b>87.5% of all rows are civil-service personnel changes</b>, not civic notices. Each stat on this site is counted within its own section — a \"global\" City Record number would really be a personnel-file number.</li><li><b>A few contract amounts are data-entry errors</b> — three rows claim $10&nbsp;billion or more, topping out at <a href=\"index.html#notice/20210524108\">$96 trillion, a housing-services award whose amount field is plainly a typo</a> (the largest verified real award is <a href=\"index.html#notice/20180109010\">about $6.68 billion, the city's 10-year electricity contract with NYPA</a>). Money filters and digests exclude amounts of $10 billion or more. One typo can't dominate every ranking.</li><li><b>Some \"due dates\" aren't deadlines.</b> Notices for pre-qualified lists use fake dates in the year 2090 or later. We mark these as \"no fixed deadline (rolling)\" so no one puts a date on their calendar that isn't real.</li><li><b>Agency names come in two conventions</b> (old ALL-CAPS and Title Case — 312 raw strings for about 150 real agencies). Our name tool treats them as one.</li>",
@@ -713,7 +716,7 @@ const STRINGS = {
     about_reason_badcategory: "Pick a category — Bug, Feature idea, or General.",
     about_reason_notconfigured: "Feedback isn't switched on yet.",
     about_reason_sendfailed: "Couldn't record that just now — try again in a moment.",
-    about_foot_html: "CROL-List · a search interface over <a href=\"https://a856-cityrecord.nyc.gov/\">The City Record</a> · <a href=\"changelog.html\">Changelog</a> · <a href=\"stats.html\">Stats</a> · <a href=\"index.html\">Home</a>",
+    about_foot_html: "CROL-List · a search interface over <a href=\"https://a856-cityrecord.nyc.gov/\" target=\"_blank\" rel=\"noopener noreferrer\">The City Record<span class=\"sr-only\"> (opens in new tab)</span></a> · <a href=\"changelog.html\">Changelog</a> · <a href=\"stats.html\">Stats</a> · <a href=\"index.html\">Home</a>",
     about_h_privacy: "Privacy",
     about_p_privacy_intro: "No accounts, no cookies, no cross-site tracking, no ad tech. Here is exactly what CROL-List does with your data:",
     about_li_privacy_html: "<li><b>Searches and filters</b> go from your browser straight to NYC Open Data. The CROL-List server never sees them.</li><li><b>The \"Ask\" box</b> lets you search in plain English. Your text is sent to Anthropic's Claude, which turns it into filters. We do not save your text. We only keep a daily count, so we can cap costs.</li><li><b>Subscribing or sending feedback</b> saves what you send us. This includes your alert or message and your email, if you share one. We also keep some basic info about your request, like your IP address and browser. We keep this for a short time to stop spam and abuse. Every alert email has a one-click unsubscribe link.</li><li><b>Page views</b> are tracked with Cloudflare Web Analytics. It uses no cookies and only shows totals. It counts visits. It does not know who you are or follow you to other sites.</li>",
@@ -813,7 +816,7 @@ const STRINGS = {
     api_h_mcp: "MCP — for AI assistants",
     api_p_mcp_html: "<code>POST /mcp</code> (Streamable HTTP, JSON-RPC) — point an MCP client at <code>https://api.crol-list.org/mcp</code>. Tools: <code>search_notices</code> and <code>get_notice</code> (the daily-refreshed notices mirror, honest-data rules applied), <code>preview_watch</code> (plain English → what a standing watch would deliver, without subscribing), and <code>create_watch</code> (plain English → a double-opt-in confirmation email — digests start only after the address confirms). Watch management stays behind the emailed unsubscribe links — knowing an address never reveals or controls its subscriptions. Per-IP and daily model-call ceilings apply.",
     api_h_upstream: "Upstream data",
-    api_p_upstream_html: "CROL-List republishes and joins public datasets — for bulk work, go straight to the sources: <a href=\"https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx\">City Record Online (dg92-zbpx, Socrata SODA)</a> · <a href=\"https://www.checkbooknyc.com/data-feeds/api\">Checkbook NYC API</a> · <a href=\"https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e\">Citywide Payroll</a> · <a href=\"https://data.cityofnewyork.us/City-Government/Zoning-Application-Portal-ZAP-Project-Data/hgx4-8ukb\">ZAP</a>.",
+    api_p_upstream_html: "CROL-List republishes and joins public datasets — for bulk work, go straight to the sources: <a href=\"https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx\">City Record Online (dg92-zbpx, Socrata SODA)</a> · <a href=\"https://www.checkbooknyc.com/data-feeds/api\" target=\"_blank\" rel=\"noopener noreferrer\">Checkbook NYC API<span class=\"sr-only\"> (opens in new tab)</span></a> · <a href=\"https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e\">Citywide Payroll</a> · <a href=\"https://data.cityofnewyork.us/City-Government/Zoning-Application-Portal-ZAP-Project-Data/hgx4-8ukb\">ZAP</a>.",
     api_foot_html: "CROL-List · <a href=\"index.html\">Home</a> · <a href=\"about.html\">About</a>",
 
     // changelog.html

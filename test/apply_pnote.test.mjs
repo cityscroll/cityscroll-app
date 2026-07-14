@@ -35,6 +35,8 @@ const { t, tn } = new Function("window", i18nSrc + "\nreturn { t: window.t, tn: 
 const { buildApply } = new Function(
   "t", "tn", "window",
   extractConst("PASSPORT") +
+  extractConst("EXT_ATTRS") +
+  extractConst("extSR") +
   extractFn("cleanText") +
   extractFn("fdt") +
   extractFn("daysLeft") +

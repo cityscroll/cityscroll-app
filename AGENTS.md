@@ -556,6 +556,39 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   again the next time a guard walk needs to prove ONE new subtree translates without also
   re-litigating a pre-existing gap elsewhere on the same page.
 
+## External links — same-tab by default, three named new-tab exceptions
+
+- **House decision (w10-03): every external link opens same-tab**, per the NYC Web Content
+  Style Guide (B18 "same tab/window", B19 "no external-link icons") —
+  `test/standards/link_targets.py` fails any `target="_blank"` whose href isn't in its
+  allowlist, and fails any decorative ↗ icon outside `ALLOWED_ICON_TEXT`.
+- **Named, narrow exception (crol-extlinks-s9): City Record, PASSPort, and Checkbook NYC
+  carry `target="_blank" rel="noopener noreferrer"`** — a user losing search/bid-response
+  state on every round-trip to one of these three government bid/payment systems was worse
+  than the B18 default. Every other external destination (NYC Open Data, ZAP, ZoLa, ACRIS,
+  Google Maps, Who Owns What) still opens same-tab; this is not a general carve-out.
+  `link_targets.py`'s `ALLOWED_NEW_TAB_HREFS`/`ALLOWED_NEW_TAB_HREF_EXPRS` are the source of
+  truth for which three destinations qualify — extending the exception to a fourth
+  destination means updating that allowlist and its docstring, not just adding the attribute.
+- **`EXT_ATTRS`/`extSR()`** (index.html, defined next to the `REQ_URL`/`PASSPORT` consts) are
+  the shared helpers for the ~15 JS-templated carve-out anchors: `${EXT_ATTRS}` expands to
+  `target="_blank" rel="noopener noreferrer"`, `${extSR()}` appends a visually-hidden
+  `<span class="sr-only">` marking (`t("ext_link_new_tab_sr")`, translated in all 11
+  catalogs) so a screen-reader user is told the link leaves the app before activating it.
+  `link_targets.py` treats `${EXT_ATTRS}`/`${extSR()}` in index.html's raw source as
+  equivalent to the literal attributes/span they expand to — it does not evaluate JS.
+  about.html's/api.html's static `data-i18n-html` strings (in both the page source and
+  every language's i18n.js/i18n/lang/*.js dictionary) bake the same literal markup by hand
+  since they're not JS-templated.
+- **`.sr-only`** exists on index.html, about.html, and api.html (the three pages with a
+  carve-out link) — a new page gaining one of these links needs the same CSS rule copied in
+  (see `.skip{...}` neighbor in each page's `<style>` block for where it lives).
+- **`test/functional/16_external_links.py`** is the characterization gate (hermetic,
+  `a11y-pr` CI job): pins both reported links ("View in City Record", "Bid on PASSPort") get
+  target+rel+marking on real rendered output, an in-app link (`#investigation`) does NOT
+  acquire `target="_blank"`, and a non-allowlisted external link (about.html's NYC Charter
+  citation) stays same-tab.
+
 ## Architecture — static site + Worker backend
 
 - The site (`index.html`, `i18n.js`, `test/`) is 100% static, deployed via GitHub Pages; the

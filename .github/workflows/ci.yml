@@ -96,6 +96,8 @@ jobs:
         run: python3 test/functional/12_language.py
       - name: Focus-visibility keyboard-walk gate
         run: python3 test/functional/14_focus_visible.py
+      - name: External-link new-tab characterization gate (City Record/PASSPort/Checkbook NYC)
+        run: python3 test/functional/16_external_links.py
       - name: Label-coverage census (rendered DOM, incl. hidden + JS-built fields)
         run: python3 test/standards/label_coverage.py
       - name: Heading-uniqueness + landmark check (per rendered state)

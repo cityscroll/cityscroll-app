@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>About · CROL-List</title>
 <meta name="description" content="What CROL-List is, where its data comes from, how flags and context work, how to send feedback, and its privacy and data-retention stance.">
-<script src="i18n.js?v=599df9af"></script>
+<script src="i18n.js?v=866d57e7"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
@@ -60,6 +60,7 @@
   :lang(zh-Hans),:lang(ko),:lang(bn),:lang(ar),:lang(ur){letter-spacing:normal !important;text-transform:none !important}
   .skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--ink);color:#fff;padding:11px 18px;border-radius:0 0 9px 0;font:600 13px/1 var(--ui);text-decoration:none}
   .skip:focus{left:0}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
   :is(a,button,select,input,textarea,summary):focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
 </style>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
@@ -101,7 +102,7 @@
 
 <main id="main" tabindex="-1">
 <h2 data-i18n="about_h_what">What this is</h2>
-<p data-i18n-html="about_p_what_html">CROL-List is a search tool for <a href="https://a856-cityrecord.nyc.gov/">The City Record</a>. That is the
+<p data-i18n-html="about_p_what_html">CROL-List is a search tool for <a href="https://a856-cityrecord.nyc.gov/" target="_blank" rel="noopener noreferrer">The City Record<span class="sr-only"> (opens in new tab)</span></a>. That is the
 City of New York's official daily paper. In it, <a href="https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-3113">every agency must publish</a> its
 contracts, hearings, rule changes, rezonings, and staff moves. CROL-List lets you search the record
 by interest. You can follow a contract, look up a job title, track a rezoning, or get an email when something new matches.</p>
@@ -112,8 +113,8 @@ by interest. You can follow a contract, look up a job title, track a rezoning, o
 <a href="https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e">Citywide Payroll (k397-673e)</a> ·
 <a href="https://data.cityofnewyork.us/resource/vx8i-nprf">Civil Service List (vx8i-nprf)</a> ·
 <a href="https://data.cityofnewyork.us/City-Government/Zoning-Application-Portal-ZAP-Project-Data/hgx4-8ukb">ZAP Projects (hgx4-8ukb)</a> ·
-<a href="https://a0333-passportpublic.nyc.gov/">PASSPort</a> ·
-<a href="https://www.checkbooknyc.com/">Checkbook NYC</a>.</p>
+<a href="https://a0333-passportpublic.nyc.gov/" target="_blank" rel="noopener noreferrer">PASSPort<span class="sr-only"> (opens in new tab)</span></a> ·
+<a href="https://www.checkbooknyc.com/" target="_blank" rel="noopener noreferrer">Checkbook NYC<span class="sr-only"> (opens in new tab)</span></a>.</p>
 
 <h2 id="data" data-i18n="about_h_honest">The data, to be honest</h2>
 <p data-i18n-html="about_p_honest_intro_html">The City Record dataset is <b>1.09 million notices back to 2003</b> — and it is not what it
@@ -201,7 +202,7 @@ registration and real payment. Nothing here says anyone did wrong. It just saves
 <p data-i18n="about_p_content">An AI assistant (Claude) drafts this site's copy — headings, explanations, pages like this one. A human editor checks it before it goes live. The data is not AI-generated. Every notice, dollar figure, and date comes straight from NYC Open Data, unedited.</p>
 
 </main>
-<footer class="foot" data-i18n-html="about_foot_html">CROL-List · a search interface over <a href="https://a856-cityrecord.nyc.gov/">The City Record</a> · <a href="changelog.html">Changelog</a> · <a href="stats.html">Stats</a> · <a href="index.html">Home</a></footer>
+<footer class="foot" data-i18n-html="about_foot_html">CROL-List · a search interface over <a href="https://a856-cityrecord.nyc.gov/" target="_blank" rel="noopener noreferrer">The City Record<span class="sr-only"> (opens in new tab)</span></a> · <a href="changelog.html">Changelog</a> · <a href="stats.html">Stats</a> · <a href="index.html">Home</a></footer>
 </div>
 
 <script>
