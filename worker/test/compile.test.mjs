@@ -19,6 +19,45 @@ test("money + keywords → City Record solicitation/RFP query with $q", () => {
   assert.equal(q.params["$q"], "construction");
 });
 
+test("money + agency → agency_name clause applied to both the award and solicitation branches", () => {
+  const award = compileSub({ lens: "money", filter: { minAmount: 1000000, agency: "Parks and Recreation" } }, "2026-06-30");
+  assert.match(award.params["$where"], /agency_name='Parks and Recreation'/);
+  const rfp = compileSub({ lens: "money", filter: { agency: "Buildings" } }, "2026-06-30");
+  assert.match(rfp.params["$where"], /agency_name='Buildings'/);
+});
+
+test("money + noticeType='award' with NO amount → still the award branch (closes the old amount-implies-type gap)", () => {
+  const q = compileSub({ lens: "money", filter: { noticeType: "award", agency: "Sanitation" } }, "2026-06-30");
+  assert.equal(q.kind, "award");
+  assert.match(q.params["$where"], /type_of_notice_description='Award'/);
+  assert.match(q.params["$where"], /agency_name='Sanitation'/);
+});
+
+test("money + noticeType='solicitation' overrides the amount-presence heuristic", () => {
+  const q = compileSub({ lens: "money", filter: { noticeType: "solicitation", minAmount: 500000 } }, "2026-06-30");
+  assert.equal(q.kind, "rfp");
+  assert.match(q.params["$where"], /type_of_notice_description='Solicitation'/);
+});
+
+test("money + months → due-window upper bound applied to the solicitation branch", () => {
+  const q = compileSub({ lens: "money", filter: { months: 3 } }, "2026-06-30");
+  assert.match(q.params["$where"], /due_date > '2026-06-30'/);
+  assert.match(q.params["$where"], /due_date <= '2026-09-30'/);
+});
+
+test("money: category + agency + keywords + noticeType + months all compile together (no one field wins at the expense of the others)", () => {
+  const q = compileSub({ lens: "money", filter: {
+    keywords: ["construction"], agency: "Buildings", category: "Construction/Construction Services",
+    noticeType: "solicitation", months: 2,
+  } }, "2026-06-30");
+  assert.equal(q.kind, "rfp");
+  assert.match(q.params["$where"], /type_of_notice_description='Solicitation'/);
+  assert.match(q.params["$where"], /agency_name='Buildings'/);
+  assert.match(q.params["$where"], /category_description='Construction\/Construction Services'/);
+  assert.match(q.params["$where"], /due_date <= '2026-08-30'/);
+  assert.equal(q.params["$q"], "construction");
+});
+
 test("land → ZAP query (project_id diff), place alias applied", () => {
   const q = compileSub({ lens: "land", filter: { keywords: ["79 Rivington"], status: "all" } }, "2026-06-30");
   assert.equal(q.kind, "rezone");

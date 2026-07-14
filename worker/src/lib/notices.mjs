@@ -31,7 +31,7 @@ export function snippet(text, n = 240) {
 
 // opts: { termGroups?: string[][], section?, agency?, category?, noticeType?,
 //         minAmount?, maxAmount?, excludeSpecialCase?, excludeRollingDeadlines?,
-//         openOnly?, sinceDate?, limit?, today? }
+//         openOnly?, dueBefore?, sinceDate?, limit?, today? }
 // termGroups is AND-of-ORs: every group must match via at least one of its terms.
 export function buildNoticesQuery(opts = {}) {
   const where = [];
@@ -52,6 +52,7 @@ export function buildNoticesQuery(opts = {}) {
   if (opts.excludeSpecialCase) where.push("special_case_reason IS NULL");
   if (opts.excludeRollingDeadlines) { where.push("due_year IS NOT NULL AND due_year < ?"); params.push(ROLLING_YEAR); }
   if (opts.openOnly) { where.push("due_date >= ?"); params.push(today); }
+  if (opts.dueBefore) { where.push("due_date <= ?"); params.push(opts.dueBefore); }
   if (opts.sinceDate) { where.push("start_date >= ?"); params.push(opts.sinceDate); }
 
   const groups = opts.termGroups || [];

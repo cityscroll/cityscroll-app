@@ -727,6 +727,9 @@ const SELECT = "request_id,start_date,agency_name,type_of_notice_description,cat
 
 const $ = s => document.querySelector(s);
 const todayISO = () => new Date().toISOString().slice(0,10) + "T00:00:00";
+// N months after an ISO date, as a date-only ISO string — mirrors the worker's compileSub()
+// monthsFromISO() exactly, so the alert preview's "due within" bound matches the digest.
+const addMonthsISO = (iso, months) => { const d=new Date(iso.slice(0,10)+"T00:00:00Z"); d.setUTCMonth(d.getUTCMonth()+months); return d.toISOString().slice(0,10); };
 // If a full-history query runs past SLOW_MS, automatically retry within this recent window.
 const RECENT_DAYS = 730, SLOW_MS = 7000;
 const recentCut = () => new Date(Date.now()-RECENT_DAYS*86400000).toISOString().slice(0,10) + "T00:00:00";
@@ -1330,20 +1333,23 @@ async function nlTranslate(){
   const text=$("#nlq").value.trim(); if(!text) return;
   const btn=$("#nlgo"); if(btn) btn.disabled=true; $("#nltrans").innerHTML=nlWorkingHTML();
   const p=await nlResolve(text, "money");
-  const chips=[`<span class="qchip">notice = <b>open RFP</b></span>`];
-  if(p.keywords.length) chips.push(`<span class="qchip">about <b>${p.keywords.join(" / ")}</b></span>`);
+  const wantsAward = p.noticeType==="award" || (!p.noticeType && p.minAmount);
+  const chips=[`<span class="qchip">notice = <b>${wantsAward?"award":"open RFP"}</b></span>`];
   if(p.agency) chips.push(`<span class="qchip">agency <b>${p.agency}</b></span>`);
+  if(p.keywords.length) chips.push(`<span class="qchip">about <b>${p.keywords.join(" / ")}</b></span>`);
+  if(p.category) chips.push(`<span class="qchip">category <b>${p.category}</b></span>`);
   if(p.minAmount) chips.push(`<span class="qchip">value ≥ <b>${money(p.minAmount)}</b></span>`);
+  if(p.maxAmount) chips.push(`<span class="qchip">value ≤ <b>${money(p.maxAmount)}</b></span>`);
   if(p.months) chips.push(`<span class="qchip">due within <b>${p.months} mo</b></span>`);
   if(p.excludeSpecial) chips.push(`<span class="qchip"><b>standard</b> · no special case</span>`);
   const kwExpr=p.keywords.length?p.keywords.map(k=>`'${k}'`).join(" OR "):"(any)";
   const dueMax=p.months?new Date(Date.now()+p.months*2629800000).toISOString().slice(0,10):null;
-  const code=["type_of_notice = 'Solicitation'","due_date > today"+(dueMax?` AND due_date <= '${dueMax}'`:""),
-    `$q ~ ${kwExpr}`, p.minAmount?`contract_amount >= ${p.minAmount}`:null,
+  const code=[`type_of_notice = '${wantsAward?"Award":"Solicitation"}'`, wantsAward?null:"due_date > today"+(dueMax?` AND due_date <= '${dueMax}'`:""),
+    `$q ~ ${kwExpr}`, p.minAmount?`contract_amount >= ${p.minAmount}`:null, p.maxAmount?`contract_amount <= ${p.maxAmount}`:null,
     p.excludeSpecial?`selection_method NOT LIKE '%Special%'`:null].filter(Boolean).join("\nAND ");
   if(btn) btn.disabled=false;
   $("#nltrans").innerHTML=nlTransHTML(chips);
-  $("#mode").value="open"; $("#sort").value="deadline"; $("#kw").value=[...p.keywords, p.agency].filter(Boolean).join(" ");
+  $("#mode").value=wantsAward?"award":"open"; $("#sort").value="deadline"; $("#kw").value=[...p.keywords, p.agency].filter(Boolean).join(" ");
   search();
 }
 
@@ -1379,9 +1385,10 @@ function deviceParse(text, lens){
   const out={keywords:[]};
   const low=" "+text.toLowerCase()+" ";
   if(lens==="alerts"){
-    // Rezonings are a different lens (land/ZAP) with no dollar amount or due date, so they
-    // stay their own shape; everything else (contracts, RFPs, awards) is the combined
-    // category + amount + deadline case parseNL() already extracts for the Money tab.
+    // Rezonings are a different lens (land/ZAP) with no dollar amount, agency, or due date,
+    // so they stay their own shape; everything else (contracts, RFPs, awards) reuses
+    // parseNL()'s general field extraction — the same function the Money tab's own search
+    // box calls, so a new field added there benefits both without any alerts-specific code.
     if(/\brezon\w*\b|\bzoning\b/.test(low)){
       const place=(text.match(/(?:near|by|around)\s+(.+)$/i)||[])[1];
       return {watchType:"rezone", place: place ? place.trim() : null};
@@ -1425,15 +1432,22 @@ const NL = {
   meetings: nlFeed("meetings","for example, recent landmarks hearings, city council"),
   alerts: {
     placeholder:"for example, education contracts over $200K due in 3 months, or awards over $1M",
-    // Reuses parseNL()'s combined {keywords, minAmount, months} shape — not a single-payload
-    // watchType classifier — so a category, an amount floor, and a deadline all survive
-    // together instead of the query collapsing onto whichever one field a fixed enum picked.
-    // Rezonings alone stay their own shape (no amount/deadline exists for that lens).
+    // Reuses parseNL()'s general filter shape — not a single-payload watchType classifier —
+    // so ANY combination of category/agency/amount/notice-type/deadline it recognizes
+    // survives together, instead of the query collapsing onto whichever one field a fixed
+    // enum picked. Rezonings alone stay their own shape (no amount/deadline/agency exists
+    // for that lens). The visible "Build an alert" fields cover keywords/amount/months —
+    // agency/category/noticeType/maxAmount have no dedicated input (moneynlExtra, below)
+    // but still flow into the stored filter and the live preview query.
     chips:f=>{
       if(f.watchType==="rezone") return [`<span class="qchip">rezonings near <b>${f.place||"…"}</b></span>`];
       const chips=[];
+      if(f.noticeType) chips.push(`<span class="qchip">${f.noticeType==="award"?"awards":"open RFPs"}</span>`);
+      if(f.agency) chips.push(`<span class="qchip">agency <b>${f.agency}</b></span>`);
       if(f.keywords && f.keywords.length) chips.push(`<span class="qchip">about <b>${f.keywords.join(" / ")}</b></span>`);
+      if(f.category) chips.push(`<span class="qchip">category <b>${f.category}</b></span>`);
       if(f.minAmount) chips.push(`<span class="qchip">amount ≥ <b>${money(f.minAmount)}</b></span>`);
+      if(f.maxAmount) chips.push(`<span class="qchip">amount ≤ <b>${money(f.maxAmount)}</b></span>`);
       if(f.months) chips.push(`<span class="qchip">due within <b>${f.months} mo</b></span>`);
       return chips;
     },
@@ -1443,6 +1457,7 @@ const NL = {
       $("#amoneykw").value=(f.keywords||[]).join(" ");
       $("#amoneymin").value=f.minAmount||"";
       $("#amoneymonths").value=f.months||"";
+      moneynlExtra={agency:f.agency||null, category:f.category||null, maxAmount:f.maxAmount||null, noticeType:f.noticeType||null};
       aPreview();
     }
   }
@@ -2058,6 +2073,14 @@ function aStore(){ try{ return JSON.parse(localStorage.getItem(AKEY)||"[]"); }ca
 function aSet(v){ try{ localStorage.setItem(AKEY, JSON.stringify(v)); }catch(e){} }
 
 let lastWatch = null;
+// The moneynl watch type's visible fields (keywords/amount/months) cover the common case, but
+// parseNL()/the model-backed /nl endpoint can recognize more of money's general schema
+// (agency/category/maxAmount/noticeType) than there's a dedicated widget for. Rather than add
+// new form controls for fields most alerts never need, the extras from the last NL parse are
+// carried here — surfaced read-only via the "understood as" chips, folded into the stored
+// filter and the live preview query, cleared whenever the watch type changes or a fresh NL
+// parse applies.
+let moneynlExtra = {};
 function aWatchChange(){
   const w = $("#awatch").value;
   // The param means something different per watch type (place vs keyword) — switching types
@@ -2066,6 +2089,7 @@ function aWatchChange(){
   if(lastWatch !== null && lastWatch !== w){
     $("#aparam").value=""; $("#aagency").value="";
     $("#amoneykw").value=""; $("#amoneymin").value=""; $("#amoneymonths").value="";
+    moneynlExtra = {};
   }
   lastWatch = w;
   $("#aagency").style.display = SECTION_WATCH_LABEL[w] ? "" : "none";
@@ -2147,14 +2171,21 @@ async function aFetch(){
     return { kind:"rfp", rows: await soda(p) };
   }
   if(w==="moneynl"){
-    // Mirrors the worker's compileSub() money-lens branch: an amount floor implies an Award
-    // query (only Award notices carry a dollar amount in this dataset — Solicitations don't),
-    // so it takes priority; otherwise it's an open-Solicitation keyword search.
-    const kw=$("#amoneykw").value.trim(), minAmt=Number($("#amoneymin").value)||0;
-    if(minAmt>=1000){
-      return { kind:"award", rows: await soda({"$select":SELECT,"$where":`type_of_notice_description='Award' AND contract_amount >= ${minAmt} AND contract_amount < 10000000000`,"$order":"start_date DESC","$limit":"5"}) };
+    // Mirrors the worker's compileSub() money-lens branch exactly (same field set, same
+    // award-vs-solicitation rule), so the preview matches the digest a subscriber gets.
+    const kw=$("#amoneykw").value.trim(), minAmt=Number($("#amoneymin").value)||0, months=Number($("#amoneymonths").value)||0;
+    const {agency=null, category=null, maxAmount=null, noticeType=null} = moneynlExtra;
+    const catClause = category ? ` AND category_description='${category.replace(/'/g,"''")}'` : "";
+    const agClause = agency ? ` AND agency_name='${agency.replace(/'/g,"''")}'` : "";
+    const wantsAward = noticeType==="award" || (!noticeType && minAmt>=1000);
+    if(wantsAward){
+      let where=`type_of_notice_description='Award' AND contract_amount >= ${minAmt||1} AND contract_amount < 10000000000`;
+      if(maxAmount) where+=` AND contract_amount <= ${maxAmount}`;
+      return { kind:"award", rows: await soda({"$select":SELECT,"$where":where+catClause+agClause,"$order":"start_date DESC","$limit":"5"}) };
     }
-    const p={"$select":SELECT,"$where":`type_of_notice_description='Solicitation' AND due_date > '${todayISO()}'`,"$order":"due_date ASC","$limit":"5"};
+    let where=`type_of_notice_description='Solicitation' AND due_date > '${todayISO()}'`;
+    if(months) where+=` AND due_date <= '${addMonthsISO(todayISO(), months)}'`;
+    const p={"$select":SELECT,"$where":where+catClause+agClause,"$order":"due_date ASC","$limit":"5"};
     if(kw) p["$q"]=kw;
     return { kind:"rfp", rows: await soda(p) };
   }
@@ -2255,7 +2286,8 @@ function aLensFilter(){
   if(w==="rfpkw")    return {lens:"money", filter:{keywords:p?[p]:[]}};
   if(w==="moneynl"){
     const kw=$("#amoneykw").value.trim(), minAmt=Number($("#amoneymin").value)||null, months=Number($("#amoneymonths").value)||null;
-    return {lens:"money", filter:{keywords:kw?[kw]:[], minAmount:minAmt, months}};
+    const {agency=null, category=null, maxAmount=null, noticeType=null} = moneynlExtra;
+    return {lens:"money", filter:{keywords:kw?[kw]:[], minAmount:minAmt, months, agency, category, maxAmount, noticeType}};
   }
   if(w==="entityvendor") return {lens:"entity", filter:{kind:"vendor", name:$("#aparam").value.trim()||null}};
   if(w==="entityagency") return {lens:"entity", filter:{kind:"agency", name:$("#aparam").value.trim()||null}};

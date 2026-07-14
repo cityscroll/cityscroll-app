@@ -46,6 +46,20 @@ test("buildNoticesQuery: AND-of-ORs term groups + rolling/open filters", () => {
   assert.ok(params.includes(2090) && params.includes("2026-07-10"));
 });
 
+test("buildNoticesQuery: dueBefore adds a due_date upper bound (the alerts 'due within N months' window)", () => {
+  const { sql, params } = buildNoticesQuery({ openOnly: true, today: "2026-06-30", dueBefore: "2026-09-30" });
+  assert.match(sql, /due_date >= \?/);
+  assert.match(sql, /due_date <= \?/);
+  assert.ok(params.includes("2026-06-30") && params.includes("2026-09-30"));
+});
+
+test("buildNoticesQuery: agency + noticeType compile to real WHERE clauses (not silently ignored)", () => {
+  const { sql, params } = buildNoticesQuery({ agency: "Parks and Recreation", noticeType: "Award" });
+  assert.match(sql, /lower\(agency\) LIKE \?/);
+  assert.match(sql, /type_of_notice = \?/);
+  assert.ok(params.includes("%parks and recreation%") && params.includes("Award"));
+});
+
 test("toRecord: invalid amount nulled, rolling due date becomes deadline_note", () => {
   const rec = toRecord({
     request_id: "x1",

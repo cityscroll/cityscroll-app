@@ -41,6 +41,7 @@ agency_name,sum(contract_amount) AS total
 type_of_notice_description AS t,count(request_id) AS n
 vendor_name,sum(contract_amount) AS total
 agency_name, count(1) as n, sum(contract_amount) as t
+contract_amount <=
 contract_amount >=
 count(1) as n, sum(contract_amount) as t
 count(1) as n, sum(contract_amount) as total
@@ -76,7 +77,7 @@ nnVia CROL-List — The City Record, searchable.
 <span class="qchip">about <b>
 <span class="qchip">due within <b>
 <span class="qchip">in <b>
-<span class="qchip">notice = <b>open RFP</b></span>
+<span class="qchip">notice = <b>
 HPD property sales
 attorney titles
 awards over $1M
@@ -89,6 +90,8 @@ for example, education contracts over $200K due in 3 months, or awards over $1M
 for example, paramedic roles, or look up someone named Rodriguez
 for example, recent landmarks hearings, city council
 for example, rezonings in Brooklyn, or 79 Rivington
+open RFP
+open RFPs
 paramedic roles
 rezonings in Brooklyn
 rezonings in Queens
@@ -100,7 +103,7 @@ rezonings near 79 Rivington
 %</b> of this agency's awards (last 12 mo, n=
 </b>) differs from the notice's (<b>
 project_id='
-type_of_notice = 'Solicitation'
+type_of_notice = '
 type_of_notice_description='Award'
 type_of_notice_description='Solicitation'
 ">Checkbook NYC</a>, matched by PIN <code>

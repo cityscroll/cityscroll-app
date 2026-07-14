@@ -15,6 +15,17 @@ const SECTION_BY_LENS = {
 const ZAP_SELECT = "project_id,project_name,project_brief,primary_applicant,public_status,borough,community_district,mih_flag,current_milestone_date";
 const REZ_ALIAS = { "79 rivington": "Allen Street", "79 rivington street": "Allen Street", "allen street mall": "Allen Street" };
 
+// N months after an ISO date, as an ISO date — pure function of todayISO (not Date.now()),
+// so compileSub() stays deterministic/testable. Used for the "due within N months" upper
+// bound on Solicitation queries. Exported so compile_d1.mjs's D1-mirror path computes the
+// exact same bound (its own opts.dueBefore) — the two compilers must agree on this date math
+// or a subscriber's D1-fast-path digest could quietly disagree with its SODA-fallback preview.
+export function monthsFromISO(iso, months) {
+  const d = new Date(iso + "T00:00:00Z");
+  d.setUTCMonth(d.getUTCMonth() + months);
+  return d.toISOString().slice(0, 10);
+}
+
 // Vendor-name identity: normalize to a stem (case / punctuation / legal suffixes) — mirrors
 // the frontend's read-time resolution, so a watch on "Sinergia Inc" also catches
 // "Sinergia Incorporated". Prefix-match server-side, exact-stem postFilter client-side.
@@ -34,27 +45,37 @@ export function compileSub(sub, todayISO) {
   const kws = (Array.isArray(f.keywords) ? f.keywords : []).filter(Boolean);
 
   if (sub.lens === "money") {
-    // Verbatim dataset value; single-quote-escaped for SODA.
+    // Verbatim dataset values; single-quote-escaped for SODA. These two clauses are shared
+    // by both branches below — an alert can name a category and/or an agency regardless of
+    // whether it's watching awards or open solicitations.
     const catClause = f.category ? ` AND category_description='${String(f.category).replace(/'/g, "''")}'` : "";
-    if (f.minAmount || f.maxAmount) {
+    const agency = typeof f.agency === "string" && f.agency.trim() ? f.agency.trim().replace(/'/g, "''") : null;
+    const agencyClause = agency ? ` AND agency_name='${agency}'` : "";
+    // noticeType, when set, is authoritative. Otherwise fall back to the pre-existing
+    // amount-presence heuristic: only Award notices carry a dollar amount in this dataset —
+    // open bids do not (EDA) — so an amount bound alone still implies the award query. This
+    // fallback is what makes every subscription stored before noticeType existed keep working
+    // unchanged.
+    const wantsAward = f.noticeType === "award" || (!f.noticeType && (f.minAmount || f.maxAmount));
+    if (wantsAward) {
       // Amount-validity cap per the crol-analyzer EDA: rows >= $10B are data-entry
       // errors (max legitimate award ≈ $6.68B — the old $5B cap wrongly excluded it).
-      // Note: only Award notices carry amounts — open bids do not (EDA), so any
-      // amount bound implies the award query.
       let where = `type_of_notice_description='Award' AND contract_amount >= ${Number(f.minAmount) || 1} AND contract_amount < 10000000000`;
       if (f.maxAmount) where += ` AND contract_amount <= ${Number(f.maxAmount)}`;
       return {
         url: SODA, idField: "request_id", kind: "award",
         params: {
           "$select": CR_SELECT,
-          "$where": where + catClause,
+          "$where": where + catClause + agencyClause,
           "$order": "start_date DESC", "$limit": "25",
         },
       };
     }
+    let where = `type_of_notice_description='Solicitation' AND due_date > '${todayISO}'`;
+    if (f.months) where += ` AND due_date <= '${monthsFromISO(todayISO, Number(f.months))}'`;
     const params = {
       "$select": CR_SELECT,
-      "$where": `type_of_notice_description='Solicitation' AND due_date > '${todayISO}'` + catClause,
+      "$where": where + catClause + agencyClause,
       "$order": "due_date ASC", "$limit": "25",
     };
     if (kws.length) params["$q"] = kws.join(" ");

@@ -371,21 +371,64 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   the pattern to reach for next time a chunk of index.html's inline script needs to be
   Node-testable as pure logic — prefer it over extending `test/unit.test.mjs`'s brace-matching
   extractor when the function has no dependency on anything else in that giant script.
-- **The Alerts tab's "Ask" box and the Money tab's search box share one extractor.** `NL.alerts`
-  (index.html) used to be a three-way single-payload classifier (`bigaward` xor `rfpkw` xor
-  `rezone`) that could only ever keep one of category/amount/deadline from a query like
-  "education contracts over $200K due in 3 months". It now calls the same `parseNL()` the Money
-  tab uses, producing a combined `{keywords, minAmount, months}` — surfaced in the "Build an
-  alert" form as a 4th watch-for option, `moneynl`, with three independently editable fields
-  (`#amoneykw`/`#amoneymin`/`#amoneymonths`), not one flattened string. The worker mirrors this:
-  `LENSES.alerts` (`worker/src/lib/filter.mjs`) now shares `keywords`/`minAmount`/`months` with
-  the money lens; `watchType` survives only to mean `"rezone"` (a place-based watch has no
-  dollar amount or due date at all) — the old `bigaward`/`rfpkw`/`threshold`/`keyword` values
-  are gone, since a rezone-watch is the only shape genuinely different from "money, with some
-  fields blank." `aFetch()`'s `moneynl` preview branch and the worker's `compileSub()` money
-  branch both apply the same rule — an amount floor implies an Award-notice query (only Awards
-  carry a dollar amount in this dataset; Solicitations don't) and takes priority over a
-  keyword-only Solicitation search — keep them in sync if that rule ever changes.
+- **The general filter schema IS money's lens field list — additive by construction.**
+  `LENSES.money` (`worker/src/lib/filter.mjs`) is the single source of truth for every field
+  the alert/digest query layer can actually turn into a query: `keywords` (full-text `$q`),
+  `agency` (`agency_name`, exact match), `category` (`category_description`, a 6-value enum),
+  `minAmount`/`maxAmount` (`contract_amount`), `months` (a due-date window — see below),
+  `noticeType` (`"award"`/`"solicitation"`, an explicit override — see below), and
+  `excludeSpecial` (declared, still not wired into any compiler — a known, pre-existing,
+  out-of-scope gap, not a regression). This inventory came from actually reading
+  `worker/src/lib/compile.mjs`/`compile_d1.mjs` and querying the live SODA dataset's real
+  columns (dg92-zbpx) — not from one example sentence. `LENSES.alerts` reuses this exact list
+  plus `watchType`/`place` for the one genuinely different shape (a rezoning watch has no
+  dollar amount, agency, or due date at all). A subscription's stored `filter` for a money/
+  alerts watch is just this object — adding a new field later is one array entry + one
+  `clampField` case, no migration, since every existing stored filter is already a subset of
+  it (this is also why the "moneynl" watch type never needed its own bespoke stored shape:
+  it was always just `lens:"money"` with a subset of these fields).
+- **`noticeType` closes a real gap: notice type used to be a SECRET function of amount-
+  presence.** Before, any `minAmount`/`maxAmount` implied "Award" and their absence implied
+  "Solicitation" — so "Parks Department awards, any amount" was inexpressible (no amount →
+  fell into the Solicitation branch despite the word "awards"). `noticeType` is now explicit
+  and authoritative when set; the amount-presence heuristic survives only as the fallback for
+  every filter stored before this field existed (no migration needed — see above). `months`
+  similarly went from computed-but-never-applied (the old code only used it in a cosmetic
+  "code preview" string, never a real query) to a real `due_date` upper bound via
+  `monthsFromISO()`/`compile.mjs`'s exported helper, mirrored in `compile_d1.mjs` as
+  `opts.dueBefore` (`notices.mjs`'s `buildNoticesQuery()`) and in the front-end's
+  `addMonthsISO()`. **The SODA path (`compile.mjs`) and the D1-mirror fast path
+  (`compile_d1.mjs`) are two independent compilers for the same `{lens, filter}` shape** —
+  `alerts.mjs` picks whichever is fresh at cron time, so a field wired into only one of them
+  would make a subscriber's digest silently depend on mirror freshness. Change one, change
+  both (and `worker/src/lib/notices.mjs`'s `buildNoticesQuery()` if it's a new SQL clause).
+- **Place/borough is deliberately NOT a money/alerts field.** The live City Record dataset
+  (dg92-zbpx) has `street_address_1/2`, `city`, `zip_code` but no `borough` column, and none of
+  them are reliably populated for procurement notices — unlike `land`/ZAP, which genuinely has
+  a `borough` field. Inventing a `place` filter for money/alerts that silently does nothing
+  would violate the "no silent caps" rule; a place mentioned in a money-lens query is only
+  ever picked up (best-effort, not guaranteed) as a `keywords` term via `$q`.
+- **`nl_parse.js`'s `parseNL()` fills whatever subset of that schema a sentence names**, not
+  just keywords/amount/months. `NL_AGENCY_ALIASES` is a bounded, best-effort dictionary of
+  common informal agency names/acronyms → the dataset's CURRENT canonical `agency_name` string
+  (grounded by querying the live dataset — it has ~300 raw variants across years, mostly
+  legacy ALL-CAPS/abbreviated rows; alerts only ever watch new, future notices, so the current
+  Title Case form is what's picked). `category` inference is deliberately conservative — the
+  procurement-category enum is about procurement METHOD, not topic, so it's only inferred from
+  unambiguous phrases (or the construction-keyword dictionary), never guessed; an over-eager
+  wrong category would silently narrow a subscriber's alert, which is worse than leaving it
+  null. The harder cases are left to the model-backed `/nl` endpoint's own enum-constrained
+  tool call. Season-relative deadline phrases ("due this fall") are a known, deliberately
+  out-of-scope extraction gap — `parseNL()` is a pure function of text alone (no "today"
+  reference passed in), and season arithmetic needs one; only numeric "N months/weeks" parses.
+- **The "Build an alert" form's visible fields did not grow** (`#amoneykw`/`#amoneymin`/
+  `#amoneymonths` only) even though the schema/mapper now cover `agency`/`category`/
+  `maxAmount`/`noticeType` too — those extra fields have no dedicated widget. They're carried
+  in a hidden `moneynlExtra` object (index.html), populated by `NL.alerts.apply()`, cleared on
+  any watch-type switch, folded into `aLensFilter()`'s stored filter and `aFetch()`'s live
+  preview query, and surfaced read-only via the same `.qchip` "understood as" chips already
+  used for keywords/amount/months — not a new UI control, just more chips in the existing row.
+  If a future pass adds visible widgets for them, `moneynlExtra` can just go away.
 - **Two free-text boxes on the same screen must not read as one input.** The 60-second quiz's
   keyword field (`#quiznarrow`, exact substring match) and the Ask box (full NL parse) sit in
   separate panels on the Alerts tab but both take arbitrary typed text — `quiz_step2`'s label
