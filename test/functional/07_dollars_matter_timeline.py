@@ -64,9 +64,9 @@ with sync_playwright() as pw:
     p3.wait_for_selector("#list .row", timeout=30000)
     try:
         p3.wait_for_function("document.querySelector('#ddollars')?.innerText.length > 10", timeout=40000)
-        step("OK", "N3 dollars panel in Money trail", p3.locator("#ddollars").inner_text()[:100].replace("\n"," | "))
+        step("OK", "N3 dollars panel in Contract trail", p3.locator("#ddollars").inner_text()[:100].replace("\n"," | "))
     except Exception:
-        step("WARN", "N3 dollars panel in Money trail", "first award's PIN not registered yet (honest empty-state or absent)")
+        step("WARN", "N3 dollars panel in Contract trail", "first award's PIN not registered yet (honest empty-state or absent)")
     p3.close()
 
     # ---------- address links (data-dependent probe) ----------

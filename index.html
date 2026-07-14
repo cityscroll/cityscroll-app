@@ -151,9 +151,11 @@
 
   .detail{padding:18px 18px 22px;min-height:320px}
   .empty{color:var(--muted);font-style:italic;padding:40px 18px;text-align:center}
-  .agencybar{display:flex;gap:22px;flex-wrap:wrap;align-items:baseline;padding:14px 16px;border:1px solid var(--rule);border-radius:8px;background:#fbf6ea;margin-bottom:16px}
+  .agencybar{display:flex;gap:22px;flex-wrap:wrap;align-items:baseline;padding:14px 16px;border:1px solid var(--rule);border-radius:8px;background:#fbf6ea;margin-top:16px}
   .agencybar .big{font:800 24px/1.05 var(--font-display);color:var(--amber)}
   .agencybar .lbl{font:600 11px/1.3 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .agencybar.sub{margin-top:16px;margin-bottom:0}
+  .agencybar.sub .big{font-size:19px}
 
   /* apply panel (money) */
   .apply{border:1px solid var(--rule-strong);border-radius:8px;background:#fff;margin-bottom:16px;overflow:hidden}
@@ -314,7 +316,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=9cbba30b"></script>
+<script src="i18n.js?v=e7bfb19f"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
@@ -1167,12 +1169,6 @@ function renderDetail(r, chain, stats){
   html += `<div id="dcontext"></div><div id="ddollars"></div>`;
   // Solicitations get the richer how-to-respond panel below; everything else gets the glance box.
   if(r.type_of_notice_description !== "Solicitation") html += glanceFor(r);
-  if(stats && stats.n){
-    html += `<div class="agencybar">
-      <div><div class="big">${money(stats.total)||"—"}</div><div class="lbl">${pivotA(agencyHref(r.agency_name), r.agency_name)}<br>${t("total_awarded_lbl")}</div></div>
-      <div><div class="big">${fmtNumber(+stats.n)}</div><div class="lbl">${t("awards_published_lbl")}</div></div>
-    </div>`;
-  }
   if(r.type_of_notice_description === "Solicitation") html += buildApply(r);
 
   html += pending
@@ -1181,6 +1177,14 @@ function renderDetail(r, chain, stats){
 
   const scope = cleanText(r.additional_description_1);
   if(scope) html += `<div class="scope"><span class="lbl">${t("what_they_want")}</span>${scope.slice(0,900)}${scope.length>900?"…":""}</div>`;
+  // Agency-wide totals are context for this notice, not the headline — rendered last and
+  // visually subordinated (smaller figures) so notice-specific facts read first.
+  if(stats && stats.n){
+    html += `<div class="agencybar sub">
+      <div><div class="big">${money(stats.total)||"—"}</div><div class="lbl">${pivotA(agencyHref(r.agency_name), r.agency_name)}<br>${t("total_awarded_lbl")}</div></div>
+      <div><div class="big">${fmtNumber(+stats.n)}</div><div class="lbl">${t("awards_published_lbl")}</div></div>
+    </div>`;
+  }
   $("#detail").innerHTML = html;
   const ib = $("#icsbtn"); if(ib) ib.addEventListener("click", downloadICS);
   const dc = $("#dcopy"); if(dc) dc.addEventListener("click", ()=>copyText(noticeLink(r.request_id), dc));

@@ -98,7 +98,7 @@ with sync_playwright() as pw:
     page.wait_for_selector("#list .row", timeout=30000)
     page.wait_for_selector("#detail .glance", timeout=30000)
     gtxt = page.locator("#detail .glance").inner_text()
-    step("OK" if "AWARDED TO" in gtxt.upper() or "WHO" in gtxt.upper() else "FAIL", "#6 glance in Money trail (award)", gtxt[:120].replace("\n"," | "))
+    step("OK" if "AWARDED TO" in gtxt.upper() or "WHO" in gtxt.upper() else "FAIL", "#6 glance in Contract trail (award)", gtxt[:120].replace("\n"," | "))
     page.select_option("#mode", "open"); page.wait_for_selector("#list .row", timeout=30000)
 
     # ---------- #9 property explorer ----------
