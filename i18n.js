@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "476a3e7f",
-  "zh-Hans": "16f8d1f0",
-  ru: "3306e55a",
-  bn: "cb8d6436",
-  ht: "04f3dd43",
-  ko: "8f06496f",
-  fr: "9c182406",
-  pl: "a7e4c123",
-  ar: "b009a300",
-  ur: "3d564a5d",
+  es: "399323a7",
+  "zh-Hans": "7302a1a5",
+  ru: "54b74257",
+  bn: "172cd137",
+  ht: "eb16d8b9",
+  ko: "dd426d99",
+  fr: "f0142b97",
+  pl: "7e0e3c18",
+  ar: "ba353f67",
+  ur: "a25cbecf",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -449,6 +449,9 @@ const STRINGS = {
     only_notice_note: "Only this notice is on record so far — no later stage has been published for PIN <code>{pin}</code> yet. ",
     award_pending_note: "The award may still be pending.",
     blanket_note: "PIN <code>{pin}</code> is a <b>blanket code</b>: it bundles {n} separate awards (common for emergency declarations). Each box is a distinct contract under the same code.",
+    prior_cycle_heading: "Looks recurring — prior award cycles",
+    prior_cycle_heuristic_note: "Matched by agency and title, not a shared PIN — this is a heuristic guess at the same recurring contract, not a guaranteed link. Check dates and vendor before relying on it.",
+    prior_cycle_none_note: "No plausible prior cycle found for this one — either it isn't recurring, or an earlier round didn't match closely enough to show with confidence.",
     what_they_want: "What they want",
     apply_method_lbl: "Method",
     apply_contact_lbl: "Contact",

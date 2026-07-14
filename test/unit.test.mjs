@@ -174,3 +174,108 @@ test("workerFetch: both bases down → rejects (callers show their own error)", 
   const { workerFetch } = makeWorkerFetch(async () => { throw new TypeError("down"); });
   await assert.rejects(() => workerFetch("/inv", {}));
 });
+
+// ---------- priorCycleAwards: cross-cycle recurring-bid heuristic (research-spike findings) ----------
+// The research measured a naive agency+title match at ~48% precision on real award data — NYC
+// commonly makes several SIMULTANEOUS awards from one RFP, which looks like a false "renewal"
+// under a bare title match. Requiring the closest two award dates be >=180 days apart measured
+// ~92-96% precise on a fresh sample. These fixtures encode both failure modes so a regression
+// in either direction (too loose → concurrent siblings leak in; too strict → real renewals drop)
+// fails a test, not just a manual re-read.
+const priorCycleEnv = new Function(
+  src.match(/const JUNK_PINS = new Set\(\[[^\]]*\]\);/)[0] + extractFn("usablePin")
+  + extractConst("PRIOR_CYCLE_MIN_GAP_DAYS") + extractConst("PRIOR_CYCLE_MAX_MATCHES")
+  + extractConst("PRIOR_CYCLE_STOPWORDS") + extractFn("priorCycleTitleWords")
+  + extractFn("daysBetween") + extractFn("rankPriorCycleCandidates")
+  + "return { rankPriorCycleCandidates, priorCycleTitleWords, daysBetween };"
+)();
+
+test("priorCycleAwards: excludes a concurrent multi-vendor award from the same RFP", () => {
+  // Real pattern found in the research: DOHMH awarded "Substance Abuse Services" to several
+  // different vendors within days of each other — siblings from one solicitation, not a
+  // sequential renewal cycle a bidder should be shown as "prior cycle" history.
+  const r = { request_id: "R2", agency_name: "Health and Mental Hygiene", pin: "07PO028001R0X00",
+    short_title: "Substance Abuse Services", start_date: "2006-09-07" };
+  const candidates = [
+    { request_id: "R1", agency_name: "Health and Mental Hygiene", pin: "07PO022901R0X00",
+      short_title: "Substance Abuse Services", start_date: "2006-08-16", vendor_name: "Faith Mission" },
+  ];
+  assert.deepEqual(priorCycleEnv.rankPriorCycleCandidates(r, candidates, {}), []);
+});
+
+test("priorCycleAwards: keeps a genuine renewal (explicit R001 PIN suffix, same vendor, far apart)", () => {
+  // Real pattern found in the research: ACS "Housing Navigation and Stabilization Services",
+  // same vendor, PIN suffix "R001" marking the renewal round, ~17 months later.
+  const r = { request_id: "R2", agency_name: "Administration for Children's Services",
+    pin: "06823N0030001R001", short_title: "Housing Navigation and Stabilization Services",
+    start_date: "2026-01-09" };
+  const candidates = [
+    { request_id: "R1", agency_name: "Administration for Children's Services", pin: "06823N0030001",
+      short_title: "Housing Navigation and Stabilization Services", start_date: "2023-08-17",
+      vendor_name: "Anthos Home Inc", contract_amount: "15458333.34" },
+  ];
+  const matches = priorCycleEnv.rankPriorCycleCandidates(r, candidates, {});
+  assert.equal(matches.length, 1);
+  assert.equal(matches[0].request_id, "R1");
+});
+
+test("priorCycleAwards: never re-surfaces this notice's own PIN (that's chainHTML's job)", () => {
+  const r = { request_id: "R2", agency_name: "Parks and Recreation", pin: "8571500455",
+    short_title: "Pool Paints", start_date: "2018-05-31" };
+  const candidates = [
+    { request_id: "R1", agency_name: "Parks and Recreation", pin: "8571500455",
+      short_title: "Pool Paints", start_date: "2015-09-01", vendor_name: "Aldoray" },
+  ];
+  assert.deepEqual(priorCycleEnv.rankPriorCycleCandidates(r, candidates, {}), []);
+});
+
+test("priorCycleAwards: excludes a different agency even with an identical title", () => {
+  const r = { request_id: "R2", agency_name: "Citywide Administrative Services", pin: "8571800149",
+    short_title: "Pool Paints", start_date: "2024-07-05" };
+  const candidates = [
+    { request_id: "R1", agency_name: "Parks and Recreation", pin: "8571200426",
+      short_title: "Pool Paints", start_date: "2012-07-09", vendor_name: "National Paint Industries" },
+  ];
+  assert.deepEqual(priorCycleEnv.rankPriorCycleCandidates(r, candidates, {}), []);
+});
+
+test("priorCycleAwards: excludes a later notice (only PRIOR cycles count, not future ones)", () => {
+  const r = { request_id: "R1", agency_name: "Citywide Administrative Services", pin: "8571200426",
+    short_title: "Pool Paints", start_date: "2012-07-09" };
+  const candidates = [
+    { request_id: "R2", agency_name: "Citywide Administrative Services", pin: "8571800149",
+      short_title: "Pool Paints", start_date: "2024-07-05", vendor_name: "Jack Loconsolo" },
+  ];
+  assert.deepEqual(priorCycleEnv.rankPriorCycleCandidates(r, candidates, {}), []);
+});
+
+test("priorCycleAwards: caps at maxN, most recent first, one row per PIN", () => {
+  const r = { request_id: "R0", agency_name: "Citywide Administrative Services", pin: "8572100094",
+    short_title: "Guide Rail, Posts and Accessories", start_date: "2021-12-17" };
+  const candidates = [
+    { request_id: "R1", agency_name: "Citywide Administrative Services", pin: "857200896",
+      short_title: "Guide Rail, Posts and Accessories", start_date: "2003-01-10" },
+    { request_id: "R2", agency_name: "Citywide Administrative Services", pin: "857400833",
+      short_title: "Guide Rail, Posts and Accessories", start_date: "2004-08-24" },
+    { request_id: "R3", agency_name: "Citywide Administrative Services", pin: "857500934",
+      short_title: "Guide Rail, Posts and Accessories.", start_date: "2006-01-17" },
+    { request_id: "R4", agency_name: "Citywide Administrative Services", pin: "8571100454",
+      short_title: "GUIDE RAIL, POSTS AND ACCESSORIES", start_date: "2012-02-02" },
+  ];
+  const matches = priorCycleEnv.rankPriorCycleCandidates(r, candidates, {});
+  assert.equal(matches.length, 3); // PRIOR_CYCLE_MAX_MATCHES
+  assert.deepEqual(matches.map(m => m.request_id), ["R4", "R3", "R2"]); // most recent first
+});
+
+test("priorCycleTitleWords: strips stopwords/punctuation, case-insensitive, deduped", () => {
+  const words = priorCycleEnv.priorCycleTitleWords("Renewal for late arrival to homeless families with children");
+  assert.ok(!words.includes("for"));
+  assert.ok(!words.includes("renewal")); // in the stopword list — too generic on its own to search on
+  assert.ok(words.includes("homeless"));
+  assert.ok(words.includes("families"));
+});
+
+test("daysBetween: absolute day gap, null on unparseable dates", () => {
+  assert.equal(priorCycleEnv.daysBetween("2023-01-01", "2023-07-01"), 181);
+  assert.equal(priorCycleEnv.daysBetween("not-a-date", "2023-07-01"), null);
+});
