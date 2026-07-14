@@ -64,14 +64,15 @@ export function compileSub(sub, todayISO) {
       // errors (max legitimate award ≈ $6.68B — the old $5B cap wrongly excluded it).
       let where = `type_of_notice_description='Award' AND contract_amount >= ${Number(f.minAmount) || 1} AND contract_amount < 10000000000`;
       if (f.maxAmount) where += ` AND contract_amount <= ${Number(f.maxAmount)}`;
-      return {
-        url: SODA, idField: "request_id", kind: "award",
-        params: {
-          "$select": CR_SELECT,
-          "$where": where + catClause + agencyClause,
-          "$order": "start_date DESC", "$limit": "25",
-        },
+      const awardParams = {
+        "$select": CR_SELECT,
+        "$where": where + catClause + agencyClause,
+        "$order": "start_date DESC", "$limit": "25",
       };
+      // Keywords apply to awards too (w6-16) — the D1 path always filtered by them;
+      // without this, the SODA fallback delivered ALL awards over the threshold.
+      if (kws.length) awardParams["$q"] = kws.join(" ");
+      return { url: SODA, idField: "request_id", kind: "award", params: awardParams };
     }
     let where = `type_of_notice_description='Solicitation' AND due_date > '${todayISO}'`;
     if (f.months) where += ` AND due_date <= '${monthsFromISO(todayISO, Number(f.months))}'`;
