@@ -51,6 +51,9 @@ title_description, count(1) as n, min(base_salary) as mn, max(base_salary) as mx
 vendor_name, count(1) as n, sum(contract_amount) as t
 vendor_name, count(1) as n, sum(contract_amount) as t, min(start_date) as first, max(start_date) as last
 
+# ── Internal matching-logic constants — never rendered, only used for word-overlap scoring
+the a an of for and to in on with by at services service contract contracts renewal option year years extension citywide fiscal
+
 # ── Key names, HTTP headers, ICS/calendar structure
 Content-Type
 DESCRIPTION:RFP response due tomorrow
