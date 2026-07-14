@@ -37,3 +37,19 @@ export function digestDecision({ freshCount, freq, lastSentDate, today, heartbea
   const quiet = daysBetween(lastSentDate, today);
   return quiet >= heartbeatDays ? { action: "heartbeat" } : { action: "none" };
 }
+
+// A handful of Award notices are republished by City Record itself, byte-identical, under a
+// second request_id — the `seen`-set (keyed on request_id alone) can't catch that, so a
+// watching subscriber would see the same notice twice in one digest. Collapse rows that share
+// a content fingerprint within THIS run's fresh list, keeping the first occurrence's request_id.
+export function dedupeFreshByContent(rows) {
+  const seen = new Set();
+  const out = [];
+  for (const r of rows) {
+    const key = ["pin", "agency_name", "short_title", "vendor_name", "start_date"].map((k) => r[k] ?? "").join("|");
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(r);
+  }
+  return out;
+}

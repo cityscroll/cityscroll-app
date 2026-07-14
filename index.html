@@ -2483,12 +2483,12 @@ async function fillContext(r, el){
    PIN as a search criterion (verified live: exact 1:1 matches), so this join is deterministic,
    not fuzzy. Calls go through the worker's /checkbook CORS proxy; no key on the path. */
 const escXml = s => String(s).replace(/[<>&'"]/g, c=>({"<":"&lt;",">":"&gt;","&":"&amp;","'":"&apos;",'"':"&quot;"}[c]));
-async function checkbookByPin(pin){
+async function checkbookQueryByField(pin, field){
   if(!API) return null;
   const xml = `<request><type_of_data>Contracts</type_of_data><records_from>1</records_from><max_records>5</max_records><search_criteria>`
     + `<criteria><name>status</name><type>value</type><value>registered</value></criteria>`
     + `<criteria><name>category</name><type>value</type><value>expense</value></criteria>`
-    + `<criteria><name>pin</name><type>value</type><value>${escXml(pin)}</value></criteria>`
+    + `<criteria><name>${field}</name><type>value</type><value>${escXml(pin)}</value></criteria>`
     + `</search_criteria></request>`;
   const r = await workerFetch("/checkbook", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({xml})}, 25000);
   const doc = new DOMParser().parseFromString(await r.text(), "application/xml");
@@ -2502,6 +2502,15 @@ async function checkbookByPin(pin){
     registered: g(el,"prime_contract_registration_date"),
     mwbe: g(el,"prime_vendor_mwbe_category"), subs: g(el,"contract_includes_sub_vendors")
   }));
+}
+// Checkbook's "pin" field only ever matched PASSPort-era (2013+) PINs at scale — pre-2013
+// PINs used an older contract-number format Checkbook stored under "apt_pin" instead. Retry
+// once against that field before treating an empty pin-field result as a genuine non-match.
+async function checkbookByPin(pin){
+  const primary = await checkbookQueryByField(pin, "pin");
+  if(primary === null || primary.length) return primary;
+  const legacy = await checkbookQueryByField(pin, "apt_pin");
+  return (legacy && legacy.length) ? legacy : primary;
 }
 
 async function followDollars(r, el){
