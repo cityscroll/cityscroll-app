@@ -15,7 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 HTML_PAGES = ["index.html", "about.html", "data.html", "stats.html", "changelog.html", "api.html"]
-JS_FILES = ["i18n.js"]
+JS_FILES = ["i18n.js", "nl_parse.js"]
 
 failures = 0
 for page in HTML_PAGES:

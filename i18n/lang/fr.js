@@ -41,7 +41,7 @@
     sugg_meetings_1: "auditions récentes du conseil municipal",
     sugg_meetings_2: "réunions récentes de conseils communautaires",
     sugg_alerts_0: "attributions de plus de 1 M$",
-    sugg_alerts_1: "RFP de construction",
+    sugg_alerts_1: "contrats d'éducation de plus de 200 000 $ échéant sous 3 mois",
     sugg_alerts_2: "rezonages près du 79 Rivington",
     all_agencies_loading: "Toutes les agences — chargement…",
     // Tab labels
@@ -86,7 +86,7 @@
     // Alerts / quiz section
     quiz_heading:       "Configurez votre bulletin en 60 secondes",
     quiz_step1:         "Que devrions-nous surveiller pour vous ?",
-    quiz_step2:         "Préciser (facultatif)",
+    quiz_step2:         "Préciser avec un mot-clé exact (facultatif)",
     quiz_step3:         "À quelle fréquence ?",
     quiz_rfpkw:         "Contrats et RFP municipaux",
     quiz_bigaward:      "Grandes attributions de contrats",
@@ -106,6 +106,7 @@
     watch_for_label:    "Surveiller",
     watch_bigaward:     "Attributions de contrats au-delà d'un seuil",
     watch_rfpkw:        "RFP ouvertes correspondant à un mot-clé",
+    watch_moneynl:      "Contrats ou attributions correspondant à une description",
     watch_rezone:       "Rezonages près d'un quartier",
     watch_property:     "Avis de vente de biens",
     watch_rules:        "Changements de règles (règles d'agence)",
@@ -193,7 +194,7 @@
     nl_placeholder_property: "p. ex. ventes de biens du HPD, terrains du DEP",
     nl_placeholder_rules:    "p. ex. règles du bâtiment, règles d'hygiène publique",
     nl_placeholder_meetings: "p. ex. auditions récentes sur les monuments historiques, conseil municipal",
-    nl_placeholder_alerts:   "p. ex. alertez-moi des attributions de plus de 1 M$, ou RFP de construction",
+    nl_placeholder_alerts:   "p. ex. contrats d'éducation de plus de 200 000 $ échéant sous 3 mois, ou attributions de plus de 1 M$",
 
     // People panel
     roles_heading:       "Postes",
@@ -226,6 +227,12 @@
     param_label_vendor:       "Nom du fournisseur",
     param_label_agency_name:  "Nom de l'agence (tel qu'imprimé)",
     param_label_place:        "Code postal, adresse ou quartier (facultatif)",
+    param_label_moneynl_kw:     "Catégorie ou mots-clés (facultatif)",
+    param_label_moneynl_min:    "Montant minimal (facultatif)",
+    param_label_moneynl_months: "Échéance, en mois (facultatif)",
+    param_placeholder_moneynl_kw:     "éducation, construction…",
+    param_placeholder_moneynl_min:    "200000",
+    param_placeholder_moneynl_months: "3",
     param_placeholder_rfpkw:  "construction, TI, sécurité…",
     param_placeholder_vendor: "Consolidated Scaffolding, Sinergia…",
     param_placeholder_agency: "Design and Construction, Buildings…",
@@ -248,6 +255,7 @@
     pulling_payroll:  "récupération de la paie…",
     fetching_today:   "récupération des avis correspondants du jour…",
     translating:      "traduction…",
+    nl_understood_label: "Voici ce que nous avons compris :",
 
     // Dynamic headings (search())
     head_open:              "Demandes de propositions (RFP) ouvertes",
@@ -456,6 +464,12 @@
     freq_weekly_lc: "hebdomadaire",
     desc_bigaward: "bulletin {freq} des attributions de contrats de la Ville de New York de plus de {amt}",
     desc_rfpkw: "bulletin {freq} des RFP ouvertes correspondant à « {kw} »",
+    desc_moneynl: "bulletin {freq} des contrats ou attributions{bits}",
+    desc_moneynl_about: " sur « {kw} »",
+    desc_moneynl_over: " de plus de {amt}",
+    desc_moneynl_due_one: " échéant sous {n} mois",
+    desc_moneynl_due_other: " échéant sous {n} mois",
+    desc_moneynl_any: " — aucun filtre défini",
     desc_vendor: "bulletin {freq} — chaque nouvel avis nommant le fournisseur « {name} »",
     desc_agency_watch: "bulletin {freq} — tout ce que « {name} » publie",
     desc_section: "bulletin {freq} de {what}{bits}",

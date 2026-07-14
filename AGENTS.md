@@ -359,6 +359,43 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   and the `git-auto-commit-action` step from the tool's README before enabling it, and be aware
   of the BeautifulSoup-reserialization caveat above before pointing `fix` at real files in CI.
 
+## Alerts NL query — the combined parser, and the pure-module extraction pattern
+
+- **`nl_parse.js`** (repo root) holds `parseNL()` + its category dictionary
+  (`NL_CATEGORY_DICT`) — extracted out of index.html's inline script into its own file so it's
+  directly `require()`-able from a Node test (`test/nl_alerts_parse.test.mjs`) with no DOM and
+  no brace-matching trick. It's a plain classic `<script>` (declares `parseNL` as a global,
+  same convention as `i18n.js`), loaded right after `i18n.js` in every page that needs it
+  (currently just index.html) — NOT an ES module, so it needs no bundler and Node's CJS/ESM
+  interop picks up its `module.exports` automatically for `import` in `.mjs` tests. This is
+  the pattern to reach for next time a chunk of index.html's inline script needs to be
+  Node-testable as pure logic — prefer it over extending `test/unit.test.mjs`'s brace-matching
+  extractor when the function has no dependency on anything else in that giant script.
+- **The Alerts tab's "Ask" box and the Money tab's search box share one extractor.** `NL.alerts`
+  (index.html) used to be a three-way single-payload classifier (`bigaward` xor `rfpkw` xor
+  `rezone`) that could only ever keep one of category/amount/deadline from a query like
+  "education contracts over $200K due in 3 months". It now calls the same `parseNL()` the Money
+  tab uses, producing a combined `{keywords, minAmount, months}` — surfaced in the "Build an
+  alert" form as a 4th watch-for option, `moneynl`, with three independently editable fields
+  (`#amoneykw`/`#amoneymin`/`#amoneymonths`), not one flattened string. The worker mirrors this:
+  `LENSES.alerts` (`worker/src/lib/filter.mjs`) now shares `keywords`/`minAmount`/`months` with
+  the money lens; `watchType` survives only to mean `"rezone"` (a place-based watch has no
+  dollar amount or due date at all) — the old `bigaward`/`rfpkw`/`threshold`/`keyword` values
+  are gone, since a rezone-watch is the only shape genuinely different from "money, with some
+  fields blank." `aFetch()`'s `moneynl` preview branch and the worker's `compileSub()` money
+  branch both apply the same rule — an amount floor implies an Award-notice query (only Awards
+  carry a dollar amount in this dataset; Solicitations don't) and takes priority over a
+  keyword-only Solicitation search — keep them in sync if that rule ever changes.
+- **Two free-text boxes on the same screen must not read as one input.** The 60-second quiz's
+  keyword field (`#quiznarrow`, exact substring match) and the Ask box (full NL parse) sit in
+  separate panels on the Alerts tab but both take arbitrary typed text — `quiz_step2`'s label
+  now says "keyword" explicitly so it doesn't invite a full sentence. Separately, the Ask box's
+  parsed-filter summary (`.qchip` spans, rendered via the shared `nlTransHTML()` helper) is
+  inert status text, not a lookalike of the clickable sample-query chips (`.trychip`) sitting
+  right above it — it carries `role="status"`, an explicit `nl_understood_label` prefix, and
+  deliberately does NOT share `.trychip`'s pill shape or pointer cursor.
+  `test/standards/nl_input_clarity.py` (unit job) statically pins both distinctions.
+
 ## Architecture — static site + Worker backend
 
 - The site (`index.html`, `i18n.js`, `test/`) is 100% static, deployed via GitHub Pages; the

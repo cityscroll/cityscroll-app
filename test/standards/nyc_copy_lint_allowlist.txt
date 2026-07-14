@@ -17,4 +17,6 @@ currency	awards over $1M
 currency	(uses the $1M+ threshold — tune it below)
 # nl_placeholder_alerts is a short search-box placeholder hint (same UI register as the
 # threshold chips above), not long-form prose — the $1M shorthand mirrors the chip it refers to.
-currency	for example, email me awards over $1M, or construction RFPs
+currency	for example, education contracts over $200K due in 3 months, or awards over $1M
+# sugg_alerts_1 is a one-line "try this" sample query, same register as the placeholder above.
+currency	education contracts over $200K due in 3 months

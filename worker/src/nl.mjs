@@ -38,10 +38,11 @@ const FIELD_DEFS = {
   status: { type: ["string", "null"], description: "'active' for in-review/active items; 'all' if they want everything incl. closed/approved; else null." },
   when: { type: ["string", "null"], description: "'upcoming' for future meetings; 'all' for recent and all; else null." },
   lookupType: { type: ["string", "null"], description: "'role' if searching a job title/role; 'person' if looking up a named individual; else null." },
-  watchType: { type: ["string", "null"], description: "The kind of saved alert: 'bigaward' (contract awards over a dollar threshold), 'rfpkw' (open RFPs matching a keyword), or 'rezone' (rezonings near a place); else null." },
-  threshold: { type: ["number", "null"], description: "For a 'bigaward' alert, the minimum award dollar amount ('over $1M' → 1000000); else null." },
-  keyword: { type: ["string", "null"], description: "For an 'rfpkw' alert, the single trade/topic keyword (e.g. 'construction'); else null." },
-  place: { type: ["string", "null"], description: "For a 'rezone' alert, the neighborhood or address to watch (e.g. '79 Rivington', 'Gowanus'); else null." },
+  // "alerts" reuses money's keywords/minAmount/months fields (below) so a category, an
+  // amount floor, and a deadline all survive together — watchType only ever marks the one
+  // genuinely different shape (rezone), which has no dollar amount or due date at all.
+  watchType: { type: ["string", "null"], description: "'rezone' if this is a request to watch rezonings/land-use near a specific place (fill place too, leave keywords/minAmount/months null); else null — the general case of watching contracts, RFPs, or awards, where keywords/minAmount/months should be filled instead." },
+  place: { type: ["string", "null"], description: "For a 'rezone' watchType, the neighborhood or address to watch (e.g. '79 Rivington', 'Gowanus'); else null." },
 };
 
 const LENS_HINT = {
@@ -51,7 +52,7 @@ const LENS_HINT = {
   property: "NYC property being sold, auctioned, or disposed (Property Disposition notices)",
   rules: "proposed and adopted NYC agency rules",
   meetings: "NYC public meetings and hearings",
-  alerts: "a saved alert — contract awards over a dollar threshold, open RFPs by keyword, or rezonings near a place",
+  alerts: "a saved alert — contracts/RFPs/awards matching a category, amount, and/or deadline, or rezonings near a place",
 };
 
 function buildTool(lens) {

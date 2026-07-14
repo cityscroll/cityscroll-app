@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "98c2d2c8",
-  "zh-Hans": "d4befc83",
-  ru: "f457577d",
-  bn: "60b7c5d7",
-  ht: "da32e93f",
-  ko: "28ca15e1",
-  fr: "658bf598",
-  pl: "7df1ba5d",
-  ar: "09b6d059",
-  ur: "ec04bc78",
+  es: "476a3e7f",
+  "zh-Hans": "16f8d1f0",
+  ru: "3306e55a",
+  bn: "cb8d6436",
+  ht: "04f3dd43",
+  ko: "8f06496f",
+  fr: "9c182406",
+  pl: "a7e4c123",
+  ar: "b009a300",
+  ur: "3d564a5d",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -131,7 +131,7 @@ const STRINGS = {
     sugg_meetings_1: "recent city council hearings",
     sugg_meetings_2: "recent community board meetings",
     sugg_alerts_0: "awards over $1M",
-    sugg_alerts_1: "construction RFPs",
+    sugg_alerts_1: "education contracts over $200K due in 3 months",
     sugg_alerts_2: "rezonings near 79 Rivington",
     all_agencies_loading: "All agencies — loading…",
     // Tab labels
@@ -176,7 +176,7 @@ const STRINGS = {
     // Alerts / quiz section
     quiz_heading:       "Get your digest in 60 seconds",
     quiz_step1:         "What should we watch for you?",
-    quiz_step2:         "Narrow it (optional)",
+    quiz_step2:         "Narrow it with an exact keyword (optional)",
     quiz_step3:         "How often?",
     quiz_rfpkw:         "City contracts and RFPs",
     quiz_bigaward:      "Big contract awards",
@@ -196,6 +196,7 @@ const STRINGS = {
     watch_for_label:    "Watch for",
     watch_bigaward:     "Contract awards over a threshold",
     watch_rfpkw:        "Open RFPs matching a keyword",
+    watch_moneynl:      "Contracts or awards matching a description",
     watch_rezone:       "Rezonings near a neighborhood",
     watch_property:     "Property sale notices",
     watch_rules:        "Rule changes (Agency Rules)",
@@ -283,7 +284,7 @@ const STRINGS = {
     nl_placeholder_property: "for example, HPD property sales, DEP land",
     nl_placeholder_rules:    "for example, buildings rules, sanitation rules",
     nl_placeholder_meetings: "for example, recent landmarks hearings, city council",
-    nl_placeholder_alerts:   "for example, email me awards over $1M, or construction RFPs",
+    nl_placeholder_alerts:   "for example, education contracts over $200K due in 3 months, or awards over $1M",
 
     // People panel
     roles_heading:       "Roles",
@@ -316,6 +317,12 @@ const STRINGS = {
     param_label_vendor:       "Vendor name",
     param_label_agency_name:  "Agency name (as printed)",
     param_label_place:        "ZIP, address, or neighborhood (optional)",
+    param_label_moneynl_kw:     "Category or keywords (optional)",
+    param_label_moneynl_min:    "Minimum amount (optional)",
+    param_label_moneynl_months: "Due within, in months (optional)",
+    param_placeholder_moneynl_kw:     "education, construction…",
+    param_placeholder_moneynl_min:    "200000",
+    param_placeholder_moneynl_months: "3",
     param_placeholder_rfpkw:  "construction, IT, security…",
     param_placeholder_vendor: "Consolidated Scaffolding, Sinergia…",
     param_placeholder_agency: "Design and Construction, Buildings…",
@@ -338,6 +345,7 @@ const STRINGS = {
     pulling_payroll:  "pulling payroll…",
     fetching_today:   "fetching today's matching notices…",
     translating:      "translating…",
+    nl_understood_label: "We understood this as:",
 
     // Dynamic headings (search())
     head_open:              "Open Requests for Proposals (RFPs)",
@@ -548,6 +556,12 @@ const STRINGS = {
     freq_weekly_lc: "weekly",
     desc_bigaward: "{freq} digest of NYC contract awards over {amt}",
     desc_rfpkw: "{freq} digest of open RFPs matching “{kw}”",
+    desc_moneynl: "{freq} digest of contracts or awards{bits}",
+    desc_moneynl_about: " about “{kw}”",
+    desc_moneynl_over: " over {amt}",
+    desc_moneynl_due_one: " due within {n} month",
+    desc_moneynl_due_other: " due within {n} months",
+    desc_moneynl_any: " — no filters set",
     desc_vendor: "{freq} digest — every new notice naming vendor “{name}”",
     desc_agency_watch: "{freq} digest — anything “{name}” publishes",
     desc_section: "{freq} digest of {what}{bits}",

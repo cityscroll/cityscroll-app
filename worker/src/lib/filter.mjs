@@ -25,7 +25,12 @@ export const LENSES = {
   rules:    ["keywords", "agency"],
   meetings: ["keywords", "agency", "when"],
   entity:   ["name", "kind"],
-  alerts:   ["watchType", "threshold", "keyword", "place"],
+  // "alerts" no longer has its own single-payload classifier (bigaward xor rfpkw xor
+  // rezone) — a query naming a category, an amount, and a deadline together now keeps all
+  // three via the same keywords/minAmount/months fields the money lens already sanitizes.
+  // watchType survives only to mark the one genuinely different shape: a rezoning watch,
+  // which has a place instead of a dollar amount or a due date.
+  alerts:   ["watchType", "place", "keywords", "minAmount", "months"],
 };
 
 const BOROS = ["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"];
@@ -62,11 +67,7 @@ function clampField(name, v) {
     case "kind":
       return v === "agency" ? "agency" : v === "vendor" ? "vendor" : null;
     case "watchType":
-      return ["bigaward", "rfpkw", "rezone"].includes(v) ? v : null;
-    case "threshold":
-      return typeof v === "number" && v >= 1000 ? Math.round(v) : null;
-    case "keyword":
-      return typeof v === "string" && v.trim() ? v.trim().toLowerCase() : null;
+      return v === "rezone" ? "rezone" : null;
     case "place":
       return typeof v === "string" && v.trim() ? v.trim() : null;
     default:

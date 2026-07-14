@@ -16,7 +16,12 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
-const src = readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "index.html"), "utf8");
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const src = readFileSync(join(ROOT, "index.html"), "utf8");
+// parseNL() now lives in its own module (nl_parse.js) — a plain global-declaring script in
+// the browser, so its source can be inlined into the Function body the same way the
+// brace-extracted index.html functions below are.
+const nlParseSrc = readFileSync(join(ROOT, "nl_parse.js"), "utf8");
 
 // Pull `function NAME(...){ ... }` (or `async function`) out of the source by brace matching.
 function extractFn(name) {
@@ -36,8 +41,9 @@ function extractFn(name) {
 const make = (API, fetchImpl) =>
   new Function("API", "fetch",
     ["const API_FALLBACK = API; let apiBase = API;", // fallback base mirrors the injected one in tests
+     nlParseSrc,
      extractFn("workerFetch"), extractFn("personName"), extractFn("withPersonName"),
-     extractFn("parseNL"), extractFn("deviceParse"), extractFn("nlResolve"),
+     extractFn("deviceParse"), extractFn("nlResolve"),
      "return { parseNL, deviceParse, nlResolve };"].join("\n")
   )(API, fetchImpl);
 
