@@ -270,6 +270,7 @@
     event_on_html: "活动日期 <b>{date}</b>",
     paper_trail_heading: "文件轨迹（共享此 PIN 的公告）",
     full_timeline_link: "含付款记录的完整时间线",
+    renewal_badge: "续约",
     notice_fallback: "公告",
     view_in_city_record: "在市政公报中查看",
     ext_link_new_tab_sr: "（在新标签页中打开）",

@@ -148,6 +148,7 @@
      color as signal). Dollar amounts and asset types are information, not alarms. */
   .tag.amt{background:var(--paper-2);color:var(--ink-soft)}
   .tag.asset{background:var(--paper-2);color:var(--ink-soft)}
+  .tag.renewal{background:var(--paper-2);color:var(--ink-soft)}
   a.pivot{color:inherit;text-decoration:none;border-bottom:1px dotted var(--rule-strong)}
   a.pivot:hover{color:var(--oxblood);border-bottom-color:var(--oxblood)}
   .facetlbl{font:600 11px/2.4 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-inline-end:4px}
@@ -319,7 +320,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=866d57e7"></script>
+<script src="i18n.js?v=24a19594"></script>
 <script src="nl_parse.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
@@ -726,7 +727,12 @@ const PASSPORT = "https://a0333-passportpublic.nyc.gov/";
 const EXT_ATTRS = 'target="_blank" rel="noopener noreferrer"';
 const extSR = () => `<span class="sr-only"> ${t("ext_link_new_tab_sr")}</span>`;
 const STAGE_RANK = {"Solicitation":0,"Intent to Negotiate":1,"Vendor List":2,"Intent to Award":3,"Award":4};
-const JUNK_PINS = new Set(["NOPINFOUND","SEE BELOW","LINE 17 BELOW","TBD","N/A","NONE","VARIOUS","SEE ATTACHED"]); // compared UPPERCASED — entries must be uppercase (unit-tested)
+const JUNK_PINS = new Set(["NOPINFOUND","SEE BELOW","LINE 17 BELOW","TBD","N/A","NONE","VARIOUS","SEE ATTACHED","123456"]); // compared UPPERCASED — entries must be uppercase (unit-tested); "123456" is a confirmed placeholder default value, not a real PIN
+// Looser second pass alongside JUNK_PINS above: the exact-match set misses common real-world
+// phrasings of the same "see the list below" placeholder (measured 37.7% miss rate on a 300-row
+// sample). \b keeps this from matching inside a real alphanumeric PIN -- digits and letters are
+// both \w, so "SEE12345" never has a word boundary after "see" and is left alone.
+const JUNK_PIN_TEXT_RE = /\bsee\b|\bbelow\b|\bline\s*17\b|\bn\/?a\b|\btbd\b|\bvarious\b|\bpending\b|\battached\b/i;
 const SELECT = "request_id,start_date,agency_name,type_of_notice_description,category_description,short_title,pin,contract_amount,vendor_name,due_date,address_to_request,contact_name,contact_phone,email,selection_method_description,additional_description_1";
 
 const $ = s => document.querySelector(s);
@@ -796,6 +802,7 @@ function usablePin(p){
   if(!/[A-Za-z0-9]/.test(s)) return false;
   if(/^[0\W_]+$/.test(s)) return false;
   if(JUNK_PINS.has(s.toUpperCase())) return false;
+  if(JUNK_PIN_TEXT_RE.test(s)) return false;
   return true;
 }
 function cleanText(s){
@@ -1033,11 +1040,27 @@ async function select(i, el){
   renderDetail(r, chain, stats);
 }
 
+// A renewal round is commonly re-published under the same base PIN with an "R00N" suffix
+// appended (e.g. "06823N0030001" → "06823N0030001R001") -- 8.8% of Award rows carry one.
+// pinBase() strips it so loadChain()/showMatter() can widen an exact match into a same-agency
+// prefix match and show the whole award-and-renewal history as one paper trail, instead of
+// 2-3 disconnected single-notice pages. PINs without the suffix are left alone (returns null)
+// and keep the cheaper, more precise exact match.
+const RENEWAL_SUFFIX_RE = /R0\d+$/;
+function pinBase(pin){
+  const s = String(pin||"").trim();
+  const m = s.match(RENEWAL_SUFFIX_RE);
+  return m ? s.slice(0, m.index) : null;
+}
 async function loadChain(r){
   if(!usablePin(r.pin)) return [r];
   try{
+    const base = pinBase(r.pin);
+    const where = base
+      ? `pin LIKE '${base.replace(/'/g,"''")}%' AND agency_name='${r.agency_name.replace(/'/g,"''")}'`
+      : `pin='${r.pin.replace(/'/g,"''")}' AND agency_name='${r.agency_name.replace(/'/g,"''")}'`;
     const rows = await soda({"$select":SELECT,
-      "$where":`pin='${r.pin.replace(/'/g,"''")}' AND agency_name='${r.agency_name.replace(/'/g,"''")}'`,
+      "$where":where,
       "$order":"start_date ASC","$limit":"60"});
     rows.sort((a,b)=> (a.start_date||"").localeCompare(b.start_date||"") ||
       (STAGE_RANK[a.type_of_notice_description]??9) - (STAGE_RANK[b.type_of_notice_description]??9));
@@ -1190,12 +1213,12 @@ function glanceFor(r){
   return body ? `<div class="glance">${body}</div>` : "";
 }
 function mailtoFor(r){
-  const subj = `Intent to respond: ${cleanText(r.short_title)}${r.pin?` (PIN ${r.pin})`:""}`;
+  const subj = `Intent to respond: ${cleanText(r.short_title)}${usablePin(r.pin)?` (PIN ${r.pin})`:""}`;
   const body =
     `To ${cleanText(r.contact_name)||"the procurement officer"},\n\n` +
     `This is a letter of intent in response to the following City of New York solicitation, as published in The City Record:\n\n` +
     `  Title:  ${cleanText(r.short_title)}\n` +
-    `  PIN:    ${r.pin||"(see notice)"}\n` +
+    `  PIN:    ${usablePin(r.pin)?r.pin:"(see notice)"}\n` +
     `  Agency: ${r.agency_name||""}\n` +
     (r.due_date?`  Due:    ${fdt(r.due_date)}\n`:"") +
     `\nWe intend to respond and would appreciate confirmation of (1) how to obtain the full solicitation package and (2) whether responses are submitted via PASSPort or directly to your office.\n\n` +
@@ -1213,7 +1236,7 @@ function icsForRFP(r){
     "BEGIN:VEVENT","UID:"+(r.request_id||fl(d))+"@crol-list.demo","DTSTAMP:"+fl(new Date()),
     "DTSTART:"+fl(d),"DTEND:"+fl(d),
     "SUMMARY:"+esc("RFP due: "+cleanText(r.short_title)),
-    "DESCRIPTION:"+esc(`${r.agency_name||""} · PIN ${r.pin||"—"} · ${REQ_URL(r.request_id)}`),
+    "DESCRIPTION:"+esc(`${r.agency_name||""} · PIN ${usablePin(r.pin)?r.pin:"—"} · ${REQ_URL(r.request_id)}`),
     "BEGIN:VALARM","TRIGGER:-P1D","ACTION:DISPLAY","DESCRIPTION:RFP response due tomorrow","END:VALARM",
     "END:VEVENT","END:VCALENDAR"
   ].join("\r\n");
@@ -1260,8 +1283,12 @@ function chainHTML(r, chain){
   let html = `<div class="chain-h">${t("paper_trail_heading")}${tlink}</div><div class="chain">`;
   chain.forEach((c,idx)=>{
     const amt = money(c.contract_amount);
+    // A chain entry pulled in by the renewal-suffix prefix widening (pinBase()) carries a
+    // DIFFERENT literal PIN than the notice we opened -- badge it so it reads as "linked via
+    // renewal", distinct from a same-PIN duplicate stage (no badge, same literal PIN as r.pin).
+    const renewed = c.pin && r.pin && c.pin !== r.pin;
     html += `<div class="stage"><div class="box ${boxClass(c.type_of_notice_description)}">
-        <div class="stage-name">${c.type_of_notice_description||t("notice_fallback")}</div>
+        <div class="stage-name">${c.type_of_notice_description||t("notice_fallback")}${renewed?` <span class="tag renewal">${t("renewal_badge")}</span>`:""}</div>
         <div class="when">${fdate(c.start_date)}</div>
         <div class="bt">${cleanText(c.short_title)||t("untitled")}</div>
         ${amt? `<div class="amt">${amt}</div>`:""}
@@ -3019,6 +3046,20 @@ async function showMatter(pin){
   try{
     rows = await soda({"$select":SELECT,"$where":`pin='${String(pin).replace(/'/g,"''")}'`,"$order":"start_date ASC","$limit":"60"}, 15000);
   }catch(e){}
+  // Whichever renewal-suffixed PIN a link used to reach this page, widen to the same base+agency
+  // prefix match loadChain() uses, so the matter page shows the same combined history regardless
+  // of which specific suffix (…R001, …R002, …) got the reader here.
+  const matterBase = pinBase(pin);
+  if(matterBase && rows.length){
+    const matterAgency = rows[0].agency_name;
+    try{
+      const more = await soda({"$select":SELECT,
+        "$where":`pin LIKE '${matterBase.replace(/'/g,"''")}%' AND agency_name='${matterAgency.replace(/'/g,"''")}'`,
+        "$order":"start_date ASC","$limit":"60"}, 15000);
+      const seen = new Set(rows.map(x=>x.request_id));
+      more.forEach(x=>{ if(!seen.has(x.request_id)){ rows.push(x); seen.add(x.request_id); } });
+    }catch(e){}
+  }
   if(!rows.length){
     box.innerHTML = `<div class="empty">No City Record notices carry PIN <code>${safe}</code>. <a href="#money">← Browse CROL-List</a></div>`;
     return;
@@ -3033,7 +3074,10 @@ async function showMatter(pin){
   const items = rows.map(r=>({
     date: r.start_date,
     label: `<b>${r.type_of_notice_description||"Notice"}</b> — ${pivotA("#notice/"+encodeURIComponent(r.request_id), cleanText(r.short_title)||"(untitled)")}`,
-    extra: [money(r.contract_amount), r.vendor_name?"→ "+pivotA(vendorHref(r.vendor_name), cleanText(r.vendor_name)):null,
+    // r.pin differing from the requested pin means this row was pulled in by the renewal-suffix
+    // base-prefix widening above, not an exact match on the PIN the reader followed here.
+    extra: [r.pin && r.pin !== pin ? `PIN ${r.pin} (renewal-linked)` : null,
+            money(r.contract_amount), r.vendor_name?"→ "+pivotA(vendorHref(r.vendor_name), cleanText(r.vendor_name)):null,
             r.due_date?"responses due "+fdate(r.due_date):null].filter(Boolean).join(" · ")
   }));
   if(c && c.registered) items.push({date:c.registered, label:`<b>Contract registered</b> — <code>${c.id}</code> (Checkbook NYC)`, extra:`committed ${money(c.current)||"—"}`});

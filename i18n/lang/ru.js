@@ -270,6 +270,7 @@
     event_on_html: "мероприятие <b>{date}</b>",
     paper_trail_heading: "Документальный след (уведомления с этим PIN)",
     full_timeline_link: "полная хронология с платежами",
+    renewal_badge: "Продление",
     notice_fallback: "Уведомление",
     view_in_city_record: "Открыть в Городском вестнике",
     ext_link_new_tab_sr: "(открывается в новой вкладке)",

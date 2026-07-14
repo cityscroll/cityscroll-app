@@ -352,6 +352,7 @@
     event_on_html: "événement le <b>{date}</b>",
     paper_trail_heading: "Le suivi documentaire (avis partageant ce PIN)",
     full_timeline_link: "chronologie complète avec les paiements",
+    renewal_badge: "Renouvellement",
     notice_fallback: "Avis",
     view_in_city_record: "Voir dans le Registre municipal",
     ext_link_new_tab_sr: "(s'ouvre dans un nouvel onglet)",

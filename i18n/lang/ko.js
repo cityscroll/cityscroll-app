@@ -270,6 +270,7 @@
     event_on_html: "행사일 <b>{date}</b>",
     paper_trail_heading: "서류 기록(같은 PIN을 공유하는 공고)",
     full_timeline_link: "결제 내역을 포함한 전체 타임라인",
+    renewal_badge: "갱신",
     notice_fallback: "공고",
     view_in_city_record: "시정 기록부에서 보기",
     ext_link_new_tab_sr: "(새 탭에서 열림)",

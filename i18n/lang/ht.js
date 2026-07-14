@@ -269,6 +269,7 @@
     event_on_html: "evènman <b>{date}</b>",
     paper_trail_heading: "Tras dokiman an (avi ki pataje menm PIN sa a)",
     full_timeline_link: "kwonoloji konplè ak peman yo",
+    renewal_badge: "Renouvèlman",
     notice_fallback: "Avi",
     view_in_city_record: "Gade nan Rejis Minisipal la",
     ext_link_new_tab_sr: "(louvri nan yon nouvo fenèt)",

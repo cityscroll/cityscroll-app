@@ -278,6 +278,7 @@
     event_on_html: "wydarzenie <b>{date}</b>",
     paper_trail_heading: "Ślad dokumentacyjny (ogłoszenia z tym samym PIN)",
     full_timeline_link: "pełna oś czasu z płatnościami",
+    renewal_badge: "Przedłużenie",
     notice_fallback: "Ogłoszenie",
     view_in_city_record: "Zobacz w Rejestrze Miejskim",
     ext_link_new_tab_sr: "(otwiera się w nowej karcie)",

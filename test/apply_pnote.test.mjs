@@ -32,18 +32,23 @@ function extractConst(name) {
 const windowStub = { LANG: "en", LANG_META: { en: { intlDate: "en-US" } } };
 const { t, tn } = new Function("window", i18nSrc + "\nreturn { t: window.t, tn: window.tn };")(windowStub);
 
-const { buildApply } = new Function(
+const { buildApply, mailtoFor, icsForRFP } = new Function(
   "t", "tn", "window",
   extractConst("PASSPORT") +
+  extractConst("REQ_URL") +
   extractConst("EXT_ATTRS") +
   extractConst("extSR") +
   extractFn("cleanText") +
   extractFn("fdt") +
   extractFn("daysLeft") +
   extractFn("telHref") +
+  src.match(/const JUNK_PINS = new Set\(\[[^\]]*\]\);/)[0] +
+  extractConst("JUNK_PIN_TEXT_RE") +
+  extractFn("usablePin") +
   extractFn("mailtoFor") +
+  extractFn("icsForRFP") +
   extractFn("buildApply") +
-  "return { buildApply };"
+  "return { buildApply, mailtoFor, icsForRFP };"
 )(t, tn, windowStub);
 
 const base = {
@@ -79,4 +84,28 @@ test("phone but no email: still no Email-a-response button, still the no-contact
   assert.doesNotMatch(html, /Email a response/);
   assert.match(html, /no direct contact/i);
   assert.match(html, /tel:/);
+});
+
+// crol-fort-pin: mailtoFor()/icsForRFP() checked bare `r.pin` truthiness, not usablePin() -- a
+// junk PIN like "TBD" or "See below" (truthy strings) leaked straight into the letter-of-intent
+// subject/body and the .ics DESCRIPTION unchanged. usablePin() is the single gate the rest of
+// the app already uses for this notice's PIN; these two must use it too.
+test("mailtoFor: a junk PIN never appears in the subject or body", () => {
+  const junky = { ...base, email: "procurement@example.gov", pin: "See below" };
+  const href = mailtoFor(junky);
+  const decoded = decodeURIComponent(href);
+  assert.doesNotMatch(decoded, /See below/);
+  assert.match(decoded, /\(see notice\)/, "falls back to the same placeholder used for a missing PIN");
+});
+test("mailtoFor: a usable PIN still appears as before", () => {
+  const href = mailtoFor({ ...base, email: "procurement@example.gov" });
+  const decoded = decodeURIComponent(href);
+  assert.match(decoded, new RegExp(`PIN ${base.pin}`));
+  assert.match(decoded, new RegExp(`\\(PIN ${base.pin}\\)`));
+});
+test("icsForRFP: a junk PIN never appears in the calendar DESCRIPTION", () => {
+  const junky = { ...base, pin: "N/A" };
+  const ics = icsForRFP(junky);
+  assert.doesNotMatch(ics, /PIN N\/A/);
+  assert.match(ics, /PIN —/, "falls back to the same em-dash used for a missing PIN");
 });
