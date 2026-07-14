@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "399323a7",
-  "zh-Hans": "7302a1a5",
-  ru: "54b74257",
-  bn: "172cd137",
-  ht: "eb16d8b9",
-  ko: "dd426d99",
-  fr: "f0142b97",
-  pl: "7e0e3c18",
-  ar: "ba353f67",
-  ur: "a25cbecf",
+  es: "6c235c99",
+  "zh-Hans": "e2288020",
+  ru: "a7a74d55",
+  bn: "9a8a232a",
+  ht: "839b2521",
+  ko: "a3754a38",
+  fr: "9ff69da5",
+  pl: "1c6a17ad",
+  ar: "81a30c19",
+  ur: "8b7c388a",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -433,6 +433,7 @@ const STRINGS = {
     pinned_open_inv: "✓ Pinned — open investigation ({n})",
     total_awarded_lbl: "total awarded,<br>on record",
     awards_published_lbl: "contract awards<br>published",
+    agency_awards_unavailable_note: "No contract awards from this agency appear in the City Record — some agencies publish awards elsewhere.",
     glance_who: "Who",
     glance_what: "What",
     glance_when: "When",
@@ -458,6 +459,7 @@ const STRINGS = {
     apply_submit_lbl: "Submit / request to",
     call_btn: "Call {phone}",
     apply_pnote_html: "<b>Email a response</b> opens a pre-filled letter of intent to the listed contact — edit before sending. Competitive bids are ultimately submitted through <b>PASSPort</b>. Nothing leaves your device until you hit send.",
+    apply_pnote_no_email_html: "This notice lists no direct contact — submit your response through <b>PASSPort</b>, or use the submission address above if one is listed.",
 
     // Screen-reader announcements
     matching_roles_announce: "{n} matching roles",
@@ -574,6 +576,7 @@ const STRINGS = {
     desc_rezone_city: "{freq} digest of new rezonings citywide",
     your_digest_subject: "Your {desc}",
     no_matches_today_html: "No matching notices today — so you&#39;d get nothing. (That&#39;s the point: signal, not noise.)",
+    simplify_keyword_hint_html: "Long, sentence-like search terms rarely match City Record listings verbatim — try one or two words instead.",
     digest_footer_one: "{n} notice today · from The City Record · unsubscribe any time (one click)",
     digest_footer_other: "{n} notices today · from The City Record · unsubscribe any time (one click)",
     event_meta: "event {date}",

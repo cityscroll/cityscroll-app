@@ -319,7 +319,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=ccc05668"></script>
+<script src="i18n.js?v=3016b77d"></script>
 <script src="nl_parse.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
@@ -1243,7 +1243,7 @@ function buildApply(r){
   acts += '</div>';
   return `<div class="apply"><h3>${t("how_to_respond_heading")}</h3><div class="body">
     ${due}${acts}${dts?`<dl>${dts}</dl>`:""}
-    <div class="pnote">${t("apply_pnote_html")}</div>
+    <div class="pnote">${r.email ? t("apply_pnote_html") : t("apply_pnote_no_email_html")}</div>
   </div></div>`;
 }
 
@@ -1275,6 +1275,17 @@ function chainHTML(r, chain){
   return html;
 }
 
+// SODA's count(1) aggregate comes back as the STRING "0" (not the number 0) when an agency has
+// no matching awards — a bare `stats.n` truthiness check treats that as present, rendering a
+// dash-and-zero scoreboard. `+stats.n > 0` is the numeric guard both agency stat blocks share.
+function hasAgencyAwards(stats){ return !!(stats && +stats.n > 0); }
+function noticeAgencyBar(stats, agencyName, barClass){
+  if(!hasAgencyAwards(stats)) return `<div class="note">${t("agency_awards_unavailable_note")}</div>`;
+  return `<div class="${barClass || "agencybar"}">
+    <div><div class="big">${money(stats.total)||"—"}</div><div class="lbl">${pivotA(agencyHref(agencyName), agencyName)}<br>${t("total_awarded_lbl")}</div></div>
+    <div><div class="big">${fmtNumber(+stats.n)}</div><div class="lbl">${t("awards_published_lbl")}</div></div>
+  </div>`;
+}
 function renderDetail(r, chain, stats){
   const pending = chain === null; // first paint from the in-memory record; chain/stats hydrate in
   let html = `<div class="actions" style="margin:0 0 12px"><button class="act" type="button" id="dcopy">${t("copy_link_notice")}</button>${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}</div>`;
@@ -1292,12 +1303,7 @@ function renderDetail(r, chain, stats){
   html += `<div id="dprior"></div>`;
   // Agency-wide totals are context for this notice, not the headline — rendered last and
   // visually subordinated (smaller figures) so notice-specific facts read first.
-  if(stats && stats.n){
-    html += `<div class="agencybar sub">
-      <div><div class="big">${money(stats.total)||"—"}</div><div class="lbl">${pivotA(agencyHref(r.agency_name), r.agency_name)}<br>${t("total_awarded_lbl")}</div></div>
-      <div><div class="big">${fmtNumber(+stats.n)}</div><div class="lbl">${t("awards_published_lbl")}</div></div>
-    </div>`;
-  }
+  if(!pending) html += noticeAgencyBar(stats, r.agency_name, "agencybar sub");
   $("#detail").innerHTML = html;
   const ib = $("#icsbtn"); if(ib) ib.addEventListener("click", downloadICS);
   const dc = $("#dcopy"); if(dc) dc.addEventListener("click", ()=>copyText(noticeLink(r.request_id), dc));
@@ -2040,6 +2046,14 @@ function downloadEventICS(r){
 const AKEY = "crd_alerts_v1";
 // Values are i18n keys — render with t(SECTION_WATCH_LABEL[w]); truthiness still gates the lens routing.
 const SECTION_WATCH_LABEL = {property:"watchlbl_property", rules:"watchlbl_rules", meetings:"watchlbl_meetings"};
+// Watch types where #aparam is a free-text keyword search (vs. an entity name or place name) —
+// only these can plausibly be "too sentence-like to match" in the sense card w11-12 means.
+function isKeywordWatch(w){ return w === "rfpkw" || !!SECTION_WATCH_LABEL[w]; }
+const AMOUNT_WORD_RE = /\$|\d|dollar|thousand|million|billion/i;
+function keywordLooksSentenceLike(kw){
+  const words = String(kw||"").trim().split(/\s+/).filter(Boolean);
+  return words.length > 3 || AMOUNT_WORD_RE.test(kw);
+}
 function aStore(){ try{ return JSON.parse(localStorage.getItem(AKEY)||"[]"); }catch(e){ return []; } }
 function aSet(v){ try{ localStorage.setItem(AKEY, JSON.stringify(v)); }catch(e){} }
 
@@ -2209,7 +2223,10 @@ async function aPreview(){
   try{ data = await aFetch(); }catch(e){ $("#apreviewbox").innerHTML='<div class="empty">' + t("could_not_reach") + '</div>'; return; }
   const rows=data.rows||[];
   const dest=$("#adest").value.trim() || t("email_placeholder");
-  const body = rows.length ? rows.map(r=>digItemHTML(data.kind,r)).join("") : `<div class="empty">${t("no_matches_today_html")}</div>`;
+  const kw = $("#aparam").value.trim();
+  const showSimplifyHint = !rows.length && isKeywordWatch($("#awatch").value) && keywordLooksSentenceLike(kw);
+  const body = rows.length ? rows.map(r=>digItemHTML(data.kind,r)).join("")
+    : `<div class="empty">${t("no_matches_today_html")}${showSimplifyHint ? ` ${t("simplify_keyword_hint_html")}` : ""}</div>`;
   $("#apreviewbox").innerHTML = `<div class="emailmock">
     <div class="ehead"><div class="efrom">CROL-List &lt;alerts@crol-list.org&gt; → ${dest}</div>
     <div class="esubj">${t("your_digest_subject",{desc:aDescribe()})}</div></div>
@@ -2496,6 +2513,17 @@ function vendorStem(name){
   return s;
 }
 
+function agencyProfileBar(stats, rfpCount){
+  if(!hasAgencyAwards(stats)) return `<div class="note">${t("agency_awards_unavailable_note")}</div>
+      <div class="agencybar">
+        <div><div class="big">${rfpCount}${rfpCount===5?"+":""}</div><div class="lbl">open RFPs<br>right now</div></div>
+      </div>`;
+  return `<div class="agencybar">
+        <div><div class="big">${money(stats.total)||"—"}</div><div class="lbl">total awarded,<br>on record</div></div>
+        <div><div class="big">${(+stats.n).toLocaleString()}</div><div class="lbl">contract awards<br>published</div></div>
+        <div><div class="big">${rfpCount}${rfpCount===5?"+":""}</div><div class="lbl">open RFPs<br>right now</div></div>
+      </div>`;
+}
 async function showAgency(name){
   showTab("entity");
   const box = $("#entityview");
@@ -2561,11 +2589,7 @@ async function showAgency(name){
     <div class="panel" style="padding:22px 24px">
       <div class="ftype" style="margin-bottom:6px">Agency profile · City Record on record</div>
       <h2 class="rolename" lang="en" dir="ltr">${agencyWho(nm)}</h2>
-      <div class="agencybar">
-        <div><div class="big">${money(stats && stats.total)||"—"}</div><div class="lbl">total awarded,<br>on record</div></div>
-        <div><div class="big">${stats ? (+stats.n).toLocaleString() : "—"}</div><div class="lbl">contract awards<br>published</div></div>
-        <div><div class="big">${rfps.length}${rfps.length===5?"+":""}</div><div class="lbl">open RFPs<br>right now</div></div>
-      </div>
+      ${agencyProfileBar(stats, rfps.length)}
       
       ${hasForecasts ? `<div class="subtabs" style="display:flex;gap:16px;border-bottom:1px solid #ddd;margin:16px 0 20px">
         <button class="subtab active" id="btn-overview" style="font-family:var(--font-sc);font-weight:600;font-size:12px;letter-spacing:.15em;text-transform:uppercase;padding:9px 0;border:none;background:none;color:var(--oxblood);border-bottom:2px solid var(--oxblood);cursor:pointer">Overview</button>
