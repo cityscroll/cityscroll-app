@@ -420,6 +420,8 @@
     simplify_keyword_hint_html: "طویل، جملے جیسی تلاش کی اصطلاحات شاذ و نادر ہی City Record کے اندراجات سے لفظ بہ لفظ مماثل ہوتی ہیں — اس کے بجائے ایک یا دو الفاظ آزمائیں۔",
     digest_footer_one: "آج {n} نوٹس · The City Record سے · کسی بھی وقت سبسکرپشن منسوخ کریں (ایک کلک)",
     digest_footer_other: "آج {n} نوٹسز · The City Record سے · کسی بھی وقت سبسکرپشن منسوخ کریں (ایک کلک)",
+    digest_match_snippet_html: "مماثلت: “{snippet}”",
+    digest_match_unknown_html: "مماثلت: “{term}”",
     event_meta: "تقریب {date}",
     days_paren: " ({n} دن)",
     respond_lbl: "جواب دیں",

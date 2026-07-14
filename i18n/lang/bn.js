@@ -667,6 +667,8 @@
     n_notices_meta_other: "{n}টি নোটিশ",
     digest_footer_one: "আজ {n}টি নোটিশ · The City Record থেকে · যেকোনো সময় সাবস্ক্রিপশন বাতিল করুন (এক ক্লিকে)",
     digest_footer_other: "আজ {n}টি নোটিশ · The City Record থেকে · যেকোনো সময় সাবস্ক্রিপশন বাতিল করুন (এক ক্লিকে)",
+    digest_match_snippet_html: "মিলেছে: “{snippet}”",
+    digest_match_unknown_html: "মিলেছে: “{term}”",
     event_in_n_days_one: "{n} দিনে",
     event_in_n_days_other: "{n} দিনে",
     mt_disclaimer: "এই অনুবাদটি স্বয়ংক্রিয়ভাবে তৈরি করা হয়েছে এবং এখনও একজন স্থানীয় ভাষাভাষী দ্বারা পর্যালোচনা করা হয়নি।",

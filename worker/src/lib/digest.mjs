@@ -53,3 +53,59 @@ export function dedupeFreshByContent(rows) {
   }
   return out;
 }
+
+// ---- match evidence: show subscribers WHY a keyword-matched notice is in their digest ----
+//
+// Without this, a notice can appear with nothing visibly explaining the match: an alert for
+// "education" once surfaced "NOS - Equity Index Investment Management Products" (an Office of
+// the Comptroller pension-fund notice) with no visible link to the word "education" at all --
+// the hit was buried in the notice's description, which names the Board of Education
+// Retirement System, one of the pension funds the notice covers. Neither the title nor the
+// meta line the digest already renders gave any hint why that notice was there.
+//
+// terms: the subscriber's search keywords (case-insensitive substring match -- the same
+// semantics as SODA's $q / the D1 mirror's `haystack LIKE` search). Fields checked, most
+// visible first: the notice title, then its description (additional_description_1) -- the
+// only two fields a digest item's own rendering ever shows or keeps on hand.
+function locateAnyTerm(text, terms) {
+  const hay = String(text || "").toLowerCase();
+  let best = null;
+  for (const term of terms) {
+    const needle = String(term || "").trim();
+    if (!needle) continue;
+    const idx = hay.indexOf(needle.toLowerCase());
+    if (idx !== -1 && (best === null || idx < best.index)) best = { term: needle, index: idx };
+  }
+  return best;
+}
+
+// Returns null when there are no keywords to explain (amount-only / name-only watches --
+// entity and bigaward matches are unambiguous without a snippet). Otherwise one of:
+//   {field:"title", term, index}            -- highlight the term in the title itself
+//   {field:"description", term, before, hit, after} -- a one-line snippet, term emphasized
+//   {field:"unknown", term}                  -- matched via a field this digest never fetches
+//     (SODA's $q also searches columns like contact/method fields) -- name the term rather
+//     than showing the notice with no explanation at all.
+export function matchEvidence(title, description, terms) {
+  const words = (terms || []).filter(Boolean);
+  if (!words.length) return null;
+
+  const inTitle = locateAnyTerm(title, words);
+  if (inTitle) return { field: "title", term: inTitle.term, index: inTitle.index };
+
+  const text = String(description || "");
+  const inDesc = locateAnyTerm(text, words);
+  if (inDesc) {
+    const RADIUS = 70;
+    const start = Math.max(0, inDesc.index - RADIUS);
+    const end = Math.min(text.length, inDesc.index + inDesc.term.length + RADIUS);
+    return {
+      field: "description", term: inDesc.term,
+      before: (start > 0 ? "…" : "") + text.slice(start, inDesc.index),
+      hit: text.slice(inDesc.index, inDesc.index + inDesc.term.length),
+      after: text.slice(inDesc.index + inDesc.term.length, end) + (end < text.length ? "…" : ""),
+    };
+  }
+
+  return { field: "unknown", term: words[0] };
+}

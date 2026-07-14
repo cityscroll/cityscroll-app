@@ -164,6 +164,7 @@ test("toDigestRow: D1 field names mapped to SODA-style names for rendering", () 
     section: "Procurement",
     event_date: "2026-07-15 10:00:00",
     event_addr1: "100 Church St",
+    description: "Emergency repair of the boiler system.",
   };
   const row = toDigestRow(d1Row);
   assert.equal(row.agency_name, "Buildings");       // D1 "agency" → "agency_name"
@@ -173,6 +174,9 @@ test("toDigestRow: D1 field names mapped to SODA-style names for rendering", () 
   assert.equal(row.contact_phone, null);
   assert.equal(row.email, null);
   assert.equal(row.street_address_1, "100 Church St");
+  // D1 "description" → "additional_description_1" -- matchEvidence() (lib/digest.mjs) reads
+  // this name regardless of which path (D1 or SODA) served the row.
+  assert.equal(row.additional_description_1, "Emergency repair of the boiler system.");
 });
 
 test("toDigestRow: corrupt amount (valid=0) is nulled", () => {

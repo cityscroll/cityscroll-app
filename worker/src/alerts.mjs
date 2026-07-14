@@ -23,7 +23,7 @@ import { compileSub_d1, toDigestRow, OFF_MIRROR_LENSES } from "./lib/compile_d1.
 import { buildNoticesQuery, searchNotices } from "./lib/notices.mjs";
 import { describeFilter } from "./lib/confirm_email.mjs";
 import { emailT } from "./lib/i18n.mjs";
-import { digestDecision, dedupeFreshByContent, shortDate } from "./lib/digest.mjs";
+import { digestDecision, dedupeFreshByContent, shortDate, matchEvidence } from "./lib/digest.mjs";
 import { runCheckbookPipeline } from "./checkbook.mjs";
 import { runMocsPlanPipeline } from "./mocs_plan.mjs";
 import { bumpStatAllTime, bumpCategoryStat, bumpHistDay } from "./lib/stats.mjs";
@@ -195,7 +195,8 @@ export async function processOneSub(env, s, ctx) {
         const forecastLabel = forecasts.length > 0 ? `${forecasts.length} forecast(s)` : "";
         const parts = [freshLabel, forecastLabel].filter(Boolean).join(" & ");
         subject = `CROL-List: ${parts} — ${label}`;
-        html = subDigestHtml(label, q.kind, fresh, unsubUrl, since, env.CONFIRM_BASE || "https://api.crol-list.org", forecasts, lang);
+        const keywords = Array.isArray(s.filter && s.filter.keywords) ? s.filter.keywords : [];
+        html = subDigestHtml(label, q.kind, fresh, unsubUrl, since, env.CONFIRM_BASE || "https://api.crol-list.org", forecasts, lang, keywords);
       } else {
         subject = decision.action === "weekly-empty"
           ? `CROL-List: nothing new this week — ${label}`
@@ -264,7 +265,7 @@ export function dueLabel(dueDate) {
 
 async function runWatch(w) {
   const params = new URLSearchParams();
-  params.set("$select", "request_id,start_date,agency_name,short_title,pin,contract_amount,vendor_name,due_date,contact_name,contact_phone,email,street_address_1,section_name");
+  params.set("$select", "request_id,start_date,agency_name,short_title,pin,contract_amount,vendor_name,due_date,contact_name,contact_phone,email,street_address_1,section_name,additional_description_1");
   params.set("$limit", String(w.limit || 25));
   params.set("$order", "start_date DESC");
 
@@ -284,19 +285,48 @@ async function runWatch(w) {
 
 // ---- actionable digest (phone / email / links per item) ------------------
 
+// ---- match-evidence rendering (shared by digestHtml + subDigestHtml) -----
+// ev comes from matchEvidence() (lib/digest.mjs); esc is the caller's own HTML-escaper.
+//
+// titleHtml: the item's title, term <mark>-highlighted when the TITLE is what matched.
+// ev.index is an offset into the unescaped title, so slicing happens before escaping --
+// otherwise an escaped "&amp;" earlier in the string could shift the highlight off-target.
+function titleHtml(title, ev, esc) {
+  if (!ev || ev.field !== "title") return esc(title);
+  const before = esc(title.slice(0, ev.index));
+  const hit = esc(title.slice(ev.index, ev.index + ev.term.length));
+  const after = esc(title.slice(ev.index + ev.term.length));
+  return `${before}<mark style="background:#ffe58a;padding:0 1px">${hit}</mark>${after}`;
+}
+// evidenceLineHtml: a one-line "why this matched" note for a match NOT in the title -- a
+// snippet from the description, or (last resort, ev.field==="unknown") just the term -- so
+// an item never appears with nothing visible explaining the match.
+function evidenceLineHtml(ev, esc, lang) {
+  if (!ev || ev.field === "title") return "";
+  const mark = (s) => `<mark style="background:#ffe58a;padding:0 1px">${esc(s)}</mark>`;
+  const html = ev.field === "description"
+    ? emailT(lang, "digest_match_snippet", { snippet: `${esc(ev.before)}${mark(ev.hit)}${esc(ev.after)}` })
+    : emailT(lang, "digest_match_unknown", { term: mark(ev.term) });
+  return `<div style="color:#666;font-size:12px;font-style:italic;margin-top:2px">${html}</div>`;
+}
+
 function digestHtml(w, rows) {
   const money = (n) => (n == null || n === "" ? "" : "$" + Number(n).toLocaleString("en-US"));
   const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
+  const keywords = w.q ? [String(w.q)] : [];
   const items = rows
     .map((r) => {
+      const titleText = r.short_title || r.section_name || "Notice";
+      const ev = matchEvidence(titleText, r.additional_description_1, keywords);
       const acts = [];
       if (r.email) acts.push(`<a href="mailto:${esc(r.email)}">✉ Email</a>`);
       if (r.contact_phone) acts.push(`<a href="tel:${esc(String(r.contact_phone).replace(/[^0-9+]/g, ""))}">☎ Call</a>`);
       acts.push(`<a href="${REQ_URL(r.request_id)}">↗ View in City Record</a>`);
       const sub = [r.agency_name, r.pin ? "PIN " + r.pin : "", money(r.contract_amount), dueLabel(r.due_date)]
         .filter(Boolean).map(esc).join(" · ");
-      return `<li style="margin:0 0 14px"><b><a href="${REQ_URL(r.request_id)}">${esc(r.short_title || r.section_name || "Notice")}</a></b><br>
+      return `<li style="margin:0 0 14px"><b><a href="${REQ_URL(r.request_id)}">${titleHtml(titleText, ev, esc)}</a></b><br>
         <span style="color:#555;font-size:13px">${sub}</span><br>
+        ${evidenceLineHtml(ev, esc, "en")}
         <span style="font-size:13px">${acts.join(" &nbsp; ")}</span></li>`;
     })
     .join("");
@@ -428,18 +458,25 @@ function maskKey(n) {
 }
 
 // Digest for a self-serve sub — award / rfp (City Record) or rezone (ZAP) items.
-function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.crol-list.org", forecasts = [], lang = "en") {
+// keywords: the sub's filter.keywords (money/property/rules/meetings lenses only -- entity
+// subs match by name, not keyword, so they pass none and get no evidence line, correctly).
+function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.crol-list.org", forecasts = [], lang = "en", keywords = []) {
   const usd = (n) => (n == null || n === "" ? "" : "$" + Number(n).toLocaleString("en-US"));
   const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
   const cr = (id) => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
   const item = (r) => {
     if (kind === "rezone") {
+      // Scope decision: rezoning (ZAP) match evidence is out of scope for this pass -- ZAP
+      // rows have their own shape (project_name/project_brief, not short_title/description)
+      // and the reported failure was a City Record procurement notice, not a rezoning.
       const meta = [r.borough, r.community_district ? "CD " + r.community_district : "", r.public_status, r.primary_applicant, /^[ty1]/i.test(String(r.mih_flag || "")) ? "affordable housing" : ""]
         .filter(Boolean).map(esc).join(" · ");
       return `<li style="margin:0 0 14px"><b><a href="https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id)}">${esc(r.project_name || "(unnamed rezoning)")}</a></b><br>
         <span style="color:#555;font-size:13px">${meta}</span><br>
         <span style="font-size:13px"><a href="https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id)}">↗ View &amp; comment on ZAP</a></span></li>`;
     }
+    const titleText = r.short_title || "Notice";
+    const ev = matchEvidence(titleText, r.additional_description_1, keywords);
     const acts = [];
     if (r.email) acts.push(`<a href="mailto:${esc(r.email)}">✉ Email</a>`);
     const tel = String(r.contact_phone || "").replace(/[^0-9+]/g, "");
@@ -453,8 +490,9 @@ function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.c
       dueLabel(r.due_date),
       r.event_date ? "event " + String(r.event_date).slice(0, 10) : ""]
       .filter(Boolean).map(esc).join(" · ");
-    return `<li style="margin:0 0 14px"><b><a href="${noticeLink}">${esc(r.short_title || "Notice")}</a></b><br>
+    return `<li style="margin:0 0 14px"><b><a href="${noticeLink}">${titleHtml(titleText, ev, esc)}</a></b><br>
       <span style="color:#555;font-size:13px">${meta}</span><br>
+      ${evidenceLineHtml(ev, esc, lang)}
       <span style="font-size:13px">${acts.join(" &nbsp; ")}</span></li>`;
   };
 

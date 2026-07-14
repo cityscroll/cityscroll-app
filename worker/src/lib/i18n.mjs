@@ -26,6 +26,11 @@ const EMAIL_STRINGS = {
     quiet_still_watching:"Still watching {label} — nothing new {since}.",
     quiet_working:       "This note just confirms your alert is working — we'll email the moment something matches.",
     quiet_subscribed:    "You subscribed to this on crol-list.org.",
+
+    // {snippet}/{term} are pre-built HTML (a <mark>-wrapped hit) -- see matchEvidence() in
+    // lib/digest.mjs for why an item needs this at all.
+    digest_match_snippet: "Matched: \"{snippet}\"",
+    digest_match_unknown: "Matched: \"{term}\"",
   },
 
   es: {
@@ -47,6 +52,9 @@ const EMAIL_STRINGS = {
     quiet_still_watching:"Seguimos monitoreando {label} — nada nuevo {since}.",
     quiet_working:       "Esta nota confirma que su alerta está funcionando — le avisaremos en cuanto haya coincidencias.",
     quiet_subscribed:    "Se suscribió a esto en crol-list.org.",
+
+    digest_match_snippet: "Coincidencia: \"{snippet}\"",
+    digest_match_unknown: "Coincidencia: \"{term}\"",
   },
 };
 
