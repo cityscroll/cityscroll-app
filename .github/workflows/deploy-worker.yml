@@ -36,7 +36,7 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           workingDirectory: worker
-          wranglerVersion: "4"
+          wranglerVersion: "4.110.0"
           # No accountId input: wrangler.toml carries no account_id, so wrangler resolves the
           # account from the API token itself — avoids a second repo secret to keep in sync.
           # No `secrets:` or `vars:` inputs on purpose — this deploys code only. Passing vars
