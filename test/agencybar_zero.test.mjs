@@ -1,0 +1,86 @@
+// SODA's count(1) aggregate returns the STRING "0" (not the number 0) when an agency has no
+// matching awards. A bare `stats.n` truthiness check treats "0" as present, so the notice-detail
+// and agency-profile aggregate blocks rendered a dash-and-zero scoreboard ("— total awarded / 0
+// contract awards published") for an agency that simply doesn't publish awards. Both call sites
+// now go through a shared numeric guard and fall back to an honest sentence instead.
+//
+//   node --test           (from the crol-list/ dir)
+
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
+
+const src = readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "index.html"), "utf8");
+const i18nSrc = readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "i18n.js"), "utf8");
+
+function extractFn(name) {
+  let start = src.indexOf("async function " + name + "(");
+  if (start === -1) start = src.indexOf("function " + name + "(");
+  assert.notEqual(start, -1, `function ${name} not found in index.html`);
+  let depth = 0, seen = false;
+  for (let j = src.indexOf("{", start); j < src.length; j++) {
+    if (src[j] === "{") { depth++; seen = true; }
+    else if (src[j] === "}" && --depth === 0 && seen) return src.slice(start, j + 1);
+  }
+  throw new Error(`unbalanced braces extracting ${name}`);
+}
+function extractConst(name) {
+  const m = src.match(new RegExp(`^const ${name} = [^;]*;`, "m"));
+  assert.ok(m, `const ${name} not found`);
+  return m[0];
+}
+
+const windowStub = { LANG: "en", LANG_META: { en: { intlDate: "en-US" } } };
+const { t } = new Function("window", i18nSrc + "\nreturn { t: window.t };")(windowStub);
+const fmtNumber = new Function("window", i18nSrc + "\nreturn window.fmtNumber;")(windowStub);
+
+const env = new Function(
+  "t", "fmtNumber", "window",
+  extractFn("money") +
+  extractConst("agencyHref") +
+  extractConst("pivotA") +
+  extractFn("hasAgencyAwards") +
+  extractFn("noticeAgencyBar") +
+  extractFn("agencyProfileBar") +
+  "return { hasAgencyAwards, noticeAgencyBar, agencyProfileBar };"
+)(t, fmtNumber, windowStub);
+
+test("hasAgencyAwards: SODA's string \"0\" is not truthy for award count", () => {
+  assert.equal(env.hasAgencyAwards({ n: "0", total: null }), false);
+  assert.equal(env.hasAgencyAwards({ n: 0 }), false);
+  assert.equal(env.hasAgencyAwards(null), false);
+  assert.equal(env.hasAgencyAwards(undefined), false);
+  assert.equal(env.hasAgencyAwards({ n: "3", total: "150000" }), true);
+  assert.equal(env.hasAgencyAwards({ n: 3 }), true);
+});
+
+test("noticeAgencyBar: zero/absent stats renders the honest note, not a dash-and-zero scoreboard", () => {
+  const html = env.noticeAgencyBar({ n: "0", total: null }, "Housing Authority");
+  assert.doesNotMatch(html, /class="big">—/);
+  assert.doesNotMatch(html, /class="big">0</);
+  assert.match(html, /No contract awards from this agency appear in the City Record/);
+});
+
+test("noticeAgencyBar: real stats render the scoreboard", () => {
+  const html = env.noticeAgencyBar({ n: "12", total: "4500000" }, "Sanitation");
+  assert.match(html, /class="agencybar"/);
+  assert.match(html, />12</);
+  assert.doesNotMatch(html, /No contract awards/);
+});
+
+test("agencyProfileBar: zero/absent stats renders the note but keeps the open-RFPs stat", () => {
+  const html = env.agencyProfileBar(null, 3);
+  assert.doesNotMatch(html, /class="big">—/);
+  assert.doesNotMatch(html, /class="big">0</);
+  assert.match(html, /No contract awards from this agency appear in the City Record/);
+  assert.match(html, />3</, "open RFPs count still renders");
+});
+
+test("agencyProfileBar: real stats render the full three-stat scoreboard", () => {
+  const html = env.agencyProfileBar({ n: "40", total: "9000000" }, 2);
+  assert.doesNotMatch(html, /No contract awards/);
+  assert.match(html, />40</);
+  assert.match(html, />2</);
+});

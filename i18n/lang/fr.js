@@ -341,6 +341,7 @@
     pinned_open_inv: "✓ Épinglé — ouvrir l'enquête ({n})",
     total_awarded_lbl: "total attribué,<br>selon le registre",
     awards_published_lbl: "attributions de contrats<br>publiées",
+    agency_awards_unavailable_note: "Aucun marché attribué par cet organisme n'apparaît dans le Registre municipal — certains organismes publient leurs attributions ailleurs.",
     glance_who: "Qui",
     glance_what: "Quoi",
     glance_when: "Quand",
@@ -366,6 +367,7 @@
     apply_submit_lbl: "Soumettre / demander à",
     call_btn: "Appeler le {phone}",
     apply_pnote_html: "<b>Envoyer une réponse par courriel</b> ouvre une lettre d'intention préremplie destinée au contact indiqué — modifiez-la avant l'envoi. Les offres concurrentielles sont finalement soumises via <b>PASSPort</b>. Rien ne quitte votre appareil avant que vous cliquiez sur envoyer.",
+    apply_pnote_no_email_html: "Cet avis n'indique aucun contact direct — soumettez votre réponse via <b>PASSPort</b>, ou utilisez l'adresse de soumission indiquée ci-dessus, le cas échéant.",
 
     // Screen-reader announcements
     matching_roles_announce: "{n} postes correspondants",
@@ -482,6 +484,7 @@
     desc_rezone_city: "bulletin {freq} des nouveaux rezonages à l'échelle de la ville",
     your_digest_subject: "Votre {desc}",
     no_matches_today_html: "Aucun avis correspondant aujourd'hui — vous ne recevriez donc rien. (C'est le principe : du signal, pas du bruit.)",
+    simplify_keyword_hint_html: "Les termes de recherche longs, en forme de phrase, correspondent rarement mot pour mot aux avis du Registre municipal — essayez plutôt un ou deux mots.",
     digest_footer_one: "{n} avis aujourd'hui · du Registre municipal · désabonnez-vous à tout moment (un clic)",
     digest_footer_other: "{n} avis aujourd'hui · du Registre municipal · désabonnez-vous à tout moment (un clic)",
     event_meta: "événement {date}",

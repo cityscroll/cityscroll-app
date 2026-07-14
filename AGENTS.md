@@ -426,6 +426,12 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   calls in `worker/src/stats.mjs`'s `Promise.all` — the response body only ever gains new
   sibling fields (`sent_all_time`, `by_category`, etc.), never changes an existing field's
   shape, so existing consumers (stats.html's 7-day grid) are unaffected by design.
+- **Sharp edge — SODA aggregates are strings.** `count(1)`/`sum(...)` come back from Socrata
+  as string fields (`stats.n === "0"`, not `0`) even when there are zero matching rows — a bare
+  `stats.n` truthiness check treats `"0"` as present and renders a dash-and-zero scoreboard.
+  Any code deciding whether an aggregate has real data must coerce first (`+stats.n > 0`);
+  `hasAgencyAwards()` (index.html) is the shared guard for the two agency-stat call sites
+  (`noticeAgencyBar()`, `agencyProfileBar()`) and the pattern to copy for new ones.
 
 ## Maintaining this file
 
