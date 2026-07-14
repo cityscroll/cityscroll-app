@@ -18,19 +18,24 @@ export const CATEGORIES = [
 ];
 
 export const LENSES = {
-  money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "excludeSpecial"],
+  // money's field list IS the general procurement-notice filter schema — additive: a new
+  // field is a new array entry + clampField case, nothing else. It's keyed to what
+  // lib/compile.mjs's compileSub() can actually turn into a SODA query (see that file's own
+  // header comment), not to any one example query — see AGENTS.md's "Alerts NL query"
+  // section for the inventory this was drawn from.
+  money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial"],
   people:   ["keywords", "lookupType"],
   land:     ["keywords", "boro", "status"],
   property: ["keywords", "agency"],
   rules:    ["keywords", "agency"],
   meetings: ["keywords", "agency", "when"],
   entity:   ["name", "kind"],
-  // "alerts" no longer has its own single-payload classifier (bigaward xor rfpkw xor
-  // rezone) — a query naming a category, an amount, and a deadline together now keeps all
-  // three via the same keywords/minAmount/months fields the money lens already sanitizes.
-  // watchType survives only to mark the one genuinely different shape: a rezoning watch,
-  // which has a place instead of a dollar amount or a due date.
-  alerts:   ["watchType", "place", "keywords", "minAmount", "months"],
+  // "alerts" has no single-payload classifier (bigaward xor rfpkw xor rezone) — it reuses
+  // money's full general schema so a query naming any combination of category/agency/
+  // amount/notice-type/deadline keeps all of them, not just whichever one field a fixed enum
+  // happened to pick. watchType/place survive only to mark the one genuinely different
+  // shape: a rezoning watch, which has a place instead of a dollar amount or a due date.
+  alerts:   ["watchType", "place", "keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial"],
 };
 
 const BOROS = ["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"];
@@ -50,6 +55,11 @@ function clampField(name, v) {
       return CATEGORIES.includes(v) ? v : null;
     case "months":
       return typeof v === "number" && v > 0 && v <= 60 ? Math.round(v) : null;
+    case "noticeType":
+      // Explicit override of the amount-presence heuristic compileSub() otherwise falls
+      // back to (only Award notices carry a dollar amount in this dataset — Solicitations
+      // don't — so an amount bound alone still implies "award" when this is null).
+      return v === "award" ? "award" : v === "solicitation" ? "solicitation" : null;
     case "excludeSpecial":
       return !!v;
     case "boro": {

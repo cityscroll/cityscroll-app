@@ -27,7 +27,11 @@ export function describeFilter(lens, filter) {
   if (f.lookupType === "person") parts.push(kws.length ? `a person named “${kws.join(" ")}”` : "a person");
   else if (f.lookupType === "role") parts.push(kws.length ? `roles matching “${kws.join(" / ")}”` : "roles");
   else if (kws.length) parts.push(`about “${kws.join(" / ")}”`);
+  if (f.noticeType === "award") parts.push("awards only");
+  else if (f.noticeType === "solicitation") parts.push("open solicitations only");
   if (f.minAmount) parts.push(`≥ ${usd(f.minAmount)}`);
+  if (f.maxAmount) parts.push(`≤ ${usd(f.maxAmount)}`);
+  if (f.category) parts.push(`category “${f.category}”`);
   if (f.agency) parts.push(`agency “${f.agency}”`);
   if (f.boro) parts.push(`in ${f.boro}`);
   if (f.months) parts.push(`due within ${f.months} mo`);

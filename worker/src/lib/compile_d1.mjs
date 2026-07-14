@@ -11,7 +11,7 @@
 // (agency_name, section_name, etc.). toDigestRow() bridges the gap so downstream
 // rendering keeps working without modification.
 
-import { vendorStem } from "./compile.mjs";
+import { vendorStem, monthsFromISO } from "./compile.mjs";
 
 // Lenses whose data lives outside the D1 notices mirror — always use SODA for these.
 // land (ZAP dataset hgx4-8ukb) is the primary case.
@@ -50,20 +50,25 @@ export function subToD1Opts(sub, todayISO) {
   }
 
   if (lens === "money") {
+    // Mirrors compile.mjs's SODA money branch field-for-field (same schema, same
+    // award-vs-solicitation rule) — the D1 fast path and the SODA fallback must agree, since
+    // either can serve any given digest run depending on mirror freshness.
     const opts = { limit: 25 };
     if (f.category) opts.category = f.category;
+    if (f.agency) opts.agency = f.agency;
     if (kws.length) opts.termGroups = [kws];
-    if (f.minAmount || f.maxAmount) {
-      // Award branch — amount bounds imply Award notices; open bids carry no amounts (EDA).
-      // notices.mjs enforces contract_amount_valid=1 for all amount filters.
+    // noticeType, when set, is authoritative; otherwise fall back to the pre-existing
+    // amount-presence heuristic (open bids carry no dollar amount in this dataset — EDA).
+    const wantsAward = f.noticeType === "award" || (!f.noticeType && (f.minAmount || f.maxAmount));
+    if (wantsAward) {
       opts.noticeType = "Award";
       if (f.minAmount != null) opts.minAmount = Number(f.minAmount) || 1;
       if (f.maxAmount != null) opts.maxAmount = Number(f.maxAmount);
     } else {
-      // RFP/solicitation branch: open bids with due date in the future
       opts.noticeType = "Solicitation";
       opts.openOnly = true;
       opts.today = todayISO;
+      if (f.months) opts.dueBefore = monthsFromISO(todayISO, Number(f.months));
     }
     return opts;
   }

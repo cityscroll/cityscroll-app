@@ -50,6 +50,42 @@ test("money/category → category opt forwarded", () => {
   assert.equal(opts.category, "Goods");
 });
 
+test("money/agency → agency opt forwarded on both the award and solicitation branches", () => {
+  const award = subToD1Opts({ lens: "money", filter: { minAmount: 1000000, agency: "Parks and Recreation" } }, "2026-07-10");
+  assert.equal(award.agency, "Parks and Recreation");
+  const rfp = subToD1Opts({ lens: "money", filter: { agency: "Buildings" } }, "2026-07-10");
+  assert.equal(rfp.agency, "Buildings");
+});
+
+test("money/noticeType='award' with no amount → still the Award branch (mirrors compile.mjs)", () => {
+  const opts = subToD1Opts({ lens: "money", filter: { noticeType: "award" } }, "2026-07-10");
+  assert.equal(opts.noticeType, "Award");
+  assert.equal(opts.minAmount, undefined);
+});
+
+test("money/noticeType='solicitation' overrides the amount-presence heuristic", () => {
+  const opts = subToD1Opts({ lens: "money", filter: { noticeType: "solicitation", minAmount: 500000 } }, "2026-07-10");
+  assert.equal(opts.noticeType, "Solicitation");
+  assert.equal(opts.openOnly, true);
+});
+
+test("money/months → dueBefore forwarded, computed the same way compile.mjs computes it", () => {
+  const opts = subToD1Opts({ lens: "money", filter: { months: 3 } }, "2026-06-30");
+  assert.equal(opts.dueBefore, "2026-09-30");
+});
+
+test("money: agency + category + keywords + noticeType + months all compile together", () => {
+  const opts = subToD1Opts({ lens: "money", filter: {
+    keywords: ["construction"], agency: "Buildings", category: "Construction/Construction Services",
+    noticeType: "solicitation", months: 2,
+  } }, "2026-06-30");
+  assert.equal(opts.noticeType, "Solicitation");
+  assert.equal(opts.agency, "Buildings");
+  assert.equal(opts.category, "Construction/Construction Services");
+  assert.equal(opts.dueBefore, "2026-08-30");
+  assert.deepEqual(opts.termGroups, [["construction"]]);
+});
+
 test("money D1 opts produce valid SQL via buildNoticesQuery", () => {
   const opts = subToD1Opts({ lens: "money", filter: { minAmount: 100000 } }, "2026-07-10");
   const { sql } = buildNoticesQuery(opts);

@@ -33,15 +33,16 @@ const FIELD_DEFS = {
   maxAmount: { type: ["number", "null"], description: "Maximum contract dollar value if a ceiling is stated ('under $500k' → 500000), else null." },
   category: { type: ["string", "null"], enum: ["Goods", "Goods and Services", "Services (other than human services)", "Human Services/Client Services", "Construction/Construction Services", "Construction Related Services", null], description: "Procurement category, exactly one of the allowed values if clearly implied (e.g. a construction company → 'Construction/Construction Services'), else null." },
   months: { type: ["number", "null"], description: "If they want results due within N months/weeks, the number of MONTHS (round weeks up), else null." },
+  noticeType: { type: ["string", "null"], description: "'award' if they're specifically asking about awarded/won contracts, 'solicitation' if specifically asking about open bids/RFPs, else null — a bare dollar amount alone still implies 'award' downstream (only Award notices carry a dollar amount in this dataset)." },
   excludeSpecial: { type: "boolean", description: "true only if they want to avoid special/restricted selection methods ('standard requirements only')." },
   boro: { type: ["string", "null"], description: "NYC borough if named or clearly implied by a neighborhood: Manhattan, Brooklyn, Queens, Bronx, or Staten Island; else null." },
   status: { type: ["string", "null"], description: "'active' for in-review/active items; 'all' if they want everything incl. closed/approved; else null." },
   when: { type: ["string", "null"], description: "'upcoming' for future meetings; 'all' for recent and all; else null." },
   lookupType: { type: ["string", "null"], description: "'role' if searching a job title/role; 'person' if looking up a named individual; else null." },
-  // "alerts" reuses money's keywords/minAmount/months fields (below) so a category, an
-  // amount floor, and a deadline all survive together — watchType only ever marks the one
+  // "alerts" reuses money's general schema (below) so any combination of category/agency/
+  // amount/notice-type/deadline survives together — watchType only ever marks the one
   // genuinely different shape (rezone), which has no dollar amount or due date at all.
-  watchType: { type: ["string", "null"], description: "'rezone' if this is a request to watch rezonings/land-use near a specific place (fill place too, leave keywords/minAmount/months null); else null — the general case of watching contracts, RFPs, or awards, where keywords/minAmount/months should be filled instead." },
+  watchType: { type: ["string", "null"], description: "'rezone' if this is a request to watch rezonings/land-use near a specific place (fill place too, leave the other fields null); else null — the general case of watching contracts, RFPs, or awards, where any of keywords/agency/minAmount/maxAmount/category/months/noticeType should be filled instead." },
   place: { type: ["string", "null"], description: "For a 'rezone' watchType, the neighborhood or address to watch (e.g. '79 Rivington', 'Gowanus'); else null." },
 };
 
@@ -52,7 +53,7 @@ const LENS_HINT = {
   property: "NYC property being sold, auctioned, or disposed (Property Disposition notices)",
   rules: "proposed and adopted NYC agency rules",
   meetings: "NYC public meetings and hearings",
-  alerts: "a saved alert — contracts/RFPs/awards matching a category, amount, and/or deadline, or rezonings near a place",
+  alerts: "a saved alert — contracts/RFPs/awards matching any combination of category, agency, amount, notice type, and/or deadline, or rezonings near a place",
 };
 
 function buildTool(lens) {

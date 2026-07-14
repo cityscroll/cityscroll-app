@@ -45,30 +45,54 @@ test("people: lookupType constrained to role|person", () => {
 test("meetings: when constrained; unknown lens falls back to money shape", () => {
   assert.equal(sanitize("meetings", { when: "upcoming" }).when, "upcoming");
   assert.equal(sanitize("meetings", { when: "someday" }).when, null);
-  // maxAmount + category joined the money lens in the crol-alert vocab merge (issue #1 PR-3).
-  assert.deepEqual(Object.keys(sanitize("bogus", {})).sort(), ["agency", "category", "excludeSpecial", "keywords", "maxAmount", "minAmount", "months"]);
+  // money's field list is the general procurement-notice filter schema (see AGENTS.md's
+  // "Alerts NL query" section for the inventory) — additive, so this list only ever grows.
+  assert.deepEqual(Object.keys(sanitize("bogus", {})).sort(),
+    ["agency", "category", "excludeSpecial", "keywords", "maxAmount", "minAmount", "months", "noticeType"]);
 });
 
-test("alerts: watchType constrained to rezone|null; category+amount+deadline kept together", () => {
-  const out = sanitize("alerts", { watchType: "rezone", place: "79 Rivington", keywords: ["education"], minAmount: 200000, months: 3 });
-  assert.deepEqual(Object.keys(out).sort(), ["keywords", "minAmount", "months", "place", "watchType"]);
+test("money: noticeType constrained to award|solicitation|null", () => {
+  assert.equal(sanitize("money", { noticeType: "award" }).noticeType, "award");
+  assert.equal(sanitize("money", { noticeType: "solicitation" }).noticeType, "solicitation");
+  assert.equal(sanitize("money", { noticeType: "bigaward" }).noticeType, null, "old single-payload values no longer valid");
+  assert.equal(sanitize("money", {}).noticeType, null);
+});
+
+test("alerts: reuses money's full general schema, plus watchType/place for rezone watches", () => {
+  const out = sanitize("alerts", {
+    watchType: "rezone", place: "79 Rivington",
+    keywords: ["education"], agency: "Education", minAmount: 200000, maxAmount: 900000,
+    category: "Goods", months: 3, noticeType: "award", excludeSpecial: true,
+  });
+  assert.deepEqual(Object.keys(out).sort(),
+    ["agency", "category", "excludeSpecial", "keywords", "maxAmount", "minAmount", "months", "noticeType", "place", "watchType"]);
   assert.equal(out.watchType, "rezone");
   assert.equal(out.place, "79 Rivington");
-  // A rezone watch has no dollar amount or deadline, but sanitize() clamps per-field
-  // independently — it doesn't know the fields are mutually exclusive by convention.
+  // A rezone watch has no dollar amount, agency, or deadline, but sanitize() clamps each
+  // field independently — it doesn't know the fields are mutually exclusive by convention.
   assert.deepEqual(out.keywords, ["education"]);
+  assert.equal(out.agency, "Education");
   assert.equal(out.minAmount, 200000);
+  assert.equal(out.maxAmount, 900000);
+  assert.equal(out.category, "Goods");
   assert.equal(out.months, 3);
+  assert.equal(out.noticeType, "award");
+  assert.equal(out.excludeSpecial, true);
   assert.equal(sanitize("alerts", { watchType: "bigaward" }).watchType, null, "old single-payload values no longer valid");
   assert.equal(sanitize("alerts", { watchType: "nope" }).watchType, null);
 });
 
-test("alerts: the combined-filter case (no watchType) keeps keywords + minAmount + months", () => {
-  const out = sanitize("alerts", { keywords: ["Education", "Sanitation", "", "x", "y", "z"], minAmount: 200000, months: 3 });
+test("alerts: the general case (no watchType) keeps ANY combination of the general schema's fields", () => {
+  const out = sanitize("alerts", {
+    keywords: ["Education", "Sanitation", "", "x", "y", "z"], agency: "Parks and Recreation",
+    minAmount: 200000, months: 3, noticeType: "award",
+  });
   assert.equal(out.watchType, null);
   assert.deepEqual(out.keywords, ["education", "sanitation", "x", "y"]);
+  assert.equal(out.agency, "Parks and Recreation");
   assert.equal(out.minAmount, 200000);
   assert.equal(out.months, 3);
+  assert.equal(out.noticeType, "award");
 });
 
 test("limits + lens registry are sane", () => {

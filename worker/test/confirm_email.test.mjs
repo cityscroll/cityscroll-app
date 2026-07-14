@@ -28,6 +28,24 @@ test("describeFilter falls back to 'all notices' when empty", () => {
   assert.equal(describeFilter("rules", {}), "rules & notices — all notices");
 });
 
+test("describeFilter: agency + notice type + category + amount ceiling — the multi-field alert case", () => {
+  assert.equal(
+    describeFilter("money", {
+      keywords: ["construction"], agency: "Parks and Recreation", category: "Construction/Construction Services",
+      noticeType: "award", minAmount: 1000000, maxAmount: 5000000, months: 3,
+    }),
+    "contract money — about “construction” · awards only · ≥ $1,000,000 · ≤ $5,000,000 · " +
+      "category “Construction/Construction Services” · agency “Parks and Recreation” · due within 3 mo"
+  );
+});
+
+test("describeFilter: noticeType alone (no amount) still renders — closes the old amount-implies-type gap", () => {
+  assert.equal(
+    describeFilter("money", { noticeType: "solicitation", agency: "Sanitation" }),
+    "contract money — open solicitations only · agency “Sanitation”"
+  );
+});
+
 test("subCanonical is stable regardless of email case/whitespace", () => {
   const a = subCanonical({ email: " A@B.com ", lens: "money", filter: { minAmount: 1000000 } });
   const b = subCanonical({ email: "a@b.com", lens: "money", filter: { minAmount: 1000000 } });
