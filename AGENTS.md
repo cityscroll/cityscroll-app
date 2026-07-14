@@ -81,6 +81,21 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   whole catalog for a new Latin-script language.
 - **Sharp edge — `t` shadowing:** never name a function parameter or local `t`
   (`pinBtn(t,…)` and `copyText(t,…)` both silently broke rendering, 2026-07-13 hotfixes).
+- **Sharp edge — static-fallback drift.** A `data-i18n`/`data-i18n-html`/`-placeholder`/`-aria`
+  element's fallback content (the raw HTML before `applyStrings()` repaints it) can silently
+  drift from its `i18n.js` en value — `test/standards/i18n_fallback_sync.py` (unit job) catches
+  this: index.html's `tab_money`/`money_trail_heading` fallback text was stuck on "Money"/
+  "Money trail" for a live-since-fixed dictionary that already said "Contracts"/"Contract
+  trail" (crol-staticsync-b2, 2026-07-14) — nothing had caught it before this gate. Same class
+  of bug the reading-level ratchet note above already warned about for a different symptom
+  (the ratchet measures this exact static text and silently gets the wrong number); this gate
+  is the general enforcement. It also catches the sharper variant: a plain `data-i18n` element
+  whose fallback contains a nested tag (`<b>…</b>`) never gets its text replaced at all —
+  `applyStrings()`'s `if (el.children.length === 0)` guard no-ops for it in EVERY language
+  forever, not just before paint — found live on three index.html empty-state hints whose
+  real translations existed in all ten shipping-language files and had never once rendered.
+  Fix is to keep the element markup-free (matching the dictionary's plain text) or switch it
+  to `data-i18n-html`.
 - **Changing i18n.js (core) requires a `?v=` hash bump** on EVERY page's script tag
   (`shasum -a 256 i18n.js | cut -c1-8`) — `test/standards/i18n_refs.py` checks all six pages
   and fails on any stale one. Changing a per-language file requires bumping ONLY its own
