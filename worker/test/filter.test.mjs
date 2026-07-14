@@ -49,13 +49,26 @@ test("meetings: when constrained; unknown lens falls back to money shape", () =>
   assert.deepEqual(Object.keys(sanitize("bogus", {})).sort(), ["agency", "category", "excludeSpecial", "keywords", "maxAmount", "minAmount", "months"]);
 });
 
-test("alerts: watchType constrained; threshold floored", () => {
-  const out = sanitize("alerts", { watchType: "bigaward", threshold: 1000000, keyword: null, place: null });
-  assert.deepEqual(Object.keys(out).sort(), ["keyword", "place", "threshold", "watchType"]);
-  assert.equal(out.watchType, "bigaward");
-  assert.equal(out.threshold, 1000000);
+test("alerts: watchType constrained to rezone|null; category+amount+deadline kept together", () => {
+  const out = sanitize("alerts", { watchType: "rezone", place: "79 Rivington", keywords: ["education"], minAmount: 200000, months: 3 });
+  assert.deepEqual(Object.keys(out).sort(), ["keywords", "minAmount", "months", "place", "watchType"]);
+  assert.equal(out.watchType, "rezone");
+  assert.equal(out.place, "79 Rivington");
+  // A rezone watch has no dollar amount or deadline, but sanitize() clamps per-field
+  // independently — it doesn't know the fields are mutually exclusive by convention.
+  assert.deepEqual(out.keywords, ["education"]);
+  assert.equal(out.minAmount, 200000);
+  assert.equal(out.months, 3);
+  assert.equal(sanitize("alerts", { watchType: "bigaward" }).watchType, null, "old single-payload values no longer valid");
   assert.equal(sanitize("alerts", { watchType: "nope" }).watchType, null);
-  assert.equal(sanitize("alerts", { threshold: 5 }).threshold, null);
+});
+
+test("alerts: the combined-filter case (no watchType) keeps keywords + minAmount + months", () => {
+  const out = sanitize("alerts", { keywords: ["Education", "Sanitation", "", "x", "y", "z"], minAmount: 200000, months: 3 });
+  assert.equal(out.watchType, null);
+  assert.deepEqual(out.keywords, ["education", "sanitation", "x", "y"]);
+  assert.equal(out.minAmount, 200000);
+  assert.equal(out.months, 3);
 });
 
 test("limits + lens registry are sane", () => {

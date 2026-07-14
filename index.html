@@ -105,8 +105,11 @@
   .nltry{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
   .nlrow{display:flex;gap:10px;flex-wrap:wrap}
   .nlrow input{flex:1 1 320px;font:15px/1.3 var(--font-body);padding:10px 11px;border:1px solid var(--rule-strong);border-radius:7px;background:#fff;color:var(--ink)}
-  .qchip{display:inline-block;font-family:var(--font-sc);font-size:12px;letter-spacing:.04em;text-transform:uppercase;background:var(--paper-2);border:1px solid var(--rule);border-radius:6px;padding:5px 9px;margin:0 6px 6px 0;color:var(--ink-soft)}
+  .qchip{display:inline-block;font-family:var(--font-sc);font-size:12px;letter-spacing:.04em;text-transform:uppercase;background:var(--paper-2);border:1px solid var(--rule);border-radius:6px;padding:5px 9px;margin:0 6px 6px 0;color:var(--ink-soft);cursor:default}
   .qchip b{color:var(--oxblood)}
+  /* Status text, not a control — deliberately NOT pill-shaped (999px radius) or button-styled
+     like .trychip above it, so the two never read as the same kind of thing. */
+  .nlunderstood{margin:10px 0 2px;font:12px/1.6 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
   .qcode{font-family:ui-monospace,Menlo,monospace;font-size:12px;line-height:1.5;background:var(--paper-2);border:1px solid var(--rule);border-radius:8px;padding:10px 12px;white-space:pre-wrap;color:var(--ink-soft);margin-top:4px}
   .tryrow{margin-top:12px;font-family:var(--font-sc);text-transform:uppercase;letter-spacing:.1em;font-size:12px;color:var(--muted)}
   .trychip{font-family:var(--font-sc);font-weight:600;letter-spacing:.03em;font-size:12px;padding:6px 11px;border:1px solid var(--rule);border-radius:999px;background:#fff;color:var(--ink-soft);cursor:pointer;margin:0 4px 6px 6px;text-transform:none}
@@ -316,7 +319,8 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=e7bfb19f"></script>
+<script src="i18n.js?v=06240435"></script>
+<script src="nl_parse.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
@@ -563,7 +567,7 @@
         </div>
       </div>
       <div class="afield">
-        <label for="quiznarrow"><span class="qstep">2</span> <span data-i18n="quiz_step2">Narrow it (optional)</span></label>
+        <label for="quiznarrow"><span class="qstep">2</span> <span data-i18n="quiz_step2">Narrow it with an exact keyword (optional)</span></label>
         <input type="text" id="quiznarrow" placeholder="pick a topic above first…" data-i18n-placeholder="quiz_narrow_placeholder">
       </div>
       <div class="afield">
@@ -594,6 +598,7 @@
             <select id="awatch">
               <option value="bigaward" data-i18n="watch_bigaward">Contract awards over a threshold</option>
               <option value="rfpkw" data-i18n="watch_rfpkw">Open RFPs matching a keyword</option>
+              <option value="moneynl" data-i18n="watch_moneynl">Contracts or awards matching a description</option>
               <option value="rezone" data-i18n="watch_rezone">Rezonings near a neighborhood</option>
               <option value="property" data-i18n="watch_property">Property sale notices</option>
               <option value="rules" data-i18n="watch_rules">Rule changes (Agency Rules)</option>
@@ -614,6 +619,23 @@
             </select>
             <input type="text" id="aparam" placeholder="" style="display:none">
             <input type="text" id="aagency" aria-label="Agency (optional)" data-i18n-aria="agency_filter_label" placeholder="agency (optional) — for example, Buildings" style="display:none;margin-top:6px">
+          </div>
+          <!-- Category, amount, and deadline as three independently visible/editable fields —
+               not one flattened keyword string — so a description like "education contracts
+               over $200K due in 3 months" keeps all three filters instead of collapsing to one. -->
+          <div id="amoneyfields" style="display:none">
+            <div class="afield">
+              <label for="amoneykw" data-i18n="param_label_moneynl_kw">Category or keywords (optional)</label>
+              <input type="text" id="amoneykw" placeholder="education, construction…" data-i18n-placeholder="param_placeholder_moneynl_kw">
+            </div>
+            <div class="afield">
+              <label for="amoneymin" data-i18n="param_label_moneynl_min">Minimum amount (optional)</label>
+              <input type="number" id="amoneymin" min="0" step="1000" placeholder="200000" data-i18n-placeholder="param_placeholder_moneynl_min">
+            </div>
+            <div class="afield">
+              <label for="amoneymonths" data-i18n="param_label_moneynl_months">Due within, in months (optional)</label>
+              <input type="number" id="amoneymonths" min="1" max="60" placeholder="3" data-i18n-placeholder="param_placeholder_moneynl_months">
+            </div>
           </div>
           <div class="afield">
             <label id="adestlabel" for="adest" data-i18n="email_label">Email address</label>
@@ -1193,21 +1215,8 @@ function renderDetail(r, chain, stats){
   followDollars(r, $("#ddollars"));
 }
 
-function parseNL(text){
-  const t=" "+text.toLowerCase()+" ";
-  const out={keywords:[],minAmount:null,months:null,excludeSpecial:false};
-  let m=t.match(/(?:over|above|more than|at least|>\s*)\s*\$?\s*([\d.,]+)\s*(k|m|thousand|million|mm)?/);
-  if(m){let n=parseFloat(m[1].replace(/,/g,""));const u=m[2]||"";if(/m/.test(u))n*=1e6;else if(/k|thousand/.test(u))n*=1e3;if(n>=1000)out.minAmount=Math.round(n);}
-  m=t.match(/(\d+)\s*month/); if(m)out.months=parseInt(m[1]);
-  if(!out.months){m=t.match(/(\d+)\s*week/);if(m)out.months=Math.max(1,Math.round(parseInt(m[1])/4));}
-  if(/no special|without special|standard requirement|no .{0,14}requirement/.test(t))out.excludeSpecial=true;
-  const dict=["affordable housing","construction","renovation","electrical","plumbing","hvac","security","janitorial","information technology","software","consulting","engineering","architecture","demolition","roofing","elevator","transportation","shelter","homeless","mental health","health","catering","legal","staffing","maintenance","landscaping","food"];
-  dict.forEach(k=>{if(t.includes(" "+k))out.keywords.push(k);});
-  m=t.match(/specializ\w+ in ([a-z &]+?)(?:\.|,| and | who | that |$)/);
-  if(m){const kw=m[1].trim();if(kw.length>2&&!out.keywords.includes(kw))out.keywords.unshift(kw);}
-  out.keywords=[...new Set(out.keywords)].slice(0,4);
-  return out;
-}
+// parseNL() itself lives in nl_parse.js (loaded above, plain global — same convention as
+// i18n.js), so it can be require()'d from a Node test with no DOM involved.
 async function nlResolve(text, lens){
   lens = lens || "money";
   // Prefer the model-backed worker when API is set; fall back to the on-device heuristic.
@@ -1235,12 +1244,19 @@ async function nlTranslate(){
     `$q ~ ${kwExpr}`, p.minAmount?`contract_amount >= ${p.minAmount}`:null,
     p.excludeSpecial?`selection_method NOT LIKE '%Special%'`:null].filter(Boolean).join("\nAND ");
   if(btn) btn.disabled=false;
-  $("#nltrans").innerHTML=`<div style="margin:10px 0 2px">${chips.join("")}</div>`;
+  $("#nltrans").innerHTML=nlTransHTML(chips);
   $("#mode").value="open"; $("#sort").value="deadline"; $("#kw").value=[...p.keywords, p.agency].filter(Boolean).join(" ");
   search();
 }
 
 function nlWorkingHTML(){ return '<div class="nlworking"><span class="loading"></span><span>' + t("translating") + '</span></div>'; }
+
+// The chips summarizing what was understood are inert status text, not the clickable sample
+// queries above them (.trychip) — an explicit label + role="status" (screen readers announce
+// it; sighted users get a text cue) keeps the two from reading as the same kind of control.
+function nlTransHTML(chips){
+  return chips.length ? `<div class="nlunderstood" role="status">${t("nl_understood_label")} ${chips.join("")}</div>` : "";
+}
 
 // "look up someone named X" → the model sets lookupType:"person" but often omits the name
 // (it reads a surname as not a "topic keyword"), so #pkw ends up empty and the search bails.
@@ -1264,6 +1280,16 @@ function deviceParse(text, lens){
   if(lens==="money") return parseNL(text);
   const out={keywords:[]};
   const low=" "+text.toLowerCase()+" ";
+  if(lens==="alerts"){
+    // Rezonings are a different lens (land/ZAP) with no dollar amount or due date, so they
+    // stay their own shape; everything else (contracts, RFPs, awards) is the combined
+    // category + amount + deadline case parseNL() already extracts for the Money tab.
+    if(/\brezon\w*\b|\bzoning\b/.test(low)){
+      const place=(text.match(/(?:near|by|around)\s+(.+)$/i)||[])[1];
+      return {watchType:"rezone", place: place ? place.trim() : null};
+    }
+    return parseNL(text);
+  }
   if(lens==="land"){
     const boros=["Manhattan","Brooklyn","Queens","Bronx","Staten Island"];
     out.boro=boros.find(b=>low.includes(" "+b.toLowerCase()+" "))||null;
@@ -1300,21 +1326,26 @@ const NL = {
   rules:    nlFeed("rules","for example, buildings rules, sanitation rules"),
   meetings: nlFeed("meetings","for example, recent landmarks hearings, city council"),
   alerts: {
-    placeholder:"for example, email me awards over $1M, or construction RFPs",
+    placeholder:"for example, education contracts over $200K due in 3 months, or awards over $1M",
+    // Reuses parseNL()'s combined {keywords, minAmount, months} shape — not a single-payload
+    // watchType classifier — so a category, an amount floor, and a deadline all survive
+    // together instead of the query collapsing onto whichever one field a fixed enum picked.
+    // Rezonings alone stay their own shape (no amount/deadline exists for that lens).
     chips:f=>{
-      if(!f.watchType) return [];
-      const lbl = f.watchType==='bigaward' ? `awards ≥ <b>${money(f.threshold||1000000)}</b>`
-                : f.watchType==='rfpkw' ? `RFPs matching <b>${f.keyword||'…'}</b>`
-                : `rezonings near <b>${f.place||'…'}</b>`;
-      return [`<span class="qchip">${lbl}</span>`];
+      if(f.watchType==="rezone") return [`<span class="qchip">rezonings near <b>${f.place||"…"}</b></span>`];
+      const chips=[];
+      if(f.keywords && f.keywords.length) chips.push(`<span class="qchip">about <b>${f.keywords.join(" / ")}</b></span>`);
+      if(f.minAmount) chips.push(`<span class="qchip">amount ≥ <b>${money(f.minAmount)}</b></span>`);
+      if(f.months) chips.push(`<span class="qchip">due within <b>${f.months} mo</b></span>`);
+      return chips;
     },
     apply:f=>{
-      const w=f.watchType||"bigaward";
-      let p;
-      if(w==="bigaward"){ const opts=[1000000,5000000,10000000,50000000]; const t=f.threshold||1000000; p=opts.filter(o=>o<=t).pop()||opts[0]; }
-      else if(w==="rfpkw"){ p=f.keyword||""; }
-      else { p=f.place||""; }
-      applySuggestion(w, String(p));
+      if(f.watchType==="rezone"){ applySuggestion("rezone", f.place||""); return; }
+      $("#awatch").value="moneynl"; aWatchChange();
+      $("#amoneykw").value=(f.keywords||[]).join(" ");
+      $("#amoneymin").value=f.minAmount||"";
+      $("#amoneymonths").value=f.months||"";
+      aPreview();
     }
   }
 };
@@ -1338,7 +1369,7 @@ async function nlTranslateLens(lens){
   $("#nltrans-"+lens).innerHTML=nlWorkingHTML();
   const f=await nlResolve(text, lens);
   const chips=(NL[lens].chips(f)||[]).filter(Boolean);
-  $("#nltrans-"+lens).innerHTML=chips.length?`<div style="margin:10px 0 2px">${chips.join("")}</div>`:"";
+  $("#nltrans-"+lens).innerHTML=nlTransHTML(chips);
   if(btn) btn.disabled=false;
   NL[lens].apply(f);
 }
@@ -1350,7 +1381,7 @@ const NL_SAMPLES = {
   property: ["HPD property sales", "environmental protection land", "police department property"],
   rules: ["buildings rules", "sanitation rules", "taxi rules"],
   meetings: ["recent landmarks hearings", "recent city council hearings", "recent community board meetings"],
-  alerts: ["awards over $1M", "construction RFPs", "rezonings near 79 Rivington"]
+  alerts: ["awards over $1M", "education contracts over $200K due in 3 months", "rezonings near 79 Rivington"]
 };
 
 function renderNLSamples(lens, el){
@@ -1926,9 +1957,14 @@ function aWatchChange(){
   // The param means something different per watch type (place vs keyword) — switching types
   // clears it so a value never leaks from one topic into another. Each type's empty state is
   // parallel: "all matching notices", with the placeholder suggesting how to narrow.
-  if(lastWatch !== null && lastWatch !== w){ $("#aparam").value=""; $("#aagency").value=""; }
+  if(lastWatch !== null && lastWatch !== w){
+    $("#aparam").value=""; $("#aagency").value="";
+    $("#amoneykw").value=""; $("#amoneymin").value=""; $("#amoneymonths").value="";
+  }
   lastWatch = w;
   $("#aagency").style.display = SECTION_WATCH_LABEL[w] ? "" : "none";
+  $("#amoneyfields").style.display = w==="moneynl" ? "" : "none";
+  if(w==="moneynl"){ $("#athresh").style.display="none"; $("#aparam").style.display="none"; return; }
   if(w==="bigaward"){ $("#aparamlabel").textContent=t("param_label_min_award"); $("#athresh").style.display=""; $("#aparam").style.display="none"; }
   else {
     $("#athresh").style.display="none"; $("#aparam").style.display="";
@@ -1944,6 +1980,15 @@ function aDescribe(){
   const freq=t($("#afreq").value.toLowerCase()==="weekly" ? "freq_weekly_lc" : "freq_daily_lc");
   if(w==="bigaward") return t("desc_bigaward",{freq, amt:money($("#athresh").value)});
   if(w==="rfpkw") return t("desc_rfpkw",{freq, kw:$("#aparam").value||"…"});
+  if(w==="moneynl"){
+    const kw=$("#amoneykw").value.trim(), minRaw=$("#amoneymin").value.trim(), moRaw=$("#amoneymonths").value.trim();
+    const bits=[
+      kw ? t("desc_moneynl_about",{kw}) : "",
+      minRaw ? t("desc_moneynl_over",{amt:money(Number(minRaw))||minRaw}) : "",
+      moRaw ? tn("desc_moneynl_due", Number(moRaw)||1) : "",
+    ].filter(Boolean).join("");
+    return t("desc_moneynl", {freq, bits: bits || t("desc_moneynl_any")});
+  }
   if(w==="entityvendor") return t("desc_vendor",{freq, name:$("#aparam").value.trim()||"…"});
   if(w==="entityagency") return t("desc_agency_watch",{freq, name:$("#aparam").value.trim()||"…"});
   if(SECTION_WATCH_LABEL[w]){
@@ -1993,6 +2038,18 @@ async function aFetch(){
   if(w==="rfpkw"){
     const p={"$select":SELECT,"$where":`type_of_notice_description='Solicitation' AND due_date > '${todayISO()}'`,"$order":"due_date ASC","$limit":"5"};
     if($("#aparam").value.trim()) p["$q"]=$("#aparam").value.trim();
+    return { kind:"rfp", rows: await soda(p) };
+  }
+  if(w==="moneynl"){
+    // Mirrors the worker's compileSub() money-lens branch: an amount floor implies an Award
+    // query (only Award notices carry a dollar amount in this dataset — Solicitations don't),
+    // so it takes priority; otherwise it's an open-Solicitation keyword search.
+    const kw=$("#amoneykw").value.trim(), minAmt=Number($("#amoneymin").value)||0;
+    if(minAmt>=1000){
+      return { kind:"award", rows: await soda({"$select":SELECT,"$where":`type_of_notice_description='Award' AND contract_amount >= ${minAmt} AND contract_amount < 10000000000`,"$order":"start_date DESC","$limit":"5"}) };
+    }
+    const p={"$select":SELECT,"$where":`type_of_notice_description='Solicitation' AND due_date > '${todayISO()}'`,"$order":"due_date ASC","$limit":"5"};
+    if(kw) p["$q"]=kw;
     return { kind:"rfp", rows: await soda(p) };
   }
   const zp={"$select":"project_id,project_name,project_brief,primary_applicant,public_status,borough,community_district,mih_flag,current_milestone_date",
@@ -2087,6 +2144,10 @@ function aLensFilter(){
   const w=$("#awatch").value, p=$("#aparam").value.trim().toLowerCase();
   if(w==="bigaward") return {lens:"money", filter:{minAmount:Number($("#athresh").value)||1000000}};
   if(w==="rfpkw")    return {lens:"money", filter:{keywords:p?[p]:[]}};
+  if(w==="moneynl"){
+    const kw=$("#amoneykw").value.trim(), minAmt=Number($("#amoneymin").value)||null, months=Number($("#amoneymonths").value)||null;
+    return {lens:"money", filter:{keywords:kw?[kw]:[], minAmount:minAmt, months}};
+  }
   if(w==="entityvendor") return {lens:"entity", filter:{kind:"vendor", name:$("#aparam").value.trim()||null}};
   if(w==="entityagency") return {lens:"entity", filter:{kind:"agency", name:$("#aparam").value.trim()||null}};
   if(SECTION_WATCH_LABEL[w]) return {lens:w, filter:{keywords:p?[p]:[], agency:$("#aagency").value.trim()||null}};

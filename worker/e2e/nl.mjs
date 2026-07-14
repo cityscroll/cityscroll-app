@@ -34,13 +34,23 @@ test("land lens: borough + topic extracted into land fields", async () => {
   assert.ok(j.filter.keywords.length >= 1 && j.filter.keywords.length <= 4);
 });
 
-test("alerts lens: 'awards over $1M' -> bigaward + threshold", async () => {
+test("alerts lens: 'awards over $1M' -> minAmount, not a place/rezone watch", async () => {
   const r = await post({ lens: "alerts", text: "email me contract awards over $1M" });
   assert.equal(r.status, 200);
   const j = await r.json();
   assert.equal(j.lens, "alerts");
-  assert.equal(j.filter.watchType, "bigaward");
-  assert.equal(j.filter.threshold, 1000000);
+  assert.equal(j.filter.watchType, null);
+  assert.equal(j.filter.minAmount, 1000000);
+});
+
+test("alerts lens: category + amount + deadline extracted together (not one-at-a-time)", async () => {
+  const r = await post({ lens: "alerts", text: "education contracts over $200K due in 3 months" });
+  assert.equal(r.status, 200);
+  const j = await r.json();
+  assert.equal(j.lens, "alerts");
+  assert.equal(j.filter.minAmount, 200000);
+  assert.equal(j.filter.months, 3);
+  assert.ok(j.filter.keywords.includes("education"), `keywords: ${j.filter.keywords}`);
 });
 
 // ---- defense in depth -----------------------------------------------------

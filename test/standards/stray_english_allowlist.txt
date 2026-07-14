@@ -75,15 +75,14 @@ nnVia CROL-List — The City Record, searchable.
 <span class="qchip">in <b>
 <span class="qchip">notice = <b>open RFP</b></span>
 HPD property sales
-RFPs matching <b>
 attorney titles
 awards over $1M
-awards ≥ <b>
 buildings rules
 construction contracts over $500k
+education contracts over $200K due in 3 months
 for example, HPD property sales, DEP land
 for example, buildings rules, sanitation rules
-for example, email me awards over $1M, or construction RFPs
+for example, education contracts over $200K due in 3 months, or awards over $1M
 for example, paramedic roles, or look up someone named Rodriguez
 for example, recent landmarks hearings, city council
 for example, rezonings in Brooklyn, or 79 Rivington
@@ -91,7 +90,7 @@ paramedic roles
 rezonings in Brooklyn
 rezonings in Queens
 rezonings near 79 Rivington
-rezonings near <b>
+<span class="qchip">rezonings near <b>
 
 # ── Entity / matter / investigation / shared views + digest mock shell (queued: language wave)
 %</b> of the agency's award $ (12 mo)
@@ -138,7 +137,6 @@ type_of_notice_description='Solicitation'
 <div class="tl"><span class="tldate">due
 <span class="tag soon">amended from
 Due:
-affordable housing
 award to this vendor at this agency in 90 days
 block/lot
 city-owned property
