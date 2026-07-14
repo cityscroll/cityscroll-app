@@ -270,6 +270,7 @@
     event_on_html: "evento el <b>{date}</b>",
     paper_trail_heading: "El rastro documental (avisos que comparten este PIN)",
     full_timeline_link: "cronología completa con pagos",
+    renewal_badge: "Renovación",
     notice_fallback: "Aviso",
     view_in_city_record: "Ver en el Registro Municipal",
     ext_link_new_tab_sr: "(se abre en una pestaña nueva)",

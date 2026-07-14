@@ -270,6 +270,7 @@
     event_on_html: "অনুষ্ঠান <b>{date}</b>",
     paper_trail_heading: "নথির ধারাবাহিক পথ (এই PIN ভাগ করা নোটিশগুলি)",
     full_timeline_link: "পেমেন্টসহ সম্পূর্ণ সময়রেখা",
+    renewal_badge: "নবায়ন",
     notice_fallback: "নোটিশ",
     view_in_city_record: "নগর নথিতে দেখুন",
     ext_link_new_tab_sr: "(নতুন ট্যাবে খোলে)",

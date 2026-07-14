@@ -277,6 +277,7 @@
     event_on_html: "الفعالية في <b>{date}</b>",
     paper_trail_heading: "المسار الوثائقي (الإشعارات التي تشترك في رقم التعريف هذا)",
     full_timeline_link: "الجدول الزمني الكامل مع المدفوعات",
+    renewal_badge: "تجديد",
     notice_fallback: "إشعار",
     view_in_city_record: "عرض في السجل البلدي",
     ext_link_new_tab_sr: "(يفتح في علامة تبويب جديدة)",

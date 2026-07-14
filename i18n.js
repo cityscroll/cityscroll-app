@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "1b5f0fa2",
-  "zh-Hans": "994269cd",
-  ru: "0d2120af",
-  bn: "ae01cbeb",
-  ht: "cfc92cb0",
-  ko: "652d1c3f",
-  fr: "136f5a8e",
-  pl: "465101c9",
-  ar: "94eb1fec",
-  ur: "45737c45",
+  es: "60b48b1d",
+  "zh-Hans": "a88f04e6",
+  ru: "246e6627",
+  bn: "768e4df6",
+  ht: "fae2751d",
+  ko: "37fb6c6d",
+  fr: "d60b0710",
+  pl: "930b8d4d",
+  ar: "1d8e44c3",
+  ur: "066c91ff",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -444,6 +444,7 @@ const STRINGS = {
     event_on_html: "event <b>{date}</b>",
     paper_trail_heading: "The paper trail (notices sharing this PIN)",
     full_timeline_link: "full timeline with payments",
+    renewal_badge: "Renewal",
     notice_fallback: "Notice",
     view_in_city_record: "View in City Record",
     // Accessible marking for the City Record/PASSPort/Checkbook NYC new-tab carve-out

@@ -277,6 +277,7 @@
     event_on_html: "تقریب <b>{date}</b>",
     paper_trail_heading: "دستاویزی سراغ (نوٹسز جو یہ PIN شیئر کرتے ہیں)",
     full_timeline_link: "ادائیگیوں کے ساتھ مکمل ٹائم لائن",
+    renewal_badge: "تجدید",
     notice_fallback: "نوٹس",
     view_in_city_record: "City Record میں دیکھیں",
     ext_link_new_tab_sr: "(نئے ٹیب میں کھلتا ہے)",

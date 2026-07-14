@@ -126,12 +126,43 @@ test("ordinal", () => {
 
 // ---------- misc shared helpers ----------
 const miscEnv = new Function(
-  src.match(/const JUNK_PINS = new Set\(\[[^\]]*\]\);/)[0] + extractFn("usablePin") + extractFn("money")
-  + src.match(/const escXml = [^\n]*;/)[0] + "return { usablePin, money, escXml };"
+  src.match(/const JUNK_PINS = new Set\(\[[^\]]*\]\);/)[0] + extractConst("JUNK_PIN_TEXT_RE")
+  + extractFn("usablePin") + extractConst("RENEWAL_SUFFIX_RE") + extractFn("pinBase") + extractFn("money")
+  + src.match(/const escXml = [^\n]*;/)[0] + "return { usablePin, pinBase, money, escXml };"
 )();
-test("usablePin rejects junk pins", () => {
+test("usablePin rejects junk pins (exact JUNK_PINS set)", () => {
   assert.ok(miscEnv.usablePin("8502026AB0031"));
   for (const junk of ["NoPINFound", "TBD", "N/A", "000", "x"]) assert.ok(!miscEnv.usablePin(junk), junk);
+});
+// crol-fort-pin: JUNK_PINS' exact-match set missed common real-world phrasings of the same
+// "see the list below" placeholder (measured 37.7% miss rate on a 300-row Award sample) --
+// before this fix, each of these rendered a live "PIN {value}" badge, a dead-end Checkbook
+// lookup, and a #matter/ link that resolved to nothing. Named after the phrasing categories the
+// audit found, not just the literal JUNK_PINS strings already covered above.
+test("usablePin rejects placeholder-text variants JUNK_PINS' exact match missed", () => {
+  const variants = [
+    "See list below", "SEE BELOW FOR PINS", "see attachment for PINs",
+    "Line 17 below", "line  17  below",
+    "n/a", "N/A", "na",
+    "TBD", "Various", "PENDING", "Attached",
+  ];
+  for (const v of variants) assert.ok(!miscEnv.usablePin(v), v);
+});
+test("usablePin: word-boundary regex leaves a real alphanumeric PIN containing those letters alone", () => {
+  // "SEE" is a substring of this real-shaped PIN but never a standalone word -- must NOT be
+  // caught by the looser JUNK_PIN_TEXT_RE pass (that would be a false positive on real PINs).
+  assert.ok(miscEnv.usablePin("SEE12345678"));
+  assert.ok(miscEnv.usablePin("TBD2026AB0031"));
+});
+test("usablePin: floors the one confirmed placeholder-default numeric collision (123456)", () => {
+  assert.ok(!miscEnv.usablePin("123456"));
+});
+test("pinBase: strips a renewal suffix (…R001), leaves a base PIN alone", () => {
+  // Real pattern from the research: ACS "Housing Navigation and Stabilization Services" renewal.
+  assert.equal(miscEnv.pinBase("06823N0030001R001"), "06823N0030001");
+  assert.equal(miscEnv.pinBase("06823N0030001"), null);
+  assert.equal(miscEnv.pinBase("8502026AB0031"), null);
+  assert.equal(miscEnv.pinBase("07PO028001R0X00"), null); // "R0X00" isn't digits-only after R0 -- not a renewal suffix
 });
 test("money formatting", () => {
   assert.equal(miscEnv.money(10837045), "$10.84M");
@@ -183,7 +214,7 @@ test("workerFetch: both bases down → rejects (callers show their own error)", 
 // in either direction (too loose → concurrent siblings leak in; too strict → real renewals drop)
 // fails a test, not just a manual re-read.
 const priorCycleEnv = new Function(
-  src.match(/const JUNK_PINS = new Set\(\[[^\]]*\]\);/)[0] + extractFn("usablePin")
+  src.match(/const JUNK_PINS = new Set\(\[[^\]]*\]\);/)[0] + extractConst("JUNK_PIN_TEXT_RE") + extractFn("usablePin")
   + extractConst("PRIOR_CYCLE_MIN_GAP_DAYS") + extractConst("PRIOR_CYCLE_MAX_MATCHES")
   + extractConst("PRIOR_CYCLE_STOPWORDS") + extractFn("priorCycleTitleWords")
   + extractFn("daysBetween") + extractFn("rankPriorCycleCandidates")
