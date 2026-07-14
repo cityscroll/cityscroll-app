@@ -322,7 +322,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=eeeba70b"></script>
+<script src="i18n.js?v=ae4ef6bc"></script>
 <script src="nl_parse.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
@@ -1891,7 +1891,7 @@ async function landSelect(i, el){
   if(actList.length) html+=`<div class="rmeta2" style="margin-top:10px"><b>${t("actions_lbl")}</b> ${actList.join(" · ")}</div>`;
   const area=(r.project_name||r.borough||"").replace(/(rezoning|demapping|rezone|special permit|special district|text amendment|mapping actions?|modification|disposition|non-?ulurp).*/i,"").trim().split(/\s+/).slice(0,3).join(" ")||r.borough||"";
   html+=`<div class="actions" style="margin-top:12px">
-    <a class="act primary" href="https://zap.planning.nyc.gov/projects/${r.project_id}">${t("zap_full_project")}</a>
+    <a class="act primary" href="https://zap.planning.nyc.gov/projects/${r.project_id}" ${EXT_ATTRS}>${t("zap_full_project")}${extSR()}</a>
     <button class="act" type="button" id="landalert" data-q="${area.replace(/"/g,'')}">${t("alert_me_area")}</button>
     <a class="act" id="crfind" href="https://a856-cityrecord.nyc.gov/Search/Advanced" ${EXT_ATTRS}>${t("search_city_record")}${extSR()}</a>
   </div>
@@ -2068,7 +2068,7 @@ function renderFeed(key, rows){
     let acts=`<a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("city_record_link")}${extSR()}</a>`;
     acts+=`<button class="act" type="button" data-link="${r.request_id}">${t("copy_link_btn")}</button>`;
     if(ev) acts+=`<button class="act" type="button" data-ev="${key}:${r.request_id}">${t("add_date_btn",{date:fdt(ev)})}</button>`;
-    if(addr) acts+=`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(addr+' New York NY')}">${t("map_link")}</a>`;
+    if(addr) acts+=`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(addr+' New York NY')}" ${EXT_ATTRS}>${t("map_link")}${extSR()}</a>`;
     if(addr && key==="property") acts+=`<button class="act" type="button" data-demo="${r.request_id}">${t("still_standing_btn")}</button>`;
     const pbadges = key==="property" && (r._asset || r._badge)
       ? `<div>${r._asset?`<span class="tag asset">${ASSET_LABEL[r._asset]?t(ASSET_LABEL[r._asset]):""}</span>`:""}${r._badge?`<span class="tag amt">${r._badge}</span>`:""}</div>` : "";
@@ -2346,7 +2346,7 @@ function digItemHTML(kind, r, keywords){
   // reported failure was a City Record procurement notice, not a rezoning.
   return `<div class="digitem"><div class="dt">${r.project_name ? enTitle(r.project_name) : t("unnamed_rezoning")}</div>
     <div class="dm">${r.borough||""}${r.community_district? " · CD "+r.community_district:""} · ${r.public_status||""}${r.primary_applicant? " · "+r.primary_applicant:""}${mihOn(r.mih_flag)? " · "+t("affordable_housing_tag"):""}</div>
-    <div class="dc"><a href="https://zap.planning.nyc.gov/projects/${r.project_id}">${t("view_comment_zap")}</a> · <a href="https://a856-cityrecord.nyc.gov/Search/Advanced" ${EXT_ATTRS}>${t("hearing_notice_cr")}${extSR()}</a></div></div>`;
+    <div class="dc"><a href="https://zap.planning.nyc.gov/projects/${r.project_id}" ${EXT_ATTRS}>${t("view_comment_zap")}${extSR()}</a> · <a href="https://a856-cityrecord.nyc.gov/Search/Advanced" ${EXT_ATTRS}>${t("hearing_notice_cr")}${extSR()}</a></div></div>`;
 }
 
 function feedURLs(){
@@ -2581,9 +2581,9 @@ async function fillAddressLinks(r, el){
   if(!geo || !geo.bbl || !/^\d{10}$/.test(geo.bbl)) return;
   const b = geo.bbl[0], block = String(parseInt(geo.bbl.slice(1,6),10)), lot = String(parseInt(geo.bbl.slice(6),10));
   el.innerHTML = `<div class="rmeta2" style="margin:8px 0">This address elsewhere:
-    <a href="https://zola.planning.nyc.gov/l/lot/${b}/${block}/${lot}">ZoLa zoning</a> ·
-    <a href="https://a836-acris.nyc.gov/bblsearch/bblsearch.asp?borough=${b}&block=${block}&lot=${lot}">ACRIS deeds</a> ·
-    <a href="https://whoownswhat.justfix.org/bbl/${geo.bbl}">Who Owns What portfolio</a>
+    <a href="https://zola.planning.nyc.gov/l/lot/${b}/${block}/${lot}" ${EXT_ATTRS}>ZoLa zoning${extSR()}</a> ·
+    <a href="https://a836-acris.nyc.gov/bblsearch/bblsearch.asp?borough=${b}&block=${block}&lot=${lot}" ${EXT_ATTRS}>ACRIS deeds${extSR()}</a> ·
+    <a href="https://whoownswhat.justfix.org/bbl/${geo.bbl}" ${EXT_ATTRS}>Who Owns What portfolio${extSR()}</a>
     <span class="muted" style="font-size:12px">· lot ${geo.bbl} via GeoSearch — verify the match</span></div>`;
 }
 

@@ -608,38 +608,80 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `i18n-guard` CI job): pins bare `#land`/`#people` render a live-picked example with zero
   clicks, the address bar stays undecorated, and `#people?q=<title>` still overrides.
 
-## External links — same-tab by default, three named new-tab exceptions
+## External links — every non-own destination opens in a new tab (crol-extlinks2-y8)
 
-- **House decision (w10-03): every external link opens same-tab**, per the NYC Web Content
-  Style Guide (B18 "same tab/window", B19 "no external-link icons") —
-  `test/standards/link_targets.py` fails any `target="_blank"` whose href isn't in its
-  allowlist, and fails any decorative ↗ icon outside `ALLOWED_ICON_TEXT`.
-- **Named, narrow exception (crol-extlinks-s9): City Record, PASSPort, and Checkbook NYC
-  carry `target="_blank" rel="noopener noreferrer"`** — a user losing search/bid-response
-  state on every round-trip to one of these three government bid/payment systems was worse
-  than the B18 default. Every other external destination (NYC Open Data, ZAP, ZoLa, ACRIS,
-  Google Maps, Who Owns What) still opens same-tab; this is not a general carve-out.
-  `link_targets.py`'s `ALLOWED_NEW_TAB_HREFS`/`ALLOWED_NEW_TAB_HREF_EXPRS` are the source of
-  truth for which three destinations qualify — extending the exception to a fourth
-  destination means updating that allowlist and its docstring, not just adding the attribute.
+- **Current rule (crol-extlinks2-y8, superseding w10-03): every absolute link to a host
+  CROL-List doesn't own opens in a new tab; every own-resource/in-app link stays same-tab.**
+  This is a deliberate product decision that supersedes the NYC Web Content Style Guide's B18
+  "same tab/window" default for external destinations — the accessible `<span class="sr-only">`
+  marking (below) is the WCAG-consistent mitigation for the tab change B18 was written to
+  prevent. B19 ("no external-link icons") is untouched and still applies to link TEXT.
+  History: w10-03 started same-tab-always; crol-extlinks-s9 carved out City Record/PASSPort/
+  Checkbook NYC after a user lost bid-response state on a round-trip; crol-extlinks2-y7 added
+  NYC Open Data after the same complaint about a dataset-citation link; crol-extlinks2-y8
+  generalized the carve-out into the default rule, since the lost-search-state cost applies to
+  ANY external round-trip, not just government data/bid/payment systems.
+- **Own resources (stay same-tab): `crol-list.org`, `api.crol-list.org`, in-app hash routes
+  and relative page links (`#notice/...`, `about.html#data`, `index.html`, ...), and the
+  project's own GitHub repo** (`https://github.com/jimdc/crol-list`, per product ruling — a
+  governance-file citation isn't the kind of mid-task research round-trip this rule targets).
+  Everything else absolute is external and must carry the new-tab treatment.
+- **`test/standards/link_targets.py`'s `classify(href)`** is the single source of truth: for
+  any literal `href="https://..."` it checks the host against `OWN_HOSTS`/`OWN_HREF_PREFIXES`;
+  for a JS-templated `href="${expr}"` (index.html/api.html build several hrefs at runtime) it
+  looks the expression prefix up in `OWN_HREF_EXPRS`/`EXTERNAL_HREF_EXPRS` — an unrecognized
+  `${...}` expression is a HARD FAILURE (not a silent guess either way), so a new href-building
+  helper must be classified there once, by hand, before the gate will pass. Every own/in-app
+  href with `target="_blank"` fails the gate too — the rule is bidirectional, not just
+  "external must have it."
 - **`EXT_ATTRS`/`extSR()`** (index.html, defined next to the `REQ_URL`/`PASSPORT` consts) are
-  the shared helpers for the ~15 JS-templated carve-out anchors: `${EXT_ATTRS}` expands to
+  the shared helpers for the ~20 JS-templated external anchors: `${EXT_ATTRS}` expands to
   `target="_blank" rel="noopener noreferrer"`, `${extSR()}` appends a visually-hidden
   `<span class="sr-only">` marking (`t("ext_link_new_tab_sr")`, translated in all 11
   catalogs) so a screen-reader user is told the link leaves the app before activating it.
   `link_targets.py` treats `${EXT_ATTRS}`/`${extSR()}` in index.html's raw source as
-  equivalent to the literal attributes/span they expand to — it does not evaluate JS.
-  about.html's/api.html's static `data-i18n-html` strings (in both the page source and
-  every language's i18n.js/i18n/lang/*.js dictionary) bake the same literal markup by hand
-  since they're not JS-templated.
-- **`.sr-only`** exists on index.html, about.html, and api.html (the three pages with a
-  carve-out link) — a new page gaining one of these links needs the same CSS rule copied in
-  (see `.skip{...}` neighbor in each page's `<style>` block for where it lives).
+  equivalent to the literal attributes/span they expand to — it does not evaluate JS. Always
+  reach for `${EXT_ATTRS}`/`${extSR()}` on a JS-templated anchor in index.html rather than
+  literal attributes/span text — literal `<span class="sr-only"> (opens in new tab)</span>`
+  bypasses the i18n layer and fails `test/standards/stray_english.py` the moment the
+  surrounding link text is itself `t()`-routed (no adjacent URL fragment left to accidentally
+  merge the literal into and dodge the word-list check — this bit the first crol-extlinks2-y8
+  sweep on the ZAP/Google Maps anchors). about.html's/api.html's/data.html's static
+  `data-i18n-html` strings (in both the page source and every language's
+  i18n.js/i18n/lang/*.js dictionary) bake the same literal markup by hand since they're not
+  JS-templated — that's the one place literal `(opens in new tab)` text is correct.
+- **`.sr-only`** exists on index.html, about.html, data.html, and api.html — a new page
+  gaining an external link needs the same CSS rule copied in (see `.skip{...}` neighbor in
+  each page's `<style>` block for where it lives).
+- **Sharp edge — an external link can live entirely inside an i18n `*_html` dictionary
+  value, invisible to a page's own raw source** (crol-extlinks2-y7): the Staffing tab's
+  `salary_note_html` string builds its two dataset-citation anchors via `t("salary_note_html",
+  ...)` + `innerHTML` — no anchor markup for it exists anywhere in index.html itself, only in
+  i18n.js/i18n/lang/*.js. `link_targets.py` therefore scans `i18n.js` + every
+  `i18n/lang/<lang>.js` as additional sources (unescaping `\"` → `"` first, since these are JS
+  string literals), not just the six page files — a first sweep that only grepped the six
+  HTML pages missed several affected `*_html` keys across all eleven language catalogs. Any
+  future `*_html` key that bakes a literal `<a href>` is covered by this scan automatically;
+  the icon check (`ALLOWED_ICON_TEXT`) is deliberately NOT run against i18n sources since it's
+  only curated for en/es and every language's own `view_on_crol` legitimately keeps the ↗.
+- **Sharp edge — pre-existing hardcoded-English link text can hide behind a URL fragment in
+  the stray-English tokenizer**, and adding `${extSR()}` right after it can expose that debt
+  as a fresh gate failure even though the text itself didn't change: `fillAddressLinks()`'s
+  "ZoLa zoning"/"ACRIS deeds"/"Who Owns What portfolio" link text was never `t()`-routed (a
+  documented pre-existing gap, out of scope for a language-expansion pass — see the render-
+  ordering note elsewhere in this file), but the extractor's chunk boundaries had merged
+  "Who Owns What portfolio" into the same discarded-as-URL literal as its href — adding
+  `${extSR()}` right after it created a fresh interpolation boundary that isolated the text
+  into its own chunk with no URL to hide behind. Registered in
+  `stray_english_allowlist.txt` (`>Who Owns What portfolio`) rather than folded into a wider
+  i18n pass, consistent with how the rest of that already-known-English function is handled.
 - **`test/functional/16_external_links.py`** is the characterization gate (hermetic,
-  `a11y-pr` CI job): pins both reported links ("View in City Record", "Bid on PASSPort") get
-  target+rel+marking on real rendered output, an in-app link (`#investigation`) does NOT
-  acquire `target="_blank"`, and a non-allowlisted external link (about.html's NYC Charter
-  citation) stays same-tab.
+  `a11y-pr` CI job): pins the reported links (City Record, PASSPort, the Staffing-tab
+  salary-band's two data.cityofnewyork.us links, and the broadened case — about.html's NYC
+  Charter citation, previously the gate's own same-tab NEGATIVE control before
+  crol-extlinks2-y8 flipped it to a positive one) get target+rel+marking on real rendered
+  output, an in-app link (`#investigation`, `about.html`'s "Back to CROL-List") does NOT
+  acquire `target="_blank"`, and stats.html's own `api.crol-list.org` link stays same-tab.
 
 ## Architecture — static site + Worker backend
 
