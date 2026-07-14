@@ -7,7 +7,7 @@
 //
 // Edge-cached 15 minutes (same pattern as /feed.*): the SUBS list scan is the only real work.
 
-import { dayStr, sumStat } from "./lib/stats.mjs";
+import { dayStr, sumStat, readStatAllTime, readAllCategoryStats } from "./lib/stats.mjs";
 
 const WINDOW_DAYS = 7;
 
@@ -26,8 +26,10 @@ export async function handleStats(req, env, ctx) {
   const now = new Date();
   const today = dayStr(now);
 
-  const [active, sentToday, sent7d, clicksToday, clicks7d, feeds7d, batch7d, shares7d, nlToday] =
-    await Promise.all([
+  const [
+    active, sentToday, sent7d, clicksToday, clicks7d, feeds7d, batch7d, shares7d, nlToday,
+    digestsAllTime, digestsByCategory, nlAllTime, nlByCategory,
+  ] = await Promise.all([
       countActiveSubs(env),
       readInt(env.ALERT_STATE, `sendcount:${today}`),
       sumSendCounts(env, now),
@@ -37,6 +39,10 @@ export async function handleStats(req, env, ctx) {
       sumStat(env.ALERT_STATE, "batch", WINDOW_DAYS, now),
       sumStat(env.ALERT_STATE, "share", WINDOW_DAYS, now),
       readInt(env.NL_METER, `nl:${today}`),
+      readStatAllTime(env.ALERT_STATE, "digest"),
+      readAllCategoryStats(env.ALERT_STATE, "digest"),
+      readStatAllTime(env.NL_METER, "nl_search"),
+      readAllCategoryStats(env.NL_METER, "nl_search"),
     ]);
 
   const body = {
@@ -44,12 +50,12 @@ export async function handleStats(req, env, ctx) {
     window_days: WINDOW_DAYS,
     note: "Aggregate counts only — CROL-List has no accounts, no cookies, and tracks no individuals. Feed/batch counts are as observed at the origin (edge cache hits are not counted).",
     subscriptions: { active },
-    digests: { sent_today: sentToday, sent_last7d: sent7d },
+    digests: { sent_today: sentToday, sent_last7d: sent7d, sent_all_time: digestsAllTime, by_category: digestsByCategory },
     digest_clicks: { today: clicksToday, last7d: clicks7d },
     feeds: { fetches_last7d: feeds7d },
     batch: { calls_last7d: batch7d },
     shared_investigations: { created_last7d: shares7d },
-    nl_search: { calls_today: nlToday },
+    nl_search: { calls_today: nlToday, calls_all_time: nlAllTime, by_category: nlByCategory },
   };
 
   const res = new Response(JSON.stringify(body, null, 2), {

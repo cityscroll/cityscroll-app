@@ -11,6 +11,7 @@
 // Worst case ≈ MAX_CALLS_PER_DAY × (~600 in + ~200 out tokens) on Haiku ≈ tens of cents/day.
 
 import { sanitize, MAX_INPUT, MAX_CALLS_PER_DAY, LENSES } from "./lib/filter.mjs";
+import { bumpStatAllTime, bumpCategoryStat } from "./lib/stats.mjs";
 
 const MODEL = "claude-haiku-4-5";
 
@@ -118,6 +119,9 @@ export async function handleNl(req, env) {
 
   // Denial-of-wallet ceiling. Over cap → client uses its on-device heuristic.
   if (await overDailyCap(env)) return json({ degraded: true, reason: "daily-cap" }, 200, cors);
+
+  await bumpStatAllTime(env.NL_METER, "nl_search");
+  await bumpCategoryStat(env.NL_METER, "nl_search", lens);
 
   const res = await parseLensFilter(env, lens, text);
   // Graceful degradation either way: the browser falls back to its on-device parser.

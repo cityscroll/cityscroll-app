@@ -57,3 +57,62 @@ export async function sumStat(kv, metric, days, now) {
   }
   return total;
 }
+
+// ---- all-time + category counters (additive to the 7-day rolling ones above) -------------
+//
+// Same per-metric counting model, but one cumulative key with no expiry instead of a day
+// key, so /stats can also publish "since launch" totals. Category counters break a metric
+// out by City Record `section_name` (falling back to the watch's lens for sections that
+// don't carry one, e.g. land/ZAP) — discovered dynamically via a KV prefix list, so no
+// fixed category list needs to be maintained here.
+
+export function allTimeKey(metric) {
+  return `stats:alltime:${metric}`;
+}
+
+export function categoryKey(metric, category) {
+  return `stats:cat:${metric}:${category}`;
+}
+
+export async function bumpStatAllTime(kv, metric) {
+  if (!kv) return;
+  try {
+    const key = allTimeKey(metric);
+    const cur = parseInt((await kv.get(key)) || "0", 10) || 0;
+    await kv.put(key, String(cur + 1));
+  } catch { /* counting is best-effort */ }
+}
+
+export async function bumpCategoryStat(kv, metric, category) {
+  if (!kv || !category) return;
+  try {
+    const key = categoryKey(metric, category);
+    const cur = parseInt((await kv.get(key)) || "0", 10) || 0;
+    await kv.put(key, String(cur + 1));
+  } catch { /* counting is best-effort */ }
+}
+
+export async function readStatAllTime(kv, metric) {
+  if (!kv) return 0;
+  try { return parseInt((await kv.get(allTimeKey(metric))) || "0", 10) || 0; } catch { return 0; }
+}
+
+// All categories seen for a metric, as { category: count }. A partial result (fewer
+// categories than actually exist) beats a 500 if the KV list call fails partway.
+export async function readAllCategoryStats(kv, metric) {
+  const out = {};
+  if (!kv) return out;
+  const prefix = `stats:cat:${metric}:`;
+  try {
+    let cursor;
+    do {
+      const res = await kv.list({ prefix, cursor });
+      for (const k of res.keys) {
+        const category = k.name.slice(prefix.length);
+        out[category] = parseInt((await kv.get(k.name)) || "0", 10) || 0;
+      }
+      cursor = res.list_complete ? null : res.cursor;
+    } while (cursor);
+  } catch { /* partial beats a 500 */ }
+  return out;
+}
