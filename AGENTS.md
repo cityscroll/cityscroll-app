@@ -642,6 +642,31 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `hasAgencyAwards()` (index.html) is the shared guard for the two agency-stat call sites
   (`noticeAgencyBar()`, `agencyProfileBar()`) and the pattern to copy for new ones.
 
+## Data-join fortifications — Checkbook field fallback + digest content dedupe
+
+- **Follow-the-dollars tries two Checkbook NYC fields, not one.** `checkbookByPin()`
+  (index.html) queries Checkbook's `pin` field first; a pre-2013 (pre-PASSPort) award's PIN
+  often doesn't match there because Checkbook filed those older contracts under its `apt_pin`
+  field instead — `checkbookQueryByField(pin, field)` is the shared one-shot query, and
+  `checkbookByPin()` retries once against `apt_pin` only when the primary query SUCCEEDS with
+  zero rows (a hard proxy/network failure on the primary query is not retried — same "say
+  nothing" posture as before). Both `followDollars()` and `showMatter()` get the fallback for
+  free since they both call `checkbookByPin()`. Characterized in
+  `test/checkbook_apt_pin_fallback.test.mjs` using the same brace-matching extraction +
+  injected-dependency pattern as `test/forecast_render.test.mjs`, with a hand-rolled fake
+  `DOMParser` (Node has none) mirroring the same regex shape `worker/src/checkbook.mjs`'s
+  server-side `parseCheckbookTransactions()` uses for the same XML.
+- **Digest `fresh` lists dedupe by content fingerprint, not just `request_id`.** A tiny
+  fraction of Award notices are republished by City Record itself, byte-identical, under a
+  second `request_id` — `worker/src/alerts.mjs`'s `seen`-set (keyed on `request_id` alone)
+  can't catch that. `dedupeFreshByContent(rows)` (`worker/src/lib/digest.mjs`, pure/testable
+  like its sibling `digestDecision()`) collapses rows sharing `pin + agency_name +
+  short_title + vendor_name + start_date` within one run's `fresh` list, keeping the
+  first-seen `request_id`; both `runAlerts()`'s legacy-watch loop and `processOneSub()`'s
+  subscription path call it right after computing `fresh`. `markSeen()` still marks every
+  fetched row's own `request_id` (not just survivors) so a since-deduped duplicate's id
+  doesn't resurface as "new" on a later run.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

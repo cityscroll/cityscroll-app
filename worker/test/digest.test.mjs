@@ -3,7 +3,7 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { digestDecision, daysBetween, shortDate } from "../src/lib/digest.mjs";
+import { digestDecision, daysBetween, shortDate, dedupeFreshByContent } from "../src/lib/digest.mjs";
 
 test("shortDate: ISO date and full timestamp both -> 'Mon D'", () => {
   assert.equal(shortDate("2026-06-30"), "Jun 30");
@@ -59,4 +59,47 @@ test("daily + no fresh, never sent (null lastSent) -> heartbeat is due", () => {
 test("heartbeat window is tunable via heartbeatDays", () => {
   assert.equal(digestDecision({ ...base, lastSentDate: "2026-06-24", heartbeatDays: 7 }).action, "heartbeat"); // 7
   assert.equal(digestDecision({ ...base, lastSentDate: "2026-06-26", heartbeatDays: 7 }).action, "none");      // 5
+});
+
+// dedupeFreshByContent: a measured identifier audit found 24 groups of Award notices, out of
+// 53,007 rows, that are byte-identical republications under a DIFFERENT request_id — the
+// `seen`-set (keyed on request_id alone, alerts.mjs) can't catch those, so before this fix a
+// subscriber watching that agency/keyword saw the same notice twice in one digest email.
+const republished = {
+  request_id: "20260601001", pin: "85024B0001", agency_name: "Department of Sanitation",
+  short_title: "Snow removal equipment maintenance", vendor_name: "Acme Snow & Ice LLC",
+  start_date: "2026-06-01", contract_amount: 250000,
+};
+
+test("before: two rows sharing pin/agency/title/vendor/start_date but different request_id both counted as fresh", () => {
+  const dup = { ...republished, request_id: "20260601002" };
+  const naiveFresh = [republished, dup]; // what alerts.mjs's request_id-only seen-set used to produce
+  assert.equal(naiveFresh.length, 2, "sanity: distinct request_ids, no request_id-level dedupe would catch this");
+});
+
+test("after: dedupeFreshByContent collapses the republished duplicate to one line item", () => {
+  const dup = { ...republished, request_id: "20260601002" };
+  const out = dedupeFreshByContent([republished, dup]);
+  assert.equal(out.length, 1);
+  assert.equal(out[0].request_id, republished.request_id, "keeps the first-seen request_id");
+});
+
+test("rows differing only by an untracked field (amount, request_id) still collapse", () => {
+  const amended = { ...republished, request_id: "20260601003", contract_amount: 999999 };
+  const out = dedupeFreshByContent([republished, amended]);
+  assert.equal(out.length, 1, "contract_amount isn't part of the fingerprint — a republished notice with a typo-fixed amount still dedupes");
+});
+
+test("rows differing in a fingerprint field (a genuinely different notice) are NOT collapsed", () => {
+  const differentStart = { ...republished, request_id: "20260601004", start_date: "2026-06-15" };
+  const differentVendor = { ...republished, request_id: "20260601005", vendor_name: "Best Ice Removal Corp" };
+  const out = dedupeFreshByContent([republished, differentStart, differentVendor]);
+  assert.equal(out.length, 3, "distinct start_date/vendor_name means these are legitimately different notices");
+});
+
+test("missing fingerprint fields (null/undefined) don't crash and don't over-collapse unrelated rows", () => {
+  const a = { request_id: "1", pin: null, agency_name: null, short_title: null, vendor_name: null, start_date: null };
+  const b = { request_id: "2", pin: null, agency_name: null, short_title: null, vendor_name: null, start_date: null };
+  const out = dedupeFreshByContent([a, b]);
+  assert.equal(out.length, 1, "two rows with identically-missing fields still fingerprint-match (expected, if rare)");
 });

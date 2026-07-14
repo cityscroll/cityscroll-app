@@ -23,7 +23,7 @@ import { compileSub_d1, toDigestRow, OFF_MIRROR_LENSES } from "./lib/compile_d1.
 import { buildNoticesQuery, searchNotices } from "./lib/notices.mjs";
 import { describeFilter } from "./lib/confirm_email.mjs";
 import { emailT } from "./lib/i18n.mjs";
-import { digestDecision, shortDate } from "./lib/digest.mjs";
+import { digestDecision, dedupeFreshByContent, shortDate } from "./lib/digest.mjs";
 import { runCheckbookPipeline } from "./checkbook.mjs";
 import { runMocsPlanPipeline } from "./mocs_plan.mjs";
 import { bumpStatAllTime, bumpCategoryStat, bumpHistDay } from "./lib/stats.mjs";
@@ -64,7 +64,7 @@ export async function runAlerts(env, watches = cfg.watches || []) {
     try {
       const rows = await runWatch(w);
       const seen = await getSeen(env, w.id);
-      const fresh = rows.filter((r) => r.request_id && !seen.has(r.request_id));
+      const fresh = dedupeFreshByContent(rows.filter((r) => r.request_id && !seen.has(r.request_id)));
 
       const { allow: send, capped } = capDecision({
         want: fresh.length > 0 && LIVE && !!w.email,
@@ -168,7 +168,7 @@ export async function processOneSub(env, s, ctx) {
       if (q.postFilter) rows = rows.filter(q.postFilter); // e.g. entity watches refine stem-prefix matches
     }
     const seen = await getSeen(env, s.key);
-    const fresh = rows.filter((r) => r[q.idField] && !seen.has(r[q.idField]));
+    const fresh = dedupeFreshByContent(rows.filter((r) => r[q.idField] && !seen.has(r[q.idField])));
 
     // Confidence: decide whether to break silence (a weekly check-in or a daily heartbeat) even
     // with no fresh notices, so a quiet inbox never looks like a broken alert. `since` = when we
