@@ -4,6 +4,7 @@ import assert from "node:assert/strict";
 import {
   dayStr, statsKey, lastNDays, parseRedirect, noticeUrl, bumpStat, sumStat, STATS_TTL,
   bumpStatAllTime, bumpCategoryStat, readStatAllTime, readAllCategoryStats,
+  bumpHistDay, readHistSeries, readHistEra, histDayKey, histEraKey,
 } from "../src/lib/stats.mjs";
 import { handleRedirect } from "../src/redirect.mjs";
 import { handleStats } from "../src/stats.mjs";
@@ -152,4 +153,49 @@ test("GET /stats publishes all-time totals + category breakdown alongside the un
   assert.deepEqual(body.digests.by_category, { Procurement: 30, land: 12 });
   assert.equal(body.nl_search.calls_all_time, 9);
   assert.deepEqual(body.nl_search.by_category, { money: 9 });
+});
+
+test("bumpHistDay accumulates per day with no TTL, unlike the 40-day rolling stats:<metric>:<day> counter", async () => {
+  const kv = fakeKV();
+  await bumpHistDay(kv, "digest", NOW);
+  await bumpHistDay(kv, "digest", NOW);
+  assert.equal(kv.store.get(histDayKey("digest", "2026-07-02")), "2");
+  assert.equal(kv.lastOpts, undefined, "no expirationTtl — a hist:<metric>:<day> key must outlive the 40-day one");
+});
+
+test("readHistSeries returns every recorded day for a metric, discovered via list, not a fixed range", async () => {
+  const kv = fakeKV({
+    [histDayKey("digest", "2026-07-02")]: "3",
+    [histDayKey("digest", "2026-07-13")]: "7",
+    [histDayKey("nl_search", "2026-07-13")]: "15", // a different metric must not bleed in
+  });
+  assert.deepEqual(await readHistSeries(kv, "digest"), { "2026-07-02": 3, "2026-07-13": 7 });
+  assert.deepEqual(await readHistSeries(null, "digest"), {});
+});
+
+test("before: /stats had no way to tell recovered history from live-counted history, so a time-series chart built from it would show every day as equally certain; after: hist:era:<metric> marks the first live day, and readHistEra surfaces it so the UI can label the split honestly", async () => {
+  const kv = fakeKV({ [histEraKey("digest")]: "2026-07-14" });
+  assert.equal(await readHistEra(kv, "digest"), "2026-07-14");
+  assert.equal(await readHistEra(kv, "nl_search"), null, "an unset era must not default to some other metric's boundary");
+  assert.equal(await readHistEra(null, "digest"), null);
+});
+
+test("GET /stats includes a history block with per-day totals and the recovered/live boundary for both digests and nl_search", async () => {
+  const alertState = fakeKV({
+    [histDayKey("digest", "2026-07-02")]: "1",
+    [histDayKey("digest", "2026-07-13")]: "2",
+    [histEraKey("digest")]: "2026-07-14",
+  });
+  const nlMeter = fakeKV({
+    [histDayKey("nl_search", "2026-07-13")]: "15",
+    [histEraKey("nl_search")]: "2026-07-14",
+  });
+  const env = { ALERT_STATE: alertState, NL_METER: nlMeter, SUBS: fakeKV() };
+  const res = await handleStats(new Request("https://api.crol-list.org/stats"), env, { waitUntil: async (p) => p });
+  const body = await res.json();
+
+  assert.deepEqual(body.history.digests.by_day, { "2026-07-02": 1, "2026-07-13": 2 });
+  assert.equal(body.history.digests.live_from, "2026-07-14");
+  assert.deepEqual(body.history.nl_search.by_day, { "2026-07-13": 15 });
+  assert.equal(body.history.nl_search.live_from, "2026-07-14");
 });

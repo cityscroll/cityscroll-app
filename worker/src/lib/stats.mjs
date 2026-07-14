@@ -116,3 +116,56 @@ export async function readAllCategoryStats(kv, metric) {
   } catch { /* partial beats a 500 */ }
   return out;
 }
+
+// ---- permanent daily history (additive to the 40-day-TTL rolling counters above) --------
+//
+// `stats:<metric>:<day>` above self-expires after 40 days — fine for the 7-day window /stats
+// was built to serve, but the "over time" chart needs day-level counts that outlive that. A
+// `hist:<metric>:<day>` key never expires and is bumped at the same call sites as
+// bumpStatAllTime, so it's exactly the same event stream, just also kept per day forever.
+// A one-time backfill (worker/scripts/backfill-history.mjs) seeded the days that were still
+// recoverable from the short-lived counters when this shipped; `hist:era:<metric>` records
+// the first day counted this way (the boundary between recovered and continuously-counted
+// history) so the UI can say so honestly instead of implying every number was always live.
+
+export function histDayKey(metric, day) {
+  return `hist:${metric}:${day}`;
+}
+
+export function histEraKey(metric) {
+  return `hist:era:${metric}`;
+}
+
+export async function bumpHistDay(kv, metric, now) {
+  if (!kv) return;
+  try {
+    const key = histDayKey(metric, dayStr(now));
+    const cur = parseInt((await kv.get(key)) || "0", 10) || 0;
+    await kv.put(key, String(cur + 1)); // no TTL — permanent
+  } catch { /* counting is best-effort */ }
+}
+
+// Every recorded hist:<metric>:<day> count, as { day: count }. Discovered via KV list, so
+// coverage grows on its own as more days accrue — nothing here assumes a fixed start date.
+export async function readHistSeries(kv, metric) {
+  const out = {};
+  if (!kv) return out;
+  const prefix = `hist:${metric}:`;
+  try {
+    let cursor;
+    do {
+      const res = await kv.list({ prefix, cursor });
+      for (const k of res.keys) {
+        const day = k.name.slice(prefix.length);
+        out[day] = parseInt((await kv.get(k.name)) || "0", 10) || 0;
+      }
+      cursor = res.list_complete ? null : res.cursor;
+    } while (cursor);
+  } catch { /* partial beats a 500 */ }
+  return out;
+}
+
+export async function readHistEra(kv, metric) {
+  if (!kv) return null;
+  try { return (await kv.get(histEraKey(metric))) || null; } catch { return null; }
+}

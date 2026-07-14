@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "87b4bb2e",
-  "zh-Hans": "9c947513",
-  ru: "32617e07",
-  bn: "592fcbe9",
-  ht: "b3ab4c2f",
-  ko: "1d8cf854",
-  fr: "52b40681",
-  pl: "8d964f67",
-  ar: "f69f2f6e",
-  ur: "0965fc29",
+  es: "6401a29c",
+  "zh-Hans": "0dbc1022",
+  ru: "9d4f34fc",
+  bn: "2c6c490d",
+  ht: "e7f2bd98",
+  ko: "65984e76",
+  fr: "5cf3ac65",
+  pl: "cfe12cbb",
+  ar: "3ffa9254",
+  ur: "98a5b859",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -744,6 +744,15 @@ const STRINGS = {
     stats_col_category: "Topic",
     stats_col_count: "Notices",
     stats_cat_empty: "No digests have matched anything yet.",
+    stats_h_history: "Over time",
+    stats_p_history: "Digests sent and plain-English searches asked, day by day.",
+    stats_col_day: "Day",
+    stats_col_digests: "Digests sent",
+    stats_col_searches: "Searches asked",
+    stats_history_caption: "Daily counts of digests sent and searches asked",
+    stats_history_notrecorded: "Not recorded",
+    stats_history_era: "Counts before {date} were recovered from old logs. Counts from {date} on are counted as they happen.",
+    stats_history_empty: "No day-by-day history yet.",
     stats_h_dontknow: "What we deliberately don't know",
     stats_p_dontknow_html: "Who you are, what you searched, which notices you read, or which emails you opened. Page-view totals come from Cloudflare's cookieless analytics (aggregate, no fingerprinting — <a href=\"about.html\">privacy notes</a>). Everything above comes from plain per-day counters. There is nothing else.",
     stats_foot_html: "Raw JSON: <a href=\"https://api.crol-list.org/stats\">api.crol-list.org/stats</a> (cached ~15 min) · <a href=\"changelog.html\">Changelog</a> · <a href=\"about.html\">About</a> · <a href=\"index.html\">Home</a>",

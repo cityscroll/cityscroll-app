@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Stats · CROL-List</title>
 <meta name="description" content="CROL-List's own usage, published: aggregate outcome counts — subscriptions, digests, clicks, feeds. No accounts, no cookies, nobody tracked.">
-<script src="i18n.js?v=b09b9209"></script>
+<script src="i18n.js?v=68ce12ec"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
@@ -46,6 +46,10 @@
   .cattable th{font:600 12px/1 var(--ui);text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
   .cattable td.n{font-variant-numeric:tabular-nums;text-align:end}
   #msg{font:14px/1.6 var(--ui);color:var(--muted);min-height:1.2em}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+  .histtable td.n{font-variant-numeric:tabular-nums;text-align:end}
+  .histtable td.notrec{color:var(--muted);font-style:italic}
+  .histera{border-top:1px dashed var(--rule);padding-top:10px;margin-top:14px}
   .foot{margin-top:40px;border-top:1px solid var(--rule);padding-top:14px;font:13px/1.6 var(--ui);color:var(--muted);text-align:center}
   .foot a{color:var(--oxblood)}
   /* language switcher — matches index.html */
@@ -125,6 +129,20 @@ did what. We measure outcomes (watches that fired, digests that got read), not p
 </table>
 <p class="src" id="catEmpty" data-i18n="stats_cat_empty" hidden>No digests have matched anything yet.</p>
 
+<h2 data-i18n="stats_h_history">Over time</h2>
+<p class="src" data-i18n="stats_p_history">Digests sent and plain-English searches asked, day by day.</p>
+<table class="cattable histtable" id="histTable" hidden>
+  <caption class="sr-only" data-i18n="stats_history_caption">Daily counts of digests sent and searches asked</caption>
+  <thead><tr>
+    <th data-i18n="stats_col_day">Day</th>
+    <th data-i18n="stats_col_digests">Digests sent</th>
+    <th data-i18n="stats_col_searches">Searches asked</th>
+  </tr></thead>
+  <tbody id="histTableBody"></tbody>
+</table>
+<p class="src histera" id="histEraNote" hidden></p>
+<p class="src" id="histEmpty" data-i18n="stats_history_empty" hidden>No day-by-day history yet.</p>
+
 <h2 data-i18n="stats_h_dontknow">What we deliberately don't know</h2>
 <p class="src" data-i18n-html="stats_p_dontknow_html">Who you are, what you searched, which notices you read, or which emails you opened. Page-view
 totals come from Cloudflare's cookieless analytics (aggregate, no fingerprinting — <a href="about.html">privacy
@@ -143,7 +161,10 @@ notes</a>). Everything above comes from plain per-day counters. There is nothing
   const gridAllTime = document.getElementById("gridAllTime");
   const catTable = document.getElementById("catTable"), catTableBody = document.getElementById("catTableBody");
   const catEmpty = document.getElementById("catEmpty");
+  const histTable = document.getElementById("histTable"), histTableBody = document.getElementById("histTableBody");
+  const histEraNote = document.getElementById("histEraNote"), histEmpty = document.getElementById("histEmpty");
   const put = (id, v) => { document.getElementById(id).textContent = (v == null ? "–" : Number(v).toLocaleString("en-US")); };
+  const curLoc = () => (window.LANG_META && window.LANG_META[window.LANG] || {}).intlDate || "en-US";
   // A category name is either a real City Record section_name (already covered by
   // tSection's per-language table) or the "land" fallback used for ZAP notices, which have
   // no section_name — reuse the existing tab_land translation for that one case.
@@ -162,16 +183,55 @@ notes</a>). Everything above comes from plain per-day counters. There is nothing
     catTable.hidden = entries.length === 0;
     catEmpty.hidden = entries.length !== 0;
   }
+  // Merge the two per-day series into one row set. A day only gets a real number when its
+  // own metric actually has a recorded value for it (backfilled or live) or when the day
+  // falls on/after that metric's "live_from" boundary (a missing key there is a confirmed
+  // zero, since live counting never expires and never skips a day). Anything else renders as
+  // "not recorded" rather than guessing — see worker/scripts/backfill-history.mjs.
+  function renderHistory(history) {
+    if (!history) return;
+    const dByDay = history.digests?.by_day || {}, nByDay = history.nl_search?.by_day || {};
+    const dLive = history.digests?.live_from || null, nLive = history.nl_search?.live_from || null;
+    const days = [...new Set([...Object.keys(dByDay), ...Object.keys(nByDay)])].sort();
+    histTableBody.textContent = "";
+    for (const day of days) {
+      const dVal = day in dByDay ? dByDay[day] : (dLive && day >= dLive ? 0 : null);
+      const nVal = day in nByDay ? nByDay[day] : (nLive && day >= nLive ? 0 : null);
+      const tr = document.createElement("tr");
+      const th = document.createElement("th"); th.scope = "row";
+      th.textContent = new Date(day + "T00:00:00Z").toLocaleDateString(curLoc(), { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
+      const cell = (v) => {
+        const td = document.createElement("td");
+        if (v == null) { td.className = "notrec"; td.textContent = t("stats_history_notrecorded"); }
+        else { td.className = "n"; td.textContent = v.toLocaleString("en-US"); }
+        return td;
+      };
+      tr.append(th, cell(dVal), cell(nVal));
+      histTableBody.appendChild(tr);
+    }
+    const earliestLive = [dLive, nLive].filter(Boolean).sort()[0] || null;
+    if (earliestLive) {
+      const label = new Date(earliestLive + "T00:00:00Z").toLocaleDateString(curLoc(), { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
+      histEraNote.textContent = t("stats_history_era", { date: label });
+      histEraNote.hidden = false;
+    } else {
+      histEraNote.hidden = true;
+    }
+    histTable.hidden = days.length === 0;
+    histEmpty.hidden = days.length !== 0;
+  }
   // applyStrings() rebuilds data-i18n-html containers (incl. the nested #s-digests-today span)
-  // on every language switch — msgState/digestsToday/categoryData survive that so a switch
-  // after data loads repaints the real numbers instead of resetting to the loading/placeholder
-  // text, and re-translates the category table's topic names into the new language.
-  let msgState = { kind: "loading" }, digestsToday = null, categoryData = null;
+  // on every language switch — msgState/digestsToday/categoryData/historyData survive that so
+  // a switch after data loads repaints the real numbers instead of resetting to the
+  // loading/placeholder text, and re-translates the category table's topic names and the
+  // history table's day labels into the new language.
+  let msgState = { kind: "loading" }, digestsToday = null, categoryData = null, historyData = null;
   function paint() {
     msg.textContent = msgState.kind === "asof" ? t("stats_asof", { date: msgState.date })
       : msgState.kind === "unreachable" ? t("stats_unreachable") : t("stats_loading");
     if (digestsToday != null) put("s-digests-today", digestsToday);
     renderCategories(categoryData);
+    renderHistory(historyData);
   }
   paint();
   // Wire the switcher immediately — it must not wait on the fetch below, or clicking it
@@ -196,8 +256,9 @@ notes</a>). Everything above comes from plain per-day counters. There is nothing
       put("s-nl-alltime", d.nl_search?.calls_all_time);
       categoryData = d.digests?.by_category;
       renderCategories(categoryData);
-      const loc = (window.LANG_META && window.LANG_META[window.LANG] || {}).intlDate || "en-US";
-      msgState = { kind: "asof", date: new Date(d.generated).toLocaleString(loc) };
+      historyData = d.history;
+      renderHistory(historyData);
+      msgState = { kind: "asof", date: new Date(d.generated).toLocaleString(curLoc()) };
       paint();
       grid.hidden = false;
       gridAllTime.hidden = false;

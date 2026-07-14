@@ -26,7 +26,7 @@ import { emailT } from "./lib/i18n.mjs";
 import { digestDecision, shortDate } from "./lib/digest.mjs";
 import { runCheckbookPipeline } from "./checkbook.mjs";
 import { runMocsPlanPipeline } from "./mocs_plan.mjs";
-import { bumpStatAllTime, bumpCategoryStat } from "./lib/stats.mjs";
+import { bumpStatAllTime, bumpCategoryStat, bumpHistDay } from "./lib/stats.mjs";
 
 // A sent digest's category breakdown for the all-time stats: one bump per distinct City
 // Record section_name it carried (falling back to the watch's lens for sections without
@@ -77,6 +77,7 @@ export async function runAlerts(env, watches = cfg.watches || []) {
         sentThisRun++; sentToday++;
         await setSendCount(env, day, sentToday);
         await bumpStatAllTime(env.ALERT_STATE, "digest");
+        await bumpHistDay(env.ALERT_STATE, "digest", new Date());
         await bumpDigestCategories(env, fresh, w.type);
       }
 
@@ -205,6 +206,7 @@ export async function processOneSub(env, s, ctx) {
       await ctx.onSent();
       await setLastSent(env, s.key, ctx.today);   // only on a real send, so the heartbeat clock tracks actual email
       await bumpStatAllTime(env.ALERT_STATE, "digest");
+      await bumpHistDay(env.ALERT_STATE, "digest", new Date());
       if (fresh.length) await bumpDigestCategories(env, fresh, s.lens);
     }
 
