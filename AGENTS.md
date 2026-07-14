@@ -468,6 +468,50 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   deliberately does NOT share `.trychip`'s pill shape or pointer cursor.
   `test/standards/nl_input_clarity.py` (unit job) statically pins both distinctions.
 
+## Procurement forecast — discoverability cross-link + subtab deep-link
+
+- **The forecast data is per-agency/vendor only — there is no sitewide "upcoming" feed.**
+  `worker/src/inv.mjs`'s `GET /inv/<id>` and `worker/src/checkbook.mjs`'s `GET /forecast?q=`
+  both require a name stem (`vendorStem(id).length >= 3`); the read path is a cheap
+  precomputed KV get (cron pipelines `runCheckbookPipeline`/`runMocsPlanPipeline` do the
+  real work ahead of time), but there's no all-agencies aggregation to browse. That's why
+  the discoverability fix is a cross-link from something that already names an agency
+  (a notice), not a new "Upcoming" mode on the Contracts tab — building a sitewide feed
+  would be a real backend project, not a placement fix.
+- **`agencyForecastTeaser(r, el)`** (index.html, shared by `renderDetail()`'s `#dforecast`
+  and `showNotice()`'s `#nforecast` — same sibling-panel pattern as `priorCycleAwards()`)
+  fetches `/inv/<agency_name>` for whatever notice is open and renders a quiet one-line
+  teaser + honesty note only when forecasts exist (silent no-op otherwise, same posture as
+  `fillAddressLinks()`) — reachable with zero extra clicks past picking a notice, which is
+  the core interaction of the whole site.
+- **`agencyHref(name, tab)`/`vendorHref(name, tab)` take an optional `tab` param** that
+  appends a literal `?tab=forecast` after the encoded name (safe: `encodeURIComponent`
+  escapes any real `?` inside the name itself, so the first literal `?` is always the
+  separator). `applyHash()`'s `splitEntityTab()` parses it back out and passes it to
+  `showAgency(name, initialTab)`/`showVendor(name, initialTab)`, which auto-clicks
+  `#btn-forecast` on render if `initialTab === "forecast"` — this is how the teaser's "See
+  the full forecast" link lands directly on the Forecast subtab instead of the profile's
+  default Overview pane.
+- **`forecastItemHTML()`/`forecastItemsHTML()`/`forecastPaneHTML()`** (index.html, defined
+  once above `showAgency`) are the single builder both profile views call — the two
+  hand-copied 20-line blocks this used to be are gone. Shape is pinned without a browser in
+  `test/forecast_render.test.mjs`, using the same brace-matching extraction pattern as
+  `apply_pnote.test.mjs` (extract the function + its deps out of index.html, inject `t`/`tn`
+  via `new Function`). **Sharp edge hit while writing that test:** the extractor's
+  `[^;]*` regex for pulling a `const` declaration breaks on any value containing an
+  HTML-entity string literal (`"&lt;"`, `"&amp;"`, …) — each one ends in a literal `;`
+  that terminates the match early. `escUiHtml`'s extraction uses `.*$` (matches to end of
+  line) instead; reach for that variant, not `[^;]*`, for any future one-liner const whose
+  value might contain `;`.
+- **`test/functional/13_stray_english.py`'s `collect_within(page, rootSel, ...)`** is a new,
+  reusable scoped variant of `collect()` — walks only a CSS-selected subtree instead of the
+  whole page. Added because the agency/vendor profile's surrounding chrome (agencybar,
+  actions row, footer note) is a separate, already-tracked translation gap (see the w9-05
+  comment above `collect_srstatus_and_aria`) that an unscoped `collect()` on the Forecast
+  subtab would have reopened as a false "regression" every run. Reach for `collect_within`
+  again the next time a guard walk needs to prove ONE new subtree translates without also
+  re-litigating a pre-existing gap elsewhere on the same page.
+
 ## Architecture — static site + Worker backend
 
 - The site (`index.html`, `i18n.js`, `test/`) is 100% static, deployed via GitHub Pages; the

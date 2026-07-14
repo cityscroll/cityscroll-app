@@ -319,7 +319,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=68ce12ec"></script>
+<script src="i18n.js?v=d5539389"></script>
 <script src="nl_parse.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
@@ -1303,7 +1303,7 @@ function renderDetail(r, chain, stats){
 
   const scope = cleanText(r.additional_description_1);
   if(scope) html += `<div class="scope"><span class="lbl">${t("what_they_want")}</span>${scope.slice(0,900)}${scope.length>900?"…":""}</div>`;
-  html += `<div id="dprior"></div>`;
+  html += `<div id="dprior"></div><div id="dforecast"></div>`;
   // Agency-wide totals are context for this notice, not the headline — rendered last and
   // visually subordinated (smaller figures) so notice-specific facts read first.
   if(!pending) html += noticeAgencyBar(stats, r.agency_name, "agencybar sub");
@@ -1314,6 +1314,7 @@ function renderDetail(r, chain, stats){
   fillContext(r, $("#dcontext"));
   followDollars(r, $("#ddollars"));
   priorCycleAwards(r, $("#dprior"));
+  agencyForecastTeaser(r, $("#dforecast"));
 }
 
 // parseNL() itself lives in nl_parse.js (loaded above, plain global — same convention as
@@ -2533,8 +2534,8 @@ async function followDollars(r, el){
    time (v1): normalize to a stem (case/punctuation/legal suffixes), prefix-match server-side,
    then keep only rows whose own stem matches exactly. Honest and zero-infrastructure; a
    nightly clustered alias table can replace it without changing this page. */
-const agencyHref = name => "#agency/" + encodeURIComponent(String(name||"").trim());
-const vendorHref = name => "#vendor/" + encodeURIComponent(cleanText(name));
+const agencyHref = (name, tab) => "#agency/" + encodeURIComponent(String(name||"").trim()) + (tab ? "?tab="+tab : "");
+const vendorHref = (name, tab) => "#vendor/" + encodeURIComponent(cleanText(name)) + (tab ? "?tab="+tab : "");
 const pivotA = (href, text) => `<a class="pivot" href="${href}">${text}</a>`;
 
 const VENDOR_SUFFIX = /\s+(INCORPORATED|INC|LLC|L\.L\.C|CORPORATION|CORP|COMPANY|CO|LTD|LIMITED|LP|LLP|PLLC|P\.C|PC|USA|OF NY|OF NEW YORK)\.?$/;
@@ -2556,7 +2557,58 @@ function agencyProfileBar(stats, rfpCount){
         <div><div class="big">${rfpCount}${rfpCount===5?"+":""}</div><div class="lbl">open RFPs<br>right now</div></div>
       </div>`;
 }
-async function showAgency(name){
+// Shared by showAgency/showVendor (both render the same "Procurement Forecast" timeline)
+// and by agencyForecastTeaser's cross-link from notice detail — one builder, one shape to
+// pin in test/forecast_render.test.mjs, instead of the two hand-copied blocks this used to be.
+const escUiHtml = (s) => String(s == null ? "" : s).replace(/[<>&'"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", "'": "&#39;", "\"": "&quot;" }[c]));
+function forecastItemHTML(f){
+  const isCheckbook = f.source === "checkbook";
+  const badgeText = isCheckbook ? t("forecast_badge_checkbook") : t("forecast_badge_mocs");
+  const badgeColor = isCheckbook ? "#e3f2fd" : "#f1f8e9";
+  const badgeTextCol = isCheckbook ? "#0d47a1" : "#33691e";
+  const title = isCheckbook ? (f.vendor_name || t("forecast_vendor_fallback")) : (f.description || t("forecast_solicitation_fallback"));
+  const sub = isCheckbook ? `${f.agency_name} · ${t("forecast_amount_label")} ${money(f.amount) || "—"}` : `${f.agency} · ${t("forecast_value_band_label")} ${f.value_band}`;
+  const dateText = isCheckbook ? t("forecast_predicted_expiration_label",{date:f.expiration_date}) : t("forecast_expected_quarter_label",{quarter:f.release_quarter});
+  const watchKind = isCheckbook ? "vendor" : "agency";
+  const watchName = isCheckbook ? f.vendor_name : f.agency_name || f.agency;
+
+  return `<div class="tl" style="margin-bottom:20px;position:relative;padding-inline-start:24px">
+    <div style="position:absolute;inset-inline-start:0;top:4px;width:10px;height:10px;border-radius:50%;background:var(--oxblood)"></div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+      <span class="badge" style="background:${badgeColor};color:${badgeTextCol};font-size:11px;font-weight:600;padding:2px 6px;border-radius:4px">${badgeText}</span>
+      <span style="font-size:12px;color:var(--muted)">${dateText}</span>
+    </div>
+    <div style="font-weight:600;font-size:14px;color:#111">${escUiHtml(title)}</div>
+    <div style="font-size:13px;color:#555;margin-bottom:8px">${escUiHtml(sub)}</div>
+    <button class="act mini-sub-btn" type="button" data-watch-kind="${watchKind}" data-watch-name="${escUiHtml(watchName)}" style="font-size:11px;padding:3px 8px;margin:0">${t("mini_subscribe_btn")}</button>
+  </div>`;
+}
+function forecastItemsHTML(forecasts){ return forecasts.map(forecastItemHTML).join(""); }
+function forecastPaneHTML(forecasts){
+  return `<div class="chain-h">${t("forecast_section_heading")}</div>
+    <div class="timeline" style="margin-top:10px">${forecastItemsHTML(forecasts)}</div>
+    <div class="note">${t("forecast_honesty_note")}</div>`;
+}
+
+// Cross-link from the notice detail's paper-trail area (sibling to priorCycleAwards): a
+// quiet teaser naming this notice's agency's own next predicted bid window, linking straight
+// into that agency's profile with the Forecast subtab pre-selected (agencyHref's ?tab= param).
+// Silent no-op when the agency has no forecast data yet — same quiet-fail posture as
+// fillAddressLinks (no geocode match → nothing rendered), not an empty-state note for every
+// notice, since most agencies don't have forecast data computed yet.
+async function agencyForecastTeaser(r, el){
+  if(!el || !r.agency_name) return;
+  let data = null;
+  try{ data = await workerFetch("/inv/" + encodeURIComponent(r.agency_name), null, 8000).then(x => x.ok ? x.json() : null); }catch(e){}
+  if(!document.contains(el)) return; // a newer selection replaced this panel
+  const forecasts = data ? (data.forecasts || []) : [];
+  if(!forecasts.length) return;
+  el.innerHTML = `<div class="chain-h">${t("agency_forecast_heading")}</div>
+    <div class="note">${tn("agency_forecast_count", forecasts.length)} <a class="pivot" href="${agencyHref(r.agency_name,"forecast")}">${t("agency_forecast_link")}</a></div>
+    <div class="note">${t("forecast_honesty_note")}</div>`;
+}
+
+async function showAgency(name, initialTab){
   showTab("entity");
   const box = $("#entityview");
   const nm = String(name||"").trim(), safe = nm.replace(/[<>&]/g,""), q = nm.replace(/'/g,"''");
@@ -2589,31 +2641,7 @@ async function showAgency(name){
   const evItems = events.map(r=>`<div class="tl"><span class="tldate">${fdate(r.event_date)}</span>
       <span class="tlreason">${pivotA("#notice/"+encodeURIComponent(r.request_id), cleanText(r.short_title)||"(untitled)")}</span>${eventTag(r.event_date)}</div>`).join("");
 
-  const esc = (s) => String(s == null ? "" : s).replace(/[<>&'"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", "'": "&#39;", "\"": "&quot;" }[c]));
   const forecasts = forecastData ? (forecastData.forecasts || []) : [];
-  const forecastItems = forecasts.map(f => {
-    const isCheckbook = f.source === "checkbook";
-    const badgeText = isCheckbook ? "Estimated Renewal" : "MOCS Plan Notice";
-    const badgeColor = isCheckbook ? "#e3f2fd" : "#f1f8e9";
-    const badgeTextCol = isCheckbook ? "#0d47a1" : "#33691e";
-    const title = isCheckbook ? (f.vendor_name || "Vendor Expiration") : (f.description || "Planned Solicitation");
-    const sub = isCheckbook ? `${f.agency_name} · Amount ${money(f.amount) || "—"}` : `${f.agency} · Value Band ${f.value_band}`;
-    const dateText = isCheckbook ? `Predicted Expiration: ${f.expiration_date}` : `Expected RFP Quarter: ${f.release_quarter}`;
-    const watchKind = isCheckbook ? "vendor" : "agency";
-    const watchName = isCheckbook ? f.vendor_name : f.agency_name || f.agency;
-
-    return `<div class="tl" style="margin-bottom:20px;position:relative;padding-inline-start:24px">
-      <div style="position:absolute;inset-inline-start:0;top:4px;width:10px;height:10px;border-radius:50%;background:var(--oxblood)"></div>
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
-        <span class="badge" style="background:${badgeColor};color:${badgeTextCol};font-size:11px;font-weight:600;padding:2px 6px;border-radius:4px">${badgeText}</span>
-        <span style="font-size:12px;color:var(--muted)">${dateText}</span>
-      </div>
-      <div style="font-weight:600;font-size:14px;color:#111">${esc(title)}</div>
-      <div style="font-size:13px;color:#555;margin-bottom:8px">${esc(sub)}</div>
-      <button class="act mini-sub-btn" type="button" data-watch-kind="${watchKind}" data-watch-name="${esc(watchName)}" style="font-size:11px;padding:3px 8px;margin:0">${t("mini_subscribe_btn")}</button>
-    </div>`;
-  }).join("");
-
   const hasForecasts = forecasts.length > 0;
 
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
@@ -2622,10 +2650,10 @@ async function showAgency(name){
       <div class="ftype" style="margin-bottom:6px">Agency profile · City Record on record</div>
       <h2 class="rolename" lang="en" dir="ltr">${agencyWho(nm)}</h2>
       ${agencyProfileBar(stats, rfps.length)}
-      
+
       ${hasForecasts ? `<div class="subtabs" style="display:flex;gap:16px;border-bottom:1px solid #ddd;margin:16px 0 20px">
-        <button class="subtab active" id="btn-overview" style="font-family:var(--font-sc);font-weight:600;font-size:12px;letter-spacing:.15em;text-transform:uppercase;padding:9px 0;border:none;background:none;color:var(--oxblood);border-bottom:2px solid var(--oxblood);cursor:pointer">Overview</button>
-        <button class="subtab" id="btn-forecast" style="font-family:var(--font-sc);font-weight:600;font-size:12px;letter-spacing:.15em;text-transform:uppercase;padding:9px 0;border:none;background:none;color:var(--muted);border-bottom:2px solid transparent;cursor:pointer">Procurement Forecast (${forecasts.length})</button>
+        <button class="subtab active" id="btn-overview" style="font-family:var(--font-sc);font-weight:600;font-size:12px;letter-spacing:.15em;text-transform:uppercase;padding:9px 0;border:none;background:none;color:var(--oxblood);border-bottom:2px solid var(--oxblood);cursor:pointer">${t("forecast_overview_tab")}</button>
+        <button class="subtab" id="btn-forecast" style="font-family:var(--font-sc);font-weight:600;font-size:12px;letter-spacing:.15em;text-transform:uppercase;padding:9px 0;border:none;background:none;color:var(--muted);border-bottom:2px solid transparent;cursor:pointer">${t("forecast_subtab_label",{n:forecasts.length})}</button>
       </div>` : ""}
 
       <div id="overview-content">
@@ -2636,10 +2664,7 @@ async function showAgency(name){
         ${events.length?`<div class="chain-h">Upcoming hearings &amp; events</div><div class="timeline">${evItems}</div>`:""}
       </div>
 
-      ${hasForecasts ? `<div id="forecast-content" style="display:none">
-        <div class="chain-h">Predicted Expirations &amp; Planned schedules</div>
-        <div class="timeline" style="margin-top:10px">${forecastItems}</div>
-      </div>` : ""}
+      ${hasForecasts ? `<div id="forecast-content" style="display:none">${forecastPaneHTML(forecasts)}</div>` : ""}
 
       <div class="actions" style="margin-top:16px">
         <button class="act primary" type="button" data-follow="agency" data-name="${nm.replace(/"/g,"&quot;")}">Follow: anything new from them</button>
@@ -2694,12 +2719,14 @@ async function showAgency(name){
       }
       aPreview();
     }));
+
+    if(initialTab === "forecast") btnForecast.click();
   }
 
   announce(t("meta_agency_profile_announce",{name:nm}));
 }
 
-async function showVendor(name){
+async function showVendor(name, initialTab){
   showTab("entity");
   const box = $("#entityview");
   const stem = vendorStem(name), safe = cleanText(name).replace(/[<>&]/g,"");
@@ -2738,31 +2765,7 @@ async function showVendor(name){
       <span class="tlreason">${pivotA("#notice/"+encodeURIComponent(r.request_id), cleanText(r.short_title)||"(untitled)")}</span>
       <span class="rmeta" style="margin:0">${tSection(r.section_name)||r.type_of_notice_description||""}</span></div>`).join("");
 
-  const esc = (s) => String(s == null ? "" : s).replace(/[<>&'"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", "'": "&#39;", "\"": "&quot;" }[c]));
   const forecasts = forecastData ? (forecastData.forecasts || []) : [];
-  const forecastItems = forecasts.map(f => {
-    const isCheckbook = f.source === "checkbook";
-    const badgeText = isCheckbook ? "Estimated Renewal" : "MOCS Plan Notice";
-    const badgeColor = isCheckbook ? "#e3f2fd" : "#f1f8e9";
-    const badgeTextCol = isCheckbook ? "#0d47a1" : "#33691e";
-    const title = isCheckbook ? (f.vendor_name || "Vendor Expiration") : (f.description || "Planned Solicitation");
-    const sub = isCheckbook ? `${f.agency_name} · Amount ${money(f.amount) || "—"}` : `${f.agency} · Value Band ${f.value_band}`;
-    const dateText = isCheckbook ? `Predicted Expiration: ${f.expiration_date}` : `Expected RFP Quarter: ${f.release_quarter}`;
-    const watchKind = isCheckbook ? "vendor" : "agency";
-    const watchName = isCheckbook ? f.vendor_name : f.agency_name || f.agency;
-
-    return `<div class="tl" style="margin-bottom:20px;position:relative;padding-inline-start:24px">
-      <div style="position:absolute;inset-inline-start:0;top:4px;width:10px;height:10px;border-radius:50%;background:var(--oxblood)"></div>
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
-        <span class="badge" style="background:${badgeColor};color:${badgeTextCol};font-size:11px;font-weight:600;padding:2px 6px;border-radius:4px">${badgeText}</span>
-        <span style="font-size:12px;color:var(--muted)">${dateText}</span>
-      </div>
-      <div style="font-weight:600;font-size:14px;color:#111">${esc(title)}</div>
-      <div style="font-size:13px;color:#555;margin-bottom:8px">${esc(sub)}</div>
-      <button class="act mini-sub-btn" type="button" data-watch-kind="${watchKind}" data-watch-name="${esc(watchName)}" style="font-size:11px;padding:3px 8px;margin:0">${t("mini_subscribe_btn")}</button>
-    </div>`;
-  }).join("");
-
   const hasForecasts = forecasts.length > 0;
 
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
@@ -2775,10 +2778,10 @@ async function showVendor(name){
         <div><div class="big">${nAwards.toLocaleString()}</div><div class="lbl">award notice${nAwards===1?"":"s"}</div></div>
         <div><div class="big" style="font-size:17px">${first?fdate(first):"—"} – ${last?fdate(last):"—"}</div><div class="lbl">first / latest<br>award published</div></div>
       </div>
-      
+
       ${hasForecasts ? `<div class="subtabs" style="display:flex;gap:16px;border-bottom:1px solid #ddd;margin:16px 0 20px">
-        <button class="subtab active" id="btn-overview" style="font-family:var(--font-sc);font-weight:600;font-size:12px;letter-spacing:.15em;text-transform:uppercase;padding:9px 0;border:none;background:none;color:var(--oxblood);border-bottom:2px solid var(--oxblood);cursor:pointer">Overview</button>
-        <button class="subtab" id="btn-forecast" style="font-family:var(--font-sc);font-weight:600;font-size:12px;letter-spacing:.15em;text-transform:uppercase;padding:9px 0;border:none;background:none;color:var(--muted);border-bottom:2px solid transparent;cursor:pointer">Procurement Forecast (${forecasts.length})</button>
+        <button class="subtab active" id="btn-overview" style="font-family:var(--font-sc);font-weight:600;font-size:12px;letter-spacing:.15em;text-transform:uppercase;padding:9px 0;border:none;background:none;color:var(--oxblood);border-bottom:2px solid var(--oxblood);cursor:pointer">${t("forecast_overview_tab")}</button>
+        <button class="subtab" id="btn-forecast" style="font-family:var(--font-sc);font-weight:600;font-size:12px;letter-spacing:.15em;text-transform:uppercase;padding:9px 0;border:none;background:none;color:var(--muted);border-bottom:2px solid transparent;cursor:pointer">${t("forecast_subtab_label",{n:forecasts.length})}</button>
       </div>` : ""}
 
       <div id="overview-content">
@@ -2787,10 +2790,7 @@ async function showVendor(name){
         ${mentions.length?`<div class="chain-h">Mentioned in other notices (text match)</div><div class="timeline">${mentionItems}</div>`:""}
       </div>
 
-      ${hasForecasts ? `<div id="forecast-content" style="display:none">
-        <div class="chain-h">Predicted Expirations &amp; Planned schedules</div>
-        <div class="timeline" style="margin-top:10px">${forecastItems}</div>
-      </div>` : ""}
+      ${hasForecasts ? `<div id="forecast-content" style="display:none">${forecastPaneHTML(forecasts)}</div>` : ""}
 
       <div class="actions" style="margin-top:16px">
         <button class="act primary" type="button" data-follow="vendor" data-name="${cleanText(display).replace(/"/g,"&quot;")}">Follow this vendor</button>
@@ -2840,6 +2840,8 @@ async function showVendor(name){
       }
       aPreview();
     }));
+
+    if(initialTab === "forecast") btnForecast.click();
   }
 
   announce(t("meta_vendor_profile_announce",{name:cleanText(display)}));
@@ -3117,8 +3119,12 @@ function applyHash(){
   const raw = location.hash.slice(1);
   if(!raw) return false;
   if(raw.startsWith("notice/")){ showNotice(decodeURIComponent(raw.slice(7))); return true; }
-  if(raw.startsWith("vendor/")){ showVendor(decodeURIComponent(raw.slice(7))); return true; }
-  if(raw.startsWith("agency/")){ showAgency(decodeURIComponent(raw.slice(7))); return true; }
+  // agencyHref()/vendorHref() can append a literal "?tab=forecast" (never inside the
+  // encoded name itself, since encodeURIComponent escapes any real "?") to deep-link
+  // straight into the profile's Forecast subtab from the notice-detail cross-link.
+  const splitEntityTab = rest => { const qi = rest.indexOf("?"); return qi < 0 ? [decodeURIComponent(rest), null] : [decodeURIComponent(rest.slice(0,qi)), new URLSearchParams(rest.slice(qi+1)).get("tab")]; };
+  if(raw.startsWith("vendor/")){ const [nm, tab] = splitEntityTab(raw.slice(7)); showVendor(nm, tab); return true; }
+  if(raw.startsWith("agency/")){ const [nm, tab] = splitEntityTab(raw.slice(7)); showAgency(nm, tab); return true; }
   if(raw.startsWith("matter/")){ showMatter(decodeURIComponent(raw.slice(7))); return true; }
   if(raw.startsWith("investigation/shared/")){ showSharedInv(decodeURIComponent(raw.slice(21))); return true; }
   if(raw === "investigation"){ showInvestigation(); return true; }
@@ -3197,6 +3203,7 @@ async function showNotice(id){
       ${r.type_of_notice_description==="Solicitation"?buildApply(r):""}
       ${scope?`<details class="fulltext"${scope.length<=600?" open":""}><summary>${t("read_full_notice")}</summary><div class="scope" style="margin-top:10px">${scope.slice(0,6000)}${scope.length>6000?"…":""}</div></details>`:""}
       <div id="nprior"></div>
+      <div id="nforecast"></div>
       <div id="nchain"></div>
       <div class="note" style="margin-top:14px">${t("permalink_note_html",{link, id:r.request_id})}</div>
     </div></div>`;
@@ -3208,6 +3215,7 @@ async function showNotice(id){
   followDollars(r, $("#ndollars"));
   fillAddressLinks(r, $("#naddr"));
   priorCycleAwards(r, $("#nprior"));
+  agencyForecastTeaser(r, $("#nforecast"));
   if(usablePin(r.pin)){ loadChain(r).then(chain=>{ if(chain.length>1) $("#nchain").innerHTML = chainHTML(r, chain); }).catch(()=>{}); }
 }
 

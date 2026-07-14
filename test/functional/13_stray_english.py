@@ -147,6 +147,51 @@ def collect(page, label, frags, violations, seen):
         if hits:
             violations.append({"view": label, **item, "english_words": hits})
 
+# crol-forecast-t2: same tree-walk as WALKER_JS, but scoped to a single subtree via
+# document.querySelector(rootSel) instead of document.body. The agency/vendor profile's
+# surrounding chrome (agencybar, actions row, footer note) is a separate, pre-existing
+# translation gap outside this card's scope (see the w9-05 comment above collect_srstatus_
+# and_aria) -- an unscoped collect() on the entity view would dye THAT gap red as a
+# "regression" every time this card's forecast pane is walked. Scoping to #forecast-content
+# proves the NEW forecast strings translate without reopening the old, tracked-elsewhere gap.
+FOCUSED_WALKER_JS = """([zones, rootSel]) => {
+  const root = document.querySelector(rootSel);
+  if (!root) return [];
+  const out = [];
+  const path = (el) => {
+    const bits = [];
+    for (let e = el, i = 0; e && e !== root.parentElement && i < 4; e = e.parentElement, i++) {
+      let b = e.tagName.toLowerCase();
+      if (e.id) { bits.unshift(b + "#" + e.id); break; }
+      if (e.classList.length) b += "." + e.classList[0];
+      bits.unshift(b);
+    }
+    return bits.join(" > ");
+  };
+  const visible = (el) => { try { return el.checkVisibility(); } catch (e) { return !!(el.offsetParent || el.getClientRects().length); } };
+  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  while (w.nextNode()) {
+    const n = w.currentNode, p = n.parentElement;
+    if (!p || p.closest("script,style,noscript,[hidden]")) continue;
+    if (zones && p.closest(zones)) continue;
+    if (p.closest('[lang="en"]') && document.documentElement.lang !== "en") continue;
+    if (!visible(p)) continue;
+    const t = n.textContent.replace(/\\s+/g, " ").trim();
+    if (t) out.push({ sel: path(p), text: t, kind: "text" });
+  }
+  return out;
+}"""
+
+def collect_within(page, root_sel, label, frags, violations, seen):
+    for item in page.evaluate(FOCUSED_WALKER_JS, [CONTENT_ZONES or None, root_sel]):
+        key = (item["sel"], item["text"])
+        if key in seen:
+            continue
+        seen.add(key)
+        hits = english_residue(item["text"], frags)
+        if hits:
+            violations.append({"view": label, **item, "english_words": hits})
+
 # w9-05: entity views (agency/vendor/matter profiles) aren't otherwise walked by this guard --
 # their full visible-text content is a separate, much larger translation gap outside this
 # card's L1-L6 scope. What the card actually asks the guard to cover is the SR-only surfaces
@@ -363,6 +408,21 @@ def run_lang(pw, lang):
     page.evaluate("location.hash = '#agency/Housing Preservation and Development'")
     page.wait_for_timeout(1000)
     collect_srstatus_and_aria(page, "entity-agency", frags, violations, seen)
+
+    # crol-forecast-t2: the Procurement Forecast subtab is exactly how the badge/date-label/
+    # honesty-note strings shipped hardcoded English for a whole wave — collect() only walks
+    # VISIBLE text, and this pane stays display:none until #btn-forecast is clicked, so no
+    # amount of walking the agency view above ever touched it. Click it open so a future
+    # regression (a new forecast string landing outside t()) fails here instead of shipping.
+    # Scoped to #forecast-content (collect_within), not the whole entity view: the profile's
+    # surrounding chrome is the pre-existing, separately-tracked gap the w9-05 comment above
+    # already excludes from this guard — an unscoped walk here would flag THAT gap too, every
+    # time, as if this card had regressed it.
+    forecast_btn = page.locator("#btn-forecast")
+    if forecast_btn.count():
+        forecast_btn.click()
+        page.wait_for_timeout(500)
+        collect_within(page, "#forecast-content", "entity-agency-forecast", frags, violations, seen)
 
     # localStorage-gated states (the hotfix-2 blind spot): workspace + its share-error path
     page.evaluate("location.hash = '#investigation'")
