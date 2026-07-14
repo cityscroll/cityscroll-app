@@ -28,7 +28,7 @@ with sync_playwright() as pw:
     step("OK", "switcher renders", "English active, native labels")
 
     money_tab_en = page.locator('[data-i18n="tab_money"]').first.inner_text()
-    assert money_tab_en.strip().lower() == "money", f"expected English chrome, got {money_tab_en!r}"  # CSS uppercases tabs
+    assert money_tab_en.strip().lower() == "contracts", f"expected English chrome, got {money_tab_en!r}"  # CSS uppercases tabs
 
     # Switch to Spanish.
     es_btn.click()
@@ -82,7 +82,7 @@ with sync_playwright() as pw:
     # And back to English.
     page.locator('#langSwitcher .lang-btn[data-lang="en"]').click()
     page.wait_for_timeout(400)
-    assert page.locator('[data-i18n="tab_money"]').first.inner_text().strip().lower() == "money"
+    assert page.locator('[data-i18n="tab_money"]').first.inner_text().strip().lower() == "contracts"
     assert page.evaluate("document.documentElement.lang") == "en"
     step("OK", "switches back to English")
 

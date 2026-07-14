@@ -51,7 +51,7 @@ with sync_playwright() as pw:
     ok = lf["lens"]=="rules" and lf["filter"]["keywords"]==["scaffold"] and lf["filter"]["agency"]=="Buildings"
     step("OK" if ok else "FAIL", "#1 subscribe payload {lens,filter}", json.dumps(lf))
 
-    # ---------- watch-this-search from Money (keyword → rfpkw) ----------
+    # ---------- watch-this-search from Contracts (keyword → rfpkw) ----------
     page.click("#tabbtn-money")
     page.wait_for_selector("#list .row", timeout=30000)
     page.fill("#kw", "asbestos")

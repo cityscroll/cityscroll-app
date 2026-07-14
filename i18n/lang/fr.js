@@ -45,7 +45,7 @@
     sugg_alerts_2: "rezonages près du 79 Rivington",
     all_agencies_loading: "Toutes les agences — chargement…",
     // Tab labels
-    tab_money:    "Argent",
+    tab_money:    "Contrats",
     tab_people:   "Personnes",
     tab_land:     "Terrains",
     tab_property: "Biens",
@@ -71,7 +71,7 @@
     min_award_any:    "Peu importe",
     watch_this_search:"Surveiller cette recherche",
     closing_this_week:"Clôture cette semaine",
-    money_trail_heading: "Suivi de l'argent",
+    money_trail_heading: "Suivi du contrat",
     export_csv:       "Exporter en CSV",
     pick_notice_empty:"Choisissez un avis à gauche pour le suivre — pour une RFP, vous verrez <b>comment répondre</b> (échéance, contact, où soumettre) et la chaîne complète avis → attribution → montant.",
 
@@ -213,7 +213,7 @@
     open_rfps_heading:   "Demandes de propositions (RFP) ouvertes",
     all_rfps_heading:    "Toutes les RFP",
     recent_awards_heading: "Attributions récentes",
-    pick_notice_panel_heading: "Suivi de l'argent",
+    pick_notice_panel_heading: "Suivi du contrat",
     preview_panel_heading: "Aperçu",
 
     // Quiz panel

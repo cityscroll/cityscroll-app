@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "4e1bb7cf",
-  "zh-Hans": "64aa5be2",
-  ru: "918dad5a",
-  bn: "9ccf00fc",
-  ht: "dd00c0a4",
-  ko: "9d8d409e",
-  fr: "30f7241b",
-  pl: "60c50d98",
-  ar: "7e7e4683",
-  ur: "6bfc0ee4",
+  es: "98c2d2c8",
+  "zh-Hans": "d4befc83",
+  ru: "f457577d",
+  bn: "60b7c5d7",
+  ht: "da32e93f",
+  ko: "28ca15e1",
+  fr: "658bf598",
+  pl: "7df1ba5d",
+  ar: "09b6d059",
+  ur: "ec04bc78",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -135,7 +135,7 @@ const STRINGS = {
     sugg_alerts_2: "rezonings near 79 Rivington",
     all_agencies_loading: "All agencies — loading…",
     // Tab labels
-    tab_money:    "Money",
+    tab_money:    "Contracts",
     tab_people:   "People",
     tab_land:     "Land",
     tab_property: "Property",
@@ -161,7 +161,7 @@ const STRINGS = {
     min_award_any:    "Any",
     watch_this_search:"Watch this search",
     closing_this_week:"Closing this week",
-    money_trail_heading: "Money trail",
+    money_trail_heading: "Contract trail",
     export_csv:       "Export CSV",
     pick_notice_empty:"Pick a notice on the left to trace it — for an RFP you'll see <b>how to respond</b> (deadline, contact, where to submit) and the full notice → award → dollars chain.",
 
@@ -303,7 +303,7 @@ const STRINGS = {
     open_rfps_heading:   "Open Requests for Proposals (RFPs)",
     all_rfps_heading:    "All RFPs",
     recent_awards_heading: "Recent Awards",
-    pick_notice_panel_heading: "Money trail",
+    pick_notice_panel_heading: "Contract trail",
     preview_panel_heading: "Preview",
 
     // Quiz panel

@@ -128,7 +128,7 @@ with sync_playwright() as pw:
     p3.click('#noticeview a[href="#money"]')
     p3.wait_for_selector("#list .row", timeout=30000)
     step("OK" if p3.evaluate("document.querySelector('#tab-money').classList.contains('active')") else "FAIL",
-         "back-link returns to Money", "")
+         "back-link returns to Contracts", "")
     p3.close()
 
     # ---------- probe: bogus notice id ----------
