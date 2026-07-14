@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "ddaa5766",
-  "zh-Hans": "16c65fe7",
-  ru: "af827891",
-  bn: "2dbece1a",
-  ht: "9df499d2",
-  ko: "02a5d231",
-  fr: "8f5b4525",
-  pl: "db363e4c",
-  ar: "4239a01a",
-  ur: "92726378",
+  es: "da5567f8",
+  "zh-Hans": "b2299b6c",
+  ru: "800d298e",
+  bn: "17153e1b",
+  ht: "110b30a3",
+  ko: "cb31963c",
+  fr: "50ba9c3c",
+  pl: "b3b27e29",
+  ar: "c62374b5",
+  ur: "cbd6cbb7",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -817,7 +817,10 @@ const STRINGS = {
     api_foot_html: "CROL-List · <a href=\"index.html\">Home</a> · <a href=\"about.html\">About</a>",
 
     // changelog.html
-    chg_p_lede_html: "What changed, when, and what it means for you — including the mistakes. Versions are dates (<a href=\"https://calver.org/\">CalVer</a>): the site ships continuously, so a date tells the truth where a version number would be theater. A tool that watches the city's public record should keep a public record of itself. Live usage numbers: <a href=\"stats.html\">stats</a>.",
+    chg_p_lede: "What changed on CROL-List, newest first.",
+    chg_auto_h2: "Recent updates",
+    chg_auto_note: "These lines come from the descriptions of merged code changes and stay in English for now.",
+    chg_earlier_h2: "Earlier releases",
     chg_detail_note: "The detailed technical notes below each release (bullet lists, incident reports) remain in English for now.",
     chg_foot_html: "CROL-List is an unofficial, free interface to public data. <a href=\"about.html\">About</a> · <a href=\"stats.html\">Stats</a> · <a href=\"api.html\">API and feeds</a> · <a href=\"index.html\">Home</a>",
     chg_0710e_h2: "2026.07.10 · Espanol coverage: the whole interface, not just the chrome",

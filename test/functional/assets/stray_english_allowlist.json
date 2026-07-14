@@ -12,12 +12,15 @@
     "  an interim-milestone carve-out (crol-subpages-es): chrome, lede, and every release's",
     "  reader-facing 'For you' summary translate; the historical technical detail stays English",
     "  for now, same as official notice content.",
+    "  '.chg-auto' = changelog.html's self-updating 'Recent updates' list (tools/gen_changelog.mjs)",
+    "  — each line is extracted verbatim from a merged PR's own body, so it can't be pre-",
+    "  translated; same archival-content posture as '.chg-detail', with its own disclosure note.",
     "allowed_terms: single tokens, CASE-SENSITIVE — acronyms and product names as printed",
     "  ('PIN' the identifier passes; an untranslated 'Pin' button still fails).",
     "allowed_phrases: multi-word proper nouns / official names, removed case-insensitively.",
     "allowed_exact: whole text nodes allowed verbatim (bilingual-by-design strings)."
   ],
-  "content_zone_selectors": [".scope", ".fscope", ".fulltext", "details.fulltext", "code", "pre", ".chg-detail"],
+  "content_zone_selectors": [".scope", ".fscope", ".fulltext", "details.fulltext", "code", "pre", ".chg-detail", ".chg-auto"],
   "allowed_terms": [
     "RFP", "RFPs", "PIN", "ZAP", "ZoLa", "PASSPort", "API", "RSS", "Atom", "JSON", "CSV",
     "ICS", "DOB", "HPD", "DCAS", "DDC", "DEP", "NYPD", "DOT", "DOHMH", "DOE", "FDNY",

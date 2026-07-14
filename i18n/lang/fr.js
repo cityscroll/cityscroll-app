@@ -725,7 +725,10 @@
     api_foot_html: "CROL-List · <a href=\"index.html\">Accueil</a> · <a href=\"about.html\">À propos</a>",
 
     // changelog.html
-    chg_p_lede_html: "Ce qui a changé, quand, et ce que cela signifie pour vous — y compris les erreurs. Les versions sont des dates (<a href=\"https://calver.org/\">CalVer</a>) : le site est publié en continu, donc une date dit la vérité là où un numéro de version ne serait que du théâtre. Un outil qui surveille le registre public de la ville devrait tenir un registre public de lui-même. Chiffres d'utilisation en direct : <a href=\"stats.html\">statistiques</a>.",
+    chg_p_lede: "Ce qui a changé sur CROL-List, du plus récent au plus ancien.",
+    chg_auto_h2: "Mises à jour récentes",
+    chg_auto_note: "Ces lignes proviennent des descriptions des modifications de code fusionnées et restent en anglais pour le moment.",
+    chg_earlier_h2: "Versions précédentes",
     chg_detail_note: "Les notes techniques détaillées sous chaque version (listes à puces, rapports d'incidents) restent en anglais pour l'instant.",
     chg_foot_html: "CROL-List est une interface gratuite et non officielle vers des données publiques. <a href=\"about.html\">À propos</a> · <a href=\"stats.html\">Statistiques</a> · <a href=\"api.html\">API et flux</a> · <a href=\"index.html\">Accueil</a>",
     chg_0710e_h2: "2026.07.10 · Couverture en français : toute l'interface, pas seulement le cadre",

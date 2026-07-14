@@ -30,9 +30,10 @@ These rules built the project and they're not aspirational — every shipped fea
 2. **Browser verification before every push.** Site changes are driven in real headless Chromium
    (`test/functional/run.sh`, Playwright) — a feature isn't shipped until the harness has clicked
    it. The harness has caught a real bug in nearly every wave; trust it.
-3. **Docs land in the same session as the change.** A feature that ships updates `README.md`,
-   gets a `changelog.html` entry (plain-language "For you" line first), and — if it changed a
-   route or a defense — the worker README's table. No "docs later."
+3. **Docs land in the same session as the change.** A feature that ships updates `README.md`
+   and, if it changed a route or a defense, the worker README's table. No "docs later." The
+   `changelog.html` entry is automatic (see below) — write the marker section, don't hand-edit
+   the page.
 4. **Live probes after deploy.** After `wrangler deploy`, hit the changed routes on
    `api.crol-list.org` and confirm real behavior (this caught a production DNS incident within
    minutes once — see the changelog).
@@ -42,6 +43,15 @@ These rules built the project and they're not aspirational — every shipped fea
    assistant (Claude); a human reviews it before it publishes, same as any other contribution.
    about.html's "About our content" section carries this disclosure to readers too (NYC Web
    Content Style Guide, GenAI tools) — `test/standards/genai_disclosure.py` gates its presence.
+
+## Changelog entries
+
+`changelog.html`'s "Recent updates" list is generated, not hand-edited. If your PR changes
+something a visitor would notice, add a one-line `## What this means for you` section to the
+PR body — plain language, present tense, no code names or internal jargon. A merge-triggered
+workflow (`.github/workflows/update-changelog.yml`) extracts that line and regenerates the
+page automatically. No marker section means no entry — that's the intended way to keep
+plumbing/CI/refactor PRs off the page, not an oversight to fix.
 
 ## Running things
 

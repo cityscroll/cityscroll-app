@@ -1,0 +1,124 @@
+# Regenerates changelog.html's "Recent updates" list on every PR merge, so no one hand-edits
+# the changelog. See CONTRIBUTING.md's "Changelog entries" section for the marker convention
+# a PR body needs, and tools/gen_changelog.mjs for the extraction + rebuild logic.
+#
+# `main` sits behind a merge-queue ruleset, and the Actions token cannot be a bypass actor —
+# a direct `git push` to `main` is rejected outright. So this workflow pushes to a standing
+# bot branch (bot/changelog-update), opens or updates a PR from it, and enqueues that PR via
+# the enqueuePullRequest GraphQL mutation instead of merging it itself.
+#
+# Loop guard, two layers:
+#   1. Trigger type: this runs on `pull_request: types: [closed]` — an event GitHub only
+#      raises through its own PR machinery. Nothing here calls that machinery directly on
+#      `main` (no merge, no admin bypass), so nothing here can raise it recursively.
+#   2. Fixed point: the bot's own PR (from bot/changelog-update) carries no
+#      "## What this means for you" section by construction (see the PR body below). When
+#      THAT PR merges, this workflow fires again, extracts nothing from its own body, and the
+#      no-diff guard below exits before touching the branch — so the chain terminates after
+#      one hop, not because the trigger can't fire again, but because there's nothing left to
+#      regenerate. Multiple qualifying PRs merging before the queue processes the bot PR
+#      accumulate onto that SAME open PR (each run reads the bot branch's current pending
+#      state as its base) rather than opening one bot PR per entry.
+name: Update changelog
+
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: update-changelog
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main'
+    runs-on: ubuntu-latest
+    env:
+      BOT_BRANCH: bot/changelog-update
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Write PR body to a file (avoids substituting untrusted content into a shell command)
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: printf '%s' "$PR_BODY" > "$RUNNER_TEMP/pr-body.md"
+
+      - name: Load the regeneration base (the bot branch's pending state, if any, else main's own)
+        run: |
+          if git ls-remote --exit-code --heads origin "$BOT_BRANCH" >/dev/null 2>&1; then
+            echo "bot branch exists — regenerating on top of its pending entries, not main's"
+            git fetch origin "$BOT_BRANCH"
+            git show "origin/$BOT_BRANCH:changelog-data.json" > changelog-data.json
+            git show "origin/$BOT_BRANCH:changelog.html" > changelog.html
+          else
+            echo "no bot branch yet — regenerating on top of main"
+          fi
+          cp changelog-data.json "$RUNNER_TEMP/before-data.json"
+          cp changelog.html "$RUNNER_TEMP/before-changelog.html"
+
+      - name: Extract this PR's user-impact line and regenerate the changelog
+        run: |
+          node tools/gen_changelog.mjs \
+            --number "${{ github.event.pull_request.number }}" \
+            --url "${{ github.event.pull_request.html_url }}" \
+            --merged-at "${{ github.event.pull_request.merged_at }}" \
+            --body-file "$RUNNER_TEMP/pr-body.md"
+
+      - name: Stop here if regeneration produced no change (explicit no-diff guard, before touching any branch)
+        run: |
+          if diff -q "$RUNNER_TEMP/before-data.json" changelog-data.json >/dev/null \
+             && diff -q "$RUNNER_TEMP/before-changelog.html" changelog.html >/dev/null; then
+            echo "No new entry (no marker in this PR, already recorded, or nothing changed) — nothing to do."
+            exit 0
+          fi
+          echo "changed=true" >> "$GITHUB_ENV"
+
+      - name: Push the bot branch, open or update its PR, and enqueue it
+        if: env.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$BOT_BRANCH"
+          git add changelog-data.json changelog.html
+          git commit -m "changelog: PR #${{ github.event.pull_request.number }} — ${{ github.event.pull_request.title }}"
+          # Force-push is expected and safe here: this branch is bot-owned (never hand-edited),
+          # rebuilt fresh from main's tip every run, and the concurrency group above serializes
+          # runs so there's no concurrent writer to race against.
+          git push --force "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" "HEAD:$BOT_BRANCH"
+
+          EXISTING_PR="$(gh pr list --head "$BOT_BRANCH" --state open --json number --jq '.[0].number // empty')"
+          if [ -n "$EXISTING_PR" ]; then
+            PR_NUMBER="$EXISTING_PR"
+            echo "Updated existing bot PR #$PR_NUMBER"
+          else
+            # Body lives in its own file (.github/changelog-bot-pr-body.md), not an inline
+            # heredoc — a heredoc terminator can't sit inside a YAML `run: |` block at the
+            # indentation bash requires without either breaking the YAML parse or never
+            # matching at runtime.
+            gh pr create --base main --head "$BOT_BRANCH" \
+              --title "changelog: automated update" \
+              --body-file .github/changelog-bot-pr-body.md
+            PR_NUMBER="$(gh pr list --head "$BOT_BRANCH" --state open --json number --jq '.[0].number')"
+            echo "Opened bot PR #$PR_NUMBER"
+          fi
+
+          PR_NODE_ID="$(gh pr view "$PR_NUMBER" --json id --jq .id)"
+          gh api graphql -f query='
+            mutation($prId: ID!) {
+              enqueuePullRequest(input: {pullRequestId: $prId}) {
+                mergeQueueEntry { position }
+              }
+            }' -f prId="$PR_NODE_ID" \
+            || echo "::warning::could not auto-enqueue PR #$PR_NUMBER — add it to the merge queue manually"

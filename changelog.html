@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Changelog · CROL-List</title>
-<meta name="description" content="What changed on CROL-List, when, and what it means for you — every release with its own plain-English summary, including the mistakes we made and fixed.">
-<script src="i18n.js?v=d5539389"></script>
+<meta name="description" content="What changed on CROL-List, newest first — plain-language notes on every update, from new features and languages to fixes.">
+<script src="i18n.js?v=599df9af"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
@@ -33,6 +33,14 @@
   .backhome{display:inline-block;margin-top:12px;font:600 13px/1 var(--ui);text-decoration:none;color:var(--oxblood)}
   .backhome:hover{text-decoration:underline}
   .lede{font-size:16px;color:var(--ink-soft);margin:22px 0 6px}
+  .rel-auto{margin-top:22px}
+  .rel-auto h2{font-family:var(--font-sc);font-size:16px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);margin:0}
+  .chgauto-note{font:13px/1.5 var(--ui);color:var(--muted);margin:4px 0 12px}
+  ul.chg-auto{list-style:none;margin:0;padding:0;font:15.5px/1.6 var(--font-body);color:var(--ink-soft)}
+  ul.chg-auto li{padding:8px 0;border-top:1px solid var(--rule)}
+  ul.chg-auto li:first-child{border-top:none}
+  ul.chg-auto time{font:600 12px/1 var(--ui);color:var(--muted);display:inline-block;margin-inline-end:6px}
+  .earlier-h2{font-family:var(--font-sc);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:34px 0 0}
   .rel{margin-top:34px;border-top:1px solid var(--rule);padding-top:16px}
   .rel h2{font-family:var(--font-sc);font-size:16px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);margin:0}
   .rel .foryou{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--green);border-radius:0 9px 9px 0;box-shadow:var(--shadow);padding:10px 14px;margin:12px 0;font-size:15.5px}
@@ -91,10 +99,32 @@
 </header>
 
 <main id="main" tabindex="-1">
-<p class="lede" data-i18n-html="chg_p_lede_html">What changed, when, and what it means for you — including the mistakes. Versions are dates
-(<a href="https://calver.org/">CalVer</a>): the site ships continuously, so a date
-tells the truth where a version number would be theater. A tool that watches the city's public record should keep
-a public record of itself. Live usage numbers: <a href="stats.html">stats</a>.</p>
+<p class="lede" data-i18n="chg_p_lede">What changed on CROL-List, newest first.</p>
+
+<section class="rel-auto" aria-labelledby="chgAutoH2">
+  <h2 id="chgAutoH2" data-i18n="chg_auto_h2">Recent updates</h2>
+  <p class="chgauto-note" data-i18n="chg_auto_note">These lines come from the descriptions of merged code changes and stay in English for now.</p>
+  <ul class="chg-auto" id="chgAutoList"><!-- CHANGELOG:AUTO:START -->
+    <li><time datetime="2026-07-14">2026.07.14</time> — The stats page now shows day-by-day history of digests sent and searches asked, with recovered and live-counted days honestly labeled.</li>
+    <li><time datetime="2026-07-14">2026.07.14</time> — The People tab is now called Staffing.</li>
+    <li><time datetime="2026-07-14">2026.07.14</time> — You can now build an alert that watches one agency, or only awards, or only open solicitations, not just an amount or a deadline.</li>
+    <li><time datetime="2026-07-14">2026.07.14</time> — The respond panel, agency award totals, and empty alert previews now tell you the truth instead of showing a broken-looking guess.</li>
+    <li><time datetime="2026-07-14">2026.07.14</time> — Typing something like &quot;education contracts over $200K due in 3 months&quot; into an alert now matches the category, amount, and deadline together, not just one of them.</li>
+    <li><time datetime="2026-07-14">2026.07.14</time> — Notice pages now show whether a recurring bid was awarded before, and to whom, not just its own paper trail.</li>
+    <li><time datetime="2026-07-14">2026.07.14</time> — The stats page now uses plain-language labels, shows all-time totals, and breaks down digest matches by topic.</li>
+    <li><time datetime="2026-07-14">2026.07.14</time> — The Money tab is now called Contracts, and a notice page now leads with that notice's own facts before agency-wide totals.</li>
+    <li><time datetime="2026-07-13">2026.07.13</time> — The homepage now says how many notices came in today, digest email titles are clickable, and a new tagline explains what the site does.</li>
+    <li><time datetime="2026-07-13">2026.07.13</time> — You can now read every page in Arabic and Urdu, right to left.</li>
+    <li><time datetime="2026-07-13">2026.07.13</time> — Added Bengali, Haitian Creole, Korean, French, and Polish.</li>
+    <li><time datetime="2026-07-13">2026.07.13</time> — Added Chinese (simplified) and Russian.</li>
+    <li><time datetime="2026-07-13">2026.07.13</time> — The About page's biggest dollar claims now link to the actual notices behind them.</li>
+    <li><time datetime="2026-07-13">2026.07.13</time> — Closed the last known accessibility gaps: every control now has a visible focus ring, an accurate label, and enough color contrast to read.</li>
+    <li><time datetime="2026-07-13">2026.07.13</time> — Every page, not just the homepage, now translates into Español, and your language choice is remembered across visits.</li>
+    <li><time datetime="2026-07-13">2026.07.13</time> — Fixed two Spanish-translation bugs: today's notice count and the investigation workspace were showing English text after switching to Español.</li>
+  <!-- CHANGELOG:AUTO:END --></ul>
+</section>
+
+<h2 class="earlier-h2" data-i18n="chg_earlier_h2">Earlier releases</h2>
 <p class="note" data-i18n="chg_detail_note" style="font:13px/1.6 var(--ui);color:var(--muted);margin:6px 0 0">The detailed technical notes below each release (bullet lists, incident reports) remain in English for now.</p>
 <section class="rel" id="2026-07-10e">
   <h2 data-i18n="chg_0710e_h2">2026.07.10 · Espanol coverage: the whole interface, not just the chrome</h2>
