@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>API and feeds · CROL-List</title>
 <meta name="description" content="CROL-List's open endpoints: RSS/JSON/calendar feeds for any search, batch watchlist cross-reference, permalinks, and the upstream open datasets.">
-<script src="i18n.js?v=599df9af"></script>
+<script src="i18n.js?v=866d57e7"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
@@ -54,6 +54,7 @@
   :lang(zh-Hans),:lang(ko),:lang(bn),:lang(ar),:lang(ur){letter-spacing:normal !important;text-transform:none !important}
   .skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--ink);color:#fff;padding:11px 18px;border-radius:0 0 9px 0;font:600 13px/1 var(--ui);text-decoration:none}
   .skip:focus{left:0}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
   :is(a,button,select,input,textarea,summary):focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
 </style>
 </head>
@@ -155,7 +156,7 @@ Per-IP and daily model-call ceilings apply.</p>
 <h2 data-i18n="api_h_upstream">Upstream data</h2>
 <p class="src" data-i18n-html="api_p_upstream_html">CROL-List republishes and joins public datasets — for bulk work, go straight to the sources:
 <a href="https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx">City Record Online (dg92-zbpx, Socrata SODA)</a> ·
-<a href="https://www.checkbooknyc.com/data-feeds/api">Checkbook NYC API</a> ·
+<a href="https://www.checkbooknyc.com/data-feeds/api" target="_blank" rel="noopener noreferrer">Checkbook NYC API<span class="sr-only"> (opens in new tab)</span></a> ·
 <a href="https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e">Citywide Payroll</a> ·
 <a href="https://data.cityofnewyork.us/City-Government/Zoning-Application-Portal-ZAP-Project-Data/hgx4-8ukb">ZAP</a>.</p>
 
