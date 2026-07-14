@@ -1,0 +1,42 @@
+# Deploys the Cloudflare Worker (api.crol-list.org) whenever worker/ changes land on main,
+# so the API ships in lockstep with the static site instead of waiting on a manual `wrangler
+# deploy`. Code-only deploy: no secret puts, no [vars] overrides — see worker/README.md's
+# "Automatic deploys" section for the vars-vs-secrets gotcha this intentionally avoids.
+name: Deploy worker
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "worker/**"
+  workflow_dispatch:
+
+concurrency:
+  group: worker-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to Cloudflare Workers
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: worker/package-lock.json
+      - name: Install worker dependencies
+        working-directory: worker
+        run: npm ci
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v3.14.1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          workingDirectory: worker
+          # No accountId input: wrangler.toml carries no account_id, so wrangler resolves the
+          # account from the API token itself — avoids a second repo secret to keep in sync.
+          # No `secrets:` or `vars:` inputs on purpose — this deploys code only. Passing vars
+          # here would clobber real secrets of the same name (see worker/README.md).

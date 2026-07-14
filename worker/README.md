@@ -141,6 +141,25 @@ board-notify secrets are optional — see "Board notifications" above). Vars (in
 `BOARD_PROJECT_IDS`, `BOARD_ORG`, `BOARD_URL`, `BOARD_HOOK_DRY`, `BOARD_HOOK_MAX_PER_DAY`,
 `BOARDNOTIFY_CC`. Fire the cron locally by hitting `/__scheduled` under `wrangler dev`.
 
+### Automatic deploys
+
+`.github/workflows/deploy-worker.yml` deploys the Worker automatically on every push to `main`
+that touches `worker/**` (also runnable by hand via `workflow_dispatch` for a re-run without a
+new commit). It's a **code-only** deploy — plain `wrangler deploy` via `cloudflare/wrangler-action`,
+no `secrets:`/`vars:` inputs — because Cloudflare will silently overwrite a live secret with a
+`[vars]` entry of the same name on deploy; keep secrets going through `wrangler secret put` by
+hand (above) and never add one to `wrangler.toml`'s `[vars]` block or to the workflow. A
+`concurrency: worker-deploy` group (no cancel-in-progress) makes two quick merges deploy in
+order rather than racing. `npx wrangler deploy` from a laptop remains the escape hatch for an
+emergency deploy outside the merge flow.
+
+Requires a `CLOUDFLARE_API_TOKEN` repo secret — a token scoped to **** on
+the target account only (least privilege; no zone/DNS/account-wide permissions needed for a
+code deploy). No separate account-id secret: `wrangler.toml` doesn't set `account_id`, so
+wrangler resolves the account from the token itself. Create/rotate it at
+https://dash.cloudflare.com/profile/api-tokens ("Edit Cloudflare Workers" template, scoped down
+to this account) and update the repo secret at Settings → Secrets and variables → Actions.
+
 ## History
 
 Originally Netlify Functions + Blobs; migrated to Cloudflare Workers + KV (free deploys —
