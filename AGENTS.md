@@ -330,6 +330,20 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `readable_or_else.measure`, or trust `check`'s own reported number) and say so in the PR —
   this happened for `index.html` and `about.html` in crol-rerun-j6 (2026-07-13), both caused by
   a previously-merged sibling PR, not new content.
+- **The extractor drops `<script>`/`<style>` entirely (`extract.py`'s `DROP_TAGS`) and never
+  executes JS** — it reads static markup only, `--extract dom-rendered` is an unimplemented
+  stub. A UI string that only ever reaches the DOM via `t()`/`innerHTML` at runtime (e.g. a
+  notice-detail panel note assembled in a `<script>` block) contributes **zero** to any page's
+  measured grade, no matter how complex its prose — verified by diffing the grade before/after
+  the string existed. Conversely, any `data-i18n` element's **static fallback text already
+  sitting in the HTML source** (the pre-`applyStrings()` English shown before JS repaints it)
+  *is* measured — so a UI-copy change that fixes the ratchet must land in the `.html` file's own
+  fallback text, not just its `i18n.js` dictionary entry (which is what actually renders after
+  JS runs — keep both in sync, or the page silently reverts to the old wording once JS paints).
+  Also: because most of index.html's chrome carries no terminal punctuation, textstat treats
+  almost the entire page as one giant "sentence" — so words/sentence ratio (and thus grade)
+  moves with *any* added or removed static label anywhere on the page, not just prose-shaped
+  copy, which is why a page's grade can drift from something as small as one new dropdown option.
 - **`fix` mode's file-mutation half round-trips the whole file through BeautifulSoup's
   `html.parser` and reserializes it** — this reorders/re-quotes every attribute on the page and,
   critically, **lowercases `viewBox` to `viewbox`**, silently breaking the inline SVG seal (SVG
