@@ -11,7 +11,7 @@
 // Worst case ≈ MAX_CALLS_PER_DAY × (~600 in + ~200 out tokens) on Haiku ≈ tens of cents/day.
 
 import { sanitize, MAX_INPUT, MAX_CALLS_PER_DAY, LENSES } from "./lib/filter.mjs";
-import { bumpStatAllTime, bumpCategoryStat } from "./lib/stats.mjs";
+import { bumpStatAllTime, bumpCategoryStat, bumpHistDay } from "./lib/stats.mjs";
 
 const MODEL = "claude-haiku-4-5";
 
@@ -124,6 +124,7 @@ export async function handleNl(req, env) {
 
   await bumpStatAllTime(env.NL_METER, "nl_search");
   await bumpCategoryStat(env.NL_METER, "nl_search", lens);
+  await bumpHistDay(env.NL_METER, "nl_search", new Date());
 
   const res = await parseLensFilter(env, lens, text);
   // Graceful degradation either way: the browser falls back to its on-device parser.

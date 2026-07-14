@@ -235,6 +235,21 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   else's server — pick a free port and pass `CROL_BASE=http://localhost:<port>/` instead of
   fighting over 8000, and never kill a process you didn't start without checking its cwd.)
 
+## Testing strategy
+
+- The house style is **characterization tests with example-anchored regression fixtures**:
+  every behavior change carries a test whose input is the actual observed failure (a real
+  sentence, a real broken URL), named after the observable symptom, with the before-behavior
+  stated in the test description ("before: X happened; after: Y"). Write the test before the
+  fix where practical, so it fails for the right reason first.
+- Live exemplars: `test/nl_alerts_parse.test.mjs` (the query that lost two of its three
+  parts, quoted verbatim in the test name and comment) and the deep-link fixtures in
+  `test/functional/assets/` (`i18n_fixtures.py`'s seeded records, driven by
+  `run_notice_deep_link()` in `test/functional/13_stray_english.py`, which pins the exact
+  render-ordering bug a prior hotfix found).
+- A description that only says what the code does, without the before/after, is missing the
+  point — the value is in pinning the failure that used to happen, not just today's output.
+
 ## Accessibility — the gates that keep it wired
 
 - **axe gate runs on every PR** (`a11y-pr` CI job, `test/functional/11_accessibility.py`),
@@ -483,6 +498,22 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   calls in `worker/src/stats.mjs`'s `Promise.all` — the response body only ever gains new
   sibling fields (`sent_all_time`, `by_category`, etc.), never changes an existing field's
   shape, so existing consumers (stats.html's 7-day grid) are unaffected by design.
+- **`/stats` day-by-day history** (`hist:<metric>:<day>` + `hist:era:<metric>`, same
+  `worker/src/lib/stats.mjs`): a permanent (no-TTL) daily counter for `digest` and
+  `nl_search`, bumped at the same call sites as `bumpStatAllTime`, so it's exactly the same
+  event stream just also kept per day forever — the 40-day-TTL `stats:<metric>:<day>` above
+  can't serve a growing chart on its own. `worker/scripts/backfill-history.mjs` was the
+  one-time migration that seeded it from whatever was still recoverable in the short-lived
+  source counters (`sendcount:<day>`, 40-day TTL; `nl:<day>`, 2-day TTL) when it ran on
+  2026-07-14 — safe to rerun (every write is skip-if-present) but there's nothing left to
+  backfill. Its zero-fill rule is the load-bearing part: a gap day is only ever written as a
+  confirmed zero when the source counter's own TTL provably still covered it at backfill
+  time; otherwise the gap is left unrecorded rather than guessed. `hist:era:<metric>` marks
+  the first day counted live (set once, the day the backfill ran) — before it, `/stats`
+  presents the series as recovered history; from it on, as counted live. stats.html's "Over
+  time" section renders this as a plain table (day / digests sent / searches asked, "Not
+  recorded" for gap days before the era boundary) rather than a custom chart — see its
+  `renderHistory()`.
 - **Sharp edge — SODA aggregates are strings.** `count(1)`/`sum(...)` come back from Socrata
   as string fields (`stats.n === "0"`, not `0`) even when there are zero matching rows — a bare
   `stats.n` truthiness check treats `"0"` as present and renders a dash-and-zero scoreboard.

@@ -7,7 +7,7 @@
 //
 // Edge-cached 15 minutes (same pattern as /feed.*): the SUBS list scan is the only real work.
 
-import { dayStr, sumStat, readStatAllTime, readAllCategoryStats } from "./lib/stats.mjs";
+import { dayStr, sumStat, readStatAllTime, readAllCategoryStats, readHistSeries, readHistEra } from "./lib/stats.mjs";
 
 const WINDOW_DAYS = 7;
 
@@ -29,6 +29,7 @@ export async function handleStats(req, env, ctx) {
   const [
     active, sentToday, sent7d, clicksToday, clicks7d, feeds7d, batch7d, shares7d, nlToday,
     digestsAllTime, digestsByCategory, nlAllTime, nlByCategory,
+    digestHist, digestEra, nlHist, nlEra,
   ] = await Promise.all([
       countActiveSubs(env),
       readInt(env.ALERT_STATE, `sendcount:${today}`),
@@ -43,6 +44,10 @@ export async function handleStats(req, env, ctx) {
       readAllCategoryStats(env.ALERT_STATE, "digest"),
       readStatAllTime(env.NL_METER, "nl_search"),
       readAllCategoryStats(env.NL_METER, "nl_search"),
+      readHistSeries(env.ALERT_STATE, "digest"),
+      readHistEra(env.ALERT_STATE, "digest"),
+      readHistSeries(env.NL_METER, "nl_search"),
+      readHistEra(env.NL_METER, "nl_search"),
     ]);
 
   const body = {
@@ -56,6 +61,11 @@ export async function handleStats(req, env, ctx) {
     batch: { calls_last7d: batch7d },
     shared_investigations: { created_last7d: shares7d },
     nl_search: { calls_today: nlToday, calls_all_time: nlAllTime, by_category: nlByCategory },
+    history: {
+      note: "Daily totals. Days before the recovered/live split were rebuilt from short-term logs that were already being kept for other reasons; days on or after it were counted as they happened.",
+      digests: { by_day: digestHist, live_from: digestEra },
+      nl_search: { by_day: nlHist, live_from: nlEra },
+    },
   };
 
   const res = new Response(JSON.stringify(body, null, 2), {
