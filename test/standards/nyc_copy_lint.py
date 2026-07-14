@@ -12,9 +12,12 @@ stray-english architecture: a static lint over two sources of truth —
 
 Content-zone carve-outs mirror stray_english.py/13_stray_english.py: <script>/<style>/
 <code>/<pre>, `.chg-detail` bullet lists and incident call-outs (changelog's archival
-per-release technical detail), and the changelog's dated release <h2> titles themselves
-(an archival register presented verbatim — same posture the heading-punctuation lint
-(w10-04) carves out for the same headings).
+per-release technical detail), `.chg-auto` (changelog's self-updating "Recent updates"
+list — each line is extracted verbatim from a merged PR's body by tools/gen_changelog.mjs,
+so a future PR author's prose can't be guaranteed to pass this lint; same posture as
+`.chg-detail`, not a license to write sloppy marker lines), and the changelog's dated
+release <h2> titles themselves (an archival register presented verbatim — same posture
+the heading-punctuation lint (w10-04) carves out for the same headings).
 
 Default invocation (no flags) is report-only: prints findings, always exits 0 — useful for
 a local check without tripping on the allowlisted chip/threshold currency exceptions. CI
@@ -156,7 +159,7 @@ class CopyExtractor(HTMLParser):
         data_i18n = attrs.get("data-i18n", "") or attrs.get("data-i18n-html", "") or ""
         if tag == "a" and "href" in attrs and PDF_LINK_RE.search(f'href="{attrs["href"]}"'):
             self.pdf_hrefs.append(attrs["href"])
-        skip = tag in SKIP_TAGS or "chg-detail" in cls
+        skip = tag in SKIP_TAGS or "chg-detail" in cls or "chg-auto" in cls
         archival = tag == "h2" and data_i18n.startswith("chg_")
         if tag in VOID_TAGS:
             return  # no closing tag will arrive to pop a frame
