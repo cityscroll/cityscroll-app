@@ -147,3 +147,10 @@ test("entityvendor: a punctuated vendor name must match its own row (DEMATTEIS b
   }
   assert.ok(!q.postFilter || q.postFilter(row), "postFilter keeps the vendor's own row");
 });
+
+test("award queries carry keywords (w6-16: SODA fallback must match the D1 path's filtering)", () => {
+  const q = compileSub({ lens: "money", filter: { minAmount: 500000, keywords: ["construction"] } }, "2026-06-30");
+  assert.equal(q.kind, "award");
+  // Without this, a construction-$500k watch on the SODA fallback receives ALL awards >= $500k.
+  assert.equal(q.params["$q"], "construction");
+});
