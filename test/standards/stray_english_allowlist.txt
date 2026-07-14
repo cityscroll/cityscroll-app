@@ -176,6 +176,7 @@ the procurement officer
 this vendor holds <b>
 vendor_name in(
 via GeoSearch — verify the match</span></div>
+>Who Owns What portfolio
 you@example.com
 © OpenStreetMap © CARTO · lots © NYC MapPLUTO
 · <a href="about.html#context">how computed</a></span></div></div>

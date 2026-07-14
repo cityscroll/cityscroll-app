@@ -2,12 +2,12 @@
   "entries": {
     "about.html": {
       "formula": "flesch_kincaid_grade",
-      "grade": 6.269369317361811,
+      "grade": 6.3516084503101276,
       "language": "en"
     },
     "api.html": {
       "formula": "flesch_kincaid_grade",
-      "grade": 9.960287990893573,
+      "grade": 9.977752895752896,
       "language": "en"
     },
     "changelog.html": {
@@ -17,7 +17,7 @@
     },
     "data.html": {
       "formula": "flesch_kincaid_grade",
-      "grade": 6.9544542772861355,
+      "grade": 6.990724637681161,
       "language": "en"
     },
     "index.html": {

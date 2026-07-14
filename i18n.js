@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "f430437c",
-  "zh-Hans": "a785c38c",
-  ru: "c82391b4",
-  bn: "05a09a5b",
-  ht: "4dc1f6b5",
-  ko: "571d8c55",
-  fr: "95166284",
-  pl: "6b835506",
-  ar: "d8894476",
-  ur: "c43f9a66",
+  es: "1be6e605",
+  "zh-Hans": "4116b636",
+  ru: "5f5494f2",
+  bn: "0d3d38e8",
+  ht: "1738afa1",
+  ko: "5f3e4eaa",
+  fr: "a9669cbc",
+  pl: "c50ed9c2",
+  ar: "8556826f",
+  ur: "ac79ad21",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -503,7 +503,7 @@ const STRINGS = {
     refreshing_payroll: "refreshing from live payroll…",
     exam_title_tag: "exam title",
     no_exam_title_tag: "no-exam title",
-    salary_note_html: "Salary band from <a href=\"https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e\">Citywide Payroll FY{fy}</a>. Exam status comes from the <a href=\"https://data.cityofnewyork.us/resource/vx8i-nprf\">Civil Service List</a>, which lists competitive (exam) titles only — a title absent there is treated as no-exam.",
+    salary_note_html: "Salary band from <a href=\"https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e\" target=\"_blank\" rel=\"noopener noreferrer\">Citywide Payroll FY{fy}<span class=\"sr-only\"> (opens in new tab)</span></a>. Exam status comes from the <a href=\"https://data.cityofnewyork.us/resource/vx8i-nprf\" target=\"_blank\" rel=\"noopener noreferrer\">Civil Service List<span class=\"sr-only\"> (opens in new tab)</span></a>, which lists competitive (exam) titles only — a title absent there is treated as no-exam.",
     n_notices_meta_one: "{n} notice",
     n_notices_meta_other: "{n} notices",
     base_salary_fy_lbl: "base salary · FY{fy}",
@@ -521,7 +521,7 @@ const STRINGS = {
     banner_none_active_nearest: "No active rezoning on this block. Nearest in <b>{area}</b>:",
     banner_none_lot: "No rezoning filed on this lot ({label}). Active rezonings near <b>{area}</b>:",
     no_zap_kw: " for “{kw}”",
-    zap_explainer_html: "ZAP indexes by <b>project</b>, not address — a notice about your block can be missing here while still in <a href=\"https://a856-cityrecord.nyc.gov/Search/Advanced\">The City Record</a>.",
+    zap_explainer_html: "ZAP indexes by <b>project</b>, not address — a notice about your block can be missing here while still in <a href=\"https://a856-cityrecord.nyc.gov/Search/Advanced\" target=\"_blank\" rel=\"noopener noreferrer\">The City Record<span class=\"sr-only\"> (opens in new tab)</span></a>.",
     affordable_housing_tag: "affordable housing",
     unnamed_project: "(unnamed project)",
     unnamed: "(unnamed)",
@@ -536,8 +536,8 @@ const STRINGS = {
     search_city_record: "Search the City Record",
     rezoning_notice_link: "This rezoning's notice in the City Record",
     locating: "locating…",
-    map_approx_note_html: "{label}. <span class=\"muted\">Approximate — confirm exact lots on <a href=\"https://zola.planning.nyc.gov/\">ZoLa</a>.</span>",
-    showing_lots_note_html: "Showing {n} rezoned tax lot{s} (NYC MapPLUTO). <span class=\"muted\">Confirm on <a href=\"https://zola.planning.nyc.gov/\">ZoLa</a>.</span>",
+    map_approx_note_html: "{label}. <span class=\"muted\">Approximate — confirm exact lots on <a href=\"https://zola.planning.nyc.gov/\" target=\"_blank\" rel=\"noopener noreferrer\">ZoLa<span class=\"sr-only\"> (opens in new tab)</span></a>.</span>",
+    showing_lots_note_html: "Showing {n} rezoned tax lot{s} (NYC MapPLUTO). <span class=\"muted\">Confirm on <a href=\"https://zola.planning.nyc.gov/\" target=\"_blank\" rel=\"noopener noreferrer\">ZoLa<span class=\"sr-only\"> (opens in new tab)</span></a>.</span>",
     map_needs_connection: "Map needs a connection.",
     location_not_resolved: "Location not resolved.",
     lot_not_geocoded: "{boro} — exact lot not geocoded",
@@ -684,19 +684,19 @@ const STRINGS = {
 
     // about.html
     about_h_what: "What this is",
-    about_p_what_html: "CROL-List is a search tool for <a href=\"https://a856-cityrecord.nyc.gov/\" target=\"_blank\" rel=\"noopener noreferrer\">The City Record<span class=\"sr-only\"> (opens in new tab)</span></a>. That is the City of New York's official daily paper. In it, <a href=\"https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-3113\">every agency must publish</a> its contracts, hearings, rule changes, rezonings, and staff moves. CROL-List lets you search the record by interest. You can follow a contract, look up a job title, track a rezoning, or get an email when something new matches.",
+    about_p_what_html: "CROL-List is a search tool for <a href=\"https://a856-cityrecord.nyc.gov/\" target=\"_blank\" rel=\"noopener noreferrer\">The City Record<span class=\"sr-only\"> (opens in new tab)</span></a>. That is the City of New York's official daily paper. In it, <a href=\"https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-3113\" target=\"_blank\" rel=\"noopener noreferrer\">every agency must publish<span class=\"sr-only\"> (opens in new tab)</span></a> its contracts, hearings, rule changes, rezonings, and staff moves. CROL-List lets you search the record by interest. You can follow a contract, look up a job title, track a rezoning, or get an email when something new matches.",
     about_h_content: "About our content",
     about_p_content: "An AI assistant (Claude) drafts this site's copy — headings, explanations, pages like this one. A human editor checks it before it goes live. The data is not AI-generated. Every notice, dollar figure, and date comes straight from NYC Open Data, unedited.",
     about_h_source: "Where the data comes from",
-    about_p_source_html: "All of it comes from public, official data: <a href=\"https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx\">City Record Online (dg92-zbpx)</a> · <a href=\"https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e\">Citywide Payroll (k397-673e)</a> · <a href=\"https://data.cityofnewyork.us/resource/vx8i-nprf\">Civil Service List (vx8i-nprf)</a> · <a href=\"https://data.cityofnewyork.us/City-Government/Zoning-Application-Portal-ZAP-Project-Data/hgx4-8ukb\">ZAP Projects (hgx4-8ukb)</a> · <a href=\"https://a0333-passportpublic.nyc.gov/\" target=\"_blank\" rel=\"noopener noreferrer\">PASSPort<span class=\"sr-only\"> (opens in new tab)</span></a> · <a href=\"https://www.checkbooknyc.com/\" target=\"_blank\" rel=\"noopener noreferrer\">Checkbook NYC<span class=\"sr-only\"> (opens in new tab)</span></a>.",
+    about_p_source_html: "All of it comes from public, official data: <a href=\"https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx\" target=\"_blank\" rel=\"noopener noreferrer\">City Record Online (dg92-zbpx)<span class=\"sr-only\"> (opens in new tab)</span></a> · <a href=\"https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e\" target=\"_blank\" rel=\"noopener noreferrer\">Citywide Payroll (k397-673e)<span class=\"sr-only\"> (opens in new tab)</span></a> · <a href=\"https://data.cityofnewyork.us/resource/vx8i-nprf\" target=\"_blank\" rel=\"noopener noreferrer\">Civil Service List (vx8i-nprf)<span class=\"sr-only\"> (opens in new tab)</span></a> · <a href=\"https://data.cityofnewyork.us/City-Government/Zoning-Application-Portal-ZAP-Project-Data/hgx4-8ukb\" target=\"_blank\" rel=\"noopener noreferrer\">ZAP Projects (hgx4-8ukb)<span class=\"sr-only\"> (opens in new tab)</span></a> · <a href=\"https://a0333-passportpublic.nyc.gov/\" target=\"_blank\" rel=\"noopener noreferrer\">PASSPort<span class=\"sr-only\"> (opens in new tab)</span></a> · <a href=\"https://www.checkbooknyc.com/\" target=\"_blank\" rel=\"noopener noreferrer\">Checkbook NYC<span class=\"sr-only\"> (opens in new tab)</span></a>.",
     about_h_honest: "The data, to be honest",
     about_p_honest_intro_html: "The City Record dataset is <b>1.09 million notices back to 2003</b> — and it is not what it looks like at first glance. Our team's exploratory analysis of the full dataset found quirks that would silently mislead if we didn't correct for them, so here is exactly what we do:",
     about_li_honest_html: "<li><b>87.5% of all rows are civil-service personnel changes</b>, not civic notices. Each stat on this site is counted within its own section — a \"global\" City Record number would really be a personnel-file number.</li><li><b>A few contract amounts are data-entry errors</b> — three rows claim $10&nbsp;billion or more, topping out at <a href=\"index.html#notice/20210524108\">$96 trillion, a housing-services award whose amount field is plainly a typo</a> (the largest verified real award is <a href=\"index.html#notice/20180109010\">about $6.68 billion, the city's 10-year electricity contract with NYPA</a>). Money filters and digests exclude amounts of $10 billion or more. One typo can't dominate every ranking.</li><li><b>Some \"due dates\" aren't deadlines.</b> Notices for pre-qualified lists use fake dates in the year 2090 or later. We mark these as \"no fixed deadline (rolling)\" so no one puts a date on their calendar that isn't real.</li><li><b>Agency names come in two conventions</b> (old ALL-CAPS and Title Case — 312 raw strings for about 150 real agencies). Our name tool treats them as one.</li>",
     about_p_honest_footer_html: "Searches on this site always show live data from NYC Open Data. Email alerts check for new matches once a day. Want the numbers themselves? <a href=\"data.html\"><b>The Data</b></a> shows the record at a glance — sections, volume, procurement mix, top agencies and vendors — computed live with these same rules.",
     about_h_flags: "Flags and context, explained",
-    about_p_flags_intro_html: "Procurement notices carry two kinds of computed notes. Both are <b>statistical context, not findings or blame</b>. A flag just means \"worth a closer look.\" Every formula has a fair reason behind it. Emergencies really happen. Some markets are specialized and have few bidders. Name matching is not perfect. This method follows two guides. One is <a href=\"https://www.open-contracting.org/resources/red-flags-in-public-procurement-a-guide-to-using-data-to-detect-and-mitigate-risks/\">the Open Contracting Partnership's red-flags guide</a>. The other is <a href=\"https://opentender.eu/\">Opentender's</a> integrity rules.",
+    about_p_flags_intro_html: "Procurement notices carry two kinds of computed notes. Both are <b>statistical context, not findings or blame</b>. A flag just means \"worth a closer look.\" Every formula has a fair reason behind it. Emergencies really happen. Some markets are specialized and have few bidders. Name matching is not perfect. This method follows two guides. One is <a href=\"https://www.open-contracting.org/resources/red-flags-in-public-procurement-a-guide-to-using-data-to-detect-and-mitigate-risks/\" target=\"_blank\" rel=\"noopener noreferrer\">the Open Contracting Partnership's red-flags guide<span class=\"sr-only\"> (opens in new tab)</span></a>. The other is <a href=\"https://opentender.eu/\" target=\"_blank\" rel=\"noopener noreferrer\">Opentender's<span class=\"sr-only\"> (opens in new tab)</span></a> integrity rules.",
     about_li_flags_html: "<li><b>⚑ Short ad window</b> — the days between when a notice is posted and when the answer is due. We flag it when it is 10 days or fewer and less than half the agency's own median. The median comes from that agency's last 200 notices. Short windows favor incumbents who already knew the work was coming.</li><li><b>⚑ Non-competitive method</b> — the notice says it will pick a vendor without a full contest. It may be a deal made through talks, a single chosen source, an urgent buy, or a test project. This can be fair at times. But it is always good to know.</li><li><b>⚑ Repeat awards</b> — the same vendor name shows up on 3 or more award notices at the same agency within 90 days. This can point to task orders under a blanket contract just as much as favoritism. The flag just counts them — you decide what it means.</li><li><b>Context strip</b> — how big an award is, shown as a percentile of that agency's awards in the last 12 months (shown only when the agency has 20 or more awards in that time). It also shows the vendor's share of the agency's award dollars in the same time. We use the exact published name. We do not merge name variants here.</li>",
-    about_p_flags_footer_html: "All numbers come live from the <a href=\"https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx\">City Record Open Data</a> when you view the notice. These are awards <b>as published</b>. The numbers can lag behind contract registration and real payment. Nothing here says anyone did wrong. It just saves you the math.",
+    about_p_flags_footer_html: "All numbers come live from the <a href=\"https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx\" target=\"_blank\" rel=\"noopener noreferrer\">City Record Open Data<span class=\"sr-only\"> (opens in new tab)</span></a> when you view the notice. These are awards <b>as published</b>. The numbers can lag behind contract registration and real payment. Nothing here says anyone did wrong. It just saves you the math.",
     about_h_feedback: "Send feedback",
     about_p_feedback: "Found a bug, want a feature, or have a thought? Send it here. We read everything. No account needed.",
     about_label_kind: "What kind?",
@@ -726,7 +726,7 @@ const STRINGS = {
     about_li_privacy_html: "<li><b>Searches and filters</b> go from your browser straight to NYC Open Data. The CROL-List server never sees them.</li><li><b>The \"Ask\" box</b> lets you search in plain English. Your text is sent to Anthropic's Claude, which turns it into filters. We do not save your text. We only keep a daily count, so we can cap costs.</li><li><b>Subscribing or sending feedback</b> saves what you send us. This includes your alert or message and your email, if you share one. We also keep some basic info about your request, like your IP address and browser. We keep this for a short time to stop spam and abuse. Every alert email has a one-click unsubscribe link.</li><li><b>Page views</b> are tracked with Cloudflare Web Analytics. It uses no cookies and only shows totals. It counts visits. It does not know who you are or follow you to other sites.</li>",
 
     // data.html
-    data_p_lede_html: "The City Record dataset at a glance. Your browser pulls live totals from <a href=\"https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx\">NYC Open Data</a>. Nothing is saved on the server. The numbers follow the <a href=\"about.html#data\">honesty rules</a>. Stats stay in their own section. We exclude likely data-entry errors: amounts of $10 billion or more. Placeholder deadlines aren't real.",
+    data_p_lede_html: "The City Record dataset at a glance. Your browser pulls live totals from <a href=\"https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx\" target=\"_blank\" rel=\"noopener noreferrer\">NYC Open Data<span class=\"sr-only\"> (opens in new tab)</span></a>. Nothing is saved on the server. The numbers follow the <a href=\"about.html#data\">honesty rules</a>. Stats stay in their own section. We exclude likely data-entry errors: amounts of $10 billion or more. Placeholder deadlines aren't real.",
     data_h_sections_html: "What the record really shows <span class=\"note\">(all time, by section)</span>",
     data_note_sections_body: "Most of the City Record is paperwork about civil-service jobs. The notices that matter to the public are only a small part of it. That is why every number on this site is shown per section.",
     data_h_volume_html: "How many were published <span class=\"note\">(last 12 months)</span>",
@@ -820,7 +820,7 @@ const STRINGS = {
     api_h_mcp: "MCP — for AI assistants",
     api_p_mcp_html: "<code>POST /mcp</code> (Streamable HTTP, JSON-RPC) — point an MCP client at <code>https://api.crol-list.org/mcp</code>. Tools: <code>search_notices</code> and <code>get_notice</code> (the daily-refreshed notices mirror, honest-data rules applied), <code>preview_watch</code> (plain English → what a standing watch would deliver, without subscribing), and <code>create_watch</code> (plain English → a double-opt-in confirmation email — digests start only after the address confirms). Watch management stays behind the emailed unsubscribe links — knowing an address never reveals or controls its subscriptions. Per-IP and daily model-call ceilings apply.",
     api_h_upstream: "Upstream data",
-    api_p_upstream_html: "CROL-List republishes and joins public datasets — for bulk work, go straight to the sources: <a href=\"https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx\">City Record Online (dg92-zbpx, Socrata SODA)</a> · <a href=\"https://www.checkbooknyc.com/data-feeds/api\" target=\"_blank\" rel=\"noopener noreferrer\">Checkbook NYC API<span class=\"sr-only\"> (opens in new tab)</span></a> · <a href=\"https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e\">Citywide Payroll</a> · <a href=\"https://data.cityofnewyork.us/City-Government/Zoning-Application-Portal-ZAP-Project-Data/hgx4-8ukb\">ZAP</a>.",
+    api_p_upstream_html: "CROL-List republishes and joins public datasets — for bulk work, go straight to the sources: <a href=\"https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx\" target=\"_blank\" rel=\"noopener noreferrer\">City Record Online (dg92-zbpx, Socrata SODA)<span class=\"sr-only\"> (opens in new tab)</span></a> · <a href=\"https://www.checkbooknyc.com/data-feeds/api\" target=\"_blank\" rel=\"noopener noreferrer\">Checkbook NYC API<span class=\"sr-only\"> (opens in new tab)</span></a> · <a href=\"https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e\" target=\"_blank\" rel=\"noopener noreferrer\">Citywide Payroll<span class=\"sr-only\"> (opens in new tab)</span></a> · <a href=\"https://data.cityofnewyork.us/City-Government/Zoning-Application-Portal-ZAP-Project-Data/hgx4-8ukb\" target=\"_blank\" rel=\"noopener noreferrer\">ZAP<span class=\"sr-only\"> (opens in new tab)</span></a>.",
     api_foot_html: "CROL-List · <a href=\"index.html\">Home</a> · <a href=\"about.html\">About</a>",
 
     // changelog.html
