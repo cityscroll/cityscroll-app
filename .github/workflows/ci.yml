@@ -134,6 +134,8 @@ jobs:
         run: python3 test/functional/15_rtl.py
       - name: Forecast discoverability guard (reachable from notice detail, translates)
         run: python3 test/functional/16_forecast_discoverability.py
+      - name: Default-example guard (Land/Staffing open on a live-picked example, deep links win)
+        run: python3 test/functional/17_default_examples.py
 
   # readable-or-else (github.com/jimdc/readable-or-else): ratchet-mode reading-level gate
   # against the committed baseline (nycsg7 = NYC Web Content Style Guide, FK grade 7). Its

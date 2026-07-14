@@ -556,6 +556,43 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   again the next time a guard walk needs to prove ONE new subtree translates without also
   re-litigating a pre-existing gap elsewhere on the same page.
 
+## Tab default selection — teach every lens by example
+
+- **"Auto-open the first result" (the 2026-06-26 commit `2d369e94`) already covers Money,
+  Land, and both Staffing sub-modes** — `renderList()`/`landRenderList()`/`pSearchRoles()`/
+  `pSearchPeople()` all end with `document.querySelector("#<list> .row")?.click();`, so
+  once ANY list renders, its first row's detail auto-opens. Money gets this for free on a
+  bare page load because Money is the tab active in the markup and `if(!applyHash())
+  search();` runs unconditionally; **Land gets it for free because `landSearch()` has no
+  keyword gate — it always queries `ulurp_non='ULURP'`(+status/boro) and sorts
+  `current_milestone_date DESC`, so a bare `#land` (or a first click into the tab) already
+  populates `#ldetail` with the most-recent rezoning, no code needed.** Verify this
+  empirically before "fixing" Land again — it's not broken.
+- **Staffing (`#people`) was the real gap**: `pSearch()` flatly refuses to search with no
+  typed keyword (`if(!kw){ ... return; }`), and there is no "browse all titles" query the
+  way Land has "browse all ULURP projects" — a role search always needs one specific title
+  to filter by. `applyPeopleDefault()`/`defaultRoleTitle()` (index.html, right above
+  `seedPeople()`) close this: on a bare `#people` open (empty `#pkw`, `pmode==="role"`),
+  live-query the payroll dataset for the single highest-headcount `title_description` and
+  feed it through the exact same `pSearch()` path a typed keyword or a "Try" chip uses —
+  same posture as `pExample()`, just computed live instead of from the curated
+  `data/people_examples.json`. Fires once per session (`peopleDefaulted` flag); a
+  query-carrying deep link (`#people?q=<title>`) or the user typing before the fetch
+  resolves both win, since the guard re-checks `#pkw` after the `await`.
+- **The auto-picked default must NOT decorate the address bar** — wrap the triggering
+  `pSearch()` call in `hashLock = true; ...; hashLock = false;` (same idiom `applyHash()`
+  itself already uses around `search()`/`landSearch()`/`pSearch()`) so `updateHash()`
+  no-ops for that call. A bare `#people` bookmark should keep reading `#people` after the
+  example renders, not silently pin to today's picked title forever — mirrors
+  `updateHash()`'s pre-existing "don't decorate a fresh default load" carve-out for bare
+  Money (`if(!location.hash && h === "#money") return;`).
+- **No new i18n strings needed** for a default-selection feature like this: it just
+  populates an existing input field and runs the existing search/detail render path,
+  same as clicking a "Try" chip — nothing new is ever painted to the DOM.
+- **`test/functional/17_default_examples.py`** is the characterization gate (hermetic,
+  `i18n-guard` CI job): pins bare `#land`/`#people` render a live-picked example with zero
+  clicks, the address bar stays undecorated, and `#people?q=<title>` still overrides.
+
 ## External links — same-tab by default, three named new-tab exceptions
 
 - **House decision (w10-03): every external link opens same-tab**, per the NYC Web Content

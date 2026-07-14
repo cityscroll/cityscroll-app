@@ -867,7 +867,7 @@ function showTab(name, push){
   if(push) pushHash();
   if(name==="land"){ loadLeaflet().catch(()=>{}); if(!landLoaded){ landLoaded=true; landSearch(); } if(landMap) setTimeout(()=>landMap.invalidateSize(),120); }
   if(name==="money" && !moneyLoaded) search(); // deep links land on other tabs; Money lazy-loads like the rest
-  if(name==="people") seedPeople();
+  if(name==="people"){ seedPeople(); applyPeopleDefault(); }
   if(SECTIONS[name] && !feedLoaded[name]){ feedLoaded[name]=true; loadSectionAgencies(name); loadSection(name); }
 }
 document.querySelectorAll(".tabbtn").forEach(b=>b.addEventListener("click",()=>showTab(b.dataset.tab, true)));
@@ -1593,6 +1593,32 @@ function parsePersonnel(desc){
     salary: g(/Salary:\s*([\d.]+)/i),
     name:   g(/Employee Name:\s*([^.]+?)\s*\.?\s*$/i)
   };
+}
+
+/* Bare #people, like bare Money, should teach the tab by example: pre-select the city's
+   highest-headcount title so the salary-band/career-ladder pane renders with zero clicks —
+   same "auto-open the first result" instinct as select()/landSelect(), one step earlier
+   because a role search needs a term to search FOR. Computed live (never hardcoded) so it
+   can't rot; skipped whenever a deep link or the user's own typing already claimed #pkw. */
+let peopleDefaulted = false;
+async function defaultRoleTitle(){
+  try{
+    const rows = await api(PAY, {"$select":"title_description, count(1) as n",
+      "$where":`fiscal_year=${PAYFY} AND base_salary > 0 AND title_description IS NOT NULL`,
+      "$group":"title_description","$order":"n DESC","$limit":"5"});
+    if(!rows || !rows.length) return null;
+    rows.sort((a,b)=>(+b.n||0)-(+a.n||0));
+    return rows[0].title_description || null;
+  }catch(e){ return null; }
+}
+async function applyPeopleDefault(){
+  if(peopleDefaulted) return; peopleDefaulted = true;
+  if($("#pkw").value.trim() || $("#pmode").value !== "role") return; // deep link/explicit choice wins
+  const title = await defaultRoleTitle();
+  if(!title || $("#pkw").value.trim()) return; // no live data, or the user started typing while we waited
+  $("#pkw").value = title;
+  hashLock = true; // an auto-picked example shouldn't decorate a fresh #people load (mirrors updateHash's money case)
+  try{ await pSearch(); } finally { hashLock = false; }
 }
 
 /* Committed seed data (data/people_examples.json + data/title_crosswalk.json): example chips
