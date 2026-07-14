@@ -319,7 +319,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=3016b77d"></script>
+<script src="i18n.js?v=b09b9209"></script>
 <script src="nl_parse.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
@@ -349,7 +349,7 @@
     </div>
     <nav class="tabs">
       <button class="tabbtn active" data-tab="money" data-i18n="tab_money">Money</button>
-      <button class="tabbtn" data-tab="people" data-i18n="tab_people">People</button>
+      <button class="tabbtn" data-tab="people" data-i18n="tab_people">Staffing</button>
       <button class="tabbtn" data-tab="land" data-i18n="tab_land">Land</button>
       <button class="tabbtn" data-tab="property" data-i18n="tab_property">Property</button>
       <button class="tabbtn" data-tab="rules" data-i18n="tab_rules">Rules</button>
@@ -567,7 +567,7 @@
         </div>
       </div>
       <div class="afield">
-        <label for="quiznarrow"><span class="qstep">2</span> <span data-i18n="quiz_step2">Narrow it with an exact keyword (optional)</span></label>
+        <label for="quiznarrow"><span class="qstep">2</span> <span data-i18n="quiz_step2">Narrow by keyword (optional)</span></label>
         <input type="text" id="quiznarrow" placeholder="pick a topic above first…" data-i18n-placeholder="quiz_narrow_placeholder">
       </div>
       <div class="afield">
@@ -598,7 +598,7 @@
             <select id="awatch">
               <option value="bigaward" data-i18n="watch_bigaward">Contract awards over a threshold</option>
               <option value="rfpkw" data-i18n="watch_rfpkw">Open RFPs matching a keyword</option>
-              <option value="moneynl" data-i18n="watch_moneynl">Contracts or awards matching a description</option>
+              <option value="moneynl" data-i18n="watch_moneynl">Contracts or awards by description</option>
               <option value="rezone" data-i18n="watch_rezone">Rezonings near a neighborhood</option>
               <option value="property" data-i18n="watch_property">Property sale notices</option>
               <option value="rules" data-i18n="watch_rules">Rule changes (Agency Rules)</option>
@@ -625,15 +625,15 @@
                over $200K due in 3 months" keeps all three filters instead of collapsing to one. -->
           <div id="amoneyfields" style="display:none">
             <div class="afield">
-              <label for="amoneykw" data-i18n="param_label_moneynl_kw">Category or keywords (optional)</label>
+              <label for="amoneykw" data-i18n="param_label_moneynl_kw">Keyword (optional)</label>
               <input type="text" id="amoneykw" placeholder="education, construction…" data-i18n-placeholder="param_placeholder_moneynl_kw">
             </div>
             <div class="afield">
-              <label for="amoneymin" data-i18n="param_label_moneynl_min">Minimum amount (optional)</label>
+              <label for="amoneymin" data-i18n="param_label_moneynl_min">Minimum $ (optional)</label>
               <input type="number" id="amoneymin" min="0" step="1000" placeholder="200000" data-i18n-placeholder="param_placeholder_moneynl_min">
             </div>
             <div class="afield">
-              <label for="amoneymonths" data-i18n="param_label_moneynl_months">Due within, in months (optional)</label>
+              <label for="amoneymonths" data-i18n="param_label_moneynl_months">Due within months (optional)</label>
               <input type="number" id="amoneymonths" min="1" max="60" placeholder="3" data-i18n-placeholder="param_placeholder_moneynl_months">
             </div>
           </div>
