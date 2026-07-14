@@ -26,6 +26,15 @@ import { emailT } from "./lib/i18n.mjs";
 import { digestDecision, shortDate } from "./lib/digest.mjs";
 import { runCheckbookPipeline } from "./checkbook.mjs";
 import { runMocsPlanPipeline } from "./mocs_plan.mjs";
+import { bumpStatAllTime, bumpCategoryStat } from "./lib/stats.mjs";
+
+// A sent digest's category breakdown for the all-time stats: one bump per distinct City
+// Record section_name it carried (falling back to the watch's lens for sections without
+// one, e.g. land/ZAP notices). Counts topics touched per digest, not per notice row.
+async function bumpDigestCategories(env, rows, fallbackCategory) {
+  const cats = new Set(rows.map((r) => r.section_name || fallbackCategory).filter(Boolean));
+  for (const c of cats) await bumpCategoryStat(env.ALERT_STATE, "digest", c);
+}
 
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const REQ_URL = (id) => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
@@ -67,6 +76,8 @@ export async function runAlerts(env, watches = cfg.watches || []) {
         await sendEmail(env, FROM, w.email, `CROL-List: ${fresh.length} new for "${w.label}"`, digestHtml(w, fresh), listUnsubscribe(FROM, w.id));
         sentThisRun++; sentToday++;
         await setSendCount(env, day, sentToday);
+        await bumpStatAllTime(env.ALERT_STATE, "digest");
+        await bumpDigestCategories(env, fresh, w.type);
       }
 
       // Mark seen only when NOT capped. A capped watch is deferred — leave its notices unseen
@@ -193,6 +204,8 @@ export async function processOneSub(env, s, ctx) {
       await sendEmail(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true);
       await ctx.onSent();
       await setLastSent(env, s.key, ctx.today);   // only on a real send, so the heartbeat clock tracks actual email
+      await bumpStatAllTime(env.ALERT_STATE, "digest");
+      if (fresh.length) await bumpDigestCategories(env, fresh, s.lens);
     }
 
     if (rows.length && !capped) await markSeen(env, s.key, rows.map((r) => r[q.idField]).filter(Boolean));

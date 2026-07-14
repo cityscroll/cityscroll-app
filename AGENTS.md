@@ -213,6 +213,12 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   isolation of an `enTitle()` span, and no horizontal overflow at 375px/1280px. It does NOT
   re-check translation completeness — that's `test/functional/13_stray_english.py` (now
   parameterized with `ar,ur` in `CROL_GUARD_LANGS` alongside es/zh-Hans/ru).
+- **`15_rtl.py` only drives index.html** — the five subpages (about/data/stats/api/changelog)
+  share index.html's `.skip{position:absolute;left:-9999px}` skip-link CSS but were never
+  retrofitted to the logical-property conversion described above. In RTL (ar/ur) this causes
+  real horizontal overflow (confirmed via `document.documentElement.scrollWidth` on stats.html,
+  ~10,000px) — a pre-existing gap, not caught by any gate today. A future RTL pass should
+  either convert subpage `.skip` to `inset-inline-start` or extend `15_rtl.py` to cover subpages.
 
 ## Test layers (what runs where)
 
@@ -370,6 +376,19 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   one-click creation kit stays outside this repo, in the maintainer's private tooling at
   `` (`INSTALL.md` has the setup steps, for reference if the App
   ever needs recreating).
+- **`/stats` counters (`worker/src/lib/stats.mjs`)**: the original per-day rolling counters
+  (`bumpStat`/`sumStat`, key `stats:<metric>:<day>`, 40-day TTL) were joined by an all-time +
+  per-category layer — `bumpStatAllTime`/`readStatAllTime` (key `stats:alltime:<metric>`, no
+  TTL, accumulates forever) and `bumpCategoryStat`/`readAllCategoryStats` (key
+  `stats:cat:<metric>:<category>`, no TTL, categories discovered dynamically via a KV prefix
+  `list()` rather than a hardcoded set). Wired for two metrics so far: `digest` (category =
+  City Record `section_name`, falling back to the watch's lens for land/ZAP notices which
+  carry no `section_name`) and `nl_search` (category = the NL lens itself: money/people/land/
+  property/rules/meetings). Adding a new all-time/category metric means calling these same
+  helpers at the event site plus adding the matching `readStatAllTime`/`readAllCategoryStats`
+  calls in `worker/src/stats.mjs`'s `Promise.all` — the response body only ever gains new
+  sibling fields (`sent_all_time`, `by_category`, etc.), never changes an existing field's
+  shape, so existing consumers (stats.html's 7-day grid) are unaffected by design.
 
 ## Maintaining this file
 
