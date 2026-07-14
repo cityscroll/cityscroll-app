@@ -420,6 +420,8 @@
     simplify_keyword_hint_html: "نادرًا ما تُطابق عبارات البحث الطويلة الشبيهة بالجمل إشعارات السجل البلدي حرفيًا — جرّب كلمة أو كلمتين بدلاً من ذلك.",
     digest_footer_one: "{n} إشعار اليوم · من السجل البلدي · ألغِ الاشتراك في أي وقت (نقرة واحدة)",
     digest_footer_other: "{n} إشعار اليوم · من السجل البلدي · ألغِ الاشتراك في أي وقت (نقرة واحدة)",
+    digest_match_snippet_html: "تطابق: «{snippet}»",
+    digest_match_unknown_html: "تطابق: «{term}»",
     event_meta: "الفعالية {date}",
     days_paren: " ({n} يوم)",
     respond_lbl: "الرد",

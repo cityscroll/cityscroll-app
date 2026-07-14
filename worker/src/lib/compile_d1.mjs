@@ -129,6 +129,9 @@ export function toDigestRow(r) {
     section_name:    r.section              ?? null,  // D1 "section" → SODA "section_name"
     event_date:      r.event_date           ?? null,
     street_address_1: r.event_addr1         ?? null,
+    // D1 "description" → SODA "additional_description_1" -- matchEvidence() (lib/digest.mjs)
+    // reads this name regardless of which path served the row.
+    additional_description_1: r.description ?? null,
   };
 }
 

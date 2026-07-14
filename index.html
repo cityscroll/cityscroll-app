@@ -272,6 +272,8 @@
   .digitem .da{font:800 16px/1 var(--font-display);color:var(--green)}
   .digitem .dc{font:12px/1.5 ui-sans-serif,system-ui,sans-serif;margin-top:3px}
   .digitem .dc a{color:var(--oxblood);text-decoration:underline;text-underline-offset:2px} /* non-color cue — WCAG 1.4.1: oxblood-vs-ink is only 1.74:1 */
+  .digitem mark{background:#ffe58a;color:inherit;padding:0 1px;border-radius:2px} /* the matched keyword — see matchEvidence() */
+  .digitem .dev{font:12px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted);font-style:italic;margin-top:3px} /* the "why this matched" line — text itself carries the meaning, not just the mark's color */
   .savedalert{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#faf6ee;border:1px solid var(--rule);border-radius:7px;padding:9px 12px;margin-top:8px;font-size:13px}
   .savedalert button{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;padding:5px 9px;background:#fff;color:var(--rose);border:1px solid var(--rule);border-radius:6px;cursor:pointer}
 
@@ -320,7 +322,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=24a19594"></script>
+<script src="i18n.js?v=eeeba70b"></script>
 <script src="nl_parse.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
@@ -2255,6 +2257,58 @@ async function aFetch(){
   return { kind:"rezone", rows: await api(ZAP, zp) };
 }
 
+// ---- match evidence: show why a keyword search notice is in the preview -------------------
+// Mirrors worker/src/lib/digest.mjs's matchEvidence() -- the preview must show evidence for
+// the same reason the emailed digest does. Observed failure: a search for "education" surfaced
+// a Comptroller pension-fund notice -- "NOS - Equity Index Investment Management Products" --
+// with nothing visible explaining the match; the hit was buried in the notice's description,
+// which names the Board of Education Retirement System, one of the funds the notice covers.
+function locateAnyTerm(text, terms){
+  const hay=String(text||"").toLowerCase(); let best=null;
+  for(const term of terms){
+    const needle=String(term||"").trim(); if(!needle) continue;
+    const idx=hay.indexOf(needle.toLowerCase());
+    if(idx!==-1 && (best===null || idx<best.index)) best={term:needle, index:idx};
+  }
+  return best;
+}
+// Returns null when there are no keywords to explain (amount/name-only watches). Otherwise:
+//   {field:"title", term, index}                     -- highlight the term in the title
+//   {field:"description", term, before, hit, after}   -- a one-line snippet, term emphasized
+//   {field:"unknown", term}                           -- matched via a field the preview
+//     doesn't fetch (SODA's $q also searches columns like contact/method fields) -- name the
+//     term rather than showing the notice with nothing explaining it.
+function matchEvidence(title, description, terms){
+  const words=(terms||[]).filter(Boolean);
+  if(!words.length) return null;
+  const inTitle=locateAnyTerm(title, words);
+  if(inTitle) return {field:"title", term:inTitle.term, index:inTitle.index};
+  const text=String(description||"");
+  const inDesc=locateAnyTerm(text, words);
+  if(inDesc){
+    const RADIUS=70, start=Math.max(0,inDesc.index-RADIUS), end=Math.min(text.length, inDesc.index+inDesc.term.length+RADIUS);
+    return { field:"description", term:inDesc.term,
+      before:(start>0?"…":"")+text.slice(start,inDesc.index),
+      hit:text.slice(inDesc.index, inDesc.index+inDesc.term.length),
+      after:text.slice(inDesc.index+inDesc.term.length, end)+(end<text.length?"…":"") };
+  }
+  return {field:"unknown", term:words[0]};
+}
+// digTitleHTML: the item's title, term <mark>-highlighted when the TITLE is what matched.
+// ev.index is an offset into the cleaned (untagged) title, so slicing happens before enTitle's
+// lang/dir wrap -- same non-escaping convention the rest of this file already uses for titles.
+function digTitleHTML(title, ev){
+  if(!title) return t("untitled");
+  if(!ev || ev.field!=="title") return enTitle(title);
+  const before=title.slice(0,ev.index), hit=title.slice(ev.index, ev.index+ev.term.length), after=title.slice(ev.index+ev.term.length);
+  return enTitle(`${before}<mark>${hit}</mark>${after}`);
+}
+// digEvidenceHTML: a one-line "why this matched" note for a match NOT in the title.
+function digEvidenceHTML(ev){
+  if(!ev || ev.field==="title") return "";
+  if(ev.field==="description") return `<div class="dev">${t("digest_match_snippet_html",{snippet:`${ev.before}<mark>${ev.hit}</mark>${ev.after}`})}</div>`;
+  return `<div class="dev">${t("digest_match_unknown_html",{term:`<mark>${ev.term}</mark>`})}</div>`;
+}
 function digContact(r){
   const tel=String(r.contact_phone||"").replace(/[^0-9+]/g,""); const parts=[];
   if(r.contact_name) parts.push(cleanText(r.contact_name));
@@ -2262,24 +2316,34 @@ function digContact(r){
   if(tel.length>=7) parts.push(`<a href="tel:${tel}">${cleanText(r.contact_phone)}</a>`);
   return parts.length?`<div class="dc">${parts.join(" · ")}</div>`:"";
 }
-function digItemHTML(kind, r){
-  if(kind==="award") return `<div class="digitem"><div class="dt"><a href="#notice/${encodeURIComponent(r.request_id)}">${cleanText(r.short_title) ? enTitle(cleanText(r.short_title)) : t("untitled")}</a></div>
+function digItemHTML(kind, r, keywords){
+  if(kind==="award"){
+    const title=cleanText(r.short_title), ev=matchEvidence(title, cleanText(r.additional_description_1), keywords);
+    return `<div class="digitem"><div class="dt"><a href="#notice/${encodeURIComponent(r.request_id)}">${digTitleHTML(title, ev)}</a></div>
     <div class="dm">${r.agency_name} · ${fdate(r.start_date)}${r.vendor_name? " · "+cleanText(r.vendor_name):""}</div>
+    ${digEvidenceHTML(ev)}
     <div class="da">${money(r.contract_amount)||""}</div>${digContact(r)}</div>`;
+  }
   if(kind==="notice"){
+    const title=cleanText(r.short_title), ev=matchEvidence(title, cleanText(r.additional_description_1), keywords);
     const meta=[r.agency_name, r.type_of_notice_description, fdate(r.start_date), r.event_date?t("event_meta",{date:fdate(r.event_date)}):""].filter(Boolean).join(" · ");
-    return `<div class="digitem"><div class="dt">${cleanText(r.short_title) ? enTitle(cleanText(r.short_title)) : t("untitled")}</div>
+    return `<div class="digitem"><div class="dt">${digTitleHTML(title, ev)}</div>
     <div class="dm">${meta}</div>
+    ${digEvidenceHTML(ev)}
     <div class="dc"><a href="#notice/${encodeURIComponent(r.request_id)}">${t("view_on_crol")}</a></div></div>`;
   }
   if(kind==="rfp"){ const dl=daysLeft(r.due_date);
+    const title=cleanText(r.short_title), ev=matchEvidence(title, cleanText(r.additional_description_1), keywords);
     const tel=String(r.contact_phone||"").replace(/[^0-9+]/g,""); const acts=[];
     if(r.email) acts.push(`<a href="${mailtoFor(r)}"><b>${t("respond_lbl")}</b></a>`);
     if(r.email) acts.push(`<a href="mailto:${r.email}">${r.email}</a>`);
     if(tel.length>=7) acts.push(`<a href="tel:${tel}">${cleanText(r.contact_phone)}</a>`);
     const dc=acts.length?`<div class="dc">${acts.join(" · ")}</div>`:"";
-    return `<div class="digitem"><div class="dt"><a href="#notice/${encodeURIComponent(r.request_id)}">${cleanText(r.short_title) ? enTitle(cleanText(r.short_title)) : t("untitled")}</a></div>
-    <div class="dm">${r.agency_name} · ${t("due_on",{date:fdt(r.due_date)})}${dl!=null?t("days_paren",{n:dl}):""}</div>${dc}</div>`; }
+    return `<div class="digitem"><div class="dt"><a href="#notice/${encodeURIComponent(r.request_id)}">${digTitleHTML(title, ev)}</a></div>
+    <div class="dm">${r.agency_name} · ${t("due_on",{date:fdt(r.due_date)})}${dl!=null?t("days_paren",{n:dl}):""}</div>${digEvidenceHTML(ev)}${dc}</div>`; }
+  // Scope decision: rezoning (ZAP) match evidence is out of scope for this pass -- ZAP rows
+  // have their own shape (project_name/project_brief, not short_title/description) and the
+  // reported failure was a City Record procurement notice, not a rezoning.
   return `<div class="digitem"><div class="dt">${r.project_name ? enTitle(r.project_name) : t("unnamed_rezoning")}</div>
     <div class="dm">${r.borough||""}${r.community_district? " · CD "+r.community_district:""} · ${r.public_status||""}${r.primary_applicant? " · "+r.primary_applicant:""}${mihOn(r.mih_flag)? " · "+t("affordable_housing_tag"):""}</div>
     <div class="dc"><a href="https://zap.planning.nyc.gov/projects/${r.project_id}">${t("view_comment_zap")}</a> · <a href="https://a856-cityrecord.nyc.gov/Search/Advanced" ${EXT_ATTRS}>${t("hearing_notice_cr")}${extSR()}</a></div></div>`;
@@ -2314,7 +2378,10 @@ async function aPreview(){
   const dest=$("#adest").value.trim() || t("email_placeholder");
   const kw = $("#aparam").value.trim();
   const showSimplifyHint = !rows.length && isKeywordWatch($("#awatch").value) && keywordLooksSentenceLike(kw);
-  const body = rows.length ? rows.map(r=>digItemHTML(data.kind,r)).join("")
+  // Same {lens,filter} shape the worker compiles into a query -- keywords is whatever subset
+  // this watch type actually searches on (empty for amount/name-only watches).
+  const previewKeywords = aLensFilter().filter.keywords || [];
+  const body = rows.length ? rows.map(r=>digItemHTML(data.kind,r,previewKeywords)).join("")
     : `<div class="empty">${t("no_matches_today_html")}${showSimplifyHint ? ` ${t("simplify_keyword_hint_html")}` : ""}</div>`;
   $("#apreviewbox").innerHTML = `<div class="emailmock">
     <div class="ehead"><div class="efrom">CROL-List &lt;alerts@crol-list.org&gt; → ${dest}</div>

@@ -3,7 +3,7 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { digestDecision, daysBetween, shortDate, dedupeFreshByContent } from "../src/lib/digest.mjs";
+import { digestDecision, daysBetween, shortDate, dedupeFreshByContent, matchEvidence } from "../src/lib/digest.mjs";
 
 test("shortDate: ISO date and full timestamp both -> 'Mon D'", () => {
   assert.equal(shortDate("2026-06-30"), "Jun 30");
@@ -102,4 +102,66 @@ test("missing fingerprint fields (null/undefined) don't crash and don't over-col
   const b = { request_id: "2", pin: null, agency_name: null, short_title: null, vendor_name: null, start_date: null };
   const out = dedupeFreshByContent([a, b]);
   assert.equal(out.length, 1, "two rows with identically-missing fields still fingerprint-match (expected, if rare)");
+});
+
+// matchEvidence: an "education" alert once surfaced "NOS - Equity Index Investment Management
+// Products" (an Office of the Comptroller pension-fund notice) with nothing visible explaining
+// the match — the subscriber had to open the notice to learn the hit was buried in the
+// description, which names the Board of Education Retirement System (one of the pension funds
+// the notice covers). Neither the title nor the meta line a digest renders gave any hint why.
+const compTitle = "NOS - Equity Index Investment Management Products";
+const compDescription =
+  "The New York City Office of the Comptroller, Bureau of Asset Management, is soliciting " +
+  "proposals on behalf of the Boards of Trustees of the New York City Employees' Retirement " +
+  "System, Teachers' Retirement System, and the Board of Education Retirement System for " +
+  "equity index investment management products.";
+
+test("before: 'education' doesn't appear in the title at all — old rendering had nothing to show", () => {
+  assert.equal(compTitle.toLowerCase().includes("education"), false);
+});
+
+test("after: matchEvidence finds 'education' in the description and returns a centered snippet naming it", () => {
+  const ev = matchEvidence(compTitle, compDescription, ["education"]);
+  assert.equal(ev.field, "description");
+  assert.equal(ev.term, "education");
+  assert.match(ev.hit, /^[Ee]ducation$/);
+  assert.match(ev.before + ev.hit + ev.after, /Board of Education Retirement System/);
+});
+
+test("matchEvidence: a term that's in the title takes priority over the description", () => {
+  const ev = matchEvidence(compTitle, compDescription, ["equity"]);
+  assert.equal(ev.field, "title");
+  assert.equal(ev.term, "equity");
+  assert.equal(compTitle.slice(ev.index, ev.index + ev.term.length).toLowerCase(), "equity");
+});
+
+test("matchEvidence: case-insensitive on both title and description", () => {
+  assert.equal(matchEvidence("Snow Removal", "", ["SNOW"]).field, "title");
+  assert.equal(matchEvidence("x", "Board of EDUCATION Retirement System", ["education"]).field, "description");
+});
+
+test("matchEvidence: no keywords (amount/name-only watches) -> null, nothing to explain", () => {
+  assert.equal(matchEvidence(compTitle, compDescription, []), null);
+  assert.equal(matchEvidence(compTitle, compDescription, undefined), null);
+});
+
+test("matchEvidence: multiple OR-terms — first hit found wins, by field priority not list order", () => {
+  const ev = matchEvidence(compTitle, compDescription, ["nonexistent", "education", "equity"]);
+  assert.equal(ev.field, "title", "'equity' is in the title, so it wins over 'education' even though it's listed later");
+  assert.equal(ev.term, "equity");
+});
+
+test("matchEvidence: term matched via a field this digest doesn't fetch -> 'unknown', names the term rather than showing nothing", () => {
+  const ev = matchEvidence(compTitle, compDescription, ["sanitation"]);
+  assert.equal(ev.field, "unknown");
+  assert.equal(ev.term, "sanitation");
+});
+
+test("matchEvidence: description snippet is truncated with an ellipsis, not the whole field", () => {
+  const longDesc = "x".repeat(500) + " target " + "y".repeat(500);
+  const ev = matchEvidence("no match here", longDesc, ["target"]);
+  assert.equal(ev.field, "description");
+  assert.ok(ev.before.startsWith("…"), "truncated on the left");
+  assert.ok(ev.after.endsWith("…"), "truncated on the right");
+  assert.ok(ev.before.length < 100 && ev.after.length < 100, "snippet stays short, not the full 500+ char field");
 });

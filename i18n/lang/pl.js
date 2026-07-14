@@ -689,6 +689,8 @@
     digest_footer_few: "{n} ogłoszenia dzisiaj · z The City Record · wypisz się w dowolnym momencie (jedno kliknięcie)",
     digest_footer_many: "{n} ogłoszeń dzisiaj · z The City Record · wypisz się w dowolnym momencie (jedno kliknięcie)",
     digest_footer_other: "{n} ogłoszenia dzisiaj · z The City Record · wypisz się w dowolnym momencie (jedno kliknięcie)",
+    digest_match_snippet_html: "Dopasowanie: „{snippet}”",
+    digest_match_unknown_html: "Dopasowanie: „{term}”",
     mt_disclaimer: "To tłumaczenie zostało wygenerowane maszynowo i nie zostało jeszcze sprawdzone przez rodzimego użytkownika języka.",
   });
   W.SECTION_I18N = W.SECTION_I18N || {};

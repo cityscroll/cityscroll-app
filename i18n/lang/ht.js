@@ -666,6 +666,8 @@
     n_notices_meta_other: "{n} avi",
     digest_footer_one: "{n} avi jodi a · soti nan Rejis Minisipal la · dezabone nenpòt lè (yon sèl klik)",
     digest_footer_other: "{n} avi jodi a · soti nan Rejis Minisipal la · dezabone nenpòt lè (yon sèl klik)",
+    digest_match_snippet_html: "Kòrespondans: \"{snippet}\"",
+    digest_match_unknown_html: "Kòrespondans: \"{term}\"",
     event_in_n_days_one: "nan {n} jou",
     event_in_n_days_other: "nan {n} jou",
     mt_disclaimer: "Tradiksyon sa a te fèt otomatikman e li poko revize pa yon moun ki pale lang lan natifnatal.",

@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "60b48b1d",
-  "zh-Hans": "a88f04e6",
-  ru: "246e6627",
-  bn: "768e4df6",
-  ht: "fae2751d",
-  ko: "37fb6c6d",
-  fr: "d60b0710",
-  pl: "930b8d4d",
-  ar: "1d8e44c3",
-  ur: "066c91ff",
+  es: "f430437c",
+  "zh-Hans": "a785c38c",
+  ru: "c82391b4",
+  bn: "05a09a5b",
+  ht: "4dc1f6b5",
+  ko: "571d8c55",
+  fr: "95166284",
+  pl: "6b835506",
+  ar: "d8894476",
+  ur: "c43f9a66",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -599,6 +599,9 @@ const STRINGS = {
     simplify_keyword_hint_html: "Long, sentence-like search terms rarely match City Record listings verbatim — try one or two words instead.",
     digest_footer_one: "{n} notice today · from The City Record · unsubscribe any time (one click)",
     digest_footer_other: "{n} notices today · from The City Record · unsubscribe any time (one click)",
+    // {snippet}/{term} are pre-built HTML (a <mark>-wrapped hit) -- see matchEvidence() above digItemHTML.
+    digest_match_snippet_html: "Matched: “{snippet}”",
+    digest_match_unknown_html: "Matched: “{term}”",
     event_meta: "event {date}",
     days_paren: " ({n} days)",
     respond_lbl: "Respond",

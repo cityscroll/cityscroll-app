@@ -719,6 +719,37 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   fetched row's own `request_id` (not just survivors) so a since-deduped duplicate's id
   doesn't resurface as "new" on a later run.
 
+## Digest match evidence — why a keyword-matched item is in the digest at all
+
+- **`matchEvidence(title, description, terms)`** is a pure, dual-implemented function (once as
+  an export in `worker/src/lib/digest.mjs` for the emailed digest, once inline in index.html
+  next to `digItemHTML` for the on-page preview — same logic, no cross-boundary import, mirrors
+  the existing SODA-path/D1-path "must agree" posture elsewhere in this file) that finds which
+  keyword actually matched and where, so a coincidental-looking notice never appears with
+  nothing explaining it. Field priority: title (highlight in place) → description
+  (`additional_description_1` / D1's `description`, a one-line snippet, term emphasized) →
+  `unknown` (matched via a field this digest doesn't fetch — SODA's `$q` also searches
+  contact/method columns — names the bare term rather than showing nothing). Returns `null` for
+  amount/name-only watches (bigaward, entity) that have no keyword to explain in the first
+  place. Real fixture: an "education" alert once surfaced "NOS - Equity Index Investment
+  Management Products" (a Comptroller pension-fund notice) with no visible reason — the hit was
+  in the description, which names the Board of Education Retirement System.
+- **Rendering is per-surface, not shared**: `titleHtml()`/`evidenceLineHtml()` in alerts.mjs
+  (HTML-escaped, inline-styled `<mark>` for email-client safety, `emailT()`-translated) vs.
+  `digTitleHTML()`/`digEvidenceHTML()` in index.html (unescaped, matching this file's existing
+  title-rendering convention, `t()`-translated via `digest_match_snippet_html`/
+  `digest_match_unknown_html`). `worker/src/lib/i18n.mjs`'s `EMAIL_STRINGS` only carries en/es
+  (that catalog's existing, narrower scope — see `SUPPORTED_LANGS` in `subscriptions.mjs`); the
+  front-end's `digest_match_*_html` keys ship in all ten `SHIPPING_LANGS` like everything else
+  in `i18n.js`. Two different i18n systems, two different coverage bars — not a gap.
+- **Scope decision: rezoning (ZAP) items get no match evidence.** ZAP rows have their own shape
+  (`project_name`/`project_brief`, not `short_title`/`additional_description_1`) and the
+  reported failure was a City Record procurement notice — extending evidence to `land` watches
+  is future work, not silently dropped.
+- Wired into `additional_description_1` at three fetch sites that previously didn't select it:
+  `compile.mjs`'s `CR_SELECT`, `alerts.mjs`'s legacy-watch `runWatch()`, and `compile_d1.mjs`'s
+  `toDigestRow()` (mapped from D1's `description` column, which `ingest.mjs` already stored).
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

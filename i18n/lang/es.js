@@ -667,6 +667,8 @@
     n_notices_meta_other: "{n} avisos",
     digest_footer_one: "{n} aviso hoy · del Registro Municipal · cancele la suscripción cuando quiera (un clic)",
     digest_footer_other: "{n} avisos hoy · del Registro Municipal · cancele la suscripción cuando quiera (un clic)",
+    digest_match_snippet_html: "Coincidencia: “{snippet}”",
+    digest_match_unknown_html: "Coincidencia: “{term}”",
     event_in_n_days_one: "en {n} día",
     event_in_n_days_other: "en {n} días",
     mt_disclaimer: "Esta traducción fue generada automáticamente y aún no ha sido revisada por un hablante nativo.",

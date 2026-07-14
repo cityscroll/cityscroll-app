@@ -505,6 +505,8 @@
     simplify_keyword_hint_html: "Les termes de recherche longs, en forme de phrase, correspondent rarement mot pour mot aux avis du Registre municipal — essayez plutôt un ou deux mots.",
     digest_footer_one: "{n} avis aujourd'hui · du Registre municipal · désabonnez-vous à tout moment (un clic)",
     digest_footer_other: "{n} avis aujourd'hui · du Registre municipal · désabonnez-vous à tout moment (un clic)",
+    digest_match_snippet_html: "Correspondance : « {snippet} »",
+    digest_match_unknown_html: "Correspondance : « {term} »",
     event_meta: "événement {date}",
     days_paren: " ({n} jours)",
     respond_lbl: "Répondre",

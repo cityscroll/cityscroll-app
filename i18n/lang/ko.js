@@ -413,6 +413,8 @@
     simplify_keyword_hint_html: "문장처럼 길게 입력한 검색어는 시정 기록부 항목과 그대로 일치하는 경우가 드뭅니다 — 한두 단어로 줄여서 시도해 보세요.",
     digest_footer_one: "오늘 공고 {n}건 · The City Record 제공 · 언제든 원클릭으로 구독 취소",
     digest_footer_other: "오늘 공고 {n}건 · The City Record 제공 · 언제든 원클릭으로 구독 취소",
+    digest_match_snippet_html: "일치 항목: \"{snippet}\"",
+    digest_match_unknown_html: "일치 항목: \"{term}\"",
     event_meta: "행사 {date}",
     days_paren: " ({n}일)",
     respond_lbl: "응답",

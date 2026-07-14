@@ -663,6 +663,8 @@
     event_in_n_days_other: "{n} 天后",
     n_notices_meta_other: "{n} 条通告",
     digest_footer_other: "今日 {n} 条通告 · 来自市政公报 · 随时一键取消订阅",
+    digest_match_snippet_html: "匹配内容：「{snippet}」",
+    digest_match_unknown_html: "匹配内容：「{term}」",
     mt_disclaimer: "此翻译由机器初步生成，尚未经过母语人士审核。",
     days_left_one: "还剩 {n} 天",
     event_in_n_days_one: "{n} 天后",
