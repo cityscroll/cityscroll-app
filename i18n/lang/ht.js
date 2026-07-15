@@ -222,6 +222,8 @@
     nl_no_matches_note: "Pa gen rezilta pou rechèch sa a.",
     nl_chip_land_kind: "chanjman zonaj",
     nl_chip_land_status_all: "gen ladan chanjman zonaj ki fèmen",
+    sugg_lineage_hint:  "Enkli kontra ki gen istwa akòdman",
+    sugg_forecast_hint: "Enkli kontra ki gen done pwevizyon",
     head_open: "Demann Pwopozisyon (RFP) louvri",
     head_allrfp: "Tout RFP yo",
     head_award: "Akòdman resan yo",

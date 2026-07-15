@@ -14,11 +14,78 @@
 // or the Anthropic API down, say), the previous KV value is left untouched rather than
 // overwritten with an empty set — a transient outage must never blank out yesterday's good
 // chips (see the field-evidence comment on SUGGESTION_POOL in lib/suggestions.mjs).
-import { SUGGESTION_POOL, suggestionCountParams, MIN_SUGGESTION_RESULTS } from "./lib/suggestions.mjs";
+//
+// w12-17: a fruitful candidate is additionally enriched with two discoverability signals — see
+// enrichCandidate() below — computed here, once a day, so the client never issues an extra
+// request to learn them (the acceptance criterion is "all computed at validation time").
+import { SUGGESTION_POOL, suggestionCountParams, suggestionSampleParams, MIN_SUGGESTION_RESULTS } from "./lib/suggestions.mjs";
+import { computeLineageSignal, lineageChainKey, lineageDedupeKey, lineageBatchClauses } from "./lib/lineage.mjs";
+import { vendorStem } from "./lib/compile.mjs";
 import { parseLensFilter } from "./nl.mjs";
 import { checkAdminKey } from "./admin.mjs";
 
 export const SUGGESTIONS_KV_KEY = "suggestions:validated";
+
+// How many of a fruitful candidate's own live rows to sample when judging lineage/forecast —
+// the same 25-row cap compileSub()'s money branch already applies to a real search, so this
+// asks nothing Socrata wouldn't already return for one click of the chip.
+const ENRICH_SAMPLE_LIMIT = 25;
+
+// Money/alerts-only candidate-level lineage-richness (PIN award-chain history) + forecast-
+// bearing (Checkbook/MOCS agency forecast) signal. Never throws: any failure at any step
+// (sample fetch, batch fetch, KV read) is swallowed and the signal for that step reports
+// "uncertain" (false) rather than a guess — the base validated/count result for the candidate
+// is unaffected either way, since enrichment is a bonus label, not a fruitfulness gate.
+async function enrichCandidate(env, lens, filter, todayISO) {
+  const none = { lineageRich: false, forecastBearing: false };
+  const sampleQ = suggestionSampleParams(lens, filter, todayISO);
+  if (!sampleQ) return none; // land/property/rules/meetings/people, or a rezone alert
+  let sample;
+  try {
+    const r = await fetch(`${sampleQ.url}?${new URLSearchParams(sampleQ.params)}`);
+    if (!r.ok) return none;
+    sample = (await r.json()).slice(0, ENRICH_SAMPLE_LIMIT);
+  } catch (e) { return none; }
+  if (!sample.length) return none;
+
+  // Lineage: batch every sampled row's chain key into one $where, same shape
+  // loadLineageBadges() builds client-side for on-screen rows (lib/lineage.mjs).
+  let lineageRich = false;
+  const keys = [], seen = new Set();
+  for (const r of sample) {
+    const k = lineageChainKey(r);
+    if (!k) continue;
+    const dk = lineageDedupeKey(k);
+    if (seen.has(dk)) continue;
+    seen.add(dk); keys.push(k);
+  }
+  if (keys.length) {
+    try {
+      const where = `(${lineageBatchClauses(keys).join(" OR ")}) AND (type_of_notice_description='Award' OR type_of_notice_description='Intent to Award')`;
+      const r = await fetch(`${sampleQ.url}?${new URLSearchParams({ "$select": "pin,agency_name,type_of_notice_description", "$where": where, "$limit": "2000" })}`);
+      if (r.ok) {
+        const batch = await r.json();
+        lineageRich = computeLineageSignal(sample, batch).lineageRich;
+      }
+    } catch (e) { /* stays false — uncertain, not a guess */ }
+  }
+
+  // Forecast: any distinct sampled agency with a cached fc:<stem>/plan:<stem> record.
+  let forecastBearing = false;
+  if (env.ALERT_STATE) {
+    const agencies = [...new Set(sample.map((r) => r.agency_name).filter(Boolean))];
+    for (const name of agencies) {
+      const stem = vendorStem(name);
+      if (stem.length < 3) continue;
+      try {
+        const [fc, plan] = await Promise.all([env.ALERT_STATE.get(`fc:${stem}`), env.ALERT_STATE.get(`plan:${stem}`)]);
+        if (fc || plan) { forecastBearing = true; break; }
+      } catch (e) { /* keep checking other agencies */ }
+    }
+  }
+
+  return { lineageRich, forecastBearing };
+}
 
 async function validateCandidate(env, candidate, todayISO) {
   const resolved = await parseLensFilter(env, candidate.lens, candidate.text);
@@ -30,7 +97,12 @@ async function validateCandidate(env, candidate, todayISO) {
   if (!r.ok) return null;
   const rows = await r.json();
   const n = Number(rows && rows[0] && rows[0].n) || 0;
-  return { lens: candidate.lens, idx: candidate.idx, count: n };
+  if (n < MIN_SUGGESTION_RESULTS) return { lens: candidate.lens, idx: candidate.idx, count: n };
+  let enrichment = { lineageRich: false, forecastBearing: false };
+  try {
+    enrichment = await enrichCandidate(env, candidate.lens, resolved.filter, todayISO);
+  } catch (e) { /* base count result still stands — enrichment is a bonus label */ }
+  return { lens: candidate.lens, idx: candidate.idx, count: n, ...enrichment };
 }
 
 export async function runSuggestionValidation(env) {
@@ -47,7 +119,7 @@ export async function runSuggestionValidation(env) {
     }
     if (!result || result.count < MIN_SUGGESTION_RESULTS) continue;
     if (!byLens[result.lens]) byLens[result.lens] = [];
-    byLens[result.lens].push({ idx: result.idx, count: result.count });
+    byLens[result.lens].push({ idx: result.idx, count: result.count, lineageRich: !!result.lineageRich, forecastBearing: !!result.forecastBearing });
   }
 
   if (!Object.keys(byLens).length) {

@@ -268,6 +268,8 @@
     nl_no_matches_note: "Aucun résultat pour cette recherche.",
     nl_chip_land_kind: "rezonages",
     nl_chip_land_status_all: "y compris les rezonages clos",
+    sugg_lineage_hint:  "Inclut des contrats avec un historique d'attribution",
+    sugg_forecast_hint: "Inclut des contrats avec des données de prévision",
 
     // Dynamic headings (search())
     head_open:              "Demandes de propositions (RFP) ouvertes",

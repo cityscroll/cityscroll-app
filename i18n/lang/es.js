@@ -223,6 +223,8 @@
     nl_no_matches_note: "No hay resultados para esta búsqueda.",
     nl_chip_land_kind: "rezonificaciones",
     nl_chip_land_status_all: "incluyendo rezonificaciones cerradas",
+    sugg_lineage_hint:  "Incluye contratos con historial de adjudicaciones",
+    sugg_forecast_hint: "Incluye contratos con datos de pronóstico",
     head_open: "Solicitudes de propuestas (RFP) abiertas",
     head_allrfp: "Todas las RFP",
     head_award: "Adjudicaciones recientes",

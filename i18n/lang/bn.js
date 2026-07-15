@@ -223,6 +223,8 @@
     nl_no_matches_note: "এই অনুসন্ধানের জন্য কোনো ফলাফল নেই।",
     nl_chip_land_kind: "অঞ্চল পুনর্বিন্যাস",
     nl_chip_land_status_all: "বন্ধ অঞ্চল পুনর্বিন্যাস সহ",
+    sugg_lineage_hint:  "প্রদানের ইতিহাসসহ চুক্তি অন্তর্ভুক্ত",
+    sugg_forecast_hint: "পূর্বাভাস তথ্যসহ চুক্তি অন্তর্ভুক্ত",
     head_open: "খোলা প্রস্তাবের অনুরোধ (RFP)",
     head_allrfp: "সব RFP",
     head_award: "সাম্প্রতিক প্রদান",

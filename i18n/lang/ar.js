@@ -226,6 +226,8 @@
     nl_no_matches_note: "لا توجد نتائج مطابقة لهذا البحث.",
     nl_chip_land_kind: "إعادة تقسيم المناطق",
     nl_chip_land_status_all: "بما في ذلك إعادة تقسيم المناطق المغلقة",
+    sugg_lineage_hint:  "يشمل عقودًا لها سجل ترسية سابق",
+    sugg_forecast_hint: "يشمل عقودًا لها بيانات توقّع",
     head_open: "طلبات تقديم عروض (RFP) مفتوحة",
     head_allrfp: "كل طلبات تقديم العروض",
     head_award: "الترسيات الأخيرة",

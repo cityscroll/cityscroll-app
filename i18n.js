@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "d85e7fc9",
-  "zh-Hans": "62477ef0",
-  ru: "71e1db23",
-  bn: "5139ccce",
-  ht: "47af4f41",
-  ko: "8936f891",
-  fr: "dc1b2b73",
-  pl: "d32ec608",
-  ar: "bf6e3b32",
-  ur: "6ef3c414",
+  es: "190f40e0",
+  "zh-Hans": "f3df9481",
+  ru: "55cc875a",
+  bn: "921e85d2",
+  ht: "40ea64a9",
+  ko: "34709015",
+  fr: "4a518dc2",
+  pl: "ba23edbc",
+  ar: "29ab7215",
+  ur: "243ffa8e",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -358,6 +358,8 @@ const STRINGS = {
     nl_no_matches_note: "No matches for this search.",
     nl_chip_land_kind: "rezonings",
     nl_chip_land_status_all: "including closed rezonings",
+    sugg_lineage_hint:  "Includes contracts with award history",
+    sugg_forecast_hint: "Includes contracts with forecast data",
 
     // Dynamic headings (search())
     head_open:              "Open Requests for Proposals (RFPs)",
