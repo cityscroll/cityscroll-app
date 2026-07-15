@@ -20,7 +20,7 @@ import { handleStats } from "./stats.mjs";
 import { handleRedirect } from "./redirect.mjs";
 import { runAlerts, consumeDigestJob } from "./alerts.mjs";
 import { ingestNotices } from "./ingest.mjs";
-import { runSuggestionValidation, handleSuggestions } from "./suggest.mjs";
+import { runSuggestionValidation, handleSuggestions, handleAdminSuggestRefresh } from "./suggest.mjs";
 import { handleMcp } from "./mcp.mjs";
 import { handleBoardHook } from "board-notify";
 import { handleInboundEmail } from "./inbound.mjs";
@@ -48,6 +48,7 @@ export default {
     if (pathname === "/api") return Response.redirect("https://crol-list.org/api.html", 302);
     if (pathname === "/admin/subs") return handleAdminSubs(request, env);
     if (pathname === "/admin/feedback") return handleAdminFeedback(request, env);
+    if (pathname === "/admin/suggest-refresh") return handleAdminSuggestRefresh(request, env);
     if (pathname === "/" || pathname === "/health") {
       return new Response("crol-worker ok", { status: 200, headers: { "Content-Type": "text/plain" } });
     }

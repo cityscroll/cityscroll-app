@@ -1075,6 +1075,14 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `test/suggestions_render.test.mjs` (root, extracts the client's pure rotation/fallback
   logic) are the two halves; `worker/e2e/suggestions.mjs` is the live check on the static
   fallback specifically (see above).
+- **Keyed admin trigger (w12-13)**: `POST /admin/suggest-refresh` (`worker/src/suggest.mjs`'s
+  `handleAdminSuggestRefresh`) runs `runSuggestionValidation(env)` on demand instead of waiting
+  for the 13:00 UTC cron, same fail-soft contract, returning the same summary JSON plus a
+  `triggeredAt` timestamp. Auth is `checkAdminKey(req, env)` (`worker/src/admin.mjs`), extracted
+  as the one shared gate for every `/admin/*` route (`/admin/subs`, `/admin/feedback`, and this
+  one) — 404 until `ADMIN_KEY` is configured, 401 on a wrong/missing key, key via `?key=` or an
+  `Authorization: Bearer` header. Reach for `checkAdminKey` again for any future `/admin/*` route
+  rather than re-copying the inline check. Tests: `worker/test/admin.test.mjs`.
 
 ## Maintaining this file
 

@@ -16,6 +16,7 @@
 // chips (see the field-evidence comment on SUGGESTION_POOL in lib/suggestions.mjs).
 import { SUGGESTION_POOL, suggestionCountParams, MIN_SUGGESTION_RESULTS } from "./lib/suggestions.mjs";
 import { parseLensFilter } from "./nl.mjs";
+import { checkAdminKey } from "./admin.mjs";
 
 export const SUGGESTIONS_KV_KEY = "suggestions:validated";
 
@@ -88,4 +89,26 @@ export async function handleSuggestions(req, env) {
   const raw = await env.ALERT_STATE.get(SUGGESTIONS_KV_KEY);
   if (!raw) return json({ ok: false, reason: "not-found" }, 404, cors);
   return new Response(raw, { status: 200, headers: { ...cors, "Content-Type": "application/json", "Cache-Control": "public, max-age=1800" } });
+}
+
+// POST /admin/suggest-refresh?key=… — operator trigger to run the exact same suggestion
+// validation the 13:00 UTC cron runs, on demand (w12-13: the owner wanted to see the result of
+// a rotation immediately rather than waiting for the daily run). Authenticated identically to
+// the other /admin/* routes (checkAdminKey, admin.mjs) — 404 until ADMIN_KEY is configured, 401
+// on a wrong/missing key. Idempotent: it only ever recomputes and overwrites the same KV record
+// runSuggestionValidation() already owns, so firing it twice in a row is safe. Fail-soft matches
+// the cron path exactly — runSuggestionValidation() itself never writes an empty set over a good
+// one (see the comment on that function), and this route's own try/catch (for something the
+// pipeline didn't anticipate, e.g. a KV outage) reports the error in the response instead of
+// throwing, leaving whatever was already in KV untouched either way.
+export async function handleAdminSuggestRefresh(req, env) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (req.method !== "POST") return json({ error: "method" }, 405);
+  try {
+    const result = await runSuggestionValidation(env);
+    return json({ ...result, triggeredAt: new Date().toISOString() }, 200);
+  } catch (e) {
+    return json({ status: "error", error: String(e?.message || e) }, 500);
+  }
 }
