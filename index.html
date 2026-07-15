@@ -327,7 +327,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=b019928a"></script>
+<script src="i18n.js?v=e779954b"></script>
 <script src="nl_parse.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
@@ -1298,6 +1298,30 @@ function buildApply(r){
   </div></div>`;
 }
 
+/* ===================== PAST WINNERS STRIP (w12-05) =====================
+   Rolls chainHTML()'s own award-type stages into an at-a-glance list -- "awarded to X in
+   2024 ($2.1M), Y in 2023 ($1.9M)" -- instead of making a reader walk the stage-by-stage
+   paper-trail boxes to compare cycles. Same chain data loadChain() already fetched, no new
+   fetch, no worker dependency. Renders nothing for a single award (there is nothing to roll
+   up against yet) -- chainHTML()'s own boxes already show that one cycle in full. */
+function pastWinnersHTML(chain){
+  const stages = chain.filter(c => c.type_of_notice_description === "Award" || c.type_of_notice_description === "Intent to Award");
+  if(stages.length < 2) return "";
+  const rows = [...stages]
+    .sort((a,b) => (b.start_date||"").localeCompare(a.start_date||"")) // most recent cycle first
+    .map(c => {
+      const year = String(c.start_date||"").slice(0,4);
+      const amt = money(c.contract_amount);
+      // A stage on record with no vendor name is shown honestly, not skipped -- omitting the
+      // cycle would understate how many rounds this contract has actually been through.
+      const vendor = c.vendor_name
+        ? pivotA(vendorHref(c.vendor_name), cleanText(c.vendor_name))
+        : t("past_winners_vendor_unlisted");
+      return `<div class="tl">${year?`<span class="tldate">${year}</span>`:""}<span class="tlreason">${vendor}</span>${amt?`<span class="tlsal">${amt}</span>`:""}</div>`;
+    }).join("");
+  return `<div class="chain-h">${t("past_winners_heading")}</div><div class="timeline">${rows}</div>`;
+}
+
 function chainHTML(r, chain){
   const blanket = chain.length > 5 && chain.every(c=>c.type_of_notice_description==="Award");
   const tlink = usablePin(r.pin) ? ` · <a class="pivot" href="#matter/${encodeURIComponent(r.pin)}">${t("full_timeline_link")}</a>` : "";
@@ -1327,6 +1351,7 @@ function chainHTML(r, chain){
   } else if(blanket){
     html += `<div class="note warn">${t("blanket_note",{pin:r.pin, n:chain.length})}</div>`;
   }
+  html += pastWinnersHTML(chain);
   return html;
 }
 

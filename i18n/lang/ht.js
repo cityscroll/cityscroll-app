@@ -279,6 +279,8 @@
     only_notice_note: "Se sèl avi sa a ki anrejistre pou kounye a — pa gen okenn etap ki vin apre ki pibliye pou PIN <code>{pin}</code> a toujou. ",
     award_pending_note: "Akòdman an ka toujou an atant.",
     blanket_note: "PIN <code>{pin}</code> a se yon <b>kòd jeneral</b>: li gwoupe {n} akòdman separe (sa fèt souvan pou deklarasyon ijans). Chak bwat se yon kontra diferan anba menm kòd la.",
+    past_winners_heading: "Ansyen genyè yo",
+    past_winners_vendor_unlisted: "Akòdman, founisè pa endike",
     prior_cycle_heading: "Sanble se yon bagay ki repete — akòdman sik anvan yo",
     prior_cycle_heuristic_note: "Nou matche sa a pa ajans ak tit, se pa pa yon PIN pataje. Li ka menm kontra rekiran an, men nou pa sèten. Verifye dat yo ak vandè a anvan.",
     prior_cycle_none_note: "Nou pa jwenn okenn sik anvan ki vrezanblab pou ka sa a. Li ka pa yon kontra rekiran. Oswa yon tou anvan pa t matche ase pou nou montre l isit la.",

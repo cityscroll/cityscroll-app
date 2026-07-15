@@ -912,6 +912,37 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - **New i18n keys**: `nl_edit_btn`, `nl_no_matches_note` — two keys, all ten `SHIPPING_LANGS`,
   same machine-drafted provenance as everything else in the catalog.
 
+## Past winners strip — rolling up chainHTML()'s own award stages (w12-05)
+
+- **Field evidence**: readers could walk the paper-trail chain (`chainHTML()`) stage by stage,
+  but wanted the rolled-up view — "awarded to X in 2024 ($2.1M), Y in 2023 ($1.9M)" — instead of
+  opening every box in the chain to compare cycles by hand.
+- **`pastWinnersHTML(chain)`** (index.html, defined just above `chainHTML`, appended to its
+  return value) filters the same chain array `chainHTML()` already renders down to award-type
+  stages (`type_of_notice_description` is `"Award"` or `"Intent to Award"`), lists each one's
+  year/vendor/amount most-recent-first, and renders nothing when fewer than two such stages
+  exist — a single award has nothing to roll up against yet, and `chainHTML()`'s own box already
+  shows it in full. No new fetch, no worker dependency: same posture as `cadenceEstimate()`
+  (w12-04) — pure arithmetic/filtering over `loadChain()`'s data already on hand client-side.
+  Reuses the existing `.timeline`/`.tl`/`.tldate`/`.tlreason`/`.tlsal` row CSS (the same classes
+  the agency/vendor profile's notice lists use) rather than inventing new styles.
+- **A stage on record with no `vendor_name` is shown honestly, not omitted** — the row falls
+  back to `t("past_winners_vendor_unlisted")` ("Award, vendor unlisted") instead of silently
+  dropping that cycle, which would understate how many rounds the contract has actually been
+  through. Real fixture proving this happens: NYC DHS PIN base `07106R0045CNV` ("Homeless
+  Shelter"), whose third stage (`...R002`) is on record with neither a `vendor_name` nor a
+  `contract_amount` field at all.
+- **Real fixtures, both queried live from the SODA dataset (dg92-zbpx), not invented**: the DHS
+  vendor-unlisted case above, and NYC DOE PIN base `04021B0003005` ("Assessments for Special
+  Education Services") — a real 3-cycle chain (2022/2024/2026) where the same vendor's legal-
+  suffix changed (LLC → PLLC) between rounds, pinned in `test/past_winners.test.mjs` alongside
+  the DHS fixture.
+- **Wiring is a single line inside `chainHTML()`** (`html += pastWinnersHTML(chain);` before its
+  `return`), so both existing call sites (the money-tab detail pane and `showNotice()`'s
+  permalink pane, which itself only calls `chainHTML()` at all when `chain.length>1`) get the
+  strip for free with no call-site changes — same integration pattern PR #52's `cadenceHTML()`
+  uses for the same function.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

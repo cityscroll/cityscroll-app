@@ -288,6 +288,8 @@
     only_notice_note: "Na razie w rejestrze jest tylko to ogłoszenie — dla PIN <code>{pin}</code> nie opublikowano jeszcze kolejnego etapu. ",
     award_pending_note: "Przyznanie może być jeszcze w toku.",
     blanket_note: "PIN <code>{pin}</code> to <b>kod zbiorczy</b>: obejmuje {n} odrębnych przyznań (częste przy ogłoszeniach stanu wyjątkowego). Każdy blok to osobny kontrakt pod tym samym kodem.",
+    past_winners_heading: "Poprzedni zwycięzcy",
+    past_winners_vendor_unlisted: "Przyznanie, dostawca nie podany",
     prior_cycle_heading: "Wygląda na powtarzalne — przyznania z poprzednich cykli",
     prior_cycle_heuristic_note: "Dopasowaliśmy to po agencji i tytule, a nie po wspólnym numerze PIN. Może to być ten sam powtarzalny kontrakt, ale nie mamy pewności. Najpierw sprawdź daty i wykonawcę.",
     prior_cycle_none_note: "Nie znaleźliśmy prawdopodobnego poprzedniego cyklu dla tego przypadku. Może to nie być kontrakt powtarzalny. Albo wcześniejsza runda nie pasowała na tyle, by pokazać ją tutaj.",

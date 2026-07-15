@@ -280,6 +280,8 @@
     only_notice_note: "Solo este aviso consta hasta ahora — todavía no se ha publicado una etapa posterior para el PIN <code>{pin}</code>. ",
     award_pending_note: "La adjudicación puede estar aún pendiente.",
     blanket_note: "El PIN <code>{pin}</code> es un <b>código global</b>: agrupa {n} adjudicaciones separadas (común en declaraciones de emergencia). Cada caja es un contrato distinto bajo el mismo código.",
+    past_winners_heading: "Adjudicatarios anteriores",
+    past_winners_vendor_unlisted: "Adjudicación, proveedor no indicado",
     prior_cycle_heading: "Parece recurrente — adjudicaciones de ciclos anteriores",
     prior_cycle_heuristic_note: "Lo relacionamos por agencia y título, no por un PIN compartido. Puede ser el mismo contrato recurrente, pero no podemos estar seguros. Verifique primero las fechas y el proveedor.",
     prior_cycle_none_note: "No encontramos un ciclo anterior probable para este caso. Puede que no sea un contrato recurrente. O una ronda anterior no coincidió lo suficiente para mostrarla aquí.",

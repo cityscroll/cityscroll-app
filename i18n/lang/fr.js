@@ -362,6 +362,8 @@
     only_notice_note: "Seul cet avis est enregistré pour le moment — aucune étape ultérieure n'a encore été publiée pour le PIN <code>{pin}</code>. ",
     award_pending_note: "L'attribution est peut-être encore en attente.",
     blanket_note: "Le PIN <code>{pin}</code> est un <b>code global</b> : il regroupe {n} attributions distinctes (courant dans les déclarations d'urgence). Chaque case est un contrat distinct sous le même code.",
+    past_winners_heading: "Attributaires précédents",
+    past_winners_vendor_unlisted: "Attribution, fournisseur non indiqué",
     prior_cycle_heading: "Semble récurrent — attributions de cycles antérieurs",
     prior_cycle_heuristic_note: "Nous avons rapproché ceci par agence et par titre, pas par un PIN partagé. Il peut s'agir du même contrat récurrent, mais nous n'en sommes pas certains. Vérifiez d'abord les dates et le fournisseur.",
     prior_cycle_none_note: "Nous n'avons trouvé aucun cycle antérieur probable pour ce cas. Il ne s'agit peut-être pas d'un contrat récurrent. Ou une série précédente ne correspondait pas assez pour être affichée ici.",
