@@ -211,6 +211,8 @@
     fetching_today: "正在获取今天的匹配通告…",
     translating: "正在翻译…",
     nl_understood_label: "我们理解为：",
+    nl_edit_btn: "编辑搜索",
+    nl_no_matches_note: "此搜索没有匹配结果。",
     head_open: "公开的征求建议书 (RFP)",
     head_allrfp: "所有征求建议书 (RFP)",
     head_award: "近期中标（授予合同）",

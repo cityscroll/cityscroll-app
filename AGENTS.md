@@ -813,6 +813,67 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `compile.mjs`'s `CR_SELECT`, `alerts.mjs`'s legacy-watch `runWatch()`, and `compile_d1.mjs`'s
   `toDigestRow()` (mapped from D1's `description` column, which `ingest.mjs` already stored).
 
+## Ask translation — paraphrase robustness + the interpretation echo (w12-02)
+
+- **Field evidence, 2026-07-14 user interview**: the ask box "required very specific wording"
+  — paraphrases of the same request failed, and the failure was a silent empty result with no
+  explanation. Two independent fixes, both scoped to `worker/src/nl.mjs`/`filter.mjs` (the
+  translation) and index.html's ask flow (the echo UI) — not the alert-builder/preview plumbing
+  itself, which is unrelated.
+- **`filterConfidence(lens, filter)`** (`worker/src/lib/filter.mjs`) is a pure function of
+  `sanitize()`'s own output — `"low"` when the sanitized filter carries no narrowing signal at
+  all (empty keywords, every other lens field still null/false/empty), else `"high"`. No extra
+  model call, no schema change — stays inside the existing Haiku metering. `/nl`'s response
+  gains a `confidence` sibling field (additive; existing consumers unaffected).
+- **Prompt robustness** (`nl.mjs`'s `FIELD_DEFS`/`buildSystem`): explicit paraphrase-tolerance
+  instructions — normalize currency/number format variants, convert days/weeks/"next quarter"
+  into months (round up), normalize lay synonyms to the term a City agency notice would
+  actually use (`school` → `education`), and never invent a specific duration from a vague
+  phrase with no stated number ("closing soon" stays `months: null` — a deliberate,
+  test-pinned conservative-parsing decision, not a gap).
+- **Real paraphrase-tolerance can only be characterized live** (it's model behavior, not
+  something `sanitize()`/mocked-fetch unit tests can prove) — the committed fixture set lives
+  in `worker/e2e/nl.mjs`'s `PARAPHRASES` array (>=6 real-wording variants of "education
+  contracts over $200k due in 3 months", asserting the same `minAmount`/`months`/keyword
+  match), run via `npm run test:live` (costs a few Haiku calls, not part of default CI — same
+  posture as the rest of that file). `worker/test/nl.test.mjs` covers the offline-testable
+  half with a mocked Anthropic response: `sanitize()`/`filterConfidence()` behave the same
+  regardless of input phrasing, and the pre-existing fail-soft contract (empty text/bad
+  lens/no key/non-ok response/no tool_use block) is unchanged.
+- **Known, documented, out-of-scope tension**: `compile.mjs`'s `compileSub()` can't actually
+  honor both `minAmount` and `months` on the same money/alerts filter at once — an amount
+  bound (with `noticeType` unset) resolves to the Award branch, which ignores `months`
+  entirely (only the Solicitation branch applies a due-date window); a `noticeType:
+  "solicitation"` override loses `minAmount` instead (Solicitations carry no `contract_amount`
+  in this dataset). The canonical fixture's phrase names both an amount and a deadline in one
+  breath, which the query schema genuinely can't represent as a single constraint today. This
+  card's job was the NL→filter *extraction* step behaving identically across paraphrases —
+  fixing what the compiled query does with a filter that names both dimensions is a separate,
+  future card.
+- **Interpretation echo (index.html)**: `nlTransHTML(chips, forSel, weak)` renders the existing
+  "We understood this as: …chips" status line plus an always-present "Edit search" button
+  (`.mini.nledit`, `data-nlfor="<input selector>"`) — one delegated `document` click listener
+  (near `injectNLBoxes()`) refocuses whichever input the button names, so no per-render
+  listener wiring and no duplicate-id risk across the money box (`#nltrans`) and every other
+  lens's box (`#nltrans-<lens>`, all present in the DOM at once — see `injectNLBoxes()`).
+  `weak` (little/nothing understood beyond money's mandatory notice-type chip, or zero search
+  results) wraps both in a visible `.nlunderstood-weak` callout instead of leaving them as
+  quiet status text — this is what satisfies "never a bare empty result": `nlTranslate()`
+  overwrites `#list`'s generic `nothing_found` empty state with the echoed chips + edit button
+  when a search comes back with zero rows. The alerts lens gets the same treatment inside
+  `aPreview()`'s existing zero-match branch, gated to `$("#awatch").value === "moneynl"` (an
+  ask-driven watch) — reuses `NL.alerts.chips()` on `aLensFilter().filter` rather than
+  threading the original parse result through, so it costs no new state.
+  **Sharp edge hit while writing this**: `test/standards/nl_input_clarity.py` statically
+  greps `nlTransHTML()`'s source between its opening `{` and the FIRST `}` it finds — any
+  `${...}` template expression placed before the required `role="status"`/`nl_understood_label`
+  text pushes that first `}` earlier and silently drops both out of the captured region. Keep
+  any new dynamic (`${}`) content in that function's template AFTER those two required
+  substrings, or build it as a separate string joined with `+`/template-literal-without-braces
+  rather than interpolated inline before them.
+- **New i18n keys**: `nl_edit_btn`, `nl_no_matches_note` — two keys, all ten `SHIPPING_LANGS`,
+  same machine-drafted provenance as everything else in the catalog.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

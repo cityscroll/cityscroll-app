@@ -214,6 +214,8 @@
     fetching_today: "جارٍ جلب إشعارات اليوم المطابقة…",
     translating: "جارٍ الترجمة…",
     nl_understood_label: "لقد فهمنا هذا على أنه:",
+    nl_edit_btn: "تعديل البحث",
+    nl_no_matches_note: "لا توجد نتائج مطابقة لهذا البحث.",
     head_open: "طلبات تقديم عروض (RFP) مفتوحة",
     head_allrfp: "كل طلبات تقديم العروض",
     head_award: "الترسيات الأخيرة",
