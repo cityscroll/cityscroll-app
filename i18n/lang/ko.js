@@ -221,6 +221,8 @@
     nl_understood_label: "다음과 같이 이해했습니다:",
     nl_edit_btn: "검색 수정",
     nl_no_matches_note: "이 검색에 대한 결과가 없습니다.",
+    nl_chip_land_kind: "구역 재지정",
+    nl_chip_land_status_all: "종료된 구역 재지정 포함",
     head_open: "공개 제안요청서 (RFP)",
     head_allrfp: "모든 제안요청서 (RFP)",
     head_award: "최근 낙찰",

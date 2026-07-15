@@ -224,6 +224,8 @@
     nl_understood_label: "لقد فهمنا هذا على أنه:",
     nl_edit_btn: "تعديل البحث",
     nl_no_matches_note: "لا توجد نتائج مطابقة لهذا البحث.",
+    nl_chip_land_kind: "إعادة تقسيم المناطق",
+    nl_chip_land_status_all: "بما في ذلك إعادة تقسيم المناطق المغلقة",
     head_open: "طلبات تقديم عروض (RFP) مفتوحة",
     head_allrfp: "كل طلبات تقديم العروض",
     head_award: "الترسيات الأخيرة",

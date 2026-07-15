@@ -229,6 +229,8 @@
     nl_understood_label: "Zrozumieliśmy to jako:",
     nl_edit_btn: "Edytuj wyszukiwanie",
     nl_no_matches_note: "Brak wyników dla tego wyszukiwania.",
+    nl_chip_land_kind: "zmiany stref",
+    nl_chip_land_status_all: "w tym zamknięte zmiany stref",
     head_open: "Otwarte Zapytania ofertowe (RFP)",
     head_allrfp: "Wszystkie RFP",
     head_award: "Ostatnie przyznania",

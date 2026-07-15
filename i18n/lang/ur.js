@@ -224,6 +224,8 @@
     nl_understood_label: "ہم نے اسے یوں سمجھا:",
     nl_edit_btn: "تلاش میں ترمیم کریں",
     nl_no_matches_note: "اس تلاش کے لیے کوئی نتائج نہیں ملے۔",
+    nl_chip_land_kind: "دوبارہ زوننگ",
+    nl_chip_land_status_all: "بند دوبارہ زوننگ سمیت",
     head_open: "کھلی درخواستِ تجاویز (RFP)",
     head_allrfp: "تمام RFP",
     head_award: "حالیہ ایوارڈز",

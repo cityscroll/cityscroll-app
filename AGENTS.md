@@ -923,6 +923,90 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   as `test/match_evidence.test.mjs`/`test/forecast_render.test.mjs`), pinned against the real
   20260709010 fixture content pulled from the live SODA dataset.
 
+## Echo the complete interpretation, incl. lens-implied parts + contextTerms (w12-09)
+
+- **Field evidence (site owner, production), two lenses, same class**: on Land, the suggestion
+  "rezonings in Queens" produced NO "Matched:" evidence and an echo reading "We understood this
+  as: in Queens" — dropping "rezonings". On Property, "police department property" echoed "We
+  understood this as: agency Police Department" — dropping "property". Root cause was **not** a
+  chip-vs-typed-ask divergence — a `.trychip` click and the Ask box's Go/Enter both resolve
+  through the identical `nlTranslateLens(lens)` (see `renderNLSamples()`/`injectNLBoxes()`), so
+  whatever `NL.<lens>.chips()` says is what every entry path echoes. The real gap: **the "kind"
+  of result (rezonings / property disposals / rules / meetings) has no field in any of these
+  lenses' filter schemas** — it's lens-implied (the tab's own query is hardcoded to one
+  `section_name`/dataset, so there's nothing else the results could be), so a query resolving to
+  e.g. `{boro:"Queens", keywords:[]}` or `{agency:"NYPD", keywords:[]}` left `chips()` with only
+  the extracted field to show.
+- **Echo fix — unconditional lens-implied leading chip**, same shape for all four lenses:
+  `NL.land.chips()` always renders a first chip (`t("nl_chip_land_kind")`, all `SHIPPING_LANGS`,
+  using the pinned `glossary.json` `rezoning` term); `nlFeed()` (shared by Property/Rules/
+  Meetings) always renders `tSection(SECTIONS[key].section)` first — the SAME translated label
+  already shown in the Today strip/agency profiles, so no new i18n keys were needed for those
+  three. Money/Alerts don't need this (no single implied notice type — `noticeType` already
+  renders when set); People already states the lens-implied part via its existing `lookupType`
+  chip.
+- **Evidence fix — `matchEvidence(title, description, terms, contextTerms)`.** A 4th param for
+  terms that describe the query but were never sent to SODA as `$q` (Land's borough — a
+  structured `borough=` filter, never folded into `#lkw`). `contextTerms` are folded into the
+  same title/description search as `terms`, but **never fall through to the `{field:"unknown"}`
+  guess** — that fallback's whole premise ("SODA's `$q` matched somewhere we didn't fetch")
+  doesn't hold for a field that was never full-text searched. Net effect: a boro-only Land query
+  now shows real "Matched: …Queens…" evidence when a project brief happens to name the borough
+  (common in ZAP data), and honest silence — never a guessed "unknown" — when it doesn't.
+  `landRenderList(kw, kwIsTextMatch, boro)` gained a third param threading `$("#lboro").value`
+  through as `contextTerms`, kept separate from keyword-derived `terms` throughout (never merged
+  before the call), so the "unknown" fallback still only ever fires for a genuine keyword miss.
+  **Property/Rules/Meetings didn't need this half** — `nlFeed().apply()` already folds `f.agency`
+  straight into `#<key>kw`/`$q`, so an agency-only feed query (the "police department property"
+  case) already produced real evidence (a `${r.type_of_notice_description}`/title/description hit
+  on the agency name, or the `unknown` fallback) before this card — only the echo was missing
+  "property".
+- **Real fixtures, live-pulled 2026-07-15 from the ZAP dataset (hgx4-8ukb)**: `P2012Q0008` ("XU
+  HOTEL AND RESIDENCES") whose `project_brief` literally ends "...Flushing, CD7, Queens." (proves
+  the contextTerm path finds a real hit); `P2012Q0316` ("WOODWARD AVENUE REZONING"), a sibling row
+  from the identical borough query whose brief never says "Queens" (proves no `unknown` guess gets
+  invented for it) — both in `test/lens_match_evidence.test.mjs`.
+- **Two more field cases, same session, same class — the echo-rendering half**: "rezonings in the
+  Bronx" echoed "We understood this as: in Bronxall · incl. closed"; "environmental protection
+  land" (Property) echoed "about environmental protection / land". Neither is a missing chip —
+  both are how the chips *combine*.
+  - **`nlTransHTML()` joined chips with `chips.join("")`** — zero characters between adjacent
+    `<span class="qchip">` elements. CSS margin still visually separates the pills, so this only
+    ever showed up in anything reading `textContent` (a screen reader's accessible-name
+    computation for the `role="status"` line, copy/paste, a test assertion) — "Bronx" and "all"
+    ran together as the single word "Bronxall". Fixed to `chips.join(" ")`; every call site
+    (`nlTranslateLens()`, `nlTranslate()`, `resolveMoneyNarrow()`, `aPreview()`'s zero-match
+    branch) already filters falsy chips before calling it, so the extra space never doubles up.
+  - **The `status==="all"` chip was raw filter jargon**, `<b>all</b> · incl. closed` — an
+    abbreviation (banned by `nyc_copy_lint.py`'s own rules, but this string was invisible to
+    every static gate, since it lives inside a `<script>` block, never in rendered static HTML —
+    same class of guard-blind-spot the reading-level ratchet note documents elsewhere in this
+    file). Replaced with a real i18n key, `nl_chip_land_status_all` ("including closed
+    rezonings"), all `SHIPPING_LANGS`.
+  - **`stripImpliedKeywords(lens, keywords)`** + `LENS_IMPLIED_WORDS` (index.html, just above
+    `const NL`) filters a lens's own type-word out of the "about" keyword chip (and the applied
+    search) — "environmental protection land" used to echo `about environmental protection /
+    land`, with "land" riding along as if it were a real topic next to "environmental
+    protection", inconsistent with how the SAME word gets dropped and stated distinctly via the
+    lens-implied chip everywhere else. Applied to all four lenses' `chips()`/`apply()` — Land's
+    own extraction occasionally puts "rezoning" in `keywords` too (confirmed live via the
+    on-device fallback parser), which used to double up on the leading chip
+    ("rezonings · about rezoning") before this.
+  - Both fixes and their exact-string before/after are pinned in `test/nl_echo_completeness.test.mjs`.
+- **Entry-path parity** is structural, not a separate reconciliation step: since chip-click and
+  Ask both call the one `nlTranslateLens(lens)`, fixing `NL.land.chips()`/`nlFeed().chips()` fixed
+  every entry path at once for both reported lenses. `test/nl_echo_completeness.test.mjs` pins the
+  chip content per lens (incl. the verbatim "rezonings in Queens" and "police department
+  property" field cases) AND greps `renderNLSamples()`/`injectNLBoxes()` to guard the wiring
+  itself — a future change that special-cased chip clicks to bypass `nlTranslateLens()` would
+  break this test even before it broke the echo.
+- **Known, out-of-scope gap left as-is**: `NL.alerts.chips()`'s `noticeType` chip
+  (`f.noticeType==="award"?"awards":"open RFPs"`) is bare, untranslated English — the same class
+  of chip-string issue, but a pre-existing one, unexercised by any hermetic guard walk (the NL
+  ask/chip interpretation panels aren't in `test/functional/13_stray_english.py`'s walk at all
+  today, a separate coverage gap from this card's scope). Not touched here to keep this card's
+  diff to the reported class (lens-implied chips + contextTerms), not a sweep of every chip string.
+
 ## Ask translation — paraphrase robustness + the interpretation echo (w12-02)
 
 - **Field evidence, 2026-07-14 user interview**: the ask box "required very specific wording"
