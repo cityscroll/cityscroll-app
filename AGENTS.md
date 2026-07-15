@@ -1008,6 +1008,74 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   strip for free with no call-site changes — same integration pattern PR #52's `cadenceHTML()`
   uses for the same function.
 
+## Verified, rotating suggestion chips (w12-08)
+
+- **Field evidence**: under the money lens, the prefab suggestion chips "IT consulting RFPs"
+  and "shelter services contracts" returned ZERO live results while "construction contracts
+  over $500k" worked — a suggestion that leads nowhere reads as a broken site. Site owner
+  decision: verify every suggestion against fresh data, and rotate the display set during the
+  daily batch update so a no-result suggestion is never shown.
+- **The chips being fixed are `.trychip`/`NL_SAMPLES`** (index.html, now
+  `NL_SUGGESTIONS_FALLBACK` + the validated-set path below) — the sample queries under each
+  lens's Ask box (`renderNLSamples()`), not the separate "Build an alert" panel's 3
+  `.wandchip` quick-suggestions (`sugg_rezone_rivington`/`sugg_awards_1m`/
+  `sugg_construction_rfp`), which are out of this card's scope.
+- **Server side**: `worker/src/lib/suggestions.mjs` is the pure candidate pool + query builder
+  — `SUGGESTION_POOL` (money/land/property/rules/meetings/alerts, ~26 candidates, each with a
+  STABLE per-lens `idx` that is also its i18n key suffix, `sugg_<lens>_<idx>` — never renumber
+  an existing one, only append), `MIN_SUGGESTION_RESULTS` (3 — "a handful", concrete), and
+  `suggestionCountParams(lens, filter, todayISO)`, which reuses `compile.mjs`'s existing
+  `compileSub()` (just swapping `$select` for `count(1) as n` and dropping `$order`/`$limit`)
+  so a suggestion's honesty is judged by the IDENTICAL query shape a real click resolves to —
+  no bespoke second query-builder to drift from it. `worker/src/suggest.mjs`'s
+  `runSuggestionValidation(env)` (called from the 13:00 UTC `scheduled()` handler in
+  `worker.mjs`, right after the D1 ingest step and before `runAlerts()`) resolves each
+  candidate's text via `parseLensFilter()` — the same NL→filter core `/nl` itself calls — then
+  counts live matches and stores the fruitful set (grouped by lens, with counts + a timestamp)
+  in `ALERT_STATE` KV under `suggestions:validated`, alongside the other cron products
+  (`fc:`/`plan:`). `GET /suggestions` (`handleSuggestions`) serves that JSON; 404s until the
+  first successful cron run.
+- **"people" is a documented, deliberate gap**: `compileSub()` has no case for it ("people
+  isn't cron-replayable yet" — payroll-title counting needs different plumbing than every
+  other lens, which all resolve to a Socrata/ZAP `$where` + count), so
+  `suggestionCountParams("people", …)` returns `null` and it's never in the pool. Its 3 chips
+  stay the pre-existing hardcoded `sugg_people_0/1/2`, unvalidated, unchanged.
+- **Fail-soft, two layers**: one candidate's resolve/count failure is caught and skipped inside
+  `runSuggestionValidation` (logged, not fatal to the run); if the WHOLE run comes back with
+  nothing validated at all (Socrata or Anthropic down), the previous KV value is left
+  untouched rather than overwritten with an empty set — a transient outage must never blank
+  out yesterday's good chips. `worker.mjs`'s own try/catch around the call is only for
+  something the pipeline didn't anticipate (e.g. a KV outage), same posture as the
+  pre-existing checkbook/MOCS pipeline call just above it.
+- **Client side** (index.html, same block that used to be `NL_SAMPLES`):
+  `NL_SUGGESTIONS_FALLBACK` is the small, evergreen static subset shown before the worker
+  responds or when it's unreachable — deliberately excludes money idx 1/2 (the two dead
+  field-evidence examples) and carries its own live check, `worker/e2e/suggestions.mjs`
+  (added to `npm run test:live`), which resolves each fallback candidate through the deployed
+  `/nl` endpoint and fails if any returns fewer than `MIN_SUGGESTION_RESULTS` live rows today.
+  `NL_SUGGESTIONS_VALIDATED` holds `GET /suggestions`'s `byLens` once `loadValidatedSuggestions()`
+  fetches it (via the existing `workerFetch()` failover helper); `currentSuggestionIndices(lens)`
+  prefers the validated set for a lens over the fallback, but only when it's non-empty — an
+  all-fruitless validation day still shows the static subset rather than blanking the chips.
+  `pickSuggestions(indices, displayCount, seed)` is the pure day-seeded rotation (`daySeed()` =
+  whole days since epoch) — stable within a day, varies across days; kept as a standalone
+  function (no `Date` inside it) specifically so `test/suggestions_render.test.mjs` can extract
+  and test it deterministically, the same brace-matching-extraction convention as
+  `forecast_render.test.mjs`/`cadence_estimate.test.mjs`.
+- **Sharp edge — the fallback idx lists are duplicated by hand.** `index.html`'s
+  `NL_SUGGESTIONS_FALLBACK` and `worker/src/lib/suggestions.mjs`'s `FALLBACK_INDICES` must
+  name the same idx values per lens — the static site and the worker can't share an import
+  across that boundary. Keep them in sync by hand when either changes.
+- **i18n**: 8 new candidates (money idx 3/4/5; land/property/rules/meetings/alerts idx 3 each)
+  needed fresh `sugg_<lens>_<idx>` keys across all 10 `SHIPPING_LANGS` — the pre-existing idx
+  0-2 keys (money/land/property/rules/meetings/alerts) were reused verbatim, unchanged.
+- **Tests**: `worker/test/suggestions.test.mjs` (offline, mocked fetch/KV — pins the
+  field-evidence fixture itself: the two dead money examples excluded, the working one
+  survives, plus the fail-soft/KV-untouched-on-outage behavior) and
+  `test/suggestions_render.test.mjs` (root, extracts the client's pure rotation/fallback
+  logic) are the two halves; `worker/e2e/suggestions.mjs` is the live check on the static
+  fallback specifically (see above).
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
