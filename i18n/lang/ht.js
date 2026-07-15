@@ -220,6 +220,8 @@
     nl_understood_label: "Men sa nou konprann:",
     nl_edit_btn: "Modifye rechèch la",
     nl_no_matches_note: "Pa gen rezilta pou rechèch sa a.",
+    nl_chip_land_kind: "chanjman zonaj",
+    nl_chip_land_status_all: "gen ladan chanjman zonaj ki fèmen",
     head_open: "Demann Pwopozisyon (RFP) louvri",
     head_allrfp: "Tout RFP yo",
     head_award: "Akòdman resan yo",

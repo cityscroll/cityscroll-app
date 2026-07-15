@@ -53,6 +53,11 @@ vendor_name, count(1) as n, sum(contract_amount) as t, min(start_date) as first,
 
 # ── Internal matching-logic constants — never rendered, only used for word-overlap scoring
 the a an of for and to in on with by at services service contract contracts renewal option year years extension citywide fiscal
+agency rules
+land use
+property disposition
+public hearing
+public hearings
 
 # ── Key names, HTTP headers, ICS/calendar structure
 Content-Type
@@ -72,7 +77,6 @@ nWe intend to respond and would appreciate confirmation of (1) how to obtain the
 nnVia CROL-List — The City Record, searchable.
 
 # ── NL ask-layer: sample queries, device-parser placeholders, translate-chips (queued: language wave)
-<span class="qchip"><b>all</b> · incl. closed</span>
 <span class="qchip">about <b>
 <span class="qchip">due within <b>
 <span class="qchip">in <b>

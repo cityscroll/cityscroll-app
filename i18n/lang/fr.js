@@ -266,6 +266,8 @@
     nl_understood_label: "Voici ce que nous avons compris :",
     nl_edit_btn: "Modifier la recherche",
     nl_no_matches_note: "Aucun résultat pour cette recherche.",
+    nl_chip_land_kind: "rezonages",
+    nl_chip_land_status_all: "y compris les rezonages clos",
 
     // Dynamic headings (search())
     head_open:              "Demandes de propositions (RFP) ouvertes",

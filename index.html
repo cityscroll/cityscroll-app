@@ -327,7 +327,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=5bd2ffa0"></script>
+<script src="i18n.js?v=c3d6e1cf"></script>
 <script src="nl_parse.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
@@ -1525,7 +1525,13 @@ function nlWorkingHTML(){ return '<div class="nlworking"><span class="loading"><
 // bare empty result — field evidence 2026-07-14).
 function nlTransHTML(chips, forSel, weak){
   if(!chips.length) return "";
-  const status = `<div class="nlunderstood" role="status">${t("nl_understood_label")} ${chips.join("")}</div>`;
+  // A plain space, not "" -- adjacent .qchip spans read fine visually (CSS margin separates
+  // the pills either way), but joining with no text node between them at all left the DOM/
+  // accessible text of consecutive chips mashed together with no boundary -- a real "rezonings
+  // in the Bronx" query echoed as the single run-on word "Bronxall" to anything reading
+  // textContent (a screen reader's accessible-name computation, copy/paste, a test assertion),
+  // not just visually.
+  const status = `<div class="nlunderstood" role="status">${t("nl_understood_label")} ${chips.join(" ")}</div>`;
   const edit = `<button type="button" class="mini nledit" data-nlfor="${forSel}">${t("nl_edit_btn")}</button>`;
   return weak ? `<div class="nlunderstood-weak">${status}${edit}</div>` : `${status}${edit}`;
 }
@@ -1579,6 +1585,22 @@ function deviceParse(text, lens){
   return out;
 }
 
+// Keywords that just restate a lens's own implied type read as redundant "keyword soup" once
+// the lens-implied chip (below) already states that type distinctly -- e.g. "environmental
+// protection land" used to echo "about environmental protection / land", with "land" doing
+// nothing but repeating what the Property tab already is. Stripped from both the echo AND the
+// applied search filter (not just hidden from view), so what's shown is always what's searched.
+const LENS_IMPLIED_WORDS = {
+  land: ["rezoning","rezonings","rezone","rezones","zoning","land use","landuse"],
+  property: ["property","properties","land","disposition","dispositions","property disposition"],
+  rules: ["rule","rules","regulation","regulations","agency rule","agency rules"],
+  meetings: ["meeting","meetings","hearing","hearings","public hearing","public hearings"],
+};
+function stripImpliedKeywords(lens, keywords){
+  const stop=new Set((LENS_IMPLIED_WORDS[lens]||[]).map(w=>w.toLowerCase()));
+  return (keywords||[]).filter(k=>!stop.has(String(k||"").trim().toLowerCase()));
+}
+
 const NL = {
   people: {
     placeholder:"for example, paramedic roles, or look up someone named Rodriguez",
@@ -1589,11 +1611,25 @@ const NL = {
   },
   land: {
     placeholder:"for example, rezonings in Brooklyn, or 79 Rivington",
-    chips:f=>[ f.boro?`<span class="qchip">in <b>${f.boro}</b></span>`:"",
-               (f.keywords&&f.keywords.length)?`<span class="qchip">about <b>${f.keywords.join(' / ')}</b></span>`:"",
-               f.status==='all'?`<span class="qchip"><b>all</b> · incl. closed</span>`:"" ],
+    // The Land tab is *always* rezonings -- there's no field for it in the filter schema
+    // (nothing else the ZAP dataset returns), so a query that names no keyword/borough of its
+    // own (e.g. "rezonings in Queens" -- boro consumes "Queens", "rezonings" has nowhere to
+    // go) used to echo as just "in Queens", dropping the very thing the user asked about. The
+    // leading chip is unconditional, not read off any extracted field. stripImpliedKeywords()
+    // keeps "rezoning"/"zoning" out of the "about" chip too -- it's occasionally extracted as
+    // a keyword (the device-parser fallback does this), which used to double up on the leading
+    // chip ("rezonings · about rezoning").
+    chips:f=>{
+      const kw=stripImpliedKeywords("land", f.keywords);
+      return [ `<span class="qchip">${t("nl_chip_land_kind")}</span>`,
+               f.boro?`<span class="qchip">in <b>${f.boro}</b></span>`:"",
+               kw.length?`<span class="qchip">about <b>${kw.join(' / ')}</b></span>`:"",
+               // Plain language, not filter jargon ("all · incl. closed") -- every echoed
+               // filter must be readable as a sentence fragment on its own.
+               f.status==='all'?`<span class="qchip">${t("nl_chip_land_status_all")}</span>`:"" ];
+    },
     apply:f=>{ if(f.boro) $("#lboro").value=f.boro; if(f.status) $("#lstatus").value=f.status;
-               $("#lkw").value=(f.keywords||[]).join(" "); landSearch(); }
+               $("#lkw").value=stripImpliedKeywords("land", f.keywords).join(" "); landSearch(); }
   },
   property: nlFeed("property","for example, HPD property sales, DEP land"),
   rules:    nlFeed("rules","for example, buildings rules, sanitation rules"),
@@ -1660,11 +1696,27 @@ async function resolveMoneyNarrow(){
 function nlFeed(key, placeholder){
   return {
     placeholder,
-    chips:f=>[ f.agency?`<span class="qchip">agency <b>${f.agency}</b></span>`:"",
-               (f.keywords&&f.keywords.length)?`<span class="qchip">about <b>${f.keywords.join(' / ')}</b></span>`:"",
-               (key==='meetings'&&f.when)?`<span class="qchip"><b>${f.when}</b></span>`:"" ],
+    // Same class of gap as Land (see NL.land.chips above): Property/Rules/Meetings are each
+    // pinned to one City Record section_name, with no field in the filter schema for it -- a
+    // query like "HPD property sales" that resolves to agency-only (the model treats "property
+    // sales" as lens-implicit, the same way it treats "rezonings") used to echo just the agency,
+    // dropping what the results actually are. SECTIONS[key].section is the exact section_name
+    // this feed already queries by, and tSection() is the translated label already used
+    // everywhere else that name is shown (Today strip, agency profiles) -- reused here rather
+    // than a new set of per-language strings.
+    // stripImpliedKeywords() (see NL.land.chips above) keeps the lens's own type-word out of
+    // the "about" chip and the applied search -- e.g. "environmental protection land" used to
+    // echo "about environmental protection / land", with "land" repeating what the lens-implied
+    // chip above already says plainly.
+    chips:f=>{
+      const kw=stripImpliedKeywords(key, f.keywords);
+      return [ `<span class="qchip">${tSection(SECTIONS[key].section)}</span>`,
+               f.agency?`<span class="qchip">agency <b>${f.agency}</b></span>`:"",
+               kw.length?`<span class="qchip">about <b>${kw.join(' / ')}</b></span>`:"",
+               (key==='meetings'&&f.when)?`<span class="qchip"><b>${f.when}</b></span>`:"" ];
+    },
     apply:f=>{ if(key==='meetings'&&f.when){ const w=$("#meetingswhen"); if(w) w.value=f.when; }
-               $("#"+key+"kw").value=[...(f.keywords||[]), f.agency].filter(Boolean).join(" ");
+               $("#"+key+"kw").value=[...stripImpliedKeywords(key, f.keywords), f.agency].filter(Boolean).join(" ");
                loadSection(key); }
   };
 }
@@ -2080,8 +2132,9 @@ async function landSearch(){
     announce(t("rezonings_announce",{n:lRows.length>=40?"40+":lRows.length}));
     // A resolved block/nearby lookup doesn't filter rows by kw as TEXT (it's a BBL join) --
     // match evidence would misrepresent that as a keyword hit, so only pass kw through when
-    // it actually became the $q text filter below.
-    landRenderList(kw, !block);
+    // it actually became the $q text filter below. boro is always a structured filter -- passed
+    // separately as a contextTerm (see landRenderList).
+    landRenderList(kw, !block, boro);
   }catch(e){ if(!stale()){ unbusy("#llist"); $("#llist").innerHTML='<div class="empty">' + t("could_not_reach") + '</div>'; } }
 }
 
@@ -2094,8 +2147,8 @@ async function landNearby(geo,status){
 // (not short_title/additional_description_1) -- digItemHTML's emailed-digest evidence
 // deliberately skips ZAP rows for that reason, but matchEvidence()/digTitleHTML()/
 // digEvidenceHTML() are generic text-in/HTML-out and work on any title+description pair.
-function landRowHTML(r, i, terms){
-  const title = r.project_name || "", ev = matchEvidence(title, cleanText(r.project_brief), terms);
+function landRowHTML(r, i, terms, contextTerms){
+  const title = r.project_name || "", ev = matchEvidence(title, cleanText(r.project_brief), terms, contextTerms);
   return `<div class="row" data-i="${i}" tabindex="0" role="button">
     <p class="rtitle">${title ? digTitleHTML(title, ev) : t("unnamed_project")}</p>
     <p class="rmeta">${mihOn(r.mih_flag)?`<span class="tag soon">${t("affordable_housing_tag")}</span>`:''}<span class="ragency">${r.borough||""}${r.community_district?" · CD "+r.community_district:""}</span> · ${r.public_status||r.project_status||""}<br>
@@ -2103,7 +2156,7 @@ function landRowHTML(r, i, terms){
     ${digEvidenceHTML(ev)}
   </div>`;
 }
-function landRenderList(kw, kwIsTextMatch){
+function landRenderList(kw, kwIsTextMatch, boro){
   const head=landBanner?`<div class="landbanner">${landBanner}</div>`:"";
   if(!lRows.length){
     $("#llist").innerHTML=head+`<div class="empty">${t("no_zap")}${kw?t("no_zap_kw",{kw}):""}. ${t("zap_explainer_html")}</div>`;
@@ -2112,7 +2165,11 @@ function landRenderList(kw, kwIsTextMatch){
   // A resolved block/nearby lookup filters rows by a BBL join, not kw as text -- only pass kw
   // through as a match term when it actually became the $q text filter (see landSearch()).
   const terms = (kw && kwIsTextMatch) ? [kw] : [];
-  $("#llist").innerHTML=head+lRows.map((r,i)=>landRowHTML(r,i,terms)).join("");
+  // boro is a structured `borough=` filter, not a $q text search -- passed as a contextTerm so
+  // matchEvidence() can still surface it when a project_brief happens to name the borough in its
+  // own text (common in ZAP data), without ever guessing a fallback "unknown" match for it.
+  const contextTerms = boro ? [boro] : [];
+  $("#llist").innerHTML=head+lRows.map((r,i)=>landRowHTML(r,i,terms,contextTerms)).join("");
   document.querySelectorAll("#llist .row").forEach(el=>el.addEventListener("click",()=>landSelect(+el.dataset.i, el)));
   document.querySelector("#llist .row")?.click();
 }
@@ -2545,13 +2602,22 @@ function locateAnyTerm(text, terms){
 //   {field:"unknown", term}                           -- matched via a field the preview
 //     doesn't fetch (SODA's $q also searches columns like contact/method fields) -- name the
 //     term rather than showing the notice with nothing explaining it.
-function matchEvidence(title, description, terms){
+// contextTerms (w12-09): terms that describe the query but were never sent to SODA as a $q
+// text search -- e.g. Land's borough, applied as a structured `borough=` filter, not a keyword
+// hit. A row's borough is already shown plainly in its own metadata line, so there's nothing
+// hidden to explain the way a buried keyword hit is -- contextTerms therefore never fall
+// through to the "unknown" guess (that fallback's whole premise is "SODA's $q matched
+// somewhere we didn't fetch," which never happened for a structured filter). They only ever
+// surface real evidence: found in the visible text, or nothing rendered at all.
+function matchEvidence(title, description, terms, contextTerms){
   const words=(terms||[]).filter(Boolean);
-  if(!words.length) return null;
-  const inTitle=locateAnyTerm(title, words);
+  const context=(contextTerms||[]).filter(Boolean);
+  const all=[...words, ...context];
+  if(!all.length) return null;
+  const inTitle=locateAnyTerm(title, all);
   if(inTitle) return {field:"title", term:inTitle.term, index:inTitle.index};
   const text=String(description||"");
-  const inDesc=locateAnyTerm(text, words);
+  const inDesc=locateAnyTerm(text, all);
   if(inDesc){
     const RADIUS=70, start=Math.max(0,inDesc.index-RADIUS), end=Math.min(text.length, inDesc.index+inDesc.term.length+RADIUS);
     return { field:"description", term:inDesc.term,
@@ -2559,6 +2625,7 @@ function matchEvidence(title, description, terms){
       hit:text.slice(inDesc.index, inDesc.index+inDesc.term.length),
       after:text.slice(inDesc.index+inDesc.term.length, end)+(end<text.length?"…":"") };
   }
+  if(!words.length) return null;
   return {field:"unknown", term:words[0]};
 }
 // matchText: the fuller haystack for a City Record row's match evidence. additional_description_1

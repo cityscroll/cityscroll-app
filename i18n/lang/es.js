@@ -221,6 +221,8 @@
     nl_understood_label: "Esto es lo que entendimos:",
     nl_edit_btn: "Editar búsqueda",
     nl_no_matches_note: "No hay resultados para esta búsqueda.",
+    nl_chip_land_kind: "rezonificaciones",
+    nl_chip_land_status_all: "incluyendo rezonificaciones cerradas",
     head_open: "Solicitudes de propuestas (RFP) abiertas",
     head_allrfp: "Todas las RFP",
     head_award: "Adjudicaciones recientes",

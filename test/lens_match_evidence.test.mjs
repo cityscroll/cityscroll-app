@@ -192,6 +192,54 @@ test("landRowHTML: a resolved geocode block lookup passes no text-match terms (k
   assert.doesNotMatch(html, /<mark/);
 });
 
+// w12-09 field report (site owner, production): following the Land suggestion "rezonings in
+// Queens", results carried no "Matched:" evidence at all -- "rezonings" is lens-implicit (no
+// filter field for it) and "Queens" resolves to a structured `borough=` filter, not a $q text
+// search, so landRenderList()'s old two-arg matchEvidence() call always got an empty terms
+// list for a borough-only query. Real fixtures pulled live 2026-07-15 from the ZAP dataset
+// (hgx4-8ukb) via
+//   curl 'https://data.cityofnewyork.us/resource/hgx4-8ukb.json?borough=Queens&$where=ulurp_non=%27ULURP%27&$order=current_milestone_date%20DESC&$limit=8'
+// -- one row (P2012Q0008) names "Queens" in its own project_brief text; a sibling row from the
+// same query (P2012Q0316) does not, proving the fix surfaces real evidence without guessing one
+// for every row a borough filter happens to return.
+const xuHotel = {
+  project_id: "P2012Q0008",
+  project_name: "XU HOTEL AND RESIDENCES",
+  project_brief: "This is a private application by CG & J Realty, LLC requesting a zoning map amendment [C120403ZMQ]to facilitate construction of a new mixed-use 11-story development, including 10,400 sf of commerical retail, 97,000 sf of hotel use, 7,000 sf of community facility space and 37,000 sf of residential use at 137-61 Northern Boulevard, Flushing, CD7, Queens.",
+  borough: "Queens",
+  public_status: "Completed",
+};
+const woodwardAve = {
+  project_id: "P2012Q0316",
+  project_name: "WOODWARD AVENUE REZONING",
+  project_brief: "ZONING MAP CHANGE FROM M1-1 TO R5B, R6B, R6B/C1-3 TO FACIITATE CONSTRUCTION OF  A NEW 4-STORY MIXED-USE BUILDING AND A 4-STORY RESIDENTIAL BUILDING",
+  borough: "Queens",
+  public_status: "Completed",
+};
+
+test("before: a borough-only query ('rezonings in Queens') passed no terms at all -- matchEvidence had nothing to work with", () => {
+  const ev = matchEvidence(xuHotel.project_name, xuHotel.project_brief, []);
+  assert.equal(ev, null);
+});
+
+test("landRowHTML: a borough passed as a contextTerm surfaces real evidence when the brief names it", () => {
+  const html = landRowHTML(xuHotel, 0, [], ["Queens"]);
+  assert.match(html, /XU HOTEL AND RESIDENCES/);
+  assert.match(html, /class="dev"/);
+  assert.match(html, /<mark>Queens<\/mark>/);
+});
+
+test("landRowHTML: a borough contextTerm never falls back to an 'unknown' guess when the brief doesn't name it", () => {
+  const html = landRowHTML(woodwardAve, 0, [], ["Queens"]);
+  assert.doesNotMatch(html, /<mark/);
+  assert.doesNotMatch(html, /class="dev"/);
+});
+
+test("matchEvidence: a real keyword term still falls back to 'unknown' -- only contextTerms are guess-free", () => {
+  const ev = matchEvidence(woodwardAve.project_name, woodwardAve.project_brief, ["Queens"], []);
+  assert.equal(ev.field, "unknown");
+});
+
 // ---- Property/Rules/Meetings ------------------------------------------------------------------
 const rulesNotice = {
   request_id: "20260710099",
