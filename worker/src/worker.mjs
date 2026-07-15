@@ -20,6 +20,7 @@ import { handleStats } from "./stats.mjs";
 import { handleRedirect } from "./redirect.mjs";
 import { runAlerts, consumeDigestJob } from "./alerts.mjs";
 import { ingestNotices } from "./ingest.mjs";
+import { runSuggestionValidation, handleSuggestions } from "./suggest.mjs";
 import { handleMcp } from "./mcp.mjs";
 import { handleBoardHook } from "board-notify";
 import { handleInboundEmail } from "./inbound.mjs";
@@ -41,6 +42,7 @@ export default {
     if (pathname === "/feed.xml" || pathname === "/feed.json" || pathname === "/feed.ics") return handleFeed(request, env, ctx);
     if (pathname === "/batch") return handleBatch(request, env);
     if (pathname === "/inv" || pathname.startsWith("/inv/")) return handleInv(request, env, pathname);
+    if (pathname === "/suggestions") return handleSuggestions(request, env);
     if (pathname === "/stats") return handleStats(request, env, ctx);
     if (pathname.startsWith("/r/")) return handleRedirect(request, env, ctx, pathname);
     if (pathname === "/api") return Response.redirect("https://crol-list.org/api.html", 302);
@@ -60,6 +62,16 @@ export default {
       console.log("ingest:", JSON.stringify(r));
     } catch (e) {
       console.error("ingest failed (alerts continue):", String(e?.message || e));
+    }
+    // Suggestion-chip validation (w12-08): a candidate's failure is already caught inside
+    // runSuggestionValidation itself; this outer catch is only for something the pipeline
+    // didn't anticipate (e.g. a KV outage) — either way, a failed run must never block the
+    // digest below, and it leaves the previously-validated set in KV untouched.
+    try {
+      const r = await runSuggestionValidation(env);
+      console.log("suggestions:", JSON.stringify(r));
+    } catch (e) {
+      console.error("suggestion validation failed (digest continues):", String(e?.message || e));
     }
     // Await directly (not ctx.waitUntil) so the runtime keeps the worker alive until the whole
     // digest run — config watches + every KV subscription — completes.

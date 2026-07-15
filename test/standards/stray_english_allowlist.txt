@@ -77,12 +77,6 @@ nnVia CROL-List — The City Record, searchable.
 <span class="qchip">due within <b>
 <span class="qchip">in <b>
 <span class="qchip">notice = <b>
-HPD property sales
-attorney titles
-awards over $1M
-buildings rules
-construction contracts over $500k
-education contracts over $200K due in 3 months
 for example, HPD property sales, DEP land
 for example, buildings rules, sanitation rules
 for example, education contracts over $200K due in 3 months, or awards over $1M
@@ -91,10 +85,6 @@ for example, recent landmarks hearings, city council
 for example, rezonings in Brooklyn, or 79 Rivington
 open RFP
 open RFPs
-paramedic roles
-rezonings in Brooklyn
-rezonings in Queens
-rezonings near 79 Rivington
 <span class="qchip">rezonings near <b>
 
 # ── Entity / matter / investigation / shared views + digest mock shell (queued: language wave)
@@ -147,29 +137,20 @@ Due:
 award to this vendor at this agency in 90 days
 block/lot
 city-owned property
-environmental protection land
 fiscal_year=
 forest management
 in the custody
 look up lookup someone somebody person people named name find search for a an the of about mr ms mrs role title
-look up someone named Rodriguez
 more</b> under this PIN
 mortgage and note
 notice/
 owners are wanted
-police department property
 property clerk
 public auction
-recent city council hearings
-recent community board meetings
-recent landmarks hearings
 request for proposal
 residential property
 response > status > result
 responses due
-sanitation rules
-shelter services contracts
-taxi rules
 text/calendar;charset=utf-8
 the a an of in on for to and or with show me find list all near over under within new nyc city our your their about that this
 the procurement officer

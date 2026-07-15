@@ -18,7 +18,7 @@
     "deploy": "wrangler deploy",
     "cf:kv": "wrangler kv namespace create NL_METER && wrangler kv namespace create ALERT_STATE",
     "test": "node --test",
-    "test:live": "node --test e2e/nl.mjs e2e/usage.mjs e2e/routes.mjs",
+    "test:live": "node --test e2e/nl.mjs e2e/usage.mjs e2e/routes.mjs e2e/suggestions.mjs",
     "usage:live": "node --test e2e/usage.mjs"
   },
   "devDependencies": {

@@ -327,7 +327,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=5fa0de13"></script>
+<script src="i18n.js?v=fc0e269e"></script>
 <script src="nl_parse.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
@@ -1685,26 +1685,83 @@ async function nlTranslateLens(lens, opts){
   NL[lens].apply(f);
 }
 
-const NL_SAMPLES = {
-  money: ["construction contracts over $500k", "IT consulting RFPs", "shelter services contracts"],
-  people: ["paramedic roles", "look up someone named Rodriguez", "attorney titles"],
-  land: ["rezonings in Brooklyn", "rezonings in Queens", "79 Rivington"],
-  property: ["HPD property sales", "environmental protection land", "police department property"],
-  rules: ["buildings rules", "sanitation rules", "taxi rules"],
-  meetings: ["recent landmarks hearings", "recent city council hearings", "recent community board meetings"],
-  alerts: ["awards over $1M", "education contracts over $200K due in 3 months", "rezonings near 79 Rivington"]
+// Suggestion-chip candidate pool + validated-set rotation (w12-08). Field evidence (site
+// owner, live production): the money lens's "IT consulting RFPs"/"shelter services contracts"
+// chips returned ZERO results while "construction contracts over $500k" worked — a suggestion
+// that leads nowhere reads as a broken site. The daily 13:00 UTC cron (worker/src/suggest.mjs)
+// verifies every candidate in worker/src/lib/suggestions.mjs's SUGGESTION_POOL against fresh
+// data and publishes the currently-fruitful set at GET /suggestions;
+// NL_SUGGESTIONS_VALIDATED holds that set once fetched (keyed by lens, each entry {idx,count}).
+// NL_SUGGESTIONS_FALLBACK is the small, evergreen static subset shown when the worker is
+// unreachable — it deliberately excludes the two dead field-evidence examples (money idx 1/2)
+// and carries its own live verification test (worker/e2e/suggestions.mjs). Keep these idx
+// lists in sync with the worker's copy (lib/suggestions.mjs's FALLBACK_INDICES) by hand — the
+// static site and the worker can't share an import across that boundary.
+//
+// "people" has no validated set at all: its chips stay the pre-existing hardcoded 3 (idx
+// 0/1/2, i18n keys sugg_people_0/1/2), unchanged — payroll-title counting isn't wired into the
+// worker's validation pipeline (a documented, deliberate gap: compileSub() has no people case).
+const NL_SUGGESTIONS_FALLBACK = {
+  money: [0, 3, 4, 5],
+  people: [0, 1, 2],
+  land: [0, 1, 2, 3],
+  property: [0, 1, 2, 3],
+  rules: [0, 1, 2, 3],
+  meetings: [0, 1, 2, 3],
+  alerts: [0, 1, 2, 3],
 };
+let NL_SUGGESTIONS_VALIDATED = null; // {lens: [{idx,count}, ...]} once GET /suggestions resolves
+
+// Pure: which idx values are currently eligible to display for a lens — the daily-validated
+// set if we have one for this lens, else the static fallback.
+function currentSuggestionIndices(lens){
+  const validated = NL_SUGGESTIONS_VALIDATED && NL_SUGGESTIONS_VALIDATED[lens];
+  if(validated && validated.length) return validated.map(c=>c.idx);
+  return NL_SUGGESTIONS_FALLBACK[lens] || [];
+}
+
+// Pure: deterministic day-seeded rotation over a pool of idx values — stable within a day
+// (every visitor that day sees the same rotation), different across days. seed is whole days
+// since the epoch (daySeed(), below); kept as a parameter so it's testable without Date.
+function pickSuggestions(indices, displayCount, seed){
+  if(!indices || !indices.length) return [];
+  const n = indices.length;
+  const start = ((seed % n) + n) % n;
+  const count = Math.min(displayCount, n);
+  const out = [];
+  for(let i=0;i<count;i++) out.push(indices[(start+i)%n]);
+  return out;
+}
+function daySeed(){ return Math.floor(Date.now()/86400000); }
 
 function renderNLSamples(lens, el){
   if(!el) return;
-  const s = NL_SAMPLES[lens] || [];
-  el.innerHTML = s.map((txt,i)=>`<button type="button" class="trychip" data-i="${i}" data-i18n="sugg_${lens}_${i}">${txt}</button>`).join("");
+  const picked = pickSuggestions(currentSuggestionIndices(lens), 3, daySeed());
+  el.innerHTML = picked.map(idx=>`<button type="button" class="trychip" data-i="${idx}" data-i18n="sugg_${lens}_${idx}">${t("sugg_"+lens+"_"+idx)}</button>`).join("");
   el.querySelectorAll(".trychip").forEach(b=>b.addEventListener("click",()=>{
-    const i=+b.dataset.i;
     const inp = lens==="money" ? $("#nlq") : $("#nlq-"+lens);
     if(inp) inp.value = b.textContent;
     lens==="money" ? nlTranslate() : nlTranslateLens(lens);
   }));
+}
+
+function rerenderAllSuggestions(){
+  renderNLSamples("money", $("#nltry"));
+  ["people","land","property","rules","meetings","alerts"].forEach(lens=>renderNLSamples(lens, $("#nltry-"+lens)));
+}
+
+// Fetches the daily-validated set; on any failure (worker unreachable, or the cron hasn't
+// populated it yet — GET /suggestions 404s until the first successful run) this just leaves
+// chips already rendered from NL_SUGGESTIONS_FALLBACK in place, so a suggestion is never
+// blank while waiting.
+async function loadValidatedSuggestions(){
+  try{
+    const r = await workerFetch("/suggestions", null, 6000);
+    if(r && r.ok){
+      const data = await r.json();
+      if(data && data.byLens){ NL_SUGGESTIONS_VALIDATED = data.byLens; rerenderAllSuggestions(); }
+    }
+  }catch(e){ /* stays on the static fallback */ }
 }
 
 function injectNLBoxes(){
@@ -3609,6 +3666,7 @@ document.addEventListener("click", e=>{
 });
 injectNLBoxes();
 renderNLSamples("money", $("#nltry"));
+loadValidatedSuggestions();
 $("#export").addEventListener("click", exportCSV);
 let editionRange=null;
 function paintEditionSpan(){ const el=$("#editionspan"); if(el&&editionRange){ el.textContent=fdtLocale(editionRange.a)+" – "+fdtLocale(editionRange.b); } }
