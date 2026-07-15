@@ -280,6 +280,8 @@
     only_notice_note: "目前仅此一份公告有据可查 — PIN <code>{pin}</code> 尚未发布后续阶段。",
     award_pending_note: "中标（授予合同）可能仍在待定中。",
     blanket_note: "PIN <code>{pin}</code> 是一个<b>总括代码</b>：它涵盖 {n} 项独立的中标（授予合同）（在紧急情况声明中常见）。每个框都是同一代码下的一份独立合同。",
+    past_winners_heading: "历史中标方",
+    past_winners_vendor_unlisted: "中标（授予合同），供应商未列出",
     prior_cycle_heading: "疑似定期项目 — 以往中标周期",
     prior_cycle_heuristic_note: "我们根据机构和标题进行匹配，而非共享的 PIN。这可能是同一份重复合同，但我们无法确定。请先核对日期和供应商。",
     prior_cycle_none_note: "我们未找到该项目可能的以往周期。它可能不是重复合同。也可能是之前某一轮匹配度不够，未能在此显示。",

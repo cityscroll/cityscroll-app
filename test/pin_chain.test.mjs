@@ -47,6 +47,7 @@ const { chainHTML, pinBase } = new Function(
   extractConst("pivotA") + extractConst("vendorHref") +
   src.match(/const JUNK_PINS = new Set\(\[[^\]]*\]\);/)[0] + extractConst("JUNK_PIN_TEXT_RE") +
   extractFn("usablePin") +
+  extractFn("pastWinnersHTML") +
   extractFn("chainHTML") +
   "return { chainHTML, pinBase };"
 )(t, windowStub);

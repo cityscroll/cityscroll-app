@@ -280,6 +280,8 @@
     only_notice_note: "현재까지는 이 공고만 기록되어 있습니다 — PIN <code>{pin}</code>에 대한 이후 단계는 아직 발행되지 않았습니다. ",
     award_pending_note: "낙찰이 아직 보류 중일 수 있습니다.",
     blanket_note: "PIN <code>{pin}</code>은 <b>일괄 코드</b>입니다. {n}건의 개별 낙찰을 묶은 것으로(비상사태 선언 시 흔함), 각 항목은 동일한 코드 아래 별개의 계약입니다.",
+    past_winners_heading: "이전 낙찰자",
+    past_winners_vendor_unlisted: "낙찰, 업체 미기재",
     prior_cycle_heading: "반복되는 것으로 보임 — 이전 낙찰 주기",
     prior_cycle_heuristic_note: "이것은 기관과 제목을 기준으로 일치시킨 것이며, 공유된 PIN에 의한 것이 아닙니다. 동일한 반복 계약일 수 있지만 확실하지 않습니다. 먼저 날짜와 업체를 확인하세요.",
     prior_cycle_none_note: "이 건에 대해 그럴듯한 이전 주기를 찾지 못했습니다. 반복 계약이 아닐 수 있습니다. 또는 이전 라운드가 충분히 일치하지 않아 여기에 표시하지 못했습니다.",

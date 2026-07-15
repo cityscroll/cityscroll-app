@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "6887bda2",
-  "zh-Hans": "38369aee",
-  ru: "263e0436",
-  bn: "55f428d7",
-  ht: "390d6b71",
-  ko: "9a33fe7a",
-  fr: "118c4e87",
-  pl: "c5791bb0",
-  ar: "becb87c1",
-  ur: "03088ca9",
+  es: "17a526ef",
+  "zh-Hans": "f5a71934",
+  ru: "3b86eb9d",
+  bn: "b200e9cf",
+  ht: "a074928c",
+  ko: "116fc972",
+  fr: "be724e66",
+  pl: "1c45905c",
+  ar: "af3df0c3",
+  ur: "4934c26f",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -456,6 +456,10 @@ const STRINGS = {
     only_notice_note: "Only this notice is on record so far — no later stage has been published for PIN <code>{pin}</code> yet. ",
     award_pending_note: "The award may still be pending.",
     blanket_note: "PIN <code>{pin}</code> is a <b>blanket code</b>: it bundles {n} separate awards (common for emergency declarations). Each box is a distinct contract under the same code.",
+    // Past winners strip (w12-05): a rolled-up list of who won each cycle, built from the same
+    // paper-trail chain chainHTML() already renders — see pastWinnersHTML() in index.html.
+    past_winners_heading: "Past winners",
+    past_winners_vendor_unlisted: "Award, vendor unlisted",
     prior_cycle_heading: "Looks recurring — prior award cycles",
     prior_cycle_heuristic_note: "We matched this by agency and title, not by a shared PIN. It may be the same repeating contract, but we cannot be sure. Check the dates and vendor first.",
     prior_cycle_none_note: "We found no likely prior cycle for this one. It may not be a repeating contract. Or an earlier round did not match closely enough to show here.",
