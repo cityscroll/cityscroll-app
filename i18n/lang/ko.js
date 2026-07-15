@@ -302,6 +302,8 @@
     cadence_years_apart_other: "약 {years}년 간격",
     cadence_next_expected: "다음 입찰 공고는 약 {date}경으로 예상됩니다.",
     cadence_estimate_tag: "예상치",
+    history_cycles_tag_one: "이력 {n}건",
+    history_cycles_tag_other: "이력 {n}건",
     prior_cycle_heading: "반복되는 것으로 보임 — 이전 낙찰 주기",
     prior_cycle_heuristic_note: "이것은 기관과 제목을 기준으로 일치시킨 것이며, 공유된 PIN에 의한 것이 아닙니다. 동일한 반복 계약일 수 있지만 확실하지 않습니다. 먼저 날짜와 업체를 확인하세요.",
     prior_cycle_none_note: "이 건에 대해 그럴듯한 이전 주기를 찾지 못했습니다. 반복 계약이 아닐 수 있습니다. 또는 이전 라운드가 충분히 일치하지 않아 여기에 표시하지 못했습니다.",

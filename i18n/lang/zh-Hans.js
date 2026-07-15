@@ -302,6 +302,8 @@
     cadence_years_apart_other: "平均相隔约 {years} 年",
     cadence_next_expected: "预计下次招标约在 {date}。",
     cadence_estimate_tag: "估计",
+    history_cycles_tag_one: "{n} 轮历史",
+    history_cycles_tag_other: "{n} 轮历史",
     prior_cycle_heading: "疑似定期项目 — 以往中标周期",
     prior_cycle_heuristic_note: "我们根据机构和标题进行匹配，而非共享的 PIN。这可能是同一份重复合同，但我们无法确定。请先核对日期和供应商。",
     prior_cycle_none_note: "我们未找到该项目可能的以往周期。它可能不是重复合同。也可能是之前某一轮匹配度不够，未能在此显示。",

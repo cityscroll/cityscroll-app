@@ -1099,6 +1099,47 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   strip for free with no call-site changes — same integration pattern PR #52's `cadenceHTML()`
   uses for the same function.
 
+## Lineage indicator — surfacing chain history on Money result rows (w12-10)
+
+- **Field evidence**: the site owner, already aware `cadenceEstimate()` (w12-04) and
+  `pastWinnersHTML()` (w12-05) had shipped, could not find a live notice exhibiting either
+  without being handed fixture PINs directly — both only reveal themselves after opening a
+  notice that happens to have a chain. `computeLineageBadgeCounts()`/`loadLineageBadges()`
+  (index.html, right after `renderList()`) surface the same signal one level up: a compact
+  `<span class="tag renewal">N cycles</span>` badge on the Money result row itself, for any
+  notice whose PIN chain has `>=2` Award/Intent-to-Award stages — the exact same threshold
+  `pastWinnersHTML()` already uses to decide whether to render, so the badge never promises
+  more than clicking through will show.
+- **Cost: ONE batched SODA request per `renderList()` call, not one per row.** Every visible
+  row's chain key (`lineageChainKey()` — `pinBase()`-widened PIN + agency, identical widening
+  to `loadChain()`'s own) is deduped and folded into one `$where` clause of ORed conditions
+  (`lineageBatchClauses()`), restricted to Award/Intent-to-Award stages. A results page never
+  exceeds 40 rows (`search()`'s own `$limit`), so this is at most 40 ORed clauses in one GET.
+  It fires after the list has already painted (same fire-and-forget-then-patch-in pattern as
+  `loadMethodFacet()`), patching each qualifying row's pre-rendered `.lineage-slot` marker once
+  counts land — never blocks or slows the list's own render.
+- **`LINEAGE_MAX_STAGES` (15) is a second honesty gate beyond `isBlanketChain()`, added after
+  a real production find while manually verifying this feature**: PIN `82626R0001001` (agency
+  "Environmental Protection") is an ordinary, unrelated single Award whose own digits happen to
+  end in something `RENEWAL_SUFFIX_RE`/`pinBase()` also matches, widening it to base `"82626"`
+  and prefix-matching ~180 unrelated contracts sharing that agency's fiscal-year PIN prefix.
+  `isBlanketChain()` doesn't catch this — the false-widened set mixes Award/Intent-to-Award/
+  Solicitation stages, so its "every stage is Award" check is false — so without a ceiling the
+  batch would render a nonsensical "180 cycles" badge. This is a **pre-existing `pinBase()`
+  over-widening gap that also affects `chainHTML()`/`pastWinnersHTML()` on the detail view
+  today** (out of scope to fix here — worth its own future card); `LINEAGE_MAX_STAGES` is a
+  narrower, more conservative gate specific to this new surface: every genuine chain fixture
+  documented in this file (cadence/past-winners sections above) tops out at 6 real stages, so a
+  widened match past 15 reads as a PIN-prefix collision, not a legitimate history, and is
+  treated the same as "uncertain" — no badge. Pinned in `test/lineage_indicator.test.mjs`
+  against that exact live PIN.
+- **The batch's own `$limit` is generous (2000, not ~40)** for a related reason: SODA applies
+  `$limit` to the WHOLE combined query, with no per-clause guarantee, so a single widened key
+  colliding with many unrelated PINs could otherwise silently crowd out and undercount a
+  different, genuine chain sharing the same batch call. Still one request either way.
+- Scoped to the Money/Contracts list only (`moneyRowHTML()`/`renderList()`) — Land/Property/
+  Rules/Meetings/Staffing notices have no PIN/award-chain concept to surface.
+
 ## Verified, rotating suggestion chips (w12-08)
 
 - **Field evidence**: under the money lens, the prefab suggestion chips "IT consulting RFPs"

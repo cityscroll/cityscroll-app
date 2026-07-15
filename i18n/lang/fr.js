@@ -384,6 +384,8 @@
     cadence_years_apart_other: "environ {years} ans d'écart",
     cadence_next_expected: "Prochain appel d'offres attendu vers {date}.",
     cadence_estimate_tag: "Estimation",
+    history_cycles_tag_one: "{n} cycle",
+    history_cycles_tag_other: "{n} cycles",
     prior_cycle_heading: "Semble récurrent — attributions de cycles antérieurs",
     prior_cycle_heuristic_note: "Nous avons rapproché ceci par agence et par titre, pas par un PIN partagé. Il peut s'agir du même contrat récurrent, mais nous n'en sommes pas certains. Vérifiez d'abord les dates et le fournisseur.",
     prior_cycle_none_note: "Nous n'avons trouvé aucun cycle antérieur probable pour ce cas. Il ne s'agit peut-être pas d'un contrat récurrent. Ou une série précédente ne correspondait pas assez pour être affichée ici.",
