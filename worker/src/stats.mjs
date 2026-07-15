@@ -7,7 +7,10 @@
 //
 // Edge-cached 15 minutes (same pattern as /feed.*): the SUBS list scan is the only real work.
 
-import { dayStr, sumStat, readStatAllTime, readAllCategoryStats, readHistSeries, readHistEra } from "./lib/stats.mjs";
+import {
+  dayStr, sumStat, readStatAllTime, readAllCategoryStats, readAllCategoryStatsWindow,
+  readHistSeries, readHistEra, mergeRecoveredAllTime,
+} from "./lib/stats.mjs";
 
 const WINDOW_DAYS = 7;
 
@@ -28,8 +31,9 @@ export async function handleStats(req, env, ctx) {
 
   const [
     active, sentToday, sent7d, clicksToday, clicks7d, feeds7d, batch7d, shares7d, nlToday,
-    digestsAllTime, digestsByCategory, nlAllTime, nlByCategory,
+    rawDigestsAllTime, digestsByCategory, rawNlAllTime, nlByCategory,
     digestHist, digestEra, nlHist, nlEra,
+    nl7d, nlByCategory7d, watchesHist, watchesEra,
   ] = await Promise.all([
       countActiveSubs(env),
       readInt(env.ALERT_STATE, `sendcount:${today}`),
@@ -48,7 +52,19 @@ export async function handleStats(req, env, ctx) {
       readHistEra(env.ALERT_STATE, "digest"),
       readHistSeries(env.NL_METER, "nl_search"),
       readHistEra(env.NL_METER, "nl_search"),
+      sumStat(env.NL_METER, "nl_search", WINDOW_DAYS, now),
+      readAllCategoryStatsWindow(env.NL_METER, "nl_search", WINDOW_DAYS, now),
+      readHistSeries(env.ALERT_STATE, "watches_active"),
+      readHistEra(env.ALERT_STATE, "watches_active"),
     ]);
+
+  // w12-14: the live all-time accumulators only count sends/searches from the moment they
+  // shipped (digestEra/nlEra) forward. Recovered pre-era days (backfilled from an older,
+  // short-lived source counter — see worker/scripts/backfill-history.mjs) are folded in here
+  // so "all time" means everything we can honestly account for, not just the counter's own
+  // lifetime. See history.*.live_from below for the boundary the UI should disclose.
+  const digestsAllTime = mergeRecoveredAllTime(rawDigestsAllTime, digestHist, digestEra);
+  const nlAllTime = mergeRecoveredAllTime(rawNlAllTime, nlHist, nlEra);
 
   const body = {
     generated: now.toISOString(),
@@ -60,11 +76,15 @@ export async function handleStats(req, env, ctx) {
     feeds: { fetches_last7d: feeds7d },
     batch: { calls_last7d: batch7d },
     shared_investigations: { created_last7d: shares7d },
-    nl_search: { calls_today: nlToday, calls_all_time: nlAllTime, by_category: nlByCategory },
+    nl_search: {
+      calls_today: nlToday, calls_last7d: nl7d, calls_all_time: nlAllTime,
+      by_category: nlByCategory, by_category_last7d: nlByCategory7d,
+    },
     history: {
       note: "Daily totals. Days before the recovered/live split were rebuilt from short-term logs that were already being kept for other reasons; days on or after it were counted as they happened.",
       digests: { by_day: digestHist, live_from: digestEra },
       nl_search: { by_day: nlHist, live_from: nlEra },
+      watches_active: { by_day: watchesHist, live_from: watchesEra },
     },
   };
 
@@ -84,8 +104,9 @@ export async function handleStats(req, env, ctx) {
 }
 
 // Count confirmed subscriptions — a cursor walk that never reads the values, so no addresses
-// pass through here.
-async function countActiveSubs(env) {
+// pass through here. Exported so the cron job can snapshot this same gauge daily (see
+// worker.mjs's scheduled() + lib/stats.mjs's snapshotHistDay).
+export async function countActiveSubs(env) {
   if (!env.SUBS) return 0;
   let n = 0, cursor = undefined;
   try {

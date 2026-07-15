@@ -1175,6 +1175,86 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `Authorization: Bearer` header. Reach for `checkAdminKey` again for any future `/admin/*` route
   rather than re-copying the inline check. Tests: `worker/test/admin.test.mjs`.
 
+## Stats page — counter integrity, per-lens breakdowns, general-vs-technical reform (w12-14/15/16)
+
+- **The all-time counter audit (w12-14) found no live increment bug** — every real digest
+  send already ran through exactly one of two call sites in `worker/src/alerts.mjs`
+  (`runAlerts()`'s legacy-watch loop, `processOneSub()` — itself shared by the inline path
+  and `consumeDigestJob()`'s queue consumer), and both already bumped `bumpStatAllTime`/
+  `bumpHistDay` exactly once per send. The real bug was **temporal, not logical**: those
+  counters were introduced in commit `60efa88` (2026-07-13) and only count sends from their
+  own deploy forward — a site that had been sending real digests for weeks before that
+  honestly read "2 digests all time," and the page's "Since launch" label made it worse by
+  implying the number covered the site's whole history. `stats:alltime:digest` and
+  `stats:cat:digest:*` have never been renamed since introduction — the gap was purely
+  "counter started later than the label claims," not a lost/renamed key.
+- **`mergeRecoveredAllTime(liveTotal, histSeries, eraDay)`** (`worker/src/lib/stats.mjs`) is
+  the fix: it folds every day STRICTLY BEFORE the live accumulator's own era boundary
+  (`hist:era:<metric>`, already set by the one-time `worker/scripts/backfill-history.mjs` run
+  that seeded `hist:<metric>:<day>` from the older, short-lived `sendcount:<day>`/`nl:<day>`
+  counters) into the live total. It's pure and free — `worker/src/stats.mjs` already fetches
+  the full hist series for the "over time" chart, so this costs no extra KV reads, and days
+  on/after the era boundary are excluded so the live accumulator's own territory is never
+  double-counted. The one bound this can't lift: `stats:cat:<metric>:<category>` (the by-topic
+  breakdown) has no day dimension in its source data, so it genuinely cannot be backfilled
+  past its own era — the UI discloses this with its own honest "Counted since {date}" note
+  (`stats_since`, sourced from `history.<metric>.live_from`) wherever a total or breakdown is
+  shown, rather than implying every number shares the same starting point.
+- **Windowed per-category counters (w12-15)**: `stats:catday:<metric>:<category>:<day>`
+  (`categoryDayKey`/`bumpCategoryDayStat`/`readAllCategoryStatsWindow`, same 40-day TTL as the
+  plain per-day counters) is a new counter SHAPE, not a rename of the existing all-time-only
+  `stats:cat:<metric>:<category>` — the all-time breakdown was already correct and needed no
+  change; what was missing was a rolling-window (7-day) breakdown, which needs a day
+  dimension the all-time-only key can't provide. Wired for `nl_search` only (`worker/src/nl.mjs`
+  now also calls the plain `bumpStat`/new `bumpCategoryDayStat` alongside the pre-existing
+  `bumpStatAllTime`/`bumpCategoryStat`/`bumpHistDay` triplet), giving `/stats` a genuine
+  `nl_search.calls_last7d` + `by_category_last7d` alongside the existing all-time fields.
+  "Category" here is the NL lens (money/people/land/property/rules/meetings/alerts) — reuses
+  the site's own `tab_<lens>` i18n labels for display, not a new naming scheme. Digest's
+  by-topic breakdown deliberately did NOT get an equivalent 7-day-by-topic table — out of
+  w12-15's scope (it's about query/search counts, not digest content), and would be a
+  separate card if ever wanted.
+- **Daily gauge snapshot (w12-16): `snapshotHistDay`/`ensureHistEra`** (`lib/stats.mjs`) are a
+  DIFFERENT shape from `bumpHistDay`/`bumpStatAllTime` — those count EVENTS (one call = one
+  real thing that happened); "active watches" is a live GAUGE (a KV list count taken at read
+  time), which has no discrete event to hook an increment on. `snapshotHistDay` writes that
+  day's reading directly (overwrites, doesn't add) into the same `hist:<metric>:<day>` key
+  shape so it's free to read via the existing `readHistSeries`/`renderHistory` machinery; a
+  second same-day call just overwrites with the latest reading (idempotent by design — a
+  gauge only has one true "as of today" value anyway). `ensureHistEra` is the worker-side
+  equivalent of what `backfill-history.mjs` does by hand for digest/nl_search: sets
+  `hist:era:<metric>` to today ONLY if unset, so a metric with no manual backfill script still
+  gets an honest "counted from here on" boundary the first time it's ever written. Wired into
+  `worker.mjs`'s `scheduled()` handler, once per cron run, right after `runAlerts()` — there is
+  **no backfill for this metric at all** (no historical record of subscription counts exists
+  anywhere), so its `hist:watches_active:<day>` series starts empty and grows from ship date
+  forward; the "over time" table's `renderHistory()` on the front end treats it as
+  presence-only (no zero-fill) unlike the event-counted columns, since a missing day here means
+  "the once-daily cron snapshot didn't happen" — not a confirmed zero the way an event
+  counter's silence would be.
+- **General-vs-technical reform (w12-16)**: interview feedback named "feed batch cross,
+  subscriptions, and investigation shared" as confusing/technical-feeling. stats.html now has
+  two explicit tiers — `stats_h_general` ("The headline numbers": active watches, digests
+  sent, searches asked, each with 7-day+today+all-time+breakdown) at the top, and
+  `stats_h_technical` ("Technical details": digest-link clicks, feed fetches, saved-search API
+  checks, shared investigation links — the same four cards, unchanged content, just moved and
+  explicitly framed as plumbing) at the bottom. "Active subscriptions" was renamed "Active
+  watches" to match the vocabulary the rest of the product already uses (`watch`/`alert`, not
+  `subscription`) — same renaming logic applied per-language, anchored to whatever term each
+  locale's OWN `stats_p_lede_html` string had already chosen for "watches that fired" (e.g. ru
+  already conflates watch=подписка, so its label barely changes; fr/ht/ko/ar/ur/bn/pl all had
+  a distinct existing term that "Active subscriptions" was inconsistent with).
+- **The "since" honesty note is one key, several call sites**: `stats_since: "Counted since
+  {date}."` (parameterized, same pattern as the pre-existing `stats_history_era`) is rendered
+  by a single `renderSinceNote(el, liveFrom)` helper in stats.html, called once per all-time
+  card and once per breakdown table — each with ITS OWN `live_from` value from the `/stats`
+  response's `history.<metric>.live_from`, since different metrics can honestly account for
+  different starting points.
+- **Reading-level ratchet**: this reform is a full copy rewrite of stats.html, not an
+  incremental edit — measure and update `reading-level-baseline.json`'s `stats.html` entry
+  (`ror baseline stats.html --preset nycsg7 -o reading-level-baseline.json`) as part of any
+  future edit here rather than assuming the committed baseline still matches.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

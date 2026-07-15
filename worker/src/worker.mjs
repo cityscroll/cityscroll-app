@@ -16,7 +16,8 @@ import { handleAdminSubs, handleAdminFeedback } from "./admin.mjs";
 import { handleFeed } from "./feed.mjs";
 import { handleBatch } from "./batch.mjs";
 import { handleInv } from "./inv.mjs";
-import { handleStats } from "./stats.mjs";
+import { handleStats, countActiveSubs } from "./stats.mjs";
+import { snapshotHistDay, ensureHistEra } from "./lib/stats.mjs";
 import { handleRedirect } from "./redirect.mjs";
 import { runAlerts, consumeDigestJob } from "./alerts.mjs";
 import { ingestNotices } from "./ingest.mjs";
@@ -77,6 +78,20 @@ export default {
     // Await directly (not ctx.waitUntil) so the runtime keeps the worker alive until the whole
     // digest run — config watches + every KV subscription — completes.
     await runAlerts(env);
+
+    // w12-16: "active watches" is a live gauge (a KV list count), not something with a
+    // discrete moment to bump on — so charting it over time means snapshotting today's
+    // reading once a day, here, rather than incrementing on an event. No backfill is
+    // possible (there's no historical record of this count anywhere); ensureHistEra marks
+    // today as the honest start of this series the first time it ever runs.
+    try {
+      const now = new Date();
+      const active = await countActiveSubs(env);
+      await snapshotHistDay(env.ALERT_STATE, "watches_active", now, active);
+      await ensureHistEra(env.ALERT_STATE, "watches_active", now);
+    } catch (e) {
+      console.error("watches_active snapshot failed (digest already ran):", String(e?.message || e));
+    }
   },
 
   // Inbound subscribe-by-email (Cloudflare Email Routing route → this Worker).

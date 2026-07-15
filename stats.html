@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Stats · CROL-List</title>
 <meta name="description" content="CROL-List's own usage, published: aggregate outcome counts — subscriptions, digests, clicks, feeds. No accounts, no cookies, nobody tracked.">
-<script src="i18n.js?v=c3d6e1cf"></script>
+<script src="i18n.js?v=0ac4aa4e"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
@@ -104,44 +104,65 @@
 did what. We measure outcomes (watches that fired, digests that got read), not people.</p>
 <p id="msg" role="status" data-i18n="stats_loading">Loading live counters…</p>
 
+<h2 data-i18n="stats_h_general">The headline numbers</h2>
 <div class="grid" id="grid" hidden>
-  <div class="stat"><div class="n" id="s-subs">–</div><div class="l" data-i18n="stats_lbl_subs">Active subscriptions</div><div class="d" data-i18n="stats_desc_subs">Confirmed standing watches — the number that matters most to us.</div></div>
+  <div class="stat"><div class="n" id="s-subs">–</div><div class="l" data-i18n="stats_lbl_subs">Active watches</div><div class="d" data-i18n="stats_desc_subs">Confirmed standing watches — the number that matters most to us.</div></div>
   <div class="stat"><div class="n" id="s-digests">–</div><div class="l" data-i18n="stats_lbl_digests">Digests sent · 7 days</div><div class="d" data-i18n-html="stats_desc_digests_html"><span id="s-digests-today">–</span> today. Only when something new matched (plus honest "still watching" check-ins).</div></div>
-  <div class="stat"><div class="n" id="s-clicks">–</div><div class="l" data-i18n="stats_lbl_clicks">Digest links followed · 7 days</div><div class="d" data-i18n-html="stats_desc_clicks_html">Counted by a redirect that records a number, never a person — <a href="changelog.html#2026-07-02b">how this works</a>.</div></div>
-  <div class="stat"><div class="n" id="s-feeds">–</div><div class="l" data-i18n="stats_lbl_feeds">Feed fetches · 7 days</div><div class="d" data-i18n="stats_desc_feeds">RSS/Atom/JSON/calendar pulls, as seen at the origin (edge-cached hits aren't counted).</div></div>
-  <div class="stat"><div class="n" id="s-batch">–</div><div class="l" data-i18n="stats_lbl_batch">Saved-search checks via the API · 7 days</div><div class="d" data-i18n-html="stats_desc_batch_html">Watchlists checked through the <a href="api.html">open API</a>.</div></div>
-  <div class="stat"><div class="n" id="s-inv">–</div><div class="l" data-i18n="stats_lbl_inv">Shared investigation links · 7 days</div><div class="d" data-i18n="stats_desc_inv">Read-only workspace snapshots created.</div></div>
-  <div class="stat"><div class="n" id="s-nl">–</div><div class="l" data-i18n="stats_lbl_nl">Plain-English searches · today</div><div class="d" data-i18n="stats_desc_nl">"Ask in plain English" calls against the daily spending ceiling.</div></div>
+  <div class="stat"><div class="n" id="s-nl">–</div><div class="l" data-i18n="stats_lbl_nl">Searches asked · 7 days</div><div class="d" data-i18n-html="stats_desc_nl_html"><span id="s-nl-today">–</span> today. Plain questions typed into "Ask," about any part of the site.</div></div>
 </div>
 
-<h2 data-i18n="stats_h_alltime">Since launch</h2>
-<p class="src" data-i18n="stats_p_alltime">The same outcomes, added up since day one instead of reset every 7 days.</p>
+<h2 data-i18n="stats_h_alltime">Totals</h2>
+<p class="src" data-i18n="stats_p_alltime">The same outcomes, added up instead of reset every 7 days.</p>
 <div class="grid" id="gridAllTime" hidden>
-  <div class="stat"><div class="n" id="s-digests-alltime">–</div><div class="l" data-i18n="stats_lbl_digests_alltime">Digests sent · all time</div><div class="d" data-i18n="stats_desc_digests_alltime">Every digest CROL-List has ever sent, not just the last 7 days.</div></div>
-  <div class="stat"><div class="n" id="s-nl-alltime">–</div><div class="l" data-i18n="stats_lbl_nl_alltime">Plain-English searches · all time</div><div class="d" data-i18n="stats_desc_nl_alltime">Every plain-English search ever translated, not just today.</div></div>
+  <div class="stat"><div class="n" id="s-digests-alltime">–</div><div class="l" data-i18n="stats_lbl_digests_alltime">Digests sent · all time</div><div class="d" data-i18n="stats_desc_digests_alltime">Every digest CROL-List has ever sent.</div><div class="d" id="s-digests-alltime-since"></div></div>
+  <div class="stat"><div class="n" id="s-nl-alltime">–</div><div class="l" data-i18n="stats_lbl_nl_alltime">Searches asked · all time</div><div class="d" data-i18n="stats_desc_nl_alltime">Every plain-English question CROL-List has ever answered.</div><div class="d" id="s-nl-alltime-since"></div></div>
 </div>
 
-<h2 data-i18n="stats_h_category">By topic</h2>
-<p class="src" data-i18n="stats_p_category">Notices surfaced in digests since launch, broken out by City Record topic.</p>
+<h2 data-i18n="stats_h_category">Digests, by topic</h2>
+<p class="src" data-i18n="stats_p_category">Notices surfaced in digests, broken out by City Record topic.</p>
 <table class="cattable" id="catTable" hidden>
   <thead><tr><th data-i18n="stats_col_category">Topic</th><th data-i18n="stats_col_count">Notices</th></tr></thead>
   <tbody id="catTableBody"></tbody>
 </table>
 <p class="src" id="catEmpty" data-i18n="stats_cat_empty" hidden>No digests have matched anything yet.</p>
+<p class="src histera" id="catSinceNote" hidden></p>
+
+<h2 data-i18n="stats_h_bylens">Searches, by section</h2>
+<p class="src" data-i18n="stats_p_bylens">Which part of the site people asked about: contracts, staffing, land, property, rules, or meetings.</p>
+<table class="cattable" id="lensTable" hidden>
+  <thead><tr>
+    <th data-i18n="stats_col_lens">Section</th>
+    <th data-i18n="stats_col_last7">Last 7 days</th>
+    <th data-i18n="stats_col_alltime">All time</th>
+  </tr></thead>
+  <tbody id="lensTableBody"></tbody>
+</table>
+<p class="src" id="lensEmpty" data-i18n="stats_lens_empty" hidden>No searches have been asked yet.</p>
+<p class="src histera" id="lensSinceNote" hidden></p>
 
 <h2 data-i18n="stats_h_history">Over time</h2>
-<p class="src" data-i18n="stats_p_history">Digests sent and plain-English searches asked, day by day.</p>
+<p class="src" data-i18n="stats_p_history">Digests sent, searches asked, and watches active, day by day.</p>
 <table class="cattable histtable" id="histTable" hidden>
-  <caption class="sr-only" data-i18n="stats_history_caption">Daily counts of digests sent and searches asked</caption>
+  <caption class="sr-only" data-i18n="stats_history_caption">Daily counts of digests sent, searches asked, and watches active</caption>
   <thead><tr>
     <th data-i18n="stats_col_day">Day</th>
     <th data-i18n="stats_col_digests">Digests sent</th>
     <th data-i18n="stats_col_searches">Searches asked</th>
+    <th data-i18n="stats_col_watches">Watches active</th>
   </tr></thead>
   <tbody id="histTableBody"></tbody>
 </table>
 <p class="src histera" id="histEraNote" hidden></p>
 <p class="src" id="histEmpty" data-i18n="stats_history_empty" hidden>No day-by-day history yet.</p>
+
+<h2 data-i18n="stats_h_technical">Technical details</h2>
+<p class="src" data-i18n="stats_p_technical">How the numbers above are put together. You don't need to know this to use CROL-List.</p>
+<div class="grid" id="gridTechnical" hidden>
+  <div class="stat"><div class="n" id="s-clicks">–</div><div class="l" data-i18n="stats_lbl_clicks">Digest links followed · 7 days</div><div class="d" data-i18n-html="stats_desc_clicks_html">Counted by a redirect that records a number, never a person — <a href="changelog.html#2026-07-02b">how this works</a>.</div></div>
+  <div class="stat"><div class="n" id="s-feeds">–</div><div class="l" data-i18n="stats_lbl_feeds">Feed fetches · 7 days</div><div class="d" data-i18n="stats_desc_feeds">RSS/Atom/JSON/calendar pulls, as seen at the origin (edge-cached hits aren't counted).</div></div>
+  <div class="stat"><div class="n" id="s-batch">–</div><div class="l" data-i18n="stats_lbl_batch">Saved-search checks via the API · 7 days</div><div class="d" data-i18n-html="stats_desc_batch_html">Watchlists checked through the <a href="api.html">open API</a>.</div></div>
+  <div class="stat"><div class="n" id="s-inv">–</div><div class="l" data-i18n="stats_lbl_inv">Shared investigation links · 7 days</div><div class="d" data-i18n="stats_desc_inv">Read-only workspace snapshots created.</div></div>
+</div>
 
 <h2 data-i18n="stats_h_dontknow">What we deliberately don't know</h2>
 <p class="src" data-i18n-html="stats_p_dontknow_html">Who you are, what you searched, which notices you read, or which emails you opened. Page-view
@@ -158,13 +179,25 @@ notes</a>). Everything above comes from plain per-day counters. There is nothing
 <script>
 (async () => {
   const msg = document.getElementById("msg"), grid = document.getElementById("grid");
-  const gridAllTime = document.getElementById("gridAllTime");
+  const gridAllTime = document.getElementById("gridAllTime"), gridTechnical = document.getElementById("gridTechnical");
   const catTable = document.getElementById("catTable"), catTableBody = document.getElementById("catTableBody");
-  const catEmpty = document.getElementById("catEmpty");
+  const catEmpty = document.getElementById("catEmpty"), catSinceNote = document.getElementById("catSinceNote");
+  const lensTable = document.getElementById("lensTable"), lensTableBody = document.getElementById("lensTableBody");
+  const lensEmpty = document.getElementById("lensEmpty"), lensSinceNote = document.getElementById("lensSinceNote");
   const histTable = document.getElementById("histTable"), histTableBody = document.getElementById("histTableBody");
   const histEraNote = document.getElementById("histEraNote"), histEmpty = document.getElementById("histEmpty");
   const put = (id, v) => { document.getElementById(id).textContent = (v == null ? "–" : Number(v).toLocaleString("en-US")); };
   const curLoc = () => (window.LANG_META && window.LANG_META[window.LANG] || {}).intlDate || "en-US";
+  const dateLabel = (iso, opts) => new Date(iso + "T00:00:00Z").toLocaleDateString(curLoc(), { ...opts, timeZone: "UTC" });
+  // A "since {date}" honesty note (w12-14): shared by every all-time total/breakdown, so a
+  // reader always knows how far back a given number can honestly account for. Hidden with no
+  // fabricated fallback when the live_from boundary isn't known.
+  function renderSinceNote(el, liveFrom) {
+    if (!el) return;
+    if (!liveFrom) { el.hidden = true; return; }
+    el.textContent = t("stats_since", { date: dateLabel(liveFrom, { month: "long", day: "numeric", year: "numeric" }) });
+    el.hidden = false;
+  }
   // A category name is either a real City Record section_name (already covered by
   // tSection's per-language table) or the "land" fallback used for ZAP notices, which have
   // no section_name — reuse the existing tab_land translation for that one case.
@@ -183,35 +216,63 @@ notes</a>). Everything above comes from plain per-day counters. There is nothing
     catTable.hidden = entries.length === 0;
     catEmpty.hidden = entries.length !== 0;
   }
-  // Merge the two per-day series into one row set. A day only gets a real number when its
-  // own metric actually has a recorded value for it (backfilled or live) or when the day
-  // falls on/after that metric's "live_from" boundary (a missing key there is a confirmed
-  // zero, since live counting never expires and never skips a day). Anything else renders as
-  // "not recorded" rather than guessing — see worker/scripts/backfill-history.mjs.
+  // Every lens the site has (money/people/land/property/rules/meetings/alerts) shares a
+  // "tab_<lens>" label already used elsewhere in the app — reuse it rather than inventing a
+  // second name for the same thing. t() already falls back through English, then the raw
+  // key, so an unrecognized lens (should not happen — LENSES is a fixed, small set) still
+  // shows the slug rather than nothing.
+  const lensLabel = (lens) => t("tab_" + lens);
+  function renderLensTable(byLens7d, byLensAllTime) {
+    if (!byLens7d && !byLensAllTime) return;
+    const last7 = byLens7d || {}, allTime = byLensAllTime || {};
+    const lenses = [...new Set([...Object.keys(last7), ...Object.keys(allTime)])].sort((a, b) => (allTime[b] || 0) - (allTime[a] || 0));
+    lensTableBody.textContent = "";
+    for (const lens of lenses) {
+      const tr = document.createElement("tr");
+      const th = document.createElement("th"); th.scope = "row"; th.textContent = lensLabel(lens);
+      const td7 = document.createElement("td"); td7.className = "n"; td7.textContent = Number(last7[lens] || 0).toLocaleString("en-US");
+      const tdAll = document.createElement("td"); tdAll.className = "n"; tdAll.textContent = Number(allTime[lens] || 0).toLocaleString("en-US");
+      tr.append(th, td7, tdAll);
+      lensTableBody.appendChild(tr);
+    }
+    lensTable.hidden = lenses.length === 0;
+    lensEmpty.hidden = lenses.length !== 0;
+  }
+  // Merge the per-day series into one row set. An EVENT-COUNTED metric (digests, searches)
+  // only gets a real number when its own metric has a recorded value for that day, or when
+  // the day falls on/after that metric's "live_from" boundary (a missing key there is a
+  // confirmed zero, since live counting never expires and never skips a day). A GAUGE
+  // SNAPSHOT metric (watches active) never zero-fills — a missing key just means that day's
+  // once-daily cron snapshot hasn't happened (yet, or ever), not a confirmed zero. Anything
+  // uncertain renders as "not recorded" rather than guessing — see
+  // worker/scripts/backfill-history.mjs and lib/stats.mjs's snapshotHistDay.
   function renderHistory(history) {
     if (!history) return;
     const dByDay = history.digests?.by_day || {}, nByDay = history.nl_search?.by_day || {};
+    const wByDay = history.watches_active?.by_day || {};
     const dLive = history.digests?.live_from || null, nLive = history.nl_search?.live_from || null;
-    const days = [...new Set([...Object.keys(dByDay), ...Object.keys(nByDay)])].sort();
+    const wLive = history.watches_active?.live_from || null;
+    const days = [...new Set([...Object.keys(dByDay), ...Object.keys(nByDay), ...Object.keys(wByDay)])].sort();
     histTableBody.textContent = "";
     for (const day of days) {
       const dVal = day in dByDay ? dByDay[day] : (dLive && day >= dLive ? 0 : null);
       const nVal = day in nByDay ? nByDay[day] : (nLive && day >= nLive ? 0 : null);
+      const wVal = day in wByDay ? wByDay[day] : null; // gauge — never zero-filled
       const tr = document.createElement("tr");
       const th = document.createElement("th"); th.scope = "row";
-      th.textContent = new Date(day + "T00:00:00Z").toLocaleDateString(curLoc(), { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
+      th.textContent = dateLabel(day, { month: "short", day: "numeric", year: "numeric" });
       const cell = (v) => {
         const td = document.createElement("td");
         if (v == null) { td.className = "notrec"; td.textContent = t("stats_history_notrecorded"); }
         else { td.className = "n"; td.textContent = v.toLocaleString("en-US"); }
         return td;
       };
-      tr.append(th, cell(dVal), cell(nVal));
+      tr.append(th, cell(dVal), cell(nVal), cell(wVal));
       histTableBody.appendChild(tr);
     }
-    const earliestLive = [dLive, nLive].filter(Boolean).sort()[0] || null;
+    const earliestLive = [dLive, nLive, wLive].filter(Boolean).sort()[0] || null;
     if (earliestLive) {
-      const label = new Date(earliestLive + "T00:00:00Z").toLocaleDateString(curLoc(), { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
+      const label = dateLabel(earliestLive, { month: "long", day: "numeric", year: "numeric" });
       histEraNote.textContent = t("stats_history_era", { date: label });
       histEraNote.hidden = false;
     } else {
@@ -220,17 +281,24 @@ notes</a>). Everything above comes from plain per-day counters. There is nothing
     histTable.hidden = days.length === 0;
     histEmpty.hidden = days.length !== 0;
   }
-  // applyStrings() rebuilds data-i18n-html containers (incl. the nested #s-digests-today span)
-  // on every language switch — msgState/digestsToday/categoryData/historyData survive that so
-  // a switch after data loads repaints the real numbers instead of resetting to the
-  // loading/placeholder text, and re-translates the category table's topic names and the
-  // history table's day labels into the new language.
-  let msgState = { kind: "loading" }, digestsToday = null, categoryData = null, historyData = null;
+  // applyStrings() rebuilds data-i18n-html containers (incl. the nested today-count spans)
+  // on every language switch — the state below survives that so a switch after data loads
+  // repaints the real numbers instead of resetting to the loading/placeholder text, and
+  // re-translates every table's row labels into the new language.
+  let msgState = { kind: "loading" }, digestsToday = null, nlToday = null;
+  let categoryData = null, categorySince = null, lensData7d = null, lensDataAllTime = null, lensSince = null;
+  let historyData = null, digestsAllTimeSince = null, nlAllTimeSince = null;
   function paint() {
     msg.textContent = msgState.kind === "asof" ? t("stats_asof", { date: msgState.date })
       : msgState.kind === "unreachable" ? t("stats_unreachable") : t("stats_loading");
     if (digestsToday != null) put("s-digests-today", digestsToday);
+    if (nlToday != null) put("s-nl-today", nlToday);
     renderCategories(categoryData);
+    renderSinceNote(catSinceNote, categorySince);
+    renderLensTable(lensData7d, lensDataAllTime);
+    renderSinceNote(lensSinceNote, lensSince);
+    renderSinceNote(document.getElementById("s-digests-alltime-since"), digestsAllTimeSince);
+    renderSinceNote(document.getElementById("s-nl-alltime-since"), nlAllTimeSince);
     renderHistory(historyData);
   }
   paint();
@@ -251,17 +319,27 @@ notes</a>). Everything above comes from plain per-day counters. There is nothing
       put("s-feeds", d.feeds?.fetches_last7d);
       put("s-batch", d.batch?.calls_last7d);
       put("s-inv", d.shared_investigations?.created_last7d);
-      put("s-nl", d.nl_search?.calls_today);
+      put("s-nl", d.nl_search?.calls_last7d);
+      nlToday = d.nl_search?.calls_today;
+      put("s-nl-today", nlToday);
       put("s-digests-alltime", d.digests?.sent_all_time);
       put("s-nl-alltime", d.nl_search?.calls_all_time);
+      digestsAllTimeSince = d.history?.digests?.live_from || null;
+      nlAllTimeSince = d.history?.nl_search?.live_from || null;
       categoryData = d.digests?.by_category;
+      categorySince = digestsAllTimeSince;
       renderCategories(categoryData);
+      lensData7d = d.nl_search?.by_category_last7d;
+      lensDataAllTime = d.nl_search?.by_category;
+      lensSince = nlAllTimeSince;
+      renderLensTable(lensData7d, lensDataAllTime);
       historyData = d.history;
       renderHistory(historyData);
       msgState = { kind: "asof", date: new Date(d.generated).toLocaleString(curLoc()) };
       paint();
       grid.hidden = false;
       gridAllTime.hidden = false;
+      gridTechnical.hidden = false;
       return;
     } catch { /* try the alias */ }
   }
