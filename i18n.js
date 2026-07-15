@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "9f0cf798",
-  "zh-Hans": "c4e99060",
-  ru: "2a2f2649",
-  bn: "4d5d320e",
-  ht: "41d51d8b",
-  ko: "5dc63137",
-  fr: "5acc7e54",
-  pl: "2ed48825",
-  ar: "837ba9f4",
-  ur: "9df5758b",
+  es: "bb38d973",
+  "zh-Hans": "7785aabb",
+  ru: "f69a1a85",
+  bn: "24e42336",
+  ht: "11c638c1",
+  ko: "bd974d76",
+  fr: "8dfc7fd1",
+  pl: "36cee40c",
+  ar: "6a373580",
+  ur: "32ccf42d",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -490,6 +490,20 @@ const STRINGS = {
     prior_cycle_heading: "Looks recurring — prior award cycles",
     prior_cycle_heuristic_note: "We matched this by agency and title, not by a shared PIN. It may be the same repeating contract, but we cannot be sure. Check the dates and vendor first.",
     prior_cycle_none_note: "We found no likely prior cycle for this one. It may not be a repeating contract. Or an earlier round did not match closely enough to show here.",
+    // Near-match prior cycles (w12-18): an exploratory second tier below the strict matcher
+    // above, offered as an explicit reveal on the empty state — see rankNearMatchCandidates()/
+    // nearMatchHTML() in index.html.
+    near_match_reveal_btn: "Show possible earlier rounds",
+    near_match_heading: "Possible earlier rounds",
+    near_match_tag: "Maybe",
+    near_match_why_lbl: "Why we're showing this:",
+    near_match_reason_agency: "same agency",
+    near_match_reason_title_html: "shares title words: {words}",
+    near_match_reason_pin_html: "PIN prefix similar to {prefix}",
+    near_match_reason_amount_html: "comparable amount ({a} vs {b})",
+    near_match_caveat_note: "These are guesses, not confirmed history. Each one shares some traits with this notice, but none cleared our bar for a likely match — check the dates, vendor, and PIN yourself before relying on them.",
+    near_match_none_note: "We checked for more distant possible matches too, and did not find any.",
+    near_match_loading: "Checking for possible matches…",
     agency_forecast_heading: "This agency's next predicted bid windows",
     agency_forecast_count_one: "{n} predicted opportunity ahead for this agency.",
     agency_forecast_count_other: "{n} predicted opportunities ahead for this agency.",

@@ -1140,6 +1140,58 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - Scoped to the Money/Contracts list only (`moneyRowHTML()`/`renderList()`) — Land/Property/
   Rules/Meetings/Staffing notices have no PIN/award-chain concept to surface.
 
+## Near-match prior cycles — the exploratory "maybe" reveal (w12-18)
+
+- **A second, looser tier below `priorCycleAwards()`'s own strict cross-PIN matcher**
+  (`rankPriorCycleCandidates()`, documented inline in index.html) — that matcher requires a
+  MAJORITY title-word overlap (score>=0.5) specifically to avoid surfacing concurrent-RFP
+  siblings as false "renewals," which also silently drops a real prior round that was simply
+  retitled between cycles (an address or permit code swapped into the title, "Renewal" dropped).
+  `rankNearMatchCandidates()` (index.html, right after `priorCycleAwards()`) surfaces those as
+  explicit, caveated maybes, hidden behind a `<details>` reveal on the strict matcher's own empty
+  state ("We found no likely prior cycle…") — never rendered eagerly, never touching the
+  confident chain/cadence/past-winners/lineage-badge surfaces above, which all read
+  `chainHTML()`'s own `pinBase()`-widened chain, never this function's output (honest-data
+  convention).
+- **A near-match needs the loosened title score PLUS at least one of two corroborating
+  signals** — how much of the (renewal-suffix-stripped) PIN's prefix the two notices share
+  (`pinPrefixShared()`, floor `NEAR_MATCH_PIN_PREFIX_MIN_LEN`=8) or whether their contract
+  amounts are within `NEAR_MATCH_AMOUNT_RATIO_MAX`=3x of each other. A weak title score ALONE
+  is too noisy to show — same-agency, unrelated-topic pairs routinely share one generic
+  location/facility word (verified live: two unrelated 2000s-era Correction contracts, a roofing
+  job and a fence-alarm repair, both score 0.43 purely from sharing "system"/"Rikers"/"Island").
+  Same >=180-day gap floor as the strict matcher throughout (a weak title match at a short gap
+  still reads as a same-round sibling, not a prior cycle) — the acceptance criteria only calls
+  for loosening the title/PIN/amount dimensions, not the gap.
+- **PIN-prefix proximity needed a real threshold, not the intuitive one.** A raw 6-character
+  shared prefix (5-digit NYC agency code + 1-letter method code) is common to nearly EVERY
+  contract a given agency issued in a given decade and proves nothing — verified live against
+  700+ real same-agency Correction pairs, nearly all topically unrelated, all sharing exactly 6
+  characters (`"072200…"`). `NEAR_MATCH_PIN_PREFIX_MIN_LEN` is set to 8 specifically to clear
+  that noise floor.
+- **Cost story: the near-match tier fires ONE extra SODA call, lazily, only on the reveal's
+  first `<details>` toggle** (`wireNearMatchReveal()`) — never eagerly, never when the strict
+  tier already found something. It can't just reuse the strict tier's own already-fetched rows:
+  verified live that the strict search's own tightly-scoped 6-word `$q` (built from the notice's
+  own title) starves out every OTHER candidate for an address/permit-code-heavy title — the
+  real HPD fixture below returns exactly one row (itself) under that $q. The lazy query widens
+  `$q` to the notice's own top `NEAR_MATCH_QUERY_WORDS`=2 significant words and bounds `$where`
+  to `start_date < `this notice's own date (ordered most-recent-first), so the 50-row cap lands
+  on candidates near this notice in time rather than the 50 most recent system-wide uses of an
+  evergreen word like "demolition."
+- **Real fixture, live-queried from the SODA dataset (dg92-zbpx)**: HPD's "IMMEDIATE EMERGENCY
+  DEMOLITION OF 28 W 130th St, MANHATTAN (DM00121 E-6038R)" (2022, PIN `80622E0016001`) scores
+  only 0.43 against its real prior round "IMMEDIATE EMERGENCY DEMOLITION" (2019, PIN
+  `80619E0021001`, same vendor Granite Environmental, 994 days earlier) — below the strict bar,
+  corroborated here by amount (ratio ≈2.4), not PIN prefix (only 3 shared chars). Correction's
+  "MARINE ENGINEERING CONSULTING SERVICES" (2010) is the paired "reveal offers nothing" fixture
+  — a genuine one-off with no earlier same-agency award sharing any significant title word,
+  confirmed against both the strict AND the widened near-match query returning zero rows live.
+  Both pinned in `test/near_match_prior_cycles.test.mjs`; one test (PIN-prefix-only
+  corroboration) uses a constructed pair — no live pair combining a strong shared PIN prefix
+  with an unusable amount signal turned up within this card's research budget, and the test
+  says so rather than mislabeling synthetic data as observed.
+
 ## Verified, rotating suggestion chips (w12-08)
 
 - **Field evidence**: under the money lens, the prefab suggestion chips "IT consulting RFPs"
