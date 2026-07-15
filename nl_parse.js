@@ -127,6 +127,20 @@ function parseNL(text) {
   return out;
 }
 
+// Distinguishes a literal keyword (safe to send to SODA/aFetch as-is, unchanged behavior)
+// from a natural-language query that should route through parseNL()/the worker instead —
+// shared by index.html's resolveMoneyNarrow(), the one place the Alerts tab's "rfpkw"
+// watch (reached directly via "Build an alert" or prefilled by the 60-second quiz's "Narrow
+// by keyword") decides whether typed text is a plain keyword or a full sentence to
+// interpret. A single word or a fully quoted phrase is literal; anything else with more
+// than one word is treated as a sentence.
+function isLiteralKeyword(text) {
+  var s = (text || "").trim();
+  if (!s) return true;
+  if (/^".*"$/.test(s) || /^'.*'$/.test(s)) return true;
+  return !/\s/.test(s);
+}
+
 function parseMoney(digits, unit) {
   var n = parseFloat(digits.replace(/,/g, ""));
   var u = unit || "";
@@ -141,5 +155,6 @@ if (typeof module !== "undefined" && module.exports !== undefined) {
     parseNL: parseNL,
     NL_CATEGORY_DICT: NL_CATEGORY_DICT,
     NL_AGENCY_ALIASES: NL_AGENCY_ALIASES,
+    isLiteralKeyword: isLiteralKeyword,
   };
 }

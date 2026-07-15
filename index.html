@@ -1497,6 +1497,31 @@ const NL = {
   }
 };
 
+// One query brain: "rfpkw"'s free-text field (#aparam, reached either directly via "Build
+// an alert" or prefilled by the 60-second quiz's "Narrow by keyword") is the one Alerts
+// control that's money-shaped enough to carry a full sentence. Before this, a query typed
+// there went to SODA as one literal $q phrase -- "education contracts over 200k due in the
+// next 3 months" matched nothing that way -- while the SAME text in the Ask box (which
+// already calls nlResolve()) worked, because only the Ask box ran it through parseNL(). This
+// is the one place both paths now resolve a non-literal query: promote the watch to the
+// fuller "moneynl" shape via NL.alerts.apply(), the SAME function the Ask box's apply step
+// calls, so Preview and a saved alert are built from ONE interpreted filter, never the raw
+// string re-matched literally. A literal single word or quoted phrase is left alone (returns
+// false) so the caller runs its own preview unchanged -- no worker round-trip for that case.
+async function resolveMoneyNarrow(){
+  if($("#awatch").value !== "rfpkw") return false;
+  const text = $("#aparam").value.trim();
+  if(!text || isLiteralKeyword(text)) return false;
+  const buttons=[$("#quizgo"), $("#apreview")].filter(Boolean);
+  buttons.forEach(b=>b.disabled=true);
+  const parsed = await nlResolve(text, "alerts");
+  buttons.forEach(b=>b.disabled=false);
+  const trans=$("#nltrans-alerts");
+  if(trans) trans.innerHTML = nlTransHTML((NL.alerts.chips(parsed)||[]).filter(Boolean));
+  NL.alerts.apply(parsed); // sets #awatch/moneynl fields + moneynlExtra, and calls aPreview()
+  return true;
+}
+
 function nlFeed(key, placeholder){
   return {
     placeholder,
@@ -3392,7 +3417,7 @@ $("#pmode").addEventListener("change", ()=>{ $("#pkwlabel").textContent = $("#pm
 
 $("#awatch").addEventListener("change", aWatchChange);
 $("#afreq").addEventListener("change", updateAWhen);
-$("#apreview").addEventListener("click", aPreview);
+$("#apreview").addEventListener("click", async ()=>{ if(!(await resolveMoneyNarrow())) aPreview(); });
 $("#asubscribe").addEventListener("click", aSubscribe);
 function applySuggestion(w, p){ $("#awatch").value=w; aWatchChange(); if(w==="bigaward") $("#athresh").value=p; else $("#aparam").value=p; aPreview(); }
 document.querySelectorAll(".wandchip").forEach(b=>b.addEventListener("click",()=>applySuggestion(b.dataset.w, b.dataset.p)));
@@ -3436,7 +3461,7 @@ $("#quizwhat").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",(
 $("#quizfreq").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{
   $("#quizfreq").querySelectorAll(".chip").forEach(x=>{ x.classList.toggle("on", x===b); x.setAttribute("aria-pressed", String(x===b)); });
 }));
-$("#quizgo").addEventListener("click",()=>{
+$("#quizgo").addEventListener("click", async ()=>{
   if(!quizW){ $("#quiznarrow").placeholder=t("pick_topic_first"); return; }
   $("#awatch").value=quizW; aWatchChange();
   // Always assign — every topic gets the same treatment: your narrowing, or the topic's
@@ -3444,7 +3469,7 @@ $("#quizgo").addEventListener("click",()=>{
   if(quizW!=="bigaward") $("#aparam").value=$("#quiznarrow").value.trim();
   const f=$("#quizfreq").querySelector(".chip.on"); if(f) $("#afreq").value=f.dataset.f;
   updateAWhen();
-  aPreview();
+  if(!(await resolveMoneyNarrow())) aPreview();
   $("#apreviewbox").scrollIntoView({behavior:"smooth", block:"start"});
 });
 

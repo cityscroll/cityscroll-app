@@ -526,6 +526,27 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   right above it — it carries `role="status"`, an explicit `nl_understood_label` prefix, and
   deliberately does NOT share `.trychip`'s pill shape or pointer cursor.
   `test/standards/nl_input_clarity.py` (unit job) statically pins both distinctions.
+- **One query brain (w12-01): the quiz keyword field's "exact substring match, no parsing"
+  premise above is now only true for non-`rfpkw` topics.** Field evidence: a real query typed
+  into `#quiznarrow` ("education contracts over 200k due in the next 3 months") previewed
+  empty because the `rfpkw` watch sent the whole sentence to SODA as one literal `$q` phrase,
+  while the identical text in the Ask box worked (it already called `nlResolve()`). Three entry
+  points shared the `rfpkw` watch's free-text field — the quiz's `#quizgo`, the Build-an-alert
+  panel's own `#apreview` button, and the Ask box — and only the Ask box interpreted it.
+  `resolveMoneyNarrow()` (index.html, right after the `NL` object) is the one place the other
+  two now resolve: if `#awatch==="rfpkw"` and `#aparam` is non-literal (multi-word, unquoted —
+  `isLiteralKeyword()`, nl_parse.js), it calls `nlResolve(text,"alerts")` and hands the result to
+  `NL.alerts.apply()` — the SAME function the Ask box calls — which promotes the watch to
+  `moneynl` and populates the structured fields, so Preview and a saved alert are built from
+  ONE interpreted filter and can't diverge. A literal single word or quoted phrase (`"..."`/
+  `'...'`) still passes straight through, unchanged, with no worker round-trip. Other quiz
+  topics (`meetings`/`rules`/`property`/`rezone`) are untouched by design — `parseNL()`'s field
+  schema is money-shaped and has no signal for those lenses, and the existing meetings/
+  `"community board"` regression test (`test/functional/03_watch_quiz_feeds.py`) pins that a
+  multi-word literal keyword stays literal for them. Node characterization:
+  `test/quiz_narrow_resolve.test.mjs` (extracts `resolveMoneyNarrow()` the same brace-matching
+  way `forecast_render.test.mjs` does, with `nlResolve`/`NL`/`nlTransHTML` injected as fakes).
+  Needed zero changes to `worker/src/nl.mjs` — `lens:"alerts"` was already a supported lens.
 
 ## Procurement forecast — discoverability cross-link + subtab deep-link
 
