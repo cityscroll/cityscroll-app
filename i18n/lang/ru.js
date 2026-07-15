@@ -211,6 +211,8 @@
     fetching_today: "загрузка сегодняшних подходящих уведомлений…",
     translating: "перевод…",
     nl_understood_label: "Мы поняли это так:",
+    nl_edit_btn: "Изменить запрос",
+    nl_no_matches_note: "По этому запросу совпадений нет.",
     head_open: "Открытые запросы предложений (RFP)",
     head_allrfp: "Все RFP",
     head_award: "Недавние присуждения контрактов",

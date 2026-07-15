@@ -53,6 +53,51 @@ test("alerts lens: category + amount + deadline extracted together (not one-at-a
   assert.ok(j.filter.keywords.includes("education"), `keywords: ${j.filter.keywords}`);
 });
 
+// ---- paraphrase robustness (w12-02) ---------------------------------------
+// Field evidence 2026-07-14: the ask box "required very specific wording" — a paraphrase of
+// the exact same request came back as a silent, unexplained empty result, which read as "the
+// feature is broken." These pin the fixture above (education / >$200k / due in 3 months)
+// under real paraphrasing — word order, synonyms ("school"/"deals"/"RFPs" for "education"/
+// "contracts"/"solicitations"), and currency/duration format ("$200k" vs "200,000" vs spelled
+// out; "3 months" vs "90 days" vs "12 weeks" vs "next quarter"). Before this card, only the
+// one exact wording above was verified — a differently-worded but identical request had no
+// coverage and, per the field report, no guarantee of the same result. Live model behavior
+// only (not unit-testable) — see test/nl.test.mjs for the offline-testable parts of this
+// pipeline (sanitize() normalization, filterConfidence()).
+const PARAPHRASES = [
+  "over 200k education contracts next 3 months",
+  "RFPs about schools > $200,000 due within 90 days",
+  "school bids worth more than $200,000 closing within the next 3 months",
+  "education RFPs exceeding two hundred thousand dollars due in the next quarter",
+  "show me contracts about education valued over $200k that close in the next twelve weeks",
+  "education contracts north of $200,000 due in 3 months",
+  "solicitations for schools greater than 200000 due in the next 3 months",
+];
+
+for (const text of PARAPHRASES) {
+  test(`alerts lens paraphrase -> same interpreted filter as the canonical fixture: "${text}"`, async () => {
+    const r = await post({ lens: "alerts", text });
+    assert.equal(r.status, 200);
+    const j = await r.json();
+    assert.ok(j.filter, `expected a filter, got ${JSON.stringify(j)}`);
+    assert.equal(j.filter.minAmount, 200000, `minAmount for "${text}": ${JSON.stringify(j.filter)}`);
+    assert.equal(j.filter.months, 3, `months for "${text}": ${JSON.stringify(j.filter)}`);
+    assert.ok(j.filter.keywords.some(k => /educat|school/i.test(k)), `keywords for "${text}": ${j.filter.keywords}`);
+  });
+}
+
+test("alerts lens: vague urgency with no stated duration doesn't invent a number (conservative-parsing design decision)", async () => {
+  // This is the one named example from the field report that carries no explicit duration —
+  // "closing soon" is not equivalent to "due in 3 months" and forcing it to guess 3 would be
+  // the same kind of over-eager guess the schema's field description explicitly forbids (see
+  // FIELD_DEFS.months in nl.mjs). Deliberately NOT folded into the equal-filter set above.
+  const r = await post({ lens: "alerts", text: "school deals worth more than $200k closing soon" });
+  assert.equal(r.status, 200);
+  const j = await r.json();
+  assert.equal(j.filter.minAmount, 200000);
+  assert.equal(j.filter.months, null, `should not invent a duration from "closing soon": ${JSON.stringify(j.filter)}`);
+});
+
 // ---- defense in depth -----------------------------------------------------
 
 test("GET is rejected (405)", async () => {

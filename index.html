@@ -108,8 +108,13 @@
   .qchip{display:inline-block;font-family:var(--font-sc);font-size:12px;letter-spacing:.04em;text-transform:uppercase;background:var(--paper-2);border:1px solid var(--rule);border-radius:6px;padding:5px 9px;margin:0 6px 6px 0;color:var(--ink-soft);cursor:default}
   .qchip b{color:var(--oxblood)}
   /* Status text, not a control — deliberately NOT pill-shaped (999px radius) or button-styled
-     like .trychip above it, so the two never read as the same kind of thing. */
+     like .trychip above it, so the two never read as the same kind of thing. Its "Edit search"
+     button (.nledit) is a real, plainly-styled button (.mini) rather than another chip. */
   .nlunderstood{margin:10px 0 2px;font:12px/1.6 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+  .nlunderstood .nledit{margin-inline-start:8px;vertical-align:baseline}
+  /* Low/no signal understood, or zero matches — the interpretation gets a visible callout
+     instead of blending into quiet status text (w12-02: never a bare empty result). */
+  .nlunderstood-weak{background:#fbf0dc;border-inline-start:3px solid var(--amber);padding:8px 10px;border-start-end-radius:6px;border-end-end-radius:6px;color:var(--ink-soft)}
   .qcode{font-family:ui-monospace,Menlo,monospace;font-size:12px;line-height:1.5;background:var(--paper-2);border:1px solid var(--rule);border-radius:8px;padding:10px 12px;white-space:pre-wrap;color:var(--ink-soft);margin-top:4px}
   .tryrow{margin-top:12px;font-family:var(--font-sc);text-transform:uppercase;letter-spacing:.1em;font-size:12px;color:var(--muted)}
   .trychip{font-family:var(--font-sc);font-weight:600;letter-spacing:.03em;font-size:12px;padding:6px 11px;border:1px solid var(--rule);border-radius:999px;background:#fff;color:var(--ink-soft);cursor:pointer;margin:0 4px 6px 6px;text-transform:none}
@@ -322,7 +327,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=80a948f2"></script>
+<script src="i18n.js?v=b019928a"></script>
 <script src="nl_parse.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
@@ -1381,19 +1386,35 @@ async function nlTranslate(){
   const code=[`type_of_notice = '${wantsAward?"Award":"Solicitation"}'`, wantsAward?null:"due_date > today"+(dueMax?` AND due_date <= '${dueMax}'`:""),
     `$q ~ ${kwExpr}`, p.minAmount?`contract_amount >= ${p.minAmount}`:null, p.maxAmount?`contract_amount <= ${p.maxAmount}`:null,
     p.excludeSpecial?`selection_method NOT LIKE '%Special%'`:null].filter(Boolean).join("\nAND ");
-  if(btn) btn.disabled=false;
-  $("#nltrans").innerHTML=nlTransHTML(chips);
   $("#mode").value=wantsAward?"award":"open"; $("#sort").value="deadline"; $("#kw").value=[...p.keywords, p.agency].filter(Boolean).join(" ");
-  search();
+  await search();
+  if(btn) btn.disabled=false;
+  // Field evidence 2026-07-14: paraphrases used to fail with a silent, unexplained empty
+  // result — the interpretation never showed itself, so a zero-row search read as "the ask
+  // button is broken." "weak" (little/nothing understood beyond the mandatory notice-type
+  // chip, or genuinely zero matches) gets a prominent echo + a one-tap way to adjust; a
+  // confident, populated search keeps the quiet status line it always had.
+  const weak = chips.length <= 1 || currentRows.length === 0;
+  $("#nltrans").innerHTML=nlTransHTML(chips, "#nlq", weak);
+  if(currentRows.length === 0) $("#list").innerHTML = `<div class="empty">${t("nl_no_matches_note")}</div>` + nlTransHTML(chips, "#nlq", true);
 }
 
 function nlWorkingHTML(){ return '<div class="nlworking"><span class="loading"></span><span>' + t("translating") + '</span></div>'; }
 
-// The chips summarizing what was understood are inert status text, not the clickable sample
-// queries above them (.trychip) — an explicit label + role="status" (screen readers announce
-// it; sighted users get a text cue) keeps the two from reading as the same kind of control.
-function nlTransHTML(chips){
-  return chips.length ? `<div class="nlunderstood" role="status">${t("nl_understood_label")} ${chips.join("")}</div>` : "";
+// The chips summarizing what was understood are inert status text (role="status"), not the
+// clickable sample queries above them (.trychip) — an explicit label keeps the two from
+// reading as the same kind of thing; the "Edit search" button is a real, separately-styled
+// control (.mini), a sibling of the status line rather than nested inside it. `forSel` is the
+// input it should refocus (delegated at the bottom of this file — see the "#nlgo" click
+// listener), so one handler covers every render across every lens instead of rewiring a
+// listener each time. `weak` (little/nothing understood, or zero matches) wraps both in a
+// visible callout instead of leaving them to blend into quiet status text (w12-02: never a
+// bare empty result — field evidence 2026-07-14).
+function nlTransHTML(chips, forSel, weak){
+  if(!chips.length) return "";
+  const status = `<div class="nlunderstood" role="status">${t("nl_understood_label")} ${chips.join("")}</div>`;
+  const edit = `<button type="button" class="mini nledit" data-nlfor="${forSel}">${t("nl_edit_btn")}</button>`;
+  return weak ? `<div class="nlunderstood-weak">${status}${edit}</div>` : `${status}${edit}`;
 }
 
 // "look up someone named X" → the model sets lookupType:"person" but often omits the name
@@ -1517,7 +1538,8 @@ async function resolveMoneyNarrow(){
   const parsed = await nlResolve(text, "alerts");
   buttons.forEach(b=>b.disabled=false);
   const trans=$("#nltrans-alerts");
-  if(trans) trans.innerHTML = nlTransHTML((NL.alerts.chips(parsed)||[]).filter(Boolean));
+  const narrowChips=(NL.alerts.chips(parsed)||[]).filter(Boolean);
+  if(trans) trans.innerHTML = nlTransHTML(narrowChips, "#aparam", narrowChips.length===0);
   NL.alerts.apply(parsed); // sets #awatch/moneynl fields + moneynlExtra, and calls aPreview()
   return true;
 }
@@ -1541,7 +1563,7 @@ async function nlTranslateLens(lens){
   $("#nltrans-"+lens).innerHTML=nlWorkingHTML();
   const f=await nlResolve(text, lens);
   const chips=(NL[lens].chips(f)||[]).filter(Boolean);
-  $("#nltrans-"+lens).innerHTML=nlTransHTML(chips);
+  $("#nltrans-"+lens).innerHTML=nlTransHTML(chips, "#nlq-"+lens, chips.length===0);
   if(btn) btn.disabled=false;
   NL[lens].apply(f);
 }
@@ -2406,8 +2428,13 @@ async function aPreview(){
   // Same {lens,filter} shape the worker compiles into a query -- keywords is whatever subset
   // this watch type actually searches on (empty for amount/name-only watches).
   const previewKeywords = aLensFilter().filter.keywords || [];
+  // A "moneynl" watch is one built from the Ask box (NL.alerts.apply) — reuse its own chip
+  // builder so a zero-match preview echoes exactly what the ask translation understood,
+  // same fix as the Money tab's own ask flow (field evidence 2026-07-14: a silent empty
+  // result read as "the ask button is broken").
+  const nlChips = (!rows.length && $("#awatch").value === "moneynl") ? NL.alerts.chips(aLensFilter().filter).filter(Boolean) : [];
   const body = rows.length ? rows.map(r=>digItemHTML(data.kind,r,previewKeywords)).join("")
-    : `<div class="empty">${t("no_matches_today_html")}${showSimplifyHint ? ` ${t("simplify_keyword_hint_html")}` : ""}</div>`;
+    : `<div class="empty">${t("no_matches_today_html")}${showSimplifyHint ? ` ${t("simplify_keyword_hint_html")}` : ""}${nlChips.length ? nlTransHTML(nlChips, "#nlq-alerts", true) : ""}</div>`;
   $("#apreviewbox").innerHTML = `<div class="emailmock">
     <div class="ehead"><div class="efrom">CROL-List &lt;alerts@crol-list.org&gt; → ${dest}</div>
     <div class="esubj">${t("your_digest_subject",{desc:aDescribe()})}</div></div>
@@ -3400,6 +3427,14 @@ async function showNotice(id){
    the fastest control is the one you don't have to click. */
 $("#nlgo").addEventListener("click", nlTranslate);
 $("#nlq").addEventListener("keydown", e=>{ if(e.key==="Enter") nlTranslate(); });
+// One delegated handler covers every ".nledit" button nlTransHTML() renders (money's
+// #nltrans, each lens's #nltrans-<lens>, and the alerts zero-result preview) — avoids
+// wiring a fresh listener, and a duplicate-id risk, on every re-render.
+document.addEventListener("click", e=>{
+  const btn=e.target.closest(".nledit"); if(!btn) return;
+  const inp=btn.dataset.nlfor ? $(btn.dataset.nlfor) : null;
+  if(inp){ inp.focus(); inp.select(); }
+});
 injectNLBoxes();
 renderNLSamples("money", $("#nltry"));
 $("#export").addEventListener("click", exportCSV);

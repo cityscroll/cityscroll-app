@@ -210,6 +210,8 @@
     fetching_today: "ap chèche avi jodi a ki koresponn…",
     translating: "ap tradwi…",
     nl_understood_label: "Men sa nou konprann:",
+    nl_edit_btn: "Modifye rechèch la",
+    nl_no_matches_note: "Pa gen rezilta pou rechèch sa a.",
     head_open: "Demann Pwopozisyon (RFP) louvri",
     head_allrfp: "Tout RFP yo",
     head_award: "Akòdman resan yo",

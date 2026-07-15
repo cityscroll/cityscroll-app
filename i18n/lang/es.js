@@ -211,6 +211,8 @@
     fetching_today: "consultando avisos de hoy…",
     translating: "traduciendo…",
     nl_understood_label: "Esto es lo que entendimos:",
+    nl_edit_btn: "Editar búsqueda",
+    nl_no_matches_note: "No hay resultados para esta búsqueda.",
     head_open: "Solicitudes de propuestas (RFP) abiertas",
     head_allrfp: "Todas las RFP",
     head_award: "Adjudicaciones recientes",

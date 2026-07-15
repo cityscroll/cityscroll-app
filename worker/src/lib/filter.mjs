@@ -95,3 +95,21 @@ export function sanitize(lens, input) {
   for (const name of fields) out[name] = clampField(name, f[name]);
   return out;
 }
+
+// Field evidence 2026-07-14: the ask button "required very specific wording" and a paraphrase
+// that the model barely parsed came back as a silent, unexplained empty result — the caller had
+// no signal to distinguish "confidently narrow" from "we understood almost nothing." "low" means
+// the sanitized filter carries no narrowing signal at all (no keywords, every other field still
+// null/false/empty) — a pure function of sanitize()'s own output, so it needs no extra model call
+// or schema change and stays inside the existing Haiku metering. Additive to /nl's response shape
+// (a new sibling field, nothing existing changes) so a client that doesn't read it is unaffected.
+export function filterConfidence(lens, filter) {
+  const fields = LENSES[lens] || LENSES.money;
+  const f = filter || {};
+  const hasSignal = fields.some((name) => {
+    const v = f[name];
+    if (Array.isArray(v)) return v.length > 0;
+    return v !== null && v !== undefined && v !== false && v !== "";
+  });
+  return hasSignal ? "high" : "low";
+}

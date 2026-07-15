@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "9d0662d6",
-  "zh-Hans": "4c275de6",
-  ru: "160cf04e",
-  bn: "07b38bb9",
-  ht: "73ee71a9",
-  ko: "896803d8",
-  fr: "f5cf9e36",
-  pl: "1acd95ff",
-  ar: "76e0a932",
-  ur: "05782688",
+  es: "6887bda2",
+  "zh-Hans": "38369aee",
+  ru: "263e0436",
+  bn: "55f428d7",
+  ht: "390d6b71",
+  ko: "9a33fe7a",
+  fr: "118c4e87",
+  pl: "c5791bb0",
+  ar: "becb87c1",
+  ur: "03088ca9",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -346,6 +346,8 @@ const STRINGS = {
     fetching_today:   "fetching today's matching notices…",
     translating:      "translating…",
     nl_understood_label: "We understood this as:",
+    nl_edit_btn:      "Edit search",
+    nl_no_matches_note: "No matches for this search.",
 
     // Dynamic headings (search())
     head_open:              "Open Requests for Proposals (RFPs)",
