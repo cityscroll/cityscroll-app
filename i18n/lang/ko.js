@@ -223,6 +223,8 @@
     nl_no_matches_note: "이 검색에 대한 결과가 없습니다.",
     nl_chip_land_kind: "구역 재지정",
     nl_chip_land_status_all: "종료된 구역 재지정 포함",
+    sugg_lineage_hint:  "낙찰 이력이 있는 계약 포함",
+    sugg_forecast_hint: "예측 데이터가 있는 계약 포함",
     head_open: "공개 제안요청서 (RFP)",
     head_allrfp: "모든 제안요청서 (RFP)",
     head_award: "최근 낙찰",

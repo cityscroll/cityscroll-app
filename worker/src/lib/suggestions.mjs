@@ -99,3 +99,20 @@ export function suggestionCountParams(lens, filter, todayISO) {
   delete params["$limit"];
   return { url: compiled.url, params };
 }
+
+// A real row SAMPLE (not a count) of a candidate's own live results — money/alerts (non-
+// rezone) only, since lineage (PIN award-chain history) and forecast (Checkbook/MOCS agency
+// forecast) are both contract concepts; Land/Property/Rules/Meetings/Staffing notices have
+// neither (same scope decision AGENTS.md's w12-10 lineage-indicator section already made for
+// the client-side row badge). Reuses compileSub()'s OWN params unmodified — it already selects
+// pin/agency_name (CR_SELECT) and caps at 25 rows — rather than a bespoke second builder, for
+// the same "identical query shape a real click resolves to" reason suggestionCountParams()
+// gives above.
+export function suggestionSampleParams(lens, filter, todayISO) {
+  const f = filter || {};
+  if (lens === "alerts" && f.watchType === "rezone") return null; // no PIN/agency-contract concept
+  if (lens !== "money" && lens !== "alerts") return null;
+  const compiled = compileSub({ lens: "money", filter: f }, todayISO);
+  if (!compiled) return null;
+  return { url: compiled.url, params: compiled.params };
+}

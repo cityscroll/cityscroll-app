@@ -1174,6 +1174,63 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   one) — 404 until `ADMIN_KEY` is configured, 401 on a wrong/missing key, key via `?key=` or an
   `Authorization: Bearer` header. Reach for `checkAdminKey` again for any future `/admin/*` route
   rather than re-copying the inline check. Tests: `worker/test/admin.test.mjs`.
+- **Suggestions promote the lineage and forecast features (w12-17)**: owner directive — the
+  paper-trail (`cadenceEstimate()`/`pastWinnersHTML()`, w12-04/05) and forecast
+  (`agencyForecastTeaser()`, Wave 5) features are both undiscoverable unless a reader happens to
+  open a notice that has one; the suggestion chips themselves should surface and quietly mark
+  queries that lead to them. `worker/src/lib/lineage.mjs` is a worker-side PORT (not an import —
+  the worker and static site can't share one, see the dual-implemented convention throughout
+  this file) of the pinBase()/isBlanketChain()/LINEAGE_MAX_STAGES honesty rules index.html's
+  own row-badge lineage machinery uses, plus a NEW candidate-level (not per-row) judgment,
+  `computeLineageSignal(sampleRows, batchRows)` — "what SHARE of a candidate's own live results
+  have a genuine prior-award chain," not "what count does this one row have." Thresholds
+  (`LINEAGE_SAMPLE_MIN`=5, `LINEAGE_RICH_MIN_COUNT`=2, `LINEAGE_RICH_MIN_SHARE`=0.2) are grounded
+  in a live check against the real "construction contracts over $500k" candidate (SUGGESTION_POOL
+  money idx 0): 6 of a 25-row sample resolve to a genuine 2-stage chain (24% share) while the
+  real PIN-prefix collision PR #61 (w12-10) already documents (PIN 82626R0001001, Environmental
+  Protection, 125 unrelated matches live) is correctly excluded as uncertain, not counted.
+- `worker/src/suggest.mjs`'s `enrichCandidate()` runs once per fruitful (count-cleared) money/
+  alerts-non-rezone candidate, once daily inside `runSuggestionValidation()`: it samples the
+  candidate's own live rows (`suggestionSampleParams()`, `worker/src/lib/suggestions.mjs` — just
+  `compileSub()`'s own unmodified params, since that already selects pin/agency_name and caps at
+  25 rows, the same "identical query shape a real click resolves to" reasoning
+  `suggestionCountParams()` uses), computes the lineage signal, then separately checks whether
+  ANY distinct sampled agency has a cached `fc:<stem>`/`plan:<stem>` forecast record
+  (`vendorStem()`, `worker/src/lib/compile.mjs`) for the forecast-bearing signal. Both signals are
+  booleans stored on the validated entry (`{idx, count, lineageRich, forecastBearing}`) — never a
+  share/number the client has to threshold itself, and never computed client-side (the
+  acceptance criterion: "all computed at validation time — no extra client request").
+  Fail-soft: any enrichment-step failure (sample fetch, batch fetch, KV read) leaves the flag
+  `false` — uncertain, not a guess — without affecting the candidate's own base validated/count
+  result.
+- **Money-lens rotation guarantee**: `pickSuggestionsGuaranteed(indices, lineageIndices,
+  displayCount, seed, guarantee)` (index.html) picks `min(guarantee, lineageIndices.length,
+  displayCount)` lineage-rich idx (day-seeded, so WHICH ones rotates too) plus fills the
+  remaining slots from the ordinary `pickSuggestions()` rotation over the rest of the pool —
+  representation, not exclusivity, per the acceptance criterion. `LINEAGE_GUARANTEE_MIN` = 2.
+  Only wired for `lens==="money"` in `renderNLSamples()`; every other lens keeps plain
+  `pickSuggestions()` unchanged. `currentSuggestionMeta(lens)` reads a validated set's
+  `lineageRich`/`forecastBearing` flags into idx `Set`s — empty sets (no indicator) for the
+  static `NL_SUGGESTIONS_FALLBACK` or an unvalidated lens, since unvalidated is exactly the
+  "uncertain" case this feature must never guess at.
+- **The indicator itself**: `trychipHTML(lens, idx, meta)` adds `.has-lineage`/`.has-forecast`
+  (CSS: a 1px `border-color` tint only — `var(--amber)`/`var(--blue)`, `var(--oxblood)` when a
+  chip is both — nothing louder, per the owner's "1px different color border" framing) plus an
+  `aria-describedby` pointing at a `.sr-only` hint span. The hint span is a SIBLING of the
+  `<button>`, never nested inside it — nesting would break `applyStrings()`'s zero-children
+  `data-i18n` guard on the button's own visible label (the same static-fallback-drift sharp edge
+  documented earlier in this file). New i18n keys: `sugg_lineage_hint`/`sugg_forecast_hint`, all
+  10 `SHIPPING_LANGS`.
+- **Tests**: `worker/test/lineage.test.mjs` pins `computeLineageSignal()` against the real
+  construction-500k fixture (25-row sample, 6 real 2-stage chains individually queried live, the
+  real 82626 collision reduced to a 16-row same-shaped stand-in per PR #61's own convention for
+  that exact PIN) plus the ported chain-key/batch-clause helpers. `worker/test/suggestions.test.mjs`
+  adds an integration-level test proving `runSuggestionValidation()` flags a real lineage-rich
+  candidate and a real forecast-bearing one (a mocked `plan:EDUCATION` KV record standing in for
+  a live DOE MOCS forecast, since actual forecast KV content is subscriber-driven and can't be a
+  stable committed fixture — same posture `test/forecast_render.test.mjs`'s own synthetic
+  `checkbookItem`/`mocsItem` fixtures already established) plus a fail-soft case. `test/
+  suggestions_render.test.mjs` extracts and pins the four new client-side pure functions.
 
 ## Stats page — counter integrity, per-lens breakdowns, general-vs-technical reform (w12-14/15/16)
 

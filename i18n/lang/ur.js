@@ -226,6 +226,8 @@
     nl_no_matches_note: "اس تلاش کے لیے کوئی نتائج نہیں ملے۔",
     nl_chip_land_kind: "دوبارہ زوننگ",
     nl_chip_land_status_all: "بند دوبارہ زوننگ سمیت",
+    sugg_lineage_hint:  "ایوارڈ کی سابقہ تاریخ والے معاہدے شامل ہیں",
+    sugg_forecast_hint: "پیش گوئی کے ڈیٹا والے معاہدے شامل ہیں",
     head_open: "کھلی درخواستِ تجاویز (RFP)",
     head_allrfp: "تمام RFP",
     head_award: "حالیہ ایوارڈز",

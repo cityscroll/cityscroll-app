@@ -123,6 +123,140 @@ test("SUGGESTION_POOL: the two field-evidence dead examples are present as fixtu
   assert.ok(money.some((c) => c.idx === 2 && c.text === "shelter services contracts"));
 });
 
+// ---- w12-17: lineage-richness / forecast-bearing enrichment -----------------------------
+//
+// Owner directive: contracts suggestions should surface some queries whose results
+// conspicuously carry prior award cycles, and separately mark the ones whose agency has
+// forecast (predictive) data — both computed once a day, not on the client's dime.
+//
+// Real fixtures: "construction contracts over $500k" (SUGGESTION_POOL money idx 0) — its own
+// live 25-row result sample and the real 2-stage Award chains within it, queried from dg92-zbpx
+// on 2026-07-15 (see test/lineage.test.mjs's header for the full provenance; same fixture,
+// reused here to prove enrichCandidate() wires computeLineageSignal() into the real pipeline).
+// "school food service contracts" (money idx 4) — two real, live NYC Department of Education
+// Solicitation rows for the same query, standing in for a candidate whose agency ("Education")
+// has cached Checkbook/MOCS forecast data; the DOE agency is deliberately absent from the
+// construction sample so the two signals are independently demonstrated, not conflated.
+const constructionSample = [
+  { pin: "85026B0058001", agency_name: "Design and Construction" },
+  { pin: "82624B0040001R001", agency_name: "Environmental Protection" },
+  { pin: "07222B0008003R001", agency_name: "Correction" },
+  { pin: "82624B0038001R001", agency_name: "Environmental Protection" },
+  { pin: "82626R0001001", agency_name: "Environmental Protection" },
+  { pin: "82624B0041001R001", agency_name: "Environmental Protection" },
+  { pin: "82624B0043001R001", agency_name: "Environmental Protection" },
+  { pin: "85026B0033001", agency_name: "Design and Construction" },
+  { pin: "85023P0003002R001", agency_name: "Design and Construction" },
+  { pin: "82624B0042001R001", agency_name: "Environmental Protection" },
+  { pin: "85023P0003003R001", agency_name: "Design and Construction" },
+  { pin: "84626B0062001", agency_name: "Parks and Recreation" },
+  { pin: "84626B0028001", agency_name: "Parks and Recreation" },
+  { pin: "85026B0074001", agency_name: "Design and Construction" },
+  { pin: "84623B0128001R001", agency_name: "Parks and Recreation" },
+  { pin: "07122P0023001R001", agency_name: "Homeless Services" },
+  { pin: "85026B0021001", agency_name: "Design and Construction" },
+  { pin: "82626W0061001", agency_name: "Environmental Protection" },
+  { pin: "84625B0150001", agency_name: "Parks and Recreation" },
+  { pin: "84121P0023002R001", agency_name: "Transportation" },
+  { pin: "85623B0004001R001", agency_name: "Citywide Administrative Services" },
+  { pin: "84124P0003001", agency_name: "Transportation" },
+  { pin: "82626E0006001", agency_name: "Environmental Protection" },
+  { pin: "07222B0004001R001", agency_name: "Correction" },
+  { pin: "84626W0028001", agency_name: "Parks and Recreation" },
+];
+const constructionBatch = [
+  { pin: "07222B0008003", agency_name: "Correction", type_of_notice_description: "Award" },
+  { pin: "07222B0008003R001", agency_name: "Correction", type_of_notice_description: "Award" },
+  { pin: "84623B0128001", agency_name: "Parks and Recreation", type_of_notice_description: "Award" },
+  { pin: "84623B0128001R001", agency_name: "Parks and Recreation", type_of_notice_description: "Award" },
+  { pin: "07122P0023001", agency_name: "Homeless Services", type_of_notice_description: "Award" },
+  { pin: "07122P0023001R001", agency_name: "Homeless Services", type_of_notice_description: "Award" },
+  { pin: "84121P0023002", agency_name: "Transportation", type_of_notice_description: "Award" },
+  { pin: "84121P0023002R001", agency_name: "Transportation", type_of_notice_description: "Award" },
+  { pin: "85623B0004001", agency_name: "Citywide Administrative Services", type_of_notice_description: "Award" },
+  { pin: "85623B0004001R001", agency_name: "Citywide Administrative Services", type_of_notice_description: "Award" },
+  { pin: "07222B0004001", agency_name: "Correction", type_of_notice_description: "Award" },
+  { pin: "07222B0004001R001", agency_name: "Correction", type_of_notice_description: "Award" },
+  ...Array.from({ length: 16 }, (_, i) => ({
+    pin: `82626${i}`, agency_name: "Environmental Protection",
+    type_of_notice_description: i % 3 === 0 ? "Intent to Award" : "Award",
+  })),
+];
+// Real DOE Solicitation rows (dg92-zbpx, 2026-07-15).
+const doeSample = [
+  { pin: "B5929040", agency_name: "Education" },
+  { pin: "B5954040", agency_name: "Education" },
+];
+
+test("runSuggestionValidation: enriches a real lineage-rich candidate and a real forecast-bearing candidate (w12-17)", async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (url, opts) => {
+    const s = String(url);
+    if (s.includes("api.anthropic.com")) {
+      const body = JSON.parse((opts && opts.body) || "{}");
+      const text = body.messages[0].content.toLowerCase();
+      let input = { keywords: [], minAmount: null, maxAmount: null, category: null, agency: null, months: null, noticeType: null, excludeSpecial: false };
+      if (text.includes("construction")) input = { ...input, keywords: ["construction"], minAmount: 500000 };
+      else if (text.includes("school food service")) input = { ...input, keywords: ["school", "food", "service"] };
+      return { ok: true, json: async () => ({ content: [{ type: "tool_use", name: "build_filter", input }] }) };
+    }
+    const u = new URL(s);
+    const select = u.searchParams.get("$select") || "";
+    if (select === "count(1) as n") {
+      const n = s.includes("construction") ? "42" : s.includes("school") ? "8" : "0";
+      return { ok: true, json: async () => [{ n }] };
+    }
+    if (select === "pin,agency_name,type_of_notice_description") {
+      return { ok: true, json: async () => constructionBatch }; // only construction's sample has a matching key
+    }
+    if (s.includes("construction")) return { ok: true, json: async () => constructionSample };
+    if (s.includes("school")) return { ok: true, json: async () => doeSample };
+    return { ok: true, json: async () => [] };
+  };
+  const kvStore = { "plan:EDUCATION": JSON.stringify([{ source: "mocs", agency: "Education", description: "School food service requirements contract", value_band: "$5M-$10M", release_quarter: "Q1 2027" }]) };
+  const env = { ANTHROPIC_API_KEY: "test-key", ALERT_STATE: { get: async (k) => kvStore[k], put: async (k, v) => { kvStore[k] = v; } } };
+  try {
+    const res = await runSuggestionValidation(env);
+    const money = res.byLens.money;
+    const construction = money.find((c) => c.idx === 0);
+    const school = money.find((c) => c.idx === 4);
+    assert.ok(construction, "construction candidate should have validated");
+    assert.equal(construction.lineageRich, true, "construction contracts over $500k: 6/25 real rows have a genuine prior-award chain");
+    assert.equal(construction.forecastBearing, false, "none of construction's sampled agencies (Education absent) have cached forecast data");
+    assert.ok(school, "school food service candidate should have validated");
+    assert.equal(school.forecastBearing, true, "Education has a cached plan: forecast record");
+    assert.equal(school.lineageRich, false, "the DOE sample rows carry no PIN chain data in this fixture");
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("runSuggestionValidation: enrichment failure (bad sample fetch) never blocks the base validated result", async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (url, opts) => {
+    const s = String(url);
+    if (s.includes("api.anthropic.com")) {
+      const body = JSON.parse((opts && opts.body) || "{}");
+      const input = { keywords: ["construction"], minAmount: 500000, maxAmount: null, category: null, agency: null, months: null, noticeType: null, excludeSpecial: false };
+      return { ok: true, json: async () => ({ content: [{ type: "tool_use", name: "build_filter", input }] }) };
+    }
+    const u = new URL(s);
+    const select = u.searchParams.get("$select") || "";
+    if (select === "count(1) as n") return { ok: true, json: async () => [{ n: "42" }] };
+    return { ok: false, status: 500 }; // sample fetch fails
+  };
+  const env = { ANTHROPIC_API_KEY: "test-key", ALERT_STATE: { get: async () => null, put: async () => {} } };
+  try {
+    const res = await runSuggestionValidation(env);
+    const construction = res.byLens.money.find((c) => c.idx === 0);
+    assert.ok(construction, "candidate still validates on its base count even when enrichment fails");
+    assert.equal(construction.lineageRich, false, "uncertain — no indicator, not a guess");
+    assert.equal(construction.forecastBearing, false);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
 // ---- GET /suggestions route --------------------------------------------------------------
 
 test("handleSuggestions: serves the stored validated set", async () => {
