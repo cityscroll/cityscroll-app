@@ -94,7 +94,7 @@
     // Alerts / quiz section
     quiz_heading:       "Configurez votre bulletin en 60 secondes",
     quiz_step1:         "Que devrions-nous surveiller pour vous ?",
-    quiz_step2:         "Préciser par mot-clé (facultatif)",
+    quiz_step2:         "Décrivez ce que vous voulez — en langage clair ou par mots-clés (facultatif)",
     quiz_step3:         "À quelle fréquence ?",
     quiz_rfpkw:         "Contrats et RFP municipaux",
     quiz_bigaward:      "Grandes attributions de contrats",
@@ -226,7 +226,7 @@
     preview_panel_heading: "Aperçu",
 
     // Quiz panel
-    quiz_narrow_placeholder: "choisissez d'abord un sujet ci-dessus…",
+    quiz_narrow_placeholder: "saisissez ce que vous recherchez, ou choisissez un sujet ci-dessus…",
     quiz_param_agency:   "agence (facultatif) -- p. ex. Buildings",
 
     // Alert builder labels
@@ -540,13 +540,13 @@
     remove_btn: "retirer",
     enter_valid_email: "Entrez une adresse courriel valide.",
     subs_need_backend: "Les abonnements nécessitent le serveur, qui n'est pas connecté dans cette version.",
-    quizph_rfpkw: "mot-clé — construction, TI, restauration…",
+    quizph_rfpkw: "construction, TI, restauration… ou décrivez-le en une phrase",
     quizph_bigaward: "(utilise le seuil de 1 M$+ — ajustez-le ci-dessous)",
     quizph_rezone: "lieu — 79 Rivington, Bushwick…",
     quizph_property: "mot-clé — Brooklyn, vente aux enchères…",
     quizph_rules: "mot-clé — vélo électrique, trottoir…",
     quizph_meetings: "mot-clé — conseil communautaire, monuments historiques…",
-    pick_topic_first: "← choisissez d'abord un sujet",
+    pick_topic_first: "← saisissez quelque chose, ou choisissez un sujet",
 
     // Clipboard
     copied_check: "✓ Copié",

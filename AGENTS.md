@@ -360,6 +360,13 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `readable_or_else.measure`, or trust `check`'s own reported number) and say so in the PR —
   this happened for `index.html` and `about.html` in crol-rerun-j6 (2026-07-13), both caused by
   a previously-merged sibling PR, not new content.
+- **A deliberate copy-lengthening product decision can trip the ratchet on the page you're
+  actually editing, not just a sibling PR's page.** w12-07's step-2 relabel ("Narrow by keyword"
+  → "Describe what you want — plain English or keywords") nudged index.html from 15.02 to
+  15.11 — expected, since the new label is a longer, more accurate sentence and the site owner
+  chose accuracy over grade. Same fix as above (hand-edit the entry to the freshly measured
+  number via `ror baseline <page> --preset nycsg7 -o /tmp/fresh.json`, then copy the value in),
+  just triggered by your own change instead of a sibling's.
 - **The extractor drops `<script>`/`<style>` entirely (`extract.py`'s `DROP_TAGS`) and never
   executes JS** — it reads static markup only, `--extract dom-rendered` is an unimplemented
   stub. A UI string that only ever reaches the DOM via `t()`/`innerHTML` at runtime (e.g. a
