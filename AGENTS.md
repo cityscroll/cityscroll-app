@@ -548,6 +548,52 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   way `forecast_render.test.mjs` does, with `nlResolve`/`NL`/`nlTransHTML` injected as fakes).
   Needed zero changes to `worker/src/nl.mjs` — `lens:"alerts"` was already a supported lens.
 
+## Cadence estimate — "is this a yearly bid?" answered in words (w12-04)
+
+- **`cadenceEstimate(chain)`/`cadenceHTML(est)`** (index.html, just above `chainHTML`) turn the
+  paper-trail chain `chainHTML()` already renders (`loadChain()`'s same-PIN + renewal-suffix-
+  widened award history) into a plain-language line — e.g. "3 prior awards, about 9 months
+  apart. Next solicitation expected around Jan 2024. Estimate" — appended to `chainHTML()`'s
+  output. No new fetch, no worker dependency: it's pure arithmetic over data already on hand
+  client-side. Wired once, in `chainHTML()`, so both call sites (the money-tab detail pane and
+  `showNotice()`'s permalink pane) get it for free.
+- **Never guesses**: renders nothing (`cadenceHTML(null)` → `""`) unless the chain has at least
+  `CADENCE_MIN_AWARDS` (3 — chosen to match "3 prior awards", i.e. 2 confirmed gaps) Award-type
+  entries with parseable dates, every gap is at least `CADENCE_MIN_GAP_DAYS` (30 — a shorter gap
+  reads as a same-round correction, not a rebid cycle) apart, the gaps aren't more than
+  `CADENCE_MAX_GAP_RATIO` (4) apart from each other (an erratic pattern can't be honestly
+  averaged), and the chain isn't a blanket code (`isBlanketChain()`, shared with `chainHTML()`'s
+  pre-existing `blanket_note` — a blanket PIN bundles simultaneous same-day awards to different
+  vendors, not sequential cycles; same-day gaps would also fail the min-gap check independently,
+  a second layer of defense).
+- **Sharp edge — date math must stay in UTC.** `start_date` is a date-only ISO string (UTC
+  midnight per spec); the first cut used local-timezone `setDate()`/`getDate()` to project the
+  next expected date, which shifted the projected day depending on the reader's own timezone
+  offset (caught by a characterization test failing only in a non-UTC CI runner). Fixed by using
+  `setUTCDate()`/`getUTCDate()` throughout `cadenceEstimate()`, and `cadenceMonthYear()` passes
+  `timeZone:"UTC"` to `toLocaleDateString()` for the same reason.
+- **Real fixture**: NYC Department of Correction PIN base `07219P0148001` ("Inmate Phone
+  System"), three renewal-suffixed Awards (R002/R003/R004) 287 and 246 days apart — pinned in
+  `test/cadence_estimate.test.mjs`, alongside a real 6-row (of 21) Sanitation blanket-PIN
+  fixture (`82714CC00040`) for the exclusion path. Both queried live from the SODA dataset
+  (dg92-zbpx) rather than invented.
+- **Period-generality**: `cadenceApart(est)` picks the phrasing — `avgMonths` below
+  `CADENCE_YEAR_THRESHOLD_MONTHS` (24) renders `cadence_months_apart` ("about 9 months apart");
+  at or above it renders `cadence_years_apart` ("about 2 years apart") instead, using `avgYears`
+  (computed straight from `avgDays`, not from the already-rounded `avgMonths`, so a long cadence
+  doesn't compound two roundings into a misleading year count). Both keys are pluralized in all
+  10 shipping languages (`ru`/`pl` carry the full one/few/many/other set; the rest one/other).
+  Three more real fixtures in `test/cadence_estimate.test.mjs`, added on review to prove the
+  logic isn't tuned to one gap length: NYC Dept for the Aging PIN base `12522P0001001`
+  ("Older Adult Center(s)"), 730/719-day gaps landing exactly on the year threshold (24 months
+  → 2 years); NYC HRA PIN base `06907P0017CNV` (scatter-site supportive-housing renewals), six
+  awards where every individual gap already clears `CADENCE_MIN_GAP_DAYS` but the widest/
+  narrowest ratio (5.85x) trips `CADENCE_MAX_GAP_RATIO` in isolation from the min-gap guard. A
+  quarterly (~91-day) fixture is CONSTRUCTED, not live-pulled — a live search across 650+
+  same-PIN/renewal-suffix chains found none averaging a 60-120 day gap; NYC's renewal-suffix
+  convention is overwhelmingly annual-or-longer, not quarterly, so there was nothing real to pin
+  and the test says so rather than mislabeling synthetic data as observed.
+
 ## Procurement forecast — discoverability cross-link + subtab deep-link
 
 - **The forecast data is per-agency/vendor only — there is no sitewide "upcoming" feed.**
