@@ -1669,14 +1669,18 @@ function nlFeed(key, placeholder){
   };
 }
 
-async function nlTranslateLens(lens){
-  const inp=$("#nlq-"+lens); if(!inp) return;
-  const text=inp.value.trim(); if(!text) return;
+// opts lets a second entry point (the 60-second quiz's own keyword field, below) reuse this
+// exact resolve→echo→apply sequence against its own input instead of the injected Ask box's
+// "#nlq-<lens>" — same interpretation, same echo container, no duplicated logic.
+async function nlTranslateLens(lens, opts){
+  const inpSel=(opts&&opts.inputSel)||("#nlq-"+lens);
+  const text=(opts&&opts.text!=null)?opts.text:($(inpSel)?.value.trim()||"");
+  if(!text) return;
   const btn=$("#nlgo-"+lens); if(btn) btn.disabled=true;
   $("#nltrans-"+lens).innerHTML=nlWorkingHTML();
   const f=await nlResolve(text, lens);
   const chips=(NL[lens].chips(f)||[]).filter(Boolean);
-  $("#nltrans-"+lens).innerHTML=nlTransHTML(chips, "#nlq-"+lens, chips.length===0);
+  $("#nltrans-"+lens).innerHTML=nlTransHTML(chips, inpSel, chips.length===0);
   if(btn) btn.disabled=false;
   NL[lens].apply(f);
 }
@@ -3665,7 +3669,20 @@ $("#quizfreq").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",(
   $("#quizfreq").querySelectorAll(".chip").forEach(x=>{ x.classList.toggle("on", x===b); x.setAttribute("aria-pressed", String(x===b)); });
 }));
 $("#quizgo").addEventListener("click", async ()=>{
-  if(!quizW){ $("#quiznarrow").placeholder=t("pick_topic_first"); return; }
+  if(!quizW){
+    // Field report (2026-07-15): typing straight into step 2 without clicking a step-1
+    // topic chip first used to silently no-op — the swapped placeholder is invisible once
+    // the field holds text, so the click looked like it did nothing at all. A typed keyword
+    // is enough signal on its own: resolve it the same way the Alerts Ask box would, rather
+    // than requiring the redundant chip click.
+    const text=$("#quiznarrow").value.trim();
+    if(!text){ $("#quiznarrow").placeholder=t("pick_topic_first"); return; }
+    $("#quizgo").disabled=true;
+    await nlTranslateLens("alerts", {text, inputSel:"#quiznarrow"});
+    $("#quizgo").disabled=false;
+    $("#apreviewbox").scrollIntoView({behavior:"smooth", block:"start"});
+    return;
+  }
   $("#awatch").value=quizW; aWatchChange();
   // Always assign — every topic gets the same treatment: your narrowing, or the topic's
   // own "all notices" default. Never a value left over from a previous topic.

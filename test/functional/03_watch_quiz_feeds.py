@@ -97,7 +97,30 @@ with sync_playwright() as pw:
     p4.click("#quizgo")
     ph = p4.evaluate("document.getElementById('quiznarrow').placeholder")
     step("PROBE" if "pick a topic" in ph else "FAIL", "quiz CTA without topic → nudge", ph)
-    p4.close(); p3.close()
+    p4.close()
+
+    # regression (site-owner field report, 2026-07-15): typing straight into "(2) Narrow by
+    # keyword" without first clicking a step-1 topic chip used to hard no-op — #quizgo's
+    # handler returned before doing anything but swap a placeholder the typed text was
+    # already hiding, so the click looked like it did nothing at all. Same text into the
+    # Ask box worked fine, so the fix now routes this path through the same
+    # nlResolve()/NL.alerts.apply() the Ask box already uses (see nlTranslateLens()).
+    p5 = ctx.new_page()
+    p5.goto(BASE + "#alerts", timeout=30000)
+    p5.wait_for_selector("#quizgo", timeout=15000)
+    p5.fill("#quiznarrow", "education contracts over $200k due in 3 months")
+    p5.click("#quizgo")
+    p5.wait_for_function("document.getElementById('awatch').value === 'moneynl'", timeout=15000)
+    p5.wait_for_selector("#apreviewbox .emailmock", timeout=30000)
+    st = p5.evaluate("""({watch: document.getElementById('awatch').value,
+        kw: document.getElementById('amoneykw').value,
+        min: document.getElementById('amoneymin').value,
+        months: document.getElementById('amoneymonths').value,
+        echo: document.getElementById('nltrans-alerts').textContent})""")
+    ok = (st["watch"]=="moneynl" and st["kw"]=="education" and st["min"]=="200000"
+          and st["months"]=="3" and "understood" in st["echo"].lower())
+    step("OK" if ok else "FAIL", "quiz keyword field alone (no topic chip) resolves the query, not a silent no-op", json.dumps(st))
+    p5.close(); p3.close()
 
     # ---------- regressions ----------
     page.click("#tabbtn-property")
