@@ -285,7 +285,7 @@
     footer_stats:      "Statistiques",
 
     // Skip link
-    site_tagline: "Suivez les contrats, rezonages et auditions publiques de la Ville de New York — en langage clair.",
+    site_tagline: "Abonnez-vous aux contrats, rezonages et auditions publiques de la Ville de New York qui vous intéressent.",
     skip_to_content: "Aller au contenu",
 
     // Announcements (sr-only)

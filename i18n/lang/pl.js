@@ -238,7 +238,7 @@
     footer_api: "API i kanały",
     footer_changelog: "Historia zmian",
     footer_stats: "Statystyki",
-    site_tagline: "Śledź umowy, zmiany stref i wysłuchania publiczne w Nowym Jorku — prostym językiem.",
+    site_tagline: "Subskrybuj umowy, zmiany stref i wysłuchania publiczne w Nowym Jorku, które Cię interesują.",
     skip_to_content: "Przejdź do treści",
     or_more_results: "{n} lub więcej wyników",
     results_count: "{n} wyników",

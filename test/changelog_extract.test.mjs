@@ -6,6 +6,13 @@
 // convention postdates them — so the "has a marker" fixture is #26's real body with that
 // section appended, exactly as a future PR author would write it. #33 is used verbatim: a
 // real plumbing PR (a deploy-workflow addition) that should produce nothing.
+//
+// PR_26_SUMMARY quotes the tagline PR #26 actually shipped ("Track NYC contracts,
+// rezonings, and hearings — in plain English."), which the site later replaced (see
+// AGENTS.md's i18n section). This is a frozen historical record, not a live copy of the
+// current tagline — don't "fix" it to match today's wording, and don't read anything about
+// current site copy from it. The assertions below only check the extractor's parsing
+// logic, never the tagline text itself.
 import test from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
