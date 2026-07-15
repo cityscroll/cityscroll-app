@@ -547,6 +547,25 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `test/quiz_narrow_resolve.test.mjs` (extracts `resolveMoneyNarrow()` the same brace-matching
   way `forecast_render.test.mjs` does, with `nlResolve`/`NL`/`nlTransHTML` injected as fakes).
   Needed zero changes to `worker/src/nl.mjs` — `lens:"alerts"` was already a supported lens.
+- **w12-06 field regression: `resolveMoneyNarrow()` above only fires once `#awatch==="rfpkw"`,
+  which requires clicking a step-1 topic chip first — typing straight into step 2's field and
+  hitting "Preview my digest →" with no chip picked used to hard no-op** (`quizW` stays `null`,
+  `$("#quizgo")`'s click handler returned after only swapping `#quiznarrow`'s placeholder — a
+  no-op invisible to the user since the field already held their typed text, hiding the
+  placeholder). Reproduced live against production with a fresh, cache-free browser context
+  before touching code (site-owner field report, 2026-07-15): zero `/nl` requests, zero DOM
+  change, the existing `03_watch_quiz_feeds.py` "PROBE" for this path only covered the
+  *empty*-field case, not *typed-but-no-topic*. Fix: `nlTranslateLens(lens, opts)` now takes an
+  optional `{text, inputSel}` override so a second entry point can reuse its exact
+  resolve→echo→apply sequence against a different input than the injected Ask box's
+  `#nlq-<lens>`; `$("#quizgo")`'s no-topic branch calls
+  `nlTranslateLens("alerts", {text, inputSel:"#quiznarrow"})` whenever the field is non-empty,
+  falling back to the placeholder nudge only when it's genuinely empty too. Same interpretation
+  path as the topic-picked case (`NL.alerts.apply()`), so a rezoning-shaped sentence still
+  resolves correctly even with no chip clicked. Browser-level regression test added to
+  `test/functional/03_watch_quiz_feeds.py` (a live-API, manual-dispatch spec, not the hermetic
+  i18n-guard suite) — confirmed it hangs/times out against the pre-fix code before confirming
+  it passes post-fix, per the house characterization-test convention.
 
 ## Cadence estimate — "is this a yearly bid?" answered in words (w12-04)
 
