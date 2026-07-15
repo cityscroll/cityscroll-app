@@ -97,6 +97,69 @@ export async function readStatAllTime(kv, metric) {
   try { return parseInt((await kv.get(allTimeKey(metric))) || "0", 10) || 0; } catch { return 0; }
 }
 
+// Fold recovered pre-era daily history into the live all-time accumulator. bumpStatAllTime
+// only counts sends from the moment it shipped forward — but hist:<metric>:<day> may hold
+// real days recovered from an older, short-lived source counter (see
+// worker/scripts/backfill-history.mjs) for the period *before* that. Those recovered days are
+// genuinely known-good counts, not estimates, so folding them in gives the true all-time total
+// as far back as we have any trustworthy record of — not just "since this counter shipped."
+// Pure and free: callers already fetch histSeries for the "over time" chart, so this costs no
+// extra KV reads. Days on/after eraDay are excluded — they're the live accumulator's own
+// territory already, and double-counting them would inflate the total.
+export function mergeRecoveredAllTime(liveTotal, histSeries, eraDay) {
+  if (!eraDay) return liveTotal; // no known boundary → nothing safe to add
+  let recovered = 0;
+  for (const [day, n] of Object.entries(histSeries || {})) {
+    if (day < eraDay) recovered += n;
+  }
+  return liveTotal + recovered;
+}
+
+// ---- day+category counters (windowed breakdowns, e.g. "searches by lens, last 7 days") --
+//
+// stats:cat:<metric>:<category> above is all-time only, with no day dimension — fine for a
+// "since we started counting" table, but a rolling-window breakdown (e.g. the last 7 days)
+// needs per-day-per-category counts. Same 40-day TTL as the plain per-day counters above,
+// since it serves the same kind of rolling window.
+
+export function categoryDayKey(metric, category, day) {
+  return `stats:catday:${metric}:${category}:${day}`;
+}
+
+export async function bumpCategoryDayStat(kv, metric, category, now) {
+  if (!kv || !category) return;
+  try {
+    const key = categoryDayKey(metric, category, dayStr(now));
+    const cur = parseInt((await kv.get(key)) || "0", 10) || 0;
+    await kv.put(key, String(cur + 1), { expirationTtl: STATS_TTL });
+  } catch { /* counting is best-effort */ }
+}
+
+// Every category's count summed over the last n days, discovered dynamically via a KV
+// prefix list (same "partial beats a 500" posture as readAllCategoryStats).
+export async function readAllCategoryStatsWindow(kv, metric, days, now) {
+  const out = {};
+  if (!kv) return out;
+  const validDays = new Set(lastNDays(days, now));
+  const prefix = `stats:catday:${metric}:`;
+  try {
+    let cursor;
+    do {
+      const res = await kv.list({ prefix, cursor });
+      for (const k of res.keys) {
+        const rest = k.name.slice(prefix.length); // "<category>:<day>"
+        const day = rest.slice(-10);
+        const category = rest.slice(0, -11); // strip ":<day>" (1 colon + 10 chars)
+        if (!validDays.has(day)) continue;
+        const n = parseInt((await kv.get(k.name)) || "0", 10) || 0;
+        out[category] = (out[category] || 0) + n;
+      }
+      cursor = res.list_complete ? null : res.cursor;
+    } while (cursor);
+  } catch { /* partial beats a 500 */ }
+  return out;
+}
+
 // All categories seen for a metric, as { category: count }. A partial result (fewer
 // categories than actually exist) beats a 500 if the KV list call fails partway.
 export async function readAllCategoryStats(kv, metric) {
@@ -168,4 +231,32 @@ export async function readHistSeries(kv, metric) {
 export async function readHistEra(kv, metric) {
   if (!kv) return null;
   try { return (await kv.get(histEraKey(metric))) || null; } catch { return null; }
+}
+
+// ---- daily gauge snapshots (a hist:<metric>:<day> variant for values that aren't events) --
+//
+// bumpHistDay counts EVENTS (one call = one real thing that happened). Some numbers worth
+// charting aren't events at all — "active watches" is a live gauge (a KV list count at read
+// time), not something with a discrete moment to bump on. snapshotHistDay writes that day's
+// gauge reading directly (not an increment) into the same hist:<metric>:<day> key shape, so
+// it reuses readHistSeries/renderHistory for free. Meant to be called once per day from the
+// cron job — calling it twice the same day just overwrites with the latest reading, which is
+// fine (idempotent, and the gauge can only have one true value "as of today" anyway).
+export async function snapshotHistDay(kv, metric, now, value) {
+  if (!kv) return;
+  try {
+    await kv.put(histDayKey(metric, dayStr(now)), String(value)); // no TTL — permanent
+  } catch { /* counting is best-effort */ }
+}
+
+// Sets hist:era:<metric> to today, but only if it isn't already set — so a metric that has
+// no manual backfill script (like the gauge snapshots above) still gets an honest "counted
+// from here on" boundary the first time it's ever written, with no risk of overwriting a
+// pre-existing era set by an actual backfill (see worker/scripts/backfill-history.mjs).
+export async function ensureHistEra(kv, metric, now) {
+  if (!kv) return;
+  try {
+    const key = histEraKey(metric);
+    if ((await kv.get(key)) == null) await kv.put(key, dayStr(now));
+  } catch { /* best-effort */ }
 }

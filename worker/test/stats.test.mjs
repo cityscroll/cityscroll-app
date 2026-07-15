@@ -5,6 +5,8 @@ import {
   dayStr, statsKey, lastNDays, parseRedirect, noticeUrl, bumpStat, sumStat, STATS_TTL,
   bumpStatAllTime, bumpCategoryStat, readStatAllTime, readAllCategoryStats,
   bumpHistDay, readHistSeries, readHistEra, histDayKey, histEraKey,
+  mergeRecoveredAllTime, categoryDayKey, bumpCategoryDayStat, readAllCategoryStatsWindow,
+  snapshotHistDay, ensureHistEra,
 } from "../src/lib/stats.mjs";
 import { handleRedirect } from "../src/redirect.mjs";
 import { handleStats } from "../src/stats.mjs";
@@ -198,4 +200,137 @@ test("GET /stats includes a history block with per-day totals and the recovered/
   assert.equal(body.history.digests.live_from, "2026-07-14");
   assert.deepEqual(body.history.nl_search.by_day, { "2026-07-13": 15 });
   assert.equal(body.history.nl_search.live_from, "2026-07-14");
+});
+
+// ---- w12-14: all-time counter integrity ------------------------------------------------
+
+test("before: sent_all_time only counted sends since bumpStatAllTime itself shipped, so a site with years of real sends could honestly read '2 digests all time' (the field-evidence bug — see backlog/w12-14); after: mergeRecoveredAllTime folds in every pre-era day recovered from the old short-lived counter, so the total reflects everything we can honestly account for", () => {
+  const liveTotal = 2; // the exact field-evidence number
+  const histSeries = {
+    "2026-06-05": 1, // recovered from sendcount:<day> before bumpStatAllTime existed
+    "2026-06-06": 3,
+    "2026-07-14": 2, // the era day itself — already inside liveTotal, must not double-count
+  };
+  // Before this fix, /stats published liveTotal verbatim — the "before" behavior:
+  assert.equal(liveTotal, 2);
+  // After: only days strictly before the era boundary get folded in.
+  assert.equal(mergeRecoveredAllTime(liveTotal, histSeries, "2026-07-14"), 2 + 1 + 3);
+});
+
+test("mergeRecoveredAllTime returns the live total unchanged when no era boundary is known — nothing is safe to add", () => {
+  assert.equal(mergeRecoveredAllTime(5, { "2026-01-01": 9 }, null), 5);
+  assert.equal(mergeRecoveredAllTime(5, {}, null), 5);
+});
+
+test("mergeRecoveredAllTime is a no-op addition when there's no recoverable pre-era history", () => {
+  assert.equal(mergeRecoveredAllTime(42, { "2026-07-14": 1, "2026-07-15": 3 }, "2026-07-14"), 42);
+});
+
+// ---- w12-15: windowed per-category (per-lens) counters ---------------------------------
+
+test("bumpCategoryDayStat increments a per-day-per-category counter with the rolling-window TTL", async () => {
+  const kv = fakeKV();
+  await bumpCategoryDayStat(kv, "nl_search", "money", NOW);
+  await bumpCategoryDayStat(kv, "nl_search", "money", NOW);
+  await bumpCategoryDayStat(kv, "nl_search", "land", NOW);
+  assert.equal(kv.store.get(categoryDayKey("nl_search", "money", "2026-07-02")), "2");
+  assert.equal(kv.store.get(categoryDayKey("nl_search", "land", "2026-07-02")), "1");
+  assert.equal(kv.lastOpts.expirationTtl, STATS_TTL);
+});
+
+test("bumpCategoryDayStat is a no-op with no category, and swallows KV failures", async () => {
+  const kv = fakeKV();
+  await bumpCategoryDayStat(kv, "nl_search", null, NOW);
+  assert.equal(kv.store.size, 0);
+  await assert.doesNotReject(bumpCategoryDayStat({ async get() { throw new Error("kv down"); }, async put() {} }, "nl_search", "money", NOW));
+});
+
+test("readAllCategoryStatsWindow sums only days inside the window, per category, discovered dynamically", async () => {
+  const kv = fakeKV({
+    [categoryDayKey("nl_search", "money", "2026-07-02")]: "2",
+    [categoryDayKey("nl_search", "money", "2026-06-25")]: "9", // outside a 7-day window from NOW
+    [categoryDayKey("nl_search", "land", "2026-07-01")]: "1",
+    [categoryDayKey("digest", "Procurement", "2026-07-02")]: "5", // a different metric must not bleed in
+  });
+  assert.deepEqual(await readAllCategoryStatsWindow(kv, "nl_search", 7, NOW), { money: 2, land: 1 });
+  assert.deepEqual(await readAllCategoryStatsWindow(null, "nl_search", 7, NOW), {});
+});
+
+test("routing per lens: each lens's queries land under its own category-day key, never another lens's", async () => {
+  const kv = fakeKV();
+  for (const lens of ["money", "people", "land"]) await bumpCategoryDayStat(kv, "nl_search", lens, NOW);
+  await bumpCategoryDayStat(kv, "nl_search", "money", NOW); // a second money query, same day
+  const byLens = await readAllCategoryStatsWindow(kv, "nl_search", 7, NOW);
+  assert.deepEqual(byLens, { money: 2, people: 1, land: 1 });
+});
+
+test("sum-consistency: summing the per-lens 7-day breakdown equals the plain 7-day total, for the same event stream", async () => {
+  const kv = fakeKV();
+  const events = ["money", "money", "land", "people", "money"];
+  for (const lens of events) {
+    await bumpStat(kv, "nl_search", NOW);
+    await bumpCategoryDayStat(kv, "nl_search", lens, NOW);
+  }
+  const total = await sumStat(kv, "nl_search", 7, NOW);
+  const byLens = await readAllCategoryStatsWindow(kv, "nl_search", 7, NOW);
+  assert.equal(total, events.length);
+  assert.equal(Object.values(byLens).reduce((a, b) => a + b, 0), total);
+});
+
+test("sum-consistency also holds all-time: summing the per-lens all-time breakdown equals the plain all-time total", async () => {
+  const kv = fakeKV();
+  const events = ["money", "money", "land", "rules"];
+  for (const lens of events) {
+    await bumpStatAllTime(kv, "nl_search");
+    await bumpCategoryStat(kv, "nl_search", lens);
+  }
+  const total = await readStatAllTime(kv, "nl_search");
+  const byLens = await readAllCategoryStats(kv, "nl_search");
+  assert.equal(total, events.length);
+  assert.equal(Object.values(byLens).reduce((a, b) => a + b, 0), total);
+});
+
+test("GET /stats publishes a 7-day nl_search total and its per-lens breakdown alongside the unchanged all-time fields", async () => {
+  const nlMeter = fakeKV({
+    [statsKey("nl_search", dayStr(new Date()))]: "3",
+    [categoryDayKey("nl_search", "money", dayStr(new Date()))]: "2",
+    [categoryDayKey("nl_search", "land", dayStr(new Date()))]: "1",
+  });
+  const env = { ALERT_STATE: fakeKV(), NL_METER: nlMeter, SUBS: fakeKV() };
+  const res = await handleStats(new Request("https://api.crol-list.org/stats"), env, { waitUntil: async (p) => p });
+  const body = await res.json();
+  assert.equal(body.nl_search.calls_last7d, 3);
+  assert.deepEqual(body.nl_search.by_category_last7d, { money: 2, land: 1 });
+});
+
+// ---- w12-16: daily gauge snapshots (active watches has no discrete "event") -------------
+
+test("snapshotHistDay writes today's gauge reading directly — not an increment — and a second call the same day overwrites rather than accumulates", async () => {
+  const kv = fakeKV();
+  await snapshotHistDay(kv, "watches_active", NOW, 14);
+  assert.equal(kv.store.get(histDayKey("watches_active", "2026-07-02")), "14");
+  await snapshotHistDay(kv, "watches_active", NOW, 15); // same day, later reading
+  assert.equal(kv.store.get(histDayKey("watches_active", "2026-07-02")), "15", "overwrites, doesn't add to the prior reading");
+  assert.equal(kv.lastOpts, undefined, "no TTL — a gauge snapshot is permanent history, same as bumpHistDay");
+});
+
+test("ensureHistEra sets the era boundary only the first time it's called — never clobbers a boundary a backfill script already set", async () => {
+  const kv = fakeKV();
+  await ensureHistEra(kv, "watches_active", NOW);
+  assert.equal(await readHistEra(kv, "watches_active"), "2026-07-02");
+  await ensureHistEra(kv, "watches_active", new Date("2026-08-01T00:00:00Z"));
+  assert.equal(await readHistEra(kv, "watches_active"), "2026-07-02", "second call is a no-op — era stays pinned to the first day");
+});
+
+test("GET /stats includes a watches_active history block with the same recovered/live shape as digests and nl_search — no backfill for a metric with no historical source", async () => {
+  const alertState = fakeKV({
+    [histDayKey("watches_active", "2026-07-14")]: "12",
+    [histDayKey("watches_active", "2026-07-15")]: "14",
+    [histEraKey("watches_active")]: "2026-07-14",
+  });
+  const env = { ALERT_STATE: alertState, NL_METER: fakeKV(), SUBS: fakeKV() };
+  const res = await handleStats(new Request("https://api.crol-list.org/stats"), env, { waitUntil: async (p) => p });
+  const body = await res.json();
+  assert.deepEqual(body.history.watches_active.by_day, { "2026-07-14": 12, "2026-07-15": 14 });
+  assert.equal(body.history.watches_active.live_from, "2026-07-14");
 });

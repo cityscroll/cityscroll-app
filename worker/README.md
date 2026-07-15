@@ -41,7 +41,7 @@ client-side (NL search uses the on-device heuristic, subscriptions/feeds are hid
 | `/feedback` | POST | Stores + emails operator feedback (Turnstile, rate-limited; rows keep IP+UA) | fails closed 503 |
 | `/batch` | POST | Watchlist cross-reference: `{names:[…]}` (≤10) → per-name award/mention counts + vendor-profile links; 30/day/IP | none |
 | `/inv` · `/inv/<id>` | POST/GET | Share an investigation snapshot (clamped, ≤32KB, 90-day TTL, 10/day/IP; SUBS KV `inv:` prefix) | none |
-| `/stats` | GET | **Public outcome counters** (R·B): active subscriptions (count only), digests sent (today/7d/all-time/by-topic), digest-link clicks, feed/batch/share activity, NL calls (today/all-time/by-lens), and a day-by-day `history` block for digests + NL calls — aggregate integers, no personal data; edge-cached 15 min | none |
+| `/stats` | GET | **Public outcome counters** (R·B): active subscriptions (count only), digests sent (today/7d/all-time/by-topic), digest-link clicks, feed/batch/share activity, NL calls (today/7d/all-time/by-lens for both windows), and a day-by-day `history` block for digests + NL calls + active-watch snapshots — aggregate integers, no personal data; edge-cached 15 min. All-time totals fold in pre-counter history recovered from an older short-lived counter where available (see `mergeRecoveredAllTime` in `lib/stats.mjs`), and every all-time/breakdown figure has an honest `live_from` boundary in `history` rather than claiming "since launch." | none |
 | `/r/<kind>/<request_id>` | GET | **Count-only digest click-through** (R·B tier 3, team-approved 2026-07-02): bumps a per-day counter (`stats:click`, `stats:click.<kind>`) and 302s to `crol-list.org/#notice/<id>`. Validated slug+id only — the path never carries a URL, so it cannot be an open redirect. No per-recipient tracking; digests disclose this in the footer | none |
 | `/api` | GET | 302 → crol-list.org/api.html (the API docs) | none |
 | `/admin/subs` `/admin/feedback` | GET | Operator reads (redacted) | `ADMIN_KEY` → 404 if unset |
@@ -93,8 +93,10 @@ hold no key and are edge-cached.
 
 ## Storage — Cloudflare KV (no D1/R2)
 
-`NL_METER` (NL daily counters) · `ALERT_STATE` (seen-IDs, send counters — 40-day TTL so /stats can window them, last-sent dates, `stats:<metric>:<day>` outcome counters, and the
-permanent `hist:<metric>:<day>` / `hist:era:<metric>` counters behind /stats' day-by-day history — see `scripts/backfill-history.mjs` and `AGENTS.md`) ·
+`NL_METER` (NL daily counters) · `ALERT_STATE` (seen-IDs, send counters — 40-day TTL so /stats can window them, last-sent dates, `stats:<metric>:<day>` outcome counters,
+`stats:catday:<metric>:<category>:<day>` windowed per-category counters (e.g. NL calls by lens, last 7 days), and the
+permanent `hist:<metric>:<day>` / `hist:era:<metric>` counters behind /stats' day-by-day history — including `hist:watches_active:<day>`, a once-daily gauge SNAPSHOT of active-subscription
+count rather than an event count, written by the cron job, not incremented — see `scripts/backfill-history.mjs` and `AGENTS.md`) ·
 `SUBS` (confirmed subs + subscribe rate limits) · `FEEDBACK` (feedback rows + rate limits).
 
 ## Dependencies — three libraries extracted from this worker
