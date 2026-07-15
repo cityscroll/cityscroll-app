@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "e2f0690f",
-  "zh-Hans": "4a3290a9",
-  ru: "39a7eef3",
-  bn: "c4df9f8a",
-  ht: "511ab66e",
-  ko: "d6b94384",
-  fr: "17f01890",
-  pl: "4835c8cd",
-  ar: "0957d6d1",
-  ur: "d11a7839",
+  es: "ae94bb7f",
+  "zh-Hans": "72d7d500",
+  ru: "9424952d",
+  bn: "06bcd6f9",
+  ht: "1c03eb42",
+  ko: "638c2e0e",
+  fr: "c6f7762f",
+  pl: "bafe9a37",
+  ar: "8e741750",
+  ur: "0d2c97eb",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -184,7 +184,7 @@ const STRINGS = {
     // Alerts / quiz section
     quiz_heading:       "Get your digest in 60 seconds",
     quiz_step1:         "What should we watch for you?",
-    quiz_step2:         "Narrow by keyword (optional)",
+    quiz_step2:         "Describe what you want — plain English or keywords (optional)",
     quiz_step3:         "How often?",
     quiz_rfpkw:         "City contracts and RFPs",
     quiz_bigaward:      "Big contract awards",
@@ -316,7 +316,7 @@ const STRINGS = {
     preview_panel_heading: "Preview",
 
     // Quiz panel
-    quiz_narrow_placeholder: "pick a topic above first…",
+    quiz_narrow_placeholder: "type what you're looking for, or pick a topic above…",
     quiz_param_agency:   "agency (optional) — for example, Buildings",
 
     // Alert builder labels
@@ -639,13 +639,13 @@ const STRINGS = {
     remove_btn: "remove",
     enter_valid_email: "Enter a valid email address.",
     subs_need_backend: "Subscriptions need the backend, which isn't wired in this build.",
-    quizph_rfpkw: "keyword — construction, IT, catering…",
+    quizph_rfpkw: "construction, IT, catering… or describe it in a sentence",
     quizph_bigaward: "(uses the $1M+ threshold — tune it below)",
     quizph_rezone: "place — 79 Rivington, Bushwick…",
     quizph_property: "keyword — Brooklyn, auction…",
     quizph_rules: "keyword — e-bike, sidewalk…",
     quizph_meetings: "keyword — community board, landmarks…",
-    pick_topic_first: "← pick a topic first",
+    pick_topic_first: "← type something, or pick a topic",
 
     // Clipboard
     copied_check: "✓ Copied",
