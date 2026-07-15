@@ -669,7 +669,6 @@
     data_foot_html: "Chaque chiffre est calculé en direct dans votre navigateur à partir du jeu de données public. Rechargez la page pour obtenir de nouvelles données. Méthodologie : <a href=\"about.html#data\">à propos → les données sous-jacentes</a> · <a href=\"stats.html\">statistiques d'utilisation du site</a> · <a href=\"changelog.html\">journal des modifications</a>",
 
     // stats.html
-    stats_p_lede_html: "Un outil de transparence devrait publier sa propre utilisation. Voici les chiffres d'exploitation en direct de CROL-List — <b>uniquement des décomptes agrégés</b> : le site n'a ni comptes ni témoins, et ni nous ni personne d'autre ne peut voir qui a fait quoi. Nous mesurons des résultats (veilles déclenchées, bulletins lus), pas des personnes.",
     stats_loading: "Chargement des compteurs en direct…",
     stats_h_general: "Les chiffres clés",
     stats_lbl_subs: "Veilles actives",
@@ -716,8 +715,6 @@
     stats_history_empty: "Pas encore d'historique jour par jour.",
     stats_h_technical: "Détails techniques",
     stats_p_technical: "Comment les chiffres ci-dessus sont calculés. Vous n'avez pas besoin de le savoir pour utiliser CROL-List.",
-    stats_h_dontknow: "Ce que nous ne savons délibérément pas",
-    stats_p_dontknow_html: "Qui vous êtes, ce que vous avez recherché, quels avis vous avez lus, ou quels courriels vous avez ouverts. Les totaux de pages consultées proviennent des analyses sans témoins de Cloudflare (agrégées, sans empreinte numérique — <a href=\"about.html\">notes sur la confidentialité</a>) ; tout ce qui précède provient de simples compteurs quotidiens. Il n'y a rien d'autre.",
     stats_foot_html: "JSON brut : <a href=\"https://api.crol-list.org/stats\">api.crol-list.org/stats</a> (mis en cache ~15 min) · <a href=\"changelog.html\">Journal des modifications</a> · <a href=\"about.html\">À propos</a> · <a href=\"index.html\">Accueil</a>",
     stats_asof: "En date du {date} (actualisé toutes les 15 minutes).",
     stats_unreachable: "Les compteurs en direct sont actuellement inaccessibles — le JSON brut se trouve sur api.crol-list.org/stats.",

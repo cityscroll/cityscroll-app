@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "190f40e0",
-  "zh-Hans": "f3df9481",
-  ru: "55cc875a",
-  bn: "921e85d2",
-  ht: "40ea64a9",
-  ko: "34709015",
-  fr: "4a518dc2",
-  pl: "ba23edbc",
-  ar: "29ab7215",
-  ur: "243ffa8e",
+  es: "a9815e26",
+  "zh-Hans": "04837188",
+  ru: "f9b032a0",
+  bn: "7dbfe173",
+  ht: "71b95b01",
+  ko: "160c35c9",
+  fr: "dfc6660e",
+  pl: "9d258470",
+  ar: "e94fe637",
+  ur: "9b0d73de",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -768,7 +768,6 @@ const STRINGS = {
     data_foot_html: "Every number is worked out live in your browser from the public dataset. Reload the page for new data. Methodology: <a href=\"about.html#data\">about → the underlying data</a> · <a href=\"stats.html\">site usage stats</a> · <a href=\"changelog.html\">changelog</a>",
 
     // stats.html
-    stats_p_lede_html: "A transparency tool should publish its own usage. These are CROL-List's live operating numbers — <b>aggregate counts only</b>: the site has no accounts and no cookies, and neither we nor anyone else can see who did what. We measure outcomes (watches that fired, digests that got read), not people.",
     stats_loading: "Loading live counters…",
     stats_h_general: "The headline numbers",
     stats_lbl_subs: "Active watches",
@@ -815,8 +814,6 @@ const STRINGS = {
     stats_history_empty: "No day-by-day history yet.",
     stats_h_technical: "Technical details",
     stats_p_technical: "How the numbers above are put together. You don't need to know this to use CROL-List.",
-    stats_h_dontknow: "What we deliberately don't know",
-    stats_p_dontknow_html: "Who you are, what you searched, which notices you read, or which emails you opened. Page-view totals come from Cloudflare's cookieless analytics (aggregate, no fingerprinting — <a href=\"about.html\">privacy notes</a>). Everything above comes from plain per-day counters. There is nothing else.",
     stats_foot_html: "Raw JSON: <a href=\"https://api.crol-list.org/stats\">api.crol-list.org/stats</a> (cached ~15 min) · <a href=\"changelog.html\">Changelog</a> · <a href=\"about.html\">About</a> · <a href=\"index.html\">Home</a>",
     stats_asof: "As of {date} (refreshes every 15 minutes).",
     stats_unreachable: "Live counters are unreachable right now — the raw JSON lives at api.crol-list.org/stats.",
