@@ -230,7 +230,7 @@
     footer_api: "API 与数据源",
     footer_changelog: "更新日志",
     footer_stats: "统计数据",
-    site_tagline: "追踪纽约市的合同、重新分区和听证会 — 用通俗易懂的语言呈现。",
+    site_tagline: "订阅您感兴趣的纽约市合同、重新分区和听证会。",
     skip_to_content: "跳至正文",
     or_more_results: "{n} 条或以上结果",
     results_count: "{n} 条结果",

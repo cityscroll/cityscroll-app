@@ -230,7 +230,7 @@
     footer_api: "API y fuentes",
     footer_changelog: "Registro de cambios",
     footer_stats: "Estadísticas",
-    site_tagline: "Dé seguimiento a contratos, rezonificaciones y audiencias de la Ciudad de Nueva York — en lenguaje claro.",
+    site_tagline: "Suscríbete a los contratos, rezonificaciones y audiencias de la Ciudad de Nueva York que te interesen.",
     skip_to_content: "Ir al contenido",
     or_more_results: "{n} o más resultados",
     results_count: "{n} resultados",
