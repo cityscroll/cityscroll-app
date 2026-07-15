@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "17a526ef",
-  "zh-Hans": "f5a71934",
-  ru: "3b86eb9d",
-  bn: "b200e9cf",
-  ht: "a074928c",
-  ko: "116fc972",
-  fr: "be724e66",
-  pl: "1c45905c",
-  ar: "af3df0c3",
-  ur: "4934c26f",
+  es: "8323a368",
+  "zh-Hans": "03b583e4",
+  ru: "9e654314",
+  bn: "6ed873b1",
+  ht: "2df935a9",
+  ko: "603b8cf2",
+  fr: "9eda7787",
+  pl: "e8050a3e",
+  ar: "6f0aee1f",
+  ur: "ac33828c",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -460,6 +460,16 @@ const STRINGS = {
     // paper-trail chain chainHTML() already renders — see pastWinnersHTML() in index.html.
     past_winners_heading: "Past winners",
     past_winners_vendor_unlisted: "Award, vendor unlisted",
+    // Cadence estimate (w12-04): "is this a yearly bid?" answered in words, from this notice's
+    // own paper-trail chain — see cadenceEstimate()/cadenceHTML() in index.html.
+    cadence_award_count_one: "{n} prior award",
+    cadence_award_count_other: "{n} prior awards",
+    cadence_months_apart_one: "about {months} month apart",
+    cadence_months_apart_other: "about {months} months apart",
+    cadence_years_apart_one: "about {years} year apart",
+    cadence_years_apart_other: "about {years} years apart",
+    cadence_next_expected: "Next solicitation expected around {date}.",
+    cadence_estimate_tag: "Estimate",
     prior_cycle_heading: "Looks recurring — prior award cycles",
     prior_cycle_heuristic_note: "We matched this by agency and title, not by a shared PIN. It may be the same repeating contract, but we cannot be sure. Check the dates and vendor first.",
     prior_cycle_none_note: "We found no likely prior cycle for this one. It may not be a repeating contract. Or an earlier round did not match closely enough to show here.",

@@ -35,7 +35,7 @@ function extractFn(name) {
 function extractConst(name) {
   const m = src.match(new RegExp(`^const ${name} = .*$`, "m"));
   assert.ok(m, `const ${name} not found`);
-  return m[0];
+  return m[0] + "\n";
 }
 
 const windowStub = { LANG: "en", LANG_META: { en: { intlDate: "en-US" } } };
@@ -51,6 +51,11 @@ const { pastWinnersHTML, chainHTML } = new Function(
   src.match(/const JUNK_PINS = new Set\(\[[^\]]*\]\);/)[0] + extractConst("JUNK_PIN_TEXT_RE") +
   extractFn("usablePin") +
   extractFn("pastWinnersHTML") +
+  extractFn("daysBetween") +
+  extractConst("CADENCE_MIN_AWARDS") + extractConst("CADENCE_MIN_GAP_DAYS") + extractConst("CADENCE_MAX_GAP_RATIO") +
+  extractConst("CADENCE_YEAR_THRESHOLD_MONTHS") +
+  extractFn("isBlanketChain") + extractFn("cadenceEstimate") + extractFn("cadenceMonthYear") +
+  extractFn("cadenceApart") + extractFn("cadenceHTML") +
   extractFn("chainHTML") +
   "return { pastWinnersHTML, chainHTML };"
 )(t, tn, windowStub);

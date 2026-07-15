@@ -37,10 +37,10 @@ function extractConst(name) {
 }
 
 const windowStub = { LANG: "en", LANG_META: { en: { intlDate: "en-US" } } };
-const { t } = new Function("window", i18nSrc + "\nreturn { t: window.t };")(windowStub);
+const { t, tn } = new Function("window", i18nSrc + "\nreturn { t: window.t, tn: window.tn };")(windowStub);
 
 const { chainHTML, pinBase } = new Function(
-  "t", "window",
+  "t", "tn", "window",
   extractConst("RENEWAL_SUFFIX_RE") + extractFn("pinBase") +
   extractFn("cleanText") + extractFn("boxClass") + extractFn("money") + extractFn("fdate") +
   extractConst("REQ_URL") + extractConst("EXT_ATTRS") + extractConst("extSR") +
@@ -48,9 +48,14 @@ const { chainHTML, pinBase } = new Function(
   src.match(/const JUNK_PINS = new Set\(\[[^\]]*\]\);/)[0] + extractConst("JUNK_PIN_TEXT_RE") +
   extractFn("usablePin") +
   extractFn("pastWinnersHTML") +
+  extractFn("daysBetween") +
+  extractConst("CADENCE_MIN_AWARDS") + extractConst("CADENCE_MIN_GAP_DAYS") + extractConst("CADENCE_MAX_GAP_RATIO") +
+  extractConst("CADENCE_YEAR_THRESHOLD_MONTHS") +
+  extractFn("isBlanketChain") + extractFn("cadenceEstimate") + extractFn("cadenceMonthYear") +
+  extractFn("cadenceApart") + extractFn("cadenceHTML") +
   extractFn("chainHTML") +
   "return { chainHTML, pinBase };"
-)(t, windowStub);
+)(t, tn, windowStub);
 
 // Real pattern from the research: ACS "Housing Navigation and Stabilization Services", same
 // vendor, PIN suffix "R001" marking the renewal round.
