@@ -813,6 +813,44 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `compile.mjs`'s `CR_SELECT`, `alerts.mjs`'s legacy-watch `runWatch()`, and `compile_d1.mjs`'s
   `toDigestRow()` (mapped from D1's `description` column, which `ingest.mjs` already stored).
 
+## Match evidence in every lens list, not just the Alerts ask preview (w12-03)
+
+- **The same `matchEvidence()`/`digTitleHTML()`/`digEvidenceHTML()` trio above is now called
+  from a small per-lens row builder in every result list**, not only `digItemHTML()`'s Alerts
+  preview: `moneyRowHTML()` (Money/Contracts), `landRowHTML()` (Land — the scope decision above
+  is about `digItemHTML()`'s emailed/on-page ALERTS preview specifically, which still skips ZAP;
+  the Land TAB's own list is a separate call site and does get evidence), `feedCardHTML()`
+  (Property/Rules/Meetings, shared by `renderFeed()`), `roleRowHTML()` and `personRowHTML()`
+  (Staffing). Each is a pure function (row/person + terms in, HTML string out) reusing the exact
+  mechanism rather than a parallel one — same pattern as `digItemHTML()` itself. `terms` is `[]`
+  for plain browsing (no keyword typed), which makes `matchEvidence()` return `null` and every
+  row render identically to before this existed.
+- **`personRowHTML()`'s row is a PERSON, not a notice** — Staffing's "Changes in Personnel"
+  results group multiple notices under one person, so evidence can't be computed against a
+  single title+description. Each grouped action now carries its own notice's text
+  (`pSearchPeople()`'s `.push()` adds a `text` field), and `personRowHTML()` walks them for the
+  first one whose evidence field isn't `"unknown"`.
+- **`landRowHTML()`'s terms are conditional on HOW the row got there**, not just whether `#lkw`
+  is non-empty: `landSearch()` resolves a typed value to a geocoded BBL/block first when it can,
+  and that path filters ZAP rows via a BBL join, not `$q` text matching — showing match evidence
+  in that case would misrepresent a location lookup as a keyword hit. `landRenderList(kw,
+  kwIsTextMatch)`'s second argument (`!block` at the call site) gates this.
+- **`matchText(r)` widens the haystack beyond `additional_description_1`** to also include
+  `other_info_1` — real field case (request_id 20260709010, a DYCD COMPASS afterschool-program
+  award): its `additional_description_1` is blank, and the actual explanatory text (which is
+  what a real "childcare" search matches on, confirmed live against the SODA dataset) lives
+  entirely in `other_info_1`. Without this, `matchEvidence()` would report `field:"unknown"` for
+  a notice that plainly does explain itself — just not in the one column being read. `SELECT`
+  (Money/Alerts/notice-detail — they all extend the same const) and `FEED_SELECT` (Property/
+  Rules/Meetings) both now fetch `other_info_1` alongside `additional_description_1`; Land's ZAP
+  dataset and Staffing's role search have no equivalent field. This front-end widening has no
+  counterpart yet in `worker/src/lib/digest.mjs`'s emailed-digest `matchEvidence()` — that stays
+  `additional_description_1`-only, a known asymmetry, not a bug, since the emailed digest was out
+  of scope for this pass.
+- Characterized in `test/lens_match_evidence.test.mjs` (same brace-matching extraction pattern
+  as `test/match_evidence.test.mjs`/`test/forecast_render.test.mjs`), pinned against the real
+  20260709010 fixture content pulled from the live SODA dataset.
+
 ## Ask translation — paraphrase robustness + the interpretation echo (w12-02)
 
 - **Field evidence, 2026-07-14 user interview**: the ask box "required very specific wording"

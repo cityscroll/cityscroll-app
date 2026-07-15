@@ -277,8 +277,8 @@
   .digitem .da{font:800 16px/1 var(--font-display);color:var(--green)}
   .digitem .dc{font:12px/1.5 ui-sans-serif,system-ui,sans-serif;margin-top:3px}
   .digitem .dc a{color:var(--oxblood);text-decoration:underline;text-underline-offset:2px} /* non-color cue — WCAG 1.4.1: oxblood-vs-ink is only 1.74:1 */
-  .digitem mark{background:#ffe58a;color:inherit;padding:0 1px;border-radius:2px} /* the matched keyword — see matchEvidence() */
-  .digitem .dev{font:12px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted);font-style:italic;margin-top:3px} /* the "why this matched" line — text itself carries the meaning, not just the mark's color */
+  mark{background:#ffe58a;color:inherit;padding:0 1px;border-radius:2px} /* the matched keyword — see matchEvidence(); unscoped so every lens list (not just the digest preview) can reuse it */
+  .digitem .dev,.row .dev,.fcard .dev{font:12px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted);font-style:italic;margin-top:3px} /* the "why this matched" line — text itself carries the meaning, not just the mark's color */
   .savedalert{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#faf6ee;border:1px solid var(--rule);border-radius:7px;padding:9px 12px;margin-top:8px;font-size:13px}
   .savedalert button{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;padding:5px 9px;background:#fff;color:var(--rose);border:1px solid var(--rule);border-radius:6px;cursor:pointer}
 
@@ -740,7 +740,13 @@ const JUNK_PINS = new Set(["NOPINFOUND","SEE BELOW","LINE 17 BELOW","TBD","N/A",
 // sample). \b keeps this from matching inside a real alphanumeric PIN -- digits and letters are
 // both \w, so "SEE12345" never has a word boundary after "see" and is left alone.
 const JUNK_PIN_TEXT_RE = /\bsee\b|\bbelow\b|\bline\s*17\b|\bn\/?a\b|\btbd\b|\bvarious\b|\bpending\b|\battached\b/i;
-const SELECT = "request_id,start_date,agency_name,type_of_notice_description,category_description,short_title,pin,contract_amount,vendor_name,due_date,address_to_request,contact_name,contact_phone,email,selection_method_description,additional_description_1";
+// other_info_1 is fetched alongside additional_description_1 for the same reason
+// worker/src/ingest.mjs picks up both -- some notices (e.g. request_id 20260709010, a DYCD
+// COMPASS afterschool award) carry all their explanatory text in other_info_1 and leave
+// additional_description_1 blank; matchText() below reads both so a real keyword hit doesn't
+// silently fall back to "matched via a field this preview doesn't fetch" just because one
+// column happened to be empty.
+const SELECT = "request_id,start_date,agency_name,type_of_notice_description,category_description,short_title,pin,contract_amount,vendor_name,due_date,address_to_request,contact_name,contact_phone,email,selection_method_description,additional_description_1,other_info_1";
 
 const $ = s => document.querySelector(s);
 const todayISO = () => new Date().toISOString().slice(0,10) + "T00:00:00";
@@ -1016,20 +1022,28 @@ async function loadMethodFacet(where, kw){
   }catch(e){ el.style.display = "none"; }
 }
 
-function renderList(){
-  if(!currentRows.length){ $("#list").innerHTML = '<div class="empty">' + t("nothing_found") + '</div>'; return; }
-  $("#list").innerHTML = currentRows.map((r,i)=>{
-    const isAward = r.type_of_notice_description === "Award";
-    const lead = isAward
-      ? (money(r.contract_amount) ? `<span class="tag amt">${money(r.contract_amount)}</span>` : "")
-      : deadlineTag(r.due_date);
-    return `<div class="row" data-i="${i}" tabindex="0" role="button">
-      <p class="rtitle">${cleanText(r.short_title) ? enTitle(cleanText(r.short_title)) : t("untitled_notice")}</p>
+// moneyRowHTML: one Money/Contracts result row -- same title-highlight/evidence-line reuse of
+// matchEvidence()/digTitleHTML()/digEvidenceHTML() as the Alerts-page ask preview's digItemHTML().
+// terms is [] for plain browsing (no #kw typed), so matchEvidence returns null and the row
+// renders exactly as it did before this existed.
+function moneyRowHTML(r, i, terms){
+  const isAward = r.type_of_notice_description === "Award";
+  const lead = isAward
+    ? (money(r.contract_amount) ? `<span class="tag amt">${money(r.contract_amount)}</span>` : "")
+    : deadlineTag(r.due_date);
+  const title = cleanText(r.short_title), ev = matchEvidence(title, matchText(r), terms);
+  return `<div class="row" data-i="${i}" tabindex="0" role="button">
+      <p class="rtitle">${title ? digTitleHTML(title, ev) : t("untitled_notice")}</p>
       <p class="rmeta">${lead}<span class="ragency" lang="en" dir="ltr">${r.agency_name||""}</span> · ${fdate(r.start_date)}
         ${r.category_description? " · "+r.category_description : ""}<br>
         ${usablePin(r.pin)? `<span class="pin">PIN ${r.pin}</span>` : `<span class="pin muted">${t("no_linkable_pin")}</span>`}</p>
+      ${digEvidenceHTML(ev)}
     </div>`;
-  }).join("");
+}
+function renderList(){
+  if(!currentRows.length){ $("#list").innerHTML = '<div class="empty">' + t("nothing_found") + '</div>'; return; }
+  const kw = ($("#kw").value||"").trim(), terms = kw ? [kw] : [];
+  $("#list").innerHTML = currentRows.map((r,i)=>moneyRowHTML(r,i,terms)).join("");
   document.querySelectorAll("#list .row").forEach(el=>el.addEventListener("click",()=>select(+el.dataset.i, el)));
   document.querySelector("#list .row")?.click(); // auto-open the first result — don't make the user click the obvious
 }
@@ -1726,6 +1740,17 @@ async function pSearch(keepDetail){
   catch(e){ if(!stale()){ unbusy("#plist"); $("#plist").innerHTML = '<div class="empty">' + t("could_not_reach") + '</div>'; } }
 }
 
+// roleRowHTML: one Staffing role row. The LIKE query that produced r already guarantees kw is
+// a substring of title_description, so ev's field is always "title" -- comp2 (competitive-exam
+// status) is precomputed by the caller since it needs the module-level competitiveSet.
+function roleRowHTML(r, i, terms, comp2){
+  const ev = matchEvidence(r.title_description, "", terms);
+  return `<div class="row" data-i="${i}" tabindex="0" role="button">
+      <p class="rtitle">${digTitleHTML(r.title_description, ev)}</p>
+      <p class="rmeta"><span class="tag ${comp2?'open':'soon'}">${comp2?t("exam_title_tag"):t("no_exam_title_tag")}</span>
+        ${fmtNumber(+r.n)} ${t("people_lbl")} · ${money(r.mn)}–${money(r.mx)}</p>
+    </div>`;
+}
 async function pSearchRoles(kw, stale){
   const up = kw.toUpperCase().replace(/'/g,"''");
   const [pay, comp] = await Promise.all([
@@ -1740,14 +1765,8 @@ async function pSearchRoles(kw, stale){
   $("#prescount").textContent = pay.length === 40 ? "40+" : pay.length;
   announce(t("matching_roles_announce",{n: pay.length===40 ? "40+" : pay.length}));
   if(!pay.length){ $("#plist").innerHTML = '<div class="empty">' + t("no_titles_match") + '</div>'; return; }
-  $("#plist").innerHTML = pay.map((r,i)=>{
-    const comp2 = competitiveSet.has((r.title_description||"").toUpperCase().trim());
-    return `<div class="row" data-i="${i}" tabindex="0" role="button">
-      <p class="rtitle">${enTitle(r.title_description)}</p>
-      <p class="rmeta"><span class="tag ${comp2?'open':'soon'}">${comp2?t("exam_title_tag"):t("no_exam_title_tag")}</span>
-        ${fmtNumber(+r.n)} ${t("people_lbl")} · ${money(r.mn)}–${money(r.mx)}</p>
-    </div>`;
-  }).join("");
+  const terms = kw ? [kw] : [];
+  $("#plist").innerHTML = pay.map((r,i)=>roleRowHTML(r,i,terms,competitiveSet.has((r.title_description||"").toUpperCase().trim()))).join("");
   document.querySelectorAll("#plist .row").forEach(el=>el.addEventListener("click",()=>pSelectRole(+el.dataset.i, el)));
   document.querySelector("#plist .row")?.click();
 }
@@ -1779,8 +1798,21 @@ function pSelectRole(i, el){
   $("#pdetail").innerHTML = html;
 }
 
+// personRowHTML: one Staffing (Changes in Personnel) row. The row shown is a PERSON, aggregated
+// across possibly-many notices, so evidence isn't computed against a single title+description --
+// it walks p.actions (each carrying its own notice's text, see the .push() below) for the first
+// one that actually explains the kw hit, preferring a non-"unknown" field over the fallback.
+function personRowHTML(p, i, terms){
+  let ev = null;
+  for(const a of p.actions){ const e = matchEvidence(p.name, a.text, terms); if(!ev) ev = e; if(e.field !== "unknown"){ ev = e; break; } }
+  return `<div class="row" data-i="${i}" tabindex="0" role="button">
+      <p class="rtitle">${digTitleHTML(p.name, ev)}</p>
+      <p class="rmeta"><span class="ragency" lang="en" dir="ltr">${p.agency}</span> · ${tn("n_notices_meta",p.actions.length)}</p>
+      ${digEvidenceHTML(ev)}
+    </div>`;
+}
 async function pSearchPeople(kw, stale){
-  const rows = await soda({"$select":"request_id,start_date,agency_name,short_title,additional_description_1",
+  const rows = await soda({"$select":"request_id,start_date,agency_name,short_title,additional_description_1,other_info_1",
     "$where":"section_name='Changes in Personnel'","$q":kw,"$order":"start_date DESC","$limit":"100"});
   if(stale && stale()) return;
   const people = new Map();
@@ -1789,15 +1821,16 @@ async function pSearchPeople(kw, stale){
     if(!p.name) return;
     const key = p.name.toUpperCase() + "|" + r.agency_name;
     if(!people.has(key)) people.set(key, {name:p.name, agency:r.agency_name, actions:[]});
-    people.get(key).actions.push({date:r.start_date, reason:p.reason||cleanText(r.short_title), salary:p.salary, code:p.code, req:r.request_id});
+    // text: the underlying notice's own title+description -- kept per action (not just on the
+    // grouped person) since the row shown is the PERSON's name, not any one notice's title, so
+    // match evidence has to be located in whichever action actually carried the kw hit.
+    people.get(key).actions.push({date:r.start_date, reason:p.reason||cleanText(r.short_title), salary:p.salary, code:p.code, req:r.request_id, text:cleanText(r.short_title)+" "+matchText(r)});
   });
   pRows = [...people.values()].sort((a,b)=>b.actions.length-a.actions.length);
   $("#prescount").textContent = pRows.length;
   if(!pRows.length){ $("#plist").innerHTML = '<div class="empty">' + t("no_personnel") + '</div>'; return; }
-  $("#plist").innerHTML = pRows.map((p,i)=>`<div class="row" data-i="${i}" tabindex="0" role="button">
-      <p class="rtitle">${enTitle(p.name)}</p>
-      <p class="rmeta"><span class="ragency" lang="en" dir="ltr">${p.agency}</span> · ${tn("n_notices_meta",p.actions.length)}</p>
-    </div>`).join("");
+  const terms = [kw];
+  $("#plist").innerHTML = pRows.map((p,i)=>personRowHTML(p,i,terms)).join("");
   document.querySelectorAll("#plist .row").forEach(el=>el.addEventListener("click",()=>pSelectPerson(+el.dataset.i, el)));
   document.querySelector("#plist .row")?.click();
 }
@@ -1885,7 +1918,10 @@ async function landSearch(){
     unbusy("#llist");
     $("#lrescount").textContent=lRows.length>=40?"40+":lRows.length;
     announce(t("rezonings_announce",{n:lRows.length>=40?"40+":lRows.length}));
-    landRenderList(kw);
+    // A resolved block/nearby lookup doesn't filter rows by kw as TEXT (it's a BBL join) --
+    // match evidence would misrepresent that as a keyword hit, so only pass kw through when
+    // it actually became the $q text filter below.
+    landRenderList(kw, !block);
   }catch(e){ if(!stale()){ unbusy("#llist"); $("#llist").innerHTML='<div class="empty">' + t("could_not_reach") + '</div>'; } }
 }
 
@@ -1894,17 +1930,29 @@ async function landNearby(geo,status){
   return api(ZAP,{"$select":ZAP_SELECT,"$where":w,"$order":"current_milestone_date DESC","$limit":"40"});
 }
 
-function landRenderList(kw){
+// landRowHTML: one rezoning result row. project_name/project_brief are ZAP's own field names
+// (not short_title/additional_description_1) -- digItemHTML's emailed-digest evidence
+// deliberately skips ZAP rows for that reason, but matchEvidence()/digTitleHTML()/
+// digEvidenceHTML() are generic text-in/HTML-out and work on any title+description pair.
+function landRowHTML(r, i, terms){
+  const title = r.project_name || "", ev = matchEvidence(title, cleanText(r.project_brief), terms);
+  return `<div class="row" data-i="${i}" tabindex="0" role="button">
+    <p class="rtitle">${title ? digTitleHTML(title, ev) : t("unnamed_project")}</p>
+    <p class="rmeta">${mihOn(r.mih_flag)?`<span class="tag soon">${t("affordable_housing_tag")}</span>`:''}<span class="ragency">${r.borough||""}${r.community_district?" · CD "+r.community_district:""}</span> · ${r.public_status||r.project_status||""}<br>
+      ${r.current_milestone?cleanText(r.current_milestone)+(r.current_milestone_date?" · "+fdate(r.current_milestone_date):""):""}</p>
+    ${digEvidenceHTML(ev)}
+  </div>`;
+}
+function landRenderList(kw, kwIsTextMatch){
   const head=landBanner?`<div class="landbanner">${landBanner}</div>`:"";
   if(!lRows.length){
     $("#llist").innerHTML=head+`<div class="empty">${t("no_zap")}${kw?t("no_zap_kw",{kw}):""}. ${t("zap_explainer_html")}</div>`;
     return;
   }
-  $("#llist").innerHTML=head+lRows.map((r,i)=>`<div class="row" data-i="${i}" tabindex="0" role="button">
-    <p class="rtitle">${r.project_name ? enTitle(r.project_name) : t("unnamed_project")}</p>
-    <p class="rmeta">${mihOn(r.mih_flag)?`<span class="tag soon">${t("affordable_housing_tag")}</span>`:''}<span class="ragency">${r.borough||""}${r.community_district?" · CD "+r.community_district:""}</span> · ${r.public_status||r.project_status||""}<br>
-      ${r.current_milestone?cleanText(r.current_milestone)+(r.current_milestone_date?" · "+fdate(r.current_milestone_date):""):""}</p>
-  </div>`).join("");
+  // A resolved block/nearby lookup filters rows by a BBL join, not kw as text -- only pass kw
+  // through as a match term when it actually became the $q text filter (see landSearch()).
+  const terms = (kw && kwIsTextMatch) ? [kw] : [];
+  $("#llist").innerHTML=head+lRows.map((r,i)=>landRowHTML(r,i,terms)).join("");
   document.querySelectorAll("#llist .row").forEach(el=>el.addEventListener("click",()=>landSelect(+el.dataset.i, el)));
   document.querySelector("#llist .row")?.click();
 }
@@ -2018,7 +2066,7 @@ const SECTIONS={
   meetings:{section:"Public Hearings and Meetings", upcoming:true}
 };
 const feedRows={}, feedLoaded={};
-const FEED_SELECT="request_id,start_date,event_date,agency_name,type_of_notice_description,short_title,street_address_1,additional_description_1";
+const FEED_SELECT="request_id,start_date,event_date,agency_name,type_of_notice_description,short_title,street_address_1,additional_description_1,other_info_1";
 function goodAddr(a){ return a && !/not listed|^n\/?a$|^none$|^various|^see /i.test(a.trim()); }
 
 async function loadSection(key){
@@ -2106,28 +2154,36 @@ async function loadSectionAgencies(key){
   }catch(e){}
 }
 
-function renderFeed(key, rows){
-  const cfg=SECTIONS[key], el=$("#"+key+"feed");
-  if(!rows.length){ el.innerHTML='<div class="empty">' + t("nothing_found_feed") + '</div>'; return; }
-  el.innerHTML=rows.map(r=>{
-    const ev=r.event_date, addr=cfg.showAddr&&goodAddr(r.street_address_1)?cleanText(r.street_address_1):"";
-    const scope=cleanText(r.additional_description_1).slice(0,200);
-    let acts=`<a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("city_record_link")}${extSR()}</a>`;
-    acts+=`<button class="act" type="button" data-link="${r.request_id}">${t("copy_link_btn")}</button>`;
-    if(ev) acts+=`<button class="act" type="button" data-ev="${key}:${r.request_id}">${t("add_date_btn",{date:fdt(ev)})}</button>`;
-    if(addr) acts+=`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(addr+' New York NY')}" ${EXT_ATTRS}>${t("map_link")}${extSR()}</a>`;
-    if(addr && key==="property") acts+=`<button class="act" type="button" data-demo="${r.request_id}">${t("still_standing_btn")}</button>`;
-    const pbadges = key==="property" && (r._asset || r._badge)
-      ? `<div>${r._asset?`<span class="tag asset">${ASSET_LABEL[r._asset]?t(ASSET_LABEL[r._asset]):""}</span>`:""}${r._badge?`<span class="tag amt">${r._badge}</span>`:""}</div>` : "";
-    return `<div class="fcard">
+// feedCardHTML: one Property/Rules/Meetings feed card. mev ("match evidence", named apart from
+// r.event_date's own `ev` local below to avoid shadowing it) reuses the same matchEvidence()/
+// digTitleHTML()/digEvidenceHTML() the Alerts-page ask preview and every other lens list share.
+function feedCardHTML(key, r, terms){
+  const cfg=SECTIONS[key];
+  const ev=r.event_date, addr=cfg.showAddr&&goodAddr(r.street_address_1)?cleanText(r.street_address_1):"";
+  const scope=cleanText(r.additional_description_1).slice(0,200);
+  const title=cleanText(r.short_title), mev=matchEvidence(title, matchText(r), terms);
+  let acts=`<a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("city_record_link")}${extSR()}</a>`;
+  acts+=`<button class="act" type="button" data-link="${r.request_id}">${t("copy_link_btn")}</button>`;
+  if(ev) acts+=`<button class="act" type="button" data-ev="${key}:${r.request_id}">${t("add_date_btn",{date:fdt(ev)})}</button>`;
+  if(addr) acts+=`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(addr+' New York NY')}" ${EXT_ATTRS}>${t("map_link")}${extSR()}</a>`;
+  if(addr && key==="property") acts+=`<button class="act" type="button" data-demo="${r.request_id}">${t("still_standing_btn")}</button>`;
+  const pbadges = key==="property" && (r._asset || r._badge)
+    ? `<div>${r._asset?`<span class="tag asset">${ASSET_LABEL[r._asset]?t(ASSET_LABEL[r._asset]):""}</span>`:""}${r._badge?`<span class="tag amt">${r._badge}</span>`:""}</div>` : "";
+  return `<div class="fcard">
       <div class="ftype">${r.type_of_notice_description||""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}${ev?` · <b style="color:var(--ink)">${fdt(ev)}</b>${eventTag(ev)}`:""}</div>
       ${pbadges}
-      <div class="ftitle">${cleanText(r.short_title) ? enTitle(cleanText(r.short_title)) : t("untitled")}</div>
+      <div class="ftitle">${title ? digTitleHTML(title, mev) : t("untitled")}</div>
       ${addr?`<div class="faddr">${addr}</div>`:""}
       ${scope?`<div class="fscope">${scope}${scope.length>=200?"…":""}</div>`:""}
+      ${digEvidenceHTML(mev)}
       <div class="factions">${acts}</div>
     </div>`;
-  }).join("");
+}
+function renderFeed(key, rows){
+  const el=$("#"+key+"feed");
+  if(!rows.length){ el.innerHTML='<div class="empty">' + t("nothing_found_feed") + '</div>'; return; }
+  const kwEl=$("#"+key+"kw"), kw=kwEl?kwEl.value.trim():"", terms=kw?[kw]:[];
+  el.innerHTML=rows.map(r=>feedCardHTML(key,r,terms)).join("");
   el.querySelectorAll("[data-link]").forEach(b=>b.addEventListener("click",()=>copyText(noticeLink(b.dataset.link), b)));
   el.querySelectorAll("[data-ev]").forEach(b=>b.addEventListener("click",()=>{ const i=b.dataset.ev.indexOf(":"); downloadEventICS(feedRows[b.dataset.ev.slice(0,i)][b.dataset.ev.slice(i+1)]); }));
   el.querySelectorAll("[data-demo]").forEach(b=>b.addEventListener("click",()=>checkDemolition(feedRows.property[b.dataset.demo], b)));
@@ -2304,12 +2360,16 @@ async function aFetch(){
   return { kind:"rezone", rows: await api(ZAP, zp) };
 }
 
-// ---- match evidence: show why a keyword search notice is in the preview -------------------
+// ---- why-match evidence: show why a keyword search notice is in the preview ---------------
 // Mirrors worker/src/lib/digest.mjs's matchEvidence() -- the preview must show evidence for
 // the same reason the emailed digest does. Observed failure: a search for "education" surfaced
 // a Comptroller pension-fund notice -- "NOS - Equity Index Investment Management Products" --
 // with nothing visible explaining the match; the hit was buried in the notice's description,
 // which names the Board of Education Retirement System, one of the funds the notice covers.
+// The same mechanism (matchEvidence()/digTitleHTML()/digEvidenceHTML(), rendered via i18n.js's
+// "Matched: ..." string) is reused by moneyRowHTML()/landRowHTML()/feedCardHTML()/roleRowHTML()/
+// personRowHTML() below, so every lens result list -- not just this Alerts preview -- carries
+// the same why-match explanation.
 function locateAnyTerm(text, terms){
   const hay=String(text||"").toLowerCase(); let best=null;
   for(const term of terms){
@@ -2341,6 +2401,15 @@ function matchEvidence(title, description, terms){
   }
   return {field:"unknown", term:words[0]};
 }
+// matchText: the fuller haystack for a City Record row's match evidence. additional_description_1
+// is sometimes blank even when the notice has real explanatory text -- request_id 20260709010 (a
+// DYCD COMPASS afterschool-program award) carries its whole rationale in other_info_1 instead, so
+// a real "childcare"/"afterschool" hit there was falling through to the unnamed "matched via a
+// field this preview doesn't fetch" case. Concatenating both fields is what lets matchEvidence()
+// find and quote the actual text.
+function matchText(r){
+  return [cleanText(r.additional_description_1), cleanText(r.other_info_1)].filter(Boolean).join(" ");
+}
 // digTitleHTML: the item's title, term <mark>-highlighted when the TITLE is what matched.
 // ev.index is an offset into the cleaned (untagged) title, so slicing happens before enTitle's
 // lang/dir wrap -- same non-escaping convention the rest of this file already uses for titles.
@@ -2365,14 +2434,14 @@ function digContact(r){
 }
 function digItemHTML(kind, r, keywords){
   if(kind==="award"){
-    const title=cleanText(r.short_title), ev=matchEvidence(title, cleanText(r.additional_description_1), keywords);
+    const title=cleanText(r.short_title), ev=matchEvidence(title, matchText(r), keywords);
     return `<div class="digitem"><div class="dt"><a href="#notice/${encodeURIComponent(r.request_id)}">${digTitleHTML(title, ev)}</a></div>
     <div class="dm">${r.agency_name} · ${fdate(r.start_date)}${r.vendor_name? " · "+cleanText(r.vendor_name):""}</div>
     ${digEvidenceHTML(ev)}
     <div class="da">${money(r.contract_amount)||""}</div>${digContact(r)}</div>`;
   }
   if(kind==="notice"){
-    const title=cleanText(r.short_title), ev=matchEvidence(title, cleanText(r.additional_description_1), keywords);
+    const title=cleanText(r.short_title), ev=matchEvidence(title, matchText(r), keywords);
     const meta=[r.agency_name, r.type_of_notice_description, fdate(r.start_date), r.event_date?t("event_meta",{date:fdate(r.event_date)}):""].filter(Boolean).join(" · ");
     return `<div class="digitem"><div class="dt">${digTitleHTML(title, ev)}</div>
     <div class="dm">${meta}</div>
@@ -2380,7 +2449,7 @@ function digItemHTML(kind, r, keywords){
     <div class="dc"><a href="#notice/${encodeURIComponent(r.request_id)}">${t("view_on_crol")}</a></div></div>`;
   }
   if(kind==="rfp"){ const dl=daysLeft(r.due_date);
-    const title=cleanText(r.short_title), ev=matchEvidence(title, cleanText(r.additional_description_1), keywords);
+    const title=cleanText(r.short_title), ev=matchEvidence(title, matchText(r), keywords);
     const tel=String(r.contact_phone||"").replace(/[^0-9+]/g,""); const acts=[];
     if(r.email) acts.push(`<a href="${mailtoFor(r)}"><b>${t("respond_lbl")}</b></a>`);
     if(r.email) acts.push(`<a href="mailto:${r.email}">${r.email}</a>`);
