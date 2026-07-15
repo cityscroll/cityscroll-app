@@ -4,11 +4,20 @@
 
 import { redactEmail } from "./lib/subscriptions.mjs";
 
-export async function handleAdminSubs(req, env) {
-  if (!env.ADMIN_KEY) return json({ error: "not found" }, 404);
+// Shared auth gate for every /admin/* route: key via ?key= or an Authorization: Bearer header.
+// FAIL CLOSED — 404 (not 401) until ADMIN_KEY is configured, so an unconfigured deploy doesn't
+// even reveal the route exists. Returns { ok:true } or { ok:false, res:<Response to return> }.
+export function checkAdminKey(req, env) {
+  if (!env.ADMIN_KEY) return { ok: false, res: json({ error: "not found" }, 404) };
   const url = new URL(req.url);
   const key = url.searchParams.get("key") || (req.headers.get("authorization") || "").replace(/^Bearer\s+/i, "");
-  if (key !== env.ADMIN_KEY) return json({ error: "unauthorized" }, 401);
+  if (key !== env.ADMIN_KEY) return { ok: false, res: json({ error: "unauthorized" }, 401) };
+  return { ok: true };
+}
+
+export async function handleAdminSubs(req, env) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
   if (!env.SUBS) return json({ error: "no-store" }, 503);
 
   const subs = [];
@@ -36,10 +45,8 @@ export async function handleAdminSubs(req, env) {
 // are redacted here (the notification email carries the real Reply-To); only `fb:` rows are read,
 // so the rate-limit counters (rl:*) in the same namespace stay out of the listing.
 export async function handleAdminFeedback(req, env) {
-  if (!env.ADMIN_KEY) return json({ error: "not found" }, 404);
-  const url = new URL(req.url);
-  const key = url.searchParams.get("key") || (req.headers.get("authorization") || "").replace(/^Bearer\s+/i, "");
-  if (key !== env.ADMIN_KEY) return json({ error: "unauthorized" }, 401);
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
   if (!env.FEEDBACK) return json({ error: "no-store" }, 503);
 
   const items = [];
