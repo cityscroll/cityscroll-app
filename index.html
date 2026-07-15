@@ -217,6 +217,16 @@
   /* w9-10: 273x12px was AA-exempt (spacing) but far under the comfort bar -- vertical padding
      brings the tappable height to ~28px without disturbing the chain-box layout. */
   .box a.view{margin-top:auto;font:600 12px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none;display:inline-block;padding:8px 0}
+  /* Near-match "maybe" tier (w12-18) — dashed top border + amber label, visually distinct from
+     the confident chain's solid var(--rule-strong) boxes above so a maybe is never mistaken for
+     a confirmed paper-trail stage at a glance. */
+  .box.maybe{border-top-style:dashed;border-top-color:var(--amber)}
+  .box.maybe .stage-name{color:var(--amber)}
+  .box .why{font:12px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+  .near-match-reveal{margin-top:10px}
+  .near-match-reveal summary{cursor:pointer;font:600 13px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--oxblood)}
+  .near-match-reveal summary:hover{text-decoration:underline}
+  .near-match-reveal .chain-h{margin-top:14px}
   .connector{display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:24px;flex:0 0 30px}
   @media(max-width:560px){.connector{transform:rotate(90deg);height:24px}.stage{flex-basis:100%}}
   .note{font:13px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted);background:#f4eee2;border-inline-start:3px solid var(--rule);padding:10px 12px;border-start-end-radius:8px;border-end-end-radius:8px;margin-top:14px}
@@ -336,7 +346,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=551d68c1"></script>
+<script src="i18n.js?v=b204e59b"></script>
 <script src="nl_parse.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
@@ -1276,7 +1286,7 @@ function priorCycleHTML(matches){
 async function priorCycleAwards(r, el){
   if(!el || !r.agency_name || !cleanText(r.short_title)) return;
   const words = priorCycleTitleWords(r.short_title).slice(0, 6);
-  if(words.length < 2){ el.innerHTML = `<div class="note">${t("prior_cycle_none_note")}</div>`; return; } // too generic a title to search on
+  if(words.length < 2){ el.innerHTML = `<div class="note">${t("prior_cycle_none_note")}</div>${nearMatchRevealHTML()}`; wireNearMatchReveal(r, el); return; } // too generic a title to search on
   let rows = null;
   try{
     rows = await soda({
@@ -1290,7 +1300,164 @@ async function priorCycleAwards(r, el){
   if(!document.contains(el)) return; // a newer selection replaced this panel
   if(!rows) return; // proxy/network hiccup — say nothing rather than something wrong, same posture as followDollars
   const matches = rankPriorCycleCandidates(r, rows, {});
-  el.innerHTML = matches.length ? priorCycleHTML(matches) : `<div class="note">${t("prior_cycle_none_note")}</div>`;
+  if(matches.length){ el.innerHTML = priorCycleHTML(matches); return; }
+  el.innerHTML = `<div class="note">${t("prior_cycle_none_note")}</div>${nearMatchRevealHTML()}`;
+  wireNearMatchReveal(r, el);
+}
+
+/* ===================== NEAR-MATCH PRIOR CYCLES (exploratory, w12-18) =====================
+   The strict matcher above requires a MAJORITY title-word overlap (score>=0.5) specifically to
+   avoid surfacing concurrent-RFP siblings as false "renewals" -- but that same precision bar
+   silently drops a real prior round that was simply retitled between cycles (an address or a
+   permit code swapped into the title, "Renewal" dropped, etc). Real example: HPD's "IMMEDIATE
+   EMERGENCY DEMOLITION OF 28 W 130th St, MANHATTAN (DM00121 E-6038R)" (2022, PIN 80622E0016001)
+   scores only 0.43 against its real prior round "IMMEDIATE EMERGENCY DEMOLITION" (2019, PIN
+   80619E0021001, same vendor Granite Environmental) -- 3 of 7 significant title words recur,
+   just short of the strict bar, even though the two notices are 994 days apart, comfortably
+   clear of the concurrent-sibling gap floor.
+   This tier surfaces candidates like that one -- explicitly, as caveated maybes, hidden behind a
+   reveal -- WITHOUT touching the confident chain/cadence/past-winners/lineage surfaces above,
+   which all read chainHTML()'s own pinBase()-widened chain, never this function's output
+   (honest-data convention). Same >=180-day gap floor as the strict matcher (a weak title match at
+   a short gap still reads as a same-round sibling, not a prior cycle) -- what loosens is the
+   title-overlap bar, corroborated by two signals a title-only match can't offer: how much of the
+   (renewal-suffix-stripped) PIN's prefix the two notices share, and whether their contract
+   amounts are in the same ballpark. A weak title score ALONE is too noisy to show on its own --
+   same-agency, unrelated-topic pairs routinely share one location/facility word (e.g. two
+   completely different Correction contracts both mentioning "Rikers Island"), a known limitation
+   inherited from PRIOR_CYCLE_STOPWORDS/priorCycleTitleWords() above, not something this tier
+   tries to fix -- so a near-match candidate needs the title score AND at least one corroborating
+   signal.
+   Cost: fires ONE additional SODA call, and only lazily on the reveal's first open (never
+   eagerly on page load, never when the strict tier already found something). It widens $q to
+   this notice's own top 2 significant words -- broad enough to survive a title starved by the
+   strict search's own 6-word $q down to a self-match only (verified live: the HPD example above
+   returns zero OTHER rows under the strict 6-word $q, but the true prior round is row 12 of 50
+   under a 2-word $q bounded to start_date < this notice's own date) -- and orders by date so the
+   50-row cap lands on the candidates closest in time to this notice, not the 50 most recent
+   system-wide uses of an evergreen word like "demolition". */
+const NEAR_MATCH_MIN_SCORE = 0.34; // "at least a third of this notice's significant title words recur" — looser than the strict majority bar, still real overlap, not one coincidental shared word
+const NEAR_MATCH_MAX_MATCHES = 3;
+const NEAR_MATCH_PIN_PREFIX_MIN_LEN = 8; // shared leading chars of the renewal-suffix-stripped PIN -- deliberately deeper than a same-agency PIN scheme's own common stem (a 2000s-era Correction PIN's first 6 chars, e.g. "072200", are shared by nearly every contract that agency issued that decade and prove nothing on their own — verified live against 700+ same-agency pairs)
+const NEAR_MATCH_AMOUNT_RATIO_MAX = 3; // larger/smaller contract_amount no more than 3x apart counts as "comparable"
+const NEAR_MATCH_QUERY_WORDS = 2; // widened $q word count for the lazy reveal fetch — see file header
+
+function pinPrefixShared(a, b){
+  const sa = pinBase(a) || a, sb = pinBase(b) || b;
+  let n = 0;
+  while(n < sa.length && n < sb.length && sa[n] === sb[n]) n++;
+  return n;
+}
+
+// A candidate needs the required title overlap PLUS at least one of these two corroborating
+// signals (rankNearMatchCandidates() below enforces that) — agency+title alone is too noisy on
+// its own, see the file header.
+function nearMatchReasons(r, c, overlapWords){
+  const reasons = [{kind:"agency"}, {kind:"title", words:overlapWords}];
+  if(usablePin(r.pin) && usablePin(c.pin) && pinPrefixShared(r.pin, c.pin) >= NEAR_MATCH_PIN_PREFIX_MIN_LEN){
+    reasons.push({kind:"pin", prefix: (pinBase(c.pin)||c.pin).slice(0, NEAR_MATCH_PIN_PREFIX_MIN_LEN)});
+  }
+  const ra = +r.contract_amount, ca = +c.contract_amount;
+  if(ra > 0 && ca > 0 && Math.max(ra,ca)/Math.min(ra,ca) <= NEAR_MATCH_AMOUNT_RATIO_MAX){
+    reasons.push({kind:"amount", a: ra, b: ca});
+  }
+  return reasons;
+}
+
+// Pure filter/rank step, mirroring rankPriorCycleCandidates() above but for the looser tier --
+// same gap floor, lower title-overlap floor, hard requirement for PIN or amount corroboration.
+// strictMatches is whatever rankPriorCycleCandidates() already found for this notice (today's
+// only call site only ever reaches this function when that was empty, but the parameter is kept
+// so a confident match can never ALSO resurface here as a "maybe", regardless of caller).
+function rankNearMatchCandidates(r, candidates, strictMatches, opts){
+  const maxN = (opts && opts.maxN) || NEAR_MATCH_MAX_MATCHES;
+  const minGapDays = (opts && opts.minGapDays) || PRIOR_CYCLE_MIN_GAP_DAYS;
+  const minScore = (opts && opts.minScore) || NEAR_MATCH_MIN_SCORE;
+  const myWords = priorCycleTitleWords(r.short_title);
+  if(!myWords.length) return [];
+  const strictIds = new Set((strictMatches||[]).map(c => c.request_id));
+  const seenPins = new Set();
+  return candidates
+    .filter(c => c.request_id !== r.request_id)
+    .filter(c => !strictIds.has(c.request_id)) // never re-surface a confident match as a maybe
+    .filter(c => c.agency_name === r.agency_name)
+    .filter(c => !usablePin(r.pin) || c.pin !== r.pin)
+    .filter(c => (c.start_date||"") < (r.start_date||""))
+    .filter(c => { const g = daysBetween(c.start_date, r.start_date); return g !== null && g >= minGapDays; })
+    .map(c => {
+      const cWords = priorCycleTitleWords(c.short_title);
+      const overlap = cWords.filter(w => myWords.includes(w));
+      return {c, score: overlap.length / myWords.length, overlap};
+    })
+    .filter(x => x.score >= minScore && x.score < 0.5) // below the strict bar -- an equal-or-better match already is one
+    .map(x => ({...x, reasons: nearMatchReasons(r, x.c, x.overlap)}))
+    .filter(x => x.reasons.some(rs => rs.kind === "pin" || rs.kind === "amount")) // title overlap alone is too noisy — see file header
+    .sort((a,b)=> b.score - a.score || (b.c.start_date||"").localeCompare(a.c.start_date||""))
+    .filter(x => { if(seenPins.has(x.c.pin)) return false; seenPins.add(x.c.pin); return true; }) // one row per PIN
+    .slice(0, maxN);
+}
+
+function nearMatchReasonHTML(reason){
+  if(reason.kind === "agency") return t("near_match_reason_agency");
+  if(reason.kind === "title") return t("near_match_reason_title_html", {words: reason.words.map(w=>`<mark>${w}</mark>`).join(", ")});
+  if(reason.kind === "pin") return t("near_match_reason_pin_html", {prefix: `<code>${reason.prefix}</code>`});
+  return t("near_match_reason_amount_html", {a: money(reason.a), b: money(reason.b)});
+}
+
+// Visually tiered from the confident chain's own boxes (.box.maybe, styled in <style> above) and
+// carries a plain-language caveat -- never mistaken for a confirmed paper-trail stage.
+function nearMatchHTML(items){
+  const rows = items.map(x => `<div class="stage"><div class="box maybe">
+      <div class="stage-name">${t("near_match_tag")}</div>
+      <div class="when">${fdate(x.c.start_date)}</div>
+      <div class="bt">${cleanText(x.c.short_title)}</div>
+      ${money(x.c.contract_amount) ? `<div class="amt">${money(x.c.contract_amount)}</div>` : ""}
+      ${x.c.vendor_name ? `<div class="vend">→ ${pivotA(vendorHref(x.c.vendor_name), cleanText(x.c.vendor_name))}</div>` : ""}
+      <div class="why">${t("near_match_why_lbl")} ${x.reasons.map(nearMatchReasonHTML).join(" · ")}</div>
+      <a class="view" href="${REQ_URL(x.c.request_id)}" ${EXT_ATTRS}>${t("view_in_city_record")}${extSR()}</a>
+    </div></div>`).join("");
+  return `<div class="chain-h">${t("near_match_heading")}</div><div class="chain">${rows}</div>
+    <div class="note warn">${t("near_match_caveat_note")}</div>`;
+}
+
+// Fires only when the strict matcher already came up empty AND the reader explicitly opens the
+// reveal (never eagerly) -- see the file header above for the full cost story.
+async function nearMatchCandidates(r){
+  const myWords = priorCycleTitleWords(r.short_title);
+  if(myWords.length < 2 || !r.agency_name || !r.start_date) return [];
+  const words = myWords.slice(0, NEAR_MATCH_QUERY_WORDS);
+  let rows = null;
+  try{
+    rows = await soda({
+      "$select": SELECT,
+      "$where": `agency_name='${r.agency_name.replace(/'/g,"''")}' AND type_of_notice_description='Award' AND start_date < '${r.start_date.replace(/'/g,"''")}'`,
+      "$q": words.join(" "),
+      "$order": "start_date DESC",
+      "$limit": "50"
+    });
+  }catch(e){}
+  if(!rows) return null; // proxy/network hiccup — say nothing rather than something wrong
+  return rankNearMatchCandidates(r, rows, []);
+}
+
+function nearMatchRevealHTML(){
+  return `<details class="near-match-reveal"><summary>${t("near_match_reveal_btn")}</summary><div class="near-match-body"></div></details>`;
+}
+
+function wireNearMatchReveal(r, el){
+  const details = el.querySelector(".near-match-reveal");
+  if(!details) return;
+  let loaded = false;
+  details.addEventListener("toggle", async () => {
+    if(!details.open || loaded) return;
+    loaded = true;
+    const body = details.querySelector(".near-match-body");
+    body.innerHTML = `<div class="note"><span class="loading"></span> ${t("near_match_loading")}</div>`;
+    const near = await nearMatchCandidates(r);
+    if(!document.contains(details)) return; // a newer selection replaced this panel
+    if(near === null){ body.innerHTML = ""; return; } // network hiccup — say nothing, same posture as priorCycleAwards
+    body.innerHTML = near.length ? nearMatchHTML(near) : `<div class="note">${t("near_match_none_note")}</div>`;
+  });
 }
 
 async function loadAgencyStats(agency){
