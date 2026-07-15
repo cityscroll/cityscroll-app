@@ -302,6 +302,8 @@
     cadence_years_apart_other: "aproximadamente {years} años de diferencia",
     cadence_next_expected: "Se espera la próxima licitación alrededor de {date}.",
     cadence_estimate_tag: "Estimación",
+    history_cycles_tag_one: "{n} ciclo",
+    history_cycles_tag_other: "{n} ciclos",
     prior_cycle_heading: "Parece recurrente — adjudicaciones de ciclos anteriores",
     prior_cycle_heuristic_note: "Lo relacionamos por agencia y título, no por un PIN compartido. Puede ser el mismo contrato recurrente, pero no podemos estar seguros. Verifique primero las fechas y el proveedor.",
     prior_cycle_none_note: "No encontramos un ciclo anterior probable para este caso. Puede que no sea un contrato recurrente. O una ronda anterior no coincidió lo suficiente para mostrarla aquí.",

@@ -336,7 +336,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=a1b59015"></script>
+<script src="i18n.js?v=551d68c1"></script>
 <script src="nl_parse.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
@@ -1043,7 +1043,7 @@ function moneyRowHTML(r, i, terms){
   const title = cleanText(r.short_title), ev = matchEvidence(title, matchText(r), terms);
   return `<div class="row" data-i="${i}" tabindex="0" role="button">
       <p class="rtitle">${title ? digTitleHTML(title, ev) : t("untitled_notice")}</p>
-      <p class="rmeta">${lead}<span class="ragency" lang="en" dir="ltr">${r.agency_name||""}</span> · ${fdate(r.start_date)}
+      <p class="rmeta">${lead}<span class="lineage-slot"></span><span class="ragency" lang="en" dir="ltr">${r.agency_name||""}</span> · ${fdate(r.start_date)}
         ${r.category_description? " · "+r.category_description : ""}<br>
         ${usablePin(r.pin)? `<span class="pin">PIN ${r.pin}</span>` : `<span class="pin muted">${t("no_linkable_pin")}</span>`}</p>
       ${digEvidenceHTML(ev)}
@@ -1055,6 +1055,111 @@ function renderList(){
   $("#list").innerHTML = currentRows.map((r,i)=>moneyRowHTML(r,i,terms)).join("");
   document.querySelectorAll("#list .row").forEach(el=>el.addEventListener("click",()=>select(+el.dataset.i, el)));
   document.querySelector("#list .row")?.click(); // auto-open the first result — don't make the user click the obvious
+  loadLineageBadges(); // fire-and-forget; badges splice into the .lineage-slot markers once the batch lookup lands
+}
+
+/* ===================== LINEAGE INDICATOR (w12-10) =====================
+   Field evidence: the site owner, already aware the cadence estimate (cadenceEstimate(), w12-04)
+   and past-winners strip (pastWinnersHTML(), w12-05) had shipped, could not find a live notice
+   exhibiting either one without being handed fixture PINs directly -- both only reveal
+   themselves after opening a notice that happens to have a chain. This surfaces the same
+   signal one level up, on the result row itself, so a reader can see which notices have
+   history before clicking in.
+
+   Cost: ONE extra SODA request per renderList() call, not one per row. It batches every visible
+   row's chain key (pinBase()-widened PIN + agency -- the exact same widening loadChain() uses
+   to build a single notice's chain) into one $where clause of ORed conditions, restricted to
+   Award/Intent-to-Award stages, and fetches all of them at once. A results page never exceeds
+   40 rows (search()'s own $limit), so this is at most 40 ORed clauses in one GET -- comfortably
+   under URL-length limits, and a small fraction of the cost of 40 individual per-row lookups.
+   It fires after the list has already painted (same fire-and-forget-then-patch-in pattern as
+   loadMethodFacet()), so it never blocks or slows the list's own render; a badge is spliced into
+   each qualifying row's pre-rendered `.lineage-slot` marker once counts are known.
+
+   LINEAGE_MAX_STAGES exists because of a real, live pinBase()/loadChain() edge case found while
+   testing this against production data: PIN "82626R0001001" (agency "Environmental Protection")
+   is a single, ordinary Award with no renewal history at all -- but its own literal digits
+   happen to end in something pinBase()'s `/R0\d+$/` suffix-strip matches, widening it to base
+   "82626" and prefix-matching ~180 UNRELATED contracts under that agency's fiscal-year PIN
+   prefix. isBlanketChain()'s existing "every stage is Award" check doesn't catch this case (the
+   false-widened set mixes Award/Intent-to-Award/Solicitation stages), so without this ceiling
+   the batch would render a nonsensical "180 cycles" badge. This is a pre-existing pinBase()
+   over-widening gap that also affects chainHTML()/pastWinnersHTML() on the detail view today
+   (out of scope to fix here -- worth its own future card); LINEAGE_MAX_STAGES is a narrower,
+   more conservative honesty gate specific to this new surface: every genuine chain fixture
+   documented in this codebase (test/cadence_estimate.test.mjs, test/past_winners.test.mjs) tops
+   out at 6 real stages, so a widened match past 15 reads as a PIN-prefix collision, not a
+   legitimate multi-decade renewal history, and is treated the same as "uncertain" -- no badge. */
+const LINEAGE_MIN_STAGES = 2; // pastWinnersHTML()'s own threshold — nothing to roll up below this
+const LINEAGE_MAX_STAGES = 15; // beyond this, a widened match reads as a PIN-prefix collision, not a real chain
+
+function lineageChainKey(r){
+  if(!usablePin(r.pin) || !r.agency_name) return null;
+  return { pin: r.pin, base: pinBase(r.pin), agency_name: r.agency_name };
+}
+function lineageDedupeKey(k){ return (k.base||k.pin) + "|" + k.agency_name; }
+
+function lineageBatchClauses(keys){
+  return keys.map(k=>{
+    const agency = `agency_name='${k.agency_name.replace(/'/g,"''")}'`;
+    const pinClause = k.base
+      ? `pin LIKE '${k.base.replace(/'/g,"''")}%'`
+      : `pin='${k.pin.replace(/'/g,"''")}'`;
+    return `(${pinClause} AND ${agency})`;
+  });
+}
+
+// Pure: given the rows on screen and the batch of Award/Intent-to-Award stage rows fetched for
+// their chain keys, decide which row gets a history badge and what count to show. Same honesty
+// gate pastWinnersHTML() applies to a single notice's chain (isBlanketChain() exclusion,
+// >=LINEAGE_MIN_STAGES) -- a row's badge promises exactly what pastWinnersHTML()/cadenceHTML()
+// will show once you click through, never more, never a guess when lineage is uncertain.
+function computeLineageBadgeCounts(rows, batchRows){
+  const memo = new Map(); // dedupe key -> count|null, computed once per distinct chain
+  return rows.map(r=>{
+    const k = lineageChainKey(r);
+    if(!k) return null;
+    const dedupeKey = lineageDedupeKey(k);
+    if(memo.has(dedupeKey)) return memo.get(dedupeKey);
+    const stages = batchRows.filter(row => row.agency_name === k.agency_name &&
+      (k.base ? String(row.pin||"").startsWith(k.base) : row.pin === k.pin));
+    const n = (!isBlanketChain(stages) && stages.length >= LINEAGE_MIN_STAGES && stages.length <= LINEAGE_MAX_STAGES)
+      ? stages.length : null;
+    memo.set(dedupeKey, n);
+    return n;
+  });
+}
+
+async function loadLineageBadges(){
+  const rows = currentRows;
+  const keys = [], seenKeys = new Set();
+  rows.forEach(r=>{
+    const k = lineageChainKey(r);
+    if(!k) return;
+    const dedupeKey = lineageDedupeKey(k);
+    if(seenKeys.has(dedupeKey)) return;
+    seenKeys.add(dedupeKey);
+    keys.push(k);
+  });
+  if(!keys.length) return; // nothing with a usable PIN on this page -- no batch worth firing
+  const where = `(${lineageBatchClauses(keys).join(" OR ")}) AND (type_of_notice_description='Award' OR type_of_notice_description='Intent to Award')`;
+  let batchRows;
+  try{
+    // $limit is generous (not the ~40 rows a genuine batch of small chains would need) because
+    // SODA applies it to the WHOLE combined query, with no per-clause guarantee -- a single
+    // widened key colliding with many unrelated PINs (see LINEAGE_MAX_STAGES's comment above)
+    // could otherwise silently crowd out and undercount a different, genuine chain sharing this
+    // same batch call. Still one request either way.
+    batchRows = await soda({"$select":"pin,agency_name,type_of_notice_description","$where":where,"$limit":"2000"});
+  }catch(e){ return; } // silent no-op -- a history badge is a bonus, not core content (same posture as agencyForecastTeaser())
+  if(currentRows !== rows) return; // a newer search superseded this one
+  const counts = computeLineageBadgeCounts(rows, batchRows);
+  document.querySelectorAll("#list .row").forEach(el=>{
+    const n = counts[+el.dataset.i];
+    if(!n) return;
+    const slot = el.querySelector(".lineage-slot");
+    if(slot) slot.outerHTML = `<span class="tag renewal">${tn("history_cycles_tag", n, {n})}</span>`;
+  });
 }
 
 async function select(i, el){

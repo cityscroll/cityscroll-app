@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "a9815e26",
-  "zh-Hans": "04837188",
-  ru: "f9b032a0",
-  bn: "7dbfe173",
-  ht: "71b95b01",
-  ko: "160c35c9",
-  fr: "dfc6660e",
-  pl: "9d258470",
-  ar: "e94fe637",
-  ur: "9b0d73de",
+  es: "9f0cf798",
+  "zh-Hans": "c4e99060",
+  ru: "2a2f2649",
+  bn: "4d5d320e",
+  ht: "41d51d8b",
+  ko: "5dc63137",
+  fr: "5acc7e54",
+  pl: "2ed48825",
+  ar: "837ba9f4",
+  ur: "9df5758b",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -482,6 +482,11 @@ const STRINGS = {
     cadence_years_apart_other: "about {years} years apart",
     cadence_next_expected: "Next solicitation expected around {date}.",
     cadence_estimate_tag: "Estimate",
+    // Lineage indicator (w12-10): a compact result-row badge pointing at the same chain data
+    // pastWinnersHTML()/cadenceHTML() already render on the detail view — see
+    // computeLineageBadgeCounts()/loadLineageBadges() in index.html.
+    history_cycles_tag_one: "{n} cycle",
+    history_cycles_tag_other: "{n} cycles",
     prior_cycle_heading: "Looks recurring — prior award cycles",
     prior_cycle_heuristic_note: "We matched this by agency and title, not by a shared PIN. It may be the same repeating contract, but we cannot be sure. Check the dates and vendor first.",
     prior_cycle_none_note: "We found no likely prior cycle for this one. It may not be a repeating contract. Or an earlier round did not match closely enough to show here.",

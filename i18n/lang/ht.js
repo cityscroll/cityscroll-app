@@ -301,6 +301,8 @@
     cadence_years_apart_other: "anviwon {years} ane apa",
     cadence_next_expected: "Nou espere pwochen apèl dof la anviwon {date}.",
     cadence_estimate_tag: "Estimasyon",
+    history_cycles_tag_one: "{n} sik",
+    history_cycles_tag_other: "{n} sik",
     prior_cycle_heading: "Sanble se yon bagay ki repete — akòdman sik anvan yo",
     prior_cycle_heuristic_note: "Nou matche sa a pa ajans ak tit, se pa pa yon PIN pataje. Li ka menm kontra rekiran an, men nou pa sèten. Verifye dat yo ak vandè a anvan.",
     prior_cycle_none_note: "Nou pa jwenn okenn sik anvan ki vrezanblab pou ka sa a. Li ka pa yon kontra rekiran. Oswa yon tou anvan pa t matche ase pou nou montre l isit la.",

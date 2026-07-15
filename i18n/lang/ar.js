@@ -309,6 +309,8 @@
     cadence_years_apart_other: "بفارق {years} سنوات تقريبًا",
     cadence_next_expected: "من المتوقع طرح العطاء التالي في حوالي {date}.",
     cadence_estimate_tag: "تقدير",
+    history_cycles_tag_one: "دورة واحدة",
+    history_cycles_tag_other: "{n} دورة",
     prior_cycle_heading: "يبدو متكررًا — ترسيات من دورات سابقة",
     prior_cycle_heuristic_note: "طابقنا هذا حسب الجهة والعنوان، وليس عبر رقم تعريف (PIN) مشترك. قد يكون نفس العقد المتكرر، لكننا لسنا متأكدين. تحقق أولاً من التواريخ والمورّد.",
     prior_cycle_none_note: "لم نجد دورة سابقة محتملة لهذه الحالة. قد لا يكون عقدًا متكررًا. أو أن جولة سابقة لم تتطابق بما يكفي لعرضها هنا.",
