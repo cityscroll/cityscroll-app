@@ -49,7 +49,7 @@ function extractConst(name) {
 }
 
 const { rankNearMatchCandidates, nearMatchReasons, pinPrefixShared, priorCycleTitleWords,
-  nearMatchPossible, priorCycleEligibleCount, priorCycleNoneHTML } = new Function(
+  priorCycleNoneHTML } = new Function(
   "t",
   src.match(/const JUNK_PINS = new Set\(\[[^\]]*\]\);/)[0] + extractConst("JUNK_PIN_TEXT_RE") + extractFn("usablePin")
   + src.match(/const RENEWAL_SUFFIX_RE = [^;]*;/)[0] + extractFn("pinBase")
@@ -59,8 +59,8 @@ const { rankNearMatchCandidates, nearMatchReasons, pinPrefixShared, priorCycleTi
   + extractConst("NEAR_MATCH_MIN_SCORE") + extractConst("NEAR_MATCH_MAX_MATCHES")
   + extractConst("NEAR_MATCH_PIN_PREFIX_MIN_LEN") + extractConst("NEAR_MATCH_AMOUNT_RATIO_MAX")
   + extractFn("pinPrefixShared") + extractFn("nearMatchReasons") + extractFn("rankNearMatchCandidates")
-  + extractFn("nearMatchPossible") + extractFn("priorCycleEligibleCount") + extractFn("priorCycleNoneHTML")
-  + "return { rankNearMatchCandidates, nearMatchReasons, pinPrefixShared, priorCycleTitleWords, nearMatchPossible, priorCycleEligibleCount, priorCycleNoneHTML };"
+  + extractFn("priorCycleNoneHTML")
+  + "return { rankNearMatchCandidates, nearMatchReasons, pinPrefixShared, priorCycleTitleWords, priorCycleNoneHTML };"
 )((k, v) => k + (v ? JSON.stringify(v) : "")); // stub t(): returns the key (plus vars, for inspection) rather than real i18n text
 
 // Real fixture, live-queried 2026-07-15 from the SODA dataset (dg92-zbpx).
@@ -210,96 +210,52 @@ test("nearMatchReasons: agency and title reasons are always present; PIN/amount 
   assert.deepEqual(kinds, ["agency", "title", "amount"]);
 });
 
-// ---------- nearMatchPossible / priorCycleNoneHTML: guarded disclosure (Fix #1) ----------
-// The near-match tier can only ever return something when it has >=2 significant title words
-// (its own 2-word $q can't form with fewer), a start_date (its query and gap filter are both
-// bounded to strictly-earlier awards), and a corroborating signal that could actually fire —
-// a PIN whose renewal-stripped base reaches NEAR_MATCH_PIN_PREFIX_MIN_LEN chars, or a positive
-// contract amount. When none of that can ever be true, offering the reveal is a provable dead
-// end, so priorCycleAwards must not render it.
-test("nearMatchPossible: false with no usable PIN and no contract amount, even with a specific title", () => {
-  const r = { short_title: "Guide Rail Posts Fencing Installation", pin: "", contract_amount: null, start_date: "2019-09-01" };
-  assert.equal(nearMatchPossible(r), false);
-});
-test("nearMatchPossible: true with a usable PIN (>=2 title words)", () => {
-  const r = { short_title: "Guide Rail Posts Fencing Installation", pin: "8571900001", contract_amount: null, start_date: "2019-09-01" };
-  assert.equal(nearMatchPossible(r), true);
-});
-test("nearMatchPossible: true with a positive contract amount, no PIN", () => {
-  const r = { short_title: "Guide Rail Posts Fencing Installation", pin: "", contract_amount: "100000", start_date: "2019-09-01" };
-  assert.equal(nearMatchPossible(r), true);
-});
-test("nearMatchPossible: false with a usable PIN but a too-generic (<2-word) title", () => {
-  const r = { short_title: "Services", pin: "8571900001", contract_amount: "100000", start_date: "2019-09-01" };
-  assert.equal(nearMatchPossible(r), false);
-});
-test("nearMatchPossible: a zero or negative contract amount does not count as a usable signal", () => {
-  const r = { short_title: "Guide Rail Posts Fencing Installation", pin: "", contract_amount: "0", start_date: "2019-09-01" };
-  assert.equal(nearMatchPossible(r), false);
-});
-test("nearMatchPossible: false with no start_date — the near-match query is date-bounded, so it can never run", () => {
-  const r = { short_title: "Guide Rail Posts Fencing Installation", pin: "8571900001", contract_amount: "100000" };
-  assert.equal(nearMatchPossible(r), false);
-});
-test("nearMatchPossible: a usable PIN whose base is shorter than the 8-char corroboration floor does not count", () => {
-  const r = { short_title: "Guide Rail Posts Fencing Installation", pin: "8571R09", contract_amount: null, start_date: "2019-09-01" };
-  assert.equal(nearMatchPossible(r), false);
-});
-
-test("priorCycleNoneHTML: no reveal rendered when neither PIN nor amount could ever corroborate", () => {
-  const r = { request_id: "R0", short_title: "Guide Rail Posts Fencing Installation", pin: "", contract_amount: null, agency_name: "Parks and Recreation", start_date: "2019-09-01" };
-  const eligible = { request_id: "C1", agency_name: "Parks and Recreation", pin: "8571100001", short_title: "Guide Rail Barrier Repair", start_date: "2016-01-01" };
-  const html = priorCycleNoneHTML(r, [eligible]);
-  assert.ok(!html.includes("near-match-reveal"), "no reveal markup expected");
+// ---------- priorCycleNoneHTML: pre-loaded reveal gate (Phase 1b) ----------
+// Phase 1b: the /priorcycle endpoint returns near matches alongside the strict tier, so the
+// reveal is no longer a lazy dead-end gated on nearMatchPossible() — priorCycleNoneHTML shows it
+// ONLY when the endpoint already found near matches (near.length > 0), and its body is populated
+// up front. So the reveal appears iff there is something to reveal, never a spin-then-nothing.
+test("priorCycleNoneHTML: no reveal rendered when the endpoint returned no near matches", () => {
+  const r = { request_id: "R0", short_title: "Guide Rail Posts Fencing Installation", pin: "8571900001", contract_amount: null, agency_name: "Parks and Recreation", start_date: "2019-09-01" };
+  const html = priorCycleNoneHTML(r, 1, []); // eligibleCount=1, but the endpoint found no near matches
+  assert.ok(!html.includes("near-match-reveal"), "no reveal markup expected when near is empty");
   assert.ok(html.includes("prior_cycle_none_low_confidence_html"), "a prior-eligible candidate existed but none matched closely");
 });
-test("priorCycleNoneHTML: reveal IS rendered when a usable PIN could still corroborate a near-match", () => {
+test("priorCycleNoneHTML: reveal IS rendered when the endpoint returned near matches", () => {
   const r = { request_id: "R0", short_title: "Guide Rail Posts Fencing Installation", pin: "8571900001", contract_amount: null, agency_name: "Parks and Recreation", start_date: "2019-09-01" };
-  const eligible = { request_id: "C1", agency_name: "Parks and Recreation", pin: "8571100001", short_title: "Guide Rail Barrier Repair", start_date: "2016-01-01" };
-  const html = priorCycleNoneHTML(r, [eligible]);
-  assert.ok(html.includes("near-match-reveal"), "reveal markup expected");
+  const near = [{ c: { request_id: "C1", short_title: "Guide Rail Barrier Repair", start_date: "2016-01-01" }, score: 0.4, reasons: [{ kind: "agency" }] }];
+  const html = priorCycleNoneHTML(r, 1, near);
+  assert.ok(html.includes("near-match-reveal"), "reveal markup expected when near is non-empty");
+});
+test("priorCycleNoneHTML: a missing/undefined near argument renders no reveal (defensive)", () => {
+  const r = { request_id: "R0", short_title: "Guide Rail Posts Fencing Installation", pin: "8571900001", contract_amount: null, agency_name: "Parks and Recreation", start_date: "2019-09-01" };
+  assert.ok(!priorCycleNoneHTML(r, 1, undefined).includes("near-match-reveal"));
 });
 
-// ---------- priorCycleNoneHTML: 3 resolved "none" cases (Fix #3) ----------
-// Case selection counts PRIOR-ELIGIBLE candidates (self excluded, strictly earlier, >=180-day
-// gap — rankPriorCycleCandidates' own pre-score pool), not raw fetched rows: the strict-tier
-// SODA query has no date bound and its $q matches this notice's own title, so its rows
-// routinely include the notice itself, later awards, and same-round siblings.
+// ---------- priorCycleNoneHTML: 3 resolved "none" cases, now driven by eligibleCount (Phase 1b) ----------
+// The 3-way message from 67 is preserved, but the no_candidates-vs-low_confidence split is now
+// driven by the eligibleCount the endpoint computed server-side (priorCycleEligibleCount over the
+// strict-tier rows), not a local recompute — the client no longer fetches those rows.
 test("priorCycleNoneHTML: title too generic (<2 significant words) selects the generic key", () => {
   const r = { short_title: "Services", pin: "", contract_amount: null, agency_name: "Parks and Recreation", start_date: "2019-09-01" };
-  const html = priorCycleNoneHTML(r, []);
+  const html = priorCycleNoneHTML(r, 0, []);
   assert.ok(html.includes("prior_cycle_none_generic"));
 });
-test("priorCycleNoneHTML: zero prior-eligible candidates selects the no-candidates key, with {agency} interpolated", () => {
+test("priorCycleNoneHTML: eligibleCount 0 selects the no-candidates key, with {agency} interpolated", () => {
   const r = { short_title: "Guide Rail Posts Fencing Installation", pin: "", contract_amount: null, agency_name: "Parks and Recreation", start_date: "2019-09-01" };
-  const html = priorCycleNoneHTML(r, []);
+  const html = priorCycleNoneHTML(r, 0, []);
   assert.ok(html.includes("prior_cycle_none_no_candidates_html"));
   assert.ok(html.includes("Parks and Recreation"), "{agency} should be interpolated into the rendered note");
 });
-test("priorCycleNoneHTML: rows holding only the notice itself, later awards, and same-round siblings still select the no-candidates key", () => {
-  // The documented HPD field case: the strict $q returns exactly one row — the notice itself.
-  // Before this fix, rows.length>0 misrendered the low-confidence message ("We found earlier
-  // {agency} awards…") when no earlier award existed in the result set at all.
-  const rows = [
-    hpdNotice, // self
-    { request_id: "L1", agency_name: hpdNotice.agency_name, pin: "80624E0001001", short_title: "IMMEDIATE EMERGENCY DEMOLITION", start_date: "2024-01-01" }, // later
-    { request_id: "S1", agency_name: hpdNotice.agency_name, pin: "80622E0017001", short_title: "IMMEDIATE EMERGENCY DEMOLITION", start_date: "2022-02-01" }, // 45 days earlier — same-round sibling
-  ];
-  assert.equal(priorCycleEligibleCount(hpdNotice, rows), 0);
-  const html = priorCycleNoneHTML(hpdNotice, rows);
-  assert.ok(html.includes("prior_cycle_none_no_candidates_html"));
-  assert.ok(!html.includes("prior_cycle_none_low_confidence_html"));
-});
-test("priorCycleNoneHTML: prior-eligible candidates exist but none matched closely selects the low-confidence key", () => {
+test("priorCycleNoneHTML: a positive eligibleCount selects the low-confidence key", () => {
   const r = { request_id: "R0", short_title: "Guide Rail Posts Fencing Installation", pin: "", contract_amount: null, agency_name: "Parks and Recreation", start_date: "2019-09-01" };
-  const eligible = { request_id: "C1", agency_name: "Parks and Recreation", pin: "8571100001", short_title: "Guide Rail Barrier Repair", start_date: "2016-01-01" };
-  const html = priorCycleNoneHTML(r, [eligible]);
+  const html = priorCycleNoneHTML(r, 2, []);
   assert.ok(html.includes("prior_cycle_none_low_confidence_html"));
   assert.ok(html.includes("Parks and Recreation"));
 });
 test("priorCycleNoneHTML: the interpolated English agency name is bidi-isolated (lang=en dir=ltr)", () => {
   const r = { short_title: "Guide Rail Posts Fencing Installation", pin: "", contract_amount: null, agency_name: "Parks and Recreation", start_date: "2019-09-01" };
-  const html = priorCycleNoneHTML(r, []);
+  const html = priorCycleNoneHTML(r, 0, []);
   assert.ok(html.includes('lang=\\"en\\" dir=\\"ltr\\"') || html.includes('lang="en" dir="ltr"'),
     "agency interpolation should carry the w8-03 isolation span");
 });

@@ -14,7 +14,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import {
   priorCycleTitleWords, daysBetween, rankPriorCycleCandidates,
-  pinPrefixShared, nearMatchReasons, rankNearMatchCandidates,
+  priorCycleEligibleCount, pinPrefixShared, nearMatchReasons, rankNearMatchCandidates,
   NEAR_MATCH_MAX_MATCHES,
 } from "../src/lib/prior_cycle.mjs";
 
@@ -78,6 +78,49 @@ test("rankPriorCycleCandidates: below the 0.5 title bar is not a strict match", 
     pin: "80619E0021001", short_title: "IMMEDIATE EMERGENCY DEMOLITION", start_date: "2019-06-28",
     type_of_notice_description: "Award" }; // 3/7 words = 0.43, below strict bar
   assert.deepEqual(rankPriorCycleCandidates(r, [weak], {}), []);
+});
+
+// ---- eligibleCount (priorCycleEligibleCount) — the pre-0.5-bar pool the Phase 1b endpoint -----
+// returns so the client can pick 67's no_candidates-vs-low_confidence empty-state message. The
+// eligibleCount logic used to live in index.html's priorCycleEligibleCount() (the source of truth
+// for 67); Phase 1b moves that source of truth into this lib and the client reads the computed
+// count off the endpoint, so these assertions pin the same behavior the client's own test used to.
+
+test("priorCycleEligibleCount: counts self-excluded, strictly-earlier, >=180-day-gap same-agency rows", () => {
+  const r = { request_id: "R0", agency_name: "Parks and Recreation", pin: "",
+    short_title: "Guide Rail Posts Fencing Installation", start_date: "2019-09-01",
+    type_of_notice_description: "Award" };
+  const eligible = { request_id: "C1", agency_name: "Parks and Recreation", pin: "8571100001",
+    short_title: "Guide Rail Barrier Repair", start_date: "2016-01-01",
+    type_of_notice_description: "Award" }; // 3+ years earlier, same agency
+  assert.equal(priorCycleEligibleCount(r, [eligible]), 1);
+});
+
+test("priorCycleEligibleCount: the documented HPD case — self, a later award, and a same-round sibling all count 0", () => {
+  // The strict $q has no date bound and matches the notice's own title, so its rows routinely
+  // include the notice itself, later awards, and near-in-time siblings. None are prior-eligible.
+  const hpd = {
+    request_id: "20220314107", agency_name: "Housing Preservation and Development",
+    pin: "80622E0016001", type_of_notice_description: "Award",
+    short_title: "IMMEDIATE EMERGENCY DEMOLITION OF 28 W 130th St, MANHATTAN (DM00121 E-6038R)",
+    start_date: "2022-03-18", contract_amount: "550000",
+  };
+  const rows = [
+    hpd, // self
+    { request_id: "L1", agency_name: hpd.agency_name, pin: "80624E0001001", short_title: "IMMEDIATE EMERGENCY DEMOLITION", start_date: "2024-01-01" }, // later
+    { request_id: "S1", agency_name: hpd.agency_name, pin: "80622E0017001", short_title: "IMMEDIATE EMERGENCY DEMOLITION", start_date: "2022-02-01" }, // 45 days earlier — same-round sibling
+  ];
+  assert.equal(priorCycleEligibleCount(hpd, rows), 0);
+});
+
+test("priorCycleEligibleCount: excludes the notice's own PIN chain (that's chainHTML's job)", () => {
+  const r = { request_id: "R2", agency_name: "Sanitation", pin: "82714B0001001",
+    short_title: "Street Sweeping Vehicle Maintenance", start_date: "2024-01-01",
+    type_of_notice_description: "Award" };
+  const samePin = { request_id: "R1", agency_name: "Sanitation", pin: "82714B0001001",
+    short_title: "Street Sweeping Vehicle Maintenance", start_date: "2021-01-01",
+    type_of_notice_description: "Award" };
+  assert.equal(priorCycleEligibleCount(r, [samePin]), 0);
 });
 
 // ---- near tier (rankNearMatchCandidates) — same real fixtures as the client's own test --------

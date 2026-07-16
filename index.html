@@ -1301,65 +1301,36 @@ function priorCycleHTML(matches){
     <div class="note">${t("prior_cycle_heuristic_note")}</div>`;
 }
 
-// The near-match tier (rankNearMatchCandidates, below) hard-requires >=2 significant title
-// words (its own 2-word $q literally can't form with fewer), this notice's own start_date
-// (both its query and its gap filter are bounded to strictly-earlier awards), AND at least
-// one corroborating signal that could actually fire — a PIN whose renewal-stripped base is
-// long enough to share NEAR_MATCH_PIN_PREFIX_MIN_LEN leading chars, or a positive contract
-// amount. When none of that can ever be true for this notice, opening the reveal is a
-// provable dead end, so don't offer it at all.
-function nearMatchPossible(r){
-  if(!r.start_date || priorCycleTitleWords(r.short_title).length < 2) return false;
-  const pinCanCorroborate = usablePin(r.pin) && (pinBase(r.pin) || String(r.pin)).length >= NEAR_MATCH_PIN_PREFIX_MIN_LEN;
-  return pinCanCorroborate || Number(r.contract_amount) > 0;
-}
-
-// Mirrors rankPriorCycleCandidates()'s pre-score filters (self, agency, own PIN, prior date,
-// >=180-day gap) — how many candidates were even eligible, before the 0.5 title-overlap bar.
-function priorCycleEligibleCount(r, candidates){
-  return (candidates || [])
-    .filter(c => c.request_id !== r.request_id)
-    .filter(c => c.agency_name === r.agency_name)
-    .filter(c => !usablePin(r.pin) || c.pin !== r.pin)
-    .filter(c => (c.start_date||"") < (r.start_date||""))
-    .filter(c => { const g = daysBetween(c.start_date, r.start_date); return g !== null && g >= PRIOR_CYCLE_MIN_GAP_DAYS; })
-    .length;
-}
-
 // Resolves the disjunctive "we found nothing" case into the three specific reasons
-// priorCycleAwards can actually distinguish at render time, plus the near-match reveal when
-// nearMatchPossible() says it could still turn something up.
-function priorCycleNoneHTML(r, rows){
+// priorCycleAwards can distinguish, plus the pre-loaded near-match reveal when the endpoint
+// already found near matches for this notice. Phase 1b: eligibleCount comes straight from the
+// /priorcycle endpoint (priorCycleEligibleCount over the strict-tier rows, computed server-side)
+// rather than a local recompute, and the reveal is shown only when the endpoint returned near
+// matches (near.length > 0) — no lazy second fetch, no spin-then-nothing dead end.
+function priorCycleNoneHTML(r, eligibleCount, near){
   let key;
   if(priorCycleTitleWords(r.short_title).length < 2) key = "prior_cycle_none_generic";
-  else if(priorCycleEligibleCount(r, rows) === 0) key = "prior_cycle_none_no_candidates_html";
+  else if((eligibleCount || 0) === 0) key = "prior_cycle_none_no_candidates_html";
   else key = "prior_cycle_none_low_confidence_html";
   const agency = `<span lang="en" dir="ltr">${cleanText(r.agency_name)}</span>`;
   const note = `<div class="note">${t(key, {agency})}</div>`;
-  if(!nearMatchPossible(r)) return note;
+  if(!near || !near.length) return note;
   return note + nearMatchRevealHTML();
 }
 
 async function priorCycleAwards(r, el){
   if(!el || !r.agency_name || !cleanText(r.short_title)) return;
-  const words = priorCycleTitleWords(r.short_title).slice(0, 6);
-  if(words.length < 2){ el.innerHTML = priorCycleNoneHTML(r, []); wireNearMatchReveal(r, el); return; } // too generic a title to search on; gate inside priorCycleNoneHTML keeps the reveal off here too
-  let rows = null;
+  if(priorCycleTitleWords(r.short_title).length < 2){ el.innerHTML = priorCycleNoneHTML(r, 0, []); return; } // too generic to search — no worker round trip
+  let data = null;
   try{
-    rows = await soda({
-      "$select": SELECT,
-      "$where": `agency_name='${r.agency_name.replace(/'/g,"''")}' AND type_of_notice_description='Award'`,
-      "$q": words.join(" "),
-      "$order": "start_date DESC",
-      "$limit": "50"
-    });
+    const resp = await workerFetch("/priorcycle/" + encodeURIComponent(r.request_id), null, 8000);
+    if(resp && resp.ok) data = await resp.json();
   }catch(e){}
   if(!document.contains(el)) return; // a newer selection replaced this panel
-  if(!rows) return; // proxy/network hiccup — say nothing rather than something wrong, same posture as followDollars
-  const matches = rankPriorCycleCandidates(r, rows, {});
-  if(matches.length){ el.innerHTML = priorCycleHTML(matches); return; }
-  el.innerHTML = priorCycleNoneHTML(r, rows);
-  wireNearMatchReveal(r, el);
+  if(!data || data.ok === false || !Array.isArray(data.strict) || !Array.isArray(data.near)) return; // network/degraded — say nothing rather than something wrong, same posture as followDollars
+  if(data.strict.length){ el.innerHTML = priorCycleHTML(data.strict); return; }
+  el.innerHTML = priorCycleNoneHTML(r, data.eligibleCount, data.near);
+  wireNearMatchReveal(el, data.near);
 }
 
 /* ===================== NEAR-MATCH PRIOR CYCLES (exploratory, w12-18) =====================
@@ -1385,19 +1356,23 @@ async function priorCycleAwards(r, el){
    inherited from PRIOR_CYCLE_STOPWORDS/priorCycleTitleWords() above, not something this tier
    tries to fix -- so a near-match candidate needs the title score AND at least one corroborating
    signal.
-   Cost: fires ONE additional SODA call, and only lazily on the reveal's first open (never
-   eagerly on page load, never when the strict tier already found something). It widens $q to
-   this notice's own top 2 significant words -- broad enough to survive a title starved by the
-   strict search's own 6-word $q down to a self-match only (verified live: the HPD example above
-   returns zero OTHER rows under the strict 6-word $q, but the true prior round is row 12 of 50
-   under a 2-word $q bounded to start_date < this notice's own date) -- and orders by date so the
-   50-row cap lands on the candidates closest in time to this notice, not the 50 most recent
-   system-wide uses of an evergreen word like "demolition". */
+   Cost: ONE additional SODA call. Phase 1b moved that fetch server-side — the /priorcycle
+   endpoint (worker/src/prior_cycle.mjs) runs both tiers together and returns { strict, near,
+   eligibleCount }, so the near set arrives PRE-LOADED with the strict set on a single
+   workerFetch and the reveal shows only when near.length > 0 (no lazy second fetch, no
+   spin-then-nothing dead end). The ranking heuristics below stay dual-implemented with the
+   worker's port (source of truth here; see lib/prior_cycle.mjs's header). The worker's near
+   query widens $q to this notice's own top 2 significant words -- broad enough to survive a
+   title starved by the strict search's own 6-word $q down to a self-match only (verified live:
+   the HPD example above returns zero OTHER rows under the strict 6-word $q, but the true prior
+   round is row 12 of 50 under a 2-word $q bounded to start_date < this notice's own date) -- and
+   orders by date so the 50-row cap lands on the candidates closest in time to this notice, not
+   the 50 most recent system-wide uses of an evergreen word like "demolition". */
 const NEAR_MATCH_MIN_SCORE = 0.34; // "at least a third of this notice's significant title words recur" — looser than the strict majority bar, still real overlap, not one coincidental shared word
 const NEAR_MATCH_MAX_MATCHES = 3;
 const NEAR_MATCH_PIN_PREFIX_MIN_LEN = 8; // shared leading chars of the renewal-suffix-stripped PIN -- deliberately deeper than a same-agency PIN scheme's own common stem (a 2000s-era Correction PIN's first 6 chars, e.g. "072200", are shared by nearly every contract that agency issued that decade and prove nothing on their own — verified live against 700+ same-agency pairs)
 const NEAR_MATCH_AMOUNT_RATIO_MAX = 3; // larger/smaller contract_amount no more than 3x apart counts as "comparable"
-const NEAR_MATCH_QUERY_WORDS = 2; // widened $q word count for the lazy reveal fetch — see file header
+const NEAR_MATCH_QUERY_WORDS = 2; // widened $q word count for the near query (now run by the worker's /priorcycle endpoint; mirrored here for the dual-impl) — see file header
 
 function pinPrefixShared(a, b){
   const sa = pinBase(a) || a, sb = pinBase(b) || b;
@@ -1477,44 +1452,20 @@ function nearMatchHTML(items){
     <div class="note warn">${t("near_match_caveat_note")}</div>`;
 }
 
-// Fires only when the strict matcher already came up empty AND the reader explicitly opens the
-// reveal (never eagerly) -- see the file header above for the full cost story.
-async function nearMatchCandidates(r){
-  const myWords = priorCycleTitleWords(r.short_title);
-  if(myWords.length < 2 || !r.agency_name || !r.start_date) return [];
-  const words = myWords.slice(0, NEAR_MATCH_QUERY_WORDS);
-  let rows = null;
-  try{
-    rows = await soda({
-      "$select": SELECT,
-      "$where": `agency_name='${r.agency_name.replace(/'/g,"''")}' AND type_of_notice_description='Award' AND start_date < '${r.start_date.replace(/'/g,"''")}'`,
-      "$q": words.join(" "),
-      "$order": "start_date DESC",
-      "$limit": "50"
-    });
-  }catch(e){}
-  if(!rows) return null; // proxy/network hiccup — say nothing rather than something wrong
-  return rankNearMatchCandidates(r, rows, []);
-}
-
 function nearMatchRevealHTML(){
   return `<details class="near-match-reveal"><summary>${t("near_match_reveal_btn")}</summary><div class="near-match-body"></div></details>`;
 }
 
-function wireNearMatchReveal(r, el){
+// Phase 1b: the near matches arrive PRE-LOADED alongside the strict tier from the /priorcycle
+// endpoint, so the reveal no longer fires a lazy second fetch on open — its body is populated up
+// front from the near array priorCycleAwards() already has in hand. priorCycleNoneHTML() only
+// emits the reveal markup when near.length > 0, so a non-empty near array is guaranteed whenever
+// the reveal is present.
+function wireNearMatchReveal(el, near){
   const details = el.querySelector(".near-match-reveal");
-  if(!details) return;
-  let loaded = false;
-  details.addEventListener("toggle", async () => {
-    if(!details.open || loaded) return;
-    loaded = true;
-    const body = details.querySelector(".near-match-body");
-    body.innerHTML = `<div class="note"><span class="loading"></span> ${t("near_match_loading")}</div>`;
-    const near = await nearMatchCandidates(r);
-    if(!document.contains(details)) return; // a newer selection replaced this panel
-    if(near === null){ body.innerHTML = ""; return; } // network hiccup — say nothing, same posture as priorCycleAwards
-    body.innerHTML = near.length ? nearMatchHTML(near) : `<div class="note">${t("near_match_none_note")}</div>`;
-  });
+  if(!details || !near || !near.length) return;
+  const body = details.querySelector(".near-match-body");
+  if(body) body.innerHTML = nearMatchHTML(near);
 }
 
 async function loadAgencyStats(agency){

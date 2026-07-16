@@ -3,8 +3,11 @@
 // Moves the two live SODA calls that index.html's priorCycleAwards()/nearMatchCandidates() fired
 // from the browser off the client and into the worker. For a given notice we run the SAME two
 // SODA queries the client did, rank both tiers with the ported lib/prior_cycle.mjs (kept in sync
-// by hand with index.html — see that file's header), cache the {strict, near} result in the D1
-// prior_cycle_matches table, and serve it from GET /priorcycle/<request_id> (worker.mjs).
+// by hand with index.html — see that file's header), cache the {strict, near, eligibleCount}
+// result in the D1 prior_cycle_matches table, and serve it from GET /priorcycle/<request_id>
+// (worker.mjs). eligibleCount is the pre-0.5-bar candidate pool over the strict-tier rows; the
+// Phase 1b client reads it to pick 67's no_candidates-vs-low_confidence empty-state message
+// without re-fetching the strict query itself.
 //
 // The daily cron pre-warms freshly-ingested Award notices (bounded, NOT a full backfill); any
 // other notice is filled lazily on its first request. Fail-soft throughout, matching the other
@@ -16,7 +19,7 @@
 
 import {
   rankPriorCycleCandidates, rankNearMatchCandidates, priorCycleTitleWords,
-  NEAR_MATCH_QUERY_WORDS,
+  priorCycleEligibleCount, NEAR_MATCH_QUERY_WORDS,
 } from "./lib/prior_cycle.mjs";
 
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
@@ -58,21 +61,25 @@ export async function fetchNoticeRow(env, requestId) {
 }
 
 // Run the two live SODA queries (strict, then near) exactly as index.html did and rank both
-// tiers. Returns { strict, near, ok }: ok is false when the notice couldn't be resolved or a
-// tier query errored, so callers know the (empty) result is not a confirmed answer and must
-// not cache it. Pass the already-resolved notice row (or null) as noticeRow to skip the
-// lookup here; only an omitted (undefined) noticeRow triggers a fetch. Fail-soft: a query
-// that errors contributes an empty tier rather than throwing.
+// tiers. Returns { strict, near, eligibleCount, ok }: ok is false when the notice couldn't be
+// resolved or a tier query errored, so callers know the (empty) result is not a confirmed answer
+// and must not cache it. eligibleCount is priorCycleEligibleCount() over the strict-tier query
+// rows — the pre-0.5-bar pool size the Phase 1b client uses to pick 67's
+// no_candidates-vs-low_confidence empty-state message, which it can no longer recompute locally
+// (it doesn't fetch the strict rows anymore). Pass the already-resolved notice row (or null) as
+// noticeRow to skip the lookup here; only an omitted (undefined) noticeRow triggers a fetch.
+// Fail-soft: a query that errors contributes an empty tier rather than throwing.
 export async function computeMatches(env, requestId, noticeRow) {
   const r = noticeRow === undefined ? await fetchNoticeRow(env, requestId) : noticeRow;
-  if (!r) return { strict: [], near: [], ok: false };
-  if (!r.agency_name || !r.short_title) return { strict: [], near: [], ok: true };
+  if (!r) return { strict: [], near: [], eligibleCount: 0, ok: false };
+  if (!r.agency_name || !r.short_title) return { strict: [], near: [], eligibleCount: 0, ok: true };
 
   const myWords = priorCycleTitleWords(r.short_title);
-  if (myWords.length < 2) return { strict: [], near: [], ok: true }; // too generic a title to search on (matches index.html's guard)
+  if (myWords.length < 2) return { strict: [], near: [], eligibleCount: 0, ok: true }; // too generic a title to search on (matches index.html's guard)
 
   // --- strict tier (priorCycleAwards): agency + top-6-title-word $q, no date bound, limit 50 ---
   let strict = [];
+  let eligibleCount = 0;
   let ok = true;
   const strictWords = myWords.slice(0, PRIOR_CYCLE_QUERY_WORDS);
   try {
@@ -84,6 +91,7 @@ export async function computeMatches(env, requestId, noticeRow) {
       "$limit": "50",
     });
     strict = rankPriorCycleCandidates(r, rows, {});
+    eligibleCount = priorCycleEligibleCount(r, rows); // pre-0.5-bar pool, from the same strict rows
   } catch { ok = false; /* leave strict empty — same posture as the client's silent catch */ }
 
   // --- near tier (nearMatchCandidates): agency + top-2-title-word $q + start_date < notice's,
@@ -103,7 +111,7 @@ export async function computeMatches(env, requestId, noticeRow) {
     } catch { ok = false; /* leave near empty */ }
   }
 
-  return { strict, near, ok };
+  return { strict, near, eligibleCount, ok };
 }
 
 async function cacheGet(env, requestId) {
@@ -114,7 +122,9 @@ async function cacheGet(env, requestId) {
     ).bind(requestId).first();
     if (row && row.matches) {
       const m = JSON.parse(row.matches);
-      if (m && Array.isArray(m.strict) && Array.isArray(m.near)) return m;
+      // A cached row from before Phase 1b lacks eligibleCount; treat it as a miss so the next
+      // request recomputes rather than serving an empty-state message the client can't resolve.
+      if (m && Array.isArray(m.strict) && Array.isArray(m.near) && typeof m.eligibleCount === "number") return m;
     }
   } catch { /* treat any cache error as a miss */ }
   return null;
@@ -136,11 +146,11 @@ async function cachePut(env, requestId, agency, matches) {
 // Fail-soft: never throws.
 export async function getOrCompute(env, requestId) {
   const cached = await cacheGet(env, requestId);
-  if (cached) return cached;
+  if (cached) return { ...cached, ok: true };
   const row = await fetchNoticeRow(env, requestId);
-  const { strict, near, ok } = await computeMatches(env, requestId, row);
-  if (ok) await cachePut(env, requestId, row && row.agency_name, { strict, near });
-  return { strict, near };
+  const { strict, near, eligibleCount, ok } = await computeMatches(env, requestId, row);
+  if (ok) await cachePut(env, requestId, row && row.agency_name, { strict, near, eligibleCount });
+  return { strict, near, eligibleCount, ok };
 }
 
 // Bounded batch pre-warm, used by the daily cron for freshly-ingested Award notices. Skips
@@ -153,9 +163,9 @@ export async function prewarm(env, requestIds) {
     try {
       if (await cacheGet(env, id)) { skipped++; continue; }
       const row = await fetchNoticeRow(env, id);
-      const { strict, near, ok } = await computeMatches(env, id, row);
+      const { strict, near, eligibleCount, ok } = await computeMatches(env, id, row);
       if (!ok) { failed++; continue; }
-      await cachePut(env, id, row && row.agency_name, { strict, near });
+      await cachePut(env, id, row && row.agency_name, { strict, near, eligibleCount });
       computed++;
     } catch {
       failed++;
@@ -187,9 +197,17 @@ export async function handlePriorCycle(req, env, pathname) {
   if (!/^[A-Za-z0-9_-]{4,40}$/.test(rawId)) return json({ ok: false, reason: "bad-id" }, 400, cors);
 
   const matches = await getOrCompute(env, rawId);
-  return new Response(JSON.stringify({ id: rawId, strict: matches.strict, near: matches.near }), {
+  const ok = matches.ok !== false;
+  return new Response(JSON.stringify({
+    id: rawId, strict: matches.strict, near: matches.near,
+    eligibleCount: typeof matches.eligibleCount === "number" ? matches.eligibleCount : 0,
+    ok,
+  }), {
     status: 200,
-    headers: { ...cors, "Content-Type": "application/json", "Cache-Control": "public, max-age=300" },
+    headers: {
+      ...cors, "Content-Type": "application/json",
+      "Cache-Control": ok ? "public, max-age=300" : "no-store",
+    },
   });
 }
 
