@@ -424,6 +424,19 @@ def run_lang(pw, lang):
         page.wait_for_timeout(500)
         collect_within(page, "#forecast-content", "entity-agency-forecast", frags, violations, seen)
 
+    # Cross-source authority awards are another dynamically-built profile surface. Drive a
+    # mapped SCA profile against the official-source fixture, then scope the walk to the new
+    # panel so this gate covers its translated provenance without reopening the profile's
+    # larger pre-existing chrome gap.
+    page.evaluate("location.hash = '#agency/School Construction Authority'")
+    page.wait_for_timeout(1000)
+    if page.locator("#external-awards-content").count():
+        collect_within(page, "#external-awards-content", "entity-agency-external-awards", frags, violations, seen)
+    else:
+        violations.append({"view": "entity-agency-external-awards", "sel": "#external-awards-content",
+                           "text": "panel missing", "kind": "fixture",
+                           "english_words": ["expected external awards panel"]})
+
     # localStorage-gated states (the hotfix-2 blind spot): workspace + its share-error path
     page.evaluate("location.hash = '#investigation'")
     page.wait_for_timeout(800)

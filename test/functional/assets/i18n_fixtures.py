@@ -157,11 +157,20 @@ FORECAST_ROWS = {"forecasts": [
      "release_quarter": "Q3 2026"},
 ]}
 
+AUTHORITY_AWARDS = [{
+    "authority_name": "New York City School Construction Authority",
+    "vendor_name": "ROUX ENVIRONMENTAL ENGINEERING AND GEOLOGY DPC",
+    "procurement_description": "HAZARDOUS MATERIAL ENGINEERING SERVICES",
+    "award_process": "Authority Contract - Competitive Bid",
+    "award_date": "2024-05-06T00:00:00.000",
+    "contract_amount": "$5,000,000.00",
+}]
+
 # Every fixture string value that may surface in the UI as DATA (legitimately English).
 # section_name is intentionally omitted — sections render as chrome and must translate.
 _DATA_ROWS = ([RFP_OPEN, RFP_OPEN_2, AWARD_ROW, HEARING_ROW, NOTICE_PERMALINK_ROW] + CHAIN_ROWS + PROPERTY_ROWS
               + RULES_ROWS + MEETINGS_ROWS + ZAP_ROWS + PAY_ROLES + CSL_ROLES
-              + AGENCIES_TODAY + METHOD_FACET + FORECAST_ROWS["forecasts"])
+              + AGENCIES_TODAY + METHOD_FACET + FORECAST_ROWS["forecasts"] + AUTHORITY_AWARDS)
 _DATA_FIELDS_EXCLUDED = {"section_name"}
 
 
@@ -246,6 +255,9 @@ def install_routes(page):
     page.route("https://data.cityofnewyork.us/resource/vx8i-nprf.json*", fixed(CSL_ROLES))
     page.route("https://data.cityofnewyork.us/resource/hgx4-8ukb.json*", fixed(ZAP_ROWS))
     page.route("https://data.cityofnewyork.us/resource/2iga-a6mk.json*", fixed([]))
+    page.route("https://data.ny.gov/**", fixed([]))
+    page.route("https://data.ny.gov/resource/8w5p-k45m.json*", fixed(AUTHORITY_AWARDS))
+    page.route("https://data.ny.gov/resource/d84c-dk28.json*", fixed(AUTHORITY_AWARDS))
     page.route("https://geosearch.planninglabs.nyc/**", fixed({"features": []}))
     page.route("https://services5.arcgis.com/**", fixed({}))
     # Worker API and third-party scripts: dead. Every feature must degrade gracefully.
