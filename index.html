@@ -135,6 +135,16 @@
   .panel{background:var(--card);border:1px solid var(--rule);border-radius:8px;box-shadow:var(--shadow)}
   .panel h2{font:600 14px/1 var(--font-sc);letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft);margin:0;padding:14px 16px;border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;gap:8px}
   .panel h2 .count{font-weight:600;color:var(--blue);letter-spacing:0;text-transform:none}
+  /* w12-20: the builder is the advanced expansion of the quiz above it, in the SAME panel —
+     a <details> disclosure, not a second h2-headed panel, so the two never read as siblings.
+     Open by default: every field stays as immediately reachable as it was as its own panel. */
+  #advopts{margin-top:18px;border-top:1px solid var(--rule)}
+  #advopts>summary{font:600 14px/1 var(--font-sc);letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft);padding:14px 16px;cursor:pointer;list-style:none}
+  #advopts>summary::-webkit-details-marker{display:none}
+  /* a down/up chevron, not a left/right-pointing one -- carries no reading-direction meaning,
+     so it needs no [dir=rtl] mirror rule the way an arrow glyph in translated text would. */
+  #advopts>summary::before{content:"▾";display:inline-block;margin-inline-end:6px;transition:transform .15s}
+  #advopts[open]>summary::before{transform:rotate(180deg)}
   /* w9-02: the Export button lives beside the heading, not inside it — .panelbar takes over
      the box styling h2 normally carries alone, so the heading's accessible name is just its text. */
   .panel .panelbar{padding:14px 16px;border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;gap:8px}
@@ -346,7 +356,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=b204e59b"></script>
+<script src="i18n.js?v=565ff018"></script>
 <script src="nl_parse.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
@@ -580,7 +590,12 @@
 <section id="tab-alerts" class="tabpane">
   <div class="wrap">
 
-    <div class="panel" id="quizpanel" style="margin-top:18px;padding:16px 18px 18px">
+    <!-- w12-20: one draft alert, two views. The quiz and the (now-nested) advanced options
+         both read/write the SAME #awatch/#aparam/#amoneykw/#amoneymin/#amoneymonths/#afreq
+         fields -- see refreshQuizDisplay() and its call sites near the bottom of this file --
+         so they are ONE panel, not two, and can no longer drift apart. -->
+    <div class="grid">
+      <div class="panel" id="quizpanel" style="padding:16px 18px 18px">
       <h2 style="border:0;padding:0 0 4px" data-i18n="quiz_heading">Get your digest in 60 seconds</h2>
       <div class="afield" style="margin-top:10px">
         <label id="quizwhatlbl"><span class="qstep">1</span> <span data-i18n="quiz_step1">What should we watch for you?</span></label>
@@ -606,12 +621,13 @@
       </div>
       <button id="quizgo" type="button" data-i18n="quiz_preview_btn">Preview my digest →</button>
       <span class="muted" style="margin-inline-start:10px;font:13px/1.4 ui-sans-serif,system-ui,sans-serif" data-i18n="quiz_no_account">No account — just an email confirmation.</span>
-    </div>
 
-    <div class="grid">
-      <div class="panel">
-        <h2 data-i18n="build_alert_heading">Build an alert</h2>
-        <div style="padding:16px">
+      <!-- Advanced options: the exact same draft alert as the quiz above, just the fuller view
+           of it (agency/category/exact amount/months/email/vendor-or-agency watches) -- open by
+           default so every field stays as reachable as it was as a sibling panel. -->
+      <details id="advopts" open>
+        <summary data-i18n="build_alert_heading">Build an alert</summary>
+        <div style="padding:0 16px 16px">
           <div class="afield">
             <label data-i18n="quick_suggestions">Quick suggestions</label>
             <div class="wand">
@@ -682,6 +698,7 @@
           </div>
           <div id="asaved"></div>
         </div>
+      </details>
       </div>
       <div class="panel">
         <h2 data-i18n="preview_panel_heading">Preview</h2>
@@ -2810,7 +2827,13 @@ let lastWatch = null;
 // filter and the live preview query, cleared whenever the watch type changes or a fresh NL
 // parse applies.
 let moneynlExtra = {};
-function aWatchChange(){
+// skipQuizSync: true only for the two bookkeeping call sites (page-init, language re-render)
+// that run before/without any real user choice -- those must NOT manufacture a "topic
+// picked" look in the quiz above by highlighting whichever chip happens to match #awatch's
+// mandatory default value. Every real interaction (a chip click, a wandchip, a saved-search
+// "Watch this" button, an NL-resolved query, or the builder's own #awatch/#afreq controls)
+// calls this with no argument, so refreshQuizDisplay() runs and the two views stay in sync.
+function aWatchChange(skipQuizSync){
   const w = $("#awatch").value;
   // The param means something different per watch type (place vs keyword) — switching types
   // clears it so a value never leaks from one topic into another. Each type's empty state is
@@ -2823,8 +2846,8 @@ function aWatchChange(){
   lastWatch = w;
   $("#aagency").style.display = SECTION_WATCH_LABEL[w] ? "" : "none";
   $("#amoneyfields").style.display = w==="moneynl" ? "" : "none";
-  if(w==="moneynl"){ $("#athresh").style.display="none"; $("#aparam").style.display="none"; return; }
-  if(w==="bigaward"){ $("#aparamlabel").textContent=t("param_label_min_award"); $("#athresh").style.display=""; $("#aparam").style.display="none"; }
+  if(w==="moneynl"){ $("#athresh").style.display="none"; $("#aparam").style.display="none"; }
+  else if(w==="bigaward"){ $("#aparamlabel").textContent=t("param_label_min_award"); $("#athresh").style.display=""; $("#aparam").style.display="none"; }
   else {
     $("#athresh").style.display="none"; $("#aparam").style.display="";
     if(w==="rfpkw"){ $("#aparamlabel").textContent=t("param_label_keyword"); $("#aparam").placeholder=t("param_placeholder_rfpkw"); }
@@ -2833,6 +2856,10 @@ function aWatchChange(){
     else if(SECTION_WATCH_LABEL[w]){ $("#aparamlabel").textContent=t("param_label_keyword"); $("#aparam").placeholder=w==="rules"?t("param_placeholder_rules"):w==="meetings"?t("param_placeholder_meetings"):t("param_placeholder_property"); }
     else { $("#aparamlabel").textContent=t("param_label_place"); $("#aparam").placeholder=t("param_placeholder_rezone"); }
   }
+  // w12-20: the quiz above is a second VIEW onto these same fields (see refreshQuizDisplay,
+  // defined near the quiz's own event wiring below) -- every watch-type change, from either
+  // view, must repaint the other so the two can never show a different draft.
+  if(!skipQuizSync) refreshQuizDisplay();
 }
 function aDescribe(){
   const w=$("#awatch").value;
@@ -4096,11 +4123,27 @@ $("#pkw").addEventListener("keydown", e=>{ if(e.key==="Enter") pSearch(); });
 $("#pkw").addEventListener("input", debounce(pSearch, 500));
 $("#pmode").addEventListener("change", ()=>{ $("#pkwlabel").textContent = $("#pmode").value==="role"?t("title_keyword_label"):t("person_name_label"); $("#pkw").placeholder = $("#pmode").value==="role"?t("kw_placeholder_people_role"):t("kw_placeholder_people_person"); });
 
-$("#awatch").addEventListener("change", aWatchChange);
-$("#afreq").addEventListener("change", updateAWhen);
+$("#awatch").addEventListener("change", ()=>{
+  aWatchChange();
+  announce(t("sync_watch_announce", {what: $("#awatch").selectedOptions[0].textContent.trim()}));
+});
+$("#afreq").addEventListener("change", ()=>{
+  updateAWhen();
+  refreshQuizDisplay();
+  announce(t("sync_freq_announce", {freq: $("#afreq").selectedOptions[0].textContent.trim()}));
+});
 $("#apreview").addEventListener("click", async ()=>{ if(!(await resolveMoneyNarrow())) aPreview(); });
 $("#asubscribe").addEventListener("click", aSubscribe);
-function applySuggestion(w, p){ $("#awatch").value=w; aWatchChange(); if(w==="bigaward") $("#athresh").value=p; else $("#aparam").value=p; aPreview(); }
+// aWatchChange() clears #aparam/#athresh's stale value when the watch type actually changes
+// (see the comment inside aWatchChange itself) -- so the suggestion's own param/threshold must
+// be applied AFTER that call, and refreshQuizDisplay() re-run once more afterward so the quiz's
+// mirrored narrow field picks up the just-applied value rather than the pre-clear one.
+function applySuggestion(w, p){
+  $("#awatch").value=w; aWatchChange();
+  if(w==="bigaward") $("#athresh").value=p; else $("#aparam").value=p;
+  refreshQuizDisplay();
+  aPreview();
+}
 document.querySelectorAll(".wandchip").forEach(b=>b.addEventListener("click",()=>applySuggestion(b.dataset.w, b.dataset.p)));
 
 /* "Watch this search" — carry the current lens filters into a prefilled alert (SAM.gov's
@@ -4124,23 +4167,66 @@ function watchFromFilters(lens){
     $("#aparam").value=$("#"+lens+"kw").value.trim();
     const ag=$("#"+lens+"agency"); $("#aagency").value=(ag&&ag.value)||"";
   }
+  refreshQuizDisplay(); // same reason as applySuggestion() above -- the param is set after aWatchChange()
   aPreview();
 }
 document.querySelectorAll(".watchbtn").forEach(b=>b.addEventListener("click",()=>watchFromFilters(b.dataset.lens)));
 
-/* 60-second onboarding: chips → prefilled builder → live preview (Meet-Your-Mayor pattern) */
+/* 60-second onboarding: chips → prefilled advanced options → live preview (Meet-Your-Mayor
+   pattern). w12-20: the quiz's chips/narrow field/freq chips and the "Advanced options"
+   builder fields are two VIEWS of one draft alert -- #awatch/#aparam-or-#amoneykw/#afreq are
+   the shared state (both Preview buttons already read them directly, see aFetch()/
+   aLensFilter()/aPreview() above), and refreshQuizDisplay()/the listeners below keep the
+   quiz's view of them live in both directions so picking a topic here and then editing an
+   amount in Advanced options (or vice versa) can never leave the two panels disagreeing about
+   what will actually be sent. Before this card, the quiz only ever pushed INTO the builder,
+   once, when its own Preview button was clicked -- see test/functional/18_draft_alert_sync.py
+   for the pinned before/after repro. */
 // Values are i18n keys — resolved with t() at click time so the quiz follows the active language.
 const QUIZ_PLACEHOLDER={rfpkw:"quizph_rfpkw", bigaward:"quizph_bigaward",
   rezone:"quizph_rezone", property:"quizph_property", rules:"quizph_rules", meetings:"quizph_meetings"};
 let quizW=null;
+// The quiz's 6 topic chips are a curated subset of #awatch's 9 "watch for" options -- no chip
+// exists for moneynl/entityvendor/entityagency, so a builder-side pick of one of those leaves
+// no quiz chip lit (an honest "the quiz has no button for this" state, not a bug).
+const QUIZ_TOPICS = new Set(["rfpkw","bigaward","rezone","property","rules","meetings"]);
+// The one narrowing text field a watch type actually reads: moneynl reads #amoneykw,
+// everything else that has a keyword/place field at all reads #aparam.
+function narrowFieldSel(){ return $("#awatch").value==="moneynl" ? "#amoneykw" : "#aparam"; }
+// Repaints the quiz's chips/narrow field/frequency chips from the CURRENT #awatch/narrow-field/
+// #afreq values. Pure repaint -- never writes back into the builder fields it reads, so calling
+// it after any of those fields changes (from either the quiz or the builder side) can't loop.
+function refreshQuizDisplay(){
+  const w = $("#awatch").value;
+  quizW = QUIZ_TOPICS.has(w) ? w : null;
+  $("#quizwhat").querySelectorAll(".chip").forEach(x=>{
+    const on = x.dataset.w===w;
+    x.classList.toggle("on", on); x.setAttribute("aria-pressed", String(on));
+  });
+  $("#quiznarrow").value = $(narrowFieldSel()).value;
+  $("#quiznarrow").placeholder = QUIZ_PLACEHOLDER[w] ? t(QUIZ_PLACEHOLDER[w]) : t("quiz_narrow_placeholder");
+  $("#quiznarrow").disabled = w==="bigaward";
+  const freq = $("#afreq").value;
+  $("#quizfreq").querySelectorAll(".chip").forEach(x=>{
+    const on = x.dataset.f===freq;
+    x.classList.toggle("on", on); x.setAttribute("aria-pressed", String(on));
+  });
+}
 $("#quizwhat").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{
-  quizW=b.dataset.w;
-  $("#quizwhat").querySelectorAll(".chip").forEach(x=>{ x.classList.toggle("on", x===b); x.setAttribute("aria-pressed", String(x===b)); });
-  $("#quiznarrow").placeholder=QUIZ_PLACEHOLDER[quizW]?t(QUIZ_PLACEHOLDER[quizW]):"";
-  $("#quiznarrow").disabled = quizW==="bigaward";
+  const changed = $("#awatch").value !== b.dataset.w;
+  $("#awatch").value = b.dataset.w;
+  if(changed) aWatchChange(); else refreshQuizDisplay(); // aWatchChange() already ends by calling refreshQuizDisplay()
+  announce(t("sync_watch_announce", {what: b.textContent.trim()}));
 }));
+// Live, in both directions: typing in either narrowing field mirrors into the other one
+// immediately -- no waiting for either Preview button.
+$("#quiznarrow").addEventListener("input", ()=>{ $(narrowFieldSel()).value = $("#quiznarrow").value; });
+$("#aparam").addEventListener("input", ()=>{ if($("#awatch").value!=="moneynl") $("#quiznarrow").value = $("#aparam").value; });
+$("#amoneykw").addEventListener("input", ()=>{ if($("#awatch").value==="moneynl") $("#quiznarrow").value = $("#amoneykw").value; });
 $("#quizfreq").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{
   $("#quizfreq").querySelectorAll(".chip").forEach(x=>{ x.classList.toggle("on", x===b); x.setAttribute("aria-pressed", String(x===b)); });
+  if($("#afreq").value !== b.dataset.f){ $("#afreq").value = b.dataset.f; updateAWhen(); }
+  announce(t("sync_freq_announce", {freq: b.textContent.trim()}));
 }));
 $("#quizgo").addEventListener("click", async ()=>{
   if(!quizW){
@@ -4181,7 +4267,11 @@ loadAgencies();
 loadToday();
 window.addEventListener("hashchange", ()=>{ if(!hashLock && !applyHash()) showTab("money"); }); // empty/unknown hash (e.g. Back to the first entry) → default view
 if(!applyHash()) search(); // an incoming permalink wins over the default Money load
-aWatchChange();
+// skipQuizSync=true: a fresh load must not make the quiz LOOK like a topic was already picked
+// just because #awatch's mandatory default ("bigaward") happens to match one of its chips —
+// the quiz starts genuinely unanswered (test/functional/03_watch_quiz_feeds.py's "quiz CTA
+// without topic" probe pins this).
+aWatchChange(true);
 updateAWhen();
 aRenderSaved();
 
@@ -4194,7 +4284,7 @@ function rerenderForLang(){
   try{ const c = JSON.parse(localStorage.getItem("crol_today_v2")||"null"); if(c && c.d) renderToday(c.d); }catch(e){}
   paintEditionSpan();
   loadAgencies();
-  aWatchChange(); updateAWhen(); aRenderSaved();
+  aWatchChange(true); updateAWhen(); aRenderSaved(); // same skipQuizSync reasoning as the page-init call above
   // #notice/#vendor/#agency/#matter permalink views have no .tabbtn (comment above
   // syncTabAria()'s role wiring), so the .tabbtn.active lookup below finds nothing for them
   // and their chrome — built once via t() when the view was first shown — silently kept

@@ -222,6 +222,8 @@
     nl_no_matches_note: "Pa gen rezilta pou rechèch sa a.",
     nl_chip_land_kind: "chanjman zonaj",
     nl_chip_land_status_all: "gen ladan chanjman zonaj ki fèmen",
+    sync_watch_announce: "Alèt ou a kounye a chwazi pou {what}.",
+    sync_freq_announce: "Frekans alèt ou a chwazi pou {freq}.",
     sugg_lineage_hint:  "Enkli kontra ki gen istwa akòdman",
     sugg_forecast_hint: "Enkli kontra ki gen done pwevizyon",
     head_open: "Demann Pwopozisyon (RFP) louvri",

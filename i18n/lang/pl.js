@@ -231,6 +231,8 @@
     nl_no_matches_note: "Brak wyników dla tego wyszukiwania.",
     nl_chip_land_kind: "zmiany stref",
     nl_chip_land_status_all: "w tym zamknięte zmiany stref",
+    sync_watch_announce: "Twoje powiadomienie jest teraz ustawione na {what}.",
+    sync_freq_announce: "Częstotliwość powiadomienia jest ustawiona na {freq}.",
     sugg_lineage_hint:  "Obejmuje kontrakty z historią przyznań",
     sugg_forecast_hint: "Obejmuje kontrakty z danymi prognozy",
     head_open: "Otwarte Zapytania ofertowe (RFP)",

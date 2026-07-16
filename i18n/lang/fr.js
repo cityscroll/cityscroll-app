@@ -268,6 +268,8 @@
     nl_no_matches_note: "Aucun résultat pour cette recherche.",
     nl_chip_land_kind: "rezonages",
     nl_chip_land_status_all: "y compris les rezonages clos",
+    sync_watch_announce: "Votre alerte est maintenant réglée sur {what}.",
+    sync_freq_announce: "La fréquence de votre alerte est réglée sur {freq}.",
     sugg_lineage_hint:  "Inclut des contrats avec un historique d'attribution",
     sugg_forecast_hint: "Inclut des contrats avec des données de prévision",
 

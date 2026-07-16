@@ -223,6 +223,8 @@
     nl_no_matches_note: "No hay resultados para esta búsqueda.",
     nl_chip_land_kind: "rezonificaciones",
     nl_chip_land_status_all: "incluyendo rezonificaciones cerradas",
+    sync_watch_announce: "Tu alerta ahora está configurada como {what}.",
+    sync_freq_announce: "La frecuencia de tu alerta está configurada en {freq}.",
     sugg_lineage_hint:  "Incluye contratos con historial de adjudicaciones",
     sugg_forecast_hint: "Incluye contratos con datos de pronóstico",
     head_open: "Solicitudes de propuestas (RFP) abiertas",
