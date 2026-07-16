@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "56397694",
-  "zh-Hans": "222dc31b",
-  ru: "f0ca9b1c",
-  bn: "9832b693",
-  ht: "75d7015e",
-  ko: "2c1d3c08",
-  fr: "fab9e5d6",
-  pl: "e394f691",
-  ar: "6bb151d8",
-  ur: "fec588d0",
+  es: "b644f589",
+  "zh-Hans": "f1d4f7b2",
+  ru: "f6826f40",
+  bn: "3c9f957e",
+  ht: "88db59f0",
+  ko: "e6612827",
+  fr: "f50552dd",
+  pl: "ab5ee8c4",
+  ar: "ace9f690",
+  ur: "1f9a5119",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -450,6 +450,10 @@ const STRINGS = {
     total_awarded_lbl: "total awarded,<br>on record",
     awards_published_lbl: "contract awards<br>published",
     agency_awards_unavailable_note: "No contract awards from this agency appear in the City Record — some agencies publish awards elsewhere.",
+    external_awards_heading: "Awards published elsewhere",
+    external_awards_abo_source: "NYS Authorities Budget Office",
+    external_awards_abo_note: "Official annual filing, separate from the City Record. The source may lag by a year.",
+    external_award_nycha_note_html: "Checkbook NYC award matched by exact PIN <code>{pin}</code> and a contract date after this solicitation.",
     glance_who: "Who",
     glance_what: "What",
     glance_when: "When",

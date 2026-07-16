@@ -39,7 +39,7 @@ band, and appointment history together.
 ## Key Features
 
 ### 1. Procurement Lenses
-*   **💵 Money:** Follow contracts from RFP → Intent to Award → Award, complete with bidding deadlines, PASSPort links, agency contacts, and CSV exports.
+*   **💵 Money:** Follow contracts from RFP → Intent to Award → Award, complete with bidding deadlines, PASSPort links, agency contacts, and CSV exports. Profiles for nine public authorities also show their latest official state-filed awards, clearly labeled as annual filings that may lag by a year.
 *   **🔮 Predictive Forecasting:** Track upcoming solicitation opportunities 6 months before they are formally published. Fuses historical Checkbook NYC award durations to calculate expiration/renewal cycles, scrapes annual MOCS agency plans, displays a chronological vertical timeline widget on profiles, and triggers early-warning alert notifications.
 *   **👤 People:** Explore city job listings, civil service exam statuses, pay scales, and appointment/payroll histories.
 *   **🏗 Land:** Map rezonings in plain English, linked to the official City Planning ZAP registry and tax-lot (MapPLUTO) boundary polygons.
@@ -62,7 +62,8 @@ band, and appointment history together.
 | Source / Portal | Endpoint / ID | Used For |
 |---|---|---|
 | **City Record Online** (Socrata) | `dg92-zbpx` | core notices: solicitations, awards, rules, meetings |
-| **Checkbook NYC API** | `POST /api` (Contracts) | registered amounts, paid-to-date, renewal expiration forecasting |
+| **Checkbook NYC API** | `POST /api` (`Contracts`, `Contracts_NYCHA`) | registered amounts, paid-to-date, renewal expiration forecasting, and date-guarded NYCHA solicitation matches |
+| **NYS Authorities Budget Office** (Socrata) | `8w5p-k45m`, `d84c-dk28` | recent official awards on nine mapped public-authority profiles; annual filings may lag by a year |
 | **MOCS Procurement Plans** (Socrata) | `whpb-ebtd` | Charter §112 agency solicitation plans (forecasting) |
 | **Citywide Payroll** (Socrata) | `k397-673e` | People lens (individual pay histories) |
 | **Civil Service List** (Socrata) | `vx8i-nprf` | People lens (exam details) |

@@ -356,8 +356,9 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=565ff018"></script>
+<script src="i18n.js?v=98266483"></script>
 <script src="nl_parse.js"></script>
+<script src="external_awards.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
@@ -1485,6 +1486,45 @@ async function loadAgencyStats(agency){
   }catch(e){ return null; }
 }
 
+/* ===================== AWARDS PUBLISHED OUTSIDE THE CITY RECORD =====================
+   Public authorities often post solicitations in the City Record but file awards elsewhere.
+   Agency profiles use an exact, curated agency -> ABO authority mapping. NYCHA notices use
+   Checkbook's Contracts_NYCHA domain, but PIN alone is NOT enough: short numeric PINs are
+   reused, so rankNychaAwardCandidates() also requires the contract date to follow the notice. */
+async function loadAuthorityAwards(agency){
+  const source = authorityAwardSource(agency);
+  if(!source) return [];
+  const base = `https://data.ny.gov/resource/${source.dataset}.json`;
+  const q = source.authority.replace(/'/g,"''");
+  const asOf = todayISO().slice(0,10);
+  try{
+    const rows = await api(base, {
+      "$select":"authority_name,vendor_name,procurement_description,award_process,award_date,contract_amount",
+      "$where":`authority_name='${q}' AND award_date IS NOT NULL AND award_date <= '${asOf}T23:59:59.999'`,
+      "$order":"award_date DESC", "$limit":"8"
+    }, 12000);
+    return normalizeRecentAuthorityAwards(rows, asOf);
+  }catch(e){ return []; }
+}
+
+function authorityAwardsHTML(agency, awards){
+  const source = authorityAwardSource(agency);
+  if(!source || !awards.length) return "";
+  const rows = awards.map(a=>{
+    const vendor = a.vendor ? `<b lang="en" dir="ltr">${escUiHtml(a.vendor)}</b>` : `<b>${t("untitled_name")}</b>`;
+    const description = a.description ? `<span lang="en" dir="ltr"> — ${escUiHtml(a.description)}</span>` : "";
+    const meta = [money(a.amount), a.process ? `<span lang="en" dir="ltr">${escUiHtml(a.process)}</span>` : ""].filter(Boolean).join(" · ");
+    return `<div class="tl">
+      <span class="tldate">${fdate(a.date)||"—"}</span>
+      <span class="tlreason">${vendor}${description}</span>
+      <span class="rmeta" style="margin:0">${meta}</span>
+    </div>`;
+  }).join("");
+  return `<div id="external-awards-content"><div class="chain-h">${t("external_awards_heading")}</div>
+    <div class="timeline">${rows}</div>
+    <div class="pnote">${t("external_awards_abo_note")} <a href="https://data.ny.gov/resource/${source.dataset}" ${EXT_ATTRS}>${t("external_awards_abo_source")}${extSR()}</a>.</div></div>`;
+}
+
 function boxClass(t){ return t==="Award" ? "award" : (t==="Intent to Award" ? "intent" : ""); }
 
 function telHref(phone){ const d = String(phone||"").replace(/[^0-9+]/g,""); return d.length>=7 ? "tel:"+d : null; }
@@ -1752,7 +1792,7 @@ function renderDetail(r, chain, stats){
 
   const scope = cleanText(r.additional_description_1);
   if(scope) html += `<div class="scope"><span class="lbl">${t("what_they_want")}</span>${scope.slice(0,900)}${scope.length>900?"…":""}</div>`;
-  html += `<div id="dprior"></div><div id="dforecast"></div>`;
+  html += `<div id="dexternal"></div><div id="dprior"></div><div id="dforecast"></div>`;
   // Agency-wide totals are context for this notice, not the headline — rendered last and
   // visually subordinated (smaller figures) so notice-specific facts read first.
   if(!pending) html += noticeAgencyBar(stats, r.agency_name, "agencybar sub");
@@ -1762,6 +1802,7 @@ function renderDetail(r, chain, stats){
   if(pending) return; // context/dollars fetch once, on the hydrated render
   fillContext(r, $("#dcontext"));
   followDollars(r, $("#ddollars"));
+  externalAwardForNotice(r, $("#dexternal"));
   priorCycleAwards(r, $("#dprior"));
   agencyForecastTeaser(r, $("#dforecast"));
 }
@@ -3357,6 +3398,50 @@ async function checkbookByPin(pin){
   return (legacy && legacy.length) ? legacy : primary;
 }
 
+async function checkbookNychaByPin(pin){
+  if(!API) return null;
+  const pageSize = 25, maxPages = 8, agreements = [];
+  const g = (el,tag)=>{ const n=el.getElementsByTagName(tag)[0]; return n ? n.textContent : ""; };
+  for(let page=0; page<maxPages; page++){
+    const from = page * pageSize + 1;
+    const xml = `<request><type_of_data>Contracts_NYCHA</type_of_data><records_from>${from}</records_from><max_records>${pageSize}</max_records><search_criteria>`
+      + `<criteria><name>pin</name><type>value</type><value>${escXml(pin)}</value></criteria>`
+      + `</search_criteria></request>`;
+    const r = await workerFetch("/checkbook", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({xml})}, 25000);
+    const doc = new DOMParser().parseFromString(await r.text(), "application/xml");
+    if((doc.querySelector("response > status > result")||{}).textContent !== "success") return null;
+    const transactions = [...doc.getElementsByTagName("transaction")];
+    agreements.push(...transactions.map(el=>({
+      id:g(el,"contract_id"), pin:g(el,"pin"), vendor:g(el,"vendor"),
+      amount:+g(el,"contract_current_amount")||+g(el,"contract_original_amount")||0,
+      invoiced:+g(el,"contract_invoiced_amount")||0,
+      start:g(el,"start_date"), end:g(el,"end_date"), approved:g(el,"approved_date"),
+      method:g(el,"award_method"), purpose:g(el,"purpose"), recordType:g(el,"record_type")
+    })).filter(c=>c.recordType === "Agreement"));
+    if(transactions.length < pageSize) return agreements;
+  }
+  return null;
+}
+
+async function externalAwardForNotice(r, el){
+  if(!el || r.agency_name !== "Housing Authority" || r.type_of_notice_description !== "Solicitation" || !usablePin(r.pin)) return;
+  let rows = null;
+  try{ rows = await checkbookNychaByPin(String(r.pin).trim()); }catch(e){}
+  if(!document.contains(el) || !rows) return;
+  const matches = rankNychaAwardCandidates(r, rows);
+  if(!matches.length) return;
+  const c = matches[0];
+  el.innerHTML = `<div class="chain-h">${t("external_awards_heading")}</div><div class="chain">
+    <div class="stage"><div class="box award">
+      <div class="stage-name">${t("mode_award")}</div><div class="when">${fdate(c.approved||c.start)}</div>
+      ${c.purpose?`<div class="bt" lang="en" dir="ltr">${escUiHtml(c.purpose)}</div>`:`<div class="bt">${t("untitled")}</div>`}
+      ${money(c.amount)?`<div class="amt">${money(c.amount)}</div>`:""}
+      ${c.vendor?`<div class="vend">${t("awarded_to")} <b lang="en" dir="ltr">${escUiHtml(c.vendor)}</b></div>`:""}
+      ${c.method?`<div class="rmeta" lang="en" dir="ltr">${escUiHtml(c.method)}</div>`:""}
+    </div></div></div>
+    <div class="pnote">${t("external_award_nycha_note_html",{pin:escUiHtml(r.pin)})}</div>`;
+}
+
 async function followDollars(r, el){
   if(!el || !usablePin(r.pin)) return;
   if(!/^(Award|Intent to Award)$/.test(r.type_of_notice_description||"")) return;
@@ -3470,13 +3555,14 @@ async function showAgency(name, initialTab){
   const box = $("#entityview");
   const nm = String(name||"").trim(), safe = nm.replace(/[<>&]/g,""), q = nm.replace(/'/g,"''");
   box.innerHTML = `<div class="empty"><span class="loading"></span> building profile: ${safe}…</div>`;
-  const [stats, sections, vendors, rfps, events, forecastData] = await Promise.all([
+  const [stats, sections, vendors, rfps, events, forecastData, authorityAwards] = await Promise.all([
     loadAgencyStats(nm),
     soda({"$select":"section_name, count(1) as n","$where":`agency_name='${q}'`,"$group":"section_name","$order":"n DESC"}).catch(()=>[]),
     soda({"$select":"vendor_name, count(1) as n, sum(contract_amount) as t","$where":`agency_name='${q}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < 5000000000 AND vendor_name IS NOT NULL`,"$group":"vendor_name","$order":"t DESC","$limit":"8"}).catch(()=>[]),
     soda({"$select":SELECT,"$where":`agency_name='${q}' AND type_of_notice_description='Solicitation' AND due_date > '${todayISO()}'`,"$order":"due_date ASC","$limit":"5"}).catch(()=>[]),
     soda({"$select":FEED_SELECT,"$where":`agency_name='${q}' AND event_date > '${todayISO()}'`,"$order":"event_date ASC","$limit":"5"}).catch(()=>[]),
-    workerFetch("/inv/" + encodeURIComponent(nm), null, 8000).then(r => r.ok ? r.json() : null).catch(() => null)
+    workerFetch("/inv/" + encodeURIComponent(nm), null, 8000).then(r => r.ok ? r.json() : null).catch(() => null),
+    loadAuthorityAwards(nm)
   ]);
   if(!(stats && +stats.n) && !sections.length){
     box.innerHTML = `<div class="empty">No City Record notices found for agency “${safe}”. <a href="#money">← Browse CROL-List</a></div>`;
@@ -3514,6 +3600,7 @@ async function showAgency(name, initialTab){
       </div>` : ""}
 
       <div id="overview-content">
+        ${authorityAwardsHTML(nm, authorityAwards)}
         <div class="chain-h">Notices by section — click to browse that lens, filtered to this agency</div>
         <div class="chiprow" style="margin-top:6px">${secChips}</div>
         ${vendors.length?`<div class="chain-h">Top vendors by awarded $ (click to pivot)</div><div class="ladder">${vendorRows}</div>`:""}
@@ -4065,7 +4152,7 @@ async function showNotice(id){
       <h2 class="rolename" lang="en" dir="ltr">${cleanText(r.short_title)||t("untitled_notice")}</h2>
       <div id="ncontext"></div>
       ${glanceFor(r)}
-      <div id="naddr"></div><div id="ndollars"></div>
+      <div id="naddr"></div><div id="ndollars"></div><div id="nexternal"></div>
       <div class="actions" style="margin-top:14px">
         <button class="act primary" type="button" id="ncopy">${t("copy_link")}</button>
         <a class="act" href="mailto:?subject=${encodeURIComponent("City Record notice: "+(cleanText(r.short_title)||r.request_id))}&body=${encodeURIComponent(link+"\n\nVia CROL-List — The City Record, searchable.")}">${t("notice_email_btn")}</a>
@@ -4087,6 +4174,7 @@ async function showNotice(id){
   const ib=$("#icsbtn"); if(ib){ ib.addEventListener("click", ()=>{ selectedRFP=r; downloadICS(); }); }
   fillContext(r, $("#ncontext"));
   followDollars(r, $("#ndollars"));
+  externalAwardForNotice(r, $("#nexternal"));
   fillAddressLinks(r, $("#naddr"));
   priorCycleAwards(r, $("#nprior"));
   agencyForecastTeaser(r, $("#nforecast"));
