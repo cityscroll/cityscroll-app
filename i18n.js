@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "bb38d973",
-  "zh-Hans": "7785aabb",
-  ru: "f69a1a85",
-  bn: "24e42336",
-  ht: "11c638c1",
-  ko: "bd974d76",
-  fr: "8dfc7fd1",
-  pl: "36cee40c",
-  ar: "6a373580",
-  ur: "32ccf42d",
+  es: "56397694",
+  "zh-Hans": "222dc31b",
+  ru: "f0ca9b1c",
+  bn: "9832b693",
+  ht: "75d7015e",
+  ko: "2c1d3c08",
+  fr: "fab9e5d6",
+  pl: "e394f691",
+  ar: "6bb151d8",
+  ur: "fec588d0",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -358,6 +358,8 @@ const STRINGS = {
     nl_no_matches_note: "No matches for this search.",
     nl_chip_land_kind: "rezonings",
     nl_chip_land_status_all: "including closed rezonings",
+    sync_watch_announce: "Your alert is now set to {what}.",
+    sync_freq_announce: "Your alert's frequency is set to {freq}.",
     sugg_lineage_hint:  "Includes contracts with award history",
     sugg_forecast_hint: "Includes contracts with forecast data",
 

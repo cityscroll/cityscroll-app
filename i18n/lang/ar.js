@@ -226,6 +226,8 @@
     nl_no_matches_note: "لا توجد نتائج مطابقة لهذا البحث.",
     nl_chip_land_kind: "إعادة تقسيم المناطق",
     nl_chip_land_status_all: "بما في ذلك إعادة تقسيم المناطق المغلقة",
+    sync_watch_announce: "تم ضبط تنبيهك الآن على {what}.",
+    sync_freq_announce: "تم ضبط تكرار تنبيهك على {freq}.",
     sugg_lineage_hint:  "يشمل عقودًا لها سجل ترسية سابق",
     sugg_forecast_hint: "يشمل عقودًا لها بيانات توقّع",
     head_open: "طلبات تقديم عروض (RFP) مفتوحة",

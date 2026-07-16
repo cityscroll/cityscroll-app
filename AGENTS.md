@@ -1405,6 +1405,58 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   (`ror baseline stats.html --preset nycsg7 -o reading-level-baseline.json`) as part of any
   future edit here rather than assuming the committed baseline still matches.
 
+## One draft alert, two views — the quiz and "Advanced options" share ONE set of fields (w12-20)
+
+- **Field evidence**: the site owner observed the 60-second quiz and "Build an alert" were
+  "unaligned - shouldn't they change as each other changes?" — picking a quiz topic never
+  reached the builder's own `#awatch` until the quiz's own Preview button ran, and even then
+  only one-way; switching the builder's select directly left the quiz chip highlighted for a
+  topic the builder would no longer actually preview or save. There is no separate JS state
+  object for "the draft" — `#awatch`/`#aparam`-or-`#amoneykw`/`#athresh`/`#amoneymin`/
+  `#amoneymonths`/`#afreq` (all inside index.html's `#tab-alerts`) ARE the one shared draft,
+  since `aFetch()`/`aLensFilter()`/`aPreview()`/`aDescribe()` already read them directly
+  regardless of which button triggered the read. The fix is keeping the quiz's chips/narrow
+  field/freq chips live-synced to those same fields in both directions, not a new state layer.
+- **`refreshQuizDisplay()`** (index.html, defined next to the quiz's own event wiring) is the
+  one-way repaint FROM the shared fields INTO the quiz's chip highlighting / narrow-field value
+  + placeholder+disabled / freq-chip highlighting. It's called from `aWatchChange()`'s own end
+  (so every real `#awatch` change, from ANY call site, repaints the quiz for free) and from the
+  quiz's own `#quiznarrow`/`#quizfreq` handlers (so a quiz-side edit stays visually consistent
+  with itself). The reverse direction — quiz INTO the builder — is just each quiz control
+  writing straight into the shared field it corresponds to (`narrowFieldSel()` picks `#aparam`
+  vs `#amoneykw` depending on the current watch type) before calling `aWatchChange()`/relying on
+  its own live 'input' listener; there is no separate "push" function for that direction.
+- **`aWatchChange(skipQuizSync)`** — the ONLY two call sites that pass `true` are the page-init
+  call and `rerenderForLang()`'s call. Both must NOT call `refreshQuizDisplay()`, because
+  `#awatch`'s mandatory default value ("bigaward") also happens to be one of the quiz's own 6
+  topics — an unconditional repaint at those two bookkeeping call sites would make a completely
+  untouched, fresh page look like the user had already picked "Big contract awards," breaking
+  `test/functional/03_watch_quiz_feeds.py`'s "quiz CTA without topic → nudge" probe (which
+  depends on `quizW` starting `null`). Every REAL interaction (a chip click, a wandchip, a
+  saved-search "Watch this" button, an NL-resolved query, or the builder's own `#awatch`/
+  `#afreq` controls) calls `aWatchChange()` with no argument and gets the sync for free.
+- **The quiz's 6 topic chips are a curated subset of `#awatch`'s 9 options** (`QUIZ_TOPICS`) —
+  no chip exists for `moneynl`/`entityvendor`/`entityagency`, so picking one of those (via the
+  Ask box, a wandchip, or an entity-profile "Watch this" button) correctly leaves no quiz chip
+  lit rather than guessing one. `narrowFieldSel()` is the single place that decides which of
+  `#aparam`/`#amoneykw` the quiz's one narrow box currently mirrors.
+- **IA**: "Build an alert" is now a `<details id="advopts" open>` nested INSIDE `#quizpanel`,
+  not a sibling `.panel` — the two are one grid column, with the Preview panel as the other
+  column. Open by default (not collapsed) so every builder field stays exactly as immediately
+  reachable/scriptable as it was as its own panel — this is why Playwright tests that
+  `select_option`/`fill`/`click` `#awatch`/`#aparam`/`#apreview` directly, with no prior click
+  to expand anything, still pass unmodified.
+- **A11y**: `sync_watch_announce`/`sync_freq_announce` (all `SHIPPING_LANGS`) announce via the
+  shared `#srstatus` region whenever a DISCRETE control (a chip click, a `<select>` change) on
+  either side pushes a value into the other view. Continuous text input (`#quiznarrow`/
+  `#aparam`/`#amoneykw`'s 'input' listeners) deliberately does NOT announce — that would spam a
+  screen-reader user on every keystroke.
+- **Characterization fixture**: `test/functional/18_draft_alert_sync.py` pins the owner's exact
+  scenario (switch the builder's watch away from the quiz's last pick, click a different quiz
+  topic, edit the builder's amount, confirm BOTH Preview buttons describe the identical
+  result) — confirmed failing against the pre-fix code via `git stash` before confirming it
+  passes, per house testing doctrine.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

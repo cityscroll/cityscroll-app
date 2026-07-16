@@ -223,6 +223,8 @@
     nl_no_matches_note: "此搜索没有匹配结果。",
     nl_chip_land_kind: "重新分区",
     nl_chip_land_status_all: "包括已结束的重新分区",
+    sync_watch_announce: "您的提醒现在设置为{what}。",
+    sync_freq_announce: "您的提醒频率设置为{freq}。",
     sugg_lineage_hint:  "包含有中标历史的合同",
     sugg_forecast_hint: "包含有预测数据的合同",
     head_open: "公开的征求建议书 (RFP)",
