@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "b644f589",
-  "zh-Hans": "f1d4f7b2",
-  ru: "f6826f40",
-  bn: "3c9f957e",
-  ht: "88db59f0",
-  ko: "e6612827",
-  fr: "f50552dd",
-  pl: "ab5ee8c4",
-  ar: "ace9f690",
-  ur: "1f9a5119",
+  es: "cad70d56",
+  "zh-Hans": "93a1b2a5",
+  ru: "193c1802",
+  bn: "f7e018a5",
+  ht: "98260e82",
+  ko: "dc21ce4e",
+  fr: "26fa844b",
+  pl: "8b7b9b85",
+  ar: "e3a3e2c8",
+  ur: "e6432f07",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -495,11 +495,13 @@ const STRINGS = {
     history_cycles_tag_other: "{n} cycles",
     prior_cycle_heading: "Looks recurring — prior award cycles",
     prior_cycle_heuristic_note: "We matched this by agency and title, not by a shared PIN. It may be the same repeating contract, but we cannot be sure. Check the dates and vendor first.",
-    prior_cycle_none_note: "We found no likely prior cycle for this one. It may not be a repeating contract. Or an earlier round did not match closely enough to show here.",
+    prior_cycle_none_generic: "This title is too generic to search for earlier rounds.",
+    prior_cycle_none_no_candidates_html: "No earlier {agency} award matches this title — most likely not a repeating contract (or an earlier round was titled differently).",
+    prior_cycle_none_low_confidence_html: "We found earlier {agency} awards, but none matched this title closely enough to be sure.",
     // Near-match prior cycles (w12-18): an exploratory second tier below the strict matcher
     // above, offered as an explicit reveal on the empty state — see rankNearMatchCandidates()/
     // nearMatchHTML() in index.html.
-    near_match_reveal_btn: "Show possible earlier rounds",
+    near_match_reveal_btn: "Look for looser possible matches",
     near_match_heading: "Possible earlier rounds",
     near_match_tag: "Maybe",
     near_match_why_lbl: "Why we're showing this:",

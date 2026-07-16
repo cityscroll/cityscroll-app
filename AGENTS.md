@@ -1148,11 +1148,33 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   siblings as false "renewals," which also silently drops a real prior round that was simply
   retitled between cycles (an address or permit code swapped into the title, "Renewal" dropped).
   `rankNearMatchCandidates()` (index.html, right after `priorCycleAwards()`) surfaces those as
-  explicit, caveated maybes, hidden behind a `<details>` reveal on the strict matcher's own empty
-  state ("We found no likely prior cycle…") — never rendered eagerly, never touching the
+  explicit, caveated maybes, hidden behind a `<details>` reveal ("Look for looser possible
+  matches" — deliberately hedged, since the lazy query can't know its result until clicked) on
+  the strict matcher's own empty state — never rendered eagerly, never touching the
   confident chain/cadence/past-winners/lineage-badge surfaces above, which all read
   `chainHTML()`'s own `pinBase()`-widened chain, never this function's output (honest-data
   convention).
+- **Guarded disclosure + case-specific empty state (crol-nearmatch-ux, 2026-07-16)**: the reveal
+  used to render unconditionally on the empty state, so notices that structurally couldn't
+  corroborate anything spun through a live SODA query and then said "nothing found."
+  `nearMatchPossible(r)` (index.html, just above `priorCycleNoneHTML()`) now gates it on exactly
+  what the tier hard-requires: a `start_date` (query and gap filter are both bounded to
+  strictly-earlier awards), >=2 significant title words (the 2-word `$q` can't form with fewer),
+  and a corroborating signal that could actually fire — a usable PIN whose renewal-stripped base
+  reaches `NEAR_MATCH_PIN_PREFIX_MIN_LEN` chars, or a positive `contract_amount`. Both "none"
+  call sites route through `priorCycleNoneHTML(r, rows)`, which also replaced the old hedged
+  `prior_cycle_none_note` with the one specific reason the code can distinguish: too-generic
+  title (`prior_cycle_none_generic`), zero prior-eligible candidates
+  (`prior_cycle_none_no_candidates_html`), or near-misses below the strict 0.5 bar
+  (`prior_cycle_none_low_confidence_html`). "Prior-eligible" is `priorCycleEligibleCount()` —
+  `rankPriorCycleCandidates()`'s own pre-score filters (self/agency/own-PIN/strictly-earlier/
+  >=180-day gap), NOT raw fetched rows: the strict `$q` has no date bound and matches the
+  notice's own title, so its rows routinely include the notice itself, later awards, and
+  same-round siblings (the HPD fixture's one returned row is itself). The interpolated `{agency}`
+  is an English data island wrapped `lang="en" dir="ltr"` per the RTL bidi-isolation convention —
+  hence the two keys' `_html` suffix. Gate + case selection pinned in
+  `test/near_match_prior_cycles.test.mjs`; a batch-precompute re-architecture of the live-query
+  design is planned separately, not part of this fix.
 - **A near-match needs the loosened title score PLUS at least one of two corroborating
   signals** — how much of the (renewal-suffix-stripped) PIN's prefix the two notices share
   (`pinPrefixShared()`, floor `NEAR_MATCH_PIN_PREFIX_MIN_LEN`=8) or whether their contract
