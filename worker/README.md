@@ -41,6 +41,7 @@ client-side (NL search uses the on-device heuristic, subscriptions/feeds are hid
 | `/feedback` | POST | Stores + emails operator feedback (Turnstile, rate-limited; rows keep IP+UA) | fails closed 503 |
 | `/batch` | POST | Watchlist cross-reference: `{names:[…]}` (≤10) → per-name award/mention counts + vendor-profile links; 30/day/IP | none |
 | `/inv` · `/inv/<id>` | POST/GET | Share an investigation snapshot (clamped, ≤32KB, 90-day TTL, 10/day/IP; SUBS KV `inv:` prefix) | none |
+| `/priorcycle/<request_id>` | GET | **Precomputed prior-cycle + near-match sets** for an Award notice (Phase 1a — the server side of moving index.html's two live SODA panels off the client; Phase 1b swaps the client to this). Ranked by `src/lib/prior_cycle.mjs`, a hand-synced dual implementation of index.html's matchers (cross-check test fails on divergence); cached in D1 `prior_cycle_matches`, compute-on-miss, cron pre-warms fresh Award notices; validated id, edge-cached 5 min | none |
 | `/stats` | GET | **Public outcome counters** (R·B): active subscriptions (count only), digests sent (today/7d/all-time/by-topic), digest-link clicks, feed/batch/share activity, NL calls (today/7d/all-time/by-lens for both windows), and a day-by-day `history` block for digests + NL calls + active-watch snapshots — aggregate integers, no personal data; edge-cached 15 min. All-time totals fold in pre-counter history recovered from an older short-lived counter where available (see `mergeRecoveredAllTime` in `lib/stats.mjs`), and every all-time/breakdown figure has an honest `live_from` boundary in `history` rather than claiming "since launch." | none |
 | `/r/<kind>/<request_id>` | GET | **Count-only digest click-through** (R·B tier 3, team-approved 2026-07-02): bumps a per-day counter (`stats:click`, `stats:click.<kind>`) and 302s to `crol-list.org/#notice/<id>`. Validated slug+id only — the path never carries a URL, so it cannot be an open redirect. No per-recipient tracking; digests disclose this in the footer | none |
 | `/api` | GET | 302 → crol-list.org/api.html (the API docs) | none |
@@ -51,6 +52,11 @@ client-side (NL search uses the on-device heuristic, subscriptions/feeds are hid
 | `/` `/health` | GET | liveness | none |
 
 ## The daily digest (cron `0 13 * * *` ≈ 9am ET; LIVE since 2026-07-01)
+
+Before the digest run, the same cron refreshes the D1 notices mirror from Socrata
+(`ingest.mjs`, cursored, fail-soft) and pre-warms prior-cycle match sets for the
+freshly-ingested Award notices (`prior_cycle.mjs`, bounded — never a full-corpus backfill;
+anything unwarmed fills lazily on its first `/priorcycle/<id>` request).
 
 `scheduled` → `runAlerts()`: replays every confirmed subscription from `SUBS` KV via
 `lib/compile.mjs` `compileSub()` — a **deterministic** SODA/ZAP query per `{lens, filter}`,
@@ -91,13 +97,17 @@ guard; capped watches **defer** to the next run rather than dropping notices. Su
 have Turnstile + per-IP/per-address daily rate limits and fail closed when unconfigured. Feeds
 hold no key and are edge-cached.
 
-## Storage — Cloudflare KV (no D1/R2)
+## Storage — Cloudflare KV + D1 (no R2)
 
 `NL_METER` (NL daily counters) · `ALERT_STATE` (seen-IDs, send counters — 40-day TTL so /stats can window them, last-sent dates, `stats:<metric>:<day>` outcome counters,
 `stats:catday:<metric>:<category>:<day>` windowed per-category counters (e.g. NL calls by lens, last 7 days), and the
 permanent `hist:<metric>:<day>` / `hist:era:<metric>` counters behind /stats' day-by-day history — including `hist:watches_active:<day>`, a once-daily gauge SNAPSHOT of active-subscription
 count rather than an event count, written by the cron job, not incremented — see `scripts/backfill-history.mjs` and `AGENTS.md`) ·
 `SUBS` (confirmed subs + subscribe rate limits) · `FEEDBACK` (feedback rows + rate limits).
+
+D1 (`crol-notices`, schema versioned in `migrations/`): the `notices` mirror + ingest cursor
+(daily cron, `ingest.mjs`; Socrata stays the source of truth) and `prior_cycle_matches` (the
+`/priorcycle` precompute cache). Schema detail lives in `../docs/architecture.md`.
 
 ## Dependencies — three libraries extracted from this worker
 
@@ -129,7 +139,7 @@ crol's contract, not reimplementations of the packages' own unit suites.
 
 ```sh
 npm install               # pulls wrangler + optin-token, sendcap, board-notify
-npm test                  # node --test — 193 unit tests, no network
+npm test                  # node --test — 323 unit tests, no network
 npm run dev               # wrangler dev → http://localhost:8787 (secrets in .dev.vars)
 npx wrangler deploy       # deploy (free); cron + KV bindings come from wrangler.toml
 CROL_WORKER_URL=https://api.crol-list.org npm run test:live   # live e2e over every public route
