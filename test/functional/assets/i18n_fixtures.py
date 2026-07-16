@@ -157,6 +157,31 @@ FORECAST_ROWS = {"forecasts": [
      "release_quarter": "Q3 2026"},
 ]}
 
+# Phase 1b (prior-cycle client swap): index.html's priorCycleAwards() now reads the precomputed
+# GET /priorcycle/<request_id> endpoint instead of firing its own SODA queries. With the worker
+# API otherwise dead in fixtures, that fetch would abort and the panel would render nothing —
+# silently dropping the prior_cycle_*/near_match_* strings out of the guard's coverage. A minimal
+# real response (empty strict + a positive eligibleCount + one near match) makes the notice-detail
+# panel render the low-confidence none-note (a prior_cycle_* string) and the "look for looser
+# matches" reveal summary (a near_match_* string), so both string families stay guard-walked. The
+# near candidate's own text sits inside the collapsed <details> body (never visible → never walked)
+# and needs no data_values() registration.
+PRIOR_CYCLE_MATCHES = {
+    "id": "20260701099",
+    "strict": [],
+    "eligibleCount": 1,
+    "near": [{
+        "c": {"request_id": "20260701003", "start_date": _iso(-400),
+              "short_title": "CITY WATER TUNNEL SHAFT REHABILITATION, STAGE TWO",
+              "contract_amount": "12500000", "vendor_name": "EXAMPLE BUILDERS INC",
+              "pin": "8262026EP0007"},
+        "reasons": [{"kind": "title", "words": ["rehabilitation"]},
+                    {"kind": "amount", "a": "12000000", "b": "12500000"}],
+        "score": 0.43,
+    }],
+    "ok": True,
+}
+
 AUTHORITY_AWARDS = [{
     "authority_name": "New York City School Construction Authority",
     "vendor_name": "ROUX ENVIRONMENTAL ENGINEERING AND GEOLOGY DPC",
@@ -265,7 +290,11 @@ def install_routes(page):
     # ...except /inv/<name> forecast lookups (see FORECAST_ROWS above) — registered after the
     # catch-all abort so it wins (Playwright matches newest-registered route first).
     page.route("https://api.crol-list.org/inv/**", fixed(FORECAST_ROWS))
+    # ...and /priorcycle/<request_id> (see PRIOR_CYCLE_MATCHES above) — same reason: registered
+    # after the catch-all abort so the prior-cycle panel renders and stays guard-covered.
+    page.route("https://api.crol-list.org/priorcycle/**", fixed(PRIOR_CYCLE_MATCHES))
     page.route("https://crol-worker.crol-worker.workers.dev/**", lambda r: r.abort())
+    page.route("https://crol-worker.crol-worker.workers.dev/priorcycle/**", fixed(PRIOR_CYCLE_MATCHES))
     page.route("https://challenges.cloudflare.com/**", lambda r: r.abort())
     page.route("https://static.cloudflareinsights.com/**", lambda r: r.abort())
     page.route("https://unpkg.com/**", lambda r: r.abort())

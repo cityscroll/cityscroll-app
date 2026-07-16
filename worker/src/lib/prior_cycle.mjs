@@ -71,6 +71,23 @@ export function rankPriorCycleCandidates(r, candidates, opts) {
     .slice(0, maxN);
 }
 
+// Mirrors rankPriorCycleCandidates()'s pre-score filters (self, agency, own PIN, prior date,
+// >=180-day gap) — how many candidates were even eligible, before the 0.5 title-overlap bar.
+// Worker-only since the Phase 1b swap: the endpoint returns this count so the client can pick
+// 67's no_candidates-vs-low_confidence empty-state message without re-running the strict query
+// it no longer fetches (index.html's own copy was deleted in the swap). The rank functions above
+// stay dual-implemented and hand-synced with index.html; this eligibility count no longer has a
+// client twin to keep in sync.
+export function priorCycleEligibleCount(r, candidates) {
+  return (candidates || [])
+    .filter((c) => c.request_id !== r.request_id)
+    .filter((c) => c.agency_name === r.agency_name)
+    .filter((c) => !usablePin(r.pin) || c.pin !== r.pin)
+    .filter((c) => (c.start_date || "") < (r.start_date || ""))
+    .filter((c) => { const g = daysBetween(c.start_date, r.start_date); return g !== null && g >= PRIOR_CYCLE_MIN_GAP_DAYS; })
+    .length;
+}
+
 // --- near-match tier (index.html:1326 NEAR-MATCH PRIOR CYCLES, w12-18) -------------------------
 
 export const NEAR_MATCH_MIN_SCORE = 0.34; // "at least a third of this notice's significant title words recur" — looser than the strict majority bar, still real overlap, not one coincidental shared word

@@ -1,11 +1,13 @@
 // Pins worker/src/prior_cycle.mjs — the SODA-query + D1-cache layer around the ported ranking
 // lib (lib/prior_cycle.mjs, tested separately in prior_cycle_lib.test.mjs). Verifies:
-//   - computeMatches runs the two queries the client did and returns { strict, near, ok }
+//   - computeMatches runs the two queries the client did and returns { strict, near,
+//     eligibleCount, ok }
 //   - getOrCompute reads the D1 cache, computes + upserts on a miss, and reuses it on a hit;
-//     a failed compute or an unresolvable id is returned but never cached
+//     a failed compute or an unresolvable id is returned but never cached; a cached row from
+//     before Phase 1b (no eligibleCount) is treated as a miss and recomputed
 //   - prewarm is bounded, idempotent (skips already-cached), and fail-soft per notice
-//   - GET /priorcycle/<id> returns { id, strict, near } with the edge-cache header and
-//     validates/sanitizes the id
+//   - GET /priorcycle/<id> returns { id, strict, near, eligibleCount, ok } with the edge-cache
+//     header (no-store when ok is false) and validates/sanitizes the id
 //
 //   node --test test/prior_cycle.test.mjs   (from the crol-list/worker/ dir)
 
@@ -90,7 +92,7 @@ function withMockedSoda(fn, { strictRows = [], nearRows = [] } = {}) {
   };
 }
 
-test("computeMatches: runs both tiers and returns { strict, near }", withMockedSoda(async (calls) => {
+test("computeMatches: runs both tiers and returns { strict, near, eligibleCount }", withMockedSoda(async (calls) => {
   const env = { DB: fakeDB() };
   const matches = await computeMatches(env, hpdNotice.request_id, {
     request_id: hpdNotice.request_id, start_date: hpdNotice.start_date,
@@ -100,16 +102,44 @@ test("computeMatches: runs both tiers and returns { strict, near }", withMockedS
   assert.deepEqual(matches.strict, []); // no strict cross-PIN match for this notice
   assert.equal(matches.near.length, 1);
   assert.equal(matches.near[0].c.request_id, "20190621041");
+  assert.equal(typeof matches.eligibleCount, "number");
+  // The strict query returned only the notice itself (no prior-eligible rows), so the pre-0.5-bar
+  // pool is empty — the client renders 67's no_candidates message from this.
+  assert.equal(matches.eligibleCount, 0);
   // Both SODA queries fired.
   assert.equal(calls.length, 2);
 }, { strictRows: [], nearRows: [hpdPriorRound] }));
+
+test("computeMatches: eligibleCount counts the prior-eligible strict rows before the 0.5 bar", withMockedSoda(async () => {
+  // The strict query returns an earlier same-agency award that clears the >=180-day gap but is
+  // titled generically enough to fall under the 0.5 title bar — a prior-eligible candidate that
+  // is NOT a strict match. eligibleCount must count it (→ 67's low_confidence message), even
+  // though strict stays empty.
+  const priorButWeak = {
+    request_id: "20200101001", agency_name: "Housing Preservation and Development",
+    type_of_notice_description: "Award", short_title: "IMMEDIATE ROOF REPAIR",
+    start_date: "2020-01-01", pin: "80620E0099001", contract_amount: "200000",
+  };
+  const env = { DB: fakeDB() };
+  const matches = await computeMatches(env, hpdNotice.request_id, {
+    request_id: hpdNotice.request_id, start_date: hpdNotice.start_date,
+    agency_name: hpdNotice.agency, short_title: hpdNotice.short_title,
+    pin: hpdNotice.pin, contract_amount: hpdNotice.contract_amount,
+  });
+  assert.deepEqual(matches.strict, []);
+  assert.equal(matches.eligibleCount, 1, "the earlier weak-title award is prior-eligible");
+}, { strictRows: [{
+  request_id: "20200101001", agency_name: "Housing Preservation and Development",
+  type_of_notice_description: "Award", short_title: "IMMEDIATE ROOF REPAIR",
+  start_date: "2020-01-01", pin: "80620E0099001", contract_amount: "200000",
+}], nearRows: [] }));
 
 test("computeMatches: too-generic a title short-circuits without a SODA call", withMockedSoda(async (calls) => {
   const env = { DB: fakeDB() };
   const matches = await computeMatches(env, "X", {
     request_id: "X", agency_name: "Sanitation", short_title: "the of and", start_date: "2024-01-01",
   });
-  assert.deepEqual(matches, { strict: [], near: [], ok: true });
+  assert.deepEqual(matches, { strict: [], near: [], eligibleCount: 0, ok: true });
   assert.equal(calls.length, 0, "no query for a title with < 2 significant words");
 }));
 
@@ -121,7 +151,7 @@ test("computeMatches: a SODA failure is fail-soft (empty tier, ok:false, never t
       request_id: hpdNotice.request_id, start_date: hpdNotice.start_date,
       agency_name: hpdNotice.agency, short_title: hpdNotice.short_title, pin: hpdNotice.pin,
     });
-    assert.deepEqual(matches, { strict: [], near: [], ok: false });
+    assert.deepEqual(matches, { strict: [], near: [], eligibleCount: 0, ok: false });
   } finally { globalThis.fetch = orig; }
 });
 
@@ -130,10 +160,10 @@ test("getOrCompute: cache hit returns stored matches without a SODA call", async
   let fetched = false;
   globalThis.fetch = async () => { fetched = true; return { ok: true, status: 200, json: async () => [] }; };
   try {
-    const stored = { strict: [{ request_id: "S1" }], near: [] };
+    const stored = { strict: [{ request_id: "S1" }], near: [], eligibleCount: 2 };
     const env = { DB: fakeDB({ cache: { "20220314107": { matches: JSON.stringify(stored) } } }) };
     const matches = await getOrCompute(env, "20220314107");
-    assert.deepEqual(matches, stored);
+    assert.deepEqual(matches, { ...stored, ok: true });
     assert.equal(fetched, false, "a cache hit must not hit SODA");
   } finally { globalThis.fetch = orig; }
 });
@@ -143,11 +173,28 @@ test("getOrCompute: cache miss computes, upserts, and the next read is a hit", w
   const env = { DB: db };
   const first = await getOrCompute(env, "20220314107");
   assert.equal(first.near.length, 1);
-  // Now cached.
+  // Now cached, including the eligibleCount field the client needs for 67's empty-state message.
   assert.ok(db._cache["20220314107"], "computed matches were upserted");
   const stored = JSON.parse(db._cache["20220314107"].matches);
   assert.equal(stored.near[0].c.request_id, "20190621041");
+  assert.equal(typeof stored.eligibleCount, "number", "eligibleCount is persisted in the cache row");
   assert.equal(db._cache["20220314107"].agency, "Housing Preservation and Development");
+}, { strictRows: [], nearRows: [hpdPriorRound] }));
+
+test("getOrCompute: a pre-Phase-1b cache row (no eligibleCount) is treated as a miss and recomputed", withMockedSoda(async () => {
+  // A legacy cached row from before Phase 1b lacks eligibleCount. Serving it would leave the
+  // client unable to pick 67's no_candidates-vs-low_confidence message, so it must be treated as
+  // a cache miss: recompute, and re-upsert a row that now carries the field.
+  const legacy = JSON.stringify({ strict: [], near: [] }); // no eligibleCount
+  const db = fakeDB({
+    notices: { "20220314107": hpdNotice },
+    cache: { "20220314107": { matches: legacy } },
+  });
+  const matches = await getOrCompute({ DB: db }, "20220314107");
+  assert.equal(typeof matches.eligibleCount, "number", "recompute filled in the missing field");
+  assert.equal(matches.near.length, 1, "recompute ran the tiers, not served the legacy empty row");
+  const restored = JSON.parse(db._cache["20220314107"].matches);
+  assert.equal(typeof restored.eligibleCount, "number", "the cache row was upgraded in place");
 }, { strictRows: [], nearRows: [hpdPriorRound] }));
 
 test("getOrCompute: a transient SODA failure is returned but NOT cached (retry-on-next-request)", async () => {
@@ -156,7 +203,7 @@ test("getOrCompute: a transient SODA failure is returned but NOT cached (retry-o
   try {
     const db = fakeDB({ notices: { "20220314107": hpdNotice } });
     const matches = await getOrCompute({ DB: db }, "20220314107");
-    assert.deepEqual(matches, { strict: [], near: [] });
+    assert.deepEqual(matches, { strict: [], near: [], eligibleCount: 0, ok: false });
     assert.equal(db._cache["20220314107"], undefined, "a failed compute must not be cached");
   } finally { globalThis.fetch = orig; }
 });
@@ -168,7 +215,7 @@ test("getOrCompute: an id that resolves to no notice writes no cache row and loo
   try {
     const db = fakeDB();
     const matches = await getOrCompute({ DB: db }, "NOPE1234");
-    assert.deepEqual(matches, { strict: [], near: [] });
+    assert.deepEqual(matches, { strict: [], near: [], eligibleCount: 0, ok: false });
     assert.equal(db._cache["NOPE1234"], undefined, "an unresolvable id must not grow the table");
     assert.equal(lookups, 1, "the notice row is resolved once, not re-fetched by computeMatches");
   } finally { globalThis.fetch = orig; }
@@ -193,7 +240,7 @@ test("getOrCompute: with no D1 binding it still computes (no cache layer)", with
 test("prewarm: bounded, idempotent, fail-soft; skips already-cached ids", withMockedSoda(async () => {
   const db = fakeDB({
     notices: { "20220314107": hpdNotice },
-    cache: { "ALREADY": { matches: JSON.stringify({ strict: [], near: [] }) } },
+    cache: { "ALREADY": { matches: JSON.stringify({ strict: [], near: [], eligibleCount: 0 }) } },
   });
   const env = { DB: db };
   const r = await prewarm(env, ["20220314107", "ALREADY", "20220314107"]); // dedupes too
@@ -203,8 +250,8 @@ test("prewarm: bounded, idempotent, fail-soft; skips already-cached ids", withMo
   assert.equal(r.failed, 0);
 }, { strictRows: [], nearRows: [hpdPriorRound] }));
 
-test("GET /priorcycle/<id>: returns { id, strict, near } with the edge-cache header", async () => {
-  const stored = { strict: [], near: [{ c: { request_id: "20190621041" } }] };
+test("GET /priorcycle/<id>: returns { id, strict, near, eligibleCount, ok } with the edge-cache header", async () => {
+  const stored = { strict: [], near: [{ c: { request_id: "20190621041" } }], eligibleCount: 3 };
   const env = { DB: fakeDB({ cache: { "20220314107": { matches: JSON.stringify(stored) } } }) };
   const req = new Request("https://w/priorcycle/20220314107", { method: "GET" });
   const res = await handlePriorCycle(req, env, "/priorcycle/20220314107");
@@ -214,6 +261,25 @@ test("GET /priorcycle/<id>: returns { id, strict, near } with the edge-cache hea
   assert.equal(body.id, "20220314107");
   assert.deepEqual(body.strict, []);
   assert.equal(body.near[0].c.request_id, "20190621041");
+  assert.equal(body.eligibleCount, 3);
+  assert.equal(body.ok, true);
+});
+
+test("GET /priorcycle/<id>: a compute failure returns ok:false and is not edge-cached", async () => {
+  // No D1 cache; every SODA fetch 503s → computeMatches returns ok:false. The 200 body must carry
+  // ok:false (so the client says nothing rather than a confident 'no earlier awards') and must not
+  // be cached at the edge (no-store), so a later request re-computes.
+  const orig = globalThis.fetch;
+  globalThis.fetch = async () => ({ ok: false, status: 503, json: async () => [] });
+  try {
+    const env = {}; // no DB binding
+    const req = new Request("https://w/priorcycle/20220314107", { method: "GET" });
+    const res = await handlePriorCycle(req, env, "/priorcycle/20220314107");
+    assert.equal(res.status, 200);
+    assert.equal(res.headers.get("Cache-Control"), "no-store");
+    const body = await res.json();
+    assert.equal(body.ok, false);
+  } finally { globalThis.fetch = orig; }
 });
 
 test("GET /priorcycle/<id>: rejects a malformed id", async () => {
