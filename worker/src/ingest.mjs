@@ -127,6 +127,11 @@ export async function ingestNotices(env) {
   let fetched = 0;
   let upserted = 0;
   let maxStart = cursor;
+  // request_ids of freshly-ingested Award notices, so the cron can pre-warm their prior-cycle
+  // match sets (prior_cycle.mjs) without a full-corpus scan. Bounded by AWARD_IDS_CAP so a large
+  // catch-up run can't return an unbounded array.
+  const awardRequestIds = [];
+  const AWARD_IDS_CAP = 200;
 
   const insert = env.DB.prepare(
     `INSERT OR REPLACE INTO notices
@@ -153,6 +158,9 @@ export async function ingestNotices(env) {
       const m = mapRow(row);
       if (!m.request_id) continue;
       if (m.start_date && m.start_date > maxStart) maxStart = m.start_date;
+      if (m.type_of_notice === "Award" && awardRequestIds.length < AWARD_IDS_CAP) {
+        awardRequestIds.push(m.request_id);
+      }
       stmts.push(
         insert.bind(
           m.request_id, m.section, m.agency, m.type_of_notice, m.category, m.short_title,
@@ -171,5 +179,5 @@ export async function ingestNotices(env) {
   }
 
   await stateSet(env.DB, "ingest_cursor", maxStart);
-  return { fetched, upserted, cursor: maxStart };
+  return { fetched, upserted, cursor: maxStart, awardRequestIds };
 }

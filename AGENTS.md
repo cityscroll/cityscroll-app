@@ -1173,8 +1173,19 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   same-round siblings (the HPD fixture's one returned row is itself). The interpolated `{agency}`
   is an English data island wrapped `lang="en" dir="ltr"` per the RTL bidi-isolation convention —
   hence the two keys' `_html` suffix. Gate + case selection pinned in
-  `test/near_match_prior_cycles.test.mjs`; a batch-precompute re-architecture of the live-query
-  design is planned separately, not part of this fix.
+  `test/near_match_prior_cycles.test.mjs`.
+- **Server-side precompute shipped (Phase 1a, 2026-07-16) — the client swap has NOT.**
+  `worker/src/lib/prior_cycle.mjs` is a hand-synced dual implementation of the strict + near
+  ranking functions above (same convention as `lib/lineage.mjs`), used by
+  `worker/src/prior_cycle.mjs` to run the same two SODA queries server-side, cache the
+  `{strict, near}` result in the D1 `prior_cycle_matches` table (migration `0002`,
+  compute-on-miss; the daily cron pre-warms freshly-ingested Award notices via
+  `ingestNotices()`'s returned `awardRequestIds`), and serve `GET /priorcycle/<request_id>`
+  (public, edge-cached 5 min). index.html still fires its own live SODA calls until Phase 1b
+  swaps them for that endpoint — until then any change to the title-word/gap/score/
+  corroboration heuristics must land in BOTH copies;
+  `worker/test/prior_cycle_lib.test.mjs`'s cross-check extracts the client functions from
+  index.html and fails on divergence.
 - **A near-match needs the loosened title score PLUS at least one of two corroborating
   signals** — how much of the (renewal-suffix-stripped) PIN's prefix the two notices share
   (`pinPrefixShared()`, floor `NEAR_MATCH_PIN_PREFIX_MIN_LEN`=8) or whether their contract

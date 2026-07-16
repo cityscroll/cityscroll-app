@@ -21,6 +21,7 @@ import { snapshotHistDay, ensureHistEra } from "./lib/stats.mjs";
 import { handleRedirect } from "./redirect.mjs";
 import { runAlerts, consumeDigestJob } from "./alerts.mjs";
 import { ingestNotices } from "./ingest.mjs";
+import { handlePriorCycle, prewarm as prewarmPriorCycle } from "./prior_cycle.mjs";
 import { runSuggestionValidation, handleSuggestions, handleAdminSuggestRefresh } from "./suggest.mjs";
 import { handleMcp } from "./mcp.mjs";
 import { handleBoardHook } from "board-notify";
@@ -43,6 +44,7 @@ export default {
     if (pathname === "/feed.xml" || pathname === "/feed.json" || pathname === "/feed.ics") return handleFeed(request, env, ctx);
     if (pathname === "/batch") return handleBatch(request, env);
     if (pathname === "/inv" || pathname.startsWith("/inv/")) return handleInv(request, env, pathname);
+    if (pathname.startsWith("/priorcycle/")) return handlePriorCycle(request, env, pathname);
     if (pathname === "/suggestions") return handleSuggestions(request, env);
     if (pathname === "/stats") return handleStats(request, env, ctx);
     if (pathname.startsWith("/r/")) return handleRedirect(request, env, ctx, pathname);
@@ -59,11 +61,25 @@ export default {
   async scheduled(event, env, ctx) {
     // Refresh the D1 notices mirror first (fail-soft: an ingest failure must never
     // block the digest run — alerts fall back to querying Socrata live anyway).
+    let ingestResult = null;
     try {
-      const r = await ingestNotices(env);
-      console.log("ingest:", JSON.stringify(r));
+      ingestResult = await ingestNotices(env);
+      console.log("ingest:", JSON.stringify(ingestResult));
     } catch (e) {
       console.error("ingest failed (alerts continue):", String(e?.message || e));
+    }
+    // Pre-warm prior-cycle / near-match sets for freshly-ingested Award notices (bounded, NOT a
+    // full-corpus backfill). Its own try/catch, fail-soft like the other cron jobs — a pre-warm
+    // failure must never block the digest. Any un-warmed notice still fills lazily on first
+    // request via getOrCompute (GET /priorcycle/<id>).
+    try {
+      const awardIds = ingestResult?.awardRequestIds || [];
+      if (awardIds.length) {
+        const r = await prewarmPriorCycle(env, awardIds);
+        console.log("prior-cycle prewarm:", JSON.stringify(r));
+      }
+    } catch (e) {
+      console.error("prior-cycle prewarm failed (digest continues):", String(e?.message || e));
     }
     // Suggestion-chip validation (w12-08): a candidate's failure is already caught inside
     // runSuggestionValidation itself; this outer catch is only for something the pipeline
