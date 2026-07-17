@@ -24,6 +24,7 @@ import { buildNoticesQuery, searchNotices } from "./lib/notices.mjs";
 import { describeFilter } from "./lib/confirm_email.mjs";
 import { emailT } from "./lib/i18n.mjs";
 import { digestDecision, dedupeFreshByContent, shortDate, matchEvidence } from "./lib/digest.mjs";
+import { encodeWatchFilter } from "./lib/filter.mjs";
 import { runCheckbookPipeline } from "./checkbook.mjs";
 import { runMocsPlanPipeline } from "./mocs_plan.mjs";
 import { bumpStatAllTime, bumpCategoryStat, bumpHistDay } from "./lib/stats.mjs";
@@ -211,7 +212,14 @@ export async function processOneSub(env, s, ctx) {
         const parts = [freshLabel, forecastLabel].filter(Boolean).join(" & ");
         subject = `CROL-List: ${parts} — ${label}`;
         const keywords = Array.isArray(s.filter && s.filter.keywords) ? s.filter.keywords : [];
-        html = subDigestHtml(label, q.kind, fresh, unsubUrl, since, env.CONFIRM_BASE || "https://api.crol-list.org", forecasts, lang, keywords, healthNote);
+        // w12-12: carry this watch's own {lens, filter} into every notice link so the site can
+        // re-render the same Matched-evidence + interpretation-echo the subscriber would see
+        // running the watch themselves. null for a watch with nothing worth carrying (e.g. a
+        // bare amount-only bigaward watch's minAmount alone still round-trips — see
+        // encodeWatchFilter()) or a lens deep-links don't cover (rezone links straight to ZAP
+        // below, never through here).
+        const w = encodeWatchFilter(s.lens, s.filter);
+        html = subDigestHtml(label, q.kind, fresh, unsubUrl, since, env.CONFIRM_BASE || "https://api.crol-list.org", forecasts, lang, keywords, w, healthNote);
       } else {
         subject = decision.action === "weekly-empty"
           ? `CROL-List: nothing new this week — ${label}`
@@ -486,7 +494,9 @@ function maskKey(n) {
 // Digest for a self-serve sub — award / rfp (City Record) or rezone (ZAP) items.
 // keywords: the sub's filter.keywords (money/property/rules/meetings lenses only -- entity
 // subs match by name, not keyword, so they pass none and get no evidence line, correctly).
-function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.crol-list.org", forecasts = [], lang = "en", keywords = [], healthNote = "") {
+// w: this watch's encodeWatchFilter() output (w12-12) — null for a rezone digest, which links
+// straight to ZAP below and never touches CROL-List's own notice view.
+function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.crol-list.org", forecasts = [], lang = "en", keywords = [], w = null, healthNote = "") {
   const usd = (n) => (n == null || n === "" ? "" : "$" + Number(n).toLocaleString("en-US"));
   const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
   const cr = (id) => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
@@ -509,7 +519,10 @@ function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.c
     if (tel.length >= 7) acts.push(`<a href="tel:${tel}">☎ Call</a>`);
     // Count-only click-through (R·B tier 3, team-approved 2026-07-02): /r bumps a per-day
     // counter and 302s to the permalink — no per-recipient tracking (see src/redirect.mjs).
-    const noticeLink = `${base}/r/${encodeURIComponent(kind)}/${encodeURIComponent(r.request_id)}`;
+    // The ?w= param (w12-12) rides along through the redirect unread and lands in the
+    // permalink's own hash fragment — see src/redirect.mjs. `w` is already encodeWatchFilter()'s
+    // own percent-encoded output, so it's placed directly, not re-encoded (that would double-encode).
+    const noticeLink = `${base}/r/${encodeURIComponent(kind)}/${encodeURIComponent(r.request_id)}${w ? `?w=${w}` : ""}`;
     acts.push(`<a href="${noticeLink}">↗ View on CROL-List</a>`);
     acts.push(`<a href="${cr(r.request_id)}">City Record</a>`);
     const meta = [r.agency_name, usd(r.contract_amount),

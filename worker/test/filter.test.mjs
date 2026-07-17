@@ -1,7 +1,7 @@
 // Pure unit tests for the lens-aware /nl sanitizer. No network, no API key — `npm test`.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { sanitize, LENSES, MAX_INPUT, MAX_CALLS_PER_DAY } from "../src/lib/filter.mjs";
+import { sanitize, LENSES, MAX_INPUT, MAX_CALLS_PER_DAY, encodeWatchFilter } from "../src/lib/filter.mjs";
 
 test("money: canonical construction example normalizes", () => {
   const out = sanitize("money", {
@@ -99,4 +99,42 @@ test("limits + lens registry are sane", () => {
   assert.ok(MAX_INPUT > 0 && MAX_INPUT <= 2000);
   assert.ok(MAX_CALLS_PER_DAY > 0 && MAX_CALLS_PER_DAY <= 1000);
   assert.ok(Object.keys(LENSES).length >= 7, "all lenses registered");
+});
+
+// w12-12: digest deep-links. Before, a digest item's link carried nothing about the watch
+// that surfaced it — a click landed on the plain notice view with no sign of why it matched.
+// encodeWatchFilter() is what a notice link's ?w= param is built from.
+test("encodeWatchFilter: the education watch (keyword-only) round-trips through sanitize()", () => {
+  const w = encodeWatchFilter("money", { keywords: ["education"] });
+  assert.equal(w, encodeURIComponent(JSON.stringify({ lens: "money", filter: { keywords: ["education"] } })));
+  assert.deepEqual(JSON.parse(decodeURIComponent(w)), { lens: "money", filter: { keywords: ["education"] } });
+});
+
+test("encodeWatchFilter: a multi-filter watch carries every non-empty field, dropping null/false/empty ones", () => {
+  const w = encodeWatchFilter("money", {
+    keywords: ["education"], agency: "Education", minAmount: 200000, maxAmount: null,
+    category: null, months: 3, noticeType: "award", excludeSpecial: false,
+  });
+  const decoded = JSON.parse(decodeURIComponent(w));
+  assert.deepEqual(decoded, {
+    lens: "money",
+    filter: { keywords: ["education"], agency: "Education", minAmount: 200000, months: 3, noticeType: "award" },
+  });
+});
+
+test("encodeWatchFilter: an amount-only bigaward watch still round-trips (minAmount alone is signal)", () => {
+  const w = encodeWatchFilter("money", { minAmount: 1000000 });
+  assert.deepEqual(JSON.parse(decodeURIComponent(w)), { lens: "money", filter: { minAmount: 1000000 } });
+});
+
+test("encodeWatchFilter: nothing worth carrying (empty filter, or an unregistered lens) -> null", () => {
+  assert.equal(encodeWatchFilter("money", {}), null);
+  assert.equal(encodeWatchFilter("money", { keywords: [], agency: null }), null);
+  assert.equal(encodeWatchFilter("bogus-lens", { keywords: ["x"] }), null);
+  assert.equal(encodeWatchFilter(null, { keywords: ["x"] }), null);
+});
+
+test("encodeWatchFilter: an unsanitary/malicious filter is clamped through sanitize() first, same as any /nl output", () => {
+  const w = encodeWatchFilter("money", { keywords: ["education"], minAmount: "'; DROP TABLE notices; --", agency: { toString: () => "nope" } });
+  assert.deepEqual(JSON.parse(decodeURIComponent(w)), { lens: "money", filter: { keywords: ["education"] } });
 });

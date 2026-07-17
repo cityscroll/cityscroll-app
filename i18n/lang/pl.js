@@ -229,6 +229,7 @@
     nl_understood_label: "Zrozumieliśmy to jako:",
     nl_edit_btn: "Edytuj wyszukiwanie",
     nl_no_matches_note: "Brak wyników dla tego wyszukiwania.",
+    deeplink_watch_context_label: "Dopasowane do Twojego powiadomienia:",
     nl_chip_land_kind: "zmiany stref",
     nl_chip_land_status_all: "w tym zamknięte zmiany stref",
     sync_watch_announce: "Twoje powiadomienie jest teraz ustawione na {what}.",

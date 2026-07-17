@@ -927,6 +927,70 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `compile.mjs`'s `CR_SELECT`, `alerts.mjs`'s legacy-watch `runWatch()`, and `compile_d1.mjs`'s
   `toDigestRow()` (mapped from D1's `description` column, which `ingest.mjs` already stored).
 
+## Digest deep-links — every emailed item opens its why-matched view (w12-12)
+
+- **The gap this closes**: a digest email's notice link carried nothing about the watch that
+  surfaced the item — following it landed on the plain `#notice/<id>` permalink with no sign of
+  why it matched or what was searched for. Fix: the originating watch's own `{lens, filter}`
+  rides in the link's URL, so `showNotice()` re-renders the same Matched-evidence highlighting
+  (w12-03) and interpretation echo (w12-02/09) the subscriber would see running the watch
+  themselves — no server-side state, nothing identifying beyond the notice id itself.
+- **`encodeWatchFilter(lens, filter)`** (`worker/src/lib/filter.mjs`) clamps a subscription's
+  already-`sanitize()`d filter through the schema again (defense in depth), drops null/false/
+  empty fields, and returns `encodeURIComponent(JSON.stringify({lens, filter}))` — `null` when
+  there's nothing worth carrying or the lens isn't registered. `alerts.mjs`'s `processOneSub()`
+  computes it once per send and threads it into `subDigestHtml()`'s per-row `noticeLink`, which
+  appends it as `?w=` on the existing `/r/<kind>/<id>` count-only redirect (`src/redirect.mjs`);
+  the redirect only bounds the value's shape (`validWatchParam` — length + printable-ASCII) before
+  re-embedding it in `noticeUrl(id, w)`'s target hash, `#notice/<id>?w=<value>` — same "?tab="
+  second-hash-segment idiom `agencyHref()`/`vendorHref()` already use. Legacy config watches
+  (`alerts.config.json`, `runWatch()`/`digestHtml()`) are out of scope — they link straight to
+  City Record, never through `/r` or CROL-List's own notice view, so there's no link to carry a
+  filter on. Rezoning digests are also out of scope by construction — they link to ZAP directly.
+- **Client side**: `parseNoticeHashSegment(rest)` (index.html, next to `applyHash()`) splits a
+  `#notice/<id>?w=<...>` hash into `{id, watch}` — `watch` is `null` for the pre-w12-12 bare-id
+  shape (unchanged behavior) or a malformed/truncated/oversized `?w=` value.
+  `parseWatchParam(raw)` does the actual JSON parse + validation, returning `null` on anything
+  that doesn't parse as `{lens, filter}` with a registered lens — the caller then falls back to
+  the plain notice view, never a broken page. `DEEPLINK_LENSES`/`deeplinkClampField`/
+  `sanitizeDeepLinkFilter` are a **hand-synced client port** of `worker/src/lib/filter.mjs`'s
+  `LENSES`/`clampField`/`sanitize` (same dual-implementation convention as
+  `external_awards.js`/`lib/external_award.mjs`) — change one, change both;
+  `test/deeplink_watch.test.mjs` cross-checks them against the real worker module and fails on
+  divergence. Reusing `sanitize()`'s clamp-to-schema behavior is what makes an unexpected extra
+  key or an out-of-range value fail soft (silently dropped) rather than break rendering.
+- **`showNotice(id, watch)`** (previously `showNotice(id)` — the second arg is optional and
+  `undefined` for every other call site) computes `matchEvidence(title, matchText(r),
+  watch.filter.keywords||[])` and splices a `<mark>` into the existing `<h2 class="rolename">`
+  wrapper in place (not a `digTitleHTML()`/`enTitle()` swap, to avoid touching the tag's existing
+  lang/dir markup) plus `digEvidenceHTML(ev)` right below it — same two functions the Money-tab
+  row list and digest preview already use. `.dev`'s CSS selector gained `.panel .dev` (it was
+  previously scoped to `.digitem`/`.row`/`.fcard` only) so the evidence line renders styled in
+  the permalink view. `watchChipsFor(lens, filter)` renders the "We understood this as"-style
+  echo (reusing `NL.alerts.chips()` for the money lens — it already covers the full money-shaped
+  schema — and `NL[lens].chips()` for property/rules/meetings) into a new `deeplink_watch_context_label`
+  banner (`.nlunderstood`, all `SHIPPING_LANGS`). **Entity watches (match by name, not keyword)
+  deliberately render no chips or evidence** — the agency/vendor name is already shown plainly
+  elsewhere on the notice, so there's nothing hidden to explain; same posture `matchEvidence()`
+  already takes for entity subs in the emailed digest.
+- **Known, documented, out-of-scope gap carried forward, not introduced here**: `NL.alerts.chips()`
+  and `nlFeed()`'s chip builders bake connector words ("agency", "about", "amount ≥", "due within")
+  as literal, untranslated English — a pre-existing gap noted in the w12-09 section above,
+  unexercised by any hermetic guard walk. `watchChipsFor()` reuses these functions as-is rather
+  than fixing them, so this card's guard coverage (`13_stray_english.py`'s `run_notice_deep_link`)
+  intentionally stays on the bare `#notice/<id>` walk (no `?w=`, `watch` is `null`, no chips
+  render) — extending it to a populated `?w=` would surface that pre-existing gap and fail CI for
+  a reason outside this card's scope. `deeplink_watch_context_label` itself is fully translated in
+  all ten `SHIPPING_LANGS` regardless.
+- **Fixtures**: `worker/test/filter.test.mjs` (`encodeWatchFilter`), `worker/test/stats.test.mjs`
+  (`noticeUrl`/`validWatchParam`/`handleRedirect` passthrough), `worker/test/
+  digest_match_evidence_render.test.mjs` (the card's anchor fixture — the real "education" watch
+  surfacing a Comptroller pension-fund notice, run end-to-end through `runAlerts()` to prove the
+  sent email's own link carries the right `?w=`), and `test/deeplink_watch.test.mjs` (the client
+  half: the same anchor fixture, a multi-filter watch, a keyword-only watch, a malformed/truncated
+  fragment, and a fragment with unexpected extra keys — plus the worker/client `sanitize()`
+  cross-check).
+
 ## Match evidence in every lens list, not just the Alerts ask preview (w12-03)
 
 - **The same `matchEvidence()`/`digTitleHTML()`/`digEvidenceHTML()` trio above is now called

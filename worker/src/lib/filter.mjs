@@ -113,3 +113,25 @@ export function filterConfidence(lens, filter) {
   });
   return hasSignal ? "high" : "low";
 }
+
+// Digest deep-links (w12-12): carry the originating watch's own filter in the notice link's URL
+// fragment, so the site can re-render the same Matched-evidence + interpretation-echo the reader
+// would have seen running the watch themselves — no server-side state, nothing identifying beyond
+// what the email already contains. Drops null/false/empty fields (sanitize()'s own output always
+// fills every schema field, most of them unset for a given watch) to keep the link short and to
+// give the client's own clamp step, which iterates the SAME schema, nothing extra to ignore.
+export function encodeWatchFilter(lens, filter) {
+  if (!lens || !LENSES[lens]) return null;
+  const clamped = sanitize(lens, filter);
+  const compact = {};
+  for (const [name, v] of Object.entries(clamped)) {
+    if (v === null || v === false || (Array.isArray(v) && v.length === 0)) continue;
+    compact[name] = v;
+  }
+  if (!Object.keys(compact).length) return null; // nothing worth carrying
+  try {
+    return encodeURIComponent(JSON.stringify({ lens, filter: compact }));
+  } catch {
+    return null;
+  }
+}

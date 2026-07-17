@@ -221,6 +221,7 @@
     nl_understood_label: "다음과 같이 이해했습니다:",
     nl_edit_btn: "검색 수정",
     nl_no_matches_note: "이 검색에 대한 결과가 없습니다.",
+    deeplink_watch_context_label: "회원님의 알림과 일치:",
     nl_chip_land_kind: "구역 재지정",
     nl_chip_land_status_all: "종료된 구역 재지정 포함",
     sync_watch_announce: "알림이 이제 {what}(으)로 설정되었습니다.",

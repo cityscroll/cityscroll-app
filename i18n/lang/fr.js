@@ -266,6 +266,7 @@
     nl_understood_label: "Voici ce que nous avons compris :",
     nl_edit_btn: "Modifier la recherche",
     nl_no_matches_note: "Aucun résultat pour cette recherche.",
+    deeplink_watch_context_label: "Correspond à votre alerte :",
     nl_chip_land_kind: "rezonages",
     nl_chip_land_status_all: "y compris les rezonages clos",
     sync_watch_announce: "Votre alerte est maintenant réglée sur {what}.",

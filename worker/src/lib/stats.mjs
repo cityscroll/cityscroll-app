@@ -33,8 +33,23 @@ export function parseRedirect(pathname) {
   return { kind: m[1], id: m[2] };
 }
 
-export function noticeUrl(id) {
-  return `https://crol-list.org/#notice/${encodeURIComponent(id)}`;
+// w (w12-12): the originating watch's filter, already encoded by encodeWatchFilter()
+// (lib/filter.mjs) — an opaque, already-percent-safe string the redirect just re-embeds after
+// the id, same "?tab=" idiom the site's own agencyHref()/vendorHref() use for a second hash
+// segment. Re-encoded here (not passed through raw) since the caller may have decoded it via
+// URLSearchParams on the way in.
+export function noticeUrl(id, w) {
+  const base = `https://crol-list.org/#notice/${encodeURIComponent(id)}`;
+  return w ? `${base}?w=${encodeURIComponent(w)}` : base;
+}
+
+// Defense in depth for the redirect: only forward a `w` value that looks like what
+// encodeWatchFilter() produces (bounded length, URL-component-safe characters) — the site's own
+// client-side parseWatchParam() is what actually validates the JSON shape, but the redirect
+// should never blindly relay an oversized or garbled query value into a Location header.
+const WATCH_PARAM_MAX = 2000;
+export function validWatchParam(w) {
+  return typeof w === "string" && w.length > 0 && w.length <= WATCH_PARAM_MAX && /^[\x20-\x7e]+$/.test(w) ? w : null;
 }
 
 // Bump one per-day counter. Fire-and-forget safe: swallows KV errors (a lost count must never

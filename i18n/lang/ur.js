@@ -224,6 +224,7 @@
     nl_understood_label: "ہم نے اسے یوں سمجھا:",
     nl_edit_btn: "تلاش میں ترمیم کریں",
     nl_no_matches_note: "اس تلاش کے لیے کوئی نتائج نہیں ملے۔",
+    deeplink_watch_context_label: "آپ کے الرٹ سے مماثل:",
     nl_chip_land_kind: "دوبارہ زوننگ",
     nl_chip_land_status_all: "بند دوبارہ زوننگ سمیت",
     sync_watch_announce: "آپ کا الرٹ اب {what} پر سیٹ ہے۔",

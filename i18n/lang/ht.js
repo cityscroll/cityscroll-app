@@ -220,6 +220,7 @@
     nl_understood_label: "Men sa nou konprann:",
     nl_edit_btn: "Modifye rechèch la",
     nl_no_matches_note: "Pa gen rezilta pou rechèch sa a.",
+    deeplink_watch_context_label: "Koresponn ak alèt ou a:",
     nl_chip_land_kind: "chanjman zonaj",
     nl_chip_land_status_all: "gen ladan chanjman zonaj ki fèmen",
     sync_watch_announce: "Alèt ou a kounye a chwazi pou {what}.",
