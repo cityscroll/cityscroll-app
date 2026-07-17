@@ -4142,8 +4142,16 @@ function applyHash(){
       const w=$("#"+tab+"when"); if(w && q.get("when")) w.value = q.get("when");
       if(tab === "property"){ propAsset = q.get("asset") || "all"; propStageSel = q.get("stage") || "all"; }
       const was = feedLoaded[tab]; showTab(tab); if(was) loadSection(tab);
+    } else if(tab === "alerts"){
+      showTab("alerts");
+      const lens = q.get("lens");
+      if(lens){
+        let filter = {};
+        try{ filter = JSON.parse(q.get("filter") || "{}"); }catch(e){ filter = {}; }
+        prefillAlertFromLink(lens, filter, q.get("freq"));
+      }
     } else {
-      showTab(tab); // alerts
+      showTab(tab);
     }
   } finally { hashLock = false; }
   return true;
@@ -4280,6 +4288,36 @@ function watchFromFilters(lens){
   aPreview();
 }
 document.querySelectorAll(".watchbtn").forEach(b=>b.addEventListener("click",()=>watchFromFilters(b.dataset.lens)));
+
+/* Saved-search health fix path — a watch that's gone quiet links back here as
+   #alerts?lens=<lens>&filter=<json>&freq=<daily|weekly>, using the exact {lens,filter} shape
+   already stored on the subscription (see applyHash()). A money-lens filter is applied via
+   NL.alerts.apply(), the SAME path the Ask box uses -- so the existing "understood as" echo
+   (aPreview()'s zero-match chips) is what helps the reader see and broaden it; other lenses are
+   pre-filled directly (no chip echo for those yet -- a documented, smaller gap, not a crash). An
+   unrecognized lens leaves the builder at its defaults rather than guessing. */
+function prefillAlertFromLink(lens, filter, freq){
+  filter = filter || {};
+  if(freq==="weekly" || freq==="daily") $("#afreq").selectedIndex = freq==="weekly" ? 1 : 0;
+  if(lens==="money"){
+    NL.alerts.apply(filter);
+  } else if(lens==="entity"){
+    $("#awatch").value = filter.kind==="agency" ? "entityagency" : "entityvendor";
+    aWatchChange();
+    $("#aparam").value = filter.name || "";
+    aPreview();
+  } else if(lens==="land"){
+    $("#awatch").value = "rezone"; aWatchChange();
+    $("#aparam").value = (filter.keywords||[]).join(" ");
+    aPreview();
+  } else if(SECTION_WATCH_LABEL[lens]){
+    $("#awatch").value = lens; aWatchChange();
+    $("#aparam").value = (filter.keywords||[]).join(" ");
+    $("#aagency").value = filter.agency || "";
+    aPreview();
+  }
+  refreshQuizDisplay();
+}
 
 /* 60-second onboarding: chips → prefilled advanced options → live preview (Meet-Your-Mayor
    pattern). w12-20: the quiz's chips/narrow field/freq chips and the "Advanced options"
