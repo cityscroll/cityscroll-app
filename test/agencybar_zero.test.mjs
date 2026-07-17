@@ -39,16 +39,21 @@ const fmtNumber = new Function("window", i18nSrc + "\nreturn window.fmtNumber;")
 const { awardCoverage, awardSourceFor } = await import("../external_awards.js");
 
 const env = new Function(
-  "t", "fmtNumber", "window", "awardCoverage", "awardSourceFor",
+  "t", "fmtNumber", "window", "awardCoverage", "awardSourceFor", "EXT_ATTRS", "extSR",
   extractFn("money") +
   extractConst("agencyHref") +
   extractConst("pivotA") +
   extractFn("hasAgencyAwards") +
+  extractConst("CHECKBOOK_NYCHA_AGENCY_ID") +
+  extractFn("aboSourceLink") +
+  extractFn("checkbookNychaLink") +
+  extractFn("checkbookNychaContractsLink") +
   extractFn("agencyAwardsNote") +
   extractFn("noticeAgencyBar") +
   extractFn("agencyProfileBar") +
   "return { hasAgencyAwards, agencyAwardsNote, noticeAgencyBar, agencyProfileBar };"
-)(t, fmtNumber, windowStub, awardCoverage, awardSourceFor);
+)(t, fmtNumber, windowStub, awardCoverage, awardSourceFor,
+  'target="_blank" rel="noopener noreferrer"', () => '<span class="sr-only"> (opens in new tab)</span>');
 
 test("hasAgencyAwards: SODA's string \"0\" is not truthy for award count", () => {
   assert.equal(env.hasAgencyAwards({ n: "0", total: null }), false);
@@ -59,11 +64,15 @@ test("hasAgencyAwards: SODA's string \"0\" is not truthy for award count", () =>
   assert.equal(env.hasAgencyAwards({ n: 3 }), true);
 });
 
-test("noticeAgencyBar: a covered agency's zero stats names its source, not a dash-and-zero scoreboard", () => {
+test("noticeAgencyBar: a covered agency's zero stats names its source, not a dash-and-zero scoreboard — and the source name is a working scoped link, not plain text", () => {
   const html = env.noticeAgencyBar({ n: "0", total: null }, "Housing Authority");
   assert.doesNotMatch(html, /class="big">—/);
   assert.doesNotMatch(html, /class="big">0</);
-  assert.match(html, /files its contract awards with Checkbook NYC/, "NYCHA is a covered exact-key agency");
+  assert.match(html, /files its contract awards with/, "NYCHA is a covered exact-key agency");
+  // Before crol-awardlink-w6: {source} was plain text ("Checkbook NYC" with no href) — a
+  // statement naming the source with no way to go look. Now it's a link to NYCHA's own
+  // Checkbook contracts view (no PIN in scope here, so the agency-wide fallback).
+  assert.match(html, /<a href="https:\/\/www\.checkbooknyc\.com\/nycha_contracts\/datasource\/checkbook_nycha\/agency\/162"[^>]*>Checkbook NYC/);
 });
 
 test("noticeAgencyBar: an unknown agency's zero stats keeps the soft hedge", () => {

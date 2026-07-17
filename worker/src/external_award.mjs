@@ -317,7 +317,7 @@ export async function handleExternalAward(req, env) {
   return json({
     id: rawId || undefined, agency, coverage: "fuzzy",
     agencyAwards: cached ? cached.awards : [],
-    source: { kind: "abo", dataset: entry.dataset, refreshed: cached ? cached.refreshed : null },
+    source: { kind: "abo", dataset: entry.dataset, authority: entry.authority, refreshed: cached ? cached.refreshed : null },
     ok: true,
   }, 200, cors, "public, max-age=300");
 }

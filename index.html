@@ -356,7 +356,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=d27dae4a"></script>
+<script src="i18n.js?v=fff8e6bf"></script>
 <script src="nl_parse.js"></script>
 <script src="external_awards.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
@@ -1499,23 +1499,44 @@ async function loadExternalAward(params){
   }catch(e){ return null; }
 }
 
-// The registry-driven empty-state claim for a zero-City-Record-award agency (Deliverable 3):
-// covered -> name the source; verified-absent -> say so plainly; unknown -> the existing hedge.
-function agencyAwardsNote(agency){
-  const cov = awardCoverage(agency);
-  if(cov==="absent") return `<div class="note">${t("agency_awards_none_open_data")}</div>`;
-  if(cov==="exact"||cov==="fuzzy"){
-    const e = awardSourceFor(agency);
-    const src = e.kind==="abo" ? t("external_awards_abo_source") : t("external_awards_checkbook_source");
-    return `<div class="note">${t("agency_awards_elsewhere_note",{source:src})}</div>`;
-  }
-  return `<div class="note">${t("agency_awards_unavailable_note")}</div>`;
+// Every note naming an external source carries a working, scoped link to it (crol-awardlink-w6)
+// — a note that only SAYS the answer lives elsewhere, with no way to go look, isn't an
+// affordance. Link shapes below were verified live against the real destinations (contract
+// detail resolves purely by contract id regardless of the year/agency path segments; the ABO
+// dataset's SODA endpoint accepts a plain `authority_name=` filter param) before shipping.
+const CHECKBOOK_NYCHA_AGENCY_ID = "162"; // NYCHA's fixed agency id on checkbooknyc.com
+
+// A link to the ABO source dataset on data.ny.gov, filtered to one authority. Malformed/missing
+// registry data (no dataset or authority) fails soft to unlinked source-name text, never a
+// broken href.
+function aboSourceLink(dataset, authority){
+  if(!dataset || !authority) return t("external_awards_abo_source");
+  return `<a href="https://data.ny.gov/resource/${dataset}.json?$order=award_date%20DESC&authority_name=${encodeURIComponent(authority || '')}" ${EXT_ATTRS}>${t("external_awards_abo_source")}${extSR()}</a>`;
+}
+// A link to Checkbook NYC's NYCHA contracts, scoped to one matched contract when we have it
+// (the most specific view we can construct) or NYCHA's whole contracts list otherwise.
+function checkbookNychaLink(contractId){
+  if(!contractId) return t("external_awards_checkbook_source");
+  return `<a href="https://www.checkbooknyc.com/nycha_contract_details/agency/${CHECKBOOK_NYCHA_AGENCY_ID}/datasource/checkbook_nycha/contract/${encodeURIComponent(contractId)}" ${EXT_ATTRS}>${t("external_awards_checkbook_source")}${extSR()}</a>`;
+}
+function checkbookNychaContractsLink(){
+  return `<a href="https://www.checkbooknyc.com/nycha_contracts/datasource/checkbook_nycha/agency/${CHECKBOOK_NYCHA_AGENCY_ID}" ${EXT_ATTRS}>${t("external_awards_checkbook_source")}${extSR()}</a>`;
 }
 
-// A link to the ABO source dataset on data.ny.gov (external -> new-tab treatment).
-function aboSourceLink(dataset){
-  return `<a href="https://data.ny.gov/resource/${dataset}" ${EXT_ATTRS}>${t("external_awards_abo_source")}${extSR()}</a>`;
+// The registry-driven empty-state claim for a zero-City-Record-award agency (Deliverable 3):
+// covered -> name + link the source; verified-absent -> say so, linked to what we checked;
+// unknown -> the existing hedge, linked to the same provenance doc.
+function agencyAwardsNote(agency){
+  const cov = awardCoverage(agency);
+  if(cov==="absent") return `<div class="note">${t("agency_awards_none_open_data_html")}</div>`;
+  if(cov==="exact"||cov==="fuzzy"){
+    const e = awardSourceFor(agency);
+    const src = e.kind==="abo" ? aboSourceLink(e.dataset, e.authority) : checkbookNychaContractsLink();
+    return `<div class="note">${t("agency_awards_elsewhere_note",{source:src})}</div>`;
+  }
+  return `<div class="note">${t("agency_awards_unavailable_note_html")}</div>`;
 }
+
 function sourceUpdatedHTML(refreshed){
   return refreshed ? ` <span class="rmeta" style="margin:0">${t("external_awards_updated",{date:refreshed})}</span>` : "";
 }
@@ -1534,10 +1555,11 @@ function aboAwardsTimelineHTML(awards, source){
   }).join("");
   return `<div id="external-awards-content"><div class="chain-h">${t("external_awards_heading")}</div>
     <div class="timeline">${rows}</div>
-    <div class="pnote">${t("external_awards_possible_note")} ${t("external_awards_abo_note")} ${aboSourceLink(source.dataset)}.${sourceUpdatedHTML(source.refreshed)}</div></div>`;
+    <div class="pnote">${t("external_awards_possible_note")} ${t("external_awards_abo_note")} ${aboSourceLink(source.dataset, source.authority)}.${sourceUpdatedHTML(source.refreshed)}</div></div>`;
 }
 
-// Exact NYCHA award (matched by PIN) renders as a confident chain box.
+// Exact NYCHA award (matched by PIN) renders as a confident chain box, linked to the exact
+// matched contract on Checkbook NYC.
 function nychaAwardBoxHTML(c, pin){
   return `<div class="chain-h">${t("external_awards_heading")}</div><div class="chain">
     <div class="stage"><div class="box award">
@@ -1547,7 +1569,7 @@ function nychaAwardBoxHTML(c, pin){
       ${c.vendor?`<div class="vend">${t("awarded_to")} <b lang="en" dir="ltr">${escUiHtml(c.vendor)}</b></div>`:""}
       ${c.method?`<div class="rmeta" lang="en" dir="ltr">${escUiHtml(c.method)}</div>`:""}
     </div></div></div>
-    <div class="pnote">${t("external_award_nycha_note_html",{pin:escUiHtml(pin)})}</div>`;
+    <div class="pnote">${t("external_award_nycha_note_html",{pin:escUiHtml(pin), link:checkbookNychaLink(c.id)})}</div>`;
 }
 
 // Turn one /externalaward response into the award region's HTML. `notice` (optional) lets the
@@ -1558,8 +1580,9 @@ function externalAwardHTML(resp, notice){
     const matches = resp.matches||[];
     if(matches.length) return nychaAwardBoxHTML(matches[0], notice?notice.pin:"");
     // Nothing found — say we checked, but only when this notice actually carried a usable PIN.
+    // Link to NYCHA's own Checkbook contracts list (no single matched contract to point at yet).
     if(notice && notice.type_of_notice_description==="Solicitation" && usablePin(notice.pin)){
-      return `<div class="note">${t("external_award_nycha_none_note")}</div>`;
+      return `<div class="note">${t("external_award_nycha_none_note_html",{link:checkbookNychaContractsLink()})}</div>`;
     }
     return "";
   }
@@ -1568,7 +1591,7 @@ function externalAwardHTML(resp, notice){
     const source = resp.source||{};
     if(awards.length) return aboAwardsTimelineHTML(awards, source);
     // Covered by an ABO source but nothing on file there — name + link + date the source checked.
-    return `<div class="note">${t("external_award_none_note_html",{source:aboSourceLink(source.dataset)})}${sourceUpdatedHTML(source.refreshed)}</div>`;
+    return `<div class="note">${t("external_award_none_note_html",{source:aboSourceLink(source.dataset, source.authority)})}${sourceUpdatedHTML(source.refreshed)}</div>`;
   }
   return "";
 }

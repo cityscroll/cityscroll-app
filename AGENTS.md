@@ -888,13 +888,41 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - **Empty state is registry-backed** (`agencyAwardsNote`, both `noticeAgencyBar` and
   `agencyProfileBar`): covered → names the source; verified-absent → "not published in any open
   dataset CROL-List knows of"; unknown agency → the pre-existing soft hedge
-  (`agency_awards_unavailable_note`). All these strings are script-rendered via `t()`, so they do
-  NOT affect the reading-level ratchet (the extractor drops `<script>`).
+  (`agency_awards_unavailable_note_html`). All these strings are script-rendered via `t()`, so
+  they do NOT affect the reading-level ratchet (the extractor drops `<script>`).
 - **Fixtures**: `test/external_awards.test.mjs` (client render + registry), `worker/test/
   external_award.test.mjs` (endpoint + cron, one fixture per class boundary: exact NYCHA, fuzzy
   source, verified-absent, covered-with-zero-rows, malformed rows). The hermetic stray-English
   guard opens the SCA agency profile and requires the `#external-awards-content` panel — the
   worker `/externalaward` route is stubbed in `i18n_fixtures.py` to keep it guard-covered.
+- **Every note naming a source carries a working scoped link (crol-awardlink-w6)** — the site
+  owner's framing: "it's not suggesting an action, or even enabling it — affordances imply
+  capability." Naming a source with no href is a statement, not an affordance. Verified live
+  URL shapes (index.html, next to `aboSourceLink`/`checkbookNychaLink`/
+  `checkbookNychaContractsLink`):
+  - **ABO (data.ny.gov)**: `https://data.ny.gov/resource/<dataset>.json?authority_name=<name>`
+    — the dataset's own SODA `/resource/<id>.json` endpoint accepts a plain, non-`$`-prefixed
+    equality filter param and renders a real filtered result in-browser; the modernized
+    "Data" tab UI (`.../data_preview`) does NOT respect URL-driven filters (confirmed live —
+    a query string there is silently dropped on load), so the JSON resource endpoint is the
+    most specific linkable view that actually exists. `source.authority` (not just `.dataset`)
+    must be threaded through — the worker's `/externalaward` fuzzy-branch response includes it
+    (`worker/src/external_award.mjs`).
+  - **Checkbook NYC / NYCHA**: contract-detail resolves purely by contract id —
+    `https://www.checkbooknyc.com/nycha_contract_details/agency/162/datasource/checkbook_nycha/
+    contract/<contract_id>` renders the right record regardless of the `year` segment's value
+    (verified live 2026-07-17: `year/0`/`year/1`/omitted all resolve identically) — `162` is
+    NYCHA's fixed Checkbook agency id (`CHECKBOOK_NYCHA_AGENCY_ID`). With no single matched
+    contract (a "none found yet" note, or the agency-level bar with no notice in scope), the
+    fallback is NYCHA's own contracts list, `.../nycha_contracts/datasource/checkbook_nycha/
+    agency/162` (omit `year` for "all years," not one fiscal year — also verified live).
+  - **Verified-absent / unknown-coverage agencies**: link to about.html's own provenance
+    sentence (`<li id="external-awards-sources">`, inside `about_li_honest_html`) rather than a
+    dead source name — transparency about what was checked IS the affordance when there's
+    nothing external to link to.
+  - **Fail-soft**: `aboSourceLink()`/`checkbookNychaLink()` render plain unlinked source-name
+    text (no `<a>`) when the registry/match data needed to scope the link is missing (no
+    `authority`, no `contract` id) — never a broken or unscoped href.
 
 ## Digest match evidence — why a keyword-matched item is in the digest at all
 
