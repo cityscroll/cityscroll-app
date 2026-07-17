@@ -155,6 +155,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
       - name: Install readable-or-else
         run: pip install git+https://github.com/jimdc/readable-or-else.git
       - name: Reading-level ratchet gate
@@ -165,6 +168,49 @@ jobs:
             --mode ratchet \
             --baseline reading-level-baseline.json \
             --format gh-annotations
+      # crol-changelogprose-k8: catches a changelog-entry reading-level regression on the
+      # FEATURE PR itself, before merge, instead of only on the automated bot PR after
+      # merge (see AGENTS.md's changelog section — two separate merged PRs stranded the bot
+      # PR this way). Simulates the exact regeneration the merge-triggered workflow
+      # (update-changelog.yml) would perform and runs the identical ratchet check against
+      # the result. Gated to the pull_request event only — merge_group/push-to-main carry no
+      # PR body to harvest an entry from, and update-changelog.yml's own post-merge ratchet
+      # check (the job above, which runs on every event) is untouched by this addition.
+      - name: Changelog reading-level gate — unit tests (fixtures for the pre-merge simulation)
+        run: node --test test/check_changelog_reading_level.test.mjs
+      - name: Load the changelog regeneration base (bot branch's pending state if present, else this PR's own committed files)
+        if: github.event_name == 'pull_request'
+        env:
+          BOT_BRANCH: bot/changelog-update
+        run: |
+          mkdir -p "$RUNNER_TEMP/changelog-sim"
+          if git ls-remote --exit-code --heads origin "$BOT_BRANCH" >/dev/null 2>&1; then
+            echo "bot branch exists — simulating on top of its pending entries"
+            git fetch origin "$BOT_BRANCH"
+            git show "origin/$BOT_BRANCH:changelog-data.json" > "$RUNNER_TEMP/changelog-sim/base-data.json"
+            git show "origin/$BOT_BRANCH:changelog.html" > "$RUNNER_TEMP/changelog-sim/base.html"
+          else
+            echo "no bot branch yet — simulating on top of this PR's own committed changelog files"
+            cp changelog-data.json "$RUNNER_TEMP/changelog-sim/base-data.json"
+            cp changelog.html "$RUNNER_TEMP/changelog-sim/base.html"
+          fi
+      - name: Simulate this PR's merged changelog entry and gate its reading level
+        if: github.event_name == 'pull_request'
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          printf '%s' "$PR_BODY" > "$RUNNER_TEMP/changelog-sim/pr-body.md"
+          node tools/check_changelog_reading_level.mjs \
+            --base-data "$RUNNER_TEMP/changelog-sim/base-data.json" \
+            --base-html "$RUNNER_TEMP/changelog-sim/base.html" \
+            --i18n i18n.js \
+            --number "$PR_NUMBER" \
+            --url "$PR_URL" \
+            --merged-at "$(date -u +%Y-%m-%d)" \
+            --body-file "$RUNNER_TEMP/changelog-sim/pr-body.md" \
+            --baseline reading-level-baseline.json
       # Opt-in only — a manually-labeled PR gets LLM-drafted plain-language suggestions as
       # PR-ready JSON (not auto-applied; a human reviews and accepts/discards). Needs
       # READABLE_OR_ELSE_LLM_BASE / READABLE_OR_ELSE_LLM_KEY / READABLE_OR_ELSE_LLM_MODEL

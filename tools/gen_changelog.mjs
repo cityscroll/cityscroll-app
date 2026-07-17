@@ -88,7 +88,7 @@ export function restampI18nVersion(html, i18nSource) {
   return html.replace(I18N_VERSION_RE, `$1${hash}$2`);
 }
 
-function renderEntries(entries) {
+export function renderEntries(entries) {
   if (!entries.length) return "";
   return entries
     .map(
@@ -100,18 +100,44 @@ function renderEntries(entries) {
     .join("\n");
 }
 
-function rewriteHtml(entries) {
-  const src = fs.readFileSync(HTML_PATH, "utf8");
-  const startIdx = src.indexOf(START_MARKER);
-  const endIdx = src.indexOf(END_MARKER);
+// Pure: rebuilds the CHANGELOG:AUTO block of an in-memory changelog.html string from a
+// given entries list, re-stamping the i18n.js?v= cache-skew guard from a given i18n.js
+// source. Split out of rewriteHtml() (below) so a caller that isn't regenerating the real
+// checked-out files — the pre-merge reading-level simulation (crol-changelogprose-k8) — can
+// reuse the identical rendering logic against files it supplies itself, with no risk of the
+// two ever drifting apart.
+export function buildHtml(html, entries, i18nSource) {
+  const startIdx = html.indexOf(START_MARKER);
+  const endIdx = html.indexOf(END_MARKER);
   if (startIdx === -1 || endIdx === -1 || endIdx < startIdx) {
     throw new Error(`changelog.html is missing ${START_MARKER}/${END_MARKER} markers`);
   }
-  const before = src.slice(0, startIdx + START_MARKER.length);
-  const after = src.slice(endIdx);
+  const before = html.slice(0, startIdx + START_MARKER.length);
+  const after = html.slice(endIdx);
   const body = entries.length ? `\n${renderEntries(entries)}\n  ` : "\n  ";
-  const rebuilt = restampI18nVersion(before + body + after, fs.readFileSync(I18N_PATH));
+  return restampI18nVersion(before + body + after, i18nSource);
+}
+
+function rewriteHtml(entries) {
+  const src = fs.readFileSync(HTML_PATH, "utf8");
+  const rebuilt = buildHtml(src, entries, fs.readFileSync(I18N_PATH));
   fs.writeFileSync(HTML_PATH, rebuilt);
+}
+
+// Pure: given the current entries list and a candidate PR's body, decides whether it adds
+// a new entry — reused by both the real post-merge CLI (main(), below) and the pre-merge
+// simulation script (tools/check_changelog_reading_level.mjs) so "what counts as harvestable" can never
+// drift between the two call sites.
+export function computeEntryAddition(entries, { number, url, mergedAt, body }) {
+  if (entries.some((e) => e.pr === number)) {
+    return { entries, text: null, reason: "already-recorded" };
+  }
+  const text = extractUserImpact(body);
+  if (!text) {
+    return { entries, text: null, reason: "no-marker" };
+  }
+  const entry = { pr: number, merged_at: (mergedAt || "").slice(0, 10), url: url || "", text };
+  return { entries: [entry, ...entries], text, reason: "added" };
 }
 
 function main() {
@@ -125,20 +151,24 @@ function main() {
       console.error("   or: gen_changelog.mjs --rebuild");
       process.exit(1);
     }
-    if (data.entries.some((e) => e.pr === args.number)) {
+    const body = fs.readFileSync(args.bodyFile, "utf8");
+    const result = computeEntryAddition(data.entries, {
+      number: args.number,
+      url: args.url,
+      mergedAt: args.mergedAt,
+      body,
+    });
+    if (result.reason === "already-recorded") {
       console.log(`PR #${args.number} already recorded — no-op.`);
       return;
     }
-    const body = fs.readFileSync(args.bodyFile, "utf8");
-    const text = extractUserImpact(body);
-    if (!text) {
+    if (result.reason === "no-marker") {
       console.log(`PR #${args.number} carries no "What this means for you" section — not user-facing, skipped.`);
       return;
     }
-    const mergedAt = (args.mergedAt || "").slice(0, 10);
-    data.entries.unshift({ pr: args.number, merged_at: mergedAt, url: args.url || "", text });
+    data.entries = result.entries;
     saveData(data);
-    console.log(`PR #${args.number} added: ${text}`);
+    console.log(`PR #${args.number} added: ${result.text}`);
   }
 
   rewriteHtml(data.entries);
