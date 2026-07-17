@@ -453,6 +453,29 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   written as if each PR had carried the marker; every entry from here on is mechanical.
 - **Characterization tests**: `test/changelog_extract.test.mjs`, real merged-PR bodies
   (crol-list #26 with an appended marker section, #33 verbatim with none).
+- **Reading-level regressions are caught pre-merge, on the feature PR, not only on the bot
+  PR.** The harvested entry text rides the site's reading-level ratchet (see the "Reading
+  level" section below), but the bot's regenerated `changelog.html` only exists on
+  `bot/changelog-update` — AFTER the source PR has merged and its author has moved on. Two
+  separate merged PRs (#70, then #72+#74 together) regressed the ratchet this way in one day,
+  each requiring a by-hand reword on the bot branch. `tools/check_changelog_reading_level.mjs`
+  closes this: it's a new step in `ci.yml`'s `reading-level` job, gated to the `pull_request`
+  event only (never `merge_group`/push-to-main, which carry no PR body to harvest from — so it
+  can't double up with the unconditional post-merge ratchet check in the same job). It
+  simulates the exact regeneration `update-changelog.yml` would perform — the bot branch's
+  pending `changelog-data.json`/`changelog.html` if it exists, else this PR's own already-
+  committed copies (the "no bot branch yet" fallback, mirroring `update-changelog.yml`'s own
+  base-selection logic) plus this PR's own harvested entry — and runs the identical
+  `readable-or-else` ratchet check against the result, failing the FEATURE PR with the
+  offending entry text and grade delta if it regresses. `tools/gen_changelog.mjs` exports
+  `computeEntryAddition`/`buildHtml` as pure functions specifically so the pre-merge
+  simulation and the real post-merge generator can never drift apart — change one call site's
+  harvesting/rendering logic, both get it. Fixture tests in
+  `test/check_changelog_reading_level.test.mjs` use the real #72/#74 wording verbatim (both
+  the original text that regressed and the reworded text that fixed it) against a small
+  self-contained fixture page, independent of the live repo's own changing content — skip
+  gracefully (with a stated reason) when `readable-or-else` isn't on `PATH`, since the general
+  `unit` CI job that runs `test/*.test.mjs` doesn't install it.
 
 ## Alerts NL query — the combined parser, and the pure-module extraction pattern
 
