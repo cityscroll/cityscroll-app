@@ -112,7 +112,7 @@ export async function refreshAboAwards(env, nowISO) {
   return { updated, failed, sources: aboSources().length };
 }
 
-async function readAboCache(env, entry) {
+export async function readAboCache(env, entry) {
   if (!env.ALERT_STATE) return null;
   try {
     const raw = await env.ALERT_STATE.get(awardKvKey(entry));
@@ -223,7 +223,7 @@ async function nychaCachePut(env, requestId, agency, matches) {
   } catch { /* a cache-write failure must never break the compute */ }
 }
 
-async function getOrComputeNycha(env, requestId, noticeRow) {
+export async function getOrComputeNycha(env, requestId, noticeRow) {
   const cached = await nychaCacheGet(env, requestId);
   if (cached) return { matches: cached.matches, ok: true };
   const row = noticeRow === undefined ? await fetchNoticeRow(env, requestId) : noticeRow;
@@ -247,6 +247,49 @@ export async function prewarmNycha(env, requestIds) {
     } catch { failed++; }
   }
   return { requested: ids.length, computed, skipped, failed };
+}
+
+// ---------------------------------------------------------------------------
+// Award-arrival alerts: one notice's current award candidates, fingerprinted so a caller can
+// diff against what it already notified about. Reuses the exact same precomputed state (the
+// D1 NYCHA cache, the KV ABO cache) the notice page itself reads via /externalaward — never a
+// second, divergent notion of "does this notice have an award yet."
+//
+// key is a stable content fingerprint, not a display id: NYCHA rows carry a real contract_id;
+// ABO rows carry none, so their key is built from the fields that make one row distinguishable
+// from another (vendor+date+amount), same fingerprinting posture as digest.mjs's
+// dedupeFreshByContent(). ok:false only ever means "couldn't determine the current state" (a
+// Checkbook/proxy hiccup) — never conflate with a confirmed empty answer, which is ok:true with
+// an empty candidates array and safe to treat as "nothing new."
+export async function currentAwardCandidates(env, requestId, agency) {
+  const entry = awardSourceFor(agency);
+  if (!entry || entry.kind === "absent") return { ok: true, candidates: [] };
+
+  if (entry.kind === "checkbook-nycha") {
+    const { matches, ok } = await getOrComputeNycha(env, requestId, undefined);
+    if (!ok) return { ok: false, candidates: [] };
+    return {
+      ok: true,
+      candidates: matches.map((m) => ({
+        key: `nycha:${m.id}`, kind: "exact",
+        vendor: m.vendor || "", amount: m.amount || 0, date: m.approved || m.start || "",
+      })),
+    };
+  }
+
+  // ABO fuzzy — the same cached per-authority award set the notice page's "possible awards"
+  // timeline already shows (unscoped by notice date, matching that existing display convention;
+  // see AGENTS.md's award-arrival-alerts note for why no date window is needed here).
+  const cached = await readAboCache(env, entry);
+  const awards = cached ? cached.awards : [];
+  return {
+    ok: true,
+    candidates: awards.map((a) => ({
+      key: `abo:${entry.dataset}:${entry.authority}:${a.vendor}:${a.date}:${a.amount}`,
+      kind: "fuzzy",
+      vendor: a.vendor || "", amount: a.amount || 0, date: a.date || "",
+    })),
+  };
 }
 
 // ---------------------------------------------------------------------------

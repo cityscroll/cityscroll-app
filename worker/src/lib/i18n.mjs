@@ -36,6 +36,16 @@ const EMAIL_STRINGS = {
     // lib/search_health.mjs). {weeks} = how long it's been quiet.
     search_health_quiet: "This watch hasn't matched anything new in the last {weeks} weeks.",
     search_health_fix:   "Broaden this search →",
+
+    // award_watch: one notice's award-arrival watch (see lib/search_health.mjs's neighbor,
+    // alerts.mjs's processAwardSub()). {agency} = the notice's agency name.
+    award_watch_subject:        "CROL-List: an award update for {agency}",
+    award_watch_heading:        "Award update",
+    award_watch_exact_label:    "Award registered",
+    award_watch_fuzzy_label:    "Possible award match",
+    award_watch_fuzzy_note:     "Matched by vendor and award date, not certain — named source only.",
+    award_watch_vendor_unlisted:"vendor unlisted",
+    award_watch_view_notice:    "View the notice on CROL-List →",
   },
 
   es: {
@@ -63,6 +73,14 @@ const EMAIL_STRINGS = {
 
     search_health_quiet: "Esta alerta no ha encontrado nada nuevo en las últimas {weeks} semanas.",
     search_health_fix:   "Ampliar esta búsqueda →",
+
+    award_watch_subject:        "CROL-List: novedades del contrato adjudicado para {agency}",
+    award_watch_heading:        "Novedades del contrato adjudicado",
+    award_watch_exact_label:    "Contrato adjudicado registrado",
+    award_watch_fuzzy_label:    "Posible contrato adjudicado",
+    award_watch_fuzzy_note:     "Coincide por proveedor y fecha de adjudicación, no es certero — solo fuente citada.",
+    award_watch_vendor_unlisted:"proveedor no indicado",
+    award_watch_view_notice:    "Ver el aviso en CROL-List →",
   },
 };
 

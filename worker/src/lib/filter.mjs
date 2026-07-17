@@ -36,6 +36,11 @@ export const LENSES = {
   // happened to pick. watchType/place survive only to mark the one genuinely different
   // shape: a rezoning watch, which has a place instead of a dollar amount or a due date.
   alerts:   ["watchType", "place", "keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial"],
+  // award: "tell me when THIS notice's award registers" — the delivery wrapper the same
+  // (email,lens,filter) idempotent-subscribe key already gives every other lens for free, just
+  // scoped to one notice instead of a standing query. See alerts.mjs's processAwardSub() for
+  // why this never runs through compileSub()/digestDecision() like the other lenses.
+  award:    ["requestId", "agency"],
 };
 
 const BOROS = ["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"];
@@ -80,6 +85,9 @@ function clampField(name, v) {
       return v === "rezone" ? "rezone" : null;
     case "place":
       return typeof v === "string" && v.trim() ? v.trim() : null;
+    case "requestId":
+      // Same shape handleExternalAward() already validates request ids against.
+      return typeof v === "string" && /^[A-Za-z0-9_-]{4,40}$/.test(v.trim()) ? v.trim() : null;
     default:
       return null;
   }
