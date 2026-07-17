@@ -18,6 +18,9 @@ const esc = (s) => String(s == null ? "" : s).replace(/[<>&"]/g, (c) => ({ "<": 
 // A stored lens filter → one human-readable line.
 export function describeFilter(lens, filter) {
   const f = filter || {};
+  if (lens === "award") {
+    return `award watch — notice ${f.requestId || "?"}${f.agency ? ` (${f.agency})` : ""} — you'll hear when the award registers`;
+  }
   if (lens === "entity") {
     const k = f.kind === "agency" ? "agency" : "vendor";
     return `${k} “${f.name || "?"}” — every new City Record notice naming them`;

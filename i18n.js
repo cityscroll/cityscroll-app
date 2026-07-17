@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "c373add4",
-  "zh-Hans": "2df7de08",
-  ru: "13b2e686",
-  bn: "dfd9b140",
-  ht: "ff3c3e1a",
-  ko: "75982549",
-  fr: "d685bb55",
-  pl: "7c685eda",
-  ar: "16dfc7e6",
-  ur: "84577b24",
+  es: "22ffec0f",
+  "zh-Hans": "c55f5990",
+  ru: "da18641b",
+  bn: "99b2503c",
+  ht: "dda011eb",
+  ko: "f7334e82",
+  fr: "c04c2404",
+  pl: "e2b08c20",
+  ar: "78645130",
+  ur: "1a5208e2",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -211,6 +211,7 @@ const STRINGS = {
     watch_meetings:     "Public hearings and meetings",
     watch_entityvendor: "A vendor — anything naming them",
     watch_entityagency: "An agency — anything they publish",
+    watch_awardwatch:   "The award on a notice I'm viewing",
     email_label:        "Email address",
     email_placeholder:  "you@example.com",
     freq_label:         "Frequency",
@@ -462,6 +463,9 @@ const STRINGS = {
     external_award_none_note_html: "The site also checked {source} and found no matching award there either.",
     external_award_nycha_none_note_html: "The site checked {link} for this notice's PIN and found no registered award there yet — registration can lag a solicitation.",
     external_award_nycha_note_html: "{link} award matched by exact PIN <code>{pin}</code> and a contract date after this solicitation.",
+    award_watch_offer_btn: "Email me when the award registers",
+    award_watch_pick_notice_html: "Open a specific notice and use its “Email me when the award registers” button — this option only works from there.",
+    award_watch_preview_note_html: "No preview to show yet — you'll get one email automatically once the award for “{label}” registers.",
     glance_who: "Who",
     glance_what: "What",
     glance_when: "When",
@@ -652,6 +656,7 @@ const STRINGS = {
     desc_moneynl_any: " — no filters set",
     desc_vendor: "{freq} digest — every new notice naming vendor “{name}”",
     desc_agency_watch: "{freq} digest — anything “{name}” publishes",
+    desc_awardwatch: "Checked {freq} — one email when the award for “{label}” registers",
     desc_section: "{freq} digest of {what}{bits}",
     desc_matching: " matching “{kw}”",
     desc_from_agency: " from {agency}",

@@ -947,6 +947,73 @@ This file is the project's committed home for project-intrinsic agent knowledge:
     text (no `<a>`) when the registry/match data needed to scope the link is missing (no
     `authority`, no `contract` id) — never a broken or unscoped href.
 
+## Award-arrival alerts — "tell me when THIS notice's award registers"
+
+- **Shape: its own minimal subscription (`lens:"award"`), not an attachment to a general
+  alert.** `LENSES.award = ["requestId","agency"]` (`worker/src/lib/filter.mjs`) rides the
+  exact same `(email,lens,filter)` idempotent-key double-opt-in flow every other lens already
+  uses — re-watching the same notice with the same email is a natural no-op upsert ("attach to
+  an existing... watch"), a fresh `{requestId,agency}` is a natural new one ("...or new"), with
+  zero extra plumbing for either case. Deliberately NOT a field bolted onto a reader's other,
+  unrelated alert — a general query subscription and a one-notice award watch have unrelated
+  cadence/content, and gluing them together would make an award note ride an email the reader
+  might not otherwise be getting (or vice versa, delay it).
+- **`processAwardSub(s, ctx)` (`worker/src/alerts.mjs`) branches BEFORE `compileSub()`/
+  `digestDecision()`, at the top of `processOneSub()`.** An award watch has no standing notices
+  query and — per the site owner's explicit requirement — no heartbeat/weekly-empty "still
+  nothing" ping; `digestDecision()`'s cadence logic would manufacture exactly that noise. It
+  diffs `currentAwardCandidates()`'s output against a per-sub seen-set using the SAME
+  `getSeen`/`markSeen` KV mechanism every other lens's fresh/seen diff already uses (just under
+  a `award:<sub key>` namespace), so "the same award re-surfacing must not re-notify" falls out
+  of existing, already-tested machinery rather than a new dedupe layer.
+- **`currentAwardCandidates(env, requestId, agency)` (`worker/src/external_award.mjs`) reuses
+  the exact precomputed state `/externalaward` already serves** — `getOrComputeNycha()` (D1
+  cache) for `checkbook-nycha` agencies, `readAboCache()` (KV) for `abo` agencies — never a
+  second, divergent notion of "has this notice's award appeared yet." Candidates are
+  content-fingerprinted (`nycha:<contract_id>`; ABO has no stable id, so
+  `abo:<dataset>:<authority>:<vendor>:<date>:<amount>`, same fingerprinting posture as
+  `dedupeFreshByContent()`). `ok:false` (a Checkbook/WAF hiccup) is distinct from a confirmed
+  `ok:true, candidates:[]` — the caller skips the run on `ok:false` rather than risking a false
+  "nothing new."
+- **No notice-date window on the ABO candidate set, and that's deliberate, not a gap**: the
+  notice page's own "possible awards" timeline for a fuzzy-covered agency already shows the same
+  unscoped per-authority cached set (`readAboCache`'s `awards`, unfiltered by date) — reusing it
+  verbatim for the watch keeps the two surfaces honest with each other. This also sidesteps a
+  first-subscribe false-positive: the opt-in button only ever renders on a CONFIRMED-empty state
+  (see below), so at subscribe time the candidate set is always empty by construction — an empty
+  starting seen-set is correct, not a bug that needs backfilling.
+- **The offer surfaces only where the promise is made — the notice-scoped empty-state note,
+  never the agency profile.** `awardWatchOfferHTML(notice)` (index.html) is embedded inside
+  `externalAwardHTML()`'s two "nothing found yet" branches only (NYCHA-none,
+  ABO-none-on-file) and guards on `notice && notice.request_id` — the agency-profile call site
+  passes no `notice`, so the button structurally cannot render there (there's no one notice to
+  attach a watch to). A covered agency with awards ALREADY showing gets no offer either — there
+  is nothing left to wait for.
+- **UI: a dedicated `#awatch` option (`awardwatch`), not a free-text field** — there's no
+  sensible free-text way to name "which notice," so the button
+  (`data-award-watch-offer` click handler in `externalAwardForNotice()`) sets a small
+  `awardWatchTarget = {requestId, agency, label}` module var, jumps to the Alerts tab, and
+  preselects it. Reaching `awardwatch` manually from the dropdown with no target set (keyboard/
+  screen-reader path, or just curiosity) shows `award_watch_pick_notice_html` instead of
+  silently failing — in both the Preview panel and as `aSubscribe()`'s own guard before any
+  network call. No live preview fetch: the "digest" is a one-off notification, not a standing
+  query, so `aPreview()` short-circuits to a static confirmation of the watched notice
+  (`award_watch_preview_note_html`) rather than hitting `/externalaward` a second time.
+- **Known, documented, out-of-scope gap**: the hermetic stray-English/a11y guard's notice-detail
+  fixture (`test/functional/assets/i18n_fixtures.py`) never renders a covered-agency EMPTY award
+  state today (its one `/externalaward` stub always returns a non-empty fuzzy set, and its one
+  notice fixture's agency isn't in `AWARD_SOURCE_REGISTRY` at all) — same class of guard blind
+  spot as the NL ask/chip panels noted elsewhere in this file. The offer button's copy is
+  covered by the STATIC lint (`stray_english.py`, every string routes through `t()`) and by
+  `i18n_keys.py`'s full-catalog parity check, just not by a rendered-DOM walk. A future fixture
+  extension (a second notice fixture under a NYCHA or ABO agency, with `/externalaward` routed
+  per-id/agency instead of one fixed response) would close this.
+- **Tests**: `worker/test/award_watch.test.mjs` — `currentAwardCandidates()` per registry kind
+  (exact/fuzzy/absent/unknown/lookup-failure) and `processOneSub()` integration fixtures for the
+  class boundaries in the acceptance criteria (fresh exact match, fresh fuzzy candidate, no
+  change → silence, malformed watch → skipped not thrown, re-surfacing → no re-notify, source
+  disappearing → no crash/no notify, lookup failure → skipped not falsely "nothing").
+
 ## Digest match evidence — why a keyword-matched item is in the digest at all
 
 - **`matchEvidence(title, description, terms)`** is a pure, dual-implemented function (once as

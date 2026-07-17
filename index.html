@@ -356,7 +356,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=fff8e6bf"></script>
+<script src="i18n.js?v=8aa616e8"></script>
 <script src="nl_parse.js"></script>
 <script src="external_awards.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
@@ -649,6 +649,7 @@
               <option value="meetings" data-i18n="watch_meetings">Public hearings and meetings</option>
               <option value="entityvendor" data-i18n="watch_entityvendor">A vendor — anything naming them</option>
               <option value="entityagency" data-i18n="watch_entityagency">An agency — anything they publish</option>
+              <option value="awardwatch" data-i18n="watch_awardwatch">The award on a notice I'm viewing</option>
             </select>
           </div>
           <div class="afield">
@@ -1537,6 +1538,15 @@ function agencyAwardsNote(agency){
   return `<div class="note">${t("agency_awards_unavailable_note_html")}</div>`;
 }
 
+// Award-arrival alerts (crol-awardarrival-q2): the opt-in surfaces exactly where the promise is
+// made — the "checked, nothing yet" empty state for a covered agency's own notice, never the
+// agency-level profile (no notice param there, and there's no single notice to attach the watch
+// to). externalAwardForNotice() wires the click after innerHTML lands.
+function awardWatchOfferHTML(notice){
+  if(!notice || !notice.request_id) return "";
+  return `<button class="act" type="button" data-award-watch-offer style="margin-top:8px">${t("award_watch_offer_btn")}</button>`;
+}
+
 function sourceUpdatedHTML(refreshed){
   return refreshed ? ` <span class="rmeta" style="margin:0">${t("external_awards_updated",{date:refreshed})}</span>` : "";
 }
@@ -1582,7 +1592,7 @@ function externalAwardHTML(resp, notice){
     // Nothing found — say we checked, but only when this notice actually carried a usable PIN.
     // Link to NYCHA's own Checkbook contracts list (no single matched contract to point at yet).
     if(notice && notice.type_of_notice_description==="Solicitation" && usablePin(notice.pin)){
-      return `<div class="note">${t("external_award_nycha_none_note_html",{link:checkbookNychaContractsLink()})}</div>`;
+      return `<div class="note">${t("external_award_nycha_none_note_html",{link:checkbookNychaContractsLink()})}</div>${awardWatchOfferHTML(notice)}`;
     }
     return "";
   }
@@ -1591,7 +1601,7 @@ function externalAwardHTML(resp, notice){
     const source = resp.source||{};
     if(awards.length) return aboAwardsTimelineHTML(awards, source);
     // Covered by an ABO source but nothing on file there — name + link + date the source checked.
-    return `<div class="note">${t("external_award_none_note_html",{source:aboSourceLink(source.dataset, source.authority)})}${sourceUpdatedHTML(source.refreshed)}</div>`;
+    return `<div class="note">${t("external_award_none_note_html",{source:aboSourceLink(source.dataset, source.authority)})}${sourceUpdatedHTML(source.refreshed)}</div>${awardWatchOfferHTML(notice)}`;
   }
   return "";
 }
@@ -2941,6 +2951,11 @@ let lastWatch = null;
 // filter and the live preview query, cleared whenever the watch type changes or a fresh NL
 // parse applies.
 let moneynlExtra = {};
+// Set by the "Email me when the award registers" button on a covered-agency notice's empty
+// award state (see awardWatchOfferHTML()/externalAwardForNotice()) — the one-notice target an
+// "awardwatch" #awatch selection subscribes to. null until that button (or nothing, if the
+// dropdown is reached manually with no notice in context) sets it.
+let awardWatchTarget = null;
 // skipQuizSync: true only for the two bookkeeping call sites (page-init, language re-render)
 // that run before/without any real user choice -- those must NOT manufacture a "topic
 // picked" look in the quiz above by highlighting whichever chip happens to match #awatch's
@@ -2956,12 +2971,14 @@ function aWatchChange(skipQuizSync){
     $("#aparam").value=""; $("#aagency").value="";
     $("#amoneykw").value=""; $("#amoneymin").value=""; $("#amoneymonths").value="";
     moneynlExtra = {};
+    if(lastWatch==="awardwatch") awardWatchTarget = null; // leaving the type clears its one-notice target
   }
   lastWatch = w;
   $("#aagency").style.display = SECTION_WATCH_LABEL[w] ? "" : "none";
   $("#amoneyfields").style.display = w==="moneynl" ? "" : "none";
   if(w==="moneynl"){ $("#athresh").style.display="none"; $("#aparam").style.display="none"; }
   else if(w==="bigaward"){ $("#aparamlabel").textContent=t("param_label_min_award"); $("#athresh").style.display=""; $("#aparam").style.display="none"; }
+  else if(w==="awardwatch"){ $("#athresh").style.display="none"; $("#aparam").style.display="none"; }
   else {
     $("#athresh").style.display="none"; $("#aparam").style.display="";
     if(w==="rfpkw"){ $("#aparamlabel").textContent=t("param_label_keyword"); $("#aparam").placeholder=t("param_placeholder_rfpkw"); }
@@ -2991,6 +3008,7 @@ function aDescribe(){
   }
   if(w==="entityvendor") return t("desc_vendor",{freq, name:$("#aparam").value.trim()||"…"});
   if(w==="entityagency") return t("desc_agency_watch",{freq, name:$("#aparam").value.trim()||"…"});
+  if(w==="awardwatch") return t("desc_awardwatch",{freq, label:(awardWatchTarget&&(awardWatchTarget.label||awardWatchTarget.agency))||"…"});
   if(SECTION_WATCH_LABEL[w]){
     const bits=[$("#aparam").value.trim()?t("desc_matching",{kw:$("#aparam").value.trim()}):"", $("#aagency").value.trim()?t("desc_from_agency",{agency:$("#aagency").value.trim()}):""].filter(Boolean).join("");
     return t("desc_section",{freq, what:t(SECTION_WATCH_LABEL[w]), bits});
@@ -3202,9 +3220,18 @@ function renderFeedLinks(){
     <a href="${u.json}">JSON Feed</a> ·
     <a href="${u.ics}">${t("calendar_ics")}</a> ${t("feeds_suffix")}`;
 }
+// awardwatch has no notices list to preview — the "digest" is a one-off notification, not a
+// standing query, so this just confirms what's about to be watched (or asks the reader to
+// open a specific notice first, if the dropdown was reached with no target set).
+function awardWatchPreviewHTML(){
+  if(!awardWatchTarget || !awardWatchTarget.requestId) return `<div class="empty">${t("award_watch_pick_notice_html")}</div>`;
+  const label = escUiHtml(awardWatchTarget.label || awardWatchTarget.agency || "");
+  return `<div class="empty">${t("award_watch_preview_note_html",{label})}</div>`;
+}
 async function aPreview(){
   $("#apreviewbox").innerHTML='<div class="empty"><span class="loading"></span> ' + t("fetching_today") + '</div>';
   renderFeedLinks();
+  if($("#awatch").value === "awardwatch"){ $("#apreviewbox").innerHTML = awardWatchPreviewHTML(); return; }
   let data;
   try{ data = await aFetch(); }catch(e){ $("#apreviewbox").innerHTML='<div class="empty">' + t("could_not_reach") + '</div>'; return; }
   const rows=data.rows||[];
@@ -3254,12 +3281,16 @@ function aLensFilter(){
   }
   if(w==="entityvendor") return {lens:"entity", filter:{kind:"vendor", name:$("#aparam").value.trim()||null}};
   if(w==="entityagency") return {lens:"entity", filter:{kind:"agency", name:$("#aparam").value.trim()||null}};
+  if(w==="awardwatch") return {lens:"award", filter:{requestId:(awardWatchTarget&&awardWatchTarget.requestId)||null, agency:(awardWatchTarget&&awardWatchTarget.agency)||null}};
   if(SECTION_WATCH_LABEL[w]) return {lens:w, filter:{keywords:p?[p]:[], agency:$("#aagency").value.trim()||null}};
   return {lens:"land", filter:{keywords:p?[p]:[], status:"all"}}; // rezonings — text match on the place
 }
 function aIsEmail(s){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s||""); }
 async function aSubscribe(){
   const msg=$("#asubmsg"), dest=$("#adest");
+  if($("#awatch").value==="awardwatch" && !(awardWatchTarget && awardWatchTarget.requestId)){
+    msg.innerHTML = t("award_watch_pick_notice_html"); return;
+  }
   const email=dest.value.trim();
   if(!aIsEmail(email)){ msg.innerHTML=t("enter_valid_email"); dest.setAttribute("aria-invalid","true"); return; }
   dest.removeAttribute("aria-invalid");
@@ -3482,6 +3513,15 @@ async function externalAwardForNotice(r, el){
   const resp = await loadExternalAward({id: r.request_id});
   if(!document.contains(el) || !resp) return;
   el.innerHTML = externalAwardHTML(resp, r);
+  const offerBtn = el.querySelector("[data-award-watch-offer]");
+  if(offerBtn) offerBtn.addEventListener("click", ()=>{
+    awardWatchTarget = { requestId: r.request_id, agency: r.agency_name, label: r.short_title || r.agency_name || "" };
+    showTab("alerts", true);
+    $("#awatch").value = "awardwatch";
+    aWatchChange();
+    aPreview();
+    $("#adest").focus();
+  });
 }
 
 async function followDollars(r, el){
@@ -4144,6 +4184,7 @@ const DEEPLINK_LENSES = {
   meetings: ["keywords", "agency", "when"],
   entity:   ["name", "kind"],
   alerts:   ["watchType", "place", "keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial"],
+  award:    ["requestId", "agency"],
 };
 const DEEPLINK_CATEGORIES = ["Goods", "Goods and Services", "Services (other than human services)",
   "Human Services/Client Services", "Construction/Construction Services", "Construction Related Services"];
@@ -4166,6 +4207,7 @@ function deeplinkClampField(name, v){
     case "kind": return v==="agency" ? "agency" : v==="vendor" ? "vendor" : null;
     case "watchType": return v==="rezone" ? "rezone" : null;
     case "place": return typeof v==="string" && v.trim() ? v.trim() : null;
+    case "requestId": return typeof v==="string" && /^[A-Za-z0-9_-]{4,40}$/.test(v.trim()) ? v.trim() : null;
     default: return null;
   }
 }

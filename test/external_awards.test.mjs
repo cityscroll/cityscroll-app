@@ -70,6 +70,7 @@ const T = (key, vars) => {
     agency_awards_none_open_data_html: "This agency's contract awards are not published in any open dataset CROL-List knows of. <a href=\"about.html#external-awards-sources\">See what we checked</a>.",
     agency_awards_unavailable_note_html: "No contract awards from this agency appear in the City Record — some agencies publish awards elsewhere. <a href=\"about.html#external-awards-sources\">See what we checked</a>.",
     mode_award: "Award", awarded_to: "Awarded to", untitled: "(untitled)", untitled_name: "(no name)",
+    award_watch_offer_btn: "Email me when the award registers",
   }[key]) || key;
   return vars ? s.replace(/\{(\w+)\}/g, (_, k) => (vars[k] != null ? vars[k] : "")) : s;
 };
@@ -90,6 +91,7 @@ function buildExternalAwardHTML() {
     extractFn("sourceUpdatedHTML"),
     extractFn("aboAwardsTimelineHTML"),
     extractFn("nychaAwardBoxHTML"),
+    extractFn("awardWatchOfferHTML"),
     extractFn("externalAwardHTML"),
   ].join("\n") + "\nreturn externalAwardHTML;";
   return new Function("t", "money", "escUiHtml", "fdate", "usablePin", "EXT_ATTRS", "extSR", src)(
@@ -292,7 +294,7 @@ test("externalAwardForNotice: absent/unknown agencies fetch nothing (claim lives
     extractFn("externalAwardForNotice") + "\nreturn externalAwardForNotice;",
   )(awardCoverage, async () => { fetched = true; return null; }, { contains: () => true }, () => "X");
 
-  const el = { innerHTML: "" };
+  const el = { innerHTML: "", querySelector: () => null };
   await externalAwardForNotice({ agency_name: "Tax Commission", request_id: "1" }, el);
   assert.equal(fetched, false, "verified-absent agency triggers no worker fetch");
   await externalAwardForNotice({ agency_name: "Sanitation", request_id: "1" }, el);
@@ -307,7 +309,7 @@ test("externalAwardForNotice: covered agency fetches once and renders the respon
   )(awardCoverage, async () => { calls++; return { coverage: "exact", matches: [] }; },
     { contains: () => true }, () => "<rendered/>");
 
-  const el = { innerHTML: "" };
+  const el = { innerHTML: "", querySelector: () => null };
   await externalAwardForNotice({ agency_name: "Housing Authority", request_id: "20250501001" }, el);
   assert.equal(calls, 1);
   assert.equal(el.innerHTML, "<rendered/>");

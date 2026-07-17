@@ -29,6 +29,7 @@ import { runCheckbookPipeline } from "./checkbook.mjs";
 import { runMocsPlanPipeline } from "./mocs_plan.mjs";
 import { bumpStatAllTime, bumpCategoryStat, bumpHistDay } from "./lib/stats.mjs";
 import { nextSearchHealth, searchHealthStatus, alertsFixUrl, searchHealthNoteHtml } from "./lib/search_health.mjs";
+import { currentAwardCandidates } from "./external_award.mjs";
 
 // A sent digest's category breakdown for the all-time stats: one bump per distinct City
 // Record section_name it carried (falling back to the watch's lens for sections without
@@ -133,6 +134,11 @@ export async function runAlerts(env, watches = cfg.watches || []) {
 export async function processOneSub(env, s, ctx) {
   try {
     if (s.freq === "weekly" && !ctx.isMonday) return { sub: maskKey(s.key), skipped: "weekly" };
+    // Award-arrival watches are one-notice, one-shot-per-award content, not a standing notices
+    // query — they never run through compileSub()/digestDecision()'s heartbeat/weekly-empty
+    // logic (a "still nothing" ping would contradict the whole point of a silent watch). See
+    // processAwardSub() below.
+    if (s.lens === "award") return processAwardSub(env, s, ctx);
     const q = compileSub(s, ctx.today);
     if (!q) return { sub: maskKey(s.key), skipped: `lens:${s.lens}` };
 
@@ -239,6 +245,85 @@ export async function processOneSub(env, s, ctx) {
   } catch (e) {
     return { sub: maskKey(s.key), error: String(e?.message || e) };
   }
+}
+
+// One award-arrival watch: diff the notice's current award candidates (currentAwardCandidates,
+// external_award.mjs — the SAME precomputed state the notice page itself reads) against what
+// this sub has already been told about, and notify only on genuinely new ones.
+//
+// Deliberately NOT digestDecision()-shaped: a one-notice watch has no "still nothing" heartbeat
+// or weekly-empty check-in to send — "when nothing new appears, then silence" (see AGENTS.md).
+// Reuses the exact same getSeen/markSeen KV mechanism every other lens's fresh/seen diff uses,
+// just under a distinct key namespace (`award:<sub key>`) so it can never collide with a notices
+// "seen" set even if a (email,lens,filter) hash were ever reused across lenses.
+export async function processAwardSub(env, s, ctx) {
+  try {
+    const filter = s.filter || {};
+    if (typeof filter.requestId !== "string" || !filter.requestId) {
+      return { sub: maskKey(s.key), skipped: "malformed-award-watch" };
+    }
+
+    const { ok, candidates } = await currentAwardCandidates(env, filter.requestId, filter.agency);
+    if (!ok) return { sub: maskKey(s.key), skipped: "award-lookup-failed" };
+
+    const seenId = `award:${s.key}`;
+    const seen = await getSeen(env, seenId);
+    const fresh = candidates.filter((c) => c.key && !seen.has(c.key));
+
+    const { allow: send, capped } = capDecision({
+      want: fresh.length > 0 && ctx.LIVE && !!s.email,
+      counts: ctx.counts(),
+      caps: ctx.caps,
+    });
+
+    if (send) {
+      const lang = s.lang || "en";
+      const unsubUrl = await unsubLink(env, s.key);
+      const subject = emailT(lang, "award_watch_subject", { agency: filter.agency || "" });
+      const html = awardWatchDigestHtml(fresh, filter, unsubUrl, lang);
+      await sendEmail(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true);
+      await ctx.onSent();
+      await setLastSent(env, s.key, ctx.today);
+      await bumpStatAllTime(env.ALERT_STATE, "digest");
+      await bumpHistDay(env.ALERT_STATE, "digest", new Date());
+      await bumpCategoryStat(env.ALERT_STATE, "digest", "award-watch");
+    }
+
+    // Every candidate seen this run is marked, sent or not — a candidate that showed up while
+    // capped must not be re-notified once the cap clears (it was already accounted for), same
+    // "mark on observe, not on send" posture the other lenses use for their own seen sets.
+    if (candidates.length && !capped) await markSeen(env, seenId, candidates.map((c) => c.key).filter(Boolean));
+
+    return { sub: maskKey(s.key), lens: "award", found: candidates.length, new: fresh.length, sent: send, capped };
+  } catch (e) {
+    return { sub: maskKey(s.key), error: String(e?.message || e) };
+  }
+}
+
+// award_watch email body — exact NYCHA matches render as a confident line, ABO fuzzy candidates
+// as an explicitly-labeled "possible" one, mirroring the notice page's nychaAwardBoxHTML() /
+// aboAwardsTimelineHTML() visual+verbal distinction (index.html).
+function awardWatchDigestHtml(candidates, filter, unsubUrl, lang = "en") {
+  const usd = (n) => (n == null || n === "" || !n ? "" : "$" + Number(n).toLocaleString("en-US"));
+  const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
+  const noticeUrl = `https://crol-list.org/#notice/${encodeURIComponent(filter.requestId)}`;
+  const items = candidates.map((c) => {
+    const vendor = c.vendor ? esc(c.vendor) : esc(emailT(lang, "award_watch_vendor_unlisted"));
+    const meta = [vendor, usd(c.amount), c.date ? esc(String(c.date).slice(0, 10)) : ""].filter(Boolean).join(" · ");
+    if (c.kind === "exact") {
+      return `<li style="margin:0 0 14px"><b>${esc(emailT(lang, "award_watch_exact_label"))}</b><br>
+        <span style="color:#555;font-size:13px">${meta}</span></li>`;
+    }
+    return `<li style="margin:0 0 14px;font-style:italic;color:#555"><b>${esc(emailT(lang, "award_watch_fuzzy_label"))}</b><br>
+      <span style="font-size:13px">${meta}</span><br>
+      <span style="font-size:12px">${esc(emailT(lang, "award_watch_fuzzy_note"))}</span></li>`;
+  }).join("");
+  return `<div style="font-family:Georgia,serif;max-width:620px">
+    <h2 style="font-family:system-ui">CROL-List — ${esc(emailT(lang, "award_watch_heading"))}</h2>
+    <ul style="list-style:none;padding:0">${items}</ul>
+    <p style="font-size:13px"><a href="${noticeUrl}">${esc(emailT(lang, "award_watch_view_notice"))}</a></p>
+    <p style="color:#999;font-size:12px;margin-top:20px">${esc(emailT(lang, "digest_subscribed"))} <a href="${esc(unsubUrl)}">${esc(emailT(lang, "digest_unsubscribe"))}</a> (one-click).</p>
+  </div>`;
 }
 
 // Queue consumer entry: one digest job = one subscription key. Reads the daily send
