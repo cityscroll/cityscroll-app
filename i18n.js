@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "68b63313",
-  "zh-Hans": "8df91ee0",
-  ru: "05cb64cb",
-  bn: "3ae25833",
-  ht: "6c189ca6",
-  ko: "407677a2",
-  fr: "c92708ec",
-  pl: "f85e726c",
-  ar: "bf2c0a1d",
-  ur: "d03964cd",
+  es: "cb814c68",
+  "zh-Hans": "b64acefa",
+  ru: "2449dcdb",
+  bn: "b3279a94",
+  ht: "1097dcd8",
+  ko: "57fe6eed",
+  fr: "acb04949",
+  pl: "d0a968fb",
+  ar: "c046fe53",
+  ur: "2ac3c078",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -356,6 +356,7 @@ const STRINGS = {
     nl_understood_label: "We understood this as:",
     nl_edit_btn:      "Edit search",
     nl_no_matches_note: "No matches for this search.",
+    deeplink_watch_context_label: "Matched by your watch:",
     nl_chip_land_kind: "rezonings",
     nl_chip_land_status_all: "including closed rezonings",
     sync_watch_announce: "Your alert is now set to {what}.",

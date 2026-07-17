@@ -221,6 +221,7 @@
     nl_understood_label: "Мы поняли это так:",
     nl_edit_btn: "Изменить запрос",
     nl_no_matches_note: "По этому запросу совпадений нет.",
+    deeplink_watch_context_label: "Совпадает с вашим оповещением:",
     nl_chip_land_kind: "изменения зонирования",
     nl_chip_land_status_all: "включая закрытые изменения зонирования",
     sync_watch_announce: "Теперь ваше оповещение настроено на {what}.",

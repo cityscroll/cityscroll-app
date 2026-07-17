@@ -101,3 +101,46 @@ test("an amount-only watch (no keywords) renders the notice with no evidence chr
   assert.doesNotMatch(html, /<mark/);
   assert.doesNotMatch(html, /Matched: /);
 });
+
+// w12-12: before, a digest item's link carried nothing about the watch that surfaced it — a
+// click from this exact education-watch email landed on the plain notice view, with the
+// school-text evidence (the <mark>-highlighted snippet asserted above) visible only in the
+// email itself, gone the moment the reader followed the link to the site. After, the link
+// carries the watch's own {lens, filter} so the site can reconstruct the same evidence on
+// arrival — this is the card's anchor fixture, run end-to-end through the real send path.
+test("the education watch's notice link carries its own filter as a ?w= param, decodable back to {lens, filter}", async () => {
+  const sentEmails = await runOneMoneySub({ keywords: ["education"] });
+  const html = sentEmails[0].html;
+  const m = html.match(/href="(https:\/\/api\.crol-list\.org\/r\/rfp\/20260701099\?w=[^"]+)"/);
+  assert.ok(m, "no ?w= link found in the sent digest HTML");
+  const url = new URL(m[1].replace(/&amp;/g, "&"));
+  const w = url.searchParams.get("w");
+  assert.deepEqual(JSON.parse(w), { lens: "money", filter: { keywords: ["education"] } });
+});
+
+test("a multi-filter watch (keywords + agency + amount) carries every field in its ?w= param", async () => {
+  // minAmount set with no explicit noticeType implies the Award branch (compileSub's
+  // pre-existing amount-presence heuristic — see AGENTS.md's "Alerts NL query" section), so
+  // this watch's link kind is "award", not "rfp" — months (a Solicitation-only due-date
+  // bound) never applies to it, same as the live query it mirrors.
+  const sentEmails = await runOneMoneySub({
+    keywords: ["education"], agency: "Office of the Comptroller", minAmount: 100000,
+  });
+  const html = sentEmails[0].html;
+  const m = html.match(/href="(https:\/\/api\.crol-list\.org\/r\/award\/20260701099\?w=[^"]+)"/);
+  assert.ok(m, "no ?w= link found in the sent digest HTML");
+  const w = new URL(m[1].replace(/&amp;/g, "&")).searchParams.get("w");
+  assert.deepEqual(JSON.parse(w), {
+    lens: "money",
+    filter: { keywords: ["education"], agency: "Office of the Comptroller", minAmount: 100000 },
+  });
+});
+
+test("an amount-only watch (no keywords) still carries its filter — minAmount alone is real signal", async () => {
+  const sentEmails = await runOneMoneySub({ minAmount: 1000000 });
+  const html = sentEmails[0].html;
+  const m = html.match(/href="(https:\/\/api\.crol-list\.org\/r\/award\/20260701099\?w=[^"]+)"/);
+  assert.ok(m);
+  const w = new URL(m[1].replace(/&amp;/g, "&")).searchParams.get("w");
+  assert.deepEqual(JSON.parse(w), { lens: "money", filter: { minAmount: 1000000 } });
+});

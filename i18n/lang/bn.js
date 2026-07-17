@@ -221,6 +221,7 @@
     nl_understood_label: "আমরা এটি এভাবে বুঝেছি:",
     nl_edit_btn: "অনুসন্ধান সম্পাদনা করুন",
     nl_no_matches_note: "এই অনুসন্ধানের জন্য কোনো ফলাফল নেই।",
+    deeplink_watch_context_label: "আপনার সতর্কতার সাথে মিলেছে:",
     nl_chip_land_kind: "অঞ্চল পুনর্বিন্যাস",
     nl_chip_land_status_all: "বন্ধ অঞ্চল পুনর্বিন্যাস সহ",
     sync_watch_announce: "আপনার সতর্কতা এখন {what}-এ সেট করা হয়েছে।",

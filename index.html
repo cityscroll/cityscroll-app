@@ -307,7 +307,7 @@
   .digitem .dc{font:12px/1.5 ui-sans-serif,system-ui,sans-serif;margin-top:3px}
   .digitem .dc a{color:var(--oxblood);text-decoration:underline;text-underline-offset:2px} /* non-color cue — WCAG 1.4.1: oxblood-vs-ink is only 1.74:1 */
   mark{background:#ffe58a;color:inherit;padding:0 1px;border-radius:2px} /* the matched keyword — see matchEvidence(); unscoped so every lens list (not just the digest preview) can reuse it */
-  .digitem .dev,.row .dev,.fcard .dev{font:12px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted);font-style:italic;margin-top:3px} /* the "why this matched" line — text itself carries the meaning, not just the mark's color */
+  .digitem .dev,.row .dev,.fcard .dev,.panel .dev{font:12px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted);font-style:italic;margin-top:3px} /* the "why this matched" line — text itself carries the meaning, not just the mark's color; .panel covers showNotice()'s deep-linked permalink view (w12-12) */
   .savedalert{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#faf6ee;border:1px solid var(--rule);border-radius:7px;padding:9px 12px;margin-top:8px;font-size:13px}
   .savedalert button{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;padding:5px 9px;background:#fff;color:var(--rose);border:1px solid var(--rule);border-radius:6px;cursor:pointer}
 
@@ -356,7 +356,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=e279c695"></script>
+<script src="i18n.js?v=d27dae4a"></script>
 <script src="nl_parse.js"></script>
 <script src="external_awards.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
@@ -4097,10 +4097,103 @@ function pushHash(){ // tab changes create a history entry (back returns to the 
   if(location.hash !== h) history.pushState(null, "", h);
 }
 
+// ===== Digest deep-links (w12-12) =====
+// A digest email's notice link carries the originating watch's own {lens, filter} as a "?w="
+// query on the "#notice/<id>" hash segment -- worker/src/lib/filter.mjs's encodeWatchFilter()
+// builds it, worker/src/redirect.mjs forwards it through the count-only /r click-through
+// unread. Landing here, showNotice() re-renders the exact same Matched-evidence highlighting +
+// interpretation echo the subscriber would see running the watch themselves -- no server-side
+// state, nothing identifying beyond the notice id itself (the URL is exactly as shareable as a
+// plain "#notice/<id>" link already was).
+//
+// DEEPLINK_LENSES/deeplinkClampField/sanitizeDeepLinkFilter are a hand-synced client port of
+// worker/src/lib/filter.mjs's LENSES/clampField/sanitize -- same dual-implementation convention
+// as external_awards.js/lib/external_award.mjs (see AGENTS.md). test/deeplink_watch.test.mjs
+// cross-checks the two stay in sync. Reusing sanitize()'s clamp-to-schema behavior is what makes
+// an unexpected extra key or an out-of-range value fail soft (silently dropped, not an error)
+// rather than break rendering.
+const DEEPLINK_LENSES = {
+  money:    ["keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial"],
+  people:   ["keywords", "lookupType"],
+  land:     ["keywords", "boro", "status"],
+  property: ["keywords", "agency"],
+  rules:    ["keywords", "agency"],
+  meetings: ["keywords", "agency", "when"],
+  entity:   ["name", "kind"],
+  alerts:   ["watchType", "place", "keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial"],
+};
+const DEEPLINK_CATEGORIES = ["Goods", "Goods and Services", "Services (other than human services)",
+  "Human Services/Client Services", "Construction/Construction Services", "Construction Related Services"];
+const DEEPLINK_BOROS = ["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"];
+function deeplinkClampField(name, v){
+  switch(name){
+    case "keywords": return Array.isArray(v) ? v.map(k=>String(k).toLowerCase().trim()).filter(Boolean).slice(0,4) : [];
+    case "agency": return typeof v==="string" && v.trim() ? v.trim() : null;
+    case "minAmount": return typeof v==="number" && v>=1000 ? Math.round(v) : null;
+    case "maxAmount": return typeof v==="number" && v>=1000 ? Math.round(v) : null;
+    case "category": return DEEPLINK_CATEGORIES.includes(v) ? v : null;
+    case "months": return typeof v==="number" && v>0 && v<=60 ? Math.round(v) : null;
+    case "noticeType": return v==="award" ? "award" : v==="solicitation" ? "solicitation" : null;
+    case "excludeSpecial": return !!v;
+    case "boro": { const s = typeof v==="string" ? v.trim().toLowerCase() : ""; return DEEPLINK_BOROS.find(b=>b.toLowerCase()===s) || null; }
+    case "status": return v==="all" ? "all" : v==="active" ? "active" : null;
+    case "when": return v==="all" ? "all" : v==="upcoming" ? "upcoming" : null;
+    case "lookupType": return v==="person" ? "person" : v==="role" ? "role" : null;
+    case "name": return typeof v==="string" && v.trim() ? v.replace(/\s+/g," ").trim().slice(0,120) : null;
+    case "kind": return v==="agency" ? "agency" : v==="vendor" ? "vendor" : null;
+    case "watchType": return v==="rezone" ? "rezone" : null;
+    case "place": return typeof v==="string" && v.trim() ? v.trim() : null;
+    default: return null;
+  }
+}
+function sanitizeDeepLinkFilter(lens, input){
+  const fields = DEEPLINK_LENSES[lens] || DEEPLINK_LENSES.money;
+  const f = input || {};
+  const out = {};
+  for(const name of fields) out[name] = deeplinkClampField(name, f[name]);
+  return out;
+}
+// raw is already percent-decoded (URLSearchParams.get()). null on anything malformed, truncated
+// (JSON.parse throws), or naming an unrecognized lens -- the caller then renders the plain
+// notice view, same as if no watch had been carried at all.
+function parseWatchParam(raw){
+  if(!raw || raw.length > 2000) return null;
+  let obj;
+  try{ obj = JSON.parse(raw); }catch(e){ return null; }
+  if(!obj || typeof obj !== "object" || Array.isArray(obj)) return null;
+  const lens = typeof obj.lens === "string" ? obj.lens : null;
+  if(!lens || !DEEPLINK_LENSES[lens]) return null;
+  return { lens, filter: sanitizeDeepLinkFilter(lens, obj.filter) };
+}
+// The "We understood this as" echo chips, reusing each lens's own chip builder so a deep-linked
+// notice reads exactly like running the watch would have. NL.alerts.chips() already covers the
+// full money-shaped schema (money's own Ask box has no NL.money entry -- nlTranslate() builds
+// its chips inline -- but the shape is identical to NL.alerts', which money-lens deep links
+// reuse here). Entity watches match by name, not keyword: there's nothing hidden to explain (the
+// agency/vendor name is already shown plainly elsewhere on the notice), so they render no
+// chips -- same posture matchEvidence() already takes for entity subs (see lib/digest.mjs).
+function watchChipsFor(lens, filter){
+  if(lens==="money") return (NL.alerts.chips(filter)||[]).filter(Boolean);
+  if(NL[lens] && typeof NL[lens].chips === "function") return (NL[lens].chips(filter)||[]).filter(Boolean);
+  return [];
+}
+// rest: whatever follows "notice/" in the hash, e.g. "20260701099?w=%7B...%7D" or a bare id
+// with no query at all (the pre-w12-12 shape, still fully supported -- watch comes back null).
+function parseNoticeHashSegment(rest){
+  const qi = rest.indexOf("?");
+  const id = decodeURIComponent(qi < 0 ? rest : rest.slice(0, qi));
+  const watch = qi < 0 ? null : parseWatchParam(new URLSearchParams(rest.slice(qi+1)).get("w"));
+  return { id, watch };
+}
+
 function applyHash(){
   const raw = location.hash.slice(1);
   if(!raw) return false;
-  if(raw.startsWith("notice/")){ showNotice(decodeURIComponent(raw.slice(7))); return true; }
+  if(raw.startsWith("notice/")){
+    const { id, watch } = parseNoticeHashSegment(raw.slice(7));
+    showNotice(id, watch);
+    return true;
+  }
   // agencyHref()/vendorHref() can append a literal "?tab=forecast" (never inside the
   // encoded name itself, since encodeURIComponent escapes any real "?") to deep-link
   // straight into the profile's Forecast subtab from the notice-detail cross-link.
@@ -4158,7 +4251,10 @@ function applyHash(){
 }
 
 const NOTICE_SELECT = SELECT + ",event_date,street_address_1,section_name";
-async function showNotice(id){
+// watch: the {lens, filter} parseWatchParam() extracted from this link's own "?w=" (w12-12) --
+// null for a plain "#notice/<id>" link (unchanged behavior). When present, the title/evidence/
+// echo below render exactly as they would if the reader had run the watch themselves.
+async function showNotice(id, watch){
   showTab("notice");
   const box = $("#noticeview");
   const safeId = String(id).replace(/[<>&]/g,"");
@@ -4174,11 +4270,19 @@ async function showNotice(id){
   }
   const link = noticeLink(r.request_id);
   const scope = cleanText(r.additional_description_1);
+  const title = cleanText(r.short_title) || t("untitled_notice");
+  const ev = watch ? matchEvidence(title, matchText(r), watch.filter.keywords||[]) : null;
+  const titleInner = (ev && ev.field==="title")
+    ? `${title.slice(0,ev.index)}<mark>${title.slice(ev.index, ev.index+ev.term.length)}</mark>${title.slice(ev.index+ev.term.length)}`
+    : title;
+  const watchChips = watch ? watchChipsFor(watch.lens, watch.filter) : [];
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("back_browse")}</a></p>
     <div class="panel" style="padding:22px 24px">
       <div class="ftype" style="margin-bottom:6px">${r.type_of_notice_description||t("notice_fallback")}${r.section_name?" · "+tSection(r.section_name):""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}</div>
-      <h2 class="rolename" lang="en" dir="ltr">${cleanText(r.short_title)||t("untitled_notice")}</h2>
+      <h2 class="rolename" lang="en" dir="ltr">${titleInner}</h2>
+      ${digEvidenceHTML(ev)}
+      ${watchChips.length ? `<div class="nlunderstood" role="status">${t("deeplink_watch_context_label")} ${watchChips.join(" ")}</div>` : ""}
       <div id="ncontext"></div>
       ${glanceFor(r)}
       <div id="naddr"></div><div id="ndollars"></div><div id="nexternal"></div>

@@ -221,6 +221,7 @@
     nl_understood_label: "Esto es lo que entendimos:",
     nl_edit_btn: "Editar búsqueda",
     nl_no_matches_note: "No hay resultados para esta búsqueda.",
+    deeplink_watch_context_label: "Coincide con tu alerta:",
     nl_chip_land_kind: "rezonificaciones",
     nl_chip_land_status_all: "incluyendo rezonificaciones cerradas",
     sync_watch_announce: "Tu alerta ahora está configurada como {what}.",

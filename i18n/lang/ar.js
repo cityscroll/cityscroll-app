@@ -224,6 +224,7 @@
     nl_understood_label: "لقد فهمنا هذا على أنه:",
     nl_edit_btn: "تعديل البحث",
     nl_no_matches_note: "لا توجد نتائج مطابقة لهذا البحث.",
+    deeplink_watch_context_label: "متطابق مع تنبيهك:",
     nl_chip_land_kind: "إعادة تقسيم المناطق",
     nl_chip_land_status_all: "بما في ذلك إعادة تقسيم المناطق المغلقة",
     sync_watch_announce: "تم ضبط تنبيهك الآن على {what}.",

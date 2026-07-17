@@ -34,6 +34,14 @@ Taxi and Limousine Commission
 Type
 Youth and Community Development
 
+# ── procurement category enum (DEEPLINK_CATEGORIES, index.html) — mirrors worker/src/lib/filter.mjs's
+# CATEGORIES verbatim, dataset category_description values used only to clamp a deep-linked
+# watch's category field; never rendered as translated chrome (category_description is already
+# shown as raw English data elsewhere, same as agency_name/vendor_name). The slash-containing
+# entries don't trip the word-list scan themselves (only their comma-joined neighbors did).
+Goods and Services
+Services (other than human services)
+
 # ── SODA query fragments / column expressions
 ,event_date,street_address_1,section_name
 agency_name,sum(contract_amount) AS total
