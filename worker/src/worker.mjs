@@ -22,6 +22,7 @@ import { handleRedirect } from "./redirect.mjs";
 import { runAlerts, consumeDigestJob } from "./alerts.mjs";
 import { ingestNotices } from "./ingest.mjs";
 import { handlePriorCycle, prewarm as prewarmPriorCycle } from "./prior_cycle.mjs";
+import { handleExternalAward, refreshAboAwards, prewarmNycha } from "./external_award.mjs";
 import { runSuggestionValidation, handleSuggestions, handleAdminSuggestRefresh } from "./suggest.mjs";
 import { handleMcp } from "./mcp.mjs";
 import { handleBoardHook } from "board-notify";
@@ -45,6 +46,7 @@ export default {
     if (pathname === "/batch") return handleBatch(request, env);
     if (pathname === "/inv" || pathname.startsWith("/inv/")) return handleInv(request, env, pathname);
     if (pathname.startsWith("/priorcycle/")) return handlePriorCycle(request, env, pathname);
+    if (pathname === "/externalaward") return handleExternalAward(request, env);
     if (pathname === "/suggestions") return handleSuggestions(request, env);
     if (pathname === "/stats") return handleStats(request, env, ctx);
     if (pathname.startsWith("/r/")) return handleRedirect(request, env, ctx, pathname);
@@ -80,6 +82,25 @@ export default {
       }
     } catch (e) {
       console.error("prior-cycle prewarm failed (digest continues):", String(e?.message || e));
+    }
+    // Awards published elsewhere: refresh the ABO per-source award cache (weekly-gated inside
+    // refreshAboAwards — the sources update ~annually) and pre-warm freshly-ingested NYCHA
+    // solicitations' exact-PIN matches. Own try/catch, fail-soft like the other cron jobs —
+    // any un-warmed notice still fills lazily on first request via GET /externalaward.
+    try {
+      const r = await refreshAboAwards(env);
+      console.log("external-award abo refresh:", JSON.stringify(r));
+    } catch (e) {
+      console.error("abo award refresh failed (digest continues):", String(e?.message || e));
+    }
+    try {
+      const nychaIds = ingestResult?.nychaRequestIds || [];
+      if (nychaIds.length) {
+        const r = await prewarmNycha(env, nychaIds);
+        console.log("nycha award prewarm:", JSON.stringify(r));
+      }
+    } catch (e) {
+      console.error("nycha award prewarm failed (digest continues):", String(e?.message || e));
     }
     // Suggestion-chip validation (w12-08): a candidate's failure is already caught inside
     // runSuggestionValidation itself; this outer catch is only for something the pipeline

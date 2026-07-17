@@ -356,7 +356,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=5548dbfc"></script>
+<script src="i18n.js?v=e279c695"></script>
 <script src="nl_parse.js"></script>
 <script src="external_awards.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
@@ -1477,29 +1477,51 @@ async function loadAgencyStats(agency){
 }
 
 /* ===================== AWARDS PUBLISHED OUTSIDE THE CITY RECORD =====================
-   Public authorities often post solicitations in the City Record but file awards elsewhere.
-   Agency profiles use an exact, curated agency -> ABO authority mapping. NYCHA notices use
-   Checkbook's Contracts_NYCHA domain, but PIN alone is NOT enough: short numeric PINs are
-   reused, so rankNychaAwardCandidates() also requires the contract date to follow the notice. */
-async function loadAuthorityAwards(agency){
-  const source = authorityAwardSource(agency);
-  if(!source) return [];
-  const base = `https://data.ny.gov/resource/${source.dataset}.json`;
-  const q = source.authority.replace(/'/g,"''");
-  const asOf = todayISO().slice(0,10);
+   Public authorities post solicitations in the City Record but file awards elsewhere. The
+   AWARD_SOURCE_REGISTRY (external_awards.js) drives all three of: which agencies are swept,
+   the join precision, and the coverage claim the empty state makes. The award DATA is
+   precomputed server-side and served by GET /externalaward (worker/src/external_award.mjs) —
+   one workerFetch, no live per-view SODA/Checkbook calls. Exact (NYCHA/Checkbook, PIN) and
+   fuzzy (ABO, vendor+date) results stay visually and verbally distinct: a fuzzy result reads
+   as "possible," never asserted. */
+
+// One loader for both surfaces (notice detail by id, agency profile by agency). Returns the
+// endpoint's coverage-shaped JSON, or null on any failure (say-nothing posture — never render a
+// wrong "no awards" over a transient outage).
+async function loadExternalAward(params){
+  if(!API) return null;
+  const qs = params.id ? "id="+encodeURIComponent(params.id) : "agency="+encodeURIComponent(params.agency||"");
   try{
-    const rows = await api(base, {
-      "$select":"authority_name,vendor_name,procurement_description,award_process,award_date,contract_amount",
-      "$where":`authority_name='${q}' AND award_date IS NOT NULL AND award_date <= '${asOf}T23:59:59.999'`,
-      "$order":"award_date DESC", "$limit":"8"
-    }, 12000);
-    return normalizeRecentAuthorityAwards(rows, asOf);
-  }catch(e){ return []; }
+    const r = await workerFetch("/externalaward?"+qs, null, 12000);
+    if(!r.ok) return null;
+    const j = await r.json();
+    return (j && j.ok !== false) ? j : null;
+  }catch(e){ return null; }
 }
 
-function authorityAwardsHTML(agency, awards){
-  const source = authorityAwardSource(agency);
-  if(!source || !awards.length) return "";
+// The registry-driven empty-state claim for a zero-City-Record-award agency (Deliverable 3):
+// covered -> name the source; verified-absent -> say so plainly; unknown -> the existing hedge.
+function agencyAwardsNote(agency){
+  const cov = awardCoverage(agency);
+  if(cov==="absent") return `<div class="note">${t("agency_awards_none_open_data")}</div>`;
+  if(cov==="exact"||cov==="fuzzy"){
+    const e = awardSourceFor(agency);
+    const src = e.kind==="abo" ? t("external_awards_abo_source") : t("external_awards_checkbook_source");
+    return `<div class="note">${t("agency_awards_elsewhere_note",{source:src})}</div>`;
+  }
+  return `<div class="note">${t("agency_awards_unavailable_note")}</div>`;
+}
+
+// A link to the ABO source dataset on data.ny.gov (external -> new-tab treatment).
+function aboSourceLink(dataset){
+  return `<a href="https://data.ny.gov/resource/${dataset}" ${EXT_ATTRS}>${t("external_awards_abo_source")}${extSR()}</a>`;
+}
+function sourceUpdatedHTML(refreshed){
+  return refreshed ? ` <span class="rmeta" style="margin:0">${t("external_awards_updated",{date:refreshed})}</span>` : "";
+}
+
+// Fuzzy ABO awards render as a "possible" timeline (distinct from the exact NYCHA box below).
+function aboAwardsTimelineHTML(awards, source){
   const rows = awards.map(a=>{
     const vendor = a.vendor ? `<b lang="en" dir="ltr">${escUiHtml(a.vendor)}</b>` : `<b>${t("untitled_name")}</b>`;
     const description = a.description ? `<span lang="en" dir="ltr"> — ${escUiHtml(a.description)}</span>` : "";
@@ -1512,8 +1534,46 @@ function authorityAwardsHTML(agency, awards){
   }).join("");
   return `<div id="external-awards-content"><div class="chain-h">${t("external_awards_heading")}</div>
     <div class="timeline">${rows}</div>
-    <div class="pnote">${t("external_awards_abo_note")} <a href="https://data.ny.gov/resource/${source.dataset}" ${EXT_ATTRS}>${t("external_awards_abo_source")}${extSR()}</a>.</div></div>`;
+    <div class="pnote">${t("external_awards_possible_note")} ${t("external_awards_abo_note")} ${aboSourceLink(source.dataset)}.${sourceUpdatedHTML(source.refreshed)}</div></div>`;
 }
+
+// Exact NYCHA award (matched by PIN) renders as a confident chain box.
+function nychaAwardBoxHTML(c, pin){
+  return `<div class="chain-h">${t("external_awards_heading")}</div><div class="chain">
+    <div class="stage"><div class="box award">
+      <div class="stage-name">${t("mode_award")}</div><div class="when">${fdate(c.approved||c.start)}</div>
+      ${c.purpose?`<div class="bt" lang="en" dir="ltr">${escUiHtml(c.purpose)}</div>`:`<div class="bt">${t("untitled")}</div>`}
+      ${money(c.amount)?`<div class="amt">${money(c.amount)}</div>`:""}
+      ${c.vendor?`<div class="vend">${t("awarded_to")} <b lang="en" dir="ltr">${escUiHtml(c.vendor)}</b></div>`:""}
+      ${c.method?`<div class="rmeta" lang="en" dir="ltr">${escUiHtml(c.method)}</div>`:""}
+    </div></div></div>
+    <div class="pnote">${t("external_award_nycha_note_html",{pin:escUiHtml(pin)})}</div>`;
+}
+
+// Turn one /externalaward response into the award region's HTML. `notice` (optional) lets the
+// NYCHA path show the PIN and gate the "nothing found yet" note to eligible solicitations.
+function externalAwardHTML(resp, notice){
+  if(!resp) return "";
+  if(resp.coverage==="exact"){
+    const matches = resp.matches||[];
+    if(matches.length) return nychaAwardBoxHTML(matches[0], notice?notice.pin:"");
+    // Nothing found — say we checked, but only when this notice actually carried a usable PIN.
+    if(notice && notice.type_of_notice_description==="Solicitation" && usablePin(notice.pin)){
+      return `<div class="note">${t("external_award_nycha_none_note")}</div>`;
+    }
+    return "";
+  }
+  if(resp.coverage==="fuzzy"){
+    const awards = resp.agencyAwards||[];
+    const source = resp.source||{};
+    if(awards.length) return aboAwardsTimelineHTML(awards, source);
+    // Covered by an ABO source but nothing on file there — name + link + date the source checked.
+    return `<div class="note">${t("external_award_none_note_html",{source:aboSourceLink(source.dataset)})}${sourceUpdatedHTML(source.refreshed)}</div>`;
+  }
+  return "";
+}
+
+function boxClass(t){ return t==="Award" ? "award" : (t==="Intent to Award" ? "intent" : ""); }
 
 function boxClass(t){ return t==="Award" ? "award" : (t==="Intent to Award" ? "intent" : ""); }
 
@@ -1762,7 +1822,7 @@ function chainHTML(r, chain){
 // dash-and-zero scoreboard. `+stats.n > 0` is the numeric guard both agency stat blocks share.
 function hasAgencyAwards(stats){ return !!(stats && +stats.n > 0); }
 function noticeAgencyBar(stats, agencyName, barClass){
-  if(!hasAgencyAwards(stats)) return `<div class="note">${t("agency_awards_unavailable_note")}</div>`;
+  if(!hasAgencyAwards(stats)) return agencyAwardsNote(agencyName);
   return `<div class="${barClass || "agencybar"}">
     <div><div class="big">${money(stats.total)||"—"}</div><div class="lbl">${pivotA(agencyHref(agencyName), agencyName)}<br>${t("total_awarded_lbl")}</div></div>
     <div><div class="big">${fmtNumber(+stats.n)}</div><div class="lbl">${t("awards_published_lbl")}</div></div>
@@ -3388,48 +3448,17 @@ async function checkbookByPin(pin){
   return (legacy && legacy.length) ? legacy : primary;
 }
 
-async function checkbookNychaByPin(pin){
-  if(!API) return null;
-  const pageSize = 25, maxPages = 8, agreements = [];
-  const g = (el,tag)=>{ const n=el.getElementsByTagName(tag)[0]; return n ? n.textContent : ""; };
-  for(let page=0; page<maxPages; page++){
-    const from = page * pageSize + 1;
-    const xml = `<request><type_of_data>Contracts_NYCHA</type_of_data><records_from>${from}</records_from><max_records>${pageSize}</max_records><search_criteria>`
-      + `<criteria><name>pin</name><type>value</type><value>${escXml(pin)}</value></criteria>`
-      + `</search_criteria></request>`;
-    const r = await workerFetch("/checkbook", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({xml})}, 25000);
-    const doc = new DOMParser().parseFromString(await r.text(), "application/xml");
-    if((doc.querySelector("response > status > result")||{}).textContent !== "success") return null;
-    const transactions = [...doc.getElementsByTagName("transaction")];
-    agreements.push(...transactions.map(el=>({
-      id:g(el,"contract_id"), pin:g(el,"pin"), vendor:g(el,"vendor"),
-      amount:+g(el,"contract_current_amount")||+g(el,"contract_original_amount")||0,
-      invoiced:+g(el,"contract_invoiced_amount")||0,
-      start:g(el,"start_date"), end:g(el,"end_date"), approved:g(el,"approved_date"),
-      method:g(el,"award_method"), purpose:g(el,"purpose"), recordType:g(el,"record_type")
-    })).filter(c=>c.recordType === "Agreement"));
-    if(transactions.length < pageSize) return agreements;
-  }
-  return null;
-}
 
+// Notice-detail external-award region. Covered agencies (exact NYCHA / fuzzy ABO) resolve the
+// precomputed set in one workerFetch; absent/unknown agencies say nothing here (their coverage
+// claim lives in the stats-bar note). Say-nothing on any fetch failure — never a wrong "none".
 async function externalAwardForNotice(r, el){
-  if(!el || r.agency_name !== "Housing Authority" || r.type_of_notice_description !== "Solicitation" || !usablePin(r.pin)) return;
-  let rows = null;
-  try{ rows = await checkbookNychaByPin(String(r.pin).trim()); }catch(e){}
-  if(!document.contains(el) || !rows) return;
-  const matches = rankNychaAwardCandidates(r, rows);
-  if(!matches.length) return;
-  const c = matches[0];
-  el.innerHTML = `<div class="chain-h">${t("external_awards_heading")}</div><div class="chain">
-    <div class="stage"><div class="box award">
-      <div class="stage-name">${t("mode_award")}</div><div class="when">${fdate(c.approved||c.start)}</div>
-      ${c.purpose?`<div class="bt" lang="en" dir="ltr">${escUiHtml(c.purpose)}</div>`:`<div class="bt">${t("untitled")}</div>`}
-      ${money(c.amount)?`<div class="amt">${money(c.amount)}</div>`:""}
-      ${c.vendor?`<div class="vend">${t("awarded_to")} <b lang="en" dir="ltr">${escUiHtml(c.vendor)}</b></div>`:""}
-      ${c.method?`<div class="rmeta" lang="en" dir="ltr">${escUiHtml(c.method)}</div>`:""}
-    </div></div></div>
-    <div class="pnote">${t("external_award_nycha_note_html",{pin:escUiHtml(r.pin)})}</div>`;
+  if(!el) return;
+  const cov = awardCoverage(r.agency_name);
+  if(cov==="absent" || cov==="unknown") return;
+  const resp = await loadExternalAward({id: r.request_id});
+  if(!document.contains(el) || !resp) return;
+  el.innerHTML = externalAwardHTML(resp, r);
 }
 
 async function followDollars(r, el){
@@ -3478,8 +3507,8 @@ function vendorStem(name){
   return s;
 }
 
-function agencyProfileBar(stats, rfpCount){
-  if(!hasAgencyAwards(stats)) return `<div class="note">${t("agency_awards_unavailable_note")}</div>
+function agencyProfileBar(stats, rfpCount, agencyName){
+  if(!hasAgencyAwards(stats)) return `${agencyAwardsNote(agencyName)}
       <div class="agencybar">
         <div><div class="big">${rfpCount}${rfpCount===5?"+":""}</div><div class="lbl">open RFPs<br>right now</div></div>
       </div>`;
@@ -3545,14 +3574,16 @@ async function showAgency(name, initialTab){
   const box = $("#entityview");
   const nm = String(name||"").trim(), safe = nm.replace(/[<>&]/g,""), q = nm.replace(/'/g,"''");
   box.innerHTML = `<div class="empty"><span class="loading"></span> building profile: ${safe}…</div>`;
-  const [stats, sections, vendors, rfps, events, forecastData, authorityAwards] = await Promise.all([
+  const [stats, sections, vendors, rfps, events, forecastData, externalAward] = await Promise.all([
     loadAgencyStats(nm),
     soda({"$select":"section_name, count(1) as n","$where":`agency_name='${q}'`,"$group":"section_name","$order":"n DESC"}).catch(()=>[]),
     soda({"$select":"vendor_name, count(1) as n, sum(contract_amount) as t","$where":`agency_name='${q}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < 5000000000 AND vendor_name IS NOT NULL`,"$group":"vendor_name","$order":"t DESC","$limit":"8"}).catch(()=>[]),
     soda({"$select":SELECT,"$where":`agency_name='${q}' AND type_of_notice_description='Solicitation' AND due_date > '${todayISO()}'`,"$order":"due_date ASC","$limit":"5"}).catch(()=>[]),
     soda({"$select":FEED_SELECT,"$where":`agency_name='${q}' AND event_date > '${todayISO()}'`,"$order":"event_date ASC","$limit":"5"}).catch(()=>[]),
     workerFetch("/inv/" + encodeURIComponent(nm), null, 8000).then(r => r.ok ? r.json() : null).catch(() => null),
-    loadAuthorityAwards(nm)
+    // Only fuzzy ABO agencies list awards on the profile; exact (NYCHA) has no agency-wide set,
+    // and absent/unknown agencies have nothing to fetch (their claim is the synchronous note).
+    awardCoverage(nm)==="fuzzy" ? loadExternalAward({agency: nm}) : Promise.resolve(null)
   ]);
   if(!(stats && +stats.n) && !sections.length){
     box.innerHTML = `<div class="empty">No City Record notices found for agency “${safe}”. <a href="#money">← Browse CROL-List</a></div>`;
@@ -3582,7 +3613,7 @@ async function showAgency(name, initialTab){
     <div class="panel" style="padding:22px 24px">
       <div class="ftype" style="margin-bottom:6px">Agency profile · City Record on record</div>
       <h2 class="rolename" lang="en" dir="ltr">${agencyWho(nm)}</h2>
-      ${agencyProfileBar(stats, rfps.length)}
+      ${agencyProfileBar(stats, rfps.length, nm)}
 
       ${hasForecasts ? `<div class="subtabs" style="display:flex;gap:16px;border-bottom:1px solid #ddd;margin:16px 0 20px">
         <button class="subtab active" id="btn-overview" style="font-family:var(--font-sc);font-weight:600;font-size:12px;letter-spacing:.15em;text-transform:uppercase;padding:9px 0;border:none;background:none;color:var(--oxblood);border-bottom:2px solid var(--oxblood);cursor:pointer">${t("forecast_overview_tab")}</button>
@@ -3590,7 +3621,7 @@ async function showAgency(name, initialTab){
       </div>` : ""}
 
       <div id="overview-content">
-        ${authorityAwardsHTML(nm, authorityAwards)}
+        ${externalAwardHTML(externalAward)}
         <div class="chain-h">Notices by section — click to browse that lens, filtered to this agency</div>
         <div class="chiprow" style="margin-top:6px">${secChips}</div>
         ${vendors.length?`<div class="chain-h">Top vendors by awarded $ (click to pivot)</div><div class="ladder">${vendorRows}</div>`:""}

@@ -191,6 +191,25 @@ AUTHORITY_AWARDS = [{
     "contract_amount": "$5,000,000.00",
 }]
 
+# GET /externalaward now serves the precomputed award set (external_award.mjs). The agency-profile
+# walk opens a covered ABO agency (School Construction Authority) and expects its fuzzy award panel,
+# so the worker endpoint is stubbed with a fuzzy response carrying one normalized award + provenance
+# (mirrors AUTHORITY_AWARDS above, in the endpoint's normalized shape). Same reason /priorcycle and
+# /inv are stubbed after the catch-all abort: keep the new surface guard-covered.
+EXTERNAL_AWARD = {
+    "agency": "New York City School Construction Authority",
+    "coverage": "fuzzy",
+    "agencyAwards": [{
+        "authority": "New York City School Construction Authority",
+        "vendor": "ROUX ENVIRONMENTAL ENGINEERING AND GEOLOGY DPC",
+        "description": "HAZARDOUS MATERIAL ENGINEERING SERVICES",
+        "process": "Authority Contract - Competitive Bid",
+        "date": "2024-05-06T00:00:00.000", "amount": 5000000, "source": "nys-abo",
+    }],
+    "source": {"kind": "abo", "dataset": "8w5p-k45m", "refreshed": "2025-12-01"},
+    "ok": True,
+}
+
 # Every fixture string value that may surface in the UI as DATA (legitimately English).
 # section_name is intentionally omitted — sections render as chrome and must translate.
 _DATA_ROWS = ([RFP_OPEN, RFP_OPEN_2, AWARD_ROW, HEARING_ROW, NOTICE_PERMALINK_ROW] + CHAIN_ROWS + PROPERTY_ROWS
@@ -293,8 +312,12 @@ def install_routes(page):
     # ...and /priorcycle/<request_id> (see PRIOR_CYCLE_MATCHES above) — same reason: registered
     # after the catch-all abort so the prior-cycle panel renders and stays guard-covered.
     page.route("https://api.crol-list.org/priorcycle/**", fixed(PRIOR_CYCLE_MATCHES))
+    # ...and /externalaward (awards published elsewhere) — a fuzzy ABO response so the agency
+    # profile's external-awards panel renders and stays guard-covered.
+    page.route("https://api.crol-list.org/externalaward*", fixed(EXTERNAL_AWARD))
     page.route("https://crol-worker.crol-worker.workers.dev/**", lambda r: r.abort())
     page.route("https://crol-worker.crol-worker.workers.dev/priorcycle/**", fixed(PRIOR_CYCLE_MATCHES))
+    page.route("https://crol-worker.crol-worker.workers.dev/externalaward*", fixed(EXTERNAL_AWARD))
     page.route("https://challenges.cloudflare.com/**", lambda r: r.abort())
     page.route("https://static.cloudflareinsights.com/**", lambda r: r.abort())
     page.route("https://unpkg.com/**", lambda r: r.abort())

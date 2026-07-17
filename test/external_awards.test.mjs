@@ -1,9 +1,11 @@
-// The City Record has no award rows for several active authorities. The first NYCHA scout
-// treated PIN 510394 as a hard match, but a live Checkbook lookup returned a 2012 purchase
-// order for a solicitation published in 2025: NYCHA reuses short numeric PINs. Before this
-// feature, external awards were absent; an unguarded implementation would have introduced a
-// false award. After: authority profiles resolve to their official ABO feed, and NYCHA only
-// surfaces an exact-PIN contract whose approval/start date does not predate the solicitation.
+// Awards published outside the City Record. The registry (external_awards.js) drives the sweep,
+// the join precision, and the coverage claim; the award DATA is precomputed server-side and served
+// by GET /externalaward, so the client no longer fires a live SODA/Checkbook call per view. These
+// tests pin the class boundaries from the client's side: an exact-key agency (NYCHA) renders a
+// confident award box, a fuzzy-source agency renders a "possible" timeline, a verified-absent
+// agency states the absence plainly, and a covered agency whose source turned up nothing says the
+// site checked that source and found none. Before this feature external awards were absent; an
+// unguarded implementation would have asserted a fuzzy vendor+date guess as a confirmed award.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -11,6 +13,8 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import {
+  awardSourceFor,
+  awardCoverage,
   authorityAwardSource,
   normalizeAuthorityAward,
   normalizeRecentAuthorityAwards,
@@ -32,38 +36,66 @@ function extractFn(name) {
   throw new Error(`unbalanced braces extracting ${name}`);
 }
 
-class FakeDoc {
-  constructor(xml) { this.xml = xml; }
-  querySelector(sel) {
-    if (sel !== "response > status > result") return null;
-    const m = this.xml.match(/<status>[\s\S]*?<result>([^<]*)<\/result>/);
-    return m ? { textContent: m[1] } : null;
-  }
-  getElementsByTagName(tag) {
-    if (tag !== "transaction") return [];
-    return [...this.xml.matchAll(/<transaction>([\s\S]*?)<\/transaction>/g)].map((match) => ({
-      getElementsByTagName(child) {
-        const m = match[1].match(new RegExp(`<${child}>([^<]*)</${child}>`));
-        return m ? [{ textContent: m[1] }] : [];
-      },
-    }));
-  }
+// Leaf helpers the render functions lean on (injected, so the test needs no DOM).
+const T = (key, vars) => {
+  const s = ({
+    external_awards_heading: "Awards published elsewhere",
+    external_awards_abo_source: "NYS Authorities Budget Office",
+    external_awards_checkbook_source: "Checkbook NYC",
+    external_awards_abo_note: "Official annual filing.",
+    external_awards_possible_note: "Possible awards, matched by vendor and award date — not a confirmed City Record match.",
+    external_awards_updated: "Source updated {date}.",
+    external_award_none_note_html: "The site also checked {source} and found no matching award there either.",
+    external_award_nycha_none_note: "The site checked Checkbook NYC for this notice's PIN and found no registered award there yet.",
+    external_award_nycha_note_html: "Checkbook NYC award matched by exact PIN <code>{pin}</code>.",
+    agency_awards_elsewhere_note: "This agency files its contract awards with {source}, not the City Record.",
+    agency_awards_none_open_data: "This agency's contract awards are not published in any open dataset CROL-List knows of.",
+    agency_awards_unavailable_note: "No contract awards from this agency appear in the City Record — some agencies publish awards elsewhere.",
+    mode_award: "Award", awarded_to: "Awarded to", untitled: "(untitled)", untitled_name: "(no name)",
+  }[key]) || key;
+  return vars ? s.replace(/\{(\w+)\}/g, (_, k) => (vars[k] != null ? vars[k] : "")) : s;
+};
+const money = (v) => (v ? "$" + v : "");
+const escUiHtml = (s) => String(s == null ? "" : s).replace(/[<>&'"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", "'": "&#39;", '"': "&quot;" }[c]));
+const fdate = (d) => String(d || "").slice(0, 10);
+const usablePin = (p) => String(p || "").trim().length >= 4;
+const EXT_ATTRS = 'target="_blank" rel="noopener noreferrer"';
+const extSR = () => '<span class="sr-only"> (opens in new tab)</span>';
+
+// Build externalAwardHTML() with its render helpers, all injected with the leaf deps above.
+function buildExternalAwardHTML() {
+  const src = [
+    extractFn("aboSourceLink"),
+    extractFn("sourceUpdatedHTML"),
+    extractFn("aboAwardsTimelineHTML"),
+    extractFn("nychaAwardBoxHTML"),
+    extractFn("externalAwardHTML"),
+  ].join("\n") + "\nreturn externalAwardHTML;";
+  return new Function("t", "money", "escUiHtml", "fdate", "usablePin", "EXT_ATTRS", "extSR", src)(
+    T, money, escUiHtml, fdate, usablePin, EXT_ATTRS, extSR,
+  );
 }
-class FakeDOMParser { parseFromString(xml) { return new FakeDoc(xml); } }
 
-const escXml = (s) => String(s).replace(/[<>&'\"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", "'": "&apos;", '\"': "&quot;" }[c]));
+test("registry: NYCHA is an exact Checkbook key; ABO agencies are fuzzy; new sources are covered", () => {
+  assert.equal(awardCoverage("Housing Authority"), "exact");
+  assert.deepEqual(awardSourceFor("Housing Authority"), { kind: "checkbook-nycha", precision: "exact" });
+  assert.equal(awardCoverage("School Construction Authority"), "fuzzy");
+  assert.equal(awardCoverage("Hudson River Park Trust"), "fuzzy", "state-authorities source added this pass");
+  assert.equal(awardCoverage("Water Board"), "fuzzy", "NYC Water Board via ABO local authorities");
+  assert.equal(awardCoverage("Triborough Bridge and Tunnel Authority"), "absent", "MTA constituent, no per-constituent open data");
+  assert.equal(awardCoverage("Public Library - Queens"), "absent", "independent library, no procurement open dataset");
+  assert.equal(awardCoverage("Sanitation"), "unknown", "an agency that publishes awards in the City Record itself");
+});
 
-test("authorityAwardSource: resolves City Record agency names to official ABO datasets", () => {
+test("authorityAwardSource: back-compat ABO {dataset, authority}, null for exact/absent", () => {
   assert.deepEqual(authorityAwardSource("School Construction Authority"), {
-    dataset: "8w5p-k45m",
-    authority: "New York City School Construction Authority",
+    dataset: "8w5p-k45m", authority: "New York City School Construction Authority",
   });
-  assert.deepEqual(authorityAwardSource("Economic Development Corporation"), {
-    dataset: "d84c-dk28",
-    authority: "New York City Economic Development Corporation",
+  assert.deepEqual(authorityAwardSource("Hudson River Park Trust"), {
+    dataset: "ehig-g5x3", authority: "Hudson River Park Trust",
   });
   assert.equal(authorityAwardSource("Housing Authority"), null, "NYCHA uses Checkbook, not ABO");
-  assert.equal(authorityAwardSource("Sanitation"), null);
+  assert.equal(authorityAwardSource("Tax Commission"), null, "verified-absent has no ABO source");
 });
 
 test("normalizeAuthorityAward: money and provenance survive the Socrata row shape", () => {
@@ -85,29 +117,14 @@ test("normalizeAuthorityAward: money and provenance survive the Socrata row shap
   });
 });
 
-test("normalizeRecentAuthorityAwards: excludes future-dated source errors before display", () => {
-  const current = { award_date: "2026-07-16T00:00:00.000", vendor_name: "CURRENT VENDOR" };
+test("normalizeRecentAuthorityAwards: drops malformed dates and future-dated source errors", () => {
+  const good = { award_date: "2026-07-15T00:00:00.000", vendor_name: "CURRENT VENDOR", contract_amount: "$10.00" };
   const future = { award_date: "2029-01-01T00:00:00.000", vendor_name: "FUTURE VENDOR" };
-  assert.deepEqual(normalizeRecentAuthorityAwards([future, current], "2026-07-16"), [
-    normalizeAuthorityAward(current),
+  const badDate = { award_date: "not-a-date", vendor_name: "BAD DATE VENDOR" };
+  const noDate = { vendor_name: "NO DATE VENDOR" };
+  assert.deepEqual(normalizeRecentAuthorityAwards([future, good, badDate, noDate], "2026-07-16"), [
+    normalizeAuthorityAward(good),
   ]);
-});
-
-test("loadAuthorityAwards: excludes future dates before limiting recent official rows", async () => {
-  let query = null;
-  const loadAuthorityAwards = new Function(
-    "authorityAwardSource", "todayISO", "api", "normalizeRecentAuthorityAwards",
-    extractFn("loadAuthorityAwards") + "\nreturn loadAuthorityAwards;",
-  )(authorityAwardSource, () => "2026-07-16T00:00:00", async (_base, params) => {
-    query = params;
-    return [{ award_date: "2026-07-15T00:00:00.000", vendor_name: "CURRENT VENDOR" }];
-  }, normalizeRecentAuthorityAwards);
-
-  const rows = await loadAuthorityAwards("Brooklyn Navy Yard Development Corp.");
-  assert.match(query.$where, /award_date <= '2026-07-16T23:59:59\.999'/);
-  assert.equal(query.$order, "award_date DESC");
-  assert.equal(query.$limit, "8");
-  assert.equal(rows[0].vendor, "CURRENT VENDOR");
 });
 
 test("rankNychaAwardCandidates: rejects the real stale PIN-reuse false positive", () => {
@@ -129,106 +146,89 @@ test("rankNychaAwardCandidates: keeps and deduplicates a temporally valid exact-
   assert.deepEqual(rankNychaAwardCandidates(notice, rows), [agreement]);
 });
 
-test("rankNychaAwardCandidates: rejects equal-date and non-agreement transactions", () => {
-  const notice = { pin: "337474", start_date: "2025-01-10T00:00:00.000" };
-  const equalDate = {
-    id: "C00042", pin: "337474", approved: "2025-01-10T00:00:00.000", recordType: "Agreement",
+test("agencyAwardsNote: registry-backed empty state — covered names the source, absent is plain", () => {
+  const agencyAwardsNote = new Function(
+    "awardCoverage", "awardSourceFor", "t",
+    extractFn("agencyAwardsNote") + "\nreturn agencyAwardsNote;",
+  )(awardCoverage, awardSourceFor, T);
+
+  assert.match(agencyAwardsNote("School Construction Authority"), /files its contract awards with NYS Authorities Budget Office/);
+  assert.match(agencyAwardsNote("Housing Authority"), /files its contract awards with Checkbook NYC/);
+  assert.match(agencyAwardsNote("Tax Commission"), /not published in any open dataset/);
+  assert.match(agencyAwardsNote("Sanitation"), /some agencies publish awards elsewhere/, "unknown agency keeps the soft hedge");
+});
+
+test("externalAwardHTML: exact NYCHA match renders a confident award box with the PIN", () => {
+  const externalAwardHTML = buildExternalAwardHTML();
+  const notice = { pin: "337474", type_of_notice_description: "Solicitation" };
+  const resp = {
+    coverage: "exact",
+    matches: [{ id: "C00042", vendor: "NELLIGAN WHITE ARCHITECTS PLLC", amount: 7310000, approved: "2025-03-01", start: "2025-02-15", method: "SEALED BID", purpose: "DESIGN SERVICES" }],
   };
-  const laterRelease = {
-    id: "C00043", pin: "337474", approved: "2025-03-01", recordType: "Release",
+  const html = externalAwardHTML(resp, notice);
+  assert.match(html, /class="box award"/, "exact match reads as a confident award, not a maybe");
+  assert.match(html, /NELLIGAN WHITE ARCHITECTS PLLC/);
+  assert.match(html, /exact PIN <code>337474<\/code>/);
+  assert.doesNotMatch(html, /Possible awards/);
+});
+
+test("externalAwardHTML: fuzzy ABO awards render as a 'possible' timeline with dated provenance", () => {
+  const externalAwardHTML = buildExternalAwardHTML();
+  const resp = {
+    coverage: "fuzzy",
+    agencyAwards: [{ vendor: "VHB ENGINEERING", description: "Environmental Consulting Services", process: "Competitive Bid", date: "2024-01-10T00:00:00.000", amount: 195000 }],
+    source: { kind: "abo", dataset: "ehig-g5x3", refreshed: "2025-12-01" },
   };
-  assert.deepEqual(rankNychaAwardCandidates(notice, [equalDate, laterRelease]), []);
+  const html = externalAwardHTML(resp, null);
+  assert.match(html, /class="timeline"/, "fuzzy reads as a list, not a confident chain box");
+  assert.doesNotMatch(html, /class="box award"/);
+  assert.match(html, /Possible awards/, "fuzzy result is verbally hedged as possible");
+  assert.match(html, /data\.ny\.gov\/resource\/ehig-g5x3/);
+  assert.match(html, /Source updated 2025-12-01/);
 });
 
-test("checkbookNychaByPin: paginates exact-PIN rows and keeps only agreements", async () => {
-  const sentXml = [];
-  const line = (id) => `<transaction><contract_id>${id}</contract_id><record_type>Line</record_type><pin>337474</pin></transaction>`;
-  const firstPage = Array.from({ length: 24 }, (_, i) => line(`L${i}`)).join("")
-    + `<transaction><contract_id>R00001</contract_id><record_type>Release</record_type><pin>337474</pin>
-      <approved_date>2026-04-01</approved_date></transaction>`;
-  const secondPage = `<transaction><contract_id>C00042</contract_id><record_type>Agreement</record_type><pin>337474</pin>
-      <vendor>NELLIGAN WHITE ARCHITECTS PLLC</vendor><contract_current_amount>7310000.00</contract_current_amount>
-      <approved_date>2025-03-01</approved_date><start_date>2025-02-15</start_date><award_method>SEALED BID</award_method>
-      <purpose>DESIGN SERVICES</purpose></transaction>
-    ${line("L25")}`;
-  const checkbookNychaByPin = new Function(
-    "API", "workerFetch", "DOMParser", "escXml",
-    extractFn("checkbookNychaByPin") + "\nreturn checkbookNychaByPin;",
-  )("https://api.crol-list.org", async (_path, opts) => {
-    const xml = JSON.parse(opts.body).xml;
-    sentXml.push(xml);
-    const transactions = xml.includes("<records_from>1</records_from>") ? firstPage : secondPage;
-    return { text: async () => `<response><status><result>success</result></status><contract_transactions>${transactions}</contract_transactions></response>` };
-  }, FakeDOMParser, escXml);
-
-  const rows = await checkbookNychaByPin("337474");
-  assert.equal(sentXml.length, 2);
-  assert.match(sentXml[0], /<type_of_data>Contracts_NYCHA<\/type_of_data>/);
-  assert.match(sentXml[0], /<records_from>1<\/records_from>/);
-  assert.match(sentXml[1], /<records_from>26<\/records_from>/);
-  assert.match(sentXml[0], /<value>337474<\/value>/);
-  assert.doesNotMatch(sentXml[0], /<name>record_type<\/name>/);
-  assert.deepEqual(rows, [{
-    id: "C00042", pin: "337474", vendor: "NELLIGAN WHITE ARCHITECTS PLLC",
-    amount: 7310000, invoiced: 0, start: "2025-02-15", end: "", approved: "2025-03-01",
-    method: "SEALED BID", purpose: "DESIGN SERVICES", recordType: "Agreement",
-  }]);
+test("externalAwardHTML: covered ABO source with zero rows says the site checked it", () => {
+  const externalAwardHTML = buildExternalAwardHTML();
+  const resp = { coverage: "fuzzy", agencyAwards: [], source: { kind: "abo", dataset: "d84c-dk28", refreshed: "2025-12-01" } };
+  const html = externalAwardHTML(resp, null);
+  assert.match(html, /also checked/);
+  assert.match(html, /data\.ny\.gov\/resource\/d84c-dk28/);
+  assert.match(html, /Source updated 2025-12-01/);
 });
 
-test("checkbookNychaByPin: fails closed when the bounded page limit is exhausted", async () => {
-  let calls = 0;
-  const fullPage = Array.from({ length: 25 }, (_, i) =>
-    `<transaction><contract_id>L${i}</contract_id><record_type>Line</record_type><pin>337474</pin></transaction>`
-  ).join("");
-  const checkbookNychaByPin = new Function(
-    "API", "workerFetch", "DOMParser", "escXml",
-    extractFn("checkbookNychaByPin") + "\nreturn checkbookNychaByPin;",
-  )("https://api.crol-list.org", async () => {
-    calls++;
-    return { text: async () => `<response><status><result>success</result></status><contract_transactions>${fullPage}</contract_transactions></response>` };
-  }, FakeDOMParser, escXml);
-
-  assert.equal(await checkbookNychaByPin("337474"), null);
-  assert.equal(calls, 8);
+test("externalAwardHTML: NYCHA with no match, but a usable PIN, says it checked Checkbook", () => {
+  const externalAwardHTML = buildExternalAwardHTML();
+  const eligible = { type_of_notice_description: "Solicitation", pin: "510394" };
+  assert.match(externalAwardHTML({ coverage: "exact", matches: [] }, eligible), /checked Checkbook NYC/);
+  // A NYCHA notice with no usable PIN can't have been searched — say nothing rather than imply it.
+  const noPin = { type_of_notice_description: "Solicitation", pin: "N/A" };
+  assert.equal(externalAwardHTML({ coverage: "exact", matches: [] }, noPin), "");
 });
 
-test("NYCHA award rendering keeps translated chrome outside the English vendor island", () => {
-  assert.match(indexSrc, /<div class="vend">\$\{t\("awarded_to"\)\} <b lang="en" dir="ltr">/);
-  assert.doesNotMatch(indexSrc, /<div class="vend" lang="en" dir="ltr">\$\{t\("awarded_to"\)\}/);
-});
-
-test("authorityAwardsHTML: marks only populated source values as English", () => {
-  const authorityAwardsHTML = new Function(
-    "authorityAwardSource", "fdate", "escUiHtml", "t", "money", "EXT_ATTRS", "extSR",
-    extractFn("authorityAwardsHTML") + "\nreturn authorityAwardsHTML;",
-  )(authorityAwardSource, (value) => value, (value) => String(value), (key) => ({ untitled_name: "بلا اسم", external_awards_heading: "العقود", external_awards_abo_note: "ملاحظة", external_awards_abo_source: "المصدر" }[key]), (value) => value ? `$${value}` : "", "", () => "");
-
-  const fallback = authorityAwardsHTML("School Construction Authority", [{ date: "2026-01-01", amount: 0 }]);
-  assert.match(fallback, /<span class="tlreason"><b>بلا اسم<\/b><\/span>/);
-  assert.doesNotMatch(fallback, /lang="en"/);
-
-  const populated = authorityAwardsHTML("School Construction Authority", [{ vendor: "SOURCE VENDOR", description: "SOURCE DESCRIPTION", process: "SOURCE PROCESS", date: "2026-01-01", amount: 10 }]);
-  assert.match(populated, /<b lang="en" dir="ltr">SOURCE VENDOR<\/b>/);
-  assert.match(populated, /<span lang="en" dir="ltr"> — SOURCE DESCRIPTION<\/span>/);
-  assert.match(populated, /<span lang="en" dir="ltr">SOURCE PROCESS<\/span>/);
-});
-
-test("externalAwardForNotice: leaves translated purpose fallback in page language", async () => {
-  let rows = [{ purpose: "", amount: 0, vendor: "", method: "" }];
+test("externalAwardForNotice: absent/unknown agencies fetch nothing (claim lives in the note)", async () => {
+  let fetched = false;
   const externalAwardForNotice = new Function(
-    "checkbookNychaByPin", "usablePin", "document", "rankNychaAwardCandidates", "t", "fdate", "escUiHtml", "money",
+    "awardCoverage", "loadExternalAward", "document", "externalAwardHTML",
     extractFn("externalAwardForNotice") + "\nreturn externalAwardForNotice;",
-  )(async () => rows, () => true, { contains: () => true }, (_notice, candidates) => candidates,
-    (key) => ({ external_awards_heading: "العقود", mode_award: "منح", untitled: "بلا عنوان", awarded_to: "مُنح إلى", external_award_nycha_note_html: "ملاحظة" }[key]),
-    (value) => value || "", (value) => String(value || ""), (value) => value ? `$${value}` : "");
-  const notice = { agency_name: "Housing Authority", type_of_notice_description: "Solicitation", pin: "337474" };
+  )(awardCoverage, async () => { fetched = true; return null; }, { contains: () => true }, () => "X");
+
   const el = { innerHTML: "" };
+  await externalAwardForNotice({ agency_name: "Tax Commission", request_id: "1" }, el);
+  assert.equal(fetched, false, "verified-absent agency triggers no worker fetch");
+  await externalAwardForNotice({ agency_name: "Sanitation", request_id: "1" }, el);
+  assert.equal(fetched, false, "unknown agency triggers no worker fetch either");
+});
 
-  await externalAwardForNotice(notice, el);
-  assert.match(el.innerHTML, /<div class="bt">بلا عنوان<\/div>/);
-  assert.doesNotMatch(el.innerHTML, /<div class="bt" lang="en" dir="ltr">بلا عنوان<\/div>/);
+test("externalAwardForNotice: covered agency fetches once and renders the response", async () => {
+  let calls = 0;
+  const externalAwardForNotice = new Function(
+    "awardCoverage", "loadExternalAward", "document", "externalAwardHTML",
+    extractFn("externalAwardForNotice") + "\nreturn externalAwardForNotice;",
+  )(awardCoverage, async () => { calls++; return { coverage: "exact", matches: [] }; },
+    { contains: () => true }, () => "<rendered/>");
 
-  rows = [{ purpose: "SOURCE PURPOSE", amount: 0, vendor: "", method: "" }];
-  await externalAwardForNotice(notice, el);
-  assert.match(el.innerHTML, /<div class="bt" lang="en" dir="ltr">SOURCE PURPOSE<\/div>/);
+  const el = { innerHTML: "" };
+  await externalAwardForNotice({ agency_name: "Housing Authority", request_id: "20250501001" }, el);
+  assert.equal(calls, 1);
+  assert.equal(el.innerHTML, "<rendered/>");
 });
