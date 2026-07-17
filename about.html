@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>About · CROL-List</title>
 <meta name="description" content="What CROL-List is, where its data comes from, how flags and context work, how to send feedback, and its privacy and data-retention stance.">
-<script src="i18n.js?v=d27dae4a"></script>
+<script src="i18n.js?v=fff8e6bf"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
@@ -135,8 +135,12 @@ that would silently mislead if we didn't correct for them, so here is exactly wh
     date on their calendar that isn't real.</li>
   <li><b>Agency names come in two conventions</b> (old ALL-CAPS and Title Case — 312 raw
     strings for about 150 real agencies). Our name tool treats them as one.</li>
+  <li id="external-awards-sources"><b>Some agencies file contract awards outside the City Record
+    entirely</b> — for those, we check Checkbook NYC (for the Housing Authority) and the NYS Authorities Budget
+    Office's open procurement datasets (for other public authorities), and say so plainly when
+    neither source covers an agency.</li>
 </ul>
-<p class="src" data-i18n-html="about_p_honest_footer_html">Searches on this site always show live data from NYC Open Data. Email alerts check
+<p class="src" data-i18n-html="about_p_honest_footer_html">Searches on this site always show live data from <a href="https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx" target="_blank" rel="noopener noreferrer">NYC Open Data<span class="sr-only"> (opens in new tab)</span></a>. Email alerts check
 for new matches once a day. Want the numbers themselves?
 <a href="data.html"><b>The Data</b></a> shows the record at a glance — sections, volume,
 procurement mix, top agencies and vendors — computed live with these same rules.</p>
@@ -199,7 +203,7 @@ registration and real payment. Nothing here says anyone did wrong. It just saves
 </ul>
 
 <h2 data-i18n="about_h_content">About our content</h2>
-<p data-i18n="about_p_content">An AI assistant (Claude) drafts this site's copy — headings, explanations, pages like this one. A human editor checks it before it goes live. The data is not AI-generated. Every notice, dollar figure, and date comes straight from NYC Open Data, unedited.</p>
+<p data-i18n-html="about_p_content_html">An AI assistant (Claude) drafts this site's copy — headings, explanations, pages like this one. A human editor checks it before it goes live. The data is not AI-generated. Every notice, dollar figure, and date comes straight from <a href="https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx" target="_blank" rel="noopener noreferrer">NYC Open Data<span class="sr-only"> (opens in new tab)</span></a>, unedited.</p>
 
 </main>
 <footer class="foot" data-i18n-html="about_foot_html">CROL-List · a search interface over <a href="https://a856-cityrecord.nyc.gov/" target="_blank" rel="noopener noreferrer">The City Record<span class="sr-only"> (opens in new tab)</span></a> · <a href="changelog.html">Changelog</a> · <a href="stats.html">Stats</a> · <a href="index.html">Home</a></footer>

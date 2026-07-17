@@ -29,16 +29,16 @@ def main():
 
     if 'data-i18n="about_h_content"' not in about:
         failures.append("about.html: missing the \"About our content\" section (about_h_content)")
-    if 'data-i18n="about_p_content"' not in about:
-        failures.append("about.html: missing the content-disclosure paragraph (about_p_content)")
+    if 'data-i18n-html="about_p_content_html"' not in about:
+        failures.append("about.html: missing the content-disclosure paragraph (about_p_content_html)")
 
     strings = load_strings()
     for lang in ("en", "es"):
-        text = strings.get(lang, {}).get("about_p_content", "")
+        text = strings.get(lang, {}).get("about_p_content_html", "")
         if not text:
-            failures.append(f"i18n.js: about_p_content missing for lang={lang!r}")
+            failures.append(f"i18n.js: about_p_content_html missing for lang={lang!r}")
         elif "Claude" not in text and "IA" not in text and "AI" not in text:
-            failures.append(f"i18n.js: about_p_content ({lang}) doesn't name the AI assistant used")
+            failures.append(f"i18n.js: about_p_content_html ({lang}) doesn't name the AI assistant used")
 
     if failures:
         print("genai-disclosure gate FAILED:", file=sys.stderr)
