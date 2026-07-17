@@ -36,16 +36,19 @@ const windowStub = { LANG: "en", LANG_META: { en: { intlDate: "en-US" } } };
 const { t } = new Function("window", i18nSrc + "\nreturn { t: window.t };")(windowStub);
 const fmtNumber = new Function("window", i18nSrc + "\nreturn window.fmtNumber;")(windowStub);
 
+const { awardCoverage, awardSourceFor } = await import("../external_awards.js");
+
 const env = new Function(
-  "t", "fmtNumber", "window",
+  "t", "fmtNumber", "window", "awardCoverage", "awardSourceFor",
   extractFn("money") +
   extractConst("agencyHref") +
   extractConst("pivotA") +
   extractFn("hasAgencyAwards") +
+  extractFn("agencyAwardsNote") +
   extractFn("noticeAgencyBar") +
   extractFn("agencyProfileBar") +
-  "return { hasAgencyAwards, noticeAgencyBar, agencyProfileBar };"
-)(t, fmtNumber, windowStub);
+  "return { hasAgencyAwards, agencyAwardsNote, noticeAgencyBar, agencyProfileBar };"
+)(t, fmtNumber, windowStub, awardCoverage, awardSourceFor);
 
 test("hasAgencyAwards: SODA's string \"0\" is not truthy for award count", () => {
   assert.equal(env.hasAgencyAwards({ n: "0", total: null }), false);
@@ -56,9 +59,16 @@ test("hasAgencyAwards: SODA's string \"0\" is not truthy for award count", () =>
   assert.equal(env.hasAgencyAwards({ n: 3 }), true);
 });
 
-test("noticeAgencyBar: zero/absent stats renders the honest note, not a dash-and-zero scoreboard", () => {
+test("noticeAgencyBar: a covered agency's zero stats names its source, not a dash-and-zero scoreboard", () => {
   const html = env.noticeAgencyBar({ n: "0", total: null }, "Housing Authority");
   assert.doesNotMatch(html, /class="big">—/);
+  assert.doesNotMatch(html, /class="big">0</);
+  assert.match(html, /files its contract awards with Checkbook NYC/, "NYCHA is a covered exact-key agency");
+});
+
+test("noticeAgencyBar: an unknown agency's zero stats keeps the soft hedge", () => {
+  // An agency the registry doesn't classify falls back to the pre-registry honest hedge.
+  const html = env.noticeAgencyBar({ n: "0", total: null }, "Some Unlisted Agency");
   assert.doesNotMatch(html, /class="big">0</);
   assert.match(html, /No contract awards from this agency appear in the City Record/);
 });
@@ -70,11 +80,11 @@ test("noticeAgencyBar: real stats render the scoreboard", () => {
   assert.doesNotMatch(html, /No contract awards/);
 });
 
-test("agencyProfileBar: zero/absent stats renders the note but keeps the open-RFPs stat", () => {
-  const html = env.agencyProfileBar(null, 3);
+test("agencyProfileBar: a verified-absent agency states the absence but keeps the open-RFPs stat", () => {
+  const html = env.agencyProfileBar(null, 3, "Tax Commission");
   assert.doesNotMatch(html, /class="big">—/);
   assert.doesNotMatch(html, /class="big">0</);
-  assert.match(html, /No contract awards from this agency appear in the City Record/);
+  assert.match(html, /not published in any open dataset/);
   assert.match(html, />3</, "open RFPs count still renders");
 });
 

@@ -854,6 +854,48 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   fetched row's own `request_id` (not just survivors) so a since-deduped duplicate's id
   doesn't resurface as "new" on a later run.
 
+## Awards published outside the City Record — registry drives sweep, join, and claim
+
+- **One data-driven registry, not scattered conditionals.** `AWARD_SOURCE_REGISTRY`
+  (`external_awards.js`) maps each City Record agency that files NO awards in `dg92-zbpx` to one
+  of three verdicts: `checkbook-nycha` (exact PIN join, NYCHA only), `abo` (fuzzy vendor+date join
+  against a NYS Authorities Budget Office dataset on data.ny.gov, keyed by `authority_name`), or
+  `absent` (verified: no open dataset publishes it). Every entry was verified live against the
+  source. The registry drives all three of: which agencies are swept, the join precision, and the
+  coverage claim the empty state makes. The four ABO datasets: `8w5p-k45m` (local authorities),
+  `d84c-dk28` (local dev corps), `ehig-g5x3` (state authorities), `p3p6-xqr5` (IDAs — none of our
+  gap agencies match it). To add coverage: verify a source returns a real dated record for the
+  agency, then add the entry.
+- **Dual-implemented, hand-synced** (same convention as `lib/prior_cycle.mjs`/`lib/lineage.mjs`):
+  the client copy is `external_awards.js`, the worker copy `worker/src/lib/external_award.mjs`.
+  `test/external_awards_registry.test.mjs` cross-checks them and fails on divergence — change one,
+  change both.
+- **Precomputed, served, not live-fetched** (the #68/#69 pattern). ABO sources: a WEEKLY-gated
+  cron (`refreshAboAwards`, gated inside itself via `award:meta:last_refresh` KV — the sources
+  refresh ~annually) pulls each authority's recent awards in bulk and caches them per source in KV
+  (`award:<dataset>:<authority>`) with the dataset's own `rowsUpdatedAt` refresh date. NYCHA: one
+  Checkbook `Contracts_NYCHA` request PER NOTICE (the WAF blocks per-PIN fan-out, so NEVER a bulk
+  backfill), ranked by `rankNychaAwardCandidates` (exact PIN + contract date strictly after the
+  solicitation — short NYCHA PINs are reused, so PIN alone is not enough), cached in D1
+  (`external_award_matches`, migration `0003`), compute-on-miss + bounded cron pre-warm of
+  freshly-ingested NYCHA solicitations (`ingest.mjs`'s `nychaRequestIds`). `GET /externalaward?id=`
+  (per notice) or `?agency=` serves one coverage-shaped response; `externalAwardForNotice` and
+  `showAgency` each read it in one `workerFetch`.
+- **Exact and fuzzy stay visually AND verbally distinct.** An exact NYCHA match renders a confident
+  `.box.award` chain box; a fuzzy ABO set renders a `.timeline` labeled "possible awards, matched
+  by vendor and award date" with the source link + refresh date — a fuzzy result is never asserted
+  as a confirmed award (the `matchEvidence()` honesty posture).
+- **Empty state is registry-backed** (`agencyAwardsNote`, both `noticeAgencyBar` and
+  `agencyProfileBar`): covered → names the source; verified-absent → "not published in any open
+  dataset CROL-List knows of"; unknown agency → the pre-existing soft hedge
+  (`agency_awards_unavailable_note`). All these strings are script-rendered via `t()`, so they do
+  NOT affect the reading-level ratchet (the extractor drops `<script>`).
+- **Fixtures**: `test/external_awards.test.mjs` (client render + registry), `worker/test/
+  external_award.test.mjs` (endpoint + cron, one fixture per class boundary: exact NYCHA, fuzzy
+  source, verified-absent, covered-with-zero-rows, malformed rows). The hermetic stray-English
+  guard opens the SCA agency profile and requires the `#external-awards-content` panel — the
+  worker `/externalaward` route is stubbed in `i18n_fixtures.py` to keep it guard-covered.
+
 ## Digest match evidence — why a keyword-matched item is in the digest at all
 
 - **`matchEvidence(title, description, terms)`** is a pure, dual-implemented function (once as

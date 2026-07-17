@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "cad70d56",
-  "zh-Hans": "93a1b2a5",
-  ru: "193c1802",
-  bn: "f7e018a5",
-  ht: "98260e82",
-  ko: "dc21ce4e",
-  fr: "26fa844b",
-  pl: "8b7b9b85",
-  ar: "e3a3e2c8",
-  ur: "e6432f07",
+  es: "68b63313",
+  "zh-Hans": "8df91ee0",
+  ru: "05cb64cb",
+  bn: "3ae25833",
+  ht: "6c189ca6",
+  ko: "407677a2",
+  fr: "c92708ec",
+  pl: "f85e726c",
+  ar: "bf2c0a1d",
+  ur: "d03964cd",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -450,9 +450,16 @@ const STRINGS = {
     total_awarded_lbl: "total awarded,<br>on record",
     awards_published_lbl: "contract awards<br>published",
     agency_awards_unavailable_note: "No contract awards from this agency appear in the City Record — some agencies publish awards elsewhere.",
+    agency_awards_elsewhere_note: "This agency files its contract awards with {source}, not the City Record.",
+    agency_awards_none_open_data: "This agency's contract awards are not published in any open dataset CROL-List knows of.",
     external_awards_heading: "Awards published elsewhere",
     external_awards_abo_source: "NYS Authorities Budget Office",
+    external_awards_checkbook_source: "Checkbook NYC",
     external_awards_abo_note: "Official annual filing, separate from the City Record. The source may lag by a year.",
+    external_awards_possible_note: "Possible awards, matched by vendor and award date — not a confirmed City Record match.",
+    external_awards_updated: "Source updated {date}.",
+    external_award_none_note_html: "The site also checked {source} and found no matching award there either.",
+    external_award_nycha_none_note: "The site checked Checkbook NYC for this notice's PIN and found no registered award there yet — registration can lag a solicitation.",
     external_award_nycha_note_html: "Checkbook NYC award matched by exact PIN <code>{pin}</code> and a contract date after this solicitation.",
     glance_who: "Who",
     glance_what: "What",
