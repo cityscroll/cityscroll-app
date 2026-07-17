@@ -27,6 +27,7 @@ import { digestDecision, dedupeFreshByContent, shortDate, matchEvidence } from "
 import { runCheckbookPipeline } from "./checkbook.mjs";
 import { runMocsPlanPipeline } from "./mocs_plan.mjs";
 import { bumpStatAllTime, bumpCategoryStat, bumpHistDay } from "./lib/stats.mjs";
+import { nextSearchHealth, searchHealthStatus, alertsFixUrl, searchHealthNoteHtml } from "./lib/search_health.mjs";
 
 // A sent digest's category breakdown for the all-time stats: one bump per distinct City
 // Record section_name it carried (falling back to the watch's lens for sections without
@@ -170,6 +171,15 @@ export async function processOneSub(env, s, ctx) {
     const seen = await getSeen(env, s.key);
     const fresh = dedupeFreshByContent(rows.filter((r) => r[q.idField] && !seen.has(r[q.idField])));
 
+    // Search health: has this watch matched anything new lately? Judged from `fresh` alone (not
+    // forecasts — those are a different kind of content), and recorded on the sub's own SUBS
+    // record regardless of the send decision below, so email caps/quiet-heartbeat pacing never
+    // distort the underlying "is the query itself still finding anything" signal.
+    const matched = fresh.length > 0;
+    const health = nextSearchHealth(s.health, matched, ctx.today);
+    const healthStatus = searchHealthStatus({ health, createdAt: s.createdAt, today: ctx.today });
+    await saveSubHealth(env, s, health);
+
     // Confidence: decide whether to break silence (a weekly check-in or a daily heartbeat) even
     // with no fresh notices, so a quiet inbox never looks like a broken alert. `since` = when we
     // last emailed this sub (falls back to signup), rendered as "since <date>".
@@ -190,18 +200,23 @@ export async function processOneSub(env, s, ctx) {
 
       const lang = s.lang || "en";
       const hasActivity = fresh.length > 0 || forecasts.length > 0;
+      // Never its own email — it only ever rides a digest that's sending anyway — and never
+      // shown alongside a real match (matched===true always resets healthStatus.quiet to false).
+      const healthNote = healthStatus.quiet
+        ? searchHealthNoteHtml({ lang, quietDays: healthStatus.quietDays, url: alertsFixUrl(s.lens, s.filter, s.freq) })
+        : "";
       if (hasActivity) {
         const freshLabel = fresh.length > 0 ? `${fresh.length} new` : "";
         const forecastLabel = forecasts.length > 0 ? `${forecasts.length} forecast(s)` : "";
         const parts = [freshLabel, forecastLabel].filter(Boolean).join(" & ");
         subject = `CROL-List: ${parts} — ${label}`;
         const keywords = Array.isArray(s.filter && s.filter.keywords) ? s.filter.keywords : [];
-        html = subDigestHtml(label, q.kind, fresh, unsubUrl, since, env.CONFIRM_BASE || "https://api.crol-list.org", forecasts, lang, keywords);
+        html = subDigestHtml(label, q.kind, fresh, unsubUrl, since, env.CONFIRM_BASE || "https://api.crol-list.org", forecasts, lang, keywords, healthNote);
       } else {
         subject = decision.action === "weekly-empty"
           ? `CROL-List: nothing new this week — ${label}`
           : `CROL-List: still watching — ${label}`;
-        html = quietHtml(label, decision.action, since, unsubUrl, lang);
+        html = quietHtml(label, decision.action, since, unsubUrl, lang, healthNote);
       }
       await sendEmail(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true);
       await ctx.onSent();
@@ -249,6 +264,17 @@ async function loadSub(env, key) {
   } catch {
     return null;
   }
+}
+
+// Persist the updated health record onto the subscription's own SUBS entry — no separate KV
+// namespace, per the "no new per-user tracking beyond the already-stored subscription" rule.
+// Fail-soft: a write failure here must never break digest compilation for this (or any other) sub.
+async function saveSubHealth(env, s, health) {
+  if (!env.SUBS) return;
+  try {
+    const { key, ...record } = s;
+    await env.SUBS.put(s.key, JSON.stringify({ ...record, health }));
+  } catch { /* ignore — health tracking is best-effort */ }
 }
 
 // ---- query a watch against the City Record -------------------------------
@@ -460,7 +486,7 @@ function maskKey(n) {
 // Digest for a self-serve sub — award / rfp (City Record) or rezone (ZAP) items.
 // keywords: the sub's filter.keywords (money/property/rules/meetings lenses only -- entity
 // subs match by name, not keyword, so they pass none and get no evidence line, correctly).
-function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.crol-list.org", forecasts = [], lang = "en", keywords = []) {
+function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.crol-list.org", forecasts = [], lang = "en", keywords = [], healthNote = "") {
   const usd = (n) => (n == null || n === "" ? "" : "$" + Number(n).toLocaleString("en-US"));
   const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
   const cr = (id) => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
@@ -528,6 +554,7 @@ function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.c
     <p style="color:#555">${esc(countLine)}</p>
     ${listHtml}
     ${forecastsHtml}
+    ${healthNote}
     <p style="color:#999;font-size:12px;margin-top:20px">${esc(emailT(lang, "digest_subscribed"))} <a href="${esc(unsubUrl)}">${esc(emailT(lang, "digest_unsubscribe"))}</a> (one-click).<br>
     Notice links go via a count-only redirect (${esc(base.replace(/^https?:\/\//, ""))}/r) so we can tell digests are useful — it counts clicks per day, never who clicked. Aggregates: <a href="https://crol-list.org/stats.html">crol-list.org/stats</a>.</p>
   </div>`;
@@ -535,7 +562,7 @@ function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.c
 
 // The "no news" email — a weekly check-in or a daily heartbeat. Same house style as the digest so
 // silence never reads as a malfunction: the subscriber hears from us on a predictable cadence.
-function quietHtml(label, action, since, unsubUrl, lang = "en") {
+function quietHtml(label, action, since, unsubUrl, lang = "en", healthNote = "") {
   const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
   const sinceStr = since ? `since ${shortDate(since)}` : "so far";
   const leadKey = action === "weekly-empty" ? "quiet_nothing_week" : "quiet_still_watching";
@@ -546,6 +573,7 @@ function quietHtml(label, action, since, unsubUrl, lang = "en") {
     <h2 style="font-family:system-ui">CROL-List</h2>
     <p style="color:#333">${lead}</p>
     <p style="color:#666;font-size:13px">${esc(emailT(lang, "quiet_working"))}</p>
+    ${healthNote}
     <p style="color:#999;font-size:12px">${esc(emailT(lang, "quiet_subscribed"))} <a href="${esc(unsubUrl)}">${esc(emailT(lang, "digest_unsubscribe"))}</a> (one-click).</p>
   </div>`;
 }

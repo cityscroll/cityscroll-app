@@ -31,6 +31,11 @@ const EMAIL_STRINGS = {
     // lib/digest.mjs for why an item needs this at all.
     digest_match_snippet: "Matched: \"{snippet}\"",
     digest_match_unknown: "Matched: \"{term}\"",
+
+    // search_health: shown on a watch that hasn't matched anything new in a while (see
+    // lib/search_health.mjs). {weeks} = how long it's been quiet.
+    search_health_quiet: "This watch hasn't matched anything new in the last {weeks} weeks.",
+    search_health_fix:   "Broaden this search →",
   },
 
   es: {
@@ -55,6 +60,9 @@ const EMAIL_STRINGS = {
 
     digest_match_snippet: "Coincidencia: \"{snippet}\"",
     digest_match_unknown: "Coincidencia: \"{term}\"",
+
+    search_health_quiet: "Esta alerta no ha encontrado nada nuevo en las últimas {weeks} semanas.",
+    search_health_fix:   "Ampliar esta búsqueda →",
   },
 };
 

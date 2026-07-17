@@ -1540,6 +1540,53 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   topic, edit the builder's amount, confirm BOTH Preview buttons describe the identical
   result) — confirmed failing against the pre-fix code via `git stash` before confirming it
   passes, per house testing doctrine.
+
+## Saved-search health — a quiet watch tells its owner, with a fix path
+
+- **The problem**: a subscription that has matched nothing new for months is a silent dead end
+  its owner still believes is working — the same never-a-dead-end posture the "confidence"
+  heartbeat/weekly-empty feature (`digestDecision()`, `lib/digest.mjs`) already applies to
+  silence in general. This is the narrower case: not "did we email lately" but "has the
+  underlying query itself stopped finding anything."
+- **Storage stays inside the existing SUBS record** — `worker/src/lib/search_health.mjs`'s
+  `nextSearchHealth()`/`searchHealthStatus()` are pure functions over a `health: {lastMatchAt}`
+  field added to the subscription object itself (no new KV namespace). `lastMatchAt` resets to
+  today whenever `fresh.length > 0` in `processOneSub()` (`alerts.mjs`); when there's no match it
+  carries forward unchanged. "Quiet" = `daysBetween(lastMatchAt ?? createdAt, today) >=
+  QUIET_THRESHOLD_DAYS` (56 days / 8 weeks) — `createdAt` (already stored on every sub) anchors a
+  watch that has never matched, so a brand-new watch reads as "no matches yet," never "quiet."
+  Any malformed/missing date fails soft to **not quiet** — an uncertain read must never
+  manufacture a false alarm. `saveSubHealth()` rewrites the sub's SUBS entry every run
+  regardless of the send/cap decision, so email-quota pacing can never distort the underlying
+  signal; a write failure there is caught and ignored (health tracking is best-effort, never
+  allowed to break digest compilation).
+- **The fix-path link reuses the alert builder's own general filter shape.** `alertsFixUrl(lens,
+  filter, freq)` builds `https://crol-list.org/#alerts?lens=<lens>&filter=<json>&freq=<...>` —
+  literally the sub's own stored `{lens,filter}`. `prefillAlertFromLink()` (index.html, called
+  from `applyHash()`'s `tab==="alerts"` branch) reverses this: a money-lens filter goes straight
+  through `NL.alerts.apply()` — the SAME function the Ask box's own interpretation step calls —
+  so a quiet money watch's fix-path link lands on the existing "understood as" chip echo
+  (`aPreview()`'s zero-match branch) for free, no separate UI. Other lenses (entity/land/
+  property/rules/meetings) are pre-filled directly (`#awatch`/`#aparam`/`#aagency`) without a
+  chip echo — a documented, smaller gap, not a crash; an unrecognized lens leaves the builder at
+  its defaults. Legacy `alerts.config.json` watches (the non-SUBS loop in `runAlerts()`) are
+  deliberately NOT covered — they have no per-user KV record to extend, matching the acceptance
+  criterion's "within the existing KV SUBS shape" scope.
+- **The note itself never sends its own email** — `searchHealthNoteHtml()` is appended to
+  whichever digest HTML already fires for a quiet run (the heartbeat/weekly-empty `quietHtml()`,
+  or `subDigestHtml()` when only forecasts fired with zero fresh notices) and is never present
+  when `fresh.length > 0` that run, since a real match always resets `lastMatchAt` to today first
+  — this is what makes "the note disappears without ceremony" a structural property, not a
+  separate check. `search_health_quiet`/`search_health_fix` are worker-only email strings
+  (`lib/i18n.mjs`, en/es only — that catalog's established narrower scope, see the i18n section
+  above) since a subscription's `lang` field is itself clamped to `SUPPORTED_LANGS = ["en","es"]`.
+- **Tests**: `worker/test/search_health.test.mjs` (pure fixtures: quiet-past-threshold,
+  exactly-at-threshold, just-resumed, brand-new/no-history, malformed stored health — plus an
+  integration pass driving `processOneSub()` end to end with a mocked SUBS/ALERT_STATE/fetch,
+  including "health still records when the send cap denies the email"); `test/
+  prefill_alert_from_link.test.mjs` (root, same brace-matching extraction + injected-fakes
+  pattern as `quiz_narrow_resolve.test.mjs`) pins the reverse mapping per lens.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
