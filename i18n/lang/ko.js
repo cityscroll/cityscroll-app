@@ -684,7 +684,6 @@
     api_foot_html: "CROL-List · <a href=\"index.html\">홈</a> · <a href=\"about.html\">소개</a>",
     chg_p_lede: "CROL-List의 변경 사항, 최신순.",
     chg_auto_h2: "최근 업데이트",
-    chg_auto_note: "이 내용은 병합된 코드 변경 사항의 설명에서 가져온 것이며, 현재는 영어로 표시됩니다.",
     chg_earlier_h2: "이전 릴리스",
     chg_detail_note: "각 릴리스 아래의 세부 기술 노트(항목 목록, 사고 보고서)는 현재 영어로 제공됩니다.",
     chg_foot_html: "CROL-List는 공식 기관이 아닌 무료 공개 데이터 인터페이스입니다. <a href=\"about.html\">소개</a> · <a href=\"stats.html\">통계</a> · <a href=\"api.html\">API 및 피드</a> · <a href=\"index.html\">홈</a>",

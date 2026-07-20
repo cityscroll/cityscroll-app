@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Changelog · CROL-List</title>
 <meta name="description" content="What changed on CROL-List, newest first — plain-language notes on every update, from new features and languages to fixes.">
-<script src="i18n.js?v=a7a79f12"></script>
+<script src="i18n.js?v=6f1c0012"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
@@ -35,7 +35,6 @@
   .lede{font-size:16px;color:var(--ink-soft);margin:22px 0 6px}
   .rel-auto{margin-top:22px}
   .rel-auto h2{font-family:var(--font-sc);font-size:16px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);margin:0}
-  .chgauto-note{font:13px/1.5 var(--ui);color:var(--muted);margin:4px 0 12px}
   ul.chg-auto{list-style:none;margin:0;padding:0;font:15.5px/1.6 var(--font-body);color:var(--ink-soft)}
   ul.chg-auto li{padding:8px 0;border-top:1px solid var(--rule)}
   ul.chg-auto li:first-child{border-top:none}
@@ -103,31 +102,19 @@
 
 <section class="rel-auto" aria-labelledby="chgAutoH2">
   <h2 id="chgAutoH2" data-i18n="chg_auto_h2">Recent updates</h2>
-  <p class="chgauto-note" data-i18n="chg_auto_note">These lines come from the descriptions of merged code changes and stay in English for now.</p>
   <ul class="chg-auto" id="chgAutoList"><!-- CHANGELOG:AUTO:START -->
-    <li><time datetime="2026-07-20">2026.07.20</time> — Digest emails now have a shorter footer. The stats page and the API docs describe click counts more plainly, with no change to what's counted or how.</li>
     <li><time datetime="2026-07-17">2026.07.17</time> — If you're watching a notice from an agency that files its awards somewhere other than the City Record, you can now ask to be emailed the moment that award shows up. Click &quot;Email me when the award registers&quot; on the notice, confirm your email once, and you're done — no extra emails until there's real news, and it's the exact same possible-vs-confirmed distinction the notice page already shows you.</li>
-    <li><time datetime="2026-07-17">2026.07.17</time> — No visible change to the site. A future code change that would make the changelog page harder to read now gets flagged on its own pull request, before it merges, instead of after.</li>
-    <li><time datetime="2026-07-17">2026.07.17</time> — - Every note that says your answer lives in another public system now hands you the door: click through to the exact record, the filtered dataset view, or an explanation of what was checked. - If a source can't be linked yet, the site says so honestly instead of showing a dead mention.</li>
+    <li><time datetime="2026-07-17">2026.07.17</time> — Every note that says your answer lives in another public system now hands you the door: click through to the exact record, the filtered dataset view, or an explanation of what was checked. If a source can't be linked yet, the site says so honestly instead of showing a dead mention.</li>
     <li><time datetime="2026-07-17">2026.07.17</time> — Click a link in a CROL-List digest email. You used to land on a bare notice page. Now you see why it matched. The matching word is highlighted. You also see a plain summary of your watch.</li>
     <li><time datetime="2026-07-17">2026.07.17</time> — Has a saved alert gone quiet? If it finds nothing new for a couple of months, its next email says so. That email links back to the alerts page. Your exact search is already loaded there. You can broaden it in one step.</li>
-    <li><time datetime="2026-07-17">2026.07.17</time> — No visible change to the site — this only makes the automated changelog update workflow more reliable, so a language-dictionary change in one PR can't leave the changelog page's cache stamp out of date.</li>
     <li><time datetime="2026-07-17">2026.07.17</time> — Some agencies do not file awards in the City Record. They post them elsewhere. The site now checks. It looks at outside sources. It shows what it finds. It links to the source. If nothing turns up, it says so.</li>
     <li><time datetime="2026-07-15">2026.07.15</time> — Opening a notice with no confirmed prior-award history now offers a &quot;Show possible earlier rounds&quot; option — a set of caveated maybes for your own judgment, instead of a dead end.</li>
-    <li><time datetime="2026-07-15">2026.07.15</time> — Contracts suggestions now hint at which ones lead somewhere deeper: a chip with a quiet colored border means its results include contracts with a documented award history or a published agency forecast — worth a click if you want more than this quarter's notice.</li>
     <li><time datetime="2026-07-15">2026.07.15</time> — The stats page's &quot;all time&quot; numbers, topic/lens breakdowns, and day-by-day history now say exactly how far back they can honestly account for — no more numbers that quietly undercount, and no more &quot;since launch&quot; where that isn't true. Digests, searches, and now active watches are also easier to read at a glance, with the technical plumbing (feed fetches, API checks) moved to its own clearly-labeled section at the bottom, translated across all ten shipping languages.</li>
-    <li><time datetime="2026-07-15">2026.07.15</time> — Not user-facing — this is an operator-only admin endpoint with no UI surface, so no changelog entry.</li>
-    <li><time datetime="2026-07-15">2026.07.15</time> — Typing a query into the Alerts &quot;Narrow by keyword&quot; field and clicking Preview now works whether or not you've clicked a topic chip first — it's resolved the same way the &quot;Ask&quot; box already handles free-text queries, and you'll always see either a populated preview or a clear &quot;we understood this as…&quot; summary, never silence.</li>
     <li><time datetime="2026-07-15">2026.07.15</time> — Typing a full sentence like &quot;education contracts over $200K due in 3 months&quot; into the Alerts quiz's keyword field now previews real matching results and saves an alert with the actual interpreted filters — the same thing you'd get from the &quot;Ask&quot; box, and the same thing that gets saved when you subscribe. A single word or a quoted phrase still searches literally as before.</li>
-    <li><time datetime="2026-07-15">2026.07.15</time> — The homepage tagline now describes CROL-List as something you subscribe to for the things you care about, instead of a passive tracking tool — in English and all ten shipping languages.</li>
     <li><time datetime="2026-07-14">2026.07.14</time> — Alert emails and the &quot;Preview my digest&quot; tool now show exactly which word matched and where — no more guessing why an unrelated-looking notice showed up in your search results.</li>
-    <li><time datetime="2026-07-14">2026.07.14</time> — The &quot;Contracts&quot; tab and &quot;Contract trail&quot; panel heading now match on first paint instead of flashing &quot;Money&quot; before JavaScript repaints them, and three previously English-only empty-state hints will now actually show their translation when you switch languages.</li>
     <li><time datetime="2026-07-14">2026.07.14</time> — Opening the Land or Staffing tab for the first time now shows a real, current example — a live rezoning application, or the city's most common job title with its salary band and career ladder — instead of an empty panel waiting for you to search. Your own searches and shared links work exactly as before.</li>
-    <li><time datetime="2026-07-14">2026.07.14</time> — Older award notices (pre-2013) are more likely to show their Checkbook NYC payment history instead of a blanket &quot;no registered contract found.&quot; Digest emails also no longer show a duplicate line item on the rare occasion City Record republishes a notice under a new ID.</li>
     <li><time datetime="2026-07-14">2026.07.14</time> — The stats page now shows day-by-day history of digests sent and searches asked, with recovered and live-counted days honestly labeled.</li>
-    <li><time datetime="2026-07-14">2026.07.14</time> — The People tab is now called Staffing.</li>
     <li><time datetime="2026-07-14">2026.07.14</time> — You can now build an alert that watches one agency, or only awards, or only open solicitations, not just an amount or a deadline.</li>
-    <li><time datetime="2026-07-14">2026.07.14</time> — The respond panel, agency award totals, and empty alert previews now tell you the truth instead of showing a broken-looking guess.</li>
     <li><time datetime="2026-07-14">2026.07.14</time> — Typing something like &quot;education contracts over $200K due in 3 months&quot; into an alert now matches the category, amount, and deadline together, not just one of them.</li>
     <li><time datetime="2026-07-14">2026.07.14</time> — Notice pages now show whether a recurring bid was awarded before, and to whom, not just its own paper trail.</li>
     <li><time datetime="2026-07-14">2026.07.14</time> — The stats page now uses plain-language labels, shows all-time totals, and breaks down digest matches by topic.</li>
@@ -136,10 +123,8 @@
     <li><time datetime="2026-07-13">2026.07.13</time> — You can now read every page in Arabic and Urdu, right to left.</li>
     <li><time datetime="2026-07-13">2026.07.13</time> — Added Bengali, Haitian Creole, Korean, French, and Polish.</li>
     <li><time datetime="2026-07-13">2026.07.13</time> — Added Chinese (simplified) and Russian.</li>
-    <li><time datetime="2026-07-13">2026.07.13</time> — The About page's biggest dollar claims now link to the actual notices behind them.</li>
     <li><time datetime="2026-07-13">2026.07.13</time> — Closed the last known accessibility gaps: every control now has a visible focus ring, an accurate label, and enough color contrast to read.</li>
     <li><time datetime="2026-07-13">2026.07.13</time> — Every page, not just the homepage, now translates into Español, and your language choice is remembered across visits.</li>
-    <li><time datetime="2026-07-13">2026.07.13</time> — Fixed two Spanish-translation bugs: today's notice count and the investigation workspace were showing English text after switching to Español.</li>
   <!-- CHANGELOG:AUTO:END --></ul>
 </section>
 

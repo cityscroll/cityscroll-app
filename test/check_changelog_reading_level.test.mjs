@@ -27,6 +27,7 @@ import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { simulate, measureAgainstBaseline, formatRegressionMessage } from "../tools/check_changelog_reading_level.mjs";
+import { MAJOR_LABEL } from "../tools/changelog_extract.mjs";
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const SCRIPT = path.join(ROOT, "tools", "check_changelog_reading_level.mjs");
@@ -113,8 +114,25 @@ test("a PR with no marker section produces no simulation and no grade check — 
     url: "https://example.invalid/99",
     mergedAt: "2026-07-17",
     body: NO_MARKER_BODY,
+    labels: [MAJOR_LABEL],
   });
   assert.equal(result.reason, "no-marker");
+  assert.equal(result.text, null);
+  assert.equal(result.html, null);
+});
+
+test("a PR with no changelog:major label produces no simulation, even with a marker section present", () => {
+  const result = simulate({
+    baseDataJson: JSON.stringify(BASE_DATA),
+    baseHtml: BASE_HTML,
+    i18nSource: Buffer.from(""),
+    number: 99,
+    url: "https://example.invalid/99",
+    mergedAt: "2026-07-17",
+    body: bodyWithMarker(PR_74_PLAIN),
+    labels: ["enhancement"],
+  });
+  assert.equal(result.reason, "not-major");
   assert.equal(result.text, null);
   assert.equal(result.html, null);
 });
@@ -144,6 +162,7 @@ test(
       url: "https://github.com/cityscroll/crol-list/pull/74",
       mergedAt: "2026-07-17",
       body: bodyWithMarker(PR_74_ORIGINAL),
+      labels: [MAJOR_LABEL],
     });
     assert.equal(sim.reason, "added");
     assert.equal(sim.text, PR_74_ORIGINAL);
@@ -171,6 +190,7 @@ test(
       url: "https://github.com/cityscroll/crol-list/pull/72",
       mergedAt: "2026-07-17",
       body: bodyWithMarker(PR_72_ORIGINAL),
+      labels: [MAJOR_LABEL],
     });
     assert.equal(sim.reason, "added");
 
@@ -195,6 +215,7 @@ test(
         url: `https://github.com/cityscroll/crol-list/pull/${number}`,
         mergedAt: "2026-07-17",
         body: bodyWithMarker(text),
+        labels: [MAJOR_LABEL],
       });
       const result = measureAgainstBaseline(sim.html, { baseline: writeTmpBaseline(), preset: "nycsg7" });
       assert.equal(result.status, "pass", `PR #${number}'s reworded text should pass: ${result.reason}`);
@@ -236,6 +257,7 @@ test(
           "--url", "https://github.com/cityscroll/crol-list/pull/74",
           "--merged-at", "2026-07-17",
           "--body-file", bodyPath,
+          "--labels", MAJOR_LABEL,
           "--baseline", baselinePath,
         ],
         { encoding: "utf8" }
@@ -269,7 +291,8 @@ test(
           process.execPath,
           [SCRIPT, "--base-data", baseDataPath, "--base-html", baseHtmlPath, "--i18n", i18nPath,
             "--number", "74", "--url", "https://github.com/cityscroll/crol-list/pull/74",
-            "--merged-at", "2026-07-17", "--body-file", regressBody, "--baseline", baselinePath],
+            "--merged-at", "2026-07-17", "--body-file", regressBody, "--labels", MAJOR_LABEL,
+            "--baseline", baselinePath],
           { encoding: "utf8", stdio: "pipe" }
         );
       }, (err) => {
@@ -285,7 +308,8 @@ test(
         process.execPath,
         [SCRIPT, "--base-data", baseDataPath, "--base-html", baseHtmlPath, "--i18n", i18nPath,
           "--number", "74", "--url", "https://github.com/cityscroll/crol-list/pull/74",
-          "--merged-at", "2026-07-17", "--body-file", passBody, "--baseline", baselinePath],
+          "--merged-at", "2026-07-17", "--body-file", passBody, "--labels", MAJOR_LABEL,
+          "--baseline", baselinePath],
         { encoding: "utf8" }
       );
       assert.match(out, /^OK —/);

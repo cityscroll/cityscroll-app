@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "24f3843f",
-  "zh-Hans": "be2c719e",
-  ru: "d58ccf44",
-  bn: "97ac9ecb",
-  ht: "b06ba6ed",
-  ko: "c429d4d2",
-  fr: "fe858f2e",
-  pl: "8778801a",
-  ar: "dd44ab2f",
-  ur: "0fa4d802",
+  es: "0f658183",
+  "zh-Hans": "cf9f41db",
+  ru: "f6774944",
+  bn: "47277e30",
+  ht: "348ef634",
+  ko: "3a8f2ce8",
+  fr: "7723c016",
+  pl: "6f35a533",
+  ar: "13a874c6",
+  ur: "b5086443",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -902,7 +902,6 @@ const STRINGS = {
     // changelog.html
     chg_p_lede: "What changed on CROL-List, newest first.",
     chg_auto_h2: "Recent updates",
-    chg_auto_note: "These lines come from the descriptions of merged code changes and stay in English for now.",
     chg_earlier_h2: "Earlier releases",
     chg_detail_note: "The detailed technical notes below each release (bullet lists, incident reports) remain in English for now.",
     chg_foot_html: "CROL-List is an unofficial, free interface to public data. <a href=\"about.html\">About</a> · <a href=\"stats.html\">Stats</a> · <a href=\"api.html\">API and feeds</a> · <a href=\"index.html\">Home</a>",

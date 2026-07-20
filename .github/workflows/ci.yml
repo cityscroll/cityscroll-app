@@ -200,6 +200,7 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
           PR_URL: ${{ github.event.pull_request.html_url }}
           PR_BODY: ${{ github.event.pull_request.body }}
+          PR_LABELS: ${{ join(github.event.pull_request.labels.*.name, ',') }}
         run: |
           printf '%s' "$PR_BODY" > "$RUNNER_TEMP/changelog-sim/pr-body.md"
           node tools/check_changelog_reading_level.mjs \
@@ -210,6 +211,7 @@ jobs:
             --url "$PR_URL" \
             --merged-at "$(date -u +%Y-%m-%d)" \
             --body-file "$RUNNER_TEMP/changelog-sim/pr-body.md" \
+            --labels "$PR_LABELS" \
             --baseline reading-level-baseline.json
       # Opt-in only — a manually-labeled PR gets LLM-drafted plain-language suggestions as
       # PR-ready JSON (not auto-applied; a human reviews and accepts/discards). Needs

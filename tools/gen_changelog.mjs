@@ -1,16 +1,18 @@
 #!/usr/bin/env node
 // tools/gen_changelog.mjs — regenerates changelog.html's "Recent updates" list from
-// changelog-data.json, and (given --number/--url/--merged-at/--body-file) first tries to
-// add a new entry extracted from a merged PR's body.
+// changelog-data.json, and (given --number/--url/--merged-at/--body-file/--labels) first
+// tries to add a new entry extracted from a merged PR's body.
 //
 // Two call shapes:
 //   node tools/gen_changelog.mjs --number 34 --url <html_url> --merged-at 2026-07-15 \
-//     --body-file /tmp/pr-body.md
-//     Extracts the PR's "## What this means for you" line (changelog_extract.mjs). No
-//     marker section -> prints a message and exits 0 (plumbing PRs are expected to lack
-//     one; this is not a failure). Already-recorded PR number -> no-op (idempotent, safe
-//     to re-run). Otherwise prepends the entry to changelog-data.json and rewrites the
-//     HTML block.
+//     --body-file /tmp/pr-body.md --labels "changelog:major,enhancement"
+//     Extracts the PR's "## What this means for you" line (changelog_extract.mjs), but only
+//     when the PR also carries the `changelog:major` label (see changelog_extract.mjs's
+//     header comment for why the marker section alone stopped being a significance signal).
+//     No label, or a label but no marker section -> prints a message and exits 0 (this is
+//     the expected, common case, not a failure). Already-recorded PR number -> no-op
+//     (idempotent, safe to re-run). Otherwise prepends the entry to changelog-data.json and
+//     rewrites the HTML block.
 //   node tools/gen_changelog.mjs --rebuild
 //     Rewrites changelog.html's HTML block from the current changelog-data.json only —
 //     useful after a hand-edit to the data file, or to verify the two files agree.
@@ -28,7 +30,7 @@ import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
 import { fileURLToPath } from "node:url";
-import { extractUserImpact } from "./changelog_extract.mjs";
+import { extractUserImpact, hasMajorLabel } from "./changelog_extract.mjs";
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const DATA_PATH = path.join(ROOT, "changelog-data.json");
@@ -47,6 +49,7 @@ function parseArgs(argv) {
     else if (a === "--url") out.url = argv[++i];
     else if (a === "--merged-at") out.mergedAt = argv[++i];
     else if (a === "--body-file") out.bodyFile = argv[++i];
+    else if (a === "--labels") out.labels = argv[++i];
   }
   return out;
 }
@@ -124,13 +127,26 @@ function rewriteHtml(entries) {
   fs.writeFileSync(HTML_PATH, rebuilt);
 }
 
-// Pure: given the current entries list and a candidate PR's body, decides whether it adds
-// a new entry — reused by both the real post-merge CLI (main(), below) and the pre-merge
-// simulation script (tools/check_changelog_reading_level.mjs) so "what counts as harvestable" can never
-// drift between the two call sites.
-export function computeEntryAddition(entries, { number, url, mergedAt, body }) {
+// Splits a comma-separated --labels value (as GitHub Actions' `join(labels.*.name, ',')`
+// produces) back into a plain array. Tolerant of a missing/empty value (no labels).
+export function parseLabels(raw) {
+  if (!raw) return [];
+  return String(raw)
+    .split(",")
+    .map((l) => l.trim())
+    .filter(Boolean);
+}
+
+// Pure: given the current entries list and a candidate PR's body + labels, decides whether
+// it adds a new entry — reused by both the real post-merge CLI (main(), below) and the
+// pre-merge simulation script (tools/check_changelog_reading_level.mjs) so "what counts as
+// harvestable" can never drift between the two call sites.
+export function computeEntryAddition(entries, { number, url, mergedAt, body, labels }) {
   if (entries.some((e) => e.pr === number)) {
     return { entries, text: null, reason: "already-recorded" };
+  }
+  if (!hasMajorLabel(labels)) {
+    return { entries, text: null, reason: "not-major" };
   }
   const text = extractUserImpact(body);
   if (!text) {
@@ -157,13 +173,18 @@ function main() {
       url: args.url,
       mergedAt: args.mergedAt,
       body,
+      labels: parseLabels(args.labels),
     });
     if (result.reason === "already-recorded") {
       console.log(`PR #${args.number} already recorded — no-op.`);
       return;
     }
+    if (result.reason === "not-major") {
+      console.log(`PR #${args.number} carries no "changelog:major" label — skipped.`);
+      return;
+    }
     if (result.reason === "no-marker") {
-      console.log(`PR #${args.number} carries no "What this means for you" section — not user-facing, skipped.`);
+      console.log(`PR #${args.number} is labeled "changelog:major" but carries no "What this means for you" section — skipped.`);
       return;
     }
     data.entries = result.entries;
