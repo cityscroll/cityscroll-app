@@ -693,7 +693,6 @@
     api_foot_html: "CROL-List · <a href=\"index.html\">ہوم</a> · <a href=\"about.html\">تعارف</a>",
     chg_p_lede: "CROL-List میں کیا بدلا، تازہ ترین پہلے۔",
     chg_auto_h2: "حالیہ اپڈیٹس",
-    chg_auto_note: "یہ سطریں مرج شدہ کوڈ کی تبدیلیوں کی تفصیل سے لی گئی ہیں اور فی الحال انگریزی میں ہیں۔",
     chg_earlier_h2: "پرانے ورژن",
     chg_detail_note: "ہر ریلیز کے نیچے تفصیلی تکنیکی نوٹس (بلٹ پوائنٹ فہرستیں، واقعے کی رپورٹیں) فی الحال انگریزی میں ہی رہتی ہیں۔",
     chg_foot_html: "CROL-List عوامی ڈیٹا کا ایک غیر سرکاری، مفت انٹرفیس ہے۔ <a href=\"about.html\">تعارف</a> · <a href=\"stats.html\">اعداد و شمار</a> · <a href=\"api.html\">API اور فیڈز</a> · <a href=\"index.html\">ہوم</a>",

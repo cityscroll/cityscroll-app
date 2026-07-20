@@ -678,7 +678,6 @@
     api_foot_html: "CROL-List · <a href=\"index.html\">首页</a> · <a href=\"about.html\">关于</a>",
     chg_p_lede: "CROL-List 的更新内容，按最新排序。",
     chg_auto_h2: "最近更新",
-    chg_auto_note: "这些内容来自已合并代码更改的说明，目前仍为英文。",
     chg_earlier_h2: "更早的版本",
     chg_detail_note: "每个版本下方的详细技术说明（项目列表、事件报告）目前仍为英文。",
     chg_foot_html: "CROL-List 是一个非官方的、免费的公开数据接口。<a href=\"about.html\">关于</a> · <a href=\"stats.html\">统计</a> · <a href=\"api.html\">API 与信息源</a> · <a href=\"index.html\">首页</a>",

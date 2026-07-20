@@ -46,12 +46,23 @@ These rules built the project and they're not aspirational — every shipped fea
 
 ## Changelog entries
 
-`changelog.html`'s "Recent updates" list is generated, not hand-edited. If your PR changes
-something a visitor would notice, add a one-line `## What this means for you` section to the
-PR body — plain language, present tense, no code names or internal jargon. A merge-triggered
-workflow (`.github/workflows/update-changelog.yml`) extracts that line and regenerates the
-page automatically. No marker section means no entry — that's the intended way to keep
-plumbing/CI/refactor PRs off the page, not an oversight to fix.
+`changelog.html`'s "Recent updates" list is generated, not hand-edited, and it's curated: it
+exists to surface the handful of changes worth a returning visitor's attention, not to mirror
+every merged PR. Two things earn a PR an entry, both required:
+
+1. A one-line `## What this means for you` section in the PR body — plain language, present
+   tense, no code names or internal jargon.
+2. The `changelog:major` label, applied when the change is genuinely significant to a
+   visitor — a new feature, a new language, a meaningful fix to something visibly broken.
+   Most PRs should NOT carry this label: a bug fix, an internal/tooling change, a wording
+   tweak, or a refinement to something that already shipped is real work but not a changelog
+   moment. If in doubt, leave it off — the PR history (and, for internal work, the project's
+   `AGENTS.md`) is still the complete record; the changelog page is the curated highlights,
+   not the log.
+
+A merge-triggered workflow (`.github/workflows/update-changelog.yml`) checks for the label,
+then extracts the marker line, and regenerates the page automatically. Missing either one
+means no entry — that's the intended way to keep the page selective, not an oversight to fix.
 
 ## Running things
 

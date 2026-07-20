@@ -1,6 +1,7 @@
 # Regenerates changelog.html's "Recent updates" list on every PR merge, so no one hand-edits
-# the changelog. See CONTRIBUTING.md's "Changelog entries" section for the marker convention
-# a PR body needs, and tools/gen_changelog.mjs for the extraction + rebuild logic.
+# the changelog. See CONTRIBUTING.md's "Changelog entries" section for the marker + label
+# convention a PR body/labels need, and tools/gen_changelog.mjs for the extraction + rebuild
+# logic.
 #
 # `main` sits behind a merge-queue ruleset, and the Actions token cannot be a bypass actor —
 # a direct `git push` to `main` is rejected outright. So this workflow pushes to a standing
@@ -19,6 +20,29 @@
 #      regenerate. Multiple qualifying PRs merging before the queue processes the bot PR
 #      accumulate onto that SAME open PR (each run reads the bot branch's current pending
 #      state as its base) rather than opening one bot PR per entry.
+#
+# Self-landing (crol-changelog-m6): main's ruleset requires four named status checks
+# ("Unit tests (site + worker)", "Accessibility + language gate (axe on every PR)",
+# "Stray-English guard (runtime, fixtures)", "Reading-level ratchet gate (readable-or-else)")
+# on top of the merge queue, so arming auto-merge alone isn't enough — the bot PR still needs
+# those checks to actually run and pass on its head SHA before it's mergeable at all. They
+# never do on their own: GitHub requires a maintainer to click "Approve and run workflows" for
+# ANY `pull_request`-triggered run whose author is GITHUB_TOKEN's bot identity
+# (github-actions[bot]), even for a same-repo, non-fork branch like this one — confirmed live
+# on PR #81, which sat with zero check runs on its head SHA (mergeStateStatus: BLOCKED) until
+# a maintainer manually re-ran CI. The "Dispatch CI directly" step below routes around this:
+# `workflow_dispatch` is a different trigger, and the fork/first-time-contributor approval
+# gate is scoped to `pull_request`/`pull_request_target` events only — it doesn't apply here.
+# Required-status-check matching keys on (SHA, check name), not on which event produced the
+# check run, so a workflow_dispatch-triggered CI run on the bot branch's head SHA satisfies
+# the same required checks a pull_request-triggered run would have. Once those pass, the
+# existing enqueuePullRequest call (moved to after the wait) succeeds on its own.
+#
+# The wait step polls the bot PR's own statusCheckRollup for the four REQUIRED check names
+# specifically, not the dispatched run's overall pass/fail — ci.yml's "functional" job (the
+# Playwright suite against live APIs) only runs on workflow_dispatch, is documented as
+# flaky, and isn't in the ruleset's required list; waiting on the whole run instead of the
+# named checks would let an unrelated flake in that job block an otherwise-mergeable PR.
 name: Update changelog
 
 on:
@@ -28,6 +52,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  actions: write
 
 concurrency:
   group: update-changelog
@@ -37,6 +62,7 @@ jobs:
   update:
     if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main'
     runs-on: ubuntu-latest
+    timeout-minutes: 25
     env:
       BOT_BRANCH: bot/changelog-update
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -68,24 +94,27 @@ jobs:
           cp changelog-data.json "$RUNNER_TEMP/before-data.json"
           cp changelog.html "$RUNNER_TEMP/before-changelog.html"
 
-      - name: Extract this PR's user-impact line and regenerate the changelog
+      - name: Extract this PR's user-impact line (if labeled changelog:major) and regenerate the changelog
+        env:
+          PR_LABELS: ${{ join(github.event.pull_request.labels.*.name, ',') }}
         run: |
           node tools/gen_changelog.mjs \
             --number "${{ github.event.pull_request.number }}" \
             --url "${{ github.event.pull_request.html_url }}" \
             --merged-at "${{ github.event.pull_request.merged_at }}" \
-            --body-file "$RUNNER_TEMP/pr-body.md"
+            --body-file "$RUNNER_TEMP/pr-body.md" \
+            --labels "$PR_LABELS"
 
       - name: Stop here if regeneration produced no change (explicit no-diff guard, before touching any branch)
         run: |
           if diff -q "$RUNNER_TEMP/before-data.json" changelog-data.json >/dev/null \
              && diff -q "$RUNNER_TEMP/before-changelog.html" changelog.html >/dev/null; then
-            echo "No new entry (no marker in this PR, already recorded, or nothing changed) — nothing to do."
+            echo "No new entry (not labeled changelog:major, no marker, already recorded, or nothing changed) — nothing to do."
             exit 0
           fi
           echo "changed=true" >> "$GITHUB_ENV"
 
-      - name: Push the bot branch, open or update its PR, and enqueue it
+      - name: Push the bot branch and open or update its PR
         if: env.changed == 'true'
         run: |
           git config user.name "github-actions[bot]"
@@ -113,7 +142,60 @@ jobs:
             PR_NUMBER="$(gh pr list --head "$BOT_BRANCH" --state open --json number --jq '.[0].number')"
             echo "Opened bot PR #$PR_NUMBER"
           fi
+          echo "$PR_NUMBER" > "$RUNNER_TEMP/bot-pr-number"
 
+      # See the file-header comment above for why this step exists: `pull_request`-triggered
+      # CI on this branch would sit at "action_required" forever without a maintainer's click.
+      - name: Dispatch CI directly on the bot branch (workflow_dispatch bypasses the pull_request-event approval gate) and wait for the required checks
+        if: env.changed == 'true'
+        timeout-minutes: 20
+        run: |
+          gh workflow run ci.yml --ref "$BOT_BRANCH"
+          PR_NUMBER="$(cat "$RUNNER_TEMP/bot-pr-number")"
+
+          # Keep this list in sync with the "required_status_checks" contexts on main's
+          # ruleset (`gh api repos/OWNER/REPO/rules/branches/main`).
+          REQUIRED_CHECKS=(
+            "Unit tests (site + worker)"
+            "Accessibility + language gate (axe on every PR)"
+            "Stray-English guard (runtime, fixtures)"
+            "Reading-level ratchet gate (readable-or-else)"
+          )
+
+          ci_ok=false
+          for i in $(seq 1 80); do
+            sleep 15
+            ROLLUP="$(gh pr view "$PR_NUMBER" --json statusCheckRollup --jq '.statusCheckRollup // []')"
+            all_done=true
+            all_green=true
+            for name in "${REQUIRED_CHECKS[@]}"; do
+              ENTRY="$(echo "$ROLLUP" | jq -c --arg n "$name" '[.[] | select(.name==$n)][0] // {}')"
+              status="$(echo "$ENTRY" | jq -r '.status // "PENDING"')"
+              conclusion="$(echo "$ENTRY" | jq -r '.conclusion // ""')"
+              if [ "$status" != "COMPLETED" ]; then
+                all_done=false
+              elif [ "$conclusion" != "SUCCESS" ]; then
+                all_green=false
+              fi
+            done
+            if [ "$all_done" = "true" ]; then
+              [ "$all_green" = "true" ] && ci_ok=true
+              break
+            fi
+          done
+
+          if [ "$ci_ok" = "true" ]; then
+            echo "Required checks passed on $BOT_BRANCH (PR #$PR_NUMBER)"
+            echo "ci_ok=true" >> "$GITHUB_ENV"
+          else
+            echo "::warning::required checks didn't all pass on $BOT_BRANCH within the poll window — leaving bot PR #$PR_NUMBER for manual review"
+            echo "ci_ok=false" >> "$GITHUB_ENV"
+          fi
+
+      - name: Enqueue the bot PR now that its required checks are satisfied
+        if: env.changed == 'true' && env.ci_ok == 'true'
+        run: |
+          PR_NUMBER="$(cat "$RUNNER_TEMP/bot-pr-number")"
           PR_NODE_ID="$(gh pr view "$PR_NUMBER" --json id --jq .id)"
           gh api graphql -f query='
             mutation($prId: ID!) {

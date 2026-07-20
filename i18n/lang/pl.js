@@ -700,7 +700,6 @@
     api_foot_html: "CROL-List · <a href=\"index.html\">Strona główna</a> · <a href=\"about.html\">O projekcie</a>",
     chg_p_lede: "Co się zmieniło w CROL-List, od najnowszych.",
     chg_auto_h2: "Najnowsze aktualizacje",
-    chg_auto_note: "Te wpisy pochodzą z opisów scalonych zmian w kodzie i na razie pozostają w języku angielskim.",
     chg_earlier_h2: "Wcześniejsze wydania",
     chg_detail_note: "Szczegółowe notatki techniczne pod każdym wydaniem (listy punktowane, raporty incydentów) pozostają na razie w języku angielskim.",
     chg_foot_html: "CROL-List to nieoficjalny, bezpłatny interfejs do danych publicznych. <a href=\"about.html\">O projekcie</a> · <a href=\"stats.html\">Statystyki</a> · <a href=\"api.html\">API i kanały</a> · <a href=\"index.html\">Strona główna</a>",

@@ -796,7 +796,6 @@
     // changelog.html
     chg_p_lede: "Ce qui a changé sur CROL-List, du plus récent au plus ancien.",
     chg_auto_h2: "Mises à jour récentes",
-    chg_auto_note: "Ces lignes proviennent des descriptions des modifications de code fusionnées et restent en anglais pour le moment.",
     chg_earlier_h2: "Versions précédentes",
     chg_detail_note: "Les notes techniques détaillées sous chaque version (listes à puces, rapports d'incidents) restent en anglais pour l'instant.",
     chg_foot_html: "CROL-List est une interface gratuite et non officielle vers des données publiques. <a href=\"about.html\">À propos</a> · <a href=\"stats.html\">Statistiques</a> · <a href=\"api.html\">API et flux</a> · <a href=\"index.html\">Accueil</a>",

@@ -18,7 +18,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { extractUserImpact } from "../tools/changelog_extract.mjs";
+import { extractUserImpact, hasMajorLabel, MAJOR_LABEL } from "../tools/changelog_extract.mjs";
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 
@@ -92,4 +92,24 @@ test("collects a multi-line marker section up to the next heading or blank line"
 test("the changelog bot's own PR body produces nothing (the loop's convergence point)", () => {
   const botBody = fs.readFileSync(path.join(ROOT, ".github", "changelog-bot-pr-body.md"), "utf8");
   assert.equal(extractUserImpact(botBody), null);
+});
+
+// crol-changelogcurate-m6: a bullet-list-formatted marker section used to leak a literal
+// "-" into the joined text — real field case, PR #76's harvested entry read "- Every note
+// that says your answer lives in another public system now hands you the door: ...".
+test("a marker section written as a bullet list has its list markers stripped, not leaked into the joined sentence", () => {
+  const body = "## What this means for you\n- Every note now links through.\n- A dead mention says so honestly.\n\n## Test plan\n";
+  assert.equal(
+    extractUserImpact(body),
+    "Every note now links through. A dead mention says so honestly."
+  );
+});
+
+test("hasMajorLabel matches the changelog:major label case-insensitively among a PR's other labels", () => {
+  assert.equal(hasMajorLabel(["enhancement", MAJOR_LABEL]), true);
+  assert.equal(hasMajorLabel(["Changelog:Major"]), true);
+  assert.equal(hasMajorLabel(["enhancement", "bug"]), false);
+  assert.equal(hasMajorLabel([]), false);
+  assert.equal(hasMajorLabel(null), false);
+  assert.equal(hasMajorLabel(undefined), false);
 });

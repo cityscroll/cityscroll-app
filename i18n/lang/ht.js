@@ -679,7 +679,6 @@
     api_foot_html: "CROL-List · <a href=\"index.html\">Akèy</a> · <a href=\"about.html\">Konsènan</a>",
     chg_p_lede: "Sa ki chanje sou CROL-List, pi resan an anvan.",
     chg_auto_h2: "Dènye chanjman yo",
-    chg_auto_note: "Liy sa yo soti nan deskripsyon chanjman kòd ki fin fusyone yo, epi yo rete an anglè pou kounye a.",
     chg_earlier_h2: "Ansyen vèsyon yo",
     chg_detail_note: "Nòt teknik detaye anba chak vèsyon (lis pwen, rapò ensidan) rete an angle pou kounye a.",
     chg_foot_html: "CROL-List se yon entèfas gratis, ki pa ofisyèl, pou done piblik. <a href=\"about.html\">Konsènan</a> · <a href=\"stats.html\">Estatistik</a> · <a href=\"api.html\">API ak flux</a> · <a href=\"index.html\">Akèy</a>",

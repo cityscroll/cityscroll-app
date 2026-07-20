@@ -27,7 +27,7 @@
 // Usage:
 //   node tools/check_changelog_reading_level.mjs \
 //     --base-data <path> --base-html <path> --i18n <path> \
-//     --number N --url URL --merged-at DATE --body-file FILE \
+//     --number N --url URL --merged-at DATE --body-file FILE --labels "changelog:major,..." \
 //     --baseline <path> [--preset nycsg7]
 //
 // Exit 0: no harvestable entry (nothing to simulate), or the simulated page meets the
@@ -39,7 +39,7 @@ import os from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
-import { computeEntryAddition, buildHtml } from "./gen_changelog.mjs";
+import { computeEntryAddition, buildHtml, parseLabels } from "./gen_changelog.mjs";
 
 export function parseArgs(argv) {
   const out = { preset: "nycsg7" };
@@ -52,6 +52,7 @@ export function parseArgs(argv) {
     else if (a === "--url") out.url = argv[++i];
     else if (a === "--merged-at") out.mergedAt = argv[++i];
     else if (a === "--body-file") out.bodyFile = argv[++i];
+    else if (a === "--labels") out.labels = argv[++i];
     else if (a === "--baseline") out.baseline = argv[++i];
     else if (a === "--preset") out.preset = argv[++i];
   }
@@ -62,10 +63,10 @@ export function parseArgs(argv) {
 // — html is null when there's nothing to simulate (reason is "no-marker" or
 // "already-recorded"). Pure aside from the two base-file/i18n reads the caller hands it as
 // already-loaded strings, so it's directly unit-testable with fixture strings.
-export function simulate({ baseDataJson, baseHtml, i18nSource, number, url, mergedAt, body }) {
+export function simulate({ baseDataJson, baseHtml, i18nSource, number, url, mergedAt, body, labels }) {
   const data = JSON.parse(baseDataJson);
   const entries = data.entries || [];
-  const result = computeEntryAddition(entries, { number, url, mergedAt, body });
+  const result = computeEntryAddition(entries, { number, url, mergedAt, body, labels });
   if (result.reason !== "added") {
     return { reason: result.reason, text: null, html: null };
   }
@@ -133,10 +134,11 @@ function main() {
     url: args.url,
     mergedAt: args.mergedAt,
     body,
+    labels: parseLabels(args.labels),
   });
 
-  if (sim.reason === "no-marker") {
-    console.log('No "What this means for you" section in this PR — nothing to simulate.');
+  if (sim.reason === "not-major" || sim.reason === "no-marker") {
+    console.log('This PR is not labeled "changelog:major" (or has no "What this means for you" section) — nothing to simulate.');
     return;
   }
   if (sim.reason === "already-recorded") {
