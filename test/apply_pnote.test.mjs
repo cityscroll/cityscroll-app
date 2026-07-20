@@ -86,7 +86,7 @@ test("phone but no email: still no Email-a-response button, still the no-contact
   assert.match(html, /tel:/);
 });
 
-// crol-fort-pin: mailtoFor()/icsForRFP() checked bare `r.pin` truthiness, not usablePin() -- a
+// mailtoFor()/icsForRFP() checked bare `r.pin` truthiness, not usablePin() -- a
 // junk PIN like "TBD" or "See below" (truthy strings) leaked straight into the letter-of-intent
 // subject/body and the .ics DESCRIPTION unchanged. usablePin() is the single gate the rest of
 // the app already uses for this notice's PIN; these two must use it too.

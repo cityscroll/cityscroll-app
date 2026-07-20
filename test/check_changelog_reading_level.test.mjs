@@ -1,5 +1,5 @@
 // Characterization tests for tools/check_changelog_reading_level.mjs — the pre-merge
-// simulation of the changelog reading-level ratchet gate (crol-changelogprose-k8).
+// simulation of the changelog reading-level ratchet gate.
 //
 // Before this existed: a changelog entry's reading-level regression was only ever detected
 // on the automated bot PR (bot/changelog-update), AFTER the feature PR that introduced the

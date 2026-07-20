@@ -1,4 +1,4 @@
-"""crol-forecast-t2: the README's headline promise ("track upcoming solicitation
+"""The README's headline promise ("track upcoming solicitation
 opportunities 6 months before they are formally published") pointed at real code that
 was practically unreachable — a Procurement Forecast pane that only existed as a
 display:none secondary subtab inside an agency/vendor profile, and a profile is itself

@@ -7,7 +7,7 @@
 // site checked that source and found none. Before this feature external awards were absent; an
 // unguarded implementation would have asserted a fuzzy vendor+date guess as a confirmed award.
 //
-// crol-awardlink-w6: every one of those notes used to name its source as plain text with no way
+// Every one of those notes used to name its source as plain text with no way
 // to go look — "affordances imply capability" was the site owner's framing. These tests now also
 // pin that each note carries a working, scoped link: NYCHA's exact match links straight to the
 // matched contract on Checkbook NYC (verified live 2026-07-17 — contract detail resolves purely
@@ -181,7 +181,7 @@ test("rankNychaAwardCandidates: keeps and deduplicates a temporally valid exact-
   assert.deepEqual(rankNychaAwardCandidates(notice, rows), [agreement]);
 });
 
-test("agencyAwardsNote: registry-backed empty state — before crol-awardlink-w6 every branch named its source as plain text with no way to go look; now each carries a working scoped link", () => {
+test("agencyAwardsNote: registry-backed empty state — before, every branch named its source as plain text with no way to go look; now each carries a working scoped link", () => {
   const agencyAwardsNote = buildAgencyAwardsNote();
 
   // Fuzzy ABO agency: source name links to the authority-filtered SODA view (real dataset id).

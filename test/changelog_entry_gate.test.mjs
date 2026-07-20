@@ -1,4 +1,4 @@
-// Characterization tests for the changelog editorial gate (crol-changelogcurate-m6):
+// Characterization tests for the changelog editorial gate:
 // tools/gen_changelog.mjs's computeEntryAddition() now requires the `changelog:major`
 // label in addition to a "## What this means for you" section before a merged PR earns a
 // changelog.html entry (see tools/changelog_extract.mjs's header comment for why the

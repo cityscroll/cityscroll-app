@@ -1,4 +1,4 @@
-// Pins chainHTML()'s renewal-linking behavior (crol-fort-pin): a chain entry pulled in by the
+// Pins chainHTML()'s renewal-linking behavior: a chain entry pulled in by the
 // pinBase() renewal-suffix prefix widening carries a DIFFERENT literal PIN than the notice the
 // reader opened, so it must render distinguishably from a same-PIN duplicate stage.
 //

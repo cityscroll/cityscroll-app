@@ -3,7 +3,7 @@
 // (not one request per row), so a reader can see which notices have prior award cycles before
 // clicking in.
 //
-// Field evidence (session firstmate 2026-07-15): the site owner, already aware the cadence
+// Field evidence (2026-07-15): the site owner, already aware the cadence
 // estimate (w12-04) and past-winners strip (w12-05) had just shipped, could not locate a live
 // notice exhibiting either feature without being handed fixture PINs directly — both only
 // reveal themselves after opening a notice that happens to have a chain. Before this fix: a

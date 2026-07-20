@@ -1,5 +1,5 @@
-// Characterization test for test/standards/i18n_fallback_sync.py, the gate added in
-// crol-staticsync-b2 after a verification pass found index.html's raw pre-JS fallback text
+// Characterization test for test/standards/i18n_fallback_sync.py, the gate added
+// after a verification pass found index.html's raw pre-JS fallback text
 // still reading "Money" / "Money trail" though the i18n.js en dictionary — what every real
 // pageview actually renders once applyStrings() runs — had long since moved to
 // "Contracts" / "Contract trail". Nothing had caught that drift; this pins the exact

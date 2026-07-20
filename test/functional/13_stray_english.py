@@ -23,7 +23,7 @@ Parameterized by language: CROL_GUARD_LANGS="es" (comma-separated) — extend as
 language's dictionary ships (wave 7). Run standalone (serves itself) or under run.sh.
 
 Parameterized by page too: CROL_GUARD_PAGES="index,about,data,stats,api,changelog"
-(comma-separated, default "index") — crol-subpages-es (2026-07-13). "index" gets the full
+(comma-separated, default "index") — since 2026-07-13. "index" gets the full
 lens-driving walk below (money/people/land/... tabs, investigation workspace, named
 regression fixtures); every other page gets a lighter walk (load, switch language, walk
 visible text) since subpages have no lens state to exercise. Approved translations are
@@ -147,7 +147,7 @@ def collect(page, label, frags, violations, seen):
         if hits:
             violations.append({"view": label, **item, "english_words": hits})
 
-# crol-forecast-t2: same tree-walk as WALKER_JS, but scoped to a single subtree via
+# Same tree-walk as WALKER_JS, but scoped to a single subtree via
 # document.querySelector(rootSel) instead of document.body. The agency/vendor profile's
 # surrounding chrome (agencybar, actions row, footer note) is a separate, pre-existing
 # translation gap outside this card's scope (see the w9-05 comment above collect_srstatus_
@@ -280,7 +280,7 @@ def workspace_seed(strings, lang):
 def run_subpage(pw, lang, page, frags):
     """Lighter walk for a non-index subpage: load, switch language, walk visible text.
     Subpages have no lens/search state to drive — the shared header switcher + chrome/content
-    keys added in crol-subpages-es are what's under test here."""
+    keys added for the subpages are what's under test here."""
     browser = pw.chromium.launch()
     ctx = browser.new_context()
     page_obj = ctx.new_page()
@@ -409,7 +409,7 @@ def run_lang(pw, lang):
     page.wait_for_timeout(1000)
     collect_srstatus_and_aria(page, "entity-agency", frags, violations, seen)
 
-    # crol-forecast-t2: the Procurement Forecast subtab is exactly how the badge/date-label/
+    # The Procurement Forecast subtab is exactly how the badge/date-label/
     # honesty-note strings shipped hardcoded English for a whole wave — collect() only walks
     # VISIBLE text, and this pane stays display:none until #btn-forecast is clicked, so no
     # amount of walking the agency view above ever touched it. Click it open so a future

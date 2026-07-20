@@ -743,7 +743,7 @@ const STRINGS = {
     nl_aria: "Describe what you're looking for in plain English",
     invnote_aria: "Note for this pinned item",
 
-    // ---- Subpage chrome + content (about/data/stats/api/changelog) — crol-subpages-es ----
+    // ---- Subpage chrome + content (about/data/stats/api/changelog) ----
     site_kicker: "The City Record, searchable",
     back_home_aria: "Back to CROL-List home",
     back_to_crol: "← Back to CROL-List",

@@ -168,7 +168,7 @@ jobs:
             --mode ratchet \
             --baseline reading-level-baseline.json \
             --format gh-annotations
-      # crol-changelogprose-k8: catches a changelog-entry reading-level regression on the
+      # Catches a changelog-entry reading-level regression on the
       # FEATURE PR itself, before merge, instead of only on the automated bot PR after
       # merge (see AGENTS.md's changelog section — two separate merged PRs stranded the bot
       # PR this way). Simulates the exact regeneration the merge-triggered workflow
@@ -178,22 +178,15 @@ jobs:
       # check (the job above, which runs on every event) is untouched by this addition.
       - name: Changelog reading-level gate — unit tests (fixtures for the pre-merge simulation)
         run: node --test test/check_changelog_reading_level.test.mjs
-      - name: Load the changelog regeneration base (bot branch's pending state if present, else this PR's own committed files)
+      - name: Load the changelog regeneration base (bot branch's pending entries if present; changelog.html always stays this tree's own current copy — see tools/prepare-changelog-base.sh)
         if: github.event_name == 'pull_request'
         env:
           BOT_BRANCH: bot/changelog-update
         run: |
           mkdir -p "$RUNNER_TEMP/changelog-sim"
-          if git ls-remote --exit-code --heads origin "$BOT_BRANCH" >/dev/null 2>&1; then
-            echo "bot branch exists — simulating on top of its pending entries"
-            git fetch origin "$BOT_BRANCH"
-            git show "origin/$BOT_BRANCH:changelog-data.json" > "$RUNNER_TEMP/changelog-sim/base-data.json"
-            git show "origin/$BOT_BRANCH:changelog.html" > "$RUNNER_TEMP/changelog-sim/base.html"
-          else
-            echo "no bot branch yet — simulating on top of this PR's own committed changelog files"
-            cp changelog-data.json "$RUNNER_TEMP/changelog-sim/base-data.json"
-            cp changelog.html "$RUNNER_TEMP/changelog-sim/base.html"
-          fi
+          bash tools/prepare-changelog-base.sh "$BOT_BRANCH"
+          cp changelog-data.json "$RUNNER_TEMP/changelog-sim/base-data.json"
+          cp changelog.html "$RUNNER_TEMP/changelog-sim/base.html"
       - name: Simulate this PR's merged changelog entry and gate its reading level
         if: github.event_name == 'pull_request'
         env:

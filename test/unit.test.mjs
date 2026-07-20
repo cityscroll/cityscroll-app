@@ -134,7 +134,7 @@ test("usablePin rejects junk pins (exact JUNK_PINS set)", () => {
   assert.ok(miscEnv.usablePin("8502026AB0031"));
   for (const junk of ["NoPINFound", "TBD", "N/A", "000", "x"]) assert.ok(!miscEnv.usablePin(junk), junk);
 });
-// crol-fort-pin: JUNK_PINS' exact-match set missed common real-world phrasings of the same
+// JUNK_PINS' exact-match set missed common real-world phrasings of the same
 // "see the list below" placeholder (measured 37.7% miss rate on a 300-row Award sample) --
 // before this fix, each of these rendered a live "PIN {value}" badge, a dead-end Checkbook
 // lookup, and a #matter/ link that resolved to nothing. Named after the phrasing categories the

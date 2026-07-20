@@ -1,4 +1,4 @@
-"""External-link new-tab characterization gate (crol-extlinks-s9, crol-extlinks2-y7, crol-extlinks2-y8).
+"""External-link new-tab characterization gate.
 
 Symptom this pins: a user reported that "View in City Record" and "Bid on PASSPort" — both
 reached mid-way through reading a notice or drafting a response — navigated the whole tab
