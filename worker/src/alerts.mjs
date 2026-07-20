@@ -653,8 +653,7 @@ function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.c
     ${listHtml}
     ${forecastsHtml}
     ${healthNote}
-    <p style="color:#999;font-size:12px;margin-top:20px">${esc(emailT(lang, "digest_subscribed"))} <a href="${esc(unsubUrl)}">${esc(emailT(lang, "digest_unsubscribe"))}</a> (one-click).<br>
-    Notice links go via a count-only redirect (${esc(base.replace(/^https?:\/\//, ""))}/r) so we can tell digests are useful — it counts clicks per day, never who clicked. Aggregates: <a href="https://crol-list.org/stats.html">crol-list.org/stats</a>.</p>
+    <p style="color:#999;font-size:12px;margin-top:20px">${esc(emailT(lang, "digest_subscribed"))} <a href="${esc(unsubUrl)}">${esc(emailT(lang, "digest_unsubscribe"))}</a> (one-click).</p>
   </div>`;
 }
 

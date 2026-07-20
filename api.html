@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>API and feeds · CROL-List</title>
 <meta name="description" content="CROL-List's open endpoints: RSS/JSON/calendar feeds for any search, batch watchlist cross-reference, permalinks, and the upstream open datasets.">
-<script src="i18n.js?v=8aa616e8"></script>
+<script src="i18n.js?v=a7a79f12"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
@@ -132,10 +132,10 @@ For each name, <b>awards</b> means award/intent notices naming that vendor (name
 
 <h2 data-i18n="api_h_stats">Public stats</h2>
 <p class="src" data-i18n-html="api_p_stats_html"><code>GET /stats</code> — the project's own usage as aggregate counts (active subscriptions,
-digests sent, digest links followed, feed/batch/share activity). No personal data exists behind it. It's cached
+digests sent, digest links followed, feed/batch/share activity). It's cached
 about 15 minutes. Human-readable version: <a href="stats.html">stats</a>. Related: digest emails link notices via
-<code>GET /r/&lt;kind&gt;/&lt;request_id&gt;</code>, a count-only redirect to the notice permalink — it accepts a
-validated id (never a URL, so it can't redirect off-site) and records a per-day number, never a person.</p>
+<code>GET /r/&lt;kind&gt;/&lt;request_id&gt;</code>, which checks the id against known notices, redirects to the
+matching permalink, and records a per-day count.</p>
 
 <h2 data-i18n="api_h_subscribe">Subscribe by email</h2>
 <p class="src" data-i18n-html="api_p_subscribe_html">Email <a href="mailto:subscribe@crol-list.org"><code>subscribe@crol-list.org</code></a>

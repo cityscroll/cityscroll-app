@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "22ffec0f",
-  "zh-Hans": "c55f5990",
-  ru: "da18641b",
-  bn: "99b2503c",
-  ht: "dda011eb",
-  ko: "f7334e82",
-  fr: "c04c2404",
-  pl: "e2b08c20",
-  ar: "78645130",
-  ur: "1a5208e2",
+  es: "24f3843f",
+  "zh-Hans": "be2c719e",
+  ru: "d58ccf44",
+  bn: "97ac9ecb",
+  ht: "b06ba6ed",
+  ko: "c429d4d2",
+  fr: "fe858f2e",
+  pl: "8778801a",
+  ar: "dd44ab2f",
+  ur: "0fa4d802",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -815,7 +815,7 @@ const STRINGS = {
     stats_lbl_digests: "Digests sent · 7 days",
     stats_desc_digests_html: "<span id=\"s-digests-today\">–</span> today. Only when something new matched (plus honest \"still watching\" check-ins).",
     stats_lbl_clicks: "Digest links followed · 7 days",
-    stats_desc_clicks_html: "Counted by a redirect that records a number, never a person — <a href=\"changelog.html#2026-07-02b\">how this works</a>.",
+    stats_desc_clicks_html: "Daily counts from the notice-link redirect — <a href=\"changelog.html#2026-07-02b\">how this works</a>.",
     stats_lbl_feeds: "Feed fetches · 7 days",
     stats_desc_feeds: "RSS/Atom/JSON/calendar pulls, as seen at the origin (edge-cached hits aren't counted).",
     stats_lbl_batch: "Saved-search checks via the API · 7 days",
@@ -890,7 +890,7 @@ const STRINGS = {
     api_h_sharedinv: "Shared investigations",
     api_p_sharedinv_html: "<code>POST /inv</code> stores a pin-list snapshot (structured fields only, ≤32KB, 90-day TTL, 10/day/IP) and returns an id. <code>GET /inv/&lt;id&gt;</code> reads it back. The site renders these at <code>/#investigation/shared/&lt;id&gt;</code>.",
     api_h_stats: "Public stats",
-    api_p_stats_html: "<code>GET /stats</code> — the project's own usage as aggregate counts (active subscriptions, digests sent, digest links followed, feed/batch/share activity). No personal data exists behind it. It's cached about 15 minutes. Human-readable version: <a href=\"stats.html\">stats</a>. Related: digest emails link notices via <code>GET /r/&lt;kind&gt;/&lt;request_id&gt;</code>, a count-only redirect to the notice permalink — it accepts a validated id (never a URL, so it can't redirect off-site) and records a per-day number, never a person.",
+    api_p_stats_html: "<code>GET /stats</code> — the project's own usage as aggregate counts (active subscriptions, digests sent, digest links followed, feed/batch/share activity). It's cached about 15 minutes. Human-readable version: <a href=\"stats.html\">stats</a>. Related: digest emails link notices via <code>GET /r/&lt;kind&gt;/&lt;request_id&gt;</code>, which checks the id against known notices, redirects to the matching permalink, and records a per-day count.",
     api_h_subscribe: "Subscribe by email",
     api_p_subscribe_html: "Email <a href=\"mailto:subscribe@crol-list.org\"><code>subscribe@crol-list.org</code></a> describing what you want in plain English — for example, \"construction contract awards over $500k\" or \"rezoning notices in Brooklyn\". You'll get back a confirmation link describing how we understood your request. The watch starts only after you click it (double opt-in). Daily ceilings apply, and nothing is stored until you confirm.",
     api_h_mcp: "MCP — for AI assistants",

@@ -69,7 +69,7 @@ export async function handleStats(req, env, ctx) {
   const body = {
     generated: now.toISOString(),
     window_days: WINDOW_DAYS,
-    note: "Aggregate counts only — CROL-List has no accounts, no cookies, and tracks no individuals. Feed/batch counts are as observed at the origin (edge cache hits are not counted).",
+    note: "Aggregate counts only, grouped by day and category. Feed/batch counts are as observed at the origin (edge cache hits are not counted).",
     subscriptions: { active },
     digests: { sent_today: sentToday, sent_last7d: sent7d, sent_all_time: digestsAllTime, by_category: digestsByCategory },
     digest_clicks: { today: clicksToday, last7d: clicks7d },

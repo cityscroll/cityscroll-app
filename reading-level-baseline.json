@@ -7,7 +7,7 @@
     },
     "api.html": {
       "formula": "flesch_kincaid_grade",
-      "grade": 9.977752895752896,
+      "grade": 9.870537160972173,
       "language": "en"
     },
     "changelog.html": {
@@ -27,7 +27,7 @@
     },
     "stats.html": {
       "formula": "flesch_kincaid_grade",
-      "grade": 7.092272727272729,
+      "grade": 6.983771043771046,
       "language": "en"
     }
   },

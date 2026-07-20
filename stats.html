@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Stats · CROL-List</title>
-<meta name="description" content="CROL-List's own usage, published: aggregate outcome counts — subscriptions, digests, clicks, feeds. No accounts, no cookies, nobody tracked.">
-<script src="i18n.js?v=8aa616e8"></script>
+<meta name="description" content="CROL-List's own usage, published: aggregate outcome counts for subscriptions, digests sent, notice-link clicks, and feed activity, refreshed regularly.">
+<script src="i18n.js?v=a7a79f12"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
@@ -155,7 +155,7 @@
 <h2 data-i18n="stats_h_technical">Technical details</h2>
 <p class="src" data-i18n="stats_p_technical">How the numbers above are put together. You don't need to know this to use CROL-List.</p>
 <div class="grid" id="gridTechnical" hidden>
-  <div class="stat"><div class="n" id="s-clicks">–</div><div class="l" data-i18n="stats_lbl_clicks">Digest links followed · 7 days</div><div class="d" data-i18n-html="stats_desc_clicks_html">Counted by a redirect that records a number, never a person — <a href="changelog.html#2026-07-02b">how this works</a>.</div></div>
+  <div class="stat"><div class="n" id="s-clicks">–</div><div class="l" data-i18n="stats_lbl_clicks">Digest links followed · 7 days</div><div class="d" data-i18n-html="stats_desc_clicks_html">Daily counts from the notice-link redirect — <a href="changelog.html#2026-07-02b">how this works</a>.</div></div>
   <div class="stat"><div class="n" id="s-feeds">–</div><div class="l" data-i18n="stats_lbl_feeds">Feed fetches · 7 days</div><div class="d" data-i18n="stats_desc_feeds">RSS/Atom/JSON/calendar pulls, as seen at the origin (edge-cached hits aren't counted).</div></div>
   <div class="stat"><div class="n" id="s-batch">–</div><div class="l" data-i18n="stats_lbl_batch">Saved-search checks via the API · 7 days</div><div class="d" data-i18n-html="stats_desc_batch_html">Watchlists checked through the <a href="api.html">open API</a>.</div></div>
   <div class="stat"><div class="n" id="s-inv">–</div><div class="l" data-i18n="stats_lbl_inv">Shared investigation links · 7 days</div><div class="d" data-i18n="stats_desc_inv">Read-only workspace snapshots created.</div></div>
