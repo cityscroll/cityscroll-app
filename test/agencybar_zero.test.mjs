@@ -69,7 +69,7 @@ test("noticeAgencyBar: a covered agency's zero stats names its source, not a das
   assert.doesNotMatch(html, /class="big">—/);
   assert.doesNotMatch(html, /class="big">0</);
   assert.match(html, /files its contract awards with/, "NYCHA is a covered exact-key agency");
-  // Before crol-awardlink-w6: {source} was plain text ("Checkbook NYC" with no href) — a
+  // Before: {source} was plain text ("Checkbook NYC" with no href) — a
   // statement naming the source with no way to go look. Now it's a link to NYCHA's own
   // Checkbook contracts view (no PIN in scope here, so the agency-wide fallback).
   assert.match(html, /<a href="https:\/\/www\.checkbooknyc\.com\/nycha_contracts\/datasource\/checkbook_nycha\/agency\/162"[^>]*>Checkbook NYC/);

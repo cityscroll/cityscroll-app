@@ -94,7 +94,7 @@ test("the changelog bot's own PR body produces nothing (the loop's convergence p
   assert.equal(extractUserImpact(botBody), null);
 });
 
-// crol-changelogcurate-m6: a bullet-list-formatted marker section used to leak a literal
+// A bullet-list-formatted marker section used to leak a literal
 // "-" into the joined text — real field case, PR #76's harvested entry read "- Every note
 // that says your answer lives in another public system now hands you the door: ...".
 test("a marker section written as a bullet list has its list markers stripped, not leaked into the joined sentence", () => {

@@ -86,7 +86,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   drift from its `i18n.js` en value — `test/standards/i18n_fallback_sync.py` (unit job) catches
   this: index.html's `tab_money`/`money_trail_heading` fallback text was stuck on "Money"/
   "Money trail" for a live-since-fixed dictionary that already said "Contracts"/"Contract
-  trail" (crol-staticsync-b2, 2026-07-14) — nothing had caught it before this gate. Same class
+  trail" (2026-07-14) — nothing had caught it before this gate. Same class
   of bug the reading-level ratchet note above already warned about for a different symptom
   (the ratchet measures this exact static text and silently gets the wrong number); this gate
   is the general enforcement. It also catches the sharper variant: a plain `data-i18n` element
@@ -358,7 +358,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   if anything shows `regression:` for a page you didn't touch, hand-edit that entry in
   `reading-level-baseline.json` to the freshly measured live grade (`measure()` from
   `readable_or_else.measure`, or trust `check`'s own reported number) and say so in the PR —
-  this happened for `index.html` and `about.html` in crol-rerun-j6 (2026-07-13), both caused by
+  this happened for `index.html` and `about.html` on 2026-07-13, both caused by
   a previously-merged sibling PR, not new content.
 - **A deliberate copy-lengthening product decision can trip the ratchet on the page you're
   actually editing, not just a sibling PR's page.** w12-07's step-2 relabel ("Narrow by keyword"
@@ -413,7 +413,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 ## Changelog — self-updating from merged-PR marker sections
 
 - **`changelog.html`'s "Recent updates" list is generated, never hand-edited, and it's
-  curated, not comprehensive** (crol-changelog-m6). A PR earns an entry only when it carries
+  curated, not comprehensive** (PR #83). A PR earns an entry only when it carries
   BOTH a `## What this means for you` section in its body (any heading level, case-insensitive
   — see `tools/changelog_extract.mjs`'s `extractUserImpact()`) AND the `changelog:major`
   label (`hasMajorLabel()`, same file). The marker section alone stopped being a significance
@@ -447,7 +447,30 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   after one hop. If a second qualifying PR merges before the queue processes the first bot PR,
   the next run reads the bot branch's own pending `changelog-data.json` as its base (not
   `main`'s stale copy) and accumulates onto that same open PR instead of opening a duplicate.
-- **The bot PR lands itself — no maintainer click required** (crol-changelog-m6, fixing PR
+  **`changelog.html` itself is a different story — it must NEVER be read from the bot
+  branch.** Both this workflow's regeneration step and `ci.yml`'s pre-merge reading-level
+  simulation used to overwrite the freshly-checked-out `changelog.html` with the bot branch's
+  own carried-forward copy before rebuilding the entries block — so any change to the page
+  OUTSIDE the `CHANGELOG:AUTO` markers on `main` (a removed disclaimer, a CSS rule) silently
+  reverted the moment the bot branch regenerated, since `gen_changelog.mjs` only ever
+  rewrites the block between the markers, leaving everything else exactly as handed to it.
+  This produced a real, repeating CI failure: PR #83 removed the `chg_auto_note` disclaimer
+  from `main`, but the bot branch's stale copy still had it, and every subsequent
+  regeneration kept re-failing the i18n reference gate with a key that no longer exists.
+  Fixed by `tools/prepare-changelog-base.sh` (sourced by both workflows): it pulls
+  `changelog-data.json` from the bot branch when present, but never touches
+  `changelog.html` — that file always stays whatever the current checkout already has.
+  **Sharp edge this same incident also surfaced**: a human bypassing the bot to hand-edit
+  `changelog-data.json` directly on `main` (as PR #83 also did, to restore the curated bar —
+  see below) can leave the bot branch's own pending entries list stale/superseded with no
+  mechanical way to tell "genuinely still-pending" apart from "deliberately removed by that
+  edit." When this happened live, the correct repair was to drop the bot branch entirely
+  (nothing on it was still legitimately pending — `main`'s own curated list already reflected
+  every judgment call) and close its PR rather than force a merge; the pipeline opens a fresh,
+  correct PR the next time a real qualifying PR merges. If this recurs, check whether
+  `main`'s changelog-data.json diverges from the bot branch's pending copy for reasons other
+  than normal accumulation before trusting either as the base.
+- **The bot PR lands itself — no maintainer click required** (PR #83, fixing PR
   #81's real failure mode). Arming auto-merge alone doesn't help: main's ruleset requires
   four named status checks on top of the merge queue, and GitHub requires a maintainer to
   click "Approve and run workflows" for ANY `pull_request`-triggered run whose author is
@@ -473,7 +496,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   is ordinary translated chrome, NOT inside the carve-out — watch the class-name substring
   check in `nyc_copy_lint.py` if you rename anything (`"chg-auto" in cls` would also match a
   sibling class literally named `chg-auto-*`). **No disclaimer paragraph explains the
-  carve-out to readers** (crol-changelog-m6 removed one, `chg_auto_note`, that read "These
+  carve-out to readers** (PR #83 removed one, `chg_auto_note`, that read "These
   lines come from the descriptions of merged code changes and stay in English for now") —
   the carve-out itself is what keeps the hermetic stray-English guard green on
   changelog.html across all ten shipping languages; a live disclosure paragraph was
@@ -757,17 +780,17 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `i18n-guard` CI job): pins bare `#land`/`#people` render a live-picked example with zero
   clicks, the address bar stays undecorated, and `#people?q=<title>` still overrides.
 
-## External links — every non-own destination opens in a new tab (crol-extlinks2-y8)
+## External links — every non-own destination opens in a new tab
 
-- **Current rule (crol-extlinks2-y8, superseding w10-03): every absolute link to a host
+- **Current rule (superseding w10-03): every absolute link to a host
   CROL-List doesn't own opens in a new tab; every own-resource/in-app link stays same-tab.**
   This is a deliberate product decision that supersedes the NYC Web Content Style Guide's B18
   "same tab/window" default for external destinations — the accessible `<span class="sr-only">`
   marking (below) is the WCAG-consistent mitigation for the tab change B18 was written to
   prevent. B19 ("no external-link icons") is untouched and still applies to link TEXT.
-  History: w10-03 started same-tab-always; crol-extlinks-s9 carved out City Record/PASSPort/
-  Checkbook NYC after a user lost bid-response state on a round-trip; crol-extlinks2-y7 added
-  NYC Open Data after the same complaint about a dataset-citation link; crol-extlinks2-y8
+  History: w10-03 started same-tab-always; a later revision carved out City Record/PASSPort/
+  Checkbook NYC after a user lost bid-response state on a round-trip; the next revision added
+  NYC Open Data after the same complaint about a dataset-citation link; the current revision
   generalized the carve-out into the default rule, since the lost-search-state cost applies to
   ANY external round-trip, not just government data/bid/payment systems.
 - **Own resources (stay same-tab): `crol-list.org`, `api.crol-list.org`, in-app hash routes
@@ -794,7 +817,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   literal attributes/span text — literal `<span class="sr-only"> (opens in new tab)</span>`
   bypasses the i18n layer and fails `test/standards/stray_english.py` the moment the
   surrounding link text is itself `t()`-routed (no adjacent URL fragment left to accidentally
-  merge the literal into and dodge the word-list check — this bit the first crol-extlinks2-y8
+  merge the literal into and dodge the word-list check — this bit the first external-link
   sweep on the ZAP/Google Maps anchors). about.html's/api.html's/data.html's static
   `data-i18n-html` strings (in both the page source and every language's
   i18n.js/i18n/lang/*.js dictionary) bake the same literal markup by hand since they're not
@@ -803,7 +826,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   gaining an external link needs the same CSS rule copied in (see `.skip{...}` neighbor in
   each page's `<style>` block for where it lives).
 - **Sharp edge — an external link can live entirely inside an i18n `*_html` dictionary
-  value, invisible to a page's own raw source** (crol-extlinks2-y7): the Staffing tab's
+  value, invisible to a page's own raw source**: the Staffing tab's
   `salary_note_html` string builds its two dataset-citation anchors via `t("salary_note_html",
   ...)` + `innerHTML` — no anchor markup for it exists anywhere in index.html itself, only in
   i18n.js/i18n/lang/*.js. `link_targets.py` therefore scans `i18n.js` + every
@@ -828,7 +851,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `a11y-pr` CI job): pins the reported links (City Record, PASSPort, the Staffing-tab
   salary-band's two data.cityofnewyork.us links, and the broadened case — about.html's NYC
   Charter citation, previously the gate's own same-tab NEGATIVE control before
-  crol-extlinks2-y8 flipped it to a positive one) get target+rel+marking on real rendered
+  a later revision flipped it to a positive one) get target+rel+marking on real rendered
   output, an in-app link (`#investigation`, `about.html`'s "Back to CROL-List") does NOT
   acquire `target="_blank"`, and stats.html's own `api.crol-list.org` link stays same-tab.
 
@@ -951,7 +974,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   source, verified-absent, covered-with-zero-rows, malformed rows). The hermetic stray-English
   guard opens the SCA agency profile and requires the `#external-awards-content` panel — the
   worker `/externalaward` route is stubbed in `i18n_fixtures.py` to keep it guard-covered.
-- **Every note naming a source carries a working scoped link (crol-awardlink-w6)** — the site
+- **Every note naming a source carries a working scoped link** — the site
   owner's framing: "it's not suggesting an action, or even enabling it — affordances imply
   capability." Naming a source with no href is a statement, not an affordance. Verified live
   URL shapes (index.html, next to `aboSourceLink`/`checkbookNychaLink`/
@@ -1411,7 +1434,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   confident chain/cadence/past-winners/lineage-badge surfaces above, which all read
   `chainHTML()`'s own `pinBase()`-widened chain, never this function's output (honest-data
   convention).
-- **Guarded disclosure + case-specific empty state (crol-nearmatch-ux, 2026-07-16)**: the reveal
+- **Guarded disclosure + case-specific empty state (2026-07-16)**: the reveal
   used to render unconditionally on the empty state, so notices that structurally couldn't
   corroborate anything spun through a live SODA query and then said "nothing found."
   #67 gated it on exactly what the near tier hard-requires: a `start_date` (query and gap filter

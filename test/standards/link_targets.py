@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
-"""External-link presentation gate (w10-03, revised crol-extlinks-s9, superseded crol-extlinks2-y8).
+"""External-link presentation gate (w10-03, revised, then superseded).
 
 Original house decision (w10-03): every external link opens same-tab, per the NYC Web Content
 Style Guide (B18 "same tab/window").
 
-Revision (crol-extlinks-s9, 2026-07): a user report ("View in City Record" and "Bid on
+Revision (2026-07): a user report ("View in City Record" and "Bid on
 PASSPort" navigate away from the app, losing in-progress bid-response state) surfaced that
 strict same-tab conformance has a real cost. A first fix carved out three government
-bid/payment systems. A second report (crol-extlinks2-y7, the Staffing tab's salary-band
+bid/payment systems. A second report (the Staffing tab's salary-band
 attribution linking to NYC Open Data) extended the same carve-out to a fourth host.
 
-Revision (crol-extlinks2-y8, 2026-07): the product owner broadened the ruling from a named
+Revision (2026-07): the product owner broadened the ruling from a named
 allowlist to a blanket rule — the lost-search-state cost applies to EVERY external site, not
 just government data/bid/payment systems, so the carve-out became the default. This
 DELIBERATELY SUPERSEDES the w10-03/B18 same-tab default for external destinations: every

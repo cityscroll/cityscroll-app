@@ -1,4 +1,4 @@
-"""crol-tabland-z8: the Money tab opens on a concrete selected notice (search()'s
+"""The Money tab opens on a concrete selected notice (search()'s
 "auto-open the first result" — index.html:1020) so a first-time visitor sees what the tab
 does with zero clicks. Land and Staffing did not match that pattern: Land requires clicking
 into the tab before anything renders (fine — that's true of Money too, until you count that

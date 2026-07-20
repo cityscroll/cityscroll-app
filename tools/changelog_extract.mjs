@@ -5,7 +5,7 @@
 // "## What this means for you" section (any heading level, case-insensitive). That alone
 // no longer earns a changelog.html entry — every PR in this project's workflow carries that
 // section by internal convention, whether the change is a major feature or an invisible
-// refactor, so section-presence stopped meaning "significant" (crol-changelogcurate-m6: the
+// refactor, so section-presence stopped meaning "significant" (the
 // generated page had drifted into a near-mirror of the merged-PR log, some entries reading
 // "No visible change to the site" or "Not user-facing" — literally saying they don't belong
 // on the page while still appearing on it). A PR now ALSO needs the `changelog:major` label

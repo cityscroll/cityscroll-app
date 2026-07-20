@@ -106,7 +106,7 @@ export function renderEntries(entries) {
 // Pure: rebuilds the CHANGELOG:AUTO block of an in-memory changelog.html string from a
 // given entries list, re-stamping the i18n.js?v= cache-skew guard from a given i18n.js
 // source. Split out of rewriteHtml() (below) so a caller that isn't regenerating the real
-// checked-out files — the pre-merge reading-level simulation (crol-changelogprose-k8) — can
+// checked-out files — the pre-merge reading-level simulation — can
 // reuse the identical rendering logic against files it supplies itself, with no risk of the
 // two ever drifting apart.
 export function buildHtml(html, entries, i18nSource) {

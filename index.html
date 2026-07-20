@@ -356,7 +356,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=6f1c0012"></script>
+<script src="i18n.js?v=4cd3c97e"></script>
 <script src="nl_parse.js"></script>
 <script src="external_awards.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
@@ -1500,7 +1500,7 @@ async function loadExternalAward(params){
   }catch(e){ return null; }
 }
 
-// Every note naming an external source carries a working, scoped link to it (crol-awardlink-w6)
+// Every note naming an external source carries a working, scoped link to it
 // — a note that only SAYS the answer lives elsewhere, with no way to go look, isn't an
 // affordance. Link shapes below were verified live against the real destinations (contract
 // detail resolves purely by contract id regardless of the year/agency path segments; the ABO
@@ -1538,7 +1538,7 @@ function agencyAwardsNote(agency){
   return `<div class="note">${t("agency_awards_unavailable_note_html")}</div>`;
 }
 
-// Award-arrival alerts (crol-awardarrival-q2): the opt-in surfaces exactly where the promise is
+// Award-arrival alerts: the opt-in surfaces exactly where the promise is
 // made — the "checked, nothing yet" empty state for a covered agency's own notice, never the
 // agency-level profile (no notice param there, and there's no single notice to attach the watch
 // to). externalAwardForNotice() wires the click after innerHTML lands.

@@ -14,7 +14,7 @@ Failure classes, all seen in production:
    drifts from the file's actual hash, a stale per-language dictionary can ship even
    though the core file's own hash (check C, below) is current.
 
-Checks (all six pages since crol-subpages-es, 2026-07-13 — every page loads i18n.js now):
+Checks (all six pages since 2026-07-13 — every page loads i18n.js now):
   A. every key referenced via data-i18n / data-i18n-html / data-i18n-placeholder
      or a real t("…") call exists in the en dictionary (parity with shipping languages is
      i18n_keys.py's job);
