@@ -76,6 +76,114 @@ function toCalVer(dateStr) {
   return dateStr.replace(/-/g, ".");
 }
 
+function requireText(value, path) {
+  if (typeof value !== "string" || !value.trim()) throw new Error(`${path} must be a non-empty string`);
+}
+
+function requireInteger(value, path, min = 1) {
+  if (!Number.isInteger(value) || value < min) throw new Error(`${path} must be an integer >= ${min}`);
+}
+
+function validateAssetPath(value, path, entry, extensions) {
+  requireText(value, path);
+  const prefix = `media/changelog/pr-${entry.pr}/`;
+  if (!value.startsWith(prefix) || value.includes("..") || value.startsWith("/")) {
+    throw new Error(`${path} must stay under ${prefix}`);
+  }
+  const ext = value.split(".").pop().toLowerCase();
+  if (!extensions.includes(ext)) throw new Error(`${path} must use ${extensions.join(" or ")}`);
+}
+
+function validateLocalizedText(value, path) {
+  requireText(value, path);
+  if (!/^[a-z][a-z0-9_]*$/.test(value)) throw new Error(`${path} must be an i18n key`);
+}
+
+// Optional entry.media schema. Keeping validation next to the generator means hand edits,
+// automated rebuilds, and the pre-merge reading-level simulation all accept the same shape.
+export function validateEntries(entries) {
+  if (!Array.isArray(entries)) throw new Error("entries must be an array");
+  for (const [index, entry] of entries.entries()) {
+    if (!Object.hasOwn(entry, "media")) continue;
+    const at = `entries[${index}].media`;
+    if (!entry.media || typeof entry.media !== "object" || Array.isArray(entry.media)) {
+      throw new Error(`${at} must be an object`);
+    }
+    const { screenshots, recording } = entry.media;
+    if (screenshots !== undefined && (!Array.isArray(screenshots) || screenshots.length === 0)) {
+      throw new Error("media.screenshots must contain at least one before/after pair");
+    }
+    if (!screenshots && !recording) throw new Error(`${at} must include screenshots or recording`);
+
+    for (const [pairIndex, pair] of (screenshots || []).entries()) {
+      const pairAt = `${at}.screenshots[${pairIndex}]`;
+      requireInteger(pair.viewport, `${pairAt}.viewport`, 200);
+      requireInteger(pair.width, `${pairAt}.width`, 1);
+      requireInteger(pair.height, `${pairAt}.height`, 1);
+      for (const side of ["before", "after"]) {
+        const image = pair[side];
+        if (!image || typeof image !== "object" || Array.isArray(image)) {
+          throw new Error(`${pairAt}.${side} must be an object`);
+        }
+        validateAssetPath(image.src, `${pairAt}.${side}.src`, entry, ["png", "webp", "jpg", "jpeg"]);
+        requireText(image.alt, `${pairAt}.${side}.alt`);
+        validateLocalizedText(image.alt_i18n, `${pairAt}.${side}.alt_i18n`);
+      }
+    }
+
+    if (recording !== undefined) {
+      const recordingAt = `${at}.recording`;
+      if (!recording || typeof recording !== "object" || Array.isArray(recording)) {
+        throw new Error(`${recordingAt} must be an object`);
+      }
+      validateAssetPath(recording.src, `${recordingAt}.src`, entry, ["webm", "mp4"]);
+      validateAssetPath(recording.poster, `${recordingAt}.poster`, entry, ["png", "webp", "jpg", "jpeg"]);
+      requireInteger(recording.width, `${recordingAt}.width`, 1);
+      requireInteger(recording.height, `${recordingAt}.height`, 1);
+      requireText(recording.caption, `${recordingAt}.caption`);
+      validateLocalizedText(recording.caption_i18n, `${recordingAt}.caption_i18n`);
+    }
+  }
+  return entries;
+}
+
+function renderLocalizedText(tag, text, key) {
+  return `<${tag} data-i18n="${escapeHtml(key)}">${escapeHtml(text)}</${tag}>`;
+}
+
+function renderMedia(entry) {
+  const media = entry.media;
+  if (!media) return "";
+  const screenshots = (media.screenshots || []).map((pair) => {
+    const renderSide = (side, labelKey, label) => {
+      const image = pair[side];
+      return `        <figure class="chg-media-shot">
+          <a href="${escapeHtml(image.src)}"><img src="${escapeHtml(image.src)}" width="${pair.width}" height="${pair.height}" loading="lazy" decoding="async" alt="${escapeHtml(image.alt)}" data-i18n-alt="${escapeHtml(image.alt_i18n)}"></a>
+          <figcaption><strong data-i18n="${labelKey}">${label}</strong>${renderLocalizedText("span", image.alt, image.alt_i18n)}</figcaption>
+        </figure>`;
+    };
+    const headingId = `chg-media-pr-${entry.pr}-${pair.viewport}`;
+    return `      <section class="chg-media-pair" aria-labelledby="${headingId}">
+        <h3 id="${headingId}"><span data-i18n="chg_media_viewport">Viewport</span> ${pair.viewport} px</h3>
+        <div class="chg-media-grid">
+${renderSide("before", "chg_media_before", "Before")}
+${renderSide("after", "chg_media_after", "After")}
+        </div>
+      </section>`;
+  }).join("\n");
+  const recording = media.recording ? `      <figure class="chg-media-recording">
+        <video controls preload="none" playsinline width="${media.recording.width}" height="${media.recording.height}" poster="${escapeHtml(media.recording.poster)}">
+          <source src="${escapeHtml(media.recording.src)}" type="video/${media.recording.src.toLowerCase().endsWith(".mp4") ? "mp4" : "webm"}">
+          ${renderLocalizedText("span", "Your browser cannot play this video.", "chg_media_video_fallback")}
+        </video>
+        <figcaption><strong data-i18n="chg_media_recording">Screen recording</strong>${renderLocalizedText("span", media.recording.caption, media.recording.caption_i18n)}</figcaption>
+      </figure>` : "";
+  return `
+    <div class="chg-media" aria-label="Before-and-after feature media" data-i18n-aria="chg_media_visual_aria">
+${screenshots}${screenshots && recording ? "\n" : ""}${recording}
+    </div>`;
+}
+
 // The bot branch's changelog.html is carried forward from run to run (see the workflow's
 // "regeneration base" step), so a stale i18n.js?v= stamp — left behind whenever some other
 // merged PR bumped i18n.js after the bot branch last regenerated — would otherwise survive
@@ -92,14 +200,17 @@ export function restampI18nVersion(html, i18nSource) {
 }
 
 export function renderEntries(entries) {
+  validateEntries(entries);
   if (!entries.length) return "";
   return entries
-    .map(
-      (e) =>
-        `    <li><time datetime="${escapeHtml(e.merged_at)}">${toCalVer(
-          escapeHtml(e.merged_at)
-        )}</time> — ${escapeHtml(e.text)}</li>`
-    )
+    .map((e) => {
+      const copy = `<time datetime="${escapeHtml(e.merged_at)}">${toCalVer(
+        escapeHtml(e.merged_at)
+      )}</time> — ${escapeHtml(e.text)}`;
+      if (!e.media) return `    <li>${copy}</li>`;
+      return `    <li class="chg-entry chg-entry--media"><div class="chg-entry-copy">${copy}</div>${renderMedia(e)}
+    </li>`;
+    })
     .join("\n");
 }
 

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Changelog · CROL-List</title>
 <meta name="description" content="What changed on CROL-List, newest first — plain-language notes on every update, from new features and languages to fixes.">
-<script src="i18n.js?v=4cd3c97e"></script>
+<script src="i18n.js?v=92f24464"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
@@ -39,6 +39,20 @@
   ul.chg-auto li{padding:8px 0;border-top:1px solid var(--rule)}
   ul.chg-auto li:first-child{border-top:none}
   ul.chg-auto time{font:600 12px/1 var(--ui);color:var(--muted);display:inline-block;margin-inline-end:6px}
+  .chg-entry--media{color:var(--ink)}
+  .chg-entry-copy{color:var(--ink-soft)}
+  .chg-media{margin-top:14px;padding:14px;background:var(--card);border:1px solid var(--rule);border-radius:9px;box-shadow:var(--shadow)}
+  .chg-media-pair+.chg-media-pair,.chg-media-recording{margin-top:18px;padding-top:16px;border-top:1px solid var(--rule)}
+  .chg-media h3{margin:0 0 8px;font:600 12px/1.3 var(--ui);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .chg-media-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .chg-media-shot,.chg-media-recording{min-width:0;margin:0}
+  .chg-media-shot a{display:block;border-radius:6px;overflow:hidden;background:var(--paper-2)}
+  .chg-media-shot img{display:block;width:100%;height:auto;max-height:360px;object-fit:cover;object-position:center}
+  .chg-media figcaption{margin-top:6px;font:12px/1.45 var(--ui);color:var(--muted)}
+  .chg-media figcaption strong{display:block;color:var(--ink);font-family:var(--font-sc);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+  .chg-media figcaption span{display:block;margin-top:2px}
+  .chg-media-recording video{display:block;width:min(100%,620px);height:auto;background:var(--ink);border-radius:6px}
+  @media(max-width:420px){.chg-media{padding:10px}.chg-media-grid{gap:8px}.chg-media figcaption{font-size:11px}}
   .earlier-h2{font-family:var(--font-sc);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:34px 0 0}
   .rel{margin-top:34px;border-top:1px solid var(--rule);padding-top:16px}
   .rel h2{font-family:var(--font-sc);font-size:16px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);margin:0}
@@ -103,7 +117,43 @@
 <section class="rel-auto" aria-labelledby="chgAutoH2">
   <h2 id="chgAutoH2" data-i18n="chg_auto_h2">Recent updates</h2>
   <ul class="chg-auto" id="chgAutoList"><!-- CHANGELOG:AUTO:START -->
-    <li><time datetime="2026-07-17">2026.07.17</time> — If you're watching a notice from an agency that files its awards somewhere other than the City Record, you can now ask to be emailed the moment that award shows up. Click &quot;Email me when the award registers&quot; on the notice, confirm your email once, and you're done — no extra emails until there's real news, and it's the exact same possible-vs-confirmed distinction the notice page already shows you.</li>
+    <li class="chg-entry chg-entry--media"><div class="chg-entry-copy"><time datetime="2026-07-17">2026.07.17</time> — If you're watching a notice from an agency that files its awards somewhere other than the City Record, you can now ask to be emailed the moment that award shows up. Click &quot;Email me when the award registers&quot; on the notice, confirm your email once, and you're done — no extra emails until there's real news, and it's the exact same possible-vs-confirmed distinction the notice page already shows you.</div>
+    <div class="chg-media" aria-label="Before-and-after feature media" data-i18n-aria="chg_media_visual_aria">
+      <section class="chg-media-pair" aria-labelledby="chg-media-pr-80-390">
+        <h3 id="chg-media-pr-80-390"><span data-i18n="chg_media_viewport">Viewport</span> 390 px</h3>
+        <div class="chg-media-grid">
+        <figure class="chg-media-shot">
+          <a href="media/changelog/pr-80/before-390.png"><img src="media/changelog/pr-80/before-390.png" width="390" height="844" loading="lazy" decoding="async" alt="A notice page before the award watch button was added." data-i18n-alt="chg_pr80_before_alt"></a>
+          <figcaption><strong data-i18n="chg_media_before">Before</strong><span data-i18n="chg_pr80_before_alt">A notice page before the award watch button was added.</span></figcaption>
+        </figure>
+        <figure class="chg-media-shot">
+          <a href="media/changelog/pr-80/after-390.png"><img src="media/changelog/pr-80/after-390.png" width="390" height="844" loading="lazy" decoding="async" alt="The same notice page with the Email me when the award registers button." data-i18n-alt="chg_pr80_after_alt"></a>
+          <figcaption><strong data-i18n="chg_media_after">After</strong><span data-i18n="chg_pr80_after_alt">The same notice page with the Email me when the award registers button.</span></figcaption>
+        </figure>
+        </div>
+      </section>
+      <section class="chg-media-pair" aria-labelledby="chg-media-pr-80-1440">
+        <h3 id="chg-media-pr-80-1440"><span data-i18n="chg_media_viewport">Viewport</span> 1440 px</h3>
+        <div class="chg-media-grid">
+        <figure class="chg-media-shot">
+          <a href="media/changelog/pr-80/before-1440.png"><img src="media/changelog/pr-80/before-1440.png" width="1440" height="900" loading="lazy" decoding="async" alt="A notice page before the award watch button was added." data-i18n-alt="chg_pr80_before_alt"></a>
+          <figcaption><strong data-i18n="chg_media_before">Before</strong><span data-i18n="chg_pr80_before_alt">A notice page before the award watch button was added.</span></figcaption>
+        </figure>
+        <figure class="chg-media-shot">
+          <a href="media/changelog/pr-80/after-1440.png"><img src="media/changelog/pr-80/after-1440.png" width="1440" height="900" loading="lazy" decoding="async" alt="The same notice page with the Email me when the award registers button." data-i18n-alt="chg_pr80_after_alt"></a>
+          <figcaption><strong data-i18n="chg_media_after">After</strong><span data-i18n="chg_pr80_after_alt">The same notice page with the Email me when the award registers button.</span></figcaption>
+        </figure>
+        </div>
+      </section>
+      <figure class="chg-media-recording">
+        <video controls preload="none" playsinline width="780" height="620" poster="media/changelog/pr-80/poster-780.png">
+          <source src="media/changelog/pr-80/award-watch.webm" type="video/webm">
+          <span data-i18n="chg_media_video_fallback">Your browser cannot play this video.</span>
+        </video>
+        <figcaption><strong data-i18n="chg_media_recording">Screen recording</strong><span data-i18n="chg_pr80_recording_caption">Find a covered notice, choose the award watch, enter reader@example.com, and reach the email confirmation step.</span></figcaption>
+      </figure>
+    </div>
+    </li>
     <li><time datetime="2026-07-17">2026.07.17</time> — Every note that says your answer lives in another public system now hands you the door: click through to the exact record, the filtered dataset view, or an explanation of what was checked. If a source can't be linked yet, the site says so honestly instead of showing a dead mention.</li>
     <li><time datetime="2026-07-17">2026.07.17</time> — Click a link in a CROL-List digest email. You used to land on a bare notice page. Now you see why it matched. The matching word is highlighted. You also see a plain summary of your watch.</li>
     <li><time datetime="2026-07-17">2026.07.17</time> — Has a saved alert gone quiet? If it finds nothing new for a couple of months, its next email says so. That email links back to the alerts page. Your exact search is already loaded there. You can broaden it in one step.</li>
