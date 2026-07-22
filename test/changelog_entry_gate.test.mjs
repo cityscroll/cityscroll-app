@@ -125,3 +125,34 @@ test("an already-recorded PR number stays a no-op regardless of label", () => {
   assert.equal(result.reason, "already-recorded");
   assert.equal(result.entries, existing);
 });
+
+// A consolidated entry (several related PRs folded into one user story, see AGENTS.md's
+// changelog section) must keep every folded-in PR number "already recorded" — otherwise a
+// PR that consolidation absorbed into entry #80's merged_prs would look unrecorded the next
+// time this function runs and the bot would append a stray duplicate entry for it.
+test("a PR folded into a consolidated entry's merged_prs stays a no-op, not just the primary pr", () => {
+  const existing = [
+    {
+      pr: 80,
+      merged_at: "2026-07-17",
+      url: "https://example.invalid/80",
+      text: "The consolidated external-awards story.",
+      merged_prs: [
+        { pr: 70, url: "https://example.invalid/70" },
+        { pr: 76, url: "https://example.invalid/76" },
+        { pr: 80, url: "https://example.invalid/80" },
+      ],
+    },
+  ];
+  for (const number of [70, 76, 80]) {
+    const result = computeEntryAddition(existing, {
+      number,
+      url: `https://example.invalid/${number}`,
+      mergedAt: "2026-07-17",
+      body: PR_70_MAJOR_BODY,
+      labels: [MAJOR_LABEL],
+    });
+    assert.equal(result.reason, "already-recorded", `PR #${number} should already be recorded`);
+    assert.equal(result.entries, existing);
+  }
+});

@@ -104,6 +104,23 @@ function validateLocalizedText(value, path) {
 export function validateEntries(entries) {
   if (!Array.isArray(entries)) throw new Error("entries must be an array");
   for (const [index, entry] of entries.entries()) {
+    // A consolidated entry (several related merged PRs told as one story) carries its full
+    // provenance in merged_prs, INCLUDING the entry's own primary `pr` — see entryCoversPr()
+    // and AGENTS.md's changelog section for why this exists (the bot's own dedupe check reads
+    // this list so a folded-in PR is never re-added as a duplicate entry on a later run).
+    if (Object.hasOwn(entry, "merged_prs")) {
+      const at = `entries[${index}].merged_prs`;
+      if (!Array.isArray(entry.merged_prs) || entry.merged_prs.length < 2) {
+        throw new Error(`${at} must be an array of at least two {pr, url} entries`);
+      }
+      for (const [i, ref] of entry.merged_prs.entries()) {
+        requireInteger(ref.pr, `${at}[${i}].pr`, 1);
+        requireText(ref.url, `${at}[${i}].url`);
+      }
+      if (!entry.merged_prs.some((ref) => ref.pr === entry.pr)) {
+        throw new Error(`${at} must include the entry's own primary pr (${entry.pr})`);
+      }
+    }
     if (!Object.hasOwn(entry, "media")) continue;
     const at = `entries[${index}].media`;
     if (!entry.media || typeof entry.media !== "object" || Array.isArray(entry.media)) {
@@ -248,12 +265,22 @@ export function parseLabels(raw) {
     .filter(Boolean);
 }
 
+// True when a PR number is already accounted for by an entry — either as that entry's own
+// primary `pr` or folded into a consolidated entry's `merged_prs` (see validateEntries above).
+// Without the second check, merging related entries into one story would make the bot
+// re-add a "new" entry for every PR number that consolidation absorbed the next time this
+// function runs.
+function entryCoversPr(entry, number) {
+  if (entry.pr === number) return true;
+  return Array.isArray(entry.merged_prs) && entry.merged_prs.some((ref) => ref.pr === number);
+}
+
 // Pure: given the current entries list and a candidate PR's body + labels, decides whether
 // it adds a new entry — reused by both the real post-merge CLI (main(), below) and the
 // pre-merge simulation script (tools/check_changelog_reading_level.mjs) so "what counts as
 // harvestable" can never drift between the two call sites.
 export function computeEntryAddition(entries, { number, url, mergedAt, body, labels }) {
-  if (entries.some((e) => e.pr === number)) {
+  if (entries.some((e) => entryCoversPr(e, number))) {
     return { entries, text: null, reason: "already-recorded" };
   }
   if (!hasMajorLabel(labels)) {
