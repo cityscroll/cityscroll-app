@@ -430,6 +430,11 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   a full rebuild from that file every time (`tools/gen_changelog.mjs`), never hand-patched —
   same "one source, generated projection" shape as `docs/architecture.md` → the kanban hub
   page, just applied to a changelog instead of an architecture doc.
+- **Media is optional and revision-grounded.** An entry may add the validated `media` object
+  rendered by `tools/gen_changelog.mjs`; entries without it retain the original flat-list markup.
+  Reproduce PR 80's before/after screenshots, compact recording, and page-level verification
+  captures with `python3 tools/capture_changelog_media.py --pr 80` — the script uses temporary
+  worktrees for the merge commit and its first parent and stubs every remote endpoint locally.
 - **`.github/workflows/update-changelog.yml`** runs on `pull_request: types: [closed]` (merged
   only) and extracts the marker line. `main` sits behind a merge-queue ruleset that rejects a
   direct push even from the Actions token (bypass actors aren't permitted on it), so the

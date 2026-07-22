@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "0f658183",
-  "zh-Hans": "cf9f41db",
-  ru: "f6774944",
-  bn: "47277e30",
-  ht: "348ef634",
-  ko: "3a8f2ce8",
-  fr: "7723c016",
-  pl: "6f35a533",
-  ar: "13a874c6",
-  ur: "b5086443",
+  es: "7d7f42a4",
+  "zh-Hans": "ccc134d9",
+  ru: "1c7dff64",
+  bn: "399f6c06",
+  ht: "ce3d526b",
+  ko: "6d4dfa95",
+  fr: "cb0e42c7",
+  pl: "e1819942",
+  ar: "c8d10cec",
+  ur: "32e4707a",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -902,6 +902,15 @@ const STRINGS = {
     // changelog.html
     chg_p_lede: "What changed on CROL-List, newest first.",
     chg_auto_h2: "Recent updates",
+    chg_media_visual_aria: "Before-and-after feature media",
+    chg_media_viewport: "Viewport",
+    chg_media_before: "Before",
+    chg_media_after: "After",
+    chg_media_recording: "Screen recording",
+    chg_media_video_fallback: "Your browser cannot play this video.",
+    chg_pr80_before_alt: "A notice page before the award watch button was added.",
+    chg_pr80_after_alt: "The same notice page with the Email me when the award registers button.",
+    chg_pr80_recording_caption: "Find a covered notice, choose the award watch, enter reader@example.com, and reach the email confirmation step.",
     chg_earlier_h2: "Earlier releases",
     chg_detail_note: "The detailed technical notes below each release (bullet lists, incident reports) remain in English for now.",
     chg_foot_html: "CROL-List is an unofficial, free interface to public data. <a href=\"about.html\">About</a> · <a href=\"stats.html\">Stats</a> · <a href=\"api.html\">API and feeds</a> · <a href=\"index.html\">Home</a>",
@@ -1050,6 +1059,9 @@ function applyStrings() {
   });
   document.querySelectorAll("[data-i18n-aria]").forEach(function(el) {
     el.setAttribute("aria-label", t(el.dataset.i18nAria));
+  });
+  document.querySelectorAll("[data-i18n-alt]").forEach(function(el) {
+    el.setAttribute("alt", t(el.dataset.i18nAlt));
   });
   // w9-05 (L6): document.title never translated -- each page marks its <html> with the title
   // key to use; applyStrings() runs on load and on every language switch, so this is the one
