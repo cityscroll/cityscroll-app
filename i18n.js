@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "7d7f42a4",
-  "zh-Hans": "ccc134d9",
-  ru: "1c7dff64",
-  bn: "399f6c06",
-  ht: "ce3d526b",
-  ko: "6d4dfa95",
-  fr: "cb0e42c7",
-  pl: "e1819942",
-  ar: "c8d10cec",
-  ur: "32e4707a",
+  es: "aa4b4b5e",
+  "zh-Hans": "08237b19",
+  ru: "8e76d9df",
+  bn: "7a325b34",
+  ht: "e85b8b13",
+  ko: "ca8c0ee5",
+  fr: "e0f9812b",
+  pl: "f5f4ab99",
+  ar: "a524fd34",
+  ur: "8c16cb07",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -908,9 +908,12 @@ const STRINGS = {
     chg_media_after: "After",
     chg_media_recording: "Screen recording",
     chg_media_video_fallback: "Your browser cannot play this video.",
-    chg_pr80_before_alt: "A notice page before the award watch button was added.",
-    chg_pr80_after_alt: "The same notice page with the Email me when the award registers button.",
     chg_pr80_recording_caption: "Find a covered notice, choose the award watch, enter reader@example.com, and reach the email confirmation step.",
+    chg_pr74_before_alt: "A notice page opened from a bare link, with no sign of why it matched.",
+    chg_pr74_after_alt: "The same notice page opened from a digest link, with the matching word highlighted and a plain summary of the watch.",
+    chg_pr62_before_alt: "The stats page with one flat grid mixing plain outcomes and technical plumbing, and no note on how far back the totals count.",
+    chg_pr62_after_alt: "The stats page with headline numbers separated from a technical-details section, and a note on how far back each total counts.",
+    chg_pr50_recording_caption: "Pick the \"City contracts and RFPs\" topic, type a full sentence, and preview the real, interpreted results.",
     chg_earlier_h2: "Earlier releases",
     chg_detail_note: "The detailed technical notes below each release (bullet lists, incident reports) remain in English for now.",
     chg_foot_html: "CROL-List is an unofficial, free interface to public data. <a href=\"about.html\">About</a> · <a href=\"stats.html\">Stats</a> · <a href=\"api.html\">API and feeds</a> · <a href=\"index.html\">Home</a>",

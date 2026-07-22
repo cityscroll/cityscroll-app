@@ -430,11 +430,32 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   a full rebuild from that file every time (`tools/gen_changelog.mjs`), never hand-patched —
   same "one source, generated projection" shape as `docs/architecture.md` → the kanban hub
   page, just applied to a changelog instead of an architecture doc.
-- **Media is optional and revision-grounded.** An entry may add the validated `media` object
-  rendered by `tools/gen_changelog.mjs`; entries without it retain the original flat-list markup.
-  Reproduce PR 80's before/after screenshots, compact recording, and page-level verification
-  captures with `python3 tools/capture_changelog_media.py --pr 80` — the script uses temporary
-  worktrees for the merge commit and its first parent and stubs every remote endpoint locally.
+- **Media is optional and revision-grounded, one form per entry by default.** An entry may add
+  the validated `media` object rendered by `tools/gen_changelog.mjs`; entries without it retain
+  the original flat-list markup, and `media.screenshots`/`media.recording` are each independently
+  optional — a recording-only or a single-pair-only entry renders cleanly with no orphaned
+  heading or layout gap (`test/changelog_media.test.mjs` pins both subset shapes). **Media-fit
+  doctrine** (first applied when PR 80's original entry — both viewport pairs plus a recording —
+  was trimmed down to just the recording): a screen recording teaches a FLOW (a click/type/confirm
+  sequence); a 390px before/after pair teaches a MOBILE-FIRST change (something whose point only
+  lands on a phone-sized screen, e.g. arriving from a digest link); a 1440px before/after pair
+  teaches a DENSE DESKTOP surface (a table, dashboard, or side-by-side arrangement that only reads
+  at width). Default to one form; add a second only when an entry genuinely has two distinct
+  teaching points. Reproduce or add captures with `python3 tools/capture_changelog_media.py --pr
+  <n> [--forms recording|screens|verify ...]` — the script uses temporary worktrees for the merge
+  commit and its first parent, stubs every remote endpoint locally, and its `SCENARIOS` dict is
+  where a new entry's route/interaction/fixtures get registered (see the file's own header for
+  the doctrine restated next to the code, and its `kind`-per-scenario dispatch in `main()`).
+- **A consolidated entry can fold several related PRs into one user story.** When entries are
+  parts of one story (e.g. a feature's initial ship and a same-arc follow-up), merge them into a
+  single `changelog-data.json` entry instead of one line per PR — but keep provenance: add a
+  `merged_prs` array (at least two `{pr, url}` objects, including the entry's own primary `pr`)
+  alongside the usual `pr`/`url`/`merged_at`/`text` fields. This is load-bearing, not cosmetic:
+  `computeEntryAddition()`'s "already recorded" dedupe check (`tools/gen_changelog.mjs`) reads
+  `merged_prs` too, so a PR folded into a consolidated entry is never re-added as a stray
+  duplicate the next time the bot workflow runs — without it, consolidating entries would silently
+  break the idempotency the bot append path depends on. `merged_prs` is provenance only; it isn't
+  rendered into the visible `<li>` (matching `url`, which also isn't shown inline).
 - **`.github/workflows/update-changelog.yml`** runs on `pull_request: types: [closed]` (merged
   only) and extracts the marker line. `main` sits behind a merge-queue ruleset that rejects a
   direct push even from the Actions token (bypass actors aren't permitted on it), so the
