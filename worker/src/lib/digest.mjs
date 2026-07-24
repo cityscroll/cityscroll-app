@@ -86,14 +86,29 @@ function locateAnyTerm(text, terms) {
 //   {field:"unknown", term}                  -- matched via a field this digest never fetches
 //     (SODA's $q also searches columns like contact/method fields) -- name the term rather
 //     than showing the notice with no explanation at all.
+// City Record fields arrive with embedded presentation HTML (styled spans,
+// paragraph wrappers). Strip markup and decode the common entities BEFORE
+// locating and slicing, so no consumer of the evidence (email digest, site
+// rows) can ever render raw tags, and so a match index can never land inside
+// a tag (James, 2026-07-23, live digest email).
+function stripHtml(s) {
+  return String(s || "")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+    .replace(/&nbsp;/g, " ").replace(/&#39;|&apos;/g, "'").replace(/&quot;/g, '"')
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 export function matchEvidence(title, description, terms) {
   const words = (terms || []).filter(Boolean);
   if (!words.length) return null;
 
-  const inTitle = locateAnyTerm(title, words);
+  const cleanTitle = stripHtml(title);
+  const inTitle = locateAnyTerm(cleanTitle, words);
   if (inTitle) return { field: "title", term: inTitle.term, index: inTitle.index };
 
-  const text = String(description || "");
+  const text = stripHtml(description);
   const inDesc = locateAnyTerm(text, words);
   if (inDesc) {
     const RADIUS = 70;
