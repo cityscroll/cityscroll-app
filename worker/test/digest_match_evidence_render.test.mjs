@@ -8,6 +8,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { runAlerts } from "../src/alerts.mjs";
+import { matchEvidence } from "../src/lib/digest.mjs";
 
 function kv(map = {}) {
   return {
@@ -143,4 +144,19 @@ test("an amount-only watch (no keywords) still carries its filter — minAmount 
   assert.ok(m);
   const w = new URL(m[1].replace(/&amp;/g, "&")).searchParams.get("w");
   assert.deepEqual(JSON.parse(w), { lens: "money", filter: { minAmount: 1000000 } });
+});
+
+
+// 2026-07-23 (James, via a live digest email): City Record descriptions arrive
+// with embedded HTML — the Matched: excerpt rendered raw tags. matchEvidence
+// must strip markup BEFORE locating and slicing.
+test("matchEvidence strips embedded HTML from descriptions before snipping", () => {
+  const desc = "<p><span><span style='color:rgba(0, 0, 0, 1)'>Design Build Services for Upstate Roadway Reconstruction &amp; Improvements Project</span></span></p>";
+  const ev = matchEvidence("Design Build 1", desc, ["reconstruction"]);
+  assert.ok(ev, "term in description must still match");
+  assert.equal(ev.field, "description");
+  const joined = `${ev.before}${ev.hit}${ev.after}`;
+  assert.doesNotMatch(joined, /[<>]/, `excerpt must contain no tags, got: ${joined}`);
+  assert.doesNotMatch(joined, /span|style=|rgba/, "no markup vocabulary in the excerpt");
+  assert.match(joined, /Design Build Services for Upstate Roadway Reconstruction & Improvements/, "entities decoded, prose preserved");
 });
