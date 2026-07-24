@@ -7,3 +7,12 @@ internal/
 tasks/
 backlog/
 *.local.md
+
+# 
+AGENTS.md
+CLAUDE.md
+backlog/
+PAPERCUTS.md
+.scrimignore
+.claude/
+.agents/
