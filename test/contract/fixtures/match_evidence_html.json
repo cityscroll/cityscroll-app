@@ -1,0 +1,26 @@
+[
+  {
+    "note": "the exact 2026-07-23 incident: embedded <span style=...> markup around the hit term",
+    "title": "Design Build 1",
+    "rawDescription": "<p><span><span style='color:rgba(0, 0, 0, 1)'>Design Build Services for Upstate Roadway Reconstruction &amp; Improvements Project</span></span></p>",
+    "keywords": ["reconstruction"]
+  },
+  {
+    "note": "tag boundary lands adjacent to the match itself",
+    "title": "Boiler Replacement",
+    "rawDescription": "Citywide <b>boiler</b> replacement and HVAC upgrade program for public schools.",
+    "keywords": ["boiler"]
+  },
+  {
+    "note": "no markup at all — plain-text baseline",
+    "title": "Plain Notice",
+    "rawDescription": "A plain-text description naming janitorial services with no embedded HTML at all.",
+    "keywords": ["janitorial"]
+  },
+  {
+    "note": "keyword only in the title, description irrelevant",
+    "title": "Elevator modernization program",
+    "rawDescription": "<div>Unrelated boilerplate text about permits.</div>",
+    "keywords": ["elevator"]
+  }
+]

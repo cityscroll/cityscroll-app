@@ -267,6 +267,7 @@
     untitled: "(san tit)",
     untitled_notice: "(avi san tit)",
     closed_tag: "fèmen",
+    rolling_deadline_tag: "pa gen dat limit fiks (kontinyèl)",
     open_days_left: "louvri · {n} jou rete",
     no_linkable_pin: "pa gen PIN ki ka lye",
     method_facet_label: "Metòd:",

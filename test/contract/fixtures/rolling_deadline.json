@@ -1,0 +1,12 @@
+[
+  { "due": "2026-08-15", "note": "ordinary near-term due date" },
+  { "due": "2027-03-01T00:00:00.000", "note": "full ISO timestamp, ordinary date" },
+  { "due": "2089-12-31", "note": "boundary: one day before the rolling-year cutoff" },
+  { "due": "2090-01-01", "note": "boundary: exactly the rolling-year cutoff" },
+  { "due": "2090-01-01T00:00:00.000", "note": "boundary, full ISO timestamp form" },
+  { "due": "2099-01-01T00:00:00.000", "note": "far-future rolling placeholder (the real-world observed shape)" },
+  { "due": "2150-06-01", "note": "further future rolling placeholder" },
+  { "due": null, "note": "no due date at all" },
+  { "due": "", "note": "empty string" },
+  { "due": "not-a-date", "note": "malformed junk — must not crash, must not be treated as rolling" }
+]

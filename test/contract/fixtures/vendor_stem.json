@@ -1,0 +1,14 @@
+[
+  { "input": "Sinergia Inc", "note": "bare legal suffix" },
+  { "input": "Sinergia Incorporated", "note": "full legal suffix must stem to the same value as 'Inc'" },
+  { "input": "Acme Construction, LLC.", "note": "comma + trailing period" },
+  { "input": "O'Brien & Sons Co", "note": "apostrophe + ampersand + suffix" },
+  { "input": "Turner   Construction   Company", "note": "repeated internal whitespace" },
+  { "input": "Skyline Contracting of New York", "note": "'OF NEW YORK' suffix" },
+  { "input": "Metro Builders LP", "note": "LP suffix" },
+  { "input": "Metro Builders, L.L.C", "note": "dotted LLC variant" },
+  { "input": "<b>Bold Vendor</b> Corp", "note": "embedded HTML must be stripped before stemming" },
+  { "input": "", "note": "empty input" },
+  { "input": null, "note": "null input" },
+  { "input": "USA Logistics USA", "note": "trailing USA suffix stripped once" }
+]
