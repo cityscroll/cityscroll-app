@@ -268,6 +268,7 @@
     untitled: "(без названия)",
     untitled_notice: "(уведомление без названия)",
     closed_tag: "закрыто",
+    rolling_deadline_tag: "без фиксированного срока (постоянный приём)",
     open_days_left: "открыто · осталось {n} дн.",
     no_linkable_pin: "нет связываемого PIN",
     method_facet_label: "Метод:",

@@ -273,6 +273,7 @@
     untitled: "(بلا عنوان)",
     untitled_notice: "(إشعار بلا عنوان)",
     closed_tag: "مغلق",
+    rolling_deadline_tag: "لا موعد نهائي ثابت (مستمر)",
     open_days_left: "مفتوح · تبقّى {n} يومًا",
     days_left_one: "تبقّى يوم واحد",
     days_left_other: "تبقّى {n} يومًا",

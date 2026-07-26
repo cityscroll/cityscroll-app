@@ -276,6 +276,7 @@
     untitled: "(bez tytułu)",
     untitled_notice: "(ogłoszenie bez tytułu)",
     closed_tag: "zamknięte",
+    rolling_deadline_tag: "bez stałego terminu (ciągłe przyjmowanie)",
     open_days_left: "otwarte · pozostało {n} dni",
     no_linkable_pin: "brak możliwego do powiązania PIN",
     method_facet_label: "Metoda:",

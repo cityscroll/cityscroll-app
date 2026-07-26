@@ -344,6 +344,7 @@
 
     // Deadline / event tags
     closed_tag: "clôturé",
+    rolling_deadline_tag: "aucune échéance fixe (continue)",
     open_days_left: "ouvert · {n} jours restants",
     days_left_one: "1 jour restant",
     days_left_other: "{n} jours restants",
