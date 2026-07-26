@@ -41,6 +41,8 @@ const { buildApply, mailtoFor, icsForRFP } = new Function(
   extractFn("cleanText") +
   extractFn("fdt") +
   extractFn("daysLeft") +
+  extractConst("ROLLING_DUE_YEAR") +
+  extractFn("isRollingDeadline") +
   extractFn("telHref") +
   src.match(/const JUNK_PINS = new Set\(\[[^\]]*\]\);/)[0] +
   extractConst("JUNK_PIN_TEXT_RE") +

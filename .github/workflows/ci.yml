@@ -62,6 +62,12 @@ jobs:
         # Scoped to test/ — a bare `node --test` also recurses into worker/test/,
         # which needs worker/node_modules (installed in the next step).
         run: node --test test/*.test.mjs
+      - name: Site/worker contract tests (drift guard — see docs/drift-inventory.md)
+        # test/contract/*.test.mjs imports worker/src/lib/*.mjs modules directly (all
+        # dependency-free — no worker/node_modules needed) alongside functions extracted from
+        # index.html, and runs one shared fixture set through both. A change that makes either
+        # side disagree with the other on the same input fails here, not in production.
+        run: node --test test/contract/*.test.mjs
       - name: Worker dependencies
         run: npm ci
         working-directory: worker

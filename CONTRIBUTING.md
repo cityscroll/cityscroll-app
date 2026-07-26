@@ -27,6 +27,13 @@ These rules built the project and they're not aspirational — every shipped fea
 1. **Tests first on worker changes.** Anything under `worker/` gets its logic in a pure
    `worker/src/lib/*.mjs` module with `node --test` coverage *before* the route is wired.
    The suite must be green before deploy.
+1a. **New dual-implemented logic gets an inventory entry.** The static site and the worker can't
+   share code, so some rules are implemented by hand on both sides — `docs/drift-inventory.md`
+   is the committed list. If your change adds a new rule to one side that the other side needs
+   to agree with, add an entry there and, if the rule is a pure function, a shared-fixture test
+   under `test/contract/` (see that directory's existing tests for the pattern). This is what
+   keeps a change like commit `3ff6825` — one side learns to strip embedded HTML, the other
+   doesn't — from shipping unnoticed again.
 2. **Browser verification before every push.** Site changes are driven in real headless Chromium
    (`test/functional/run.sh`, Playwright) — a feature isn't shipped until the harness has clicked
    it. The harness has caught a real bug in nearly every wave; trust it.

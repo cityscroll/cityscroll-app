@@ -268,6 +268,7 @@
     untitled: "（无标题）",
     untitled_notice: "（无标题通知）",
     closed_tag: "已关闭",
+    rolling_deadline_tag: "无固定截止日期（滚动）",
     open_days_left: "开放中 · 剩余 {n} 天",
     no_linkable_pin: "无可链接的 PIN",
     method_facet_label: "方式：",

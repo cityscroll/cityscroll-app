@@ -268,6 +268,7 @@
     untitled: "(제목 없음)",
     untitled_notice: "(제목 없는 공고)",
     closed_tag: "마감됨",
+    rolling_deadline_tag: "고정 마감일 없음(상시 진행)",
     open_days_left: "진행 중 · {n}일 남음",
     no_linkable_pin: "연결 가능한 PIN 없음",
     method_facet_label: "방식:",

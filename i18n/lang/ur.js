@@ -273,6 +273,7 @@
     untitled: "(بلا عنوان)",
     untitled_notice: "(بلا عنوان نوٹس)",
     closed_tag: "بند",
+    rolling_deadline_tag: "کوئی مقررہ آخری تاریخ نہیں (جاری)",
     open_days_left: "کھلا ہے · {n} دن باقی",
     days_left_one: "1 دن باقی",
     days_left_other: "{n} دن باقی",

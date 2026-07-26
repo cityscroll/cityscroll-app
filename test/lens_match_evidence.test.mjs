@@ -14,7 +14,7 @@
 // Record dataset (dg92-zbpx) via
 //   curl 'https://data.cityofnewyork.us/resource/dg92-zbpx.json?request_id=20260709010'
 // and confirmed live against the exact Money-tab Award query (type_of_notice_description='Award'
-// AND contract_amount >= 1000 AND contract_amount < 5000000000, $q=childcare) that this notice is
+// AND contract_amount >= 1000 AND contract_amount < 10000000000, $q=childcare) that this notice is
 // a real, current result -- not a hypothetical.
 //
 //   node --test test/lens_match_evidence.test.mjs   (from the crol-list/ dir)
@@ -79,6 +79,8 @@ const {
   extractFn("daysLeft") +
   extractDecl("_SPELL") +
   extractFn("_spellNum") +
+  extractDecl("ROLLING_DUE_YEAR") +
+  extractFn("isRollingDeadline") +
   extractFn("deadlineTag") +
   extractFn("eventTag") +
   extractFn("locateAnyTerm") +

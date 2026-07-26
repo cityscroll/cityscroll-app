@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "aa4b4b5e",
-  "zh-Hans": "08237b19",
-  ru: "8e76d9df",
-  bn: "7a325b34",
-  ht: "e85b8b13",
-  ko: "ca8c0ee5",
-  fr: "e0f9812b",
-  pl: "f5f4ab99",
-  ar: "a524fd34",
-  ur: "8c16cb07",
+  es: "1addc597",
+  "zh-Hans": "a166db9a",
+  ru: "6178f228",
+  bn: "79b54fb3",
+  ht: "728d06e0",
+  ko: "ab4d0472",
+  fr: "b9d7896e",
+  pl: "cf325cf6",
+  ar: "45ff93ce",
+  ur: "a285b842",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -437,6 +437,9 @@ const STRINGS = {
     // Deadline / event tags
     closed_tag: "closed",
     open_days_left: "open · {n} days left",
+    // A due date in year 2090+ is a pre-qualified-list placeholder, not a real deadline (mirrors
+    // the worker's dueLabel()/ROLLING_YEAR) — never show a day-count or the fake date itself.
+    rolling_deadline_tag: "no fixed deadline (rolling)",
     days_left_one: "1 day left",
     days_left_other: "{n} days left",
 
