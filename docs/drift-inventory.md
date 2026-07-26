@@ -112,7 +112,13 @@ scout or automation judgment — intentionally left open here rather than guesse
 
 ## Setup still needed
 
-`drift-synthesis.yml` requires an `ANTHROPIC_API_KEY` repository secret (Settings → Secrets and
-variables → Actions) — **not present in this repo as of this change** (only
-`CLOUDFLARE_API_TOKEN` exists today). Until it's added, the workflow will run and fail cleanly on
-every same-repo PR touching site/worker code (informational-only, so this never blocks a merge).
+`drift-synthesis.yml` needs two things this repo doesn't have yet, confirmed by running it on this
+PR (informational-only, so neither blocks a merge in the meantime):
+
+1. An `ANTHROPIC_API_KEY` repository secret (Settings → Secrets and variables → Actions) — only
+   `CLOUDFLARE_API_TOKEN` exists today.
+2. The Claude Code GitHub App installed on this repository (https://github.com/apps/claude) —
+   the action's own error confirms it needs this in addition to the API key.
+
+Until both are in place, the workflow runs and fails cleanly on every same-repo PR touching
+site/worker code.
