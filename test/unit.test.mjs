@@ -95,7 +95,7 @@ const tagEnv = new Function(
   "function t(k,v){ return k; }\n" +
   "function tn(base,n){ return base + '_' + (n === 1 ? 'one' : 'other'); }\n" +
   _spellConst + "\n" +
-  extractFn("_spellNum") + extractFn("daysLeft") + extractFn("deadlineTag") + extractFn("eventTag") +
+  extractFn("_spellNum") + extractFn("daysLeft") + extractConst("ROLLING_DUE_YEAR") + extractFn("isRollingDeadline") + extractFn("deadlineTag") + extractFn("eventTag") +
   "return { deadlineTag, eventTag };"
 )();
 const inDays = (n) => new Date(Date.now() + n * 86400000 + 3600000).toISOString();

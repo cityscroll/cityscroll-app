@@ -268,6 +268,7 @@
     untitled: "(sin título)",
     untitled_notice: "(aviso sin título)",
     closed_tag: "cerrada",
+    rolling_deadline_tag: "sin fecha límite fija (continua)",
     open_days_left: "abierta · quedan {n} días",
     no_linkable_pin: "sin PIN enlazable",
     method_facet_label: "Método:",

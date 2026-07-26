@@ -79,6 +79,8 @@ const {
   extractFn("daysLeft") +
   extractDecl("_SPELL") +
   extractFn("_spellNum") +
+  extractDecl("ROLLING_DUE_YEAR") +
+  extractFn("isRollingDeadline") +
   extractFn("deadlineTag") +
   extractFn("eventTag") +
   extractFn("locateAnyTerm") +

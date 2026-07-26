@@ -16,6 +16,7 @@ Contact
 Days left
 Design and Construction
 Email
+no fixed deadline (rolling)
 Health and Hospitals Corporation
 Health and Mental Hygiene
 Housing Authority
@@ -143,7 +144,6 @@ type_of_notice_description='Solicitation'
 <div class="empty">No City Record notices carry PIN <code>
 <div class="empty">No City Record notices found for agency “
 <div class="empty">No awards on record for “
-<div class="tl"><span class="tldate">due
 <span class="tag soon">amended from
 Due:
 award to this vendor at this agency in 90 days

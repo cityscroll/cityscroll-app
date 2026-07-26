@@ -356,7 +356,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=a84a9dad"></script>
+<script src="i18n.js?v=b26938c5"></script>
 <script src="nl_parse.js"></script>
 <script src="external_awards.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
@@ -786,6 +786,13 @@ const JUNK_PIN_TEXT_RE = /\bsee\b|\bbelow\b|\bline\s*17\b|\bn\/?a\b|\btbd\b|\bva
 // column happened to be empty.
 const SELECT = "request_id,start_date,agency_name,type_of_notice_description,category_description,short_title,pin,contract_amount,vendor_name,due_date,address_to_request,contact_name,contact_phone,email,selection_method_description,additional_description_1,other_info_1";
 
+// Honest-data cap (EDA: 3 rows >= $10B are data-entry errors, max legit ~= $6.68B, the NYPA
+// electricity contract cited in about.html's "The data, to be honest" section — mirrors
+// worker/src/ingest.mjs's AMOUNT_CAP). One named constant, referenced everywhere a Money-lens
+// query needs it, instead of a repeated literal (test/contract/money_honesty_cap.test.mjs pins
+// both this file's uses and about.html's/i18n.js's copy against it).
+const MONEY_HONESTY_CAP = 10000000000;
+
 const $ = s => document.querySelector(s);
 const todayISO = () => new Date().toISOString().slice(0,10) + "T00:00:00";
 // N months after an ISO date, as a date-only ISO string — mirrors the worker's compileSub()
@@ -879,9 +886,19 @@ function money(v){
 function fdate(s){ return s ? String(s).slice(0,10) : ""; }
 function fdt(s){ if(!s) return ""; const d = new Date(s); const _lm=(window.LANG_META||{})[window.LANG||"en"]; const _loc=_lm?_lm.intlDate:"en-US"; return d.toLocaleDateString(_loc,{year:"numeric",month:"long",day:"numeric"}); }
 function daysLeft(s){ if(!s) return null; return Math.ceil((new Date(s) - new Date())/86400000); }
+// Honest deadline label: due dates in year >= 2090 are rolling placeholders (pre-qualified-list
+// entries), not real deadlines — mirrors worker/src/ingest.mjs's ROLLING_YEAR /
+// worker/src/alerts.mjs's dueLabel(). Never render one as a real date or a day-count.
+const ROLLING_DUE_YEAR = 2090;
+function isRollingDeadline(due){
+  if(!due) return false;
+  const y = Number(String(due).slice(0,4));
+  return Number.isFinite(y) && y >= ROLLING_DUE_YEAR;
+}
 const _SPELL = ["zero","one","two","three","four","five","six","seven","eight","nine"];
 function _spellNum(n){ return n < 10 ? _SPELL[n] : String(n); }
 function deadlineTag(due){
+  if(isRollingDeadline(due)) return `<span class="tag open">${t("rolling_deadline_tag")}</span>`;
   const dl = daysLeft(due);
   if(dl === null) return "";
   if(dl < 0) return `<span class="tag closed">${t("closed_tag")}</span>`;
@@ -994,7 +1011,7 @@ async function search(){
   if(mode === "open") where += ` AND due_date > '${todayISO()}'`;
   if(mode === "open" && closingWeek) where += ` AND due_date <= '${weekOutISO()}'`;
   if(agency) where += ` AND agency_name='${agency.replace(/'/g,"''")}'`;
-  if(mode === "award" && minamt) where += ` AND contract_amount >= ${minamt} AND contract_amount < 10000000000`;
+  if(mode === "award" && minamt) where += ` AND contract_amount >= ${minamt} AND contract_amount < ${MONEY_HONESTY_CAP}`;
   const facetWhere = where; // method-facet counts are computed WITHOUT the method clause (Datasette-style)
   if(methodSel) where += ` AND selection_method_description='${methodSel.replace(/'/g,"''")}'`;
 
@@ -1472,7 +1489,7 @@ function wireNearMatchReveal(el, near){
 async function loadAgencyStats(agency){
   try{
     const rows = await soda({"$select":"count(1) as n, sum(contract_amount) as total",
-      "$where":`agency_name='${agency.replace(/'/g,"''")}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < 10000000000`});
+      "$where":`agency_name='${agency.replace(/'/g,"''")}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < ${MONEY_HONESTY_CAP}`});
     return rows[0] || null;
   }catch(e){ return null; }
 }
@@ -1641,7 +1658,7 @@ function glanceFor(r){
     + (amt ? ` · <b>${amt}</b>` : "");
   const when = [
     r.start_date ? t("published_on",{date:fdt(r.start_date)}) : null,
-    r.due_date ? `${t("responses_due_html",{date:fdt(r.due_date)})} ${deadlineTag(r.due_date)}` : null,
+    r.due_date ? (isRollingDeadline(r.due_date) ? deadlineTag(r.due_date) : `${t("responses_due_html",{date:fdt(r.due_date)})} ${deadlineTag(r.due_date)}`) : null,
     r.event_date ? `${t("event_on_html",{date:fdt(r.event_date)})}${eventTag(r.event_date)}` : null
   ].filter(Boolean).join(" · ");
   const act = [];
@@ -1662,14 +1679,14 @@ function mailtoFor(r){
     `  Title:  ${cleanText(r.short_title)}\n` +
     `  PIN:    ${usablePin(r.pin)?r.pin:"(see notice)"}\n` +
     `  Agency: ${r.agency_name||""}\n` +
-    (r.due_date?`  Due:    ${fdt(r.due_date)}\n`:"") +
+    (r.due_date?`  Due:    ${isRollingDeadline(r.due_date)?t("rolling_deadline_tag"):fdt(r.due_date)}\n`:"") +
     `\nWe intend to respond and would appreciate confirmation of (1) how to obtain the full solicitation package and (2) whether responses are submitted via PASSPort or directly to your office.\n\n` +
     `[One-line capability statement about your firm.]\n\n` +
     `Thank you,\n[Your name — firm — phone]`;
   return `mailto:${r.email}?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(body)}`;
 }
 function icsForRFP(r){
-  if(!r.due_date) return null;
+  if(!r.due_date || isRollingDeadline(r.due_date)) return null; // no real date to remind about
   const d = new Date(r.due_date), pad = n=>String(n).padStart(2,"0");
   const fl = dt=>`${dt.getFullYear()}${pad(dt.getMonth()+1)}${pad(dt.getDate())}T${pad(dt.getHours())}${pad(dt.getMinutes())}00`;
   const esc = s=>String(s||"").replace(/([,;\\])/g,"\\$1").replace(/\n/g,"\\n");
@@ -1702,15 +1719,19 @@ function buildApply(r){
   const dts = rows.map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join("");
   let due = "";
   if(r.due_date){
-    const tag = dl === null ? "" : (dl < 0 ? `<span class="tag closed">${t("closed_tag")}</span>` :
-      dl <= 3 ? `<span class="tag hot">${dl===0?t("due_today_tag"):tn("days_left",dl)}</span>` :
-      dl <= 14 ? `<span class="tag soon">${tn("days_left",dl)}</span>` : `<span class="tag open">${tn("days_left",dl)}</span>`);
-    due = `<div class="due"><span class="d">${t("deadline_respond_by",{date:fdt(r.due_date)})}</span>${tag}</div>`;
+    if(isRollingDeadline(r.due_date)){
+      due = `<div class="due"><span class="d">${t("rolling_deadline_tag")}</span></div>`;
+    }else{
+      const tag = dl === null ? "" : (dl < 0 ? `<span class="tag closed">${t("closed_tag")}</span>` :
+        dl <= 3 ? `<span class="tag hot">${dl===0?t("due_today_tag"):tn("days_left",dl)}</span>` :
+        dl <= 14 ? `<span class="tag soon">${tn("days_left",dl)}</span>` : `<span class="tag open">${tn("days_left",dl)}</span>`);
+      due = `<div class="due"><span class="d">${t("deadline_respond_by",{date:fdt(r.due_date)})}</span>${tag}</div>`;
+    }
   }
   let acts = '<div class="actions">';
   if(r.email) acts += `<a class="act primary" href="${mailtoFor(r)}">${t("email_a_response")}</a>`;
   if(tel) acts += `<a class="act" href="${tel}">${t("call_btn",{phone:cleanText(r.contact_phone)})}</a>`;
-  if(r.due_date) acts += `<button class="act" id="icsbtn" type="button">${t("add_deadline_calendar")}</button>`;
+  if(r.due_date && !isRollingDeadline(r.due_date)) acts += `<button class="act" id="icsbtn" type="button">${t("add_deadline_calendar")}</button>`;
   acts += `<a class="act" href="${PASSPORT}" ${EXT_ATTRS}>${t("bid_on_passport")}${extSR()}</a>`;
   acts += '</div>';
   return `<div class="apply"><h3>${t("how_to_respond_heading")}</h3><div class="body">
@@ -2327,8 +2348,8 @@ function exportCSV(){
   const cols = [
     ["Type", r=>r.type_of_notice_description], ["Agency", r=>r.agency_name],
     ["Title", r=>cleanText(r.short_title)], ["Category", r=>r.category_description],
-    ["Posted", r=>fdate(r.start_date)], ["Due", r=>fdate(r.due_date)],
-    ["Days left", r=>{const d=daysLeft(r.due_date);return d==null?"":d;}],
+    ["Posted", r=>fdate(r.start_date)], ["Due", r=>isRollingDeadline(r.due_date)?"no fixed deadline (rolling)":fdate(r.due_date)],
+    ["Days left", r=>{if(isRollingDeadline(r.due_date)) return ""; const d=daysLeft(r.due_date);return d==null?"":d;}],
     ["Method", r=>cleanText(r.selection_method_description)], ["Contact", r=>cleanText(r.contact_name)],
     ["Email", r=>r.email||""], ["Phone", r=>cleanText(r.contact_phone)],
     ["Submit to", r=>cleanText(r.address_to_request)], ["PIN", r=>r.pin||""],
@@ -3051,7 +3072,7 @@ async function aFetch(){
   }
   if(w==="bigaward"){
     const t=$("#athresh").value;
-    return { kind:"award", rows: await soda({"$select":SELECT,"$where":`type_of_notice_description='Award' AND contract_amount >= ${t} AND contract_amount < 10000000000`,"$order":"start_date DESC","$limit":"5"}) };
+    return { kind:"award", rows: await soda({"$select":SELECT,"$where":`type_of_notice_description='Award' AND contract_amount >= ${t} AND contract_amount < ${MONEY_HONESTY_CAP}`,"$order":"start_date DESC","$limit":"5"}) };
   }
   if(w==="rfpkw"){
     const p={"$select":SELECT,"$where":`type_of_notice_description='Solicitation' AND due_date > '${todayISO()}'`,"$order":"due_date ASC","$limit":"5"};
@@ -3067,7 +3088,7 @@ async function aFetch(){
     const agClause = agency ? ` AND agency_name='${agency.replace(/'/g,"''")}'` : "";
     const wantsAward = noticeType==="award" || (!noticeType && minAmt>=1000);
     if(wantsAward){
-      let where=`type_of_notice_description='Award' AND contract_amount >= ${minAmt||1} AND contract_amount < 10000000000`;
+      let where=`type_of_notice_description='Award' AND contract_amount >= ${minAmt||1} AND contract_amount < ${MONEY_HONESTY_CAP}`;
       if(maxAmount) where+=` AND contract_amount <= ${maxAmount}`;
       return { kind:"award", rows: await soda({"$select":SELECT,"$where":where+catClause+agClause,"$order":"start_date DESC","$limit":"5"}) };
     }
@@ -3183,15 +3204,16 @@ function digItemHTML(kind, r, keywords){
     ${digEvidenceHTML(ev)}
     <div class="dc"><a href="#notice/${encodeURIComponent(r.request_id)}">${t("view_on_crol")}</a></div></div>`;
   }
-  if(kind==="rfp"){ const dl=daysLeft(r.due_date);
+  if(kind==="rfp"){ const dl=daysLeft(r.due_date), rolling=isRollingDeadline(r.due_date);
     const title=cleanText(r.short_title), ev=matchEvidence(title, matchText(r), keywords);
     const tel=String(r.contact_phone||"").replace(/[^0-9+]/g,""); const acts=[];
     if(r.email) acts.push(`<a href="${mailtoFor(r)}"><b>${t("respond_lbl")}</b></a>`);
     if(r.email) acts.push(`<a href="mailto:${r.email}">${r.email}</a>`);
     if(tel.length>=7) acts.push(`<a href="tel:${tel}">${cleanText(r.contact_phone)}</a>`);
     const dc=acts.length?`<div class="dc">${acts.join(" · ")}</div>`:"";
+    const when = rolling ? t("rolling_deadline_tag") : t("due_on",{date:fdt(r.due_date)})+(dl!=null?t("days_paren",{n:dl}):"");
     return `<div class="digitem"><div class="dt"><a href="#notice/${encodeURIComponent(r.request_id)}">${digTitleHTML(title, ev)}</a></div>
-    <div class="dm">${r.agency_name} · ${t("due_on",{date:fdt(r.due_date)})}${dl!=null?t("days_paren",{n:dl}):""}</div>${digEvidenceHTML(ev)}${dc}</div>`; }
+    <div class="dm">${r.agency_name} · ${when}</div>${digEvidenceHTML(ev)}${dc}</div>`; }
   // Scope decision: rezoning (ZAP) match evidence is out of scope for this pass -- ZAP rows
   // have their own shape (project_name/project_brief, not short_title/description) and the
   // reported failure was a City Record procurement notice, not a rezoning.
@@ -3331,7 +3353,7 @@ async function loadToday(){
       const [counts, agencies, award, closing, hearing] = await Promise.all([
         soda({"$select":"section_name, count(1) as n","$where":`start_date='${iso}'`,"$group":"section_name","$order":"n DESC"}),
         soda({"$select":"agency_name","$where":`start_date='${iso}'`,"$group":"agency_name","$limit":"300"}),
-        soda({"$select":"request_id,short_title,agency_name,contract_amount","$where":`start_date='${iso}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < 10000000000`,"$order":"contract_amount DESC","$limit":"1"}),
+        soda({"$select":"request_id,short_title,agency_name,contract_amount","$where":`start_date='${iso}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < ${MONEY_HONESTY_CAP}`,"$order":"contract_amount DESC","$limit":"1"}),
         soda({"$select":"request_id,short_title,agency_name,due_date","$where":`type_of_notice_description='Solicitation' AND due_date > '${todayISO()}' AND due_date <= '${weekOutISO()}'`,"$order":"due_date ASC","$limit":"1"}),
         soda({"$select":"request_id,short_title,agency_name,event_date","$where":`section_name='Public Hearings and Meetings' AND event_date > '${todayISO()}'`,"$order":"event_date ASC","$limit":"1"})
       ]);
@@ -3378,7 +3400,7 @@ function agencyNorms(agency){
       if(ws.length>=8){ out.adMedian = ws[Math.floor(ws.length/2)]; out.adN = ws.length; }
     }catch(e){}
     try{
-      const [a] = await soda({"$select":"count(1) as n, sum(contract_amount) as t","$where":`agency_name='${q}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < 10000000000 AND start_date > '${yearCut()}'`}, 8000);
+      const [a] = await soda({"$select":"count(1) as n, sum(contract_amount) as t","$where":`agency_name='${q}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < ${MONEY_HONESTY_CAP} AND start_date > '${yearCut()}'`}, 8000);
       if(a){ out.awardCount = +a.n||0; out.awardTotal = +a.t||0; }
     }catch(e){}
     return out;
@@ -3413,9 +3435,9 @@ async function noticeFlags(r){
 async function awardContext(r){
   if(!r || r.type_of_notice_description !== "Award" || !r.agency_name) return "";
   const X = +r.contract_amount;
-  if(!X || X <= 0 || X >= 1e10) return "";
+  if(!X || X <= 0 || X >= MONEY_HONESTY_CAP) return "";
   const q = r.agency_name.replace(/'/g,"''");
-  const base = `agency_name='${q}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < 10000000000 AND start_date > '${yearCut()}'`;
+  const base = `agency_name='${q}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < ${MONEY_HONESTY_CAP} AND start_date > '${yearCut()}'`;
   const bits = [];
   try{
     const [[le],[tot]] = await Promise.all([
@@ -3640,7 +3662,7 @@ async function showAgency(name, initialTab){
   const [stats, sections, vendors, rfps, events, forecastData, externalAward] = await Promise.all([
     loadAgencyStats(nm),
     soda({"$select":"section_name, count(1) as n","$where":`agency_name='${q}'`,"$group":"section_name","$order":"n DESC"}).catch(()=>[]),
-    soda({"$select":"vendor_name, count(1) as n, sum(contract_amount) as t","$where":`agency_name='${q}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < 10000000000 AND vendor_name IS NOT NULL`,"$group":"vendor_name","$order":"t DESC","$limit":"8"}).catch(()=>[]),
+    soda({"$select":"vendor_name, count(1) as n, sum(contract_amount) as t","$where":`agency_name='${q}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < ${MONEY_HONESTY_CAP} AND vendor_name IS NOT NULL`,"$group":"vendor_name","$order":"t DESC","$limit":"8"}).catch(()=>[]),
     soda({"$select":SELECT,"$where":`agency_name='${q}' AND type_of_notice_description='Solicitation' AND due_date > '${todayISO()}'`,"$order":"due_date ASC","$limit":"5"}).catch(()=>[]),
     soda({"$select":FEED_SELECT,"$where":`agency_name='${q}' AND event_date > '${todayISO()}'`,"$order":"event_date ASC","$limit":"5"}).catch(()=>[]),
     workerFetch("/inv/" + encodeURIComponent(nm), null, 8000).then(r => r.ok ? r.json() : null).catch(() => null),
@@ -3663,7 +3685,7 @@ async function showAgency(name, initialTab){
     const label = `${tSection(c.section_name)}<span class="ct">${fmtNumber(+c.n)}</span>`;
     return lens ? `<a class="chip" style="text-decoration:none" href="#${lens}?agency=${encodeURIComponent(nm)}">${label}</a>` : `<span class="chip" style="cursor:default">${label}</span>`;
   }).join("");
-  const rfpItems = rfps.map(r=>`<div class="tl"><span class="tldate">due ${fdate(r.due_date)}</span>
+  const rfpItems = rfps.map(r=>`<div class="tl"><span class="tldate">${isRollingDeadline(r.due_date)?"":"due "+fdate(r.due_date)}</span>
       <span class="tlreason">${pivotA("#notice/"+encodeURIComponent(r.request_id), cleanText(r.short_title)||"(untitled)")}</span>${deadlineTag(r.due_date)}</div>`).join("");
   const evItems = events.map(r=>`<div class="tl"><span class="tldate">${fdate(r.event_date)}</span>
       <span class="tlreason">${pivotA("#notice/"+encodeURIComponent(r.request_id), cleanText(r.short_title)||"(untitled)")}</span>${eventTag(r.event_date)}</div>`).join("");
@@ -3763,7 +3785,7 @@ async function showVendor(name, initialTab){
   let variants = [];
   try{
     variants = await soda({"$select":"vendor_name, count(1) as n, sum(contract_amount) as t, min(start_date) as first, max(start_date) as last",
-      "$where":"vendor_name IS NOT NULL AND type_of_notice_description='Award' AND contract_amount < 10000000000",
+      "$where":`vendor_name IS NOT NULL AND type_of_notice_description='Award' AND contract_amount < ${MONEY_HONESTY_CAP}`,
       "$q":stem,"$group":"vendor_name","$limit":"100"});
   }catch(e){}
   variants = variants.filter(v => vendorStem(v.vendor_name) === stem);
@@ -3778,7 +3800,7 @@ async function showVendor(name, initialTab){
   const last = variants.map(v=>v.last).filter(Boolean).sort().pop();
   const display = variants.slice().sort((a,b)=>(+b.n)-(+a.n))[0].vendor_name;
   const [agencies, rows, mentions, forecastData] = await Promise.all([
-    soda({"$select":"agency_name, count(1) as n, sum(contract_amount) as t","$where":`vendor_name in(${inList}) AND type_of_notice_description='Award' AND contract_amount < 10000000000`,"$group":"agency_name","$order":"t DESC","$limit":"10"}, 15000).catch(()=>[]),
+    soda({"$select":"agency_name, count(1) as n, sum(contract_amount) as t","$where":`vendor_name in(${inList}) AND type_of_notice_description='Award' AND contract_amount < ${MONEY_HONESTY_CAP}`,"$group":"agency_name","$order":"t DESC","$limit":"10"}, 15000).catch(()=>[]),
     soda({"$select":SELECT,"$where":`vendor_name in(${inList})`,"$order":"start_date DESC","$limit":"15"}, 15000).catch(()=>[]),
     soda({"$select":SELECT,"$where":`vendor_name IS NULL AND start_date > '${recentCut()}'`,"$q":stem,"$order":"start_date DESC","$limit":"8"}, 8000).catch(()=>[]),
     workerFetch("/inv/" + encodeURIComponent(display), null, 8000).then(r => r.ok ? r.json() : null).catch(() => null)
@@ -4066,7 +4088,7 @@ async function showMatter(pin){
     // base-prefix widening above, not an exact match on the PIN the reader followed here.
     extra: [r.pin && r.pin !== pin ? `PIN ${r.pin} (renewal-linked)` : null,
             money(r.contract_amount), r.vendor_name?"→ "+pivotA(vendorHref(r.vendor_name), cleanText(r.vendor_name)):null,
-            r.due_date?"responses due "+fdate(r.due_date):null].filter(Boolean).join(" · ")
+            r.due_date?(isRollingDeadline(r.due_date)?t("rolling_deadline_tag"):"responses due "+fdate(r.due_date)):null].filter(Boolean).join(" · ")
   }));
   if(c && c.registered) items.push({date:c.registered, label:`<b>Contract registered</b> — <code>${c.id}</code> (Checkbook NYC)`, extra:`committed ${money(c.current)||"—"}`});
   items.sort((a,b)=>(a.date||"9999").localeCompare(b.date||"9999"));
@@ -4355,7 +4377,7 @@ async function showNotice(id, watch){
         <button class="act primary" type="button" id="ncopy">${t("copy_link")}</button>
         <a class="act" href="mailto:?subject=${encodeURIComponent("City Record notice: "+(cleanText(r.short_title)||r.request_id))}&body=${encodeURIComponent(link+"\n\nVia CROL-List — The City Record, searchable.")}">${t("notice_email_btn")}</a>
         <button class="act" type="button" id="nprint">${t("notice_print_btn")}</button>
-        ${(r.due_date||r.event_date)?`<button class="act" type="button" id="nics">${t("add_to_calendar_btn")}</button>`:""}
+        ${((r.due_date&&!isRollingDeadline(r.due_date))||r.event_date)?`<button class="act" type="button" id="nics">${t("add_to_calendar_btn")}</button>`:""}
         ${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}
         <a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("view_in_city_record")}${extSR()}</a>
       </div>

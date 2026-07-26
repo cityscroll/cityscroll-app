@@ -27,11 +27,19 @@ function capsFoundIn(text) {
   return caps;
 }
 
-test("index.html: every 'contract_amount <' clause uses the canonical $10B cap", () => {
+test("index.html: MONEY_HONESTY_CAP constant matches the canonical $10B cap", () => {
   const src = readFileSync(join(ROOT, "index.html"), "utf8");
-  const caps = capsFoundIn(src);
-  assert.ok(caps.size > 0, "expected to find at least one contract_amount cap clause in index.html");
-  assert.deepEqual([...caps], [CANONICAL_CAP], `index.html has a stale/inconsistent cap: found ${[...caps]}`);
+  const m = src.match(/const MONEY_HONESTY_CAP\s*=\s*(\d+)/);
+  assert.ok(m, "MONEY_HONESTY_CAP constant not found in index.html");
+  assert.equal(Number(m[1]), CANONICAL_CAP);
+});
+
+test("index.html: no query site uses a hardcoded number instead of MONEY_HONESTY_CAP", () => {
+  const src = readFileSync(join(ROOT, "index.html"), "utf8");
+  // Every real call site now reads `contract_amount < ${MONEY_HONESTY_CAP}` — a literal digit
+  // here would mean a query site regressed back to a hand-copied number (exactly how the
+  // original $5B/$10B split happened in the first place).
+  assert.equal(capsFoundIn(src).size, 0, "found a literal contract_amount cap — should reference MONEY_HONESTY_CAP instead");
 });
 
 test("worker/src/lib/compile.mjs: cron-replay query uses the canonical $10B cap", () => {
@@ -68,4 +76,29 @@ test("worker/src: no stale $5B literal in any form (decimal or scientific notati
     const src = readFileSync(join(ROOT, "worker/src", f), "utf8");
     assert.doesNotMatch(src, STALE_CAP_PATTERN, `worker/src/${f}`);
   }
+});
+
+// Copy-vs-code: a third drift surface, distinct from site-vs-worker. about.html's "The data,
+// to be honest" section (and its i18n.js runtime counterpart) explains this exact cap in prose
+// to readers — that explanation must agree with the code, not just with itself. See
+// docs/drift-inventory.md #19.
+const CAP_DISPLAY_BILLIONS = CANONICAL_CAP / 1e9; // 10
+const HONESTY_SENTENCE_RE = new RegExp(
+  `Money filters and digests exclude amounts of \\$${CAP_DISPLAY_BILLIONS}(?:&nbsp;|\\s)*billion or more`,
+);
+const STALE_HONESTY_SENTENCE_RE = /Money filters and digests exclude amounts of \$5(?:&nbsp;|\s)*billion or more/;
+
+test("about.html: the honesty-cap explanation states the same value as MONEY_HONESTY_CAP", () => {
+  const src = readFileSync(join(ROOT, "about.html"), "utf8");
+  assert.match(src, HONESTY_SENTENCE_RE, "about.html's copy doesn't state the current $10B cap");
+  assert.doesNotMatch(src, STALE_HONESTY_SENTENCE_RE, "about.html's copy still states the old $5B cap");
+});
+
+test("i18n.js: the English runtime string for the same explanation agrees with MONEY_HONESTY_CAP", () => {
+  const src = readFileSync(join(ROOT, "i18n.js"), "utf8");
+  const m = src.match(/about_li_honest_html:\s*"((?:[^"\\]|\\.)*)"/);
+  assert.ok(m, "about_li_honest_html key not found in i18n.js");
+  const value = m[1].replace(/\\"/g, '"');
+  assert.match(value, HONESTY_SENTENCE_RE, "i18n.js's about_li_honest_html doesn't state the current $10B cap");
+  assert.doesNotMatch(value, STALE_HONESTY_SENTENCE_RE, "i18n.js's about_li_honest_html still states the old $5B cap");
 });

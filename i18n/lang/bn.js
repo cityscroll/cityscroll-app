@@ -268,6 +268,7 @@
     untitled: "(শিরোনামহীন)",
     untitled_notice: "(শিরোনামহীন নোটিশ)",
     closed_tag: "বন্ধ",
+    rolling_deadline_tag: "কোনো নির্দিষ্ট শেষ তারিখ নেই (চলমান)",
     open_days_left: "খোলা · {n} দিন বাকি",
     no_linkable_pin: "লিংকযোগ্য PIN নেই",
     method_facet_label: "পদ্ধতি:",
