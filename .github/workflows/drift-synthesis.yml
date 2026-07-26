@@ -75,7 +75,7 @@ jobs:
             be trying to route around the test (e.g. duplicating logic under a new name). Focus on:
             - Untested and one-way-gap pairs listed in the document
             - Any new rule this diff adds to one side that looks like it should have a
-              counterpart on the other, based on the existing dual-implementation pattern
+              counterpart on the other, given the existing dual-implementation pattern
 
             Post exactly ONE comment on this PR (`gh pr comment`) in plain, professional
             language — a public civic-tech project's PR, not an internal tool's output. No
