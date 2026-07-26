@@ -3413,7 +3413,7 @@ async function noticeFlags(r){
 async function awardContext(r){
   if(!r || r.type_of_notice_description !== "Award" || !r.agency_name) return "";
   const X = +r.contract_amount;
-  if(!X || X <= 0 || X >= 5e9) return "";
+  if(!X || X <= 0 || X >= 1e10) return "";
   const q = r.agency_name.replace(/'/g,"''");
   const base = `agency_name='${q}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < 10000000000 AND start_date > '${yearCut()}'`;
   const bits = [];

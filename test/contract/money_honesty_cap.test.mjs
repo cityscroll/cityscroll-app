@@ -50,3 +50,22 @@ test("worker/src/ingest.mjs: D1 ingest's AMOUNT_CAP matches the canonical $10B c
   assert.ok(m, "AMOUNT_CAP constant not found in worker/src/ingest.mjs");
   assert.equal(Number(m[1]), CANONICAL_CAP);
 });
+
+// The `contract_amount <` regex above only catches the SODA $where-clause form of this cap.
+// The stale $5B value also showed up as a plain numeric guard — `X >= 5e9` in index.html's
+// awardContext() — that the same-named contract_amount pattern never matches. Belt-and-suspenders:
+// no form of the OLD $5B value (decimal or scientific notation) should appear anywhere in either
+// tree at all, regardless of what syntactic shape a future stray copy takes.
+const STALE_CAP_PATTERN = /\b5000000000\b|\b5e9\b/;
+
+test("index.html: no stale $5B literal in any form (decimal or scientific notation)", () => {
+  const src = readFileSync(join(ROOT, "index.html"), "utf8");
+  assert.doesNotMatch(src, STALE_CAP_PATTERN);
+});
+
+test("worker/src: no stale $5B literal in any form (decimal or scientific notation)", () => {
+  for (const f of ["alerts.mjs", "ingest.mjs", "lib/compile.mjs"]) {
+    const src = readFileSync(join(ROOT, "worker/src", f), "utf8");
+    assert.doesNotMatch(src, STALE_CAP_PATTERN, `worker/src/${f}`);
+  }
+});

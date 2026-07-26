@@ -17,13 +17,13 @@ change that introduces it.
 (nothing cross-checks them yet), `one-way` (only one side implements this; not true
 duplication). Testability: `deterministic` (same input always yields the same output — a
 fixture test can pin it) or `judgment` (requires human/LLM judgment — not a fixture-test
-candidate; this is what the LLM drift-synthesis CI job is for).
+candidate; see "The floor vs. the remainder" below for how judgment-shaped drift is covered).
 
 ## Confirmed drift found and fixed by this pass
 
 | # | Rule | Site | Worker | What was wrong |
 |---|------|------|--------|----------------|
-| 1 | Money-lens "honesty cap": Award notices ≥ $10B are excluded as data-entry errors (EDA: 3 rows ≥ $10B are errors, max legit ≈ $6.68B) | `index.html` (10 query-building call sites) | `worker/src/lib/compile.mjs:65`, `worker/src/alerts.mjs:394`, `worker/src/ingest.mjs:15` (`AMOUNT_CAP = 1e10`) | 9 of `index.html`'s 10 call sites still had the **old** $5,000,000,000 cap (lines 997, 1475, 3054, 3334, 3381, 3418, 3643, 3766, 3781) — only the newest call site (line 3070, added alongside the worker's own $10B move) had been updated. Real, legitimate contracts between $5B and $10B were silently excluded from Money-lens search, agency/vendor profiles, and stats aggregates. Fixed in this change; `test/contract/money_honesty_cap.test.mjs` now pins the constant everywhere it appears. |
+| 1 | Money-lens "honesty cap": Award notices ≥ $10B are excluded as data-entry errors (EDA: 3 rows ≥ $10B are errors, max legit ≈ $6.68B) | `index.html` (11 call sites total) | `worker/src/lib/compile.mjs:65`, `worker/src/alerts.mjs:394`, `worker/src/ingest.mjs:15` (`AMOUNT_CAP = 1e10`) | 9 of `index.html`'s query-building call sites still had the **old** $5,000,000,000 cap (lines 997, 1475, 3054, 3334, 3381, 3418, 3643, 3766, 3781) — only the newest call site (line 3070, added alongside the worker's own $10B move) had been updated. Real, legitimate contracts between $5B and $10B were silently excluded from Money-lens search, agency/vendor profiles, and stats aggregates. Fixed; `test/contract/money_honesty_cap.test.mjs` now pins the constant everywhere it appears. **A second copy of the same stale threshold, in a different lexical form (`X >= 5e9`, a plain numeric guard in `awardContext()`, `index.html:3416`), was missed by the first pass entirely** — its own regex-based query-string check never matched a bare scientific-notation comparison. Found by running the layer-2 drift check (below) against this very PR's diff, fixed the same way, and the test now also asserts no form of the old literal (decimal or scientific notation) remains anywhere in either tree — see `STALE_CAP_PATTERN` in the test file. |
 
 ## Tested (an automated cross-check already exists)
 
@@ -84,41 +84,29 @@ These are candidates for a future pass, not confirmed bugs — listed here so th
   (`.github/workflows/ci.yml`) — a drifting change fails the build on every PR, same as any
   other unit test failure.
 - **Judgment-shaped pairs** (anything needing product/UX judgment, like #3's rolling-deadline
-  label, or the "needs deeper look" items above) are covered by an informational LLM
-  drift-synthesis check (`.github/workflows/drift-synthesis.yml`) that reads this document and
-  flags likely cross-implementation drift on PRs touching either side. It posts one comment; it
-  does not block merge.
+  label, or the "needs deeper look" items below) are covered by a second, informational layer —
+  see "Layer 2: local drift-synthesis runner" below.
 
-## Promotion path (documented, not enacted)
+## Layer 2: local drift-synthesis runner (pending design, not automatically invoked)
 
-`drift-synthesis.yml` runs informational-only today — it is not in `main`'s required-status-check
-ruleset, so it cannot block a PR. Whether and when to promote it to a required check is a
-deliberate, separate decision, not something this change makes on its own. The path, if that
-decision is made later:
+`tools/drift_synthesis.mjs` reads this document and a PR's diff, asks Claude Code to review the
+diff for cross-implementation drift the fixture tests above can't catch, and posts one comment on
+the PR. Usage:
 
-1. **Let it run on real PRs first.** Informational-only for some number of real PRs (author,
-   not a fixed count — the point is real signal, not a calendar date) to establish a
-   false-positive rate before anyone treats its output as gating.
-2. **Promote once the false-positive rate is proven low**, the same "required status check"
-   mechanism already used for the 4 existing required jobs
-   (`gh-axi api repos/cityscroll/crol-list/rulesets/18899568`) — add its check name to that
-   ruleset. No new mechanism needed, just adding an entry to what already exists.
-3. **Widening beyond same-repo PRs** (today's workflow skips forks — see its header) is its own
-   later decision if drift review should also run for external contributors, weighed against the
-   action's own documented `allowed_non_write_users` risk trade-offs.
+```
+node tools/drift_synthesis.mjs --pr <number> [--repo owner/name] [--dry-run]
+```
 
-Both the promotion threshold and the fork-widening question are captain/maintainer calls, not
-scout or automation judgment — intentionally left open here rather than guessed at.
+This intentionally does **not** run as a GitHub Actions workflow: it needs no repository secret
+and no GitHub App installed on this repo. It runs wherever an operator already has `gh` and the
+Claude Code CLI (`claude`) authenticated — the same trust boundary as running `gh pr comment` by
+hand — and is meant to be invoked once per PR that touches site/worker code, by whatever an
+operator already uses to notice new PRs. Proven against a real PR while building it: running it
+against this PR's own diff caught the `awardContext()` gap in row #1 above that the first
+fixture-test pass had missed.
 
-## Setup still needed
-
-`drift-synthesis.yml` needs two things this repo doesn't have yet, confirmed by running it on this
-PR (informational-only, so neither blocks a merge in the meantime):
-
-1. An `ANTHROPIC_API_KEY` repository secret (Settings → Secrets and variables → Actions) — only
-   `CLOUDFLARE_API_TOKEN` exists today.
-2. The Claude Code GitHub App installed on this repository (https://github.com/apps/claude) —
-   the action's own error confirms it needs this in addition to the API key.
-
-Until both are in place, the workflow runs and fails cleanly on every same-repo PR touching
-site/worker code.
+**What's pending:** wiring an actual per-PR trigger for this script. The script itself and its
+prompt are complete and working; deciding what invokes it automatically (and whether its output
+should ever be promoted toward a required, blocking check, the same way a deterministic
+`test/contract/` failure already is) is a separate, later decision — not something this change
+makes on its own.
