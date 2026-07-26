@@ -1,0 +1,99 @@
+# Cross-implementation drift synthesis — the LLM layer of the site/worker drift guard
+# (see docs/drift-inventory.md for the contract surface this checks against).
+#
+# The deterministic floor lives in test/contract/ (fixture tests, part of the required "Unit
+# tests (site + worker)" CI job): every testable pair fails the build the moment it drifts. This
+# job covers the remainder — cross-implementation drift that isn't a pure function with a fixture
+# (e.g. a new rule introduced on one side with no counterpart considered on the other, or a
+# judgment call like the documented rolling-deadline gap) — by asking Claude to read the diff
+# against the committed inventory and flag anything that looks like the same recurring bug class.
+#
+# This uses the official anthropics/claude-code-action (not a third-party review control plane),
+# with the model pinned explicitly via --model so behavior can't silently shift on an alias.
+# INFORMATIONAL ONLY: this workflow is not in main's required-status-check ruleset and cannot
+# block a merge. See the "Promotion path" section of docs/drift-inventory.md for what proving
+# a low false-positive rate over real PRs would look like before that changes — that flip is a
+# separate, deliberate decision, not something this workflow does on its own.
+#
+# Runs only for same-repo PRs (skips forks): a fork PR's `pull_request` run gets no repository
+# secrets from GitHub by design, so ANTHROPIC_API_KEY wouldn't be available to it anyway, and
+# this keeps the job from failing loudly on every external contribution.
+name: Drift synthesis
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - "index.html"
+      - "i18n.js"
+      - "nl_parse.js"
+      - "external_awards.js"
+      - "data.html"
+      - "worker/src/**"
+      - "docs/drift-inventory.md"
+
+jobs:
+  drift-synthesis:
+    name: Cross-implementation drift check (informational)
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Claude drift review
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          use_sticky_comment: true
+          prompt: |
+            REPO: ${{ github.repository }}
+            PR NUMBER: ${{ github.event.pull_request.number }}
+
+            crol-list is a static site (index.html and root-level i18n.js/nl_parse.js/
+            external_awards.js) plus a Cloudflare Worker (worker/src/). The two can't share
+            code across that boundary, so a fixed set of rules is implemented independently on
+            both sides "by hand" — docs/drift-inventory.md is the committed list of every place
+            this happens, which pairs already have an automated cross-check (test/contract/),
+            and which are documented one-way gaps. Read that file first.
+
+            Then read this PR's diff (`gh pr diff`). Your ONLY job is spotting
+            cross-implementation drift: places where this PR changes a rule on one side
+            (index.html/i18n.js/nl_parse.js/external_awards.js) without a matching change on the
+            worker side (worker/src/**), or vice versa — including a NEW dual-implemented rule
+            this PR introduces that isn't in docs/drift-inventory.md yet. Do not review anything
+            else (style, security, performance, accessibility, tests) — those are out of scope
+            for this check.
+
+            For each pair already listed in docs/drift-inventory.md as "tested," a contract test
+            already catches drift automatically — do not re-flag those unless the diff appears to
+            be trying to route around the test (e.g. duplicating logic under a new name). Focus on:
+            - Untested and one-way-gap pairs listed in the document
+            - Any new rule this diff adds to one side that looks like it should have a
+              counterpart on the other, based on the existing dual-implementation pattern
+
+            Post exactly ONE comment on this PR (`gh pr comment`) in plain, professional
+            language — a public civic-tech project's PR, not an internal tool's output. No
+            internal jargon, no mention of any internal automation or process by name, no
+            transcript-style narration of your own reasoning steps.
+
+            Format:
+            ## Cross-implementation drift check
+
+            If nothing found: one line saying so plainly, e.g. "No cross-implementation drift
+            found in this diff." If something found: a short bullet list, each bullet naming the
+            file/line on both sides and the one-sentence risk in plain language — mirror the
+            phrasing style of docs/drift-inventory.md's own entries. End with one line noting
+            this check is informational and does not block merging.
+
+            Do not edit any files, create branches, or push commits — you are read-only.
+          claude_args: |
+            --model claude-sonnet-5
+            --max-turns 8
+            --allowedTools "Read,Grep,Glob,Bash(gh pr diff:*),Bash(gh pr comment:*),Bash(gh pr view:*)"
+            --disallowedTools "Edit,Write,Bash(git push:*),Bash(git commit:*),Bash(gh pr merge:*)"

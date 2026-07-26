@@ -81,9 +81,38 @@ These are candidates for a future pass, not confirmed bugs — listed here so th
 
 - **Deterministic pairs** (this document's "Tested" table) are the floor: `test/contract/`
   fixture tests, wired into the existing required "Unit tests (site + worker)" CI job
-  (`.github/workflows/ci.yml`) — a drifting change fails the build on every PR.
+  (`.github/workflows/ci.yml`) — a drifting change fails the build on every PR, same as any
+  other unit test failure.
 - **Judgment-shaped pairs** (anything needing product/UX judgment, like #3's rolling-deadline
   label, or the "needs deeper look" items above) are covered by an informational LLM
-  drift-synthesis check (see `.github/workflows/drift-synthesis.yml`) that reads this document
-  and flags likely cross-implementation drift on PRs touching either side. It posts one
-  comment; it does not block merge. See that workflow's own header for the promotion path.
+  drift-synthesis check (`.github/workflows/drift-synthesis.yml`) that reads this document and
+  flags likely cross-implementation drift on PRs touching either side. It posts one comment; it
+  does not block merge.
+
+## Promotion path (documented, not enacted)
+
+`drift-synthesis.yml` runs informational-only today — it is not in `main`'s required-status-check
+ruleset, so it cannot block a PR. Whether and when to promote it to a required check is a
+deliberate, separate decision, not something this change makes on its own. The path, if that
+decision is made later:
+
+1. **Let it run on real PRs first.** Informational-only for some number of real PRs (author,
+   not a fixed count — the point is real signal, not a calendar date) to establish a
+   false-positive rate before anyone treats its output as gating.
+2. **Promote once the false-positive rate is proven low**, the same "required status check"
+   mechanism already used for the 4 existing required jobs
+   (`gh-axi api repos/cityscroll/crol-list/rulesets/18899568`) — add its check name to that
+   ruleset. No new mechanism needed, just adding an entry to what already exists.
+3. **Widening beyond same-repo PRs** (today's workflow skips forks — see its header) is its own
+   later decision if drift review should also run for external contributors, weighed against the
+   action's own documented `allowed_non_write_users` risk trade-offs.
+
+Both the promotion threshold and the fork-widening question are captain/maintainer calls, not
+scout or automation judgment — intentionally left open here rather than guessed at.
+
+## Setup still needed
+
+`drift-synthesis.yml` requires an `ANTHROPIC_API_KEY` repository secret (Settings → Secrets and
+variables → Actions) — **not present in this repo as of this change** (only
+`CLOUDFLARE_API_TOKEN` exists today). Until it's added, the workflow will run and fail cleanly on
+every same-repo PR touching site/worker code (informational-only, so this never blocks a merge).
