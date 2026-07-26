@@ -1,0 +1,30 @@
+{
+  "usablePin": [
+    { "input": "826202SOL0001P", "note": "real PIN shape" },
+    { "input": "NOPINFOUND", "note": "exact junk token" },
+    { "input": "nopinfound", "note": "junk token, lowercase" },
+    { "input": "See Below", "note": "junk phrase, mixed case" },
+    { "input": "TBD", "note": "junk token" },
+    { "input": "N/A", "note": "junk token" },
+    { "input": "123456", "note": "known placeholder default" },
+    { "input": "000000", "note": "all-zero, no letters" },
+    { "input": "", "note": "empty" },
+    { "input": null, "note": "null" },
+    { "input": "AB1", "note": "too short (<4 chars)" },
+    { "input": "Pending review", "note": "junk phrase substring" },
+    { "input": "82626R0001001", "note": "real renewal-suffixed PIN" }
+  ],
+  "pinBase": [
+    { "input": "82626R0001001", "note": "renewal suffix present" },
+    { "input": "826202SOL0001P", "note": "no renewal suffix" },
+    { "input": "", "note": "empty" },
+    { "input": null, "note": "null" },
+    { "input": "ABCR0999", "note": "short base + renewal suffix" }
+  ],
+  "isBlanketChain": [
+    { "input": [{ "type_of_notice_description": "Award" }, { "type_of_notice_description": "Award" }, { "type_of_notice_description": "Award" }, { "type_of_notice_description": "Award" }, { "type_of_notice_description": "Award" }, { "type_of_notice_description": "Award" }], "note": "6 Award-only rows: blanket chain" },
+    { "input": [{ "type_of_notice_description": "Award" }, { "type_of_notice_description": "Award" }], "note": "2 rows: below the >5 threshold" },
+    { "input": [{ "type_of_notice_description": "Award" }, { "type_of_notice_description": "Award" }, { "type_of_notice_description": "Award" }, { "type_of_notice_description": "Award" }, { "type_of_notice_description": "Award" }, { "type_of_notice_description": "Intent to Award" }], "note": "6 rows but not all Award: not blanket" },
+    { "input": [], "note": "empty chain" }
+  ]
+}

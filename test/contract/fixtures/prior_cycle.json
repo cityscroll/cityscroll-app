@@ -1,0 +1,59 @@
+[
+  {
+    "note": "prior-cycle strict match: same agency, prior-dated, >=180 days apart, full title overlap",
+    "notice": { "request_id": "R2", "agency_name": "DOT", "pin": "111R0002", "start_date": "2026-06-01", "short_title": "Roadway reconstruction and paving citywide" },
+    "candidates": [
+      { "request_id": "R1", "agency_name": "DOT", "pin": "111R0001", "start_date": "2025-01-01", "short_title": "Roadway reconstruction and paving citywide" }
+    ]
+  },
+  {
+    "note": "concurrent-cohort siblings (same RFP, days apart) must be EXCLUDED from strict tier",
+    "notice": { "request_id": "R2", "agency_name": "DOT", "pin": "111R0002", "start_date": "2026-06-10", "short_title": "Roadway reconstruction and paving citywide" },
+    "candidates": [
+      { "request_id": "R1", "agency_name": "DOT", "pin": "111R0001", "start_date": "2026-06-01", "short_title": "Roadway reconstruction and paving citywide" }
+    ]
+  },
+  {
+    "note": "different agency must never match even with identical title",
+    "notice": { "request_id": "R2", "agency_name": "DOT", "pin": "111R0002", "start_date": "2026-06-01", "short_title": "Roadway reconstruction and paving citywide" },
+    "candidates": [
+      { "request_id": "R1", "agency_name": "DEP", "pin": "222R0001", "start_date": "2025-01-01", "short_title": "Roadway reconstruction and paving citywide" }
+    ]
+  },
+  {
+    "note": "near-match tier: below strict overlap bar but corroborated by shared PIN prefix",
+    "notice": { "request_id": "R2", "agency_name": "PARKS", "pin": "84623B0128001", "start_date": "2026-06-01", "contract_amount": 500000, "short_title": "Playground renovation and fencing improvements citywide project" },
+    "candidates": [
+      { "request_id": "R1", "agency_name": "PARKS", "pin": "84623B0128999", "start_date": "2025-01-01", "contract_amount": 480000, "short_title": "Fencing improvements for select parks" }
+    ]
+  },
+  {
+    "note": "near-match tier: title overlap alone (no PIN or amount corroboration) must NOT surface",
+    "notice": { "request_id": "R2", "agency_name": "PARKS", "pin": "999R0002", "start_date": "2026-06-01", "contract_amount": 500000, "short_title": "Playground renovation and fencing improvements citywide project" },
+    "candidates": [
+      { "request_id": "R1", "agency_name": "PARKS", "pin": "111R0001", "start_date": "2025-01-01", "contract_amount": 50000000, "short_title": "Fencing improvements for select parks" }
+    ]
+  },
+  {
+    "note": "own PIN chain excluded from candidates (r's own chain isn't a 'prior cycle')",
+    "notice": { "request_id": "R2", "agency_name": "DOT", "pin": "111R0002", "start_date": "2026-06-01", "short_title": "Roadway reconstruction and paving citywide" },
+    "candidates": [
+      { "request_id": "R1", "agency_name": "DOT", "pin": "111R0002", "start_date": "2025-01-01", "short_title": "Roadway reconstruction and paving citywide" }
+    ]
+  },
+  {
+    "note": "no candidates at all",
+    "notice": { "request_id": "R2", "agency_name": "DOT", "pin": "111R0002", "start_date": "2026-06-01", "short_title": "Roadway reconstruction and paving citywide" },
+    "candidates": []
+  },
+  {
+    "note": "multiple candidates: max-3 cap and one-row-per-PIN dedupe",
+    "notice": { "request_id": "R5", "agency_name": "DSNY", "pin": "555R0005", "start_date": "2026-08-01", "short_title": "Waste collection and street cleaning services citywide" },
+    "candidates": [
+      { "request_id": "R1", "agency_name": "DSNY", "pin": "555R0001", "start_date": "2024-01-01", "short_title": "Waste collection and street cleaning services citywide" },
+      { "request_id": "R2", "agency_name": "DSNY", "pin": "555R0002", "start_date": "2024-06-01", "short_title": "Waste collection and street cleaning services citywide" },
+      { "request_id": "R3", "agency_name": "DSNY", "pin": "555R0003", "start_date": "2025-01-01", "short_title": "Waste collection and street cleaning services citywide" },
+      { "request_id": "R4", "agency_name": "DSNY", "pin": "555R0004", "start_date": "2025-06-01", "short_title": "Waste collection and street cleaning services citywide" }
+    ]
+  }
+]

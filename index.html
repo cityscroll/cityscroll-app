@@ -994,7 +994,7 @@ async function search(){
   if(mode === "open") where += ` AND due_date > '${todayISO()}'`;
   if(mode === "open" && closingWeek) where += ` AND due_date <= '${weekOutISO()}'`;
   if(agency) where += ` AND agency_name='${agency.replace(/'/g,"''")}'`;
-  if(mode === "award" && minamt) where += ` AND contract_amount >= ${minamt} AND contract_amount < 5000000000`;
+  if(mode === "award" && minamt) where += ` AND contract_amount >= ${minamt} AND contract_amount < 10000000000`;
   const facetWhere = where; // method-facet counts are computed WITHOUT the method clause (Datasette-style)
   if(methodSel) where += ` AND selection_method_description='${methodSel.replace(/'/g,"''")}'`;
 
@@ -1472,7 +1472,7 @@ function wireNearMatchReveal(el, near){
 async function loadAgencyStats(agency){
   try{
     const rows = await soda({"$select":"count(1) as n, sum(contract_amount) as total",
-      "$where":`agency_name='${agency.replace(/'/g,"''")}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < 5000000000`});
+      "$where":`agency_name='${agency.replace(/'/g,"''")}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < 10000000000`});
     return rows[0] || null;
   }catch(e){ return null; }
 }
@@ -3051,7 +3051,7 @@ async function aFetch(){
   }
   if(w==="bigaward"){
     const t=$("#athresh").value;
-    return { kind:"award", rows: await soda({"$select":SELECT,"$where":`type_of_notice_description='Award' AND contract_amount >= ${t} AND contract_amount < 5000000000`,"$order":"start_date DESC","$limit":"5"}) };
+    return { kind:"award", rows: await soda({"$select":SELECT,"$where":`type_of_notice_description='Award' AND contract_amount >= ${t} AND contract_amount < 10000000000`,"$order":"start_date DESC","$limit":"5"}) };
   }
   if(w==="rfpkw"){
     const p={"$select":SELECT,"$where":`type_of_notice_description='Solicitation' AND due_date > '${todayISO()}'`,"$order":"due_date ASC","$limit":"5"};
@@ -3331,7 +3331,7 @@ async function loadToday(){
       const [counts, agencies, award, closing, hearing] = await Promise.all([
         soda({"$select":"section_name, count(1) as n","$where":`start_date='${iso}'`,"$group":"section_name","$order":"n DESC"}),
         soda({"$select":"agency_name","$where":`start_date='${iso}'`,"$group":"agency_name","$limit":"300"}),
-        soda({"$select":"request_id,short_title,agency_name,contract_amount","$where":`start_date='${iso}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < 5000000000`,"$order":"contract_amount DESC","$limit":"1"}),
+        soda({"$select":"request_id,short_title,agency_name,contract_amount","$where":`start_date='${iso}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < 10000000000`,"$order":"contract_amount DESC","$limit":"1"}),
         soda({"$select":"request_id,short_title,agency_name,due_date","$where":`type_of_notice_description='Solicitation' AND due_date > '${todayISO()}' AND due_date <= '${weekOutISO()}'`,"$order":"due_date ASC","$limit":"1"}),
         soda({"$select":"request_id,short_title,agency_name,event_date","$where":`section_name='Public Hearings and Meetings' AND event_date > '${todayISO()}'`,"$order":"event_date ASC","$limit":"1"})
       ]);
@@ -3378,7 +3378,7 @@ function agencyNorms(agency){
       if(ws.length>=8){ out.adMedian = ws[Math.floor(ws.length/2)]; out.adN = ws.length; }
     }catch(e){}
     try{
-      const [a] = await soda({"$select":"count(1) as n, sum(contract_amount) as t","$where":`agency_name='${q}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < 5000000000 AND start_date > '${yearCut()}'`}, 8000);
+      const [a] = await soda({"$select":"count(1) as n, sum(contract_amount) as t","$where":`agency_name='${q}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < 10000000000 AND start_date > '${yearCut()}'`}, 8000);
       if(a){ out.awardCount = +a.n||0; out.awardTotal = +a.t||0; }
     }catch(e){}
     return out;
@@ -3415,7 +3415,7 @@ async function awardContext(r){
   const X = +r.contract_amount;
   if(!X || X <= 0 || X >= 5e9) return "";
   const q = r.agency_name.replace(/'/g,"''");
-  const base = `agency_name='${q}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < 5000000000 AND start_date > '${yearCut()}'`;
+  const base = `agency_name='${q}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < 10000000000 AND start_date > '${yearCut()}'`;
   const bits = [];
   try{
     const [[le],[tot]] = await Promise.all([
@@ -3640,7 +3640,7 @@ async function showAgency(name, initialTab){
   const [stats, sections, vendors, rfps, events, forecastData, externalAward] = await Promise.all([
     loadAgencyStats(nm),
     soda({"$select":"section_name, count(1) as n","$where":`agency_name='${q}'`,"$group":"section_name","$order":"n DESC"}).catch(()=>[]),
-    soda({"$select":"vendor_name, count(1) as n, sum(contract_amount) as t","$where":`agency_name='${q}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < 5000000000 AND vendor_name IS NOT NULL`,"$group":"vendor_name","$order":"t DESC","$limit":"8"}).catch(()=>[]),
+    soda({"$select":"vendor_name, count(1) as n, sum(contract_amount) as t","$where":`agency_name='${q}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < 10000000000 AND vendor_name IS NOT NULL`,"$group":"vendor_name","$order":"t DESC","$limit":"8"}).catch(()=>[]),
     soda({"$select":SELECT,"$where":`agency_name='${q}' AND type_of_notice_description='Solicitation' AND due_date > '${todayISO()}'`,"$order":"due_date ASC","$limit":"5"}).catch(()=>[]),
     soda({"$select":FEED_SELECT,"$where":`agency_name='${q}' AND event_date > '${todayISO()}'`,"$order":"event_date ASC","$limit":"5"}).catch(()=>[]),
     workerFetch("/inv/" + encodeURIComponent(nm), null, 8000).then(r => r.ok ? r.json() : null).catch(() => null),
@@ -3763,7 +3763,7 @@ async function showVendor(name, initialTab){
   let variants = [];
   try{
     variants = await soda({"$select":"vendor_name, count(1) as n, sum(contract_amount) as t, min(start_date) as first, max(start_date) as last",
-      "$where":"vendor_name IS NOT NULL AND type_of_notice_description='Award' AND contract_amount < 5000000000",
+      "$where":"vendor_name IS NOT NULL AND type_of_notice_description='Award' AND contract_amount < 10000000000",
       "$q":stem,"$group":"vendor_name","$limit":"100"});
   }catch(e){}
   variants = variants.filter(v => vendorStem(v.vendor_name) === stem);
@@ -3778,7 +3778,7 @@ async function showVendor(name, initialTab){
   const last = variants.map(v=>v.last).filter(Boolean).sort().pop();
   const display = variants.slice().sort((a,b)=>(+b.n)-(+a.n))[0].vendor_name;
   const [agencies, rows, mentions, forecastData] = await Promise.all([
-    soda({"$select":"agency_name, count(1) as n, sum(contract_amount) as t","$where":`vendor_name in(${inList}) AND type_of_notice_description='Award' AND contract_amount < 5000000000`,"$group":"agency_name","$order":"t DESC","$limit":"10"}, 15000).catch(()=>[]),
+    soda({"$select":"agency_name, count(1) as n, sum(contract_amount) as t","$where":`vendor_name in(${inList}) AND type_of_notice_description='Award' AND contract_amount < 10000000000`,"$group":"agency_name","$order":"t DESC","$limit":"10"}, 15000).catch(()=>[]),
     soda({"$select":SELECT,"$where":`vendor_name in(${inList})`,"$order":"start_date DESC","$limit":"15"}, 15000).catch(()=>[]),
     soda({"$select":SELECT,"$where":`vendor_name IS NULL AND start_date > '${recentCut()}'`,"$q":stem,"$order":"start_date DESC","$limit":"8"}, 8000).catch(()=>[]),
     workerFetch("/inv/" + encodeURIComponent(display), null, 8000).then(r => r.ok ? r.json() : null).catch(() => null)
