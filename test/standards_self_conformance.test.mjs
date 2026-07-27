@@ -12,14 +12,11 @@ function selfConformanceSection() {
   return match[0];
 }
 
-test("standards page states CROL-List's current and tracked accessibility targets", () => {
+test("standards page states CROL-List's current accessibility target", () => {
   const section = selfConformanceSection();
 
-  assert.match(section, /CROL-List targets <b>WCAG 2\.1 Level AA<\/b> today/);
-  assert.match(
-    section,
-    /tracking New York State's <b>WCAG 2\.2 Level AA<\/b> mandate for January 1, 2027/
-  );
+  assert.match(section, /CROL-List targets <b>WCAG 2\.2 Level AA<\/b> today/);
+  assert.doesNotMatch(section, /CROL-List targets <b>WCAG 2\.1 Level AA<\/b>/);
 });
 
 test("self-conformance section names each continuous observation", () => {
