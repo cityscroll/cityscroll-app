@@ -49,8 +49,9 @@ def main():
 
     index_src = (ROOT / "index.html").read_text(encoding="utf-8")
 
-    # (2a) the parsed-filter summary has its own explicit status label + role, wired through
-    # the shared nlTransHTML() helper (both nlTranslate() and nlTranslateLens() route through it).
+    # (2a) every parsed-filter summary has its own explicit status label + role. Section
+    # lenses use nlTransHTML(); Money projects the active state through
+    # renderMoneyActiveFilters() so Ask, cold deep links, and history traversal share one row.
     m = re.search(r"function nlTransHTML\([^)]*\)\s*\{([^}]*)\}", index_src, re.S)
     if not m:
         failures.append("nlTransHTML() helper not found — parsed-filter summary rendering changed")
@@ -61,10 +62,26 @@ def main():
         if "nl_understood_label" not in body:
             failures.append("nlTransHTML() doesn't render nl_understood_label — the chip row has no explanatory text of its own")
 
-    for fn in ("nlTranslate", "nlTranslateLens"):
-        fm = re.search(r"async function " + fn + r"\(.*?\n\}", index_src, re.S)
-        if fm and "nlTransHTML(" not in fm.group(0):
-            failures.append(f"{fn}() no longer routes its chips through nlTransHTML() — the status label/role could silently regress")
+    fm = re.search(r"async function nlTranslateLens\(.*?\n\}", index_src, re.S)
+    if fm and "nlTransHTML(" not in fm.group(0):
+        failures.append("nlTranslateLens() no longer routes its chips through nlTransHTML() — the status label/role could silently regress")
+
+    active_start = index_src.find("function renderMoneyActiveFilters()")
+    active_end = index_src.find("async function search()", active_start)
+    active_body = index_src[active_start:active_end] if active_start >= 0 and active_end > active_start else ""
+    if not active_body:
+        failures.append("renderMoneyActiveFilters() helper not found — Money's state summary rendering changed")
+    else:
+        if 'role="status"' not in active_body:
+            failures.append("renderMoneyActiveFilters() output has no role=\"status\"")
+        if "nl_understood_label" not in active_body:
+            failures.append("renderMoneyActiveFilters() doesn't render nl_understood_label")
+
+    search_start = index_src.find("async function search()")
+    search_end = index_src.find("/* Selection-method facet", search_start)
+    search_body = index_src[search_start:search_end] if search_start >= 0 and search_end > search_start else ""
+    if "renderMoneyActiveFilters()" not in search_body:
+        failures.append("search() no longer projects Money's active filters into the status row")
 
     # (2b) .qchip (the inert summary) must not look interactive; .trychip (the real clickable
     # sample queries) is the one allowed a pointer cursor and pill shape.
