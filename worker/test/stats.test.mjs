@@ -199,7 +199,8 @@ test("GET /stats publishes all-time totals + category breakdown alongside the un
   assert.equal(body.digests.sent_all_time, 42);
   assert.deepEqual(body.digests.by_category, { Procurement: 30, land: 12 });
   assert.equal(body.nl_search.calls_all_time, 9);
-  assert.deepEqual(body.nl_search.by_category, { money: 9 });
+  assert.equal(body.nl_search.by_category.money, 9);
+  assert.equal(body.nl_search.by_category.meetings, 0, "unseen lenses are explicit zeroes, not missing rows");
 });
 
 test("bumpHistDay accumulates per day with no TTL, unlike the 40-day rolling stats:<metric>:<day> counter", async () => {
@@ -345,7 +346,9 @@ test("GET /stats publishes a 7-day nl_search total and its per-lens breakdown al
   const res = await handleStats(new Request("https://api.crol-list.org/stats"), env, { waitUntil: async (p) => p });
   const body = await res.json();
   assert.equal(body.nl_search.calls_last7d, 3);
-  assert.deepEqual(body.nl_search.by_category_last7d, { money: 2, land: 1 });
+  assert.equal(body.nl_search.by_category_last7d.money, 2);
+  assert.equal(body.nl_search.by_category_last7d.land, 1);
+  assert.equal(body.nl_search.by_category_last7d.meetings, 0);
 });
 
 // ---- w12-16: daily gauge snapshots (active watches has no discrete "event") -------------

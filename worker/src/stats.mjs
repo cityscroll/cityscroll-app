@@ -11,10 +11,11 @@ import {
   dayStr, sumStat, readStatAllTime, readAllCategoryStats, readAllCategoryStatsWindow,
   readHistSeries, readHistEra, mergeRecoveredAllTime,
 } from "./lib/stats.mjs";
+import { completeLensCounts, readUsageAnalytics } from "./lib/analytics.mjs";
 
 const WINDOW_DAYS = 7;
 
-export async function handleStats(req, env, ctx) {
+export async function handleStats(req, env, ctx, options = {}) {
   if (req.method !== "GET") {
     return new Response("Method not allowed", { status: 405 });
   }
@@ -33,7 +34,7 @@ export async function handleStats(req, env, ctx) {
     active, sentToday, sent7d, clicksToday, clicks7d, feeds7d, batch7d, shares7d, nlToday,
     rawDigestsAllTime, digestsByCategory, rawNlAllTime, nlByCategory,
     digestHist, digestEra, nlHist, nlEra,
-    nl7d, nlByCategory7d, watchesHist, watchesEra,
+    nl7d, nlByCategory7d, watchesHist, watchesEra, usage,
   ] = await Promise.all([
       countActiveSubs(env),
       readInt(env.ALERT_STATE, `sendcount:${today}`),
@@ -56,6 +57,7 @@ export async function handleStats(req, env, ctx) {
       readAllCategoryStatsWindow(env.NL_METER, "nl_search", WINDOW_DAYS, now),
       readHistSeries(env.ALERT_STATE, "watches_active"),
       readHistEra(env.ALERT_STATE, "watches_active"),
+      readUsageAnalytics(env, { fetchImpl: options.fetchImpl, now }),
     ]);
 
   // w12-14: the live all-time accumulators only count sends/searches from the moment they
@@ -78,7 +80,8 @@ export async function handleStats(req, env, ctx) {
     shared_investigations: { created_last7d: shares7d },
     nl_search: {
       calls_today: nlToday, calls_last7d: nl7d, calls_all_time: nlAllTime,
-      by_category: nlByCategory, by_category_last7d: nlByCategory7d,
+      by_category: completeLensCounts(nlByCategory),
+      by_category_last7d: completeLensCounts(nlByCategory7d),
     },
     history: {
       note: "Daily totals. Days before the recovered/live split were rebuilt from short-term logs that were already being kept for other reasons; days on or after it were counted as they happened.",
@@ -86,6 +89,7 @@ export async function handleStats(req, env, ctx) {
       nl_search: { by_day: nlHist, live_from: nlEra },
       watches_active: { by_day: watchesHist, live_from: watchesEra },
     },
+    usage,
   };
 
   const res = new Response(JSON.stringify(body, null, 2), {

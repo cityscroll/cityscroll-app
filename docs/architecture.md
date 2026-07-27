@@ -8,7 +8,8 @@ summary: >-
   and labels separately sourced public-authority awards on agency profiles.
   The core site works without the worker; the worker adds Checkbook lookups,
   email alerts, feeds, plain-English search, forecasting, precomputed vendor
-  identity headers, and the stats counter. A D1 mirror of
+  identity headers, resilient public stats, and aggregate first-party usage
+  analytics. A D1 mirror of
   recent notices (daily ingest; Socrata stays the source of truth) backs alert
   matching and server-side search. Daily, versioned KV buckets let a complete
   vendor profile paint from one edge read; new front doors: subscribe-by-inbound-email
@@ -22,7 +23,7 @@ sources:
   - external_awards.js
   - worker/wrangler.toml
   - worker/src/worker.mjs
-sources_hash: e0fe06cb0ffab1c29878b85c2140c8c967a2da7375dce4e45b726a958f809df3
+sources_hash: a392dbc0904fdb7693f752918324fdd6812b5800bbdcb37c3ab419f954081e87
 ---
 
 # crol-list — architecture
@@ -58,6 +59,7 @@ Browser (crol-list.org — static on GitHub Pages)
         ├──  /inv[/<id>]        investigation snapshots + entity forecast metadata
         ├──  /priorcycle/<id>   precomputed prior-cycle + near-match sets (D1-cached, compute-on-miss)
         ├──  /stats /usage      public aggregate counters / keyed usage report
+        ├──  /events            bounded aggregate usage events (no visitor identifiers)
         ├──  /r/<kind>/<id>     count-only digest click-through → 302
         └──  /admin/subs /admin/feedback        keyed operator views
 
@@ -73,6 +75,8 @@ Cron (daily 13:00 UTC): (1) Socrata→D1 ingest refresh (fail-soft), (2) prior-c
 KV: SUBS · NL_METER · ALERT_STATE (incl. fc:/plan: forecast cache) · FEEDBACK
 D1: crol-notices — mirror of recent City Record notices + ingest cursor
      + prior_cycle_matches (precomputed prior-cycle/near-match cache)
+Analytics Engine: crol_usage_events_v1 — versioned aggregate page/click/search
+  events; enumerated dimensions only, with no cookies or visitor identifiers
 ```
 
 Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground truth. `index.html` queries the CORS-open Socrata feeds directly; the worker proxies Checkbook and also holds secrets (Claude, Resend), shared state (subscriptions, counters), and scheduled work (the digest cron). The Wave-5 forecasting layer sits inside the worker because it needs both a cache and the cron.
@@ -85,14 +89,15 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 - **KV `FEEDBACK`** — stored feedback rows (`fb:<ts>:<rand>`) + rate-limit counters.
 - **`index.html` localStorage** — client-side only: investigation workspace (pinned notices + notes), query cache, saved searches, plain/rigor toggle.
 - **D1 `crol-notices`** — mirror of recent notices (`notices` table: parsed columns + honest-data fields `contract_amount_valid`, `due_year`, plus the raw source row for schema-drift recovery), `ingest_state` (Socrata ingest cursor), and `prior_cycle_matches` (per-notice precomputed `{strict, near, eligibleCount}` prior-cycle match sets — the cache behind `GET /priorcycle/<id>`; compute-on-miss, cron pre-warms freshly-ingested Award notices, ranked by `worker/src/lib/prior_cycle.mjs`, a hand-synced dual implementation of index.html's matchers). Refreshed by the daily cron (`worker/src/ingest.mjs`); Socrata remains the source of truth.
+- **Analytics Engine `crol_usage_events_v1`** — first-party aggregate page, lens, search, deep-link, export, alert, feed, and investigation events. The versioned schema in `docs/analytics-event-taxonomy.md` permits only bounded enumerations; it stores no query text, email, IP address, cookie, fingerprint, or visitor identifier. `/stats` reads sampling-aware 7/30-day aggregates through Cloudflare's SQL API.
 - **`data/`** — committed seed data for People-lens role chips (instant, no network).
 
 ## Serving & deploy
 
 - `index.html` served as a GitHub Pages static site at `crol-list.org` (CNAME in repo).
-- Worker deployed via `wrangler deploy` from `worker/` to the custom domain `api.crol-list.org` (workers.dev alias intentionally kept alive). Cron trigger `0 13 * * *` (~9am ET). D1 schema versioned in `worker/migrations/`, applied with `wrangler d1 migrations apply crol-notices --remote`.
-- Secrets via `wrangler secret put`: `ANTHROPIC_API_KEY`, `RESEND_API_KEY`, `TURNSTILE_SECRET`, `TOKEN_SECRET`, `USAGE_KEY`. Spend guards are vars in `wrangler.toml`: `MAX_PER_RUN=25`, `MAX_SENDS_PER_DAY=50` (under Resend's free 100/day); `/subscribe` and `/feedback` fail closed (503) if their secrets are absent.
-- No CI/CD pipeline; deploy is manual from the MacBook.
+- Worker deployed via `wrangler deploy` from `worker/` to the custom domain `api.crol-list.org` (workers.dev alias intentionally kept alive). Changes under `worker/**` deploy from `main` through `.github/workflows/deploy-worker.yml`; a manual Wrangler deploy remains the emergency path. Cron trigger `0 13 * * *` (~9am ET). D1 schema versioned in `worker/migrations/`, applied with `wrangler d1 migrations apply crol-notices --remote`.
+- Secrets via `wrangler secret put`: `ANTHROPIC_API_KEY`, `RESEND_API_KEY`, `TURNSTILE_SECRET`, `TOKEN_SECRET`, `USAGE_KEY`, `ANALYTICS_READ_TOKEN`, `ANALYTICS_DEV_KEY`, and the production-only `ANALYTICS_ENVIRONMENT` runtime gate. The analytics read token is scoped to Account Analytics Read; the developer key authenticates short-lived HMAC exclusions, while a missing/non-production runtime gate drops writes. Spend guards are vars in `wrangler.toml`: `MAX_PER_RUN=25`, `MAX_SENDS_PER_DAY=50` (under Resend's free 100/day); `/subscribe` and `/feedback` fail closed (503) if their secrets are absent.
+- GitHub Actions runs the test suite on pull requests and deploys Worker changes after merge.
 
 ## Surface
 
@@ -109,21 +114,21 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 
 ## Seams
 
-- **Consumes:** NYC Open Data Socrata SODA (City Record `dg92-zbpx`, MOCS plans `whpb-ebtd`, payroll `k397-673e`, civil service `vx8i-nprf`, ZAP `hgx4-8ukb`), NYS Open Data Socrata SODA (Authorities Budget Office local-authority awards `8w5p-k45m`, local-development-corporation awards `d84c-dk28`), Checkbook NYC API (`Contracts`, `Contracts_NYCHA`), NYC GeoSearch / MapPLUTO, DOB job filings, Anthropic Claude Haiku (`/nl`), Resend (email), Cloudflare Turnstile, Cloudflare KV + Cron Triggers.
+- **Consumes:** NYC Open Data Socrata SODA (City Record `dg92-zbpx`, MOCS plans `whpb-ebtd`, payroll `k397-673e`, civil service `vx8i-nprf`, ZAP `hgx4-8ukb`), NYS Open Data Socrata SODA (Authorities Budget Office local-authority awards `8w5p-k45m`, local-development-corporation awards `d84c-dk28`), Checkbook NYC API (`Contracts`, `Contracts_NYCHA`), NYC GeoSearch / MapPLUTO, DOB job filings, Anthropic Claude Haiku (`/nl`), Resend (email), Cloudflare Turnstile, Cloudflare KV + Analytics Engine + Cron Triggers.
 - **Feeds:** subscriber inboxes (daily/weekly digests + forecast early warnings); public stats at `crol-list.org/stats.html`; RSS/Atom/JSON Feed/iCal consumers.
 - **Sister repo (archived):** `crol-worker` — pre-move history of the worker before it was open-sourced into this monorepo (2026-07-02).
 
 ## TL;DR
 
-1 static site (`index.html` + `data.html`) + 1 Cloudflare Worker, 7 lenses, public and operator API routes plus an inbound-email handler and queue consumer, 1 daily cron (ingest → cache precomputation → queue fan-out), 4 KV namespaces + 1 D1 database (notices mirror + prior-cycle cache) + 2 queues, 5 secrets, 2 hard send caps — under one hard rule: no accounts, no tracking, no hard backend dependency; everything degrades gracefully when the worker is absent.
+1 static site (`index.html` + `data.html`) + 1 Cloudflare Worker, 7 lenses, public and operator API routes plus an inbound-email handler and queue consumer, 1 daily cron (ingest → cache precomputation → queue fan-out), 4 KV namespaces + 1 D1 database (notices mirror + prior-cycle cache) + 1 Analytics Engine dataset + 2 queues, 6 secrets, 2 hard send caps — under one hard rule: no accounts, cookies, fingerprinting, or visitor profiles, and no hard backend dependency; everything degrades gracefully when the worker is absent.
 
 1. A visitor loads `index.html` (inline CSS + vanilla JS) served static from GitHub Pages at `crol-list.org` — no backend required.
 2. Picking a lens fires queries direct from the browser to CORS-open public APIs: Socrata SODA for City Record notices and ABO awards, plus GeoSearch/MapPLUTO for BBL and rezoning geometry. Checkbook queries use the schema-agnostic worker proxy.
 3. Server-only features route to `api.crol-list.org`: `/nl` (plain English → filters via Claude Haiku, metered by `NL_METER`), `/subscribe`→`/confirm`→`/unsubscribe` (double-opt-in, Turnstile-gated, fails closed), feeds, `/batch`, `/agencies`, `/inv`, `/stats`, `/feedback`, keyed `/admin/*` and `/usage`.
 4. The forecasting layer (`/checkbook` + `/forecast`) parses historical Checkbook NYC award term lengths into projected expirations (`fc:<stem>` in `ALERT_STATE`) and merges them with scraped Charter §112 MOCS agency plans (`plan:<stem>`) into one chronological timeline, rendered as the profile-page timeline widget.
-5. Subscriptions land in KV `SUBS`; aggregate integers accrue in stats counters — no personal data beyond the double-opted-in email itself.
+5. Subscriptions land in KV `SUBS`; legacy aggregate integers accrue in stats counters, while bounded page and interaction events accrue in Analytics Engine without visitor identifiers. The only personal data is the double-opted-in subscription email.
 6. The daily cron (13:00 UTC) first refreshes the D1 notices mirror from Socrata (cursored, fail-soft — a failed ingest never blocks alerts), pre-warms prior-cycle match sets for freshly-ingested Award notices, rebuilds the versioned whole-profile vendor projection in KV, then replays active subscriptions and forecast milestones, sending digests and early-warning emails via Resend — hard-capped at 25/run, 50/day. Each cache job is fail-soft; Money digests exclude data-entry-error amounts (≥ $10B) and label rolling year-2090 deadlines honestly.
-7. Deploy is manual from the MacBook: `index.html` to GitHub Pages, worker via `wrangler deploy`. There is no CI/CD.
+7. GitHub Pages serves the static site; Worker changes deploy automatically from `main`, with manual `wrangler deploy` retained as an emergency path.
 
 ## Check yourself
 

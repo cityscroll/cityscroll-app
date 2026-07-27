@@ -28,6 +28,7 @@ import { encodeWatchFilter } from "./lib/filter.mjs";
 import { runCheckbookPipeline } from "./checkbook.mjs";
 import { runMocsPlanPipeline } from "./mocs_plan.mjs";
 import { bumpStatAllTime, bumpCategoryStat, bumpHistDay } from "./lib/stats.mjs";
+import { emitUsageEvent } from "./lib/analytics.mjs";
 import { nextSearchHealth, searchHealthStatus, alertsFixUrl, searchHealthNoteHtml } from "./lib/search_health.mjs";
 import { currentAwardCandidates } from "./external_award.mjs";
 
@@ -82,6 +83,7 @@ export async function runAlerts(env, watches = cfg.watches || []) {
         await bumpStatAllTime(env.ALERT_STATE, "digest");
         await bumpHistDay(env.ALERT_STATE, "digest", new Date());
         await bumpDigestCategories(env, fresh, w.type);
+        emitUsageEvent(env, { event: "digest_sent", lens: w.type, surface: "email" });
       }
 
       // Mark seen only when NOT capped. A capped watch is deferred — leave its notices unseen
@@ -238,6 +240,7 @@ export async function processOneSub(env, s, ctx) {
       await bumpStatAllTime(env.ALERT_STATE, "digest");
       await bumpHistDay(env.ALERT_STATE, "digest", new Date());
       if (fresh.length) await bumpDigestCategories(env, fresh, s.lens);
+      emitUsageEvent(env, { event: "digest_sent", lens: s.lens, surface: "email" });
     }
 
     if (rows.length && !capped) await markSeen(env, s.key, rows.map((r) => r[q.idField]).filter(Boolean));
@@ -287,6 +290,7 @@ export async function processAwardSub(env, s, ctx) {
       await bumpStatAllTime(env.ALERT_STATE, "digest");
       await bumpHistDay(env.ALERT_STATE, "digest", new Date());
       await bumpCategoryStat(env.ALERT_STATE, "digest", "award-watch");
+      emitUsageEvent(env, { event: "digest_sent", surface: "email" });
     }
 
     // Every candidate seen this run is marked, sent or not — a candidate that showed up while
