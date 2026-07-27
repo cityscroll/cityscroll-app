@@ -44,6 +44,7 @@ client-side (NL search uses the on-device heuristic, subscriptions/feeds are hid
 | `/inv` · `/inv/<id>` | POST/GET | Share an investigation snapshot (clamped, ≤32KB, 90-day TTL, 10/day/IP; SUBS KV `inv:` prefix) | none |
 | `/priorcycle/<request_id>` | GET | **Precomputed prior-cycle + near-match sets** for an Award notice (Phase 1a — the server side of moving index.html's two live SODA panels off the client; Phase 1b swaps the client to this). Ranked by `src/lib/prior_cycle.mjs`, a hand-synced dual implementation of index.html's matchers (cross-check test fails on divergence); cached in D1 `prior_cycle_matches`, compute-on-miss, cron pre-warms fresh Award notices; validated id, edge-cached 5 min | none |
 | `/stats` | GET | **Public outcome counters** (R·B): active subscriptions (count only), digests sent (today/7d/all-time/by-topic), digest-link clicks, feed/batch/share activity, NL calls (today/7d/all-time/by-lens for both windows), and a day-by-day `history` block for digests + NL calls + active-watch snapshots — aggregate integers, no personal data; edge-cached 15 min. All-time totals fold in pre-counter history recovered from an older short-lived counter where available (see `mergeRecoveredAllTime` in `lib/stats.mjs`), and every all-time/breakdown figure has an honest `live_from` boundary in `history` rather than claiming "since launch." | none |
+| `/events` | POST | Bounded first-party event intake. Accepts only the enumerations in `../docs/analytics-event-taxonomy.md`, caps payloads at 1 KiB, and writes one aggregate Analytics Engine point with no visitor identifier. | allowed site origin + production runtime binding + `USAGE_ANALYTICS` |
 | `/r/<kind>/<request_id>` | GET | **Count-only digest click-through** (R·B tier 3, team-approved 2026-07-02): bumps a per-day counter (`stats:click`, `stats:click.<kind>`) and 302s to `crol-list.org/#notice/<id>`. Validated slug+id only — the path never carries a URL, so it cannot be an open redirect. No per-recipient tracking; digests disclose this in the footer | none |
 | `/api` | GET | 302 → crol-list.org/api.html (the API docs) | none |
 | `/admin/subs` `/admin/feedback` | GET | Operator reads (redacted) | `ADMIN_KEY` → 404 if unset |
@@ -98,7 +99,7 @@ guard; capped watches **defer** to the next run rather than dropping notices. Su
 have Turnstile + per-IP/per-address daily rate limits and fail closed when unconfigured. Feeds
 hold no key and are edge-cached.
 
-## Storage — Cloudflare KV + D1 (no R2)
+## Storage — Cloudflare KV + D1 + Analytics Engine (no R2)
 
 `NL_METER` (NL daily counters) · `ALERT_STATE` (seen-IDs, send counters — 40-day TTL so /stats can window them, last-sent dates, `stats:<metric>:<day>` outcome counters,
 `stats:catday:<metric>:<category>:<day>` windowed per-category counters (e.g. NL calls by lens, last 7 days), and the
@@ -109,6 +110,19 @@ count rather than an event count, written by the cron job, not incremented — s
 D1 (`crol-notices`, schema versioned in `migrations/`): the `notices` mirror + ingest cursor
 (daily cron, `ingest.mjs`; Socrata stays the source of truth) and `prior_cycle_matches` (the
 `/priorcycle` precompute cache). Schema detail lives in `../docs/architecture.md`.
+
+Analytics Engine (`crol_usage_events_v1`) holds the rolling 90-day interaction taxonomy described
+in `../docs/analytics-event-taxonomy.md`. Writes use the `USAGE_ANALYTICS` binding. `/stats`
+queries the SQL API with `ANALYTICS_READ_TOKEN` (), then edge-caches
+the response for 15 minutes. The paid-plan allowance is 10 million writes and 1 million reads per
+month; the worst-case cached dashboard read rate is about 2,880 per 30-day month. Current pricing,
+limits, and source links are kept in the taxonomy document.
+
+Writes also require `ANALYTICS_ENVIRONMENT` to equal `production`. Keep it unset in local and
+preview Workers so they drop events by default. Production stores it as a Wrangler secret binding
+so code-only deployments retain it. `ANALYTICS_DEV_KEY` authenticates five-minute HMAC exclusion
+tokens for production-site testing; invalid or missing tokens count normally and receive the same
+response. 
 
 ## Dependencies — three libraries extracted from this worker
 
@@ -141,7 +155,7 @@ crol's contract, not reimplementations of the packages' own unit suites.
 ```sh
 npm install               # pulls wrangler + optin-token, sendcap, board-notify
 npm test                  # node --test — 323 unit tests, no network
-npm run dev               # wrangler dev → http://localhost:8787 (secrets in .dev.vars)
+npm run dev               # wrangler dev → http://localhost:8787; analytics drops by default
 npx wrangler deploy       # deploy (free); cron + KV bindings come from wrangler.toml
 CROL_WORKER_URL=https://api.crol-list.org npm run test:live   # live e2e over every public route
 #   (defaults to the workers.dev alias — doubling as a regression check that the alias stays up)
@@ -149,7 +163,12 @@ CROL_WORKER_URL=https://api.crol-list.org npm run test:live   # live e2e over ev
 
 Secrets (`wrangler secret put`): `ANTHROPIC_API_KEY`, `RESEND_API_KEY`, `TOKEN_SECRET`,
 `TURNSTILE_SECRET`, `USAGE_KEY`, `ADMIN_KEY`, `BOARD_HOOK_SECRET`, `GITHUB_BOT_TOKEN`,
-`BOARDNOTIFY_APP_ID`, `BOARDNOTIFY_APP_PRIVATE_KEY`, `BOARDNOTIFY_INSTALLATION_ID` (all six
+`BOARDNOTIFY_APP_ID`, `BOARDNOTIFY_APP_PRIVATE_KEY`, `BOARDNOTIFY_INSTALLATION_ID`,
+`ANALYTICS_READ_TOKEN` (; the analytics section of `/stats` reports
+unavailable rather than failing the endpoint when unset), `ANALYTICS_DEV_KEY` (random, at least
+32 characters), and `ANALYTICS_ENVIRONMENT` (enter `production` only on the live Worker).
+The last binding is intentionally absent from `wrangler.toml`, local development, and preview
+deployments. All six
 board-notify secrets are optional — see "Board notifications" above). Vars (in
 `wrangler.toml`): `ALERTS_LIVE` (master switch — anything but `"true"` = dry-run),
 `ALERTS_FROM`, `MAX_PER_RUN`, `MAX_SENDS_PER_DAY`, `HEARTBEAT_DAYS`, `FEEDBACK_TO`,

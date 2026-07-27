@@ -15,6 +15,7 @@
 // fails soft to the plain notice view on anything malformed or truncated.
 
 import { parseRedirect, noticeUrl, validWatchParam, bumpStat } from "./lib/stats.mjs";
+import { emitUsageEvent } from "./lib/analytics.mjs";
 
 export function handleRedirect(req, env, ctx, pathname) {
   const parsed = parseRedirect(pathname);
@@ -26,6 +27,9 @@ export function handleRedirect(req, env, ctx, pathname) {
     await bumpStat(env.ALERT_STATE, "click", now);
     await bumpStat(env.ALERT_STATE, `click.${parsed.kind}`, now);
   })();
+  emitUsageEvent(env, {
+    event: "digest_link_open", lens: parsed.kind, detail: "notice", surface: "digest",
+  });
   if (ctx && ctx.waitUntil) ctx.waitUntil(bump); // don't make the reader wait for a counter
   const w = validWatchParam(new URL(req.url).searchParams.get("w"));
   return Response.redirect(noticeUrl(parsed.id, w), 302);
