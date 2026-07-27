@@ -24,6 +24,7 @@ import { runAlerts, consumeDigestJob } from "./alerts.mjs";
 import { ingestNotices } from "./ingest.mjs";
 import { handlePriorCycle, prewarm as prewarmPriorCycle } from "./prior_cycle.mjs";
 import { handleExternalAward, refreshAboAwards, prewarmNycha } from "./external_award.mjs";
+import { handleAgency } from "./agency.mjs";
 import { runSuggestionValidation, handleSuggestions, handleAdminSuggestRefresh } from "./suggest.mjs";
 import { handleMcp } from "./mcp.mjs";
 import { handleBoardHook } from "board-notify";
@@ -49,6 +50,7 @@ export default {
     if (pathname === "/inv" || pathname.startsWith("/inv/")) return handleInv(request, env, pathname);
     if (pathname.startsWith("/priorcycle/")) return handlePriorCycle(request, env, pathname);
     if (pathname === "/externalaward") return handleExternalAward(request, env);
+    if (pathname === "/agency") return handleAgency(request, env);
     if (pathname === "/suggestions") return handleSuggestions(request, env);
     if (pathname === "/stats") return handleStats(request, env, ctx);
     if (pathname.startsWith("/r/")) return handleRedirect(request, env, ctx, pathname);

@@ -86,6 +86,8 @@ OWN_HREF_EXPRS = (
 EXTERNAL_HREF_EXPRS = (
     "${REQ_URL(",   # City Record
     "${PASSPORT}",  # PASSPort
+    "${aurl}",      # agency-identity card: the agency's own official website (nyc.gov, etc.)
+    "${surl}",      # agency-identity card: an NYC Open Data source-dataset page
 )
 
 A_TAG_RE = re.compile(r"<a\b([^>]*)>(.*?)</a>", re.DOTALL)
