@@ -238,6 +238,8 @@
     nl_filter_months: "Termin w ciągu {n} mies.",
     nl_filter_standard_only: "Tylko standardowe metody",
     clear_filters_btn: "Wyczyść filtry",
+    property_asset_label: "Mienie",
+    property_stage_label: "Etap",
     nl_edit_btn: "Edytuj wyszukiwanie",
     nl_no_matches_note: "Brak wyników dla tego wyszukiwania.",
     deeplink_watch_context_label: "Dopasowane do Twojego powiadomienia:",

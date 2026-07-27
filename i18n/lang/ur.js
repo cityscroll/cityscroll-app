@@ -233,6 +233,8 @@
     nl_filter_months: "{n} ماہ میں واجب",
     nl_filter_standard_only: "صرف معیاری طریقے",
     clear_filters_btn: "فلٹر صاف کریں",
+    property_asset_label: "اثاثہ",
+    property_stage_label: "مرحلہ",
     nl_edit_btn: "تلاش میں ترمیم کریں",
     nl_no_matches_note: "اس تلاش کے لیے کوئی نتائج نہیں ملے۔",
     deeplink_watch_context_label: "آپ کے الرٹ سے مماثل:",

@@ -50,8 +50,9 @@ def main():
     index_src = (ROOT / "index.html").read_text(encoding="utf-8")
 
     # (2a) every parsed-filter summary has its own explicit status label + role. Section
-    # lenses use nlTransHTML(); Money projects the active state through
-    # renderMoneyActiveFilters() so Ask, cold deep links, and history traversal share one row.
+    # Ask-in-progress echoes use nlTransHTML(); replayed/active state on every search lens
+    # projects through interpretedSearchRowHTML(), so cold links and history traversal use
+    # the same labeled status component.
     m = re.search(r"function nlTransHTML\([^)]*\)\s*\{([^}]*)\}", index_src, re.S)
     if not m:
         failures.append("nlTransHTML() helper not found — parsed-filter summary rendering changed")
@@ -66,16 +67,22 @@ def main():
     if fm and "nlTransHTML(" not in fm.group(0):
         failures.append("nlTranslateLens() no longer routes its chips through nlTransHTML() — the status label/role could silently regress")
 
+    shared_start = index_src.find("function interpretedSearchRowHTML(")
+    shared_end = index_src.find("function bindClearSearchState(", shared_start)
+    shared_body = index_src[shared_start:shared_end] if shared_start >= 0 and shared_end > shared_start else ""
+    if not shared_body:
+        failures.append("interpretedSearchRowHTML() helper not found — active-state summary rendering changed")
+    else:
+        if 'role="status"' not in shared_body:
+            failures.append("interpretedSearchRowHTML() output has no role=\"status\"")
+        if "nl_understood_label" not in shared_body:
+            failures.append("interpretedSearchRowHTML() doesn't render nl_understood_label")
+
     active_start = index_src.find("function renderMoneyActiveFilters()")
     active_end = index_src.find("async function search()", active_start)
     active_body = index_src[active_start:active_end] if active_start >= 0 and active_end > active_start else ""
-    if not active_body:
-        failures.append("renderMoneyActiveFilters() helper not found — Money's state summary rendering changed")
-    else:
-        if 'role="status"' not in active_body:
-            failures.append("renderMoneyActiveFilters() output has no role=\"status\"")
-        if "nl_understood_label" not in active_body:
-            failures.append("renderMoneyActiveFilters() doesn't render nl_understood_label")
+    if 'interpretedSearchRowHTML("money"' not in active_body:
+        failures.append("Money no longer uses the shared interpreted-state row")
 
     search_start = index_src.find("async function search()")
     search_end = index_src.find("/* Selection-method facet", search_start)
