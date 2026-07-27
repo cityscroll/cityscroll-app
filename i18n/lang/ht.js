@@ -641,6 +641,7 @@
     data_note_agencies_html: "\"Netwaye\" vle di nou retire montan ki plis pase $10 milya. Nou kwè se erè antre done. Gade <a href=\"about.html#data\">done debaz yo</a>.",
     data_h_vendors_html: "Pi gwo founisè pa dola akòde <span class=\"note\">(12 dènye mwa, netwaye)</span>",
     data_note_vendors: "Non founisè yo pa nòmalize nan sous la. Ti diferans ekri parèt kòm liy separe isit la.",
+    data_value_share: "{value} · {share} nan total la",
     data_loading_counting: "Ap konte plis pase 1M avi…",
     data_fail: "Pa t kapab konekte ak NYC Open Data kounye a — rechaje pou eseye ankò.",
     data_foot_html: "Chak chif kalkile an dirèk nan navigatè w soti nan ansanm done piblik la. Rechaje paj la pou nouvo done. Metodoloji: <a href=\"about.html#data\">konsènan → done debaz yo</a> · <a href=\"stats.html\">estatistik itilizasyon sit la</a> · <a href=\"changelog.html\">istorik chanjman</a>",

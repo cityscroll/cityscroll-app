@@ -646,6 +646,7 @@
     data_note_agencies_html: "\"정제됨\"이란 100억 달러 이상의 금액을 제외했다는 뜻입니다. 저희는 이를 입력 오류로 판단합니다. <a href=\"about.html#data\">기초 데이터</a>를 참고하세요.",
     data_h_vendors_html: "낙찰 금액 상위 업체 <span class=\"note\">(최근 12개월, 정제됨)</span>",
     data_note_vendors: "원본 데이터에서 업체명은 표준화되어 있지 않습니다. 철자가 조금만 달라도 이곳에서는 별개의 행으로 표시됩니다.",
+    data_value_share: "{value} · 전체의 {share}",
     data_loading_counting: "100만 건 이상의 공고를 집계하는 중…",
     data_fail: "방금 NYC Open Data에 연결하지 못했습니다 — 새로고침하여 다시 시도해 주세요.",
     data_foot_html: "모든 수치는 공개 데이터셋을 바탕으로 브라우저에서 실시간으로 계산됩니다. 새 데이터를 보려면 페이지를 새로고침하세요. 방법론: <a href=\"about.html#data\">소개 → 기초 데이터</a> · <a href=\"stats.html\">사이트 이용 통계</a> · <a href=\"changelog.html\">변경 이력</a>",

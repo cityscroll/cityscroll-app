@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "3952d57e",
-  "zh-Hans": "f491ae01",
-  ru: "51298b2c",
-  bn: "20cad80b",
-  ht: "f3365be7",
-  ko: "2bbfefe3",
-  fr: "dcd07680",
-  pl: "d5eb3019",
-  ar: "86320161",
-  ur: "5394d09f",
+  es: "abeab18e",
+  "zh-Hans": "7b0325fc",
+  ru: "6b144720",
+  bn: "21a34ed8",
+  ht: "548fd634",
+  ko: "152f7419",
+  fr: "bda094a0",
+  pl: "a303a3a1",
+  ar: "0cf3f74b",
+  ur: "0b7c11e0",
 };
 
 
@@ -861,6 +861,7 @@ const STRINGS = {
     data_note_agencies_html: "\"Cleaned\" means we took out amounts over $10 billion. We think those are data-entry errors. See <a href=\"about.html#data\">the underlying data</a>.",
     data_h_vendors_html: "Top vendors by awarded dollars <span class=\"note\">(last 12 months, cleaned)</span>",
     data_note_vendors: "Vendor names are not standardized in the source. Small spelling differences show up as separate rows here.",
+    data_value_share: "{value} · {share} of total",
     data_loading_counting: "Counting 1M+ notices…",
     data_fail: "Couldn't reach NYC Open Data just now — reload to retry.",
     data_foot_html: "Every number is worked out live in your browser from the public dataset. Reload the page for new data. Methodology: <a href=\"about.html#data\">about → the underlying data</a> · <a href=\"stats.html\">site usage stats</a> · <a href=\"changelog.html\">changelog</a>",
