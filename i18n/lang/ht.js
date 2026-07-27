@@ -170,6 +170,8 @@
     search_label: "Chèche",
     borough_label: "Awondisman",
     all_boroughs: "Tout awondisman",
+    use_my_location: "Sèvi ak pozisyon mwen",
+    near_you_area: "toupre ou → {area}",
     zip_addr_neighborhood: "Kòd postal, adrès, oswa katye",
     status_label: "Estati",
     status_active: "Ap egzamine / aktif",

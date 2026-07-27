@@ -200,6 +200,8 @@
     search_label:        "Rechercher",
     borough_label:       "Arrondissement",
     all_boroughs:        "Tous les arrondissements",
+    use_my_location:     "Utiliser ma position",
+    near_you_area:       "près de chez vous → {area}",
     zip_addr_neighborhood: "Code postal, adresse ou quartier",
     status_label:        "Statut",
     status_active:       "En examen / actif",

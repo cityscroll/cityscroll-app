@@ -179,6 +179,8 @@
     search_label: "Szukaj",
     borough_label: "Dzielnica",
     all_boroughs: "Wszystkie dzielnice",
+    use_my_location: "Użyj mojej lokalizacji",
+    near_you_area: "w pobliżu → {area}",
     zip_addr_neighborhood: "Kod pocztowy, adres lub okolica",
     status_label: "Status",
     status_active: "W trakcie rozpatrywania / aktywne",
