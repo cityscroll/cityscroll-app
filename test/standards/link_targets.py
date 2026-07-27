@@ -88,13 +88,16 @@ EXTERNAL_HREF_EXPRS = (
     "${PASSPORT}",  # PASSPort
     "${aurl}",      # agency-identity card: the agency's own official website (nyc.gov, etc.)
     "${surl}",      # agency-identity card: an NYC Open Data source-dataset page
+    # Explicit same-origin exception: this action promises to open the canonical shareable
+    # search separately, so it follows the new-tab safety/accessibility checks below.
+    "${nlqEscape(canonicalSearchURL(",
 )
 
 A_TAG_RE = re.compile(r"<a\b([^>]*)>(.*?)</a>", re.DOTALL)
 HREF_RE = re.compile(r'href\s*=\s*"([^"]*)"')
 WANTS_NEW_TAB_RE = re.compile(r'target\s*=\s*"_blank"|\$\{EXT_ATTRS\}')
 REL_OK_RE = re.compile(r'rel\s*=\s*"noopener noreferrer"|\$\{EXT_ATTRS\}')
-SR_MARK_RE = re.compile(r'<span class="sr-only">|\$\{extSR\(\)\}')
+SR_MARK_RE = re.compile(r'<span class="sr-only"(?:\s[^>]*)?>|\$\{extSR\(\)\}')
 TAG_RE = re.compile(r"<[^<>]*>")
 
 
