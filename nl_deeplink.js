@@ -1,7 +1,8 @@
-// Pure helpers for replayable Money-lens filters and device-local presets.
+// Pure helpers for replayable search-lens filters and one device-local preset store.
 // No DOM or network access: browser code uses the globals below and Node tests require them.
 
 var NLQ_PRESET_LIMIT = 8;
+var SEARCH_LENSES = ["money", "people", "land", "property", "rules", "meetings"];
 
 function compactText(value, max) {
   return typeof value === "string" ? value.replace(/\s+/g, " ").trim().slice(0, max) : "";
@@ -44,6 +45,52 @@ function buildMoneyDeepLink(filter) {
   return "#money?" + params.toString();
 }
 
+function compactKeywords(value) {
+  var values = Array.isArray(value) ? value : compactText(value, 320) ? [value] : [];
+  return values
+    .map(function (word) { return compactText(word, 80).toLowerCase(); })
+    .filter(Boolean)
+    .slice(0, 4);
+}
+
+// Canonical order mirrors index.html's serializeState(), so an Ask resolution and the
+// equivalent hand-set controls always produce the same URL.
+function buildSearchDeepLink(lens, filter) {
+  if (lens === "money") return buildMoneyDeepLink(filter);
+  if (SEARCH_LENSES.indexOf(lens) < 0) return null;
+
+  var f = filter && typeof filter === "object" ? filter : {};
+  var keywords = compactKeywords(f.keywords);
+  var agency = compactText(f.agency, 160);
+  var params = new URLSearchParams();
+
+  if (lens === "people") {
+    if (f.lookupType === "person") params.set("mode", "person");
+    if (keywords.length) params.set("q", keywords.join(" "));
+  } else if (lens === "land") {
+    var boros = ["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"];
+    var boro = boros.find(function (name) {
+      return name.toLowerCase() === compactText(f.boro, 40).toLowerCase();
+    });
+    if (boro) params.set("boro", boro);
+    if (keywords.length) params.set("q", keywords.join(" "));
+    if (f.status === "all") params.set("status", "all");
+  } else {
+    if (agency) params.set("agency", agency);
+    if (keywords.length) params.set("q", keywords.join(" "));
+    if (lens === "meetings" && f.when === "all") params.set("when", "all");
+    if (lens === "property") {
+      var asset = compactText(f.asset, 40);
+      var stage = compactText(f.stage, 40);
+      if (asset && asset !== "all") params.set("asset", asset);
+      if (stage && stage !== "all") params.set("stage", stage);
+    }
+  }
+
+  var query = params.toString();
+  return query ? "#" + lens + "?" + query : null;
+}
+
 // The interpreted row is an explanation for filters that the standard Money controls cannot
 // show. Once one of those hidden filters is active, include every active filter so the row is a
 // complete, legible description of the result set rather than a partial footnote.
@@ -83,15 +130,23 @@ function canonicalSearchURL(locationValue, hash) {
   var origin = compactText(loc.origin, 2048).replace(/\/+$/, "");
   var pathname = compactText(loc.pathname, 2048) || "/";
   if (pathname.charAt(0) !== "/") pathname = "/" + pathname;
-  var safeHash = /^#money(?:\?[^#]*)?$/.test(hash || "") ? hash : "#money";
+  var safeHash = /^#(?:money|people|land|property|rules|meetings)(?:\?[^#]*)?$/.test(hash || "")
+    ? hash
+    : "#money";
   return origin + pathname + safeHash;
+}
+
+function presetLens(value) {
+  var hash = typeof value === "string" ? value : value && value.hash;
+  var match = /^#(money|people|land|property|rules|meetings)\?/.exec(hash || "");
+  return match ? match[1] : null;
 }
 
 function validPreset(value) {
   if (!value || typeof value !== "object" || Array.isArray(value)) return null;
   var label = compactText(value.label, 100);
   var hash = compactText(value.hash, 2000);
-  if (!label || !/^#money\?(?:[^#]*)$/.test(hash)) return null;
+  if (!label || !presetLens(hash)) return null;
   return { label: label, hash: hash };
 }
 
@@ -126,9 +181,11 @@ function removePreset(values, index) {
 
 if (typeof module !== "undefined" && module.exports !== undefined) {
   module.exports = {
+    buildSearchDeepLink: buildSearchDeepLink,
     buildMoneyDeepLink: buildMoneyDeepLink,
     canonicalSearchURL: canonicalSearchURL,
     moneyActiveFilterItems: moneyActiveFilterItems,
+    presetLens: presetLens,
     parsePresetStore: parsePresetStore,
     savePreset: savePreset,
     removePreset: removePreset,

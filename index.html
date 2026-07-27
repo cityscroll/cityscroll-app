@@ -112,8 +112,8 @@
      button (.nledit) is a real, plainly-styled button (.mini) rather than another chip. */
   .nlunderstood{margin:10px 0 2px;font:12px/1.6 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
   .nlunderstood .nledit{margin-inline-start:8px;vertical-align:baseline}
-  .moneyactive{display:flex;align-items:baseline;gap:4px 8px;flex-wrap:wrap}
-  .moneyactive .mini{flex:0 0 auto}
+  .searchactive{display:flex;align-items:baseline;gap:4px 8px;flex-wrap:wrap}
+  .searchactive .mini{flex:0 0 auto}
   .nlqactions{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin-top:9px}
   .nlqactions .act,.nlqactions button{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;padding:7px 10px;border-radius:7px}
   .nlqactions .act{display:inline-flex;align-items:center;background:#fff;color:var(--oxblood);border:1px solid var(--rule);text-decoration:none}
@@ -121,7 +121,8 @@
   .nlqpresets-title{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
   .nlqpreset-list{display:flex;flex-wrap:wrap;gap:7px}
   .nlqpreset{display:inline-flex;min-width:0}
-  .nlqpreset-run{font:600 12px/1.25 ui-sans-serif,system-ui,sans-serif;padding:7px 10px;background:#fff;color:var(--ink-soft);border:1px solid var(--rule);border-radius:7px 0 0 7px;max-width:340px;white-space:normal;text-align:start}
+  .nlqpreset-run{display:inline-flex;align-items:center;gap:7px;font:600 12px/1.25 ui-sans-serif,system-ui,sans-serif;padding:7px 10px;background:#fff;color:var(--ink-soft);border:1px solid var(--rule);border-radius:7px 0 0 7px;max-width:340px;white-space:normal;text-align:start}
+  .nlqpreset-lens{flex:0 0 auto;font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--oxblood);border-inline-end:1px solid var(--rule);padding-inline-end:7px}
   .nlqpreset-remove{font:700 13px/1 ui-sans-serif,system-ui,sans-serif;padding:7px 9px;background:var(--paper-2);color:var(--rose);border:1px solid var(--rule);border-inline-start:0;border-radius:0 7px 7px 0}
   /* Low/no signal understood, or zero matches — the interpretation gets a visible callout
      instead of blending into quiet status text (w12-02: never a bare empty result). */
@@ -386,7 +387,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=2f565121"></script>
+<script src="i18n.js?v=581a6ff2"></script>
 <script src="nl_parse.js"></script>
 <script src="nl_deeplink.js"></script>
 <script src="external_awards.js"></script>
@@ -455,7 +456,7 @@
       <div id="nltry" class="nltry"></div>
       <div id="moneyactivefilters"></div>
       <div id="nltrans"></div>
-      <div id="nlpresets"></div>
+      <div id="nlpresets" data-search-presets></div>
     </div>
 
     <div class="controls">
@@ -1053,30 +1054,19 @@ function moneyActiveFilterChip(item){
 }
 function renderMoneyActiveFilters(){
   const box=$("#moneyactivefilters"); if(!box) return;
-  const items=moneyActiveFilterItems({
+  const filter={
     noticeType:mode==="award"?"award":mode==="allrfp"?"allrfp":"solicitation",
     agency:$("#agency").value,
     keywords:$("#kw").value.trim(),
     minAmount:$("#minamt").value,
     ...moneyNlResolved,
+  };
+  const items=moneyActiveFilterItems({
+    noticeType:filter.noticeType, agency:filter.agency, keywords:filter.keywords,
+    minAmount:filter.minAmount, ...moneyNlResolved,
   });
-  if(!items.length){ box.innerHTML=""; return; }
-  const chips=items.map(moneyActiveFilterChip);
-  box.innerHTML=`<div class="nlunderstood moneyactive"><span role="status">${t("nl_understood_label")} ${chips.join(" ")}</span><button type="button" class="mini" id="moneyactiveclear">${t("clear_filters_btn")}</button></div>`;
-  $("#moneyactiveclear").addEventListener("click",()=>{
-    moneyNlResolved={};
-    $("#mode").value="open";
-    $("#agency").value="";
-    $("#kw").value="";
-    $("#sort").value="deadline";
-    forceAmountSelect(null);
-    closingWeek=false;
-    $("#closingweek").classList.remove("on");
-    $("#closingweek").setAttribute("aria-pressed","false");
-    methodSel="";
-    $("#nltrans").innerHTML="";
-    search();
-  });
+  box.innerHTML=interpretedSearchRowHTML("money", filter, items.map(moneyActiveFilterChip));
+  bindClearSearchState("money", box);
 }
 async function search(){
   moneyLoaded = true;
@@ -2085,37 +2075,49 @@ function nlqEscape(value){
   return String(value||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
 }
 function renderNLQPresets(){
-  const box=$("#nlpresets"); if(!box) return;
   const list=nlqPresetStore();
-  box.innerHTML = list.length
-    ? `<div class="nlqpresets"><div class="nlqpresets-title">${t("saved_searches_heading")}</div><div class="nlqpreset-list">` +
-      list.map((preset,i)=>`<span class="nlqpreset"><button type="button" class="nlqpreset-run" data-i="${i}">${nlqEscape(preset.label)}</button><button type="button" class="nlqpreset-remove" data-i="${i}" aria-label="${nlqEscape(t("remove_saved_search_aria",{label:preset.label}))}">×</button></span>`).join("") +
-      `</div></div>`
-    : "";
-  box.querySelectorAll(".nlqpreset-run").forEach(btn=>btn.addEventListener("click",()=>{
-    const preset=nlqPresetStore()[+btn.dataset.i]; if(!preset) return;
-    if(location.hash===preset.hash) applyHash(); else location.hash=preset.hash;
-  }));
-  box.querySelectorAll(".nlqpreset-remove").forEach(btn=>btn.addEventListener("click",()=>{
-    const next=removePreset(nlqPresetStore(), +btn.dataset.i); nlqPresetSet(next); renderNLQPresets();
-  }));
+  document.querySelectorAll("[data-search-presets]").forEach(box=>{
+    box.innerHTML = list.length
+      ? `<div class="nlqpresets"><div class="nlqpresets-title">${t("saved_searches_heading")}</div><div class="nlqpreset-list">` +
+        list.map((preset,i)=>{
+          const lens=presetLens(preset);
+          const lensLabel=t("tab_"+lens);
+          return `<span class="nlqpreset"><button type="button" class="nlqpreset-run" data-i="${i}"><span class="nlqpreset-lens">${nlqEscape(lensLabel)}</span><span>${nlqEscape(preset.label)}</span></button><button type="button" class="nlqpreset-remove" data-i="${i}" aria-label="${nlqEscape(t("remove_saved_search_aria",{label:lensLabel+" — "+preset.label}))}">×</button></span>`;
+        }).join("") +
+        `</div></div>`
+      : "";
+    box.querySelectorAll(".nlqpreset-run").forEach(btn=>btn.addEventListener("click",()=>{
+      const preset=nlqPresetStore()[+btn.dataset.i]; if(!preset) return;
+      if(location.hash===preset.hash) applyHash(); else location.hash=preset.hash;
+    }));
+    box.querySelectorAll(".nlqpreset-remove").forEach(btn=>btn.addEventListener("click",()=>{
+      const next=removePreset(nlqPresetStore(), +btn.dataset.i); nlqPresetSet(next); renderNLQPresets();
+    }));
+  });
 }
-function nlqResolvedActionsHTML(hash){
+function searchActionsHTML(lens, hash){
   if(!hash) return "";
-  return `<div class="nlqactions"><a class="act" id="nlqshare" href="${nlqEscape(canonicalSearchURL(location, hash))}" target="_blank" rel="noopener noreferrer"><span data-i18n="share_search_link">${t("share_search_link")}</span><span class="sr-only" data-i18n="ext_link_new_tab_sr"> ${t("ext_link_new_tab_sr")}</span></a><button type="button" class="mini" id="nlqcopy" data-i18n="copy_search_link">${t("copy_search_link")}</button><button type="button" class="mini" id="nlqsave" data-i18n="save_search_btn">${t("save_search_btn")}</button></div>`;
+  const moneyIds=lens==="money";
+  return `<div class="nlqactions"><a class="act" data-search-share ${moneyIds?'id="nlqshare" ':''}href="${nlqEscape(canonicalSearchURL(location, hash))}" target="_blank" rel="noopener noreferrer"><span data-i18n="share_search_link">${t("share_search_link")}</span><span class="sr-only" data-i18n="ext_link_new_tab_sr"> ${t("ext_link_new_tab_sr")}</span></a><button type="button" class="mini" data-search-copy ${moneyIds?'id="nlqcopy" ':''}data-i18n="copy_search_link">${t("copy_search_link")}</button><button type="button" class="mini" data-search-save ${moneyIds?'id="nlqsave" ':''}data-i18n="save_search_btn">${t("save_search_btn")}</button></div>`;
 }
-function bindNLQResolvedActions(label, hash){
-  if(!hash) return;
-  const share=$("#nlqshare"); if(share) share.href=canonicalSearchURL(location, hash);
-  const copy=$("#nlqcopy");
+function bindSearchActions(root, label, hash){
+  if(!root || !hash) return;
+  const share=root.querySelector("[data-search-share]"); if(share) share.href=canonicalSearchURL(location, hash);
+  const copy=root.querySelector("[data-search-copy]");
   if(copy) copy.addEventListener("click",()=>copyText(canonicalSearchURL(location, hash), copy));
-  const save=$("#nlqsave");
+  const save=root.querySelector("[data-search-save]");
   if(save) save.addEventListener("click",()=>{
     nlqPresetSet(savePreset(nlqPresetStore(), label, hash));
     renderNLQPresets();
     save.dataset.i18n="saved_check";
     save.textContent=t("saved_check");
   });
+}
+function nlqResolvedActionsHTML(hash){
+  return searchActionsHTML("money", hash);
+}
+function bindNLQResolvedActions(label, hash){
+  bindSearchActions($("#nltrans"), label, hash);
 }
 async function nlTranslate(){
   const text=$("#nlq").value.trim(); if(!text) return;
@@ -2205,6 +2207,13 @@ function deviceParse(text, lens){
   }
   const stop=new Set("the a an of in on for to and or with show me find list all near over under within new nyc city our your their about that this".split(" "));
   out.keywords=[...new Set(text.toLowerCase().replace(/[^a-z0-9 ]/g," ").split(/\s+/).filter(w=>w.length>3&&!stop.has(w)))].slice(0,4);
+  // A borough already has its own structured field. Do not also send its words through ZAP's
+  // full-text query: "rezonings in Queens" is canonically #land?boro=Queens, not the same
+  // borough twice as both boro=Queens and q=queens.
+  if(lens==="land" && out.boro){
+    const boroWords=new Set(out.boro.toLowerCase().split(/\s+/));
+    out.keywords=out.keywords.filter(word=>!boroWords.has(word));
+  }
   return out;
 }
 
@@ -2230,7 +2239,7 @@ const NL = {
     chips:f=>[ f.lookupType?`<span class="qchip">a <b>${f.lookupType==='person'?'person':'role'}</b></span>`:"",
                (f.keywords&&f.keywords.length)?`<span class="qchip">about <b>${f.keywords.join(' / ')}</b></span>`:"" ],
     apply:f=>{ if(f.lookupType){ $("#pmode").value=f.lookupType; $("#pmode").dispatchEvent(new Event("change")); }
-               $("#pkw").value=(f.keywords||[]).join(" "); pSearch(); }
+               $("#pkw").value=(f.keywords||[]).join(" "); return pSearch(); }
   },
   land: {
     placeholder:"for example, rezonings in Brooklyn, or 79 Rivington",
@@ -2252,7 +2261,7 @@ const NL = {
                f.status==='all'?`<span class="qchip">${t("nl_chip_land_status_all")}</span>`:"" ];
     },
     apply:f=>{ if(f.boro) $("#lboro").value=f.boro; if(f.status) $("#lstatus").value=f.status;
-               $("#lkw").value=stripImpliedKeywords("land", f.keywords).join(" "); landSearch(); }
+               $("#lkw").value=stripImpliedKeywords("land", f.keywords).join(" "); return landSearch(); }
   },
   property: nlFeed("property","for example, HPD property sales, DEP land"),
   rules:    nlFeed("rules","for example, buildings rules, sanitation rules"),
@@ -2339,9 +2348,110 @@ function nlFeed(key, placeholder){
                (key==='meetings'&&f.when)?`<span class="qchip"><b>${f.when}</b></span>`:"" ];
     },
     apply:f=>{ if(key==='meetings'&&f.when){ const w=$("#meetingswhen"); if(w) w.value=f.when; }
-               $("#"+key+"kw").value=[...stripImpliedKeywords(key, f.keywords), f.agency].filter(Boolean).join(" ");
-               loadSection(key); }
+               forceSelect("#"+key+"agency", f.agency);
+               $("#"+key+"kw").value=stripImpliedKeywords(key, f.keywords).join(" ");
+               return loadSection(key); }
   };
+}
+
+function searchFilterFromHash(lens, hash){
+  const qi=(hash||"").indexOf("?");
+  if(qi<0 || !hash.startsWith("#"+lens+"?")) return null;
+  const q=new URLSearchParams(hash.slice(qi+1));
+  const keywords=q.get("q")?[q.get("q")]:[];
+  if(lens==="people") return {lookupType:q.get("mode")==="person"?"person":"role", keywords};
+  if(lens==="land") return {boro:q.get("boro"), keywords, status:q.get("status")==="all"?"all":"active"};
+  const filter={agency:q.get("agency"), keywords};
+  if(lens==="meetings") filter.when=q.get("when")==="all"?"all":"upcoming";
+  if(lens==="property"){ filter.asset=q.get("asset")||"all"; filter.stage=q.get("stage")||"all"; }
+  return filter;
+}
+
+function searchFilterChips(lens, filter){
+  if(lens==="money") return moneyActiveFilterItems(filter).map(moneyActiveFilterChip);
+  const keywords=(filter.keywords||[]).filter(Boolean);
+  let chips=[];
+  if(lens==="people"){
+    chips.push(`<span class="qchip">${t("look_up_label")} <b>${t(filter.lookupType==="person"?"pmode_person":"pmode_role")}</b></span>`);
+    if(keywords.length) chips.push(`<span class="qchip">${t("nl_filter_about_label")} <b>${enTitle(keywords.join(" / "))}</b></span>`);
+  } else if(lens==="land"){
+    chips.push(`<span class="qchip">${t("nl_chip_land_kind")}</span>`);
+    if(filter.boro) chips.push(`<span class="qchip">${t("borough_label")} <b>${filter.boro}</b></span>`);
+    if(keywords.length) chips.push(`<span class="qchip">${t("nl_filter_about_label")} <b>${enTitle(keywords.join(" / "))}</b></span>`);
+    if(filter.status==="all") chips.push(`<span class="qchip">${t("nl_chip_land_status_all")}</span>`);
+  } else {
+    chips.push(`<span class="qchip">${tSection(SECTIONS[lens].section)}</span>`);
+    if(filter.agency) chips.push(`<span class="qchip">${t("agency_label")} <b>${enTitle(filter.agency)}</b></span>`);
+    if(keywords.length) chips.push(`<span class="qchip">${t("nl_filter_about_label")} <b>${enTitle(keywords.join(" / "))}</b></span>`);
+    if(lens==="meetings") chips.push(`<span class="qchip"><b>${t(filter.when==="all"?"status_all":"mode_upcoming")}</b></span>`);
+  }
+  if(lens==="property"){
+    if(filter.asset && filter.asset!=="all") chips.push(`<span class="qchip">${t("property_asset_label")} <b>${t(ASSET_LABEL[filter.asset]||"asset_other")}</b></span>`);
+    if(filter.stage && filter.stage!=="all") chips.push(`<span class="qchip">${t("property_stage_label")} <b>${t((PROP_STAGES.find(([key])=>key===filter.stage)||[])[1]||"stage_all")}</b></span>`);
+  }
+  return chips;
+}
+
+// One interpreted-row component for every arrival path: Ask, hand-set controls, or a cold
+// shared link. Lens-specific code supplies only the filter-to-chip conversion.
+function interpretedSearchRowHTML(lens, filter, suppliedChips){
+  const chips=suppliedChips||searchFilterChips(lens, filter);
+  if(!chips.length) return "";
+  const clearId=lens==="money"?' id="moneyactiveclear"':"";
+  return `<div class="nlunderstood searchactive${lens==="money"?" moneyactive":""}"><span role="status">${t("nl_understood_label")} ${chips.join(" ")}</span><button type="button" class="mini"${clearId} data-search-clear="${lens}">${t("clear_filters_btn")}</button></div>`;
+}
+
+function bindClearSearchState(lens, root){
+  const clear=root?.querySelector("[data-search-clear]"); if(!clear) return;
+  clear.addEventListener("click",()=>{
+    if(lens==="money"){
+      moneyNlResolved={};
+      $("#mode").value="open"; $("#agency").value=""; $("#kw").value=""; $("#sort").value="deadline";
+      forceAmountSelect(null); closingWeek=false; methodSel="";
+      $("#closingweek").classList.remove("on"); $("#closingweek").setAttribute("aria-pressed","false");
+      $("#nltrans").innerHTML=""; search(); return;
+    }
+    if(lens==="people"){
+      $("#pmode").value="role"; $("#pmode").dispatchEvent(new Event("change")); $("#pkw").value="";
+      $("#nltrans-people").innerHTML=""; pSearch(); return;
+    }
+    if(lens==="land"){
+      $("#lboro").value=""; $("#lkw").value=""; $("#lstatus").value="active";
+      $("#nltrans-land").innerHTML=""; landSearch(); return;
+    }
+    forceSelect("#"+lens+"agency", "");
+    $("#"+lens+"agency").value="";
+    $("#"+lens+"kw").value="";
+    const when=$("#"+lens+"when"); if(when) when.value="upcoming";
+    if(lens==="property"){ propAsset="all"; propStageSel="all"; }
+    $("#nltrans-"+lens).innerHTML="";
+    loadSection(lens);
+  });
+}
+
+function searchLabelFromHash(lens, hash){
+  const q=new URLSearchParams((hash.split("?")[1]||""));
+  const parts=["q","agency","boro","mode","status","when","asset","stage"].map(key=>q.get(key)).filter(Boolean);
+  return parts.join(" · ") || t("tab_"+lens);
+}
+
+function renderSearchComponents(lens, options){
+  if(!["people","land","property","rules","meetings"].includes(lens)) return;
+  const serialized=location.hash.startsWith("#"+lens+"?")?serializeState():null;
+  const hash=(options&&options.hash)||serialized;
+  const safeHash=hash&&hash.startsWith("#"+lens+"?")?hash:null;
+  const filter=searchFilterFromHash(lens, safeHash);
+  const state=document.querySelector(`[data-search-state="${lens}"]`);
+  const actions=document.querySelector(`[data-search-actions="${lens}"]`);
+  if(state){
+    state.innerHTML=filter?interpretedSearchRowHTML(lens, filter):"";
+    bindClearSearchState(lens, state);
+  }
+  if(actions){
+    actions.innerHTML=searchActionsHTML(lens, safeHash);
+    bindSearchActions(actions, (options&&options.label)||searchLabelFromHash(lens, safeHash||""), safeHash);
+  }
+  renderNLQPresets();
 }
 
 // opts lets a second entry point (the 60-second quiz's own keyword field, below) reuse this
@@ -2357,7 +2467,12 @@ async function nlTranslateLens(lens, opts){
   const chips=(NL[lens].chips(f)||[]).filter(Boolean);
   $("#nltrans-"+lens).innerHTML=nlTransHTML(chips, inpSel, chips.length===0);
   if(btn) btn.disabled=false;
-  NL[lens].apply(f);
+  const linkFilter={...f};
+  if(["land","property","rules","meetings"].includes(lens)) linkFilter.keywords=stripImpliedKeywords(lens, f.keywords);
+  const deepLink=buildSearchDeepLink(lens, linkFilter);
+  await NL[lens].apply(f);
+  if(chips.length) $("#nltrans-"+lens).innerHTML="";
+  renderSearchComponents(lens, {hash:deepLink, label:text});
 }
 
 // Suggestion-chip candidate pool + validated-set rotation (w12-08). Field evidence (site
@@ -2513,9 +2628,12 @@ function injectNLBoxes(){
     const wrap=document.querySelector(sel+" .wrap"); if(!wrap) return;
     const anchor=wrap.querySelector(anchorSel); if(!anchor) return;
     const box=document.createElement("div"); box.className="nlbox";
+    const searchTools=lens==="alerts"?"":'<div id="searchstate-'+lens+'" data-search-state="'+lens+'"></div>'+
+      '<div id="searchactions-'+lens+'" data-search-actions="'+lens+'"></div>'+
+      '<div id="nlpresets-'+lens+'" data-search-presets></div>';
     box.innerHTML='<div class="nlrow"><input type="text" id="nlq-'+lens+'" aria-label="'+t("nl_aria")+'" data-i18n-aria="nl_aria" data-i18n-placeholder="nl_placeholder_'+lens+'" placeholder="'+NL[lens].placeholder+'">'+
       '<button id="nlgo-'+lens+'" data-i18n="ask_btn">Ask</button></div>'+
-      '<div id="nltry-'+lens+'" class="nltry"></div><div id="nltrans-'+lens+'"></div>';
+      '<div id="nltry-'+lens+'" class="nltry"></div><div id="nltrans-'+lens+'"></div>'+searchTools;
     anchor.parentNode.insertBefore(box, anchor);
     $("#nlgo-"+lens).addEventListener("click",()=>nlTranslateLens(lens));
     $("#nlq-"+lens).addEventListener("keydown",e=>{ if(e.key==="Enter") nlTranslateLens(lens); });
@@ -2630,6 +2748,7 @@ async function pSearch(keepDetail){
   pMode = $("#pmode").value;
   const kw = $("#pkw").value.trim();
   updateHash();
+  renderSearchComponents("people");
   $("#preshead").textContent = pMode === "role" ? t("roles_heading") : t("people_heading");
   $("#prescount").textContent = "";
   if(keepDetail !== true) $("#pdetail").innerHTML = '<div class="empty">' + t("pick_result_empty") + '</div>';
@@ -2793,6 +2912,7 @@ function zapWhere(status){ return "ulurp_non='ULURP'"+(status==="active"?" AND p
 async function landSearch(){
   const boro=$("#lboro").value, kw=$("#lkw").value.trim(), status=$("#lstatus").value;
   updateHash();
+  renderSearchComponents("land");
   $("#lreshead").textContent = t("rezonings_heading") + (boro?" · "+boro:"") + (kw?` · “${kw}”`:"");
   $("#lrescount").textContent=""; landBanner="";
   busyList("#llist", 3);
@@ -3061,6 +3181,7 @@ async function loadSection(key){
   const cfg=SECTIONS[key];
   const kw=($("#"+key+"kw").value||"").trim();
   updateHash();
+  renderSearchComponents(key);
   const whenSel=$("#"+key+"when");
   let where=`section_name='${cfg.section}'`, order="start_date DESC";
   const ag=$("#"+key+"agency")?$("#"+key+"agency").value:""; if(ag) where+=` AND agency_name='${ag.replace(/'/g,"''")}'`;
@@ -3125,8 +3246,8 @@ function renderPropExplorer(){
     `<button type="button" class="chip ${propAsset===k?'on':''}" data-a="${k}">${t(l)}<span class="ct">${ac[k]||0}</span></button>`).join("");
   $("#liferail").innerHTML=PROP_STAGES.map(([k,l])=>
     `<button type="button" class="chip ${propStageSel===k?'on':''}" data-s="${k}">${t(l)}<span class="ct">${sc[k]||0}</span></button>`).join("");
-  $("#assettabs").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{ propAsset=b.dataset.a; renderPropExplorer(); updateHash(); }));
-  $("#liferail").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{ propStageSel=b.dataset.s; renderPropExplorer(); updateHash(); }));
+  $("#assettabs").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{ propAsset=b.dataset.a; renderPropExplorer(); updateHash(); renderSearchComponents("property"); }));
+  $("#liferail").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{ propStageSel=b.dataset.s; renderPropExplorer(); updateHash(); renderSearchComponents("property"); }));
   const subset=propAll.filter(r=>(propAsset==="all"||r._asset===propAsset) && (propStageSel==="all"||r._stage===propStageSel));
   announce(t("property_notices_announce",{n:subset.length}));
   renderFeed("property", subset);
@@ -4681,19 +4802,21 @@ function applyHash(){
       methodSel = q.get("m") || "";
       showTab("money"); search();
     } else if(tab === "people"){
-      if(q.get("mode")){ $("#pmode").value = q.get("mode"); $("#pmode").dispatchEvent(new Event("change")); }
+      $("#pmode").value = q.get("mode")==="person"?"person":"role";
+      $("#pmode").dispatchEvent(new Event("change"));
       $("#pkw").value = q.get("q") || "";
       showTab("people");
       if($("#pkw").value.trim()) pSearch();
     } else if(tab === "land"){
-      if(q.get("boro")) $("#lboro").value = q.get("boro");
+      $("#lboro").value = DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"";
       $("#lkw").value = q.get("q") || "";
-      if(q.get("status")) $("#lstatus").value = q.get("status");
+      $("#lstatus").value = q.get("status")==="all"?"all":"active";
       const was = landLoaded; showTab("land"); if(was) landSearch();
     } else if(SECTIONS[tab]){
+      $("#"+tab+"agency").value="";
       forceSelect("#"+tab+"agency", q.get("agency"));
       $("#"+tab+"kw").value = q.get("q") || "";
-      const w=$("#"+tab+"when"); if(w && q.get("when")) w.value = q.get("when");
+      const w=$("#"+tab+"when"); if(w) w.value = q.get("when")==="all"?"all":"upcoming";
       if(tab === "property"){ propAsset = q.get("asset") || "all"; propStageSel = q.get("stage") || "all"; }
       const was = feedLoaded[tab]; showTab(tab); if(was) loadSection(tab);
     } else if(tab === "alerts"){

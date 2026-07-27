@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "b682d503",
-  "zh-Hans": "73e928d8",
-  ru: "67f2d3a4",
-  bn: "9ac3777a",
-  ht: "bb802cdc",
-  ko: "48005e34",
-  fr: "17aa599b",
-  pl: "c36faeea",
-  ar: "c46e5fbd",
-  ur: "4bfe6988",
+  es: "fb9c6a06",
+  "zh-Hans": "ecfa2358",
+  ru: "1eb63df8",
+  bn: "e30394d8",
+  ht: "87f17d31",
+  ko: "d421e0d7",
+  fr: "9f319d9d",
+  pl: "be110375",
+  ar: "103bd5b2",
+  ur: "16d54001",
 };
 
 
@@ -366,6 +366,8 @@ const STRINGS = {
     nl_filter_months: "Due within {n} mo",
     nl_filter_standard_only: "Standard methods only",
     clear_filters_btn: "Clear filters",
+    property_asset_label: "Asset",
+    property_stage_label: "Stage",
     nl_edit_btn:      "Edit search",
     nl_no_matches_note: "No matches for this search.",
     deeplink_watch_context_label: "Matched by your watch:",

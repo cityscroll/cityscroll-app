@@ -230,6 +230,8 @@
     nl_filter_months: "Vence dentro de {n} meses",
     nl_filter_standard_only: "Solo métodos estándar",
     clear_filters_btn: "Borrar filtros",
+    property_asset_label: "Bien",
+    property_stage_label: "Etapa",
     nl_edit_btn: "Editar búsqueda",
     nl_no_matches_note: "No hay resultados para esta búsqueda.",
     deeplink_watch_context_label: "Coincide con tu alerta:",
