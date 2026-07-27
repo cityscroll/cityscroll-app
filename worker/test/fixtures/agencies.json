@@ -1,0 +1,47 @@
+[
+  {
+    "canonical_name": "Police Department",
+    "variants": [
+      "Police Department",
+      "POLICE DEPARTMENT"
+    ]
+  },
+  {
+    "canonical_name": "Design and Construction",
+    "variants": [
+      "Design and Construction",
+      "DESIGN AND CONSTRUCTION",
+      "DEPT. OF DESIGN & CONSTRUCTION"
+    ]
+  },
+  {
+    "canonical_name": "Administration for Children's Services",
+    "variants": [
+      "Administration for Children's Services",
+      "ADMIN FOR CHILDREN'S SERVICES",
+      "ADMIN FOR CHILDRENS SERVICES",
+      "ADMIN FOR CHILDREN'S SVCS",
+      "ADMIN FOR CHILDRENS SVCS",
+      "ADMIN FOR CHILDREN' SVCS"
+    ]
+  },
+  {
+    "canonical_name": "Board of Correction",
+    "variants": [
+      "Board of Correction",
+      "BOARD OF CORRECTION"
+    ]
+  },
+  {
+    "canonical_name": "Community Boards",
+    "variants": [
+      "Community Boards",
+      "BRONX COMMUNITY BOARD #2",
+      "BRONX COMMUNITY BOARD 2",
+      "BROOKLYN COMMUNITY BOARD #4",
+      "BROOKLYN COMMUNITY BOARD 4",
+      "QUEENS COMMUNITY BOARD #14",
+      "QUEENS COMMUNITY BOARD 14"
+    ]
+  }
+]
