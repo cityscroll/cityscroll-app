@@ -1,0 +1,1783 @@
+{
+  "source": "https://crol-list.org/data.html",
+  "observedAt": "2026-07-27",
+  "beforeRevision": "c9802f3b2a3d3a2342c2a299db42171aa7acb885",
+  "fixture": {
+    "sections": [
+      {
+        "section_name": "Changes in Personnel",
+        "n": "959659"
+      },
+      {
+        "section_name": "Procurement",
+        "n": "105044"
+      },
+      {
+        "section_name": "Contract Award Hearings",
+        "n": "10505"
+      },
+      {
+        "section_name": "Public Hearings and Meetings",
+        "n": "8932"
+      },
+      {
+        "section_name": "Special Materials",
+        "n": "8131"
+      },
+      {
+        "section_name": "Agency Rules",
+        "n": "3061"
+      },
+      {
+        "section_name": "Public Comment on Contract Awards",
+        "n": "929"
+      },
+      {
+        "section_name": "Property Disposition",
+        "n": "243"
+      },
+      {
+        "section_name": "Court Notices",
+        "n": "155"
+      }
+    ],
+    "volume": [
+      {
+        "m": "2025-07-01T00:00:00.000",
+        "n": "134"
+      },
+      {
+        "m": "2025-08-01T00:00:00.000",
+        "n": "8271"
+      },
+      {
+        "m": "2025-09-01T00:00:00.000",
+        "n": "7117"
+      },
+      {
+        "m": "2025-10-01T00:00:00.000",
+        "n": "5931"
+      },
+      {
+        "m": "2025-11-01T00:00:00.000",
+        "n": "4589"
+      },
+      {
+        "m": "2025-12-01T00:00:00.000",
+        "n": "4339"
+      },
+      {
+        "m": "2026-01-01T00:00:00.000",
+        "n": "7525"
+      },
+      {
+        "m": "2026-02-01T00:00:00.000",
+        "n": "4522"
+      },
+      {
+        "m": "2026-03-01T00:00:00.000",
+        "n": "8261"
+      },
+      {
+        "m": "2026-04-01T00:00:00.000",
+        "n": "3644"
+      },
+      {
+        "m": "2026-05-01T00:00:00.000",
+        "n": "2496"
+      },
+      {
+        "m": "2026-06-01T00:00:00.000",
+        "n": "1114"
+      },
+      {
+        "m": "2026-07-01T00:00:00.000",
+        "n": "620"
+      }
+    ],
+    "procmix": [
+      {
+        "t": "Award",
+        "n": "3237"
+      },
+      {
+        "t": "Solicitation",
+        "n": "929"
+      },
+      {
+        "t": "Intent to Award",
+        "n": "488"
+      },
+      {
+        "t": "Vendor List",
+        "n": "13"
+      }
+    ],
+    "agencies": [
+      {
+        "agency_name": "Homeless Services",
+        "total": "4610000000"
+      },
+      {
+        "agency_name": "Administration for Children's Services",
+        "total": "4260000000"
+      },
+      {
+        "agency_name": "Citywide Administrative Services",
+        "total": "3350000000"
+      },
+      {
+        "agency_name": "Small Business Services",
+        "total": "2620000000"
+      },
+      {
+        "agency_name": "Transportation",
+        "total": "1750000000"
+      },
+      {
+        "agency_name": "Health and Mental Hygiene",
+        "total": "1530000000"
+      },
+      {
+        "agency_name": "Environmental Protection",
+        "total": "1240000000"
+      },
+      {
+        "agency_name": "Information Technology and Telecommunications",
+        "total": "1190000000"
+      },
+      {
+        "agency_name": "Design and Construction",
+        "total": "1130000000"
+      },
+      {
+        "agency_name": "Youth and Community Development",
+        "total": "985300000"
+      }
+    ],
+    "vendors": [
+      {
+        "vendor_name": "New York City Economic Development Corporation",
+        "total": "2130000000"
+      },
+      {
+        "vendor_name": "Common Ground Management Corp",
+        "total": "1050000000"
+      },
+      {
+        "vendor_name": "American Traffic Solutions, Inc.",
+        "total": "998500000"
+      },
+      {
+        "vendor_name": "Group Health Incorporated",
+        "total": "950000000"
+      },
+      {
+        "vendor_name": "Universal Protection Service LLC",
+        "total": "948300000"
+      },
+      {
+        "vendor_name": "Dell Marketing L.P.",
+        "total": "573800000"
+      },
+      {
+        "vendor_name": "SCO Family of Services",
+        "total": "436100000"
+      },
+      {
+        "vendor_name": "Aron Security Inc",
+        "total": "428800000"
+      },
+      {
+        "vendor_name": "Inter-Con Security Systems Incorporated",
+        "total": "399700000"
+      },
+      {
+        "vendor_name": "Governors Island Corporation",
+        "total": "394100000"
+      }
+    ]
+  },
+  "captures": {
+    "before-390": {
+      "sections": {
+        "encoding": "legacy-ranking",
+        "rows": [
+          {
+            "label": "Changes in Personnel",
+            "value": "959,659",
+            "cssWidth": "100%",
+            "fillPx": 0,
+            "trackPx": 129.98,
+            "renderedPct": 0
+          },
+          {
+            "label": "Procurement",
+            "value": "105,044",
+            "cssWidth": "11%",
+            "fillPx": 0,
+            "trackPx": 129.98,
+            "renderedPct": 0
+          },
+          {
+            "label": "Contract Award Hearings",
+            "value": "10,505",
+            "cssWidth": "1%",
+            "fillPx": 0,
+            "trackPx": 138.64,
+            "renderedPct": 0
+          },
+          {
+            "label": "Public Hearings and Meetings",
+            "value": "8,932",
+            "cssWidth": "1%",
+            "fillPx": 0,
+            "trackPx": 147.31,
+            "renderedPct": 0
+          },
+          {
+            "label": "Special Materials",
+            "value": "8,131",
+            "cssWidth": "1%",
+            "fillPx": 0,
+            "trackPx": 147.31,
+            "renderedPct": 0
+          },
+          {
+            "label": "Agency Rules",
+            "value": "3,061",
+            "cssWidth": "1%",
+            "fillPx": 0,
+            "trackPx": 147.31,
+            "renderedPct": 0
+          },
+          {
+            "label": "Public Comment on Contract Awards",
+            "value": "929",
+            "cssWidth": "1%",
+            "fillPx": 0,
+            "trackPx": 159.98,
+            "renderedPct": 0
+          },
+          {
+            "label": "Property Disposition",
+            "value": "243",
+            "cssWidth": "1%",
+            "fillPx": 0,
+            "trackPx": 159.98,
+            "renderedPct": 0
+          },
+          {
+            "label": "Court Notices",
+            "value": "155",
+            "cssWidth": "1%",
+            "fillPx": 0,
+            "trackPx": 159.98,
+            "renderedPct": 0
+          }
+        ]
+      },
+      "volume": {
+        "encoding": "legacy-ranking",
+        "rows": [
+          {
+            "label": "2025-07",
+            "value": "134",
+            "cssWidth": "2%",
+            "fillPx": 0,
+            "trackPx": 159.98,
+            "renderedPct": 0
+          },
+          {
+            "label": "2025-08",
+            "value": "8,271",
+            "cssWidth": "100%",
+            "fillPx": 0,
+            "trackPx": 147.31,
+            "renderedPct": 0
+          },
+          {
+            "label": "2025-09",
+            "value": "7,117",
+            "cssWidth": "86%",
+            "fillPx": 0,
+            "trackPx": 147.31,
+            "renderedPct": 0
+          },
+          {
+            "label": "2025-10",
+            "value": "5,931",
+            "cssWidth": "72%",
+            "fillPx": 0,
+            "trackPx": 147.31,
+            "renderedPct": 0
+          },
+          {
+            "label": "2025-11",
+            "value": "4,589",
+            "cssWidth": "55%",
+            "fillPx": 0,
+            "trackPx": 147.31,
+            "renderedPct": 0
+          },
+          {
+            "label": "2025-12",
+            "value": "4,339",
+            "cssWidth": "52%",
+            "fillPx": 0,
+            "trackPx": 147.31,
+            "renderedPct": 0
+          },
+          {
+            "label": "2026-01",
+            "value": "7,525",
+            "cssWidth": "91%",
+            "fillPx": 0,
+            "trackPx": 147.31,
+            "renderedPct": 0
+          },
+          {
+            "label": "2026-02",
+            "value": "4,522",
+            "cssWidth": "55%",
+            "fillPx": 0,
+            "trackPx": 147.31,
+            "renderedPct": 0
+          },
+          {
+            "label": "2026-03",
+            "value": "8,261",
+            "cssWidth": "100%",
+            "fillPx": 0,
+            "trackPx": 147.31,
+            "renderedPct": 0
+          },
+          {
+            "label": "2026-04",
+            "value": "3,644",
+            "cssWidth": "44%",
+            "fillPx": 0,
+            "trackPx": 147.31,
+            "renderedPct": 0
+          },
+          {
+            "label": "2026-05",
+            "value": "2,496",
+            "cssWidth": "30%",
+            "fillPx": 0,
+            "trackPx": 147.31,
+            "renderedPct": 0
+          },
+          {
+            "label": "2026-06",
+            "value": "1,114",
+            "cssWidth": "13%",
+            "fillPx": 0,
+            "trackPx": 147.31,
+            "renderedPct": 0
+          },
+          {
+            "label": "2026-07",
+            "value": "620",
+            "cssWidth": "7%",
+            "fillPx": 0,
+            "trackPx": 159.98,
+            "renderedPct": 0
+          }
+        ]
+      },
+      "procmix": {
+        "encoding": "legacy-ranking",
+        "rows": [
+          {
+            "label": "Award",
+            "value": "3,237",
+            "cssWidth": "100%",
+            "fillPx": 0,
+            "trackPx": 147.31,
+            "renderedPct": 0
+          },
+          {
+            "label": "Solicitation",
+            "value": "929",
+            "cssWidth": "29%",
+            "fillPx": 0,
+            "trackPx": 159.98,
+            "renderedPct": 0
+          },
+          {
+            "label": "Intent to Award",
+            "value": "488",
+            "cssWidth": "15%",
+            "fillPx": 0,
+            "trackPx": 159.98,
+            "renderedPct": 0
+          },
+          {
+            "label": "Vendor List",
+            "value": "13",
+            "cssWidth": "1%",
+            "fillPx": 0,
+            "trackPx": 168.66,
+            "renderedPct": 0
+          }
+        ]
+      },
+      "agencies": {
+        "encoding": "legacy-ranking",
+        "rows": [
+          {
+            "label": "Homeless Services",
+            "value": "$4.61B",
+            "cssWidth": "100%",
+            "fillPx": 0,
+            "trackPx": 138.27,
+            "renderedPct": 0
+          },
+          {
+            "label": "Administration for Children's Services",
+            "value": "$4.26B",
+            "cssWidth": "92%",
+            "fillPx": 0,
+            "trackPx": 138.27,
+            "renderedPct": 0
+          },
+          {
+            "label": "Citywide Administrative Services",
+            "value": "$3.35B",
+            "cssWidth": "73%",
+            "fillPx": 0,
+            "trackPx": 138.27,
+            "renderedPct": 0
+          },
+          {
+            "label": "Small Business Services",
+            "value": "$2.62B",
+            "cssWidth": "57%",
+            "fillPx": 0,
+            "trackPx": 138.27,
+            "renderedPct": 0
+          },
+          {
+            "label": "Transportation",
+            "value": "$1.75B",
+            "cssWidth": "38%",
+            "fillPx": 0,
+            "trackPx": 138.27,
+            "renderedPct": 0
+          },
+          {
+            "label": "Health and Mental Hygiene",
+            "value": "$1.53B",
+            "cssWidth": "33%",
+            "fillPx": 0,
+            "trackPx": 138.27,
+            "renderedPct": 0
+          },
+          {
+            "label": "Environmental Protection",
+            "value": "$1.24B",
+            "cssWidth": "27%",
+            "fillPx": 0,
+            "trackPx": 138.27,
+            "renderedPct": 0
+          },
+          {
+            "label": "Information Technology and Telecommunications",
+            "value": "$1.19B",
+            "cssWidth": "26%",
+            "fillPx": 0,
+            "trackPx": 138.27,
+            "renderedPct": 0
+          },
+          {
+            "label": "Design and Construction",
+            "value": "$1.13B",
+            "cssWidth": "25%",
+            "fillPx": 0,
+            "trackPx": 138.27,
+            "renderedPct": 0
+          },
+          {
+            "label": "Youth and Community Development",
+            "value": "$985.3M",
+            "cssWidth": "21%",
+            "fillPx": 0,
+            "trackPx": 126.56,
+            "renderedPct": 0
+          }
+        ]
+      },
+      "vendors": {
+        "encoding": "legacy-ranking",
+        "rows": [
+          {
+            "label": "New York City Economic Development Corporation",
+            "value": "$2.13B",
+            "cssWidth": "100%",
+            "fillPx": 0,
+            "trackPx": 138.27,
+            "renderedPct": 0
+          },
+          {
+            "label": "Common Ground Management Corp",
+            "value": "$1.05B",
+            "cssWidth": "49%",
+            "fillPx": 0,
+            "trackPx": 138.27,
+            "renderedPct": 0
+          },
+          {
+            "label": "American Traffic Solutions, Inc.",
+            "value": "$998.5M",
+            "cssWidth": "47%",
+            "fillPx": 0,
+            "trackPx": 126.56,
+            "renderedPct": 0
+          },
+          {
+            "label": "Group Health Incorporated",
+            "value": "$950.0M",
+            "cssWidth": "45%",
+            "fillPx": 0,
+            "trackPx": 126.56,
+            "renderedPct": 0
+          },
+          {
+            "label": "Universal Protection Service LLC",
+            "value": "$948.3M",
+            "cssWidth": "45%",
+            "fillPx": 0,
+            "trackPx": 126.56,
+            "renderedPct": 0
+          },
+          {
+            "label": "Dell Marketing L.P.",
+            "value": "$573.8M",
+            "cssWidth": "27%",
+            "fillPx": 0,
+            "trackPx": 126.56,
+            "renderedPct": 0
+          },
+          {
+            "label": "SCO Family of Services",
+            "value": "$436.1M",
+            "cssWidth": "20%",
+            "fillPx": 0,
+            "trackPx": 126.56,
+            "renderedPct": 0
+          },
+          {
+            "label": "Aron Security Inc",
+            "value": "$428.8M",
+            "cssWidth": "20%",
+            "fillPx": 0,
+            "trackPx": 126.56,
+            "renderedPct": 0
+          },
+          {
+            "label": "Inter-Con Security Systems Incorporated",
+            "value": "$399.7M",
+            "cssWidth": "19%",
+            "fillPx": 0,
+            "trackPx": 126.56,
+            "renderedPct": 0
+          },
+          {
+            "label": "Governors Island Corporation",
+            "value": "$394.1M",
+            "cssWidth": "19%",
+            "fillPx": 0,
+            "trackPx": 126.56,
+            "renderedPct": 0
+          }
+        ]
+      }
+    },
+    "before-1440": {
+      "sections": {
+        "encoding": "legacy-ranking",
+        "rows": [
+          {
+            "label": "Changes in Personnel",
+            "value": "959,659",
+            "cssWidth": "100%",
+            "fillPx": 0,
+            "trackPx": 367.91,
+            "renderedPct": 0
+          },
+          {
+            "label": "Procurement",
+            "value": "105,044",
+            "cssWidth": "11%",
+            "fillPx": 0,
+            "trackPx": 367.91,
+            "renderedPct": 0
+          },
+          {
+            "label": "Contract Award Hearings",
+            "value": "10,505",
+            "cssWidth": "1%",
+            "fillPx": 0,
+            "trackPx": 376.56,
+            "renderedPct": 0
+          },
+          {
+            "label": "Public Hearings and Meetings",
+            "value": "8,932",
+            "cssWidth": "1%",
+            "fillPx": 0,
+            "trackPx": 385.23,
+            "renderedPct": 0
+          },
+          {
+            "label": "Special Materials",
+            "value": "8,131",
+            "cssWidth": "1%",
+            "fillPx": 0,
+            "trackPx": 385.23,
+            "renderedPct": 0
+          },
+          {
+            "label": "Agency Rules",
+            "value": "3,061",
+            "cssWidth": "1%",
+            "fillPx": 0,
+            "trackPx": 385.23,
+            "renderedPct": 0
+          },
+          {
+            "label": "Public Comment on Contract Awards",
+            "value": "929",
+            "cssWidth": "1%",
+            "fillPx": 0,
+            "trackPx": 397.91,
+            "renderedPct": 0
+          },
+          {
+            "label": "Property Disposition",
+            "value": "243",
+            "cssWidth": "1%",
+            "fillPx": 0,
+            "trackPx": 397.91,
+            "renderedPct": 0
+          },
+          {
+            "label": "Court Notices",
+            "value": "155",
+            "cssWidth": "1%",
+            "fillPx": 0,
+            "trackPx": 397.91,
+            "renderedPct": 0
+          }
+        ]
+      },
+      "volume": {
+        "encoding": "legacy-ranking",
+        "rows": [
+          {
+            "label": "2025-07",
+            "value": "134",
+            "cssWidth": "2%",
+            "fillPx": 0,
+            "trackPx": 397.91,
+            "renderedPct": 0
+          },
+          {
+            "label": "2025-08",
+            "value": "8,271",
+            "cssWidth": "100%",
+            "fillPx": 0,
+            "trackPx": 385.23,
+            "renderedPct": 0
+          },
+          {
+            "label": "2025-09",
+            "value": "7,117",
+            "cssWidth": "86%",
+            "fillPx": 0,
+            "trackPx": 385.23,
+            "renderedPct": 0
+          },
+          {
+            "label": "2025-10",
+            "value": "5,931",
+            "cssWidth": "72%",
+            "fillPx": 0,
+            "trackPx": 385.23,
+            "renderedPct": 0
+          },
+          {
+            "label": "2025-11",
+            "value": "4,589",
+            "cssWidth": "55%",
+            "fillPx": 0,
+            "trackPx": 385.23,
+            "renderedPct": 0
+          },
+          {
+            "label": "2025-12",
+            "value": "4,339",
+            "cssWidth": "52%",
+            "fillPx": 0,
+            "trackPx": 385.23,
+            "renderedPct": 0
+          },
+          {
+            "label": "2026-01",
+            "value": "7,525",
+            "cssWidth": "91%",
+            "fillPx": 0,
+            "trackPx": 385.23,
+            "renderedPct": 0
+          },
+          {
+            "label": "2026-02",
+            "value": "4,522",
+            "cssWidth": "55%",
+            "fillPx": 0,
+            "trackPx": 385.23,
+            "renderedPct": 0
+          },
+          {
+            "label": "2026-03",
+            "value": "8,261",
+            "cssWidth": "100%",
+            "fillPx": 0,
+            "trackPx": 385.23,
+            "renderedPct": 0
+          },
+          {
+            "label": "2026-04",
+            "value": "3,644",
+            "cssWidth": "44%",
+            "fillPx": 0,
+            "trackPx": 385.23,
+            "renderedPct": 0
+          },
+          {
+            "label": "2026-05",
+            "value": "2,496",
+            "cssWidth": "30%",
+            "fillPx": 0,
+            "trackPx": 385.23,
+            "renderedPct": 0
+          },
+          {
+            "label": "2026-06",
+            "value": "1,114",
+            "cssWidth": "13%",
+            "fillPx": 0,
+            "trackPx": 385.23,
+            "renderedPct": 0
+          },
+          {
+            "label": "2026-07",
+            "value": "620",
+            "cssWidth": "7%",
+            "fillPx": 0,
+            "trackPx": 397.91,
+            "renderedPct": 0
+          }
+        ]
+      },
+      "procmix": {
+        "encoding": "legacy-ranking",
+        "rows": [
+          {
+            "label": "Award",
+            "value": "3,237",
+            "cssWidth": "100%",
+            "fillPx": 0,
+            "trackPx": 385.23,
+            "renderedPct": 0
+          },
+          {
+            "label": "Solicitation",
+            "value": "929",
+            "cssWidth": "29%",
+            "fillPx": 0,
+            "trackPx": 397.91,
+            "renderedPct": 0
+          },
+          {
+            "label": "Intent to Award",
+            "value": "488",
+            "cssWidth": "15%",
+            "fillPx": 0,
+            "trackPx": 397.91,
+            "renderedPct": 0
+          },
+          {
+            "label": "Vendor List",
+            "value": "13",
+            "cssWidth": "1%",
+            "fillPx": 0,
+            "trackPx": 406.58,
+            "renderedPct": 0
+          }
+        ]
+      },
+      "agencies": {
+        "encoding": "legacy-ranking",
+        "rows": [
+          {
+            "label": "Homeless Services",
+            "value": "$4.61B",
+            "cssWidth": "100%",
+            "fillPx": 0,
+            "trackPx": 376.19,
+            "renderedPct": 0
+          },
+          {
+            "label": "Administration for Children's Services",
+            "value": "$4.26B",
+            "cssWidth": "92%",
+            "fillPx": 0,
+            "trackPx": 376.19,
+            "renderedPct": 0
+          },
+          {
+            "label": "Citywide Administrative Services",
+            "value": "$3.35B",
+            "cssWidth": "73%",
+            "fillPx": 0,
+            "trackPx": 376.19,
+            "renderedPct": 0
+          },
+          {
+            "label": "Small Business Services",
+            "value": "$2.62B",
+            "cssWidth": "57%",
+            "fillPx": 0,
+            "trackPx": 376.19,
+            "renderedPct": 0
+          },
+          {
+            "label": "Transportation",
+            "value": "$1.75B",
+            "cssWidth": "38%",
+            "fillPx": 0,
+            "trackPx": 376.19,
+            "renderedPct": 0
+          },
+          {
+            "label": "Health and Mental Hygiene",
+            "value": "$1.53B",
+            "cssWidth": "33%",
+            "fillPx": 0,
+            "trackPx": 376.19,
+            "renderedPct": 0
+          },
+          {
+            "label": "Environmental Protection",
+            "value": "$1.24B",
+            "cssWidth": "27%",
+            "fillPx": 0,
+            "trackPx": 376.19,
+            "renderedPct": 0
+          },
+          {
+            "label": "Information Technology and Telecommunications",
+            "value": "$1.19B",
+            "cssWidth": "26%",
+            "fillPx": 0,
+            "trackPx": 376.19,
+            "renderedPct": 0
+          },
+          {
+            "label": "Design and Construction",
+            "value": "$1.13B",
+            "cssWidth": "25%",
+            "fillPx": 0,
+            "trackPx": 376.19,
+            "renderedPct": 0
+          },
+          {
+            "label": "Youth and Community Development",
+            "value": "$985.3M",
+            "cssWidth": "21%",
+            "fillPx": 0,
+            "trackPx": 364.48,
+            "renderedPct": 0
+          }
+        ]
+      },
+      "vendors": {
+        "encoding": "legacy-ranking",
+        "rows": [
+          {
+            "label": "New York City Economic Development Corporation",
+            "value": "$2.13B",
+            "cssWidth": "100%",
+            "fillPx": 0,
+            "trackPx": 376.19,
+            "renderedPct": 0
+          },
+          {
+            "label": "Common Ground Management Corp",
+            "value": "$1.05B",
+            "cssWidth": "49%",
+            "fillPx": 0,
+            "trackPx": 376.19,
+            "renderedPct": 0
+          },
+          {
+            "label": "American Traffic Solutions, Inc.",
+            "value": "$998.5M",
+            "cssWidth": "47%",
+            "fillPx": 0,
+            "trackPx": 364.48,
+            "renderedPct": 0
+          },
+          {
+            "label": "Group Health Incorporated",
+            "value": "$950.0M",
+            "cssWidth": "45%",
+            "fillPx": 0,
+            "trackPx": 364.48,
+            "renderedPct": 0
+          },
+          {
+            "label": "Universal Protection Service LLC",
+            "value": "$948.3M",
+            "cssWidth": "45%",
+            "fillPx": 0,
+            "trackPx": 364.48,
+            "renderedPct": 0
+          },
+          {
+            "label": "Dell Marketing L.P.",
+            "value": "$573.8M",
+            "cssWidth": "27%",
+            "fillPx": 0,
+            "trackPx": 364.48,
+            "renderedPct": 0
+          },
+          {
+            "label": "SCO Family of Services",
+            "value": "$436.1M",
+            "cssWidth": "20%",
+            "fillPx": 0,
+            "trackPx": 364.48,
+            "renderedPct": 0
+          },
+          {
+            "label": "Aron Security Inc",
+            "value": "$428.8M",
+            "cssWidth": "20%",
+            "fillPx": 0,
+            "trackPx": 364.48,
+            "renderedPct": 0
+          },
+          {
+            "label": "Inter-Con Security Systems Incorporated",
+            "value": "$399.7M",
+            "cssWidth": "19%",
+            "fillPx": 0,
+            "trackPx": 364.48,
+            "renderedPct": 0
+          },
+          {
+            "label": "Governors Island Corporation",
+            "value": "$394.1M",
+            "cssWidth": "19%",
+            "fillPx": 0,
+            "trackPx": 364.48,
+            "renderedPct": 0
+          }
+        ]
+      }
+    },
+    "after-390": {
+      "sections": {
+        "encoding": "composition",
+        "rows": [
+          {
+            "label": "Changes in Personnel",
+            "value": "959,659 · 88% of total",
+            "cssWidth": "87.51%",
+            "fillPx": 301.03,
+            "trackPx": 346,
+            "renderedPct": 87
+          },
+          {
+            "label": "Procurement",
+            "value": "105,044 · 10% of total",
+            "cssWidth": "9.58%",
+            "fillPx": 32.95,
+            "trackPx": 346,
+            "renderedPct": 9.52
+          },
+          {
+            "label": "Contract Award Hearings",
+            "value": "10,505 · 1% of total",
+            "cssWidth": "0.96%",
+            "fillPx": 3.3,
+            "trackPx": 346,
+            "renderedPct": 0.95
+          },
+          {
+            "label": "Public Hearings and Meetings",
+            "value": "8,932 · 0.8% of total",
+            "cssWidth": "0.81%",
+            "fillPx": 2.78,
+            "trackPx": 346,
+            "renderedPct": 0.8
+          },
+          {
+            "label": "Special Materials",
+            "value": "8,131 · 0.7% of total",
+            "cssWidth": "0.74%",
+            "fillPx": 2.53,
+            "trackPx": 346,
+            "renderedPct": 0.73
+          },
+          {
+            "label": "Agency Rules",
+            "value": "3,061 · 0.3% of total",
+            "cssWidth": "0.28%",
+            "fillPx": 0.95,
+            "trackPx": 346,
+            "renderedPct": 0.28
+          },
+          {
+            "label": "Public Comment on Contract Awards",
+            "value": "929 · 0.1% of total",
+            "cssWidth": "0.08%",
+            "fillPx": 0.27,
+            "trackPx": 346,
+            "renderedPct": 0.08
+          },
+          {
+            "label": "Property Disposition",
+            "value": "243 · 0% of total",
+            "cssWidth": "0.02%",
+            "fillPx": 0.06,
+            "trackPx": 346,
+            "renderedPct": 0.02
+          },
+          {
+            "label": "Court Notices",
+            "value": "155 · 0% of total",
+            "cssWidth": "0.01%",
+            "fillPx": 0.03,
+            "trackPx": 346,
+            "renderedPct": 0.01
+          }
+        ]
+      },
+      "volume": {
+        "encoding": "ranking",
+        "rows": [
+          {
+            "label": "2025-07",
+            "value": "134",
+            "cssWidth": "1.62%",
+            "fillPx": 5.56,
+            "trackPx": 346,
+            "renderedPct": 1.61
+          },
+          {
+            "label": "2025-08",
+            "value": "8,271",
+            "cssWidth": "100%",
+            "fillPx": 344,
+            "trackPx": 346,
+            "renderedPct": 99.42
+          },
+          {
+            "label": "2025-09",
+            "value": "7,117",
+            "cssWidth": "86.05%",
+            "fillPx": 296,
+            "trackPx": 346,
+            "renderedPct": 85.55
+          },
+          {
+            "label": "2025-10",
+            "value": "5,931",
+            "cssWidth": "71.71%",
+            "fillPx": 246.67,
+            "trackPx": 346,
+            "renderedPct": 71.29
+          },
+          {
+            "label": "2025-11",
+            "value": "4,589",
+            "cssWidth": "55.48%",
+            "fillPx": 190.84,
+            "trackPx": 346,
+            "renderedPct": 55.16
+          },
+          {
+            "label": "2025-12",
+            "value": "4,339",
+            "cssWidth": "52.46%",
+            "fillPx": 180.45,
+            "trackPx": 346,
+            "renderedPct": 52.15
+          },
+          {
+            "label": "2026-01",
+            "value": "7,525",
+            "cssWidth": "90.98%",
+            "fillPx": 312.97,
+            "trackPx": 346,
+            "renderedPct": 90.45
+          },
+          {
+            "label": "2026-02",
+            "value": "4,522",
+            "cssWidth": "54.67%",
+            "fillPx": 188.06,
+            "trackPx": 346,
+            "renderedPct": 54.35
+          },
+          {
+            "label": "2026-03",
+            "value": "8,261",
+            "cssWidth": "99.88%",
+            "fillPx": 343.58,
+            "trackPx": 346,
+            "renderedPct": 99.3
+          },
+          {
+            "label": "2026-04",
+            "value": "3,644",
+            "cssWidth": "44.06%",
+            "fillPx": 151.56,
+            "trackPx": 346,
+            "renderedPct": 43.8
+          },
+          {
+            "label": "2026-05",
+            "value": "2,496",
+            "cssWidth": "30.18%",
+            "fillPx": 103.81,
+            "trackPx": 346,
+            "renderedPct": 30
+          },
+          {
+            "label": "2026-06",
+            "value": "1,114",
+            "cssWidth": "13.47%",
+            "fillPx": 46.33,
+            "trackPx": 346,
+            "renderedPct": 13.39
+          },
+          {
+            "label": "2026-07",
+            "value": "620",
+            "cssWidth": "7.5%",
+            "fillPx": 25.8,
+            "trackPx": 346,
+            "renderedPct": 7.46
+          }
+        ]
+      },
+      "procmix": {
+        "encoding": "composition",
+        "rows": [
+          {
+            "label": "Award",
+            "value": "3,237 · 69% of total",
+            "cssWidth": "69.36%",
+            "fillPx": 238.59,
+            "trackPx": 346,
+            "renderedPct": 68.96
+          },
+          {
+            "label": "Solicitation",
+            "value": "929 · 20% of total",
+            "cssWidth": "19.91%",
+            "fillPx": 68.48,
+            "trackPx": 346,
+            "renderedPct": 19.79
+          },
+          {
+            "label": "Intent to Award",
+            "value": "488 · 10% of total",
+            "cssWidth": "10.46%",
+            "fillPx": 35.97,
+            "trackPx": 346,
+            "renderedPct": 10.4
+          },
+          {
+            "label": "Vendor List",
+            "value": "13 · 0.3% of total",
+            "cssWidth": "0.28%",
+            "fillPx": 0.95,
+            "trackPx": 346,
+            "renderedPct": 0.28
+          }
+        ]
+      },
+      "agencies": {
+        "encoding": "ranking",
+        "rows": [
+          {
+            "label": "Homeless Services",
+            "value": "$4.61B",
+            "cssWidth": "100%",
+            "fillPx": 344,
+            "trackPx": 346,
+            "renderedPct": 99.42
+          },
+          {
+            "label": "Administration for Children's Services",
+            "value": "$4.26B",
+            "cssWidth": "92.41%",
+            "fillPx": 317.88,
+            "trackPx": 346,
+            "renderedPct": 91.87
+          },
+          {
+            "label": "Citywide Administrative Services",
+            "value": "$3.35B",
+            "cssWidth": "72.67%",
+            "fillPx": 249.98,
+            "trackPx": 346,
+            "renderedPct": 72.25
+          },
+          {
+            "label": "Small Business Services",
+            "value": "$2.62B",
+            "cssWidth": "56.83%",
+            "fillPx": 195.48,
+            "trackPx": 346,
+            "renderedPct": 56.5
+          },
+          {
+            "label": "Transportation",
+            "value": "$1.75B",
+            "cssWidth": "37.96%",
+            "fillPx": 130.58,
+            "trackPx": 346,
+            "renderedPct": 37.74
+          },
+          {
+            "label": "Health and Mental Hygiene",
+            "value": "$1.53B",
+            "cssWidth": "33.19%",
+            "fillPx": 114.17,
+            "trackPx": 346,
+            "renderedPct": 33
+          },
+          {
+            "label": "Environmental Protection",
+            "value": "$1.24B",
+            "cssWidth": "26.9%",
+            "fillPx": 92.53,
+            "trackPx": 346,
+            "renderedPct": 26.74
+          },
+          {
+            "label": "Information Technology and Telecommunications",
+            "value": "$1.19B",
+            "cssWidth": "25.81%",
+            "fillPx": 88.78,
+            "trackPx": 346,
+            "renderedPct": 25.66
+          },
+          {
+            "label": "Design and Construction",
+            "value": "$1.13B",
+            "cssWidth": "24.51%",
+            "fillPx": 84.31,
+            "trackPx": 346,
+            "renderedPct": 24.37
+          },
+          {
+            "label": "Youth and Community Development",
+            "value": "$985.3M",
+            "cssWidth": "21.37%",
+            "fillPx": 73.5,
+            "trackPx": 346,
+            "renderedPct": 21.24
+          }
+        ]
+      },
+      "vendors": {
+        "encoding": "ranking",
+        "rows": [
+          {
+            "label": "New York City Economic Development Corporation",
+            "value": "$2.13B",
+            "cssWidth": "100%",
+            "fillPx": 344,
+            "trackPx": 346,
+            "renderedPct": 99.42
+          },
+          {
+            "label": "Common Ground Management Corp",
+            "value": "$1.05B",
+            "cssWidth": "49.3%",
+            "fillPx": 169.58,
+            "trackPx": 346,
+            "renderedPct": 49.01
+          },
+          {
+            "label": "American Traffic Solutions, Inc.",
+            "value": "$998.5M",
+            "cssWidth": "46.88%",
+            "fillPx": 161.27,
+            "trackPx": 346,
+            "renderedPct": 46.61
+          },
+          {
+            "label": "Group Health Incorporated",
+            "value": "$950M",
+            "cssWidth": "44.6%",
+            "fillPx": 153.42,
+            "trackPx": 346,
+            "renderedPct": 44.34
+          },
+          {
+            "label": "Universal Protection Service LLC",
+            "value": "$948.3M",
+            "cssWidth": "44.52%",
+            "fillPx": 153.14,
+            "trackPx": 346,
+            "renderedPct": 44.26
+          },
+          {
+            "label": "Dell Marketing L.P.",
+            "value": "$573.8M",
+            "cssWidth": "26.94%",
+            "fillPx": 92.67,
+            "trackPx": 346,
+            "renderedPct": 26.78
+          },
+          {
+            "label": "SCO Family of Services",
+            "value": "$436.1M",
+            "cssWidth": "20.47%",
+            "fillPx": 70.41,
+            "trackPx": 346,
+            "renderedPct": 20.35
+          },
+          {
+            "label": "Aron Security Inc",
+            "value": "$428.8M",
+            "cssWidth": "20.13%",
+            "fillPx": 69.23,
+            "trackPx": 346,
+            "renderedPct": 20.01
+          },
+          {
+            "label": "Inter-Con Security Systems Incorporated",
+            "value": "$399.7M",
+            "cssWidth": "18.77%",
+            "fillPx": 64.56,
+            "trackPx": 346,
+            "renderedPct": 18.66
+          },
+          {
+            "label": "Governors Island Corporation",
+            "value": "$394.1M",
+            "cssWidth": "18.5%",
+            "fillPx": 63.63,
+            "trackPx": 346,
+            "renderedPct": 18.39
+          }
+        ]
+      }
+    },
+    "after-1440": {
+      "sections": {
+        "encoding": "composition",
+        "rows": [
+          {
+            "label": "Changes in Personnel",
+            "value": "959,659 · 88% of total",
+            "cssWidth": "87.51%",
+            "fillPx": 624.81,
+            "trackPx": 716,
+            "renderedPct": 87.26
+          },
+          {
+            "label": "Procurement",
+            "value": "105,044 · 10% of total",
+            "cssWidth": "9.58%",
+            "fillPx": 68.39,
+            "trackPx": 716,
+            "renderedPct": 9.55
+          },
+          {
+            "label": "Contract Award Hearings",
+            "value": "10,505 · 1% of total",
+            "cssWidth": "0.96%",
+            "fillPx": 6.84,
+            "trackPx": 716,
+            "renderedPct": 0.96
+          },
+          {
+            "label": "Public Hearings and Meetings",
+            "value": "8,932 · 0.8% of total",
+            "cssWidth": "0.81%",
+            "fillPx": 5.78,
+            "trackPx": 716,
+            "renderedPct": 0.81
+          },
+          {
+            "label": "Special Materials",
+            "value": "8,131 · 0.7% of total",
+            "cssWidth": "0.74%",
+            "fillPx": 5.28,
+            "trackPx": 716,
+            "renderedPct": 0.74
+          },
+          {
+            "label": "Agency Rules",
+            "value": "3,061 · 0.3% of total",
+            "cssWidth": "0.28%",
+            "fillPx": 1.98,
+            "trackPx": 716,
+            "renderedPct": 0.28
+          },
+          {
+            "label": "Public Comment on Contract Awards",
+            "value": "929 · 0.1% of total",
+            "cssWidth": "0.08%",
+            "fillPx": 0.56,
+            "trackPx": 716,
+            "renderedPct": 0.08
+          },
+          {
+            "label": "Property Disposition",
+            "value": "243 · 0% of total",
+            "cssWidth": "0.02%",
+            "fillPx": 0.14,
+            "trackPx": 716,
+            "renderedPct": 0.02
+          },
+          {
+            "label": "Court Notices",
+            "value": "155 · 0% of total",
+            "cssWidth": "0.01%",
+            "fillPx": 0.06,
+            "trackPx": 716,
+            "renderedPct": 0.01
+          }
+        ]
+      },
+      "volume": {
+        "encoding": "ranking",
+        "rows": [
+          {
+            "label": "2025-07",
+            "value": "134",
+            "cssWidth": "1.62%",
+            "fillPx": 11.56,
+            "trackPx": 716,
+            "renderedPct": 1.61
+          },
+          {
+            "label": "2025-08",
+            "value": "8,271",
+            "cssWidth": "100%",
+            "fillPx": 714,
+            "trackPx": 716,
+            "renderedPct": 99.72
+          },
+          {
+            "label": "2025-09",
+            "value": "7,117",
+            "cssWidth": "86.05%",
+            "fillPx": 614.39,
+            "trackPx": 716,
+            "renderedPct": 85.81
+          },
+          {
+            "label": "2025-10",
+            "value": "5,931",
+            "cssWidth": "71.71%",
+            "fillPx": 512,
+            "trackPx": 716,
+            "renderedPct": 71.51
+          },
+          {
+            "label": "2025-11",
+            "value": "4,589",
+            "cssWidth": "55.48%",
+            "fillPx": 396.13,
+            "trackPx": 716,
+            "renderedPct": 55.32
+          },
+          {
+            "label": "2025-12",
+            "value": "4,339",
+            "cssWidth": "52.46%",
+            "fillPx": 374.56,
+            "trackPx": 716,
+            "renderedPct": 52.31
+          },
+          {
+            "label": "2026-01",
+            "value": "7,525",
+            "cssWidth": "90.98%",
+            "fillPx": 649.59,
+            "trackPx": 716,
+            "renderedPct": 90.73
+          },
+          {
+            "label": "2026-02",
+            "value": "4,522",
+            "cssWidth": "54.67%",
+            "fillPx": 390.34,
+            "trackPx": 716,
+            "renderedPct": 54.52
+          },
+          {
+            "label": "2026-03",
+            "value": "8,261",
+            "cssWidth": "99.88%",
+            "fillPx": 713.14,
+            "trackPx": 716,
+            "renderedPct": 99.6
+          },
+          {
+            "label": "2026-04",
+            "value": "3,644",
+            "cssWidth": "44.06%",
+            "fillPx": 314.58,
+            "trackPx": 716,
+            "renderedPct": 43.94
+          },
+          {
+            "label": "2026-05",
+            "value": "2,496",
+            "cssWidth": "30.18%",
+            "fillPx": 215.48,
+            "trackPx": 716,
+            "renderedPct": 30.1
+          },
+          {
+            "label": "2026-06",
+            "value": "1,114",
+            "cssWidth": "13.47%",
+            "fillPx": 96.17,
+            "trackPx": 716,
+            "renderedPct": 13.43
+          },
+          {
+            "label": "2026-07",
+            "value": "620",
+            "cssWidth": "7.5%",
+            "fillPx": 53.55,
+            "trackPx": 716,
+            "renderedPct": 7.48
+          }
+        ]
+      },
+      "procmix": {
+        "encoding": "composition",
+        "rows": [
+          {
+            "label": "Award",
+            "value": "3,237 · 69% of total",
+            "cssWidth": "69.36%",
+            "fillPx": 495.22,
+            "trackPx": 716,
+            "renderedPct": 69.16
+          },
+          {
+            "label": "Solicitation",
+            "value": "929 · 20% of total",
+            "cssWidth": "19.91%",
+            "fillPx": 142.16,
+            "trackPx": 716,
+            "renderedPct": 19.85
+          },
+          {
+            "label": "Intent to Award",
+            "value": "488 · 10% of total",
+            "cssWidth": "10.46%",
+            "fillPx": 74.67,
+            "trackPx": 716,
+            "renderedPct": 10.43
+          },
+          {
+            "label": "Vendor List",
+            "value": "13 · 0.3% of total",
+            "cssWidth": "0.28%",
+            "fillPx": 1.98,
+            "trackPx": 716,
+            "renderedPct": 0.28
+          }
+        ]
+      },
+      "agencies": {
+        "encoding": "ranking",
+        "rows": [
+          {
+            "label": "Homeless Services",
+            "value": "$4.61B",
+            "cssWidth": "100%",
+            "fillPx": 714,
+            "trackPx": 716,
+            "renderedPct": 99.72
+          },
+          {
+            "label": "Administration for Children's Services",
+            "value": "$4.26B",
+            "cssWidth": "92.41%",
+            "fillPx": 659.8,
+            "trackPx": 716,
+            "renderedPct": 92.15
+          },
+          {
+            "label": "Citywide Administrative Services",
+            "value": "$3.35B",
+            "cssWidth": "72.67%",
+            "fillPx": 518.86,
+            "trackPx": 716,
+            "renderedPct": 72.47
+          },
+          {
+            "label": "Small Business Services",
+            "value": "$2.62B",
+            "cssWidth": "56.83%",
+            "fillPx": 405.77,
+            "trackPx": 716,
+            "renderedPct": 56.67
+          },
+          {
+            "label": "Transportation",
+            "value": "$1.75B",
+            "cssWidth": "37.96%",
+            "fillPx": 271.03,
+            "trackPx": 716,
+            "renderedPct": 37.85
+          },
+          {
+            "label": "Health and Mental Hygiene",
+            "value": "$1.53B",
+            "cssWidth": "33.19%",
+            "fillPx": 236.97,
+            "trackPx": 716,
+            "renderedPct": 33.1
+          },
+          {
+            "label": "Environmental Protection",
+            "value": "$1.24B",
+            "cssWidth": "26.9%",
+            "fillPx": 192.06,
+            "trackPx": 716,
+            "renderedPct": 26.82
+          },
+          {
+            "label": "Information Technology and Telecommunications",
+            "value": "$1.19B",
+            "cssWidth": "25.81%",
+            "fillPx": 184.28,
+            "trackPx": 716,
+            "renderedPct": 25.74
+          },
+          {
+            "label": "Design and Construction",
+            "value": "$1.13B",
+            "cssWidth": "24.51%",
+            "fillPx": 175,
+            "trackPx": 716,
+            "renderedPct": 24.44
+          },
+          {
+            "label": "Youth and Community Development",
+            "value": "$985.3M",
+            "cssWidth": "21.37%",
+            "fillPx": 152.58,
+            "trackPx": 716,
+            "renderedPct": 21.31
+          }
+        ]
+      },
+      "vendors": {
+        "encoding": "ranking",
+        "rows": [
+          {
+            "label": "New York City Economic Development Corporation",
+            "value": "$2.13B",
+            "cssWidth": "100%",
+            "fillPx": 714,
+            "trackPx": 716,
+            "renderedPct": 99.72
+          },
+          {
+            "label": "Common Ground Management Corp",
+            "value": "$1.05B",
+            "cssWidth": "49.3%",
+            "fillPx": 352,
+            "trackPx": 716,
+            "renderedPct": 49.16
+          },
+          {
+            "label": "American Traffic Solutions, Inc.",
+            "value": "$998.5M",
+            "cssWidth": "46.88%",
+            "fillPx": 334.72,
+            "trackPx": 716,
+            "renderedPct": 46.75
+          },
+          {
+            "label": "Group Health Incorporated",
+            "value": "$950M",
+            "cssWidth": "44.6%",
+            "fillPx": 318.44,
+            "trackPx": 716,
+            "renderedPct": 44.47
+          },
+          {
+            "label": "Universal Protection Service LLC",
+            "value": "$948.3M",
+            "cssWidth": "44.52%",
+            "fillPx": 317.86,
+            "trackPx": 716,
+            "renderedPct": 44.39
+          },
+          {
+            "label": "Dell Marketing L.P.",
+            "value": "$573.8M",
+            "cssWidth": "26.94%",
+            "fillPx": 192.34,
+            "trackPx": 716,
+            "renderedPct": 26.86
+          },
+          {
+            "label": "SCO Family of Services",
+            "value": "$436.1M",
+            "cssWidth": "20.47%",
+            "fillPx": 146.14,
+            "trackPx": 716,
+            "renderedPct": 20.41
+          },
+          {
+            "label": "Aron Security Inc",
+            "value": "$428.8M",
+            "cssWidth": "20.13%",
+            "fillPx": 143.72,
+            "trackPx": 716,
+            "renderedPct": 20.07
+          },
+          {
+            "label": "Inter-Con Security Systems Incorporated",
+            "value": "$399.7M",
+            "cssWidth": "18.77%",
+            "fillPx": 134.02,
+            "trackPx": 716,
+            "renderedPct": 18.72
+          },
+          {
+            "label": "Governors Island Corporation",
+            "value": "$394.1M",
+            "cssWidth": "18.5%",
+            "fillPx": 132.08,
+            "trackPx": 716,
+            "renderedPct": 18.45
+          }
+        ]
+      }
+    }
+  }
+}
