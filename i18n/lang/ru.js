@@ -230,6 +230,8 @@
     nl_filter_months: "Срок в течение {n} мес.",
     nl_filter_standard_only: "Только стандартные методы",
     clear_filters_btn: "Сбросить фильтры",
+    property_asset_label: "Имущество",
+    property_stage_label: "Этап",
     nl_edit_btn: "Изменить запрос",
     nl_no_matches_note: "По этому запросу совпадений нет.",
     deeplink_watch_context_label: "Совпадает с вашим оповещением:",

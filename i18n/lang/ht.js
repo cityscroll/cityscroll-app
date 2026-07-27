@@ -229,6 +229,8 @@
     nl_filter_months: "Dwe fèt nan {n} mwa",
     nl_filter_standard_only: "Metòd estanda sèlman",
     clear_filters_btn: "Efase filtè yo",
+    property_asset_label: "Byen",
+    property_stage_label: "Etap",
     nl_edit_btn: "Modifye rechèch la",
     nl_no_matches_note: "Pa gen rezilta pou rechèch sa a.",
     deeplink_watch_context_label: "Koresponn ak alèt ou a:",

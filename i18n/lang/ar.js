@@ -233,6 +233,8 @@
     nl_filter_months: "مستحق خلال {n} شهر",
     nl_filter_standard_only: "الطرق القياسية فقط",
     clear_filters_btn: "مسح عوامل التصفية",
+    property_asset_label: "الأصل",
+    property_stage_label: "المرحلة",
     nl_edit_btn: "تعديل البحث",
     nl_no_matches_note: "لا توجد نتائج مطابقة لهذا البحث.",
     deeplink_watch_context_label: "متطابق مع تنبيهك:",
