@@ -182,7 +182,7 @@ const ALLOW = new Set([
   "http://localhost:8000", "http://localhost:8787",
 ]);
 
-export async function handlePriorCycle(req, env, pathname) {
+export async function handlePriorCycle(req, env, pathname, ctx) {
   const cors = corsHeaders(req.headers.get("origin") || "");
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
   if (req.method !== "GET") return json({ ok: false, reason: "method" }, 405, cors);
@@ -196,9 +196,15 @@ export async function handlePriorCycle(req, env, pathname) {
   // request_ids are digit strings (e.g. "20260625017"); accept a conservative alnum set only.
   if (!/^[A-Za-z0-9_-]{4,40}$/.test(rawId)) return json({ ok: false, reason: "bad-id" }, 400, cors);
 
+  const cache = typeof caches !== "undefined" ? caches.default : null;
+  if (cache) {
+    const hit = await cache.match(req).catch(() => null);
+    if (hit) return withCors(hit, cors);
+  }
+
   const matches = await getOrCompute(env, rawId);
   const ok = matches.ok !== false;
-  return new Response(JSON.stringify({
+  const res = new Response(JSON.stringify({
     id: rawId, strict: matches.strict, near: matches.near,
     eligibleCount: typeof matches.eligibleCount === "number" ? matches.eligibleCount : 0,
     ok,
@@ -209,6 +215,11 @@ export async function handlePriorCycle(req, env, pathname) {
       "Cache-Control": ok ? "public, max-age=300" : "no-store",
     },
   });
+  if (cache && ok) {
+    const put = cache.put(req, res.clone());
+    if (ctx?.waitUntil) ctx.waitUntil(put); else await put.catch(() => {});
+  }
+  return res;
 }
 
 function corsHeaders(origin) {
@@ -219,6 +230,11 @@ function corsHeaders(origin) {
     "Access-Control-Allow-Headers": "Content-Type",
     "Vary": "Origin",
   };
+}
+function withCors(res, cors) {
+  const headers = new Headers(res.headers);
+  headers.set("Access-Control-Allow-Origin", cors["Access-Control-Allow-Origin"]);
+  return new Response(res.body, { status: res.status, statusText: res.statusText, headers });
 }
 function json(obj, status, cors) {
   return new Response(JSON.stringify(obj), { status, headers: { ...cors, "Content-Type": "application/json" } });
