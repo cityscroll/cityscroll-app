@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "fb9c6a06",
-  "zh-Hans": "ecfa2358",
-  ru: "1eb63df8",
-  bn: "e30394d8",
-  ht: "87f17d31",
-  ko: "d421e0d7",
-  fr: "9f319d9d",
-  pl: "be110375",
-  ar: "103bd5b2",
-  ur: "16d54001",
+  es: "635a95bc",
+  "zh-Hans": "ac5df0fc",
+  ru: "61fb7ea1",
+  bn: "6e0ce304",
+  ht: "ce24897b",
+  ko: "04a6b5a4",
+  fr: "dc37aa17",
+  pl: "794bc9d3",
+  ar: "7a9daaaf",
+  ur: "6d263fc0",
 };
 
 
@@ -172,6 +172,23 @@ const STRINGS = {
     closing_this_week:"Closing this week",
     money_trail_heading: "Contract trail",
     export_csv:       "Export CSV",
+    export_xlsx:      "Export Excel (.xlsx)",
+    print_save_pdf:   "Print / Save as PDF",
+    print_header:     "CROL-List · {link} · As of {date}",
+    csv_address: "Address",
+    csv_applicant: "Applicant",
+    csv_asset_type: "Asset type",
+    csv_average_base_salary: "Average base salary",
+    csv_exam_list: "Exam list",
+    csv_max_base_salary: "Maximum base salary",
+    csv_min_base_salary: "Minimum base salary",
+    csv_notices: "Notices",
+    csv_people: "People",
+    csv_project: "Project",
+    csv_project_id: "Project ID",
+    csv_role: "Role",
+    csv_search_permalink: "Search permalink",
+    csv_status: "Status",
     pick_notice_empty:"Pick a notice on the left to trace it — for an RFP you'll see <b>how to respond</b> (deadline, contact, where to submit) and the full notice → award → dollars chain.",
 
     // People lens
