@@ -21,7 +21,7 @@ import subprocess
 import sys
 
 ROOT = pathlib.Path(__file__).parents[2]
-PAGES = ["index.html", "about.html", "data.html", "stats.html", "api.html", "changelog.html"]
+PAGES = ["index.html", "about.html", "data.html", "stats.html", "api.html", "changelog.html", "standards.html"]
 
 H_TAG_RE = re.compile(r"<(h[1-3])\b([^>]*)>(.*?)</h[1-3]>", re.DOTALL)
 DATA_I18N_RE = re.compile(r'data-i18n(?:-html)?="([a-zA-Z0-9_]+)"')

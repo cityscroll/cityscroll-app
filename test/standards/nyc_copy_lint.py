@@ -53,7 +53,7 @@ from html.parser import HTMLParser
 
 ROOT = pathlib.Path(__file__).parents[2]
 ALLOWLIST_FILE = pathlib.Path(__file__).parent / "nyc_copy_lint_allowlist.txt"
-PAGES = ["index.html", "about.html", "data.html", "stats.html", "api.html", "changelog.html"]
+PAGES = ["index.html", "about.html", "data.html", "stats.html", "api.html", "changelog.html", "standards.html"]
 
 SKIP_TAGS = {"script", "style", "code", "pre"}
 

@@ -39,7 +39,7 @@ from i18n_fixtures import install_routes  # noqa: E402
 BASE = os.environ.get("CROL_BASE", "http://localhost:8000/")
 AXE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "axe.min.js")
 
-PAGES = ["about.html", "data.html", "stats.html", "changelog.html", "api.html"]
+PAGES = ["about.html", "data.html", "stats.html", "changelog.html", "api.html", "standards.html"]
 FAIL_IMPACTS = {"critical", "serious"}
 # w9-01: landmark-one-main/region were standing moderate findings (no <main>, no <footer>
 # landmark) on every page. Now that every page has both, ratchet these specific rule ids
