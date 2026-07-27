@@ -24,6 +24,16 @@ const CAMBA_ROWS = [
   n: String(n), t: String(t), first, last,
 }));
 
+const CAMBA_NOTICES = Array.from({ length: 18 }, (_, i) => ({
+  request_id: `camba-${i + 1}`,
+  start_date: `2026-07-${String(27 - i).padStart(2, "0")}`,
+  agency_name: i % 2 ? "Human Resources Administration" : "Homeless Services",
+  type_of_notice_description: "Award",
+  short_title: `CAMBA notice ${i + 1}`,
+  contract_amount: String((i + 1) * 1000),
+  vendor_name: i % 2 ? "Camba Inc." : "CAMBA, Inc.",
+}));
+
 function kvStore(initial = {}) {
   const values = new Map(Object.entries(initial));
   const writes = [];
@@ -32,6 +42,14 @@ function kvStore(initial = {}) {
     writes,
     async get(key) { return values.get(key) ?? null; },
     async put(key, value) { values.set(key, value); writes.push(key); },
+    async list({ prefix }) {
+      return {
+        keys: [...values.keys()]
+          .filter((key) => key.startsWith(prefix))
+          .map((name) => ({ name })),
+        list_complete: true,
+      };
+    },
   };
 }
 
@@ -72,8 +90,15 @@ test("GET /vendor-profile serves a fresh record and rejects it after 24 hours", 
 });
 
 test("cron refresh writes versioned buckets before publishing the manifest", async () => {
-  const store = kvStore();
-  const fetchImpl = async () => new Response(JSON.stringify(CAMBA_ROWS), {
+  const forecast = [{
+    source: "checkbook",
+    vendor_name: "Camba Inc.",
+    expiration_date: "2027-03-01",
+  }];
+  const store = kvStore({ "fc:CAMBA": JSON.stringify(forecast) });
+  const fetchImpl = async (url) => new Response(JSON.stringify(
+    new URL(url).searchParams.get("$group") ? CAMBA_ROWS : CAMBA_NOTICES,
+  ), {
     status: 200,
     headers: { "Content-Type": "application/json" },
   });
@@ -84,6 +109,20 @@ test("cron refresh writes versioned buckets before publishing the manifest", asy
 
   assert.equal(result.profiles, 1);
   assert.equal(result.buckets, 1);
+  assert.equal(result.cronCost.socrataRequestsBefore, 1);
+  assert.equal(result.cronCost.socrataRequestsAfter, 2);
+  assert.equal(result.included.recentNotices, 15);
+  assert.equal(result.included.forecasts, 1);
+  assert.equal(result.included.mentions, false);
+  assert.ok(result.storage.averageBytesAfter > result.storage.averageBytesBefore);
   assert.equal(store.writes.at(-1), "vp:manifest:v1");
   assert.match(store.writes[0], /^vp:v1:20260727130000:/);
+
+  const bucket = JSON.parse(store.values.get(store.writes[0]));
+  assert.equal(bucket.profiles.CAMBA.recentNotices.length, 15);
+  assert.equal(bucket.profiles.CAMBA.recentNotices[0].request_id, "camba-1");
+  assert.equal(bucket.profiles.CAMBA.recentNotices[0].vendor_name, undefined);
+  assert.deepEqual(bucket.profiles.CAMBA.forecasts, forecast);
+  const manifest = JSON.parse(store.values.get("vp:manifest:v1"));
+  assert.equal(manifest.schema, 2);
 });

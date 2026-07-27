@@ -1,10 +1,11 @@
-// Precomputed vendor identity profiles.
+// Precomputed vendor profiles.
 //
 // The daily cron folds City Record Award rows into normalized vendor stems, publishes
-// versioned buckets to ALERT_STATE KV, then swaps a small manifest last. GET /vendor-profile
-// reads one bucket and rejects records older than 24 hours, so the browser can paint the
-// identity header quickly without ever treating stale data as current. Socrata remains the
-// source of truth; a miss or refresh failure falls back to the browser's live resolver.
+// versioned buckets to ALERT_STATE KV, then swaps a small manifest last. Each record is a
+// read model for the whole profile: identity totals, agency rollup, 15 recent notices, and
+// any forecast payload already present in KV. GET /vendor-profile reads one bucket and
+// rejects records older than 24 hours. Socrata remains the source of truth; a miss or refresh
+// failure falls back to the browser's live resolver.
 
 import { vendorStem } from "./lib/compile.mjs";
 
@@ -16,6 +17,8 @@ const BUCKET_COUNT = 64;
 const MANIFEST_KEY = "vp:manifest:v1";
 const MAX_AGE_MS = 24 * 60 * 60 * 1000;
 const RECORD_TTL_SECONDS = 3 * 24 * 60 * 60;
+const RECENT_NOTICE_LIMIT = 15;
+const FORECAST_PREFIXES = ["fc:", "plan:"];
 
 export function vendorProfileBucket(stem) {
   let hash = 2166136261;
@@ -112,6 +115,7 @@ export function buildVendorProfiles(rows) {
 
 async function fetchVendorRows(fetchImpl) {
   const rows = [];
+  let requests = 0;
   for (let page = 0; page < MAX_PAGES; page++) {
     const params = new URLSearchParams({
       "$select": "vendor_name,agency_name,count(1) as n,sum(contract_amount) as t,min(start_date) as first,max(start_date) as last",
@@ -121,14 +125,120 @@ async function fetchVendorRows(fetchImpl) {
       "$limit": String(PAGE_SIZE),
       "$offset": String(page * PAGE_SIZE),
     });
+    requests++;
     const response = await fetchImpl(`${SODA}?${params}`);
     if (!response.ok) throw new Error(`vendor profile SODA ${response.status}`);
     const pageRows = await response.json();
     if (!Array.isArray(pageRows)) throw new Error("vendor profile SODA returned a non-array response");
     rows.push(...pageRows);
-    if (pageRows.length < PAGE_SIZE) return rows;
+    if (pageRows.length < PAGE_SIZE) return { rows, requests };
   }
   throw new Error(`vendor profile SODA exceeded ${MAX_PAGES * PAGE_SIZE} grouped rows`);
+}
+
+function recentNotice(row) {
+  return {
+    request_id: row.request_id || null,
+    start_date: row.start_date || null,
+    agency_name: row.agency_name || null,
+    type_of_notice_description: row.type_of_notice_description || null,
+    short_title: row.short_title || null,
+    contract_amount: row.contract_amount ?? null,
+  };
+}
+
+async function attachRecentNotices(profiles, fetchImpl) {
+  let requests = 0;
+  let rowsScanned = 0;
+  let rowsStored = 0;
+  for (const profile of Object.values(profiles)) profile.recentNotices = [];
+
+  for (let page = 0; page < MAX_PAGES; page++) {
+    const params = new URLSearchParams({
+      "$select": "request_id,start_date,agency_name,type_of_notice_description,short_title,contract_amount,vendor_name",
+      "$where": "vendor_name IS NOT NULL",
+      "$order": "start_date DESC,request_id",
+      "$limit": String(PAGE_SIZE),
+      "$offset": String(page * PAGE_SIZE),
+    });
+    requests++;
+    const response = await fetchImpl(`${SODA}?${params}`);
+    if (!response.ok) throw new Error(`vendor profile recent-notices SODA ${response.status}`);
+    const pageRows = await response.json();
+    if (!Array.isArray(pageRows)) {
+      throw new Error("vendor profile recent-notices SODA returned a non-array response");
+    }
+    rowsScanned += pageRows.length;
+    for (const row of pageRows) {
+      const profile = profiles[vendorStem(row?.vendor_name || "")];
+      if (!profile || profile.recentNotices.length >= RECENT_NOTICE_LIMIT) continue;
+      profile.recentNotices.push(recentNotice(row));
+      rowsStored++;
+    }
+    if (pageRows.length < PAGE_SIZE) return { requests, rowsScanned, rowsStored };
+  }
+  throw new Error(`vendor profile recent-notices SODA exceeded ${MAX_PAGES * PAGE_SIZE} rows`);
+}
+
+async function listKeys(kv, prefix) {
+  if (typeof kv?.list !== "function") return { keys: [], requests: 0 };
+  const keys = [];
+  let cursor;
+  let requests = 0;
+  do {
+    const page = await kv.list({ prefix, ...(cursor ? { cursor } : {}) });
+    requests++;
+    keys.push(...(page?.keys || []).map((key) => key.name));
+    cursor = page?.list_complete === false ? page.cursor : null;
+  } while (cursor);
+  return { keys, requests };
+}
+
+async function attachForecasts(profiles, kv) {
+  for (const profile of Object.values(profiles)) profile.forecasts = [];
+  let listRequests = 0;
+  let readRequests = 0;
+  let recordsStored = 0;
+
+  for (const prefix of FORECAST_PREFIXES) {
+    const listed = await listKeys(kv, prefix);
+    listRequests += listed.requests;
+    for (const key of listed.keys) {
+      const stem = key.slice(prefix.length);
+      const profile = profiles[stem];
+      if (!profile || !stem || stem.includes(":")) continue;
+      const raw = await kv.get(key);
+      readRequests++;
+      if (!raw) continue;
+      let forecasts;
+      try {
+        forecasts = JSON.parse(raw);
+      } catch {
+        continue;
+      }
+      if (!Array.isArray(forecasts)) continue;
+      profile.forecasts.push(...forecasts);
+      recordsStored += forecasts.length;
+    }
+  }
+
+  for (const profile of Object.values(profiles)) {
+    profile.forecasts.sort((a, b) => {
+      const dateA = a.expiration_date || a.release_quarter || "";
+      const dateB = b.expiration_date || b.release_quarter || "";
+      return dateA.localeCompare(dateB);
+    });
+  }
+  return { listRequests, readRequests, recordsStored };
+}
+
+function withoutTail(profile) {
+  const { recentNotices, forecasts, ...identity } = profile;
+  return identity;
+}
+
+function byteLength(value) {
+  return new TextEncoder().encode(value).byteLength;
 }
 
 export async function refreshVendorProfiles(env, options = {}) {
@@ -137,7 +247,10 @@ export async function refreshVendorProfiles(env, options = {}) {
   const now = options.now || new Date();
   const generated = now.toISOString();
   const version = generated.replace(/\D/g, "").slice(0, 14);
-  const profiles = buildVendorProfiles(await fetchVendorRows(fetchImpl));
+  const aggregate = await fetchVendorRows(fetchImpl);
+  const profiles = buildVendorProfiles(aggregate.rows);
+  const recent = await attachRecentNotices(profiles, fetchImpl);
+  const forecast = await attachForecasts(profiles, env.ALERT_STATE);
   const buckets = new Map();
 
   for (const profile of Object.values(profiles)) {
@@ -146,10 +259,17 @@ export async function refreshVendorProfiles(env, options = {}) {
     buckets.get(bucket)[profile.stem] = profile;
   }
 
+  let beforeBytes = 0;
+  let afterBytes = 0;
   for (const [bucket, records] of buckets) {
+    const baseline = {};
+    for (const [stem, profile] of Object.entries(records)) baseline[stem] = withoutTail(profile);
+    beforeBytes += byteLength(JSON.stringify({ generated, profiles: baseline }));
+    const value = JSON.stringify({ generated, profiles: records });
+    afterBytes += byteLength(value);
     await env.ALERT_STATE.put(
       vendorProfileBucketKey(version, bucket),
-      JSON.stringify({ generated, profiles: records }),
+      value,
       { expirationTtl: RECORD_TTL_SECONDS },
     );
   }
@@ -157,10 +277,39 @@ export async function refreshVendorProfiles(env, options = {}) {
   // Publish last: readers either see the previous complete generation or this one.
   await env.ALERT_STATE.put(
     MANIFEST_KEY,
-    JSON.stringify({ generated, version, profileCount: Object.keys(profiles).length }),
+    JSON.stringify({
+      generated,
+      version,
+      schema: 2,
+      profileCount: Object.keys(profiles).length,
+    }),
     { expirationTtl: RECORD_TTL_SECONDS },
   );
-  return { generated, version, profiles: Object.keys(profiles).length, buckets: buckets.size };
+  return {
+    generated,
+    version,
+    profiles: Object.keys(profiles).length,
+    buckets: buckets.size,
+    cronCost: {
+      socrataRequestsBefore: aggregate.requests,
+      socrataRequestsAfter: aggregate.requests + recent.requests,
+      recentRowsScanned: recent.rowsScanned,
+      forecastKvListRequests: forecast.listRequests,
+      forecastKvReadRequests: forecast.readRequests,
+    },
+    storage: {
+      bucketCount: buckets.size,
+      averageBytesBefore: buckets.size ? Math.round(beforeBytes / buckets.size) : 0,
+      averageBytesAfter: buckets.size ? Math.round(afterBytes / buckets.size) : 0,
+      totalBytesBefore: beforeBytes,
+      totalBytesAfter: afterBytes,
+    },
+    included: {
+      recentNotices: recent.rowsStored,
+      forecasts: forecast.recordsStored,
+      mentions: false,
+    },
+  };
 }
 
 export async function handleVendorProfile(req, env, options = {}) {

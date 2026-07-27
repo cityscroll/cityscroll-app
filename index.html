@@ -4218,9 +4218,17 @@ async function loadVendorProfileRecord(name){
     if(!response.ok) return null;
     const body = await response.json();
     const profile = body && body.profile;
-    if(!body?.ok || !profile || profile.stem !== vendorStem(name) || !Array.isArray(profile.variants) || !profile.variants.length) return null;
+    if(!body?.ok || !profile || profile.stem !== vendorStem(name) || !Array.isArray(profile.variants) || !profile.variants.length
+      || !Array.isArray(profile.recentNotices) || !Array.isArray(profile.forecasts)) return null;
+    profile.asOf = body.generated;
     return profile;
   }catch(e){ return null; }
+}
+
+function vendorMentionItemsHTML(mentions){
+  return mentions.map(r=>`<div class="tl"><span class="tldate">${fdate(r.start_date)}</span>
+      <span class="tlreason">${pivotA("#notice/"+encodeURIComponent(r.request_id), cleanText(r.short_title)||"(untitled)")}</span>
+      <span class="rmeta" style="margin:0">${tSection(r.section_name)||r.type_of_notice_description||""}</span></div>`).join("");
 }
 
 function vendorProfileHTML(profile, details, hydrating){
@@ -4228,6 +4236,7 @@ function vendorProfileHTML(profile, details, hydrating){
   const agencies = details?.agencies || profile.topAgencies || [];
   const rows = details?.rows || [];
   const mentions = details?.mentions || [];
+  const mentionsProvided = !!details && Object.prototype.hasOwnProperty.call(details,"mentions");
   const forecasts = details?.forecasts || [];
   const hasForecasts = forecasts.length > 0;
   const agChips = agencies.map(a=>{
@@ -4238,9 +4247,11 @@ function vendorProfileHTML(profile, details, hydrating){
       <span class="tlreason">${pivotA("#notice/"+encodeURIComponent(r.request_id), cleanText(r.short_title)||"(untitled)")}</span>
       <span class="rmeta" style="margin:0">${r.type_of_notice_description||""} · ${pivotA(agencyHref(r.agency_name), r.agency_name||"")}</span>
       ${money(r.contract_amount)?`<span class="tlsal">${money(r.contract_amount)}</span>`:""}</div>`).join("");
-  const mentionItems = mentions.map(r=>`<div class="tl"><span class="tldate">${fdate(r.start_date)}</span>
-      <span class="tlreason">${pivotA("#notice/"+encodeURIComponent(r.request_id), cleanText(r.short_title)||"(untitled)")}</span>
-      <span class="rmeta" style="margin:0">${tSection(r.section_name)||r.type_of_notice_description||""}</span></div>`).join("");
+  const mentionItems = vendorMentionItemsHTML(mentions);
+  const lazyMentions = !hydrating && !mentionsProvided ? `<details id="vendor-mentions-lazy" style="margin-top:18px">
+        <summary class="chain-h" style="cursor:pointer">Mentioned in other notices (text match)</summary>
+        <div id="vendor-mentions-results"></div>
+      </details>` : "";
   const loadingSections = hydrating ? `<div id="vendor-live" aria-busy="true">
         <div class="chain-h">On the record — notices naming this vendor</div><div class="empty" style="padding:12px"><span class="loading"></span></div>
         <div class="chain-h">Mentioned in other notices (text match)</div><div class="empty" style="padding:12px"><span class="loading"></span></div>
@@ -4262,10 +4273,12 @@ function vendorProfileHTML(profile, details, hydrating){
         ${rows.length?`<div class="chain-h">On the record — notices naming this vendor</div><div class="timeline">${rowItems}</div>`:""}
         ${mentions.length?`<div class="chain-h">Mentioned in other notices (text match)</div><div class="timeline">${mentionItems}</div>`:""}
         ${loadingSections}
+        ${lazyMentions}
       </div>
 
       ${hasForecasts ? `<div id="forecast-content" style="display:none">${forecastPaneHTML(forecasts)}</div>` : ""}
 
+      ${profile.asOf?`<div class="rmeta" style="margin-top:12px">${t("external_awards_updated",{date:fdate(profile.asOf)})}</div>`:""}
       <div class="actions" style="margin-top:16px">
         <button class="act primary" type="button" data-follow="vendor" data-name="${display.replace(/"/g,"&quot;")}">Follow this vendor</button>
         <button class="act" type="button" id="ecopy">Copy link</button>
@@ -4282,6 +4295,12 @@ function renderVendorProfile(box, profile, details, initialTab, hydrating){
   box.dataset.vendorStem = profile.stem;
   box.innerHTML = vendorProfileHTML(profile, details, hydrating);
   $("#ecopy").addEventListener("click", ()=>copyText(link, $("#ecopy")));
+  const lazyMentions = $("#vendor-mentions-lazy");
+  if(lazyMentions) lazyMentions.addEventListener("toggle", ()=>{
+    if(!lazyMentions.open || lazyMentions.dataset.loaded) return;
+    lazyMentions.dataset.loaded = "true";
+    loadVendorMentions(profile, $("#vendor-mentions-results"));
+  });
 
   if(details?.forecasts?.length){
     const btnOverview = $("#btn-overview"), btnForecast = $("#btn-forecast");
@@ -4304,6 +4323,17 @@ function renderVendorProfile(box, profile, details, initialTab, hydrating){
     }));
     if(initialTab==="forecast") btnForecast.click();
   }
+}
+
+async function loadVendorMentions(profile, el){
+  if(!el) return;
+  el.innerHTML = `<div class="empty" style="padding:12px"><span class="loading"></span></div>`;
+  let mentions = [];
+  try{
+    mentions = await soda({"$select":SELECT,"$where":`vendor_name IS NULL AND start_date > '${recentCut()}'`,"$q":profile.stem,"$order":"start_date DESC","$limit":"8"},8000);
+  }catch(e){}
+  if(!document.contains(el)) return;
+  el.innerHTML = mentions.length ? `<div class="timeline">${vendorMentionItemsHTML(mentions)}</div>` : "";
 }
 
 async function hydrateVendorProfile(profile, initialTab, box, fetchAgencies){
@@ -4350,9 +4380,12 @@ async function showVendor(name, initialTab){
   box.innerHTML = `<div style="max-width:880px;margin:0 auto"><div class="panel" style="padding:22px 24px"><h2 class="rolename" lang="en" dir="ltr">${safe}</h2><div class="agencybar" aria-hidden="true"><div><div class="big">—</div></div><div><div class="big">—</div></div><div><div class="big">—</div></div></div></div></div>`;
   const profile = await loadVendorProfileRecord(name);
   if(!profile) return showVendorLive(name, initialTab, box);
-  renderVendorProfile(box, profile, null, initialTab, true);
+  renderVendorProfile(box, profile, {
+    agencies:profile.topAgencies||[],
+    rows:profile.recentNotices,
+    forecasts:profile.forecasts
+  }, initialTab, false);
   announce(t("meta_vendor_profile_announce",{name:cleanText(profile.display)}));
-  await hydrateVendorProfile(profile, initialTab, box, false);
 }
 
 /* ===================== INVESTIGATION WORKSPACE (#investigation) =====================
