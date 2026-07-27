@@ -171,6 +171,8 @@
     search_label: "অনুসন্ধান",
     borough_label: "বরো",
     all_boroughs: "সব বরো",
+    use_my_location: "আমার অবস্থান ব্যবহার করুন",
+    near_you_area: "আপনার কাছাকাছি → {area}",
     zip_addr_neighborhood: "জিপ কোড, ঠিকানা, বা এলাকা",
     status_label: "অবস্থা",
     status_active: "পর্যালোচনাধীন / সক্রিয়",

@@ -171,6 +171,8 @@
     search_label: "搜索",
     borough_label: "行政区",
     all_boroughs: "所有行政区",
+    use_my_location: "使用我的位置",
+    near_you_area: "您附近 → {area}",
     zip_addr_neighborhood: "邮编、地址或社区",
     status_label: "状态",
     status_active: "审核中 / 进行中",
