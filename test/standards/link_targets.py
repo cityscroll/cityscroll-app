@@ -53,7 +53,7 @@ import sys
 from urllib.parse import urlparse
 
 ROOT = pathlib.Path(__file__).parents[2]
-PAGES = ["index.html", "about.html", "data.html", "stats.html", "api.html", "changelog.html"]
+PAGES = ["index.html", "about.html", "data.html", "stats.html", "api.html", "changelog.html", "standards.html"]
 I18N_SOURCES = ["i18n.js"] + sorted(
     str(pathlib.Path(p).relative_to(ROOT)) for p in glob.glob(str(ROOT / "i18n/lang/*.js"))
 )

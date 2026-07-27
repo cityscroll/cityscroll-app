@@ -169,7 +169,7 @@ jobs:
       - name: Reading-level ratchet gate
         run: |
           readable-or-else check \
-            about.html api.html changelog.html data.html index.html stats.html \
+            about.html api.html changelog.html data.html index.html stats.html standards.html \
             --preset nycsg7 \
             --mode ratchet \
             --baseline reading-level-baseline.json \
