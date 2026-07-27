@@ -215,5 +215,24 @@
     ]);
   }
 
-  return {excelSafeCsv,downloadFile,workbookBytes,buildNoticeWorkbook};
+  function buildListWorkbook(sheetName, columns, rows){
+    const workbookColumns=columns.map((column,index)=>{
+      const source=Array.isArray(column) ? {label:column[0],value:column[1]} : column;
+      return {
+        label:source.label,
+        key:`column_${index}`,
+        type:source.type||"string",
+        width:source.width||16,
+        value:source.xlsxValue||source.value,
+      };
+    });
+    const workbookRows=(rows||[]).map(row=>{
+      const output={};
+      workbookColumns.forEach(column=>{ output[column.key]=column.value(row); });
+      return output;
+    });
+    return workbookBytes([{name:sheetName,columns:workbookColumns,rows:workbookRows}]);
+  }
+
+  return {excelSafeCsv,downloadFile,workbookBytes,buildListWorkbook,buildNoticeWorkbook};
 });

@@ -9,6 +9,7 @@ const source = readFileSync(new URL("../index.html", import.meta.url), "utf8");
 const i18n = readFileSync(new URL("../i18n.js", import.meta.url), "utf8");
 const {
   excelSafeCsv,
+  buildListWorkbook,
   buildNoticeWorkbook,
 } = require("../export_workflows.js");
 
@@ -107,9 +108,31 @@ test("the notice workbook carries typed dates and amounts on separate sheets", (
   assert.match(trail, /<t(?: [^>]*)?>مؤسسة أكمي<\/t>/);
 });
 
-test("every export-worthy lens exposes CSV and print controls at the target size", () => {
+test("a list workbook carries typed dates, amounts, and non-ASCII text on one sheet", () => {
+  const workbook = buildListWorkbook(
+    "Money",
+    [
+      { label: "Title", value: row => row.title, width: 40 },
+      { label: "Posted", value: row => row.posted, type: "date", width: 13 },
+      { label: "Amount", value: row => row.amount, type: "number", width: 16 },
+    ],
+    [{ title: "社区中心翻新服务", posted: "2026-07-27T00:00:00.000", amount: "1250.50" }],
+  );
+  const entries = zipEntries(workbook);
+  const book = entries.get("xl/workbook.xml").toString("utf8");
+  const sheet = entries.get("xl/worksheets/sheet1.xml").toString("utf8");
+
+  assert.equal([...entries.keys()].filter(name => /^xl\/worksheets\/sheet\d+\.xml$/.test(name)).length, 1);
+  assert.match(book, /name="Money"/);
+  assert.match(sheet, /<t(?: [^>]*)?>社区中心翻新服务<\/t>/);
+  assert.match(sheet, /<c r="B2" s="1"><v>\d+(?:\.\d+)?<\/v><\/c>/);
+  assert.match(sheet, /<c r="C2"><v>1250\.5<\/v><\/c>/);
+});
+
+test("every export-worthy lens exposes CSV, Excel, and print controls at the target size", () => {
   for (const lens of ["money", "people", "land", "property", "rules", "meetings"]) {
     assert.match(source, new RegExp(`data-export-csv="${lens}"`));
+    assert.match(source, new RegExp(`data-export-xlsx="${lens}"`));
     assert.match(source, new RegExp(`data-print-view="${lens}"`));
   }
   assert.match(source, /\.export-control[^}]*min-height:\s*44px/s);

@@ -54,7 +54,7 @@ band, and appointment history together.
 *   **Multilingual UI:** Switch the interface to Spanish, Simplified Chinese, or Russian via the header language selector; your preference is remembered. City Record notices remain in English (the official source language).
 *   **[The Data](https://crol-list.org/data.html):** the City Record at a glance — sections, volume, procurement mix, top agencies/vendors by cleaned dollars — computed live in the browser.
 *   **Unified Workspace:** Pin records, write local notes, export CSV/JSON dossiers, and generate shareable snapshot links.
-*   **Workflow exports:** Download any lens as Excel-safe CSV, export notice details and contract trails as typed Excel workbooks, or print a clean permalink-and-date-stamped view to PDF.
+*   **Workflow exports:** Download any lens as Excel-safe CSV or a typed Excel workbook, export notice details with a separate contract-trail sheet, or print a clean permalink-and-date-stamped view to PDF.
 
 ---
 

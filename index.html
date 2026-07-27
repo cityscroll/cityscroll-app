@@ -536,6 +536,7 @@
           <h2><span id="reshead">Open Requests for Proposals (RFPs)</span> <span class="count" id="rescount"></span></h2>
           <span class="export-actions">
             <button id="export" class="mini export-control" data-export-csv="money" data-i18n="export_csv">Export CSV</button>
+            <button class="mini export-control" data-export-xlsx="money" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
             <button class="mini export-control" data-print-view="money" data-i18n="print_save_pdf">Print / Save as PDF</button>
           </span>
         </div>
@@ -574,6 +575,7 @@
           <h2><span><span id="preshead" data-i18n="roles_heading">Roles</span> <span class="count" id="prescount"></span></span></h2>
           <span class="export-actions">
             <button class="mini export-control" data-export-csv="people" data-i18n="export_csv">Export CSV</button>
+            <button class="mini export-control" data-export-xlsx="people" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
             <button class="mini export-control" data-print-view="people" data-i18n="print_save_pdf">Print / Save as PDF</button>
           </span>
         </div>
@@ -614,6 +616,7 @@
           <h2><span><span id="lreshead" data-i18n="recent_rezonings_heading">Recent rezonings</span> <span class="count" id="lrescount"></span></span></h2>
           <span class="export-actions">
             <button class="mini export-control" data-export-csv="land" data-i18n="export_csv">Export CSV</button>
+            <button class="mini export-control" data-export-xlsx="land" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
             <button class="mini export-control" data-print-view="land" data-i18n="print_save_pdf">Print / Save as PDF</button>
           </span>
         </div>
@@ -639,6 +642,7 @@
     <div class="chiprow" id="liferail" style="margin-top:8px"></div>
     <div class="exportbar">
       <button class="mini export-control" data-export-csv="property" data-i18n="export_csv">Export CSV</button>
+      <button class="mini export-control" data-export-xlsx="property" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
       <button class="mini export-control" data-print-view="property" data-i18n="print_save_pdf">Print / Save as PDF</button>
     </div>
     <div class="feed" id="propertyfeed" translate="no"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
@@ -654,6 +658,7 @@
     </div>
     <div class="exportbar">
       <button class="mini export-control" data-export-csv="rules" data-i18n="export_csv">Export CSV</button>
+      <button class="mini export-control" data-export-xlsx="rules" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
       <button class="mini export-control" data-print-view="rules" data-i18n="print_save_pdf">Print / Save as PDF</button>
     </div>
     <div class="feed" id="rulesfeed" translate="no"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
@@ -670,6 +675,7 @@
     </div>
     <div class="exportbar">
       <button class="mini export-control" data-export-csv="meetings" data-i18n="export_csv">Export CSV</button>
+      <button class="mini export-control" data-export-xlsx="meetings" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
       <button class="mini export-control" data-print-view="meetings" data-i18n="print_save_pdf">Print / Save as PDF</button>
     </div>
     <div class="feed" id="meetingsfeed" translate="no"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
@@ -2703,38 +2709,51 @@ function injectNLBoxes(){
 function exportSpec(lens){
   const searchLink=()=>location.href;
   if(lens==="money") return {rows:currentRows, columns:[
-    ["Type",r=>r.type_of_notice_description],["Agency",r=>r.agency_name],
-    ["Title",r=>cleanText(r.short_title)],["Category",r=>r.category_description],
-    ["Posted",r=>fdate(r.start_date)],["Due",r=>isRollingDeadline(r.due_date)?"no fixed deadline (rolling)":fdate(r.due_date)],
-    ["Days left",r=>{if(isRollingDeadline(r.due_date)) return "";const d=daysLeft(r.due_date);return d==null?"":d;}],
+    {label:"Type",value:r=>r.type_of_notice_description,width:22},
+    {label:"Agency",value:r=>r.agency_name,width:32},
+    {label:"Title",value:r=>cleanText(r.short_title),width:48},
+    ["Category",r=>r.category_description],
+    {label:"Posted",value:r=>fdate(r.start_date),xlsxValue:r=>r.start_date,type:"date",width:13},
+    {label:"Due",value:r=>isRollingDeadline(r.due_date)?"no fixed deadline (rolling)":fdate(r.due_date),xlsxValue:r=>isRollingDeadline(r.due_date)?"":r.due_date,type:"date",width:13},
+    {label:"Days left",value:r=>{if(isRollingDeadline(r.due_date)) return "";const d=daysLeft(r.due_date);return d==null?"":d;},type:"number",width:12},
     ["Method",r=>cleanText(r.selection_method_description)],["Contact",r=>cleanText(r.contact_name)],
     ["Email",r=>r.email||""],["Phone",r=>cleanText(r.contact_phone)],
     ["Submit to",r=>cleanText(r.address_to_request)],["PIN",r=>r.pin||""],
-    ["Amount",r=>r.contract_amount||""],["Request ID",r=>r.request_id||""],
+    {label:"Amount",value:r=>r.contract_amount||"",type:"number",width:16},
+    ["Request ID",r=>r.request_id||""],
     ["Permalink",r=>noticeLink(r.request_id)],["City Record URL",r=>REQ_URL(r.request_id)]
   ]};
   if(lens==="people" && pMode==="person") return {rows:pRows, columns:[
-    ["Name",p=>p.name],["Agency",p=>p.agency],[t("csv_notices"),p=>p.actions.length],
+    ["Name",p=>p.name],["Agency",p=>p.agency],
+    {label:t("csv_notices"),value:p=>p.actions.length,type:"number",width:12},
     ["Request IDs",p=>p.actions.map(a=>a.req).join(" | ")],
     ["Permalinks",p=>p.actions.map(a=>noticeLink(a.req)).join(" | ")],
     [t("csv_search_permalink"),searchLink]
   ]};
   if(lens==="people") return {rows:pRows, columns:[
     [t("csv_role"),r=>r.title_description],[t("csv_exam_list"),r=>competitiveSet.has((r.title_description||"").toUpperCase().trim())?"Yes":"No"],
-    [t("csv_people"),r=>r.n],[t("csv_min_base_salary"),r=>r.mn],[t("csv_max_base_salary"),r=>r.mx],
-    [t("csv_average_base_salary"),r=>r.avg],[t("csv_search_permalink"),searchLink]
+    {label:t("csv_people"),value:r=>r.n,type:"number",width:12},
+    {label:t("csv_min_base_salary"),value:r=>r.mn,type:"number",width:18},
+    {label:t("csv_max_base_salary"),value:r=>r.mx,type:"number",width:18},
+    {label:t("csv_average_base_salary"),value:r=>r.avg,type:"number",width:20},
+    [t("csv_search_permalink"),searchLink]
   ]};
   if(lens==="land") return {rows:lRows, columns:[
-    [t("csv_project"),r=>r.project_name],["Borough",r=>r.borough],["Community district",r=>r.community_district],
+    {label:t("csv_project"),value:r=>r.project_name,width:40},
+    ["Borough",r=>r.borough],["Community district",r=>r.community_district],
     [t("csv_status"),r=>r.public_status||r.project_status],["Milestone",r=>cleanText(r.current_milestone)],
-    ["Milestone date",r=>fdate(r.current_milestone_date)],[t("csv_applicant"),r=>r.primary_applicant],
+    {label:"Milestone date",value:r=>fdate(r.current_milestone_date),xlsxValue:r=>r.current_milestone_date,type:"date",width:15},
+    [t("csv_applicant"),r=>r.primary_applicant],
     [t("csv_project_id"),r=>r.project_id],["Permalink",r=>landLink(r.project_id)]
   ]};
   const rows=feedVisible[lens]||[];
   const columns=[
-    ["Type",r=>r.type_of_notice_description],["Agency",r=>r.agency_name],
-    ["Title",r=>cleanText(r.short_title)],["Posted",r=>fdate(r.start_date)],
-    ["Event date",r=>fdate(r.event_date)],[t("csv_address"),r=>cleanText(r.street_address_1)],
+    {label:"Type",value:r=>r.type_of_notice_description,width:22},
+    {label:"Agency",value:r=>r.agency_name,width:32},
+    {label:"Title",value:r=>cleanText(r.short_title),width:48},
+    {label:"Posted",value:r=>fdate(r.start_date),xlsxValue:r=>r.start_date,type:"date",width:13},
+    {label:"Event date",value:r=>fdate(r.event_date),xlsxValue:r=>r.event_date,type:"date",width:13},
+    [t("csv_address"),r=>cleanText(r.street_address_1)],
     ["Request ID",r=>r.request_id],["Permalink",r=>noticeLink(r.request_id)],
     ["City Record URL",r=>REQ_URL(r.request_id)]
   ];
@@ -2748,6 +2767,19 @@ function exportLensCsv(lens){
     `crol-${lens}-${new Date().toISOString().slice(0,10)}.csv`,
     CrolExports.excelSafeCsv(spec.columns,spec.rows),
     "text/csv;charset=utf-8"
+  );
+}
+function exportLensXlsx(lens){
+  const spec=exportSpec(lens);
+  if(!spec||!spec.rows.length) return;
+  const bytes=CrolExports.buildListWorkbook(
+    lens.charAt(0).toUpperCase()+lens.slice(1),
+    spec.columns,
+    spec.rows
+  );
+  CrolExports.downloadFile(
+    `crol-${lens}-${new Date().toISOString().slice(0,10)}.xlsx`,
+    new Blob([bytes],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"})
   );
 }
 function exportNoticeXlsx(notice, chain){
@@ -5067,6 +5099,8 @@ loadValidatedSuggestions();
 document.addEventListener("click",e=>{
   const csv=e.target.closest("[data-export-csv]");
   if(csv){ exportLensCsv(csv.dataset.exportCsv); return; }
+  const xlsx=e.target.closest("[data-export-xlsx]");
+  if(xlsx){ exportLensXlsx(xlsx.dataset.exportXlsx); return; }
   const print=e.target.closest("[data-print-view]");
   if(print) printCurrentView(print.dataset.printView);
 });

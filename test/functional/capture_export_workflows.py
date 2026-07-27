@@ -161,7 +161,7 @@ def capture_state(browser, tree: Path, state: str, width: int, height: int) -> N
         annotate(
             page,
             selector,
-            "AFTER · CSV, EXCEL DETAIL, AND PRINT/PDF" if state == "after"
+            "AFTER · CSV, EXCEL, AND PRINT/PDF" if state == "after"
             else "BEFORE · CSV ONLY ON CONTRACTS",
         )
         page.screenshot(path=str(OUTPUT / f"{state}-{width}-annotated.png"), animations="disabled")
@@ -174,7 +174,9 @@ def verify_after(browser, base_url: str, width: int, height: int) -> None:
     page.on("pageerror", lambda error: errors.append(str(error)))
     ready_money(page, base_url)
 
-    for control in page.locator('[data-export-csv="money"], [data-print-view="money"]').all():
+    for control in page.locator(
+        '[data-export-csv="money"], [data-export-xlsx="money"], [data-print-view="money"]'
+    ).all():
         box = control.bounding_box()
         assert box and box["width"] >= 44 and box["height"] >= 44, box
 
@@ -185,6 +187,12 @@ def verify_after(browser, base_url: str, width: int, height: int) -> None:
     assert b"\r\n" in csv and b"\n" not in csv.replace(b"\r\n", b"")
     text = csv.decode("utf-8-sig")
     assert "001234" in text and "社区中心" in text and "اجتماع عام" in text
+
+    with page.expect_download() as download_info:
+        page.locator('[data-export-xlsx="money"]').click()
+    list_xlsx = Path(download_info.value.path()).read_bytes()
+    assert list_xlsx.startswith(b"PK\x03\x04")
+    assert "社区中心".encode() in list_xlsx
 
     page.wait_for_function("!document.querySelector('#dxlsx').disabled")
     with page.expect_download() as download_info:
