@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Stats · CROL-List</title>
 <meta name="description" content="CROL-List's own usage, published: aggregate outcome counts for subscriptions, digests sent, notice-link clicks, and feed activity, refreshed regularly.">
-<script src="i18n.js?v=8683bbec"></script>
+<script src="i18n.js?v=64192263"></script>
 <script defer src="analytics.js?v=1.1.0"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -143,7 +143,7 @@
 <p class="src" data-stat-asof></p>
 
 <h2 data-i18n="stats_h_usage">How people use CROL-List</h2>
-<p class="src" data-i18n="stats_p_usage">First-party, aggregate activity counts. No cookies or visitor profiles.</p>
+<p class="src" data-i18n="stats_p_usage">Site totals. See use by day. No cookies. No visitor profiles.</p>
 <div class="grid" id="gridUsage">
   <div class="stat"><div class="n" id="s-pageviews">–</div><div class="l" data-i18n="stats_lbl_pageviews">Page views · 7 days</div><div class="d stat-asof" data-stat-asof data-usage-asof></div></div>
   <div class="stat"><div class="n" id="s-usage-searches">–</div><div class="l" data-i18n="stats_lbl_usage_searches">Searches run · 7 days</div><div class="d stat-asof" data-stat-asof data-usage-asof></div></div>
@@ -152,25 +152,25 @@
   <div class="stat"><div class="n" id="s-alert-confirms">–</div><div class="l" data-i18n="stats_lbl_alert_confirms">Watches confirmed · 7 days</div><div class="d stat-asof" data-stat-asof data-usage-asof></div></div>
 </div>
 <p class="src histera" id="usageSinceNote" hidden></p>
-<p class="src" id="usageUnavailable" data-i18n="stats_usage_unavailable" hidden>New usage counters are not available yet.</p>
+<p class="src" id="usageUnavailable" data-i18n="stats_usage_unavailable" hidden>These totals are not ready yet.</p>
 
-<h3 data-i18n="stats_h_lens_interest">Activity by section</h3>
+<h3 data-i18n="stats_h_lens_interest">Use by section</h3>
 <table class="cattable" id="usageLensTable" hidden>
   <thead><tr><th data-i18n="stats_col_lens">Section</th><th data-i18n="stats_col_last7">Last 7 days</th><th data-i18n="stats_col_last30">Last 30 days</th></tr></thead>
   <tbody id="usageLensTableBody"></tbody>
 </table>
 <p class="src" data-stat-asof data-usage-asof></p>
 
-<h3 data-i18n="stats_h_geography">Geography of interest</h3>
+<h3 data-i18n="stats_h_geography">Searches by area</h3>
 <table class="cattable" id="usageGeoTable" hidden>
   <thead><tr><th data-i18n="stats_col_area">Area</th><th data-i18n="stats_col_last30">Last 30 days</th></tr></thead>
   <tbody id="usageGeoTableBody"></tbody>
 </table>
 <p class="src" data-stat-asof data-usage-asof></p>
 
-<h3 data-i18n="stats_h_usage_growth">Usage growth over time</h3>
+<h3 data-i18n="stats_h_usage_growth">Daily use</h3>
 <table class="cattable histtable" id="usageGrowthTable" hidden>
-  <thead><tr><th data-i18n="stats_col_day">Day</th><th data-i18n="stats_lbl_pageviews_short">Page views</th><th data-i18n="stats_col_interactions">Interactions</th></tr></thead>
+  <thead><tr><th data-i18n="stats_col_day">Day</th><th data-i18n="stats_lbl_pageviews_short">Page views</th><th data-i18n="stats_col_interactions">Actions</th></tr></thead>
   <tbody id="usageGrowthTableBody"></tbody>
 </table>
 <p class="src" data-stat-asof data-usage-asof></p>
