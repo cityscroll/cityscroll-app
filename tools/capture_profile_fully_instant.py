@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Capture annotated whole-profile before/after evidence at 390px and 1440px.
+"""Capture plain and annotated whole-profile evidence at 390px and 1440px.
 
 The before frame renders the previously shipped instant identity header with its
 three live-hydration skeletons. The after frame exercises showVendor() against a
@@ -10,10 +10,12 @@ from __future__ import annotations
 
 import functools
 import json
+import textwrap
 import threading
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
+from PIL import Image, ImageDraw, ImageFont
 from playwright.sync_api import Page, Route, sync_playwright
 
 
@@ -126,37 +128,67 @@ def install_fixtures(page: Page) -> None:
     )
 
 
-def annotate(page: Page, selector: str, label_text: str) -> None:
-    page.locator(selector).scroll_into_view_if_needed()
-    page.evaluate(
+def annotate(source: Path, destination: Path, state: str, target: dict[str, float]) -> None:
+    image = Image.open(source).convert("RGB")
+    draw = ImageDraw.Draw(image, "RGBA")
+    color = (155, 48, 48, 255) if state == "before" else (35, 112, 83, 255)
+    message = (
+        "Before: the profile tail waits on live requests and shows skeleton rows."
+        if state == "before"
+        else "After: recent notices paint from the daily bucket with its as-of stamp."
+    )
+    font = ImageFont.load_default(size=18 if image.width >= 700 else 15)
+    label = "\n".join(textwrap.wrap(message, width=66 if image.width >= 700 else 38))
+    text_box = draw.multiline_textbbox((0, 0), label, font=font, spacing=4)
+    banner_height = text_box[3] - text_box[1] + 24
+    draw.rounded_rectangle(
+        (10, 10, image.width - 10, 10 + banner_height),
+        radius=10,
+        fill=(28, 25, 22, 238),
+        outline=color,
+        width=3,
+    )
+    draw.multiline_text((22, 22), label, font=font, fill=(255, 255, 255, 255), spacing=4)
+
+    x1 = max(2, target["x"] - 7)
+    y1 = max(2, target["y"] - 6)
+    x2 = min(image.width - 2, target["x"] + target["width"] + 7)
+    y2 = min(image.height - 2, target["y"] + target["height"] + 6)
+    draw.rounded_rectangle((x1, y1, x2, y2), radius=7, outline=color, width=4)
+    image.save(destination, optimize=True)
+
+
+def skeleton_target(page: Page) -> dict[str, float]:
+    return page.evaluate(
         """
-        ({selector, labelText}) => {
-          document.querySelectorAll(".review-annotation").forEach(el => el.remove());
-          const rect = document.querySelector(selector).getBoundingClientRect();
-          const left = Math.max(4, rect.left - 8);
-          const top = Math.max(42, rect.top - 8);
-          const width = Math.min(rect.width + 16, innerWidth - left - 4);
-          const height = Math.min(rect.height + 16, innerHeight - top - 4);
-          const mark = document.createElement("div");
-          mark.className = "review-annotation";
-          Object.assign(mark.style, {
-            position: "fixed", left: `${left}px`, top: `${top}px`,
-            width: `${width}px`, height: `${height}px`,
-            border: "4px solid #d60000", boxSizing: "border-box",
-            zIndex: "99999", pointerEvents: "none"
-          });
-          const label = document.createElement("div");
-          label.className = "review-annotation";
-          label.textContent = labelText;
-          Object.assign(label.style, {
-            position: "fixed", left: `${left + 4}px`, top: `${Math.max(4, top - 34)}px`,
-            background: "#d60000", color: "white", padding: "6px 10px",
-            font: "800 12px/1 system-ui", zIndex: "100000"
-          });
-          document.body.append(mark, label);
+        () => {
+          const el = document.querySelector("#vendor-live");
+          window.scrollTo(0, Math.max(0, el.getBoundingClientRect().top + scrollY - 125));
+          const rect = el.getBoundingClientRect();
+          return {x:rect.x, y:rect.y, width:rect.width, height:rect.height};
         }
-        """,
-        {"selector": selector, "labelText": label_text},
+        """
+    )
+
+
+def instant_tail_target(page: Page) -> dict[str, float]:
+    return page.evaluate(
+        """
+        () => {
+          const rows = [...document.querySelectorAll("#overview-content .timeline .tl")];
+          const start = rows[Math.max(0, rows.length - 3)];
+          const asOf = document.querySelector("#entityview .panel > .rmeta");
+          window.scrollTo(0, Math.max(0, start.getBoundingClientRect().top + scrollY - 125));
+          const first = start.getBoundingClientRect();
+          const last = asOf.getBoundingClientRect();
+          return {
+            x: Math.min(first.x, last.x),
+            y: first.y,
+            width: Math.max(first.right, last.right) - Math.min(first.x, last.x),
+            height: last.bottom - first.y
+          };
+        }
+        """
     )
 
 
@@ -172,14 +204,19 @@ def capture(page: Page, base_url: str, width: int, height: int) -> None:
         """,
         PROFILE,
     )
-    annotate(page, "#vendor-live", "BEFORE · LIVE SKELETON ROWS")
+    before_target = skeleton_target(page)
     before = OUTPUT / f"before-{width}.png"
     page.screenshot(path=str(before), animations="disabled")
+    annotate(
+        before,
+        OUTPUT / f"before-{width}-annotated.png",
+        "before",
+        before_target,
+    )
 
     page.evaluate(
         """
         () => {
-          document.querySelectorAll(".review-annotation").forEach(el => el.remove());
           window.__socrataCalls = [];
           void showVendor("Camba Inc.");
         }
@@ -193,14 +230,24 @@ def capture(page: Page, base_url: str, width: int, height: int) -> None:
         timeout=1000,
     )
     assert page.evaluate("window.__socrataCalls.length") == 0
-    annotate(page, "#overview-content", "AFTER · FULL BUCKET PAINT")
+    after_target = instant_tail_target(page)
     after = OUTPUT / f"after-{width}.png"
     page.screenshot(path=str(after), animations="disabled")
+    annotate(
+        after,
+        OUTPUT / f"after-{width}-annotated.png",
+        "after",
+        after_target,
+    )
 
     assert before.stat().st_size > 10_000
     assert after.stat().st_size > 10_000
+    assert (OUTPUT / f"before-{width}-annotated.png").stat().st_size > 10_000
+    assert (OUTPUT / f"after-{width}-annotated.png").stat().st_size > 10_000
     print(f"captured {before.relative_to(ROOT)}")
+    print(f"captured {(OUTPUT / f'before-{width}-annotated.png').relative_to(ROOT)}")
     print(f"captured {after.relative_to(ROOT)}")
+    print(f"captured {(OUTPUT / f'after-{width}-annotated.png').relative_to(ROOT)}")
 
 
 def main() -> None:
