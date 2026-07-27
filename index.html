@@ -118,6 +118,14 @@
   .nlqactions{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin-top:9px}
   .nlqactions .act,.nlqactions button{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;padding:7px 10px;border-radius:7px}
   .nlqactions .act{display:inline-flex;align-items:center;background:#fff;color:var(--oxblood);border:1px solid var(--rule);text-decoration:none}
+  .qr-dialog{width:min(92vw,520px);max-height:92vh;border:1px solid var(--rule-strong);border-radius:10px;background:var(--card);color:var(--ink);padding:22px;box-shadow:0 18px 60px #201b1480}
+  .qr-dialog::backdrop{background:#201b14b8}
+  .qr-dialog h2{font:800 24px/1.15 var(--font-display);margin:0 0 16px;text-align:center}
+  .qr-image{display:block;width:min(100%,360px);height:auto;margin:0 auto;background:#fff}
+  .qr-destination-label{font:600 11px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:16px 0 5px}
+  .qr-destination{display:block;max-width:100%;overflow-wrap:anywhere;font:13px/1.45 ui-monospace,Menlo,monospace;color:var(--oxblood)}
+  .qr-dialog-actions{display:flex;justify-content:flex-end;gap:9px;flex-wrap:wrap;margin-top:18px}
+  .qr-dialog-actions button{min-width:44px;min-height:44px}
   .nlqpresets{margin-top:12px;padding-top:10px;border-top:1px solid var(--rule)}
   .nlqpresets-title{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
   .nlqpreset-list{display:flex;flex-wrap:wrap;gap:7px}
@@ -412,10 +420,11 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=67205926"></script>
+<script src="i18n.js?v=8683bbec"></script>
 <script src="nl_parse.js"></script>
 <script src="nl_deeplink.js"></script>
 <script src="location_awareness.js"></script>
+<script src="qr_share.js"></script>
 <script src="external_awards.js"></script>
 <script src="export_workflows.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
@@ -483,6 +492,7 @@
       <div id="nltry" class="nltry"></div>
       <div id="moneyactivefilters"></div>
       <div id="nltrans"></div>
+      <div id="landing-share-actions"></div>
       <div id="nlpresets" data-search-presets></div>
     </div>
 
@@ -2086,6 +2096,7 @@ function renderDetail(r, chain, stats){
   const pending = chain === null; // first paint from the in-memory record; chain/stats hydrate in
   let html = `<div class="actions" style="margin:0 0 12px">
     <button class="act" type="button" id="dcopy">${t("copy_link_notice")}</button>
+    ${qrButtonHTML("dqr","act")}
     <button class="act export-control" type="button" id="dxlsx"${pending?' disabled aria-busy="true"':""}>${t("export_xlsx")}</button>
     <button class="act export-control" type="button" id="dprint">${t("print_save_pdf")}</button>
     ${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}
@@ -2107,9 +2118,11 @@ function renderDetail(r, chain, stats){
   if(!pending) html += noticeAgencyBar(stats, r.agency_name, "agencybar sub");
   $("#detail").innerHTML = html;
   const ib = $("#icsbtn"); if(ib) ib.addEventListener("click", downloadICS);
-  const dc = $("#dcopy"); if(dc) dc.addEventListener("click", ()=>copyText(noticeLink(r.request_id), dc));
+  const detailURL=noticeLink(r.request_id);
+  const dc = $("#dcopy"); if(dc) dc.addEventListener("click", ()=>copyText(detailURL, dc));
+  bindQRShare($("#dqr"), detailURL);
   const dx = $("#dxlsx"); if(dx && !pending) dx.addEventListener("click", ()=>exportNoticeXlsx(r, chain));
-  const dp = $("#dprint"); if(dp) dp.addEventListener("click", ()=>printCurrentView("notice", noticeLink(r.request_id)));
+  const dp = $("#dprint"); if(dp) dp.addEventListener("click", ()=>printCurrentView("notice", detailURL));
   if(pending) return; // context/dollars fetch once, on the hydrated render
   fillContext(r, $("#dcontext"));
   followDollars(r, $("#ddollars"));
@@ -2163,16 +2176,41 @@ function renderNLQPresets(){
     }));
   });
 }
+function qrButtonHTML(id, className){
+  return `<button type="button" class="${className||"mini"}"${id?` id="${id}"`:""} data-qr-share data-i18n="qr_share_btn">${t("qr_share_btn")}</button>`;
+}
+function qrLabels(){
+  return {
+    title:t("qr_dialog_title"),
+    alt:t("qr_image_alt"),
+    destination:t("qr_destination_label"),
+    download:t("qr_download_png"),
+    close:t("qr_close")
+  };
+}
+function bindQRShare(button, url){
+  if(button && window.QRShare) QRShare.bind(button, url, qrLabels);
+}
+function renderLandingShareActions(){
+  const root=$("#landing-share-actions"); if(!root) return;
+  const url=location.origin+location.pathname;
+  root.innerHTML=`<div class="nlqactions"><button type="button" class="mini" data-landing-copy data-i18n="copy_link">${t("copy_link")}</button>${qrButtonHTML()}</div>`;
+  const copy=root.querySelector("[data-landing-copy]");
+  copy.addEventListener("click",()=>copyText(url, copy));
+  bindQRShare(root.querySelector("[data-qr-share]"), url);
+}
 function searchActionsHTML(lens, hash){
   if(!hash) return "";
   const moneyIds=lens==="money";
-  return `<div class="nlqactions"><a class="act" data-search-share ${moneyIds?'id="nlqshare" ':''}href="${nlqEscape(canonicalSearchURL(location, hash))}" target="_blank" rel="noopener noreferrer"><span data-i18n="share_search_link">${t("share_search_link")}</span><span class="sr-only" data-i18n="ext_link_new_tab_sr"> ${t("ext_link_new_tab_sr")}</span></a><button type="button" class="mini" data-search-copy ${moneyIds?'id="nlqcopy" ':''}data-i18n="copy_search_link">${t("copy_search_link")}</button><button type="button" class="mini" data-search-save ${moneyIds?'id="nlqsave" ':''}data-i18n="save_search_btn">${t("save_search_btn")}</button></div>`;
+  return `<div class="nlqactions"><a class="act" data-search-share ${moneyIds?'id="nlqshare" ':''}href="${nlqEscape(canonicalSearchURL(location, hash))}" target="_blank" rel="noopener noreferrer"><span data-i18n="share_search_link">${t("share_search_link")}</span><span class="sr-only" data-i18n="ext_link_new_tab_sr"> ${t("ext_link_new_tab_sr")}</span></a><button type="button" class="mini" data-search-copy ${moneyIds?'id="nlqcopy" ':''}data-i18n="copy_search_link">${t("copy_search_link")}</button>${qrButtonHTML(moneyIds?"nlqqr":"")}<button type="button" class="mini" data-search-save ${moneyIds?'id="nlqsave" ':''}data-i18n="save_search_btn">${t("save_search_btn")}</button></div>`;
 }
 function bindSearchActions(root, label, hash){
   if(!root || !hash) return;
+  const url=canonicalSearchURL(location, hash);
   const share=root.querySelector("[data-search-share]"); if(share) share.href=canonicalSearchURL(location, hash);
   const copy=root.querySelector("[data-search-copy]");
-  if(copy) copy.addEventListener("click",()=>copyText(canonicalSearchURL(location, hash), copy));
+  if(copy) copy.addEventListener("click",()=>copyText(url, copy));
+  bindQRShare(root.querySelector("[data-qr-share]"), url);
   const save=root.querySelector("[data-search-save]");
   if(save) save.addEventListener("click",()=>{
     nlqPresetSet(savePreset(nlqPresetStore(), label, hash));
@@ -3198,7 +3236,9 @@ async function landSelect(i, el){
   </div>
   <div class="note" id="landmapnote"><span class="loading"></span> ${t("locating")}</div>`;
   $("#ldetail").innerHTML=html;
-  const lc=$("#landcopy"); if(lc) lc.addEventListener("click",()=>copyText(landLink(r.project_id), lc));
+  const landURL=landLink(r.project_id);
+  const lc=$("#landcopy"); if(lc) lc.addEventListener("click",()=>copyText(landURL, lc));
+  bindQRShare($("#landqr"), landURL);
   const la=$("#landalert"); if(la) la.addEventListener("click",()=>landToAlert(la.dataset.q));
   const crterm=cleanText(r.project_name||"").replace(/\b(rezoning|demapping|rezone|special permit|special district|text amendment|mapping actions?|modification|disposition|non-?ulurp|public hearing|notice)\b/ig," ").replace(/\s+/g," ").trim();
   if(crterm.length>3){ soda({"$select":"request_id","$where":"section_name='Public Hearings and Meetings'","$q":crterm,"$order":"start_date DESC","$limit":"1"}).then(rows=>{ if(selection!==landSelectionSeq) return; const cr=$("#crfind"); if(cr&&rows&&rows[0]){ cr.href=REQ_URL(rows[0].request_id); cr.innerHTML=t("rezoning_notice_link")+extSR(); } }).catch(()=>{}); }
@@ -3224,7 +3264,7 @@ async function landSelect(i, el){
 
 function landPermalinkActionHTML(r){
   return r && r.project_id
-    ? `<button class="act" type="button" id="landcopy">${t("copy_link")}</button>`
+    ? `<button class="act" type="button" id="landcopy">${t("copy_link")}</button>${qrButtonHTML("landqr","act")}`
     : "";
 }
 
@@ -4293,6 +4333,7 @@ async function showAgency(name, initialTab){
       <div class="actions" style="margin-top:16px">
         <button class="act primary" type="button" data-follow="agency" data-name="${nm.replace(/"/g,"&quot;")}">Follow: anything new from them</button>
         <button class="act" type="button" id="ecopy">Copy link</button>
+        ${qrButtonHTML("eqr","act")}
         ${pinBtn("agency", nm, agencyWho(nm), t("meta_agency_profile"))}
         <button class="act" type="button" data-aw="rules">Watch rules only</button>
         <button class="act" type="button" data-aw="meetings">Watch meetings only</button>
@@ -4302,6 +4343,7 @@ async function showAgency(name, initialTab){
     </div></div>`;
 
   $("#ecopy").addEventListener("click", ()=>copyText(link, $("#ecopy")));
+  bindQRShare($("#eqr"), link);
   box.querySelectorAll("[data-aw]").forEach(b=>b.addEventListener("click", ()=>{
     showTab("alerts", true); $("#awatch").value=b.dataset.aw; aWatchChange(); $("#aagency").value=nm; aPreview();
   }));
@@ -4452,6 +4494,7 @@ function vendorProfileHTML(profile, details, hydrating){
       <div class="actions" style="margin-top:16px">
         <button class="act primary" type="button" data-follow="vendor" data-name="${display.replace(/"/g,"&quot;")}">Follow this vendor</button>
         <button class="act" type="button" id="ecopy">Copy link</button>
+        ${qrButtonHTML("eqr","act")}
         ${pinBtn("vendor", display, display, t("meta_vendor_profile"))}
         ${API?`<a class="act" href="${API.replace(/\/+$/,"")}/feed.xml?lens=entity&kind=vendor&name=${encodeURIComponent(display)}">RSS</a>`:""}
       </div>
@@ -4465,6 +4508,7 @@ function renderVendorProfile(box, profile, details, initialTab, hydrating){
   box.dataset.vendorStem = profile.stem;
   box.innerHTML = vendorProfileHTML(profile, details, hydrating);
   $("#ecopy").addEventListener("click", ()=>copyText(link, $("#ecopy")));
+  bindQRShare($("#eqr"), link);
   const lazyMentions = $("#vendor-mentions-lazy");
   if(lazyMentions) lazyMentions.addEventListener("toggle", ()=>{
     if(!lazyMentions.open || lazyMentions.dataset.loaded) return;
@@ -4771,12 +4815,14 @@ async function showMatter(pin){
       </div>
       <div class="actions" style="margin-top:16px">
         <button class="act primary" type="button" id="ecopy">Copy link</button>
+        ${qrButtonHTML("eqr","act")}
         ${pinBtn("matter", pin, t("meta_matter",{pin:safe}), [agency, vendor?cleanText(vendor):null].filter(Boolean).join(" × "))}
         <a class="act" href="${REQ_URL(rows[rows.length-1].request_id)}" ${EXT_ATTRS}>Latest notice in City Record${extSR()}</a>
       </div>
       <div class="note">The spine is every City Record notice sharing this PIN, in order; Checkbook events join deterministically on the same PIN. Public-hearing notices rarely carry PINs, so hearings may be missing from the chronology.</div>
     </div></div>`;
   $("#ecopy").addEventListener("click", ()=>copyText(link, $("#ecopy")));
+  bindQRShare($("#eqr"), link);
   announce(t("meta_matter_timeline_announce",{n:items.length}));
 }
 
@@ -5078,6 +5124,7 @@ async function showNotice(id, watch){
       <div id="naddr"></div><div id="ndollars"></div><div id="nexternal"></div>
       <div class="actions" style="margin-top:14px">
         <button class="act primary" type="button" id="ncopy">${t("copy_link")}</button>
+        ${qrButtonHTML("nqr","act")}
         <a class="act" href="mailto:?subject=${encodeURIComponent("City Record notice: "+(cleanText(r.short_title)||r.request_id))}&body=${encodeURIComponent(link+"\n\nVia CROL-List — The City Record, searchable.")}">${t("notice_email_btn")}</a>
         <button class="act export-control" type="button" id="nxlsx">${t("export_xlsx")}</button>
         <button class="act export-control" type="button" id="nprint">${t("print_save_pdf")}</button>
@@ -5091,8 +5138,9 @@ async function showNotice(id, watch){
       <div id="nforecast"></div>
       <div id="nchain"></div>
       <div class="note" style="margin-top:14px">${t("permalink_note_html",{link, id:r.request_id})}</div>
-    </div></div>`;
+  </div></div>`;
   $("#ncopy").addEventListener("click", ()=>copyText(link, $("#ncopy")));
+  bindQRShare($("#nqr"), link);
   $("#nxlsx").addEventListener("click", async ()=>exportNoticeXlsx(r,await loadChain(r)));
   $("#nprint").addEventListener("click", ()=>printCurrentView("notice",link));
   const ni=$("#nics"); if(ni) ni.addEventListener("click", ()=>{ if(r.due_date){ selectedRFP=r; downloadICS(); } else downloadEventICS(r); });
@@ -5122,6 +5170,7 @@ document.addEventListener("click", e=>{
 });
 injectNLBoxes();
 renderNLSamples("money", $("#nltry"));
+renderLandingShareActions();
 renderNLQPresets();
 loadValidatedSuggestions();
 document.addEventListener("click",e=>{
@@ -5359,7 +5408,7 @@ function rerenderForLang(){
   try{ const c = JSON.parse(localStorage.getItem("crol_today_v2")||"null"); if(c && c.d) renderToday(c.d); }catch(e){}
   paintEditionSpan();
   loadAgencies();
-  aWatchChange(true); updateAWhen(); aRenderSaved(); renderNLQPresets(); // same skipQuizSync reasoning as the page-init call above
+  aWatchChange(true); updateAWhen(); aRenderSaved(); renderLandingShareActions(); renderNLQPresets(); // same skipQuizSync reasoning as the page-init call above
   // #notice/#vendor/#agency/#matter permalink views have no .tabbtn (comment above
   // syncTabAria()'s role wiring), so the .tabbtn.active lookup below finds nothing for them
   // and their chrome — built once via t() when the view was first shown — silently kept
