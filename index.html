@@ -112,6 +112,15 @@
      button (.nledit) is a real, plainly-styled button (.mini) rather than another chip. */
   .nlunderstood{margin:10px 0 2px;font:12px/1.6 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
   .nlunderstood .nledit{margin-inline-start:8px;vertical-align:baseline}
+  .nlqactions{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin-top:9px}
+  .nlqactions .act,.nlqactions button{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;padding:7px 10px;border-radius:7px}
+  .nlqactions .act{display:inline-flex;align-items:center;background:#fff;color:var(--oxblood);border:1px solid var(--rule);text-decoration:none}
+  .nlqpresets{margin-top:12px;padding-top:10px;border-top:1px solid var(--rule)}
+  .nlqpresets-title{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+  .nlqpreset-list{display:flex;flex-wrap:wrap;gap:7px}
+  .nlqpreset{display:inline-flex;min-width:0}
+  .nlqpreset-run{font:600 12px/1.25 ui-sans-serif,system-ui,sans-serif;padding:7px 10px;background:#fff;color:var(--ink-soft);border:1px solid var(--rule);border-radius:7px 0 0 7px;max-width:340px;white-space:normal;text-align:start}
+  .nlqpreset-remove{font:700 13px/1 ui-sans-serif,system-ui,sans-serif;padding:7px 9px;background:var(--paper-2);color:var(--rose);border:1px solid var(--rule);border-inline-start:0;border-radius:0 7px 7px 0}
   /* Low/no signal understood, or zero matches — the interpretation gets a visible callout
      instead of blending into quiet status text (w12-02: never a bare empty result). */
   .nlunderstood-weak{background:#fbf0dc;border-inline-start:3px solid var(--amber);padding:8px 10px;border-start-end-radius:6px;border-end-end-radius:6px;color:var(--ink-soft)}
@@ -372,8 +381,9 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=dfbc7b61"></script>
+<script src="i18n.js?v=5c0d3942"></script>
 <script src="nl_parse.js"></script>
+<script src="nl_deeplink.js"></script>
 <script src="external_awards.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
@@ -439,6 +449,7 @@
       </div>
       <div id="nltry" class="nltry"></div>
       <div id="nltrans"></div>
+      <div id="nlpresets"></div>
     </div>
 
     <div class="controls">
@@ -1011,6 +1022,10 @@ async function loadAgencies(){
 }
 
 let currentRows = [], mode = "open", selectedRFP = null, closingWeek = false, moneyLoaded = false, methodSel = "";
+// Category, maximum amount, deadline window, and special-method exclusion have no dedicated
+// Money controls. NLQ results and their deep links carry them here so search(), serializeState(),
+// and applyHash() all replay the same complete filter.
+let moneyNlResolved = {};
 const weekOutISO = () => new Date(Date.now()+7*86400000).toISOString().slice(0,10) + "T23:59:59";
 async function search(){
   moneyLoaded = true;
@@ -1028,6 +1043,11 @@ async function search(){
   if(mode === "open" && closingWeek) where += ` AND due_date <= '${weekOutISO()}'`;
   if(agency) where += ` AND agency_name='${agency.replace(/'/g,"''")}'`;
   if(mode === "award" && minamt) where += ` AND contract_amount >= ${minamt} AND contract_amount < ${MONEY_HONESTY_CAP}`;
+  const {category=null, maxAmount=null, months=null, excludeSpecial=false} = moneyNlResolved;
+  if(category) where += ` AND category_description='${category.replace(/'/g,"''")}'`;
+  if(mode === "award" && maxAmount) where += ` AND contract_amount <= ${maxAmount}`;
+  if(mode === "open" && months) where += ` AND due_date <= '${addMonthsISO(todayISO(), months)}'`;
+  if(excludeSpecial) where += ` AND selection_method_description NOT LIKE '%Special%'`;
   const facetWhere = where; // method-facet counts are computed WITHOUT the method clause (Datasette-style)
   if(methodSel) where += ` AND selection_method_description='${methodSel.replace(/'/g,"''")}'`;
 
@@ -2001,11 +2021,56 @@ async function nlResolve(text, lens){
   }
   return {source:"device",...deviceParse(text, lens)};
 }
+
+const NLQ_PRESET_KEY = "crd_nlq_presets_v1";
+function nlqPresetStore(){
+  try{ return parsePresetStore(localStorage.getItem(NLQ_PRESET_KEY)); }catch(e){ return []; }
+}
+function nlqPresetSet(list){
+  try{ localStorage.setItem(NLQ_PRESET_KEY, JSON.stringify(list)); }catch(e){}
+}
+function nlqEscape(value){
+  return String(value||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+}
+function renderNLQPresets(){
+  const box=$("#nlpresets"); if(!box) return;
+  const list=nlqPresetStore();
+  box.innerHTML = list.length
+    ? `<div class="nlqpresets"><div class="nlqpresets-title">${t("saved_searches_heading")}</div><div class="nlqpreset-list">` +
+      list.map((preset,i)=>`<span class="nlqpreset"><button type="button" class="nlqpreset-run" data-i="${i}">${nlqEscape(preset.label)}</button><button type="button" class="nlqpreset-remove" data-i="${i}" aria-label="${nlqEscape(t("remove_saved_search_aria",{label:preset.label}))}">×</button></span>`).join("") +
+      `</div></div>`
+    : "";
+  box.querySelectorAll(".nlqpreset-run").forEach(btn=>btn.addEventListener("click",()=>{
+    const preset=nlqPresetStore()[+btn.dataset.i]; if(!preset) return;
+    if(location.hash===preset.hash) applyHash(); else location.hash=preset.hash;
+  }));
+  box.querySelectorAll(".nlqpreset-remove").forEach(btn=>btn.addEventListener("click",()=>{
+    const next=removePreset(nlqPresetStore(), +btn.dataset.i); nlqPresetSet(next); renderNLQPresets();
+  }));
+}
+function nlqResolvedActionsHTML(hash){
+  if(!hash) return "";
+  return `<div class="nlqactions"><a class="act" id="nlqshare" href="#money" data-i18n="share_search_link">${t("share_search_link")}</a><button type="button" class="mini" id="nlqcopy" data-i18n="copy_search_link">${t("copy_search_link")}</button><button type="button" class="mini" id="nlqsave" data-i18n="save_search_btn">${t("save_search_btn")}</button></div>`;
+}
+function bindNLQResolvedActions(label, hash){
+  if(!hash) return;
+  const share=$("#nlqshare"); if(share) share.href=hash;
+  const copy=$("#nlqcopy");
+  if(copy) copy.addEventListener("click",()=>copyText(location.origin+location.pathname+hash, copy));
+  const save=$("#nlqsave");
+  if(save) save.addEventListener("click",()=>{
+    nlqPresetSet(savePreset(nlqPresetStore(), label, hash));
+    renderNLQPresets();
+    save.dataset.i18n="saved_check";
+    save.textContent=t("saved_check");
+  });
+}
 async function nlTranslate(){
   const text=$("#nlq").value.trim(); if(!text) return;
   const btn=$("#nlgo"); if(btn) btn.disabled=true; $("#nltrans").innerHTML=nlWorkingHTML();
   const p=await nlResolve(text, "money");
-  const wantsAward = p.noticeType==="award" || (!p.noticeType && p.minAmount);
+  const deepLink=buildMoneyDeepLink(p);
+  const wantsAward = p.noticeType==="award" || (!p.noticeType && (p.minAmount || p.maxAmount));
   const chips=[`<span class="qchip">notice = <b>${wantsAward?"award":"open RFP"}</b></span>`];
   if(p.agency) chips.push(`<span class="qchip">agency <b>${p.agency}</b></span>`);
   if(p.keywords.length) chips.push(`<span class="qchip">about <b>${p.keywords.join(" / ")}</b></span>`);
@@ -2019,7 +2084,11 @@ async function nlTranslate(){
   const code=[`type_of_notice = '${wantsAward?"Award":"Solicitation"}'`, wantsAward?null:"due_date > today"+(dueMax?` AND due_date <= '${dueMax}'`:""),
     `$q ~ ${kwExpr}`, p.minAmount?`contract_amount >= ${p.minAmount}`:null, p.maxAmount?`contract_amount <= ${p.maxAmount}`:null,
     p.excludeSpecial?`selection_method NOT LIKE '%Special%'`:null].filter(Boolean).join("\nAND ");
-  $("#mode").value=wantsAward?"award":"open"; $("#sort").value="deadline"; $("#kw").value=[...p.keywords, p.agency].filter(Boolean).join(" ");
+  moneyNlResolved={category:p.category||null, maxAmount:p.maxAmount||null, months:p.months||null,
+    noticeType:p.noticeType||null, excludeSpecial:!!p.excludeSpecial};
+  $("#mode").value=wantsAward?"award":"open"; $("#sort").value="deadline";
+  $("#agency").value=""; forceSelect("#agency", p.agency);
+  $("#kw").value=p.keywords.join(" "); forceAmountSelect(p.minAmount);
   await search();
   if(btn) btn.disabled=false;
   // Field evidence 2026-07-14: paraphrases used to fail with a silent, unexplained empty
@@ -2028,7 +2097,8 @@ async function nlTranslate(){
   // chip, or genuinely zero matches) gets a prominent echo + a one-tap way to adjust; a
   // confident, populated search keeps the quiet status line it always had.
   const weak = chips.length <= 1 || currentRows.length === 0;
-  $("#nltrans").innerHTML=nlTransHTML(chips, "#nlq", weak);
+  $("#nltrans").innerHTML=nlTransHTML(chips, "#nlq", weak)+nlqResolvedActionsHTML(deepLink);
+  bindNLQResolvedActions(text, deepLink);
   if(currentRows.length === 0) $("#list").innerHTML = `<div class="empty">${t("nl_no_matches_note")}</div>` + nlTransHTML(chips, "#nlq", true);
 }
 
@@ -4236,6 +4306,16 @@ function forceSelect(sel, val){
   if(![...s.options].some(o=>o.value===val)){ const o=document.createElement("option"); o.textContent=val; s.appendChild(o); }
   s.value = val;
 }
+function forceAmountSelect(value){
+  const select=$("#minamt"), amount=positiveAmount(value);
+  if(!select) return;
+  if(!amount){ select.value=""; return; }
+  const val=String(amount);
+  if(![...select.options].some(option=>option.value===val)){
+    const option=document.createElement("option"); option.value=val; option.textContent=money(amount)+"+"; select.appendChild(option);
+  }
+  select.value=val;
+}
 
 function serializeState(){
   const tab = document.querySelector(".tabbtn.active")?.dataset.tab;
@@ -4247,6 +4327,10 @@ function serializeState(){
     if($("#kw").value.trim()) q.set("q", $("#kw").value.trim());
     if($("#sort").value !== "deadline") q.set("sort", $("#sort").value);
     if($("#minamt").value) q.set("min", $("#minamt").value);
+    if(moneyNlResolved.maxAmount) q.set("max", String(moneyNlResolved.maxAmount));
+    if(moneyNlResolved.category) q.set("category", moneyNlResolved.category);
+    if(moneyNlResolved.months) q.set("months", String(moneyNlResolved.months));
+    if(moneyNlResolved.excludeSpecial) q.set("standard", "1");
     if(closingWeek) q.set("closing", "week");
     if(methodSel) q.set("m", methodSel);
   } else if(tab === "people"){
@@ -4394,11 +4478,19 @@ function applyHash(){
   hashLock = true;
   try{
     if(tab === "money"){
-      if(q.get("mode")) $("#mode").value = q.get("mode");
-      forceSelect("#agency", q.get("agency"));
+      // Reset first: a shared hash must produce the same filter from any prior in-page state.
+      $("#mode").value = ["open","allrfp","award"].includes(q.get("mode")) ? q.get("mode") : "open";
+      $("#agency").value = ""; forceSelect("#agency", q.get("agency"));
       $("#kw").value = q.get("q") || "";
-      if(q.get("sort")) $("#sort").value = q.get("sort");
-      if(q.get("min")) $("#minamt").value = q.get("min");
+      $("#sort").value = ["deadline","newest","amount"].includes(q.get("sort")) ? q.get("sort") : "deadline";
+      forceAmountSelect(q.get("min"));
+      moneyNlResolved = {
+        maxAmount: positiveAmount(q.get("max")),
+        category: DEEPLINK_CATEGORIES.includes(q.get("category")) ? q.get("category") : null,
+        months: Number(q.get("months")) > 0 && Number(q.get("months")) <= 60 ? Math.round(Number(q.get("months"))) : null,
+        noticeType: q.get("mode")==="award" ? "award" : q.get("mode")==="open" ? "solicitation" : null,
+        excludeSpecial: q.get("standard")==="1",
+      };
       closingWeek = q.get("closing") === "week";
       $("#closingweek").classList.toggle("on", closingWeek);
       $("#closingweek").setAttribute("aria-pressed", String(closingWeek));
@@ -4515,6 +4607,7 @@ document.addEventListener("click", e=>{
 });
 injectNLBoxes();
 renderNLSamples("money", $("#nltry"));
+renderNLQPresets();
 loadValidatedSuggestions();
 $("#export").addEventListener("click", exportCSV);
 let editionRange=null;
@@ -4720,7 +4813,7 @@ function rerenderForLang(){
   try{ const c = JSON.parse(localStorage.getItem("crol_today_v2")||"null"); if(c && c.d) renderToday(c.d); }catch(e){}
   paintEditionSpan();
   loadAgencies();
-  aWatchChange(true); updateAWhen(); aRenderSaved(); // same skipQuizSync reasoning as the page-init call above
+  aWatchChange(true); updateAWhen(); aRenderSaved(); renderNLQPresets(); // same skipQuizSync reasoning as the page-init call above
   // #notice/#vendor/#agency/#matter permalink views have no .tabbtn (comment above
   // syncTabAria()'s role wiring), so the .tabbtn.active lookup below finds nothing for them
   // and their chrome — built once via t() when the view was first shown — silently kept
