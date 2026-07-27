@@ -10,7 +10,8 @@ summary: >-
   email alerts, feeds, plain-English search, forecasting, precomputed vendor
   identity headers, and the stats counter. A D1 mirror of
   recent notices (daily ingest; Socrata stays the source of truth) backs alert
-  matching and server-side search; new front doors: subscribe-by-inbound-email
+  matching and server-side search. Daily, versioned KV buckets let a complete
+  vendor profile paint from one edge read; new front doors: subscribe-by-inbound-email
   and an MCP endpoint for AI assistants (both spend-metered), plus a public
   data.html page of live dataset aggregates. Digest delivery fans out through
   a Cloudflare Queue (per-subscriber retries, DLQ; daily send caps unchanged).
@@ -53,7 +54,7 @@ Browser (crol-list.org — static on GitHub Pages)
         ├──  /feed.xml /feed.json /feed.ics     standing feeds from any saved search
         ├──  /batch             watchlist cross-reference
         ├──  /agencies          public raw-name → canonical-name crosswalk (JSON/CSV)
-        ├──  /vendor-profile    ≤24h vendor identity projection (KV; live fallback on miss)
+        ├──  /vendor-profile    ≤24h complete vendor-profile projection (KV; live fallback on miss)
         ├──  /inv[/<id>]        investigation snapshots + entity forecast metadata
         ├──  /priorcycle/<id>   precomputed prior-cycle + near-match sets (D1-cached, compute-on-miss)
         ├──  /stats /usage      public aggregate counters / keyed usage report
@@ -64,7 +65,8 @@ Inbound email (Email Routing: subscribe@crol-list.org → this worker): plain
   English → LLM-parsed watch → double-opt-in confirm reply (metered, loop-guarded)
 Cron (daily 13:00 UTC): (1) Socrata→D1 ingest refresh (fail-soft), (2) prior-cycle
   pre-warm for the freshly-ingested Award notices (bounded, fail-soft), (3) rebuild
-  versioned vendor-profile KV buckets from the full Award history, then (4) digest
+  versioned vendor-profile KV buckets (identity, agency rollup, 15 recent notices,
+  and forecasts), then (4) digest
   fan-out — QUEUE_DIGESTS=true enqueues one job per subscription to
   Queue crol-digests (consumer sends with retries, poison → crol-digests-dlq);
   send caps unchanged: MAX_PER_RUN=25 / MAX_SENDS_PER_DAY=50 via Resend
@@ -79,7 +81,7 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 
 - **KV `SUBS`** — confirmed subscriptions: `sub:<token>` → `{email, lens, filters, frequency}`, plus per-IP/per-address rate-limit counters for `/subscribe`.
 - **KV `NL_METER`** — daily spend metering for `/nl` (the denial-of-wallet ceiling on the only Claude-billed route).
-- **KV `ALERT_STATE`** — digest/cron bookkeeping plus the forecast cache: `fc:<stem>` → computed contract-expiration forecasts (from Checkbook award durations), `plan:<stem>` → parsed §112 MOCS plan rows (Socrata `whpb-ebtd`), and versioned `vp:v1:*` buckets behind `/vendor-profile`; the manifest is published last and records older than 24 hours are rejected so the browser uses its live Socrata fallback.
+- **KV `ALERT_STATE`** — digest/cron bookkeeping plus the forecast cache: `fc:<stem>` → computed contract-expiration forecasts (from Checkbook award durations), `plan:<stem>` → parsed §112 MOCS plan rows (Socrata `whpb-ebtd`), and versioned `vp:v1:*` whole-profile buckets behind `/vendor-profile`; the manifest is published last and records older than 24 hours are rejected so the browser uses its live Socrata fallback.
 - **KV `FEEDBACK`** — stored feedback rows (`fb:<ts>:<rand>`) + rate-limit counters.
 - **`index.html` localStorage** — client-side only: investigation workspace (pinned notices + notes), query cache, saved searches, plain/rigor toggle.
 - **D1 `crol-notices`** — mirror of recent notices (`notices` table: parsed columns + honest-data fields `contract_amount_valid`, `due_year`, plus the raw source row for schema-drift recovery), `ingest_state` (Socrata ingest cursor), and `prior_cycle_matches` (per-notice precomputed `{strict, near, eligibleCount}` prior-cycle match sets — the cache behind `GET /priorcycle/<id>`; compute-on-miss, cron pre-warms freshly-ingested Award notices, ranked by `worker/src/lib/prior_cycle.mjs`, a hand-synced dual implementation of index.html's matchers). Refreshed by the daily cron (`worker/src/ingest.mjs`); Socrata remains the source of truth.
@@ -96,7 +98,7 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 
 - **Seven lenses:** Money (RFP→Award pipeline + forecast timeline), People (title decoder + payroll), Land (rezonings + map), Property (asset lifecycle), Rules, Meetings, Alerts (subscriptions + watchlist).
 - **Forecasting UI:** vertical timeline widget on vendor/agency profile panels — official §112 plan entries and calculated expirations carry distinct badges.
-- **Vendor profiles:** the identity header and top-agency chips paint from a daily precomputed KV projection; recent notices, text mentions, and forecasts hydrate independently afterward. Missing or stale projection records use the original live Socrata resolver.
+- **Vendor profiles:** in response to user feedback, identity, top-agency chips, 15 recent notices, and forecasts now paint together from one daily precomputed KV projection. Full-text mentions stay behind an explicit disclosure because joining every vendor stem against the recent text corpus is disproportionate; missing or stale projection records use the original live Socrata resolver.
 - **External awards:** nine mapped public-authority profiles show up to eight recent awards from official annual ABO filings (`8w5p-k45m` / `d84c-dk28`) with source and lag labels. NYCHA solicitation details use exact-PIN Checkbook `Contracts_NYCHA` candidates only when the contract date is later than the solicitation date; matches remain separate from City Record rows.
 - **API:** `api.html` documents all worker routes and hosts the live batch cross-reference tool. `GET /agencies` publishes the City Record agency-name reconciliation as cached, CORS-open JSON or CSV; `/api` on the worker 302s to the documentation.
 - **MCP:** `POST /mcp` — `search_notices` / `get_notice` (D1 mirror) + `preview_watch` / `create_watch` (LLM, metered; double opt-in preserved). Optional bearer token; per-IP daily ceiling.
@@ -120,7 +122,7 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 3. Server-only features route to `api.crol-list.org`: `/nl` (plain English → filters via Claude Haiku, metered by `NL_METER`), `/subscribe`→`/confirm`→`/unsubscribe` (double-opt-in, Turnstile-gated, fails closed), feeds, `/batch`, `/agencies`, `/inv`, `/stats`, `/feedback`, keyed `/admin/*` and `/usage`.
 4. The forecasting layer (`/checkbook` + `/forecast`) parses historical Checkbook NYC award term lengths into projected expirations (`fc:<stem>` in `ALERT_STATE`) and merges them with scraped Charter §112 MOCS agency plans (`plan:<stem>`) into one chronological timeline, rendered as the profile-page timeline widget.
 5. Subscriptions land in KV `SUBS`; aggregate integers accrue in stats counters — no personal data beyond the double-opted-in email itself.
-6. The daily cron (13:00 UTC) first refreshes the D1 notices mirror from Socrata (cursored, fail-soft — a failed ingest never blocks alerts), pre-warms prior-cycle match sets for freshly-ingested Award notices, rebuilds the versioned vendor-profile projection in KV, then replays active subscriptions and forecast milestones, sending digests and early-warning emails via Resend — hard-capped at 25/run, 50/day. Each cache job is fail-soft; Money digests exclude data-entry-error amounts (≥ $10B) and label rolling year-2090 deadlines honestly.
+6. The daily cron (13:00 UTC) first refreshes the D1 notices mirror from Socrata (cursored, fail-soft — a failed ingest never blocks alerts), pre-warms prior-cycle match sets for freshly-ingested Award notices, rebuilds the versioned whole-profile vendor projection in KV, then replays active subscriptions and forecast milestones, sending digests and early-warning emails via Resend — hard-capped at 25/run, 50/day. Each cache job is fail-soft; Money digests exclude data-entry-error amounts (≥ $10B) and label rolling year-2090 deadlines honestly.
 7. Deploy is manual from the MacBook: `index.html` to GitHub Pages, worker via `wrangler deploy`. There is no CI/CD.
 
 ## Check yourself
