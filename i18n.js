@@ -77,17 +77,18 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "2b4a14f1",
-  "zh-Hans": "ba5b5845",
-  ru: "3dfa20ec",
-  bn: "0674229f",
-  ht: "7b32597e",
-  ko: "6dfdddca",
-  fr: "d5417193",
-  pl: "908f76af",
-  ar: "2a9bee1e",
-  ur: "b83d4b56",
+  es: "f7998301",
+  "zh-Hans": "d671f9cc",
+  ru: "0b9732bb",
+  bn: "5d5f05b2",
+  ht: "59694b24",
+  ko: "00bfe41b",
+  fr: "8b25f536",
+  pl: "f8c07ecd",
+  ar: "d901944d",
+  ur: "bd32d54a",
 };
+
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
 // (updateLangNotice(), below). `state` is one of "machine-drafted" | "glossary-checked" |
@@ -604,11 +605,11 @@ const STRINGS = {
     // Land lens
     rezonings_heading: "Rezonings",
     banner_on_block: "On this block — {label}.",
-    banner_none_nearest: "No rezoning on this block. Nearest in <b>{area}</b>:",
-    banner_none_active_nearest: "No active rezoning on this block. Nearest in <b>{area}</b>:",
-    banner_none_lot: "No rezoning filed on this lot ({label}). Active rezonings near <b>{area}</b>:",
+    banner_none_nearest: "No rezoning on this block. In <b>{area}</b>:",
+    banner_none_active_nearest: "No active rezoning on this block. Recent rezonings in <b>{area}</b>:",
+    banner_none_lot: "No rezoning filed on this lot ({label}). Recent rezonings in <b>{area}</b>:",
     no_zap_kw: " for “{kw}”",
-    zap_explainer_html: "ZAP indexes by <b>project</b>, not address — a notice about your block can be missing here while still in <a href=\"https://a856-cityrecord.nyc.gov/Search/Advanced\" target=\"_blank\" rel=\"noopener noreferrer\">The City Record<span class=\"sr-only\"> (opens in new tab)</span></a>.",
+    zap_explainer_html: "ZAP indexes by <b>project</b>, not address — a notice about your block can be missing here while still in <a href=\"https://a856-cityrecord.nyc.gov/Search/Advanced\" target=\"_blank\" rel=\"noopener noreferrer\">The City Record<span class=\"sr-only\"> (opens in new tab)</span></a>. Rezoning data comes from NYC's own ZAP portal via NYC Open Data, which the city refreshes monthly — a change on the live ZAP site can take weeks to appear here.",
     affordable_housing_tag: "affordable housing",
     unnamed_project: "(unnamed project)",
     unnamed: "(unnamed)",
