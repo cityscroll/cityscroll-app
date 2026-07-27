@@ -640,6 +640,7 @@
     data_note_agencies_html: "「已清理」意味着我们去掉了超过 100 亿美元的金额。我们认为那些是录入错误。请参见<a href=\"about.html#data\">底层数据</a>。",
     data_h_vendors_html: "按中标（授予合同）金额排名的供应商 <span class=\"note\">（过去 12 个月，经过清理）</span>",
     data_note_vendors: "源数据中的供应商名称未经规范化——拼写近似重复的会在此显示为不同的行。",
+    data_value_share: "{value} · 占总数 {share}",
     data_loading_counting: "正在统计 100 万+ 条通告……",
     data_fail: "此刻无法连接 NYC Open Data——请重新加载以重试。",
     data_foot_html: "每个数字都在您的浏览器中根据公开数据集实时计算。刷新页面可获取新数据。方法说明：<a href=\"about.html#data\">关于 → 底层数据</a> · <a href=\"stats.html\">网站使用统计</a> · <a href=\"changelog.html\">更新日志</a>",

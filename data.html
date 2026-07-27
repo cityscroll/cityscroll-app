@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Data · CROL-List</title>
 <meta name="description" content="The City Record dataset at a glance: what gets published, by whom, for how much — live aggregates straight from NYC Open Data, honestly labeled.">
-<script src="i18n.js?v=8a32bde7"></script>
+<script src="i18n.js?v=67205926"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
@@ -38,11 +38,12 @@
   .src{font:14px/1.7 var(--ui);color:var(--ink-soft)}
   .note{font:13px/1.6 var(--ui);color:var(--muted)}
   .bars{margin:12px 0}
-  .bar{display:grid;grid-template-columns:minmax(140px,38%) 1fr auto;gap:10px;align-items:center;margin:5px 0;font:14px/1.35 var(--ui)}
-  .bar .lbl{color:var(--ink-soft);text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .bar .trk{background:var(--paper-2);border:1px solid var(--rule);border-radius:3px;height:16px;position:relative}
-  .bar .fil{background:var(--green);height:100%;border-radius:2px;min-width:2px}
-  .bar .val{color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .bar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;align-items:end;margin:10px 0;font:14px/1.35 var(--ui)}
+  .bar .lbl{color:var(--ink-soft);text-align:start;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .bar .trk{grid-column:1/-1;background:var(--paper-2);border:1px solid var(--rule);border-radius:3px;height:13px;position:relative;overflow:hidden}
+  .bar .fil{display:block;background:var(--green);height:100%;border-radius:2px}
+  .bar .val{color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap;text-align:end}
+  @media(max-width:520px){.bar .lbl{white-space:normal;line-height:1.25}}
   .loading{font:14px/1.6 var(--ui);color:var(--muted);padding:8px 0}
   .foot{margin-top:40px;border-top:1px solid var(--rule);padding-top:14px;font:13px/1.6 var(--ui);color:var(--muted);text-align:center}
   .foot a{color:var(--oxblood)}
@@ -131,12 +132,25 @@ aren't real.</p>
 (function () {
   var SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
   var esc = function (s) { return String(s == null ? "" : s).replace(/[<>&]/g, function (c) { return { "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]; }); };
-  var fmtN = function (n) { return Number(n).toLocaleString("en-US"); };
+  var locale = function () {
+    var meta = window.LANG_META && LANG_META[window.LANG || "en"];
+    return meta ? meta.intlDate : "en-US";
+  };
+  var fmtN = function (n) { return new Intl.NumberFormat(locale()).format(Number(n)); };
   var fmtMoney = function (n) {
     n = Number(n);
-    if (n >= 1e9) return "$" + (n / 1e9).toFixed(2) + "B";
-    if (n >= 1e6) return "$" + (n / 1e6).toFixed(1) + "M";
-    return "$" + Math.round(n).toLocaleString("en-US");
+    return new Intl.NumberFormat(locale(), {
+      style: "currency",
+      currency: "USD",
+      notation: n >= 1e6 ? "compact" : "standard",
+      maximumFractionDigits: n >= 1e9 ? 2 : (n >= 1e6 ? 1 : 0)
+    }).format(n);
+  };
+  var fmtPercent = function (share) {
+    return new Intl.NumberFormat(locale(), {
+      style: "percent",
+      maximumFractionDigits: share > 0 && share < 0.01 ? 1 : 0
+    }).format(share);
   };
   var yearAgo = new Date(Date.now() - 365 * 86400000).toISOString().slice(0, 10);
 
@@ -147,57 +161,85 @@ aren't real.</p>
     });
   }
 
-  function bars(el, rows, lblKey, valKey, fmt) {
-    var max = rows.reduce(function (m, r) { return Math.max(m, Number(r[valKey]) || 0); }, 0) || 1;
-    el.innerHTML = rows.map(function (r) {
-      var v = Number(r[valKey]) || 0;
+  function chartRows(rows, valKey, encoding) {
+    var values = rows.map(function (r) { return Number(r[valKey]) || 0; });
+    var denominator = encoding === "composition"
+      ? values.reduce(function (sum, v) { return sum + v; }, 0)
+      : values.reduce(function (max, v) { return Math.max(max, v); }, 0);
+    denominator = denominator || 1;
+    return rows.map(function (row, index) {
+      var value = values[index];
+      return { row: row, value: value, width: (value / denominator) * 100, share: value / denominator };
+    });
+  }
+
+  function bars(el, rows, lblKey, valKey, fmt, encoding) {
+    el.dataset.encoding = encoding;
+    el.innerHTML = chartRows(rows, valKey, encoding).map(function (item) {
+      var r = item.row;
+      var value = fmt(item.value);
+      var label = encoding === "composition"
+        ? t("data_value_share", { value: value, share: fmtPercent(item.share) })
+        : value;
       return '<div class="bar"><span class="lbl" title="' + esc(r[lblKey]) + '">' + esc(r[lblKey] || "—") +
-        '</span><span class="trk"><span class="fil" style="width:' + Math.max(1, Math.round((v / max) * 100)) + '%"></span></span>' +
-        '<span class="val">' + fmt(v) + "</span></div>";
+        '</span><span class="val">' + esc(label) + '</span><span class="trk" aria-hidden="true">' +
+        '<span class="fil" style="width:' + item.width.toFixed(2) + '%"></span></span></div>';
     }).join("");
   }
 
   function fail(el) { el.innerHTML = '<div class="loading">' + t("data_fail") + '</div>'; }
 
-  // Sections, all time. Cached so a language switch can repaint section names via tSection()
-  // without a re-fetch (translate() names are chrome, not data — see i18n.js SECTION_I18N).
-  var sectionsRows = null;
-  function renderSections() {
-    if (!sectionsRows) return;
-    var rows = sectionsRows.map(function (r) {
-      return { section_name: (window.tSection ? tSection(r.section_name) : r.section_name), n: r.n };
-    });
-    bars(document.getElementById("sections"), rows, "section_name", "n", fmtN);
+  // Cache all charts so a language switch can repaint number, currency, percentage, and
+  // section-name formats without another Open Data request.
+  var charts = {};
+  function rememberChart(id, rows, lblKey, valKey, fmt, encoding, transform) {
+    charts[id] = { rows: rows, lblKey: lblKey, valKey: valKey, fmt: fmt, encoding: encoding, transform: transform };
+    renderChart(id);
+  }
+  function renderChart(id) {
+    var chart = charts[id];
+    if (!chart) return;
+    var rows = chart.transform ? chart.transform(chart.rows) : chart.rows;
+    bars(document.getElementById(id), rows, chart.lblKey, chart.valKey, chart.fmt, chart.encoding);
+  }
+  function renderCharts() {
+    Object.keys(charts).forEach(renderChart);
   }
   soda({ "$select": "section_name,count(request_id) AS n", "$group": "section_name", "$order": "n DESC" })
-    .then(function (rows) { sectionsRows = rows.filter(function (r) { return r.section_name; }); renderSections(); })
+    .then(function (rows) {
+      rememberChart("sections", rows.filter(function (r) { return r.section_name; }), "section_name", "n", fmtN, "composition", function (source) {
+        return source.map(function (r) {
+          return { section_name: (window.tSection ? tSection(r.section_name) : r.section_name), n: r.n };
+        });
+      });
+    })
     .catch(function () { fail(document.getElementById("sections")); });
 
   // Volume by month, last 12 months.
   soda({ "$select": "date_trunc_ym(start_date) AS m,count(request_id) AS n", "$where": "start_date >= '" + yearAgo + "T00:00:00'", "$group": "m", "$order": "m ASC" })
     .then(function (rows) {
       rows = rows.filter(function (r) { return r.m; }).map(function (r) { return { m: String(r.m).slice(0, 7), n: r.n }; });
-      bars(document.getElementById("volume"), rows, "m", "n", fmtN);
+      rememberChart("volume", rows, "m", "n", fmtN, "ranking");
     })
     .catch(function () { fail(document.getElementById("volume")); });
 
   // Procurement mix, last 12 months.
   soda({ "$select": "type_of_notice_description AS t,count(request_id) AS n", "$where": "section_name='Procurement' AND start_date >= '" + yearAgo + "T00:00:00'", "$group": "t", "$order": "n DESC" })
-    .then(function (rows) { bars(document.getElementById("procmix"), rows.filter(function (r) { return r.t; }), "t", "n", fmtN); })
+    .then(function (rows) { rememberChart("procmix", rows.filter(function (r) { return r.t; }), "t", "n", fmtN, "composition"); })
     .catch(function () { fail(document.getElementById("procmix")); });
 
   // Awarded $ filters: Award notices, positive, below the $10B error line.
   var CLEAN = "type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < 10000000000 AND start_date >= '" + yearAgo + "T00:00:00'";
 
   soda({ "$select": "agency_name,sum(contract_amount) AS total", "$where": CLEAN, "$group": "agency_name", "$order": "total DESC", "$limit": "10" })
-    .then(function (rows) { bars(document.getElementById("agencies"), rows.filter(function (r) { return r.agency_name; }), "agency_name", "total", fmtMoney); })
+    .then(function (rows) { rememberChart("agencies", rows.filter(function (r) { return r.agency_name; }), "agency_name", "total", fmtMoney, "ranking"); })
     .catch(function () { fail(document.getElementById("agencies")); });
 
   soda({ "$select": "vendor_name,sum(contract_amount) AS total", "$where": CLEAN + " AND vendor_name IS NOT NULL", "$group": "vendor_name", "$order": "total DESC", "$limit": "10" })
-    .then(function (rows) { bars(document.getElementById("vendors"), rows, "vendor_name", "total", fmtMoney); })
+    .then(function (rows) { rememberChart("vendors", rows, "vendor_name", "total", fmtMoney, "ranking"); })
     .catch(function () { fail(document.getElementById("vendors")); });
 
-  initSubpageLangSwitcher(renderSections);
+  initSubpageLangSwitcher(renderCharts);
 })();
 </script>
 </body>
