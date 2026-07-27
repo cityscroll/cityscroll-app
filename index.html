@@ -943,13 +943,14 @@ function syncTabAria(){
   if(!any && btns[0]) btns[0].tabIndex = 0; // notice view: no tab selected — keep the tablist reachable
 }
 function showTab(name, push){
+  const leavingLandEntry = name==="land" && push && location.hash.startsWith("#land/");
   document.querySelectorAll(".tabpane").forEach(p=>p.classList.toggle("active", p.id === "tab-"+name));
   document.querySelectorAll(".tabbtn").forEach(b=>b.classList.toggle("active", b.dataset.tab === name));
   syncTabAria();
   // Push BEFORE any lazy load below runs updateHash(), or the load's replaceState
   // rewrites the prior entry and the push turns into a no-op (Back would skip a tab).
   if(push) pushHash();
-  if(name==="land"){ loadLeaflet().catch(()=>{}); if(!landLoaded){ landLoaded=true; landSearch(); } if(landMap) setTimeout(()=>landMap.invalidateSize(),120); }
+  if(name==="land"){ loadLeaflet().catch(()=>{}); if(!landLoaded || leavingLandEntry){ landLoaded=true; landSearch(); } if(landMap) setTimeout(()=>landMap.invalidateSize(),120); }
   if(name==="money" && !moneyLoaded) search(); // deep links land on other tabs; Money lazy-loads like the rest
   if(name==="people"){ seedPeople(); applyPeopleDefault(); }
   if(SECTIONS[name] && !feedLoaded[name]){ feedLoaded[name]=true; loadSectionAgencies(name); loadSection(name); }
@@ -2679,7 +2680,7 @@ const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";
 const GEO = "https://geosearch.planninglabs.nyc/v2/search";
 const BORO_CENTER = {Manhattan:[40.776,-73.971],Brooklyn:[40.650,-73.950],Bronx:[40.844,-73.865],Queens:[40.718,-73.806],"Staten Island":[40.580,-74.150]};
 // ZAP action labels live in i18n.js (zapact_* keys) — see ZAPACT_KEY in landSelect().
-let lRows=[], landLoaded=false, landMap=null, landMarker=null;
+let lRows=[], landLoaded=false, landMap=null, landMarker=null, landSelectionSeq=0;
 const mihOn = v => v===true || v==="true";
 
 const ZAPBBL="https://data.cityofnewyork.us/resource/2iga-a6mk.json";
@@ -2744,7 +2745,7 @@ function landRowHTML(r, i, terms, contextTerms){
     ${digEvidenceHTML(ev)}
   </div>`;
 }
-function landRenderList(kw, kwIsTextMatch, boro){
+function landRenderList(kw, kwIsTextMatch, boro, autoSelect){
   const head=landBanner?`<div class="landbanner">${landBanner}</div>`:"";
   if(!lRows.length){
     $("#llist").innerHTML=head+`<div class="empty">${t("no_zap")}${kw?t("no_zap_kw",{kw}):""}. ${t("zap_explainer_html")}</div>`;
@@ -2759,7 +2760,7 @@ function landRenderList(kw, kwIsTextMatch, boro){
   const contextTerms = boro ? [boro] : [];
   $("#llist").innerHTML=head+lRows.map((r,i)=>landRowHTML(r,i,terms,contextTerms)).join("");
   document.querySelectorAll("#llist .row").forEach(el=>el.addEventListener("click",()=>landSelect(+el.dataset.i, el)));
-  document.querySelector("#llist .row")?.click();
+  if(autoSelect !== false) document.querySelector("#llist .row")?.click();
 }
 
 async function geocode(q){
@@ -2772,6 +2773,7 @@ async function geocode(q){
 }
 
 async function landSelect(i, el){
+  const selection=++landSelectionSeq;
   document.querySelectorAll("#llist .row.sel").forEach(e=>e.classList.remove("sel"));
   el.classList.add("sel");
   const r=lRows[i];
@@ -2791,30 +2793,88 @@ async function landSelect(i, el){
   if(actList.length) html+=`<div class="rmeta2" style="margin-top:10px"><b>${t("actions_lbl")}</b> ${actList.join(" · ")}</div>`;
   const area=(r.project_name||r.borough||"").replace(/(rezoning|demapping|rezone|special permit|special district|text amendment|mapping actions?|modification|disposition|non-?ulurp).*/i,"").trim().split(/\s+/).slice(0,3).join(" ")||r.borough||"";
   html+=`<div class="actions" style="margin-top:12px">
+    ${landPermalinkActionHTML(r)}
     <a class="act primary" href="https://zap.planning.nyc.gov/projects/${r.project_id}" ${EXT_ATTRS}>${t("zap_full_project")}${extSR()}</a>
     <button class="act" type="button" id="landalert" data-q="${area.replace(/"/g,'')}">${t("alert_me_area")}</button>
     <a class="act" id="crfind" href="https://a856-cityrecord.nyc.gov/Search/Advanced" ${EXT_ATTRS}>${t("search_city_record")}${extSR()}</a>
   </div>
   <div id="landmap"></div><div class="note" id="landmapnote"><span class="loading"></span> ${t("locating")}</div>`;
   $("#ldetail").innerHTML=html;
+  const lc=$("#landcopy"); if(lc) lc.addEventListener("click",()=>copyText(landLink(r.project_id), lc));
   const la=$("#landalert"); if(la) la.addEventListener("click",()=>landToAlert(la.dataset.q));
   const crterm=cleanText(r.project_name||"").replace(/\b(rezoning|demapping|rezone|special permit|special district|text amendment|mapping actions?|modification|disposition|non-?ulurp|public hearing|notice)\b/ig," ").replace(/\s+/g," ").trim();
-  if(crterm.length>3){ soda({"$select":"request_id","$where":"section_name='Public Hearings and Meetings'","$q":crterm,"$order":"start_date DESC","$limit":"1"}).then(rows=>{ const cr=$("#crfind"); if(cr&&rows&&rows[0]){ cr.href=REQ_URL(rows[0].request_id); cr.innerHTML=t("rezoning_notice_link")+extSR(); } }).catch(()=>{}); }
+  if(crterm.length>3){ soda({"$select":"request_id","$where":"section_name='Public Hearings and Meetings'","$q":crterm,"$order":"start_date DESC","$limit":"1"}).then(rows=>{ if(selection!==landSelectionSeq) return; const cr=$("#crfind"); if(cr&&rows&&rows[0]){ cr.href=REQ_URL(rows[0].request_id); cr.innerHTML=t("rezoning_notice_link")+extSR(); } }).catch(()=>{}); }
   let drew=false;
   try{
     const bblRows=await api(ZAPBBL,{"$select":"bbl","$where":`project_id='${(r.project_id||"").replace(/'/g,"''")}'`,"$limit":"40"});
     const bbls=[...new Set(bblRows.map(b=>b.bbl).filter(Boolean))].slice(0,25);
     if(bbls.length){
       const gj=await fetch(`https://services5.arcgis.com/GfwWNkhOj9bNBqoJ/arcgis/rest/services/MAPPLUTO/FeatureServer/0/query?where=BBL%20IN%20(${bbls.join(",")})&returnGeometry=true&outSR=4326&outFields=BBL&f=geojson`).then(x=>x.json()).catch(()=>null);
-      if(gj&&gj.features&&gj.features.length){ landShowLots(gj, gj.features.length); drew=true; }
+      if(selection!==landSelectionSeq) return;
+      if(gj&&gj.features&&gj.features.length){ landShowLots(gj, gj.features.length, selection); drew=true; }
     }
   }catch(e){}
+  if(selection!==landSelectionSeq) return;
   if(!drew){
     const q=(r.project_name||"").replace(/rezoning|special (mixed use )?district|text amendment|\bnos?\.?\b/ig," ").replace(/\s+/g," ").trim();
     const geo = q ? await geocode(q+" "+(r.borough||"")+" New York") : null;
-    if(geo) landShowMap(geo.lat,geo.lon,geo.label);
-    else { const c=BORO_CENTER[r.borough]; if(c) landShowMap(c[0],c[1],t("lot_not_geocoded",{boro:r.borough||""})); else { $("#landmap").style.display="none"; $("#landmapnote").textContent=t("location_not_resolved"); } }
+    if(selection!==landSelectionSeq) return;
+    if(geo) landShowMap(geo.lat,geo.lon,geo.label,selection);
+    else { const c=BORO_CENTER[r.borough]; if(c) landShowMap(c[0],c[1],t("lot_not_geocoded",{boro:r.borough||""}),selection); else { $("#landmap").style.display="none"; $("#landmapnote").textContent=t("location_not_resolved"); } }
   }
+}
+
+function landPermalinkActionHTML(r){
+  return r && r.project_id
+    ? `<button class="act" type="button" id="landcopy">${t("copy_link")}</button>`
+    : "";
+}
+
+function renderLandEntryNotFound(id){
+  unbusy("#llist");
+  if(landMap){ try{landMap.remove();}catch(e){} landMap=null; landMarker=null; }
+  const safeId=String(id||"").replace(/[<>&]/g,"");
+  const suffix=safeId?`: <code>${safeId}</code>`:"";
+  const html=`<div class="empty">${t("no_zap")}${suffix}.<br><br><a href="#land">${t("back_browse")}</a></div>`;
+  $("#llist").innerHTML=html;
+  $("#ldetail").innerHTML=html;
+  $("#lrescount").textContent="0";
+}
+
+async function showLandEntry(id){
+  landSelectionSeq++; // invalidate any map/detail hydration still finishing for the prior entry
+  landLoaded=true; // suppress the ordinary list fetch while the exact project loads
+  showTab("land");
+  $("#lboro").value="";
+  $("#lkw").value="";
+  $("#lstatus").value="active";
+  $("#lreshead").textContent=t("rezonings_heading");
+  $("#lrescount").textContent="";
+  landBanner="";
+  const stale=staleGuard("land");
+  if(!id){ renderLandEntryNotFound(id); return; }
+  busyList("#llist", 1);
+  $("#ldetail").innerHTML=listSkeleton(1);
+  let rows;
+  try{
+    rows=await api(ZAP,{"$select":ZAP_SELECT,"$where":`project_id='${String(id).replace(/'/g,"''")}'`,"$limit":"1"});
+  }catch(e){
+    if(!stale()){
+      unbusy("#llist");
+      const html=`<div class="empty">${t("could_not_reach")}</div>`;
+      $("#llist").innerHTML=html;
+      $("#ldetail").innerHTML=html;
+    }
+    return;
+  }
+  if(stale()) return;
+  unbusy("#llist");
+  if(!rows.length){ renderLandEntryNotFound(id); return; }
+  lRows=rows;
+  $("#lrescount").textContent="1";
+  landRenderList("", true, "", false);
+  const row=$("#llist").querySelector(".row");
+  if(row) await landSelect(0,row);
 }
 
 /* Leaflet loads on demand: the map is a detail of one lens, not a cost every visitor pays.
@@ -2831,10 +2891,11 @@ function loadLeaflet(){
   });
   return leafletP;
 }
-async function landShowMap(lat, lon, label){
+async function landShowMap(lat, lon, label, selection){
   const el=$("#landmap"); if(!el) return; el.style.display="block";
   $("#landmapnote").innerHTML=t("map_approx_note_html",{label});
   try{ await loadLeaflet(); }catch(e){}
+  if(selection!==undefined && selection!==landSelectionSeq) return;
   if(typeof L==="undefined"){ el.innerHTML=`<div class="empty">${t("map_needs_connection")}</div>`; return; }
   landMap=L.map(el).setView([lat,lon],15);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap © CARTO',subdomains:'abcd',maxZoom:19}).addTo(landMap);
@@ -2845,10 +2906,11 @@ async function landShowMap(lat, lon, label){
   setTimeout(()=>{ if(landMap) landMap.invalidateSize(); },150);
 }
 
-async function landShowLots(gj, n){
+async function landShowLots(gj, n, selection){
   const el=$("#landmap"); if(!el) return; el.style.display="block";
   $("#landmapnote").innerHTML=t("showing_lots_note_html",{n, s:n===1?"":"s"});
   try{ await loadLeaflet(); }catch(e){}
+  if(selection!==undefined && selection!==landSelectionSeq) return;
   if(typeof L==="undefined"){ el.innerHTML=`<div class="empty">${t("map_needs_connection")}</div>`; return; }
   landMap=L.map(el);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap © CARTO · lots © NYC MapPLUTO',subdomains:'abcd',maxZoom:19}).addTo(landMap);
@@ -4216,9 +4278,11 @@ async function showMatter(pin){
 
 /* ===================== PERMALINKS & URL STATE =====================
    #<tab>?<filters> mirrors the active lens (shareable, bookmarkable, back-button-safe);
-   #notice/<request_id> is a canonical address for one notice. The router reads/writes the
-   same control values the NL layer and hand-set filters use — three spellings of one state. */
+   #notice/<request_id> and #land/<project_id> are canonical addresses for individual records.
+   The router reads/writes the same control values the NL layer and hand-set filters use —
+   three spellings of one state. */
 const noticeLink = id => location.origin + location.pathname + "#notice/" + encodeURIComponent(id);
+const landLink = id => location.origin + location.pathname + "#land/" + encodeURIComponent(id);
 let hashLock = false;
 
 async function copyText(txt, btn){ // NOT `t` — that's the i18n lookup
@@ -4371,12 +4435,22 @@ function parseNoticeHashSegment(rest){
   return { id, watch };
 }
 
+function parseLandHashSegment(rest){
+  let id;
+  try{ id=decodeURIComponent(rest); }catch(e){ return null; }
+  return /^[A-Za-z0-9_-]{1,80}$/.test(id) ? id : null;
+}
+
 function applyHash(){
   const raw = location.hash.slice(1);
   if(!raw) return false;
   if(raw.startsWith("notice/")){
     const { id, watch } = parseNoticeHashSegment(raw.slice(7));
     showNotice(id, watch);
+    return true;
+  }
+  if(raw.startsWith("land/")){
+    showLandEntry(parseLandHashSegment(raw.slice(5)));
     return true;
   }
   // agencyHref()/vendorHref() can append a literal "?tab=forecast" (never inside the
@@ -4736,7 +4810,11 @@ function rerenderForLang(){
   if(tab!=="land") landLoaded=false;
   if(tab==="money" && moneyLoaded) search();
   else if(tab==="people" && $("#pkw").value.trim()) pSearch();
-  else if(tab==="land" && landLoaded) landSearch();
+  else if(tab==="land" && landLoaded){
+    const raw=location.hash.slice(1);
+    if(raw.startsWith("land/")) showLandEntry(parseLandHashSegment(raw.slice(5)));
+    else landSearch();
+  }
   else if(tab && SECTIONS[tab] && feedLoaded[tab]){ loadSectionAgencies(tab); loadSection(tab); }
 }
 
