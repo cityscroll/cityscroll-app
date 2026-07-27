@@ -21,7 +21,7 @@ import subprocess
 import sys
 
 ROOT = pathlib.Path(__file__).parents[2]
-PAGES = ["index.html", "about.html", "data.html", "stats.html", "api.html", "changelog.html"]
+PAGES = ["index.html", "about.html", "data.html", "stats.html", "api.html", "changelog.html", "standards.html"]
 
 GENERIC_PHRASES = {
     "click here", "click", "here", "read more", "more", "more info", "more information",

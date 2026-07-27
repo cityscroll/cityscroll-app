@@ -12,7 +12,7 @@ import sys
 import pathlib
 
 ROOT = pathlib.Path(__file__).parents[2]
-PAGES = ["index.html", "about.html", "data.html", "stats.html", "changelog.html", "api.html"]
+PAGES = ["index.html", "about.html", "data.html", "stats.html", "changelog.html", "api.html", "standards.html"]
 
 FORM_TAG = re.compile(r"(?<![\w.#-])(input|select|textarea)\b")
 BAD_BORDER = re.compile(r"border(?:-\w+)?\s*:\s*[^;]*var\(--rule\)(?!-strong)")

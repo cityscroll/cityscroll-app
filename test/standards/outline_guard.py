@@ -12,7 +12,7 @@ import re
 import sys
 
 ROOT = pathlib.Path(__file__).parents[2]
-PAGES = ["index.html", "about.html", "data.html", "stats.html", "api.html", "changelog.html"]
+PAGES = ["index.html", "about.html", "data.html", "stats.html", "api.html", "changelog.html", "standards.html"]
 
 SUPPRESS_RE = re.compile(r"([^{}]+)\{[^{}]*\boutline\s*:\s*(?:none|0)\b[^{}]*\}")
 FOCUS_VISIBLE_RE = re.compile(r"([^{}]+):focus-visible\s*\{([^{}]*)\}")

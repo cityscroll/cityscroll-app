@@ -210,7 +210,7 @@ def scan_js(src):
     return findings
 
 
-HTML_PAGES = ["index.html", "about.html", "data.html", "stats.html", "api.html", "changelog.html"]
+HTML_PAGES = ["index.html", "about.html", "data.html", "stats.html", "api.html", "changelog.html", "standards.html"]
 
 
 def main():

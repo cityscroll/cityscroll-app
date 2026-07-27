@@ -52,7 +52,7 @@ from pathlib import Path
 ROOT = Path(os.environ.get("CROL_FALLBACK_SYNC_ROOT") or Path(__file__).resolve().parents[2])
 _pages_override = os.environ.get("CROL_FALLBACK_SYNC_PAGES")
 PAGES = _pages_override.split(",") if _pages_override else [
-    "index.html", "about.html", "data.html", "stats.html", "api.html", "changelog.html"]
+    "index.html", "about.html", "data.html", "stats.html", "api.html", "changelog.html", "standards.html"]
 
 SCRIPT_RE = re.compile(r"<script\b.*?</script>", re.DOTALL | re.IGNORECASE)
 STYLE_RE = re.compile(r"<style\b.*?</style>", re.DOTALL | re.IGNORECASE)
