@@ -752,6 +752,7 @@
     data_note_agencies_html: "« Nettoyées » signifie que nous avons retiré les montants de plus de 10 milliards $. Nous pensons qu'il s'agit d'erreurs de saisie. Voir <a href=\"about.html#data\">les données sous-jacentes</a>.",
     data_h_vendors_html: "Principaux fournisseurs par montants attribués <span class=\"note\">(12 derniers mois, données nettoyées)</span>",
     data_note_vendors: "Les noms de fournisseurs ne sont pas normalisés dans la source. De petites différences orthographiques apparaissent ici comme des lignes distinctes.",
+    data_value_share: "{value} · {share} du total",
     data_loading_counting: "Comptage de plus d'un million d'avis…",
     data_fail: "Impossible de joindre NYC Open Data pour l'instant — rechargez pour réessayer.",
     data_foot_html: "Chaque chiffre est calculé en direct dans votre navigateur à partir du jeu de données public. Rechargez la page pour obtenir de nouvelles données. Méthodologie : <a href=\"about.html#data\">à propos → les données sous-jacentes</a> · <a href=\"stats.html\">statistiques d'utilisation du site</a> · <a href=\"changelog.html\">journal des modifications</a>",

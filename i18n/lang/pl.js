@@ -662,6 +662,7 @@
     data_note_agencies_html: "„Oczyszczone” oznacza, że usunęliśmy kwoty powyżej 10 mld USD. Uważamy, że są to błędy wprowadzania danych. Zobacz <a href=\"about.html#data\">dane źródłowe</a>.",
     data_h_vendors_html: "Czołowi dostawcy według przyznanych kwot <span class=\"note\">(ostatnie 12 miesięcy, oczyszczone)</span>",
     data_note_vendors: "Nazwy dostawców nie są ujednolicone w źródle. Drobne różnice w pisowni pojawiają się tutaj jako osobne wiersze.",
+    data_value_share: "{value} · {share} całości",
     data_loading_counting: "Liczenie ponad 1 mln ogłoszeń…",
     data_fail: "Nie udało się teraz połączyć z NYC Open Data — odśwież, aby spróbować ponownie.",
     data_foot_html: "Każda liczba jest obliczana na żywo w Twojej przeglądarce na podstawie publicznego zbioru danych. Odśwież stronę, aby uzyskać nowe dane. Metodologia: <a href=\"about.html#data\">o projekcie → dane źródłowe</a> · <a href=\"stats.html\">statystyki użycia strony</a> · <a href=\"changelog.html\">historia zmian</a>",

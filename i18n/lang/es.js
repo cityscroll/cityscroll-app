@@ -642,6 +642,7 @@
     data_note_agencies_html: "\"Depurado\" significa que quitamos los montos superiores a $10 mil millones. Creemos que son errores de entrada de datos. Vea <a href=\"about.html#data\">los datos subyacentes</a>.",
     data_h_vendors_html: "Principales proveedores por dólares adjudicados <span class=\"note\">(últimos 12 meses, depurado)</span>",
     data_note_vendors: "Los nombres de proveedores no están normalizados en la fuente. Pequeñas diferencias de ortografía aparecen como filas separadas aquí.",
+    data_value_share: "{value} · {share} del total",
     data_loading_counting: "Contando más de 1M de avisos…",
     data_fail: "No se pudo conectar a NYC Open Data en este momento — recargue para reintentar.",
     data_foot_html: "Cada número se calcula en vivo en su navegador a partir del conjunto de datos público. Recargue la página para obtener datos nuevos. Metodología: <a href=\"about.html#data\">acerca de → los datos subyacentes</a> · <a href=\"stats.html\">estadísticas de uso del sitio</a> · <a href=\"changelog.html\">registro de cambios</a>",
