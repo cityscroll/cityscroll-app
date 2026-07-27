@@ -146,7 +146,7 @@ const STRINGS = {
     // Tab labels
     tab_money:    "Contracts",
     tab_people:   "Staffing",
-    tab_land:     "Land",
+    tab_land:     "Zoning",
     tab_property: "Property",
     tab_rules:    "Rules",
     tab_meetings: "Meetings",
@@ -902,7 +902,7 @@ const STRINGS = {
     stats_col_count: "Notices",
     stats_cat_empty: "No digests have matched anything yet.",
     stats_h_bylens: "Searches, by section",
-    stats_p_bylens: "Which part of the site people asked about: contracts, staffing, land, property, rules, or meetings.",
+    stats_p_bylens: "Which part of the site people asked about: contracts, staffing, zoning, property, rules, or meetings.",
     stats_col_lens: "Section",
     stats_col_last7: "Last 7 days",
     stats_col_alltime: "All time",
