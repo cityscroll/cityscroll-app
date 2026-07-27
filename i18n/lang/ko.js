@@ -171,6 +171,8 @@
     search_label: "검색",
     borough_label: "자치구",
     all_boroughs: "모든 자치구",
+    use_my_location: "내 위치 사용",
+    near_you_area: "내 주변 → {area}",
     zip_addr_neighborhood: "우편번호, 주소 또는 동네",
     status_label: "상태",
     status_active: "검토 중 / 진행 중",

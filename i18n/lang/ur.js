@@ -174,6 +174,8 @@
     search_label: "تلاش",
     borough_label: "بورو",
     all_boroughs: "تمام بوروز",
+    use_my_location: "میرا مقام استعمال کریں",
+    near_you_area: "آپ کے قریب ← {area}",
     zip_addr_neighborhood: "زپ کوڈ، پتہ، یا محلہ",
     status_label: "حیثیت",
     status_active: "زیرِ جائزہ / فعال",

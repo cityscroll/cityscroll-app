@@ -174,6 +174,8 @@
     search_label: "بحث",
     borough_label: "المقاطعة",
     all_boroughs: "كل المقاطعات",
+    use_my_location: "استخدام موقعي",
+    near_you_area: "بالقرب منك ← {area}",
     zip_addr_neighborhood: "الرمز البريدي أو العنوان أو الحي",
     status_label: "الحالة",
     status_active: "قيد المراجعة / نشط",

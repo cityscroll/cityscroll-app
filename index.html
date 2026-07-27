@@ -96,6 +96,7 @@
   button{font:600 14px/1 ui-sans-serif,system-ui,sans-serif;padding:11px 18px;border-radius:7px;border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer}
   button:active{transform:translateY(1px)}
   button.mini{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;padding:6px 10px;background:#fff;color:var(--ink);border:1px solid var(--rule);border-radius:7px}
+  #landlocation{min-height:32px;white-space:nowrap}
   .wand{display:flex;flex-wrap:wrap;gap:7px}
   .wandchip{font-family:var(--font-sc);font-weight:600;letter-spacing:.04em;font-size:12px;padding:7px 12px;border:1px solid var(--rule);border-radius:999px;background:#fff;color:var(--ink-soft);cursor:pointer}
   .wandchip:hover{border-color:var(--oxblood);color:var(--oxblood)}
@@ -411,9 +412,10 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=0c3ccd0b"></script>
+<script src="i18n.js?v=8a32bde7"></script>
 <script src="nl_parse.js"></script>
 <script src="nl_deeplink.js"></script>
+<script src="location_awareness.js"></script>
 <script src="external_awards.js"></script>
 <script src="export_workflows.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
@@ -601,13 +603,14 @@
         </select>
       </div>
       <div class="field kw">
-        <label for="lkw" data-i18n="zip_addr_neighborhood">ZIP, address, or neighborhood</label>
+        <label for="lkw" data-i18n="zip_addr_neighborhood">ZIP or place</label>
         <input type="text" id="lkw" placeholder="Bushwick, 79 Rivington, Gowanus…" data-i18n-placeholder="kw_placeholder_land">
       </div>
       <div class="field">
         <label for="lstatus" data-i18n="status_label">Status</label>
         <select id="lstatus"><option value="active" data-i18n="status_active">In review / active</option><option value="all" data-i18n="status_all">All</option></select>
       </div>
+      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" id="landlocation" data-i18n="use_my_location">Use my location</button></div>
       <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="land" data-i18n="watch_this_search">Watch this search</button></div>
     </div>
     <div class="grid">
@@ -1029,7 +1032,7 @@ function showTab(name, push){
   // Push BEFORE any lazy load below runs updateHash(), or the load's replaceState
   // rewrites the prior entry and the push turns into a no-op (Back would skip a tab).
   if(push) pushHash();
-  if(name==="land"){ loadLeaflet().catch(()=>{}); if(!landLoaded || leavingLandEntry){ landLoaded=true; landSearch(); } if(landMap) setTimeout(()=>landMap.invalidateSize(),120); }
+  if(name==="land"){ loadLeaflet().catch(()=>{}); if(!landLoaded || leavingLandEntry){ landLoaded=true; landSearch(); } if(!location.hash.startsWith("#land/")) maybeAutoLocateLand(); if(landMap) setTimeout(()=>landMap.invalidateSize(),120); }
   if(name==="money" && !moneyLoaded) search(); // deep links land on other tabs; Money lazy-loads like the rest
   if(name==="people"){ seedPeople(); applyPeopleDefault(); }
   if(SECTIONS[name] && !feedLoaded[name]){ feedLoaded[name]=true; loadSectionAgencies(name); loadSection(name); }
@@ -2425,7 +2428,7 @@ function searchFilterFromHash(lens, hash){
   const q=new URLSearchParams(hash.slice(qi+1));
   const keywords=q.get("q")?[q.get("q")]:[];
   if(lens==="people") return {lookupType:q.get("mode")==="person"?"person":"role", keywords};
-  if(lens==="land") return {boro:q.get("boro"), keywords, status:q.get("status")==="all"?"all":"active"};
+  if(lens==="land") return {boro:q.get("boro"), communityDistrict:q.get("cd"), keywords, status:q.get("status")==="all"?"all":"active"};
   const filter={agency:q.get("agency"), keywords};
   if(lens==="meetings") filter.when=q.get("when")==="all"?"all":"upcoming";
   if(lens==="property"){ filter.asset=q.get("asset")||"all"; filter.stage=q.get("stage")||"all"; }
@@ -2441,7 +2444,9 @@ function searchFilterChips(lens, filter){
     if(keywords.length) chips.push(`<span class="qchip">${t("nl_filter_about_label")} <b>${enTitle(keywords.join(" / "))}</b></span>`);
   } else if(lens==="land"){
     chips.push(`<span class="qchip">${t("nl_chip_land_kind")}</span>`);
-    if(filter.boro) chips.push(`<span class="qchip">${t("borough_label")} <b>${filter.boro}</b></span>`);
+    if(filter.locationArea) chips.push(`<span class="qchip">${t("near_you_area",{area:filter.locationArea})}</span>`);
+    else if(filter.boro) chips.push(`<span class="qchip">${t("borough_label")} <b>${filter.boro}</b></span>`);
+    if(filter.communityDistrict && !filter.locationArea) chips.push(`<span class="qchip">CD <b>${Number(filter.communityDistrict.slice(1))}</b></span>`);
     if(keywords.length) chips.push(`<span class="qchip">${t("nl_filter_about_label")} <b>${enTitle(keywords.join(" / "))}</b></span>`);
     if(filter.status==="all") chips.push(`<span class="qchip">${t("nl_chip_land_status_all")}</span>`);
   } else {
@@ -2481,6 +2486,8 @@ function bindClearSearchState(lens, root){
       $("#nltrans-people").innerHTML=""; pSearch(); return;
     }
     if(lens==="land"){
+      landResolvedArea=null;
+      landCommunityDistrict="";
       $("#lboro").value=""; $("#lkw").value=""; $("#lstatus").value="active";
       $("#nltrans-land").innerHTML=""; landSearch(); return;
     }
@@ -2496,7 +2503,7 @@ function bindClearSearchState(lens, root){
 
 function searchLabelFromHash(lens, hash){
   const q=new URLSearchParams((hash.split("?")[1]||""));
-  const parts=["q","agency","boro","mode","status","when","asset","stage"].map(key=>q.get(key)).filter(Boolean);
+  const parts=["q","agency","boro","cd","mode","status","when","asset","stage"].map(key=>q.get(key)).filter(Boolean);
   return parts.join(" · ") || t("tab_"+lens);
 }
 
@@ -2505,7 +2512,7 @@ function renderSearchComponents(lens, options){
   const serialized=location.hash.startsWith("#"+lens+"?")?serializeState():null;
   const hash=(options&&options.hash)||serialized;
   const safeHash=hash&&hash.startsWith("#"+lens+"?")?hash:null;
-  const filter=searchFilterFromHash(lens, safeHash);
+  const filter=(options&&options.filter)||searchFilterFromHash(lens, safeHash);
   const state=document.querySelector(`[data-search-state="${lens}"]`);
   const actions=document.querySelector(`[data-search-actions="${lens}"]`);
   if(state){
@@ -3046,22 +3053,38 @@ const GEO = "https://geosearch.planninglabs.nyc/v2/search";
 const BORO_CENTER = {Manhattan:[40.776,-73.971],Brooklyn:[40.650,-73.950],Bronx:[40.844,-73.865],Queens:[40.718,-73.806],"Staten Island":[40.580,-74.150]};
 // ZAP action labels live in i18n.js (zapact_* keys) — see ZAPACT_KEY in landSelect().
 let lRows=[], landLoaded=false, landMap=null, landMarker=null, landSelectionSeq=0;
+let landResolvedArea=null;
+let landCommunityDistrict="";
+let landAutoLocationChecked=false;
 const mihOn = v => v===true || v==="true";
 
 const ZAPBBL="https://data.cityofnewyork.us/resource/2iga-a6mk.json";
 const ZAP_SELECT="project_id,project_name,project_brief,primary_applicant,public_status,project_status,borough,community_district,actions,mih_flag,current_milestone,current_milestone_date,ulurp_numbers";
 let landBanner="";
 function zapWhere(status){ return "ulurp_non='ULURP'"+(status==="active"?" AND project_status='Active'":""); }
+function zapDistrictWhere(communityDistrict){
+  return /^(?:M|X|K|Q|R)\d{2}$/.test(communityDistrict||"")
+    ? ` AND community_district like '%${communityDistrict}%'`
+    : "";
+}
 
 async function landSearch(){
   const boro=$("#lboro").value, kw=$("#lkw").value.trim(), status=$("#lstatus").value;
+  const located=!!(landResolvedArea && !kw && landResolvedArea.borough===boro);
   updateHash();
-  renderSearchComponents("land");
+  if(located){
+    renderSearchComponents("land", {filter: {
+      ...coarseLandFilter(landResolvedArea, status),
+      locationArea: landResolvedArea.borough+(landResolvedArea.communityDistrict?` CD ${Number(landResolvedArea.communityDistrict.slice(1))}`:""),
+    }});
+  } else {
+    renderSearchComponents("land");
+  }
   $("#lreshead").textContent = t("rezonings_heading") + (boro?" · "+boro:"") + (kw?` · “${kw}”`:"");
   $("#lrescount").textContent=""; landBanner="";
   busyList("#llist", 3);
   const stale = staleGuard("land");
-  let geo=null, block=null;
+  let geo=located?landResolvedArea:null, block=located?landResolvedArea.block:null;
   if(kw){ geo=await geocode(kw); if(geo&&geo.bbl&&/^\d{10}$/.test(geo.bbl)) block=geo.bbl.slice(0,6); }
   try{
     let rows, banner="";
@@ -3077,6 +3100,7 @@ async function landSearch(){
       } else { rows=await landNearby(geo,status); banner=t("banner_none_lot",{label:geo.label, area:geo.neighbourhood||geo.borough}); }
     } else {
       let w=zapWhere(status); if(boro) w+=` AND borough='${boro.replace(/'/g,"''")}'`;
+      w+=zapDistrictWhere(landCommunityDistrict);
       const p={"$select":ZAP_SELECT,"$where":w,"$order":"current_milestone_date DESC","$limit":"40"}; if(kw) p["$q"]=kw;
       rows=await api(ZAP,p);
     }
@@ -3095,6 +3119,7 @@ async function landSearch(){
 
 async function landNearby(geo,status){
   let w=zapWhere(status); if(geo&&geo.borough) w+=` AND borough='${geo.borough.replace(/'/g,"''")}'`;
+  w+=zapDistrictWhere(geo&&geo.communityDistrict);
   return api(ZAP,{"$select":ZAP_SELECT,"$where":w,"$order":"current_milestone_date DESC","$limit":"40"});
 }
 
@@ -4811,6 +4836,7 @@ function serializeState(){
     if($("#pkw").value.trim()) q.set("q", $("#pkw").value.trim());
   } else if(tab === "land"){
     if($("#lboro").value) q.set("boro", $("#lboro").value);
+    if(landCommunityDistrict) q.set("cd", landCommunityDistrict);
     if($("#lkw").value.trim()) q.set("q", $("#lkw").value.trim());
     if($("#lstatus").value !== "active") q.set("status", $("#lstatus").value);
   } else if(SECTIONS[tab]){
@@ -4986,7 +5012,9 @@ function applyHash(){
       showTab("people");
       if($("#pkw").value.trim()) pSearch();
     } else if(tab === "land"){
+      landResolvedArea=null;
       $("#lboro").value = DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"";
+      landCommunityDistrict=/^(?:M|X|K|Q|R)\d{2}$/.test(q.get("cd")||"")?q.get("cd"):"";
       $("#lkw").value = q.get("q") || "";
       $("#lstatus").value = q.get("status")==="all"?"all":"active";
       const was = landLoaded; showTab("land"); if(was) landSearch();
@@ -5277,8 +5305,32 @@ $("#quizgo").addEventListener("click", async ()=>{
 });
 
 $("#lkw").addEventListener("keydown", e=>{ if(e.key==="Enter") landSearch(); });
-$("#lkw").addEventListener("input", debounce(landSearch, 700)); // geocoding behind it — a touch lazier
-["#lboro","#lstatus"].forEach(s=>$(s).addEventListener("change", landSearch));
+const debouncedLandSearch=debounce(landSearch, 700); // geocoding behind it — a touch lazier
+$("#lkw").addEventListener("input", ()=>{ landResolvedArea=null; landCommunityDistrict=""; debouncedLandSearch(); });
+$("#lboro").addEventListener("change", ()=>{ landResolvedArea=null; landCommunityDistrict=""; landSearch(); });
+$("#lstatus").addEventListener("change", landSearch);
+const landLocationOptions={
+  permissions:navigator.permissions,
+  geolocation:navigator.geolocation,
+  fetchImpl:url=>fetch(url),
+  onResolved:area=>{
+    landResolvedArea=area;
+    landCommunityDistrict=area.communityDistrict||"";
+    $("#lboro").value=area.borough;
+    $("#lkw").value="";
+    landSearch();
+  },
+};
+function maybeAutoLocateLand(){
+  if(landAutoLocationChecked) return;
+  landAutoLocationChecked=true;
+  let storage=null;
+  try{ storage=localStorage; }catch(e){}
+  const button=$("#landlocation");
+  button.disabled=true;
+  resolveLandEntryLocation({...landLocationOptions, storage}).finally(()=>{ button.disabled=false; });
+}
+bindLocationControl($("#landlocation"), landLocationOptions);
 
 ["property","rules","meetings"].forEach(k=>{
   $("#"+k+"kw").addEventListener("keydown",e=>{ if(e.key==="Enter") loadSection(k); });

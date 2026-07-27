@@ -73,6 +73,10 @@ function buildSearchDeepLink(lens, filter) {
       return name.toLowerCase() === compactText(f.boro, 40).toLowerCase();
     });
     if (boro) params.set("boro", boro);
+    var communityDistrict = compactText(f.communityDistrict, 8).toUpperCase();
+    if (/^(?:M|X|K|Q|R)\d{2}$/.test(communityDistrict)) {
+      params.set("cd", communityDistrict);
+    }
     if (keywords.length) params.set("q", keywords.join(" "));
     if (f.status === "all") params.set("status", "all");
   } else {

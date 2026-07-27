@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "635a95bc",
-  "zh-Hans": "ac5df0fc",
-  ru: "61fb7ea1",
-  bn: "6e0ce304",
-  ht: "ce24897b",
-  ko: "04a6b5a4",
-  fr: "dc37aa17",
-  pl: "794bc9d3",
-  ar: "7a9daaaf",
-  ur: "6d263fc0",
+  es: "3952d57e",
+  "zh-Hans": "f491ae01",
+  ru: "51298b2c",
+  bn: "20cad80b",
+  ht: "f3365be7",
+  ko: "2bbfefe3",
+  fr: "dcd07680",
+  pl: "d5eb3019",
+  ar: "86320161",
+  ur: "5394d09f",
 };
 
 
@@ -291,7 +291,9 @@ const STRINGS = {
     search_label:        "Search",
     borough_label:       "Borough",
     all_boroughs:        "All boroughs",
-    zip_addr_neighborhood: "ZIP, address, or neighborhood",
+    use_my_location:     "Use my location",
+    near_you_area:       "near you → {area}",
+    zip_addr_neighborhood: "ZIP or place",
     status_label:        "Status",
     status_active:       "In review / active",
     status_all:          "All",
