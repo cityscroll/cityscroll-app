@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>API and feeds · CROL-List</title>
 <meta name="description" content="CROL-List's open endpoints: RSS/JSON/calendar feeds for any search, batch watchlist cross-reference, permalinks, and the upstream open datasets.">
-<script src="i18n.js?v=b26938c5"></script>
+<script src="i18n.js?v=1b8aa7c6"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
@@ -102,6 +102,20 @@ rate-limited and cached, and none touches a paid service. Base URL: <code>https:
 <pre>https://api.crol-list.org/feed.xml?lens=rules&amp;agency=Buildings
 https://api.crol-list.org/feed.ics?lens=meetings&amp;q=community%20board
 https://api.crol-list.org/feed.json?lens=entity&amp;kind=vendor&amp;name=Sinergia%20Inc</pre>
+
+<h2 id="agency-crosswalk" data-i18n="api_h_agencies">Agency-name crosswalk</h2>
+<p class="src" data-i18n-html="api_p_agencies_html"><code>GET /agencies</code> lists each agency name as written in City Record Open Data and connects it to one name used by this site. Add <code>?format=csv</code> for CSV. The endpoint needs no key, allows cross-site requests, and is cached for one day.</p>
+<p class="src"><a href="https://api.crol-list.org/agencies">JSON</a> · <a href="https://api.crol-list.org/agencies?format=csv">CSV</a></p>
+<table>
+  <tr><th scope="col" data-i18n="api_th_param">Param</th><th scope="col" data-i18n="api_th_meaning">Meaning</th></tr>
+  <tbody data-i18n-html="api_agencies_dictionary_html">
+    <tr><td><code>raw_string</code></td><td>exact text in <code>agency_name</code>. One row for each distinct source string</td></tr>
+    <tr><td><code>canonical_id</code></td><td>stable text id assigned by the crosswalk</td></tr>
+    <tr><td><code>canonical_name</code></td><td>name this site uses for the group</td></tr>
+    <tr><td><code>variants</code></td><td>every source spelling connected to the same id</td></tr>
+  </tbody>
+</table>
+<p class="src" data-i18n="api_p_agencies_limits">Matches use case, punctuation, known short forms, and administrative families. New spellings may start with their own id until the crosswalk is updated. The crosswalk helps connect records. It is not an official agency registry.</p>
 
 <h2 data-i18n="api_h_batch">Batch cross-reference</h2>
 <p class="src" data-i18n-html="api_p_batch_html"><code>POST /batch</code> with <code>{"names": ["…", …]}</code> (≤10 names/request, 30 requests/day/IP).

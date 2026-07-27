@@ -62,6 +62,23 @@ test("batch: hit matrix with stem-refined awards; empty names 400", async () => 
   assert.equal((await fetch(`${BASE}/batch`, json({ names: [] }))).status, 400);
 });
 
+test("agencies: public JSON/CSV crosswalk keeps case variants together", async () => {
+  const r = await fetch(`${BASE}/agencies`);
+  assert.equal(r.status, 200);
+  assert.equal(r.headers.get("access-control-allow-origin"), "*");
+  const j = await r.json();
+  assert.equal(j.rows.length, j.row_count);
+  const title = j.rows.find((row) => row.raw_string === "Police Department");
+  const caps = j.rows.find((row) => row.raw_string === "POLICE DEPARTMENT");
+  assert.ok(title && caps);
+  assert.equal(title.canonical_id, caps.canonical_id);
+
+  const csv = await fetch(`${BASE}/agencies?format=csv`);
+  assert.equal(csv.status, 200);
+  assert.match(csv.headers.get("content-type"), /^text\/csv/);
+  assert.equal((await csv.text()).trimEnd().split("\n").length - 1, j.row_count);
+});
+
 test("inv: share roundtrip, bad id 404, junk payload 400", async () => {
   const snap = { name: "e2e probe", items: [{ t: "notice", id: "20260625017", title: "probe", meta: "e2e", note: "", added: "2026-07-02" }] };
   const r = await fetch(`${BASE}/inv`, json(snap));
