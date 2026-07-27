@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "5740c8aa",
-  "zh-Hans": "107bf9be",
-  ru: "b5ad3b7a",
-  bn: "0107217d",
-  ht: "b85e6fcd",
-  ko: "0da85cda",
-  fr: "2d201518",
-  pl: "1e4c4111",
-  ar: "1d5ce055",
-  ur: "f8cae462",
+  es: "b682d503",
+  "zh-Hans": "73e928d8",
+  ru: "67f2d3a4",
+  bn: "9ac3777a",
+  ht: "bb802cdc",
+  ko: "48005e34",
+  fr: "17aa599b",
+  pl: "c36faeea",
+  ar: "c46e5fbd",
+  ur: "4bfe6988",
 };
 
 
@@ -637,6 +637,11 @@ const STRINGS = {
     map_approx_note_html: "{label}. <span class=\"muted\">Approximate — confirm exact lots on <a href=\"https://zola.planning.nyc.gov/\" target=\"_blank\" rel=\"noopener noreferrer\">ZoLa<span class=\"sr-only\"> (opens in new tab)</span></a>.</span>",
     showing_lots_note_html: "Showing {n} rezoned tax lot{s} (NYC MapPLUTO). <span class=\"muted\">Confirm on <a href=\"https://zola.planning.nyc.gov/\" target=\"_blank\" rel=\"noopener noreferrer\">ZoLa<span class=\"sr-only\"> (opens in new tab)</span></a>.</span>",
     map_needs_connection: "Map needs a connection.",
+    map_pan_group_aria: "Map pan controls",
+    map_pan_west: "Pan map west",
+    map_pan_north: "Pan map north",
+    map_pan_south: "Pan map south",
+    map_pan_east: "Pan map east",
     location_not_resolved: "Location not resolved.",
     lot_not_geocoded: "{boro} — exact lot not geocoded",
     zapact_zm: "Zoning map amendment",
@@ -1033,7 +1038,7 @@ const STRINGS = {
     std_h_self_conformance: "CROL-List's own accessibility posture",
     std_p_self_conformance_lede: "These are targets and continuous observations, not a certification.",
     std_self_target_label: "CROL-List target",
-    std_self_target_html: "CROL-List targets <b>WCAG 2.1 Level AA</b> today. It is tracking New York State's <b>WCAG 2.2 Level AA</b> mandate for January 1, 2027.",
+    std_self_target_html: "CROL-List targets <b>WCAG 2.2 Level AA</b> today.",
     std_self_observations_label: "Continuous observations",
     std_li_axe_pr: "The axe accessibility gate runs on every pull request across each public page and activated tab state. A new critical or serious violation fails the build.",
     std_li_ll30_live: "The Local Law 30 table above reads the site's current language switcher live. It changes when a language is added to or removed from the switcher.",

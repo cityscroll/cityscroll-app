@@ -1,4 +1,5 @@
-"""Wave 6 (w6-02) + wave 7 (w7-02) + wave 9 (w9-01/w9-09): axe-core accessibility gate.
+"""Wave 6 (w6-02) + wave 7 (w7-02) + wave 9 (w9-01/w9-09) + WCAG 2.2:
+axe-core accessibility gate.
 
 Runs the vendored axe-core (test/functional/assets/axe.min.js — no network dependency)
 against each page and FAILS on any violation of impact 'critical' or 'serious', PLUS any
@@ -25,6 +26,12 @@ one might not be).
 w9-01: RATCHET_RULES guards the landmark-one-main/region fix — every page now has exactly
 one <main> and skip links/footers exist where footer content does; these rule ids fail
 the gate at ANY impact level (they're axe 'moderate' by default) so a regression is caught.
+
+WCAG 2.2: axe-core 4.10.2 maps its automated 2.2 AA coverage to the `wcag22aa` tag
+(currently `target-size`). Every rule carrying that tag fails at any impact, and the
+complete state matrix runs at both the 390px and 1440px review widths. A DOM exposure
+probe supplements axe for 2.4.11 by focusing each rendered control and verifying that at
+least part of it remains topmost rather than entirely hidden by author-created content.
 """
 import json
 import os
@@ -50,6 +57,7 @@ FAIL_IMPACTS = {"critical", "serious"}
 RATCHET_RULES = {"landmark-one-main", "region", "heading-order"}
 TABS = ["people", "land", "property", "rules", "meetings", "alerts"]  # money is active on load
 LANGS = ["en", "es"]
+VIEWPORTS = [(390, 844), (1440, 900)]
 
 
 def step(tag, name, detail=""):
@@ -68,7 +76,19 @@ def workspace_seed():
 
 def run_axe(page, state_name, failures):
     result = page.evaluate("async () => await axe.run(document, {resultTypes:['violations']})")
-    gate = [v for v in result["violations"] if v.get("impact") in FAIL_IMPACTS or v["id"] in RATCHET_RULES]
+    wcag22_rules = set(page.evaluate(
+        "() => axe.getRules(['wcag22aa']).map(rule => rule.ruleId)"
+    ))
+    if "target-size" not in wcag22_rules:
+        failures.append((state_name, "wcag22aa-ruleset-missing"))
+        step("FAIL", f"{state_name}: wcag22aa ruleset missing",
+             "vendored axe no longer exposes target-size under the WCAG 2.2 AA tag")
+    gate = [
+        v for v in result["violations"]
+        if v.get("impact") in FAIL_IMPACTS
+        or v["id"] in RATCHET_RULES
+        or v["id"] in wcag22_rules
+    ]
     info = [v for v in result["violations"] if v not in gate]
     for v in gate:
         nodes = "; ".join(n["target"][0] for n in v["nodes"][:3])
@@ -78,12 +98,70 @@ def run_axe(page, state_name, failures):
         step("info", f"{state_name}: {v['id']} ({v.get('impact')})", f"{len(v['nodes'])} node(s)")
     if not gate:
         step("OK", f"{state_name}: no critical/serious axe violations",
-             f"{len(info)} lesser finding(s) noted")
+             f"{len(info)} lesser finding(s) noted; wcag22aa={sorted(wcag22_rules)}")
 
 
-def run_index_states(pw, lang, failures):
+def run_focus_exposure(page, state_name, failures):
+    """Approximate the SC 2.4.11 keyboard check across every rendered focus target."""
+    hidden = page.evaluate(
+        """() => {
+          const selector = [
+            'a[href]', 'button:not([disabled])', 'input:not([disabled]):not([type="hidden"])',
+            'select:not([disabled])', 'textarea:not([disabled])', 'summary',
+            '[tabindex]:not([tabindex="-1"])'
+          ].join(',');
+          const rendered = el => {
+            const style = getComputedStyle(el);
+            const rect = el.getBoundingClientRect();
+            const closed = el.closest('details:not([open])');
+            if (closed && !closed.querySelector('summary')?.contains(el)) return false;
+            return style.display !== 'none' && style.visibility !== 'hidden'
+              && rect.width > 0 && rect.height > 0;
+          };
+          const exposedAt = (el, x, y) => {
+            const top = document.elementFromPoint(x, y);
+            return top === el || (top && el.contains(top));
+          };
+          const findings = [];
+          for (const el of [...document.querySelectorAll(selector)].filter(rendered)) {
+            el.focus({preventScroll:false});
+            let exposed = false;
+            for (const rect of el.getClientRects()) {
+              const left = Math.max(0, rect.left), right = Math.min(innerWidth, rect.right);
+              const top = Math.max(0, rect.top), bottom = Math.min(innerHeight, rect.bottom);
+              if (right <= left || bottom <= top) continue;
+              const xs = [left + 1, (left + right) / 2, right - 1];
+              const ys = [top + 1, (top + bottom) / 2, bottom - 1];
+              if (xs.some(x => ys.some(y => exposedAt(el, x, y)))) {
+                exposed = true;
+                break;
+              }
+            }
+            if (!exposed) {
+              findings.push({
+                tag: el.tagName,
+                id: el.id,
+                cls: String(el.className || '').slice(0, 80),
+                text: String(el.innerText || el.getAttribute('aria-label') || '').trim().slice(0, 80)
+              });
+            }
+          }
+          return findings;
+        }"""
+    )
+    for item in hidden:
+        detail = f"{item['tag']}#{item['id']}.{item['cls']} {item['text']!r}"
+        step("FAIL", f"{state_name}: focus entirely obscured", detail)
+        failures.append((state_name, "focus-not-obscured", detail))
+    if not hidden:
+        step("OK", f"{state_name}: focus not obscured", "all rendered focus targets exposed")
+
+
+def run_index_states(pw, lang, viewport, failures):
     browser = pw.chromium.launch()
-    ctx = browser.new_context()
+    width, height = viewport
+    viewport_name = f"{width}x{height}"
+    ctx = browser.new_context(viewport={"width": width, "height": height})
     ctx.add_init_script(
         f"localStorage.setItem('crd_invs_v1', JSON.stringify({json.dumps(workspace_seed())}))")
     page = ctx.new_page()
@@ -97,17 +175,25 @@ def run_index_states(pw, lang, failures):
         page.click(f'#langSwitcher .lang-btn[data-lang="{lang}"]')
         page.wait_for_timeout(800)
 
-    run_axe(page, f"index.html [{lang}] [load:money]", failures)
+    state = f"index.html [{lang}] [{viewport_name}] [load:money]"
+    run_axe(page, state, failures)
+    run_focus_exposure(page, state, failures)
 
     for tab in TABS:
         page.click(f'.tabbtn[data-tab="{tab}"]')
         page.wait_for_timeout(900 if tab == "land" else 400)
-        run_axe(page, f"index.html [{lang}] [tab:{tab}]", failures)
+        # The fixture deliberately blocks the Leaflet CDN. Expose the app-owned directional
+        # controls anyway so axe measures their 32px targets at both responsive widths.
+        if tab == "land" and page.locator("#landpan").count():
+            page.locator("#landpan").evaluate("el => el.hidden = false")
+        state = f"index.html [{lang}] [{viewport_name}] [tab:{tab}]"
+        run_axe(page, state, failures)
+        run_focus_exposure(page, state, failures)
 
     # digest preview (alerts tab is already active from the loop above)
     page.click("#apreview")
     page.wait_for_timeout(1200)
-    run_axe(page, f"index.html [{lang}] [alerts:digest-preview]", failures)
+    run_axe(page, f"index.html [{lang}] [{viewport_name}] [alerts:digest-preview]", failures)
 
     # notice detail: money tab, click the first fixture row (renderList also auto-clicks
     # it on load, but an explicit click keeps this state independent of that behavior)
@@ -115,42 +201,47 @@ def run_index_states(pw, lang, failures):
     page.wait_for_timeout(400)
     page.click("#list .row")
     page.wait_for_timeout(600)
-    run_axe(page, f"index.html [{lang}] [money:notice-detail]", failures)
+    run_axe(page, f"index.html [{lang}] [{viewport_name}] [money:notice-detail]", failures)
 
     # entity profile via permalink hash
     page.evaluate("location.hash = '#agency/Housing Preservation and Development'")
     page.wait_for_timeout(1000)
-    run_axe(page, f"index.html [{lang}] [entity:agency]", failures)
+    run_axe(page, f"index.html [{lang}] [{viewport_name}] [entity:agency]", failures)
 
     # investigation workspace (seeded above) + its share-error path (worker is stubbed dead)
     page.evaluate("location.hash = '#investigation'")
     page.wait_for_timeout(800)
-    run_axe(page, f"index.html [{lang}] [investigation]", failures)
+    run_axe(page, f"index.html [{lang}] [{viewport_name}] [investigation]", failures)
     page.click("#invshare")
     page.wait_for_timeout(1200)
-    run_axe(page, f"index.html [{lang}] [investigation:share-error]", failures)
+    run_axe(page, f"index.html [{lang}] [{viewport_name}] [investigation:share-error]", failures)
 
     browser.close()
 
 
-def run_subpage(pw, path, failures):
+def run_subpage(pw, path, viewport, failures):
     browser = pw.chromium.launch()
-    page = browser.new_context().new_page()
+    width, height = viewport
+    viewport_name = f"{width}x{height}"
+    page = browser.new_context(viewport={"width": width, "height": height}).new_page()
     install_routes(page)
     page.goto(BASE + path, timeout=30000)
     page.wait_for_load_state("load", timeout=20000)
     page.wait_for_timeout(1000)
     page.add_script_tag(path=AXE)
-    run_axe(page, f"{path} [load]", failures)
+    state = f"{path} [{viewport_name}] [load]"
+    run_axe(page, state, failures)
+    run_focus_exposure(page, state, failures)
     browser.close()
 
 
 failures = []
 with sync_playwright() as pw:
-    for lang in LANGS:
-        run_index_states(pw, lang, failures)
-    for path in PAGES:
-        run_subpage(pw, path, failures)
+    for viewport in VIEWPORTS:
+        for lang in LANGS:
+            run_index_states(pw, lang, viewport, failures)
+        for path in PAGES:
+            run_subpage(pw, path, viewport, failures)
 
 assert not failures, f"axe gate: {len(failures)} critical/serious violation(s): {failures}"
 print("✅ axe gate green on all pages + activated tab states + dynamic states (en+es)")
