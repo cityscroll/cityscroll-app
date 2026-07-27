@@ -48,12 +48,12 @@ export default {
     if (pathname === "/feed.xml" || pathname === "/feed.json" || pathname === "/feed.ics") return handleFeed(request, env, ctx);
     if (pathname === "/batch") return handleBatch(request, env);
     if (pathname === "/agencies") return handleAgencies(request, env, ctx);
-    if (pathname === "/inv" || pathname.startsWith("/inv/")) return handleInv(request, env, pathname);
-    if (pathname.startsWith("/priorcycle/")) return handlePriorCycle(request, env, pathname);
-    if (pathname === "/externalaward") return handleExternalAward(request, env);
-    if (pathname === "/agency") return handleAgency(request, env);
-    if (pathname === "/vendor-profile") return handleVendorProfile(request, env);
-    if (pathname === "/suggestions") return handleSuggestions(request, env);
+    if (pathname === "/inv" || pathname.startsWith("/inv/")) return handleInv(request, env, pathname, ctx);
+    if (pathname.startsWith("/priorcycle/")) return handlePriorCycle(request, env, pathname, ctx);
+    if (pathname === "/externalaward") return handleExternalAward(request, env, ctx);
+    if (pathname === "/agency") return handleAgency(request, env, ctx);
+    if (pathname === "/vendor-profile") return handleVendorProfile(request, env, ctx);
+    if (pathname === "/suggestions") return handleSuggestions(request, env, ctx);
     if (pathname === "/stats") return handleStats(request, env, ctx);
     if (pathname.startsWith("/r/")) return handleRedirect(request, env, ctx, pathname);
     if (pathname === "/api") return Response.redirect("https://crol-list.org/api.html", 302);

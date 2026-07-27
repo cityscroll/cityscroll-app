@@ -22,7 +22,7 @@ const ALLOW = new Set([
 // The provenance block, minus the (large) entries map — small enough to return on every response.
 const PROVENANCE = crosswalk._provenance || null;
 
-export async function handleAgency(req, env) {
+export async function handleAgency(req, env, ctx) {
   const cors = corsHeaders(req.headers.get("origin") || "");
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
   if (req.method !== "GET") return json({ ok: false, reason: "method" }, 405, cors);
@@ -30,12 +30,23 @@ export async function handleAgency(req, env) {
   const name = new URL(req.url).searchParams.get("name");
   if (!name) return json({ ok: false, reason: "missing-name" }, 400, cors);
 
+  const cache = typeof caches !== "undefined" ? caches.default : null;
+  if (cache) {
+    const hit = await cache.match(req).catch(() => null);
+    if (hit) return withCors(hit, cors);
+  }
+
   const identity = enrichAgency(crosswalk.entries, name);
   // Static join → safe to cache hard at the edge (a day); the bundle only changes on redeploy.
-  return json(
+  const res = json(
     { ok: true, agency: name, matched: !!identity, identity: identity || null, provenance: PROVENANCE },
     200, cors, "public, max-age=86400"
   );
+  if (cache) {
+    const put = cache.put(req, res.clone());
+    if (ctx?.waitUntil) ctx.waitUntil(put); else await put.catch(() => {});
+  }
+  return res;
 }
 
 function corsHeaders(origin) {
@@ -46,6 +57,11 @@ function corsHeaders(origin) {
     "Access-Control-Allow-Headers": "Content-Type",
     "Vary": "Origin",
   };
+}
+function withCors(res, cors) {
+  const headers = new Headers(res.headers);
+  headers.set("Access-Control-Allow-Origin", cors["Access-Control-Allow-Origin"]);
+  return new Response(res.body, { status: res.status, statusText: res.statusText, headers });
 }
 function json(obj, status, cors, cache) {
   const headers = { ...cors, "Content-Type": "application/json" };

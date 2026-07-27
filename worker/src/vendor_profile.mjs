@@ -326,6 +326,12 @@ export async function handleVendorProfile(req, env, options = {}) {
   const stem = vendorStem(name);
   if (stem.length < 3) return json({ ok: false, reason: "invalid-name" }, 400, cors);
 
+  const cache = typeof caches !== "undefined" ? caches.default : null;
+  if (cache) {
+    const hit = await cache.match(req).catch(() => null);
+    if (hit) return hit;
+  }
+
   let manifest;
   try {
     manifest = JSON.parse(await env.ALERT_STATE.get(MANIFEST_KEY) || "null");
@@ -355,11 +361,20 @@ export async function handleVendorProfile(req, env, options = {}) {
   const profile = bucket?.profiles?.[stem];
   if (!profile) return json({ ok: false, reason: "not-found" }, 404, cors);
 
-  return json(
+  const cacheSeconds = Math.max(
+    0,
+    Math.min(300, Math.floor((MAX_AGE_MS - ageMs) / 1000)),
+  );
+  const res = json(
     { ok: true, generated: manifest.generated, profile },
     200,
-    { ...cors, "Cache-Control": "public, max-age=300" },
+    { ...cors, "Cache-Control": `public, max-age=${cacheSeconds}` },
   );
+  if (cache && cacheSeconds > 0) {
+    const put = cache.put(req, res.clone());
+    if (options?.waitUntil) options.waitUntil(put); else await put.catch(() => {});
+  }
+  return res;
 }
 
 function json(value, status, headers) {
