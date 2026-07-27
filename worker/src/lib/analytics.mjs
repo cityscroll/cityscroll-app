@@ -123,7 +123,13 @@ export function usageDataPoint(input) {
 
 export function emitUsageEvent(env, input) {
   const point = usageDataPoint(input);
-  if (!point || !env?.USAGE_ANALYTICS?.writeDataPoint) return false;
+  // Production is an explicit runtime binding. Missing or non-production bindings fail closed,
+  // so wrangler dev, preview deployments, and unit-test mocks cannot pollute public counts.
+  if (
+    env?.ANALYTICS_ENVIRONMENT !== "production"
+    || !point
+    || !env?.USAGE_ANALYTICS?.writeDataPoint
+  ) return false;
   try {
     // writeDataPoint() returns void; the runtime completes the write asynchronously.
     env.USAGE_ANALYTICS.writeDataPoint(point);

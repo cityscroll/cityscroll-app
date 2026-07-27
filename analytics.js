@@ -1,10 +1,12 @@
-// First-party aggregate event collector. No cookies, local storage, identifiers, raw search
-// text, entity names, or notice ids. The Worker validates every value against the versioned
-// taxonomy before writing it to Analytics Engine.
+// First-party aggregate event collector. No cookies, visitor identifiers, raw search text,
+// entity names, or notice ids. The Worker validates every value against the versioned taxonomy
+// before writing it to Analytics Engine.
 (function () {
   "use strict";
 
   const ENDPOINT = "https://api.crol-list.org/events";
+  const DEV_TOKEN_STORAGE_KEY = "crol_analytics_dev_token_v1";
+  const DEV_TOKEN_HEADER = "X-CROL-Analytics-Dev";
   const LENSES = new Set(["money", "people", "land", "property", "rules", "meetings", "alerts"]);
   const AREAS = new Map([
     ["manhattan", "manhattan"], ["brooklyn", "brooklyn"], ["queens", "queens"],
@@ -36,15 +38,25 @@
   function record(event, dimensions) {
     const payload = JSON.stringify({ event, ...dimensions });
     try {
-      if (navigator.sendBeacon) {
+      // The browser treats an optional short-lived developer token as opaque. Only the Worker
+      // can validate it; absent, expired, or forged values follow the normal counting path.
+      let developerToken = "";
+      try {
+        developerToken = localStorage.getItem(DEV_TOKEN_STORAGE_KEY) || "";
+      } catch {
+        // Storage can be unavailable; analytics still follows the normal counting path.
+      }
+      if (!developerToken && navigator.sendBeacon) {
         const body = new Blob([payload], { type: "text/plain;charset=UTF-8" });
         if (navigator.sendBeacon(ENDPOINT, body)) return;
       }
+      const headers = { "Content-Type": "text/plain;charset=UTF-8" };
+      if (developerToken) headers[DEV_TOKEN_HEADER] = developerToken;
       void fetch(ENDPOINT, {
         method: "POST",
         body: payload,
         keepalive: true,
-        headers: { "Content-Type": "text/plain;charset=UTF-8" },
+        headers,
       }).catch(() => {});
     } catch {
       // Analytics is always fail-soft.

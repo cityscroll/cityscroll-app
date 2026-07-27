@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "a2ecad7e",
-  "zh-Hans": "9eb58db5",
-  ru: "f90395ca",
-  bn: "a2086af0",
-  ht: "e2da0383",
-  ko: "7c239c1b",
-  fr: "f5167e57",
-  pl: "220d8e29",
-  ar: "f510c7a4",
-  ur: "f0b8f53c",
+  es: "168d976c",
+  "zh-Hans": "1b962bef",
+  ru: "3c0eac49",
+  bn: "0878a4d8",
+  ht: "9fdf8bb3",
+  ko: "6dd77e51",
+  fr: "50c49208",
+  pl: "56d93c77",
+  ar: "3e18d438",
+  ur: "fe477134",
 };
 
 
@@ -854,8 +854,8 @@ const STRINGS = {
     about_reason_sendfailed: "Couldn't record that just now — try again in a moment.",
     about_foot_html: "CROL-List · a search interface over <a href=\"https://a856-cityrecord.nyc.gov/\" target=\"_blank\" rel=\"noopener noreferrer\">The City Record<span class=\"sr-only\"> (opens in new tab)</span></a> · <a href=\"changelog.html\">Changelog</a> · <a href=\"stats.html\">Stats</a> · <a href=\"index.html\">Home</a>",
     about_h_privacy: "Privacy",
-    about_p_privacy_intro: "No accounts, no cookies, no cross-site tracking, no ad tech. Here is exactly what CROL-List does with your data:",
-    about_li_privacy_html: "<li><b>Searches and filters</b> go from your browser straight to NYC Open Data. The CROL-List server never sees them.</li><li><b>The \"Ask\" box</b> lets you search in plain English. Your text is sent to Anthropic's Claude, which turns it into filters. We do not save your text. We only keep a daily count, so we can cap costs.</li><li><b>Subscribing or sending feedback</b> saves what you send us. This includes your alert or message and your email, if you share one. We also keep some basic info about your request, like your IP address and browser. We keep this for a short time to stop spam and abuse. Every alert email has a one-click unsubscribe link.</li><li><b>Page views</b> are tracked with Cloudflare Web Analytics. It uses no cookies and only shows totals. It counts visits. It does not know who you are or follow you to other sites.</li>",
+    about_p_privacy_intro: "CROL-List uses no accounts, no cookies, no cross-site tracking, no ad tech.",
+    about_li_privacy_html: "<li><b>Searches and filters</b> use NYC Open Data.</li><li><b>The \"Ask\" box</b> lets you search in plain English. Your text is sent to Anthropic's Claude, which turns it into filters. We do not save your text.</li><li><b>Subscribing or sending feedback</b> saves what you send us. This includes your alert or message and your email, if you share one. We also keep some basic info about your request, like your IP address and browser. We keep this for a short time to stop spam and abuse. Every alert email has a one-click unsubscribe link.</li><li><b>Page views</b> are tracked with Cloudflare Web Analytics. It uses no cookies and only shows totals. It counts visits. It does not know who you are or follow you to other sites.</li>",
 
     // data.html
     data_p_lede_html: "The City Record dataset at a glance. Your browser pulls live totals from <a href=\"https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx\" target=\"_blank\" rel=\"noopener noreferrer\">NYC Open Data<span class=\"sr-only\"> (opens in new tab)</span></a>. Nothing is saved on the server. The numbers follow the <a href=\"about.html#data\">honesty rules</a>. Stats stay in their own section. We exclude likely data-entry errors: amounts of $10 billion or more. Placeholder deadlines aren't real.",

@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { createHmac } from "node:crypto";
 import { readFile } from "node:fs/promises";
 
 import { handleEvent } from "../worker/src/events.mjs";
@@ -41,13 +42,32 @@ function rowFromPoint(point, day) {
   };
 }
 
-async function emit(points, event) {
+function developerToken(secret, nowMs) {
+  const timestamp = Math.floor(nowMs / 1000);
+  const signature = createHmac("sha256", secret)
+    .update(`crol-analytics-dev-exclusion\n${timestamp}`)
+    .digest("base64url");
+  return `v1.${timestamp}.${signature}`;
+}
+
+async function emit(points, event, options = {}) {
+  const headers = {
+    Origin: "https://crol-list.org",
+    "Content-Type": "text/plain;charset=UTF-8",
+  };
+  if (options.developerToken) headers["X-CROL-Analytics-Dev"] = options.developerToken;
   const response = await handleEvent(new Request("https://api.crol-list.org/events", {
     method: "POST",
-    headers: { Origin: "https://crol-list.org", "Content-Type": "text/plain;charset=UTF-8" },
+    headers,
     body: JSON.stringify(event),
-  }), { USAGE_ANALYTICS: analyticsBinding(points) });
+  }), {
+    USAGE_ANALYTICS: analyticsBinding(points),
+    ANALYTICS_ENVIRONMENT: options.environment ?? "production",
+    ANALYTICS_DEV_KEY: options.secret,
+  }, { nowMs: options.nowMs });
   assert.equal(response.status, 204);
+  assert.equal(await response.text(), "");
+  return response;
 }
 
 test("event intake writes only bounded taxonomy dimensions", async () => {
@@ -69,6 +89,43 @@ test("event intake writes only bounded taxonomy dimensions", async () => {
   assert.ok(!JSON.stringify(points[0]).includes("this value"));
   assert.ok(!JSON.stringify(points[0]).includes("forbidden"));
   assert.equal(normalizeUsageEvent({ event: "unknown", surface: "home" }), null);
+});
+
+test("developer exclusion is authenticated, invisible, and fail-closed", async () => {
+  const nowMs = Date.parse("2026-07-27T22:15:00Z");
+  const secret = "test-only-analytics-developer-key-32-chars";
+  const event = { event: "page_view", surface: "stats" };
+
+  const excluded = [];
+  await emit(excluded, event, {
+    developerToken: developerToken(secret, nowMs),
+    secret,
+    nowMs,
+  });
+  assert.equal(excluded.length, 0, "a current valid HMAC token is excluded");
+
+  const counted = [];
+  await emit(counted, event, {
+    developerToken: developerToken(`${secret}-wrong`, nowMs),
+    secret,
+    nowMs,
+  });
+  await emit(counted, event, { secret, nowMs });
+  await emit(counted, event, {
+    developerToken: developerToken(secret, nowMs - 6 * 60 * 1000),
+    secret,
+    nowMs,
+  });
+  assert.equal(counted.length, 3, "invalid, absent, and expired tokens count normally");
+
+  const nonProduction = [];
+  await emit(nonProduction, event, {
+    environment: "preview",
+    developerToken: developerToken(secret, nowMs),
+    secret,
+    nowMs,
+  });
+  assert.equal(nonProduction.length, 0, "non-production bindings drop events by default");
 });
 
 test("fixture event flows emit -> sampling-aware aggregate -> public stats endpoint", async () => {
@@ -139,7 +196,7 @@ test("stats page never success-gates its number panels and stamps each panel", a
 
 test("every public page loads the first-party collector and every locale covers new labels", async () => {
   for (const page of ["index.html", "stats.html", "about.html", "data.html", "api.html", "changelog.html", "standards.html"]) {
-    assert.match(await readFile(new URL(`../${page}`, import.meta.url), "utf8"), /analytics\.js\?v=1\.0\.0/, page);
+    assert.match(await readFile(new URL(`../${page}`, import.meta.url), "utf8"), /analytics\.js\?v=1\.1\.0/, page);
   }
   for (const locale of ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar", "ur"]) {
     const source = await readFile(new URL(`../i18n/lang/${locale}.js`, import.meta.url), "utf8");
@@ -149,12 +206,25 @@ test("every public page loads the first-party collector and every locale covers 
   }
 });
 
+test("privacy copy removes falsified exhaustive promises without adding a new enumeration", async () => {
+  const about = await readFile(new URL("../about.html", import.meta.url), "utf8");
+  const english = await readFile(new URL("../i18n.js", import.meta.url), "utf8");
+  for (const source of [about, english]) {
+    assert.match(source, /uses no accounts, no cookies, no cross-site tracking, no ad tech/);
+    assert.match(source, /Searches and filters(?:<\/b>)? use NYC Open Data/);
+    assert.doesNotMatch(source, /go straight to NYC Open Data|server never sees them|only keep a daily count/i);
+    assert.doesNotMatch(source, /aggregate usage events|interaction taxonomy/i);
+  }
+});
+
 test("taxonomy and budget note pin current Cloudflare allowances and limits", async () => {
   const doc = await readFile(new URL("../docs/analytics-event-taxonomy.md", import.meta.url), "utf8");
   assert.match(doc, /Version: \*\*1\.0\.0\*\*/);
   assert.match(doc, /10 million data points/);
   assert.match(doc, /1 million SQL read queries/);
   assert.match(doc, /250 data points per Worker invocation/);
+  assert.match(doc, /ANALYTICS_DEV_KEY/);
+  assert.match(doc, /ANALYTICS_ENVIRONMENT/);
   assert.match(doc, /https:\/\/developers\.cloudflare\.com\/analytics\/analytics-engine\/pricing\//);
   assert.match(usageAnalyticsQuery(), /INTERVAL '90' DAY/);
 });

@@ -17,7 +17,14 @@ all three data grids retained `hidden`, leaving headings and an error message bu
 values. The screenshot below is the production page code running with the endpoint made
 unavailable.
 
-[Annotated before capture](evidence/analytics-readiness-before.png)
+- Before, [390 px annotated capture](evidence/analytics-readiness-before-390-annotated.png)
+- Before, [1440 px annotated capture](evidence/analytics-readiness-before-1440-annotated.png)
+
+The matching post-fix fixtures keep the same panels visible, fill their values, and show
+per-panel provenance:
+
+- After, [390 px annotated capture](evidence/analytics-readiness-after-390-annotated.png)
+- After, [1440 px annotated capture](evidence/analytics-readiness-after-1440-annotated.png)
 
 ## Findings and causes
 
@@ -32,9 +39,10 @@ unavailable.
 
 ## Published-copy review
 
-`about.html` says its privacy list is an exact description and currently describes Cloudflare Web
-Analytics page-view totals, but not the new first-party interaction taxonomy. No replacement
-privacy wording is included in this change. The site owner should approve that disclosure wording
-before the expanded browser collection is deployed. The implementation and precise technical
-inventory are documented independently in
-[the versioned event taxonomy](analytics-event-taxonomy.md).
+User feedback identified two exhaustive promises that the expanded first-party collection would
+make false. The published copy now removes only those promises: the privacy introduction is a
+non-exhaustive statement of the controls that remain true, searches are described as using NYC
+Open Data without claiming the server never sees them, and the Ask-box entry no longer promises
+that only a daily count is kept. No new analytics enumeration or replacement promise was added.
+The same deletions are applied across every shipped translation. The precise technical inventory
+remains in [the versioned event taxonomy](analytics-event-taxonomy.md).

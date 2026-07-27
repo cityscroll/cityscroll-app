@@ -18,8 +18,10 @@ workers_dev = true
 crons = ["0 13 * * *"]
 
 # Non-secret config. Secrets (ANTHROPIC_API_KEY, RESEND_API_KEY, USAGE_KEY,
-# ANALYTICS_READ_TOKEN) go via `wrangler secret put`. USAGE_KEY gates the read-only /usage
-# endpoint; unset → /usage 404s. ANALYTICS_READ_TOKEN needs Account Analytics Read only.
+# ANALYTICS_READ_TOKEN, ANALYTICS_DEV_KEY, ANALYTICS_ENVIRONMENT) go via `wrangler secret put`.
+# USAGE_KEY gates the read-only /usage endpoint; unset → /usage 404s. ANALYTICS_READ_TOKEN needs
+# Account Analytics Read only. ANALYTICS_ENVIRONMENT must equal "production" for analytics writes;
+# keeping that runtime binding out of this file makes wrangler dev/preview fail closed by default.
 [vars]
 ALERTS_LIVE = "true"
 ALERTS_FROM = "CROL-List <alerts@crol-list.org>"

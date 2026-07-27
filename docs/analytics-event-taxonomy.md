@@ -54,6 +54,55 @@ Each accepted event produces one Workers Analytics Engine data point:
 The intake rejects unknown events and dimensions. Payloads are capped at 1 KiB. Browser delivery is
 fail-soft, so analytics can never block the action being measured.
 
+## Operator controls for development and preview traffic
+
+Analytics writes are fail-closed behind the `ANALYTICS_ENVIRONMENT` runtime binding. The shared
+event writer emits only when that value is exactly `production`; a missing value, `development`,
+or `preview` drops the event. Production stores this non-sensitive gate as a Wrangler secret
+binding so code-only deploys retain it:
+
+```sh
+npx wrangler secret put ANALYTICS_ENVIRONMENT
+# Enter: production
+```
+
+Do not set that binding in `wrangler dev` or preview environments. Their missing binding drops
+browser and Worker-generated events by default. Unit tests use an in-memory Analytics Engine mock
+and never contact production.
+
+Developers who must inspect the production site can exclude a short session with a timestamped
+HMAC token. Configure a random secret of at least 32 characters only on the production Worker:
+
+```sh
+npx wrangler secret put ANALYTICS_DEV_KEY
+```
+
+Keep the same value in an approved operator credential store; never commit it. From `worker/`,
+provide that value to the token helper on standard input:
+
+```sh
+npm run analytics:dev-token < "$ANALYTICS_DEV_KEY_FILE"
+```
+
+The helper prints a small browser-console statement. Paste it on the site before testing:
+
+```js
+localStorage.setItem("crol_analytics_dev_token_v1", "<short-lived token>");
+```
+
+Remove it when finished:
+
+```js
+localStorage.removeItem("crol_analytics_dev_token_v1");
+```
+
+`analytics.js` forwards this value without interpreting it. The Worker accepts only
+`v1.<unix-seconds>.<HMAC-SHA256>` tokens signed with `ANALYTICS_DEV_KEY`, with a five-minute age
+limit and 30-second clock-skew allowance. Valid tokens suppress the write. Missing, expired,
+malformed, or incorrectly signed tokens count normally. All accepted event requests return the
+same empty HTTP 204 response, so token validity is not exposed as a response oracle. The token
+itself is never written to Analytics Engine.
+
 ## Aggregation and reading
 
 The public Worker queries one 90-day grouped time series through the Analytics Engine SQL API and
@@ -65,6 +114,10 @@ The public response is edge-cached for about 15 minutes.
 Analytics Engine retention is three months, so these event metrics are rolling-window measures,
 not lifetime user counts. Existing longer-lived operational counters retain their own explicit
 measured-since boundaries.
+
+The initial measured-since date predates the authenticated developer exclusion. Counts collected
+before that control is deployed may include development checks against the production site; no
+trustworthy retrospective subtraction is possible.
 
 ## Budget
 

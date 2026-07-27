@@ -23,7 +23,7 @@ sources:
   - external_awards.js
   - worker/wrangler.toml
   - worker/src/worker.mjs
-sources_hash: a4e89c65ecc380f8e50e555ce49de1172b900afc91b08a5d94695f0d8f5ba9b5
+sources_hash: a392dbc0904fdb7693f752918324fdd6812b5800bbdcb37c3ab419f954081e87
 ---
 
 # crol-list — architecture
@@ -95,9 +95,9 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 ## Serving & deploy
 
 - `index.html` served as a GitHub Pages static site at `crol-list.org` (CNAME in repo).
-- Worker deployed via `wrangler deploy` from `worker/` to the custom domain `api.crol-list.org` (workers.dev alias intentionally kept alive). Cron trigger `0 13 * * *` (~9am ET). D1 schema versioned in `worker/migrations/`, applied with `wrangler d1 migrations apply crol-notices --remote`.
-- Secrets via `wrangler secret put`: `ANTHROPIC_API_KEY`, `RESEND_API_KEY`, `TURNSTILE_SECRET`, `TOKEN_SECRET`, `USAGE_KEY`, `ANALYTICS_READ_TOKEN`. The analytics token is read-only and scoped to Account Analytics Read. Spend guards are vars in `wrangler.toml`: `MAX_PER_RUN=25`, `MAX_SENDS_PER_DAY=50` (under Resend's free 100/day); `/subscribe` and `/feedback` fail closed (503) if their secrets are absent.
-- No CI/CD pipeline; deploy is manual from the MacBook.
+- Worker deployed via `wrangler deploy` from `worker/` to the custom domain `api.crol-list.org` (workers.dev alias intentionally kept alive). Changes under `worker/**` deploy from `main` through `.github/workflows/deploy-worker.yml`; a manual Wrangler deploy remains the emergency path. Cron trigger `0 13 * * *` (~9am ET). D1 schema versioned in `worker/migrations/`, applied with `wrangler d1 migrations apply crol-notices --remote`.
+- Secrets via `wrangler secret put`: `ANTHROPIC_API_KEY`, `RESEND_API_KEY`, `TURNSTILE_SECRET`, `TOKEN_SECRET`, `USAGE_KEY`, `ANALYTICS_READ_TOKEN`, `ANALYTICS_DEV_KEY`, and the production-only `ANALYTICS_ENVIRONMENT` runtime gate. The analytics read token is scoped to Account Analytics Read; the developer key authenticates short-lived HMAC exclusions, while a missing/non-production runtime gate drops writes. Spend guards are vars in `wrangler.toml`: `MAX_PER_RUN=25`, `MAX_SENDS_PER_DAY=50` (under Resend's free 100/day); `/subscribe` and `/feedback` fail closed (503) if their secrets are absent.
+- GitHub Actions runs the test suite on pull requests and deploys Worker changes after merge.
 
 ## Surface
 
@@ -128,7 +128,7 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 4. The forecasting layer (`/checkbook` + `/forecast`) parses historical Checkbook NYC award term lengths into projected expirations (`fc:<stem>` in `ALERT_STATE`) and merges them with scraped Charter §112 MOCS agency plans (`plan:<stem>`) into one chronological timeline, rendered as the profile-page timeline widget.
 5. Subscriptions land in KV `SUBS`; legacy aggregate integers accrue in stats counters, while bounded page and interaction events accrue in Analytics Engine without visitor identifiers. The only personal data is the double-opted-in subscription email.
 6. The daily cron (13:00 UTC) first refreshes the D1 notices mirror from Socrata (cursored, fail-soft — a failed ingest never blocks alerts), pre-warms prior-cycle match sets for freshly-ingested Award notices, rebuilds the versioned whole-profile vendor projection in KV, then replays active subscriptions and forecast milestones, sending digests and early-warning emails via Resend — hard-capped at 25/run, 50/day. Each cache job is fail-soft; Money digests exclude data-entry-error amounts (≥ $10B) and label rolling year-2090 deadlines honestly.
-7. Deploy is manual from the MacBook: `index.html` to GitHub Pages, worker via `wrangler deploy`. There is no CI/CD.
+7. GitHub Pages serves the static site; Worker changes deploy automatically from `main`, with manual `wrangler deploy` retained as an emergency path.
 
 ## Check yourself
 
