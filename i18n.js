@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "5918eb5c",
-  "zh-Hans": "0af61617",
-  ru: "3182e07c",
-  bn: "fcd06549",
-  ht: "4daa3c2b",
-  ko: "cdf372ac",
-  fr: "d14ed7e7",
-  pl: "a9eac2a8",
-  ar: "fe81d286",
-  ur: "d797c3bc",
+  es: "2b4a14f1",
+  "zh-Hans": "ba5b5845",
+  ru: "3dfa20ec",
+  bn: "0674229f",
+  ht: "7b32597e",
+  ko: "6dfdddca",
+  fr: "d5417193",
+  pl: "908f76af",
+  ar: "2a9bee1e",
+  ur: "b83d4b56",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -450,6 +450,12 @@ const STRINGS = {
 
     // Money detail / chain / glance / how-to-respond
     copy_link_notice: "Copy link to this notice",
+    share_search_link: "Open shareable search",
+    copy_search_link: "Copy search link",
+    save_search_btn: "Save preset",
+    saved_check: "✓ Saved",
+    saved_searches_heading: "Saved searches",
+    remove_saved_search_aria: "Remove saved search: {label}",
     pin_btn: "Pin",
     pinned_open_inv: "✓ Pinned — open investigation ({n})",
     total_awarded_lbl: "total awarded,<br>on record",
