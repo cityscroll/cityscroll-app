@@ -43,6 +43,14 @@
 # Playwright suite against live APIs) only runs on workflow_dispatch, is documented as
 # flaky, and isn't in the ruleset's required list; waiting on the whole run instead of the
 # named checks would let an unrelated flake in that job block an otherwise-mergeable PR.
+#
+# Path guard: self-merge only arms when the bot's commit touches exclusively the files it owns
+# (changelog-data.json, changelog.html), checked by tools/changelog-path-guard.sh — see the
+# "Verify the bot only touched changelog-owned paths" step below and its test at
+# test/changelog_path_guard.test.mjs. This is defense-in-depth on top of the fact that the
+# commit step only ever stages those two files: if a future change to the generation script (or
+# anything else) ever lands a different path on this branch, the guard fails closed and the PR
+# is left unarmed for manual review instead of silently self-merging an unreviewed path.
 name: Update changelog
 
 on:
@@ -137,10 +145,32 @@ jobs:
           fi
           echo "$PR_NUMBER" > "$RUNNER_TEMP/bot-pr-number"
 
+      # Hard guard, independent of the two loop guards above: self-merge below only arms when
+      # this commit touches exactly the files the bot owns (tools/changelog-path-guard.sh, kept
+      # in sync with what tools/gen_changelog.mjs writes). By construction the commit above only
+      # ever stages changelog-data.json and changelog.html, so this should always pass — it
+      # exists as a second, independent check against a future regression in the generation
+      # script (or anything else landing on this branch) silently getting an unreviewed path
+      # merged. A guard failure leaves the PR open and unarmed for a human to look at; it never
+      # blocks pushing or opening the PR itself.
+      - name: Verify the bot only touched changelog-owned paths (hard guard before arming self-merge)
+        if: env.changed == 'true'
+        run: |
+          CHANGED_PATHS="$(git diff --name-only main HEAD)"
+          echo "Changed paths on $BOT_BRANCH vs main:"
+          echo "$CHANGED_PATHS"
+          if echo "$CHANGED_PATHS" | bash tools/changelog-path-guard.sh; then
+            echo "paths_ok=true" >> "$GITHUB_ENV"
+          else
+            PR_NUMBER="$(cat "$RUNNER_TEMP/bot-pr-number")"
+            echo "::warning::PR #$PR_NUMBER touches paths outside the changelog surface — leaving it for manual review, not arming self-merge"
+            echo "paths_ok=false" >> "$GITHUB_ENV"
+          fi
+
       # See the file-header comment above for why this step exists: `pull_request`-triggered
       # CI on this branch would sit at "action_required" forever without a maintainer's click.
       - name: Dispatch CI directly on the bot branch (workflow_dispatch bypasses the pull_request-event approval gate) and wait for the required checks
-        if: env.changed == 'true'
+        if: env.changed == 'true' && env.paths_ok == 'true'
         timeout-minutes: 20
         run: |
           gh workflow run ci.yml --ref "$BOT_BRANCH"
@@ -186,7 +216,7 @@ jobs:
           fi
 
       - name: Enqueue the bot PR now that its required checks are satisfied
-        if: env.changed == 'true' && env.ci_ok == 'true'
+        if: env.changed == 'true' && env.paths_ok == 'true' && env.ci_ok == 'true'
         run: |
           PR_NUMBER="$(cat "$RUNNER_TEMP/bot-pr-number")"
           PR_NODE_ID="$(gh pr view "$PR_NUMBER" --json id --jq .id)"
