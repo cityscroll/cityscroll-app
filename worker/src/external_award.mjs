@@ -318,7 +318,7 @@ function json(obj, status, cors, cache) {
   });
 }
 
-export async function handleExternalAward(req, env) {
+export async function handleExternalAward(req, env, ctx) {
   const cors = corsHeaders(req.headers.get("origin") || "");
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
   if (req.method !== "GET") return json({ ok: false, reason: "method" }, 405, cors);
@@ -330,37 +330,73 @@ export async function handleExternalAward(req, env) {
 
   if (rawId != null) {
     if (!/^[A-Za-z0-9_-]{4,40}$/.test(rawId)) return json({ ok: false, reason: "bad-id" }, 400, cors);
+  } else if (!agency) {
+    return json({ ok: false, reason: "missing-id-or-agency" }, 400, cors);
+  }
+
+  const cache = typeof caches !== "undefined" ? caches.default : null;
+  if (cache) {
+    const hit = await cache.match(req).catch(() => null);
+    if (hit) return withCors(hit, cors);
+  }
+
+  if (rawId != null) {
     noticeRow = await fetchNoticeRow(env, rawId);
     if (!noticeRow) return json({ id: rawId, coverage: "unknown", ok: false }, 200, cors);
     agency = noticeRow.agency_name;
-  } else if (!agency) {
-    return json({ ok: false, reason: "missing-id-or-agency" }, 400, cors);
   }
 
   const entry = awardSourceFor(agency);
 
   // Absent / unknown — no data to fetch; the client renders the coverage claim from its own
   // registry copy, this just confirms the verdict (and is safe to edge-cache).
-  if (!entry) return json({ agency, coverage: "unknown", ok: true }, 200, cors, "public, max-age=3600");
-  if (entry.kind === "absent") return json({ agency, coverage: "absent", ok: true }, 200, cors, "public, max-age=3600");
+  if (!entry || entry.kind === "absent") {
+    const res = json(
+      { agency, coverage: entry ? "absent" : "unknown", ok: true },
+      200,
+      cors,
+      "public, max-age=3600",
+    );
+    if (cache) {
+      const put = cache.put(req, res.clone());
+      if (ctx?.waitUntil) ctx.waitUntil(put); else await put.catch(() => {});
+    }
+    return res;
+  }
 
   if (entry.kind === "checkbook-nycha") {
     // Per-notice exact join. Agency-only lookups (no id) carry no PIN to join — return the
     // coverage verdict with an empty match set (the agency profile just shows the claim).
     if (rawId == null) return json({ agency, coverage: "exact", matches: [], source: { kind: "checkbook-nycha" }, ok: true }, 200, cors);
     const { matches, ok } = await getOrComputeNycha(env, rawId, noticeRow);
-    return json({
+    const res = json({
       id: rawId, agency, coverage: "exact", matches,
       source: { kind: "checkbook-nycha" }, ok,
     }, 200, cors, ok ? "public, max-age=300" : "no-store");
+    if (cache && ok) {
+      const put = cache.put(req, res.clone());
+      if (ctx?.waitUntil) ctx.waitUntil(put); else await put.catch(() => {});
+    }
+    return res;
   }
 
   // ABO fuzzy — serve the cached per-source award set + provenance.
   const cached = await readAboCache(env, entry);
-  return json({
+  const res = json({
     id: rawId || undefined, agency, coverage: "fuzzy",
     agencyAwards: cached ? cached.awards : [],
     source: { kind: "abo", dataset: entry.dataset, authority: entry.authority, refreshed: cached ? cached.refreshed : null },
     ok: true,
   }, 200, cors, "public, max-age=300");
+  if (cache) {
+    const put = cache.put(req, res.clone());
+    if (ctx?.waitUntil) ctx.waitUntil(put); else await put.catch(() => {});
+  }
+  return res;
+}
+
+function withCors(res, cors) {
+  const headers = new Headers(res.headers);
+  headers.set("Access-Control-Allow-Origin", cors["Access-Control-Allow-Origin"]);
+  return new Response(res.body, { status: res.status, statusText: res.statusText, headers });
 }

@@ -153,14 +153,30 @@ function json(obj, status, cors) {
 // GET /suggestions — the client's validated-set read. 404 (not just an empty body) when the
 // cron hasn't populated KV yet (a fresh deploy) so index.html's fetch-failure fallback path
 // treats "never validated" the same as "worker absent": static suggestions either way.
-export async function handleSuggestions(req, env) {
+export async function handleSuggestions(req, env, ctx) {
   const cors = corsHeaders(req.headers.get("origin") || "");
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
   if (req.method !== "GET") return json({ ok: false, reason: "method" }, 405, cors);
   if (!env.ALERT_STATE) return json({ ok: false, reason: "not-configured" }, 503, cors);
+  const cache = typeof caches !== "undefined" ? caches.default : null;
+  if (cache) {
+    const hit = await cache.match(req).catch(() => null);
+    if (hit) return withCors(hit, cors);
+  }
   const raw = await env.ALERT_STATE.get(SUGGESTIONS_KV_KEY);
   if (!raw) return json({ ok: false, reason: "not-found" }, 404, cors);
-  return new Response(raw, { status: 200, headers: { ...cors, "Content-Type": "application/json", "Cache-Control": "public, max-age=1800" } });
+  const res = new Response(raw, { status: 200, headers: { ...cors, "Content-Type": "application/json", "Cache-Control": "public, max-age=1800" } });
+  if (cache) {
+    const put = cache.put(req, res.clone());
+    if (ctx?.waitUntil) ctx.waitUntil(put); else await put.catch(() => {});
+  }
+  return res;
+}
+
+function withCors(res, cors) {
+  const headers = new Headers(res.headers);
+  headers.set("Access-Control-Allow-Origin", cors["Access-Control-Allow-Origin"]);
+  return new Response(res.body, { status: res.status, statusText: res.statusText, headers });
 }
 
 // POST /admin/suggest-refresh?key=… — operator trigger to run the exact same suggestion

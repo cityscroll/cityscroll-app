@@ -14,19 +14,29 @@ const ALLOW = new Set([
   "http://localhost:8000", "http://localhost:8787",
 ]);
 
-export async function handleInv(req, env, pathname) {
+export async function handleInv(req, env, pathname, ctx) {
   const cors = corsHeaders(req.headers.get("origin") || "");
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
 
   // GET /inv/<id> — public read of a shared snapshot or agency/vendor forecast
   if (req.method === "GET" && pathname.startsWith("/inv/")) {
     const id = pathname.slice(5); // strip "/inv/"
+    const cache = typeof caches !== "undefined" ? caches.default : null;
+    if (cache) {
+      const hit = await cache.match(req).catch(() => null);
+      if (hit) return withCors(hit, cors);
+    }
     
     // 1. Try to fetch as share snapshot first
     if (env.SUBS) {
       const raw = await env.SUBS.get(`inv:${id}`);
       if (raw) {
-        return new Response(raw, { status: 200, headers: { ...cors, "Content-Type": "application/json", "Cache-Control": "public, max-age=300" } });
+        const res = new Response(raw, { status: 200, headers: { ...cors, "Content-Type": "application/json", "Cache-Control": "public, max-age=300" } });
+        if (cache) {
+          const put = cache.put(req, res.clone());
+          if (ctx?.waitUntil) ctx.waitUntil(put); else await put.catch(() => {});
+        }
+        return res;
       }
     }
 
@@ -81,6 +91,11 @@ function corsHeaders(origin) {
     "Access-Control-Allow-Headers": "Content-Type",
     "Vary": "Origin",
   };
+}
+function withCors(res, cors) {
+  const headers = new Headers(res.headers);
+  headers.set("Access-Control-Allow-Origin", cors["Access-Control-Allow-Origin"]);
+  return new Response(res.body, { status: res.status, statusText: res.statusText, headers });
 }
 function json(obj, status, cors) {
   return new Response(JSON.stringify(obj), { status, headers: { ...cors, "Content-Type": "application/json" } });
