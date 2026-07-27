@@ -223,6 +223,12 @@
   .act{font:600 13px/1 ui-sans-serif,system-ui,sans-serif;padding:10px 13px;border-radius:7px;border:1px solid var(--rule);background:#fff;color:var(--ink);text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
   .act.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
   .act:hover{filter:brightness(.97)}
+  .exportbar{display:flex;justify-content:flex-end;align-items:center;gap:8px;flex-wrap:wrap;margin:12px 0}
+  .export-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .export-control{min-width:44px;min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+  .panel .panelbar{align-items:flex-start;flex-wrap:wrap}
+  .panelbar .export-actions{flex:1 1 100%;justify-content:flex-end}
+  .panelbar .export-control{padding:8px 11px}
 
   .scope{font-size:14.5px;line-height:1.6;color:#3f3930;background:#faf6ee;border:1px solid var(--rule);border-radius:8px;padding:13px 15px;margin-top:16px}
   .scope .lbl{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
@@ -384,13 +390,32 @@
   .lang-btn{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;padding:3px 10px;min-height:32px;display:inline-flex;align-items:center;border-radius:12px;border:1px solid var(--rule-strong);background:transparent;color:var(--muted);cursor:pointer}
   .lang-btn[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
   .lang-notice{font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);text-align:center;margin-block-start:4px;padding-inline:22px}
+
+  @media print{
+    @page{margin:14mm}
+    html,body{background:#fff!important;color:#000!important}
+    body{font:11pt/1.4 Georgia,"Times New Roman",serif}
+    body::before{content:attr(data-print-meta);display:block;padding:0 0 8pt;margin:0 0 12pt;border-bottom:1pt solid #000;font:9pt/1.35 ui-sans-serif,system-ui,sans-serif;overflow-wrap:anywhere}
+    header.masthead,footer,.skip,.controls,.filtertoggle,.nlbox,.chiprow,.exportbar,.export-actions,.actions,.factions{display:none!important}
+    .tabpane:not(.active){display:none!important}
+    .tabpane.active{display:block!important;padding:0}
+    main,.wrap{max-width:none!important;margin:0!important;padding:0!important}
+    .panel,.fcard,.scope,.apply,.agencybar{background:#fff!important;box-shadow:none!important;break-inside:avoid}
+    .list{max-height:none!important;overflow:visible!important}
+    body.printing-list .grid{display:block}
+    body.printing-list .grid>.panel:nth-child(2){display:none!important}
+    body.printing-notice #tab-money .grid{display:block}
+    body.printing-notice #tab-money .grid>.panel:first-child{display:none!important}
+    a{color:#000!important}
+  }
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=581a6ff2"></script>
+<script src="i18n.js?v=0c3ccd0b"></script>
 <script src="nl_parse.js"></script>
 <script src="nl_deeplink.js"></script>
 <script src="external_awards.js"></script>
+<script src="export_workflows.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
@@ -509,7 +534,10 @@
                applyStrings() pass overwrite a deep-linked Award heading with the static
                default after the correct search has already rendered. -->
           <h2><span id="reshead">Open Requests for Proposals (RFPs)</span> <span class="count" id="rescount"></span></h2>
-          <button id="export" class="mini" data-i18n="export_csv">Export CSV</button>
+          <span class="export-actions">
+            <button id="export" class="mini export-control" data-export-csv="money" data-i18n="export_csv">Export CSV</button>
+            <button class="mini export-control" data-print-view="money" data-i18n="print_save_pdf">Print / Save as PDF</button>
+          </span>
         </div>
         <div class="list" id="list" translate="no"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
       </div>
@@ -542,7 +570,13 @@
 
     <div class="grid">
       <div class="panel">
-        <h2><span><span id="preshead" data-i18n="roles_heading">Roles</span> <span class="count" id="prescount"></span></span></h2>
+        <div class="panelbar">
+          <h2><span><span id="preshead" data-i18n="roles_heading">Roles</span> <span class="count" id="prescount"></span></span></h2>
+          <span class="export-actions">
+            <button class="mini export-control" data-export-csv="people" data-i18n="export_csv">Export CSV</button>
+            <button class="mini export-control" data-print-view="people" data-i18n="print_save_pdf">Print / Save as PDF</button>
+          </span>
+        </div>
         <div class="list" id="plist" translate="no"><div class="empty" data-i18n="try_a_title_empty">Try a title like "emergency medical" -- or switch to a person.</div></div>
       </div>
       <div class="panel">
@@ -576,7 +610,13 @@
     </div>
     <div class="grid">
       <div class="panel">
-        <h2><span><span id="lreshead" data-i18n="recent_rezonings_heading">Recent rezonings</span> <span class="count" id="lrescount"></span></span></h2>
+        <div class="panelbar">
+          <h2><span><span id="lreshead" data-i18n="recent_rezonings_heading">Recent rezonings</span> <span class="count" id="lrescount"></span></span></h2>
+          <span class="export-actions">
+            <button class="mini export-control" data-export-csv="land" data-i18n="export_csv">Export CSV</button>
+            <button class="mini export-control" data-print-view="land" data-i18n="print_save_pdf">Print / Save as PDF</button>
+          </span>
+        </div>
         <div class="list" id="llist" translate="no"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
       </div>
       <div class="panel">
@@ -597,6 +637,10 @@
     </div>
     <div class="chiprow" id="assettabs"></div>
     <div class="chiprow" id="liferail" style="margin-top:8px"></div>
+    <div class="exportbar">
+      <button class="mini export-control" data-export-csv="property" data-i18n="export_csv">Export CSV</button>
+      <button class="mini export-control" data-print-view="property" data-i18n="print_save_pdf">Print / Save as PDF</button>
+    </div>
     <div class="feed" id="propertyfeed" translate="no"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
   </div>
 </section>
@@ -607,6 +651,10 @@
       <div class="field"><label for="rulesagency" data-i18n="agency_label">Agency</label><select id="rulesagency"><option value="" data-i18n="all_agencies">All agencies</option></select></div>
       <div class="field kw"><label for="ruleskw" data-i18n="search_label">Search</label><input type="text" id="ruleskw" placeholder="sanitation, licensing, rent, sidewalk…" data-i18n-placeholder="kw_placeholder_rules"></div>
       <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="rules" data-i18n="watch_this_search">Watch this search</button></div>
+    </div>
+    <div class="exportbar">
+      <button class="mini export-control" data-export-csv="rules" data-i18n="export_csv">Export CSV</button>
+      <button class="mini export-control" data-print-view="rules" data-i18n="print_save_pdf">Print / Save as PDF</button>
     </div>
     <div class="feed" id="rulesfeed" translate="no"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
   </div>
@@ -619,6 +667,10 @@
       <div class="field"><label for="meetingsagency" data-i18n="agency_label">Agency</label><select id="meetingsagency"><option value="" data-i18n="all_agencies">All agencies</option></select></div>
       <div class="field kw"><label for="meetingskw" data-i18n="search_label">Search</label><input type="text" id="meetingskw" placeholder="Community Board, Brooklyn, landmark…" data-i18n-placeholder="kw_placeholder_meetings"></div>
       <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="meetings" data-i18n="watch_this_search">Watch this search</button></div>
+    </div>
+    <div class="exportbar">
+      <button class="mini export-control" data-export-csv="meetings" data-i18n="export_csv">Export CSV</button>
+      <button class="mini export-control" data-print-view="meetings" data-i18n="print_save_pdf">Print / Save as PDF</button>
     </div>
     <div class="feed" id="meetingsfeed" translate="no"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
   </div>
@@ -2023,7 +2075,12 @@ function noticeAgencyBar(stats, agencyName, barClass){
 }
 function renderDetail(r, chain, stats){
   const pending = chain === null; // first paint from the in-memory record; chain/stats hydrate in
-  let html = `<div class="actions" style="margin:0 0 12px"><button class="act" type="button" id="dcopy">${t("copy_link_notice")}</button>${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}</div>`;
+  let html = `<div class="actions" style="margin:0 0 12px">
+    <button class="act" type="button" id="dcopy">${t("copy_link_notice")}</button>
+    <button class="act export-control" type="button" id="dxlsx"${pending?' disabled aria-busy="true"':""}>${t("export_xlsx")}</button>
+    <button class="act export-control" type="button" id="dprint">${t("print_save_pdf")}</button>
+    ${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}
+  </div>`;
   html += `<div id="dcontext"></div><div id="ddollars"></div>`;
   // Solicitations get the richer how-to-respond panel below; everything else gets the glance box.
   if(r.type_of_notice_description !== "Solicitation") html += glanceFor(r);
@@ -2042,6 +2099,8 @@ function renderDetail(r, chain, stats){
   $("#detail").innerHTML = html;
   const ib = $("#icsbtn"); if(ib) ib.addEventListener("click", downloadICS);
   const dc = $("#dcopy"); if(dc) dc.addEventListener("click", ()=>copyText(noticeLink(r.request_id), dc));
+  const dx = $("#dxlsx"); if(dx && !pending) dx.addEventListener("click", ()=>exportNoticeXlsx(r, chain));
+  const dp = $("#dprint"); if(dp) dp.addEventListener("click", ()=>printCurrentView("notice", noticeLink(r.request_id)));
   if(pending) return; // context/dollars fetch once, on the hydrated render
   fillContext(r, $("#dcontext"));
   followDollars(r, $("#ddollars"));
@@ -2641,27 +2700,80 @@ function injectNLBoxes(){
   });
 }
 
-function exportCSV(){
-  if(!currentRows.length) return;
-  const cols = [
-    ["Type", r=>r.type_of_notice_description], ["Agency", r=>r.agency_name],
-    ["Title", r=>cleanText(r.short_title)], ["Category", r=>r.category_description],
-    ["Posted", r=>fdate(r.start_date)], ["Due", r=>isRollingDeadline(r.due_date)?"no fixed deadline (rolling)":fdate(r.due_date)],
-    ["Days left", r=>{if(isRollingDeadline(r.due_date)) return ""; const d=daysLeft(r.due_date);return d==null?"":d;}],
-    ["Method", r=>cleanText(r.selection_method_description)], ["Contact", r=>cleanText(r.contact_name)],
-    ["Email", r=>r.email||""], ["Phone", r=>cleanText(r.contact_phone)],
-    ["Submit to", r=>cleanText(r.address_to_request)], ["PIN", r=>r.pin||""],
-    ["Amount", r=>r.contract_amount||""], ["CityRecordURL", r=>REQ_URL(r.request_id)]
+function exportSpec(lens){
+  const searchLink=()=>location.href;
+  if(lens==="money") return {rows:currentRows, columns:[
+    ["Type",r=>r.type_of_notice_description],["Agency",r=>r.agency_name],
+    ["Title",r=>cleanText(r.short_title)],["Category",r=>r.category_description],
+    ["Posted",r=>fdate(r.start_date)],["Due",r=>isRollingDeadline(r.due_date)?"no fixed deadline (rolling)":fdate(r.due_date)],
+    ["Days left",r=>{if(isRollingDeadline(r.due_date)) return "";const d=daysLeft(r.due_date);return d==null?"":d;}],
+    ["Method",r=>cleanText(r.selection_method_description)],["Contact",r=>cleanText(r.contact_name)],
+    ["Email",r=>r.email||""],["Phone",r=>cleanText(r.contact_phone)],
+    ["Submit to",r=>cleanText(r.address_to_request)],["PIN",r=>r.pin||""],
+    ["Amount",r=>r.contract_amount||""],["Request ID",r=>r.request_id||""],
+    ["Permalink",r=>noticeLink(r.request_id)],["City Record URL",r=>REQ_URL(r.request_id)]
+  ]};
+  if(lens==="people" && pMode==="person") return {rows:pRows, columns:[
+    ["Name",p=>p.name],["Agency",p=>p.agency],[t("csv_notices"),p=>p.actions.length],
+    ["Request IDs",p=>p.actions.map(a=>a.req).join(" | ")],
+    ["Permalinks",p=>p.actions.map(a=>noticeLink(a.req)).join(" | ")],
+    [t("csv_search_permalink"),searchLink]
+  ]};
+  if(lens==="people") return {rows:pRows, columns:[
+    [t("csv_role"),r=>r.title_description],[t("csv_exam_list"),r=>competitiveSet.has((r.title_description||"").toUpperCase().trim())?"Yes":"No"],
+    [t("csv_people"),r=>r.n],[t("csv_min_base_salary"),r=>r.mn],[t("csv_max_base_salary"),r=>r.mx],
+    [t("csv_average_base_salary"),r=>r.avg],[t("csv_search_permalink"),searchLink]
+  ]};
+  if(lens==="land") return {rows:lRows, columns:[
+    [t("csv_project"),r=>r.project_name],["Borough",r=>r.borough],["Community district",r=>r.community_district],
+    [t("csv_status"),r=>r.public_status||r.project_status],["Milestone",r=>cleanText(r.current_milestone)],
+    ["Milestone date",r=>fdate(r.current_milestone_date)],[t("csv_applicant"),r=>r.primary_applicant],
+    [t("csv_project_id"),r=>r.project_id],["Permalink",r=>landLink(r.project_id)]
+  ]};
+  const rows=feedVisible[lens]||[];
+  const columns=[
+    ["Type",r=>r.type_of_notice_description],["Agency",r=>r.agency_name],
+    ["Title",r=>cleanText(r.short_title)],["Posted",r=>fdate(r.start_date)],
+    ["Event date",r=>fdate(r.event_date)],[t("csv_address"),r=>cleanText(r.street_address_1)],
+    ["Request ID",r=>r.request_id],["Permalink",r=>noticeLink(r.request_id)],
+    ["City Record URL",r=>REQ_URL(r.request_id)]
   ];
-  const esc = v => `"${String(v==null?"":v).replace(/"/g,'""')}"`;
-  const lines = [cols.map(c=>esc(c[0])).join(",")];
-  currentRows.forEach(r=>lines.push(cols.map(c=>esc(c[1](r))).join(",")));
-  const blob = new Blob(["﻿"+lines.join("\r\n")], {type:"text/csv;charset=utf-8"});
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = `city-record-${mode}-${new Date().toISOString().slice(0,10)}.csv`;
-  document.body.appendChild(a); a.click(); a.remove();
+  if(lens==="property") columns.splice(3,0,[t("csv_asset_type"),r=>r._asset||""],["Lifecycle",r=>r._stage||""]);
+  return {rows,columns};
 }
+function exportLensCsv(lens){
+  const spec=exportSpec(lens);
+  if(!spec||!spec.rows.length) return;
+  CrolExports.downloadFile(
+    `crol-${lens}-${new Date().toISOString().slice(0,10)}.csv`,
+    CrolExports.excelSafeCsv(spec.columns,spec.rows),
+    "text/csv;charset=utf-8"
+  );
+}
+function exportNoticeXlsx(notice, chain){
+  const bytes=CrolExports.buildNoticeWorkbook(notice,chain,record=>noticeLink(record.request_id));
+  CrolExports.downloadFile(
+    `crol-notice-${String(notice.request_id||"export").replace(/[^a-z0-9_-]/gi,"-")}.xlsx`,
+    new Blob([bytes],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"})
+  );
+}
+function preparePrintView(kind, permalink){
+  const meta=t("print_header",{
+    link:permalink||location.href,
+    date:new Date().toLocaleDateString((window.LANG_META[window.LANG||"en"]||{}).intlDate||"en-US",{year:"numeric",month:"long",day:"numeric"})
+  });
+  document.body.setAttribute("data-print-meta",meta);
+  document.body.classList.toggle("printing-list",kind!=="notice");
+  document.body.classList.toggle("printing-notice",kind==="notice");
+}
+function clearPrintView(){
+  document.body.classList.remove("printing-list","printing-notice");
+}
+function printCurrentView(kind, permalink){
+  preparePrintView(kind,permalink);
+  window.print();
+}
+window.addEventListener("afterprint",clearPrintView);
 
 /* ===================== PEOPLE ===================== */
 let pRows = [], pMode = "role", competitiveSet = new Set();
@@ -3173,7 +3285,7 @@ const SECTIONS={
   rules:{section:"Agency Rules"},
   meetings:{section:"Public Hearings and Meetings", upcoming:true}
 };
-const feedRows={}, feedLoaded={};
+const feedRows={}, feedLoaded={}, feedVisible={};
 const FEED_SELECT="request_id,start_date,event_date,agency_name,type_of_notice_description,short_title,street_address_1,additional_description_1,other_info_1";
 function goodAddr(a){ return a && !/not listed|^n\/?a$|^none$|^various|^see /i.test(a.trim()); }
 
@@ -3290,6 +3402,7 @@ function feedCardHTML(key, r, terms){
 }
 function renderFeed(key, rows){
   const el=$("#"+key+"feed");
+  feedVisible[key]=rows;
   if(!rows.length){ el.innerHTML='<div class="empty">' + t("nothing_found_feed") + '</div>'; return; }
   const kwEl=$("#"+key+"kw"), kw=kwEl?kwEl.value.trim():"", terms=kw?[kw]:[];
   el.innerHTML=rows.map(r=>feedCardHTML(key,r,terms)).join("");
@@ -4435,11 +4548,11 @@ document.addEventListener("click", e=>{
 });
 
 function invCsv(inv){
-  const esc = v => `"${String(v==null?"":v).replace(/"/g,'""')}"`;
   const base = location.origin + location.pathname;
-  const lines = [["Type","Title","Meta","Note","Added","Permalink"].map(esc).join(",")];
-  inv.items.forEach(i=>lines.push([i.t,i.title,i.meta,i.note,i.added,base+invItemHref(i)].map(esc).join(",")));
-  return "﻿"+lines.join("\r\n");
+  return CrolExports.excelSafeCsv([
+    ["Type",i=>i.t],["Title",i=>i.title],["Meta",i=>i.meta],
+    ["Note",i=>i.note],["Added",i=>i.added],["Permalink",i=>base+invItemHref(i)]
+  ],inv.items);
 }
 function invDownload(name, content, type){
   const a=document.createElement("a");
@@ -4906,7 +5019,8 @@ async function showNotice(id, watch){
       <div class="actions" style="margin-top:14px">
         <button class="act primary" type="button" id="ncopy">${t("copy_link")}</button>
         <a class="act" href="mailto:?subject=${encodeURIComponent("City Record notice: "+(cleanText(r.short_title)||r.request_id))}&body=${encodeURIComponent(link+"\n\nVia CROL-List — The City Record, searchable.")}">${t("notice_email_btn")}</a>
-        <button class="act" type="button" id="nprint">${t("notice_print_btn")}</button>
+        <button class="act export-control" type="button" id="nxlsx">${t("export_xlsx")}</button>
+        <button class="act export-control" type="button" id="nprint">${t("print_save_pdf")}</button>
         ${((r.due_date&&!isRollingDeadline(r.due_date))||r.event_date)?`<button class="act" type="button" id="nics">${t("add_to_calendar_btn")}</button>`:""}
         ${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}
         <a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("view_in_city_record")}${extSR()}</a>
@@ -4919,7 +5033,8 @@ async function showNotice(id, watch){
       <div class="note" style="margin-top:14px">${t("permalink_note_html",{link, id:r.request_id})}</div>
     </div></div>`;
   $("#ncopy").addEventListener("click", ()=>copyText(link, $("#ncopy")));
-  $("#nprint").addEventListener("click", ()=>window.print());
+  $("#nxlsx").addEventListener("click", async ()=>exportNoticeXlsx(r,await loadChain(r)));
+  $("#nprint").addEventListener("click", ()=>printCurrentView("notice",link));
   const ni=$("#nics"); if(ni) ni.addEventListener("click", ()=>{ if(r.due_date){ selectedRFP=r; downloadICS(); } else downloadEventICS(r); });
   const ib=$("#icsbtn"); if(ib){ ib.addEventListener("click", ()=>{ selectedRFP=r; downloadICS(); }); }
   fillContext(r, $("#ncontext"));
@@ -4949,7 +5064,12 @@ injectNLBoxes();
 renderNLSamples("money", $("#nltry"));
 renderNLQPresets();
 loadValidatedSuggestions();
-$("#export").addEventListener("click", exportCSV);
+document.addEventListener("click",e=>{
+  const csv=e.target.closest("[data-export-csv]");
+  if(csv){ exportLensCsv(csv.dataset.exportCsv); return; }
+  const print=e.target.closest("[data-print-view]");
+  if(print) printCurrentView(print.dataset.printView);
+});
 let editionRange=null;
 function paintEditionSpan(){ const el=$("#editionspan"); if(el&&editionRange){ el.textContent=fdtLocale(editionRange.a)+" – "+fdtLocale(editionRange.b); } }
 soda({"$select":"min(start_date) as a, max(start_date) as b"}).then(r=>{ if(r&&r[0]){ editionRange=r[0]; paintEditionSpan(); } }).catch(()=>{});
