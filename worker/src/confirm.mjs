@@ -5,6 +5,7 @@
 import { verifyToken } from "optin-token";
 import { buildSubscription, subCanonical } from "./lib/subscriptions.mjs";
 import { describeFilter, htmlPage } from "./lib/confirm_email.mjs";
+import { emitUsageEvent } from "./lib/analytics.mjs";
 
 export async function handleConfirm(req, env) {
   if (!env.TOKEN_SECRET || !env.SUBS) return page("Unavailable", "This link isn't available right now.", 503);
@@ -26,6 +27,7 @@ export async function handleConfirm(req, env) {
   } catch {
     return page("Something went wrong", "We couldn't save your subscription — please try again.", 500);
   }
+  emitUsageEvent(env, { event: "alert_confirmed", lens: sub.lens, surface: "email" });
 
   const desc = escHtml(describeFilter(sub.lens, sub.filter));
   return page(

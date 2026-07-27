@@ -4,6 +4,7 @@
 
 import { validInvPayload, INV_TTL } from "./lib/inv.mjs";
 import { bumpStat } from "./lib/stats.mjs";
+import { emitUsageEvent } from "./lib/analytics.mjs";
 import { vendorStem } from "./lib/compile.mjs";
 
 const MAX_SHARES_PER_IP_DAY = 10;
@@ -80,6 +81,7 @@ export async function handleInv(req, env, pathname, ctx) {
   const id = [...crypto.getRandomValues(new Uint8Array(8))].map(b => (b % 36).toString(36)).join("");
   await env.SUBS.put(`inv:${id}`, JSON.stringify(snap), { expirationTtl: INV_TTL });
   await bumpStat(env.ALERT_STATE, "share", new Date()); // outcome counter (R·B) — aggregate only
+  emitUsageEvent(env, { event: "investigation_share", detail: "create", surface: "api" });
   return json({ ok: true, id, ttlDays: Math.round(INV_TTL / 86400) }, 200, cors);
 }
 

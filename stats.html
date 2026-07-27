@@ -6,6 +6,7 @@
 <title>Stats · CROL-List</title>
 <meta name="description" content="CROL-List's own usage, published: aggregate outcome counts for subscriptions, digests sent, notice-link clicks, and feed activity, refreshed regularly.">
 <script src="i18n.js?v=8683bbec"></script>
+<script defer src="analytics.js?v=1.0.0"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
@@ -38,7 +39,9 @@
   .stat .n{font-family:var(--font-nameplate);font-weight:900;font-size:2.2rem;line-height:1;color:var(--ink)}
   .stat .l{font-family:var(--font-sc);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-top:6px}
   .stat .d{font:13px/1.5 var(--ui);color:var(--ink-soft);margin-top:8px}
+  .stat .stat-asof{padding-top:7px;border-top:1px solid var(--rule);color:var(--muted)}
   h2{font-family:var(--font-sc);font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--oxblood);margin:30px 0 8px;border-top:1px solid var(--rule);padding-top:16px}
+  h3{font:600 13px/1.4 var(--ui);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin:20px 0 6px}
   p{margin:10px 0}
   .src{font:14px/1.7 var(--ui);color:var(--ink-soft)}
   .cattable{width:100%;border-collapse:collapse;margin:12px 0 4px;font:14px/1.5 var(--ui)}
@@ -102,17 +105,17 @@
 <p id="msg" role="status" data-i18n="stats_loading">Loading live counters…</p>
 
 <h2 data-i18n="stats_h_general">The headline numbers</h2>
-<div class="grid" id="grid" hidden>
-  <div class="stat"><div class="n" id="s-subs">–</div><div class="l" data-i18n="stats_lbl_subs">Active watches</div><div class="d" data-i18n="stats_desc_subs">Confirmed standing watches — the number that matters most to us.</div></div>
-  <div class="stat"><div class="n" id="s-digests">–</div><div class="l" data-i18n="stats_lbl_digests">Digests sent · 7 days</div><div class="d" data-i18n-html="stats_desc_digests_html"><span id="s-digests-today">–</span> today. Only when something new matched (plus honest "still watching" check-ins).</div></div>
-  <div class="stat"><div class="n" id="s-nl">–</div><div class="l" data-i18n="stats_lbl_nl">Searches asked · 7 days</div><div class="d" data-i18n-html="stats_desc_nl_html"><span id="s-nl-today">–</span> today. Plain questions typed into "Ask," about any part of the site.</div></div>
+<div class="grid" id="grid">
+  <div class="stat"><div class="n" id="s-subs">–</div><div class="l" data-i18n="stats_lbl_subs">Active watches</div><div class="d" data-i18n="stats_desc_subs">Confirmed standing watches — the number that matters most to us.</div><div class="d stat-asof" data-stat-asof></div></div>
+  <div class="stat"><div class="n" id="s-digests">–</div><div class="l" data-i18n="stats_lbl_digests">Digests sent · 7 days</div><div class="d" data-i18n-html="stats_desc_digests_html"><span id="s-digests-today">–</span> today. Only when something new matched (plus honest "still watching" check-ins).</div><div class="d stat-asof" data-stat-asof></div></div>
+  <div class="stat"><div class="n" id="s-nl">–</div><div class="l" data-i18n="stats_lbl_nl">Searches asked · 7 days</div><div class="d" data-i18n-html="stats_desc_nl_html"><span id="s-nl-today">–</span> today. Plain questions typed into "Ask," about any part of the site.</div><div class="d stat-asof" data-stat-asof></div></div>
 </div>
 
 <h2 data-i18n="stats_h_alltime">Totals</h2>
 <p class="src" data-i18n="stats_p_alltime">The same outcomes, added up instead of reset every 7 days.</p>
-<div class="grid" id="gridAllTime" hidden>
-  <div class="stat"><div class="n" id="s-digests-alltime">–</div><div class="l" data-i18n="stats_lbl_digests_alltime">Digests sent · all time</div><div class="d" data-i18n="stats_desc_digests_alltime">Every digest CROL-List has ever sent.</div><div class="d" id="s-digests-alltime-since"></div></div>
-  <div class="stat"><div class="n" id="s-nl-alltime">–</div><div class="l" data-i18n="stats_lbl_nl_alltime">Searches asked · all time</div><div class="d" data-i18n="stats_desc_nl_alltime">Every plain-English question CROL-List has ever answered.</div><div class="d" id="s-nl-alltime-since"></div></div>
+<div class="grid" id="gridAllTime">
+  <div class="stat"><div class="n" id="s-digests-alltime">–</div><div class="l" data-i18n="stats_lbl_digests_alltime">Digests sent · all time</div><div class="d" data-i18n="stats_desc_digests_alltime">Every digest CROL-List has ever sent.</div><div class="d" id="s-digests-alltime-since"></div><div class="d stat-asof" data-stat-asof></div></div>
+  <div class="stat"><div class="n" id="s-nl-alltime">–</div><div class="l" data-i18n="stats_lbl_nl_alltime">Searches asked · all time</div><div class="d" data-i18n="stats_desc_nl_alltime">Every plain-English question CROL-List has ever answered.</div><div class="d" id="s-nl-alltime-since"></div><div class="d stat-asof" data-stat-asof></div></div>
 </div>
 
 <h2 data-i18n="stats_h_category">Digests, by topic</h2>
@@ -123,6 +126,7 @@
 </table>
 <p class="src" id="catEmpty" data-i18n="stats_cat_empty" hidden>No digests have matched anything yet.</p>
 <p class="src histera" id="catSinceNote" hidden></p>
+<p class="src" data-stat-asof></p>
 
 <h2 data-i18n="stats_h_bylens">Searches, by section</h2>
 <p class="src" data-i18n="stats_p_bylens">Which part of the site people asked about: contracts, staffing, land, property, rules, or meetings.</p>
@@ -136,6 +140,40 @@
 </table>
 <p class="src" id="lensEmpty" data-i18n="stats_lens_empty" hidden>No searches have been asked yet.</p>
 <p class="src histera" id="lensSinceNote" hidden></p>
+<p class="src" data-stat-asof></p>
+
+<h2 data-i18n="stats_h_usage">How people use CROL-List</h2>
+<p class="src" data-i18n="stats_p_usage">First-party, aggregate activity counts. No cookies or visitor profiles.</p>
+<div class="grid" id="gridUsage">
+  <div class="stat"><div class="n" id="s-pageviews">–</div><div class="l" data-i18n="stats_lbl_pageviews">Page views · 7 days</div><div class="d stat-asof" data-stat-asof data-usage-asof></div></div>
+  <div class="stat"><div class="n" id="s-usage-searches">–</div><div class="l" data-i18n="stats_lbl_usage_searches">Searches run · 7 days</div><div class="d stat-asof" data-stat-asof data-usage-asof></div></div>
+  <div class="stat"><div class="n" id="s-deeplinks">–</div><div class="l" data-i18n="stats_lbl_deeplinks">Deep links opened · 7 days</div><div class="d stat-asof" data-stat-asof data-usage-asof></div></div>
+  <div class="stat"><div class="n" id="s-exports">–</div><div class="l" data-i18n="stats_lbl_exports">Exports · 7 days</div><div class="d stat-asof" data-stat-asof data-usage-asof></div></div>
+  <div class="stat"><div class="n" id="s-alert-confirms">–</div><div class="l" data-i18n="stats_lbl_alert_confirms">Watches confirmed · 7 days</div><div class="d stat-asof" data-stat-asof data-usage-asof></div></div>
+</div>
+<p class="src histera" id="usageSinceNote" hidden></p>
+<p class="src" id="usageUnavailable" data-i18n="stats_usage_unavailable" hidden>New usage counters are not available yet.</p>
+
+<h3 data-i18n="stats_h_lens_interest">Activity by section</h3>
+<table class="cattable" id="usageLensTable" hidden>
+  <thead><tr><th data-i18n="stats_col_lens">Section</th><th data-i18n="stats_col_last7">Last 7 days</th><th data-i18n="stats_col_last30">Last 30 days</th></tr></thead>
+  <tbody id="usageLensTableBody"></tbody>
+</table>
+<p class="src" data-stat-asof data-usage-asof></p>
+
+<h3 data-i18n="stats_h_geography">Geography of interest</h3>
+<table class="cattable" id="usageGeoTable" hidden>
+  <thead><tr><th data-i18n="stats_col_area">Area</th><th data-i18n="stats_col_last30">Last 30 days</th></tr></thead>
+  <tbody id="usageGeoTableBody"></tbody>
+</table>
+<p class="src" data-stat-asof data-usage-asof></p>
+
+<h3 data-i18n="stats_h_usage_growth">Usage growth over time</h3>
+<table class="cattable histtable" id="usageGrowthTable" hidden>
+  <thead><tr><th data-i18n="stats_col_day">Day</th><th data-i18n="stats_lbl_pageviews_short">Page views</th><th data-i18n="stats_col_interactions">Interactions</th></tr></thead>
+  <tbody id="usageGrowthTableBody"></tbody>
+</table>
+<p class="src" data-stat-asof data-usage-asof></p>
 
 <h2 data-i18n="stats_h_history">Over time</h2>
 <p class="src" data-i18n="stats_p_history">Digests sent, searches asked, and watches active, day by day.</p>
@@ -151,14 +189,15 @@
 </table>
 <p class="src histera" id="histEraNote" hidden></p>
 <p class="src" id="histEmpty" data-i18n="stats_history_empty" hidden>No day-by-day history yet.</p>
+<p class="src" data-stat-asof></p>
 
 <h2 data-i18n="stats_h_technical">Technical details</h2>
 <p class="src" data-i18n="stats_p_technical">How the numbers above are put together. You don't need to know this to use CROL-List.</p>
-<div class="grid" id="gridTechnical" hidden>
-  <div class="stat"><div class="n" id="s-clicks">–</div><div class="l" data-i18n="stats_lbl_clicks">Digest links followed · 7 days</div><div class="d" data-i18n-html="stats_desc_clicks_html">Daily counts from the notice-link redirect — <a href="changelog.html#2026-07-02b">how this works</a>.</div></div>
-  <div class="stat"><div class="n" id="s-feeds">–</div><div class="l" data-i18n="stats_lbl_feeds">Feed fetches · 7 days</div><div class="d" data-i18n="stats_desc_feeds">RSS/Atom/JSON/calendar pulls, as seen at the origin (edge-cached hits aren't counted).</div></div>
-  <div class="stat"><div class="n" id="s-batch">–</div><div class="l" data-i18n="stats_lbl_batch">Saved-search checks via the API · 7 days</div><div class="d" data-i18n-html="stats_desc_batch_html">Watchlists checked through the <a href="api.html">open API</a>.</div></div>
-  <div class="stat"><div class="n" id="s-inv">–</div><div class="l" data-i18n="stats_lbl_inv">Shared investigation links · 7 days</div><div class="d" data-i18n="stats_desc_inv">Read-only workspace snapshots created.</div></div>
+<div class="grid" id="gridTechnical">
+  <div class="stat"><div class="n" id="s-clicks">–</div><div class="l" data-i18n="stats_lbl_clicks">Digest links followed · 7 days</div><div class="d" data-i18n-html="stats_desc_clicks_html">Daily counts from the notice-link redirect — <a href="changelog.html#2026-07-02b">how this works</a>.</div><div class="d stat-asof" data-stat-asof></div></div>
+  <div class="stat"><div class="n" id="s-feeds">–</div><div class="l" data-i18n="stats_lbl_feeds">Feed fetches · 7 days</div><div class="d" data-i18n="stats_desc_feeds">RSS/Atom/JSON/calendar pulls, as seen at the origin (edge-cached hits aren't counted).</div><div class="d stat-asof" data-stat-asof></div></div>
+  <div class="stat"><div class="n" id="s-batch">–</div><div class="l" data-i18n="stats_lbl_batch">Saved-search checks via the API · 7 days</div><div class="d" data-i18n-html="stats_desc_batch_html">Watchlists checked through the <a href="api.html">open API</a>.</div><div class="d stat-asof" data-stat-asof></div></div>
+  <div class="stat"><div class="n" id="s-inv">–</div><div class="l" data-i18n="stats_lbl_inv">Shared investigation links · 7 days</div><div class="d" data-i18n="stats_desc_inv">Read-only workspace snapshots created.</div><div class="d stat-asof" data-stat-asof></div></div>
 </div>
 
 </main>
@@ -178,6 +217,10 @@
   const lensEmpty = document.getElementById("lensEmpty"), lensSinceNote = document.getElementById("lensSinceNote");
   const histTable = document.getElementById("histTable"), histTableBody = document.getElementById("histTableBody");
   const histEraNote = document.getElementById("histEraNote"), histEmpty = document.getElementById("histEmpty");
+  const usageSinceNote = document.getElementById("usageSinceNote"), usageUnavailable = document.getElementById("usageUnavailable");
+  const usageLensTable = document.getElementById("usageLensTable"), usageLensTableBody = document.getElementById("usageLensTableBody");
+  const usageGeoTable = document.getElementById("usageGeoTable"), usageGeoTableBody = document.getElementById("usageGeoTableBody");
+  const usageGrowthTable = document.getElementById("usageGrowthTable"), usageGrowthTableBody = document.getElementById("usageGrowthTableBody");
   const put = (id, v) => { document.getElementById(id).textContent = (v == null ? "–" : Number(v).toLocaleString("en-US")); };
   const curLoc = () => (window.LANG_META && window.LANG_META[window.LANG] || {}).intlDate || "en-US";
   const dateLabel = (iso, opts) => new Date(iso + "T00:00:00Z").toLocaleDateString(curLoc(), { ...opts, timeZone: "UTC" });
@@ -273,13 +316,66 @@
     histTable.hidden = days.length === 0;
     histEmpty.hidden = days.length !== 0;
   }
+  const areaLabel = (area) => t("stats_area_" + area.replace("-", "_"));
+  function numberCell(value) {
+    const td = document.createElement("td");
+    td.className = "n";
+    td.textContent = Number(value || 0).toLocaleString("en-US");
+    return td;
+  }
+  function renderUsage(usage) {
+    if (!usage || !usage.available) {
+      usageUnavailable.hidden = false;
+      usageLensTable.hidden = true;
+      usageGeoTable.hidden = true;
+      usageGrowthTable.hidden = true;
+      renderSinceNote(usageSinceNote, usage?.measured_since);
+      return;
+    }
+    usageUnavailable.hidden = true;
+    put("s-pageviews", usage.page_views?.last7d);
+    put("s-usage-searches", usage.searches?.last7d);
+    put("s-deeplinks", usage.deep_links?.last7d);
+    put("s-exports", usage.exports?.last7d);
+    put("s-alert-confirms", usage.alerts?.confirmed_last7d);
+    renderSinceNote(usageSinceNote, usage.measured_since);
+
+    usageLensTableBody.textContent = "";
+    const lens7 = usage.lens_interest?.last7d || {}, lens30 = usage.lens_interest?.last30d || {};
+    for (const lens of Object.keys(lens30)) {
+      const tr = document.createElement("tr"), th = document.createElement("th");
+      th.scope = "row"; th.textContent = lensLabel(lens);
+      tr.append(th, numberCell(lens7[lens]), numberCell(lens30[lens]));
+      usageLensTableBody.appendChild(tr);
+    }
+    usageLensTable.hidden = usageLensTableBody.rows.length === 0;
+
+    usageGeoTableBody.textContent = "";
+    for (const [area, count] of Object.entries(usage.geography_interest?.last30d || {})) {
+      const tr = document.createElement("tr"), th = document.createElement("th");
+      th.scope = "row"; th.textContent = areaLabel(area);
+      tr.append(th, numberCell(count));
+      usageGeoTableBody.appendChild(tr);
+    }
+    usageGeoTable.hidden = usageGeoTableBody.rows.length === 0;
+
+    usageGrowthTableBody.textContent = "";
+    const growth = Object.entries(usage.growth?.by_day || {}).sort((a, b) => a[0].localeCompare(b[0])).slice(-30);
+    for (const [day, counts] of growth) {
+      const tr = document.createElement("tr"), th = document.createElement("th");
+      th.scope = "row"; th.textContent = dateLabel(day, { month: "short", day: "numeric", year: "numeric" });
+      tr.append(th, numberCell(counts.page_views), numberCell(counts.interactions));
+      usageGrowthTableBody.appendChild(tr);
+    }
+    usageGrowthTable.hidden = growth.length === 0;
+  }
   // applyStrings() rebuilds data-i18n-html containers (incl. the nested today-count spans)
   // on every language switch — the state below survives that so a switch after data loads
   // repaints the real numbers instead of resetting to the loading/placeholder text, and
   // re-translates every table's row labels into the new language.
   let msgState = { kind: "loading" }, digestsToday = null, nlToday = null;
   let categoryData = null, categorySince = null, lensData7d = null, lensDataAllTime = null, lensSince = null;
-  let historyData = null, digestsAllTimeSince = null, nlAllTimeSince = null;
+  let historyData = null, usageData = null, digestsAllTimeSince = null, nlAllTimeSince = null, metricAsOf = null;
   function paint() {
     msg.textContent = msgState.kind === "asof" ? t("stats_asof", { date: msgState.date })
       : msgState.kind === "unreachable" ? t("stats_unreachable") : t("stats_loading");
@@ -292,6 +388,11 @@
     renderSinceNote(document.getElementById("s-digests-alltime-since"), digestsAllTimeSince);
     renderSinceNote(document.getElementById("s-nl-alltime-since"), nlAllTimeSince);
     renderHistory(historyData);
+    renderUsage(usageData);
+    const stamp = metricAsOf ? t("stats_metric_asof", { date: metricAsOf }) : t("stats_metric_unavailable");
+    document.querySelectorAll("[data-stat-asof]").forEach((el) => { el.textContent = stamp; });
+    const usageStamp = usageData?.available ? stamp : t("stats_metric_unavailable");
+    document.querySelectorAll("[data-usage-asof]").forEach((el) => { el.textContent = usageStamp; });
   }
   paint();
   // Wire the switcher immediately — it must not wait on the fetch below, or clicking it
@@ -327,15 +428,18 @@
       renderLensTable(lensData7d, lensDataAllTime);
       historyData = d.history;
       renderHistory(historyData);
+      usageData = d.usage || null;
+      metricAsOf = new Date(d.generated).toLocaleString(curLoc());
       msgState = { kind: "asof", date: new Date(d.generated).toLocaleString(curLoc()) };
       paint();
-      grid.hidden = false;
-      gridAllTime.hidden = false;
-      gridTechnical.hidden = false;
       return;
     } catch { /* try the alias */ }
   }
   msgState = { kind: "unreachable" };
+  catEmpty.hidden = false;
+  lensEmpty.hidden = false;
+  histEmpty.hidden = false;
+  usageUnavailable.hidden = false;
   paint();
 })();
 </script>

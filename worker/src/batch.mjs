@@ -10,6 +10,7 @@
 
 import { parseNames, MAX_NAMES } from "./lib/batch.mjs";
 import { bumpStat } from "./lib/stats.mjs";
+import { emitUsageEvent } from "./lib/analytics.mjs";
 import { vendorStem } from "./lib/compile.mjs";
 
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
@@ -40,6 +41,7 @@ export async function handleBatch(req, env) {
   }
 
   await bumpStat(env.ALERT_STATE, "batch", new Date()); // outcome counter (R·B) — aggregate only
+  emitUsageEvent(env, { event: "saved_search_check", surface: "api" });
 
   const cut = new Date(Date.now() - 730 * 86400000).toISOString().slice(0, 10) + "T00:00:00";
   const results = {};

@@ -18,6 +18,7 @@ import { handleBatch } from "./batch.mjs";
 import { handleAgencies } from "./agencies.mjs";
 import { handleInv } from "./inv.mjs";
 import { handleStats, countActiveSubs } from "./stats.mjs";
+import { handleEvent } from "./events.mjs";
 import { snapshotHistDay, ensureHistEra } from "./lib/stats.mjs";
 import { handleRedirect } from "./redirect.mjs";
 import { runAlerts, consumeDigestJob } from "./alerts.mjs";
@@ -55,6 +56,7 @@ export default {
     if (pathname === "/vendor-profile") return handleVendorProfile(request, env, ctx);
     if (pathname === "/suggestions") return handleSuggestions(request, env, ctx);
     if (pathname === "/stats") return handleStats(request, env, ctx);
+    if (pathname === "/events") return handleEvent(request, env);
     if (pathname.startsWith("/r/")) return handleRedirect(request, env, ctx, pathname);
     if (pathname === "/api") return Response.redirect("https://crol-list.org/api.html", 302);
     if (pathname === "/admin/subs") return handleAdminSubs(request, env);

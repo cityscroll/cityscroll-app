@@ -7,6 +7,7 @@
 import { sanitize } from "./lib/filter.mjs";
 import { compileSub } from "./lib/compile.mjs";
 import { bumpStat } from "./lib/stats.mjs";
+import { emitUsageEvent } from "./lib/analytics.mjs";
 import { describeFilter } from "./lib/confirm_email.mjs";
 import { parseFeedQuery, feedItems, atomFeed, jsonFeed, icsFeed } from "./lib/feed.mjs";
 
@@ -37,6 +38,11 @@ export async function handleFeed(request, env, ctx) {
   // Outcome counter (R·B): feeds served from the origin, per day — aggregate only. Edge cache
   // hits never reach here, so this undercounts; that is the honest, documented behavior.
   const bumped = bumpStat(env.ALERT_STATE, "feed", new Date());
+  emitUsageEvent(env, {
+    event: "feed_fetch",
+    detail: url.pathname.endsWith(".xml") ? "atom" : url.pathname.endsWith(".json") ? "json" : "ics",
+    surface: "api",
+  });
   if (ctx && ctx.waitUntil) ctx.waitUntil(bumped);
 
   let rows;
