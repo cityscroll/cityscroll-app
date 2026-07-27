@@ -15,6 +15,7 @@ import { handleFeedback } from "./feedback.mjs";
 import { handleAdminSubs, handleAdminFeedback } from "./admin.mjs";
 import { handleFeed } from "./feed.mjs";
 import { handleBatch } from "./batch.mjs";
+import { handleAgencies } from "./agencies.mjs";
 import { handleInv } from "./inv.mjs";
 import { handleStats, countActiveSubs } from "./stats.mjs";
 import { snapshotHistDay, ensureHistEra } from "./lib/stats.mjs";
@@ -44,6 +45,7 @@ export default {
     if (pathname === "/feedback") return handleFeedback(request, env);
     if (pathname === "/feed.xml" || pathname === "/feed.json" || pathname === "/feed.ics") return handleFeed(request, env, ctx);
     if (pathname === "/batch") return handleBatch(request, env);
+    if (pathname === "/agencies") return handleAgencies(request, env, ctx);
     if (pathname === "/inv" || pathname.startsWith("/inv/")) return handleInv(request, env, pathname);
     if (pathname.startsWith("/priorcycle/")) return handlePriorCycle(request, env, pathname);
     if (pathname === "/externalaward") return handleExternalAward(request, env);
