@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Standards · CROL-List</title>
 <meta name="description" content="How CROL-List's language switcher and accessibility posture compare to published NYC and NY State standards — tracked live, over time.">
-<script src="i18n.js?v=9414d588"></script>
+<script src="i18n.js?v=2ba21b67"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
@@ -136,6 +136,23 @@
   <div data-i18n-html="std_a11y_next_html">New York State's technology law (<a href="https://designsystem.ny.gov/foundations/accessibility/" target="_blank" rel="noopener noreferrer">STL §103-d<span class="sr-only"> (opens in new tab)</span></a>) requires State Entity websites to move up to <b>WCAG 2.2 Level AA</b>. That binds state agencies, not New York City directly — but it is the clearest published signal of where the standard is heading next.</div>
 </div>
 
+<section id="selfConformance" aria-labelledby="selfConformanceHeading">
+<h2 id="selfConformanceHeading" data-i18n="std_h_self_conformance">CROL-List's own accessibility posture</h2>
+<p class="note" data-i18n="std_p_self_conformance_lede">These are targets and continuous observations, not a certification.</p>
+<div class="milestone">
+  <div class="milestone-label" data-i18n="std_self_target_label">CROL-List target</div>
+  <div data-i18n-html="std_self_target_html">CROL-List targets <b>WCAG 2.1 Level AA</b> today. It is tracking New York State's <b>WCAG 2.2 Level AA</b> mandate for January 1, 2027.</div>
+</div>
+<div class="milestone">
+  <div class="milestone-label" data-i18n="std_self_observations_label">Continuous observations</div>
+  <ul class="posture">
+    <li data-i18n="std_li_axe_pr">The axe accessibility gate runs on every pull request across each public page and activated tab state. A new critical or serious violation fails the build.</li>
+    <li data-i18n="std_li_ll30_live">The Local Law 30 table above reads the site's current language switcher live. It changes when a language is added to or removed from the switcher.</li>
+    <li data-i18n="std_li_reading_ratchet">The reading-level ratchet runs on every pull request across the public pages. A page that gets harder to read than its committed baseline fails the gate.</li>
+  </ul>
+</div>
+</section>
+
 <h2 data-i18n="std_h_posture">What we actually built (checked on this page)</h2>
 <p class="note" data-i18n="std_p_posture_lede">None of this is a certification. Some lines are checked live against this page's own markup. The rest are plain facts about how the site works. View source any time to check for yourself.</p>
 <ul class="posture">
@@ -145,7 +162,6 @@
   <li id="chkMain"><span data-i18n="std_li_semantic_main">Landmark region for the main content:</span> <span class="val"></span></li>
   <li id="chkSwitcher"><span data-i18n="std_li_semantic_switcher">Language switcher marked as a labeled group:</span> <span class="val"></span></li>
   <li id="reviewCount"></li>
-  <li data-i18n="std_li_ci_scan">An automated accessibility scan (axe) runs in continuous integration against this page. A change that introduces a new critical or serious violation fails the build.</li>
 </ul>
 
 <h2 data-i18n="std_h_timeline">Snapshots over time</h2>
