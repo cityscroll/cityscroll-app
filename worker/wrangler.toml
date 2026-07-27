@@ -1,6 +1,6 @@
 name = "crol-worker"
 main = "src/worker.mjs"
-compatibility_date = "2026-01-01"
+compatibility_date = "2026-07-27"
 # No nodejs_compat needed — the Worker uses only fetch + Web APIs (no npm runtime deps).
 
 # Branded public hostname: user-visible URLs (feed links, confirm links) read api.crol-list.org,
@@ -17,8 +17,11 @@ workers_dev = true
 [triggers]
 crons = ["0 13 * * *"]
 
-# Non-secret config. Secrets (ANTHROPIC_API_KEY, RESEND_API_KEY, USAGE_KEY) go via
-# `wrangler secret put`. USAGE_KEY gates the read-only /usage endpoint; unset → /usage 404s.
+# Non-secret config. Secrets (ANTHROPIC_API_KEY, RESEND_API_KEY, USAGE_KEY,
+# ANALYTICS_READ_TOKEN, ANALYTICS_DEV_KEY, ANALYTICS_ENVIRONMENT) go via `wrangler secret put`.
+# USAGE_KEY gates the read-only /usage endpoint; unset → /usage 404s. ANALYTICS_READ_TOKEN needs
+# Account Analytics Read only. ANALYTICS_ENVIRONMENT must equal "production" for analytics writes;
+# keeping that runtime binding out of this file makes wrangler dev/preview fail closed by default.
 [vars]
 ALERTS_LIVE = "true"
 ALERTS_FROM = "CROL-List <alerts@crol-list.org>"
@@ -61,6 +64,14 @@ BOARD_ORG = "cityscroll"
 BOARD_URL = "https://github.com/orgs/cityscroll/projects/1"
 BOARD_HOOK_DRY = "false"
 BOARD_HOOK_MAX_PER_DAY = "100"
+ANALYTICS_ACCOUNT_ID = "8162581cb1d97e20a172031adb8a13af"
+ANALYTICS_DATASET = "crol_usage_events_v1"
+ANALYTICS_MEASURED_SINCE = "2026-07-27"
+
+# Privacy-preserving event rows: bounded taxonomy dimensions only, no visitor identifier.
+[[analytics_engine_datasets]]
+binding = "USAGE_ANALYTICS"
+dataset = "crol_usage_events_v1"
 
 # Digest delivery queue. QUEUE_DIGESTS="true" switches the cron from
 # the inline send loop to one-job-per-subscription fan-out: independently retryable,

@@ -12,6 +12,7 @@
 
 import { sanitize, filterConfidence, MAX_INPUT, MAX_CALLS_PER_DAY, LENSES } from "./lib/filter.mjs";
 import { bumpStat, bumpStatAllTime, bumpCategoryStat, bumpCategoryDayStat, bumpHistDay } from "./lib/stats.mjs";
+import { emitUsageEvent } from "./lib/analytics.mjs";
 
 const MODEL = "claude-haiku-4-5";
 
@@ -133,6 +134,13 @@ export async function handleNl(req, env) {
   await bumpCategoryDayStat(env.NL_METER, "nl_search", lens, now);
 
   const res = await parseLensFilter(env, lens, text);
+  emitUsageEvent(env, {
+    event: "search_run",
+    lens,
+    detail: "natural-language",
+    geography: String(res?.filter?.boro || "").toLowerCase().replace(/\s+/g, "-"),
+    surface: "api",
+  });
   // Graceful degradation either way: the browser falls back to its on-device parser.
   return json(res, 200, cors);
 }
