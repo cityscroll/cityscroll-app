@@ -3673,9 +3673,11 @@ function renderVendorVariants(variants){
   if(variants.length <= 1) return "";
   const items = variants
     .map(v => {
+      const name = v.vendor_name || v.name || "";
+      const total = v.t ?? v.total;
       const count = Number(v.n);
       const countText = Number.isFinite(count) ? count.toLocaleString("en-US",{maximumFractionDigits:0}) : "0";
-      return `<div class="vendor-variant-item"><span class="vendor-variant-name" lang="en" dir="ltr">${cleanText(v.vendor_name).replace(/&/g,"&amp;")}</span> · <span class="vendor-variant-meta">${countText} · ${money(v.t) || "—"}</span></div>`;
+      return `<div class="vendor-variant-item"><span class="vendor-variant-name" lang="en" dir="ltr">${cleanText(name).replace(/&/g,"&amp;")}</span> · <span class="vendor-variant-meta">${countText} · ${money(total) || "—"}</span></div>`;
     })
     .join("");
   const needsCollapse = variants.length > 8;
@@ -3749,6 +3751,7 @@ async function agencyForecastTeaser(r, el){
 async function showAgency(name, initialTab){
   showTab("entity");
   const box = $("#entityview");
+  delete box.dataset.vendorStem;
   const nm = String(name||"").trim(), safe = nm.replace(/[<>&]/g,""), q = nm.replace(/'/g,"''");
   box.innerHTML = `<div class="empty"><span class="loading"></span> building profile: ${safe}…</div>`;
   const [stats, sections, vendors, rfps, events, forecastData, externalAward, agencyIdentity] = await Promise.all([
@@ -3873,37 +3876,60 @@ async function showAgency(name, initialTab){
   announce(t("meta_agency_profile_announce",{name:nm}));
 }
 
-async function showVendor(name, initialTab){
-  showTab("entity");
-  const box = $("#entityview");
-  const stem = vendorStem(name), safe = cleanText(name).replace(/[<>&]/g,"");
-  box.innerHTML = `<div class="empty"><span class="loading"></span> resolving vendor: ${safe}…</div>`;
-  if(stem.length < 3){ box.innerHTML = `<div class="empty">“${safe}” is too short to resolve to a vendor. <a href="#money">← Browse</a></div>`; return; }
-  let variants = [];
+function vendorProfileFromVariants(variants){
+  const normalized = variants.map(v=>({
+    name:v.name||v.vendor_name, n:+v.n||0, total:+(v.total??v.t)||0,
+    first:v.first||null, last:v.last||null
+  }));
+  const ordered = normalized.slice().sort((a,b)=>b.n-a.n || b.total-a.total || a.name.localeCompare(b.name));
+  return {
+    stem:vendorStem(ordered[0]?.name||""),
+    display:ordered[0]?.name||"",
+    variants:normalized,
+    awardCount:normalized.reduce((s,v)=>s+v.n,0),
+    total:normalized.reduce((s,v)=>s+v.total,0),
+    first:normalized.map(v=>v.first).filter(Boolean).sort()[0]||null,
+    last:normalized.map(v=>v.last).filter(Boolean).sort().pop()||null,
+    topAgencies:[]
+  };
+}
+
+function vendorProfileHeaderHTML(profile){
+  const variants = Array.isArray(profile.variants) ? profile.variants : [];
+  const display = cleanText(profile.display||variants[0]?.name||variants[0]?.vendor_name||"");
+  const nAwards = +profile.awardCount||0;
+  return `<div class="ftype" style="margin-bottom:6px">${t("vendor_profile_variants",{n:variants.length,s:variants.length===1?"":"s"})}</div>
+      ${renderVendorVariants(variants)}
+      <h2 class="rolename" lang="en" dir="ltr">${display}</h2>
+      <div class="agencybar">
+        <div><div class="big">${money(profile.total)||"—"}</div><div class="lbl">total awarded,<br>on record</div></div>
+        <div><div class="big">${nAwards.toLocaleString()}</div><div class="lbl">award notice${nAwards===1?"":"s"}</div></div>
+        <div><div class="big" style="font-size:17px">${profile.first?fdate(profile.first):"—"} – ${profile.last?fdate(profile.last):"—"}</div><div class="lbl">first / latest<br>award published</div></div>
+      </div>`;
+}
+
+async function loadVendorProfileRecord(name){
   try{
-    variants = await soda({"$select":"vendor_name, count(1) as n, sum(contract_amount) as t, min(start_date) as first, max(start_date) as last",
-      "$where":`vendor_name IS NOT NULL AND type_of_notice_description='Award' AND contract_amount < ${MONEY_HONESTY_CAP}`,
-      "$q":stem,"$group":"vendor_name","$limit":"100"});
-  }catch(e){}
-  variants = variants.filter(v => vendorStem(v.vendor_name) === stem);
-  if(!variants.length){
-    box.innerHTML = `<div class="empty">No awards on record for “${safe}”. <a href="#money?q=${encodeURIComponent(stem.toLowerCase())}">Search notices mentioning them →</a></div>`;
-    return;
-  }
-  const names = variants.map(v=>v.vendor_name);
-  const inList = names.slice(0,20).map(n=>`'${n.replace(/'/g,"''")}'`).join(",");
-  const total = variants.reduce((s,v)=>s+(+v.t||0),0), nAwards = variants.reduce((s,v)=>s+(+v.n||0),0);
-  const first = variants.map(v=>v.first).filter(Boolean).sort()[0];
-  const last = variants.map(v=>v.last).filter(Boolean).sort().pop();
-  const display = variants.slice().sort((a,b)=>(+b.n)-(+a.n))[0].vendor_name;
-  const [agencies, rows, mentions, forecastData] = await Promise.all([
-    soda({"$select":"agency_name, count(1) as n, sum(contract_amount) as t","$where":`vendor_name in(${inList}) AND type_of_notice_description='Award' AND contract_amount < ${MONEY_HONESTY_CAP}`,"$group":"agency_name","$order":"t DESC","$limit":"10"}, 15000).catch(()=>[]),
-    soda({"$select":SELECT,"$where":`vendor_name in(${inList})`,"$order":"start_date DESC","$limit":"15"}, 15000).catch(()=>[]),
-    soda({"$select":SELECT,"$where":`vendor_name IS NULL AND start_date > '${recentCut()}'`,"$q":stem,"$order":"start_date DESC","$limit":"8"}, 8000).catch(()=>[]),
-    workerFetch("/inv/" + encodeURIComponent(display), null, 8000).then(r => r.ok ? r.json() : null).catch(() => null)
-  ]);
-  const link = location.origin + location.pathname + vendorHref(display);
-  const agChips = agencies.map(a=>`<a class="chip" style="text-decoration:none" href="${agencyHref(a.agency_name)}">${a.agency_name}<span class="ct">${money(a.t)||a.n}</span></a>`).join("");
+    const response = await workerFetch("/vendor-profile?name="+encodeURIComponent(cleanText(name)), null, 900);
+    if(!response.ok) return null;
+    const body = await response.json();
+    const profile = body && body.profile;
+    if(!body?.ok || !profile || profile.stem !== vendorStem(name) || !Array.isArray(profile.variants) || !profile.variants.length) return null;
+    return profile;
+  }catch(e){ return null; }
+}
+
+function vendorProfileHTML(profile, details, hydrating){
+  const display = cleanText(profile.display);
+  const agencies = details?.agencies || profile.topAgencies || [];
+  const rows = details?.rows || [];
+  const mentions = details?.mentions || [];
+  const forecasts = details?.forecasts || [];
+  const hasForecasts = forecasts.length > 0;
+  const agChips = agencies.map(a=>{
+    const name = a.name||a.agency_name||"";
+    return `<a class="chip" style="text-decoration:none" href="${agencyHref(name)}">${cleanText(name)}<span class="ct">${money(a.total??a.t)||a.n}</span></a>`;
+  }).join("");
   const rowItems = rows.map(r=>`<div class="tl"><span class="tldate">${fdate(r.start_date)}</span>
       <span class="tlreason">${pivotA("#notice/"+encodeURIComponent(r.request_id), cleanText(r.short_title)||"(untitled)")}</span>
       <span class="rmeta" style="margin:0">${r.type_of_notice_description||""} · ${pivotA(agencyHref(r.agency_name), r.agency_name||"")}</span>
@@ -3911,21 +3937,16 @@ async function showVendor(name, initialTab){
   const mentionItems = mentions.map(r=>`<div class="tl"><span class="tldate">${fdate(r.start_date)}</span>
       <span class="tlreason">${pivotA("#notice/"+encodeURIComponent(r.request_id), cleanText(r.short_title)||"(untitled)")}</span>
       <span class="rmeta" style="margin:0">${tSection(r.section_name)||r.type_of_notice_description||""}</span></div>`).join("");
+  const loadingSections = hydrating ? `<div id="vendor-live" aria-busy="true">
+        <div class="chain-h">On the record — notices naming this vendor</div><div class="empty" style="padding:12px"><span class="loading"></span></div>
+        <div class="chain-h">Mentioned in other notices (text match)</div><div class="empty" style="padding:12px"><span class="loading"></span></div>
+        <div class="chain-h">${t("forecast_section_heading")}</div><div class="empty" style="padding:12px"><span class="loading"></span></div>
+      </div>` : "";
 
-  const forecasts = forecastData ? (forecastData.forecasts || []) : [];
-  const hasForecasts = forecasts.length > 0;
-
-  box.innerHTML = `<div style="max-width:880px;margin:0 auto">
+  return `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CROL-List</a></p>
     <div class="panel" style="padding:22px 24px">
-      <div class="ftype" style="margin-bottom:6px">${t("vendor_profile_variants",{n:variants.length,s:variants.length===1?"":"s"})}</div>
-      ${renderVendorVariants(variants)}
-      <h2 class="rolename" lang="en" dir="ltr">${cleanText(display)}</h2>
-      <div class="agencybar">
-        <div><div class="big">${money(total)||"—"}</div><div class="lbl">total awarded,<br>on record</div></div>
-        <div><div class="big">${nAwards.toLocaleString()}</div><div class="lbl">award notice${nAwards===1?"":"s"}</div></div>
-        <div><div class="big" style="font-size:17px">${first?fdate(first):"—"} – ${last?fdate(last):"—"}</div><div class="lbl">first / latest<br>award published</div></div>
-      </div>
+      ${vendorProfileHeaderHTML(profile)}
 
       ${hasForecasts ? `<div class="subtabs" style="display:flex;gap:16px;border-bottom:1px solid #ddd;margin:16px 0 20px">
         <button class="subtab active" id="btn-overview" style="font-family:var(--font-sc);font-weight:600;font-size:12px;letter-spacing:.15em;text-transform:uppercase;padding:9px 0;border:none;background:none;color:var(--oxblood);border-bottom:2px solid var(--oxblood);cursor:pointer">${t("forecast_overview_tab")}</button>
@@ -3936,63 +3957,98 @@ async function showVendor(name, initialTab){
         ${agencies.length?`<div class="chain-h">Agencies they win from (click to pivot)</div><div class="chiprow" style="margin-top:6px">${agChips}</div>`:""}
         ${rows.length?`<div class="chain-h">On the record — notices naming this vendor</div><div class="timeline">${rowItems}</div>`:""}
         ${mentions.length?`<div class="chain-h">Mentioned in other notices (text match)</div><div class="timeline">${mentionItems}</div>`:""}
+        ${loadingSections}
       </div>
 
       ${hasForecasts ? `<div id="forecast-content" style="display:none">${forecastPaneHTML(forecasts)}</div>` : ""}
 
       <div class="actions" style="margin-top:16px">
-        <button class="act primary" type="button" data-follow="vendor" data-name="${cleanText(display).replace(/"/g,"&quot;")}">Follow this vendor</button>
+        <button class="act primary" type="button" data-follow="vendor" data-name="${display.replace(/"/g,"&quot;")}">Follow this vendor</button>
         <button class="act" type="button" id="ecopy">Copy link</button>
-        ${pinBtn("vendor", cleanText(display), cleanText(display), t("meta_vendor_profile"))}
-        ${API?`<a class="act" href="${API.replace(/\/+$/,"")}/feed.xml?lens=entity&kind=vendor&name=${encodeURIComponent(cleanText(display))}">RSS</a>`:""}
+        ${pinBtn("vendor", display, display, t("meta_vendor_profile"))}
+        ${API?`<a class="act" href="${API.replace(/\/+$/,"")}/feed.xml?lens=entity&kind=vendor&name=${encodeURIComponent(display)}">RSS</a>`:""}
       </div>
       <div class="note">Identity is resolved by name normalization (case, punctuation, legal suffixes) — variants listed above; distinct companies sharing a name stem would be merged, so treat totals as <b>“published under this name,”</b> not a legal entity. Awards as published in the City Record; actual payments differ (Checkbook join coming).</div>
     </div></div>`;
+}
 
+function renderVendorProfile(box, profile, details, initialTab, hydrating){
+  const display = cleanText(profile.display);
+  const link = location.origin + location.pathname + vendorHref(display);
+  box.dataset.vendorStem = profile.stem;
+  box.innerHTML = vendorProfileHTML(profile, details, hydrating);
   $("#ecopy").addEventListener("click", ()=>copyText(link, $("#ecopy")));
 
-  if (hasForecasts) {
-    const btnOverview = $("#btn-overview");
-    const btnForecast = $("#btn-forecast");
-    const paneOverview = $("#overview-content");
-    const paneForecast = $("#forecast-content");
-
-    btnOverview.addEventListener("click", () => {
-      btnOverview.style.color = "var(--oxblood)";
-      btnOverview.style.borderBottomColor = "var(--oxblood)";
-      btnForecast.style.color = "var(--muted)";
-      btnForecast.style.borderBottomColor = "transparent";
-      paneOverview.style.display = "block";
-      paneForecast.style.display = "none";
+  if(details?.forecasts?.length){
+    const btnOverview = $("#btn-overview"), btnForecast = $("#btn-forecast");
+    const paneOverview = $("#overview-content"), paneForecast = $("#forecast-content");
+    btnOverview.addEventListener("click", ()=>{
+      btnOverview.style.color="var(--oxblood)"; btnOverview.style.borderBottomColor="var(--oxblood)";
+      btnForecast.style.color="var(--muted)"; btnForecast.style.borderBottomColor="transparent";
+      paneOverview.style.display="block"; paneForecast.style.display="none";
     });
-
-    btnForecast.addEventListener("click", () => {
-      btnForecast.style.color = "var(--oxblood)";
-      btnForecast.style.borderBottomColor = "var(--oxblood)";
-      btnOverview.style.color = "var(--muted)";
-      btnOverview.style.borderBottomColor = "transparent";
-      paneOverview.style.display = "none";
-      paneForecast.style.display = "block";
+    btnForecast.addEventListener("click", ()=>{
+      btnForecast.style.color="var(--oxblood)"; btnForecast.style.borderBottomColor="var(--oxblood)";
+      btnOverview.style.color="var(--muted)"; btnOverview.style.borderBottomColor="transparent";
+      paneOverview.style.display="none"; paneForecast.style.display="block";
     });
-
-    box.querySelectorAll(".mini-sub-btn").forEach(b => b.addEventListener("click", () => {
-      const kind = b.dataset.watchKind;
-      const watchName = b.dataset.watchName;
-      showTab("alerts", true);
-      $("#awatch").value = "entity";
-      aWatchChange();
-      if (kind === "agency") {
-        $("#aagency").value = watchName;
-      } else {
-        $("#avendor").value = watchName;
-      }
+    box.querySelectorAll(".mini-sub-btn").forEach(b=>b.addEventListener("click", ()=>{
+      showTab("alerts",true); $("#awatch").value="entity"; aWatchChange();
+      if(b.dataset.watchKind==="agency") $("#aagency").value=b.dataset.watchName;
+      else $("#avendor").value=b.dataset.watchName;
       aPreview();
     }));
-
-    if(initialTab === "forecast") btnForecast.click();
+    if(initialTab==="forecast") btnForecast.click();
   }
+}
 
-  announce(t("meta_vendor_profile_announce",{name:cleanText(display)}));
+async function hydrateVendorProfile(profile, initialTab, box, fetchAgencies){
+  const names = profile.variants.map(v=>v.name).slice(0,20);
+  const inList = names.map(n=>`'${n.replace(/'/g,"''")}'`).join(",");
+  const [agencies, rows, mentions, forecastData] = await Promise.all([
+    fetchAgencies
+      ? soda({"$select":"agency_name, count(1) as n, sum(contract_amount) as t","$where":`vendor_name in(${inList}) AND type_of_notice_description='Award' AND contract_amount < ${MONEY_HONESTY_CAP}`,"$group":"agency_name","$order":"t DESC","$limit":"10"},15000).catch(()=>[])
+      : Promise.resolve(profile.topAgencies||[]),
+    soda({"$select":SELECT,"$where":`vendor_name in(${inList})`,"$order":"start_date DESC","$limit":"15"},15000).catch(()=>[]),
+    soda({"$select":SELECT,"$where":`vendor_name IS NULL AND start_date > '${recentCut()}'`,"$q":profile.stem,"$order":"start_date DESC","$limit":"8"},8000).catch(()=>[]),
+    workerFetch("/inv/"+encodeURIComponent(profile.display),null,8000).then(r=>r.ok?r.json():null).catch(()=>null)
+  ]);
+  if(box.dataset.vendorStem !== profile.stem) return;
+  renderVendorProfile(box, profile, {agencies,rows,mentions,forecasts:forecastData?.forecasts||[]}, initialTab, false);
+}
+
+async function showVendorLive(name, initialTab, box){
+  const stem = vendorStem(name), safe = cleanText(name).replace(/[<>&]/g,"");
+  box.innerHTML = `<div class="empty"><span class="loading"></span> resolving vendor: ${safe}…</div>`;
+  let variants = [];
+  try{
+    variants = await soda({"$select":"vendor_name, count(1) as n, sum(contract_amount) as t, min(start_date) as first, max(start_date) as last",
+      "$where":`vendor_name IS NOT NULL AND type_of_notice_description='Award' AND contract_amount < ${MONEY_HONESTY_CAP}`,
+      "$q":stem,"$group":"vendor_name","$limit":"100"});
+  }catch(e){}
+  variants = variants.filter(v=>vendorStem(v.vendor_name)===stem);
+  if(!variants.length){
+    box.innerHTML = `<div class="empty">No awards on record for “${safe}”. <a href="#money?q=${encodeURIComponent(stem.toLowerCase())}">Search notices mentioning them →</a></div>`;
+    return;
+  }
+  const profile = vendorProfileFromVariants(variants);
+  renderVendorProfile(box, profile, null, initialTab, true);
+  announce(t("meta_vendor_profile_announce",{name:cleanText(profile.display)}));
+  await hydrateVendorProfile(profile, initialTab, box, true);
+}
+
+async function showVendor(name, initialTab){
+  showTab("entity");
+  const box = $("#entityview");
+  delete box.dataset.vendorStem;
+  const stem = vendorStem(name), safe = cleanText(name).replace(/[<>&]/g,"");
+  if(stem.length < 3){ box.innerHTML = `<div class="empty">“${safe}” is too short to resolve to a vendor. <a href="#money">← Browse</a></div>`; return; }
+  box.innerHTML = `<div style="max-width:880px;margin:0 auto"><div class="panel" style="padding:22px 24px"><h2 class="rolename" lang="en" dir="ltr">${safe}</h2><div class="agencybar" aria-hidden="true"><div><div class="big">—</div></div><div><div class="big">—</div></div><div><div class="big">—</div></div></div></div></div>`;
+  const profile = await loadVendorProfileRecord(name);
+  if(!profile) return showVendorLive(name, initialTab, box);
+  renderVendorProfile(box, profile, null, initialTab, true);
+  announce(t("meta_vendor_profile_announce",{name:cleanText(profile.display)}));
+  await hydrateVendorProfile(profile, initialTab, box, false);
 }
 
 /* ===================== INVESTIGATION WORKSPACE (#investigation) =====================
@@ -4073,6 +4129,7 @@ async function showInvestigation(){
   showTab("entity");
   const s = invStore(), inv = s.invs[s.current];
   const box = $("#entityview");
+  delete box.dataset.vendorStem;
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("back_browse")}</a></p>
     <div class="panel" style="padding:22px 24px">
@@ -4123,6 +4180,7 @@ async function showInvestigation(){
 async function showSharedInv(id){
   showTab("entity");
   const box = $("#entityview");
+  delete box.dataset.vendorStem;
   box.innerHTML = `<div class="empty"><span class="loading"></span> ${t("inv_fetching_shared")}</div>`;
   let j=null;
   try{ const r=await workerFetch("/inv/"+encodeURIComponent(id), null, 12000); if(r.ok) j=await r.json(); }catch(e){}
@@ -4149,6 +4207,7 @@ async function showSharedInv(id){
 async function showMatter(pin){
   showTab("entity");
   const box = $("#entityview"), safe = String(pin).replace(/[<>&]/g,"");
+  delete box.dataset.vendorStem;
   box.innerHTML = `<div class="empty"><span class="loading"></span> assembling the matter: PIN ${safe}…</div>`;
   let rows = [];
   try{
