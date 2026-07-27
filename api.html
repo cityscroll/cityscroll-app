@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>API and feeds · CROL-List</title>
 <meta name="description" content="CROL-List's open endpoints: RSS/JSON/calendar feeds for any search, batch watchlist cross-reference, permalinks, and the upstream open datasets.">
-<script src="i18n.js?v=18ff7723"></script>
+<script src="i18n.js?v=2f565121"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
@@ -55,7 +55,7 @@
   .skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--ink);color:#fff;padding:11px 18px;border-radius:0 0 9px 0;font:600 13px/1 var(--ui);text-decoration:none}
   .skip:focus{left:0}
   .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
-  :is(a,button,select,input,textarea,summary):focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
+  :is(a,button,select,input,textarea,summary,pre):focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
 </style>
 </head>
 <body>
@@ -99,7 +99,7 @@ rate-limited and cached, and none touches a paid service. Base URL: <code>https:
   <tr><td><code>min</code></td><td data-i18n="api_row_min">minimum award $ (money lens → award feed)</td></tr>
   <tr><td><code>kind</code> + <code>name</code></td><td data-i18n-html="api_row_kindname_html">entity lens: <code>kind=vendor|agency</code>, <code>name=…</code> — vendor names are matched by normalized stem, so suffix/case variants are included</td></tr>
 </table>
-<pre>https://api.crol-list.org/feed.xml?lens=rules&amp;agency=Buildings
+<pre tabindex="0">https://api.crol-list.org/feed.xml?lens=rules&amp;agency=Buildings
 https://api.crol-list.org/feed.ics?lens=meetings&amp;q=community%20board
 https://api.crol-list.org/feed.json?lens=entity&amp;kind=vendor&amp;name=Sinergia%20Inc</pre>
 
