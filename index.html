@@ -298,6 +298,11 @@
   .chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
   .chip .ct{color:var(--muted);font-weight:400;margin-inline-start:5px}
   .chip.on .ct{color:#d9d2c2}
+  .vendor-variant-list{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
+  .vendor-variant-item{display:inline-flex;flex-wrap:wrap;align-items:center;gap:7px;background:#fff;border:1px solid var(--rule);padding:7px 11px;border-radius:10px;font-size:12px;line-height:1.35;max-width:100%}
+  .vendor-variant-name{font-family:var(--font-sc);font-size:12px;line-height:1.35;font-weight:600;letter-spacing:.02em}
+  .vendor-variant-meta{color:var(--muted);white-space:nowrap}
+  .vendor-variant-list-wrapper{margin-top:8px}
 
   /* alerts */
   .afield{margin-bottom:14px}
@@ -3664,6 +3669,21 @@ function vendorStem(name){
   return s;
 }
 
+function renderVendorVariants(variants){
+  if(variants.length <= 1) return "";
+  const items = variants
+    .map(v => {
+      const count = Number(v.n);
+      const countText = Number.isFinite(count) ? count.toLocaleString("en-US",{maximumFractionDigits:0}) : "0";
+      return `<div class="vendor-variant-item"><span class="vendor-variant-name" lang="en" dir="ltr">${cleanText(v.vendor_name).replace(/&/g,"&amp;")}</span> · <span class="vendor-variant-meta">${countText} · ${money(v.t) || "—"}</span></div>`;
+    })
+    .join("");
+  const needsCollapse = variants.length > 8;
+  const list = `<div class="vendor-variant-list">${items}</div>`;
+  if(!needsCollapse) return list;
+  return `<details class="vendor-variant-list-wrapper" open><summary style="display:inline;cursor:pointer;border-bottom:1px dotted var(--rule-strong)">${t("which_variants_btn")}</summary>${list}</details>`;
+}
+
 function agencyProfileBar(stats, rfpCount, agencyName){
   if(!hasAgencyAwards(stats)) return `${agencyAwardsNote(agencyName)}
       <div class="agencybar">
@@ -3898,7 +3918,8 @@ async function showVendor(name, initialTab){
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CROL-List</a></p>
     <div class="panel" style="padding:22px 24px">
-      <div class="ftype" style="margin-bottom:6px">${t("vendor_profile_variants",{n:variants.length,s:variants.length===1?"":"s"})}${variants.length>1?` <details style="display:inline"><summary style="display:inline;cursor:pointer;border-bottom:1px dotted var(--rule-strong)">${t("which_variants_btn")}</summary> <span lang="en" dir="ltr">${names.map(n=>cleanText(n).replace(/&/g,"&amp;")).join(" · ")}</span></details>`:""}</div>
+      <div class="ftype" style="margin-bottom:6px">${t("vendor_profile_variants",{n:variants.length,s:variants.length===1?"":"s"})}</div>
+      ${renderVendorVariants(variants)}
       <h2 class="rolename" lang="en" dir="ltr">${cleanText(display)}</h2>
       <div class="agencybar">
         <div><div class="big">${money(total)||"—"}</div><div class="lbl">total awarded,<br>on record</div></div>
