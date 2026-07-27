@@ -171,6 +171,8 @@
     search_label: "Buscar",
     borough_label: "Distrito",
     all_boroughs: "Todos los distritos",
+    use_my_location: "Usar mi ubicación",
+    near_you_area: "cerca de ti → {area}",
     zip_addr_neighborhood: "Código postal, dirección o vecindario",
     status_label: "Estado",
     status_active: "En revisión / activo",

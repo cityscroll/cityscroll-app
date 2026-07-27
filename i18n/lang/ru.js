@@ -171,6 +171,8 @@
     search_label: "Поиск",
     borough_label: "Район",
     all_boroughs: "Все районы",
+    use_my_location: "Использовать моё местоположение",
+    near_you_area: "рядом с вами → {area}",
     zip_addr_neighborhood: "Индекс, адрес или район",
     status_label: "Статус",
     status_active: "На рассмотрении / активно",
