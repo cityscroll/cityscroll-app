@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "1addc597",
-  "zh-Hans": "a166db9a",
-  ru: "6178f228",
-  bn: "79b54fb3",
-  ht: "728d06e0",
-  ko: "ab4d0472",
-  fr: "b9d7896e",
-  pl: "cf325cf6",
-  ar: "45ff93ce",
-  ur: "a285b842",
+  es: "e9cdfd5e",
+  "zh-Hans": "1edaa051",
+  ru: "472dd7f6",
+  bn: "e6aee47a",
+  ht: "e34f0e03",
+  ko: "8485746c",
+  fr: "d21b72f3",
+  pl: "aa016d6e",
+  ar: "feb8f958",
+  ur: "2809c183",
 };
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -763,6 +763,7 @@ const STRINGS = {
     about_h_honest: "The data, to be honest",
     about_p_honest_intro_html: "The City Record dataset is <b>1.09 million notices back to 2003</b> — and it is not what it looks like at first glance. Our team's exploratory analysis of the full dataset found quirks that would silently mislead if we didn't correct for them, so here is exactly what we do:",
     about_li_honest_html: "<li><b>87.5% of all rows are civil-service personnel changes</b>, not civic notices. Each stat on this site is counted within its own section — a \"global\" City Record number would really be a personnel-file number.</li><li><b>A few contract amounts are data-entry errors</b> — three rows claim $10&nbsp;billion or more, topping out at <a href=\"index.html#notice/20210524108\">$96 trillion, a housing-services award whose amount field is plainly a typo</a> (the largest verified real award is <a href=\"index.html#notice/20180109010\">about $6.68 billion, the city's 10-year electricity contract with NYPA</a>). Money filters and digests exclude amounts of $10 billion or more. One typo can't dominate every ranking.</li><li><b>Some \"due dates\" aren't deadlines.</b> Notices for pre-qualified lists use fake dates in the year 2090 or later. We mark these as \"no fixed deadline (rolling)\" so no one puts a date on their calendar that isn't real.</li><li><b>Agency names come in two conventions</b> (old ALL-CAPS and Title Case — 312 raw strings for about 150 real agencies). Our name tool treats them as one.</li><li id=\"external-awards-sources\"><b>Some agencies file contract awards outside the City Record entirely</b> — for those, we check Checkbook NYC (for the Housing Authority) and the NYS Authorities Budget Office's open procurement datasets (for other public authorities), and say so plainly when neither source covers an agency.</li>",
+    about_p_agency_crosswalk_html: "The <a href=\"api.html#agency-crosswalk\">agency-name crosswalk</a> shows each source name and every spelling linked to it. Its data guide explains the limits and links to JSON and CSV files.",
     about_p_honest_footer_html: "Searches on this site always show live data from <a href=\"https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx\" target=\"_blank\" rel=\"noopener noreferrer\">NYC Open Data<span class=\"sr-only\"> (opens in new tab)</span></a>. Email alerts check for new matches once a day. Want the numbers themselves? <a href=\"data.html\"><b>The Data</b></a> shows the record at a glance — sections, volume, procurement mix, top agencies and vendors — computed live with these same rules.",
     about_h_flags: "Flags and context, explained",
     about_p_flags_intro_html: "Procurement notices carry two kinds of computed notes. Both are <b>statistical context, not findings or blame</b>. A flag just means \"worth a closer look.\" Every formula has a fair reason behind it. Emergencies really happen. Some markets are specialized and have few bidders. Name matching is not perfect. This method follows two guides. One is <a href=\"https://www.open-contracting.org/resources/red-flags-in-public-procurement-a-guide-to-using-data-to-detect-and-mitigate-risks/\" target=\"_blank\" rel=\"noopener noreferrer\">the Open Contracting Partnership's red-flags guide<span class=\"sr-only\"> (opens in new tab)</span></a>. The other is <a href=\"https://opentender.eu/\" target=\"_blank\" rel=\"noopener noreferrer\">Opentender's<span class=\"sr-only\"> (opens in new tab)</span></a> integrity rules.",
@@ -871,6 +872,10 @@ const STRINGS = {
     api_row_agency: "agency name as printed in the record",
     api_row_min: "minimum award $ (money lens → award feed)",
     api_row_kindname_html: "entity lens: <code>kind=vendor|agency</code>, <code>name=…</code> — vendor names are matched by normalized stem, so suffix/case variants are included",
+    api_h_agencies: "Agency-name crosswalk",
+    api_p_agencies_html: "<code>GET /agencies</code> lists each agency name as written in City Record Open Data and connects it to one name used by this site. Add <code>?format=csv</code> for CSV. The endpoint needs no key, allows cross-site requests, and is cached for one day.",
+    api_agencies_dictionary_html: "<tr><td><code>raw_string</code></td><td>exact text in <code>agency_name</code>. One row for each distinct source string</td></tr><tr><td><code>canonical_id</code></td><td>stable text id assigned by the crosswalk</td></tr><tr><td><code>canonical_name</code></td><td>name this site uses for the group</td></tr><tr><td><code>variants</code></td><td>every source spelling connected to the same id</td></tr>",
+    api_p_agencies_limits: "Matches use case, punctuation, known short forms, and administrative families. New spellings may start with their own id until the crosswalk is updated. The crosswalk helps connect records. It is not an official agency registry.",
     api_h_batch: "Batch cross-reference",
     api_p_batch_html: "<code>POST /batch</code> with <code>{\"names\": [\"…\", …]}</code> (≤10 names/request, 30 requests/day/IP). For each name, <b>awards</b> means award/intent notices naming that vendor (name-stem matched, all years). <b>Mentions</b> means full-text hits in the last two years of editions. <b>Entity</b> means the vendor-profile permalink when awards exist.",
     api_label_try: "Try it — one name per line",

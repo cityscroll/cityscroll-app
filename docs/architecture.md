@@ -13,14 +13,14 @@ summary: >-
   and an MCP endpoint for AI assistants (both spend-metered), plus a public
   data.html page of live dataset aggregates. Digest delivery fans out through
   a Cloudflare Queue (per-subscriber retries, DLQ; daily send caps unchanged).
-updated: 2026-07-16
+updated: 2026-07-26
 sources:
   - README.md
   - MISSION.md
   - external_awards.js
   - worker/wrangler.toml
   - worker/src/worker.mjs
-sources_hash: 711e684f466d2144bccf55fd571bdb061ee3b7abf5891a27d962b4367e5f5ecc
+sources_hash: 18db10597cf8defeac80f87bead775e2416a2cb69a6b31b73e34463a5bc13b90
 ---
 
 # crol-list — architecture
@@ -51,6 +51,7 @@ Browser (crol-list.org — static on GitHub Pages)
         ├──  /feedback          operator feedback form (Turnstile-gated, fails closed)
         ├──  /feed.xml /feed.json /feed.ics     standing feeds from any saved search
         ├──  /batch             watchlist cross-reference
+        ├──  /agencies          public raw-name → canonical-name crosswalk (JSON/CSV)
         ├──  /inv[/<id>]        investigation snapshots + entity forecast metadata
         ├──  /priorcycle/<id>   precomputed prior-cycle + near-match sets (D1-cached, compute-on-miss)
         ├──  /stats /usage      public aggregate counters / keyed usage report
@@ -93,7 +94,7 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 - **Seven lenses:** Money (RFP→Award pipeline + forecast timeline), People (title decoder + payroll), Land (rezonings + map), Property (asset lifecycle), Rules, Meetings, Alerts (subscriptions + watchlist).
 - **Forecasting UI:** vertical timeline widget on vendor/agency profile panels — official §112 plan entries and calculated expirations carry distinct badges.
 - **External awards:** nine mapped public-authority profiles show up to eight recent awards from official annual ABO filings (`8w5p-k45m` / `d84c-dk28`) with source and lag labels. NYCHA solicitation details use exact-PIN Checkbook `Contracts_NYCHA` candidates only when the contract date is later than the solicitation date; matches remain separate from City Record rows.
-- **API:** `api.html` documents all worker routes and hosts the live batch cross-reference tool; `/api` on the worker 302s there.
+- **API:** `api.html` documents all worker routes and hosts the live batch cross-reference tool. `GET /agencies` publishes the City Record agency-name reconciliation as cached, CORS-open JSON or CSV; `/api` on the worker 302s to the documentation.
 - **MCP:** `POST /mcp` — `search_notices` / `get_notice` (D1 mirror) + `preview_watch` / `create_watch` (LLM, metered; double opt-in preserved). Optional bearer token; per-IP daily ceiling.
 - **Subscribe by email:** `subscribe@crol-list.org` (Email Routing → the worker's `email()` handler) — plain English → LLM-parsed watch → confirm reply. Metered + per-sender-limited + loop-guarded.
 - **The Data:** `data.html` — live dataset aggregates (sections, monthly volume, procurement mix, top agencies/vendors by cleaned dollars), browser→Socrata direct, honesty rules applied.
@@ -108,11 +109,11 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 
 ## TL;DR
 
-1 static site (`index.html` + `data.html`) + 1 Cloudflare Worker (21 source modules + 19 lib), 7 lenses, 19 worker routes + an inbound-email handler + a queue consumer, 1 daily cron (ingest → prior-cycle pre-warm → queue fan-out), 4 KV namespaces + 1 D1 database (notices mirror + prior-cycle cache) + 2 queues, 5 secrets, 2 hard send caps — under one hard rule: no accounts, no tracking, no hard backend dependency; everything degrades gracefully when the worker is absent.
+1 static site (`index.html` + `data.html`) + 1 Cloudflare Worker (23 source modules + 22 lib), 7 lenses, 20 worker routes + an inbound-email handler + a queue consumer, 1 daily cron (ingest → prior-cycle pre-warm → queue fan-out), 4 KV namespaces + 1 D1 database (notices mirror + prior-cycle cache) + 2 queues, 5 secrets, 2 hard send caps — under one hard rule: no accounts, no tracking, no hard backend dependency; everything degrades gracefully when the worker is absent.
 
 1. A visitor loads `index.html` (inline CSS + vanilla JS) served static from GitHub Pages at `crol-list.org` — no backend required.
 2. Picking a lens fires queries direct from the browser to CORS-open public APIs: Socrata SODA for City Record notices and ABO awards, plus GeoSearch/MapPLUTO for BBL and rezoning geometry. Checkbook queries use the schema-agnostic worker proxy.
-3. Server-only features route to `api.crol-list.org`: `/nl` (plain English → filters via Claude Haiku, metered by `NL_METER`), `/subscribe`→`/confirm`→`/unsubscribe` (double-opt-in, Turnstile-gated, fails closed), feeds, `/batch`, `/inv`, `/stats`, `/feedback`, keyed `/admin/*` and `/usage`.
+3. Server-only features route to `api.crol-list.org`: `/nl` (plain English → filters via Claude Haiku, metered by `NL_METER`), `/subscribe`→`/confirm`→`/unsubscribe` (double-opt-in, Turnstile-gated, fails closed), feeds, `/batch`, `/agencies`, `/inv`, `/stats`, `/feedback`, keyed `/admin/*` and `/usage`.
 4. The forecasting layer (`/checkbook` + `/forecast`) parses historical Checkbook NYC award term lengths into projected expirations (`fc:<stem>` in `ALERT_STATE`) and merges them with scraped Charter §112 MOCS agency plans (`plan:<stem>`) into one chronological timeline, rendered as the profile-page timeline widget.
 5. Subscriptions land in KV `SUBS`; aggregate integers accrue in stats counters — no personal data beyond the double-opted-in email itself.
 6. The daily cron (13:00 UTC) first refreshes the D1 notices mirror from Socrata (cursored, fail-soft — a failed ingest never blocks alerts), pre-warms prior-cycle match sets for the freshly-ingested Award notices (bounded, fail-soft; anything unwarmed computes lazily on first `/priorcycle/<id>` request), then replays active subscriptions and forecast milestones, sending digests and early-warning emails via Resend — hard-capped at 25/run, 50/day. Money digests exclude data-entry-error amounts (≥ $10B) and label rolling year-2090 deadlines honestly.
