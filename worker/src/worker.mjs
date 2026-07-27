@@ -29,6 +29,7 @@ import { runSuggestionValidation, handleSuggestions, handleAdminSuggestRefresh }
 import { handleMcp } from "./mcp.mjs";
 import { handleBoardHook } from "board-notify";
 import { handleInboundEmail } from "./inbound.mjs";
+import { handleVendorProfile, refreshVendorProfiles } from "./vendor_profile.mjs";
 
 export default {
   async fetch(request, env, ctx) {
@@ -51,6 +52,7 @@ export default {
     if (pathname.startsWith("/priorcycle/")) return handlePriorCycle(request, env, pathname);
     if (pathname === "/externalaward") return handleExternalAward(request, env);
     if (pathname === "/agency") return handleAgency(request, env);
+    if (pathname === "/vendor-profile") return handleVendorProfile(request, env);
     if (pathname === "/suggestions") return handleSuggestions(request, env);
     if (pathname === "/stats") return handleStats(request, env, ctx);
     if (pathname.startsWith("/r/")) return handleRedirect(request, env, ctx, pathname);
@@ -115,6 +117,15 @@ export default {
       console.log("suggestions:", JSON.stringify(r));
     } catch (e) {
       console.error("suggestion validation failed (digest continues):", String(e?.message || e));
+    }
+    // Vendor identity headers are a read-optimized daily projection of the full City Record
+    // Award history. Publish versioned KV buckets before the manifest so readers never depend
+    // on a partially-built generation; any failure leaves the live Socrata resolver available.
+    try {
+      const r = await refreshVendorProfiles(env);
+      console.log("vendor profiles:", JSON.stringify(r));
+    } catch (e) {
+      console.error("vendor profile refresh failed (digest continues):", String(e?.message || e));
     }
     // Await directly (not ctx.waitUntil) so the runtime keeps the worker alive until the whole
     // digest run — config watches + every KV subscription — completes.
