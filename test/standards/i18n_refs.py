@@ -38,7 +38,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-PAGES = ["index.html", "about.html", "data.html", "stats.html", "api.html", "changelog.html"]
+PAGES = ["index.html", "about.html", "data.html", "stats.html", "api.html", "changelog.html", "standards.html"]
 pages = {p: (ROOT / p).read_text() for p in PAGES}
 lib = (ROOT / "i18n.js").read_text()
 

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en" data-i18n-title="standards_title">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Standards · CROL-List</title>
+<meta name="description" content="How CROL-List's language switcher and accessibility posture compare to published NYC and NY State standards — tracked live, over time.">
+<script src="i18n.js?v=94978011"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4efe4; --paper-2:#efe7d6; --ink:#1a1714; --ink-soft:#3b342c; --muted:#5c5349;
+    --rule:#cdbfa6; --rule-strong:#8a7c64; --card:#fbf7ed;
+    --shadow:0 1px 2px rgba(40,30,10,.05),0 6px 20px rgba(40,30,10,.06);
+    --green:#2f4a32; --oxblood:#7a1f1f;
+    --font-nameplate:'Playfair Display',Georgia,serif; --font-body:'Spectral',Georgia,serif;
+    --font-sc:'Spectral SC','Spectral',Georgia,serif; --ui:ui-sans-serif,system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--font-body);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:760px;margin:0 auto;padding:0 22px 80px}
+  a{color:var(--oxblood)}
+  .cr-rule{border-top:3px solid var(--ink)} .cr-rule--bottom{border-top:3px double var(--ink);margin-top:8px}
+  header{padding-top:18px;text-align:center}
+  .home{display:inline-flex;align-items:center;gap:9px;text-decoration:none;color:var(--ink)}
+  .home:hover .cr-title{color:var(--oxblood)}
+  .cr-seal{width:34px;height:34px;color:var(--ink)}
+  .cr-title{font-family:var(--font-nameplate);font-weight:900;font-size:1.5rem;letter-spacing:.01em;margin:0}
+  .kicker{font-family:var(--font-sc);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-top:14px}
+  h1{font-family:var(--font-nameplate);font-weight:900;font-size:clamp(2rem,6vw,3rem);text-transform:uppercase;line-height:.95;margin:.06em 0 .12em}
+  .backhome{display:inline-block;margin-top:12px;font:600 13px/1 var(--ui);text-decoration:none;color:var(--oxblood)}
+  .backhome:hover{text-decoration:underline}
+  .lede{font-size:16px;color:var(--ink-soft);margin:22px 0 8px}
+  h2{font-family:var(--font-sc);font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--oxblood);margin:30px 0 8px;border-top:1px solid var(--rule);padding-top:16px}
+  p{margin:10px 0}
+  .src{font:14px/1.7 var(--ui);color:var(--ink-soft)}
+  .note{font:13px/1.6 var(--ui);color:var(--muted)}
+  .loading{font:14px/1.6 var(--ui);color:var(--muted);padding:8px 0}
+  .foot{margin-top:40px;border-top:1px solid var(--rule);padding-top:14px;font:13px/1.6 var(--ui);color:var(--muted);text-align:center}
+  .foot a{color:var(--oxblood)}
+  /* language switcher — matches index.html */
+  .lang-switcher{display:flex;gap:.4rem;justify-content:center;margin-block-start:10px;flex-wrap:wrap}
+  .lang-btn{font:600 11px/1 var(--ui);padding:3px 10px;min-height:32px;display:inline-flex;align-items:center;border-radius:12px;border:1px solid var(--rule-strong);background:transparent;color:var(--muted);cursor:pointer}
+  .lang-btn[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .lang-notice{font:12px/1.4 var(--ui);color:var(--muted);text-align:center;margin-block-start:4px;padding-inline:22px}
+  :lang(zh-Hans),:lang(ko),:lang(bn),:lang(ar),:lang(ur){letter-spacing:normal !important;text-transform:none !important}
+  .skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--ink);color:#fff;padding:11px 18px;border-radius:0 0 9px 0;font:600 13px/1 var(--ui);text-decoration:none}
+  .skip:focus{left:0}
+  :is(a,button,select,input,textarea,summary):focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+  /* standards.html-specific */
+  table{width:100%;border-collapse:collapse;margin:14px 0;font:14px/1.4 var(--ui)}
+  caption{text-align:left}
+  th,td{text-align:start;padding:8px 10px;border-bottom:1px solid var(--rule)}
+  th{font:600 12px/1.2 var(--ui);text-transform:uppercase;letter-spacing:.04em;color:var(--muted);border-bottom:2px solid var(--rule-strong)}
+  td.native{font-family:var(--font-body);font-size:16px}
+  .badge{display:inline-block;padding:1px 8px;border-radius:10px;font:600 12px/1.6 var(--ui)}
+  .badge-yes{background:#e3ece4;color:var(--green)}
+  .badge-no{background:#f2e2e2;color:var(--oxblood)}
+  .milestone{display:grid;grid-template-columns:minmax(110px,28%) 1fr;gap:12px;margin:14px 0;font:15px/1.55 var(--font-body)}
+  .milestone-label{font:700 12px/1.3 var(--ui);text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding-top:2px}
+  ul.posture{list-style:none;margin:10px 0;padding:0}
+  ul.posture li{padding:7px 0 7px 26px;position:relative;border-bottom:1px solid var(--rule);font:15px/1.5 var(--font-body)}
+  ul.posture li:before{content:"–";position:absolute;left:4px;color:var(--muted)}
+  .check-yes:before{content:"✓";color:var(--green);font-weight:700}
+  .check-no:before{content:"✕";color:var(--oxblood);font-weight:700}
+  .timeline-entry{border-inline-start:3px solid var(--rule-strong);padding:4px 0 4px 14px;margin:14px 0;font:15px/1.5 var(--font-body)}
+  .timeline-date{font:700 13px/1.3 var(--ui);text-transform:uppercase;letter-spacing:.04em;color:var(--oxblood)}
+</style>
+</head>
+<body>
+<a class="skip" href="#main" data-i18n="skip_to_content">Skip to content</a>
+<div class="wrap">
+<header>
+  <div class="cr-rule"></div>
+  <a class="home" href="index.html" aria-label="Back to CROL-List home" data-i18n-aria="back_home_aria">
+    <svg class="cr-seal" viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="0.6"/>
+      <path d="M50 18 L74 30 V58 Q74 76 50 86 Q26 76 26 58 V30 Z" fill="none" stroke="currentColor" stroke-width="1.3"/>
+      <line x1="26" y1="48" x2="74" y2="48" stroke="currentColor" stroke-width="0.6"/>
+      <path d="M50 30 L50 46 M42 38 L58 38" stroke="currentColor" stroke-width="1.1"/>
+    </svg>
+    <span class="cr-title">CROL-List</span>
+  </a>
+  <div class="kicker" data-i18n="site_kicker">The City Record, searchable</div>
+  <h1 data-i18n="std_h1">Standards We Track</h1>
+  <div class="lang-switcher" id="langSwitcher" role="group" aria-label="Language / Idioma">
+    <button class="lang-btn" data-lang="en" aria-pressed="true"><span lang="en" dir="ltr">English</span></button>
+    <button class="lang-btn" data-lang="es" aria-pressed="false"><span lang="es" dir="ltr">Español</span></button>
+    <button class="lang-btn" data-lang="zh-Hans" aria-pressed="false"><span lang="zh-Hans" dir="ltr">中文（简体）</span></button>
+    <button class="lang-btn" data-lang="ru" aria-pressed="false"><span lang="ru" dir="ltr">Русский</span></button>
+    <button class="lang-btn" data-lang="bn" aria-pressed="false"><span lang="bn" dir="ltr">বাংলা</span></button>
+    <button class="lang-btn" data-lang="ht" aria-pressed="false"><span lang="ht" dir="ltr">Kreyòl ayisyen</span></button>
+    <button class="lang-btn" data-lang="ko" aria-pressed="false"><span lang="ko" dir="ltr">한국어</span></button>
+    <button class="lang-btn" data-lang="fr" aria-pressed="false"><span lang="fr" dir="ltr">Français</span></button>
+    <button class="lang-btn" data-lang="pl" aria-pressed="false"><span lang="pl" dir="ltr">Polski</span></button>
+    <button class="lang-btn" data-lang="ar" aria-pressed="false"><span lang="ar" dir="rtl">العربية</span></button>
+    <button class="lang-btn" data-lang="ur" aria-pressed="false"><span lang="ur" dir="rtl">اردو</span></button>
+  </div>
+  <div id="langNotice" class="lang-notice" hidden></div>
+  <div class="cr-rule cr-rule--bottom"></div>
+  <a class="backhome" href="index.html" data-i18n="back_to_crol">← Back to CROL-List</a>
+</header>
+
+<main id="main" tabindex="-1">
+<p class="lede" data-i18n-html="std_p_lede_html">This page checks CROL-List against standards New York City and New York State have published. One part covers languages. The other covers accessibility. What we actually do is stated as a plain observation, never as a certification.</p>
+
+<h2 data-i18n="std_h_languages">Language access, side by side</h2>
+<p data-i18n-html="std_p_languages_html">New York City's <a href="https://citymeetings.nyc/meetings/new-york-city-council/2024-09-24-0100-pm-committee-on-immigration/chapter/explanation-of-local-law-30-of-2017-and-its-requirements/" target="_blank" rel="noopener noreferrer">Local Law 30 of 2017<span class="sr-only"> (opens in new tab)</span></a> names ten citywide languages, beyond English, that city agencies must support. The table below checks that list against CROL-List's own language switcher, live: if a language is ever added to or removed from the switcher, this table changes with it.</p>
+<table>
+  <caption class="sr-only" data-i18n="std_table_caption">Local Law 30's ten languages compared to CROL-List's language switcher</caption>
+  <thead>
+    <tr>
+      <th scope="col" data-i18n="std_col_language">Language (Local Law 30)</th>
+      <th scope="col" data-i18n="std_col_switcher">In CROL-List's switcher</th>
+      <th scope="col" data-i18n="std_col_review">Translation review status</th>
+    </tr>
+  </thead>
+  <tbody id="langJoinBody">
+    <tr><td colspan="3" class="loading" data-i18n="loading_data">Loading…</td></tr>
+  </tbody>
+</table>
+<p class="note" id="langSummary"></p>
+
+<h2 data-i18n="std_h_accessibility">The accessibility target, and where it's headed</h2>
+<div class="milestone">
+  <div class="milestone-label" data-i18n="std_a11y_today_label">Today</div>
+  <div data-i18n-html="std_a11y_today_html">New York City's own <a href="https://rules.cityofnewyork.us/nyc-rules-website-accessibility-statement/" target="_blank" rel="noopener noreferrer">website accessibility statement<span class="sr-only"> (opens in new tab)</span></a> targets <b>WCAG 2.1 Level AA</b> and describes the City's sites as "partially conformant."</div>
+</div>
+<div class="milestone">
+  <div class="milestone-label" data-i18n="std_a11y_next_label">January 2027</div>
+  <div data-i18n-html="std_a11y_next_html">New York State's technology law (<a href="https://designsystem.ny.gov/foundations/accessibility/" target="_blank" rel="noopener noreferrer">STL §103-d<span class="sr-only"> (opens in new tab)</span></a>) requires State Entity websites to move up to <b>WCAG 2.2 Level AA</b>. That binds state agencies, not New York City directly — but it is the clearest published signal of where the standard is heading next.</div>
+</div>
+
+<h2 data-i18n="std_h_posture">What we actually built (checked on this page)</h2>
+<p class="note" data-i18n="std_p_posture_lede">None of this is a certification. Some lines are checked live against this page's own markup. The rest are plain facts about how the site works. View source any time to check for yourself.</p>
+<ul class="posture">
+  <li data-i18n="std_li_no_login">No account, sign-in, or password is required to search notices or read one.</li>
+  <li data-i18n="std_li_no_browser_gate">No browser-version check blocks entry. The page does not test which browser you use before it loads.</li>
+  <li id="chkSkip"><span data-i18n="std_li_semantic_skip">Skip-to-content link:</span> <span class="val"></span></li>
+  <li id="chkMain"><span data-i18n="std_li_semantic_main">Landmark region for the main content:</span> <span class="val"></span></li>
+  <li id="chkSwitcher"><span data-i18n="std_li_semantic_switcher">Language switcher marked as a labeled group:</span> <span class="val"></span></li>
+  <li id="reviewCount"></li>
+  <li data-i18n="std_li_ci_scan">An automated accessibility scan (axe) runs in continuous integration against this page. A change that introduces a new critical or serious violation fails the build.</li>
+</ul>
+
+<h2 data-i18n="std_h_timeline">Snapshots over time</h2>
+<p class="note" data-i18n="std_p_timeline_lede">Every time the published standard moves, or our own posture changes, we add a dated entry below instead of editing the numbers above. The record stays honest even when the target does not.</p>
+<div id="timelineList"><div class="loading" data-i18n="std_timeline_loading">Loading snapshots…</div></div>
+
+</main>
+<footer class="foot" data-i18n-html="std_foot_html">
+  CROL-List · <a href="about.html">About</a> · <a href="data.html">The Data</a> · <a href="changelog.html">Changelog</a> · <a href="index.html">Home</a>
+</footer>
+</div>
+
+<script>
+(function () {
+  var LL30_LANGUAGES = [
+    { code: "es", nameKey: "std_lang_es" },
+    { code: "zh-Hans", nameKey: "std_lang_zh_hans" },
+    { code: "ru", nameKey: "std_lang_ru" },
+    { code: "bn", nameKey: "std_lang_bn" },
+    { code: "ht", nameKey: "std_lang_ht" },
+    { code: "ko", nameKey: "std_lang_ko" },
+    { code: "ar", nameKey: "std_lang_ar" },
+    { code: "fr", nameKey: "std_lang_fr" },
+    { code: "ur", nameKey: "std_lang_ur" },
+    { code: "pl", nameKey: "std_lang_pl" }
+  ];
+
+  function fdt(s) {
+    var d = new Date(s + "T12:00:00");
+    var lm = (window.LANG_META || {})[window.LANG || "en"];
+    var loc = lm ? lm.intlDate : "en-US";
+    return d.toLocaleDateString(loc, { year: "numeric", month: "long", day: "numeric" });
+  }
+
+  function renderLanguageJoin() {
+    var meta = window.LANG_META || {};
+    var shipping = window.SHIPPING_LANGS || [];
+    var provenance = window.I18N_PROVENANCE || {};
+    var matched = 0, reviewed = 0;
+    var rows = LL30_LANGUAGES.map(function (lang) {
+      var inSwitcher = shipping.indexOf(lang.code) !== -1;
+      if (inSwitcher) matched++;
+      var state = provenance[lang.code] && provenance[lang.code].state;
+      if (state === "native-reviewed") reviewed++;
+      var nativeLabel = (meta[lang.code] && meta[lang.code].label) || t(lang.nameKey);
+      var switcherBadge = inSwitcher
+        ? '<span class="badge badge-yes">' + t("std_switcher_yes") + '</span>'
+        : '<span class="badge badge-no">' + t("std_switcher_no") + '</span>';
+      var reviewLabel = state === "native-reviewed" ? t("std_review_native") : t("std_review_machine_drafted");
+      return "<tr><td class=\"native\">" + nativeLabel + " <span class=\"note\">(" + t(lang.nameKey) + ")</span></td>" +
+        "<td>" + switcherBadge + "</td>" +
+        "<td>" + (inSwitcher ? reviewLabel : "—") + "</td></tr>";
+    });
+    document.getElementById("langJoinBody").innerHTML = rows.join("");
+    document.getElementById("langSummary").textContent = t("std_p_language_summary", {
+      n: matched, total: LL30_LANGUAGES.length, r: reviewed
+    });
+    return { matched: matched, total: LL30_LANGUAGES.length, reviewed: reviewed };
+  }
+
+  function renderPosture(counts) {
+    var skip = !!document.querySelector(".skip");
+    var main = !!document.querySelector("main#main");
+    var switcherGroup = !!document.querySelector('#langSwitcher[role="group"][aria-label]');
+    function mark(id, ok) {
+      var el = document.getElementById(id);
+      el.classList.remove("check-yes", "check-no");
+      el.classList.add(ok ? "check-yes" : "check-no");
+      el.querySelector(".val").textContent = ok ? t("std_status_present") : t("std_status_missing");
+    }
+    mark("chkSkip", skip);
+    mark("chkMain", main);
+    mark("chkSwitcher", switcherGroup);
+    document.getElementById("reviewCount").textContent = t("std_li_translation_review", {
+      r: counts.reviewed, total: counts.total
+    });
+  }
+
+  function renderTimeline(snapshots) {
+    var el = document.getElementById("timelineList");
+    if (!snapshots || !snapshots.length) { el.innerHTML = '<div class="loading">' + t("std_timeline_fail") + "</div>"; return; }
+    el.innerHTML = snapshots.slice().reverse().map(function (snap) {
+      var text = t("std_timeline_entry_html", {
+        date: fdt(snap.date),
+        matched: snap.languages.matched_count,
+        total: snap.languages.standard_count,
+        city: snap.accessibility.city_current_standard,
+        next: snap.accessibility.next_published_standard,
+        nextdate: fdt(snap.accessibility.next_published_effective)
+      });
+      return '<div class="timeline-entry"><div class="timeline-date">' + fdt(snap.date) + "</div><div>" + text + "</div></div>";
+    }).join("");
+  }
+
+  var snapshotsData = null;
+  function renderAll() {
+    var counts = renderLanguageJoin();
+    renderPosture(counts);
+    if (snapshotsData) renderTimeline(snapshotsData);
+  }
+
+  fetch("data/compliance-snapshots.json").then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (data) { snapshotsData = (data && data.snapshots) || []; renderTimeline(snapshotsData); })
+    .catch(function () { renderTimeline([]); });
+
+  renderAll();
+  initSubpageLangSwitcher(renderAll);
+})();
+</script>
+</body>
+</html>

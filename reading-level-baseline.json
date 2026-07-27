@@ -22,7 +22,12 @@
     },
     "index.html": {
       "formula": "flesch_kincaid_grade",
-      "grade": 15.2722249589491,
+      "grade": 15.311218872870253,
+      "language": "en"
+    },
+    "standards.html": {
+      "formula": "flesch_kincaid_grade",
+      "grade": 9.299318572903523,
       "language": "en"
     },
     "stats.html": {

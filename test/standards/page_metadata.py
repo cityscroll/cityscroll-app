@@ -20,7 +20,7 @@ import re
 import sys
 
 ROOT = pathlib.Path(__file__).parents[2]
-PAGES = ["index.html", "about.html", "data.html", "stats.html", "api.html", "changelog.html"]
+PAGES = ["index.html", "about.html", "data.html", "stats.html", "api.html", "changelog.html", "standards.html"]
 
 TITLE_RE = re.compile(r"<title>([^<]*)</title>")
 DESC_RE = re.compile(r'<meta name="description" content="([^"]*)">')
