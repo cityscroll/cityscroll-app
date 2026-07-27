@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "abeab18e",
-  "zh-Hans": "7b0325fc",
-  ru: "6b144720",
-  bn: "21a34ed8",
-  ht: "548fd634",
-  ko: "152f7419",
-  fr: "bda094a0",
-  pl: "a303a3a1",
-  ar: "0cf3f74b",
-  ur: "0b7c11e0",
+  es: "a2ecad7e",
+  "zh-Hans": "9eb58db5",
+  ru: "f90395ca",
+  bn: "a2086af0",
+  ht: "e2da0383",
+  ko: "7c239c1b",
+  fr: "f5167e57",
+  pl: "220d8e29",
+  ar: "f510c7a4",
+  ur: "f0b8f53c",
 };
 
 
@@ -484,6 +484,12 @@ const STRINGS = {
     copy_link_notice: "Copy link to this notice",
     share_search_link: "Open shareable search",
     copy_search_link: "Copy search link",
+    qr_share_btn: "QR code",
+    qr_dialog_title: "Share this view by QR code",
+    qr_image_alt: "QR code linking to {url}",
+    qr_destination_label: "Destination address",
+    qr_download_png: "Download PNG",
+    qr_close: "Close",
     save_search_btn: "Save preset",
     saved_check: "✓ Saved",
     saved_searches_heading: "Saved searches",

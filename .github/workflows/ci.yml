@@ -94,6 +94,8 @@ jobs:
         run: |
           pip install playwright
           playwright install --with-deps chromium
+      - name: QR share interaction and capture gate
+        run: python3 test/functional/capture_qr_share.py --verify-only
       - name: Serve site locally
         run: |
           python3 -m http.server 8000 &
