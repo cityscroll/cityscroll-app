@@ -356,6 +356,12 @@
 
     // Money detail / chain / glance / how-to-respond
     copy_link_notice: "Copier le lien vers cet avis",
+    share_search_link: "Ouvrir la recherche partageable",
+    copy_search_link: "Copier le lien de recherche",
+    save_search_btn: "Enregistrer le raccourci",
+    saved_check: "✓ Enregistré",
+    saved_searches_heading: "Recherches enregistrées",
+    remove_saved_search_aria: "Supprimer la recherche enregistrée : {label}",
     pin_btn: "Épingler",
     pinned_open_inv: "✓ Épinglé — ouvrir l'enquête ({n})",
     total_awarded_lbl: "total attribué,<br>selon le registre",
