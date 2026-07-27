@@ -230,6 +230,8 @@
     nl_filter_months: "{n} 个月内截止",
     nl_filter_standard_only: "仅标准方式",
     clear_filters_btn: "清除筛选条件",
+    property_asset_label: "资产",
+    property_stage_label: "阶段",
     nl_edit_btn: "编辑搜索",
     nl_no_matches_note: "此搜索没有匹配结果。",
     deeplink_watch_context_label: "与您的提醒匹配：",

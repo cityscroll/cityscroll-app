@@ -275,6 +275,8 @@
     nl_filter_months: "Échéance dans {n} mois",
     nl_filter_standard_only: "Méthodes standard uniquement",
     clear_filters_btn: "Effacer les filtres",
+    property_asset_label: "Bien",
+    property_stage_label: "Étape",
     nl_edit_btn: "Modifier la recherche",
     nl_no_matches_note: "Aucun résultat pour cette recherche.",
     deeplink_watch_context_label: "Correspond à votre alerte :",

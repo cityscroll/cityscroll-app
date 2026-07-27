@@ -230,6 +230,8 @@
     nl_filter_months: "{n} মাসের মধ্যে শেষ",
     nl_filter_standard_only: "শুধু মানক পদ্ধতি",
     clear_filters_btn: "ফিল্টার মুছুন",
+    property_asset_label: "সম্পদ",
+    property_stage_label: "পর্যায়",
     nl_edit_btn: "অনুসন্ধান সম্পাদনা করুন",
     nl_no_matches_note: "এই অনুসন্ধানের জন্য কোনো ফলাফল নেই।",
     deeplink_watch_context_label: "আপনার সতর্কতার সাথে মিলেছে:",

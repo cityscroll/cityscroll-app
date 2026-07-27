@@ -230,6 +230,8 @@
     nl_filter_months: "{n}개월 이내 마감",
     nl_filter_standard_only: "표준 방식만",
     clear_filters_btn: "필터 지우기",
+    property_asset_label: "자산",
+    property_stage_label: "단계",
     nl_edit_btn: "검색 수정",
     nl_no_matches_note: "이 검색에 대한 결과가 없습니다.",
     deeplink_watch_context_label: "회원님의 알림과 일치:",
