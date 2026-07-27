@@ -44,6 +44,49 @@ function buildMoneyDeepLink(filter) {
   return "#money?" + params.toString();
 }
 
+// The interpreted row is an explanation for filters that the standard Money controls cannot
+// show. Once one of those hidden filters is active, include every active filter so the row is a
+// complete, legible description of the result set rather than a partial footnote.
+function moneyActiveFilterItems(filter) {
+  var f = filter && typeof filter === "object" ? filter : {};
+  var category = compactText(f.category, 120);
+  var maxAmount = positiveAmount(f.maxAmount);
+  var months = Number.isFinite(Number(f.months)) && Number(f.months) > 0 && Number(f.months) <= 60
+    ? Math.round(Number(f.months))
+    : null;
+  var excludeSpecial = f.excludeSpecial === true;
+  if (!category && !maxAmount && !months && !excludeSpecial) return [];
+
+  var noticeType = f.noticeType === "award" || f.noticeType === "allrfp"
+    ? f.noticeType
+    : "solicitation";
+  var agency = compactText(f.agency, 160);
+  var keywords = Array.isArray(f.keywords)
+    ? f.keywords.map(function (word) { return compactText(word, 80); }).filter(Boolean).slice(0, 4)
+    : compactText(f.keywords, 320)
+      ? [compactText(f.keywords, 320)]
+      : [];
+  var minAmount = positiveAmount(f.minAmount);
+  var items = [{ kind: "noticeType", value: noticeType }];
+  if (agency) items.push({ kind: "agency", value: agency });
+  if (keywords.length) items.push({ kind: "keywords", value: keywords });
+  if (category) items.push({ kind: "category", value: category });
+  if (minAmount) items.push({ kind: "minAmount", value: minAmount });
+  if (maxAmount) items.push({ kind: "maxAmount", value: maxAmount });
+  if (months) items.push({ kind: "months", value: months });
+  if (excludeSpecial) items.push({ kind: "excludeSpecial", value: true });
+  return items;
+}
+
+function canonicalSearchURL(locationValue, hash) {
+  var loc = locationValue && typeof locationValue === "object" ? locationValue : {};
+  var origin = compactText(loc.origin, 2048).replace(/\/+$/, "");
+  var pathname = compactText(loc.pathname, 2048) || "/";
+  if (pathname.charAt(0) !== "/") pathname = "/" + pathname;
+  var safeHash = /^#money(?:\?[^#]*)?$/.test(hash || "") ? hash : "#money";
+  return origin + pathname + safeHash;
+}
+
 function validPreset(value) {
   if (!value || typeof value !== "object" || Array.isArray(value)) return null;
   var label = compactText(value.label, 100);
@@ -84,6 +127,8 @@ function removePreset(values, index) {
 if (typeof module !== "undefined" && module.exports !== undefined) {
   module.exports = {
     buildMoneyDeepLink: buildMoneyDeepLink,
+    canonicalSearchURL: canonicalSearchURL,
+    moneyActiveFilterItems: moneyActiveFilterItems,
     parsePresetStore: parsePresetStore,
     savePreset: savePreset,
     removePreset: removePreset,

@@ -112,6 +112,8 @@
      button (.nledit) is a real, plainly-styled button (.mini) rather than another chip. */
   .nlunderstood{margin:10px 0 2px;font:12px/1.6 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
   .nlunderstood .nledit{margin-inline-start:8px;vertical-align:baseline}
+  .moneyactive{display:flex;align-items:baseline;gap:4px 8px;flex-wrap:wrap}
+  .moneyactive .mini{flex:0 0 auto}
   .nlqactions{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin-top:9px}
   .nlqactions .act,.nlqactions button{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;padding:7px 10px;border-radius:7px}
   .nlqactions .act{display:inline-flex;align-items:center;background:#fff;color:var(--oxblood);border:1px solid var(--rule);text-decoration:none}
@@ -381,7 +383,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=2ba21b67"></script>
+<script src="i18n.js?v=18ff7723"></script>
 <script src="nl_parse.js"></script>
 <script src="nl_deeplink.js"></script>
 <script src="external_awards.js"></script>
@@ -448,6 +450,7 @@
         <button id="nlgo" data-i18n="ask_btn">Ask</button>
       </div>
       <div id="nltry" class="nltry"></div>
+      <div id="moneyactivefilters"></div>
       <div id="nltrans"></div>
       <div id="nlpresets"></div>
     </div>
@@ -498,7 +501,10 @@
     <div class="grid">
       <div class="panel">
         <div class="panelbar">
-          <h2><span id="reshead" data-i18n="open_rfps_heading">Open Requests for Proposals (RFPs)</span> <span class="count" id="rescount"></span></h2>
+          <!-- search() owns this dynamic heading. Leaving data-i18n here lets the initial
+               applyStrings() pass overwrite a deep-linked Award heading with the static
+               default after the correct search has already rendered. -->
+          <h2><span id="reshead">Open Requests for Proposals (RFPs)</span> <span class="count" id="rescount"></span></h2>
           <button id="export" class="mini" data-i18n="export_csv">Export CSV</button>
         </div>
         <div class="list" id="list" translate="no"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
@@ -1028,6 +1034,47 @@ let currentRows = [], mode = "open", selectedRFP = null, closingWeek = false, mo
 // and applyHash() all replay the same complete filter.
 let moneyNlResolved = {};
 const weekOutISO = () => new Date(Date.now()+7*86400000).toISOString().slice(0,10) + "T23:59:59";
+function moneyActiveFilterChip(item){
+  const value = item.value;
+  if(item.kind==="noticeType"){
+    const label = value==="award" ? t("nl_filter_award") : value==="allrfp" ? t("head_allrfp") : t("nl_filter_open_rfp");
+    return `<span class="qchip">${t("nl_filter_notice_label")} <b>${label}</b></span>`;
+  }
+  if(item.kind==="agency") return `<span class="qchip">${t("agency_label")} <b>${enTitle(value)}</b></span>`;
+  if(item.kind==="keywords") return `<span class="qchip">${t("nl_filter_about_label")} <b>${enTitle(value.join(" / "))}</b></span>`;
+  if(item.kind==="category") return `<span class="qchip">${t("nl_filter_category_label")} <b>${enTitle(value.replace(/\//g,"-"))}</b></span>`;
+  if(item.kind==="minAmount") return `<span class="qchip">${t("nl_filter_min_label")} <b>${money(value)}</b></span>`;
+  if(item.kind==="maxAmount") return `<span class="qchip">${t("nl_filter_max_label")} <b>${money(value)}</b></span>`;
+  if(item.kind==="months") return `<span class="qchip">${t("nl_filter_months",{n:value})}</span>`;
+  return `<span class="qchip"><b>${t("nl_filter_standard_only")}</b></span>`;
+}
+function renderMoneyActiveFilters(){
+  const box=$("#moneyactivefilters"); if(!box) return;
+  const items=moneyActiveFilterItems({
+    noticeType:mode==="award"?"award":mode==="allrfp"?"allrfp":"solicitation",
+    agency:$("#agency").value,
+    keywords:$("#kw").value.trim(),
+    minAmount:$("#minamt").value,
+    ...moneyNlResolved,
+  });
+  if(!items.length){ box.innerHTML=""; return; }
+  const chips=items.map(moneyActiveFilterChip);
+  box.innerHTML=`<div class="nlunderstood moneyactive"><span role="status">${t("nl_understood_label")} ${chips.join(" ")}</span><button type="button" class="mini" id="moneyactiveclear">${t("clear_filters_btn")}</button></div>`;
+  $("#moneyactiveclear").addEventListener("click",()=>{
+    moneyNlResolved={};
+    $("#mode").value="open";
+    $("#agency").value="";
+    $("#kw").value="";
+    $("#sort").value="deadline";
+    forceAmountSelect(null);
+    closingWeek=false;
+    $("#closingweek").classList.remove("on");
+    $("#closingweek").setAttribute("aria-pressed","false");
+    methodSel="";
+    $("#nltrans").innerHTML="";
+    search();
+  });
+}
 async function search(){
   moneyLoaded = true;
   mode = $("#mode").value;
@@ -1038,6 +1085,7 @@ async function search(){
   // The closing-week quick filter only makes sense for open RFPs.
   if(mode !== "open" && closingWeek){ closingWeek = false; $("#closingweek").classList.remove("on"); $("#closingweek").setAttribute("aria-pressed","false"); }
   $("#moneyquick").style.display = mode === "open" ? "" : "none";
+  renderMoneyActiveFilters();
 
   let where = mode === "award" ? "type_of_notice_description='Award'" : "type_of_notice_description='Solicitation'";
   if(mode === "open") where += ` AND due_date > '${todayISO()}'`;
@@ -2051,13 +2099,13 @@ function renderNLQPresets(){
 }
 function nlqResolvedActionsHTML(hash){
   if(!hash) return "";
-  return `<div class="nlqactions"><a class="act" id="nlqshare" href="#money" data-i18n="share_search_link">${t("share_search_link")}</a><button type="button" class="mini" id="nlqcopy" data-i18n="copy_search_link">${t("copy_search_link")}</button><button type="button" class="mini" id="nlqsave" data-i18n="save_search_btn">${t("save_search_btn")}</button></div>`;
+  return `<div class="nlqactions"><a class="act" id="nlqshare" href="${nlqEscape(canonicalSearchURL(location, hash))}" target="_blank" rel="noopener noreferrer"><span data-i18n="share_search_link">${t("share_search_link")}</span><span class="sr-only" data-i18n="ext_link_new_tab_sr"> ${t("ext_link_new_tab_sr")}</span></a><button type="button" class="mini" id="nlqcopy" data-i18n="copy_search_link">${t("copy_search_link")}</button><button type="button" class="mini" id="nlqsave" data-i18n="save_search_btn">${t("save_search_btn")}</button></div>`;
 }
 function bindNLQResolvedActions(label, hash){
   if(!hash) return;
-  const share=$("#nlqshare"); if(share) share.href=hash;
+  const share=$("#nlqshare"); if(share) share.href=canonicalSearchURL(location, hash);
   const copy=$("#nlqcopy");
-  if(copy) copy.addEventListener("click",()=>copyText(location.origin+location.pathname+hash, copy));
+  if(copy) copy.addEventListener("click",()=>copyText(canonicalSearchURL(location, hash), copy));
   const save=$("#nlqsave");
   if(save) save.addEventListener("click",()=>{
     nlqPresetSet(savePreset(nlqPresetStore(), label, hash));
@@ -2072,19 +2120,6 @@ async function nlTranslate(){
   const p=await nlResolve(text, "money");
   const deepLink=buildMoneyDeepLink(p);
   const wantsAward = p.noticeType==="award" || (!p.noticeType && (p.minAmount || p.maxAmount));
-  const chips=[`<span class="qchip">notice = <b>${wantsAward?"award":"open RFP"}</b></span>`];
-  if(p.agency) chips.push(`<span class="qchip">agency <b>${p.agency}</b></span>`);
-  if(p.keywords.length) chips.push(`<span class="qchip">about <b>${p.keywords.join(" / ")}</b></span>`);
-  if(p.category) chips.push(`<span class="qchip">category <b>${p.category}</b></span>`);
-  if(p.minAmount) chips.push(`<span class="qchip">value ≥ <b>${money(p.minAmount)}</b></span>`);
-  if(p.maxAmount) chips.push(`<span class="qchip">value ≤ <b>${money(p.maxAmount)}</b></span>`);
-  if(p.months) chips.push(`<span class="qchip">due within <b>${p.months} mo</b></span>`);
-  if(p.excludeSpecial) chips.push(`<span class="qchip"><b>standard</b> · no special case</span>`);
-  const kwExpr=p.keywords.length?p.keywords.map(k=>`'${k}'`).join(" OR "):"(any)";
-  const dueMax=p.months?new Date(Date.now()+p.months*2629800000).toISOString().slice(0,10):null;
-  const code=[`type_of_notice = '${wantsAward?"Award":"Solicitation"}'`, wantsAward?null:"due_date > today"+(dueMax?` AND due_date <= '${dueMax}'`:""),
-    `$q ~ ${kwExpr}`, p.minAmount?`contract_amount >= ${p.minAmount}`:null, p.maxAmount?`contract_amount <= ${p.maxAmount}`:null,
-    p.excludeSpecial?`selection_method NOT LIKE '%Special%'`:null].filter(Boolean).join("\nAND ");
   moneyNlResolved={category:p.category||null, maxAmount:p.maxAmount||null, months:p.months||null,
     noticeType:p.noticeType||null, excludeSpecial:!!p.excludeSpecial};
   $("#mode").value=wantsAward?"award":"open"; $("#sort").value="deadline";
@@ -2092,15 +2127,9 @@ async function nlTranslate(){
   $("#kw").value=p.keywords.join(" "); forceAmountSelect(p.minAmount);
   await search();
   if(btn) btn.disabled=false;
-  // Field evidence 2026-07-14: paraphrases used to fail with a silent, unexplained empty
-  // result — the interpretation never showed itself, so a zero-row search read as "the ask
-  // button is broken." "weak" (little/nothing understood beyond the mandatory notice-type
-  // chip, or genuinely zero matches) gets a prominent echo + a one-tap way to adjust; a
-  // confident, populated search keeps the quiet status line it always had.
-  const weak = chips.length <= 1 || currentRows.length === 0;
-  $("#nltrans").innerHTML=nlTransHTML(chips, "#nlq", weak)+nlqResolvedActionsHTML(deepLink);
+  $("#nltrans").innerHTML=nlqResolvedActionsHTML(deepLink);
   bindNLQResolvedActions(text, deepLink);
-  if(currentRows.length === 0) $("#list").innerHTML = `<div class="empty">${t("nl_no_matches_note")}</div>` + nlTransHTML(chips, "#nlq", true);
+  if(currentRows.length === 0) $("#list").innerHTML = `<div class="empty">${t("nl_no_matches_note")}</div>`;
 }
 
 function nlWorkingHTML(){ return '<div class="nlworking"><span class="loading"></span><span>' + t("translating") + '</span></div>'; }

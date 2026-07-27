@@ -49,11 +49,8 @@ agency_name,sum(contract_amount) AS total
 type_of_notice_description AS t,count(request_id) AS n
 vendor_name,sum(contract_amount) AS total
 agency_name, count(1) as n, sum(contract_amount) as t
-contract_amount <=
-contract_amount >=
 count(1) as n, sum(contract_amount) as t
 count(1) as n, sum(contract_amount) as total
-due_date > today
 selection_method_description, count(1) as n
 sum(contract_amount) as t
 title_description, count(1) as n, min(base_salary) as mn, max(base_salary) as mx, avg(base_salary) as avg
@@ -89,14 +86,12 @@ nnVia CROL-List — The City Record, searchable.
 <span class="qchip">about <b>
 <span class="qchip">due within <b>
 <span class="qchip">in <b>
-<span class="qchip">notice = <b>
 for example, HPD property sales, DEP land
 for example, buildings rules, sanitation rules
 for example, education contracts over $200K due in 3 months, or awards over $1M
 for example, paramedic roles, or look up someone named Rodriguez
 for example, recent landmarks hearings, city council
 for example, rezonings in Brooklyn, or 79 Rivington
-open RFP
 open RFPs
 <span class="qchip">rezonings near <b>
 
@@ -105,7 +100,6 @@ open RFPs
 %</b> of this agency's awards (last 12 mo, n=
 </b>) differs from the notice's (<b>
 project_id='
-type_of_notice = '
 type_of_notice_description='Award'
 type_of_notice_description='Solicitation'
 ">Follow this vendor</button> <button class="act" type="button" id="ecopy">Copy link</button>
@@ -116,7 +110,6 @@ type_of_notice_description='Solicitation'
 </a>, matched by PIN <code>
 </a> </div> <div class="note">The spine is every City Record notice sharing this PIN, in order; Checkbook events join deterministically on the same PIN. Public-hearing notices rarely carry PINs, so hearings may be missing from the chronology.</div> </div></div>
 (agency median
-(any)
 (see notice)
 (untitled)
 </b> of

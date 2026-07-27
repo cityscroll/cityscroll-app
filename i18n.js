@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "556b632f",
-  "zh-Hans": "4254cb13",
-  ru: "6676668d",
-  bn: "a2e558f1",
-  ht: "84427195",
-  ko: "0de19dfb",
-  fr: "d2b45f09",
-  pl: "aa48c248",
-  ar: "978776d3",
-  ur: "59371604",
+  es: "5740c8aa",
+  "zh-Hans": "107bf9be",
+  ru: "b5ad3b7a",
+  bn: "0107217d",
+  ht: "b85e6fcd",
+  ko: "0da85cda",
+  fr: "2d201518",
+  pl: "1e4c4111",
+  ar: "1d5ce055",
+  ur: "f8cae462",
 };
 
 
@@ -356,6 +356,16 @@ const STRINGS = {
     fetching_today:   "fetching today's matching notices…",
     translating:      "translating…",
     nl_understood_label: "We understood this as:",
+    nl_filter_notice_label: "Notice",
+    nl_filter_award: "Award",
+    nl_filter_open_rfp: "Open RFP",
+    nl_filter_about_label: "About",
+    nl_filter_category_label: "Category",
+    nl_filter_min_label: "Value ≥",
+    nl_filter_max_label: "Value ≤",
+    nl_filter_months: "Due within {n} mo",
+    nl_filter_standard_only: "Standard methods only",
+    clear_filters_btn: "Clear filters",
     nl_edit_btn:      "Edit search",
     nl_no_matches_note: "No matches for this search.",
     deeplink_watch_context_label: "Matched by your watch:",
