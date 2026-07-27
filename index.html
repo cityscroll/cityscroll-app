@@ -293,6 +293,9 @@
   .rm b{display:block;margin-bottom:4px}
   .rm.done{border-inline-start:3px solid var(--green)}
   #landmap{display:none;height:300px;border:1px solid var(--rule);border-radius:8px;margin-top:14px;overflow:hidden;background:#eee}
+  .map-pan-controls{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:8px}
+  .map-pan-controls button{width:32px;height:32px;padding:0;display:inline-flex;align-items:center;justify-content:center;background:var(--card);color:var(--ink);border:1px solid var(--rule-strong);font:700 17px/1 ui-sans-serif,system-ui,sans-serif}
+  .map-pan-controls button:hover{border-color:var(--oxblood);color:var(--oxblood)}
   #landmapnote{margin-top:8px}
   .landbanner{font:13px/1.5 ui-sans-serif,system-ui,sans-serif;background:#faf6ee;border-inline-start:3px solid var(--oxblood);padding:9px 12px;color:var(--ink-soft);margin-bottom:2px}
   .feed{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-top:22px}
@@ -383,7 +386,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=18ff7723"></script>
+<script src="i18n.js?v=2f565121"></script>
 <script src="nl_parse.js"></script>
 <script src="nl_deeplink.js"></script>
 <script src="external_awards.js"></script>
@@ -2897,7 +2900,14 @@ async function landSelect(i, el){
     <button class="act" type="button" id="landalert" data-q="${area.replace(/"/g,'')}">${t("alert_me_area")}</button>
     <a class="act" id="crfind" href="https://a856-cityrecord.nyc.gov/Search/Advanced" ${EXT_ATTRS}>${t("search_city_record")}${extSR()}</a>
   </div>
-  <div id="landmap"></div><div class="note" id="landmapnote"><span class="loading"></span> ${t("locating")}</div>`;
+  <div id="landmap"></div>
+  <div id="landpan" class="map-pan-controls" role="group" aria-label="${t("map_pan_group_aria")}" hidden>
+    <button type="button" data-map-pan="west" aria-controls="landmap" aria-label="${t("map_pan_west")}">←</button>
+    <button type="button" data-map-pan="north" aria-controls="landmap" aria-label="${t("map_pan_north")}">↑</button>
+    <button type="button" data-map-pan="south" aria-controls="landmap" aria-label="${t("map_pan_south")}">↓</button>
+    <button type="button" data-map-pan="east" aria-controls="landmap" aria-label="${t("map_pan_east")}">→</button>
+  </div>
+  <div class="note" id="landmapnote"><span class="loading"></span> ${t("locating")}</div>`;
   $("#ldetail").innerHTML=html;
   const lc=$("#landcopy"); if(lc) lc.addEventListener("click",()=>copyText(landLink(r.project_id), lc));
   const la=$("#landalert"); if(la) la.addEventListener("click",()=>landToAlert(la.dataset.q));
@@ -2990,6 +3000,16 @@ function loadLeaflet(){
   });
   return leafletP;
 }
+// WCAG 2.2 SC 2.5.7: Leaflet supports drag-to-pan, so expose the same map movement as
+// four ordinary single-pointer buttons. Keyboard panning remains Leaflet's responsibility.
+function wireLandPanControls(map){
+  const controls=$("#landpan"); if(!controls) return;
+  const offsets={west:[-80,0],north:[0,-80],south:[0,80],east:[80,0]};
+  controls.hidden=false;
+  controls.querySelectorAll("[data-map-pan]").forEach(button=>{
+    button.addEventListener("click",()=>map.panBy(offsets[button.dataset.mapPan],{animate:false}));
+  });
+}
 async function landShowMap(lat, lon, label, selection){
   const el=$("#landmap"); if(!el) return; el.style.display="block";
   $("#landmapnote").innerHTML=t("map_approx_note_html",{label});
@@ -2997,6 +3017,7 @@ async function landShowMap(lat, lon, label, selection){
   if(selection!==undefined && selection!==landSelectionSeq) return;
   if(typeof L==="undefined"){ el.innerHTML=`<div class="empty">${t("map_needs_connection")}</div>`; return; }
   landMap=L.map(el).setView([lat,lon],15);
+  wireLandPanControls(landMap);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap © CARTO',subdomains:'abcd',maxZoom:19}).addTo(landMap);
   // w9-10: Leaflet's marker icon renders as an <img> -- `alt` is its accessible name
   // (the list view, #llist, remains the real keyboard/SR-equivalent; this is a small assist).
@@ -3012,6 +3033,7 @@ async function landShowLots(gj, n, selection){
   if(selection!==undefined && selection!==landSelectionSeq) return;
   if(typeof L==="undefined"){ el.innerHTML=`<div class="empty">${t("map_needs_connection")}</div>`; return; }
   landMap=L.map(el);
+  wireLandPanControls(landMap);
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{attribution:'© OpenStreetMap © CARTO · lots © NYC MapPLUTO',subdomains:'abcd',maxZoom:19}).addTo(landMap);
   const layer=L.geoJSON(gj,{style:{color:'#7a1f1f',weight:2,fillColor:'#b5781b',fillOpacity:.35}}).addTo(landMap);
   try{ landMap.fitBounds(layer.getBounds(),{padding:[20,20],maxZoom:17}); }catch(e){ landMap.setView([40.71,-73.96],12); }
