@@ -90,6 +90,7 @@ EXTERNAL_HREF_EXPRS = (
     "${surl}",      # agency-identity card: an NYC Open Data source-dataset page
     "${record.source_url}",       # normalized City Record request-detail URL
     "${escUiHtml(link.url)}",     # notice-supplied remote participation URL
+    "${escUiHtml(exam.notice_url)}",  # official DCAS Notice of Examination PDF
     # Explicit same-origin exception: this action promises to open the canonical shareable
     # search separately, so it follows the new-tab safety/accessibility checks below.
     "${nlqEscape(canonicalSearchURL(",

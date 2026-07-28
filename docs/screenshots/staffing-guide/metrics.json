@@ -1,0 +1,33 @@
+{
+  "captured_viewports": [
+    390,
+    1440
+  ],
+  "page_weight": {
+    "index.html": {
+      "bytes": 396284,
+      "gzip_bytes": 115656
+    },
+    "i18n.js": {
+      "bytes": 105951,
+      "gzip_bytes": 35383
+    },
+    "staffing.js": {
+      "bytes": 2578,
+      "gzip_bytes": 945
+    },
+    "data/staffing_exams.json": {
+      "bytes": 65503,
+      "gzip_bytes": 5755
+    },
+    "guide_incremental": {
+      "bytes": 68081,
+      "gzip_bytes": 6700
+    }
+  },
+  "notes": "Guide incremental weight is the dependency-free staffing module plus the precomputed exam JSON. No NYC API request is required to render exam cards.",
+  "captures": [
+    "docs/screenshots/staffing-guide/guide-390.png",
+    "docs/screenshots/staffing-guide/guide-1440.png"
+  ]
+}

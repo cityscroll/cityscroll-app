@@ -1,0 +1,17 @@
+{
+  "source": {
+    "id": "city-record-exam-check",
+    "name": "City Record Online exam-announcement check",
+    "dataset_id": "dg92-zbpx",
+    "url": "https://data.cityofnewyork.us/resource/dg92-zbpx.json",
+    "fetched_at": "2026-07-28",
+    "refresh_cadence": "Daily",
+    "stale_after_days": 3,
+    "role": "Negative control: keyword candidates are reviewed so unrelated contracts and uses of “examination” are not presented as civil-service exam announcements."
+  },
+  "summary": {
+    "candidate_rows": "183",
+    "accepted_exam_announcements": 0,
+    "finding": "The City Record dataset does not expose DCAS Notices of Examination as a notice section. DCAS schedule pages and NOEs are the authoritative application sources."
+  }
+}

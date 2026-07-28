@@ -1,0 +1,2116 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-07-28",
+  "data_current_as_of": "2026-07-22",
+  "interest_areas": [
+    "public-safety",
+    "health-care",
+    "engineering-construction",
+    "technology-science",
+    "community-social-services",
+    "administration-finance",
+    "trades-operations",
+    "other"
+  ],
+  "sources": [
+    {
+      "id": "dcas-open-competitive",
+      "name": "DCAS Open Competitive Exams for Anyone",
+      "url": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page",
+      "verified_at": "2026-07-28",
+      "refresh_cadence": "Check daily while an application window is open; DCAS publishes a monthly schedule and may amend individual NOEs between releases.",
+      "stale_after_days": 35,
+      "method": "The current DCAS table and each linked Notice of Examination were reviewed. This committed snapshot is required because nyc.gov sometimes blocks unattended requests from build networks."
+    },
+    {
+      "id": "dcas-annual-schedule",
+      "name": "Annual Examination Schedule of Each Fiscal Year",
+      "dataset_id": "4ptz-hmtc",
+      "url": "https://data.cityofnewyork.us/resource/4ptz-hmtc.json",
+      "landing_page": "https://data.cityofnewyork.us/d/4ptz-hmtc",
+      "fetched_at": "2026-07-28",
+      "data_current_as_of": "2026-07-22",
+      "refresh_cadence": "DCAS says the public schedule is updated monthly; Open Data metadata says annual updates and quarterly data changes.",
+      "stale_after_days": 95
+    },
+    {
+      "id": "dcas-active-civil-service-list",
+      "name": "Civil Service List (Active)",
+      "dataset_id": "vx8i-nprf",
+      "url": "https://data.cityofnewyork.us/resource/vx8i-nprf.json",
+      "fetched_at": "2026-07-28",
+      "refresh_cadence": "Daily",
+      "stale_after_days": 3,
+      "privacy": "Only aggregate counts are retained; candidate records and names are not copied."
+    },
+    {
+      "id": "city-record-exam-check",
+      "name": "City Record Online exam-announcement check",
+      "dataset_id": "dg92-zbpx",
+      "url": "https://data.cityofnewyork.us/resource/dg92-zbpx.json",
+      "fetched_at": "2026-07-28",
+      "refresh_cadence": "Daily",
+      "stale_after_days": 3,
+      "role": "Negative control: keyword candidates are reviewed so unrelated contracts and uses of “examination” are not presented as civil-service exam announcements."
+    }
+  ],
+  "source_checks": {
+    "active_list": {
+      "candidate_rows": "407420",
+      "distinct_exams": "851",
+      "distinct_titles": "431",
+      "latest_established": "2026-07-22T00:00:00.000",
+      "latest_extension": "2027-07-20T00:00:00.000"
+    },
+    "city_record": {
+      "candidate_rows": "183",
+      "accepted_exam_announcements": 0,
+      "finding": "The City Record dataset does not expose DCAS Notices of Examination as a notice section. DCAS schedule pages and NOEs are the authoritative application sources."
+    }
+  },
+  "exams": [
+    {
+      "exam_number": "6125",
+      "title_code": "53053",
+      "title": "Emergency Medical Specialist - EMT (Fire)",
+      "application_start": "2026-06-15",
+      "application_end": "2026-08-07",
+      "eligibility": "open_competitive",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20266125000.pdf",
+      "fee": 30,
+      "fee_waiver": "Veterans, unemployed applicants, and applicants receiving public assistance or Supplemental Security Income may qualify under this NOE.",
+      "salary_min": 39386,
+      "salary_note": "Current minimum annual salary",
+      "summary": "Provide basic life support, emergency medical care, and ambulance transportation with FDNY.",
+      "qualifications": "A high school diploma or equivalent plus a valid New York State EMT-Basic or EMT-Paramedic certificate by the deadline stated in the NOE.",
+      "test_method": "See the NOE for every test part and deadline",
+      "interest_area": "health-care",
+      "schedule_status": "scheduled",
+      "sources": [
+        "dcas-open-competitive",
+        "dcas-noe"
+      ]
+    },
+    {
+      "exam_number": "6126",
+      "title_code": "53052",
+      "title": "Emergency Medical Specialist Trainee",
+      "application_start": "2026-06-15",
+      "application_end": "2026-08-07",
+      "eligibility": "open_competitive",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20266126000.pdf",
+      "fee": 30,
+      "fee_waiver": "Veterans, unemployed applicants, and applicants receiving public assistance or Supplemental Security Income may qualify under this NOE.",
+      "salary_min": 36330,
+      "salary_note": "Current minimum annual salary",
+      "summary": "Train with FDNY to become an emergency medical technician and serve patients across the city.",
+      "qualifications": "A high school diploma or equivalent plus one of the work, military, college-credit, or approved EMS-coursework paths listed in the NOE.",
+      "test_method": "See the NOE for every test part and deadline",
+      "interest_area": "health-care",
+      "schedule_status": "scheduled",
+      "sources": [
+        "dcas-open-competitive",
+        "dcas-noe"
+      ]
+    },
+    {
+      "exam_number": "7006",
+      "title_code": "20210",
+      "title": "Assistant Civil Engineer",
+      "application_start": "2026-07-01",
+      "application_end": "2026-08-25",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe"
+      ],
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277006000.pdf",
+      "fee": 82,
+      "fee_waiver": "Veterans, unemployed applicants, NYC high school students, first-time test takers, and applicants receiving public assistance or Supplemental Security Income may qualify.",
+      "salary_min": 66330,
+      "salary_note": "Current minimum annual salary",
+      "summary": "Help design, inspect, and supervise City construction and infrastructure work.",
+      "qualifications": "The NOE lists several paths, including a civil engineering degree plus experience or specified graduate study.",
+      "test_method": "Education and experience exam",
+      "amendment": "The July 15 amended NOE extended the application deadline to August 25."
+    },
+    {
+      "exam_number": "7007",
+      "title_code": "20310",
+      "title": "Assistant Electrical Engineer",
+      "application_start": "2026-07-01",
+      "application_end": "2026-07-21",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7013",
+      "title_code": "92508",
+      "title": "Automotive Service Worker",
+      "application_start": "2026-07-01",
+      "application_end": "2026-08-25",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "trades-operations",
+      "sources": [
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe"
+      ],
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277013000.pdf",
+      "fee": 61,
+      "fee_waiver": "Veterans, unemployed applicants, NYC high school students, first-time test takers, and applicants receiving public assistance or Supplemental Security Income may qualify.",
+      "salary_min": 42387,
+      "salary_note": "Current minimum annual salary",
+      "summary": "Inspect, maintain, service, and help repair City cars, trucks, and other vehicles.",
+      "qualifications": "Two years of automotive maintenance experience, relevant trade or technical education, an associate degree in automotive technology, or an allowed combination.",
+      "test_method": "Education and experience exam",
+      "amendment": "The July 15 amended NOE extended the application deadline to August 25."
+    },
+    {
+      "exam_number": "7016",
+      "title_code": "52304",
+      "title": "Caseworker",
+      "application_start": "2026-07-01",
+      "application_end": "2026-08-25",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "community-social-services",
+      "sources": [
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe"
+      ],
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277016000.pdf",
+      "fee": 68,
+      "fee_waiver": "Veterans, unemployed applicants, NYC high school students, first-time test takers, and applicants receiving public assistance or Supplemental Security Income may qualify.",
+      "salary_min": 48206,
+      "salary_note": "Current minimum annual salary",
+      "summary": "Connect New Yorkers with public benefits, health care, housing, and other social services.",
+      "qualifications": "A bachelor's degree from an accredited college or university.",
+      "test_method": "Education and experience exam"
+    },
+    {
+      "exam_number": "7018",
+      "title_code": "523400",
+      "title": "Caseworker (NYC Health + Hospitals)",
+      "application_start": "2026-07-01",
+      "application_end": "2026-08-25",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "health-care",
+      "sources": [
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe"
+      ],
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277018000.pdf",
+      "fee": 68,
+      "fee_waiver": "Veterans, unemployed applicants, NYC high school students, first-time test takers, and applicants receiving public assistance or Supplemental Security Income may qualify.",
+      "salary_min": 48206,
+      "salary_note": "Current minimum annual salary",
+      "summary": "Help hospital patients and families connect with benefits, care, housing, and social services.",
+      "qualifications": "A bachelor's degree from an accredited college or university.",
+      "test_method": "Education and experience exam"
+    },
+    {
+      "exam_number": "7514",
+      "title_code": "52370",
+      "title": "Child Welfare Specialist Supervisor (Prom)",
+      "application_start": "2026-07-01",
+      "application_end": "2026-07-21",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "community-social-services",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7524",
+      "title_code": "91580",
+      "title": "Mate (DEP) (Prom)",
+      "application_start": "2026-07-01",
+      "application_end": "2026-07-21",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7311",
+      "title_code": "70210",
+      "title": "Police Officer",
+      "application_start": "2026-07-01",
+      "application_end": "2026-07-14",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7323",
+      "title_code": "60817",
+      "title": "School Safety Agent",
+      "application_start": "2026-07-01",
+      "application_end": "2026-08-25",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe"
+      ],
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277323000.pdf",
+      "fee": 61,
+      "fee_waiver": "Veterans, unemployed applicants, NYC high school students, first-time test takers, and applicants receiving public assistance or Supplemental Security Income may qualify.",
+      "salary_min": 40480,
+      "salary_note": "Current minimum annual salary; the NOE lists increases through five years",
+      "summary": "Help keep public school buildings safe, assist visitors and students, and respond to incidents.",
+      "qualifications": "A high school diploma or equivalent. The NOE also lists age, citizenship, residency, screening, and appointment requirements.",
+      "test_method": "Multiple-choice testing is expected to begin October 20, 2026"
+    },
+    {
+      "exam_number": "7331",
+      "title_code": "71651",
+      "title": "Traffic Enforcement Agent",
+      "application_start": "2026-07-01",
+      "application_end": "2026-08-25",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule",
+        "dcas-open-competitive",
+        "dcas-noe"
+      ],
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277331000.pdf",
+      "fee": 0,
+      "fee_waiver": "No application fee is charged for this exam.",
+      "salary_min": 48719,
+      "salary_note": "Current minimum annual salary for Assignment Level II",
+      "summary": "Enforce parking and traffic rules and help keep vehicles and pedestrians moving safely.",
+      "qualifications": "A high school diploma or equivalent, plus the license, medical, psychological, and screening requirements in the NOE.",
+      "test_method": "Multiple-choice testing is expected to begin October 22, 2026"
+    },
+    {
+      "exam_number": "7312",
+      "title_code": "70210",
+      "title": "Police Officer",
+      "application_start": "2026-08-03",
+      "application_end": "2026-08-17",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7508",
+      "title_code": "80305",
+      "title": "Assistant Resident Buildings Superintendent (Prom)",
+      "application_start": "2026-08-05",
+      "application_end": "2026-08-25",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7509",
+      "title_code": "60821",
+      "title": "Associate Supervisor of School Security (Prom)",
+      "application_start": "2026-08-05",
+      "application_end": "2026-08-25",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7023",
+      "title_code": "40561",
+      "title": "Contract Specialist",
+      "application_start": "2026-08-05",
+      "application_end": "2026-08-25",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "administration-finance",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7028",
+      "title_code": "91722",
+      "title": "Electrician's Helper",
+      "application_start": "2026-08-05",
+      "application_end": "2026-08-25",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7029",
+      "title_code": "91722",
+      "title": "Electrician's Helper (CUNY)",
+      "application_start": "2026-08-05",
+      "application_end": "2026-08-25",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7033",
+      "title_code": "20122",
+      "title": "Estima\u0074or (General Construction)",
+      "application_start": "2026-08-05",
+      "application_end": "2026-08-25",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7522",
+      "title_code": "70316",
+      "title": "Marine Engineer (Uniformed-Fire Department) (Prom)",
+      "application_start": "2026-08-05",
+      "application_end": "2026-10-27",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7056",
+      "title_code": "22410",
+      "title": "Plan Examiner (Buildings)",
+      "application_start": "2026-08-05",
+      "application_end": "2026-08-25",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7527",
+      "title_code": "22410",
+      "title": "Plan Examiner (Buildings) (Prom)",
+      "application_start": "2026-08-05",
+      "application_end": "2026-08-25",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7070",
+      "title_code": "4340",
+      "title": "Plant Maintainer (Hospitals)/Tender (NYC H+H)",
+      "application_start": "2026-08-05",
+      "application_end": "2026-09-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "trades-operations",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7313",
+      "title_code": "70210",
+      "title": "Police Officer",
+      "application_start": "2026-09-01",
+      "application_end": "2026-09-14",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7002",
+      "title_code": "83006",
+      "title": "Administrative Housing Development Specialist",
+      "application_start": "2026-09-02",
+      "application_end": "2026-09-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "community-social-services",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7501",
+      "title_code": "83006",
+      "title": "Administrative Housing Development Specialist (Prom)",
+      "application_start": "2026-09-02",
+      "application_end": "2026-09-22",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "community-social-services",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7003",
+      "title_code": "82994",
+      "title": "Administrative Labor Relations Analyst",
+      "application_start": "2026-09-02",
+      "application_end": "2026-09-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "administration-finance",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7502",
+      "title_code": "82994",
+      "title": "Administrative Labor Relations Analyst (Prom)",
+      "application_start": "2026-09-02",
+      "application_end": "2026-09-22",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "administration-finance",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7507",
+      "title_code": "91352",
+      "title": "Area Supervisor (Highway Maintenance) (Prom)",
+      "application_start": "2026-09-02",
+      "application_end": "2026-09-22",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "trades-operations",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7302",
+      "title_code": "70410",
+      "title": "Correction Officer",
+      "application_start": "2026-09-02",
+      "application_end": "2026-09-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7034",
+      "title_code": "90510",
+      "title": "Exterminator",
+      "application_start": "2026-09-02",
+      "application_end": "2026-09-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "trades-operations",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7035",
+      "title_code": "90510",
+      "title": "Exterminator (CUNY)",
+      "application_start": "2026-09-02",
+      "application_end": "2026-09-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "trades-operations",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7036",
+      "title_code": "81361",
+      "title": "Forester",
+      "application_start": "2026-09-02",
+      "application_end": "2026-09-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "trades-operations",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7041",
+      "title_code": "31623",
+      "title": "Inspector (Electrical)",
+      "application_start": "2026-09-02",
+      "application_end": "2026-09-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7307",
+      "title_code": "71012",
+      "title": "Police Communications Technician",
+      "application_start": "2026-09-02",
+      "application_end": "2026-09-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7065",
+      "title_code": "21538",
+      "title": "Scientist (Water Ecology)",
+      "application_start": "2026-09-02",
+      "application_end": "2026-09-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "technology-science",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7327",
+      "title_code": "70810",
+      "title": "Special Officer",
+      "application_start": "2026-09-02",
+      "application_end": "2026-09-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7329",
+      "title_code": "708100",
+      "title": "Special Officer (NYC H+H)",
+      "application_start": "2026-09-02",
+      "application_end": "2026-10-27",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7539",
+      "title_code": "92272",
+      "title": "Supervisor Plasterer (Prom)",
+      "application_start": "2026-09-02",
+      "application_end": "2026-09-22",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7314",
+      "title_code": "70210",
+      "title": "Police Officer",
+      "application_start": "2026-10-01",
+      "application_end": "2026-10-14",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7010",
+      "title_code": "92510",
+      "title": "Auto Mechanic",
+      "application_start": "2026-10-07",
+      "application_end": "2026-10-27",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "trades-operations",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7011",
+      "title_code": "92510",
+      "title": "Auto Mechanic (CUNY)",
+      "application_start": "2026-10-07",
+      "application_end": "2026-10-27",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "trades-operations",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7012",
+      "title_code": "92511",
+      "title": "Auto Mechanic (Diesel)",
+      "application_start": "2026-10-07",
+      "application_end": "2026-10-27",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "trades-operations",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7512",
+      "title_code": "92511",
+      "title": "Auto Mechanic (Diesel) (Prom)",
+      "application_start": "2026-10-07",
+      "application_end": "2026-10-27",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "trades-operations",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7513",
+      "title_code": "92510",
+      "title": "Auto Mechanic (Prom)",
+      "application_start": "2026-10-07",
+      "application_end": "2026-10-27",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "trades-operations",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7024",
+      "title_code": "60888",
+      "title": "Customer Information Representative",
+      "application_start": "2026-10-07",
+      "application_end": "2026-10-27",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7027",
+      "title_code": "91719",
+      "title": "Electrician (Automobile)",
+      "application_start": "2026-10-07",
+      "application_end": "2026-10-27",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7031",
+      "title_code": "53053",
+      "title": "Emergency Medical Specialist - EMT",
+      "application_start": "2026-10-07",
+      "application_end": "2026-11-18",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "health-care",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7032",
+      "title_code": "53052",
+      "title": "Emergency Medical Specialist Trainee",
+      "application_start": "2026-10-07",
+      "application_end": "2026-11-18",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "health-care",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7047",
+      "title_code": "40502",
+      "title": "Management Auditor",
+      "application_start": "2026-10-07",
+      "application_end": "2026-10-27",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "administration-finance",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7052",
+      "title_code": "51221",
+      "title": "Occupational Therapist (DOE)",
+      "application_start": "2026-10-07",
+      "application_end": "2026-10-27",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7054",
+      "title_code": "51222",
+      "title": "Physical Therapist (DOE)",
+      "application_start": "2026-10-07",
+      "application_end": "2026-10-27",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7324",
+      "title_code": "60817",
+      "title": "School Safety Agent",
+      "application_start": "2026-10-07",
+      "application_end": "2026-10-27",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7533",
+      "title_code": "70235",
+      "title": "Sergeant (Police) (Prom)",
+      "application_start": "2026-10-07",
+      "application_end": "2026-10-27",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7315",
+      "title_code": "70210",
+      "title": "Police Officer",
+      "application_start": "2026-11-02",
+      "application_end": "2026-11-16",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7000",
+      "title_code": "500",
+      "title": "Addiction Counselor (NYC H+H)",
+      "application_start": "2026-11-05",
+      "application_end": "2026-12-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "health-care",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7001",
+      "title_code": "10001",
+      "title": "Administrative Accountant",
+      "application_start": "2026-11-05",
+      "application_end": "2026-11-25",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "administration-finance",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7500",
+      "title_code": "10001",
+      "title": "Administrative Accountant (Prom)",
+      "application_start": "2026-11-05",
+      "application_end": "2026-11-25",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "administration-finance",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7009",
+      "title_code": "71141",
+      "title": "Associate Fingerprint Technician",
+      "application_start": "2026-11-05",
+      "application_end": "2026-11-25",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7015",
+      "title_code": "91110",
+      "title": "Bridge Operator",
+      "application_start": "2026-11-05",
+      "application_end": "2026-11-25",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "trades-operations",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7017",
+      "title_code": "10605",
+      "title": "Cashier",
+      "application_start": "2026-11-05",
+      "application_end": "2026-11-25",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "administration-finance",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7030",
+      "title_code": "90711",
+      "title": "Elevator Mechanic's Helper",
+      "application_start": "2026-11-05",
+      "application_end": "2026-11-25",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "trades-operations",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7040",
+      "title_code": "31622",
+      "title": "Inspector (Construction)",
+      "application_start": "2026-11-05",
+      "application_end": "2026-11-25",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7050",
+      "title_code": "91225",
+      "title": "Metal Work Mechanic",
+      "application_start": "2026-11-05",
+      "application_end": "2026-11-25",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "trades-operations",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7525",
+      "title_code": "91225",
+      "title": "Metal Work Mechanic (Prom)",
+      "application_start": "2026-11-05",
+      "application_end": "2026-11-25",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "trades-operations",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7058",
+      "title_code": "51801",
+      "title": "Probation Officer Trainee",
+      "application_start": "2026-11-05",
+      "application_end": "2026-11-25",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7332",
+      "title_code": "71651",
+      "title": "Traffic Enforcement Agent",
+      "application_start": "2026-11-05",
+      "application_end": "2026-11-25",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7074",
+      "title_code": "52287",
+      "title": "Youth Development Specialist",
+      "application_start": "2026-11-05",
+      "application_end": "2026-11-25",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "community-social-services",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7316",
+      "title_code": "70210",
+      "title": "Police Officer",
+      "application_start": "2026-12-01",
+      "application_end": "2026-12-14",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7019",
+      "title_code": "40523",
+      "title": "City Tax Auditor",
+      "application_start": "2026-12-02",
+      "application_end": "2026-12-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "administration-finance",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7020",
+      "title_code": "20215",
+      "title": "Civil Engineer",
+      "application_start": "2026-12-02",
+      "application_end": "2026-12-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7515",
+      "title_code": "20215",
+      "title": "Civil Engineer (Prom)",
+      "application_start": "2026-12-02",
+      "application_end": "2026-12-22",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7305",
+      "title_code": "70811",
+      "title": "Environmental Police Officer",
+      "application_start": "2026-12-02",
+      "application_end": "2026-12-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7038",
+      "title_code": "22507",
+      "title": "Housing Development Specialist",
+      "application_start": "2026-12-02",
+      "application_end": "2026-12-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "community-social-services",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7039",
+      "title_code": "31620",
+      "title": "Inspector (Boilers)",
+      "application_start": "2026-12-02",
+      "application_end": "2026-12-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7308",
+      "title_code": "71012",
+      "title": "Police Communications Technician",
+      "application_start": "2026-12-02",
+      "application_end": "2026-12-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7528",
+      "title_code": "70210",
+      "title": "Police Officer (Prom)",
+      "application_start": "2026-12-02",
+      "application_end": "2026-12-22",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7061",
+      "title_code": "34173",
+      "title": "Quality Assurance Specialist (Building Repairs)",
+      "application_start": "2026-12-02",
+      "application_end": "2026-12-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7068",
+      "title_code": "90760",
+      "title": "Supervisor of Radio Repair Operations",
+      "application_start": "2026-12-02",
+      "application_end": "2026-12-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7538",
+      "title_code": "90760",
+      "title": "Supervisor of Radio Repair Operations (Prom)",
+      "application_start": "2026-12-02",
+      "application_end": "2026-12-22",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7069",
+      "title_code": "34615",
+      "title": "Water Use Inspector",
+      "application_start": "2026-12-02",
+      "application_end": "2026-12-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7317",
+      "title_code": "70210",
+      "title": "Police Officer",
+      "application_start": "2027-01-04",
+      "application_end": "2027-01-19",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7021",
+      "title_code": "81303",
+      "title": "Climber & Pruner",
+      "application_start": "2027-01-06",
+      "application_end": "2027-01-26",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7516",
+      "title_code": "90756",
+      "title": "Construction Laborer (Prom)",
+      "application_start": "2027-01-06",
+      "application_end": "2027-01-26",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7303",
+      "title_code": "70410",
+      "title": "Correction Officer",
+      "application_start": "2027-01-06",
+      "application_end": "2027-01-26",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7026",
+      "title_code": "503100",
+      "title": "Dietitian (NYC H+H)",
+      "application_start": "2027-01-06",
+      "application_end": "2027-02-23",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7057",
+      "title_code": "10124",
+      "title": "Principal Administrative Associate",
+      "application_start": "2027-01-06",
+      "application_end": "2027-01-26",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "administration-finance",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7530",
+      "title_code": "10124",
+      "title": "Principal Administrative Associate (Prom)",
+      "application_start": "2027-01-06",
+      "application_end": "2027-01-26",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "administration-finance",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7059",
+      "title_code": "51022",
+      "title": "Public Health Nurse (School Health)",
+      "application_start": "2027-01-06",
+      "application_end": "2027-01-26",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "health-care",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7063",
+      "title_code": "80310",
+      "title": "Resident Buildings Superintendent",
+      "application_start": "2027-01-06",
+      "application_end": "2027-01-26",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7532",
+      "title_code": "80310",
+      "title": "Resident Buildings Superintendent (Prom)",
+      "application_start": "2027-01-06",
+      "application_end": "2027-01-26",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7064",
+      "title_code": "54483",
+      "title": "School Food Service Manager",
+      "application_start": "2027-01-06",
+      "application_end": "2027-01-26",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7325",
+      "title_code": "60817",
+      "title": "School Safety Agent",
+      "application_start": "2027-01-06",
+      "application_end": "2027-01-26",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7540",
+      "title_code": "70314",
+      "title": "Wiper (Uniformed) (Prom)",
+      "application_start": "2027-01-06",
+      "application_end": "2027-01-26",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7318",
+      "title_code": "70210",
+      "title": "Police Officer",
+      "application_start": "2027-02-01",
+      "application_end": "2027-02-16",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7008",
+      "title_code": "92122",
+      "title": "Assistant Printing Press Operator",
+      "application_start": "2027-02-03",
+      "application_end": "2027-02-23",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "trades-operations",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7073",
+      "title_code": "10104",
+      "title": "Eligibility Specialist",
+      "application_start": "2027-02-03",
+      "application_end": "2027-02-23",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7517",
+      "title_code": "70392",
+      "title": "Fire Marshal (Uniformed) (Prom)",
+      "application_start": "2027-02-03",
+      "application_end": "2027-02-23",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7042",
+      "title_code": "31670",
+      "title": "Inspector (Housing)",
+      "application_start": "2027-02-03",
+      "application_end": "2027-02-23",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7043",
+      "title_code": "91001",
+      "title": "Instrumentation Specialist",
+      "application_start": "2027-02-03",
+      "application_end": "2027-02-23",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7523",
+      "title_code": "70316",
+      "title": "Marine Engineer (Uniformed-Fire Department) (Prom)",
+      "application_start": "2027-02-03",
+      "application_end": "2027-04-27",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7048",
+      "title_code": "91546",
+      "title": "Marine Oiler",
+      "application_start": "2027-02-03",
+      "application_end": "2027-02-23",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7049",
+      "title_code": "91547",
+      "title": "Marine Oiler (Ferry Operations)",
+      "application_start": "2027-02-03",
+      "application_end": "2027-02-23",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7053",
+      "title_code": "51221",
+      "title": "Occupational Therapist (DOE)",
+      "application_start": "2027-02-03",
+      "application_end": "2027-02-23",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7536",
+      "title_code": "90769",
+      "title": "Supervisor Elevator Mechanic (Prom)",
+      "application_start": "2027-02-03",
+      "application_end": "2027-02-23",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "trades-operations",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7333",
+      "title_code": "71651",
+      "title": "Traffic Enforcement Agent",
+      "application_start": "2027-02-03",
+      "application_end": "2027-02-23",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7319",
+      "title_code": "70210",
+      "title": "Police Officer",
+      "application_start": "2027-03-01",
+      "application_end": "2027-03-15",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7005",
+      "title_code": "10026",
+      "title": "Administrative Staff Analyst",
+      "application_start": "2027-03-03",
+      "application_end": "2027-03-23",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "administration-finance",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7504",
+      "title_code": "10026",
+      "title": "Administrative Staff Analyst (Prom)",
+      "application_start": "2027-03-03",
+      "application_end": "2027-03-23",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "administration-finance",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7506",
+      "title_code": "10042",
+      "title": "Administrative Traffic Enforcement Agent (Prom)",
+      "application_start": "2027-03-03",
+      "application_end": "2027-03-23",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7510",
+      "title_code": "60422",
+      "title": "Associate Urban Park Ranger (Prom)",
+      "application_start": "2027-03-03",
+      "application_end": "2027-03-23",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7045",
+      "title_code": "90698",
+      "title": "Maintenance Worker",
+      "application_start": "2027-03-03",
+      "application_end": "2027-03-23",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "trades-operations",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7046",
+      "title_code": "90698",
+      "title": "Maintenance Worker (CUNY)",
+      "application_start": "2027-03-03",
+      "application_end": "2027-03-23",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "trades-operations",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7051",
+      "title_code": "91210",
+      "title": "Motor Grader Operator",
+      "application_start": "2027-03-03",
+      "application_end": "2027-03-23",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "trades-operations",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7309",
+      "title_code": "71012",
+      "title": "Police Communications Technician",
+      "application_start": "2027-03-03",
+      "application_end": "2027-03-23",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7062",
+      "title_code": "60910",
+      "title": "Research Assistant",
+      "application_start": "2027-03-03",
+      "application_end": "2027-03-23",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "technology-science",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7328",
+      "title_code": "70810",
+      "title": "Special Officer",
+      "application_start": "2027-03-03",
+      "application_end": "2027-03-23",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7330",
+      "title_code": "708100",
+      "title": "Special Officer (NYC H+H)",
+      "application_start": "2027-03-03",
+      "application_end": "2027-04-27",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7320",
+      "title_code": "70210",
+      "title": "Police Officer",
+      "application_start": "2027-04-01",
+      "application_end": "2027-04-14",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7004",
+      "title_code": "10010",
+      "title": "Administrative Management Auditor",
+      "application_start": "2027-04-07",
+      "application_end": "2027-04-27",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "administration-finance",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7503",
+      "title_code": "10010",
+      "title": "Administrative Management Auditor (Prom)",
+      "application_start": "2027-04-07",
+      "application_end": "2027-04-27",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "administration-finance",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7072",
+      "title_code": "52275",
+      "title": "Assistant Superintendent of Welfare Shelters",
+      "application_start": "2027-04-07",
+      "application_end": "2027-04-27",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "community-social-services",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7014",
+      "title_code": "92305",
+      "title": "Blacksmith",
+      "application_start": "2027-04-07",
+      "application_end": "2027-04-27",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "trades-operations",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7304",
+      "title_code": "70410",
+      "title": "Correction Officer",
+      "application_start": "2027-04-07",
+      "application_end": "2027-04-27",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7306",
+      "title_code": "70811",
+      "title": "Environmental Police Officer",
+      "application_start": "2027-04-07",
+      "application_end": "2027-04-27",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7037",
+      "title_code": "91619",
+      "title": "Heating Plant Technician (Housing Authority)",
+      "application_start": "2027-04-07",
+      "application_end": "2027-04-27",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "community-social-services",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7518",
+      "title_code": "91619",
+      "title": "Heating Plant Technician (Housing Authority) (Prom)",
+      "application_start": "2027-04-07",
+      "application_end": "2027-04-27",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "community-social-services",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7044",
+      "title_code": "92610",
+      "title": "Machinist",
+      "application_start": "2027-04-07",
+      "application_end": "2027-04-27",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "trades-operations",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7521",
+      "title_code": "92610",
+      "title": "Machinist (Prom)",
+      "application_start": "2027-04-07",
+      "application_end": "2027-04-27",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "trades-operations",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7326",
+      "title_code": "60817",
+      "title": "School Safety Agent",
+      "application_start": "2027-04-07",
+      "application_end": "2027-04-27",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7534",
+      "title_code": "71060",
+      "title": "Supervising Fire Alarm Dispatcher (Prom)",
+      "application_start": "2027-04-07",
+      "application_end": "2027-04-27",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7321",
+      "title_code": "70210",
+      "title": "Police Officer",
+      "application_start": "2027-05-03",
+      "application_end": "2027-05-17",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7505",
+      "title_code": "10049",
+      "title": "Administrative Tax Auditor (Prom)",
+      "application_start": "2027-05-05",
+      "application_end": "2027-05-25",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "administration-finance",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7301",
+      "title_code": "52366",
+      "title": "Child Protective Specialist",
+      "application_start": "2027-05-05",
+      "application_end": "2027-05-25",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "community-social-services",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7022",
+      "title_code": "34201",
+      "title": "Construction Project Manager Intern",
+      "application_start": "2027-05-05",
+      "application_end": "2027-05-25",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7025",
+      "title_code": "501010",
+      "title": "Dental Assistant (NYC H+H)",
+      "application_start": "2027-05-05",
+      "application_end": "2027-06-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "health-care",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7520",
+      "title_code": "70260",
+      "title": "Lieutenant (Police) (Prom)",
+      "application_start": "2027-05-05",
+      "application_end": "2027-05-25",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7535",
+      "title_code": "51860",
+      "title": "Supervising Probation Officer (Prom)",
+      "application_start": "2027-05-05",
+      "application_end": "2027-05-25",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7334",
+      "title_code": "71651",
+      "title": "Traffic Enforcement Agent",
+      "application_start": "2027-05-05",
+      "application_end": "2027-05-25",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7322",
+      "title_code": "70210",
+      "title": "Police Officer",
+      "application_start": "2027-06-01",
+      "application_end": "2027-06-14",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7071",
+      "title_code": "10056",
+      "title": "Administrative Director of Social Services",
+      "application_start": "2027-06-02",
+      "application_end": "2027-06-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "community-social-services",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7541",
+      "title_code": "10056",
+      "title": "Administrative Director of Social Services (Prom)",
+      "application_start": "2027-06-02",
+      "application_end": "2027-06-22",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "community-social-services",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7511",
+      "title_code": "52288",
+      "title": "Associate Youth Development Specialist (Prom)",
+      "application_start": "2027-06-02",
+      "application_end": "2027-06-22",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "community-social-services",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7526",
+      "title_code": "70312",
+      "title": "Pilot (Prom)",
+      "application_start": "2027-06-02",
+      "application_end": "2027-06-22",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7310",
+      "title_code": "71012",
+      "title": "Police Communications Technician",
+      "application_start": "2027-06-02",
+      "application_end": "2027-06-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7529",
+      "title_code": "70210",
+      "title": "Police Officer (Prom)",
+      "application_start": "2027-06-02",
+      "application_end": "2027-06-22",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7060",
+      "title_code": "60216",
+      "title": "Public Records Officer",
+      "application_start": "2027-06-02",
+      "application_end": "2027-06-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "administration-finance",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7531",
+      "title_code": "60216",
+      "title": "Public Records Officer (Prom)",
+      "application_start": "2027-06-02",
+      "application_end": "2027-06-22",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "administration-finance",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7066",
+      "title_code": "92340",
+      "title": "Sheet Metal Worker",
+      "application_start": "2027-06-02",
+      "application_end": "2027-06-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "trades-operations",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7067",
+      "title_code": "11704",
+      "title": "Supervisor of Office Machine Operations",
+      "application_start": "2027-06-02",
+      "application_end": "2027-06-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    },
+    {
+      "exam_number": "7537",
+      "title_code": "11704",
+      "title": "Supervisor of Office Machine Operations (Prom)",
+      "application_start": "2027-06-02",
+      "application_end": "2027-06-22",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-schedule"
+      ]
+    }
+  ]
+}

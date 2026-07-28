@@ -23,9 +23,11 @@ sources:
   - README.md
   - MISSION.md
   - external_awards.js
+  - staffing.js
+  - tools/build_staffing_exams.mjs
   - worker/wrangler.toml
   - worker/src/worker.mjs
-sources_hash: 66f6fcf185436daa70055dabfecadd2a2c16595ea4870e0cee484259b963cf24
+sources_hash: 0f6efabf3f0c833537f6ab1987335f6d7313562fa44472c3d5aa2a8c9ec811dd
 ---
 
 # crol-list — architecture
@@ -39,6 +41,7 @@ The NYC City Record publishes every agency contract, hearing, rule change, rezon
 ```
 Browser (crol-list.org — static on GitHub Pages)
   index.html  (inline CSS + vanilla JS, ~100% of the feature surface)
+        ├──►  data/staffing_exams.json (build-time materialized DCAS exam view)
         │  most queries go direct — CORS-open, no key needed
         ├──►  NYC Open Data / Socrata SODA (City Record dg92-zbpx, payroll, civil service, ZAP)
         ├──►  NYS Open Data / Socrata SODA (ABO awards 8w5p-k45m, d84c-dk28)
@@ -82,7 +85,7 @@ Analytics Engine: crol_usage_events_v1 — versioned aggregate page/click/search
   events; enumerated dimensions only, with no cookies or visitor identifiers
 ```
 
-Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground truth. `index.html` queries the CORS-open Socrata feeds directly; the worker proxies Checkbook and also holds secrets (Claude, Resend), shared state (subscriptions, counters), and scheduled work (the digest cron). The Wave-5 forecasting layer sits inside the worker because it needs both a cache and the cron.
+Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground truth. `index.html` queries the CORS-open Socrata feeds directly; the Staffing career guide is the exception, using one committed materialized view built from DCAS schedules, NOEs, and Open Data so opening it never fans out to upstream APIs. The worker proxies Checkbook and also holds secrets (Claude, Resend), shared state (subscriptions, counters), and scheduled work (the digest cron). The Wave-5 forecasting layer sits inside the worker because it needs both a cache and the cron.
 
 ## Data stores & schemas
 
@@ -93,7 +96,7 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 - **`index.html` localStorage** — client-side only: investigation workspace (pinned notices + notes), query cache, saved searches, plain/rigor toggle.
 - **D1 `crol-notices`** — mirror of recent notices (`notices` table: parsed columns + honest-data fields `contract_amount_valid`, `due_year`, plus the raw source row for schema-drift recovery), `ingest_state` (Socrata ingest cursor), and `prior_cycle_matches` (per-notice precomputed `{strict, near, eligibleCount}` prior-cycle match sets — the cache behind `GET /priorcycle/<id>`; compute-on-miss, cron pre-warms freshly-ingested Award notices, ranked by `worker/src/lib/prior_cycle.mjs`, a hand-synced dual implementation of index.html's matchers). Refreshed by the daily cron (`worker/src/ingest.mjs`); Socrata remains the source of truth.
 - **Analytics Engine `crol_usage_events_v1`** — first-party aggregate page, lens, search, deep-link, export, alert, feed, and investigation events. The versioned schema in `docs/analytics-event-taxonomy.md` permits only bounded enumerations; it stores no query text, email, IP address, cookie, fingerprint, or visitor identifier. `/stats` reads sampling-aware 7/30-day aggregates through Cloudflare's SQL API.
-- **`data/`** — committed seed data for People-lens role chips (instant, no network).
+- **`data/`** — committed seed data for Staffing role chips plus `staffing_exams.json`, a compact build-time view of the current DCAS open-exam page/NOEs, annual schedule dataset `4ptz-hmtc`, aggregate active-list metadata from `vx8i-nprf`, and a City Record negative-control check. Source snapshots record provenance, refresh cadence, and staleness thresholds; candidate-level active-list rows are never committed.
 
 ## Serving & deploy
 
@@ -105,7 +108,7 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 
 ## Surface
 
-- **Seven lenses:** Money (RFP→Award pipeline + forecast timeline), People (title decoder + payroll), Land (rezonings + map), Property (asset lifecycle), Rules, Meetings, Alerts (subscriptions + watchlist).
+- **Seven lenses:** Money (RFP→Award pipeline + forecast timeline), Staffing (plain-language civil-service guide + open/upcoming exam explorer + title decoder/payroll), Land (rezonings + map), Property (asset lifecycle), Rules, Meetings, Alerts (subscriptions + watchlist).
 - **Location-aware hearings:** Meetings joins public-meeting notices with dated rules hearings, offers rolling week/month filters plus affected borough and neighborhood controls, and groups unlocated notices visibly instead of dropping them. Hearing cards render affected area and venue as independent facts; location-aware meeting watches replay the same distinction in digest matching.
 - **Forecasting UI:** vertical timeline widget on vendor/agency profile panels — official §112 plan entries and calculated expirations carry distinct badges.
 - **Vendor profiles:** in response to user feedback, identity, top-agency chips, 15 recent notices, and forecasts now paint together from one daily precomputed KV projection. Full-text mentions stay behind an explicit disclosure because joining every vendor stem against the recent text corpus is disproportionate; missing or stale projection records use the original live Socrata resolver.
@@ -119,7 +122,7 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 
 ## Seams
 
-- **Consumes:** NYC Open Data Socrata SODA (City Record `dg92-zbpx`, MOCS plans `whpb-ebtd`, payroll `k397-673e`, civil service `vx8i-nprf`, ZAP `hgx4-8ukb`), NYS Open Data Socrata SODA (Authorities Budget Office local-authority awards `8w5p-k45m`, local-development-corporation awards `d84c-dk28`), Checkbook NYC API (`Contracts`, `Contracts_NYCHA`), NYC GeoSearch / MapPLUTO, DOB job filings, Anthropic Claude Haiku (`/nl`), Resend (email), Cloudflare Turnstile, Cloudflare KV + Analytics Engine + Cron Triggers.
+- **Consumes:** NYC Open Data Socrata SODA (City Record `dg92-zbpx`, MOCS plans `whpb-ebtd`, payroll `k397-673e`, annual exam schedule `4ptz-hmtc`, active civil-service lists `vx8i-nprf`, ZAP `hgx4-8ukb`), current DCAS exam schedules and NOEs, NYS Open Data Socrata SODA (Authorities Budget Office local-authority awards `8w5p-k45m`, local-development-corporation awards `d84c-dk28`), Checkbook NYC API (`Contracts`, `Contracts_NYCHA`), NYC GeoSearch / MapPLUTO, DOB job filings, Anthropic Claude Haiku (`/nl`), Resend (email), Cloudflare Turnstile, Cloudflare KV + Analytics Engine + Cron Triggers.
 - **Feeds:** subscriber inboxes (daily/weekly digests + forecast early warnings); public stats at `crol-list.org/stats.html`; RSS/Atom/JSON Feed/iCal consumers.
 - **Sister repo (archived):** `crol-worker` — pre-move history of the worker before it was open-sourced into this monorepo (2026-07-02).
 
