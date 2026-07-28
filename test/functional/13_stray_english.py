@@ -351,6 +351,25 @@ def run_notice_deep_link(pw, lang, frags):
     return violations
 
 
+# card 8 (w4-a11y-i18n-landing) — the landing-identity layer, on a genuinely fresh visit in
+# each shipping language. install_routes' returning-visitor init script is deliberately
+# overridden here (see that function's own docstring) so this always lands on the layer.
+def run_landing_layer(pw, lang, frags):
+    browser = pw.chromium.launch()
+    ctx = browser.new_context()
+    ctx.add_init_script("try{localStorage.removeItem('crol_landing_seen_v1');}catch(e){}")
+    ctx.add_init_script(f"localStorage.setItem('crol_lang', {json.dumps(lang)})")
+    page = ctx.new_page()
+    install_routes(page)
+    page.goto(BASE, timeout=30000)
+    page.wait_for_load_state("load")
+    page.wait_for_timeout(1200)
+    violations, seen = [], set()
+    collect(page, "landing-identity", frags, violations, seen)
+    browser.close()
+    return violations
+
+
 def run_lang(pw, lang):
     strings = load_strings()
     frags = dict_fragments(strings, lang)
@@ -363,6 +382,7 @@ def run_lang(pw, lang):
     if "index" not in PAGES:
         return all_violations
     all_violations += run_notice_deep_link(pw, lang, frags)
+    all_violations += run_landing_layer(pw, lang, frags)
     browser = pw.chromium.launch()
     ctx = browser.new_context()
     # Seed a pinned item so localStorage-gated states (the hotfix-2 blind spot: the workspace
