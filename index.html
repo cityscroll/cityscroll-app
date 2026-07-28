@@ -420,7 +420,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=64192263"></script>
+<script src="i18n.js?v=5ae00c30"></script>
 <script defer src="analytics.js?v=1.1.0"></script>
 <script src="nl_parse.js"></script>
 <script src="nl_deeplink.js"></script>
@@ -457,7 +457,7 @@
     <nav class="tabs">
       <button class="tabbtn active" data-tab="money" data-i18n="tab_money">Contracts</button>
       <button class="tabbtn" data-tab="people" data-i18n="tab_people">Staffing</button>
-      <button class="tabbtn" data-tab="land" data-i18n="tab_land">Land</button>
+      <button class="tabbtn" data-tab="land" data-i18n="tab_land">Zoning</button>
       <button class="tabbtn" data-tab="property" data-i18n="tab_property">Property</button>
       <button class="tabbtn" data-tab="rules" data-i18n="tab_rules">Rules</button>
       <button class="tabbtn" data-tab="meetings" data-i18n="tab_meetings">Meetings</button>
@@ -546,7 +546,7 @@
           <!-- search() owns this dynamic heading. Leaving data-i18n here lets the initial
                applyStrings() pass overwrite a deep-linked Award heading with the static
                default after the correct search has already rendered. -->
-          <h2><span id="reshead">Open Requests for Proposals (RFPs)</span> <span class="count" id="rescount"></span></h2>
+          <h2><span id="reshead">Open RFPs</span> <span class="count" id="rescount"></span></h2>
           <span class="export-actions">
             <button id="export" class="mini export-control" data-export-csv="money" data-i18n="export_csv">Export CSV</button>
             <button class="mini export-control" data-export-xlsx="money" data-i18n="export_xlsx">Export Excel (.xlsx)</button>

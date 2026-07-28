@@ -120,34 +120,36 @@ def open_entry(page: Page, base_url: str) -> None:
 
 
 def position_capture(page: Page, state: str, width: int) -> dict[str, float]:
-    if state == "after":
-        target = page.locator("#landcopy")
-        if width == 390:
-            target.scroll_into_view_if_needed()
-            page.evaluate(
-                """() => {
-                  const el=document.querySelector('#ldetail .rolename');
-                  window.scrollTo(0, Math.max(0, el.getBoundingClientRect().top + scrollY - 190));
-                }"""
-            )
-        else:
-            page.evaluate(
-                """() => {
-                  const el=document.querySelector('#tab-land .grid');
-                  window.scrollTo(0, Math.max(0, el.getBoundingClientRect().top + scrollY - 150));
-                }"""
-            )
-    else:
-        target = page.locator('.tabbtn[data-tab="money"]')
-        page.evaluate("window.scrollTo(0, 0)")
-    page.wait_for_timeout(250)
+    target = page.locator('.tabbtn[data-tab="land"]')
+    target.scroll_into_view_if_needed()
+    page.evaluate("window.scrollTo(0, 0)")
+    page.wait_for_timeout(150)
     box = target.bounding_box()
     if box is None:
         raise AssertionError(f"annotation target missing for {state}-{width}")
+    if box["y"] > 120:
+        page.evaluate(
+            "(y) => window.scrollTo(0, Math.max(0, y - 25))",
+            box["y"],
+        )
+        page.wait_for_timeout(150)
+        box = target.bounding_box()
+        if box is None:
+            raise AssertionError(
+                f"annotation target missing after recenter for {state}-{width}"
+            )
+    if box["y"] > 120:
+        raise AssertionError(
+            f"annotation target y too low for {state}-{width}: {box['y']} (expected top nav row)"
+        )
+    if box["x"] < 0:
+        raise AssertionError(f"annotation target x invalid for {state}-{width}: {box['x']}")
     return box
 
 
-def annotate(source: Path, destination: Path, state: str, target: dict[str, float]) -> None:
+def annotate(
+    source: Path, destination: Path, state: str, target: dict[str, float]
+) -> dict[str, float]:
     image = Image.open(source).convert("RGB")
     draw = ImageDraw.Draw(image, "RGBA")
     width = image.width
@@ -184,6 +186,26 @@ def annotate(source: Path, destination: Path, state: str, target: dict[str, floa
         fill=color,
     )
     image.save(destination, optimize=True)
+    return {"x": x1, "y": y1, "x2": x2, "y2": y2}
+
+
+def assert_annotation_crops(path: Path, rect: dict[str, float], state: str, width: int) -> None:
+    image = Image.open(path).convert("RGB")
+    x1 = max(0, int(rect["x"]))
+    y1 = max(0, int(rect["y"]) - 4)
+    x2 = min(image.width, int(rect["x2"]) + 4)
+    y2 = min(image.height, int(rect["y2"]) + 4)
+    crop = image.crop((x1, y1, x2, y2))
+    gray = crop.convert("L")
+    pixel_count = gray.width * gray.height
+    non_background = sum(1 for p in gray.getdata() if p < 240)
+    ratio = non_background / pixel_count if pixel_count else 0
+    print(f"{path.name}: rect={rect}, dark_ratio={ratio:.4f}, size={crop.size}")
+    if ratio < 0.02:
+        raise AssertionError(
+            f"{state}-{width} annotated crop has insufficient contrast: "
+            f"ratio={ratio:.4f}, check if annotation is drawing wrong area"
+        )
 
 
 def capture_state(browser, tree: Path, state: str, width: int, height: int) -> None:
@@ -201,12 +223,13 @@ def capture_state(browser, tree: Path, state: str, width: int, height: int) -> N
             open_entry(page, base_url)
         else:
             page.goto(f"{base_url}#land/{PROJECT_ID}", wait_until="domcontentloaded")
-            page.locator("#tab-money.active").wait_for(state="visible")
-            page.locator("#list .empty:not(.skel)").wait_for(state="visible")
+            page.locator('.tabbtn[data-tab="land"]').wait_for(state="visible")
         target = position_capture(page, state, width)
         raw = OUTPUT / f"{state}-{width}.png"
         page.screenshot(path=raw, animations="disabled")
-        annotate(raw, OUTPUT / f"{state}-{width}-annotated.png", state, target)
+        annotated = OUTPUT / f"{state}-{width}-annotated.png"
+        drawn_rect = annotate(raw, annotated, state, target)
+        assert_annotation_crops(annotated, drawn_rect, state, width)
         if page_errors:
             raise AssertionError(f"{state}-{width} page errors: {page_errors}")
         context.close()

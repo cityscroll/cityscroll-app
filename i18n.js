@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "168d976c",
-  "zh-Hans": "1b962bef",
-  ru: "3c0eac49",
-  bn: "0878a4d8",
-  ht: "9fdf8bb3",
-  ko: "6dd77e51",
-  fr: "50c49208",
-  pl: "56d93c77",
-  ar: "3e18d438",
-  ur: "fe477134",
+  es: "5c42ac41",
+  "zh-Hans": "ccda896a",
+  ru: "9043bd68",
+  bn: "a338e67e",
+  ht: "bcc9a815",
+  ko: "3ad0a991",
+  fr: "35eadf63",
+  pl: "6bbe9320",
+  ar: "df610899",
+  ur: "964ef12d",
 };
 
 
@@ -146,7 +146,7 @@ const STRINGS = {
     // Tab labels
     tab_money:    "Contracts",
     tab_people:   "Staffing",
-    tab_land:     "Land",
+    tab_land:     "Zoning",
     tab_property: "Property",
     tab_rules:    "Rules",
     tab_meetings: "Meetings",
@@ -902,7 +902,7 @@ const STRINGS = {
     stats_col_count: "Notices",
     stats_cat_empty: "No digests have matched anything yet.",
     stats_h_bylens: "Searches, by section",
-    stats_p_bylens: "Which part of the site people asked about: contracts, staffing, land, property, rules, or meetings.",
+    stats_p_bylens: "Which part of the site people asked about: contracts, staffing, zoning, property, rules, or meetings.",
     stats_col_lens: "Section",
     stats_col_last7: "Last 7 days",
     stats_col_alltime: "All time",
