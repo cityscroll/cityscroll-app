@@ -64,6 +64,7 @@
     landing_ask_placeholder: "rezonificaciones cerca de mí, contratos de TI abiertos ahora…",
     landing_more_link: "También rastrea cambios de personal, ventas de propiedades, reglas de agencias y reuniones públicas",
     landing_skip_to_tool: "Saltar a la herramienta completa",
+    landing_since: "desde",
     nl_placeholder_money: "describa lo que busca…",
     ask_btn: "Buscar",
     show_label: "Mostrar",

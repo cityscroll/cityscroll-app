@@ -72,6 +72,7 @@
     landing_ask_placeholder: "zmiany stref w pobliżu, otwarte kontrakty IT…",
     landing_more_link: "Śledzi też zmiany kadrowe, sprzedaż nieruchomości, przepisy agencji i posiedzenia publiczne",
     landing_skip_to_tool: "Przejdź do pełnego narzędzia",
+    landing_since: "od",
     nl_placeholder_money: "opisz, czego szukasz…",
     ask_btn: "Szukaj",
     show_label: "Pokaż",

@@ -24,7 +24,7 @@ from playwright.sync_api import Page, Route, sync_playwright
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "test" / "e2e" / "shots" / "landing-identity"
+SHOTS = ROOT / "test" / "e2e" / "shots"
 VIEWPORTS = [(390, 844), (1440, 900)]
 
 
@@ -72,15 +72,11 @@ def install_routes(page: Page) -> None:
     page.route("https://**", lambda route: route.abort())
 
 
-def annotate(source: Path, destination: Path, state: str, target: dict[str, float]) -> None:
+def annotate(source: Path, destination: Path, state: str, target: dict[str, float], messages: dict[str, str]) -> None:
     image = Image.open(source).convert("RGB")
     draw = ImageDraw.Draw(image, "RGBA")
     color = (146, 54, 45, 255) if state == "before" else (35, 112, 83, 255)
-    message = (
-        "Before · A bare first visit sees the full power tool immediately, no orientation."
-        if state == "before"
-        else "After · A first-time visitor sees a short welcome and two task-phrased choices first."
-    )
+    message = messages[state]
     font = ImageFont.load_default(size=17 if image.width >= 700 else 14)
     label = "\n".join(textwrap.wrap(message, width=68 if image.width >= 700 else 38))
     text_box = draw.multiline_textbbox((0, 0), label, font=font, spacing=4)
@@ -109,7 +105,7 @@ def annotate(source: Path, destination: Path, state: str, target: dict[str, floa
     image.save(destination, optimize=True)
 
 
-def capture(browser, tree: Path, state: str, width: int, height: int) -> None:
+def capture(browser, tree: Path, state: str, width: int, height: int, selector: str | None, messages: dict[str, str], output: Path) -> None:
     with StaticServer(tree) as base_url:
         context = browser.new_context(
             viewport={"width": width, "height": height},
@@ -121,7 +117,8 @@ def capture(browser, tree: Path, state: str, width: int, height: int) -> None:
         install_routes(page)
         # A genuinely fresh browser, no hash — exactly the visit this feature targets.
         page.goto(base_url, wait_until="domcontentloaded")
-        selector = "#landing-identity" if state == "after" else "header.masthead"
+        if selector is None:
+            selector = "#landing-identity" if state == "after" else "header.masthead"
         target = page.locator(selector)
         target.wait_for(state="visible")
         page.evaluate("document.fonts && document.fonts.ready")
@@ -132,11 +129,11 @@ def capture(browser, tree: Path, state: str, width: int, height: int) -> None:
         if box["x"] < 0 or box["y"] < 0 or box["width"] < 24 or box["height"] < 24:
             raise AssertionError(f"{state}-{width}: invalid target bounds {box}")
 
-        OUTPUT.mkdir(parents=True, exist_ok=True)
-        raw = OUTPUT / f"{state}-{width}.png"
-        annotated = OUTPUT / f"{state}-{width}-annotated.png"
+        output.mkdir(parents=True, exist_ok=True)
+        raw = output / f"{state}-{width}.png"
+        annotated = output / f"{state}-{width}-annotated.png"
         page.screenshot(path=raw, animations="disabled")
-        annotate(raw, annotated, state, box)
+        annotate(raw, annotated, state, box, messages)
         if annotated.stat().st_size < 10_000:
             raise AssertionError(f"{annotated.name}: capture unexpectedly small")
         if errors:
@@ -148,7 +145,26 @@ def capture(browser, tree: Path, state: str, width: int, height: int) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--before", default="HEAD")
+    parser.add_argument(
+        "--selector",
+        default=None,
+        help="override the captured element for BOTH states (default: the whole layer vs. "
+        "the masthead, for the layer's introduction; pass a narrower selector — e.g. "
+        "#landingCtaContracts — when before/after are both showing the layer and only a "
+        "smaller region changed).",
+    )
+    parser.add_argument(
+        "--message-before",
+        default="Before · A bare first visit sees the full power tool immediately, no orientation.",
+    )
+    parser.add_argument(
+        "--message-after",
+        default="After · A first-time visitor sees a short welcome and two task-phrased choices first.",
+    )
+    parser.add_argument("--out-subdir", default="landing-identity")
     args = parser.parse_args()
+    messages = {"before": args.message_before, "after": args.message_after}
+    output = SHOTS / args.out_subdir
 
     with tempfile.TemporaryDirectory(prefix=".capture-landing-", dir=ROOT) as temporary:
         before_tree = Path(temporary)
@@ -156,8 +172,8 @@ def main() -> None:
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch()
             for width, height in VIEWPORTS:
-                capture(browser, before_tree, "before", width, height)
-                capture(browser, ROOT, "after", width, height)
+                capture(browser, before_tree, "before", width, height, args.selector, messages, output)
+                capture(browser, ROOT, "after", width, height, args.selector, messages, output)
             browser.close()
 
 

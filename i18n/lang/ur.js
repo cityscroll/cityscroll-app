@@ -66,6 +66,7 @@
     landing_ask_placeholder: "میرے قریب دوبارہ زوننگ، ابھی کھلے آئی ٹی ٹھیکے…",
     landing_more_link: "عملے کی تبدیلیاں، جائیداد کی فروخت، ایجنسی کے قواعد، اور عوامی اجلاس بھی ٹریک کرتا ہے",
     landing_skip_to_tool: "مکمل ٹول پر جائیں",
+    landing_since: "سے",
     nl_placeholder_money: "بیان کریں کہ آپ کیا تلاش کر رہے ہیں…",
     ask_btn: "پوچھیں",
     show_label: "دکھائیں",

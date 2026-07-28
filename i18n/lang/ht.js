@@ -63,6 +63,7 @@
     landing_ask_placeholder: "chanjman zonaj toupre m, kontra IT ki louvri kounye a…",
     landing_more_link: "Li swiv tou chanjman pèsonèl, vant pwopriyete, règleman ajans, ak reyinyon piblik",
     landing_skip_to_tool: "Sote ale nan zouti konplè a",
+    landing_since: "depi",
     nl_placeholder_money: "dekri sa w ap chèche a…",
     ask_btn: "Mande",
     show_label: "Montre",

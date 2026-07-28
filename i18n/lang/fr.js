@@ -69,6 +69,7 @@
     landing_ask_placeholder: "rezonages près de chez moi, contrats informatiques ouverts…",
     landing_more_link: "Suit aussi les changements de personnel, les ventes de biens, les règles des agences et les réunions publiques",
     landing_skip_to_tool: "Passer à l'outil complet",
+    landing_since: "depuis",
 
     // Money lens controls
     nl_placeholder_money: "décrivez ce que vous recherchez…",

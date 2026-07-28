@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "d13985c9",
-  "zh-Hans": "c0590b8b",
-  ru: "8fb3d4b1",
-  bn: "5e9352e0",
-  ht: "4c92d2f1",
-  ko: "e4850b1b",
-  fr: "1a1c9057",
-  pl: "b840e83c",
-  ar: "f3e994b3",
-  ur: "905de5cd",
+  es: "94f9f139",
+  "zh-Hans": "bffbb1dd",
+  ru: "b0919afb",
+  bn: "ef2003e5",
+  ht: "1a30cee1",
+  ko: "9f321946",
+  fr: "6f7262c0",
+  pl: "e2764a76",
+  ar: "588c9bd8",
+  ur: "d7099b9b",
 };
 
 
@@ -162,6 +162,7 @@ const STRINGS = {
     landing_ask_placeholder:  "rezonings near me, IT contracts open now…",
     landing_more_link:        "Also tracks staffing, property sales, agency rules, and public meetings",
     landing_skip_to_tool:     "Skip to the full tool",
+    landing_since:            "since",
 
     // Money lens controls
     nl_placeholder_money: "describe what you're looking for…",

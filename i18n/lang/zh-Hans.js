@@ -64,6 +64,7 @@
     landing_ask_placeholder: "我附近的重新分区、现在开放的IT合同…",
     landing_more_link: "还追踪人事变动、房产出售、机构规则和公开会议",
     landing_skip_to_tool: "跳转到完整工具",
+    landing_since: "自",
     nl_placeholder_money: "描述您要查找的内容…",
     ask_btn: "搜索",
     show_label: "显示",

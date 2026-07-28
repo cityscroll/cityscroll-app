@@ -64,6 +64,7 @@
     landing_ask_placeholder: "내 주변 구역 재지정, 지금 열려 있는 IT 계약…",
     landing_more_link: "인력 변경, 부동산 매각, 기관 규정, 공개 회의도 추적합니다",
     landing_skip_to_tool: "전체 도구로 건너뛰기",
+    landing_since: "부터",
     nl_placeholder_money: "찾으시는 내용을 설명해 주세요…",
     ask_btn: "검색",
     show_label: "표시",
