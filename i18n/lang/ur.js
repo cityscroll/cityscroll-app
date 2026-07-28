@@ -293,6 +293,7 @@
     footer_changelog: "تبدیلیوں کی فہرست",
     footer_stats: "اعداد و شمار",
     site_tagline: "نیویارک سٹی کے ان معاہدوں، دوبارہ زوننگ، اور سماعتوں کو سبسکرائب کریں جن میں آپ کی دلچسپی ہو۔",
+    house_brand_callout: "CityScroll کا ایک ٹول",
     skip_to_content: "مواد پر جائیں",
     or_more_results: "{n} یا زیادہ نتائج",
     results_count: "{n} نتائج",

@@ -290,6 +290,7 @@
     footer_changelog: "Журнал изменений",
     footer_stats: "Статистика",
     site_tagline: "Подписывайтесь на интересующие вас контракты, изменения зонирования и публичные слушания Нью-Йорка.",
+    house_brand_callout: "Инструмент от CityScroll",
     skip_to_content: "Перейти к содержимому",
     or_more_results: "{n} или более результатов",
     results_count: "{n} результатов",

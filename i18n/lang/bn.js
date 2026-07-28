@@ -290,6 +290,7 @@
     footer_changelog: "পরিবর্তন লগ",
     footer_stats: "পরিসংখ্যান",
     site_tagline: "আপনার আগ্রহের নিউ ইয়র্ক সিটির চুক্তি, অঞ্চল পুনর্বিন্যাস ও শুনানিতে সাবস্ক্রাইব করুন।",
+    house_brand_callout: "CityScroll-এর একটি টুল",
     skip_to_content: "মূল বিষয়বস্তুতে যান",
     or_more_results: "{n} বা তার বেশি ফলাফল",
     results_count: "{n}টি ফলাফল",

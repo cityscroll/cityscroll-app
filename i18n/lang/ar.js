@@ -293,6 +293,7 @@
     footer_changelog: "سجل التغييرات",
     footer_stats: "إحصاءات",
     site_tagline: "اشترك في عقود مدينة نيويورك وإعادة تقسيم المناطق وجلسات الاستماع التي تهمّك.",
+    house_brand_callout: "أداة من CityScroll",
     skip_to_content: "تخطَّ إلى المحتوى",
     or_more_results: "{n} نتيجة أو أكثر",
     results_count: "{n} نتيجة",

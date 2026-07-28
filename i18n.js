@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "94f9f139",
-  "zh-Hans": "bffbb1dd",
-  ru: "b0919afb",
-  bn: "ef2003e5",
-  ht: "1a30cee1",
-  ko: "9f321946",
-  fr: "6f7262c0",
-  pl: "e2764a76",
-  ar: "588c9bd8",
-  ur: "d7099b9b",
+  es: "1c40fe35",
+  "zh-Hans": "2334a885",
+  ru: "7d232428",
+  bn: "9a865699",
+  ht: "7876e6b6",
+  ko: "8a9c7fa9",
+  fr: "169c4646",
+  pl: "138b169a",
+  ar: "6872bd87",
+  ur: "18a3858c",
 };
 
 
@@ -438,6 +438,7 @@ const STRINGS = {
 
     // Front-page masthead
     site_tagline: "Subscribe to NYC contracts, rezonings, and hearings that interest you.",
+    house_brand_callout: "A CityScroll tool",
 
     // Skip link
     skip_to_content: "Skip to content",

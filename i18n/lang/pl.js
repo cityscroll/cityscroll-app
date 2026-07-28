@@ -298,6 +298,7 @@
     footer_changelog: "Historia zmian",
     footer_stats: "Statystyki",
     site_tagline: "Subskrybuj umowy, zmiany stref i wysłuchania publiczne w Nowym Jorku, które Cię interesują.",
+    house_brand_callout: "Narzędzie od CityScroll",
     skip_to_content: "Przejdź do treści",
     or_more_results: "{n} lub więcej wyników",
     results_count: "{n} wyników",

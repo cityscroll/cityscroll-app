@@ -290,6 +290,7 @@
     footer_changelog: "변경 이력",
     footer_stats: "통계",
     site_tagline: "관심 있는 뉴욕시의 계약, 구역 재지정, 청문회를 구독하세요.",
+    house_brand_callout: "CityScroll의 도구",
     skip_to_content: "본문으로 건너뛰기",
     or_more_results: "{n}건 이상의 결과",
     results_count: "{n}건의 결과",

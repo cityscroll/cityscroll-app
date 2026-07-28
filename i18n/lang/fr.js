@@ -345,6 +345,7 @@
 
     // Skip link
     site_tagline: "Abonnez-vous aux contrats, rezonages et auditions publiques de la Ville de New York qui vous intéressent.",
+    house_brand_callout: "Un outil CityScroll",
     skip_to_content: "Aller au contenu",
 
     // Announcements (sr-only)

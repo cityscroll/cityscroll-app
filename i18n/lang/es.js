@@ -290,6 +290,7 @@
     footer_changelog: "Registro de cambios",
     footer_stats: "Estadísticas",
     site_tagline: "Suscríbete a los contratos, rezonificaciones y audiencias de la Ciudad de Nueva York que te interesen.",
+    house_brand_callout: "Una herramienta de CityScroll",
     skip_to_content: "Ir al contenido",
     or_more_results: "{n} o más resultados",
     results_count: "{n} resultados",

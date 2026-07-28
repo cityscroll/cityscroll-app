@@ -289,6 +289,7 @@
     footer_changelog: "Istorik chanjman",
     footer_stats: "Estatistik",
     site_tagline: "Abòne w a kontra, chanjman zonaj, ak seyans piblik Vil New York ki enterese w.",
+    house_brand_callout: "Yon zouti CityScroll",
     skip_to_content: "Ale dirèk nan kontni an",
     or_more_results: "{n} oswa plis rezilta",
     results_count: "{n} rezilta",

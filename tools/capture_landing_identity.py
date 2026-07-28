@@ -105,7 +105,7 @@ def annotate(source: Path, destination: Path, state: str, target: dict[str, floa
     image.save(destination, optimize=True)
 
 
-def capture(browser, tree: Path, state: str, width: int, height: int, selector: str | None, messages: dict[str, str], output: Path) -> None:
+def capture(browser, tree: Path, state: str, width: int, height: int, selector: str | None, messages: dict[str, str], output: Path, hash_route: str = "") -> None:
     with StaticServer(tree) as base_url:
         context = browser.new_context(
             viewport={"width": width, "height": height},
@@ -115,8 +115,10 @@ def capture(browser, tree: Path, state: str, width: int, height: int, selector: 
         errors: list[str] = []
         page.on("pageerror", lambda error: errors.append(str(error)))
         install_routes(page)
-        # A genuinely fresh browser, no hash — exactly the visit this feature targets.
-        page.goto(base_url, wait_until="domcontentloaded")
+        # A genuinely fresh browser, no hash — exactly the visit this feature targets. Pass
+        # --hash to instead bypass the identity layer and capture tool chrome (e.g. the
+        # persistent masthead), a completely different visit this tool can also evidence.
+        page.goto(base_url + hash_route, wait_until="domcontentloaded")
         if selector is None:
             selector = "#landing-identity" if state == "after" else "header.masthead"
         target = page.locator(selector)
@@ -162,6 +164,12 @@ def main() -> None:
         default="After · A first-time visitor sees a short welcome and two task-phrased choices first.",
     )
     parser.add_argument("--out-subdir", default="landing-identity")
+    parser.add_argument(
+        "--hash",
+        default="",
+        help="navigate to base_url + this (e.g. '#money') instead of the bare URL — bypasses "
+        "the identity layer to capture tool chrome (e.g. the persistent masthead) instead.",
+    )
     args = parser.parse_args()
     messages = {"before": args.message_before, "after": args.message_after}
     output = SHOTS / args.out_subdir
@@ -172,8 +180,8 @@ def main() -> None:
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch()
             for width, height in VIEWPORTS:
-                capture(browser, before_tree, "before", width, height, args.selector, messages, output)
-                capture(browser, ROOT, "after", width, height, args.selector, messages, output)
+                capture(browser, before_tree, "before", width, height, args.selector, messages, output, args.hash)
+                capture(browser, ROOT, "after", width, height, args.selector, messages, output, args.hash)
             browser.close()
 
 
