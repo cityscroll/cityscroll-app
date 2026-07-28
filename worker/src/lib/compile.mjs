@@ -2,13 +2,15 @@
 // Mirrors the frontend alert preview (aFetch) so a subscriber's digest matches what they previewed.
 // No model call — the filter was already compiled at subscribe time; this is deterministic replay.
 
+import { dateWindowEnd, hearingMatchesLocation } from "./hearings.mjs";
+
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json"; // City Record
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";  // Zoning Application Portal
 // additional_description_1 is fetched so a digest item can show WHY a keyword matched when
 // the term isn't in the title (see matchEvidence() in lib/digest.mjs) -- not otherwise shown.
 const CR_SELECT = "request_id,start_date,agency_name,short_title,pin,contract_amount,vendor_name,due_date,contact_name,contact_phone,email,section_name,additional_description_1";
 // Section lenses additionally need the event date + address for a useful digest line.
-const CR_SELECT_EV = CR_SELECT + ",event_date,street_address_1";
+const CR_SELECT_EV = CR_SELECT + ",event_date,street_address_1,street_address_2,building_name,city,state,zip_code,additional_description_2,additional_description_3,other_info_1,other_info_2,other_info_3,printout_1";
 const SECTION_BY_LENS = {
   property: "Property Disposition",
   rules: "Agency Rules",
@@ -114,14 +116,29 @@ export function compileSub(sub, todayISO) {
     // property / rules / meetings: a deterministic City Record section query — same shape the
     // lens's own feed uses. Meetings watches mean "upcoming events", not "any new row about a
     // past meeting", so they get an event-date floor and soonest-first ordering.
-    let where = `section_name='${SECTION_BY_LENS[sub.lens]}'`;
+    let where = sub.lens === "meetings"
+      ? "(section_name='Public Hearings and Meetings' OR (section_name='Agency Rules' AND type_of_notice_description='Public Hearings' AND event_date IS NOT NULL))"
+      : `section_name='${SECTION_BY_LENS[sub.lens]}'`;
     const agency = typeof f.agency === "string" && f.agency.trim() ? f.agency.trim().replace(/'/g, "''") : null;
     if (agency) where += ` AND agency_name='${agency}'`;
     let order = "start_date DESC";
-    if (sub.lens === "meetings") { where += ` AND event_date > '${todayISO}'`; order = "event_date ASC"; }
+    if (sub.lens === "meetings") {
+      where += ` AND event_date > '${todayISO}'`;
+      const end = dateWindowEnd(todayISO, f.dateWindow || f.when);
+      if (end) where += ` AND event_date <= '${end}T23:59:59'`;
+      order = "event_date ASC";
+    }
     const params = { "$select": CR_SELECT_EV, "$where": where, "$order": order, "$limit": "25" };
     if (kws.length) params["$q"] = kws.join(" ");
-    return { url: SODA, idField: "request_id", kind: sub.lens, params };
+    return {
+      url: SODA,
+      idField: "request_id",
+      kind: sub.lens,
+      params,
+      postFilter: sub.lens === "meetings" && (f.borough || f.neighborhood || f.locationScope)
+        ? (row) => hearingMatchesLocation(row, f)
+        : undefined,
+    };
   }
 
   if (sub.lens === "land") {

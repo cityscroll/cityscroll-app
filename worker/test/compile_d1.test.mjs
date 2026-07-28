@@ -137,11 +137,9 @@ test("rules → section=Agency Rules, agency forwarded", () => {
   assert.deepEqual(opts.termGroups, [["scaffold"]]);
 });
 
-test("meetings → section=Public Hearings and Meetings, openOnly=true", () => {
-  const opts = subToD1Opts({ lens: "meetings", filter: {} }, "2026-07-10");
-  assert.equal(opts.section, "Public Hearings and Meetings");
-  assert.equal(opts.openOnly, true);
-  assert.equal(opts.today, "2026-07-10");
+test("meetings → off-mirror because the lens joins meeting notices and rule hearings", () => {
+  assert.equal(subToD1Opts({ lens: "meetings", filter: {} }, "2026-07-10"), null);
+  assert.equal(compileSub_d1({ lens: "meetings", filter: {} }, "2026-07-10"), null);
 });
 
 test("unknown lens → null", () => {

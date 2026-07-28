@@ -32,6 +32,7 @@ import { handleBoardHook } from "board-notify";
 import { handleInboundEmail } from "./inbound.mjs";
 import { handleVendorProfile, refreshVendorProfiles } from "./vendor_profile.mjs";
 import { handleMirror } from "./mirror.mjs";
+import { handleHearings, refreshHearings } from "./hearings.mjs";
 
 const MIRROR_HOSTS = new Set(["cityscroll.org", "www.cityscroll.org"]);
 
@@ -58,6 +59,7 @@ export default {
     if (pathname === "/externalaward") return handleExternalAward(request, env, ctx);
     if (pathname === "/agency") return handleAgency(request, env, ctx);
     if (pathname === "/vendor-profile") return handleVendorProfile(request, env, ctx);
+    if (pathname === "/hearings") return handleHearings(request, env, ctx);
     if (pathname === "/suggestions") return handleSuggestions(request, env, ctx);
     if (pathname === "/stats") return handleStats(request, env, ctx);
     if (pathname === "/events") return handleEvent(request, env);
@@ -123,6 +125,15 @@ export default {
       console.log("suggestions:", JSON.stringify(r));
     } catch (e) {
       console.error("suggestion validation failed (digest continues):", String(e?.message || e));
+    }
+    // Hearings use a small read-optimized materialized view over both City Record sections that carry
+    // public events. A daily refresh keeps location extraction and GeoSearch work off the
+    // browser path; a stale view remains usable if either upstream is briefly unavailable.
+    try {
+      const r = await refreshHearings(env);
+      console.log("hearings:", JSON.stringify(r));
+    } catch (e) {
+      console.error("hearing refresh failed (digest continues):", String(e?.message || e));
     }
     // Vendor identity headers are a read-optimized daily projection of the full City Record
     // Award history. Publish versioned KV buckets before the manifest so readers never depend

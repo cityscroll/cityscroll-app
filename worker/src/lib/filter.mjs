@@ -28,7 +28,7 @@ export const LENSES = {
   land:     ["keywords", "boro", "status"],
   property: ["keywords", "agency"],
   rules:    ["keywords", "agency"],
-  meetings: ["keywords", "agency", "when"],
+  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow"],
   entity:   ["name", "kind"],
   // "alerts" has no single-payload classifier (bigaward xor rfpkw xor rezone) — it reuses
   // money's full general schema so a query naming any combination of category/agency/
@@ -74,7 +74,17 @@ function clampField(name, v) {
     case "status":
       return v === "all" ? "all" : v === "active" ? "active" : null;
     case "when":
-      return v === "all" ? "all" : v === "upcoming" ? "upcoming" : null;
+      return ["all", "upcoming", "week", "month"].includes(v) ? v : null;
+    case "borough": {
+      const s = typeof v === "string" ? v.trim().toLowerCase() : "";
+      return BOROS.find((b) => b.toLowerCase() === s) || null;
+    }
+    case "neighborhood":
+      return typeof v === "string" && v.trim() ? v.replace(/\s+/g, " ").trim().slice(0, 80) : null;
+    case "locationScope":
+      return v === "citywide-unlocated" ? v : null;
+    case "dateWindow":
+      return ["week", "month", "upcoming"].includes(v) ? v : null;
     case "lookupType":
       return v === "person" ? "person" : v === "role" ? "role" : null;
     case "name":
