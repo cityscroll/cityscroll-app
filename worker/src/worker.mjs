@@ -31,10 +31,14 @@ import { handleMcp } from "./mcp.mjs";
 import { handleBoardHook } from "board-notify";
 import { handleInboundEmail } from "./inbound.mjs";
 import { handleVendorProfile, refreshVendorProfiles } from "./vendor_profile.mjs";
+import { handleMirror } from "./mirror.mjs";
+
+const MIRROR_HOSTS = new Set(["cityscroll.org", "www.cityscroll.org"]);
 
 export default {
   async fetch(request, env, ctx) {
-    const { pathname } = new URL(request.url);
+    const { pathname, hostname } = new URL(request.url);
+    if (MIRROR_HOSTS.has(hostname)) return handleMirror(request);
     if (pathname === "/nl") return handleNl(request, env);
     if (pathname === "/mcp") return handleMcp(request, env);
     if (pathname === "/board-hook") return handleBoardHook(request, env);
