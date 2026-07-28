@@ -8,6 +8,9 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `docs/analytics-event-taxonomy.md`; keep collection and public stats changes within it.
 - Run the standards and test commands in `.github/workflows/ci.yml`; i18n edits must also
   refresh the core and per-language cache hashes enforced by `test/standards/i18n_refs.py`.
+- The static site is GitHub Pages, not Cloudflare — only the API (`api.crol-list.org`) and the
+  `cityscroll.org` parallel-domain mirror (`worker/src/mirror.mjs`) are Cloudflare Workers. Don't
+  assume a Cloudflare Pages project exists for the frontend.
 
 ## Maintaining this file
 

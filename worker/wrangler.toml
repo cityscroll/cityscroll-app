@@ -6,8 +6,15 @@ compatibility_date = "2026-07-27"
 # Branded public hostname: user-visible URLs (feed links, confirm links) read api.crol-list.org,
 # not *.workers.dev. Custom Domain — Cloudflare creates the DNS record + certificate in the
 # crol-list.org zone on deploy; the workers.dev URL keeps working as an alias.
+#
+# cityscroll.org / www.cityscroll.org — a parallel serving domain (crol-list.org stays
+# canonical; see index.html's <link rel="canonical">). Same custom-domain mechanism, same
+# deploy; the worker answers these two hosts by reverse-proxying the static site straight
+# from crol-list.org (src/mirror.mjs) so the mirror can never drift out of sync.
 routes = [
-  { pattern = "api.crol-list.org", custom_domain = true }
+  { pattern = "api.crol-list.org", custom_domain = true },
+  { pattern = "cityscroll.org", custom_domain = true },
+  { pattern = "www.cityscroll.org", custom_domain = true },
 ]
 # Adding routes implicitly DISABLES workers.dev unless this is explicit — keep the alias alive
 # so older cached pages and any in-flight confirm links (24h TTL) don't break.
