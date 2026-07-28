@@ -6,7 +6,7 @@ import {
   bumpStatAllTime, bumpCategoryStat, readStatAllTime, readAllCategoryStats,
   bumpHistDay, readHistSeries, readHistEra, histDayKey, histEraKey,
   mergeRecoveredAllTime, categoryDayKey, bumpCategoryDayStat, readAllCategoryStatsWindow,
-  snapshotHistDay, ensureHistEra,
+  snapshotHistDay, ensureHistEra, moreTierOrder,
 } from "../src/lib/stats.mjs";
 import { handleRedirect } from "../src/redirect.mjs";
 import { handleStats } from "../src/stats.mjs";
@@ -381,4 +381,19 @@ test("GET /stats includes a watches_active history block with the same recovered
   const body = await res.json();
   assert.deepEqual(body.history.watches_active.by_day, { "2026-07-14": 12, "2026-07-15": 14 });
   assert.equal(body.history.watches_active.live_from, "2026-07-14");
+});
+
+// w4-more-tier-reorder — pins the "more" tier's render order against the exact /stats
+// nl_search.by_category snapshot the wave-0 design pack measured (2026-07-27, 13 days live):
+// money 21, land 9, people 6, property 4, rules 1, meetings 0 (money/land are the two primary
+// tabs, not part of this ranking). The site's index.html hardcodes this same order today — this
+// test is what makes a silent drift between the two show up here instead of only in a screenshot.
+test("moreTierOrder ranks the 'more' tier by measured nl_search volume — matches index.html's static order", () => {
+  const byCategory = { money: 21, land: 9, people: 6, property: 4, rules: 1, meetings: 0 };
+  assert.deepEqual(moreTierOrder(byCategory), ["people", "property", "rules", "meetings"]);
+});
+
+test("moreTierOrder breaks ties by historical position, never reorders on a genuine tie", () => {
+  assert.deepEqual(moreTierOrder({ people: 3, property: 3, rules: 3, meetings: 3 }), ["people", "property", "rules", "meetings"]);
+  assert.deepEqual(moreTierOrder({}), ["people", "property", "rules", "meetings"], "no data at all — falls back to the historical order, not an arbitrary one");
 });

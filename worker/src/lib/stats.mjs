@@ -275,3 +275,20 @@ export async function ensureHistEra(kv, metric, now) {
     if ((await kv.get(key)) == null) await kv.put(key, dayStr(now));
   } catch { /* best-effort */ }
 }
+
+// The lens navigation's "more" tier (site's index.html, secondary-tabs), ranked by measured
+// nl_search volume from the /stats endpoint's nl_search.by_category — descending, ties broken
+// by the lens's existing historical position so a genuine tie never reorders anything. Pure and
+// side-effect-free: the site doesn't call this at render time today (the ranking is pinned as a
+// static DOM order, characterized against a real /stats-shaped fixture by
+// test/functional/19_two_tier_navigation.py's sibling in worker/test/stats.test.mjs) — this
+// exists so that re-ranking, when the ~13-day sample referenced in the wave-0 design pack
+// matures, is a one-line call instead of a fresh design.
+export const MORE_TIER_LENSES = Object.freeze(["people", "property", "rules", "meetings"]);
+export function moreTierOrder(byCategory = {}) {
+  return [...MORE_TIER_LENSES].sort((a, b) => {
+    const diff = (byCategory[b] || 0) - (byCategory[a] || 0);
+    if (diff !== 0) return diff;
+    return MORE_TIER_LENSES.indexOf(a) - MORE_TIER_LENSES.indexOf(b);
+  });
+}
