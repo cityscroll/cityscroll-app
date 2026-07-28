@@ -61,7 +61,6 @@
     landing_cta_contracts_sub: "投标、中标和截止日期",
     landing_cta_zoning: "关注重新分区",
     landing_cta_zoning_sub: "社区委员会通知、听证会和地图",
-    landing_ask_label: "或直接用简单的话提问",
     landing_ask_placeholder: "我附近的重新分区、现在开放的IT合同…",
     landing_more_link: "还追踪人事变动、房产出售、机构规则和公开会议",
     landing_skip_to_tool: "跳转到完整工具",

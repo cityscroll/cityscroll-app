@@ -75,8 +75,9 @@ with sync_playwright() as playwright:
     assert state["mainVisible"] is True, state
     assert state["activeTab"] == "money", state
     assert page.evaluate("location.hash") == "#money", page.evaluate("location.hash")
+    assert page.locator(".nlbox #nlq").count() == 1, "the ask row must be back in the Contracts nlbox"
     context.close()
-    print("OK the Contracts CTA dismisses the layer onto the Contracts lens")
+    print("OK the Contracts CTA dismisses the layer onto the Contracts lens, restoring the ask row")
 
     # The Zoning CTA dismisses the layer and lands on the Zoning (land) lens.
     context = browser.new_context()
@@ -109,14 +110,17 @@ with sync_playwright() as playwright:
     page = context.new_page()
     page.route("https://**", lambda route: route.abort())
     page.goto(BASE, wait_until="domcontentloaded")
-    page.locator("#landingAsk").fill("rezonings near me")
-    page.locator("#landingAskForm button[type=submit]").click()
+    assert page.locator("#landingAskSlot #nlq").count() == 1, "the tool's own #nlq should relocate into the layer"
+    page.locator("#landingAskSlot #nlq").fill("rezonings near me")
+    page.locator("#landingAskSlot #nlgo").click()
     state = layer_state(page)
     assert state["showLanding"] is False, state
     assert state["activeTab"] == "money", state
     assert page.locator("#nlq").input_value() == "rezonings near me"
+    assert page.locator("#landingAskSlot #nlq").count() == 0, "the ask row must move back into the tool on dismiss"
+    assert page.locator(".nlbox #nlq").count() == 1, "the ask row must be back in the Contracts nlbox"
     context.close()
-    print("OK asking from the identity layer dismisses it and hands the query to the tool")
+    print("OK asking from the identity layer dismisses it and hands the query to the tool, restoring the ask row")
 
     browser.close()
 

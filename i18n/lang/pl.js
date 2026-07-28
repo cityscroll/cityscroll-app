@@ -69,7 +69,6 @@
     landing_cta_contracts_sub: "przetargi, przyznane kontrakty i terminy",
     landing_cta_zoning: "Śledź zmianę stref",
     landing_cta_zoning_sub: "zawiadomienia Rady Dzielnicowej, wysłuchania i mapy",
-    landing_ask_label: "Albo po prostu zapytaj, prostym językiem",
     landing_ask_placeholder: "zmiany stref w pobliżu, otwarte kontrakty IT…",
     landing_more_link: "Śledzi też zmiany kadrowe, sprzedaż nieruchomości, przepisy agencji i posiedzenia publiczne",
     landing_skip_to_tool: "Przejdź do pełnego narzędzia",

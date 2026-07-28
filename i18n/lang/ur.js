@@ -63,7 +63,6 @@
     landing_cta_contracts_sub: "بولیاں، ایوارڈز، اور آخری تاریخیں",
     landing_cta_zoning: "دوبارہ زوننگ کو فالو کریں",
     landing_cta_zoning_sub: "کمیونٹی بورڈ کے نوٹسز، سماعتیں، اور نقشے",
-    landing_ask_label: "یا بس آسان زبان میں پوچھیں",
     landing_ask_placeholder: "میرے قریب دوبارہ زوننگ، ابھی کھلے آئی ٹی ٹھیکے…",
     landing_more_link: "عملے کی تبدیلیاں، جائیداد کی فروخت، ایجنسی کے قواعد، اور عوامی اجلاس بھی ٹریک کرتا ہے",
     landing_skip_to_tool: "مکمل ٹول پر جائیں",

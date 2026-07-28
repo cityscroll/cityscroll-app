@@ -60,7 +60,6 @@
     landing_cta_contracts_sub: "ofrann, akòdman, ak dat limit",
     landing_cta_zoning: "Swiv yon chanjman zonaj",
     landing_cta_zoning_sub: "avi Konsèy Kominotè, seyans piblik, ak kat",
-    landing_ask_label: "Oswa poze kesyon w nan lang senp",
     landing_ask_placeholder: "chanjman zonaj toupre m, kontra IT ki louvri kounye a…",
     landing_more_link: "Li swiv tou chanjman pèsonèl, vant pwopriyete, règleman ajans, ak reyinyon piblik",
     landing_skip_to_tool: "Sote ale nan zouti konplè a",

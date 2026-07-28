@@ -61,7 +61,6 @@
     landing_cta_contracts_sub: "입찰, 낙찰, 마감일",
     landing_cta_zoning: "구역 재지정 팔로우하기",
     landing_cta_zoning_sub: "지역위원회 공고, 공청회, 지도",
-    landing_ask_label: "또는 쉬운 말로 질문하기",
     landing_ask_placeholder: "내 주변 구역 재지정, 지금 열려 있는 IT 계약…",
     landing_more_link: "인력 변경, 부동산 매각, 기관 규정, 공개 회의도 추적합니다",
     landing_skip_to_tool: "전체 도구로 건너뛰기",

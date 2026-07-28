@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "6bbeae84",
-  "zh-Hans": "5e3ab8b5",
-  ru: "b0b1af0f",
-  bn: "961fdce9",
-  ht: "c1428234",
-  ko: "30db0964",
-  fr: "ecf5e3f0",
-  pl: "dc49f3d0",
-  ar: "c7e9049f",
-  ur: "4557ccd2",
+  es: "d13985c9",
+  "zh-Hans": "c0590b8b",
+  ru: "8fb3d4b1",
+  bn: "5e9352e0",
+  ht: "4c92d2f1",
+  ko: "e4850b1b",
+  fr: "1a1c9057",
+  pl: "b840e83c",
+  ar: "f3e994b3",
+  ur: "905de5cd",
 };
 
 
@@ -159,7 +159,6 @@ const STRINGS = {
     landing_cta_contracts_sub:"bids, awards, and deadlines",
     landing_cta_zoning:       "Follow a rezoning",
     landing_cta_zoning_sub:   "Community Board notices, hearings, and maps",
-    landing_ask_label:        "Or just ask, in plain English",
     landing_ask_placeholder:  "rezonings near me, IT contracts open now…",
     landing_more_link:        "Also tracks staffing, property sales, agency rules, and public meetings",
     landing_skip_to_tool:     "Skip to the full tool",

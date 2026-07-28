@@ -61,7 +61,6 @@
     landing_cta_contracts_sub: "licitaciones, adjudicaciones y plazos",
     landing_cta_zoning: "Sigue una rezonificación",
     landing_cta_zoning_sub: "avisos de la Junta Comunitaria, audiencias y mapas",
-    landing_ask_label: "O simplemente pregunta, en lenguaje sencillo",
     landing_ask_placeholder: "rezonificaciones cerca de mí, contratos de TI abiertos ahora…",
     landing_more_link: "También rastrea cambios de personal, ventas de propiedades, reglas de agencias y reuniones públicas",
     landing_skip_to_tool: "Saltar a la herramienta completa",

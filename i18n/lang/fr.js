@@ -66,7 +66,6 @@
     landing_cta_contracts_sub: "appels d'offres, attributions et échéances",
     landing_cta_zoning: "Suivez un rezonage",
     landing_cta_zoning_sub: "avis du Conseil communautaire, auditions et cartes",
-    landing_ask_label: "Ou posez simplement votre question, en langage courant",
     landing_ask_placeholder: "rezonages près de chez moi, contrats informatiques ouverts…",
     landing_more_link: "Suit aussi les changements de personnel, les ventes de biens, les règles des agences et les réunions publiques",
     landing_skip_to_tool: "Passer à l'outil complet",
