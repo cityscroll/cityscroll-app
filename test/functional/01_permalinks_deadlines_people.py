@@ -29,6 +29,7 @@ with sync_playwright() as pw:
     step("OK", "money loads", f"{n} rows, hash='{page.evaluate('location.hash')}' (expect empty on default load)")
 
     # ---------- (3a) tab click updates hash, back returns ----------
+    page.click("#more-tabs-toggle")
     page.click('.tabbtn[data-tab="people"]')
     h = page.evaluate("location.hash")
     step("OK" if h == "#people" else "FAIL", "tab click -> hash", h)
@@ -139,6 +140,7 @@ with sync_playwright() as pw:
     p4.close()
 
     # ---------- probe: browser back after tab pushes ----------
+    page.click("#more-tabs-toggle")
     page.click('.tabbtn[data-tab="meetings"]')
     page.wait_for_function("location.hash.startsWith('#meetings')")
     page.go_back()

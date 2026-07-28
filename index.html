@@ -75,10 +75,25 @@
   .t-card .tmeta{font:11.5px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:3px;display:block}
   @media(max-width:680px){.t-cards{grid-template-columns:1fr}.t-big{font-size:18px}}
 
-  .tabs{display:flex;gap:.2rem;justify-content:center;flex-wrap:wrap;margin-top:4px}
-  .tabbtn{font-family:var(--font-sc);font-weight:600;font-size:13px;letter-spacing:.15em;text-transform:uppercase;padding:9px 18px;border:0;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent}
+  .lens-nav{max-width:780px;margin:8px auto 0}
+  .tabs{display:flex;justify-content:center}
+  .tabbtn{font-family:var(--font-sc);font-weight:600;font-size:13px;letter-spacing:.15em;text-transform:uppercase;min-height:44px;padding:9px 18px;border:0;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent}
   .tabbtn.active{color:var(--oxblood);border-bottom-color:var(--oxblood)}
   .tabbtn:hover{color:var(--ink)}
+  .primary-tabs{gap:10px}
+  .primary-tabs .tabbtn{min-width:148px;border:2px solid var(--ink);border-radius:7px;background:var(--card);color:var(--ink);padding:10px 24px}
+  .primary-tabs .tabbtn.active{border-color:var(--oxblood);background:var(--oxblood);color:var(--paper)}
+  .secondary-disclosure{margin-top:6px}
+  .more-tabs-toggle{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:44px;padding:7px 12px;border:1px dashed var(--rule-strong);border-radius:6px;background:transparent;color:var(--muted);font:12px/1.35 ui-sans-serif,system-ui,sans-serif;text-align:start}
+  .more-label{font-weight:700}
+  .more-summary{display:flex;justify-content:center;gap:4px;flex-wrap:wrap;color:var(--muted)}
+  .more-chevron{font-size:16px;line-height:1;transition:transform .12s ease}
+  .more-tabs-toggle[aria-expanded="true"] .more-chevron{transform:rotate(180deg)}
+  .more-tabs-toggle:hover{border-color:var(--ink);color:var(--ink)}
+  .secondary-tabs[hidden]{display:none}
+  .secondary-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;padding:6px 8px;border:1px dashed var(--rule-strong);border-top:0;border-radius:0 0 6px 6px;background:var(--card)}
+  .secondary-tabs .tabbtn{min-width:0;padding:8px 10px;font-size:12px;letter-spacing:.08em}
+  .secondary-tabs .tabbtn.active{background:var(--paper-2)}
   .tabpane{display:none;padding:24px 0 10px}
   .tabpane.active{display:block}
   .deck{max-width:820px;margin:0 auto 4px;text-align:center;color:#4a4338}
@@ -382,6 +397,14 @@
   .row:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
   .filtertoggle{display:none}
   @media(max-width:680px){
+    .lens-nav{margin-top:6px}
+    .primary-tabs{gap:8px}
+    .primary-tabs .tabbtn{flex:1;min-width:0;padding:10px 8px}
+    .more-tabs-toggle{justify-content:flex-start}
+    .more-summary{justify-content:flex-start;font-size:11px}
+    .secondary-tabs{grid-template-columns:1fr;padding:4px 10px}
+    .secondary-tabs .tabbtn{text-align:start;border-bottom:1px dotted var(--rule);border-radius:0}
+    .secondary-tabs .tabbtn:last-child{border-bottom-color:transparent}
     .filtertoggle{display:block;width:100%;margin-top:14px}
     .controls{display:none}
     .controls.open{display:flex}
@@ -421,7 +444,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=5ae00c30"></script>
+<script src="i18n.js?v=77d652f8"></script>
 <script defer src="analytics.js?v=1.1.0"></script>
 <script src="nl_parse.js"></script>
 <script src="nl_deeplink.js"></script>
@@ -455,14 +478,29 @@
       <div class="t-counts" id="tcounts"></div>
       <div class="t-cards" id="tcards"></div>
     </div>
-    <nav class="tabs">
-      <button class="tabbtn active" data-tab="money" data-i18n="tab_money">Contracts</button>
-      <button class="tabbtn" data-tab="people" data-i18n="tab_people">Staffing</button>
-      <button class="tabbtn" data-tab="land" data-i18n="tab_land">Zoning</button>
-      <button class="tabbtn" data-tab="property" data-i18n="tab_property">Property</button>
-      <button class="tabbtn" data-tab="rules" data-i18n="tab_rules">Rules</button>
-      <button class="tabbtn" data-tab="meetings" data-i18n="tab_meetings">Meetings</button>
-      <button class="tabbtn" data-tab="alerts" data-i18n="tab_alerts">Alerts</button>
+    <nav class="lens-nav">
+      <div class="tabs primary-tabs">
+        <button class="tabbtn active" data-tab="money" data-i18n="tab_money">Contracts</button>
+        <button class="tabbtn" data-tab="land" data-i18n="tab_land">Zoning</button>
+      </div>
+      <div class="secondary-disclosure">
+        <button type="button" class="more-tabs-toggle" id="more-tabs-toggle" aria-expanded="false" aria-controls="secondary-tabs">
+          <span class="more-label" data-i18n="tab_more">More</span>
+          <span class="more-summary" aria-hidden="true">
+            <span data-i18n="tab_people">Staffing</span><span>·</span>
+            <span data-i18n="tab_property">Property</span><span>·</span>
+            <span data-i18n="tab_rules">Rules</span><span>·</span>
+            <span data-i18n="tab_meetings">Meetings</span>
+          </span>
+          <span class="more-chevron" aria-hidden="true">⌄</span>
+        </button>
+        <div class="tabs secondary-tabs" id="secondary-tabs" aria-labelledby="more-tabs-toggle" hidden>
+          <button class="tabbtn" data-tab="people" data-i18n="tab_people">Staffing</button>
+          <button class="tabbtn" data-tab="property" data-i18n="tab_property">Property</button>
+          <button class="tabbtn" data-tab="rules" data-i18n="tab_rules">Rules</button>
+          <button class="tabbtn" data-tab="meetings" data-i18n="tab_meetings">Meetings</button>
+        </div>
+      </div>
     </nav>
     <div class="lang-switcher" id="langSwitcher" role="group" aria-label="Language / Idioma">
       <button class="lang-btn" data-lang="en" aria-pressed="true"><span lang="en" dir="ltr">English</span></button>
@@ -1030,16 +1068,33 @@ function eventTag(ev){
 
 /* ===================== TABS ===================== */
 function announce(msg){ const el=$("#srstatus"); if(el) el.textContent = msg; }
+const SECONDARY_LENSES = new Set(["people","property","rules","meetings"]);
+function setSecondaryNavExpanded(expanded){
+  const toggle=$("#more-tabs-toggle"), panel=$("#secondary-tabs");
+  if(!toggle || !panel) return;
+  toggle.setAttribute("aria-expanded", String(expanded));
+  panel.hidden=!expanded;
+}
 function syncTabAria(){
   const btns=[...document.querySelectorAll(".tabbtn")];
-  let any=false;
-  btns.forEach(b=>{ const on=b.classList.contains("active"); b.setAttribute("aria-selected", String(on)); b.tabIndex = on ? 0 : -1; if(on) any=true; });
-  if(!any && btns[0]) btns[0].tabIndex = 0; // notice view: no tab selected — keep the tablist reachable
+  btns.forEach(b=>{
+    const on=b.classList.contains("active");
+    b.setAttribute("aria-selected", String(on));
+    b.tabIndex=-1;
+  });
+  document.querySelectorAll(".tabs").forEach(tablist=>{
+    if(tablist.hidden) return;
+    const tabs=[...tablist.querySelectorAll(".tabbtn")];
+    const active=tabs.find(b=>b.classList.contains("active"));
+    if(active) active.tabIndex=0;
+    else if(tabs[0]) tabs[0].tabIndex=0;
+  });
 }
 function showTab(name, push){
   const leavingLandEntry = name==="land" && push && location.hash.startsWith("#land/");
   document.querySelectorAll(".tabpane").forEach(p=>p.classList.toggle("active", p.id === "tab-"+name));
   document.querySelectorAll(".tabbtn").forEach(b=>b.classList.toggle("active", b.dataset.tab === name));
+  setSecondaryNavExpanded(SECONDARY_LENSES.has(name));
   syncTabAria();
   // Push BEFORE any lazy load below runs updateHash(), or the load's replaceState
   // rewrites the prior entry and the push turns into a no-op (Back would skip a tab).
@@ -1050,11 +1105,20 @@ function showTab(name, push){
   if(SECTIONS[name] && !feedLoaded[name]){ feedLoaded[name]=true; loadSectionAgencies(name); loadSection(name); }
 }
 document.querySelectorAll(".tabbtn").forEach(b=>b.addEventListener("click",()=>showTab(b.dataset.tab, true)));
+$("#more-tabs-toggle").addEventListener("click",()=>{
+  const toggle=$("#more-tabs-toggle");
+  setSecondaryNavExpanded(toggle.getAttribute("aria-expanded")!=="true");
+  syncTabAria();
+});
 
 /* ARIA tab semantics (WAI-ARIA Authoring Practices "tabs" pattern) + arrow-key navigation */
 (function(){
-  const nav=document.querySelector(".tabs"); if(!nav) return;
-  nav.setAttribute("role","tablist"); nav.setAttribute("aria-label", t("tablist_label"));
+  const nav=document.querySelector(".lens-nav"); if(!nav) return;
+  nav.setAttribute("aria-label", t("tablist_label"));
+  const tablists=[...nav.querySelectorAll(".tabs")];
+  tablists.forEach(tablist=>tablist.setAttribute("role","tablist"));
+  const primary=nav.querySelector(".primary-tabs");
+  if(primary) primary.setAttribute("aria-label", t("tablist_label"));
   document.querySelectorAll(".tabbtn").forEach(b=>{
     b.id="tabbtn-"+b.dataset.tab; b.setAttribute("role","tab"); b.setAttribute("aria-controls","tab-"+b.dataset.tab);
   });
@@ -1065,8 +1129,8 @@ document.querySelectorAll(".tabbtn").forEach(b=>b.addEventListener("click",()=>s
     const btn=document.getElementById("tabbtn-"+p.id.slice(4));
     if(btn){ p.setAttribute("role","tabpanel"); p.setAttribute("aria-labelledby", btn.id); }
   });
-  nav.addEventListener("keydown", e=>{
-    const tabs=[...nav.querySelectorAll(".tabbtn")];
+  tablists.forEach(tablist=>tablist.addEventListener("keydown", e=>{
+    const tabs=[...tablist.querySelectorAll(".tabbtn")];
     const i=tabs.indexOf(document.activeElement); if(i<0) return;
     let j=null;
     if(e.key==="ArrowRight") j=(i+1)%tabs.length;
@@ -1074,7 +1138,7 @@ document.querySelectorAll(".tabbtn").forEach(b=>b.addEventListener("click",()=>s
     else if(e.key==="Home") j=0;
     else if(e.key==="End") j=tabs.length-1;
     if(j!==null){ e.preventDefault(); tabs[j].focus(); tabs[j].click(); }
-  });
+  }));
   syncTabAria();
 })();
 
@@ -4864,7 +4928,9 @@ function forceAmountSelect(value){
 }
 
 function serializeState(){
-  const tab = document.querySelector(".tabbtn.active")?.dataset.tab;
+  const activePane = document.querySelector(".tabpane.active");
+  const tab = document.querySelector(".tabbtn.active")?.dataset.tab
+    || (activePane?.id === "tab-alerts" ? "alerts" : null);
   if(!tab) return location.hash || "#money"; // notice view keeps its own hash
   const q = new URLSearchParams();
   if(tab === "money"){
@@ -5406,7 +5472,12 @@ aRenderSaved();
 // old language. Re-render from cache/memory — the 5-minute API cache makes the re-runs free.
 function rerenderForLang(){
   document.querySelectorAll(".filtertoggle").forEach(b=>{ b.textContent = "☰ " + t("filters_toggle"); });
-  const nav = document.querySelector(".tabs"); if(nav) nav.setAttribute("aria-label", t("tablist_label"));
+  const nav = document.querySelector(".lens-nav");
+  if(nav){
+    nav.setAttribute("aria-label", t("tablist_label"));
+    const primary=nav.querySelector(".primary-tabs");
+    if(primary) primary.setAttribute("aria-label", t("tablist_label"));
+  }
   try{ const c = JSON.parse(localStorage.getItem("crol_today_v2")||"null"); if(c && c.d) renderToday(c.d); }catch(e){}
   paintEditionSpan();
   loadAgencies();
@@ -5419,7 +5490,7 @@ function rerenderForLang(){
   const activePane = document.querySelector(".tabpane.active");
   if(activePane && (activePane.id === "tab-notice" || activePane.id === "tab-entity")){ applyHash(); return; }
   const active = document.querySelector(".tabbtn.active");
-  const tab = active ? active.dataset.tab : null;
+  const tab = active ? active.dataset.tab : activePane?.id === "tab-alerts" ? "alerts" : null;
   // Loaded-but-inactive lenses re-fetch on their next visit instead of re-rendering now.
   Object.keys(feedLoaded).forEach(k=>{ if(k!==tab && feedLoaded[k]) feedLoaded[k]=false; });
   if(tab!=="money") moneyLoaded=false;

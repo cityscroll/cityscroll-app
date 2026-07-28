@@ -57,6 +57,7 @@
     tab_rules: "القواعد",
     tab_meetings: "الاجتماعات",
     tab_alerts: "التنبيهات",
+    tab_more: "المزيد",
     nl_placeholder_money: "صف ما تبحث عنه…",
     ask_btn: "اسأل",
     show_label: "عرض",

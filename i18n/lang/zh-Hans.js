@@ -55,6 +55,7 @@
     tab_rules: "规则",
     tab_meetings: "会议",
     tab_alerts: "提醒",
+    tab_more: "更多",
     nl_placeholder_money: "描述您要查找的内容…",
     ask_btn: "搜索",
     show_label: "显示",

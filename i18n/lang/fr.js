@@ -60,6 +60,7 @@
     tab_rules:    "Règles",
     tab_meetings: "Réunions",
     tab_alerts:   "Alertes",
+    tab_more:     "Plus",
 
     // Money lens controls
     nl_placeholder_money: "décrivez ce que vous recherchez…",

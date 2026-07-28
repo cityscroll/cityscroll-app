@@ -384,17 +384,21 @@ def run_lang(pw, lang):
     collect(page, "money+today", frags, violations, seen)
     check_lang_of_parts(page, lang, violations)
 
+    page.click("#more-tabs-toggle")
     page.click('.tabbtn[data-tab="people"]')
     page.fill("#pkw", "attorney")
     page.wait_for_timeout(1600)
     collect(page, "people", frags, violations, seen)
 
     for tab in ("land", "property", "rules", "meetings"):
+        if tab in ("property", "rules", "meetings") and page.locator("#secondary-tabs").is_hidden():
+            page.click("#more-tabs-toggle")
         page.click(f'.tabbtn[data-tab="{tab}"]')
         page.wait_for_timeout(1800 if tab == "land" else 1200)
         collect(page, tab, frags, violations, seen)
 
-    page.click('.tabbtn[data-tab="alerts"]')
+    page.evaluate("location.hash = '#alerts'")
+    page.wait_for_function("document.querySelector('#tab-alerts').classList.contains('active')")
     page.wait_for_timeout(400)
     page.click("#apreview")
     page.wait_for_timeout(1500)

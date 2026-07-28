@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "5c42ac41",
-  "zh-Hans": "ccda896a",
-  ru: "9043bd68",
-  bn: "a338e67e",
-  ht: "bcc9a815",
-  ko: "3ad0a991",
-  fr: "35eadf63",
-  pl: "6bbe9320",
-  ar: "df610899",
-  ur: "964ef12d",
+  es: "777c43f8",
+  "zh-Hans": "5505680d",
+  ru: "5eae7d9e",
+  bn: "16a353b6",
+  ht: "950ef5dc",
+  ko: "9bbd87c2",
+  fr: "841fac5a",
+  pl: "59816368",
+  ar: "51214911",
+  ur: "730c2708",
 };
 
 
@@ -151,6 +151,7 @@ const STRINGS = {
     tab_rules:    "Rules",
     tab_meetings: "Meetings",
     tab_alerts:   "Alerts",
+    tab_more:     "More",
 
     // Money lens controls
     nl_placeholder_money: "describe what you're looking for…",

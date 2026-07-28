@@ -123,6 +123,7 @@ with sync_playwright() as pw:
     p5.close(); p3.close()
 
     # ---------- regressions ----------
+    page.click("#more-tabs-toggle")
     page.click("#tabbtn-property")
     page.wait_for_selector("#assettabs .chip", timeout=45000)
     step("OK", "regression: property explorer loads", "")

@@ -54,6 +54,7 @@
     tab_rules: "Règleman",
     tab_meetings: "Reyinyon",
     tab_alerts: "Alèt",
+    tab_more: "Plis",
     nl_placeholder_money: "dekri sa w ap chèche a…",
     ask_btn: "Mande",
     show_label: "Montre",

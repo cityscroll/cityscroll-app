@@ -63,6 +63,7 @@
     tab_rules: "Przepisy",
     tab_meetings: "Posiedzenia",
     tab_alerts: "Powiadomienia",
+    tab_more: "Więcej",
     nl_placeholder_money: "opisz, czego szukasz…",
     ask_btn: "Szukaj",
     show_label: "Pokaż",

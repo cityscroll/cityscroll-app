@@ -22,6 +22,7 @@ from i18n_fixtures import install_routes  # noqa: E402
 BASE = os.environ.get("CROL_BASE", "http://localhost:8000/")
 PAGES = ["", "about.html", "data.html", "stats.html", "api.html", "changelog.html", "standards.html"]
 TABS = ["people", "land", "property", "rules", "meetings", "alerts"]
+SECONDARY_TABS = {"people", "property", "rules", "meetings"}
 
 INV_SEED = {"current": "inv1", "invs": {"inv1": {
     "name": "My investigation", "created": "2026-07-10",
@@ -79,7 +80,15 @@ def main():
 
             if not path:  # index.html: walk every tab + the alerts digest preview + investigation
                 for tab in TABS:
-                    page.click(f'.tabbtn[data-tab="{tab}"]')
+                    if tab == "alerts":
+                        page.evaluate("location.hash = '#alerts'")
+                        page.wait_for_function(
+                            "document.querySelector('#tab-alerts').classList.contains('active')"
+                        )
+                    else:
+                        if tab in SECONDARY_TABS and page.locator("#secondary-tabs").is_hidden():
+                            page.click("#more-tabs-toggle")
+                        page.click(f'.tabbtn[data-tab="{tab}"]')
                     page.wait_for_timeout(400)
                     census(page, f"{name} [tab:{tab}]", failures)
                 page.click("#apreview")

@@ -55,6 +55,7 @@
     tab_rules: "규정",
     tab_meetings: "회의",
     tab_alerts: "알림",
+    tab_more: "더보기",
     nl_placeholder_money: "찾으시는 내용을 설명해 주세요…",
     ask_btn: "검색",
     show_label: "표시",

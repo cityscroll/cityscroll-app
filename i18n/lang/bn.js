@@ -55,6 +55,7 @@
     tab_rules: "বিধি",
     tab_meetings: "সভা",
     tab_alerts: "সতর্কতা",
+    tab_more: "আরও",
     nl_placeholder_money: "আপনি কী খুঁজছেন তা বর্ণনা করুন…",
     ask_btn: "জিজ্ঞাসা করুন",
     show_label: "দেখান",

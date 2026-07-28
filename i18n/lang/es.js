@@ -55,6 +55,7 @@
     tab_rules: "Reglas",
     tab_meetings: "Reuniones",
     tab_alerts: "Alertas",
+    tab_more: "Más",
     nl_placeholder_money: "describa lo que busca…",
     ask_btn: "Buscar",
     show_label: "Mostrar",

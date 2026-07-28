@@ -10,7 +10,8 @@ remains a per-wave practice (see internal reviews, Kalbag ch.6).
 
 w7-02 (dynamic-state coverage): axe only sees markup that's actually in the accessibility
 tree — display:none content (every inactive .tabpane) is invisible to it. So for index.html
-we don't stop at the load state: we ACTIVATE each of the seven .tabbtn tabs in turn and
+we don't stop at the load state: we ACTIVATE each lens in turn (opening the secondary
+navigation disclosure when needed, and routing to Alerts through its retained hash) and
 re-run axe after each, catching violations (like unlabeled fields) that only exist once a
 panel is shown.
 
@@ -55,7 +56,8 @@ FAIL_IMPACTS = {"critical", "serious"}
 # w10-04: heading-order (NYC Web Content Style Guide — heading levels "should not be
 # skipped") is also axe 'moderate', so without a ratchet entry it's invisible to the gate.
 RATCHET_RULES = {"landmark-one-main", "region", "heading-order"}
-TABS = ["people", "land", "property", "rules", "meetings", "alerts"]  # money is active on load
+LENSES = ["people", "land", "property", "rules", "meetings", "alerts"]  # money is active on load
+SECONDARY_LENSES = {"people", "property", "rules", "meetings"}
 LANGS = ["en", "es"]
 VIEWPORTS = [(390, 844), (1440, 900)]
 
@@ -179,8 +181,16 @@ def run_index_states(pw, lang, viewport, failures):
     run_axe(page, state, failures)
     run_focus_exposure(page, state, failures)
 
-    for tab in TABS:
-        page.click(f'.tabbtn[data-tab="{tab}"]')
+    for tab in LENSES:
+        if tab == "alerts":
+            page.evaluate("location.hash = '#alerts'")
+            page.wait_for_function(
+                "document.querySelector('#tab-alerts').classList.contains('active')"
+            )
+        else:
+            if tab in SECONDARY_LENSES and page.locator("#secondary-tabs").is_hidden():
+                page.click("#more-tabs-toggle")
+            page.click(f'.tabbtn[data-tab="{tab}"]')
         page.wait_for_timeout(900 if tab == "land" else 400)
         # The fixture deliberately blocks the Leaflet CDN. Expose the app-owned directional
         # controls anyway so axe measures their 32px targets at both responsive widths.
@@ -190,7 +200,7 @@ def run_index_states(pw, lang, viewport, failures):
         run_axe(page, state, failures)
         run_focus_exposure(page, state, failures)
 
-    # digest preview (alerts tab is already active from the loop above)
+    # digest preview (the Alerts route is already active from the loop above)
     page.click("#apreview")
     page.wait_for_timeout(1200)
     run_axe(page, f"index.html [{lang}] [{viewport_name}] [alerts:digest-preview]", failures)

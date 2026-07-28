@@ -102,6 +102,8 @@ jobs:
           sleep 1
       - name: axe WCAG 2.2 accessibility gate (390px + 1440px, every activated state)
         run: python3 test/functional/11_accessibility.py
+      - name: Two-tier navigation characterization (responsive, disclosure, legacy hashes)
+        run: python3 test/functional/19_two_tier_navigation.py
       - name: Language switcher gate
         run: python3 test/functional/12_language.py
       - name: Focus-visibility keyboard-walk gate

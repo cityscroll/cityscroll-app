@@ -121,6 +121,7 @@ with sync_playwright() as pw:
     step("OK", "regression: closing-week", "")
     strip = page.evaluate("!document.getElementById('todaystrip').hidden")
     step("OK" if strip else "FAIL", "regression: today strip", "")
+    page.click("#more-tabs-toggle")
     page.click("#tabbtn-people"); page.wait_for_selector("#pchips .chip", timeout=15000)
     step("OK" if page.locator("#pchips .chip").count()==16 else "FAIL", "regression: people chips", "")
 

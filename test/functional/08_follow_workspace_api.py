@@ -92,6 +92,7 @@ with sync_playwright() as pw:
     # ---------- regressions ----------
     page.goto(BASE, timeout=30000)
     page.wait_for_selector("#list .row", timeout=30000)
+    page.click("#more-tabs-toggle")
     page.click("#tabbtn-people"); page.wait_for_selector("#pchips .chip", timeout=15000)
     step("OK" if page.locator("#pchips .chip").count()==16 else "FAIL", "regression: people chips", "")
     step("OK" if not errors else "FAIL", "zero page errors", "; ".join(errors[:5]))

@@ -55,6 +55,7 @@
     tab_rules: "Правила",
     tab_meetings: "Заседания",
     tab_alerts: "Оповещения",
+    tab_more: "Ещё",
     nl_placeholder_money: "опишите, что вы ищете…",
     ask_btn: "Искать",
     show_label: "Показать",

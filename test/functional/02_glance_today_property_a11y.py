@@ -46,20 +46,20 @@ with sync_playwright() as pw:
 
     # ---------- #10 ARIA tabs ----------
     roles = page.evaluate("""({
-        tablist: document.querySelector('.tabs').getAttribute('role'),
+        tablists: [...document.querySelectorAll('.tabs')].map(el => el.getAttribute('role')),
         tab: document.querySelector('.tabbtn').getAttribute('role'),
         sel: document.querySelector('#tabbtn-money').getAttribute('aria-selected'),
         panel: document.querySelector('#tab-money').getAttribute('role'),
         roving: [...document.querySelectorAll('.tabbtn')].map(b=>b.tabIndex)
     })""")
-    ok = roles["tablist"]=="tablist" and roles["tab"]=="tab" and roles["panel"]=="tabpanel" and roles["roving"].count(0)==1
+    ok = roles["tablists"]==["tablist", "tablist"] and roles["tab"]=="tab" and roles["panel"]=="tabpanel" and roles["roving"].count(0)==1
     step("OK" if ok else "FAIL", "#10 ARIA tab semantics", json.dumps(roles))
 
     page.focus("#tabbtn-money")
     page.keyboard.press("ArrowRight")
     page.wait_for_timeout(300)
-    act = page.evaluate("({active:document.querySelector('.tabbtn.active')?.dataset.tab, focus:document.activeElement.id, sel:document.querySelector('#tabbtn-people').getAttribute('aria-selected')})")
-    step("OK" if act["active"]=="people" and act["focus"]=="tabbtn-people" and act["sel"]=="true" else "FAIL",
+    act = page.evaluate("({active:document.querySelector('.tabbtn.active')?.dataset.tab, focus:document.activeElement.id, sel:document.querySelector('#tabbtn-land').getAttribute('aria-selected')})")
+    step("OK" if act["active"]=="land" and act["focus"]=="tabbtn-land" and act["sel"]=="true" else "FAIL",
          "#10 arrow-key tab nav + aria-selected", json.dumps(act))
 
     # keyboard-operable rows (money)
@@ -155,6 +155,7 @@ with sync_playwright() as pw:
     page.wait_for_function("document.getElementById('reshead').textContent.includes('closing this week')", timeout=30000)
     step("OK", "regression: closing-week still works", "")
     page.click("#closingweek")
+    page.click("#more-tabs-toggle")
     page.click("#tabbtn-people")
     page.wait_for_selector("#pchips .chip", timeout=15000)
     step("OK" if page.locator("#pchips .chip").count()==16 else "FAIL", "regression: 16 people chips", "")

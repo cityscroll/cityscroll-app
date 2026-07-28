@@ -87,6 +87,7 @@ with sync_playwright() as pw:
     p3.close()
 
     # ---------- regressions ----------
+    page.click("#more-tabs-toggle")
     page.click("#tabbtn-rules")
     page.wait_for_selector("#rulesfeed .fcard", timeout=30000)
     step("OK", "regression: rules feed", "")

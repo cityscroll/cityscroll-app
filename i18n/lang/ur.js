@@ -57,6 +57,7 @@
     tab_rules: "قواعد",
     tab_meetings: "اجلاس",
     tab_alerts: "الرٹس",
+    tab_more: "مزید",
     nl_placeholder_money: "بیان کریں کہ آپ کیا تلاش کر رہے ہیں…",
     ask_btn: "پوچھیں",
     show_label: "دکھائیں",
