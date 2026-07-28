@@ -232,6 +232,10 @@ def verify_interactions(browser) -> None:
             permissions=["clipboard-read", "clipboard-write"],
         )
         page = context.new_page()
+        # This spec characterizes deep-link interactions, not the first-contact
+        # landing-identity layer — mark it a returning visitor so the bare-URL navigation
+        # below (line ~289) lands straight in the tool as before.
+        page.add_init_script("try{localStorage.setItem('crol_landing_seen_v1','1');}catch(e){}")
         errors: list[str] = []
         page.on("pageerror", lambda error: errors.append(str(error)))
         install_routes(page)

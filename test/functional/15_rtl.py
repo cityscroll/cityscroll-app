@@ -51,7 +51,7 @@ def check_lang(pw, lang):
     page.wait_for_timeout(1000)
 
     # Baseline (English) physical resolution, BEFORE switching -- what "mirrored" is relative to.
-    skip_x_ltr = page.locator(".skip").evaluate("el => el.getBoundingClientRect().x")
+    skip_x_ltr = page.locator("#skipToContent").evaluate("el => el.getBoundingClientRect().x")
     border_ltr = page.locator(".tag").first.evaluate(
         "el => [getComputedStyle(el).marginLeft, getComputedStyle(el).marginRight]")
 
@@ -74,7 +74,7 @@ def check_lang(pw, lang):
     # 2. Logical-property mirroring, spot-checked two ways.
     # 2a. .skip (skip-to-content link): inset-inline-start:-9999px must push it off the
     #     OPPOSITE physical edge under RTL -- off-screen LEFT in en, off-screen RIGHT in ar/ur.
-    skip_x_rtl = page.locator(".skip").evaluate("el => el.getBoundingClientRect().x")
+    skip_x_rtl = page.locator("#skipToContent").evaluate("el => el.getBoundingClientRect().x")
     if not (skip_x_ltr < 0 and skip_x_rtl > 0):
         failures.append(
             f"{lang}: .skip did not mirror off-screen side (ltr x={skip_x_ltr}, rtl x={skip_x_rtl}) "

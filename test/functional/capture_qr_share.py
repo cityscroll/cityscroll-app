@@ -168,6 +168,10 @@ def capture(browser: Browser, tree: Path, state: str, width: int, height: int) -
         page.on("pageerror", lambda error: errors.append(str(error)))
         install_routes(page)
         seed_presets(page)
+        # This capture characterizes the tool's QR-share flow, not the first-contact
+        # landing-identity layer — mark it a returning visitor so the bare-URL goto below
+        # lands straight in the tool as before.
+        page.add_init_script("try{localStorage.setItem('crol_landing_seen_v1','1');}catch(e){}")
         page.goto(base_url, wait_until="domcontentloaded")
         page.locator("#tab-money .nlbox").wait_for(state="visible")
 
@@ -238,6 +242,10 @@ def verify_interactions(browser: Browser) -> None:
         page.on("pageerror", lambda error: errors.append(str(error)))
         install_routes(page)
         seed_presets(page)
+        # This capture characterizes the tool's QR-share flow, not the first-contact
+        # landing-identity layer — mark it a returning visitor so the bare-URL goto below
+        # lands straight in the tool as before.
+        page.add_init_script("try{localStorage.setItem('crol_landing_seen_v1','1');}catch(e){}")
         page.goto(base_url, wait_until="domcontentloaded")
 
         copied = assert_copy_matches_qr(

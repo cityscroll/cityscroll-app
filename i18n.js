@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "777c43f8",
-  "zh-Hans": "5505680d",
-  ru: "5eae7d9e",
-  bn: "16a353b6",
-  ht: "950ef5dc",
-  ko: "9bbd87c2",
-  fr: "841fac5a",
-  pl: "59816368",
-  ar: "51214911",
-  ur: "730c2708",
+  es: "6bbeae84",
+  "zh-Hans": "5e3ab8b5",
+  ru: "b0b1af0f",
+  bn: "961fdce9",
+  ht: "c1428234",
+  ko: "30db0964",
+  fr: "ecf5e3f0",
+  pl: "dc49f3d0",
+  ar: "c7e9049f",
+  ur: "4557ccd2",
 };
 
 
@@ -152,6 +152,17 @@ const STRINGS = {
     tab_meetings: "Meetings",
     tab_alerts:   "Alerts",
     tab_more:     "More",
+
+    // Landing-identity layer (shown once, to a bare "/" first-time visit — see #landing-identity)
+    landing_tagline:          "NYC's public record, organized for people who have to act on it.",
+    landing_cta_contracts:    "Track city contracts",
+    landing_cta_contracts_sub:"bids, awards, and deadlines",
+    landing_cta_zoning:       "Follow a rezoning",
+    landing_cta_zoning_sub:   "Community Board notices, hearings, and maps",
+    landing_ask_label:        "Or just ask, in plain English",
+    landing_ask_placeholder:  "rezonings near me, IT contracts open now…",
+    landing_more_link:        "Also tracks staffing, property sales, agency rules, and public meetings",
+    landing_skip_to_tool:     "Skip to the full tool",
 
     // Money lens controls
     nl_placeholder_money: "describe what you're looking for…",

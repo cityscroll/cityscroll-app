@@ -15,6 +15,9 @@ def step(tag, name, detail=""):
 with sync_playwright() as pw:
     browser = pw.chromium.launch(args=_ARGS)
     page = browser.new_context().new_page()
+    # This spec characterizes the tool, not the first-contact landing-identity layer —
+    # mark it a returning visitor so a bare BASE load lands straight in the tool as before.
+    page.add_init_script("try{localStorage.setItem('crol_landing_seen_v1','1');}catch(e){}")
     errors = []
     page.on("pageerror", lambda e: errors.append(str(e)))
 

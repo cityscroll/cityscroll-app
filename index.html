@@ -47,6 +47,32 @@
      hyphenated identifier can't get bidi-reordered inside RTL (ar/ur) surrounding text. */
   code{font:12px/1 ui-monospace,Menlo,monospace;background:#efe8d8;padding:1px 5px;border-radius:4px;unicode-bidi:isolate}
 
+  /* Landing-identity layer: shown once, to a bare "/" first-time visit (see the decision
+     script at the top of <body>). Hidden by default so no-JS/JS-disabled visitors and every
+     returning or deep-linked visitor see today's tool, unchanged. */
+  #landing-identity{display:none}
+  html.show-landing #landing-identity{display:block}
+  html.show-landing header.masthead, html.show-landing main#main{display:none}
+  .landing-identity{background:var(--paper);padding:32px 0 40px}
+  .landing-identity .wrap{max-width:560px;text-align:center}
+  .landing-identity .cr-seal{margin:0 auto 6px}
+  .landing-tagline{font-size:16px;line-height:1.4;color:var(--ink-soft);max-width:38ch;margin:0 auto 22px}
+  .landing-ctas{display:flex;flex-direction:column;gap:12px;margin-bottom:18px}
+  .landing-cta{min-height:44px;border:2px solid var(--ink);border-radius:10px;padding:12px 16px;font:inherit;font-family:var(--font-body);cursor:pointer;text-align:start}
+  .landing-cta span{display:block;font-weight:700;font-size:16px}
+  .landing-cta small{display:block;font-weight:400;font-size:12.5px;opacity:.82;margin-top:2px}
+  .landing-cta.primary{background:var(--ink);color:var(--paper)}
+  .landing-cta.secondary{background:var(--card);color:var(--ink)}
+  .landing-ask{display:flex;gap:8px;margin:0 auto 16px;max-width:420px}
+  .landing-ask input{flex:1;min-height:44px;border:2px solid var(--ink);border-radius:20px;padding:9px 16px;font:inherit;font-family:var(--font-body);background:var(--card);color:var(--ink)}
+  .landing-ask button{min-height:44px;padding:9px 18px;border:2px solid var(--ink);border-radius:20px;background:var(--oxblood);border-color:var(--oxblood);color:#fff;font-weight:600;cursor:pointer}
+  .landing-more{display:inline-block;font-size:13px;color:var(--muted);text-decoration:underline dotted;margin-top:4px}
+  @media(min-width:760px){
+    .landing-identity .wrap{max-width:660px}
+    .landing-ctas{flex-direction:row}
+    .landing-cta{flex:1}
+  }
+
   /* masthead + tabs (City Record letterpress) */
   header.masthead{background:var(--paper)}
   .masthead .wrap{padding:16px 22px 0;text-align:center}
@@ -444,7 +470,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=77d652f8"></script>
+<script src="i18n.js?v=392168fd"></script>
 <script defer src="analytics.js?v=1.1.0"></script>
 <script src="nl_parse.js"></script>
 <script src="nl_deeplink.js"></script>
@@ -455,8 +481,54 @@
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
-<a class="skip" href="#main" data-i18n="skip_to_content">Skip to content</a>
+<a class="skip" href="#main" id="skipToContent" data-i18n="skip_to_content">Skip to content</a>
 <div id="srstatus" class="sr-only" role="status" aria-live="polite"></div>
+<script>
+/* Landing-identity layer decision — must run before the masthead/tool below paint, so a
+   bare "/" first-time visit never flashes the full tool before the identity layer replaces
+   it. Any existing hash (every #notice/#vendor/#agency/#land/#money/etc. permalink) or an
+   already-seen flag skips the layer entirely — it shows at most once per browser. */
+(function(){
+  try{
+    var seen = localStorage.getItem("crol_landing_seen_v1") === "1";
+    var hasHash = !!location.hash && location.hash !== "#";
+    if(!hasHash && !seen){
+      document.documentElement.classList.add("show-landing");
+      localStorage.setItem("crol_landing_seen_v1", "1");
+    }
+  }catch(e){}
+})();
+</script>
+<main id="landing-identity" class="landing-identity">
+  <div class="wrap">
+    <a class="skip" href="#main" id="landingSkip" data-i18n="landing_skip_to_tool">Skip to the full tool</a>
+    <svg class="cr-seal" viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="0.6"/>
+      <path d="M50 18 L74 30 V58 Q74 76 50 86 Q26 76 26 58 V30 Z" fill="none" stroke="currentColor" stroke-width="1.3"/>
+      <line x1="26" y1="48" x2="74" y2="48" stroke="currentColor" stroke-width="0.6"/>
+      <path d="M50 30 L50 46 M42 38 L58 38" stroke="currentColor" stroke-width="1.1"/>
+    </svg>
+    <h1 class="cr-title">CROL-List</h1>
+    <p class="landing-tagline" data-i18n="landing_tagline">NYC's public record, organized for people who have to act on it.</p>
+    <div class="landing-ctas">
+      <button type="button" class="landing-cta primary" id="landingCtaContracts">
+        <span data-i18n="landing_cta_contracts">Track city contracts</span>
+        <small data-i18n="landing_cta_contracts_sub">bids, awards, and deadlines</small>
+      </button>
+      <button type="button" class="landing-cta secondary" id="landingCtaZoning">
+        <span data-i18n="landing_cta_zoning">Follow a rezoning</span>
+        <small data-i18n="landing_cta_zoning_sub">Community Board notices, hearings, and maps</small>
+      </button>
+    </div>
+    <form class="landing-ask" id="landingAskForm">
+      <label for="landingAsk" class="sr-only" data-i18n="landing_ask_label">Or just ask, in plain English</label>
+      <input type="text" id="landingAsk" placeholder="rezonings near me, IT contracts open now…" data-i18n-placeholder="landing_ask_placeholder">
+      <button type="submit" data-i18n="ask_btn">Ask</button>
+    </form>
+    <a href="#people" class="landing-more" id="landingMore" data-i18n="landing_more_link">Also tracks staffing, property sales, agency rules, and public meetings</a>
+  </div>
+</main>
 <header class="masthead">
   <div class="wrap">
     <div class="cr-rule cr-rule--top"></div>
@@ -1140,6 +1212,37 @@ $("#more-tabs-toggle").addEventListener("click",()=>{
     if(j!==null){ e.preventDefault(); tabs[j].focus(); tabs[j].click(); }
   }));
   syncTabAria();
+})();
+
+/* ===================== LANDING-IDENTITY LAYER ===================== */
+// The tool underneath keeps loading normally while this layer is shown (see the bottom of
+// this file) — dismissing just reveals it, never triggers a fresh load, so the two CTAs and
+// the "more" link below all use showTab()/setSecondaryNavExpanded() rather than re-fetching.
+function dismissLandingLayer(){
+  document.documentElement.classList.remove("show-landing");
+}
+(function(){
+  const contracts=$("#landingCtaContracts"), zoning=$("#landingCtaZoning"), more=$("#landingMore"),
+        askForm=$("#landingAskForm"), askInput=$("#landingAsk");
+  ["#landingSkip","#skipToContent"].forEach(sel=>{
+    const link=$(sel); if(link) link.addEventListener("click", ()=>dismissLandingLayer());
+  });
+  if(contracts) contracts.addEventListener("click", ()=>{ dismissLandingLayer(); showTab("money", true); $("#main").focus(); });
+  if(zoning) zoning.addEventListener("click", ()=>{ dismissLandingLayer(); showTab("land", true); $("#main").focus(); });
+  if(more) more.addEventListener("click", e=>{
+    e.preventDefault();
+    dismissLandingLayer();
+    setSecondaryNavExpanded(true); syncTabAria();
+    $("#more-tabs-toggle").focus();
+  });
+  if(askForm) askForm.addEventListener("submit", e=>{
+    e.preventDefault();
+    const text=askInput.value.trim(); if(!text) return;
+    dismissLandingLayer();
+    showTab("money", true);
+    $("#nlq").value=text;
+    nlTranslate();
+  });
 })();
 
 /* Result-list rows are keyboard-operable: Enter/Space activates the focused row */
