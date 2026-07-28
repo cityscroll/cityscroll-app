@@ -34,6 +34,9 @@ failures = []
 with sync_playwright() as pw:
     browser = pw.chromium.launch()
     page = browser.new_context().new_page()
+    # This spec characterizes the tool, not the first-contact landing-identity layer —
+    # mark it a returning visitor so a bare BASE load lands straight in the tool as before.
+    page.add_init_script("try{localStorage.setItem('crol_landing_seen_v1','1');}catch(e){}")
     page.goto(BASE, timeout=30000)
     page.wait_for_load_state("load")
     page.wait_for_timeout(500)
@@ -73,6 +76,34 @@ with sync_playwright() as pw:
                              f"box-shadow={info['boxShadow']!r})")
     if not any("stop" in f for f in failures):
         step("OK", f"focus-visible walk", f"{N_STOPS - 1} stop(s), all have a visible indicator")
+
+    # The landing-identity layer — its own short keyboard walk, on a genuinely
+    # fresh visit (not inoculated, unlike the walk above): skip link, all three equal
+    # route choices, then the relocated ask input + button.
+    LANDING_STOPS = 6
+    landing_page = browser.new_context().new_page()
+    landing_page.goto(BASE, timeout=30000)
+    landing_page.wait_for_load_state("load")
+    landing_page.wait_for_timeout(500)
+    landing_page.keyboard.press("Tab")
+    for i in range(1, LANDING_STOPS):
+        landing_page.keyboard.press("Tab")
+        info = landing_page.evaluate("""() => {
+            const el = document.activeElement;
+            const cs = getComputedStyle(el);
+            return {tag: el.tagName, id: el.id, cls: el.className,
+                     outlineStyle: cs.outlineStyle, outlineWidth: cs.outlineWidth,
+                     boxShadow: cs.boxShadow};
+        }""")
+        if info["tag"] == "BODY":
+            break
+        if not has_visible_focus_indicator(info):
+            desc = f"{info['tag']}#{info['id']}.{info['cls']}".replace(" ", ".")
+            failures.append(f"landing stop {i}: {desc} has no visible focus indicator "
+                             f"(outline-style={info['outlineStyle']!r} width={info['outlineWidth']!r} "
+                             f"box-shadow={info['boxShadow']!r})")
+    if not any("landing stop" in f for f in failures):
+        step("OK", "landing-identity focus-visible walk", f"{LANDING_STOPS - 1} stop(s), all have a visible indicator")
     browser.close()
 
 assert not failures, f"focus-visibility gate: {len(failures)} failure(s): {failures}"

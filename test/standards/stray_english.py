@@ -217,8 +217,11 @@ def main():
     findings = []
     for page in HTML_PAGES:
         src = (ROOT / page).read_text(encoding="utf-8")
-        start, end = src.find("<script>"), src.rfind("</script>")
-        findings += scan_js(src[start + 8:end] if start != -1 and end != -1 else "")
+        # Each <script>...</script> block scanned on its own — a naive first-open/last-close
+        # slice would swallow every HTML tag between a page's FIRST and LAST script block as
+        # if it were JS source the moment a page carries more than one inline script.
+        for block in re.findall(r"<script>(.*?)</script>", src, re.S):
+            findings += scan_js(block)
     # i18n.js: only the code AFTER the dictionaries (builders/helpers) is linted —
     # the STRINGS/SECTION_I18N tables *are* the i18n layer.
     i18n_src = (ROOT / "i18n.js").read_text(encoding="utf-8")

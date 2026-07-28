@@ -60,6 +60,19 @@
     tab_rules:    "Règles",
     tab_meetings: "Réunions",
     tab_alerts:   "Alertes",
+    landing_tagline: "Le registre public de New York, organisé pour ceux qui doivent agir en conséquence.",
+    landing_cta_contracts: "Trouvez des occasions de contrats",
+    landing_cta_contracts_sub: "appels d'offres ouverts, attributions et échéances",
+    landing_cta_staffing: "Explorez les carrières municipales",
+    landing_cta_staffing_sub: "titres de poste, échelles salariales et concours de la fonction publique",
+    landing_cta_browse: "Parcourez les registres publics",
+    landing_cta_browse_sub: "zonage, propriétés, règles des agences et réunions publiques",
+    landing_ask_placeholder: "recherchez des contrats par sujet ou agence…",
+    landing_skip_to_tool: "Passer à l'outil complet",
+    city_careers_heading: "Faites d'un titre une carrière municipale",
+    city_careers_intro: "Comparez ici les titres officiels, les échelles salariales et le statut des concours. Continuez ensuite sur les sites officiels de la Ville.",
+    city_careers_jobs: "Rechercher les emplois municipaux actuels",
+    city_careers_exams: "Voir les concours ouverts de la fonction publique",
 
     // Money lens controls
     nl_placeholder_money: "décrivez ce que vous recherchez…",
@@ -335,6 +348,7 @@
 
     // Skip link
     site_tagline: "Abonnez-vous aux contrats, rezonages et auditions publiques de la Ville de New York qui vous intéressent.",
+    house_brand_callout: "Un outil CityScroll",
     skip_to_content: "Aller au contenu",
 
     // Announcements (sr-only)

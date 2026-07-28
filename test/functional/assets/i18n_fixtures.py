@@ -281,7 +281,16 @@ def _soda_response(url):
 
 def install_routes(page):
     """Intercept every upstream. Local files (index.html, i18n.js, data/*.json) still load
-    from the CROL_BASE http server; everything remote is deterministic or dead."""
+    from the CROL_BASE http server; everything remote is deterministic or dead.
+
+    Also marks the browser context as a returning visitor (see index.html's
+    crol_landing_seen_v1 flag) so every existing spec characterizing the TOOL keeps landing
+    straight in it, unaffected by the landing-identity layer shown only on a genuinely fresh
+    bare "/" visit. A spec that means to exercise the landing layer itself should clear this
+    key (`page.evaluate("localStorage.removeItem('crol_landing_seen_v1')")`) after routes are
+    installed but before its own navigation — see test/functional/20_landing_identity.py.
+    """
+    page.add_init_script("try{localStorage.setItem('crol_landing_seen_v1','1');}catch(e){}")
     def soda(route):
         route.fulfill(status=200, content_type="application/json",
                       body=json.dumps(_soda_response(route.request.url)))

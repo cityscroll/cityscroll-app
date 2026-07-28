@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "5c42ac41",
-  "zh-Hans": "ccda896a",
-  ru: "9043bd68",
-  bn: "a338e67e",
-  ht: "bcc9a815",
-  ko: "3ad0a991",
-  fr: "35eadf63",
-  pl: "6bbe9320",
-  ar: "df610899",
-  ur: "964ef12d",
+  es: "8c7b7f82",
+  "zh-Hans": "43337c35",
+  ru: "1bea02fe",
+  bn: "5e98d8c1",
+  ht: "e6461be2",
+  ko: "2fdd83c3",
+  fr: "61a706c7",
+  pl: "06afe839",
+  ar: "7afc692c",
+  ur: "711ac8bb",
 };
 
 
@@ -151,6 +151,17 @@ const STRINGS = {
     tab_rules:    "Rules",
     tab_meetings: "Meetings",
     tab_alerts:   "Alerts",
+
+    // Landing-identity layer (shown once, to a bare "/" first-time visit — see #landing-identity)
+    landing_tagline:          "NYC's public record, organized for people who have to act on it.",
+    landing_cta_contracts:    "Find contract opportunities",
+    landing_cta_contracts_sub:"open bids, awards, and deadlines",
+    landing_cta_staffing:     "Explore city careers",
+    landing_cta_staffing_sub: "job titles, pay ranges, and civil service exams",
+    landing_cta_browse:       "Browse public records",
+    landing_cta_browse_sub:   "zoning, property, agency rules, and public meetings",
+    landing_ask_placeholder:  "search contracts by topic or agency…",
+    landing_skip_to_tool:     "Skip to the full tool",
 
     // Money lens controls
     nl_placeholder_money: "describe what you're looking for…",
@@ -316,6 +327,10 @@ const STRINGS = {
     nl_placeholder_alerts:   "for example, education contracts over $200K due in 3 months, or awards over $1M",
 
     // People panel
+    city_careers_heading: "Turn a title into a city career",
+    city_careers_intro: "Compare official titles, pay ranges, and exam status here. Then continue on the City's official sites.",
+    city_careers_jobs: "Search current city jobs",
+    city_careers_exams: "See open civil service exams",
     roles_heading:       "Roles",
     people_heading:      "People",
     listing_heading:     "Listing",
@@ -426,6 +441,7 @@ const STRINGS = {
 
     // Front-page masthead
     site_tagline: "Subscribe to NYC contracts, rezonings, and hearings that interest you.",
+    house_brand_callout: "A CityScroll tool",
 
     // Skip link
     skip_to_content: "Skip to content",

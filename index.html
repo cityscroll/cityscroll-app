@@ -47,6 +47,30 @@
      hyphenated identifier can't get bidi-reordered inside RTL (ar/ur) surrounding text. */
   code{font:12px/1 ui-monospace,Menlo,monospace;background:#efe8d8;padding:1px 5px;border-radius:4px;unicode-bidi:isolate}
 
+  /* Landing-identity layer: shown once, to a bare "/" first-time visit (see the decision
+     script at the top of <body>). Hidden by default so no-JS/JS-disabled visitors and every
+     returning or deep-linked visitor see today's tool, unchanged. */
+  #landing-identity{display:none}
+  html.show-landing #landing-identity{display:block}
+  html.show-landing header.masthead, html.show-landing main#main{display:none}
+  .landing-identity{background:var(--paper);padding:32px 0 40px}
+  .landing-identity .wrap{max-width:820px;text-align:center}
+  .landing-identity .cr-seal{margin:0 auto 6px}
+  .landing-tagline{font-size:16px;line-height:1.4;color:var(--ink-soft);max-width:38ch;margin:0 auto 22px}
+  .landing-ctas{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:18px}
+  .landing-cta{min-height:44px;border:2px solid var(--ink);border-radius:10px;padding:12px 16px;font:inherit;font-family:var(--font-body);cursor:pointer;text-align:start}
+  .landing-cta > span{display:block;font-weight:700;font-size:16px}
+  .landing-cta small{display:block;font-weight:400;font-size:12.5px;opacity:.82;margin-top:2px}
+  .landing-cta{background:var(--card);color:var(--ink)}
+  .landing-cta:hover{border-color:var(--oxblood);color:var(--oxblood)}
+  .landing-ask-slot{margin:0 auto 16px;max-width:420px}
+  .landing-ask-slot .nlrow{flex-wrap:nowrap}
+  .landing-ask-slot input{flex:1;min-height:44px;border:2px solid var(--ink);border-radius:20px;padding:9px 16px;font:inherit;font-family:var(--font-body);background:var(--card);color:var(--ink)}
+  .landing-ask-slot button{min-height:44px;padding:9px 18px;border:2px solid var(--ink);border-radius:20px;background:var(--oxblood);border-color:var(--oxblood);color:#fff;font-weight:600;cursor:pointer}
+  @media(min-width:760px){
+    .landing-ctas{grid-template-columns:repeat(3,minmax(0,1fr))}
+  }
+
   /* masthead + tabs (City Record letterpress) */
   header.masthead{background:var(--paper)}
   .masthead .wrap{padding:16px 22px 0;text-align:center}
@@ -58,6 +82,7 @@
   .cr-seal{width:44px;height:44px;color:var(--ink);display:block;margin:0 auto 3px}
   .cr-title{font-family:var(--font-nameplate);font-weight:900;font-size:clamp(2.5rem,8vw,4.8rem);line-height:.9;letter-spacing:.01em;text-transform:uppercase;color:var(--ink);margin:.04em 0 .1em}
   .cr-tagline{font-family:var(--font-body);font-size:15px;line-height:1.4;color:var(--ink-soft);margin:0 0 8px}
+  .cr-housebrand{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 3px}
   /* Today's Edition strip (front page) */
   #todaystrip{padding:10px 0 8px;border-bottom:1px solid var(--rule)}
   .t-dateline{font-family:var(--font-sc);font-weight:600;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
@@ -75,8 +100,9 @@
   .t-card .tmeta{font:11.5px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:3px;display:block}
   @media(max-width:680px){.t-cards{grid-template-columns:1fr}.t-big{font-size:18px}}
 
-  .tabs{display:flex;gap:.2rem;justify-content:center;flex-wrap:wrap;margin-top:4px}
-  .tabbtn{font-family:var(--font-sc);font-weight:600;font-size:13px;letter-spacing:.15em;text-transform:uppercase;padding:9px 18px;border:0;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent}
+  .lens-nav{margin-top:4px}
+  .tabs{display:flex;gap:.2rem;justify-content:center;flex-wrap:wrap}
+  .tabbtn{font-family:var(--font-sc);font-weight:600;font-size:13px;letter-spacing:.15em;text-transform:uppercase;min-height:44px;padding:9px 18px;border:0;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent}
   .tabbtn.active{color:var(--oxblood);border-bottom-color:var(--oxblood)}
   .tabbtn:hover{color:var(--ink)}
   .tabpane{display:none;padding:24px 0 10px}
@@ -421,7 +447,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=5ae00c30"></script>
+<script src="i18n.js?v=be3d7ba1"></script>
 <script defer src="analytics.js?v=1.1.0"></script>
 <script src="nl_parse.js"></script>
 <script src="nl_deeplink.js"></script>
@@ -432,8 +458,55 @@
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
-<a class="skip" href="#main" data-i18n="skip_to_content">Skip to content</a>
+<a class="skip" href="#main" id="skipToContent" data-i18n="skip_to_content">Skip to content</a>
 <div id="srstatus" class="sr-only" role="status" aria-live="polite"></div>
+<script>
+/* Landing-identity layer decision — must run before the masthead/tool below paint, so a
+   bare "/" first-time visit never flashes the full tool before the identity layer replaces
+   it. Any existing hash (every #notice/#vendor/#agency/#land/#money/etc. permalink) or an
+   already-seen flag skips the layer entirely — it shows at most once per browser. */
+(function(){
+  try{
+    var seen = localStorage.getItem("crol_landing_seen_v1") === "1";
+    var hasHash = !!location.hash && location.hash !== "#";
+    if(!hasHash && !seen){
+      document.documentElement.classList.add("show-landing");
+      localStorage.setItem("crol_landing_seen_v1", "1");
+    }
+  }catch(e){}
+})();
+</script>
+<main id="landing-identity" class="landing-identity">
+  <div class="wrap">
+    <a class="skip" href="#main" id="landingSkip" data-i18n="landing_skip_to_tool">Skip to the full tool</a>
+    <svg class="cr-seal" viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="0.6"/>
+      <path d="M50 18 L74 30 V58 Q74 76 50 86 Q26 76 26 58 V30 Z" fill="none" stroke="currentColor" stroke-width="1.3"/>
+      <line x1="26" y1="48" x2="74" y2="48" stroke="currentColor" stroke-width="0.6"/>
+      <path d="M50 30 L50 46 M42 38 L58 38" stroke="currentColor" stroke-width="1.1"/>
+    </svg>
+    <h1 class="cr-title">CityScroll</h1>
+    <p class="landing-tagline" data-i18n="landing_tagline">NYC's public record, organized for people who have to act on it.</p>
+    <div class="landing-ctas">
+      <button type="button" class="landing-cta" id="landingCtaContracts">
+        <span data-i18n="landing_cta_contracts">Find contract opportunities</span>
+        <small data-i18n="landing_cta_contracts_sub">open bids, awards, and deadlines</small>
+      </button>
+      <button type="button" class="landing-cta" id="landingCtaStaffing">
+        <span data-i18n="landing_cta_staffing">Explore city careers</span>
+        <small data-i18n="landing_cta_staffing_sub">job titles, pay ranges, and civil service exams</small>
+      </button>
+      <button type="button" class="landing-cta" id="landingCtaBrowse">
+        <span data-i18n="landing_cta_browse">Browse public records</span>
+        <small data-i18n="landing_cta_browse_sub">zoning, property, agency rules, and public meetings</small>
+      </button>
+    </div>
+    <!-- The tool's own #nlq/#nlgo pair relocates here (see the LANDING-IDENTITY LAYER
+         script) rather than a separate copy — one shared component, not two. -->
+    <div class="landing-ask-slot" id="landingAskSlot"></div>
+  </div>
+</main>
 <header class="masthead">
   <div class="wrap">
     <div class="cr-rule cr-rule--top"></div>
@@ -446,6 +519,7 @@
         <path d="M50 30 L50 46 M42 38 L58 38" stroke="currentColor" stroke-width="1.1"/>
       </svg>
       <h1 class="cr-title">CROL-List</h1>
+      <p class="cr-housebrand" data-i18n="house_brand_callout">A CityScroll tool</p>
       <p class="cr-tagline" data-i18n="site_tagline">Subscribe to NYC contracts, rezonings, and hearings that interest you.</p>
     </div>
     <div class="cr-rule cr-rule--mid"></div>
@@ -455,7 +529,7 @@
       <div class="t-counts" id="tcounts"></div>
       <div class="t-cards" id="tcards"></div>
     </div>
-    <nav class="tabs">
+    <nav class="lens-nav tabs">
       <button class="tabbtn active" data-tab="money" data-i18n="tab_money">Contracts</button>
       <button class="tabbtn" data-tab="people" data-i18n="tab_people">Staffing</button>
       <button class="tabbtn" data-tab="land" data-i18n="tab_land">Zoning</button>
@@ -567,6 +641,14 @@
 <!-- ============ PEOPLE ============ -->
 <section id="tab-people" class="tabpane">
   <div class="wrap">
+    <section class="scope" aria-labelledby="city-careers-heading">
+      <h2 id="city-careers-heading" data-i18n="city_careers_heading">Turn a title into a city career</h2>
+      <p data-i18n="city_careers_intro">Compare official titles, pay ranges, and exam status here. Then continue on the City's official sites.</p>
+      <div class="actions">
+        <a class="act primary" href="https://cityjobs.nyc.gov/jobs" target="_blank" rel="noopener noreferrer"><span data-i18n="city_careers_jobs">Search current city jobs</span><span class="sr-only" data-i18n="ext_link_new_tab_sr"> (opens in new tab)</span></a>
+        <a class="act" href="https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page" target="_blank" rel="noopener noreferrer"><span data-i18n="city_careers_exams">See open civil service exams</span><span class="sr-only" data-i18n="ext_link_new_tab_sr"> (opens in new tab)</span></a>
+      </div>
+    </section>
 
     <div class="controls">
       <div class="field">
@@ -1076,6 +1158,53 @@ document.querySelectorAll(".tabbtn").forEach(b=>b.addEventListener("click",()=>s
     if(j!==null){ e.preventDefault(); tabs[j].focus(); tabs[j].click(); }
   });
   syncTabAria();
+})();
+
+/* ===================== LANDING-IDENTITY LAYER ===================== */
+// The tool underneath keeps loading normally while this layer is shown (see the bottom of
+// this file) — dismissing just reveals it, never triggers a fresh load, so the three routes and
+// the route choices below all use showTab() rather than re-fetching.
+//
+// The Ask input is the SAME #nlq/#nlgo pair the Contracts lens already uses, physically
+// relocated into the layer's slot (and moved back on dismiss) rather than a second copy —
+// one shared component in one visual position, whichever context is showing.
+let landingAskRelocated = false;
+function restoreAskRow(){
+  if(!landingAskRelocated) return;
+  const nlq=$("#nlq"), row=nlq && nlq.closest(".nlrow"), nlbox=document.querySelector(".nlbox");
+  if(nlbox && row) nlbox.insertBefore(row, nlbox.firstChild);
+  if(nlq){ nlq.dataset.i18nPlaceholder="nl_placeholder_money"; nlq.placeholder=t("nl_placeholder_money"); }
+  landingAskRelocated=false;
+}
+function dismissLandingLayer(){
+  document.documentElement.classList.remove("show-landing");
+  restoreAskRow();
+}
+(function(){
+  const contracts=$("#landingCtaContracts"), staffing=$("#landingCtaStaffing"), browse=$("#landingCtaBrowse");
+  ["#landingSkip","#skipToContent"].forEach(sel=>{
+    const link=$(sel); if(link) link.addEventListener("click", ()=>dismissLandingLayer());
+  });
+  if(contracts) contracts.addEventListener("click", ()=>{ dismissLandingLayer(); showTab("money", true); $("#main").focus(); });
+  if(staffing) staffing.addEventListener("click", ()=>{ dismissLandingLayer(); showTab("people", true); $("#main").focus(); });
+  if(browse) browse.addEventListener("click", ()=>{ dismissLandingLayer(); $("#main").focus(); });
+
+  if(document.documentElement.classList.contains("show-landing")){
+    const slot=$("#landingAskSlot"), nlq=$("#nlq"), row=nlq && nlq.closest(".nlrow");
+    if(slot && row){
+      slot.appendChild(row);
+      nlq.dataset.i18nPlaceholder="landing_ask_placeholder";
+      nlq.placeholder=t("landing_ask_placeholder");
+      landingAskRelocated=true;
+      // Attached BEFORE this file's own unconditional #nlgo click / #nlq Enter listeners
+      // (bound near the bottom of this file) — same-event listeners fire in attachment
+      // order, so dismissal always runs first and the search itself runs against the
+      // now-visible tool.
+      const submitFromLanding=()=>{ dismissLandingLayer(); showTab("money", true); };
+      $("#nlgo").addEventListener("click", submitFromLanding);
+      nlq.addEventListener("keydown", e=>{ if(e.key==="Enter") submitFromLanding(); });
+    }
+  }
 })();
 
 /* Result-list rows are keyboard-operable: Enter/Space activates the focused row */

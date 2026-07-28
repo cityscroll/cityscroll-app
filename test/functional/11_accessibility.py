@@ -219,6 +219,30 @@ def run_index_states(pw, lang, viewport, failures):
     browser.close()
 
 
+def run_landing_state(pw, lang, viewport, failures):
+    """The landing-identity layer on a genuinely fresh visit,
+    never inoculated by install_routes' returning-visitor init script (see that function's
+    own docstring): the setter and remover both fire on every navigation, in that order, so
+    the page's own decision script always finds a fresh, unseen browser."""
+    browser = pw.chromium.launch()
+    width, height = viewport
+    viewport_name = f"{width}x{height}"
+    ctx = browser.new_context(viewport={"width": width, "height": height})
+    page = ctx.new_page()
+    install_routes(page)
+    page.add_init_script("try{localStorage.removeItem('crol_landing_seen_v1');}catch(e){}")
+    if lang != "en":
+        page.add_init_script(f"try{{localStorage.setItem('crol_lang','{lang}');}}catch(e){{}}")
+    page.goto(BASE, timeout=30000)
+    page.wait_for_load_state("load", timeout=20000)
+    page.wait_for_timeout(600)
+    page.add_script_tag(path=AXE)
+    state = f"index.html [{lang}] [{viewport_name}] [landing-identity]"
+    run_axe(page, state, failures)
+    run_focus_exposure(page, state, failures)
+    browser.close()
+
+
 def run_subpage(pw, path, viewport, failures):
     browser = pw.chromium.launch()
     width, height = viewport
@@ -240,6 +264,7 @@ with sync_playwright() as pw:
     for viewport in VIEWPORTS:
         for lang in LANGS:
             run_index_states(pw, lang, viewport, failures)
+            run_landing_state(pw, lang, viewport, failures)
         for path in PAGES:
             run_subpage(pw, path, viewport, failures)
 

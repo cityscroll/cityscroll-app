@@ -51,7 +51,7 @@ def check_lang(pw, lang):
     page.wait_for_timeout(1000)
 
     # Baseline (English) physical resolution, BEFORE switching -- what "mirrored" is relative to.
-    skip_x_ltr = page.locator(".skip").evaluate("el => el.getBoundingClientRect().x")
+    skip_x_ltr = page.locator("#skipToContent").evaluate("el => el.getBoundingClientRect().x")
     border_ltr = page.locator(".tag").first.evaluate(
         "el => [getComputedStyle(el).marginLeft, getComputedStyle(el).marginRight]")
 
@@ -74,7 +74,7 @@ def check_lang(pw, lang):
     # 2. Logical-property mirroring, spot-checked two ways.
     # 2a. .skip (skip-to-content link): inset-inline-start:-9999px must push it off the
     #     OPPOSITE physical edge under RTL -- off-screen LEFT in en, off-screen RIGHT in ar/ur.
-    skip_x_rtl = page.locator(".skip").evaluate("el => el.getBoundingClientRect().x")
+    skip_x_rtl = page.locator("#skipToContent").evaluate("el => el.getBoundingClientRect().x")
     if not (skip_x_ltr < 0 and skip_x_rtl > 0):
         failures.append(
             f"{lang}: .skip did not mirror off-screen side (ltr x={skip_x_ltr}, rtl x={skip_x_rtl}) "
@@ -115,6 +115,48 @@ def check_lang(pw, lang):
     return failures
 
 
+def check_landing_lang(pw, lang):
+    """The landing-identity layer on a genuinely fresh visit
+    in an RTL language — install_routes' returning-visitor init script is deliberately
+    overridden (see its own docstring) so this always lands on the layer, not the tool."""
+    failures = []
+    browser = pw.chromium.launch()
+    ctx = browser.new_context(viewport={"width": 1280, "height": 900})
+    page = ctx.new_page()
+    install_routes(page)
+    page.add_init_script("try{localStorage.removeItem('crol_landing_seen_v1');}catch(e){}")
+    page.add_init_script(f"try{{localStorage.setItem('crol_lang','{lang}');}}catch(e){{}}")
+    page.goto(BASE, timeout=30000)
+    page.wait_for_load_state("load")
+    page.wait_for_timeout(1000)
+
+    layer = page.locator("#landing-identity")
+    if not layer.is_visible():
+        failures.append(f"{lang}: landing-identity layer did not render on a fresh visit")
+        browser.close()
+        return failures
+
+    html_dir = page.evaluate("document.documentElement.getAttribute('dir')")
+    if html_dir != "rtl":
+        failures.append(f"{lang}: landing-identity: document.documentElement.dir={html_dir!r}, expected 'rtl'")
+
+    # The layer's own skip link ("Skip to the full tool") shares the .skip class with the
+    # main skip link 15_rtl.py already checks — same inset-inline-start mirroring contract.
+    skip_x = page.locator("#landingSkip").evaluate("el => el.getBoundingClientRect().x")
+    if not skip_x > 0:
+        failures.append(f"{lang}: landing-identity: #landingSkip did not mirror off the right edge (x={skip_x})")
+
+    for w, h in ((375, 800), (1280, 900)):
+        page.set_viewport_size({"width": w, "height": h})
+        page.wait_for_timeout(150)
+        overflow = page.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
+        if overflow > 1:
+            failures.append(f"{lang}: landing-identity: horizontal overflow of {overflow}px at {w}x{h}")
+
+    browser.close()
+    return failures
+
+
 def main():
     global BASE
     server = None
@@ -136,6 +178,15 @@ def main():
                     print(f"   {v}")
             else:
                 step("OK", f"RTL guard[{lang}]", "dir/lang propagation, logical-property mirroring, bidi isolation, no overflow")
+
+            landing_violations = check_landing_lang(pw, lang)
+            if landing_violations:
+                failed = True
+                step("FAIL", f"RTL guard[{lang}][landing-identity]", f"{len(landing_violations)} issue(s)")
+                for v in landing_violations:
+                    print(f"   {v}")
+            else:
+                step("OK", f"RTL guard[{lang}][landing-identity]", "dir propagation, skip-link mirroring, no overflow")
 
     if server:
         server.shutdown()
