@@ -85,6 +85,14 @@
       record("lens_open", { lens, surface: "home" });
       return;
     }
+    if (target.matches("[data-scenario][data-scenario-lens]")) {
+      record("scenario_open", {
+        lens: target.dataset.scenarioLens,
+        detail: target.dataset.scenario,
+        surface: "home",
+      });
+      return;
+    }
     if (target.matches(".trychip")) {
       record("search_run", { lens, detail: "preset", geography: currentArea(), surface: "home" });
       return;

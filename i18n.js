@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "f091afce",
-  "zh-Hans": "6109a311",
-  ru: "230a863d",
-  bn: "3d98bc8b",
-  ht: "051346f2",
-  ko: "df973cc5",
-  fr: "ced47919",
-  pl: "613f37df",
-  ar: "bc9c572a",
-  ur: "a1b54d3a",
+  es: "0b0404ff",
+  "zh-Hans": "11fa0e26",
+  ru: "2af2c32a",
+  bn: "5242a875",
+  ht: "53b47d77",
+  ko: "7889c55b",
+  fr: "cd2bf0a4",
+  pl: "61a5cc5d",
+  ar: "64bf70d2",
+  ur: "7136318d",
 };
 
 
@@ -112,6 +112,14 @@ const I18N_PROVENANCE = {
 // Notice content (City Record titles, agency names, notice bodies) is NEVER in this table.
 const STRINGS = {
   en: {
+    scenario_heading: "What are you here to do?",
+    scenario_intro: "Choose a task to start with useful filters, or use the category tabs above.",
+    scenario_city_work: "I bid on city work",
+    scenario_neighborhood: "I follow my neighborhood",
+    scenario_hearings: "I attend or comment on hearings",
+    scenario_city_career: "I explore a city career",
+    scenario_subsidies_land: "I track subsidies and land use",
+    scenario_legal_compliance: "I watch legal or compliance notices",
     footer_notices: "1M+ notices",
     sugg_money_0: "construction contracts over $500k",
     sugg_money_1: "IT consulting RFPs",
