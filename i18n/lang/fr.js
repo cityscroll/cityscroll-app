@@ -55,7 +55,7 @@
     // Tab labels
     tab_money:    "Contrats",
     tab_people:   "Effectifs",
-    tab_land:     "Terrains",
+    tab_land:     "Zonage",
     tab_property: "Biens",
     tab_rules:    "Règles",
     tab_meetings: "Réunions",
@@ -793,7 +793,7 @@
     stats_col_count: "Avis",
     stats_cat_empty: "Aucun bulletin n'a encore trouvé de correspondance.",
     stats_h_bylens: "Recherches, par section",
-    stats_p_bylens: "La partie du site sur laquelle portaient les questions : contrats, personnel, terrains, immobilier, réglementation ou réunions.",
+    stats_p_bylens: "La partie du site sur laquelle portaient les questions : contrats, personnel, zonage, immobilier, réglementation ou réunions.",
     stats_col_lens: "Section",
     stats_col_last7: "7 derniers jours",
     stats_col_alltime: "Depuis toujours",

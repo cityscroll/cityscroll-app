@@ -79,6 +79,14 @@ test("a real ZAP project gets a canonical #land/<project_id> permalink", () => {
   assert.equal(landLink(ALLEN_STREET.project_id), "https://crol-list.org/#land/2023M0452");
 });
 
+test("#land/<project_id> continues to resolve and lands on the renamed Zoning tab label", () => {
+  const landMatch = src.match(/<button class="tabbtn"[^>]*data-tab="land"[^>]*>(.*?)<\/button>/);
+  assert.equal(landMatch?.[1], "Zoning");
+  const applyHash = extractFn("applyHash");
+  assert.match(applyHash, /case "land":/);
+  assert.match(applyHash, /showLandEntry\(parseLandHashSegment\(raw\.slice\(5\)\)\);/);
+});
+
 test("the Land detail exposes the same Copy link action shape as notice details", () => {
   const html = landPermalinkActionHTML(ALLEN_STREET);
   assert.match(html, /<button class="act" type="button" id="landcopy">Copy link<\/button>/);
