@@ -6,6 +6,13 @@ The thin serverless backend for **[CROL-List](https://crol-list.org)** — a sin
 a CORS shim, a schedule, or server-side rendering lives here. The site works fully without
 the worker — every feature degrades gracefully when it's absent.
 
+The same worker also answers `cityscroll.org` / `www.cityscroll.org` — a parallel serving
+domain on the same Cloudflare account. `crol-list.org` is canonical (every page's
+`<link rel="canonical">` says so); the worker just reverse-proxies the two cityscroll.org
+hosts straight from `crol-list.org` byte-for-byte (`src/mirror.mjs`), since GitHub Pages
+itself only virtual-hosts the one domain configured in its own settings. CORS allowlists
+across the API routes include both cityscroll.org origins alongside crol-list.org's.
+
 > Maintenance rule: this README is updated with every significant feature change — if a
 > route, cron behavior, or defense changes, its description lands here in the same session.
 > (It previously went stale enough to still describe the retired Netlify deployment; don't

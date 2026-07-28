@@ -18,6 +18,7 @@ const MAX_BATCH_PER_IP_DAY = 30;
 
 const ALLOW = new Set([
   "https://crol-list.org", "https://www.crol-list.org",
+  "https://cityscroll.org", "https://www.cityscroll.org",
   "https://crol-list.jimdc.com", "https://jimdc.github.io",
   "http://localhost:8000", "http://localhost:8787",
 ]);
