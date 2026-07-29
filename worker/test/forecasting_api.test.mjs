@@ -73,3 +73,25 @@ test("GET /inv/:id returns agency forecasts if not found as shared snapshot", as
   assert.equal(body.forecasts.length, 1);
   assert.equal(body.forecasts[0].contract_id, "CTA9");
 });
+
+test("POST /inv rate-limits by IP without putting the IP in KV keys", async () => {
+  const store = {};
+  const env = { SUBS: kv(store) };
+  const post = () => handleInv(
+    new Request("https://w/inv", {
+      method: "POST",
+      headers: { "content-type": "application/json", "CF-Connecting-IP": "203.0.113.19" },
+      body: JSON.stringify({ invalid: true }),
+    }),
+    env,
+    "/inv",
+  );
+
+  for (let i = 0; i < 10; i++) assert.equal((await post()).status, 400);
+  assert.equal((await post()).status, 429);
+
+  const keys = Object.keys(store);
+  assert.equal(keys.length, 1);
+  assert.match(keys[0], /^rl:inv:a:[0-9a-f]{64}:\d{4}-\d{2}-\d{2}$/);
+  assert.ok(!keys[0].includes("203.0.113.19"));
+});

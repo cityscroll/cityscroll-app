@@ -12,6 +12,7 @@ import { parseNames, MAX_NAMES } from "./lib/batch.mjs";
 import { bumpStat } from "./lib/stats.mjs";
 import { emitUsageEvent } from "./lib/analytics.mjs";
 import { vendorStem } from "./lib/compile.mjs";
+import { overActorLimit } from "./lib/meter.mjs";
 
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const MAX_BATCH_PER_IP_DAY = 30;
@@ -34,11 +35,8 @@ export async function handleBatch(req, env) {
   if (!names.length) return json({ ok: false, reason: "no-names", max: MAX_NAMES }, 400, cors);
 
   const ip = req.headers.get("CF-Connecting-IP") || "";
-  if (env.NL_METER && ip) {
-    const key = `batch:${ip}:${new Date().toISOString().slice(0, 10)}`;
-    const n = (Number(await env.NL_METER.get(key)) || 0) + 1;
-    await env.NL_METER.put(key, String(n), { expirationTtl: 172800 });
-    if (n > MAX_BATCH_PER_IP_DAY) return json({ ok: false, reason: "rate-limited" }, 429, cors);
+  if (ip && await overActorLimit(env.NL_METER, "batch", ip, MAX_BATCH_PER_IP_DAY)) {
+    return json({ ok: false, reason: "rate-limited" }, 429, cors);
   }
 
   await bumpStat(env.ALERT_STATE, "batch", new Date()); // outcome counter (R·B) — aggregate only

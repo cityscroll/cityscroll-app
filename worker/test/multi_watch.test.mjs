@@ -51,7 +51,10 @@ test("one email can hold multiple distinct watches", async () => {
 
   const keys = subKeys(env);
   assert.equal(keys.length, 3, `expected 3 distinct watches for one email, got ${keys.length}: ${keys.join(", ")}`);
-  for (const k of keys) assert.ok(k.startsWith("sub:anna@example.com:"), k);
+  for (const k of keys) {
+    assert.match(k, /^sub:[0-9a-f]{16}$/);
+    assert.ok(!k.includes("@"), k);
+  }
 });
 
 test("re-confirming the same watch is idempotent (no duplicates)", async () => {
@@ -94,7 +97,8 @@ test("digest listing (prefix sub:) sees every watch for an address", async () =>
   // Same listing shape the alerts cron uses (SUBS.list({ prefix: "sub:" })).
   const res = await env.SUBS.list({ prefix: "sub:" });
   assert.equal(res.keys.length, 3);
-  assert.equal(res.keys.filter((k) => k.name.startsWith("sub:anna@example.com:")).length, 2);
+  const records = res.keys.map((k) => JSON.parse(env.SUBS.store.get(k.name)));
+  assert.equal(records.filter((record) => record.email.split("@")[0] === "anna").length, 2);
 });
 
 test("changing language does NOT create a duplicate watch (lang excluded from id hash)", async () => {
@@ -141,6 +145,14 @@ test("sharp edge (by design): failed subscribe ATTEMPTS consume the per-address 
     // multiple watches. If Dev's multi-subscription repro was over HTTP, this is the
     // likeliest culprit. Pinned here so any future change is a conscious one.
     assert.equal((await post()).status, 429);
+
+    const rateKeys = [...env.SUBS.store.keys()].filter((key) => key.startsWith("rl:"));
+    assert.equal(rateKeys.length, 2, "one opaque counter each for the IP and address");
+    for (const key of rateKeys) {
+      assert.match(key, /^rl:(?:ip|addr):a:[0-9a-f]{64}:\d{4}-\d{2}-\d{2}$/);
+      assert.ok(!key.includes("203.0.113.7"));
+      assert.ok(!key.includes("@"));
+    }
   } finally {
     globalThis.fetch = realFetch;
   }

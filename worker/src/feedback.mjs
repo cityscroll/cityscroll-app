@@ -15,6 +15,7 @@
 
 import { validateFeedback } from "./lib/feedback.mjs";
 import { corsHeaders, isAllowedRequestOrigin } from "./lib/cors.mjs";
+import { overActorLimit } from "./lib/meter.mjs";
 
 const MAX_FB_PER_IP_DAY = 10;
 const MAX_FB_PER_ADDR_DAY = 5;
@@ -142,15 +143,9 @@ async function verifyTurnstile(env, token, ip) {
 }
 
 async function overLimit(env, ip, email) {
-  const day = new Date().toISOString().slice(0, 10);
-  const ipOver = ip ? await bump(env, `rl:ip:${ip}:${day}`, MAX_FB_PER_IP_DAY) : false;
-  const addrOver = email ? await bump(env, `rl:addr:${email}:${day}`, MAX_FB_PER_ADDR_DAY) : false;
+  const ipOver = ip ? await overActorLimit(env.FEEDBACK, "ip", ip, MAX_FB_PER_IP_DAY) : false;
+  const addrOver = email ? await overActorLimit(env.FEEDBACK, "addr", email, MAX_FB_PER_ADDR_DAY) : false;
   return ipOver || addrOver;
-}
-async function bump(env, key, max) {
-  const n = (Number(await env.FEEDBACK.get(key)) || 0) + 1;
-  await env.FEEDBACK.put(key, String(n), { expirationTtl: 172800 });
-  return n > max;
 }
 
 function json(obj, status, cors) {
