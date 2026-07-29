@@ -11,9 +11,12 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - The CityScroll identity, logo usage, and design-token rationale live in `docs/brand.md`;
   regenerate raster assets with `tools/build_brand_assets.py` and run the brand identity gate
   after changing the mark, icons, or public product name.
-- Run the standards and test commands in `.github/workflows/ci.yml`; i18n cache stamps are
-  derived only in the Pages artifact by `tools/stamp_i18n_assets.py` and verified by
-  `test/standards/i18n_refs.py`—do not commit generated hashes to source pages or `i18n.js`.
+- Run the standards and test commands in `.github/workflows/ci.yml`. Any i18n-adjacent or static
+  asset change must regenerate both the `?v=` stamps and `LANG_FILE_HASHES` so a deployment cannot
+  pair new pages with cached language files. I18n cache stamps are derived only in the Pages
+  artifact by `tools/stamp_i18n_assets.py` and verified by `test/standards/i18n_refs.py`—do not
+  commit generated hashes to source pages or `i18n.js`. The CI gates covering this discipline are
+  named `Stray-English guard` and `Accessibility + language gate`.
 - The static site is GitHub Pages, not Cloudflare — only the API (`api.crol-list.org`) and the
   `cityscroll.org` parallel-domain mirror (`worker/src/mirror.mjs`) are Cloudflare Workers. Don't
   assume a Cloudflare Pages project exists for the frontend.
