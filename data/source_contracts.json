@@ -36,9 +36,28 @@
       "max_stale_days": 45,
       "publisher_cadence": "Ongoing registrations and spending updates",
       "product_freshness": "Queried live for contract details and daily for watched renewal estimates.",
-      "used_for": "Registered amounts, paid-to-date totals, contract terms, and estimated renewal timing.",
+      "used_for": "Pending and registered contract amounts, paid-to-date totals, contract terms, and the procurement lifecycle timeline.",
       "code_references": [
-        {"path": "worker/src/checkbook.mjs", "contains": "<type_of_data>Contracts</type_of_data>"}
+        {"path": "worker/src/checkbook.mjs", "contains": "<type_of_data>Contracts</type_of_data>"},
+        {"path": "worker/src/checkbook_lifecycle.mjs", "contains": "<type_of_data>Contracts</type_of_data>"}
+      ]
+    },
+    {
+      "id": "checkbook-spending",
+      "name": "Checkbook NYC spending transactions",
+      "owner": "Office of the New York City Comptroller",
+      "status": "live",
+      "scope": "runtime",
+      "kind": "checkbook",
+      "endpoint": "https://www.checkbooknyc.com/api",
+      "landing_page": "https://www.checkbooknyc.com/data-feeds/api",
+      "data_type": "Spending",
+      "required_fields": ["spending_id", "vendor_name", "check_amount", "check_date"],
+      "publisher_cadence": "Ongoing spending and payment updates",
+      "product_freshness": "Queried by PIN for the contract lifecycle timeline.",
+      "used_for": "Individual payment records in the procurement lifecycle (solicitation to payment).",
+      "code_references": [
+        {"path": "worker/src/checkbook_lifecycle.mjs", "contains": "<type_of_data>Spending</type_of_data>"}
       ]
     },
     {

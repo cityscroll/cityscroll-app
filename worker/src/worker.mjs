@@ -35,6 +35,7 @@ import { handleMirror } from "./mirror.mjs";
 import { handleHearings, refreshHearings } from "./hearings.mjs";
 import { handleProperties, refreshProperties } from "./property.mjs";
 import { handleSourceVault } from "./source_vault.mjs";
+import { handleContractLifecycle, prewarmContractLifecycle } from "./checkbook_lifecycle.mjs";
 
 const MIRROR_HOSTS = new Set(["cityscroll.org", "www.cityscroll.org"]);
 
@@ -61,6 +62,7 @@ export default {
     if (pathname === "/externalaward") return handleExternalAward(request, env, ctx);
     if (pathname === "/agency") return handleAgency(request, env, ctx);
     if (pathname === "/vendor-profile") return handleVendorProfile(request, env, ctx);
+    if (pathname === "/contract-lifecycle") return handleContractLifecycle(request, env, ctx);
     if (pathname === "/hearings") return handleHearings(request, env, ctx);
     if (pathname === "/property-locations") return handleProperties(request, env, ctx);
     if (pathname === "/source-vault/fetch" || pathname.startsWith("/source-vault/")) return handleSourceVault(request, env);
@@ -119,6 +121,18 @@ export default {
       }
     } catch (e) {
       console.error("nycha award prewarm failed (digest continues):", String(e?.message || e));
+    }
+    // Contract lifecycle (PROC-001): pre-warm the procurement timeline for freshly-ingested
+    // Award notices. Joins each notice's PIN to Checkbook NYC pending, registered, and spending
+    // domains. Bounded (≤40/run); compute-on-miss otherwise. Fail-soft like the other cron jobs.
+    try {
+      const awardIds = ingestResult?.awardRequestIds || [];
+      if (awardIds.length) {
+        const r = await prewarmContractLifecycle(env, awardIds);
+        console.log("contract lifecycle prewarm:", JSON.stringify(r));
+      }
+    } catch (e) {
+      console.error("contract lifecycle prewarm failed (digest continues):", String(e?.message || e));
     }
     // Suggestion-chip validation (w12-08): a candidate's failure is already caught inside
     // runSuggestionValidation itself; this outer catch is only for something the pipeline
