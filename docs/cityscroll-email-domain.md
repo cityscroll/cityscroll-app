@@ -16,21 +16,22 @@ cold-start DNS wait. **The live sender is unchanged** — `ALERTS_FROM` in
   | Purpose | Type | Name | Value | Priority | TTL | Resend status |
   |---|---|---|---|---|---|---|
   | DKIM | TXT | `resend._domainkey` | `p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCx8KrFDDi35mc1zeOM9OJ7lx8ebBfE/BmbhT/XlIyQnelthNlx5zoeQQHAdbXB8KSHT+Wy8c3r+Y1CTskAvMJ0TmLNvOqLMSGHccWR+aRjdVxwgv/5TpobYre+wCkIFgb/HyAZrzvf4CfO/pJRC94pDjHEFjpjYLXhOTnzTBd+6QIDAQAB` | — | Auto | verified |
-  | SPF (routing) | MX | `send` | `feedback-smtp.us-east-1.amazonses.com` | 10 | Auto | pending |
-  | SPF (policy) | TXT | `send` | `v=spf1 include:amazonses.com ~all` | — | Auto | pending |
+  | SPF (routing) | MX | `send` | `feedback-smtp.us-east-1.amazonses.com` | 10 | Auto | verified |
+  | SPF (policy) | TXT | `send` | `v=spf1 include:amazonses.com ~all` | — | Auto | verified |
 
-  These are public DNS records, not secrets, and are safe to keep in the repo. `dig` confirms
-  all three resolve at the DNS layer; Resend's own re-check of the MX/TXT pair is still
-  catching up as of this writing.
+  These are public DNS records, not secrets, and are safe to keep in the repo.
+
+## Current status: verified
+
+Resend reports `cityscroll.org` fully verified. A one-time test send from
+`alerts@cityscroll.org` went out to confirm deliverability (Resend message id
+`71c6541e-3bb1-4b41-8100-54a8fefd2416`), pending the recipient's confirmation it landed
+cleanly.
 
 ## What's left
 
-Resend re-checks domain records on its own schedule; DKIM has already flipped to
-`verified` and the remaining SPF records are expected to follow once Resend's next
-check runs. Once `GET https://api.resend.com/domains/d6bb9aa7-dd4f-4305-9472-53118de697e1`
-reports overall `status: verified`:
+Once the test send is confirmed to have landed as expected:
 
-1. Send one test message from `alerts@cityscroll.org` to confirm deliverability.
-2. Only after that confirmation: change `ALERTS_FROM` in `worker/wrangler.toml` from
-   `alerts@crol-list.org` to `alerts@cityscroll.org` (or make it host-aware, if the two
-   domains should each send under their own name) and redeploy.
+1. Change `ALERTS_FROM` in `worker/wrangler.toml` from `alerts@crol-list.org` to
+   `alerts@cityscroll.org` (or make it host-aware, if the two domains should each send
+   under their own name) and redeploy.
