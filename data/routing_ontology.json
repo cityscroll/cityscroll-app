@@ -1,0 +1,245 @@
+{
+  "schema_version": "1.0.0",
+  "snapshot_date": "2026-07-28",
+  "research_status": "pre_field",
+  "research_artifact_hash": "d822f14cea74f1b3f6cd730a27a78f5ca8031606ec0bdb9ccc4030353ecfee91",
+  "profile_storage": false,
+  "behavioral_inputs": [],
+  "dimensions": [
+    {
+      "id": "topics",
+      "source": "subscriber_declaration",
+      "provisional": true
+    },
+    {
+      "id": "places",
+      "source": "subscriber_declaration",
+      "provisional": true
+    },
+    {
+      "id": "actions",
+      "source": "subscriber_declaration",
+      "provisional": true
+    }
+  ],
+  "excluded_inferences": [
+    "identity",
+    "occupation",
+    "protected_class",
+    "union_membership",
+    "visitor_location",
+    "browser_history"
+  ],
+  "fixtures": [
+    {
+      "id": "city-point-place",
+      "expected": true,
+      "result": {
+        "matched": true,
+        "rule": {
+          "kind": "declared_interest",
+          "required_dimensions": [
+            "topics",
+            "places",
+            "actions"
+          ],
+          "declared": {
+            "topics": [
+              "land_use"
+            ],
+            "places": [
+              "Downtown Brooklyn"
+            ],
+            "actions": [
+              "attend"
+            ]
+          },
+          "public_inputs": [
+            "published notice text",
+            "published affected area"
+          ]
+        },
+        "reason": "topics: land_use · places: Downtown Brooklyn · actions: attend"
+      },
+      "public_inputs": [
+        "published notice text",
+        "published affected area"
+      ],
+      "agency_enrichment_required": false
+    },
+    {
+      "id": "dining-out-place",
+      "expected": true,
+      "result": {
+        "matched": true,
+        "rule": {
+          "kind": "declared_interest",
+          "required_dimensions": [
+            "topics",
+            "places",
+            "actions"
+          ],
+          "declared": {
+            "topics": [
+              "street_use"
+            ],
+            "places": [
+              "Manhattan"
+            ],
+            "actions": [
+              "comment"
+            ]
+          },
+          "public_inputs": [
+            "published notice text",
+            "published borough"
+          ]
+        },
+        "reason": "topics: street_use · places: Manhattan · actions: comment"
+      },
+      "public_inputs": [
+        "published notice text",
+        "published borough"
+      ],
+      "agency_enrichment_required": false
+    },
+    {
+      "id": "nycida-participation",
+      "expected": true,
+      "result": {
+        "matched": true,
+        "rule": {
+          "kind": "declared_interest",
+          "required_dimensions": [
+            "topics",
+            "places",
+            "actions"
+          ],
+          "declared": {
+            "topics": [
+              "public_subsidy"
+            ],
+            "places": [
+              "Queens"
+            ],
+            "actions": [
+              "attend"
+            ]
+          },
+          "public_inputs": [
+            "published notice text",
+            "published project location"
+          ]
+        },
+        "reason": "topics: public_subsidy · places: Queens · actions: attend"
+      },
+      "public_inputs": [
+        "published notice text",
+        "published project location"
+      ],
+      "agency_enrichment_required": false
+    },
+    {
+      "id": "exam-partner-lane",
+      "expected": true,
+      "result": {
+        "matched": true,
+        "rule": {
+          "kind": "declared_interest",
+          "required_dimensions": [
+            "topics",
+            "places",
+            "actions"
+          ],
+          "declared": {
+            "topics": [
+              "civil_service_exams"
+            ],
+            "places": [
+              "citywide"
+            ],
+            "actions": [
+              "apply"
+            ]
+          },
+          "public_inputs": [
+            "published examination notice"
+          ]
+        },
+        "reason": "topics: civil_service_exams · places: citywide · actions: apply"
+      },
+      "public_inputs": [
+        "published examination notice"
+      ],
+      "agency_enrichment_required": false
+    },
+    {
+      "id": "noncooperation-public-notice",
+      "expected": true,
+      "result": {
+        "matched": true,
+        "rule": {
+          "kind": "declared_interest",
+          "required_dimensions": [
+            "topics",
+            "places",
+            "actions"
+          ],
+          "declared": {
+            "topics": [
+              "public_hearing"
+            ],
+            "places": [
+              "Bronx"
+            ],
+            "actions": [
+              "attend"
+            ]
+          },
+          "public_inputs": [
+            "published notice text"
+          ]
+        },
+        "reason": "topics: public_hearing · places: Bronx · actions: attend"
+      },
+      "public_inputs": [
+        "published notice text"
+      ],
+      "agency_enrichment_required": false
+    },
+    {
+      "id": "declared-rule-does-not-match",
+      "expected": false,
+      "result": {
+        "matched": false,
+        "rule": {
+          "kind": "declared_interest",
+          "required_dimensions": [
+            "topics",
+            "places",
+            "actions"
+          ],
+          "declared": {
+            "topics": [
+              "civil_service_exams"
+            ],
+            "places": [
+              "citywide"
+            ],
+            "actions": [
+              "apply"
+            ]
+          },
+          "public_inputs": [
+            "published notice text"
+          ]
+        },
+        "reason": "The public notice does not match every declared topic, place, and action criterion."
+      },
+      "public_inputs": [
+        "published notice text"
+      ],
+      "agency_enrichment_required": false
+    }
+  ]
+}

@@ -52,6 +52,11 @@ Each accepted event produces one Workers Analytics Engine data point:
 - Referrer URL or outbound destination URL
 - A row keyed to a person
 
+Declared-interest routing is outside this event dataset. A subscriber's chosen topic, place, or
+action is used only to compile that subscriber's watch; it is not inferred from browsing and is
+never written as an analytics profile. Aggregate routing research publishes denominators and
+category totals only, without subscriber addresses or individual responses.
+
 The intake rejects unknown events and dimensions. Payloads are capped at 1 KiB. Browser delivery is
 fail-soft, so analytics can never block the action being measured.
 
