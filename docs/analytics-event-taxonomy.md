@@ -1,6 +1,6 @@
 # CROL-List aggregate event taxonomy
 
-Version: **1.0.0**
+Version: **1.1.0**
 Dataset: **`crol_usage_events_v1`**
 Retention: **90 days**
 Initial measured-since boundary: **2026-07-27**
@@ -20,7 +20,7 @@ Each accepted event produces one Workers Analytics Engine data point:
 | `blob3` | detail | Event-specific small enumeration below, or `none` |
 | `blob4` | geography of interest | NYC borough selected in a search, or `none`; never inferred visitor location |
 | `blob5` | surface | `home`, `stats`, `about`, `data`, `api`, `changelog`, `standards`, `digest`, or `email` as allowed per event |
-| `blob6` | taxonomy version | `1.0.0` |
+| `blob6` | taxonomy version | `1.1.0` (the reader also accepts compatible `1.0.0` rows) |
 | `double1` | count | Always `1` |
 | `index1` | sampling key | Event name |
 | `timestamp` | event time | Added by Analytics Engine |
@@ -31,6 +31,7 @@ Each accepted event produces one Workers Analytics Engine data point:
 |---|---|---|
 | `page_view` | One HTML page loaded. | `surface` |
 | `lens_open` | One primary lens tab selected. | `lens`; `surface=home` |
+| `scenario_open` | One task-first scenario route selected. This records the visitor's declared task, not an inferred identity. | `lens`; `detail=city-work\|neighborhood\|hearings\|city-career\|subsidies-land-use\|legal-compliance`; `surface=home` |
 | `search_run` | One user-initiated filter, preset, or natural-language search. | `lens`; `detail=filters\|preset\|natural-language`; optional selected borough; `surface=home\|api` |
 | `deep_link_open` | One permalink opened in the browser. | optional `lens`; `detail=notice\|agency\|vendor\|search\|investigation`; `surface=home\|digest` |
 | `export` | One export action started. | optional `lens`; `detail=csv\|xlsx\|print\|ics\|json`; `surface=home` |
@@ -107,7 +108,9 @@ itself is never written to Analytics Engine.
 
 The public Worker queries one 90-day grouped time series through the Analytics Engine SQL API and
 builds the public cuts in `GET /stats`: 7- and 30-day activity, lens interest, search
-activity, deep links, exports, confirmed watches, selected borough interest, and daily growth.
+activity, scenario interest, deep links, exports, confirmed watches, selected borough interest,
+and daily growth. Version 1.1.0 is additive; queries include compatible 1.0.0 rows so the existing
+rolling window remains continuous.
 Queries use `sum(_sample_interval * double1)`, so adaptive sampling remains represented in totals.
 The public response is edge-cached for about 15 minutes.
 

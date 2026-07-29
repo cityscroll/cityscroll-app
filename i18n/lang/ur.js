@@ -19,6 +19,14 @@
   W.STRINGS = W.STRINGS || {};
   W.STRINGS["ur"] = W.STRINGS["ur"] || {};
   Object.assign(W.STRINGS["ur"], {
+    scenario_heading: "آپ یہاں کیا کرنے آئے ہیں؟",
+    scenario_intro: "مفید فلٹرز کے ساتھ شروع کرنے کے لیے ایک کام منتخب کریں، یا اوپر موجود زمرہ ٹیبز استعمال کریں۔",
+    scenario_city_work: "میں شہر کے کاموں کے لیے بولی دیتا ہوں",
+    scenario_neighborhood: "میں اپنے محلے میں ہونے والی سرگرمیوں پر نظر رکھتا ہوں",
+    scenario_hearings: "میں عوامی سماعتوں میں شرکت یا تبصرہ کرتا ہوں",
+    scenario_city_career: "میں شہری خدمات میں کیریئر تلاش کرتا ہوں",
+    scenario_subsidies_land: "میں سبسڈی اور زمین کے استعمال پر نظر رکھتا ہوں",
+    scenario_legal_compliance: "میں قانونی یا ضابطہ جاتی تعمیل کے نوٹس دیکھتا ہوں",
     footer_notices: "10 لاکھ سے زیادہ نوٹسز",
     sugg_money_0: "$500k سے زیادہ کے تعمیراتی ٹھیکے",
     sugg_money_1: "آئی ٹی مشاورتی درخواستِ تجاویز (RFP)",

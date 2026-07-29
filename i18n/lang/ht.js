@@ -16,6 +16,14 @@
   W.STRINGS = W.STRINGS || {};
   W.STRINGS["ht"] = W.STRINGS["ht"] || {};
   Object.assign(W.STRINGS["ht"], {
+    scenario_heading: "Kisa ou vin fè la a?",
+    scenario_intro: "Chwazi yon travay pou kòmanse ak filtè ki itil, oswa itilize onglet kategori ki anlè yo.",
+    scenario_city_work: "Mwen fè òf pou kontra Vil la",
+    scenario_neighborhood: "Mwen suiv sa k ap pase nan katye mwen",
+    scenario_hearings: "Mwen patisipe nan odyans oswa bay kòmantè",
+    scenario_city_career: "Mwen eksplore yon karyè nan sèvis Vil la",
+    scenario_subsidies_land: "Mwen suiv sibvansyon ak itilizasyon tè",
+    scenario_legal_compliance: "Mwen suiv avi legal oswa avi konfòmite",
     footer_notices: "plis pase 1 milyon avi",
     sugg_money_0: "kontra konstriksyon plis pase $500k",
     sugg_money_1: "Demann Pwopozisyon (RFP) pou konsèy enfòmatik",

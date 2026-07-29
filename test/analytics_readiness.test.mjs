@@ -7,6 +7,7 @@ import { handleEvent } from "../worker/src/events.mjs";
 import { handleStats } from "../worker/src/stats.mjs";
 import {
   ANALYTICS_LENSES,
+  ANALYTICS_SCENARIOS,
   buildUsageSnapshot,
   normalizeUsageEvent,
   usageAnalyticsQuery,
@@ -83,12 +84,24 @@ test("event intake writes only bounded taxonomy dimensions", async () => {
   });
 
   assert.equal(points.length, 1);
-  assert.deepEqual(points[0].blobs, ["search_run", "land", "filters", "queens", "home", "1.0.0"]);
+  assert.deepEqual(points[0].blobs, ["search_run", "land", "filters", "queens", "home", "1.1.0"]);
   assert.deepEqual(points[0].doubles, [1]);
   assert.deepEqual(points[0].indexes, ["search_run"]);
   assert.ok(!JSON.stringify(points[0]).includes("this value"));
   assert.ok(!JSON.stringify(points[0]).includes("forbidden"));
   assert.equal(normalizeUsageEvent({ event: "unknown", surface: "home" }), null);
+  assert.equal(normalizeUsageEvent({
+    event: "scenario_open",
+    lens: "meetings",
+    detail: "subsidies-land-use",
+    surface: "home",
+  })?.detail, "subsidies-land-use");
+  assert.equal(normalizeUsageEvent({
+    event: "scenario_open",
+    lens: "meetings",
+    detail: "property-lawyer",
+    surface: "home",
+  }), null, "scenario values stay a bounded declared-interest enumeration");
 });
 
 test("developer exclusion is authenticated, invisible, and fail-closed", async () => {
@@ -135,6 +148,7 @@ test("fixture event flows emit -> sampling-aware aggregate -> public stats endpo
   await emit(points, { event: "search_run", lens: "land", detail: "filters", geography: "queens", surface: "home" });
   await emit(points, { event: "export", lens: "money", detail: "csv", surface: "home" });
   await emit(points, { event: "alert_confirmed", lens: "land", surface: "email" });
+  await emit(points, { event: "scenario_open", lens: "meetings", detail: "hearings", surface: "home" });
 
   const rows = points.map((point) => rowFromPoint(point, "2026-07-27"));
   const env = {
@@ -167,6 +181,8 @@ test("fixture event flows emit -> sampling-aware aggregate -> public stats endpo
   assert.equal(body.usage.exports.last7d, 1);
   assert.equal(body.usage.alerts.confirmed_last7d, 1);
   assert.equal(body.usage.geography_interest.last30d.queens, 1);
+  assert.equal(body.usage.scenario_interest.last30d.hearings, 1);
+  assert.deepEqual(Object.keys(body.usage.scenario_interest.last30d), ANALYTICS_SCENARIOS);
   assert.deepEqual(Object.keys(body.usage.lens_interest.last30d), ANALYTICS_LENSES);
   assert.equal(body.usage.lens_interest.last30d.meetings, 0);
   assert.equal(body.nl_search.by_category.meetings, 0, "previously omitted zero-count lens is pinned");
@@ -196,7 +212,7 @@ test("stats page never success-gates its number panels and stamps each panel", a
 
 test("every public page loads the first-party collector and every locale covers new labels", async () => {
   for (const page of ["index.html", "stats.html", "about.html", "data.html", "api.html", "changelog.html", "standards.html"]) {
-    assert.match(await readFile(new URL(`../${page}`, import.meta.url), "utf8"), /analytics\.js\?v=1\.1\.0/, page);
+    assert.match(await readFile(new URL(`../${page}`, import.meta.url), "utf8"), /analytics\.js\?v=1\.2\.0/, page);
   }
   for (const locale of ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar", "ur"]) {
     const source = await readFile(new URL(`../i18n/lang/${locale}.js`, import.meta.url), "utf8");
@@ -219,7 +235,8 @@ test("privacy copy removes falsified exhaustive promises without adding a new en
 
 test("taxonomy and budget note pin current Cloudflare allowances and limits", async () => {
   const doc = await readFile(new URL("../docs/analytics-event-taxonomy.md", import.meta.url), "utf8");
-  assert.match(doc, /Version: \*\*1\.0\.0\*\*/);
+  assert.match(doc, /Version: \*\*1\.1\.0\*\*/);
+  assert.match(doc, /declared task, not an inferred identity/);
   assert.match(doc, /10 million data points/);
   assert.match(doc, /1 million SQL read queries/);
   assert.match(doc, /250 data points per Worker invocation/);
@@ -227,4 +244,5 @@ test("taxonomy and budget note pin current Cloudflare allowances and limits", as
   assert.match(doc, /ANALYTICS_ENVIRONMENT/);
   assert.match(doc, /https:\/\/developers\.cloudflare\.com\/analytics\/analytics-engine\/pricing\//);
   assert.match(usageAnalyticsQuery(), /INTERVAL '90' DAY/);
+  assert.match(usageAnalyticsQuery(), /blob6 IN \('1\.0\.0', '1\.1\.0'\)/);
 });

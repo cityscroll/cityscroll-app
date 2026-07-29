@@ -19,6 +19,14 @@
   W.STRINGS = W.STRINGS || {};
   W.STRINGS["ar"] = W.STRINGS["ar"] || {};
   Object.assign(W.STRINGS["ar"], {
+    scenario_heading: "ما الذي جئت لفعله؟",
+    scenario_intro: "اختر مهمة للبدء بمرشحات مفيدة، أو استخدم علامات تبويب الفئات أعلاه.",
+    scenario_city_work: "أتقدم بعطاءات لأعمال المدينة",
+    scenario_neighborhood: "أتابع ما يحدث في حيي",
+    scenario_hearings: "أحضر جلسات الاستماع أو أقدم تعليقات",
+    scenario_city_career: "أستكشف مسارًا مهنيًا في خدمات المدينة",
+    scenario_subsidies_land: "أتابع الإعانات واستخدام الأراضي",
+    scenario_legal_compliance: "أتابع الإشعارات القانونية أو إشعارات الامتثال",
     footer_notices: "أكثر من مليون إشعار",
     sugg_money_0: "عقود إنشاءات تفوق 500 ألف دولار",
     sugg_money_1: "طلبات تقديم عروض (RFP) لاستشارات تقنية المعلومات",
