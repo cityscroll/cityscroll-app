@@ -16,7 +16,8 @@ GitHub Pages deployment that the CityScroll Worker mirrors.
 | Mirror failover | `https://raw.githubusercontent.com/cityscroll/crol-list/main/` | Public static-source seam used only when the preferred origin redirects back to CityScroll |
 | Calendar UID namespace | `@crol-list` | Deliberately unchanged to prevent duplicate imported events |
 | Atom entry namespace | `tag:crol-list.org,2026:` | Deliberately unchanged to prevent duplicate feed-reader entries |
-| Email sending and routing | `@crol-list.org` | Deferred to a separate sender-domain decision |
+| Alert email sending | `alerts@cityscroll.org` | Site owner decided the switchover 2026-07-29; `crol-list.org` stays verified as a fallback sending domain |
+| Other email routing | `@crol-list.org` | `subscribe@` and `feedback@` are unchanged by this decision |
 
 ## One owner activation action
 
@@ -73,7 +74,9 @@ Pages project's Custom domains panel. Draft preview aliases are not changed.
 After merge, set the GitHub repository's **Website** field to
 `https://cityscroll.org`. The repository name stays `crol-list`.
 
-The email sending and routing domain is explicitly outside this cutover. A
-change from `alerts@crol-list.org`, `subscribe@crol-list.org`, or the other
-operational addresses requires a separate deliverability and ownership
-decision.
+Alert email sending moved separately from the rest of this cutover. The site
+owner decided on 2026-07-29 to switch the alerts sender to
+`alerts@cityscroll.org` once `cityscroll.org` was verified with the email
+provider and a test send was confirmed received. `subscribe@crol-list.org`,
+`feedback@crol-list.org`, and the other operational addresses are unchanged
+by this decision.

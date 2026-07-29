@@ -1,9 +1,8 @@
-# cityscroll.org as a sending domain (Resend) — prep status
+# cityscroll.org as a sending domain (Resend)
 
-Purpose: pre-verify `cityscroll.org` with Resend so a future canonical-domain flip can
-swap the alerts sender from `alerts@crol-list.org` to `alerts@cityscroll.org` without a
-cold-start DNS wait. **The live sender is unchanged** — `ALERTS_FROM` in
-`worker/wrangler.toml` still points at `crol-list.org`.
+`cityscroll.org` is verified with the email provider (Resend) and is now the live
+alerts sender. See `docs/canonical-domain-cutover.md` for the site owner's decision
+record on the sender-domain switchover (2026-07-29).
 
 ## What exists today
 
@@ -21,17 +20,10 @@ cold-start DNS wait. **The live sender is unchanged** — `ALERTS_FROM` in
 
   These are public DNS records, not secrets, and are safe to keep in the repo.
 
-## Current status: verified
+## Status: verified and live
 
 Resend reports `cityscroll.org` fully verified. A one-time test send from
-`alerts@cityscroll.org` went out to confirm deliverability (Resend message id
-`71c6541e-3bb1-4b41-8100-54a8fefd2416`), pending the recipient's confirmation it landed
-cleanly.
-
-## What's left
-
-Once the test send is confirmed to have landed as expected:
-
-1. Change `ALERTS_FROM` in `worker/wrangler.toml` from `alerts@crol-list.org` to
-   `alerts@cityscroll.org` (or make it host-aware, if the two domains should each send
-   under their own name) and redeploy.
+`alerts@cityscroll.org` confirmed deliverability (Resend message id
+`71c6541e-3bb1-4b41-8100-54a8fefd2416`) before the switchover. `ALERTS_FROM` in
+`worker/wrangler.toml` now points at `alerts@cityscroll.org`; `crol-list.org` stays
+verified in Resend as a fallback sending domain.
