@@ -10,10 +10,10 @@ compatibility_date = "2026-07-27"
 # origin at crol-list.org. The direct-visitor redirect documented in
 # docs/canonical-domain-cutover.md excludes Worker subrequests so the mirror cannot loop.
 routes = [
-  { pattern = "api.cityscroll.org", custom_domain = true },
-  { pattern = "api.crol-list.org", custom_domain = true },
-  { pattern = "cityscroll.org", custom_domain = true },
-  { pattern = "www.cityscroll.org", custom_domain = true },
+  "cityscroll.org/*",
+  "www.cityscroll.org/*",
+  "api.cityscroll.org/*",
+  "api.crol-list.org/*",
 ]
 # Adding routes implicitly DISABLES workers.dev unless this is explicit — keep the alias alive
 # so older cached pages and any in-flight confirm links (24h TTL) don't break.
