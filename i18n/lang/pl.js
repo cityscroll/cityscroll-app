@@ -25,6 +25,14 @@
   W.STRINGS = W.STRINGS || {};
   W.STRINGS["pl"] = W.STRINGS["pl"] || {};
   Object.assign(W.STRINGS["pl"], {
+    scenario_heading: "Co chcesz zrobić?",
+    scenario_intro: "Wybierz zadanie, aby zacząć od przydatnych filtrów, albo użyj kart kategorii powyżej.",
+    scenario_city_work: "Składam oferty na zlecenia miejskie",
+    scenario_neighborhood: "Śledzę, co dzieje się w mojej okolicy",
+    scenario_hearings: "Uczestniczę w wysłuchaniach lub składam uwagi",
+    scenario_city_career: "Rozważam karierę w administracji miejskiej",
+    scenario_subsidies_land: "Śledzę dotacje i zagospodarowanie terenu",
+    scenario_legal_compliance: "Śledzę ogłoszenia prawne lub dotyczące zgodności",
     footer_notices: "ponad 1 mln ogłoszeń",
     sugg_money_0: "kontrakty budowlane powyżej 500 tys. USD",
     sugg_money_1: "Zapytania ofertowe (RFP) na doradztwo IT",

@@ -17,6 +17,14 @@
   W.STRINGS = W.STRINGS || {};
   W.STRINGS["zh-Hans"] = W.STRINGS["zh-Hans"] || {};
   Object.assign(W.STRINGS["zh-Hans"], {
+    scenario_heading: "您来这里要做什么？",
+    scenario_intro: "选择一项任务以使用实用筛选条件开始，或使用上方的类别选项卡。",
+    scenario_city_work: "我竞标市政府项目",
+    scenario_neighborhood: "我关注社区动态",
+    scenario_hearings: "我参加听证会或提交意见",
+    scenario_city_career: "我探索市政府职业",
+    scenario_subsidies_land: "我跟踪补贴和土地使用",
+    scenario_legal_compliance: "我关注法律或合规公告",
     footer_notices: "100 万+ 条通告",
     sugg_money_0: "50 万美元以上的建筑合同",
     sugg_money_1: "IT 咨询征求建议书 (RFP)",
