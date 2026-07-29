@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://crol-list.org/demo/demo-links.schema.json",
+  "title": "CROL-List demo links",
+  "description": "Public demo routes and the browser-visible behavior each route preserves.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "schemaVersion", "entries"],
+  "properties": {
+    "$schema": {
+      "const": "./demo-links.schema.json"
+    },
+    "schemaVersion": {
+      "const": 1
+    },
+    "entries": {
+      "type": "array",
+      "minItems": 12,
+      "items": {
+        "$ref": "#/$defs/entry"
+      }
+    }
+  },
+  "$defs": {
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "url", "feature", "description", "expectations"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "url": {
+          "type": "string",
+          "pattern": "^#[^\\s]*$"
+        },
+        "feature": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 12,
+          "maxLength": 160,
+          "pattern": "^[^\\r\\n<>]+$"
+        },
+        "expectations": {
+          "$ref": "#/$defs/expectations"
+        }
+      }
+    },
+    "expectations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["visible", "notVisible"],
+      "properties": {
+        "hash": {
+          "type": "string",
+          "pattern": "^#[^\\s]*$"
+        },
+        "visible": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/locator"
+          }
+        },
+        "notVisible": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/locator"
+          }
+        },
+        "focus": {
+          "type": "string",
+          "minLength": 1
+        },
+        "states": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/state"
+          }
+        },
+        "banner": {
+          "$ref": "#/$defs/banner"
+        }
+      }
+    },
+    "locator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["selector"],
+      "properties": {
+        "selector": {
+          "type": "string",
+          "minLength": 1
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["selector", "equals"],
+      "properties": {
+        "selector": {
+          "type": "string",
+          "minLength": 1
+        },
+        "property": {
+          "enum": ["value", "open", "checked"]
+        },
+        "attribute": {
+          "type": "string",
+          "minLength": 1
+        },
+        "equals": {
+          "type": ["string", "boolean"]
+        }
+      },
+      "oneOf": [
+        {
+          "required": ["property"],
+          "not": {
+            "required": ["attribute"]
+          }
+        },
+        {
+          "required": ["attribute"],
+          "not": {
+            "required": ["property"]
+          }
+        }
+      ]
+    },
+    "banner": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["selector", "visible"],
+      "properties": {
+        "selector": {
+          "type": "string",
+          "minLength": 1
+        },
+        "visible": {
+          "type": "boolean"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}
