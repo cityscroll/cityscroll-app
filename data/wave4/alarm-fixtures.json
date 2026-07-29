@@ -1,0 +1,25 @@
+{
+  "snapshot_date": "2026-07-28",
+  "fixture_notice": "Methodology fixtures test rule behavior; review leads are not findings of wrongdoing.",
+  "cases": [
+    {"id":"date-order-positive","rule":"date_order","expected":"lead","facts":{"notice_date":"2025-04-15","service_start":"2025-04-01"},"sources":{"notice_date":"https://a856-cityrecord.nyc.gov/","service_start":"https://www.checkbooknyc.com/"}},
+    {"id":"date-order-near","rule":"date_order","expected":"clear","facts":{"notice_date":"2025-03-15","service_start":"2025-04-01"},"sources":{"notice_date":"https://a856-cityrecord.nyc.gov/","service_start":"https://www.checkbooknyc.com/"}},
+    {"id":"date-order-missing","rule":"date_order","expected":"insufficient","facts":{"notice_date":null,"service_start":"2025-04-01"},"sources":{"service_start":"https://www.checkbooknyc.com/"}},
+
+    {"id":"expired-before-process-positive","rule":"expired_before_process","expected":"lead","facts":{"intent_notice_date":"2025-06-20","negotiation_start":"2025-05-01"},"sources":{"intent_notice_date":"https://a856-cityrecord.nyc.gov/","negotiation_start":"https://www.checkbooknyc.com/"}},
+    {"id":"expired-before-process-near","rule":"expired_before_process","expected":"clear","facts":{"intent_notice_date":"2025-04-20","negotiation_start":"2025-05-01"},"sources":{"intent_notice_date":"https://a856-cityrecord.nyc.gov/","negotiation_start":"https://www.checkbooknyc.com/"}},
+    {"id":"expired-before-process-missing","rule":"expired_before_process","expected":"insufficient","facts":{"intent_notice_date":"2025-04-20","negotiation_start":null},"sources":{"intent_notice_date":"https://a856-cityrecord.nyc.gov/"}},
+
+    {"id":"future-competition-positive","rule":"future_competition","expected":"lead","facts":{"bridge_end":"2025-09-30","successor_notice_date":"2025-10-21"},"sources":{"bridge_end":"https://www.checkbooknyc.com/","successor_notice_date":"https://a856-cityrecord.nyc.gov/"}},
+    {"id":"future-competition-near","rule":"future_competition","expected":"clear","facts":{"bridge_end":"2025-09-30","successor_notice_date":"2025-08-15"},"sources":{"bridge_end":"https://www.checkbooknyc.com/","successor_notice_date":"https://a856-cityrecord.nyc.gov/"}},
+    {"id":"future-competition-missing","rule":"future_competition","expected":"insufficient","facts":{"bridge_end":null,"successor_notice_date":"2025-08-15"},"sources":{"successor_notice_date":"https://a856-cityrecord.nyc.gov/"}},
+
+    {"id":"contestability-package-positive","rule":"contestability_package","expected":"lead","facts":{"responsive_bid_count":1,"notified_vendor_count":null,"required_form_present":false},"sources":{"responsive_bid_count":"https://a856-cityrecord.nyc.gov/","required_form_present":"https://a856-cityrecord.nyc.gov/"}},
+    {"id":"contestability-package-near","rule":"contestability_package","expected":"clear","facts":{"responsive_bid_count":2,"notified_vendor_count":5,"required_form_present":true},"sources":{"responsive_bid_count":"https://a856-cityrecord.nyc.gov/","notified_vendor_count":"https://a856-cityrecord.nyc.gov/","required_form_present":"https://a856-cityrecord.nyc.gov/"}},
+    {"id":"contestability-package-missing","rule":"contestability_package","expected":"insufficient","facts":{"responsive_bid_count":null,"notified_vendor_count":null,"required_form_present":null},"sources":{}},
+
+    {"id":"broken-succession-positive","rule":"broken_succession","expected":"lead","facts":{"extension_end":"2025-06-30","successor_start":"2025-08-12","amendment_rationale":null},"sources":{"extension_end":"https://www.checkbooknyc.com/","successor_start":"https://www.checkbooknyc.com/"}},
+    {"id":"broken-succession-near","rule":"broken_succession","expected":"clear","facts":{"extension_end":"2025-06-30","successor_start":"2025-06-15","amendment_rationale":"Published scope transition"},"sources":{"extension_end":"https://www.checkbooknyc.com/","successor_start":"https://www.checkbooknyc.com/","amendment_rationale":"https://a856-cityrecord.nyc.gov/"}},
+    {"id":"broken-succession-missing","rule":"broken_succession","expected":"insufficient","facts":{"extension_end":"2025-06-30","successor_start":null,"amendment_rationale":null},"sources":{"extension_end":"https://www.checkbooknyc.com/"}}
+  ]
+}
