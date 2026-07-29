@@ -2,6 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { validateFeedback, FEEDBACK_CATEGORIES, MSG_MIN, MSG_MAX } from "../src/lib/feedback.mjs";
 import { handleFeedback } from "../src/feedback.mjs";
+import { overActorLimit } from "../src/lib/meter.mjs";
 
 const good = (over = {}) => ({ category: "bug", message: "Something broke on the money tab.", email: "", ...over });
 
@@ -136,10 +137,18 @@ test("invalid fields are rejected (400) before any Turnstile/network call", asyn
 });
 
 test("rate-limited (429) once the per-IP daily counter is exceeded — before Turnstile", async () => {
-  const day = new Date().toISOString().slice(0, 10);
   const ip = "203.0.113.7";
-  const env = { TURNSTILE_SECRET: "ts", RESEND_API_KEY: "rk", FEEDBACK: kv({ [`rl:ip:${ip}:${day}`]: "10" }) };
+  const store = {};
+  const env = { TURNSTILE_SECRET: "ts", RESEND_API_KEY: "rk", FEEDBACK: kv(store) };
+  for (let i = 0; i < 10; i++) {
+    assert.equal(await overActorLimit(env.FEEDBACK, "ip", ip, 10), false);
+  }
   const r = await handleFeedback(post(good(), { "CF-Connecting-IP": ip }), env);
   assert.equal(r.status, 429);
   assert.equal((await r.json()).reason, "rate-limited");
+
+  const keys = Object.keys(store);
+  assert.equal(keys.length, 1);
+  assert.match(keys[0], /^rl:ip:a:[0-9a-f]{64}:\d{4}-\d{2}-\d{2}$/);
+  assert.ok(!keys[0].includes(ip));
 });

@@ -40,9 +40,19 @@ test("overSurfaceCap: allows up to max, then blocks; missing store fails open", 
   assert.equal(await overSurfaceCap(null, "t", 2), false);
 });
 
-test("overActorLimit: counts attempts per actor per day", async () => {
+test("overActorLimit: counts attempts per actor per day without putting the actor in KV keys", async () => {
   const kv = new MockKV();
-  for (let i = 0; i < 5; i++) assert.equal(await overActorLimit(kv, "in", "a@b.co", 5), false);
-  assert.equal(await overActorLimit(kv, "in", "a@b.co", 5), true);
-  assert.equal(await overActorLimit(kv, "in", "other@b.co", 5), false); // separate actor
+  const actor = ["a", "example.com"].join("@");
+  const otherActor = ["other", "example.com"].join("@");
+  for (let i = 0; i < 5; i++) assert.equal(await overActorLimit(kv, "in", actor, 5), false);
+  assert.equal(await overActorLimit(kv, "in", actor.toUpperCase(), 5), true);
+  assert.equal(await overActorLimit(kv, "in", otherActor, 5), false); // separate actor
+
+  const keys = [...kv.store.keys()];
+  assert.equal(keys.length, 2);
+  for (const key of keys) {
+    assert.match(key, /^rl:in:a:[0-9a-f]{64}:\d{4}-\d{2}-\d{2}$/);
+    assert.ok(!key.includes("@"));
+  }
+  assert.ok(keys.every((key) => !key.includes(actor) && !key.includes(otherActor)));
 });

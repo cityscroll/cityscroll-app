@@ -6,6 +6,7 @@ import { validInvPayload, INV_TTL } from "./lib/inv.mjs";
 import { bumpStat } from "./lib/stats.mjs";
 import { emitUsageEvent } from "./lib/analytics.mjs";
 import { vendorStem } from "./lib/compile.mjs";
+import { overActorLimit } from "./lib/meter.mjs";
 
 const MAX_SHARES_PER_IP_DAY = 10;
 
@@ -67,11 +68,8 @@ export async function handleInv(req, env, pathname, ctx) {
   if (!env.SUBS) return json({ ok: false, reason: "not-configured" }, 503, cors);
 
   const ip = req.headers.get("CF-Connecting-IP") || "";
-  if (ip) {
-    const key = `rl:inv:${ip}:${new Date().toISOString().slice(0, 10)}`;
-    const n = (Number(await env.SUBS.get(key)) || 0) + 1;
-    await env.SUBS.put(key, String(n), { expirationTtl: 172800 });
-    if (n > MAX_SHARES_PER_IP_DAY) return json({ ok: false, reason: "rate-limited" }, 429, cors);
+  if (ip && await overActorLimit(env.SUBS, "inv", ip, MAX_SHARES_PER_IP_DAY)) {
+    return json({ ok: false, reason: "rate-limited" }, 429, cors);
   }
 
   let body;

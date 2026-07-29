@@ -2,13 +2,23 @@
 // paid surface (LLM calls, outbound replies) has a hard ceiling that fails closed.
 // KV eventual consistency can slightly under-count near a cap; fine for a soft stop.
 //
-// Keys live in NL_METER (surface meters, `m:<name>:<day>`) and SUBS (per-actor rate
-// limits, `rl:<name>:<actor>:<day>`) — both self-expire.
+// Keys live in NL_METER (surface meters, `m:<name>:<day>`) and other KV namespaces
+// (per-actor rate limits, `rl:<name>:a:<sha256>:<day>`) — both self-expire. Actor
+// identifiers never appear directly in KV key names.
 
 const DAY_TTL = 172800; // 2 days
 
 function today() {
   return new Date().toISOString().slice(0, 10);
+}
+
+// Stable, opaque identifier for a normalized email address or IP string. This is
+// pseudonymization, not anonymization; callers must still treat the source identifier as PII.
+export async function opaqueActorId(actor) {
+  const normalized = String(actor).trim().toLowerCase();
+  const data = new TextEncoder().encode(normalized);
+  const digest = await crypto.subtle.digest("SHA-256", data);
+  return `a:${[...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, "0")).join("")}`;
 }
 
 // Global per-surface daily ceiling. Returns true when the surface is OVER its cap
@@ -31,7 +41,7 @@ export async function overSurfaceCap(store, name, max) {
 export async function overActorLimit(store, name, actor, max) {
   try {
     if (!store || !actor) return false;
-    const key = `rl:${name}:${String(actor).toLowerCase()}:${today()}`;
+    const key = `rl:${name}:${await opaqueActorId(actor)}:${today()}`;
     const n = (Number(await store.get(key)) || 0) + 1;
     await store.put(key, String(n), { expirationTtl: DAY_TTL });
     return n > max;

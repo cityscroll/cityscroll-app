@@ -14,6 +14,7 @@ import { isValidEmail, buildSubscription } from "./lib/subscriptions.mjs";
 import { signToken } from "optin-token";
 import { confirmSubject, confirmEmailHtml } from "./lib/confirm_email.mjs";
 import { corsHeaders, isAllowedRequestOrigin } from "./lib/cors.mjs";
+import { overActorLimit } from "./lib/meter.mjs";
 
 // Subscribable lenses = the content tabs + entity follows. "alerts" is the delivery wrapper.
 // "award" is the one-notice award-arrival watch (see lib/filter.mjs's LENSES.award comment).
@@ -96,15 +97,9 @@ async function verifyTurnstile(env, token, ip) {
 }
 
 async function overLimit(env, ip, email) {
-  const day = new Date().toISOString().slice(0, 10);
-  const ipOver = ip ? await bump(env, `rl:ip:${ip}:${day}`, MAX_SUB_PER_IP_DAY) : false;
-  const addrOver = await bump(env, `rl:addr:${email.toLowerCase()}:${day}`, MAX_SUB_PER_ADDR_DAY);
+  const ipOver = ip ? await overActorLimit(env.SUBS, "ip", ip, MAX_SUB_PER_IP_DAY) : false;
+  const addrOver = await overActorLimit(env.SUBS, "addr", email, MAX_SUB_PER_ADDR_DAY);
   return ipOver || addrOver;
-}
-async function bump(env, key, max) {
-  const n = (Number(await env.SUBS.get(key)) || 0) + 1;
-  await env.SUBS.put(key, String(n), { expirationTtl: 172800 });
-  return n > max;
 }
 
 function json(obj, status, cors) {
