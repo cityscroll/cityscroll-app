@@ -31,17 +31,19 @@ Checkbook NYC shows was actually paid), the vendor, and a link to the real notic
 Simplified Chinese, or Russian. Notices themselves stay in English (it's the official
 record's language), but everything CROL-List adds around them speaks yours.
 
-**Follow a role or a salary band.**
-*Before:* cross-reference three separate NYC Open Data portals by hand.
-*With CROL-List:* one People-lens search shows a title's civil-service exam status, pay
-band, and appointment history together.
+**Find a path into a City career.**
+*Before:* learn civil-service vocabulary, compare a monthly schedule with annual data,
+open each Notice of Examination, and then find the separate application system.
+*With CROL-List:* the Staffing guide explains the process in plain language, puts open and
+upcoming exams in one filterable list, shows fees and minimum salaries when DCAS has
+published them, and links each applicant to the official next step.
 
 ## Key Features
 
 ### 1. Procurement Lenses
 *   **💵 Money:** Follow contracts from RFP → Intent to Award → Award, complete with bidding deadlines, PASSPort links, agency contacts, and CSV exports. Profiles for nine public authorities also show their latest official state-filed awards, clearly labeled as annual filings that may lag by a year.
 *   **🔮 Predictive Forecasting:** Track upcoming solicitation opportunities 6 months before they are formally published. Fuses historical Checkbook NYC award durations to calculate expiration/renewal cycles, scrapes annual MOCS agency plans, displays a chronological vertical timeline widget on profiles, and triggers early-warning alert notifications.
-*   **👤 People:** Explore city job listings, civil service exam statuses, pay scales, and appointment/payroll histories.
+*   **👤 Staffing:** Learn how civil-service hiring works, browse open and upcoming exams by interest, share a specific exam, and compare City titles, pay scales, and appointment histories.
 *   **🏗 Land:** Map rezonings in plain English, linked to the official City Planning ZAP registry and tax-lot (MapPLUTO) boundary polygons.
 *   **🏛 Property:** Track municipal asset auctions (real estate, equipment, timber) and check building demolition statuses.
 *   **📋 Rules & 🗓 Meetings:** Find this week's public hearings by affected borough or neighborhood, with the hearing venue kept separate from the place a decision concerns; monitor regulatory changes and public comment windows.
@@ -68,6 +70,8 @@ band, and appointment history together.
 | **MOCS Procurement Plans** (Socrata) | `whpb-ebtd` | Charter §112 agency solicitation plans (forecasting) |
 | **Citywide Payroll** (Socrata) | `k397-673e` | People lens (individual pay histories) |
 | **Civil Service List** (Socrata) | `vx8i-nprf` | People lens (exam details) |
+| **Annual Examination Schedule** (Socrata) | `4ptz-hmtc` | upcoming DCAS exams and application windows |
+| **DCAS Exam Schedules and NOEs** | [nyc.gov/examsforjobs](https://www.nyc.gov/examsforjobs) | current open exams, official job details, fees, waivers, and application action |
 | **ZAP Projects** (Socrata) | `hgx4-8ukb` | Land lens (rezonings status) |
 | **MapPLUTO** (ArcGIS Online) | `/MAPPLUTO` | Land lens (geographic lot boundary layers) |
 | **DOB Job Filings** (Socrata) | `w9ak-ipjd`, `ic3t-wcy2` | Property lens (building demolition verification) |
@@ -78,8 +82,11 @@ band, and appointment history together.
 
 This repository holds the complete system: a static client (`index.html`) and a serverless
 Cloudflare Worker backend (`worker/`) that handles email alerts, feeds, public metrics, and
-the plain-English search assistant. It's designed to be forked and pointed at any city's
-open-data portal.
+the plain-English search assistant. Civil-service exam sources are normalized at build time
+into `data/staffing_exams.json`, so career exploration needs one small static file and no
+runtime API fan-out. Source provenance and refresh rules live in
+[`data/exam_sources/`](data/exam_sources/README.md). The project is designed to be forked and
+pointed at any city's open-data portal.
 
 For the code map and how the pieces fit together, see
 [CONTRIBUTING.md](CONTRIBUTING.md#geography-of-indexhtml); for backend routes, storage, and

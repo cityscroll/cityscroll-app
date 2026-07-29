@@ -1,0 +1,19 @@
+{
+  "source": {
+    "id": "dcas-active-civil-service-list",
+    "name": "Civil Service List (Active)",
+    "dataset_id": "vx8i-nprf",
+    "url": "https://data.cityofnewyork.us/resource/vx8i-nprf.json",
+    "fetched_at": "2026-07-28",
+    "refresh_cadence": "Daily",
+    "stale_after_days": 3,
+    "privacy": "Only aggregate counts are retained; candidate records and names are not copied."
+  },
+  "summary": {
+    "candidate_rows": "407420",
+    "distinct_exams": "851",
+    "distinct_titles": "431",
+    "latest_established": "2026-07-22T00:00:00.000",
+    "latest_extension": "2027-07-20T00:00:00.000"
+  }
+}

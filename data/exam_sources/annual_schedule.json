@@ -1,0 +1,1356 @@
+{
+  "source": {
+    "id": "dcas-annual-schedule",
+    "name": "Annual Examination Schedule of Each Fiscal Year",
+    "dataset_id": "4ptz-hmtc",
+    "url": "https://data.cityofnewyork.us/resource/4ptz-hmtc.json",
+    "landing_page": "https://data.cityofnewyork.us/d/4ptz-hmtc",
+    "fetched_at": "2026-07-28",
+    "data_current_as_of": "2026-07-22",
+    "refresh_cadence": "DCAS says the public schedule is updated monthly; Open Data metadata says annual updates and quarterly data changes.",
+    "stale_after_days": 95
+  },
+  "records": [
+    {
+      "title_code": "20210",
+      "exam_title": "Assistant Civil Engineer",
+      "exam_number": "7006",
+      "application_period_start": "2026-07-01T00:00:00.000",
+      "application_period_end_date": "2026-07-21T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "20310",
+      "exam_title": "Assistant Electrical Engineer",
+      "exam_number": "7007",
+      "application_period_start": "2026-07-01T00:00:00.000",
+      "application_period_end_date": "2026-07-21T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "92508",
+      "exam_title": "Automotive Service Worker",
+      "exam_number": "7013",
+      "application_period_start": "2026-07-01T00:00:00.000",
+      "application_period_end_date": "2026-07-21T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "52304",
+      "exam_title": "Caseworker",
+      "exam_number": "7016",
+      "application_period_start": "2026-07-01T00:00:00.000",
+      "application_period_end_date": "2026-07-21T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "523400",
+      "exam_title": "Caseworker (NYC H+H)",
+      "exam_number": "7018",
+      "application_period_start": "2026-07-01T00:00:00.000",
+      "application_period_end_date": "2026-08-25T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "52370",
+      "exam_title": "Child Welfare Specialist Supervisor (Prom)",
+      "exam_number": "7514",
+      "application_period_start": "2026-07-01T00:00:00.000",
+      "application_period_end_date": "2026-07-21T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "91580",
+      "exam_title": "Mate (DEP) (Prom)",
+      "exam_number": "7524",
+      "application_period_start": "2026-07-01T00:00:00.000",
+      "application_period_end_date": "2026-07-21T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "70210",
+      "exam_title": "Police Officer",
+      "exam_number": "7311",
+      "application_period_start": "2026-07-01T00:00:00.000",
+      "application_period_end_date": "2026-07-14T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "60817",
+      "exam_title": "School Safety Agent",
+      "exam_number": "7323",
+      "application_period_start": "2026-07-01T00:00:00.000",
+      "application_period_end_date": "2026-07-21T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "71651",
+      "exam_title": "Traffic Enforcement Agent",
+      "exam_number": "7331",
+      "application_period_start": "2026-07-01T00:00:00.000",
+      "application_period_end_date": "2026-08-25T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "70210",
+      "exam_title": "Police Officer",
+      "exam_number": "7312",
+      "application_period_start": "2026-08-03T00:00:00.000",
+      "application_period_end_date": "2026-08-17T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "80305",
+      "exam_title": "Assistant Resident Buildings Superintendent (Prom)",
+      "exam_number": "7508",
+      "application_period_start": "2026-08-05T00:00:00.000",
+      "application_period_end_date": "2026-08-25T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "60821",
+      "exam_title": "Associate Supervisor of School Security (Prom)",
+      "exam_number": "7509",
+      "application_period_start": "2026-08-05T00:00:00.000",
+      "application_period_end_date": "2026-08-25T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "40561",
+      "exam_title": "Contract Specialist",
+      "exam_number": "7023",
+      "application_period_start": "2026-08-05T00:00:00.000",
+      "application_period_end_date": "2026-08-25T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "91722",
+      "exam_title": "Electrician's Helper",
+      "exam_number": "7028",
+      "application_period_start": "2026-08-05T00:00:00.000",
+      "application_period_end_date": "2026-08-25T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "91722",
+      "exam_title": "Electrician's Helper (CUNY)",
+      "exam_number": "7029",
+      "application_period_start": "2026-08-05T00:00:00.000",
+      "application_period_end_date": "2026-08-25T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "20122",
+      "exam_title": "Estima\u0074or (General Construction)",
+      "exam_number": "7033",
+      "application_period_start": "2026-08-05T00:00:00.000",
+      "application_period_end_date": "2026-08-25T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "70316",
+      "exam_title": "Marine Engineer (Uniformed-Fire Department) (Prom)",
+      "exam_number": "7522",
+      "application_period_start": "2026-08-05T00:00:00.000",
+      "application_period_end_date": "2026-10-27T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "22410",
+      "exam_title": "Plan Examiner (Buildings)",
+      "exam_number": "7056",
+      "application_period_start": "2026-08-05T00:00:00.000",
+      "application_period_end_date": "2026-08-25T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "22410",
+      "exam_title": "Plan Examiner (Buildings) (Prom)",
+      "exam_number": "7527",
+      "application_period_start": "2026-08-05T00:00:00.000",
+      "application_period_end_date": "2026-08-25T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "4340",
+      "exam_title": "Plant Maintainer (Hospitals)/Tender (NYC H+H)",
+      "exam_number": "7070",
+      "application_period_start": "2026-08-05T00:00:00.000",
+      "application_period_end_date": "2026-09-22T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "70210",
+      "exam_title": "Police Officer",
+      "exam_number": "7313",
+      "application_period_start": "2026-09-01T00:00:00.000",
+      "application_period_end_date": "2026-09-14T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "83006",
+      "exam_title": "Administrative Housing Development Specialist",
+      "exam_number": "7002",
+      "application_period_start": "2026-09-02T00:00:00.000",
+      "application_period_end_date": "2026-09-22T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "83006",
+      "exam_title": "Administrative Housing Development Specialist (Prom)",
+      "exam_number": "7501",
+      "application_period_start": "2026-09-02T00:00:00.000",
+      "application_period_end_date": "2026-09-22T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "82994",
+      "exam_title": "Administrative Labor Relations Analyst",
+      "exam_number": "7003",
+      "application_period_start": "2026-09-02T00:00:00.000",
+      "application_period_end_date": "2026-09-22T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "82994",
+      "exam_title": "Administrative Labor Relations Analyst (Prom)",
+      "exam_number": "7502",
+      "application_period_start": "2026-09-02T00:00:00.000",
+      "application_period_end_date": "2026-09-22T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "91352",
+      "exam_title": "Area Supervisor (Highway Maintenance) (Prom)",
+      "exam_number": "7507",
+      "application_period_start": "2026-09-02T00:00:00.000",
+      "application_period_end_date": "2026-09-22T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "70410",
+      "exam_title": "Correction Officer",
+      "exam_number": "7302",
+      "application_period_start": "2026-09-02T00:00:00.000",
+      "application_period_end_date": "2026-09-22T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "90510",
+      "exam_title": "Exterminator",
+      "exam_number": "7034",
+      "application_period_start": "2026-09-02T00:00:00.000",
+      "application_period_end_date": "2026-09-22T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "90510",
+      "exam_title": "Exterminator (CUNY)",
+      "exam_number": "7035",
+      "application_period_start": "2026-09-02T00:00:00.000",
+      "application_period_end_date": "2026-09-22T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "81361",
+      "exam_title": "Forester",
+      "exam_number": "7036",
+      "application_period_start": "2026-09-02T00:00:00.000",
+      "application_period_end_date": "2026-09-22T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "31623",
+      "exam_title": "Inspector (Electrical)",
+      "exam_number": "7041",
+      "application_period_start": "2026-09-02T00:00:00.000",
+      "application_period_end_date": "2026-09-22T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "71012",
+      "exam_title": "Police Communications Technician",
+      "exam_number": "7307",
+      "application_period_start": "2026-09-02T00:00:00.000",
+      "application_period_end_date": "2026-09-22T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "21538",
+      "exam_title": "Scientist (Water Ecology)",
+      "exam_number": "7065",
+      "application_period_start": "2026-09-02T00:00:00.000",
+      "application_period_end_date": "2026-09-22T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "70810",
+      "exam_title": "Special Officer",
+      "exam_number": "7327",
+      "application_period_start": "2026-09-02T00:00:00.000",
+      "application_period_end_date": "2026-09-22T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "708100",
+      "exam_title": "Special Officer (NYC H+H)",
+      "exam_number": "7329",
+      "application_period_start": "2026-09-02T00:00:00.000",
+      "application_period_end_date": "2026-10-27T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "92272",
+      "exam_title": "Supervisor Plasterer (Prom)",
+      "exam_number": "7539",
+      "application_period_start": "2026-09-02T00:00:00.000",
+      "application_period_end_date": "2026-09-22T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "70210",
+      "exam_title": "Police Officer",
+      "exam_number": "7314",
+      "application_period_start": "2026-10-01T00:00:00.000",
+      "application_period_end_date": "2026-10-14T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "92510",
+      "exam_title": "Auto Mechanic",
+      "exam_number": "7010",
+      "application_period_start": "2026-10-07T00:00:00.000",
+      "application_period_end_date": "2026-10-27T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "92510",
+      "exam_title": "Auto Mechanic (CUNY)",
+      "exam_number": "7011",
+      "application_period_start": "2026-10-07T00:00:00.000",
+      "application_period_end_date": "2026-10-27T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "92511",
+      "exam_title": "Auto Mechanic (Diesel)",
+      "exam_number": "7012",
+      "application_period_start": "2026-10-07T00:00:00.000",
+      "application_period_end_date": "2026-10-27T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "92511",
+      "exam_title": "Auto Mechanic (Diesel) (Prom)",
+      "exam_number": "7512",
+      "application_period_start": "2026-10-07T00:00:00.000",
+      "application_period_end_date": "2026-10-27T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "92510",
+      "exam_title": "Auto Mechanic (Prom)",
+      "exam_number": "7513",
+      "application_period_start": "2026-10-07T00:00:00.000",
+      "application_period_end_date": "2026-10-27T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "60888",
+      "exam_title": "Customer Information Representative",
+      "exam_number": "7024",
+      "application_period_start": "2026-10-07T00:00:00.000",
+      "application_period_end_date": "2026-10-27T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "91719",
+      "exam_title": "Electrician (Automobile)",
+      "exam_number": "7027",
+      "application_period_start": "2026-10-07T00:00:00.000",
+      "application_period_end_date": "2026-10-27T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "53053",
+      "exam_title": "Emergency Medical Specialist - EMT",
+      "exam_number": "7031",
+      "application_period_start": "2026-10-07T00:00:00.000",
+      "application_period_end_date": "2026-11-18T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "53052",
+      "exam_title": "Emergency Medical Specialist Trainee",
+      "exam_number": "7032",
+      "application_period_start": "2026-10-07T00:00:00.000",
+      "application_period_end_date": "2026-11-18T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "40502",
+      "exam_title": "Management Auditor",
+      "exam_number": "7047",
+      "application_period_start": "2026-10-07T00:00:00.000",
+      "application_period_end_date": "2026-10-27T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "51221",
+      "exam_title": "Occupational Therapist (DOE)",
+      "exam_number": "7052",
+      "application_period_start": "2026-10-07T00:00:00.000",
+      "application_period_end_date": "2026-10-27T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "51222",
+      "exam_title": "Physical Therapist (DOE)",
+      "exam_number": "7054",
+      "application_period_start": "2026-10-07T00:00:00.000",
+      "application_period_end_date": "2026-10-27T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "60817",
+      "exam_title": "School Safety Agent",
+      "exam_number": "7324",
+      "application_period_start": "2026-10-07T00:00:00.000",
+      "application_period_end_date": "2026-10-27T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "70235",
+      "exam_title": "Sergeant (Police) (Prom)",
+      "exam_number": "7533",
+      "application_period_start": "2026-10-07T00:00:00.000",
+      "application_period_end_date": "2026-10-27T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "70210",
+      "exam_title": "Police Officer",
+      "exam_number": "7315",
+      "application_period_start": "2026-11-02T00:00:00.000",
+      "application_period_end_date": "2026-11-16T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "500",
+      "exam_title": "Addiction Counselor (NYC H+H)",
+      "exam_number": "7000",
+      "application_period_start": "2026-11-05T00:00:00.000",
+      "application_period_end_date": "2026-12-22T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "10001",
+      "exam_title": "Administrative Accountant",
+      "exam_number": "7001",
+      "application_period_start": "2026-11-05T00:00:00.000",
+      "application_period_end_date": "2026-11-25T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "10001",
+      "exam_title": "Administrative Accountant (Prom)",
+      "exam_number": "7500",
+      "application_period_start": "2026-11-05T00:00:00.000",
+      "application_period_end_date": "2026-11-25T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "71141",
+      "exam_title": "Associate Fingerprint Technician",
+      "exam_number": "7009",
+      "application_period_start": "2026-11-05T00:00:00.000",
+      "application_period_end_date": "2026-11-25T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "91110",
+      "exam_title": "Bridge Operator",
+      "exam_number": "7015",
+      "application_period_start": "2026-11-05T00:00:00.000",
+      "application_period_end_date": "2026-11-25T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "10605",
+      "exam_title": "Cashier",
+      "exam_number": "7017",
+      "application_period_start": "2026-11-05T00:00:00.000",
+      "application_period_end_date": "2026-11-25T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "90711",
+      "exam_title": "Elevator Mechanic's Helper",
+      "exam_number": "7030",
+      "application_period_start": "2026-11-05T00:00:00.000",
+      "application_period_end_date": "2026-11-25T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "31622",
+      "exam_title": "Inspector (Construction)",
+      "exam_number": "7040",
+      "application_period_start": "2026-11-05T00:00:00.000",
+      "application_period_end_date": "2026-11-25T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "91225",
+      "exam_title": "Metal Work Mechanic",
+      "exam_number": "7050",
+      "application_period_start": "2026-11-05T00:00:00.000",
+      "application_period_end_date": "2026-11-25T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "91225",
+      "exam_title": "Metal Work Mechanic (Prom)",
+      "exam_number": "7525",
+      "application_period_start": "2026-11-05T00:00:00.000",
+      "application_period_end_date": "2026-11-25T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "51801",
+      "exam_title": "Probation Officer Trainee",
+      "exam_number": "7058",
+      "application_period_start": "2026-11-05T00:00:00.000",
+      "application_period_end_date": "2026-11-25T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "71651",
+      "exam_title": "Traffic Enforcement Agent",
+      "exam_number": "7332",
+      "application_period_start": "2026-11-05T00:00:00.000",
+      "application_period_end_date": "2026-11-25T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "52287",
+      "exam_title": "Youth Development Specialist",
+      "exam_number": "7074",
+      "application_period_start": "2026-11-05T00:00:00.000",
+      "application_period_end_date": "2026-11-25T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "70210",
+      "exam_title": "Police Officer",
+      "exam_number": "7316",
+      "application_period_start": "2026-12-01T00:00:00.000",
+      "application_period_end_date": "2026-12-14T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "40523",
+      "exam_title": "City Tax Auditor",
+      "exam_number": "7019",
+      "application_period_start": "2026-12-02T00:00:00.000",
+      "application_period_end_date": "2026-12-22T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "20215",
+      "exam_title": "Civil Engineer",
+      "exam_number": "7020",
+      "application_period_start": "2026-12-02T00:00:00.000",
+      "application_period_end_date": "2026-12-22T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "20215",
+      "exam_title": "Civil Engineer (Prom)",
+      "exam_number": "7515",
+      "application_period_start": "2026-12-02T00:00:00.000",
+      "application_period_end_date": "2026-12-22T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "70811",
+      "exam_title": "Environmental Police Officer",
+      "exam_number": "7305",
+      "application_period_start": "2026-12-02T00:00:00.000",
+      "application_period_end_date": "2026-12-22T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "22507",
+      "exam_title": "Housing Development Specialist",
+      "exam_number": "7038",
+      "application_period_start": "2026-12-02T00:00:00.000",
+      "application_period_end_date": "2026-12-22T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "31620",
+      "exam_title": "Inspector (Boilers)",
+      "exam_number": "7039",
+      "application_period_start": "2026-12-02T00:00:00.000",
+      "application_period_end_date": "2026-12-22T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "71012",
+      "exam_title": "Police Communications Technician",
+      "exam_number": "7308",
+      "application_period_start": "2026-12-02T00:00:00.000",
+      "application_period_end_date": "2026-12-22T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "70210",
+      "exam_title": "Police Officer (Prom)",
+      "exam_number": "7528",
+      "application_period_start": "2026-12-02T00:00:00.000",
+      "application_period_end_date": "2026-12-22T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "34173",
+      "exam_title": "Quality Assurance Specialist (Building Repairs)",
+      "exam_number": "7061",
+      "application_period_start": "2026-12-02T00:00:00.000",
+      "application_period_end_date": "2026-12-22T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "90760",
+      "exam_title": "Supervisor of Radio Repair Operations",
+      "exam_number": "7068",
+      "application_period_start": "2026-12-02T00:00:00.000",
+      "application_period_end_date": "2026-12-22T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "90760",
+      "exam_title": "Supervisor of Radio Repair Operations (Prom)",
+      "exam_number": "7538",
+      "application_period_start": "2026-12-02T00:00:00.000",
+      "application_period_end_date": "2026-12-22T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "34615",
+      "exam_title": "Water Use Inspector",
+      "exam_number": "7069",
+      "application_period_start": "2026-12-02T00:00:00.000",
+      "application_period_end_date": "2026-12-22T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "70210",
+      "exam_title": "Police Officer",
+      "exam_number": "7317",
+      "application_period_start": "2027-01-04T00:00:00.000",
+      "application_period_end_date": "2027-01-19T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "81303",
+      "exam_title": "Climber & Pruner",
+      "exam_number": "7021",
+      "application_period_start": "2027-01-06T00:00:00.000",
+      "application_period_end_date": "2027-01-26T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "90756",
+      "exam_title": "Construction Laborer (Prom)",
+      "exam_number": "7516",
+      "application_period_start": "2027-01-06T00:00:00.000",
+      "application_period_end_date": "2027-01-26T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "70410",
+      "exam_title": "Correction Officer",
+      "exam_number": "7303",
+      "application_period_start": "2027-01-06T00:00:00.000",
+      "application_period_end_date": "2027-01-26T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "503100",
+      "exam_title": "Dietitian (NYC H+H)",
+      "exam_number": "7026",
+      "application_period_start": "2027-01-06T00:00:00.000",
+      "application_period_end_date": "2027-02-23T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "10124",
+      "exam_title": "Principal Administrative Associate",
+      "exam_number": "7057",
+      "application_period_start": "2027-01-06T00:00:00.000",
+      "application_period_end_date": "2027-01-26T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "10124",
+      "exam_title": "Principal Administrative Associate (Prom)",
+      "exam_number": "7530",
+      "application_period_start": "2027-01-06T00:00:00.000",
+      "application_period_end_date": "2027-01-26T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "51022",
+      "exam_title": "Public Health Nurse (School Health)",
+      "exam_number": "7059",
+      "application_period_start": "2027-01-06T00:00:00.000",
+      "application_period_end_date": "2027-01-26T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "80310",
+      "exam_title": "Resident Buildings Superintendent",
+      "exam_number": "7063",
+      "application_period_start": "2027-01-06T00:00:00.000",
+      "application_period_end_date": "2027-01-26T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "80310",
+      "exam_title": "Resident Buildings Superintendent (Prom)",
+      "exam_number": "7532",
+      "application_period_start": "2027-01-06T00:00:00.000",
+      "application_period_end_date": "2027-01-26T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "54483",
+      "exam_title": "School Food Service Manager",
+      "exam_number": "7064",
+      "application_period_start": "2027-01-06T00:00:00.000",
+      "application_period_end_date": "2027-01-26T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "60817",
+      "exam_title": "School Safety Agent",
+      "exam_number": "7325",
+      "application_period_start": "2027-01-06T00:00:00.000",
+      "application_period_end_date": "2027-01-26T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "70314",
+      "exam_title": "Wiper (Uniformed) (Prom)",
+      "exam_number": "7540",
+      "application_period_start": "2027-01-06T00:00:00.000",
+      "application_period_end_date": "2027-01-26T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "70210",
+      "exam_title": "Police Officer",
+      "exam_number": "7318",
+      "application_period_start": "2027-02-01T00:00:00.000",
+      "application_period_end_date": "2027-02-16T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "92122",
+      "exam_title": "Assistant Printing Press Operator",
+      "exam_number": "7008",
+      "application_period_start": "2027-02-03T00:00:00.000",
+      "application_period_end_date": "2027-02-23T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "10104",
+      "exam_title": "Eligibility Specialist",
+      "exam_number": "7073",
+      "application_period_start": "2027-02-03T00:00:00.000",
+      "application_period_end_date": "2027-02-23T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "70392",
+      "exam_title": "Fire Marshal (Uniformed) (Prom)",
+      "exam_number": "7517",
+      "application_period_start": "2027-02-03T00:00:00.000",
+      "application_period_end_date": "2027-02-23T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "31670",
+      "exam_title": "Inspector (Housing)",
+      "exam_number": "7042",
+      "application_period_start": "2027-02-03T00:00:00.000",
+      "application_period_end_date": "2027-02-23T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "91001",
+      "exam_title": "Instrumentation Specialist",
+      "exam_number": "7043",
+      "application_period_start": "2027-02-03T00:00:00.000",
+      "application_period_end_date": "2027-02-23T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "70316",
+      "exam_title": "Marine Engineer (Uniformed-Fire Department) (Prom)",
+      "exam_number": "7523",
+      "application_period_start": "2027-02-03T00:00:00.000",
+      "application_period_end_date": "2027-04-27T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "91546",
+      "exam_title": "Marine Oiler",
+      "exam_number": "7048",
+      "application_period_start": "2027-02-03T00:00:00.000",
+      "application_period_end_date": "2027-02-23T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "91547",
+      "exam_title": "Marine Oiler (Ferry Operations)",
+      "exam_number": "7049",
+      "application_period_start": "2027-02-03T00:00:00.000",
+      "application_period_end_date": "2027-02-23T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "51221",
+      "exam_title": "Occupational Therapist (DOE)",
+      "exam_number": "7053",
+      "application_period_start": "2027-02-03T00:00:00.000",
+      "application_period_end_date": "2027-02-23T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "90769",
+      "exam_title": "Supervisor Elevator Mechanic (Prom)",
+      "exam_number": "7536",
+      "application_period_start": "2027-02-03T00:00:00.000",
+      "application_period_end_date": "2027-02-23T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "71651",
+      "exam_title": "Traffic Enforcement Agent",
+      "exam_number": "7333",
+      "application_period_start": "2027-02-03T00:00:00.000",
+      "application_period_end_date": "2027-02-23T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "70210",
+      "exam_title": "Police Officer",
+      "exam_number": "7319",
+      "application_period_start": "2027-03-01T00:00:00.000",
+      "application_period_end_date": "2027-03-15T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "10026",
+      "exam_title": "Administrative Staff Analyst",
+      "exam_number": "7005",
+      "application_period_start": "2027-03-03T00:00:00.000",
+      "application_period_end_date": "2027-03-23T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "10026",
+      "exam_title": "Administrative Staff Analyst (Prom)",
+      "exam_number": "7504",
+      "application_period_start": "2027-03-03T00:00:00.000",
+      "application_period_end_date": "2027-03-23T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "10042",
+      "exam_title": "Administrative Traffic Enforcement Agent (Prom)",
+      "exam_number": "7506",
+      "application_period_start": "2027-03-03T00:00:00.000",
+      "application_period_end_date": "2027-03-23T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "60422",
+      "exam_title": "Associate Urban Park Ranger (Prom)",
+      "exam_number": "7510",
+      "application_period_start": "2027-03-03T00:00:00.000",
+      "application_period_end_date": "2027-03-23T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "90698",
+      "exam_title": "Maintenance Worker",
+      "exam_number": "7045",
+      "application_period_start": "2027-03-03T00:00:00.000",
+      "application_period_end_date": "2027-03-23T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "90698",
+      "exam_title": "Maintenance Worker (CUNY)",
+      "exam_number": "7046",
+      "application_period_start": "2027-03-03T00:00:00.000",
+      "application_period_end_date": "2027-03-23T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "91210",
+      "exam_title": "Motor Grader Operator",
+      "exam_number": "7051",
+      "application_period_start": "2027-03-03T00:00:00.000",
+      "application_period_end_date": "2027-03-23T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "71012",
+      "exam_title": "Police Communications Technician",
+      "exam_number": "7309",
+      "application_period_start": "2027-03-03T00:00:00.000",
+      "application_period_end_date": "2027-03-23T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "60910",
+      "exam_title": "Research Assistant",
+      "exam_number": "7062",
+      "application_period_start": "2027-03-03T00:00:00.000",
+      "application_period_end_date": "2027-03-23T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "70810",
+      "exam_title": "Special Officer",
+      "exam_number": "7328",
+      "application_period_start": "2027-03-03T00:00:00.000",
+      "application_period_end_date": "2027-03-23T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "708100",
+      "exam_title": "Special Officer (NYC H+H)",
+      "exam_number": "7330",
+      "application_period_start": "2027-03-03T00:00:00.000",
+      "application_period_end_date": "2027-04-27T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "70210",
+      "exam_title": "Police Officer",
+      "exam_number": "7320",
+      "application_period_start": "2027-04-01T00:00:00.000",
+      "application_period_end_date": "2027-04-14T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "10010",
+      "exam_title": "Administrative Management Auditor",
+      "exam_number": "7004",
+      "application_period_start": "2027-04-07T00:00:00.000",
+      "application_period_end_date": "2027-04-27T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "10010",
+      "exam_title": "Administrative Management Auditor (Prom)",
+      "exam_number": "7503",
+      "application_period_start": "2027-04-07T00:00:00.000",
+      "application_period_end_date": "2027-04-27T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "52275",
+      "exam_title": "Assistant Superintendent of Welfare Shelters",
+      "exam_number": "7072",
+      "application_period_start": "2027-04-07T00:00:00.000",
+      "application_period_end_date": "2027-04-27T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "92305",
+      "exam_title": "Blacksmith",
+      "exam_number": "7014",
+      "application_period_start": "2027-04-07T00:00:00.000",
+      "application_period_end_date": "2027-04-27T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "70410",
+      "exam_title": "Correction Officer",
+      "exam_number": "7304",
+      "application_period_start": "2027-04-07T00:00:00.000",
+      "application_period_end_date": "2027-04-27T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "70811",
+      "exam_title": "Environmental Police Officer",
+      "exam_number": "7306",
+      "application_period_start": "2027-04-07T00:00:00.000",
+      "application_period_end_date": "2027-04-27T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "91619",
+      "exam_title": "Heating Plant Technician (Housing Authority)",
+      "exam_number": "7037",
+      "application_period_start": "2027-04-07T00:00:00.000",
+      "application_period_end_date": "2027-04-27T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "91619",
+      "exam_title": "Heating Plant Technician (Housing Authority) (Prom)",
+      "exam_number": "7518",
+      "application_period_start": "2027-04-07T00:00:00.000",
+      "application_period_end_date": "2027-04-27T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "92610",
+      "exam_title": "Machinist",
+      "exam_number": "7044",
+      "application_period_start": "2027-04-07T00:00:00.000",
+      "application_period_end_date": "2027-04-27T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "92610",
+      "exam_title": "Machinist (Prom)",
+      "exam_number": "7521",
+      "application_period_start": "2027-04-07T00:00:00.000",
+      "application_period_end_date": "2027-04-27T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "60817",
+      "exam_title": "School Safety Agent",
+      "exam_number": "7326",
+      "application_period_start": "2027-04-07T00:00:00.000",
+      "application_period_end_date": "2027-04-27T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "71060",
+      "exam_title": "Supervising Fire Alarm Dispatcher (Prom)",
+      "exam_number": "7534",
+      "application_period_start": "2027-04-07T00:00:00.000",
+      "application_period_end_date": "2027-04-27T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "70210",
+      "exam_title": "Police Officer",
+      "exam_number": "7321",
+      "application_period_start": "2027-05-03T00:00:00.000",
+      "application_period_end_date": "2027-05-17T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "10049",
+      "exam_title": "Administrative Tax Auditor (Prom)",
+      "exam_number": "7505",
+      "application_period_start": "2027-05-05T00:00:00.000",
+      "application_period_end_date": "2027-05-25T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "52366",
+      "exam_title": "Child Protective Specialist",
+      "exam_number": "7301",
+      "application_period_start": "2027-05-05T00:00:00.000",
+      "application_period_end_date": "2027-05-25T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "34201",
+      "exam_title": "Construction Project Manager Intern",
+      "exam_number": "7022",
+      "application_period_start": "2027-05-05T00:00:00.000",
+      "application_period_end_date": "2027-05-25T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "501010",
+      "exam_title": "Dental Assistant (NYC H+H)",
+      "exam_number": "7025",
+      "application_period_start": "2027-05-05T00:00:00.000",
+      "application_period_end_date": "2027-06-22T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "70260",
+      "exam_title": "Lieutenant (Police) (Prom)",
+      "exam_number": "7520",
+      "application_period_start": "2027-05-05T00:00:00.000",
+      "application_period_end_date": "2027-05-25T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "51860",
+      "exam_title": "Supervising Probation Officer (Prom)",
+      "exam_number": "7535",
+      "application_period_start": "2027-05-05T00:00:00.000",
+      "application_period_end_date": "2027-05-25T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "71651",
+      "exam_title": "Traffic Enforcement Agent",
+      "exam_number": "7334",
+      "application_period_start": "2027-05-05T00:00:00.000",
+      "application_period_end_date": "2027-05-25T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "70210",
+      "exam_title": "Police Officer",
+      "exam_number": "7322",
+      "application_period_start": "2027-06-01T00:00:00.000",
+      "application_period_end_date": "2027-06-14T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "10056",
+      "exam_title": "Administrative Director of Social Services",
+      "exam_number": "7071",
+      "application_period_start": "2027-06-02T00:00:00.000",
+      "application_period_end_date": "2027-06-22T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "10056",
+      "exam_title": "Administrative Director of Social Services (Prom)",
+      "exam_number": "7541",
+      "application_period_start": "2027-06-02T00:00:00.000",
+      "application_period_end_date": "2027-06-22T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "52288",
+      "exam_title": "Associate Youth Development Specialist (Prom)",
+      "exam_number": "7511",
+      "application_period_start": "2027-06-02T00:00:00.000",
+      "application_period_end_date": "2027-06-22T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "70312",
+      "exam_title": "Pilot (Prom)",
+      "exam_number": "7526",
+      "application_period_start": "2027-06-02T00:00:00.000",
+      "application_period_end_date": "2027-06-22T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "71012",
+      "exam_title": "Police Communications Technician",
+      "exam_number": "7310",
+      "application_period_start": "2027-06-02T00:00:00.000",
+      "application_period_end_date": "2027-06-22T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "70210",
+      "exam_title": "Police Officer (Prom)",
+      "exam_number": "7529",
+      "application_period_start": "2027-06-02T00:00:00.000",
+      "application_period_end_date": "2027-06-22T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "60216",
+      "exam_title": "Public Records Officer",
+      "exam_number": "7060",
+      "application_period_start": "2027-06-02T00:00:00.000",
+      "application_period_end_date": "2027-06-22T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "60216",
+      "exam_title": "Public Records Officer (Prom)",
+      "exam_number": "7531",
+      "application_period_start": "2027-06-02T00:00:00.000",
+      "application_period_end_date": "2027-06-22T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "92340",
+      "exam_title": "Sheet Metal Worker",
+      "exam_number": "7066",
+      "application_period_start": "2027-06-02T00:00:00.000",
+      "application_period_end_date": "2027-06-22T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "11704",
+      "exam_title": "Supervisor of Office Machine Operations",
+      "exam_number": "7067",
+      "application_period_start": "2027-06-02T00:00:00.000",
+      "application_period_end_date": "2027-06-22T00:00:00.000",
+      "open_competitive_promotion": "Open Competitive",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    },
+    {
+      "title_code": "11704",
+      "exam_title": "Supervisor of Office Machine Operations (Prom)",
+      "exam_number": "7537",
+      "application_period_start": "2027-06-02T00:00:00.000",
+      "application_period_end_date": "2027-06-22T00:00:00.000",
+      "open_competitive_promotion": "Promotion",
+      "data_current_as_of": "2026-07-22T00:00:00.000"
+    }
+  ]
+}
