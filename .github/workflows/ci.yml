@@ -25,7 +25,7 @@ jobs:
           node-version: 20
           cache: npm
           cache-dependency-path: worker/package-lock.json
-      - name: Beta review readiness contract
+      - name: Beta preview alias contract
         if: github.event_name == 'pull_request'
         run: node tools/check_beta_review_contract.mjs
       - name: Expiring beta flag contract

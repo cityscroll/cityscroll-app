@@ -18,20 +18,14 @@ public-artifact gate. Review artifacts add an experimental banner, a link back
 to `crol-list.org`, commit metadata, and `X-Robots-Tag: noindex`. They retain
 the stable site's canonical links.
 
-## Review decision
+## Ready-state contract
 
-Keep a `preview:beta` pull request in draft while its stable preview link is
-shared. The suggested chat prompt is:
+A ready pull request labeled `preview:beta` names its own stable preview alias
+in the public body. The unit check verifies that the alias belongs to that pull
+request. Drafts may omit it while their first preview deployment is pending.
 
-> React ✅ if you would be comfortable shipping this. Otherwise reply with the
-> screen, concern, and preferred change by the stated review deadline.
-
-The site owner records the deadline, outcome, summary, and disposition of each
-objection in the pull request template. Silence is recorded as no response,
-not approval. A `Revise` or `Withdraw` outcome stays draft; only an explicit
-`Promote` outcome may be marked ready. The existing required unit check
-validates that record on the `ready_for_review` event, and GitHub does not
-allow a draft pull request into the merge queue.
+Marking a pull request ready does not deploy either stable or beta. Promotion
+remains a separate, manually triggered exact-commit operation.
 
 ## Promote or restore one commit
 
