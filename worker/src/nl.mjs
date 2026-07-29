@@ -13,20 +13,9 @@
 import { sanitize, filterConfidence, MAX_INPUT, MAX_CALLS_PER_DAY, LENSES } from "./lib/filter.mjs";
 import { bumpStat, bumpStatAllTime, bumpCategoryStat, bumpCategoryDayStat, bumpHistDay } from "./lib/stats.mjs";
 import { emitUsageEvent } from "./lib/analytics.mjs";
+import { corsHeaders, isAllowedRequestOrigin } from "./lib/cors.mjs";
 
 const MODEL = "claude-haiku-4-5";
-
-const ALLOW = new Set([
-  "https://crol-list.org",
-  "https://www.crol-list.org",
-  "https://cityscroll.org",
-  "https://www.cityscroll.org",
-  "https://crol-list.jimdc.com",
-  "https://jimdc.github.io",
-  "http://localhost:8888",
-  "http://localhost:8000",
-  "http://localhost:8787", // wrangler dev
-]);
 
 // Field catalogue — the schema for each lens is assembled from its LENSES[] field list.
 const FIELD_DEFS = {
@@ -112,8 +101,11 @@ export async function parseLensFilter(env, lens, rawText) {
 
 export async function handleNl(req, env) {
   const origin = req.headers.get("origin") || "";
-  const cors = corsHeaders(origin);
+  const cors = corsHeaders(origin, env);
 
+  if (!isAllowedRequestOrigin(origin, env)) {
+    return json({ error: "Origin not allowed" }, 403, cors);
+  }
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
   if (req.method !== "POST") return json({ error: "POST only" }, 405, cors);
 
@@ -163,16 +155,6 @@ async function overDailyCap(env) {
   } catch {
     return false;
   }
-}
-
-function corsHeaders(origin) {
-  const o = ALLOW.has(origin) ? origin : "https://crol-list.jimdc.com";
-  return {
-    "Access-Control-Allow-Origin": o,
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Vary": "Origin",
-  };
 }
 
 function json(obj, status, cors) {

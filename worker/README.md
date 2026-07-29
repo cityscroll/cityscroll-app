@@ -31,9 +31,15 @@ across the API routes include both cityscroll.org origins alongside crol-list.or
    crol-worker (Cloudflare Worker + KV + Cron Triggers)
 ```
 
-The frontend knows the worker by a single constant in `crol-list/index.html`:
-`const API = "https://api.crol-list.org"`. Empty string = pure
-client-side (NL search uses the on-device heuristic, subscriptions/feeds are hidden).
+The frontend defaults to `https://api.crol-list.org` through `window.CROL_API_ORIGIN`.
+Review builds set that value to `https://api-beta.crol-list.org` before page scripts
+run. An unavailable Worker leaves the site in its client-side degraded mode.
+
+The beta Worker is a separate, manually deployed Wrangler environment. It
+inherits no production secrets, storage bindings, queues, or cron trigger;
+stateful and delivery routes fail closed. Its CORS policy accepts beta review
+origins only when `DEPLOYMENT_CHANNEL=beta`, while the production environment
+continues to reject those origins. See `../docs/beta-channel.md`.
 
 ## Routes
 
@@ -96,8 +102,8 @@ else — you can ignore it entirely or point it at your own board.
 
 ## Defense in depth (denial-of-wallet & abuse)
 
-`/nl` is the only endpoint that spends money, so it's layered: CORS allowlist
-(crol-list.org + legacy origins + localhost), 600-char input cap, a **hard daily ceiling**
+`/nl` is the only endpoint that spends money, so it's layered: a centralized CORS allowlist
+(stable sites + legacy origins + localhost; review origins only in beta), 600-char input cap, a **hard daily ceiling**
 (`MAX_CALLS_PER_DAY=300`, KV counter in `NL_METER`), tiny `max_tokens`, and
 `{degraded:true}` on every failure path — worst case a few tens of cents/day by
 construction. Alert sending is bounded by `MAX_PER_RUN=25` and `MAX_SENDS_PER_DAY=50`

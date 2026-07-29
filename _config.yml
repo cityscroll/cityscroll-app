@@ -1,0 +1,18 @@
+# Keep the generated public site limited to visitor-facing content and public
+# project documentation. Source, tests, automation, and local guidance remain
+# available in the repository without becoming Pages routes.
+exclude:
+  - .agents
+  - .claude
+  - .github
+  - .gitignore
+  - AGENTS.md
+  - CLAUDE.md
+  - PAPERCUTS.md
+  - backlog
+  - internal
+  - node_modules
+  - tasks
+  - test
+  - tools
+  - worker
