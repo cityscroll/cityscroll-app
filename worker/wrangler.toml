@@ -74,6 +74,14 @@ BOARD_HOOK_MAX_PER_DAY = "100"
 ANALYTICS_ACCOUNT_ID = "8162581cb1d97e20a172031adb8a13af"
 ANALYTICS_DATASET = "crol_usage_events_v1"
 ANALYTICS_MEASURED_SINCE = "2026-07-27"
+# Wave 4 source custody is fail-closed. Set this to "true" only after the
+# content-policy fixtures and the automatically provisioned bucket are ready.
+SOURCE_VAULT_ENABLED = "false"
+
+# The source vault is the wave's only new infrastructure binding. Omitting a
+# bucket_name asks current Wrangler to provision an R2 bucket for this binding.
+[[r2_buckets]]
+binding = "SOURCE_VAULT"
 
 # Privacy-preserving event rows: bounded taxonomy dimensions only, no visitor identifier.
 [[analytics_engine_datasets]]

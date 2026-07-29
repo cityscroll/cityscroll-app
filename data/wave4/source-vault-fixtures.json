@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0.0",
+  "cases": [
+    {
+      "id": "eligible-open-data-pdf",
+      "url": "https://www.nyc.gov/assets/dcas/downloads/pdf/example-public-report.pdf",
+      "process_id": "process:pin:84124p0003001",
+      "content_type": "application/pdf",
+      "expected": "eligible"
+    },
+    {
+      "id": "account-gated-refusal",
+      "url": "https://passport.cityofnewyork.us/page.aspx/en/rfp/request_browse_public",
+      "process_id": "process:pin:84124p0003001",
+      "content_type": "text/html",
+      "expected": "official_link_only"
+    },
+    {
+      "id": "uncertain-rights-refusal",
+      "url": "https://example.com/procurement-document.pdf",
+      "process_id": "process:pin:84124p0003001",
+      "content_type": "application/pdf",
+      "expected": "official_link_only"
+    },
+    {
+      "id": "executable-refusal",
+      "url": "https://www.nyc.gov/assets/dcas/files/example.exe",
+      "process_id": "process:pin:84124p0003001",
+      "content_type": "application/octet-stream",
+      "expected": "official_link_only"
+    }
+  ]
+}
