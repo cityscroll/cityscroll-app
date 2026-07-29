@@ -82,7 +82,17 @@ function buildSearchDeepLink(lens, filter) {
   } else {
     if (agency) params.set("agency", agency);
     if (keywords.length) params.set("q", keywords.join(" "));
-    if (lens === "meetings" && f.when === "all") params.set("when", "all");
+    if (lens === "meetings") {
+      if (["week", "month", "upcoming"].indexOf(f.when) >= 0) params.set("when", f.when);
+      var hearingBoros = ["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"];
+      var hearingBoro = hearingBoros.find(function (name) {
+        return name.toLowerCase() === compactText(f.borough, 40).toLowerCase();
+      });
+      if (hearingBoro) params.set("boro", hearingBoro);
+      var neighborhood = compactText(f.neighborhood, 80);
+      if (neighborhood) params.set("neighborhood", neighborhood);
+      if (f.locationScope === "citywide-unlocated") params.set("scope", "citywide-unlocated");
+    }
     if (lens === "property") {
       var asset = compactText(f.asset, 40);
       var stage = compactText(f.stage, 40);

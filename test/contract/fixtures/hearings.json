@@ -1,0 +1,63 @@
+[
+  {
+    "name": "virtual hearing with a Staten Island subject property",
+    "row": {
+      "request_id": "20260709020",
+      "start_date": "2026-07-24T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "FOR ACQUISITION - Block 5308 Lot 50",
+      "event_date": "2026-09-09T10:00:00.000",
+      "additional_description_1": "<p>A public hearing will be held via conference call.</p><p><b>IN THE MATTER OF</b> the acquisition of Staten Island Tax Block 5308, Lot 50. The City is acquiring the Property to expand Crescent Beach Park, in Staten Island, Community District 3.</p>"
+    }
+  },
+  {
+    "name": "Manhattan venue for a Queens land-use matter",
+    "row": {
+      "request_id": "fixture-queens-venue",
+      "start_date": "2026-07-28T00:00:00.000",
+      "agency_name": "City Planning Commission",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "Queens zoning map amendment",
+      "event_date": "2026-08-03T10:00:00.000",
+      "street_address_1": "120 Broadway",
+      "street_address_2": "Lower Level",
+      "city": "New York",
+      "state": "NY",
+      "zip_code": "10271",
+      "additional_description_1": "IN THE MATTER OF a proposed zoning map amendment for property located at 37-18 Queens Boulevard in the Sunnyside neighborhood, Community District 2, Queens. The public hearing will be held at the venue listed above."
+    }
+  },
+  {
+    "name": "citywide virtual rule hearing",
+    "row": {
+      "request_id": "fixture-citywide-rule",
+      "start_date": "2026-07-28T00:00:00.000",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "short_title": "Dining Out NYC sidewalk and roadway cafe rules",
+      "event_date": "2026-08-04T10:00:00.000",
+      "additional_description_1": "The proposed rule applies citywide to outdoor dining and sidewalk cafes. The hearing will take place online. Join the meeting: https://example.com/zoom/join."
+    }
+  },
+  {
+    "name": "notice with no affected-area signal",
+    "row": {
+      "request_id": "fixture-unlocated",
+      "start_date": "2026-07-28T00:00:00.000",
+      "agency_name": "Board Meetings",
+      "type_of_notice_description": "Meeting",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "Monthly public meeting",
+      "event_date": "2026-08-05T13:00:00.000",
+      "street_address_1": "255 Greenwich Street",
+      "city": "New York",
+      "state": "NY",
+      "zip_code": "10007",
+      "additional_description_1": "The board will hold its monthly public meeting."
+    }
+  }
+]
