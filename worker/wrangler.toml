@@ -31,8 +31,9 @@ crons = ["0 13 * * *"]
 [vars]
 ALERTS_LIVE = "true"
 CONFIRM_BASE = "https://api.cityscroll.org"
-# The sending domain is intentionally unchanged during the web canonical cutover.
-ALERTS_FROM = "CityScroll <alerts@crol-list.org>"
+# The site owner formally decided the sender-domain switchover on 2026-07-29; see
+# docs/canonical-domain-cutover.md.
+ALERTS_FROM = "CityScroll <alerts@cityscroll.org>"
 # Spend guards (denial-of-wallet ceiling). MAX_SENDS_PER_DAY stays under Resend's free 100/day.
 MAX_PER_RUN = "25"
 MAX_SENDS_PER_DAY = "50"

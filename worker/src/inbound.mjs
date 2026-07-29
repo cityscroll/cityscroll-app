@@ -34,7 +34,7 @@ export function pickLens(text) {
 // True for senders we must never auto-reply to (loops, bounces, ourselves).
 export function shouldIgnore(from, headers = new Map()) {
   const f = String(from || "").toLowerCase();
-  if (!f || f.endsWith("@crol-list.org")) return true;
+  if (!f || f.endsWith("@crol-list.org") || f.endsWith("@cityscroll.org")) return true;
   if (/mailer-daemon|no-?reply|postmaster|bounce/.test(f)) return true;
   const auto = headers.get?.("auto-submitted") || "";
   if (auto && auto.toLowerCase() !== "no") return true;
