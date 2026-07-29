@@ -191,6 +191,15 @@ RULES_ROWS = [
      "type_of_notice_description": "Notice of Adoption",
      "short_title": "NOTICE OF ADOPTION OF RULE RELATING TO ELEVATOR INSPECTIONS",
      "additional_description_1": "Notice of adoption of amendments to rules relating to elevator inspections."},
+    {"request_id": "20260701010", "start_date": _iso(-2), "agency_name": "Transportation",
+     "type_of_notice_description": "Public Hearings", "event_date": _iso(6),
+     "section_name": "Agency Rules",
+     "short_title": "BRONX CURB MANAGEMENT RULE HEARING",
+     "street_address_1": "255 Greenwich Street",
+     "additional_description_1": (
+         "The hearing will be held at 255 Greenwich Street in Manhattan. "
+         "IN THE MATTER OF proposed curb management rules in the Borough of the Bronx."
+     )},
 ]
 MEETINGS_ROWS = [dict(HEARING_ROW)]
 
