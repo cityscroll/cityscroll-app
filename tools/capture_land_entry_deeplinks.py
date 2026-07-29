@@ -92,7 +92,7 @@ def json_response(route: Route, body: object) -> None:
 def install_routes(page: Page) -> None:
     page.route("https://**", lambda route: route.abort())
     page.route("https://data.cityofnewyork.us/**", lambda route: json_response(route, []))
-    page.route("https://api.crol-list.org/**", lambda route: json_response(route, {}))
+    page.route("https://api.cityscroll.org/**", lambda route: json_response(route, {}))
     page.route(
         "https://geosearch.planninglabs.nyc/**",
         lambda route: json_response(route, {"features": []}),

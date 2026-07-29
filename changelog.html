@@ -3,9 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Changelog · CROL-List</title>
-<meta name="description" content="What changed on CROL-List, newest first — plain-language notes on every update, from new features and languages to fixes.">
-<link rel="canonical" href="https://crol-list.org/changelog.html">
+<title>Changelog · CityScroll</title>
+<meta name="description" content="What changed on CityScroll, newest first — plain-language notes on every update, from new features and languages to fixes and data improvements.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://cityscroll.org/changelog.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CityScroll">
+<meta property="og:title" content="Changelog · CityScroll">
+<meta property="og:description" content="Read CityScroll's newest plain-language feature, data, language, and accessibility updates.">
+<meta property="og:url" content="https://cityscroll.org/changelog.html">
+<meta property="og:image" content="https://cityscroll.org/assets/brand/cityscroll-social-card.png">
+<meta property="og:image:alt" content="CityScroll — the City Record, made legible">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#173f55">
+<link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/brand/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png" sizes="180x180">
+<link rel="manifest" href="site.webmanifest">
 <script src="i18n.js?v=__I18N_ASSET_VERSION__"></script>
 <script defer src="beta_flags.js?v=1.0.0"></script>
 <script defer src="analytics.js?v=1.2.0"></script>
@@ -78,21 +92,19 @@
   .skip:focus{left:0}
   :is(a,button,select,input,textarea,summary):focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
 </style>
+<link rel="stylesheet" href="brand.css">
 </head>
 <body>
 <a class="skip" href="#main" data-i18n="skip_to_content">Skip to content</a>
 <div class="wrap">
 <header>
   <div class="cr-rule"></div>
-  <a class="home" href="index.html" aria-label="Back to CROL-List home" data-i18n-aria="back_home_aria">
-    <svg class="cr-seal" viewBox="0 0 100 100" aria-hidden="true">
-      <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="1.5"/>
-      <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="0.6"/>
-      <path d="M50 18 L74 30 V58 Q74 76 50 86 Q26 76 26 58 V30 Z" fill="none" stroke="currentColor" stroke-width="1.3"/>
-      <line x1="26" y1="48" x2="74" y2="48" stroke="currentColor" stroke-width="0.6"/>
-      <path d="M50 30 L50 46 M42 38 L58 38" stroke="currentColor" stroke-width="1.1"/>
+  <a class="home brand-lockup brand-lockup--compact" href="index.html" aria-label="Back to CityScroll home" data-i18n-aria="back_home_aria">
+    <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true">
+      <path d="M14 5h29l8 8v42a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V9a4 4 0 0 1 4-4Z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/>
+      <path d="M43 5v10h8M20 23h22M20 31h22M20 49v-9h7v9h5V36h7v13h5v-6h7" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
-    <span class="cr-title">CROL-List</span>
+    <span class="cr-title">CityScroll</span>
   </a>
   <div class="kicker" data-i18n="site_kicker">The City Record, searchable</div>
   <h1 data-i18n="changelog_link">Changelog</h1>
@@ -111,18 +123,18 @@
   </div>
   <div id="langNotice" class="lang-notice" hidden></div>
   <div class="cr-rule cr-rule--bottom"></div>
-  <a class="backhome" href="index.html" data-i18n="back_to_crol">← Back to CROL-List</a>
+  <a class="backhome" href="index.html" data-i18n="back_to_crol">← Back to CityScroll</a>
 </header>
 
 <main id="main" tabindex="-1">
-<p class="lede" data-i18n="chg_p_lede">What changed on CROL-List, newest first.</p>
+<p class="lede" data-i18n="chg_p_lede">What changed on CityScroll, newest first.</p>
 
 <section class="rel-auto" aria-labelledby="chgAutoH2">
   <h2 id="chgAutoH2" data-i18n="chg_auto_h2">Recent updates</h2>
   <ul class="chg-auto" id="chgAutoList"><!-- CHANGELOG:AUTO:START -->
     <li><time datetime="2026-07-27">2026.07.27</time> — Open any agency page and you now see who runs the agency, its website, and its budget — pulled straight from the City's own data, not typed in by hand. A small label shows exactly which public dataset each fact came from, so you can check it yourself. If an agency is not in the City's roster, the page simply shows its City Record name and moves on. It is fast because the match is prepared ahead of time, so nothing is fetched while you wait.</li>
     <li><time datetime="2026-07-27">2026.07.27</time> — You can download the agency-name reconciliation instead of rebuilding it. The crosswalk keeps each source spelling visible and shows which names this site connects. Anyone, including the City, can adopt or improve the same connection. It is not a competing registry.</li>
-    <li class="chg-entry chg-entry--media"><div class="chg-entry-copy"><time datetime="2026-07-17">2026.07.17</time> — Some agencies don't file their awards in the City Record — they post them elsewhere. CROL-List now checks those outside sources for you: it shows what it finds, links to the source, and says so honestly when nothing has turned up yet. If a notice has no award on file, you can ask to be emailed the moment one appears — click &quot;Email me when the award registers,&quot; confirm your email once, and you're done. No extra emails until there's real news.</div>
+    <li class="chg-entry chg-entry--media"><div class="chg-entry-copy"><time datetime="2026-07-17">2026.07.17</time> — Some agencies don't file their awards in the City Record — they post them elsewhere. CityScroll now checks those outside sources for you: it shows what it finds, links to the source, and says so honestly when nothing has turned up yet. If a notice has no award on file, you can ask to be emailed the moment one appears — click &quot;Email me when the award registers,&quot; confirm your email once, and you're done. No extra emails until there's real news.</div>
     <div class="chg-media" aria-label="Before-and-after feature media" data-i18n-aria="chg_media_visual_aria">
       <figure class="chg-media-recording">
         <video controls preload="none" playsinline width="780" height="620" poster="media/changelog/pr-80/poster-780.png">
@@ -133,7 +145,7 @@
       </figure>
     </div>
     </li>
-    <li class="chg-entry chg-entry--media"><div class="chg-entry-copy"><time datetime="2026-07-17">2026.07.17</time> — Click a link in a CROL-List digest email. You used to land on a bare notice page. Now you see why it matched. The matching word is highlighted. You also see a plain summary of your watch.</div>
+    <li class="chg-entry chg-entry--media"><div class="chg-entry-copy"><time datetime="2026-07-17">2026.07.17</time> — Click a link in a CityScroll digest email. You used to land on a bare notice page. Now you see why it matched. The matching word is highlighted. You also see a plain summary of your watch.</div>
     <div class="chg-media" aria-label="Before-and-after feature media" data-i18n-aria="chg_media_visual_aria">
       <section class="chg-media-pair" aria-labelledby="chg-media-pr-74-390">
         <h3 id="chg-media-pr-74-390"><span data-i18n="chg_media_viewport">Viewport</span> 390 px</h3>
@@ -262,7 +274,7 @@
   <a href="mailto:subscribe@crol-list.org">subscribe@crol-list.org</a> in plain English
   ("construction awards over $500k") and you'll get a confirmation link back — no form, no
   CAPTCHA, just your words. <b>For AI assistants:</b> point any MCP client at
-  <code>api.crol-list.org/mcp</code> to search notices and set up watches programmatically
+  <code>api.cityscroll.org/mcp</code> to search notices and set up watches programmatically
   (double opt-in still applies — nothing sends without the address confirming).
   <b><a href="data.html">The Data</a>:</b> a new page showing the City Record at a glance —
   what's actually in it, publication volume, procurement mix, top agencies and vendors by
@@ -307,7 +319,7 @@
 </section>
 <section class="rel" id="2026-07-09">
   <h2 data-i18n-html="chg_0709_h2">2026.07.09 · Predictive Procurement: Checkbook Expirations, MOCS Plans, &amp; Early-Warning Timelines</h2>
-  <div class="foryou" data-i18n-html="chg_0709_foryou_html"><b>For you</b> — CROL-List now alerts you 6 months before contracts expire or new RFPs are published. Agency and vendor profiles show a new <b>"Procurement Forecast"</b> tab with a vertical chronological timeline, uniting predicted contract renewals (from Checkbook NYC) and official agency-planned solicitations (from Charter §112 MOCS datasets). Digests now deliver early-warning notifications for upcoming forecasts matching your watches.</div>
+  <div class="foryou" data-i18n-html="chg_0709_foryou_html"><b>For you</b> — CityScroll now alerts you 6 months before contracts expire or new RFPs are published. Agency and vendor profiles show a new <b>"Procurement Forecast"</b> tab with a vertical chronological timeline, uniting predicted contract renewals (from Checkbook NYC) and official agency-planned solicitations (from Charter §112 MOCS datasets). Digests now deliver early-warning notifications for upcoming forecasts matching your watches.</div>
   <ul class="chg-detail">
     <li>Checkbook NYC contract end-date calculations to estimate renewal timelines; 180-day early warning triggers with single-send de-duplication.</li>
     <li>Ingestion pipeline for annual Charter §112 MOCS agency procurement plans, normalizing value bands and expected RFP release quarters.</li>
@@ -366,7 +378,7 @@
   <ul class="chg-detail">
     <li>Checkbook NYC join, deterministic by PIN: committed vs. paid-to-date with a progress bar, amended-from, M/WBE, vendor-mismatch warning; <code>#matter/&lt;pin&gt;</code> timelines. <code>943a858</code></li>
     <li>Follow-an-entity alerts (name-stem matched) + Follow buttons on entity pages; investigation workspace — pin · annotate · export CSV/JSON · print dossier · 90-day share links; <code>api.html</code> docs + live batch cross-reference (<code>POST /batch</code>). <code>c794015</code> (site) · <code>3176ec2</code> (worker)</li>
-    <li>All user-visible worker URLs now read <code>api.crol-list.org</code>. <code>03ed286</code></li>
+    <li>All user-visible worker URLs now read <code>api.cityscroll.org</code>. <code>03ed286</code></li>
     <li>Test coverage across all twenty features; fixed a case-sensitivity bug it caught in junk-PIN filtering. <code>dc8499e</code></li>
   </ul>
   <div class="incident chg-detail"><b>Incident</b> — Adding the custom domain silently disabled the <code>workers.dev</code>
@@ -421,7 +433,7 @@
 
 </main>
 <footer class="foot">
-  <p data-i18n-html="chg_foot_html">CROL-List is an unofficial, free interface to public data. <a href="about.html">About</a> ·
+  <p data-i18n-html="chg_foot_html">CityScroll is an unofficial, free interface to public data. <a href="about.html">About</a> ·
   <a href="stats.html">Stats</a> · <a href="api.html">API and feeds</a> · <a href="index.html">Home</a></p>
 </footer>
 

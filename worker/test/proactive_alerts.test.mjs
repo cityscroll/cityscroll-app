@@ -72,7 +72,7 @@ test("runAlerts matches checkbook warning_date and sends email containing foreca
     ALERTS_LIVE: "true",
     RESEND_API_KEY: "re-1234",
     TOKEN_SECRET: "secret-key",
-    CONFIRM_BASE: "https://api.crol-list.org",
+    CONFIRM_BASE: "https://api.cityscroll.org",
     MAX_PER_RUN: "25",
     MAX_SENDS_PER_DAY: "50",
     HEARTBEAT_DAYS: "14",

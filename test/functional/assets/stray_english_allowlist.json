@@ -27,7 +27,7 @@
     "DSNY", "NYC", "CUNY", "MOCS", "ULURP", "MIH", "FY", "CD"
   ],
   "allowed_phrases": [
-    "CROL-List", "City Record", "NYC Open Data", "Checkbook NYC",
+    "CityScroll", "City Record", "NYC Open Data", "Checkbook NYC",
     "New York", "MapPLUTO", "GeoSearch",
     "Staten Island", "alerts@crol-list.org", "crol-list.org"
   ],

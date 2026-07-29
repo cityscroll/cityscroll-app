@@ -32,7 +32,7 @@ ALLOWED_TERMS = {
     "RFP", "RFPs", "PIN", "ZAP", "ZoLa", "PASSPort", "API", "RSS", "Atom", "JSON", "CSV",
     "ICS", "DOB", "HPD", "DCAS", "NYC", "MOCS", "ULURP", "MIH", "FY", "CD", "M/WBE",
 }
-ALLOWED_PHRASES = ["CROL-List", "City Record", "NYC Open Data", "Checkbook NYC", "New York",
+ALLOWED_PHRASES = ["CityScroll", "City Record", "NYC Open Data", "Checkbook NYC", "New York",
                    "MapPLUTO", "GeoSearch", "Staten Island"]
 
 WORD_RE = re.compile(r"[A-Za-z]+")

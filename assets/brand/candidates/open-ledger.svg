@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc" color="#173f55">
+  <title id="title">Open Ledger logo candidate</title>
+  <desc id="desc">Two open record pages form a street-like center line.</desc>
+  <path d="M7 13c9-3 17-1 25 5v36c-8-6-16-8-25-5V13Zm50 0c-9-3-17-1-25 5v36c8-6 16-8 25-5V13Z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/>
+  <path d="M14 24c4-.4 8 .5 12 2.8M14 33c4-.4 8 .5 12 2.8M50 24c-4-.4-8 .5-12 2.8M50 33c-4-.4-8 .5-12 2.8" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+</svg>

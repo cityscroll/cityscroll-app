@@ -7,7 +7,7 @@
 // per-day integer. The disclosure line in every digest footer points at this file's behavior.
 //
 // Not an open redirect: the target is always constructed by us from the validated request id
-// (crol-list.org/#notice/<id>); the path never carries a URL. Bad paths fall through to the
+// (cityscroll.org/#notice/<id>); the path never carries a URL. Bad paths fall through to the
 // homepage uncounted. The optional `w` query value (w12-12: the originating watch's own filter,
 // built by encodeWatchFilter()/lib/filter.mjs) is passed through unread — the redirect only
 // bounds its shape (validWatchParam) before re-embedding it in the target's hash fragment; the
@@ -20,7 +20,7 @@ import { emitUsageEvent } from "./lib/analytics.mjs";
 export function handleRedirect(req, env, ctx, pathname) {
   const parsed = parseRedirect(pathname);
   if (!parsed) {
-    return Response.redirect("https://crol-list.org/", 302);
+    return Response.redirect("https://cityscroll.org/", 302);
   }
   const bump = (async () => {
     const now = new Date();

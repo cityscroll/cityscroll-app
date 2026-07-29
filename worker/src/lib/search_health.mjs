@@ -43,7 +43,7 @@ export function searchHealthStatus({ health, createdAt, today, thresholdDays = Q
 // same shape already stored on the subscription — so the site's existing interpretation echo
 // (a money-lens watch renders as "moneynl," which already echoes "understood as" chips on a
 // zero-match preview) helps the reader see, and broaden, exactly what's being searched.
-export function alertsFixUrl(lens, filter, freq, base = "https://crol-list.org") {
+export function alertsFixUrl(lens, filter, freq, base = "https://cityscroll.org") {
   const params = new URLSearchParams();
   params.set("lens", lens || "");
   params.set("filter", JSON.stringify(filter || {}));

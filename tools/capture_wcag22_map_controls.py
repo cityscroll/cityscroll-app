@@ -99,7 +99,7 @@ def install_routes(page: Page) -> None:
     page.route("https://**", lambda route: route.abort())
     page.route("https://unpkg.com/**", lambda route: route.continue_())
     page.route("https://*.basemaps.cartocdn.com/**", lambda route: route.continue_())
-    page.route("https://api.crol-list.org/**", lambda route: json_response(route, {}))
+    page.route("https://api.cityscroll.org/**", lambda route: json_response(route, {}))
     page.route("https://geosearch.planninglabs.nyc/**", lambda route: json_response(route, {"features": []}))
     page.route(
         "https://services5.arcgis.com/**",

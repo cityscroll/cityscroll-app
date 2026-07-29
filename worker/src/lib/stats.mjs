@@ -1,6 +1,6 @@
 // Pure + KV-thin helpers for the public /stats endpoint and the count-only /r redirect.
 //
-// Design (round three, R·B): CROL-List measures OUTCOMES, not people. Every counter here is a
+// Design (round three, R·B): CityScroll measures OUTCOMES, not people. Every counter here is a
 // plain per-day integer under `stats:<metric>:<YYYY-MM-DD>` in ALERT_STATE — no IPs, no IDs, no
 // per-recipient anything. KV read-modify-write is eventually consistent, so concurrent bumps can
 // under-count slightly; these are trend numbers, not billing. Day keys self-expire.
@@ -25,7 +25,7 @@ export function lastNDays(n, now) {
 
 // Parse a /r/<kind>/<id> path. kind is one of our watch/lens kinds (lowercase slug); id is a City
 // Record request id (digits + letters + dashes). Anything else → null. The redirect TARGET is
-// always built by us (crol-list.org/#notice/<id>) — the path never carries a URL, so /r cannot be
+// always built by us (cityscroll.org/#notice/<id>) — the path never carries a URL, so /r cannot be
 // an open redirect.
 export function parseRedirect(pathname) {
   const m = /^\/r\/([a-z][a-z0-9-]{0,23})\/([A-Za-z0-9][A-Za-z0-9-]{0,39})$/.exec(pathname);
@@ -39,7 +39,7 @@ export function parseRedirect(pathname) {
 // segment. Re-encoded here (not passed through raw) since the caller may have decoded it via
 // URLSearchParams on the way in.
 export function noticeUrl(id, w) {
-  const base = `https://crol-list.org/#notice/${encodeURIComponent(id)}`;
+  const base = `https://cityscroll.org/#notice/${encodeURIComponent(id)}`;
   return w ? `${base}?w=${encodeURIComponent(w)}` : base;
 }
 

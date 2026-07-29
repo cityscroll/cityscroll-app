@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">CityScroll</title>
+  <style>
+    .tile { fill: #173f55; }
+    .mark { color: #fbf8f0; }
+    @media (prefers-color-scheme: dark) {
+      .tile { fill: #f4efe4; }
+      .mark { color: #173f55; }
+    }
+  </style>
+  <rect class="tile" width="64" height="64" rx="11"/>
+  <g class="mark" transform="translate(9 7) scale(.72)">
+    <path d="M14 5h29l8 8v42a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V9a4 4 0 0 1 4-4Z" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linejoin="round"/>
+    <path d="M43 5v10h8M20 23h22M20 31h22M20 49v-9h7v9h5V36h7v13h5v-6h7" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

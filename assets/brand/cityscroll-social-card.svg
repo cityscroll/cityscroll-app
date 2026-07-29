@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">CityScroll social card</title>
+  <desc id="desc">CityScroll, the City Record made legible.</desc>
+  <rect width="1200" height="630" fill="#f4efe4"/>
+  <path d="M76 76H1124M76 554H1124" stroke="#173f55" stroke-width="8"/>
+  <g color="#173f55" transform="translate(116 143) scale(4.8)">
+    <path d="M14 5h29l8 8v42a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V9a4 4 0 0 1 4-4Z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/>
+    <path d="M43 5v10h8M20 23h22M20 31h22M20 49v-9h7v9h5V36h7v13h5v-6h7" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="472" y="319" fill="#173f55" font-family="Georgia, 'Times New Roman', serif" font-size="114" font-weight="700" letter-spacing="-4">CityScroll</text>
+  <text x="478" y="387" fill="#536066" font-family="Arial, Helvetica, sans-serif" font-size="34">The City Record, made legible.</text>
+  <circle cx="479" cy="442" r="7" fill="#8a302b"/>
+  <text x="500" y="453" fill="#344850" font-family="Arial, Helvetica, sans-serif" font-size="25">Contracts · staffing · zoning · rules · meetings</text>
+</svg>

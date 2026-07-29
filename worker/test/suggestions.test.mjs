@@ -273,7 +273,7 @@ test("runSuggestionValidation: enrichment failure (bad sample fetch) never block
 test("handleSuggestions: serves the stored validated set", async () => {
   const stored = { generatedAt: "2026-07-15T13:00:00.000Z", minResults: 3, byLens: { money: [{ idx: 0, count: 42 }] } };
   const env = { ALERT_STATE: { get: async () => JSON.stringify(stored) } };
-  const req = new Request("https://crol-worker.example/suggestions", { headers: { origin: "https://crol-list.org" } });
+  const req = new Request("https://crol-worker.example/suggestions", { headers: { origin: "https://cityscroll.org" } });
   const res = await handleSuggestions(req, env);
   assert.equal(res.status, 200);
   const body = await res.json();

@@ -57,7 +57,7 @@ const ALLEN_STREET = {
 };
 
 const locationStub = {
-  origin: "https://crol-list.org",
+  origin: "https://cityscroll.org",
   pathname: "/",
 };
 
@@ -76,7 +76,7 @@ const {
 
 test("a real ZAP project gets a canonical #land/<project_id> permalink", () => {
   assert.equal(parseLandHashSegment(ALLEN_STREET.project_id), ALLEN_STREET.project_id);
-  assert.equal(landLink(ALLEN_STREET.project_id), "https://crol-list.org/#land/2023M0452");
+  assert.equal(landLink(ALLEN_STREET.project_id), "https://cityscroll.org/#land/2023M0452");
 });
 
 test("#land/<project_id> continues to resolve and lands on the renamed Zoning tab label", () => {

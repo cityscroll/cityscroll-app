@@ -115,7 +115,7 @@ def install_routes(page: Page) -> None:
         json_response(route, VENDOR_PROFILE if path.endswith("/vendor-profile") else {})
 
     page.route("https://data.cityofnewyork.us/**", city_data)
-    page.route("https://api.crol-list.org/**", worker_data)
+    page.route("https://api.cityscroll.org/**", worker_data)
     page.route("https://crol-worker.crol-worker.workers.dev/**", worker_data)
 
 
@@ -178,7 +178,7 @@ def capture(browser: Browser, tree: Path, state: str, width: int, height: int) -
                   const old=document.querySelector('#landing-share-actions [data-qr-share]');
                   const button=old.cloneNode(true);
                   old.replaceWith(button);
-                  QRShare.bind(button, 'https://crol-list.org/', qrLabels);
+                  QRShare.bind(button, 'https://cityscroll.org/', qrLabels);
                 }"""
             )
             page.locator("#landing-share-actions [data-qr-share]").click()

@@ -4,10 +4,10 @@
 // its existing stable, mirror, legacy, and local-development origin set.
 
 const STABLE_ORIGINS = new Set([
-  "https://crol-list.org",
-  "https://www.crol-list.org",
   "https://cityscroll.org",
   "https://www.cityscroll.org",
+  "https://crol-list.org",
+  "https://www.crol-list.org",
   "https://crol-list.jimdc.com",
   "https://jimdc.github.io",
 ]);
@@ -27,7 +27,7 @@ function isLocalDevelopmentOrigin(origin) {
 }
 
 function isReviewOrigin(origin) {
-  if (origin === "https://beta.crol-list.org") return true;
+  if (origin === "https://beta.cityscroll.org") return true;
   try {
     const url = new URL(origin);
     return (
@@ -62,8 +62,8 @@ export function corsHeaders(
 ) {
   const result = {
     "Access-Control-Allow-Origin": isAllowedRequestOrigin(origin, env)
-      ? (origin || "https://crol-list.org")
-      : "https://crol-list.org",
+      ? (origin || "https://cityscroll.org")
+      : "https://cityscroll.org",
     "Access-Control-Allow-Methods": methods,
     "Access-Control-Allow-Headers": headers,
     "Vary": "Origin",

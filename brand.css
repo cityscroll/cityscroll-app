@@ -1,0 +1,135 @@
+:root {
+  /* CityScroll primitives: a civic navy and brick accent on warm record paper. */
+  --cs-navy-950: #102a3a;
+  --cs-navy-800: #173f55;
+  --cs-navy-650: #2f5f73;
+  --cs-brick-700: #8a302b;
+  --cs-gold-700: #755a20;
+  --cs-green-700: #34533f;
+  --cs-paper-50: #fbf8f0;
+  --cs-paper-100: #f4efe4;
+  --cs-paper-200: #e8deca;
+  --cs-paper-300: #c9bda6;
+  --cs-slate-700: #536066;
+
+  /* Semantic color tokens. Existing component aliases keep every page on one theme. */
+  --color-canvas: var(--cs-paper-100);
+  --color-canvas-subtle: var(--cs-paper-200);
+  --color-surface: var(--cs-paper-50);
+  --color-text: var(--cs-navy-950);
+  --color-text-soft: #344850;
+  --color-text-muted: var(--cs-slate-700);
+  --color-border: var(--cs-paper-300);
+  --color-border-strong: #887d68;
+  --color-brand: var(--cs-navy-800);
+  --color-action: var(--cs-brick-700);
+  --color-caution: var(--cs-gold-700);
+  --color-success: var(--cs-green-700);
+
+  --paper: var(--color-canvas);
+  --paper-2: var(--color-canvas-subtle);
+  --card: var(--color-surface);
+  --ink: var(--color-text);
+  --ink-soft: var(--color-text-soft);
+  --muted: var(--color-text-muted);
+  --rule: var(--color-border);
+  --rule-strong: var(--color-border-strong);
+  --blue: var(--color-brand);
+  --oxblood: var(--color-action);
+  --rose: var(--color-action);
+  --amber: var(--color-caution);
+  --green: var(--color-success);
+
+  /* Type, spacing, and shape tokens used by the identity and available site-wide. */
+  --font-brand: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-reading: "Spectral", Georgia, "Times New Roman", serif;
+  --font-label: "Spectral SC", "Spectral", Georgia, serif;
+  --font-interface: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-nameplate: var(--font-brand);
+  --font-display: var(--font-brand);
+  --font-body: var(--font-reading);
+  --font-sc: var(--font-label);
+  --ui: var(--font-interface);
+  --space-1: .25rem;
+  --space-2: .5rem;
+  --space-3: .75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --radius-sm: .35rem;
+  --radius-md: .55rem;
+}
+
+body {
+  accent-color: var(--color-action);
+}
+
+.brand-lockup {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  color: var(--color-brand);
+}
+
+.brand-lockup--masthead {
+  gap: clamp(var(--space-3), 2vw, var(--space-5));
+}
+
+.brand-mark,
+.cr-seal {
+  display: block;
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  color: currentColor;
+}
+
+.brand-lockup--masthead .brand-mark {
+  width: clamp(48px, 7vw, 68px);
+  height: clamp(48px, 7vw, 68px);
+}
+
+.brand-lockup .cr-title {
+  color: currentColor;
+  font-family: var(--font-brand);
+  font-weight: 900;
+  letter-spacing: -.025em;
+  text-transform: none;
+}
+
+.brand-lockup--masthead .cr-title {
+  margin: 0;
+  font-size: clamp(2.7rem, 7.5vw, 4.8rem);
+  line-height: .9;
+}
+
+.home.brand-lockup {
+  gap: var(--space-2);
+}
+
+.home.brand-lockup .brand-mark {
+  width: 34px;
+  height: 34px;
+}
+
+.home.brand-lockup:hover {
+  color: var(--color-action);
+}
+
+.cr-rule--top,
+header > .cr-rule:first-child {
+  border-color: var(--color-brand);
+}
+
+@media (max-width: 420px) {
+  .brand-lockup--masthead {
+    gap: var(--space-2);
+  }
+
+  .brand-lockup--masthead .brand-mark {
+    width: 44px;
+    height: 44px;
+  }
+}

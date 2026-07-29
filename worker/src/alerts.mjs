@@ -44,7 +44,7 @@ const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const REQ_URL = (id) => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
 
 export async function runAlerts(env, watches = cfg.watches || []) {
-  const FROM = env.ALERTS_FROM || "CROL-List <alerts@crol-list.org>";
+  const FROM = env.ALERTS_FROM || "CityScroll <alerts@crol-list.org>";
   const LIVE = env.ALERTS_LIVE === "true";
   const maxPerRun = Number(env.MAX_PER_RUN) || 25;            // most emails one cron firing may send
   const maxPerDay = Number(env.MAX_SENDS_PER_DAY) || 50;      // daily ceiling, kept below Resend's free 100/day
@@ -77,7 +77,7 @@ export async function runAlerts(env, watches = cfg.watches || []) {
       });
 
       if (send) {
-        await sendEmail(env, FROM, w.email, `CROL-List: ${fresh.length} new for "${w.label}"`, digestHtml(w, fresh), listUnsubscribe(FROM, w.id));
+        await sendEmail(env, FROM, w.email, `CityScroll: ${fresh.length} new for "${w.label}"`, digestHtml(w, fresh), listUnsubscribe(FROM, w.id));
         sentThisRun++; sentToday++;
         await setSendCount(env, day, sentToday);
         await bumpStatAllTime(env.ALERT_STATE, "digest");
@@ -218,7 +218,7 @@ export async function processOneSub(env, s, ctx) {
         const freshLabel = fresh.length > 0 ? `${fresh.length} new` : "";
         const forecastLabel = forecasts.length > 0 ? `${forecasts.length} forecast(s)` : "";
         const parts = [freshLabel, forecastLabel].filter(Boolean).join(" & ");
-        subject = `CROL-List: ${parts} — ${label}`;
+        subject = `CityScroll: ${parts} — ${label}`;
         const keywords = Array.isArray(s.filter && s.filter.keywords) ? s.filter.keywords : [];
         // w12-12: carry this watch's own {lens, filter} into every notice link so the site can
         // re-render the same Matched-evidence + interpretation-echo the subscriber would see
@@ -227,11 +227,11 @@ export async function processOneSub(env, s, ctx) {
         // encodeWatchFilter()) or a lens deep-links don't cover (rezone links straight to ZAP
         // below, never through here).
         const w = encodeWatchFilter(s.lens, s.filter);
-        html = subDigestHtml(label, q.kind, fresh, unsubUrl, since, env.CONFIRM_BASE || "https://api.crol-list.org", forecasts, lang, keywords, w, healthNote);
+        html = subDigestHtml(label, q.kind, fresh, unsubUrl, since, env.CONFIRM_BASE || "https://api.cityscroll.org", forecasts, lang, keywords, w, healthNote);
       } else {
         subject = decision.action === "weekly-empty"
-          ? `CROL-List: nothing new this week — ${label}`
-          : `CROL-List: still watching — ${label}`;
+          ? `CityScroll: nothing new this week — ${label}`
+          : `CityScroll: still watching — ${label}`;
         html = quietHtml(label, decision.action, since, unsubUrl, lang, healthNote);
       }
       await sendEmail(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true);
@@ -310,7 +310,7 @@ export async function processAwardSub(env, s, ctx) {
 function awardWatchDigestHtml(candidates, filter, unsubUrl, lang = "en") {
   const usd = (n) => (n == null || n === "" || !n ? "" : "$" + Number(n).toLocaleString("en-US"));
   const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
-  const noticeUrl = `https://crol-list.org/#notice/${encodeURIComponent(filter.requestId)}`;
+  const noticeUrl = `https://cityscroll.org/#notice/${encodeURIComponent(filter.requestId)}`;
   const items = candidates.map((c) => {
     const vendor = c.vendor ? esc(c.vendor) : esc(emailT(lang, "award_watch_vendor_unlisted"));
     const meta = [vendor, usd(c.amount), c.date ? esc(String(c.date).slice(0, 10)) : ""].filter(Boolean).join(" · ");
@@ -323,7 +323,7 @@ function awardWatchDigestHtml(candidates, filter, unsubUrl, lang = "en") {
       <span style="font-size:12px">${esc(emailT(lang, "award_watch_fuzzy_note"))}</span></li>`;
   }).join("");
   return `<div style="font-family:Georgia,serif;max-width:620px">
-    <h2 style="font-family:system-ui">CROL-List — ${esc(emailT(lang, "award_watch_heading"))}</h2>
+    <h2 style="font-family:system-ui">CityScroll — ${esc(emailT(lang, "award_watch_heading"))}</h2>
     <ul style="list-style:none;padding:0">${items}</ul>
     <p style="font-size:13px"><a href="${noticeUrl}">${esc(emailT(lang, "award_watch_view_notice"))}</a></p>
     <p style="color:#999;font-size:12px;margin-top:20px">${esc(emailT(lang, "digest_subscribed"))} <a href="${esc(unsubUrl)}">${esc(emailT(lang, "digest_unsubscribe"))}</a> (one-click).</p>
@@ -338,7 +338,7 @@ export async function consumeDigestJob(env, key) {
   const day = new Date().toISOString().slice(0, 10);
   let daily = await getSendCount(env, day);
   const ctx = {
-    FROM: env.ALERTS_FROM || "CROL-List <alerts@crol-list.org>",
+    FROM: env.ALERTS_FROM || "CityScroll <alerts@crol-list.org>",
     LIVE: env.ALERTS_LIVE === "true",
     heartbeatDays: Number(env.HEARTBEAT_DAYS) || 14,
     today: day,
@@ -454,10 +454,10 @@ function digestHtml(w, rows) {
     })
     .join("");
   return `<div style="font-family:Georgia,serif;max-width:620px">
-    <h2 style="font-family:system-ui">CROL-List — ${esc(w.label)}</h2>
+    <h2 style="font-family:system-ui">CityScroll — ${esc(w.label)}</h2>
     <p style="color:#555">${rows.length} new ${rows.length === 1 ? "notice" : "notices"} in The City Record.</p>
     <ul style="list-style:none;padding:0">${items}</ul>
-    <p style="color:#999;font-size:12px">You subscribed to this slice on crol-list.org. <a href="mailto:alerts@crol-list.org?subject=unsubscribe">Unsubscribe</a>.</p>
+    <p style="color:#999;font-size:12px">You subscribed to this slice on cityscroll.org. <a href="mailto:alerts@crol-list.org?subject=unsubscribe">Unsubscribe</a>.</p>
   </div>`;
 }
 
@@ -571,7 +571,7 @@ async function isMirrorFresh(db, todayISO) {
 // A one-click unsubscribe URL: a long-lived signed token carrying the sub's KV key.
 async function unsubLink(env, subKey) {
   if (!env.TOKEN_SECRET) return "mailto:alerts@crol-list.org?subject=unsubscribe";
-  const base = env.CONFIRM_BASE || "https://api.crol-list.org"; // branded custom domain (workers.dev stays an alias)
+  const base = env.CONFIRM_BASE || "https://api.cityscroll.org"; // branded custom domain (workers.dev stays an alias)
   const token = await signToken(env.TOKEN_SECRET, { k: subKey }, { ttlSeconds: 60 * 24 * 3600 });
   return `${base}/unsubscribe?token=${encodeURIComponent(token)}`;
 }
@@ -584,8 +584,8 @@ function maskKey(n) {
 // keywords: the sub's filter.keywords (money/property/rules/meetings lenses only -- entity
 // subs match by name, not keyword, so they pass none and get no evidence line, correctly).
 // w: this watch's encodeWatchFilter() output (w12-12) — null for a rezone digest, which links
-// straight to ZAP below and never touches CROL-List's own notice view.
-function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.crol-list.org", forecasts = [], lang = "en", keywords = [], w = null, healthNote = "") {
+// straight to ZAP below and never touches CityScroll's own notice view.
+function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.cityscroll.org", forecasts = [], lang = "en", keywords = [], w = null, healthNote = "") {
   const usd = (n) => (n == null || n === "" ? "" : "$" + Number(n).toLocaleString("en-US"));
   const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
   const cr = (id) => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
@@ -612,7 +612,7 @@ function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.c
     // permalink's own hash fragment — see src/redirect.mjs. `w` is already encodeWatchFilter()'s
     // own percent-encoded output, so it's placed directly, not re-encoded (that would double-encode).
     const noticeLink = `${base}/r/${encodeURIComponent(kind)}/${encodeURIComponent(r.request_id)}${w ? `?w=${w}` : ""}`;
-    acts.push(`<a href="${noticeLink}">↗ View on CROL-List</a>`);
+    acts.push(`<a href="${noticeLink}">↗ View on CityScroll</a>`);
     acts.push(`<a href="${cr(r.request_id)}">City Record</a>`);
     const meta = [r.agency_name, usd(r.contract_amount),
       dueLabel(r.due_date),
@@ -652,7 +652,7 @@ function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.c
     : emailT(lang, "digest_no_date", { n: rows.length, item: itemWord });
 
   return `<div style="font-family:Georgia,serif;max-width:620px">
-    <h2 style="font-family:system-ui">CROL-List — ${esc(label)}</h2>
+    <h2 style="font-family:system-ui">CityScroll — ${esc(label)}</h2>
     <p style="color:#555">${esc(countLine)}</p>
     ${listHtml}
     ${forecastsHtml}
@@ -671,7 +671,7 @@ function quietHtml(label, action, since, unsubUrl, lang = "en", healthNote = "")
   // Replace the label placeholder with bold markup (emailT escapes nothing; we escape the label)
   const lead = leadTpl.replace(esc(label), `<b>${esc(label)}</b>`);
   return `<div style="font-family:Georgia,serif;max-width:620px">
-    <h2 style="font-family:system-ui">CROL-List</h2>
+    <h2 style="font-family:system-ui">CityScroll</h2>
     <p style="color:#333">${lead}</p>
     <p style="color:#666;font-size:13px">${esc(emailT(lang, "quiet_working"))}</p>
     ${healthNote}

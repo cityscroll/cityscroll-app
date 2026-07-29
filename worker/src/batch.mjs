@@ -17,8 +17,8 @@ const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const MAX_BATCH_PER_IP_DAY = 30;
 
 const ALLOW = new Set([
-  "https://crol-list.org", "https://www.crol-list.org",
   "https://cityscroll.org", "https://www.cityscroll.org",
+  "https://crol-list.org", "https://www.crol-list.org",
   "https://crol-list.jimdc.com", "https://jimdc.github.io",
   "http://localhost:8000", "http://localhost:8787",
 ]);
@@ -66,7 +66,7 @@ export async function handleBatch(req, env) {
     } catch { /* leave 0 */ }
     results[name] = {
       awards, mentions,
-      entity: awards > 0 ? `https://crol-list.org/#vendor/${encodeURIComponent(name)}` : null,
+      entity: awards > 0 ? `https://cityscroll.org/#vendor/${encodeURIComponent(name)}` : null,
     };
   }));
 
@@ -80,7 +80,7 @@ async function soda(params) {
 }
 
 function corsHeaders(origin) {
-  const o = ALLOW.has(origin) ? origin : "https://crol-list.org";
+  const o = ALLOW.has(origin) ? origin : "https://cityscroll.org";
   return {
     "Access-Control-Allow-Origin": o,
     "Access-Control-Allow-Methods": "POST, OPTIONS",

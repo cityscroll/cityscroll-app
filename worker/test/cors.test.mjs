@@ -11,7 +11,7 @@ import { handleSubscribe } from "../src/subscribe.mjs";
 
 const betaEnv = { DEPLOYMENT_CHANNEL: "beta", ANALYTICS_ENVIRONMENT: "preview" };
 const betaOrigins = [
-  "https://beta.crol-list.org",
+  "https://beta.cityscroll.org",
   "https://crol-list-beta.pages.dev",
   "https://pr-42.crol-list-beta.pages.dev",
   "https://a1b2c3d4.crol-list-beta.pages.dev",
@@ -20,8 +20,8 @@ const localDevelopmentOrigin = ["http", ["localhost", "8000"].join(":")].join(":
 
 test("production origins remain allowed in every environment", () => {
   for (const origin of [
-    "https://crol-list.org",
-    "https://www.crol-list.org",
+    "https://cityscroll.org",
+    "https://www.cityscroll.org",
     "https://cityscroll.org",
     "https://www.cityscroll.org",
     localDevelopmentOrigin,
@@ -44,7 +44,7 @@ test("review origins are beta-only and external origins stay rejected", () => {
 
 test("analytics from beta is accepted but dropped, while production rejects beta origins", async () => {
   const request = (origin) =>
-    new Request("https://api-beta.crol-list.org/events", {
+    new Request("https://api-beta.cityscroll.org/events", {
       method: "POST",
       headers: { Origin: origin, "Content-Type": "text/plain" },
       body: JSON.stringify({ event: "page_view", surface: "home" }),
@@ -62,7 +62,7 @@ test("analytics from beta is accepted but dropped, while production rejects beta
 
 test("beta subscription and feedback routes fail closed before side effects", async () => {
   const subscribe = await handleSubscribe(
-    new Request("https://api-beta.crol-list.org/subscribe", {
+    new Request("https://api-beta.cityscroll.org/subscribe", {
       method: "POST",
       headers: { Origin: betaOrigins[1], "Content-Type": "application/json" },
       body: "{}",
@@ -73,7 +73,7 @@ test("beta subscription and feedback routes fail closed before side effects", as
   assert.equal((await subscribe.json()).reason, "not-configured");
 
   const feedback = await handleFeedback(
-    new Request("https://api-beta.crol-list.org/feedback", {
+    new Request("https://api-beta.cityscroll.org/feedback", {
       method: "POST",
       headers: { Origin: betaOrigins[1], "Content-Type": "application/json" },
       body: "{}",

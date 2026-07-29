@@ -1,17 +1,16 @@
 # crol-worker
 
-The thin serverless backend for **[CROL-List](https://crol-list.org)** — a single
-**Cloudflare Worker** at `https://api.crol-list.org` (custom domain; `crol-worker.crol-worker.workers.dev` remains an alias). CROL-List itself is
+The thin serverless backend for **[CityScroll](https://cityscroll.org)** — a single
+**Cloudflare Worker** at `https://api.cityscroll.org` (custom domain; `crol-worker.crol-worker.workers.dev` remains an alias). CityScroll itself is
 100% static (one `index.html` on GitHub Pages, no keys); everything that needs a held secret,
 a CORS shim, a schedule, or server-side rendering lives here. The site works fully without
 the worker — every feature degrades gracefully when it's absent.
 
-The same worker also answers `cityscroll.org` / `www.cityscroll.org` — a parallel serving
-domain on the same Cloudflare account. `crol-list.org` is canonical (every page's
-`<link rel="canonical">` says so); the worker just reverse-proxies the two cityscroll.org
-hosts straight from `crol-list.org` byte-for-byte (`src/mirror.mjs`), since GitHub Pages
-itself only virtual-hosts the one domain configured in its own settings. CORS allowlists
-across the API routes include both cityscroll.org origins alongside crol-list.org's.
+The same worker answers the canonical `cityscroll.org` / `www.cityscroll.org` site
+hosts by reverse-proxying the GitHub Pages origin at `crol-list.org` byte-for-byte
+(`src/mirror.mjs`). The old hostname's direct-visitor redirect excludes Worker
+subrequests, preventing a mirror loop. CORS allowlists use CityScroll by default
+while retaining the old origins for compatibility.
 
 > Maintenance rule: this README is updated with every significant feature change — if a
 > route, cron behavior, or defense changes, its description lands here in the same session.
@@ -21,7 +20,7 @@ across the API routes include both cityscroll.org origins alongside crol-list.or
 ## How it all plugs together
 
 ```
-   Browser (crol-list.org, static on GitHub Pages)
+   Browser (cityscroll.org, mirrored from static GitHub Pages)
         │
         │  most queries go straight to NYC Open Data (CORS-open, no key)
         ├───────────────────────────►  Socrata SODA / GeoSearch / MapPLUTO
@@ -31,8 +30,8 @@ across the API routes include both cityscroll.org origins alongside crol-list.or
    crol-worker (Cloudflare Worker + KV + Cron Triggers)
 ```
 
-The frontend defaults to `https://api.crol-list.org` through `window.CROL_API_ORIGIN`.
-Review builds set that value to `https://api-beta.crol-list.org` before page scripts
+The frontend defaults to `https://api.cityscroll.org` through `window.CROL_API_ORIGIN`.
+Review builds set that value to `https://api-beta.cityscroll.org` before page scripts
 run. An unavailable Worker leaves the site in its client-side degraded mode.
 
 The beta Worker is a separate, manually deployed Wrangler environment. It
@@ -47,7 +46,7 @@ continues to reject those origins. See `../docs/beta-channel.md`.
 |---|---|---|---|
 | `/nl` | POST | Claude Haiku decodes English → lens filters | `ANTHROPIC_API_KEY`; degrades to `{degraded:true}` |
 | `/checkbook` | POST | CORS proxy to checkbooknyc.com/api | none |
-| `/feed.xml` `/feed.json` `/feed.ics` | GET | **Any saved search as a standing feed** — Atom / JSON Feed 1.1 / subscribable calendar. Params: `lens=money\|land\|property\|rules\|meetings`, `q=`, `agency=`, `min=`. Same `compileSub()` queries the cron replays; entry links land on `crol-list.org/#notice/<id>` permalinks; edge-cached 15 min; no paid key on the path | none |
+| `/feed.xml` `/feed.json` `/feed.ics` | GET | **Any saved search as a standing feed** — Atom / JSON Feed 1.1 / subscribable calendar. Params: `lens=money\|land\|property\|rules\|meetings`, `q=`, `agency=`, `min=`. Same `compileSub()` queries the cron replays; entry links land on `cityscroll.org/#notice/<id>` permalinks; edge-cached 15 min; no paid key on the path. Calendar UIDs retain the `@crol-list` namespace so existing subscribers do not receive duplicate events | none |
 | `/subscribe` | POST | Double-opt-in signup (Turnstile + per-IP/per-address rate limits); emails a signed [`optin-token`](https://github.com/jimdc/optin-token) confirm link, stores nothing until clicked | fails closed 503 until `TURNSTILE_SECRET` + `TOKEN_SECRET` + `RESEND_API_KEY` + `SUBS` |
 | `/confirm` | GET | Verifies the `optin-token`, writes the ACTIVE sub to KV | `TOKEN_SECRET` + `SUBS` |
 | `/unsubscribe` | GET/POST | Removes a sub; POST = RFC 8058 one-click (`optin-token`) | `TOKEN_SECRET` + `SUBS` |
@@ -59,8 +58,8 @@ continues to reject those origins. See `../docs/beta-channel.md`.
 | `/priorcycle/<request_id>` | GET | **Precomputed prior-cycle + near-match sets** for an Award notice (Phase 1a — the server side of moving index.html's two live SODA panels off the client; Phase 1b swaps the client to this). Ranked by `src/lib/prior_cycle.mjs`, a hand-synced dual implementation of index.html's matchers (cross-check test fails on divergence); cached in D1 `prior_cycle_matches`, compute-on-miss, cron pre-warms fresh Award notices; validated id, edge-cached 5 min | none |
 | `/stats` | GET | **Public outcome counters** (R·B): active subscriptions (count only), digests sent (today/7d/all-time/by-topic), digest-link clicks, feed/batch/share activity, NL calls (today/7d/all-time/by-lens for both windows), and a day-by-day `history` block for digests + NL calls + active-watch snapshots — aggregate integers, no personal data; edge-cached 15 min. All-time totals fold in pre-counter history recovered from an older short-lived counter where available (see `mergeRecoveredAllTime` in `lib/stats.mjs`), and every all-time/breakdown figure has an honest `live_from` boundary in `history` rather than claiming "since launch." | none |
 | `/events` | POST | Bounded first-party event intake. Accepts only the enumerations in `../docs/analytics-event-taxonomy.md`, caps payloads at 1 KiB, and writes one aggregate Analytics Engine point with no visitor identifier. | allowed site origin + production runtime binding + `USAGE_ANALYTICS` |
-| `/r/<kind>/<request_id>` | GET | **Count-only digest click-through** (R·B tier 3, team-approved 2026-07-02): bumps a per-day counter (`stats:click`, `stats:click.<kind>`) and 302s to `crol-list.org/#notice/<id>`. Validated slug+id only — the path never carries a URL, so it cannot be an open redirect. No per-recipient tracking; digests disclose this in the footer | none |
-| `/api` | GET | 302 → crol-list.org/api.html (the API docs) | none |
+| `/r/<kind>/<request_id>` | GET | **Count-only digest click-through** (R·B tier 3, team-approved 2026-07-02): bumps a per-day counter (`stats:click`, `stats:click.<kind>`) and 302s to `cityscroll.org/#notice/<id>`. Validated slug+id only — the path never carries a URL, so it cannot be an open redirect. No per-recipient tracking; digests disclose this in the footer | none |
+| `/api` | GET | 302 → cityscroll.org/api.html (the API docs) | none |
 | `/admin/subs` `/admin/feedback` | GET | Operator reads (redacted) | `ADMIN_KEY` → 404 if unset |
 | `/admin/suggest-refresh` | POST | Runs the suggestion-chip validation (`/suggestions`' cron pipeline) on demand instead of waiting for the 13:00 UTC cron; returns the same summary JSON, fail-soft identical to the cron path | `ADMIN_KEY` → 404 if unset |
 | `/usage` | GET | Read-only Haiku spend report | `USAGE_KEY` → 404 if unset |
@@ -87,8 +86,9 @@ deliberately — weekly empty check-ins and a "still watching" heartbeat after
 the site's `#notice/<id>` permalinks.
 
 **Email identity:** From is always the app's own (`ALERTS_FROM` =
-`CROL-List <alerts@crol-list.org>`, domain verified in Resend, DMARC passing); To is only
-ever the subscriber's own opted-in address. Never sends as a person.
+`CityScroll <alerts@crol-list.org>`, domain verified in Resend, DMARC passing); To is only
+ever the subscriber's own opted-in address. Never sends as a person. The sending
+domain is deliberately outside the web canonical-domain cutover.
 
 ## Board notifications
 
@@ -171,7 +171,7 @@ npm install               # pulls wrangler + optin-token, sendcap, board-notify
 npm test                  # node --test — 323 unit tests, no network
 npm run dev               # wrangler dev → http://localhost:8787; analytics drops by default
 npx wrangler deploy       # deploy (free); cron + KV bindings come from wrangler.toml
-CROL_WORKER_URL=https://api.crol-list.org npm run test:live   # live e2e over every public route
+CROL_WORKER_URL=https://api.cityscroll.org npm run test:live   # live e2e over every public route
 #   (defaults to the workers.dev alias — doubling as a regression check that the alias stays up)
 ```
 

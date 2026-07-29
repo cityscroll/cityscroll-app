@@ -72,7 +72,7 @@ test("Property refresh writes the materialized view and its route serves it", as
   assert.equal(result.status, "success");
   assert.ok(kv.values.has(PROPERTY_KV_KEY));
   const response = await handleProperties(
-    new Request("https://api.crol-list.org/property-locations"),
+    new Request("https://api.cityscroll.org/property-locations"),
     { ALERT_STATE: kv },
   );
   assert.equal(response.status, 200);

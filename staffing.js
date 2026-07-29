@@ -49,7 +49,7 @@
   }
 
   function examUrl(examNumber, base) {
-    return `${base || "https://crol-list.org/"}#exam/${encodeURIComponent(examNumber)}`;
+    return `${base || "https://cityscroll.org/"}#exam/${encodeURIComponent(examNumber)}`;
   }
 
   function featuredExams(exams, today, limit) {

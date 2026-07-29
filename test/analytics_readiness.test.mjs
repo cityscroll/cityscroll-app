@@ -54,11 +54,11 @@ function developerToken(secret, nowMs) {
 
 async function emit(points, event, options = {}) {
   const headers = {
-    Origin: "https://crol-list.org",
+    Origin: "https://cityscroll.org",
     "Content-Type": "text/plain;charset=UTF-8",
   };
   if (options.developerToken) headers["X-CROL-Analytics-Dev"] = options.developerToken;
-  const response = await handleEvent(new Request("https://api.crol-list.org/events", {
+  const response = await handleEvent(new Request("https://api.cityscroll.org/events", {
     method: "POST",
     headers,
     body: JSON.stringify(event),
@@ -163,7 +163,7 @@ test("fixture event flows emit -> sampling-aware aggregate -> public stats endpo
     SUBS: fakeKV(),
   };
   const response = await handleStats(
-    new Request("https://api.crol-list.org/stats"),
+    new Request("https://api.cityscroll.org/stats"),
     env,
     { waitUntil() {} },
     {

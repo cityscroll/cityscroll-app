@@ -1,4 +1,4 @@
-# Deploys the Cloudflare Worker (api.crol-list.org) whenever worker/ changes land on main,
+# Deploys the Cloudflare Worker (api.cityscroll.org) whenever worker/ changes land on main,
 # so the API ships in lockstep with the static site instead of waiting on a manual `wrangler
 # deploy`. Code-only deploy: no secret puts, no [vars] overrides — see worker/README.md's
 # "Automatic deploys" section for the vars-vs-secrets gotcha this intentionally avoids.

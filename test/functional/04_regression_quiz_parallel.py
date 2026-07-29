@@ -3,7 +3,7 @@ import sys
 from playwright.sync_api import sync_playwright
 import os
 BASE = os.environ.get("CROL_BASE", "http://localhost:8000/")
-_ARGS = ["--host-resolver-rules=MAP api.crol-list.org " + os.environ["CROL_DNS_IP"]] if os.environ.get("CROL_DNS_IP") else []
+_ARGS = ["--host-resolver-rules=MAP api.cityscroll.org " + os.environ["CROL_DNS_IP"]] if os.environ.get("CROL_DNS_IP") else []
 SHOT = os.environ.get("CROL_SHOTS", os.path.dirname(os.path.abspath(__file__)) + "/shots") + "/"
 os.makedirs(SHOT, exist_ok=True)
 

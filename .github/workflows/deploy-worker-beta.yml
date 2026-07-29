@@ -25,7 +25,7 @@ jobs:
     name: Deploy isolated beta Worker
     environment:
       name: beta-worker
-      url: https://api-beta.crol-list.org/health
+      url: https://api-beta.cityscroll.org/health
     runs-on: ubuntu-latest
     steps:
       - name: Validate exact commit request
@@ -72,5 +72,5 @@ jobs:
       - name: Verify beta Worker
         shell: bash
         run: |
-          body="$(curl --fail --silent --show-error https://api-beta.crol-list.org/health)"
+          body="$(curl --fail --silent --show-error https://api-beta.cityscroll.org/health)"
           printf '%s' "$body" | grep -q '"ok":true'

@@ -208,7 +208,7 @@ def install_common_routes(page: Page) -> None:
     registered AFTER calling this, not before."""
     page.route("https://**", lambda route: route.abort())
     page.route("https://data.cityofnewyork.us/**", lambda route: json_response(route, []))
-    page.route("https://api.crol-list.org/**", lambda route: json_response(route, {}))
+    page.route("https://api.cityscroll.org/**", lambda route: json_response(route, {}))
     page.route("https://crol-worker.crol-worker.workers.dev/**", lambda route: json_response(route, {}))
     page.route("https://challenges.cloudflare.com/**", lambda route: route.abort())
     page.route("https://fonts.googleapis.com/**", lambda route: route.abort())
@@ -254,7 +254,7 @@ def install_notice_routes(page: Page, notice: dict) -> None:
 
     page.route("https://data.cityofnewyork.us/**", lambda route: json_response(route, []))
     page.route("https://data.cityofnewyork.us/resource/dg92-zbpx.json*", soda)
-    page.route("https://api.crol-list.org/**", api)
+    page.route("https://api.cityscroll.org/**", api)
     page.route("https://crol-worker.crol-worker.workers.dev/**", api)
 
 
@@ -264,7 +264,7 @@ def install_stats_routes(page: Page, payload: dict) -> None:
     def stats(route: Route) -> None:
         json_response(route, payload)
 
-    page.route("https://api.crol-list.org/stats", stats)
+    page.route("https://api.cityscroll.org/stats", stats)
     page.route("https://crol-worker.crol-worker.workers.dev/stats", stats)
 
 
@@ -287,7 +287,7 @@ def install_quiz_routes(page: Page, award_row: dict, nl_filter: dict) -> None:
 
     page.route("https://data.cityofnewyork.us/**", lambda route: json_response(route, []))
     page.route("https://data.cityofnewyork.us/resource/dg92-zbpx.json*", soda)
-    page.route("https://api.crol-list.org/**", api)
+    page.route("https://api.cityscroll.org/**", api)
     page.route("https://crol-worker.crol-worker.workers.dev/**", api)
 
 

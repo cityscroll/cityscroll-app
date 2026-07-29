@@ -3,9 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Standards · CROL-List</title>
-<meta name="description" content="How CROL-List's language switcher and accessibility posture compare to published NYC and NY State standards — tracked live, over time.">
-<link rel="canonical" href="https://crol-list.org/standards.html">
+<title>Standards · CityScroll</title>
+<meta name="description" content="How CityScroll's language switcher and accessibility posture compare to published NYC and NY State standards — tracked live, over time.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://cityscroll.org/standards.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CityScroll">
+<meta property="og:title" content="Standards · CityScroll">
+<meta property="og:description" content="Track CityScroll's language-access and accessibility posture against published public standards.">
+<meta property="og:url" content="https://cityscroll.org/standards.html">
+<meta property="og:image" content="https://cityscroll.org/assets/brand/cityscroll-social-card.png">
+<meta property="og:image:alt" content="CityScroll — the City Record, made legible">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#173f55">
+<link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/brand/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png" sizes="180x180">
+<link rel="manifest" href="site.webmanifest">
 <script src="i18n.js?v=__I18N_ASSET_VERSION__"></script>
 <script defer src="beta_flags.js?v=1.0.0"></script>
 <script defer src="analytics.js?v=1.2.0"></script>
@@ -73,21 +87,19 @@
   .timeline-entry{border-inline-start:3px solid var(--rule-strong);padding:4px 0 4px 14px;margin:14px 0;font:15px/1.5 var(--font-body)}
   .timeline-date{font:700 13px/1.3 var(--ui);text-transform:uppercase;letter-spacing:.04em;color:var(--oxblood)}
 </style>
+<link rel="stylesheet" href="brand.css">
 </head>
 <body>
 <a class="skip" href="#main" data-i18n="skip_to_content">Skip to content</a>
 <div class="wrap">
 <header>
   <div class="cr-rule"></div>
-  <a class="home" href="index.html" aria-label="Back to CROL-List home" data-i18n-aria="back_home_aria">
-    <svg class="cr-seal" viewBox="0 0 100 100" aria-hidden="true">
-      <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="1.5"/>
-      <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="0.6"/>
-      <path d="M50 18 L74 30 V58 Q74 76 50 86 Q26 76 26 58 V30 Z" fill="none" stroke="currentColor" stroke-width="1.3"/>
-      <line x1="26" y1="48" x2="74" y2="48" stroke="currentColor" stroke-width="0.6"/>
-      <path d="M50 30 L50 46 M42 38 L58 38" stroke="currentColor" stroke-width="1.1"/>
+  <a class="home brand-lockup brand-lockup--compact" href="index.html" aria-label="Back to CityScroll home" data-i18n-aria="back_home_aria">
+    <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true">
+      <path d="M14 5h29l8 8v42a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V9a4 4 0 0 1 4-4Z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/>
+      <path d="M43 5v10h8M20 23h22M20 31h22M20 49v-9h7v9h5V36h7v13h5v-6h7" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
-    <span class="cr-title">CROL-List</span>
+    <span class="cr-title">CityScroll</span>
   </a>
   <div class="kicker" data-i18n="site_kicker">The City Record, searchable</div>
   <h1 data-i18n="std_h1">Standards We Track</h1>
@@ -106,20 +118,20 @@
   </div>
   <div id="langNotice" class="lang-notice" hidden></div>
   <div class="cr-rule cr-rule--bottom"></div>
-  <a class="backhome" href="index.html" data-i18n="back_to_crol">← Back to CROL-List</a>
+  <a class="backhome" href="index.html" data-i18n="back_to_crol">← Back to CityScroll</a>
 </header>
 
 <main id="main" tabindex="-1">
-<p class="lede" data-i18n-html="std_p_lede_html">This page checks CROL-List against standards New York City and New York State have published. One part covers languages. The other covers accessibility. What we actually do is stated as a plain observation, never as a certification.</p>
+<p class="lede" data-i18n-html="std_p_lede_html">This page checks CityScroll against standards New York City and New York State have published. One part covers languages. The other covers accessibility. What we actually do is stated as a plain observation, never as a certification.</p>
 
 <h2 data-i18n="std_h_languages">Language access, side by side</h2>
-<p data-i18n-html="std_p_languages_html">New York City's <a href="https://citymeetings.nyc/meetings/new-york-city-council/2024-09-24-0100-pm-committee-on-immigration/chapter/explanation-of-local-law-30-of-2017-and-its-requirements/" target="_blank" rel="noopener noreferrer">Local Law 30 of 2017<span class="sr-only"> (opens in new tab)</span></a> names ten citywide languages, beyond English, that city agencies must support. The table below checks that list against CROL-List's own language switcher, live: if a language is ever added to or removed from the switcher, this table changes with it.</p>
+<p data-i18n-html="std_p_languages_html">New York City's <a href="https://citymeetings.nyc/meetings/new-york-city-council/2024-09-24-0100-pm-committee-on-immigration/chapter/explanation-of-local-law-30-of-2017-and-its-requirements/" target="_blank" rel="noopener noreferrer">Local Law 30 of 2017<span class="sr-only"> (opens in new tab)</span></a> names ten citywide languages, beyond English, that city agencies must support. The table below checks that list against CityScroll's own language switcher, live: if a language is ever added to or removed from the switcher, this table changes with it.</p>
 <table>
-  <caption class="sr-only" data-i18n="std_table_caption">Local Law 30's ten languages compared to CROL-List's language switcher</caption>
+  <caption class="sr-only" data-i18n="std_table_caption">Local Law 30's ten languages compared to CityScroll's language switcher</caption>
   <thead>
     <tr>
       <th scope="col" data-i18n="std_col_language">Language (Local Law 30)</th>
-      <th scope="col" data-i18n="std_col_switcher">In CROL-List's switcher</th>
+      <th scope="col" data-i18n="std_col_switcher">In CityScroll's switcher</th>
       <th scope="col" data-i18n="std_col_review">Translation review status</th>
     </tr>
   </thead>
@@ -140,11 +152,11 @@
 </div>
 
 <section id="selfConformance" aria-labelledby="selfConformanceHeading">
-<h2 id="selfConformanceHeading" data-i18n="std_h_self_conformance">CROL-List's own accessibility posture</h2>
+<h2 id="selfConformanceHeading" data-i18n="std_h_self_conformance">CityScroll's own accessibility posture</h2>
 <p class="note" data-i18n="std_p_self_conformance_lede">These are targets and continuous observations, not a certification.</p>
 <div class="milestone">
-  <div class="milestone-label" data-i18n="std_self_target_label">CROL-List target</div>
-  <div data-i18n-html="std_self_target_html">CROL-List targets <b>WCAG 2.2 Level AA</b> today.</div>
+  <div class="milestone-label" data-i18n="std_self_target_label">CityScroll target</div>
+  <div data-i18n-html="std_self_target_html">CityScroll targets <b>WCAG 2.2 Level AA</b> today.</div>
 </div>
 <div class="milestone">
   <div class="milestone-label" data-i18n="std_self_observations_label">Continuous observations</div>
@@ -173,7 +185,7 @@
 
 </main>
 <footer class="foot" data-i18n-html="std_foot_html">
-  CROL-List · <a href="about.html">About</a> · <a href="data.html">The Data</a> · <a href="changelog.html">Changelog</a> · <a href="index.html">Home</a>
+  CityScroll · <a href="about.html">About</a> · <a href="data.html">The Data</a> · <a href="changelog.html">Changelog</a> · <a href="index.html">Home</a>
 </footer>
 </div>
 

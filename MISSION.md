@@ -1,6 +1,6 @@
 # Mission
 
-CROL-List exists to shrink the time between the City of New York publishing a decision and the
+CityScroll exists to shrink the time between the City of New York publishing a decision and the
 people it affects finding out — without asking anything of them in return.
 
 This file is the project's *machine-readable mission*: precise enough that a new collaborator (or
@@ -16,7 +16,7 @@ journalist, vendor, community board member, neighbor.
 ## Success measures (in order)
 
 1. **Standing watches that fire and get read** — active subscriptions, digests sent, digest links
-   followed (all public at [crol-list.org/stats.html](https://crol-list.org/stats.html)).
+   followed (all public at [cityscroll.org/stats.html](https://cityscroll.org/stats.html)).
 2. **Time-to-awareness** — a subscriber learns about a matching notice the morning after it's
    published, days-to-weeks before they'd have found it themselves (or never).
 3. **Citations** — notices, entity pages, and exported workspaces used in reporting, testimony,
