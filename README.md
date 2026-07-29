@@ -44,7 +44,7 @@ band, and appointment history together.
 *   **👤 People:** Explore city job listings, civil service exam statuses, pay scales, and appointment/payroll histories.
 *   **🏗 Land:** Map rezonings in plain English, linked to the official City Planning ZAP registry and tax-lot (MapPLUTO) boundary polygons.
 *   **🏛 Property:** Track municipal asset auctions (real estate, equipment, timber) and check building demolition statuses.
-*   **📋 Rules & 🗓 Meetings:** Monitor regulatory changes, public comment windows, and public hearings.
+*   **📋 Rules & 🗓 Meetings:** Find this week's public hearings by affected borough or neighborhood, with the hearing venue kept separate from the place a decision concerns; monitor regulatory changes and public comment windows.
 
 ### 2. Search & Alerts
 *   **Subscription Quiz:** Build tailored watches via an onboarding wizard.

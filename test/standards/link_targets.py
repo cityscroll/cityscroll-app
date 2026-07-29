@@ -88,6 +88,8 @@ EXTERNAL_HREF_EXPRS = (
     "${PASSPORT}",  # PASSPort
     "${aurl}",      # agency-identity card: the agency's own official website (nyc.gov, etc.)
     "${surl}",      # agency-identity card: an NYC Open Data source-dataset page
+    "${record.source_url}",       # normalized City Record request-detail URL
+    "${escUiHtml(link.url)}",     # notice-supplied remote participation URL
     # Explicit same-origin exception: this action promises to open the canonical shareable
     # search separately, so it follows the new-tab safety/accessibility checks below.
     "${nlqEscape(canonicalSearchURL(",

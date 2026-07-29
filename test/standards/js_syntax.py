@@ -16,7 +16,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 HTML_PAGES = ["index.html", "about.html", "data.html", "stats.html", "changelog.html", "api.html", "standards.html"]
 # Source: the standalone first-party scripts loaded by index.html.
-JS_FILES = ["i18n.js", "nl_parse.js", "location_awareness.js", "qr_share.js", "external_awards.js"]  # source: index.html script tags
+JS_FILES = ["i18n.js", "nl_parse.js", "location_awareness.js", "hearing_location.js", "qr_share.js", "external_awards.js"]  # source: index.html script tags
 
 failures = 0
 for page in HTML_PAGES:
