@@ -62,6 +62,8 @@ jobs:
         # Scoped to test/ — a bare `node --test` also recurses into worker/test/,
         # which needs worker/node_modules (installed in the next step).
         run: node --test test/*.test.mjs
+      - name: Preset shortcuts and rotating suggestions resolve to live results
+        run: node tools/validate_presets.mjs --check
       - name: Site/worker contract tests (drift guard — see docs/drift-inventory.md)
         # test/contract/*.test.mjs imports worker/src/lib/*.mjs modules directly (all
         # dependency-free — no worker/node_modules needed) alongside functions extracted from
