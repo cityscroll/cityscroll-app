@@ -292,6 +292,9 @@
   @media(max-width:560px){.connector{transform:rotate(90deg);height:24px}.stage{flex-basis:100%}}
   .note{font:13px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted);background:#f4eee2;border-inline-start:3px solid var(--rule);padding:10px 12px;border-start-end-radius:8px;border-end-end-radius:8px;margin-top:14px}
   .note.warn{border-inline-start-color:var(--rose)}
+  .widening-note{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:12px 0 0;border-inline-start-color:var(--blue);color:var(--ink)}
+  .widening-note span{min-width:0}
+  .widening-note .mini{flex:0 0 auto}
 
   /* people lens */
   .rolename{font:800 22px/1.15 var(--font-display);margin-bottom:8px}
@@ -510,6 +513,7 @@
     .scenario-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
     .scenario-card{padding:10px}
     .scenario-card h3{font-size:14px}
+    .widening-note{align-items:flex-start;flex-direction:column}
     .filtertoggle{display:block;width:100%;margin-top:14px}
     .controls{display:none}
     .controls.open{display:flex}
@@ -549,7 +553,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=34a0fa09"></script>
+<script src="i18n.js?v=01180aa7"></script>
 <script defer src="analytics.js?v=1.2.0"></script>
 <script src="nl_parse.js"></script>
 <script src="nl_deeplink.js"></script>
@@ -622,44 +626,44 @@
     <article class="scenario-card">
       <h3 data-i18n="scenario_city_work">I bid on city work</h3>
       <div class="scenario-routes">
-        <a class="scenario-route" href="#money?mode=open&amp;closing=week" data-scenario="city-work" data-scenario-lens="money" data-i18n="closing_this_week">Closing this week</a>
-        <a class="scenario-route" href="#money?mode=open" data-scenario="city-work" data-scenario-lens="money" data-i18n="tab_money">Contracts</a>
+        <a class="scenario-route" href="#money?mode=open&amp;closing=week" data-preset-id="city-work-closing" data-scenario="city-work" data-scenario-lens="money" data-i18n="closing_this_week">Closing this week</a>
+        <a class="scenario-route" href="#money?mode=open" data-preset-id="city-work-all" data-scenario="city-work" data-scenario-lens="money" data-i18n="tab_money">Contracts</a>
       </div>
     </article>
     <article class="scenario-card">
       <h3 data-i18n="scenario_neighborhood">I follow my neighborhood</h3>
       <div class="scenario-routes">
-        <a class="scenario-route" href="#land" data-scenario="neighborhood" data-scenario-lens="land" data-i18n="tab_land">Zoning</a>
-        <a class="scenario-route" href="#property" data-scenario="neighborhood" data-scenario-lens="property" data-i18n="tab_property">Property</a>
-        <a class="scenario-route" href="#meetings?when=upcoming" data-scenario="neighborhood" data-scenario-lens="meetings" data-i18n="tab_meetings">Meetings</a>
+        <a class="scenario-route" href="#land" data-preset-id="neighborhood-land" data-scenario="neighborhood" data-scenario-lens="land" data-i18n="tab_land">Zoning</a>
+        <a class="scenario-route" href="#property" data-preset-id="neighborhood-property" data-scenario="neighborhood" data-scenario-lens="property" data-i18n="tab_property">Property</a>
+        <a class="scenario-route" href="#meetings?when=upcoming" data-preset-id="neighborhood-meetings" data-scenario="neighborhood" data-scenario-lens="meetings" data-i18n="tab_meetings">Meetings</a>
       </div>
     </article>
     <article class="scenario-card">
       <h3 data-i18n="scenario_hearings">I attend or comment on hearings</h3>
       <div class="scenario-routes">
-        <a class="scenario-route" href="#meetings?when=upcoming" data-scenario="hearings" data-scenario-lens="meetings" data-i18n="tab_meetings">Meetings</a>
-        <a class="scenario-route" href="#rules" data-scenario="hearings" data-scenario-lens="rules" data-i18n="tab_rules">Rules</a>
+        <a class="scenario-route" href="#meetings?when=upcoming" data-preset-id="hearings-meetings" data-scenario="hearings" data-scenario-lens="meetings" data-i18n="tab_meetings">Meetings</a>
+        <a class="scenario-route" href="#rules" data-preset-id="hearings-rules" data-scenario="hearings" data-scenario-lens="rules" data-i18n="tab_rules">Rules</a>
       </div>
     </article>
     <article class="scenario-card">
       <h3 data-i18n="scenario_city_career">I explore a city career</h3>
       <div class="scenario-routes">
-        <a class="scenario-route" href="#people" data-scenario="city-career" data-scenario-lens="people" data-i18n="tab_people">Staffing</a>
+        <a class="scenario-route" href="#people" data-preset-id="city-career-people" data-scenario="city-career" data-scenario-lens="people" data-i18n="tab_people">Staffing</a>
       </div>
     </article>
     <article class="scenario-card">
       <h3 data-i18n="scenario_subsidies_land">I track subsidies and land use</h3>
       <div class="scenario-routes">
-        <a class="scenario-route" href="#meetings?when=upcoming&amp;q=IDA" data-scenario="subsidies-land-use" data-scenario-lens="meetings" data-i18n="tab_meetings">Meetings</a>
-        <a class="scenario-route" href="#land" data-scenario="subsidies-land-use" data-scenario-lens="land" data-i18n="tab_land">Zoning</a>
+        <a class="scenario-route" href="#meetings?when=past&amp;q=IDA" data-preset-id="subsidies-ida" data-scenario="subsidies-land-use" data-scenario-lens="meetings" data-i18n="scenario_ida_past">Past IDA meetings</a>
+        <a class="scenario-route" href="#land" data-preset-id="subsidies-land" data-scenario="subsidies-land-use" data-scenario-lens="land" data-i18n="tab_land">Zoning</a>
       </div>
     </article>
     <article class="scenario-card">
       <h3 data-i18n="scenario_legal_compliance">I watch legal or compliance notices</h3>
       <div class="scenario-routes">
-        <a class="scenario-route" href="#property?asset=realty" data-scenario="legal-compliance" data-scenario-lens="property" data-i18n="tab_property">Property</a>
-        <a class="scenario-route" href="#rules" data-scenario="legal-compliance" data-scenario-lens="rules" data-i18n="tab_rules">Rules</a>
-        <a class="scenario-route" href="#meetings?when=upcoming" data-scenario="legal-compliance" data-scenario-lens="meetings" data-i18n="tab_meetings">Meetings</a>
+        <a class="scenario-route" href="#property?asset=realty" data-preset-id="legal-property" data-scenario="legal-compliance" data-scenario-lens="property" data-i18n="tab_property">Property</a>
+        <a class="scenario-route" href="#rules" data-preset-id="legal-rules" data-scenario="legal-compliance" data-scenario-lens="rules" data-i18n="tab_rules">Rules</a>
+        <a class="scenario-route" href="#meetings?when=upcoming" data-preset-id="legal-meetings" data-scenario="legal-compliance" data-scenario-lens="meetings" data-i18n="tab_meetings">Meetings</a>
       </div>
     </article>
   </div>
@@ -968,7 +972,7 @@
   <div class="wrap">
     <div class="hearingintro" data-i18n-html="hearings_location_note_html"><b>Affected place drives “near me.”</b> The venue is shown separately, because a Manhattan hearing can decide a Queens matter. Citywide and unlocated notices stay visible.</div>
     <div class="controls">
-      <div class="field"><label for="meetingswhen" data-i18n="date_window_label">Date window</label><select id="meetingswhen"><option value="week" data-i18n="this_week">This week</option><option value="month" data-i18n="next_30_days">Next 30 days</option><option value="upcoming" data-i18n="all_upcoming">All upcoming</option></select></div>
+      <div class="field"><label for="meetingswhen" data-i18n="date_window_label">Date window</label><select id="meetingswhen"><option value="week" data-i18n="this_week">This week</option><option value="month" data-i18n="next_30_days">Next 30 days</option><option value="upcoming" data-i18n="all_upcoming">All upcoming</option><option value="past" data-i18n="recent_past">Recent past</option></select></div>
       <div class="field"><label for="meetingsboro" data-i18n="affected_area_label">Affected area</label><select id="meetingsboro"><option value="" data-i18n="all_areas">All areas</option><option>Manhattan</option><option>Bronx</option><option>Brooklyn</option><option>Queens</option><option>Staten Island</option><option value="citywide-unlocated" data-i18n="citywide_unlocated">Citywide / unlocated</option></select></div>
       <div class="field"><label for="meetingsneighborhood" data-i18n="neighborhood_label">Neighborhood</label><input type="text" id="meetingsneighborhood" placeholder="Astoria, Kingsbridge Heights…" data-i18n-placeholder="neighborhood_placeholder"></div>
       <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" id="meetingslocation" data-i18n="use_my_location">Use my location</button></div>
@@ -976,6 +980,7 @@
       <div class="field kw"><label for="meetingskw" data-i18n="search_label">Search</label><input type="text" id="meetingskw" placeholder="Community Board, Brooklyn, landmark…" data-i18n-placeholder="kw_placeholder_meetings"></div>
       <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="meetings" data-i18n="watch_this_search">Watch this search</button></div>
     </div>
+    <div id="meetingswidening"></div>
     <div id="hearingssummary" class="nlunderstood" role="status"></div>
     <div class="exportbar">
       <button class="mini export-control" data-export-csv="meetings" data-i18n="export_csv">Export CSV</button>
@@ -2764,7 +2769,7 @@ function searchFilterFromHash(lens, hash){
   if(lens==="land") return {boro:q.get("boro"), communityDistrict:q.get("cd"), keywords, status:q.get("status")==="all"?"all":"active"};
   const filter={agency:q.get("agency"), keywords};
   if(lens==="meetings"){
-    filter.when=["week","month","upcoming"].includes(q.get("when"))?q.get("when"):"week";
+    filter.when=["week","month","upcoming","past"].includes(q.get("when"))?q.get("when"):"week";
     filter.borough=DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):null;
     filter.neighborhood=q.get("neighborhood")||null;
     filter.locationScope=q.get("scope")==="citywide-unlocated"?"citywide-unlocated":null;
@@ -2792,7 +2797,7 @@ function searchFilterChips(lens, filter){
     if(filter.agency) chips.push(`<span class="qchip">${t("agency_label")} <b>${enTitle(filter.agency)}</b></span>`);
     if(keywords.length) chips.push(`<span class="qchip">${t("nl_filter_about_label")} <b>${enTitle(keywords.join(" / "))}</b></span>`);
     if(lens==="meetings"){
-      const whenKey=filter.when==="week"?"this_week":filter.when==="month"?"next_30_days":"all_upcoming";
+      const whenKey=filter.when==="week"?"this_week":filter.when==="month"?"next_30_days":filter.when==="past"?"recent_past":"all_upcoming";
       chips.push(`<span class="qchip"><b>${t(whenKey)}</b></span>`);
       if(filter.borough) chips.push(`<span class="qchip">${t("affected_area_label")} <b>${filter.borough}</b></span>`);
       if(filter.neighborhood) chips.push(`<span class="qchip">${t("neighborhood_label")} <b>${filter.neighborhood}</b></span>`);
@@ -2899,15 +2904,10 @@ async function nlTranslateLens(lens, opts){
 // verifies every candidate in worker/src/lib/suggestions.mjs's SUGGESTION_POOL against fresh
 // data and publishes the currently-fruitful set at GET /suggestions;
 // NL_SUGGESTIONS_VALIDATED holds that set once fetched (keyed by lens, each entry {idx,count}).
-// NL_SUGGESTIONS_FALLBACK is the small, evergreen static subset shown when the worker is
-// unreachable — it deliberately excludes the two dead field-evidence examples (money idx 1/2)
-// and carries its own live verification test (worker/e2e/suggestions.mjs). Keep these idx
-// lists in sync with the worker's copy (lib/suggestions.mjs's FALLBACK_INDICES) by hand — the
-// static site and the worker can't share an import across that boundary.
-//
-// "people" has no validated set at all: its chips stay the pre-existing hardcoded 3 (idx
-// 0/1/2, i18n keys sugg_people_0/1/2), unchanged — payroll-title counting isn't wired into the
-// worker's validation pipeline (a documented, deliberate gap: compileSub() has no people case).
+// NL_SUGGESTIONS_FALLBACK is the build-validated subset shown when the worker is unreachable.
+// tools/validate_presets.mjs resolves every candidate, counts the identical destination query,
+// and generates this list plus the worker copy from data/preset-validation.json. A build fails
+// if a selected candidate drifts to zero; `--write` rotates the dead candidate out.
 //
 // w12-17: owner directive — the suggestions themselves should make the lineage (paper-trail
 // history) and forecast (predictive) features "much more discoverable". A validated entry now
@@ -2920,12 +2920,12 @@ async function nlTranslateLens(lens, opts){
 // so a fallback chip never gets an indicator (currentSuggestionMeta() returns empty sets when
 // there's no validated entry for a lens).
 const NL_SUGGESTIONS_FALLBACK = {
-  money: [0, 3, 4, 5],
-  people: [0, 1, 2],
+  money: [0, 1, 2, 3, 4, 5],
+  people: [0, 2],
   land: [0, 1, 2, 3],
-  property: [0, 1, 2, 3],
-  rules: [0, 1, 2, 3],
-  meetings: [0, 1, 2, 3],
+  property: [1],
+  rules: [0, 1, 2],
+  meetings: [0, 3],
   alerts: [0, 1, 2, 3],
 };
 let NL_SUGGESTIONS_VALIDATED = null; // {lens: [{idx,count,lineageRich,forecastBearing}, ...]} once GET /suggestions resolves
@@ -3916,6 +3916,9 @@ async function loadSection(key){
 }
 
 let hearingAll=null;
+const hearingPastCache=new Map();
+let hearingRenderSeq=0;
+let hearingWideningDismissed="";
 function hearingWindowEnd(){
   return hearingDateWindowEnd(todayISO(), $("#meetingswhen").value);
 }
@@ -3939,6 +3942,44 @@ function hearingEventRow(record){
     street_address_1:record.venue&&record.venue.address,
     additional_description_1:record.description,
   };
+}
+function hearingViewFilter(){
+  return {
+    when:$("#meetingswhen").value,
+    agency:$("#meetingsagency").value,
+    keyword:$("#meetingskw").value.trim(),
+    ...hearingFilter(),
+  };
+}
+function hearingFilterKey(filter){
+  return JSON.stringify([
+    filter.when, filter.agency, filter.keyword, filter.borough,
+    filter.locationScope, filter.neighborhood,
+  ]);
+}
+function hearingScopeLabel(scope){
+  return t(scope==="week"?"this_week":scope==="month"?"next_30_days":scope==="past"?"recent_past":"all_upcoming");
+}
+function hearingWideningHTML(selection, filter){
+  if(!selection.widened) return "";
+  const query=filter.keyword ? `“${escUiHtml(filter.keyword)}”` : t("this_search");
+  return `<div class="note widening-note" role="status"><span>${t("meetings_widened_notice",{
+    query,
+    original:hearingScopeLabel(selection.requested),
+    shown:hearingScopeLabel(selection.scope),
+  })}</span><button type="button" class="mini" data-remove-widening>${t("show_exact_search")}</button></div>`;
+}
+async function loadPastHearings(filter){
+  const cacheKey=JSON.stringify([filter.agency,filter.keyword]);
+  if(hearingPastCache.has(cacheKey)) return hearingPastCache.get(cacheKey);
+  let where=`(section_name='Public Hearings and Meetings' OR (section_name='Agency Rules' AND type_of_notice_description='Public Hearings' AND event_date IS NOT NULL)) AND event_date < '${todayISO()}'`;
+  if(filter.agency) where+=` AND agency_name='${filter.agency.replace(/'/g,"''")}'`;
+  const params={"$select":FEED_SELECT,"$where":where,"$order":"event_date DESC","$limit":"500"};
+  if(filter.keyword) params["$q"]=filter.keyword;
+  const rows=await soda(params);
+  const records=rows.map(normalizeHearingRow);
+  hearingPastCache.set(cacheKey,records);
+  return records;
 }
 function hearingSafeURL(value){
   try{ const url=new URL(value); return url.protocol==="https:"||url.protocol==="http:" ? url.toString() : null; }
@@ -3965,6 +4006,7 @@ function hearingVenueText(record){
 function hearingCardHTML(record){
   const scope=record.affected_area&&record.affected_area.scope||"unlocated";
   const sectionKey=record.source_section==="Agency Rules"?"rules_hearing_badge":"public_hearing_badge";
+  const past=!!record.event_date&&String(record.event_date).slice(0,10)<todayISO().slice(0,10);
   const participation=record.participation||{}, links=(participation.links||[])
     .map(link=>({url:hearingSafeURL(link.url), join:/\bjoin\b/i.test(link.label||"")}))
     .filter(link=>link.url).slice(0,2);
@@ -3978,7 +4020,7 @@ function hearingCardHTML(record){
   const venue=record.venue||{};
   if(venue.address) actions+=`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(venue.address+' New York NY')}" ${EXT_ATTRS}>${t("map_venue")}${extSR()}</a>`;
   return `<article class="fcard hcard" data-scope="${scope}">
-      <div class="ftype"><span class="tag asset">${t(sectionKey)}</span>${record.agency?" "+pivotA(agencyHref(record.agency),record.agency):""}${record.event_date?` · <b style="color:var(--ink)">${fdt(record.event_date)}</b>${eventTag(record.event_date)}`:""}</div>
+      <div class="ftype"><span class="tag asset">${t(sectionKey)}</span>${past?` <span class="tag closed">${t("past_tag")}</span>`:""}${record.agency?" "+pivotA(agencyHref(record.agency),record.agency):""}${record.event_date?` · <b style="color:var(--ink)">${fdt(record.event_date)}</b>${eventTag(record.event_date)}`:""}</div>
       <div class="ftitle">${escUiHtml(record.decides||record.title||t("untitled"))}</div>
       <div class="hfacts">
         <div class="hfact"><b>${t("affected_area_label")}</b><span>${escUiHtml(hearingAreaText(record))}</span></div>
@@ -3995,31 +4037,47 @@ function renderHearingGroup(scope, records){
   const note=scope==="local"?"local_hearings_note":scope==="citywide"?"citywide_hearings_note":"unlocated_hearings_note";
   return `<h2 class="hearinggroup">${t(label)} <small>${t(note)}</small></h2>${records.map(hearingCardHTML).join("")}`;
 }
-function renderHearingExplorer(){
-  const agency=$("#meetingsagency").value, kw=$("#meetingskw").value.trim().toLowerCase();
-  const areaFilter=hearingFilter(), end=hearingWindowEnd(), start=todayISO().slice(0,10);
-  const rows=(hearingAll||[]).filter(record=>{
-    const date=String(record.event_date||"").slice(0,10);
-    if(!date||date<start||(end&&date>end)) return false;
-    if(agency&&record.agency!==agency) return false;
-    if(!hearingMatchesArea(record,areaFilter)) return false;
-    if(kw&&!`${record.title||""} ${record.decides||""} ${record.description||""} ${(record.affects||[]).join(" ")}`.toLowerCase().includes(kw)) return false;
-    return true;
-  }).sort((a,b)=>String(a.event_date||"").localeCompare(String(b.event_date||"")));
+async function renderHearingExplorer(){
+  const seq=++hearingRenderSeq;
+  const filter=hearingViewFilter(), key=hearingFilterKey(filter);
+  const allowWidening=hearingWideningDismissed!==key;
+  let records=hearingAll||[];
+  let selection=chooseHearingScope(records,filter,todayISO(),allowWidening);
+  const needsPast=filter.when==="past" || (allowWidening && !selection.rows.length);
+  if(needsPast){
+    try{
+      const past=await loadPastHearings(filter);
+      if(seq!==hearingRenderSeq) return;
+      records=records.concat(past);
+      selection=chooseHearingScope(records,filter,todayISO(),allowWidening);
+    }catch(e){ /* the exact zero state remains actionable below */ }
+  }
+  if(seq!==hearingRenderSeq) return;
+  const rows=selection.rows;
+  const widening=$("#meetingswidening");
+  widening.innerHTML=hearingWideningHTML(selection,filter);
+  const remove=widening.querySelector("[data-remove-widening]");
+  if(remove) remove.addEventListener("click",()=>{
+    hearingWideningDismissed=key;
+    renderHearingExplorer();
+  });
   feedVisible.meetings=rows.map(hearingEventRow);
   feedRows.meetings={}; rows.forEach(record=>feedRows.meetings[record.request_id]=hearingEventRow(record));
   const counts={local:0,citywide:0,unlocated:0};
   rows.forEach(record=>{ counts[record.affected_area&&record.affected_area.scope||"unlocated"]++; });
   $("#hearingssummary").textContent=t("hearing_results_summary",{n:rows.length,local:counts.local,citywide:counts.citywide,unlocated:counts.unlocated});
   const el=$("#meetingsfeed");
-  if(!rows.length){ el.innerHTML=`<div class="empty">${t("no_hearings_window")}</div>`; announce(t("notices_announce",{n:0})); return; }
+  if(!rows.length){
+    el.innerHTML=`<div class="empty">${t(allowWidening?"no_hearings_after_widening":"no_hearings_window")}</div>`;
+    announce(t("notices_announce",{n:0})); return;
+  }
   el.innerHTML=["local","citywide","unlocated"].map(scope=>renderHearingGroup(scope,rows.filter(record=>(record.affected_area&&record.affected_area.scope||"unlocated")===scope))).join("");
   el.querySelectorAll("[data-link]").forEach(button=>button.addEventListener("click",()=>copyText(noticeLink(button.dataset.link),button)));
   el.querySelectorAll("[data-ev]").forEach(button=>button.addEventListener("click",()=>downloadEventICS(feedRows.meetings[button.dataset.ev.split(":")[1]])));
   announce(t("notices_announce",{n:rows.length}));
 }
 async function loadHearings(){
-  if(hearingAll){ renderHearingExplorer(); return; }
+  if(hearingAll){ await renderHearingExplorer(); return; }
   busyList("#meetingsfeed",3);
   const key="meetings", stale=staleGuard("feed:"+key);
   try{
@@ -4039,7 +4097,7 @@ async function loadHearings(){
     if(stale()) return;
     hearingAll=records;
     unbusy("#meetingsfeed");
-    renderHearingExplorer();
+    await renderHearingExplorer();
   }catch(e){
     if(!stale()){ unbusy("#meetingsfeed"); $("#meetingsfeed").innerHTML=`<div class="empty">${t("could_not_reach")}</div>`; }
   }
@@ -5615,11 +5673,11 @@ function deeplinkClampField(name, v){
     case "excludeSpecial": return !!v;
     case "boro": { const s = typeof v==="string" ? v.trim().toLowerCase() : ""; return DEEPLINK_BOROS.find(b=>b.toLowerCase()===s) || null; }
     case "status": return v==="all" ? "all" : v==="active" ? "active" : null;
-    case "when": return ["all","upcoming","week","month"].includes(v) ? v : null;
+    case "when": return ["all","upcoming","week","month","past"].includes(v) ? v : null;
     case "borough": { const s=typeof v==="string"?v.trim().toLowerCase():""; return DEEPLINK_BOROS.find(b=>b.toLowerCase()===s)||null; }
     case "neighborhood": return typeof v==="string"&&v.trim()?v.replace(/\s+/g," ").trim().slice(0,80):null;
     case "locationScope": return v==="citywide-unlocated"?v:null;
-    case "dateWindow": return ["week","month","upcoming"].includes(v)?v:null;
+    case "dateWindow": return ["week","month","upcoming","past"].includes(v)?v:null;
     case "lookupType": return v==="person" ? "person" : v==="role" ? "role" : null;
     case "name": return typeof v==="string" && v.trim() ? v.replace(/\s+/g," ").trim().slice(0,120) : null;
     case "kind": return v==="agency" ? "agency" : v==="vendor" ? "vendor" : null;
@@ -5743,7 +5801,7 @@ function applyHash(){
       $("#"+tab+"agency").value="";
       forceSelect("#"+tab+"agency", q.get("agency"));
       $("#"+tab+"kw").value = q.get("q") || "";
-      const w=$("#"+tab+"when"); if(w) w.value = tab==="meetings"&&["week","month","upcoming"].includes(q.get("when"))?q.get("when"):tab==="meetings"?"week":"upcoming";
+      const w=$("#"+tab+"when"); if(w) w.value = tab==="meetings"&&["week","month","upcoming","past"].includes(q.get("when"))?q.get("when"):tab==="meetings"?"week":"upcoming";
       if(tab==="meetings"){
         $("#meetingsboro").value=q.get("scope")==="citywide-unlocated"?"citywide-unlocated":DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"";
         $("#meetingsneighborhood").value=q.get("neighborhood")||"";

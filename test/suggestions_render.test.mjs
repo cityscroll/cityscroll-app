@@ -7,8 +7,8 @@
 // excluding them. These tests pin: pickSuggestions() rotates deterministically (same day ->
 // same picks, different day -> different picks, per the day-seed contract), currentSuggestionIndices()
 // prefers a daily-validated set over the static fallback when one exists for the lens, falls
-// back cleanly when it doesn't (or is empty), and the static NL_SUGGESTIONS_FALLBACK itself
-// never includes money idx 1/2 — the two dead field-evidence examples — by construction.
+// back cleanly when it doesn't (or is empty), and the generated fallback contains only
+// candidates with a non-zero count in data/preset-validation.json.
 //
 // w12-17 (owner directive: make lineage/forecast "much more discoverable" through the
 // suggestions themselves): before this card, a validated suggestion carried no hint at all
@@ -30,6 +30,7 @@ import { dirname, join } from "node:path";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const src = readFileSync(join(ROOT, "index.html"), "utf8");
+const receipt = JSON.parse(readFileSync(join(ROOT, "data", "preset-validation.json"), "utf8"));
 
 function extractFn(name) {
   let start = src.indexOf("async function " + name + "(");
@@ -104,12 +105,11 @@ test("pickSuggestions: empty pool -> nothing to show, not a crash", () => {
 
 // ---- currentSuggestionIndices: validated set wins, fallback otherwise ------------------
 
-test("currentSuggestionIndices: before the worker responds, money falls back to the evergreen static subset (never idx 1/2, the dead field-evidence examples)", () => {
+test("currentSuggestionIndices: before the worker responds, money uses the build-validated subset", () => {
   setValidated(null);
   const idxs = currentSuggestionIndices("money");
   assert.deepEqual(idxs, NL_SUGGESTIONS_FALLBACK.money);
-  assert.ok(!idxs.includes(1), "IT consulting RFPs (idx 1) must never be in the static fallback");
-  assert.ok(!idxs.includes(2), "shelter services contracts (idx 2) must never be in the static fallback");
+  assert.deepEqual(idxs, receipt.suggestions.byLens.money);
 });
 
 test("currentSuggestionIndices: once the worker's validated set arrives, it wins over the static fallback", () => {
@@ -122,14 +122,24 @@ test("currentSuggestionIndices: an empty validated array for a lens still falls 
   assert.deepEqual(currentSuggestionIndices("money"), NL_SUGGESTIONS_FALLBACK.money);
 });
 
-test("currentSuggestionIndices: 'people' always uses its own fallback — it has no validated set (payroll counting isn't wired into the worker)", () => {
-  setValidated({ money: [{ idx: 0, count: 57 }] }); // validated set present, but never names "people"
-  assert.deepEqual(currentSuggestionIndices("people"), NL_SUGGESTIONS_FALLBACK.people);
+test("currentSuggestionIndices: people accepts a daily-validated set", () => {
+  setValidated({ people: [{ idx: 2, count: 57 }] });
+  assert.deepEqual(currentSuggestionIndices("people"), [2]);
 });
 
 test("NL_SUGGESTIONS_FALLBACK: every validatable lens has a non-empty static subset", () => {
   for (const lens of ["money", "people", "land", "property", "rules", "meetings", "alerts"]) {
     assert.ok(Array.isArray(NL_SUGGESTIONS_FALLBACK[lens]) && NL_SUGGESTIONS_FALLBACK[lens].length > 0, `missing fallback for ${lens}`);
+  }
+});
+
+test("NL_SUGGESTIONS_FALLBACK: every selected candidate had results at generation time", () => {
+  const countByKey = new Map(receipt.suggestions.candidates.map((candidate) => [
+    `${candidate.lens}:${candidate.idx}`, candidate.count,
+  ]));
+  for (const [lens, indices] of Object.entries(NL_SUGGESTIONS_FALLBACK)) {
+    assert.deepEqual(indices, receipt.suggestions.byLens[lens]);
+    for (const idx of indices) assert.ok(countByKey.get(`${lens}:${idx}`) > 0, `${lens}:${idx} was empty`);
   }
 });
 

@@ -45,8 +45,19 @@ test("suggestionCountParams: alerts non-rezone watch maps to a money-shaped coun
   assert.match(q.params["$where"], /contract_amount >= 1000000/);
 });
 
-test("suggestionCountParams: people has no compileSub() replay path -> null (documented, deliberate gap)", () => {
-  assert.equal(suggestionCountParams("people", { keywords: ["paramedic"], lookupType: "role" }, TODAY), null);
+test("suggestionCountParams: people role suggestions use the same payroll year and title match as Staffing", () => {
+  const q = suggestionCountParams("people", { keywords: ["paramedic"], lookupType: "role" }, TODAY);
+  assert.match(q.url, /k397-673e\.json/);
+  assert.equal(q.params["$select"], "count(1) as n");
+  assert.match(q.params["$where"], /fiscal_year=2025/);
+  assert.match(q.params["$where"], /upper\(title_description\) like '%PARAMEDIC%'/);
+});
+
+test("suggestionCountParams: people-name suggestions count Changes in Personnel notices", () => {
+  const q = suggestionCountParams("people", { keywords: ["Rodriguez"], lookupType: "person" }, TODAY);
+  assert.match(q.url, /dg92-zbpx\.json/);
+  assert.equal(q.params["$q"], "Rodriguez");
+  assert.match(q.params["$where"], /Changes in Personnel/);
 });
 
 // ---- runSuggestionValidation: the daily pipeline ---------------------------------------
