@@ -51,6 +51,21 @@ These rules built the project and they're not aspirational — every shipped fea
    about.html's "About our content" section carries this disclosure to readers too (NYC Web
    Content Style Guide, GenAI tools) — `test/standards/genai_disclosure.py` gates its presence.
 
+## Beta review
+
+Large interaction changes may opt into the public beta channel. Apply
+`preview:beta` while the pull request is a draft, copy its stable
+`pr-<number>.crol-list-beta.pages.dev` link into the pull request and the review
+chat, and state a deadline. Reviewers react affirmatively or reply with the
+screen, concern, and preferred change. Silence is recorded as no response,
+never as approval.
+
+The site owner summarizes the result in the pull request and selects Promote,
+Revise, or Withdraw. Revise and Withdraw remain draft. Only Promote can pass
+the readiness contract when the pull request is marked ready; GitHub's draft
+gate keeps merge automation from acting before then. See
+[docs/beta-channel.md](docs/beta-channel.md) for deployment and rollback.
+
 ## Changelog entries
 
 `changelog.html`'s "Recent updates" list is generated, not hand-edited, and it's curated: it
