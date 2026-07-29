@@ -19,6 +19,7 @@ BODY_RE = re.compile(r"(<body(?:\s[^>]*)?>)", re.IGNORECASE)
 def channel_banner(channel: str, commit: str) -> str:
     label = "Draft preview" if channel == "preview" else "Experimental beta"
     return f"""
+<script data-release-channel-config>window.CROL_API_ORIGIN = "https://api-beta.crol-list.org";</script>
 <aside data-release-channel-banner role="note" lang="en" style="background:#1f3a5f;color:#fff;padding:10px 18px;text-align:center;font:600 14px/1.45 ui-sans-serif,system-ui,sans-serif">
   <strong>{html.escape(label)}</strong>
   <span aria-hidden="true"> · </span>
@@ -42,7 +43,7 @@ def prepare(site_root: Path, channel: str, commit: str) -> None:
         raise ValueError("site root does not contain HTML pages")
     for page in pages:
         source = page.read_text()
-        if "data-release-channel-banner" in source:
+        if "data-release-channel-banner" in source or "data-release-channel-config" in source:
             continue
         updated, count = BODY_RE.subn(rf"\1{banner}", source, count=1)
         if count != 1:

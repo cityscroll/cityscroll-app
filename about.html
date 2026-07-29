@@ -213,8 +213,8 @@ registration and real payment. Nothing here says anyone did wrong. It just saves
 </div>
 
 <script>
-const API = "https://api.crol-list.org";
-const API_FALLBACK = "https://crol-worker.crol-worker.workers.dev"; // stale-DNS fallback
+const API = window.CROL_API_ORIGIN || "https://api.crol-list.org";
+const API_FALLBACK = window.CROL_API_ORIGIN || "https://crol-worker.crol-worker.workers.dev"; // stale-DNS fallback
 async function workerFetch(path, opts){
   try{ return await fetch(API+path, opts); }
   catch(e){ return fetch(API_FALLBACK+path, opts); }

@@ -1,35 +1,13 @@
 // POST /events — bounded first-party event intake for the static site.
 
 import { emitUsageEvent, normalizeUsageEvent } from "./lib/analytics.mjs";
+import { corsHeaders, isAllowedRequestOrigin } from "./lib/cors.mjs";
 
 export const ANALYTICS_DEV_HEADER = "X-CROL-Analytics-Dev";
 const DEV_TOKEN_VERSION = "v1";
 const DEV_TOKEN_CONTEXT = "crol-analytics-dev-exclusion";
 const DEV_TOKEN_MAX_AGE_SECONDS = 5 * 60;
 const DEV_TOKEN_FUTURE_SKEW_SECONDS = 30;
-
-const ALLOWED_ORIGINS = new Set([
-  "https://crol-list.org",
-  "https://www.crol-list.org",
-  "https://cityscroll.org",
-  "https://www.cityscroll.org",
-  "https://crol-list.jimdc.com",
-  "https://jimdc.github.io",
-  "http://localhost:8000",
-  "http://localhost:8787",
-  "http://localhost:8888",
-]);
-
-function corsHeaders(origin) {
-  return {
-    "Access-Control-Allow-Origin": ALLOWED_ORIGINS.has(origin) ? origin : "https://crol-list.org",
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Access-Control-Allow-Headers": `Content-Type, ${ANALYTICS_DEV_HEADER}`,
-    "Access-Control-Max-Age": "86400",
-    "Cache-Control": "no-store",
-    "Vary": "Origin",
-  };
-}
 
 function decodeBase64Url(value) {
   if (!/^[A-Za-z0-9_-]{43}$/.test(value)) return null;
@@ -84,10 +62,16 @@ async function hasValidDeveloperExclusion(req, env, nowMs) {
 
 export async function handleEvent(req, env, options = {}) {
   const origin = req.headers.get("Origin") || "";
-  const cors = corsHeaders(origin);
+  const cors = corsHeaders(origin, env, {
+    headers: `Content-Type, ${ANALYTICS_DEV_HEADER}`,
+    maxAge: "86400",
+    cacheControl: "no-store",
+  });
+  if (!isAllowedRequestOrigin(origin, env)) {
+    return new Response("Origin not allowed", { status: 403, headers: cors });
+  }
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
   if (req.method !== "POST") return new Response("Method not allowed", { status: 405, headers: cors });
-  if (!ALLOWED_ORIGINS.has(origin)) return new Response("Origin not allowed", { status: 403, headers: cors });
 
   const length = Number(req.headers.get("Content-Length") || 0);
   if (length > 1024) return new Response("Event too large", { status: 413, headers: cors });

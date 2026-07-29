@@ -14,19 +14,18 @@
 // vector); the operator triages the archive and files real issues by hand.
 
 import { validateFeedback } from "./lib/feedback.mjs";
+import { corsHeaders, isAllowedRequestOrigin } from "./lib/cors.mjs";
 
-const ALLOW = new Set([
-  "https://crol-list.org", "https://www.crol-list.org",
-  "https://cityscroll.org", "https://www.cityscroll.org",
-  "https://crol-list.jimdc.com", "https://jimdc.github.io",
-  "http://localhost:8000", "http://localhost:8787",
-]);
 const MAX_FB_PER_IP_DAY = 10;
 const MAX_FB_PER_ADDR_DAY = 5;
 const DEFAULT_TO = "feedback@crol-list.org"; // routed by the crol-list.org catch-all; no personal inbox in source
 
 export async function handleFeedback(req, env) {
-  const cors = corsHeaders(req.headers.get("origin") || "");
+  const origin = req.headers.get("origin") || "";
+  const cors = corsHeaders(origin, env);
+  if (!isAllowedRequestOrigin(origin, env)) {
+    return json({ ok: false, reason: "origin" }, 403, cors);
+  }
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
   if (req.method !== "POST") return json({ ok: false, reason: "method" }, 405, cors);
 
@@ -154,15 +153,6 @@ async function bump(env, key, max) {
   return n > max;
 }
 
-function corsHeaders(origin) {
-  const o = ALLOW.has(origin) ? origin : "https://crol-list.org";
-  return {
-    "Access-Control-Allow-Origin": o,
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Vary": "Origin",
-  };
-}
 function json(obj, status, cors) {
   return new Response(JSON.stringify(obj), { status, headers: { ...cors, "Content-Type": "application/json" } });
 }

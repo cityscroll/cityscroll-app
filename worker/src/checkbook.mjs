@@ -9,25 +9,17 @@
 
 import { vendorStem } from "./lib/compile.mjs";
 import { scoreForecastAccuracy } from "./lib/forecast_score.mjs";
+import { corsHeaders, isAllowedRequestOrigin } from "./lib/cors.mjs";
 
 const CHECKBOOK = "https://www.checkbooknyc.com/api";
 
-const ALLOW = new Set([
-  "https://crol-list.org",
-  "https://www.crol-list.org",
-  "https://cityscroll.org",
-  "https://www.cityscroll.org",
-  "https://crol-list.jimdc.com",
-  "https://jimdc.github.io",
-  "http://localhost:8888",
-  "http://localhost:8000",
-  "http://localhost:8787", // wrangler dev
-]);
-
-export async function handleCheckbook(req) {
+export async function handleCheckbook(req, env = {}) {
   const origin = req.headers.get("origin") || "";
-  const cors = corsHeaders(origin);
+  const cors = corsHeaders(origin, env);
 
+  if (!isAllowedRequestOrigin(origin, env)) {
+    return text("Origin not allowed", 403, cors, "text/plain");
+  }
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
   if (req.method !== "POST") return text("POST only", 405, cors, "text/plain");
 
@@ -47,16 +39,6 @@ export async function handleCheckbook(req) {
   } catch (e) {
     return text(`Upstream error: ${String(e?.message || e)}`, 502, cors, "text/plain");
   }
-}
-
-function corsHeaders(origin) {
-  const o = ALLOW.has(origin) ? origin : "https://crol-list.jimdc.com";
-  return {
-    "Access-Control-Allow-Origin": o,
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Vary": "Origin",
-  };
 }
 
 function text(s, status, cors, type) {
@@ -235,13 +217,11 @@ export async function runCheckbookPipeline(env, watches, subs) {
 
 export async function handleForecast(req, env) {
   const origin = req.headers.get("origin") || "";
-  const cors = {
-    "Access-Control-Allow-Origin": ALLOW.has(origin) ? origin : "https://crol-list.org",
-    "Access-Control-Allow-Methods": "GET, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Vary": "Origin"
-  };
+  const cors = corsHeaders(origin, env, { methods: "GET, OPTIONS" });
 
+  if (!isAllowedRequestOrigin(origin, env)) {
+    return new Response("Origin not allowed", { status: 403, headers: cors });
+  }
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
   if (req.method !== "GET") return new Response("GET only", { status: 405, headers: cors });
 
@@ -301,13 +281,11 @@ const ACCURACY_CACHE_TTL = 6 * 3600; // 6 hours
 
 export async function handleForecastAccuracy(req, env) {
   const origin = req.headers.get("origin") || "";
-  const cors = {
-    "Access-Control-Allow-Origin": ALLOW.has(origin) ? origin : "https://crol-list.org",
-    "Access-Control-Allow-Methods": "GET, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Vary": "Origin",
-  };
+  const cors = corsHeaders(origin, env, { methods: "GET, OPTIONS" });
 
+  if (!isAllowedRequestOrigin(origin, env)) {
+    return new Response("Origin not allowed", { status: 403, headers: cors });
+  }
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
   if (req.method !== "GET") return new Response("GET only", { status: 405, headers: cors });
 

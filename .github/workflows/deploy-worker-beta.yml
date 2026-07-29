@@ -1,0 +1,76 @@
+# Deploys one selected commit to the isolated beta API environment.
+name: Deploy exact commit to beta Worker
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit_sha:
+        description: Full 40-character commit SHA to deploy
+        required: true
+        type: string
+      confirmation:
+        description: Type DEPLOY to confirm the beta Worker change
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: beta-worker-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy isolated beta Worker
+    environment:
+      name: beta-worker
+      url: https://api-beta.crol-list.org/health
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate exact commit request
+        env:
+          REQUESTED_SHA: ${{ inputs.commit_sha }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+        shell: bash
+        run: |
+          if [[ ! "$REQUESTED_SHA" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "commit_sha must be a full lowercase 40-character SHA" >&2
+            exit 1
+          fi
+          if [ "$CONFIRMATION" != "DEPLOY" ]; then
+            echo "confirmation must equal DEPLOY" >&2
+            exit 1
+          fi
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.commit_sha }}
+          persist-credentials: false
+      - name: Verify selected checkout
+        env:
+          REQUESTED_SHA: ${{ inputs.commit_sha }}
+        shell: bash
+        run: test "$(git rev-parse HEAD)" = "$REQUESTED_SHA"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: worker/package-lock.json
+      - name: Install Worker dependencies
+        working-directory: worker
+        run: npm ci
+      - name: Validate isolated deployment
+        working-directory: worker
+        run: npx wrangler deploy --env beta --dry-run
+      - name: Deploy selected commit
+        uses: cloudflare/wrangler-action@v3.14.1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          workingDirectory: worker
+          wranglerVersion: "4.110.0"
+          command: deploy --env beta
+      - name: Verify beta Worker
+        shell: bash
+        run: |
+          body="$(curl --fail --silent --show-error https://api-beta.crol-list.org/health)"
+          printf '%s' "$body" | grep -q '"ok":true'

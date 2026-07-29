@@ -56,3 +56,21 @@ Rollback is the same operation: rerun the workflow with the prior known-good
 SHA. This re-points beta without changing `crol-list.org`, rewriting history,
 or reverting source. The immutable URL in each successful workflow summary is
 the audit trail for what was reviewed and what was restored.
+
+## Isolated beta Worker
+
+Review pages are static by default. If a change needs Worker behavior, the site
+owner can run **Deploy exact commit to beta Worker** with a full commit SHA and
+the `DEPLOY` confirmation. That manual workflow deploys the selected source to
+`api-beta.crol-list.org`; there is no automatic beta Worker deployment.
+
+The beta environment inherits no production bindings or secrets. It has no
+cron, queues, email route, D1, KV, R2, or Analytics Engine destination. Paid,
+stateful, delivery, administrative, and write routes therefore degrade or fail
+closed. Its browser-origin allowlist accepts the beta Pages hostnames, while
+the production Worker continues to reject those origins.
+
+Preview and promoted beta artifacts select the beta API at deploy time before
+page scripts run. They never fall back to the production Worker. If the beta
+Worker is unavailable, Worker-backed enhancements degrade and the public-data
+parts of the static site keep working.

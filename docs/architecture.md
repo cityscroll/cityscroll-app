@@ -36,9 +36,11 @@ sources:
   - .github/workflows/deploy-pages.yml
   - .github/workflows/deploy-beta-preview.yml
   - .github/workflows/promote-beta.yml
+  - .github/workflows/deploy-worker-beta.yml
   - worker/wrangler.toml
   - worker/src/worker.mjs
-sources_hash: 2e419d1a4f2aa31c8c31de987aa27b22751383557226fcf31ec60000395eef35
+  - worker/src/lib/cors.mjs
+sources_hash: dc96668e7b4856d5c79a481baffaacf1d4bc9051e9232275dd45bb3924ad9bad
 ---
 
 # crol-list — architecture
@@ -100,6 +102,7 @@ Analytics Engine: crol_usage_events_v1 — versioned aggregate page/click/search
 Public review channel (Cloudflare Pages project "crol-list-beta")
   draft PR + preview:beta label → stable pr-<number> alias
   owner workflow + exact SHA → beta production pointer → beta.crol-list.org
+  optional owner workflow + exact SHA → isolated api-beta.crol-list.org Worker
   same verified Jekyll + deploy-time i18n stamp pipeline as stable
 ```
 
@@ -124,6 +127,7 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 
 - `index.html` is built and served as a GitHub Pages static site at `crol-list.org` (CNAME in repo) — the canonical domain; every page's `<link rel="canonical">` points here regardless of which domain served the request. The Pages workflow derives one cache stamp from `i18n.js` plus every shipping dictionary, writes it only into the deployment artifact, verifies the result, and then publishes it.
 - Cloudflare Pages hosts public review artifacts only. Draft pull requests opt in with `preview:beta` and receive a stable `pr-<number>.crol-list-beta.pages.dev` alias plus an immutable URL. The manually triggered promotion workflow deploys one explicit commit to the Pages production branch named `beta`; `beta.crol-list.org` is therefore a moving pointer, not a long-lived source branch. Re-running the workflow with the prior SHA is the deterministic rollback. Review artifacts keep stable canonical links and add no-index headers, channel/commit metadata, a visible experimental banner, and a stable-site escape link.
+- Review artifacts select `api-beta.crol-list.org` before page scripts run and never fall back to production. That Worker is an optional, manually deployed exact-commit environment with no inherited production secrets, storage, queues, or cron. Its browser routes accept beta Pages origins only under the beta runtime gate; paid, stateful, delivery, and write behavior fails closed when unconfigured.
 - Worker deployed via `wrangler deploy` from `worker/` to the custom domain `api.crol-list.org` (workers.dev alias intentionally kept alive). Changes under `worker/**` deploy from `main` through `.github/workflows/deploy-worker.yml`; a manual Wrangler deploy remains the emergency path. Cron trigger `0 13 * * *` (~9am ET). D1 schema versioned in `worker/migrations/`, applied with `wrangler d1 migrations apply crol-notices --remote`.
 - `cityscroll.org` / `www.cityscroll.org` — a parallel serving domain (same Cloudflare account, custom-domain routes in `worker/wrangler.toml`). Since GitHub Pages only virtual-hosts the one domain configured in its own settings, the worker answers these two hosts itself by reverse-proxying the static site straight from `crol-list.org` byte-for-byte (`worker/src/mirror.mjs`), so the mirror can never drift and the canonical tag rides along unchanged. `crol-list.org` stays canonical; this is infrastructure only, not a redirect or a content fork.
 - Secrets via `wrangler secret put`: `ANTHROPIC_API_KEY`, `RESEND_API_KEY`, `TURNSTILE_SECRET`, `TOKEN_SECRET`, `USAGE_KEY`, `ANALYTICS_READ_TOKEN`, `ANALYTICS_DEV_KEY`, and the production-only `ANALYTICS_ENVIRONMENT` runtime gate. The analytics read token is scoped to Account Analytics Read; the developer key authenticates short-lived HMAC exclusions, while a missing/non-production runtime gate drops writes. Spend guards are vars in `wrangler.toml`: `MAX_PER_RUN=25`, `MAX_SENDS_PER_DAY=50` (under Resend's free 100/day); `/subscribe` and `/feedback` fail closed (503) if their secrets are absent.
