@@ -28,7 +28,8 @@ visible so a webpage or broken identifier cannot be mistaken for a working feed.
 | build-time | [NYC Agencies and Governance Organizations](https://data.cityofnewyork.us/d/t3jq-9nkf) `t3jq-9nkf` | Canonical agency identity, leadership, organization type, and official links. | Slow-changing organizational data. Operator-built into the committed agency crosswalk. |
 | build-time | [NYC Expense Budget](https://data.cityofnewyork.us/d/mwzb-yiwb) `mwzb-yiwb` | Agency budget codes and adopted budget totals. | Fiscal-year budget releases. Operator-built into the committed agency crosswalk. |
 | manual | [DCAS exam pages and Notices of Examination](https://www.nyc.gov/examsforjobs) | Official job details, qualifications, fees, waivers, and application links. | Updated as exam notices change. Manually reviewed during the Staffing build because the page blocks unattended refresh. |
-| disabled | [MOCS Local Law 63 procurement plans](https://www.nyc.gov/site/mocs/resources/standard-prof-services-ll63.page) | No current product output. | Annual plans with in-year agency spreadsheet updates. Disabled. No plan rows are read or shown, and stale plan cache entries are purged. |
+| disabled | [MOCS Local Law 63 procurement plans](https://www.nyc.gov/site/mocs/resources/standard-professional-services-ll63.page) | No current product output. | Annual plans with in-year agency spreadsheet updates. Disabled. No plan rows are read or shown, and stale plan cache entries are purged. |
+| live | [NYC Rules RSS feed](https://rules.cityofnewyork.us/) | Rule lifecycle enrichment: official comment/adoption page links, comment deadlines, hearing dates, adoption and effective dates joined to City Record Agency Rules notices. | Updated as rules are proposed, heard, adopted, or made effective. Daily materialized join in the Worker; a stale or unreachable feed falls back to City Record notices only with an explicit enrichment-gap marker. |
 
 ## External-award coverage
 

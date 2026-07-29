@@ -34,6 +34,7 @@ import { handleVendorProfile, refreshVendorProfiles } from "./vendor_profile.mjs
 import { handleMirror } from "./mirror.mjs";
 import { handleHearings, refreshHearings } from "./hearings.mjs";
 import { handleProperties, refreshProperties } from "./property.mjs";
+import { handleRules, refreshRules } from "./rules.mjs";
 import { handleSourceVault } from "./source_vault.mjs";
 
 const MIRROR_HOSTS = new Set(["cityscroll.org", "www.cityscroll.org"]);
@@ -63,6 +64,7 @@ export default {
     if (pathname === "/vendor-profile") return handleVendorProfile(request, env, ctx);
     if (pathname === "/hearings") return handleHearings(request, env, ctx);
     if (pathname === "/property-locations") return handleProperties(request, env, ctx);
+    if (pathname === "/rules") return handleRules(request, env, ctx);
     if (pathname === "/source-vault/fetch" || pathname.startsWith("/source-vault/")) return handleSourceVault(request, env);
     if (pathname === "/suggestions") return handleSuggestions(request, env, ctx);
     if (pathname === "/stats") return handleStats(request, env, ctx);
@@ -144,6 +146,15 @@ export default {
       console.log("properties:", JSON.stringify(r));
     } catch (e) {
       console.error("Property refresh failed (digest continues):", String(e?.message || e));
+    }
+    // NYC Rules: daily materialized join of City Record Agency Rules notices to NYC Rules
+    // RSS lifecycle records. RSS enrichment is fail-soft — a stale or unreachable feed
+    // leaves the view with City Record notices only, and the join gap is explicit.
+    try {
+      const r = await refreshRules(env);
+      console.log("rules:", JSON.stringify(r));
+    } catch (e) {
+      console.error("rules refresh failed (digest continues):", String(e?.message || e));
     }
     // Vendor identity headers are a read-optimized daily projection of the full City Record
     // Award history. Publish versioned KV buckets before the manifest so readers never depend
