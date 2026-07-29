@@ -553,7 +553,7 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=01180aa7"></script>
+<script src="i18n.js?v=5dd8e8e2"></script>
 <script defer src="analytics.js?v=1.2.0"></script>
 <script src="nl_parse.js"></script>
 <script src="nl_deeplink.js"></script>
@@ -3993,7 +3993,11 @@ function hearingAreaText(record){
     ...(area.neighborhoods||[]),
     ...(area.boroughs||[]),
     ...(area.community_districts||[]).map(cd=>t("community_district_short",{n:cd})),
+    ...(area.community_boards||[]),
     ...(area.addresses||[]).map(address=>address.label),
+    ...(area.street_ranges||[]).map(range=>range.label),
+    ...(area.tax_lots||[]).map(lot=>lot.label),
+    ...(area.project_names||[]),
   ].filter(Boolean);
   return [...new Set(values)].join(" · ") || t("affected_not_stated");
 }

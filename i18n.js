@@ -77,16 +77,16 @@ const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar
 // a Polish fix never invalidates nine other dictionaries' cache entries.
 // Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
 const LANG_FILE_HASHES = {
-  es: "1f811156",
-  "zh-Hans": "4d039498",
-  ru: "1f8bb842",
-  bn: "e4ef77ff",
-  ht: "79c420ef",
-  ko: "9c3c95fe",
-  fr: "ac6b1cab",
-  pl: "e72e6b5a",
-  ar: "0e52c554",
-  ur: "ec20d9da",
+  es: "8eb0fe24",
+  "zh-Hans": "b5c9319b",
+  ru: "a37dc16e",
+  bn: "814e4e4f",
+  ht: "54370f32",
+  ko: "59742068",
+  fr: "0ab7385f",
+  pl: "0957339e",
+  ar: "619e859b",
+  ur: "275b157a",
 };
 
 
@@ -323,7 +323,7 @@ const STRINGS = {
     neighborhood_label: "Neighborhood",
     neighborhood_placeholder: "Astoria, Kingsbridge Heights…",
     citywide: "Citywide",
-    affected_not_stated: "Affected area not stated in the notice",
+    affected_not_stated: "No affected area identified in this notice",
     community_district_short: "Community District {n}",
     venue_virtual: "Online or by phone",
     venue_in_person: "In person",
@@ -351,7 +351,7 @@ const STRINGS = {
     local_hearings_note: "Matched by affected place, not venue",
     citywide_hearings_group: "Citywide hearings",
     citywide_hearings_note: "These may affect every borough",
-    unlocated_hearings_group: "Affected area not stated",
+    unlocated_hearings_group: "No affected area identified in this notice",
     unlocated_hearings_note: "Kept visible instead of guessed or dropped",
     hearing_results_summary: "{n} hearings · {local} place-specific · {citywide} citywide · {unlocated} unlocated",
     no_hearings_window: "No hearings match this date and location. Try the next 30 days or Citywide / unlocated.",

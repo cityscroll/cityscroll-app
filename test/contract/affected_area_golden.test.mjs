@@ -11,6 +11,7 @@ const corpus = JSON.parse(await readFile(
   new URL("./fixtures/affected_area_golden.json", import.meta.url),
   "utf8",
 ));
+const noticeById = new Map(corpus.notices.map((notice) => [notice.row.request_id, notice]));
 
 function ratio(numerator, denominator) {
   return denominator ? numerator / denominator : 1;
@@ -114,6 +115,28 @@ test("Worker and browser fallback agree on every golden notice", () => {
       `${notice.row.request_id}: browser and Worker extraction drifted`,
     );
   }
+});
+
+test("real notice forms remain first-class affected-area evidence", () => {
+  const kent = affectedAreaFromRow(noticeById.get("20260428004").row);
+  assert.ok(kent.community_boards.includes("Community Board 1, Brooklyn"));
+  assert.ok(kent.addresses.some((address) => address.label === "289 Kent Avenue"));
+  assert.ok(kent.street_ranges.some((range) => range.label.startsWith("bounded by South 1st Street")));
+  assert.ok(kent.application_numbers.includes("C260087ZMK"));
+  assert.ok(kent.application_numbers.includes("26DCP046K"));
+
+  const bsa = affectedAreaFromRow(noticeById.get("20260723030").row);
+  assert.ok(bsa.tax_lots.some((lot) => lot.label === "Block 16124, Lot(s) 23, 76"));
+  assert.ok(bsa.addresses.some((address) => address.label === "90-01 Beach Channel Drive"));
+  assert.ok(!bsa.addresses.some((address) => address.label === "22 Reade Street"));
+
+  const monitorPoint = affectedAreaFromRow(noticeById.get("20260224010").row);
+  assert.ok(monitorPoint.project_names.includes("Monitor Point"));
+  assert.deepEqual(monitorPoint.boroughs, ["Brooklyn"]);
+
+  const newtownCreek = affectedAreaFromRow(noticeById.get("20251216019").row);
+  assert.ok(newtownCreek.project_names.includes("Newtown Creek"));
+  assert.deepEqual(newtownCreek.boroughs, ["Brooklyn", "Queens"]);
 });
 
 test("affected-area extraction clears the measured corpus quality floor", (context) => {

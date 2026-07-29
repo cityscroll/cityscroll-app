@@ -65,11 +65,18 @@ def hearing_payload() -> dict[str, object]:
                     "boroughs": ["Queens"],
                     "neighborhoods": ["Sunnyside"],
                     "community_districts": ["2"],
+                    "community_boards": ["Community Board 2, Queens"],
                     "addresses": [{
                         "label": "37-18 Queens Boulevard",
                         "borough": "Queens",
                         "neighborhood": "Sunnyside",
                     }],
+                    "street_ranges": [{
+                        "label": "Queens Boulevard between 39th Street and 43rd Street",
+                    }],
+                    "tax_lots": [{"label": "Block 123, Lot 45"}],
+                    "project_names": ["Sunnyside Yard plan"],
+                    "application_numbers": ["C250001ZMQ"],
                 },
                 "venue": {
                     "mode": "hybrid",
@@ -205,7 +212,10 @@ def verify_and_capture(page: Page, base_url: str, width: int) -> None:
     assert page.locator("#meetingsfeed").get_by_text("Sunnyside", exact=False).count() > 0
     assert page.locator("#meetingsfeed").get_by_text("120 Broadway", exact=False).count() > 0
     assert page.locator("#meetingsfeed").get_by_text("Citywide", exact=False).count() > 0
-    assert page.locator("#meetingsfeed").get_by_text("Affected area not stated", exact=False).count() > 0
+    assert page.locator("#meetingsfeed").get_by_text(
+        "No affected area identified in this notice",
+        exact=False,
+    ).count() > 0
 
     page.locator("#meetingsboro").select_option(label="Queens")
     page.locator("#meetingsfeed .hcard").first.wait_for(state="visible")
