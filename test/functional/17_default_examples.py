@@ -1,31 +1,9 @@
-"""The Money tab opens on a concrete selected notice (search()'s
-"auto-open the first result" — index.html:1020) so a first-time visitor sees what the tab
-does with zero clicks. Land and Staffing did not match that pattern: Land requires clicking
-into the tab before anything renders (fine — that's true of Money too, until you count that
-Money is the tab active on the very first paint), and Staffing's pSearch() flatly refuses to
-search at all with no typed keyword ("Try a title like…" / "Pick a role…", index.html:1616-
-1617) — there was no live-computed example to fall back to.
+"""Land and Staffing expose concrete data on a bare tab open.
 
-Investigating turned up a split: Land's list-render already auto-clicks its first row
-(landRenderList(), index.html — the 2026-06-26 "auto-open the first result" commit covered
-money/land/people-role/people-person list renders alike), so a bare #land hash already
-resolves to a populated #ldetail — confirmed empirically against these same fixtures before
-any code changed here. Staffing was the real gap: pSearchRoles()/pSearchPeople() never run
-without a keyword, so there was nothing for that auto-click to click.
-
-The fix (index.html's applyPeopleDefault()/defaultRoleTitle()) queries the payroll dataset
-for the single highest-headcount title (live, never hardcoded — computed the same way Land's
-"most recent" is computed from current_milestone_date DESC) and feeds it through the exact
-same pSearch() path a typed keyword or a "Try" chip would use, once, only when the tab opens
-with an empty #pkw and pmode="role" — a query-carrying deep link (#people?q=<title>) or the
-user typing before the fetch resolves both win over the default, matching Land's existing
-"an explicit boro/status/q param always overrides the default listing" behavior. The applied
-default deliberately does NOT decorate the address bar (mirrors updateHash()'s pre-existing
-"don't decorate a fresh default load" carve-out for bare Money) — sharing a bare #people link
-should keep showing #people, not silently pin to today's picked title forever.
-
-Hermetic (i18n_fixtures, no live network) — same fixture layer as
-test/functional/13_stray_english.py and 16_forecast_discoverability.py.
+Staffing is posting-first: a blank search is not a prerequisite. Its newest City Record
+appointments render immediately in reverse chronological order, while a query-carrying
+deep link refines the already-visible list. Hermetic fixture routes keep both guarantees in
+CI without live-network dependence.
 """
 import os
 import sys
@@ -67,11 +45,7 @@ def land_opens_on_a_populated_example(pw):
 
 
 def people_opens_on_a_populated_example(pw):
-    """BEFORE: bare #people showed "Try a title like…" / "Pick a role…" — no keyword, no
-    search, ever. AFTER: the highest-headcount title (live-queried, fixture picks "AGENCY
-    ATTORNEY" at n=120 over "ASSOCIATE ATTORNEY" at n=45) pre-selects, rendering both the
-    role list and its salary-band/career-ladder detail with zero clicks — same posture as
-    Land above, and the auto-pick doesn't decorate the address bar either."""
+    """A bare Staffing tab renders the newest appointment without a search."""
     failures = []
     browser = pw.chromium.launch()
     page = browser.new_context().new_page()
@@ -80,39 +54,39 @@ def people_opens_on_a_populated_example(pw):
     page.goto(f"{BASE}#people", timeout=30000)
     page.wait_for_load_state("load")
     page.wait_for_timeout(1500)
-    detail_text = page.locator("#pdetail").inner_text().strip()
-    if "Pick a role" in detail_text or not detail_text:
-        failures.append(f"bare #people still shows the empty prompt instead of an example — got: {detail_text!r}")
-    if "AGENCY ATTORNEY" not in detail_text:
-        failures.append(f"bare #people did not pre-select the highest-headcount fixture title — got: {detail_text!r}")
-    list_text = page.locator("#plist").inner_text().strip()
-    if "Try a title like" in list_text or not list_text:
-        failures.append(f"bare #people's role list stayed on the empty prompt — got: {list_text!r}")
+    first = page.locator("#staffing-notice-list .staffing-notice-card").first
+    first.wait_for(state="visible")
+    first_text = first.inner_text().strip()
+    if "RIVERA,ANA M." not in first_text:
+        failures.append(f"bare #people did not put the newest fixture first — got: {first_text!r}")
+    if page.locator("#staffing-notice-list .staffing-notice-card").count() != 4:
+        failures.append("bare #people did not render all four recent appointment fixtures")
     if page.evaluate("location.hash") != "#people":
-        failures.append("bare #people's default selection decorated the address bar")
-    kw_val = page.locator("#pkw").input_value()
-    if kw_val != "AGENCY ATTORNEY":
-        failures.append(f"#pkw field should surface the picked example (like a 'Try' chip does) — got: {kw_val!r}")
+        failures.append("bare #people's default feed decorated the address bar")
+    if page.locator("#staffing-query").input_value():
+        failures.append("bare #people unexpectedly requires or injects a search")
     browser.close()
     return failures
 
 
 def deep_link_still_overrides_the_default(pw):
-    """A query-carrying permalink (#people?q=<title>) must keep winning over the live-picked
-    default — the default only ever applies to a genuinely bare open."""
+    """A query-carrying permalink refines the visible notice feed."""
     failures = []
     browser = pw.chromium.launch()
     page = browser.new_context().new_page()
     install_routes(page)
 
-    page.goto(f"{BASE}#people?q=ASSOCIATE", timeout=30000)
+    page.goto(f"{BASE}#people?q=RODRIGUEZ", timeout=30000)
     page.wait_for_load_state("load")
     page.wait_for_timeout(1500)
-    kw_val = page.locator("#pkw").input_value()
-    if kw_val != "ASSOCIATE":
-        failures.append(f"#people?q=ASSOCIATE was overridden by the default — #pkw got: {kw_val!r}")
-    if page.evaluate("location.hash") != "#people?q=ASSOCIATE":
-        failures.append(f"#people?q=ASSOCIATE permalink was rewritten — got: {page.evaluate('location.hash')!r}")
+    query = page.locator("#staffing-query").input_value()
+    if query != "RODRIGUEZ":
+        failures.append(f"#people?q=RODRIGUEZ did not populate the list search — got: {query!r}")
+    rows = page.locator("#staffing-notice-list .staffing-notice-card")
+    if rows.count() != 1 or "RODRIGUEZ,LUIS A." not in rows.first.inner_text():
+        failures.append("the query permalink did not refine the appointment list to Rodriguez")
+    if page.evaluate("location.hash") != "#people?q=RODRIGUEZ":
+        failures.append(f"#people?q=RODRIGUEZ permalink was rewritten — got: {page.evaluate('location.hash')!r}")
     browser.close()
     return failures
 
