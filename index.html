@@ -597,6 +597,7 @@
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
 <script src="i18n.js?v=__I18N_ASSET_VERSION__"></script>
+<script defer src="beta_flags.js?v=1.0.0"></script>
 <script defer src="analytics.js?v=1.2.0"></script>
 <script src="nl_parse.js"></script>
 <script src="nl_deeplink.js"></script>
@@ -1215,12 +1216,12 @@ const PAYFY = "2025";
 // like feeds and confirm links should read crol-list.org, never *.workers.dev). Empty = fully
 // client-side: the NL box uses the on-device heuristic, Checkbook $-paid stays hidden, alerts
 // are preview-only. Every worker-backed feature falls back to static behavior if unreachable.
-const API = "https://api.crol-list.org";
+const API = window.CROL_API_ORIGIN || "https://api.crol-list.org";
 // The branded subdomain is young — resolvers with a stale NXDOMAIN (or flaky DNS) would
 // otherwise kill every worker feature. workerFetch() fails over to the workers.dev alias
 // and remembers which base worked for the rest of the session. Non-idempotent POSTs get no
 // timeout (an abort+retry could double-send); the DNS failure mode rejects immediately anyway.
-const API_FALLBACK = "https://crol-worker.crol-worker.workers.dev";
+const API_FALLBACK = window.CROL_API_ORIGIN || "https://crol-worker.crol-worker.workers.dev";
 let apiBase = API;
 async function workerFetch(path, opts, timeoutMs){
   const attempt = async (base) => {

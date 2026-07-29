@@ -143,3 +143,21 @@ id = "a7addee904774e7c90f9be447f927b20"
 [[kv_namespaces]]
 binding = "FEEDBACK"
 id = "75d85d23ec914d8ea44bc3e9bb540afd"
+
+# The beta Worker is a separate, manually deployed environment. Environment
+# bindings are non-inheritable, so this intentionally has no production KV,
+# D1, R2, Analytics Engine, Queue, cron, or secret configuration.
+[env.beta]
+routes = [
+  { pattern = "api-beta.crol-list.org", custom_domain = true },
+]
+workers_dev = true
+
+[env.beta.vars]
+DEPLOYMENT_CHANNEL = "beta"
+ALERTS_LIVE = "false"
+QUEUE_DIGESTS = "false"
+ANALYTICS_ENVIRONMENT = "preview"
+SOURCE_VAULT_ENABLED = "false"
+BOARD_HOOK_DRY = "true"
+CONFIRM_BASE = "https://api-beta.crol-list.org"

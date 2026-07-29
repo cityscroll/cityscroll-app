@@ -7,6 +7,7 @@
 <meta name="description" content="CROL-List's own usage, published: aggregate outcome counts for subscriptions, digests sent, notice-link clicks, and feed activity, refreshed regularly.">
 <link rel="canonical" href="https://crol-list.org/stats.html">
 <script src="i18n.js?v=__I18N_ASSET_VERSION__"></script>
+<script defer src="beta_flags.js?v=1.0.0"></script>
 <script defer src="analytics.js?v=1.2.0"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -399,7 +400,9 @@
   // Wire the switcher immediately — it must not wait on the fetch below, or clicking it
   // during the loading window would silently do nothing (found in manual verification).
   initSubpageLangSwitcher(paint);
-  const bases = ["https://api.crol-list.org", "https://crol-worker.crol-worker.workers.dev"];
+  const bases = window.CROL_API_ORIGIN
+    ? [window.CROL_API_ORIGIN]
+    : ["https://api.crol-list.org", "https://crol-worker.crol-worker.workers.dev"];
   for (const base of bases) {
     try {
       const r = await fetch(base + "/stats", { signal: AbortSignal.timeout(8000) });
