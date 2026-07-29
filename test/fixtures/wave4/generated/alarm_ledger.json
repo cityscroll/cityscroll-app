@@ -38,7 +38,7 @@
         "service_start": "https://www.checkbooknyc.com/"
       },
       "counterfactual": "The notice date is on or before the service start date.",
-      "language": "Review lead: the published dates or fields meet this rule. Human review is needed."
+      "language": "Review lead: published dates or fields meet this rule."
     },
     {
       "case_id": "date-order-near",
@@ -55,7 +55,7 @@
         "service_start": "https://www.checkbooknyc.com/"
       },
       "counterfactual": "The notice date is on or before the service start date.",
-      "language": "Rule checked; the published facts do not meet this review-lead threshold."
+      "language": "Published facts do not trigger this rule."
     },
     {
       "case_id": "date-order-missing",
@@ -72,7 +72,7 @@
       "sources": {
         "service_start": "https://www.checkbooknyc.com/"
       },
-      "language": "Not enough published evidence to evaluate this review lead."
+      "language": "No published notice date found for this matter."
     },
     {
       "case_id": "expired-before-process-positive",
@@ -92,7 +92,7 @@
         "negotiation_start": "https://www.checkbooknyc.com/"
       },
       "counterfactual": "The intent notice is published before negotiations begin.",
-      "language": "Review lead: the published dates or fields meet this rule. Human review is needed."
+      "language": "Review lead: published dates or fields meet this rule."
     },
     {
       "case_id": "expired-before-process-near",
@@ -109,7 +109,7 @@
         "negotiation_start": "https://www.checkbooknyc.com/"
       },
       "counterfactual": "The intent notice is published before negotiations begin.",
-      "language": "Rule checked; the published facts do not meet this review-lead threshold."
+      "language": "Published facts do not trigger this rule."
     },
     {
       "case_id": "expired-before-process-missing",
@@ -126,7 +126,7 @@
       "sources": {
         "intent_notice_date": "https://a856-cityrecord.nyc.gov/"
       },
-      "language": "Not enough published evidence to evaluate this review lead."
+      "language": "No published negotiation start date found for this matter."
     },
     {
       "case_id": "future-competition-positive",
@@ -146,7 +146,7 @@
         "successor_notice_date": "https://a856-cityrecord.nyc.gov/"
       },
       "counterfactual": "A successor notice is published before the bridge or extension ends.",
-      "language": "Review lead: the published dates or fields meet this rule. Human review is needed."
+      "language": "Review lead: published dates or fields meet this rule."
     },
     {
       "case_id": "future-competition-near",
@@ -163,7 +163,7 @@
         "successor_notice_date": "https://a856-cityrecord.nyc.gov/"
       },
       "counterfactual": "A successor notice is published before the bridge or extension ends.",
-      "language": "Rule checked; the published facts do not meet this review-lead threshold."
+      "language": "Published facts do not trigger this rule."
     },
     {
       "case_id": "future-competition-missing",
@@ -180,7 +180,7 @@
       "sources": {
         "successor_notice_date": "https://a856-cityrecord.nyc.gov/"
       },
-      "language": "Not enough published evidence to evaluate this review lead."
+      "language": "No published bridge end date found for this matter."
     },
     {
       "case_id": "contestability-package-positive",
@@ -201,7 +201,7 @@
         "required_form_present": "https://a856-cityrecord.nyc.gov/"
       },
       "counterfactual": "The record shows more than one responsive bid, the notified count, and required forms.",
-      "language": "Review lead: the published dates or fields meet this rule. Human review is needed."
+      "language": "Review lead: published dates or fields meet this rule."
     },
     {
       "case_id": "contestability-package-near",
@@ -220,7 +220,7 @@
         "required_form_present": "https://a856-cityrecord.nyc.gov/"
       },
       "counterfactual": "The record shows more than one responsive bid, the notified count, and required forms.",
-      "language": "Rule checked; the published facts do not meet this review-lead threshold."
+      "language": "Published facts do not trigger this rule."
     },
     {
       "case_id": "contestability-package-missing",
@@ -237,7 +237,7 @@
         "required_form_present": null
       },
       "sources": {},
-      "language": "Not enough published evidence to evaluate this review lead."
+      "language": "No published responsive bid count or required form status found for this matter."
     },
     {
       "case_id": "broken-succession-positive",
@@ -258,7 +258,7 @@
         "successor_start": "https://www.checkbooknyc.com/"
       },
       "counterfactual": "The successor starts before the extension ends, or a transition rationale is published.",
-      "language": "Review lead: the published dates or fields meet this rule. Human review is needed."
+      "language": "Review lead: published dates or fields meet this rule."
     },
     {
       "case_id": "broken-succession-near",
@@ -277,7 +277,7 @@
         "amendment_rationale": "https://a856-cityrecord.nyc.gov/"
       },
       "counterfactual": "The successor starts before the extension ends, or a transition rationale is published.",
-      "language": "Rule checked; the published facts do not meet this review-lead threshold."
+      "language": "Published facts do not trigger this rule."
     },
     {
       "case_id": "broken-succession-missing",
@@ -295,7 +295,7 @@
       "sources": {
         "extension_end": "https://www.checkbooknyc.com/"
       },
-      "language": "Not enough published evidence to evaluate this review lead."
+      "language": "No published successor start date found for this matter."
     }
   ]
 }

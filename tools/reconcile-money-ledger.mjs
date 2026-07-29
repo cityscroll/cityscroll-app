@@ -3,8 +3,8 @@ import { readJson } from "./lib/wave4-build.mjs";
 import { summarizeMoneyEvents } from "../worker/src/lib/money_events.mjs";
 
 if (!process.argv.includes("--fixtures")) throw new Error("use --fixtures for the bounded reconciliation");
-const source = readJson("data/wave4/money-events.json");
-const ledger = readJson("data/money_ledger.json");
+const source = readJson("test/fixtures/wave4/money-events.json");
+const ledger = readJson("test/fixtures/wave4/generated/money_ledger.json");
 
 for (const process of ledger.processes) {
   const events = source.events.filter((event) => event.process_id === process.process_id);

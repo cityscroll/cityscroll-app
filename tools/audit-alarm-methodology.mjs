@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readJson } from "./lib/wave4-build.mjs";
 
-const ledger = readJson("data/alarm_ledger.json");
+const ledger = readJson("test/fixtures/wave4/generated/alarm_ledger.json");
 const text = JSON.stringify(ledger);
 assert.equal(ledger.methodology.human_review_required, true);
 assert.equal(ledger.methodology.automated_verdict, false);

@@ -8,8 +8,8 @@ import {
   evaluateForecasts
 } from "../worker/src/lib/forecast_calibration.mjs";
 
-const fixtures = JSON.parse(readFileSync(new URL("../data/wave4/forecast-fixtures.json", import.meta.url)));
-const bundle = JSON.parse(readFileSync(new URL("../data/forecast_bundle.json", import.meta.url)));
+const fixtures = JSON.parse(readFileSync(new URL("./fixtures/wave4/forecast-fixtures.json", import.meta.url)));
+const bundle = JSON.parse(readFileSync(new URL("./fixtures/wave4/generated/forecast_bundle.json", import.meta.url)));
 const valid = fixtures.predictions.filter((prediction) => !prediction.leakage_fixture);
 
 test("historical cutoffs reject features observed in the future", () => {

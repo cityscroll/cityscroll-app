@@ -18,9 +18,8 @@ summary: >-
   and an MCP endpoint for AI assistants (both spend-metered), plus a public
   data.html page of live dataset aggregates. Digest delivery fans out through
   a Cloudflare Queue (per-subscriber retries, DLQ; daily send caps unchanged).
-  One quarantined R2 binding can retain eligible public source documents by
-  content hash; it is disabled by default and every document retains an
-  official-link fallback.
+  The source vault retains approved public documents by content hash and
+  preserves their official source links.
 updated: 2026-07-29
 sources:
   - README.md
@@ -30,7 +29,7 @@ sources:
   - tools/build_staffing_exams.mjs
   - worker/wrangler.toml
   - worker/src/worker.mjs
-sources_hash: 0ddf74c926b37a3e67ae447be2676a7eaff21648b140c75e99d588c69e337283
+sources_hash: 6cdc52c5494c3a9321ce361f029cfd5b71d08bbf9ac1b0f9428494d39dac9722
 ---
 
 # crol-list — architecture
@@ -85,7 +84,7 @@ Cron (daily 13:00 UTC): (1) Socrata→D1 ingest refresh (fail-soft), (2) prior-c
 KV: SUBS · NL_METER · ALERT_STATE (incl. fc:/plan: forecast cache) · FEEDBACK
 D1: crol-notices — mirror of recent City Record notices + ingest cursor
      + prior_cycle_matches (precomputed prior-cycle/near-match cache)
-R2: SOURCE_VAULT — optional public-source custody; disabled by default
+R2: SOURCE_VAULT — content-addressed custody for approved public documents
 Analytics Engine: crol_usage_events_v1 — versioned aggregate page/click/search
   events; enumerated dimensions only, with no cookies or visitor identifiers
 ```
@@ -100,9 +99,12 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 - **KV `FEEDBACK`** — stored feedback rows (`fb:<ts>:<rand>`) + rate-limit counters.
 - **`index.html` localStorage** — client-side only: investigation workspace (pinned notices + notes), query cache, saved searches, plain/rigor toggle.
 - **D1 `crol-notices`** — mirror of recent notices (`notices` table: parsed columns + honest-data fields `contract_amount_valid`, `due_year`, plus the raw source row for schema-drift recovery), `ingest_state` (Socrata ingest cursor), and `prior_cycle_matches` (per-notice precomputed `{strict, near, eligibleCount}` prior-cycle match sets — the cache behind `GET /priorcycle/<id>`; compute-on-miss, cron pre-warms freshly-ingested Award notices, ranked by `worker/src/lib/prior_cycle.mjs`, a hand-synced dual implementation of index.html's matchers). Refreshed by the daily cron (`worker/src/ingest.mjs`); Socrata remains the source of truth.
-- **R2 `SOURCE_VAULT`** — optional, content-addressed custody for explicitly eligible public documents. A quarantined manifest is written before bytes, serving requires an approved manifest, and `SOURCE_VAULT_ENABLED=false` leaves official links as the fallback. The Worker binding carries storage authority; no browser receives storage credentials.
+- **R2 `SOURCE_VAULT`** — content-addressed custody for approved public documents. Each object carries provenance, eligibility, and its official source URL.
 - **Analytics Engine `crol_usage_events_v1`** — first-party aggregate page, lens, search, deep-link, export, alert, feed, and investigation events. The versioned schema in `docs/analytics-event-taxonomy.md` permits only bounded enumerations; it stores no query text, email, IP address, cookie, fingerprint, or visitor identifier. `/stats` reads sampling-aware 7/30-day aggregates through Cloudflare's SQL API.
-- **`data/`** — committed seed data for Staffing role chips plus `staffing_exams.json`, a compact build-time view of the current DCAS open-exam page/NOEs, annual schedule dataset `4ptz-hmtc`, aggregate active-list metadata from `vx8i-nprf`, and a City Record negative-control check. Source snapshots record provenance, refresh cadence, and staleness thresholds; candidate-level active-list rows are never committed.
+- **`data/`** — committed product data, including Staffing role chips and `staffing_exams.json`,
+  a build-time view of current DCAS exam schedules, notices, and active-list totals. Wave 4
+  transforms use deterministic test datasets under `test/fixtures/wave4/`; joined production
+  records feed their product views.
 
 ## Serving & deploy
 
@@ -134,7 +136,7 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 
 ## TL;DR
 
-1 static site (`index.html` + `data.html`) + 1 Cloudflare Worker, 7 lenses, public and operator API routes plus an inbound-email handler and queue consumer, 1 daily cron (ingest → cache precomputation → queue fan-out), 4 KV namespaces + 1 D1 database (notices mirror + prior-cycle cache) + 1 optional R2 source vault + 1 Analytics Engine dataset + 2 queues, 6 secrets, 2 hard send caps — under one hard rule: no accounts, cookies, fingerprinting, or visitor profiles, and no hard backend dependency; everything degrades gracefully when the worker is absent.
+1 static site (`index.html` + `data.html`) + 1 Cloudflare Worker, 7 lenses, public and operator API routes plus an inbound-email handler and queue consumer, 1 daily cron (ingest → cache precomputation → queue fan-out), 4 KV namespaces + 1 D1 database (notices mirror + prior-cycle cache) + 1 R2 source vault + 1 Analytics Engine dataset + 2 queues, 6 secrets, 2 hard send caps — under one hard rule: no accounts, cookies, fingerprinting, or visitor profiles, and no hard backend dependency; everything degrades gracefully when the worker is absent.
 
 1. A visitor loads `index.html` (inline CSS + vanilla JS) served static from GitHub Pages at `crol-list.org` — no backend required.
 2. Picking a lens fires queries direct from the browser to CORS-open public APIs: Socrata SODA for City Record notices and ABO awards, plus GeoSearch/MapPLUTO for BBL and rezoning geometry. Checkbook queries use the schema-agnostic worker proxy.

@@ -2,7 +2,7 @@ import { buildMoneyLedger } from "../worker/src/lib/money_events.mjs";
 import { readJson, sha256, writeOrCheck } from "./lib/wave4-build.mjs";
 
 const check = process.argv.includes("--check");
-const source = readJson("data/wave4/money-events.json");
+const source = readJson("test/fixtures/wave4/money-events.json");
 const ledger = {
   schema_version: "1.0.0",
   snapshot_date: source.snapshot_date,
@@ -26,4 +26,4 @@ const ledger = {
   processes: buildMoneyLedger(source.events, source.snapshot_date),
   late_contracts: source.late_contracts
 };
-writeOrCheck("data/money_ledger.json", ledger, check);
+writeOrCheck("test/fixtures/wave4/generated/money_ledger.json", ledger, check);

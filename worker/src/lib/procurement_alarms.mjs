@@ -1,5 +1,18 @@
 const day = (value) => value ? Date.parse(`${value}T00:00:00Z`) / 86400000 : null;
 
+const fieldLabels = {
+  notice_date: "notice date",
+  service_start: "service start date",
+  intent_notice_date: "intent notice date",
+  negotiation_start: "negotiation start date",
+  bridge_end: "bridge end date",
+  successor_notice_date: "successor notice date",
+  responsive_bid_count: "responsive bid count",
+  required_form_present: "required form status",
+  extension_end: "extension end date",
+  successor_start: "successor start date"
+};
+
 const definitions = {
   date_order: {
     title: "Publication follows service start",
@@ -49,7 +62,7 @@ export function evaluateAlarm(ruleId, record) {
       missing_fields: missing,
       facts: record.facts,
       sources: record.sources,
-      language: "Not enough published evidence to evaluate this review lead."
+      language: `No published ${missing.map((field) => fieldLabels[field] || field).join(" or ")} found for this matter.`
     };
   }
   const fired = rule.evaluate(record.facts);
@@ -63,8 +76,8 @@ export function evaluateAlarm(ruleId, record) {
     sources: record.sources,
     counterfactual: rule.counterfactual,
     language: fired
-      ? "Review lead: the published dates or fields meet this rule. Human review is needed."
-      : "Rule checked; the published facts do not meet this review-lead threshold."
+      ? "Review lead: published dates or fields meet this rule."
+      : "Published facts do not trigger this rule."
   };
 }
 

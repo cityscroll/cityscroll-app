@@ -7,7 +7,7 @@ import {
   validateCoverageEntry
 } from "../worker/src/lib/coverage_ledger.mjs";
 
-const ledger = JSON.parse(readFileSync(new URL("../data/coverage_ledger.json", import.meta.url)));
+const ledger = JSON.parse(readFileSync(new URL("./fixtures/wave4/generated/coverage_ledger.json", import.meta.url)));
 const entries = ledger.processes.flatMap((process) => process.stages);
 
 test("every empty coverage field has a typed missingness reason", () => {

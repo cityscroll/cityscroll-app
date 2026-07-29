@@ -3,8 +3,8 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { ALARM_RULES, evaluateAlarm, evaluateAlarmFixtures } from "../worker/src/lib/procurement_alarms.mjs";
 
-const fixtures = JSON.parse(readFileSync(new URL("../data/wave4/alarm-fixtures.json", import.meta.url)));
-const ledger = JSON.parse(readFileSync(new URL("../data/alarm_ledger.json", import.meta.url)));
+const fixtures = JSON.parse(readFileSync(new URL("./fixtures/wave4/alarm-fixtures.json", import.meta.url)));
+const ledger = JSON.parse(readFileSync(new URL("./fixtures/wave4/generated/alarm_ledger.json", import.meta.url)));
 
 test("all five forensic rule families have positive, near-miss, and missing-data fixtures", () => {
   for (const rule of Object.keys(ALARM_RULES)) {
@@ -35,6 +35,7 @@ test("missing evidence produces an explicit insufficient state", () => {
   const result = evaluateAlarm(record.rule, record);
   assert.deepEqual(result.missing_fields, ["notice_date"]);
   assert.equal(result.status, "insufficient");
+  assert.equal(result.language, "No published notice date found for this matter.");
 });
 
 test("methodology language never declares wrongdoing", () => {

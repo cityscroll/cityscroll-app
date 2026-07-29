@@ -9,8 +9,8 @@ import {
   validateDeliveryEvent
 } from "../worker/src/lib/delivery_events.mjs";
 
-const source = JSON.parse(readFileSync(new URL("../data/wave4/delivery-events.json", import.meta.url)));
-const bundle = JSON.parse(readFileSync(new URL("../data/delivery_events.json", import.meta.url)));
+const source = JSON.parse(readFileSync(new URL("./fixtures/wave4/delivery-events.json", import.meta.url)));
+const bundle = JSON.parse(readFileSync(new URL("./fixtures/wave4/generated/delivery_events.json", import.meta.url)));
 const events = bundle.processes.flatMap((process) => process.events);
 
 test("two public source families implement the bounded adapter contract", () => {

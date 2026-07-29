@@ -84,6 +84,14 @@ const EVENT_SPECS = Object.freeze({
     details: ["create", "copy"],
     surfaces: ["home", "api"],
   },
+  action_opened: {
+    details: ["direct", "official-handoff"],
+    surfaces: ["home"],
+  },
+  outcome_recorded: {
+    details: ["submitted", "attended", "bid", "won", "not-useful"],
+    surfaces: ["home"],
+  },
 });
 
 const NONE = "none";

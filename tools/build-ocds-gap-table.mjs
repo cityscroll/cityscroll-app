@@ -1,10 +1,10 @@
 import { readJson, sha256, writeOrCheck } from "./lib/wave4-build.mjs";
 
 const check = process.argv.includes("--check");
-const spine = readJson("data/process_spine.json");
+const spine = readJson("test/fixtures/wave4/generated/process_spine.json");
 let ledger = null;
 try {
-  ledger = readJson("data/coverage_ledger.json");
+  ledger = readJson("test/fixtures/wave4/generated/coverage_ledger.json");
 } catch {}
 const stages = [
   {
@@ -49,7 +49,7 @@ const stages = [
   }
 ];
 
-writeOrCheck("data/ocds-gap-table.json", {
+writeOrCheck("test/fixtures/wave4/generated/ocds-gap-table.json", {
   schema_version: "1.0.0",
   snapshot_date: spine.snapshot_date,
   source_spine_hash: sha256(spine),

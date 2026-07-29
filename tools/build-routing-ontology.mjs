@@ -2,8 +2,8 @@ import { readJson, sha256, writeOrCheck } from "./lib/wave4-build.mjs";
 import { routeNotice, validateRoutingOntology } from "../worker/src/lib/declared_interest_routing.mjs";
 
 const check = process.argv.includes("--check");
-const research = readJson("data/subscriber-research/latest.json");
-const fixtures = readJson("data/wave4/routing-fixtures.json");
+const research = readJson("test/fixtures/wave4/subscriber-research.json");
+const fixtures = readJson("test/fixtures/wave4/routing-fixtures.json");
 const ontology = validateRoutingOntology({
   schema_version: "1.0.0",
   snapshot_date: fixtures.snapshot_date,
@@ -25,4 +25,4 @@ const ontology = validateRoutingOntology({
     agency_enrichment_required: false
   }))
 });
-writeOrCheck("data/routing_ontology.json", ontology, check);
+writeOrCheck("test/fixtures/wave4/generated/routing_ontology.json", ontology, check);

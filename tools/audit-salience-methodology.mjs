@@ -2,8 +2,8 @@ import assert from "node:assert/strict";
 import { readJson } from "./lib/wave4-build.mjs";
 import { buildReviewQueue } from "../worker/src/lib/review_queue.mjs";
 
-const fixtures = readJson("data/wave4/review-fixtures.json");
-const bundle = readJson("data/review_queue.json");
+const fixtures = readJson("test/fixtures/wave4/review-fixtures.json");
+const bundle = readJson("test/fixtures/wave4/generated/review_queue.json");
 assert.deepEqual(bundle.queue, buildReviewQueue(fixtures.records));
 assert.equal(bundle.methodology.human_review_required, true);
 assert.ok(bundle.methodology.blind_spots.length >= 3);

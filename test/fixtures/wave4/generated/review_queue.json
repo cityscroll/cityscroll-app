@@ -27,9 +27,9 @@
       "browser_history"
     ],
     "blind_spots": [
-      "Published records may omit outreach, internal approvals, or delivery facts.",
-      "Amount percentiles are meaningful only within the stated source coverage.",
-      "A high or low score is not an editorial conclusion."
+      "Source coverage is printed beside every queue snapshot.",
+      "Amount percentiles use that declared source coverage.",
+      "Review leads organize human attention; they are not findings."
     ],
     "human_review_required": true
   },
@@ -95,7 +95,7 @@
       ],
       "investigation_href": "#investigation",
       "label": "Review priority",
-      "caveat": "This score orders records for human review. It does not determine public interest or wrongdoing.",
+      "caveat": "Review leads organize human attention; they are not findings.",
       "rank": 1
     },
     {
@@ -158,7 +158,7 @@
       ],
       "investigation_href": "#investigation",
       "label": "Review priority",
-      "caveat": "This score orders records for human review. It does not determine public interest or wrongdoing.",
+      "caveat": "Review leads organize human attention; they are not findings.",
       "rank": 2
     },
     {
@@ -218,7 +218,7 @@
       ],
       "investigation_href": "#investigation",
       "label": "Review priority",
-      "caveat": "This score orders records for human review. It does not determine public interest or wrongdoing.",
+      "caveat": "Review leads organize human attention; they are not findings.",
       "rank": 3
     }
   ]

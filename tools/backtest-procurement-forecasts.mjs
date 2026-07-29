@@ -3,7 +3,7 @@ import { readJson, sha256, writeOrCheck } from "./lib/wave4-build.mjs";
 
 if (!process.argv.includes("--temporal-split")) throw new Error("--temporal-split is required");
 const check = process.argv.includes("--check");
-const source = readJson("data/wave4/forecast-fixtures.json");
+const source = readJson("test/fixtures/wave4/forecast-fixtures.json");
 const valid = source.predictions.filter((prediction) => !prediction.leakage_fixture);
 const metrics = evaluateForecasts(valid);
 const gate = calibrationGate(metrics);
@@ -17,7 +17,7 @@ const eligibleForecasts = valid
     coverage: prediction.coverage_ratio
   }));
 
-writeOrCheck("data/forecast_bundle.json", {
+writeOrCheck("test/fixtures/wave4/generated/forecast_bundle.json", {
   schema_version: "1.0.0",
   snapshot_date: source.snapshot_date,
   model_version: source.model_version,

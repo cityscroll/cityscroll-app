@@ -3,7 +3,7 @@ import { readJson } from "./lib/wave4-build.mjs";
 import { inspectDocument, sourceEligibility } from "../worker/src/source_vault.mjs";
 
 if (!process.argv.includes("--fixtures")) throw new Error("use --fixtures for the bounded source policy audit");
-const fixtures = readJson("data/wave4/source-vault-fixtures.json");
+const fixtures = readJson("test/fixtures/wave4/source-vault-fixtures.json");
 for (const fixture of fixtures.cases) {
   const eligibility = sourceEligibility(fixture.url);
   if (fixture.expected === "eligible") assert.equal(eligibility.eligible, true, fixture.id);

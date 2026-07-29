@@ -2,7 +2,7 @@ import { processEnvelope, eventId, indexProcessSpine, PROCESS_SPINE_SCHEMA_VERSI
 import { readJson, sha256, writeOrCheck } from "./lib/wave4-build.mjs";
 
 const check = process.argv.includes("--check");
-const source = readJson("data/wave4/source-events.json");
+const source = readJson("test/fixtures/wave4/source-events.json");
 const sourceToEvent = new Map(source.events.map((row) => [row.source_key, eventId(row.source_system, row.source_key)]));
 
 const events = source.events.map((row) => processEnvelope(row, sha256(row.payload), {
@@ -23,7 +23,7 @@ const bundle = {
   events
 };
 indexProcessSpine(bundle);
-writeOrCheck("data/process_spine.json", bundle, check);
+writeOrCheck("test/fixtures/wave4/generated/process_spine.json", bundle, check);
 
 const unresolved = {
   schema_version: "1.0.0",
@@ -40,4 +40,4 @@ const unresolved = {
       decision: "human_review_required"
     }))
 };
-writeOrCheck("data/unresolved-joins.json", unresolved, check);
+writeOrCheck("test/fixtures/wave4/generated/unresolved-joins.json", unresolved, check);

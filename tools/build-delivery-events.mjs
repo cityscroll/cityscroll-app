@@ -9,7 +9,7 @@ import {
 import { readJson, sha256, writeOrCheck } from "./lib/wave4-build.mjs";
 
 const check = process.argv.includes("--check");
-const source = readJson("data/wave4/delivery-events.json");
+const source = readJson("test/fixtures/wave4/delivery-events.json");
 const events = [
   ...source.mta_capital_dashboard.map(adaptMtaCapitalRow),
   ...source.ddc_project_data.map(adaptDdcProjectRow),
@@ -19,7 +19,7 @@ const events = [
 ];
 const processIds = [...new Set(events.map((event) => event.process_id))];
 
-writeOrCheck("data/delivery_events.json", {
+writeOrCheck("test/fixtures/wave4/generated/delivery_events.json", {
   schema_version: "1.0.0",
   snapshot_date: source.snapshot_date,
   source_snapshot_hash: sha256(source),

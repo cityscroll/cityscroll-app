@@ -3,9 +3,9 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { indexProcessSpine, processEnvelope } from "../worker/src/lib/process_spine.mjs";
 
-const spine = JSON.parse(readFileSync(new URL("../data/process_spine.json", import.meta.url)));
-const unresolved = JSON.parse(readFileSync(new URL("../data/unresolved-joins.json", import.meta.url)));
-const gaps = JSON.parse(readFileSync(new URL("../data/ocds-gap-table.json", import.meta.url)));
+const spine = JSON.parse(readFileSync(new URL("./fixtures/wave4/generated/process_spine.json", import.meta.url)));
+const unresolved = JSON.parse(readFileSync(new URL("./fixtures/wave4/generated/unresolved-joins.json", import.meta.url)));
+const gaps = JSON.parse(readFileSync(new URL("./fixtures/wave4/generated/ocds-gap-table.json", import.meta.url)));
 
 test("canonical events round-trip through their native source key", () => {
   const { byProcess, bySource } = indexProcessSpine(spine);

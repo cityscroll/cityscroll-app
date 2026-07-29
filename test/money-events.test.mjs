@@ -3,8 +3,8 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { buildMoneyLedger, summarizeMoneyEvents, validateMoneyEvent } from "../worker/src/lib/money_events.mjs";
 
-const source = JSON.parse(readFileSync(new URL("../data/wave4/money-events.json", import.meta.url)));
-const ledger = JSON.parse(readFileSync(new URL("../data/money_ledger.json", import.meta.url)));
+const source = JSON.parse(readFileSync(new URL("./fixtures/wave4/money-events.json", import.meta.url)));
+const ledger = JSON.parse(readFileSync(new URL("./fixtures/wave4/generated/money_ledger.json", import.meta.url)));
 
 test("award, registration, amendments, payments, and reversals stay typed", () => {
   for (const event of source.events) validateMoneyEvent(event);

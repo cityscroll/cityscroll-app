@@ -3,9 +3,9 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { routeNotice, validateRoutingOntology } from "../worker/src/lib/declared_interest_routing.mjs";
 
-const fixtures = JSON.parse(readFileSync(new URL("../data/wave4/routing-fixtures.json", import.meta.url)));
-const ontology = JSON.parse(readFileSync(new URL("../data/routing_ontology.json", import.meta.url)));
-const research = JSON.parse(readFileSync(new URL("../data/subscriber-research/latest.json", import.meta.url)));
+const fixtures = JSON.parse(readFileSync(new URL("./fixtures/wave4/routing-fixtures.json", import.meta.url)));
+const ontology = JSON.parse(readFileSync(new URL("./fixtures/wave4/generated/routing_ontology.json", import.meta.url)));
+const research = JSON.parse(readFileSync(new URL("./fixtures/wave4/subscriber-research.json", import.meta.url)));
 
 test("every route states its declared rule and public inputs", () => {
   for (const fixture of fixtures.routes) {

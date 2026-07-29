@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readJson } from "./lib/wave4-build.mjs";
 
-const bundle = readJson("data/forecast_bundle.json");
+const bundle = readJson("test/fixtures/wave4/generated/forecast_bundle.json");
 assert.equal(bundle.split.kind, "monthly_temporal");
 assert.equal(bundle.split.future_information_allowed, false);
 assert.ok(bundle.model_version);

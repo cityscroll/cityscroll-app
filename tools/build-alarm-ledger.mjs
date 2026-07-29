@@ -2,9 +2,9 @@ import { evaluateAlarmFixtures } from "../worker/src/lib/procurement_alarms.mjs"
 import { readJson, sha256, writeOrCheck } from "./lib/wave4-build.mjs";
 
 const check = process.argv.includes("--check");
-const fixtures = readJson("data/wave4/alarm-fixtures.json");
+const fixtures = readJson("test/fixtures/wave4/alarm-fixtures.json");
 const evaluations = evaluateAlarmFixtures(fixtures.cases);
-writeOrCheck("data/alarm_ledger.json", {
+writeOrCheck("test/fixtures/wave4/generated/alarm_ledger.json", {
   schema_version: "1.0.0",
   snapshot_date: fixtures.snapshot_date,
   source_snapshot_hash: sha256(fixtures),

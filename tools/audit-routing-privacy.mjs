@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import { readJson } from "./lib/wave4-build.mjs";
 
-const ontology = readJson("data/routing_ontology.json");
-const research = readJson("data/subscriber-research/latest.json");
+const ontology = readJson("test/fixtures/wave4/generated/routing_ontology.json");
+const research = readJson("test/fixtures/wave4/subscriber-research.json");
 assert.equal(ontology.profile_storage, false);
 assert.deepEqual(ontology.behavioral_inputs, []);
 assert.ok(ontology.excluded_inferences.includes("browser_history"));

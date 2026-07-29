@@ -3,8 +3,8 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { buildReviewQueue, reviewComponents, scoreReviewRecord } from "../worker/src/lib/review_queue.mjs";
 
-const fixtures = JSON.parse(readFileSync(new URL("../data/wave4/review-fixtures.json", import.meta.url)));
-const bundle = JSON.parse(readFileSync(new URL("../data/review_queue.json", import.meta.url)));
+const fixtures = JSON.parse(readFileSync(new URL("./fixtures/wave4/review-fixtures.json", import.meta.url)));
+const bundle = JSON.parse(readFileSync(new URL("./fixtures/wave4/generated/review_queue.json", import.meta.url)));
 
 test("every ordering decomposes and reproduces from visible source facts", () => {
   assert.deepEqual(buildReviewQueue(fixtures.records), bundle.queue);
@@ -35,5 +35,5 @@ test("methodology ranks review effort without predicting scandal", () => {
   assert.equal(bundle.methodology.label, "Review priority");
   assert.equal(bundle.methodology.human_review_required, true);
   assert.doesNotMatch(JSON.stringify(bundle), /\b(is of public interest|misconduct occurred|corrupt|fraudulent|guilty)\b/i);
-  assert.ok(bundle.queue.every((record) => /does not determine public interest/.test(record.caveat)));
+  assert.ok(bundle.queue.every((record) => record.caveat === "Review leads organize human attention; they are not findings."));
 });

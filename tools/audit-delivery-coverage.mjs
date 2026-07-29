@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readJson } from "./lib/wave4-build.mjs";
 
 if (!process.argv.includes("--fixtures")) throw new Error("use --fixtures for the bounded adapter audit");
-const bundle = readJson("data/delivery_events.json");
+const bundle = readJson("test/fixtures/wave4/generated/delivery_events.json");
 assert.deepEqual(bundle.coverage.adapter_families, ["mta_capital_dashboard", "nyc_ddc_project_data"]);
 const events = bundle.processes.flatMap((process) => process.events);
 assert.ok(events.some((event) => event.evidence_level === "direct_acceptance"));

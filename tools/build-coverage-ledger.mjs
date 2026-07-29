@@ -2,7 +2,7 @@ import { aggregateCoverage, validateCoverageEntry } from "../worker/src/lib/cove
 import { readJson, sha256, writeOrCheck } from "./lib/wave4-build.mjs";
 
 const check = process.argv.includes("--check");
-const spine = readJson("data/process_spine.json");
+const spine = readJson("test/fixtures/wave4/generated/process_spine.json");
 const byProcess = new Map();
 for (const event of spine.events) {
   const events = byProcess.get(event.process_id) || [];
@@ -85,4 +85,4 @@ const ledger = {
   aggregate: aggregateCoverage(entries)
 };
 
-writeOrCheck("data/coverage_ledger.json", ledger, check);
+writeOrCheck("test/fixtures/wave4/generated/coverage_ledger.json", ledger, check);

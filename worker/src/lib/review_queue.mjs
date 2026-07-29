@@ -50,7 +50,7 @@ export function scoreReviewRecord(record) {
     source_urls: record.source_urls,
     investigation_href: record.investigation_href,
     label: "Review priority",
-    caveat: "This score orders records for human review. It does not determine public interest or wrongdoing."
+    caveat: "Review leads organize human attention; they are not findings."
   };
 }
 

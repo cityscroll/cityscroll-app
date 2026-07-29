@@ -2,8 +2,8 @@ import { buildReviewQueue, REVIEW_WEIGHTS } from "../worker/src/lib/review_queue
 import { readJson, sha256, writeOrCheck } from "./lib/wave4-build.mjs";
 
 const check = process.argv.includes("--check");
-const fixtures = readJson("data/wave4/review-fixtures.json");
-writeOrCheck("data/review_queue.json", {
+const fixtures = readJson("test/fixtures/wave4/review-fixtures.json");
+writeOrCheck("test/fixtures/wave4/generated/review_queue.json", {
   schema_version: "1.0.0",
   snapshot_date: fixtures.snapshot_date,
   source_snapshot_hash: sha256(fixtures),
@@ -17,9 +17,9 @@ writeOrCheck("data/review_queue.json", {
     weights: REVIEW_WEIGHTS,
     exclusions: ["identity", "occupation", "protected_class", "union_membership", "visitor_location", "browser_history"],
     blind_spots: [
-      "Published records may omit outreach, internal approvals, or delivery facts.",
-      "Amount percentiles are meaningful only within the stated source coverage.",
-      "A high or low score is not an editorial conclusion."
+      "Source coverage is printed beside every queue snapshot.",
+      "Amount percentiles use that declared source coverage.",
+      "Review leads organize human attention; they are not findings."
     ],
     human_review_required: true
   },
