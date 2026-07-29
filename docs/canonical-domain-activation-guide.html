@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CityScroll — Final Domain Activation</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17211d;
+      --muted: #58655f;
+      --paper: #f7f4ed;
+      --card: #fffefa;
+      --line: #d8d4ca;
+      --green: #145f42;
+      --green-soft: #dff4e9;
+      --blue: #265b91;
+      --blue-soft: #e7f1fb;
+      --amber: #8b5911;
+      --amber-soft: #fff0cc;
+      --red: #8b3029;
+      --red-soft: #fae8e5;
+      --shadow: 0 16px 40px rgba(31, 45, 38, .09);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--paper); }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 92% 3%, rgba(38, 91, 145, .12), transparent 26rem),
+        radial-gradient(circle at 8% 18%, rgba(20, 95, 66, .10), transparent 24rem),
+        var(--paper);
+    }
+    :where(p, h1, h2, h3, li, code, span, strong) { overflow-wrap: anywhere; }
+    a { color: var(--blue); }
+    button { font: inherit; }
+    .wrap { width: min(1040px, calc(100% - 32px)); margin: 0 auto; }
+    .hero { padding: 64px 0 34px; }
+    .eyebrow {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      padding: 7px 12px;
+      border: 1px solid #e7c06f;
+      border-radius: 999px;
+      background: var(--amber-soft);
+      color: var(--amber);
+      font-weight: 750;
+      font-size: 14px;
+      letter-spacing: .02em;
+    }
+    h1 {
+      max-width: 850px;
+      margin: 18px 0 16px;
+      font-size: clamp(42px, 7vw, 72px);
+      line-height: .98;
+      letter-spacing: -.055em;
+    }
+    .lede {
+      max-width: 780px;
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(18px, 2.5vw, 23px);
+      line-height: 1.5;
+    }
+    .facts {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 28px;
+    }
+    .fact {
+      min-width: 0;
+      padding: 15px 17px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      background: rgba(255, 254, 250, .78);
+    }
+    .fact strong { display: block; font-size: 17px; }
+    .fact span { color: var(--muted); font-size: 14px; }
+    .rail {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-block: 1px solid var(--line);
+      background: rgba(247, 244, 237, .93);
+      backdrop-filter: blur(16px);
+    }
+    .rail-inner { display: flex; gap: 8px; padding: 10px 0; overflow-x: auto; }
+    .rail a {
+      flex: 0 0 auto;
+      padding: 8px 12px;
+      border-radius: 999px;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .rail a:hover { background: var(--card); color: var(--ink); }
+    main { padding: 34px 0 72px; }
+    .step {
+      display: grid;
+      grid-template-columns: 78px minmax(0, 1fr);
+      gap: 20px;
+      margin: 0 0 24px;
+      scroll-margin-top: 78px;
+    }
+    .number {
+      display: grid;
+      place-items: center;
+      align-self: start;
+      width: 70px;
+      height: 70px;
+      border-radius: 22px;
+      background: var(--ink);
+      color: white;
+      font-size: 32px;
+      font-weight: 850;
+      box-shadow: var(--shadow);
+    }
+    .number.green { background: var(--green); }
+    .number.blue { background: var(--blue); }
+    .card {
+      min-width: 0;
+      padding: clamp(22px, 4vw, 38px);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: var(--card);
+      box-shadow: var(--shadow);
+    }
+    .step-kicker {
+      margin: 0 0 7px;
+      color: var(--green);
+      font-size: 14px;
+      font-weight: 820;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    h2 {
+      margin: 0 0 12px;
+      font-size: clamp(27px, 4vw, 39px);
+      line-height: 1.08;
+      letter-spacing: -.035em;
+    }
+    h3 { margin: 0 0 8px; font-size: 20px; line-height: 1.2; }
+    .card > p, .subcard p { color: var(--muted); font-size: 17px; line-height: 1.55; }
+    .path {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      align-items: center;
+      margin: 20px 0;
+      padding: 15px;
+      border: 1px solid #bcd1e5;
+      border-radius: 15px;
+      background: var(--blue-soft);
+      font-weight: 760;
+    }
+    .path i { color: var(--blue); font-style: normal; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+    .subcard {
+      min-width: 0;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: #faf9f5;
+    }
+    .subcard.green { border-top: 5px solid var(--green); }
+    .subcard.blue { border-top: 5px solid var(--blue); }
+    .badge {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: var(--blue-soft);
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 820;
+    }
+    .badge.good { background: var(--green-soft); color: var(--green); }
+    .badge.warn { background: var(--amber-soft); color: var(--amber); }
+    .exact-list {
+      display: grid;
+      gap: 11px;
+      margin: 20px 0;
+    }
+    .exact {
+      display: grid;
+      grid-template-columns: minmax(130px, .32fr) minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+      padding: 13px 14px;
+      border: 1px solid #d0cec8;
+      border-radius: 13px;
+      background: #fbfbfa;
+    }
+    .exact .label { color: var(--muted); font-size: 13px; font-weight: 780; text-transform: uppercase; }
+    .exact code {
+      min-width: 0;
+      color: #17211d;
+      font: 700 13px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    .copy {
+      padding: 6px 10px;
+      border: 1px solid #9ba7a0;
+      border-radius: 8px;
+      color: var(--ink);
+      background: white;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 760;
+    }
+    .copy:hover { background: var(--green-soft); border-color: var(--green); }
+    .checks { margin: 18px 0 0; padding: 0; list-style: none; }
+    .checks li {
+      display: flex;
+      gap: 11px;
+      align-items: flex-start;
+      margin: 13px 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.48;
+    }
+    .check {
+      display: grid;
+      place-items: center;
+      flex: 0 0 25px;
+      height: 25px;
+      border-radius: 8px;
+      background: var(--green-soft);
+      color: var(--green);
+      font-weight: 900;
+    }
+    .alert { margin-top: 18px; padding: 15px 17px; border-radius: 14px; line-height: 1.5; }
+    .alert.warn { border: 1px solid #e7c06f; background: var(--amber-soft); color: #5d430f; }
+    .alert.info { border: 1px solid #b6d0e9; background: var(--blue-soft); color: #234a70; }
+    .alert.safe { border: 1px solid #b6d8c7; background: var(--green-soft); color: #174e38; }
+    .terminal {
+      position: relative;
+      margin-top: 18px;
+      overflow: hidden;
+      border-radius: 16px;
+      background: #18201d;
+      color: #edf8f1;
+      box-shadow: 0 13px 26px rgba(17, 25, 21, .17);
+    }
+    .terminal-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      padding: 10px 12px 9px 16px;
+      border-bottom: 1px solid #3c4943;
+      color: #a9b9b0;
+      font-size: 12px;
+    }
+    .terminal pre {
+      margin: 0;
+      padding: 18px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font: 13px/1.65 ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    .terminal .copy { border-color: #67756e; color: white; background: #28332e; }
+    .terminal .copy:hover { background: #34443c; }
+    .state {
+      display: grid;
+      grid-template-columns: minmax(180px, .35fr) minmax(0, 1fr);
+      gap: 0;
+      margin-top: 18px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+    }
+    .state > div { padding: 13px 15px; border-bottom: 1px solid var(--line); }
+    .state > div:nth-last-child(-n+2) { border-bottom: 0; }
+    .state .key { background: #f1efe9; color: var(--muted); font-weight: 760; }
+    .state .value { min-width: 0; background: white; }
+    footer { padding: 0 0 60px; color: var(--muted); text-align: center; }
+    @media (max-width: 760px) {
+      .facts, .grid { grid-template-columns: 1fr; }
+      .step { grid-template-columns: 1fr; gap: 10px; }
+      .number { width: 54px; height: 54px; border-radius: 17px; font-size: 25px; }
+      .exact { grid-template-columns: 1fr; gap: 7px; }
+      .exact .copy { justify-self: start; }
+      .state { grid-template-columns: 1fr; }
+      .state > div { border-bottom: 1px solid var(--line) !important; }
+      .state > div:last-child { border-bottom: 0 !important; }
+      .hero { padding-top: 42px; }
+    }
+    @media print {
+      .rail, .copy { display: none; }
+      body { background: white; }
+      .card, .number { box-shadow: none; }
+      .step { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <div class="eyebrow">● Owner action · about 10 minutes</div>
+      <h1>Finish the CityScroll domain transition.</h1>
+      <p class="lede">Make the old public site redirect cleanly, attach the public beta hostname, then run four checks. The values below are ready to paste.</p>
+      <div class="facts">
+        <div class="fact"><strong>1 redirect rule</strong><span>Old site → CityScroll, path and query kept</span></div>
+        <div class="fact"><strong>1 beta hostname</strong><span>Attached to the existing Pages project</span></div>
+        <div class="fact"><strong>API stays live</strong><span>Old API and email paths are outside the rule</span></div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="rail" aria-label="Steps">
+    <div class="wrap rail-inner">
+      <a href="#why">0 · Why clicks</a>
+      <a href="#proxy">1 · Proxy old site</a>
+      <a href="#redirect">2 · Add redirect</a>
+      <a href="#beta">3 · Attach beta</a>
+      <a href="#content">4 · Ensure beta content</a>
+      <a href="#verify">5 · Verify</a>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <section class="step" id="why">
+      <div class="number">0</div>
+      <div class="card">
+        <p class="step-kicker">Credential inventory</p>
+        <h2>The deployment credentials cannot finish the zone changes.</h2>
+        <p>The available credentials were tested with read-only calls before any mutation was attempted. No secret value was printed or copied.</p>
+        <div class="grid">
+          <div class="subcard green">
+            <span class="badge good">Local Wrangler</span>
+            <h3>Pages access works</h3>
+            <p>The OAuth session has Pages write access and can read both zones. It can see the existing <strong>crol-list-beta</strong> Pages project.</p>
+          </div>
+          <div class="subcard blue">
+            <span class="badge warn">Zone access blocked</span>
+            <h3>Rules and DNS return 403</h3>
+            <p>Read-only calls to list the crol-list.org zone rulesets and cityscroll.org DNS records both returned <strong>HTTP 403 Authentication error</strong>.</p>
+          </div>
+        </div>
+        <div class="state" aria-label="Credential findings">
+          <div class="key">Local environment</div><div class="value">No <code>CF_API_TOKEN</code> or <code>CLOUDFLARE_API_TOKEN</code> variable is set.</div>
+          <div class="key">Wrangler session</div><div class="value">OAuth: Pages write, zone read; rulesets and DNS record reads denied.</div>
+          <div class="key">GitHub Actions</div><div class="value"><code>CLOUDFLARE_API_TOKEN</code> exists as an opaque repository secret; no <code>CLOUDFLARE_ACCOUNT_ID</code> variable exists.</div>
+          <div class="key">Safe next path</div><div class="value">Use the already authenticated Cloudflare dashboard. A new token is not needed for these clicks.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="step" id="proxy">
+      <div class="number green">1</div>
+      <div class="card">
+        <p class="step-kicker">crol-list.org · DNS prerequisite</p>
+        <h2>Put only the old public site records behind Cloudflare.</h2>
+        <div class="path"><i>Cloudflare dashboard</i> › Websites › crol-list.org › DNS › Records</div>
+        <p>Find every record whose name is <strong>crol-list.org</strong> (shown as <strong>@</strong>) or <strong>www</strong>. Set <strong>Proxy status</strong> to <strong>Proxied</strong> (orange cloud), then save. Current public DNS shows these old-site records:</p>
+        <div class="exact-list">
+          <div class="exact"><span class="label">A · @</span><code>185.199.108.153</code><span></span></div>
+          <div class="exact"><span class="label">A · @</span><code>185.199.109.153</code><span></span></div>
+          <div class="exact"><span class="label">A · @</span><code>185.199.110.153</code><span></span></div>
+          <div class="exact"><span class="label">A · @</span><code>185.199.111.153</code><span></span></div>
+          <div class="exact"><span class="label">CNAME · www</span><code>cityscroll.github.io</code><span></span></div>
+        </div>
+        <div class="alert warn"><strong>Leave everything else alone.</strong> Do not edit <code>api.crol-list.org</code>, <code>api-beta.crol-list.org</code>, MX, TXT, CAA, Email Routing, or any other record.</div>
+      </div>
+    </section>
+
+    <section class="step" id="redirect">
+      <div class="number green">2</div>
+      <div class="card">
+        <p class="step-kicker">crol-list.org · Single Redirect</p>
+        <h2>Redirect direct site visitors, not the CityScroll mirror.</h2>
+        <div class="path"><i>Cloudflare dashboard</i> › Websites › crol-list.org › Rules › Overview › Create rule › Redirect Rule</div>
+        <div class="exact-list">
+          <div class="exact"><span class="label">Rule name</span><code>Redirect public crol-list.org site to CityScroll</code><button class="copy" data-copy="Redirect public crol-list.org site to CityScroll">Copy</button></div>
+          <div class="exact"><span class="label">Match type</span><code>Custom filter expression</code><span></span></div>
+          <div class="exact"><span class="label">Expression</span><code>(http.host in {"crol-list.org" "www.crol-list.org"} and cf.worker.upstream_zone eq "")</code><button class="copy" data-copy='(http.host in {"crol-list.org" "www.crol-list.org"} and cf.worker.upstream_zone eq "")'>Copy</button></div>
+          <div class="exact"><span class="label">Redirect type</span><code>Dynamic</code><span></span></div>
+          <div class="exact"><span class="label">Target expression</span><code>concat("https://cityscroll.org", http.request.uri.path)</code><button class="copy" data-copy='concat("https://cityscroll.org", http.request.uri.path)'>Copy</button></div>
+          <div class="exact"><span class="label">Status code</span><code>301</code><span></span></div>
+          <div class="exact"><span class="label">Preserve query</span><code>On</code><span></span></div>
+        </div>
+        <p>Select <strong>Deploy</strong>.</p>
+        <div class="alert safe"><strong>The exclusion is load-bearing.</strong> <code>cf.worker.upstream_zone eq ""</code> matches direct browser and crawler requests but excludes the CityScroll Worker’s origin subrequest. Without it, the mirror would loop.</div>
+        <ul class="checks">
+          <li><span class="check">✓</span><span>The host match covers only <code>crol-list.org</code> and <code>www.crol-list.org</code>. API subdomains and email delivery are not redirected.</span></li>
+          <li><span class="check">✓</span><span>The target expression keeps the original path; <strong>Preserve query string</strong> keeps the query.</span></li>
+          <li><span class="check">✓</span><span>Fragments such as <code>#notice/…</code> never reach the server. Because the redirect supplies no new fragment, conforming browsers retain the original one client-side.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="step" id="beta">
+      <div class="number blue">3</div>
+      <div class="card">
+        <p class="step-kicker">cityscroll.org · Pages custom domain</p>
+        <h2>Attach beta through Pages before touching DNS.</h2>
+        <div class="path"><i>Cloudflare dashboard</i> › Workers &amp; Pages › crol-list-beta › Custom domains › Set up a domain</div>
+        <div class="exact-list">
+          <div class="exact"><span class="label">Custom domain</span><code>beta.cityscroll.org</code><button class="copy" data-copy="beta.cityscroll.org">Copy</button></div>
+          <div class="exact"><span class="label">Pages project</span><code>crol-list-beta</code><span></span></div>
+          <div class="exact"><span class="label">Pages target</span><code>crol-list-beta.pages.dev</code><button class="copy" data-copy="crol-list-beta.pages.dev">Copy</button></div>
+        </div>
+        <p>Select <strong>Continue</strong>, review the DNS change, and confirm activation. Because cityscroll.org is already managed by the same Cloudflare account, Pages should create the DNS record automatically.</p>
+        <div class="alert info"><strong>If Cloudflare asks for the DNS record:</strong> approve a <code>CNAME</code> named <code>beta</code> targeting <code>crol-list-beta.pages.dev</code>, with <strong>Proxy status: Proxied</strong> and <strong>TTL: Auto</strong>.</div>
+        <div class="alert warn"><strong>Do not create the CNAME first in DNS.</strong> Cloudflare documents that a manually created Pages CNAME without the Pages custom-domain association can return a 522. If a beta record already exists, return to the Pages custom-domain flow and let it validate or replace that record—do not create a duplicate.</div>
+      </div>
+    </section>
+
+    <section class="step" id="content">
+      <div class="number blue">4</div>
+      <div class="card">
+        <p class="step-kicker">Only if beta returns 404</p>
+        <h2>Point beta at one reviewed commit.</h2>
+        <p>The Pages project currently has successful preview deployments but no production deployment on its <code>beta</code> branch. The custom hostname can activate before content is promoted, so a temporary 404 is possible.</p>
+        <div class="path"><i>GitHub</i> › cityscroll/crol-list › Actions › Promote exact commit to beta › Run workflow</div>
+        <div class="exact-list">
+          <div class="exact"><span class="label">commit_sha</span><code>The full 40-character SHA of the reviewed commit</code><span></span></div>
+          <div class="exact"><span class="label">confirmation</span><code>PROMOTE</code><button class="copy" data-copy="PROMOTE">Copy</button></div>
+        </div>
+        <p>Run the workflow and wait for <strong>Point beta at selected commit</strong> to complete. This is the project’s promotion pointer: rerunning the same workflow with a prior reviewed SHA is the rollback.</p>
+      </div>
+    </section>
+
+    <section class="step" id="verify">
+      <div class="number">5</div>
+      <div class="card">
+        <p class="step-kicker">Proof before closing the tab</p>
+        <h2>Run these checks exactly.</h2>
+        <div class="terminal">
+          <div class="terminal-head"><span>Terminal · redirect, mirror, compatibility routes, beta</span><button class="copy" data-copy="curl -I &quot;https://crol-list.org/about.html?source=cutover&quot;&#10;curl -I &quot;https://cityscroll.org/about.html?source=cutover&quot;&#10;curl -I &quot;https://api.crol-list.org/health&quot;&#10;curl -I &quot;https://api.crol-list.org/confirm&quot;&#10;curl -I &quot;https://api.crol-list.org/unsubscribe&quot;&#10;dig +short beta.cityscroll.org&#10;curl -I &quot;https://beta.cityscroll.org/&quot;">Copy all</button></div>
+          <pre>curl -I "https://crol-list.org/about.html?source=cutover"
+curl -I "https://cityscroll.org/about.html?source=cutover"
+curl -I "https://api.crol-list.org/health"
+curl -I "https://api.crol-list.org/confirm"
+curl -I "https://api.crol-list.org/unsubscribe"
+dig +short beta.cityscroll.org
+curl -I "https://beta.cityscroll.org/"</pre>
+        </div>
+        <ul class="checks">
+          <li><span class="check">1</span><span>Old site: <strong>301</strong> with <code>location: https://cityscroll.org/about.html?source=cutover</code>.</span></li>
+          <li><span class="check">2</span><span>Canonical site: <strong>200</strong>. This proves the Worker mirror can still reach the old GitHub Pages origin without looping.</span></li>
+          <li><span class="check">3</span><span>Compatibility routes: health returns <strong>200</strong>; confirm and unsubscribe return <strong>400</strong> without a token. None has a CityScroll <code>Location</code> header. This proves old API and in-flight email links were excluded.</span></li>
+          <li><span class="check">4</span><span>Beta DNS: at least one answer. Cloudflare may flatten or proxy the CNAME, so an IP answer is valid.</span></li>
+          <li><span class="check">5</span><span>Beta site: <strong>200</strong> and an <code>X-Robots-Tag</code> containing <code>noindex</code>.</span></li>
+        </ul>
+        <div class="alert safe"><strong>Done means all five pass.</strong> If beta DNS answers but the site returns 404, complete step 4. If the custom domain says “Pending,” wait for certificate issuance and retry; do not change the target.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap">CityScroll domain activation · exact values verified against the repository configuration on July 29, 2026</footer>
+  <script>
+    document.querySelectorAll("[data-copy]").forEach((button) => {
+      button.addEventListener("click", async () => {
+        const original = button.textContent;
+        await navigator.clipboard.writeText(button.dataset.copy);
+        button.textContent = "Copied";
+        setTimeout(() => { button.textContent = original; }, 1200);
+      });
+    });
+  </script>
+</body>
+</html>
