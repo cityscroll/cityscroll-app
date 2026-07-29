@@ -47,14 +47,12 @@ export async function handleInv(req, env, pathname, ctx) {
     const stem = vendorStem(decodeURIComponent(id));
     if (stem.length >= 3 && env.ALERT_STATE) {
       const fcRaw = await env.ALERT_STATE.get(`fc:${stem}`);
-      const planRaw = await env.ALERT_STATE.get(`plan:${stem}`);
       const forecasts = [];
       if (fcRaw) forecasts.push(...JSON.parse(fcRaw));
-      if (planRaw) forecasts.push(...JSON.parse(planRaw));
       
       forecasts.sort((a, b) => {
-        const dateA = a.expiration_date || a.release_quarter || "";
-        const dateB = b.expiration_date || b.release_quarter || "";
+        const dateA = a.expiration_date || a.warning_date || "";
+        const dateB = b.expiration_date || b.warning_date || "";
         return dateA.localeCompare(dateB);
       });
 

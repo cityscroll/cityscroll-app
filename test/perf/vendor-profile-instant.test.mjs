@@ -76,6 +76,7 @@ function fakeBox() {
     dataset: {},
     get innerHTML() { return html; },
     set innerHTML(value) { html = value; history.push(value); },
+    querySelector() { return null; },
     querySelectorAll() { return []; },
   };
 }
@@ -118,6 +119,7 @@ function makeHarness(precomputed) {
   const showVendor = new Function(
     "$", "showTab", "cleanText", "vendorStem", "loadVendorProfileRecord",
     "renderVendorProfile", "hydrateVendorProfile", "showVendorLive", "announce", "t",
+    "focusItemRouteTarget",
     `${extractFn("showVendor")}; return showVendor;`,
   )(
     (selector) => selector === "#entityview" ? box : null,
@@ -130,6 +132,7 @@ function makeHarness(precomputed) {
     showVendorLive,
     () => {},
     t,
+    () => {},
   );
 
   return { box, fallbackCalls, showVendor };

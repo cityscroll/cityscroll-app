@@ -74,6 +74,7 @@ function fakeBox() {
     dataset: {},
     get innerHTML() { return html; },
     set innerHTML(value) { html = value; },
+    querySelector() { return null; },
   };
 }
 
@@ -112,6 +113,7 @@ function makeHarness(bucketBody) {
   const showVendor = new Function(
     "$", "showTab", "cleanText", "vendorStem", "loadVendorProfileRecord",
     "renderVendorProfile", "hydrateVendorProfile", "showVendorLive", "announce", "t",
+    "focusItemRouteTarget",
     `${extractFn("showVendor")}; return showVendor;`,
   )(
     (selector) => selector === "#entityview" ? box : null,
@@ -124,6 +126,7 @@ function makeHarness(bucketBody) {
     showVendorLive,
     () => {},
     (key) => key,
+    () => {},
   );
 
   return { box, fallbackCalls, renders, showVendor, socrataRequests };
