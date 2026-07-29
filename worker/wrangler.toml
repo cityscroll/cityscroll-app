@@ -81,8 +81,8 @@ SOURCE_VAULT_ENABLED = "false"
 
 # The source vault is the wave's only new infrastructure binding. Omitting a
 # bucket_name asks current Wrangler to provision an R2 bucket for this binding.
-[[r2_buckets]]
-binding = "SOURCE_VAULT"
+# [[r2_buckets]]
+# binding = "SOURCE_VAULT"
 
 # Privacy-preserving event rows: bounded taxonomy dimensions only, no visitor identifier.
 [[analytics_engine_datasets]]
