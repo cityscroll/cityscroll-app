@@ -384,6 +384,7 @@
   .career-card[data-status="open"]{border-top-color:var(--green)}
   .career-card[data-status="closed"],.career-card[data-status="canceled"]{border-top-color:var(--rule-strong)}
   .career-card.selected{grid-column:1/-1;max-width:900px;outline:3px solid #7a1f1f33;outline-offset:2px}
+  .route-item:focus{outline:3px solid var(--blue);outline-offset:3px}
   .career-card-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
   .career-card-title{font:800 22px/1.12 var(--font-display);margin:0;overflow-wrap:anywhere}
   .career-exam-number{font:700 12px/1.2 ui-monospace,Menlo,monospace;color:var(--muted);white-space:nowrap}
@@ -994,7 +995,7 @@
         </div>
         <div class="list" id="llist" translate="no"><div class="empty skel" aria-hidden="true"><span class="loading"></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span><span class="skl"><i></i><i></i></span></div></div>
       </div>
-      <div class="panel">
+      <div class="panel route-item" id="land-item-card" tabindex="-1">
         <h2 data-i18n="land_listing_heading">Listing</h2>
         <div class="detail" id="ldetail" translate="no"><div class="empty" data-i18n="pick_rezoning_empty">Pick a rezoning to see it in plain English -- applicant, what's being built, affordable units, status -- and on a map. Try "79 Rivington" or "Gowanus".</div></div>
       </div>
@@ -3421,6 +3422,7 @@ function careerSourceHTML(){
 function careerCardHTML(exam){
   const status=CrolStaffing.statusFor(exam,careerToday());
   const title=escUiHtml(exam.title);
+  const selected=careerSelected===exam.exam_number;
   const notice=exam.notice_url
     ? `<a class="act" href="${escUiHtml(exam.notice_url)}" ${EXT_ATTRS}>${t("career_read_noe")}${extSR()}</a>`
     : `<a class="act" href="https://www.nyc.gov/site/dcas/employment/how-can-you-find-upcoming-exams.page" ${EXT_ATTRS}>${t("career_official_schedule")}${extSR()}</a>`;
@@ -3437,7 +3439,7 @@ function careerCardHTML(exam){
     ${exam.amendment?`<p class="note warn" lang="en" dir="ltr">${escUiHtml(exam.amendment)}</p>`:""}
     <p class="career-english-note">${t("career_official_english_note")}</p>`
     : `<p class="note">${t("career_noe_pending")}</p>`;
-  return `<article class="career-card${careerSelected===exam.exam_number?" selected":""}" data-status="${status}" id="career-exam-${exam.exam_number}">
+  return `<article class="career-card${selected?" selected route-item":""}" data-status="${status}" id="career-exam-${exam.exam_number}"${selected?' tabindex="-1"':""}>
     <div class="career-card-head">
       <p class="career-card-title"><a href="#exam/${encodeURIComponent(exam.exam_number)}" lang="en" dir="ltr">${title}</a></p>
       <span class="career-exam-number">${t("career_exam_number",{number:escUiHtml(exam.exam_number)})}</span>
@@ -3522,7 +3524,7 @@ function showExam(examNumber){
   prepareCareerHow();
   loadCareerGuide().then(()=>{
     renderCareerGuide();
-    $("#career-exam-"+CSS.escape(examNumber))?.scrollIntoView({block:"start"});
+    focusItemRouteTarget($("#career-exam-"+CSS.escape(examNumber)));
   });
 }
 function scrollStaffingView(view){
@@ -4016,7 +4018,11 @@ async function showLandEntry(id){
   $("#lrescount").textContent="1";
   landRenderList("", true, "", false);
   const row=$("#llist").querySelector(".row");
-  if(row) await landSelect(0,row);
+  if(row){
+    const selection=landSelect(0,row);
+    focusItemRouteTarget($("#land-item-card"));
+    await selection;
+  }
 }
 
 /* Leaflet loads on demand: the map is a detail of one lens, not a cost every visitor pays.
@@ -5235,7 +5241,7 @@ async function showAgency(name, initialTab){
 
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CROL-List</a></p>
-    <div class="panel" style="padding:22px 24px">
+    <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
       <div class="ftype" style="margin-bottom:6px">Agency profile · City Record on record</div>
       <h2 class="rolename" lang="en" dir="ltr">${agencyWho(nm)}</h2>
       ${agencyProfileBar(stats, rfps.length, nm)}
@@ -5317,6 +5323,7 @@ async function showAgency(name, initialTab){
   }
 
   announce(t("meta_agency_profile_announce",{name:nm}));
+  focusItemRouteTarget(box.querySelector(".route-item"));
 }
 
 function vendorProfileFromVariants(variants){
@@ -5399,7 +5406,7 @@ function vendorProfileHTML(profile, details, hydrating){
 
   return `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CROL-List</a></p>
-    <div class="panel" style="padding:22px 24px">
+    <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
       ${vendorProfileHeaderHTML(profile)}
 
       ${hasForecasts ? `<div class="subtabs" style="display:flex;gap:16px;border-bottom:1px solid #ddd;margin:16px 0 20px">
@@ -5510,6 +5517,7 @@ async function showVendorLive(name, initialTab, box){
   renderVendorProfile(box, profile, null, initialTab, true);
   announce(t("meta_vendor_profile_announce",{name:cleanText(profile.display)}));
   await hydrateVendorProfile(profile, initialTab, box, true);
+  focusItemRouteTarget(box.querySelector(".route-item"));
 }
 
 async function showVendor(name, initialTab){
@@ -5527,6 +5535,7 @@ async function showVendor(name, initialTab){
     forecasts:profile.forecasts
   }, initialTab, false);
   announce(t("meta_vendor_profile_announce",{name:cleanText(profile.display)}));
+  focusItemRouteTarget(box.querySelector(".route-item"));
 }
 
 /* ===================== INVESTIGATION WORKSPACE (#investigation) =====================
@@ -5665,7 +5674,7 @@ async function showSharedInv(id){
   if(!j || !j.items){ box.innerHTML=`<div class="empty">${t("inv_shared_missing_html")} <a href="#money">${t("back_browse")}</a></div>`; return; }
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("back_browse")}</a></p>
-    <div class="panel" style="padding:22px 24px">
+    <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
       <div class="ftype" style="margin-bottom:6px">${t("inv_shared_heading",{date:j.sharedAt||"—"})}</div>
       <h2 class="rolename">${String(j.name||t("untitled_name")).replace(/[<>&]/g,"")}</h2>
       <div class="timeline" style="margin-top:14px">${invItemsHtml(j.items,true)}</div>
@@ -5676,6 +5685,7 @@ async function showSharedInv(id){
     j.items.forEach(p=>{ if(!inv.items.some(i=>i.t===p.t&&i.id===p.id)) inv.items.push({...p, added:p.added||new Date().toISOString().slice(0,10)}); });
     invSave(s); location.hash="#investigation";
   });
+  focusItemRouteTarget(box.querySelector(".route-item"));
 }
 
 /* ===================== MATTER TIMELINE (#matter/<pin>) =====================
@@ -5732,7 +5742,7 @@ async function showMatter(pin){
   const link = location.origin + location.pathname + "#matter/" + encodeURIComponent(pin);
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CROL-List</a></p>
-    <div class="panel" style="padding:22px 24px">
+    <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
       <div class="ftype" style="margin-bottom:6px">Matter timeline · PIN <code>${safe}</code></div>
       <h2 class="rolename" lang="en" dir="ltr">${agency?pivotA(agencyHref(agency), agencyWho(agency)):""}${vendor?` × ${pivotA(vendorHref(vendor), cleanText(vendor))}`:""}</h2>
       <div class="timeline" style="margin-top:14px">
@@ -5751,6 +5761,7 @@ async function showMatter(pin){
   $("#ecopy").addEventListener("click", ()=>copyText(link, $("#ecopy")));
   bindQRShare($("#eqr"), link);
   announce(t("meta_matter_timeline_announce",{n:items.length}));
+  focusItemRouteTarget(box.querySelector(".route-item"));
 }
 
 /* ===================== PERMALINKS & URL STATE =====================
@@ -5761,6 +5772,21 @@ async function showMatter(pin){
 const noticeLink = id => location.origin + location.pathname + "#notice/" + encodeURIComponent(id);
 const landLink = id => location.origin + location.pathname + "#land/" + encodeURIComponent(id);
 let hashLock = false;
+let focusedItemRouteHash = "";
+
+// Hash navigation changes both the visual viewport and the assistive-technology reading point.
+// The active-pane guard prevents a slow route from reclaiming focus after navigation moved on.
+function focusItemRouteTarget(target){
+  if(!target) return;
+  const routeHash=location.hash;
+  requestAnimationFrame(()=>{
+    if(location.hash!==routeHash || focusedItemRouteHash===routeHash ||
+       !target.isConnected || !target.closest(".tabpane.active")) return;
+    target.scrollIntoView({block:"start"});
+    target.focus({preventScroll:true});
+    focusedItemRouteHash=routeHash;
+  });
+}
 
 async function copyText(txt, btn){ // NOT `t` — that's the i18n lookup
   let ok = false;
@@ -5990,6 +6016,7 @@ function applyHash(){
   if(raw.startsWith("agency/")){ const [nm, tab] = splitEntityTab(raw.slice(7)); showAgency(nm, tab); return true; }
   if(raw.startsWith("matter/")){ showMatter(decodeURIComponent(raw.slice(7))); return true; }
   if(raw.startsWith("investigation/shared/")){ showSharedInv(decodeURIComponent(raw.slice(21))); return true; }
+  focusedItemRouteHash="";
   if(raw === "investigation"){ showInvestigation(); return true; }
   const qi = raw.indexOf("?"), tab = qi < 0 ? raw : raw.slice(0, qi);
   if(tab === "notice" || tab === "entity" || !document.getElementById("tab-"+tab)) return false;
@@ -6084,7 +6111,7 @@ async function showNotice(id, watch){
   const watchChips = watch ? watchChipsFor(watch.lens, watch.filter) : [];
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("back_browse")}</a></p>
-    <div class="panel" style="padding:22px 24px">
+    <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
       <div class="ftype" style="margin-bottom:6px">${r.type_of_notice_description||t("notice_fallback")}${r.section_name?" · "+tSection(r.section_name):""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}</div>
       <h2 class="rolename" lang="en" dir="ltr">${titleInner}</h2>
       ${digEvidenceHTML(ev)}
@@ -6122,6 +6149,7 @@ async function showNotice(id, watch){
   priorCycleAwards(r, $("#nprior"));
   agencyForecastTeaser(r, $("#nforecast"));
   if(usablePin(r.pin)){ loadChain(r).then(chain=>{ if(chain.length>1) $("#nchain").innerHTML = chainHTML(r, chain); }).catch(()=>{}); }
+  focusItemRouteTarget(box.querySelector(".route-item"));
 }
 
 /* ===================== INIT =====================
