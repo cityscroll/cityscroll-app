@@ -31,6 +31,9 @@ const PAYROLL = "https://data.cityofnewyork.us/resource/k397-673e.json";
 const PAYROLL_FY = 2025;
 const PRESET_MIN_RESULTS = 1;
 const TODAY = new Date().toISOString().slice(0, 10);
+const FETCH_TIMEOUT_MS = Number(process.env.PRESET_FETCH_TIMEOUT_MS) || (process.env.CI ? 45_000 : 20_000);
+const FETCH_ATTEMPTS = Number(process.env.PRESET_FETCH_ATTEMPTS) || (process.env.CI ? 3 : 2);
+const FETCH_CONCURRENCY = Number(process.env.PRESET_FETCH_CONCURRENCY) || (process.env.CI ? 1 : 4);
 
 if (!WRITE && !CHECK) {
   throw new Error("usage: node tools/validate_presets.mjs --write|--check");
@@ -44,9 +47,13 @@ function addDays(iso, days) {
 
 async function fetchJSON(url, options) {
   let last;
-  for (let attempt = 0; attempt < 2; attempt++) {
+  for (let attempt = 0; attempt < FETCH_ATTEMPTS; attempt++) {
     try {
-      const response = await fetch(url, { ...options, signal: AbortSignal.timeout(20_000) });
+      const response = await fetch(url, {
+        ...options,
+        headers: { "User-Agent": "crol-list-preset-validation/1.0", ...options?.headers },
+        signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
+      });
       if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
       return await response.json();
     } catch (error) {
@@ -220,7 +227,7 @@ async function validateSuggestions(previous) {
   const previousByKey = new Map(
     (previous?.candidates || []).map((candidate) => [`${candidate.lens}:${candidate.idx}`, candidate]),
   );
-  const candidates = await mapLimit(SUGGESTION_POOL, 4, async (candidate) => {
+  const candidates = await mapLimit(SUGGESTION_POOL, FETCH_CONCURRENCY, async (candidate) => {
     const prior = previousByKey.get(`${candidate.lens}:${candidate.idx}`);
     if (CHECK && (!prior || prior.text !== candidate.text)) {
       throw new Error(`suggestion receipt is missing or stale for ${candidate.lens}:${candidate.idx}`);
@@ -291,10 +298,11 @@ function fallbackFromHTML(html) {
 }
 
 const previous = await readFile(RECEIPT, "utf8").then(JSON.parse).catch(() => null);
-const [scenarios, suggestions] = await Promise.all([
-  validateScenarios(),
-  validateSuggestions(previous?.suggestions),
-]);
+// Keep scenario and suggestion validation sequential. Both hit NYC Open Data; bursting the
+// upstream API from shared CI runners caused avoidable timeouts and must not turn a truthful
+// fail-closed gate into a flaky one.
+const scenarios = await validateScenarios();
+const suggestions = await validateSuggestions(previous?.suggestions);
 let html = await readFile(INDEX, "utf8");
 let workerSource = await readFile(WORKER_SUGGESTIONS, "utf8");
 
