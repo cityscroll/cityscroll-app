@@ -313,24 +313,42 @@
   .tldate{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;color:var(--muted);min-width:92px}
   .tlreason{font-weight:700}
   .tlsal{font:700 13px/1 var(--font-display);color:var(--green)}
-  .staffing-hub{border-block:3px double var(--ink);padding:24px 0;margin-bottom:34px}
-  .staffing-hub-head{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(260px,.75fr);gap:22px;align-items:end;margin-bottom:18px}
-  .staffing-hub-head h2{font:900 clamp(2rem,5vw,3.35rem)/1 var(--font-display);letter-spacing:-.025em;margin:0;max-width:760px}
-  .staffing-hub-deck{font-size:17px;line-height:1.5;color:var(--ink-soft);margin:0}
-  .staffing-pathways{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(260px,.7fr);gap:12px}
-  .staffing-pathway{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:17px;min-width:0}
-  .staffing-pathway.featured{border-top:5px solid var(--green)}
-  .staffing-pathway.live{border-top:5px solid var(--blue);display:flex;flex-direction:column}
-  .staffing-pathway h3{font:800 24px/1.12 var(--font-display);margin:0 0 6px}
-  .staffing-pathway>p{font:13.5px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:0 0 14px}
-  .staffing-upcoming-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0 14px;min-height:210px}
+  .staffing-feed{border-block:3px double var(--ink);padding:24px 0 26px;margin-bottom:24px}
+  .staffing-feed-head{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr);gap:24px;align-items:end;margin-bottom:17px}
+  .staffing-feed-head h2{font:900 clamp(2rem,5vw,3.35rem)/1 var(--font-display);letter-spacing:-.025em;margin:0;max-width:760px}
+  .staffing-feed-deck{font-size:16px;line-height:1.5;color:var(--ink-soft);max-width:710px;margin:10px 0 0}
+  .staffing-feed-search label{display:block;font:700 12px/1.2 ui-sans-serif,system-ui,sans-serif;color:var(--ink);margin-bottom:6px}
+  .staffing-feed-search input{width:100%;font-size:16px;background:#fff}
+  .staffing-filter-bar{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(0,1fr);gap:12px;border-block:1px solid var(--rule);padding:12px 0;margin-bottom:14px}
+  .staffing-filter-group{border:0;padding:0;margin:0;min-width:0}
+  .staffing-filter-group legend{font:600 10px/1 var(--font-sc);letter-spacing:.13em;text-transform:uppercase;color:var(--muted);padding:0;margin-bottom:7px}
+  .staffing-filter-options{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .staffing-filter-options .chip{min-height:34px;padding:6px 10px}
+  .staffing-filter-options .chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+  .staffing-exam-help{font:650 12px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--oxblood)}
+  .staffing-feed-meta{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:9px}
+  .staffing-feed-meta h3{font:800 21px/1.1 var(--font-display);margin:0}
+  .staffing-feed-meta p{font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:0}
+  .staffing-export-actions{display:flex;justify-content:flex-end;gap:6px;flex-wrap:wrap;margin-top:10px}
+  .staffing-notice-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;min-height:290px}
+  .staffing-notice-card{background:var(--card);border:1px solid var(--rule);border-top:4px solid var(--blue);border-radius:8px;padding:14px;min-width:0;display:flex;flex-direction:column;gap:8px}
+  .staffing-notice-card[data-kind="exam"]{border-top-color:var(--green)}
+  .staffing-notice-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .staffing-notice-date{font:600 11.5px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--muted);white-space:nowrap}
+  .staffing-notice-card h4{font:800 20px/1.13 var(--font-display);margin:0;overflow-wrap:anywhere}
+  .staffing-notice-person{font:650 14px/1.35 ui-sans-serif,system-ui,sans-serif;margin:0}
+  .staffing-notice-agency{font:12.5px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:0}
+  .staffing-notice-facts{display:flex;gap:6px 12px;flex-wrap:wrap;font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft)}
+  .staffing-notice-card .view{margin-top:auto;padding-top:3px;font:650 12px/1.4 ui-sans-serif,system-ui,sans-serif}
+  .staffing-upcoming{border:1px solid var(--rule);border-top:5px solid var(--green);border-radius:8px;background:var(--card);padding:15px;margin-bottom:24px}
+  .staffing-upcoming-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .staffing-upcoming-head h3{font:800 22px/1.12 var(--font-display);margin:0}
+  .staffing-upcoming-head a{font:650 12px/1.4 ui-sans-serif,system-ui,sans-serif}
+  .staffing-upcoming-list{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:12px 0 0;min-height:0}
   .staffing-upcoming-item{display:block;border:1px solid var(--rule);border-radius:7px;padding:10px;background:#fff;text-decoration:none;color:var(--ink);min-width:0}
   .staffing-upcoming-item:hover{border-color:var(--oxblood);background:var(--paper-2)}
   .staffing-upcoming-title{display:block;font:750 15px/1.25 var(--font-body);margin:5px 0 4px;overflow-wrap:anywhere}
   .staffing-upcoming-window{display:block;font:12px/1.35 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
-  .staffing-pathway-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}
-  .staffing-pathway-actions .act{display:inline-flex;align-items:center;min-height:40px}
-  .staffing-pathway-actions .primary{background:var(--oxblood);border-color:var(--oxblood);color:#fff}
   .career-guide{margin-bottom:34px;scroll-margin-top:12px}
   .career-hero{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(260px,.8fr);gap:22px;border-block:3px double var(--ink);padding:24px 0 22px}
   .career-kicker{font:600 11px/1 var(--font-sc);letter-spacing:.15em;text-transform:uppercase;color:var(--oxblood);margin:0 0 9px}
@@ -385,7 +403,6 @@
   .career-explorer-divider{border-top:3px double var(--ink);padding-top:24px;margin-top:28px;scroll-margin-top:12px}
   .career-explorer-divider h2{font:800 27px/1.1 var(--font-display);margin:0 0 6px}
   .career-explorer-divider p{margin:0;color:var(--muted)}
-  .career-explorer-divider .staffing-pathway-actions{margin-top:12px}
   .staffing-role-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px}
   .staffing-role-select{border:0;background:transparent;color:inherit;padding:0;text-align:start;font:inherit;min-width:0;cursor:pointer}
   .staffing-role-select:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
@@ -393,13 +410,26 @@
   .staffing-exam-link .tag{white-space:normal;text-align:center}
   .staffing-exam-window{font:11px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
   @media(max-width:820px){
-    .staffing-hub-head,.staffing-pathways{grid-template-columns:1fr}
+    .staffing-feed-head{grid-template-columns:1fr}
+    .staffing-filter-bar{grid-template-columns:1fr 1fr}
+    .staffing-filter-group:first-child{grid-column:1/-1}
+    .staffing-upcoming-list{grid-template-columns:repeat(2,minmax(0,1fr))}
     .career-hero{grid-template-columns:1fr}.career-facts{border-inline-start:0;border-top:1px solid var(--rule);padding:12px 0 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.career-fact{border-bottom:0}
     .career-steps{grid-template-columns:repeat(2,minmax(0,1fr))}
     .career-controls{grid-template-columns:repeat(2,minmax(0,1fr))}
   }
   @media(max-width:560px){
-    .staffing-upcoming-list{grid-template-columns:1fr;min-height:430px}
+    .staffing-feed{padding-top:18px}
+    .staffing-feed-head h2{font-size:2.4rem}
+    .staffing-filter-bar{grid-template-columns:1fr}
+    .staffing-filter-group:first-child{grid-column:auto}
+    .staffing-filter-options{flex-wrap:nowrap;overflow-x:auto;padding-bottom:3px}
+    .staffing-filter-group:first-child .staffing-filter-options{flex-wrap:wrap;overflow:visible}
+    .staffing-filter-options .chip,.staffing-exam-help{flex:0 0 auto}
+    .staffing-feed-meta{display:block}.staffing-feed-meta p{margin-top:4px}
+    .staffing-notice-list{grid-template-columns:1fr}
+    .staffing-upcoming-list{display:flex;overflow-x:auto;scroll-snap-type:x proximity;padding-bottom:4px}
+    .staffing-upcoming-item{flex:0 0 82%;scroll-snap-align:start}
     .career-hero h1{font-size:2.35rem}.career-deck{font-size:16.5px}
     .career-facts{grid-template-columns:1fr}.career-fact{border-bottom:1px solid var(--rule)}
     .career-steps,.career-controls,.career-results{grid-template-columns:1fr}
@@ -753,44 +783,74 @@
 <!-- ============ PEOPLE ============ -->
 <section id="tab-people" class="tabpane">
   <div class="wrap">
-    <section class="staffing-hub" id="staffing-pathways" aria-labelledby="staffing-pathways-heading">
-      <div class="staffing-hub-head">
+    <section class="staffing-feed" id="staffing-feed" aria-labelledby="staffing-feed-heading">
+      <div class="staffing-feed-head">
         <div>
-          <p class="career-kicker" data-i18n="staffing_pathways_kicker">City careers</p>
-          <h2 id="staffing-pathways-heading" data-i18n="staffing_pathways_heading">Choose your next step</h2>
+          <p class="career-kicker" data-i18n="staffing_feed_kicker">City staffing</p>
+          <h2 id="staffing-feed-heading" data-i18n="staffing_feed_heading">Newest staffing notices</h2>
+          <p class="staffing-feed-deck" data-i18n="staffing_feed_deck">Recent appointments published in the City Record, newest first. Search and filters refine the notices already on the page.</p>
         </div>
-        <p class="staffing-hub-deck" data-i18n="staffing_pathways_deck">Find an exam you can apply for, or explore the live City Record notices, titles, and pay behind City staffing.</p>
+        <div class="staffing-feed-search">
+          <label for="staffing-query" data-i18n="staffing_search_label">Search these notices</label>
+          <input id="staffing-query" type="search" placeholder="role, person, agency, or title code…" data-i18n-placeholder="staffing_search_placeholder">
+        </div>
       </div>
-      <div class="staffing-pathways">
-        <article class="staffing-pathway featured" aria-labelledby="staffing-upcoming-heading">
-          <h3 id="staffing-upcoming-heading" data-i18n="staffing_upcoming_heading">Upcoming civil-service exams</h3>
-          <p data-i18n="staffing_upcoming_deck">These next application windows come from the precomputed DCAS exam guide. Open exams appear first.</p>
-          <div class="staffing-upcoming-list" id="staffing-upcoming-list" aria-live="polite">
-            <span class="loading" aria-hidden="true"></span> <span data-i18n="career_loading">Loading the precomputed DCAS exam guide…</span>
+
+      <div class="staffing-filter-bar">
+        <fieldset class="staffing-filter-group">
+          <legend data-i18n="staffing_filter_type">Notice type</legend>
+          <div class="staffing-filter-options">
+            <button type="button" class="chip" data-staffing-type="hire" aria-pressed="true" data-i18n="staffing_filter_hires">New hires</button>
+            <button type="button" class="chip" data-staffing-type="exam" aria-pressed="false" data-i18n="staffing_filter_exams">Civil-service exams</button>
+            <a id="staffing-exam-help" class="staffing-exam-help" href="#people?view=guide" data-i18n="staffing_exam_help">New to civil-service exams?</a>
           </div>
-          <div class="staffing-pathway-actions">
-            <a class="act primary" href="#people?view=guide" data-i18n="staffing_explore_all_exams">Explore all exams and how to apply</a>
+        </fieldset>
+        <fieldset class="staffing-filter-group">
+          <legend data-i18n="staffing_filter_roles">Role or title</legend>
+          <div class="staffing-filter-options" id="staffing-role-filters">
+            <button type="button" class="chip" data-staffing-role="" aria-pressed="true" data-i18n="staffing_all_roles">All roles</button>
           </div>
-        </article>
-        <article class="staffing-pathway live">
-          <h3 data-i18n="staffing_notices_heading">Live staffing notices, titles, and pay</h3>
-          <p data-i18n="staffing_notices_deck">Search City Record personnel changes, recent payroll, and active civil-service titles. Live searches are labeled separately from the precomputed exam schedule.</p>
-          <div class="staffing-pathway-actions">
-            <a class="act" href="#people?mode=person&amp;view=notices" data-i18n="staffing_browse_notices">Browse live staffing notices</a>
+        </fieldset>
+        <fieldset class="staffing-filter-group">
+          <legend data-i18n="staffing_filter_agencies">Agency</legend>
+          <div class="staffing-filter-options" id="staffing-agency-filters">
+            <button type="button" class="chip" data-staffing-agency="" aria-pressed="true" data-i18n="staffing_all_agencies">All agencies</button>
           </div>
-        </article>
+        </fieldset>
+      </div>
+
+      <div class="staffing-feed-meta">
+        <div>
+          <h3 data-i18n="staffing_list_heading">Latest postings</h3>
+          <p id="staffing-result-count" aria-live="polite"></p>
+        </div>
+      </div>
+      <div class="staffing-notice-list" id="staffing-notice-list" aria-live="polite">
+        <div class="career-empty"><span class="loading" aria-hidden="true"></span> <span data-i18n="staffing_loading">Loading staffing notices…</span></div>
+      </div>
+      <div class="staffing-export-actions">
+        <button class="mini export-control" data-export-csv="people" data-i18n="export_csv">Export CSV</button>
+        <button class="mini export-control" data-export-xlsx="people" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
+        <button class="mini export-control" data-print-view="people" data-i18n="print_save_pdf">Print / Save as PDF</button>
       </div>
     </section>
 
-    <div class="career-guide" id="career-guide">
+    <section class="staffing-upcoming" aria-labelledby="staffing-upcoming-heading">
+      <div class="staffing-upcoming-head">
+        <h3 id="staffing-upcoming-heading" data-i18n="staffing_upcoming_heading">Upcoming civil-service exams</h3>
+        <a href="#people?view=guide" data-i18n="staffing_explore_all_exams">See all exam dates</a>
+      </div>
+      <div class="staffing-upcoming-list" id="staffing-upcoming-list" aria-live="polite">
+        <span class="loading" aria-hidden="true"></span> <span data-i18n="career_loading">Loading the precomputed DCAS exam guide…</span>
+      </div>
+    </section>
+
+    <div class="career-guide" id="career-guide" hidden>
       <header class="career-hero">
         <div>
           <p class="career-kicker" data-i18n="career_kicker">City careers, explained</p>
           <h2 data-i18n="career_heading">A City job may start with an exam</h2>
           <p class="career-deck" data-i18n="career_deck">Civil-service exams can open a path to stable public-service work. You do not need to know City hiring jargon first: start with work that interests you, check the official requirements, and apply during the listed window.</p>
-          <div class="career-hero-actions">
-            <a class="act" href="#people?mode=person&amp;view=notices" data-i18n="staffing_browse_notices">Browse live staffing notices</a>
-          </div>
         </div>
         <div class="career-facts" aria-label="Exam guide summary" data-i18n-aria="career_summary_aria">
           <div class="career-fact"><b id="career-open-count">—</b><span data-i18n="career_open_count_label">open to applications now</span></div>
@@ -846,47 +906,21 @@
         </div>
         <div class="career-results" id="career-results" aria-live="polite"></div>
       </section>
-
-      <section class="career-explorer-divider" id="staffing-live" aria-labelledby="career-explorer-heading">
-        <h2 id="career-explorer-heading" data-i18n="career_explorer_heading">Explore City titles, pay, and staffing notices</h2>
-        <p data-i18n="career_explorer_deck">Already have a job title or person in mind? Compare recent City payroll, active civil-service lists, and City Record personnel changes.</p>
-        <div class="staffing-pathway-actions">
-          <a class="act" href="#people?view=guide" data-i18n="staffing_back_to_guide">Go to the civil-service exam guide</a>
-        </div>
-      </section>
     </div>
 
-    <div class="controls">
-      <div class="field">
-        <label for="pmode" data-i18n="look_up_label">Look up</label>
-        <select id="pmode"><option value="role" data-i18n="pmode_role">A role / title</option><option value="person" data-i18n="pmode_person">A person</option></select>
-      </div>
-      <div class="field kw">
-        <label for="pkw" id="pkwlabel" data-i18n="title_keyword_label">Title keyword</label>
-        <input type="text" id="pkw" list="ptitles" placeholder="emergency medical, attorney, engineer…" data-i18n-placeholder="kw_placeholder_people_role">
-        <datalist id="ptitles"></datalist>
-      </div>
-    </div>
-
-    <div class="chiprow" id="pchips"></div>
-
-
-    <div class="grid">
-      <div class="panel">
-        <div class="panelbar">
-          <h2><span><span id="preshead" data-i18n="roles_heading">Roles</span> <span class="count" id="prescount"></span></span></h2>
-          <span class="export-actions">
-            <button class="mini export-control" data-export-csv="people" data-i18n="export_csv">Export CSV</button>
-            <button class="mini export-control" data-export-xlsx="people" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
-            <button class="mini export-control" data-print-view="people" data-i18n="print_save_pdf">Print / Save as PDF</button>
-          </span>
-        </div>
-        <div class="list" id="plist" translate="no"><div class="empty" data-i18n="try_a_title_empty">Try a title like "emergency medical" -- or switch to a person.</div></div>
-      </div>
-      <div class="panel">
-        <h2 data-i18n="listing_heading">Listing</h2>
-        <div class="detail" id="pdetail" translate="no"><div class="empty" data-i18n="pick_role_empty">Pick a role to see its official title, whether it needs an exam, its salary band, and the career ladder.</div></div>
-      </div>
+    <!-- Compatibility-only nodes for old query links and alert parsing. They are not a
+         second Staffing interface; the visible landing is the notice feed above. -->
+    <div hidden aria-hidden="true">
+      <label for="pmode" data-i18n="look_up_label">Look up</label>
+      <select id="pmode"><option value="role" data-i18n="pmode_role">A role / title</option><option value="person" data-i18n="pmode_person">A person</option></select>
+      <label for="pkw" id="pkwlabel" data-i18n="title_keyword_label">Title keyword</label>
+      <input type="text" id="pkw" list="ptitles" placeholder="emergency medical, attorney, engineer…" data-i18n-placeholder="kw_placeholder_people_role">
+      <datalist id="ptitles"></datalist>
+      <div id="pchips"></div>
+      <span id="preshead" data-i18n="roles_heading">Roles</span>
+      <span id="prescount"></span>
+      <div id="plist"></div>
+      <div id="pdetail"></div>
     </div>
   </div>
 </section>
@@ -1334,13 +1368,18 @@ function showTab(name, push){
   const leavingLandEntry = name==="land" && push && location.hash.startsWith("#land/");
   document.querySelectorAll(".tabpane").forEach(p=>p.classList.toggle("active", p.id === "tab-"+name));
   document.querySelectorAll(".tabbtn").forEach(b=>b.classList.toggle("active", b.dataset.tab === name));
+  const scenarios=document.querySelector(".scenario-nav");
+  if(scenarios) scenarios.hidden=name==="people";
   syncTabAria();
   // Push BEFORE any lazy load below runs updateHash(), or the load's replaceState
   // rewrites the prior entry and the push turns into a no-op (Back would skip a tab).
   if(push) pushHash();
   if(name==="land"){ loadLeaflet().catch(()=>{}); if(!landLoaded || leavingLandEntry){ landLoaded=true; landSearch(); } if(!location.hash.startsWith("#land/")) maybeAutoLocateLand(); if(landMap) setTimeout(()=>landMap.invalidateSize(),120); }
   if(name==="money" && !moneyLoaded) search(); // deep links land on other tabs; Money lazy-loads like the rest
-  if(name==="people"){ loadCareerGuide(); seedPeople(); applyPeopleDefault(); }
+  if(name==="people"){
+    if(push) $("#career-guide").hidden=true;
+    loadCareerGuide(); loadStaffingFeed();
+  }
   if(SECTIONS[name] && !feedLoaded[name]){ feedLoaded[name]=true; loadSectionAgencies(name); loadSection(name); }
 }
 document.querySelectorAll(".tabbtn").forEach(b=>b.addEventListener("click",()=>showTab(b.dataset.tab, true)));
@@ -3075,19 +3114,15 @@ function exportSpec(lens){
     ["Request ID",r=>r.request_id||""],
     ["Permalink",r=>noticeLink(r.request_id)],["City Record URL",r=>REQ_URL(r.request_id)]
   ]};
-  if(lens==="people" && pMode==="person") return {rows:pRows, columns:[
-    ["Name",p=>p.name],["Agency",p=>p.agency],
-    {label:t("csv_notices"),value:p=>p.actions.length,type:"number",width:12},
-    ["Request IDs",p=>p.actions.map(a=>a.req).join(" | ")],
-    ["Permalinks",p=>p.actions.map(a=>noticeLink(a.req)).join(" | ")],
-    [t("csv_search_permalink"),searchLink]
-  ]};
-  if(lens==="people") return {rows:pRows, columns:[
-    [t("csv_role"),r=>r.title_description],[t("csv_exam_list"),r=>competitiveSet.has((r.title_description||"").toUpperCase().trim())?"Yes":"No"],
-    {label:t("csv_people"),value:r=>r.n,type:"number",width:12},
-    {label:t("csv_min_base_salary"),value:r=>r.mn,type:"number",width:18},
-    {label:t("csv_max_base_salary"),value:r=>r.mx,type:"number",width:18},
-    {label:t("csv_average_base_salary"),value:r=>r.avg,type:"number",width:20},
+  if(lens==="people") return {rows:staffingVisibleItems(), columns:[
+    ["Type",r=>r.kind==="exam"?t("staffing_filter_exams"):t("staffing_new_hire_tag")],
+    [t("csv_role"),r=>r.role||""],[t("person_name_label"),r=>r.person||""],["Agency",r=>r.agency||""],
+    {label:"Posted / application start",value:r=>r.published_at||"",type:"date",width:22},
+    ["Effective / application end",r=>r.kind==="exam"?(r.exam.application_end||""):(r.effective_date||"")],
+    {label:t("staffing_salary",{amount:""}).trim(),value:r=>r.salary||"",type:"number",width:16},
+    [t("staffing_title_code",{code:""}).trim()+" / "+t("career_exam_number",{number:""}).trim(),r=>r.kind==="exam"?r.request_id:(r.title_code||"")],
+    ["Request ID",r=>r.kind==="hire"?r.request_id:""],
+    ["City Record URL",r=>r.kind==="hire"?REQ_URL(r.request_id):location.origin+location.pathname+"#exam/"+encodeURIComponent(r.request_id)],
     [t("csv_search_permalink"),searchLink]
   ]};
   if(lens==="land") return {rows:lRows, columns:[
@@ -3162,6 +3197,9 @@ window.addEventListener("afterprint",clearPrintView);
 /* ===================== PEOPLE ===================== */
 let pRows = [], pMode = "role", competitiveSet = new Set();
 let careerData = null, careerLoadPromise = null, careerSelected = null, careerLimit = 16;
+let staffingNotices = [], staffingLoaded = false, staffingLoadPromise = null;
+const staffingFilters = {type:"hire", query:"", role:"", agency:""};
+const STAFFING_EXAM_AGENCY = "DCAS";
 
 const CAREER_AREA_KEYS = {
   "public-safety": "career_area_public_safety",
@@ -3173,6 +3211,115 @@ const CAREER_AREA_KEYS = {
   "trades-operations": "career_area_trades",
   "other": "career_area_other",
 };
+function staffingExamItems(){
+  if(!careerData) return [];
+  return CrolStaffing.featuredExams(careerData.exams,careerToday(),careerData.exams.length).map(exam=>({
+    kind:"exam",
+    request_id:exam.exam_number,
+    published_at:exam.application_start||"",
+    agency:STAFFING_EXAM_AGENCY,
+    role:exam.title,
+    exam,
+  }));
+}
+function staffingSourceItems(){
+  return staffingFilters.type==="exam" ? staffingExamItems() : staffingNotices;
+}
+function staffingVisibleItems(){
+  const items=staffingSourceItems();
+  if(staffingFilters.type==="hire"){
+    return CrolStaffing.filterHireNotices(items,staffingFilters);
+  }
+  const query=staffingFilters.query.trim().toLowerCase();
+  return items.filter(item=>
+    (!staffingFilters.role||item.role===staffingFilters.role)
+    && (!staffingFilters.agency||item.agency===staffingFilters.agency)
+    && (!query||`${item.role} ${item.agency} ${item.request_id}`.toLowerCase().includes(query))
+  );
+}
+function staffingFacetHTML(kind, allKey, field){
+  const items=staffingSourceItems();
+  const selected=staffingFilters[field];
+  const values=CrolStaffing.topValues(items,field,4);
+  if(selected&&!values.includes(selected)) values.unshift(selected);
+  return `<button type="button" class="chip" data-staffing-${kind}="" aria-pressed="${String(!selected)}">${t(allKey)}</button>`
+    +values.map(value=>`<button type="button" class="chip" data-staffing-${kind}="${escUiHtml(value)}" aria-pressed="${String(selected===value)}"><span lang="en" dir="ltr">${escUiHtml(value)}</span></button>`).join("");
+}
+function bindStaffingFacets(){
+  $("#staffing-role-filters").querySelectorAll("[data-staffing-role]").forEach(button=>button.addEventListener("click",()=>{
+    staffingFilters.role=button.dataset.staffingRole||"";
+    renderStaffingFeed(); updateHash();
+  }));
+  $("#staffing-agency-filters").querySelectorAll("[data-staffing-agency]").forEach(button=>button.addEventListener("click",()=>{
+    staffingFilters.agency=button.dataset.staffingAgency||"";
+    renderStaffingFeed(); updateHash();
+  }));
+}
+function staffingHireCardHTML(item){
+  const role=item.role||t("staffing_unknown_role",{code:escUiHtml(item.title_code||"—")});
+  const salary=money(item.salary);
+  return `<article class="staffing-notice-card" data-kind="hire">
+    <div class="staffing-notice-top">
+      <span class="tag open">${t("staffing_new_hire_tag")}</span>
+      <span class="staffing-notice-date">${fdate(item.published_at)}</span>
+    </div>
+    <h4 lang="en" dir="ltr">${escUiHtml(role)}</h4>
+    <p class="staffing-notice-person" lang="en" dir="ltr">${escUiHtml(item.person)}</p>
+    <p class="staffing-notice-agency" lang="en" dir="ltr">${escUiHtml(item.agency)}</p>
+    <div class="staffing-notice-facts">
+      ${item.effective_date?`<span>${t("staffing_effective_date",{date:escUiHtml(item.effective_date)})}</span>`:""}
+      ${salary?`<span>${t("staffing_salary",{amount:salary})}</span>`:""}
+      ${item.title_code?`<span>${t("staffing_title_code",{code:escUiHtml(item.title_code)})}</span>`:""}
+    </div>
+    <a class="view" href="${REQ_URL(item.request_id)}" ${EXT_ATTRS}>${t("staffing_view_notice")}${extSR()}</a>
+  </article>`;
+}
+function staffingExamCardHTML(item){
+  const exam=item.exam, status=CrolStaffing.statusFor(exam,careerToday());
+  return `<article class="staffing-notice-card" data-kind="exam">
+    <div class="staffing-notice-top">
+      <span class="tag ${careerStatusClass(status)}">${careerStatusLabel(status)}</span>
+      <span class="staffing-notice-date">${careerWindowText(exam,status)}</span>
+    </div>
+    <h4><a href="#exam/${encodeURIComponent(exam.exam_number)}" lang="en" dir="ltr">${escUiHtml(exam.title)}</a></h4>
+    <p class="staffing-notice-agency"><span lang="en" dir="ltr">DCAS</span></p>
+    <div class="staffing-notice-facts"><span>${t("career_exam_number",{number:escUiHtml(exam.exam_number)})}</span></div>
+    <a class="view" href="#exam/${encodeURIComponent(exam.exam_number)}">${t("staffing_view_exam_detail")}</a>
+  </article>`;
+}
+function renderStaffingFeed(){
+  if(!staffingLoaded) return;
+  $("#staffing-role-filters").innerHTML=staffingFacetHTML("role","staffing_all_roles","role");
+  $("#staffing-agency-filters").innerHTML=staffingFacetHTML("agency","staffing_all_agencies","agency");
+  bindStaffingFacets();
+  document.querySelectorAll("[data-staffing-type]").forEach(button=>{
+    button.setAttribute("aria-pressed",String(button.dataset.staffingType===staffingFilters.type));
+  });
+  const items=staffingVisibleItems();
+  $("#staffing-result-count").textContent=t("staffing_results_count",{n:fmtNumber(items.length)});
+  $("#staffing-notice-list").innerHTML=items.length
+    ? items.map(item=>item.kind==="exam"?staffingExamCardHTML(item):staffingHireCardHTML(item)).join("")
+    : `<div class="career-empty">${t("staffing_no_results")}</div>`;
+}
+async function loadStaffingFeed(){
+  if(staffingLoaded){ renderStaffingFeed(); return staffingNotices; }
+  if(staffingLoadPromise) return staffingLoadPromise;
+  staffingLoadPromise=Promise.all([
+    soda({"$select":"request_id,start_date,agency_name,short_title,additional_description_1",
+      "$where":"section_name='Changes in Personnel' AND short_title='APPOINTED'",
+      "$order":"start_date DESC, request_id DESC","$limit":"80"}),
+    fetch("data/title_crosswalk.json").then(response=>response.ok?response.json():[]),
+  ]).then(([rows,crosswalk])=>{
+    staffingNotices=CrolStaffing.hireNotices(rows,crosswalk);
+    staffingLoaded=true;
+    renderStaffingFeed();
+    return staffingNotices;
+  }).catch(()=>{
+    $("#staffing-notice-list").innerHTML=`<div class="career-empty">${t("staffing_load_failed")}</div>`;
+    return [];
+  });
+  return staffingLoadPromise;
+}
 function careerToday(){ return new Date().toISOString().slice(0,10); }
 function careerDate(value){ return value ? fdt(value+"T12:00:00Z") : t("career_date_unknown"); }
 function careerMoney(value){
@@ -3271,6 +3418,7 @@ function careerFilters(){
 function renderCareerGuide(){
   if(!careerData) return;
   renderStaffingHub();
+  if(staffingLoaded&&staffingFilters.type==="exam") renderStaffingFeed();
   const today=careerToday();
   const open=careerData.exams.filter(exam=>exam.eligibility==="open_competitive"&&CrolStaffing.statusFor(exam,today)==="open").length;
   const upcoming=careerData.exams.filter(exam=>exam.eligibility==="open_competitive"&&CrolStaffing.statusFor(exam,today)==="upcoming").length;
@@ -3316,6 +3464,7 @@ async function loadCareerGuide(){
     $("#career-source").innerHTML=`<span>${t("career_load_failed")}</span>`;
     $("#career-results").innerHTML=`<div class="career-empty">${t("career_load_failed")}</div>`;
     $("#staffing-upcoming-list").innerHTML=`<div class="career-empty">${t("career_load_failed")}</div>`;
+    if(staffingFilters.type==="exam") $("#staffing-notice-list").innerHTML=`<div class="career-empty">${t("career_load_failed")}</div>`;
     return null;
   });
   return careerLoadPromise;
@@ -3323,17 +3472,20 @@ async function loadCareerGuide(){
 function showExam(examNumber){
   careerSelected=examNumber; careerLimit=16;
   showTab("people");
+  $("#career-guide").hidden=false;
   loadCareerGuide().then(()=>{
     renderCareerGuide();
     $("#career-exam-"+CSS.escape(examNumber))?.scrollIntoView({block:"start"});
   });
 }
 function scrollStaffingView(view){
-  const target=view==="notices"?$("#staffing-live"):view==="guide"?$("#career-guide"):null;
+  const guide=$("#career-guide");
+  guide.hidden=view!=="guide";
+  const target=view==="guide"?guide:view==="notices"?$("#staffing-feed"):null;
   if(!target) return;
   requestAnimationFrame(()=>{
     target.scrollIntoView({block:"start"});
-    if(view==="notices") $("#pkw")?.focus({preventScroll:true});
+    if(view==="notices") $("#staffing-query")?.focus({preventScroll:true});
   });
 }
 
@@ -5605,8 +5757,10 @@ function serializeState(){
     if(closingWeek) q.set("closing", "week");
     if(methodSel) q.set("m", methodSel);
   } else if(tab === "people"){
-    if($("#pmode").value !== "role") q.set("mode", $("#pmode").value);
-    if($("#pkw").value.trim()) q.set("q", $("#pkw").value.trim());
+    if(staffingFilters.type !== "hire") q.set("type", staffingFilters.type);
+    if($("#staffing-query").value.trim()) q.set("q", $("#staffing-query").value.trim());
+    if(staffingFilters.role) q.set("role", staffingFilters.role);
+    if(staffingFilters.agency) q.set("agency", staffingFilters.agency);
   } else if(tab === "land"){
     if($("#lboro").value) q.set("boro", $("#lboro").value);
     if(landCommunityDistrict) q.set("cd", landCommunityDistrict);
@@ -5794,11 +5948,12 @@ function applyHash(){
       methodSel = q.get("m") || "";
       showTab("money"); search();
     } else if(tab === "people"){
-      $("#pmode").value = q.get("mode")==="person"?"person":"role";
-      $("#pmode").dispatchEvent(new Event("change"));
-      $("#pkw").value = q.get("q") || "";
+      staffingFilters.type=q.get("type")==="exam"?"exam":"hire";
+      staffingFilters.query=q.get("q")||"";
+      staffingFilters.role=q.get("role")||"";
+      staffingFilters.agency=q.get("agency")||"";
+      $("#staffing-query").value=staffingFilters.query;
       showTab("people");
-      if($("#pkw").value.trim()) pSearch();
       scrollStaffingView(q.get("view"));
     } else if(tab === "land"){
       landResolvedArea=null;
@@ -5935,6 +6090,17 @@ $("#kw").addEventListener("keydown", e=>{ if(e.key==="Enter") search(); });
 $("#kw").addEventListener("input", debounce(search, 500));
 ["#mode","#agency","#sort","#minamt"].forEach(s=>$(s).addEventListener("change", search));
 $("#closingweek").addEventListener("click", ()=>{ closingWeek = !closingWeek; $("#closingweek").classList.toggle("on", closingWeek); $("#closingweek").setAttribute("aria-pressed", String(closingWeek)); search(); });
+
+$("#staffing-query").addEventListener("input",debounce(()=>{
+  staffingFilters.query=$("#staffing-query").value.trim();
+  renderStaffingFeed(); updateHash();
+},250));
+document.querySelectorAll("[data-staffing-type]").forEach(button=>button.addEventListener("click",()=>{
+  staffingFilters.type=button.dataset.staffingType;
+  staffingFilters.role=""; staffingFilters.agency="";
+  renderStaffingFeed(); updateHash();
+  if(staffingFilters.type==="exam") loadCareerGuide().then(renderStaffingFeed);
+}));
 
 $("#pkw").addEventListener("keydown", e=>{ if(e.key==="Enter") pSearch(); });
 $("#pkw").addEventListener("input", debounce(pSearch, 500));
@@ -6205,8 +6371,7 @@ function rerenderForLang(){
   if(tab!=="land") landLoaded=false;
   if(tab==="money" && moneyLoaded) search();
   else if(tab==="people"){
-    populateCareerInterests(); renderCareerGuide();
-    if($("#pkw").value.trim()) pSearch();
+    populateCareerInterests(); renderCareerGuide(); renderStaffingFeed();
   }
   else if(tab==="land" && landLoaded){
     const raw=location.hash.slice(1);

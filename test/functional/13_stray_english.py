@@ -385,7 +385,7 @@ def run_lang(pw, lang):
     check_lang_of_parts(page, lang, violations)
 
     page.click('.tabbtn[data-tab="people"]')
-    page.fill("#pkw", "attorney")
+    page.fill("#staffing-query", "Rodriguez")
     page.wait_for_timeout(1600)
     collect(page, "people", frags, violations, seen)
 
