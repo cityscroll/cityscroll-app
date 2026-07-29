@@ -18,6 +18,13 @@
       "fields": ["prime_contract_id", "prime_vendor", "prime_contract_current_amount", "prime_contract_registration_date"]
     },
     {
+      "id": "checkbook-spending",
+      "kind": "checkbook",
+      "identifier": "Spending",
+      "response_type": "xml-recordset",
+      "fields": ["spending_id", "vendor_name", "check_amount", "check_date"]
+    },
+    {
       "id": "checkbook-nycha-contracts",
       "kind": "checkbook",
       "identifier": "Contracts_NYCHA",
