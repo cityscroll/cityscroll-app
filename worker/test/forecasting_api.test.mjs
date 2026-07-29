@@ -23,6 +23,8 @@ test("GET /forecast returns forecasts matching stem prefix", async () => {
       "fc:DESIGN AND CONSTRUCTION": JSON.stringify([
         { contract_id: "CTA1", expiration_date: "2029-07-01" }
       ]),
+      // Old deployments may still have this key before the next cleanup run.
+      // Forecast readers must ignore it immediately.
       "plan:DESIGN AND CONSTRUCTION": JSON.stringify([
         { description: "Precinct CM", release_quarter: "Q3 FY2027" }
       ])
@@ -34,9 +36,8 @@ test("GET /forecast returns forecasts matching stem prefix", async () => {
   
   assert.equal(r.status, 200);
   const body = await r.json();
-  assert.equal(body.length, 2);
+  assert.equal(body.length, 1);
   assert.equal(body[0].contract_id, "CTA1");
-  assert.equal(body[1].description, "Precinct CM");
 });
 
 test("GET /inv/:id fetches shared snapshot if exists in SUBS", async () => {

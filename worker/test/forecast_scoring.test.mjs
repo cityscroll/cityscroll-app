@@ -127,7 +127,7 @@ function kv(map = {}) {
   };
 }
 
-test("collectPredictions: gathers fc:* and plan:* entries", async () => {
+test("collectPredictions: gathers renewal estimates and ignores retired plan rows", async () => {
   const store = kv({
     "fc:DESIGN AND CONSTRUCTION": JSON.stringify([
       { expiration_date: "2026-06-01", agency_name: "Design and Construction" },
@@ -137,7 +137,8 @@ test("collectPredictions: gathers fc:* and plan:* entries", async () => {
     ]),
   });
   const preds = await collectPredictions(store);
-  assert.equal(preds.length, 2);
+  assert.equal(preds.length, 1);
+  assert.equal(preds[0].agency_name, "Design and Construction");
 });
 
 test("collectPredictions: skips keys that don't start with an uppercase letter after fc:", async () => {
