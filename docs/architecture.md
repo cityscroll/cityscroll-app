@@ -20,6 +20,9 @@ summary: >-
   a Cloudflare Queue (per-subscriber retries, DLQ; daily send caps unchanged).
   The source vault retains approved public documents by content hash and
   preserves their official source links.
+  A public Cloudflare Pages beta lane provides stable draft-PR preview aliases
+  and an owner-triggered pointer to one exact reviewed commit without changing
+  the stable GitHub Pages host.
 updated: 2026-07-29
 sources:
   - README.md
@@ -29,10 +32,13 @@ sources:
   - i18n.js
   - tools/build_staffing_exams.mjs
   - tools/stamp_i18n_assets.py
+  - .github/actions/build-site/action.yml
   - .github/workflows/deploy-pages.yml
+  - .github/workflows/deploy-beta-preview.yml
+  - .github/workflows/promote-beta.yml
   - worker/wrangler.toml
   - worker/src/worker.mjs
-sources_hash: 5ca3cdaaa596f706bdcc775fb377eb4c77e44e83e7039b6e5ff5fca84ab8145c
+sources_hash: 2e419d1a4f2aa31c8c31de987aa27b22751383557226fcf31ec60000395eef35
 ---
 
 # crol-list — architecture
@@ -90,6 +96,11 @@ D1: crol-notices — mirror of recent City Record notices + ingest cursor
 R2: SOURCE_VAULT — content-addressed custody for approved public documents
 Analytics Engine: crol_usage_events_v1 — versioned aggregate page/click/search
   events; enumerated dimensions only, with no cookies or visitor identifiers
+
+Public review channel (Cloudflare Pages project "crol-list-beta")
+  draft PR + preview:beta label → stable pr-<number> alias
+  owner workflow + exact SHA → beta production pointer → beta.crol-list.org
+  same verified Jekyll + deploy-time i18n stamp pipeline as stable
 ```
 
 Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground truth. `index.html` queries the CORS-open Socrata feeds directly; the Staffing career guide is the exception, using one committed materialized view built from DCAS schedules, NOEs, and Open Data so opening it never fans out to upstream APIs. The worker proxies Checkbook and also holds secrets (Claude, Resend), shared state (subscriptions, counters), and scheduled work (the digest cron). The Wave-5 forecasting layer sits inside the worker because it needs both a cache and the cron.
@@ -112,10 +123,11 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 ## Serving & deploy
 
 - `index.html` is built and served as a GitHub Pages static site at `crol-list.org` (CNAME in repo) — the canonical domain; every page's `<link rel="canonical">` points here regardless of which domain served the request. The Pages workflow derives one cache stamp from `i18n.js` plus every shipping dictionary, writes it only into the deployment artifact, verifies the result, and then publishes it.
+- Cloudflare Pages hosts public review artifacts only. Draft pull requests opt in with `preview:beta` and receive a stable `pr-<number>.crol-list-beta.pages.dev` alias plus an immutable URL. The manually triggered promotion workflow deploys one explicit commit to the Pages production branch named `beta`; `beta.crol-list.org` is therefore a moving pointer, not a long-lived source branch. Re-running the workflow with the prior SHA is the deterministic rollback. Review artifacts keep stable canonical links and add no-index headers, channel/commit metadata, a visible experimental banner, and a stable-site escape link.
 - Worker deployed via `wrangler deploy` from `worker/` to the custom domain `api.crol-list.org` (workers.dev alias intentionally kept alive). Changes under `worker/**` deploy from `main` through `.github/workflows/deploy-worker.yml`; a manual Wrangler deploy remains the emergency path. Cron trigger `0 13 * * *` (~9am ET). D1 schema versioned in `worker/migrations/`, applied with `wrangler d1 migrations apply crol-notices --remote`.
 - `cityscroll.org` / `www.cityscroll.org` — a parallel serving domain (same Cloudflare account, custom-domain routes in `worker/wrangler.toml`). Since GitHub Pages only virtual-hosts the one domain configured in its own settings, the worker answers these two hosts itself by reverse-proxying the static site straight from `crol-list.org` byte-for-byte (`worker/src/mirror.mjs`), so the mirror can never drift and the canonical tag rides along unchanged. `crol-list.org` stays canonical; this is infrastructure only, not a redirect or a content fork.
 - Secrets via `wrangler secret put`: `ANTHROPIC_API_KEY`, `RESEND_API_KEY`, `TURNSTILE_SECRET`, `TOKEN_SECRET`, `USAGE_KEY`, `ANALYTICS_READ_TOKEN`, `ANALYTICS_DEV_KEY`, and the production-only `ANALYTICS_ENVIRONMENT` runtime gate. The analytics read token is scoped to Account Analytics Read; the developer key authenticates short-lived HMAC exclusions, while a missing/non-production runtime gate drops writes. Spend guards are vars in `wrangler.toml`: `MAX_PER_RUN=25`, `MAX_SENDS_PER_DAY=50` (under Resend's free 100/day); `/subscribe` and `/feedback` fail closed (503) if their secrets are absent.
-- GitHub Actions runs the test suite on pull requests, builds and deploys the static site after merge, and deploys Worker changes when `worker/**` changes.
+- GitHub Actions runs the test suite on pull requests, builds and deploys the stable site after merge, publishes explicitly labeled draft previews, promotes exact commits to beta only on manual dispatch, and deploys Worker changes when `worker/**` changes.
 
 ## Surface
 

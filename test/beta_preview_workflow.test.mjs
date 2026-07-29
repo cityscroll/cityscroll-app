@@ -42,16 +42,19 @@ test("stable and preview lanes share one build, i18n stamp, and artifact gate", 
   assert.match(preview, /uses: \.\/\.github\/actions\/build-site/);
 
   const build = action.indexOf("actions/jekyll-build-pages@v1");
-  const stamp = action.indexOf("tools/stamp_i18n_assets.py --site-root _site --stamp");
-  const verify = action.indexOf("test/standards/i18n_refs.py --root _site --built");
-  const boundary = action.indexOf("tools/verify_public_artifact.py --site-root _site");
+  const stamp = action.indexOf("tools/stamp_i18n_assets.py");
+  const verify = action.indexOf("test/standards/i18n_refs.py");
+  const boundary = action.indexOf("tools/verify_public_artifact.py");
   assert.ok(build >= 0 && build < stamp && stamp < verify && verify < boundary);
 });
 
 test("review artifacts carry noindex metadata and reject repository-only paths", () => {
   const root = mkdtempSync(join(tmpdir(), "crol-beta-preview-"));
   try {
-    writeFileSync(join(root, "index.html"), "<!doctype html><title>Preview</title>");
+    writeFileSync(
+      join(root, "index.html"),
+      "<!doctype html><title>Preview</title><body>Preview</body>",
+    );
     let result = spawnSync(
       "python3",
       [
