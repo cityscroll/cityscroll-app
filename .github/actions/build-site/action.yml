@@ -1,0 +1,41 @@
+name: Build verified site artifact
+description: Build the site once, derive its i18n stamp, and verify the public artifact.
+
+inputs:
+  review-channel:
+    description: Optional public review channel name.
+    required: false
+    default: ""
+  commit-sha:
+    description: Exact source commit represented by a review artifact.
+    required: false
+    default: ""
+
+runs:
+  using: composite
+  steps:
+    - name: Build with GitHub Pages
+      uses: actions/jekyll-build-pages@v1
+      with:
+        source: ./
+        destination: ./_site
+    - name: Derive i18n cache stamp from deployed content
+      shell: bash
+      run: python3 tools/stamp_i18n_assets.py --site-root _site --stamp
+    - name: Verify the built cache-skew guard
+      shell: bash
+      run: python3 test/standards/i18n_refs.py --root _site --built
+    - name: Prepare public review metadata
+      if: ${{ inputs.review-channel != '' }}
+      shell: bash
+      env:
+        REVIEW_CHANNEL: ${{ inputs.review-channel }}
+        REVIEW_COMMIT_SHA: ${{ inputs.commit-sha }}
+      run: |
+        python3 tools/prepare_review_artifact.py \
+          --site-root _site \
+          --channel "$REVIEW_CHANNEL" \
+          --commit "$REVIEW_COMMIT_SHA"
+    - name: Verify public artifact boundary
+      shell: bash
+      run: python3 tools/verify_public_artifact.py --site-root _site

@@ -1,0 +1,89 @@
+# Publishes an opt-in draft pull request to a stable, public Cloudflare Pages alias.
+name: Deploy beta preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled, converted_to_draft]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: beta-preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    name: Publish shareable beta preview
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.draft == true &&
+      contains(github.event.pull_request.labels.*.name, 'preview:beta')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/configure-pages@v5
+      - name: Build verified review artifact
+        uses: ./.github/actions/build-site
+        with:
+          review-channel: preview
+          commit-sha: ${{ github.event.pull_request.head.sha }}
+      - name: Deploy numbered preview
+        id: deploy
+        uses: cloudflare/wrangler-action@v3.14.1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          wranglerVersion: "4.110.0"
+          command: >-
+            pages deploy _site
+            --project-name=crol-list-beta
+            --branch=pr-${{ github.event.pull_request.number }}
+            --commit-hash=${{ github.event.pull_request.head.sha }}
+            --commit-message="Pull request preview"
+            --commit-dirty=false
+      - name: Verify shareable URLs and X-Robots-Tag
+        env:
+          ACTUAL_ALIAS: ${{ steps.deploy.outputs.pages-deployment-alias-url }}
+          IMMUTABLE_URL: ${{ steps.deploy.outputs.deployment-url }}
+          EXPECTED_ALIAS: https://pr-${{ github.event.pull_request.number }}.crol-list-beta.pages.dev
+        shell: bash
+        run: |
+          test "$ACTUAL_ALIAS" = "$EXPECTED_ALIAS"
+          case "$IMMUTABLE_URL" in
+            https://*.crol-list-beta.pages.dev) ;;
+            *) echo "Unexpected immutable deployment URL" >&2; exit 1 ;;
+          esac
+
+          attempt=1
+          while [ "$attempt" -le 5 ]; do
+            if curl --fail --silent --show-error --head "$ACTUAL_ALIAS" \
+              | tr -d '\r' \
+              | grep -Eiq '^x-robots-tag:.*noindex'; then
+              break
+            fi
+            if [ "$attempt" -eq 5 ]; then
+              echo "Preview did not return X-Robots-Tag: noindex" >&2
+              exit 1
+            fi
+            attempt=$((attempt + 1))
+            sleep 2
+          done
+      - name: Publish preview links
+        env:
+          ALIAS_URL: ${{ steps.deploy.outputs.pages-deployment-alias-url }}
+          IMMUTABLE_URL: ${{ steps.deploy.outputs.deployment-url }}
+          COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
+        shell: bash
+        run: |
+          {
+            echo "## Beta preview"
+            echo
+            echo "**Share this stable review link:** [$ALIAS_URL]($ALIAS_URL)"
+            echo
+            echo "Immutable deployment: [$IMMUTABLE_URL]($IMMUTABLE_URL)"
+            echo
+            echo "Source commit: \`$COMMIT_SHA\`"
+          } >> "$GITHUB_STEP_SUMMARY"
