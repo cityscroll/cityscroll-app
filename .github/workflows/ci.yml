@@ -13,6 +13,38 @@ on:
   workflow_dispatch:
 
 jobs:
+  changes:
+    name: Detect changed paths
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      frontend: ${{ steps.filter.outputs.frontend }}
+      worker: ${{ steps.filter.outputs.worker }}
+      docs: ${{ steps.filter.outputs.docs }}
+    steps:
+      # Checkout is required for merge_group, push, and workflow_dispatch events;
+      # pull_request events use the GitHub API to inspect the PR's changed files.
+      - uses: actions/checkout@v4
+        if: github.event_name != 'pull_request'
+        with:
+          persist-credentials: false
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            frontend:
+              - '*.html'
+              - 'assets/**'
+              - 'i18n/**'
+              - '*.js'
+            worker:
+              - 'worker/**'
+            docs:
+              - 'docs/**'
+              - '*.md'
+
   unit:
     name: Unit tests (site + worker)
     runs-on: ubuntu-latest
@@ -94,7 +126,9 @@ jobs:
   # parks the heavier functional suite on manual dispatch doesn't apply here.
   a11y-pr:
     name: Accessibility + language gate (axe on every PR)
-    # runs on pull_request per w7-01 (static local pages only, no live-API flakiness)
+    needs: changes
+    # Job-level skips report success to required-check rulesets and merge queues.
+    if: needs.changes.outputs.frontend == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -143,6 +177,8 @@ jobs:
   # languages ship (wave 7 activates one run per language).
   i18n-guard:
     name: Stray-English guard (runtime, fixtures)
+    needs: changes
+    if: needs.changes.outputs.frontend == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -178,6 +214,8 @@ jobs:
   # Not yet on PyPI; install straight from the (public) source repo.
   reading-level:
     name: Reading-level ratchet gate (readable-or-else)
+    needs: changes
+    if: needs.changes.outputs.frontend == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -200,44 +238,6 @@ jobs:
             --mode ratchet \
             --baseline reading-level-baseline.json \
             --format gh-annotations
-      # Catches a changelog-entry reading-level regression on the
-      # FEATURE PR itself, before merge, instead of only on the automated bot PR after
-      # merge (see AGENTS.md's changelog section — two separate merged PRs stranded the bot
-      # PR this way). Simulates the exact regeneration the merge-triggered workflow
-      # (update-changelog.yml) would perform and runs the identical ratchet check against
-      # the result. Gated to the pull_request event only — merge_group/push-to-main carry no
-      # PR body to harvest an entry from, and update-changelog.yml's own post-merge ratchet
-      # check (the job above, which runs on every event) is untouched by this addition.
-      - name: Changelog reading-level gate — unit tests (fixtures for the pre-merge simulation)
-        run: node --test test/check_changelog_reading_level.test.mjs
-      - name: Load the changelog regeneration base (bot branch's pending entries if present; changelog.html always stays this tree's own current copy — see tools/prepare-changelog-base.sh)
-        if: github.event_name == 'pull_request'
-        env:
-          BOT_BRANCH: bot/changelog-update
-        run: |
-          mkdir -p "$RUNNER_TEMP/changelog-sim"
-          bash tools/prepare-changelog-base.sh "$BOT_BRANCH"
-          cp changelog-data.json "$RUNNER_TEMP/changelog-sim/base-data.json"
-          cp changelog.html "$RUNNER_TEMP/changelog-sim/base.html"
-      - name: Simulate this PR's merged changelog entry and gate its reading level
-        if: github.event_name == 'pull_request'
-        env:
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          PR_URL: ${{ github.event.pull_request.html_url }}
-          PR_BODY: ${{ github.event.pull_request.body }}
-          PR_LABELS: ${{ join(github.event.pull_request.labels.*.name, ',') }}
-        run: |
-          printf '%s' "$PR_BODY" > "$RUNNER_TEMP/changelog-sim/pr-body.md"
-          node tools/check_changelog_reading_level.mjs \
-            --base-data "$RUNNER_TEMP/changelog-sim/base-data.json" \
-            --base-html "$RUNNER_TEMP/changelog-sim/base.html" \
-            --i18n i18n.js \
-            --number "$PR_NUMBER" \
-            --url "$PR_URL" \
-            --merged-at "$(date -u +%Y-%m-%d)" \
-            --body-file "$RUNNER_TEMP/changelog-sim/pr-body.md" \
-            --labels "$PR_LABELS" \
-            --baseline reading-level-baseline.json
       # Opt-in only — a manually-labeled PR gets LLM-drafted plain-language suggestions as
       # PR-ready JSON (not auto-applied; a human reviews and accepts/discards). Needs
       # READABLE_OR_ELSE_LLM_BASE / READABLE_OR_ELSE_LLM_KEY / READABLE_OR_ELSE_LLM_MODEL
@@ -256,6 +256,62 @@ jobs:
           readable-or-else check data.html index.html \
             --preset nycsg7 --mode warn --suggest --format json \
             > readable-or-else-suggestions.json
+
+  # Pre-merge changelog reading-level safeguard — deliberately NOT frontend-gated.
+  # update-changelog.yml harvests a "What this means for you" entry only from a PR labeled
+  # `changelog:major`, so this job runs on exactly those PRs (any file set — worker-only and
+  # docs-only included) and is skipped otherwise (a skipped conclusion satisfies required
+  # checks and merge queues). It simulates the exact regeneration the merge-triggered workflow
+  # would perform and runs the identical ratchet check against the result, catching a
+  # changelog-entry reading-level regression on the FEATURE PR itself, before merge, instead of
+  # only on the automated bot PR after merge (see AGENTS.md's changelog section — two separate
+  # merged PRs stranded the bot PR this way). update-changelog.yml's own post-merge ratchet
+  # check is untouched by this addition.
+  changelog-reading-level:
+    name: Changelog reading-level gate (pre-merge simulation)
+    if: github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'changelog:major')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install readable-or-else
+        run: pip install git+https://github.com/jimdc/readable-or-else.git
+      - name: Changelog reading-level gate — unit tests (fixtures for the pre-merge simulation)
+        run: node --test test/check_changelog_reading_level.test.mjs
+      - name: Load the changelog regeneration base (bot branch's pending entries if present; changelog.html always stays this tree's own current copy — see tools/prepare-changelog-base.sh)
+        env:
+          BOT_BRANCH: bot/changelog-update
+        run: |
+          mkdir -p "$RUNNER_TEMP/changelog-sim"
+          bash tools/prepare-changelog-base.sh "$BOT_BRANCH"
+          cp changelog-data.json "$RUNNER_TEMP/changelog-sim/base-data.json"
+          cp changelog.html "$RUNNER_TEMP/changelog-sim/base.html"
+      - name: Simulate this PR's merged changelog entry and gate its reading level
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+          PR_LABELS: ${{ join(github.event.pull_request.labels.*.name, ',') }}
+        run: |
+          printf '%s' "$PR_BODY" > "$RUNNER_TEMP/changelog-sim/pr-body.md"
+          node tools/check_changelog_reading_level.mjs \
+            --base-data "$RUNNER_TEMP/changelog-sim/base-data.json" \
+            --base-html "$RUNNER_TEMP/changelog-sim/base.html" \
+            --i18n i18n.js \
+            --number "$PR_NUMBER" \
+            --url "$PR_URL" \
+            --merged-at "$(date -u +%Y-%m-%d)" \
+            --body-file "$RUNNER_TEMP/changelog-sim/pr-body.md" \
+            --labels "$PR_LABELS" \
+            --baseline reading-level-baseline.json
 
   functional:
     name: Functional (Playwright, manual)
