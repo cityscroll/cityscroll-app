@@ -42,9 +42,24 @@ test("people: lookupType constrained to role|person", () => {
   assert.deepEqual(Object.keys(sanitize("people", {})).sort(), ["keywords", "lookupType"]);
 });
 
-test("meetings: when constrained; unknown lens falls back to money shape", () => {
-  assert.equal(sanitize("meetings", { when: "upcoming" }).when, "upcoming");
-  assert.equal(sanitize("meetings", { when: "someday" }).when, null);
+test("meetings: date and affected-area fields are constrained", () => {
+  const meeting = sanitize("meetings", {
+    when: "week",
+    dateWindow: "month",
+    borough: "queens",
+    neighborhood: `  Long   Island City ${"x".repeat(100)}`,
+    locationScope: "citywide-unlocated",
+  });
+  assert.equal(meeting.when, "week");
+  assert.equal(meeting.dateWindow, "month");
+  assert.equal(meeting.borough, "Queens");
+  assert.equal(meeting.neighborhood.length, 80);
+  assert.equal(meeting.locationScope, "citywide-unlocated");
+  assert.equal(sanitize("meetings", { when: "someday", borough: "Bushwick" }).when, null);
+  assert.equal(sanitize("meetings", { when: "someday", borough: "Bushwick" }).borough, null);
+});
+
+test("unknown lens falls back to money shape", () => {
   // money's field list is the general procurement-notice filter schema (see AGENTS.md's
   // "Alerts NL query" section for the inventory) — additive, so this list only ever grows.
   assert.deepEqual(Object.keys(sanitize("bogus", {})).sort(),

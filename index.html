@@ -324,6 +324,21 @@
   .fcard .factions{display:flex;flex-wrap:wrap;gap:7px;margin-top:auto;padding-top:4px}
   .fcard .factions .act{padding:7px 11px;font-size:12.5px}
   .fcard .demoresult{cursor:default;border-style:dashed;white-space:normal}
+  .hearingintro{background:#faf6ee;border:1px solid var(--rule);border-inline-start:3px solid var(--blue);border-radius:8px;padding:11px 14px;margin-top:14px;font:13px/1.55 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft)}
+  .hearingintro b{color:var(--ink)}
+  .hearinggroup{grid-column:1/-1;margin:5px 0 -3px;padding:8px 0 4px;border-bottom:2px solid var(--ink);font:600 12px/1 var(--font-sc);letter-spacing:.11em;text-transform:uppercase;color:var(--ink-soft)}
+  .hearinggroup small{font:12px/1.4 ui-sans-serif,system-ui,sans-serif;letter-spacing:0;text-transform:none;color:var(--muted);margin-inline-start:8px}
+  .hfacts{display:grid;grid-template-columns:minmax(0,1fr);gap:7px;padding:9px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+  .hfact{display:grid;grid-template-columns:82px minmax(0,1fr);gap:9px;font:13px/1.45 ui-sans-serif,system-ui,sans-serif;min-width:0}
+  .hfact b{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .hfact span{min-width:0;overflow-wrap:anywhere;color:var(--ink-soft)}
+  .hcard .ftitle{font-size:17px}
+  .hcard .fscope{font-size:14px}
+  #meetingslocation{min-height:40px;white-space:nowrap}
+  @media(max-width:520px){
+    .hearinggroup small{display:block;margin:5px 0 0}
+    .hfact{grid-template-columns:1fr;gap:2px}
+  }
   .chiprow{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
   .chip{font-family:var(--font-sc);font-weight:600;font-size:12px;letter-spacing:.04em;padding:7px 12px;border:1px solid var(--rule);border-radius:999px;background:#fff;color:var(--ink-soft);cursor:pointer}
   .chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
@@ -421,11 +436,12 @@
 </style>
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
-<script src="i18n.js?v=5ae00c30"></script>
+<script src="i18n.js?v=146a0f2f"></script>
 <script defer src="analytics.js?v=1.1.0"></script>
 <script src="nl_parse.js"></script>
 <script src="nl_deeplink.js"></script>
 <script src="location_awareness.js"></script>
+<script src="hearing_location.js"></script>
 <script src="qr_share.js"></script>
 <script src="external_awards.js"></script>
 <script src="export_workflows.js"></script>
@@ -682,12 +698,17 @@
 
 <section id="tab-meetings" class="tabpane">
   <div class="wrap">
+    <div class="hearingintro" data-i18n-html="hearings_location_note_html"><b>Affected place drives “near me.”</b> The venue is shown separately, because a Manhattan hearing can decide a Queens matter. Citywide and unlocated notices stay visible.</div>
     <div class="controls">
-      <div class="field"><label for="meetingswhen" data-i18n="show_label_meetings">Show</label><select id="meetingswhen"><option value="upcoming" data-i18n="mode_upcoming">Upcoming</option><option value="all" data-i18n="mode_all_recent">All (recent)</option></select></div>
+      <div class="field"><label for="meetingswhen" data-i18n="date_window_label">Date window</label><select id="meetingswhen"><option value="week" data-i18n="this_week">This week</option><option value="month" data-i18n="next_30_days">Next 30 days</option><option value="upcoming" data-i18n="all_upcoming">All upcoming</option></select></div>
+      <div class="field"><label for="meetingsboro" data-i18n="affected_area_label">Affected area</label><select id="meetingsboro"><option value="" data-i18n="all_areas">All areas</option><option>Manhattan</option><option>Bronx</option><option>Brooklyn</option><option>Queens</option><option>Staten Island</option><option value="citywide-unlocated" data-i18n="citywide_unlocated">Citywide / unlocated</option></select></div>
+      <div class="field"><label for="meetingsneighborhood" data-i18n="neighborhood_label">Neighborhood</label><input type="text" id="meetingsneighborhood" placeholder="Astoria, Kingsbridge Heights…" data-i18n-placeholder="neighborhood_placeholder"></div>
+      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" id="meetingslocation" data-i18n="use_my_location">Use my location</button></div>
       <div class="field"><label for="meetingsagency" data-i18n="agency_label">Agency</label><select id="meetingsagency"><option value="" data-i18n="all_agencies">All agencies</option></select></div>
       <div class="field kw"><label for="meetingskw" data-i18n="search_label">Search</label><input type="text" id="meetingskw" placeholder="Community Board, Brooklyn, landmark…" data-i18n-placeholder="kw_placeholder_meetings"></div>
       <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="meetings" data-i18n="watch_this_search">Watch this search</button></div>
     </div>
+    <div id="hearingssummary" class="nlunderstood" role="status"></div>
     <div class="exportbar">
       <button class="mini export-control" data-export-csv="meetings" data-i18n="export_csv">Export CSV</button>
       <button class="mini export-control" data-export-xlsx="meetings" data-i18n="export_xlsx">Export Excel (.xlsx)</button>
@@ -2453,9 +2474,13 @@ function nlFeed(key, placeholder){
       return [ `<span class="qchip">${tSection(SECTIONS[key].section)}</span>`,
                f.agency?`<span class="qchip">agency <b>${f.agency}</b></span>`:"",
                kw.length?`<span class="qchip">about <b>${kw.join(' / ')}</b></span>`:"",
-               (key==='meetings'&&f.when)?`<span class="qchip"><b>${f.when}</b></span>`:"" ];
+               (key==='meetings'&&f.when)?`<span class="qchip"><b>${f.when}</b></span>`:"",
+               (key==='meetings'&&f.borough)?`<span class="qchip">${t("affected_area_label")} <b>${f.borough}</b></span>`:"",
+               (key==='meetings'&&f.neighborhood)?`<span class="qchip">${t("neighborhood_label")} <b>${f.neighborhood}</b></span>`:"" ];
     },
     apply:f=>{ if(key==='meetings'&&f.when){ const w=$("#meetingswhen"); if(w) w.value=f.when; }
+               if(key==='meetings'&&f.borough) $("#meetingsboro").value=f.borough;
+               if(key==='meetings'&&f.neighborhood) $("#meetingsneighborhood").value=f.neighborhood;
                forceSelect("#"+key+"agency", f.agency);
                $("#"+key+"kw").value=stripImpliedKeywords(key, f.keywords).join(" ");
                return loadSection(key); }
@@ -2470,7 +2495,12 @@ function searchFilterFromHash(lens, hash){
   if(lens==="people") return {lookupType:q.get("mode")==="person"?"person":"role", keywords};
   if(lens==="land") return {boro:q.get("boro"), communityDistrict:q.get("cd"), keywords, status:q.get("status")==="all"?"all":"active"};
   const filter={agency:q.get("agency"), keywords};
-  if(lens==="meetings") filter.when=q.get("when")==="all"?"all":"upcoming";
+  if(lens==="meetings"){
+    filter.when=["week","month","upcoming"].includes(q.get("when"))?q.get("when"):"week";
+    filter.borough=DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):null;
+    filter.neighborhood=q.get("neighborhood")||null;
+    filter.locationScope=q.get("scope")==="citywide-unlocated"?"citywide-unlocated":null;
+  }
   if(lens==="property"){ filter.asset=q.get("asset")||"all"; filter.stage=q.get("stage")||"all"; }
   return filter;
 }
@@ -2493,7 +2523,13 @@ function searchFilterChips(lens, filter){
     chips.push(`<span class="qchip">${tSection(SECTIONS[lens].section)}</span>`);
     if(filter.agency) chips.push(`<span class="qchip">${t("agency_label")} <b>${enTitle(filter.agency)}</b></span>`);
     if(keywords.length) chips.push(`<span class="qchip">${t("nl_filter_about_label")} <b>${enTitle(keywords.join(" / "))}</b></span>`);
-    if(lens==="meetings") chips.push(`<span class="qchip"><b>${t(filter.when==="all"?"status_all":"mode_upcoming")}</b></span>`);
+    if(lens==="meetings"){
+      const whenKey=filter.when==="week"?"this_week":filter.when==="month"?"next_30_days":"all_upcoming";
+      chips.push(`<span class="qchip"><b>${t(whenKey)}</b></span>`);
+      if(filter.borough) chips.push(`<span class="qchip">${t("affected_area_label")} <b>${filter.borough}</b></span>`);
+      if(filter.neighborhood) chips.push(`<span class="qchip">${t("neighborhood_label")} <b>${filter.neighborhood}</b></span>`);
+      if(filter.locationScope) chips.push(`<span class="qchip">${t("citywide_unlocated")}</span>`);
+    }
   }
   if(lens==="property"){
     if(filter.asset && filter.asset!=="all") chips.push(`<span class="qchip">${t("property_asset_label")} <b>${t(ASSET_LABEL[filter.asset]||"asset_other")}</b></span>`);
@@ -2535,6 +2571,7 @@ function bindClearSearchState(lens, root){
     $("#"+lens+"agency").value="";
     $("#"+lens+"kw").value="";
     const when=$("#"+lens+"when"); if(when) when.value="upcoming";
+    if(lens==="meetings"){ $("#meetingswhen").value="week"; $("#meetingsboro").value=""; $("#meetingsneighborhood").value=""; }
     if(lens==="property"){ propAsset="all"; propStageSel="all"; }
     $("#nltrans-"+lens).innerHTML="";
     loadSection(lens);
@@ -2543,7 +2580,7 @@ function bindClearSearchState(lens, root){
 
 function searchLabelFromHash(lens, hash){
   const q=new URLSearchParams((hash.split("?")[1]||""));
-  const parts=["q","agency","boro","cd","mode","status","when","asset","stage"].map(key=>q.get(key)).filter(Boolean);
+  const parts=["q","agency","boro","neighborhood","scope","cd","mode","status","when","asset","stage"].map(key=>q.get(key)).filter(Boolean);
   return parts.join(" · ") || t("tab_"+lens);
 }
 
@@ -3385,7 +3422,7 @@ const SECTIONS={
   meetings:{section:"Public Hearings and Meetings", upcoming:true}
 };
 const feedRows={}, feedLoaded={}, feedVisible={};
-const FEED_SELECT="request_id,start_date,event_date,agency_name,type_of_notice_description,short_title,street_address_1,additional_description_1,other_info_1";
+const FEED_SELECT="request_id,start_date,event_date,agency_name,type_of_notice_description,section_name,short_title,building_name,street_address_1,street_address_2,city,state,zip_code,additional_description_1,additional_description_2,additional_description_3,other_info_1,other_info_2,other_info_3,printout_1,printout_2,printout_3";
 function goodAddr(a){ return a && !/not listed|^n\/?a$|^none$|^various|^see /i.test(a.trim()); }
 
 async function loadSection(key){
@@ -3393,6 +3430,7 @@ async function loadSection(key){
   const kw=($("#"+key+"kw").value||"").trim();
   updateHash();
   renderSearchComponents(key);
+  if(key==="meetings") return loadHearings();
   const whenSel=$("#"+key+"when");
   let where=`section_name='${cfg.section}'`, order="start_date DESC";
   const ag=$("#"+key+"agency")?$("#"+key+"agency").value:""; if(ag) where+=` AND agency_name='${ag.replace(/'/g,"''")}'`;
@@ -3410,6 +3448,136 @@ async function loadSection(key){
     if(key==="property"){ propAll=rows; renderPropExplorer(); }
     else { announce(t("notices_announce",{n:rows.length})); renderFeed(key, rows); }
   }catch(e){ if(!stale()){ unbusy("#"+key+"feed"); $("#"+key+"feed").innerHTML='<div class="empty">' + t("could_not_reach") + '</div>'; } }
+}
+
+let hearingAll=null;
+function hearingWindowEnd(){
+  return hearingDateWindowEnd(todayISO(), $("#meetingswhen").value);
+}
+function hearingFilter(){
+  const place=$("#meetingsboro").value;
+  return {
+    borough: place && place!=="citywide-unlocated" ? place : null,
+    locationScope: place==="citywide-unlocated" ? place : null,
+    neighborhood: $("#meetingsneighborhood").value.trim() || null,
+  };
+}
+function hearingEventRow(record){
+  return {
+    request_id:record.request_id,
+    start_date:record.published_at,
+    event_date:record.event_date,
+    agency_name:record.agency,
+    type_of_notice_description:record.notice_type,
+    section_name:record.source_section,
+    short_title:record.title,
+    street_address_1:record.venue&&record.venue.address,
+    additional_description_1:record.description,
+  };
+}
+function hearingSafeURL(value){
+  try{ const url=new URL(value); return url.protocol==="https:"||url.protocol==="http:" ? url.toString() : null; }
+  catch(e){ return null; }
+}
+function hearingAreaText(record){
+  const area=record.affected_area||{};
+  if(area.scope==="citywide") return t("citywide");
+  if(area.scope==="unlocated") return t("affected_not_stated");
+  const values=[
+    ...(area.neighborhoods||[]),
+    ...(area.boroughs||[]),
+    ...(area.community_districts||[]).map(cd=>t("community_district_short",{n:cd})),
+    ...(area.addresses||[]).map(address=>address.label),
+  ].filter(Boolean);
+  return [...new Set(values)].join(" · ") || t("affected_not_stated");
+}
+function hearingVenueText(record){
+  const venue=record.venue||{}, labels={
+    "virtual":"venue_virtual","in-person":"venue_in_person","hybrid":"venue_hybrid","not-stated":"venue_not_stated"
+  };
+  return [t(labels[venue.mode]||"venue_not_stated"), venue.building, venue.address].filter(Boolean).join(" · ");
+}
+function hearingCardHTML(record){
+  const scope=record.affected_area&&record.affected_area.scope||"unlocated";
+  const sectionKey=record.source_section==="Agency Rules"?"rules_hearing_badge":"public_hearing_badge";
+  const participation=record.participation||{}, links=(participation.links||[])
+    .map(link=>({url:hearingSafeURL(link.url), join:/\bjoin\b/i.test(link.label||"")}))
+    .filter(link=>link.url).slice(0,2);
+  let actions=`<a class="act" href="${record.source_url}" ${EXT_ATTRS}>${t("read_official_notice")}${extSR()}</a>`;
+  actions+=`<button class="act" type="button" data-link="${record.request_id}">${t("copy_link_btn")}</button>`;
+  if(record.event_date) actions+=`<button class="act" type="button" data-ev="meetings:${record.request_id}">${t("add_date_btn",{date:fdt(record.event_date)})}</button>`;
+  links.forEach(link=>{ actions+=`<a class="act" href="${escUiHtml(link.url)}" ${EXT_ATTRS}>${t(link.join?"join_online":"participation_link")}${extSR()}</a>`; });
+  (participation.emails||[]).slice(0,1).forEach(email=>{
+    actions+=`<a class="act" href="mailto:${encodeURIComponent(email)}">${t("email_in_notice")}</a>`;
+  });
+  const venue=record.venue||{};
+  if(venue.address) actions+=`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(venue.address+' New York NY')}" ${EXT_ATTRS}>${t("map_venue")}${extSR()}</a>`;
+  return `<article class="fcard hcard" data-scope="${scope}">
+      <div class="ftype"><span class="tag asset">${t(sectionKey)}</span>${record.agency?" "+pivotA(agencyHref(record.agency),record.agency):""}${record.event_date?` · <b style="color:var(--ink)">${fdt(record.event_date)}</b>${eventTag(record.event_date)}`:""}</div>
+      <div class="ftitle">${escUiHtml(record.decides||record.title||t("untitled"))}</div>
+      <div class="hfacts">
+        <div class="hfact"><b>${t("affected_area_label")}</b><span>${escUiHtml(hearingAreaText(record))}</span></div>
+        <div class="hfact"><b>${t("venue_label")}</b><span>${escUiHtml(hearingVenueText(record))}</span></div>
+        <div class="hfact"><b>${t("who_affected_label")}</b><span>${record.affects&&record.affects.length?escUiHtml(record.affects.map(value=>t(value)).join(" · ")):t("who_affected_not_stated")}</span></div>
+      </div>
+      ${record.description?`<div class="fscope">${escUiHtml(record.description.slice(0,260))}${record.description.length>260?"…":""}</div>`:""}
+      <div class="factions">${actions}</div>
+    </article>`;
+}
+function renderHearingGroup(scope, records){
+  if(!records.length) return "";
+  const label=scope==="local"?"local_hearings_group":scope==="citywide"?"citywide_hearings_group":"unlocated_hearings_group";
+  const note=scope==="local"?"local_hearings_note":scope==="citywide"?"citywide_hearings_note":"unlocated_hearings_note";
+  return `<h2 class="hearinggroup">${t(label)} <small>${t(note)}</small></h2>${records.map(hearingCardHTML).join("")}`;
+}
+function renderHearingExplorer(){
+  const agency=$("#meetingsagency").value, kw=$("#meetingskw").value.trim().toLowerCase();
+  const areaFilter=hearingFilter(), end=hearingWindowEnd(), start=todayISO().slice(0,10);
+  const rows=(hearingAll||[]).filter(record=>{
+    const date=String(record.event_date||"").slice(0,10);
+    if(!date||date<start||(end&&date>end)) return false;
+    if(agency&&record.agency!==agency) return false;
+    if(!hearingMatchesArea(record,areaFilter)) return false;
+    if(kw&&!`${record.title||""} ${record.decides||""} ${record.description||""} ${(record.affects||[]).join(" ")}`.toLowerCase().includes(kw)) return false;
+    return true;
+  }).sort((a,b)=>String(a.event_date||"").localeCompare(String(b.event_date||"")));
+  feedVisible.meetings=rows.map(hearingEventRow);
+  feedRows.meetings={}; rows.forEach(record=>feedRows.meetings[record.request_id]=hearingEventRow(record));
+  const counts={local:0,citywide:0,unlocated:0};
+  rows.forEach(record=>{ counts[record.affected_area&&record.affected_area.scope||"unlocated"]++; });
+  $("#hearingssummary").textContent=t("hearing_results_summary",{n:rows.length,local:counts.local,citywide:counts.citywide,unlocated:counts.unlocated});
+  const el=$("#meetingsfeed");
+  if(!rows.length){ el.innerHTML=`<div class="empty">${t("no_hearings_window")}</div>`; announce(t("notices_announce",{n:0})); return; }
+  el.innerHTML=["local","citywide","unlocated"].map(scope=>renderHearingGroup(scope,rows.filter(record=>(record.affected_area&&record.affected_area.scope||"unlocated")===scope))).join("");
+  el.querySelectorAll("[data-link]").forEach(button=>button.addEventListener("click",()=>copyText(noticeLink(button.dataset.link),button)));
+  el.querySelectorAll("[data-ev]").forEach(button=>button.addEventListener("click",()=>downloadEventICS(feedRows.meetings[button.dataset.ev.split(":")[1]])));
+  announce(t("notices_announce",{n:rows.length}));
+}
+async function loadHearings(){
+  if(hearingAll){ renderHearingExplorer(); return; }
+  busyList("#meetingsfeed",3);
+  const key="meetings", stale=staleGuard("feed:"+key);
+  try{
+    let records=null;
+    try{
+      const response=await workerFetch("/hearings",{},12000);
+      if(response.ok){ const payload=await response.json(); if(Array.isArray(payload.hearings)) records=payload.hearings; }
+    }catch(e){}
+    if(!records){
+      const rows=await soda({
+        "$select":FEED_SELECT,
+        "$where":`(section_name='Public Hearings and Meetings' OR (section_name='Agency Rules' AND type_of_notice_description='Public Hearings' AND event_date IS NOT NULL)) AND event_date >= '${todayISO()}'`,
+        "$order":"event_date ASC","$limit":"500"
+      });
+      records=rows.map(normalizeHearingRow);
+    }
+    if(stale()) return;
+    hearingAll=records;
+    unbusy("#meetingsfeed");
+    renderHearingExplorer();
+  }catch(e){
+    if(!stale()){ unbusy("#meetingsfeed"); $("#meetingsfeed").innerHTML=`<div class="empty">${t("could_not_reach")}</div>`; }
+  }
 }
 
 /* ===== Property explorer: asset-type tabs + lifecycle rail (design: property-ux report §2–3).
@@ -3467,7 +3635,10 @@ function renderPropExplorer(){
 async function loadSectionAgencies(key){
   const sel=$("#"+key+"agency"); if(!sel) return;
   try{
-    const rows=await soda({"$select":"agency_name","$where":`section_name='${SECTIONS[key].section}' AND agency_name IS NOT NULL`,"$group":"agency_name","$order":"agency_name","$limit":"200"});
+    const sectionWhere=key==="meetings"
+      ? "(section_name='Public Hearings and Meetings' OR (section_name='Agency Rules' AND type_of_notice_description='Public Hearings' AND event_date IS NOT NULL))"
+      : `section_name='${SECTIONS[key].section}'`;
+    const rows=await soda({"$select":"agency_name","$where":`${sectionWhere} AND agency_name IS NOT NULL`,"$group":"agency_name","$order":"agency_name","$limit":"200"});
     const cur=sel.value;
     sel.innerHTML=`<option value="">${t("all_agencies")}</option>`+rows.map(r=>`<option>${r.agency_name}</option>`).join("");
     if(cur) forceSelect("#"+key+"agency", cur);
@@ -3565,6 +3736,9 @@ let lastWatch = null;
 // filter and the live preview query, cleared whenever the watch type changes or a fresh NL
 // parse applies.
 let moneynlExtra = {};
+// Location carried by a Meetings lens "Watch this search" handoff. It is declarative watch
+// state (affected borough/neighborhood), never inferred or retained visitor coordinates.
+let meetingWatchExtra = {};
 // Set by the "Email me when the award registers" button on a covered-agency notice's empty
 // award state (see awardWatchOfferHTML()/externalAwardForNotice()) — the one-notice target an
 // "awardwatch" #awatch selection subscribes to. null until that button (or nothing, if the
@@ -3585,6 +3759,7 @@ function aWatchChange(skipQuizSync){
     $("#aparam").value=""; $("#aagency").value="";
     $("#amoneykw").value=""; $("#amoneymin").value=""; $("#amoneymonths").value="";
     moneynlExtra = {};
+    meetingWatchExtra = {};
     if(lastWatch==="awardwatch") awardWatchTarget = null; // leaving the type clears its one-notice target
   }
   lastWatch = w;
@@ -3624,7 +3799,10 @@ function aDescribe(){
   if(w==="entityagency") return t("desc_agency_watch",{freq, name:$("#aparam").value.trim()||"…"});
   if(w==="awardwatch") return t("desc_awardwatch",{freq, label:(awardWatchTarget&&(awardWatchTarget.label||awardWatchTarget.agency))||"…"});
   if(SECTION_WATCH_LABEL[w]){
-    const bits=[$("#aparam").value.trim()?t("desc_matching",{kw:$("#aparam").value.trim()}):"", $("#aagency").value.trim()?t("desc_from_agency",{agency:$("#aagency").value.trim()}):""].filter(Boolean).join("");
+    const location=w==="meetings"
+      ? (meetingWatchExtra.neighborhood||meetingWatchExtra.borough||(meetingWatchExtra.locationScope?t("citywide_unlocated"):""))
+      : "";
+    const bits=[$("#aparam").value.trim()?t("desc_matching",{kw:$("#aparam").value.trim()}):"", $("#aagency").value.trim()?t("desc_from_agency",{agency:$("#aagency").value.trim()}):"", location?t("desc_affecting_area",{area:location}):""].filter(Boolean).join("");
     return t("desc_section",{freq, what:t(SECTION_WATCH_LABEL[w]), bits});
   }
   const place=$("#aparam").value.trim();
@@ -3656,12 +3834,23 @@ async function aFetch(){
   }
   if(SECTION_WATCH_LABEL[w]){
     // Mirrors the worker's compileSub() for these lenses, so the preview matches the digest.
-    let where=`section_name='${SECTIONS[w].section}'`, order="start_date DESC";
-    if(w==="meetings"){ where+=` AND event_date > '${todayISO()}'`; order="event_date ASC"; }
+    let where=w==="meetings"
+      ? "(section_name='Public Hearings and Meetings' OR (section_name='Agency Rules' AND type_of_notice_description='Public Hearings' AND event_date IS NOT NULL))"
+      : `section_name='${SECTIONS[w].section}'`, order="start_date DESC";
+    if(w==="meetings"){
+      where+=` AND event_date > '${todayISO()}'`;
+      const end=hearingDateWindowEnd(todayISO(),meetingWatchExtra.dateWindow);
+      if(end) where+=` AND event_date <= '${end}T23:59:59'`;
+      order="event_date ASC";
+    }
     const ag=$("#aagency").value.trim(); if(ag) where+=` AND agency_name='${ag.replace(/'/g,"''")}'`;
     const p={"$select":FEED_SELECT,"$where":where,"$order":order,"$limit":"5"};
     if($("#aparam").value.trim()) p["$q"]=$("#aparam").value.trim();
-    return { kind:"notice", rows: await soda(p) };
+    let rows=await soda(p);
+    if(w==="meetings"&&(meetingWatchExtra.borough||meetingWatchExtra.neighborhood||meetingWatchExtra.locationScope)){
+      rows=rows.filter(row=>hearingMatchesArea(normalizeHearingRow(row),meetingWatchExtra));
+    }
+    return { kind:"notice", rows };
   }
   if(w==="bigaward"){
     const t=$("#athresh").value;
@@ -3897,7 +4086,10 @@ function aLensFilter(){
   if(w==="entityvendor") return {lens:"entity", filter:{kind:"vendor", name:$("#aparam").value.trim()||null}};
   if(w==="entityagency") return {lens:"entity", filter:{kind:"agency", name:$("#aparam").value.trim()||null}};
   if(w==="awardwatch") return {lens:"award", filter:{requestId:(awardWatchTarget&&awardWatchTarget.requestId)||null, agency:(awardWatchTarget&&awardWatchTarget.agency)||null}};
-  if(SECTION_WATCH_LABEL[w]) return {lens:w, filter:{keywords:p?[p]:[], agency:$("#aagency").value.trim()||null}};
+  if(SECTION_WATCH_LABEL[w]) return {lens:w, filter:{
+    keywords:p?[p]:[], agency:$("#aagency").value.trim()||null,
+    ...(w==="meetings"?meetingWatchExtra:{})
+  }};
   return {lens:"land", filter:{keywords:p?[p]:[], status:"all"}}; // rezonings — text match on the place
 }
 function aIsEmail(s){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s||""); }
@@ -4891,6 +5083,12 @@ function serializeState(){
     const ag=$("#"+tab+"agency"); if(ag && ag.value) q.set("agency", ag.value);
     const kw=$("#"+tab+"kw"); if(kw && kw.value.trim()) q.set("q", kw.value.trim());
     const w=$("#"+tab+"when"); if(w && w.value !== "upcoming") q.set("when", w.value);
+    if(tab==="meetings"){
+      const place=$("#meetingsboro").value;
+      if(place==="citywide-unlocated") q.set("scope",place);
+      else if(place) q.set("boro",place);
+      if($("#meetingsneighborhood").value.trim()) q.set("neighborhood",$("#meetingsneighborhood").value.trim());
+    }
     if(tab === "property"){
       if(propAsset !== "all") q.set("asset", propAsset);
       if(propStageSel !== "all") q.set("stage", propStageSel);
@@ -4932,7 +5130,7 @@ const DEEPLINK_LENSES = {
   land:     ["keywords", "boro", "status"],
   property: ["keywords", "agency"],
   rules:    ["keywords", "agency"],
-  meetings: ["keywords", "agency", "when"],
+  meetings: ["keywords", "agency", "when", "borough", "neighborhood", "locationScope", "dateWindow"],
   entity:   ["name", "kind"],
   alerts:   ["watchType", "place", "keywords", "agency", "minAmount", "maxAmount", "category", "months", "noticeType", "excludeSpecial"],
   award:    ["requestId", "agency"],
@@ -4952,7 +5150,11 @@ function deeplinkClampField(name, v){
     case "excludeSpecial": return !!v;
     case "boro": { const s = typeof v==="string" ? v.trim().toLowerCase() : ""; return DEEPLINK_BOROS.find(b=>b.toLowerCase()===s) || null; }
     case "status": return v==="all" ? "all" : v==="active" ? "active" : null;
-    case "when": return v==="all" ? "all" : v==="upcoming" ? "upcoming" : null;
+    case "when": return ["all","upcoming","week","month"].includes(v) ? v : null;
+    case "borough": { const s=typeof v==="string"?v.trim().toLowerCase():""; return DEEPLINK_BOROS.find(b=>b.toLowerCase()===s)||null; }
+    case "neighborhood": return typeof v==="string"&&v.trim()?v.replace(/\s+/g," ").trim().slice(0,80):null;
+    case "locationScope": return v==="citywide-unlocated"?v:null;
+    case "dateWindow": return ["week","month","upcoming"].includes(v)?v:null;
     case "lookupType": return v==="person" ? "person" : v==="role" ? "role" : null;
     case "name": return typeof v==="string" && v.trim() ? v.replace(/\s+/g," ").trim().slice(0,120) : null;
     case "kind": return v==="agency" ? "agency" : v==="vendor" ? "vendor" : null;
@@ -5070,7 +5272,11 @@ function applyHash(){
       $("#"+tab+"agency").value="";
       forceSelect("#"+tab+"agency", q.get("agency"));
       $("#"+tab+"kw").value = q.get("q") || "";
-      const w=$("#"+tab+"when"); if(w) w.value = q.get("when")==="all"?"all":"upcoming";
+      const w=$("#"+tab+"when"); if(w) w.value = tab==="meetings"&&["week","month","upcoming"].includes(q.get("when"))?q.get("when"):tab==="meetings"?"week":"upcoming";
+      if(tab==="meetings"){
+        $("#meetingsboro").value=q.get("scope")==="citywide-unlocated"?"citywide-unlocated":DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"";
+        $("#meetingsneighborhood").value=q.get("neighborhood")||"";
+      }
       if(tab === "property"){ propAsset = q.get("asset") || "all"; propStageSel = q.get("stage") || "all"; }
       const was = feedLoaded[tab]; showTab(tab); if(was) loadSection(tab);
     } else if(tab === "alerts"){
@@ -5238,6 +5444,16 @@ function watchFromFilters(lens){
     $("#awatch").value=lens; aWatchChange();
     $("#aparam").value=$("#"+lens+"kw").value.trim();
     const ag=$("#"+lens+"agency"); $("#aagency").value=(ag&&ag.value)||"";
+    if(lens==="meetings"){
+      const place=$("#meetingsboro").value;
+      meetingWatchExtra={
+        borough:place&&place!=="citywide-unlocated"?place:null,
+        neighborhood:$("#meetingsneighborhood").value.trim()||null,
+        locationScope:place==="citywide-unlocated"?place:null,
+        dateWindow:$("#meetingswhen").value,
+        when:$("#meetingswhen").value,
+      };
+    }
   }
   refreshQuizDisplay(); // same reason as applySuggestion() above -- the param is set after aWatchChange()
   aPreview();
@@ -5269,6 +5485,11 @@ function prefillAlertFromLink(lens, filter, freq){
     $("#awatch").value = lens; aWatchChange();
     $("#aparam").value = (filter.keywords||[]).join(" ");
     $("#aagency").value = filter.agency || "";
+    if(lens==="meetings") meetingWatchExtra={
+      borough:filter.borough||null, neighborhood:filter.neighborhood||null,
+      locationScope:filter.locationScope||null, dateWindow:filter.dateWindow||filter.when||"upcoming",
+      when:filter.when||filter.dateWindow||"upcoming",
+    };
     aPreview();
   }
   refreshQuizDisplay();
@@ -5382,6 +5603,16 @@ function maybeAutoLocateLand(){
   resolveLandEntryLocation({...landLocationOptions, storage}).finally(()=>{ button.disabled=false; });
 }
 bindLocationControl($("#landlocation"), landLocationOptions);
+bindLocationControl($("#meetingslocation"), {
+  geolocation:navigator.geolocation,
+  fetchImpl:fetch,
+  mapPlutoEndpoint:MAPPLUTO_QUERY,
+  onResolved:area=>{
+    $("#meetingsboro").value=area.borough||"";
+    $("#meetingsneighborhood").value=area.neighbourhood||"";
+    loadSection("meetings");
+  },
+});
 
 ["property","rules","meetings"].forEach(k=>{
   $("#"+k+"kw").addEventListener("keydown",e=>{ if(e.key==="Enter") loadSection(k); });
@@ -5389,6 +5620,9 @@ bindLocationControl($("#landlocation"), landLocationOptions);
   const w=$("#"+k+"when"); if(w) w.addEventListener("change",()=>loadSection(k));
   const ag=$("#"+k+"agency"); if(ag) ag.addEventListener("change",()=>loadSection(k));
 });
+$("#meetingsboro").addEventListener("change",()=>loadSection("meetings"));
+$("#meetingsneighborhood").addEventListener("keydown",event=>{ if(event.key==="Enter") loadSection("meetings"); });
+$("#meetingsneighborhood").addEventListener("input",debounce(()=>loadSection("meetings"),500));
 loadAgencies();
 loadToday();
 window.addEventListener("hashchange", ()=>{ if(!hashLock && !applyHash()) showTab("money"); }); // empty/unknown hash (e.g. Back to the first entry) → default view

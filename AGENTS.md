@@ -11,6 +11,9 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - The static site is GitHub Pages, not Cloudflare — only the API (`api.crol-list.org`) and the
   `cityscroll.org` parallel-domain mirror (`worker/src/mirror.mjs`) are Cloudflare Workers. Don't
   assume a Cloudflare Pages project exists for the frontend.
+- Hearing location extraction is deliberately dual-implemented in `hearing_location.js` and
+  `worker/src/lib/hearings.mjs`; keep venue and affected area separate and run
+  `test/contract/hearing_location.test.mjs` after changing either copy.
 
 ## Maintaining this file
 
