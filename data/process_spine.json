@@ -1,0 +1,118 @@
+{
+  "schema_version": "1.0.0",
+  "snapshot_date": "2026-07-28",
+  "source_snapshot_hash": "bf874d0b669664da02e5d2560929d16f848b7d2a08c4e3cb530c95ab8f5ca19f",
+  "coverage": {
+    "scope": "published Wave 4 reference matters",
+    "process_count": 1,
+    "event_count": 4,
+    "full_corpus": false
+  },
+  "events": [
+    {
+      "process_id": "process:pin:84124p0003001",
+      "project_id": "project:project:queens-bus-radio",
+      "event_id": "event:city_record:cr:2133677",
+      "event_type": "tender.notice",
+      "source_system": "city_record",
+      "source_key": "cr:2133677",
+      "observed_at": "2025-01-09T15:00:00Z",
+      "effective_at": "2025-01-09T00:00:00Z",
+      "actor": {
+        "id": "nyc-dot",
+        "name": "Department of Transportation"
+      },
+      "amount": null,
+      "parent_event_id": null,
+      "supersedes_event_id": null,
+      "content_hash": "4d49933e9d4b3349b7c036ec353ca09adfda21270daf7ee3908734c2cf52700b",
+      "join": {
+        "method": "native_pin",
+        "confidence": "confirmed"
+      },
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/2133677"
+    },
+    {
+      "process_id": "process:pin:84124p0003001",
+      "project_id": "project:project:queens-bus-radio",
+      "event_id": "event:city_record:cr:2141200",
+      "event_type": "award.notice",
+      "source_system": "city_record",
+      "source_key": "cr:2141200",
+      "observed_at": "2025-05-14T15:00:00Z",
+      "effective_at": "2025-05-14T00:00:00Z",
+      "actor": {
+        "id": "nyc-dot",
+        "name": "Department of Transportation"
+      },
+      "amount": {
+        "currency": "USD",
+        "type": "awarded",
+        "value": 1825000
+      },
+      "parent_event_id": "event:city_record:cr:2133677",
+      "supersedes_event_id": null,
+      "content_hash": "36760f63e30a7169644edd9d2412433b9ce8c7c31902d681277fa0d563a27642",
+      "join": {
+        "method": "native_pin",
+        "confidence": "confirmed"
+      },
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/2141200"
+    },
+    {
+      "process_id": "process:pin:84124p0003001",
+      "project_id": "project:project:queens-bus-radio",
+      "event_id": "event:checkbook_nyc:checkbook:ct1-841-20258800411",
+      "event_type": "contract.registered",
+      "source_system": "checkbook_nyc",
+      "source_key": "checkbook:CT1-841-20258800411",
+      "observed_at": "2025-06-04T00:00:00Z",
+      "effective_at": "2025-05-29T00:00:00Z",
+      "actor": {
+        "id": "nyc-dot",
+        "name": "Department of Transportation"
+      },
+      "amount": {
+        "currency": "USD",
+        "type": "registered",
+        "value": 1825000
+      },
+      "parent_event_id": "event:city_record:cr:2141200",
+      "supersedes_event_id": null,
+      "content_hash": "6f64eb3fc7e52bf8a1704c6d69f9ddba32f3cb73be8503d2a0ea6d947235b299",
+      "join": {
+        "method": "native_pin",
+        "confidence": "confirmed"
+      },
+      "source_url": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT1-841-20258800411"
+    },
+    {
+      "process_id": "process:pin:84124p0003001",
+      "project_id": "project:project:queens-bus-radio",
+      "event_id": "event:nyscr:nyscr:candidate-2133677",
+      "event_type": "tender.notice",
+      "source_system": "nyscr",
+      "source_key": "nyscr:candidate-2133677",
+      "observed_at": "2025-01-10T00:00:00Z",
+      "effective_at": "2025-01-10T00:00:00Z",
+      "actor": {
+        "id": null,
+        "name": "New York City Department of Transportation"
+      },
+      "amount": null,
+      "parent_event_id": null,
+      "supersedes_event_id": null,
+      "content_hash": "5a5bbdbe29740691ac28e13381b7d189713fb21b94c1e164755b1e13d25969f4",
+      "join": {
+        "method": "candidate_metadata",
+        "confidence": "review",
+        "matched_fields": [
+          "agency",
+          "contract_cr_number",
+          "commodity"
+        ]
+      },
+      "source_url": "https://www.nyscr.ny.gov/Ads/Search?CR=2133677"
+    }
+  ]
+}
