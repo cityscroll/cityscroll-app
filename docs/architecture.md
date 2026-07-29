@@ -26,10 +26,13 @@ sources:
   - MISSION.md
   - external_awards.js
   - staffing.js
+  - i18n.js
   - tools/build_staffing_exams.mjs
+  - tools/stamp_i18n_assets.py
+  - .github/workflows/deploy-pages.yml
   - worker/wrangler.toml
   - worker/src/worker.mjs
-sources_hash: 6cdc52c5494c3a9321ce361f029cfd5b71d08bbf9ac1b0f9428494d39dac9722
+sources_hash: cb37ec92e8ddf292d42936b4f73d92767ef7208b8773ccaf0af693c9e979e465
 ---
 
 # crol-list — architecture
@@ -108,11 +111,11 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 
 ## Serving & deploy
 
-- `index.html` served as a GitHub Pages static site at `crol-list.org` (CNAME in repo) — the canonical domain; every page's `<link rel="canonical">` points here regardless of which domain served the request.
+- `index.html` is built and served as a GitHub Pages static site at `crol-list.org` (CNAME in repo) — the canonical domain; every page's `<link rel="canonical">` points here regardless of which domain served the request. The Pages workflow derives one cache stamp from `i18n.js` plus every shipping dictionary, writes it only into the deployment artifact, verifies the result, and then publishes it.
 - Worker deployed via `wrangler deploy` from `worker/` to the custom domain `api.crol-list.org` (workers.dev alias intentionally kept alive). Changes under `worker/**` deploy from `main` through `.github/workflows/deploy-worker.yml`; a manual Wrangler deploy remains the emergency path. Cron trigger `0 13 * * *` (~9am ET). D1 schema versioned in `worker/migrations/`, applied with `wrangler d1 migrations apply crol-notices --remote`.
 - `cityscroll.org` / `www.cityscroll.org` — a parallel serving domain (same Cloudflare account, custom-domain routes in `worker/wrangler.toml`). Since GitHub Pages only virtual-hosts the one domain configured in its own settings, the worker answers these two hosts itself by reverse-proxying the static site straight from `crol-list.org` byte-for-byte (`worker/src/mirror.mjs`), so the mirror can never drift and the canonical tag rides along unchanged. `crol-list.org` stays canonical; this is infrastructure only, not a redirect or a content fork.
 - Secrets via `wrangler secret put`: `ANTHROPIC_API_KEY`, `RESEND_API_KEY`, `TURNSTILE_SECRET`, `TOKEN_SECRET`, `USAGE_KEY`, `ANALYTICS_READ_TOKEN`, `ANALYTICS_DEV_KEY`, and the production-only `ANALYTICS_ENVIRONMENT` runtime gate. The analytics read token is scoped to Account Analytics Read; the developer key authenticates short-lived HMAC exclusions, while a missing/non-production runtime gate drops writes. Spend guards are vars in `wrangler.toml`: `MAX_PER_RUN=25`, `MAX_SENDS_PER_DAY=50` (under Resend's free 100/day); `/subscribe` and `/feedback` fail closed (503) if their secrets are absent.
-- GitHub Actions runs the test suite on pull requests and deploys Worker changes after merge.
+- GitHub Actions runs the test suite on pull requests, builds and deploys the static site after merge, and deploys Worker changes when `worker/**` changes.
 
 ## Surface
 
