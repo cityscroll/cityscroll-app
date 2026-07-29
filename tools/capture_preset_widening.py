@@ -110,7 +110,7 @@ def capture(page: Page, base_url: str, width: int, height: int) -> Path:
     banner = page.locator("#meetingswidening .widening-note")
     banner.wait_for(state="visible")
     page.locator("#meetingsfeed .fcard").wait_for(state="visible")
-    assert "No results for “IDA” in All upcoming. Showing Recent past." in banner.inner_text()
+    assert "Showing recent past meetings for “IDA” (none upcoming)." in banner.inner_text()
     assert page.locator("#meetingsfeed .tag.closed", has_text="Past").count() == 1
     assert page.locator("#meetingsfeed .fcard").count() == 1
     page.evaluate(
