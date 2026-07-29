@@ -146,7 +146,7 @@ test("SUGGESTION_POOL: the two field-evidence dead examples are present as fixtu
 // reused here to prove enrichCandidate() wires computeLineageSignal() into the real pipeline).
 // "school food service contracts" (money idx 4) — two real, live NYC Department of Education
 // Solicitation rows for the same query, standing in for a candidate whose agency ("Education")
-// has cached Checkbook/MOCS forecast data; the DOE agency is deliberately absent from the
+// has cached Checkbook forecast data; the DOE agency is deliberately absent from the
 // construction sample so the two signals are independently demonstrated, not conflated.
 const constructionSample = [
   { pin: "85026B0058001", agency_name: "Design and Construction" },
@@ -224,7 +224,7 @@ test("runSuggestionValidation: enriches a real lineage-rich candidate and a real
     if (s.includes("school")) return { ok: true, json: async () => doeSample };
     return { ok: true, json: async () => [] };
   };
-  const kvStore = { "plan:EDUCATION": JSON.stringify([{ source: "mocs", agency: "Education", description: "School food service requirements contract", value_band: "$5M-$10M", release_quarter: "Q1 2027" }]) };
+  const kvStore = { "fc:EDUCATION": JSON.stringify([{ source: "checkbook", agency_name: "Education", contract_id: "DOE-1", expiration_date: "2027-09-01" }]) };
   const env = { ANTHROPIC_API_KEY: "test-key", ALERT_STATE: { get: async (k) => kvStore[k], put: async (k, v) => { kvStore[k] = v; } } };
   try {
     const res = await runSuggestionValidation(env);
@@ -235,7 +235,7 @@ test("runSuggestionValidation: enriches a real lineage-rich candidate and a real
     assert.equal(construction.lineageRich, true, "construction contracts over $500k: 6/25 real rows have a genuine prior-award chain");
     assert.equal(construction.forecastBearing, false, "none of construction's sampled agencies (Education absent) have cached forecast data");
     assert.ok(school, "school food service candidate should have validated");
-    assert.equal(school.forecastBearing, true, "Education has a cached plan: forecast record");
+    assert.equal(school.forecastBearing, true, "Education has a cached renewal-estimate record");
     assert.equal(school.lineageRich, false, "the DOE sample rows carry no PIN chain data in this fixture");
   } finally {
     globalThis.fetch = originalFetch;

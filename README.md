@@ -41,8 +41,8 @@ published them, and links each applicant to the official next step.
 ## Key Features
 
 ### 1. Procurement Lenses
-*   **💵 Money:** Follow contracts from RFP → Intent to Award → Award, complete with bidding deadlines, PASSPort links, agency contacts, and CSV exports. Profiles for nine public authorities also show their latest official state-filed awards, clearly labeled as annual filings that may lag by a year.
-*   **🔮 Predictive Forecasting:** Track upcoming solicitation opportunities 6 months before they are formally published. Fuses historical Checkbook NYC award durations to calculate expiration/renewal cycles, scrapes annual MOCS agency plans, displays a chronological vertical timeline widget on profiles, and triggers early-warning alert notifications.
+*   **💵 Money:** Follow contracts from RFP → Intent to Award → Award, complete with bidding deadlines, PASSPort links, agency contacts, and CSV exports. Thirteen agency aliases map to 12 distinct public authorities with recent official state-filed awards, clearly labeled as annual filings that may lag by a year.
+*   **🔮 Renewal Outlook:** Use historical Checkbook NYC contract terms to estimate expiration and renewal timing, display a chronological timeline on profiles, and trigger six-month early-warning alerts. These are labeled estimates, not active solicitations.
 *   **👤 Staffing:** Learn how civil-service hiring works, browse open and upcoming exams by interest, share a specific exam, and compare City titles, pay scales, and appointment histories.
 *   **🏗 Land:** Map rezonings in plain English, linked to the official City Planning ZAP registry and tax-lot (MapPLUTO) boundary polygons.
 *   **🏛 Property:** Track municipal asset auctions (real estate, equipment, timber) and check building demolition statuses.
@@ -62,19 +62,38 @@ published them, and links each applicant to the official next step.
 
 ## Data Sources
 
-| Source / Portal | Endpoint / ID | Used For |
+<!-- BEGIN GENERATED SOURCE CONTRACTS -->
+
+The executable registry is [`data/source_contracts.json`](data/source_contracts.json);
+[the generated source ledger](docs/data-sources.md) records coverage, cadence, freshness,
+required fields, and known gaps. Required pull-request checks validate recorded upstream
+shapes; a separate daily workflow runs the live verifier and reports publisher drift.
+
+| Live source | Used for | Product freshness |
 |---|---|---|
-| **City Record Online** (Socrata) | `dg92-zbpx` | core notices: solicitations, awards, rules, meetings |
-| **Checkbook NYC API** | `POST /api` (`Contracts`, `Contracts_NYCHA`) | registered amounts, paid-to-date, renewal expiration forecasting, and date-guarded NYCHA solicitation matches |
-| **NYS Authorities Budget Office** (Socrata) | `8w5p-k45m`, `d84c-dk28` | recent official awards on nine mapped public-authority profiles; annual filings may lag by a year |
-| **MOCS Procurement Plans** (Socrata) | `whpb-ebtd` | Charter §112 agency solicitation plans (forecasting) |
-| **Citywide Payroll** (Socrata) | `k397-673e` | People lens (individual pay histories) |
-| **Civil Service List** (Socrata) | `vx8i-nprf` | People lens (exam details) |
-| **Annual Examination Schedule** (Socrata) | `4ptz-hmtc` | upcoming DCAS exams and application windows |
-| **DCAS Exam Schedules and NOEs** | [nyc.gov/examsforjobs](https://www.nyc.gov/examsforjobs) | current open exams, official job details, fees, waivers, and application action |
-| **ZAP Projects** (Socrata) | `hgx4-8ukb` | Land lens (rezonings status) |
-| **MapPLUTO** (ArcGIS Online) | `/MAPPLUTO` | Land lens (geographic lot boundary layers) |
-| **DOB Job Filings** (Socrata) | `w9ak-ipjd`, `ic3t-wcy2` | Property lens (building demolition verification) |
+| [City Record Online](https://data.cityofnewyork.us/d/dg92-zbpx) `dg92-zbpx` | Core notices, feeds, alerts, profiles, hearings, property records, prior-cycle matches, and aggregates. | Live browser queries use a five-minute cache; Worker mirrors and materialized views refresh daily. |
+| [Checkbook NYC registered contracts](https://www.checkbooknyc.com/data-feeds/api) `Contracts` | Registered amounts, paid-to-date totals, contract terms, and estimated renewal timing. | Queried live for contract details and daily for watched renewal estimates. |
+| [Checkbook NYC NYCHA contracts](https://www.checkbooknyc.com/data-feeds/api) `Contracts_NYCHA` | Exact NYCHA solicitation-to-award matches. | Queried by exact notice PIN on demand, with bounded daily prewarming. |
+| [NYS Authorities Budget Office — local authorities](https://data.ny.gov/d/8w5p-k45m) `8w5p-k45m` | Possible award matches for mapped local-authority profiles. | Checked weekly; the last good cache is retained if the upstream request fails. |
+| [NYS Authorities Budget Office — local development corporations](https://data.ny.gov/d/d84c-dk28) `d84c-dk28` | Possible award matches for mapped local-development-corporation profiles. | Checked weekly; the last good cache is retained if the upstream request fails. |
+| [NYS Authorities Budget Office — state authorities](https://data.ny.gov/d/ehig-g5x3) `ehig-g5x3` | Possible award matches for mapped state-authority profiles, including the MTA. | Checked weekly; the last good cache is retained if the upstream request fails. |
+| [Citywide Payroll Data](https://data.cityofnewyork.us/d/k397-673e) `k397-673e` | Title and pay history in the Staffing experience. | Queried live with a five-minute browser cache. |
+| [Civil Service List (Active)](https://data.cityofnewyork.us/d/vx8i-nprf) `vx8i-nprf` | Competitive-list checks and active-list totals. | Queried live for list checks and captured in the Staffing build. |
+| [Zoning Application Portal — projects](https://data.cityofnewyork.us/d/hgx4-8ukb) `hgx4-8ukb` | Rezoning search, status, milestones, applicants, and comments handoff. | Queried live with a five-minute browser cache and used by daily subscriptions. |
+| [Zoning Application Portal — tax lots](https://data.cityofnewyork.us/d/2iga-a6mk) `2iga-a6mk` | Tax-lot joins from ZAP projects to MapPLUTO. | Queried live with a five-minute browser cache. |
+| [MapPLUTO](https://www.nyc.gov/content/planning/pages/resources/datasets/mappluto-pluto-change) | Tax-lot boundary geometry. | Queried live for matched ZAP tax lots. |
+| [NYC GeoSearch](https://geosearch.planninglabs.nyc/) | Address, neighborhood, borough, and BBL resolution. | Queried live; the verifier checks availability and response shape, not underlying data age. |
+| [DOB NOW job application filings](https://data.cityofnewyork.us/d/w9ak-ipjd) `w9ak-ipjd` | Current demolition-filing verification. | Queried live only when a demolition check is requested. |
+| [Legacy DOB job application filings](https://data.cityofnewyork.us/d/ic3t-wcy2) `ic3t-wcy2` | Legacy demolition-filing verification. | Queried live as the fallback for demolition checks. |
+
+The external-award registry currently maps 13 agency names to 12 distinct ABO authorities across `8w5p-k45m`, `d84c-dk28`, `ehig-g5x3`, adds 1 exact NYCHA mapping, and records 16 verified coverage gaps. ABO joins remain possible matches rather than exact contract identity.
+
+MOCS Local Law 63 plan rows are disabled. The current official page publishes rotating
+per-agency spreadsheets without a stable machine manifest; the former configured dataset is
+non-tabular, and the former documented dataset does not exist. CityScroll does not show
+official plan forecasts until a source passes the executable contract.
+
+<!-- END GENERATED SOURCE CONTRACTS -->
 
 ---
 

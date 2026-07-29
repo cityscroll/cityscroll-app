@@ -5,7 +5,7 @@
 // text into a filter the EXACT same way a real chip click would (parseLensFilter — the same
 // NL→filter core /nl itself calls), then counts today's live matches via
 // suggestionCountParams(). Candidates clearing MIN_SUGGESTION_RESULTS are stored, grouped by
-// lens, in ALERT_STATE KV alongside the other cron products (fc:/plan:) under
+// lens, in ALERT_STATE KV alongside the other cron products under
 // SUGGESTIONS_KV_KEY, so index.html's suggestion chips only ever render a query proven to
 // return real results today.
 //
@@ -32,7 +32,7 @@ export const SUGGESTIONS_KV_KEY = "suggestions:validated";
 const ENRICH_SAMPLE_LIMIT = 25;
 
 // Money/alerts-only candidate-level lineage-richness (PIN award-chain history) + forecast-
-// bearing (Checkbook/MOCS agency forecast) signal. Never throws: any failure at any step
+// bearing (Checkbook renewal estimate) signal. Never throws: any failure at any step
 // (sample fetch, batch fetch, KV read) is swallowed and the signal for that step reports
 // "uncertain" (false) rather than a guess — the base validated/count result for the candidate
 // is unaffected either way, since enrichment is a bonus label, not a fruitfulness gate.
@@ -70,7 +70,7 @@ async function enrichCandidate(env, lens, filter, todayISO) {
     } catch (e) { /* stays false — uncertain, not a guess */ }
   }
 
-  // Forecast: any distinct sampled agency with a cached fc:<stem>/plan:<stem> record.
+  // Forecast: any distinct sampled agency with a cached fc:<stem> renewal estimate.
   let forecastBearing = false;
   if (env.ALERT_STATE) {
     const agencies = [...new Set(sample.map((r) => r.agency_name).filter(Boolean))];
@@ -78,8 +78,8 @@ async function enrichCandidate(env, lens, filter, todayISO) {
       const stem = vendorStem(name);
       if (stem.length < 3) continue;
       try {
-        const [fc, plan] = await Promise.all([env.ALERT_STATE.get(`fc:${stem}`), env.ALERT_STATE.get(`plan:${stem}`)]);
-        if (fc || plan) { forecastBearing = true; break; }
+        const fc = await env.ALERT_STATE.get(`fc:${stem}`);
+        if (fc) { forecastBearing = true; break; }
       } catch (e) { /* keep checking other agencies */ }
     }
   }

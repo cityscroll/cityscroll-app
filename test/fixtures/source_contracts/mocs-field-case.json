@@ -1,0 +1,34 @@
+{
+  "observed_on": "2026-07-29",
+  "configured": {
+    "dataset_id": "egea-b8r5",
+    "metadata": {
+      "id": "egea-b8r5",
+      "name": "LL63 of 2011 Plan",
+      "assetType": "href",
+      "columns": [],
+      "rowsUpdatedAt": 1499882842
+    },
+    "resource": {
+      "status": 403,
+      "body": {
+        "error": true,
+        "message": "no row or column access to non-tabular tables"
+      }
+    }
+  },
+  "documented": {
+    "dataset_id": "whpb-ebtd",
+    "resource": {
+      "status": 404,
+      "body": {
+        "code": "dataset.missing",
+        "error": true,
+        "message": "Not found",
+        "data": {
+          "id": "whpb-ebtd"
+        }
+      }
+    }
+  }
+}

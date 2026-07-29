@@ -68,6 +68,10 @@ test("GET /vendor-profile serves a fresh record and rejects it after 24 hours", 
   const generated = "2026-07-27T13:00:00.000Z";
   const version = "20260727130000";
   const profile = buildVendorProfiles(CAMBA_ROWS).CAMBA;
+  profile.forecasts = [
+    { source: "checkbook", contract_id: "keep", expiration_date: "2027-03-01" },
+    { source: "mocs", description: "retired plan row", release_quarter: "Q1 FY2027" },
+  ];
   const bucketKey = vendorProfileBucketKey(version, vendorProfileBucket("CAMBA"));
   const store = kvStore({
     "vp:manifest:v1": JSON.stringify({ generated, version }),
@@ -79,7 +83,11 @@ test("GET /vendor-profile serves a fresh record and rejects it after 24 hours", 
     nowMs: Date.parse(generated) + 23 * 60 * 60 * 1000,
   });
   assert.equal(fresh.status, 200);
-  assert.equal((await fresh.json()).profile.awardCount, 271);
+  const freshBody = await fresh.json();
+  assert.equal(freshBody.profile.awardCount, 271);
+  assert.deepEqual(freshBody.profile.forecasts, [
+    { source: "checkbook", contract_id: "keep", expiration_date: "2027-03-01" },
+  ]);
   assert.equal(fresh.headers.get("cache-control"), "public, max-age=300");
 
   const stale = await handleVendorProfile(req, { ALERT_STATE: store }, {
