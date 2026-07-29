@@ -350,23 +350,27 @@
   .staffing-upcoming-title{display:block;font:750 15px/1.25 var(--font-body);margin:5px 0 4px;overflow-wrap:anywhere}
   .staffing-upcoming-window{display:block;font:12px/1.35 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
   .career-guide{margin-bottom:34px;scroll-margin-top:12px}
-  .career-hero{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(260px,.8fr);gap:22px;border-block:3px double var(--ink);padding:24px 0 22px}
   .career-kicker{font:600 11px/1 var(--font-sc);letter-spacing:.15em;text-transform:uppercase;color:var(--oxblood);margin:0 0 9px}
-  .career-hero h1{font:900 clamp(2rem,5vw,3.8rem)/.98 var(--font-display);letter-spacing:-.025em;margin:0;max-width:770px}
-  .career-deck{font-size:18px;line-height:1.5;color:var(--ink-soft);max-width:720px;margin:15px 0 0}
-  .career-facts{align-self:end;border-inline-start:1px solid var(--rule-strong);padding-inline-start:20px}
-  .career-fact{padding:10px 0;border-bottom:1px solid var(--rule)}
-  .career-fact:last-child{border-bottom:0}
-  .career-fact b{display:block;font:800 21px/1.05 var(--font-display);color:var(--oxblood);margin-bottom:3px}
-  .career-fact span{display:block;font:12.5px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
-  .career-how{padding:24px 0 3px}
-  .career-section-heading{font:800 25px/1.1 var(--font-display);margin:0 0 13px}
+  .career-intro{border-block:3px double var(--ink);padding:10px 0 12px}
+  .career-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-bottom:9px}
+  .career-fact{display:flex;align-items:baseline;justify-content:center;gap:5px;min-width:0;padding:4px 10px;border-inline-end:1px solid var(--rule);text-align:center}
+  .career-fact:last-child{border-inline-end:0}
+  .career-fact b{font:800 17px/1.1 var(--font-display);color:var(--oxblood)}
+  .career-fact span{font:11.5px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+  .career-how{border:1px solid var(--rule);border-radius:7px;background:var(--card)}
+  .career-how summary{display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;list-style:none;padding:8px 11px;font:700 13px/1.35 ui-sans-serif,system-ui,sans-serif;color:var(--oxblood)}
+  .career-how summary::-webkit-details-marker{display:none}
+  .career-how summary::after{content:"▸";flex:0 0 auto;transition:transform .15s ease}
+  .career-how[open] summary::after{transform:rotate(90deg)}
+  .career-how-body{border-top:1px solid var(--rule);padding:10px 12px 12px}
+  .career-deck{font-size:14px;line-height:1.45;color:var(--ink-soft);max-width:850px;margin:0 0 11px}
+  .career-section-heading{font:800 19px/1.1 var(--font-display);margin:0 0 10px}
   .career-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;counter-reset:careerstep}
-  .career-step{counter-increment:careerstep;border-top:3px solid var(--ink);padding:12px 10px 10px 0;min-width:0}
-  .career-step::before{content:counter(careerstep);display:block;font:800 13px/1 var(--font-display);color:var(--oxblood);margin-bottom:7px}
-  .career-step b{display:block;font-size:16px;line-height:1.25;margin-bottom:4px}
-  .career-step span{display:block;font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
-  .career-browser{margin-top:28px;border-top:1px solid var(--rule-strong);padding-top:22px}
+  .career-step{counter-increment:careerstep;border-top:2px solid var(--ink);padding:8px 7px 3px 0;min-width:0}
+  .career-step::before{content:counter(careerstep);display:block;font:800 12px/1 var(--font-display);color:var(--oxblood);margin-bottom:5px}
+  .career-step b{display:block;font-size:14px;line-height:1.2;margin-bottom:3px}
+  .career-step span{display:block;font:12px/1.35 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+  .career-browser{margin-top:16px;border-top:1px solid var(--rule-strong);padding-top:18px}
   .career-browser-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
   .career-browser-head p{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:0}
   .career-controls{display:grid;grid-template-columns:minmax(180px,1.4fr) repeat(3,minmax(145px,.7fr));gap:10px;margin:14px 0 12px}
@@ -403,6 +407,16 @@
   .career-explorer-divider{border-top:3px double var(--ink);padding-top:24px;margin-top:28px;scroll-margin-top:12px}
   .career-explorer-divider h2{font:800 27px/1.1 var(--font-display);margin:0 0 6px}
   .career-explorer-divider p{margin:0;color:var(--muted)}
+  .contract-examples{border:1px solid var(--rule);border-radius:7px;background:var(--card);margin:9px 0 14px}
+  .contract-examples summary{cursor:pointer;list-style:none;padding:8px 11px;font:700 12px/1.35 ui-sans-serif,system-ui,sans-serif;color:var(--oxblood)}
+  .contract-examples summary::-webkit-details-marker{display:none}
+  .contract-examples summary::after{content:" ▸"}
+  .contract-examples[open] summary::after{content:" ▾"}
+  .contract-example-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;border-top:1px solid var(--rule);padding:9px}
+  .contract-example{display:flex;align-items:center;justify-content:space-between;gap:9px;min-width:0;background:#fff;border:1px solid var(--rule);border-radius:6px;padding:7px 8px}
+  .contract-example a{min-width:0;font:650 12px/1.3 ui-sans-serif,system-ui,sans-serif;overflow-wrap:anywhere}
+  .contract-example code{display:block;width:max-content;margin-top:2px}
+  .contract-example button{flex:0 0 auto;min-height:34px;padding:5px 8px}
   .staffing-role-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px}
   .staffing-role-select{border:0;background:transparent;color:inherit;padding:0;text-align:start;font:inherit;min-width:0;cursor:pointer}
   .staffing-role-select:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
@@ -414,7 +428,6 @@
     .staffing-filter-bar{grid-template-columns:1fr 1fr}
     .staffing-filter-group:first-child{grid-column:1/-1}
     .staffing-upcoming-list{grid-template-columns:repeat(2,minmax(0,1fr))}
-    .career-hero{grid-template-columns:1fr}.career-facts{border-inline-start:0;border-top:1px solid var(--rule);padding:12px 0 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.career-fact{border-bottom:0}
     .career-steps{grid-template-columns:repeat(2,minmax(0,1fr))}
     .career-controls{grid-template-columns:repeat(2,minmax(0,1fr))}
   }
@@ -430,11 +443,11 @@
     .staffing-notice-list{grid-template-columns:1fr}
     .staffing-upcoming-list{display:flex;overflow-x:auto;scroll-snap-type:x proximity;padding-bottom:4px}
     .staffing-upcoming-item{flex:0 0 82%;scroll-snap-align:start}
-    .career-hero h1{font-size:2.35rem}.career-deck{font-size:16.5px}
-    .career-facts{grid-template-columns:1fr}.career-fact{border-bottom:1px solid var(--rule)}
-    .career-steps,.career-controls,.career-results{grid-template-columns:1fr}
+    .career-fact{display:block;padding:4px 5px}.career-fact b,.career-fact span{display:block}.career-fact b{font-size:15px}.career-fact span{font-size:10px}
+    .career-controls,.career-results{grid-template-columns:1fr}
     .career-source{display:block}.career-source details{margin-top:7px}
     .career-card-head{display:block}.career-exam-number{display:block;margin-top:5px}
+    .contract-example-list{grid-template-columns:1fr}
     .staffing-role-row{grid-template-columns:1fr}.staffing-exam-link{align-items:flex-start;max-width:none;text-align:start}
   }
 
@@ -757,6 +770,28 @@
     </div>
     <div class="chiprow" id="methodfacet" style="display:none"></div>
 
+    <details class="contract-examples">
+      <summary data-i18n="contract_examples_heading">Follow a real contract</summary>
+      <div class="contract-example-list">
+        <div class="contract-example">
+          <a href="#matter/84124P0003001"><span lang="en" dir="ltr">21st Avenue bridge engineering</span><code>84124P0003001</code></a>
+          <button type="button" class="mini" data-matter-copy="84124P0003001" data-i18n="copy_link_btn">Copy link</button>
+        </div>
+        <div class="contract-example">
+          <a href="#matter/06820P8165KXLR002"><span lang="en" dir="ltr">Bronx prevention services</span><code>06820P8165KXLR002</code></a>
+          <button type="button" class="mini" data-matter-copy="06820P8165KXLR002" data-i18n="copy_link_btn">Copy link</button>
+        </div>
+        <div class="contract-example">
+          <a href="#matter/07124N0007001R001"><span lang="en" dir="ltr">Emergency hotel management</span><code>07124N0007001R001</code></a>
+          <button type="button" class="mini" data-matter-copy="07124N0007001R001" data-i18n="copy_link_btn">Copy link</button>
+        </div>
+        <div class="contract-example">
+          <a href="#matter/82626B0029001"><span lang="en" dir="ltr">Owls Head settling-system rehabilitation</span><code>82626B0029001</code></a>
+          <button type="button" class="mini" data-matter-copy="82626B0029001" data-i18n="copy_link_btn">Copy link</button>
+        </div>
+      </div>
+    </details>
+
     <div class="grid">
       <div class="panel">
         <div class="panelbar">
@@ -802,7 +837,7 @@
           <div class="staffing-filter-options">
             <button type="button" class="chip" data-staffing-type="hire" aria-pressed="true" data-i18n="staffing_filter_hires">New hires</button>
             <button type="button" class="chip" data-staffing-type="exam" aria-pressed="false" data-i18n="staffing_filter_exams">Civil-service exams</button>
-            <a id="staffing-exam-help" class="staffing-exam-help" href="#people?view=guide" data-i18n="staffing_exam_help">New to civil-service exams?</a>
+            <a id="staffing-exam-help" class="staffing-exam-help" href="#people?view=guide" data-i18n="staffing_exam_help">New to civil-service exams? How it works</a>
           </div>
         </fieldset>
         <fieldset class="staffing-filter-group">
@@ -846,28 +881,28 @@
     </section>
 
     <div class="career-guide" id="career-guide" hidden>
-      <header class="career-hero">
-        <div>
-          <p class="career-kicker" data-i18n="career_kicker">City careers, explained</p>
-          <h2 data-i18n="career_heading">A City job may start with an exam</h2>
-          <p class="career-deck" data-i18n="career_deck">Civil-service exams can open a path to stable public-service work. You do not need to know City hiring jargon first: start with work that interests you, check the official requirements, and apply during the listed window.</p>
-        </div>
+      <div class="career-intro">
         <div class="career-facts" aria-label="Exam guide summary" data-i18n-aria="career_summary_aria">
           <div class="career-fact"><b id="career-open-count">—</b><span data-i18n="career_open_count_label">open to applications now</span></div>
           <div class="career-fact"><b id="career-upcoming-count">—</b><span data-i18n="career_upcoming_count_label">open-competitive exams scheduled next</span></div>
           <div class="career-fact"><b data-i18n="career_no_account_fact">No account here</b><span data-i18n="career_no_account_label">Applications happen in the City's OASys system</span></div>
         </div>
-      </header>
-
-      <section class="career-how" aria-labelledby="career-how-heading">
-        <h3 class="career-section-heading" id="career-how-heading" data-i18n="career_how_heading">What a civil-service exam does</h3>
-        <div class="career-steps">
-          <div class="career-step"><b data-i18n="career_step1_title">Find an exam</b><span data-i18n="career_step1_body">Open-competitive exams are available to anyone who meets the requirements.</span></div>
-          <div class="career-step"><b data-i18n="career_step2_title">Read the NOE</b><span data-i18n="career_step2_body">The Notice of Examination is the official guide to the job, qualifications, fee, and test.</span></div>
-          <div class="career-step"><b data-i18n="career_step3_title">Apply in the window</b><span data-i18n="career_step3_body">Create an OASys account, submit the application, and request a fee waiver if you qualify.</span></div>
-          <div class="career-step"><b data-i18n="career_step4_title">Join the eligible list</b><span data-i18n="career_step4_body">If you pass, your score places you on a list agencies use when they hire for that title.</span></div>
-        </div>
-      </section>
+        <details class="career-how" id="career-how-details">
+          <summary data-i18n="staffing_exam_help">New to civil-service exams? How it works</summary>
+          <div class="career-how-body">
+            <p class="career-deck" data-i18n="career_deck">Civil-service exams can open a path to stable public-service work. You do not need to know City hiring jargon first: start with work that interests you, check the official requirements, and apply during the listed window.</p>
+            <section aria-labelledby="career-how-heading">
+              <h3 class="career-section-heading" id="career-how-heading" data-i18n="career_how_heading">What a civil-service exam does</h3>
+              <div class="career-steps">
+                <div class="career-step"><b data-i18n="career_step1_title">Find an exam</b><span data-i18n="career_step1_body">Open-competitive exams are available to anyone who meets the requirements.</span></div>
+                <div class="career-step"><b data-i18n="career_step2_title">Read the NOE</b><span data-i18n="career_step2_body">The Notice of Examination is the official guide to the job, qualifications, fee, and test.</span></div>
+                <div class="career-step"><b data-i18n="career_step3_title">Apply in the window</b><span data-i18n="career_step3_body">Create an OASys account, submit the application, and request a fee waiver if you qualify.</span></div>
+                <div class="career-step"><b data-i18n="career_step4_title">Join the eligible list</b><span data-i18n="career_step4_body">If you pass, your score places you on a list agencies use when they hire for that title.</span></div>
+              </div>
+            </section>
+          </div>
+        </details>
+      </div>
 
       <section class="career-browser" aria-labelledby="career-browser-heading">
         <div class="career-browser-head">
@@ -3197,6 +3232,17 @@ window.addEventListener("afterprint",clearPrintView);
 /* ===================== PEOPLE ===================== */
 let pRows = [], pMode = "role", competitiveSet = new Set();
 let careerData = null, careerLoadPromise = null, careerSelected = null, careerLimit = 16;
+let careerHowPrepared = false;
+const CAREER_HOW_SEEN_KEY = "crol_exam_how_seen_v1";
+function prepareCareerHow(){
+  if(careerHowPrepared) return;
+  const details=$("#career-how-details");
+  let seen=false;
+  try{ seen=localStorage.getItem(CAREER_HOW_SEEN_KEY)==="1"; }catch(e){}
+  details.open=!seen;
+  if(!seen){ try{ localStorage.setItem(CAREER_HOW_SEEN_KEY,"1"); }catch(e){} }
+  careerHowPrepared=true;
+}
 let staffingNotices = [], staffingLoaded = false, staffingLoadPromise = null;
 const staffingFilters = {type:"hire", query:"", role:"", agency:""};
 const STAFFING_EXAM_AGENCY = "DCAS";
@@ -3473,6 +3519,7 @@ function showExam(examNumber){
   careerSelected=examNumber; careerLimit=16;
   showTab("people");
   $("#career-guide").hidden=false;
+  prepareCareerHow();
   loadCareerGuide().then(()=>{
     renderCareerGuide();
     $("#career-exam-"+CSS.escape(examNumber))?.scrollIntoView({block:"start"});
@@ -3481,6 +3528,7 @@ function showExam(examNumber){
 function scrollStaffingView(view){
   const guide=$("#career-guide");
   guide.hidden=view!=="guide";
+  if(view==="guide") prepareCareerHow();
   const target=view==="guide"?guide:view==="notices"?$("#staffing-feed"):null;
   if(!target) return;
   requestAnimationFrame(()=>{
@@ -5897,9 +5945,29 @@ function parseLandHashSegment(rest){
   return /^[A-Za-z0-9_-]{1,80}$/.test(id) ? id : null;
 }
 
+// Every hash prefix that addresses one item also has a collection-level landing. This keeps
+// hand-typed/share-trimmed routes useful instead of letting them fall through to the default tab.
+function bareCollectionHash(raw){
+  const route=raw.endsWith("/")?raw.slice(0,-1):raw;
+  return {
+    notice:"#money",
+    exam:"#people?view=guide",
+    land:"#land",
+    vendor:"#money",
+    agency:"#money",
+    matter:"#money",
+    "investigation/shared":"#investigation",
+  }[route]||null;
+}
+
 function applyHash(){
   const raw = location.hash.slice(1);
   if(!raw) return false;
+  const collectionHash=bareCollectionHash(raw);
+  if(collectionHash&&location.hash!==collectionHash){
+    history.replaceState(null,"",collectionHash);
+    return applyHash();
+  }
   if(raw.startsWith("notice/")){
     const { id, watch } = parseNoticeHashSegment(raw.slice(7));
     showNotice(id, watch);
@@ -6076,6 +6144,12 @@ renderLandingShareActions();
 renderNLQPresets();
 loadValidatedSuggestions();
 document.addEventListener("click",e=>{
+  const matterCopy=e.target.closest("[data-matter-copy]");
+  if(matterCopy){
+    const link=location.origin+location.pathname+"#matter/"+encodeURIComponent(matterCopy.dataset.matterCopy);
+    copyText(link,matterCopy);
+    return;
+  }
   const csv=e.target.closest("[data-export-csv]");
   if(csv){ exportLensCsv(csv.dataset.exportCsv); return; }
   const xlsx=e.target.closest("[data-export-xlsx]");
