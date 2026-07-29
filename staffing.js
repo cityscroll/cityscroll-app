@@ -52,5 +52,47 @@
     return `${base || "https://crol-list.org/"}#exam/${encodeURIComponent(examNumber)}`;
   }
 
-  return { statusFor, filterExams, sourceAgeDays, sourceIsStale, examUrl };
+  function featuredExams(exams, today, limit) {
+    const count = Number.isFinite(limit) ? Math.max(0, Math.floor(limit)) : 4;
+    return filterExams(exams, {
+      query: "",
+      interest: "all",
+      eligibility: "open_competitive",
+      window: "actionable",
+    }, today).slice(0, count);
+  }
+
+  function normalizeTitle(value) {
+    return String(value || "")
+      .normalize("NFKD")
+      .replace(/&/g, " AND ")
+      .replace(/[^A-Za-z0-9]+/g, " ")
+      .trim()
+      .replace(/\s+/g, " ")
+      .toUpperCase();
+  }
+
+  function titleKeys(value) {
+    const full = normalizeTitle(value);
+    const withoutQualifier = normalizeTitle(String(value || "").replace(/\s*\([^)]*\)\s*$/g, ""));
+    return [...new Set([full, withoutQualifier].filter(Boolean))];
+  }
+
+  function examForTitle(exams, title, today) {
+    const keys = new Set(titleKeys(title));
+    if (!keys.size) return null;
+    const actionable = featuredExams(exams, today, exams.length);
+    return actionable.find(exam => titleKeys(exam.title).some(key => keys.has(key))) || null;
+  }
+
+  return {
+    statusFor,
+    filterExams,
+    sourceAgeDays,
+    sourceIsStale,
+    examUrl,
+    featuredExams,
+    normalizeTitle,
+    examForTitle,
+  };
 });

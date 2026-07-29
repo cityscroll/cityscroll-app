@@ -18,7 +18,7 @@ summary: >-
   and an MCP endpoint for AI assistants (both spend-metered), plus a public
   data.html page of live dataset aggregates. Digest delivery fans out through
   a Cloudflare Queue (per-subscriber retries, DLQ; daily send caps unchanged).
-updated: 2026-07-28
+updated: 2026-07-29
 sources:
   - README.md
   - MISSION.md
@@ -27,7 +27,7 @@ sources:
   - tools/build_staffing_exams.mjs
   - worker/wrangler.toml
   - worker/src/worker.mjs
-sources_hash: 0f6efabf3f0c833537f6ab1987335f6d7313562fa44472c3d5aa2a8c9ec811dd
+sources_hash: 0ddf74c926b37a3e67ae447be2676a7eaff21648b140c75e99d588c69e337283
 ---
 
 # crol-list — architecture

@@ -64,8 +64,27 @@ def main():
                 def handle_route(route):
                     route_external(route, base)
                 page.route("**/*", handle_route)
-                page.goto(base + "#exam/7016", wait_until="load")
+                page.goto(base + "#people", wait_until="load")
+                page.locator("#staffing-upcoming-list .staffing-upcoming-item").first.wait_for(state="visible")
+                if page.locator("#staffing-upcoming-list .staffing-upcoming-item").count() != 4:
+                    failures.append(f"{width}px: Staffing page did not render four featured exams")
+                if not page.locator("#staffing-upcoming-list .staffing-upcoming-item").first.get_attribute("href").startswith("#exam/"):
+                    failures.append(f"{width}px: featured exam does not deep-link to its guide detail")
+                if page.locator('a[href="#people?view=guide"]').count() < 2:
+                    failures.append(f"{width}px: Staffing-to-guide cross-links are missing")
+                if page.locator('a[href="#people?mode=person&view=notices"]').count() < 2:
+                    failures.append(f"{width}px: guide-to-live-notices cross-links are missing")
+                tagged_role = page.evaluate(
+                    """() => roleRowHTML(
+                      {title_description:'CASEWORKER', n:'20', mn:'50000', mx:'70000'},
+                      0, ['caseworker'], true,
+                      CrolStaffing.examForTitle(careerData.exams, 'CASEWORKER', careerToday())
+                    )"""
+                )
+                if 'class="staffing-exam-link"' not in tagged_role or 'href="#exam/7016"' not in tagged_role:
+                    failures.append(f"{width}px: matching Staffing role was not tagged with its exam detail")
                 card = page.locator("#career-exam-7016")
+                page.evaluate("location.hash='#exam/7016'")
                 card.wait_for(state="visible")
                 if page.evaluate("location.hash") != "#exam/7016":
                     failures.append(f"{width}px: exam deep link was rewritten")
@@ -79,7 +98,9 @@ def main():
                 if not args.verify_only:
                     OUTPUT.mkdir(parents=True, exist_ok=True)
                     target = OUTPUT / f"guide-{width}.png"
-                    page.locator("#career-guide").screenshot(path=target, animations="disabled")
+                    page.evaluate("location.hash='#people'")
+                    page.locator("#staffing-pathways").wait_for(state="visible")
+                    page.locator("#staffing-pathways").screenshot(path=target, animations="disabled")
                     captures.append(str(target.relative_to(ROOT)))
                 page.close()
             browser.close()
@@ -89,7 +110,7 @@ def main():
     metrics = {
         "captured_viewports": [width for width, _ in VIEWPORTS],
         "page_weight": file_metrics(),
-        "notes": "Guide incremental weight is the dependency-free staffing module plus the precomputed exam JSON. No NYC API request is required to render exam cards.",
+        "notes": "Guide incremental weight is the dependency-free staffing module plus the precomputed exam JSON. The Staffing-page exam module and exam tags reuse that artifact; no NYC API request is required to render them.",
         "captures": captures,
     }
     if not args.verify_only:
@@ -100,7 +121,7 @@ def main():
         for failure in failures:
             print("FAIL", failure)
         raise SystemExit(1)
-    print("Staffing guide deep-link, action, responsive-layout, and capture checks passed.")
+    print("Staffing hub, cross-link, exam-tag, deep-link, responsive-layout, and capture checks passed.")
 
 
 if __name__ == "__main__":
