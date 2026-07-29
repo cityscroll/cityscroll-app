@@ -2,9 +2,9 @@
 # Functional suite: drives every shipped feature in a real headless Chromium.
 #
 #   ./test/functional/run.sh                     # against a local server (started for you, port 8000)
-#   CROL_BASE=https://crol-list.org/ ./test/functional/run.sh    # e2e against production
+#   CROL_BASE=https://cityscroll.org/ ./test/functional/run.sh    # e2e against production
 #
-# Env: CROL_BASE (default http://localhost:8000/) · CROL_DNS_IP (pin api.crol-list.org if your
+# Env: CROL_BASE (default http://localhost:8000/) · CROL_DNS_IP (pin api.cityscroll.org if your
 # resolver has a stale record) · CROL_SHOTS (screenshot dir). Requires: python3 + playwright
 # (pip install playwright && playwright install chromium).
 set -u

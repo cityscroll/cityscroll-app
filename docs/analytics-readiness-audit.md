@@ -7,8 +7,8 @@ Trigger: user feedback that the public statistics surface showed missing or empt
 
 The live page and endpoint were checked before implementation:
 
-- `https://crol-list.org/stats.html`
-- `https://api.crol-list.org/stats`
+- `https://cityscroll.org/stats.html`
+- `https://api.cityscroll.org/stats`
 
 At 21:36 UTC the JSON endpoint returned HTTP 200 with a generated timestamp and non-zero values.
 The healthy endpoint populated the page after its asynchronous request completed. A controlled

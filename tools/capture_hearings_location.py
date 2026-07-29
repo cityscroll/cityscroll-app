@@ -179,7 +179,7 @@ def install_routes(page: Page) -> None:
         else:
             json_response(route, {})
 
-    page.route("https://api.crol-list.org/**", worker)
+    page.route("https://api.cityscroll.org/**", worker)
     page.route("https://crol-worker.crol-worker.workers.dev/**", worker)
 
     def city_data(route: Route) -> None:

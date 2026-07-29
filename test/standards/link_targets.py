@@ -14,12 +14,12 @@ Revision (2026-07): the product owner broadened the ruling from a named
 allowlist to a blanket rule — the lost-search-state cost applies to EVERY external site, not
 just government data/bid/payment systems, so the carve-out became the default. This
 DELIBERATELY SUPERSEDES the w10-03/B18 same-tab default for external destinations: every
-absolute link to a host CROL-List doesn't own now opens in a new tab, with the accessible
+absolute link to a host CityScroll doesn't own now opens in a new tab, with the accessible
 `<span class="sr-only">` marking (below) serving as the WCAG-consistent mitigation for the
-tab-change B18 was written to prevent. Only CROL-List's own resources — crol-list.org,
-api.crol-list.org, in-app hash routes (`#notice/...`, relative page links), and the project's
-own GitHub repo — stay same-tab; the B19 "no external-link icons" rule is untouched by this
-revision and still applies.
+tab-change B18 was written to prevent. Only CityScroll's current and compatibility
+domains, in-app hash routes (`#notice/...`, relative page links), and the project's
+own GitHub repo stay same-tab; the B19 "no external-link icons" rule is untouched
+by this revision and still applies.
 
 A link must, to pass this gate:
   1. resolve to an OWN destination (`classify()` below) — in which case it must NOT carry
@@ -61,24 +61,27 @@ I18N_SOURCES = ["i18n.js"] + sorted(
 # Resolved anchor text allowed to keep an arrow — internal navigation, not an external link.
 # B19 ("no external-link icons") is untouched by crol-extlinks2-y8 — it governs link TEXT,
 # not new-tab behavior, so it still applies to every external link regardless of target.
-ALLOWED_ICON_TEXT = {"View on CROL-List", "Ver en CROL-List"}
+ALLOWED_ICON_TEXT = {"View on CityScroll", "Ver en CityScroll"}
 
-# Hosts CROL-List itself serves from — these, and only these, stay same-tab.
-OWN_HOSTS = {"crol-list.org", "api.crol-list.org", "www.crol-list.org"}
+# Hosts CityScroll itself serves from — these, and only these, stay same-tab.
+OWN_HOSTS = {
+    "cityscroll.org", "www.cityscroll.org", "api.cityscroll.org",
+    "crol-list.org", "www.crol-list.org", "api.crol-list.org",
+}
 # The project's own GitHub repo counts as "own" too (crol-extlinks2-y8 product ruling) — a
 # governance-file link isn't the kind of mid-task research round-trip this rule targets.
 OWN_HREF_PREFIXES = ("https://github.com/jimdc/crol-list",)
 
-# JS-templated (`${...}`) hrefs known to resolve to CROL-List's own domain / an in-app hash
+# JS-templated (`${...}`) hrefs known to resolve to CityScroll's own domain / an in-app hash
 # route / a non-navigating scheme (tel:, mailto:) — audited against every call site as of
 # crol-extlinks2-y8. Keep in sync with index.html/api.html when a new one is added.
 OWN_HREF_EXPRS = (
     "${href}",             # pivotA(href, text) — always called with an in-app hash route
     "${agencyHref(",       # in-app hash route (#agency/...)
     "${url}",              # investigation share link — location.origin + ... (same origin)
-    "${u.atom}", "${u.json}", "${u.ics}",  # feed links — always api.crol-list.org
-    "${API.replace(",       # per-agency/vendor RSS feed links — always api.crol-list.org
-    "${esc(v.entity)}",    # api.html entity link — always crol-list.org (worker/src/batch.mjs)
+    "${u.atom}", "${u.json}", "${u.ics}",  # feed links — always api.cityscroll.org
+    "${API.replace(",       # per-agency/vendor RSS feed links — always api.cityscroll.org
+    "${esc(v.entity)}",    # api.html entity link — always cityscroll.org (worker/src/batch.mjs)
     "${tel}",               # tel: scheme, not a page navigation
     "${mailtoFor(",         # mailto: scheme, not a page navigation
 )

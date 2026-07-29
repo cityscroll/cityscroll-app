@@ -1,6 +1,6 @@
 ---
 summary: >-
-  CROL-List is a dependency-free static site (`index.html`) plus a Cloudflare
+  CityScroll is a dependency-free static site (`index.html`) plus a Cloudflare
   Worker backend that makes NYC's City Record searchable by interest: seven
   lenses (Money/People/Land/Property/Rules/Meetings plus an alert system) over
   live Socrata open-data APIs, with a Wave-5 forecasting layer that predicts
@@ -37,7 +37,11 @@ sources:
   - rule_location.mjs
   - beta_flags.js
   - beta-flags.json
+  - CNAME
+  - robots.txt
+  - sitemap.xml
   - _config.yml
+  - 
   - tools/build_staffing_exams.mjs
   - tools/stamp_i18n_assets.py
   - tools/ensure_beta_pages.mjs
@@ -50,20 +54,21 @@ sources:
   - worker/src/worker.mjs
   - worker/src/property.mjs
   - worker/src/lib/hearings.mjs
+  - worker/src/mirror.mjs
   - worker/src/lib/cors.mjs
-sources_hash: e68c2267690698daf197292dcd807faa090bd3a581953d1984f412f6400c932a
+sources_hash: 94d3d7c22f941996f7d1a44b9850f25eb6786a0f338dc4ca39f86e535a79d183
 ---
 
 # crol-list — architecture
 
 ## What & why
 
-The NYC City Record publishes every agency contract, hearing, rule change, rezoning, and property disposition — by City Charter §1066 — but the raw record is hard to follow by interest. CROL-List re-stitches it into seven navigable lenses, adds cross-references to Checkbook NYC (contract payments and NYCHA contracts), official NYS Authorities Budget Office award filings, ZAP (rezoning detail), and BBL lookups, delivers standing watches as email digests, and — since Wave 5 — forecasts upcoming solicitations up to 6 months out by fusing historical award durations with agencies' published §112 procurement plans. The constraint is no accounts, no per-user tracking, no hard backend dependency — every feature degrades gracefully when the worker is absent.
+The NYC City Record publishes every agency contract, hearing, rule change, rezoning, and property disposition — by City Charter §1066 — but the raw record is hard to follow by interest. CityScroll re-stitches it into seven navigable lenses, adds cross-references to Checkbook NYC (contract payments and NYCHA contracts), official NYS Authorities Budget Office award filings, ZAP (rezoning detail), and BBL lookups, delivers standing watches as email digests, and — since Wave 5 — forecasts upcoming solicitations up to 6 months out by fusing historical award durations with agencies' published §112 procurement plans. The constraint is no accounts, no per-user tracking, no hard backend dependency — every feature degrades gracefully when the worker is absent.
 
 ## System map
 
 ```
-Browser (crol-list.org — static on GitHub Pages)
+Browser (cityscroll.org — canonical Worker mirror of static GitHub Pages)
   index.html  (inline CSS + vanilla JS, ~100% of the feature surface)
         ├──►  data/staffing_exams.json (build-time materialized DCAS exam view)
         │  most queries go direct — CORS-open, no key needed
@@ -73,7 +78,7 @@ Browser (crol-list.org — static on GitHub Pages)
         │
         │  secret / server-side routes only
         ▼
-  api.crol-list.org  (Cloudflare Worker "crol-worker" — worker/ in this repo;
+  api.cityscroll.org  (Cloudflare Worker "crol-worker" — worker/ in this repo;
                       workers.dev alias kept alive for in-flight confirm links)
         ├──  /nl                plain-English → lens filters (Claude Haiku, NL_METER-capped)
         ├──  /mcp               MCP for AI assistants: search/get/preview_watch/create_watch (metered)
@@ -114,8 +119,8 @@ Analytics Engine: crol_usage_events_v1 — versioned aggregate page/click/search
 
 Public review channel (Cloudflare Pages project "crol-list-beta")
   draft PR + preview:beta label → stable pr-<number> alias
-  owner workflow + exact SHA → beta production pointer → beta.crol-list.org
-  optional owner workflow + exact SHA → isolated api-beta.crol-list.org Worker
+  owner workflow + exact SHA → beta production pointer → beta.cityscroll.org
+  optional owner workflow + exact SHA → isolated api-beta.cityscroll.org Worker
   same verified Jekyll + deploy-time i18n stamp pipeline as stable
 ```
 
@@ -139,11 +144,13 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 
 ## Serving & deploy
 
-- `index.html` is built and served as a GitHub Pages static site at `crol-list.org` (CNAME in repo) — the canonical domain; every page's `<link rel="canonical">` points here regardless of which domain served the request. The Pages workflow derives one cache stamp from `i18n.js` plus every shipping dictionary, writes it only into the deployment artifact, verifies the result, and then publishes it.
-- Cloudflare Pages hosts public review artifacts only. Draft pull requests opt in with `preview:beta` and receive a stable `pr-<number>.crol-list-beta.pages.dev` alias plus an immutable URL. The manually triggered promotion workflow deploys one explicit commit to the Pages production branch named `beta`; `beta.crol-list.org` is therefore a moving pointer, not a long-lived source branch. Re-running the workflow with the prior SHA is the deterministic rollback. Review artifacts keep stable canonical links and add no-index headers, channel/commit metadata, a visible experimental banner, and a stable-site escape link.
-- Review artifacts select `api-beta.crol-list.org` before page scripts run and never fall back to production. That Worker is an optional, manually deployed exact-commit environment with no inherited production secrets, storage, queues, or cron. Its browser routes accept beta Pages origins only under the beta runtime gate; paid, stateful, delivery, and write behavior fails closed when unconfigured.
-- Worker deployed via `wrangler deploy` from `worker/` to the custom domain `api.crol-list.org` (workers.dev alias intentionally kept alive). Changes under `worker/**` deploy from `main` through `.github/workflows/deploy-worker.yml`; a manual Wrangler deploy remains the emergency path. Cron trigger `0 13 * * *` (~9am ET). D1 schema versioned in `worker/migrations/`, applied with `wrangler d1 migrations apply crol-notices --remote`.
-- `cityscroll.org` / `www.cityscroll.org` — a parallel serving domain (same Cloudflare account, custom-domain routes in `worker/wrangler.toml`). Since GitHub Pages only virtual-hosts the one domain configured in its own settings, the worker answers these two hosts itself by reverse-proxying the static site straight from `crol-list.org` byte-for-byte (`worker/src/mirror.mjs`), so the mirror can never drift and the canonical tag rides along unchanged. `crol-list.org` stays canonical; this is infrastructure only, not a redirect or a content fork.
+- `index.html` is built as a GitHub Pages static site whose origin hostname remains `crol-list.org` (the repository CNAME). The canonical public site is `cityscroll.org`; every page's canonical and Open Graph URL points there. The Pages workflow derives one cache stamp from `i18n.js` plus every shipping dictionary, writes it only into the deployment artifact, verifies the result, and then publishes it.
+- Cloudflare Pages hosts public review artifacts only. Draft pull requests opt in with `preview:beta` and receive a stable `pr-<number>.crol-list-beta.pages.dev` alias plus an immutable URL. The manually triggered promotion workflow deploys one explicit commit to the Pages production branch named `beta`; `beta.cityscroll.org` is therefore a moving pointer, not a long-lived source branch. Re-running the workflow with the prior SHA is the deterministic rollback. Review artifacts keep stable canonical links and add no-index headers, channel/commit metadata, a visible experimental banner, and a stable-site escape link.
+- Review artifacts select `api-beta.cityscroll.org` before page scripts run and never fall back to production. That Worker is an optional, manually deployed exact-commit environment with no inherited production secrets, storage, queues, or cron. Its browser routes accept beta Pages origins only under the beta runtime gate; paid, stateful, delivery, and write behavior fails closed when unconfigured.
+- Worker deployed via `wrangler deploy` from `worker/` to the canonical custom domain `api.cityscroll.org`; `api.crol-list.org` and workers.dev remain compatibility aliases for existing clients and in-flight confirmation links. Changes under `worker/**` deploy from `main` through `.github/workflows/deploy-worker.yml`; a manual Wrangler deploy remains the emergency path. Cron trigger `0 13 * * *` (~9am ET). D1 schema versioned in `worker/migrations/`, applied with `wrangler d1 migrations apply crol-notices --remote`.
+- `cityscroll.org` / `www.cityscroll.org` are the canonical site hosts (custom-domain routes in `worker/wrangler.toml`). The Worker reverse-proxies the GitHub Pages origin at `crol-list.org` byte-for-byte (`worker/src/mirror.mjs`) so the two layers cannot drift.
+- Direct visitors to `crol-list.org` / `www.crol-list.org` receive a 301 to the matching CityScroll path and query through the externally activated Cloudflare Single Redirect in ``. The rule excludes requests with a Worker upstream zone, allowing the mirror to reach the origin without a loop. Fragments remain client-side and are retained by conforming browsers.
+- New feed, confirmation, redirect, and API URLs mint on CityScroll. Existing calendar UIDs retain `@crol-list` and Atom entries retain `tag:crol-list.org,2026:` so calendar and feed clients do not create duplicates. Email sending and routing remain on `@crol-list.org` pending a separate deliverability decision.
 - Secrets via `wrangler secret put`: `ANTHROPIC_API_KEY`, `RESEND_API_KEY`, `TURNSTILE_SECRET`, `TOKEN_SECRET`, `USAGE_KEY`, `ANALYTICS_READ_TOKEN`, `ANALYTICS_DEV_KEY`, and the production-only `ANALYTICS_ENVIRONMENT` runtime gate. The analytics read token is scoped to Account Analytics Read; the developer key authenticates short-lived HMAC exclusions, while a missing/non-production runtime gate drops writes. Spend guards are vars in `wrangler.toml`: `MAX_PER_RUN=25`, `MAX_SENDS_PER_DAY=50` (under Resend's free 100/day); `/subscribe` and `/feedback` fail closed (503) if their secrets are absent.
 - GitHub Actions runs the test suite on pull requests, builds and deploys the stable site after merge, publishes explicitly labeled draft previews, promotes exact commits to beta only on manual dispatch, and deploys Worker changes when `worker/**` changes.
 
@@ -165,16 +172,16 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 ## Seams
 
 - **Consumes:** NYC Open Data Socrata SODA (City Record `dg92-zbpx`, MOCS plans `whpb-ebtd`, payroll `k397-673e`, annual exam schedule `4ptz-hmtc`, active civil-service lists `vx8i-nprf`, ZAP `hgx4-8ukb`), current DCAS exam schedules and NOEs, NYS Open Data Socrata SODA (Authorities Budget Office local-authority awards `8w5p-k45m`, local-development-corporation awards `d84c-dk28`), Checkbook NYC API (`Contracts`, `Contracts_NYCHA`), NYC GeoSearch / MapPLUTO, DOB job filings, Anthropic Claude Haiku (`/nl`), Resend (email), Cloudflare Turnstile, Cloudflare KV + R2 + Analytics Engine + Cron Triggers.
-- **Feeds:** subscriber inboxes (daily/weekly digests + forecast early warnings); public stats at `crol-list.org/stats.html`; RSS/Atom/JSON Feed/iCal consumers.
+- **Feeds:** subscriber inboxes (daily/weekly digests + forecast early warnings); public stats at `cityscroll.org/stats.html`; RSS/Atom/JSON Feed/iCal consumers.
 - **Sister repo (archived):** `crol-worker` — pre-move history of the worker before it was open-sourced into this monorepo (2026-07-02).
 
 ## TL;DR
 
 1 static site (`index.html` + `data.html`) + 1 Cloudflare Worker, 7 lenses, public and operator API routes plus an inbound-email handler and queue consumer, 1 daily cron (ingest → cache precomputation → queue fan-out), 4 KV namespaces + 1 D1 database (notices mirror + prior-cycle cache) + 1 R2 source vault + 1 Analytics Engine dataset + 2 queues, 6 secrets, 2 hard send caps — under one hard rule: no accounts, cookies, fingerprinting, or visitor profiles, and no hard backend dependency; everything degrades gracefully when the worker is absent.
 
-1. A visitor loads `index.html` (inline CSS + vanilla JS) served static from GitHub Pages at `crol-list.org` — no backend required.
+1. A visitor loads `index.html` (inline CSS + vanilla JS) at canonical `cityscroll.org`, mirrored from the static GitHub Pages origin — no application backend required.
 2. Picking a lens fires queries direct from the browser to CORS-open public APIs: Socrata SODA for City Record notices and ABO awards, plus GeoSearch/MapPLUTO for BBL and rezoning geometry. Checkbook queries use the schema-agnostic worker proxy.
-3. Server-only features route to `api.crol-list.org`: `/nl` (plain English → filters via Claude Haiku, metered by `NL_METER`), `/subscribe`→`/confirm`→`/unsubscribe` (double-opt-in, Turnstile-gated, fails closed), feeds, `/batch`, `/agencies`, `/inv`, `/stats`, `/feedback`, keyed `/admin/*` and `/usage`.
+3. Server-only features route to `api.cityscroll.org`: `/nl` (plain English → filters via Claude Haiku, metered by `NL_METER`), `/subscribe`→`/confirm`→`/unsubscribe` (double-opt-in, Turnstile-gated, fails closed), feeds, `/batch`, `/agencies`, `/inv`, `/stats`, `/feedback`, keyed `/admin/*` and `/usage`.
 4. The forecasting layer (`/checkbook` + `/forecast`) parses historical Checkbook NYC award term lengths into projected expirations (`fc:<stem>` in `ALERT_STATE`) and merges them with scraped Charter §112 MOCS agency plans (`plan:<stem>`) into one chronological timeline, rendered as the profile-page timeline widget.
 5. Subscriptions land in KV `SUBS`; legacy aggregate integers accrue in stats counters, while bounded page and interaction events accrue in Analytics Engine without visitor identifiers. The only personal data is the double-opted-in subscription email.
 6. The daily cron (13:00 UTC) first refreshes the D1 notices mirror from Socrata (cursored, fail-soft — a failed ingest never blocks alerts), pre-warms prior-cycle match sets for freshly-ingested Award notices, rebuilds the hearings, Property, and versioned whole-profile vendor projections in KV, then replays active subscriptions and forecast milestones, sending digests and early-warning emails via Resend — hard-capped at 25/run, 50/day. Each cache job is fail-soft; Money digests exclude data-entry-error amounts (≥ $10B) and label rolling year-2090 deadlines honestly.

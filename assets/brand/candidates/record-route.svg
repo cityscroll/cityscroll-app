@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc" color="#173f55">
+  <title id="title">Record Route logo candidate</title>
+  <desc id="desc">A continuous scroll route passes through a grid of city blocks.</desc>
+  <path d="M12 11h33a8 8 0 0 1 0 16H20a8 8 0 0 0 0 16h32" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+  <path d="M12 51h10v8H12zM28 49h10v10H28zM44 51h8v8h-8zM12 3h8v5h-8zM26 3h12v5H26zM44 3h8v5h-8z" fill="currentColor"/>
+</svg>

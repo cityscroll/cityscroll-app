@@ -32,7 +32,7 @@ function payload() {
   };
 }
 function req(body, headers = {}) {
-  return new Request("https://api.crol-list.org/board-hook", { method: "POST", headers, body });
+  return new Request("https://api.cityscroll.org/board-hook", { method: "POST", headers, body });
 }
 
 test("optionality: no board-notify secrets configured -> route fails closed (503), no crash", async () => {

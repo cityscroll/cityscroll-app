@@ -51,10 +51,10 @@ test("one preset store accepts every search lens and identifies its lens for lab
   assert.deepEqual(parsePresetStore(JSON.stringify(store)), store);
   assert.equal(
     canonicalSearchURL(
-      { origin: "https://crol-list.org", pathname: "/" },
+      { origin: "https://cityscroll.org", pathname: "/" },
       store[0].hash,
     ),
-    "https://crol-list.org/#land?boro=Queens",
+    "https://cityscroll.org/#land?boro=Queens",
   );
 });
 

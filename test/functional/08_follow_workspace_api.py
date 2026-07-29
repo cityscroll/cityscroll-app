@@ -3,7 +3,7 @@ import json, sys
 from playwright.sync_api import sync_playwright
 import os
 BASE = os.environ.get("CROL_BASE", "http://localhost:8000/")
-_ARGS = ["--host-resolver-rules=MAP api.crol-list.org " + os.environ["CROL_DNS_IP"]] if os.environ.get("CROL_DNS_IP") else []
+_ARGS = ["--host-resolver-rules=MAP api.cityscroll.org " + os.environ["CROL_DNS_IP"]] if os.environ.get("CROL_DNS_IP") else []
 SHOT = os.environ.get("CROL_SHOTS", os.path.dirname(os.path.abspath(__file__)) + "/shots") + "/"
 os.makedirs(SHOT, exist_ok=True)
 
@@ -34,7 +34,7 @@ with sync_playwright() as pw:
     subj = page.locator("#apreviewbox .esubj").inner_text()
     step("OK" if "Sinergia" in subj else "FAIL", "N7 entity preview renders", subj)
     feeds = page.evaluate("[...document.querySelectorAll('#afeeds a')].map(a=>a.href)")
-    ok = feeds and all("lens=entity" in f and "kind=vendor" in f and "api.crol-list.org" in f for f in feeds)
+    ok = feeds and all("lens=entity" in f and "kind=vendor" in f and "api.cityscroll.org" in f for f in feeds)
     step("OK" if ok else "FAIL", "N7 entity feed links (branded)", feeds[0] if feeds else "none")
 
     # ---------- N9: pin → workspace → note → export → share → shared view ----------

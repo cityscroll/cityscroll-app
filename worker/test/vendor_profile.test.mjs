@@ -73,7 +73,7 @@ test("GET /vendor-profile serves a fresh record and rejects it after 24 hours", 
     "vp:manifest:v1": JSON.stringify({ generated, version }),
     [bucketKey]: JSON.stringify({ generated, profiles: { CAMBA: profile } }),
   });
-  const req = new Request("https://api.crol-list.org/vendor-profile?name=Camba%20Inc.");
+  const req = new Request("https://api.cityscroll.org/vendor-profile?name=Camba%20Inc.");
 
   const fresh = await handleVendorProfile(req, { ALERT_STATE: store }, {
     nowMs: Date.parse(generated) + 23 * 60 * 60 * 1000,

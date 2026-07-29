@@ -4,14 +4,14 @@ a meta description on every page, 120-160 characters; a title under 60 character
 consistent separator across the site.
 
 House decision (documented per the guide's own "or conform, and document the deviation"
-option): CROL-List keeps the middle dot ("·") as its title separator rather than switching to
+option): CityScroll keeps the middle dot ("·") as its title separator rather than switching to
 the guide's literal hyphen — it's already the site's brand mark (used in the header, footer,
-and every non-home page's "Page · CROL-List" title) and switching only the five-page dash format
+and every non-home page's "Page · CityScroll" title) and switching only the five-page dash format
 while leaving the brand's own middle-dot usage everywhere else would be the inconsistent choice.
-index.html's title previously broke the pattern entirely (a colon, "CROL-List: track RFPs…");
+index.html's title previously broke the pattern entirely (a colon, "CityScroll: track RFPs…");
 this gate ensures every page uses "·", not that every page match the same word order — a
-homepage brand-first title ("CROL-List · tagline") is standard SEO practice and unlike the five
-inner pages, needn't read "Page · CROL-List".
+homepage brand-first title ("CityScroll · tagline") is standard SEO practice and unlike the five
+inner pages, needn't read "Page · CityScroll".
 
 Pure-text lint (title/meta tag only), no browser — unit job.
 """

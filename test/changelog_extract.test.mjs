@@ -43,7 +43,7 @@ ${PR_26_USER_IMPACT_LINE}
 `;
 
 const PR_33_BODY_NO_MARKER = `## Summary
-- Add \`.github/workflows/deploy-worker.yml\`: deploys the Cloudflare Worker (api.crol-list.org) on every push to \`main\` that touches \`worker/**\`, via \`cloudflare/wrangler-action@v3.14.1\` (pinned to a full version), plus \`workflow_dispatch\` for manual re-runs.
+- Add \`.github/workflows/deploy-worker.yml\`: deploys the Cloudflare Worker (api.cityscroll.org) on every push to \`main\` that touches \`worker/**\`, via \`cloudflare/wrangler-action@v3.14.1\` (pinned to a full version), plus \`workflow_dispatch\` for manual re-runs.
 - Serialize deploys with a \`concurrency: worker-deploy\` group (\`cancel-in-progress: false\`) so two quick merges deploy in order instead of racing.
 - Code-only deploy: no \`secrets:\`/\`vars:\` inputs, no \`wrangler secret put\` — avoids the documented gotcha where a \`[vars]\` entry can silently overwrite a live secret of the same name.
 

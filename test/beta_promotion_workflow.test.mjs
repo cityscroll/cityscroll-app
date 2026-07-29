@@ -51,7 +51,7 @@ test("the first promotion provisions the pointer and every promotion verifies it
   const domain = workflow.indexOf("ensure_beta_pages.mjs domain");
   const verify = workflow.indexOf("release-channel.json");
   assert.ok(project >= 0 && project < deploy && deploy < domain && domain < verify);
-  assert.match(workflow, /https:\/\/beta\.crol-list\.org/);
+  assert.match(workflow, /https:\/\/beta\.cityscroll\.org/);
   assert.match(workflow, /EXPECTED_COMMIT/);
 });
 
@@ -60,7 +60,7 @@ test("beta artifacts show their exact commit and a stable-site escape", () => {
   try {
     writeFileSync(
       join(root, "index.html"),
-      '<!doctype html><link rel="canonical" href="https://crol-list.org/"><body><main>Site</main></body>',
+      '<!doctype html><link rel="canonical" href="https://cityscroll.org/"><body><main>Site</main></body>',
     );
     const result = spawnSync(
       "python3",
@@ -79,8 +79,8 @@ test("beta artifacts show their exact commit and a stable-site escape", () => {
     const page = readFileSync(join(root, "index.html"), "utf8");
     assert.match(page, /Experimental beta/);
     assert.match(page, /bbbbbbbbbbbb/);
-    assert.match(page, /https:\/\/crol-list\.org\//);
-    assert.match(page, /rel="canonical" href="https:\/\/crol-list\.org\/"/);
+    assert.match(page, /https:\/\/cityscroll\.org\//);
+    assert.match(page, /rel="canonical" href="https:\/\/cityscroll\.org\/"/);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }

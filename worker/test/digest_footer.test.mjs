@@ -47,7 +47,7 @@ async function runOneMoneySub(filter) {
     ALERTS_LIVE: "true",
     RESEND_API_KEY: "re-1234",
     TOKEN_SECRET: "secret-key",
-    CONFIRM_BASE: "https://api.crol-list.org",
+    CONFIRM_BASE: "https://api.cityscroll.org",
     MAX_PER_RUN: "25",
     MAX_SENDS_PER_DAY: "50",
     HEARTBEAT_DAYS: "14",
@@ -80,7 +80,7 @@ test("after: the digest footer no longer explains the count-only redirect", asyn
 test("after: the notice link still routes through the count-only /r redirect — only the explainer text is gone", async () => {
   const sentEmails = await runOneMoneySub({ keywords: ["elevator"] });
   const html = sentEmails[0].html;
-  assert.match(html, /https:\/\/api\.crol-list\.org\/r\/[^/"]+\/20260701200/, "redirect behavior is unchanged");
+  assert.match(html, /https:\/\/api\.cityscroll\.org\/r\/[^/"]+\/20260701200/, "redirect behavior is unchanged");
 });
 
 test("after: the unsubscribe line still renders", async () => {

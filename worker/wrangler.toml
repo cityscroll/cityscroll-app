@@ -3,15 +3,14 @@ main = "src/worker.mjs"
 compatibility_date = "2026-07-27"
 # No nodejs_compat needed — the Worker uses only fetch + Web APIs (no npm runtime deps).
 
-# Branded public hostname: user-visible URLs (feed links, confirm links) read api.crol-list.org,
-# not *.workers.dev. Custom Domain — Cloudflare creates the DNS record + certificate in the
-# crol-list.org zone on deploy; the workers.dev URL keeps working as an alias.
+# New API and site URLs use cityscroll.org. api.crol-list.org remains a compatibility
+# alias for existing clients and in-flight confirmation links.
 #
-# cityscroll.org / www.cityscroll.org — a parallel serving domain (crol-list.org stays
-# canonical; see index.html's <link rel="canonical">). Same custom-domain mechanism, same
-# deploy; the worker answers these two hosts by reverse-proxying the static site straight
-# from crol-list.org (src/mirror.mjs) so the mirror can never drift out of sync.
+# The canonical cityscroll.org site is mirrored byte-for-byte from the GitHub Pages
+# origin at crol-list.org. The direct-visitor redirect documented in
+#  excludes Worker subrequests so the mirror cannot loop.
 routes = [
+  { pattern = "api.cityscroll.org", custom_domain = true },
   { pattern = "api.crol-list.org", custom_domain = true },
   { pattern = "cityscroll.org", custom_domain = true },
   { pattern = "www.cityscroll.org", custom_domain = true },
@@ -31,7 +30,9 @@ crons = ["0 13 * * *"]
 # keeping that runtime binding out of this file makes wrangler dev/preview fail closed by default.
 [vars]
 ALERTS_LIVE = "true"
-ALERTS_FROM = "CROL-List <alerts@crol-list.org>"
+CONFIRM_BASE = "https://api.cityscroll.org"
+# The sending domain is intentionally unchanged during the web canonical cutover.
+ALERTS_FROM = "CityScroll <alerts@crol-list.org>"
 # Spend guards (denial-of-wallet ceiling). MAX_SENDS_PER_DAY stays under Resend's free 100/day.
 MAX_PER_RUN = "25"
 MAX_SENDS_PER_DAY = "50"
@@ -149,6 +150,7 @@ id = "75d85d23ec914d8ea44bc3e9bb540afd"
 # D1, R2, Analytics Engine, Queue, cron, or secret configuration.
 [env.beta]
 routes = [
+  { pattern = "api-beta.cityscroll.org", custom_domain = true },
   { pattern = "api-beta.crol-list.org", custom_domain = true },
 ]
 workers_dev = true
@@ -160,4 +162,4 @@ QUEUE_DIGESTS = "false"
 ANALYTICS_ENVIRONMENT = "preview"
 SOURCE_VAULT_ENABLED = "false"
 BOARD_HOOK_DRY = "true"
-CONFIRM_BASE = "https://api-beta.crol-list.org"
+CONFIRM_BASE = "https://api-beta.cityscroll.org"

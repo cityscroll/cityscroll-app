@@ -66,7 +66,7 @@ test("uncertain rights, credentials, executable content, and malware signatures 
   assert.equal(sourceEligibility("https://example.com/file.pdf").reason, "rights_or_access_uncertain");
   assert.equal(inspectDocument(new TextEncoder().encode("MZ").buffer, "application/octet-stream").accepted, false);
   assert.equal(inspectDocument(new TextEncoder().encode("EICAR-STANDARD-ANTIVIRUS-TEST-FILE").buffer, "text/plain").accepted, false);
-  const response = await handleSourceVault(new Request("https://api.crol-list.org/source-vault/fetch", {
+  const response = await handleSourceVault(new Request("https://api.cityscroll.org/source-vault/fetch", {
     method: "POST",
     headers: {"content-type": "application/json"},
     body: JSON.stringify({url: eligibleUrl, process_id: "process:test", credentials: "never"})
@@ -91,6 +91,6 @@ test("bytes cannot be served without an approved eligibility manifest", async ()
     eligibility: {eligible: true},
     object_key: `objects/${hash}`
   }));
-  const response = await handleSourceVault(new Request(`https://api.crol-list.org/source-vault/${hash}`), env);
+  const response = await handleSourceVault(new Request(`https://api.cityscroll.org/source-vault/${hash}`), env);
   assert.equal(response.status, 404);
 });

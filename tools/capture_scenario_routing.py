@@ -44,7 +44,7 @@ def install_routes(page: Page) -> None:
 
     page.route("https://data.cityofnewyork.us/**", empty_json)
     page.route("https://data.ny.gov/**", empty_json)
-    page.route("https://api.crol-list.org/**", empty_json)
+    page.route("https://api.cityscroll.org/**", empty_json)
     page.route("https://geosearch.planninglabs.nyc/**", empty_json)
     page.route("https://**", lambda route: route.abort())
 

@@ -4,14 +4,30 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Track NYC contract opportunities, rezonings, and public meetings. Search open RFPs, follow vendors, watch rule changes — free email alerts.">
-<title>CROL-List · track RFPs, rezonings, meetings</title>
-<link rel="canonical" href="https://crol-list.org/">
-<link rel="alternate" type="application/atom+xml" title="CROL-List — new procurement notices" href="https://api.crol-list.org/feed.xml?lens=money">
-<link rel="alternate" type="application/feed+json" title="CROL-List — new procurement notices (JSON)" href="https://api.crol-list.org/feed.json?lens=money">
+<meta name="robots" content="index,follow">
+<title>CityScroll · track RFPs, rezonings, meetings</title>
+<link rel="canonical" href="https://cityscroll.org/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CityScroll">
+<meta property="og:title" content="CityScroll · track RFPs, rezonings, meetings">
+<meta property="og:description" content="Track NYC contract opportunities, rezonings, public meetings, and rule changes with free alerts.">
+<meta property="og:url" content="https://cityscroll.org/">
+<meta property="og:image" content="https://cityscroll.org/assets/brand/cityscroll-social-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CityScroll — the City Record, made legible">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#173f55">
+<link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/brand/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png" sizes="180x180">
+<link rel="manifest" href="site.webmanifest">
+<link rel="alternate" type="application/atom+xml" title="CityScroll — new procurement notices" href="https://api.cityscroll.org/feed.xml?lens=money">
+<link rel="alternate" type="application/feed+json" title="CityScroll — new procurement notices (JSON)" href="https://api.cityscroll.org/feed.json?lens=money">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://data.cityofnewyork.us">
-<link rel="preconnect" href="https://api.crol-list.org">
+<link rel="preconnect" href="https://api.cityscroll.org">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;1,400&family=Spectral+SC:wght@500;600&display=swap" rel="stylesheet">
 <style>
   :root{
@@ -595,6 +611,7 @@
     a{color:#000!important}
   }
 </style>
+<link rel="stylesheet" href="brand.css">
 <!-- Leaflet is lazy-loaded by loadLeaflet() on first Land-lens use — ~150KB of parse-blocking
      JS for a map most visits never open has no business on the critical path. -->
 <script src="i18n.js?v=__I18N_ASSET_VERSION__"></script>
@@ -617,14 +634,13 @@
   <div class="wrap">
     <div class="cr-rule cr-rule--top"></div>
     <div class="nameplate">
-      <svg class="cr-seal" viewBox="0 0 100 100" aria-hidden="true">
-        <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="1.5"/>
-        <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="0.6"/>
-        <path d="M50 18 L74 30 V58 Q74 76 50 86 Q26 76 26 58 V30 Z" fill="none" stroke="currentColor" stroke-width="1.3"/>
-        <line x1="26" y1="48" x2="74" y2="48" stroke="currentColor" stroke-width="0.6"/>
-        <path d="M50 30 L50 46 M42 38 L58 38" stroke="currentColor" stroke-width="1.1"/>
-      </svg>
-      <h1 class="cr-title">CROL-List</h1>
+      <div class="brand-lockup brand-lockup--masthead">
+        <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true">
+          <path d="M14 5h29l8 8v42a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V9a4 4 0 0 1 4-4Z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/>
+          <path d="M43 5v10h8M20 23h22M20 31h22M20 49v-9h7v9h5V36h7v13h5v-6h7" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <h1 class="cr-title">CityScroll</h1>
+      </div>
       <p class="cr-tagline" data-i18n="site_tagline">Subscribe to NYC contracts, rezonings, and hearings that interest you.</p>
     </div>
     <div class="cr-rule cr-rule--mid"></div>
@@ -1207,7 +1223,7 @@
 
 <footer>
   <div class="wrap">
-    <p style="margin:0"><span data-i18n="footer_lede">CROL-List searches the City Record Open Data</span> — <b><span id="editionspan">2003 to present</span></b>, <span data-i18n="footer_notices">1M+ notices</span>. <a href="about.html" style="color:var(--oxblood)" data-i18n="footer_about">About</a> · <a href="#investigation" style="color:var(--oxblood)" data-i18n="footer_investigation">My investigation</a> · <a href="api.html" style="color:var(--oxblood)" data-i18n="footer_api">API and feeds</a> · <a href="changelog.html" style="color:var(--oxblood)" data-i18n="footer_changelog">Changelog</a> · <a href="stats.html" style="color:var(--oxblood)" data-i18n="footer_stats">Stats</a> · <a href="standards.html" style="color:var(--oxblood)" data-i18n="footer_standards">Standards</a></p>
+    <p style="margin:0"><span data-i18n="footer_lede">CityScroll searches the City Record Open Data</span> — <b><span id="editionspan">2003 to present</span></b>, <span data-i18n="footer_notices">1M+ notices</span>. <a href="about.html" style="color:var(--oxblood)" data-i18n="footer_about">About</a> · <a href="#investigation" style="color:var(--oxblood)" data-i18n="footer_investigation">My investigation</a> · <a href="api.html" style="color:var(--oxblood)" data-i18n="footer_api">API and feeds</a> · <a href="changelog.html" style="color:var(--oxblood)" data-i18n="footer_changelog">Changelog</a> · <a href="stats.html" style="color:var(--oxblood)" data-i18n="footer_stats">Stats</a> · <a href="standards.html" style="color:var(--oxblood)" data-i18n="footer_standards">Standards</a></p>
   </div>
 </footer>
 
@@ -1217,10 +1233,10 @@ const PAY  = "https://data.cityofnewyork.us/resource/k397-673e.json";
 const CSL  = "https://data.cityofnewyork.us/resource/vx8i-nprf.json";
 const PAYFY = "2025";
 // Optional backend (crol-worker, a Cloudflare Worker on our own subdomain — user-visible URLs
-// like feeds and confirm links should read crol-list.org, never *.workers.dev). Empty = fully
+// like feeds and confirm links should read cityscroll.org, never *.workers.dev). Empty = fully
 // client-side: the NL box uses the on-device heuristic, Checkbook $-paid stays hidden, alerts
 // are preview-only. Every worker-backed feature falls back to static behavior if unreachable.
-const API = window.CROL_API_ORIGIN || "https://api.crol-list.org";
+const API = window.CROL_API_ORIGIN || "https://api.cityscroll.org";
 // The branded subdomain is young — resolvers with a stale NXDOMAIN (or flaky DNS) would
 // otherwise kill every worker feature. workerFetch() fails over to the workers.dev alias
 // and remembers which base worked for the rest of the session. Non-idempotent POSTs get no
@@ -1246,7 +1262,7 @@ async function workerFetch(path, opts, timeoutMs){
 const REQ_URL = id => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
 const PASSPORT = "https://a0333-passportpublic.nyc.gov/";
 // City Record/PASSPort/Checkbook NYC carve-out (test/standards/link_targets.py): these three
-// government systems open in a new tab so a bid workflow doesn't lose CROL-List's app state.
+// government systems open in a new tab so a bid workflow doesn't lose CityScroll's app state.
 const EXT_ATTRS = 'target="_blank" rel="noopener noreferrer"';
 const extSR = () => `<span class="sr-only"> ${t("ext_link_new_tab_sr")}</span>`;
 const STAGE_RANK = {"Solicitation":0,"Intent to Negotiate":1,"Vendor List":2,"Intent to Award":3,"Award":4};
@@ -2276,7 +2292,7 @@ function icsForRFP(r){
   const fl = dt=>`${dt.getFullYear()}${pad(dt.getMonth()+1)}${pad(dt.getDate())}T${pad(dt.getHours())}${pad(dt.getMinutes())}00`;
   const esc = s=>String(s||"").replace(/([,;\\])/g,"\\$1").replace(/\n/g,"\\n");
   return [
-    "BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//CROL-List//EN","CALSCALE:GREGORIAN","METHOD:PUBLISH",
+    "BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//CityScroll//EN","CALSCALE:GREGORIAN","METHOD:PUBLISH",
     "BEGIN:VEVENT","UID:"+(r.request_id||fl(d))+"@crol-list.demo","DTSTAMP:"+fl(new Date()),
     "DTSTART:"+fl(d),"DTEND:"+fl(d),
     "SUMMARY:"+esc("RFP due: "+cleanText(r.short_title)),
@@ -4524,7 +4540,7 @@ function downloadEventICS(r){
   const d=new Date(r.event_date), pad=n=>String(n).padStart(2,"0");
   const fl=dt=>`${dt.getFullYear()}${pad(dt.getMonth()+1)}${pad(dt.getDate())}T${pad(dt.getHours())}${pad(dt.getMinutes())}00`;
   const esc=s=>String(s||"").replace(/([,;\\])/g,"\\$1").replace(/\n/g,"\\n");
-  const ics=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//CROL-List//EN","CALSCALE:GREGORIAN","METHOD:PUBLISH",
+  const ics=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//CityScroll//EN","CALSCALE:GREGORIAN","METHOD:PUBLISH",
     "BEGIN:VEVENT","UID:"+r.request_id+"@crol-list","DTSTAMP:"+fl(new Date()),"DTSTART:"+fl(d),"DTEND:"+fl(d),
     "SUMMARY:"+esc(cleanText(r.short_title)),
     "DESCRIPTION:"+esc(`${r.agency_name||""}${goodAddr(r.street_address_1)?" · "+cleanText(r.street_address_1):""} · ${REQ_URL(r.request_id)}`),
@@ -4875,7 +4891,7 @@ async function aPreview(){
   const body = rows.length ? rows.map(r=>digItemHTML(data.kind,r,previewKeywords)).join("")
     : `<div class="empty">${t("no_matches_today_html")}${showSimplifyHint ? ` ${t("simplify_keyword_hint_html")}` : ""}${nlChips.length ? nlTransHTML(nlChips, "#nlq-alerts", true) : ""}</div>`;
   $("#apreviewbox").innerHTML = `<div class="emailmock">
-    <div class="ehead"><div class="efrom">CROL-List &lt;alerts@crol-list.org&gt; → ${dest}</div>
+    <div class="ehead"><div class="efrom">CityScroll &lt;alerts@crol-list.org&gt; → ${dest}</div>
     <div class="esubj">${t("your_digest_subject",{desc:aDescribe()})}</div></div>
     <div class="ebody">${body}
       <div style="margin-top:12px;font:12px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted)">${tn("digest_footer",rows.length)}</div>
@@ -5300,7 +5316,7 @@ async function showAgency(name, initialTab){
     workerFetch("/agency?name=" + encodeURIComponent(nm), null, 8000).then(r => r.ok ? r.json() : null).catch(() => null)
   ]);
   if(!(stats && +stats.n) && !sections.length){
-    box.innerHTML = `<div class="empty">No City Record notices found for agency “${safe}”. <a href="#money">← Browse CROL-List</a></div>`;
+    box.innerHTML = `<div class="empty">No City Record notices found for agency “${safe}”. <a href="#money">← Browse CityScroll</a></div>`;
     return;
   }
   const link = location.origin + location.pathname + agencyHref(nm);
@@ -5323,7 +5339,7 @@ async function showAgency(name, initialTab){
   const hasForecasts = forecasts.length > 0;
 
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
-    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CROL-List</a></p>
+    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CityScroll</a></p>
     <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
       <div class="ftype" style="margin-bottom:6px">Agency profile · City Record on record</div>
       <h2 class="rolename" lang="en" dir="ltr">${agencyWho(nm)}</h2>
@@ -5488,7 +5504,7 @@ function vendorProfileHTML(profile, details, hydrating){
       </div>` : "";
 
   return `<div style="max-width:880px;margin:0 auto">
-    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CROL-List</a></p>
+    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CityScroll</a></p>
     <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
       ${vendorProfileHeaderHTML(profile)}
 
@@ -5799,7 +5815,7 @@ async function showMatter(pin){
     }catch(e){}
   }
   if(!rows.length){
-    box.innerHTML = `<div class="empty">No City Record notices carry PIN <code>${safe}</code>. <a href="#money">← Browse CROL-List</a></div>`;
+    box.innerHTML = `<div class="empty">No City Record notices carry PIN <code>${safe}</code>. <a href="#money">← Browse CityScroll</a></div>`;
     return;
   }
   rows.sort((a,b)=>(a.start_date||"").localeCompare(b.start_date||"") ||
@@ -5824,7 +5840,7 @@ async function showMatter(pin){
     extra:`term ${fdate(c.start)||"—"} → ${fdate(c.end)||"—"} · <a href="https://www.checkbooknyc.com/smart_search/citywide?search_term=${encodeURIComponent(c.id)}" ${EXT_ATTRS}>Checkbook${extSR()}</a>`});
   const link = location.origin + location.pathname + "#matter/" + encodeURIComponent(pin);
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
-    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CROL-List</a></p>
+    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CityScroll</a></p>
     <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
       <div class="ftype" style="margin-bottom:6px">Matter timeline · PIN <code>${safe}</code></div>
       <h2 class="rolename" lang="en" dir="ltr">${agency?pivotA(agencyHref(agency), agencyWho(agency)):""}${vendor?` × ${pivotA(vendorHref(vendor), cleanText(vendor))}`:""}</h2>
@@ -6212,7 +6228,7 @@ async function showNotice(id, watch){
       <div class="actions" style="margin-top:14px">
         <button class="act primary" type="button" id="ncopy">${t("copy_link")}</button>
         ${qrButtonHTML("nqr","act")}
-        <a class="act" href="mailto:?subject=${encodeURIComponent("City Record notice: "+(cleanText(r.short_title)||r.request_id))}&body=${encodeURIComponent(link+"\n\nVia CROL-List — The City Record, searchable.")}">${t("notice_email_btn")}</a>
+        <a class="act" href="mailto:?subject=${encodeURIComponent("City Record notice: "+(cleanText(r.short_title)||r.request_id))}&body=${encodeURIComponent(link+"\n\nVia CityScroll — The City Record, searchable.")}">${t("notice_email_btn")}</a>
         <button class="act export-control" type="button" id="nxlsx">${t("export_xlsx")}</button>
         <button class="act export-control" type="button" id="nprint">${t("print_save_pdf")}</button>
         ${((r.due_date&&!isRollingDeadline(r.due_date))||r.event_date)?`<button class="act" type="button" id="nics">${t("add_to_calendar_btn")}</button>`:""}
@@ -6628,7 +6644,7 @@ function rerenderForLang(){
   }
 })();
 </script>
-<!-- Cloudflare Web Analytics — cookieless, aggregate. Manual JS beacon: crol-list.org is served
+<!-- Cloudflare Web Analytics — cookieless, aggregate. Manual JS beacon: the static origin is served
      directly by GitHub Pages (not proxied through Cloudflare), so zone-level Automatic Setup collects
      nothing — the snippet must live here. Token is a public site id, safe to commit. -->
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "5d81fb4366b848dea15fb1862391909c"}'></script>

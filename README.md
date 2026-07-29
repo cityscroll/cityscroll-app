@@ -1,13 +1,13 @@
-# CROL-List
+# CityScroll
 
-CROL-List makes **The City Record** — the official daily journal where every NYC agency
+CityScroll makes **The City Record** — the official daily journal where every NYC agency
 must publish its contracts, hearings, rule changes, rezonings, and staff moves (NYC Charter
 §1066) — actually searchable, and emails you the moment something you care about shows up
 in it.
 
-*   **Use it:** [crol-list.org](https://crol-list.org/)
-*   **Changelog:** [crol-list.org/changelog.html](https://crol-list.org/changelog.html)
-*   **System Stats:** [crol-list.org/stats.html](https://crol-list.org/stats.html)
+*   **Use it:** [cityscroll.org](https://cityscroll.org/)
+*   **Changelog:** [cityscroll.org/changelog.html](https://cityscroll.org/changelog.html)
+*   **System Stats:** [cityscroll.org/stats.html](https://cityscroll.org/stats.html)
 
 ---
 
@@ -16,25 +16,25 @@ in it.
 **Track a rezoning in your neighborhood.**
 *Before:* dig through City Planning's ZAP case portal by project number, or wait for a
 neighborhood listserv to notice.
-*With CROL-List:* search "Bushwick rezoning" in plain English, follow the project, and get
+*With CityScroll:* search "Bushwick rezoning" in plain English, follow the project, and get
 an email the moment its status changes — mapped against the actual tax lots.
 
 **Catch a contract award before it's old news.**
 *Before:* comb the City Record by hand, or wait for a reporter to flag it.
-*With CROL-List:* watch any agency or vendor — "construction contract awards over
+*With CityScroll:* watch any agency or vendor — "construction contract awards over
 $500k" — and get notified the day it posts, with the award amount (reconciled against what
 Checkbook NYC shows was actually paid), the vendor, and a link to the real notice.
 
 **Get alerts in your own language.**
 *Before:* English-only civic data, full stop.
-*With CROL-List:* switch the whole interface — search, filters, digests — to Spanish,
+*With CityScroll:* switch the whole interface — search, filters, digests — to Spanish,
 Simplified Chinese, or Russian. Notices themselves stay in English (it's the official
-record's language), but everything CROL-List adds around them speaks yours.
+record's language), but everything CityScroll adds around them speaks yours.
 
 **Find a path into a City career.**
 *Before:* learn civil-service vocabulary, compare a monthly schedule with annual data,
 open each Notice of Examination, and then find the separate application system.
-*With CROL-List:* the Staffing guide explains the process in plain language, puts open and
+*With CityScroll:* the Staffing guide explains the process in plain language, puts open and
 upcoming exams in one filterable list, shows fees and minimum salaries when DCAS has
 published them, and links each applicant to the official next step.
 
@@ -51,10 +51,10 @@ published them, and links each applicant to the official next step.
 ### 2. Search & Alerts
 *   **Subscription Quiz:** Build tailored watches via an onboarding wizard.
 *   **Subscribe by Email:** Write to `subscribe@crol-list.org` in plain English; an LLM parses it into a watch and replies with a double-opt-in confirmation link.
-*   **MCP for AI Assistants:** Point any MCP client at `api.crol-list.org/mcp` to search notices and create/preview watches programmatically ([docs](https://crol-list.org/api.html)).
+*   **MCP for AI Assistants:** Point any MCP client at `api.cityscroll.org/mcp` to search notices and create/preview watches programmatically ([docs](https://cityscroll.org/api.html)).
 *   **Proactive Alerts:** Receive morning email digests (queued per-subscriber delivery with independent retries) or subscribe to live RSS/Atom, JSON, and iCal feeds. Alerts deliver in your chosen language.
 *   **Multilingual UI:** Switch the interface to Spanish, Simplified Chinese, or Russian via the header language selector; your preference is remembered. City Record notices remain in English (the official source language).
-*   **[The Data](https://crol-list.org/data.html):** the City Record at a glance — sections, volume, procurement mix, top agencies/vendors by cleaned dollars — computed live in the browser.
+*   **[The Data](https://cityscroll.org/data.html):** the City Record at a glance — sections, volume, procurement mix, top agencies/vendors by cleaned dollars — computed live in the browser.
 *   **Unified Workspace:** Pin records, write local notes, export CSV/JSON dossiers, and generate shareable snapshot links.
 *   **Workflow exports:** Download any lens as Excel-safe CSV or a typed Excel workbook, export notice details with a separate contract-trail sheet, or print a clean permalink-and-date-stamped view to PDF.
 
@@ -110,7 +110,7 @@ Run tests from the repository root:
     ./test/functional/run.sh
     ```
     *Requires Python 3 and Playwright (`pip install playwright && playwright install chromium`).*
-*   **Production E2E Tests:** Run against the live production deployment using:
+*   **Production E2E Tests:** Run the public demo-link contract against the canonical deployment using:
     ```bash
-    CROL_BASE=https://crol-list.org/ ./test/functional/run.sh
+    CROL_BASE=https://cityscroll.org/ python3 test/functional/20_demo_links.py
     ```

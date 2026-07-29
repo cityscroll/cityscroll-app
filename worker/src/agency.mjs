@@ -14,8 +14,8 @@ import crosswalk from "./data/agency_crosswalk.json" with { type: "json" };
 import { enrichAgency } from "./lib/agency_identity.mjs";
 
 const ALLOW = new Set([
-  "https://crol-list.org", "https://www.crol-list.org",
   "https://cityscroll.org", "https://www.cityscroll.org",
+  "https://crol-list.org", "https://www.crol-list.org",
   "https://crol-list.jimdc.com", "https://jimdc.github.io",
   "http://localhost:8000", "http://localhost:8787",
 ]);
@@ -51,7 +51,7 @@ export async function handleAgency(req, env, ctx) {
 }
 
 function corsHeaders(origin) {
-  const o = ALLOW.has(origin) ? origin : "https://crol-list.org";
+  const o = ALLOW.has(origin) ? origin : "https://cityscroll.org";
   return {
     "Access-Control-Allow-Origin": o,
     "Access-Control-Allow-Methods": "GET, OPTIONS",

@@ -25,7 +25,7 @@ jobs:
     name: Point beta at selected commit
     environment:
       name: beta
-      url: https://beta.crol-list.org/
+      url: https://beta.cityscroll.org/
     runs-on: ubuntu-latest
     steps:
       - name: Validate exact commit request
@@ -93,7 +93,7 @@ jobs:
       - name: Verify beta pointer and noindex header
         env:
           EXPECTED_COMMIT: ${{ inputs.commit_sha }}
-          BETA_URL: https://beta.crol-list.org
+          BETA_URL: https://beta.cityscroll.org
         shell: bash
         run: |
           attempt=1
@@ -112,7 +112,7 @@ jobs:
               break
             fi
             if [ "$attempt" -eq 10 ]; then
-              echo "beta.crol-list.org did not resolve to the requested commit with noindex" >&2
+              echo "beta.cityscroll.org did not resolve to the requested commit with noindex" >&2
               exit 1
             fi
             attempt=$((attempt + 1))
@@ -127,7 +127,7 @@ jobs:
           {
             echo "## Beta pointer updated"
             echo
-            echo "Beta: [https://beta.crol-list.org](https://beta.crol-list.org)"
+            echo "Beta: [https://beta.cityscroll.org](https://beta.cityscroll.org)"
             echo
             echo "Immutable deployment: [$IMMUTABLE_URL]($IMMUTABLE_URL)"
             echo

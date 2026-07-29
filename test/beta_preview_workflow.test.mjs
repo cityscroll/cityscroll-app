@@ -88,7 +88,7 @@ test("review artifacts carry noindex metadata and reject repository-only paths",
     assert.deepEqual(
       JSON.parse(readFileSync(join(root, "release-channel.json"), "utf8")),
       {
-        canonical_site: "https://crol-list.org/",
+        canonical_site: "https://cityscroll.org/",
         channel: "preview",
         commit: "a".repeat(40),
       },

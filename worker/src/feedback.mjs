@@ -72,12 +72,12 @@ function rand() {
 }
 
 async function notifyOperator(env, r) {
-  const from = env.ALERTS_FROM || "CROL-List <alerts@crol-list.org>";
+  const from = env.ALERTS_FROM || "CityScroll <alerts@crol-list.org>";
   const to = env.FEEDBACK_TO || DEFAULT_TO;
   const label = { bug: "Bug", feature: "Feature idea", general: "General" }[r.category] || r.category;
   const payload = {
     from, to,
-    subject: `[CROL-List] ${label}: ${firstLine(r.message)}`,
+    subject: `[CityScroll] ${label}: ${firstLine(r.message)}`,
     html: notifyHtml(r, label),
     text: notifyText(r, label),
   };
@@ -96,7 +96,7 @@ function firstLine(s) {
 }
 function notifyText(r, label) {
   return [
-    "New CROL-List feedback",
+    "New CityScroll feedback",
     "",
     `Category: ${label}`,
     `From:     ${r.email || "(no email given)"}`,
@@ -116,7 +116,7 @@ function notifyHtml(r, label) {
     ["UA", r.ua || "(unknown)"],
   ].map(([k, val]) => `<tr><td style="padding:2px 12px 2px 0;color:#5c5349;vertical-align:top">${k}</td><td>${escHtml(val)}</td></tr>`).join("");
   return `<div style="font:15px/1.6 Georgia,serif;color:#1a1714;max-width:640px">
-    <h2 style="font:700 16px/1.3 ui-sans-serif,system-ui,sans-serif;margin:0 0 8px">New CROL-List feedback</h2>
+    <h2 style="font:700 16px/1.3 ui-sans-serif,system-ui,sans-serif;margin:0 0 8px">New CityScroll feedback</h2>
     <table style="font:13px/1.6 ui-sans-serif,system-ui,sans-serif;border-collapse:collapse;margin:0 0 14px">${rows}</table>
     <div style="white-space:pre-wrap;border-left:3px solid #cdbfa6;padding-left:12px">${escHtml(r.message)}</div>
     ${r.email ? `<p style="font:13px/1.5 ui-sans-serif,system-ui,sans-serif;color:#5c5349">Reply directly to this email to respond to the sender.</p>` : ""}

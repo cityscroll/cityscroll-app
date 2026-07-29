@@ -3,9 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>API and feeds · CROL-List</title>
-<meta name="description" content="CROL-List's open endpoints: RSS/JSON/calendar feeds for any search, batch watchlist cross-reference, permalinks, and the upstream open datasets.">
-<link rel="canonical" href="https://crol-list.org/api.html">
+<title>API and feeds · CityScroll</title>
+<meta name="description" content="CityScroll's open endpoints: RSS/JSON/calendar feeds for any search, batch watchlist cross-reference, permalinks, and the upstream open datasets.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://cityscroll.org/api.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CityScroll">
+<meta property="og:title" content="API and feeds · CityScroll">
+<meta property="og:description" content="Use CityScroll's open, keyless feeds, permalinks, and machine-readable public-record endpoints.">
+<meta property="og:url" content="https://cityscroll.org/api.html">
+<meta property="og:image" content="https://cityscroll.org/assets/brand/cityscroll-social-card.png">
+<meta property="og:image:alt" content="CityScroll — the City Record, made legible">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#173f55">
+<link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/brand/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png" sizes="180x180">
+<link rel="manifest" href="site.webmanifest">
 <script src="i18n.js?v=__I18N_ASSET_VERSION__"></script>
 <script defer src="beta_flags.js?v=1.0.0"></script>
 <script defer src="analytics.js?v=1.2.0"></script>
@@ -60,13 +74,20 @@
   .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
   :is(a,button,select,input,textarea,summary,pre):focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
 </style>
+<link rel="stylesheet" href="brand.css">
 </head>
 <body>
 <a class="skip" href="#main" data-i18n="skip_to_content">Skip to content</a>
 <div class="wrap">
 <header>
   <div class="cr-rule"></div>
-  <a class="home" href="index.html"><span class="cr-title">CROL-List</span></a>
+  <a class="home brand-lockup brand-lockup--compact" href="index.html" aria-label="Back to CityScroll home" data-i18n-aria="back_home_aria">
+    <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true">
+      <path d="M14 5h29l8 8v42a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V9a4 4 0 0 1 4-4Z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/>
+      <path d="M43 5v10h8M20 23h22M20 31h22M20 49v-9h7v9h5V36h7v13h5v-6h7" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="cr-title">CityScroll</span>
+  </a>
   <div class="kicker" data-i18n="site_kicker">The City Record, searchable</div>
   <h1 data-i18n="footer_api">API and feeds</h1>
   <div class="lang-switcher" id="langSwitcher" role="group" aria-label="Language / Idioma">
@@ -84,12 +105,12 @@
   </div>
   <div id="langNotice" class="lang-notice" hidden></div>
   <div class="cr-rule cr-rule--bottom"></div>
-  <a class="backhome" href="index.html" data-i18n="back_to_crol">← Back to CROL-List</a>
+  <a class="backhome" href="index.html" data-i18n="back_to_crol">← Back to CityScroll</a>
 </header>
 
 <main id="main" tabindex="-1">
-<p class="src" data-i18n-html="api_p_intro_html">Every view on CROL-List has a machine-readable twin. No key and no account are required. Endpoints are
-rate-limited and cached, and none touches a paid service. Base URL: <code>https://api.crol-list.org</code>.</p>
+<p class="src" data-i18n-html="api_p_intro_html">Every view on CityScroll has a machine-readable twin. No key and no account are required. Endpoints are
+rate-limited and cached, and none touches a paid service. Base URL: <code>https://api.cityscroll.org</code>.</p>
 
 <h2 data-i18n="api_h_feeds">Feeds — any search as RSS / JSON / calendar</h2>
 <p class="src" data-i18n-html="api_p_feeds_html"><code>GET /feed.xml</code> (Atom) · <code>GET /feed.json</code> (JSON Feed 1.1) ·
@@ -102,17 +123,17 @@ rate-limited and cached, and none touches a paid service. Base URL: <code>https:
   <tr><td><code>min</code></td><td data-i18n="api_row_min">minimum award $ (money lens → award feed)</td></tr>
   <tr><td><code>kind</code> + <code>name</code></td><td data-i18n-html="api_row_kindname_html">entity lens: <code>kind=vendor|agency</code>, <code>name=…</code> — vendor names are matched by normalized stem, so suffix/case variants are included</td></tr>
 </table>
-<pre tabindex="0">https://api.crol-list.org/feed.xml?lens=rules&amp;agency=Buildings
-https://api.crol-list.org/feed.ics?lens=meetings&amp;q=community%20board
-https://api.crol-list.org/feed.json?lens=entity&amp;kind=vendor&amp;name=Sinergia%20Inc</pre>
+<pre tabindex="0">https://api.cityscroll.org/feed.xml?lens=rules&amp;agency=Buildings
+https://api.cityscroll.org/feed.ics?lens=meetings&amp;q=community%20board
+https://api.cityscroll.org/feed.json?lens=entity&amp;kind=vendor&amp;name=Sinergia%20Inc</pre>
 
 <h2 id="property-locations" data-i18n="api_h_property_locations">Property locations</h2>
 <p class="src" data-i18n-html="api_p_property_locations_html"><code>GET /property-locations</code> returns the latest Property Disposition notices with extracted site addresses, boroughs, tax lots, BBLs, and resolved map geometry where available. The daily view is cached at the edge for 30 minutes. City Record Online remains the source of truth.</p>
-<p class="src"><a href="https://api.crol-list.org/property-locations">JSON</a></p>
+<p class="src"><a href="https://api.cityscroll.org/property-locations">JSON</a></p>
 
 <h2 id="agency-crosswalk" data-i18n="api_h_agencies">Agency-name crosswalk</h2>
 <p class="src" data-i18n-html="api_p_agencies_html"><code>GET /agencies</code> lists each agency name as written in City Record Open Data and connects it to one name used by this site. Add <code>?format=csv</code> for CSV. The endpoint needs no key, allows cross-site requests, and is cached for one day.</p>
-<p class="src"><a href="https://api.crol-list.org/agencies">JSON</a> · <a href="https://api.crol-list.org/agencies?format=csv">CSV</a></p>
+<p class="src"><a href="https://api.cityscroll.org/agencies">JSON</a> · <a href="https://api.cityscroll.org/agencies?format=csv">CSV</a></p>
 <table>
   <tr><th scope="col" data-i18n="api_th_param">Param</th><th scope="col" data-i18n="api_th_meaning">Meaning</th></tr>
   <tbody data-i18n-html="api_agencies_dictionary_html">
@@ -167,7 +188,7 @@ stored until you confirm.</p>
 
 <h2 data-i18n="api_h_mcp">MCP — for AI assistants</h2>
 <p class="src" data-i18n-html="api_p_mcp_html"><code>POST /mcp</code> (Streamable HTTP, JSON-RPC) — point an MCP client at
-<code>https://api.crol-list.org/mcp</code>. Tools: <code>search_notices</code> and <code>get_notice</code>
+<code>https://api.cityscroll.org/mcp</code>. Tools: <code>search_notices</code> and <code>get_notice</code>
 (the daily-refreshed notices mirror, honest-data rules applied), <code>preview_watch</code> (plain English →
 what a standing watch would deliver, without subscribing), and <code>create_watch</code> (plain English →
 a double-opt-in confirmation email — digests start only after the address confirms). Watch management stays
@@ -175,18 +196,18 @@ behind the emailed unsubscribe links — knowing an address never reveals or con
 Per-IP and daily model-call ceilings apply.</p>
 
 <h2 data-i18n="api_h_upstream">Upstream data</h2>
-<p class="src" data-i18n-html="api_p_upstream_html">CROL-List republishes and joins public datasets — for bulk work, go straight to the sources:
+<p class="src" data-i18n-html="api_p_upstream_html">CityScroll republishes and joins public datasets — for bulk work, go straight to the sources:
 <a href="https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx" target="_blank" rel="noopener noreferrer">City Record Online (dg92-zbpx, Socrata SODA)<span class="sr-only"> (opens in new tab)</span></a> ·
 <a href="https://www.checkbooknyc.com/data-feeds/api" target="_blank" rel="noopener noreferrer">Checkbook NYC API<span class="sr-only"> (opens in new tab)</span></a> ·
 <a href="https://data.cityofnewyork.us/City-Government/Citywide-Payroll-Data-Fiscal-Year-/k397-673e" target="_blank" rel="noopener noreferrer">Citywide Payroll<span class="sr-only"> (opens in new tab)</span></a> ·
 <a href="https://data.cityofnewyork.us/City-Government/Zoning-Application-Portal-ZAP-Project-Data/hgx4-8ukb" target="_blank" rel="noopener noreferrer">ZAP<span class="sr-only"> (opens in new tab)</span></a>.</p>
 
 </main>
-<footer class="foot" data-i18n-html="api_foot_html">CROL-List · <a href="index.html">Home</a> · <a href="about.html">About</a></footer>
+<footer class="foot" data-i18n-html="api_foot_html">CityScroll · <a href="index.html">Home</a> · <a href="about.html">About</a></footer>
 </div>
 
 <script>
-const API = window.CROL_API_ORIGIN || "https://api.crol-list.org";
+const API = window.CROL_API_ORIGIN || "https://api.cityscroll.org";
 const API_FALLBACK = window.CROL_API_ORIGIN || "https://crol-worker.crol-worker.workers.dev"; // stale-DNS fallback
 async function workerFetch(path, opts){
   try{ return await fetch(API+path, opts); }
