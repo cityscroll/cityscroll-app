@@ -5,6 +5,7 @@ export const ROOT = fileURLToPath(new URL("../", import.meta.url));
 export const REGISTRY_PATH = fileURLToPath(new URL("../data/source_contracts.json", import.meta.url));
 export const DOC_PATH = fileURLToPath(new URL("../docs/data-sources.md", import.meta.url));
 export const README_PATH = fileURLToPath(new URL("../README.md", import.meta.url));
+export const SHAPE_FIXTURE_PATH = fileURLToPath(new URL("../test/fixtures/source_contracts/source-shapes.json", import.meta.url));
 export const README_BEGIN = "<!-- BEGIN GENERATED SOURCE CONTRACTS -->";
 export const README_END = "<!-- END GENERATED SOURCE CONTRACTS -->";
 
@@ -13,6 +14,10 @@ const ALLOWED_KIND = new Set(["socrata", "checkbook", "arcgis", "geosearch", "ht
 
 export function loadSourceContracts() {
   return JSON.parse(readFileSync(REGISTRY_PATH, "utf8"));
+}
+
+export function loadSourceContractFixtures() {
+  return JSON.parse(readFileSync(SHAPE_FIXTURE_PATH, "utf8"));
 }
 
 export function validateSourceContracts(registry) {
@@ -54,6 +59,91 @@ export function validateSourceContracts(registry) {
   return errors;
 }
 
+function contractIdentifier(contract) {
+  if (contract.kind === "socrata") return contract.dataset_id;
+  if (contract.kind === "checkbook") return contract.data_type;
+  if (contract.kind === "arcgis") {
+    return new URL(contract.endpoint).pathname.split("/arcgis/rest/services/")[1] || "";
+  }
+  if (contract.kind === "geosearch") return new URL(contract.endpoint).pathname.replace(/^\/+/, "");
+  if (contract.kind === "html") {
+    return new URL(contract.landing_page).pathname.split("/").filter(Boolean).at(-1) || "";
+  }
+  if (contract.kind === "mocs-disabled") return contract.legacy_dataset_ids.join("|");
+  return "";
+}
+
+export function validateSourceContractFixtures(registry, fixtures) {
+  const errors = [];
+  if (fixtures?.schema_version !== 1) errors.push("source-shape fixture schema_version must be 1");
+  if (!fixtures?.observed_on || !Number.isFinite(Date.parse(fixtures.observed_on))) {
+    errors.push("source-shape fixtures need an observed_on date");
+  }
+  if (!Array.isArray(fixtures?.sources)) {
+    errors.push("source-shape fixtures must contain a sources array");
+    return errors;
+  }
+
+  const byId = new Map();
+  for (const fixture of fixtures.sources) {
+    if (!fixture?.id) {
+      errors.push("source-shape fixture is missing id");
+      continue;
+    }
+    if (byId.has(fixture.id)) errors.push(`${fixture.id}: duplicate source-shape fixture`);
+    byId.set(fixture.id, fixture);
+  }
+
+  for (const contract of registry.contracts || []) {
+    const fixture = byId.get(contract.id);
+    if (!fixture) {
+      errors.push(`${contract.id}: missing recorded source-shape fixture`);
+      continue;
+    }
+    byId.delete(contract.id);
+    if (fixture.kind !== contract.kind) {
+      errors.push(`${contract.id}: fixture kind ${fixture.kind} does not match ${contract.kind}`);
+    }
+    if (fixture.identifier !== contractIdentifier(contract)) {
+      errors.push(`${contract.id}: fixture identifier does not match the registry`);
+    }
+
+    const fields = new Set(fixture.fields || []);
+    const missing = (contract.required_fields || []).filter((field) => !fields.has(field));
+    if (missing.length) errors.push(`${contract.id}: fixture is missing fields ${missing.join(", ")}`);
+
+    if (contract.kind === "socrata") {
+      if (!["dataset", "table"].includes(fixture.asset_type)) {
+        errors.push(`${contract.id}: fixture is not tabular Socrata metadata`);
+      }
+      if (fixture.sample_type !== "array<object>") {
+        errors.push(`${contract.id}: fixture does not record a tabular JSON sample`);
+      }
+    } else if (contract.kind === "checkbook" && fixture.response_type !== "xml-recordset") {
+      errors.push(`${contract.id}: fixture does not record a Checkbook XML recordset`);
+    } else if (contract.kind === "arcgis") {
+      if (fixture.asset_type !== "Feature Layer" || fixture.sample_type !== "FeatureCollection") {
+        errors.push(`${contract.id}: fixture does not record a tabular ArcGIS feature layer`);
+      }
+    } else if (contract.kind === "geosearch" && fixture.response_type !== "FeatureCollection") {
+      errors.push(`${contract.id}: fixture does not record a GeoSearch FeatureCollection`);
+    } else if (contract.kind === "html" && fixture.response_type !== "text/html") {
+      errors.push(`${contract.id}: fixture does not record an HTML publication`);
+    } else if (contract.kind === "mocs-disabled") {
+      if (
+        fixture.configured_asset_type !== "href"
+        || fixture.configured_status !== 403
+        || fixture.documented_status !== 404
+      ) {
+        errors.push(`${contract.id}: fixture does not record the retired MOCS field case`);
+      }
+    }
+  }
+
+  for (const id of byId.keys()) errors.push(`${id}: source-shape fixture has no registry contract`);
+  return errors;
+}
+
 function mdCell(value) {
   return String(value || "").replace(/\|/g, "\\|").replace(/\n/g, " ");
 }
@@ -90,8 +180,8 @@ export function renderReadmeSourceBlock(registry, coverage) {
     "",
     "The executable registry is [`data/source_contracts.json`](data/source_contracts.json);",
     "[the generated source ledger](docs/data-sources.md) records coverage, cadence, freshness,",
-    "required fields, and known gaps. `node tools/verify_source_contracts.mjs --live` checks the",
-    "registry against the current upstream schemas.",
+    "required fields, and known gaps. Required pull-request checks validate recorded upstream",
+    "shapes; a separate daily workflow runs the live verifier and reports publisher drift.",
     "",
     "| Live source | Used for | Product freshness |",
     "|---|---|---|",
@@ -146,14 +236,18 @@ export function renderSourceDocument(registry, coverage) {
     "Run:",
     "",
     "```sh",
+    "node tools/verify_source_contracts.mjs",
     "node tools/generate_source_docs.mjs --check",
     "node tools/verify_source_contracts.mjs --live",
     "```",
     "",
-    "The live verifier checks source type, required fields, bounded sample rows, and declared",
-    "freshness metadata. It also rechecks the two retired MOCS IDs and the official LL63 page,",
-    "so a source recovery or a new machine publication becomes an explicit contract review",
-    "instead of silently changing product behavior.",
+    "The first command validates the registry against committed source-shape fixtures without",
+    "network access. Pull-request CI requires that deterministic check. A daily scheduled workflow",
+    "runs the live verifier for source type, required fields, bounded sample rows, and declared",
+    "freshness metadata; it opens or updates an issue when the upstream contract drifts. The live",
+    "check also rechecks the two retired MOCS IDs and the official LL63 page, so a source recovery",
+    "or a new machine publication becomes an explicit contract review instead of silently changing",
+    "product behavior.",
     "",
   ].join("\n");
 }

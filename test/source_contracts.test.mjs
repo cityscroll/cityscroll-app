@@ -6,7 +6,9 @@ import { checkGeneratedSourceFiles } from "../tools/generate_source_docs.mjs";
 import {
   awardCoverage,
   classifyMocsFieldCase,
+  loadSourceContractFixtures,
   loadSourceContracts,
+  validateSourceContractFixtures,
   validateSourceContracts,
   verifyCodeReferences,
 } from "../tools/source_contracts.mjs";
@@ -15,8 +17,40 @@ import { verifySocrata } from "../tools/verify_source_contracts.mjs";
 test("source-contract registry is valid and its generated public docs are current", () => {
   const registry = loadSourceContracts();
   assert.deepEqual(validateSourceContracts(registry), []);
+  assert.deepEqual(validateSourceContractFixtures(registry, loadSourceContractFixtures()), []);
   assert.deepEqual(verifyCodeReferences(registry), []);
   assert.deepEqual(checkGeneratedSourceFiles(), []);
+});
+
+test("recorded fixtures reject missing fields and non-tabular source shapes", () => {
+  const registry = loadSourceContracts();
+  const missingField = structuredClone(loadSourceContractFixtures());
+  missingField.sources.find((source) => source.id === "city-record").fields = [];
+  assert.match(
+    validateSourceContractFixtures(registry, missingField).join("\n"),
+    /city-record: fixture is missing fields/,
+  );
+
+  const nonTabular = structuredClone(loadSourceContractFixtures());
+  nonTabular.sources.find((source) => source.id === "city-record").asset_type = "href";
+  assert.match(
+    validateSourceContractFixtures(registry, nonTabular).join("\n"),
+    /city-record: fixture is not tabular Socrata metadata/,
+  );
+});
+
+test("pull-request CI requires fixtures while live drift runs on a daily alerting lane", () => {
+  const ci = readFileSync(new URL("../.github/workflows/ci.yml", import.meta.url), "utf8");
+  const live = readFileSync(
+    new URL("../.github/workflows/source-contracts-live.yml", import.meta.url),
+    "utf8",
+  );
+  assert.match(ci, /name: Recorded civic-data source contracts[\s\S]*node tools\/verify_source_contracts\.mjs/);
+  assert.doesNotMatch(ci, /verify_source_contracts\.mjs --live/);
+  assert.match(live, /schedule:[\s\S]*cron:/);
+  assert.match(live, /node tools\/verify_source_contracts\.mjs --live/);
+  assert.match(live, /issues: write/);
+  assert.match(live, /Report upstream drift[\s\S]*issues\.create/);
 });
 
 test("ABO source contracts match the runtime registry and derive coverage prose", () => {

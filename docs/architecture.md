@@ -48,6 +48,7 @@ sources:
   - tools/source_contracts.mjs
   - tools/generate_source_docs.mjs
   - tools/verify_source_contracts.mjs
+  - test/fixtures/source_contracts/source-shapes.json
   - tools/stamp_i18n_assets.py
   - tools/ensure_beta_pages.mjs
   - .github/actions/build-site/action.yml
@@ -56,6 +57,7 @@ sources:
   - .github/workflows/promote-beta.yml
   - .github/workflows/deploy-worker-beta.yml
   - .github/workflows/ci.yml
+  - .github/workflows/source-contracts-live.yml
   - worker/wrangler.toml
   - worker/src/worker.mjs
   - worker/src/alerts.mjs
@@ -69,7 +71,7 @@ sources:
   - worker/src/lib/hearings.mjs
   - worker/src/mirror.mjs
   - worker/src/lib/cors.mjs
-sources_hash: 7eb8c6c47f7f23b174f206f7eaf41b95a4419cab95b233ef525c6b4830553ad0
+sources_hash: 4d75ccbab6ae79bddd8c0930396cd84d7efb04919b3f28eab283ee864a29b811
 ---
 
 # crol-list — architecture
@@ -165,7 +167,12 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 - Direct visitors to `crol-list.org` / `www.crol-list.org` receive a 301 to the matching CityScroll path and query through the externally activated Cloudflare Single Redirect in `docs/canonical-domain-cutover.md`. The rule should exclude requests with a Worker upstream zone. The mirror's independent redirect-loop failover keeps the canonical site available if that rule is broadened accidentally. Fragments remain client-side and are retained by conforming browsers.
 - New feed, confirmation, redirect, and API URLs mint on CityScroll. Existing calendar UIDs retain `@crol-list` and Atom entries retain `tag:crol-list.org,2026:` so calendar and feed clients do not create duplicates. Email sending and routing remain on `@crol-list.org` pending a separate deliverability decision.
 - Secrets via `wrangler secret put`: `ANTHROPIC_API_KEY`, `RESEND_API_KEY`, `TURNSTILE_SECRET`, `TOKEN_SECRET`, `USAGE_KEY`, `ANALYTICS_READ_TOKEN`, `ANALYTICS_DEV_KEY`, and the production-only `ANALYTICS_ENVIRONMENT` runtime gate. The analytics read token is scoped to Account Analytics Read; the developer key authenticates short-lived HMAC exclusions, while a missing/non-production runtime gate drops writes. Spend guards are vars in `wrangler.toml`: `MAX_PER_RUN=25`, `MAX_SENDS_PER_DAY=50` (under Resend's free 100/day); `/subscribe` and `/feedback` fail closed (503) if their secrets are absent.
-- GitHub Actions runs the test suite on pull requests, builds and deploys the stable site after merge, publishes explicitly labeled draft previews, promotes exact commits to beta only on manual dispatch, and deploys Worker changes when `worker/**` changes.
+- GitHub Actions runs deterministic tests on pull requests, including source-contract checks
+  against committed upstream-shape fixtures. A separate daily workflow probes the live sources
+  and opens or updates an issue on schema, tabularity, availability, or freshness drift. Actions
+  also builds and deploys the stable site after merge, publishes explicitly labeled draft
+  previews, promotes exact commits to beta only on manual dispatch, and deploys Worker changes
+  when `worker/**` changes.
 
 ## Surface
 

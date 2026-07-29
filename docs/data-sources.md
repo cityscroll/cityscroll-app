@@ -48,11 +48,15 @@ remain available and are labeled as estimates.
 Run:
 
 ```sh
+node tools/verify_source_contracts.mjs
 node tools/generate_source_docs.mjs --check
 node tools/verify_source_contracts.mjs --live
 ```
 
-The live verifier checks source type, required fields, bounded sample rows, and declared
-freshness metadata. It also rechecks the two retired MOCS IDs and the official LL63 page,
-so a source recovery or a new machine publication becomes an explicit contract review
-instead of silently changing product behavior.
+The first command validates the registry against committed source-shape fixtures without
+network access. Pull-request CI requires that deterministic check. A daily scheduled workflow
+runs the live verifier for source type, required fields, bounded sample rows, and declared
+freshness metadata; it opens or updates an issue when the upstream contract drifts. The live
+check also rechecks the two retired MOCS IDs and the official LL63 page, so a source recovery
+or a new machine publication becomes an explicit contract review instead of silently changing
+product behavior.

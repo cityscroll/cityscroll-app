@@ -7,7 +7,9 @@ import { checkGeneratedSourceFiles } from "./generate_source_docs.mjs";
 import {
   awardCoverage,
   classifyMocsFieldCase,
+  loadSourceContractFixtures,
   loadSourceContracts,
+  validateSourceContractFixtures,
   validateSourceContracts,
   verifyCodeReferences,
 } from "./source_contracts.mjs";
@@ -179,8 +181,10 @@ async function verifyLiveContract(contract) {
 
 export async function verifySourceContracts({ live = false } = {}) {
   const registry = loadSourceContracts();
+  const fixtures = loadSourceContractFixtures();
   const errors = [
     ...validateSourceContracts(registry),
+    ...validateSourceContractFixtures(registry, fixtures),
     ...verifyCodeReferences(registry),
   ];
   const generated = checkGeneratedSourceFiles();
@@ -218,7 +222,7 @@ async function main() {
     process.exitCode = 1;
     return;
   }
-  console.log(`source contracts valid (${report.contracts}${live ? ", live" : ""})`);
+  console.log(`source contracts valid (${report.contracts}, recorded fixtures${live ? " + live" : ""})`);
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1] || "").href) await main();

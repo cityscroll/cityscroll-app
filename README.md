@@ -66,8 +66,8 @@ published them, and links each applicant to the official next step.
 
 The executable registry is [`data/source_contracts.json`](data/source_contracts.json);
 [the generated source ledger](docs/data-sources.md) records coverage, cadence, freshness,
-required fields, and known gaps. `node tools/verify_source_contracts.mjs --live` checks the
-registry against the current upstream schemas.
+required fields, and known gaps. Required pull-request checks validate recorded upstream
+shapes; a separate daily workflow runs the live verifier and reports publisher drift.
 
 | Live source | Used for | Product freshness |
 |---|---|---|
