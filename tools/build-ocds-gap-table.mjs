@@ -2,6 +2,10 @@ import { readJson, sha256, writeOrCheck } from "./lib/wave4-build.mjs";
 
 const check = process.argv.includes("--check");
 const spine = readJson("data/process_spine.json");
+let ledger = null;
+try {
+  ledger = readJson("data/coverage_ledger.json");
+} catch {}
 const stages = [
   {
     stage: "planning",
@@ -49,6 +53,10 @@ writeOrCheck("data/ocds-gap-table.json", {
   schema_version: "1.0.0",
   snapshot_date: spine.snapshot_date,
   source_spine_hash: sha256(spine),
+  source_coverage_hash: ledger ? sha256(ledger) : null,
   coverage: spine.coverage,
-  stages
+  stages: stages.map((stage) => ({
+    ...stage,
+    counts: ledger?.aggregate?.[stage.stage] || null
+  }))
 }, check);

@@ -2,6 +2,7 @@
   "schema_version": "1.0.0",
   "snapshot_date": "2026-07-28",
   "source_spine_hash": "ea40cc18c7c43b21c553b702655259289d0960cffa1654ecdcf86a406e24ece1",
+  "source_coverage_hash": "3d669230cdb0d8e1bc7b55560d8e2a34c7e746bf5a11d54ef800ab951b630034",
   "coverage": {
     "scope": "published Wave 4 reference matters",
     "process_count": 1,
@@ -23,7 +24,16 @@
         "planning/budget",
         "planning/rationale"
       ],
-      "missing_reason": "not_published"
+      "missing_reason": "not_published",
+      "counts": {
+        "total": 1,
+        "complete": 0,
+        "partial": 0,
+        "missing": 1,
+        "reasons": {
+          "not_published": 1
+        }
+      }
     },
     {
       "stage": "tender",
@@ -40,7 +50,16 @@
         "tender/documents",
         "tender/numberOfTenderers"
       ],
-      "missing_reason": "not_published"
+      "missing_reason": "not_published",
+      "counts": {
+        "total": 1,
+        "complete": 0,
+        "partial": 1,
+        "missing": 0,
+        "reasons": {
+          "unresolved_join": 1
+        }
+      }
     },
     {
       "stage": "award",
@@ -54,7 +73,14 @@
       ],
       "completeness": "mapped",
       "missing_fields": [],
-      "missing_reason": null
+      "missing_reason": null,
+      "counts": {
+        "total": 1,
+        "complete": 1,
+        "partial": 0,
+        "missing": 0,
+        "reasons": {}
+      }
     },
     {
       "stage": "contract",
@@ -70,7 +96,16 @@
       "missing_fields": [
         "contracts/implementation"
       ],
-      "missing_reason": "not_published"
+      "missing_reason": "not_published",
+      "counts": {
+        "total": 1,
+        "complete": 0,
+        "partial": 1,
+        "missing": 0,
+        "reasons": {
+          "not_published": 1
+        }
+      }
     },
     {
       "stage": "implementation",
@@ -82,7 +117,16 @@
         "implementation/transactions",
         "implementation/status"
       ],
-      "missing_reason": "source_unavailable"
+      "missing_reason": "source_unavailable",
+      "counts": {
+        "total": 1,
+        "complete": 0,
+        "partial": 0,
+        "missing": 1,
+        "reasons": {
+          "source_unavailable": 1
+        }
+      }
     }
   ]
 }
