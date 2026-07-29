@@ -13,6 +13,38 @@ on:
   workflow_dispatch:
 
 jobs:
+  changes:
+    name: Detect changed paths
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      frontend: ${{ steps.filter.outputs.frontend }}
+      worker: ${{ steps.filter.outputs.worker }}
+      docs: ${{ steps.filter.outputs.docs }}
+    steps:
+      # Checkout is required for merge_group, push, and workflow_dispatch events;
+      # pull_request events use the GitHub API to inspect the PR's changed files.
+      - uses: actions/checkout@v4
+        if: github.event_name != 'pull_request'
+        with:
+          persist-credentials: false
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            frontend:
+              - '*.html'
+              - 'assets/**'
+              - 'i18n/**'
+              - '*.js'
+            worker:
+              - 'worker/**'
+            docs:
+              - 'docs/**'
+              - '*.md'
+
   unit:
     name: Unit tests (site + worker)
     runs-on: ubuntu-latest
@@ -94,7 +126,9 @@ jobs:
   # parks the heavier functional suite on manual dispatch doesn't apply here.
   a11y-pr:
     name: Accessibility + language gate (axe on every PR)
-    # runs on pull_request per w7-01 (static local pages only, no live-API flakiness)
+    needs: changes
+    # Job-level skips report success to required-check rulesets and merge queues.
+    if: needs.changes.outputs.frontend == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -143,6 +177,8 @@ jobs:
   # languages ship (wave 7 activates one run per language).
   i18n-guard:
     name: Stray-English guard (runtime, fixtures)
+    needs: changes
+    if: needs.changes.outputs.frontend == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -178,6 +214,8 @@ jobs:
   # Not yet on PyPI; install straight from the (public) source repo.
   reading-level:
     name: Reading-level ratchet gate (readable-or-else)
+    needs: changes
+    if: needs.changes.outputs.frontend == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
