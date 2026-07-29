@@ -10,7 +10,7 @@ export const README_BEGIN = "<!-- BEGIN GENERATED SOURCE CONTRACTS -->";
 export const README_END = "<!-- END GENERATED SOURCE CONTRACTS -->";
 
 const ALLOWED_STATUS = new Set(["live", "build-time", "manual", "disabled"]);
-const ALLOWED_KIND = new Set(["socrata", "checkbook", "arcgis", "geosearch", "html", "mocs-disabled"]);
+const ALLOWED_KIND = new Set(["socrata", "checkbook", "arcgis", "geosearch", "html", "mocs-disabled", "rss"]);
 
 export function loadSourceContracts() {
   return JSON.parse(readFileSync(REGISTRY_PATH, "utf8"));
@@ -51,7 +51,7 @@ export function validateSourceContracts(registry) {
       }
       if (!(Number(contract.max_stale_days) > 0)) errors.push(`${label}: max_stale_days must be positive`);
     }
-    if (["checkbook", "arcgis", "geosearch"].includes(contract.kind) && !contract.endpoint) {
+    if (["checkbook", "arcgis", "geosearch", "rss"].includes(contract.kind) && !contract.endpoint) {
       errors.push(`${label}: missing endpoint`);
     }
     if (contract.status === "disabled" && !contract.gap) errors.push(`${label}: disabled sources need a specific gap`);
@@ -70,6 +70,7 @@ function contractIdentifier(contract) {
     return new URL(contract.landing_page).pathname.split("/").filter(Boolean).at(-1) || "";
   }
   if (contract.kind === "mocs-disabled") return contract.legacy_dataset_ids.join("|");
+  if (contract.kind === "rss") return new URL(contract.endpoint).pathname.replace(/^\/+/, "").replace(/\/+$/, "");
   return "";
 }
 
@@ -129,6 +130,8 @@ export function validateSourceContractFixtures(registry, fixtures) {
       errors.push(`${contract.id}: fixture does not record a GeoSearch FeatureCollection`);
     } else if (contract.kind === "html" && fixture.response_type !== "text/html") {
       errors.push(`${contract.id}: fixture does not record an HTML publication`);
+    } else if (contract.kind === "rss" && fixture.response_type !== "application/rss+xml") {
+      errors.push(`${contract.id}: fixture does not record an RSS feed`);
     } else if (contract.kind === "mocs-disabled") {
       if (
         fixture.configured_asset_type !== "href"

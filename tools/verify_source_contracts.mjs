@@ -141,6 +141,35 @@ async function verifyHtml(contract) {
   return "manual source reachable";
 }
 
+async function verifyRss(contract) {
+  const response = await fetch(contract.endpoint, { redirect: "follow" });
+  if (!response.ok) throw new Error(`${contract.id}: feed HTTP ${response.status}`);
+  const xml = await response.text();
+  if (!/<rss[\s>]/i.test(xml) || !/<item>/i.test(xml)) {
+    throw new Error(`${contract.id}: response is not an RSS feed with items`);
+  }
+  for (const field of contract.required_fields) {
+    const re = new RegExp(`<${field.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}[^>]*>`, "i");
+    if (!re.test(xml)) {
+      throw new Error(`${contract.id}: feed is missing field <${field}>`);
+    }
+  }
+  const lastBuildMatch = xml.match(/<lastBuildDate>([^<]+)<\/lastBuildDate>/i);
+  const pubMatch = xml.match(/<pubDate>([^<]+)<\/pubDate>/i);
+  const dateStr = (lastBuildMatch && lastBuildMatch[1]) || (pubMatch && pubMatch[1]);
+  if (dateStr) {
+    const parsed = Date.parse(dateStr.trim());
+    if (Number.isFinite(parsed)) {
+      const age = ageDays(parsed);
+      if (age > contract.max_stale_days) {
+        throw new Error(`${contract.id}: feed is stale (${Math.floor(age)} days; limit ${contract.max_stale_days})`);
+      }
+      return `${Math.max(0, Math.floor(age))}d old`;
+    }
+  }
+  return "feed reachable, no parseable freshness date";
+}
+
 async function verifyDisabledMocs(contract) {
   const [configuredId, documentedId] = contract.legacy_dataset_ids;
   const [metadataResponse, configuredResponse, documentedResponse, landingResponse] = await Promise.all([
@@ -175,6 +204,7 @@ async function verifyLiveContract(contract) {
   if (contract.kind === "arcgis") return verifyArcgis(contract);
   if (contract.kind === "geosearch") return verifyGeosearch(contract);
   if (contract.kind === "html") return verifyHtml(contract);
+  if (contract.kind === "rss") return verifyRss(contract);
   if (contract.kind === "mocs-disabled") return verifyDisabledMocs(contract);
   throw new Error(`${contract.id}: no live verifier for ${contract.kind}`);
 }
