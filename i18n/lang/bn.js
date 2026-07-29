@@ -17,6 +17,14 @@
   W.STRINGS = W.STRINGS || {};
   W.STRINGS["bn"] = W.STRINGS["bn"] || {};
   Object.assign(W.STRINGS["bn"], {
+    scenario_heading: "আপনি এখানে কী করতে এসেছেন?",
+    scenario_intro: "সহায়ক ফিল্টার দিয়ে শুরু করতে একটি কাজ বেছে নিন, অথবা উপরের বিভাগের ট্যাবগুলো ব্যবহার করুন।",
+    scenario_city_work: "আমি সিটির কাজে দরপত্র দিই",
+    scenario_neighborhood: "আমি আমার এলাকার খবর অনুসরণ করি",
+    scenario_hearings: "আমি শুনানিতে অংশ নিই বা মতামত দিই",
+    scenario_city_career: "আমি সিটি সরকারের পেশা খুঁজি",
+    scenario_subsidies_land: "আমি ভর্তুকি ও ভূমি ব্যবহার অনুসরণ করি",
+    scenario_legal_compliance: "আমি আইনি বা বিধি মেনে চলার নোটিশ দেখি",
     footer_notices: "১০ লক্ষের বেশি নোটিশ",
     sugg_money_0: "$500k-এর বেশি নির্মাণ চুক্তি",
     sugg_money_1: "আইটি পরামর্শ RFP",

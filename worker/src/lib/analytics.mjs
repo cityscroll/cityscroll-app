@@ -4,7 +4,8 @@
 // visitor, request, IP, user-agent, query-text, entity-name, or notice-id field. All dimensions
 // are small enumerations from docs/analytics-event-taxonomy.md.
 
-export const TAXONOMY_VERSION = "1.0.0";
+export const TAXONOMY_VERSION = "1.1.0";
+export const COMPATIBLE_TAXONOMY_VERSIONS = Object.freeze(["1.0.0", TAXONOMY_VERSION]);
 export const DEFAULT_ANALYTICS_DATASET = "crol_usage_events_v1";
 export const ANALYTICS_RETENTION_DAYS = 90;
 
@@ -14,6 +15,11 @@ export const ANALYTICS_LENSES = Object.freeze([
 
 export const ANALYTICS_AREAS = Object.freeze([
   "manhattan", "brooklyn", "queens", "bronx", "staten-island",
+]);
+
+export const ANALYTICS_SCENARIOS = Object.freeze([
+  "city-work", "neighborhood", "hearings", "city-career",
+  "subsidies-land-use", "legal-compliance",
 ]);
 
 const SURFACES = Object.freeze([
@@ -26,6 +32,11 @@ const EVENT_SPECS = Object.freeze({
   },
   lens_open: {
     lenses: ANALYTICS_LENSES,
+    surfaces: ["home"],
+  },
+  scenario_open: {
+    lenses: ANALYTICS_LENSES,
+    details: ANALYTICS_SCENARIOS,
     surfaces: ["home"],
   },
   search_run: {
@@ -150,6 +161,7 @@ function checkedDataset(value) {
 
 export function usageAnalyticsQuery(datasetName = DEFAULT_ANALYTICS_DATASET) {
   const dataset = checkedDataset(datasetName);
+  const versions = COMPATIBLE_TAXONOMY_VERSIONS.map((version) => `'${version}'`).join(", ");
   return `SELECT
   formatDateTime(timestamp, '%Y-%m-%d', 'Etc/UTC') AS day,
   blob1 AS event,
@@ -160,7 +172,7 @@ export function usageAnalyticsQuery(datasetName = DEFAULT_ANALYTICS_DATASET) {
   sum(_sample_interval * double1) AS count
 FROM ${dataset}
 WHERE timestamp >= NOW() - INTERVAL '${ANALYTICS_RETENTION_DAYS}' DAY
-  AND blob6 = '${TAXONOMY_VERSION}'
+  AND blob6 IN (${versions})
 GROUP BY day, event, lens, detail, geography, surface
 ORDER BY day ASC`;
 }
@@ -186,6 +198,7 @@ function blankUsage(measuredSince = null) {
     taxonomy_version: TAXONOMY_VERSION,
     page_views: { last7d: 0, last30d: 0, by_surface_last30d: fixedCounts(SURFACES) },
     lens_interest: { last7d: fixedCounts(ANALYTICS_LENSES), last30d: fixedCounts(ANALYTICS_LENSES) },
+    scenario_interest: { last7d: fixedCounts(ANALYTICS_SCENARIOS), last30d: fixedCounts(ANALYTICS_SCENARIOS) },
     searches: { last7d: 0, last30d: 0, by_lens_last30d: fixedCounts(ANALYTICS_LENSES) },
     deep_links: { last7d: 0, last30d: 0, by_kind_last30d: {} },
     exports: { last7d: 0, last30d: 0, by_format_last30d: {} },
@@ -205,7 +218,7 @@ export function buildUsageSnapshot(rows, now = new Date(), configuredSince = nul
   const last7 = dayOffset(now, 6);
   const last30 = dayOffset(now, 29);
   const pageBySurface = {};
-  const lens7 = {}, lens30 = {}, searchesByLens = {}, deepByKind = {}, exportsByFormat = {}, geography = {};
+  const lens7 = {}, lens30 = {}, scenario7 = {}, scenario30 = {}, searchesByLens = {}, deepByKind = {}, exportsByFormat = {}, geography = {};
 
   for (const row of validRows) {
     const day = String(row?.day || "").slice(0, 10);
@@ -238,6 +251,10 @@ export function buildUsageSnapshot(rows, now = new Date(), configuredSince = nul
         addCount(searchesByLens, lens, count);
       }
     }
+    if (event === "scenario_open") {
+      if (in7) addCount(scenario7, detail, count);
+      if (in30) addCount(scenario30, detail, count);
+    }
     if (["deep_link_open", "digest_link_open"].includes(event)) {
       if (in7) out.deep_links.last7d += count;
       if (in30) {
@@ -267,6 +284,8 @@ export function buildUsageSnapshot(rows, now = new Date(), configuredSince = nul
   out.page_views.by_surface_last30d = fixedCounts(SURFACES, pageBySurface);
   out.lens_interest.last7d = fixedCounts(ANALYTICS_LENSES, lens7);
   out.lens_interest.last30d = fixedCounts(ANALYTICS_LENSES, lens30);
+  out.scenario_interest.last7d = fixedCounts(ANALYTICS_SCENARIOS, scenario7);
+  out.scenario_interest.last30d = fixedCounts(ANALYTICS_SCENARIOS, scenario30);
   out.searches.by_lens_last30d = fixedCounts(ANALYTICS_LENSES, searchesByLens);
   out.deep_links.by_kind_last30d = deepByKind;
   out.exports.by_format_last30d = exportsByFormat;

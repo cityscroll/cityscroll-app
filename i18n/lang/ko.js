@@ -17,6 +17,14 @@
   W.STRINGS = W.STRINGS || {};
   W.STRINGS["ko"] = W.STRINGS["ko"] || {};
   Object.assign(W.STRINGS["ko"], {
+    scenario_heading: "무엇을 하러 오셨나요?",
+    scenario_intro: "유용한 필터로 시작할 작업을 선택하거나 위의 카테고리 탭을 이용하세요.",
+    scenario_city_work: "시 사업에 입찰합니다",
+    scenario_neighborhood: "우리 동네에서 일어나는 일을 확인합니다",
+    scenario_hearings: "공청회에 참석하거나 의견을 제출합니다",
+    scenario_city_career: "시 정부 경력을 알아봅니다",
+    scenario_subsidies_land: "보조금과 토지 이용을 추적합니다",
+    scenario_legal_compliance: "법률 또는 규정 준수 공고를 확인합니다",
     footer_notices: "100만 건 이상의 공고",
     sugg_money_0: "50만 달러 이상의 건설 계약",
     sugg_money_1: "IT 컨설팅 제안요청서 (RFP)",

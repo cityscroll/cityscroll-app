@@ -21,6 +21,14 @@
   W.STRINGS = W.STRINGS || {};
   W.STRINGS["fr"] = W.STRINGS["fr"] || {};
   Object.assign(W.STRINGS["fr"], {
+    scenario_heading: "Que voulez-vous faire ?",
+    scenario_intro: "Choisissez une tâche pour commencer avec des filtres utiles, ou utilisez les onglets de catégorie ci-dessus.",
+    scenario_city_work: "Je réponds aux appels d’offres de la Ville",
+    scenario_neighborhood: "Je suis ce qui se passe dans mon quartier",
+    scenario_hearings: "J’assiste aux auditions ou je dépose un commentaire",
+    scenario_city_career: "J’explore une carrière au service de la Ville",
+    scenario_subsidies_land: "Je suis les subventions et l’utilisation des sols",
+    scenario_legal_compliance: "Je surveille les avis juridiques ou de conformité",
     footer_notices: "plus d'un million d'avis",
     sugg_money_0: "contrats de construction de plus de 500 000 $",
     sugg_money_1: "demandes de propositions (RFP) de conseil en TI",
