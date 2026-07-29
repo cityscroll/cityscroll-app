@@ -16,7 +16,7 @@ const MAX_PAGES = 50;
 const BUCKET_COUNT = 64;
 const MANIFEST_KEY = "vp:manifest:v1";
 const MAX_AGE_MS = 24 * 60 * 60 * 1000;
-const RECORD_TTL_SECONDS = 3 * 24 * 60 * 60;
+const RECORD_TTL_SECONDS = 28 * 60 * 60;
 const RECENT_NOTICE_LIMIT = 15;
 const FORECAST_PREFIXES = ["fc:", "plan:"];
 
