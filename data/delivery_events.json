@@ -1,0 +1,158 @@
+{
+  "schema_version": "1.0.0",
+  "snapshot_date": "2026-07-28",
+  "source_snapshot_hash": "60806a2c9a2f5bde0f940c9cfe998bb0f61c2250cd4ec30ca08f556f5c8b105c",
+  "coverage": {
+    "scope": "Wave 4 adapter fixtures",
+    "full_corpus": false,
+    "notice": "Adapter fixtures demonstrate public delivery-source semantics; coverage is not citywide.",
+    "adapter_families": [
+      "mta_capital_dashboard",
+      "nyc_ddc_project_data"
+    ]
+  },
+  "processes": [
+    {
+      "process_id": "process:pin:84124p0003001",
+      "delivery_status": {
+        "process_id": "process:pin:84124p0003001",
+        "event_id": "mta:MTA-REF-001:construction-50",
+        "event_type": "delivery.milestone",
+        "evidence_level": "published_milestone",
+        "delivery_status": "complete",
+        "planned_at": "2026-02-28",
+        "observed_at": "2026-03-12",
+        "label": "Construction 50% complete",
+        "source": "MTA Capital Program Dashboard",
+        "source_url": "https://capitaldashboard.mta.info/",
+        "schema_version": "capital-dashboard-2026-07",
+        "missing_reason": null
+      },
+      "events": [
+        {
+          "process_id": "process:pin:84124p0003001",
+          "event_id": "mta:MTA-REF-001:construction-50",
+          "event_type": "delivery.milestone",
+          "evidence_level": "published_milestone",
+          "delivery_status": "complete",
+          "planned_at": "2026-02-28",
+          "observed_at": "2026-03-12",
+          "label": "Construction 50% complete",
+          "source": "MTA Capital Program Dashboard",
+          "source_url": "https://capitaldashboard.mta.info/",
+          "schema_version": "capital-dashboard-2026-07",
+          "missing_reason": null
+        },
+        {
+          "process_id": "process:pin:84124p0003001",
+          "event_id": "payment-proxy:checkbook:CT1-841-20258800411:payment-1",
+          "event_type": "delivery.payment_proxy",
+          "evidence_level": "payment_proxy",
+          "delivery_status": "unknown",
+          "planned_at": null,
+          "observed_at": "2025-11-18",
+          "amount": {
+            "currency": "USD",
+            "value": 412000
+          },
+          "label": "Payment recorded; delivery not established",
+          "source": "Checkbook NYC",
+          "source_url": "https://www.checkbooknyc.com/",
+          "schema_version": "checkbook-payment-v1",
+          "missing_reason": "not_published"
+        }
+      ]
+    },
+    {
+      "process_id": "process:project:reference-ddc-1",
+      "delivery_status": {
+        "process_id": "process:project:reference-ddc-1",
+        "event_id": "acceptance:reference-1",
+        "event_type": "delivery.accepted",
+        "evidence_level": "direct_acceptance",
+        "delivery_status": "accepted",
+        "planned_at": null,
+        "observed_at": "2026-04-18",
+        "label": "Substantial completion",
+        "accepted_by": "Department of Design and Construction",
+        "source": "Published acceptance record",
+        "source_url": "https://www.nyc.gov/site/ddc/index.page",
+        "schema_version": "acceptance-fixture-v1",
+        "missing_reason": null
+      },
+      "events": [
+        {
+          "process_id": "process:project:reference-ddc-1",
+          "event_id": "ddc:DDC-REF-001:substantial-completion",
+          "event_type": "delivery.milestone",
+          "evidence_level": "published_milestone",
+          "delivery_status": "delayed",
+          "planned_at": "2025-12-31",
+          "observed_at": null,
+          "label": "Substantial completion",
+          "change_reason": "Published schedule revision",
+          "source": "NYC DDC project data",
+          "source_url": "https://www.nyc.gov/site/ddc/about/press-releases/project-transparency.page",
+          "schema_version": "ddc-projects-2026-07",
+          "missing_reason": "not_published"
+        },
+        {
+          "process_id": "process:project:reference-ddc-1",
+          "event_id": "acceptance:reference-1",
+          "event_type": "delivery.accepted",
+          "evidence_level": "direct_acceptance",
+          "delivery_status": "accepted",
+          "planned_at": null,
+          "observed_at": "2026-04-18",
+          "label": "Substantial completion",
+          "accepted_by": "Department of Design and Construction",
+          "source": "Published acceptance record",
+          "source_url": "https://www.nyc.gov/site/ddc/index.page",
+          "schema_version": "acceptance-fixture-v1",
+          "missing_reason": null
+        }
+      ]
+    },
+    {
+      "process_id": "process:project:no-public-delivery-source",
+      "delivery_status": {
+        "process_id": "process:project:no-public-delivery-source",
+        "event_id": "delivery-unknown:process:project:no-public-delivery-source",
+        "event_type": "delivery.unknown",
+        "evidence_level": "unknown",
+        "delivery_status": "unknown",
+        "planned_at": null,
+        "observed_at": "2026-07-28",
+        "label": "No public delivery status found",
+        "sources_checked": [
+          "city_record",
+          "checkbook_nyc"
+        ],
+        "source": "Coverage ledger",
+        "source_url": "https://crol-list.org/data.html",
+        "schema_version": "coverage-ledger-v1",
+        "missing_reason": "not_published"
+      },
+      "events": [
+        {
+          "process_id": "process:project:no-public-delivery-source",
+          "event_id": "delivery-unknown:process:project:no-public-delivery-source",
+          "event_type": "delivery.unknown",
+          "evidence_level": "unknown",
+          "delivery_status": "unknown",
+          "planned_at": null,
+          "observed_at": "2026-07-28",
+          "label": "No public delivery status found",
+          "sources_checked": [
+            "city_record",
+            "checkbook_nyc"
+          ],
+          "source": "Coverage ledger",
+          "source_url": "https://crol-list.org/data.html",
+          "schema_version": "coverage-ledger-v1",
+          "missing_reason": "not_published"
+        }
+      ]
+    }
+  ]
+}
