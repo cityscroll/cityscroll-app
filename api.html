@@ -106,6 +106,10 @@ rate-limited and cached, and none touches a paid service. Base URL: <code>https:
 https://api.crol-list.org/feed.ics?lens=meetings&amp;q=community%20board
 https://api.crol-list.org/feed.json?lens=entity&amp;kind=vendor&amp;name=Sinergia%20Inc</pre>
 
+<h2 id="property-locations" data-i18n="api_h_property_locations">Property locations</h2>
+<p class="src" data-i18n-html="api_p_property_locations_html"><code>GET /property-locations</code> returns the latest Property Disposition notices with extracted site addresses, boroughs, tax lots, BBLs, and resolved map geometry where available. The daily view is cached at the edge for 30 minutes. City Record Online remains the source of truth.</p>
+<p class="src"><a href="https://api.crol-list.org/property-locations">JSON</a></p>
+
 <h2 id="agency-crosswalk" data-i18n="api_h_agencies">Agency-name crosswalk</h2>
 <p class="src" data-i18n-html="api_p_agencies_html"><code>GET /agencies</code> lists each agency name as written in City Record Open Data and connects it to one name used by this site. Add <code>?format=csv</code> for CSV. The endpoint needs no key, allows cross-site requests, and is cached for one day.</p>
 <p class="src"><a href="https://api.crol-list.org/agencies">JSON</a> · <a href="https://api.crol-list.org/agencies?format=csv">CSV</a></p>
