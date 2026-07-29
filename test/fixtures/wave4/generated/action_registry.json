@@ -1,0 +1,121 @@
+{
+  "schema_version": "1.0.0",
+  "snapshot_date": "2026-07-28",
+  "source_snapshot_hash": "3e1244dfcc19bc8c2fdc534080a147e765d5690eb97a1baeb6fd44ed2ab6749b",
+  "coverage": {
+    "scope": "Wave 4 reference matter",
+    "full_corpus": false
+  },
+  "handoff_contract": {
+    "consequential_actions_submit_in_product": false,
+    "destination_visible_before_leaving": true,
+    "third_party_credentials_accepted": false,
+    "return_state": "matter permalink"
+  },
+  "matter": {
+    "process_id": "process:pin:84124p0003001",
+    "title": "Bus radio communications services",
+    "matter_href": "index.html#matter/84124P0003001",
+    "official_notice_url": "https://a856-cityrecord.nyc.gov/RequestDetail/2141200",
+    "official_application_url": "https://passport.cityofnewyork.us/page.aspx/en/rfp/request_browse_public",
+    "official_contact_url": "https://www.nyc.gov/site/mocs/passport/about-passport.page",
+    "deadline": "2026-09-30",
+    "document": {
+      "vault_hash": null,
+      "official_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/example-public-report.pdf"
+    }
+  },
+  "actions": [
+    {
+      "type": "watch",
+      "label": "Watch this matter",
+      "handled": "local",
+      "boundary": "direct",
+      "destination": "index.html#alerts"
+    },
+    {
+      "type": "calendar",
+      "label": "Add deadline to calendar",
+      "handled": "local",
+      "boundary": "direct",
+      "destination": null,
+      "deadline": "2026-09-30"
+    },
+    {
+      "type": "document",
+      "label": "Open official document",
+      "handled": "handoff",
+      "boundary": "official_handoff",
+      "destination": "https://www.nyc.gov/assets/dcas/downloads/pdf/example-public-report.pdf",
+      "destination_label": "www.nyc.gov",
+      "vault_fallback": true
+    },
+    {
+      "type": "contact",
+      "label": "Contact the responsible office",
+      "handled": "handoff",
+      "boundary": "official_handoff",
+      "destination": "https://www.nyc.gov/site/mocs/passport/about-passport.page",
+      "destination_label": "www.nyc.gov"
+    },
+    {
+      "type": "rsvp",
+      "label": "RSVP on the official site",
+      "handled": "handoff",
+      "boundary": "official_handoff",
+      "destination": "https://a856-cityrecord.nyc.gov/RequestDetail/2141200",
+      "destination_label": "a856-cityrecord.nyc.gov"
+    },
+    {
+      "type": "comment",
+      "label": "Testify or comment",
+      "handled": "handoff",
+      "boundary": "official_handoff",
+      "destination": "https://a856-cityrecord.nyc.gov/RequestDetail/2141200",
+      "destination_label": "a856-cityrecord.nyc.gov"
+    },
+    {
+      "type": "attend",
+      "label": "Prepare to attend",
+      "handled": "local",
+      "boundary": "direct",
+      "destination": null
+    },
+    {
+      "type": "bid_checklist",
+      "label": "Open bid checklist",
+      "handled": "local",
+      "boundary": "direct",
+      "destination": null
+    },
+    {
+      "type": "official_application",
+      "label": "Open the official application",
+      "handled": "handoff",
+      "boundary": "official_handoff",
+      "destination": "https://passport.cityofnewyork.us/page.aspx/en/rfp/request_browse_public",
+      "destination_label": "passport.cityofnewyork.us"
+    },
+    {
+      "type": "return_to_matter",
+      "label": "Return to matter",
+      "handled": "local",
+      "boundary": "direct",
+      "destination": "index.html#matter/84124P0003001"
+    },
+    {
+      "type": "local_note",
+      "label": "Add a private note",
+      "handled": "local",
+      "boundary": "direct",
+      "destination": null
+    }
+  ],
+  "outcomes": [
+    "submitted",
+    "attended",
+    "bid",
+    "won",
+    "not_useful"
+  ]
+}

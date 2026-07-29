@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0.0",
+  "research_date": "2026-07-28",
+  "status": "pre_field",
+  "purpose": "Learn which public City Record topics, places, and actions subscribers want to declare.",
+  "sampling_frame_request": {
+    "recipient": "Department of Citywide Administrative Services records access officer",
+    "status": "draft_not_sent",
+    "reasonably_particular_description": "Current voluntary City Record email subscribers eligible for a one-time service-improvement survey.",
+    "minimum_requested_fields": ["subscriber email address", "subscription category if already recorded"],
+    "excluded_fields": ["name", "occupation", "employer", "protected class", "union membership", "location history", "browser history"],
+    "handling": "One-time invitation only; addresses remain outside product analytics and are deleted after the invitation window.",
+    "expected_response_sequence": ["acknowledgement", "scope clarification if needed", "feasible extract or reasoned determination"],
+    "expected_redactions": ["records not reasonably segregable", "fields exempt from disclosure"],
+    "public_artifact_contains_addresses": false
+  },
+  "survey": {
+    "instrument_version": "declared-interest-v1",
+    "questions": [
+      "Which public topics do you choose to follow?",
+      "Which boroughs or named places do you choose to follow?",
+      "Which actions do you want to know about: read, attend, comment, apply, or bid?",
+      "How often should a digest arrive?",
+      "What useful notice has been hard to find or act on?"
+    ],
+    "invited": 0,
+    "responses": 0,
+    "response_rate": null,
+    "fielded": false
+  },
+  "aggregate_findings": [],
+  "ontology_change_log": [
+    {
+      "date": "2026-07-28",
+      "kind": "provisional_baseline",
+      "reason": "Existing public watch filters and named routing cases establish a testable baseline before fieldwork.",
+      "added": ["topic", "place", "action"],
+      "removed": []
+    }
+  ],
+  "privacy": {
+    "subscriber_addresses_in_artifact": 0,
+    "individual_responses_published": false,
+    "analytics_profile_created": false,
+    "findings_publication_level": "aggregate_only"
+  }
+}

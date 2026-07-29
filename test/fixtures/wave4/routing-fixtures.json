@@ -1,0 +1,41 @@
+{
+  "snapshot_date": "2026-07-28",
+  "routes": [
+    {
+      "id": "city-point-place",
+      "declared": {"topics":["land_use"],"places":["Downtown Brooklyn"],"actions":["attend"]},
+      "notice": {"topics":["land_use"],"places":["Downtown Brooklyn"],"actions":["attend"],"title":"City Point public hearing","public_inputs":["published notice text","published affected area"]},
+      "expected": true
+    },
+    {
+      "id": "dining-out-place",
+      "declared": {"topics":["street_use"],"places":["Manhattan"],"actions":["comment"]},
+      "notice": {"topics":["street_use"],"places":["Manhattan"],"actions":["comment"],"title":"Dining Out NYC public hearing","public_inputs":["published notice text","published borough"]},
+      "expected": true
+    },
+    {
+      "id": "nycida-participation",
+      "declared": {"topics":["public_subsidy"],"places":["Queens"],"actions":["attend"]},
+      "notice": {"topics":["public_subsidy"],"places":["Queens"],"actions":["attend"],"title":"NYCIDA subsidy hearing","public_inputs":["published notice text","published project location"]},
+      "expected": true
+    },
+    {
+      "id": "exam-partner-lane",
+      "declared": {"topics":["civil_service_exams"],"places":["citywide"],"actions":["apply"]},
+      "notice": {"topics":["civil_service_exams"],"places":["citywide"],"actions":["apply"],"title":"Open competitive exam","public_inputs":["published examination notice"],"candidate_distribution_partners":["New York City Central Labor Council","District Council 37"]},
+      "expected": true
+    },
+    {
+      "id": "noncooperation-public-notice",
+      "declared": {"topics":["public_hearing"],"places":["Bronx"],"actions":["attend"]},
+      "notice": {"topics":["public_hearing"],"places":["Bronx"],"actions":["attend"],"title":"Legally sufficient hearing notice","public_inputs":["published notice text"],"agency_enrichment":null},
+      "expected": true
+    },
+    {
+      "id": "declared-rule-does-not-match",
+      "declared": {"topics":["civil_service_exams"],"places":["citywide"],"actions":["apply"]},
+      "notice": {"topics":["street_use"],"places":["Brooklyn"],"actions":["comment"],"title":"Street use hearing","public_inputs":["published notice text"]},
+      "expected": false
+    }
+  ]
+}

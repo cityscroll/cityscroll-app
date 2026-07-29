@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0.0",
+  "snapshot_date": "2026-07-28",
+  "candidates": [
+    {
+      "event_id": "event:nyscr:nyscr:candidate-2133677",
+      "source_system": "nyscr",
+      "source_key": "nyscr:candidate-2133677",
+      "candidate_process_id": "process:pin:84124p0003001",
+      "confidence": "review",
+      "matched_fields": [
+        "agency",
+        "contract_cr_number",
+        "commodity"
+      ],
+      "decision": "human_review_required"
+    }
+  ]
+}

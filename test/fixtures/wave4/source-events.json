@@ -1,0 +1,74 @@
+{
+  "snapshot_date": "2026-07-28",
+  "schema_version": "1.0.0",
+  "events": [
+    {
+      "source_system": "city_record",
+      "source_key": "cr:2133677",
+      "process_key": "pin:84124P0003001",
+      "project_key": "project:queens-bus-radio",
+      "event_type": "tender.notice",
+      "observed_at": "2025-01-09T15:00:00Z",
+      "effective_at": "2025-01-09T00:00:00Z",
+      "actor": {"id": "nyc-dot", "name": "Department of Transportation"},
+      "amount": null,
+      "parent_source_key": null,
+      "supersedes_source_key": null,
+      "join": {"method": "native_pin", "confidence": "confirmed"},
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/2133677",
+      "payload": {"pin": "84124P0003001", "title": "Bus radio communications services"}
+    },
+    {
+      "source_system": "city_record",
+      "source_key": "cr:2141200",
+      "process_key": "pin:84124P0003001",
+      "project_key": "project:queens-bus-radio",
+      "event_type": "award.notice",
+      "observed_at": "2025-05-14T15:00:00Z",
+      "effective_at": "2025-05-14T00:00:00Z",
+      "actor": {"id": "nyc-dot", "name": "Department of Transportation"},
+      "amount": {"currency": "USD", "type": "awarded", "value": 1825000},
+      "parent_source_key": "cr:2133677",
+      "supersedes_source_key": null,
+      "join": {"method": "native_pin", "confidence": "confirmed"},
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/2141200",
+      "payload": {"pin": "84124P0003001", "vendor": "Metro Signal Services", "title": "Bus radio communications services"}
+    },
+    {
+      "source_system": "checkbook_nyc",
+      "source_key": "checkbook:CT1-841-20258800411",
+      "process_key": "pin:84124P0003001",
+      "project_key": "project:queens-bus-radio",
+      "event_type": "contract.registered",
+      "observed_at": "2025-06-04T00:00:00Z",
+      "effective_at": "2025-05-29T00:00:00Z",
+      "actor": {"id": "nyc-dot", "name": "Department of Transportation"},
+      "amount": {"currency": "USD", "type": "registered", "value": 1825000},
+      "parent_source_key": "cr:2141200",
+      "supersedes_source_key": null,
+      "join": {"method": "native_pin", "confidence": "confirmed"},
+      "source_url": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT1-841-20258800411",
+      "payload": {"pin": "84124P0003001", "contract_id": "CT1-841-20258800411", "vendor": "Metro Signal Services"}
+    },
+    {
+      "source_system": "nyscr",
+      "source_key": "nyscr:candidate-2133677",
+      "process_key": "pin:84124P0003001",
+      "project_key": "project:queens-bus-radio",
+      "event_type": "tender.notice",
+      "observed_at": "2025-01-10T00:00:00Z",
+      "effective_at": "2025-01-10T00:00:00Z",
+      "actor": {"id": null, "name": "New York City Department of Transportation"},
+      "amount": null,
+      "parent_source_key": null,
+      "supersedes_source_key": null,
+      "join": {
+        "method": "candidate_metadata",
+        "confidence": "review",
+        "matched_fields": ["agency", "contract_cr_number", "commodity"]
+      },
+      "source_url": "https://www.nyscr.ny.gov/Ads/Search?CR=2133677",
+      "payload": {"cr_number": "2133677", "commodity": "telecommunications"}
+    }
+  ]
+}
