@@ -89,9 +89,11 @@ def main() -> None:
         failures.append("worker routes: beta confirmation links must mint on cityscroll.org")
     if 'CONFIRM_BASE = "https://api.cityscroll.org"' not in wrangler:
         failures.append("worker routes: production confirmation links must mint on cityscroll.org")
-    for sender in ("alerts@crol-list.org", "feedback@crol-list.org", "subscribe@crol-list.org"):
+    for sender in ("alerts@cityscroll.org", "feedback@crol-list.org", "subscribe@crol-list.org"):
         if sender not in wrangler:
-            failures.append(f"email scope: {sender} changed during the web-domain cutover")
+            failures.append(f"email scope: {sender} missing — the site owner's 2026-07-29 sender-domain decision moved alerts@ to cityscroll.org while leaving feedback@/subscribe@ unchanged")
+    if "alerts@crol-list.org" in wrangler:
+        failures.append("email scope: alerts@crol-list.org should no longer be the live ALERTS_FROM value")
 
     mirror = (ROOT / "worker/src/mirror.mjs").read_text()
     if 'const ORIGIN = "https://crol-list.org";' not in mirror:
@@ -120,7 +122,7 @@ def main() -> None:
     cutover = (ROOT / "docs/canonical-domain-cutover.md").read_text()
     for phrase in (
         "cf.worker.upstream_zone", "status `301`", "URL fragments",
-        "Website", "explicitly outside this cutover",
+        "Website", "decided on 2026-07-29 to switch the alerts sender",
     ):
         if phrase not in cutover:
             failures.append(f"cutover guide: missing {phrase!r}")
