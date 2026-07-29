@@ -6,6 +6,11 @@ name: CI
 
 on:
   pull_request:
+    # Automated changelog PRs only touch these guarded paths and dispatch CI explicitly.
+    # PR branch filters match the base branch, so they cannot exclude bot/changelog-update.
+    paths-ignore:
+      - changelog-data.json
+      - changelog.html
     types: [opened, synchronize, reopened, labeled, unlabeled, ready_for_review]
   merge_group:
   push:
