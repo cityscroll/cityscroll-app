@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  const ENDPOINT = "https://api.crol-list.org/events";
+  const ENDPOINT = `${window.CROL_API_ORIGIN || "https://api.crol-list.org"}/events`;
   const DEV_TOKEN_STORAGE_KEY = "crol_analytics_dev_token_v1";
   const DEV_TOKEN_HEADER = "X-CROL-Analytics-Dev";
   const LENSES = new Set(["money", "people", "land", "property", "rules", "meetings", "alerts"]);

@@ -20,6 +20,9 @@ summary: >-
   a Cloudflare Queue (per-subscriber retries, DLQ; daily send caps unchanged).
   The source vault retains approved public documents by content hash and
   preserves their official source links.
+  A public Cloudflare Pages beta lane provides stable draft-PR preview aliases
+  and an owner-triggered pointer to one exact reviewed commit without changing
+  the stable GitHub Pages host.
 updated: 2026-07-29
 sources:
   - README.md
@@ -27,12 +30,21 @@ sources:
   - external_awards.js
   - staffing.js
   - i18n.js
+  - beta_flags.js
+  - beta-flags.json
+  - _config.yml
   - tools/build_staffing_exams.mjs
   - tools/stamp_i18n_assets.py
+  - tools/ensure_beta_pages.mjs
+  - .github/actions/build-site/action.yml
   - .github/workflows/deploy-pages.yml
+  - .github/workflows/deploy-beta-preview.yml
+  - .github/workflows/promote-beta.yml
+  - .github/workflows/deploy-worker-beta.yml
   - worker/wrangler.toml
   - worker/src/worker.mjs
-sources_hash: 5ca3cdaaa596f706bdcc775fb377eb4c77e44e83e7039b6e5ff5fca84ab8145c
+  - worker/src/lib/cors.mjs
+sources_hash: e4138be291c854b298b4df6741ad17eb400770cf055dbf8b282d8b510281363d
 ---
 
 # crol-list — architecture
@@ -90,6 +102,12 @@ D1: crol-notices — mirror of recent City Record notices + ingest cursor
 R2: SOURCE_VAULT — content-addressed custody for approved public documents
 Analytics Engine: crol_usage_events_v1 — versioned aggregate page/click/search
   events; enumerated dimensions only, with no cookies or visitor identifiers
+
+Public review channel (Cloudflare Pages project "crol-list-beta")
+  draft PR + preview:beta label → stable pr-<number> alias
+  owner workflow + exact SHA → beta production pointer → beta.crol-list.org
+  optional owner workflow + exact SHA → isolated api-beta.crol-list.org Worker
+  same verified Jekyll + deploy-time i18n stamp pipeline as stable
 ```
 
 Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground truth. `index.html` queries the CORS-open Socrata feeds directly; the Staffing career guide is the exception, using one committed materialized view built from DCAS schedules, NOEs, and Open Data so opening it never fans out to upstream APIs. The worker proxies Checkbook and also holds secrets (Claude, Resend), shared state (subscriptions, counters), and scheduled work (the digest cron). The Wave-5 forecasting layer sits inside the worker because it needs both a cache and the cron.
@@ -101,6 +119,7 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 - **KV `ALERT_STATE`** — digest/cron bookkeeping plus read models: `hearings:location:v1` → rules hearings and public meetings normalized into separate affected-area and venue fields (addresses resolved through NYC GeoSearch), `fc:<stem>` → computed contract-expiration forecasts (from Checkbook award durations), `plan:<stem>` → parsed §112 MOCS plan rows (Socrata `whpb-ebtd`), and versioned `vp:v1:*` whole-profile buckets behind `/vendor-profile`; stale or missing views retain live Socrata fallbacks.
 - **KV `FEEDBACK`** — stored feedback rows (`fb:<ts>:<rand>`) + rate-limit counters.
 - **`index.html` localStorage** — client-side only: investigation workspace (pinned notices + notes), query cache, saved searches, plain/rigor toggle.
+- **Public beta flag localStorage** — one registered, default-off experiment slug selected by `?beta=<slug>`; `?beta=0` clears it. The registry enforces a removal date and on/off tests. It is presentation state only, never access control.
 - **D1 `crol-notices`** — mirror of recent notices (`notices` table: parsed columns + honest-data fields `contract_amount_valid`, `due_year`, plus the raw source row for schema-drift recovery), `ingest_state` (Socrata ingest cursor), and `prior_cycle_matches` (per-notice precomputed `{strict, near, eligibleCount}` prior-cycle match sets — the cache behind `GET /priorcycle/<id>`; compute-on-miss, cron pre-warms freshly-ingested Award notices, ranked by `worker/src/lib/prior_cycle.mjs`, a hand-synced dual implementation of index.html's matchers). Refreshed by the daily cron (`worker/src/ingest.mjs`); Socrata remains the source of truth.
 - **R2 `SOURCE_VAULT`** — content-addressed custody for approved public documents. Each object carries provenance, eligibility, and its official source URL.
 - **Analytics Engine `crol_usage_events_v1`** — first-party aggregate page, lens, search, deep-link, export, alert, feed, and investigation events. The versioned schema in `docs/analytics-event-taxonomy.md` permits only bounded enumerations; it stores no query text, email, IP address, cookie, fingerprint, or visitor identifier. `/stats` reads sampling-aware 7/30-day aggregates through Cloudflare's SQL API.
@@ -112,10 +131,12 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 ## Serving & deploy
 
 - `index.html` is built and served as a GitHub Pages static site at `crol-list.org` (CNAME in repo) — the canonical domain; every page's `<link rel="canonical">` points here regardless of which domain served the request. The Pages workflow derives one cache stamp from `i18n.js` plus every shipping dictionary, writes it only into the deployment artifact, verifies the result, and then publishes it.
+- Cloudflare Pages hosts public review artifacts only. Draft pull requests opt in with `preview:beta` and receive a stable `pr-<number>.crol-list-beta.pages.dev` alias plus an immutable URL. The manually triggered promotion workflow deploys one explicit commit to the Pages production branch named `beta`; `beta.crol-list.org` is therefore a moving pointer, not a long-lived source branch. Re-running the workflow with the prior SHA is the deterministic rollback. Review artifacts keep stable canonical links and add no-index headers, channel/commit metadata, a visible experimental banner, and a stable-site escape link.
+- Review artifacts select `api-beta.crol-list.org` before page scripts run and never fall back to production. That Worker is an optional, manually deployed exact-commit environment with no inherited production secrets, storage, queues, or cron. Its browser routes accept beta Pages origins only under the beta runtime gate; paid, stateful, delivery, and write behavior fails closed when unconfigured.
 - Worker deployed via `wrangler deploy` from `worker/` to the custom domain `api.crol-list.org` (workers.dev alias intentionally kept alive). Changes under `worker/**` deploy from `main` through `.github/workflows/deploy-worker.yml`; a manual Wrangler deploy remains the emergency path. Cron trigger `0 13 * * *` (~9am ET). D1 schema versioned in `worker/migrations/`, applied with `wrangler d1 migrations apply crol-notices --remote`.
 - `cityscroll.org` / `www.cityscroll.org` — a parallel serving domain (same Cloudflare account, custom-domain routes in `worker/wrangler.toml`). Since GitHub Pages only virtual-hosts the one domain configured in its own settings, the worker answers these two hosts itself by reverse-proxying the static site straight from `crol-list.org` byte-for-byte (`worker/src/mirror.mjs`), so the mirror can never drift and the canonical tag rides along unchanged. `crol-list.org` stays canonical; this is infrastructure only, not a redirect or a content fork.
 - Secrets via `wrangler secret put`: `ANTHROPIC_API_KEY`, `RESEND_API_KEY`, `TURNSTILE_SECRET`, `TOKEN_SECRET`, `USAGE_KEY`, `ANALYTICS_READ_TOKEN`, `ANALYTICS_DEV_KEY`, and the production-only `ANALYTICS_ENVIRONMENT` runtime gate. The analytics read token is scoped to Account Analytics Read; the developer key authenticates short-lived HMAC exclusions, while a missing/non-production runtime gate drops writes. Spend guards are vars in `wrangler.toml`: `MAX_PER_RUN=25`, `MAX_SENDS_PER_DAY=50` (under Resend's free 100/day); `/subscribe` and `/feedback` fail closed (503) if their secrets are absent.
-- GitHub Actions runs the test suite on pull requests, builds and deploys the static site after merge, and deploys Worker changes when `worker/**` changes.
+- GitHub Actions runs the test suite on pull requests, builds and deploys the stable site after merge, publishes explicitly labeled draft previews, promotes exact commits to beta only on manual dispatch, and deploys Worker changes when `worker/**` changes.
 
 ## Surface
 

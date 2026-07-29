@@ -1,0 +1,65 @@
+name: Build verified site artifact
+description: Build the site once, derive its i18n stamp, and verify the public artifact.
+
+inputs:
+  source-dir:
+    description: Source checkout to build.
+    required: false
+    default: "."
+  site-dir:
+    description: Destination for the built artifact.
+    required: false
+    default: "_site"
+  review-channel:
+    description: Optional public review channel name.
+    required: false
+    default: ""
+  commit-sha:
+    description: Exact source commit represented by a review artifact.
+    required: false
+    default: ""
+
+runs:
+  using: composite
+  steps:
+    - name: Build with GitHub Pages
+      uses: actions/jekyll-build-pages@v1
+      with:
+        source: ${{ inputs.source-dir }}
+        destination: ${{ inputs.site-dir }}
+    - name: Make generated artifact writable
+      shell: bash
+      env:
+        SITE_DIR: ${{ inputs.site-dir }}
+      run: |
+        sudo chown -R "$(id -u):$(id -g)" "$SITE_DIR"
+        chmod -R u+rwX "$SITE_DIR"
+    - name: Derive i18n cache stamp from deployed content
+      shell: bash
+      env:
+        SOURCE_DIR: ${{ inputs.source-dir }}
+        SITE_DIR: ${{ inputs.site-dir }}
+      run: python3 "$SOURCE_DIR/tools/stamp_i18n_assets.py" --site-root "$SITE_DIR" --stamp
+    - name: Verify the built cache-skew guard
+      shell: bash
+      env:
+        SOURCE_DIR: ${{ inputs.source-dir }}
+        SITE_DIR: ${{ inputs.site-dir }}
+      run: python3 "$SOURCE_DIR/test/standards/i18n_refs.py" --root "$SITE_DIR" --built
+    - name: Prepare public review metadata
+      if: ${{ inputs.review-channel != '' }}
+      shell: bash
+      env:
+        REVIEW_CHANNEL: ${{ inputs.review-channel }}
+        REVIEW_COMMIT_SHA: ${{ inputs.commit-sha }}
+        SITE_DIR: ${{ inputs.site-dir }}
+      run: |
+        python3 "$GITHUB_ACTION_PATH/../../../tools/prepare_review_artifact.py" \
+          --site-root "$SITE_DIR" \
+          --channel "$REVIEW_CHANNEL" \
+          --commit "$REVIEW_COMMIT_SHA"
+    - name: Verify public artifact boundary
+      shell: bash
+      env:
+        SITE_DIR: ${{ inputs.site-dir }}
+      run: python3 "$GITHUB_ACTION_PATH/../../../tools/verify_public_artifact.py" --site-root "$SITE_DIR"

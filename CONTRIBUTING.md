@@ -51,6 +51,17 @@ These rules built the project and they're not aspirational — every shipped fea
    about.html's "About our content" section carries this disclosure to readers too (NYC Web
    Content Style Guide, GenAI tools) — `test/standards/genai_disclosure.py` gates its presence.
 
+## Beta preview
+
+Large interaction changes may opt into the public beta channel. Apply
+`preview:beta` to a same-repository draft pull request to publish its stable
+`pr-<number>.crol-list-beta.pages.dev` alias. A labeled pull request includes
+that alias in its public body before it is marked ready.
+
+Ready status does not deploy either stable or beta. Beta promotion remains a
+separate, manually triggered exact-commit operation. See
+[docs/beta-channel.md](docs/beta-channel.md) for deployment and rollback.
+
 ## Changelog entries
 
 `changelog.html`'s "Recent updates" list is generated, not hand-edited, and it's curated: it
