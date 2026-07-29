@@ -1,0 +1,45 @@
+{
+  "snapshot_date": "2026-07-28",
+  "fixture_notice": "Queue fixtures demonstrate transparent ordering; scores prioritize review effort and are not judgments about a procurement.",
+  "records": [
+    {
+      "process_id": "process:pin:84124p0003001",
+      "title": "Bus radio communications services",
+      "amount_percentile": 0.91,
+      "procurement_method": "negotiated_acquisition",
+      "responsive_bid_count": 1,
+      "alarm_case_ids": ["date-order-positive", "contestability-package-positive"],
+      "amendment_count": 2,
+      "succession_gap": true,
+      "missing_field_count": 3,
+      "investigation_href": "#investigation",
+      "source_urls": ["https://a856-cityrecord.nyc.gov/", "https://www.checkbooknyc.com/"]
+    },
+    {
+      "process_id": "process:project:reference-ddc-1",
+      "title": "Reference public works delivery",
+      "amount_percentile": 0.72,
+      "procurement_method": "competitive_sealed_bid",
+      "responsive_bid_count": 4,
+      "alarm_case_ids": ["broken-succession-positive"],
+      "amendment_count": 1,
+      "succession_gap": false,
+      "missing_field_count": 2,
+      "investigation_href": "#investigation",
+      "source_urls": ["https://a856-cityrecord.nyc.gov/", "https://www.nyc.gov/site/ddc/index.page"]
+    },
+    {
+      "process_id": "process:authority:reference-ida-1",
+      "title": "Reference authority procurement",
+      "amount_percentile": 0.33,
+      "procurement_method": "request_for_proposals",
+      "responsive_bid_count": 3,
+      "alarm_case_ids": [],
+      "amendment_count": 0,
+      "succession_gap": false,
+      "missing_field_count": 4,
+      "investigation_href": "#investigation",
+      "source_urls": ["https://www.abo.ny.gov/"]
+    }
+  ]
+}

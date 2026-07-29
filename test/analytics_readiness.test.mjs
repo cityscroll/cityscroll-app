@@ -8,6 +8,7 @@ import { handleStats } from "../worker/src/stats.mjs";
 import {
   ANALYTICS_LENSES,
   ANALYTICS_SCENARIOS,
+  TAXONOMY_VERSION,
   buildUsageSnapshot,
   normalizeUsageEvent,
   usageAnalyticsQuery,
@@ -84,7 +85,7 @@ test("event intake writes only bounded taxonomy dimensions", async () => {
   });
 
   assert.equal(points.length, 1);
-  assert.deepEqual(points[0].blobs, ["search_run", "land", "filters", "queens", "home", "1.1.0"]);
+  assert.deepEqual(points[0].blobs, ["search_run", "land", "filters", "queens", "home", TAXONOMY_VERSION]);
   assert.deepEqual(points[0].doubles, [1]);
   assert.deepEqual(points[0].indexes, ["search_run"]);
   assert.ok(!JSON.stringify(points[0]).includes("this value"));
@@ -235,7 +236,7 @@ test("privacy copy removes falsified exhaustive promises without adding a new en
 
 test("taxonomy and budget note pin current Cloudflare allowances and limits", async () => {
   const doc = await readFile(new URL("../docs/analytics-event-taxonomy.md", import.meta.url), "utf8");
-  assert.match(doc, /Version: \*\*1\.1\.0\*\*/);
+  assert.match(doc, new RegExp(`Version: \\*\\*${TAXONOMY_VERSION.replaceAll(".", "\\.")}\\*\\*`));
   assert.match(doc, /declared task, not an inferred identity/);
   assert.match(doc, /10 million data points/);
   assert.match(doc, /1 million SQL read queries/);

@@ -1,0 +1,182 @@
+{
+  "schema_version": "1.0.0",
+  "snapshot_date": "2026-07-28",
+  "model_version": "procurement-window-rules-v1",
+  "source_snapshot_hashes": {
+    "process_spine": "fixture-process-spine-2026-07",
+    "coverage_ledger": "fixture-coverage-2026-07",
+    "late_contracts": "fixture-late-contracts-2026-07",
+    "delivery_events": "fixture-delivery-2026-07"
+  },
+  "fixture_snapshot_hash": "659ed95b4579b5b0edd901cead273ee1dff7a778acaf68fdaac041986a5d0863",
+  "coverage": {
+    "scope": "Historical-cutoff methodology fixtures",
+    "full_corpus": false,
+    "notice": "Historical-cutoff fixtures exercise the calibration gate; metrics do not describe full production coverage."
+  },
+  "split": {
+    "kind": "monthly_temporal",
+    "future_information_allowed": false
+  },
+  "metrics": {
+    "denominator": 11,
+    "scored": 10,
+    "abstained": 1,
+    "precision": 0.8333,
+    "recall": 1,
+    "mean_lead_days": 58.4,
+    "brier_score": 0.1,
+    "baselines": {
+      "time_naive_brier": 0.25,
+      "shuffled_brier": 0.25
+    },
+    "calibration": [
+      {
+        "range": [
+          0,
+          0.25
+        ],
+        "count": 2,
+        "predicted_rate": 0.15,
+        "observed_rate": 0,
+        "absolute_gap": 0.15
+      },
+      {
+        "range": [
+          0.25,
+          0.5
+        ],
+        "count": 2,
+        "predicted_rate": 0.35,
+        "observed_rate": 0,
+        "absolute_gap": 0.35
+      },
+      {
+        "range": [
+          0.5,
+          0.75
+        ],
+        "count": 3,
+        "predicted_rate": 0.6333,
+        "observed_rate": 0.6667,
+        "absolute_gap": 0.0333
+      },
+      {
+        "range": [
+          0.75,
+          1.001
+        ],
+        "count": 3,
+        "predicted_rate": 0.8333,
+        "observed_rate": 1,
+        "absolute_gap": 0.1667
+      }
+    ],
+    "maximum_calibration_gap": 0.35,
+    "abstentions": [
+      {
+        "id": "f11",
+        "status": "abstain",
+        "reason": "required_fields_missing",
+        "coverage_ratio": 0.42,
+        "missing_required_fields": [
+          "delivery_status"
+        ]
+      }
+    ]
+  },
+  "calibration_gate": {
+    "status": "withhold",
+    "checks": {
+      "sample": true,
+      "brier": true,
+      "calibration": false,
+      "precision": true
+    },
+    "thresholds": {
+      "minimum_scored": 8,
+      "maximum_brier": 0.25,
+      "maximum_calibration_gap": 0.25,
+      "minimum_precision": 0.7
+    }
+  },
+  "forecasts": [
+    {
+      "id": "f01",
+      "cutoff": "2025-01-01",
+      "probability": null,
+      "display_status": "withhold",
+      "coverage": 0.95
+    },
+    {
+      "id": "f02",
+      "cutoff": "2025-01-01",
+      "probability": null,
+      "display_status": "withhold",
+      "coverage": 0.91
+    },
+    {
+      "id": "f03",
+      "cutoff": "2025-02-01",
+      "probability": null,
+      "display_status": "withhold",
+      "coverage": 0.89
+    },
+    {
+      "id": "f04",
+      "cutoff": "2025-02-01",
+      "probability": null,
+      "display_status": "withhold",
+      "coverage": 0.83
+    },
+    {
+      "id": "f05",
+      "cutoff": "2025-03-01",
+      "probability": null,
+      "display_status": "withhold",
+      "coverage": 0.88
+    },
+    {
+      "id": "f06",
+      "cutoff": "2025-03-01",
+      "probability": null,
+      "display_status": "withhold",
+      "coverage": 0.92
+    },
+    {
+      "id": "f07",
+      "cutoff": "2025-04-01",
+      "probability": null,
+      "display_status": "withhold",
+      "coverage": 0.86
+    },
+    {
+      "id": "f08",
+      "cutoff": "2025-04-01",
+      "probability": null,
+      "display_status": "withhold",
+      "coverage": 0.82
+    },
+    {
+      "id": "f09",
+      "cutoff": "2025-05-01",
+      "probability": null,
+      "display_status": "withhold",
+      "coverage": 0.9
+    },
+    {
+      "id": "f10",
+      "cutoff": "2025-05-01",
+      "probability": null,
+      "display_status": "withhold",
+      "coverage": 0.84
+    },
+    {
+      "id": "f11",
+      "cutoff": "2025-05-01",
+      "probability": null,
+      "display_status": "withhold",
+      "coverage": 0.42
+    }
+  ]
+}
