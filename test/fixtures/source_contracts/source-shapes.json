@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "observed_on": "2026-07-29",
+  "sources": [
+    {
+      "id": "city-record",
+      "kind": "socrata",
+      "identifier": "dg92-zbpx",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": ["request_id", "start_date", "agency_name", "type_of_notice_description", "section_name"]
+    },
+    {
+      "id": "checkbook-contracts",
+      "kind": "checkbook",
+      "identifier": "Contracts",
+      "response_type": "xml-recordset",
+      "fields": ["prime_contract_id", "prime_vendor", "prime_contract_current_amount", "prime_contract_registration_date"]
+    },
+    {
+      "id": "checkbook-nycha-contracts",
+      "kind": "checkbook",
+      "identifier": "Contracts_NYCHA",
+      "response_type": "xml-recordset",
+      "fields": ["contract_id", "record_type", "vendor", "pin"]
+    },
+    {
+      "id": "abo-local-authorities",
+      "kind": "socrata",
+      "identifier": "8w5p-k45m",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": ["authority_name", "vendor_name", "procurement_description", "award_date", "contract_amount"]
+    },
+    {
+      "id": "abo-local-development-corporations",
+      "kind": "socrata",
+      "identifier": "d84c-dk28",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": ["authority_name", "vendor_name", "procurement_description", "award_date", "contract_amount"]
+    },
+    {
+      "id": "abo-state-authorities",
+      "kind": "socrata",
+      "identifier": "ehig-g5x3",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": ["authority_name", "vendor_name", "procurement_description", "award_date", "contract_amount"]
+    },
+    {
+      "id": "citywide-payroll",
+      "kind": "socrata",
+      "identifier": "k397-673e",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": ["fiscal_year", "agency_name", "last_name", "first_name", "title_description"]
+    },
+    {
+      "id": "active-civil-service-list",
+      "kind": "socrata",
+      "identifier": "vx8i-nprf",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": ["exam_no", "list_no", "first_name", "last_name", "list_title_desc"]
+    },
+    {
+      "id": "annual-examination-schedule",
+      "kind": "socrata",
+      "identifier": "4ptz-hmtc",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": ["exam_title", "exam_number", "application_period_start", "application_period_end_date", "data_current_as_of"]
+    },
+    {
+      "id": "civil-service-list-certification",
+      "kind": "socrata",
+      "identifier": "a9md-ynri",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": ["exam_no", "list_title_desc", "cert_date", "no_certified", "no_vacancies"]
+    },
+    {
+      "id": "zap-projects",
+      "kind": "socrata",
+      "identifier": "hgx4-8ukb",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": ["project_id", "project_name", "project_status", "borough", "community_district"]
+    },
+    {
+      "id": "zap-bbl",
+      "kind": "socrata",
+      "identifier": "2iga-a6mk",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": ["project_id", "bbl", "validated_borough", "validated_block", "validated_lot"]
+    },
+    {
+      "id": "mappluto",
+      "kind": "arcgis",
+      "identifier": "MAPPLUTO/FeatureServer/0",
+      "asset_type": "Feature Layer",
+      "sample_type": "FeatureCollection",
+      "fields": ["BBL"]
+    },
+    {
+      "id": "nyc-geosearch",
+      "kind": "geosearch",
+      "identifier": "v2/search",
+      "response_type": "FeatureCollection",
+      "fields": ["features", "properties.label", "properties.borough"]
+    },
+    {
+      "id": "dob-now-job-filings",
+      "kind": "socrata",
+      "identifier": "w9ak-ipjd",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": ["job_filing_number", "filing_status", "borough", "block", "lot", "job_type"]
+    },
+    {
+      "id": "legacy-dob-job-filings",
+      "kind": "socrata",
+      "identifier": "ic3t-wcy2",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": ["job__", "job_status_descrp", "latest_action_date", "borough", "block", "lot", "job_type"]
+    },
+    {
+      "id": "nyc-agencies",
+      "kind": "socrata",
+      "identifier": "t3jq-9nkf",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": ["record_id", "operational_status", "organization_type", "name", "acronym", "url"]
+    },
+    {
+      "id": "expense-budget",
+      "kind": "socrata",
+      "identifier": "mwzb-yiwb",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": ["publication_date", "fiscal_year", "agency_number", "agency_name", "adopted_budget_amount"]
+    },
+    {
+      "id": "dcas-exam-notices",
+      "kind": "html",
+      "identifier": "examsforjobs",
+      "response_type": "text/html",
+      "fields": []
+    },
+    {
+      "id": "mocs-ll63-plans",
+      "kind": "mocs-disabled",
+      "identifier": "egea-b8r5|whpb-ebtd",
+      "configured_asset_type": "href",
+      "configured_status": 403,
+      "documented_status": 404,
+      "fields": []
+    }
+  ]
+}

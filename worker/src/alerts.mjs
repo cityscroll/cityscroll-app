@@ -54,11 +54,11 @@ export async function runAlerts(env, watches = cfg.watches || []) {
   let sentThisRun = 0;
   const results = [];
 
-  // Trigger checkbook and MOCS forecasting pipelines
+  // Refresh Checkbook renewal estimates and purge disabled MOCS plan caches.
   try {
+    await runMocsPlanPipeline(env);
     const subs = await subWatches(env);
     await runCheckbookPipeline(env, watches, subs);
-    await runMocsPlanPipeline(env);
   } catch (e) {
     console.error("alerts: forecasting pipelines error:", e);
   }
@@ -626,19 +626,13 @@ function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.c
 
   let forecastsHtml = "";
   if (forecasts.length > 0) {
-    const fItems = forecasts.map(f => {
-      if (f.source === "checkbook") {
-        return `<li style="margin:0 0 14px"><b>Estimated Renewal: ${esc(f.vendor_name || "Vendor")}</b><br>
-          <span style="color:#555;font-size:13px">${esc(f.agency_name)} · Amount ${usd(f.amount)}</span><br>
-          <span style="color:#a42;font-size:13px">Predicted Expiration: ${f.expiration_date} · 6-Month Warning: ${f.warning_date}</span></li>`;
-      } else {
-        return `<li style="margin:0 0 14px"><b>MOCS Plan Notice: ${esc(f.description)}</b><br>
-          <span style="color:#555;font-size:13px">${esc(f.agency)} · Value Band ${esc(f.value_band)}</span><br>
-          <span style="color:#a42;font-size:13px">Anticipated Release: ${f.release_quarter}</span></li>`;
-      }
-    }).join("");
+    const fItems = forecasts.map(f => (
+      `<li style="margin:0 0 14px"><b>Estimated Renewal: ${esc(f.vendor_name || "Vendor")}</b><br>
+        <span style="color:#555;font-size:13px">${esc(f.agency_name)} · Amount ${usd(f.amount)}</span><br>
+        <span style="color:#a42;font-size:13px">Predicted Expiration: ${f.expiration_date} · 6-Month Warning: ${f.warning_date}</span></li>`
+    )).join("");
     forecastsHtml = `<h3 style="margin-top:20px;border-top:1px solid #ddd;padding-top:15px;font-family:system-ui">Upcoming Procurement Forecasts (Early Warning)</h3>
-      <p style="font-size:13px;color:#666;font-style:italic;margin-bottom:12px">These are predicted upcoming contract expirations and planned schedules, not active open solicitations.</p>
+      <p style="font-size:13px;color:#666;font-style:italic;margin-bottom:12px">These are estimated contract expirations, not active open solicitations.</p>
       <ul style="list-style:none;padding:0">${fItems}</ul>`;
   }
 
@@ -709,23 +703,6 @@ export async function matchForecasts(env, s, today) {
             if (LIVE) {
               await env.ALERT_STATE.put(`sent:${forecastId}`, "1");
             }
-          }
-        }
-      }
-    }
-
-    // MOCS plans
-    const planRaw = await env.ALERT_STATE.get(`plan:${stem}`);
-    if (planRaw) {
-      const list = JSON.parse(planRaw);
-      for (const px of list) {
-        const descId = String(px.description).replace(/\s+/g, "_").slice(0, 50);
-        const forecastId = `plan:${stem}:${descId}:${s.key}`;
-        const sent = await env.ALERT_STATE.get(`sent:${forecastId}`);
-        if (!sent) {
-          matched.push(px);
-          if (LIVE) {
-            await env.ALERT_STATE.put(`sent:${forecastId}`, "1");
           }
         }
       }

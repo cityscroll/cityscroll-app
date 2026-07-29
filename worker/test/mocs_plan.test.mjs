@@ -1,75 +1,66 @@
+import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { parseMocsPlanRow, runMocsPlanPipeline } from "../src/mocs_plan.mjs";
+import { runMocsPlanPipeline } from "../src/mocs_plan.mjs";
 
-test("parseMocsPlanRow normalizes various Socrata field variants", () => {
-  const row1 = {
-    agency: "Design and Construction",
-    description: "Build Precinct 123",
-    value_band: "$1M - $5M",
-    release_quarter: "Q3 FY2027"
-  };
-  assert.deepEqual(parseMocsPlanRow(row1), {
-    agency: "Design and Construction",
-    description: "Build Precinct 123",
-    value_band: "$1M - $5M",
-    release_quarter: "Q3 FY2027"
-  });
+const fieldCase = JSON.parse(readFileSync(
+  new URL("../../test/fixtures/source_contracts/mocs-field-case.json", import.meta.url),
+));
 
-  const row2 = {
-    purchasing_agency: "Buildings",
-    contracting_action: "Scaffold audit",
-    estimated_cost: "$200K",
-    anticipated_release_quarter: "Q4 FY2026"
-  };
-  assert.deepEqual(parseMocsPlanRow(row2), {
-    agency: "Buildings",
-    description: "Scaffold audit",
-    value_band: "$200K",
-    release_quarter: "Q4 FY2026"
-  });
+test("the configured and documented MOCS dataset IDs reproduce the field failure", () => {
+  assert.equal(fieldCase.configured.dataset_id, "egea-b8r5");
+  assert.equal(fieldCase.configured.metadata.assetType, "href");
+  assert.deepEqual(fieldCase.configured.metadata.columns, []);
+  assert.equal(fieldCase.configured.resource.status, 403);
+  assert.match(fieldCase.configured.resource.body.message, /non-tabular/);
+
+  assert.equal(fieldCase.documented.dataset_id, "whpb-ebtd");
+  assert.equal(fieldCase.documented.resource.status, 404);
+  assert.equal(fieldCase.documented.resource.body.code, "dataset.missing");
 });
 
-test("runMocsPlanPipeline fetches MOCS dataset, parses stems, and saves to KV", async () => {
+test("live MOCS field case still matches the recorded source failure", {
+  skip: process.env.CITYSCROLL_LIVE_SOURCES !== "1",
+}, async () => {
+  const configuredMeta = await fetch(
+    `https://data.cityofnewyork.us/api/views/${fieldCase.configured.dataset_id}`,
+  ).then((response) => response.json());
+  assert.equal(configuredMeta.assetType, "href");
+  assert.deepEqual(configuredMeta.columns, []);
+
+  for (const source of [fieldCase.configured, fieldCase.documented]) {
+    const response = await fetch(
+      `https://data.cityofnewyork.us/resource/${source.dataset_id}.json?$limit=1`,
+    );
+    const body = await response.json();
+    assert.equal(response.status, source.resource.status);
+    assert.equal(body.error, true);
+  }
+});
+
+test("disabled MOCS pipeline performs no fetch and removes stale plan rows", async (t) => {
   const originalFetch = globalThis.fetch;
-  globalThis.fetch = async (url) => {
-    assert.match(url, /egea-b8r5\.json/);
-    return {
-      ok: true,
-      json: async () => [
-        {
-          agency: "Design and Construction",
-          description: "Precinct CM",
-          value_band: "$1M-$5M",
-          release_quarter: "Q3 FY2027"
-        },
-        {
-          agency: "Design and Construction",
-          description: "Precinct General Contracting",
-          value_band: "$5M+",
-          release_quarter: "Q4 FY2027"
-        }
-      ]
-    };
+  t.after(() => { globalThis.fetch = originalFetch; });
+  globalThis.fetch = async () => {
+    assert.fail("a disabled source must not be fetched");
   };
 
-  const kvStore = {};
+  const kvStore = {
+    "plan:DESIGN AND CONSTRUCTION": JSON.stringify([{ description: "stale" }]),
+    "plan:BUILDINGS": JSON.stringify([{ description: "stale" }]),
+    "fc:DESIGN AND CONSTRUCTION": JSON.stringify([{ contract_id: "keep" }]),
+  };
   const env = {
     ALERT_STATE: {
-      put: async (key, val) => {
-        kvStore[key] = val;
-      }
+      list: async ({ prefix }) => ({
+        keys: Object.keys(kvStore).filter((name) => name.startsWith(prefix)).map((name) => ({ name })),
+        list_complete: true,
+      }),
+      delete: async (key) => { delete kvStore[key]; },
     }
   };
 
-  const res = await runMocsPlanPipeline(env, "egea-b8r5");
-  globalThis.fetch = originalFetch; // restore
-
-  assert.equal(res.status, "success");
-  assert.ok(kvStore["plan:DESIGN AND CONSTRUCTION"]);
-  
-  const plans = JSON.parse(kvStore["plan:DESIGN AND CONSTRUCTION"]);
-  assert.equal(plans.length, 2);
-  assert.equal(plans[0].description, "Precinct CM");
-  assert.equal(plans[1].description, "Precinct General Contracting");
+  const result = await runMocsPlanPipeline(env);
+  assert.deepEqual(result, { status: "disabled", removed: 2 });
+  assert.deepEqual(Object.keys(kvStore), ["fc:DESIGN AND CONSTRUCTION"]);
 });

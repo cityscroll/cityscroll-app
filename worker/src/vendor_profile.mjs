@@ -3,7 +3,7 @@
 // The daily cron folds City Record Award rows into normalized vendor stems, publishes
 // versioned buckets to ALERT_STATE KV, then swaps a small manifest last. Each record is a
 // read model for the whole profile: identity totals, agency rollup, 15 recent notices, and
-// any forecast payload already present in KV. GET /vendor-profile reads one bucket and
+// any Checkbook renewal-estimate payload already present in KV. GET /vendor-profile reads one bucket and
 // rejects records older than 24 hours. Socrata remains the source of truth; a miss or refresh
 // failure falls back to the browser's live resolver.
 
@@ -18,7 +18,23 @@ const MANIFEST_KEY = "vp:manifest:v1";
 const MAX_AGE_MS = 24 * 60 * 60 * 1000;
 const RECORD_TTL_SECONDS = 28 * 60 * 60;
 const RECENT_NOTICE_LIMIT = 15;
-const FORECAST_PREFIXES = ["fc:", "plan:"];
+const FORECAST_PREFIXES = ["fc:"];
+const CACHE_SCHEMA = "source-contract-v2";
+
+function cacheKeyFor(req) {
+  const url = new URL(req.url);
+  url.searchParams.set("_cache_schema", CACHE_SCHEMA);
+  return new Request(url, req);
+}
+
+function withoutDisabledPlanRows(profile) {
+  return {
+    ...profile,
+    forecasts: Array.isArray(profile?.forecasts)
+      ? profile.forecasts.filter((forecast) => forecast?.source === "checkbook")
+      : [],
+  };
+}
 
 export function vendorProfileBucket(stem) {
   let hash = 2166136261;
@@ -327,8 +343,9 @@ export async function handleVendorProfile(req, env, options = {}) {
   if (stem.length < 3) return json({ ok: false, reason: "invalid-name" }, 400, cors);
 
   const cache = typeof caches !== "undefined" ? caches.default : null;
+  const cacheKey = cacheKeyFor(req);
   if (cache) {
-    const hit = await cache.match(req).catch(() => null);
+    const hit = await cache.match(cacheKey).catch(() => null);
     if (hit) return hit;
   }
 
@@ -358,8 +375,9 @@ export async function handleVendorProfile(req, env, options = {}) {
   } catch {
     return json({ ok: false, reason: "missing-index" }, 404, cors);
   }
-  const profile = bucket?.profiles?.[stem];
-  if (!profile) return json({ ok: false, reason: "not-found" }, 404, cors);
+  const storedProfile = bucket?.profiles?.[stem];
+  if (!storedProfile) return json({ ok: false, reason: "not-found" }, 404, cors);
+  const profile = withoutDisabledPlanRows(storedProfile);
 
   const cacheSeconds = Math.max(
     0,
@@ -371,7 +389,7 @@ export async function handleVendorProfile(req, env, options = {}) {
     { ...cors, "Cache-Control": `public, max-age=${cacheSeconds}` },
   );
   if (cache && cacheSeconds > 0) {
-    const put = cache.put(req, res.clone());
+    const put = cache.put(cacheKey, res.clone());
     if (options?.waitUntil) options.waitUntil(put); else await put.catch(() => {});
   }
   return res;

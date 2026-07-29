@@ -1,53 +1,32 @@
-import { vendorStem } from "./lib/compile.mjs";
+// MOCS Local Law 63 plans are deliberately disabled.
+//
+// The former runtime ID (egea-b8r5) is a non-tabular Socrata link asset, while the
+// former documented ID (whpb-ebtd) does not exist. MOCS currently publishes rotating
+// per-agency spreadsheets from an HTML page, without a stable machine manifest. Until
+// that publication satisfies data/source_contracts.json, the daily job only removes
+// plan rows left by earlier deployments. No upstream request is made and no new plan
+// forecast can enter the product.
 
-export function parseMocsPlanRow(row) {
-  const agency = row.agency || row.agency_name || row.purchasing_agency || "";
-  const description = row.description || row.title || row.contracting_action || row.description_of_planned_services || "";
-  const valueBand = row.value_band || row.estimated_cost || row.cost_estimate || row.estimated_value || "";
-  const quarter = row.release_quarter || row.anticipated_release_date || row.quarter || row.anticipated_release_quarter || "";
+const PLAN_PREFIX = "plan:";
 
-  return {
-    agency: String(agency).trim(),
-    description: String(description).trim(),
-    value_band: String(valueBand).trim(),
-    release_quarter: String(quarter).trim()
-  };
-}
-
-export async function runMocsPlanPipeline(env, mocsDatasetId = "egea-b8r5") {
-  const url = `https://data.cityofnewyork.us/resource/${mocsDatasetId}.json`;
-  const params = new URLSearchParams({
-    "$limit": "5000"
-  });
-
-  const r = await fetch(`${url}?${params.toString()}`);
-  if (!r.ok) {
-    return { error: `MOCS SODA status ${r.status}` };
+export async function runMocsPlanPipeline(env) {
+  if (!env.ALERT_STATE?.list || !env.ALERT_STATE?.delete) {
+    return { status: "disabled", removed: 0 };
   }
 
-  const rows = await r.json();
-  const agencyMap = new Map();
-
-  for (const row of rows) {
-    const parsed = parseMocsPlanRow(row);
-    if (!parsed.agency || !parsed.description) continue;
-    
-    const stem = vendorStem(parsed.agency);
-    if (stem.length < 3) continue;
-
-    if (!agencyMap.has(stem)) {
-      agencyMap.set(stem, []);
+  let cursor;
+  let removed = 0;
+  do {
+    const page = await env.ALERT_STATE.list({
+      prefix: PLAN_PREFIX,
+      ...(cursor ? { cursor } : {}),
+    });
+    for (const key of page?.keys || []) {
+      await env.ALERT_STATE.delete(key.name);
+      removed++;
     }
-    agencyMap.get(stem).push(parsed);
-  }
+    cursor = page?.list_complete === false ? page.cursor : null;
+  } while (cursor);
 
-  const results = {};
-  for (const [stem, plans] of agencyMap.entries()) {
-    if (env.ALERT_STATE) {
-      await env.ALERT_STATE.put(`plan:${stem}`, JSON.stringify(plans));
-    }
-    results[stem] = plans.length;
-  }
-
-  return { status: "success", updated: results };
+  return { status: "disabled", removed };
 }

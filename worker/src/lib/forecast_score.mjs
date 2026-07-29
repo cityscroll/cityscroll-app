@@ -1,4 +1,4 @@
-// Forecast accuracy scoring: compare fc:* / plan:* predictions in ALERT_STATE
+// Forecast accuracy scoring: compare fc:* renewal estimates in ALERT_STATE
 // against actual Solicitation notices in the D1 mirror.
 //
 // A "hit" is a prediction whose ±WINDOW_DAYS window around its predicted date
@@ -97,7 +97,7 @@ export async function checkPredictionHit(prediction, db) {
   return false;
 }
 
-// Collect all fc:* and plan:* forecasts from ALERT_STATE.
+// Collect all fc:* renewal estimates from ALERT_STATE.
 // Returns an array of raw prediction objects.
 export async function collectPredictions(kv) {
   const predictions = [];
@@ -106,15 +106,6 @@ export async function collectPredictions(kv) {
     for (const key of fcList.keys || []) {
       // Skip sentinel keys that aren't forecast arrays (e.g. "fc:sent:…")
       if (!key.name.match(/^fc:[A-Z]/)) continue;
-      try {
-        const raw = await kv.get(key.name);
-        if (!raw) continue;
-        const list = JSON.parse(raw);
-        if (Array.isArray(list)) predictions.push(...list);
-      } catch { /* skip malformed entry */ }
-    }
-    const planList = await kv.list({ prefix: "plan:" });
-    for (const key of planList.keys || []) {
       try {
         const raw = await kv.get(key.name);
         if (!raw) continue;

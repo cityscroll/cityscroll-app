@@ -232,9 +232,7 @@ export async function handleForecast(req, env) {
   const forecasts = [];
   if (env.ALERT_STATE && stem.length >= 3) {
     const fcRaw = await env.ALERT_STATE.get(`fc:${stem}`);
-    const planRaw = await env.ALERT_STATE.get(`plan:${stem}`);
     if (fcRaw) forecasts.push(...JSON.parse(fcRaw));
-    if (planRaw) forecasts.push(...JSON.parse(planRaw));
 
     try {
       const fcList = await env.ALERT_STATE.list({ prefix: `fc:${stem}` });
@@ -243,21 +241,15 @@ export async function handleForecast(req, env) {
         const raw = await env.ALERT_STATE.get(key.name);
         if (raw) forecasts.push(...JSON.parse(raw));
       }
-      const planList = await env.ALERT_STATE.list({ prefix: `plan:${stem}` });
-      for (const key of planList.keys) {
-        if (key.name === `plan:${stem}`) continue;
-        const raw = await env.ALERT_STATE.get(key.name);
-        if (raw) forecasts.push(...JSON.parse(raw));
-      }
     } catch (e) {
       // ignore list errors
     }
   }
 
-  // Sort forecasts chronologically by predicted expiration/warning/quarter
+  // Sort renewal estimates chronologically.
   forecasts.sort((a, b) => {
-    const dateA = a.expiration_date || a.release_quarter || "";
-    const dateB = b.expiration_date || b.release_quarter || "";
+    const dateA = a.expiration_date || a.warning_date || "";
+    const dateB = b.expiration_date || b.warning_date || "";
     return dateA.localeCompare(dateB);
   });
 
@@ -270,7 +262,7 @@ export async function handleForecast(req, env) {
 // ============================================================================
 // GET /forecast/accuracy  (w6-07 — forecast accuracy scoring)
 //
-// Public, no secrets. Scores how often fc:* / plan:* predictions from ALERT_STATE
+// Public, no secrets. Scores how often fc:* predictions from ALERT_STATE
 // matched an actual Solicitation in the D1 mirror within ±30 days.
 // Cached in KV for ~6 hours to avoid hammering D1 on every request.
 // Requires both env.DB (D1) and env.ALERT_STATE (KV) to be bound; returns a
