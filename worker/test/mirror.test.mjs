@@ -1,17 +1,18 @@
-// cityscroll.org / www.cityscroll.org parallel-serving domain: handleMirror reverse-proxies
-// to crol-list.org (the GitHub Pages origin) byte-for-byte, and must never leak the
-// incoming Host header upstream (GitHub Pages virtual-hosts by Host and 404s on a domain
-// it doesn't know about).
+// cityscroll.org / www.cityscroll.org parallel-serving domain: handleMirror normally
+// reverse-proxies crol-list.org (the GitHub Pages origin) byte-for-byte, with a public
+// source failover when that origin redirects back to the mirror. It must never leak the
+// incoming Host header upstream (GitHub Pages virtual-hosts by Host and 404s otherwise).
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { handleMirror } from "../src/mirror.mjs";
 
 test("handleMirror: proxies GET to crol-list.org with the same path and query, dropping Host", async () => {
   const originalFetch = globalThis.fetch;
-  let capturedUrl, capturedHeaders;
+  let capturedUrl, capturedHeaders, capturedRedirect;
   globalThis.fetch = async (url, opts) => {
     capturedUrl = url;
     capturedHeaders = opts.headers;
+    capturedRedirect = opts.redirect;
     return new Response("<html>hi</html>", { status: 200, headers: { "Content-Type": "text/html" } });
   };
   try {
@@ -22,8 +23,44 @@ test("handleMirror: proxies GET to crol-list.org with the same path and query, d
     assert.equal(capturedUrl, "https://crol-list.org/about.html?x=1");
     assert.equal(capturedHeaders.get("host"), null, "must not forward the incoming Host header upstream");
     assert.equal(capturedHeaders.get("if-none-match"), '"abc"');
+    assert.equal(capturedRedirect, "manual", "the origin request must never auto-follow a redirect back to this Worker");
     assert.equal(res.status, 200);
     assert.equal(await res.text(), "<html>hi</html>");
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("handleMirror: falls back to public GitHub source when the Pages origin redirects back to CityScroll", async () => {
+  const originalFetch = globalThis.fetch;
+  const calls = [];
+  globalThis.fetch = async (url, opts) => {
+    calls.push({ url, opts });
+    if (calls.length === 1) {
+      return Response.redirect("https://cityscroll.org/about.html?x=1", 301);
+    }
+    return new Response("<html>from fallback</html>", {
+      status: 200,
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Content-Security-Policy": "default-src 'none'; sandbox",
+      },
+    });
+  };
+  try {
+    const res = await handleMirror(new Request("https://cityscroll.org/about.html?x=1"));
+    assert.equal(calls.length, 2);
+    assert.equal(calls[0].url, "https://crol-list.org/about.html?x=1");
+    assert.equal(calls[0].opts.redirect, "manual");
+    assert.equal(
+      calls[1].url,
+      "https://raw.githubusercontent.com/cityscroll/crol-list/main/about.html?x=1",
+    );
+    assert.equal(calls[1].opts.redirect, "manual");
+    assert.equal(res.status, 200);
+    assert.equal(res.headers.get("content-type"), "text/html; charset=utf-8");
+    assert.equal(res.headers.get("content-security-policy"), null);
+    assert.equal(await res.text(), "<html>from fallback</html>");
   } finally {
     globalThis.fetch = originalFetch;
   }
