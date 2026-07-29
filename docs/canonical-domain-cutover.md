@@ -12,7 +12,8 @@ GitHub Pages deployment that the CityScroll Worker mirrors.
 | Public API | `https://api.cityscroll.org` | `api.crol-list.org` remains an alias for existing clients and in-flight links |
 | Beta pointer | `https://beta.cityscroll.org` | Draft preview aliases remain under `crol-list-beta.pages.dev` |
 | Beta API | `https://api-beta.cityscroll.org` | `api-beta.crol-list.org` remains a compatibility alias |
-| GitHub Pages origin | `https://crol-list.org` | Origin-only; the mirror fetches it as a Worker subrequest |
+| GitHub Pages origin | `https://crol-list.org` | Preferred origin; the mirror fetches it as a manual-redirect Worker subrequest |
+| Mirror failover | `https://raw.githubusercontent.com/cityscroll/crol-list/main/` | Public static-source seam used only when the preferred origin redirects back to CityScroll |
 | Calendar UID namespace | `@crol-list` | Deliberately unchanged to prevent duplicate imported events |
 | Atom entry namespace | `tag:crol-list.org,2026:` | Deliberately unchanged to prevent duplicate feed-reader entries |
 | Email sending and routing | `@crol-list.org` | Deferred to a separate sender-domain decision |
@@ -39,7 +40,11 @@ Cloudflare zone that serves `crol-list.org`:
 
 The `cf.worker.upstream_zone` condition applies the redirect to direct visitors
 and crawlers but not to the CityScroll mirror's subrequest to its GitHub Pages
-origin. This prevents a redirect loop.
+origin. The mirror also uses `redirect: "manual"` as a circuit breaker. If a
+misconfigured rule still redirects that subrequest to `cityscroll.org`, the
+Worker serves the same public static source from GitHub without following the
+redirect. This keeps the canonical site available instead of recursively
+invoking the Worker.
 
 Paths and query strings are preserved. URL fragments are never sent to an HTTP
 server; because the redirect target does not supply a replacement fragment,
