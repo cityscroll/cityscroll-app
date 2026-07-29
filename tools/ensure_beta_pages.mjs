@@ -48,8 +48,23 @@ export function validateAccountId(accountId) {
   return accountId;
 }
 
+export async function resolveAccountId({
+  accountId,
+  token,
+  fetchImpl = fetch,
+}) {
+  if (accountId) return validateAccountId(accountId);
+  const accounts = await apiRequest("/accounts?per_page=50", { token, fetchImpl });
+  if (!Array.isArray(accounts) || accounts.length !== 1) {
+    throw new Error(
+      "Token must grant exactly one account or CLOUDFLARE_ACCOUNT_ID must be configured",
+    );
+  }
+  return validateAccountId(accounts[0]?.id);
+}
+
 export async function ensureProject({ accountId, token, fetchImpl = fetch }) {
-  const id = validateAccountId(accountId);
+  const id = await resolveAccountId({ accountId, token, fetchImpl });
   const projectPath = `/accounts/${id}/pages/projects/${PROJECT_NAME}`;
   const existing = await apiRequest(projectPath, {
     token,
@@ -78,7 +93,7 @@ export async function ensureProject({ accountId, token, fetchImpl = fetch }) {
 }
 
 export async function ensureDomain({ accountId, token, fetchImpl = fetch }) {
-  const id = validateAccountId(accountId);
+  const id = await resolveAccountId({ accountId, token, fetchImpl });
   const domainsPath = `/accounts/${id}/pages/projects/${PROJECT_NAME}/domains`;
   const domains = await apiRequest(domainsPath, { token, fetchImpl });
   const existing = Array.isArray(domains)

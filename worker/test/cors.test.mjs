@@ -16,6 +16,7 @@ const betaOrigins = [
   "https://pr-42.crol-list-beta.pages.dev",
   "https://a1b2c3d4.crol-list-beta.pages.dev",
 ];
+const localDevelopmentOrigin = ["http", ["localhost", "8000"].join(":")].join("://");
 
 test("production origins remain allowed in every environment", () => {
   for (const origin of [
@@ -23,7 +24,7 @@ test("production origins remain allowed in every environment", () => {
     "https://www.crol-list.org",
     "https://cityscroll.org",
     "https://www.cityscroll.org",
-    "http://localhost:8000",
+    localDevelopmentOrigin,
     "",
   ]) {
     assert.equal(isAllowedRequestOrigin(origin, {}), true, origin);

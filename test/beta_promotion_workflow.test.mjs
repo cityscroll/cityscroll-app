@@ -14,6 +14,7 @@ import {
   PROJECT_NAME,
   ensureDomain,
   ensureProject,
+  resolveAccountId,
 } from "../tools/ensure_beta_pages.mjs";
 
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
@@ -127,6 +128,29 @@ test("Pages provisioning is idempotent and fixes the production branch at beta",
     name: PROJECT_NAME,
     production_branch: "beta",
   });
+});
+
+test("a single-account token needs no committed account identifier", async () => {
+  const id = "a".repeat(32);
+  const resolved = await resolveAccountId({
+    token: "test-token",
+    fetchImpl: async (url) => {
+      assert.match(url, /\/accounts\?per_page=50$/);
+      return {
+        ok: true,
+        status: 200,
+        json: async () => ({ success: true, result: [{ id }] }),
+      };
+    },
+  });
+  assert.equal(resolved, id);
+
+  for (const path of [
+    ".github/workflows/deploy-beta-preview.yml",
+    ".github/workflows/promote-beta.yml",
+  ]) {
+    assert.doesNotMatch(read(path), /\b[0-9a-f]{32}\b/);
+  }
 });
 
 test("Pages domain provisioning does not recreate an attached domain", async () => {

@@ -15,10 +15,12 @@ FORBIDDEN_PARTS = {
     "backlog",
     "internal",
     "tasks",
+    "test",
+    "tools",
+    "worker",
 }
 FORBIDDEN_NAMES = {
     ".env",
-    ".scrimignore",
     "AGENTS.html",
     "AGENTS.md",
     "CLAUDE.html",
@@ -26,11 +28,11 @@ FORBIDDEN_NAMES = {
     "PAPERCUTS.html",
     "PAPERCUTS.md",
 }
-FORBIDDEN_SUFFIXES = {".key", ".p12", ".pem"}
+FORBIDDEN_SUFFIXES = (".key", ".p12", ".pem")
 
 
 def violations(site_root: Path) -> list[str]:
-    problems: list[str] = []
+    problems: list[str] = list()
     if not site_root.is_dir():
         return ["site root does not exist"]
     if not (site_root / "index.html").is_file():

@@ -27,6 +27,13 @@ runs:
       with:
         source: ${{ inputs.source-dir }}
         destination: ${{ inputs.site-dir }}
+    - name: Make generated artifact writable
+      shell: bash
+      env:
+        SITE_DIR: ${{ inputs.site-dir }}
+      run: |
+        sudo chown -R "$(id -u):$(id -g)" "$SITE_DIR"
+        chmod -R u+rwX "$SITE_DIR"
     - name: Derive i18n cache stamp from deployed content
       shell: bash
       env:

@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "flags": [
+    {
+      "slug": "channel-banner",
+      "default_off": true,
+      "owner": "site-owner",
+      "introduced_on": "2026-07-29",
+      "removal_date": "2026-09-30",
+      "affected_surfaces": [
+        "all public pages"
+      ],
+      "tests": {
+        "on": [
+          "test/beta_flags.test.mjs"
+        ],
+        "off": [
+          "test/beta_flags.test.mjs"
+        ]
+      }
+    }
+  ]
+}

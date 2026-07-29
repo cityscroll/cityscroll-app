@@ -30,8 +30,12 @@ sources:
   - external_awards.js
   - staffing.js
   - i18n.js
+  - beta_flags.js
+  - beta-flags.json
+  - _config.yml
   - tools/build_staffing_exams.mjs
   - tools/stamp_i18n_assets.py
+  - tools/ensure_beta_pages.mjs
   - .github/actions/build-site/action.yml
   - .github/workflows/deploy-pages.yml
   - .github/workflows/deploy-beta-preview.yml
@@ -40,7 +44,7 @@ sources:
   - worker/wrangler.toml
   - worker/src/worker.mjs
   - worker/src/lib/cors.mjs
-sources_hash: dc96668e7b4856d5c79a481baffaacf1d4bc9051e9232275dd45bb3924ad9bad
+sources_hash: e4138be291c854b298b4df6741ad17eb400770cf055dbf8b282d8b510281363d
 ---
 
 # crol-list — architecture
@@ -115,6 +119,7 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 - **KV `ALERT_STATE`** — digest/cron bookkeeping plus read models: `hearings:location:v1` → rules hearings and public meetings normalized into separate affected-area and venue fields (addresses resolved through NYC GeoSearch), `fc:<stem>` → computed contract-expiration forecasts (from Checkbook award durations), `plan:<stem>` → parsed §112 MOCS plan rows (Socrata `whpb-ebtd`), and versioned `vp:v1:*` whole-profile buckets behind `/vendor-profile`; stale or missing views retain live Socrata fallbacks.
 - **KV `FEEDBACK`** — stored feedback rows (`fb:<ts>:<rand>`) + rate-limit counters.
 - **`index.html` localStorage** — client-side only: investigation workspace (pinned notices + notes), query cache, saved searches, plain/rigor toggle.
+- **Public beta flag localStorage** — one registered, default-off experiment slug selected by `?beta=<slug>`; `?beta=0` clears it. The registry enforces a removal date and on/off tests. It is presentation state only, never access control.
 - **D1 `crol-notices`** — mirror of recent notices (`notices` table: parsed columns + honest-data fields `contract_amount_valid`, `due_year`, plus the raw source row for schema-drift recovery), `ingest_state` (Socrata ingest cursor), and `prior_cycle_matches` (per-notice precomputed `{strict, near, eligibleCount}` prior-cycle match sets — the cache behind `GET /priorcycle/<id>`; compute-on-miss, cron pre-warms freshly-ingested Award notices, ranked by `worker/src/lib/prior_cycle.mjs`, a hand-synced dual implementation of index.html's matchers). Refreshed by the daily cron (`worker/src/ingest.mjs`); Socrata remains the source of truth.
 - **R2 `SOURCE_VAULT`** — content-addressed custody for approved public documents. Each object carries provenance, eligibility, and its official source URL.
 - **Analytics Engine `crol_usage_events_v1`** — first-party aggregate page, lens, search, deep-link, export, alert, feed, and investigation events. The versioned schema in `docs/analytics-event-taxonomy.md` permits only bounded enumerations; it stores no query text, email, IP address, cookie, fingerprint, or visitor identifier. `/stats` reads sampling-aware 7/30-day aggregates through Cloudflare's SQL API.

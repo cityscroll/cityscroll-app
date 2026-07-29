@@ -6,6 +6,8 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `sources_hash` current when a listed source changes.
 - The privacy boundary and versioned contract for aggregate usage events live in
   `docs/analytics-event-taxonomy.md`; keep collection and public stats changes within it.
+- Lightweight public experiments follow `docs/beta-flags.md`; registry entries are
+  default-off, tested in both states, and removed or explicitly renewed before their deadline.
 - Run the standards and test commands in `.github/workflows/ci.yml`; i18n cache stamps are
   derived only in the Pages artifact by `tools/stamp_i18n_assets.py` and verified by
   `test/standards/i18n_refs.py`—do not commit generated hashes to source pages or `i18n.js`.

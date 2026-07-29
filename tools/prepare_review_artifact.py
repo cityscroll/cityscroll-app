@@ -10,7 +10,7 @@ import re
 import sys
 from pathlib import Path
 
-CHANNELS = {"preview", "beta"}
+CHANNELS = ("preview", "beta")
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
 NOINDEX_RULE = "/*\n  X-Robots-Tag: noindex\n"
 BODY_RE = re.compile(r"(<body(?:\s[^>]*)?>)", re.IGNORECASE)

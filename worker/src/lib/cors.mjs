@@ -10,10 +10,21 @@ const STABLE_ORIGINS = new Set([
   "https://www.cityscroll.org",
   "https://crol-list.jimdc.com",
   "https://jimdc.github.io",
-  "http://localhost:8000",
-  "http://localhost:8787",
-  "http://localhost:8888",
 ]);
+const LOCAL_DEVELOPMENT_PORTS = new Set(["8000", "8787", "8888"]);
+
+function isLocalDevelopmentOrigin(origin) {
+  try {
+    const url = new URL(origin);
+    return (
+      url.protocol === "http:"
+      && url.hostname === "localhost"
+      && LOCAL_DEVELOPMENT_PORTS.has(url.port)
+    );
+  } catch {
+    return false;
+  }
+}
 
 function isReviewOrigin(origin) {
   if (origin === "https://beta.crol-list.org") return true;
@@ -35,6 +46,7 @@ function isReviewOrigin(origin) {
 export function isAllowedRequestOrigin(origin, env = {}) {
   if (!origin) return true;
   if (STABLE_ORIGINS.has(origin)) return true;
+  if (isLocalDevelopmentOrigin(origin)) return true;
   return env?.DEPLOYMENT_CHANNEL === "beta" && isReviewOrigin(origin);
 }
 

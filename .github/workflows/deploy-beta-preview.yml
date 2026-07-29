@@ -25,6 +25,11 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           persist-credentials: false
+      - name: Ensure beta Pages project
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: node tools/ensure_beta_pages.mjs project
       - uses: actions/configure-pages@v5
       - name: Build verified review artifact
         uses: ./.github/actions/build-site
