@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 
 const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");
 const analytics = readFileSync(new URL("../analytics.js", import.meta.url), "utf8");
+const receipt = JSON.parse(readFileSync(new URL("../data/preset-validation.json", import.meta.url), "utf8"));
 
 const EXPECTED = new Map([
   ["city-work", ["money"]],
@@ -16,8 +17,13 @@ const EXPECTED = new Map([
 
 function routeTags() {
   return [...html.matchAll(
-    /<a class="scenario-route" href="([^"]+)" data-scenario="([^"]+)" data-scenario-lens="([^"]+)"/g,
-  )].map((match) => ({ href: match[1].replace(/&amp;/g, "&"), scenario: match[2], lens: match[3] }));
+    /<a class="scenario-route" href="([^"]+)" data-preset-id="([^"]+)" data-scenario="([^"]+)" data-scenario-lens="([^"]+)"/g,
+  )].map((match) => ({
+    href: match[1].replace(/&amp;/g, "&"),
+    preset: match[2],
+    scenario: match[3],
+    lens: match[4],
+  }));
 }
 
 test("the task-first layer is additive and leaves every category lens tab in place", () => {
@@ -42,11 +48,21 @@ test("every declared scenario maps only to static existing-lens hashes", () => {
   }
 });
 
-test("high-intent scenarios arrive with useful precomputed filters", () => {
+test("high-intent scenarios arrive with live-validated precomputed filters", () => {
   const routes = routeTags();
   assert.ok(routes.some((route) => route.scenario === "city-work" && route.href === "#money?mode=open&closing=week"));
-  assert.ok(routes.some((route) => route.scenario === "subsidies-land-use" && route.href === "#meetings?when=upcoming&q=IDA"));
+  assert.ok(routes.some((route) => route.scenario === "subsidies-land-use" && route.href === receipt.scenarios["subsidies-ida"].href));
+  assert.ok(receipt.scenarios["subsidies-ida"].count > 0);
   assert.ok(routes.some((route) => route.scenario === "legal-compliance" && route.href === "#property?asset=realty"));
+});
+
+test("every shipped scenario route is the non-empty variant recorded at build time", () => {
+  for (const route of routeTags()) {
+    const selected = receipt.scenarios[route.preset];
+    assert.ok(selected, `missing validation receipt for ${route.preset}`);
+    assert.equal(route.href, selected.href);
+    assert.ok(selected.count > 0, `${route.preset} must not ship with zero results`);
+  }
 });
 
 test("scenario measurement records only bounded declared task and route values", () => {

@@ -128,12 +128,66 @@ function hearingDateWindowEnd(today, windowName) {
   return date.toISOString().slice(0, 10);
 }
 
+// Progressive query relaxation for time-scoped hearing searches. Every rung preserves
+// agency, subject, and affected-area filters; only the date window changes. The caller
+// supplies past rows when it reaches the final rung, so normal upcoming views keep their
+// one-request path.
+function hearingScopeLadder(requested) {
+  if (requested === "week") return ["week", "month", "upcoming", "past"];
+  if (requested === "month") return ["month", "upcoming", "past"];
+  if (requested === "past") return ["past"];
+  return ["upcoming", "past"];
+}
+function hearingRowsInScope(records, filter, scope, today) {
+  var start = String(today).slice(0, 10);
+  var end = hearingDateWindowEnd(start, scope);
+  var agency = String(filter.agency || "");
+  var keyword = String(filter.keyword || "").trim().toLowerCase();
+  return (records || []).filter(function (record) {
+    var date = String(record.event_date || "").slice(0, 10);
+    if (!date) return false;
+    if (scope === "past") {
+      if (date >= start) return false;
+    } else if (date < start || (end && date > end)) {
+      return false;
+    }
+    if (agency && record.agency !== agency) return false;
+    if (!hearingMatchesArea(record, filter)) return false;
+    if (keyword) {
+      var haystack = [
+        record.title, record.decides, record.description,
+        (record.affects || []).join(" "),
+      ].filter(Boolean).join(" ").toLowerCase();
+      if (!haystack.includes(keyword)) return false;
+    }
+    return true;
+  }).sort(function (a, b) {
+    var av = String(a.event_date || ""), bv = String(b.event_date || "");
+    return scope === "past" ? bv.localeCompare(av) : av.localeCompare(bv);
+  });
+}
+function chooseHearingScope(records, filter, today, allowWidening) {
+  var requested = filter.when || "upcoming";
+  var ladder = allowWidening === false ? [requested] : hearingScopeLadder(requested);
+  for (var i = 0; i < ladder.length; i++) {
+    var scope = ladder[i];
+    var rows = hearingRowsInScope(records, filter, scope, today);
+    if (rows.length) {
+      return { requested: requested, scope: scope, widened: scope !== requested, rows: rows };
+    }
+  }
+  return { requested: requested, scope: requested, widened: false, rows: [] };
+}
+
 if (typeof module !== "undefined" && module.exports !== undefined) {
   module.exports = {
+    chooseHearingScope: chooseHearingScope,
     hearingAffectedArea: hearingAffectedArea,
     hearingDateWindowEnd: hearingDateWindowEnd,
     hearingMatchesArea: hearingMatchesArea,
     hearingPlainText: hearingPlainText,
+    hearingRowsInScope: hearingRowsInScope,
+    hearingScopeLadder: hearingScopeLadder,
     hearingVenue: hearingVenue,
     normalizeHearingRow: normalizeHearingRow,
   };
