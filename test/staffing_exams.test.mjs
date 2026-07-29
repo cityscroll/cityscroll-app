@@ -53,6 +53,34 @@ test("interest, eligibility, and application-window filters are deterministic", 
   assert.deepEqual(exact.map(exam => exam.exam_number), ["7016"]);
 });
 
+test("new-hire notices parse, sort newest-first, and refine without a gatekeeping search", () => {
+  const rows = [
+    {
+      request_id: "2",
+      start_date: "2026-07-29T00:00:00.000",
+      agency_name: "Sanitation",
+      additional_description_1: "Effective Date: 07/20/2026; Provisional Status: Yes; Title Code: 53053; Reason For Change: APPOINTED; Salary: 49047.00; Employee Name: RIVERA,ANA",
+    },
+    {
+      request_id: "1",
+      start_date: "2026-07-28T00:00:00.000",
+      agency_name: "Health",
+      additional_description_1: "Effective Date: 07/19/2026; Provisional Status: No; Title Code: 10026; Reason For Change: APPOINTED; Salary: 77744.00; Employee Name: RODRIGUEZ,LUIS",
+    },
+  ];
+  const notices = Staffing.hireNotices(rows, [
+    { title_code: "53053", official_title: "EMERGENCY MEDICAL SPECIALIST-EMT" },
+    { title_code: "10026", official_title: "ADMINISTRATIVE STAFF ANALYST" },
+  ]);
+  assert.deepEqual(notices.map(item => item.request_id), ["2", "1"]);
+  assert.equal(Staffing.filterHireNotices(notices, {}).length, 2);
+  assert.deepEqual(
+    Staffing.filterHireNotices(notices, { query: "Rodriguez" }).map(item => item.request_id),
+    ["1"],
+  );
+  assert.deepEqual(Staffing.topValues(notices, "agency", 1), ["Health"]);
+});
+
 test("the Staffing lens features the next actionable exams without runtime data fan-out", () => {
   const today = "2026-07-28";
   const featured = Staffing.featuredExams(artifact.exams, today, 4);
@@ -61,7 +89,22 @@ test("the Staffing lens features the next actionable exams without runtime data 
   assert.ok(featured.every(exam => ["open", "upcoming"].includes(Staffing.statusFor(exam, today))));
   assert.match(html, /id="staffing-upcoming-list"/);
   assert.match(html, /href="#people\?view=guide"/);
-  assert.match(html, /href="#people\?mode=person&amp;view=notices"/);
+  assert.match(html, /id="staffing-feed"/);
+});
+
+test("the Staffing landing is a notice feed, with search and filters refining visible postings", () => {
+  const feed = html.indexOf('id="staffing-feed"');
+  const guide = html.indexOf('id="career-guide"');
+  assert.ok(feed >= 0, "Staffing needs a first-class newest-notices feed");
+  assert.ok(guide > feed, "the exam guide must follow the live notice feed");
+  assert.match(html, /id="staffing-query"/);
+  assert.match(html, /data-staffing-type="hire"/);
+  assert.match(html, /data-staffing-type="exam"/);
+  assert.match(html, /id="staffing-role-filters"/);
+  assert.match(html, /id="staffing-agency-filters"/);
+  assert.match(html, /id="staffing-notice-list"/);
+  assert.match(html, /id="staffing-exam-help"/);
+  assert.match(html, /<div class="career-guide" id="career-guide" hidden>/);
 });
 
 test("actionable exam titles connect Staffing role rows to exact exam details", () => {

@@ -85,6 +85,68 @@
     return actionable.find(exam => titleKeys(exam.title).some(key => keys.has(key))) || null;
   }
 
+  function personnelFields(value) {
+    const text = String(value || "").replace(/\s+/g, " ").trim();
+    const read = pattern => {
+      const match = text.match(pattern);
+      return match ? match[1].trim() : "";
+    };
+    return {
+      effective_date: read(/Effective Date:\s*([^;]+)/i),
+      provisional: read(/Provisional Status:\s*([^;]+)/i),
+      title_code: read(/Title Code:\s*([^;]+)/i),
+      reason: read(/Reason For Change:\s*([^;]+)/i),
+      salary: read(/Salary:\s*([^;]+)/i),
+      person: read(/Employee Name:\s*(.+)$/i),
+    };
+  }
+
+  function hireNotices(rows, crosswalk) {
+    const titles = new Map((crosswalk || []).map(item => [
+      String(item.title_code || "").toUpperCase(),
+      item.official_title || item.payroll_title || "",
+    ]));
+    return (rows || []).map(row => {
+      const fields = personnelFields(row.additional_description_1);
+      return {
+        kind: "hire",
+        request_id: row.request_id || "",
+        published_at: row.start_date || "",
+        agency: row.agency_name || "",
+        role: titles.get(fields.title_code.toUpperCase()) || "",
+        ...fields,
+      };
+    }).filter(item => item.request_id && item.reason.toUpperCase() === "APPOINTED")
+      .sort((a, b) =>
+        b.published_at.localeCompare(a.published_at)
+        || b.request_id.localeCompare(a.request_id)
+      );
+  }
+
+  function filterHireNotices(notices, filters) {
+    const query = String(filters.query || "").trim().toLowerCase();
+    return (notices || []).filter(item => {
+      if (filters.role && item.role !== filters.role) return false;
+      if (filters.agency && item.agency !== filters.agency) return false;
+      if (!query) return true;
+      return [
+        item.role, item.person, item.agency, item.title_code, item.reason,
+      ].join(" ").toLowerCase().includes(query);
+    });
+  }
+
+  function topValues(items, field, limit) {
+    const counts = new Map();
+    (items || []).forEach(item => {
+      const value = item[field];
+      if (value) counts.set(value, (counts.get(value) || 0) + 1);
+    });
+    return [...counts.entries()]
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+      .slice(0, limit || 4)
+      .map(([value]) => value);
+  }
+
   return {
     statusFor,
     filterExams,
@@ -94,5 +156,9 @@
     featuredExams,
     normalizeTitle,
     examForTitle,
+    personnelFields,
+    hireNotices,
+    filterHireNotices,
+    topValues,
   };
 });
