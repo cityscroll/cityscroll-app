@@ -6,6 +6,7 @@ import { readFileSync } from "node:fs";
 const require = createRequire(import.meta.url);
 const { chooseHearingScope } = require("../hearing_location.js");
 const indexSource = readFileSync(new URL("../index.html", import.meta.url), "utf8");
+const i18nSource = readFileSync(new URL("../i18n.js", import.meta.url), "utf8");
 const TODAY = "2026-07-29";
 
 function hearing(id, date, title = "Public hearing") {
@@ -33,6 +34,8 @@ test("zero results this week widen to this month and preserve the subject filter
   assert.deepEqual(result.rows.map((row) => row.request_id), ["ida-month"]);
   assert.match(indexSource, /meetings_widened_notice/);
   assert.match(indexSource, /data-remove-widening/);
+  assert.match(i18nSource, /meetings_widened_notice: "Showing \{shown\} for \{query\} \(\{none\}\)\."/);
+  assert.doesNotMatch(i18nSource, /meetings_widened_notice: "No results/);
 });
 
 test("zero results in every upcoming scope show a labeled recent-past result", () => {
@@ -42,6 +45,12 @@ test("zero results in every upcoming scope show a labeled recent-past result", (
   assert.equal(result.widened, true);
   assert.deepEqual(result.rows.map((row) => row.request_id), ["ida-past"]);
   assert.match(indexSource, /class="tag closed">\$\{t\("past_tag"\)\}/);
+  assert.match(indexSource, /selection\.scope==="past"\?"upcoming":selection\.requested/);
+});
+
+test("true empty states lead with a recovery action instead of the absence", () => {
+  assert.match(i18nSource, /no_hearings_after_widening: "Try a broader search\./);
+  assert.match(i18nSource, /no_hearings_window: "Try the next 30 days or Citywide \/ unlocated\./);
 });
 
 test("removing automatic widening restores the exact empty search", () => {
