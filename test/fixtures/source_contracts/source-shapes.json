@@ -158,6 +158,13 @@
       "configured_status": 403,
       "documented_status": 404,
       "fields": []
+    },
+    {
+      "id": "nyc-rules-rss",
+      "kind": "rss",
+      "identifier": "feed",
+      "response_type": "application/rss+xml",
+      "fields": ["title", "link", "agency_name", "comment_by_date", "hearing_date_1"]
     }
   ]
 }

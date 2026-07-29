@@ -365,7 +365,7 @@
       "status": "disabled",
       "scope": "runtime",
       "kind": "mocs-disabled",
-      "landing_page": "https://www.nyc.gov/site/mocs/resources/standard-prof-services-ll63.page",
+      "landing_page": "https://www.nyc.gov/site/mocs/resources/standard-professional-services-ll63.page",
       "legacy_dataset_ids": ["egea-b8r5", "whpb-ebtd"],
       "publisher_cadence": "Annual plans with in-year agency spreadsheet updates",
       "product_freshness": "Disabled. No plan rows are read or shown, and stale plan cache entries are purged.",
@@ -373,6 +373,24 @@
       "gap": "The official page links rotating per-agency spreadsheets but provides no stable tabular feed or machine manifest. The former configured ID is non-tabular and the former documented ID does not exist.",
       "code_references": [
         {"path": "worker/src/mocs_plan.mjs", "contains": "status: \"disabled\""}
+      ]
+    },
+    {
+      "id": "nyc-rules-rss",
+      "name": "NYC Rules RSS feed",
+      "owner": "NYC Office of the Mayor",
+      "status": "live",
+      "scope": "runtime",
+      "kind": "rss",
+      "endpoint": "https://rules.cityofnewyork.us/feed/",
+      "landing_page": "https://rules.cityofnewyork.us/",
+      "required_fields": ["title", "link", "agency_name", "comment_by_date", "hearing_date_1"],
+      "max_stale_days": 45,
+      "publisher_cadence": "Updated as rules are proposed, heard, adopted, or made effective",
+      "product_freshness": "Daily materialized join in the Worker; a stale or unreachable feed falls back to City Record notices only with an explicit enrichment-gap marker.",
+      "used_for": "Rule lifecycle enrichment: official comment/adoption page links, comment deadlines, hearing dates, adoption and effective dates joined to City Record Agency Rules notices.",
+      "code_references": [
+        {"path": "worker/src/rules.mjs", "contains": "rules.cityofnewyork.us/feed/"}
       ]
     }
   ]

@@ -23,6 +23,12 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - Hearing location extraction is deliberately dual-implemented in `hearing_location.js` and
   `worker/src/lib/hearings.mjs`; keep venue and affected area separate and run
   `test/contract/hearing_location.test.mjs` after changing either copy.
+- NYC Rules RSS is ingested into a daily materialized rule record in `worker/src/rules.mjs`
+  (KV key `rules:materialized:v1`, served at `/rules`). The join logic in
+  `worker/src/lib/rules.mjs` matches City Record Agency Rules notices to NYC Rules RSS items
+  by agency, date proximity, and title overlap; unmatched joins are explicit, never blank.
+  Run `worker/test/nyc_rules.test.mjs` and `test/contract/rule_lifecycle.test.mjs` after
+  changing either copy.
 - Lead category pages with the newest actionable records. Search and filters refine the records
   already shown; explanatory guidance appears only at the concept it explains or on a dedicated
   guide surface. The content-first Staffing exemplar and captures are in
