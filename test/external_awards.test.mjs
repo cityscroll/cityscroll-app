@@ -67,7 +67,7 @@ const T = (key, vars) => {
     external_award_nycha_none_note_html: "The site checked {link} for this notice's PIN and found no registered award there yet.",
     external_award_nycha_note_html: "{link} award matched by exact PIN <code>{pin}</code>.",
     agency_awards_elsewhere_note: "This agency files its contract awards with {source}, not the City Record.",
-    agency_awards_none_open_data_html: "This agency's contract awards are not published in any open dataset CROL-List knows of. <a href=\"about.html#external-awards-sources\">See what we checked</a>.",
+    agency_awards_none_open_data_html: "This agency's contract awards are not published in any open dataset CityScroll knows of. <a href=\"about.html#external-awards-sources\">See what we checked</a>.",
     agency_awards_unavailable_note_html: "No contract awards from this agency appear in the City Record — some agencies publish awards elsewhere. <a href=\"about.html#external-awards-sources\">See what we checked</a>.",
     mode_award: "Award", awarded_to: "Awarded to", untitled: "(untitled)", untitled_name: "(no name)",
     award_watch_offer_btn: "Email me when the award registers",

@@ -3,9 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>About · CROL-List</title>
-<meta name="description" content="What CROL-List is, where its data comes from, how flags and context work, how to send feedback, and its privacy and data-retention stance.">
-<link rel="canonical" href="https://crol-list.org/about.html">
+<title>About · CityScroll</title>
+<meta name="description" content="What CityScroll is, where its data comes from, how flags and context work, how to send feedback, and its privacy and data-retention stance.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://cityscroll.org/about.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CityScroll">
+<meta property="og:title" content="About · CityScroll">
+<meta property="og:description" content="How CityScroll makes the City Record searchable, with honest-data, privacy, and accessibility commitments.">
+<meta property="og:url" content="https://cityscroll.org/about.html">
+<meta property="og:image" content="https://cityscroll.org/assets/brand/cityscroll-social-card.png">
+<meta property="og:image:alt" content="CityScroll — the City Record, made legible">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#173f55">
+<link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/brand/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png" sizes="180x180">
+<link rel="manifest" href="site.webmanifest">
 <script src="i18n.js?v=__I18N_ASSET_VERSION__"></script>
 <script defer src="beta_flags.js?v=1.0.0"></script>
 <script defer src="analytics.js?v=1.2.0"></script>
@@ -66,6 +80,7 @@
   .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
   :is(a,button,select,input,textarea,summary):focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
 </style>
+<link rel="stylesheet" href="brand.css">
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
@@ -73,15 +88,12 @@
 <div class="wrap">
 <header>
   <div class="cr-rule"></div>
-  <a class="home" href="index.html" aria-label="Back to CROL-List home" data-i18n-aria="back_home_aria">
-    <svg class="cr-seal" viewBox="0 0 100 100" aria-hidden="true">
-      <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="1.5"/>
-      <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="0.6"/>
-      <path d="M50 18 L74 30 V58 Q74 76 50 86 Q26 76 26 58 V30 Z" fill="none" stroke="currentColor" stroke-width="1.3"/>
-      <line x1="26" y1="48" x2="74" y2="48" stroke="currentColor" stroke-width="0.6"/>
-      <path d="M50 30 L50 46 M42 38 L58 38" stroke="currentColor" stroke-width="1.1"/>
+  <a class="home brand-lockup brand-lockup--compact" href="index.html" aria-label="Back to CityScroll home" data-i18n-aria="back_home_aria">
+    <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true">
+      <path d="M14 5h29l8 8v42a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V9a4 4 0 0 1 4-4Z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/>
+      <path d="M43 5v10h8M20 23h22M20 31h22M20 49v-9h7v9h5V36h7v13h5v-6h7" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
-    <span class="cr-title">CROL-List</span>
+    <span class="cr-title">CityScroll</span>
   </a>
   <div class="kicker" data-i18n="site_kicker">The City Record, searchable</div>
   <h1 data-i18n="about_link">About</h1>
@@ -100,14 +112,14 @@
   </div>
   <div id="langNotice" class="lang-notice" hidden></div>
   <div class="cr-rule cr-rule--bottom"></div>
-  <a class="backhome" href="index.html" data-i18n="back_to_crol">← Back to CROL-List</a>
+  <a class="backhome" href="index.html" data-i18n="back_to_crol">← Back to CityScroll</a>
 </header>
 
 <main id="main" tabindex="-1">
 <h2 data-i18n="about_h_what">What this is</h2>
-<p data-i18n-html="about_p_what_html">CROL-List is a search tool for <a href="https://a856-cityrecord.nyc.gov/" target="_blank" rel="noopener noreferrer">The City Record<span class="sr-only"> (opens in new tab)</span></a>. That is the
+<p data-i18n-html="about_p_what_html">CityScroll is a search tool for <a href="https://a856-cityrecord.nyc.gov/" target="_blank" rel="noopener noreferrer">The City Record<span class="sr-only"> (opens in new tab)</span></a>. That is the
 City of New York's official daily paper. In it, <a href="https://codelibrary.amlegal.com/codes/newyorkcity/latest/NYCcharter/0-0-0-3113" target="_blank" rel="noopener noreferrer">every agency must publish<span class="sr-only"> (opens in new tab)</span></a> its
-contracts, hearings, rule changes, rezonings, and staff moves. CROL-List lets you search the record
+contracts, hearings, rule changes, rezonings, and staff moves. CityScroll lets you search the record
 by interest. You can follow a contract, look up a job title, track a rezoning, or get an email when something new matches.</p>
 
 <h2 data-i18n="about_h_source">Where the data comes from</h2>
@@ -198,7 +210,7 @@ registration and real payment. Nothing here says anyone did wrong. It just saves
 </div>
 
 <h2 id="privacy" data-i18n="about_h_privacy">Privacy</h2>
-<p class="src" data-i18n="about_p_privacy_intro">CROL-List uses no accounts, no cookies, no cross-site tracking, no ad tech.</p>
+<p class="src" data-i18n="about_p_privacy_intro">CityScroll uses no accounts, no cookies, no cross-site tracking, no ad tech.</p>
 <ul class="src" style="margin:8px 0;padding-left:20px" data-i18n-html="about_li_privacy_html">
   <li><b>Searches and filters</b> use NYC Open Data.</li>
   <li><b>The "Ask" box</b> lets you search in plain English. Your text is sent to Anthropic's Claude, which turns it into filters. We do not save your text.</li>
@@ -210,11 +222,11 @@ registration and real payment. Nothing here says anyone did wrong. It just saves
 <p data-i18n-html="about_p_content_html">An AI assistant (Claude) drafts this site's copy — headings, explanations, pages like this one. A human editor checks it before it goes live. The data is not AI-generated. Every notice, dollar figure, and date comes straight from <a href="https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx" target="_blank" rel="noopener noreferrer">NYC Open Data<span class="sr-only"> (opens in new tab)</span></a>, unedited.</p>
 
 </main>
-<footer class="foot" data-i18n-html="about_foot_html">CROL-List · a search interface over <a href="https://a856-cityrecord.nyc.gov/" target="_blank" rel="noopener noreferrer">The City Record<span class="sr-only"> (opens in new tab)</span></a> · <a href="changelog.html">Changelog</a> · <a href="stats.html">Stats</a> · <a href="index.html">Home</a></footer>
+<footer class="foot" data-i18n-html="about_foot_html">CityScroll · a search interface over <a href="https://a856-cityrecord.nyc.gov/" target="_blank" rel="noopener noreferrer">The City Record<span class="sr-only"> (opens in new tab)</span></a> · <a href="changelog.html">Changelog</a> · <a href="stats.html">Stats</a> · <a href="index.html">Home</a></footer>
 </div>
 
 <script>
-const API = window.CROL_API_ORIGIN || "https://api.crol-list.org";
+const API = window.CROL_API_ORIGIN || "https://api.cityscroll.org";
 const API_FALLBACK = window.CROL_API_ORIGIN || "https://crol-worker.crol-worker.workers.dev"; // stale-DNS fallback
 async function workerFetch(path, opts){
   try{ return await fetch(API+path, opts); }
@@ -268,7 +280,7 @@ async function sendFeedback(){
 $("#fbsend").addEventListener("click", sendFeedback);
 initSubpageLangSwitcher();
 </script>
-<!-- Cloudflare Web Analytics — cookieless, aggregate. Manual JS beacon (crol-list.org is served
+<!-- Cloudflare Web Analytics — cookieless, aggregate. Manual JS beacon (the static origin is served
      directly by GitHub Pages, not proxied through Cloudflare). Token is a public site id, safe to commit. -->
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "5d81fb4366b848dea15fb1862391909c"}'></script>
 </body>

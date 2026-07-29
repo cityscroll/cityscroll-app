@@ -19,7 +19,7 @@ export async function handleUnsubscribe(req, env) {
 
   try { await env.SUBS.delete(key); } catch { /* idempotent: ignore */ }
 
-  return oneClick ? new Response(null, { status: 200 }) : page("Unsubscribed", "You're off that alert. You can re-subscribe any time on crol-list.org.", 200);
+  return oneClick ? new Response(null, { status: 200 }) : page("Unsubscribed", "You're off that alert. You can re-subscribe any time on cityscroll.org.", 200);
 }
 
 function page(title, message, status) {

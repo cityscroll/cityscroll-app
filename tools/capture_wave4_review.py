@@ -36,7 +36,7 @@ def shell(title: str, eyebrow: str, body: str) -> str:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{title} · CROL-List</title>
+<title>{title} · CityScroll</title>
 <style>
   :root {{
     --paper:#f4efe5; --paper2:#fbf8f0; --ink:#161512; --muted:#69635a;

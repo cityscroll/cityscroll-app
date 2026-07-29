@@ -8,6 +8,9 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `docs/analytics-event-taxonomy.md`; keep collection and public stats changes within it.
 - Lightweight public experiments follow `docs/beta-flags.md`; registry entries are
   default-off, tested in both states, and removed or explicitly renewed before their deadline.
+- The CityScroll identity, logo usage, and design-token rationale live in `docs/brand.md`;
+  regenerate raster assets with `tools/build_brand_assets.py` and run the brand identity gate
+  after changing the mark, icons, or public product name.
 - Run the standards and test commands in `.github/workflows/ci.yml`; i18n cache stamps are
   derived only in the Pages artifact by `tools/stamp_i18n_assets.py` and verified by
   `test/standards/i18n_refs.py`—do not commit generated hashes to source pages or `i18n.js`.

@@ -55,7 +55,7 @@ test("GET /agencies publishes JSON and CSV with open CORS and cache headers", as
   t.after(() => { globalThis.fetch = realFetch; });
 
   const jsonRes = await handleAgencies(
-    new Request("https://api.crol-list.org/agencies"),
+    new Request("https://api.cityscroll.org/agencies"),
     {},
     { waitUntil() {} },
   );
@@ -65,10 +65,10 @@ test("GET /agencies publishes JSON and CSV with open CORS and cache headers", as
   const body = await jsonRes.json();
   assert.equal(body.row_count, liveRows.length);
   assert.equal(body.rows.length, liveRows.length);
-  assert.equal(body.data_dictionary, "https://crol-list.org/api.html#agency-crosswalk");
+  assert.equal(body.data_dictionary, "https://cityscroll.org/api.html#agency-crosswalk");
 
   const csvRes = await handleAgencies(
-    new Request("https://api.crol-list.org/agencies?format=csv"),
+    new Request("https://api.cityscroll.org/agencies?format=csv"),
     {},
     { waitUntil() {} },
   );
@@ -77,9 +77,9 @@ test("GET /agencies publishes JSON and CSV with open CORS and cache headers", as
 });
 
 test("OPTIONS is keyless and CORS-open; unsupported methods and formats are bounded", async () => {
-  const preflight = await handleAgencies(new Request("https://api.crol-list.org/agencies", { method: "OPTIONS" }), {}, {});
+  const preflight = await handleAgencies(new Request("https://api.cityscroll.org/agencies", { method: "OPTIONS" }), {}, {});
   assert.equal(preflight.status, 204);
   assert.equal(preflight.headers.get("Access-Control-Allow-Origin"), "*");
-  assert.equal((await handleAgencies(new Request("https://api.crol-list.org/agencies", { method: "POST" }), {}, {})).status, 405);
-  assert.equal((await handleAgencies(new Request("https://api.crol-list.org/agencies?format=xml"), {}, {})).status, 400);
+  assert.equal((await handleAgencies(new Request("https://api.cityscroll.org/agencies", { method: "POST" }), {}, {})).status, 405);
+  assert.equal((await handleAgencies(new Request("https://api.cityscroll.org/agencies?format=xml"), {}, {})).status, 400);
 });

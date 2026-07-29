@@ -66,7 +66,7 @@ test("cacheable route classes serve the second identical request from caches.def
     ]);
     let reads = 0;
     const env = { ALERT_STATE: { async get(key) { reads++; return values.get(key) ?? null; } } };
-    const req = new Request("https://api.crol-list.org/vendor-profile?name=Camba%20Inc.");
+    const req = new Request("https://api.cityscroll.org/vendor-profile?name=Camba%20Inc.");
     await assertSecondHit(
       () => handleVendorProfile(req, env, { nowMs: Date.parse(generated) + 60_000 }),
       () => reads,
@@ -83,7 +83,7 @@ test("cacheable route classes serve the second identical request from caches.def
         },
       },
     };
-    const req = new Request("https://api.crol-list.org/inv/shared123");
+    const req = new Request("https://api.cityscroll.org/inv/shared123");
     await assertSecondHit(() => handleInv(req, env, "/inv/shared123"), () => reads);
   });
 
@@ -103,7 +103,7 @@ test("cacheable route classes serve the second identical request from caches.def
       },
     };
     const req = new Request(
-      "https://api.crol-list.org/externalaward?agency=School%20Construction%20Authority",
+      "https://api.cityscroll.org/externalaward?agency=School%20Construction%20Authority",
     );
     await assertSecondHit(() => handleExternalAward(req, env), () => reads);
   });
@@ -111,8 +111,8 @@ test("cacheable route classes serve the second identical request from caches.def
   await t.test("static agency identity", async () => {
     let reads = 0;
     const req = new Request(
-      "https://api.crol-list.org/agency?name=DEPARTMENT%20OF%20SANITATION",
-      { headers: { Origin: "https://crol-list.org" } },
+      "https://api.cityscroll.org/agency?name=DEPARTMENT%20OF%20SANITATION",
+      { headers: { Origin: "https://cityscroll.org" } },
     );
     await assertSecondHit(() => handleAgency(req, {}), () => reads);
   });
@@ -133,7 +133,7 @@ test("cacheable route classes serve the second identical request from caches.def
         },
       },
     };
-    const req = new Request("https://api.crol-list.org/priorcycle/20220314107");
+    const req = new Request("https://api.cityscroll.org/priorcycle/20220314107");
     await assertSecondHit(
       () => handlePriorCycle(req, env, "/priorcycle/20220314107"),
       () => reads,
@@ -156,7 +156,7 @@ test("cacheable route classes serve the second identical request from caches.def
         },
       },
     };
-    const req = new Request("https://api.crol-list.org/suggestions");
+    const req = new Request("https://api.cityscroll.org/suggestions");
     await assertSecondHit(() => handleSuggestions(req, env), () => reads);
   });
 });
@@ -174,7 +174,7 @@ test("vendor profile cache TTL never exceeds the remaining 24-hour freshness win
   const remainingSeconds = 90;
   const nowMs = Date.parse(generated) + 24 * 60 * 60 * 1000 - remainingSeconds * 1000;
   const res = await handleVendorProfile(
-    new Request("https://api.crol-list.org/vendor-profile?name=Camba%20Inc."),
+    new Request("https://api.cityscroll.org/vendor-profile?name=Camba%20Inc."),
     env,
     { nowMs },
   );
@@ -187,16 +187,16 @@ test("cache hits retain the requesting origin's CORS header", async () => {
   const previous = globalThis.caches;
   const cache = memoryCache();
   globalThis.caches = { default: cache };
-  const url = "https://api.crol-list.org/agency?name=DEPARTMENT%20OF%20SANITATION";
+  const url = "https://api.cityscroll.org/agency?name=DEPARTMENT%20OF%20SANITATION";
   try {
     await handleAgency(new Request(url, {
-      headers: { Origin: "https://crol-list.org" },
+      headers: { Origin: "https://cityscroll.org" },
     }), {});
     const hit = await handleAgency(new Request(url, {
-      headers: { Origin: "https://www.crol-list.org" },
+      headers: { Origin: "https://www.cityscroll.org" },
     }), {});
     assert.equal(hit.headers.get("X-Test-Cache-Hit"), "true");
-    assert.equal(hit.headers.get("Access-Control-Allow-Origin"), "https://www.crol-list.org");
+    assert.equal(hit.headers.get("Access-Control-Allow-Origin"), "https://www.cityscroll.org");
   } finally {
     if (previous === undefined) delete globalThis.caches;
     else globalThis.caches = previous;

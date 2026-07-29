@@ -10,7 +10,7 @@ const ALLOWED_TYPES = new Set(["application/pdf", "text/plain", "text/csv", "app
 function json(body, status = 200) {
   return Response.json(body, {
     status,
-    headers: {"cache-control": "no-store", "access-control-allow-origin": "https://crol-list.org"}
+    headers: {"cache-control": "no-store", "access-control-allow-origin": "https://cityscroll.org"}
   });
 }
 

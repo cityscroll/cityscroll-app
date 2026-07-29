@@ -2,7 +2,7 @@
 
 Symptom this pins: a user reported that "View in City Record" and "Bid on PASSPort" — both
 reached mid-way through reading a notice or drafting a response — navigated the whole tab
-away from CROL-List, discarding search/filter state. BEFORE this change, both links were
+away from CityScroll, discarding search/filter state. BEFORE this change, both links were
 plain same-tab anchors (the w10-03 house default, test/standards/link_targets.py); clicking
 either replaced the app in place. AFTER, both carry target="_blank" rel="noopener noreferrer"
 plus a visually-hidden "opens in new tab" marking, so the tab stays open behind the new one
@@ -14,19 +14,19 @@ not discard the list's search and filters.
 
 Broadened ruling (crol-extlinks2-y8): the product owner extended the new-tab treatment from a
 named allowlist (City Record / PASSPort / Checkbook NYC / NYC Open Data) to EVERY external
-destination — only CROL-List's own resources (crol-list.org, api.crol-list.org, in-app hash
+destination — only CityScroll's own resources (crol-list.org, api.cityscroll.org, in-app hash
 routes, the project's own GitHub repo) stay same-tab now. About's NYC Charter/amlegal
 citation — previously the gate's own "stays same-tab" control fixture — is a perfect example:
 BEFORE crol-extlinks2-y8 it was a deliberate same-tab exception (an external destination
 outside the then-narrow allowlist); AFTER, it gets the same new-tab treatment as every other
 external link, so this gate now asserts the OPPOSITE of what it asserted before. The former
 negative control is replaced with two new ones: an in-app hash link (unchanged) and stats.html's
-own api.crol-list.org link (CROL-List's own resource, must never acquire target="_blank").
+own api.cityscroll.org link (CityScroll's own resource, must never acquire target="_blank").
 
 This gate proves it on real rendered output: the notice-detail links (City Record, PASSPort)
 and the Staffing feed's City Record link get the new-tab treatment, the broadened case (the
 NYC Charter citation, previously same-tab) now also gets it, an ordinary in-app link does not
-regress into acquiring target="_blank", and CROL-List's own api.crol-list.org link stays
+regress into acquiring target="_blank", and CityScroll's own api.cityscroll.org link stays
 same-tab.
 """
 import os
@@ -156,24 +156,24 @@ with sync_playwright() as pw:
     # --- Control: an in-app hash link on the same page must NOT acquire target="_blank" ----
     home_target2 = page2.locator('a.backhome[href="index.html"]').first.get_attribute("target")
     if home_target2 is not None:
-        failures.append(f'about.html\'s "Back to CROL-List" link acquired target={home_target2!r} '
+        failures.append(f'about.html\'s "Back to CityScroll" link acquired target={home_target2!r} '
                          "— in-app/own navigation must keep replacing the current tab")
     else:
-        step("OK", 'about.html\'s "Back to CROL-List" link stays same-tab (own resource)', "target=None")
+        step("OK", 'about.html\'s "Back to CityScroll" link stays same-tab (own resource)', "target=None")
     browser.close()
 
-    # --- Control: CROL-List's own api.crol-list.org link must NOT acquire target="_blank" --
+    # --- Control: CityScroll's own api.cityscroll.org link must NOT acquire target="_blank" --
     # (crol-extlinks2-y8: own resources are the only exemption from the blanket new-tab rule)
     browser = pw.chromium.launch()
     page3 = browser.new_context().new_page()
     page3.goto(f"{BASE}stats.html", timeout=30000)
     page3.wait_for_load_state("load")
-    api_target = page3.locator('a[href*="api.crol-list.org/stats"]').first.get_attribute("target")
+    api_target = page3.locator('a[href*="api.cityscroll.org/stats"]').first.get_attribute("target")
     if api_target is not None:
-        failures.append(f"stats.html's api.crol-list.org link acquired target={api_target!r} "
-                         "— CROL-List's own resources stay same-tab even under the broadened rule")
+        failures.append(f"stats.html's api.cityscroll.org link acquired target={api_target!r} "
+                         "— CityScroll's own resources stay same-tab even under the broadened rule")
     else:
-        step("OK", "stats.html's api.crol-list.org link stays same-tab (own resource)", "target=None")
+        step("OK", "stats.html's api.cityscroll.org link stays same-tab (own resource)", "target=None")
     browser.close()
 
 assert not failures, f"external-links gate: {len(failures)} failure(s): {failures}"

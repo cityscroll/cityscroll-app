@@ -14,7 +14,7 @@ export async function handleConfirm(req, env) {
   const res = await verifyToken(env.TOKEN_SECRET, token);
   if (!res.valid) {
     const msg = res.reason === "expired"
-      ? "This confirmation link has expired. Please subscribe again on crol-list.org."
+      ? "This confirmation link has expired. Please subscribe again on cityscroll.org."
       : "This confirmation link is invalid.";
     return page("Link not valid", msg, 400);
   }

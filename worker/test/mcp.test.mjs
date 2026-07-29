@@ -26,7 +26,7 @@ function mockDb(rows) {
 }
 
 function post(body, headers = {}) {
-  return new Request("https://api.crol-list.org/mcp", {
+  return new Request("https://api.cityscroll.org/mcp", {
     method: "POST",
     headers: { "content-type": "application/json", "CF-Connecting-IP": "203.0.113.9", ...headers },
     body: JSON.stringify(body),

@@ -103,8 +103,8 @@ test("a no-match agency string degrades gracefully (null, no throw)", () => {
 // --- GET /agency endpoint ---------------------------------------------------------------------
 
 function get(name) {
-  const url = "https://api.crol-list.org/agency" + (name == null ? "" : "?name=" + encodeURIComponent(name));
-  return handleAgency(new Request(url, { headers: { origin: "https://crol-list.org" } }), {});
+  const url = "https://api.cityscroll.org/agency" + (name == null ? "" : "?name=" + encodeURIComponent(name));
+  return handleAgency(new Request(url, { headers: { origin: "https://cityscroll.org" } }), {});
 }
 
 test("GET /agency returns the identity card + provenance for a matched agency", async () => {
@@ -133,7 +133,7 @@ test("GET /agency returns matched:false (not an error) for an unresolved agency"
 test("GET /agency without a name is a 400, and OPTIONS preflight is 204", async () => {
   assert.equal((await get(null)).status, 400);
   const pre = await handleAgency(
-    new Request("https://api.crol-list.org/agency", { method: "OPTIONS", headers: { origin: "https://crol-list.org" } }),
+    new Request("https://api.cityscroll.org/agency", { method: "OPTIONS", headers: { origin: "https://cityscroll.org" } }),
     {}
   );
   assert.equal(pre.status, 204);

@@ -1,7 +1,7 @@
 // Live e2e over every public route of the deployed worker. Read-only where possible; the one
 // write (/inv) is a tiny TTL'd snapshot. Never completes a real subscription (that would email).
 //
-//   CROL_WORKER_URL=https://api.crol-list.org npm run test:live
+//   CROL_WORKER_URL=https://api.cityscroll.org npm run test:live
 //
 // Defaults to the workers.dev alias so the suite also proves the alias stays alive
 // (regression for the 2026-07-02 workers_dev=false incident).
@@ -10,7 +10,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 
 const BASE = (process.env.CROL_WORKER_URL || "https://crol-worker.crol-worker.workers.dev").replace(/\/+$/, "");
-const ORIGIN = { Origin: "https://crol-list.org" };
+const ORIGIN = { Origin: "https://cityscroll.org" };
 const json = (body) => ({ method: "POST", headers: { "Content-Type": "application/json", ...ORIGIN }, body: JSON.stringify(body) });
 
 test("health", async () => {

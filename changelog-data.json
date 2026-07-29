@@ -17,7 +17,7 @@
       "pr": 80,
       "merged_at": "2026-07-17",
       "url": "https://github.com/cityscroll/crol-list/pull/80",
-      "text": "Some agencies don't file their awards in the City Record — they post them elsewhere. CROL-List now checks those outside sources for you: it shows what it finds, links to the source, and says so honestly when nothing has turned up yet. If a notice has no award on file, you can ask to be emailed the moment one appears — click \"Email me when the award registers,\" confirm your email once, and you're done. No extra emails until there's real news.",
+      "text": "Some agencies don't file their awards in the City Record — they post them elsewhere. CityScroll now checks those outside sources for you: it shows what it finds, links to the source, and says so honestly when nothing has turned up yet. If a notice has no award on file, you can ask to be emailed the moment one appears — click \"Email me when the award registers,\" confirm your email once, and you're done. No extra emails until there's real news.",
       "merged_prs": [
         {
           "pr": 70,
@@ -47,7 +47,7 @@
       "pr": 74,
       "merged_at": "2026-07-17",
       "url": "https://github.com/cityscroll/crol-list/pull/74",
-      "text": "Click a link in a CROL-List digest email. You used to land on a bare notice page. Now you see why it matched. The matching word is highlighted. You also see a plain summary of your watch.",
+      "text": "Click a link in a CityScroll digest email. You used to land on a bare notice page. Now you see why it matched. The matching word is highlighted. You also see a plain summary of your watch.",
       "media": {
         "screenshots": [
           {

@@ -102,7 +102,7 @@ test("currentAwardCandidates: verified-absent and unknown agencies both resolve 
 
 function baseCtx(today) {
   return {
-    FROM: "CROL-List <alerts@crol-list.org>", LIVE: true, heartbeatDays: 14, today, isMonday: true,
+    FROM: "CityScroll <alerts@crol-list.org>", LIVE: true, heartbeatDays: 14, today, isMonday: true,
     counts: () => ({ "per-run": 0, daily: 0 }), caps: { "per-run": 25, daily: 50 }, onSent: async () => {},
   };
 }

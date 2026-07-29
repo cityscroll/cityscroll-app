@@ -8,7 +8,7 @@ import { buildAgencyCrosswalk, crosswalkCSV } from "./lib/agencies.mjs";
 
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const CACHE_SECONDS = 86400;
-const DATA_DICTIONARY = "https://crol-list.org/api.html#agency-crosswalk";
+const DATA_DICTIONARY = "https://cityscroll.org/api.html#agency-crosswalk";
 
 export async function handleAgencies(req, env, ctx) {
   const cors = corsHeaders();

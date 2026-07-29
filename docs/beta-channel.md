@@ -1,6 +1,6 @@
 # Beta release channel
 
-The public beta is a **promotion pointer**: `beta.crol-list.org` identifies one
+The public beta is a **promotion pointer**: `beta.cityscroll.org` identifies one
 exact reviewed commit. There is no long-lived `beta` branch and no second
 integration history.
 
@@ -15,7 +15,7 @@ the exact source commit.
 Only the verified `_site` directory is uploaded. Stable, preview, and beta use
 the same Jekyll build, deploy-time i18n stamp derivation, built-stamp check, and
 public-artifact gate. Review artifacts add an experimental banner, a link back
-to `crol-list.org`, commit metadata, and `X-Robots-Tag: noindex`. They retain
+to `cityscroll.org`, commit metadata, and `X-Robots-Tag: noindex`. They retain
 the stable site's canonical links.
 
 ## Ready-state contract
@@ -37,7 +37,7 @@ The site owner runs **Promote exact commit to beta** from GitHub Actions with:
 The preview and promotion workflows idempotently create the `crol-list-beta`
 Direct Upload project with `beta` as its production branch.
 Promotion is one owner-triggered workflow run: it deploys the selected commit
-and attaches `beta.crol-list.org`. Both workflows use the existing
+and attaches `beta.cityscroll.org`. Both workflows use the existing
 `CLOUDFLARE_API_TOKEN` repository secret. The token needs Cloudflare Pages
 Write access for the account. If Cloudflare rejects the token, update its
 permissions at the provider and replace the repository secret; do not put a
@@ -53,7 +53,7 @@ domain's `release-channel.json` after deployment, and fails unless the domain
 reports the selected commit and a no-index header.
 
 Rollback is the same operation: rerun the workflow with the prior known-good
-SHA. This re-points beta without changing `crol-list.org`, rewriting history,
+SHA. This re-points beta without changing `cityscroll.org`, rewriting history,
 or reverting source. The immutable URL in each successful workflow summary is
 the audit trail for what was reviewed and what was restored.
 
@@ -62,7 +62,7 @@ the audit trail for what was reviewed and what was restored.
 Review pages are static by default. If a change needs Worker behavior, the site
 owner can run **Deploy exact commit to beta Worker** with a full commit SHA and
 the `DEPLOY` confirmation. That manual workflow deploys the selected source to
-`api-beta.crol-list.org`; there is no automatic beta Worker deployment.
+`api-beta.cityscroll.org`; there is no automatic beta Worker deployment.
 
 The beta environment inherits no production bindings or secrets. It has no
 cron, queues, email route, D1, KV, R2, or Analytics Engine destination. Paid,

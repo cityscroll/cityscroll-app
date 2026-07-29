@@ -2,7 +2,7 @@
 """Capture deterministic before/after evidence for data.html chart encodings.
 
 The fixture values are a production snapshot observed on 2026-07-27 from the live
-NYC Open Data-backed page at https://crol-list.org/data.html. Both revisions receive
+NYC Open Data-backed page at https://cityscroll.org/data.html. Both revisions receive
 the same responses, so the screenshots isolate rendering and encoding changes.
 
 Run before committing:
@@ -35,7 +35,7 @@ from playwright.sync_api import Page, Route, sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "media" / "review" / "data-viz-intuitive"
-SOURCE = "https://crol-list.org/data.html"
+SOURCE = "https://cityscroll.org/data.html"
 OBSERVED_AT = "2026-07-27"
 
 FIXTURES = {

@@ -3,9 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Stats · CROL-List</title>
-<meta name="description" content="CROL-List's own usage, published: aggregate outcome counts for subscriptions, digests sent, notice-link clicks, and feed activity, refreshed regularly.">
-<link rel="canonical" href="https://crol-list.org/stats.html">
+<title>Stats · CityScroll</title>
+<meta name="description" content="CityScroll's own usage, published: aggregate outcome counts for subscriptions, digests sent, notice-link clicks, and feed activity, refreshed regularly.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://cityscroll.org/stats.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CityScroll">
+<meta property="og:title" content="Stats · CityScroll">
+<meta property="og:description" content="See CityScroll's privacy-preserving aggregate usage and outcome counts.">
+<meta property="og:url" content="https://cityscroll.org/stats.html">
+<meta property="og:image" content="https://cityscroll.org/assets/brand/cityscroll-social-card.png">
+<meta property="og:image:alt" content="CityScroll — the City Record, made legible">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#173f55">
+<link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/brand/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png" sizes="180x180">
+<link rel="manifest" href="site.webmanifest">
 <script src="i18n.js?v=__I18N_ASSET_VERSION__"></script>
 <script defer src="beta_flags.js?v=1.0.0"></script>
 <script defer src="analytics.js?v=1.2.0"></script>
@@ -67,21 +81,19 @@
   .skip:focus{left:0}
   :is(a,button,select,input,textarea,summary):focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
 </style>
+<link rel="stylesheet" href="brand.css">
 </head>
 <body>
 <a class="skip" href="#main" data-i18n="skip_to_content">Skip to content</a>
 <div class="wrap">
 <header>
   <div class="cr-rule"></div>
-  <a class="home" href="index.html" aria-label="Back to CROL-List home" data-i18n-aria="back_home_aria">
-    <svg class="cr-seal" viewBox="0 0 100 100" aria-hidden="true">
-      <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" stroke-width="1.5"/>
-      <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="0.6"/>
-      <path d="M50 18 L74 30 V58 Q74 76 50 86 Q26 76 26 58 V30 Z" fill="none" stroke="currentColor" stroke-width="1.3"/>
-      <line x1="26" y1="48" x2="74" y2="48" stroke="currentColor" stroke-width="0.6"/>
-      <path d="M50 30 L50 46 M42 38 L58 38" stroke="currentColor" stroke-width="1.1"/>
+  <a class="home brand-lockup brand-lockup--compact" href="index.html" aria-label="Back to CityScroll home" data-i18n-aria="back_home_aria">
+    <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true">
+      <path d="M14 5h29l8 8v42a4 4 0 0 1-4 4H14a4 4 0 0 1-4-4V9a4 4 0 0 1 4-4Z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/>
+      <path d="M43 5v10h8M20 23h22M20 31h22M20 49v-9h7v9h5V36h7v13h5v-6h7" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
-    <span class="cr-title">CROL-List</span>
+    <span class="cr-title">CityScroll</span>
   </a>
   <div class="kicker" data-i18n="site_kicker">The City Record, searchable</div>
   <h1 data-i18n="stats_link">Stats</h1>
@@ -100,7 +112,7 @@
   </div>
   <div id="langNotice" class="lang-notice" hidden></div>
   <div class="cr-rule cr-rule--bottom"></div>
-  <a class="backhome" href="index.html" data-i18n="back_to_crol">← Back to CROL-List</a>
+  <a class="backhome" href="index.html" data-i18n="back_to_crol">← Back to CityScroll</a>
 </header>
 
 <main id="main" tabindex="-1">
@@ -116,8 +128,8 @@
 <h2 data-i18n="stats_h_alltime">Totals</h2>
 <p class="src" data-i18n="stats_p_alltime">The same outcomes, added up instead of reset every 7 days.</p>
 <div class="grid" id="gridAllTime">
-  <div class="stat"><div class="n" id="s-digests-alltime">–</div><div class="l" data-i18n="stats_lbl_digests_alltime">Digests sent · all time</div><div class="d" data-i18n="stats_desc_digests_alltime">Every digest CROL-List has ever sent.</div><div class="d" id="s-digests-alltime-since"></div><div class="d stat-asof" data-stat-asof></div></div>
-  <div class="stat"><div class="n" id="s-nl-alltime">–</div><div class="l" data-i18n="stats_lbl_nl_alltime">Searches asked · all time</div><div class="d" data-i18n="stats_desc_nl_alltime">Every plain-English question CROL-List has ever answered.</div><div class="d" id="s-nl-alltime-since"></div><div class="d stat-asof" data-stat-asof></div></div>
+  <div class="stat"><div class="n" id="s-digests-alltime">–</div><div class="l" data-i18n="stats_lbl_digests_alltime">Digests sent · all time</div><div class="d" data-i18n="stats_desc_digests_alltime">Every digest CityScroll has ever sent.</div><div class="d" id="s-digests-alltime-since"></div><div class="d stat-asof" data-stat-asof></div></div>
+  <div class="stat"><div class="n" id="s-nl-alltime">–</div><div class="l" data-i18n="stats_lbl_nl_alltime">Searches asked · all time</div><div class="d" data-i18n="stats_desc_nl_alltime">Every plain-English question CityScroll has ever answered.</div><div class="d" id="s-nl-alltime-since"></div><div class="d stat-asof" data-stat-asof></div></div>
 </div>
 
 <h2 data-i18n="stats_h_category">Digests, by topic</h2>
@@ -144,7 +156,7 @@
 <p class="src histera" id="lensSinceNote" hidden></p>
 <p class="src" data-stat-asof></p>
 
-<h2 data-i18n="stats_h_usage">How people use CROL-List</h2>
+<h2 data-i18n="stats_h_usage">How people use CityScroll</h2>
 <p class="src" data-i18n="stats_p_usage">Site totals. See use by day. No cookies. No visitor profiles.</p>
 <div class="grid" id="gridUsage">
   <div class="stat"><div class="n" id="s-pageviews">–</div><div class="l" data-i18n="stats_lbl_pageviews">Page views · 7 days</div><div class="d stat-asof" data-stat-asof data-usage-asof></div></div>
@@ -194,7 +206,7 @@
 <p class="src" data-stat-asof></p>
 
 <h2 data-i18n="stats_h_technical">Technical details</h2>
-<p class="src" data-i18n="stats_p_technical">How the numbers above are put together. You don't need to know this to use CROL-List.</p>
+<p class="src" data-i18n="stats_p_technical">How the numbers above are put together. You don't need to know this to use CityScroll.</p>
 <div class="grid" id="gridTechnical">
   <div class="stat"><div class="n" id="s-clicks">–</div><div class="l" data-i18n="stats_lbl_clicks">Digest links followed · 7 days</div><div class="d" data-i18n-html="stats_desc_clicks_html">Daily counts from the notice-link redirect — <a href="changelog.html#2026-07-02b">how this works</a>.</div><div class="d stat-asof" data-stat-asof></div></div>
   <div class="stat"><div class="n" id="s-feeds">–</div><div class="l" data-i18n="stats_lbl_feeds">Feed fetches · 7 days</div><div class="d" data-i18n="stats_desc_feeds">RSS/Atom/JSON/calendar pulls, as seen at the origin (edge-cached hits aren't counted).</div><div class="d stat-asof" data-stat-asof></div></div>
@@ -204,7 +216,7 @@
 
 </main>
 <footer class="foot">
-  <p data-i18n-html="stats_foot_html">Raw JSON: <a href="https://api.crol-list.org/stats">api.crol-list.org/stats</a> (cached ~15 min) ·
+  <p data-i18n-html="stats_foot_html">Raw JSON: <a href="https://api.cityscroll.org/stats">api.cityscroll.org/stats</a> (cached ~15 min) ·
   <a href="changelog.html">Changelog</a> · <a href="about.html">About</a> · <a href="index.html">Home</a></p>
 </footer>
 </div>
@@ -402,7 +414,7 @@
   initSubpageLangSwitcher(paint);
   const bases = window.CROL_API_ORIGIN
     ? [window.CROL_API_ORIGIN]
-    : ["https://api.crol-list.org", "https://crol-worker.crol-worker.workers.dev"];
+    : ["https://api.cityscroll.org", "https://crol-worker.crol-worker.workers.dev"];
   for (const base of bases) {
     try {
       const r = await fetch(base + "/stats", { signal: AbortSignal.timeout(8000) });

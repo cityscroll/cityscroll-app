@@ -6,7 +6,7 @@ import assert from "node:assert/strict";
 import { replyAddr, listUnsubscribe } from "optin-token";
 
 test("replyAddr extracts the address from a display-name From", () => {
-  assert.equal(replyAddr("CROL-List <alerts@crol-list.org>"), "alerts@crol-list.org");
+  assert.equal(replyAddr("CityScroll <alerts@crol-list.org>"), "alerts@crol-list.org");
 });
 
 test("replyAddr passes through a bare address", () => {
@@ -15,7 +15,7 @@ test("replyAddr passes through a bare address", () => {
 
 test("listUnsubscribe builds an angle-bracketed mailto with an encoded subject", () => {
   assert.equal(
-    listUnsubscribe("CROL-List <alerts@crol-list.org>", "awards-1m"),
+    listUnsubscribe("CityScroll <alerts@crol-list.org>", "awards-1m"),
     "<mailto:alerts@crol-list.org?subject=unsubscribe%20awards-1m>"
   );
 });

@@ -30,7 +30,7 @@ class MockKV {
 }
 
 function confirmReq(token) {
-  return new Request(`https://api.crol-list.org/confirm?token=${encodeURIComponent(token)}`);
+  return new Request(`https://api.cityscroll.org/confirm?token=${encodeURIComponent(token)}`);
 }
 
 async function confirmWatch(env, { email, lens, filter, freq = "daily", lang = "en" }) {
@@ -79,7 +79,7 @@ test("unsubscribing one watch leaves the email's other watches intact", async ()
   const [first, second] = subKeys(env).sort();
 
   const unsubToken = await signToken(SECRET, { k: first }, { ttlSeconds: 3600 });
-  const res = await handleUnsubscribe(new Request(`https://api.crol-list.org/unsubscribe?token=${encodeURIComponent(unsubToken)}`), env);
+  const res = await handleUnsubscribe(new Request(`https://api.cityscroll.org/unsubscribe?token=${encodeURIComponent(unsubToken)}`), env);
   assert.equal(res.status, 200);
 
   const remaining = subKeys(env);
@@ -126,7 +126,7 @@ test("sharp edge (by design): failed subscribe ATTEMPTS consume the per-address 
   try {
     const post = () =>
       handleSubscribe(
-        new Request("https://api.crol-list.org/subscribe", {
+        new Request("https://api.cityscroll.org/subscribe", {
           method: "POST",
           headers: { "Content-Type": "application/json", "CF-Connecting-IP": "203.0.113.7" },
           body: JSON.stringify({ email: "anna@example.com", lens: "money", filter: {}, turnstileToken: "bad" }),

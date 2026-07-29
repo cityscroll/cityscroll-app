@@ -11,7 +11,7 @@ import { pathToFileURL } from "node:url";
 const API_ROOT = "https://api.cloudflare.com/client/v4";
 export const PROJECT_NAME = "crol-list-beta";
 export const PRODUCTION_BRANCH = "beta";
-export const BETA_DOMAIN = "beta.crol-list.org";
+export const BETA_DOMAIN = "beta.cityscroll.org";
 
 function errorMessage(payload, status) {
   const messages = Array.isArray(payload?.errors)

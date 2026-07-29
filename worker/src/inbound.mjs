@@ -74,14 +74,14 @@ export async function handleInboundEmail(message, env) {
       '  "construction contract awards over $500k"\n' +
       '  "rezoning notices in Brooklyn"\n' +
       '  "upcoming public hearings about transportation"\n\n' +
-      "Or build it on the site: https://crol-list.org/");
+      "Or build it on the site: https://cityscroll.org/");
     return;
   }
 
   const filter = parsedFilter.filter;
   const sub = buildSubscription({ email: from, lens, filter, freq: "daily" });
   const token = await signToken(env.TOKEN_SECRET, { e: sub.email, l: lens, f: filter, c: "email", q: sub.freq }, { ttlSeconds: CONFIRM_TTL });
-  const base = env.CONFIRM_BASE || "https://api.crol-list.org";
+  const base = env.CONFIRM_BASE || "https://api.cityscroll.org";
   const confirmUrl = `${base}/confirm?token=${encodeURIComponent(token)}`;
 
   // The confirm email itself carries the "we understood you as…" description
@@ -98,11 +98,11 @@ export async function handleInboundEmail(message, env) {
 // discipline). Preview of matches is intentionally omitted here: the confirm email
 // describes the watch, and /confirm's landing shows what it covers.
 async function reply(env, to, subject, text) {
-  const fromHdr = env.ALERTS_FROM || "CROL-List <alerts@crol-list.org>";
+  const fromHdr = env.ALERTS_FROM || "CityScroll <alerts@crol-list.org>";
   const r = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: { "content-type": "application/json", authorization: `Bearer ${env.RESEND_API_KEY}` },
-    body: JSON.stringify({ from: fromHdr, to, subject: "Re: " + (subject || "your CROL-List request"), text }),
+    body: JSON.stringify({ from: fromHdr, to, subject: "Re: " + (subject || "your CityScroll request"), text }),
   });
   if (!r.ok) throw new Error(`Resend ${r.status}`);
 }

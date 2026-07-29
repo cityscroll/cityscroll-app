@@ -122,16 +122,16 @@ function decodeMatrix(modules) {
 }
 
 test("matrix decodes to the exact bare canonical landing URL", () => {
-  const url = "https://crol-list.org/";
+  const url = "https://cityscroll.org/";
   assert.equal(decodeMatrix(sandbox.QRShare.matrix(url)), url);
 });
 
 test("filtered, entity, located, and saved-preset URLs survive matrix encoding exactly", () => {
   const urls = [
-    "https://crol-list.org/#vendor/Acme%20Gardens",
-    "https://crol-list.org/#land?boro=Queens",
-    "https://crol-list.org/#land?boro=Queens&cd=Q04",
-    "https://crol-list.org/#rules?q=sidewalk",
+    "https://cityscroll.org/#vendor/Acme%20Gardens",
+    "https://cityscroll.org/#land?boro=Queens",
+    "https://cityscroll.org/#land?boro=Queens&cd=Q04",
+    "https://cityscroll.org/#rules?q=sidewalk",
   ];
   for (const url of urls) assert.equal(decodeMatrix(sandbox.QRShare.matrix(url)), url);
 });
@@ -147,11 +147,11 @@ test("located Land QR equals Copy link's coarse-area canonical URL", () => {
   }, "active");
   const hash = buildSearchDeepLink("land", filter);
   const copyLinkOutput = canonicalSearchURL(
-    { origin: "https://crol-list.org", pathname: "/" },
+    { origin: "https://cityscroll.org", pathname: "/" },
     hash,
   );
 
-  assert.equal(copyLinkOutput, "https://crol-list.org/#land?boro=Queens&cd=Q04");
+  assert.equal(copyLinkOutput, "https://cityscroll.org/#land?boro=Queens&cd=Q04");
   assert.equal(decodeMatrix(sandbox.QRShare.matrix(copyLinkOutput)), copyLinkOutput);
   assert.doesNotMatch(copyLinkOutput, /(?:lat|latitude|lon|longitude|40\.7473|-73\.8832|4014930012)/i);
 });

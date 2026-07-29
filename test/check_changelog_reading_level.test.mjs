@@ -56,7 +56,7 @@ const BASE_HTML = `<!doctype html>
   <!-- CHANGELOG:AUTO:END --></ul>
 <script>console.log("hidden, not measured")</script>
 </main>
-<footer><p>CROL-List tracks city contracts and hearings in plain English.</p></footer>
+<footer><p>CityScroll tracks city contracts and hearings in plain English.</p></footer>
 </body>
 </html>
 `;
@@ -91,9 +91,9 @@ const BASELINE = {
 };
 
 const PR_74_ORIGINAL =
-  "Following a link from a CROL-List digest email now shows *why* that notice was in your digest — the matching keyword highlighted in the title or a description snippet, plus a plain-language summary of your watch — instead of a bare notice page.";
+  "Following a link from a CityScroll digest email now shows *why* that notice was in your digest — the matching keyword highlighted in the title or a description snippet, plus a plain-language summary of your watch — instead of a bare notice page.";
 const PR_74_PLAIN =
-  "Click a link in a CROL-List digest email. You used to land on a bare notice page. Now you see why it matched. The matching word is highlighted. You also see a plain summary of your watch.";
+  "Click a link in a CityScroll digest email. You used to land on a bare notice page. Now you see why it matched. The matching word is highlighted. You also see a plain summary of your watch.";
 const PR_72_ORIGINAL =
   "If one of your saved alerts hasn't found anything new in a couple of months, its next email will say so and link you straight back to the alerts page with that exact search already loaded, so you can see what it's currently looking for and broaden it in one step.";
 const PR_72_PLAIN =

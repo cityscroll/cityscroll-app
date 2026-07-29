@@ -96,10 +96,10 @@ test("same-hash sharing resolves to a canonical absolute URL and opens a new tab
   assert.equal(typeof canonicalSearchURL, "function");
   assert.equal(
     canonicalSearchURL(
-      { origin: "https://crol-list.org", pathname: "/index.html" },
+      { origin: "https://cityscroll.org", pathname: "/index.html" },
       PINNED_HASH,
     ),
-    "https://crol-list.org/index.html" + PINNED_HASH,
+    "https://cityscroll.org/index.html" + PINNED_HASH,
   );
   assert.match(
     indexSource,
