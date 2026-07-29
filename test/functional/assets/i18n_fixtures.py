@@ -366,16 +366,16 @@ def install_routes(page):
     page.route("https://geosearch.planninglabs.nyc/**", fixed({"features": []}))
     page.route("https://services5.arcgis.com/**", fixed({}))
     # Worker API and third-party scripts: dead. Every feature must degrade gracefully.
-    page.route("https://api.crol-list.org/**", lambda r: r.abort())
+    page.route("https://api.cityscroll.org/**", lambda r: r.abort())
     # ...except /inv/<name> forecast lookups (see FORECAST_ROWS above) — registered after the
     # catch-all abort so it wins (Playwright matches newest-registered route first).
-    page.route("https://api.crol-list.org/inv/**", fixed(FORECAST_ROWS))
+    page.route("https://api.cityscroll.org/inv/**", fixed(FORECAST_ROWS))
     # ...and /priorcycle/<request_id> (see PRIOR_CYCLE_MATCHES above) — same reason: registered
     # after the catch-all abort so the prior-cycle panel renders and stays guard-covered.
-    page.route("https://api.crol-list.org/priorcycle/**", fixed(PRIOR_CYCLE_MATCHES))
+    page.route("https://api.cityscroll.org/priorcycle/**", fixed(PRIOR_CYCLE_MATCHES))
     # ...and /externalaward (awards published elsewhere) — a fuzzy ABO response so the agency
     # profile's external-awards panel renders and stays guard-covered.
-    page.route("https://api.crol-list.org/externalaward*", fixed(EXTERNAL_AWARD))
+    page.route("https://api.cityscroll.org/externalaward*", fixed(EXTERNAL_AWARD))
     page.route("https://crol-worker.crol-worker.workers.dev/**", lambda r: r.abort())
     page.route("https://crol-worker.crol-worker.workers.dev/priorcycle/**", fixed(PRIOR_CYCLE_MATCHES))
     page.route("https://crol-worker.crol-worker.workers.dev/externalaward*", fixed(EXTERNAL_AWARD))

@@ -38,7 +38,7 @@ export function feedItems(kind, rows) {
     }
     return {
       id: String(r.request_id || ""),
-      url: `https://crol-list.org/#notice/${encodeURIComponent(r.request_id || "")}`,
+      url: `https://cityscroll.org/#notice/${encodeURIComponent(r.request_id || "")}`,
       title: stripHtml(r.short_title) || "(untitled notice)",
       date: r.start_date || null,
       summary: [
@@ -111,7 +111,7 @@ export function icsFeed({ title, items }) {
       "END:VEVENT",
     ].join("\r\n"));
   return [
-    "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//CROL-List//feeds//EN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH",
+    "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//CityScroll//feeds//EN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH",
     `X-WR-CALNAME:${escIcs(title)}`,
     ...events,
     "END:VCALENDAR", "",

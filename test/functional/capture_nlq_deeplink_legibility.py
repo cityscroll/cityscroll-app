@@ -103,7 +103,7 @@ def install_routes(page: Page) -> None:
             json_response(route, [])
 
     page.route("https://data.cityofnewyork.us/**", city_data)
-    page.route("https://api.crol-list.org/**", lambda route: json_response(route, {}))
+    page.route("https://api.cityscroll.org/**", lambda route: json_response(route, {}))
     page.route(
         "https://crol-worker.crol-worker.workers.dev/**",
         lambda route: json_response(route, {}),

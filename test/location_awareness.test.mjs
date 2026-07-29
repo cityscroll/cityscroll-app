@@ -321,12 +321,12 @@ test("a located Land view emits only its resolved coarse area", () => {
   }, "active");
   const hash = buildSearchDeepLink("land", filter);
   const url = canonicalSearchURL(
-    { origin: "https://crol-list.org", pathname: "/" },
+    { origin: "https://cityscroll.org", pathname: "/" },
     hash,
   );
 
   assert.equal(hash, "#land?boro=Queens&cd=Q04");
-  assert.equal(url, "https://crol-list.org/#land?boro=Queens&cd=Q04");
+  assert.equal(url, "https://cityscroll.org/#land?boro=Queens&cd=Q04");
   assert.doesNotMatch(url, /(?:lat|latitude|lon|longitude|40\.7473|-73\.8832|4014930012)/i);
 });
 

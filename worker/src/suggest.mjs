@@ -132,14 +132,14 @@ export async function runSuggestionValidation(env) {
 }
 
 const ALLOW = new Set([
-  "https://crol-list.org", "https://www.crol-list.org",
   "https://cityscroll.org", "https://www.cityscroll.org",
+  "https://crol-list.org", "https://www.crol-list.org",
   "https://crol-list.jimdc.com", "https://jimdc.github.io",
   "http://localhost:8000", "http://localhost:8787",
 ]);
 
 function corsHeaders(origin) {
-  const o = ALLOW.has(origin) ? origin : "https://crol-list.org";
+  const o = ALLOW.has(origin) ? origin : "https://cityscroll.org";
   return {
     "Access-Control-Allow-Origin": o,
     "Access-Control-Allow-Methods": "GET, OPTIONS",

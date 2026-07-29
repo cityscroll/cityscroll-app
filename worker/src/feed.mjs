@@ -55,9 +55,9 @@ export async function handleFeed(request, env, ctx) {
     return plain("upstream data source unavailable — retry shortly", 502);
   }
 
-  const title = `CROL-List — ${describeFilter(lens, sub.filter)}`;
+  const title = `CityScroll — ${describeFilter(lens, sub.filter)}`;
   const items = feedItems(q.kind, rows);
-  const siteUrl = "https://crol-list.org/";
+  const siteUrl = "https://cityscroll.org/";
   const updated = new Date().toISOString();
 
   let body;

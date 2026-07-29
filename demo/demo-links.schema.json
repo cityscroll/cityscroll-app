@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://crol-list.org/demo/demo-links.schema.json",
-  "title": "CROL-List demo links",
+  "$id": "https://cityscroll.org/demo/demo-links.schema.json",
+  "title": "CityScroll demo links",
   "description": "Public demo routes and the browser-visible behavior each route preserves.",
   "type": "object",
   "additionalProperties": false,

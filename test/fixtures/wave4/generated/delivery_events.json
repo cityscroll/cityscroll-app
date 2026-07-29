@@ -129,7 +129,7 @@
           "checkbook_nyc"
         ],
         "source": "Coverage ledger",
-        "source_url": "https://crol-list.org/data.html",
+        "source_url": "https://cityscroll.org/data.html",
         "schema_version": "coverage-ledger-v1",
         "missing_reason": "not_published"
       },
@@ -148,7 +148,7 @@
             "checkbook_nyc"
           ],
           "source": "Coverage ledger",
-          "source_url": "https://crol-list.org/data.html",
+          "source_url": "https://cityscroll.org/data.html",
           "schema_version": "coverage-ledger-v1",
           "missing_reason": "not_published"
         }

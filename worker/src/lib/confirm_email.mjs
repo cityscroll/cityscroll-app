@@ -64,12 +64,12 @@ export function confirmEmailHtml({ confirmUrl, lens, filter, freq = "daily", lan
 // trusted HTML the caller assembles (never raw user input); `title` is escaped.
 export function htmlPage(title, message) {
   return `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${esc(title)} · CROL-List</title>
+<title>${esc(title)} · CityScroll</title>
 <body style="margin:0;background:#f4efe4;color:#1a1714;font:17px/1.6 Georgia,serif">
 <div style="max-width:520px;margin:14vh auto;padding:0 24px;text-align:center">
-  <div style="font:700 13px/1 system-ui;letter-spacing:.18em;text-transform:uppercase;color:#7a1f1f">CROL-List</div>
+  <div style="font:700 13px/1 system-ui;letter-spacing:.18em;text-transform:uppercase;color:#7a1f1f">CityScroll</div>
   <h1 style="font-size:28px;margin:14px 0 8px">${esc(title)}</h1>
   <p style="color:#3b342c">${message}</p>
-  <p style="margin-top:24px"><a href="https://crol-list.org" style="color:#7a1f1f">← crol-list.org</a></p>
+  <p style="margin-top:24px"><a href="https://cityscroll.org" style="color:#7a1f1f">← cityscroll.org</a></p>
 </div>`;
 }

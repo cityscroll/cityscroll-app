@@ -1,4 +1,4 @@
-# CROL-List aggregate event taxonomy
+# CityScroll aggregate event taxonomy
 
 Version: **1.1.0**
 Dataset: **`crol_usage_events_v1`**
@@ -138,7 +138,7 @@ about 2,880 SQL reads in a 30-day month, far below the included million. One acc
 uses one write.
 
 Platform constraints applied here: at most 20 blobs, 20 doubles, one index, 16 KiB of blob data,
-and 250 data points per Worker invocation. CROL-List uses six short blobs, one double, one index,
+and 250 data points per Worker invocation. CityScroll uses six short blobs, one double, one index,
 and one point per invocation.
 
 Sources:

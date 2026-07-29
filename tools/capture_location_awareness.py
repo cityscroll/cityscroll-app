@@ -116,7 +116,7 @@ def install_routes(page: Page) -> None:
     page.route("https://fonts.googleapis.com/**", lambda route: route.abort())
     page.route("https://fonts.gstatic.com/**", lambda route: route.abort())
     page.route("https://static.cloudflareinsights.com/**", lambda route: route.abort())
-    page.route("https://api.crol-list.org/**", lambda route: json_response(route, {}))
+    page.route("https://api.cityscroll.org/**", lambda route: json_response(route, {}))
     page.route(
         "https://crol-worker.crol-worker.workers.dev/**",
         lambda route: json_response(route, {}),

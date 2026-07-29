@@ -25,11 +25,11 @@ test("parseFeedQuery: lens + q/agency/min extracted, keywords capped at 4", () =
   assert.equal(filter.minAmount, 250000);
 });
 
-test("feedItems: City Record rows → crol-list permalinks, titles cleaned, dates carried", () => {
+test("feedItems: City Record rows → CityScroll permalinks, titles cleaned, dates carried", () => {
   const items = feedItems("rules", [CR_ROW]);
   assert.equal(items.length, 1);
   assert.equal(items[0].id, "20260630012");
-  assert.equal(items[0].url, "https://crol-list.org/#notice/20260630012");
+  assert.equal(items[0].url, "https://cityscroll.org/#notice/20260630012");
   assert.ok(!items[0].title.includes("<b>"), "html stripped from title");
   assert.equal(items[0].date, "2026-06-30T00:00:00");
   assert.match(items[0].summary, /Buildings/);
@@ -46,9 +46,9 @@ test("feedItems: ZAP rows → ZAP project links", () => {
 
 test("atomFeed: well-formed, escaped, one entry per item", () => {
   const xml = atomFeed({
-    title: 'CROL-List — rules & notices — about "scaffold"',
+    title: 'CityScroll — rules & notices — about "scaffold"',
     selfUrl: "https://w.example/feed.xml?lens=rules&q=scaffold",
-    siteUrl: "https://crol-list.org/",
+    siteUrl: "https://cityscroll.org/",
     updated: "2026-07-01T13:00:00Z",
     items: feedItems("rules", [CR_ROW]),
   });
@@ -56,15 +56,15 @@ test("atomFeed: well-formed, escaped, one entry per item", () => {
   assert.match(xml, /<feed xmlns="http:\/\/www\.w3\.org\/2005\/Atom">/);
   assert.match(xml, /&amp;q=scaffold/, "self link query escaped");
   assert.match(xml, /<entry>/);
-  assert.match(xml, /href="https:\/\/crol-list\.org\/#notice\/20260630012"/);
+  assert.match(xml, /href="https:\/\/cityscroll\.org\/#notice\/20260630012"/);
   assert.ok(!/<b>/.test(xml), "no raw html leaks");
   assert.match(xml, /scaffold certification &amp; fees/, "title text escaped");
 });
 
 test("jsonFeed: valid JSON Feed 1.1 with items", () => {
   const s = jsonFeed({
-    title: "CROL-List — rules", selfUrl: "https://w.example/feed.json?lens=rules",
-    siteUrl: "https://crol-list.org/", items: feedItems("rules", [CR_ROW]),
+    title: "CityScroll — rules", selfUrl: "https://w.example/feed.json?lens=rules",
+    siteUrl: "https://cityscroll.org/", items: feedItems("rules", [CR_ROW]),
   });
   const j = JSON.parse(s);
   assert.equal(j.version, "https://jsonfeed.org/version/1.1");
@@ -73,10 +73,10 @@ test("jsonFeed: valid JSON Feed 1.1 with items", () => {
   assert.match(j.items[0].url, /#notice\/20260630012/);
 });
 
-test("icsFeed: rows with an event/due date become VEVENTs; dateless rows are skipped", () => {
-  const ics = icsFeed({ title: "CROL-List — meetings", items: feedItems("meetings", [EV_ROW, { request_id: "x1", short_title: "no dates" }]) });
+test("icsFeed: canonical flip preserves existing UID namespace to avoid duplicate calendars", () => {
+  const ics = icsFeed({ title: "CityScroll — meetings", items: feedItems("meetings", [EV_ROW, { request_id: "x1", short_title: "no dates" }]) });
   assert.match(ics, /BEGIN:VCALENDAR/);
-  assert.match(ics, /X-WR-CALNAME:CROL-List — meetings/);
+  assert.match(ics, /X-WR-CALNAME:CityScroll — meetings/);
   assert.equal((ics.match(/BEGIN:VEVENT/g) || []).length, 1);
   assert.match(ics, /UID:20260629001@crol-list/);
   assert.match(ics, /DTSTART:20260714T183000/);

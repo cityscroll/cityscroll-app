@@ -79,7 +79,7 @@ test("searchHealthStatus: malformed stored health (wrong shape/type) fails soft,
 
 test("alertsFixUrl: builds a hash deep link carrying lens/filter/freq, decodable back to the same filter", () => {
   const url = alertsFixUrl("money", { keywords: ["asbestos"], minAmount: 200000 }, "weekly");
-  assert.ok(url.startsWith("https://crol-list.org/#alerts?"), url);
+  assert.ok(url.startsWith("https://cityscroll.org/#alerts?"), url);
   const q = new URLSearchParams(url.split("?")[1]);
   assert.equal(q.get("lens"), "money");
   assert.deepEqual(JSON.parse(q.get("filter")), { keywords: ["asbestos"], minAmount: 200000 });
@@ -92,7 +92,7 @@ test("alertsFixUrl: omits freq entirely when not given, rather than emitting fre
 });
 
 test("searchHealthNoteHtml: escapes the fix-path URL and states the actual quiet span in whole weeks", () => {
-  const html = searchHealthNoteHtml({ lang: "en", quietDays: 70, url: "https://crol-list.org/#alerts?lens=money&filter=%7B%7D" });
+  const html = searchHealthNoteHtml({ lang: "en", quietDays: 70, url: "https://cityscroll.org/#alerts?lens=money&filter=%7B%7D" });
   assert.match(html, /10 weeks/); // 70 days -> 10 weeks
   assert.ok(html.includes("&amp;"), "the & in the URL's query string must be escaped for safe HTML embedding");
   assert.ok(!html.includes("filter=%7B%7D&filter="), "sanity: no double-encoding");
@@ -117,7 +117,7 @@ class MockKV {
 
 function baseCtx(today) {
   return {
-    FROM: "CROL-List <alerts@crol-list.org>",
+    FROM: "CityScroll <alerts@crol-list.org>",
     LIVE: true,
     heartbeatDays: 14,
     today,

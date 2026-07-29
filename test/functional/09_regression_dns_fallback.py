@@ -1,5 +1,5 @@
 """Regression for the 2026-07-02 share failure (James, agency 'City Planning Commission'):
-api.crol-list.org unreachable (stale NXDOMAIN) must NOT kill worker features — workerFetch
+api.cityscroll.org unreachable (stale NXDOMAIN) must NOT kill worker features — workerFetch
 fails over to the workers.dev alias. Runs the pin→share flow twice: healthy DNS and NXDOMAIN."""
 import os, sys
 from playwright.sync_api import sync_playwright
@@ -11,7 +11,7 @@ def step(tag, name, detail=""):
     print(f"{tag} {name}" + (f" -> {detail}" if detail else ""), flush=True)
 
 def run_share(pw, rules_suffix, label):
-    args = [f"--host-resolver-rules=MAP api.crol-list.org {rules_suffix}"] if rules_suffix else []
+    args = [f"--host-resolver-rules=MAP api.cityscroll.org {rules_suffix}"] if rules_suffix else []
     b = pw.chromium.launch(args=args)
     page = b.new_context().new_page()
     page.goto(BASE + "#agency/City%20Planning%20Commission", timeout=30000)

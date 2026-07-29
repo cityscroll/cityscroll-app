@@ -70,7 +70,7 @@ test("refresh writes one materialized view and the read route serves it", async 
   assert.equal(result.status, "success");
   assert.ok(kv.values.has(HEARINGS_KV_KEY));
 
-  const response = await handleHearings(new Request("https://api.crol-list.org/hearings"), { ALERT_STATE: kv });
+  const response = await handleHearings(new Request("https://api.cityscroll.org/hearings"), { ALERT_STATE: kv });
   assert.equal(response.status, 200);
   assert.equal(response.headers.get("access-control-allow-origin"), "*");
   const body = await response.json();

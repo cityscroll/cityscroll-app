@@ -1,6 +1,6 @@
 # Demo link contract
 
-`demo-links.json` is the public, executable list of routes used to demonstrate CROL-List. Each
+`demo-links.json` is the public, executable list of routes used to demonstrate CityScroll. Each
 entry states what a visitor should see and what must not appear. The browser regression suite
 generates one test from every entry, so adding a route does not require another test function.
 

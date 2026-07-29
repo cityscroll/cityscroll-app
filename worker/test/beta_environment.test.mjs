@@ -9,6 +9,7 @@ test("beta deploy targets a distinct Worker and custom domain", () => {
   const beta = config.slice(config.indexOf("[env.beta]"));
 
   assert.match(beta, /^\[env\.beta\]$/m);
+  assert.match(beta, /api-beta\.cityscroll\.org/);
   assert.match(beta, /api-beta\.crol-list\.org/);
   assert.match(beta, /custom_domain = true/);
   assert.match(beta, /workers_dev = true/);
@@ -36,10 +37,11 @@ test("beta carries no production write, delivery, analytics, queue, or cron bind
   assert.match(beta, /^SOURCE_VAULT_ENABLED = "false"$/m);
 });
 
-test("production Worker routes and automatic deployment remain unchanged", () => {
+test("production Worker routes carry canonical and compatibility domains", () => {
   const config = read("../wrangler.toml");
   const production = config.slice(0, config.indexOf("[env.beta]"));
   for (const hostname of [
+    "api.cityscroll.org",
     "api.crol-list.org",
     "cityscroll.org",
     "www.cityscroll.org",
@@ -60,5 +62,5 @@ test("beta Worker deployment is manual, exact-commit, and opt-in", () => {
   assert.match(workflow, /\^\[0-9a-f\]\{40\}\$/);
   assert.match(workflow, /ref: \$\{\{ inputs\.commit_sha \}\}/);
   assert.match(workflow, /command: deploy --env beta/);
-  assert.match(workflow, /https:\/\/api-beta\.crol-list\.org\/health/);
+  assert.match(workflow, /https:\/\/api-beta\.cityscroll\.org\/health/);
 });

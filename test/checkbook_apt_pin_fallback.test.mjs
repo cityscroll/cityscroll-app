@@ -91,7 +91,7 @@ test("before (legacy behavior, still true for a genuine non-match): empty pin-fi
   // Characterizes the pre-fix code path in isolation: querying only \"pin\" and finding
   // nothing is what used to be reported straight to the reader as \"no registered contract.\"
   const { checkbookByPin } = load({
-    API: "https://api.crol-list.org",
+    API: "https://api.cityscroll.org",
     workerFetch: async () => ({ text: async () => EMPTY_XML }),
   });
   const rows = await checkbookByPin("82607Y0012");
@@ -100,7 +100,7 @@ test("before (legacy behavior, still true for a genuine non-match): empty pin-fi
 
 test("after: pin field empty, apt_pin field has the pre-2013 contract -> legacy match surfaces", async () => {
   const { checkbookByPin } = load({
-    API: "https://api.crol-list.org",
+    API: "https://api.cityscroll.org",
     workerFetch: async (path, opts) => {
       const field = fieldQueried(opts);
       if (field === "pin") return { text: async () => EMPTY_XML };
@@ -117,7 +117,7 @@ test("after: pin field empty, apt_pin field has the pre-2013 contract -> legacy 
 test("pin field already matches (modern PASSPort-era PIN) -> no apt_pin retry needed, same shape as before", async () => {
   let calls = 0;
   const { checkbookByPin } = load({
-    API: "https://api.crol-list.org",
+    API: "https://api.cityscroll.org",
     workerFetch: async (path, opts) => {
       calls++;
       const field = fieldQueried(opts);
@@ -132,7 +132,7 @@ test("pin field already matches (modern PASSPort-era PIN) -> no apt_pin retry ne
 
 test("both pin and apt_pin come back empty -> genuine non-match, same 'no registered contract' state as before", async () => {
   const { checkbookByPin } = load({
-    API: "https://api.crol-list.org",
+    API: "https://api.cityscroll.org",
     workerFetch: async () => ({ text: async () => EMPTY_XML }),
   });
   const rows = await checkbookByPin("82607Y0099");
@@ -142,7 +142,7 @@ test("both pin and apt_pin come back empty -> genuine non-match, same 'no regist
 test("proxy/network failure on the primary query -> null (unknown state), no apt_pin retry attempted", async () => {
   let calls = 0;
   const { checkbookByPin } = load({
-    API: "https://api.crol-list.org",
+    API: "https://api.cityscroll.org",
     workerFetch: async () => { calls++; throw new Error("network down"); },
   });
   await assert.rejects(() => checkbookByPin("82607Y0012"));

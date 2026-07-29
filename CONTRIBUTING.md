@@ -5,7 +5,7 @@ argument.
 
 ## How this project is governed
 
-CROL-List is built by a small team with maintainer governance — the code is public because
+CityScroll is built by a small team with maintainer governance — the code is public because
 transparency builds trust in a civic tool, not because development is crowd-sourced. In
 practice:
 
@@ -42,7 +42,7 @@ These rules built the project and they're not aspirational — every shipped fea
    `changelog.html` entry is automatic (see below) — write the marker section, don't hand-edit
    the page.
 4. **Live probes after deploy.** After `wrangler deploy`, hit the changed routes on
-   `api.crol-list.org` and confirm real behavior (this caught a production DNS incident within
+   `api.cityscroll.org` and confirm real behavior (this caught a production DNS incident within
    minutes once — see the changelog).
 5. **Honest failure.** If something can't be verified, say so where the next person will look —
    don't stamp it shipped.

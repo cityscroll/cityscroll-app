@@ -53,21 +53,21 @@ test("parseRedirect rejects junk: no URL smuggling, no odd chars, no empty parts
   ]) assert.equal(parseRedirect(bad), null, bad);
 });
 
-test("noticeUrl always targets crol-list.org (never an attacker-supplied URL)", () => {
-  assert.equal(noticeUrl("20260701123"), "https://crol-list.org/#notice/20260701123");
-  assert.ok(noticeUrl("a&b=c").startsWith("https://crol-list.org/#notice/"));
+test("noticeUrl always targets cityscroll.org (never an attacker-supplied URL)", () => {
+  assert.equal(noticeUrl("20260701123"), "https://cityscroll.org/#notice/20260701123");
+  assert.ok(noticeUrl("a&b=c").startsWith("https://cityscroll.org/#notice/"));
 });
 
 // w12-12: noticeUrl's second arg carries the originating watch's filter as a second hash
 // query segment, same "?tab=" idiom the site's own agencyHref()/vendorHref() already use.
 test("noticeUrl appends the watch filter as a ?w= query on the notice's own hash segment", () => {
   const url = noticeUrl("20260701123", '{"lens":"money","filter":{"keywords":["education"]}}');
-  assert.equal(url, "https://crol-list.org/#notice/20260701123?w=" +
+  assert.equal(url, "https://cityscroll.org/#notice/20260701123?w=" +
     encodeURIComponent('{"lens":"money","filter":{"keywords":["education"]}}'));
 });
 
 test("noticeUrl omits ?w= entirely when there's nothing to carry", () => {
-  assert.equal(noticeUrl("20260701123", null), "https://crol-list.org/#notice/20260701123");
+  assert.equal(noticeUrl("20260701123", null), "https://cityscroll.org/#notice/20260701123");
 });
 
 test("validWatchParam accepts a well-formed watch payload and rejects junk", () => {
@@ -103,11 +103,11 @@ test("handleRedirect 302s to the permalink and counts total + per-kind", async (
   const kv = fakeKV();
   const waits = [];
   const res = handleRedirect(
-    new Request("https://api.crol-list.org/r/money/20260701123"),
+    new Request("https://api.cityscroll.org/r/money/20260701123"),
     { ALERT_STATE: kv }, { waitUntil: (p) => waits.push(p) }, "/r/money/20260701123",
   );
   assert.equal(res.status, 302);
-  assert.equal(res.headers.get("Location"), "https://crol-list.org/#notice/20260701123");
+  assert.equal(res.headers.get("Location"), "https://cityscroll.org/#notice/20260701123");
   await Promise.all(waits);
   assert.equal(kv.store.get(`stats:click:${dayStr(new Date())}`), "1");
   assert.equal(kv.store.get(`stats:click.money:${dayStr(new Date())}`), "1");
@@ -121,27 +121,27 @@ test("handleRedirect carries a well-formed ?w= filter through to the notice's ha
   const kv = fakeKV();
   const w = encodeURIComponent('{"lens":"money","filter":{"keywords":["education"]}}');
   const res = handleRedirect(
-    new Request(`https://api.crol-list.org/r/rfp/20260701123?w=${w}`),
+    new Request(`https://api.cityscroll.org/r/rfp/20260701123?w=${w}`),
     { ALERT_STATE: kv }, { waitUntil() {} }, "/r/rfp/20260701123",
   );
   assert.equal(res.status, 302);
-  assert.equal(res.headers.get("Location"), `https://crol-list.org/#notice/20260701123?w=${w}`);
+  assert.equal(res.headers.get("Location"), `https://cityscroll.org/#notice/20260701123?w=${w}`);
 });
 
 test("handleRedirect drops an oversized/garbled ?w= rather than relay it — plain notice link, not a broken redirect", async () => {
   const kv = fakeKV();
   const res = handleRedirect(
-    new Request(`https://api.crol-list.org/r/rfp/20260701123?w=${"x".repeat(3000)}`),
+    new Request(`https://api.cityscroll.org/r/rfp/20260701123?w=${"x".repeat(3000)}`),
     { ALERT_STATE: kv }, { waitUntil() {} }, "/r/rfp/20260701123",
   );
-  assert.equal(res.headers.get("Location"), "https://crol-list.org/#notice/20260701123");
+  assert.equal(res.headers.get("Location"), "https://cityscroll.org/#notice/20260701123");
 });
 
 test("handleRedirect falls back to the homepage uncounted on junk paths", async () => {
   const kv = fakeKV();
-  const res = handleRedirect(new Request("https://api.crol-list.org/r/x"), { ALERT_STATE: kv }, { waitUntil() {} }, "/r/x");
+  const res = handleRedirect(new Request("https://api.cityscroll.org/r/x"), { ALERT_STATE: kv }, { waitUntil() {} }, "/r/x");
   assert.equal(res.status, 302);
-  assert.equal(res.headers.get("Location"), "https://crol-list.org/");
+  assert.equal(res.headers.get("Location"), "https://cityscroll.org/");
   assert.equal(kv.store.size, 0);
 });
 
@@ -186,7 +186,7 @@ test("GET /stats publishes all-time totals + category breakdown alongside the un
     "stats:cat:nl_search:money": "9",
   });
   const env = { ALERT_STATE: alertState, NL_METER: nlMeter, SUBS: fakeKV() };
-  const res = await handleStats(new Request("https://api.crol-list.org/stats"), env, { waitUntil: async (p) => p });
+  const res = await handleStats(new Request("https://api.cityscroll.org/stats"), env, { waitUntil: async (p) => p });
   assert.equal(res.status, 200);
   const body = await res.json();
 
@@ -239,7 +239,7 @@ test("GET /stats includes a history block with per-day totals and the recovered/
     [histEraKey("nl_search")]: "2026-07-14",
   });
   const env = { ALERT_STATE: alertState, NL_METER: nlMeter, SUBS: fakeKV() };
-  const res = await handleStats(new Request("https://api.crol-list.org/stats"), env, { waitUntil: async (p) => p });
+  const res = await handleStats(new Request("https://api.cityscroll.org/stats"), env, { waitUntil: async (p) => p });
   const body = await res.json();
 
   assert.deepEqual(body.history.digests.by_day, { "2026-07-02": 1, "2026-07-13": 2 });
@@ -343,7 +343,7 @@ test("GET /stats publishes a 7-day nl_search total and its per-lens breakdown al
     [categoryDayKey("nl_search", "land", dayStr(new Date()))]: "1",
   });
   const env = { ALERT_STATE: fakeKV(), NL_METER: nlMeter, SUBS: fakeKV() };
-  const res = await handleStats(new Request("https://api.crol-list.org/stats"), env, { waitUntil: async (p) => p });
+  const res = await handleStats(new Request("https://api.cityscroll.org/stats"), env, { waitUntil: async (p) => p });
   const body = await res.json();
   assert.equal(body.nl_search.calls_last7d, 3);
   assert.equal(body.nl_search.by_category_last7d.money, 2);
@@ -377,7 +377,7 @@ test("GET /stats includes a watches_active history block with the same recovered
     [histEraKey("watches_active")]: "2026-07-14",
   });
   const env = { ALERT_STATE: alertState, NL_METER: fakeKV(), SUBS: fakeKV() };
-  const res = await handleStats(new Request("https://api.crol-list.org/stats"), env, { waitUntil: async (p) => p });
+  const res = await handleStats(new Request("https://api.cityscroll.org/stats"), env, { waitUntil: async (p) => p });
   const body = await res.json();
   assert.deepEqual(body.history.watches_active.by_day, { "2026-07-14": 12, "2026-07-15": 14 });
   assert.equal(body.history.watches_active.live_from, "2026-07-14");

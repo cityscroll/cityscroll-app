@@ -68,7 +68,7 @@ export default {
     if (pathname === "/stats") return handleStats(request, env, ctx);
     if (pathname === "/events") return handleEvent(request, env);
     if (pathname.startsWith("/r/")) return handleRedirect(request, env, ctx, pathname);
-    if (pathname === "/api") return Response.redirect("https://crol-list.org/api.html", 302);
+    if (pathname === "/api") return Response.redirect("https://cityscroll.org/api.html", 302);
     if (pathname === "/admin/subs") return handleAdminSubs(request, env);
     if (pathname === "/admin/feedback") return handleAdminFeedback(request, env);
     if (pathname === "/admin/suggest-refresh") return handleAdminSuggestRefresh(request, env);

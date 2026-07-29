@@ -28,7 +28,7 @@ export function validateAction(action) {
 
 export function compileActionRail(matter, {vaultEnabled = false} = {}) {
   const documentDestination = vaultEnabled && matter.document?.vault_hash
-    ? `https://api.crol-list.org/source-vault/${matter.document.vault_hash}`
+    ? `https://api.cityscroll.org/source-vault/${matter.document.vault_hash}`
     : matter.document?.official_url;
   const actions = [
     {type: "watch", label: "Watch this matter", handled: "local", boundary: "direct", destination: "index.html#alerts"},

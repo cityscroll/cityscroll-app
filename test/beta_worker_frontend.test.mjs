@@ -15,7 +15,7 @@ const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), "utf
 test("interactive pages honor the deploy-time beta API origin without production fallback", () => {
   for (const page of ["index.html", "about.html", "api.html"]) {
     const source = read(page);
-    assert.match(source, /window\.CROL_API_ORIGIN \|\| "https:\/\/api\.crol-list\.org"/, page);
+    assert.match(source, /window\.CROL_API_ORIGIN \|\| "https:\/\/api\.cityscroll\.org"/, page);
     assert.match(
       source,
       /window\.CROL_API_ORIGIN \|\| "https:\/\/crol-worker\.crol-worker\.workers\.dev"/,
@@ -47,7 +47,7 @@ test("review artifact preparation injects beta API selection before page scripts
     const source = readFileSync(join(root, "index.html"), "utf8");
     assert.match(
       source,
-      /window\.CROL_API_ORIGIN = "https:\/\/api-beta\.crol-list\.org"/,
+      /window\.CROL_API_ORIGIN = "https:\/\/api-beta\.cityscroll\.org"/,
     );
     assert.ok(
       source.indexOf("window.CROL_API_ORIGIN") < source.indexOf("<main>"),

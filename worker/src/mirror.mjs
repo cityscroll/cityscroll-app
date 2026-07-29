@@ -1,8 +1,7 @@
-// /mirror — serves cityscroll.org and www.cityscroll.org by reverse-proxying the static
-// site from crol-list.org (the GitHub Pages origin). crol-list.org stays canonical: this
-// worker only fronts a second domain for the same content, byte-for-byte, so the two
-// domains can never drift out of sync and every page's own <link rel="canonical"> (which
-// always points at crol-list.org) rides along unchanged.
+// /mirror — serves the canonical cityscroll.org and www.cityscroll.org hosts by
+// reverse-proxying the static site from crol-list.org, its GitHub Pages origin.
+// The direct-visitor redirect on that origin excludes Worker subrequests through
+// cf.worker.upstream_zone, so this fetch reaches Pages without a redirect loop.
 //
 // GitHub Pages virtual-hosts by the Host header, so the request to the origin must NOT
 // carry the incoming Host (cityscroll.org) — that would 404 on a domain GitHub doesn't

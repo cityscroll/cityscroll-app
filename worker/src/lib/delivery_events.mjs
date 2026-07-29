@@ -104,7 +104,7 @@ export function unknownDelivery(row) {
     label: "No public delivery status found",
     sources_checked: row.sources_checked,
     source: "Coverage ledger",
-    source_url: "https://crol-list.org/data.html",
+    source_url: "https://cityscroll.org/data.html",
     schema_version: "coverage-ledger-v1",
     missing_reason: row.reason
   });

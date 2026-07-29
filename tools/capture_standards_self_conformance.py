@@ -107,9 +107,9 @@ def annotate(source: Path, destination: Path, state: str, target: dict[str, floa
     color = (155, 48, 48, 255) if state == "before" else (35, 112, 83, 255)
     message = (
         "Before: the page moves from government targets to implementation facts "
-        "without stating CROL-List's own target."
+        "without stating CityScroll's own target."
         if state == "before"
-        else "After: a scoped section states CROL-List's target and three continuous observations."
+        else "After: a scoped section states CityScroll's target and three continuous observations."
     )
     font = ImageFont.load_default(size=18 if image.width >= 700 else 15)
     label = "\n".join(textwrap.wrap(message, width=66 if image.width >= 700 else 38))
