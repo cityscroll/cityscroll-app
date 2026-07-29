@@ -11,8 +11,10 @@ summary: >-
   identity headers, resilient public stats, and aggregate first-party usage
   analytics. A D1 mirror of
   recent notices (daily ingest; Socrata stays the source of truth) backs alert
-  matching and server-side search. A daily KV materialized view joins rules
-  hearings with public meetings and keeps affected geography separate from venue.
+  matching and server-side search. Daily KV materialized views join rules
+  hearings with public meetings while keeping affected geography separate from
+  venue, and add extracted property-site geography plus resolved map geometry to
+  Property Disposition notices.
   Daily, versioned KV buckets let a complete
   vendor profile paint from one edge read; new front doors: subscribe-by-inbound-email
   and an MCP endpoint for AI assistants (both spend-metered), plus a public
@@ -30,6 +32,9 @@ sources:
   - external_awards.js
   - staffing.js
   - i18n.js
+  - location_extract.mjs
+  - property_location.mjs
+  - rule_location.mjs
   - beta_flags.js
   - beta-flags.json
   - _config.yml
@@ -43,8 +48,10 @@ sources:
   - .github/workflows/deploy-worker-beta.yml
   - worker/wrangler.toml
   - worker/src/worker.mjs
+  - worker/src/property.mjs
+  - worker/src/lib/hearings.mjs
   - worker/src/lib/cors.mjs
-sources_hash: e4138be291c854b298b4df6741ad17eb400770cf055dbf8b282d8b510281363d
+sources_hash: e68c2267690698daf197292dcd807faa090bd3a581953d1984f412f6400c932a
 ---
 
 # crol-list — architecture
@@ -79,6 +86,7 @@ Browser (crol-list.org — static on GitHub Pages)
         ├──  /agencies          public raw-name → canonical-name crosswalk (JSON/CSV)
         ├──  /vendor-profile    ≤24h complete vendor-profile projection (KV; live fallback on miss)
         ├──  /hearings          daily rules/meetings view with affected area + venue
+        ├──  /property-locations daily Property view with site evidence + resolved geometry
         ├──  /source-vault/*    eligible public documents (R2; manifest gated)
         ├──  /inv[/<id>]        investigation snapshots + entity forecast metadata
         ├──  /priorcycle/<id>   precomputed prior-cycle + near-match sets (D1-cached, compute-on-miss)
@@ -91,8 +99,9 @@ Inbound email (Email Routing: subscribe@crol-list.org → this worker): plain
   English → LLM-parsed watch → double-opt-in confirm reply (metered, loop-guarded)
 Cron (daily 13:00 UTC): (1) Socrata→D1 ingest refresh (fail-soft), (2) prior-cycle
   pre-warm for the freshly-ingested Award notices (bounded, fail-soft), (3) rebuild
-  the location-aware hearings view, (4) rebuild versioned vendor-profile KV
-  buckets (identity, agency rollup, 15 recent notices, and forecasts), then (5) digest
+  the location-aware hearings view, (4) rebuild the location-aware Property view,
+  (5) rebuild versioned vendor-profile KV buckets (identity, agency rollup, 15
+  recent notices, and forecasts), then (6) digest
   fan-out — QUEUE_DIGESTS=true enqueues one job per subscription to
   Queue crol-digests (consumer sends with retries, poison → crol-digests-dlq);
   send caps unchanged: MAX_PER_RUN=25 / MAX_SENDS_PER_DAY=50 via Resend
@@ -116,7 +125,7 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 
 - **KV `SUBS`** — confirmed subscriptions: `sub:<token>` → `{email, lens, filters, frequency}`, plus per-IP/per-address rate-limit counters for `/subscribe`.
 - **KV `NL_METER`** — daily spend metering for `/nl` (the denial-of-wallet ceiling on the only Claude-billed route).
-- **KV `ALERT_STATE`** — digest/cron bookkeeping plus read models: `hearings:location:v1` → rules hearings and public meetings normalized into separate affected-area and venue fields (addresses resolved through NYC GeoSearch), `fc:<stem>` → computed contract-expiration forecasts (from Checkbook award durations), `plan:<stem>` → parsed §112 MOCS plan rows (Socrata `whpb-ebtd`), and versioned `vp:v1:*` whole-profile buckets behind `/vendor-profile`; stale or missing views retain live Socrata fallbacks.
+- **KV `ALERT_STATE`** — digest/cron bookkeeping plus read models: `hearings:location:v1` → rules hearings and public meetings normalized into separate affected-area and venue fields, `property:location:v1` → Property Disposition notices with extracted site addresses/tax lots/BBLs and NYC GeoSearch geometry, `fc:<stem>` → computed contract-expiration forecasts (from Checkbook award durations), `plan:<stem>` → parsed §112 MOCS plan rows (Socrata `whpb-ebtd`), and versioned `vp:v1:*` whole-profile buckets behind `/vendor-profile`; stale or missing location views retain live Socrata fallbacks.
 - **KV `FEEDBACK`** — stored feedback rows (`fb:<ts>:<rand>`) + rate-limit counters.
 - **`index.html` localStorage** — client-side only: investigation workspace (pinned notices + notes), query cache, saved searches, plain/rigor toggle.
 - **Public beta flag localStorage** — one registered, default-off experiment slug selected by `?beta=<slug>`; `?beta=0` clears it. The registry enforces a removal date and on/off tests. It is presentation state only, never access control.
@@ -142,6 +151,7 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 
 - **Seven lenses:** Money (RFP→Award pipeline + forecast timeline), Staffing (plain-language civil-service guide + open/upcoming exam explorer + title decoder/payroll), Land (rezonings + map), Property (asset lifecycle), Rules, Meetings, Alerts (subscriptions + watchlist).
 - **Location-aware hearings:** Meetings joins public-meeting notices with dated rules hearings, offers rolling week/month filters plus affected borough and neighborhood controls, and groups unlocated notices visibly instead of dropping them. Hearing cards render affected area and venue as independent facts; location-aware meeting watches replay the same distinction in digest matching.
+- **Location-aware Property and Rules:** Property notices share the hearing extractor's geography primitives but use property-specific evidence scoping so agency/contact addresses cannot become site addresses. The lens offers borough, neighborhood, and coarse near-me filters; cards show addresses, tax lots, BBLs, and map links only when supported, with an explicit fallback for notices that state no location. Rules remain citywide by default, while explicitly borough/district-scoped rules and dated rule hearings display their supported affected-area chips.
 - **Forecasting UI:** vertical timeline widget on vendor/agency profile panels — official §112 plan entries and calculated expirations carry distinct badges.
 - **Vendor profiles:** in response to user feedback, identity, top-agency chips, 15 recent notices, and forecasts now paint together from one daily precomputed KV projection. Full-text mentions stay behind an explicit disclosure because joining every vendor stem against the recent text corpus is disproportionate; missing or stale projection records use the original live Socrata resolver.
 - **External awards:** nine mapped public-authority profiles show up to eight recent awards from official annual ABO filings (`8w5p-k45m` / `d84c-dk28`) with source and lag labels. NYCHA solicitation details use exact-PIN Checkbook `Contracts_NYCHA` candidates only when the contract date is later than the solicitation date; matches remain separate from City Record rows.
@@ -167,7 +177,7 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 3. Server-only features route to `api.crol-list.org`: `/nl` (plain English → filters via Claude Haiku, metered by `NL_METER`), `/subscribe`→`/confirm`→`/unsubscribe` (double-opt-in, Turnstile-gated, fails closed), feeds, `/batch`, `/agencies`, `/inv`, `/stats`, `/feedback`, keyed `/admin/*` and `/usage`.
 4. The forecasting layer (`/checkbook` + `/forecast`) parses historical Checkbook NYC award term lengths into projected expirations (`fc:<stem>` in `ALERT_STATE`) and merges them with scraped Charter §112 MOCS agency plans (`plan:<stem>`) into one chronological timeline, rendered as the profile-page timeline widget.
 5. Subscriptions land in KV `SUBS`; legacy aggregate integers accrue in stats counters, while bounded page and interaction events accrue in Analytics Engine without visitor identifiers. The only personal data is the double-opted-in subscription email.
-6. The daily cron (13:00 UTC) first refreshes the D1 notices mirror from Socrata (cursored, fail-soft — a failed ingest never blocks alerts), pre-warms prior-cycle match sets for freshly-ingested Award notices, rebuilds the versioned whole-profile vendor projection in KV, then replays active subscriptions and forecast milestones, sending digests and early-warning emails via Resend — hard-capped at 25/run, 50/day. Each cache job is fail-soft; Money digests exclude data-entry-error amounts (≥ $10B) and label rolling year-2090 deadlines honestly.
+6. The daily cron (13:00 UTC) first refreshes the D1 notices mirror from Socrata (cursored, fail-soft — a failed ingest never blocks alerts), pre-warms prior-cycle match sets for freshly-ingested Award notices, rebuilds the hearings, Property, and versioned whole-profile vendor projections in KV, then replays active subscriptions and forecast milestones, sending digests and early-warning emails via Resend — hard-capped at 25/run, 50/day. Each cache job is fail-soft; Money digests exclude data-entry-error amounts (≥ $10B) and label rolling year-2090 deadlines honestly.
 7. GitHub Pages serves the static site; Worker changes deploy automatically from `main`, with manual `wrangler deploy` retained as an emergency path.
 
 ## Check yourself

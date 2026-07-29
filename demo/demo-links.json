@@ -403,6 +403,105 @@
       }
     },
     {
+      "id": "rules-hearing-affected-area",
+      "url": "#rules?q=BRONX%20CURB",
+      "feature": "rules-hearing-location",
+      "description": "Show a rule hearing with its affected borough rather than its Manhattan venue.",
+      "expectations": {
+        "visible": [
+          {
+            "selector": "#rulesfeed .fcard",
+            "text": "BRONX CURB MANAGEMENT"
+          },
+          {
+            "selector": "#rulesfeed .tag.place",
+            "text": "Bronx"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#rulesfeed .empty"
+          },
+          {
+            "selector": "#rulesfeed .loading"
+          }
+        ],
+        "states": [
+          {
+            "selector": "#ruleskw",
+            "property": "value",
+            "equals": "BRONX CURB"
+          }
+        ]
+      }
+    },
+    {
+      "id": "property-brooklyn-sites",
+      "url": "#property?boro=Brooklyn",
+      "feature": "property-location-filter",
+      "description": "Open Property with only notices whose subject site is identified in Brooklyn.",
+      "expectations": {
+        "visible": [
+          {
+            "selector": "#propertyfeed .fcard",
+            "text": "PUBLIC AUCTION"
+          },
+          {
+            "selector": "#propertyfeed .tag.place",
+            "text": "Brooklyn"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#propertyfeed .empty"
+          },
+          {
+            "selector": "#propertyfeed .loading"
+          }
+        ],
+        "states": [
+          {
+            "selector": "#propertyboro",
+            "property": "value",
+            "equals": "Brooklyn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "property-honest-location-fallback",
+      "url": "#property?asset=forest",
+      "feature": "property-location-fallback",
+      "description": "Show a Property notice without inventing a site when the notice identifies none.",
+      "expectations": {
+        "visible": [
+          {
+            "selector": "#propertyfeed .fcard",
+            "text": "FOREST MANAGEMENT"
+          },
+          {
+            "selector": "#propertyfeed .tag.place",
+            "text": "No location identified in this notice"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#propertyfeed .empty"
+          },
+          {
+            "selector": "#propertyfeed .loading"
+          }
+        ],
+        "states": [
+          {
+            "selector": "#assettabs [data-a='forest']",
+            "attribute": "class",
+            "equals": "chip on"
+          }
+        ]
+      }
+    },
+    {
       "id": "scenario-legal-compliance",
       "url": "#property?asset=realty",
       "feature": "scenario-legal-compliance",

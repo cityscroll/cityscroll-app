@@ -100,6 +100,7 @@ const {
   extractDecl("agencyHref") +
   extractDecl("ASSET_BUCKETS") +
   extractDecl("ASSET_LABEL") +
+  extractFn("rulePlaceChips") +
   extractFn("feedCardHTML") +
   extractFn("roleRowHTML") +
   extractFn("personRowHTML") +

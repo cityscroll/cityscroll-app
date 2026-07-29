@@ -487,7 +487,7 @@
   .hfact span{min-width:0;overflow-wrap:anywhere;color:var(--ink-soft)}
   .hcard .ftitle{font-size:17px}
   .hcard .fscope{font-size:14px}
-  #meetingslocation{min-height:40px;white-space:nowrap}
+  #meetingslocation,#propertylocation{min-height:40px;white-space:nowrap}
   @media(max-width:520px){
     .hearinggroup small{display:block;margin:5px 0 0}
     .hfact{grid-template-columns:1fr;gap:2px}
@@ -1008,6 +1008,9 @@
 <section id="tab-property" class="tabpane">
   <div class="wrap">
     <div class="controls">
+      <div class="field"><label for="propertyboro" data-i18n="borough_label">Borough</label><select id="propertyboro"><option value="" data-i18n="all_boroughs">All boroughs</option><option>Manhattan</option><option>Bronx</option><option>Brooklyn</option><option>Queens</option><option>Staten Island</option></select></div>
+      <div class="field"><label for="propertyneighborhood" data-i18n="neighborhood_label">Neighborhood</label><input type="text" id="propertyneighborhood" placeholder="Astoria, Kingsbridge Heights…" data-i18n-placeholder="neighborhood_placeholder"></div>
+      <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" id="propertylocation" data-i18n="use_my_location">Use my location</button></div>
       <div class="field"><label for="propertyagency" data-i18n="agency_label">Agency</label><select id="propertyagency"><option value="" data-i18n="all_agencies">All agencies</option></select></div>
       <div class="field kw"><label for="propertykw" data-i18n="search_label">Search</label><input type="text" id="propertykw" placeholder="address, neighborhood…" data-i18n-placeholder="kw_placeholder_property"></div>
       <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="property" data-i18n="watch_this_search">Watch this search</button></div>
@@ -2850,7 +2853,12 @@ function searchFilterFromHash(lens, hash){
     filter.neighborhood=q.get("neighborhood")||null;
     filter.locationScope=q.get("scope")==="citywide-unlocated"?"citywide-unlocated":null;
   }
-  if(lens==="property"){ filter.asset=q.get("asset")||"all"; filter.stage=q.get("stage")||"all"; }
+  if(lens==="property"){
+    filter.asset=q.get("asset")||"all";
+    filter.stage=q.get("stage")||"all";
+    filter.borough=DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):null;
+    filter.neighborhood=q.get("neighborhood")||null;
+  }
   return filter;
 }
 
@@ -2881,6 +2889,8 @@ function searchFilterChips(lens, filter){
     }
   }
   if(lens==="property"){
+    if(filter.borough) chips.push(`<span class="qchip">${t("borough_label")} <b>${filter.borough}</b></span>`);
+    if(filter.neighborhood) chips.push(`<span class="qchip">${t("neighborhood_label")} <b>${filter.neighborhood}</b></span>`);
     if(filter.asset && filter.asset!=="all") chips.push(`<span class="qchip">${t("property_asset_label")} <b>${t(ASSET_LABEL[filter.asset]||"asset_other")}</b></span>`);
     if(filter.stage && filter.stage!=="all") chips.push(`<span class="qchip">${t("property_stage_label")} <b>${t((PROP_STAGES.find(([key])=>key===filter.stage)||[])[1]||"stage_all")}</b></span>`);
   }
@@ -2921,7 +2931,7 @@ function bindClearSearchState(lens, root){
     $("#"+lens+"kw").value="";
     const when=$("#"+lens+"when"); if(when) when.value="upcoming";
     if(lens==="meetings"){ $("#meetingswhen").value="week"; $("#meetingsboro").value=""; $("#meetingsneighborhood").value=""; }
-    if(lens==="property"){ propAsset="all"; propStageSel="all"; }
+    if(lens==="property"){ propAsset="all"; propStageSel="all"; $("#propertyboro").value=""; $("#propertyneighborhood").value=""; }
     $("#nltrans-"+lens).innerHTML="";
     loadSection(lens);
   });
@@ -4096,6 +4106,16 @@ const SECTIONS={
 const feedRows={}, feedLoaded={}, feedVisible={};
 const FEED_SELECT="request_id,start_date,event_date,agency_name,type_of_notice_description,section_name,short_title,building_name,street_address_1,street_address_2,city,state,zip_code,additional_description_1,additional_description_2,additional_description_3,other_info_1,other_info_2,other_info_3,printout_1,printout_2,printout_3";
 function goodAddr(a){ return a && !/not listed|^n\/?a$|^none$|^various|^see /i.test(a.trim()); }
+let propertyLocationToolsPromise=null;
+function propertyLocationTools(){
+  if(!propertyLocationToolsPromise) propertyLocationToolsPromise=import("./property_location.mjs");
+  return propertyLocationToolsPromise;
+}
+let ruleLocationToolsPromise=null;
+function ruleLocationTools(){
+  if(!ruleLocationToolsPromise) ruleLocationToolsPromise=import("./rule_location.mjs");
+  return ruleLocationToolsPromise;
+}
 
 async function loadSection(key){
   const cfg=SECTIONS[key];
@@ -4113,11 +4133,38 @@ async function loadSection(key){
   busyList("#"+key+"feed", 3);
   const stale = staleGuard("feed:"+key);
   try{
-    const rows=await soda(p);
+    let rows=null;
+    if(key==="property"){
+      try{
+        const response=await workerFetch("/property-locations",{},12000);
+        if(response.ok){
+          const payload=await response.json();
+          if(Array.isArray(payload.properties)){
+            rows=payload.properties.filter(row=>(!ag||row.agency_name===ag)
+              && (!kw||matchText(row).toLowerCase().includes(kw.toLowerCase())));
+          }
+        }
+      }catch(e){}
+    }
+    if(!rows) rows=await soda(p);
     if(stale()) return;
     unbusy("#"+key+"feed");
+    if(key==="rules"){
+      const tools=await ruleLocationTools();
+      rows.forEach(row=>{
+        const hearingArea=tools.isRuleHearing(row)
+          ? normalizeHearingRow(row).affected_area : null;
+        row._ruleLocation=tools.ruleLocationFromRow(row,{hearingArea});
+      });
+      if(stale()) return;
+    }
     feedRows[key]={}; rows.forEach(r=>feedRows[key][r.request_id]=r);
-    if(key==="property"){ propAll=rows; renderPropExplorer(); }
+    if(key==="property"){
+      const tools=await propertyLocationTools();
+      rows.forEach(r=>{ r._location=r.property_location||tools.propertyLocationFromRow(r); });
+      if(stale()) return;
+      propAll=rows; renderPropExplorer();
+    }
     else { announce(t("notices_announce",{n:rows.length})); renderFeed(key, rows); }
   }catch(e){ if(!stale()){ unbusy("#"+key+"feed"); $("#"+key+"feed").innerHTML='<div class="empty">' + t("could_not_reach") + '</div>'; } }
 }
@@ -4367,9 +4414,39 @@ function renderPropExplorer(){
     `<button type="button" class="chip ${propStageSel===k?'on':''}" data-s="${k}">${t(l)}<span class="ct">${sc[k]||0}</span></button>`).join("");
   $("#assettabs").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{ propAsset=b.dataset.a; renderPropExplorer(); updateHash(); renderSearchComponents("property"); }));
   $("#liferail").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{ propStageSel=b.dataset.s; renderPropExplorer(); updateHash(); renderSearchComponents("property"); }));
-  const subset=propAll.filter(r=>(propAsset==="all"||r._asset===propAsset) && (propStageSel==="all"||r._stage===propStageSel));
+  const borough=$("#propertyboro").value, neighborhood=$("#propertyneighborhood").value.trim();
+  const subset=propAll.filter(r=>(propAsset==="all"||r._asset===propAsset)
+    && (propStageSel==="all"||r._stage===propStageSel)
+    && (!borough||(r._location?.boroughs||[]).includes(borough))
+    && (!neighborhood||[
+      ...(r._location?.neighborhoods||[]),
+      ...(r._location?.addresses||[]).map(address=>address.label),
+    ].join(" ").toLowerCase().includes(neighborhood.toLowerCase())));
   announce(t("property_notices_announce",{n:subset.length}));
   renderFeed("property", subset);
+}
+
+function propertyPlaceChips(location){
+  if(!location||location.scope!=="local") return `<div class="faddr"><span class="tag place">${t("property_location_not_stated")}</span></div>`;
+  const values=[
+    ...(location.addresses||[]).slice(0,3).map(address=>address.label),
+    ...(location.boroughs||[]),
+    ...(location.tax_lots||[]).slice(0,2).map(lot=>lot.label),
+    ...(location.bbls||[]).slice(0,2).map(bbl=>`BBL ${bbl}`),
+  ];
+  return `<div class="faddr">${[...new Set(values)].map(value=>`<span class="tag place">${escUiHtml(value)}</span>`).join(" ")}</div>`;
+}
+
+function rulePlaceChips(location){
+  if(!location||location.scope==="citywide") return `<div class="faddr"><span class="tag place">${t("citywide")}</span></div>`;
+  if(location.scope==="unlocated") return `<div class="faddr"><span class="tag place">${t("affected_not_stated")}</span></div>`;
+  const values=[
+    ...(location.districts||[]),
+    ...(location.neighborhoods||[]),
+    ...(location.boroughs||[]),
+    ...(location.addresses||[]).map(address=>address.label),
+  ].filter(Boolean);
+  return `<div class="faddr">${[...new Set(values)].map(value=>`<span class="tag place">${escUiHtml(value)}</span>`).join(" ")}</div>`;
 }
 
 async function loadSectionAgencies(key){
@@ -4390,13 +4467,16 @@ async function loadSectionAgencies(key){
 // digTitleHTML()/digEvidenceHTML() the Alerts-page ask preview and every other lens list share.
 function feedCardHTML(key, r, terms){
   const cfg=SECTIONS[key];
-  const ev=r.event_date, addr=cfg.showAddr&&goodAddr(r.street_address_1)?cleanText(r.street_address_1):"";
+  const ev=r.event_date, propertyAddress=key==="property"&&r._location?.addresses?.[0]?.label;
+  const addr=propertyAddress||(cfg.showAddr&&goodAddr(r.street_address_1)?cleanText(r.street_address_1):"");
   const scope=cleanText(r.additional_description_1).slice(0,200);
   const title=cleanText(r.short_title), mev=matchEvidence(title, matchText(r), terms);
   let acts=`<a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("city_record_link")}${extSR()}</a>`;
   acts+=`<button class="act" type="button" data-link="${r.request_id}">${t("copy_link_btn")}</button>`;
   if(ev) acts+=`<button class="act" type="button" data-ev="${key}:${r.request_id}">${t("add_date_btn",{date:fdt(ev)})}</button>`;
-  if(addr) acts+=`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(addr+' New York NY')}" ${EXT_ATTRS}>${t("map_link")}${extSR()}</a>`;
+  const geometry=key==="property"&&r._location?.geometry;
+  const mapQuery=geometry?`${geometry.latitude},${geometry.longitude}`:addr?`${addr} New York NY`:"";
+  if(mapQuery) acts+=`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(mapQuery)}" ${EXT_ATTRS}>${t("map_link")}${extSR()}</a>`;
   if(addr && key==="property") acts+=`<button class="act" type="button" data-demo="${r.request_id}">${t("still_standing_btn")}</button>`;
   const pbadges = key==="property" && (r._asset || r._badge)
     ? `<div>${r._asset?`<span class="tag asset">${ASSET_LABEL[r._asset]?t(ASSET_LABEL[r._asset]):""}</span>`:""}${r._badge?`<span class="tag amt">${r._badge}</span>`:""}</div>` : "";
@@ -4404,7 +4484,8 @@ function feedCardHTML(key, r, terms){
       <div class="ftype">${r.type_of_notice_description||""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}${ev?` · <b style="color:var(--ink)">${fdt(ev)}</b>${eventTag(ev)}`:""}</div>
       ${pbadges}
       <div class="ftitle">${title ? digTitleHTML(title, mev) : t("untitled")}</div>
-      ${addr?`<div class="faddr">${addr}</div>`:""}
+      ${key==="property"?propertyPlaceChips(r._location):addr?`<div class="faddr">${addr}</div>`:""}
+      ${key==="rules"?rulePlaceChips(r._ruleLocation):""}
       ${scope?`<div class="fscope">${scope}${scope.length>=200?"…":""}</div>`:""}
       ${digEvidenceHTML(mev)}
       <div class="factions">${acts}</div>
@@ -4422,9 +4503,10 @@ function renderFeed(key, rows){
 }
 
 async function checkDemolition(r, btn){
-  if(!r||!r.street_address_1) return;
+  const address=r?._location?.addresses?.[0]?.label||r?.street_address_1;
+  if(!r||!address) return;
   btn.textContent=t("checking_dob"); btn.disabled=true;
-  const geo=await geocode(cleanText(r.street_address_1)+" New York NY");
+  const geo=await geocode(cleanText(address)+" New York NY");
   if(!geo||!geo.bbl||!/^\d{10}$/.test(geo.bbl)){ btn.textContent=t("lot_not_resolved"); btn.disabled=false; return; }
   const boro={"1":"MANHATTAN","2":"BRONX","3":"BROOKLYN","4":"QUEENS","5":"STATEN ISLAND"}[geo.bbl[0]]||"";
   const blkIn=`'${String(parseInt(geo.bbl.slice(1,6),10))}','${geo.bbl.slice(1,6)}'`;
@@ -5852,6 +5934,8 @@ function serializeState(){
       if($("#meetingsneighborhood").value.trim()) q.set("neighborhood",$("#meetingsneighborhood").value.trim());
     }
     if(tab === "property"){
+      if($("#propertyboro").value) q.set("boro", $("#propertyboro").value);
+      if($("#propertyneighborhood").value.trim()) q.set("neighborhood", $("#propertyneighborhood").value.trim());
       if(propAsset !== "all") q.set("asset", propAsset);
       if(propStageSel !== "all") q.set("stage", propStageSel);
     }
@@ -6067,7 +6151,12 @@ function applyHash(){
         $("#meetingsboro").value=q.get("scope")==="citywide-unlocated"?"citywide-unlocated":DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"";
         $("#meetingsneighborhood").value=q.get("neighborhood")||"";
       }
-      if(tab === "property"){ propAsset = q.get("asset") || "all"; propStageSel = q.get("stage") || "all"; }
+      if(tab === "property"){
+        $("#propertyboro").value=DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"";
+        $("#propertyneighborhood").value=q.get("neighborhood")||"";
+        propAsset = q.get("asset") || "all";
+        propStageSel = q.get("stage") || "all";
+      }
       const was = feedLoaded[tab]; showTab(tab); if(was) loadSection(tab);
     } else if(tab === "alerts"){
       showTab("alerts");
@@ -6417,6 +6506,18 @@ function maybeAutoLocateLand(){
   resolveLandEntryLocation({...landLocationOptions, storage}).finally(()=>{ button.disabled=false; });
 }
 bindLocationControl($("#landlocation"), landLocationOptions);
+bindLocationControl($("#propertylocation"), {
+  geolocation:navigator.geolocation,
+  fetchImpl:fetch,
+  mapPlutoEndpoint:MAPPLUTO_QUERY,
+  onResolved:area=>{
+    $("#propertyboro").value=area.borough||"";
+    $("#propertyneighborhood").value=area.neighbourhood||"";
+    renderPropExplorer();
+    updateHash();
+    renderSearchComponents("property");
+  },
+});
 bindLocationControl($("#meetingslocation"), {
   geolocation:navigator.geolocation,
   fetchImpl:fetch,
@@ -6437,6 +6538,9 @@ bindLocationControl($("#meetingslocation"), {
 $("#meetingsboro").addEventListener("change",()=>loadSection("meetings"));
 $("#meetingsneighborhood").addEventListener("keydown",event=>{ if(event.key==="Enter") loadSection("meetings"); });
 $("#meetingsneighborhood").addEventListener("input",debounce(()=>loadSection("meetings"),500));
+$("#propertyboro").addEventListener("change",()=>{ renderPropExplorer(); updateHash(); renderSearchComponents("property"); });
+$("#propertyneighborhood").addEventListener("keydown",event=>{ if(event.key==="Enter"){ renderPropExplorer(); updateHash(); renderSearchComponents("property"); } });
+$("#propertyneighborhood").addEventListener("input",debounce(()=>{ renderPropExplorer(); updateHash(); renderSearchComponents("property"); },500));
 loadAgencies();
 loadToday();
 window.addEventListener("hashchange", ()=>{ if(!hashLock && !applyHash()) showTab("money"); }); // empty/unknown hash (e.g. Back to the first entry) → default view
