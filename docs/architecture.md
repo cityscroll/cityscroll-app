@@ -8,8 +8,10 @@ summary: >-
   and labels separately sourced public-authority awards on agency profiles.
   The core site works without the worker; the worker adds Checkbook lookups,
   email alerts, feeds, plain-English search, forecasting, precomputed vendor
-  identity headers, resilient public stats, and aggregate first-party usage
-  analytics. A D1 mirror of
+  identity headers, resilient public stats, aggregate first-party usage
+  analytics, and a Wave-4 process-spine layer (`process_id` / `project_id` /
+  `event_id`) for contract-lifecycle joins with confidence checks.
+  A D1 mirror of
   recent notices (daily ingest; Socrata stays the source of truth) backs alert
   matching and server-side search. Daily KV materialized views join rules
   hearings with public meetings while keeping affected geography separate from
@@ -59,19 +61,27 @@ sources:
   - .github/workflows/ci.yml
   - .github/workflows/source-contracts-live.yml
   - worker/wrangler.toml
+  - worker/src/events.mjs
   - worker/src/worker.mjs
   - worker/src/alerts.mjs
   - worker/src/checkbook.mjs
+  - worker/src/lib/analytics.mjs
   - worker/src/inv.mjs
   - worker/src/mocs_plan.mjs
   - worker/src/property.mjs
   - worker/src/suggest.mjs
-  - worker/src/vendor_profile.mjs
+  - worker/src/lib/process_spine.mjs
   - worker/src/lib/forecast_score.mjs
+  - worker/src/vendor_profile.mjs
+  - docs/analytics-event-taxonomy.md
   - worker/src/lib/hearings.mjs
   - worker/src/mirror.mjs
   - worker/src/lib/cors.mjs
-sources_hash: 4d75ccbab6ae79bddd8c0930396cd84d7efb04919b3f28eab283ee864a29b811
+  - test/process-spine.test.mjs
+  - test/fixtures/wave4/generated/process_spine.json
+  - test/fixtures/wave4/generated/unresolved-joins.json
+  - test/fixtures/wave4/generated/ocds-gap-table.json
+sources_hash: 56e31c23f807bc6a7e4b5fd1f28c431690c45c139faed118348a81957c3b026d
 ---
 
 # crol-list — architecture
@@ -94,7 +104,7 @@ Browser (cityscroll.org — canonical Worker mirror of static GitHub Pages)
         │  secret / server-side routes only
         ▼
   api.cityscroll.org  (Cloudflare Worker "crol-worker" — worker/ in this repo;
-                      workers.dev alias kept alive for in-flight confirm links)
+                      api.crol-list.org and workers.dev aliases kept alive for in-flight confirm links)
         ├──  /nl                plain-English → lens filters (Claude Haiku, NL_METER-capped)
         ├──  /mcp               MCP for AI assistants: search/get/preview_watch/create_watch (metered)
         ├──  /checkbook         Checkbook NYC proxy + expiration pipeline (fc:* cache)
@@ -116,7 +126,9 @@ Browser (cityscroll.org — canonical Worker mirror of static GitHub Pages)
         └──  /admin/subs /admin/feedback        keyed operator views
 
 Inbound email (Email Routing: subscribe@crol-list.org → this worker): plain
-  English → LLM-parsed watch → double-opt-in confirm reply (metered, loop-guarded)
+English → LLM-parsed watch → double-opt-in confirm reply (metered, loop-guarded).
+Outbound worker email to users comes from `alerts@cityscroll.org` (set by `ALERTS_FROM`).
+
 Cron (daily 13:00 UTC): (1) Socrata→D1 ingest refresh (fail-soft), (2) prior-cycle
   pre-warm for the freshly-ingested Award notices (bounded, fail-soft), (3) rebuild
   the location-aware hearings view, (4) rebuild the location-aware Property view,
@@ -149,6 +161,7 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 - **KV `FEEDBACK`** — stored feedback rows (`fb:<ts>:<rand>`) + rate-limit counters.
 - **`index.html` localStorage** — client-side only: investigation workspace (pinned notices + notes), query cache, saved searches, plain/rigor toggle.
 - **Public beta flag localStorage** — one registered, default-off experiment slug selected by `?beta=<slug>`; `?beta=0` clears it. The registry enforces a removal date and on/off tests. It is presentation state only, never access control.
+- **Wave-4 process-spine contracts** — required process-spine fixtures and matching code live in `test/fixtures/wave4/generated/` and `worker/src/lib/process_spine.mjs`; PR and CI tests validate confidence gates and required fields via `test/process-spine.test.mjs`.
 - **D1 `crol-notices`** — mirror of recent notices (`notices` table: parsed columns + honest-data fields `contract_amount_valid`, `due_year`, plus the raw source row for schema-drift recovery), `ingest_state` (Socrata ingest cursor), and `prior_cycle_matches` (per-notice precomputed `{strict, near, eligibleCount}` prior-cycle match sets — the cache behind `GET /priorcycle/<id>`; compute-on-miss, cron pre-warms freshly-ingested Award notices, ranked by `worker/src/lib/prior_cycle.mjs`, a hand-synced dual implementation of index.html's matchers). Refreshed by the daily cron (`worker/src/ingest.mjs`); Socrata remains the source of truth.
 - **R2 `SOURCE_VAULT`** — content-addressed custody for approved public documents. Each object carries provenance, eligibility, and its official source URL.
 - **Analytics Engine `crol_usage_events_v1`** — first-party aggregate page, lens, search, deep-link, export, alert, feed, and investigation events. The versioned schema in `docs/analytics-event-taxonomy.md` permits only bounded enumerations; it stores no query text, email, IP address, cookie, fingerprint, or visitor identifier. `/stats` reads sampling-aware 7/30-day aggregates through Cloudflare's SQL API.
@@ -162,17 +175,19 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 - `index.html` is built as a GitHub Pages static site whose origin hostname remains `crol-list.org` (the repository CNAME). The canonical public site is `cityscroll.org`; every page's canonical and Open Graph URL points there. The Pages workflow derives one cache stamp from `i18n.js` plus every shipping dictionary, writes it only into the deployment artifact, verifies the result, and then publishes it.
 - Cloudflare Pages hosts public review artifacts only. Draft pull requests opt in with `preview:beta` and receive a stable `pr-<number>.crol-list-beta.pages.dev` alias plus an immutable URL. The manually triggered promotion workflow deploys one explicit commit to the Pages production branch named `beta`; `beta.cityscroll.org` is therefore a moving pointer, not a long-lived source branch. Re-running the workflow with the prior SHA is the deterministic rollback. Review artifacts keep stable canonical links and add no-index headers, channel/commit metadata, a visible experimental banner, and a stable-site escape link.
 - Review artifacts select `api-beta.cityscroll.org` before page scripts run and never fall back to production. That Worker is an optional, manually deployed exact-commit environment with no inherited production secrets, storage, queues, or cron. Its browser routes accept beta Pages origins only under the beta runtime gate; paid, stateful, delivery, and write behavior fails closed when unconfigured.
-- Worker deployed via `wrangler deploy` from `worker/` to the canonical custom domain `api.cityscroll.org`; `api.crol-list.org` and workers.dev remain compatibility aliases for existing clients and in-flight confirmation links. Changes under `worker/**` deploy from `main` through `.github/workflows/deploy-worker.yml`; a manual Wrangler deploy remains the emergency path. Cron trigger `0 13 * * *` (~9am ET). D1 schema versioned in `worker/migrations/`, applied with `wrangler d1 migrations apply crol-notices --remote`.
+- Worker deployed via `wrangler deploy` from `worker/` to the canonical custom domains `api.cityscroll.org` and `www.cityscroll.org`; `api.crol-list.org` and workers.dev remain compatibility aliases for existing clients and in-flight confirmation links. Changes under `worker/**` deploy from `main` through `.github/workflows/deploy-worker.yml`; a manual Wrangler deploy remains the emergency path. Cron trigger `0 13 * * *` (~9am ET). D1 schema versioned in `worker/migrations/`, applied with `wrangler d1 migrations apply crol-notices --remote`.
 - `cityscroll.org` / `www.cityscroll.org` are the canonical site hosts (custom-domain routes in `worker/wrangler.toml`). The Worker normally reverse-proxies the GitHub Pages origin at `crol-list.org` byte-for-byte (`worker/src/mirror.mjs`). Origin redirects are manual; a redirect back to CityScroll trips a circuit breaker and retries through GitHub's public repository source seam.
 - Direct visitors to `crol-list.org` / `www.crol-list.org` receive a 301 to the matching CityScroll path and query through the externally activated Cloudflare Single Redirect in ``. The rule should exclude requests with a Worker upstream zone. The mirror's independent redirect-loop failover keeps the canonical site available if that rule is broadened accidentally. Fragments remain client-side and are retained by conforming browsers.
-- New feed, confirmation, redirect, and API URLs mint on CityScroll. Existing calendar UIDs retain `@crol-list` and Atom entries retain `tag:crol-list.org,2026:` so calendar and feed clients do not create duplicates. Email sending and routing remain on `@crol-list.org` pending a separate deliverability decision.
+- New feed, confirmation, redirect, and API URLs mint on CityScroll. Existing calendar UIDs retain `@crol-list` and Atom entries retain `tag:crol-list.org,2026:` so calendar and feed clients do not create duplicates. Outbound alerts are sent from `alerts@cityscroll.org`; inbound operational routing remains on `@crol-list.org` (`subscribe@`, `feedback@`) unless separately redirected by provider policy.
 - Secrets via `wrangler secret put`: `ANTHROPIC_API_KEY`, `RESEND_API_KEY`, `TURNSTILE_SECRET`, `TOKEN_SECRET`, `USAGE_KEY`, `ANALYTICS_READ_TOKEN`, `ANALYTICS_DEV_KEY`, and the production-only `ANALYTICS_ENVIRONMENT` runtime gate. The analytics read token is scoped to Account Analytics Read; the developer key authenticates short-lived HMAC exclusions, while a missing/non-production runtime gate drops writes. Spend guards are vars in `wrangler.toml`: `MAX_PER_RUN=25`, `MAX_SENDS_PER_DAY=50` (under Resend's free 100/day); `/subscribe` and `/feedback` fail closed (503) if their secrets are absent.
-- GitHub Actions runs deterministic tests on pull requests, including source-contract checks
-  against committed upstream-shape fixtures. A separate daily workflow probes the live sources
-  and opens or updates an issue on schema, tabularity, availability, or freshness drift. Actions
-  also builds and deploys the stable site after merge, publishes explicitly labeled draft
+- GitHub Actions is path-filtered in `CI` using `dorny/paths-filter`; worker/docs/frontend jobs run only when their lanes changed.
+  PR and merge tests include source-contract verification against committed fixtures:
+  `tools/verify_source_contracts.mjs`.
+  A separate daily workflow (`source-contracts-live.yml`) probes live sources and opens/updates an issue on drift.
+  Actions also builds and deploys the stable site after merge, publishes explicitly labeled draft
   previews, promotes exact commits to beta only on manual dispatch, and deploys Worker changes
   when `worker/**` changes.
+- Performance budget gate work is in flight for merge protection and has not yet landed.
 
 ## Surface
 
