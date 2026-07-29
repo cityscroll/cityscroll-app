@@ -72,22 +72,22 @@ const SUPPORTED_LANGS = Object.keys(LANG_META);
 // from every LTR language before them. All ten LL30 languages now ship.
 const SHIPPING_LANGS = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar", "ur"];
 
-// Per-file cache-skew hashes (w8-01 AC #1): sha256(i18n/lang/<lang>.js)[:8], checked by
-// test/standards/i18n_refs.py. Changing ONE language's file changes only its own hash here —
-// a Polish fix never invalidates nine other dictionaries' cache entries.
-// Regenerate with: shasum -a 256 i18n/lang/<lang>.js | cut -c1-8
-const LANG_FILE_HASHES = {
-  es: "1ea4a30e",
-  "zh-Hans": "9a6a743d",
-  ru: "58b929d1",
-  bn: "737dfc49",
-  ht: "31dfcbb4",
-  ko: "a5d2ba96",
-  fr: "4a3050f4",
-  pl: "659a27a4",
-  ar: "9549832a",
-  ur: "22e32877",
-};
+// The deploy build stamps every page's i18n.js URL from the combined content of this file
+// and all shipping dictionaries. Reuse that stamp for lazy dictionary requests, so a build
+// can never pair new HTML or runtime code with a cached old dictionary. Source pages keep a
+// merge-stable token; tools/stamp_i18n_assets.py replaces it only in the deployed artifact.
+const I18N_ASSET_VERSION = (() => {
+  if (typeof document === "undefined" || !document.currentScript) return "";
+  try {
+    return new URL(document.currentScript.src, document.baseURI).searchParams.get("v") || "";
+  } catch (_error) {
+    return "";
+  }
+})();
+
+function i18nAssetUrl(path) {
+  return path + (I18N_ASSET_VERSION ? ("?v=" + encodeURIComponent(I18N_ASSET_VERSION)) : "");
+}
 
 
 // Translation review-state (w8-02): drives the machine-translation disclosure banner
@@ -1297,7 +1297,7 @@ window.STRINGS = STRINGS;
 window.LANG_META = LANG_META;
 window.SUPPORTED_LANGS = SUPPORTED_LANGS;
 window.SHIPPING_LANGS = SHIPPING_LANGS;
-window.LANG_FILE_HASHES = LANG_FILE_HASHES;
+window.I18N_ASSET_VERSION = I18N_ASSET_VERSION;
 window.I18N_PROVENANCE = I18N_PROVENANCE;
 window.SECTION_I18N = SECTION_I18N;
 window.tSection = tSection;
@@ -1430,9 +1430,8 @@ function ensureLangLoaded(lang, cb) {
     return;
   }
   _langLoadState[lang] = "loading";
-  const hash = LANG_FILE_HASHES[lang];
   const s = document.createElement("script");
-  s.src = "i18n/lang/" + lang + ".js" + (hash ? ("?v=" + hash) : "");
+  s.src = i18nAssetUrl("i18n/lang/" + lang + ".js");
   function done() {
     _langLoadState[lang] = "loaded";
     document.dispatchEvent(new Event("crol:langloaded:" + lang));
@@ -1541,8 +1540,7 @@ if (typeof module !== "undefined" && module.exports !== undefined && typeof requ
     var meta = LANG_META[saved];
     if (meta) document.documentElement.dir = meta.dir;
     if (saved !== "en" && SHIPPING_LANGS.includes(saved) && typeof document.write === "function") {
-      var hash = LANG_FILE_HASHES[saved];
-      document.write('<script src="i18n/lang/' + saved + '.js' + (hash ? ('?v=' + hash) : '') + '"><\/script>');
+      document.write('<script src="' + i18nAssetUrl("i18n/lang/" + saved + ".js") + '"><\/script>');
       _langLoadState[saved] = "loaded"; // document.write blocks until it runs — no async race
     }
   }

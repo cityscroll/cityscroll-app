@@ -6,8 +6,9 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `sources_hash` current when a listed source changes.
 - The privacy boundary and versioned contract for aggregate usage events live in
   `docs/analytics-event-taxonomy.md`; keep collection and public stats changes within it.
-- Run the standards and test commands in `.github/workflows/ci.yml`; i18n edits must also
-  refresh the core and per-language cache hashes enforced by `test/standards/i18n_refs.py`.
+- Run the standards and test commands in `.github/workflows/ci.yml`; i18n cache stamps are
+  derived only in the Pages artifact by `tools/stamp_i18n_assets.py` and verified by
+  `test/standards/i18n_refs.py`—do not commit generated hashes to source pages or `i18n.js`.
 - The static site is GitHub Pages, not Cloudflare — only the API (`api.crol-list.org`) and the
   `cityscroll.org` parallel-domain mirror (`worker/src/mirror.mjs`) are Cloudflare Workers. Don't
   assume a Cloudflare Pages project exists for the frontend.
