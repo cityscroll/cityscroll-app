@@ -4,7 +4,7 @@
 
 const BOROUGHS = [
   ["Manhattan", /\b(?:manhattan|new york county)\b/i],
-  ["Bronx", /\b(?:the bronx|bronx county)\b/i],
+  ["Bronx", /\b(?:the bronx|bronx county|bronx)\b/i],
   ["Brooklyn", /\b(?:brooklyn|kings county)\b/i],
   ["Queens", /\b(?:queens|queens county)\b/i],
   ["Staten Island", /\b(?:staten island|richmond county)\b/i],
@@ -29,8 +29,37 @@ const AUDIENCES = [
     "audience_businesses"],
 ];
 
-const ADDRESS_RE = /\b\d{1,5}(?:-\d{1,5})?\s+[A-Z0-9][A-Z0-9.'’ -]{1,70}\b(?:Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Place|Pl|Lane|Ln|Drive|Dr|Parkway|Pkwy|Broadway)\b(?:[^.;<\n]{0,45})?/gi;
+const ADDRESS_RE = /\b\d{1,5}(?:-\d{1,5})?(?!\s*(?:feet|foot|ft\.?|square|sf)\b)\s+[A-Z0-9][A-Z0-9.'’ -]{1,60}?\b(?:Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Place|Pl|Lane|Ln|Drive|Dr|Parkway|Pkwy|Broadway)\b/gi;
 const URL_RE = /https?:\/\/[^\s<>"')]+/gi;
+const APPLICATION_BOROUGHS = {
+  M: "Manhattan",
+  X: "Bronx",
+  K: "Brooklyn",
+  Q: "Queens",
+  R: "Staten Island",
+};
+const BOARD_BOROUGHS = {
+  M: "Manhattan",
+  BX: "Bronx",
+  BK: "Brooklyn",
+  Q: "Queens",
+  SI: "Staten Island",
+};
+const PROJECT_GAZETTEER = [
+  { name: "Brownsville Plan", pattern: /\bBrownsville Plan\b/i, boroughs: ["Brooklyn"], neighborhoods: ["Brownsville"] },
+  { name: "Jamaica Neighborhood Plan", pattern: /\bJamaica Neighborhood Plan\b/i, boroughs: ["Queens"], neighborhoods: ["Jamaica"] },
+  { name: "Monitor Point", pattern: /\bMonitor Point\b/i, boroughs: ["Brooklyn"], neighborhoods: ["Greenpoint"] },
+  { name: "Newtown Creek", pattern: /\bNewtown Creek\b/i, boroughs: ["Brooklyn", "Queens"], neighborhoods: [] },
+  { name: "Willets Point", pattern: /\bWillets Point\b/i, boroughs: ["Queens"], neighborhoods: ["Willets Point"] },
+  { name: "One45", pattern: /\bOne45\b/i, boroughs: ["Manhattan"], neighborhoods: ["Harlem"] },
+  { name: "Ferry Point Park", pattern: /\bFerry Point Park\b/i, boroughs: ["Bronx"], neighborhoods: [] },
+  { name: "Lincoln Center West", pattern: /\bLincoln Center West\b/i, boroughs: ["Manhattan"], neighborhoods: [] },
+  { name: "South Shore of Staten Island", pattern: /\b(?:South Shore of Staten Island|Line of Protection)\b/i, boroughs: ["Staten Island"], neighborhoods: [] },
+  { name: "Bay Ridge", pattern: /\bBay Ridge\b/i, boroughs: ["Brooklyn"], neighborhoods: ["Bay Ridge"] },
+  { name: "Gowanus", pattern: /\bGowanus\b/i, boroughs: ["Brooklyn"], neighborhoods: ["Gowanus"] },
+  { name: "Crescent Beach Park", pattern: /\bCrescent Beach Park\b/i, boroughs: ["Staten Island"], neighborhoods: [] },
+  { name: "Goodhue Park", pattern: /\bGoodhue Park\b/i, boroughs: ["Staten Island"], neighborhoods: [] },
+];
 
 export function plainText(value) {
   return String(value || "")
@@ -59,11 +88,85 @@ function boroughsIn(text) {
   return BOROUGHS.filter(([, pattern]) => pattern.test(text)).map(([name]) => name);
 }
 
-function subjectSegment(text) {
-  const marker = /\b(?:in the matter of|subject propert(?:y|ies)|premises (?:known as|located at)|property located at)\b/i.exec(text);
-  if (!marker) return "";
-  return text.slice(marker.index, marker.index + 1200)
-    .split(/\b(?:further information|the proposed (?:acquisition|rule)|public inspection|if you need)\b/i)[0];
+function canonicalBorough(value) {
+  return BOROUGHS.find(([, pattern]) => pattern.test(value))?.[0] || plainText(value);
+}
+
+function subjectText(text) {
+  const markers = [
+    /\bin the matters? of\b/i,
+    /\bpremises affected\b/i,
+    /\bsubject propert(?:y|ies)\b/i,
+    /\bpremises (?:known as|located at)\b/i,
+    /\bproperty located at\b/i,
+    /\bthe following agenda items? will be heard\b/i,
+    /\bthe following public hearing items?\b/i,
+    /\bon the following petitions?\b/i,
+    /\bconsent items\b/i,
+    /\bagenda\s+project name\b/i,
+    /\bdisposition area\b/i,
+    /\bpublic hearing (?:with respect to|regarding|concerning)\b/i,
+    /\bone or more of the boroughs?\b/i,
+    /\b(?:Manhattan|Bronx|Brooklyn|Queens|Staten Island) borough (?:board|president).{0,120}?\b(?:public )?hearing on\b/i,
+  ];
+  const starts = markers.map((pattern) => pattern.exec(text)?.index).filter(Number.isInteger);
+  if (!starts.length) return "";
+  const start = Math.min(...starts);
+  return text.slice(start, start + 16000)
+    .split(/\b(?:further information|public inspection|if you need (?:an )?accommodation)\b/i)[0];
+}
+
+function applicationSignals(text) {
+  const numbers = [];
+  const boroughs = [];
+  const patterns = [
+    /\b(?:C|N)?\s*\d{6}\s*(?:ZM|ZR|ZS|ZA|ZC|MM|HA|LD|PC|PP)([MXKQR])\b/gi,
+    /\b(?:ZM|ZR|ZS|ZA|ZC|MM|HA|LD|PC|PP)\s*\d{6}\s*(?:ZM|ZR|ZS|ZA|ZC|MM|HA|LD|PC|PP)?([MXKQR])\b/gi,
+    /\b\d{2}[A-Z]{3}\d{3}([MXKQR])\b/gi,
+  ];
+  for (const pattern of patterns) {
+    for (const match of text.matchAll(pattern)) {
+      numbers.push(plainText(match[0]).replace(/\s+/g, ""));
+      boroughs.push(APPLICATION_BOROUGHS[match[1].toUpperCase()]);
+    }
+  }
+  return { numbers: unique(numbers), boroughs: unique(boroughs) };
+}
+
+function communityBoardSignals(text) {
+  const boards = [];
+  const boroughs = [];
+  for (const match of text.matchAll(/\bcommunity board\s*#?\s*(\d{1,2})\s*(BX|BK|SI|M|Q)\b/gi)) {
+    const borough = BOARD_BOROUGHS[match[2].toUpperCase()];
+    boards.push(`Community Board ${Number(match[1])}, ${borough}`);
+    boroughs.push(borough);
+  }
+  for (const match of text.matchAll(/\bcommunity board\s+(BX|BK|SI|M|Q)\s*0?(\d{1,2})\b/gi)) {
+    const borough = BOARD_BOROUGHS[match[1].toUpperCase()];
+    boards.push(`Community Board ${Number(match[2])}, ${borough}`);
+    boroughs.push(borough);
+  }
+  for (const match of text.matchAll(/\bborough of (?:the )?(Manhattan|Brooklyn|Queens|Bronx|Staten Island).{0,55}?\bcommunity board(?:\s+no\.?|\s*#)?\s*0?(\d{1,2})\b/gi)) {
+    const borough = canonicalBorough(match[1]);
+    boards.push(`Community Board ${Number(match[2])}, ${borough}`);
+    boroughs.push(borough);
+  }
+  return { boards: unique(boards), boroughs: unique(boroughs) };
+}
+
+function streetRangesIn(text) {
+  const ranges = [
+    ...text.matchAll(/\b([A-Z0-9][A-Za-z0-9.'’ -]{1,80}?(?:Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Place|Pl|Lane|Ln|Drive|Dr|Parkway|Pkwy|Broadway))\s+between\s+([A-Z0-9][A-Za-z0-9.'’ -]{1,80}?(?:Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Place|Pl|Lane|Ln|Drive|Dr|Parkway|Pkwy|Broadway))\s+and\s+([A-Z0-9][A-Za-z0-9.'’ -]{1,80}?(?:Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Place|Pl|Lane|Ln|Drive|Dr|Parkway|Pkwy|Broadway))/gi),
+  ].map((match) => normalizeAddress(match[0]));
+  for (const match of text.matchAll(/\bbounded by\s+(.{10,360}?)(?=;|\.\s|,\s*(?:Borough|Community District)|$)/gi)) {
+    ranges.push(normalizeAddress(`bounded by ${match[1]}`));
+  }
+  return unique(ranges);
+}
+
+function taxLotsIn(text) {
+  return unique([...text.matchAll(/\b(?:tax\s+)?block\s*\d+[A-Z]?(?:\s*[,/&-]\s*(?:p\/o\s+|part of\s+)?lot(?:\(s\)|s)?\s*(?:\d+[A-Z]?(?:\s*(?:,|and|&|\/|-)\s*(?:p\/o\s+|part of\s+)?\d+[A-Z]?)*))?/gi)]
+    .map((match) => plainText(match[0])));
 }
 
 export function affectedAreaFromRow(row) {
@@ -77,26 +180,49 @@ export function affectedAreaFromRow(row) {
     row.other_info_2,
     row.other_info_3,
     row.printout_1,
+    row.printout_2,
+    row.printout_3,
   ].filter(Boolean).join(" "));
-  const subject = subjectSegment(body);
-  // Only the title and an explicitly marked subject segment are affected-area evidence.
-  // The free-form body often repeats the hearing venue; treating any body-place as the subject
-  // silently turns a Manhattan meeting room into a Manhattan-only matter.
+  const subject = subjectText(body);
+  // Limit free-form place extraction to the title and an explicitly marked subject segment.
+  // Formal application/community-board designations are safe supplemental evidence; arbitrary
+  // body places are not, because they turn a Manhattan meeting room into a Manhattan matter.
   const localText = [title, subject].filter(Boolean).join(" ");
-  const boroughs = unique(boroughsIn(localText));
-  const neighborhoods = unique([...localText.matchAll(/\b(?:neighbou?rhood of|located in|within)\s+([A-Z][A-Za-z.'’ -]{2,45}?)(?=,|\s+(?:neighbou?rhood|community district|in (?:Manhattan|Brooklyn|Queens|the Bronx|Staten Island))\b|[.;])/gi)]
-    .map((match) => plainText(match[1]).replace(/^the\s+/i, "")));
+  const applications = applicationSignals(localText);
+  const boards = communityBoardSignals(body);
+  const gazetteer = PROJECT_GAZETTEER.filter((entry) => entry.pattern.test(localText));
+  const boroughs = unique([
+    ...boroughsIn(localText),
+    ...applications.boroughs,
+    ...boards.boroughs,
+    ...gazetteer.flatMap((entry) => entry.boroughs),
+  ]);
+  const neighborhoods = unique([
+    ...[...localText.matchAll(/\b(?:neighbou?rhood of|located in|within)\s+([A-Z][A-Za-z.'’ -]{2,45}?)(?=,|\s+(?:neighbou?rhood|community district|in (?:Manhattan|Brooklyn|Queens|the Bronx|Staten Island))\b|[.;])/gi)]
+      .map((match) => plainText(match[1]).replace(/^the\s+/i, "")),
+    ...gazetteer.flatMap((entry) => entry.neighborhoods),
+  ]);
   const community_districts = unique([...localText.matchAll(/\bcommunity districts?\s+((?:\d{1,2})(?:\s*(?:,|and|&)\s*\d{1,2})*)/gi)]
     .flatMap((match) => match[1].match(/\d{1,2}/g) || []));
   const addresses = unique((subject.match(ADDRESS_RE) || []).map(normalizeAddress));
-  const citywide = /\b(?:citywide|throughout (?:new york )?city|all five boroughs)\b/i.test(body);
-  const local = boroughs.length || neighborhoods.length || community_districts.length || addresses.length;
+  const street_ranges = streetRangesIn(subject);
+  const tax_lots = taxLotsIn(subject);
+  const citywide = /\b(?:citywide(?! (?:administrative|personnel) services)|throughout (?:new york )?city|all five boroughs)\b/i.test(body);
+  const project_names = gazetteer.map((entry) => entry.name);
+  const local = boroughs.length || neighborhoods.length || community_districts.length
+    || boards.boards.length || addresses.length || street_ranges.length || tax_lots.length
+    || project_names.length || applications.numbers.length;
   return {
     scope: citywide ? "citywide" : local ? "local" : "unlocated",
     boroughs,
     neighborhoods,
     community_districts,
+    community_boards: boards.boards,
     addresses: addresses.map((label) => ({ label })),
+    street_ranges: street_ranges.map((label) => ({ label })),
+    tax_lots: tax_lots.map((label) => ({ label })),
+    project_names,
+    application_numbers: applications.numbers,
   };
 }
 
