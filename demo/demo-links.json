@@ -1,0 +1,463 @@
+{
+  "$schema": "./demo-links.schema.json",
+  "schemaVersion": 1,
+  "entries": [
+    {
+      "id": "matter-21st-avenue-bridge",
+      "url": "#matter/84124P0003001",
+      "feature": "contract-timeline",
+      "description": "Follow the 21st Avenue bridge engineering contract as one matter timeline.",
+      "expectations": {
+        "visible": [
+          {
+            "selector": "#entityview .ftype",
+            "text": "84124P0003001"
+          },
+          {
+            "selector": "#entityview .timeline"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#entityview .empty"
+          },
+          {
+            "selector": "#entityview .loading"
+          }
+        ],
+        "focus": "#entityview .route-item"
+      }
+    },
+    {
+      "id": "matter-bronx-prevention-services",
+      "url": "#matter/06820P8165KXLR002",
+      "feature": "contract-timeline",
+      "description": "Follow the Bronx prevention services contract as one matter timeline.",
+      "expectations": {
+        "visible": [
+          {
+            "selector": "#entityview .ftype",
+            "text": "06820P8165KXLR002"
+          },
+          {
+            "selector": "#entityview .timeline"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#entityview .empty"
+          },
+          {
+            "selector": "#entityview .loading"
+          }
+        ],
+        "focus": "#entityview .route-item"
+      }
+    },
+    {
+      "id": "matter-emergency-hotel-management",
+      "url": "#matter/07124N0007001R001",
+      "feature": "contract-timeline",
+      "description": "Follow the emergency hotel management contract as one matter timeline.",
+      "expectations": {
+        "visible": [
+          {
+            "selector": "#entityview .ftype",
+            "text": "07124N0007001R001"
+          },
+          {
+            "selector": "#entityview .timeline"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#entityview .empty"
+          },
+          {
+            "selector": "#entityview .loading"
+          }
+        ],
+        "focus": "#entityview .route-item"
+      }
+    },
+    {
+      "id": "matter-owls-head-rehabilitation",
+      "url": "#matter/82626B0029001",
+      "feature": "contract-timeline",
+      "description": "Follow the Owls Head rehabilitation contract as one matter timeline.",
+      "expectations": {
+        "visible": [
+          {
+            "selector": "#entityview .ftype",
+            "text": "82626B0029001"
+          },
+          {
+            "selector": "#entityview .timeline"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#entityview .empty"
+          },
+          {
+            "selector": "#entityview .loading"
+          }
+        ],
+        "focus": "#entityview .route-item"
+      }
+    },
+    {
+      "id": "exam-caseworker-7016",
+      "url": "#exam/7016",
+      "feature": "civil-service-exam-detail",
+      "description": "Open the Caseworker exam with qualifications, fees, dates, and official actions.",
+      "expectations": {
+        "visible": [
+          {
+            "selector": "#career-exam-7016",
+            "text": "Caseworker"
+          },
+          {
+            "selector": "#career-exam-7016 .actions"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#career-results .career-empty"
+          },
+          {
+            "selector": "#career-results .loading"
+          }
+        ],
+        "focus": "#career-exam-7016"
+      }
+    },
+    {
+      "id": "exam-emergency-medical-specialist-6125",
+      "url": "#exam/6125",
+      "feature": "civil-service-exam-detail",
+      "description": "Open the Emergency Medical Specialist exam with qualifications and official actions.",
+      "expectations": {
+        "visible": [
+          {
+            "selector": "#career-exam-6125",
+            "text": "Emergency Medical Specialist"
+          },
+          {
+            "selector": "#career-exam-6125 .actions"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#career-results .career-empty"
+          },
+          {
+            "selector": "#career-results .loading"
+          }
+        ],
+        "focus": "#career-exam-6125"
+      }
+    },
+    {
+      "id": "exam-guide",
+      "url": "#exam",
+      "feature": "civil-service-exam-guide",
+      "description": "Open the civil-service exam guide from the short collection route.",
+      "expectations": {
+        "hash": "#people?view=guide",
+        "visible": [
+          {
+            "selector": "#career-guide"
+          },
+          {
+            "selector": "#career-results .career-card"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#career-results .career-empty"
+          },
+          {
+            "selector": "#career-results .loading"
+          }
+        ]
+      }
+    },
+    {
+      "id": "meetings-ida-widening",
+      "url": "#meetings?when=upcoming&q=IDA",
+      "feature": "meeting-result-widening",
+      "description": "Show a recent IDA meeting when no upcoming meeting matches the search.",
+      "expectations": {
+        "visible": [
+          {
+            "selector": "#meetingsfeed .fcard",
+            "text": "IDA"
+          },
+          {
+            "selector": "#meetingsfeed .tag.closed",
+            "text": "Past"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#meetingsfeed .empty"
+          },
+          {
+            "selector": "#meetingsfeed .loading"
+          }
+        ],
+        "states": [
+          {
+            "selector": "#meetingswhen",
+            "property": "value",
+            "equals": "upcoming"
+          }
+        ],
+        "banner": {
+          "selector": "#meetingswidening .widening-note",
+          "visible": true,
+          "text": "Showing recent past meetings for “IDA” (none upcoming)."
+        }
+      }
+    },
+    {
+      "id": "contracts-closing-this-week",
+      "url": "#money?mode=open&closing=week",
+      "feature": "contract-closing-preset",
+      "description": "Open contract opportunities that are accepting responses and closing this week.",
+      "expectations": {
+        "visible": [
+          {
+            "selector": "#list .row"
+          },
+          {
+            "selector": "#reshead",
+            "text": "closing this week"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#list .empty"
+          },
+          {
+            "selector": "#list .loading"
+          }
+        ],
+        "states": [
+          {
+            "selector": "#mode",
+            "property": "value",
+            "equals": "open"
+          },
+          {
+            "selector": "#closingweek",
+            "attribute": "aria-pressed",
+            "equals": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "scenario-city-work",
+      "url": "#money?mode=open&closing=week",
+      "feature": "scenario-city-work",
+      "description": "Start the city-work path with open contracts closing this week.",
+      "expectations": {
+        "visible": [
+          {
+            "selector": "#list .row"
+          },
+          {
+            "selector": "#closingweek"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#list .empty"
+          },
+          {
+            "selector": "#list .loading"
+          }
+        ],
+        "states": [
+          {
+            "selector": "#closingweek",
+            "attribute": "aria-pressed",
+            "equals": "true"
+          }
+        ]
+      }
+    },
+    {
+      "id": "scenario-neighborhood",
+      "url": "#land",
+      "feature": "scenario-neighborhood",
+      "description": "Start the neighborhood path with a current zoning project already selected.",
+      "expectations": {
+        "visible": [
+          {
+            "selector": "#llist .row"
+          },
+          {
+            "selector": "#ldetail .rolename",
+            "text": "Example Street Rezoning"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#ldetail > .empty"
+          },
+          {
+            "selector": "#ldetail > .loading"
+          }
+        ],
+        "states": [
+          {
+            "selector": "#lstatus",
+            "property": "value",
+            "equals": "active"
+          }
+        ]
+      }
+    },
+    {
+      "id": "scenario-hearings",
+      "url": "#rules",
+      "feature": "scenario-hearings",
+      "description": "Start the hearings path with published agency rules ready to review.",
+      "expectations": {
+        "visible": [
+          {
+            "selector": "#rulesfeed .fcard",
+            "text": "ELEVATOR INSPECTIONS"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#rulesfeed .empty"
+          },
+          {
+            "selector": "#rulesfeed .loading"
+          }
+        ]
+      }
+    },
+    {
+      "id": "scenario-city-career",
+      "url": "#people",
+      "feature": "scenario-city-career",
+      "description": "Start the city-career path with the newest staffing notices already visible.",
+      "expectations": {
+        "visible": [
+          {
+            "selector": "#staffing-notice-list .staffing-notice-card",
+            "text": "RIVERA,ANA M."
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#staffing-notice-list .career-empty"
+          },
+          {
+            "selector": "#staffing-notice-list .loading"
+          }
+        ]
+      }
+    },
+    {
+      "id": "scenario-subsidies-land-use",
+      "url": "#meetings?when=past&q=IDA",
+      "feature": "scenario-subsidies-land-use",
+      "description": "Start the subsidies and land-use path with a published IDA meeting.",
+      "expectations": {
+        "visible": [
+          {
+            "selector": "#meetingsfeed .fcard",
+            "text": "IDA"
+          },
+          {
+            "selector": "#meetingsfeed .tag.closed",
+            "text": "Past"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#meetingsfeed .empty"
+          },
+          {
+            "selector": "#meetingsfeed .loading"
+          }
+        ],
+        "states": [
+          {
+            "selector": "#meetingswhen",
+            "property": "value",
+            "equals": "past"
+          }
+        ],
+        "banner": {
+          "selector": "#meetingswidening .widening-note",
+          "visible": false
+        }
+      }
+    },
+    {
+      "id": "scenario-legal-compliance",
+      "url": "#property?asset=realty",
+      "feature": "scenario-legal-compliance",
+      "description": "Start the legal and compliance path with public real-estate notices.",
+      "expectations": {
+        "visible": [
+          {
+            "selector": "#propertyfeed .fcard",
+            "text": "PUBLIC AUCTION"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#propertyfeed .empty"
+          },
+          {
+            "selector": "#propertyfeed .loading"
+          }
+        ],
+        "states": [
+          {
+            "selector": "#assettabs [data-a='realty']",
+            "attribute": "class",
+            "equals": "chip on"
+          }
+        ]
+      }
+    },
+    {
+      "id": "alerts-builder",
+      "url": "#alerts",
+      "feature": "alert-builder",
+      "description": "Open the alert builder with its topic, schedule, and preview controls ready.",
+      "expectations": {
+        "visible": [
+          {
+            "selector": "#awatch"
+          },
+          {
+            "selector": "#afreq"
+          },
+          {
+            "selector": "#apreview"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#tab-alerts .loading"
+          },
+          {
+            "selector": "#tab-alerts",
+            "text": "Could not reach"
+          }
+        ]
+      }
+    }
+  ]
+}
