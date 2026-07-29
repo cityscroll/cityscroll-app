@@ -21,7 +21,7 @@ export async function handleConfirm(req, env) {
 
   const p = res.payload; // { e, l, f, c, q, lng? }
   const sub = buildSubscription({ email: p.e, lens: p.l, filter: p.f, channel: p.c, freq: p.q, lang: p.lng || "en" });
-  const key = `sub:${sub.email}:${await subId(sub)}`;
+  const key = `sub:${await subId(sub)}`;
   try {
     await env.SUBS.put(key, JSON.stringify(sub));
   } catch {
