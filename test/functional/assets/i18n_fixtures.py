@@ -107,6 +107,58 @@ PAY_ROLES = [
 ]
 CSL_ROLES = [{"list_title_desc": "AGENCY ATTORNEY"}]
 
+PERSONNEL_ROWS = [
+    {
+        "request_id": "20260729004", "start_date": _iso(-1),
+        "agency_name": "Fire Department",
+        "short_title": "APPOINTED",
+        "additional_description_1": (
+            "Effective Date: 07/20/2026; Provisional Status: No; Title Code: 53053; "
+            "Reason For Change: APPOINTED; Salary: 49047.00; Employee Name: RIVERA,ANA M."
+        ),
+    },
+    {
+        "request_id": "20260729003", "start_date": _iso(-2),
+        "agency_name": "Citywide Administrative Services",
+        "short_title": "APPOINTED",
+        "additional_description_1": (
+            "Effective Date: 07/19/2026; Provisional Status: Yes; Title Code: 10026; "
+            "Reason For Change: APPOINTED; Salary: 77744.00; Employee Name: RODRIGUEZ,LUIS A."
+        ),
+    },
+    {
+        "request_id": "20260729002", "start_date": _iso(-3),
+        "agency_name": "Health and Mental Hygiene",
+        "short_title": "APPOINTED",
+        "additional_description_1": (
+            "Effective Date: 07/18/2026; Provisional Status: No; Title Code: 53053; "
+            "Reason For Change: APPOINTED; Salary: 52000.00; Employee Name: CHEN,MEI L."
+        ),
+    },
+    {
+        "request_id": "20260729001", "start_date": _iso(-4),
+        "agency_name": "Citywide Administrative Services",
+        "short_title": "APPOINTED",
+        "additional_description_1": (
+            "Effective Date: 07/17/2026; Provisional Status: No; Title Code: 10026; "
+            "Reason For Change: APPOINTED; Salary: 85000.00; Employee Name: WILLIAMS,JORDAN T."
+        ),
+    },
+]
+
+TITLE_CROSSWALK = [
+    {
+        "title_code": "53053",
+        "official_title": "EMERGENCY MEDICAL SPECIALIST-EMT",
+        "payroll_title": "EMERGENCY MEDICAL SPECIALIST-EMT",
+    },
+    {
+        "title_code": "10026",
+        "official_title": "ADMINISTRATIVE STAFF ANALYST",
+        "payroll_title": "ADMINISTRATIVE STAFF ANALYST",
+    },
+]
+
 ZAP_ROWS = [
     {"project_id": "P2026K0001", "project_name": "Example Street Rezoning",
      "project_brief": "A zoning map amendment to facilitate a nine-story mixed-use building with approximately 120 dwelling units.",
@@ -213,7 +265,7 @@ EXTERNAL_AWARD = {
 # Every fixture string value that may surface in the UI as DATA (legitimately English).
 # section_name is intentionally omitted — sections render as chrome and must translate.
 _DATA_ROWS = ([RFP_OPEN, RFP_OPEN_2, AWARD_ROW, HEARING_ROW, NOTICE_PERMALINK_ROW] + CHAIN_ROWS + PROPERTY_ROWS
-              + RULES_ROWS + MEETINGS_ROWS + ZAP_ROWS + PAY_ROLES + CSL_ROLES
+              + RULES_ROWS + MEETINGS_ROWS + ZAP_ROWS + PAY_ROLES + CSL_ROLES + PERSONNEL_ROWS + TITLE_CROSSWALK
               + AGENCIES_TODAY + METHOD_FACET + FORECAST_ROWS["forecasts"] + AUTHORITY_AWARDS)
 _DATA_FIELDS_EXCLUDED = {"section_name"}
 
@@ -271,7 +323,7 @@ def _soda_response(url):
     if "section_name='Agency Rules'" in where:
         return RULES_ROWS
     if "section_name='Changes in Personnel'" in where:
-        return []
+        return PERSONNEL_ROWS
     if "type_of_notice_description='Award'" in where:
         return [AWARD_ROW]
     if "type_of_notice_description='Solicitation'" in where:
@@ -323,4 +375,4 @@ def install_routes(page):
     page.route("https://unpkg.com/**", lambda r: r.abort())
     # Committed seed data: empty in fixtures — the guard exercises the live-search path.
     page.route("**/data/people_examples.json", fixed([]))
-    page.route("**/data/title_crosswalk.json", fixed([]))
+    page.route("**/data/title_crosswalk.json", fixed(TITLE_CROSSWALK))

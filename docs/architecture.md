@@ -32,7 +32,7 @@ sources:
   - .github/workflows/deploy-pages.yml
   - worker/wrangler.toml
   - worker/src/worker.mjs
-sources_hash: cb37ec92e8ddf292d42936b4f73d92767ef7208b8773ccaf0af693c9e979e465
+sources_hash: 6ede466ed032cd3c6908f5e9880a3e944fae5ac828135896befe5e2597e6d4f4
 ---
 
 # crol-list — architecture
