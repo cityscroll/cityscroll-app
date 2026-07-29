@@ -1,0 +1,103 @@
+{
+  "snapshot_date": "2026-07-28",
+  "fixture_notice": "Reference fixtures exercise amount semantics; they are not a full-corpus financial statement.",
+  "events": [
+    {
+      "source_system": "city_record",
+      "source_key": "cr:2141200",
+      "process_id": "process:pin:84124p0003001",
+      "event_type": "awarded",
+      "effective_at": "2025-05-14",
+      "fiscal_year": 2025,
+      "payee": "Metro Signal Services",
+      "relationship": "prime",
+      "amount": 1825000,
+      "currency": "USD",
+      "quality": "published",
+      "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/2141200"
+    },
+    {
+      "source_system": "checkbook_nyc",
+      "source_key": "checkbook:CT1-841-20258800411",
+      "process_id": "process:pin:84124p0003001",
+      "event_type": "registered",
+      "effective_at": "2025-05-29",
+      "fiscal_year": 2025,
+      "payee": "Metro Signal Services",
+      "relationship": "prime",
+      "amount": 1825000,
+      "currency": "USD",
+      "quality": "published",
+      "source_url": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT1-841-20258800411"
+    },
+    {
+      "source_system": "checkbook_nyc",
+      "source_key": "checkbook:CT1-841-20258800411:mod-1",
+      "process_id": "process:pin:84124p0003001",
+      "event_type": "amended",
+      "effective_at": "2025-09-02",
+      "fiscal_year": 2026,
+      "payee": "Metro Signal Services",
+      "relationship": "prime",
+      "amount": 125000,
+      "currency": "USD",
+      "quality": "published",
+      "source_url": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT1-841-20258800411"
+    },
+    {
+      "source_system": "checkbook_nyc",
+      "source_key": "checkbook:CT1-841-20258800411:payment-1",
+      "process_id": "process:pin:84124p0003001",
+      "event_type": "paid",
+      "effective_at": "2025-11-18",
+      "fiscal_year": 2026,
+      "payee": "Metro Signal Services",
+      "relationship": "prime",
+      "amount": 412000,
+      "currency": "USD",
+      "quality": "published",
+      "source_url": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT1-841-20258800411"
+    },
+    {
+      "source_system": "checkbook_nyc",
+      "source_key": "checkbook:CT1-841-20258800411:reversal-1",
+      "process_id": "process:pin:84124p0003001",
+      "event_type": "reversed",
+      "effective_at": "2025-11-24",
+      "fiscal_year": 2026,
+      "payee": "Metro Signal Services",
+      "relationship": "prime",
+      "amount": -12000,
+      "currency": "USD",
+      "quality": "published",
+      "reverses_source_key": "checkbook:CT1-841-20258800411:payment-1",
+      "source_url": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT1-841-20258800411"
+    },
+    {
+      "source_system": "paris_abo",
+      "source_key": "abo:reference-ida-1",
+      "process_id": "process:authority:reference-ida-1",
+      "event_type": "awarded",
+      "effective_at": "2025-06-30",
+      "fiscal_year": 2025,
+      "payee": "Reference Development Company",
+      "relationship": "prime",
+      "amount": 7500,
+      "currency": "USD",
+      "quality": "self_reported_unverified",
+      "authority_class": "IDA",
+      "hearing_process_id": "process:hearing:reference-ida-1",
+      "source_url": "https://www.abo.ny.gov/"
+    }
+  ],
+  "late_contracts": [
+    {
+      "process_id": "process:pin:84124p0003001",
+      "contract_id": "CT1-841-20258800411",
+      "registration_lag_days": 15,
+      "role": ["joined_evidence", "candidate_forecast_feature", "alarm_context"],
+      "source": "NYC Comptroller Late Contracts Dashboard",
+      "source_url": "https://comptroller.nyc.gov/reports/nyc-contracts/"
+    }
+  ]
+}

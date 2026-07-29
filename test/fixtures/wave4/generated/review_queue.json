@@ -1,0 +1,225 @@
+{
+  "schema_version": "1.0.0",
+  "snapshot_date": "2026-07-28",
+  "source_snapshot_hash": "1958f17a19068708b68bdb99df0c6fe2e33ff02ef03431aae2ef948c687196f5",
+  "coverage": {
+    "scope": "Wave 4 review-order fixtures",
+    "full_corpus": false,
+    "notice": "Queue fixtures demonstrate transparent ordering; scores prioritize review effort and are not judgments about a procurement."
+  },
+  "methodology": {
+    "label": "Review priority",
+    "weights": {
+      "amount_percentile": 18,
+      "method": 12,
+      "one_bid": 14,
+      "alarms": 24,
+      "amendments": 10,
+      "succession": 12,
+      "incompleteness": 10
+    },
+    "exclusions": [
+      "identity",
+      "occupation",
+      "protected_class",
+      "union_membership",
+      "visitor_location",
+      "browser_history"
+    ],
+    "blind_spots": [
+      "Source coverage is printed beside every queue snapshot.",
+      "Amount percentiles use that declared source coverage.",
+      "Review leads organize human attention; they are not findings."
+    ],
+    "human_review_required": true
+  },
+  "queue": [
+    {
+      "process_id": "process:pin:84124p0003001",
+      "title": "Bus radio communications services",
+      "score": 86,
+      "components": {
+        "amount_percentile": 16,
+        "method": 12,
+        "one_bid": 14,
+        "alarms": 16,
+        "amendments": 10,
+        "succession": 12,
+        "incompleteness": 6
+      },
+      "remove_one": {
+        "amount_percentile": {
+          "score_without": 70,
+          "change": -16
+        },
+        "method": {
+          "score_without": 74,
+          "change": -12
+        },
+        "one_bid": {
+          "score_without": 72,
+          "change": -14
+        },
+        "alarms": {
+          "score_without": 70,
+          "change": -16
+        },
+        "amendments": {
+          "score_without": 76,
+          "change": -10
+        },
+        "succession": {
+          "score_without": 74,
+          "change": -12
+        },
+        "incompleteness": {
+          "score_without": 80,
+          "change": -6
+        }
+      },
+      "facts": {
+        "amount_percentile": 0.91,
+        "procurement_method": "negotiated_acquisition",
+        "responsive_bid_count": 1,
+        "alarm_case_ids": [
+          "date-order-positive",
+          "contestability-package-positive"
+        ],
+        "amendment_count": 2,
+        "succession_gap": true,
+        "missing_field_count": 3
+      },
+      "source_urls": [
+        "https://a856-cityrecord.nyc.gov/",
+        "https://www.checkbooknyc.com/"
+      ],
+      "investigation_href": "#investigation",
+      "label": "Review priority",
+      "caveat": "Review leads organize human attention; they are not findings.",
+      "rank": 1
+    },
+    {
+      "process_id": "process:project:reference-ddc-1",
+      "title": "Reference public works delivery",
+      "score": 30,
+      "components": {
+        "amount_percentile": 13,
+        "method": 0,
+        "one_bid": 0,
+        "alarms": 8,
+        "amendments": 5,
+        "succession": 0,
+        "incompleteness": 4
+      },
+      "remove_one": {
+        "amount_percentile": {
+          "score_without": 17,
+          "change": -13
+        },
+        "method": {
+          "score_without": 30,
+          "change": 0
+        },
+        "one_bid": {
+          "score_without": 30,
+          "change": 0
+        },
+        "alarms": {
+          "score_without": 22,
+          "change": -8
+        },
+        "amendments": {
+          "score_without": 25,
+          "change": -5
+        },
+        "succession": {
+          "score_without": 30,
+          "change": 0
+        },
+        "incompleteness": {
+          "score_without": 26,
+          "change": -4
+        }
+      },
+      "facts": {
+        "amount_percentile": 0.72,
+        "procurement_method": "competitive_sealed_bid",
+        "responsive_bid_count": 4,
+        "alarm_case_ids": [
+          "broken-succession-positive"
+        ],
+        "amendment_count": 1,
+        "succession_gap": false,
+        "missing_field_count": 2
+      },
+      "source_urls": [
+        "https://a856-cityrecord.nyc.gov/",
+        "https://www.nyc.gov/site/ddc/index.page"
+      ],
+      "investigation_href": "#investigation",
+      "label": "Review priority",
+      "caveat": "Review leads organize human attention; they are not findings.",
+      "rank": 2
+    },
+    {
+      "process_id": "process:authority:reference-ida-1",
+      "title": "Reference authority procurement",
+      "score": 14,
+      "components": {
+        "amount_percentile": 6,
+        "method": 0,
+        "one_bid": 0,
+        "alarms": 0,
+        "amendments": 0,
+        "succession": 0,
+        "incompleteness": 8
+      },
+      "remove_one": {
+        "amount_percentile": {
+          "score_without": 8,
+          "change": -6
+        },
+        "method": {
+          "score_without": 14,
+          "change": 0
+        },
+        "one_bid": {
+          "score_without": 14,
+          "change": 0
+        },
+        "alarms": {
+          "score_without": 14,
+          "change": 0
+        },
+        "amendments": {
+          "score_without": 14,
+          "change": 0
+        },
+        "succession": {
+          "score_without": 14,
+          "change": 0
+        },
+        "incompleteness": {
+          "score_without": 6,
+          "change": -8
+        }
+      },
+      "facts": {
+        "amount_percentile": 0.33,
+        "procurement_method": "request_for_proposals",
+        "responsive_bid_count": 3,
+        "alarm_case_ids": [],
+        "amendment_count": 0,
+        "succession_gap": false,
+        "missing_field_count": 4
+      },
+      "source_urls": [
+        "https://www.abo.ny.gov/"
+      ],
+      "investigation_href": "#investigation",
+      "label": "Review priority",
+      "caveat": "Review leads organize human attention; they are not findings.",
+      "rank": 3
+    }
+  ]
+}

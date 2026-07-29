@@ -1,0 +1,59 @@
+{
+  "snapshot_date": "2026-07-28",
+  "fixture_notice": "Adapter fixtures demonstrate public delivery-source semantics; coverage is not citywide.",
+  "mta_capital_dashboard": [
+    {
+      "project_id": "MTA-REF-001",
+      "process_id": "process:pin:84124p0003001",
+      "milestone_id": "construction-50",
+      "milestone_name": "Construction 50% complete",
+      "planned_date": "2026-02-28",
+      "actual_date": "2026-03-12",
+      "status": "complete",
+      "schema_version": "capital-dashboard-2026-07",
+      "source_url": "https://capitaldashboard.mta.info/"
+    }
+  ],
+  "ddc_project_data": [
+    {
+      "project_id": "DDC-REF-001",
+      "process_id": "process:project:reference-ddc-1",
+      "milestone_id": "substantial-completion",
+      "milestone_name": "Substantial completion",
+      "planned_date": "2025-12-31",
+      "actual_date": null,
+      "status": "delayed",
+      "delay_reason": "Published schedule revision",
+      "schema_version": "ddc-projects-2026-07",
+      "source_url": "https://www.nyc.gov/site/ddc/about/press-releases/project-transparency.page"
+    }
+  ],
+  "acceptance_records": [
+    {
+      "record_id": "acceptance:reference-1",
+      "process_id": "process:project:reference-ddc-1",
+      "accepted_at": "2026-04-18",
+      "accepted_by": "Department of Design and Construction",
+      "scope": "Substantial completion",
+      "schema_version": "acceptance-fixture-v1",
+      "source_url": "https://www.nyc.gov/site/ddc/index.page"
+    }
+  ],
+  "payment_proxies": [
+    {
+      "source_key": "checkbook:CT1-841-20258800411:payment-1",
+      "process_id": "process:pin:84124p0003001",
+      "paid_at": "2025-11-18",
+      "amount": 412000,
+      "source_url": "https://www.checkbooknyc.com/"
+    }
+  ],
+  "unknown_processes": [
+    {
+      "process_id": "process:project:no-public-delivery-source",
+      "reason": "not_published",
+      "sources_checked": ["city_record", "checkbook_nyc"],
+      "checked_at": "2026-07-28"
+    }
+  ]
+}

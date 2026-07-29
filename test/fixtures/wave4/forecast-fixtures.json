@@ -1,0 +1,25 @@
+{
+  "snapshot_date": "2026-07-28",
+  "fixture_notice": "Historical-cutoff fixtures exercise the calibration gate; metrics do not describe full production coverage.",
+  "model_version": "procurement-window-rules-v1",
+  "source_snapshot_hashes": {
+    "process_spine": "fixture-process-spine-2026-07",
+    "coverage_ledger": "fixture-coverage-2026-07",
+    "late_contracts": "fixture-late-contracts-2026-07",
+    "delivery_events": "fixture-delivery-2026-07"
+  },
+  "predictions": [
+    {"id":"f01","cutoff":"2025-01-01","feature_observed_at":"2024-12-15","outcome_observed_at":"2025-03-04","agency":"DOT","category":"services","probability":0.9,"outcome":1,"lead_days":62,"coverage_ratio":0.95,"lag_prior_days":14},
+    {"id":"f02","cutoff":"2025-01-01","feature_observed_at":"2024-12-20","outcome_observed_at":"2025-02-18","agency":"DDC","category":"construction","probability":0.8,"outcome":1,"lead_days":48,"coverage_ratio":0.91,"lag_prior_days":23},
+    {"id":"f03","cutoff":"2025-02-01","feature_observed_at":"2025-01-18","outcome_observed_at":"2025-05-01","agency":"DOT","category":"services","probability":0.7,"outcome":1,"lead_days":76,"coverage_ratio":0.89,"lag_prior_days":17},
+    {"id":"f04","cutoff":"2025-02-01","feature_observed_at":"2025-01-29","outcome_observed_at":"2025-04-02","agency":"DEP","category":"construction","probability":0.6,"outcome":1,"lead_days":51,"coverage_ratio":0.83,"lag_prior_days":31},
+    {"id":"f05","cutoff":"2025-03-01","feature_observed_at":"2025-02-12","outcome_observed_at":"2025-06-01","agency":"DDC","category":"construction","probability":0.6,"outcome":0,"lead_days":null,"coverage_ratio":0.88,"lag_prior_days":25},
+    {"id":"f06","cutoff":"2025-03-01","feature_observed_at":"2025-02-19","outcome_observed_at":"2025-06-01","agency":"DOT","category":"services","probability":0.4,"outcome":0,"lead_days":null,"coverage_ratio":0.92,"lag_prior_days":12},
+    {"id":"f07","cutoff":"2025-04-01","feature_observed_at":"2025-03-22","outcome_observed_at":"2025-07-01","agency":"DEP","category":"services","probability":0.3,"outcome":0,"lead_days":null,"coverage_ratio":0.86,"lag_prior_days":29},
+    {"id":"f08","cutoff":"2025-04-01","feature_observed_at":"2025-03-30","outcome_observed_at":"2025-07-01","agency":"DDC","category":"construction","probability":0.2,"outcome":0,"lead_days":null,"coverage_ratio":0.82,"lag_prior_days":21},
+    {"id":"f09","cutoff":"2025-05-01","feature_observed_at":"2025-04-15","outcome_observed_at":"2025-08-01","agency":"DOT","category":"services","probability":0.1,"outcome":0,"lead_days":null,"coverage_ratio":0.90,"lag_prior_days":16},
+    {"id":"f10","cutoff":"2025-05-01","feature_observed_at":"2025-04-27","outcome_observed_at":"2025-07-14","agency":"DEP","category":"construction","probability":0.8,"outcome":1,"lead_days":55,"coverage_ratio":0.84,"lag_prior_days":34},
+    {"id":"f11","cutoff":"2025-05-01","feature_observed_at":"2025-04-14","outcome_observed_at":"2025-08-01","agency":"DOT","category":"services","probability":0.75,"outcome":1,"lead_days":64,"coverage_ratio":0.42,"missing_required_fields":["delivery_status"]},
+    {"id":"f12","cutoff":"2025-05-01","feature_observed_at":"2025-05-08","outcome_observed_at":"2025-06-11","agency":"DDC","category":"construction","probability":0.85,"outcome":1,"lead_days":27,"coverage_ratio":0.94,"leakage_fixture":true}
+  ]
+}

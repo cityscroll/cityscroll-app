@@ -1,0 +1,16 @@
+{
+  "snapshot_date": "2026-07-28",
+  "matter": {
+    "process_id": "process:pin:84124p0003001",
+    "title": "Bus radio communications services",
+    "matter_href": "index.html#matter/84124P0003001",
+    "official_notice_url": "https://a856-cityrecord.nyc.gov/RequestDetail/2141200",
+    "official_application_url": "https://passport.cityofnewyork.us/page.aspx/en/rfp/request_browse_public",
+    "official_contact_url": "https://www.nyc.gov/site/mocs/passport/about-passport.page",
+    "deadline": "2026-09-30",
+    "document": {
+      "vault_hash": null,
+      "official_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/example-public-report.pdf"
+    }
+  }
+}

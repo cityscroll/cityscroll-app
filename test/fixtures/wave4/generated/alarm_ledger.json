@@ -1,0 +1,301 @@
+{
+  "schema_version": "1.0.0",
+  "snapshot_date": "2026-07-28",
+  "source_snapshot_hash": "9010d10aa17e3094719264c2d44b9c466b5d755fb1f222f2f0bbdd29ea82410c",
+  "coverage": {
+    "scope": "Five-family methodology fixtures",
+    "full_corpus": false,
+    "notice": "Methodology fixtures test rule behavior; review leads are not findings of wrongdoing."
+  },
+  "methodology": {
+    "output_term": "review lead",
+    "human_review_required": true,
+    "automated_verdict": false,
+    "rule_families": [
+      "date_order",
+      "expired_before_process",
+      "future_competition",
+      "contestability_package",
+      "broken_succession"
+    ]
+  },
+  "evaluations": [
+    {
+      "case_id": "date-order-positive",
+      "rule_id": "date_order",
+      "status": "lead",
+      "title": "Publication follows service start",
+      "triggering_facts": {
+        "notice_date": "2025-04-15",
+        "service_start": "2025-04-01"
+      },
+      "facts": {
+        "notice_date": "2025-04-15",
+        "service_start": "2025-04-01"
+      },
+      "sources": {
+        "notice_date": "https://a856-cityrecord.nyc.gov/",
+        "service_start": "https://www.checkbooknyc.com/"
+      },
+      "counterfactual": "The notice date is on or before the service start date.",
+      "language": "Review lead: published dates or fields meet this rule."
+    },
+    {
+      "case_id": "date-order-near",
+      "rule_id": "date_order",
+      "status": "clear",
+      "title": "Publication follows service start",
+      "triggering_facts": {},
+      "facts": {
+        "notice_date": "2025-03-15",
+        "service_start": "2025-04-01"
+      },
+      "sources": {
+        "notice_date": "https://a856-cityrecord.nyc.gov/",
+        "service_start": "https://www.checkbooknyc.com/"
+      },
+      "counterfactual": "The notice date is on or before the service start date.",
+      "language": "Published facts do not trigger this rule."
+    },
+    {
+      "case_id": "date-order-missing",
+      "rule_id": "date_order",
+      "status": "insufficient",
+      "title": "Publication follows service start",
+      "missing_fields": [
+        "notice_date"
+      ],
+      "facts": {
+        "notice_date": null,
+        "service_start": "2025-04-01"
+      },
+      "sources": {
+        "service_start": "https://www.checkbooknyc.com/"
+      },
+      "language": "No published notice date found for this matter."
+    },
+    {
+      "case_id": "expired-before-process-positive",
+      "rule_id": "expired_before_process",
+      "status": "lead",
+      "title": "Intent notice follows negotiations",
+      "triggering_facts": {
+        "intent_notice_date": "2025-06-20",
+        "negotiation_start": "2025-05-01"
+      },
+      "facts": {
+        "intent_notice_date": "2025-06-20",
+        "negotiation_start": "2025-05-01"
+      },
+      "sources": {
+        "intent_notice_date": "https://a856-cityrecord.nyc.gov/",
+        "negotiation_start": "https://www.checkbooknyc.com/"
+      },
+      "counterfactual": "The intent notice is published before negotiations begin.",
+      "language": "Review lead: published dates or fields meet this rule."
+    },
+    {
+      "case_id": "expired-before-process-near",
+      "rule_id": "expired_before_process",
+      "status": "clear",
+      "title": "Intent notice follows negotiations",
+      "triggering_facts": {},
+      "facts": {
+        "intent_notice_date": "2025-04-20",
+        "negotiation_start": "2025-05-01"
+      },
+      "sources": {
+        "intent_notice_date": "https://a856-cityrecord.nyc.gov/",
+        "negotiation_start": "https://www.checkbooknyc.com/"
+      },
+      "counterfactual": "The intent notice is published before negotiations begin.",
+      "language": "Published facts do not trigger this rule."
+    },
+    {
+      "case_id": "expired-before-process-missing",
+      "rule_id": "expired_before_process",
+      "status": "insufficient",
+      "title": "Intent notice follows negotiations",
+      "missing_fields": [
+        "negotiation_start"
+      ],
+      "facts": {
+        "intent_notice_date": "2025-04-20",
+        "negotiation_start": null
+      },
+      "sources": {
+        "intent_notice_date": "https://a856-cityrecord.nyc.gov/"
+      },
+      "language": "No published negotiation start date found for this matter."
+    },
+    {
+      "case_id": "future-competition-positive",
+      "rule_id": "future_competition",
+      "status": "lead",
+      "title": "Successor notice follows bridge end",
+      "triggering_facts": {
+        "bridge_end": "2025-09-30",
+        "successor_notice_date": "2025-10-21"
+      },
+      "facts": {
+        "bridge_end": "2025-09-30",
+        "successor_notice_date": "2025-10-21"
+      },
+      "sources": {
+        "bridge_end": "https://www.checkbooknyc.com/",
+        "successor_notice_date": "https://a856-cityrecord.nyc.gov/"
+      },
+      "counterfactual": "A successor notice is published before the bridge or extension ends.",
+      "language": "Review lead: published dates or fields meet this rule."
+    },
+    {
+      "case_id": "future-competition-near",
+      "rule_id": "future_competition",
+      "status": "clear",
+      "title": "Successor notice follows bridge end",
+      "triggering_facts": {},
+      "facts": {
+        "bridge_end": "2025-09-30",
+        "successor_notice_date": "2025-08-15"
+      },
+      "sources": {
+        "bridge_end": "https://www.checkbooknyc.com/",
+        "successor_notice_date": "https://a856-cityrecord.nyc.gov/"
+      },
+      "counterfactual": "A successor notice is published before the bridge or extension ends.",
+      "language": "Published facts do not trigger this rule."
+    },
+    {
+      "case_id": "future-competition-missing",
+      "rule_id": "future_competition",
+      "status": "insufficient",
+      "title": "Successor notice follows bridge end",
+      "missing_fields": [
+        "bridge_end"
+      ],
+      "facts": {
+        "bridge_end": null,
+        "successor_notice_date": "2025-08-15"
+      },
+      "sources": {
+        "successor_notice_date": "https://a856-cityrecord.nyc.gov/"
+      },
+      "language": "No published bridge end date found for this matter."
+    },
+    {
+      "case_id": "contestability-package-positive",
+      "rule_id": "contestability_package",
+      "status": "lead",
+      "title": "Single responsive bid with an incomplete competition record",
+      "triggering_facts": {
+        "responsive_bid_count": 1,
+        "required_form_present": false
+      },
+      "facts": {
+        "responsive_bid_count": 1,
+        "notified_vendor_count": null,
+        "required_form_present": false
+      },
+      "sources": {
+        "responsive_bid_count": "https://a856-cityrecord.nyc.gov/",
+        "required_form_present": "https://a856-cityrecord.nyc.gov/"
+      },
+      "counterfactual": "The record shows more than one responsive bid, the notified count, and required forms.",
+      "language": "Review lead: published dates or fields meet this rule."
+    },
+    {
+      "case_id": "contestability-package-near",
+      "rule_id": "contestability_package",
+      "status": "clear",
+      "title": "Single responsive bid with an incomplete competition record",
+      "triggering_facts": {},
+      "facts": {
+        "responsive_bid_count": 2,
+        "notified_vendor_count": 5,
+        "required_form_present": true
+      },
+      "sources": {
+        "responsive_bid_count": "https://a856-cityrecord.nyc.gov/",
+        "notified_vendor_count": "https://a856-cityrecord.nyc.gov/",
+        "required_form_present": "https://a856-cityrecord.nyc.gov/"
+      },
+      "counterfactual": "The record shows more than one responsive bid, the notified count, and required forms.",
+      "language": "Published facts do not trigger this rule."
+    },
+    {
+      "case_id": "contestability-package-missing",
+      "rule_id": "contestability_package",
+      "status": "insufficient",
+      "title": "Single responsive bid with an incomplete competition record",
+      "missing_fields": [
+        "responsive_bid_count",
+        "required_form_present"
+      ],
+      "facts": {
+        "responsive_bid_count": null,
+        "notified_vendor_count": null,
+        "required_form_present": null
+      },
+      "sources": {},
+      "language": "No published responsive bid count or required form status found for this matter."
+    },
+    {
+      "case_id": "broken-succession-positive",
+      "rule_id": "broken_succession",
+      "status": "lead",
+      "title": "Successor starts after an extension ends",
+      "triggering_facts": {
+        "extension_end": "2025-06-30",
+        "successor_start": "2025-08-12"
+      },
+      "facts": {
+        "extension_end": "2025-06-30",
+        "successor_start": "2025-08-12",
+        "amendment_rationale": null
+      },
+      "sources": {
+        "extension_end": "https://www.checkbooknyc.com/",
+        "successor_start": "https://www.checkbooknyc.com/"
+      },
+      "counterfactual": "The successor starts before the extension ends, or a transition rationale is published.",
+      "language": "Review lead: published dates or fields meet this rule."
+    },
+    {
+      "case_id": "broken-succession-near",
+      "rule_id": "broken_succession",
+      "status": "clear",
+      "title": "Successor starts after an extension ends",
+      "triggering_facts": {},
+      "facts": {
+        "extension_end": "2025-06-30",
+        "successor_start": "2025-06-15",
+        "amendment_rationale": "Published scope transition"
+      },
+      "sources": {
+        "extension_end": "https://www.checkbooknyc.com/",
+        "successor_start": "https://www.checkbooknyc.com/",
+        "amendment_rationale": "https://a856-cityrecord.nyc.gov/"
+      },
+      "counterfactual": "The successor starts before the extension ends, or a transition rationale is published.",
+      "language": "Published facts do not trigger this rule."
+    },
+    {
+      "case_id": "broken-succession-missing",
+      "rule_id": "broken_succession",
+      "status": "insufficient",
+      "title": "Successor starts after an extension ends",
+      "missing_fields": [
+        "successor_start"
+      ],
+      "facts": {
+        "extension_end": "2025-06-30",
+        "successor_start": null,
+        "amendment_rationale": null
+      },
+      "sources": {
+        "extension_end": "https://www.checkbooknyc.com/"
+      },
+      "language": "No published successor start date found for this matter."
+    }
+  ]
+}

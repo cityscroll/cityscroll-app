@@ -33,6 +33,7 @@ import { handleInboundEmail } from "./inbound.mjs";
 import { handleVendorProfile, refreshVendorProfiles } from "./vendor_profile.mjs";
 import { handleMirror } from "./mirror.mjs";
 import { handleHearings, refreshHearings } from "./hearings.mjs";
+import { handleSourceVault } from "./source_vault.mjs";
 
 const MIRROR_HOSTS = new Set(["cityscroll.org", "www.cityscroll.org"]);
 
@@ -60,6 +61,7 @@ export default {
     if (pathname === "/agency") return handleAgency(request, env, ctx);
     if (pathname === "/vendor-profile") return handleVendorProfile(request, env, ctx);
     if (pathname === "/hearings") return handleHearings(request, env, ctx);
+    if (pathname === "/source-vault/fetch" || pathname.startsWith("/source-vault/")) return handleSourceVault(request, env);
     if (pathname === "/suggestions") return handleSuggestions(request, env, ctx);
     if (pathname === "/stats") return handleStats(request, env, ctx);
     if (pathname === "/events") return handleEvent(request, env);

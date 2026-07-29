@@ -42,6 +42,8 @@ Each accepted event produces one Workers Analytics Engine data point:
 | `feed_fetch` | One origin request for a feed completed the event-counting path. | `detail=atom\|json\|ics`; `surface=api` |
 | `saved_search_check` | One accepted batch saved-search check. | `surface=api` |
 | `investigation_share` | One read-only investigation link was created or copied. | `detail=create\|copy`; `surface=home\|api` |
+| `action_opened` | One matter action was opened. | `detail=direct\|official-handoff`; `surface=home` |
+| `outcome_recorded` | One voluntary post-deadline outcome was recorded. | `detail=submitted\|attended\|bid\|won\|not-useful`; `surface=home` |
 
 ## Data that is never written
 
@@ -51,6 +53,9 @@ Each accepted event produces one Workers Analytics Engine data point:
 - Raw search text, filter keyword, address, entity name, notice id, or investigation id
 - Referrer URL or outbound destination URL
 - A row keyed to a person
+
+Declared-interest routing compiles subscriber-selected topics, places, and actions into standing
+watches. Aggregate routing research publishes denominators and category totals.
 
 The intake rejects unknown events and dimensions. Payloads are capped at 1 KiB. Browser delivery is
 fail-soft, so analytics can never block the action being measured.
