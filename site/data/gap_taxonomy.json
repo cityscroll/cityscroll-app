@@ -521,6 +521,62 @@
       "landing_page": "https://data.cityofnewyork.us/d/qyyg-4tf5"
     },
     {
+      "id": "ulurp-recommendation-pdfs",
+      "name": "ULURP Recommendation PDFs",
+      "source_contract_id": "ulurp-recommendation-pdfs",
+      "status": "disabled",
+      "join_keys": [
+        "ulurp_numbers"
+      ],
+      "join_coverage": {
+        "predicted": {
+          "grade": "high-risk",
+          "note": "Pre-recon estimate: small historical PDF companion; not a citywide live letter feed."
+        },
+        "realized": {
+          "rate": 0.0054,
+          "joined": 152,
+          "total": 27971,
+          "metric": "zap_ulurp_numbered_either",
+          "observed_on": "2026-07-30",
+          "universe": "NYC Open Data ZAP projects (hgx4-8ukb) with non-null ulurp_numbers",
+          "strategy": "exact_ulurp_token (optional type letter + 6-digit body + letter suffix; spaces optional). Bare body without suffix, title-only, and Property Disposition notice sampling rejected.",
+          "verdict": "Below usefulness threshold (~30%) on ZAP projects with non-null ulurp_numbers (0.54% either recommendations or PDFs). Ship measured reconnaissance + disabled source contracts only; do not edge-materialize Borough President recommendation panels. Keep the class-(a) land-outcome pointer.",
+          "source": "source_contracts.join_measurement"
+        }
+      },
+      "landing_page": "https://data.cityofnewyork.us/d/gt5i-dmde",
+      "delivery_tier": "live-only"
+    },
+    {
+      "id": "ulurp-recommendations",
+      "name": "ULURP Recommendations (Borough President positions)",
+      "source_contract_id": "ulurp-recommendations",
+      "status": "disabled",
+      "join_keys": [
+        "ulurp_numbers"
+      ],
+      "join_coverage": {
+        "predicted": {
+          "grade": "high-risk",
+          "note": "Pre-recon estimate: borough-scoped historical BP recommendations; tiny absolute N vs citywide ZAP ULURP projects."
+        },
+        "realized": {
+          "rate": 0.0054,
+          "joined": 152,
+          "total": 27971,
+          "metric": "zap_ulurp_numbered_either",
+          "observed_on": "2026-07-30",
+          "universe": "NYC Open Data ZAP projects (hgx4-8ukb) with non-null ulurp_numbers",
+          "strategy": "exact_ulurp_token (optional type letter + 6-digit body + letter suffix; spaces optional). Bare body without suffix, title-only, and Property Disposition notice sampling rejected.",
+          "verdict": "Below usefulness threshold (~30%) on ZAP projects with non-null ulurp_numbers (0.54% either recommendations or PDFs). Ship measured reconnaissance + disabled source contracts only; do not edge-materialize Borough President recommendation panels. Keep the class-(a) land-outcome pointer.",
+          "source": "source_contracts.join_measurement"
+        }
+      },
+      "landing_page": "https://data.cityofnewyork.us/d/4j6i-9rmr",
+      "delivery_tier": "live-only"
+    },
+    {
       "id": "unregistered-zoning-application-portal-projects",
       "name": "Zoning Application Portal projects",
       "source_contract_id": null,
@@ -2174,7 +2230,7 @@
   ],
   "depot_refresh": {
     "observed_on": "2026-07-30",
-    "source_contracts_fingerprint": "ddc2afb7ab611dcf094f2ef3ba9dbd27f8dfbd5533324416e8c43afc0a7b9dea",
+    "source_contracts_fingerprint": "6060eef019ee2965a3498407013cf00f9a90db51dd66587092097a7bc97a5934",
     "materialized_crosswalks": 11,
     "candidate_crosswalks": 45,
     "class_changes": 0,

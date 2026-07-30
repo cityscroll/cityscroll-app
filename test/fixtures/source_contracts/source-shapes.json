@@ -461,6 +461,34 @@
         "organization_phone",
         "doing_business_start_date"
       ]
+    },
+    {
+      "id": "ulurp-recommendations",
+      "kind": "socrata",
+      "identifier": "4j6i-9rmr",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": [
+        "ulurp_application_name",
+        "community_board_s",
+        "council_district_s",
+        "ulurp_number_s",
+        "borough_president",
+        "recommendation_date"
+      ]
+    },
+    {
+      "id": "ulurp-recommendation-pdfs",
+      "kind": "socrata",
+      "identifier": "gt5i-dmde",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": [
+        "date",
+        "project",
+        "pdf_download",
+        "ulurp_application_number"
+      ]
     }
   ]
 }

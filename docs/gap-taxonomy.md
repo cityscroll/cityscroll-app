@@ -66,6 +66,8 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `passport-public-contracts` | landed | EPIN, PIN, contract_id, agency | high-risk | 74% (all_notices_to_contracts) |
 | `passport-public-rfx` | landed | EPIN, PIN, procurement_name, agency | high-risk | 78% (either_contracts_or_rfx) |
 | `recent-contract-awards-ocp` | not_ingested | PIN, request_id, agency | — | — |
+| `ulurp-recommendation-pdfs` | disabled | ulurp_numbers | high-risk | 0.5% (zap_ulurp_numbered_either) |
+| `ulurp-recommendations` | disabled | ulurp_numbers | high-risk | 0.5% (zap_ulurp_numbered_either) |
 | `unregistered-zoning-application-portal-projects` | not_ingested | project_id, BBL, ulurp_numbers | — | — |
 | `zap-api-outcomes` | landed | project_id, BBL, ulurp_numbers | — | 100% (ulurp_complete_useful_outcome) |
 | `zap-bbl` | live-only | BBL, project_id | — | — |
@@ -175,4 +177,4 @@ node tools/depot_rederive.mjs          # write registry + docs + receipt
 node tools/depot_rederive.mjs --check  # CI drift gate (no writes)
 ```
 
-Last refresh fingerprint: `ddc2afb7ab61…` · materialized 11 · candidates 45 · class changes 0.
+Last refresh fingerprint: `6060eef019ee…` · materialized 11 · candidates 45 · class changes 0.

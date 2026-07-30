@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "observed_on": "2026-07-30",
+  "source_contracts": [
+    "ulurp-recommendations",
+    "ulurp-recommendation-pdfs"
+  ],
+  "dataset_ids": [
+    "4j6i-9rmr",
+    "gt5i-dmde"
+  ],
+  "strategies_accepted": [
+    "exact_ulurp_token"
+  ],
+  "strategies_rejected": [
+    "bare_six_digit_body",
+    "title_only",
+    "property_disposition_universe"
+  ],
+  "cases": [
+    {
+      "id": "joined-brooklyn-bp-spaced",
+      "expect": "joined",
+      "method": "exact_ulurp_token",
+      "zap": {
+        "project_id": "2019K0437",
+        "ulurp_numbers": "C210033ZMK; M210034LDK",
+        "borough": "Brooklyn",
+        "public_status": "Completed"
+      },
+      "recommendation": {
+        "ulurp_application_name": "Sample Brooklyn ULURP",
+        "ulurp_number_s": "210033 ZMK M 210034 LDK",
+        "borough_president": "Approved",
+        "recommendation_date": "2021-03-15T00:00:00.000",
+        "community_board_s": "1",
+        "council_district_s": "33"
+      }
+    },
+    {
+      "id": "joined-pdf-type-letter",
+      "expect": "joined",
+      "method": "exact_ulurp_token",
+      "zap": {
+        "project_id": "2018M0123",
+        "ulurp_numbers": "C180066ZSM",
+        "borough": "Manhattan",
+        "public_status": "Completed"
+      },
+      "pdf": {
+        "project": "172-174 East 73rd Street",
+        "ulurp_application_number": "C 180066 ZSM",
+        "date": "2017-11-20T00:00:00.000",
+        "pdf_download": "http://manhattanbp.nyc.gov/downloads/pdf/example-C-180066-ZSM.pdf"
+      }
+    },
+    {
+      "id": "joined-multi-ulurp-semicolon",
+      "expect": "joined",
+      "method": "exact_ulurp_token",
+      "zap": {
+        "project_id": "P2015K0596",
+        "ulurp_numbers": "C180393ZMK; N180394ZRK",
+        "borough": "Brooklyn",
+        "public_status": "Completed"
+      },
+      "recommendation": {
+        "ulurp_application_name": "Multi-action rezoning",
+        "ulurp_number_s": "180393 ZMK 180394 ZRK",
+        "borough_president": "Approved with conditions",
+        "recommendation_date": "2018-06-01T00:00:00.000",
+        "community_board_s": "6",
+        "council_district_s": "39"
+      }
+    },
+    {
+      "id": "unjoined-active-modern-ulurp",
+      "expect": "unjoined",
+      "zap": {
+        "project_id": "2026M0366",
+        "ulurp_numbers": "260302ZCM",
+        "borough": "Manhattan",
+        "public_status": "Filed"
+      },
+      "gap_note": "Active modern ULURP tokens are outside the small historical Borough President recommendation catalogs (91 + 88 rows)."
+    },
+    {
+      "id": "unjoined-property-disposition-wrong-universe",
+      "expect": "unjoined",
+      "zap": {
+        "project_id": null,
+        "ulurp_numbers": null,
+        "note": "Property Disposition notices are not ZAP projects; do not use that notice slice as a join success metric."
+      },
+      "gap_note": "Wrong universe for this join. Land-use / ULURP path only."
+    },
+    {
+      "id": "rejected-bare-body-collision",
+      "expect": "unjoined",
+      "method_rejected": "bare_six_digit_body",
+      "zap": {
+        "project_id": "COLLIDE",
+        "ulurp_numbers": "210033ZCM",
+        "borough": "Manhattan",
+        "public_status": "Completed"
+      },
+      "recommendation": {
+        "ulurp_number_s": "210033 ZMK",
+        "borough_president": "Approved",
+        "recommendation_date": "2021-01-01T00:00:00.000"
+      },
+      "gap_note": "Same 6-digit body with a different suffix must not join."
+    }
+  ],
+  "join_measurement_topline": {
+    "usefulness_threshold": 0.3,
+    "zap_ulurp_numbered_either_rate": 0.0054,
+    "zap_ulurp_numbered_recs_rate": 0.0029,
+    "zap_ulurp_numbered_pdfs_rate": 0.0025,
+    "zap_ulurp_numbered_total": 27971,
+    "either_joined": 152,
+    "verdict": "Below usefulness threshold"
+  }
+}
