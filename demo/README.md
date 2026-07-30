@@ -11,6 +11,7 @@ generates one test from every entry, so adding a route does not require another 
 | `id` | Stable entry identifier. Tour and documentation surfaces may refer to it. |
 | `url` | Hash route opened from `index.html`. |
 | `feature` | Stable feature grouping used by other public surfaces. |
+| `localOnly` | Optional. When `true`, the browser contract runs only against the local fixture server, not production `cityscroll.org`. Use for routes that ship in the same PR and are not live on the public host yet. |
 | `description` | One-line public description of the demonstrated capability. |
 | `expectations.visible` | CSS selectors that must be visible; optional `text` narrows the match. |
 | `expectations.notVisible` | CSS selectors or selector-and-text matches that must not be visible. |

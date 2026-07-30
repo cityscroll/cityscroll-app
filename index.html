@@ -120,6 +120,25 @@
   .scenario-routes{display:flex;gap:6px;flex-wrap:wrap}
   .scenario-route{display:inline-flex;align-items:center;min-height:30px;padding:5px 9px;border:1px solid var(--rule-strong);border-radius:999px;background:#fff;color:var(--oxblood);text-decoration:none;font:600 11px/1.2 ui-sans-serif,system-ui,sans-serif}
   .scenario-route:hover{border-color:var(--oxblood);background:var(--paper-2)}
+  /* Task-first entry experiment: additive routes (#task/…), not a lens redesign. */
+  .task-first{max-width:920px;margin:0 auto;padding:8px 0 28px}
+  .task-first-head{margin:0 0 16px}
+  .task-first-kicker{font:700 12px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+  .task-first-head h2{font:900 clamp(1.6rem,3.5vw,2.2rem)/1.1 var(--font-display);margin:0 0 8px;color:var(--ink)}
+  .task-first-deck{font:15px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft);margin:0;max-width:720px}
+  .task-first-list{display:grid;gap:12px}
+  .task-card{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:16px 18px;box-shadow:var(--shadow)}
+  .task-card.route-item:focus{outline:2px solid var(--oxblood);outline-offset:2px}
+  .task-card-answer{font:800 18px/1.25 var(--font-display);color:var(--ink);margin:0 0 10px}
+  .task-card-title{font:700 16px/1.35 var(--font-body);margin:0 0 10px;color:var(--ink)}
+  .task-lead{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px 12px;margin:0 0 12px}
+  .task-lead dt{font:700 10px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0}
+  .task-lead dd{font:600 14px/1.35 ui-sans-serif,system-ui,sans-serif;color:var(--ink);margin:3px 0 0}
+  .task-facts{margin:0 0 12px;font:14px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft)}
+  .task-facts dt{font:700 11px/1.2 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:8px 0 2px}
+  .task-facts dd{margin:0}
+  .task-card-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .task-payment-lag{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft);border-inline-start:3px solid var(--rule-strong);padding:8px 0 8px 12px;margin:10px 0 0}
   .deck{max-width:820px;margin:0 auto 4px;text-align:center;color:#4a4338}
   .deck b{color:var(--ink)}
   .center{text-align:center}
@@ -667,6 +686,7 @@
 <script src="external_awards.js"></script>
 <script src="export_workflows.js"></script>
 <script src="staffing.js"></script>
+<script src="task_first.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
@@ -737,11 +757,13 @@
       <div class="scenario-routes">
         <a class="scenario-route" href="#money?mode=open&amp;closing=week" data-preset-id="city-work-closing" data-scenario="city-work" data-scenario-lens="money" data-i18n="closing_this_week">Closing this week</a>
         <a class="scenario-route" href="#money?mode=open" data-preset-id="city-work-all" data-scenario="city-work" data-scenario-lens="money" data-i18n="tab_money">Contracts</a>
+        <a class="scenario-route" href="#task/can-i-bid" data-task-entry="can-i-bid" data-scenario="city-work" data-scenario-lens="task" data-i18n="task_can_i_bid_link">Can I bid? (examples)</a>
       </div>
     </article>
     <article class="scenario-card">
       <h3 data-i18n="scenario_neighborhood">I follow my neighborhood</h3>
       <div class="scenario-routes">
+        <a class="scenario-route" href="#task/what-will-change" data-task-entry="what-will-change" data-scenario="neighborhood" data-scenario-lens="task" data-i18n="task_what_will_change_link">What will change here? (examples)</a>
         <a class="scenario-route" href="#land" data-preset-id="neighborhood-land" data-scenario="neighborhood" data-scenario-lens="land" data-i18n="tab_land">Zoning</a>
         <a class="scenario-route" href="#property" data-preset-id="neighborhood-property" data-scenario="neighborhood" data-scenario-lens="property" data-i18n="tab_property">Property</a>
         <a class="scenario-route" href="#meetings?when=upcoming" data-preset-id="neighborhood-meetings" data-scenario="neighborhood" data-scenario-lens="meetings" data-i18n="tab_meetings">Meetings</a>
@@ -1267,6 +1289,13 @@
   </div>
 </section>
 
+<!-- ============ TASK-FIRST ENTRY (additive experiment: #task/can-i-bid · #task/what-will-change) ============ -->
+<section id="tab-task" class="tabpane">
+  <div class="wrap">
+    <div id="taskview"><div class="empty"><span class="loading"></span> loading task examples…</div></div>
+  </div>
+</section>
+
 </main>
 
 <footer>
@@ -1473,7 +1502,8 @@ function showTab(name, push){
   document.querySelectorAll(".tabpane").forEach(p=>p.classList.toggle("active", p.id === "tab-"+name));
   document.querySelectorAll(".tabbtn").forEach(b=>b.classList.toggle("active", b.dataset.tab === name));
   const scenarios=document.querySelector(".scenario-nav");
-  if(scenarios) scenarios.hidden=name==="people";
+  // Task-first entry and Staffing lead with their own content; hide the home task grid.
+  if(scenarios) scenarios.hidden=name==="people" || name==="task" || name==="notice" || name==="entity";
   syncTabAria();
   // Push BEFORE any lazy load below runs updateHash(), or the load's replaceState
   // rewrites the prior entry and the push turns into a no-op (Back would skip a tab).
@@ -6454,7 +6484,174 @@ function bareCollectionHash(raw){
     agency:"#money",
     matter:"#money",
     "investigation/shared":"#investigation",
+    "task/can-i-bid":"#task/can-i-bid",
+    "task/what-will-change":"#task/what-will-change",
+    task:"#money",
   }[route]||null;
+}
+
+/* ===================== TASK-FIRST ENTRY (bounded examples) =====================
+   Precomputed data/task_first_examples.json — five procurement + five ZAP records.
+   Routes are additive (#task/…); existing lenses stay intact. See task_first.js. */
+let taskFirstBundle = null;
+let taskFirstBundlePromise = null;
+function loadTaskFirstBundle(){
+  if(taskFirstBundle) return Promise.resolve(taskFirstBundle);
+  if(taskFirstBundlePromise) return taskFirstBundlePromise;
+  taskFirstBundlePromise = fetch("data/task_first_examples.json")
+    .then(r => r.ok ? r.json() : null)
+    .then(data => { taskFirstBundle = data; return data; })
+    .catch(() => { taskFirstBundle = null; return null; });
+  return taskFirstBundlePromise;
+}
+function taskEsc(value){
+  return String(value == null ? "" : value)
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+function taskBidAnswerHTML(presentation){
+  const status = presentation.bid_status || {};
+  if(status.key === "open") return t("task_bid_yes_until",{date:fdt(presentation.facts.deadline),n:status.days_left});
+  if(status.key === "due_today") return t("task_bid_yes_today");
+  if(status.key === "rolling") return t("task_bid_yes_rolling");
+  if(status.key === "closed") return t("task_bid_no_closed",{date:fdt(presentation.facts.deadline)});
+  return t("task_bid_unknown");
+}
+function taskPaymentLagHTML(lag){
+  if(!lag || lag.bid_count_causality_claimed) return "";
+  const subject = lag.subject ? taskEsc(lag.subject) : t("task_payment_lag_related");
+  const source = lag.source_url
+    ? `<a href="${taskEsc(lag.source_url)}" ${EXT_ATTRS}>${taskEsc(lag.source)}${extSR()}</a>`
+    : taskEsc(lag.source);
+  // Observed figure only — never bid-count causality (unmeasured).
+  const copy = t("task_payment_lag_observed_html",{days:lag.days, subject, source});
+  if(window.TaskFirst && !TaskFirst.paymentLagCopyIsSafe(copy.replace(/<[^>]+>/g," "))) return "";
+  return `<div class="task-payment-lag">${copy}</div>`;
+}
+function taskCanIBidCardHTML(presentation, focused){
+  const f = presentation.facts;
+  const leadRows = [
+    [t("task_lead_stage"), f.stage],
+    [t("task_lead_method"), f.method],
+    [t("task_lead_deadline"), f.deadline ? fdt(f.deadline) : null],
+    [t("task_lead_agency"), f.agency],
+    [t("task_lead_pin"), f.pin],
+  ].filter(([,v]) => v);
+  const more = [
+    [t("task_fact_category"), f.category],
+    [t("task_fact_contact"), [f.contact_name, f.contact_phone, f.email].filter(Boolean).join(" · ")],
+    [t("task_fact_submit"), f.submit_to],
+    [t("task_fact_other"), f.other_info],
+    [t("task_fact_published"), f.start_date ? fdate(f.start_date) : null],
+    [t("task_fact_request_id"), f.request_id],
+  ].filter(([,v]) => v);
+  const desc = f.description
+    ? `<div class="scope"><span class="lbl">${t("what_they_want")}</span>${taskEsc(f.description.slice(0,900))}${f.description.length>900?"…":""}</div>`
+    : "";
+  const itemHref = presentation.id ? TaskFirst.taskItemHash("can-i-bid", presentation.id) : "#task/can-i-bid";
+  const noticeHref = presentation.notice_hash || "#money";
+  const sourceHref = (presentation.source && presentation.source.url) || (f.request_id ? REQ_URL(f.request_id) : "#money");
+  return `<article class="task-card${focused?" route-item":""}"${focused?' tabindex="-1"':""} data-task-id="${taskEsc(presentation.id||"")}">
+    <p class="task-card-answer">${taskEsc(taskBidAnswerHTML(presentation))}</p>
+    <h3 class="task-card-title" lang="en" dir="ltr">${taskEsc(f.title||t("untitled_notice"))}</h3>
+    <dl class="task-lead">${leadRows.map(([k,v])=>`<div><dt>${taskEsc(k)}</dt><dd lang="en" dir="ltr">${taskEsc(v)}</dd></div>`).join("")}</dl>
+    <dl class="task-facts">${more.map(([k,v])=>`<dt>${taskEsc(k)}</dt><dd lang="en" dir="ltr">${taskEsc(v)}</dd>`).join("")}</dl>
+    ${desc}
+    ${taskPaymentLagHTML(presentation.observed_payment_lag)}
+    <div class="task-card-actions actions">
+      ${focused?"":`<a class="act" href="${taskEsc(itemHref)}">${t("task_open_example")}</a>`}
+      <a class="act primary" href="${taskEsc(noticeHref)}">${t("task_open_notice_lens")}</a>
+      <a class="act" href="${taskEsc(sourceHref)}" ${EXT_ATTRS}>${t("view_in_city_record")}${extSR()}</a>
+    </div>
+  </article>`;
+}
+function taskWhatWillChangeCardHTML(presentation, focused){
+  const f = presentation.facts;
+  const leadRows = [
+    [t("task_lead_place"), f.place],
+    [t("task_lead_boundary"), f.boundary_actions],
+    [t("task_lead_stage"), f.stage_public || f.milestone],
+  ].filter(([,v]) => v);
+  const more = [
+    [t("task_fact_milestone"), f.milestone],
+    [t("task_fact_project_status"), f.stage_project],
+    [t("task_fact_applicant"), f.applicant],
+    [t("task_fact_ulurp"), f.ulurp_numbers],
+    [t("task_fact_mih"), f.mih_flag == null ? null : (f.mih_flag === "true" ? t("task_mih_yes") : t("task_mih_no"))],
+    [t("task_fact_project_id"), f.project_id],
+  ].filter(([,v]) => v);
+  const brief = f.brief
+    ? `<div class="scope"><span class="lbl">${t("in_plain_english")}</span>${taskEsc(f.brief)}</div>`
+    : "";
+  const itemHref = presentation.id ? TaskFirst.taskItemHash("what-will-change", presentation.id) : "#task/what-will-change";
+  const landHref = presentation.land_hash || "#land";
+  const sourceHref = (presentation.source && presentation.source.url) || (f.project_id ? `https://zap.planning.nyc.gov/projects/${encodeURIComponent(f.project_id)}` : "#land");
+  return `<article class="task-card${focused?" route-item":""}"${focused?' tabindex="-1"':""} data-task-id="${taskEsc(presentation.id||"")}">
+    <p class="task-card-answer">${taskEsc(f.place ? t("task_change_place_lead",{place:f.place}) : t("task_change_place_unknown"))}</p>
+    <h3 class="task-card-title" lang="en" dir="ltr">${taskEsc(f.title||t("unnamed_rezoning"))}</h3>
+    <dl class="task-lead">${leadRows.map(([k,v])=>`<div><dt>${taskEsc(k)}</dt><dd lang="en" dir="ltr">${taskEsc(v)}</dd></div>`).join("")}</dl>
+    ${brief}
+    <dl class="task-facts">${more.map(([k,v])=>`<dt>${taskEsc(k)}</dt><dd lang="en" dir="ltr">${taskEsc(v)}</dd>`).join("")}</dl>
+    <div class="task-card-actions actions">
+      ${focused?"":`<a class="act" href="${taskEsc(itemHref)}">${t("task_open_example")}</a>`}
+      <a class="act primary" href="${taskEsc(landHref)}">${t("task_open_land_lens")}</a>
+      <a class="act" href="${taskEsc(sourceHref)}" ${EXT_ATTRS}>${t("zap_full_project")}${extSR()}</a>
+    </div>
+  </article>`;
+}
+function taskCardHTML(presentation, focused){
+  if(!presentation) return "";
+  if(presentation.task === "can-i-bid") return taskCanIBidCardHTML(presentation, focused);
+  if(presentation.task === "what-will-change") return taskWhatWillChangeCardHTML(presentation, focused);
+  return "";
+}
+async function showTaskFirst(task, id){
+  showTab("task");
+  const box = $("#taskview");
+  if(!box) return;
+  if(!window.TaskFirst){
+    box.innerHTML = `<div class="empty">${t("could_not_reach")}</div>`;
+    return;
+  }
+  box.innerHTML = `<div class="empty"><span class="loading"></span> ${t("task_loading")}</div>`;
+  const bundle = await loadTaskFirstBundle();
+  if(!bundle || !bundle.tasks || !bundle.tasks[task]){
+    box.innerHTML = `<div class="empty">${t("task_bundle_missing")}<br><br><a href="#money">${t("back_browse")}</a></div>`;
+    return;
+  }
+  const group = bundle.tasks[task];
+  const titleKey = task === "can-i-bid" ? "task_can_i_bid_title" : "task_what_will_change_title";
+  const deckKey = task === "can-i-bid" ? "task_can_i_bid_deck" : "task_what_will_change_deck";
+  const backHref = task === "can-i-bid" ? "#money" : "#land";
+  if(id){
+    const example = TaskFirst.findExample(bundle, task, id);
+    if(!example){
+      box.innerHTML = `<div class="empty">${t("task_example_not_found",{id:taskEsc(id)})}<br><br><a href="${TaskFirst.taskCollectionHash(task)}">${t("task_back_examples")}</a></div>`;
+      return;
+    }
+    const presentation = TaskFirst.presentExample(example);
+    box.innerHTML = `<div class="task-first">
+      <p style="margin:4px 0 12px"><a href="${TaskFirst.taskCollectionHash(task)}" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("task_back_examples")}</a>
+      · <a href="${backHref}" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("back_browse")}</a></p>
+      <header class="task-first-head">
+        <p class="task-first-kicker">${t("task_entry_kicker")}</p>
+        <h2>${t(titleKey)}</h2>
+        <p class="task-first-deck">${t(deckKey)}</p>
+      </header>
+      <div class="task-first-list">${taskCardHTML(presentation, true)}</div>
+    </div>`;
+    focusItemRouteTarget(box.querySelector(".route-item"));
+    return;
+  }
+  const cards = (group.examples || []).map(ex => taskCardHTML(TaskFirst.presentExample(ex), false)).join("");
+  box.innerHTML = `<div class="task-first">
+    <p style="margin:4px 0 12px"><a href="${backHref}" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("back_browse")}</a></p>
+    <header class="task-first-head">
+      <p class="task-first-kicker">${t("task_entry_kicker")}</p>
+      <h2>${t(titleKey)}</h2>
+      <p class="task-first-deck">${t(deckKey)}</p>
+    </header>
+    <div class="task-first-list" data-task-collection="${taskEsc(task)}">${cards || `<div class="empty">${t("task_bundle_missing")}</div>`}</div>
+  </div>`;
 }
 
 function applyHash(){
@@ -6487,10 +6684,19 @@ function applyHash(){
   if(raw.startsWith("agency/")){ const [nm, tab] = splitEntityTab(raw.slice(7)); showAgency(nm, tab); return true; }
   if(raw.startsWith("matter/")){ showMatter(decodeURIComponent(raw.slice(7))); return true; }
   if(raw.startsWith("investigation/shared/")){ showSharedInv(decodeURIComponent(raw.slice(21))); return true; }
+  if(raw.startsWith("task/") || raw === "task"){
+    const parsed = window.TaskFirst ? TaskFirst.parseTaskHash(raw) : null;
+    if(!parsed || !parsed.task){
+      history.replaceState(null,"","#money");
+      return applyHash();
+    }
+    showTaskFirst(parsed.task, parsed.id);
+    return true;
+  }
   focusedItemRouteHash="";
   if(raw === "investigation"){ showInvestigation(); return true; }
   const qi = raw.indexOf("?"), tab = qi < 0 ? raw : raw.slice(0, qi);
-  if(tab === "notice" || tab === "entity" || !document.getElementById("tab-"+tab)) return false;
+  if(tab === "notice" || tab === "entity" || tab === "task" || !document.getElementById("tab-"+tab)) return false;
   const q = new URLSearchParams(qi < 0 ? "" : raw.slice(qi+1));
   hashLock = true;
   try{
@@ -6977,7 +7183,7 @@ function rerenderForLang(){
   // whatever language was active at that moment. Re-run the hash router instead, which
   // dispatches back to whichever show*(id) built the currently-active pane (2026-07-13 hotfix 3).
   const activePane = document.querySelector(".tabpane.active");
-  if(activePane && (activePane.id === "tab-notice" || activePane.id === "tab-entity")){ applyHash(); return; }
+  if(activePane && (activePane.id === "tab-notice" || activePane.id === "tab-entity" || activePane.id === "tab-task")){ applyHash(); return; }
   const active = document.querySelector(".tabbtn.active");
   const tab = active ? active.dataset.tab : null;
   // Loaded-but-inactive lenses re-fetch on their next visit instead of re-rendering now.
