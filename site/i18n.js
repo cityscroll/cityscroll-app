@@ -923,7 +923,10 @@ const STRINGS = {
     banner_none_active_nearest: "No active rezoning on this block. Recent rezonings in <b>{area}</b>:",
     banner_none_lot: "No rezoning filed on this lot ({label}). Recent rezonings in <b>{area}</b>:",
     no_zap_kw: " for “{kw}”",
-    zap_explainer_html: "ZAP indexes by <b>project</b>, not address — a notice about your block can be missing here while still in <a href=\"https://a856-cityrecord.nyc.gov/Search/Advanced\" target=\"_blank\" rel=\"noopener noreferrer\">The City Record<span class=\"sr-only\"> (opens in new tab)</span></a>. Rezoning data comes from NYC's own ZAP portal via NYC Open Data, which the city refreshes monthly — a change on the live ZAP site can take weeks to appear here.",
+    // Empty-state only: project-vs-address completeness caveat (not part of the methodology note).
+    zap_project_index_html: "ZAP indexes by <b>project</b>, not address — a notice about your block can be missing here while still in <a href=\"https://a856-cityrecord.nyc.gov/Search/Advanced\" target=\"_blank\" rel=\"noopener noreferrer\">The City Record<span class=\"sr-only\"> (opens in new tab)</span></a>.",
+    // Shared methodology note (empty + successful Land results). Site-owner-approved wording.
+    zap_explainer_html: "Rezoning data comes from NYC's Zoning Application Portal (ZAP) via NYC Open Data, which the city refreshes about monthly. A change on the live ZAP site can take weeks to appear here. Lot outlines use the same tax-lot (BBL) → MapPLUTO join ZAP Search describes. When lots cannot be matched, the map is approximate — confirm on ZoLa.",
     affordable_housing_tag: "affordable housing",
     unnamed_project: "(unnamed project)",
     unnamed: "(unnamed)",
