@@ -949,7 +949,7 @@ const STRINGS = {
     lifecycle_dollars_term_lbl: "Term",
     lifecycle_dollars_mwbe_lbl: "Minority/Women-Owned Business Enterprise (M/WBE)",
     lifecycle_dollars_vendor_mismatch_html: "⚠ Checkbook's vendor (<b>{checkbook}</b>) differs from the notice's (<b>{notice}</b>) — a PIN can cover multiple awards. Treat with care.",
-    lifecycle_dollars_vendor_variant_html: "Same vendor as the notice (<b>{notice}</b>); Checkbook shows the name as <b>{checkbook}</b>.",
+    lifecycle_dollars_vendor_variant_html: "Same vendor as the notice (<b>{notice}</b>). Checkbook shows the name as <b>{checkbook}</b>.",
     lifecycle_dollars_payments_html: "{count}. {latest}",
     lifecycle_dollars_provenance_html: "From the precomputed lifecycle join to {link}, matched by PIN {pin}.",
     matter_spine_note: "The spine is every City Record notice sharing this PIN, in order. Checkbook events join deterministically on the same PIN via the precomputed contract lifecycle. Public-hearing notices rarely carry PINs, so hearings may be missing from the chronology.",
