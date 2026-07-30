@@ -179,6 +179,13 @@
       "identifier": "feed",
       "response_type": "application/rss+xml",
       "fields": ["title", "link", "agency_name", "comment_by_date", "hearing_date_1"]
+    },
+    {
+      "id": "nyc-council-legistar",
+      "kind": "html",
+      "identifier": "api",
+      "response_type": "text/html",
+      "fields": []
     }
   ]
 }
