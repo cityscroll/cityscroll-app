@@ -50,6 +50,7 @@ const sandbox = new Function(
   extractConst("PASSPORT_RFX_URL") +
   extractConst("LIFECYCLE_STAGE_ORDER") +
   extractConst("CURRENT_SOLICITATIONS_URL") +
+  extractConst("OCP_AWARDS_URL") +
   extractFn("lifecycleStageLabel") +
   extractFn("lifecycleAmount") +
   extractFn("lifecycleMoney") +
@@ -60,8 +61,9 @@ const sandbox = new Function(
   extractFn("lifecycleSourceLink") +
   extractFn("lifecycleDocumentsHTML") +
   extractFn("lifecycleStageHTML") +
+  extractFn("lifecycleOcpAwardHTML") +
   extractFn("lifecycleTimelineHTML") +
-  "return { lifecycleStageLabel, lifecycleAmount, lifecycleSourceLink, lifecycleStageHTML, lifecycleTimelineHTML, lifecycleMoney };"
+  "return { lifecycleStageLabel, lifecycleAmount, lifecycleSourceLink, lifecycleStageHTML, lifecycleOcpAwardHTML, lifecycleTimelineHTML, lifecycleMoney };"
 );
 
 const {
@@ -69,7 +71,9 @@ const {
   lifecycleAmount,
   lifecycleSourceLink,
   lifecycleStageHTML,
+  lifecycleOcpAwardHTML,
   lifecycleTimelineHTML,
+  lifecycleMoney,
 } = sandbox(t, tn, windowStub);
 
 // ---------------------------------------------------------------------------
@@ -515,4 +519,87 @@ test("lifecycle: solicitation without package join uses not-yet-ingested registe
   assert.match(html, /Not yet shown here — solicitation package details live in/);
   assert.match(html, /Current Solicitations \(Open Data\)/);
   assert.doesNotMatch(html, /package document/);
+// OCP award side-car render (qyyg-4tf5)
+// ---------------------------------------------------------------------------
+
+test("lifecycle OCP: unmatched renders not-yet-ingested register with source link", () => {
+  const data = {
+    ...UNMATCHED_LIFECYCLE,
+    ocp_award: {
+      status: "unmatched",
+      source: "ocp-recent-awards",
+      join_key: null,
+      detail: null,
+      corroboration: null,
+    },
+  };
+  const html = lifecycleTimelineHTML(data, notice);
+  assert.match(html, /OCP award record/);
+  assert.match(html, /Not yet shown here/);
+  assert.match(html, /qyyg-4tf5/);
+  assert.match(html, /Recent Contract Awards \(OCP\)/);
+});
+
+test("lifecycle OCP: matched + agreement shows corroboration copy", () => {
+  const data = {
+    ...FULL_LIFECYCLE,
+    ocp_award: {
+      status: "matched",
+      source: "ocp-recent-awards",
+      join_key: "request_id",
+      detail: {
+        request_id: "20260723031",
+        pin: "81626W0043001",
+        date: "2026-07-30",
+        amount: 250000,
+        vendor: "Make it Zesty LLC",
+      },
+      corroboration: {
+        agree: true,
+        disagreements: [],
+        fields: {
+          amount: { city_record: 250000, ocp: 250000, agree: true },
+          date: { city_record: "2026-07-30", ocp: "2026-07-30", agree: true },
+        },
+      },
+    },
+  };
+  const html = lifecycleOcpAwardHTML(data);
+  assert.match(html, /Make it Zesty LLC/);
+  assert.match(html, /agree on award date and amount/);
+  assert.doesNotMatch(html, /disagree/);
+});
+
+test("lifecycle OCP: disagreement names both City Record and OCP amounts and dates", () => {
+  const data = {
+    ocp_award: {
+      status: "matched",
+      source: "ocp-recent-awards",
+      join_key: "request_id",
+      detail: {
+        request_id: "20260723031",
+        date: "2026-07-30",
+        amount: 250000,
+        vendor: "Make it Zesty LLC",
+      },
+      corroboration: {
+        agree: false,
+        disagreements: [
+          { field: "amount", city_record: 999999, ocp: 250000 },
+          { field: "date", city_record: "2026-07-15", ocp: "2026-07-30" },
+        ],
+        fields: {
+          amount: { city_record: 999999, ocp: 250000, agree: false },
+          date: { city_record: "2026-07-15", ocp: "2026-07-30", agree: false },
+        },
+      },
+    },
+  };
+  const html = lifecycleOcpAwardHTML(data);
+  assert.match(html, /disagree/);
+  assert.match(html, /City Record/);
+  assert.match(html, /Recent Contract Awards \(OCP\)/);
+  // Both amounts present (site money() short form) — never silently prefer one
+  assert.match(html, /\$1000K|\$999,999|999999/);
+  assert.match(html, /\$250K|\$250,000|250000/);
 });

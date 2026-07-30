@@ -26,15 +26,23 @@ import {
 import { enrichLifecycleWithPassport } from "./lib/passport_lifecycle.mjs";
 import { lookupPassportForPin } from "./passport.mjs";
 import { CURRENT_SOLICITATIONS_DATASET } from "./lib/current_solicitations.mjs";
+import {
+  joinOcpAward,
+  attachOcpAward,
+  OCP_DATASET_ID,
+} from "./lib/ocp_awards.mjs";
 
 const CHECKBOOK = "https://www.checkbooknyc.com/api";
 const SODA_NYC = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const SODA_CURRENT_SOLICITATIONS =
   `https://data.cityofnewyork.us/resource/${CURRENT_SOLICITATIONS_DATASET}.json`;
+// Recent Contract Awards (OCP) — Open Data side-car for award date/amount corroboration.
+const SODA_OCP = `https://data.cityofnewyork.us/resource/${OCP_DATASET_ID}.json`;
 
 const PAGE_SIZE = 25;
 const MAX_PAGES = 4; // 4 × 25 = 100 records cap per domain per notice
 const PREWARM_MAX = 40;
+const OCP_PIN_LIMIT = 10;
 
 function escXml(s) {
   return String(s).replace(/[<>&'"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", "'": "&apos;", '"': "&quot;" }[c]));
@@ -141,6 +149,60 @@ export async function fetchNoticeRow(env, requestId) {
   }
 }
 
+
+// ---------------------------------------------------------------------------
+// OCP Recent Contract Awards (qyyg-4tf5) side-car fetch
+// ---------------------------------------------------------------------------
+
+// Fetch OCP award rows for a notice: request_id first, then PIN. Bounded, fail-soft.
+export async function fetchOcpAwardRows(noticeRow) {
+  const r = noticeRow || {};
+  const rows = [];
+  const seen = new Set();
+
+  async function pull(where, limit) {
+    try {
+      const params = new URLSearchParams({
+        $select: "request_id,start_date,agency_name,type_of_notice_description,short_title,pin,contract_amount,vendor_name",
+        $where: where,
+        $limit: String(limit),
+      });
+      const resp = await fetch(`${SODA_OCP}?${params}`);
+      if (!resp.ok) return { ok: false, rows: [] };
+      const data = await resp.json();
+      if (!Array.isArray(data)) return { ok: false, rows: [] };
+      return { ok: true, rows: data };
+    } catch {
+      return { ok: false, rows: [] };
+    }
+  }
+
+  let anyOk = false;
+  if (r.request_id) {
+    const byId = await pull(`request_id='${sq(r.request_id)}'`, 5);
+    if (byId.ok) anyOk = true;
+    else return { ok: false, rows: [] };
+    for (const row of byId.rows) {
+      const key = row.request_id || JSON.stringify(row);
+      if (!seen.has(key)) { seen.add(key); rows.push(row); }
+    }
+  }
+
+  if (!rows.length && r.pin) {
+    const byPin = await pull(`pin='${sq(r.pin)}'`, OCP_PIN_LIMIT);
+    if (byPin.ok) anyOk = true;
+    else return { ok: false, rows: [] };
+    for (const row of byPin.rows) {
+      const key = row.request_id || JSON.stringify(row);
+      if (!seen.has(key)) { seen.add(key); rows.push(row); }
+    }
+  } else if (!r.request_id && !r.pin) {
+    return { ok: true, rows: [] };
+  }
+
+  return { ok: anyOk || (!r.request_id && !r.pin), rows };
+}
+
 // ---------------------------------------------------------------------------
 // Current Solicitations (3khw-qi8f) — package enrichment lookup
 // ---------------------------------------------------------------------------
@@ -200,25 +262,33 @@ export async function fetchCurrentSolicitationRows(noticeRow) {
 // lookups fail. A notice without a usable PIN returns a lifecycle with all Checkbook
 // stages marked "unknown" — the reader sees an explicit statement, not a blank.
 // Current Solicitations enrichment is fail-soft and does not flip lifecycle.ok.
+// Always attaches an OCP award side-car (matched / unmatched / unknown / ambiguous).
 export async function computeLifecycle(env, requestId, noticeRow) {
   const r = noticeRow === undefined ? await fetchNoticeRow(env, requestId) : noticeRow;
   if (!r) return { lifecycle: null, ok: false };
 
-  // Kick off Current Solicitations enrichment in parallel with Checkbook work.
+  // Kick off Open Data enrichments in parallel with Checkbook work.
   const csPromise = fetchCurrentSolicitationRows(r);
+  const ocpPromise = fetchOcpAwardRows(r);
 
   const { pins, strategy } = pinMatchStrategy(r.pin);
   if (pins.length === 0) {
     // No PIN → not a transient Checkbook failure. Stages are not_applicable; the
     // renderer collapses them into the single class-(b) no-PIN note.
-    // Current Solicitations may still join package docs by request_id.
-    const currentSolicitation = await csPromise;
+    // Current Solicitations / OCP may still join by request_id.
+    const [currentSolicitation, ocpFetch] = await Promise.all([csPromise, ocpPromise]);
+    const ocpAward = joinOcpAward(r, ocpFetch.rows, {
+      lookupStatus: ocpFetch.ok ? "ok" : "error",
+    });
     return {
-      lifecycle: assembleLifecycle(r, [], [], [], {
-        pinStrategy: "none",
-        lookupStatus: { pending: "skip", registered: "skip", spending: "skip" },
-        currentSolicitation,
-      }),
+      lifecycle: attachOcpAward(
+        assembleLifecycle(r, [], [], [], {
+          pinStrategy: "none",
+          lookupStatus: { pending: "skip", registered: "skip", spending: "skip" },
+          currentSolicitation,
+        }),
+        ocpAward,
+      ),
       ok: true,
     };
   }
@@ -255,7 +325,7 @@ export async function computeLifecycle(env, requestId, noticeRow) {
     spending: spending.ok ? "ok" : "error",
   };
 
-  const currentSolicitation = await csPromise;
+  const [currentSolicitation, ocpFetch] = await Promise.all([csPromise, ocpPromise]);
   let lifecycle = assembleLifecycle(r, pending.records, registered.records, spending.records, {
     pinStrategy: pinStrategyUsed,
     lookupStatus,
@@ -275,6 +345,12 @@ export async function computeLifecycle(env, requestId, noticeRow) {
     /* leave Checkbook-only lifecycle */
   }
 
+  // OCP Recent Contract Awards side-car (date/amount corroboration).
+  const ocpAward = joinOcpAward(r, ocpFetch.rows, {
+    lookupStatus: ocpFetch.ok ? "ok" : "error",
+  });
+  lifecycle = attachOcpAward(lifecycle, ocpAward);
+
   return { lifecycle, ok: true };
 }
 
@@ -290,7 +366,8 @@ async function cacheGet(env, requestId) {
     ).bind(requestId).first();
     if (row && row.lifecycle) {
       const m = JSON.parse(row.lifecycle);
-      if (m && Array.isArray(m.timeline)) return m;
+      // Require ocp_award so pre-OCP cache entries recompute with the side-car.
+      if (m && Array.isArray(m.timeline) && m.ocp_award) return m;
     }
   } catch { /* miss */ }
   return null;
