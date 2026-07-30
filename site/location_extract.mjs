@@ -1,6 +1,11 @@
 // Shared, pure NYC location primitives for the static site and Worker. Lens-specific modules decide which text is
 // scope evidence; this module only normalizes and extracts the evidence they provide.
 
+import { plainText as cleanPlainText } from "./text_clean.mjs";
+
+// Re-export the shared notice-text cleaner so location callers keep importing plainText from here.
+export { plainText, cleanNoticeText, decodeHtmlEntities, excerptPlain, excerptHtml, escapeHtml } from "./text_clean.mjs";
+
 export const BOROUGHS = [
   ["Manhattan", /\b(?:manhattan|new york county)\b/i],
   ["Bronx", /\b(?:the bronx|bronx county|bronx)\b/i],
@@ -33,20 +38,8 @@ const BBL_BOROUGH_CODES = {
   "Staten Island": "5",
 };
 
-export function plainText(value) {
-  return String(value || "")
-    .replace(/<br\s*\/?>/gi, " ")
-    .replace(/<\/p\s*>/gi, " ")
-    .replace(/<[^>]+>/g, " ")
-    .replace(/&nbsp;|&#160;/gi, " ")
-    .replace(/&amp;/gi, "&")
-    .replace(/&quot;/gi, '"')
-    .replace(/&#39;|&apos;/gi, "'")
-    .replace(/&#x?[0-9a-f]+;/gi, " ")
-    .replace(/[\u0000-\u001f\u007f-\u009f]/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
+// Local alias keeps call sites below short; body lives in text_clean.mjs (entity decode + tag strip).
+const plainText = cleanPlainText;
 
 export function unique(values) {
   return [...new Set((values || []).filter(Boolean))];

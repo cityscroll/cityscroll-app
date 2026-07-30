@@ -43,12 +43,46 @@ var HEARING_PROJECT_GAZETTEER = [
   { name: "Goodhue Park", pattern: /\bGoodhue Park\b/i, boroughs: ["Staten Island"], neighborhoods: [] },
 ];
 
+// Hand-synced with site/text_clean.mjs cleanNoticeText (browser script can't import ESM here).
+// Decode entities BEFORE any card truncates/escapes, or named forms like &ldquo; re-escape to
+// the literal string "&ldquo;" in preview cards (notice 20220525018 field case).
+function hearingDecodeEntities(value) {
+  var named = {
+    amp: "&", lt: "<", gt: ">", quot: '"', apos: "'", nbsp: "\u00A0",
+    ldquo: "\u201C", rdquo: "\u201D", lsquo: "\u2018", rsquo: "\u2019",
+    sbquo: "\u201A", bdquo: "\u201E", ndash: "\u2013", mdash: "\u2014",
+    hellip: "\u2026", bull: "\u2022", middot: "\u00B7", sect: "\u00A7",
+    para: "\u00B6", copy: "\u00A9", reg: "\u00AE", trade: "\u2122",
+    deg: "\u00B0", times: "\u00D7", divide: "\u00F7", plusmn: "\u00B1",
+    frac12: "\u00BD", frac14: "\u00BC", frac34: "\u00BE", euro: "\u20AC",
+    pound: "\u00A3", yen: "\u00A5", cent: "\u00A2"
+  };
+  var out = String(value == null ? "" : value);
+  for (var pass = 0; pass < 2; pass++) {
+    var next = out.replace(/&(#x[0-9a-f]+|#\d+|[a-z][a-z0-9]*);/gi, function (match, body) {
+      if (body.charAt(0) === "#") {
+        var code = (body.charAt(1) === "x" || body.charAt(1) === "X")
+          ? parseInt(body.slice(2), 16)
+          : parseInt(body.slice(1), 10);
+        if (!isFinite(code) || code < 0 || code > 0x10ffff) return match;
+        try { return String.fromCodePoint(code); } catch (e) { return match; }
+      }
+      var key = String(body).toLowerCase();
+      return Object.prototype.hasOwnProperty.call(named, key) ? named[key] : match;
+    });
+    if (next === out) break;
+    out = next;
+  }
+  return out;
+}
 function hearingPlainText(value) {
-  return String(value || "")
-    .replace(/<br\s*\/?>/gi, " ").replace(/<\/p\s*>/gi, " ").replace(/<[^>]+>/g, " ")
-    .replace(/&nbsp;|&#160;/gi, " ").replace(/&amp;/gi, "&").replace(/&quot;/gi, '"')
-    .replace(/&#39;|&apos;/gi, "'").replace(/&#x?[0-9a-f]+;/gi, " ")
-    .replace(/[\u0000-\u001f\u007f-\u009f]/g, " ").replace(/\s+/g, " ").trim();
+  if (value == null || value === "") return "";
+  return hearingDecodeEntities(
+    String(value)
+      .replace(/<br\s*\/?>/gi, " ")
+      .replace(/<\/p\s*>/gi, " ")
+      .replace(/<[^>]+>/g, " ")
+  ).replace(/[\u0000-\u001f\u007f-\u009f]/g, " ").replace(/\s+/g, " ").trim();
 }
 function hearingUnique(values) { return Array.from(new Set((values || []).filter(Boolean))); }
 function hearingAddress(value) {

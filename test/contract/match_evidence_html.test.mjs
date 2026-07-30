@@ -27,14 +27,8 @@ const fixtures = JSON.parse(readFileSync(join(ROOT, "test/contract/fixtures/matc
 
 const { cleanText, locateAnyTerm, matchEvidence: siteMatchEvidence } = loadSite(["cleanText", "locateAnyTerm", "matchEvidence"]);
 
-// Site's cleanText() doesn't decode HTML entities (worker's stripHtml() does) — a documented,
-// narrower difference than the tag-stripping this test is really about. Normalize just the
-// entities here so the assertion isolates "did the tags/markup make it into the snippet," not
-// this secondary, lower-severity asymmetry (see docs/drift-inventory.md #2's "needs deeper
-// look" note).
-function decodeEntities(s) {
-  return String(s || "").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&nbsp;/g, " ").replace(/&#39;|&apos;/g, "'").replace(/&quot;/g, '"');
-}
+// Site cleanText and worker stripHtml now share site/text_clean.mjs entity decode, so snippets
+// compare directly (no secondary entity-normalize pass). Raw tags must still be gone.
 
 function joined(ev) {
   if (!ev) return "";
@@ -49,11 +43,13 @@ for (const { title, rawDescription, keywords, note } of fixtures) {
 
     assert.equal(siteEv?.field, workerEv?.field, `field mismatch: site=${siteEv?.field} worker=${workerEv?.field}`);
 
-    const workerText = decodeEntities(joined(workerEv));
-    const siteText = decodeEntities(joined(siteEv));
+    const workerText = joined(workerEv);
+    const siteText = joined(siteEv);
     assert.equal(siteText, workerText);
 
-    assert.doesNotMatch(workerText, /[<>]/, "worker snippet must contain no raw tags");
-    assert.doesNotMatch(siteText, /[<>]/, "site snippet must contain no raw tags");
+    // Angle brackets may remain as decoded text from &lt;/&gt; entities (then re-escaped at
+    // HTML render time); raw HTML *tags* must not survive stripping.
+    assert.doesNotMatch(workerText, /<\/?[a-z][^>]*>/i, "worker snippet must contain no raw tags");
+    assert.doesNotMatch(siteText, /<\/?[a-z][^>]*>/i, "site snippet must contain no raw tags");
   });
 }

@@ -8,6 +8,8 @@
 //
 // Pure query-building is exported separately so it unit-tests without a D1 handle.
 
+import { excerptPlain } from "../../../site/text_clean.mjs";
+
 const ROLLING_YEAR = 2090;
 
 function fmtMoney(x) {
@@ -15,18 +17,12 @@ function fmtMoney(x) {
   return "$" + Math.round(x).toLocaleString("en-US");
 }
 
+// Decode → truncate on plain text (never mid-entity). Callers that embed in HTML
+// must escape once — Atom/JSON feed paths already do.
 export function snippet(text, n = 240) {
   if (!text) return null;
-  let s = String(text).replace(/<[^>]+>/g, " "); // recent notices carry HTML payloads
-  s = s
-    .replace(/&nbsp;/g, " ")
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&#39;/g, "'")
-    .replace(/&quot;/g, '"');
-  s = s.replace(/\s+/g, " ").trim();
-  return s.length > n ? s.slice(0, n) + "…" : s;
+  const s = excerptPlain(text, n);
+  return s || null;
 }
 
 // opts: { termGroups?: string[][], section?, agency?, category?, noticeType?,

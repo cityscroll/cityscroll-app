@@ -72,6 +72,7 @@ const {
   extractDecl("JUNK_PIN_TEXT_RE") +
   extractFn("usablePin") +
   extractFn("cleanText") +
+  extractFn("excerptHtml") +
   extractFn("enTitle") +
   extractFn("money") +
   extractFn("fdate") +
@@ -96,12 +97,12 @@ const {
   extractDecl("REQ_URL") +
   extractDecl("EXT_ATTRS") +
   extractDecl("extSR") +
+  extractDecl("escUiHtml") +
   extractDecl("pivotA") +
   extractDecl("agencyHref") +
   extractDecl("ASSET_BUCKETS") +
   extractDecl("ASSET_LABEL") +
   extractFn("rulePlaceChips") +
-  extractDecl("escUiHtml") +
   extractDecl("RULE_STAGE_CFG") +
   extractFn("ruleDisplayStage") +
   extractFn("ruleStageChip") +

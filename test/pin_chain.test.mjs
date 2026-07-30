@@ -44,7 +44,7 @@ const { chainHTML, pinBase } = new Function(
   extractConst("RENEWAL_SUFFIX_RE") + extractFn("pinBase") +
   extractFn("cleanText") + extractFn("boxClass") + extractFn("money") + extractFn("fdate") +
   extractConst("REQ_URL") + extractConst("EXT_ATTRS") + extractConst("extSR") +
-  extractConst("pivotA") + extractConst("vendorHref") +
+  extractConst("escUiHtml") + extractConst("pivotA") + extractConst("vendorHref") +
   src.match(/const JUNK_PINS = new Set\(\[[^\]]*\]\);/)[0] + extractConst("JUNK_PIN_TEXT_RE") +
   extractFn("usablePin") +
   extractFn("pastWinnersHTML") +
