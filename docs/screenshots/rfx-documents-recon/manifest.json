@@ -1,0 +1,18 @@
+{
+  "rfx-docs-recon-390.png": {
+    "sha256": "5ece4de605b5c01a370e39d97a986f6142d03f72848061219bee0ac894cba677",
+    "bytes": 87229,
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  "rfx-docs-recon-1440.png": {
+    "sha256": "643246c633b28e3a490a34133da46100751d92ae5054223115867d99c6c22d96",
+    "bytes": 95699,
+    "viewport": [
+      1440,
+      900
+    ]
+  }
+}

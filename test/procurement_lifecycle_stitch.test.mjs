@@ -75,6 +75,7 @@ const sandbox = new Function(
   extractConst("PASSPORT_RFX_URL") + "\n" +
   extractConst("LIFECYCLE_STAGE_ORDER") + "\n" +
   extractConst("CURRENT_SOLICITATIONS_URL") + "\n" +
+  extractConst("CITY_RECORD_GETFILE_URL") + "\n" +
   extractConst("OCP_AWARDS_URL") + "\n" +
   extractFn("checkbookSearchUrl") + "\n" +
   extractFn("lifecycleStageLabel") + "\n" +
@@ -138,6 +139,7 @@ try {
     const PASSPORT_RFX_URL = 'https://a0333-passportpublic.nyc.gov/rfx.html';
     const LIFECYCLE_STAGE_ORDER = {solicitation:0, award:1, pending:2, registered:3, payment:4};
     const CURRENT_SOLICITATIONS_URL = 'https://data.cityofnewyork.us/d/3khw-qi8f';
+    const CITY_RECORD_GETFILE_URL = 'https://a856-cityrecord.nyc.gov/Search/GetFile';
     const OCP_AWARDS_URL = 'https://data.cityofnewyork.us/d/qyyg-4tf5';
     function pivotA(href, text){ return '<a href="'+href+'">'+text+'</a>'; }
     ` +

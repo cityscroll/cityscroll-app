@@ -845,8 +845,8 @@
       ],
       "max_stale_days": 7,
       "publisher_cadence": "Daily (Open Data automation metadata)",
-      "product_freshness": "Joined at lifecycle compute time and cached with the procurement timeline in D1; a stale or unreachable view leaves City Record stages intact and marks the package-documents sub-slot unknown.",
-      "used_for": "Procurement lifecycle solicitation-stage package enrichment: document links, due dates, and contact fields joined to City Record notices by request_id or PIN.",
+      "product_freshness": "Joined at lifecycle compute time and cached with the procurement timeline in D1; a stale or unreachable view leaves City Record stages intact. Modern OCP rows do not fill package document_links (measured 0% for 2025+); historical GetFile links still surface when present.",
+      "used_for": "Procurement lifecycle solicitation-stage enrichment: due dates and contact fields joined to City Record notices by request_id or PIN. Package document links when present (historical GetFile only on modern measurement); not a modern document source.",
       "code_references": [
         {
           "path": "worker/src/checkbook_lifecycle.mjs",
@@ -857,7 +857,25 @@
           "contains": "3khw-qi8f"
         }
       ],
-      "delivery_tier": "edge-materialized"
+      "delivery_tier": "edge-materialized",
+      "join_measurement": {
+        "observed_on": "2026-07-30",
+        "universe": "Current Solicitations 3khw-qi8f rows with start_date >= 2025-01-01",
+        "universe_count": 1550,
+        "strategy": "document_links field non-null (Socrata count); request_id/PIN join for enrichment remains separate",
+        "rates": {
+          "modern_document_links_fill": {
+            "joined": 0,
+            "total": 1550,
+            "rate": 0.0
+          },
+          "all_time_document_links_fill_note": {
+            "note": "Historical document_links exist (pre-2025 GetFile attachments); modern window empty"
+          }
+        },
+        "usefulness_threshold": 0.3,
+        "verdict": "Modern document_links fill is 0% (0/1550 for start_date >= 2025-01-01). PIN/request_id join for due dates and contact fields may still succeed; package-document sub-slot remains empty on modern rows. Receipt: site/data/passport_sources/verification_receipts/passport_rfx_documents_2026-07-30.json"
+      }
     },
     {
       "id": "nyc-rules-rss",
@@ -1084,7 +1102,7 @@
       "max_stale_days": 3,
       "publisher_cadence": "Portal dataJs dump refreshed about daily (Last-Modified on dataJs/rfxData.js)",
       "product_freshness": "Worker rebuilds the D1 passport_rfx table on the daily scheduled run; solicitation lifecycle stages read joined RFx detail from that materialization.",
-      "used_for": "RFx detail on solicitation lifecycle stages (due date, method, status, commodity) joined by EPIN to City Record PINs.",
+      "used_for": "RFx metadata on solicitation lifecycle stages (due date, method, status, commodity) joined by EPIN to City Record PINs. Package document URLs are not published on the public dataJs dump (measured 0% document-URL join); do not treat RFx as a package-doc source.",
       "join_keys": [
         "EPIN",
         "PIN"
@@ -1116,9 +1134,23 @@
             "joined": 5660,
             "total": 7254,
             "rate": 0.78
+          },
+          "solicitation_rfx_document_url": {
+            "joined": 0,
+            "total": 1470,
+            "rate": 0.0,
+            "note": "public_rfx_data has no document URL columns; kill sample 0/50"
+          },
+          "kill_sample_solicitation_document_url": {
+            "joined": 0,
+            "total": 50,
+            "rate": 0.0,
+            "note": "50 most recent Solicitation+PIN since 2025-01-01"
           }
         },
-        "verdict": "Above usefulness threshold (>=30%). Ship join + edge materialization."
+        "verdict": "Above usefulness threshold (>=30%). Ship join + edge materialization.",
+        "document_url_verdict": "Below usefulness threshold (~30%) for package-document URLs (0% on kill sample and modern Solicitation+PIN). Do not edge-materialize package docs from RFx dump. EPIN join remains above threshold for RFx metadata only.",
+        "document_url_receipt": "site/data/passport_sources/verification_receipts/passport_rfx_documents_2026-07-30.json"
       },
       "code_references": [
         {
@@ -1136,6 +1168,10 @@
         {
           "path": "worker/migrations/0007_passport_public.sql",
           "contains": "passport_rfx"
+        },
+        {
+          "path": "worker/src/lib/rfx_documents_join.mjs",
+          "contains": "measureRfxDocumentJoin"
         }
       ],
       "delivery_tier": "edge-materialized"
