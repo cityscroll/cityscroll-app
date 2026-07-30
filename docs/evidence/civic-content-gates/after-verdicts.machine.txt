@@ -1,0 +1,7 @@
+VERDICT link_text exit=0
+VERDICT i18n_keys exit=0
+VERDICT nyc_copy_lint exit=0
+VERDICT heading_punctuation exit=0
+VERDICT page_metadata exit=0
+VERDICT genai_disclosure exit=0
+VERDICT reading_level_ratchet exit=0

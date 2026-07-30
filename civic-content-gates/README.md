@@ -1,0 +1,82 @@
+# civic-content-gates
+
+Reusable **civic content CI gates** — the mechanically checkable rules from the
+[NYC Web Content Style Guide](https://designsystem.nyc.gov/standards/nyc-web-content-style-guide.html)
+plus companion checks (i18n key parity, reading-level ratchet) that any static
+civic site can run.
+
+This package is extracted from CityScroll's production gates. Extraction keeps
+each gate's verdict logic; it does not redesign the rules.
+
+## Suite members
+
+| Gate | What it enforces |
+|---|---|
+| `link_text` | Link text must make sense out of context (no "click here") |
+| `i18n_keys` | Every shipping language has every English key |
+| `nyc_copy_lint` | Style-guide copy rules (acronyms, currency form, PDF links, …) |
+| `heading_punctuation` | No colon/period in headings (question marks allowed) |
+| `page_metadata` | Title length + separator; meta description length |
+| `genai_disclosure` | About page discloses generative-AI use for site copy |
+| `reading_level` | Flesch–Kincaid gate/ratchet via [readable-or-else](https://github.com/jimdc/readable-or-else) |
+
+## Install
+
+```bash
+# from a clone of this repository
+pip install -e ./civic-content-gates
+
+# reading-level member (optional)
+pip install git+https://github.com/jimdc/readable-or-else.git
+```
+
+## Run
+
+```bash
+# full suite against a site directory
+civic-content-gates run --root path/to/site --allowlist path/to/allowlist.txt
+
+# with the reading-level ratchet
+civic-content-gates run --root path/to/site \
+  --baseline path/to/reading-level-baseline.json
+
+# one gate
+civic-content-gates check link_text --root path/to/site
+
+# or as a module (no install)
+PYTHONPATH=civic-content-gates python3 -m civic_content_gates run --root site
+```
+
+### GitHub Actions
+
+```yaml
+- uses: actions/checkout@v4
+- uses: actions/setup-python@v5
+  with:
+    python-version: "3.12"
+- name: Civic content gates
+  uses: ./.github/actions/civic-content-gates
+  with:
+    site-root: site
+    allowlist: test/standards/nyc_copy_lint_allowlist.txt
+    baseline: site/reading-level-baseline.json
+```
+
+## Expected site layout
+
+```
+site/
+  index.html
+  about.html
+  …
+  i18n.js                 # window.STRINGS + SHIPPING_LANGS
+  i18n/lang/<lang>.js     # per-language dictionaries
+  reading-level-baseline.json   # optional, for ratchet mode
+```
+
+Sites without i18n can still run `link_text`, `page_metadata`, `heading_punctuation`,
+and `reading_level` against plain HTML.
+
+## License
+
+MIT

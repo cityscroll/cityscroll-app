@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "civic-content-gates"
+version = "0.1.0"
+description = "Reusable civic content CI gates (NYC Web Content Style Guide suite)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = []
+
+[project.optional-dependencies]
+reading-level = []  # reading-level member shells out to readable-or-else when installed
+dev = ["pytest>=7"]
+
+[project.scripts]
+civic-content-gates = "civic_content_gates.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["civic_content_gates*"]
+
+[tool.setuptools.package-data]
+civic_content_gates = ["nyc_copy_lint_allowlist.txt"]

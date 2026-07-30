@@ -1,0 +1,3 @@
+# Default allowlist shipped with civic-content-gates (empty starter).
+# Consuming sites pass their own --allowlist file. CityScroll's house
+# allowlist lives at test/standards/nyc_copy_lint_allowlist.txt.

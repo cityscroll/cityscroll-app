@@ -1,0 +1,54 @@
+name: Civic content gates
+description: >
+  Run the reusable civic-content-gates suite (NYC Web Content Style Guide and
+  companion checks) against a static site directory.
+
+inputs:
+  site-root:
+    description: Path to the static site root (HTML pages + i18n.js).
+    required: false
+    default: site
+  allowlist:
+    description: Path to the nyc_copy_lint allowlist file.
+    required: false
+    default: test/standards/nyc_copy_lint_allowlist.txt
+  baseline:
+    description: Path to the reading-level baseline JSON (enables ratchet mode).
+    required: false
+    default: site/reading-level-baseline.json
+  skip-reading-level:
+    description: Set to "true" to omit the reading-level member.
+    required: false
+    default: "false"
+  package-path:
+    description: Path to the civic-content-gates package directory inside the repo.
+    required: false
+    default: civic-content-gates
+
+runs:
+  using: composite
+  steps:
+    - name: Install readable-or-else (reading-level member)
+      if: inputs.skip-reading-level != 'true'
+      shell: bash
+      run: pip install git+https://github.com/jimdc/readable-or-else.git
+    - name: Run civic-content-gates suite
+      shell: bash
+      env:
+        SITE_ROOT: ${{ inputs.site-root }}
+        ALLOWLIST: ${{ inputs.allowlist }}
+        BASELINE: ${{ inputs.baseline }}
+        SKIP_RL: ${{ inputs.skip-reading-level }}
+        PKG: ${{ inputs.package-path }}
+      run: |
+        set -euo pipefail
+        export PYTHONPATH="$PKG${PYTHONPATH:+:$PYTHONPATH}"
+        args=(run --root "$SITE_ROOT" --allowlist "$ALLOWLIST" --machine)
+        if [ "$SKIP_RL" = "true" ]; then
+          args+=(--skip-reading-level)
+        elif [ -n "$BASELINE" ] && [ -f "$BASELINE" ]; then
+          args+=(--baseline "$BASELINE" --reading-level-mode ratchet)
+        else
+          args+=(--skip-reading-level)
+        fi
+        python3 -m civic_content_gates "${args[@]}"
