@@ -9,7 +9,7 @@ backlog/
 *.local.md
 
 # Local editor / agent helper files
-AGENTS.md
+# AGENTS.md is committed (standing project contracts for contributors).
 CLAUDE.md
 backlog/
 PAPERCUTS.md
