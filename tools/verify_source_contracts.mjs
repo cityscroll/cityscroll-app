@@ -138,6 +138,37 @@ async function verifyHtml(contract) {
   if (!response.ok) throw new Error(`${contract.id}: landing page HTTP ${response.status}`);
   const type = response.headers.get("content-type") || "";
   if (!type.includes("text/html")) throw new Error(`${contract.id}: expected manual HTML source`);
+
+  // Optional machine dump (PASSPort Public dataJs arrays and similar static JS payloads).
+  if (contract.endpoint) {
+    const dataRes = await fetch(contract.endpoint, { redirect: "follow" });
+    if (!dataRes.ok) throw new Error(`${contract.id}: machine endpoint HTTP ${dataRes.status}`);
+    const dataType = dataRes.headers.get("content-type") || "";
+    if (!/javascript|ecmascript|text\/plain/.test(dataType)) {
+      throw new Error(`${contract.id}: machine endpoint content-type ${dataType || "missing"}`);
+    }
+    const body = await dataRes.text();
+    if (body.length < 100) throw new Error(`${contract.id}: machine endpoint body too small`);
+    for (const field of contract.required_fields || []) {
+      // Row arrays are positional; field names appear in companion portal JS, not always in the dump.
+      // Require at least one required join key string to appear as a sample cell for EPIN/PIN sources.
+      if (field === "epin" && !/"[A-Z0-9]{6,}"/i.test(body.slice(0, 5000))) {
+        throw new Error(`${contract.id}: machine dump does not look like a tabular EPIN array`);
+      }
+    }
+    if (contract.max_stale_days) {
+      const lm = dataRes.headers.get("last-modified");
+      const parsed = lm ? Date.parse(lm) : NaN;
+      if (Number.isFinite(parsed)) {
+        const age = ageDays(parsed);
+        if (age > contract.max_stale_days) {
+          throw new Error(`${contract.id}: machine dump is stale (${Math.floor(age)} days; limit ${contract.max_stale_days})`);
+        }
+        return `HTML + machine dump · ${Math.max(0, Math.floor(age))}d old`;
+      }
+    }
+    return "HTML + machine dump reachable";
+  }
   return "manual source reachable";
 }
 

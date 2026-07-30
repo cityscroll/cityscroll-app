@@ -95,7 +95,12 @@ OWN_HREF_EXPRS = (
 # JS-templated hrefs known to resolve to an external host — must carry ${EXT_ATTRS}/${extSR()}.
 EXTERNAL_HREF_EXPRS = (
     "${REQ_URL(",   # City Record
-    "${PASSPORT}",  # PASSPort
+    "${PASSPORT}",  # PASSPort portal home
+    "${PASSPORT_CONTRACTS_URL}",  # PASSPort Public contracts portal
+    "${PASSPORT_RFX_URL}",        # PASSPort Public RFx portal
+    "${entry.portal || PASSPORT_CONTRACTS_URL}",  # lifecycle stage link: contracts portal
+    "${entry.portal || PASSPORT_RFX_URL}",        # lifecycle stage link: RFx portal
+    "${rfx.portal || PASSPORT_RFX_URL}",          # RFx detail note portal link
     "${aurl}",      # agency-identity card: the agency's own official website (nyc.gov, etc.)
     "${surl}",      # agency-identity card: an NYC Open Data source-dataset page
     "${record.source_url}",       # normalized City Record request-detail URL

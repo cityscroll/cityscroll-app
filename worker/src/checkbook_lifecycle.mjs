@@ -23,6 +23,8 @@ import {
   usablePin,
   checkbookSuccess,
 } from "./lib/checkbook_lifecycle.mjs";
+import { enrichLifecycleWithPassport } from "./lib/passport_lifecycle.mjs";
+import { lookupPassportForPin } from "./passport.mjs";
 
 const CHECKBOOK = "https://www.checkbooknyc.com/api";
 const SODA_NYC = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
@@ -191,10 +193,23 @@ export async function computeLifecycle(env, requestId, noticeRow) {
     spending: spending.ok ? "ok" : "error",
   };
 
-  const lifecycle = assembleLifecycle(r, pending.records, registered.records, spending.records, {
+  let lifecycle = assembleLifecycle(r, pending.records, registered.records, spending.records, {
     pinStrategy: pinStrategyUsed,
     lookupStatus,
   });
+
+  // PASSPort Public edge materialization: fill pending/registered gaps and enrich RFx.
+  // Fail-soft — a PASSPort D1 miss never fails the Checkbook lifecycle.
+  try {
+    const pp = await lookupPassportForPin(env, r.pin || pin);
+    lifecycle = enrichLifecycleWithPassport(lifecycle, r, {
+      contracts: pp.contracts,
+      rfx: pp.rfx,
+      lookupStatus: pp.lookupStatus,
+    });
+  } catch {
+    /* leave Checkbook-only lifecycle */
+  }
 
   return { lifecycle, ok: true };
 }

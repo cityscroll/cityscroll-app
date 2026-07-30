@@ -5587,6 +5587,16 @@ function lifecycleAmount(entry){
 // Checkbook NYC for the procurement steps. An unmatched Checkbook stage still links to
 // the source search so the reader can verify — the same "here's where we looked" move
 // the external-award none-note makes.
+const PASSPORT_CONTRACTS_URL = "https://a0333-passportpublic.nyc.gov/contracts.html";
+const PASSPORT_RFX_URL = "https://a0333-passportpublic.nyc.gov/rfx.html";
+
+function lifecycleSourceName(source){
+  if(source === "city-record") return t("lifecycle_source_city_record");
+  if(source === "checkbook-contracts" || source === "checkbook-spending") return t("lifecycle_source_checkbook");
+  if(source === "passport-public-contracts" || source === "passport-public-rfx") return t("lifecycle_source_passport");
+  return t("lifecycle_source_checkbook");
+}
+
 function lifecycleSourceLink(entry){
   if(entry.source === "city-record" && entry.detail && entry.detail.request_id){
     return `<a class="view" href="${REQ_URL(entry.detail.request_id)}" ${EXT_ATTRS}>${t("lifecycle_source_city_record")}${extSR()}</a>`;
@@ -5600,6 +5610,12 @@ function lifecycleSourceLink(entry){
   }
   if(entry.source === "checkbook-spending"){
     return `<a class="view" href="${CHECKBOOK_SPENDING_URL}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`;
+  }
+  if(entry.source === "passport-public-contracts"){
+    return `<a class="view" href="${entry.portal || PASSPORT_CONTRACTS_URL}" ${EXT_ATTRS}>${t("lifecycle_source_passport")}${extSR()}</a>`;
+  }
+  if(entry.source === "passport-public-rfx"){
+    return `<a class="view" href="${entry.portal || PASSPORT_RFX_URL}" ${EXT_ATTRS}>${t("lifecycle_source_passport")}${extSR()}</a>`;
   }
   return "";
 }
@@ -5635,20 +5651,30 @@ function lifecycleStageHTML(entry){
     if(entry.stage === "registered" && d.vendor){
       extraHTML += `<div class="vend">${t("awarded_to")} <b lang="en" dir="ltr">${escUiHtml(d.vendor)}</b></div>`;
     }
+    if(entry.stage === "pending" && d.passport_status){
+      extraHTML += `<div class="lc-pct">${escUiHtml(d.passport_status)}</div>`;
+    }
+    if(entry.stage === "solicitation" && d.rfx){
+      const rfx = d.rfx;
+      extraHTML += `<div class="lc-pct">${t("lifecycle_rfx_heading")}</div>`;
+      if(rfx.due_date) extraHTML += `<div class="lc-pct">${t("lifecycle_rfx_due_html",{date:fdate(rfx.due_date) || escUiHtml(rfx.due_date)})}</div>`;
+      if(rfx.rfx_status) extraHTML += `<div class="lc-pct">${t("lifecycle_rfx_status_html",{status:escUiHtml(rfx.rfx_status)})}</div>`;
+      if(rfx.procurement_method) extraHTML += `<div class="lc-pct">${t("lifecycle_rfx_method_html",{method:escUiHtml(rfx.procurement_method)})}</div>`;
+    }
     detailHTML = amtHTML + extraHTML;
   } else if(entry.status === "unmatched"){
-    const srcName = entry.source === "city-record"
-      ? t("lifecycle_source_city_record")
-      : t("lifecycle_source_checkbook");
-    const src = `<span lang="en" dir="ltr">${srcName}</span>`;
+    const srcName = lifecycleSourceName(entry.source);
+    // Prefer naming both Checkbook and PASSPort when the edge join recorded both gap sources.
+    const multi = Array.isArray(entry.gap_sources) && entry.gap_sources.length > 1
+      ? entry.gap_sources.map(lifecycleSourceName).filter((v, i, a) => a.indexOf(v) === i).join(" · ")
+      : srcName;
+    const src = `<span lang="en" dir="ltr">${multi}</span>`;
     const specificKey = "lifecycle_unmatched_" + entry.stage + "_html";
     let note = t(specificKey, {source: src});
     if(note === specificKey) note = t("lifecycle_unmatched_generic_html", {source: src});
     detailHTML = `<div class="lc-norecord">${note}</div>`;
   } else if(entry.status === "unknown"){
-    const srcName = entry.source === "city-record"
-      ? t("lifecycle_source_city_record")
-      : t("lifecycle_source_checkbook");
+    const srcName = lifecycleSourceName(entry.source);
     detailHTML = `<div class="lc-norecord">${t("lifecycle_unknown_html",{source:`<span lang="en" dir="ltr">${srcName}</span>`})}</div>`;
   } else if(entry.status === "ambiguous"){
     detailHTML = `<div class="lc-norecord">${t("lifecycle_ambiguous_html")}</div>`;
@@ -5696,13 +5722,32 @@ function lifecycleTimelineHTML(data, notice){
     ? t("lifecycle_provenance_note_html",{
         city_record:`<a href="${REQ_URL(notice.request_id)}" ${EXT_ATTRS}>${t("lifecycle_source_city_record")}${extSR()}</a>`,
         checkbook:`<a href="https://www.checkbooknyc.com/" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`,
+        passport:`<a href="${PASSPORT_CONTRACTS_URL}" ${EXT_ATTRS}>${t("lifecycle_source_passport")}${extSR()}</a>`,
         pin:`<code>${escUiHtml(data.pin)}</code>`
       })
     : t("lifecycle_no_pin_note_html");
 
+  let rfxHTML = "";
+  const rfx = data.rfx_detail;
+  if(rfx && rfx.status === "matched" && rfx.detail){
+    const d = rfx.detail;
+    rfxHTML = `<div class="note" style="margin-top:8px"><b>${t("lifecycle_rfx_heading")}</b>
+      ${d.procurement_name ? ` · <span lang="en" dir="ltr">${escUiHtml(d.procurement_name)}</span>` : ""}
+      ${d.due_date ? ` · ${t("lifecycle_rfx_due_html",{date:fdate(d.due_date) || escUiHtml(d.due_date)})}` : ""}
+      ${d.rfx_status ? ` · ${t("lifecycle_rfx_status_html",{status:escUiHtml(d.rfx_status)})}` : ""}
+      ${d.procurement_method ? ` · ${t("lifecycle_rfx_method_html",{method:escUiHtml(d.procurement_method)})}` : ""}
+      · <a class="view" href="${rfx.portal || PASSPORT_RFX_URL}" ${EXT_ATTRS}>${t("lifecycle_source_passport")}${extSR()}</a>
+    </div>`;
+  } else if(rfx && rfx.status === "unmatched"){
+    rfxHTML = `<div class="note" style="margin-top:8px">${t("lifecycle_rfx_unmatched_html",{
+      source:`<span lang="en" dir="ltr">${t("lifecycle_source_passport")}</span>`
+    })} · <a class="view" href="${PASSPORT_RFX_URL}" ${EXT_ATTRS}>${t("lifecycle_source_passport")}${extSR()}</a></div>`;
+  }
+
   return `<div class="chain-h">${t("lifecycle_heading")}</div>
     <div class="chain">${stages}</div>
     ${amendmentsHTML}
+    ${rfxHTML}
     <div class="note">${pinNote}</div>`;
 }
 
