@@ -38,15 +38,12 @@ The preview and promotion workflows idempotently create the `crol-list-beta`
 Direct Upload project with `beta` as its production branch.
 Promotion is one owner-triggered workflow run: it deploys the selected commit
 and attaches `beta.cityscroll.org`. Both workflows use the existing
-`CLOUDFLARE_API_TOKEN` repository secret. The token needs Cloudflare Pages
-Write access for the account. If Cloudflare rejects the token, update its
-permissions at the provider and replace the repository secret; do not put a
-token in a commit or command argument.
+`CLOUDFLARE_API_TOKEN` repository secret (never commit a token or pass one on
+the command line).
 
-The provisioning helper discovers the account when the token can access
-exactly one. If the token spans more than one account, the site owner sets the
-non-secret `CLOUDFLARE_ACCOUNT_ID` repository Actions variable once and reruns
-the workflow.
+When the token can reach exactly one Cloudflare account, the provisioning
+helper discovers that account automatically. Otherwise the optional non-secret
+`CLOUDFLARE_ACCOUNT_ID` repository Actions variable selects the account.
 
 The workflow verifies the checked-out SHA before building, verifies the public
 domain's `release-channel.json` after deployment, and fails unless the domain

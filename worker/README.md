@@ -88,7 +88,7 @@ the site's `#notice/<id>` permalinks.
 **Email identity:** From is always the app's own (`ALERTS_FROM` =
 `CityScroll <alerts@crol-list.org>`, domain verified in Resend, DMARC passing); To is only
 ever the subscriber's own opted-in address. Never sends as a person. The sending
-domain is deliberately outside the web canonical-domain cutover.
+domain is managed separately from the public website hostnames.
 
 ## Board notifications
 
@@ -118,7 +118,7 @@ hold no key and are edge-cached.
 `NL_METER` (NL daily counters) · `ALERT_STATE` (seen-IDs, send counters — 40-day TTL so /stats can window them, last-sent dates, `stats:<metric>:<day>` outcome counters,
 `stats:catday:<metric>:<category>:<day>` windowed per-category counters (e.g. NL calls by lens, last 7 days), and the
 permanent `hist:<metric>:<day>` / `hist:era:<metric>` counters behind /stats' day-by-day history — including `hist:watches_active:<day>`, a once-daily gauge SNAPSHOT of active-subscription
-count rather than an event count, written by the cron job, not incremented — see `scripts/backfill-history.mjs` and `AGENTS.md`) ·
+count rather than an event count, written by the cron job, not incremented — see `scripts/backfill-history.mjs`) ·
 `SUBS` (confirmed subs + subscribe rate limits) · `FEEDBACK` (feedback rows + rate limits).
 
 D1 (`crol-notices`, schema versioned in `migrations/`): the `notices` mirror + ingest cursor
@@ -127,16 +127,11 @@ D1 (`crol-notices`, schema versioned in `migrations/`): the `notices` mirror + i
 
 Analytics Engine (`crol_usage_events_v1`) holds the rolling 90-day interaction taxonomy described
 in `../docs/analytics-event-taxonomy.md`. Writes use the `USAGE_ANALYTICS` binding. `/stats`
-queries the SQL API with `ANALYTICS_READ_TOKEN` (Account Analytics Read only), then edge-caches
-the response for 15 minutes. The paid-plan allowance is 10 million writes and 1 million reads per
-month; the worst-case cached dashboard read rate is about 2,880 per 30-day month. Current pricing,
-limits, and source links are kept in the taxonomy document.
-
-Writes also require `ANALYTICS_ENVIRONMENT` to equal `production`. Keep it unset in local and
-preview Workers so they drop events by default. Production stores it as a Wrangler secret binding
-so code-only deployments retain it. `ANALYTICS_DEV_KEY` authenticates five-minute HMAC exclusion
-tokens for production-site testing; invalid or missing tokens count normally and receive the same
-response. The operator procedure and browser-console snippet are versioned in the taxonomy.
+queries the SQL API with `ANALYTICS_READ_TOKEN`, then edge-caches the response for 15 minutes.
+Writes also require `ANALYTICS_ENVIRONMENT` to equal `production`; leave it unset in local and
+preview Workers so they drop events by default. `ANALYTICS_DEV_KEY` authenticates short-lived
+HMAC exclusion tokens for live-site testing; invalid or missing tokens count normally and receive
+the same response.
 
 ## Dependencies — three libraries extracted from this worker
 
@@ -175,19 +170,16 @@ CROL_WORKER_URL=https://api.cityscroll.org npm run test:live   # live e2e over e
 #   (defaults to the workers.dev alias — doubling as a regression check that the alias stays up)
 ```
 
-Secrets (`wrangler secret put`): `ANTHROPIC_API_KEY`, `RESEND_API_KEY`, `TOKEN_SECRET`,
-`TURNSTILE_SECRET`, `USAGE_KEY`, `ADMIN_KEY`, `BOARD_HOOK_SECRET`, `GITHUB_BOT_TOKEN`,
-`BOARDNOTIFY_APP_ID`, `BOARDNOTIFY_APP_PRIVATE_KEY`, `BOARDNOTIFY_INSTALLATION_ID`,
-`ANALYTICS_READ_TOKEN` (Account Analytics Read only; the analytics section of `/stats` reports
-unavailable rather than failing the endpoint when unset), `ANALYTICS_DEV_KEY` (random, at least
-32 characters), and `ANALYTICS_ENVIRONMENT` (enter `production` only on the live Worker).
-The last binding is intentionally absent from `wrangler.toml`, local development, and preview
-deployments. All six
-board-notify secrets are optional — see "Board notifications" above). Vars (in
-`wrangler.toml`): `ALERTS_LIVE` (master switch — anything but `"true"` = dry-run),
-`ALERTS_FROM`, `MAX_PER_RUN`, `MAX_SENDS_PER_DAY`, `HEARTBEAT_DAYS`, `FEEDBACK_TO`,
-`BOARD_PROJECT_IDS`, `BOARD_ORG`, `BOARD_URL`, `BOARD_HOOK_DRY`, `BOARD_HOOK_MAX_PER_DAY`,
-`BOARDNOTIFY_CC`. Fire the cron locally by hitting `/__scheduled` under `wrangler dev`.
+Secrets (set outside the repository via Wrangler): `ANTHROPIC_API_KEY`, `RESEND_API_KEY`,
+`TOKEN_SECRET`, `TURNSTILE_SECRET`, `USAGE_KEY`, `ADMIN_KEY`, `BOARD_HOOK_SECRET`,
+`GITHUB_BOT_TOKEN`, `BOARDNOTIFY_APP_ID`, `BOARDNOTIFY_APP_PRIVATE_KEY`,
+`BOARDNOTIFY_INSTALLATION_ID`, `ANALYTICS_READ_TOKEN`, `ANALYTICS_DEV_KEY`, and
+`ANALYTICS_ENVIRONMENT` (`production` only on the live Worker). Board-notify secrets are
+optional — see "Board notifications" above. Vars (in `wrangler.toml`): `ALERTS_LIVE`
+(master switch — anything but `"true"` = dry-run), `ALERTS_FROM`, `MAX_PER_RUN`,
+`MAX_SENDS_PER_DAY`, `HEARTBEAT_DAYS`, `FEEDBACK_TO`, `BOARD_PROJECT_IDS`, `BOARD_ORG`,
+`BOARD_URL`, `BOARD_HOOK_DRY`, `BOARD_HOOK_MAX_PER_DAY`, `BOARDNOTIFY_CC`. Fire the cron
+locally by hitting `/__scheduled` under `wrangler dev`.
 
 ### Automatic deploys
 
@@ -201,16 +193,11 @@ hand (above) and never add one to `wrangler.toml`'s `[vars]` block or to the wor
 order rather than racing. `npx wrangler deploy` from a laptop remains the escape hatch for an
 emergency deploy outside the merge flow.
 
-Requires a `CLOUDFLARE_API_TOKEN` repo secret — a token scoped to **Workers Scripts: Edit** on
-the target account only (least privilege; no zone/DNS/account-wide permissions needed for a
-code deploy). No separate account-id secret: `wrangler.toml` doesn't set `account_id`, so
-wrangler resolves the account from the token itself. Create/rotate it at
-https://dash.cloudflare.com/profile/api-tokens ("Edit Cloudflare Workers" template, scoped down
-to this account) and update the repo secret at Settings → Secrets and variables → Actions.
+Requires a `CLOUDFLARE_API_TOKEN` repository secret for GitHub Actions. Prefer a
+least-privilege token limited to Workers deploys on this account. `wrangler.toml` does not set
+`account_id`, so wrangler resolves the account from the token itself.
 
 ## History
 
-Originally Netlify Functions + Blobs; migrated to Cloudflare Workers + KV (free deploys —
-Netlify billed 15 credits per production deploy against a shared pool; background:
-`../professional-presence/netlify_deploy_credits.md`). The `netlify/` directory is legacy.
-Moving both repos into a shared GitHub org remains a deferred governance call, not a code one.
+Originally Netlify Functions + Blobs; migrated to Cloudflare Workers + KV for free deploys
+(Netlify production deploys drew from a shared credit pool). The `netlify/` directory is legacy.

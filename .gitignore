@@ -2,13 +2,13 @@ node_modules/
 .DS_Store
 __pycache__/
 
-# internal planning + ops notes — keep private, never on the public repo
+# Local notes and planning dirs (not part of the product tree)
 internal/
 tasks/
 backlog/
 *.local.md
 
-# agent/estate scaffolding stays local, never public
+# Local editor / agent helper files
 AGENTS.md
 CLAUDE.md
 backlog/

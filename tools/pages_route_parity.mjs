@@ -5,7 +5,7 @@
  * Compares HTTP status and a content marker for every path in the site's
  * public route inventory (sitemap pages plus robots/sitemap). Used to prove
  * a parallel Cloudflare Pages host matches the live production site before
- * DNS cutover. Never prints credentials.
+ * DNS changes. Never prints credentials.
  */
 
 import { pathToFileURL } from "node:url";
