@@ -348,6 +348,16 @@
       "delivery_tier": "edge-materialized"
     },
     {
+      "id": "ocp-current-solicitations",
+      "name": "Current Solicitations (OCP / Open Data)",
+      "source_contract_id": "ocp-current-solicitations",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://data.cityofnewyork.us/d/3khw-qi8f",
+      "delivery_tier": "edge-materialized"
+    },
+    {
       "id": "passport-public-contracts",
       "name": "PASSPort Public registered contracts",
       "source_contract_id": "passport-public-contracts",
@@ -1851,7 +1861,7 @@
   ],
   "depot_refresh": {
     "observed_on": "2026-07-30",
-    "source_contracts_fingerprint": "aece86d129c21f9aee0a0e4ee93dff041a06c52f671bf1bd302074b11cbda59c",
+    "source_contracts_fingerprint": "55a6ff044b58ce380663cb979b6ad51b8b2d9b1f210fd41ecf798403af7724e9",
     "materialized_crosswalks": 8,
     "candidate_crosswalks": 39,
     "class_changes": 0,
