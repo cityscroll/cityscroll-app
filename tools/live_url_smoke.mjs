@@ -92,6 +92,10 @@ export const PAGES_DEV_TARGETS = Object.freeze([
  * Post-flip verification matrix. Dormant until an operator deliberately selects
  * --set post-flip after a site-owner-authorized cutover — never the deploy default.
  *
+ * URL probes below plus named operational checks in tools/post_flip_checks.mjs
+ * (EMAIL HEALTH, STATS SANITY, WORKER ACCESS, HUMAN-PATH JOURNEY), each annotated
+ * with the incident class it descends from.
+ *
  * Optional header checks (no GitHub Pages request id on apex/www) assert the
  * Pages-primary edge only when this set is used.
  */
@@ -122,6 +126,12 @@ export const POST_FLIP_TARGETS = Object.freeze([
     id: "post-flip-api-health",
     url: "https://api.cityscroll.org/health",
     marker: API_HEALTH_MARKER,
+  },
+  {
+    id: "post-flip-api-stats",
+    url: "https://api.cityscroll.org/stats",
+    // JSON includes digests block; marker is a stable key name, not HTML CityScroll.
+    marker: /"digests"\s*:/,
   },
   {
     id: "post-flip-pages-dev",
@@ -590,6 +600,8 @@ function parseArgs(argv) {
     urls: [],
     baseUrl: null,
     targetSet: "default",
+    withJourney: true,
+    namedChecksOnly: false,
   };
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
@@ -599,6 +611,9 @@ function parseArgs(argv) {
     else if (arg === "--url") opts.urls.push(argv[++i]);
     else if (arg === "--base-url") opts.baseUrl = argv[++i];
     else if (arg === "--set") opts.targetSet = argv[++i];
+    else if (arg === "--with-journey") opts.withJourney = true;
+    else if (arg === "--skip-journey") opts.withJourney = false;
+    else if (arg === "--named-checks-only") opts.namedChecksOnly = true;
     else if (arg === "--help" || arg === "-h") opts.help = true;
   }
   return opts;
@@ -616,11 +631,14 @@ Options:
   --set NAME                      Named target set: ${TARGET_SET_NAMES.join(", ")}
   --base-url https://host.example Probe / and /about.html on one host
   --url https://host.example/path Probe an explicit URL (repeatable)
+  --with-journey / --skip-journey Post-flip HUMAN-PATH JOURNEY (default: on for post-flip)
+  --named-checks-only             Run only post-flip named operational checks (no URL matrix)
 
 Default set probes: ${DEFAULT_TARGETS.map((t) => t.url).join(", ")}
 Named sets (opt-in; not used by deploy jobs unless selected):
   pages-dev  ${PAGES_DEV_TARGETS.map((t) => t.url).join(", ")}
-  post-flip  post-cutover verification matrix (apex, www, about, crol-list, api/health, pages.dev)
+  post-flip  URL matrix + named incident checks (EMAIL HEALTH, STATS SANITY,
+             WORKER ACCESS, HUMAN-PATH JOURNEY)
 Each HTML target must return HTTP 200 with a CityScroll content marker, or the retry window ends.
 API health uses the worker health marker. The post-flip set also asserts apex/www lack a
 GitHub Pages request-id header once Pages is the public origin.
@@ -628,38 +646,65 @@ GitHub Pages request-id header once Pages is the public origin.
     return 0;
   }
 
-  let targets;
-  try {
-    targets = targetsFromCli(opts);
-  } catch (err) {
-    console.error(err?.message || String(err));
-    return 2;
-  }
-  console.log(
-    `live-url smoke: probing ${targets.length} URLs `
-    + `(timeout ${opts.timeoutMs}ms, interval ${opts.intervalMs}ms)`,
-  );
+  const isPostFlip = String(opts.targetSet || "").toLowerCase() === "post-flip";
+  let urlFailed = false;
 
-  const result = await runSmoke({
-    targets,
-    timeoutMs: opts.timeoutMs,
-    intervalMs: opts.intervalMs,
-    requestTimeoutMs: opts.requestTimeoutMs,
-  });
-
-  if (result.ok) {
-    for (const r of result.results) {
-      console.log(`OK ${r.id || r.url} → ${r.finalStatus} (${r.finalUrl}) chain=${formatStatusChain(r.statusChain)}`);
+  if (!opts.namedChecksOnly) {
+    let targets;
+    try {
+      targets = targetsFromCli(opts);
+    } catch (err) {
+      console.error(err?.message || String(err));
+      return 2;
     }
-    console.log(`live-url smoke green after ${result.attempts} attempt(s)`);
-    return 0;
+    console.log(
+      `live-url smoke: probing ${targets.length} URLs `
+      + `(timeout ${opts.timeoutMs}ms, interval ${opts.intervalMs}ms)`,
+    );
+
+    const result = await runSmoke({
+      targets,
+      timeoutMs: opts.timeoutMs,
+      intervalMs: opts.intervalMs,
+      requestTimeoutMs: opts.requestTimeoutMs,
+    });
+
+    if (result.ok) {
+      for (const r of result.results) {
+        console.log(`OK ${r.id || r.url} → ${r.finalStatus} (${r.finalUrl}) chain=${formatStatusChain(r.statusChain)}`);
+      }
+      console.log(`live-url smoke green after ${result.attempts} attempt(s)`);
+    } else {
+      urlFailed = true;
+      console.error(`live-url smoke FAILED after ${result.attempts} attempt(s)`);
+      for (const line of result.failures) {
+        console.error(line);
+      }
+    }
   }
 
-  console.error(`live-url smoke FAILED after ${result.attempts} attempt(s)`);
-  for (const line of result.failures) {
-    console.error(line);
+  // Named operational checks only for post-flip (or explicit --named-checks-only).
+  if (isPostFlip || opts.namedChecksOnly) {
+    const { runPostFlipNamedChecks } = await import("./post_flip_checks.mjs");
+    console.log("post-flip named checks: EMAIL HEALTH, STATS SANITY, WORKER ACCESS, HUMAN-PATH JOURNEY");
+    const named = await runPostFlipNamedChecks({
+      runJourney: opts.withJourney,
+    });
+    for (const r of named.results) {
+      const tag = r.ok ? "OK" : "FAIL";
+      console.log(
+        `${tag} ${r.name} [${r.id}] incident=${r.incident.class}`
+        + (r.reason ? ` — ${r.reason}` : ""),
+      );
+    }
+    if (!named.ok) {
+      for (const line of named.failures) console.error(line);
+      return 1;
+    }
+    console.log("post-flip named checks green");
   }
-  return 1;
+
+  return urlFailed ? 1 : 0;
 }
 
 const isDirect = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
