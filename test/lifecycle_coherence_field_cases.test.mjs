@@ -51,11 +51,13 @@ const sandbox = new Function(
   extractConst("EXT_ATTRS") +
   extractConst("CHECKBOOK_SEARCH_URL") +
   extractConst("CHECKBOOK_SPENDING_URL") +
+  extractConst("CHECKBOOK_SMART_SEARCH") +
   extractConst("PASSPORT_CONTRACTS_URL") +
   extractConst("PASSPORT_RFX_URL") +
   extractConst("LIFECYCLE_STAGE_ORDER") +
   extractConst("CURRENT_SOLICITATIONS_URL") +
   extractConst("OCP_AWARDS_URL") +
+  extractFn("checkbookSearchUrl") +
   extractFn("lifecycleStageLabel") +
   extractFn("lifecycleAmount") +
   extractFn("lifecycleMoney") +
@@ -65,6 +67,8 @@ const sandbox = new Function(
   extractFn("lifecyclePublicStatus") +
   extractFn("lifecycleMatchedRegisteredDetail") +
   extractConst("LIFECYCLE_DOLLARS_ANCHOR") +
+  extractFn("lifecycleDollarsFocusHref") +
+  extractFn("lifecyclePaymentState") +
   extractFn("lifecyclePaymentSummaryHTML") +
   extractFn("lifecycleSourceLink") +
   extractFn("lifecycleDocumentsHTML") +
@@ -72,10 +76,12 @@ const sandbox = new Function(
   extractFn("lifecycleOcpAwardHTML") +
   extractFn("lifecycleTimelineHTML") +
   extractFn("lifecycleDollarsHTML") +
-  // vendorStem used by lifecycleDollarsHTML for mismatch warning
-  `function vendorStem(s){ return String(s||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim(); }
-   function cleanText(s){ return String(s||"").replace(/\\s+/g," ").trim(); }` +
-  "return { lifecycleTimelineHTML, lifecycleDollarsHTML, lifecycleStageHTML, money, lifecycleMoney };"
+  // Real vendorStem + vendorNamesMatch (entity-resolution for mismatch warning)
+  extractConst("VENDOR_SUFFIX") +
+  extractFn("cleanText") +
+  extractFn("vendorStem") +
+  extractFn("vendorNamesMatch") +
+  "return { lifecycleTimelineHTML, lifecycleDollarsHTML, lifecycleStageHTML, money, lifecycleMoney, vendorNamesMatch, checkbookSearchUrl, lifecyclePaymentState, lifecyclePaymentSummaryHTML };"
 );
 
 const {
@@ -83,6 +89,10 @@ const {
   lifecycleDollarsHTML,
   money,
   lifecycleMoney,
+  vendorNamesMatch,
+  checkbookSearchUrl,
+  lifecyclePaymentState,
+  lifecyclePaymentSummaryHTML,
 } = sandbox(t, tn, windowStub);
 
 // Live-shaped fixture: HNTB award #notice/20260623008 (registered matched, payment was unknown)
@@ -136,9 +146,22 @@ const HNTB_LIFECYCLE_RAW = {
         mwbe: "Non-M/WBE",
       },
     },
-    // Live 2026-07-30 shape: empty spending feed while registered join carries spent_to_date: 0
-    // (false gap if rendered as "not yet shown" in parallel with Follow-the-Dollars $0 paid).
-    { stage: "payment", status: "unmatched", source: "checkbook-spending", date: null, detail: null },
+    // Healthy spending feed empty + registered spent 0 → verified $0 (not unavailable).
+    {
+      stage: "payment",
+      status: "matched",
+      source: "checkbook-spending",
+      date: null,
+      detail: {
+        total_payments: null,
+        total_spent: 0,
+        latest_payment_date: null,
+        latest_payment_amount: null,
+        fiscal_year: null,
+        derived_from: "registered",
+        payment_state: "verified_zero",
+      },
+    },
   ],
 };
 
@@ -222,11 +245,15 @@ test("joined payments rendered as not-shown, duplicated: payments card summarize
   // No class-(a) payment gap while registered join exists
   assert.doesNotMatch(both, /Not yet shown here — payments live in/i);
   assert.doesNotMatch(both, /payments live in Checkbook NYC spending/i);
-  // Payments card: summary + $0 lag + anchor to dollars (one owner; dollars is detail)
+  // Payments card: summary + $0 lag + notice-scoped deep link to dollars
   assert.match(timeline, /\$0 paid of \$13\.5/i);
   assert.match(timeline, /Payments lag invoicing/i);
-  assert.match(timeline, /href="#follow-the-dollars"/);
+  assert.match(timeline, /href="#notice\/20260623008\?focus=follow-the-dollars"/);
+  assert.doesNotMatch(timeline, /href="#follow-the-dollars"/);
   assert.match(timeline, /class="box matched"/);
+  // Outbound Checkbook links carry the contract id (not bare spending_search)
+  assert.match(timeline, /smart_search\/citywide\?search_term=CT184120268807929/);
+  assert.doesNotMatch(timeline, /href="https:\/\/www\.checkbooknyc\.com\/spending_search"/);
   // Dollars is the detail owner: Paid to date $0, lag in provenance — no second gap line
   assert.match(dollars, /Paid to date/i);
   assert.match(dollars, /\$0/);
@@ -266,7 +293,7 @@ test("IDA no-PIN field case: single no-PIN explanation; dependent slots collapse
 // 3. Assembly coherence for the same shapes (precompute side)
 // ---------------------------------------------------------------------------
 
-test("assembleLifecycle: spending error with registered match does not leave payment unknown", () => {
+test("assembleLifecycle: spending error never invents confident $0 (payment_state unavailable)", () => {
   const registered = [{
     id: "CT184120268807929",
     vendor: "HNTB",
@@ -284,13 +311,87 @@ test("assembleLifecycle: spending error with registered match does not leave pay
   });
   const pay = result.timeline.find((e) => e.stage === "payment");
   const pending = result.timeline.find((e) => e.stage === "pending");
-  assert.notEqual(pay.status, "unknown");
-  // spent 0 on the registered contract is a joined payment fact (normal lag), not a gap
+  assert.equal(pay.status, "matched");
+  assert.equal(pay.detail.payment_state, "unavailable");
+  assert.equal(pay.detail.total_spent, null, "must not fall back to registered $0 on spending error");
+  assert.equal(pending.status, "passed"); // registered present → pending superseded
+  assert.equal(result.ok, true); // unavailable is resolved, still cacheable
+});
+
+test("assembleLifecycle: healthy empty spending + registered $0 → verified_zero", () => {
+  const registered = [{
+    id: "CT184120268807929",
+    vendor: "HNTB",
+    registered: "2026-06-22",
+    original: 13533763.08,
+    current: 13533763.08,
+    spent: 0,
+    start: "2024-10-11",
+    end: "2032-10-10",
+    mwbe: "Non-M/WBE",
+  }];
+  const result = assembleLifecycle(HNTB_NOTICE, [], registered, [], {
+    pinStrategy: "exact",
+    lookupStatus: { pending: "ok", registered: "ok", spending: "ok" },
+  });
+  const pay = result.timeline.find((e) => e.stage === "payment");
   assert.equal(pay.status, "matched");
   assert.equal(pay.detail.total_spent, 0);
+  assert.equal(pay.detail.payment_state, "verified_zero");
   assert.equal(pay.detail.derived_from, "registered");
-  assert.equal(pending.status, "passed"); // registered present → pending superseded
-  assert.equal(result.ok, true); // recoverable partial join is cacheable
+});
+
+test("assembleLifecycle: spending transactions → paid state with summed total", () => {
+  const registered = [{
+    id: "CT1", vendor: "ACME", registered: "2025-04-01",
+    original: 100, current: 100, spent: 40,
+  }];
+  const spending = [
+    { amount: 25, date: "2025-05-01" },
+    { amount: 15, date: "2025-06-01" },
+  ];
+  const result = assembleLifecycle(
+    { request_id: "x", pin: "P1", type_of_notice_description: "Award", start_date: "2025-01-01", agency_name: "A", short_title: "T" },
+    [], registered, spending,
+    { pinStrategy: "exact", lookupStatus: { pending: "ok", registered: "ok", spending: "ok" } },
+  );
+  const pay = result.timeline.find((e) => e.stage === "payment");
+  assert.equal(pay.detail.payment_state, "paid");
+  assert.equal(pay.detail.total_spent, 40);
+  assert.equal(pay.detail.total_payments, 2);
+});
+
+test("UI: unavailable payment does not show confident $0", () => {
+  const data = {
+    pin: "84124P0003001",
+    pin_strategy: "exact",
+    ok: true,
+    amendments: [],
+    timeline: [
+      {
+        stage: "registered", status: "matched", source: "checkbook-contracts", date: "2026-06-22",
+        detail: {
+          contract_id: "CT184120268807929", vendor: "HNTB",
+          registration_date: "2026-06-22", original_amount: 100, current_amount: 100,
+          spent_to_date: 0, start_date: "2024-10-11", end_date: "2032-10-10", mwbe: null,
+        },
+      },
+      {
+        stage: "payment", status: "matched", source: "checkbook-spending", date: null,
+        detail: {
+          total_payments: null, total_spent: null, payment_state: "unavailable",
+        },
+      },
+    ],
+  };
+  const timeline = lifecycleTimelineHTML(data, HNTB_NOTICE);
+  const dollars = lifecycleDollarsHTML(data, HNTB_NOTICE);
+  assert.match(timeline, /Payment data unavailable right now/i);
+  assert.doesNotMatch(timeline, /\$0 paid of/i);
+  assert.match(dollars, /Unavailable right now/i);
+  // Paid cell is unavailable — not a dollar amount (lag copy lives only on verified $0)
+  assert.match(dollars, /Paid to date<\/dt><dd>Unavailable right now<\/dd>/);
+  assert.doesNotMatch(dollars, /\$0 paid on a freshly registered/);
 });
 
 test("assembleLifecycle: no PIN marks Checkbook stages not_applicable (not unknown)", () => {
@@ -323,6 +424,50 @@ test("lifecycleMoney formats zero as $0 and nullish as em dash (never literal nu
   assert.equal(lifecycleMoney(undefined), "—");
   assert.equal(lifecycleMoney(13533763.08), money(13533763.08));
   assert.notEqual(String(lifecycleMoney(0)), "null");
+});
+
+// ---------------------------------------------------------------------------
+// 4. Entity resolution: HNTB truncation is same firm; true mismatch still warns
+// ---------------------------------------------------------------------------
+
+test("HNTB vendor pair: entity resolution matches Checkbook truncation to notice name", () => {
+  const checkbook = "HNTB NEW YORK ENGINEERING ARCHITECTURE AND LANDSCAPE ARCHITE";
+  const noticeName = "HNTB New York Engineering and Architecture, P.C.";
+  assert.equal(vendorNamesMatch(checkbook, noticeName), true);
+  const dollars = lifecycleDollarsHTML(HNTB_LIFECYCLE_RAW, HNTB_NOTICE);
+  // Soft variant note (or quiet match) — never the red mismatch warning
+  assert.doesNotMatch(dollars, /differs from the notice/i);
+  assert.doesNotMatch(dollars, /note warn/);
+  // Soft note when display strings differ but entity resolves
+  assert.match(dollars, /Same vendor as the notice|Checkbook shows the name/i);
+  // Specific outbound Checkbook link
+  assert.match(dollars, /smart_search\/citywide\?search_term=CT184120268807929/);
+});
+
+test("true vendor mismatch still warns", () => {
+  const other = {
+    ...HNTB_NOTICE,
+    vendor_name: "Acme Bridge Demolition LLC",
+  };
+  assert.equal(
+    vendorNamesMatch(
+      "HNTB NEW YORK ENGINEERING ARCHITECTURE AND LANDSCAPE ARCHITE",
+      other.vendor_name,
+    ),
+    false,
+  );
+  const dollars = lifecycleDollarsHTML(HNTB_LIFECYCLE_RAW, other);
+  assert.match(dollars, /differs from the notice/i);
+  assert.match(dollars, /note warn/);
+  assert.match(dollars, /Acme Bridge Demolition/);
+});
+
+test("checkbookSearchUrl constructs scoped Checkbook URLs", () => {
+  const u = checkbookSearchUrl({ contractId: "CT184120268807929" });
+  assert.equal(
+    u,
+    "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT184120268807929",
+  );
 });
 
 // ---------------------------------------------------------------------------
