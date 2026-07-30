@@ -635,7 +635,7 @@
     {
       "rank": 2,
       "source": "Legistar agenda/vote materialization depth",
-      "value_score": 46,
+      "value_score": 54,
       "realized_join_rate": 1
     },
     {
@@ -657,5 +657,5 @@
       "realized_join_rate": null
     }
   ],
-  "registry_sha256": "067fbc2ff712871b9db383fe63bd9b4f633f427582f37142f02915945b08ec36"
+  "registry_sha256": "7c482c423684b170b4b9936d4322c03327c7f7d534a12849ac4a68117dff34be"
 }

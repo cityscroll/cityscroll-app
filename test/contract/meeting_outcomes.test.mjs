@@ -13,38 +13,47 @@ function model() {
   return buildMeetingOutcomes(
     fixture.notices,
     fixture.events,
-    fixture.agenda_items,
-    fixture.matters,
+    fixture.event_items,
     fixture.votes,
-    fixture.documents,
   );
 }
 
 // ---------------------------------------------------------------------------
-// Chain characterization: notice -> agenda item -> matter -> vote -> document
+// Chain characterization: notice -> (strict join) -> event -> agenda item -> matter
 // ---------------------------------------------------------------------------
 
-test("contract fixture follows notice -> agenda -> matter -> vote -> document", () => {
+test("contract fixture follows notice -> event -> agenda -> matter with strict join", () => {
   const modelRow = model();
   assert.equal(modelRow.records.length, 1);
 
   const record = modelRow.records[0];
   assert.equal(record.join.matched, true);
-  assert.equal(record.agenda_items.length, 1);
+  assert.equal(record.join.method, "exact_date_body_tokens");
+
+  const event = record.council_event;
+  assert.equal(event.event_id, "evt-001");
+  assert.equal(event.body_name, "Subcommittee on Land Use");
+  assert.equal(event.documents.length, 2);
 
   const item = record.agenda_items[0];
   assert.equal(item.matters.length, 1);
 
   const matter = item.matters[0];
   assert.equal(matter.matter_id, "mat-001");
-  assert.equal(matter.votes[0].vote_id, "vote-001");
-  assert.equal(matter.documents[0].document_id, "doc-001");
+  assert.equal(matter.matter_file, "LU 0001-2026");
+  assert.equal(matter.status, "Adopted");
+  assert.equal(matter.outcome, "Approved by Subcommittee");
+  assert.equal(matter.votes[0].result, "Passed");
   assert.equal(matter.votes[0].counts.aye, 6);
+  assert.equal(matter.votes[0].counts.nay, 3);
+});
 
+test("notice location and affected-area still surface through normalizeHearing", () => {
+  const modelRow = model();
+  const record = modelRow.records[0];
   assert.equal(record.notice.affected_area.scope, "local");
   assert.deepEqual(record.notice.affected_area.boroughs, ["Queens"]);
   assert.equal(record.notice.venue.address, "120 Broad Street, New York, NY, 10271");
-  assert.notEqual(record.notice.venue.borough, "Queens");
 });
 
 // ---------------------------------------------------------------------------
@@ -64,14 +73,23 @@ test("unmatched notice records explicit reasons and empty outcome rows", () => {
   assert.equal(unmatched.records[0].agenda_items.length, 0);
 });
 
+test("same-day body mismatch is rejected by the strict join", () => {
+  // Same date, but the notice title names a different body than the event.
+  const rejected = buildMeetingOutcomes(
+    [{ ...fixture.notices[0], short_title: "7-28-26 Subcommittee on Zoning and Franchises meeting" }],
+    fixture.events,
+    fixture.event_items,
+    fixture.votes,
+  );
+  assert.equal(rejected.records[0].join.matched, false);
+});
+
 function modelWithNotice(notice) {
   return buildMeetingOutcomes(
     [notice],
     fixture.events,
-    fixture.agenda_items,
-    fixture.matters,
+    fixture.event_items,
     fixture.votes,
-    fixture.documents,
   );
 }
 
