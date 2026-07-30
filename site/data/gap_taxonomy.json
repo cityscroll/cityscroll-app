@@ -1,15 +1,15 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "generated_document": "docs/gap-taxonomy.md",
   "doctrine": {
     "class_a": {
       "id": "not_yet_ingested",
-      "register": "Not yet shown here \u2014 this lives in <source>.",
+      "register": "Not yet shown here — this lives in <source>.",
       "meaning": "A public source publishes this field. The empty slot is this product's incomplete join or missing adapter, not a city publication failure."
     },
     "class_b": {
       "id": "not_published",
-      "register": "The city does not publish this \u2014 it would appear in <where> if released.",
+      "register": "The city does not publish this — it would appear in <where> if released.",
       "meaning": "No public, joinable release of this field is known. Name the logical home when one exists."
     },
     "non_gap": {
@@ -17,10 +17,1329 @@
       "meaning": "Transient reach failures and join ambiguity keep their existing operational wording; they are not publication taxonomy."
     }
   },
+  "sources": [
+    {
+      "id": "abo-local-authorities",
+      "name": "NYS Authorities Budget Office procurement datasets",
+      "source_contract_id": "abo-local-authorities",
+      "status": "landed",
+      "join_keys": [
+        "authority_name",
+        "vendor_name",
+        "award_date",
+        "contract_amount"
+      ],
+      "join_coverage": {},
+      "landing_page": "https://data.ny.gov/",
+      "delivery_tier": "edge-materialized"
+    },
+    {
+      "id": "abo-local-development-corporations",
+      "name": "NYS Authorities Budget Office — local development corporations",
+      "source_contract_id": "abo-local-development-corporations",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://data.ny.gov/d/d84c-dk28",
+      "delivery_tier": "edge-materialized"
+    },
+    {
+      "id": "abo-state-authorities",
+      "name": "NYS Authorities Budget Office — state authorities",
+      "source_contract_id": "abo-state-authorities",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://data.ny.gov/d/ehig-g5x3",
+      "delivery_tier": "edge-materialized"
+    },
+    {
+      "id": "active-civil-service-list",
+      "name": "Civil Service List (Active)",
+      "source_contract_id": "active-civil-service-list",
+      "status": "live-only",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://data.cityofnewyork.us/d/vx8i-nprf",
+      "delivery_tier": "live-only"
+    },
+    {
+      "id": "annual-examination-schedule",
+      "name": "Annual Examination Schedule",
+      "source_contract_id": "annual-examination-schedule",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://data.cityofnewyork.us/d/4ptz-hmtc",
+      "delivery_tier": "inline-at-build"
+    },
+    {
+      "id": "bid-tabulations-historical",
+      "name": "Bid Tabulations (Historical)",
+      "source_contract_id": "bid-tabulations-historical",
+      "status": "disabled",
+      "join_keys": [
+        "bid_number",
+        "PIN",
+        "bid_title",
+        "bid_opening_date"
+      ],
+      "join_coverage": {
+        "predicted": {
+          "grade": "high-risk",
+          "note": "Pre-recon estimate: bid_number rarely equals City Record PIN; historical coverage only."
+        },
+        "realized": {
+          "rate": 0,
+          "joined": 0,
+          "total": 7254,
+          "metric": "modern_notices_strict",
+          "observed_on": "2026-07-30",
+          "universe": null,
+          "strategy": "exact | agency_prefix_bid_suffix (2-4 digit agency prefix + known 7-digit bid_number). Weak title-unique and digit-containment joins rejected.",
+          "verdict": "Below usefulness threshold (~30%) on the modern product universe (0%) and historical overlap universe (9.07%). Ship measured reconnaissance + source contract only; do not edge-materialize bid counts.",
+          "source": "source_contracts.join_measurement"
+        }
+      },
+      "landing_page": "https://data.cityofnewyork.us/d/9k82-ys7w",
+      "delivery_tier": "live-only"
+    },
+    {
+      "id": "checkbook-contracts",
+      "name": "Checkbook NYC Contracts",
+      "source_contract_id": "checkbook-contracts",
+      "status": "landed",
+      "join_keys": [
+        "PIN",
+        "contract_id",
+        "registration_date"
+      ],
+      "join_coverage": {},
+      "landing_page": "https://www.checkbooknyc.com/data-feeds/api",
+      "delivery_tier": "edge-materialized"
+    },
+    {
+      "id": "checkbook-nycha-contracts",
+      "name": "Checkbook NYC NYCHA contracts",
+      "source_contract_id": "checkbook-nycha-contracts",
+      "status": "landed",
+      "join_keys": [
+        "contract_id"
+      ],
+      "join_coverage": {},
+      "landing_page": "https://www.checkbooknyc.com/data-feeds/api",
+      "delivery_tier": "edge-materialized"
+    },
+    {
+      "id": "checkbook-spending",
+      "name": "Checkbook NYC Spending",
+      "source_contract_id": "checkbook-spending",
+      "status": "landed",
+      "join_keys": [
+        "PIN",
+        "contract_id",
+        "check_amount",
+        "check_date"
+      ],
+      "join_coverage": {},
+      "landing_page": "https://www.checkbooknyc.com/data-feeds/api",
+      "delivery_tier": "edge-materialized"
+    },
+    {
+      "id": "city-record",
+      "name": "City Record Online",
+      "source_contract_id": "city-record",
+      "status": "live-only",
+      "join_keys": [
+        "PIN",
+        "request_id",
+        "agency"
+      ],
+      "join_coverage": {},
+      "landing_page": "https://data.cityofnewyork.us/d/dg92-zbpx",
+      "delivery_tier": "live-only"
+    },
+    {
+      "id": "citywide-payroll",
+      "name": "Citywide Payroll Data",
+      "source_contract_id": "citywide-payroll",
+      "status": "live-only",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://data.cityofnewyork.us/d/k397-673e",
+      "delivery_tier": "live-only"
+    },
+    {
+      "id": "civil-service-list-certification",
+      "name": "Civil Service List Certification",
+      "source_contract_id": "civil-service-list-certification",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://data.cityofnewyork.us/d/a9md-ynri",
+      "delivery_tier": "inline-at-build"
+    },
+    {
+      "id": "current-solicitations-ocp",
+      "name": "Current Solicitations (OCP)",
+      "source_contract_id": null,
+      "status": "not_ingested",
+      "join_keys": [
+        "PIN",
+        "request_id",
+        "agency"
+      ],
+      "join_coverage": {},
+      "landing_page": "https://data.cityofnewyork.us/d/3khw-qi8f"
+    },
+    {
+      "id": "dcas-annual-exam-outcomes",
+      "name": "DCAS annual civil-service exam outcome aggregates",
+      "source_contract_id": "dcas-annual-exam-outcomes",
+      "status": "landed",
+      "join_keys": [
+        "exam_number"
+      ],
+      "join_coverage": {
+        "predicted": {
+          "grade": "medium",
+          "note": "exam_number collisions across years; aggregate-only privacy must hold."
+        }
+      },
+      "landing_page": "https://a860-gpp.nyc.gov/concern/nyc_government_publications/zk51vm65n",
+      "delivery_tier": "inline-at-build"
+    },
+    {
+      "id": "dcas-exam-notices",
+      "name": "DCAS open-competitive exam schedule and Notices of Examination",
+      "source_contract_id": "dcas-exam-notices",
+      "status": "landed",
+      "join_keys": [
+        "exam_number"
+      ],
+      "join_coverage": {},
+      "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page",
+      "delivery_tier": "inline-at-build"
+    },
+    {
+      "id": "dob-now-job-filings",
+      "name": "DOB NOW job filings",
+      "source_contract_id": "dob-now-job-filings",
+      "status": "live-only",
+      "join_keys": [
+        "BBL",
+        "BIN",
+        "job_number"
+      ],
+      "join_coverage": {},
+      "landing_page": "https://data.cityofnewyork.us/d/w9ak-ipjd",
+      "delivery_tier": "live-only"
+    },
+    {
+      "id": "expense-budget",
+      "name": "NYC Expense Budget",
+      "source_contract_id": "expense-budget",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://data.cityofnewyork.us/d/mwzb-yiwb",
+      "delivery_tier": "inline-at-build"
+    },
+    {
+      "id": "legacy-dob-job-filings",
+      "name": "Legacy DOB job application filings",
+      "source_contract_id": "legacy-dob-job-filings",
+      "status": "live-only",
+      "join_keys": [
+        "BBL",
+        "BIN",
+        "job_number"
+      ],
+      "join_coverage": {},
+      "landing_page": "https://data.cityofnewyork.us/d/ic3t-wcy2",
+      "delivery_tier": "live-only"
+    },
+    {
+      "id": "mappluto",
+      "name": "MapPLUTO",
+      "source_contract_id": "mappluto",
+      "status": "live-only",
+      "join_keys": [
+        "BBL"
+      ],
+      "join_coverage": {},
+      "landing_page": "https://www.nyc.gov/content/planning/pages/resources/datasets/mappluto-pluto-change",
+      "delivery_tier": "live-only"
+    },
+    {
+      "id": "mocs-ll63-plans",
+      "name": "MOCS Local Law 63 procurement plans",
+      "source_contract_id": "mocs-ll63-plans",
+      "status": "disabled",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://www.nyc.gov/site/mocs/resources/standard-professional-services-ll63.page",
+      "delivery_tier": "live-only"
+    },
+    {
+      "id": "nyc-agencies",
+      "name": "NYC Agencies and Governance Organizations",
+      "source_contract_id": "nyc-agencies",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://data.cityofnewyork.us/d/t3jq-9nkf",
+      "delivery_tier": "inline-at-build"
+    },
+    {
+      "id": "nyc-council-legistar",
+      "name": "NYC Council Legistar agenda items",
+      "source_contract_id": "nyc-council-legistar",
+      "status": "landed",
+      "join_keys": [
+        "matter_id",
+        "event_id",
+        "event_item_id",
+        "agency",
+        "event_title",
+        "start_time"
+      ],
+      "join_coverage": {},
+      "landing_page": "https://council.nyc.gov/legislation/api/",
+      "delivery_tier": "edge-materialized"
+    },
+    {
+      "id": "nyc-geosearch",
+      "name": "NYC GeoSearch",
+      "source_contract_id": "nyc-geosearch",
+      "status": "live-only",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://geosearch.planninglabs.nyc/",
+      "delivery_tier": "live-only"
+    },
+    {
+      "id": "nyc-rules-rss",
+      "name": "NYC Rules RSS feed",
+      "source_contract_id": "nyc-rules-rss",
+      "status": "landed",
+      "join_keys": [
+        "agency"
+      ],
+      "join_coverage": {},
+      "landing_page": "https://rules.cityofnewyork.us/",
+      "delivery_tier": "edge-materialized"
+    },
+    {
+      "id": "nycida-build-nyc-projects",
+      "name": "NYCIDA/Build NYC public documents",
+      "source_contract_id": "nycida-build-nyc-projects",
+      "status": "landed",
+      "join_keys": [
+        "request_id",
+        "project_id",
+        "project_name",
+        "company_name",
+        "project_address",
+        "request_id_when_present"
+      ],
+      "join_coverage": {},
+      "landing_page": "https://edc.nyc/about-nycedc/financial-public-documents-recordings",
+      "delivery_tier": "edge-materialized"
+    },
+    {
+      "id": "passport-public-contracts",
+      "name": "PASSPort Public registered contracts",
+      "source_contract_id": "passport-public-contracts",
+      "status": "landed",
+      "join_keys": [
+        "EPIN",
+        "PIN",
+        "contract_id",
+        "agency"
+      ],
+      "join_coverage": {
+        "predicted": {
+          "grade": "high-risk",
+          "note": "Pre-landing estimate: EPIN↔PIN strictness unknown; weak prefix joins risk false matches."
+        },
+        "realized": {
+          "rate": 0.74,
+          "joined": 5368,
+          "total": 7254,
+          "metric": "all_notices_to_contracts",
+          "observed_on": "2026-07-30",
+          "universe": "City Record Online (dg92-zbpx) Procurement notices with non-empty pin and start_date >= 2025-01-01",
+          "strategy": "exact | pin_strip_suffix | pin_prefix_of_epin | epin_prefix_of_pin (EPIN length >= 10; remainder digits or letter+2-4 digits). Weak shared-prefix joins rejected.",
+          "verdict": "Above usefulness threshold (>=30%). Ship join + edge materialization.",
+          "source": "source_contracts.join_measurement"
+        }
+      },
+      "landing_page": "https://a0333-passportpublic.nyc.gov/contracts.html",
+      "delivery_tier": "edge-materialized"
+    },
+    {
+      "id": "passport-public-rfx",
+      "name": "PASSPort Public solicitations (RFx)",
+      "source_contract_id": "passport-public-rfx",
+      "status": "landed",
+      "join_keys": [
+        "EPIN",
+        "PIN",
+        "procurement_name",
+        "agency"
+      ],
+      "join_coverage": {
+        "predicted": {
+          "grade": "high-risk",
+          "note": "Pre-landing estimate: solicitation EPINs expected to join less cleanly than awards."
+        },
+        "realized": {
+          "rate": 0.78,
+          "joined": 5660,
+          "total": 7254,
+          "metric": "either_contracts_or_rfx",
+          "observed_on": "2026-07-30",
+          "universe": "City Record Online (dg92-zbpx) Procurement notices with non-empty pin and start_date >= 2025-01-01",
+          "strategy": "exact | pin_strip_suffix | pin_prefix_of_epin | epin_prefix_of_pin (EPIN length >= 10; remainder digits or letter+2-4 digits). Weak shared-prefix joins rejected.",
+          "verdict": "Above usefulness threshold (>=30%). Ship join + edge materialization.",
+          "source": "source_contracts.join_measurement"
+        }
+      },
+      "landing_page": "https://a0333-passportpublic.nyc.gov/rfx.html",
+      "delivery_tier": "edge-materialized"
+    },
+    {
+      "id": "recent-contract-awards-ocp",
+      "name": "Recent Contract Awards (OCP)",
+      "source_contract_id": null,
+      "status": "not_ingested",
+      "join_keys": [
+        "PIN",
+        "request_id",
+        "agency"
+      ],
+      "join_coverage": {},
+      "landing_page": "https://data.cityofnewyork.us/d/qyyg-4tf5"
+    },
+    {
+      "id": "unregistered-zoning-application-portal-projects",
+      "name": "Zoning Application Portal projects",
+      "source_contract_id": null,
+      "status": "not_ingested",
+      "join_keys": [
+        "project_id",
+        "BBL",
+        "ulurp_numbers"
+      ],
+      "join_coverage": {},
+      "landing_page": "https://data.cityofnewyork.us/d/hgx4-8ukb"
+    },
+    {
+      "id": "zap-bbl",
+      "name": "Zoning Application Portal — tax lots",
+      "source_contract_id": "zap-bbl",
+      "status": "live-only",
+      "join_keys": [
+        "BBL",
+        "project_id"
+      ],
+      "join_coverage": {},
+      "landing_page": "https://data.cityofnewyork.us/d/2iga-a6mk",
+      "delivery_tier": "live-only"
+    },
+    {
+      "id": "zap-projects",
+      "name": "Zoning Application Portal — projects",
+      "source_contract_id": "zap-projects",
+      "status": "live-only",
+      "join_keys": [
+        "project_id",
+        "BBL",
+        "ulurp_numbers"
+      ],
+      "join_coverage": {},
+      "landing_page": "https://data.cityofnewyork.us/d/hgx4-8ukb",
+      "delivery_tier": "live-only"
+    }
+  ],
+  "crosswalks": [
+    {
+      "id": "city-record-pin-x-checkbook-contracts",
+      "source_a": "city-record",
+      "source_b": "checkbook-contracts",
+      "key_path": [
+        "PIN"
+      ],
+      "status": "materialized",
+      "lineage": {
+        "code": "worker/src/checkbook_lifecycle.mjs",
+        "strategy": "PIN lookup against Checkbook Contracts feed"
+      },
+      "realized_coverage": null,
+      "worth_materializing": "already_materialized",
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched",
+        "procurement-ocp-recent-awards"
+      ]
+    },
+    {
+      "id": "city-record-pin-x-checkbook-spending",
+      "source_a": "city-record",
+      "source_b": "checkbook-spending",
+      "key_path": [
+        "PIN"
+      ],
+      "status": "materialized",
+      "lineage": {
+        "code": "worker/src/checkbook_lifecycle.mjs",
+        "strategy": "PIN lookup against Checkbook Spending feed"
+      },
+      "realized_coverage": null,
+      "worth_materializing": "already_materialized",
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched",
+        "procurement-ocp-recent-awards"
+      ]
+    },
+    {
+      "id": "city-record-pin-x-passport-contracts-epin",
+      "source_a": "city-record",
+      "source_b": "passport-public-contracts",
+      "key_path": [
+        "PIN",
+        "EPIN"
+      ],
+      "status": "materialized",
+      "lineage": {
+        "code": "worker/src/lib/passport_join.mjs",
+        "strategy": "exact | pin_strip_suffix | pin_prefix_of_epin | epin_prefix_of_pin",
+        "measurement_contract": "passport-public-contracts",
+        "measurement_rate_key": "all_notices_to_contracts"
+      },
+      "realized_coverage": {
+        "rate": 0.74,
+        "joined": 5368,
+        "total": 7254,
+        "metric": "all_notices_to_contracts",
+        "observed_on": "2026-07-30",
+        "universe": "City Record Online (dg92-zbpx) Procurement notices with non-empty pin and start_date >= 2025-01-01",
+        "strategy": "exact | pin_strip_suffix | pin_prefix_of_epin | epin_prefix_of_pin (EPIN length >= 10; remainder digits or letter+2-4 digits). Weak shared-prefix joins rejected.",
+        "verdict": "Above usefulness threshold (>=30%). Ship join + edge materialization.",
+        "source": "source_contracts.join_measurement"
+      },
+      "worth_materializing": "already_materialized",
+      "gaps_would_close": [
+        "procurement-registered-unmatched",
+        "procurement-ocp-recent-awards"
+      ]
+    },
+    {
+      "id": "city-record-pin-x-passport-rfx-epin",
+      "source_a": "city-record",
+      "source_b": "passport-public-rfx",
+      "key_path": [
+        "PIN",
+        "EPIN"
+      ],
+      "status": "materialized",
+      "lineage": {
+        "code": "worker/src/lib/passport_join.mjs",
+        "strategy": "exact | pin_strip_suffix | pin_prefix_of_epin | epin_prefix_of_pin",
+        "measurement_contract": "passport-public-rfx",
+        "measurement_rate_key": "solicitation_to_rfx"
+      },
+      "realized_coverage": {
+        "rate": 0.444,
+        "joined": 653,
+        "total": 1470,
+        "metric": "solicitation_to_rfx",
+        "observed_on": "2026-07-30",
+        "universe": "City Record Online (dg92-zbpx) Procurement notices with non-empty pin and start_date >= 2025-01-01",
+        "strategy": "exact | pin_strip_suffix | pin_prefix_of_epin | epin_prefix_of_pin (EPIN length >= 10; remainder digits or letter+2-4 digits). Weak shared-prefix joins rejected.",
+        "verdict": "Above usefulness threshold (>=30%). Ship join + edge materialization.",
+        "source": "source_contracts.join_measurement"
+      },
+      "worth_materializing": "already_materialized",
+      "gaps_would_close": [
+        "procurement-solicitation-documents",
+        "procurement-ocp-recent-awards"
+      ]
+    },
+    {
+      "id": "city-record-request-x-nycida-projects",
+      "source_a": "city-record",
+      "source_b": "nycida-build-nyc-projects",
+      "key_path": [
+        "request_id"
+      ],
+      "status": "materialized",
+      "lineage": {
+        "code": "worker/src/lib/subsidy_lifecycle.mjs",
+        "strategy": "request_id plus fuzzy name/address fallback"
+      },
+      "realized_coverage": null,
+      "worth_materializing": "already_materialized",
+      "gaps_would_close": [
+        "procurement-ocp-recent-awards",
+        "subsidy-stage-unmatched"
+      ]
+    },
+    {
+      "id": "city-record-x-legistar-events",
+      "source_a": "city-record",
+      "source_b": "nyc-council-legistar",
+      "key_path": [
+        "agency"
+      ],
+      "status": "materialized",
+      "lineage": {
+        "code": "worker/src/lib/meeting_outcomes.mjs",
+        "strategy": "title/date/agency confidence match to Legistar events"
+      },
+      "realized_coverage": null,
+      "worth_materializing": "already_materialized",
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-ocp-recent-awards",
+        "meeting-outcomes-unmatched",
+        "meeting-matters-absent"
+      ]
+    },
+    {
+      "id": "exam-number-x-dcas-outcomes",
+      "source_a": "dcas-exam-notices",
+      "source_b": "dcas-annual-exam-outcomes",
+      "key_path": [
+        "exam_number"
+      ],
+      "status": "materialized",
+      "lineage": {
+        "code": "tools/build_staffing_exams.mjs",
+        "strategy": "exact exam_number on precomputed staffing_exams artifact"
+      },
+      "realized_coverage": null,
+      "worth_materializing": "already_materialized",
+      "gaps_would_close": [
+        "exam-outcome-aggregate"
+      ]
+    },
+    {
+      "id": "zap-project-x-bbl",
+      "source_a": "zap-projects",
+      "source_b": "zap-bbl",
+      "key_path": [
+        "project_id",
+        "BBL"
+      ],
+      "status": "materialized",
+      "lineage": {
+        "code": "worker/src/property.mjs",
+        "strategy": "project_id + BBL lot expansion"
+      },
+      "realized_coverage": null,
+      "worth_materializing": "already_materialized",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "checkbook-contracts-x-passport-public-contracts-via-PIN+contract_id",
+      "source_a": "checkbook-contracts",
+      "source_b": "passport-public-contracts",
+      "key_path": [
+        "PIN",
+        "contract_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "yes",
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched",
+        "procurement-solicitation-documents",
+        "procurement-bid-counts",
+        "procurement-ocp-recent-awards"
+      ],
+      "score": 6,
+      "evidence": "PASSPort Public contract rows expose contract_id alongside EPIN; Checkbook Contracts expose prime_contract_id (canonicalized to contract_id). Direct equality is not yet measured — candidate only. Transitive path already exists via City Record PIN."
+    },
+    {
+      "id": "checkbook-contracts-x-passport-public-rfx-via-PIN",
+      "source_a": "checkbook-contracts",
+      "source_b": "passport-public-rfx",
+      "key_path": [
+        "PIN"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "yes",
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched",
+        "procurement-solicitation-documents",
+        "procurement-bid-counts",
+        "procurement-ocp-recent-awards"
+      ],
+      "score": 6,
+      "evidence": "Shared keys PIN; 6 taxonomy gap(s) could close."
+    },
+    {
+      "id": "checkbook-nycha-contracts-x-passport-public-contracts-via-contract_id",
+      "source_a": "checkbook-nycha-contracts",
+      "source_b": "passport-public-contracts",
+      "key_path": [
+        "contract_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "yes",
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched",
+        "procurement-solicitation-documents",
+        "procurement-bid-counts",
+        "procurement-ocp-recent-awards"
+      ],
+      "score": 6,
+      "evidence": "PASSPort Public contract rows expose contract_id alongside EPIN; Checkbook Contracts expose prime_contract_id (canonicalized to contract_id). Direct equality is not yet measured — candidate only. Transitive path already exists via City Record PIN."
+    },
+    {
+      "id": "checkbook-spending-x-passport-public-contracts-via-PIN+contract_id",
+      "source_a": "checkbook-spending",
+      "source_b": "passport-public-contracts",
+      "key_path": [
+        "PIN",
+        "contract_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "yes",
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched",
+        "procurement-solicitation-documents",
+        "procurement-bid-counts",
+        "procurement-ocp-recent-awards"
+      ],
+      "score": 6,
+      "evidence": "PASSPort Public contract rows expose contract_id alongside EPIN; Checkbook Contracts expose prime_contract_id (canonicalized to contract_id). Direct equality is not yet measured — candidate only. Transitive path already exists via City Record PIN."
+    },
+    {
+      "id": "checkbook-spending-x-passport-public-rfx-via-PIN",
+      "source_a": "checkbook-spending",
+      "source_b": "passport-public-rfx",
+      "key_path": [
+        "PIN"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "yes",
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched",
+        "procurement-solicitation-documents",
+        "procurement-bid-counts",
+        "procurement-ocp-recent-awards"
+      ],
+      "score": 6,
+      "evidence": "Shared keys PIN; 6 taxonomy gap(s) could close."
+    },
+    {
+      "id": "checkbook-contracts-x-current-solicitations-ocp-via-PIN",
+      "source_a": "checkbook-contracts",
+      "source_b": "current-solicitations-ocp",
+      "key_path": [
+        "PIN"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched",
+        "procurement-solicitation-documents"
+      ],
+      "score": 4,
+      "evidence": "Shared keys PIN; 4 taxonomy gap(s) could close."
+    },
+    {
+      "id": "checkbook-contracts-x-recent-contract-awards-ocp-via-PIN",
+      "source_a": "checkbook-contracts",
+      "source_b": "recent-contract-awards-ocp",
+      "key_path": [
+        "PIN"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched",
+        "procurement-ocp-recent-awards"
+      ],
+      "score": 4,
+      "evidence": "Shared keys PIN; 4 taxonomy gap(s) could close."
+    },
+    {
+      "id": "checkbook-spending-x-current-solicitations-ocp-via-PIN",
+      "source_a": "checkbook-spending",
+      "source_b": "current-solicitations-ocp",
+      "key_path": [
+        "PIN"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched",
+        "procurement-solicitation-documents"
+      ],
+      "score": 4,
+      "evidence": "Shared keys PIN; 4 taxonomy gap(s) could close."
+    },
+    {
+      "id": "checkbook-spending-x-recent-contract-awards-ocp-via-PIN",
+      "source_a": "checkbook-spending",
+      "source_b": "recent-contract-awards-ocp",
+      "key_path": [
+        "PIN"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched",
+        "procurement-ocp-recent-awards"
+      ],
+      "score": 4,
+      "evidence": "Shared keys PIN; 4 taxonomy gap(s) could close."
+    },
+    {
+      "id": "checkbook-contracts-x-checkbook-nycha-contracts-via-contract_id",
+      "source_a": "checkbook-contracts",
+      "source_b": "checkbook-nycha-contracts",
+      "key_path": [
+        "contract_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "yes",
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched"
+      ],
+      "score": 3,
+      "evidence": "Shared keys contract_id; 3 taxonomy gap(s) could close."
+    },
+    {
+      "id": "checkbook-contracts-x-checkbook-spending-via-PIN+contract_id",
+      "source_a": "checkbook-contracts",
+      "source_b": "checkbook-spending",
+      "key_path": [
+        "PIN",
+        "contract_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "yes",
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched"
+      ],
+      "score": 3,
+      "evidence": "Shared keys PIN, contract_id; 3 taxonomy gap(s) could close."
+    },
+    {
+      "id": "checkbook-nycha-contracts-x-checkbook-spending-via-contract_id",
+      "source_a": "checkbook-nycha-contracts",
+      "source_b": "checkbook-spending",
+      "key_path": [
+        "contract_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "yes",
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched"
+      ],
+      "score": 3,
+      "evidence": "Shared keys contract_id; 3 taxonomy gap(s) could close."
+    },
+    {
+      "id": "city-record-x-current-solicitations-ocp-via-PIN+request_id",
+      "source_a": "city-record",
+      "source_b": "current-solicitations-ocp",
+      "key_path": [
+        "PIN",
+        "request_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "procurement-solicitation-documents",
+        "procurement-ocp-recent-awards"
+      ],
+      "score": 2,
+      "evidence": "Shared keys PIN, request_id; 2 taxonomy gap(s) could close."
+    },
+    {
+      "id": "current-solicitations-ocp-x-nycida-build-nyc-projects-via-request_id",
+      "source_a": "current-solicitations-ocp",
+      "source_b": "nycida-build-nyc-projects",
+      "key_path": [
+        "request_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "procurement-solicitation-documents",
+        "subsidy-stage-unmatched"
+      ],
+      "score": 2,
+      "evidence": "Shared keys request_id; 2 taxonomy gap(s) could close."
+    },
+    {
+      "id": "current-solicitations-ocp-x-passport-public-contracts-via-PIN",
+      "source_a": "current-solicitations-ocp",
+      "source_b": "passport-public-contracts",
+      "key_path": [
+        "PIN"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "procurement-registered-unmatched",
+        "procurement-solicitation-documents"
+      ],
+      "score": 2,
+      "evidence": "Shared keys PIN; 2 taxonomy gap(s) could close."
+    },
+    {
+      "id": "current-solicitations-ocp-x-recent-contract-awards-ocp-via-PIN+request_id",
+      "source_a": "current-solicitations-ocp",
+      "source_b": "recent-contract-awards-ocp",
+      "key_path": [
+        "PIN",
+        "request_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "procurement-solicitation-documents",
+        "procurement-ocp-recent-awards"
+      ],
+      "score": 2,
+      "evidence": "Shared keys PIN, request_id; 2 taxonomy gap(s) could close."
+    },
+    {
+      "id": "nycida-build-nyc-projects-x-recent-contract-awards-ocp-via-request_id",
+      "source_a": "nycida-build-nyc-projects",
+      "source_b": "recent-contract-awards-ocp",
+      "key_path": [
+        "request_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "procurement-ocp-recent-awards",
+        "subsidy-stage-unmatched"
+      ],
+      "score": 2,
+      "evidence": "Shared keys request_id; 2 taxonomy gap(s) could close."
+    },
+    {
+      "id": "nycida-build-nyc-projects-x-unregistered-zoning-application-portal-projects-via-project_id",
+      "source_a": "nycida-build-nyc-projects",
+      "source_b": "unregistered-zoning-application-portal-projects",
+      "key_path": [
+        "project_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "subsidy-stage-unmatched",
+        "land-outcome-detail"
+      ],
+      "score": 2,
+      "evidence": "Shared keys project_id; 2 taxonomy gap(s) could close."
+    },
+    {
+      "id": "nycida-build-nyc-projects-x-zap-bbl-via-project_id",
+      "source_a": "nycida-build-nyc-projects",
+      "source_b": "zap-bbl",
+      "key_path": [
+        "project_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "yes",
+      "gaps_would_close": [
+        "subsidy-stage-unmatched",
+        "land-outcome-detail"
+      ],
+      "score": 2,
+      "evidence": "Shared keys project_id; 2 taxonomy gap(s) could close."
+    },
+    {
+      "id": "nycida-build-nyc-projects-x-zap-projects-via-project_id",
+      "source_a": "nycida-build-nyc-projects",
+      "source_b": "zap-projects",
+      "key_path": [
+        "project_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "yes",
+      "gaps_would_close": [
+        "subsidy-stage-unmatched",
+        "land-outcome-detail"
+      ],
+      "score": 2,
+      "evidence": "Shared keys project_id; 2 taxonomy gap(s) could close."
+    },
+    {
+      "id": "passport-public-contracts-x-passport-public-rfx-via-EPIN+PIN",
+      "source_a": "passport-public-contracts",
+      "source_b": "passport-public-rfx",
+      "key_path": [
+        "EPIN",
+        "PIN"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "yes",
+      "gaps_would_close": [
+        "procurement-registered-unmatched",
+        "procurement-solicitation-documents"
+      ],
+      "score": 2,
+      "evidence": "Shared keys EPIN, PIN; 2 taxonomy gap(s) could close."
+    },
+    {
+      "id": "passport-public-contracts-x-recent-contract-awards-ocp-via-PIN",
+      "source_a": "passport-public-contracts",
+      "source_b": "recent-contract-awards-ocp",
+      "key_path": [
+        "PIN"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "procurement-registered-unmatched",
+        "procurement-ocp-recent-awards"
+      ],
+      "score": 2,
+      "evidence": "Shared keys PIN; 2 taxonomy gap(s) could close."
+    },
+    {
+      "id": "passport-public-rfx-x-recent-contract-awards-ocp-via-PIN",
+      "source_a": "passport-public-rfx",
+      "source_b": "recent-contract-awards-ocp",
+      "key_path": [
+        "PIN"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "procurement-solicitation-documents",
+        "procurement-ocp-recent-awards"
+      ],
+      "score": 2,
+      "evidence": "Shared keys PIN; 2 taxonomy gap(s) could close."
+    },
+    {
+      "id": "city-record-x-recent-contract-awards-ocp-via-PIN+request_id",
+      "source_a": "city-record",
+      "source_b": "recent-contract-awards-ocp",
+      "key_path": [
+        "PIN",
+        "request_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "procurement-ocp-recent-awards"
+      ],
+      "score": 1,
+      "evidence": "Shared keys PIN, request_id; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "current-solicitations-ocp-x-passport-public-rfx-via-PIN",
+      "source_a": "current-solicitations-ocp",
+      "source_b": "passport-public-rfx",
+      "key_path": [
+        "PIN"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "procurement-solicitation-documents"
+      ],
+      "score": 1,
+      "evidence": "Shared keys PIN; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "dob-now-job-filings-x-legacy-dob-job-filings-via-BBL+BIN+job_number",
+      "source_a": "dob-now-job-filings",
+      "source_b": "legacy-dob-job-filings",
+      "key_path": [
+        "BBL",
+        "BIN",
+        "job_number"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys BBL, BIN, job_number; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "dob-now-job-filings-x-mappluto-via-BBL",
+      "source_a": "dob-now-job-filings",
+      "source_b": "mappluto",
+      "key_path": [
+        "BBL"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "dob-now-job-filings-x-unregistered-zoning-application-portal-projects-via-BBL",
+      "source_a": "dob-now-job-filings",
+      "source_b": "unregistered-zoning-application-portal-projects",
+      "key_path": [
+        "BBL"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "dob-now-job-filings-x-zap-bbl-via-BBL",
+      "source_a": "dob-now-job-filings",
+      "source_b": "zap-bbl",
+      "key_path": [
+        "BBL"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "dob-now-job-filings-x-zap-projects-via-BBL",
+      "source_a": "dob-now-job-filings",
+      "source_b": "zap-projects",
+      "key_path": [
+        "BBL"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "legacy-dob-job-filings-x-unregistered-zoning-application-portal-projects-via-BBL",
+      "source_a": "legacy-dob-job-filings",
+      "source_b": "unregistered-zoning-application-portal-projects",
+      "key_path": [
+        "BBL"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "legacy-dob-job-filings-x-zap-bbl-via-BBL",
+      "source_a": "legacy-dob-job-filings",
+      "source_b": "zap-bbl",
+      "key_path": [
+        "BBL"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "legacy-dob-job-filings-x-zap-projects-via-BBL",
+      "source_a": "legacy-dob-job-filings",
+      "source_b": "zap-projects",
+      "key_path": [
+        "BBL"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "mappluto-x-unregistered-zoning-application-portal-projects-via-BBL",
+      "source_a": "mappluto",
+      "source_b": "unregistered-zoning-application-portal-projects",
+      "key_path": [
+        "BBL"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "mappluto-x-zap-bbl-via-BBL",
+      "source_a": "mappluto",
+      "source_b": "zap-bbl",
+      "key_path": [
+        "BBL"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "mappluto-x-zap-projects-via-BBL",
+      "source_a": "mappluto",
+      "source_b": "zap-projects",
+      "key_path": [
+        "BBL"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "unregistered-zoning-application-portal-projects-x-zap-bbl-via-BBL+project_id",
+      "source_a": "unregistered-zoning-application-portal-projects",
+      "source_b": "zap-bbl",
+      "key_path": [
+        "project_id",
+        "BBL"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys project_id, BBL; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "unregistered-zoning-application-portal-projects-x-zap-projects-via-BBL+project_id+ulurp_numbers",
+      "source_a": "unregistered-zoning-application-portal-projects",
+      "source_b": "zap-projects",
+      "key_path": [
+        "project_id",
+        "BBL",
+        "ulurp_numbers"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys project_id, BBL, ulurp_numbers; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "legacy-dob-job-filings-x-mappluto-via-BBL",
+      "source_a": "legacy-dob-job-filings",
+      "source_b": "mappluto",
+      "key_path": [
+        "BBL"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "no",
+      "gaps_would_close": [],
+      "score": 0,
+      "evidence": "Shared keys BBL; 0 taxonomy gap(s) could close."
+    }
+  ],
   "gaps": [
     {
       "id": "procurement-pending-unmatched",
-      "surface": "contract lifecycle \u00b7 pending stage",
+      "surface": "contract lifecycle · pending stage",
       "i18n_key": "lifecycle_unmatched_pending_html",
       "class": "not_yet_ingested",
       "public_source": {
@@ -51,7 +1370,7 @@
     },
     {
       "id": "procurement-registered-unmatched",
-      "surface": "contract lifecycle \u00b7 registered stage",
+      "surface": "contract lifecycle · registered stage",
       "i18n_key": "lifecycle_unmatched_registered_html",
       "class": "not_yet_ingested",
       "public_source": {
@@ -82,7 +1401,7 @@
     },
     {
       "id": "procurement-payment-unmatched",
-      "surface": "contract lifecycle \u00b7 payment stage",
+      "surface": "contract lifecycle · payment stage",
       "i18n_key": "lifecycle_unmatched_payment_html",
       "class": "not_yet_ingested",
       "public_source": {
@@ -102,7 +1421,7 @@
     },
     {
       "id": "procurement-no-pin",
-      "surface": "contract lifecycle \u00b7 provenance when PIN missing",
+      "surface": "contract lifecycle · provenance when PIN missing",
       "i18n_key": "lifecycle_no_pin_note_html",
       "class": "not_published",
       "would_appear_in": "Checkbook NYC registrations and payments (joined by PIN) if the notice published a Procurement ID",
@@ -111,7 +1430,7 @@
     },
     {
       "id": "procurement-solicitation-documents",
-      "surface": "contract lifecycle \u00b7 tender documents (not yet a separate slot UI)",
+      "surface": "contract lifecycle · tender documents (not yet a separate slot UI)",
       "i18n_key": null,
       "class": "not_yet_ingested",
       "public_source": {
@@ -139,11 +1458,11 @@
         }
       ],
       "notices_affected_estimate": "~1,550 Solicitation notices since 2025-01-01 plus live PASSPort RFx rows.",
-      "evidence": "PASSPort Public dataJs/rfxData.js verified live (HTTP 200, ~daily Last-Modified). EPIN\u2194PIN strict join measured 44.4% on Solicitation notices since 2025-01-01."
+      "evidence": "PASSPort Public dataJs/rfxData.js verified live (HTTP 200, ~daily Last-Modified). EPIN↔PIN strict join measured 44.4% on Solicitation notices since 2025-01-01."
     },
     {
       "id": "procurement-bid-counts",
-      "surface": "OCDS tender/numberOfTenderers \u00b7 contestability package",
+      "surface": "OCDS tender/numberOfTenderers · contestability package",
       "i18n_key": null,
       "class": "not_yet_ingested",
       "public_source": {
@@ -190,7 +1509,7 @@
     },
     {
       "id": "subsidy-stage-unmatched",
-      "surface": "subsidy lifecycle \u00b7 per-stage empty slot",
+      "surface": "subsidy lifecycle · per-stage empty slot",
       "i18n_key": "subsidy_stage_unmatched_html",
       "class": "not_yet_ingested",
       "public_source": {
@@ -210,7 +1529,7 @@
     },
     {
       "id": "subsidy-outcome-absent",
-      "surface": "subsidy lifecycle \u00b7 stage outcome",
+      "surface": "subsidy lifecycle · stage outcome",
       "i18n_key": "subsidy_outcome_unknown_html",
       "class": "not_published",
       "would_appear_in": "Build NYC / NYCIDA project documents (board minutes, closing packages) if an explicit outcome field is released",
@@ -219,7 +1538,7 @@
     },
     {
       "id": "subsidy-project-unmatched",
-      "surface": "subsidy lifecycle \u00b7 no project join",
+      "surface": "subsidy lifecycle · no project join",
       "i18n_key": "subsidy_unmatched_html",
       "class": "not_published",
       "would_appear_in": "NYCIDA/Build NYC financial public documents page if a project record is released for the notice",
@@ -228,7 +1547,7 @@
     },
     {
       "id": "subsidy-field-company-place-money",
-      "surface": "subsidy lifecycle \u00b7 company / place / money fields",
+      "surface": "subsidy lifecycle · company / place / money fields",
       "i18n_keys": [
         "subsidy_company_unknown_html",
         "subsidy_place_unknown_html",
@@ -241,7 +1560,7 @@
     },
     {
       "id": "meeting-outcomes-unmatched",
-      "surface": "Council meeting outcomes \u00b7 no event join",
+      "surface": "Council meeting outcomes · no event join",
       "i18n_key": "meeting_outcomes_unmatched_html",
       "class": "not_yet_ingested",
       "public_source": {
@@ -261,7 +1580,7 @@
     },
     {
       "id": "meeting-votes-absent",
-      "surface": "Council meeting outcomes \u00b7 matter without votes",
+      "surface": "Council meeting outcomes · matter without votes",
       "i18n_key": "meeting_outcomes_no_votes_html",
       "class": "not_yet_ingested",
       "public_source": {
@@ -279,7 +1598,7 @@
     },
     {
       "id": "meeting-matters-absent",
-      "surface": "Council meeting outcomes \u00b7 event without agenda matters",
+      "surface": "Council meeting outcomes · event without agenda matters",
       "i18n_key": "meeting_outcomes_no_matters_html",
       "class": "not_yet_ingested",
       "public_source": {
@@ -297,7 +1616,7 @@
     },
     {
       "id": "meeting-community-board-votes",
-      "surface": "non-Council hearings \u00b7 votes",
+      "surface": "non-Council hearings · votes",
       "i18n_key": null,
       "class": "not_published",
       "would_appear_in": "community board or borough president open data / Legistar-class feeds if released as machine-readable votes",
@@ -306,7 +1625,7 @@
     },
     {
       "id": "exam-outcome-aggregate",
-      "surface": "staffing exam cards \u00b7 post-cycle outcomes",
+      "surface": "staffing exam cards · post-cycle outcomes",
       "i18n_key": null,
       "class": "not_yet_ingested",
       "public_source": {
@@ -332,7 +1651,7 @@
     },
     {
       "id": "exam-salary-fee-not-published",
-      "surface": "staffing exam card \u00b7 fee or salary null",
+      "surface": "staffing exam card · fee or salary null",
       "i18n_key": "career_not_published",
       "class": "not_published",
       "would_appear_in": "the Notice of Examination PDF / open-competitive schedule if DCAS states the amount",
@@ -341,7 +1660,7 @@
     },
     {
       "id": "external-awards-agency-absent",
-      "surface": "agency awards empty state \u00b7 verified absent",
+      "surface": "agency awards empty state · verified absent",
       "i18n_key": "agency_awards_none_open_data_html",
       "class": "not_published",
       "would_appear_in": "NYS Authorities Budget Office procurement filings or Checkbook NYC if that agency released a joinable open dataset",
@@ -370,7 +1689,7 @@
     },
     {
       "id": "land-outcome-detail",
-      "surface": "land / ZAP \u00b7 final decision documents beyond status",
+      "surface": "land / ZAP · final decision documents beyond status",
       "i18n_key": null,
       "class": "not_yet_ingested",
       "public_source": {
@@ -412,55 +1731,14 @@
         "procurement-solicitation-documents"
       ],
       "value": "Pending and pre-registration status often appears in PASSPort before or beside Checkbook. Solicitation package metadata fills tender-document gaps. Affects Money-lens awards and solicitations at citywide scale (~5k awards + ~1.5k solicitations/year class volume).",
-      "effort_guess": "Medium \u2014 stable dataJs machine path; strict EPIN\u2194PIN join measured 78% either-source on PIN-bearing Procurement notices since 2025-01-01.",
-      "join_risk": "Medium \u2014 exact EPIN==PIN covers most awards (88.6%); solicitations 44.4%; weak prefix joins rejected."
+      "effort_guess": "Medium — stable dataJs machine path; strict EPIN↔PIN join measured 78% either-source on PIN-bearing Procurement notices since 2025-01-01.",
+      "join_risk": "Measured 78% either-source EPIN↔PIN on PIN-bearing Procurement notices since 2025-01-01 (predicted pre-landing grade: high-risk).",
+      "value_score": 56.6,
+      "realized_join_rate": 0.78,
+      "predicted_join_grade": "high-risk"
     },
     {
       "rank": 2,
-      "source": "DCAS annual exam outcomes \u2192 exam card join",
-      "access": "Already built: site/data/exam_sources/dcas_exam_outcomes.json (source contract dcas-annual-exam-outcomes)",
-      "gaps_filled": [
-        "exam-outcome-aggregate"
-      ],
-      "value": "Shows certification/hire aggregates on staffing exam cards without new upstream work. Affects every exam_number present in both schedule and outcomes.",
-      "effort_guess": "Low \u2014 UI + join by exam_number on existing artifact.",
-      "join_risk": "Medium \u2014 exam_number collisions across years; aggregate-only privacy must hold."
-    },
-    {
-      "rank": 3,
-      "source": "Current Solicitations Open Data 3khw-qi8f",
-      "access": "https://data.cityofnewyork.us/d/3khw-qi8f",
-      "gaps_filled": [
-        "procurement-solicitation-documents"
-      ],
-      "value": "Stable Socrata enrichment for OCP solicitations (pin, due_date, request_id).",
-      "effort_guess": "Low \u2014 Socrata client pattern already used for City Record.",
-      "join_risk": "Medium \u2014 OCP subset only; overlap with City Record dg92-zbpx."
-    },
-    {
-      "rank": 4,
-      "source": "Recent Contract Awards Open Data qyyg-4tf5",
-      "access": "https://data.cityofnewyork.us/d/qyyg-4tf5",
-      "gaps_filled": [
-        "procurement-ocp-recent-awards"
-      ],
-      "value": "OCP award side-car for Money detail when City Record fields are thin.",
-      "effort_guess": "Low",
-      "join_risk": "Medium \u2014 same City Record-shaped keys; scope limited to OCP."
-    },
-    {
-      "rank": 5,
-      "source": "Bid Tabulations Historical 9k82-ys7w",
-      "access": "https://data.cityofnewyork.us/d/9k82-ys7w",
-      "gaps_filled": [
-        "procurement-bid-counts"
-      ],
-      "value": "Would fill OCDS tender/numberOfTenderers and contestability package signals for historical CSB bids only.",
-      "effort_guess": "Measured \u2014 recon complete; materialization stopped below usefulness threshold.",
-      "join_risk": "High \u2014 measured strict join 0% on modern notices (2025+), 9.07% on 2016-2021 overlap; no PIN column; openings end 2021-03-24. Contracted as disabled (bid-tabulations-historical)."
-    },
-    {
-      "rank": 6,
       "source": "Legistar agenda/vote materialization depth",
       "access": "https://council.nyc.gov/legislation/api/ (already contracted)",
       "gaps_filled": [
@@ -469,28 +1747,93 @@
         "meeting-matters-absent"
       ],
       "value": "Raises match rate and vote completeness on Council hearing notices without a new publisher.",
-      "effort_guess": "Medium \u2014 improve join confidence and daily materialization, not a new source.",
-      "join_risk": "Medium \u2014 title/date/agency fuzzy match false positives."
+      "effort_guess": "Medium — improve join confidence and daily materialization, not a new source.",
+      "join_risk": "Medium — title/date/agency fuzzy match false positives.",
+      "value_score": 36,
+      "realized_join_rate": null,
+      "predicted_join_grade": null
     },
     {
-      "rank": 7,
+      "rank": 3,
+      "source": "DCAS annual exam outcomes → exam card join",
+      "access": "Already built: site/data/exam_sources/dcas_exam_outcomes.json (source contract dcas-annual-exam-outcomes)",
+      "gaps_filled": [
+        "exam-outcome-aggregate"
+      ],
+      "value": "Shows certification/hire aggregates on staffing exam cards without new upstream work. Affects every exam_number present in both schedule and outcomes.",
+      "effort_guess": "Low — UI + join by exam_number on existing artifact.",
+      "join_risk": "Medium — exam_number collisions across years; aggregate-only privacy must hold.",
+      "value_score": 16,
+      "realized_join_rate": null,
+      "predicted_join_grade": null
+    },
+    {
+      "rank": 4,
+      "source": "Current Solicitations Open Data 3khw-qi8f",
+      "access": "https://data.cityofnewyork.us/d/3khw-qi8f",
+      "gaps_filled": [
+        "procurement-solicitation-documents"
+      ],
+      "value": "Stable Socrata enrichment for OCP solicitations (pin, due_date, request_id).",
+      "effort_guess": "Low — Socrata client pattern already used for City Record.",
+      "join_risk": "Medium — OCP subset only; overlap with City Record dg92-zbpx.",
+      "value_score": 16,
+      "realized_join_rate": null,
+      "predicted_join_grade": null
+    },
+    {
+      "rank": 5,
+      "source": "Recent Contract Awards Open Data qyyg-4tf5",
+      "access": "https://data.cityofnewyork.us/d/qyyg-4tf5",
+      "gaps_filled": [
+        "procurement-ocp-recent-awards"
+      ],
+      "value": "OCP award side-car for Money detail when City Record fields are thin.",
+      "effort_guess": "Low",
+      "join_risk": "Medium — same City Record-shaped keys; scope limited to OCP.",
+      "value_score": 16,
+      "realized_join_rate": null,
+      "predicted_join_grade": null
+    },
+    {
+      "rank": 6,
       "source": "ZAP decision docs + DOB NOW outcome stitch",
       "access": "hgx4-8ukb, 2iga-a6mk, w9ak-ipjd (already contracted)",
       "gaps_filled": [
         "land-outcome-detail"
       ],
       "value": "Land and property readers see decision/filing outcomes beyond status chips.",
-      "effort_guess": "Medium-high \u2014 document links and BBL joins.",
-      "join_risk": "Medium \u2014 BBL multi-lot projects; ZAP lag vs live portal."
+      "effort_guess": "Medium-high — document links and BBL joins.",
+      "join_risk": "Medium — BBL multi-lot projects; ZAP lag vs live portal.",
+      "value_score": 16,
+      "realized_join_rate": null,
+      "predicted_join_grade": null
     },
     {
-      "rank": 8,
+      "rank": 7,
       "source": "Doing Business Search Entities 72mk-a8z7",
       "access": "https://data.cityofnewyork.us/d/72mk-a8z7",
       "gaps_filled": [],
       "value": "Vendor identity enrichment for award chains (secondary to lifecycle gaps).",
       "effort_guess": "Low-medium",
-      "join_risk": "Medium \u2014 organization name normalization."
+      "join_risk": "Medium — organization name normalization.",
+      "value_score": 6,
+      "realized_join_rate": null,
+      "predicted_join_grade": null
+    },
+    {
+      "rank": 8,
+      "source": "Bid Tabulations Historical 9k82-ys7w",
+      "access": "https://data.cityofnewyork.us/d/9k82-ys7w",
+      "gaps_filled": [
+        "procurement-bid-counts"
+      ],
+      "value": "Would fill OCDS tender/numberOfTenderers and contestability package signals for historical CSB bids only.",
+      "effort_guess": "Measured — recon complete; materialization stopped below usefulness threshold.",
+      "join_risk": "High — measured strict join 0% on modern notices (2025+), 9.07% on 2016-2021 overlap; no PIN column; openings end 2021-03-24. Contracted as disabled (bid-tabulations-historical).",
+      "value_score": -4,
+      "realized_join_rate": 0,
+      "predicted_join_grade": "high-risk"
     }
   ],
   "operational_messages_not_in_taxonomy": [
@@ -505,5 +1848,13 @@
     "City Record type counts since 2025-01-01: Award ~5173, Solicitation ~1550, Public Hearings ~1679, Intent to Award ~703.",
     "EDC document portal may block unattended fetch (403); product already treats it as HTML source.",
     "Bid Tabulations Historical 9k82-ys7w join recon (2026-07-30): strict PIN↔bid_number 0% modern / 9.07% historical overlap; below ~30% usefulness; source contract disabled without materialization."
-  ]
+  ],
+  "depot_refresh": {
+    "observed_on": "2026-07-30",
+    "source_contracts_fingerprint": "aece86d129c21f9aee0a0e4ee93dff041a06c52f671bf1bd302074b11cbda59c",
+    "materialized_crosswalks": 8,
+    "candidate_crosswalks": 39,
+    "class_changes": 0,
+    "passport_realized_either_rate": 0.78
+  }
 }
