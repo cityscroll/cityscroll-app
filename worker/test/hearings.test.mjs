@@ -8,10 +8,18 @@ import {
   refreshHearings,
 } from "../src/hearings.mjs";
 
-const sourceRow = {
+const TEST_NOW = new Date();
+
+function fixtureDate(offsetDays) {
+  const date = new Date(TEST_NOW.getTime() + (offsetDays * 24 * 60 * 60 * 1000));
+  return date.toISOString().replace(".000Z", ".000");
+}
+
+function makeSourceRow() {
+  return {
   request_id: "fixture-hearing-view",
-  start_date: "2026-07-28T00:00:00.000",
-  event_date: "2026-08-02T10:00:00.000",
+  start_date: fixtureDate(-1),
+  event_date: fixtureDate(6),
   agency_name: "City Planning Commission",
   type_of_notice_description: "Public Hearings",
   section_name: "Public Hearings and Meetings",
@@ -21,7 +29,10 @@ const sourceRow = {
   state: "NY",
   zip_code: "10271",
   additional_description_1: "IN THE MATTER OF property located at 37-18 Queens Boulevard in the Sunnyside neighborhood, Community District 2, Queens.",
-};
+  };
+}
+
+const sourceRow = makeSourceRow();
 
 function fetchFixture(calls) {
   return async (url) => {
@@ -53,7 +64,7 @@ function memoryKV() {
 
 test("materialized view queries both hearing-bearing sections and geocodes venue and subject separately", async () => {
   const calls = [];
-  const view = await buildHearingView(fetchFixture(calls), new Date("2026-07-28T12:00:00Z"));
+  const view = await buildHearingView(fetchFixture(calls), TEST_NOW);
   assert.equal(view.hearings.length, 1);
   const where = new URL(calls[0]).searchParams.get("$where");
   assert.match(where, /Public Hearings and Meetings/);
@@ -66,7 +77,7 @@ test("materialized view queries both hearing-bearing sections and geocodes venue
 
 test("refresh writes one materialized view and the read route serves it", async () => {
   const kv = memoryKV();
-  const result = await refreshHearings({ ALERT_STATE: kv }, fetchFixture([]), new Date("2026-07-28T12:00:00Z"));
+  const result = await refreshHearings({ ALERT_STATE: kv }, fetchFixture([]), TEST_NOW);
   assert.equal(result.status, "success");
   assert.ok(kv.values.has(HEARINGS_KV_KEY));
 
