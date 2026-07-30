@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "observed_on": "2026-07-30",
+  "observed_at_utc": "2026-07-30T20:00:00Z",
+  "source_contracts": [
+    "passport-public-rfx",
+    "ocp-current-solicitations"
+  ],
+  "access_surface": {
+    "portal": "https://a0333-passportpublic.nyc.gov/rfx.html",
+    "machine_rfx": "https://a0333-passportpublic.nyc.gov/dataJs/rfxData.js",
+    "city_record_getfile": "https://a856-cityrecord.nyc.gov/Search/GetFile",
+    "ocp_current_solicitations": "https://data.cityofnewyork.us/d/3khw-qi8f",
+    "city_record_online": "https://data.cityofnewyork.us/d/dg92-zbpx"
+  },
+  "curl_verified": {
+    "rfx_http": 200,
+    "rfx_bytes": 3428618,
+    "rfx_last_modified": "Thu, 30 Jul 2026 05:37:13 GMT",
+    "rfx_sha256": "6f805ba1178ab6726499097a7f99f199430fef5989fa890970ba8d30b9261f76",
+    "rfx_rows_parsed": 11982,
+    "rfx_columns": [
+      "rfp_id",
+      "bpm_id",
+      "program",
+      "industry",
+      "epin",
+      "procurement_name",
+      "agency",
+      "rfx_status",
+      "release_date",
+      "due_date",
+      "main_commodity",
+      "procurement_method"
+    ],
+    "rfx_url_bearing_cells": 0
+  },
+  "kill_criterion": {
+    "description": "On 50 open Solicitation notices with PIN: RFx document URL join ≥30%",
+    "universe": "dg92-zbpx type_of_notice_description=Solicitation, pin not empty, start_date >= 2025-01-01, order start_date DESC, limit 50",
+    "universe_n": 50,
+    "threshold": 0.3,
+    "rfx_epin_join": {
+      "joined": 19,
+      "total": 50,
+      "rate": 0.38
+    },
+    "rfx_document_url_join": {
+      "joined": 0,
+      "total": 50,
+      "rate": 0
+    },
+    "verdict": "stop_no_document_materialization"
+  },
+  "join_measurement": {
+    "strategy": "EPIN↔PIN via passport_join (exact | pin_strip_suffix | pin_prefix_of_epin | epin_prefix_of_pin); document URLs via extractRfxDocumentUrls on public_rfx_data columns only",
+    "rfx_public_columns": [
+      "rfp_id",
+      "bpm_id",
+      "program",
+      "industry",
+      "epin",
+      "procurement_name",
+      "agency",
+      "rfx_status",
+      "release_date",
+      "due_date",
+      "main_commodity",
+      "procurement_method"
+    ],
+    "rates": {
+      "kill_sample_epin": {
+        "joined": 19,
+        "total": 50,
+        "rate": 0.38
+      },
+      "kill_sample_document_url": {
+        "joined": 0,
+        "total": 50,
+        "rate": 0
+      },
+      "modern_solicitation_epin": {
+        "joined": 653,
+        "total": 1470,
+        "rate": 0.4442
+      },
+      "modern_solicitation_document_url": {
+        "joined": 0,
+        "total": 1470,
+        "rate": 0
+      }
+    },
+    "usefulness_threshold": 0.3,
+    "verdict": "Below usefulness threshold (~30%) for RFx package-document URLs (0%). EPIN join remains useful for RFx metadata. Do not edge-materialize package documents from the RFx dump."
+  },
+  "companion_fills": {
+    "ocp_document_links_2025_plus": {
+      "source": "3khw-qi8f",
+      "joined": 0,
+      "total": 1550,
+      "rate": 0,
+      "note": "Socrata count where document_links IS NOT NULL and start_date >= 2025-01-01"
+    },
+    "city_record_document_links_2025_plus": {
+      "source": "dg92-zbpx",
+      "joined": 0,
+      "total": 1550,
+      "rate": 0,
+      "note": "Solicitation notices with document_links non-null since 2025-01-01"
+    },
+    "historical_getfile_present": {
+      "note": "City Record / OCP document_links still carry GetFile attachments on pre-2025 rows (latest sample 2024-10-09); modern window is empty.",
+      "example_request_id": "20241002118",
+      "example_url_host": "a856-cityrecord.nyc.gov",
+      "example_url_path": "/Search/GetFile"
+    }
+  },
+  "product_decision": "Stop rule applied: RFx document URL join 0% on the 50-notice kill sample (and 0% on 1,470 modern Solicitation+PIN notices). Reclassify gap procurement-solicitation-documents as not_published with pointer at City Record GetFile. Keep PASSPort RFx metadata materialization; do not invent package-document URLs from the public dump.",
+  "field_cases": {
+    "joined_epin_pin": "81026B0003",
+    "joined_request_id": "20260707026",
+    "unjoinable_pin": "TGI-RED-AdaptiveReus"
+  }
+}

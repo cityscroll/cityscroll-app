@@ -572,6 +572,8 @@
     lifecycle_source_passport: "PASSPort Public",
     lifecycle_source_current_solicitations: "المناقصات الحالية (بيانات مفتوحة)",
     lifecycle_unmatched_documents_html: "لم يُعرض هنا بعد — تفاصيل حزمة المناقصة موجودة في {source}.",
+    lifecycle_source_city_record_getfile: "مرفقات City Record",
+    lifecycle_documents_not_published_html: "لا تنشر المدينة مستندات حزمة المناقصة كمصدر مفتوح لهذا الإشعار — وستظهر في {where} إذا نُشرت.",
     lifecycle_unmatched_solicitation_html: "لم يُعرض هنا بعد — حزمة المناقصة موجودة في {source}.",
     lifecycle_documents_count_one: "مستند حزمة واحد ({n})",
     lifecycle_documents_count_other: "{n} مستندات للحزمة",

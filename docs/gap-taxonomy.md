@@ -23,7 +23,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | contract lifecycle · registered stage | a | Checkbook NYC Contracts |
 | contract lifecycle · payment stage | a | Checkbook NYC Spending |
 | contract lifecycle · provenance when PIN missing | b | Checkbook NYC registrations and payments (joined by PIN) if the notice published a Procurement ID |
-| contract lifecycle · tender documents (not yet a separate slot UI) | a | PASSPort Public solicitations (RFx) |
+| contract lifecycle · tender / package documents **CLASS CHANGE** | b | City Record Online file attachments (GetFile on a856-cityrecord.nyc.gov) if the notice published package documents |
 | OCDS tender/numberOfTenderers · contestability package | a | Bid Tabulations (Historical) |
 | award detail enrichment beyond City Record | a | Recent Contract Awards (OCP) |
 | OCDS planning/budget and planning/rationale | b | agency budget justifications or MOCS procurement plans if released as stable machine data |
@@ -93,26 +93,26 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 
 | Candidate | Pair | Key path | Verdict | Gaps |
 |---|---|---|---|---|
-| `checkbook-contracts-x-passport-public-contracts-via-PIN+contract_id` | `checkbook-contracts` × `passport-public-contracts` | PIN · contract_id | yes | 6 |
-| `checkbook-contracts-x-passport-public-rfx-via-PIN` | `checkbook-contracts` × `passport-public-rfx` | PIN | yes | 6 |
-| `checkbook-nycha-contracts-x-passport-public-contracts-via-contract_id` | `checkbook-nycha-contracts` × `passport-public-contracts` | contract_id | yes | 6 |
-| `checkbook-spending-x-passport-public-contracts-via-PIN+contract_id` | `checkbook-spending` × `passport-public-contracts` | PIN · contract_id | yes | 6 |
-| `checkbook-spending-x-passport-public-rfx-via-PIN` | `checkbook-spending` × `passport-public-rfx` | PIN | yes | 6 |
-| `checkbook-contracts-x-current-solicitations-ocp-via-PIN` | `checkbook-contracts` × `current-solicitations-ocp` | PIN | maybe | 4 |
+| `checkbook-contracts-x-passport-public-contracts-via-PIN+contract_id` | `checkbook-contracts` × `passport-public-contracts` | PIN · contract_id | yes | 5 |
+| `checkbook-contracts-x-passport-public-rfx-via-PIN` | `checkbook-contracts` × `passport-public-rfx` | PIN | yes | 5 |
+| `checkbook-nycha-contracts-x-passport-public-contracts-via-contract_id` | `checkbook-nycha-contracts` × `passport-public-contracts` | contract_id | yes | 5 |
+| `checkbook-spending-x-passport-public-contracts-via-PIN+contract_id` | `checkbook-spending` × `passport-public-contracts` | PIN · contract_id | yes | 5 |
+| `checkbook-spending-x-passport-public-rfx-via-PIN` | `checkbook-spending` × `passport-public-rfx` | PIN | yes | 5 |
 | `checkbook-contracts-x-recent-contract-awards-ocp-via-PIN` | `checkbook-contracts` × `recent-contract-awards-ocp` | PIN | maybe | 4 |
-| `checkbook-spending-x-current-solicitations-ocp-via-PIN` | `checkbook-spending` × `current-solicitations-ocp` | PIN | maybe | 4 |
 | `checkbook-spending-x-recent-contract-awards-ocp-via-PIN` | `checkbook-spending` × `recent-contract-awards-ocp` | PIN | maybe | 4 |
 | `checkbook-contracts-x-checkbook-nycha-contracts-via-contract_id` | `checkbook-contracts` × `checkbook-nycha-contracts` | contract_id | yes | 3 |
 | `checkbook-contracts-x-checkbook-spending-via-PIN+contract_id` | `checkbook-contracts` × `checkbook-spending` | PIN · contract_id | yes | 3 |
+| `checkbook-contracts-x-current-solicitations-ocp-via-PIN` | `checkbook-contracts` × `current-solicitations-ocp` | PIN | maybe | 3 |
 | `checkbook-nycha-contracts-x-checkbook-spending-via-contract_id` | `checkbook-nycha-contracts` × `checkbook-spending` | contract_id | yes | 3 |
-| `city-record-x-current-solicitations-ocp-via-PIN+request_id` | `city-record` × `current-solicitations-ocp` | PIN · request_id | maybe | 2 |
-| `current-solicitations-ocp-x-nycida-build-nyc-projects-via-request_id` | `current-solicitations-ocp` × `nycida-build-nyc-projects` | request_id | maybe | 2 |
-| `current-solicitations-ocp-x-passport-public-contracts-via-PIN` | `current-solicitations-ocp` × `passport-public-contracts` | PIN | maybe | 2 |
-| `current-solicitations-ocp-x-recent-contract-awards-ocp-via-PIN+request_id` | `current-solicitations-ocp` × `recent-contract-awards-ocp` | PIN · request_id | maybe | 2 |
+| `checkbook-spending-x-current-solicitations-ocp-via-PIN` | `checkbook-spending` × `current-solicitations-ocp` | PIN | maybe | 3 |
 | `nycida-build-nyc-projects-x-recent-contract-awards-ocp-via-request_id` | `nycida-build-nyc-projects` × `recent-contract-awards-ocp` | request_id | maybe | 2 |
 | `nycida-build-nyc-projects-x-unregistered-zoning-application-portal-projects-via-project_id` | `nycida-build-nyc-projects` × `unregistered-zoning-application-portal-projects` | project_id | maybe | 2 |
 | `nycida-build-nyc-projects-x-zap-api-outcomes-via-project_id` | `nycida-build-nyc-projects` × `zap-api-outcomes` | project_id | yes | 2 |
 | `nycida-build-nyc-projects-x-zap-bbl-via-project_id` | `nycida-build-nyc-projects` × `zap-bbl` | project_id | yes | 2 |
+| `nycida-build-nyc-projects-x-zap-projects-via-project_id` | `nycida-build-nyc-projects` × `zap-projects` | project_id | yes | 2 |
+| `passport-public-contracts-x-recent-contract-awards-ocp-via-PIN` | `passport-public-contracts` × `recent-contract-awards-ocp` | PIN | maybe | 2 |
+| `abo-local-authorities-x-doing-business-entities-via-vendor_name` | `abo-local-authorities` × `doing-business-entities` | vendor_name | maybe | 1 |
+| `city-record-x-current-solicitations-ocp-via-PIN+request_id` | `city-record` × `current-solicitations-ocp` | PIN · request_id | maybe | 1 |
 
 ## Graph view
 
@@ -144,14 +144,19 @@ graph LR
 Ordered for dispatch. Full rows (effort, join risk, value scores) live in
 `site/data/gap_taxonomy.json` → `ranked_ingest_list`.
 
-1. **PASSPort Public contracts + solicitations** — procurement-pending-unmatched, procurement-registered-unmatched, procurement-solicitation-documents. Measured join **78%**. Predicted grade: **high-risk**. Measured 78% either-source EPIN↔PIN on PIN-bearing Procurement notices since 2025-01-01 (predicted pre-landing grade: high-risk). Medium — stable dataJs machine path; strict EPIN↔PIN join measured 78% either-source on PIN-bearing Procurement notices since 2025-01-01.
-2. **Legistar agenda/vote materialization depth** — meeting-outcomes-unmatched, meeting-votes-absent, meeting-matters-absent. Measured join **100%**. Predicted grade: **medium**. Measured 100% modern City Council notice → Legistar event join with LEGISTAR_API_TOKEN (predicted pre-auth grade: medium).
+1. **Legistar agenda/vote materialization depth** — meeting-outcomes-unmatched, meeting-votes-absent, meeting-matters-absent. Measured join **100%**. Predicted grade: **medium**. Measured 100% modern City Council notice → Legistar event join with LEGISTAR_API_TOKEN (predicted pre-auth grade: medium).
+2. **PASSPort Public contracts + solicitations** — procurement-pending-unmatched, procurement-registered-unmatched. Measured join **78%**. Predicted grade: **high-risk**. Measured 78% either-source EPIN↔PIN on PIN-bearing Procurement notices since 2025-01-01 (predicted pre-landing grade: high-risk). Medium — stable dataJs machine path; strict EPIN↔PIN join measured 78% either-source on PIN-bearing Procurement notices since 2025-01-01.
 3. **ZAP decision docs + DOB NOW outcome stitch** — land-outcome-detail. Measured join **100%**.
 4. **DCAS annual exam outcomes → exam card join** — exam-outcome-aggregate.
-5. **Current Solicitations Open Data 3khw-qi8f** — procurement-solicitation-documents.
-6. **Recent Contract Awards Open Data qyyg-4tf5** — procurement-ocp-recent-awards.
-7. **Doing Business Search Entities 72mk-a8z7** — secondary enrichment. Measured join **70.4%**. Predicted grade: **medium**. Measured 70.4% modern award notice-level vendor_stem join (predicted pre-landing grade: medium). Measured — stem join above usefulness; edge-materialized onto vendor profiles.
+5. **Recent Contract Awards Open Data qyyg-4tf5** — procurement-ocp-recent-awards.
+6. **Doing Business Search Entities 72mk-a8z7** — secondary enrichment. Measured join **70.4%**. Predicted grade: **medium**. Measured 70.4% modern award notice-level vendor_stem join (predicted pre-landing grade: medium). Measured — stem join above usefulness; edge-materialized onto vendor profiles.
+7. **Current Solicitations Open Data 3khw-qi8f** — secondary enrichment. Measured modern document_links fill 0% (0/1550 for start_date ≥ 2025-01-01). PIN/request_id join for due dates may still work; package docs are not a modern fill. Gap procurement-solicitation-documents reclassified not_published → City Record GetFile. Measured stop — do not treat OCP as modern package-doc source; enrichment for due dates/contacts remains.
 8. **Bid Tabulations Historical 9k82-ys7w** — procurement-bid-counts. Measured join **0%**. Predicted grade: **high-risk**. High — measured strict join 0% on modern notices (2025+), 9.07% on 2016-2021 overlap; no PIN column; openings end 2021-03-24. Contracted as disabled (bid-tabulations-historical). Measured — recon complete; materialization stopped below usefulness threshold.
+
+## Class changes (loud)
+
+- **CLASS CHANGE** `procurement-solicitation-documents`: not_yet_ingested → not_published — Kill-criterion failed: RFx document URL join 0% (<30%). Public machine dumps do not publish package document URLs; modern OCP/City Record document_links fill 0%.
+
 
 ## Verification notes (2026-07-30)
 
@@ -161,6 +166,7 @@ Ordered for dispatch. Full rows (effort, join risk, value scores) live in
 - EDC document portal may block unattended fetch (403); product already treats it as HTML source.
 - Bid Tabulations Historical 9k82-ys7w join recon (2026-07-30): strict PIN↔bid_number 0% modern / 9.07% historical overlap; below ~30% usefulness; source contract disabled without materialization.
 - Doing Business Search Entities 72mk-a8z7 join recon (2026-07-30): vendor_stem join 70.42% notice-level / 61.62% distinct vendors on modern awards; above ~30% usefulness; source contract live edge-materialized onto vendor profiles.
+- PASSPort RFx package documents (2026-07-30): document-URL join 0% on 50-notice kill sample and 0/1470 modern Solicitation+PIN; OCP/City Record modern document_links 0%. Gap procurement-solicitation-documents reclassified not_published → City Record GetFile. No RFx package-doc edge materialization.
 
 ## UI copy keys (two registers)
 
@@ -177,4 +183,4 @@ node tools/depot_rederive.mjs          # write registry + docs + receipt
 node tools/depot_rederive.mjs --check  # CI drift gate (no writes)
 ```
 
-Last refresh fingerprint: `6060eef019ee…` · materialized 11 · candidates 45 · class changes 0.
+Last refresh fingerprint: `8914e50d72f1…` · materialized 11 · candidates 45 · class changes 0.

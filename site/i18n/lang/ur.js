@@ -572,6 +572,8 @@
     lifecycle_source_passport: "PASSPort Public",
     lifecycle_source_current_solicitations: "موجودہ بولی (کھلے ڈیٹا)",
     lifecycle_unmatched_documents_html: "ابھی یہاں نہیں دکھایا گیا — بولی کے پیکج کی تفصیلات {source} میں ہیں۔",
+    lifecycle_source_city_record_getfile: "City Record فائل منسلکات",
+    lifecycle_documents_not_published_html: "شہر اس نوٹس کے لیے پیکج دستاویزات کھلے فیڈ کے طور پر شائع نہیں کرتا — اگر جاری کی گئیں تو وہ {where} میں ظاہر ہوتیں۔",
     lifecycle_unmatched_solicitation_html: "ابھی یہاں نہیں دکھایا گیا — بولی کا پیکج {source} میں ہے۔",
     lifecycle_documents_count_one: "{n} پیکج دستاویز",
     lifecycle_documents_count_other: "{n} پیکج دستاویزات",
