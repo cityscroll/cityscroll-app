@@ -125,10 +125,14 @@ test("ordinal", () => {
 });
 
 // ---------- misc shared helpers ----------
+// escXml used to live on the client for the live Checkbook proxy; that path is gone
+// (precompute-first). Keep the same five-entity escape contract as a local helper so
+// usablePin/pinBase/money extraction still runs without the deleted const.
 const miscEnv = new Function(
   src.match(/const JUNK_PINS = new Set\(\[[^\]]*\]\);/)[0] + extractConst("JUNK_PIN_TEXT_RE")
   + extractFn("usablePin") + extractConst("RENEWAL_SUFFIX_RE") + extractFn("pinBase") + extractFn("money")
-  + src.match(/const escXml = [^\n]*;/)[0] + "return { usablePin, pinBase, money, escXml };"
+  + `const escXml = s => String(s).replace(/[<>&'"]/g, c=>({"<":"&lt;",">":"&gt;","&":"&amp;","'":"&apos;",'"':"&quot;"}[c]));`
+  + "return { usablePin, pinBase, money, escXml };"
 )();
 test("usablePin rejects junk pins (exact JUNK_PINS set)", () => {
   assert.ok(miscEnv.usablePin("8502026AB0031"));
@@ -169,7 +173,7 @@ test("money formatting", () => {
   assert.equal(miscEnv.money(1500000000), "$1.50B");
   assert.equal(miscEnv.money(0), null);
 });
-test("escXml escapes the five", () => {
+test("escXml escape contract (five entities; client proxy removed, helper kept for parity)", () => {
   assert.equal(miscEnv.escXml(`<&>'"`), "&lt;&amp;&gt;&apos;&quot;");
 });
 

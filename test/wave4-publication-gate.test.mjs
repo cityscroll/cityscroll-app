@@ -48,11 +48,16 @@ test("fixture-only Wave 4 surfaces stay out of the public site", () => {
 test("the shipped notice surface keeps real joins and item-specific missing states", () => {
   const html = readFileSync(new URL("index.html", siteRoot), "utf8");
   const strings = readFileSync(new URL("i18n.js", siteRoot), "utf8");
-  assert.match(html, /async function checkbookByPin\(pin\)/);
+  // Precompute-first: notice detail consumes GET /contract-lifecycle, not a live
+  // Checkbook proxy (checkbookByPin / checkbookQueryByField are gone from the client).
+  assert.match(html, /async function loadLifecycle\(/);
+  assert.match(html, /function lifecycleDollarsHTML\(/);
+  assert.match(html, /\/contract-lifecycle\?id=/);
+  assert.doesNotMatch(html, /async function checkbookByPin\(/);
+  assert.doesNotMatch(html, /async function checkbookQueryByField\(/);
   assert.match(html, /async function externalAwardForNotice\(r, el\)/);
   assert.match(html, /loadChain\(r\)/);
-  // Registration gap is the established lifecycle register (precompute-first dollars panel),
-  // not a live Checkbook proxy path.
+  // Registration gap is the established lifecycle register (precompute-first dollars panel).
   assert.match(strings, /Not yet shown here — registered contracts live in \{source\}/);
   assert.match(html, /lifecycleDollarsHTML|lifecycle_unmatched_registered_html/);
   assert.match(html, /t\("external_award_none_note_html"/);
