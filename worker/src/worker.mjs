@@ -35,6 +35,7 @@ import { handleMirror } from "./mirror.mjs";
 import { handleHearings, refreshHearings } from "./hearings.mjs";
 import { handleProperties, refreshProperties } from "./property.mjs";
 import { handleRules, refreshRules } from "./rules.mjs";
+import { handleMeetingOutcomes, refreshMeetingOutcomes } from "./meeting_outcomes.mjs";
 import { handleSourceVault } from "./source_vault.mjs";
 import { handleContractLifecycle, prewarmContractLifecycle } from "./checkbook_lifecycle.mjs";
 import { handleSubsidyLifecycle, prewarmSubsidyLifecycle } from "./subsidy_lifecycle.mjs";
@@ -68,6 +69,7 @@ export default {
     if (pathname === "/subsidy-lifecycle") return handleSubsidyLifecycle(request, env, ctx);
     if (pathname === "/hearings") return handleHearings(request, env, ctx);
     if (pathname === "/property-locations") return handleProperties(request, env, ctx);
+    if (pathname === "/meeting-outcomes") return handleMeetingOutcomes(request, env, ctx);
     if (pathname === "/rules") return handleRules(request, env, ctx);
     if (pathname === "/source-vault/fetch" || pathname.startsWith("/source-vault/")) return handleSourceVault(request, env);
     if (pathname === "/suggestions") return handleSuggestions(request, env, ctx);
@@ -174,6 +176,12 @@ export default {
       console.log("properties:", JSON.stringify(r));
     } catch (e) {
       console.error("Property refresh failed (digest continues):", String(e?.message || e));
+    }
+    try {
+      const r = await refreshMeetingOutcomes(env);
+      console.log("meeting outcomes:", JSON.stringify(r));
+    } catch (e) {
+      console.error("meeting outcomes refresh failed (digest continues):", String(e?.message || e));
     }
     // NYC Rules: daily materialized join of City Record Agency Rules notices to NYC Rules
     // RSS lifecycle records. RSS enrichment is fail-soft — a stale or unreachable feed
