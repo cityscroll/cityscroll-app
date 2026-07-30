@@ -123,14 +123,16 @@ export async function computeLifecycle(env, requestId, noticeRow) {
 
 export async function getOrCompute(env, requestId) {
   const cached = await cacheGet(env, requestId);
-  if (cached) return { ...cached, ok: true };
+  if (cached) return { lifecycle: cached, ok: true, sourceUnavailable: cached.source_status === "unavailable" };
 
-  const { lifecycle, ok } = await computeLifecycle(env, requestId);
-  if (ok && lifecycle) {
+  const { lifecycle, ok, sourceUnavailable } = await computeLifecycle(env, requestId);
+  // Cache matched and explicit-gap rows so the notice detail always gets a structured
+  // lifecycle (join.matched false, source_status unavailable, etc.) — never a blank.
+  if (lifecycle) {
     const row = await fetchNoticeRow(env, requestId).catch(() => null);
     await cachePut(env, requestId, row && row.agency_name, lifecycle);
   }
-  return { lifecycle, ok };
+  return { lifecycle, ok, sourceUnavailable: !!sourceUnavailable };
 }
 
 export async function prewarmSubsidyLifecycle(env, requestIds) {
@@ -213,7 +215,10 @@ export async function handleSubsidyLifecycle(req, env, ctx) {
   }
 
   const computed = await getOrCompute(env, id);
-  if (!computed.ok || !computed.lifecycle) {
+  // Only "notice not found" is unresolved. Matched joins, unmatched joins, and
+  // source-unavailable fallbacks all return the structured lifecycle so the detail
+  // view can render specific per-slot gaps instead of a blank.
+  if (!computed.lifecycle) {
     const failureResponse = new Response(JSON.stringify({ id, ok: false, reason: "unresolved" }), {
       status: 200,
       headers: { ...cors, "Content-Type": "application/json", "Cache-Control": "no-store" },
@@ -226,16 +231,25 @@ export async function handleSubsidyLifecycle(req, env, ctx) {
     return failureResponse;
   }
 
-  const body = JSON.stringify({ id, ...computed.lifecycle, ok: true });
+  const body = JSON.stringify({
+    id,
+    ...computed.lifecycle,
+    ok: true,
+    source_status: computed.lifecycle.source_status
+      || (computed.sourceUnavailable ? "unavailable" : "ok"),
+  });
+  // Cache successful structured responses (including unmatched gaps) briefly; do not
+  // edge-cache only when source is unavailable so a later recovery can rejoin quickly.
+  const cacheable = computed.lifecycle.source_status !== "unavailable" && !computed.sourceUnavailable;
   const response = new Response(body, {
     status: 200,
     headers: {
       ...cors,
       "Content-Type": "application/json",
-      "Cache-Control": "public, max-age=300",
+      "Cache-Control": cacheable ? "public, max-age=300" : "no-store",
     },
   });
-  if (cache) {
+  if (cache && cacheable) {
     const put = cache.put(req, response.clone());
     if (ctx?.waitUntil) ctx.waitUntil(put);
     else await put.catch(() => {});

@@ -105,6 +105,10 @@ EXTERNAL_HREF_EXPRS = (
     "${escUiHtml(CrolStaffing.DCAS_OPEN_COMPETITIVE_URL)}",  # DCAS open-competitive schedule page
     "${lifecycleSourceUrl}",          # Checkbook NYC contract search or matched contract
     "${CHECKBOOK_SPENDING_URL}",      # Checkbook NYC spending search
+    "${CHECKBOOK_SEARCH_URL}",        # Checkbook NYC contract search (registration gap CTA)
+    "${contractLink}",                # Checkbook NYC smart_search for a matched contract id
+    "${escUiHtml(entry.source.url)}", # subsidy lifecycle: official Build NYC / NYCIDA document
+    "${escUiHtml(d.url)}",            # council meeting outcomes: Legistar supporting document
     "${escUiHtml(href)}",         # rule-lifecycle chip + comment action: NYC Rules comment/adoption page
     # Explicit same-origin exception: this action promises to open the canonical shareable
     # search separately, so it follows the new-tab safety/accessibility checks below.
