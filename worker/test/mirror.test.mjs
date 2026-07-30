@@ -5,6 +5,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { handleMirror } from "../src/mirror.mjs";
+import loopRedirectFixtures from "./fixtures/mirror_redirect_regressions.json" with { type: "json" };
 
 test("handleMirror: proxies GET to crol-list.org with the same path and query, dropping Host", async () => {
   const originalFetch = globalThis.fetch;
@@ -30,6 +31,42 @@ test("handleMirror: proxies GET to crol-list.org with the same path and query, d
     globalThis.fetch = originalFetch;
   }
 });
+
+for (const { requestPath, originStatus = 301, originLocation, expectedFallbackUrl } of loopRedirectFixtures.cases) {
+  test(`handleMirror: never leaks canonical-origin ${originStatus} redirect for ${requestPath}`, async () => {
+    const originalFetch = globalThis.fetch;
+    const calls = [];
+    globalThis.fetch = async (url, opts) => {
+      calls.push({ url, opts });
+      if (calls.length === 1) {
+        return new Response(null, { status: originStatus, headers: { location: originLocation } });
+      }
+      return new Response("<html>from fallback</html>", {
+        status: 200,
+        headers: {
+          "Content-Type": "text/plain; charset=utf-8",
+          "Content-Security-Policy": "default-src 'none'; sandbox",
+        },
+      });
+    };
+    try {
+      const req = new Request(`https://cityscroll.org${requestPath}`);
+      const res = await handleMirror(req);
+      assert.equal(calls.length, 2);
+      assert.equal(calls[0].url, `https://crol-list.org${requestPath}`);
+      assert.equal(calls[0].opts.redirect, "manual");
+      assert.equal(calls[1].url, expectedFallbackUrl);
+      assert.equal(calls[1].opts.redirect, "manual");
+      assert.equal(res.status, 200);
+      assert.equal(res.headers.get("content-type"), "text/html; charset=utf-8");
+      assert.equal(res.headers.get("location"), null);
+      assert.equal(await res.text(), "<html>from fallback</html>");
+      assert.equal(res.headers.get("content-security-policy"), null);
+    } finally {
+      globalThis.fetch = originalFetch;
+    }
+  });
+}
 
 test("handleMirror: falls back to public GitHub source when the Pages origin redirects back to CityScroll", async () => {
   const originalFetch = globalThis.fetch;
