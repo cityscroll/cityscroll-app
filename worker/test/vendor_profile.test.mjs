@@ -97,6 +97,15 @@ test("GET /vendor-profile serves a fresh record and rejects it after 24 hours", 
   assert.equal((await stale.json()).reason, "stale-index");
 });
 
+const CAMBA_DOING_BUSINESS = [
+  {
+    organization_name: "CAMBA  INC",
+    ownership_structure_code: "COR",
+    organization_phone: "7182872600",
+    doing_business_start_date: "0009-05-16T00:00:00.000",
+  },
+];
+
 test("cron refresh writes versioned buckets before publishing the manifest", async () => {
   const forecast = [{
     source: "checkbook",
@@ -104,12 +113,17 @@ test("cron refresh writes versioned buckets before publishing the manifest", asy
     expiration_date: "2027-03-01",
   }];
   const store = kvStore({ "fc:CAMBA": JSON.stringify(forecast) });
-  const fetchImpl = async (url) => new Response(JSON.stringify(
-    new URL(url).searchParams.get("$group") ? CAMBA_ROWS : CAMBA_NOTICES,
-  ), {
-    status: 200,
-    headers: { "Content-Type": "application/json" },
-  });
+  const fetchImpl = async (url) => {
+    const href = String(url);
+    let body;
+    if (href.includes("72mk-a8z7")) body = CAMBA_DOING_BUSINESS;
+    else if (new URL(href).searchParams.get("$group")) body = CAMBA_ROWS;
+    else body = CAMBA_NOTICES;
+    return new Response(JSON.stringify(body), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  };
   const result = await refreshVendorProfiles(
     { ALERT_STATE: store },
     { fetchImpl, now: new Date("2026-07-27T13:00:00.000Z") },
@@ -118,9 +132,11 @@ test("cron refresh writes versioned buckets before publishing the manifest", asy
   assert.equal(result.profiles, 1);
   assert.equal(result.buckets, 1);
   assert.equal(result.cronCost.socrataRequestsBefore, 1);
-  assert.equal(result.cronCost.socrataRequestsAfter, 2);
+  assert.equal(result.cronCost.socrataRequestsAfter, 3);
+  assert.equal(result.cronCost.doingBusinessRequests, 1);
   assert.equal(result.included.recentNotices, 15);
   assert.equal(result.included.forecasts, 1);
+  assert.equal(result.included.doingBusiness, 1);
   assert.equal(result.included.mentions, false);
   assert.ok(result.storage.averageBytesAfter > result.storage.averageBytesBefore);
   assert.equal(store.writes.at(-1), "vp:manifest:v1");
@@ -131,6 +147,9 @@ test("cron refresh writes versioned buckets before publishing the manifest", asy
   assert.equal(bucket.profiles.CAMBA.recentNotices[0].request_id, "camba-1");
   assert.equal(bucket.profiles.CAMBA.recentNotices[0].vendor_name, undefined);
   assert.deepEqual(bucket.profiles.CAMBA.forecasts, forecast);
+  assert.equal(bucket.profiles.CAMBA.doingBusiness.organization_name, "CAMBA  INC");
+  assert.equal(bucket.profiles.CAMBA.doingBusiness.organization_phone, "718-287-2600");
+  assert.equal(bucket.profiles.CAMBA.doingBusiness.doing_business_start_date, "2009-05-16");
   const manifest = JSON.parse(store.values.get("vp:manifest:v1"));
   assert.equal(manifest.schema, 2);
 });

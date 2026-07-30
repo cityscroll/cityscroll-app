@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "observed_on": "2026-07-30",
+  "cases": [
+    {
+      "id": "joined-camba",
+      "expect": "joined",
+      "method": "vendor_stem",
+      "vendor": { "vendor_name": "Camba Inc." },
+      "entity": {
+        "organization_name": "CAMBA  INC",
+        "ownership_structure_code": "COR",
+        "organization_phone": "7182872600",
+        "doing_business_start_date": "0009-05-16T00:00:00.000"
+      }
+    },
+    {
+      "id": "joined-3g-warehouse",
+      "expect": "joined",
+      "method": "vendor_stem",
+      "vendor": { "vendor_name": "3G Warehouse, Inc." },
+      "entity": {
+        "organization_name": "3G WAREHOUSE INC",
+        "ownership_structure_code": "COR",
+        "organization_phone": "6316942226",
+        "doing_business_start_date": "0012-01-01T00:00:00.000"
+      }
+    },
+    {
+      "id": "joined-22nd-century",
+      "expect": "joined",
+      "method": "vendor_stem",
+      "vendor": { "vendor_name": "22nd Century Technologies Inc." },
+      "entity": {
+        "organization_name": "22ND CENTURY TECHNOLOGIES INC",
+        "ownership_structure_code": "COR",
+        "organization_phone": "7325372100",
+        "doing_business_start_date": "0008-07-31T00:00:00.000"
+      }
+    },
+    {
+      "id": "unjoined-production-services",
+      "expect": "unjoined",
+      "vendor": { "vendor_name": "1030 Production Services LLC" },
+      "entity": null
+    },
+    {
+      "id": "unjoined-short-stem",
+      "expect": "unjoined",
+      "vendor": { "vendor_name": "3M Company" },
+      "entity": {
+        "organization_name": "3M COMPANY",
+        "ownership_structure_code": "COR",
+        "organization_phone": "6517331110",
+        "doing_business_start_date": "0008-02-02T00:00:00.000"
+      },
+      "note": "vendorStem('3M Company') is '3M' (length 2); product skips stems shorter than 3 characters."
+    }
+  ]
+}

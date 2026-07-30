@@ -4,7 +4,7 @@
   "observed_on": "2026-07-30",
   "class_changes": [],
   "class_changes_loud": [],
-  "sources_count": 35,
+  "sources_count": 36,
   "materialized_crosswalks": [
     {
       "id": "city-record-pin-x-checkbook-contracts",
@@ -30,6 +30,11 @@
       "id": "city-record-request-x-nycida-projects",
       "rate": null,
       "metric": null
+    },
+    {
+      "id": "city-record-vendor-x-doing-business-entities",
+      "rate": 0.7042,
+      "metric": "modern_awards_stem_notices"
     },
     {
       "id": "city-record-x-legistar-events",
@@ -384,6 +389,17 @@
       ]
     },
     {
+      "id": "abo-local-authorities-x-doing-business-entities-via-vendor_name",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "vendor_name"
+      ],
+      "gaps_would_close": [
+        "external-awards-abo-none"
+      ]
+    },
+    {
       "id": "city-record-x-recent-contract-awards-ocp-via-PIN+request_id",
       "worth_materializing": "maybe",
       "score": 1,
@@ -657,5 +673,5 @@
       "realized_join_rate": null
     }
   ],
-  "registry_sha256": "7c482c423684b170b4b9936d4322c03327c7f7d534a12849ac4a68117dff34be"
+  "registry_sha256": "1a69810bc82b5f87ecff0ed4a6641dc191d2f4ace90e73d872780fc76793b1af"
 }

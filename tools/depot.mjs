@@ -70,6 +70,7 @@ export const SEED_SOURCE_JOIN_KEYS = {
   "nyc-rules-rss": ["agency"],
   "bid-tabulations-historical": ["bid_number", "PIN"],
   "zap-api-outcomes": ["project_id", "ulurp_numbers"],
+  "doing-business-entities": ["organization_name", "vendor_name"],
 };
 
 /**
@@ -197,6 +198,19 @@ export const SEED_MATERIALIZED_CROSSWALKS = [
       measurement_rate_key: "complete_sample_dob_any_filing",
     },
   },
+  {
+    id: "city-record-vendor-x-doing-business-entities",
+    source_a: "city-record",
+    source_b: "doing-business-entities",
+    key_path: ["vendor_name", "organization_name"],
+    status: "materialized",
+    lineage: {
+      code: "worker/src/lib/doing_business_join.mjs",
+      strategy: "vendor_stem (product vendorStem on organization_name equals vendorStem(vendor_name))",
+      measurement_contract: "doing-business-entities",
+      measurement_rate_key: "modern_awards_stem_notices",
+    },
+  },
 ];
 
 /** Pre-landing predicted join grades retained for comparison against realized rates. */
@@ -216,6 +230,10 @@ export const PREDICTED_JOIN_GRADES = {
   "bid-tabulations-historical": {
     grade: "high-risk",
     note: "Pre-recon estimate: bid_number rarely equals City Record PIN; historical coverage only.",
+  },
+  "doing-business-entities": {
+    grade: "medium",
+    note: "Pre-recon estimate: organization name normalization against award vendor_name.",
   },
 };
 
@@ -292,6 +310,9 @@ function pickPrimaryRate(rates) {
     // Bid tabulations recon (disabled source; keep modern headline)
     "modern_notices_strict",
     "historical_notices_strict",
+    // Doing Business vendor identity enrichment
+    "modern_awards_stem_notices",
+    "modern_awards_stem_vendors",
     "ulurp_complete_useful_outcome",
     "mixed_sample_any_documents",
     "complete_sample_dob_any_filing",
@@ -794,6 +815,24 @@ export function rerankIngestList(registry, sources, candidates) {
         }
       }
       // Demote hard when measured below usefulness
+      if (realizedRate != null && realizedRate < 0.3) valueScore -= 15;
+    }
+
+    // Doing Business vendor identity enrichment
+    if (blob.includes("doing business") || blob.includes("72mk-a8z7")) {
+      const db = sources.find((s) => s.id === "doing-business-entities");
+      const dbRate = db?.join_coverage?.realized?.rate;
+      if (dbRate != null) {
+        realizedRate = dbRate;
+        predictedGrade = db?.join_coverage?.predicted?.grade || "medium";
+        if (dbRate >= 0.3) {
+          join_risk = `Measured ${Math.round(dbRate * 1000) / 10}% modern award notice-level vendor_stem join (predicted pre-landing grade: medium).`;
+          effort_guess = "Measured — stem join above usefulness; edge-materialized onto vendor profiles.";
+          valueScore += 8;
+        } else if (!/measured|usefulness/i.test(String(join_risk || ""))) {
+          join_risk = `Medium — measured stem join ${Math.round(dbRate * 1000) / 10}%; below usefulness for vendor enrichment.`;
+        }
+      }
       if (realizedRate != null && realizedRate < 0.3) valueScore -= 15;
     }
 

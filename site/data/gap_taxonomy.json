@@ -267,6 +267,35 @@
       "delivery_tier": "live-only"
     },
     {
+      "id": "doing-business-entities",
+      "name": "Doing Business Search - Entities",
+      "source_contract_id": "doing-business-entities",
+      "status": "landed",
+      "join_keys": [
+        "organization_name",
+        "vendor_name"
+      ],
+      "join_coverage": {
+        "predicted": {
+          "grade": "medium",
+          "note": "Pre-recon estimate: organization name normalization against award vendor_name."
+        },
+        "realized": {
+          "rate": 0.7042,
+          "joined": 3643,
+          "total": 5173,
+          "metric": "modern_awards_stem_notices",
+          "observed_on": "2026-07-30",
+          "universe": null,
+          "strategy": "vendor_stem (product vendorStem on organization_name equals vendorStem(vendor_name)). Substring/token-overlap and phone-only joins rejected.",
+          "verdict": "Above usefulness threshold (>=30%) on modern awards (70.42% notice-level stem join; 61.62% distinct-vendor stem join). Ship join + edge materialization onto vendor profiles.",
+          "source": "source_contracts.join_measurement"
+        }
+      },
+      "landing_page": "https://data.cityofnewyork.us/d/72mk-a8z7",
+      "delivery_tier": "edge-materialized"
+    },
+    {
       "id": "expense-budget",
       "name": "NYC Expense Budget",
       "source_contract_id": "expense-budget",
@@ -683,6 +712,35 @@
         "procurement-ocp-recent-awards",
         "subsidy-stage-unmatched"
       ]
+    },
+    {
+      "id": "city-record-vendor-x-doing-business-entities",
+      "source_a": "city-record",
+      "source_b": "doing-business-entities",
+      "key_path": [
+        "vendor_name",
+        "organization_name"
+      ],
+      "status": "materialized",
+      "lineage": {
+        "code": "worker/src/lib/doing_business_join.mjs",
+        "strategy": "vendor_stem (product vendorStem on organization_name equals vendorStem(vendor_name))",
+        "measurement_contract": "doing-business-entities",
+        "measurement_rate_key": "modern_awards_stem_notices"
+      },
+      "realized_coverage": {
+        "rate": 0.7042,
+        "joined": 3643,
+        "total": 5173,
+        "metric": "modern_awards_stem_notices",
+        "observed_on": "2026-07-30",
+        "universe": null,
+        "strategy": "vendor_stem (product vendorStem on organization_name equals vendorStem(vendor_name)). Substring/token-overlap and phone-only joins rejected.",
+        "verdict": "Above usefulness threshold (>=30%) on modern awards (70.42% notice-level stem join; 61.62% distinct-vendor stem join). Ship join + edge materialization onto vendor profiles.",
+        "source": "source_contracts.join_measurement"
+      },
+      "worth_materializing": "already_materialized",
+      "gaps_would_close": []
     },
     {
       "id": "city-record-x-legistar-events",
@@ -1257,6 +1315,22 @@
       ],
       "score": 2,
       "evidence": "Shared keys PIN; 2 taxonomy gap(s) could close."
+    },
+    {
+      "id": "abo-local-authorities-x-doing-business-entities-via-vendor_name",
+      "source_a": "abo-local-authorities",
+      "source_b": "doing-business-entities",
+      "key_path": [
+        "vendor_name"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "external-awards-abo-none"
+      ],
+      "score": 1,
+      "evidence": "Shared keys vendor_name; 1 taxonomy gap(s) could close."
     },
     {
       "id": "city-record-x-recent-contract-awards-ocp-via-PIN+request_id",
@@ -2063,11 +2137,11 @@
       "access": "https://data.cityofnewyork.us/d/72mk-a8z7",
       "gaps_filled": [],
       "value": "Vendor identity enrichment for award chains (secondary to lifecycle gaps).",
-      "effort_guess": "Low-medium",
-      "join_risk": "Medium — organization name normalization.",
-      "value_score": 6,
-      "realized_join_rate": null,
-      "predicted_join_grade": null
+      "effort_guess": "Measured — stem join above usefulness; edge-materialized onto vendor profiles.",
+      "join_risk": "Measured 70.4% modern award notice-level vendor_stem join (predicted pre-landing grade: medium).",
+      "value_score": 14,
+      "realized_join_rate": 0.7042,
+      "predicted_join_grade": "medium"
     },
     {
       "rank": 8,
@@ -2095,13 +2169,14 @@
     "PASSPort Public contracts and rfx pages returned HTTP 200.",
     "City Record type counts since 2025-01-01: Award ~5173, Solicitation ~1550, Public Hearings ~1679, Intent to Award ~703.",
     "EDC document portal may block unattended fetch (403); product already treats it as HTML source.",
-    "Bid Tabulations Historical 9k82-ys7w join recon (2026-07-30): strict PIN↔bid_number 0% modern / 9.07% historical overlap; below ~30% usefulness; source contract disabled without materialization."
+    "Bid Tabulations Historical 9k82-ys7w join recon (2026-07-30): strict PIN↔bid_number 0% modern / 9.07% historical overlap; below ~30% usefulness; source contract disabled without materialization.",
+    "Doing Business Search Entities 72mk-a8z7 join recon (2026-07-30): vendor_stem join 70.42% notice-level / 61.62% distinct vendors on modern awards; above ~30% usefulness; source contract live edge-materialized onto vendor profiles."
   ],
   "depot_refresh": {
     "observed_on": "2026-07-30",
-    "source_contracts_fingerprint": "21e7b367e96a97f632422c533559c5850b7e8899d5bd638dd3522378c788ff15",
-    "materialized_crosswalks": 10,
-    "candidate_crosswalks": 44,
+    "source_contracts_fingerprint": "ddc2afb7ab611dcf094f2ef3ba9dbd27f8dfbd5533324416e8c43afc0a7b9dea",
+    "materialized_crosswalks": 11,
+    "candidate_crosswalks": 45,
     "class_changes": 0,
     "passport_realized_either_rate": 0.78
   }
