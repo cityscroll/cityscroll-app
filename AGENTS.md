@@ -33,6 +33,10 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   by agency, date proximity, and title overlap; unmatched joins are explicit, never blank.
   Run `worker/test/nyc_rules.test.mjs` and `test/contract/rule_lifecycle.test.mjs` after
   changing either copy.
+- Citywide (topic) rules vs address-level (place) consents share one civic-scope schema in
+  `worker/src/lib/civic_scope.mjs` + `worker/src/lib/cafe_consent.mjs` (Dining Out NYC is the
+  characterization case). See `docs/civic-scope-schema.md` and run
+  `test/contract/civic_scope_dining_out.test.mjs` after changing either module.
 - Lead category pages with the newest actionable records. Search and filters refine the records
   already shown; explanatory guidance appears only at the concept it explains or on a dedicated
   guide surface. The content-first Staffing exemplar and captures are in
