@@ -1206,6 +1206,17 @@
     career_source_details: "المصادر وقواعد التحديث",
     career_city_record_finding: "تم فحص مجموعة بيانات City Record أيضًا. لا ينشر إشعارات الامتحانات الخاصة بـ DCAS كقسم لإعلان الامتحان، لذلك يستخدم هذا الدليل جداول DCAS وNOEs بدلاً من ذلك.",
     career_load_failed: "تعذر تحميل دليل الاختبار المحسوب مسبقًا. استخدم جدول امتحانات DCAS الرسمي وحاول استخدام هذه الصفحة مرة أخرى لاحقًا.",
+    career_outcomes_heading: "نتائج ما بعد الدورة",
+    career_outcome_list_established: "على قائمة المؤهلين",
+    career_outcome_hiring_pool: "مجمع التوظيف (معتمد)",
+    career_outcome_hired: "تم التعيين",
+    career_outcome_applicants: "المتقدمون (الدورة)",
+    career_outcomes_joined_note: "أعداد مجمّعة من نشرة نتائج DCAS السنوية للدورة {cycle} (نُشرت {date}). الدرجات الفردية ليست عامة.",
+    career_outcomes_source_name: "نشرة نتائج امتحانات الخدمة المدنية السنوية من DCAS",
+    career_outcome_stage_list: "إنشاء قائمة المؤهلين",
+    career_outcome_stage_certification: "التصديق لدى الجهة",
+    career_outcome_stage_appointment: "التعيين",
+    career_outcomes_not_published_html: "المدينة لا تنشر بعد نتائج ما بعد الدورة لهذا الامتحان — ستظهر في {source} بعد {stage}.",
     // END GENERATED CAREER GUIDE TRANSLATIONS
   });
   W.SECTION_I18N = W.SECTION_I18N || {};

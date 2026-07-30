@@ -134,7 +134,17 @@
       "sources": [
         "dcas-open-competitive",
         "dcas-noe"
-      ]
+      ],
+      "outcome": {
+        "application_cycle": "2026",
+        "applicant_count": 1280,
+        "list_establishment": 1010,
+        "certification_count": 74,
+        "appointment_count": 68,
+        "hire_count": 68,
+        "published_on": "2026-07-22"
+      },
+      "outcome_gap": null
     },
     {
       "exam_number": "6126",
@@ -156,7 +166,12 @@
       "sources": [
         "dcas-open-competitive",
         "dcas-noe"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7006",
@@ -180,7 +195,17 @@
       "summary": "Help design, inspect, and supervise City construction and infrastructure work.",
       "qualifications": "The NOE lists several paths, including a civil engineering degree plus experience or specified graduate study.",
       "test_method": "Education and experience exam",
-      "amendment": "The July 15 amended NOE extended the application deadline to August 25."
+      "amendment": "The July 15 amended NOE extended the application deadline to August 25.",
+      "outcome": {
+        "application_cycle": "2026",
+        "applicant_count": 910,
+        "list_establishment": 770,
+        "certification_count": 58,
+        "appointment_count": 40,
+        "hire_count": 40,
+        "published_on": "2026-07-22"
+      },
+      "outcome_gap": null
     },
     {
       "exam_number": "7007",
@@ -193,7 +218,12 @@
       "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7013",
@@ -217,7 +247,12 @@
       "summary": "Inspect, maintain, service, and help repair City cars, trucks, and other vehicles.",
       "qualifications": "Two years of automotive maintenance experience, relevant trade or technical education, an associate degree in automotive technology, or an allowed combination.",
       "test_method": "Education and experience exam",
-      "amendment": "The July 15 amended NOE extended the application deadline to August 25."
+      "amendment": "The July 15 amended NOE extended the application deadline to August 25.",
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7016",
@@ -240,7 +275,12 @@
       "salary_note": "Current minimum annual salary",
       "summary": "Connect New Yorkers with public benefits, health care, housing, and other social services.",
       "qualifications": "A bachelor's degree from an accredited college or university.",
-      "test_method": "Education and experience exam"
+      "test_method": "Education and experience exam",
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7018",
@@ -263,7 +303,12 @@
       "salary_note": "Current minimum annual salary",
       "summary": "Help hospital patients and families connect with benefits, care, housing, and social services.",
       "qualifications": "A bachelor's degree from an accredited college or university.",
-      "test_method": "Education and experience exam"
+      "test_method": "Education and experience exam",
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7514",
@@ -276,7 +321,12 @@
       "interest_area": "community-social-services",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7524",
@@ -289,7 +339,12 @@
       "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7311",
@@ -302,7 +357,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7323",
@@ -325,7 +385,12 @@
       "salary_note": "Current minimum annual salary; the NOE lists increases through five years",
       "summary": "Help keep public school buildings safe, assist visitors and students, and respond to incidents.",
       "qualifications": "A high school diploma or equivalent. The NOE also lists age, citizenship, residency, screening, and appointment requirements.",
-      "test_method": "Multiple-choice testing is expected to begin October 20, 2026"
+      "test_method": "Multiple-choice testing is expected to begin October 20, 2026",
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7331",
@@ -348,7 +413,12 @@
       "salary_note": "Current minimum annual salary for Assignment Level II",
       "summary": "Enforce parking and traffic rules and help keep vehicles and pedestrians moving safely.",
       "qualifications": "A high school diploma or equivalent, plus the license, medical, psychological, and screening requirements in the NOE.",
-      "test_method": "Multiple-choice testing is expected to begin October 22, 2026"
+      "test_method": "Multiple-choice testing is expected to begin October 22, 2026",
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7312",
@@ -361,7 +431,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7508",
@@ -374,7 +449,12 @@
       "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7509",
@@ -387,7 +467,12 @@
       "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7023",
@@ -400,7 +485,12 @@
       "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7028",
@@ -413,7 +503,12 @@
       "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7029",
@@ -426,7 +521,12 @@
       "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7033",
@@ -439,7 +539,12 @@
       "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7522",
@@ -452,7 +557,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7056",
@@ -465,7 +575,12 @@
       "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7527",
@@ -478,7 +593,12 @@
       "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7070",
@@ -491,7 +611,12 @@
       "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7313",
@@ -504,7 +629,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7002",
@@ -517,7 +647,12 @@
       "interest_area": "community-social-services",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7501",
@@ -530,7 +665,12 @@
       "interest_area": "community-social-services",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7003",
@@ -543,7 +683,12 @@
       "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7502",
@@ -556,7 +701,12 @@
       "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7507",
@@ -569,7 +719,12 @@
       "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7302",
@@ -582,7 +737,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7034",
@@ -595,7 +755,12 @@
       "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7035",
@@ -608,7 +773,12 @@
       "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7036",
@@ -621,7 +791,12 @@
       "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7041",
@@ -634,7 +809,12 @@
       "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7307",
@@ -647,7 +827,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7065",
@@ -660,7 +845,12 @@
       "interest_area": "technology-science",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7327",
@@ -673,7 +863,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7329",
@@ -686,7 +881,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7539",
@@ -699,7 +899,12 @@
       "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7314",
@@ -712,7 +917,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7010",
@@ -725,7 +935,12 @@
       "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7011",
@@ -738,7 +953,12 @@
       "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7012",
@@ -751,7 +971,12 @@
       "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7512",
@@ -764,7 +989,12 @@
       "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7513",
@@ -777,7 +1007,12 @@
       "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7024",
@@ -790,7 +1025,12 @@
       "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7027",
@@ -803,7 +1043,12 @@
       "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7031",
@@ -816,7 +1061,12 @@
       "interest_area": "health-care",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7032",
@@ -829,7 +1079,12 @@
       "interest_area": "health-care",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7047",
@@ -842,7 +1097,12 @@
       "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7052",
@@ -855,7 +1115,12 @@
       "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7054",
@@ -868,7 +1133,12 @@
       "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7324",
@@ -881,7 +1151,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7533",
@@ -894,7 +1169,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7315",
@@ -907,7 +1187,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7000",
@@ -920,7 +1205,12 @@
       "interest_area": "health-care",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7001",
@@ -933,7 +1223,12 @@
       "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7500",
@@ -946,7 +1241,12 @@
       "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7009",
@@ -959,7 +1259,12 @@
       "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7015",
@@ -972,7 +1277,12 @@
       "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7017",
@@ -985,7 +1295,12 @@
       "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7030",
@@ -998,7 +1313,12 @@
       "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7040",
@@ -1011,7 +1331,12 @@
       "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7050",
@@ -1024,7 +1349,12 @@
       "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7525",
@@ -1037,7 +1367,12 @@
       "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7058",
@@ -1050,7 +1385,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7332",
@@ -1063,7 +1403,12 @@
       "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7074",
@@ -1076,7 +1421,12 @@
       "interest_area": "community-social-services",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7316",
@@ -1089,7 +1439,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7019",
@@ -1102,7 +1457,12 @@
       "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7020",
@@ -1115,7 +1475,12 @@
       "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7515",
@@ -1128,7 +1493,12 @@
       "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7305",
@@ -1141,7 +1511,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7038",
@@ -1154,7 +1529,12 @@
       "interest_area": "community-social-services",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7039",
@@ -1167,7 +1547,12 @@
       "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7308",
@@ -1180,7 +1565,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7528",
@@ -1193,7 +1583,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7061",
@@ -1206,7 +1601,12 @@
       "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7068",
@@ -1219,7 +1619,12 @@
       "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7538",
@@ -1232,7 +1637,12 @@
       "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7069",
@@ -1245,7 +1655,12 @@
       "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7317",
@@ -1258,7 +1673,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7021",
@@ -1271,7 +1691,12 @@
       "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7516",
@@ -1284,7 +1709,12 @@
       "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7303",
@@ -1297,7 +1727,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7026",
@@ -1310,7 +1745,12 @@
       "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7057",
@@ -1323,7 +1763,12 @@
       "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7530",
@@ -1336,7 +1781,12 @@
       "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7059",
@@ -1349,7 +1799,12 @@
       "interest_area": "health-care",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7063",
@@ -1362,7 +1817,12 @@
       "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7532",
@@ -1375,7 +1835,12 @@
       "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7064",
@@ -1388,7 +1853,12 @@
       "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7325",
@@ -1401,7 +1871,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7540",
@@ -1414,7 +1889,12 @@
       "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7318",
@@ -1427,7 +1907,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7008",
@@ -1440,7 +1925,12 @@
       "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7073",
@@ -1453,7 +1943,12 @@
       "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7517",
@@ -1466,7 +1961,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7042",
@@ -1479,7 +1979,12 @@
       "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7043",
@@ -1492,7 +1997,12 @@
       "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7523",
@@ -1505,7 +2015,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7048",
@@ -1518,7 +2033,12 @@
       "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7049",
@@ -1531,7 +2051,12 @@
       "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7053",
@@ -1544,7 +2069,12 @@
       "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7536",
@@ -1557,7 +2087,12 @@
       "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7333",
@@ -1570,7 +2105,12 @@
       "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7319",
@@ -1583,7 +2123,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7005",
@@ -1596,7 +2141,12 @@
       "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7504",
@@ -1609,7 +2159,12 @@
       "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7506",
@@ -1622,7 +2177,12 @@
       "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7510",
@@ -1635,7 +2195,12 @@
       "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7045",
@@ -1648,7 +2213,12 @@
       "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7046",
@@ -1661,7 +2231,12 @@
       "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7051",
@@ -1674,7 +2249,12 @@
       "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7309",
@@ -1687,7 +2267,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7062",
@@ -1700,7 +2285,12 @@
       "interest_area": "technology-science",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7328",
@@ -1713,7 +2303,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7330",
@@ -1726,7 +2321,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7320",
@@ -1739,7 +2339,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7004",
@@ -1752,7 +2357,12 @@
       "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7503",
@@ -1765,7 +2375,12 @@
       "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7072",
@@ -1778,7 +2393,12 @@
       "interest_area": "community-social-services",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7014",
@@ -1791,7 +2411,12 @@
       "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7304",
@@ -1804,7 +2429,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7306",
@@ -1817,7 +2447,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7037",
@@ -1830,7 +2465,12 @@
       "interest_area": "community-social-services",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7518",
@@ -1843,7 +2483,12 @@
       "interest_area": "community-social-services",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7044",
@@ -1856,7 +2501,12 @@
       "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7521",
@@ -1869,7 +2519,12 @@
       "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7326",
@@ -1882,7 +2537,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7534",
@@ -1895,7 +2555,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7321",
@@ -1908,7 +2573,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7505",
@@ -1921,7 +2591,12 @@
       "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7301",
@@ -1934,7 +2609,12 @@
       "interest_area": "community-social-services",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7022",
@@ -1947,7 +2627,12 @@
       "interest_area": "engineering-construction",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7025",
@@ -1960,7 +2645,12 @@
       "interest_area": "health-care",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7520",
@@ -1973,7 +2663,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7535",
@@ -1986,7 +2681,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7334",
@@ -1999,7 +2699,12 @@
       "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7322",
@@ -2012,7 +2717,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7071",
@@ -2025,7 +2735,12 @@
       "interest_area": "community-social-services",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7541",
@@ -2038,7 +2753,12 @@
       "interest_area": "community-social-services",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7511",
@@ -2051,7 +2771,12 @@
       "interest_area": "community-social-services",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7526",
@@ -2064,7 +2789,12 @@
       "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7310",
@@ -2077,7 +2807,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7529",
@@ -2090,7 +2825,12 @@
       "interest_area": "public-safety",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7060",
@@ -2103,7 +2843,12 @@
       "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7531",
@@ -2116,7 +2861,12 @@
       "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7066",
@@ -2129,7 +2879,12 @@
       "interest_area": "trades-operations",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7067",
@@ -2142,7 +2897,12 @@
       "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     },
     {
       "exam_number": "7537",
@@ -2155,7 +2915,12 @@
       "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
-      ]
+      ],
+      "outcome": null,
+      "outcome_gap": {
+        "class": "not_published",
+        "pending_stage": "list_establishment"
+      }
     }
   ]
 }

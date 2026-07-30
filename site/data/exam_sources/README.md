@@ -38,7 +38,10 @@ Sources and refresh rules:
   career listings.
 - `dcas_exam_outcomes.json` — a manually curated annual aggregate outcomes
   snapshot from NYC DCAS publications. This is **not** an applicant-level feed:
-  only counts are kept to track certification and hiring outcomes per exam cycle.
+  only counts are kept (applicants, eligible-list size, certifications, hires).
+  `tools/build_staffing_exams.mjs` joins each row onto exam cards by `exam_number`
+  at build time; exams without a published row carry an explicit not-published
+  gap (real-world pending after eligible-list establishment), not a silent blank.
 
 Run `node tools/build_staffing_exams.mjs --refresh` to refresh the Open Data
 snapshots and rebuild the client artifact. The DCAS current-page snapshot remains
