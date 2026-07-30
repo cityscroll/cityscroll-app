@@ -358,6 +358,16 @@
       "delivery_tier": "edge-materialized"
     },
     {
+      "id": "ocp-recent-contract-awards",
+      "name": "Recent Contract Awards (OCP)",
+      "source_contract_id": "ocp-recent-contract-awards",
+      "status": "landed",
+      "join_keys": [],
+      "join_coverage": {},
+      "landing_page": "https://data.cityofnewyork.us/d/qyyg-4tf5",
+      "delivery_tier": "edge-materialized"
+    },
+    {
       "id": "passport-public-contracts",
       "name": "PASSPort Public registered contracts",
       "source_contract_id": "passport-public-contracts",
@@ -1861,7 +1871,7 @@
   ],
   "depot_refresh": {
     "observed_on": "2026-07-30",
-    "source_contracts_fingerprint": "55a6ff044b58ce380663cb979b6ad51b8b2d9b1f210fd41ecf798403af7724e9",
+    "source_contracts_fingerprint": "5c778a9f4f66daebadc665804cae54cd5cdfb3dcb5ebea3f8258e80bcbbe9d90",
     "materialized_crosswalks": 8,
     "candidate_crosswalks": 39,
     "class_changes": 0,

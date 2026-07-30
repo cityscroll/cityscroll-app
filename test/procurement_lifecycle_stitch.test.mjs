@@ -73,8 +73,7 @@ const sandbox = new Function(
   extractConst("PASSPORT_CONTRACTS_URL") + "\n" +
   extractConst("PASSPORT_RFX_URL") + "\n" +
   extractConst("LIFECYCLE_STAGE_ORDER") + "\n" +
-  extractConst("CURRENT_SOLICITATIONS_URL") + "
-" +
+  extractConst("CURRENT_SOLICITATIONS_URL") + "\n" +
   extractConst("OCP_AWARDS_URL") + "\n" +
   extractFn("lifecycleStageLabel") + "\n" +
   extractFn("lifecycleAmount") + "\n" +
