@@ -10,8 +10,15 @@
 // functions with precompute + cache + endpoint.
 
 import { usablePin, pinBase } from "./lineage.mjs";
+import {
+  CURRENT_SOLICITATIONS_SOURCE,
+  joinSolicitationEnrichment,
+  applySolicitationDetail,
+  documentsStatusFor,
+} from "./current_solicitations.mjs";
 
 export { usablePin, pinBase };
+export { CURRENT_SOLICITATIONS_SOURCE };
 
 // ---------------------------------------------------------------------------
 // XML parsing (regex-based, matching the pattern in checkbook.mjs / external_award.mjs)
@@ -151,7 +158,8 @@ function stageEntry(stage, status, source, opts = {}) {
   };
 }
 
-// Assemble the full procurement lifecycle from City Record notice + Checkbook data.
+// Assemble the full procurement lifecycle from City Record notice + Checkbook data
+// + optional Current Solicitations (3khw-qi8f) package enrichment.
 //
 // noticeRow: the City Record notice (request_id, agency_name, type_of_notice_description,
 //            pin, start_date, short_title, contract_amount, vendor_name)
@@ -160,6 +168,7 @@ function stageEntry(stage, status, source, opts = {}) {
 // spending: array of parsed Checkbook spending records for this PIN
 // opts.pinStrategy: "exact" | "legacy-base" | "none"
 // opts.lookupStatus: { pending/registered/spending: "ok"|"error"|"skip" }
+// opts.currentSolicitation: { status: "ok"|"error", rows: raw Socrata rows[] }
 //
 // Returns a lifecycle object with an explicit timeline array, amendments, and ok flag.
 // Stage succession: when a later stage is matched, earlier unmatched/unknown stages
@@ -174,23 +183,59 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
   const noPin = pinStrategy === "none"
     || (lookupStatus.pending === "skip" && lookupStatus.registered === "skip" && lookupStatus.spending === "skip");
 
+  // Current Solicitations enrichment (package documents / due date). Fail-soft:
+  // missing opts → treat as unmatched (gap copy); status error → unknown.
+  const cs = opts.currentSolicitation;
+  let enrichment;
+  if (!cs) {
+    enrichment = { status: "unmatched", match: null, candidates: [], basis: null };
+  } else if (cs.status === "error") {
+    enrichment = { status: "unknown", match: null, candidates: null, basis: null };
+  } else {
+    enrichment = joinSolicitationEnrichment(r, cs.rows || []);
+  }
+  const docsStatus = documentsStatusFor(enrichment);
+
   // --- City Record stages (solicitation + award) ---
   // The notice itself is the solicitation; an award notice carries the vendor + amount.
+  // When an award joins a Current Solicitations row by PIN, prepend that solicitation stage
+  // so readers see package metadata that City Record award rows omit.
   const isAward = r.type_of_notice_description === "Award";
   const isSolicitation = r.type_of_notice_description === "Solicitation" || !isAward;
 
   const timeline = [];
 
   if (isSolicitation) {
+    const detail = applySolicitationDetail({
+      request_id: r.request_id,
+      agency: r.agency_name,
+      title: r.short_title || null,
+      pin: r.pin || null,
+    }, enrichment);
+    // Prefer the City Record notice as the stage source; flag enrichment source in detail.
+    // When package documents joined, source still names city-record for the notice itself;
+    // documents_status + enrichment_source drive the documents sub-slot.
     timeline.push(stageEntry(STAGE_SOLICITATION, "matched", "city-record", {
       date: r.start_date || null,
       source_timestamp: r.start_date || null,
-      detail: {
-        request_id: r.request_id,
-        agency: r.agency_name,
-        title: r.short_title || null,
-        pin: r.pin || null,
-      },
+      documents_status: docsStatus,
+      detail,
+    }));
+  } else if (isAward && enrichment.status === "matched" && enrichment.match) {
+    // Award notice with a linked solicitation package from Current Solicitations.
+    // Only prepend on a positive join — do not invent an empty solicitation stage for every award.
+    const m = enrichment.match;
+    const detail = applySolicitationDetail({
+      request_id: m.request_id,
+      agency: m.agency_name,
+      title: m.short_title || null,
+      pin: m.pin || r.pin || null,
+    }, enrichment);
+    timeline.push(stageEntry(STAGE_SOLICITATION, "matched", CURRENT_SOLICITATIONS_SOURCE, {
+      date: m.start_date || null,
+      source_timestamp: m.start_date || null,
+      documents_status: docsStatus,
+      detail,
     }));
   }
 
@@ -224,6 +269,12 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
       timeline,
       amendments: [],
       ok: true,
+      solicitation_enrichment: {
+        status: enrichment.status,
+        basis: enrichment.basis,
+        documents_status: docsStatus,
+        source: CURRENT_SOLICITATIONS_SOURCE,
+      },
     };
   }
 
@@ -351,6 +402,12 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
     timeline,
     amendments,
     ok,
+    solicitation_enrichment: {
+      status: enrichment.status,
+      basis: enrichment.basis,
+      documents_status: docsStatus,
+      source: CURRENT_SOLICITATIONS_SOURCE,
+    },
   };
 }
 

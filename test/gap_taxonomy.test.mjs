@@ -40,7 +40,7 @@ function extractConst(name) {
 }
 
 const windowStub = { LANG: "en", LANG_META: { en: { intlDate: "en-US" } } };
-const { t } = new Function("window", i18nSrc + "\nreturn { t: window.t };")(windowStub);
+const { t, tn } = new Function("window", i18nSrc + "\nreturn { t: window.t, tn: window.tn };")(windowStub);
 
 function money(n) {
   if (n == null || !Number.isFinite(+n)) return null;
@@ -56,7 +56,7 @@ function escUiHtml(s) {
 }
 
 const helpers = new Function(
-  "t", "money", "fdate", "cleanText", "escUiHtml",
+  "t", "tn", "money", "fdate", "cleanText", "escUiHtml",
   `
   const extSR = () => '<span class="sr-only"> (opens in new tab)</span>';
   const REQ_URL = (id) => 'https://a856-cityrecord.nyc.gov/RequestDetail/' + encodeURIComponent(id);
@@ -65,6 +65,7 @@ const helpers = new Function(
   const CHECKBOOK_SPENDING_URL = 'https://www.checkbooknyc.com/spending_search';
   const PASSPORT_CONTRACTS_URL = 'https://a0333-passportpublic.nyc.gov/contracts.html';
   const PASSPORT_RFX_URL = 'https://a0333-passportpublic.nyc.gov/rfx.html';
+  const CURRENT_SOLICITATIONS_URL = 'https://data.cityofnewyork.us/d/3khw-qi8f';
   const LIFECYCLE_STAGE_ORDER = {solicitation:0, award:1, pending:2, registered:3, payment:4};
   ` +
   extractFn("lifecycleStageLabel") +
@@ -75,6 +76,7 @@ const helpers = new Function(
   extractFn("lifecycleHasLaterMatched") +
   extractFn("lifecyclePublicStatus") +
   extractFn("lifecycleSourceLink") +
+  extractFn("lifecycleDocumentsHTML") +
   extractFn("lifecycleStageHTML") +
   extractFn("lifecycleTimelineHTML") +
   extractFn("subsidyStageLabel") +
@@ -84,7 +86,7 @@ const helpers = new Function(
   `
   return { lifecycleTimelineHTML, subsidyLifecycleHTML, meetingOutcomesHTML, t };
   `,
-)(t, money, fdate, cleanText, escUiHtml);
+)(t, tn, money, fdate, cleanText, escUiHtml);
 
 const { lifecycleTimelineHTML, subsidyLifecycleHTML, meetingOutcomesHTML } = helpers;
 
