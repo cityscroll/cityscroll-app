@@ -44,7 +44,7 @@ const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const REQ_URL = (id) => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
 
 export async function runAlerts(env, watches = cfg.watches || []) {
-  const FROM = env.ALERTS_FROM || "CityScroll <alerts@crol-list.org>";
+  const FROM = env.ALERTS_FROM || "CityScroll <alerts@cityscroll.org>";
   const LIVE = env.ALERTS_LIVE === "true";
   const maxPerRun = Number(env.MAX_PER_RUN) || 25;            // most emails one cron firing may send
   const maxPerDay = Number(env.MAX_SENDS_PER_DAY) || 50;      // daily ceiling, kept below Resend's free 100/day
@@ -70,20 +70,29 @@ export async function runAlerts(env, watches = cfg.watches || []) {
       const seen = await getSeen(env, w.id);
       const fresh = dedupeFreshByContent(rows.filter((r) => r.request_id && !seen.has(r.request_id)));
 
-      const { allow: send, capped } = capDecision({
-        want: fresh.length > 0 && LIVE && !!w.email,
+      const { allow: underCap, capped } = capDecision({
+        want: fresh.length > 0 && !!w.email,
         counts: { "per-run": sentThisRun, daily: sentToday },
         caps: { "per-run": maxPerRun, daily: maxPerDay },
       });
+      const send = underCap && LIVE;
 
-      if (send) {
-        await sendEmail(env, FROM, w.email, `CityScroll: ${fresh.length} new for "${w.label}"`, digestHtml(w, fresh), listUnsubscribe(FROM, w.id));
-        sentThisRun++; sentToday++;
-        await setSendCount(env, day, sentToday);
-        await bumpStatAllTime(env.ALERT_STATE, "digest");
-        await bumpHistDay(env.ALERT_STATE, "digest", new Date());
-        await bumpDigestCategories(env, fresh, w.type);
-        emitUsageEvent(env, { event: "digest_sent", lens: w.type, surface: "email" });
+      if (underCap) {
+        const subject = `CityScroll: ${fresh.length} new for "${w.label}"`;
+        const html = digestHtml(w, fresh);
+        const listUnsub = listUnsubscribe(FROM, w.id);
+        if (send) {
+          await sendEmail(env, FROM, w.email, subject, html, listUnsub);
+          sentThisRun++; sentToday++;
+          await setSendCount(env, day, sentToday);
+          await bumpStatAllTime(env.ALERT_STATE, "digest");
+          await bumpHistDay(env.ALERT_STATE, "digest", new Date());
+          await bumpDigestCategories(env, fresh, w.type);
+          emitUsageEvent(env, { event: "digest_sent", lens: w.type, surface: "email" });
+        } else {
+          // ALERTS_LIVE dry-run: render full payload, never call Resend / never bump counters.
+          logDryRunEmail(emailPayload(env, FROM, w.email, subject, html, listUnsub));
+        }
       }
 
       // Mark seen only when NOT capped. A capped watch is deferred — leave its notices unseen
@@ -196,13 +205,14 @@ export async function processOneSub(env, s, ctx) {
     const effectiveCount = fresh.length + forecasts.length;
     const decision = digestDecision({ freshCount: effectiveCount, freq: s.freq, lastSentDate: since, today: ctx.today, heartbeatDays: ctx.heartbeatDays });
 
-    const { allow: send, capped } = capDecision({
-      want: (decision.action !== "none" || forecasts.length > 0) && ctx.LIVE && !!s.email,
+    const { allow: underCap, capped } = capDecision({
+      want: (decision.action !== "none" || forecasts.length > 0) && !!s.email,
       counts: ctx.counts(),
       caps: ctx.caps,
     });
+    const send = underCap && ctx.LIVE;
 
-    if (send) {
+    if (underCap) {
       const label = describeFilter(s.lens, s.filter);
       const unsubUrl = await unsubLink(env, s.key);
       let subject, html;
@@ -234,17 +244,22 @@ export async function processOneSub(env, s, ctx) {
           : `CityScroll: still watching — ${label}`;
         html = quietHtml(label, decision.action, since, unsubUrl, lang, healthNote);
       }
-      await sendEmail(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true);
-      await ctx.onSent();
-      await setLastSent(env, s.key, ctx.today);   // only on a real send, so the heartbeat clock tracks actual email
-      await bumpStatAllTime(env.ALERT_STATE, "digest");
-      await bumpHistDay(env.ALERT_STATE, "digest", new Date());
-      if (fresh.length) await bumpDigestCategories(env, fresh, s.lens);
-      emitUsageEvent(env, { event: "digest_sent", lens: s.lens, surface: "email" });
+      if (send) {
+        await sendEmail(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true);
+        await ctx.onSent();
+        await setLastSent(env, s.key, ctx.today);   // only on a real send, so the heartbeat clock tracks actual email
+        await bumpStatAllTime(env.ALERT_STATE, "digest");
+        await bumpHistDay(env.ALERT_STATE, "digest", new Date());
+        if (fresh.length) await bumpDigestCategories(env, fresh, s.lens);
+        emitUsageEvent(env, { event: "digest_sent", lens: s.lens, surface: "email" });
+      } else {
+        // ALERTS_LIVE dry-run: render full payload, never call Resend / never bump counters.
+        logDryRunEmail(emailPayload(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true));
+      }
     }
 
     if (rows.length && !capped) await markSeen(env, s.key, rows.map((r) => r[q.idField]).filter(Boolean));
-    return { sub: maskKey(s.key), lens: s.lens, found: rows.length, new: fresh.length, forecasts: forecasts.length, action: decision.action, sent: send, capped };
+    return { sub: maskKey(s.key), lens: s.lens, found: rows.length, new: fresh.length, forecasts: forecasts.length, action: decision.action, sent: send, dryRun: underCap && !ctx.LIVE, capped };
   } catch (e) {
     return { sub: maskKey(s.key), error: String(e?.message || e) };
   }
@@ -273,24 +288,29 @@ export async function processAwardSub(env, s, ctx) {
     const seen = await getSeen(env, seenId);
     const fresh = candidates.filter((c) => c.key && !seen.has(c.key));
 
-    const { allow: send, capped } = capDecision({
-      want: fresh.length > 0 && ctx.LIVE && !!s.email,
+    const { allow: underCap, capped } = capDecision({
+      want: fresh.length > 0 && !!s.email,
       counts: ctx.counts(),
       caps: ctx.caps,
     });
+    const send = underCap && ctx.LIVE;
 
-    if (send) {
+    if (underCap) {
       const lang = s.lang || "en";
       const unsubUrl = await unsubLink(env, s.key);
       const subject = emailT(lang, "award_watch_subject", { agency: filter.agency || "" });
       const html = awardWatchDigestHtml(fresh, filter, unsubUrl, lang);
-      await sendEmail(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true);
-      await ctx.onSent();
-      await setLastSent(env, s.key, ctx.today);
-      await bumpStatAllTime(env.ALERT_STATE, "digest");
-      await bumpHistDay(env.ALERT_STATE, "digest", new Date());
-      await bumpCategoryStat(env.ALERT_STATE, "digest", "award-watch");
-      emitUsageEvent(env, { event: "digest_sent", surface: "email" });
+      if (send) {
+        await sendEmail(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true);
+        await ctx.onSent();
+        await setLastSent(env, s.key, ctx.today);
+        await bumpStatAllTime(env.ALERT_STATE, "digest");
+        await bumpHistDay(env.ALERT_STATE, "digest", new Date());
+        await bumpCategoryStat(env.ALERT_STATE, "digest", "award-watch");
+        emitUsageEvent(env, { event: "digest_sent", surface: "email" });
+      } else {
+        logDryRunEmail(emailPayload(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true));
+      }
     }
 
     // Every candidate seen this run is marked, sent or not — a candidate that showed up while
@@ -338,7 +358,7 @@ export async function consumeDigestJob(env, key) {
   const day = new Date().toISOString().slice(0, 10);
   let daily = await getSendCount(env, day);
   const ctx = {
-    FROM: env.ALERTS_FROM || "CityScroll <alerts@crol-list.org>",
+    FROM: env.ALERTS_FROM || "CityScroll <alerts@cityscroll.org>",
     LIVE: env.ALERTS_LIVE === "true",
     heartbeatDays: Number(env.HEARTBEAT_DAYS) || 14,
     today: day,
@@ -457,18 +477,45 @@ function digestHtml(w, rows) {
     <h2 style="font-family:system-ui">CityScroll — ${esc(w.label)}</h2>
     <p style="color:#555">${rows.length} new ${rows.length === 1 ? "notice" : "notices"} in The City Record.</p>
     <ul style="list-style:none;padding:0">${items}</ul>
-    <p style="color:#999;font-size:12px">You subscribed to this slice on cityscroll.org. <a href="mailto:alerts@crol-list.org?subject=unsubscribe">Unsubscribe</a>.</p>
+    <p style="color:#999;font-size:12px">You subscribed to this slice on cityscroll.org. <a href="mailto:alerts@cityscroll.org?subject=unsubscribe">Unsubscribe</a>.</p>
   </div>`;
 }
 
-async function sendEmail(env, from, to, subject, html, listUnsub, oneClick) {
-  const body = { from, to, subject, html };
+// Human replies need a mailbox that can actually receive. cityscroll.org has no apex MX
+// (so replies to alerts@cityscroll.org bounce); crol-list.org still has Cloudflare email
+// routing. Prefer ALERTS_REPLY_TO, then the address that used to be the digest From.
+function replyToAddress(env) {
+  return env.ALERTS_REPLY_TO || "alerts@crol-list.org";
+}
+
+// Build the Resend payload shape used by both live sends and ALERTS_LIVE dry-run logging.
+function emailPayload(env, from, to, subject, html, listUnsub, oneClick) {
+  const body = { from, to, subject, html, reply_to: replyToAddress(env) };
   // List-Unsubscribe: clients render a native Unsubscribe button. mailto form (legacy config
   // watches) lands at the reply address; https form + List-Unsubscribe-Post = RFC 8058 one-click.
   if (listUnsub) {
     body.headers = { "List-Unsubscribe": listUnsub };
     if (oneClick) body.headers["List-Unsubscribe-Post"] = "List-Unsubscribe=One-Click";
   }
+  return body;
+}
+
+function logDryRunEmail(payload) {
+  console.log("alerts dry-run (no send):", JSON.stringify({
+    from: payload.from,
+    reply_to: payload.reply_to,
+    to: payload.to,
+    subject: payload.subject,
+    listUnsub: payload.headers?.["List-Unsubscribe"] || null,
+    htmlBytes: payload.html ? payload.html.length : 0,
+    html: payload.html,
+    headers: payload.headers || null,
+  }));
+}
+
+async function sendEmail(env, from, to, subject, html, listUnsub, oneClick) {
+  // Callers must gate on ALERTS_LIVE / ctx.LIVE before invoking — this only hits Resend.
+  const body = emailPayload(env, from, to, subject, html, listUnsub, oneClick);
   const r = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: { "content-type": "application/json", authorization: `Bearer ${env.RESEND_API_KEY}` },
@@ -570,7 +617,7 @@ async function isMirrorFresh(db, todayISO) {
 
 // A one-click unsubscribe URL: a long-lived signed token carrying the sub's KV key.
 async function unsubLink(env, subKey) {
-  if (!env.TOKEN_SECRET) return "mailto:alerts@crol-list.org?subject=unsubscribe";
+  if (!env.TOKEN_SECRET) return "mailto:alerts@cityscroll.org?subject=unsubscribe";
   const base = env.CONFIRM_BASE || "https://api.cityscroll.org"; // branded custom domain (workers.dev stays an alias)
   const token = await signToken(env.TOKEN_SECRET, { k: subKey }, { ttlSeconds: 60 * 24 * 3600 });
   return `${base}/unsubscribe?token=${encodeURIComponent(token)}`;
