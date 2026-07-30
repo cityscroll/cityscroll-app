@@ -56,7 +56,7 @@
       ],
       "publisher_cadence": "Daily",
       "product_freshness": "Freshness depends on the Build NYC document publication page; the worker caches joined lifecycle records for read-path latency.",
-      "used_for": "City Record \u2194 Build NYC subsidy timeline joins for application, hearing, board, closing, and compliance stages.",
+      "used_for": "City Record ↔ Build NYC subsidy timeline joins for application, hearing, board, closing, and compliance stages.",
       "code_references": [
         {
           "path": "worker/src/subsidy_lifecycle.mjs",
@@ -191,7 +191,7 @@
     },
     {
       "id": "abo-local-authorities",
-      "name": "NYS Authorities Budget Office \u2014 local authorities",
+      "name": "NYS Authorities Budget Office — local authorities",
       "owner": "NYS Authorities Budget Office",
       "status": "live",
       "scope": "runtime",
@@ -220,7 +220,7 @@
     },
     {
       "id": "abo-local-development-corporations",
-      "name": "NYS Authorities Budget Office \u2014 local development corporations",
+      "name": "NYS Authorities Budget Office — local development corporations",
       "owner": "NYS Authorities Budget Office",
       "status": "live",
       "scope": "runtime",
@@ -249,7 +249,7 @@
     },
     {
       "id": "abo-state-authorities",
-      "name": "NYS Authorities Budget Office \u2014 state authorities",
+      "name": "NYS Authorities Budget Office — state authorities",
       "owner": "NYS Authorities Budget Office",
       "status": "live",
       "scope": "runtime",
@@ -402,7 +402,7 @@
     },
     {
       "id": "zap-projects",
-      "name": "Zoning Application Portal \u2014 projects",
+      "name": "Zoning Application Portal — projects",
       "owner": "NYC Department of City Planning",
       "status": "live",
       "scope": "runtime",
@@ -431,7 +431,7 @@
     },
     {
       "id": "zap-bbl",
-      "name": "Zoning Application Portal \u2014 tax lots",
+      "name": "Zoning Application Portal — tax lots",
       "owner": "NYC Department of City Planning",
       "status": "live",
       "scope": "runtime",
@@ -460,7 +460,7 @@
     },
     {
       "id": "zap-api-outcomes",
-      "name": "Zoning Application Portal \u2014 project outcomes (Planning Labs API)",
+      "name": "Zoning Application Portal — project outcomes (Planning Labs API)",
       "owner": "NYC Department of City Planning",
       "status": "live",
       "scope": "runtime",
@@ -1251,7 +1251,7 @@
       "publisher_cadence": "Historical series labeled 1999 to 2024; meetings end 2024-12-19; resource Last-Modified 2025-12-30",
       "product_freshness": "Disabled for product materialization. Historical event identity only; modern depth uses authenticated Legistar Web API instead.",
       "used_for": "No current product output for modern notice detail. Measured as an event-identity recon source only (no vote or agenda-item columns).",
-      "gap": "Open Data m48u-yjt8 freezes at 2024-12-19: modern City Council notice join is 0%; historical 2019\u20132024 strict event join 73.41%. No vote/agenda-item columns. Superseded for modern depth by authenticated Legistar Web API (see nyc-council-legistar join_measurement, 100% modern event join). Kept disabled for product materialization.",
+      "gap": "Open Data m48u-yjt8 freezes at 2024-12-19: modern City Council notice join is 0%; historical 2019–2024 strict event join 73.41%. No vote/agenda-item columns. Superseded for modern depth by authenticated Legistar Web API (see nyc-council-legistar join_measurement, 100% modern event join). Kept disabled for product materialization.",
       "join_keys": [
         "event_id",
         "agency",
@@ -1385,6 +1385,175 @@
         }
       ],
       "delivery_tier": "edge-materialized"
+    },
+    {
+      "id": "ulurp-recommendations",
+      "name": "ULURP Recommendations (Borough President positions)",
+      "owner": "Brooklyn Borough President / NYC Open Data",
+      "status": "disabled",
+      "scope": "runtime",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "4j6i-9rmr",
+      "landing_page": "https://data.cityofnewyork.us/d/4j6i-9rmr",
+      "required_fields": [
+        "ulurp_number_s",
+        "borough_president",
+        "recommendation_date",
+        "community_board_s",
+        "ulurp_application_name"
+      ],
+      "max_stale_days": 5000,
+      "publisher_cadence": "Historical / irregular Brooklyn Borough President recommendations (resource Last-Modified 2021-06-29; 91 rows)",
+      "product_freshness": "Disabled for product reads. Schema probes tolerate multi-year freeze via max_stale_days because the publication is intentionally historical and borough-scoped.",
+      "used_for": "No current product output. Ranked land-outcome depth candidate was measured; strict ULURP-number join usefulness is below the materialization threshold.",
+      "gap": "Strict ULURP-token joins from ZAP projects with non-null ulurp_numbers cover 0.54% when combined with the PDF companion (gt5i-dmde) and 0.29% for this table alone (81/27,971) — both below the ~30% usefulness threshold. The catalog is Brooklyn Borough President history (91 rows), not a citywide live feed. Property Disposition notices are the wrong universe for this join. Borough President / community board recommendation letters remain not-yet-ingested on the land path until a higher-coverage source ships or usefulness is re-measured above threshold.",
+      "join_keys": [
+        "ulurp_numbers",
+        "ulurp_number_s"
+      ],
+      "join_measurement": {
+        "observed_on": "2026-07-30",
+        "universe": "NYC Open Data ZAP projects (hgx4-8ukb) with non-null ulurp_numbers",
+        "universe_count": 27971,
+        "strategy": "exact_ulurp_token (optional type letter + 6-digit body + letter suffix; spaces optional). Bare body without suffix, title-only, and Property Disposition notice sampling rejected.",
+        "usefulness_threshold": 0.3,
+        "rates": {
+          "zap_ulurp_numbered_either": {
+            "joined": 152,
+            "total": 27971,
+            "rate": 0.0054
+          },
+          "zap_ulurp_numbered_recommendations": {
+            "joined": 81,
+            "total": 27971,
+            "rate": 0.0029
+          },
+          "zap_ulurp_numbered_pdfs": {
+            "joined": 71,
+            "total": 27971,
+            "rate": 0.0025
+          },
+          "recommendation_rows_hit_zap": {
+            "joined": 80,
+            "total": 91,
+            "rate": 0.8791
+          },
+          "pdf_rows_hit_zap": {
+            "joined": 73,
+            "total": 88,
+            "rate": 0.8295
+          }
+        },
+        "verdict": "Below usefulness threshold (~30%) on ZAP projects with non-null ulurp_numbers (0.54% either recommendations or PDFs). Ship measured reconnaissance + disabled source contracts only; do not edge-materialize Borough President recommendation panels. Keep the class-(a) land-outcome pointer."
+      },
+      "code_references": [
+        {
+          "path": "worker/src/lib/ulurp_recommendations_join.mjs",
+          "contains": "joinZapUlurpToRecommendations"
+        },
+        {
+          "path": "site/data/ulurp_recommendation_sources/README.md",
+          "contains": "4j6i-9rmr"
+        },
+        {
+          "path": "site/data/ulurp_recommendation_sources/verification_receipts/ulurp_recommendations_2026-07-30.json",
+          "contains": "ulurp-recommendations"
+        },
+        {
+          "path": "test/fixtures/ulurp_recommendations/join_cases.json",
+          "contains": "joined-brooklyn-bp-spaced"
+        },
+        {
+          "path": "test/ulurp_recommendations_join.test.mjs",
+          "contains": "ulurp-recommendations"
+        }
+      ],
+      "delivery_tier": "live-only"
+    },
+    {
+      "id": "ulurp-recommendation-pdfs",
+      "name": "ULURP Recommendation PDFs",
+      "owner": "NYC Open Data (Borough President PDF companion)",
+      "status": "disabled",
+      "scope": "runtime",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "gt5i-dmde",
+      "landing_page": "https://data.cityofnewyork.us/d/gt5i-dmde",
+      "required_fields": [
+        "ulurp_application_number",
+        "pdf_download",
+        "date",
+        "project"
+      ],
+      "max_stale_days": 5000,
+      "publisher_cadence": "Historical / irregular PDF companion letters (resource Last-Modified 2018-01-25; 88 rows)",
+      "product_freshness": "Disabled for product reads. Schema probes tolerate multi-year freeze via max_stale_days because the publication is intentionally historical.",
+      "used_for": "No current product output. PDF companion to Borough President ULURP recommendations; measured below materialization usefulness with the position table.",
+      "gap": "Strict ULURP-token joins from ZAP projects with non-null ulurp_numbers cover 0.25% for this PDF table alone (71/27,971) and 0.54% combined with 4j6i-9rmr — below the ~30% usefulness threshold. Deep-link field is pdf_download (letter URL), not the dataset landing page. Kept disabled for product materialization alongside ulurp-recommendations.",
+      "join_keys": [
+        "ulurp_numbers",
+        "ulurp_application_number"
+      ],
+      "join_measurement": {
+        "observed_on": "2026-07-30",
+        "universe": "NYC Open Data ZAP projects (hgx4-8ukb) with non-null ulurp_numbers",
+        "universe_count": 27971,
+        "strategy": "exact_ulurp_token (optional type letter + 6-digit body + letter suffix; spaces optional). Bare body without suffix, title-only, and Property Disposition notice sampling rejected.",
+        "usefulness_threshold": 0.3,
+        "rates": {
+          "zap_ulurp_numbered_either": {
+            "joined": 152,
+            "total": 27971,
+            "rate": 0.0054
+          },
+          "zap_ulurp_numbered_recommendations": {
+            "joined": 81,
+            "total": 27971,
+            "rate": 0.0029
+          },
+          "zap_ulurp_numbered_pdfs": {
+            "joined": 71,
+            "total": 27971,
+            "rate": 0.0025
+          },
+          "recommendation_rows_hit_zap": {
+            "joined": 80,
+            "total": 91,
+            "rate": 0.8791
+          },
+          "pdf_rows_hit_zap": {
+            "joined": 73,
+            "total": 88,
+            "rate": 0.8295
+          }
+        },
+        "verdict": "Below usefulness threshold (~30%) on ZAP projects with non-null ulurp_numbers (0.54% either recommendations or PDFs). Ship measured reconnaissance + disabled source contracts only; do not edge-materialize Borough President recommendation panels. Keep the class-(a) land-outcome pointer."
+      },
+      "code_references": [
+        {
+          "path": "worker/src/lib/ulurp_recommendations_join.mjs",
+          "contains": "cleanUrl"
+        },
+        {
+          "path": "site/data/ulurp_recommendation_sources/README.md",
+          "contains": "gt5i-dmde"
+        },
+        {
+          "path": "site/data/ulurp_recommendation_sources/verification_receipts/ulurp_recommendations_2026-07-30.json",
+          "contains": "ulurp-recommendation-pdfs"
+        },
+        {
+          "path": "test/fixtures/ulurp_recommendations/join_cases.json",
+          "contains": "joined-pdf-type-letter"
+        },
+        {
+          "path": "test/ulurp_recommendations_join.test.mjs",
+          "contains": "ulurp-recommendation-pdfs"
+        }
+      ],
+      "delivery_tier": "live-only"
     }
   ]
 }
