@@ -63,6 +63,9 @@ const sandbox = new Function(
   extractFn("lifecycleGapSourceName") +
   extractFn("lifecycleHasLaterMatched") +
   extractFn("lifecyclePublicStatus") +
+  extractFn("lifecycleMatchedRegisteredDetail") +
+  extractConst("LIFECYCLE_DOLLARS_ANCHOR") +
+  extractFn("lifecyclePaymentSummaryHTML") +
   extractFn("lifecycleSourceLink") +
   extractFn("lifecycleDocumentsHTML") +
   extractFn("lifecycleStageHTML") +
@@ -133,8 +136,9 @@ const HNTB_LIFECYCLE_RAW = {
         mwbe: "Non-M/WBE",
       },
     },
-    // Symptom: spending lookup failed while registered join succeeded
-    { stage: "payment", status: "unknown", source: "checkbook-spending", date: null, detail: null },
+    // Live 2026-07-30 shape: empty spending feed while registered join carries spent_to_date: 0
+    // (false gap if rendered as "not yet shown" in parallel with Follow-the-Dollars $0 paid).
+    { stage: "payment", status: "unmatched", source: "checkbook-spending", date: null, detail: null },
   ],
 };
 
@@ -208,11 +212,38 @@ test("HNTB field case: Follow-the-Dollars and payments stage agree (no unreachab
   assert.doesNotMatch(dollars + timeline, LITERAL_NULL);
 });
 
-test("HNTB field case: registered spent/current line never renders literal null", () => {
+// Named after the live symptom on #notice/20260623008: payments card + Follow-the-Dollars
+// both showed "Not yet shown here — payments live in Checkbook NYC spending" while the same
+// panel also showed Paid to date $0 (0%) with the normal-lag explanation.
+test("joined payments rendered as not-shown, duplicated: payments card summarizes join; gap only when absent", () => {
+  const timeline = lifecycleTimelineHTML(HNTB_LIFECYCLE_RAW, HNTB_NOTICE);
+  const dollars = lifecycleDollarsHTML(HNTB_LIFECYCLE_RAW, HNTB_NOTICE);
+  const both = timeline + dollars;
+  // No class-(a) payment gap while registered join exists
+  assert.doesNotMatch(both, /Not yet shown here — payments live in/i);
+  assert.doesNotMatch(both, /payments live in Checkbook NYC spending/i);
+  // Payments card: summary + $0 lag + anchor to dollars (one owner; dollars is detail)
+  assert.match(timeline, /\$0 paid of \$13\.5/i);
+  assert.match(timeline, /Payments lag invoicing/i);
+  assert.match(timeline, /href="#follow-the-dollars"/);
+  assert.match(timeline, /class="box matched"/);
+  // Dollars is the detail owner: Paid to date $0, lag in provenance — no second gap line
+  assert.match(dollars, /Paid to date/i);
+  assert.match(dollars, /\$0/);
+  assert.match(dollars, /id="follow-the-dollars"/);
+  assert.doesNotMatch(dollars, CLASS_A);
+  // Gap copy must not appear twice across the panel
+  const gapHits = (both.match(/Not yet shown here/g) || []).length;
+  assert.equal(gapHits, 0, "no not-yet-shown when Checkbook join is present");
+});
+
+test("HNTB field case: registration card owns registration, not a second paid bar", () => {
   const html = lifecycleTimelineHTML(HNTB_LIFECYCLE_RAW, HNTB_NOTICE);
-  // money(0) used to stringify as "null / $13.53M (0%)"
   assert.doesNotMatch(html, /null\s*\/\s*\$/);
-  assert.match(html, /\$0\s*\/\s*\$13\.5/);
+  // Paid summary lives on the payments card, not as $0 / $13.53M on registered
+  assert.doesNotMatch(html, /\$0\s*\/\s*\$13\.5/);
+  assert.match(html, /Registered contract/i);
+  assert.match(html, /\$0 paid of \$13\.5/i);
 });
 
 // ---------------------------------------------------------------------------
@@ -254,7 +285,10 @@ test("assembleLifecycle: spending error with registered match does not leave pay
   const pay = result.timeline.find((e) => e.stage === "payment");
   const pending = result.timeline.find((e) => e.stage === "pending");
   assert.notEqual(pay.status, "unknown");
-  assert.equal(pay.status, "unmatched"); // spent 0 → taxonomy unmatched, not transient
+  // spent 0 on the registered contract is a joined payment fact (normal lag), not a gap
+  assert.equal(pay.status, "matched");
+  assert.equal(pay.detail.total_spent, 0);
+  assert.equal(pay.detail.derived_from, "registered");
   assert.equal(pending.status, "passed"); // registered present → pending superseded
   assert.equal(result.ok, true); // recoverable partial join is cacheable
 });

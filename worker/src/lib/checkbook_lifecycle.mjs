@@ -328,6 +328,9 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
 
   // --- Checkbook spending stage ---
   // Multiple payments are normal over a contract's life, so 1+ records = matched.
+  // When the registered contracts join already carries spent_to_date (including $0),
+  // payment is a known fact from that join — never a "not yet shown" gap in parallel
+  // with Follow-the-Dollars Paid to date. Gap only when no registered Checkbook record.
   let spendStatus;
   let payDetail = null;
   let payDate = null;
@@ -346,29 +349,21 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
       latest_payment_amount: latestPayment ? latestPayment.amount : null,
       fiscal_year: latestPayment ? latestPayment.year : null,
     };
+  } else if (regStatus === "matched") {
+    // Empty spending feed or spending-domain error: still a joined payment fact from
+    // the registered contract (spent_to_date, including $0 / normal lag).
+    const spent = Number(registered[0].spent) || 0;
+    spendStatus = "matched";
+    payDetail = {
+      total_payments: null,
+      total_spent: spent,
+      latest_payment_date: null,
+      latest_payment_amount: null,
+      fiscal_year: null,
+      derived_from: "registered",
+    };
   } else if (lookupStatus.spending === "error") {
-    // Recover from registered.spent_to_date when the spending domain failed but the
-    // contracts join already carries paid-to-date — never leave payment as "unknown"
-    // when Follow-the-Dollars can show Checkbook data from the same join.
-    if (regStatus === "matched") {
-      const spent = Number(registered[0].spent) || 0;
-      if (spent > 0) {
-        spendStatus = "matched";
-        payDetail = {
-          total_payments: null,
-          total_spent: spent,
-          latest_payment_date: null,
-          latest_payment_amount: null,
-          fiscal_year: null,
-          derived_from: "registered",
-        };
-      } else {
-        // $0 on the registered contract = no payments yet → taxonomy unmatched
-        spendStatus = "unmatched";
-      }
-    } else {
-      spendStatus = "unknown";
-    }
+    spendStatus = "unknown";
   } else {
     spendStatus = "unmatched";
   }
