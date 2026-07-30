@@ -406,17 +406,43 @@ export async function runSmoke({
   return { ok: false, results: lastResults, attempts, failures: lastFailures };
 }
 
+/**
+ * Build smoke targets from CLI options.
+ * --url may be repeated; --base-url expands the default deep-route set on one host.
+ */
+export function targetsFromCli(opts) {
+  if (opts.urls?.length) {
+    return opts.urls.map((url, index) => ({
+      id: `url-${index + 1}`,
+      url,
+      marker: CONTENT_MARKER,
+    }));
+  }
+  if (opts.baseUrl) {
+    const base = String(opts.baseUrl).replace(/\/+$/, "");
+    return [
+      { id: "base-apex", url: `${base}/`, marker: CONTENT_MARKER },
+      { id: "base-about", url: `${base}/about.html`, marker: CONTENT_MARKER },
+    ];
+  }
+  return DEFAULT_TARGETS;
+}
+
 function parseArgs(argv) {
   const opts = {
     timeoutMs: DEFAULT_TIMEOUT_MS,
     intervalMs: DEFAULT_INTERVAL_MS,
     requestTimeoutMs: DEFAULT_REQUEST_TIMEOUT_MS,
+    urls: [],
+    baseUrl: null,
   };
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
     if (arg === "--timeout-ms") opts.timeoutMs = Number(argv[++i]);
     else if (arg === "--interval-ms") opts.intervalMs = Number(argv[++i]);
     else if (arg === "--request-timeout-ms") opts.requestTimeoutMs = Number(argv[++i]);
+    else if (arg === "--url") opts.urls.push(argv[++i]);
+    else if (arg === "--base-url") opts.baseUrl = argv[++i];
     else if (arg === "--help" || arg === "-h") opts.help = true;
   }
   return opts;
@@ -425,20 +451,29 @@ function parseArgs(argv) {
 export async function main(argv = process.argv.slice(2)) {
   const opts = parseArgs(argv);
   if (opts.help) {
-    console.log(`Usage: node tools/live_url_smoke.mjs [--timeout-ms N] [--interval-ms N]
+    console.log(`Usage: node tools/live_url_smoke.mjs [options]
 
-Probes ${DEFAULT_TARGETS.map((t) => t.url).join(", ")}
-until each returns HTTP 200 with a CityScroll content marker, or the retry window ends.
+Options:
+  --timeout-ms N
+  --interval-ms N
+  --request-timeout-ms N
+  --base-url https://host.example   Probe / and /about.html on one host
+  --url https://host.example/path   Probe an explicit URL (repeatable)
+
+Default probes: ${DEFAULT_TARGETS.map((t) => t.url).join(", ")}
+Each target must return HTTP 200 with a CityScroll content marker, or the retry window ends.
 `);
     return 0;
   }
 
+  const targets = targetsFromCli(opts);
   console.log(
-    `live-url smoke: probing ${DEFAULT_TARGETS.length} URLs `
+    `live-url smoke: probing ${targets.length} URLs `
     + `(timeout ${opts.timeoutMs}ms, interval ${opts.intervalMs}ms)`,
   );
 
   const result = await runSmoke({
+    targets,
     timeoutMs: opts.timeoutMs,
     intervalMs: opts.intervalMs,
     requestTimeoutMs: opts.requestTimeoutMs,
