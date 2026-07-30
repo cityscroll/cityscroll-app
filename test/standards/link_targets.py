@@ -94,6 +94,8 @@ EXTERNAL_HREF_EXPRS = (
     "${record.source_url}",       # normalized City Record request-detail URL
     "${escUiHtml(link.url)}",     # notice-supplied remote participation URL
     "${escUiHtml(exam.notice_url)}",  # official DCAS Notice of Examination PDF
+    "${escUiHtml(CrolStaffing.OASY_APPLY_URL)}",  # DCAS OASys application handoff
+    "${escUiHtml(CrolStaffing.DCAS_OPEN_COMPETITIVE_URL)}",  # DCAS open-competitive schedule page
     "${lifecycleSourceUrl}",          # Checkbook NYC contract search or matched contract
     "${CHECKBOOK_SPENDING_URL}",      # Checkbook NYC spending search
     "${escUiHtml(href)}",         # rule-lifecycle chip + comment action: NYC Rules comment/adoption page

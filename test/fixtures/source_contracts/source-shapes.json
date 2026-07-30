@@ -160,7 +160,7 @@
     {
       "id": "dcas-exam-notices",
       "kind": "html",
-      "identifier": "examsforjobs",
+      "identifier": "exam-schedules-open-competitive-exams.page",
       "response_type": "text/html",
       "fields": []
     },

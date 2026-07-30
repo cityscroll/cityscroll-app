@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "source_contract_id": "dcas-exam-notices",
+  "authoritative_feed": {
+    "name": "DCAS Open Competitive Exams for Anyone",
+    "url": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page",
+    "role": "Authoritative public schedule table for currently open application windows and linked Notices of Examination (NOE) PDFs."
+  },
+  "related_feeds": [
+    {
+      "id": "annual-examination-schedule",
+      "dataset_id": "4ptz-hmtc",
+      "url": "https://data.cityofnewyork.us/resource/4ptz-hmtc.json",
+      "role": "Fiscal-year annual schedule with monthly in-year updates; may lag mid-cycle NOE amendments."
+    },
+    {
+      "id": "dcas-annual-exam-outcomes",
+      "url": "https://a860-gpp.nyc.gov/concern/nyc_government_publications/zk51vm65n",
+      "role": "Annual aggregate outcomes only; not used for open-window cards."
+    }
+  ],
+  "update_semantics": {
+    "publisher_claim": "DCAS posts an annual open-competitive schedule and updates the public schedule monthly; individual Notices of Examination can amend application windows between monthly releases.",
+    "product_rule": "While any application window is open, re-check the open-competitive schedule page and linked NOE PDFs daily before rebuilding data/exam_sources/dcas_open_competitive.json.",
+    "stale_after_days_snapshot": 35,
+    "precompute": "Browser loads only data/staffing_exams.json (built by tools/build_staffing_exams.mjs). No live client fetch to DCAS or Open Data for exam cards."
+  },
+  "application_handoff": {
+    "public_url": "https://www.nyc.gov/examsforjobs",
+    "observed_redirect": "https://www.nyc.gov/assets/dcas/html/redirects/oasys.html",
+    "oasys_host": "https://a856-exams.nyc.gov/oasysweb",
+    "note": "CityScroll links the stable public examsforjobs URL; the City's OASys system is where applications are submitted."
+  },
+  "ingested_by_exam_freshness_work": {
+    "open_competitive_snapshot": "data/exam_sources/dcas_open_competitive.json",
+    "outcomes_snapshot": "data/exam_sources/dcas_exam_outcomes.json",
+    "annual_schedule_snapshot": "data/exam_sources/annual_schedule.json",
+    "build_tool": "tools/build_staffing_exams.mjs",
+    "client_artifact": "data/staffing_exams.json"
+  },
+  "verified_at": "2026-07-29",
+  "verified_at_utc": "2026-07-30T03:12:35Z",
+  "http_status": 200,
+  "page_bytes": 25215,
+  "page_sha256": "811b80b9d9245ef7c4739ab042d2771ac6b651342a6a531e3bd003439666dfe2",
+  "observed_exams": [
+    {
+      "exam_number": "7006",
+      "title": "Assistant Civil Engineer",
+      "present_on_page": true,
+      "live_application_start": "2026-07-01",
+      "live_application_end": "2026-08-25",
+      "snapshot_application_start": "2026-07-01",
+      "snapshot_application_end": "2026-08-25",
+      "dates_match": true,
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277006000.pdf"
+    },
+    {
+      "exam_number": "7013",
+      "title": "Automotive Service Worker",
+      "present_on_page": true,
+      "live_application_start": "2026-07-01",
+      "live_application_end": "2026-08-25",
+      "snapshot_application_start": "2026-07-01",
+      "snapshot_application_end": "2026-08-25",
+      "dates_match": true,
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277013000.pdf"
+    },
+    {
+      "exam_number": "7016",
+      "title": "Caseworker",
+      "present_on_page": true,
+      "live_application_start": "2026-07-01",
+      "live_application_end": "2026-08-25",
+      "snapshot_application_start": "2026-07-01",
+      "snapshot_application_end": "2026-08-25",
+      "dates_match": true,
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277016000.pdf"
+    },
+    {
+      "exam_number": "7018",
+      "title": "Caseworker (NYC Health + Hospitals)",
+      "present_on_page": true,
+      "live_application_start": "2026-07-01",
+      "live_application_end": "2026-08-25",
+      "snapshot_application_start": "2026-07-01",
+      "snapshot_application_end": "2026-08-25",
+      "dates_match": true,
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277018000.pdf"
+    },
+    {
+      "exam_number": "6125",
+      "title": "Emergency Medical Specialist - EMT (Fire)",
+      "present_on_page": true,
+      "live_application_start": "2026-06-15",
+      "live_application_end": "2026-08-07",
+      "snapshot_application_start": "2026-06-15",
+      "snapshot_application_end": "2026-08-07",
+      "dates_match": true,
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20266125000.pdf"
+    },
+    {
+      "exam_number": "6126",
+      "title": "Emergency Medical Specialist Trainee",
+      "present_on_page": true,
+      "live_application_start": "2026-06-15",
+      "live_application_end": "2026-08-07",
+      "snapshot_application_start": "2026-06-15",
+      "snapshot_application_end": "2026-08-07",
+      "dates_match": true,
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20266126000.pdf"
+    },
+    {
+      "exam_number": "7323",
+      "title": "School Safety Agent",
+      "present_on_page": true,
+      "live_application_start": "2026-07-01",
+      "live_application_end": "2026-08-25",
+      "snapshot_application_start": "2026-07-01",
+      "snapshot_application_end": "2026-08-25",
+      "dates_match": true,
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277323000.pdf"
+    },
+    {
+      "exam_number": "7331",
+      "title": "Traffic Enforcement Agent",
+      "present_on_page": true,
+      "live_application_start": "2026-07-01",
+      "live_application_end": "2026-08-25",
+      "snapshot_application_start": "2026-07-01",
+      "snapshot_application_end": "2026-08-25",
+      "dates_match": true,
+      "noe_path_present": true,
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277331000.pdf"
+    }
+  ],
+  "snapshot_match": true,
+  "acceptance_exam_numbers": [
+    "6125",
+    "7006",
+    "7013",
+    "7016",
+    "7331"
+  ]
+}

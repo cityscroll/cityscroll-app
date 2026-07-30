@@ -321,12 +321,16 @@
         "data_current_as_of"
       ],
       "max_stale_days": 45,
-      "publisher_cadence": "Annual schedule with in-year updates",
-      "product_freshness": "Operator-built into data/staffing_exams.json; the artifact displays its source date.",
-      "used_for": "Upcoming exam cards and application windows.",
+      "publisher_cadence": "Annual fiscal-year post with monthly in-year updates (publisher description); Open Data metadata may still list annual or quarterly change claims",
+      "product_freshness": "Operator-built into data/staffing_exams.json; the artifact displays its source date. Superseded by the open-competitive schedule page and linked NOEs when application windows are open.",
+      "used_for": "Upcoming exam cards and application windows when no current NOE has been published yet.",
       "code_references": [
         {
           "path": "tools/build_staffing_exams.mjs",
+          "contains": "4ptz-hmtc"
+        },
+        {
+          "path": "data/exam_sources/annual_schedule.json",
           "contains": "4ptz-hmtc"
         }
       ],
@@ -594,19 +598,37 @@
     },
     {
       "id": "dcas-exam-notices",
-      "name": "DCAS exam pages and Notices of Examination",
+      "name": "DCAS open-competitive exam schedule and Notices of Examination",
       "owner": "NYC Department of Citywide Administrative Services",
       "status": "manual",
       "scope": "build-time",
       "kind": "html",
-      "landing_page": "https://www.nyc.gov/examsforjobs",
-      "publisher_cadence": "Updated as exam notices change",
-      "product_freshness": "Manually reviewed during the Staffing build because the page blocks unattended refresh.",
-      "used_for": "Official job details, qualifications, fees, waivers, and application links.",
+      "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page",
+      "publisher_cadence": "Monthly schedule posts with mid-cycle Notice of Examination amendments; re-check daily while any application window is open",
+      "product_freshness": "Operator-reviewed snapshot in data/exam_sources/dcas_open_competitive.json, rebuilt into data/staffing_exams.json. Live HTML sometimes blocks unattended fetch from build networks; verification receipts record live checks.",
+      "used_for": "Current open-competitive application windows, qualifications, fees, fee waivers, Notice of Examination PDF links, and the OASys application handoff.",
+      "application_handoff": "https://www.nyc.gov/examsforjobs",
+      "update_semantics": "The open-competitive schedule page is authoritative for which exams are open now and which NOE PDF is current. The Annual Examination Schedule Open Data dataset (4ptz-hmtc) is the fiscal-year planning table and can lag an amended NOE. Outcomes publications are annual aggregates and never drive open-window cards.",
+      "related_contract_ids": [
+        "annual-examination-schedule",
+        "dcas-annual-exam-outcomes"
+      ],
       "code_references": [
+        {
+          "path": "data/exam_sources/dcas_open_competitive.json",
+          "contains": "dcas-open-competitive"
+        },
         {
           "path": "data/exam_sources/README.md",
           "contains": "dcas_open_competitive.json"
+        },
+        {
+          "path": "tools/build_staffing_exams.mjs",
+          "contains": "dcas-open-competitive"
+        },
+        {
+          "path": "data/exam_sources/verification_receipts/dcas_open_competitive_2026-07-29.json",
+          "contains": "dcas-exam-notices"
         }
       ],
       "delivery_tier": "inline-at-build"
