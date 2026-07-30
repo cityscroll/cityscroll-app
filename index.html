@@ -75,7 +75,14 @@
   .cr-title{font-family:var(--font-nameplate);font-weight:900;font-size:clamp(2.5rem,8vw,4.8rem);line-height:.9;letter-spacing:.01em;text-transform:uppercase;color:var(--ink);margin:.04em 0 .1em}
   .cr-tagline{font-family:var(--font-body);font-size:15px;line-height:1.4;color:var(--ink-soft);margin:0 0 8px}
   /* Today's Edition strip (front page) */
-  #todaystrip{padding:10px 0 8px;border-bottom:1px solid var(--rule)}
+  #todaystrip{box-sizing:border-box;min-height:224px;padding:10px 0 8px;border-bottom:1px solid var(--rule);position:relative}
+  .today-skeleton{position:absolute;inset:10px 0 8px;display:grid;grid-template-rows:12px 25px 18px 1fr;gap:8px;pointer-events:none}
+  .today-skeleton span{display:block;border-radius:5px;background:linear-gradient(90deg,var(--paper-2),#e8dfce,var(--paper-2))}
+  .today-skeleton .today-skeleton-date{width:38%;margin:0 auto}
+  .today-skeleton .today-skeleton-summary{width:56%;margin:0 auto}
+  .today-skeleton .today-skeleton-counts{width:70%;margin:0 auto}
+  .today-skeleton .today-skeleton-cards{width:min(860px,100%);margin:3px auto 0}
+  #todaystrip[aria-busy="false"] .today-skeleton{display:none}
   .t-dateline{font-family:var(--font-sc);font-weight:600;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
   .t-big{font-family:var(--font-display);font-weight:900;font-size:21px;margin:4px 0 3px}
   .t-big b{color:var(--oxblood)}
@@ -89,7 +96,11 @@
   .t-card .tlbl{font:600 9.5px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
   .t-card .tttl{font-weight:700;font-size:13.5px;line-height:1.3;display:block}
   .t-card .tmeta{font:11.5px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:3px;display:block}
-  @media(max-width:680px){.t-cards{grid-template-columns:1fr}.t-big{font-size:18px}}
+  @media(max-width:680px){
+    #todaystrip{min-height:462px}
+    .t-cards{grid-template-columns:1fr}
+    .t-big{font-size:18px}
+  }
 
   .tabs{display:flex;gap:.2rem;justify-content:center;flex-wrap:wrap;margin-top:4px}
   .tabbtn{font-family:var(--font-sc);font-weight:600;font-size:13px;letter-spacing:.15em;text-transform:uppercase;padding:9px 18px;border:0;background:none;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent}
@@ -644,7 +655,13 @@
       <p class="cr-tagline" data-i18n="site_tagline">Subscribe to NYC contracts, rezonings, and hearings that interest you.</p>
     </div>
     <div class="cr-rule cr-rule--mid"></div>
-    <div id="todaystrip" hidden>
+    <div id="todaystrip" aria-busy="true">
+      <div class="today-skeleton" aria-hidden="true">
+        <span class="today-skeleton-date"></span>
+        <span class="today-skeleton-summary"></span>
+        <span class="today-skeleton-counts"></span>
+        <span class="today-skeleton-cards"></span>
+      </div>
       <div class="t-dateline" id="tdate"></div>
       <div class="t-big" id="tbig"></div>
       <div class="t-counts" id="tcounts"></div>
@@ -1432,6 +1449,12 @@ function showTab(name, push){
   if(push) pushHash();
   if(name==="land"){ loadLeaflet().catch(()=>{}); if(!landLoaded || leavingLandEntry){ landLoaded=true; landSearch(); } if(!location.hash.startsWith("#land/")) maybeAutoLocateLand(); if(landMap) setTimeout(()=>landMap.invalidateSize(),120); }
   if(name==="money" && !moneyLoaded) search(); // deep links land on other tabs; Money lazy-loads like the rest
+  if(name==="money" && matchMedia("(max-width:680px)").matches){
+    const controls=document.getElementById("tab-money").querySelector(".controls");
+    const toggle=controls && controls.previousElementSibling;
+    if(controls) controls.classList.add("open");
+    if(toggle && toggle.classList.contains("filtertoggle")) toggle.setAttribute("aria-expanded","true");
+  }
   if(name==="people"){
     if(push) $("#career-guide").hidden=true;
     loadCareerGuide(); loadStaffingFeed();
@@ -1478,7 +1501,9 @@ document.querySelectorAll(".tabbtn").forEach(b=>b.addEventListener("click",()=>s
 /* Mobile: filters collapse behind a toggle (NN/g mobile faceted-search tray, lite) */
 document.querySelectorAll(".tabpane .controls").forEach(c=>{
   const b=document.createElement("button");
-  b.type="button"; b.className="filtertoggle"; b.textContent="☰ " + t("filters_toggle"); b.setAttribute("aria-expanded","false");
+  const startsOpen=!!c.closest("#tab-money") && matchMedia("(max-width:680px)").matches;
+  if(startsOpen) c.classList.add("open");
+  b.type="button"; b.className="filtertoggle"; b.textContent="☰ " + t("filters_toggle"); b.setAttribute("aria-expanded",String(startsOpen));
   c.parentNode.insertBefore(b,c);
   b.addEventListener("click",()=>{ const open=c.classList.toggle("open"); b.setAttribute("aria-expanded", String(open)); });
 });
@@ -4971,7 +4996,7 @@ async function loadToday(){
   if(!d){
     try{
       const [maxr] = await soda({"$select":"max(start_date) as m"});
-      const ed = (maxr && maxr.m || "").slice(0,10); if(!ed) return;
+      const ed = (maxr && maxr.m || "").slice(0,10); if(!ed){ $("#todaystrip").setAttribute("aria-busy","false"); return; }
       const iso = ed + "T00:00:00";
       const [counts, agencies, award, closing, hearing] = await Promise.all([
         soda({"$select":"section_name, count(1) as n","$where":`start_date='${iso}'`,"$group":"section_name","$order":"n DESC"}),
@@ -4982,7 +5007,7 @@ async function loadToday(){
       ]);
       d = {ed, counts, nAgencies: agencies.length, award: award[0]||null, closing: closing[0]||null, hearing: hearing[0]||null};
       try{ localStorage.setItem(KEY, JSON.stringify({at: Date.now(), d})); }catch(e){}
-    }catch(e){ return; }
+    }catch(e){ $("#todaystrip").setAttribute("aria-busy","false"); return; }
     try{ renderToday(d); }catch(e){} // fresh copy replaces the cached strip in place
   }
 }
@@ -5001,7 +5026,7 @@ function renderToday(d){
   if(d.award) cards.push({lbl:t("largest_award_lbl"), t:d.award, meta:`${money(d.award.contract_amount)} — ${d.award.agency_name}`});
   if(d.hearing) cards.push({lbl:t("next_hearing_lbl"), t:d.hearing, meta:`${d.hearing.agency_name} · ${fdt(d.hearing.event_date)}${eventTag(d.hearing.event_date)}`});
   $("#tcards").innerHTML = cards.map(c=>`<a class="t-card" href="#notice/${encodeURIComponent(c.t.request_id)}"><span class="tlbl">${c.lbl}</span><span class="tttl">${cleanText(c.t.short_title)||t("untitled")}</span><span class="tmeta">${c.meta}</span></a>`).join("");
-  $("#todaystrip").hidden = false;
+  $("#todaystrip").setAttribute("aria-busy","false");
 }
 
 /* ===================== RED FLAGS & BENCHMARKS (context, never accusations) =====================

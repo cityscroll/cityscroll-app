@@ -1,0 +1,79 @@
+{
+  "version": 1,
+  "sourceDelayMs": 180,
+  "editionDate": "2026-07-29",
+  "today": {
+    "counts": [
+      {
+        "section_name": "Procurement",
+        "n": "18"
+      },
+      {
+        "section_name": "Public Hearings and Meetings",
+        "n": "7"
+      },
+      {
+        "section_name": "Agency Rules",
+        "n": "4"
+      }
+    ],
+    "agencies": [
+      {
+        "agency_name": "Housing Preservation and Development"
+      },
+      {
+        "agency_name": "Department of Citywide Administrative Services"
+      },
+      {
+        "agency_name": "Department of Transportation"
+      }
+    ],
+    "award": [
+      {
+        "request_id": "20260729001",
+        "short_title": "Supportive housing services for New Yorkers",
+        "agency_name": "Housing Preservation and Development",
+        "contract_amount": "4200000"
+      }
+    ],
+    "closing": [
+      {
+        "request_id": "20260729002",
+        "short_title": "Affordable housing rehabilitation services",
+        "agency_name": "Housing Preservation and Development",
+        "due_date": "2026-08-03T10:00:00.000"
+      }
+    ],
+    "hearing": [
+      {
+        "request_id": "20260729003",
+        "short_title": "Public hearing on neighborhood housing",
+        "agency_name": "City Planning",
+        "event_date": "2026-08-04T14:00:00.000"
+      }
+    ]
+  },
+  "contracts": [
+    {
+      "request_id": "20260729004",
+      "short_title": "Housing maintenance and repair services",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Solicitation",
+      "start_date": "2026-07-29T00:00:00.000",
+      "due_date": "2026-08-15T10:00:00.000",
+      "category_description": "Human Services",
+      "selection_method_description": "Competitive Sealed Proposals",
+      "pin": "80626P0001001"
+    }
+  ],
+  "selectionMethods": [
+    {
+      "selection_method_description": "Competitive Sealed Proposals",
+      "n": "12"
+    },
+    {
+      "selection_method_description": "Competitive Sealed Bids",
+      "n": "6"
+    }
+  ]
+}

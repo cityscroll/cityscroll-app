@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "sourceDelayMs": 40,
+  "editionDate": "2026-07-29",
+  "today": {
+    "counts": [
+      {
+        "section_name": "Procurement",
+        "n": "18"
+      }
+    ],
+    "agencies": [
+      {
+        "agency_name": "Housing Preservation and Development"
+      }
+    ],
+    "award": [],
+    "closing": [],
+    "hearing": []
+  },
+  "contracts": [
+    {
+      "request_id": "20260729004",
+      "short_title": "Housing maintenance and repair services",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Solicitation",
+      "start_date": "2026-07-29T00:00:00.000",
+      "due_date": "2026-08-15T10:00:00.000",
+      "category_description": "Human Services",
+      "selection_method_description": "Competitive Sealed Proposals",
+      "pin": "80626P0001001"
+    }
+  ],
+  "selectionMethods": [
+    {
+      "selection_method_description": "Competitive Sealed Proposals",
+      "n": "12"
+    },
+    {
+      "selection_method_description": "Competitive Sealed Bids",
+      "n": "6"
+    }
+  ]
+}

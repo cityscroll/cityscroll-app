@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cityscroll.org/schemas/performance-budgets.schema.json",
+  "title": "CityScroll performance budgets",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "statistics",
+    "viewports",
+    "fieldVitals",
+    "fixtures"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "version": {
+      "const": 1
+    },
+    "statistics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "quantile",
+        "warmupSamples",
+        "samples"
+      ],
+      "properties": {
+        "quantile": {
+          "type": "number",
+          "minimum": 0.5,
+          "maximum": 1
+        },
+        "warmupSamples": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "samples": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "viewports": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "$ref": "#/$defs/viewport"
+      }
+    },
+    "fieldVitals": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "quantile",
+        "lcpMs",
+        "inpMs",
+        "cls"
+      ],
+      "properties": {
+        "quantile": {
+          "type": "number",
+          "minimum": 0.5,
+          "maximum": 1
+        },
+        "lcpMs": {
+          "type": "number",
+          "minimum": 0
+        },
+        "inpMs": {
+          "type": "number",
+          "minimum": 0
+        },
+        "cls": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "fixtures": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "$ref": "#/$defs/fixtureBudget"
+      }
+    }
+  },
+  "$defs": {
+    "viewport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "width",
+        "height"
+      ],
+      "properties": {
+        "width": {
+          "type": "integer",
+          "minimum": 320
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 480
+        }
+      }
+    },
+    "fixtureBudget": {
+      "type": "object",
+      "required": [
+        "viewports"
+      ],
+      "properties": {
+        "viewports": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "invariant": {
+          "type": "string"
+        },
+        "comment": {
+          "type": "string"
+        },
+        "ttfbMs": {
+          "type": "number",
+          "minimum": 0
+        },
+        "fcpMs": {
+          "type": "number",
+          "minimum": 0
+        },
+        "lcpMs": {
+          "type": "number",
+          "minimum": 0
+        },
+        "cls": {
+          "type": "number",
+          "minimum": 0
+        },
+        "wireBytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "visualResponseMs": {
+          "type": "number",
+          "minimum": 0
+        },
+        "settledMs": {
+          "type": "number",
+          "minimum": 0
+        },
+        "eventDurationMs": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

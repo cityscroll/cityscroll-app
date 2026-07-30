@@ -1,0 +1,58 @@
+{
+  "$schema": "test/performance/performance-budgets.schema.json",
+  "version": 1,
+  "statistics": {
+    "quantile": 0.95,
+    "warmupSamples": 1,
+    "samples": 20
+  },
+  "viewports": {
+    "mobile": {
+      "width": 390,
+      "height": 844
+    },
+    "desktop": {
+      "width": 1440,
+      "height": 900
+    }
+  },
+  "fieldVitals": {
+    "quantile": 0.75,
+    "lcpMs": 2500,
+    "inpMs": 200,
+    "cls": 0.1
+  },
+  "fixtures": {
+    "home.cold": {
+      "viewports": [
+        "mobile",
+        "desktop"
+      ],
+      "ttfbMs": 300,
+      "fcpMs": 1000,
+      "lcpMs": 2500,
+      "cls": 0.1,
+      "wireBytes": 430000
+    },
+    "home.warm": {
+      "viewports": [
+        "mobile",
+        "desktop"
+      ],
+      "ttfbMs": 150,
+      "lcpMs": 1000,
+      "cls": 0.1
+    },
+    "contracts.keyword-housing": {
+      "viewports": [
+        "mobile",
+        "desktop"
+      ],
+      "invariant": "keyword-control-visible-without-extra-disclosure",
+      "visualResponseMs": 100,
+      "settledMs": 1200,
+      "eventDurationMs": 225,
+      "comment": "The 20-sample pre-change p95 measured 212 ms; 225 ms prevents regression. Ratchet target: 200 ms."
+    }
+  }
+}
