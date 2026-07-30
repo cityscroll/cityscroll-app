@@ -51,10 +51,13 @@ const sandbox = new Function(
   extractConst("EXT_ATTRS") +
   extractConst("CHECKBOOK_SEARCH_URL") +
   extractConst("CHECKBOOK_SPENDING_URL") +
+  extractConst("PASSPORT_CONTRACTS_URL") +
+  extractConst("PASSPORT_RFX_URL") +
   extractConst("LIFECYCLE_STAGE_ORDER") +
   extractFn("lifecycleStageLabel") +
   extractFn("lifecycleAmount") +
   extractFn("lifecycleMoney") +
+  extractFn("lifecycleSourceName") +
   extractFn("lifecycleGapSourceName") +
   extractFn("lifecycleHasLaterMatched") +
   extractFn("lifecyclePublicStatus") +
