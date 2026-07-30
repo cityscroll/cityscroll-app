@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "observed_on": "2026-07-30",
+  "observed_at_utc": "2026-07-30T19:58:42Z",
+  "source_contracts": [
+    "ulurp-recommendations",
+    "ulurp-recommendation-pdfs"
+  ],
+  "access_surface": {
+    "recommendations": {
+      "catalog": "https://data.cityofnewyork.us/d/4j6i-9rmr",
+      "metadata": "https://data.cityofnewyork.us/api/views/4j6i-9rmr.json",
+      "resource": "https://data.cityofnewyork.us/resource/4j6i-9rmr.json"
+    },
+    "pdfs": {
+      "catalog": "https://data.cityofnewyork.us/d/gt5i-dmde",
+      "metadata": "https://data.cityofnewyork.us/api/views/gt5i-dmde.json",
+      "resource": "https://data.cityofnewyork.us/resource/gt5i-dmde.json"
+    },
+    "zap_projects": {
+      "catalog": "https://data.cityofnewyork.us/d/hgx4-8ukb",
+      "resource": "https://data.cityofnewyork.us/resource/hgx4-8ukb.json"
+    }
+  },
+  "curl_verified": {
+    "recommendations": {
+      "metadata_http": 200,
+      "resource_sample_http": 200,
+      "resource_count_http": 200,
+      "metadata_bytes": 15193,
+      "metadata_sha256": "8d7b4fd1e186eecd62e766f24a70066865712da0967b65131c47e9f8abb5177c",
+      "sample_bytes": 212,
+      "sample_sha256": "3ae097c0cf26e62ac5982cb330239fd4a6ffc726bf6086b1dc41279869840156",
+      "resource_last_modified": "Tue, 29 Jun 2021 14:51:04 GMT",
+      "x_soda2_truth_last_modified": "Tue, 29 Jun 2021 14:51:04 GMT",
+      "x_soda2_fields": [
+        "ulurp_application_name",
+        "community_board_s",
+        "council_district_s",
+        "ulurp_number_s",
+        "borough_president",
+        "recommendation_date"
+      ]
+    },
+    "pdfs": {
+      "metadata_http": 200,
+      "resource_sample_http": 200,
+      "resource_count_http": 200,
+      "metadata_bytes": 13636,
+      "metadata_sha256": "17753625f1148657f4ffaa8f11480fb385464279960c26c0b66740e20732cd71",
+      "sample_bytes": 297,
+      "sample_sha256": "81d3d1e49064c43ed3fa44aa33b6ce1485989e0a8806190a6739bf9e2ab5a0aa",
+      "resource_last_modified": "Thu, 25 Jan 2018 21:35:58 GMT",
+      "x_soda2_truth_last_modified": "Thu, 25 Jan 2018 21:35:58 GMT",
+      "x_soda2_fields": [
+        "date",
+        "project",
+        "pdf_download",
+        "ulurp_application_number"
+      ]
+    }
+  },
+  "datasets": {
+    "recommendations": {
+      "id": "4j6i-9rmr",
+      "name": "Uniform Land Use Review Procedure (ULURP) Recommendations",
+      "attribution": "Brooklyn Borough President",
+      "row_count": 91,
+      "rows_updated_at_unix": 1624978264,
+      "rows_updated_at_utc": "2021-06-29T14:51:04Z",
+      "required_fields_present": [
+        "ulurp_number_s",
+        "borough_president",
+        "recommendation_date",
+        "community_board_s"
+      ],
+      "scope_note": "Brooklyn Borough President recommendations; not citywide."
+    },
+    "pdfs": {
+      "id": "gt5i-dmde",
+      "name": "ULURP Recommendations",
+      "attribution": null,
+      "row_count": 88,
+      "rows_updated_at_unix": 1514317636,
+      "rows_updated_at_utc": "2017-12-26T21:07:16Z",
+      "required_fields_present": [
+        "ulurp_application_number",
+        "pdf_download",
+        "date",
+        "project"
+      ],
+      "scope_note": "PDF companion letters; small historical set (Last-Modified 2018-01-25)."
+    }
+  },
+  "update_cadence": {
+    "publisher_claim": "Irregular / historical borough-office publications; no daily citywide feed",
+    "product_rule": "No product ingest. Sources contracted as disabled after join measurement below usefulness threshold.",
+    "max_stale_days_for_schema_probe": 5000
+  },
+  "join_measurement": {
+    "universe": "NYC Open Data ZAP projects (hgx4-8ukb) with non-null ulurp_numbers",
+    "universe_count": 27971,
+    "strategy": "exact_ulurp_token (optional type letter + 6-digit body + letter suffix; spaces optional). Bare body without suffix, title-only, and Property Disposition notice sampling rejected.",
+    "usefulness_threshold": 0.3,
+    "wrong_universe_note": "Property Disposition City Record notices are not ZAP ULURP projects; 17/17 unmatched in prior sampling is expected and is not a product kill metric for this join.",
+    "rates": {
+      "zap_ulurp_numbered_either": {
+        "joined": 152,
+        "total": 27971,
+        "rate": 0.0054
+      },
+      "zap_ulurp_numbered_recommendations": {
+        "joined": 81,
+        "total": 27971,
+        "rate": 0.0029
+      },
+      "zap_ulurp_numbered_pdfs": {
+        "joined": 71,
+        "total": 27971,
+        "rate": 0.0025
+      },
+      "recommendation_rows_hit_zap": {
+        "joined": 80,
+        "total": 91,
+        "rate": 0.8791
+      },
+      "pdf_rows_hit_zap": {
+        "joined": 73,
+        "total": 88,
+        "rate": 0.8295
+      }
+    },
+    "hit_boroughs_either": {
+      "Brooklyn": 80,
+      "Manhattan": 68,
+      "Citywide": 4
+    },
+    "hit_public_status_either": {
+      "Completed": 152
+    },
+    "verdict": "Below usefulness threshold (~30%) on ZAP projects with non-null ulurp_numbers (0.54% either recommendations or PDFs). Ship measured reconnaissance + disabled source contracts only; do not edge-materialize Borough President recommendation panels. Keep the class-(a) land-outcome pointer."
+  }
+}

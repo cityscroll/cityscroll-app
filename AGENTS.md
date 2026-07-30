@@ -51,6 +51,18 @@ Strategies and receipts: `worker/src/lib/doing_business_join.mjs`,
 `site/data/doing_business_sources/`. Publisher dates often use truncated `00YY` years —
 normalize to `20YY` before display.
 
+## ULURP Recommendations (`4j6i-9rmr` + PDF `gt5i-dmde`)
+
+Land-outcome depth candidate (Borough President positions + letter PDFs). **Measured
+below usefulness** (2026-07-30): strict ULURP-token join on ZAP projects with non-null
+`ulurp_numbers` is **0.54%** either-source (152/27,971), **0.29%** recommendations,
+**0.25%** PDFs. Borough-scoped historical catalogs (91 + 88 rows). Source contracts
+`ulurp-recommendations` and `ulurp-recommendation-pdfs` are **disabled** — no edge
+materialization; keep the class-(a) land-outcome pointer. **Wrong universe:** Property
+Disposition notices are not ZAP projects — do not use that slice as a success metric.
+Strategies and receipts: `worker/src/lib/ulurp_recommendations_join.mjs`,
+`site/data/ulurp_recommendation_sources/`.
+
 ## Legistar agenda/vote depth
 
 Ranked class-(a) meeting-outcomes depth. **Edge materialization is live** (daily
