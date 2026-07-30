@@ -20,6 +20,7 @@ import re
 import sys
 
 ROOT = pathlib.Path(__file__).parents[2]
+SITE_ROOT = ROOT / "site"
 PAGES = ["index.html", "about.html", "data.html", "stats.html", "api.html", "changelog.html", "standards.html"]
 
 TITLE_RE = re.compile(r"<title>([^<]*)</title>")
@@ -33,7 +34,7 @@ SEPARATOR = "·"
 def main():
     failures = []
     for page in PAGES:
-        src = (ROOT / page).read_text(encoding="utf-8")
+        src = (SITE_ROOT / page).read_text(encoding="utf-8")
 
         title_m = TITLE_RE.search(src)
         if not title_m:

@@ -5,8 +5,8 @@ import { fileURLToPath } from "node:url";
 import path from "node:path";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const SOURCE_DIR = path.join(ROOT, "data", "exam_sources");
-const OUTPUT = path.join(ROOT, "data", "staffing_exams.json");
+const SOURCE_DIR = path.join(ROOT, "site", "data", "exam_sources");
+const OUTPUT = path.join(ROOT, "site", "data", "staffing_exams.json");
 const ANNUAL_ID = "4ptz-hmtc";
 const OUTCOMES_ID = "dcas-annual-exam-outcomes";
 const ACTIVE_LIST_ID = "vx8i-nprf";

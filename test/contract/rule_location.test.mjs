@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
 import { affectedAreaFromRow } from "../../worker/src/lib/hearings.mjs";
-import { ruleLocationFromRow } from "../../rule_location.mjs";
+import { ruleLocationFromRow } from "../../site/rule_location.mjs";
 
 const hearingFixtures = JSON.parse(await readFile(
   new URL("./fixtures/hearings.json", import.meta.url),

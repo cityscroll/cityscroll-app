@@ -71,7 +71,8 @@ class QuietHandler(SimpleHTTPRequestHandler):
 
 class StaticServer:
     def __init__(self, directory: Path):
-        handler = functools.partial(QuietHandler, directory=str(directory))
+        public_root = directory / "site" if (directory / "site" / "index.html").is_file() else directory
+        handler = functools.partial(QuietHandler, directory=str(public_root))
         self.server = ThreadingHTTPServer(("127.0.0.1", 0), handler)
         self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
 
@@ -226,7 +227,7 @@ def assert_copy_matches_qr(page: Page, copy_selector: str, qr_selector: str) -> 
 
 
 def verify_interactions(browser: Browser) -> None:
-    with StaticServer(ROOT) as base_url:
+    with StaticServer(ROOT / "site") as base_url:
         context = browser.new_context(
             viewport={"width": 390, "height": 844},
             permissions=["clipboard-read", "clipboard-write"],

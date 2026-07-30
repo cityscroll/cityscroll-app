@@ -46,7 +46,7 @@ def assert_item_landing(page, selector):
 
 
 def main():
-    handler = functools.partial(QuietHandler, directory=str(ROOT))
+    handler = functools.partial(QuietHandler, directory=str(ROOT / "site"))
     server = ThreadingHTTPServer(("127.0.0.1", 0), handler)
     threading.Thread(target=server.serve_forever, daemon=True).start()
     base = f"http://127.0.0.1:{server.server_address[1]}/"

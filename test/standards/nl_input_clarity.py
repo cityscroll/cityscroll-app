@@ -24,6 +24,7 @@ import subprocess
 import sys
 
 ROOT = pathlib.Path(__file__).parents[2]
+SITE_ROOT = ROOT / "site"
 
 
 def load_strings_en():
@@ -31,7 +32,7 @@ def load_strings_en():
         ["node", "-e",
          "global.window={};require(process.argv[1]);"
          "console.log(JSON.stringify(window.STRINGS.en))",
-         str(ROOT / "i18n.js")], text=True)
+         str(SITE_ROOT / "i18n.js")], text=True)
     return __import__("json").loads(out)
 
 
@@ -47,7 +48,7 @@ def main():
             "invitation to type a sentence, same as the Ask box next to it"
         )
 
-    index_src = (ROOT / "index.html").read_text(encoding="utf-8")
+    index_src = (SITE_ROOT / "index.html").read_text(encoding="utf-8")
 
     # (2a) every parsed-filter summary has its own explicit status label + role. Section
     # Ask-in-progress echoes use nlTransHTML(); replayed/active state on every search lens

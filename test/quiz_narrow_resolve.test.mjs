@@ -19,10 +19,10 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
-import { isLiteralKeyword, parseNL } from "../nl_parse.js";
+import { isLiteralKeyword, parseNL } from "../site/nl_parse.js";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const src = readFileSync(join(ROOT, "index.html"), "utf8");
+const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
 
 function extractFn(name) {
   let start = src.indexOf("async function " + name + "(");

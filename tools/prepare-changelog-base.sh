@@ -23,7 +23,12 @@ BOT_BRANCH="${1:?usage: prepare-changelog-base.sh <bot-branch-name>}"
 if git ls-remote --exit-code --heads origin "$BOT_BRANCH" >/dev/null 2>&1; then
   echo "bot branch exists — using its pending changelog-data.json; changelog.html stays this tree's own current copy"
   git fetch origin "$BOT_BRANCH"
-  git show "origin/$BOT_BRANCH:changelog-data.json" > changelog-data.json
+  bot_data_path="site/changelog-data.json"
+  if ! git cat-file -e "origin/$BOT_BRANCH:$bot_data_path" 2>/dev/null; then
+    # A bot branch created before the site/ move remains a valid reconciliation source.
+    bot_data_path="changelog-data.json"
+  fi
+  git show "origin/$BOT_BRANCH:$bot_data_path" > site/changelog-data.json
 else
   echo "no bot branch yet — using this tree's own changelog-data.json"
 fi

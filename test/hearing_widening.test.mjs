@@ -4,9 +4,9 @@ import { createRequire } from "node:module";
 import { readFileSync } from "node:fs";
 
 const require = createRequire(import.meta.url);
-const { chooseHearingScope } = require("../hearing_location.js");
-const indexSource = readFileSync(new URL("../index.html", import.meta.url), "utf8");
-const i18nSource = readFileSync(new URL("../i18n.js", import.meta.url), "utf8");
+const { chooseHearingScope } = require("../site/hearing_location.js");
+const indexSource = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
+const i18nSource = readFileSync(new URL("../site/i18n.js", import.meta.url), "utf8");
 const TODAY = "2026-07-29";
 
 function hearing(id, date, title = "Public hearing") {

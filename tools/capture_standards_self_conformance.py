@@ -27,7 +27,7 @@ from playwright.sync_api import Page, sync_playwright
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "media" / "review" / "standards-self-conformance"
+OUTPUT = ROOT / "site" / "media" / "review" / "standards-self-conformance"
 VIEWPORTS = ((390, 844), (1440, 900))
 
 

@@ -30,8 +30,8 @@ import { fileURLToPath } from "node:url";
 import { extractUserImpact, hasMajorLabel } from "./changelog_extract.mjs";
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
-const DATA_PATH = path.join(ROOT, "changelog-data.json");
-const HTML_PATH = path.join(ROOT, "changelog.html");
+const DATA_PATH = path.join(ROOT, "site", "changelog-data.json");
+const HTML_PATH = path.join(ROOT, "site", "changelog.html");
 const START_MARKER = "<!-- CHANGELOG:AUTO:START -->";
 const END_MARKER = "<!-- CHANGELOG:AUTO:END -->";
 const I18N_VERSION_MARKER = "__I18N_ASSET_VERSION__";

@@ -7,14 +7,14 @@ import { dirname, join } from "node:path";
 
 const require = createRequire(import.meta.url);
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const indexSource = readFileSync(join(ROOT, "index.html"), "utf8");
+const indexSource = readFileSync(join(ROOT, "site", "index.html"), "utf8");
 const {
   buildSearchDeepLink,
   canonicalSearchURL,
   parsePresetStore,
   presetLens,
   savePreset,
-} = require("../nl_deeplink.js");
+} = require("../site/nl_deeplink.js");
 
 test("fixtures pin canonical links for Land, Staffing, and a City Record section", () => {
   assert.equal(

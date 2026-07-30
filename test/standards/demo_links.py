@@ -9,8 +9,9 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[2]
-MANIFEST_PATH = ROOT / "demo" / "demo-links.json"
-SCHEMA_PATH = ROOT / "demo" / "demo-links.schema.json"
+SITE_ROOT = ROOT / "site"
+MANIFEST_PATH = SITE_ROOT / "demo" / "demo-links.json"
+SCHEMA_PATH = SITE_ROOT / "demo" / "demo-links.schema.json"
 ID_PATTERN = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 
 

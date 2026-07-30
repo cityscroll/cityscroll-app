@@ -9,8 +9,8 @@ on:
     # Automated changelog PRs only touch these guarded paths and dispatch CI explicitly.
     # PR branch filters match the base branch, so they cannot exclude bot/changelog-update.
     paths-ignore:
-      - changelog-data.json
-      - changelog.html
+      - site/changelog-data.json
+      - site/changelog.html
     types: [opened, synchronize, reopened, labeled, unlabeled, ready_for_review]
   merge_group:
   push:
@@ -40,10 +40,11 @@ jobs:
         with:
           filters: |
             frontend:
-              - '*.html'
-              - 'assets/**'
-              - 'i18n/**'
-              - '*.js'
+              - 'site/**'
+              - '.github/actions/build-site/**'
+              - '.github/workflows/deploy-pages.yml'
+              - '.github/workflows/deploy-beta-preview.yml'
+              - '.github/workflows/promote-beta.yml'
             worker:
               - 'worker/**'
             docs:
@@ -152,6 +153,7 @@ jobs:
           python3 test/performance/verify.py \
             --budgets performance-budgets.json \
             --fixtures test/performance/fixtures \
+            --site-root site \
             --samples 20
       - name: Preserve raw performance samples
         if: always()
@@ -188,7 +190,7 @@ jobs:
         run: python3 test/functional/19_hash_route_focus.py
       - name: Serve site locally
         run: |
-          python3 -m http.server 8000 &
+          python3 -m http.server 8000 --directory site &
           sleep 1
       - name: axe WCAG 2.2 accessibility gate (390px + 1440px, every activated state)
         run: python3 test/functional/11_accessibility.py
@@ -271,6 +273,7 @@ jobs:
       - name: Install readable-or-else
         run: pip install git+https://github.com/jimdc/readable-or-else.git
       - name: Reading-level ratchet gate
+        working-directory: site
         run: |
           readable-or-else check \
             about.html api.html changelog.html data.html index.html stats.html standards.html \
@@ -293,7 +296,7 @@ jobs:
           READABLE_OR_ELSE_LLM_KEY: ${{ secrets.READABLE_OR_ELSE_LLM_KEY }}
           READABLE_OR_ELSE_LLM_MODEL: ${{ secrets.READABLE_OR_ELSE_LLM_MODEL }}
         run: |
-          readable-or-else check data.html index.html \
+          readable-or-else check site/data.html site/index.html \
             --preset nycsg7 --mode warn --suggest --format json \
             > readable-or-else-suggestions.json
 
@@ -332,8 +335,8 @@ jobs:
         run: |
           mkdir -p "$RUNNER_TEMP/changelog-sim"
           bash tools/prepare-changelog-base.sh "$BOT_BRANCH"
-          cp changelog-data.json "$RUNNER_TEMP/changelog-sim/base-data.json"
-          cp changelog.html "$RUNNER_TEMP/changelog-sim/base.html"
+          cp site/changelog-data.json "$RUNNER_TEMP/changelog-sim/base-data.json"
+          cp site/changelog.html "$RUNNER_TEMP/changelog-sim/base.html"
       - name: Simulate this PR's merged changelog entry and gate its reading level
         env:
           PR_NUMBER: ${{ github.event.pull_request.number }}
@@ -345,13 +348,13 @@ jobs:
           node tools/check_changelog_reading_level.mjs \
             --base-data "$RUNNER_TEMP/changelog-sim/base-data.json" \
             --base-html "$RUNNER_TEMP/changelog-sim/base.html" \
-            --i18n i18n.js \
+            --i18n site/i18n.js \
             --number "$PR_NUMBER" \
             --url "$PR_URL" \
             --merged-at "$(date -u +%Y-%m-%d)" \
             --body-file "$RUNNER_TEMP/changelog-sim/pr-body.md" \
             --labels "$PR_LABELS" \
-            --baseline reading-level-baseline.json
+            --baseline site/reading-level-baseline.json
 
   functional:
     name: Functional (Playwright, manual)

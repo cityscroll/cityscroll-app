@@ -7,6 +7,7 @@ import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
+const SITE_ROOT = path.join(ROOT, "site");
 const PAGES = [
   "index.html",
   "about.html",
@@ -48,7 +49,7 @@ function buildIgnoredArtifact(repo) {
 test("two independently built language branches merge without shared generated edits", () => {
   const repo = fs.mkdtempSync(path.join(os.tmpdir(), "i18n-merge-friendly-"));
   try {
-    copySiteFiles(ROOT, repo);
+    copySiteFiles(SITE_ROOT, repo);
     fs.mkdirSync(path.join(repo, "tools"), { recursive: true });
     fs.copyFileSync(
       path.join(ROOT, "tools", "stamp_i18n_assets.py"),
@@ -89,7 +90,7 @@ test("two independently built language branches merge without shared generated e
 test("the built-artifact gate rejects real skew after a dictionary changes", () => {
   const site = fs.mkdtempSync(path.join(os.tmpdir(), "i18n-built-skew-"));
   try {
-    copySiteFiles(ROOT, site);
+    copySiteFiles(SITE_ROOT, site);
     run("python3", [path.join(ROOT, "tools", "stamp_i18n_assets.py"), "--site-root", site, "--stamp"], ROOT);
     run(
       "python3",

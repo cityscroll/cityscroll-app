@@ -4,7 +4,7 @@
 import {
   applyPropertyGeocodes,
   propertyLocationFromRow,
-} from "../../property_location.mjs";
+} from "../../site/property_location.mjs";
 
 export const PROPERTY_KV_KEY = "property:location:v1";
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";

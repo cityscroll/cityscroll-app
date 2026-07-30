@@ -5,7 +5,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
-const i18nSrc = readFileSync(join(ROOT, "..", "i18n.js"), "utf8");
+const i18nSrc = readFileSync(join(ROOT, "..", "site", "i18n.js"), "utf8");
 const windowStub = { LANG: "en", LANG_META: { en: { intlDate: "en-US" } } };
 const en = new Function(
   "window",
@@ -13,7 +13,7 @@ const en = new Function(
 )(windowStub);
 
 function loadLang(lang) {
-  const path = join(ROOT, "..", "i18n", "lang", `${lang}.js`);
+  const path = join(ROOT, "..", "site", "i18n", "lang", `${lang}.js`);
   const langSrc = readFileSync(path, "utf8");
   const langWindow = { STRINGS: {} };
   const evaled = new Function(

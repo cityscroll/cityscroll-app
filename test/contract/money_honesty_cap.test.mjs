@@ -28,14 +28,14 @@ function capsFoundIn(text) {
 }
 
 test("index.html: MONEY_HONESTY_CAP constant matches the canonical $10B cap", () => {
-  const src = readFileSync(join(ROOT, "index.html"), "utf8");
+  const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
   const m = src.match(/const MONEY_HONESTY_CAP\s*=\s*(\d+)/);
   assert.ok(m, "MONEY_HONESTY_CAP constant not found in index.html");
   assert.equal(Number(m[1]), CANONICAL_CAP);
 });
 
 test("index.html: no query site uses a hardcoded number instead of MONEY_HONESTY_CAP", () => {
-  const src = readFileSync(join(ROOT, "index.html"), "utf8");
+  const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
   // Every real call site now reads `contract_amount < ${MONEY_HONESTY_CAP}` — a literal digit
   // here would mean a query site regressed back to a hand-copied number (exactly how the
   // original $5B/$10B split happened in the first place).
@@ -67,7 +67,7 @@ test("worker/src/ingest.mjs: D1 ingest's AMOUNT_CAP matches the canonical $10B c
 const STALE_CAP_PATTERN = /\b5000000000\b|\b5e9\b/;
 
 test("index.html: no stale $5B literal in any form (decimal or scientific notation)", () => {
-  const src = readFileSync(join(ROOT, "index.html"), "utf8");
+  const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
   assert.doesNotMatch(src, STALE_CAP_PATTERN);
 });
 
@@ -89,13 +89,13 @@ const HONESTY_SENTENCE_RE = new RegExp(
 const STALE_HONESTY_SENTENCE_RE = /Money filters and digests exclude amounts of \$5(?:&nbsp;|\s)*billion or more/;
 
 test("about.html: the honesty-cap explanation states the same value as MONEY_HONESTY_CAP", () => {
-  const src = readFileSync(join(ROOT, "about.html"), "utf8");
+  const src = readFileSync(join(ROOT, "site", "about.html"), "utf8");
   assert.match(src, HONESTY_SENTENCE_RE, "about.html's copy doesn't state the current $10B cap");
   assert.doesNotMatch(src, STALE_HONESTY_SENTENCE_RE, "about.html's copy still states the old $5B cap");
 });
 
 test("i18n.js: the English runtime string for the same explanation agrees with MONEY_HONESTY_CAP", () => {
-  const src = readFileSync(join(ROOT, "i18n.js"), "utf8");
+  const src = readFileSync(join(ROOT, "site", "i18n.js"), "utf8");
   const m = src.match(/about_li_honest_html:\s*"((?:[^"\\]|\\.)*)"/);
   assert.ok(m, "about_li_honest_html key not found in i18n.js");
   const value = m[1].replace(/\\"/g, '"');

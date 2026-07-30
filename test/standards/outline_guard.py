@@ -12,6 +12,7 @@ import re
 import sys
 
 ROOT = pathlib.Path(__file__).parents[2]
+SITE_ROOT = ROOT / "site"
 PAGES = ["index.html", "about.html", "data.html", "stats.html", "api.html", "changelog.html", "standards.html"]
 
 SUPPRESS_RE = re.compile(r"([^{}]+)\{[^{}]*\boutline\s*:\s*(?:none|0)\b[^{}]*\}")
@@ -43,7 +44,7 @@ def has_visible_replacement(selector, css):
 def main():
     failures = []
     for page in PAGES:
-        src = (ROOT / page).read_text(encoding="utf-8")
+        src = (SITE_ROOT / page).read_text(encoding="utf-8")
         css = style_block(src)
         for selector, in [(m.group(1),) for m in SUPPRESS_RE.finditer(css)]:
             if not has_visible_replacement(selector, css):

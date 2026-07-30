@@ -4,16 +4,16 @@ import { createRequire } from "node:module";
 import { readFileSync } from "node:fs";
 
 const require = createRequire(import.meta.url);
-const indexSource = readFileSync(new URL("../index.html", import.meta.url), "utf8");
+const indexSource = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
 const {
   bindLocationControl,
   coarseLandFilter,
   resolveLandEntryLocation,
-} = require("../location_awareness.js");
+} = require("../site/location_awareness.js");
 const {
   buildSearchDeepLink,
   canonicalSearchURL,
-} = require("../nl_deeplink.js");
+} = require("../site/nl_deeplink.js");
 
 function locationButton() {
   return {

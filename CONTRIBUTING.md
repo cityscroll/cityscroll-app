@@ -85,10 +85,10 @@ means no entry — that's the intended way to keep the page selective, not an ov
 
 ```bash
 # site (static — any server works)
-python3 -m http.server 8000            # then open http://localhost:8000
+python3 -m http.server 8000 --directory site  # then open http://localhost:8000
 
 # site tests
-node --test                             # unit: pure functions extracted from index.html
+node --test                             # unit: pure functions extracted from site/index.html
 test/functional/run.sh                  # browser harness (needs: pip install playwright && playwright install chromium)
 
 # worker
@@ -102,7 +102,7 @@ cd worker && npx wrangler deploy        # deploy (needs Cloudflare auth)
   vendor I need to…"). These steer the roadmap more than code does.
 - **Docs, outreach, research** — the About/api pages, the changelog's plain-language lines, and
   anything that helps the right people find the tool.
-- **Code** — the site is one dependency-free `index.html` (inline CSS, vanilla JS, no build
+- **Code** — the site is one dependency-free `site/index.html` (inline CSS, vanilla JS, no build
   step); the backend is one Cloudflare Worker under `worker/`. Keep both boring: no frameworks,
   no build steps, graceful degradation everywhere.
 - **Adapting this to another city** — fork it; the SODA queries and the lens definitions are
@@ -113,7 +113,7 @@ cd worker && npx wrangler deploy        # deploy (needs Cloudflare auth)
 
 See [SECURITY.md](SECURITY.md) for the threat model and how to report a vulnerability.
 
-## Geography of index.html
+## Geography of site/index.html
 
 The site is deliberately one dependency-free file (~3,000 lines). It reads top to bottom:
 

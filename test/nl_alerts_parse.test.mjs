@@ -14,7 +14,7 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { parseNL, NL_CATEGORY_DICT, NL_AGENCY_ALIASES } from "../nl_parse.js";
+import { parseNL, NL_CATEGORY_DICT, NL_AGENCY_ALIASES } from "../site/nl_parse.js";
 
 test("parseNL: category + amount + deadline extracted TOGETHER, not one-at-a-time", () => {
   const f = parseNL("education contracts over $200K due in 3 months");
