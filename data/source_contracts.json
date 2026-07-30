@@ -612,6 +612,23 @@
       "delivery_tier": "inline-at-build"
     },
     {
+      "id": "dcas-annual-exam-outcomes",
+      "name": "DCAS annual civil-service exam outcome aggregates",
+      "owner": "NYC Department of Citywide Administrative Services",
+      "status": "build-time",
+      "scope": "build-time",
+      "kind": "html",
+      "landing_page": "https://a860-gpp.nyc.gov/concern/nyc_government_publications/zk51vm65n",
+      "publisher_cadence": "Annual outcomes publication with potential corrections during the fiscal-year outcomes cycle",
+      "product_freshness": "Built from a manually reviewed aggregate outcomes snapshot committed in data/exam_sources/dcas_exam_outcomes.json.",
+      "used_for": "Aggregate post-cycle outcomes such as certification and hire counts for Staffing records.",
+      "code_references": [
+        {"path": "data/exam_sources/dcas_exam_outcomes.json", "contains": "dcas-annual-exam-outcomes"},
+        {"path": "tools/build_staffing_exams.mjs", "contains": "dcas-annual-exam-outcomes"}
+      ],
+      "delivery_tier": "inline-at-build"
+    },
+    {
       "id": "mocs-ll63-plans",
       "name": "MOCS Local Law 63 procurement plans",
       "owner": "NYC Mayor's Office of Contract Services",
