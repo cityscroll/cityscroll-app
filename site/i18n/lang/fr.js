@@ -647,6 +647,8 @@
     lifecycle_source_passport: "PASSPort Public",
     lifecycle_source_current_solicitations: "Appels d’offres en cours (données ouvertes)",
     lifecycle_unmatched_documents_html: "Pas encore affiché ici — les détails du dossier d’appel d’offres sont dans {source}.",
+    lifecycle_source_city_record_getfile: "pièces jointes du City Record",
+    lifecycle_documents_not_published_html: "La ville ne publie pas les documents du dossier comme flux ouvert pour cet avis — ils apparaîtraient dans {where} s’ils étaient diffusés.",
     lifecycle_unmatched_solicitation_html: "Pas encore affiché ici — le dossier d’appel d’offres est dans {source}.",
     lifecycle_documents_count_one: "{n} document du dossier",
     lifecycle_documents_count_other: "{n} documents du dossier",

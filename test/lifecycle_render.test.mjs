@@ -51,6 +51,7 @@ const sandbox = new Function(
   extractConst("PASSPORT_RFX_URL") +
   extractConst("LIFECYCLE_STAGE_ORDER") +
   extractConst("CURRENT_SOLICITATIONS_URL") +
+  extractConst("CITY_RECORD_GETFILE_URL") +
   extractConst("OCP_AWARDS_URL") +
   extractFn("checkbookSearchUrl") +
   extractFn("lifecycleStageLabel") +
@@ -540,7 +541,7 @@ test("lifecycle: solicitation with joined package documents renders real links",
   assert.doesNotMatch(html, /Not yet shown here — solicitation package/);
 });
 
-test("lifecycle: solicitation without package join uses not-yet-ingested register", () => {
+test("lifecycle: solicitation without package documents uses not-published register", () => {
   const gapLifecycle = {
     pin: "85726B0067", pin_strategy: "exact", ok: true, amendments: [],
     timeline: [
@@ -565,9 +566,10 @@ test("lifecycle: solicitation without package join uses not-yet-ingested registe
   const html = lifecycleTimelineHTML(gapLifecycle, {
     request_id: "20260709023", agency_name: "Citywide Administrative Services", pin: "85726B0067",
   });
-  assert.match(html, /Not yet shown here — solicitation package details live in/);
-  assert.match(html, /Current Solicitations \(Open Data\)/);
-  assert.doesNotMatch(html, /package document/);
+  assert.match(html, /The city does not publish package documents/);
+  assert.match(html, /a856-cityrecord\.nyc\.gov\/Search\/GetFile/);
+  assert.match(html, /City Record file attachments/);
+  assert.doesNotMatch(html, /Not yet shown here — solicitation package/);
 });
 
 // ---------------------------------------------------------------------------

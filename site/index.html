@@ -5725,8 +5725,13 @@ function lifecycleSourceName(source){
   return t("lifecycle_source_checkbook");
 }
 
-// Package-documents sub-slot on the solicitation stage (Current Solicitations join).
-// Matched → real document links; unmatched → not-yet-ingested register; unknown → reachability.
+// Package-documents sub-slot on the solicitation stage.
+// Matched → real document links (historical City Record GetFile / OCP when present).
+// Unmatched → class (b) not-published: modern public feeds do not publish package docs
+// (measured 2026-07-30; RFx dump has no document URLs; OCP/City Record 2025+ fill 0%).
+// Unknown → reachability only.
+const CITY_RECORD_GETFILE_URL = "https://a856-cityrecord.nyc.gov/Search/GetFile";
+
 function lifecycleDocumentsHTML(entry){
   if(entry.stage !== "solicitation") return "";
   const d = entry.detail || {};
@@ -5746,8 +5751,9 @@ function lifecycleDocumentsHTML(entry){
   if(docsStatus === "ambiguous"){
     return `<div class="lc-norecord lc-docs-gap">${t("lifecycle_ambiguous_html")}</div>`;
   }
-  // unmatched — class (a) not-yet-ingested register for solicitation package details
-  return `<div class="lc-norecord lc-docs-gap">${t("lifecycle_unmatched_documents_html",{source:src})}</div>`;
+  // unmatched — class (b) not-published; pointer at City Record GetFile
+  const where = `<a class="view" href="${CITY_RECORD_GETFILE_URL}" ${EXT_ATTRS}><span lang="en" dir="ltr">${t("lifecycle_source_city_record_getfile")}</span>${extSR()}</a>`;
+  return `<div class="lc-norecord lc-docs-gap">${t("lifecycle_documents_not_published_html",{where})}</div>`;
 }
 
 // ctx: optional {contractId, pin, vendor} when the stage detail lacks a join key but the

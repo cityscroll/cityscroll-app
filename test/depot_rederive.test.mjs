@@ -79,10 +79,13 @@ test("PASSPort field case: predicted high-risk vs realized 78%, EPIN in graph", 
   // Contracts side keeps its own all_notices_to_contracts rate
   assert.equal(contracts.join_coverage?.realized?.rate, 0.74);
 
-  // Ranked list still leads with PASSPort and stamps realized rate
-  assert.match(registry.ranked_ingest_list[0].source, /PASSPort/);
-  assert.equal(registry.ranked_ingest_list[0].realized_join_rate, 0.78);
-  assert.equal(registry.ranked_ingest_list[0].predicted_join_grade, "high-risk");
+  // Ranked list still carries PASSPort with realized either-source rate
+  // (package-document gap closed as class-b; pending/registered remain)
+  const passportRank = registry.ranked_ingest_list.find((r) => /PASSPort/i.test(r.source));
+  assert.ok(passportRank, "PASSPort still on ranked ingest list");
+  assert.equal(passportRank.realized_join_rate, 0.78);
+  assert.equal(passportRank.predicted_join_grade, "high-risk");
+  assert.ok(passportRank.rank <= 3, `PASSPort near top, got rank ${passportRank.rank}`);
 });
 
 test("newly-feasible pair: passport contract_id × checkbook is enumerated", () => {

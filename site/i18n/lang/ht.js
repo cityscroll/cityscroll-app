@@ -564,6 +564,8 @@
     lifecycle_source_passport: "PASSPort Public",
     lifecycle_source_current_solicitations: "Solisitasyon aktyèl (done ouvè)",
     lifecycle_unmatched_documents_html: "Pokò a pa montre isit la — detay pake solisitasyon an nan {source}.",
+    lifecycle_source_city_record_getfile: "dokiman City Record yo",
+    lifecycle_documents_not_published_html: "Vil la pa pibliye dokiman pake solisitasyon yo kòm yon sous ouvè pou avi sa a — yo ta parèt nan {where} si yo te pibliye yo.",
     lifecycle_unmatched_solicitation_html: "Pokò a pa montre isit la — pake solisitasyon an nan {source}.",
     lifecycle_documents_count_one: "{n} dokiman pake",
     lifecycle_documents_count_other: "{n} dokiman pake",
