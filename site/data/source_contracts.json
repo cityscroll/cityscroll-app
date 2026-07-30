@@ -906,6 +906,97 @@
         }
       ],
       "delivery_tier": "edge-materialized"
+    },
+    {
+      "id": "bid-tabulations-historical",
+      "name": "Bid Tabulations (Historical)",
+      "owner": "NYC Department of Citywide Administrative Services",
+      "status": "disabled",
+      "scope": "runtime",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "9k82-ys7w",
+      "landing_page": "https://data.cityofnewyork.us/d/9k82-ys7w",
+      "required_fields": [
+        "bid_number",
+        "bid_title",
+        "bidder_name",
+        "bid_price",
+        "bid_opening_date"
+      ],
+      "max_stale_days": 5000,
+      "publisher_cadence": "Historical / irregular (publisher labels the view historical; openings end 2021-03-24; rows last modified 2023-09-16)",
+      "product_freshness": "Disabled for product reads. Schema probes tolerate multi-year freeze via max_stale_days because the publication is intentionally historical.",
+      "used_for": "No current product output. Ranked class-(a) bid-count source was measured; strict join usefulness is below the materialization threshold.",
+      "gap": "Strict PIN to bid_number joins cover 9.07% of City Record Procurement notices with PIN in the historical overlap window (2016-2021) and 0% of notices since 2025-01-01. Both rates are below the ~30% usefulness threshold for edge materialization. The dataset has no PIN/EPIN column, openings end 2021-03-24, and weak title-only joins were rejected after recon false positives. Bid counts remain not-yet-ingested until a higher-coverage modern source ships or usefulness is re-measured above threshold.",
+      "join_keys": [
+        "bid_number",
+        "PIN"
+      ],
+      "join_measurement": {
+        "observed_on": "2026-07-30",
+        "universe_modern": "City Record Online (dg92-zbpx) Procurement notices with non-empty pin and start_date >= 2025-01-01",
+        "universe_modern_count": 7254,
+        "universe_historical": "City Record Online (dg92-zbpx) Procurement notices with non-empty pin and start_date in [2016-01-01, 2022-01-01)",
+        "universe_historical_count": 23804,
+        "bid_tabulation_rows": 57704,
+        "bid_tabulation_unique_bid_numbers": 945,
+        "bid_opening_min": "2016-01-05",
+        "bid_opening_max": "2021-03-24",
+        "strategy": "exact | agency_prefix_bid_suffix (2-4 digit agency prefix + known 7-digit bid_number). Weak title-unique and digit-containment joins rejected.",
+        "rates": {
+          "modern_notices_strict": {
+            "joined": 0,
+            "total": 7254,
+            "rate": 0.0
+          },
+          "historical_notices_strict": {
+            "joined": 2158,
+            "total": 23804,
+            "rate": 0.0907
+          },
+          "historical_857_prefix_subset": {
+            "joined": 2127,
+            "total": 3180,
+            "rate": 0.6689
+          },
+          "historical_solicitation_strict": {
+            "joined": 935,
+            "total": 8667,
+            "rate": 0.1079
+          },
+          "historical_award_strict": {
+            "joined": 1223,
+            "total": 13241,
+            "rate": 0.0924
+          }
+        },
+        "usefulness_threshold": 0.3,
+        "verdict": "Below usefulness threshold (~30%) on the modern product universe (0%) and historical overlap universe (9.07%). Ship measured reconnaissance + source contract only; do not edge-materialize bid counts."
+      },
+      "code_references": [
+        {
+          "path": "worker/src/lib/bid_tabulations_join.mjs",
+          "contains": "joinPinToBidNumber"
+        },
+        {
+          "path": "site/data/bid_tabulation_sources/README.md",
+          "contains": "9k82-ys7w"
+        },
+        {
+          "path": "site/data/bid_tabulation_sources/verification_receipts/bid_tabulations_historical_2026-07-30.json",
+          "contains": "bid-tabulations-historical"
+        },
+        {
+          "path": "test/fixtures/bid_tabulations/join_cases.json",
+          "contains": "joined-agency-prefix-solicitation"
+        },
+        {
+          "path": "test/bid_tabulations_join.test.mjs",
+          "contains": "bid-tabulations-historical"
+        }
+      ],
+      "delivery_tier": "live-only"
     }
   ]
 }
