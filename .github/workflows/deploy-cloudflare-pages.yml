@@ -86,9 +86,13 @@ jobs:
           node tools/pages_route_parity.mjs
           --reference https://cityscroll.org
           --candidate https://cityscroll.pages.dev
+          --timeout-ms 720000
+          --interval-ms 20000
           --out docs/evidence/cloudflare-pages-route-parity.md
       - name: Upload parity report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: cloudflare-pages-route-parity
           path: docs/evidence/cloudflare-pages-route-parity.md
+          if-no-files-found: ignore

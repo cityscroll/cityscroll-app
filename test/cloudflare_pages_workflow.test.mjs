@@ -41,6 +41,7 @@ test("parallel host smoke and route parity run after Cloudflare Pages deploy", (
   assert.match(workflow, /live_url_smoke\.mjs/);
   assert.match(workflow, /--base-url https:\/\/cityscroll\.pages\.dev/);
   assert.match(workflow, /pages_route_parity\.mjs/);
+  assert.match(workflow, /--timeout-ms 720000/);
   assert.match(workflow, /needs:\s*deploy/);
   const smokeBlock = workflow.slice(workflow.indexOf("live_url_smoke"));
   assert.doesNotMatch(

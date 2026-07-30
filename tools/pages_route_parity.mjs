@@ -211,6 +211,9 @@ export function formatParityReport({
   return lines.join("\n");
 }
 
+export const DEFAULT_TIMEOUT_MS = 180_000;
+export const DEFAULT_INTERVAL_MS = 10_000;
+
 function parseArgs(argv) {
   const opts = {
     reference: DEFAULT_REFERENCE_ORIGIN,
@@ -218,6 +221,8 @@ function parseArgs(argv) {
     out: null,
     cacheBust: true,
     requestTimeoutMs: 20_000,
+    timeoutMs: DEFAULT_TIMEOUT_MS,
+    intervalMs: DEFAULT_INTERVAL_MS,
   };
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
@@ -226,9 +231,62 @@ function parseArgs(argv) {
     else if (arg === "--out") opts.out = argv[++i];
     else if (arg === "--no-cache-bust") opts.cacheBust = false;
     else if (arg === "--request-timeout-ms") opts.requestTimeoutMs = Number(argv[++i]);
+    else if (arg === "--timeout-ms") opts.timeoutMs = Number(argv[++i]);
+    else if (arg === "--interval-ms") opts.intervalMs = Number(argv[++i]);
     else if (arg === "--help" || arg === "-h") opts.help = true;
   }
   return opts;
+}
+
+/**
+ * Probe both origins until parity passes or the retry window elapses.
+ * Fresh deploys can briefly return 522/5xx on pages.dev before the edge is ready.
+ */
+export async function runParity({
+  reference,
+  candidate,
+  cacheBust = true,
+  requestTimeoutMs = 20_000,
+  timeoutMs = DEFAULT_TIMEOUT_MS,
+  intervalMs = DEFAULT_INTERVAL_MS,
+  fetchImpl,
+  sleep = (ms) => new Promise((r) => setTimeout(r, ms)),
+  now = () => Date.now(),
+} = {}) {
+  const deadline = now() + timeoutMs;
+  let attempts = 0;
+  let referenceRows = [];
+  let candidateRows = [];
+  let comparison = { ok: false, rows: [], failures: ["not started"] };
+
+  while (true) {
+    attempts += 1;
+    referenceRows = await probeInventory(reference, {
+      cacheBust,
+      requestTimeoutMs,
+      fetchImpl,
+      now: now(),
+    });
+    candidateRows = await probeInventory(candidate, {
+      cacheBust,
+      requestTimeoutMs,
+      fetchImpl,
+      now: now(),
+    });
+    comparison = compareInventories(referenceRows, candidateRows);
+    if (comparison.ok) {
+      return { ok: true, attempts, referenceRows, candidateRows, comparison };
+    }
+    const remaining = deadline - now();
+    if (remaining <= 0) break;
+    console.error(
+      `route parity attempt ${attempts} failed (${comparison.failures.length} path(s)); retrying…`,
+    );
+    await sleep(Math.min(intervalMs, Math.max(0, remaining)));
+    if (now() > deadline) break;
+  }
+
+  return { ok: false, attempts, referenceRows, candidateRows, comparison };
 }
 
 export async function main(argv = process.argv.slice(2)) {
@@ -237,34 +295,36 @@ export async function main(argv = process.argv.slice(2)) {
     console.log(`Usage: node tools/pages_route_parity.mjs \\
   [--reference ${DEFAULT_REFERENCE_ORIGIN}] \\
   [--candidate ${DEFAULT_CANDIDATE_ORIGIN}] \\
-  [--out docs/evidence/cloudflare-pages-route-parity.md]
+  [--out docs/evidence/cloudflare-pages-route-parity.md] \\
+  [--timeout-ms ${DEFAULT_TIMEOUT_MS}] [--interval-ms ${DEFAULT_INTERVAL_MS}]
 
 Probes the full route inventory on both origins and writes a parity report.
+Retries inside the timeout window so a fresh pages.dev deploy can warm up.
 `);
     return 0;
   }
 
-  const comparedAt = new Date().toISOString();
   console.log(
-    `route parity: reference=${opts.reference} candidate=${opts.candidate} routes=${ROUTE_INVENTORY.length}`,
+    `route parity: reference=${opts.reference} candidate=${opts.candidate} `
+    + `routes=${ROUTE_INVENTORY.length} (timeout ${opts.timeoutMs}ms)`,
   );
 
-  const referenceRows = await probeInventory(opts.reference, {
+  const result = await runParity({
+    reference: opts.reference,
+    candidate: opts.candidate,
     cacheBust: opts.cacheBust,
     requestTimeoutMs: opts.requestTimeoutMs,
+    timeoutMs: opts.timeoutMs,
+    intervalMs: opts.intervalMs,
   });
-  const candidateRows = await probeInventory(opts.candidate, {
-    cacheBust: opts.cacheBust,
-    requestTimeoutMs: opts.requestTimeoutMs,
-  });
-  const comparison = compareInventories(referenceRows, candidateRows);
+  const comparedAt = new Date().toISOString();
   const report = formatParityReport({
     referenceOrigin: opts.reference,
     candidateOrigin: opts.candidate,
     comparedAt,
-    comparison,
-    referenceRows,
-    candidateRows,
+    comparison: result.comparison,
+    referenceRows: result.referenceRows,
+    candidateRows: result.candidateRows,
   });
 
   if (opts.out) {
@@ -275,13 +335,15 @@ Probes the full route inventory on both origins and writes a parity report.
     process.stdout.write(report);
   }
 
-  if (!comparison.ok) {
-    console.error(`route parity FAILED (${comparison.failures.length} path(s))`);
-    for (const failure of comparison.failures) console.error(`  ${failure}`);
+  if (!result.ok) {
+    console.error(
+      `route parity FAILED after ${result.attempts} attempt(s) (${result.comparison.failures.length} path(s))`,
+    );
+    for (const failure of result.comparison.failures) console.error(`  ${failure}`);
     return 1;
   }
 
-  console.log("route parity PASS");
+  console.log(`route parity PASS after ${result.attempts} attempt(s)`);
   return 0;
 }
 
