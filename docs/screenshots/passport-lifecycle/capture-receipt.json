@@ -1,0 +1,20 @@
+{
+  "raw_urls": {
+    "contracts": {
+      "url": "https://a0333-passportpublic.nyc.gov/dataJs/contractData.js",
+      "http": 200,
+      "sha256": "3767afb06bbb502002b8c1d20b05ef34f777c20b2755c922a8d1cf22394eead4"
+    },
+    "rfx": {
+      "url": "https://a0333-passportpublic.nyc.gov/dataJs/rfxData.js",
+      "http": 200,
+      "sha256": "6f805ba1178ab6726499097a7f99f199430fef5989fa890970ba8d30b9261f76"
+    }
+  },
+  "screenshots_dir": "docs/screenshots/passport-lifecycle",
+  "field_cases": [
+    "joined-registered",
+    "joined-rfx",
+    "unjoinable-solicitation"
+  ]
+}

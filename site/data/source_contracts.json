@@ -56,7 +56,7 @@
       ],
       "publisher_cadence": "Daily",
       "product_freshness": "Freshness depends on the Build NYC document publication page; the worker caches joined lifecycle records for read-path latency.",
-      "used_for": "City Record ↔ Build NYC subsidy timeline joins for application, hearing, board, closing, and compliance stages.",
+      "used_for": "City Record \u2194 Build NYC subsidy timeline joins for application, hearing, board, closing, and compliance stages.",
       "code_references": [
         {
           "path": "worker/src/subsidy_lifecycle.mjs",
@@ -156,7 +156,7 @@
     },
     {
       "id": "abo-local-authorities",
-      "name": "NYS Authorities Budget Office — local authorities",
+      "name": "NYS Authorities Budget Office \u2014 local authorities",
       "owner": "NYS Authorities Budget Office",
       "status": "live",
       "scope": "runtime",
@@ -185,7 +185,7 @@
     },
     {
       "id": "abo-local-development-corporations",
-      "name": "NYS Authorities Budget Office — local development corporations",
+      "name": "NYS Authorities Budget Office \u2014 local development corporations",
       "owner": "NYS Authorities Budget Office",
       "status": "live",
       "scope": "runtime",
@@ -214,7 +214,7 @@
     },
     {
       "id": "abo-state-authorities",
-      "name": "NYS Authorities Budget Office — state authorities",
+      "name": "NYS Authorities Budget Office \u2014 state authorities",
       "owner": "NYS Authorities Budget Office",
       "status": "live",
       "scope": "runtime",
@@ -367,7 +367,7 @@
     },
     {
       "id": "zap-projects",
-      "name": "Zoning Application Portal — projects",
+      "name": "Zoning Application Portal \u2014 projects",
       "owner": "NYC Department of City Planning",
       "status": "live",
       "scope": "runtime",
@@ -396,7 +396,7 @@
     },
     {
       "id": "zap-bbl",
-      "name": "Zoning Application Portal — tax lots",
+      "name": "Zoning Application Portal \u2014 tax lots",
       "owner": "NYC Department of City Planning",
       "status": "live",
       "scope": "runtime",
@@ -644,13 +644,30 @@
       "publisher_cadence": "Annual outcomes publication with potential corrections during the fiscal-year outcomes cycle",
       "product_freshness": "Built from a manually reviewed aggregate outcomes snapshot committed in data/exam_sources/dcas_exam_outcomes.json.",
       "used_for": "Aggregate post-cycle outcomes (eligible-list size, hiring-pool certifications, hire counts) joined by exam_number onto deadline-first exam cards and exam detail in the precomputed staffing guide.",
-      "join_keys": ["exam_number"],
+      "join_keys": [
+        "exam_number"
+      ],
       "code_references": [
-        {"path": "data/exam_sources/dcas_exam_outcomes.json", "contains": "dcas-annual-exam-outcomes"},
-        {"path": "tools/build_staffing_exams.mjs", "contains": "dcas-annual-exam-outcomes"},
-        {"path": "data/staffing_exams.json", "contains": "\"outcome\""},
-        {"path": "staffing.js", "contains": "examOutcomeView"},
-        {"path": "index.html", "contains": "careerOutcomeHTML"}
+        {
+          "path": "data/exam_sources/dcas_exam_outcomes.json",
+          "contains": "dcas-annual-exam-outcomes"
+        },
+        {
+          "path": "tools/build_staffing_exams.mjs",
+          "contains": "dcas-annual-exam-outcomes"
+        },
+        {
+          "path": "data/staffing_exams.json",
+          "contains": "\"outcome\""
+        },
+        {
+          "path": "staffing.js",
+          "contains": "examOutcomeView"
+        },
+        {
+          "path": "index.html",
+          "contains": "careerOutcomeHTML"
+        }
       ],
       "delivery_tier": "inline-at-build"
     },
@@ -721,6 +738,171 @@
         {
           "path": "worker/src/lib/meeting_outcomes.mjs",
           "contains": "LEGISTAR_API_BASE"
+        }
+      ],
+      "delivery_tier": "edge-materialized"
+    },
+    {
+      "id": "passport-public-contracts",
+      "name": "PASSPort Public contracts",
+      "owner": "NYC Mayor's Office of Contract Services",
+      "status": "live",
+      "scope": "runtime",
+      "kind": "html",
+      "landing_page": "https://a0333-passportpublic.nyc.gov/contracts.html",
+      "endpoint": "https://a0333-passportpublic.nyc.gov/dataJs/contractData.js",
+      "required_fields": [
+        "epin",
+        "contract_id",
+        "title",
+        "agency",
+        "vendor",
+        "status",
+        "current_amount",
+        "start_date",
+        "end_date",
+        "registration_date"
+      ],
+      "max_stale_days": 3,
+      "publisher_cadence": "Portal dataJs dump refreshed about daily (Last-Modified on dataJs/contractData.js)",
+      "product_freshness": "Worker rebuilds the D1 passport_contracts table on the daily scheduled run; lifecycle reads join from that edge materialization with no live browser fetch to PASSPort.",
+      "used_for": "Pending and pre-registration contract stages on the procurement lifecycle when Checkbook is unmatched, plus registered-stage enrichment when EPIN joins a City Record PIN.",
+      "join_keys": [
+        "EPIN",
+        "PIN"
+      ],
+      "join_measurement": {
+        "observed_on": "2026-07-30",
+        "universe": "City Record Online (dg92-zbpx) Procurement notices with non-empty pin and start_date >= 2025-01-01",
+        "universe_count": 7254,
+        "passport_contract_rows": 61451,
+        "passport_unique_epins": 60686,
+        "strategy": "exact | pin_strip_suffix | pin_prefix_of_epin | epin_prefix_of_pin (EPIN length >= 10; remainder digits or letter+2-4 digits). Weak shared-prefix joins rejected.",
+        "rates": {
+          "all_notices_to_contracts": {
+            "joined": 5368,
+            "total": 7254,
+            "rate": 0.74
+          },
+          "award_to_contracts": {
+            "joined": 4581,
+            "total": 5170,
+            "rate": 0.886
+          },
+          "solicitation_to_contracts": {
+            "joined": 458,
+            "total": 1470,
+            "rate": 0.312
+          },
+          "intent_to_award_to_contracts": {
+            "joined": 328,
+            "total": 614,
+            "rate": 0.534
+          }
+        },
+        "verdict": "Above usefulness threshold (>=30%). Ship join + edge materialization."
+      },
+      "code_references": [
+        {
+          "path": "worker/src/passport.mjs",
+          "contains": "CONTRACT_DATA_URL"
+        },
+        {
+          "path": "worker/src/lib/passport_parse.mjs",
+          "contains": "public_ctr_data"
+        },
+        {
+          "path": "worker/src/lib/passport_join.mjs",
+          "contains": "joinPinToEpin"
+        },
+        {
+          "path": "worker/src/lib/passport_lifecycle.mjs",
+          "contains": "enrichLifecycleWithPassport"
+        },
+        {
+          "path": "worker/src/checkbook_lifecycle.mjs",
+          "contains": "lookupPassportForPin"
+        },
+        {
+          "path": "worker/migrations/0007_passport_public.sql",
+          "contains": "passport_contracts"
+        }
+      ],
+      "delivery_tier": "edge-materialized"
+    },
+    {
+      "id": "passport-public-rfx",
+      "name": "PASSPort Public solicitations (RFx)",
+      "owner": "NYC Mayor's Office of Contract Services",
+      "status": "live",
+      "scope": "runtime",
+      "kind": "html",
+      "landing_page": "https://a0333-passportpublic.nyc.gov/rfx.html",
+      "endpoint": "https://a0333-passportpublic.nyc.gov/dataJs/rfxData.js",
+      "required_fields": [
+        "epin",
+        "procurement_name",
+        "agency",
+        "rfx_status",
+        "release_date",
+        "due_date",
+        "procurement_method"
+      ],
+      "max_stale_days": 3,
+      "publisher_cadence": "Portal dataJs dump refreshed about daily (Last-Modified on dataJs/rfxData.js)",
+      "product_freshness": "Worker rebuilds the D1 passport_rfx table on the daily scheduled run; solicitation lifecycle stages read joined RFx detail from that materialization.",
+      "used_for": "RFx detail on solicitation lifecycle stages (due date, method, status, commodity) joined by EPIN to City Record PINs.",
+      "join_keys": [
+        "EPIN",
+        "PIN"
+      ],
+      "join_measurement": {
+        "observed_on": "2026-07-30",
+        "universe": "City Record Online (dg92-zbpx) Procurement notices with non-empty pin and start_date >= 2025-01-01",
+        "universe_count": 7254,
+        "passport_rfx_rows": 12005,
+        "passport_unique_epins": 10763,
+        "strategy": "exact | pin_strip_suffix | pin_prefix_of_epin | epin_prefix_of_pin (EPIN length >= 10; remainder digits or letter+2-4 digits). Weak shared-prefix joins rejected.",
+        "rates": {
+          "all_notices_to_rfx": {
+            "joined": 2526,
+            "total": 7254,
+            "rate": 0.348
+          },
+          "solicitation_to_rfx": {
+            "joined": 653,
+            "total": 1470,
+            "rate": 0.444
+          },
+          "award_to_rfx": {
+            "joined": 1758,
+            "total": 5170,
+            "rate": 0.34
+          },
+          "either_contracts_or_rfx": {
+            "joined": 5660,
+            "total": 7254,
+            "rate": 0.78
+          }
+        },
+        "verdict": "Above usefulness threshold (>=30%). Ship join + edge materialization."
+      },
+      "code_references": [
+        {
+          "path": "worker/src/passport.mjs",
+          "contains": "RFX_DATA_URL"
+        },
+        {
+          "path": "worker/src/lib/passport_parse.mjs",
+          "contains": "public_rfx_data"
+        },
+        {
+          "path": "worker/src/lib/passport_lifecycle.mjs",
+          "contains": "passport-public-rfx"
+        },
+        {
+          "path": "worker/migrations/0007_passport_public.sql",
+          "contains": "passport_rfx"
         }
       ],
       "delivery_tier": "edge-materialized"

@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "observed_on": "2026-07-30",
+  "join_measurement_topline": {
+    "universe": "City Record Procurement notices with PIN, start_date >= 2025-01-01",
+    "universe_count": 7254,
+    "either_contracts_or_rfx_rate": 0.78,
+    "award_to_contracts_rate": 0.886,
+    "solicitation_to_rfx_rate": 0.444,
+    "strategy": "exact | pin_strip_suffix | pin_prefix_of_epin | epin_prefix_of_pin"
+  },
+  "joined_award": {
+    "notice": {
+      "request_id": "20260723031",
+      "pin": "81626W0043001",
+      "type_of_notice_description": "Award",
+      "agency_name": "Health and Mental Hygiene",
+      "start_date": "2026-07-30T00:00:00.000",
+      "short_title": "Catering Services",
+      "vendor_name": "MAKE IT ZESTY LLC",
+      "contract_amount": "250000"
+    },
+    "passport_contract": {
+      "ctr_id": "5755276",
+      "epin": "81626W0043001",
+      "epin_norm": "81626W0043001",
+      "contract_id": "CT1-816-20278801775",
+      "title": "PIN 26AE017201R0X00",
+      "agency": "DEPARTMENT OF HEALTH AND MENTAL HYGIENE",
+      "vendor": "MAKE IT ZESTY LLC",
+      "status": "Registered",
+      "award_amount": 250000,
+      "current_amount": 250000,
+      "paid_amount": 0,
+      "start_date": "09/01/2026",
+      "end_date": "08/31/2032",
+      "registration_date": "07/23/2026"
+    },
+    "expected_join_method": "exact"
+  },
+  "joined_solicitation": {
+    "notice": {
+      "request_id": "20260707026",
+      "pin": "81026B0003",
+      "type_of_notice_description": "Solicitation",
+      "agency_name": "Buildings",
+      "start_date": "2026-07-28T00:00:00.000",
+      "short_title": "81026B0003-Records Remediation Project"
+    },
+    "passport_rfx": {
+      "rfp_id": "36426",
+      "epin": "81026B0003",
+      "epin_norm": "81026B0003",
+      "procurement_name": "81026B0003-Records remediation project",
+      "agency": "DEPARTMENT OF BUILDINGS",
+      "rfx_status": "Released",
+      "release_date": "7/28/2026 9:00:00 AM",
+      "due_date": "8/18/2026 1:00:00 PM",
+      "procurement_method": "Competitive Sealed Bid",
+      "main_commodity": "Historical Preservation Services",
+      "industry": "Professional Services"
+    },
+    "expected_join_method": "exact"
+  },
+  "unjoinable_award": {
+    "notice": {
+      "request_id": "20260724016",
+      "pin": "26026N0011044",
+      "type_of_notice_description": "Award",
+      "agency_name": "Youth and Community Development",
+      "start_date": "2026-07-30T00:00:00.000",
+      "short_title": "Summer Youth Employment Program NAQ"
+    },
+    "reason": "PIN not present as EPIN in PASSPort Public contract or RFx dumps on observation day"
+  },
+  "unjoinable_solicitation": {
+    "notice": {
+      "request_id": "20260722026",
+      "pin": "TGI-RED-AdaptiveReus",
+      "type_of_notice_description": "Solicitation",
+      "agency_name": "Trust for Governors Island",
+      "start_date": "2026-07-29T00:00:00.000",
+      "short_title": "Ground leasing, rehabilitating, and operating Building 324 and/or Building 330 on Governors Island"
+    },
+    "reason": "Non-standard PIN outside PASSPort EPIN namespace (public authority / special entity)"
+  },
+  "pending_passport_contract": {
+    "passport_contract": {
+      "ctr_id": "5790163",
+      "epin": "26026O0002001R001",
+      "epin_norm": "26026O0002001R001",
+      "contract_id": null,
+      "title": "PO202700030 - DIONA Dell Marketing Renewal #1",
+      "agency": "DEPARTMENT OF YOUTH AND COMMUNITY DEVELOPMENT",
+      "vendor": "DELL MARKETING LP",
+      "status": "In Progress",
+      "award_amount": 64500,
+      "current_amount": 64500,
+      "start_date": "12/07/2026",
+      "end_date": "12/06/2027",
+      "registration_date": null
+    },
+    "synthetic_notice": {
+      "request_id": "fixture-pending-pp",
+      "pin": "26026O0002001R001",
+      "type_of_notice_description": "Award",
+      "agency_name": "Youth and Community Development",
+      "start_date": "2026-07-01",
+      "short_title": "Dell Marketing Renewal",
+      "vendor_name": "DELL MARKETING LP"
+    }
+  },
+  "prefix_join": {
+    "pin": "84125B0005001",
+    "epin": "84125B0005",
+    "expected_method": "epin_prefix_of_pin"
+  }
+}

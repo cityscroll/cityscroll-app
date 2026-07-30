@@ -39,6 +39,7 @@ import { handleMeetingOutcomes, refreshMeetingOutcomes } from "./meeting_outcome
 import { handleSourceVault } from "./source_vault.mjs";
 import { handleContractLifecycle, prewarmContractLifecycle } from "./checkbook_lifecycle.mjs";
 import { handleSubsidyLifecycle, prewarmSubsidyLifecycle } from "./subsidy_lifecycle.mjs";
+import { ingestPassportPublic } from "./passport.mjs";
 import { handleTranslate } from "./translate.mjs";
 
 const MIRROR_HOSTS = new Set(["cityscroll.org", "www.cityscroll.org"]);
@@ -130,9 +131,18 @@ export default {
     } catch (e) {
       console.error("nycha award prewarm failed (digest continues):", String(e?.message || e));
     }
+    // PASSPort Public contracts + RFx: rebuild the edge materialization from the portal's
+    // dataJs dumps before lifecycle prewarm so PIN↔EPIN joins see today's rows. Fail-soft.
+    try {
+      const r = await ingestPassportPublic(env);
+      console.log("passport public ingest:", JSON.stringify(r));
+    } catch (e) {
+      console.error("passport public ingest failed (digest continues):", String(e?.message || e));
+    }
     // Contract lifecycle (PROC-001): pre-warm the procurement timeline for freshly-ingested
     // Award notices. Joins each notice's PIN to Checkbook NYC pending, registered, and spending
-    // domains. Bounded (≤40/run); compute-on-miss otherwise. Fail-soft like the other cron jobs.
+    // domains, then enriches unmatched pending/registered stages from PASSPort when EPIN joins.
+    // Bounded (≤40/run); compute-on-miss otherwise. Fail-soft like the other cron jobs.
     try {
       const awardIds = ingestResult?.awardRequestIds || [];
       if (awardIds.length) {
