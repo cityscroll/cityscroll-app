@@ -1441,9 +1441,39 @@ function usablePin(p){
   if(JUNK_PIN_TEXT_RE.test(s)) return false;
   return true;
 }
+// Hand-synced with site/text_clean.mjs cleanNoticeText: strip tags, decode entities, collapse
+// whitespace. Returns plain Unicode — HTML sinks must escape once (escUiHtml / excerptHtml).
+// Incomplete decode left &ldquo; in feed/hearing paths; escUiHtml then re-escaped to the literal
+// string "&ldquo;" (notice 20220525018). Truncate only on the decoded result (excerptHtml).
+// Self-contained (decoder inlined) so test extractors that pull only cleanText still run.
 function cleanText(s){
   if(!s) return "";
-  return String(s).replace(/<[^>]*>/g," ").replace(/[\u0000-\u001f\u007f]/g," ").replace(/&nbsp;/gi," ").replace(/\s+/g," ").trim();
+  const named={amp:"&",lt:"<",gt:">",quot:'"',apos:"'",nbsp:"\u00A0",ldquo:"\u201C",rdquo:"\u201D",lsquo:"\u2018",rsquo:"\u2019",sbquo:"\u201A",bdquo:"\u201E",ndash:"\u2013",mdash:"\u2014",hellip:"\u2026",bull:"\u2022",middot:"\u00B7",sect:"\u00A7",para:"\u00B6",copy:"\u00A9",reg:"\u00AE",trade:"\u2122",deg:"\u00B0",times:"\u00D7",divide:"\u00F7",plusmn:"\u00B1",frac12:"\u00BD",frac14:"\u00BC",frac34:"\u00BE",euro:"\u20AC",pound:"\u00A3",yen:"\u00A5",cent:"\u00A2"};
+  let out=String(s).replace(/<[^>]*>/g," ").replace(/[\u0000-\u001f\u007f-\u009f]/g," ");
+  for(let pass=0; pass<2; pass++){
+    const next=out.replace(/&(#x[0-9a-f]+|#\d+|[a-z][a-z0-9]*);/gi,(m,body)=>{
+      if(body[0]==="#"){
+        const code=(body[1]==="x"||body[1]==="X")?parseInt(body.slice(2),16):parseInt(body.slice(1),10);
+        if(!Number.isFinite(code)||code<0||code>0x10ffff) return m;
+        try{ return String.fromCodePoint(code); }catch{ return m; }
+      }
+      const key=String(body).toLowerCase();
+      return Object.prototype.hasOwnProperty.call(named,key)?named[key]:m;
+    });
+    if(next===out) break;
+    out=next;
+  }
+  return out.replace(/\s+/g," ").trim();
+}
+// Decode → truncate on plain text → escape once. Owner for every notice preview/card excerpt.
+// Self-contained so extractors that pull only excerptHtml (+ cleanText) still run.
+function excerptHtml(s, n){
+  const plain=cleanText(s);
+  if(!plain) return "";
+  const esc=v=>String(v).replace(/[<>&'"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;","'":"&#39;",'"':"&quot;"}[c]));
+  const max=Math.max(0, Number(n)||0);
+  if(plain.length<=max) return esc(plain);
+  return esc(plain.slice(0,max))+"…";
 }
 // w9-06 (WCAG 3.1.2): City Record data values (notice titles, agency/vendor names, addresses)
 // are always English, regardless of UI language -- wrap them so es-mode screen readers don't
@@ -1943,7 +1973,7 @@ function rankPriorCycleCandidates(r, candidates, opts){
 function priorCycleHTML(matches){
   const rows = matches.map(c => `<div class="stage"><div class="box">
       <div class="when">${fdate(c.start_date)}</div>
-      <div class="bt">${cleanText(c.short_title)}</div>
+      <div class="bt">${escUiHtml(cleanText(c.short_title))}</div>
       ${money(c.contract_amount) ? `<div class="amt">${money(c.contract_amount)}</div>` : ""}
       ${c.vendor_name ? `<div class="vend">→ ${pivotA(vendorHref(c.vendor_name), cleanText(c.vendor_name))}</div>` : ""}
       <a class="view" href="${REQ_URL(c.request_id)}" ${EXT_ATTRS}>${t("view_in_city_record")}${extSR()}</a>
@@ -2093,7 +2123,7 @@ function nearMatchHTML(items){
   const rows = items.map(x => `<div class="stage"><div class="box maybe">
       <div class="stage-name">${t("near_match_tag")}</div>
       <div class="when">${fdate(x.c.start_date)}</div>
-      <div class="bt">${cleanText(x.c.short_title)}</div>
+      <div class="bt">${escUiHtml(cleanText(x.c.short_title))}</div>
       ${money(x.c.contract_amount) ? `<div class="amt">${money(x.c.contract_amount)}</div>` : ""}
       ${x.c.vendor_name ? `<div class="vend">→ ${pivotA(vendorHref(x.c.vendor_name), cleanText(x.c.vendor_name))}</div>` : ""}
       <div class="why">${t("near_match_why_lbl")} ${x.reasons.map(nearMatchReasonHTML).join(" · ")}</div>
@@ -2544,7 +2574,7 @@ function chainHTML(r, chain){
     html += `<div class="stage"><div class="box ${boxClass(c.type_of_notice_description)}">
         <div class="stage-name">${c.type_of_notice_description||t("notice_fallback")}${renewed?` <span class="tag renewal">${t("renewal_badge")}</span>`:""}</div>
         <div class="when">${fdate(c.start_date)}</div>
-        <div class="bt">${cleanText(c.short_title)||t("untitled")}</div>
+        <div class="bt">${escUiHtml(cleanText(c.short_title))||t("untitled")}</div>
         ${amt? `<div class="amt">${amt}</div>`:""}
         ${c.vendor_name? `<div class="vend">→ ${pivotA(vendorHref(c.vendor_name), cleanText(c.vendor_name))}</div>`:""}
         <a class="view" href="${REQ_URL(c.request_id)}" ${EXT_ATTRS}>${t("view_in_city_record")}${extSR()}</a>
@@ -2594,9 +2624,10 @@ function renderDetail(r, chain, stats){
     ? `<div class="chain-h">${t("paper_trail_heading")}</div>${listSkeleton(2)}`
     : chainHTML(r, chain);
 
-  const scope = cleanText(r.additional_description_1);
   // Original English notice text is the official record — always rendered first.
-  if(scope) html += `<div class="scope" lang="en" dir="ltr"><span class="lbl">${t("what_they_want")}</span>${scope.slice(0,900)}${scope.length>900?"…":""}</div>`;
+  // excerptHtml: decode entities, truncate on plain text, escape once (same discipline as cards).
+  const scopeHtml = excerptHtml(r.additional_description_1, 900);
+  if(scopeHtml) html += `<div class="scope" lang="en" dir="ltr"><span class="lbl">${t("what_they_want")}</span>${scopeHtml}</div>`;
   // Optional unofficial translation sits AFTER the original; never replaces it.
   html += `<div class="xlate" id="dxlate"></div>`;
   html += `<div id="dexternal"></div><div id="dprior"></div><div id="dforecast"></div>`;
@@ -4173,7 +4204,7 @@ async function landSelect(i, el){
       <div><div class="big" style="font-size:17px">${r.primary_applicant||"—"}</div><div class="lbl">${t("applicant_lbl")}</div></div>
       <div><div class="big" style="font-size:17px">${r.borough||""}${r.community_district?" · CD "+r.community_district:""}</div><div class="lbl">${t("where_lbl")}</div></div>
     </div>`;
-  if(r.project_brief) html+=`<div class="scope"><span class="lbl">${t("in_plain_english")}</span>${cleanText(r.project_brief)}</div>`;
+  if(r.project_brief) html+=`<div class="scope"><span class="lbl">${t("in_plain_english")}</span>${excerptHtml(r.project_brief,900)}</div>`;
   if(actList.length) html+=`<div class="rmeta2" style="margin-top:10px"><b>${t("actions_lbl")}</b> ${actList.join(" · ")}</div>`;
   const area=(r.project_name||r.borough||"").replace(/(rezoning|demapping|rezone|special permit|special district|text amendment|mapping actions?|modification|disposition|non-?ulurp).*/i,"").trim().split(/\s+/).slice(0,3).join(" ")||r.borough||"";
   html+=`<div class="actions" style="margin-top:12px">
@@ -4552,13 +4583,13 @@ function hearingCardHTML(record){
   if(venue.address) actions+=`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(venue.address+' New York NY')}" ${EXT_ATTRS}>${t("map_venue")}${extSR()}</a>`;
   return `<article class="fcard hcard" data-scope="${scope}">
       <div class="ftype"><span class="tag asset">${t(sectionKey)}</span>${past?` <span class="tag closed">${t("past_tag")}</span>`:""}${record.agency?" "+pivotA(agencyHref(record.agency),record.agency):""}${record.event_date?` · <b style="color:var(--ink)">${fdt(record.event_date)}</b>${eventTag(record.event_date)}`:""}</div>
-      <div class="ftitle">${escUiHtml(record.decides||record.title||t("untitled"))}</div>
+      <div class="ftitle">${excerptHtml(record.decides||record.title||t("untitled"),400)}</div>
       <div class="hfacts">
         <div class="hfact"><b>${t("affected_area_label")}</b><span>${escUiHtml(hearingAreaText(record))}</span></div>
         <div class="hfact"><b>${t("venue_label")}</b><span>${escUiHtml(hearingVenueText(record))}</span></div>
         <div class="hfact"><b>${t("who_affected_label")}</b><span>${record.affects&&record.affects.length?escUiHtml(record.affects.map(value=>t(value)).join(" · ")):t("who_affected_not_stated")}</span></div>
       </div>
-      ${record.description?`<div class="fscope">${escUiHtml(record.description.slice(0,260))}${record.description.length>260?"…":""}</div>`:""}
+      ${record.description?`<div class="fscope">${excerptHtml(record.description,260)}</div>`:""}
       <div class="factions">${actions}</div>
     </article>`;
 }
@@ -4788,7 +4819,9 @@ function feedCardHTML(key, r, terms){
   const cfg=SECTIONS[key];
   const ev=r.event_date, propertyAddress=key==="property"&&r._location?.addresses?.[0]?.label;
   const addr=propertyAddress||(cfg.showAddr&&goodAddr(r.street_address_1)?cleanText(r.street_address_1):"");
-  const scope=cleanText(r.additional_description_1).slice(0,200);
+  // excerptHtml owns decode→truncate→escape; raw slice of cleanText left entities double-escaped
+  // when a later path escaped again, and could cut inside "&ldquo;".
+  const scopeHtml=excerptHtml(r.additional_description_1,200);
   const title=cleanText(r.short_title), mev=matchEvidence(title, matchText(r), terms);
   // Comment-open is the actionable moment: lead with the official comment-page CTA so the
   // primary action sits first in the row (matches the hearing-card join/participation lead).
@@ -4811,7 +4844,7 @@ function feedCardHTML(key, r, terms){
       <div class="ftitle">${title ? digTitleHTML(title, mev) : t("untitled")}</div>
       ${key==="property"?propertyPlaceChips(r._location):addr?`<div class="faddr">${addr}</div>`:""}
       ${key==="rules"?rulePlaceChips(r._ruleLocation):""}
-      ${scope?`<div class="fscope">${scope}${scope.length>=200?"…":""}</div>`:""}
+      ${scopeHtml?`<div class="fscope">${scopeHtml}</div>`:""}
       ${digEvidenceHTML(mev)}
       <div class="factions">${acts}</div>
     </div>`;
@@ -5096,19 +5129,21 @@ function matchText(r){
   return [cleanText(r.additional_description_1), cleanText(r.other_info_1)].filter(Boolean).join(" ");
 }
 // digTitleHTML: the item's title, term <mark>-highlighted when the TITLE is what matched.
-// ev.index is an offset into the cleaned (untagged) title, so slicing happens before enTitle's
-// lang/dir wrap -- same non-escaping convention the rest of this file already uses for titles.
+// ev.index is an offset into the cleaned (decoded) title. Escape text slices once so a notice
+// that carried &lt;script&gt; cannot inject after cleanText decodes entities.
 function digTitleHTML(title, ev){
   if(!title) return t("untitled");
-  if(!ev || ev.field!=="title") return enTitle(title);
+  const esc=v=>String(v==null?"":v).replace(/[<>&'"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;","'":"&#39;",'"':"&quot;"}[c]));
+  if(!ev || ev.field!=="title") return enTitle(esc(title));
   const before=title.slice(0,ev.index), hit=title.slice(ev.index, ev.index+ev.term.length), after=title.slice(ev.index+ev.term.length);
-  return enTitle(`${before}<mark>${hit}</mark>${after}`);
+  return enTitle(`${esc(before)}<mark>${esc(hit)}</mark>${esc(after)}`);
 }
 // digEvidenceHTML: a one-line "why this matched" note for a match NOT in the title.
 function digEvidenceHTML(ev){
   if(!ev || ev.field==="title") return "";
-  if(ev.field==="description") return `<div class="dev">${t("digest_match_snippet_html",{snippet:`${ev.before}<mark>${ev.hit}</mark>${ev.after}`})}</div>`;
-  return `<div class="dev">${t("digest_match_unknown_html",{term:`<mark>${ev.term}</mark>`})}</div>`;
+  const esc=v=>String(v==null?"":v).replace(/[<>&'"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;","'":"&#39;",'"':"&quot;"}[c]));
+  if(ev.field==="description") return `<div class="dev">${t("digest_match_snippet_html",{snippet:`${esc(ev.before)}<mark>${esc(ev.hit)}</mark>${esc(ev.after)}`})}</div>`;
+  return `<div class="dev">${t("digest_match_unknown_html",{term:`<mark>${esc(ev.term)}</mark>`})}</div>`;
 }
 function digContact(r){
   const tel=String(r.contact_phone||"").replace(/[^0-9+]/g,""); const parts=[];
@@ -5121,7 +5156,7 @@ function digItemHTML(kind, r, keywords){
   if(kind==="award"){
     const title=cleanText(r.short_title), ev=matchEvidence(title, matchText(r), keywords);
     return `<div class="digitem"><div class="dt"><a href="#notice/${encodeURIComponent(r.request_id)}">${digTitleHTML(title, ev)}</a></div>
-    <div class="dm">${r.agency_name} · ${fdate(r.start_date)}${r.vendor_name? " · "+cleanText(r.vendor_name):""}</div>
+    <div class="dm">${escUiHtml(r.agency_name)} · ${fdate(r.start_date)}${r.vendor_name? " · "+escUiHtml(cleanText(r.vendor_name)):""}</div>
     ${digEvidenceHTML(ev)}
     <div class="da">${money(r.contract_amount)||""}</div>${digContact(r)}</div>`;
   }
@@ -5309,7 +5344,7 @@ function renderToday(d){
   if(d.closing) cards.push({lbl:t("closing_soon_lbl"), t:d.closing, meta:`${d.closing.agency_name} · ${t("due_on",{date:fdt(d.closing.due_date)})} ${deadlineTag(d.closing.due_date)}`});
   if(d.award) cards.push({lbl:t("largest_award_lbl"), t:d.award, meta:`${money(d.award.contract_amount)} — ${d.award.agency_name}`});
   if(d.hearing) cards.push({lbl:t("next_hearing_lbl"), t:d.hearing, meta:`${d.hearing.agency_name} · ${fdt(d.hearing.event_date)}${eventTag(d.hearing.event_date)}`});
-  $("#tcards").innerHTML = cards.map(c=>`<a class="t-card" href="#notice/${encodeURIComponent(c.t.request_id)}"><span class="tlbl">${c.lbl}</span><span class="tttl">${cleanText(c.t.short_title)||t("untitled")}</span><span class="tmeta">${c.meta}</span></a>`).join("");
+  $("#tcards").innerHTML = cards.map(c=>`<a class="t-card" href="#notice/${encodeURIComponent(c.t.request_id)}"><span class="tlbl">${c.lbl}</span><span class="tttl">${escUiHtml(cleanText(c.t.short_title))||t("untitled")}</span><span class="tmeta">${c.meta}</span></a>`).join("");
   $("#todaystrip").setAttribute("aria-busy","false");
 }
 
@@ -5345,7 +5380,7 @@ async function noticeFlags(r){
   const flags = [];
   if(!r || !r.agency_name) return flags;
   if(NONCOMP_RE.test(r.selection_method_description||""))
-    flags.push({lvl:"soon", t:`⚑ non-competitive method: ${cleanText(r.selection_method_description)}`});
+    flags.push({lvl:"soon", t:`⚑ non-competitive method: ${escUiHtml(cleanText(r.selection_method_description))}`});
   if(r.type_of_notice_description === "Solicitation" && r.due_date && r.start_date){
     const w = Math.round((new Date(r.due_date)-new Date(r.start_date))/86400000);
     if(w > 0 && w <= 10){
@@ -5950,7 +5985,10 @@ async function loadMeetingOutcomes(r, el){
    nightly clustered alias table can replace it without changing this page. */
 const agencyHref = (name, tab) => "#agency/" + encodeURIComponent(String(name||"").trim()) + (tab ? "?tab="+tab : "");
 const vendorHref = (name, tab) => "#vendor/" + encodeURIComponent(cleanText(name)) + (tab ? "?tab="+tab : "");
-const pivotA = (href, text) => `<a class="pivot" href="${href}">${text}</a>`;
+const escUiHtml = (s) => String(s == null ? "" : s).replace(/[<>&'"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", "'": "&#39;", "\"": "&quot;" }[c]));
+// Escape the label once: cleanText now decodes entities to plain Unicode, so an unescaped
+// pivot label would re-open injection for any notice field carrying &lt;…&gt;.
+const pivotA = (href, text) => `<a class="pivot" href="${href}">${escUiHtml(text)}</a>`;
 
 const VENDOR_SUFFIX = /\s+(INCORPORATED|INC|LLC|L\.L\.C|CORPORATION|CORP|COMPANY|CO|LTD|LIMITED|LP|LLP|PLLC|P\.C|PC|USA|OF NY|OF NEW YORK)\.?$/;
 function vendorStem(name){
@@ -5991,7 +6029,7 @@ function agencyProfileBar(stats, rfpCount, agencyName){
 // Shared by showAgency/showVendor (both render the same "Procurement Forecast" timeline)
 // and by agencyForecastTeaser's cross-link from notice detail — one builder, one shape to
 // pin in test/forecast_render.test.mjs, instead of the two hand-copied blocks this used to be.
-const escUiHtml = (s) => String(s == null ? "" : s).replace(/[<>&'"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", "'": "&#39;", "\"": "&quot;" }[c]));
+// (escUiHtml lives next to pivotA above — single definition for all HTML sinks.)
 function forecastItemHTML(f){
   const isCheckbook = f.source === "checkbook";
   const badgeText = isCheckbook ? t("forecast_badge_checkbook") : t("forecast_badge_mocs");
@@ -6231,7 +6269,7 @@ function vendorProfileHTML(profile, details, hydrating){
   const hasForecasts = forecasts.length > 0;
   const agChips = agencies.map(a=>{
     const name = a.name||a.agency_name||"";
-    return `<a class="chip" style="text-decoration:none" href="${agencyHref(name)}">${cleanText(name)}<span class="ct">${money(a.total??a.t)||a.n}</span></a>`;
+    return `<a class="chip" style="text-decoration:none" href="${agencyHref(name)}">${escUiHtml(cleanText(name))}<span class="ct">${money(a.total??a.t)||a.n}</span></a>`;
   }).join("");
   const rowItems = rows.map(r=>`<div class="tl"><span class="tldate">${fdate(r.start_date)}</span>
       <span class="tlreason">${pivotA("#notice/"+encodeURIComponent(r.request_id), cleanText(r.short_title)||"(untitled)")}</span>

@@ -42,6 +42,8 @@ const env = new Function(
   "t", "fmtNumber", "window", "awardCoverage", "awardSourceFor", "EXT_ATTRS", "extSR",
   extractFn("money") +
   extractConst("agencyHref") +
+  // Local stub: extractConst here is semicolon-naive and cannot pull escUiHtml (contains &#39;).
+  `const escUiHtml = (s) => String(s == null ? "" : s).replace(/[<>&'"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", "'": "&#39;", "\\"": "&quot;" }[c]));` +
   extractConst("pivotA") +
   extractFn("hasAgencyAwards") +
   extractConst("CHECKBOOK_NYCHA_AGENCY_ID") +
