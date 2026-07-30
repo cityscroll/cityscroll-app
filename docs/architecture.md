@@ -55,11 +55,14 @@ sources:
   - tools/ensure_beta_pages.mjs
   - .github/actions/build-site/action.yml
   - .github/workflows/deploy-pages.yml
+  - .github/workflows/deploy-worker.yml
   - .github/workflows/deploy-beta-preview.yml
   - .github/workflows/promote-beta.yml
   - .github/workflows/deploy-worker-beta.yml
   - .github/workflows/ci.yml
   - .github/workflows/source-contracts-live.yml
+  - tools/live_url_smoke.mjs
+  - test/live_url_smoke.test.mjs
   - worker/wrangler.toml
   - worker/src/events.mjs
   - worker/src/worker.mjs
@@ -81,7 +84,7 @@ sources:
   - test/fixtures/wave4/generated/process_spine.json
   - test/fixtures/wave4/generated/unresolved-joins.json
   - test/fixtures/wave4/generated/ocds-gap-table.json
-sources_hash: eb05c60aa69bbcfad0532f23e8327e68706bebb412a4d02a9ab0c12b11f60c34
+sources_hash: 4e33c24dc53efa405f76fab9d182c595718d661272f935c526aacc0e08761584
 ---
 
 # crol-list — architecture
@@ -188,6 +191,11 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
   Actions also builds and deploys the stable site after merge, publishes explicitly labeled draft
   previews, promotes exact commits to beta only on manual dispatch, and deploys Worker changes
   when `worker/**` changes.
+  After every site or worker deploy on `main`, `tools/live_url_smoke.mjs` probes the live public
+  apex hosts (`cityscroll.org`, `crol-list.org`) plus a deep route for HTTP 200 with real page
+  content (cache-busted; bounded retry for Pages/Fastly redirect-cache lag). A redirect loop,
+  non-200, empty body, or error shell fails the deploy workflow with URL and status-chain
+  diagnostics instead of reporting a green deploy.
 
 ## Surface
 

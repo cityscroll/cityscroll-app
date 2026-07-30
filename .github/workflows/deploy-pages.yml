@@ -42,3 +42,22 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  # Fail the deploy workflow if the public apex (or a deep route) is looping,
+  # non-200, empty, or serving an error shell. Polls inside a bounded window so
+  # short-lived GitHub Pages / Fastly redirect-cache lag does not false-fail;
+  # a sustained outage still fails the run instead of reporting a green deploy.
+  smoke:
+    name: Live URL smoke
+    needs: deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Post-deploy live URL smoke
+        run: node tools/live_url_smoke.mjs --timeout-ms 720000 --interval-ms 20000

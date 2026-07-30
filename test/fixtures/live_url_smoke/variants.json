@@ -1,0 +1,64 @@
+{
+  "description": "Class-boundary variants for the post-deploy live-URL smoke guard. Each case must fail (or pass) for the named reason.",
+  "cases": [
+    {
+      "id": "redirect-loop-301",
+      "expect": "fail",
+      "reason_match": "redirect loop",
+      "hops": [
+        { "status": 301, "location": "https://crol-list.org/" },
+        { "status": 301, "location": "https://cityscroll.org/" },
+        { "status": 301, "location": "https://crol-list.org/" }
+      ]
+    },
+    {
+      "id": "non-200-503",
+      "expect": "fail",
+      "reason_match": "final status 503",
+      "hops": [
+        { "status": 503, "body": "Service Unavailable" }
+      ]
+    },
+    {
+      "id": "empty-body-200",
+      "expect": "fail",
+      "reason_match": "empty body",
+      "hops": [
+        { "status": 200, "body": "" }
+      ]
+    },
+    {
+      "id": "error-page-200",
+      "expect": "fail",
+      "reason_match": "error-page body",
+      "hops": [
+        {
+          "status": 200,
+          "body": "<!doctype html><html><head><title>404 Not Found</title></head><body><h1>Page not found</h1><p>There isn't a GitHub Pages site here.</p></body></html>"
+        }
+      ]
+    },
+    {
+      "id": "healthy-cityscroll-200",
+      "expect": "pass",
+      "hops": [
+        {
+          "status": 200,
+          "body": "<!doctype html><html lang=\"en\"><head><title>CityScroll · track RFPs, rezonings, meetings</title><meta property=\"og:site_name\" content=\"CityScroll\"></head><body><h1 class=\"cr-title\">CityScroll</h1></body></html>"
+        }
+      ]
+    },
+    {
+      "id": "healthy-after-301-to-canonical",
+      "expect": "pass",
+      "url": "https://crol-list.org/",
+      "hops": [
+        { "status": 301, "location": "https://cityscroll.org/" },
+        {
+          "status": 200,
+          "body": "<!doctype html><title>CityScroll · track RFPs</title><h1 class=\"cr-title\">CityScroll</h1>"
+        }
+      ]
+    }
+  ]
+}

@@ -41,3 +41,21 @@ jobs:
           # account from the API token itself — avoids a second repo secret to keep in sync.
           # No `secrets:` or `vars:` inputs on purpose — this deploys code only. Passing vars
           # here would clobber real secrets of the same name (see worker/README.md).
+
+  # Mirror / route deploys can break the public apex without failing wrangler.
+  # Same live-URL gate as Deploy site: real content on both apex hosts + a deep
+  # route, or the workflow fails with URL + status-chain diagnostics.
+  smoke:
+    name: Live URL smoke
+    needs: deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Post-deploy live URL smoke
+        run: node tools/live_url_smoke.mjs --timeout-ms 720000 --interval-ms 20000
