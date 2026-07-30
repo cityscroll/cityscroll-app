@@ -70,6 +70,8 @@ const sandbox = new Function(
   extractFn("lifecycleDollarsFocusHref") +
   extractFn("lifecyclePaymentState") +
   extractFn("lifecycleResolvedPayment") +
+  extractFn("lifecycleTermEnded") +
+  extractFn("lifecycleCommittedUnderrun") +
   extractFn("lifecyclePaymentSummaryHTML") +
   extractFn("lifecycleSourceLink") +
   extractFn("lifecycleDocumentsHTML") +
@@ -82,7 +84,7 @@ const sandbox = new Function(
   extractFn("cleanText") +
   extractFn("vendorStem") +
   extractFn("vendorNamesMatch") +
-  "return { lifecycleTimelineHTML, lifecycleDollarsHTML, lifecycleStageHTML, money, lifecycleMoney, vendorNamesMatch, checkbookSearchUrl, lifecyclePaymentState, lifecycleResolvedPayment, lifecyclePaymentSummaryHTML };"
+  "return { lifecycleTimelineHTML, lifecycleDollarsHTML, lifecycleStageHTML, money, lifecycleMoney, vendorNamesMatch, checkbookSearchUrl, lifecyclePaymentState, lifecycleResolvedPayment, lifecycleCommittedUnderrun, lifecyclePaymentSummaryHTML };"
 );
 
 const {
@@ -94,6 +96,7 @@ const {
   checkbookSearchUrl,
   lifecyclePaymentState,
   lifecycleResolvedPayment,
+  lifecycleCommittedUnderrun,
   lifecyclePaymentSummaryHTML,
 } = sandbox(t, tn, windowStub);
 
@@ -500,6 +503,145 @@ test("Millennium field case: join has paid-to-date → payments card and dollars
   );
   assert.equal(resolved.state, "from_registered");
   assert.equal(resolved.spent, 4018484.1);
+});
+
+// Field case #notice/20230728114 — Urban Resource Institute / MOCJ FJC case management.
+// Verified against Checkbook: single Prime Vendor row, spending txs sum to spent_to_date
+// ($344,117.23), no sibling contract ids under this PIN. 57% of current is complete data
+// (committed ceiling after amendment from $1.22M → $608k), not missing fiscal-year slices.
+const URI_NOTICE = {
+  request_id: "20230728114",
+  agency_name: "Mayor's Office of Criminal Justice",
+  type_of_notice_description: "Award",
+  pin: "00222P0004003",
+  vendor_name: "Urban Resource Institute",
+  contract_amount: "1217316",
+  short_title: "Family Justice Center - Case Mngt",
+  start_date: "2023-08-03",
+};
+
+const URI_LIFECYCLE = {
+  pin: "00222P0004003",
+  pin_strategy: "exact",
+  ok: true,
+  amendments: [{
+    contract_id: "CT100220248801490",
+    original_amount: 1217316,
+    current_amount: 608658,
+    delta: 608658 - 1217316,
+    date: "2023-07-27",
+  }],
+  timeline: [
+    {
+      stage: "award",
+      status: "matched",
+      source: "city-record",
+      date: "2023-08-03",
+      detail: {
+        request_id: "20230728114",
+        agency: "Mayor's Office of Criminal Justice",
+        title: URI_NOTICE.short_title,
+        pin: "00222P0004003",
+        vendor: URI_NOTICE.vendor_name,
+        amount: 1217316,
+      },
+    },
+    { stage: "pending", status: "passed", source: "checkbook-contracts", date: null, detail: null },
+    {
+      stage: "registered",
+      status: "matched",
+      source: "checkbook-contracts",
+      date: "2023-07-27",
+      detail: {
+        contract_id: "CT100220248801490",
+        vendor: "URBAN RESOURCE INSTITUTE",
+        registration_date: "2023-07-27",
+        original_amount: 1217316,
+        current_amount: 608658,
+        spent_to_date: 344117.23,
+        start_date: "2023-07-01",
+        end_date: "2024-06-30",
+        duration: null,
+        mwbe: null,
+      },
+    },
+    {
+      stage: "payment",
+      status: "matched",
+      source: "checkbook-spending",
+      date: null,
+      detail: {
+        total_payments: 7,
+        total_spent: 344117.23,
+        latest_payment_date: null,
+        latest_payment_amount: 82821.3,
+        fiscal_year: "2025",
+        payment_state: "paid",
+      },
+    },
+  ],
+};
+
+test("URI field case: single-row 57% of ceiling is complete — no multi-contract warning, ceiling note shown", () => {
+  assert.equal(
+    lifecycleCommittedUnderrun(344117.23, 608658, "2024-06-30"),
+    true,
+    "term ended + underrun → ceiling framing",
+  );
+  assert.equal(
+    lifecycleCommittedUnderrun(344117.23, 608658, "2099-01-01"),
+    false,
+    "open term does not show ceiling underrun note",
+  );
+
+  const timeline = lifecycleTimelineHTML(URI_LIFECYCLE, URI_NOTICE);
+  const dollars = lifecycleDollarsHTML(URI_LIFECYCLE, URI_NOTICE);
+  const both = timeline + dollars;
+  assert.doesNotMatch(both, /Multiple contracts found/i);
+  assert.doesNotMatch(both, /Payment data unavailable/i);
+  // ~$344K of $609K committed (~57%)
+  assert.match(timeline, /\$344K paid of \$609K committed/i);
+  assert.match(dollars, /\$344K/);
+  assert.match(dollars, /\(57%\)/);
+  assert.match(dollars, /CT100220248801490/);
+  // Ceiling framing, not an unpaid-debt implication
+  assert.match(both, /registration ceiling|not a remaining balance/i);
+  // Amendment from original award still visible
+  assert.match(dollars, /amended from \$1\.22M/i);
+});
+
+// Same notice as a pre-fix cache shape (payment unknown + PASSPort spent) — finding-2
+// coherence: must show $344k, not unavailable.
+test("URI field case: pre-fix unknown payment + registration spent still shows 57% (not unavailable)", () => {
+  const liveShape = {
+    ...URI_LIFECYCLE,
+    ok: false,
+    timeline: URI_LIFECYCLE.timeline.map((e) => {
+      if (e.stage === "payment") {
+        return { stage: "payment", status: "unknown", source: "checkbook-spending", date: null, detail: null };
+      }
+      if (e.stage === "registered") {
+        return {
+          ...e,
+          source: "passport-public-contracts",
+          detail: {
+            ...e.detail,
+            contract_id: "CT1-002-20248801490", // PASSPort hyphen form of the same id
+            registration_date: "07/27/2023",
+            start_date: "07/01/2023",
+            end_date: "06/30/2024",
+          },
+        };
+      }
+      return e;
+    }),
+  };
+  const timeline = lifecycleTimelineHTML(liveShape, URI_NOTICE);
+  const dollars = lifecycleDollarsHTML(liveShape, URI_NOTICE);
+  assert.doesNotMatch(timeline + dollars, /Payment data unavailable/i);
+  assert.match(timeline, /\$344K paid of/i);
+  assert.match(dollars, /\(57%\)/);
+  assert.match(timeline + dollars, /registration ceiling|not a remaining balance/i);
 });
 
 test("assembleLifecycle: no PIN marks Checkbook stages not_applicable (not unknown)", () => {

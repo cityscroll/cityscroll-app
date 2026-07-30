@@ -610,6 +610,7 @@
     lifecycle_paid_to_date_html: "Zapłacono do tej pory: {amount}",
     lifecycle_payment_summary_html: "{paid} wypłacone z {committed} zobowiązanych",
     lifecycle_payment_zero_lag_html: "Płatności opóźniają się względem faktur — 0 $ na świeżo zarejestrowanej umowie jest normalne.",
+    lifecycle_committed_ceiling_note_html: "Zobowiązanie to pułap rejestracji, nie pozostałe salda do zapłaty — umowy usług społecznych często zamykają się poniżej zarejestrowanej kwoty.",
     lifecycle_payment_unavailable_html: "Dane o płatnościach są teraz niedostępne — nie udało się sprawdzić wydatków w Checkbook.",
     lifecycle_dollars_paid_unavailable_html: "Niedostępne w tej chwili",
     lifecycle_payment_details_link_html: "<a href=\"{href}\">Śledź pieniądze</a>, by zobaczyć szczegóły.",

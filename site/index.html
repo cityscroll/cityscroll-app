@@ -5869,6 +5869,29 @@ function lifecycleResolvedPayment(regDetail, payDetail){
   return { state: payState || "unavailable", spent: null, totalPayments: null };
 }
 
+// Parse a registration/term end date (ISO or PASSPort MM/DD/YYYY) and report if it is past.
+function lifecycleTermEnded(endDate){
+  if(!endDate) return false;
+  const raw = String(endDate).trim();
+  let iso = raw.slice(0, 10);
+  const m = raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+  if(m) iso = m[3] + "-" + m[1].padStart(2, "0") + "-" + m[2].padStart(2, "0");
+  const t = Date.parse(iso);
+  if(!Number.isFinite(t)) return false;
+  return t < Date.now() - 86400000;
+}
+
+// Term ended + paid below ~95% of committed: show ceiling framing (not an unpaid debt).
+// Field case #notice/20230728114 — single-row Checkbook verified at 57% of ceiling.
+function lifecycleCommittedUnderrun(paid, committed, endDate){
+  const paidN = paid != null ? Number(paid) : NaN;
+  const committedN = committed != null ? Number(committed) : NaN;
+  if(!Number.isFinite(paidN) || !Number.isFinite(committedN) || committedN <= 0) return false;
+  if(paidN <= 0) return false;
+  if(paidN >= committedN * 0.95) return false;
+  return lifecycleTermEnded(endDate);
+}
+
 // Payments card summary when Checkbook join exists: amounts + optional $0 lag note +
 // notice-scoped deep link to the dollars panel. Never gap copy while the join is present.
 // payment_state "unavailable" never renders a confident $0.
@@ -5887,6 +5910,8 @@ function lifecyclePaymentSummaryHTML(paid, committed, opts){
     })}</div>`;
     if(paidN === 0 && opts.zeroLag !== false){
       html += `<div class="lc-pct">${t("lifecycle_payment_zero_lag_html")}</div>`;
+    } else if(opts.ceilingNote){
+      html += `<div class="lc-pct">${t("lifecycle_committed_ceiling_note_html")}</div>`;
     }
   }
   if(opts.link !== false){
@@ -5932,6 +5957,7 @@ function lifecycleStageHTML(entry, timeline, notice){
     }
     extraHTML += lifecyclePaymentSummaryHTML(paid, committed, {
       zeroLag: payState === "verified_zero" || (payState !== "unavailable" && Number(paid) === 0),
+      ceilingNote: lifecycleCommittedUnderrun(paid, committed, regDetail.end_date),
       noticeId: notice && notice.request_id,
       paymentState: payState,
     });
@@ -6226,6 +6252,9 @@ function lifecycleDollarsHTML(data, notice){
     const lagNote = (payState === "verified_zero" || (payState !== "unavailable" && spent === 0))
       ? `<div class="note" style="margin-top:10px">${t("lifecycle_payment_zero_lag_html")}</div>`
       : "";
+    const ceilingNote = lifecycleCommittedUnderrun(spent, current, d.end_date)
+      ? `<div class="note" style="margin-top:10px">${t("lifecycle_committed_ceiling_note_html")}</div>`
+      : "";
     return `<div class="apply" id="${LIFECYCLE_DOLLARS_ANCHOR}" style="margin-top:14px" tabindex="-1"><h3>${t("lifecycle_dollars_heading")}</h3><div class="body">
       <dl>
         <dt>${t("lifecycle_dollars_contract_lbl")}</dt><dd><code>${escUiHtml(d.contract_id||"—")}</code> · ${t("lifecycle_dollars_registered_on_html",{date:d.registration_date?fdate(d.registration_date):"—"})}</dd>
@@ -6237,6 +6266,7 @@ function lifecycleDollarsHTML(data, notice){
       ${vendorNote}
       ${payNote?`<div class="note" style="margin-top:10px">${payNote}</div>`:""}
       ${lagNote}
+      ${ceilingNote}
       <div class="pnote">${t("lifecycle_dollars_provenance_html",{
         link:`<a href="${contractLink}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`,
         pin:`<code>${escUiHtml(data.pin||notice.pin||"")}</code>`

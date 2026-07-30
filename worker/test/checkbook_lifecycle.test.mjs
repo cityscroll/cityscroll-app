@@ -845,6 +845,68 @@ test("recoverPaymentFromRegisteredJoin: unavailable + spent 0 stays unavailable"
   assert.equal(out.timeline.find((e) => e.stage === "payment").detail.payment_state, "unavailable");
 });
 
+// Field case #notice/20230728114 (URI / MOCJ FJC case management):
+// Verified 2026-07-30 against Checkbook: ONE Prime Vendor row for
+// CT100220248801490 (PASSPort hyphen form CT1-002-20248801490), no Sub Vendor
+// slices, no sibling contract ids under PIN 00222P0004003. Spending domain
+// returns 7 transactions summing to exactly prime_vendor_spent_to_date
+// ($344,117.23 across FY2024+FY2025). 57% of current ($608,658) is the true
+// complete state — committed is a ceiling (amended down from $1,217,316), not
+// missing payment rows.
+test("URI 20230728114: single-row registered + spending sum equals spent_to_date (not multi-row)", () => {
+  const registered = [{
+    id: "CT100220248801490",
+    vendor: "URBAN RESOURCE INSTITUTE",
+    current: 608658,
+    original: 1217316,
+    spent: 344117.23,
+    registered: "2023-07-27",
+    start: "2023-07-01",
+    end: "2024-06-30",
+  }];
+  // Fiscal-year slices of the same contract id — not separate identities.
+  const spending = [
+    { amount: 121732.00, year: "2024" },
+    { amount: 70935.15, year: "2024" },
+    { amount: 48469.34, year: "2024" },
+    { amount: 9694.01, year: "2024" },
+    { amount: 6648.87, year: "2024" },
+    { amount: 3816.56, year: "2024" },
+    { amount: 82821.30, year: "2025" },
+  ];
+  assert.equal(aggregateContractsById(registered).length, 1);
+  const sum = spending.reduce((s, t) => s + t.amount, 0);
+  assert.equal(Math.round(sum * 100) / 100, 344117.23);
+  assert.equal(sum, registered[0].spent);
+
+  const notice = {
+    request_id: "20230728114",
+    agency_name: "Mayor's Office of Criminal Justice",
+    type_of_notice_description: "Award",
+    pin: "00222P0004003",
+    vendor_name: "Urban Resource Institute",
+    contract_amount: "1217316",
+    short_title: "Family Justice Center - Case Mngt",
+    start_date: "2023-08-03",
+  };
+  const result = assembleLifecycle(notice, [], registered, spending, {
+    lookupStatus: { pending: "ok", registered: "ok", spending: "ok" },
+  });
+  const reg = result.timeline.find((t) => t.stage === "registered");
+  const pay = result.timeline.find((t) => t.stage === "payment");
+  assert.equal(reg.status, "matched");
+  assert.equal(reg.detail.contract_id, "CT100220248801490");
+  assert.equal(reg.detail.current_amount, 608658);
+  assert.equal(reg.detail.original_amount, 1217316);
+  assert.equal(pay.status, "matched");
+  assert.equal(pay.detail.payment_state, "paid");
+  assert.equal(pay.detail.total_spent, 344117.23);
+  assert.equal(pay.detail.total_payments, 7);
+  // ~56.5% of ceiling — domain underrun, not a join defect
+  const pct = pay.detail.total_spent / reg.detail.current_amount;
+  assert.ok(pct > 0.55 && pct < 0.58, `expected ~57% of ceiling, got ${pct}`);
+});
+
 test("detectAmendments: current ≠ original → amendment", () => {
   const amendments = detectAmendments([
     { id: "C1", original: 1000000, current: 1500000, registered: "2025-04-01" },
