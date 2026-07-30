@@ -14,6 +14,33 @@ import {
 import { completeLensCounts, readUsageAnalytics } from "./lib/analytics.mjs";
 
 const WINDOW_DAYS = 7;
+const PAGE_VIEW_SURFACES = Object.freeze([
+  "home",
+  "stats",
+  "about",
+  "data",
+  "api",
+  "changelog",
+  "standards",
+]);
+
+function completePageViewsBySurface(observed = {}) {
+  return Object.fromEntries(PAGE_VIEW_SURFACES.map((surface) => [surface, observed[surface] || 0]));
+}
+
+async function readFallbackPageViews(env, now = new Date()) {
+  if (!env?.ALERT_STATE) return null;
+  const [last7d, last30d, bySurfaceRaw] = await Promise.all([
+    sumStat(env.ALERT_STATE, "page_view", 7, now),
+    sumStat(env.ALERT_STATE, "page_view", 30, now),
+    readAllCategoryStatsWindow(env.ALERT_STATE, "page_view", 30, now),
+  ]);
+  return {
+    last7d,
+    last30d,
+    bySurfaceLast30d: completePageViewsBySurface(bySurfaceRaw),
+  };
+}
 
 export async function handleStats(req, env, ctx, options = {}) {
   if (req.method !== "GET") {
@@ -35,6 +62,7 @@ export async function handleStats(req, env, ctx, options = {}) {
     rawDigestsAllTime, digestsByCategory, rawNlAllTime, nlByCategory,
     digestHist, digestEra, nlHist, nlEra,
     nl7d, nlByCategory7d, watchesHist, watchesEra, usage,
+    pageViewsFallback,
   ] = await Promise.all([
       countActiveSubs(env),
       readInt(env.ALERT_STATE, `sendcount:${today}`),
@@ -58,7 +86,21 @@ export async function handleStats(req, env, ctx, options = {}) {
       readHistSeries(env.ALERT_STATE, "watches_active"),
       readHistEra(env.ALERT_STATE, "watches_active"),
       readUsageAnalytics(env, { fetchImpl: options.fetchImpl, now }),
+      readFallbackPageViews(env, now),
     ]);
+
+  const fallbackUsed = !usage.available && pageViewsFallback && (
+    pageViewsFallback.last7d || pageViewsFallback.last30d
+  );
+  if (fallbackUsed) {
+    usage.page_views = {
+      ...usage.page_views,
+      last7d: pageViewsFallback.last7d,
+      last30d: pageViewsFallback.last30d,
+      by_surface_last30d: pageViewsFallback.bySurfaceLast30d,
+    };
+    usage.available = true;
+  }
 
   // w12-14: the live all-time accumulators only count sends/searches from the moment they
   // shipped (digestEra/nlEra) forward. Recovered pre-era days (backfilled from an older,

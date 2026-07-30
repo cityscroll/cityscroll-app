@@ -58,15 +58,17 @@ async function emit(points, event, options = {}) {
     "Content-Type": "text/plain;charset=UTF-8",
   };
   if (options.developerToken) headers["X-CROL-Analytics-Dev"] = options.developerToken;
+  const env = {
+    USAGE_ANALYTICS: analyticsBinding(points),
+    ANALYTICS_ENVIRONMENT: options.environment ?? "production",
+    ANALYTICS_DEV_KEY: options.secret,
+    ALERT_STATE: options.alertState,
+  };
   const response = await handleEvent(new Request("https://api.cityscroll.org/events", {
     method: "POST",
     headers,
     body: JSON.stringify(event),
-  }), {
-    USAGE_ANALYTICS: analyticsBinding(points),
-    ANALYTICS_ENVIRONMENT: options.environment ?? "production",
-    ANALYTICS_DEV_KEY: options.secret,
-  }, { nowMs: options.nowMs });
+  }), env, { nowMs: options.nowMs });
   assert.equal(response.status, 204);
   assert.equal(await response.text(), "");
   return response;
@@ -187,6 +189,51 @@ test("fixture event flows emit -> sampling-aware aggregate -> public stats endpo
   assert.deepEqual(Object.keys(body.usage.lens_interest.last30d), ANALYTICS_LENSES);
   assert.equal(body.usage.lens_interest.last30d.meetings, 0);
   assert.equal(body.nl_search.by_category.meetings, 0, "previously omitted zero-count lens is pinned");
+});
+
+test("zero-state repro: without usage credentials, /stats reports unavailable usage", async () => {
+  const response = await handleStats(
+    new Request("https://api.cityscroll.org/stats"),
+    { SUBS: fakeKV(), ALERT_STATE: fakeKV(), NL_METER: fakeKV() },
+    { waitUntil() {} },
+  );
+  const body = await response.json();
+  assert.equal(body.usage.available, false);
+  assert.equal(body.usage.unavailable_reason, "not-configured");
+  assert.equal(body.usage.page_views.last30d, 0);
+});
+
+test("repair fixture: page_view beacons remain visible when SQL read credentials are missing", async () => {
+  const points = [];
+  const secret = "test-only-analytics-developer-key-32-chars";
+  const alertState = fakeKV();
+  const nowMs = Date.now();
+  await emit(points, { event: "page_view", surface: "home" }, {
+    environment: "production",
+    secret,
+    alertState,
+    nowMs,
+  });
+  await emit(points, { event: "page_view", surface: "stats" }, {
+    environment: "production",
+    secret,
+    alertState,
+    nowMs: nowMs + 1,
+  });
+
+  const response = await handleStats(
+    new Request("https://api.cityscroll.org/stats"),
+    { SUBS: fakeKV(), ALERT_STATE: alertState, NL_METER: fakeKV() },
+    { waitUntil() {} },
+  );
+  await new Promise((resolve) => setTimeout(resolve, 20));
+  const body = await response.json();
+
+  assert.equal(body.usage.available, true);
+  assert.equal(body.usage.page_views.last7d, 2);
+  assert.equal(body.usage.page_views.last30d, 2);
+  assert.equal(body.usage.page_views.by_surface_last30d.home, 1);
+  assert.equal(body.usage.page_views.by_surface_last30d.stats, 1);
 });
 
 test("aggregate windows exclude old rows without inventing missing values", () => {
