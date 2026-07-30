@@ -412,9 +412,9 @@
   // Wire the switcher immediately — it must not wait on the fetch below, or clicking it
   // during the loading window would silently do nothing (found in manual verification).
   initSubpageLangSwitcher(paint);
-  const bases = window.CROL_API_ORIGIN
-    ? [window.CROL_API_ORIGIN]
-    : ["https://api.cityscroll.org", "https://crol-worker.crol-worker.workers.dev"];
+  const API_PRIMARY = window.CROL_API_ORIGIN || "https://api.cityscroll.org";
+  const API_FALLBACK = window.CROL_API_FALLBACK_ORIGIN || "https://crol-worker.crol-worker.workers.dev";
+  const bases = API_PRIMARY === API_FALLBACK ? [API_PRIMARY] : [API_PRIMARY, API_FALLBACK];
   for (const base of bases) {
     try {
       const r = await fetch(base + "/stats", { signal: AbortSignal.timeout(8000) });

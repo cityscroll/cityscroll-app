@@ -98,7 +98,7 @@ def main() -> None:
     mirror = (ROOT / "worker/src/mirror.mjs").read_text()
     if 'const ORIGIN = "https://crol-list.org";' not in mirror:
         failures.append("mirror: primary GitHub Pages origin must remain crol-list.org")
-    if 'const FALLBACK_ORIGIN = "https://raw.githubusercontent.com/cityscroll/crol-list/main/";' not in mirror:
+    if 'const FALLBACK_ORIGIN = "https://cityscroll.github.io/crol-list/";' not in mirror:
         failures.append("mirror: missing independent public-source failover seam")
     if 'redirect: "manual"' not in mirror:
         failures.append("mirror: origin fetches must not auto-follow redirects back to CityScroll")
