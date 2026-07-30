@@ -95,6 +95,8 @@ const helpers = new Function(
   extractFn("subsidyStageLabel") +
   extractFn("subsidyStageHTML") +
   extractFn("subsidyLifecycleHTML") +
+  extractFn("isCityCouncilNotice") +
+  extractFn("meetingOutcomesUnmatchedHTML") +
   extractFn("meetingOutcomesHTML") +
   `
   return { lifecycleTimelineHTML, subsidyLifecycleHTML, meetingOutcomesHTML, t };
@@ -238,9 +240,22 @@ test("class a: unmatched Council outcomes use not-yet-ingested register naming L
     },
     council_event: null,
     agenda_items: [],
-  });
+  }, { agency_name: "City Council", request_id: "20260714002" });
   assert.match(html, CLASS_A_PREFIX);
   assert.match(html, /Council outcomes live in NYC Council Legistar/);
+});
+
+test("class b: unmatched non-Council hearings use not-published register with BP/CB pointers", () => {
+  const html = meetingOutcomesHTML({
+    request_id: "20260701001",
+    join: { matched: false, reason: "No Council event matched." },
+    council_event: null,
+    agenda_items: [],
+  }, { agency_name: "Community Boards", request_id: "20260701001" });
+  assert.match(html, CLASS_B_PREFIX);
+  assert.match(html, /borough president|community board/i);
+  assert.doesNotMatch(html, CLASS_A_PREFIX);
+  assert.doesNotMatch(html, /Not yet shown here — Council outcomes/);
 });
 
 test("class a: matter without votes uses not-yet-ingested register", () => {
@@ -315,6 +330,24 @@ test("procurement-solicitation-documents is class (b) after RFx document-URL kil
   assert.equal(gap.class_change?.to, "not_published");
 });
 
+test("procurement-planning-budget class (b) pointer names Capital Projects", () => {
+  const gap = registry.gaps.find((g) => g.id === "procurement-planning-budget");
+  assert.ok(gap);
+  assert.equal(gap.class, "not_published");
+  assert.match(gap.would_appear_in, /Capital Projects/i);
+  assert.match(gap.would_appear_in, /n7gv-k5yt|data\.cityofnewyork\.us\/d\/n7gv/);
+  assert.match(gap.evidence, /fuzzy|0%|1%/i);
+});
+
+test("meeting-community-board-votes class (b) names borough president and community board homes", () => {
+  const gap = registry.gaps.find((g) => g.id === "meeting-community-board-votes");
+  assert.ok(gap);
+  assert.equal(gap.class, "not_published");
+  assert.equal(gap.i18n_key, "meeting_outcomes_non_council_not_published_html");
+  assert.match(gap.would_appear_in, /borough president|community board/i);
+  assert.match(gap.evidence, /40\/40|non-Council/i);
+});
+
 test("unmatched package-documents sub-slot uses not-published register with GetFile pointer", () => {
   const html = lifecycleTimelineHTML({
     ok: true,
@@ -372,9 +405,14 @@ test("all ten shipping locales define the gap taxonomy keys", () => {
     "meeting_outcomes_unmatched_html",
     "meeting_outcomes_no_votes_html",
     "meeting_outcomes_no_matters_html",
+    "meeting_outcomes_non_council_not_published_html",
+    "meeting_outcomes_non_council_where",
+    "meeting_outcomes_heading_non_council",
     "agency_awards_none_open_data_html",
     "external_award_none_note_html",
     "career_not_published",
+    "career_outcomes_list_joined_note",
+    "career_outcomes_list_source_name",
   ];
   const langs = ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar", "ur"];
   for (const lang of langs) {

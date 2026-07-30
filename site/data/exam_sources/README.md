@@ -48,3 +48,12 @@ snapshots and rebuild the client artifact. The DCAS current-page snapshot remain
 a reviewed input because nyc.gov sometimes blocks unattended requests from build
 networks. Run `node tools/build_staffing_exams.mjs --check` for the hermetic CI
 drift check.
+
+- `civil_service_list_aggregates.json` — **exam-level only** group-by from the
+  active Civil Service List (`vx8i-nprf`): list_count, established_date,
+  extension_date, title_count. Per-applicant rows and names are never stored.
+  Closed-exam exam_no overlap measured 2026-07-30 at **44.54%** (494/1,109);
+  open-exam overlap 0%. Receipt:
+  `verification_receipts/civil_service_list_closed_exams_2026-07-30.json`.
+  `tools/build_staffing_exams.mjs` joins aggregates onto exam cards as post-list
+  depth when annual DCAS outcomes are not yet published for that exam_number.

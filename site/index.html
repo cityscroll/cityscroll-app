@@ -3705,6 +3705,18 @@ function careerOutcomeHTML(exam){
       })}</p>
     </section>`;
   }
+  if(view.kind==="list_joined"){
+    return `<section class="career-outcomes" data-outcome="list_joined" aria-label="${escUiHtml(t("career_outcomes_heading"))}">
+      <h3 class="career-outcomes-heading">${t("career_outcomes_heading")}</h3>
+      <div class="career-outcomes-metrics">
+        <div class="career-metric"><b>${careerCount(view.list_count)}</b><span>${t("career_outcome_list_established")}</span></div>
+      </div>
+      <p class="career-outcomes-note">${t("career_outcomes_list_joined_note",{
+        date:careerDate(view.established_date),
+        source:t("career_outcomes_list_source_name")
+      })}</p>
+    </section>`;
+  }
   // Real-world pending: DCAS has not released aggregates for this exam yet (not an ingest gap).
   const stageKey={
     list_establishment:"career_outcome_stage_list",
@@ -6472,14 +6484,34 @@ function isMeetingOutcomesEligible(r){
   return false;
 }
 
-function meetingOutcomesHTML(record){
+/** City Council notices join Legistar; other hearing bodies have no machine vote feed. */
+function isCityCouncilNotice(r){
+  const agency = String(r && r.agency_name || "").trim().toLowerCase();
+  if(!agency) return false;
+  if(agency === "city council") return true;
+  return /\bcity council\b/.test(agency);
+}
+
+function meetingOutcomesUnmatchedHTML(record, notice){
+  const join = (record && record.join) || {};
+  // Non-Council hearings: no public joinable vote feed — class (b), not a missing ingest.
+  if(notice && !isCityCouncilNotice(notice)){
+    return `<div class="chain-h">${t("meeting_outcomes_heading_non_council")}</div>
+      <div class="note">${t("meeting_outcomes_non_council_not_published_html",{
+        where: t("meeting_outcomes_non_council_where")
+      })}</div>`;
+  }
+  return `<div class="chain-h">${t("meeting_outcomes_heading")}</div>
+    <div class="note">${t("meeting_outcomes_unmatched_html",{
+      reason: escUiHtml(join.reason || t("meeting_outcomes_unmatched_default"))
+    })}</div>`;
+}
+
+function meetingOutcomesHTML(record, notice){
   if(!record) return "";
   const join = record.join || {};
   if(!join.matched){
-    return `<div class="chain-h">${t("meeting_outcomes_heading")}</div>
-      <div class="note">${t("meeting_outcomes_unmatched_html",{
-        reason: escUiHtml(join.reason || t("meeting_outcomes_unmatched_default"))
-      })}</div>`;
+    return meetingOutcomesUnmatchedHTML(record, notice);
   }
   const event = record.council_event || {};
   const items = Array.isArray(record.agenda_items) ? record.agenda_items : [];
@@ -6552,15 +6584,12 @@ async function loadMeetingOutcomes(r, el){
   if(!document.contains(el)) return;
   if(!data || data.ok === false || !data.record){
     if(eligible){
-      el.innerHTML = `<div class="chain-h">${t("meeting_outcomes_heading")}</div>
-        <div class="note">${t("meeting_outcomes_unmatched_html",{
-          reason: escUiHtml(t("meeting_outcomes_unmatched_default"))
-        })}</div>`;
+      el.innerHTML = meetingOutcomesUnmatchedHTML({ join: { matched: false } }, r);
     }
     return;
   }
   if(!eligible && !(data.record.join && data.record.join.matched)) return;
-  el.innerHTML = meetingOutcomesHTML(data.record);
+  el.innerHTML = meetingOutcomesHTML(data.record, r);
 }
 
 /* ===================== ENTITY PAGES (vendor / agency) =====================
