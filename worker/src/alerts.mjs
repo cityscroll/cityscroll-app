@@ -40,6 +40,182 @@ async function bumpDigestCategories(env, rows, fallbackCategory) {
   for (const c of cats) await bumpCategoryStat(env.ALERT_STATE, "digest", c);
 }
 
+// ---- durable per-run receipt (ALERT_STATE) ---------------------------------
+// Digest operational keys live under sendcount:/seen:/lastsent:/sent:/digest:run:* —
+// deliberately disjoint from usage dual-write keys (stats:usage_*, stats:page_view,
+// stats:catday:*, stats:alert_confirmed) so a list-prefix scan or exact get can never
+// confuse a page-view counter with a send cap or last-sent clock.
+export const DIGEST_RUN_LATEST_KEY = "digest:run:latest";
+export function digestRunDayKey(day) {
+  return `digest:run:${day}`;
+}
+
+// Collapse one cron (or queue-consumer aggregate) into a public, low-cardinality receipt.
+// A silent skip must leave a non-null skipped_reason — never an empty "looks like nothing ran."
+export function summarizeDigestRun({ ranAt, day, live, mode, sentThisRun, sentToday, results = [], enqueued = 0 } = {}) {
+  const tallies = {
+    matched: 0,
+    sent: 0,
+    dry_run: 0,
+    capped: 0,
+    errors: 0,
+    skipped_weekly: 0,
+    skipped_quiet: 0,
+    skipped_other: 0,
+    enqueued: Number(enqueued) || 0,
+  };
+  for (const r of results) {
+    if (!r || typeof r !== "object") continue;
+    if (r.mode === "queue") {
+      tallies.enqueued = Number(r.enqueued) || tallies.enqueued;
+      continue;
+    }
+    if (r.error) { tallies.errors++; continue; }
+    if (r.capped) tallies.capped++;
+    const fresh = Number(r.new) || 0;
+    const forecasts = Number(r.forecasts) || 0;
+    if (fresh > 0 || forecasts > 0 || r.action === "match") tallies.matched++;
+    if (r.sent) tallies.sent++;
+    else if (r.dryRun) tallies.dry_run++;
+    else if (r.skipped === "weekly") tallies.skipped_weekly++;
+    else if (r.action === "none") tallies.skipped_quiet++;
+    else if (r.skipped || r.action === "weekly-empty" || r.action === "heartbeat") {
+      // weekly-empty/heartbeat without send are counted above when dry/capped; remaining skips
+      if (!r.capped && !r.dryRun) tallies.skipped_other++;
+    } else if (!r.sent && !r.capped && underWantsSend(r)) {
+      tallies.skipped_other++;
+    }
+  }
+  // Prefer the live counters when present (inline path advances them); fall back to tallies.
+  const sent = Number.isFinite(sentThisRun) ? sentThisRun : tallies.sent;
+  const matched = tallies.matched;
+  let skipped_reason = null;
+  if (mode === "queue" && tallies.enqueued > 0 && sent === 0 && tallies.errors === 0 && tallies.matched === 0 && results.every((r) => r?.mode === "queue" || r?.watch)) {
+    // Cron only enqueued — consumers have not reported final outcomes yet.
+    skipped_reason = "queue_pending";
+  } else if (sent > 0) {
+    skipped_reason = null;
+  } else if (tallies.errors > 0) {
+    skipped_reason = "errors";
+  } else if (tallies.capped > 0 && matched > 0) {
+    skipped_reason = "capped";
+  } else if (tallies.dry_run > 0) {
+    skipped_reason = "dry_run";
+  } else if (matched === 0 && tallies.skipped_quiet > 0) {
+    skipped_reason = "all_quiet";
+  } else if (matched === 0 && tallies.enqueued === 0 && results.length === 0) {
+    skipped_reason = "no_subscriptions";
+  } else if (matched === 0) {
+    skipped_reason = "no_matches";
+  } else {
+    skipped_reason = "skipped";
+  }
+  return {
+    ranAt: ranAt || new Date().toISOString(),
+    day: day || null,
+    live: !!live,
+    mode: mode || "inline",
+    matched,
+    sent,
+    sentToday: Number.isFinite(sentToday) ? sentToday : sent,
+    enqueued: tallies.enqueued,
+    skipped_reason,
+    tallies,
+  };
+}
+
+function underWantsSend(r) {
+  return r.action === "match" || r.action === "heartbeat" || r.action === "weekly-empty" || (Number(r.new) || 0) > 0;
+}
+
+async function writeDigestRunReceipt(env, receipt) {
+  if (!env?.ALERT_STATE || !receipt) return;
+  try {
+    const body = JSON.stringify(receipt);
+    const puts = [env.ALERT_STATE.put(DIGEST_RUN_LATEST_KEY, body)];
+    if (receipt.day) puts.push(env.ALERT_STATE.put(digestRunDayKey(receipt.day), body));
+    await Promise.all(puts);
+  } catch {
+    // Receipt is observability, not load-bearing for delivery — never break the cron.
+  }
+}
+
+export async function readDigestRunReceipt(env) {
+  if (!env?.ALERT_STATE) return null;
+  try {
+    const raw = await env.ALERT_STATE.get(DIGEST_RUN_LATEST_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object" ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+// Queue consumers merge their final outcome into the day's receipt so a silent zero after
+// fan-out cannot hide behind "queue_pending" forever.
+async function recordQueueJobOutcome(env, day, jobResult) {
+  if (!env?.ALERT_STATE || !day || !jobResult) return;
+  try {
+    const key = digestRunDayKey(day);
+    let base = null;
+    try { base = JSON.parse((await env.ALERT_STATE.get(key)) || "null"); } catch { base = null; }
+    if (!base || typeof base !== "object") {
+      base = {
+        ranAt: new Date().toISOString(),
+        day,
+        live: true,
+        mode: "queue",
+        matched: 0,
+        sent: 0,
+        sentToday: await getSendCount(env, day),
+        enqueued: 0,
+        skipped_reason: null,
+        tallies: {
+          matched: 0, sent: 0, dry_run: 0, capped: 0, errors: 0,
+          skipped_weekly: 0, skipped_quiet: 0, skipped_other: 0, enqueued: 0,
+          jobs_done: 0,
+        },
+      };
+    }
+    const t = base.tallies || (base.tallies = {});
+    t.jobs_done = (Number(t.jobs_done) || 0) + 1;
+    if (jobResult.error) t.errors = (Number(t.errors) || 0) + 1;
+    else {
+      const fresh = Number(jobResult.new) || 0;
+      const forecasts = Number(jobResult.forecasts) || 0;
+      if (fresh > 0 || forecasts > 0 || jobResult.action === "match") t.matched = (Number(t.matched) || 0) + 1;
+      if (jobResult.capped) t.capped = (Number(t.capped) || 0) + 1;
+      if (jobResult.sent) t.sent = (Number(t.sent) || 0) + 1;
+      else if (jobResult.dryRun) t.dry_run = (Number(t.dry_run) || 0) + 1;
+      else if (jobResult.skipped === "weekly") t.skipped_weekly = (Number(t.skipped_weekly) || 0) + 1;
+      else if (jobResult.action === "none") t.skipped_quiet = (Number(t.skipped_quiet) || 0) + 1;
+      else if (!jobResult.sent && !jobResult.skipped) t.skipped_other = (Number(t.skipped_other) || 0) + 1;
+    }
+    base.matched = Number(t.matched) || 0;
+    base.sent = Number(t.sent) || 0;
+    base.sentToday = await getSendCount(env, day);
+    base.updatedAt = new Date().toISOString();
+    // Re-derive skipped_reason from the aggregate so /stats always has an explicit reason.
+    if (base.sent > 0) base.skipped_reason = null;
+    else if ((Number(t.errors) || 0) > 0) base.skipped_reason = "errors";
+    else if ((Number(t.capped) || 0) > 0 && base.matched > 0) base.skipped_reason = "capped";
+    else if ((Number(t.dry_run) || 0) > 0) base.skipped_reason = "dry_run";
+    else if (base.matched === 0 && (Number(t.skipped_quiet) || 0) > 0) base.skipped_reason = "all_quiet";
+    else if (base.matched === 0) base.skipped_reason = "no_matches";
+    else base.skipped_reason = "skipped";
+    // Clear queue_pending once any job has finished reporting.
+    if (base.skipped_reason === "queue_pending") base.skipped_reason = "no_matches";
+    const body = JSON.stringify(base);
+    await Promise.all([
+      env.ALERT_STATE.put(key, body),
+      env.ALERT_STATE.put(DIGEST_RUN_LATEST_KEY, body),
+    ]);
+  } catch {
+    /* observability only */
+  }
+}
+
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const REQ_URL = (id) => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
 
@@ -99,7 +275,7 @@ export async function runAlerts(env, watches = cfg.watches || []) {
       // so the next run retries them once the cap clears, rather than losing them silently.
       if (rows.length && !capped) await markSeen(env, w.id, rows.map((r) => r.request_id).filter(Boolean));
 
-      results.push({ watch: w.id, found: rows.length, new: fresh.length, sent: send, capped });
+      results.push({ watch: w.id, found: rows.length, new: fresh.length, sent: send, capped, dryRun: underCap && !LIVE });
     } catch (e) {
       results.push({ watch: w.id, error: String(e?.message || e) });
     }
@@ -119,8 +295,10 @@ export async function runAlerts(env, watches = cfg.watches || []) {
     caps: { "per-run": maxPerRun, daily: maxPerDay },
     onSent: async () => { sentThisRun++; sentToday++; await setSendCount(env, day, sentToday); },
   };
+  let mode = "inline";
+  let enqueued = 0;
   if (env.QUEUE_DIGESTS === "true" && env.DIGEST_QUEUE) {
-    let enqueued = 0;
+    mode = "queue";
     for (const s of await subWatches(env)) {
       await env.DIGEST_QUEUE.send({ key: s.key });
       enqueued++;
@@ -134,7 +312,12 @@ export async function runAlerts(env, watches = cfg.watches || []) {
 
   const deferred = results.filter((r) => r.capped).length;
   if (deferred) console.warn(`alerts: ${deferred} watch(es) deferred by send caps (perRun=${maxPerRun}, perDay=${maxPerDay})`);
-  const summary = { ranAt: new Date().toISOString(), live: LIVE, sentThisRun, sentToday, caps: { perRun: maxPerRun, perDay: maxPerDay }, results };
+  const ranAt = new Date().toISOString();
+  const receipt = summarizeDigestRun({
+    ranAt, day, live: LIVE, mode, sentThisRun, sentToday, results, enqueued,
+  });
+  await writeDigestRunReceipt(env, receipt);
+  const summary = { ranAt, live: LIVE, sentThisRun, sentToday, caps: { perRun: maxPerRun, perDay: maxPerDay }, receipt, results };
   console.log("alerts run:", JSON.stringify(summary));
   return summary;
 }
@@ -352,9 +535,17 @@ function awardWatchDigestHtml(candidates, filter, unsubUrl, lang = "en") {
 
 // Queue consumer entry: one digest job = one subscription key. Reads the daily send
 // count fresh per job (consumer max_concurrency=1 keeps the counter honest).
+//
+// Errors that prevented a real send are re-thrown so the queue retries (and eventually
+// DLQs) instead of acking a silent failure — that was one path to sent_today=0 with no
+// durable explanation.
 export async function consumeDigestJob(env, key) {
   const s = await loadSub(env, key);
-  if (!s) return { sub: maskKey(key), skipped: "gone" };
+  if (!s) {
+    const gone = { sub: maskKey(key), skipped: "gone" };
+    await recordQueueJobOutcome(env, new Date().toISOString().slice(0, 10), gone);
+    return gone;
+  }
   const day = new Date().toISOString().slice(0, 10);
   let daily = await getSendCount(env, day);
   const ctx = {
@@ -370,6 +561,10 @@ export async function consumeDigestJob(env, key) {
   };
   const r = await processOneSub(env, s, ctx);
   console.log("digest job:", JSON.stringify(r));
+  await recordQueueJobOutcome(env, day, r);
+  if (r?.error) {
+    throw new Error(`digest job error for ${maskKey(key)}: ${r.error}`);
+  }
   return r;
 }
 
