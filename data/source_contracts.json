@@ -36,6 +36,24 @@
       "delivery_tier": "live-only"
     },
     {
+      "id": "nycida-build-nyc-projects",
+      "name": "NYCIDA/Build NYC subsidy project records",
+      "owner": "NYC Economic Development Corporation",
+      "status": "live",
+      "scope": "runtime",
+      "delivery_tier": "edge-materialized",
+      "kind": "html",
+      "landing_page": "https://edc.nyc/about-nycedc/financial-public-documents-recordings",
+      "required_fields": ["request_id", "project_id", "project_name", "company_name", "project_address", "requested_benefit_amount", "estimated_public_cost", "application_status"],
+      "publisher_cadence": "Daily",
+      "product_freshness": "Freshness depends on the Build NYC document publication page; the worker caches joined lifecycle records for read-path latency.",
+      "used_for": "City Record ↔ Build NYC subsidy timeline joins for application, hearing, board, closing, and compliance stages.",
+      "code_references": [
+        {"path": "worker/src/subsidy_lifecycle.mjs", "contains": "SUBSIDY_SOURCE"},
+        {"path": "worker/src/lib/subsidy_lifecycle.mjs", "contains": "assembleSubsidyLifecycle"}
+      ]
+    },
+    {
       "id": "checkbook-contracts",
       "name": "Checkbook NYC registered contracts",
       "owner": "Office of the New York City Comptroller",

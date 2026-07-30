@@ -72,6 +72,7 @@ shapes; a separate daily workflow runs the live verifier and reports publisher d
 | Live source | Used for | Product freshness |
 |---|---|---|
 | [City Record Online](https://data.cityofnewyork.us/d/dg92-zbpx) `dg92-zbpx` | Core notices, feeds, alerts, profiles, hearings, property records, prior-cycle matches, and aggregates. | Live browser queries use a five-minute cache; Worker mirrors and materialized views refresh daily. |
+| [NYCIDA/Build NYC subsidy project records](https://edc.nyc/about-nycedc/financial-public-documents-recordings) | City Record ↔ Build NYC subsidy timeline joins for application, hearing, board, closing, and compliance stages. | Freshness depends on the Build NYC document publication page; the worker caches joined lifecycle records for read-path latency. |
 | [Checkbook NYC registered contracts](https://www.checkbooknyc.com/data-feeds/api) `Contracts` | Pending and registered contract amounts, paid-to-date totals, contract terms, and the procurement lifecycle timeline. | Queried live for contract details and daily for watched renewal estimates. |
 | [Checkbook NYC spending transactions](https://www.checkbooknyc.com/data-feeds/api) `Spending` | Individual payment records in the procurement lifecycle (solicitation to payment). | Queried by PIN for the contract lifecycle timeline. |
 | [Checkbook NYC NYCHA contracts](https://www.checkbooknyc.com/data-feeds/api) `Contracts_NYCHA` | Exact NYCHA solicitation-to-award matches. | Queried by exact notice PIN on demand, with bounded daily prewarming. |
