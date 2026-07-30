@@ -5228,10 +5228,10 @@ function lifecycleSourceLink(entry){
   }
   if(entry.source === "checkbook-contracts"){
     const id = entry.detail && entry.detail.contract_id;
-    const url = id
+    const lifecycleSourceUrl = id
       ? `https://www.checkbooknyc.com/smart_search/citywide?search_term=${encodeURIComponent(id)}`
       : CHECKBOOK_SEARCH_URL;
-    return `<a class="view" href="${url}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`;
+    return `<a class="view" href="${lifecycleSourceUrl}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`;
   }
   if(entry.source === "checkbook-spending"){
     return `<a class="view" href="${CHECKBOOK_SPENDING_URL}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`;
