@@ -16,8 +16,17 @@
 
 import { parseRedirect, noticeUrl, validWatchParam, bumpStat } from "./lib/stats.mjs";
 import { emitUsageEvent } from "./lib/analytics.mjs";
+import { verifyToken, signToken } from "optin-token";
+import {
+  isPinsSessionPayload,
+  sessionPayload,
+  sessionCookieHeader,
+  SESSION_COOKIE_TTL_SECONDS,
+  MAX_SESSION_ATTEMPTS_PER_IP_DAY,
+} from "./lib/session.mjs";
+import { overActorLimit } from "./lib/meter.mjs";
 
-export function handleRedirect(req, env, ctx, pathname) {
+export async function handleRedirect(req, env, ctx, pathname) {
   const parsed = parseRedirect(pathname);
   if (!parsed) {
     return Response.redirect("https://cityscroll.org/", 302);
@@ -31,6 +40,42 @@ export function handleRedirect(req, env, ctx, pathname) {
     event: "digest_link_open", lens: parsed.kind, detail: "notice", surface: "digest",
   });
   if (ctx && ctx.waitUntil) ctx.waitUntil(bump); // don't make the reader wait for a counter
-  const w = validWatchParam(new URL(req.url).searchParams.get("w"));
-  return Response.redirect(noticeUrl(parsed.id, w), 302);
+  const url = new URL(req.url);
+  const w = validWatchParam(url.searchParams.get("w"));
+  const location = noticeUrl(parsed.id, w);
+  // Optional pins-scoped magic-link token from digest emails. Invalid/expired →
+  // silent anonymous redirect (no scary error). Never put the token on the final URL.
+  const sessionTok = url.searchParams.get("s") || "";
+  const cookie = sessionTok ? await exchangeSessionCookie(req, env, sessionTok) : null;
+  if (cookie) {
+    return new Response(null, {
+      status: 302,
+      headers: {
+        Location: location,
+        "Set-Cookie": cookie,
+        "Cache-Control": "no-store",
+      },
+    });
+  }
+  return Response.redirect(location, 302);
+}
+
+async function exchangeSessionCookie(req, env, token) {
+  if (!env.TOKEN_SECRET || !token) return null;
+  try {
+    const ip = req.headers.get("CF-Connecting-IP") || "";
+    if (ip && env.SUBS && await overActorLimit(env.SUBS, "session", ip, MAX_SESSION_ATTEMPTS_PER_IP_DAY)) {
+      return null;
+    }
+    const res = await verifyToken(env.TOKEN_SECRET, token);
+    if (!res.valid || !isPinsSessionPayload(res.payload)) return null;
+    const cookieTok = await signToken(
+      env.TOKEN_SECRET,
+      sessionPayload(res.payload.e),
+      { ttlSeconds: SESSION_COOKIE_TTL_SECONDS },
+    );
+    return sessionCookieHeader(cookieTok);
+  } catch {
+    return null;
+  }
 }

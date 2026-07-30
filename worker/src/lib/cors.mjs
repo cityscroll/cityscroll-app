@@ -60,10 +60,14 @@ export function corsHeaders(
     headers = "Content-Type",
     maxAge,
     cacheControl,
+    // Credentialed routes (session cookie / pin sync) must echo a specific Origin
+    // and set Access-Control-Allow-Credentials — never "*".
+    credentials = false,
   } = {},
 ) {
+  const allowed = isAllowedRequestOrigin(origin, env);
   const result = {
-    "Access-Control-Allow-Origin": isAllowedRequestOrigin(origin, env)
+    "Access-Control-Allow-Origin": allowed
       ? (origin || "https://cityscroll.org")
       : "https://cityscroll.org",
     "Access-Control-Allow-Methods": methods,
@@ -72,5 +76,10 @@ export function corsHeaders(
   };
   if (maxAge) result["Access-Control-Max-Age"] = maxAge;
   if (cacheControl) result["Cache-Control"] = cacheControl;
+  if (credentials && allowed && origin) {
+    result["Access-Control-Allow-Credentials"] = "true";
+    // Credentialed responses must not fall back to a foreign default origin.
+    result["Access-Control-Allow-Origin"] = origin;
+  }
   return result;
 }
