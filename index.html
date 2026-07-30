@@ -306,6 +306,25 @@
   .near-match-reveal .chain-h{margin-top:14px}
   .connector{display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:24px;flex:0 0 30px}
   @media(max-width:560px){.connector{transform:rotate(90deg);height:24px}.stage{flex-basis:100%}}
+
+  /* Lifecycle timeline (PROC-001): compact horizontal stages with status-aware styling.
+     Reuses the .chain/.stage/.box/.connector grid above; the modifiers below set the
+     status accent (solid green = confirmed, dashed amber = nothing found, dashed muted =
+     could not verify, solid amber = multiple records). */
+  .box.matched{border-top-color:var(--green)}
+  .box.matched .stage-name{color:var(--green)}
+  .box.unmatched{border-top-style:dashed;border-top-color:var(--amber)}
+  .box.unmatched .stage-name{color:var(--amber)}
+  .box.unknown{border-top-style:dashed;border-top-color:var(--rule-strong)}
+  .box.unknown .stage-name{color:var(--rule-strong)}
+  .box.ambiguous{border-top-color:var(--amber)}
+  .box.ambiguous .stage-name{color:var(--amber)}
+  .box .lc-norecord{font:12px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+  .box .lc-pct{font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+  .box .lc-pcount{font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+  .box .lc-amend{font:11px/1 ui-sans-serif,system-ui,sans-serif;color:var(--amber)}
+  .box .lc-candidates{font:11px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:4px}
+  .box .lc-candidates > div{padding:2px 0}
   .note{font:13px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted);background:#f4eee2;border-inline-start:3px solid var(--rule);padding:10px 12px;border-start-end-radius:8px;border-end-end-radius:8px;margin-top:14px}
   .note.warn{border-inline-start-color:var(--rose)}
   .widening-note{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:12px 0 0;border-inline-start-color:var(--blue);color:var(--ink)}
@@ -2492,7 +2511,7 @@ function renderDetail(r, chain, stats){
     <button class="act export-control" type="button" id="dprint">${t("print_save_pdf")}</button>
     ${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}
   </div>`;
-  html += `<div id="dcontext"></div><div id="ddollars"></div>`;
+  html += `<div id="dcontext"></div><div id="dlifecycle"></div><div id="ddollars"></div>`;
   // Solicitations get the richer how-to-respond panel below; everything else gets the glance box.
   if(r.type_of_notice_description !== "Solicitation") html += glanceFor(r);
   if(r.type_of_notice_description === "Solicitation") html += buildApply(r);
@@ -2516,6 +2535,7 @@ function renderDetail(r, chain, stats){
   const dp = $("#dprint"); if(dp) dp.addEventListener("click", ()=>printCurrentView("notice", detailURL));
   if(pending) return; // context/dollars fetch once, on the hydrated render
   fillContext(r, $("#dcontext"));
+  loadLifecycle(r, $("#dlifecycle"));
   followDollars(r, $("#ddollars"));
   externalAwardForNotice(r, $("#dexternal"));
   priorCycleAwards(r, $("#dprior"));
@@ -5169,6 +5189,174 @@ async function externalAwardForNotice(r, el){
   });
 }
 
+/* ===================== CONTRACT LIFECYCLE TIMELINE (PROC-001) =====================
+    A compact horizontal timeline on notice detail showing the full procurement journey:
+    solicitation/award → pending → registered → payment. Consumes the precomputed read model
+    from GET /contract-lifecycle?id=<request_id> (worker/src/checkbook_lifecycle.mjs) — no
+    live upstream fetch from the client. Unmatched/ambiguous/unknown stages render as specific
+    statements in the established "no record found" register, never blank. Each stage links to
+    its authoritative source page (City Record or Checkbook NYC). */
+const CHECKBOOK_SEARCH_URL = "https://www.checkbooknyc.com/contract_search";
+const CHECKBOOK_SPENDING_URL = "https://www.checkbooknyc.com/spending_search";
+
+function lifecycleStageLabel(stage){
+  if(stage === "solicitation") return t("lifecycle_stage_solicitation");
+  if(stage === "award") return t("lifecycle_stage_award");
+  if(stage === "pending") return t("lifecycle_stage_pending");
+  if(stage === "registered") return t("lifecycle_stage_registered");
+  if(stage === "payment") return t("lifecycle_stage_payment");
+  return stage;
+}
+
+function lifecycleAmount(entry){
+  const d = entry.detail;
+  if(!d) return null;
+  if(entry.stage === "award") return d.amount != null ? d.amount : null;
+  if(entry.stage === "pending") return d.amount != null ? d.amount : null;
+  if(entry.stage === "registered") return d.current_amount != null ? d.current_amount : null;
+  if(entry.stage === "payment") return d.total_spent != null ? d.total_spent : null;
+  return null;
+}
+
+// The authoritative source link for each stage: City Record for solicitation/award,
+// Checkbook NYC for the procurement steps. An unmatched Checkbook stage still links to
+// the source search so the reader can verify — the same "here's where we looked" move
+// the external-award none-note makes.
+function lifecycleSourceLink(entry){
+  if(entry.source === "city-record" && entry.detail && entry.detail.request_id){
+    return `<a class="view" href="${REQ_URL(entry.detail.request_id)}" ${EXT_ATTRS}>${t("lifecycle_source_city_record")}${extSR()}</a>`;
+  }
+  if(entry.source === "checkbook-contracts"){
+    const id = entry.detail && entry.detail.contract_id;
+    const url = id
+      ? `https://www.checkbooknyc.com/smart_search/citywide?search_term=${encodeURIComponent(id)}`
+      : CHECKBOOK_SEARCH_URL;
+    return `<a class="view" href="${url}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`;
+  }
+  if(entry.source === "checkbook-spending"){
+    return `<a class="view" href="${CHECKBOOK_SPENDING_URL}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`;
+  }
+  return "";
+}
+
+function lifecycleStageHTML(entry){
+  const label = lifecycleStageLabel(entry.stage);
+  const dateHTML = entry.date ? `<div class="when">${fdate(entry.date)}</div>` : `<div class="when">—</div>`;
+  let detailHTML = "";
+
+  if(entry.status === "matched"){
+    const amt = lifecycleAmount(entry);
+    const amtHTML = (amt != null && money(amt)) ? `<div class="amt">${money(amt)}</div>` : "";
+    const d = entry.detail || {};
+    let extraHTML = "";
+    if(entry.stage === "registered" && d.current_amount > 0 && d.original_amount > 0 &&
+       Math.abs(d.current_amount - d.original_amount) > 1){
+      extraHTML += `<div class="lc-amend">${t("lifecycle_amended_from_html",{original:money(d.original_amount)})}</div>`;
+    }
+    if(entry.stage === "registered" && d.spent_to_date != null){
+      const pct = d.current_amount > 0 ? Math.min(100, Math.round((d.spent_to_date / d.current_amount) * 100)) : 0;
+      extraHTML += `<div class="lc-pct">${money(d.spent_to_date)} / ${money(d.current_amount)} (${pct}%)</div>`;
+      extraHTML += `<div class="lbar" style="max-width:180px;margin-top:4px"><span style="width:${pct}%"></span></div>`;
+    }
+    if(entry.stage === "payment" && d.total_payments){
+      extraHTML += `<div class="lc-pcount">${tn("lifecycle_payments_count", d.total_payments)}</div>`;
+      if(d.latest_payment_amount != null){
+        extraHTML += `<div class="lc-pct">${t("lifecycle_latest_payment_html",{amount:money(d.latest_payment_amount),date:fdate(d.latest_payment_date)})}</div>`;
+      }
+    }
+    if((entry.stage === "award" || entry.stage === "pending") && d.vendor){
+      extraHTML += `<div class="vend">${t("awarded_to")} <b lang="en" dir="ltr">${escUiHtml(d.vendor)}</b></div>`;
+    }
+    if(entry.stage === "registered" && d.vendor){
+      extraHTML += `<div class="vend">${t("awarded_to")} <b lang="en" dir="ltr">${escUiHtml(d.vendor)}</b></div>`;
+    }
+    detailHTML = amtHTML + extraHTML;
+  } else if(entry.status === "unmatched"){
+    const srcName = entry.source === "city-record"
+      ? t("lifecycle_source_city_record")
+      : t("lifecycle_source_checkbook");
+    const src = `<span lang="en" dir="ltr">${srcName}</span>`;
+    const specificKey = "lifecycle_unmatched_" + entry.stage + "_html";
+    let note = t(specificKey, {source: src});
+    if(note === specificKey) note = t("lifecycle_unmatched_generic_html", {source: src});
+    detailHTML = `<div class="lc-norecord">${note}</div>`;
+  } else if(entry.status === "unknown"){
+    const srcName = entry.source === "city-record"
+      ? t("lifecycle_source_city_record")
+      : t("lifecycle_source_checkbook");
+    detailHTML = `<div class="lc-norecord">${t("lifecycle_unknown_html",{source:`<span lang="en" dir="ltr">${srcName}</span>`})}</div>`;
+  } else if(entry.status === "ambiguous"){
+    detailHTML = `<div class="lc-norecord">${t("lifecycle_ambiguous_html")}</div>`;
+    if(entry.detail && Array.isArray(entry.detail.candidates)){
+      const cands = entry.detail.candidates.map(c => {
+        const amt = c.current_amount != null ? c.current_amount : (c.amount || 0);
+        const dt = c.registration_date || c.received_date || null;
+        return `<div>${money(amt) || "—"}${dt ? " · " + fdate(dt) : ""}${c.contract_id ? ` · <code>${c.contract_id}</code>` : ""}</div>`;
+      }).join("");
+      detailHTML += `<div class="lc-candidates">${cands}</div>`;
+    }
+  }
+
+  const link = lifecycleSourceLink(entry);
+  return `<div class="stage"><div class="box ${entry.status}">
+    <div class="stage-name">${label}</div>
+    ${dateHTML}
+    ${detailHTML}
+    ${link}
+  </div></div>`;
+}
+
+function lifecycleTimelineHTML(data, notice){
+  const tl = data.timeline || [];
+  if(!tl.length) return "";
+
+  let stages = "";
+  tl.forEach((entry, idx) => {
+    stages += lifecycleStageHTML(entry);
+    if(idx < tl.length - 1) stages += '<div class="connector">→</div>';
+  });
+
+  let amendmentsHTML = "";
+  if(data.amendments && data.amendments.length){
+    amendmentsHTML = data.amendments.map(a =>
+      `<div class="note warn">${t("lifecycle_amendment_note_html",{
+        original:money(a.original_amount),
+        current:money(a.current_amount),
+        delta:money(Math.abs(a.delta))
+      })}</div>`
+    ).join("");
+  }
+
+  const pinNote = data.pin
+    ? t("lifecycle_provenance_note_html",{
+        city_record:`<a href="${REQ_URL(notice.request_id)}" ${EXT_ATTRS}>${t("lifecycle_source_city_record")}${extSR()}</a>`,
+        checkbook:`<a href="https://www.checkbooknyc.com/" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`,
+        pin:`<code>${escUiHtml(data.pin)}</code>`
+      })
+    : t("lifecycle_no_pin_note_html");
+
+  return `<div class="chain-h">${t("lifecycle_heading")}</div>
+    <div class="chain">${stages}</div>
+    ${amendmentsHTML}
+    <div class="note">${pinNote}</div>`;
+}
+
+// Fetches the precomputed lifecycle from the worker and renders the timeline. Fail-soft:
+// a fetch failure or ok:false says nothing rather than something wrong (same posture as
+// followDollars/externalAwardForNotice). The read model is fully precomputed server-side
+// (worker/src/checkbook_lifecycle.mjs) — no live upstream calls from the client.
+async function loadLifecycle(r, el){
+  if(!el || !r.request_id) return;
+  let data = null;
+  try{
+    const resp = await workerFetch("/contract-lifecycle?id=" + encodeURIComponent(r.request_id), null, 8000);
+    if(resp && resp.ok) data = await resp.json();
+  }catch(e){}
+  if(!document.contains(el)) return;
+  if(!data || data.ok === false || !Array.isArray(data.timeline)) return;
+  el.innerHTML = lifecycleTimelineHTML(data, r);
+}
+
 async function followDollars(r, el){
   if(!el || !usablePin(r.pin)) return;
   if(!/^(Award|Intent to Award)$/.test(r.type_of_notice_description||"")) return;
@@ -6224,7 +6412,7 @@ async function showNotice(id, watch){
       ${watchChips.length ? `<div class="nlunderstood" role="status">${t("deeplink_watch_context_label")} ${watchChips.join(" ")}</div>` : ""}
       <div id="ncontext"></div>
       ${glanceFor(r)}
-      <div id="naddr"></div><div id="ndollars"></div><div id="nexternal"></div>
+      <div id="naddr"></div><div id="nlifecycle"></div><div id="ndollars"></div><div id="nexternal"></div>
       <div class="actions" style="margin-top:14px">
         <button class="act primary" type="button" id="ncopy">${t("copy_link")}</button>
         ${qrButtonHTML("nqr","act")}
@@ -6249,6 +6437,7 @@ async function showNotice(id, watch){
   const ni=$("#nics"); if(ni) ni.addEventListener("click", ()=>{ if(r.due_date){ selectedRFP=r; downloadICS(); } else downloadEventICS(r); });
   const ib=$("#icsbtn"); if(ib){ ib.addEventListener("click", ()=>{ selectedRFP=r; downloadICS(); }); }
   fillContext(r, $("#ncontext"));
+  loadLifecycle(r, $("#nlifecycle"));
   followDollars(r, $("#ndollars"));
   externalAwardForNotice(r, $("#nexternal"));
   fillAddressLinks(r, $("#naddr"));
