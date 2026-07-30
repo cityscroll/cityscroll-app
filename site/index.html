@@ -2584,7 +2584,7 @@ function renderDetail(r, chain, stats){
     <button class="act export-control" type="button" id="dprint">${t("print_save_pdf")}</button>
     ${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}
   </div>`;
-  html += `<div id="dcontext"></div><div id="dlifecycle"></div><div id="ddollars"></div>`;
+  html += `<div id="dcontext"></div><div id="dlifecycle"></div><div id="ddollars"></div><div id="dsubsidy"></div><div id="dmeet"></div>`;
   // Solicitations get the richer how-to-respond panel below; everything else gets the glance box.
   if(r.type_of_notice_description !== "Solicitation") html += glanceFor(r);
   if(r.type_of_notice_description === "Solicitation") html += buildApply(r);
@@ -2611,8 +2611,9 @@ function renderDetail(r, chain, stats){
   const dp = $("#dprint"); if(dp) dp.addEventListener("click", ()=>printCurrentView("notice", detailURL));
   if(pending) return; // context/dollars fetch once, on the hydrated render
   fillContext(r, $("#dcontext"));
-  loadLifecycle(r, $("#dlifecycle"));
-  followDollars(r, $("#ddollars"));
+  loadLifecycle(r, $("#dlifecycle"), $("#ddollars"));
+  loadSubsidyLifecycle(r, $("#dsubsidy"));
+  loadMeetingOutcomes(r, $("#dmeet"));
   externalAwardForNotice(r, $("#dexternal"));
   priorCycleAwards(r, $("#dprior"));
   agencyForecastTeaser(r, $("#dforecast"));
@@ -5626,48 +5627,316 @@ function lifecycleTimelineHTML(data, notice){
     <div class="note">${pinNote}</div>`;
 }
 
-// Fetches the precomputed lifecycle from the worker and renders the timeline. Fail-soft:
-// a fetch failure or ok:false says nothing rather than something wrong (same posture as
-// followDollars/externalAwardForNotice). The read model is fully precomputed server-side
-// (worker/src/checkbook_lifecycle.mjs) — no live upstream calls from the client.
-async function loadLifecycle(r, el){
-  if(!el || !r.request_id) return;
+// Registration / payment detail drawn from the same precomputed lifecycle timeline — no
+// live Checkbook proxy from the client (precompute-first). Specific per-slot gaps use the
+// established "no record found" register.
+function lifecycleDollarsHTML(data, notice){
+  if(!data || !Array.isArray(data.timeline)) return "";
+  const reg = data.timeline.find(e => e.stage === "registered") || null;
+  const pay = data.timeline.find(e => e.stage === "payment") || null;
+  if(!reg && !pay) return "";
+
+  if(reg && reg.status === "matched" && reg.detail){
+    const d = reg.detail;
+    const spent = d.spent_to_date != null ? d.spent_to_date : 0;
+    const current = d.current_amount != null ? d.current_amount : 0;
+    const original = d.original_amount != null ? d.original_amount : 0;
+    const pct = current > 0 ? Math.min(100, Math.round((spent / current) * 100)) : 0;
+    const amended = original > 0 && Math.abs(current - original) > 1;
+    const vendorMismatch = notice.vendor_name && d.vendor && vendorStem(d.vendor) !== vendorStem(notice.vendor_name);
+    const payNote = pay && pay.status === "matched" && pay.detail
+      ? t("lifecycle_dollars_payments_html",{
+          count: tn("lifecycle_payments_count", pay.detail.total_payments || 0),
+          latest: pay.detail.latest_payment_amount != null
+            ? t("lifecycle_latest_payment_html",{amount:money(pay.detail.latest_payment_amount),date:fdate(pay.detail.latest_payment_date)})
+            : ""
+        })
+      : (pay ? (pay.status === "unmatched"
+          ? t("lifecycle_unmatched_payment_html",{source:`<span lang="en" dir="ltr">${t("lifecycle_source_checkbook")}</span>`})
+          : pay.status === "unknown"
+            ? t("lifecycle_unknown_html",{source:`<span lang="en" dir="ltr">${t("lifecycle_source_checkbook")}</span>`})
+            : "") : "");
+    const contractLink = d.contract_id
+      ? `https://www.checkbooknyc.com/smart_search/citywide?search_term=${encodeURIComponent(d.contract_id)}`
+      : CHECKBOOK_SEARCH_URL;
+    return `<div class="apply" style="margin-top:14px"><h3>${t("lifecycle_dollars_heading")}</h3><div class="body">
+      <dl>
+        <dt>${t("lifecycle_dollars_contract_lbl")}</dt><dd><code>${escUiHtml(d.contract_id||"—")}</code> · ${t("lifecycle_dollars_registered_on_html",{date:d.registration_date?fdate(d.registration_date):"—"})}</dd>
+        <dt>${t("lifecycle_dollars_committed_lbl")}</dt><dd><b>${money(current)||"$0"}</b>${amended?` <span class="tag soon">${t("lifecycle_amended_from_html",{original:money(original)})}</span>`:""}</dd>
+        <dt>${t("lifecycle_dollars_paid_lbl")}</dt><dd><b>${money(spent)||"$0"}</b> (${pct}%)<div class="lbar" style="max-width:220px;margin-top:5px"><span style="width:${pct}%"></span></div></dd>
+        <dt>${t("lifecycle_dollars_term_lbl")}</dt><dd>${fdate(d.start_date)||"—"} → ${fdate(d.end_date)||"—"}</dd>
+        ${d.mwbe?`<dt>${t("lifecycle_dollars_mwbe_lbl")}</dt><dd>${escUiHtml(d.mwbe)}</dd>`:""}
+      </dl>
+      ${vendorMismatch?`<div class="note warn" style="margin-top:10px">${t("lifecycle_dollars_vendor_mismatch_html",{checkbook:escUiHtml(cleanText(d.vendor)),notice:escUiHtml(cleanText(notice.vendor_name))})}</div>`:""}
+      ${payNote?`<div class="note" style="margin-top:10px">${payNote}</div>`:""}
+      <div class="pnote">${t("lifecycle_dollars_provenance_html",{
+        link:`<a href="${contractLink}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`,
+        pin:`<code>${escUiHtml(data.pin||notice.pin||"")}</code>`
+      })}</div>
+    </div></div>`;
+  }
+
+  // Registration not matched — still name the specific gap (never a page-level blank).
+  const regNote = !reg ? ""
+    : reg.status === "unmatched"
+      ? t("lifecycle_unmatched_registered_html",{source:`<span lang="en" dir="ltr">${t("lifecycle_source_checkbook")}</span>`})
+      : reg.status === "unknown"
+        ? t("lifecycle_unknown_html",{source:`<span lang="en" dir="ltr">${t("lifecycle_source_checkbook")}</span>`})
+        : reg.status === "ambiguous"
+          ? t("lifecycle_ambiguous_html")
+          : "";
+  if(!regNote) return "";
+  return `<div class="note" style="margin-top:12px"><b>${t("lifecycle_dollars_heading")}</b> ${regNote}
+    <a href="${CHECKBOOK_SEARCH_URL}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a></div>`;
+}
+
+// Fetches the precomputed lifecycle from the worker and renders the timeline + dollars
+// panel. Fail-soft on network: says nothing rather than inventing a gap. The read model is
+// fully precomputed server-side (worker/src/checkbook_lifecycle.mjs) — no live upstream.
+async function loadLifecycle(r, el, dollarsEl){
+  if((!el && !dollarsEl) || !r.request_id) return;
   let data = null;
   try{
     const resp = await workerFetch("/contract-lifecycle?id=" + encodeURIComponent(r.request_id), null, 8000);
     if(resp && resp.ok) data = await resp.json();
   }catch(e){}
-  if(!document.contains(el)) return;
-  if(!data || data.ok === false || !Array.isArray(data.timeline)) return;
-  el.innerHTML = lifecycleTimelineHTML(data, r);
-}
-
-async function followDollars(r, el){
-  if(!el || !usablePin(r.pin)) return;
-  if(!/^(Award|Intent to Award)$/.test(r.type_of_notice_description||"")) return;
-  let rows = null;
-  try{ rows = await checkbookByPin(String(r.pin).trim()); }catch(e){}
-  if(!document.contains(el)) return;
-  if(!rows) return; // proxy unreachable → say nothing rather than something wrong
-  if(!rows.length){
-    el.innerHTML = `<div class="note" style="margin-top:12px"><b>Follow the dollars:</b> no registered contract in Checkbook NYC for PIN <code>${r.pin}</code> yet — registration typically lags the award notice by weeks. <a href="https://www.checkbooknyc.com/contract_search" ${EXT_ATTRS}>Search Checkbook${extSR()}</a></div>`;
+  if(el && !document.contains(el)) return;
+  if(dollarsEl && !document.contains(dollarsEl)) return;
+  if(!data){
+    // No PIN → explicit gap on the lifecycle slot when this is a procurement notice.
+    if(el && /^(Solicitation|Award|Intent to Award)$/.test(r.type_of_notice_description||"") && !usablePin(r.pin)){
+      el.innerHTML = `<div class="chain-h">${t("lifecycle_heading")}</div><div class="note">${t("lifecycle_no_pin_note_html")}</div>`;
+    }
     return;
   }
-  const c = rows[0];
-  const pct = c.current > 0 ? Math.min(100, Math.round((c.spent/c.current)*100)) : 0;
-  const amended = c.original > 0 && Math.abs(c.current - c.original) > 1;
-  const vendorMismatch = r.vendor_name && c.vendor && vendorStem(c.vendor) !== vendorStem(r.vendor_name);
-  el.innerHTML = `<div class="apply" style="margin-top:14px"><h3>Follow the dollars — Checkbook NYC</h3><div class="body">
-    <dl>
-      <dt>Contract</dt><dd><code>${c.id}</code> · registered ${c.registered?fdt(c.registered):"—"}${rows.length>1?` · <b>+${rows.length-1} more</b> under this PIN`:""}</dd>
-      <dt>Committed</dt><dd><b>${money(c.current)||"$0"}</b>${amended?` <span class="tag soon">amended from ${money(c.original)}</span>`:""}</dd>
-      <dt>Paid to date</dt><dd><b>${money(c.spent)||"$0"}</b> (${pct}%)<div class="lbar" style="max-width:220px;margin-top:5px"><span style="width:${pct}%"></span></div></dd>
-      <dt>Term</dt><dd>${fdate(c.start)||"—"} → ${fdate(c.end)||"—"}</dd>
-      <dt>Minority/Women-Owned Business Enterprise (M/WBE)</dt><dd>${c.mwbe||"—"}${c.subs && c.subs!=="N/A" ? ` · sub-vendors: ${c.subs}` : ""}</dd>
-    </dl>
-    ${vendorMismatch?`<div class="note warn" style="margin-top:10px">⚠ Checkbook's vendor (<b>${cleanText(c.vendor)}</b>) differs from the notice's (<b>${cleanText(r.vendor_name)}</b>) — a PIN can cover multiple awards; treat with care.</div>`:""}
-    <div class="pnote">Live from <a href="https://www.checkbooknyc.com/smart_search/citywide?search_term=${encodeURIComponent(c.id)}" ${EXT_ATTRS}>Checkbook NYC${extSR()}</a>, matched by PIN <code>${r.pin}</code>. Payments lag invoicing — $0 paid on a freshly registered contract is normal.</div>
+  if(data.ok === false && !Array.isArray(data.timeline)){
+    if(el && usablePin(r.pin)){
+      el.innerHTML = `<div class="chain-h">${t("lifecycle_heading")}</div>
+        <div class="note">${t("lifecycle_unknown_html",{source:`<span lang="en" dir="ltr">${t("lifecycle_source_checkbook")}</span>`})}</div>`;
+    }
+    return;
+  }
+  if(el && Array.isArray(data.timeline) && data.timeline.length){
+    el.innerHTML = lifecycleTimelineHTML(data, r);
+  }
+  if(dollarsEl && /^(Award|Intent to Award)$/.test(r.type_of_notice_description||"")){
+    dollarsEl.innerHTML = lifecycleDollarsHTML(data, r);
+  }
+}
+
+/* ===================== SUBSIDY LIFECYCLE (SUB-001) =====================
+   NYCIDA/Build NYC stages on the notice detail where users actually look. Consumes
+   GET /subsidy-lifecycle?id= — edge-materialized, no live EDC fetch from the client. */
+function isSubsidyEligibleNotice(r){
+  const agency = String(r.agency_name || "").toLowerCase();
+  if(/industrial development|build nyc|nycida|economic development corporation/.test(agency)) return true;
+  const title = String(r.short_title || "");
+  return /\b(IDA|NYCIDA|Build NYC|tax-?exempt bond|industrial development)\b/i.test(title);
+}
+
+function subsidyStageLabel(stage){
+  if(stage === "application") return t("subsidy_stage_application");
+  if(stage === "hearing") return t("subsidy_stage_hearing");
+  if(stage === "board_decision") return t("subsidy_stage_board_decision");
+  if(stage === "closing") return t("subsidy_stage_closing");
+  if(stage === "compliance") return t("subsidy_stage_compliance");
+  return stage;
+}
+
+function subsidyStageHTML(entry){
+  const label = subsidyStageLabel(entry.stage);
+  const dateHTML = entry.date ? `<div class="when">${fdate(entry.date)}</div>` : `<div class="when">—</div>`;
+  let detailHTML = "";
+  const status = entry.status === "matched" ? "matched" : (entry.status === "unknown" ? "unknown" : "unmatched");
+  if(entry.status === "matched"){
+    const action = entry.official_action ? `<div class="lc-pct">${t("subsidy_action_html",{action:escUiHtml(String(entry.official_action).replace(/_/g," "))})}</div>` : "";
+    const outcome = entry.outcome && entry.outcome !== "unknown"
+      ? `<div class="lc-pct">${t("subsidy_outcome_html",{outcome:escUiHtml(entry.outcome)})}</div>`
+      : `<div class="lc-norecord">${t("subsidy_outcome_unknown_html")}</div>`;
+    const amt = entry.detail && entry.detail.amount != null ? `<div class="amt">${money(entry.detail.amount)}</div>` : "";
+    detailHTML = amt + action + outcome;
+  } else {
+    detailHTML = `<div class="lc-norecord">${t("subsidy_stage_unmatched_html",{
+      stage: label,
+      source: `<span lang="en" dir="ltr">${t("subsidy_source_build_nyc")}</span>`
+    })}</div>`;
+  }
+  let link = "";
+  if(entry.source && entry.source.status === "matched" && entry.source.url){
+    link = `<a class="view" href="${escUiHtml(entry.source.url)}" ${EXT_ATTRS}>${t("subsidy_source_build_nyc")}${extSR()}</a>`;
+  }
+  return `<div class="stage"><div class="box ${status}">
+    <div class="stage-name">${label}</div>
+    ${dateHTML}
+    ${detailHTML}
+    ${link}
   </div></div>`;
+}
+
+function subsidyLifecycleHTML(data, notice){
+  if(!data) return "";
+  const join = data.join || {};
+  let stages = "";
+  const tl = Array.isArray(data.timeline) ? data.timeline : [];
+  tl.forEach((entry, idx) => {
+    stages += subsidyStageHTML(entry);
+    if(idx < tl.length - 1) stages += '<div class="connector">→</div>';
+  });
+
+  let joinNote = "";
+  if(data.source_status === "unavailable"){
+    joinNote = t("subsidy_source_unavailable_html",{source:`<span lang="en" dir="ltr">${t("subsidy_source_build_nyc")}</span>`});
+  } else if(join.matched === false){
+    joinNote = t("subsidy_unmatched_html",{
+      reason: escUiHtml(join.reason || t("subsidy_unmatched_default_reason")),
+      title: escUiHtml(cleanText(notice.short_title) || notice.request_id || "")
+    });
+  } else if(join.matched){
+    const proj = data.project || {};
+    joinNote = t("subsidy_matched_html",{
+      project: escUiHtml(proj.name || proj.id || "—"),
+      company: escUiHtml((data.company && data.company.value) || proj.company || "—"),
+      stage: subsidyStageLabel(data.stage || "")
+    });
+  }
+
+  // Explicit field-level gaps for company/place/money when the join exists but a field is missing.
+  let fieldGaps = "";
+  if(join.matched){
+    if(data.company && data.company.status !== "matched"){
+      fieldGaps += `<div class="lc-norecord">${t("subsidy_company_unknown_html")}</div>`;
+    }
+    if(data.place && data.place.status !== "matched"){
+      fieldGaps += `<div class="lc-norecord">${t("subsidy_place_unknown_html")}</div>`;
+    }
+    if(data.money){
+      if(data.money.requested_benefit && data.money.requested_benefit.status !== "matched"){
+        fieldGaps += `<div class="lc-norecord">${t("subsidy_money_unknown_html",{field:t("subsidy_money_requested_lbl")})}</div>`;
+      }
+      if(data.money.estimated_cost && data.money.estimated_cost.status !== "matched"){
+        fieldGaps += `<div class="lc-norecord">${t("subsidy_money_unknown_html",{field:t("subsidy_money_estimated_lbl")})}</div>`;
+      }
+    }
+  }
+
+  return `<div class="chain-h">${t("subsidy_lifecycle_heading")}</div>
+    ${joinNote?`<div class="note">${joinNote}</div>`:""}
+    ${stages?`<div class="chain">${stages}</div>`:""}
+    ${fieldGaps}
+    <div class="note">${t("subsidy_provenance_note_html",{
+      source:`<a href="https://edc.nyc/about-nycedc/financial-public-documents-recordings" ${EXT_ATTRS}>${t("subsidy_source_build_nyc")}${extSR()}</a>`
+    })}</div>`;
+}
+
+async function loadSubsidyLifecycle(r, el){
+  if(!el || !r.request_id || !isSubsidyEligibleNotice(r)) return;
+  let data = null;
+  try{
+    const resp = await workerFetch("/subsidy-lifecycle?id=" + encodeURIComponent(r.request_id), null, 8000);
+    if(resp && resp.ok) data = await resp.json();
+  }catch(e){}
+  if(!document.contains(el)) return;
+  if(!data || data.ok === false){
+    // Specific gap even when the endpoint cannot resolve a notice row.
+    el.innerHTML = `<div class="chain-h">${t("subsidy_lifecycle_heading")}</div>
+      <div class="note">${t("subsidy_unmatched_html",{
+        reason: escUiHtml(t("subsidy_unmatched_default_reason")),
+        title: escUiHtml(cleanText(r.short_title) || r.request_id || "")
+      })}</div>`;
+    return;
+  }
+  el.innerHTML = subsidyLifecycleHTML(data, r);
+}
+
+/* ===================== COUNCIL MEETING OUTCOMES (MEET-001) =====================
+   Related Council event / matter / votes for hearing notices. Precomputed read model
+   from GET /meeting-outcomes?id= — no live Legistar fetch from the client. */
+function isMeetingOutcomesEligible(r){
+  const section = r.section_name || "";
+  if(section === "Public Hearings and Meetings") return true;
+  if(section === "Agency Rules" && r.type_of_notice_description === "Public Hearings") return true;
+  // Procurement notices can still be referenced by Council matters (title/PIN); offer the
+  // slot when the materialized view has a row, so loadMeetingOutcomes always tries for awards
+  // that may appear on a council calendar.
+  return false;
+}
+
+function meetingOutcomesHTML(record){
+  if(!record) return "";
+  const join = record.join || {};
+  if(!join.matched){
+    return `<div class="chain-h">${t("meeting_outcomes_heading")}</div>
+      <div class="note">${t("meeting_outcomes_unmatched_html",{
+        reason: escUiHtml(join.reason || t("meeting_outcomes_unmatched_default"))
+      })}</div>`;
+  }
+  const event = record.council_event || {};
+  const items = Array.isArray(record.agenda_items) ? record.agenda_items : [];
+  let mattersHTML = "";
+  for(const item of items){
+    for(const matter of (item.matters || [])){
+      const votes = Array.isArray(matter.votes) ? matter.votes : [];
+      let voteHTML = "";
+      if(votes.length){
+        voteHTML = votes.map(v => {
+          const c = v.counts || {};
+          return `<div class="lc-pct">${t("meeting_outcomes_vote_html",{
+            result: escUiHtml(v.result || v.outcome || "—"),
+            aye: String(c.aye != null ? c.aye : "—"),
+            nay: String(c.nay != null ? c.nay : "—")
+          })}</div>`;
+        }).join("");
+      } else {
+        voteHTML = `<div class="lc-norecord">${t("meeting_outcomes_no_votes_html",{
+          matter: escUiHtml(matter.title || matter.matter_id || "—")
+        })}</div>`;
+      }
+      const docs = (matter.documents || []).slice(0, 3).map(d =>
+        d.url ? `<a class="view" href="${escUiHtml(d.url)}" ${EXT_ATTRS}>${escUiHtml(d.name || d.document_id || t("meeting_outcomes_document_lbl"))}${extSR()}</a>` : ""
+      ).filter(Boolean).join(" · ");
+      mattersHTML += `<div class="stage"><div class="box matched">
+        <div class="stage-name">${t("meeting_outcomes_matter_lbl")}</div>
+        <div class="when">${escUiHtml(matter.status || matter.outcome || "—")}</div>
+        <div class="lc-pct" lang="en" dir="ltr">${escUiHtml(matter.title || matter.matter_id || "—")}</div>
+        ${voteHTML}
+        ${docs?`<div class="lc-pct">${docs}</div>`:""}
+      </div></div>`;
+    }
+  }
+  if(!mattersHTML){
+    mattersHTML = `<div class="note">${t("meeting_outcomes_no_matters_html")}</div>`;
+  }
+  return `<div class="chain-h">${t("meeting_outcomes_heading")}</div>
+    <div class="note">${t("meeting_outcomes_matched_html",{
+      event: escUiHtml(event.title || event.event_id || "—"),
+      date: event.start_time ? fdate(String(event.start_time).slice(0,10)) : "—"
+    })}</div>
+    <div class="chain">${mattersHTML}</div>
+    <div class="note">${t("meeting_outcomes_provenance_html")}</div>`;
+}
+
+async function loadMeetingOutcomes(r, el){
+  if(!el || !r.request_id) return;
+  // Always try for hearing-eligible notices; for other notices only show when the join
+  // lands (so a procurement notice that Council actually voted on still surfaces).
+  const eligible = isMeetingOutcomesEligible(r);
+  let data = null;
+  try{
+    const resp = await workerFetch("/meeting-outcomes?id=" + encodeURIComponent(r.request_id), null, 8000);
+    if(resp && resp.ok) data = await resp.json();
+  }catch(e){}
+  if(!document.contains(el)) return;
+  if(!data || data.ok === false || !data.record){
+    if(eligible){
+      el.innerHTML = `<div class="chain-h">${t("meeting_outcomes_heading")}</div>
+        <div class="note">${t("meeting_outcomes_unmatched_html",{
+          reason: escUiHtml(t("meeting_outcomes_unmatched_default"))
+        })}</div>`;
+    }
+    return;
+  }
+  if(!eligible && !(data.record.join && data.record.join.matched)) return;
+  el.innerHTML = meetingOutcomesHTML(data.record);
 }
 
 /* ===================== ENTITY PAGES (vendor / agency) =====================
@@ -6295,9 +6564,21 @@ async function showMatter(pin){
     (STAGE_RANK[a.type_of_notice_description]??9)-(STAGE_RANK[b.type_of_notice_description]??9));
   const agency = rows[rows.length-1].agency_name || rows[0].agency_name || "";
   const vendor = rows.map(r=>r.vendor_name).filter(Boolean).pop() || "";
-  let cb = null;
-  try{ cb = await checkbookByPin(String(pin).trim()); }catch(e){}
-  const c = cb && cb[0];
+  // Precompute-first: pull registration/payment from the edge-materialized lifecycle for
+  // the newest notice on this PIN, not a live Checkbook proxy call from the browser.
+  let lifecycle = null;
+  try{
+    const latestId = rows[rows.length-1].request_id;
+    const resp = await workerFetch("/contract-lifecycle?id=" + encodeURIComponent(latestId), null, 8000);
+    if(resp && resp.ok) lifecycle = await resp.json();
+  }catch(e){}
+  const reg = lifecycle && Array.isArray(lifecycle.timeline)
+    ? lifecycle.timeline.find(e => e.stage === "registered" && e.status === "matched")
+    : null;
+  const pay = lifecycle && Array.isArray(lifecycle.timeline)
+    ? lifecycle.timeline.find(e => e.stage === "payment")
+    : null;
+  const regDetail = reg && reg.detail ? reg.detail : null;
   const items = rows.map(r=>({
     date: r.start_date,
     label: `<b>${r.type_of_notice_description||"Notice"}</b> — ${pivotA("#notice/"+encodeURIComponent(r.request_id), cleanText(r.short_title)||"(untitled)")}`,
@@ -6307,10 +6588,35 @@ async function showMatter(pin){
             money(r.contract_amount), r.vendor_name?"→ "+pivotA(vendorHref(r.vendor_name), cleanText(r.vendor_name)):null,
             r.due_date?(isRollingDeadline(r.due_date)?t("rolling_deadline_tag"):"responses due "+fdate(r.due_date)):null].filter(Boolean).join(" · ")
   }));
-  if(c && c.registered) items.push({date:c.registered, label:`<b>Contract registered</b> — <code>${c.id}</code> (Checkbook NYC)`, extra:`committed ${money(c.current)||"—"}`});
+  if(regDetail && regDetail.registration_date){
+    items.push({
+      date: regDetail.registration_date,
+      label: `<b>${t("lifecycle_stage_registered")}</b> — <code>${escUiHtml(regDetail.contract_id||"")}</code> (${t("lifecycle_source_checkbook")})`,
+      extra: `${t("lifecycle_dollars_committed_lbl")} ${money(regDetail.current_amount)||"—"}`
+    });
+  } else if(lifecycle && Array.isArray(lifecycle.timeline)){
+    const regEntry = lifecycle.timeline.find(e => e.stage === "registered");
+    if(regEntry && regEntry.status === "unmatched"){
+      items.push({
+        date: null,
+        label: `<b>${t("lifecycle_stage_registered")}</b>`,
+        extra: t("lifecycle_unmatched_registered_html",{source:t("lifecycle_source_checkbook")})
+      });
+    }
+  }
   items.sort((a,b)=>(a.date||"9999").localeCompare(b.date||"9999"));
-  if(c) items.push({date:null, label:`<b>Paid to date: ${money(c.spent)||"$0"}</b> of ${money(c.current)||"—"} committed`,
-    extra:`term ${fdate(c.start)||"—"} → ${fdate(c.end)||"—"} · <a href="https://www.checkbooknyc.com/smart_search/citywide?search_term=${encodeURIComponent(c.id)}" ${EXT_ATTRS}>Checkbook${extSR()}</a>`});
+  if(regDetail){
+    const spent = regDetail.spent_to_date != null ? regDetail.spent_to_date : 0;
+    const current = regDetail.current_amount != null ? regDetail.current_amount : 0;
+    const payExtra = pay && pay.status === "unmatched"
+      ? t("lifecycle_unmatched_payment_html",{source:t("lifecycle_source_checkbook")})
+      : `term ${fdate(regDetail.start_date)||"—"} → ${fdate(regDetail.end_date)||"—"} · <a href="https://www.checkbooknyc.com/smart_search/citywide?search_term=${encodeURIComponent(regDetail.contract_id||"")}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`;
+    items.push({
+      date: null,
+      label: `<b>${t("lifecycle_dollars_paid_lbl")}: ${money(spent)||"$0"}</b> of ${money(current)||"—"}`,
+      extra: payExtra
+    });
+  }
   const link = location.origin + location.pathname + "#matter/" + encodeURIComponent(pin);
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CityScroll</a></p>
@@ -6328,7 +6634,7 @@ async function showMatter(pin){
         ${pinBtn("matter", pin, t("meta_matter",{pin:safe}), [agency, vendor?cleanText(vendor):null].filter(Boolean).join(" × "))}
         <a class="act" href="${REQ_URL(rows[rows.length-1].request_id)}" ${EXT_ATTRS}>Latest notice in City Record${extSR()}</a>
       </div>
-      <div class="note">The spine is every City Record notice sharing this PIN, in order; Checkbook events join deterministically on the same PIN. Public-hearing notices rarely carry PINs, so hearings may be missing from the chronology.</div>
+      <div class="note">The spine is every City Record notice sharing this PIN, in order; Checkbook events join deterministically on the same PIN via the precomputed contract lifecycle. Public-hearing notices rarely carry PINs, so hearings may be missing from the chronology.</div>
     </div></div>`;
   $("#ecopy").addEventListener("click", ()=>copyText(link, $("#ecopy")));
   bindQRShare($("#eqr"), link);
@@ -6904,7 +7210,7 @@ async function showNotice(id, watch){
       ${watchChips.length ? `<div class="nlunderstood" role="status">${t("deeplink_watch_context_label")} ${watchChips.join(" ")}</div>` : ""}
       <div id="ncontext"></div>
       ${glanceFor(r)}
-      <div id="naddr"></div><div id="nlifecycle"></div><div id="ndollars"></div><div id="nexternal"></div>
+      <div id="naddr"></div><div id="nlifecycle"></div><div id="ndollars"></div><div id="nsubsidy"></div><div id="nmeet"></div><div id="nexternal"></div>
       <div class="actions" style="margin-top:14px">
         <button class="act primary" type="button" id="ncopy">${t("copy_link")}</button>
         ${qrButtonHTML("nqr","act")}
@@ -6930,8 +7236,9 @@ async function showNotice(id, watch){
   const ni=$("#nics"); if(ni) ni.addEventListener("click", ()=>{ if(r.due_date){ selectedRFP=r; downloadICS(); } else downloadEventICS(r); });
   const ib=$("#icsbtn"); if(ib){ ib.addEventListener("click", ()=>{ selectedRFP=r; downloadICS(); }); }
   fillContext(r, $("#ncontext"));
-  loadLifecycle(r, $("#nlifecycle"));
-  followDollars(r, $("#ndollars"));
+  loadLifecycle(r, $("#nlifecycle"), $("#ndollars"));
+  loadSubsidyLifecycle(r, $("#nsubsidy"));
+  loadMeetingOutcomes(r, $("#nmeet"));
   externalAwardForNotice(r, $("#nexternal"));
   fillAddressLinks(r, $("#naddr"));
   priorCycleAwards(r, $("#nprior"));
