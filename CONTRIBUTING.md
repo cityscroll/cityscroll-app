@@ -74,9 +74,8 @@ every merged PR. Two things earn a PR an entry, both required:
    visitor — a new feature, a new language, a meaningful fix to something visibly broken.
    Most PRs should NOT carry this label: a bug fix, an internal/tooling change, a wording
    tweak, or a refinement to something that already shipped is real work but not a changelog
-   moment. If in doubt, leave it off — the PR history (and, for internal work, the project's
-   `AGENTS.md`) is still the complete record; the changelog page is the curated highlights,
-   not the log.
+   moment. If in doubt, leave it off — the PR history is still the complete record; the
+   changelog page is the curated highlights, not the log.
 
 A merge-triggered workflow (`.github/workflows/update-changelog.yml`) checks for the label,
 then extracts the marker line, and regenerates the page automatically. Missing either one

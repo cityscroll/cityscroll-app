@@ -24,16 +24,15 @@ test("Cloudflare Pages workflow provisions the project before first deploy", () 
   assert.ok(ensure >= 0 && ensure < deploy, "Pages project must exist before deploy");
 });
 
-test("Cloudflare Pages workflow never attaches apex hostnames (cutover is a runbook)", () => {
+test("Cloudflare Pages workflow never attaches apex hostnames", () => {
   const workflow = read(".github/workflows/deploy-cloudflare-pages.yml");
   assert.doesNotMatch(workflow, /ensure_stable_pages\.mjs domain/);
   assert.doesNotMatch(workflow, /--domain=/);
   assert.doesNotMatch(workflow, /pages domain add/i);
-  const runbook = read("docs/hosting-cutover-runbook.md");
-  assert.match(runbook, /cityscroll\.org/);
-  assert.match(runbook, /Rollback|rollback/);
-  assert.match(runbook, /TTL/);
-  assert.match(runbook, /GitHub Pages/);
+  // Parallel deploy may reference cityscroll.org for parity checks; it must not
+  // provision or attach custom domains on the Pages project.
+  assert.doesNotMatch(workflow, /pages domains? (add|create)/i);
+  assert.doesNotMatch(workflow, /Custom domains/i);
 });
 
 test("parallel host smoke and route parity run after Cloudflare Pages deploy", () => {

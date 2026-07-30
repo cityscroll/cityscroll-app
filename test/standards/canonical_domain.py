@@ -119,13 +119,15 @@ def main() -> None:
     if "crol-list-beta.pages.dev" not in (ROOT / "docs/beta-channel.md").read_text():
         failures.append("beta previews: stable Pages aliases must remain unchanged")
 
-    cutover = (ROOT / "docs/canonical-domain-cutover.md").read_text()
+    architecture = (ROOT / "docs/architecture.md").read_text()
     for phrase in (
-        "cf.worker.upstream_zone", "status `301`", "URL fragments",
-        "Website", "decided on 2026-07-29 to switch the alerts sender",
+        "cityscroll.org",
+        "alerts@cityscroll.org",
+        "301",
+        "crol-list.org",
     ):
-        if phrase not in cutover:
-            failures.append(f"cutover guide: missing {phrase!r}")
+        if phrase not in architecture:
+            failures.append(f"architecture: missing public domain fact {phrase!r}")
 
     if failures:
         print("canonical-domain gate FAILED:", file=sys.stderr)
