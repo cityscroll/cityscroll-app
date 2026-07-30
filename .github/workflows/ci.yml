@@ -153,6 +153,7 @@ jobs:
           python3 test/performance/verify.py \
             --budgets performance-budgets.json \
             --fixtures test/performance/fixtures \
+            --site-root site \
             --samples 20
       - name: Preserve raw performance samples
         if: always()
