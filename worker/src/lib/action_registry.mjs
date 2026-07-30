@@ -166,7 +166,7 @@ export function compileActionRail(matter, {vaultEnabled = false} = {}) {
     },
   ];
   return actions.map((action) => {
-    if (action.type === "document" && action.delivery !== "official_handoff") {
+    if (action.type === "document" && !vaultEnabled) {
       return {...action, vault_fallback: !vaultEnabled};
     }
     if (action.type === "calendar" && action.delivery === "unavailable") {

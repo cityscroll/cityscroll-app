@@ -49,7 +49,8 @@
       "destination": "https://www.nyc.gov/assets/dcas/downloads/pdf/example-public-report.pdf",
       "destination_label": "www.nyc.gov",
       "deadline": "2026-09-30",
-      "confirmation_required": false
+      "confirmation_required": false,
+      "vault_fallback": true
     },
     {
       "type": "contact",
