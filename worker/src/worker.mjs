@@ -40,6 +40,7 @@ import { handleSourceVault } from "./source_vault.mjs";
 import { handleContractLifecycle, prewarmContractLifecycle } from "./checkbook_lifecycle.mjs";
 import { handleSubsidyLifecycle, prewarmSubsidyLifecycle } from "./subsidy_lifecycle.mjs";
 import { ingestPassportPublic } from "./passport.mjs";
+import { handleZapOutcomes } from "./zap_outcomes.mjs";
 import { handleTranslate } from "./translate.mjs";
 
 const MIRROR_HOSTS = new Set(["cityscroll.org", "www.cityscroll.org"]);
@@ -73,6 +74,7 @@ export default {
     if (pathname === "/hearings") return handleHearings(request, env, ctx);
     if (pathname === "/property-locations") return handleProperties(request, env, ctx);
     if (pathname === "/meeting-outcomes") return handleMeetingOutcomes(request, env, ctx);
+    if (pathname === "/zap-outcomes") return handleZapOutcomes(request, env, ctx);
     if (pathname === "/rules") return handleRules(request, env, ctx);
     if (pathname === "/source-vault/fetch" || pathname.startsWith("/source-vault/")) return handleSourceVault(request, env);
     if (pathname === "/suggestions") return handleSuggestions(request, env, ctx);

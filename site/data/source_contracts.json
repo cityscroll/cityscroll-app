@@ -459,6 +459,101 @@
       "delivery_tier": "live-only"
     },
     {
+      "id": "zap-api-outcomes",
+      "name": "Zoning Application Portal \u2014 project outcomes (Planning Labs API)",
+      "owner": "NYC Department of City Planning",
+      "status": "live",
+      "scope": "runtime",
+      "kind": "html",
+      "landing_page": "https://zap.planning.nyc.gov/",
+      "endpoint": "https://zap-api-production.herokuapp.com/projects/{project_id}",
+      "required_fields": [
+        "project_id",
+        "public_status",
+        "actions",
+        "dispositions",
+        "documents"
+      ],
+      "max_stale_days": 3,
+      "publisher_cadence": "Live CRM-backed API used by the public ZAP portal; Open Data project table lags the portal by about a month",
+      "product_freshness": "Worker materializes per-project outcomes on GET /zap-outcomes with a one-day edge cache; the browser never calls the ZAP API for this panel.",
+      "used_for": "Land detail decision documents, action approvals, disposition votes/recommendations, and DOB NOW tax-lot filing side-car beyond Open Data status chips.",
+      "join_keys": [
+        "project_id",
+        "BBL",
+        "ulurp_numbers"
+      ],
+      "join_measurement": {
+        "observed_on": "2026-07-30",
+        "universe": "ULURP projects from NYC Open Data hgx4-8ukb joined by exact project_id to zap-api-production.herokuapp.com/projects/{id}; DOB NOW w9ak-ipjd via exact BBL from zap-bbl",
+        "strategy": "exact_project_id | exact_bbl. Title-only and partial ULURP matches rejected.",
+        "usefulness_threshold": 0.3,
+        "sample": {
+          "ulurp_complete_n": 50,
+          "mixed_active_complete_n": 60,
+          "complete_bbl_sample_n": 25
+        },
+        "rates": {
+          "ulurp_complete_useful_outcome": {
+            "joined": 50,
+            "total": 50,
+            "rate": 1.0
+          },
+          "ulurp_complete_any_documents": {
+            "joined": 50,
+            "total": 50,
+            "rate": 1.0
+          },
+          "ulurp_complete_disposition_vote": {
+            "joined": 45,
+            "total": 50,
+            "rate": 0.9
+          },
+          "ulurp_complete_approved_action": {
+            "joined": 34,
+            "total": 50,
+            "rate": 0.68
+          },
+          "mixed_sample_api_project_id": {
+            "joined": 60,
+            "total": 60,
+            "rate": 1.0
+          },
+          "mixed_sample_any_documents": {
+            "joined": 40,
+            "total": 60,
+            "rate": 0.667
+          },
+          "complete_sample_with_bbl": {
+            "joined": 22,
+            "total": 25,
+            "rate": 0.88
+          },
+          "complete_sample_dob_any_filing": {
+            "joined": 14,
+            "total": 25,
+            "rate": 0.56
+          }
+        },
+        "verdict": "Above usefulness threshold (>=30%) on decision-document outcomes (100% useful on ULURP completed sample; 66.7% any documents on mixed active+completed). Ship edge materialization of ZAP API outcomes + DOB BBL side-car."
+      },
+      "code_references": [
+        {
+          "path": "worker/src/lib/zap_outcomes.mjs",
+          "contains": "zap-api-production.herokuapp.com"
+        },
+        {
+          "path": "worker/src/zap_outcomes.mjs",
+          "contains": "zap-outcomes"
+        },
+        {
+          "path": "site/index.html",
+          "contains": "zap-outcomes"
+        }
+      ],
+      "delivery_tier": "edge-materialized"
+    },
+    {
       "id": "mappluto",
       "name": "MapPLUTO",
       "owner": "NYC Department of City Planning",
