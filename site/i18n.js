@@ -1197,7 +1197,7 @@ const STRINGS = {
     stats_lbl_deeplinks: "Deep links opened · 7 days",
     stats_lbl_exports: "Exports · 7 days",
     stats_lbl_alert_confirms: "Watches confirmed · 7 days",
-    stats_usage_unavailable: "These totals are not ready yet. Page views appear after the first counted visit (refreshed about every 15 minutes).",
+    stats_usage_unavailable: "These totals are not ready yet. They show after the first visit (about 15 minutes).",
     stats_h_lens_interest: "Use by section",
     stats_col_last30: "Last 30 days",
     stats_h_geography: "Searches by area",
