@@ -147,9 +147,7 @@ shapes; a separate daily workflow runs the live verifier and reports publisher d
 | [PASSPort Public contracts](https://a0333-passportpublic.nyc.gov/contracts.html) | Pending and pre-registration contract stages on the procurement lifecycle when Checkbook is unmatched, plus registered-stage enrichment when EPIN joins a City Record PIN. | Worker rebuilds the D1 passport_contracts table on the daily scheduled run; lifecycle reads join from that edge materialization with no live browser fetch to PASSPort. |
 | [PASSPort Public solicitations (RFx)](https://a0333-passportpublic.nyc.gov/rfx.html) | RFx detail on solicitation lifecycle stages (due date, method, status, commodity) joined by EPIN to City Record PINs. | Worker rebuilds the D1 passport_rfx table on the daily scheduled run; solicitation lifecycle stages read joined RFx detail from that materialization. |
 
-The external-award registry currently maps 13 agency names to 12 distinct ABO authorities across
-`8w5p-k45m`, `d84c-dk28`, `ehig-g5x3`, adds 1 exact NYCHA mapping, and records 16 verified
-coverage gaps. ABO joins remain possible matches rather than exact contract identity.
+The external-award registry currently maps 13 agency names to 12 distinct ABO authorities across `8w5p-k45m`, `d84c-dk28`, `ehig-g5x3`, adds 1 exact NYCHA mapping, and records 16 verified coverage gaps. ABO joins remain possible matches rather than exact contract identity.
 
 MOCS Local Law 63 plan rows are disabled. The current official page publishes rotating
 per-agency spreadsheets without a stable machine manifest; the former configured dataset is
