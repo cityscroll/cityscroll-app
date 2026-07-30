@@ -26,6 +26,10 @@ Edge materialization: `worker/src/passport.mjs` → D1 `passport_contracts` / `p
 Strict EPIN↔PIN join: `worker/src/lib/passport_join.mjs`. Measured rates live in
 `site/data/source_contracts.json` (`join_measurement`) and
 `site/data/passport_sources/verification_receipts/`.
+Deploy applies D1 migrations before worker code (`deploy-worker.yml`); `ensurePassportSchema`
+is the runtime safety net. `lookup_status` is three-state: `ok` / `error` / `skipped` —
+error must never render as a confident empty miss. Characterization:
+`node --test worker/test/passport_lookup.test.mjs`.
 
 ## Bid Tabulations Historical (`9k82-ys7w`)
 
