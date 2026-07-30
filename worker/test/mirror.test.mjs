@@ -91,7 +91,7 @@ test("handleMirror: falls back to public GitHub source when the Pages origin red
     assert.equal(calls[0].opts.redirect, "manual");
     assert.equal(
       calls[1].url,
-      "https://cityscroll.github.io/crol-list/about.html?x=1",
+      "https://raw.githubusercontent.com/cityscroll/crol-list/main/about.html?x=1",
     );
     assert.equal(calls[1].opts.redirect, "manual");
     assert.equal(res.status, 200);
