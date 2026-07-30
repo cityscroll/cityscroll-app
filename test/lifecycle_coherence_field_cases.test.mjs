@@ -55,6 +55,7 @@ const sandbox = new Function(
   extractConst("PASSPORT_RFX_URL") +
   extractConst("LIFECYCLE_STAGE_ORDER") +
   extractConst("CURRENT_SOLICITATIONS_URL") +
+  extractConst("OCP_AWARDS_URL") +
   extractFn("lifecycleStageLabel") +
   extractFn("lifecycleAmount") +
   extractFn("lifecycleMoney") +
@@ -65,6 +66,7 @@ const sandbox = new Function(
   extractFn("lifecycleSourceLink") +
   extractFn("lifecycleDocumentsHTML") +
   extractFn("lifecycleStageHTML") +
+  extractFn("lifecycleOcpAwardHTML") +
   extractFn("lifecycleTimelineHTML") +
   extractFn("lifecycleDollarsHTML") +
   // vendorStem used by lifecycleDollarsHTML for mismatch warning

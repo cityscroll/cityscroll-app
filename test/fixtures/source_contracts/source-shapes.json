@@ -57,6 +57,14 @@
       ]
     },
     {
+      "id": "ocp-recent-contract-awards",
+      "kind": "socrata",
+      "identifier": "qyyg-4tf5",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": ["request_id", "start_date", "agency_name", "type_of_notice_description", "pin", "contract_amount", "vendor_name"]
+    },
+    {
       "id": "checkbook-nycha-contracts",
       "kind": "checkbook",
       "identifier": "Contracts_NYCHA",

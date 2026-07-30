@@ -112,6 +112,7 @@ EXTERNAL_HREF_EXPRS = (
     "${CHECKBOOK_SPENDING_URL}",      # Checkbook NYC spending search
     "${CHECKBOOK_SEARCH_URL}",        # Checkbook NYC contract search (registration gap CTA)
     "${CURRENT_SOLICITATIONS_URL}",   # NYC Open Data Current Solicitations (3khw-qi8f) landing page
+    "${OCP_AWARDS_URL}",              # OCP Recent Contract Awards Open Data (qyyg-4tf5)
     "${contractLink}",                # Checkbook NYC smart_search for a matched contract id
     "${escUiHtml(entry.source.url)}", # subsidy lifecycle: official Build NYC / NYCIDA document
     "${escUiHtml(d.url)}",            # council meeting outcomes: Legistar supporting document

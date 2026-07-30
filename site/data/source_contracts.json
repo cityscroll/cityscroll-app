@@ -128,6 +128,41 @@
       "delivery_tier": "edge-materialized"
     },
     {
+      "id": "ocp-recent-contract-awards",
+      "name": "Recent Contract Awards (OCP)",
+      "owner": "NYC Mayor's Office of Contract Services",
+      "status": "live",
+      "scope": "runtime",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "qyyg-4tf5",
+      "landing_page": "https://data.cityofnewyork.us/d/qyyg-4tf5",
+      "required_fields": [
+        "request_id",
+        "start_date",
+        "agency_name",
+        "type_of_notice_description",
+        "pin",
+        "contract_amount",
+        "vendor_name"
+      ],
+      "max_stale_days": 14,
+      "publisher_cadence": "Frequent (Open Data metadata)",
+      "product_freshness": "Joined into the precomputed contract lifecycle on the Worker; edge-cached with the lifecycle read model.",
+      "used_for": "OCP award side-car on the procurement lifecycle: award date and amount corroboration against City Record, with both sources named when they disagree.",
+      "code_references": [
+        {
+          "path": "worker/src/checkbook_lifecycle.mjs",
+          "contains": "qyyg-4tf5"
+        },
+        {
+          "path": "worker/src/lib/ocp_awards.mjs",
+          "contains": "qyyg-4tf5"
+        }
+      ],
+      "delivery_tier": "edge-materialized"
+    },
+    {
       "id": "checkbook-nycha-contracts",
       "name": "Checkbook NYC NYCHA contracts",
       "owner": "Office of the New York City Comptroller",

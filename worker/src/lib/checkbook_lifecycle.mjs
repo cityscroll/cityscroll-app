@@ -169,6 +169,9 @@ function stageEntry(stage, status, source, opts = {}) {
 // opts.pinStrategy: "exact" | "legacy-base" | "none"
 // opts.lookupStatus: { pending/registered/spending: "ok"|"error"|"skip" }
 // opts.currentSolicitation: { status: "ok"|"error", rows: raw Socrata rows[] }
+// opts.ocpAward: optional pre-joined OCP Recent Contract Awards side-car
+//   (from worker/src/lib/ocp_awards.mjs). When omitted the side-car is absent until the
+//   worker attaches it — cached lifecycles without ocp_award are treated as a miss.
 //
 // Returns a lifecycle object with an explicit timeline array, amendments, and ok flag.
 // Stage succession: when a later stage is matched, earlier unmatched/unknown stages
@@ -396,7 +399,7 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
   const unresolved = timeline.some((e) => e.status === "unknown");
   const ok = !unresolved;
 
-  return {
+  const out = {
     pin: r.pin || null,
     pin_strategy: pinStrategy,
     timeline,
@@ -409,6 +412,9 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
       source: CURRENT_SOLICITATIONS_SOURCE,
     },
   };
+  // OCP side-car is optional on pure assemble; worker attach always sets it after fetch.
+  if (opts.ocpAward) out.ocp_award = opts.ocpAward;
+  return out;
 }
 
 // ---------------------------------------------------------------------------
