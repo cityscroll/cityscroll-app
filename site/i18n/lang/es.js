@@ -592,6 +592,7 @@
     lifecycle_paid_to_date_html: "Pagado hasta la fecha: {amount}",
     lifecycle_payment_summary_html: "{paid} pagados de {committed} comprometidos",
     lifecycle_payment_zero_lag_html: "Los pagos se demoran respecto a la facturación — $0 pagados en un contrato recién registrado es normal.",
+    lifecycle_committed_ceiling_note_html: "El comprometido es un techo de registro, no un saldo pendiente — los contratos de servicios humanos a menudo cierran por debajo del monto registrado.",
     lifecycle_payment_unavailable_html: "Datos de pago no disponibles ahora — no se pudo consultar el gasto en Checkbook.",
     lifecycle_dollars_paid_unavailable_html: "No disponible ahora",
     lifecycle_payment_details_link_html: "<a href=\"{href}\">Sigue el dinero</a> para el detalle.",

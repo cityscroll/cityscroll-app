@@ -592,6 +592,7 @@
     lifecycle_paid_to_date_html: "迄今已付：{amount}",
     lifecycle_payment_summary_html: "已付 {paid}，承诺 {committed}",
     lifecycle_payment_zero_lag_html: "付款滞后于开票 — 新登记合同显示 $0 已付属正常。",
+    lifecycle_committed_ceiling_note_html: "承诺金额是登记上限，不是尚欠余额——人类服务合同常以低于登记金额结案。",
     lifecycle_payment_unavailable_html: "目前无法获取付款数据 — 未能查询 Checkbook 支出。",
     lifecycle_dollars_paid_unavailable_html: "目前不可用",
     lifecycle_payment_details_link_html: "<a href=\"{href}\">查看资金流向</a>了解详情。",
