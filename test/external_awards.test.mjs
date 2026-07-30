@@ -63,11 +63,11 @@ const T = (key, vars) => {
     external_awards_abo_note: "Official annual filing.",
     external_awards_possible_note: "Possible awards, matched by vendor and award date — not a confirmed City Record match.",
     external_awards_updated: "Source updated {date}.",
-    external_award_none_note_html: "The site also checked {source} and found no matching award there either.",
-    external_award_nycha_none_note_html: "The site checked {link} for this notice's PIN and found no registered award there yet.",
+    external_award_none_note_html: "Not yet shown here — matching awards live in {source}.",
+    external_award_nycha_none_note_html: "Not yet shown here — NYCHA registrations live in {link}.",
     external_award_nycha_note_html: "{link} award matched by exact PIN <code>{pin}</code>.",
     agency_awards_elsewhere_note: "This agency files its contract awards with {source}, not the City Record.",
-    agency_awards_none_open_data_html: "This agency's contract awards are not published in any open dataset CityScroll knows of. <a href=\"about.html#external-awards-sources\">See what we checked</a>.",
+    agency_awards_none_open_data_html: "The city does not publish this agency's awards in an open dataset — they would appear in NYS Authorities Budget Office filings or Checkbook NYC if released. <a href=\"about.html#external-awards-sources\">See what we checked</a>.",
     agency_awards_unavailable_note_html: "No contract awards from this agency appear in the City Record — some agencies publish awards elsewhere. <a href=\"about.html#external-awards-sources\">See what we checked</a>.",
     mode_award: "Award", awarded_to: "Awarded to", untitled: "(untitled)", untitled_name: "(no name)",
     award_watch_offer_btn: "Email me when the award registers",
@@ -198,7 +198,7 @@ test("agencyAwardsNote: registry-backed empty state — before, every branch nam
   // Verified-absent: the honest affordance is transparency, not a dead source name — links to
   // the site's own provenance doc instead of naming a source with nowhere to click.
   const absent = agencyAwardsNote("Tax Commission");
-  assert.match(absent, /not published in any open dataset/);
+  assert.match(absent, /does not publish this agency's awards in an open dataset/);
   assert.match(absent, /<a href="about\.html#external-awards-sources">/);
 
   // Unknown (agency not in the registry at all) keeps the soft hedge, also now linked to the
@@ -256,20 +256,20 @@ test("externalAwardHTML: fuzzy ABO awards (real SCA fixture) render as a 'possib
   assert.match(html, /Source updated 2025-12-01/);
 });
 
-test("externalAwardHTML: covered ABO source with zero rows says the site checked it, linked and dated — the ongoing weekly-cron capability reads as a live process, not a dead end", () => {
+test("externalAwardHTML: covered ABO source with zero rows uses not-yet-ingested register naming the source, linked and dated", () => {
   const externalAwardHTML = buildExternalAwardHTML();
   const resp = { coverage: "fuzzy", agencyAwards: [], source: { kind: "abo", dataset: "d84c-dk28", authority: "New York City Economic Development Corporation", refreshed: "2025-12-01" } };
   const html = externalAwardHTML(resp, null);
-  assert.match(html, /also checked/);
+  assert.match(html, /Not yet shown here — matching awards live in/);
   assert.match(html, /<a href="https:\/\/data\.ny\.gov\/resource\/d84c-dk28\.json\?\$order=award_date%20DESC&authority_name=New%20York%20City%20Economic%20Development%20Corporation"[^>]*>NYS Authorities Budget Office/);
   assert.match(html, /Source updated 2025-12-01/, "the precomputed source-refresh date is reused, so \"nothing yet\" reads as a live process");
 });
 
-test("externalAwardHTML: NYCHA with no match, but a usable PIN, says it checked Checkbook — linked to NYCHA's contracts view, since there's no single matched contract to point at yet", () => {
+test("externalAwardHTML: NYCHA with no match, but a usable PIN, uses not-yet-ingested register — linked to NYCHA's contracts view", () => {
   const externalAwardHTML = buildExternalAwardHTML();
   const eligible = { type_of_notice_description: "Solicitation", pin: "510394" };
   const html = externalAwardHTML({ coverage: "exact", matches: [] }, eligible);
-  assert.match(html, /checked/);
+  assert.match(html, /Not yet shown here — NYCHA registrations live in/);
   assert.match(html, /<a href="https:\/\/www\.checkbooknyc\.com\/nycha_contracts\/datasource\/checkbook_nycha\/agency\/162"[^>]*>Checkbook NYC/);
 });
 

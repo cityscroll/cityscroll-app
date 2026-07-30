@@ -204,7 +204,7 @@ test("procurement detail: HNTB lifecycle fills award + registration; pending/pay
   assert.match(html, /Award/);
   assert.match(html, /Registered contract/);
   assert.match(html, /CT184120268807929|13\.53M|\$13/);
-  assert.match(html, /No pending contract found/);
+  assert.match(html, /Not yet shown here — pending contracts live in/);
   assert.match(html, /Could not reach/);
   assert.doesNotMatch(html, />unknown</i);
 });
@@ -284,8 +284,8 @@ test("subsidy detail: unmatched IDA hearing renders specific gap, never generic 
   };
   const html = subsidyLifecycleHTML(unmatchedSubsidy, notice);
   assert.match(html, /Subsidy lifecycle/);
-  assert.match(html, /No registration record found for/);
-  assert.match(html, /20260617040|INDUSTRIAL DEVELOPMENT|No matching NYCIDA/i);
+  assert.match(html, /does not publish a linked subsidy project for/);
+  assert.match(html, /20260617040|INDUSTRIAL DEVELOPMENT|would appear on the NYCIDA|No matching NYCIDA/i);
   assert.doesNotMatch(html, />\s*unknown\s*</i);
 });
 
@@ -339,7 +339,7 @@ test("meeting outcomes: unmatched renders the specific join reason", () => {
     agenda_items: [],
   });
   assert.match(html, /Council meeting outcomes/);
-  assert.match(html, /No Council meeting or vote record found/);
+  assert.match(html, /Not yet shown here — Council outcomes live in NYC Council Legistar/);
   assert.match(html, /title\/date\/agency|confidence/i);
 });
 

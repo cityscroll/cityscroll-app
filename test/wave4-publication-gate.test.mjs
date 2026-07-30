@@ -53,8 +53,8 @@ test("the shipped notice surface keeps real joins and item-specific missing stat
   assert.match(html, /loadChain\(r\)/);
   // Registration gap is the established lifecycle register (precompute-first dollars panel),
   // not a live Checkbook proxy path.
-  assert.match(strings, /No registered contract found in \{source\} yet/);
+  assert.match(strings, /Not yet shown here — registered contracts live in \{source\}/);
   assert.match(html, /lifecycleDollarsHTML|lifecycle_unmatched_registered_html/);
   assert.match(html, /t\("external_award_none_note_html"/);
-  assert.match(strings, /found no matching award there either/);
+  assert.match(strings, /Not yet shown here — matching awards live in \{source\}/);
 });
