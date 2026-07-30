@@ -75,7 +75,7 @@ def capture(page: Page, base_url: str, width: int, height: int) -> Path:
     page.evaluate("document.fonts && document.fonts.ready")
     page.wait_for_timeout(150)
     assert page.locator(".scenario-card").count() == 6
-    assert page.locator(".scenario-route").count() == 13
+    assert page.locator(".scenario-route").count() == 15
     assert page.locator(".tabbtn").count() == 7
     if width < 700:
         page.evaluate(

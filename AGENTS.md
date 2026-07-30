@@ -37,6 +37,10 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `worker/src/lib/civic_scope.mjs` + `worker/src/lib/cafe_consent.mjs` (Dining Out NYC is the
   characterization case). See `docs/civic-scope-schema.md` and run
   `test/contract/civic_scope_dining_out.test.mjs` after changing either module.
+- Task-first entry examples (`#task/can-i-bid`, `#task/what-will-change`) are an additive
+  entry-point experiment over precomputed `data/task_first_examples.json` and `task_first.js`.
+  They do not restructure existing lenses. Payment-lag copy may cite observed lag only —
+  bid-count causality is not measured (`data/TASK_FIRST_EXAMPLES.md`).
 - Lead category pages with the newest actionable records. Search and filters refine the records
   already shown; explanatory guidance appears only at the concept it explains or on a dedicated
   guide surface. The content-first Staffing exemplar and captures are in
