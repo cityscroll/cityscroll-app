@@ -305,6 +305,12 @@
 
   .scope{font-size:14.5px;line-height:1.6;color:#3f3930;background:#faf6ee;border:1px solid var(--rule);border-radius:8px;padding:13px 15px;margin-top:16px}
   .scope .lbl{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
+  /* Informal translation pane — always BELOW the English original; never replaces it. */
+  .xlate{margin-top:14px}
+  .xlate-pane{font-size:14.5px;line-height:1.6;color:#3f3930;background:#f3f6fb;border:1px dashed var(--rule);border-radius:8px;padding:13px 15px;margin-top:10px}
+  .xlate-pane .lbl{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px}
+  .xlate-pane .xlate-title{font:600 15px/1.35 var(--serif,Georgia,serif);margin:0 0 8px}
+  .xlate-pane .xlate-body{margin:0;white-space:pre-wrap}
 
   /* at-a-glance (who/what/when/act) — deterministic re-presentation of the record's own fields */
   .glance{background:#f6f1e4;border:1px solid var(--rule);border-inline-start:3px solid var(--rule-strong);border-start-end-radius:8px;border-end-end-radius:8px;padding:10px 14px;margin:12px 0;font-size:14px}
@@ -2588,7 +2594,10 @@ function renderDetail(r, chain, stats){
     : chainHTML(r, chain);
 
   const scope = cleanText(r.additional_description_1);
-  if(scope) html += `<div class="scope"><span class="lbl">${t("what_they_want")}</span>${scope.slice(0,900)}${scope.length>900?"…":""}</div>`;
+  // Original English notice text is the official record — always rendered first.
+  if(scope) html += `<div class="scope" lang="en" dir="ltr"><span class="lbl">${t("what_they_want")}</span>${scope.slice(0,900)}${scope.length>900?"…":""}</div>`;
+  // Optional unofficial translation sits AFTER the original; never replaces it.
+  html += `<div class="xlate" id="dxlate"></div>`;
   html += `<div id="dexternal"></div><div id="dprior"></div><div id="dforecast"></div>`;
   // Agency-wide totals are context for this notice, not the headline — rendered last and
   // visually subordinated (smaller figures) so notice-specific facts read first.
@@ -2607,6 +2616,7 @@ function renderDetail(r, chain, stats){
   externalAwardForNotice(r, $("#dexternal"));
   priorCycleAwards(r, $("#dprior"));
   agencyForecastTeaser(r, $("#dforecast"));
+  mountUnofficialTranslation($("#dxlate"), r);
 }
 
 // parseNL() itself lives in nl_parse.js (loaded above, plain global — same convention as
@@ -2722,6 +2732,79 @@ async function nlTranslate(){
 }
 
 function nlWorkingHTML(){ return '<div class="nlworking"><span class="loading"></span><span>' + t("translating") + '</span></div>'; }
+
+// Informal notice translation — original English always stays primary above this mount.
+// On-demand only (button); worker caches per (notice, lang) so a second open is a cache hit
+// with no upstream model call. Invariant failures return ok:false → we show the short
+// unavailable line, never a partial translation.
+function mountUnofficialTranslation(el, r){
+  if(!el || !r || !r.request_id) return;
+  const lang = window.LANG || "en";
+  const shipping = (window.SHIPPING_LANGS || []).includes(lang);
+  if(!shipping || lang === "en" || !API){ el.innerHTML = ""; return; }
+  el.innerHTML = `<button type="button" class="act" data-xlate-btn>${t("unofficial_translation_show")}</button>`
+    + `<div class="xlate-pane" data-xlate-pane hidden></div>`;
+  const btn = el.querySelector("[data-xlate-btn]");
+  const pane = el.querySelector("[data-xlate-pane]");
+  if(!btn || !pane) return;
+  let state = "idle"; // idle | loading | open | unavailable
+  btn.addEventListener("click", async ()=>{
+    if(state === "open"){
+      pane.hidden = true;
+      btn.textContent = t("unofficial_translation_show");
+      state = "idle";
+      return;
+    }
+    if(state === "unavailable") return;
+    if(state === "loading") return;
+    if(pane.dataset.loaded === "1"){
+      pane.hidden = false;
+      btn.textContent = t("unofficial_translation_hide");
+      state = "open";
+      return;
+    }
+    state = "loading";
+    btn.disabled = true;
+    btn.textContent = t("unofficial_translation_loading");
+    try{
+      const resp = await workerFetch(
+        "/translate/" + encodeURIComponent(r.request_id) + "?lang=" + encodeURIComponent(lang),
+        null,
+        20000,
+      );
+      const j = resp && resp.ok ? await resp.json() : null;
+      if(!j || !j.ok || !j.title && !j.description){
+        pane.hidden = false;
+        pane.dataset.loaded = "0";
+        pane.innerHTML = `<span class="lbl">${t("unofficial_translation")}</span>`
+          + `<p class="xlate-body">${t("unofficial_translation_unavailable")}</p>`;
+        btn.textContent = t("unofficial_translation");
+        btn.disabled = true;
+        state = "unavailable";
+        return;
+      }
+      const title = cleanText(j.title || "");
+      const body = cleanText(j.description || "");
+      // lang on the pane matches the active UI language; original English stays above with lang=en.
+      pane.setAttribute("lang", lang);
+      pane.innerHTML = `<span class="lbl">${t("unofficial_translation")}</span>`
+        + (title ? `<div class="xlate-title">${title}</div>` : "")
+        + (body ? `<p class="xlate-body">${body.slice(0,6000)}${body.length>6000?"…":""}</p>` : "");
+      pane.dataset.loaded = "1";
+      pane.hidden = false;
+      btn.disabled = false;
+      btn.textContent = t("unofficial_translation_hide");
+      state = "open";
+    }catch(e){
+      pane.hidden = false;
+      pane.innerHTML = `<span class="lbl">${t("unofficial_translation")}</span>`
+        + `<p class="xlate-body">${t("unofficial_translation_unavailable")}</p>`;
+      btn.textContent = t("unofficial_translation");
+      btn.disabled = true;
+      state = "unavailable";
+    }
+  });
+}
 
 // The chips summarizing what was understood are inert status text (role="status"), not the
 // clickable sample queries above them (.trychip) — an explicit label keeps the two from
@@ -6833,7 +6916,8 @@ async function showNotice(id, watch){
         <a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("view_in_city_record")}${extSR()}</a>
       </div>
       ${r.type_of_notice_description==="Solicitation"?buildApply(r):""}
-      ${scope?`<details class="fulltext"${scope.length<=600?" open":""}><summary>${t("read_full_notice")}</summary><div class="scope" style="margin-top:10px">${scope.slice(0,6000)}${scope.length>6000?"…":""}</div></details>`:""}
+      ${scope?`<details class="fulltext"${scope.length<=600?" open":""}><summary>${t("read_full_notice")}</summary><div class="scope" lang="en" dir="ltr" style="margin-top:10px">${scope.slice(0,6000)}${scope.length>6000?"…":""}</div></details>`:""}
+      <div class="xlate" id="nxlate"></div>
       <div id="nprior"></div>
       <div id="nforecast"></div>
       <div id="nchain"></div>
@@ -6852,6 +6936,7 @@ async function showNotice(id, watch){
   fillAddressLinks(r, $("#naddr"));
   priorCycleAwards(r, $("#nprior"));
   agencyForecastTeaser(r, $("#nforecast"));
+  mountUnofficialTranslation($("#nxlate"), r);
   if(usablePin(r.pin)){ loadChain(r).then(chain=>{ if(chain.length>1) $("#nchain").innerHTML = chainHTML(r, chain); }).catch(()=>{}); }
   focusItemRouteTarget(box.querySelector(".route-item"));
 }
