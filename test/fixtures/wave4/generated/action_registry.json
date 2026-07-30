@@ -29,86 +29,95 @@
     {
       "type": "watch",
       "label": "Watch this matter",
-      "handled": "local",
-      "boundary": "direct",
-      "destination": "index.html#alerts"
+      "delivery": "local",
+      "destination": "index.html#alerts",
+      "deadline": null,
+      "confirmation_required": true
     },
     {
       "type": "calendar",
       "label": "Add deadline to calendar",
-      "handled": "local",
-      "boundary": "direct",
+      "delivery": "local",
       "destination": null,
-      "deadline": "2026-09-30"
+      "deadline": "2026-09-30",
+      "confirmation_required": false
     },
     {
       "type": "document",
       "label": "Open official document",
-      "handled": "handoff",
-      "boundary": "official_handoff",
+      "delivery": "official_handoff",
       "destination": "https://www.nyc.gov/assets/dcas/downloads/pdf/example-public-report.pdf",
       "destination_label": "www.nyc.gov",
-      "vault_fallback": true
+      "deadline": "2026-09-30",
+      "confirmation_required": false
     },
     {
       "type": "contact",
       "label": "Contact the responsible office",
-      "handled": "handoff",
-      "boundary": "official_handoff",
+      "delivery": "official_handoff",
       "destination": "https://www.nyc.gov/site/mocs/passport/about-passport.page",
-      "destination_label": "www.nyc.gov"
+      "destination_label": "www.nyc.gov",
+      "deadline": null,
+      "confirmation_required": false
     },
     {
       "type": "rsvp",
       "label": "RSVP on the official site",
-      "handled": "handoff",
-      "boundary": "official_handoff",
+      "delivery": "official_handoff",
       "destination": "https://a856-cityrecord.nyc.gov/RequestDetail/2141200",
-      "destination_label": "a856-cityrecord.nyc.gov"
+      "destination_label": "a856-cityrecord.nyc.gov",
+      "deadline": "2026-09-30",
+      "confirmation_required": true
     },
     {
       "type": "comment",
       "label": "Testify or comment",
-      "handled": "handoff",
-      "boundary": "official_handoff",
+      "delivery": "official_handoff",
       "destination": "https://a856-cityrecord.nyc.gov/RequestDetail/2141200",
-      "destination_label": "a856-cityrecord.nyc.gov"
+      "destination_label": "a856-cityrecord.nyc.gov",
+      "deadline": "2026-09-30",
+      "confirmation_required": true
     },
     {
       "type": "attend",
       "label": "Prepare to attend",
-      "handled": "local",
-      "boundary": "direct",
-      "destination": null
+      "delivery": "local",
+      "destination": null,
+      "deadline": null,
+      "confirmation_required": false
     },
     {
       "type": "bid_checklist",
       "label": "Open bid checklist",
-      "handled": "local",
-      "boundary": "direct",
-      "destination": null
+      "delivery": "local",
+      "destination": null,
+      "deadline": null,
+      "confirmation_required": false
     },
     {
       "type": "official_application",
       "label": "Open the official application",
-      "handled": "handoff",
-      "boundary": "official_handoff",
+      "delivery": "official_handoff",
       "destination": "https://passport.cityofnewyork.us/page.aspx/en/rfp/request_browse_public",
-      "destination_label": "passport.cityofnewyork.us"
+      "destination_label": "passport.cityofnewyork.us",
+      "deadline": "2026-09-30",
+      "confirmation_required": true
     },
     {
       "type": "return_to_matter",
       "label": "Return to matter",
-      "handled": "local",
-      "boundary": "direct",
-      "destination": "index.html#matter/84124P0003001"
+      "delivery": "local",
+      "destination": "index.html#matter/84124P0003001",
+      "deadline": null,
+      "confirmation_required": false
     },
     {
       "type": "local_note",
       "label": "Add a private note",
-      "handled": "local",
-      "boundary": "direct",
-      "destination": null
+      "delivery": "local",
+      "destination": null,
+      "deadline": null,
+      "confirmation_required": false
     }
   ],
   "outcomes": [
