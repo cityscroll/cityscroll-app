@@ -591,6 +591,7 @@
     lifecycle_paid_to_date_html: "Peye jiska prezan: {amount}",
     lifecycle_payment_summary_html: "{paid} peye sou {committed} angaje",
     lifecycle_payment_zero_lag_html: "Peman ralanti dèyè fakti — $0 peye sou yon kontra ki fèk anrejistre se nòmal.",
+    lifecycle_committed_ceiling_note_html: "Montan angaje a se yon plafon anrejistreman, pa yon balanse ki rete dwe — kontra sèvis imen souvan fèmen anba montan anrejistre a.",
     lifecycle_payment_unavailable_html: "Done peman pa disponib kounye a — pa t kapab tcheke depanse Checkbook yo.",
     lifecycle_dollars_paid_unavailable_html: "Pa disponib kounye a",
     lifecycle_payment_details_link_html: "<a href=\"{href}\">Swiv lajan yo</a> pou detay.",

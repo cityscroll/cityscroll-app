@@ -592,6 +592,7 @@
     lifecycle_paid_to_date_html: "현재까지 지급: {amount}",
     lifecycle_payment_summary_html: "약정 {committed} 중 {paid} 지급",
     lifecycle_payment_zero_lag_html: "지급은 청구보다 늦습니다 — 새로 등록된 계약의 $0 지급은 정상입니다.",
+    lifecycle_committed_ceiling_note_html: "약정액은 등록 한도이지 미지급 잔액이 아닙니다 — 인적 서비스 계약은 등록액보다 적게 종료되는 경우가 많습니다.",
     lifecycle_payment_unavailable_html: "지금 지급 데이터를 쓸 수 없습니다 — Checkbook 지출을 확인할 수 없었습니다.",
     lifecycle_dollars_paid_unavailable_html: "지금 사용할 수 없음",
     lifecycle_payment_details_link_html: "<a href=\"{href}\">자금 추적</a>에서 자세히 보기.",

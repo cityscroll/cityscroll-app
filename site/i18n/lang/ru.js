@@ -602,6 +602,7 @@
     lifecycle_paid_to_date_html: "Выплачено на сегодня: {amount}",
     lifecycle_payment_summary_html: "{paid} выплачено из {committed} обязательств",
     lifecycle_payment_zero_lag_html: "Платежи отстают от счетов — $0 по только что зарегистрированному контракту нормальны.",
+    lifecycle_committed_ceiling_note_html: "Обязательство — потолок регистрации, а не остаток к оплате: контракты на соцуслуги часто закрываются ниже зарегистрированной суммы.",
     lifecycle_payment_unavailable_html: "Данные о платежах сейчас недоступны — не удалось проверить расходы в Checkbook.",
     lifecycle_dollars_paid_unavailable_html: "Сейчас недоступно",
     lifecycle_payment_details_link_html: "<a href=\"{href}\">Следите за деньгами</a> — подробности.",

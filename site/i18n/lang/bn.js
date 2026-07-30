@@ -592,6 +592,7 @@
     lifecycle_paid_to_date_html: "এখন পর্যন্ত পরিশোধিত: {amount}",
     lifecycle_payment_summary_html: "{committed} প্রতিশ্রুতের মধ্যে {paid} পরিশোধিত",
     lifecycle_payment_zero_lag_html: "পরিশোধ বিলিংয়ের পরে আসে — নতুন নিবন্ধিত চুক্তিতে $0 পরিশোধ স্বাভাবিক।",
+    lifecycle_committed_ceiling_note_html: "প্রতিশ্রুত অর্থ নিবন্ধনের সীমা, বাকি দেনা নয় — মানবসেবা চুক্তি প্রায়ই নিবন্ধিত অর্থের নিচে শেষ হয়।",
     lifecycle_payment_unavailable_html: "পেমেন্ট তথ্য এখন পাওয়া যাচ্ছে না — Checkbook ব্যয় যাচাই করা যায়নি।",
     lifecycle_dollars_paid_unavailable_html: "এখন পাওয়া যাচ্ছে না",
     lifecycle_payment_details_link_html: "<a href=\"{href}\">টাকার খোঁজ</a> বিস্তারিত জানতে।",
