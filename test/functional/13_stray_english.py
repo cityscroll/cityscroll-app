@@ -257,8 +257,9 @@ def regression_fixtures(page, lang, strings, violations):
             violations.append({"view": f"REGRESSION-FIXTURE ({name})", "sel": "-",
                                "text": actual.replace("\n", " ")[:120], "kind": "fixture",
                                "english_words": [f"expected substring {must_contain!r}"]})
-    pin("hotfix-1 bug a: today-strip summary", page.locator("#tbig").inner_text(), "avisos hoy")
-    pin("hotfix-1 bug b: section names translate", page.locator("#tcounts").inner_text(), "Adquisiciones")
+    # Homepage edition strip removed; pin CTA chrome + list deadline tags instead.
+    if page.locator("#homeCtaPrompt").count():
+        pin("homepage CTA prompt translates", page.locator("#homeCtaPrompt").inner_text(), "correo")
     pin("hotfix-1: deadline tags translate", page.locator("#list").first.inner_text(), "cierra")
     pin("hotfix-2: diacritic 'Mi investigación'",
         page.locator('[data-i18n="footer_investigation"]').inner_text(), "Mi investigación")

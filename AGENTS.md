@@ -10,8 +10,8 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 `tools/capture_readme_screens.py` → `docs/readme/*.png` (linked from root `README.md`).
 Captures the live site. Each frame waits on data-bearing selectors (not network-idle /
 fixed sleep) and **fails if a skeleton is still visible** (`.today-skeleton`, `.empty.skel`,
-`.skl`). Homepage must clear Today's Edition (`#todaystrip[aria-busy=false]` + `#tdate` /
-`#tbig` / `#tcounts`) and the default Contracts list (`#list .row`). Data page must clear
+`.skl`). Homepage must clear the email CTA (`#homeCta`) and the default Contracts list
+(`#list .row`). Data page must clear
 section counts and chart bars (sections paint last; "Counting 1M…" / "Loading…" are not ready).
 Re-run: `python3 tools/capture_readme_screens.py`. Eyeball PNGs before commit.
 

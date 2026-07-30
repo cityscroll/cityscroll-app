@@ -22,29 +22,20 @@ with sync_playwright() as pw:
     errors = []
     page.on("pageerror", lambda e: errors.append(str(e)))
 
-    # ---------- load + #7 Today's Edition ----------
+    # ---------- load: masthead CTA + category tabs (edition strip removed) ----------
     page.goto(BASE, timeout=30000)
     page.wait_for_selector("#list .row", timeout=30000)
     try:
-        page.wait_for_function("!document.getElementById('todaystrip').hidden", timeout=20000)
-        page.wait_for_function("document.getElementById('todaystrip').getAttribute('aria-busy')==='false' && !!document.getElementById('tbig')?.textContent?.trim()", timeout=20000)
-        tbig = page.locator("#tbig").inner_text()
-        counts = page.locator("#tcounts a").count()
-        cards = page.locator("#tcards .t-card").count() if page.locator("#tcards").count() else 0
-        static_counts = page.locator("#tcounts .t-count-static").count()
-        # Edition highlight cards removed (noise reduction); compact date line + section counts remain.
-        ok = counts >= 1 and cards == 0 and bool(tbig.strip())
-        step("OK" if ok else "FAIL", "#7 Today strip renders", f"{tbig!r}, {counts} lens links, {cards} cards, {static_counts} static counts")
+        has_cta = page.locator("#homeCta").count() == 1
+        has_tabs = page.locator(".tabbtn").count() >= 6
+        no_strip = page.locator("#todaystrip").count() == 0
+        no_scenario = page.locator(".scenario-nav").count() == 0
+        ok = has_cta and has_tabs and no_strip and no_scenario
+        step("OK" if ok else "FAIL", "#7 homepage masthead flow",
+             f"cta={has_cta} tabs={has_tabs} strip_gone={no_strip} scenario_gone={no_scenario}")
     except Exception as e:
-        step("FAIL", "#7 Today strip renders", str(e)[:120])
+        step("FAIL", "#7 homepage masthead flow", str(e)[:120])
     page.screenshot(path=SHOT + "today.png")
-
-    # count link deep-links into a lens
-    if page.locator('#tcounts a[href="#meetings"]').count():
-        page.click('#tcounts a[href="#meetings"]')
-        page.wait_for_function("document.querySelector('#tab-meetings').classList.contains('active')", timeout=10000)
-        step("OK", "#7 count link deep-links", "meetings active")
-        page.go_back(); page.wait_for_timeout(400)
 
     # ---------- #10 ARIA tabs ----------
     roles = page.evaluate("""({

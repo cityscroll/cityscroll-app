@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Capture and verify the task-first scenario layer at review widths."""
+"""Capture and verify the quiet homepage masthead flow at review widths.
+
+The audience scenario grid was removed from the homepage (owner noise cut).
+This tool now checks category-tab navigation and captures the masthead area.
+"""
 
 from __future__ import annotations
 
@@ -50,38 +54,27 @@ def install_routes(page: Page) -> None:
 
 
 def verify_routes(page: Page, base_url: str) -> None:
-    expected = (
-        ("city-work", "money", "#money?mode=open&closing=week"),
-        ("neighborhood", "land", "#land"),
-        ("hearings", "meetings", "#meetings?when=upcoming"),
-        ("city-career", "people", "#people"),
-        ("subsidies-land-use", "meetings", "#meetings?when=upcoming&q=IDA"),
-        ("legal-compliance", "property", "#property?asset=realty"),
-    )
-    for scenario, lens, expected_hash in expected:
-        page.goto(base_url, wait_until="domcontentloaded")
-        selector = f'[data-scenario="{scenario}"][data-scenario-lens="{lens}"]'
-        page.locator(selector).first.click()
+    page.goto(base_url, wait_until="domcontentloaded")
+    assert page.locator("#homeCta").count() == 1, "homepage email CTA required"
+    assert page.locator(".scenario-nav").count() == 0, "scenario grid must stay off the homepage"
+    assert page.locator(".tabbtn").count() == 7
+    for lens in ("people", "land", "meetings", "money"):
+        page.click(f'.tabbtn[data-tab="{lens}"]')
         page.wait_for_function(
             "(lens) => document.querySelector(`#tab-${lens}`)?.classList.contains('active')",
             arg=lens,
         )
-        assert page.evaluate("location.hash") == expected_hash
 
 
 def capture(page: Page, base_url: str, width: int, height: int) -> Path:
     page.goto(base_url, wait_until="domcontentloaded")
-    page.locator(".scenario-nav").wait_for(state="visible")
+    page.locator("#homeCta").wait_for(state="visible")
+    page.locator(".tabs").wait_for(state="visible")
     page.evaluate("document.fonts && document.fonts.ready")
     page.wait_for_timeout(150)
-    assert page.locator(".scenario-card").count() == 6
-    assert page.locator(".scenario-route").count() == 15
+    assert page.locator("#homeCta").count() == 1
+    assert page.locator(".scenario-nav").count() == 0
     assert page.locator(".tabbtn").count() == 7
-    if width < 700:
-        page.evaluate(
-            "window.scrollTo(0, document.querySelector('.scenario-nav').getBoundingClientRect().top + window.scrollY - 8)"
-        )
-        page.wait_for_timeout(100)
 
     output = OUTPUT / f"after-{width}.png"
     page.screenshot(path=str(output), full_page=False)

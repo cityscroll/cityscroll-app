@@ -129,7 +129,7 @@ with sync_playwright() as pw:
     page.click("#tabbtn-people")
     page.wait_for_selector("#pchips .chip", timeout=15000)
     step("OK" if page.locator("#pchips .chip").count()==16 else "FAIL", "regression: people chips", "")
-    strip = page.evaluate("!document.getElementById('todaystrip').hidden")
+    strip = page.evaluate("!!document.getElementById('homeCta')")
     step("OK" if strip else "FAIL", "regression: today strip", "")
 
     step("OK" if not errors else "FAIL", "zero page errors", "; ".join(errors[:5]))
