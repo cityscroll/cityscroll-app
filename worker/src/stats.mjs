@@ -69,7 +69,11 @@ export async function handleStats(req, env, ctx, options = {}) {
   }
 
   const cache = typeof caches !== "undefined" ? caches.default : null;
-  const cacheKey = new Request(new URL("/stats", req.url).toString(), { method: "GET" });
+  // Version the cache key when the usage reconciliation shape changes so a deploy cannot
+  // keep serving a pre-flip empty usage block for the full max-age window.
+  const cacheKey = new Request(new URL("/stats?edge=usage-continuity-v2", req.url).toString(), {
+    method: "GET",
+  });
   if (cache) {
     const hit = await cache.match(cacheKey).catch(() => null);
     if (hit) return hit;
