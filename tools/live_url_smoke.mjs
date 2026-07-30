@@ -32,6 +32,14 @@ export const ERROR_BODY_PATTERNS = [
   /Internal Server Error/i,
 ];
 
+/**
+ * Build-time tokens that must never ship on a live page.
+ * Field case (2026-07-30): homepage served i18n.js?v=__I18N_ASSET_VERSION__ after the
+ * site-root restructure broke the stamped-artifact failover path.
+ * Matches ALL-CAPS __TOKEN__ placeholders (not markdown __emphasis__).
+ */
+export const UNSUBSTITUTED_PLACEHOLDER_RE = /__[A-Z][A-Z0-9_]{2,}__/;
+
 export const DEFAULT_TARGETS = Object.freeze([
   {
     id: "cityscroll-apex",
@@ -133,6 +141,15 @@ export function classifyProbe({ statusChain, finalStatus, body, marker = CONTENT
     return {
       ok: false,
       reason: `body missing content marker ${marker}`,
+    };
+  }
+
+  // Cheap class check: unsubstituted build placeholders on live HTML.
+  const placeholder = text.match(UNSUBSTITUTED_PLACEHOLDER_RE);
+  if (placeholder) {
+    return {
+      ok: false,
+      reason: `unsubstituted build placeholder ${placeholder[0]}`,
     };
   }
 

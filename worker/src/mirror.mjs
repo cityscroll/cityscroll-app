@@ -2,14 +2,18 @@
 // reverse-proxying the static site from crol-list.org, its GitHub Pages origin.
 // Origin redirects are handled manually so a redirect back to this Worker cannot
 // become a recursive subrequest loop. If the direct-visitor redirect catches the
-// subrequest, the public repository source is the independent failover seam.
+// subrequest, the stamped Cloudflare Pages production artifact is the site failover
+// seam (not raw GitHub source, which keeps unsubstituted build tokens).
 //
 // GitHub Pages virtual-hosts by the Host header, so the request to the origin must NOT
 // carry the incoming Host (cityscroll.org) — that would 404 on a domain GitHub doesn't
 // know about. Only a small, safe header allowlist is forwarded; everything else is dropped.
 
 const ORIGIN = "https://crol-list.org";
-const SITE_FALLBACK_ORIGIN = "https://raw.githubusercontent.com/cityscroll/crol-list/main/site/";
+// Built, cache-stamped site (parallel Pages host). Source trees keep __I18N_ASSET_VERSION__
+// merge-stable; only the deploy artifact substitutes it. Field case 2026-07-30: raw
+// GitHub fallback served the unsubstituted placeholder on the live homepage.
+const SITE_FALLBACK_ORIGIN = "https://cityscroll.pages.dev/";
 const REPOSITORY_FALLBACK_ORIGIN = "https://raw.githubusercontent.com/cityscroll/crol-list/main/";
 const FORWARD_REQUEST_HEADERS = ["accept", "accept-language", "if-none-match", "if-modified-since", "user-agent"];
 const MIRROR_HOSTS = new Set([
@@ -46,18 +50,30 @@ function redirectedToMirror(response) {
 
 function fallbackUrl(target) {
   let pathname = target.pathname;
-  if (pathname.endsWith("/")) pathname += "index.html";
+  // Directory indexes need an explicit file on the raw-docs seam; the stamped site
+  // host pretty-redirects /index.html → / and *.html → clean paths, so leave bare
+  // "/" alone and follow same-origin redirects in fetchFallback().
+  if (pathname.endsWith("/") && pathname !== "/") pathname += "index.html";
   const fallbackOrigin = pathname.startsWith("/docs/") || ROOT_DOCUMENTS.has(pathname)
     ? REPOSITORY_FALLBACK_ORIGIN
     : SITE_FALLBACK_ORIGIN;
-  const url = new URL(pathname.replace(/^\/+/, ""), fallbackOrigin);
+  const url = new URL(pathname.replace(/^\/+/, "") || ".", fallbackOrigin);
+  // new URL(".", base) keeps a trailing slash; normalize bare site root to "/"
+  if (pathname === "/" || pathname === "") {
+    url.pathname = "/";
+  }
   url.search = target.search;
   return url;
 }
 
 function fallbackContentType(pathname) {
+  if (!pathname || pathname === "/") return "text/html; charset=utf-8";
   const dot = pathname.lastIndexOf(".");
-  return dot === -1 ? null : FALLBACK_CONTENT_TYPES.get(pathname.slice(dot).toLowerCase()) || null;
+  if (dot === -1) {
+    // Cloudflare Pages clean paths (/about, /stats) serve HTML without an extension.
+    return "text/html; charset=utf-8";
+  }
+  return FALLBACK_CONTENT_TYPES.get(pathname.slice(dot).toLowerCase()) || null;
 }
 
 function relay(response, fallbackPathname = null) {
@@ -75,6 +91,30 @@ function relay(response, fallbackPathname = null) {
     statusText: response.statusText,
     headers,
   });
+}
+
+/**
+ * Fetch the stamped fallback host, following redirects that stay on the same origin.
+ * Cloudflare Pages pretty-URL 308s (e.g. /about.html → /about) must not be relayed to
+ * the visitor as a loop back into this Worker.
+ */
+async function fetchFallback(startUrl, fetchOptions, maxHops = 5) {
+  let current = new URL(startUrl.toString());
+  let response = await fetch(current.toString(), fetchOptions);
+  for (let hop = 0; hop < maxHops; hop++) {
+    if (response.status < 300 || response.status >= 400) {
+      return { response, pathname: current.pathname };
+    }
+    const location = response.headers.get("location");
+    if (!location) return { response, pathname: current.pathname };
+    const next = new URL(location, current);
+    if (next.origin !== current.origin) {
+      return { response, pathname: current.pathname };
+    }
+    current = next;
+    response = await fetch(current.toString(), fetchOptions);
+  }
+  return { response, pathname: current.pathname };
 }
 
 export async function handleMirror(request) {
@@ -97,6 +137,6 @@ export async function handleMirror(request) {
   if (!mirrorRedirect) return relay(originResponse);
 
   const fallback = fallbackUrl(mirrorRedirect);
-  const fallbackResponse = await fetch(fallback.toString(), fetchOptions);
-  return relay(fallbackResponse, fallback.pathname);
+  const { response: fallbackResponse, pathname } = await fetchFallback(fallback, fetchOptions);
+  return relay(fallbackResponse, pathname);
 }
