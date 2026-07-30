@@ -4,7 +4,7 @@
   "observed_on": "2026-07-30",
   "class_changes": [],
   "class_changes_loud": [],
-  "sources_count": 33,
+  "sources_count": 34,
   "materialized_crosswalks": [
     {
       "id": "city-record-pin-x-checkbook-contracts",
@@ -42,9 +42,19 @@
       "metric": null
     },
     {
+      "id": "zap-bbl-x-dob-now-filings",
+      "rate": 0.56,
+      "metric": "complete_sample_dob_any_filing"
+    },
+    {
       "id": "zap-project-x-bbl",
       "rate": null,
       "metric": null
+    },
+    {
+      "id": "zap-projects-x-zap-api-outcomes",
+      "rate": 1,
+      "metric": "ulurp_complete_useful_outcome"
     }
   ],
   "candidate_crosswalks": [
@@ -301,6 +311,18 @@
       ]
     },
     {
+      "id": "nycida-build-nyc-projects-x-zap-api-outcomes-via-project_id",
+      "worth_materializing": "yes",
+      "score": 2,
+      "key_path": [
+        "project_id"
+      ],
+      "gaps_would_close": [
+        "subsidy-stage-unmatched",
+        "land-outcome-detail"
+      ]
+    },
+    {
       "id": "nycida-build-nyc-projects-x-zap-bbl-via-project_id",
       "worth_materializing": "yes",
       "score": 2,
@@ -420,7 +442,7 @@
       ]
     },
     {
-      "id": "dob-now-job-filings-x-zap-bbl-via-BBL",
+      "id": "dob-now-job-filings-x-zap-api-outcomes-via-BBL",
       "worth_materializing": "maybe",
       "score": 1,
       "key_path": [
@@ -443,6 +465,17 @@
     },
     {
       "id": "legacy-dob-job-filings-x-unregistered-zoning-application-portal-projects-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "legacy-dob-job-filings-x-zap-api-outcomes-via-BBL",
       "worth_materializing": "maybe",
       "score": 1,
       "key_path": [
@@ -486,6 +519,17 @@
       ]
     },
     {
+      "id": "mappluto-x-zap-api-outcomes-via-BBL",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
       "id": "mappluto-x-zap-bbl-via-BBL",
       "worth_materializing": "maybe",
       "score": 1,
@@ -502,6 +546,19 @@
       "score": 1,
       "key_path": [
         "BBL"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "unregistered-zoning-application-portal-projects-x-zap-api-outcomes-via-BBL+project_id+ulurp_numbers",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "project_id",
+        "BBL",
+        "ulurp_numbers"
       ],
       "gaps_would_close": [
         "land-outcome-detail"
@@ -527,6 +584,18 @@
         "project_id",
         "BBL",
         "ulurp_numbers"
+      ],
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "zap-api-outcomes-x-zap-bbl-via-BBL+project_id",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "project_id",
+        "BBL"
       ],
       "gaps_would_close": [
         "land-outcome-detail"
@@ -571,22 +640,22 @@
     },
     {
       "rank": 3,
+      "source": "ZAP decision docs + DOB NOW outcome stitch",
+      "value_score": 36,
+      "realized_join_rate": 1
+    },
+    {
+      "rank": 4,
       "source": "DCAS annual exam outcomes → exam card join",
       "value_score": 16,
       "realized_join_rate": null
     },
     {
-      "rank": 4,
-      "source": "Current Solicitations Open Data 3khw-qi8f",
-      "value_score": 16,
-      "realized_join_rate": null
-    },
-    {
       "rank": 5,
-      "source": "Recent Contract Awards Open Data qyyg-4tf5",
+      "source": "Current Solicitations Open Data 3khw-qi8f",
       "value_score": 16,
       "realized_join_rate": null
     }
   ],
-  "registry_sha256": "ed09b9d9dce19d7da941dc140f39aee5a16db15bc34d65e9c11d0ae6a3b1e883"
+  "registry_sha256": "b31c877ff700f46f8d69c02428729bf6df6abc4ec6cb62278a871c587852c606"
 }

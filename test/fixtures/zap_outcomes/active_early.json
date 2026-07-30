@@ -1,0 +1,667 @@
+{
+  "meta": {},
+  "data": {
+    "type": "projects",
+    "id": "2026M0366",
+    "attributes": {
+      "applicantteam": [
+        {
+          "name": "301 East 71 Investors LLC",
+          "role": "Primary Applicant"
+        },
+        {
+          "name": "Sheila Pozon",
+          "role": "Primary Contact"
+        }
+      ],
+      "dcp-name": "2026M0366",
+      "dcp-applicanttype": 717170002,
+      "dcp-borough": "Manhattan",
+      "dcp-ceqrnumber": "26DCP126M",
+      "dcp-ceqrtype": "Type II",
+      "dcp-easeis": null,
+      "dcp-certifiedreferred": "2026-06-22T04:00:00.000Z",
+      "dcp-femafloodzonea": false,
+      "dcp-femafloodzoneshadedx": false,
+      "dcp-sisubdivision": false,
+      "dcp-sischoolseat": false,
+      "dcp-projectbrief": "A private application by 301 East 71 Investors LLC seeking a joint certification by the City Planning Commission and the Metropolitan Transportation Authority pursuant to ZR Section 95-041 to determine whether a transit easement volume is required for a zoning lot located at 301 East 71st Street in Manhattan Community District 8.",
+      "dcp-additionalpublicinformation": null,
+      "dcp-projectid": "fc16969b-1209-f111-8406-001dd800e224",
+      "dcp-projectname": "301 E 71st Street Transit Easement Certification",
+      "dcp-publicstatus": "In Public Review",
+      "dcp-projectcompleted": null,
+      "dcp-hiddenprojectmetrictarget": 717170001,
+      "dcp-ulurp-nonulurp": "Non-ULURP",
+      "dcp-validatedcommunitydistricts": "M08",
+      "dcp-bsanumber": null,
+      "dcp-wrpnumber": null,
+      "dcp-lpcnumber": null,
+      "dcp-lastmilestonedate": "2026-07-29T20:47:01.000Z",
+      "dcp-nydospermitnumber": null,
+      "bbls": [
+        "1014467502",
+        "1014460051",
+        "1014460004",
+        "1014460003",
+        "1014460001",
+        "1014460151",
+        "1014460002",
+        "1014460052"
+      ],
+      "bbl-featurecollection": {
+        "type": "FeatureCollection",
+        "features": [
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "MultiPolygon",
+              "coordinates": [
+                [
+                  [
+                    [
+                      -73.958664,
+                      40.768121
+                    ],
+                    [
+                      -73.958611,
+                      40.768192
+                    ],
+                    [
+                      -73.958567,
+                      40.768253
+                    ],
+                    [
+                      -73.958523,
+                      40.768314
+                    ],
+                    [
+                      -73.958483,
+                      40.768368
+                    ],
+                    [
+                      -73.958423,
+                      40.76845
+                    ],
+                    [
+                      -73.958397,
+                      40.768487
+                    ],
+                    [
+                      -73.958294,
+                      40.768629
+                    ],
+                    [
+                      -73.958235,
+                      40.768604
+                    ],
+                    [
+                      -73.957793,
+                      40.768417
+                    ],
+                    [
+                      -73.957983,
+                      40.768157
+                    ],
+                    [
+                      -73.958151,
+                      40.768228
+                    ],
+                    [
+                      -73.958244,
+                      40.768267
+                    ],
+                    [
+                      -73.958283,
+                      40.768213
+                    ],
+                    [
+                      -73.958327,
+                      40.768152
+                    ],
+                    [
+                      -73.958372,
+                      40.768091
+                    ],
+                    [
+                      -73.958424,
+                      40.768019
+                    ],
+                    [
+                      -73.958664,
+                      40.768121
+                    ]
+                  ]
+                ]
+              ]
+            },
+            "properties": {}
+          }
+        ]
+      },
+      "keywords": [],
+      "video-links": [],
+      "dcp-applicability": null,
+      "dcp-noticeddate": null,
+      "dcp-applicant-customer-value": "301 East 71 Investors LLC",
+      "dcp-applicantadministrator-customer-value": "Sheila Pozon"
+    },
+    "relationships": {
+      "actions": {
+        "data": [
+          {
+            "type": "actions",
+            "id": "40397f4f-eb1b-f111-8342-001dd803dca7"
+          }
+        ]
+      },
+      "milestones": {
+        "data": [
+          {
+            "type": "milestones",
+            "id": "6fe77441-743e-f111-88b3-001dd80390e4"
+          },
+          {
+            "type": "milestones",
+            "id": "d73b7f4f-eb1b-f111-8342-001dd803dca7"
+          },
+          {
+            "type": "milestones",
+            "id": "783d7f4f-eb1b-f111-8342-001dd803dca7"
+          },
+          {
+            "type": "milestones",
+            "id": "80e87441-743e-f111-88b3-001dd80390e4"
+          },
+          {
+            "type": "milestones",
+            "id": "080f8155-eb1b-f111-8342-001dd803dca7"
+          },
+          {
+            "type": "milestones",
+            "id": "95712a86-9069-f111-a824-001dd802a900"
+          },
+          {
+            "type": "milestones",
+            "id": "fd2ad276-658b-f111-ab10-001dd803dca7"
+          },
+          {
+            "type": "milestones",
+            "id": "55188155-eb1b-f111-8342-001dd803dca7"
+          }
+        ]
+      },
+      "dispositions": {
+        "data": [
+          {
+            "type": "dispositions",
+            "id": "f56f9a3c-1c7a-f111-ab0f-001dd80ed938"
+          }
+        ]
+      },
+      "packages": {
+        "data": [
+          {
+            "type": "packages",
+            "id": "1db26f47-743e-f111-88b3-001dd80390e4"
+          },
+          {
+            "type": "packages",
+            "id": "7a933797-eb1b-f111-8342-001dd803dca7"
+          }
+        ]
+      },
+      "artifacts": {
+        "data": [
+          {
+            "type": "artifacts",
+            "id": "77d8b492-ec72-f111-ab0d-001dd8084607"
+          },
+          {
+            "type": "artifacts",
+            "id": "051859ef-ed72-f111-ab0d-001dd8084607"
+          },
+          {
+            "type": "artifacts",
+            "id": "d9a37434-7442-f111-88b4-001dd80e798c"
+          }
+        ]
+      }
+    }
+  },
+  "included": [
+    {
+      "type": "actions",
+      "id": "40397f4f-eb1b-f111-8342-001dd803dca7",
+      "attributes": {
+        "dcp-name": "",
+        "statuscode": "Referred",
+        "statecode": "Active",
+        "dcp-ulurpnumber": "N260302ZCM",
+        "dcp-ccresolutionnumber": null,
+        "dcp-action-value": "ZC",
+        "dcp-zoningresolution-value": "95-041",
+        "dcp-spabsoluteurl": null
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "6fe77441-743e-f111-88b3-001dd80390e4",
+      "attributes": {
+        "dcp-milestone": "663beec4-dad0-e711-8116-1458d04e2fb8",
+        "dcp-name": "ZC - Prepare Filed Land Use Application  ",
+        "milestonename": "Prepare Filed Land Use Application",
+        "dcp-plannedstartdate": "2026-04-22T17:54:36.000Z",
+        "dcp-plannedcompletiondate": "2026-05-12T17:54:48.000Z",
+        "dcp-actualstartdate": "2026-04-22T17:54:48.000Z",
+        "dcp-actualenddate": "2026-06-01T18:23:58.000Z",
+        "statuscode": "Completed",
+        "dcp-milestonesequence": 26,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": 0,
+        "dcp-goalduration": 20,
+        "dcp-actualdurationasoftoday": null,
+        "display-name": "Land Use Application Filed",
+        "outcome": null,
+        "dcp-reviewmeetingdate": null
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "d73b7f4f-eb1b-f111-8342-001dd803dca7",
+      "attributes": {
+        "dcp-milestone": "663beec4-dad0-e711-8116-1458d04e2fb8",
+        "dcp-name": "ZC - Prepare Filed Land Use Application  ",
+        "milestonename": "Prepare Filed Land Use Application",
+        "dcp-plannedstartdate": "2026-03-09T19:09:37.000Z",
+        "dcp-plannedcompletiondate": "2026-04-03T19:10:36.000Z",
+        "dcp-actualstartdate": "2026-03-09T19:10:36.000Z",
+        "dcp-actualenddate": "2026-03-20T20:42:03.000Z",
+        "statuscode": "Completed",
+        "dcp-milestonesequence": 26,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": 0,
+        "dcp-goalduration": 25,
+        "dcp-actualdurationasoftoday": null,
+        "display-name": "Land Use Application Filed",
+        "outcome": null,
+        "dcp-reviewmeetingdate": null
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "783d7f4f-eb1b-f111-8342-001dd803dca7",
+      "attributes": {
+        "dcp-milestone": "6a3beec4-dad0-e711-8116-1458d04e2fb8",
+        "dcp-name": "ZC - Prepare Filed Land Use Fee Payment  ",
+        "milestonename": "Prepare Filed Land Use Fee Payment",
+        "dcp-plannedstartdate": "2026-03-27T00:00:08.000Z",
+        "dcp-plannedcompletiondate": "2026-03-29T00:00:08.000Z",
+        "dcp-actualstartdate": "2026-03-23T19:34:43.000Z",
+        "dcp-actualenddate": "2026-04-03T15:22:59.000Z",
+        "statuscode": "Completed",
+        "dcp-milestonesequence": 28,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": 0,
+        "dcp-goalduration": 2,
+        "dcp-actualdurationasoftoday": null,
+        "display-name": "Land Use Fee Paid",
+        "outcome": null,
+        "dcp-reviewmeetingdate": null
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "80e87441-743e-f111-88b3-001dd80390e4",
+      "attributes": {
+        "dcp-milestone": "6c3beec4-dad0-e711-8116-1458d04e2fb8",
+        "dcp-name": "ZC - Review Filed Land Use Application  ",
+        "milestonename": "Review Filed Land Use Application",
+        "dcp-plannedstartdate": "2026-06-08T00:00:25.000Z",
+        "dcp-plannedcompletiondate": "2026-06-26T20:44:08.000Z",
+        "dcp-actualstartdate": "2026-06-01T20:44:08.000Z",
+        "dcp-actualenddate": "2026-06-15T14:55:22.000Z",
+        "statuscode": "Completed",
+        "dcp-milestonesequence": 29,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": 0,
+        "dcp-goalduration": 25,
+        "dcp-actualdurationasoftoday": null,
+        "display-name": "Land Use Application Filed",
+        "outcome": null,
+        "dcp-reviewmeetingdate": null
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "080f8155-eb1b-f111-8342-001dd803dca7",
+      "attributes": {
+        "dcp-milestone": "6c3beec4-dad0-e711-8116-1458d04e2fb8",
+        "dcp-name": "ZC - Review Filed Land Use Application  ",
+        "milestonename": "Review Filed Land Use Application",
+        "dcp-plannedstartdate": "2026-03-30T00:00:10.000Z",
+        "dcp-plannedcompletiondate": "2026-05-03T15:23:19.000Z",
+        "dcp-actualstartdate": "2026-04-03T15:23:19.000Z",
+        "dcp-actualenddate": "2026-04-22T17:54:26.000Z",
+        "statuscode": "Completed",
+        "dcp-milestonesequence": 29,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": 0,
+        "dcp-goalduration": 30,
+        "dcp-actualdurationasoftoday": null,
+        "display-name": "Land Use Application Filed",
+        "outcome": null,
+        "dcp-reviewmeetingdate": null
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "95712a86-9069-f111-a824-001dd802a900",
+      "attributes": {
+        "dcp-milestone": "923beec4-dad0-e711-8116-1458d04e2fb8",
+        "dcp-name": "Ad-hoc - Community Board Referral",
+        "milestonename": "Community Board Referral",
+        "dcp-plannedstartdate": "2026-07-06T00:00:21.000Z",
+        "dcp-plannedcompletiondate": "2026-07-21T04:00:00.000Z",
+        "dcp-actualstartdate": "2026-06-29T04:00:00.000Z",
+        "dcp-actualenddate": "2026-07-29T20:46:52.000Z",
+        "statuscode": "Completed",
+        "dcp-milestonesequence": 48,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": 0,
+        "dcp-goalduration": 22,
+        "dcp-actualdurationasoftoday": null,
+        "display-description": "The City Planning Commission refers to the Community Board for 30, 45 or 60 days.",
+        "display-name": "Community Board Review",
+        "outcome": null,
+        "dcp-reviewmeetingdate": null
+      }
+    },
+    {
+      "type": "dispositions",
+      "id": "f56f9a3c-1c7a-f111-ab0f-001dd80ed938",
+      "attributes": {
+        "dcp-publichearinglocation": null,
+        "dcp-ispublichearingrequired": 717170001,
+        "dcp-dateofpublichearing": null,
+        "dcp-boroughpresidentrecommendation": null,
+        "dcp-boroughboardrecommendation": null,
+        "dcp-communityboardrecommendation": null,
+        "dcp-consideration": null,
+        "dcp-votelocation": null,
+        "dcp-datereceived": null,
+        "dcp-dateofvote": null,
+        "dcp-nameofpersoncompletingthisform": "ZAP LUP Portal",
+        "dcp-name": "2026M0366_ZC_MN CB8",
+        "statecode": "Active",
+        "statuscode": "Saved",
+        "dcp-docketdescription": null,
+        "dcp-votinginfavorrecommendation": null,
+        "dcp-votingagainstrecommendation": null,
+        "dcp-votingabstainingonrecommendation": null,
+        "dcp-totalmembersappointedtotheboard": null,
+        "dcp-wasaquorumpresent": false,
+        "dcp-representing": "Community Board",
+        "dcp-recommendationsubmittedby-value": "MN CB8",
+        "dcp-projectaction-value": "40397f4f-eb1b-f111-8342-001dd803dca7",
+        "dcp-visibility": 717170004,
+        "documents": []
+      }
+    },
+    {
+      "type": "packages",
+      "id": "1db26f47-743e-f111-88b3-001dd80390e4",
+      "attributes": {
+        "statuscode": 717170009,
+        "statecode": 1,
+        "dcp-packagetype": 717170011,
+        "dcp-visibility": 717170003,
+        "dcp-packageversion": 2,
+        "dcp-rwcdsform-value": null,
+        "dcp-pasform-value": null,
+        "dcp-landuseapplication-value": "c8b16f47-743e-f111-88b3-001dd80390e4",
+        "dcp-packageid": "1db26f47-743e-f111-88b3-001dd80390e4",
+        "dcp-name": "2026M0366_Filed LU Package_2",
+        "dcp-statusdate": "2026-06-15T14:55:09.000Z",
+        "dcp-packagesubmissiondate": "2026-06-01T18:23:56.000Z",
+        "dcp-packagenotes": null,
+        "documents": [
+          {
+            "name": "01.-Project-Description.pdf",
+            "timeCreated": "2026-05-27T20:20:33Z",
+            "serverRelativeUrl": "/01QY2C5KLP762YDUHMLVGZXWJFV2425E3S"
+          },
+          {
+            "name": "02.-Zoning-Map.pdf",
+            "timeCreated": "2026-05-27T20:19:38Z",
+            "serverRelativeUrl": "/01QY2C5KPJ2KSUTTNQO5EZB42TE3B4BT5R"
+          },
+          {
+            "name": "03.-Tax-Map.pdf",
+            "timeCreated": "2026-05-27T20:19:39Z",
+            "serverRelativeUrl": "/01QY2C5KLDT5BIGN4EBRCKGRE6ZJCZTKAA"
+          },
+          {
+            "name": "04.-Area-Map.pdf",
+            "timeCreated": "2026-05-27T20:19:42Z",
+            "serverRelativeUrl": "/01QY2C5KJRUJ6OUHFMOZCZOYE2NDLAVQD7"
+          },
+          {
+            "name": "05.-Site-Photos.pdf",
+            "timeCreated": "2026-05-27T20:19:44Z",
+            "serverRelativeUrl": "/01QY2C5KNMA725FOD2VJDKHP7GCKVDUUXZ"
+          },
+          {
+            "name": "06.-Owners--Authorization-Letters.pdf",
+            "timeCreated": "2026-06-01T17:09:58Z",
+            "serverRelativeUrl": "/01QY2C5KLQFH3P4VVINJCKPWST52WL45TN"
+          },
+          {
+            "name": "07.-Signature-Form.pdf",
+            "timeCreated": "2026-05-27T20:20:50Z",
+            "serverRelativeUrl": "/01QY2C5KJC4OUSPOPCYJCIY7VMRJ7UCFPO"
+          },
+          {
+            "name": "LandUse.pdf",
+            "timeCreated": "2026-06-02T03:01:03Z",
+            "serverRelativeUrl": "/01QY2C5KIDHJCKXW5QNND3Y5FRYFV52V6H"
+          }
+        ]
+      }
+    },
+    {
+      "type": "packages",
+      "id": "7a933797-eb1b-f111-8342-001dd803dca7",
+      "attributes": {
+        "statuscode": 717170010,
+        "statecode": 1,
+        "dcp-packagetype": 717170011,
+        "dcp-visibility": 717170003,
+        "dcp-packageversion": 1,
+        "dcp-rwcdsform-value": null,
+        "dcp-pasform-value": null,
+        "dcp-landuseapplication-value": "8e983797-eb1b-f111-8342-001dd803dca7",
+        "dcp-packageid": "7a933797-eb1b-f111-8342-001dd803dca7",
+        "dcp-name": "2026M0366_Filed LU Package_1",
+        "dcp-statusdate": "2026-04-22T17:54:00.000Z",
+        "dcp-packagesubmissiondate": "2026-03-20T20:42:01.000Z",
+        "dcp-packagenotes": null,
+        "documents": [
+          {
+            "name": "01.-301-E-71st-St---Project-Description.pdf",
+            "timeCreated": "2026-03-20T20:39:51Z",
+            "serverRelativeUrl": "/01QY2C5KPVMZLYDDHBW5DYG34PW7AHN26R"
+          },
+          {
+            "name": "02.-301-E-71st-St---Zoning-Map.pdf",
+            "timeCreated": "2026-03-20T20:39:53Z",
+            "serverRelativeUrl": "/01QY2C5KIOREWN7BR3JVGKNUKLL6UEZMOJ"
+          },
+          {
+            "name": "03.-301-E-71st-St---Tax-Map.pdf",
+            "timeCreated": "2026-03-20T20:39:56Z",
+            "serverRelativeUrl": "/01QY2C5KK6LCVEQBS6SZC2Y4V7U234I4T2"
+          },
+          {
+            "name": "04.-301-E-71st-St---Area-Map.pdf",
+            "timeCreated": "2026-03-20T20:39:59Z",
+            "serverRelativeUrl": "/01QY2C5KJIXMNHLHUXDJEK3XYA4GXKQGAJ"
+          },
+          {
+            "name": "05.-301-E-71st-St---Site-Photos.pdf",
+            "timeCreated": "2026-03-20T20:40:04Z",
+            "serverRelativeUrl": "/01QY2C5KMTRLUWE3VADFHKHXUESO7LMRGU"
+          },
+          {
+            "name": "06.-301-E-71st-St---Owners--Authorization-Letters.pdf",
+            "timeCreated": "2026-03-20T20:40:06Z",
+            "serverRelativeUrl": "/01QY2C5KP5KT3KMC3RARHYK2BVX4BMD465"
+          },
+          {
+            "name": "07.-301-E-71st-St---Signature-Form.pdf",
+            "timeCreated": "2026-03-20T20:40:09Z",
+            "serverRelativeUrl": "/01QY2C5KMTYC2UUZ57IFHL5EQ7KAGBRVZ7"
+          },
+          {
+            "name": "LandUse.pdf",
+            "timeCreated": "2026-03-21T03:00:58Z",
+            "serverRelativeUrl": "/01QY2C5KJIDQM73U4OLRAIC4QBEQFLNDV5"
+          }
+        ]
+      }
+    },
+    {
+      "type": "artifacts",
+      "id": "77d8b492-ec72-f111-ab0d-001dd8084607",
+      "attributes": {
+        "dcp-artifactdocumentlocation": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_artifacts/60-Day Referral_77D8B492EC72F111AB0D001DD8084607",
+        "versionnumber": 1087706110,
+        "dcp-submittedfilename": "2026M0366_Referral Package_6/28/2026 8:26 AM _1  ",
+        "dcp-artifactsid": "77d8b492-ec72-f111-ab0d-001dd8084607",
+        "dcp-name": "60-Day Referral",
+        "modifiedon": "2026-06-29T13:13:27.000Z",
+        "dcp-packagetype": null,
+        "dcp-visibility": 717170003,
+        "documents": [
+          {
+            "name": "01.-Project-Description.pdf",
+            "timeCreated": "2026-06-28T12:35:26Z",
+            "serverRelativeUrl": "/01QY2C5KLNVD7RSP6Y2NAJO5FP7VJQ5MLN"
+          },
+          {
+            "name": "02.-Zoning-Map.pdf",
+            "timeCreated": "2026-06-28T12:35:27Z",
+            "serverRelativeUrl": "/01QY2C5KL7QTDREM6BGFGLPNOJFHW35KYM"
+          },
+          {
+            "name": "03.-Tax-Map.pdf",
+            "timeCreated": "2026-06-28T12:35:26Z",
+            "serverRelativeUrl": "/01QY2C5KM2SK3GEXNBTNALNTRJGVNXHJUA"
+          },
+          {
+            "name": "04.-Area-Map.pdf",
+            "timeCreated": "2026-06-28T12:35:28Z",
+            "serverRelativeUrl": "/01QY2C5KK3GGH75TLAHJAZCIZ3WNZGNYUJ"
+          },
+          {
+            "name": "05.-Site-Photos.pdf",
+            "timeCreated": "2026-06-28T12:35:27Z",
+            "serverRelativeUrl": "/01QY2C5KNLMFFKH3XXBND3E3SMPSIN2IZF"
+          },
+          {
+            "name": "06.-Owners--Authorization-Letters.pdf",
+            "timeCreated": "2026-06-28T12:35:33Z",
+            "serverRelativeUrl": "/01QY2C5KMXSMNJDPFN7ZH3OT63NJP7FLMF"
+          },
+          {
+            "name": "07.-Signature-Form.pdf",
+            "timeCreated": "2026-06-28T12:35:32Z",
+            "serverRelativeUrl": "/01QY2C5KNNNNFVZPGJFFE3EJXG6O7RSR5J"
+          },
+          {
+            "name": "LandUse.pdf",
+            "timeCreated": "2026-06-28T12:35:31Z",
+            "serverRelativeUrl": "/01QY2C5KINXWAXTHPDANBZ57TFWRPKPUIR"
+          }
+        ]
+      }
+    },
+    {
+      "type": "artifacts",
+      "id": "051859ef-ed72-f111-ab0d-001dd8084607",
+      "attributes": {
+        "dcp-artifactdocumentlocation": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_artifacts/2026M0366_30-Day Referral_1_051859EFED72F111AB0D001DD8084607",
+        "versionnumber": 1087706150,
+        "dcp-submittedfilename": "2026M0366__6/28/2026 8:36 AM _1  ",
+        "dcp-artifactsid": "051859ef-ed72-f111-ab0d-001dd8084607",
+        "dcp-name": "30-Day Referral",
+        "modifiedon": "2026-06-29T13:13:40.000Z",
+        "dcp-packagetype": null,
+        "dcp-visibility": 717170003,
+        "documents": [
+          {
+            "name": "01.-Project-Description.pdf",
+            "timeCreated": "2026-06-28T12:37:52Z",
+            "serverRelativeUrl": "/01QY2C5KO6T4AVZ7SWK5DKKKN4NEAPPPTI"
+          },
+          {
+            "name": "02.-Zoning-Map.pdf",
+            "timeCreated": "2026-06-28T12:37:52Z",
+            "serverRelativeUrl": "/01QY2C5KP4XRFJEPTMY5CZ6RHJIHPW4UM3"
+          },
+          {
+            "name": "03.-Tax-Map.pdf",
+            "timeCreated": "2026-06-28T12:37:52Z",
+            "serverRelativeUrl": "/01QY2C5KPJ33FFO2IAZNBYVL2U7AX3MIRU"
+          },
+          {
+            "name": "04.-Area-Map.pdf",
+            "timeCreated": "2026-06-28T12:37:54Z",
+            "serverRelativeUrl": "/01QY2C5KJ4ZKV6QXRPDNCZU4RM6U6RECVZ"
+          },
+          {
+            "name": "05.-Site-Photos.pdf",
+            "timeCreated": "2026-06-28T12:37:54Z",
+            "serverRelativeUrl": "/01QY2C5KMBKAJBJV3CUFCJTZ4WLMEWHLS5"
+          },
+          {
+            "name": "06.-Owners--Authorization-Letters.pdf",
+            "timeCreated": "2026-06-28T12:38:00Z",
+            "serverRelativeUrl": "/01QY2C5KIRSBDVG6ZRKBBKYWJTGOSR5J4A"
+          },
+          {
+            "name": "07.-Signature-Form.pdf",
+            "timeCreated": "2026-06-28T12:37:55Z",
+            "serverRelativeUrl": "/01QY2C5KMBYHVKSW7INVFYJ77EAUCCMLPO"
+          },
+          {
+            "name": "LandUse.pdf",
+            "timeCreated": "2026-06-28T12:37:56Z",
+            "serverRelativeUrl": "/01QY2C5KMYRDMRKLSI2RCIB2F5L2IYXEKD"
+          }
+        ]
+      }
+    },
+    {
+      "type": "artifacts",
+      "id": "d9a37434-7442-f111-88b4-001dd80e798c",
+      "attributes": {
+        "dcp-artifactdocumentlocation": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_artifacts/2026M0366_Type II Memo_1_D9A374347442F11188B4001DD80E798C",
+        "versionnumber": 1062985926,
+        "dcp-submittedfilename": "2026M0366__4/27/2026 4:03 PM _1  ",
+        "dcp-artifactsid": "d9a37434-7442-f111-88b4-001dd80e798c",
+        "dcp-name": "2026M0366_Type II Memo_1",
+        "modifiedon": "2026-04-27T21:17:46.000Z",
+        "dcp-packagetype": null,
+        "dcp-visibility": 717170003,
+        "documents": [
+          {
+            "name": "26DCP126M_Type II Memo_04242026.pdf",
+            "timeCreated": "2026-04-27T20:04:16Z",
+            "serverRelativeUrl": "/01QY2C5KKUU475RXSUNBA3T7PGQLIOAJLC"
+          }
+        ]
+      }
+    }
+  ]
+}
