@@ -246,7 +246,7 @@
     closes_in_n_days: "clôture dans {n} jours",
 
     // Notice content language note (shown when non-English UI is active)
-    notices_in_english_note: "Texte officiel en anglais ; traduction non officielle disponible.",
+    notices_in_english_note: "Texte officiel en anglais. Traduction non officielle disponible.",
     notices_in_english_es:   "Le texte des avis apparaît dans l'anglais original.",
 
     // Footer / nav
@@ -485,7 +485,7 @@
     prefer_feeds_html: "Vous préférez les flux ? Cette veille est aussi disponible en",
 
     // Notices-in-English
-    notices_in_english_note_inline: "Texte officiel en anglais ; traduction non officielle disponible.",
+    notices_in_english_note_inline: "Texte officiel en anglais. Traduction non officielle disponible.",
     unofficial_translation: "Traduction non officielle",
     unofficial_translation_show: "Afficher la traduction non officielle",
     unofficial_translation_hide: "Masquer la traduction non officielle",

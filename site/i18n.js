@@ -340,8 +340,8 @@ const STRINGS = {
     // Notice content language note (shown when non-English UI is active).
     // Softened once on-demand unofficial translation shipped: original stays official;
     // translation is an aid available from the notice detail.
-    notices_in_english_note: "Official text in English; unofficial translation available.",
-    notices_in_english_es:   "Texto oficial en inglés; traducción no oficial disponible.",
+    notices_in_english_note: "Official text in English. Unofficial translation available.",
+    notices_in_english_es:   "Texto oficial en inglés. Traducción no oficial disponible.",
 
     // Informal notice translation (on-demand pane — minimal wording only)
     unofficial_translation: "Unofficial translation",
@@ -706,7 +706,7 @@ const STRINGS = {
     prefer_feeds_html: "Prefer feeds? This watch is also",
 
     // Notices-in-English
-    notices_in_english_note_inline: "Official text in English; unofficial translation available.",
+    notices_in_english_note_inline: "Official text in English. Unofficial translation available.",
 
     // ---- Dynamically-built chrome (2026-07-13 hotfix: strings composed in JS
     // template literals bypassed the dictionary; every builder now routes here) ----

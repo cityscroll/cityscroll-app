@@ -87,7 +87,7 @@ sources:
   - test/fixtures/wave4/generated/process_spine.json
   - test/fixtures/wave4/generated/unresolved-joins.json
   - test/fixtures/wave4/generated/ocds-gap-table.json
-sources_hash: d6081a2f58923e14c20edc3b83bfa4a89678d8404bea47ecb8be811616a15a62
+sources_hash: 91d912264dfae360ae14a1c84f57838954b054fd1e5b68dca184b41f8db63890
 ---
 
 # crol-list — architecture
