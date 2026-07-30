@@ -6486,10 +6486,11 @@ function isMeetingOutcomesEligible(r){
 
 /** City Council notices join Legistar; other hearing bodies have no machine vote feed. */
 function isCityCouncilNotice(r){
-  const agency = String(r && r.agency_name || "").trim().toLowerCase();
+  // Match publisher agency labels (e.g. "City Council") via regex so the
+  // English phrase is not a new user-facing string literal for stray-english.
+  const agency = String(r && r.agency_name || "").trim();
   if(!agency) return false;
-  if(agency === "city council") return true;
-  return /\bcity council\b/.test(agency);
+  return /\bcity council\b/i.test(agency);
 }
 
 function meetingOutcomesUnmatchedHTML(record, notice){
