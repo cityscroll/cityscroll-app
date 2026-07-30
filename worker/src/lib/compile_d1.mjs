@@ -64,11 +64,17 @@ export function subToD1Opts(sub, todayISO) {
       opts.noticeType = "Award";
       if (f.minAmount != null) opts.minAmount = Number(f.minAmount) || 1;
       if (f.maxAmount != null) opts.maxAmount = Number(f.maxAmount);
+      // SODA award digests use $order=start_date DESC. Default D1 amount-ordering
+      // (contract_amount DESC) permanently hides mid-size recent awards under
+      // multi-billion mega-contracts inside LIMIT 25 — a construction ≥$500k watch
+      // then stops matching after the mirror stays fresh. Force recency for parity.
+      opts.orderBy = "start_date";
     } else {
       opts.noticeType = "Solicitation";
       opts.openOnly = true;
       opts.today = todayISO;
       if (f.months) opts.dueBefore = monthsFromISO(todayISO, Number(f.months));
+      opts.orderBy = "start_date";
     }
     return opts;
   }

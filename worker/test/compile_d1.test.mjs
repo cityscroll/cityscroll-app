@@ -20,11 +20,14 @@ test("compileSub_d1 returns null for land", () => {
 
 // ---- money lens --------------------------------------------------------
 
-test("money/minAmount → Award notice type, minAmount forwarded", () => {
+test("money/minAmount → Award notice type, minAmount forwarded, start_date order for digest parity", () => {
   const opts = subToD1Opts({ lens: "money", filter: { minAmount: 500000 } }, "2026-07-10");
   assert.equal(opts.noticeType, "Award");
   assert.equal(opts.minAmount, 500000);
   assert.equal(opts.maxAmount, undefined);
+  assert.equal(opts.orderBy, "start_date", "digests must not amount-order (hides mid-size awards)");
+  const { sql } = buildNoticesQuery(opts);
+  assert.match(sql, /ORDER BY start_date DESC/);
 });
 
 test("money/maxAmount only → Award (any amount bound implies Award branch per EDA)", () => {
