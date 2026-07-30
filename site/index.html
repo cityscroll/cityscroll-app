@@ -345,6 +345,14 @@
   .near-match-reveal summary{cursor:pointer;font:600 13px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--oxblood)}
   .near-match-reveal summary:hover{text-decoration:underline}
   .near-match-reveal .chain-h{margin-top:14px}
+  /* Inline methodology disclosure on notice detail — expands in place (no navigation). */
+  .inline-disclose{display:inline;margin:0}
+  .inline-disclose>summary{display:inline;cursor:pointer;list-style:none;color:var(--oxblood);border-bottom:1px dotted var(--rule-strong);font:600 12px/1.5 ui-sans-serif,system-ui,sans-serif}
+  .inline-disclose>summary::-webkit-details-marker{display:none}
+  .inline-disclose>summary:hover{text-decoration:underline}
+  .inline-disclose-body{display:block;margin-top:8px;padding:10px 12px;background:var(--paper-2,#f7f1e4);border:1px solid var(--rule);border-radius:6px;font:13px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft);max-width:42em}
+  .inline-disclose-body a{color:var(--oxblood)}
+  .pivot-disclose{display:inline-block;margin-inline-start:6px;vertical-align:baseline}
   .connector{display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:24px;flex:0 0 30px}
   @media(max-width:560px){.connector{transform:rotate(90deg);height:24px}.stage{flex-basis:100%}}
 
@@ -5576,7 +5584,9 @@ async function awardContext(r){
       }
     }catch(e){}
   }
-  return bits.length ? `<div class="glance" style="border-inline-start-color:var(--amber)"><div class="gl"><b>Context</b><span>${bits.join(" · ")} · <a href="about.html#context">how computed</a></span></div></div>` : "";
+  if(!bits.length) return "";
+  // Inline disclosure keeps the reader on the notice; full methodology stays one click away.
+  return `<div class="glance" style="border-inline-start-color:var(--amber)"><div class="gl"><b>${t("context_strip_lbl")}</b><span>${bits.join(" · ")} · <details class="inline-disclose"><summary>${t("context_how_computed_summary")}</summary><div class="inline-disclose-body">${t("context_how_computed_body_html")} <a href="about.html#context">${t("context_full_methodology_link")}</a></div></details></span></div></div>`;
 }
 
 /* Address cross-links: geocode → BBL → deep links into the city's other property records.
@@ -5602,7 +5612,7 @@ async function fillContext(r, el){
   const [flags, ctx] = await Promise.all([noticeFlags(r), awardContext(r)]);
   if(!document.contains(el)) return; // a newer selection replaced this panel
   let html = "";
-  if(flags.length) html += `<div style="margin:6px 0 4px">${flags.map(f=>`<span class="tag ${f.lvl}" style="margin-bottom:4px">${f.t}</span>`).join(" ")} <a class="pivot" style="font:12px/1.6 ui-sans-serif,system-ui,sans-serif;color:var(--muted)" href="about.html#context">what flags mean</a></div>`;
+  if(flags.length) html += `<div style="margin:6px 0 4px">${flags.map(f=>`<span class="tag ${f.lvl}" style="margin-bottom:4px">${f.t}</span>`).join(" ")} <details class="inline-disclose pivot-disclose"><summary class="pivot" style="font:12px/1.6 ui-sans-serif,system-ui,sans-serif;color:var(--muted)">${t("context_flags_summary")}</summary><div class="inline-disclose-body">${t("context_flags_body_html")} <a href="about.html#context">${t("context_full_methodology_link")}</a></div></details></div>`;
   html += ctx;
   if(html) el.innerHTML = html;
 }
@@ -5643,7 +5653,18 @@ async function externalAwardForNotice(r, el){
     corroboration — disagreements name both sources. */
 const CHECKBOOK_SEARCH_URL = "https://www.checkbooknyc.com/contract_search";
 const CHECKBOOK_SPENDING_URL = "https://www.checkbooknyc.com/spending_search";
+const CHECKBOOK_SMART_SEARCH = "https://www.checkbooknyc.com/smart_search/citywide";
 const OCP_AWARDS_URL = "https://data.cityofnewyork.us/d/qyyg-4tf5";
+
+// Prefer a contract / PIN / vendor search term when we already have it — never send the
+// reader to a bare Checkbook landing page when a scoped query is constructible.
+function checkbookSearchUrl(opts){
+  opts = opts || {};
+  const term = opts.contractId || opts.pin || opts.vendor || opts.searchTerm;
+  if(term) return `${CHECKBOOK_SMART_SEARCH}?search_term=${encodeURIComponent(String(term))}`;
+  if(opts.kind === "spending") return CHECKBOOK_SPENDING_URL;
+  return CHECKBOOK_SEARCH_URL;
+}
 
 function lifecycleStageLabel(stage){
   if(stage === "solicitation") return t("lifecycle_stage_solicitation");
@@ -5729,7 +5750,10 @@ function lifecycleDocumentsHTML(entry){
   return `<div class="lc-norecord lc-docs-gap">${t("lifecycle_unmatched_documents_html",{source:src})}</div>`;
 }
 
-function lifecycleSourceLink(entry){
+// ctx: optional {contractId, pin, vendor} when the stage detail lacks a join key but the
+// surrounding notice / registered row already has one (payment card is the common case).
+function lifecycleSourceLink(entry, ctx){
+  ctx = ctx || {};
   if(entry.source === "city-record" && entry.detail && entry.detail.request_id){
     return `<a class="view" href="${REQ_URL(entry.detail.request_id)}" ${EXT_ATTRS}>${t("lifecycle_source_city_record")}${extSR()}</a>`;
   }
@@ -5742,14 +5766,12 @@ function lifecycleSourceLink(entry){
     return `<a class="view" href="${CURRENT_SOLICITATIONS_URL}" ${EXT_ATTRS}>${t("lifecycle_source_current_solicitations")}${extSR()}</a>`;
   }
   if(entry.source === "checkbook-contracts"){
-    const id = entry.detail && entry.detail.contract_id;
-    const lifecycleSourceUrl = id
-      ? `https://www.checkbooknyc.com/smart_search/citywide?search_term=${encodeURIComponent(id)}`
-      : CHECKBOOK_SEARCH_URL;
-    return `<a class="view" href="${lifecycleSourceUrl}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`;
+    const id = (entry.detail && entry.detail.contract_id) || ctx.contractId;
+    return `<a class="view" href="${checkbookSearchUrl({contractId:id, pin:ctx.pin, vendor:ctx.vendor})}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`;
   }
   if(entry.source === "checkbook-spending"){
-    return `<a class="view" href="${CHECKBOOK_SPENDING_URL}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`;
+    const id = (entry.detail && entry.detail.contract_id) || ctx.contractId;
+    return `<a class="view" href="${checkbookSearchUrl({contractId:id, pin:ctx.pin, vendor:ctx.vendor, kind:"spending"})}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`;
   }
   if(entry.source === "passport-public-contracts"){
     return `<a class="view" href="${entry.portal || PASSPORT_CONTRACTS_URL}" ${EXT_ATTRS}>${t("lifecycle_source_passport")}${extSR()}</a>`;
@@ -5799,28 +5821,53 @@ function lifecycleMatchedRegisteredDetail(timeline){
 // Stable anchor for Follow-the-Dollars — payments card links here for money detail.
 const LIFECYCLE_DOLLARS_ANCHOR = "follow-the-dollars";
 
+// Deep-link into Follow-the-Dollars on this notice (never a bare #follow-the-dollars —
+// that hash falls through applyHash and ejects the reader to the money tab).
+function lifecycleDollarsFocusHref(noticeId){
+  if(!noticeId) return "#" + LIFECYCLE_DOLLARS_ANCHOR;
+  return `#notice/${encodeURIComponent(String(noticeId))}?focus=${encodeURIComponent(LIFECYCLE_DOLLARS_ANCHOR)}`;
+}
+
+// Resolve payment_state for three-state honesty (paid / verified_zero / unavailable).
+// Legacy payloads without payment_state: total_spent null → unavailable; else infer.
+function lifecyclePaymentState(detail){
+  if(!detail) return null;
+  if(detail.payment_state) return detail.payment_state;
+  if(detail.total_spent == null && detail.total_payments == null) return "unavailable";
+  if(detail.total_payments != null) return "paid";
+  if(Number(detail.total_spent) === 0) return "verified_zero";
+  return detail.derived_from === "registered" ? "from_registered" : "paid";
+}
+
 // Payments card summary when Checkbook join exists: amounts + optional $0 lag note +
-// anchor to the dollars panel. Never gap copy while the join is present.
+// notice-scoped deep link to the dollars panel. Never gap copy while the join is present.
+// payment_state "unavailable" never renders a confident $0.
 function lifecyclePaymentSummaryHTML(paid, committed, opts){
   opts = opts || {};
-  const paidN = paid != null ? Number(paid) : 0;
   const committedN = committed != null ? Number(committed) : 0;
-  let html = `<div class="lc-pct">${t("lifecycle_payment_summary_html",{
-    paid: lifecycleMoney(paidN),
-    committed: lifecycleMoney(committedN)
-  })}</div>`;
-  if(paidN === 0 && opts.zeroLag !== false){
-    html += `<div class="lc-pct">${t("lifecycle_payment_zero_lag_html")}</div>`;
+  const state = opts.paymentState || null;
+  let html = "";
+  if(state === "unavailable"){
+    html += `<div class="lc-pct">${t("lifecycle_payment_unavailable_html")}</div>`;
+  } else {
+    const paidN = paid != null ? Number(paid) : 0;
+    html += `<div class="lc-pct">${t("lifecycle_payment_summary_html",{
+      paid: lifecycleMoney(paidN),
+      committed: lifecycleMoney(committedN)
+    })}</div>`;
+    if(paidN === 0 && opts.zeroLag !== false){
+      html += `<div class="lc-pct">${t("lifecycle_payment_zero_lag_html")}</div>`;
+    }
   }
   if(opts.link !== false){
     html += `<div class="lc-pct">${t("lifecycle_payment_details_link_html",{
-      href: "#" + LIFECYCLE_DOLLARS_ANCHOR
+      href: lifecycleDollarsFocusHref(opts.noticeId)
     })}</div>`;
   }
   return html;
 }
 
-function lifecycleStageHTML(entry, timeline){
+function lifecycleStageHTML(entry, timeline, notice){
   let publicStatus = lifecyclePublicStatus(entry, timeline);
   if(publicStatus === "not_applicable") return "";
 
@@ -5828,13 +5875,21 @@ function lifecycleStageHTML(entry, timeline){
   const dateHTML = entry.date ? `<div class="when">${fdate(entry.date)}</div>` : `<div class="when">—</div>`;
   let detailHTML = "";
   const regDetail = lifecycleMatchedRegisteredDetail(timeline);
+  const sourceCtx = {
+    contractId: regDetail && regDetail.contract_id,
+    pin: (notice && notice.pin) || (regDetail && regDetail.pin) || null,
+    vendor: (regDetail && regDetail.vendor) || (notice && notice.vendor_name) || null,
+  };
 
   // Ownership: when Checkbook registration joined, payments card summarizes paid/committed
   // and links to Follow-the-Dollars — never parallel gap copy (even on stale unmatched rows).
+  // Three-state honesty: unavailable never shows a confident $0.
   if(entry.stage === "payment" && regDetail){
     publicStatus = "matched";
     const d = entry.detail || {};
-    const paid = d.total_spent != null ? d.total_spent : (regDetail.spent_to_date != null ? regDetail.spent_to_date : 0);
+    const payState = lifecyclePaymentState(d);
+    const paid = payState === "unavailable" ? null
+      : (d.total_spent != null ? d.total_spent : (regDetail.spent_to_date != null ? regDetail.spent_to_date : 0));
     const committed = regDetail.current_amount != null ? regDetail.current_amount : 0;
     let extraHTML = "";
     if(d.total_payments){
@@ -5843,9 +5898,16 @@ function lifecycleStageHTML(entry, timeline){
         extraHTML += `<div class="lc-pct">${t("lifecycle_latest_payment_html",{amount:lifecycleMoney(d.latest_payment_amount),date:fdate(d.latest_payment_date)})}</div>`;
       }
     }
-    extraHTML += lifecyclePaymentSummaryHTML(paid, committed, {zeroLag: Number(paid) === 0});
-    detailHTML = `<div class="amt">${lifecycleMoney(paid)}</div>` + extraHTML;
-    const link = lifecycleSourceLink(entry);
+    extraHTML += lifecyclePaymentSummaryHTML(paid, committed, {
+      zeroLag: payState === "verified_zero" || (payState !== "unavailable" && Number(paid) === 0),
+      noticeId: notice && notice.request_id,
+      paymentState: payState,
+    });
+    const amtHTML = payState === "unavailable"
+      ? `<div class="amt muted">—</div>`
+      : `<div class="amt">${lifecycleMoney(paid)}</div>`;
+    detailHTML = amtHTML + extraHTML;
+    const link = lifecycleSourceLink(entry, sourceCtx);
     return `<div class="stage"><div class="box matched">
       <div class="stage-name">${label}</div>
       ${dateHTML}
@@ -5932,7 +5994,7 @@ function lifecycleStageHTML(entry, timeline){
     }
   }
 
-  const link = publicStatus === "passed" ? "" : lifecycleSourceLink(entry);
+  const link = publicStatus === "passed" ? "" : lifecycleSourceLink(entry, sourceCtx);
   return `<div class="stage"><div class="box ${publicStatus}">
     <div class="stage-name">${label}</div>
     ${dateHTML}
@@ -6015,7 +6077,7 @@ function lifecycleTimelineHTML(data, notice){
     : raw.filter(e => lifecyclePublicStatus(e, raw) !== "not_applicable");
 
   let stages = "";
-  const visible = tl.map(e => ({entry: e, html: lifecycleStageHTML(e, raw)})).filter(x => x.html);
+  const visible = tl.map(e => ({entry: e, html: lifecycleStageHTML(e, raw, notice)})).filter(x => x.html);
   visible.forEach((x, idx) => {
     stages += x.html;
     if(idx < visible.length - 1) stages += '<div class="connector">→</div>';
@@ -6032,11 +6094,17 @@ function lifecycleTimelineHTML(data, notice){
     ).join("");
   }
 
+  const regForLink = lifecycleMatchedRegisteredDetail(raw);
+  const checkbookHref = checkbookSearchUrl({
+    contractId: regForLink && regForLink.contract_id,
+    pin: data.pin || (notice && notice.pin),
+    vendor: (regForLink && regForLink.vendor) || (notice && notice.vendor_name),
+  });
   const pinNote = noPin
     ? t("lifecycle_no_pin_note_html")
     : t("lifecycle_provenance_note_html",{
         city_record:`<a href="${REQ_URL(notice.request_id)}" ${EXT_ATTRS}>${t("lifecycle_source_city_record")}${extSR()}</a>`,
-        checkbook:`<a href="https://www.checkbooknyc.com/" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`,
+        checkbook:`<a href="${checkbookHref}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`,
         passport:`<a href="${PASSPORT_CONTRACTS_URL}" ${EXT_ATTRS}>${t("lifecycle_source_passport")}${extSR()}</a>`,
         pin:`<code>${escUiHtml(data.pin)}</code>`
       });
@@ -6086,12 +6154,25 @@ function lifecycleDollarsHTML(data, notice){
 
   if(reg && reg.status === "matched" && reg.detail){
     const d = reg.detail;
-    const spent = d.spent_to_date != null ? d.spent_to_date : 0;
+    const payState = lifecyclePaymentState(pay && pay.detail);
+    // Prefer payment-stage total when the spending feed joined; never invent $0 on unavailable.
+    let spent = null;
+    if(payState === "unavailable"){
+      spent = null;
+    } else if(pay && pay.detail && pay.detail.total_spent != null){
+      spent = pay.detail.total_spent;
+    } else {
+      spent = d.spent_to_date != null ? d.spent_to_date : 0;
+    }
     const current = d.current_amount != null ? d.current_amount : 0;
     const original = d.original_amount != null ? d.original_amount : 0;
-    const pct = current > 0 ? Math.min(100, Math.round((spent / current) * 100)) : 0;
+    const pct = (spent != null && current > 0) ? Math.min(100, Math.round((spent / current) * 100)) : null;
     const amended = original > 0 && Math.abs(current - original) > 1;
-    const vendorMismatch = notice.vendor_name && d.vendor && vendorStem(d.vendor) !== vendorStem(notice.vendor_name);
+    // Entity-resolution match (stem + truncation/token overlap) — warn only on genuine mismatch.
+    const sameVendor = !notice.vendor_name || !d.vendor || vendorNamesMatch(d.vendor, notice.vendor_name);
+    const vendorMismatch = notice.vendor_name && d.vendor && !sameVendor;
+    const displayDiffers = notice.vendor_name && d.vendor && sameVendor
+      && cleanText(d.vendor).toLowerCase() !== cleanText(notice.vendor_name).toLowerCase();
     const payPublic = pay ? lifecyclePublicStatus(pay, data.timeline) : "";
     // Dollars owns paid-to-date detail. Never re-emit payments gap copy here when the
     // registration join already supplies Paid to date (one owner; gap only if join absent).
@@ -6103,19 +6184,33 @@ function lifecycleDollarsHTML(data, notice){
             : ""
         })
       : "";
-    const contractLink = d.contract_id
-      ? `https://www.checkbooknyc.com/smart_search/citywide?search_term=${encodeURIComponent(d.contract_id)}`
-      : CHECKBOOK_SEARCH_URL;
-    return `<div class="apply" id="${LIFECYCLE_DOLLARS_ANCHOR}" style="margin-top:14px"><h3>${t("lifecycle_dollars_heading")}</h3><div class="body">
+    const contractLink = checkbookSearchUrl({
+      contractId: d.contract_id,
+      pin: data.pin || notice.pin,
+      vendor: d.vendor || notice.vendor_name,
+    });
+    const vendorNote = vendorMismatch
+      ? `<div class="note warn" style="margin-top:10px">${t("lifecycle_dollars_vendor_mismatch_html",{checkbook:escUiHtml(cleanText(d.vendor)),notice:escUiHtml(cleanText(notice.vendor_name))})}</div>`
+      : displayDiffers
+        ? `<div class="note" style="margin-top:10px">${t("lifecycle_dollars_vendor_variant_html",{checkbook:escUiHtml(cleanText(d.vendor)),notice:escUiHtml(cleanText(notice.vendor_name))})}</div>`
+        : "";
+    const paidDd = payState === "unavailable"
+      ? `<dd>${t("lifecycle_dollars_paid_unavailable_html")}</dd>`
+      : `<dd><b>${lifecycleMoney(spent)}</b>${pct != null ? ` (${pct}%)` : ""}<div class="lbar" style="max-width:220px;margin-top:5px"><span style="width:${pct || 0}%"></span></div></dd>`;
+    const lagNote = (payState === "verified_zero" || (payState !== "unavailable" && spent === 0))
+      ? `<div class="note" style="margin-top:10px">${t("lifecycle_payment_zero_lag_html")}</div>`
+      : "";
+    return `<div class="apply" id="${LIFECYCLE_DOLLARS_ANCHOR}" style="margin-top:14px" tabindex="-1"><h3>${t("lifecycle_dollars_heading")}</h3><div class="body">
       <dl>
         <dt>${t("lifecycle_dollars_contract_lbl")}</dt><dd><code>${escUiHtml(d.contract_id||"—")}</code> · ${t("lifecycle_dollars_registered_on_html",{date:d.registration_date?fdate(d.registration_date):"—"})}</dd>
         <dt>${t("lifecycle_dollars_committed_lbl")}</dt><dd><b>${lifecycleMoney(current)}</b>${amended?` <span class="tag soon">${t("lifecycle_amended_from_html",{original:lifecycleMoney(original)})}</span>`:""}</dd>
-        <dt>${t("lifecycle_dollars_paid_lbl")}</dt><dd><b>${lifecycleMoney(spent)}</b> (${pct}%)<div class="lbar" style="max-width:220px;margin-top:5px"><span style="width:${pct}%"></span></div></dd>
+        <dt>${t("lifecycle_dollars_paid_lbl")}</dt>${paidDd}
         <dt>${t("lifecycle_dollars_term_lbl")}</dt><dd>${fdate(d.start_date)||"—"} → ${fdate(d.end_date)||"—"}</dd>
         ${d.mwbe?`<dt>${t("lifecycle_dollars_mwbe_lbl")}</dt><dd>${escUiHtml(d.mwbe)}</dd>`:""}
       </dl>
-      ${vendorMismatch?`<div class="note warn" style="margin-top:10px">${t("lifecycle_dollars_vendor_mismatch_html",{checkbook:escUiHtml(cleanText(d.vendor)),notice:escUiHtml(cleanText(notice.vendor_name))})}</div>`:""}
+      ${vendorNote}
       ${payNote?`<div class="note" style="margin-top:10px">${payNote}</div>`:""}
+      ${lagNote}
       <div class="pnote">${t("lifecycle_dollars_provenance_html",{
         link:`<a href="${contractLink}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`,
         pin:`<code>${escUiHtml(data.pin||notice.pin||"")}</code>`
@@ -6132,8 +6227,12 @@ function lifecycleDollarsHTML(data, notice){
         ? t("lifecycle_ambiguous_html")
         : "";
   if(!regNote) return "";
+  const fallbackCheckbook = checkbookSearchUrl({
+    pin: data.pin || notice.pin,
+    vendor: notice.vendor_name,
+  });
   return `<div class="note" style="margin-top:12px"><b>${t("lifecycle_dollars_heading")}</b> ${regNote}
-    <a href="${CHECKBOOK_SEARCH_URL}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a></div>`;
+    <a href="${fallbackCheckbook}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a></div>`;
 }
 
 // Fetches the precomputed lifecycle from the worker and renders the timeline + dollars
@@ -6166,6 +6265,8 @@ async function loadLifecycle(r, el, dollarsEl){
   if(dollarsEl && /^(Award|Intent to Award)$/.test(r.type_of_notice_description||"")){
     dollarsEl.innerHTML = lifecycleDollarsHTML(data, r);
   }
+  // Honor #notice/<id>?focus=follow-the-dollars after the panel is in the DOM.
+  scrollToLifecycleFocus();
 }
 
 /* ===================== SUBSIDY LIFECYCLE (SUB-001) =====================
@@ -6419,6 +6520,35 @@ function vendorStem(name){
   let prev;
   do { prev = s; s = s.replace(VENDOR_SUFFIX, "").trim(); } while (s !== prev && s.length > 3);
   return s;
+}
+
+// Cross-source same-entity match for vendor labels. Reuses vendorStem, then tolerates
+// Checkbook-style truncation and token-level expansion (AND/LANDSCAPE wording, cut-off tails).
+// Used by the dollars panel so a genuine mismatch still warns; HNTB-style variants do not.
+function vendorNamesMatch(a, b){
+  const sa = vendorStem(a), sb = vendorStem(b);
+  if(!sa || !sb) return false;
+  if(sa === sb) return true;
+  const [short, long] = sa.length <= sb.length ? [sa, sb] : [sb, sa];
+  // Shared prefix after normalization (source often truncates around 60 chars).
+  if(short.length >= 16 && long.startsWith(short)) return true;
+  const tokens = s => s.split(" ").filter(t => t.length > 1);
+  const ta = tokens(sa), tb = tokens(sb);
+  if(!ta.length || !tb.length) return false;
+  const setA = new Set(ta), setB = new Set(tb);
+  function tokenHit(t, other){
+    if(other.has(t)) return true;
+    // Truncated last token: ARCHITE ↔ ARCHITECTURE
+    for(const u of other){
+      if(u.length >= 5 && t.length >= 5 && (u.startsWith(t) || t.startsWith(u))) return true;
+    }
+    return false;
+  }
+  const [small, largeSet] = ta.length <= tb.length ? [ta, setB] : [tb, setA];
+  let hits = 0;
+  for(const t of small) if(tokenHit(t, largeSet)) hits++;
+  const need = Math.max(2, Math.ceil(small.length * 0.75));
+  return hits >= need && hits >= Math.min(3, small.length);
 }
 
 function renderVendorVariants(variants){
@@ -7314,8 +7444,27 @@ function watchChipsFor(lens, filter){
 function parseNoticeHashSegment(rest){
   const qi = rest.indexOf("?");
   const id = decodeURIComponent(qi < 0 ? rest : rest.slice(0, qi));
-  const watch = qi < 0 ? null : parseWatchParam(new URLSearchParams(rest.slice(qi+1)).get("w"));
-  return { id, watch };
+  const params = qi < 0 ? new URLSearchParams() : new URLSearchParams(rest.slice(qi+1));
+  const watch = parseWatchParam(params.get("w"));
+  // focus=follow-the-dollars (and future in-notice anchors) — scroll after async panels load.
+  const focus = params.get("focus") || null;
+  return { id, watch, focus };
+}
+
+// Pending in-notice scroll target set by applyHash; cleared after a successful scroll.
+let pendingNoticeFocus = null;
+function scrollToLifecycleFocus(){
+  const focus = pendingNoticeFocus || (() => {
+    const raw = location.hash.slice(1);
+    if(!raw.startsWith("notice/")) return null;
+    return parseNoticeHashSegment(raw.slice(7)).focus;
+  })();
+  if(focus !== LIFECYCLE_DOLLARS_ANCHOR) return;
+  const target = document.getElementById(LIFECYCLE_DOLLARS_ANCHOR);
+  if(!target) return;
+  pendingNoticeFocus = null;
+  try{ target.scrollIntoView({behavior:"smooth", block:"start"}); }catch(e){ target.scrollIntoView(); }
+  try{ target.focus({preventScroll:true}); }catch(e){}
 }
 
 function parseLandHashSegment(rest){
@@ -7515,7 +7664,8 @@ function applyHash(){
     return applyHash();
   }
   if(raw.startsWith("notice/")){
-    const { id, watch } = parseNoticeHashSegment(raw.slice(7));
+    const { id, watch, focus } = parseNoticeHashSegment(raw.slice(7));
+    pendingNoticeFocus = focus;
     showNotice(id, watch);
     return true;
   }

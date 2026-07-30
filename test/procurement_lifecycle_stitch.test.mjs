@@ -70,11 +70,13 @@ const sandbox = new Function(
   extractConst("EXT_ATTRS") + "\n" +
   extractConst("CHECKBOOK_SEARCH_URL") + "\n" +
   extractConst("CHECKBOOK_SPENDING_URL") + "\n" +
+  extractConst("CHECKBOOK_SMART_SEARCH") + "\n" +
   extractConst("PASSPORT_CONTRACTS_URL") + "\n" +
   extractConst("PASSPORT_RFX_URL") + "\n" +
   extractConst("LIFECYCLE_STAGE_ORDER") + "\n" +
   extractConst("CURRENT_SOLICITATIONS_URL") + "\n" +
   extractConst("OCP_AWARDS_URL") + "\n" +
+  extractFn("checkbookSearchUrl") + "\n" +
   extractFn("lifecycleStageLabel") + "\n" +
   extractFn("lifecycleAmount") + "\n" +
   extractFn("lifecycleMoney") + "\n" +
@@ -84,6 +86,8 @@ const sandbox = new Function(
   extractFn("lifecyclePublicStatus") + "\n" +
   extractFn("lifecycleMatchedRegisteredDetail") + "\n" +
   extractConst("LIFECYCLE_DOLLARS_ANCHOR") + "\n" +
+  extractFn("lifecycleDollarsFocusHref") + "\n" +
+  extractFn("lifecyclePaymentState") + "\n" +
   extractFn("lifecyclePaymentSummaryHTML") + "\n" +
   extractFn("lifecycleSourceLink") + "\n" +
   extractFn("lifecycleDocumentsHTML") + "\n" +
@@ -91,6 +95,9 @@ const sandbox = new Function(
   extractFn("lifecycleOcpAwardHTML") + "\n" +
   extractFn("lifecycleTimelineHTML") + "\n" +
   extractFn("lifecycleDollarsHTML") + "\n" +
+  extractConst("VENDOR_SUFFIX") + "\n" +
+  extractFn("vendorStem") + "\n" +
+  extractFn("vendorNamesMatch") + "\n" +
   extractFn("isSubsidyEligibleNotice") + "\n" +
   extractFn("subsidyStageLabel") + "\n" +
   extractFn("subsidyStageHTML") + "\n" +
@@ -123,6 +130,7 @@ try {
     const EXT_ATTRS = 'target="_blank" rel="noopener noreferrer"';
     const CHECKBOOK_SEARCH_URL = 'https://www.checkbooknyc.com/contract_search';
     const CHECKBOOK_SPENDING_URL = 'https://www.checkbooknyc.com/spending_search';
+    const CHECKBOOK_SMART_SEARCH = 'https://www.checkbooknyc.com/smart_search/citywide';
     const PASSPORT_CONTRACTS_URL = 'https://a0333-passportpublic.nyc.gov/contracts.html';
     const PASSPORT_RFX_URL = 'https://a0333-passportpublic.nyc.gov/rfx.html';
     const LIFECYCLE_STAGE_ORDER = {solicitation:0, award:1, pending:2, registered:3, payment:4};
@@ -130,6 +138,7 @@ try {
     const OCP_AWARDS_URL = 'https://data.cityofnewyork.us/d/qyyg-4tf5';
     function pivotA(href, text){ return '<a href="'+href+'">'+text+'</a>'; }
     ` +
+    extractFn("checkbookSearchUrl") +
     extractFn("lifecycleStageLabel") +
     extractFn("lifecycleAmount") +
     extractFn("lifecycleMoney") +
@@ -139,6 +148,8 @@ try {
     extractFn("lifecyclePublicStatus") +
     extractFn("lifecycleMatchedRegisteredDetail") +
     extractConst("LIFECYCLE_DOLLARS_ANCHOR") +
+    extractFn("lifecycleDollarsFocusHref") +
+    extractFn("lifecyclePaymentState") +
     extractFn("lifecyclePaymentSummaryHTML") +
     extractFn("lifecycleSourceLink") +
     extractFn("lifecycleDocumentsHTML") +
@@ -146,6 +157,9 @@ try {
     extractFn("lifecycleOcpAwardHTML") +
     extractFn("lifecycleTimelineHTML") +
     extractFn("lifecycleDollarsHTML") +
+    extractConst("VENDOR_SUFFIX") +
+    extractFn("vendorStem") +
+    extractFn("vendorNamesMatch") +
     extractFn("isSubsidyEligibleNotice") +
     extractFn("subsidyStageLabel") +
     extractFn("subsidyStageHTML") +
@@ -224,7 +238,18 @@ const HNTB_LIFECYCLE = {
         mwbe: "Non-M/WBE",
       },
     },
-    { stage: "payment", status: "unknown", source: "checkbook-spending", date: null, detail: null },
+    {
+      stage: "payment",
+      status: "matched",
+      source: "checkbook-spending",
+      date: null,
+      detail: {
+        total_payments: null,
+        total_spent: 0,
+        derived_from: "registered",
+        payment_state: "verified_zero",
+      },
+    },
   ],
 };
 

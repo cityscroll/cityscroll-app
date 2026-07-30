@@ -218,22 +218,29 @@ test("an entity watch renders no chips or evidence -- the agency/vendor name is 
 // ---- applyHash()'s "#notice/<id>?w=<...>" routing (parseNoticeHashSegment) --------------------
 
 test("before: a bare '#notice/<id>' with no ?w= at all -- the pre-w12-12 shape -- still routes with watch:null, unchanged", () => {
-  assert.deepEqual(parseNoticeHashSegment("20260701099"), { id: "20260701099", watch: null });
+  assert.deepEqual(parseNoticeHashSegment("20260701099"), { id: "20260701099", watch: null, focus: null });
 });
 
 test("after: '#notice/<id>?w=<encoded>' splits the id from the watch and reconstructs it", () => {
   const w = encodeURIComponent(JSON.stringify({ lens: "money", filter: { keywords: ["education"] } }));
-  const { id, watch } = parseNoticeHashSegment(`20260701099?w=${w}`);
+  const { id, watch, focus } = parseNoticeHashSegment(`20260701099?w=${w}`);
   assert.equal(id, "20260701099");
   assert.deepEqual(watch, { lens: "money", filter: sanitizeDeepLinkFilter("money", { keywords: ["education"] }) });
+  assert.equal(focus, null);
 });
 
 test("a malformed ?w= still yields the correct id and a null watch -- never a broken page", () => {
-  const { id, watch } = parseNoticeHashSegment("20260701099?w=not-json-and-not-even-percent-encoded-properly%");
+  const { id, watch, focus } = parseNoticeHashSegment("20260701099?w=not-json-and-not-even-percent-encoded-properly%");
   assert.equal(id, "20260701099");
   assert.equal(watch, null);
+  assert.equal(focus, null);
 });
 
 test("a '?' with no w= param at all (some other query the link author added) also yields watch:null", () => {
-  assert.deepEqual(parseNoticeHashSegment("20260701099?utm_source=email"), { id: "20260701099", watch: null });
+  assert.deepEqual(parseNoticeHashSegment("20260701099?utm_source=email"), { id: "20260701099", watch: null, focus: null });
+});
+
+test("focus=follow-the-dollars deep-links into the notice payment panel without losing id", () => {
+  const parsed = parseNoticeHashSegment("20260623008?focus=follow-the-dollars");
+  assert.deepEqual(parsed, { id: "20260623008", watch: null, focus: "follow-the-dollars" });
 });

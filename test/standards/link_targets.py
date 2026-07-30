@@ -111,6 +111,9 @@ EXTERNAL_HREF_EXPRS = (
     "${lifecycleSourceUrl}",          # Checkbook NYC contract search or matched contract
     "${CHECKBOOK_SPENDING_URL}",      # Checkbook NYC spending search
     "${CHECKBOOK_SEARCH_URL}",        # Checkbook NYC contract search (registration gap CTA)
+    "${checkbookSearchUrl(",          # Checkbook NYC smart_search (contract id / PIN / vendor)
+    "${checkbookHref}",               # provenance note: scoped Checkbook URL for this PIN/contract
+    "${fallbackCheckbook}",           # registration-gap CTA: best available Checkbook search URL
     "${CURRENT_SOLICITATIONS_URL}",   # NYC Open Data Current Solicitations (3khw-qi8f) landing page
     "${OCP_AWARDS_URL}",              # OCP Recent Contract Awards Open Data (qyyg-4tf5)
     "${contractLink}",                # Checkbook NYC smart_search for a matched contract id

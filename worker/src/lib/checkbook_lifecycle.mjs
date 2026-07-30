@@ -327,10 +327,12 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
   });
 
   // --- Checkbook spending stage ---
+  // Three-state payment honesty:
+  //   1. spending transactions present → real paid amount (payment_state: "paid")
+  //   2. spending feed healthy + empty → verified $0 / registered spent
+  //      (payment_state: "verified_zero" | "from_registered")
+  //   3. spending feed error → unavailable (never a confident $0 fallback)
   // Multiple payments are normal over a contract's life, so 1+ records = matched.
-  // When the registered contracts join already carries spent_to_date (including $0),
-  // payment is a known fact from that join — never a "not yet shown" gap in parallel
-  // with Follow-the-Dollars Paid to date. Gap only when no registered Checkbook record.
   let spendStatus;
   let payDetail = null;
   let payDate = null;
@@ -348,10 +350,28 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
       latest_payment_date: latestPayment ? latestPayment.date : null,
       latest_payment_amount: latestPayment ? latestPayment.amount : null,
       fiscal_year: latestPayment ? latestPayment.year : null,
+      payment_state: "paid",
     };
+  } else if (lookupStatus.spending === "error") {
+    // HONESTY: never paint a confident $0 (or any amount) when the spending lookup failed.
+    // With a registered join present, surface an explicit unavailable payment card.
+    // With no registration either, leave payment as unknown (total Checkbook failure).
+    if (regStatus === "matched") {
+      spendStatus = "matched";
+      payDetail = {
+        total_payments: null,
+        total_spent: null,
+        latest_payment_date: null,
+        latest_payment_amount: null,
+        fiscal_year: null,
+        payment_state: "unavailable",
+      };
+    } else {
+      spendStatus = "unknown";
+    }
   } else if (regStatus === "matched") {
-    // Empty spending feed or spending-domain error: still a joined payment fact from
-    // the registered contract (spent_to_date, including $0 / normal lag).
+    // Spending feed healthy — use registered spent_to_date as the verified figure
+    // (often $0 / normal lag on a young contract).
     const spent = Number(registered[0].spent) || 0;
     spendStatus = "matched";
     payDetail = {
@@ -361,9 +381,8 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
       latest_payment_amount: null,
       fiscal_year: null,
       derived_from: "registered",
+      payment_state: spent === 0 ? "verified_zero" : "from_registered",
     };
-  } else if (lookupStatus.spending === "error") {
-    spendStatus = "unknown";
   } else {
     spendStatus = "unmatched";
   }
@@ -390,7 +409,8 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
 
   // ok: true when every Checkbook stage is resolved to a public-facing status
   // (matched / unmatched / ambiguous / passed / not_applicable) — not stuck on unknown.
-  // Spending errors recovered via registered.spent count as resolved.
+  // Spending errors surface as payment_state "unavailable" (matched, resolved) so the
+  // cache still serves an honest unavailable card instead of inventing $0.
   const unresolved = timeline.some((e) => e.status === "unknown");
   const ok = !unresolved;
 
