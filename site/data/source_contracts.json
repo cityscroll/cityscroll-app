@@ -696,6 +696,40 @@
       "delivery_tier": "live-only"
     },
     {
+      "id": "ocp-current-solicitations",
+      "name": "Current Solicitations (OCP / Open Data)",
+      "owner": "NYC Department of Citywide Administrative Services",
+      "status": "live",
+      "scope": "runtime",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "3khw-qi8f",
+      "landing_page": "https://data.cityofnewyork.us/d/3khw-qi8f",
+      "required_fields": [
+        "request_id",
+        "start_date",
+        "agency_name",
+        "type_of_notice_description",
+        "short_title",
+        "due_date"
+      ],
+      "max_stale_days": 7,
+      "publisher_cadence": "Daily (Open Data automation metadata)",
+      "product_freshness": "Joined at lifecycle compute time and cached with the procurement timeline in D1; a stale or unreachable view leaves City Record stages intact and marks the package-documents sub-slot unknown.",
+      "used_for": "Procurement lifecycle solicitation-stage package enrichment: document links, due dates, and contact fields joined to City Record notices by request_id or PIN.",
+      "code_references": [
+        {
+          "path": "worker/src/checkbook_lifecycle.mjs",
+          "contains": "3khw-qi8f"
+        },
+        {
+          "path": "worker/src/lib/current_solicitations.mjs",
+          "contains": "3khw-qi8f"
+        }
+      ],
+      "delivery_tier": "edge-materialized"
+    },
+    {
       "id": "nyc-rules-rss",
       "name": "NYC Rules RSS feed",
       "owner": "NYC Office of the Mayor",

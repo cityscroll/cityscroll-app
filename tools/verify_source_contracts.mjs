@@ -32,7 +32,8 @@ export async function verifySocrata(contract) {
   const metadataResponse = await fetch(`${contract.domain}/api/views/${contract.dataset_id}`);
   if (!metadataResponse.ok) throw new Error(`${contract.id}: metadata HTTP ${metadataResponse.status}`);
   const metadata = await responseJson(metadataResponse, contract.id);
-  if (!["dataset", "table"].includes(metadata.assetType)) {
+  // "filter" is a Socrata filtered view (e.g. Current Solicitations 3khw-qi8f) — still tabular.
+  if (!["dataset", "table", "filter"].includes(metadata.assetType)) {
     throw new Error(`${contract.id}: expected a tabular dataset, got ${metadata.assetType || "unknown"}`);
   }
   const fields = new Set((metadata.columns || []).map((column) => column.fieldName));

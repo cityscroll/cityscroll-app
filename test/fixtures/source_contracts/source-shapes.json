@@ -370,6 +370,33 @@
       "machine_endpoint": "dataJs/rfxData.js",
       "machine_response_type": "application/javascript",
       "machine_var": "public_rfx_data"
+    },
+    {
+      "id": "ocp-current-solicitations",
+      "kind": "socrata",
+      "identifier": "3khw-qi8f",
+      "asset_type": "filter",
+      "sample_type": "array<object>",
+      "fields": [
+        "request_id",
+        "start_date",
+        "end_date",
+        "agency_name",
+        "type_of_notice_description",
+        "category_description",
+        "short_title",
+        "selection_method_description",
+        "section_name",
+        "special_case_reason_description",
+        "pin",
+        "due_date",
+        "address_to_request",
+        "contact_name",
+        "contact_phone",
+        "email",
+        "contract_amount",
+        "document_links"
+      ]
     }
   ]
 }

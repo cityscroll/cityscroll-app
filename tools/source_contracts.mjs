@@ -118,7 +118,8 @@ export function validateSourceContractFixtures(registry, fixtures) {
     if (missing.length) errors.push(`${contract.id}: fixture is missing fields ${missing.join(", ")}`);
 
     if (contract.kind === "socrata") {
-      if (!["dataset", "table"].includes(fixture.asset_type)) {
+      // "filter" is a Socrata filtered view of a dataset — still tabular JSON.
+      if (!["dataset", "table", "filter"].includes(fixture.asset_type)) {
         errors.push(`${contract.id}: fixture is not tabular Socrata metadata`);
       }
       if (fixture.sample_type !== "array<object>") {

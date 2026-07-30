@@ -25,9 +25,12 @@ import {
 } from "./lib/checkbook_lifecycle.mjs";
 import { enrichLifecycleWithPassport } from "./lib/passport_lifecycle.mjs";
 import { lookupPassportForPin } from "./passport.mjs";
+import { CURRENT_SOLICITATIONS_DATASET } from "./lib/current_solicitations.mjs";
 
 const CHECKBOOK = "https://www.checkbooknyc.com/api";
 const SODA_NYC = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
+const SODA_CURRENT_SOLICITATIONS =
+  `https://data.cityofnewyork.us/resource/${CURRENT_SOLICITATIONS_DATASET}.json`;
 
 const PAGE_SIZE = 25;
 const MAX_PAGES = 4; // 4 × 25 = 100 records cap per domain per notice
@@ -139,6 +142,56 @@ export async function fetchNoticeRow(env, requestId) {
 }
 
 // ---------------------------------------------------------------------------
+// Current Solicitations (3khw-qi8f) — package enrichment lookup
+// ---------------------------------------------------------------------------
+
+// Bounded SODA fetch for rows that may join this notice (request_id first, then pin).
+// Fail-soft: network/HTTP errors → { status: "error", rows: [] } so the timeline keeps
+// City Record + Checkbook stages and marks the documents sub-slot unknown.
+const CS_SELECT = [
+  "request_id", "start_date", "agency_name", "type_of_notice_description",
+  "short_title", "selection_method_description", "pin", "due_date",
+  "contact_name", "contact_phone", "email", "address_to_request", "document_links",
+].join(",");
+
+export async function fetchCurrentSolicitationRows(noticeRow) {
+  const r = noticeRow || {};
+  const rows = [];
+  const seen = new Set();
+
+  async function pull(where, limit = 10) {
+    const params = new URLSearchParams({
+      "$select": CS_SELECT,
+      "$where": where,
+      "$limit": String(limit),
+    });
+    const res = await fetch(`${SODA_CURRENT_SOLICITATIONS}?${params}`);
+    if (!res.ok) throw new Error(`current-solicitations SODA ${res.status}`);
+    const data = await res.json();
+    if (!Array.isArray(data)) throw new Error("current-solicitations SODA non-array");
+    for (const row of data) {
+      const key = row && row.request_id != null ? String(row.request_id) : JSON.stringify(row);
+      if (seen.has(key)) continue;
+      seen.add(key);
+      rows.push(row);
+    }
+  }
+
+  try {
+    if (r.request_id) {
+      await pull(`request_id='${sq(r.request_id)}'`, 5);
+    }
+    // Also gather pin-siblings when a usable PIN is present (award → prior solicitation).
+    if (usablePin(r.pin) && rows.length === 0) {
+      await pull(`pin='${sq(r.pin)}'`, 15);
+    }
+    return { status: "ok", rows };
+  } catch {
+    return { status: "error", rows: [] };
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Lifecycle computation
 // ---------------------------------------------------------------------------
 
@@ -146,18 +199,25 @@ export async function fetchNoticeRow(env, requestId) {
 // Returns { lifecycle, ok }: ok=false when the notice is unresolvable or all Checkbook
 // lookups fail. A notice without a usable PIN returns a lifecycle with all Checkbook
 // stages marked "unknown" — the reader sees an explicit statement, not a blank.
+// Current Solicitations enrichment is fail-soft and does not flip lifecycle.ok.
 export async function computeLifecycle(env, requestId, noticeRow) {
   const r = noticeRow === undefined ? await fetchNoticeRow(env, requestId) : noticeRow;
   if (!r) return { lifecycle: null, ok: false };
+
+  // Kick off Current Solicitations enrichment in parallel with Checkbook work.
+  const csPromise = fetchCurrentSolicitationRows(r);
 
   const { pins, strategy } = pinMatchStrategy(r.pin);
   if (pins.length === 0) {
     // No PIN → not a transient Checkbook failure. Stages are not_applicable; the
     // renderer collapses them into the single class-(b) no-PIN note.
+    // Current Solicitations may still join package docs by request_id.
+    const currentSolicitation = await csPromise;
     return {
       lifecycle: assembleLifecycle(r, [], [], [], {
         pinStrategy: "none",
         lookupStatus: { pending: "skip", registered: "skip", spending: "skip" },
+        currentSolicitation,
       }),
       ok: true,
     };
@@ -195,9 +255,11 @@ export async function computeLifecycle(env, requestId, noticeRow) {
     spending: spending.ok ? "ok" : "error",
   };
 
+  const currentSolicitation = await csPromise;
   let lifecycle = assembleLifecycle(r, pending.records, registered.records, spending.records, {
     pinStrategy: pinStrategyUsed,
     lookupStatus,
+    currentSolicitation,
   });
 
   // PASSPort Public edge materialization: fill pending/registered gaps and enrich RFx.
