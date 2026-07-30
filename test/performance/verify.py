@@ -267,7 +267,15 @@ def nav_metrics(page: Page) -> dict[str, float]:
 
 
 def wait_for_home(page: Page) -> None:
-    page.locator("#todaystrip .t-card").first.wait_for(state="visible")
+    # Edition cards removed; readiness is the compact today strip (date + summary) + list.
+    page.wait_for_function(
+        """() => {
+          const strip = document.getElementById('todaystrip');
+          const big = document.getElementById('tbig');
+          return strip && strip.getAttribute('aria-busy') === 'false'
+            && big && big.textContent && big.textContent.trim().length > 0;
+        }"""
+    )
     page.wait_for_timeout(120)
 
 

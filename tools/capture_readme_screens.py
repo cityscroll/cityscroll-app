@@ -108,7 +108,7 @@ def capture_homepage(page: Page) -> None:
             && strip.getAttribute('aria-busy') === 'false'
             && (document.querySelector('#tdate')?.textContent || '').trim().length > 0
             && (document.querySelector('#tbig')?.textContent || '').trim().length > 0
-            && document.querySelectorAll('#tcards > *').length > 0;
+            && document.querySelectorAll('#tcounts > *').length > 0;
           const listReady = document.querySelectorAll('#list .row').length > 0
             && !document.querySelector('#list .empty.skel');
           const scenarios = document.querySelectorAll('.scenario-card').length >= 1;

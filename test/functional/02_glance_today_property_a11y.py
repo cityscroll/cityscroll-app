@@ -27,12 +27,14 @@ with sync_playwright() as pw:
     page.wait_for_selector("#list .row", timeout=30000)
     try:
         page.wait_for_function("!document.getElementById('todaystrip').hidden", timeout=20000)
+        page.wait_for_function("document.getElementById('todaystrip').getAttribute('aria-busy')==='false' && !!document.getElementById('tbig')?.textContent?.trim()", timeout=20000)
         tbig = page.locator("#tbig").inner_text()
         counts = page.locator("#tcounts a").count()
-        cards = page.locator("#tcards .t-card").count()
-        hrefs = page.evaluate("[...document.querySelectorAll('#tcards .t-card')].map(a=>a.getAttribute('href'))")
-        ok = counts >= 2 and cards >= 2 and all(h.startswith("#notice/") for h in hrefs)
-        step("OK" if ok else "FAIL", "#7 Today strip renders", f"{tbig!r}, {counts} lens links, {cards} cards, hrefs ok={all(h.startswith('#notice/') for h in hrefs)}")
+        cards = page.locator("#tcards .t-card").count() if page.locator("#tcards").count() else 0
+        static_counts = page.locator("#tcounts .t-count-static").count()
+        # Edition highlight cards removed (noise reduction); compact date line + section counts remain.
+        ok = counts >= 1 and cards == 0 and bool(tbig.strip())
+        step("OK" if ok else "FAIL", "#7 Today strip renders", f"{tbig!r}, {counts} lens links, {cards} cards, {static_counts} static counts")
     except Exception as e:
         step("FAIL", "#7 Today strip renders", str(e)[:120])
     page.screenshot(path=SHOT + "today.png")

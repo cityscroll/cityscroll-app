@@ -289,9 +289,8 @@ def run_subpage(pw, lang, page, frags):
     page_obj.wait_for_load_state("load")
     page_obj.wait_for_timeout(1000)
 
-    btn = page_obj.locator(f'#langSwitcher .lang-btn[data-lang="{lang}"]')
-    assert btn.count(), f"{page}.html: no language button for {lang!r} — add the shared switcher"
-    btn.click()
+    assert page_obj.locator("#langSelect").count(), f"{page}.html: no language dropdown for {lang!r} — add the shared switcher"
+    page_obj.select_option("#langSelect", lang)
     page_obj.wait_for_timeout(800)
 
     violations, seen = [], set()
@@ -340,9 +339,8 @@ def run_notice_deep_link(pw, lang, frags):
     page.goto(f"{BASE}#notice/{NOTICE_PERMALINK_ID}", timeout=30000)
     page.wait_for_load_state("load")
     page.wait_for_timeout(1200)
-    btn = page.locator(f'#langSwitcher .lang-btn[data-lang="{lang}"]')
-    assert btn.count(), f"no language button for {lang!r} — add it before activating its guard"
-    btn.click()
+    assert page.locator("#langSelect").count(), f"no language dropdown for {lang!r} — add it before activating its guard"
+    page.select_option("#langSelect", lang)
     page.wait_for_timeout(1200)
     seen = set()
     collect(page, "notice-deep-link (switched while viewing)", frags, violations, seen)
@@ -375,9 +373,8 @@ def run_lang(pw, lang):
     page.wait_for_load_state("load")
     page.wait_for_timeout(1500)
 
-    btn = page.locator(f'#langSwitcher .lang-btn[data-lang="{lang}"]')
-    assert btn.count(), f"no language button for {lang!r} — add it before activating its guard"
-    btn.click()
+    assert page.locator("#langSelect").count(), f"no language dropdown for {lang!r} — add it before activating its guard"
+    page.select_option("#langSelect", lang)
     page.wait_for_timeout(1500)
 
     violations, seen = [], set()

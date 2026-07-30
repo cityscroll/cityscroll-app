@@ -245,7 +245,7 @@ def verify_interactions(browser) -> None:
         page.locator("#searchactions-land [data-search-copy]").click()
         assert page.evaluate("navigator.clipboard.readText()") == base_url + LAND_HASH
 
-        page.locator('.lang-btn[data-lang="es"]').click()
+        page.select_option("#langSelect", "es")
         page.wait_for_function(
             "() => document.querySelector('#searchstate-land')?.textContent.includes('Distrito')"
         )
@@ -254,7 +254,7 @@ def verify_interactions(browser) -> None:
             page.locator("#searchactions-land").text_content() or ""
         )
         assert "Contratos" in (page.locator("#nlpresets-land").text_content() or "")
-        page.locator('.lang-btn[data-lang="en"]').click()
+        page.select_option("#langSelect", "en")
         page.wait_for_function("document.documentElement.lang === 'en'")
 
         page.locator("#searchactions-land [data-search-save]").click()
