@@ -3,10 +3,11 @@
 // come from the same compileSub() queries the cron replays; entry links land on the site's
 // #notice/<id> permalinks.
 
+import { cleanNoticeText as stripHtml } from "../../../site/text_clean.mjs";
+
 const esc = (s) => String(s == null ? "" : s).replace(/[<>&"']/g, (c) => ({
   "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;", "'": "&#39;",
 }[c]));
-const stripHtml = (s) => String(s == null ? "" : s).replace(/<[^>]*>/g, " ").replace(/&nbsp;/gi, " ").replace(/\s+/g, " ").trim();
 const usd = (n) => (n == null || n === "" || !Number(n) ? "" : "$" + Number(n).toLocaleString("en-US"));
 const d10 = (s) => (s ? String(s).slice(0, 10) : "");
 

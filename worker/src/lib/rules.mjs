@@ -1,6 +1,7 @@
 // Pure parsing, lifecycle classification, and join logic for the NYC Rules
-// materialized view. Kept dependency-free so it can run in both the Worker and
-// the site's contract-test lane.
+// materialized view. Runs in both the Worker and the site's contract-test lane.
+
+import { cleanNoticeText } from "../../../site/text_clean.mjs";
 
 // ---------------------------------------------------------------------------
 // Agency name normalization
@@ -71,15 +72,7 @@ function extractTag(block, tag) {
 }
 
 function stripHtml(s) {
-  if (!s) return "";
-  return s
-    .replace(/<[^>]+>/g, " ")
-    .replace(/&nbsp;/g, " ")
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/\s+/g, " ")
-    .trim();
+  return cleanNoticeText(s);
 }
 
 function parseCompactDate(s) {
