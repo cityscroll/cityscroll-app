@@ -599,6 +599,7 @@
     lifecycle_paid_to_date_html: "اب تک ادا شدہ: {amount}",
     lifecycle_payment_summary_html: "{committed} عہد میں سے {paid} ادا شدہ",
     lifecycle_payment_zero_lag_html: "ادائیگیاں انوائسنگ سے پیچھے رہتی ہیں — تازہ درج معاہدے پر $0 ادا شدہ معمول ہے۔",
+    lifecycle_committed_ceiling_note_html: "مقررہ رقم رجسٹریشن کی بالائی حد ہے، بقایا رقم نہیں — انسانی خدمات کے معاہدے اکثر رجسٹرڈ رقم سے کم پر ختم ہوتے ہیں۔",
     lifecycle_payment_unavailable_html: "ادائیگی کا ڈیٹا اب دستیاب نہیں — Checkbook اخراجات چیک نہیں ہو سکے۔",
     lifecycle_dollars_paid_unavailable_html: "اب دستیاب نہیں",
     lifecycle_payment_details_link_html: "تفصیل کے لیے <a href=\"{href}\">رقم کی پیروی کریں</a>۔",

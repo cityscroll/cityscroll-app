@@ -599,6 +599,7 @@
     lifecycle_paid_to_date_html: "المدفوع حتى الآن: {amount}",
     lifecycle_payment_summary_html: "{paid} مدفوع من {committed} ملتزم",
     lifecycle_payment_zero_lag_html: "تتأخر المدفوعات عن الفوترة — $0 على عقد مُسجَّل حديثًا أمر طبيعي.",
+    lifecycle_committed_ceiling_note_html: "المبلغ الملتزم به سقف تسجيل وليس رصيدًا متبقيًا — عقود الخدمات الإنسانية غالبًا تُغلق دون المبلغ المسجَّل.",
     lifecycle_payment_unavailable_html: "بيانات الدفع غير متاحة الآن — تعذّر التحقق من إنفاق Checkbook.",
     lifecycle_dollars_paid_unavailable_html: "غير متاح الآن",
     lifecycle_payment_details_link_html: "<a href=\"{href}\">تتبّع الأموال</a> للتفاصيل.",

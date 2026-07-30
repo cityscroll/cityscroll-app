@@ -64,6 +64,9 @@ const sandbox = new Function(
   extractConst("LIFECYCLE_DOLLARS_ANCHOR") +
   extractFn("lifecycleDollarsFocusHref") +
   extractFn("lifecyclePaymentState") +
+  extractFn("lifecycleResolvedPayment") +
+  extractFn("lifecycleTermEnded") +
+  extractFn("lifecycleCommittedUnderrun") +
   extractFn("lifecyclePaymentSummaryHTML") +
   extractFn("lifecycleSourceLink") +
   extractFn("lifecycleDocumentsHTML") +
