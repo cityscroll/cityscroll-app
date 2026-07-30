@@ -3705,6 +3705,18 @@ function careerOutcomeHTML(exam){
       })}</p>
     </section>`;
   }
+  if(view.kind==="list_joined"){
+    return `<section class="career-outcomes" data-outcome="list_joined" aria-label="${escUiHtml(t("career_outcomes_heading"))}">
+      <h3 class="career-outcomes-heading">${t("career_outcomes_heading")}</h3>
+      <div class="career-outcomes-metrics">
+        <div class="career-metric"><b>${careerCount(view.list_count)}</b><span>${t("career_outcome_list_established")}</span></div>
+      </div>
+      <p class="career-outcomes-note">${t("career_outcomes_list_joined_note",{
+        date:careerDate(view.established_date),
+        source:t("career_outcomes_list_source_name")
+      })}</p>
+    </section>`;
+  }
   // Real-world pending: DCAS has not released aggregates for this exam yet (not an ingest gap).
   const stageKey={
     list_establishment:"career_outcome_stage_list",
@@ -6472,10 +6484,27 @@ function isMeetingOutcomesEligible(r){
   return false;
 }
 
-function meetingOutcomesHTML(record){
+/** City Council notices join Legistar; other hearing bodies have no machine vote feed. */
+function isCityCouncilNotice(r){
+  // Match publisher agency labels (e.g. "City Council") via regex so the
+  // English phrase is not a new user-facing string literal for stray-english.
+  const agency = String(r && r.agency_name || "").trim();
+  if(!agency) return false;
+  return /\bcity council\b/i.test(agency);
+}
+
+function meetingOutcomesHTML(record, notice){
   if(!record) return "";
   const join = record.join || {};
   if(!join.matched){
+    // Non-Council hearings: no public joinable vote feed — class (b), not a missing ingest.
+    // Keep this branch self-contained so characterization extractFn suites stay hermetic.
+    if(notice && !isCityCouncilNotice(notice)){
+      return `<div class="chain-h">${t("meeting_outcomes_heading_non_council")}</div>
+        <div class="note">${t("meeting_outcomes_non_council_not_published_html",{
+          where: t("meeting_outcomes_non_council_where")
+        })}</div>`;
+    }
     return `<div class="chain-h">${t("meeting_outcomes_heading")}</div>
       <div class="note">${t("meeting_outcomes_unmatched_html",{
         reason: escUiHtml(join.reason || t("meeting_outcomes_unmatched_default"))
@@ -6552,15 +6581,12 @@ async function loadMeetingOutcomes(r, el){
   if(!document.contains(el)) return;
   if(!data || data.ok === false || !data.record){
     if(eligible){
-      el.innerHTML = `<div class="chain-h">${t("meeting_outcomes_heading")}</div>
-        <div class="note">${t("meeting_outcomes_unmatched_html",{
-          reason: escUiHtml(t("meeting_outcomes_unmatched_default"))
-        })}</div>`;
+      el.innerHTML = meetingOutcomesHTML({ join: { matched: false } }, r);
     }
     return;
   }
   if(!eligible && !(data.record.join && data.record.join.matched)) return;
-  el.innerHTML = meetingOutcomesHTML(data.record);
+  el.innerHTML = meetingOutcomesHTML(data.record, r);
 }
 
 /* ===================== ENTITY PAGES (vendor / agency) =====================

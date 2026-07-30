@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-28",
+  "generated_at": "2026-07-30",
   "data_current_as_of": "2026-07-22",
   "interest_areas": [
     "public-safety",
@@ -75,6 +75,10 @@
       "candidate_rows": "183",
       "accepted_exam_announcements": 0,
       "finding": "The City Record dataset does not expose DCAS Notices of Examination as a notice section. DCAS schedule pages and NOEs are the authoritative application sources."
+    },
+    "list_aggregates": {
+      "distinct_exams": 853,
+      "total_list_rows_sum": 408068
     }
   },
   "outcomes": {
@@ -113,6 +117,20 @@
       "count": 2
     }
   },
+  "list_aggregates": {
+    "source": {
+      "id": "dcas-active-civil-service-list",
+      "name": "Civil Service List (Active) — exam-level aggregates only",
+      "dataset_id": "vx8i-nprf",
+      "landing_page": "https://data.cityofnewyork.us/d/vx8i-nprf",
+      "fetched_at": "2026-07-30",
+      "privacy": "Only exam-level counts and list dates are retained; candidate records and names are not copied."
+    },
+    "summary": {
+      "distinct_exams": 853,
+      "total_list_rows_sum": 408068
+    }
+  },
   "exams": [
     {
       "exam_number": "6125",
@@ -144,7 +162,8 @@
         "hire_count": 68,
         "published_on": "2026-07-22"
       },
-      "outcome_gap": null
+      "outcome_gap": null,
+      "list_aggregate": null
     },
     {
       "exam_number": "6126",
@@ -171,7 +190,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7006",
@@ -205,7 +225,8 @@
         "hire_count": 40,
         "published_on": "2026-07-22"
       },
-      "outcome_gap": null
+      "outcome_gap": null,
+      "list_aggregate": null
     },
     {
       "exam_number": "7007",
@@ -223,7 +244,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7013",
@@ -252,7 +274,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7016",
@@ -280,7 +303,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7018",
@@ -308,7 +332,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7514",
@@ -326,7 +351,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7524",
@@ -344,7 +370,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7311",
@@ -362,7 +389,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7323",
@@ -390,7 +418,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7331",
@@ -418,7 +447,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7312",
@@ -436,7 +466,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7508",
@@ -454,7 +485,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7509",
@@ -472,7 +504,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7023",
@@ -490,7 +523,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7028",
@@ -508,7 +542,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7029",
@@ -526,7 +561,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7033",
@@ -544,7 +580,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7522",
@@ -562,7 +599,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7056",
@@ -580,7 +618,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7527",
@@ -598,7 +637,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7070",
@@ -616,7 +656,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7313",
@@ -634,7 +675,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7002",
@@ -652,7 +694,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7501",
@@ -670,7 +713,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7003",
@@ -688,7 +732,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7502",
@@ -706,7 +751,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7507",
@@ -724,7 +770,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7302",
@@ -742,7 +789,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7034",
@@ -760,7 +808,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7035",
@@ -778,7 +827,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7036",
@@ -796,7 +846,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7041",
@@ -814,7 +865,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7307",
@@ -832,7 +884,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7065",
@@ -850,7 +903,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7327",
@@ -868,7 +922,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7329",
@@ -886,7 +941,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7539",
@@ -904,7 +960,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7314",
@@ -922,7 +979,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7010",
@@ -940,7 +998,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7011",
@@ -958,7 +1017,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7012",
@@ -976,7 +1036,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7512",
@@ -994,7 +1055,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7513",
@@ -1012,7 +1074,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7024",
@@ -1030,7 +1093,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7027",
@@ -1048,7 +1112,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7031",
@@ -1066,7 +1131,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7032",
@@ -1084,7 +1150,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7047",
@@ -1102,7 +1169,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7052",
@@ -1120,7 +1188,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7054",
@@ -1138,7 +1207,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7324",
@@ -1156,7 +1226,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7533",
@@ -1174,7 +1245,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7315",
@@ -1192,7 +1264,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7000",
@@ -1210,7 +1283,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7001",
@@ -1228,7 +1302,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7500",
@@ -1246,7 +1321,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7009",
@@ -1264,7 +1340,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7015",
@@ -1282,7 +1359,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7017",
@@ -1300,7 +1378,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7030",
@@ -1318,7 +1397,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7040",
@@ -1336,7 +1416,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7050",
@@ -1354,7 +1435,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7525",
@@ -1372,7 +1454,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7058",
@@ -1390,7 +1473,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7332",
@@ -1408,7 +1492,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7074",
@@ -1426,7 +1511,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7316",
@@ -1444,7 +1530,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7019",
@@ -1462,7 +1549,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7020",
@@ -1480,7 +1568,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7515",
@@ -1498,7 +1587,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7305",
@@ -1516,7 +1606,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7038",
@@ -1534,7 +1625,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7039",
@@ -1552,7 +1644,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7308",
@@ -1570,7 +1663,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7528",
@@ -1588,7 +1682,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7061",
@@ -1606,7 +1701,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7068",
@@ -1624,7 +1720,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7538",
@@ -1642,7 +1739,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7069",
@@ -1660,7 +1758,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7317",
@@ -1678,7 +1777,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7021",
@@ -1696,7 +1796,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7516",
@@ -1714,7 +1815,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7303",
@@ -1732,7 +1834,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7026",
@@ -1750,7 +1853,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7057",
@@ -1768,7 +1872,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7530",
@@ -1786,7 +1891,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7059",
@@ -1804,7 +1910,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7063",
@@ -1822,7 +1929,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7532",
@@ -1840,7 +1948,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7064",
@@ -1858,7 +1967,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7325",
@@ -1876,7 +1986,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7540",
@@ -1894,7 +2005,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7318",
@@ -1912,7 +2024,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7008",
@@ -1930,7 +2043,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7073",
@@ -1948,7 +2062,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7517",
@@ -1966,7 +2081,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7042",
@@ -1984,7 +2100,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7043",
@@ -2002,7 +2119,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7523",
@@ -2020,7 +2138,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7048",
@@ -2038,7 +2157,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7049",
@@ -2056,7 +2176,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7053",
@@ -2074,7 +2195,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7536",
@@ -2092,7 +2214,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7333",
@@ -2110,7 +2233,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7319",
@@ -2128,7 +2252,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7005",
@@ -2146,7 +2271,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7504",
@@ -2164,7 +2290,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7506",
@@ -2182,7 +2309,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7510",
@@ -2200,7 +2328,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7045",
@@ -2218,7 +2347,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7046",
@@ -2236,7 +2366,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7051",
@@ -2254,7 +2385,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7309",
@@ -2272,7 +2404,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7062",
@@ -2290,7 +2423,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7328",
@@ -2308,7 +2442,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7330",
@@ -2326,7 +2461,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7320",
@@ -2344,7 +2480,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7004",
@@ -2362,7 +2499,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7503",
@@ -2380,7 +2518,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7072",
@@ -2398,7 +2537,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7014",
@@ -2416,7 +2556,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7304",
@@ -2434,7 +2575,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7306",
@@ -2452,7 +2594,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7037",
@@ -2470,7 +2613,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7518",
@@ -2488,7 +2632,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7044",
@@ -2506,7 +2651,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7521",
@@ -2524,7 +2670,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7326",
@@ -2542,7 +2689,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7534",
@@ -2560,7 +2708,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7321",
@@ -2578,7 +2727,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7505",
@@ -2596,7 +2746,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7301",
@@ -2614,7 +2765,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7022",
@@ -2632,7 +2784,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7025",
@@ -2650,7 +2803,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7520",
@@ -2668,7 +2822,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7535",
@@ -2686,7 +2841,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7334",
@@ -2704,7 +2860,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7322",
@@ -2722,7 +2879,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7071",
@@ -2740,7 +2898,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7541",
@@ -2758,7 +2917,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7511",
@@ -2776,7 +2936,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7526",
@@ -2794,7 +2955,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7310",
@@ -2812,7 +2974,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7529",
@@ -2830,7 +2993,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7060",
@@ -2848,7 +3012,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7531",
@@ -2866,7 +3031,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7066",
@@ -2884,7 +3050,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7067",
@@ -2902,7 +3069,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     },
     {
       "exam_number": "7537",
@@ -2920,7 +3088,8 @@
       "outcome_gap": {
         "class": "not_published",
         "pending_stage": "list_establishment"
-      }
+      },
+      "list_aggregate": null
     }
   ]
 }

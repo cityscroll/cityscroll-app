@@ -56,7 +56,7 @@
       ],
       "publisher_cadence": "Daily",
       "product_freshness": "Freshness depends on the Build NYC document publication page; the worker caches joined lifecycle records for read-path latency.",
-      "used_for": "City Record ↔ Build NYC subsidy timeline joins for application, hearing, board, closing, and compliance stages.",
+      "used_for": "City Record \u2194 Build NYC subsidy timeline joins for application, hearing, board, closing, and compliance stages.",
       "code_references": [
         {
           "path": "worker/src/subsidy_lifecycle.mjs",
@@ -191,7 +191,7 @@
     },
     {
       "id": "abo-local-authorities",
-      "name": "NYS Authorities Budget Office — local authorities",
+      "name": "NYS Authorities Budget Office \u2014 local authorities",
       "owner": "NYS Authorities Budget Office",
       "status": "live",
       "scope": "runtime",
@@ -220,7 +220,7 @@
     },
     {
       "id": "abo-local-development-corporations",
-      "name": "NYS Authorities Budget Office — local development corporations",
+      "name": "NYS Authorities Budget Office \u2014 local development corporations",
       "owner": "NYS Authorities Budget Office",
       "status": "live",
       "scope": "runtime",
@@ -249,7 +249,7 @@
     },
     {
       "id": "abo-state-authorities",
-      "name": "NYS Authorities Budget Office — state authorities",
+      "name": "NYS Authorities Budget Office \u2014 state authorities",
       "owner": "NYS Authorities Budget Office",
       "status": "live",
       "scope": "runtime",
@@ -324,8 +324,8 @@
       ],
       "max_stale_days": 14,
       "publisher_cadence": "Frequent list updates",
-      "product_freshness": "Queried live for list checks and captured in the Staffing build.",
-      "used_for": "Competitive-list checks and active-list totals.",
+      "product_freshness": "Queried live for list checks; exam-level aggregates captured at build into data/exam_sources/civil_service_list_aggregates.json and joined onto staffing exam cards.",
+      "used_for": "Competitive-list checks, active-list totals, and post-list aggregate depth on exam cards (list_count and established dates only \u2014 never per-applicant rows).",
       "code_references": [
         {
           "path": "index.html",
@@ -334,9 +334,48 @@
         {
           "path": "tools/build_staffing_exams.mjs",
           "contains": "vx8i-nprf"
+        },
+        {
+          "path": "worker/src/lib/civil_service_list_join.mjs",
+          "contains": "joinExamToListAggregate"
+        },
+        {
+          "path": "site/data/exam_sources/civil_service_list_aggregates.json",
+          "contains": "list_count"
+        },
+        {
+          "path": "site/data/exam_sources/verification_receipts/civil_service_list_closed_exams_2026-07-30.json",
+          "contains": "closed_exams_list_presence"
+        },
+        {
+          "path": "staffing.js",
+          "contains": "list_joined"
         }
       ],
-      "delivery_tier": "live-only"
+      "delivery_tier": "live-only",
+      "join_keys": [
+        "exam_no"
+      ],
+      "join_measurement": {
+        "observed_on": "2026-07-30",
+        "universe_closed": "Annual Examination Schedule (4ptz-hmtc) distinct exam_number with application_period_end_date < 2026-07-30",
+        "universe_open": "same schedule with application_period_end_date >= 2026-07-30",
+        "strategy": "exact exam_number \u2194 exam_no (zero-pad variants). Aggregates only via group-by.",
+        "rates": {
+          "closed_exams_list_presence": {
+            "joined": 494,
+            "total": 1109,
+            "rate": 0.4454
+          },
+          "open_exams_list_presence": {
+            "joined": 0,
+            "total": 141,
+            "rate": 0.0
+          }
+        },
+        "usefulness_threshold": 0.3,
+        "verdict": "Closed-exam overlap 44.54% meets >=30%. Ship build-time post-list aggregates; never ship per-applicant rows."
+      }
     },
     {
       "id": "annual-examination-schedule",
@@ -402,7 +441,7 @@
     },
     {
       "id": "zap-projects",
-      "name": "Zoning Application Portal — projects",
+      "name": "Zoning Application Portal \u2014 projects",
       "owner": "NYC Department of City Planning",
       "status": "live",
       "scope": "runtime",
@@ -431,7 +470,7 @@
     },
     {
       "id": "zap-bbl",
-      "name": "Zoning Application Portal — tax lots",
+      "name": "Zoning Application Portal \u2014 tax lots",
       "owner": "NYC Department of City Planning",
       "status": "live",
       "scope": "runtime",
@@ -460,7 +499,7 @@
     },
     {
       "id": "zap-api-outcomes",
-      "name": "Zoning Application Portal — project outcomes (Planning Labs API)",
+      "name": "Zoning Application Portal \u2014 project outcomes (Planning Labs API)",
       "owner": "NYC Department of City Planning",
       "status": "live",
       "scope": "runtime",
@@ -1268,6 +1307,73 @@
       "delivery_tier": "live-only"
     },
     {
+      "id": "capital-projects",
+      "name": "Capital Projects",
+      "owner": "Mayor's Office of Operations (OPS)",
+      "status": "disabled",
+      "scope": "runtime",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "n7gv-k5yt",
+      "landing_page": "https://data.cityofnewyork.us/d/n7gv-k5yt",
+      "required_fields": [
+        "pid",
+        "project_name",
+        "managing_agency",
+        "client_agency",
+        "budget_forecast",
+        "current_phase"
+      ],
+      "max_stale_days": 120,
+      "publisher_cadence": "Periodic capital dashboard refresh (time-series by date_reported_as_of)",
+      "product_freshness": "Disabled for product materialization. Recon only: no PIN/EPIN column for City Record join.",
+      "used_for": "No current product output. Class-(b) pointer for procurement planning/budget names this dataset when a PIN/EPIN is not published on the notice.",
+      "gap": "Dataset n7gv-k5yt has no PIN/EPIN. Agency+name fuzzy join on 100 modern Procurement notices measured 2026-07-30 at 0% unique substring and 1% unique token Jaccard \u2014 both below ~30%. Keep procurement-planning-budget as not_published pointing at Capital Projects with deep link; do not edge-materialize.",
+      "join_keys": [
+        "project_name",
+        "managing_agency",
+        "client_agency",
+        "pid"
+      ],
+      "join_measurement": {
+        "observed_on": "2026-07-30",
+        "universe_modern": "City Record Online (dg92-zbpx) Procurement notices start_date >= 2025-01-01 (sample n=100 recent)",
+        "capital_project_rows": 3320,
+        "distinct_pid": 363,
+        "pin_or_epin_column": false,
+        "strategy": "agency+project_name fuzzy only (unique project_name substring; unique token Jaccard >=0.35 with margin). No PIN path.",
+        "rates": {
+          "modern_procurement_substring_unique": {
+            "joined": 0,
+            "total": 100,
+            "rate": 0.0
+          },
+          "modern_procurement_fuzzy_unique": {
+            "joined": 1,
+            "total": 100,
+            "rate": 0.01
+          }
+        },
+        "usefulness_threshold": 0.3,
+        "verdict": "Below usefulness threshold (~30%). Pointer-only class-(b) upgrade for procurement-planning-budget; do not edge-materialize on fuzzy name join."
+      },
+      "code_references": [
+        {
+          "path": "worker/src/lib/capital_projects_join.mjs",
+          "contains": "joinTitleToCapitalProject"
+        },
+        {
+          "path": "site/data/capital_project_sources/README.md",
+          "contains": "n7gv-k5yt"
+        },
+        {
+          "path": "site/data/capital_project_sources/verification_receipts/capital_projects_2026-07-30.json",
+          "contains": "capital-projects"
+        }
+      ],
+      "delivery_tier": "live-only"
+    },
+    {
       "id": "city-council-meetings-open-data",
       "name": "City Council Meetings (Open Data)",
       "owner": "NYC Council / NYC Open Data",
@@ -1287,7 +1393,7 @@
       "publisher_cadence": "Historical series labeled 1999 to 2024; meetings end 2024-12-19; resource Last-Modified 2025-12-30",
       "product_freshness": "Disabled for product materialization. Historical event identity only; modern depth uses authenticated Legistar Web API instead.",
       "used_for": "No current product output for modern notice detail. Measured as an event-identity recon source only (no vote or agenda-item columns).",
-      "gap": "Open Data m48u-yjt8 freezes at 2024-12-19: modern City Council notice join is 0%; historical 2019–2024 strict event join 73.41%. No vote/agenda-item columns. Superseded for modern depth by authenticated Legistar Web API (see nyc-council-legistar join_measurement, 100% modern event join). Kept disabled for product materialization.",
+      "gap": "Open Data m48u-yjt8 freezes at 2024-12-19: modern City Council notice join is 0%; historical 2019\u20132024 strict event join 73.41%. No vote/agenda-item columns. Superseded for modern depth by authenticated Legistar Web API (see nyc-council-legistar join_measurement, 100% modern event join). Kept disabled for product materialization.",
       "join_keys": [
         "event_id",
         "agency",
@@ -1443,7 +1549,7 @@
       "publisher_cadence": "Historical / irregular Brooklyn Borough President recommendations (resource Last-Modified 2021-06-29; 91 rows)",
       "product_freshness": "Disabled for product reads. Schema probes tolerate multi-year freeze via max_stale_days because the publication is intentionally historical and borough-scoped.",
       "used_for": "No current product output. Ranked land-outcome depth candidate was measured; strict ULURP-number join usefulness is below the materialization threshold.",
-      "gap": "Strict ULURP-token joins from ZAP projects with non-null ulurp_numbers cover 0.54% when combined with the PDF companion (gt5i-dmde) and 0.29% for this table alone (81/27,971) — both below the ~30% usefulness threshold. The catalog is Brooklyn Borough President history (91 rows), not a citywide live feed. Property Disposition notices are the wrong universe for this join. Borough President / community board recommendation letters remain not-yet-ingested on the land path until a higher-coverage source ships or usefulness is re-measured above threshold.",
+      "gap": "Strict ULURP-token joins from ZAP projects with non-null ulurp_numbers cover 0.54% when combined with the PDF companion (gt5i-dmde) and 0.29% for this table alone (81/27,971) \u2014 both below the ~30% usefulness threshold. The catalog is Brooklyn Borough President history (91 rows), not a citywide live feed. Property Disposition notices are the wrong universe for this join. Borough President / community board recommendation letters remain not-yet-ingested on the land path until a higher-coverage source ships or usefulness is re-measured above threshold.",
       "join_keys": [
         "ulurp_numbers",
         "ulurp_number_s"
@@ -1527,7 +1633,7 @@
       "publisher_cadence": "Historical / irregular PDF companion letters (resource Last-Modified 2018-01-25; 88 rows)",
       "product_freshness": "Disabled for product reads. Schema probes tolerate multi-year freeze via max_stale_days because the publication is intentionally historical.",
       "used_for": "No current product output. PDF companion to Borough President ULURP recommendations; measured below materialization usefulness with the position table.",
-      "gap": "Strict ULURP-token joins from ZAP projects with non-null ulurp_numbers cover 0.25% for this PDF table alone (71/27,971) and 0.54% combined with 4j6i-9rmr — below the ~30% usefulness threshold. Deep-link field is pdf_download (letter URL), not the dataset landing page. Kept disabled for product materialization alongside ulurp-recommendations.",
+      "gap": "Strict ULURP-token joins from ZAP projects with non-null ulurp_numbers cover 0.25% for this PDF table alone (71/27,971) and 0.54% combined with 4j6i-9rmr \u2014 below the ~30% usefulness threshold. Deep-link field is pdf_download (letter URL), not the dataset landing page. Kept disabled for product materialization alongside ulurp-recommendations.",
       "join_keys": [
         "ulurp_numbers",
         "ulurp_application_number"

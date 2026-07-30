@@ -3,6 +3,10 @@ import assert from "node:assert/strict";
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
+import {
+  buildListAggregateIndex,
+  joinExamToListAggregate,
+} from "../worker/src/lib/civil_service_list_join.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SOURCE_DIR = path.join(ROOT, "site", "data", "exam_sources");
@@ -13,6 +17,7 @@ const ACTIVE_LIST_ID = "vx8i-nprf";
 const CITY_RECORD_ID = "dg92-zbpx";
 const CURRENT_ID = "dcas-open-competitive";
 const NOE_ID = "dcas-noe";
+const LIST_AGGREGATES_FILE = "civil_service_list_aggregates.json";
 
 const INTEREST_RULES = [
   ["public-safety", /\b(police|correction|safety|special officer|fire|probation)\b/i],
@@ -218,12 +223,51 @@ export function joinOutcomeOntoExam(exam, outcomeMap) {
   };
 }
 
+/**
+ * Attach privacy-safe Civil Service List aggregates (list_count + dates only).
+ * Never copies per-applicant fields. When annual outcomes are absent but a list
+ * is established, cards can render post-list depth without inventing hire counts.
+ */
+export function joinListAggregateOntoExam(exam, listIndex) {
+  const hit = joinExamToListAggregate(exam.exam_number, listIndex);
+  if (!hit) {
+    return {
+      ...exam,
+      list_aggregate: null,
+    };
+  }
+  return {
+    ...exam,
+    list_aggregate: {
+      list_count: hit.list_count,
+      established_date: hit.established_date,
+      extension_date: hit.extension_date,
+      title_count: hit.title_count,
+      source_id: "dcas-active-civil-service-list",
+    },
+  };
+}
+
+/** Prefer annual outcome gap clearance; list presence still attaches for depth. */
+export function joinOutcomesAndListOntoExam(exam, outcomeMap, listIndex) {
+  return joinListAggregateOntoExam(joinOutcomeOntoExam(exam, outcomeMap), listIndex);
+}
+
 function normalizeOutcomeSourceOutdatedCheck(source) {
   const publicationDate = source?.verified_at || source?.data_publication_date || source?.fetched_at;
   assert(publicationDate, `${source?.id || "source"}: outcomes source lacks a publication date`);
 }
 
-export function buildArtifact({ annual, current, activeList, cityRecord, outcomes, priorArtifact, today }) {
+export function buildArtifact({
+  annual,
+  current,
+  activeList,
+  cityRecord,
+  outcomes,
+  listAggregates,
+  priorArtifact,
+  today,
+}) {
   const generatedAt = today || new Date().toISOString().slice(0, 10);
   const latestSourceAt = [
     annual.source.fetched_at,
@@ -233,6 +277,7 @@ export function buildArtifact({ annual, current, activeList, cityRecord, outcome
     outcomes.source.fetched_at,
     outcomes.source.verified_at,
     outcomes.source.data_publication_date,
+    listAggregates?.source?.fetched_at,
   ]
     .filter(Boolean).sort().at(-1);
 
@@ -267,8 +312,9 @@ export function buildArtifact({ annual, current, activeList, cityRecord, outcome
   }
 
   const outcomeMap = outcomesByExamNumber(outcomes.records);
+  const listIndex = buildListAggregateIndex(listAggregates?.records || []);
   const records = [...exams.values()]
-    .map((exam) => joinOutcomeOntoExam(exam, outcomeMap))
+    .map((exam) => joinOutcomesAndListOntoExam(exam, outcomeMap, listIndex))
     .sort((a, b) => {
       const ad = a.application_start || "9999-12-31";
       const bd = b.application_start || "9999-12-31";
@@ -277,6 +323,7 @@ export function buildArtifact({ annual, current, activeList, cityRecord, outcome
 
   normalizeOutcomeSourceOutdatedCheck(outcomes.source);
 
+  const listSource = listAggregates?.source || activeList.source;
   return {
     schema_version: 1,
     generated_at: latestSourceAt,
@@ -289,8 +336,22 @@ export function buildArtifact({ annual, current, activeList, cityRecord, outcome
     source_checks: {
       active_list: activeList.summary,
       city_record: cityRecord.summary,
+      list_aggregates: listAggregates?.summary || {
+        distinct_exams: listIndex.size ? new Set([...listIndex.values()].map((r) => r.exam_number)).size : 0,
+      },
     },
     outcomes: buildOutcomes({ outcomes }),
+    list_aggregates: {
+      source: {
+        id: listSource.id || "dcas-active-civil-service-list",
+        name: listSource.name || "Civil Service List (Active) — exam-level aggregates only",
+        dataset_id: listSource.dataset_id || ACTIVE_LIST_ID,
+        landing_page: listSource.landing_page || `https://data.cityofnewyork.us/d/${ACTIVE_LIST_ID}`,
+        fetched_at: listSource.fetched_at || activeList.source.fetched_at,
+        privacy: "Only exam-level counts and list dates are retained; candidate records and names are not copied.",
+      },
+      summary: listAggregates?.summary || { distinct_exams: 0 },
+    },
     exams: records,
   };
 }
@@ -423,12 +484,13 @@ function validateSources(today, sources) {
 async function main() {
   const check = process.argv.includes("--check");
   if (process.argv.includes("--refresh")) await refreshSnapshots();
-  const [annual, current, activeList, cityRecord, outcomes, priorArtifact] = await Promise.all([
+  const [annual, current, activeList, cityRecord, outcomes, listAggregates, priorArtifact] = await Promise.all([
     readJson("annual_schedule.json"),
     readJson("dcas_open_competitive.json"),
     readJson("active_list_summary.json"),
     readJson("city_record_check.json"),
     readJson("dcas_exam_outcomes.json"),
+    readJsonOptional(LIST_AGGREGATES_FILE),
     (async () => {
       try {
         return JSON.parse(await readFile(OUTPUT, "utf8"));
@@ -446,12 +508,20 @@ async function main() {
     cityRecord.source,
     outcomes.source,
   ]);
+  if (listAggregates?.source) {
+    // Aggregates snapshot: fail closed if older than active-list freshness window.
+    assertSourceFresh({
+      ...listAggregates.source,
+      stale_after_days: listAggregates.source.stale_after_days ?? activeList.source.stale_after_days ?? 3,
+    }, today);
+  }
   const rendered = stableJson(buildArtifact({
     annual,
     current,
     activeList,
     cityRecord,
     outcomes,
+    listAggregates,
     priorArtifact,
     today,
   }));

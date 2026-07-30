@@ -581,7 +581,9 @@ const STRINGS = {
     career_outcome_hired: "hired",
     career_outcome_applicants: "applicants (cycle)",
     career_outcomes_joined_note: "Aggregate counts from the DCAS annual outcomes publication for cycle {cycle} (published {date}). Individual scores are not public.",
+    career_outcomes_list_joined_note: "List size from {source} (list established {date}). Individual scores and ranks are not public.",
     career_outcomes_source_name: "the DCAS annual civil-service exam outcomes publication",
+    career_outcomes_list_source_name: "the Civil Service List open data feed",
     career_outcome_stage_list: "eligible-list establishment",
     career_outcome_stage_certification: "agency certification",
     career_outcome_stage_appointment: "appointment",
@@ -984,9 +986,12 @@ const STRINGS = {
 
     // Council meeting outcomes on notice detail (MEET-001)
     meeting_outcomes_heading: "Council meeting outcomes",
+    meeting_outcomes_heading_non_council: "Hearing outcomes",
     meeting_outcomes_matched_html: "Matched Council event: <b lang=\"en\" dir=\"ltr\">{event}</b> ({date}).",
     meeting_outcomes_unmatched_html: "Not yet shown here — Council outcomes live in NYC Council Legistar. {reason}",
     meeting_outcomes_unmatched_default: "No match for this City Record notice on the hearing date and committee name.",
+    meeting_outcomes_non_council_not_published_html: "The city does not publish votes for this hearing. They would appear on {where} if released as open data.",
+    meeting_outcomes_non_council_where: "borough president websites and community board minutes pages",
     meeting_outcomes_matter_lbl: "Council matter",
     meeting_outcomes_vote_html: "Vote: {result} (aye {aye} · nay {nay})",
     meeting_outcomes_outcome_html: "Outcome: {outcome}",

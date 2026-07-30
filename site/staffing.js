@@ -177,8 +177,8 @@
   }
 
   /**
-   * Build-time outcome join on exam_number. When present, return aggregate counts
-   * for the card UI; when absent, return the not-published gap (real-world pending).
+   * Build-time outcome join on exam_number. Prefer full annual DCAS aggregates;
+   * else post-list Civil Service List counts (no PII); else not-published gap.
    */
   function examOutcomeView(exam) {
     if (exam && exam.outcome && typeof exam.outcome === "object") {
@@ -191,6 +191,18 @@
         hire_count: Number(exam.outcome.hire_count || 0),
         published_on: exam.outcome.published_on || null,
         application_cycle: exam.outcome.application_cycle || null,
+      };
+    }
+    const list = exam && exam.list_aggregate && typeof exam.list_aggregate === "object"
+      ? exam.list_aggregate
+      : null;
+    if (list && Number(list.list_count) > 0) {
+      return {
+        kind: "list_joined",
+        list_count: Number(list.list_count || 0),
+        established_date: list.established_date || null,
+        extension_date: list.extension_date || null,
+        title_count: Number(list.title_count || 0),
       };
     }
     const gap = exam && exam.outcome_gap ? exam.outcome_gap : null;

@@ -58,8 +58,22 @@
       "name": "Civil Service List (Active)",
       "source_contract_id": "active-civil-service-list",
       "status": "live-only",
-      "join_keys": [],
-      "join_coverage": {},
+      "join_keys": [
+        "exam_no"
+      ],
+      "join_coverage": {
+        "realized": {
+          "rate": 0.4454,
+          "joined": 494,
+          "total": 1109,
+          "metric": "closed_exams_list_presence",
+          "observed_on": "2026-07-30",
+          "universe": null,
+          "strategy": "exact exam_number ↔ exam_no (zero-pad variants). Aggregates only via group-by.",
+          "verdict": "Closed-exam overlap 44.54% meets >=30%. Ship build-time post-list aggregates; never ship per-applicant rows.",
+          "source": "source_contracts.join_measurement"
+        }
+      },
       "landing_page": "https://data.cityofnewyork.us/d/vx8i-nprf",
       "delivery_tier": "live-only"
     },
@@ -102,6 +116,33 @@
         }
       },
       "landing_page": "https://data.cityofnewyork.us/d/9k82-ys7w",
+      "delivery_tier": "live-only"
+    },
+    {
+      "id": "capital-projects",
+      "name": "Capital Projects",
+      "source_contract_id": "capital-projects",
+      "status": "disabled",
+      "join_keys": [
+        "project_name",
+        "managing_agency",
+        "client_agency",
+        "pid"
+      ],
+      "join_coverage": {
+        "realized": {
+          "rate": 0,
+          "joined": 0,
+          "total": 100,
+          "metric": "modern_procurement_substring_unique",
+          "observed_on": "2026-07-30",
+          "universe": null,
+          "strategy": "agency+project_name fuzzy only (unique project_name substring; unique token Jaccard >=0.35 with margin). No PIN path.",
+          "verdict": "Below usefulness threshold (~30%). Pointer-only class-(b) upgrade for procurement-planning-budget; do not edge-materialize on fuzzy name join.",
+          "source": "source_contracts.join_measurement"
+        }
+      },
+      "landing_page": "https://data.cityofnewyork.us/d/n7gv-k5yt",
       "delivery_tier": "live-only"
     },
     {
@@ -225,11 +266,12 @@
     },
     {
       "id": "dcas-annual-exam-outcomes",
-      "name": "DCAS annual civil-service exam outcome aggregates",
+      "name": "DCAS annual civil-service exam outcome aggregates + Civil Service List (Active) exam-level counts",
       "source_contract_id": "dcas-annual-exam-outcomes",
       "status": "landed",
       "join_keys": [
-        "exam_number"
+        "exam_number",
+        "exam_no"
       ],
       "join_coverage": {
         "predicted": {
@@ -237,7 +279,7 @@
           "note": "exam_number collisions across years; aggregate-only privacy must hold."
         }
       },
-      "landing_page": "https://a860-gpp.nyc.gov/concern/nyc_government_publications/zk51vm65n",
+      "landing_page": "https://data.cityofnewyork.us/d/vx8i-nprf",
       "delivery_tier": "inline-at-build"
     },
     {
@@ -1288,6 +1330,22 @@
       "evidence": "Shared keys vendor_name; 1 taxonomy gap(s) could close."
     },
     {
+      "id": "active-civil-service-list-x-dcas-annual-exam-outcomes-via-exam_no",
+      "source_a": "active-civil-service-list",
+      "source_b": "dcas-annual-exam-outcomes",
+      "key_path": [
+        "exam_no"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "exam-outcome-aggregate"
+      ],
+      "score": 1,
+      "evidence": "Shared keys exam_no; 1 taxonomy gap(s) could close."
+    },
+    {
       "id": "city-record-x-current-solicitations-ocp-via-PIN+request_id",
       "source_a": "city-record",
       "source_b": "current-solicitations-ocp",
@@ -1862,9 +1920,9 @@
       "surface": "OCDS planning/budget and planning/rationale",
       "i18n_key": null,
       "class": "not_published",
-      "would_appear_in": "agency budget justifications or MOCS procurement plans if released as stable machine data",
+      "would_appear_in": "the Capital Projects open dataset (n7gv-k5yt) if released with a PIN/EPIN that joins to the notice — https://data.cityofnewyork.us/d/n7gv-k5yt — or agency budget justifications / MOCS procurement plans if released as stable machine data",
       "notices_affected_estimate": "All procurement processes in the OCDS gap table.",
-      "evidence": "Wave-4 OCDS gap table marks planning/budget and planning/rationale as not_published. MOCS LL63 plans are disabled: no stable tabular endpoint (source contract status disabled)."
+      "evidence": "Wave-4 OCDS gap table marks planning/budget and planning/rationale as not_published. Capital Projects n7gv-k5yt (3,320 rows; managing_agency, client_agency, budget_forecast, current_phase, project_name) has no PIN/EPIN. Measured 2026-07-30 agency+name fuzzy join on 100 modern Procurement notices: 0% unique substring, 1% unique token Jaccard — below ~30%. Pointer upgrade only; no edge materialization. Receipt: site/data/capital_project_sources/verification_receipts/capital_projects_2026-07-30.json. MOCS LL63 plans remain disabled (no stable tabular endpoint)."
     },
     {
       "id": "subsidy-stage-unmatched",
@@ -1932,8 +1990,8 @@
           "committee/body name in notice title"
         ]
       },
-      "notices_affected_estimate": "Modern (2025+) Public Hearings notices join at 100% via the strict exact_date_body_tokens join. Remaining unmatched: pre-modern historical notices (73% strict join) and non-Council public hearings that have no Legistar event.",
-      "evidence": "Authenticated edge materialization is live. Modern strict event join is 100% (59/59). Unmatched is now genuine absence (non-Council hearing or pre-modern historical), not incomplete join."
+      "notices_affected_estimate": "City Council Public Hearings only for this class-(a) slot. Modern Council notice → Legistar event join is 100% (59/59) in the authenticated materialization window. Non-Council public hearings are not a missing Legistar ingest — they use the not_published register (see meeting-community-board-votes).",
+      "evidence": "Authenticated edge materialization is live for Council. Modern strict event join 100% (59/59). Measured non-Council hearings: 40/40 unmatched on meeting outcomes with no joinable citywide vote feed (community board catalog datasets are rosters, not votes). Non-Council empty slots reclassified to not_published copy pointing at borough president websites and community board minutes pages."
     },
     {
       "id": "meeting-votes-absent",
@@ -1974,11 +2032,11 @@
     {
       "id": "meeting-community-board-votes",
       "surface": "non-Council hearings · votes",
-      "i18n_key": null,
+      "i18n_key": "meeting_outcomes_non_council_not_published_html",
       "class": "not_published",
-      "would_appear_in": "community board or borough president open data / Legistar-class feeds if released as machine-readable votes",
+      "would_appear_in": "borough president websites and community board minutes / vote pages if released as a citywide machine-readable open data feed (not only member rosters)",
       "notices_affected_estimate": "Most Public Hearings notices that are not NYC Council.",
-      "evidence": "No citywide open vote feed for community boards was found. Only Council has a contracted Legistar API in the source registry."
+      "evidence": "Measured 2026-07-30: 40/40 non-Council public hearings unmatched on /meeting-outcomes. Open Data community board datasets (e.g. ruf7-3wgc, 3gkd-ddzn) are contacts/rosters, not votes. No citywide open vote feed for community boards or borough presidents. Product copy uses the not_published register with specific pointers; Council-matched Legistar behavior is unchanged."
     },
     {
       "id": "exam-outcome-aggregate",
@@ -1986,16 +2044,17 @@
       "i18n_key": null,
       "class": "not_yet_ingested",
       "public_source": {
-        "name": "DCAS annual civil-service exam outcome aggregates",
-        "access": "NYC Government Publications (manual snapshot) + build artifact data/exam_sources/dcas_exam_outcomes.json",
-        "landing_page": "https://a860-gpp.nyc.gov/concern/nyc_government_publications/zk51vm65n",
-        "update_cadence": "Annual with in-year corrections",
+        "name": "DCAS annual civil-service exam outcome aggregates + Civil Service List (Active) exam-level counts",
+        "access": "NYC Government Publications (manual snapshot) + Open Data vx8i-nprf group-by aggregates",
+        "landing_page": "https://data.cityofnewyork.us/d/vx8i-nprf",
+        "update_cadence": "Annual outcomes publication; active list daily",
         "join_keys": [
-          "exam_number"
+          "exam_number",
+          "exam_no"
         ]
       },
-      "notices_affected_estimate": "Open and closed exams in staffing_exams.json that have a matching outcomes row by exam_number.",
-      "evidence": "Source contract dcas-annual-exam-outcomes is build-time live; artifact includes aggregate counts. Exam cards do not yet render those rows."
+      "notices_affected_estimate": "Closed exams with list presence get list-size depth; full hire/certification counts still depend on the annual outcomes publication.",
+      "evidence": "Source contract dcas-annual-exam-outcomes is build-time live for full post-cycle counts. Civil Service List closed-exam exam_no overlap measured 2026-07-30 at 44.54% (494/1,109) — above ~30%; open-exam overlap 0%. Build joins privacy-safe list aggregates (list_count, established_date) onto exam cards as post-list depth when annual outcomes are absent. Per-applicant rows never ship. Receipt: site/data/exam_sources/verification_receipts/civil_service_list_closed_exams_2026-07-30.json."
     },
     {
       "id": "exam-outcome-individual",
@@ -2203,13 +2262,14 @@
     "EDC document portal may block unattended fetch (403); product already treats it as HTML source.",
     "Bid Tabulations Historical 9k82-ys7w join recon (2026-07-30): strict PIN↔bid_number 0% modern / 9.07% historical overlap; below ~30% usefulness; source contract disabled without materialization.",
     "Doing Business Search Entities 72mk-a8z7 join recon (2026-07-30): vendor_stem join 70.42% notice-level / 61.62% distinct vendors on modern awards; above ~30% usefulness; source contract live edge-materialized onto vendor profiles.",
-    "PASSPort RFx package documents (2026-07-30): document-URL join 0% on 50-notice kill sample and 0/1470 modern Solicitation+PIN; OCP/City Record modern document_links 0%. Gap procurement-solicitation-documents reclassified not_published → City Record GetFile. No RFx package-doc edge materialization."
+    "PASSPort RFx package documents (2026-07-30): document-URL join 0% on 50-notice kill sample and 0/1470 modern Solicitation+PIN; OCP/City Record modern document_links 0%. Gap procurement-solicitation-documents reclassified not_published → City Record GetFile. No RFx package-doc edge materialization.",
+    "Gap-pressure tail 2026-07-30: Capital Projects n7gv-k5yt fuzzy join ≤1% → class-b pointer for procurement-planning-budget; Civil Service List closed-exam overlap 44.54% → ship exam-level list aggregates; non-Council meeting outcomes reclassified not_published with BP/CB minutes pointers."
   ],
   "depot_refresh": {
     "observed_on": "2026-07-30",
-    "source_contracts_fingerprint": "8914e50d72f199eef667f2edc6de145ed1be9a29a3ab33b356700d713c876c0d",
+    "source_contracts_fingerprint": "84aa82661c407276ecfc215fe9567fc50fa18c4b99f9c01e791c9b90b8c699d4",
     "materialized_crosswalks": 11,
-    "candidate_crosswalks": 45,
+    "candidate_crosswalks": 46,
     "class_changes": 0,
     "passport_realized_either_rate": 0.78
   }

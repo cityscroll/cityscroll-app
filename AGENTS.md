@@ -166,6 +166,30 @@ Both surfaces use the same resolution (`lifecycleResolvedPayment` in `site/index
 - Payment honesty: Checkbook Spending rejects `pin` (code 1101) — join by `contract_id` after Contracts. Three states via `payment_state`: `paid` / `verified_zero` / `unavailable` (never confident `$0` on feed error).
 - Characterization: `node --test test/lifecycle_coherence_field_cases.test.mjs test/lifecycle_render.test.mjs test/unit.test.mjs` and `cd worker && node --test test/checkbook_lifecycle.test.mjs`.
 
+## Capital Projects planning pointer (`n7gv-k5yt`)
+
+Class-(b) pointer for `procurement-planning-budget` only. Dataset has **no
+PIN/EPIN**; agency+name fuzzy join measured **≤1%** on modern Procurement
+(2026-07-30) — below usefulness. Do not edge-materialize. Receipt:
+`site/data/capital_project_sources/verification_receipts/capital_projects_2026-07-30.json`.
+Helpers: `worker/src/lib/capital_projects_join.mjs`.
+
+## Civil Service List closed-exam aggregates (`vx8i-nprf`)
+
+PII hard rule: exam-level group-by only (`list_count`, dates, `title_count`).
+Closed-exam exam_no overlap **44.54%** (494/1,109) — ship post-list depth;
+open-exam overlap 0%. Artifact:
+`site/data/exam_sources/civil_service_list_aggregates.json` joined at build via
+`tools/build_staffing_exams.mjs` + `worker/src/lib/civil_service_list_join.mjs`.
+UI: `list_joined` outcome view when annual DCAS outcomes are absent.
+
+## Non-Council hearing outcomes (copy)
+
+Non-Council unmatched slots use class-(b) copy naming borough president websites
+and community board minutes pages (`meeting_outcomes_non_council_*`). Council
+notices keep Legistar class-(a) unmatched copy. Detection: `isCityCouncilNotice`
+on `agency_name`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
