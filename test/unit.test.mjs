@@ -310,3 +310,92 @@ test("daysBetween: absolute day gap, null on unparseable dates", () => {
   assert.equal(priorCycleEnv.daysBetween("2023-01-01", "2023-07-01"), 181);
   assert.equal(priorCycleEnv.daysBetween("not-a-date", "2023-07-01"), null);
 });
+
+// ---------- rule-lifecycle status chips (rules-status-chips) ----------
+// ruleStageChip()/ruleCommentAction() consume the precomputed /rules read-model stage
+// (r._ruleStage) joined by request_id. Stubs mirror the real t()/fdt()/escUiHtml()/extSR()
+// shape; daysLeft is the real extraction so the urgency ladder is exercised against live dates.
+const ruleChipEnv = new Function(
+  "function t(k,v){ if(v){Object.keys(v).forEach(function(x){ k=k.replace(new RegExp('\\\\{'+x+'\\\\}','g'),String(v[x])); });} return k; }\n" +
+  "function fdt(s){ return s ? 'D['+s+']' : ''; }\n" +
+  "function escUiHtml(s){ return String(s==null?'':s); }\n" +
+  "function extSR(){ return '[SR]'; }\n" +
+  "const EXT_ATTRS='target=\"_blank\" rel=\"noopener noreferrer\"';\n" +
+  extractFn("daysLeft") +
+  extractConst("RULE_STAGE_CFG") +
+  extractFn("ruleDisplayStage") + extractFn("ruleStageChip") + extractFn("ruleCommentAction") +
+  "return { ruleStageChip, ruleCommentAction, ruleDisplayStage };"
+)();
+const ruleInDays = (n) => new Date(Date.now() + n * 86400000 + 3600000).toISOString();
+const nr = (o) => Object.assign({ url: "https://rules.example/rule" }, o);
+
+test("ruleStageChip: comment-open uses the urgency ladder and links the comment page", () => {
+  const hot = ruleChipEnv.ruleStageChip({ stage: "comment-open", nyc_rules: nr({ comment_url: "https://rules.example/c", comment_by_date: ruleInDays(2) }) });
+  assert.match(hot, /tag hot/);
+  assert.match(hot, /href="https:\/\/rules\.example\/c"/); // comment page preferred while open
+  assert.match(hot, /rule_stage_comment_open/);
+  assert.ok(hot.includes("[SR]")); // accessible new-tab marking
+
+  const soon = ruleChipEnv.ruleStageChip({ stage: "comment-open", nyc_rules: nr({ comment_by_date: ruleInDays(10) }) });
+  assert.match(soon, /tag soon/);
+
+  const open = ruleChipEnv.ruleStageChip({ stage: "comment-open", nyc_rules: nr({ comment_by_date: ruleInDays(40) }) });
+  assert.match(open, /tag open/);
+});
+
+test("ruleStageChip: settled stages read as quiet ink and link the rule record", () => {
+  const adopted = ruleChipEnv.ruleStageChip({ stage: "adopted", nyc_rules: nr({ adoption_date: "2026-01-15" }) });
+  assert.match(adopted, /tag asset/);
+  assert.match(adopted, /href="https:\/\/rules\.example\/rule"/);
+  assert.match(adopted, /rule_stage_adopted/);
+
+  const effective = ruleChipEnv.ruleStageChip({ stage: "effective", nyc_rules: nr({ adoption_date: "2025-12-01" }) });
+  assert.match(effective, /tag asset/);
+  assert.match(effective, /rule_stage_effective/);
+
+  const hearing = ruleChipEnv.ruleStageChip({ stage: "hearing", nyc_rules: nr({ hearing_date: ruleInDays(20) }) });
+  assert.match(hearing, /tag open/); // actionable upcoming event
+  assert.match(hearing, /rule_stage_hearing/);
+});
+
+test("ruleStageChip: proposed with no NYC Rules enrichment renders the stage, no link, no hollow", () => {
+  // An unmatched City Record notice: nyc_rules is null, so there's no official page to link —
+  // the chip is a plain span labeled "Proposed", never a blank or a dead link.
+  const proposed = ruleChipEnv.ruleStageChip({ stage: "proposed", nyc_rules: null });
+  assert.match(proposed, /<span class="tag asset">rule_stage_proposed<\/span>/);
+  assert.doesNotMatch(proposed, /href=/);
+});
+
+test("ruleStageChip: missing/invalid stage returns explicit unknown status", () => {
+  assert.equal(ruleChipEnv.ruleStageChip(null), "");
+  assert.match(ruleChipEnv.ruleStageChip({ stage: null, nyc_rules: { url: "https://rules.example/record" } }), /rule_stage_unknown/);
+  assert.match(ruleChipEnv.ruleStageChip({ stage: null, nyc_rules: { url: "https://rules.example/record" } }), /href="https:\/\/rules\.example\/record"/);
+  assert.match(ruleChipEnv.ruleStageChip({ stage: "garbage", nyc_rules: { url: "https://rules.example/record" } }), /rule_stage_unknown/);
+  assert.match(ruleChipEnv.ruleStageChip({ stage: "garbage", nyc_rules: { url: "https://rules.example/record" } }), /href="https:\/\/rules\.example\/record"/);
+});
+
+test("ruleDisplayStage: a comment-open whose deadline passed is corrected to comment-closed", () => {
+  // The read model classifies at materialization time; the single most time-sensitive drift
+  // (comment period that has since closed) is corrected against the user's clock so we never
+  // invite a comment on a closed period.
+  const stale = { stage: "comment-open", nyc_rules: nr({ comment_by_date: ruleInDays(-3) }) };
+  assert.equal(ruleChipEnv.ruleDisplayStage(stale), "comment-closed");
+  const chip = ruleChipEnv.ruleStageChip(stale);
+  assert.match(chip, /tag closed/);
+  assert.match(chip, /rule_stage_comment_closed/);
+});
+
+test("ruleCommentAction: leads with the comment CTA only while the period is genuinely open", () => {
+  const open = { stage: "comment-open", nyc_rules: nr({ comment_url: "https://rules.example/c", comment_by_date: ruleInDays(5) }) };
+  const act = ruleChipEnv.ruleCommentAction(open);
+  assert.match(act, /class="act"/);
+  assert.match(act, /href="https:\/\/rules\.example\/c"/);
+  assert.match(act, /rule_comment_btn/);
+
+  // Passed deadline: no comment CTA (the chip already corrected to comment-closed).
+  const closed = { stage: "comment-open", nyc_rules: nr({ comment_by_date: ruleInDays(-3) }) };
+  assert.equal(ruleChipEnv.ruleCommentAction(closed), "");
+
+  // Non-comment-open stage: no comment CTA.
+  assert.equal(ruleChipEnv.ruleCommentAction({ stage: "hearing", nyc_rules: nr({ hearing_date: ruleInDays(5) }) }), "");
+});

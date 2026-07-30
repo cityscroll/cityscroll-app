@@ -96,6 +96,7 @@ EXTERNAL_HREF_EXPRS = (
     "${escUiHtml(exam.notice_url)}",  # official DCAS Notice of Examination PDF
     "${lifecycleSourceUrl}",          # Checkbook NYC contract search or matched contract
     "${CHECKBOOK_SPENDING_URL}",      # Checkbook NYC spending search
+    "${escUiHtml(href)}",         # rule-lifecycle chip + comment action: NYC Rules comment/adoption page
     # Explicit same-origin exception: this action promises to open the canonical shareable
     # search separately, so it follows the new-tab safety/accessibility checks below.
     "${nlqEscape(canonicalSearchURL(",
