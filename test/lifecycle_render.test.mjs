@@ -268,10 +268,11 @@ test("lifecycle: unmatched stages render specific statements, never blank", () =
   const norecordDivs = (html.match(/class="lc-norecord"/g) || []).length;
   assert.equal(norecordDivs, 3, "pending + registered + payment each have a no-record statement");
 
-  // Specific statements per stage
-  assert.match(html, /No pending contract found/);
-  assert.match(html, /No registered contract found/);
-  assert.match(html, /No payments recorded/);
+  // Two-register class-(a) copy: not-yet-ingested, per-stage specificity
+  assert.match(html, /Not yet shown here/);
+  assert.match(html, /pending contracts live in/);
+  assert.match(html, /registered contracts live in/);
+  assert.match(html, /payments live in/);
 
   // Each names the source
   const checkbookCount = (html.match(/Checkbook NYC/g) || []).length;
@@ -428,6 +429,7 @@ test("lifecycle: no PIN renders the no-pin note instead of the provenance note",
     ],
   };
   const html = lifecycleTimelineHTML(noPinLifecycle, { request_id: "X", agency_name: "A", pin: null });
-  assert.match(html, /no Procurement ID/);
+  assert.match(html, /does not publish a Procurement ID \(PIN\)/);
+  assert.match(html, /would appear in Checkbook NYC if released with a PIN/);
   assert.doesNotMatch(html, /matched by PIN/);
 });
