@@ -551,6 +551,7 @@
   .map-pan-controls button:hover{border-color:var(--oxblood);color:var(--oxblood)}
   #landmapnote{margin-top:8px}
   .landbanner{font:13px/1.5 ui-sans-serif,system-ui,sans-serif;background:#faf6ee;border-inline-start:3px solid var(--oxblood);padding:9px 12px;color:var(--ink-soft);margin-bottom:2px}
+  .landbanner.land-methodology{border-inline-start-color:var(--rule);background:#f4eee2;color:var(--muted)}
   .feed{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-top:22px}
   .fcard{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:14px 15px;display:flex;flex-direction:column;gap:7px}
   .fcard .ftype{font:600 11px/1.35 ui-sans-serif,system-ui,sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
@@ -4127,8 +4128,10 @@ function landRowHTML(r, i, terms, contextTerms){
 }
 function landRenderList(kw, kwIsTextMatch, boro, autoSelect){
   const head=landBanner?`<div class="landbanner">${landBanner}</div>`:"";
+  // Same methodology string on empty and successful searches (zap_explainer_html) — do not fork.
+  const methodology=`<div class="landbanner land-methodology" id="land-methodology">${t("zap_explainer_html")}</div>`;
   if(!lRows.length){
-    $("#llist").innerHTML=head+`<div class="empty">${t("no_zap")}${kw?t("no_zap_kw",{kw}):""}. ${t("zap_explainer_html")}</div>`;
+    $("#llist").innerHTML=head+`<div class="empty">${t("no_zap")}${kw?t("no_zap_kw",{kw}):""}. ${t("zap_project_index_html")} ${t("zap_explainer_html")}</div>`;
     return;
   }
   // A resolved block/nearby lookup filters rows by a BBL join, not kw as text -- only pass kw
@@ -4138,7 +4141,7 @@ function landRenderList(kw, kwIsTextMatch, boro, autoSelect){
   // matchEvidence() can still surface it when a project_brief happens to name the borough in its
   // own text (common in ZAP data), without ever guessing a fallback "unknown" match for it.
   const contextTerms = boro ? [boro] : [];
-  $("#llist").innerHTML=head+lRows.map((r,i)=>landRowHTML(r,i,terms,contextTerms)).join("");
+  $("#llist").innerHTML=head+methodology+lRows.map((r,i)=>landRowHTML(r,i,terms,contextTerms)).join("");
   document.querySelectorAll("#llist .row").forEach(el=>el.addEventListener("click",()=>landSelect(+el.dataset.i, el)));
   if(autoSelect !== false) document.querySelector("#llist .row")?.click();
 }
