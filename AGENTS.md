@@ -64,6 +64,15 @@ delta that is not already-recorded, fails the job — never a green no-op. Conve
 `CONTRIBUTING.md` “Changelog entries”. Characterization: `test/changelog_*.test.mjs`,
 `test/changelog_entry_gate.test.mjs`.
 
+## Live-URL smoke target sets
+
+Post-deploy gate: `node tools/live_url_smoke.mjs` (default set includes apex, www, crol-list redirect host, about). Named opt-in sets do not change production routing:
+
+- `--set pages-dev` — parallel host only (or `--base-url https://cityscroll.pages.dev`)
+- `--set post-flip` — post-cutover matrix (apex/www header checks, api/health, pages.dev); select only after an owner-authorized flip
+
+Characterization: `node --test test/live_url_smoke.test.mjs`. Operator flip procedure lives outside this public tree.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

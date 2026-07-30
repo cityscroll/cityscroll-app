@@ -8,6 +8,8 @@ const STABLE_ORIGINS = new Set([
   "https://www.cityscroll.org",
   "https://crol-list.org",
   "https://www.crol-list.org",
+  // Parallel Cloudflare Pages host (Phase 1); API calls from pages.dev during soak.
+  "https://cityscroll.pages.dev",
   "https://crol-list.jimdc.com",
   "https://jimdc.github.io",
 ]);

@@ -7,15 +7,22 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import {
+  API_HEALTH_MARKER,
   CONTENT_MARKER,
   DEFAULT_TARGETS,
+  PAGES_DEV_TARGETS,
+  POST_FLIP_TARGETS,
+  TARGET_SETS,
+  TARGET_SET_NAMES,
   cacheBustUrl,
   classifyProbe,
   createFixtureFetch,
   formatFailure,
   formatStatusChain,
   probeUrl,
+  resolveTargetSet,
   runSmoke,
+  targetsFromCli,
 } from "../tools/live_url_smoke.mjs";
 
 const read = (path) => readFileSync(new URL(path, import.meta.url), "utf8");
@@ -176,11 +183,115 @@ test("runSmoke retries then fails with named diagnostics after the window", asyn
   assert.match(result.failures.join("\n"), /503/);
 });
 
-test("default targets cover both public apex hosts and a deep route", () => {
+test("default targets cover both public apex hosts, www, and a deep route", () => {
   const urls = DEFAULT_TARGETS.map((t) => t.url);
   assert.ok(urls.includes("https://cityscroll.org/"));
+  assert.ok(urls.includes("https://www.cityscroll.org/"));
   assert.ok(urls.includes("https://crol-list.org/"));
   assert.ok(urls.some((u) => u.includes("about.html")));
+  // Parallel host and post-flip matrix stay off the deploy default.
+  assert.ok(!urls.includes("https://cityscroll.pages.dev/"));
+  assert.ok(!urls.includes("https://api.cityscroll.org/health"));
+});
+
+test("named smoke target sets: pages-dev and post-flip are selectable and dormant", () => {
+  assert.deepEqual([...TARGET_SET_NAMES].sort(), ["default", "pages-dev", "post-flip"].sort());
+  assert.equal(TARGET_SETS.default, DEFAULT_TARGETS);
+  assert.equal(resolveTargetSet("default"), DEFAULT_TARGETS);
+  assert.equal(resolveTargetSet("pages-dev"), PAGES_DEV_TARGETS);
+  assert.equal(resolveTargetSet("post-flip"), POST_FLIP_TARGETS);
+  assert.equal(resolveTargetSet("PAGES-DEV"), PAGES_DEV_TARGETS);
+
+  const pagesDevUrls = PAGES_DEV_TARGETS.map((t) => t.url);
+  assert.deepEqual(pagesDevUrls, [
+    "https://cityscroll.pages.dev/",
+    "https://cityscroll.pages.dev/about.html",
+  ]);
+
+  const postFlipUrls = POST_FLIP_TARGETS.map((t) => t.url);
+  assert.deepEqual(postFlipUrls, [
+    "https://cityscroll.org/",
+    "https://www.cityscroll.org/",
+    "https://cityscroll.org/about.html",
+    "https://crol-list.org/",
+    "https://api.cityscroll.org/health",
+    "https://cityscroll.pages.dev/",
+  ]);
+  const api = POST_FLIP_TARGETS.find((t) => t.id === "post-flip-api-health");
+  assert.equal(api.marker, API_HEALTH_MARKER);
+  const apex = POST_FLIP_TARGETS.find((t) => t.id === "post-flip-cityscroll-apex");
+  assert.deepEqual([...apex.requireAbsentHeaders], ["x-github-request-id"]);
+  const www = POST_FLIP_TARGETS.find((t) => t.id === "post-flip-cityscroll-www");
+  assert.deepEqual([...www.requireAbsentHeaders], ["x-github-request-id"]);
+
+  assert.throws(() => resolveTargetSet("not-a-set"), /unknown smoke target set/);
+});
+
+test("targetsFromCli selects named sets; --url and --base-url still take precedence", () => {
+  assert.equal(targetsFromCli({}), DEFAULT_TARGETS);
+  assert.equal(targetsFromCli({ targetSet: "pages-dev" }), PAGES_DEV_TARGETS);
+  assert.equal(targetsFromCli({ targetSet: "post-flip" }), POST_FLIP_TARGETS);
+
+  const fromBase = targetsFromCli({ baseUrl: "https://cityscroll.pages.dev", targetSet: "post-flip" });
+  assert.deepEqual(
+    fromBase.map((t) => t.url),
+    ["https://cityscroll.pages.dev/", "https://cityscroll.pages.dev/about.html"],
+  );
+
+  const fromUrls = targetsFromCli({
+    urls: ["https://example.test/x"],
+    targetSet: "pages-dev",
+  });
+  assert.equal(fromUrls[0].url, "https://example.test/x");
+  assert.equal(fromUrls[0].marker, CONTENT_MARKER);
+});
+
+test("post-flip header assertion fails when x-github-request-id is still present", () => {
+  const withGithubHeader = classifyProbe({
+    statusChain: [{ status: 200 }],
+    finalStatus: 200,
+    body: "<title>CityScroll</title>",
+    marker: CONTENT_MARKER,
+    finalHeaders: { "x-github-request-id": "ABC123" },
+    requireAbsentHeaders: ["x-github-request-id"],
+  });
+  assert.equal(withGithubHeader.ok, false);
+  assert.match(withGithubHeader.reason, /x-github-request-id/i);
+
+  const pagesPrimary = classifyProbe({
+    statusChain: [{ status: 200 }],
+    finalStatus: 200,
+    body: "<title>CityScroll</title>",
+    marker: CONTENT_MARKER,
+    finalHeaders: { "cf-ray": "xyz" },
+    requireAbsentHeaders: ["x-github-request-id"],
+  });
+  assert.equal(pagesPrimary.ok, true);
+
+  const apiHealth = classifyProbe({
+    statusChain: [{ status: 200 }],
+    finalStatus: 200,
+    body: "crol-worker ok",
+    marker: API_HEALTH_MARKER,
+  });
+  assert.equal(apiHealth.ok, true);
+});
+
+test("probeUrl applies requireAbsentHeaders from the target", async () => {
+  const fetchImpl = createFixtureFetch([
+    {
+      status: 200,
+      body: "<title>CityScroll</title>",
+      headers: { "x-github-request-id": "still-on-pages" },
+    },
+  ]);
+  const result = await probeUrl("https://cityscroll.org/", {
+    fetchImpl,
+    cacheBust: false,
+    requireAbsentHeaders: ["x-github-request-id"],
+  });
+  assert.equal(result.classification.ok, false);
+  assert.match(result.classification.reason, /x-github-request-id/i);
 });
 
 test("deploy-pages and deploy-worker run the live-URL smoke after deploy", () => {
@@ -196,6 +307,12 @@ test("deploy-pages and deploy-worker run the live-URL smoke after deploy", () =>
       smokeBlock.slice(0, 400),
       /continue-on-error:\s*true/,
       `${name} must not soft-pass smoke failures`,
+    );
+    // Deploy gates must not auto-select the post-flip matrix (owner flip is separate).
+    assert.doesNotMatch(
+      smokeBlock.slice(0, 600),
+      /--set\s+post-flip/,
+      `${name} must not run post-flip set until cutover is authorized`,
     );
   }
 });
