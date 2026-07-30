@@ -29,6 +29,7 @@ export async function handleMeetingOutcomes(request, env, ctx) {
   const { searchParams } = new URL(request.url);
   const requestOffset = searchParams.get("offset");
   const requestLimit = searchParams.get("limit");
+  const requestId = searchParams.get("id");
 
   let raw = await env.ALERT_STATE.get(MEETING_OUTCOMES_KV_KEY);
   let parsed = null;
@@ -49,6 +50,40 @@ export async function handleMeetingOutcomes(request, env, ctx) {
         return response(JSON.stringify({ ok: false, reason: "upstream", detail: String(error?.message || error) }), 502);
       }
     }
+  }
+
+  // Per-notice detail path: return one joined record (or an explicit unmatched gap)
+  // so the notice view never needs the full list and never invents a blank.
+  if (requestId) {
+    if (!/^[A-Za-z0-9_-]{4,40}$/.test(requestId)) {
+      return response(JSON.stringify({ ok: false, reason: "bad-id" }), 400);
+    }
+    const hit = (parsed?.records || []).find((row) => row && row.request_id === requestId) || null;
+    if (hit) {
+      return response(JSON.stringify({
+        ok: true,
+        generated_at: parsed.generated_at,
+        source: parsed.source,
+        record: hit,
+      }));
+    }
+    return response(JSON.stringify({
+      ok: true,
+      generated_at: parsed?.generated_at || null,
+      source: parsed?.source || null,
+      record: {
+        request_id: requestId,
+        join: {
+          matched: false,
+          reason: "No Council meeting-outcomes record for this notice in the current join window.",
+          score: 0,
+          confidence: "none",
+        },
+        notice: { request_id: requestId },
+        council_event: null,
+        agenda_items: [],
+      },
+    }));
   }
 
   const limited = applyApiLimits(parsed?.records || [], { limit: requestLimit, offset: requestOffset });
