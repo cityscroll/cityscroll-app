@@ -519,6 +519,9 @@ test("lifecycle: solicitation without package join uses not-yet-ingested registe
   assert.match(html, /Not yet shown here — solicitation package details live in/);
   assert.match(html, /Current Solicitations \(Open Data\)/);
   assert.doesNotMatch(html, /package document/);
+});
+
+// ---------------------------------------------------------------------------
 // OCP award side-car render (qyyg-4tf5)
 // ---------------------------------------------------------------------------
 
