@@ -41,12 +41,13 @@ Keep **per-item** specificity (pending vs registered vs payments; subsidy outcom
 
 **Where it lives**
 
-- Machine inventory + ranked class-(a) ingest list: [`site/data/gap_taxonomy.json`](site/data/gap_taxonomy.json)
-- Human report: [`docs/gap-taxonomy.md`](docs/gap-taxonomy.md)
-- Characterization (both registers, real field cases): `node --test test/gap_taxonomy.test.mjs`
+- Depot (join graph + gap inventory + ranked class-(a) ingest list): [`site/data/gap_taxonomy.json`](site/data/gap_taxonomy.json) — `sources` / `crosswalks` are the graph; `gaps` are the slots
+- Direction page (generated): [`docs/gap-taxonomy.md`](docs/gap-taxonomy.md)
+- Re-derive after source-contract or taxonomy changes: `node tools/depot_rederive.mjs` (CI drift gate: `--check`)
+- Characterization: `node --test test/gap_taxonomy.test.mjs test/depot_rederive.test.mjs`
 - Screenshot capture: `python3 tools/capture_gap_taxonomy.py`
 
-When adding a new lifecycle empty state: pick class a or b with evidence, add or update the inventory row, use the matching register in English and all shipping locales, and extend the characterization test. Prefer pointing new work at the inventory over inventing a third gap register.
+When adding a new lifecycle empty state: pick class a or b with evidence, add or update the inventory row, use the matching register in English and all shipping locales, and extend the characterization test. Prefer pointing new work at the inventory over inventing a third gap register. After landing a source or stamping `join_measurement`, run `depot_rederive.mjs` so realized coverage, candidate crosswalks, and the ranked queue stay current.
 
 ### Lifecycle rendering coherence (notice detail)
 
