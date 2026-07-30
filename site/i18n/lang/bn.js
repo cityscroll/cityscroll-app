@@ -273,6 +273,7 @@
     read_official_notice: "সরকারি বিজ্ঞপ্তি পড়ুন",
     join_online: "অনলাইনে যোগ দিন",
     participation_link: "অংশগ্রহণের লিংক",
+    ida_meetings_page: "IDA সভার পৃষ্ঠা",
     email_in_notice: "বিজ্ঞপ্তির ইমেইল",
     map_venue: "সভাস্থলের মানচিত্র",
     venue_label: "সভাস্থল",

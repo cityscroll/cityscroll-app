@@ -273,6 +273,7 @@
     read_official_notice: "Leer aviso oficial",
     join_online: "Participar en línea",
     participation_link: "Enlace para participar",
+    ida_meetings_page: "Página de reuniones de la IDA",
     email_in_notice: "Correo del aviso",
     map_venue: "Mapa del lugar",
     venue_label: "Lugar",

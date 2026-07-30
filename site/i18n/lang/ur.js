@@ -276,6 +276,7 @@
     read_official_notice: "سرکاری نوٹس پڑھیں",
     join_online: "آن لائن شامل ہوں",
     participation_link: "شرکت کا لنک",
+    ida_meetings_page: "IDA میٹنگز کا صفحہ",
     email_in_notice: "نوٹس میں درج ای میل",
     map_venue: "اجلاس کی جگہ کا نقشہ",
     venue_label: "اجلاس کی جگہ",

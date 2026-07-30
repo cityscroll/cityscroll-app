@@ -273,6 +273,7 @@
     read_official_notice: "Читать официальное объявление",
     join_online: "Присоединиться онлайн",
     participation_link: "Ссылка для участия",
+    ida_meetings_page: "Страница заседаний IDA",
     email_in_notice: "Эл. почта из объявления",
     map_venue: "Место на карте",
     venue_label: "Место проведения",

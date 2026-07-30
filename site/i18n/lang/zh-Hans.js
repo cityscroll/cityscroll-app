@@ -273,6 +273,7 @@
     read_official_notice: "阅读官方公告",
     join_online: "在线参加",
     participation_link: "参与链接",
+    ida_meetings_page: "IDA 会议页面",
     email_in_notice: "公告中的电子邮件",
     map_venue: "查看会场地图",
     venue_label: "会场",

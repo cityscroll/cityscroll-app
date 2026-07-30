@@ -302,6 +302,7 @@
     read_official_notice: "Lire l’avis officiel",
     join_online: "Participer en ligne",
     participation_link: "Lien de participation",
+    ida_meetings_page: "Page des réunions de l’IDA",
     email_in_notice: "Courriel indiqué",
     map_venue: "Carte du lieu",
     venue_label: "Lieu",

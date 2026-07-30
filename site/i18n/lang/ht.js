@@ -272,6 +272,7 @@
     read_official_notice: "Li avi ofisyèl la",
     join_online: "Patisipe sou entènèt",
     participation_link: "Lyen pou patisipe",
+    ida_meetings_page: "Paj reyinyon IDA",
     email_in_notice: "Imèl nan avi a",
     map_venue: "Kat kote a",
     venue_label: "Kote odyans lan",

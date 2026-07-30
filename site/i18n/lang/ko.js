@@ -273,6 +273,7 @@
     read_official_notice: "공식 공고 읽기",
     join_online: "온라인 참여",
     participation_link: "참여 링크",
+    ida_meetings_page: "IDA 회의 페이지",
     email_in_notice: "공고의 이메일",
     map_venue: "장소 지도",
     venue_label: "개최 장소",

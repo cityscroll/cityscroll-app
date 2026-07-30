@@ -276,6 +276,7 @@
     read_official_notice: "قراءة الإشعار الرسمي",
     join_online: "الانضمام عبر الإنترنت",
     participation_link: "رابط المشاركة",
+    ida_meetings_page: "صفحة اجتماعات IDA",
     email_in_notice: "البريد الوارد في الإشعار",
     map_venue: "خريطة مكان الجلسة",
     venue_label: "مكان الجلسة",

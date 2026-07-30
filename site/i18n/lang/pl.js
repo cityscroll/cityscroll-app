@@ -281,6 +281,7 @@
     read_official_notice: "Przeczytaj oficjalne ogłoszenie",
     join_online: "Dołącz online",
     participation_link: "Link do udziału",
+    ida_meetings_page: "Strona posiedzeń IDA",
     email_in_notice: "E-mail z ogłoszenia",
     map_venue: "Mapa miejsca",
     venue_label: "Miejsce",
