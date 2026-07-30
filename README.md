@@ -1,64 +1,114 @@
 # CityScroll
 
-CityScroll makes **The City Record** — the official daily journal where every NYC agency
-must publish its contracts, hearings, rule changes, rezonings, and staff moves (NYC Charter
-§1066) — actually searchable, and emails you the moment something you care about shows up
-in it.
+CityScroll brings New York City's scattered public-data systems into one place — so you can
+follow a procurement from solicitation through award to payment, see one vendor across every
+agency they work with, and get an email the morning something you care about appears. No
+single city website connects these threads. CityScroll does.
 
 *   **Use it:** [cityscroll.org](https://cityscroll.org/)
 *   **Changelog:** [cityscroll.org/changelog.html](https://cityscroll.org/changelog.html)
 *   **System Stats:** [cityscroll.org/stats.html](https://cityscroll.org/stats.html)
 
-![CityScroll's Staffing guide, showing current City notices first and civil-service guidance in context](site/media/review/staffing-content-first/after-1440.png)
+![CityScroll homepage — contracts, staffing, zoning, property, meetings, and rules, all in one place](docs/readme/homepage.png)
+
+[**Open it →**](https://cityscroll.org/)
 
 ---
 
-## See it in action
+## What you can do here that the source sites can't do
 
-**Track a rezoning in your neighborhood.**
-*Before:* dig through City Planning's ZAP case portal by project number, or wait for a
-neighborhood listserv to notice.
-*With CityScroll:* search "Bushwick rezoning" in plain English, follow the project, and get
-an email the moment its status changes — mapped against the actual tax lots.
+**Follow a contract end to end — across systems that don't link to each other.**
 
-**Catch a contract award before it's old news.**
-*Before:* comb the City Record by hand, or wait for a reporter to flag it.
-*With CityScroll:* watch any agency or vendor — "construction contract awards over
-$500k" — and get notified the day it posts, with the award amount (reconciled against what
-Checkbook NYC shows was actually paid), the vendor, and a link to the real notice.
+A single notice page joins the City Record announcement, the Checkbook NYC registration and
+payment record, the PASSPort solicitation detail, and the OCP award corroboration —
+on one timeline, with every source named.
 
-**Get alerts in your own language.**
-*Before:* English-only civic data, full stop.
-*With CityScroll:* switch the whole interface — search, filters, digests — to Spanish,
-Simplified Chinese, or Russian. Notices themselves stay in English (it's the official
-record's language), but everything CityScroll adds around them speaks yours.
+[![A procurement lifecycle timeline joining City Record, Checkbook NYC, and PASSPort on one notice page](docs/readme/procurement-lifecycle.png)](https://cityscroll.org/#notice/20260724018)
 
-**Find a path into a City career.**
-*Before:* learn civil-service vocabulary, compare a monthly schedule with annual data,
-open each Notice of Examination, and then find the separate application system.
-*With CityScroll:* the Staffing guide explains the process in plain language, puts open and
-upcoming exams in one filterable list, shows fees and minimum salaries when DCAS has
-published them, and links each applicant to the official next step.
+**See one vendor across every agency and every year.**
 
-## Key Features
+A vendor profile resolves name variants (punctuation, casing, legal suffixes), totals every
+award on record, lists the agencies they win from, and links to every notice that names them.
 
-### 1. Procurement Lenses
-*   **💵 Money:** Follow contracts from RFP → Intent to Award → Award, complete with bidding deadlines, PASSPort links, agency contacts, and CSV exports. Thirteen agency aliases map to 12 distinct public authorities with recent official state-filed awards, clearly labeled as annual filings that may lag by a year.
-*   **🔮 Renewal Outlook:** Use historical Checkbook NYC contract terms to estimate expiration and renewal timing, display a chronological timeline on profiles, and trigger six-month early-warning alerts. These are labeled estimates, not active solicitations.
-*   **👤 Staffing:** Learn how civil-service hiring works, browse open and upcoming exams by interest, share a specific exam, and compare City titles, pay scales, and appointment histories.
-*   **🏗 Land:** Map rezonings in plain English, linked to the official City Planning ZAP registry and tax-lot (MapPLUTO) boundary polygons.
-*   **🏛 Property:** Track municipal asset auctions (real estate, equipment, timber) and check building demolition statuses.
-*   **📋 Rules & 🗓 Meetings:** Find this week's public hearings by affected borough or neighborhood, with the hearing venue kept separate from the place a decision concerns; monitor regulatory changes and public comment windows.
+[![Vendor profile resolving four name variants, $184M across 50 awards and six agencies](docs/readme/vendor-profile.png)](https://cityscroll.org/#vendor/Community%20Mediation%20Services%2C%20Inc.)
 
-### 2. Search & Alerts
-*   **Subscription Quiz:** Build tailored watches via an onboarding wizard.
-*   **Subscribe by Email:** Write to `subscribe@crol-list.org` in plain English; an LLM parses it into a watch and replies with a double-opt-in confirmation link.
-*   **MCP for AI Assistants:** Point any MCP client at `api.cityscroll.org/mcp` to search notices and create/preview watches programmatically ([docs](https://cityscroll.org/api.html)).
-*   **Proactive Alerts:** Receive morning email digests (queued per-subscriber delivery with independent retries) or subscribe to live RSS/Atom, JSON, and iCal feeds. Alerts deliver in your chosen language.
-*   **Multilingual UI:** Switch the interface to Spanish, Simplified Chinese, or Russian via the header language selector; your preference is remembered. Official City Record notice text stays in English; an unofficial translation is available on demand for shipping languages.
-*   **[The Data](https://cityscroll.org/data.html):** the City Record at a glance — sections, volume, procurement mix, top agencies/vendors by cleaned dollars — computed live in the browser.
-*   **Unified Workspace:** Pin records, write local notes, export CSV/JSON dossiers, and generate shareable snapshot links.
-*   **Workflow exports:** Download any lens as Excel-safe CSV or a typed Excel workbook, export notice details with a separate contract-trail sheet, or print a clean permalink-and-date-stamped view to PDF.
+**Search procurement notices and get daily alerts.**
+
+Browse open RFPs, recent awards, and closing-soon solicitations in one filterable view, or
+describe what you want in plain English ("construction contracts over $500k"). Get a morning
+email digest when new matches appear.
+
+[![Procurement search showing open solicitations across multiple agencies](docs/readme/money-search.png)](https://cityscroll.org/#money)
+
+**See the data honestly — with its quirks explained.**
+
+The Data page computes live totals from NYC Open Data: how many notices by section, the
+procurement mix, top agencies and vendors. It also explains the data-entry errors it corrects
+for (phantom $96 trillion awards, fake 2099 deadlines, 312 raw agency-name strings for ~150
+real agencies).
+
+[![The Data page — live per-section counts, procurement mix, and data-quality notes](docs/readme/data-page.png)](https://cityscroll.org/data.html)
+
+---
+
+## What CityScroll covers
+
+### Procurement
+Follow contracts from RFP → Intent to Award → Award → Registration → Payments. Each stage
+names its source and links back to it. Solicitation pages include bidding deadlines, PASSPort
+detail, agency contacts, and document links. Export any view as CSV or Excel.
+
+### Vendors and agencies
+Every vendor and agency has a deep-linkable profile page. Vendor pages resolve name variants,
+total awards across all agencies, and list every notice that names them. Agency pages show
+their procurement history and award patterns.
+
+### Renewal outlook
+Historical Checkbook NYC contract terms are used to estimate expiration and renewal timing,
+displayed as a timeline on profiles, with six-month early-warning alerts. These are labeled
+estimates, not active solicitations.
+
+### Staffing
+A plain-language guide to how civil-service hiring works, with open and upcoming exams in one
+filterable list. Fees, minimum salaries, and pay-schedule history are shown when DCAS has
+published them, with a direct link to the official application step.
+
+### Land use
+Rezonings and land-use actions in plain English, linked to the official City Planning ZAP
+registry and tax-lot (MapPLUTO) boundary polygons. Project detail pages show decision
+documents, action approvals, and disposition votes beyond the status chips on the portal.
+
+### Property
+Municipal asset auctions (real estate, equipment, timber) and building demolition filing
+statuses.
+
+### Rules and meetings
+This week's public hearings by affected borough or neighborhood, with the hearing venue kept
+separate from the place a decision concerns. Regulatory changes and public comment windows,
+enriched with official comment/adoption links and deadlines from the NYC Rules feed.
+
+---
+
+## Search, alerts, and data tools
+
+*   **Plain-English search:** Type what you're looking for — "shelter services contracts,"
+    " rezonings in Brooklyn," "education contracts over $200K" — and CityScroll translates it
+    into the right filters.
+*   **Email digests:** Describe a watch in plain English, confirm via double opt-in, and
+    receive a morning email when new matches appear. Delivers in your chosen language.
+*   **Subscribe by email:** Write to `subscribe@crol-list.org` in plain English; the message
+    is parsed into a watch and a confirmation link is sent back.
+*   **RSS, JSON, and iCal feeds:** Live feeds for any lens, so you can wire CityScroll into
+    your own tools.
+*   **MCP for AI assistants:** Point any MCP client at `api.cityscroll.org/mcp` to search
+    notices and create watches programmatically ([docs](https://cityscroll.org/api.html)).
+*   **Multilingual:** The interface switches to Spanish, Simplified Chinese, Russian, and
+    other languages via the header selector. Notice text stays in English (it's the official
+    record); an unofficial translation is available on demand for shipping languages.
+*   **Workspace:** Pin records, write local notes, export CSV/JSON dossiers, and generate
+    shareable snapshot links.
+*   **Exports:** Download any lens as Excel-safe CSV or a typed Excel workbook, export notice
+    details with a contract-trail sheet, or print a clean permalink-stamped view to PDF.
 
 ---
 
@@ -97,7 +147,9 @@ shapes; a separate daily workflow runs the live verifier and reports publisher d
 | [PASSPort Public contracts](https://a0333-passportpublic.nyc.gov/contracts.html) | Pending and pre-registration contract stages on the procurement lifecycle when Checkbook is unmatched, plus registered-stage enrichment when EPIN joins a City Record PIN. | Worker rebuilds the D1 passport_contracts table on the daily scheduled run; lifecycle reads join from that edge materialization with no live browser fetch to PASSPort. |
 | [PASSPort Public solicitations (RFx)](https://a0333-passportpublic.nyc.gov/rfx.html) | RFx detail on solicitation lifecycle stages (due date, method, status, commodity) joined by EPIN to City Record PINs. | Worker rebuilds the D1 passport_rfx table on the daily scheduled run; solicitation lifecycle stages read joined RFx detail from that materialization. |
 
-The external-award registry currently maps 13 agency names to 12 distinct ABO authorities across `8w5p-k45m`, `d84c-dk28`, `ehig-g5x3`, adds 1 exact NYCHA mapping, and records 16 verified coverage gaps. ABO joins remain possible matches rather than exact contract identity.
+The external-award registry currently maps 13 agency names to 12 distinct ABO authorities across
+`8w5p-k45m`, `d84c-dk28`, `ehig-g5x3`, adds 1 exact NYCHA mapping, and records 16 verified
+coverage gaps. ABO joins remain possible matches rather than exact contract identity.
 
 MOCS Local Law 63 plan rows are disabled. The current official page publishes rotating
 per-agency spreadsheets without a stable machine manifest; the former configured dataset is
