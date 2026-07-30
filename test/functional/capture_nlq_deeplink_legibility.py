@@ -302,7 +302,7 @@ def verify_interactions(browser) -> None:
         assert popup.url == expected_url
         popup.close()
 
-        page.locator('.lang-btn[data-lang="es"]').click()
+        page.select_option("#langSelect", "es")
         page.wait_for_function("document.documentElement.lang === 'es'")
         page.wait_for_function(
             "document.querySelector('#moneyactivefilters').textContent.includes('Borrar filtros')"

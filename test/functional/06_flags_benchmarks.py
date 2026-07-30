@@ -90,7 +90,7 @@ with sync_playwright() as pw:
     page.click("#tabbtn-rules")
     page.wait_for_selector("#rulesfeed .fcard", timeout=30000)
     step("OK", "regression: rules feed", "")
-    strip = page.evaluate("!document.getElementById('todaystrip').hidden")
+    strip = page.evaluate("!!document.getElementById('homeCta')")
     step("OK" if strip else "FAIL", "regression: today strip", "")
 
     step("OK" if not errors else "FAIL", "zero page errors", "; ".join(errors[:5]))

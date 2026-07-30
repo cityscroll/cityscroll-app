@@ -256,12 +256,12 @@ def verify_interactions(browser) -> None:
         )
         copied = page.evaluate("navigator.clipboard.readText()")
         assert copied == f"{base_url}#land/{PROJECT_ID}"
-        page.locator('.lang-btn[data-lang="es"]').click()
+        page.select_option("#langSelect", "es")
         page.wait_for_function("document.documentElement.lang === 'es'")
         page.locator("#landcopy").wait_for(state="visible")
         assert page.evaluate("location.hash") == f"#land/{PROJECT_ID}"
         assert page.locator("#llist .row").count() == 1
-        page.locator('.lang-btn[data-lang="en"]').click()
+        page.select_option("#langSelect", "en")
         page.wait_for_function("document.documentElement.lang === 'en'")
         page.go_back(wait_until="domcontentloaded")
         page.wait_for_function("location.hash === '#land'")

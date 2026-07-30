@@ -257,8 +257,9 @@ def regression_fixtures(page, lang, strings, violations):
             violations.append({"view": f"REGRESSION-FIXTURE ({name})", "sel": "-",
                                "text": actual.replace("\n", " ")[:120], "kind": "fixture",
                                "english_words": [f"expected substring {must_contain!r}"]})
-    pin("hotfix-1 bug a: today-strip summary", page.locator("#tbig").inner_text(), "avisos hoy")
-    pin("hotfix-1 bug b: section names translate", page.locator("#tcounts").inner_text(), "Adquisiciones")
+    # Homepage edition strip removed; pin CTA chrome + list deadline tags instead.
+    if page.locator("#homeCtaPrompt").count():
+        pin("homepage CTA prompt translates", page.locator("#homeCtaPrompt").inner_text(), "correo")
     pin("hotfix-1: deadline tags translate", page.locator("#list").first.inner_text(), "cierra")
     pin("hotfix-2: diacritic 'Mi investigación'",
         page.locator('[data-i18n="footer_investigation"]').inner_text(), "Mi investigación")
@@ -289,9 +290,8 @@ def run_subpage(pw, lang, page, frags):
     page_obj.wait_for_load_state("load")
     page_obj.wait_for_timeout(1000)
 
-    btn = page_obj.locator(f'#langSwitcher .lang-btn[data-lang="{lang}"]')
-    assert btn.count(), f"{page}.html: no language button for {lang!r} — add the shared switcher"
-    btn.click()
+    assert page_obj.locator("#langSelect").count(), f"{page}.html: no language dropdown for {lang!r} — add the shared switcher"
+    page_obj.select_option("#langSelect", lang)
     page_obj.wait_for_timeout(800)
 
     violations, seen = [], set()
@@ -340,9 +340,8 @@ def run_notice_deep_link(pw, lang, frags):
     page.goto(f"{BASE}#notice/{NOTICE_PERMALINK_ID}", timeout=30000)
     page.wait_for_load_state("load")
     page.wait_for_timeout(1200)
-    btn = page.locator(f'#langSwitcher .lang-btn[data-lang="{lang}"]')
-    assert btn.count(), f"no language button for {lang!r} — add it before activating its guard"
-    btn.click()
+    assert page.locator("#langSelect").count(), f"no language dropdown for {lang!r} — add it before activating its guard"
+    page.select_option("#langSelect", lang)
     page.wait_for_timeout(1200)
     seen = set()
     collect(page, "notice-deep-link (switched while viewing)", frags, violations, seen)
@@ -375,9 +374,8 @@ def run_lang(pw, lang):
     page.wait_for_load_state("load")
     page.wait_for_timeout(1500)
 
-    btn = page.locator(f'#langSwitcher .lang-btn[data-lang="{lang}"]')
-    assert btn.count(), f"no language button for {lang!r} — add it before activating its guard"
-    btn.click()
+    assert page.locator("#langSelect").count(), f"no language dropdown for {lang!r} — add it before activating its guard"
+    page.select_option("#langSelect", lang)
     page.wait_for_timeout(1500)
 
     violations, seen = [], set()
