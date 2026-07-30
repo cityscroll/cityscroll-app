@@ -1,0 +1,71 @@
+{
+  "notices": [
+    {
+      "request_id": "CR-1001",
+      "start_date": "2026-07-10T00:00:00.000",
+      "agency_name": "City Council",
+      "section_name": "Public Hearings and Meetings",
+      "type_of_notice_description": "Public Hearing",
+      "short_title": "Queens Transit Routing and Street Improvements",
+      "event_date": "2026-07-28",
+      "additional_description_1": "The proposed route change affects the Borough of Queens and neighboring communities.",
+      "street_address_1": "120 Broad Street",
+      "city": "New York",
+      "state": "NY",
+      "zip_code": "10271"
+    }
+  ],
+  "events": [
+    {
+      "EventId": "evt-001",
+      "EventTitle": "Queens Transit Routing and Street Improvements",
+      "BodyText": "City Council Transportation Committee",
+      "StartDate": "2026-07-28T16:00:00-04:00",
+      "EndDate": "2026-07-28T18:00:00-04:00",
+      "EventLocation": "Council Chambers, New York, NY",
+      "VenueName": "City Hall",
+      "VenueCity": "New York",
+      "VenueType": "in-person"
+    }
+  ],
+  "agenda_items": [
+    {
+      "AgendaItemId": "ag-001",
+      "EventId": "evt-001",
+      "AgendaItemNumber": "1",
+      "AgendaItemTitle": "Transit Improvement Funding",
+      "MatterId": "mat-001"
+    }
+  ],
+  "matters": [
+    {
+      "MatterId": "mat-001",
+      "EventId": "evt-001",
+      "AgendaItemId": "ag-001",
+      "MatterName": "Transit Improvement Funding",
+      "MatterText": "Approve budget amendment and implementation plan.",
+      "Status": "Final",
+      "Outcome": "Approved"
+    }
+  ],
+  "votes": [
+    {
+      "VoteId": "vote-001",
+      "MatterId": "mat-001",
+      "Result": "Passed",
+      "Ayes": "6",
+      "Nays": "3",
+      "Abstain": "0",
+      "VoteDate": "2026-07-28T17:00:00-04:00"
+    }
+  ],
+  "documents": [
+    {
+      "DocumentId": "doc-001",
+      "MatterId": "mat-001",
+      "DocumentName": "Transit Vote Transcript",
+      "FileURL": "https://council.nyc.gov/records/transit-vote.pdf",
+      "Category": "Minutes"
+    }
+  ]
+}

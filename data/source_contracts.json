@@ -44,13 +44,28 @@
       "delivery_tier": "edge-materialized",
       "kind": "html",
       "landing_page": "https://edc.nyc/about-nycedc/financial-public-documents-recordings",
-      "required_fields": ["request_id", "project_id", "project_name", "company_name", "project_address", "requested_benefit_amount", "estimated_public_cost", "application_status"],
+      "required_fields": [
+        "request_id",
+        "project_id",
+        "project_name",
+        "company_name",
+        "project_address",
+        "requested_benefit_amount",
+        "estimated_public_cost",
+        "application_status"
+      ],
       "publisher_cadence": "Daily",
       "product_freshness": "Freshness depends on the Build NYC document publication page; the worker caches joined lifecycle records for read-path latency.",
       "used_for": "City Record ↔ Build NYC subsidy timeline joins for application, hearing, board, closing, and compliance stages.",
       "code_references": [
-        {"path": "worker/src/subsidy_lifecycle.mjs", "contains": "SUBSIDY_SOURCE"},
-        {"path": "worker/src/lib/subsidy_lifecycle.mjs", "contains": "assembleSubsidyLifecycle"}
+        {
+          "path": "worker/src/subsidy_lifecycle.mjs",
+          "contains": "SUBSIDY_SOURCE"
+        },
+        {
+          "path": "worker/src/lib/subsidy_lifecycle.mjs",
+          "contains": "assembleSubsidyLifecycle"
+        }
       ]
     },
     {
@@ -644,6 +659,25 @@
         {
           "path": "worker/src/rules.mjs",
           "contains": "rules.cityofnewyork.us/feed/"
+        }
+      ],
+      "delivery_tier": "edge-materialized"
+    },
+    {
+      "id": "nyc-council-legistar",
+      "name": "NYC Council Legistar API",
+      "owner": "NYC Council",
+      "status": "live",
+      "scope": "runtime",
+      "kind": "html",
+      "landing_page": "https://council.nyc.gov/legislation/api/",
+      "publisher_cadence": "Updated as meetings, agenda items, and votes change",
+      "product_freshness": "Daily materialized read model in the worker; stale views keep user-facing tables usable while upstream is retried.",
+      "used_for": "Meeting outcomes surface: matching notices to Council agenda trees, voting results, and supporting documents.",
+      "code_references": [
+        {
+          "path": "worker/src/lib/meeting_outcomes.mjs",
+          "contains": "LEGISTAR_API_BASE"
         }
       ],
       "delivery_tier": "edge-materialized"
