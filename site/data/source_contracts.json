@@ -896,15 +896,78 @@
       "kind": "html",
       "landing_page": "https://council.nyc.gov/legislation/api/",
       "publisher_cadence": "Updated as meetings, agenda items, and votes change",
-      "product_freshness": "Daily materialized read model in the worker; stale views keep user-facing tables usable while upstream is retried.",
+      "product_freshness": "Authenticated Web API materialization is recommended after measured modern event join of 100% (2026-07-30) with LEGISTAR_API_TOKEN. Nested EventItems/Votes require the token as token= query on webapi.legistar.com/v1/nyc. Worker secret not installed in this recon PR.",
       "used_for": "Meeting outcomes surface: matching notices to Council agenda trees, voting results, and supporting documents.",
       "code_references": [
         {
           "path": "worker/src/lib/meeting_outcomes.mjs",
           "contains": "LEGISTAR_API_BASE"
+        },
+        {
+          "path": "worker/src/lib/legistar_join.mjs",
+          "contains": "exact_date_body_tokens"
         }
       ],
-      "delivery_tier": "edge-materialized"
+      "delivery_tier": "edge-materialized",
+      "endpoint": "https://webapi.legistar.com/v1/nyc/",
+      "gap": "Authenticated recon (2026-07-30): modern City Council Public Hearings strict event join is 100% (59/59); EventItems on 100% of joined events; matter-linked items 98.3%; votes present on ~10% of joined subcommittee hearings when sampled. Clears ~30% usefulness for event/agenda depth. Follow-up: edge materialize Events\u2192EventItems\u2192Votes with Worker secret LEGISTAR_API_TOKEN (not set in this PR). Gaps remain class-(a) until that materialization ships.",
+      "join_keys": [
+        "matter_id",
+        "event_id",
+        "event_item_id",
+        "agency",
+        "event_title",
+        "start_time"
+      ],
+      "join_measurement": {
+        "observed_on": "2026-07-30",
+        "universe_modern": "City Record Online (dg92-zbpx) Public Hearings and Meetings, agency City Council, event_date present, start_date >= 2025-01-01",
+        "universe_modern_count": 59,
+        "universe_historical": "Same, start_date in [2019-01-01, 2025-01-01)",
+        "universe_historical_count": 173,
+        "strategy": "exact_date_body_tokens against authenticated webapi.legistar.com/v1/nyc Events (EventBodyName + EventDate). Nested EventItems/{id}/Votes for depth.",
+        "access": {
+          "webapi_token_required": true,
+          "unauthenticated_http": 403,
+          "authenticated_http": 200,
+          "token_env": "LEGISTAR_API_TOKEN",
+          "docs_landing": "https://council.nyc.gov/legislation/api/",
+          "note": "Full multi-segment token required; first segment alone returns 403."
+        },
+        "rates": {
+          "modern_notices_strict": {
+            "joined": 59,
+            "total": 59,
+            "rate": 1.0
+          },
+          "historical_notices_strict": {
+            "joined": 127,
+            "total": 173,
+            "rate": 0.7341
+          },
+          "historical_2023_2024_strict": {
+            "joined": 56,
+            "total": 59,
+            "rate": 0.9492
+          },
+          "modern_joined_with_event_items": {
+            "joined": 59,
+            "total": 59,
+            "rate": 1.0
+          },
+          "modern_joined_with_matter_items": {
+            "joined": 58,
+            "total": 59,
+            "rate": 0.9831
+          },
+          "modern_joined_with_votes_sampled": {
+            "joined": 6,
+            "total": 59,
+            "rate": 0.1017
+          }
+        },
+        "verdict": "Above usefulness threshold (~30%) for modern event/agenda depth: authenticated strict event join 100% (59/59); EventItems 100%; matter items 98.3%. Recommend edge materialization with LEGISTAR_API_TOKEN Worker secret (not set in this PR)."
+      }
     },
     {
       "id": "passport-public-contracts",
@@ -1161,6 +1224,70 @@
         }
       ],
       "delivery_tier": "live-only"
+    },
+    {
+      "id": "city-council-meetings-open-data",
+      "name": "City Council Meetings (Open Data)",
+      "owner": "NYC Council / NYC Open Data",
+      "status": "disabled",
+      "scope": "runtime",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "m48u-yjt8",
+      "landing_page": "https://data.cityofnewyork.us/d/m48u-yjt8",
+      "required_fields": [
+        "event_id",
+        "committee",
+        "meeting_date",
+        "url"
+      ],
+      "max_stale_days": 5000,
+      "publisher_cadence": "Historical series labeled 1999 to 2024; meetings end 2024-12-19; resource Last-Modified 2025-12-30",
+      "product_freshness": "Disabled for product materialization. Historical event identity only; modern depth uses authenticated Legistar Web API instead.",
+      "used_for": "No current product output for modern notice detail. Measured as an event-identity recon source only (no vote or agenda-item columns).",
+      "gap": "Open Data m48u-yjt8 freezes at 2024-12-19: modern City Council notice join is 0%; historical 2019\u20132024 strict event join 73.41%. No vote/agenda-item columns. Superseded for modern depth by authenticated Legistar Web API (see nyc-council-legistar join_measurement, 100% modern event join). Kept disabled for product materialization.",
+      "join_keys": [
+        "event_id",
+        "agency",
+        "event_title",
+        "start_time"
+      ],
+      "join_measurement": {
+        "observed_on": "2026-07-30",
+        "universe_modern": "City Record Online (dg92-zbpx) Public Hearings and Meetings, agency City Council, event_date present, start_date >= 2025-01-01",
+        "universe_modern_count": 59,
+        "universe_historical": "Same, start_date in [2019-01-01, 2025-01-01)",
+        "universe_historical_count": 173,
+        "meeting_rows": 16104,
+        "meeting_date_min": "1999-10-19",
+        "meeting_date_max": "2024-12-19",
+        "strategy": "exact_date_committee_tokens (unique same-day committee named in notice title). Weak date-only and loose title overlaps rejected.",
+        "rates": {
+          "modern_notices_strict": {
+            "joined": 0,
+            "total": 59,
+            "rate": 0.0
+          },
+          "historical_notices_strict": {
+            "joined": 127,
+            "total": 173,
+            "rate": 0.7341
+          },
+          "historical_2023_2024_strict": {
+            "joined": 56,
+            "total": 59,
+            "rate": 0.9492
+          }
+        },
+        "verdict": "Below usefulness threshold (~30%) for modern product universe (0% strict join; freeze ends 2024-12-19). Historical event-level join is useful for recon only and does not publish votes/agenda items. Do not edge-materialize modern meeting-outcome depth from this source."
+      },
+      "code_references": [
+        {
+          "path": "worker/src/lib/legistar_join.mjs",
+          "contains": "exact_date_body_tokens"
+        }
+      ],
+      "delivery_tier": "edge-materialized"
     }
   ]
 }

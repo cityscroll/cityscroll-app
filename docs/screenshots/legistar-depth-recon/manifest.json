@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "observed_on": "2026-07-30",
+  "source_contract": "nyc-council-legistar",
+  "api_base": "https://webapi.legistar.com/v1/nyc/",
+  "demo_frame_request_id": "20260706036",
+  "files": [
+    {
+      "name": "joined-modern-votes-390.png",
+      "bytes": 81956,
+      "sha256": "1433e180984ea59a05945d6efdbc9b131e024b685c4273c065d59c7d4d1a2654",
+      "viewport": [
+        390,
+        844
+      ],
+      "stem": "joined-modern-votes"
+    },
+    {
+      "name": "joined-modern-votes-1440.png",
+      "bytes": 91630,
+      "sha256": "48353b6f38e324bf6ad9815232b4d1b2c86a3c26ded9a6e28825d5a2a553535b",
+      "viewport": [
+        1440,
+        900
+      ],
+      "stem": "joined-modern-votes"
+    },
+    {
+      "name": "rejected-loose-body-390.png",
+      "bytes": 55608,
+      "sha256": "27884ad7ceeea05d4aa23d7194925862760180c9e1964751ca338c25fe3d2ed2",
+      "viewport": [
+        390,
+        844
+      ],
+      "stem": "rejected-loose-body"
+    },
+    {
+      "name": "rejected-loose-body-1440.png",
+      "bytes": 63197,
+      "sha256": "5d72b46de6375870c6c4fffbf444a204e3ab115ee64bd7375aad344965272d57",
+      "viewport": [
+        1440,
+        900
+      ],
+      "stem": "rejected-loose-body"
+    },
+    {
+      "name": "measurement-clear-390.png",
+      "bytes": 88327,
+      "sha256": "339aa945d9a7359a7f3e31e7685506a07104f977d221d3ed0f0465b902a7b3a0",
+      "viewport": [
+        390,
+        844
+      ],
+      "stem": "measurement-clear"
+    },
+    {
+      "name": "measurement-clear-1440.png",
+      "bytes": 98605,
+      "sha256": "eb79462d64098caa0bfffc4ae6fd4ba79e3529dacdfea21b91a46d79e287f0c4",
+      "viewport": [
+        1440,
+        900
+      ],
+      "stem": "measurement-clear"
+    }
+  ]
+}

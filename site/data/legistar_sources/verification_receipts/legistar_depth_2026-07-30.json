@@ -1,0 +1,352 @@
+{
+  "observed_on": "2026-07-30",
+  "observed_at_utc": "2026-07-30T17:44:44Z",
+  "auth": {
+    "unauthenticated_events_http": 403,
+    "authenticated_events_http": 200,
+    "truncated_first_segment_http": 403,
+    "truncated_first_segment_body_head": "",
+    "token_env": "LEGISTAR_API_TOKEN",
+    "token_len": 210,
+    "token_sha256_12": "4c1f9ad3acb5",
+    "note": "Full multi-segment token required (dot-suffix payload). First segment alone returns 403.",
+    "payload_name": "NYC read token 20171026",
+    "write": false
+  },
+  "access": {
+    "Events": {
+      "http": 200,
+      "n": 2,
+      "keys": [
+        "EventId",
+        "EventGuid",
+        "EventLastModifiedUtc",
+        "EventRowVersion",
+        "EventBodyId",
+        "EventBodyName",
+        "EventDate",
+        "EventTime",
+        "EventVideoStatus",
+        "EventAgendaStatusId",
+        "EventAgendaStatusName",
+        "EventMinutesStatusId",
+        "EventMinutesStatusName",
+        "EventLocation",
+        "EventAgendaFile",
+        "EventMinutesFile",
+        "EventAgendaLastPublishedUTC",
+        "EventMinutesLastPublishedUTC"
+      ]
+    },
+    "Bodies": {
+      "http": 200,
+      "n": 2,
+      "keys": [
+        "BodyId",
+        "BodyGuid",
+        "BodyLastModifiedUtc",
+        "BodyRowVersion",
+        "BodyName",
+        "BodyTypeId",
+        "BodyTypeName",
+        "BodyMeetFlag",
+        "BodyActiveFlag",
+        "BodySort",
+        "BodyDescription",
+        "BodyContactNameId",
+        "BodyContactFullName",
+        "BodyContactPhone",
+        "BodyContactEmail",
+        "BodyUsedControlFlag",
+        "BodyNumberOfMembers",
+        "BodyUsedActingFlag"
+      ]
+    },
+    "Matters": {
+      "http": 200,
+      "n": 2,
+      "keys": [
+        "MatterId",
+        "MatterGuid",
+        "MatterLastModifiedUtc",
+        "MatterRowVersion",
+        "MatterFile",
+        "MatterName",
+        "MatterTitle",
+        "MatterTypeId",
+        "MatterTypeName",
+        "MatterStatusId",
+        "MatterStatusName",
+        "MatterBodyId",
+        "MatterBodyName",
+        "MatterIntroDate",
+        "MatterAgendaDate",
+        "MatterPassedDate",
+        "MatterEnactmentDate",
+        "MatterEnactmentNumber"
+      ]
+    },
+    "EventItems_top_level": {
+      "http": null,
+      "error": "RuntimeError",
+      "msg": "HTTP 404 on EventItems bytes=3281"
+    },
+    "Votes_top_level": {
+      "http": null,
+      "error": "RuntimeError",
+      "msg": "HTTP 404 on Votes bytes=3271"
+    }
+  },
+  "nested_sample": {
+    "sample_event_id": 22547,
+    "sample_body": "City Council",
+    "sample_date": "2026-12-17",
+    "EventItems_n": 1,
+    "EventItems_keys": [
+      "EventItemId",
+      "EventItemGuid",
+      "EventItemLastModifiedUtc",
+      "EventItemRowVersion",
+      "EventItemEventId",
+      "EventItemAgendaSequence",
+      "EventItemMinutesSequence",
+      "EventItemAgendaNumber",
+      "EventItemVideo",
+      "EventItemVideoIndex",
+      "EventItemVersion",
+      "EventItemAgendaNote",
+      "EventItemMinutesNote",
+      "EventItemActionId",
+      "EventItemActionName",
+      "EventItemActionText"
+    ],
+    "vote_attach_sample": {
+      "items": 1,
+      "with_matter": 0,
+      "votes_nonempty": 0,
+      "attachments_nonempty": 0
+    },
+    "sample_vote_keys": null
+  },
+  "event_universe": {
+    "events_2019_2022": 2261,
+    "events_2023_2024": 1242,
+    "events_2025plus": 1136,
+    "events_total_indexed": 4639
+  },
+  "join_measurement": {
+    "strategy": "exact_date_body_tokens (unique same-day EventBodyName named in notice title)",
+    "usefulness_threshold": 0.3,
+    "rates": {
+      "modern_notices_strict": {
+        "joined": 59,
+        "total": 59,
+        "rate": 1.0,
+        "reasons": {}
+      },
+      "historical_notices_strict": {
+        "joined": 127,
+        "total": 173,
+        "rate": 0.7341,
+        "reasons": {
+          "date_only_rejected": 45,
+          "ambiguous": 1
+        }
+      },
+      "historical_2023_2024_strict": {
+        "joined": 56,
+        "total": 59,
+        "rate": 0.9492,
+        "reasons": {
+          "date_only_rejected": 3
+        }
+      }
+    },
+    "examples": {
+      "modern": [
+        {
+          "request_id": "20251107004",
+          "title": "11-20-25 Subcommittee on Zoning and Franchises meeting",
+          "event_id": 22018,
+          "body": "Subcommittee on Zoning and Franchises",
+          "event_date": "2025-11-20"
+        },
+        {
+          "request_id": "20260706036",
+          "title": "Correction: 7-14-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Disposition",
+          "event_id": 22526,
+          "body": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
+          "event_date": "2026-07-14"
+        },
+        {
+          "request_id": "20251001024",
+          "title": "10-16-26 Subcommittee on Zoning and Franchises meeting",
+          "event_id": 21910,
+          "body": "Subcommittee on Zoning and Franchises",
+          "event_date": "2025-10-16"
+        },
+        {
+          "request_id": "20251119030",
+          "title": "12-3-25 Subcommittee on Zoning and Franchises meeting",
+          "event_id": 22042,
+          "body": "Subcommittee on Zoning and Franchises",
+          "event_date": "2025-12-03"
+        },
+        {
+          "request_id": "20250612007",
+          "title": "6-26-25 Subcommittee on Landmarks, Public Sitings, and Dispositions meeting",
+          "event_id": 21642,
+          "body": "Subcommittee on Landmarks, Public Sitings and Dispositions",
+          "event_date": "2025-06-26"
+        },
+        {
+          "request_id": "20260408025",
+          "title": "4-22-26 Subcommittee on Zoning and Franchises meeting",
+          "event_id": 22342,
+          "body": "Subcommittee on Zoning and Franchises",
+          "event_date": "2026-04-22"
+        }
+      ],
+      "historical": [
+        {
+          "request_id": "20210827004",
+          "title": "9/13/21 Subcommittee on Landmarks, Public Sitings, and Dispositions meeting",
+          "event_id": 18772,
+          "body": "Subcommittee on Landmarks, Public Sitings and Dispositions",
+          "event_date": "2021-09-13"
+        },
+        {
+          "request_id": "20220524001",
+          "title": "6-7-22 Subcommittee on Landmarks, Public Sitings, and Dispositions meeting",
+          "event_id": 19309,
+          "body": "Subcommittee on Landmarks, Public Sitings and Dispositions",
+          "event_date": "2022-06-07"
+        },
+        {
+          "request_id": "20240708002",
+          "title": "7-24-24 Subcommittee on Zoning and Franchises meeting",
+          "event_id": 20890,
+          "body": "Subcommittee on Zoning and Franchises",
+          "event_date": "2024-07-24"
+        }
+      ]
+    },
+    "depth": {
+      "modern": {
+        "notices": 59,
+        "event_joined": 59,
+        "total_items": 849,
+        "events_with_items": 59,
+        "total_matter_items": 755,
+        "events_with_matter_items": 58,
+        "total_votes": 106,
+        "items_with_votes": 14,
+        "events_with_any_votes": 6,
+        "frac_with_items": 1.0,
+        "frac_with_matters": 0.9831,
+        "frac_with_votes": 0.1017
+      },
+      "historical_2024_sample": {
+        "notices": 26,
+        "event_joined": 25,
+        "total_items": 342,
+        "events_with_items": 25,
+        "total_matter_items": 304,
+        "events_with_matter_items": 24,
+        "total_votes": 49,
+        "items_with_votes": 7,
+        "events_with_any_votes": 4,
+        "frac_with_items": 1.0,
+        "frac_with_matters": 0.96,
+        "frac_with_votes": 0.16
+      }
+    },
+    "demos": {
+      "modern": [
+        {
+          "request_id": "20251107004",
+          "event_id": 22018,
+          "body": "Subcommittee on Zoning and Franchises",
+          "event_date": "2025-11-20",
+          "items": 6,
+          "matter_items": 4,
+          "votes_sampled": 0,
+          "title": "11-20-25 Subcommittee on Zoning and Franchises meeting"
+        },
+        {
+          "request_id": "20260706036",
+          "event_id": 22526,
+          "body": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
+          "event_date": "2026-07-14",
+          "items": 16,
+          "matter_items": 14,
+          "votes_sampled": 7,
+          "title": "Correction: 7-14-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting"
+        },
+        {
+          "request_id": "20251001024",
+          "event_id": 21910,
+          "body": "Subcommittee on Zoning and Franchises",
+          "event_date": "2025-10-16",
+          "items": 23,
+          "matter_items": 21,
+          "votes_sampled": 0,
+          "title": "10-16-26 Subcommittee on Zoning and Franchises meeting"
+        },
+        {
+          "request_id": "20251119030",
+          "event_id": 22042,
+          "body": "Subcommittee on Zoning and Franchises",
+          "event_date": "2025-12-03",
+          "items": 15,
+          "matter_items": 14,
+          "votes_sampled": 0,
+          "title": "12-3-25 Subcommittee on Zoning and Franchises meeting"
+        }
+      ],
+      "historical_2024": [
+        {
+          "request_id": "20240708002",
+          "event_id": 20890,
+          "body": "Subcommittee on Zoning and Franchises",
+          "event_date": "2024-07-24",
+          "items": 33,
+          "matter_items": 32,
+          "votes_sampled": 0,
+          "title": "7-24-24 Subcommittee on Zoning and Franchises meeting"
+        },
+        {
+          "request_id": "20240826002",
+          "event_id": 21010,
+          "body": "Subcommittee on Landmarks, Public Sitings and Dispositions",
+          "event_date": "2024-09-10",
+          "items": 12,
+          "matter_items": 10,
+          "votes_sampled": 14,
+          "title": "9-10-24 Subcommittee on Landmarks, Public Sitings, and Dispositions meeting"
+        },
+        {
+          "request_id": "20240222009",
+          "event_id": 20699,
+          "body": "Subcommittee on Landmarks, Public Sitings and Dispositions",
+          "event_date": "2024-03-05",
+          "items": 13,
+          "matter_items": 12,
+          "votes_sampled": 14,
+          "title": "3-5-24 Subcommittee on Landmarks, Public Sitings, and Dispositions"
+        },
+        {
+          "request_id": "20240624005",
+          "event_id": 20889,
+          "body": "Subcommittee on Zoning and Franchises",
+          "event_date": "2024-07-09",
+          "items": 6,
+          "matter_items": 4,
+          "votes_sampled": 0,
+          "title": "7-9-24 Subcommittee on Zoning and Franchises meeting"
+        }
+      ]
+    },
+    "verdict": "Authenticated Legistar Web API unlocks event rows. Modern City Council notice strict event join is 100.0% (59/59). Above ~30% usefulness for event-level depth. Among joined modern events: items=1.0, matters=0.9831, votes=0.1017. Recommend follow-up edge materialization of Events\u2192EventItems\u2192Votes with LEGISTAR_API_TOKEN as a Worker secret (not set in this PR)."
+  }
+}
