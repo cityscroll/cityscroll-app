@@ -168,8 +168,15 @@ unavailable`. When the feed fails, `projectFromIdaNotice` derives a hearing-stag
 join from the City Record IDA hearing notice (company names, event date). Keep
 honest unavailable copy only when the feed is down **and** no notice-derived
 hearing applies. Schema safety net: `ensureSubsidySchema` (migration
-`0005_subsidy_lifecycle.sql`). Characterization: `test/subsidy_lifecycle.test.mjs`,
-`test/ida_notice_defects.test.mjs`.
+`0005_subsidy_lifecycle.sql`).
+
+**Age-aware gap kinds** (temporal sibling of paid / verified_zero / unavailable):
+`subsidyGapKind` → `too_soon` | `not_published` | (worker) `unavailable`. Lag table
+`SUBSIDY_STAGE_EXPECT_LAG_DAYS` (board ~60d, closing ~180d, project_record ~90d).
+Demo/backtest notices must be **aged** (2022–2024 hearings) so later stages read
+`not_published`, not “could not reach.” Young hearings use “check back” copy.
+Characterization: `test/subsidy_lifecycle.test.mjs`, `test/ida_notice_defects.test.mjs`.
+Aged demo ids: `20220525018`, `20231004016`, `20240617012`.
 
 ## Checkbook Contracts row identity
 

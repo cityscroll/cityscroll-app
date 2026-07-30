@@ -306,6 +306,56 @@ export function matchProjectToNotice(notice, projects = []) {
 // hearing-stage project from the City Record notice itself. IDA public-hearing notices are the
 // public hearing stage — they list companies and applications. This is not a substitute for
 // board/closing/compliance documents; those stay explicit unknowns until the feed recovers.
+// Typical lag after a hearing before later Build NYC / IDA stages are public enough
+// that absence is "not published" rather than "too soon". Conservative generic weeks —
+// not measured publication stats. Temporal sibling of paid / verified_zero / unavailable.
+export const SUBSIDY_STAGE_EXPECT_LAG_DAYS = {
+  board_decision: 60, // ~one board cycle after the hearing
+  closing: 180, // closing packages often land months later
+  compliance: 400, // first annual compliance window
+  project_record: 90, // whole-project join after hearing
+};
+
+export function daysSinceIso(iso, asOf = new Date()) {
+  const start = String(iso || "").slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(start)) return null;
+  const a = Date.UTC(+start.slice(0, 4), +start.slice(5, 7) - 1, +start.slice(8, 10));
+  const end = asOf instanceof Date ? asOf : new Date(asOf);
+  if (Number.isNaN(end.valueOf())) return null;
+  const b = Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate());
+  return Math.floor((b - a) / 86400000);
+}
+
+export function lagWeeksForStage(stage) {
+  const days = SUBSIDY_STAGE_EXPECT_LAG_DAYS[stage] ?? SUBSIDY_STAGE_EXPECT_LAG_DAYS.project_record;
+  return Math.max(1, Math.round(days / 7));
+}
+
+// Three honest gap states for subsidy slots (when not matched):
+//   too_soon      — typical publication lag has not elapsed
+//   not_published — lag elapsed; treat as class-(b) absence
+//   unavailable   — feed/fetch failure (set by the worker path, not here)
+export function subsidyGapKind({ stage = "project_record", anchorDate = null, asOf = new Date(), matched = false } = {}) {
+  if (matched) return null;
+  const days = daysSinceIso(anchorDate, asOf);
+  if (days == null) return "not_published";
+  const lag = SUBSIDY_STAGE_EXPECT_LAG_DAYS[stage] ?? SUBSIDY_STAGE_EXPECT_LAG_DAYS.project_record;
+  if (days < lag) return "too_soon";
+  return "not_published";
+}
+
+export function subsidyAnchorDate(notice = {}, lifecycle = null) {
+  const fromTimeline = (lifecycle?.timeline || []).find(
+    (e) => e && e.stage === STAGE_HEARING && e.date,
+  );
+  return toDate(
+    fromTimeline?.date
+      || notice.event_date
+      || notice.start_date
+      || null,
+  );
+}
+
 export function isIdaHearingNotice(notice = {}) {
   const agency = String(notice.agency_name || notice.agency || "");
   const title = String(notice.short_title || notice.title || "");
@@ -376,6 +426,20 @@ export function projectFromIdaNotice(notice = {}) {
   };
 }
 
+function withGapKinds(timeline, anchorDate) {
+  return (timeline || []).map((entry) => {
+    if (!entry || entry.status === "matched") return entry;
+    return {
+      ...entry,
+      gap_kind: subsidyGapKind({
+        stage: entry.stage,
+        anchorDate,
+        matched: false,
+      }),
+    };
+  });
+}
+
 export function assembleSubsidyLifecycle(notices = [], projects = []) {
   return (notices || []).map((notice = {}) => {
     let matched = matchProjectToNotice(notice, projects);
@@ -386,13 +450,24 @@ export function assembleSubsidyLifecycle(notices = [], projects = []) {
           && String(p.project_id || "").startsWith("city-record:"),
       ) || projectFromIdaNotice(notice);
     }
+    const anchor = subsidyAnchorDate(notice, null);
     if (!matched) {
+      const bareTimeline = STAGES.map((stage) => ({
+        stage,
+        status: UNKNOWN,
+        date: null,
+        official_action: stage === STAGE_APPLICATION ? "application_review" : stage === STAGE_HEARING ? "public_hearing" : stage === STAGE_BOARD_DECISION ? "board_decision" : stage === STAGE_CLOSING ? "closing" : "annual_compliance",
+        outcome: UNKNOWN,
+        source: docState(),
+        detail: null,
+      }));
       return {
         request_id: String(notice.request_id || "").trim() || null,
         project: null,
         stage: STAGE_APPLICATION,
         join: {
           matched: false,
+          gap_kind: subsidyGapKind({ stage: "project_record", anchorDate: anchor, matched: false }),
           reason: "No matching NYCIDA/Build NYC project record was linked to this notice from public sources.",
         },
         company: {
@@ -419,20 +494,13 @@ export function assembleSubsidyLifecycle(notices = [], projects = []) {
           closing: docState(),
           compliance: docState(),
         },
-        timeline: STAGES.map((stage) => ({
-          stage,
-          status: UNKNOWN,
-          date: null,
-          official_action: stage === STAGE_APPLICATION ? "application_review" : stage === STAGE_HEARING ? "public_hearing" : stage === STAGE_BOARD_DECISION ? "board_decision" : stage === STAGE_CLOSING ? "closing" : "annual_compliance",
-          outcome: UNKNOWN,
-          source: docState(),
-          detail: null,
-        })),
+        timeline: withGapKinds(bareTimeline, anchor),
       };
     }
 
     const place = buildPlace(notice, matched);
-    const timeline = buildTimeline(matched);
+    const hearingAnchor = matched.hearing?.date || anchor || subsidyAnchorDate(notice, null);
+    const timeline = withGapKinds(buildTimeline(matched), hearingAnchor);
     const current = resolveStage(matched);
     const fromCityRecord = matched._derived_from === "city-record-hearing"
       || String(matched.project_id || "").startsWith("city-record:");
@@ -453,6 +521,7 @@ export function assembleSubsidyLifecycle(notices = [], projects = []) {
         method: joinMethod,
         source: joinSource,
         project_reference: matched.project_id || matched.request_id || null,
+        anchor_date: hearingAnchor || null,
       },
       company: {
         status: matched.company ? "matched" : UNKNOWN,

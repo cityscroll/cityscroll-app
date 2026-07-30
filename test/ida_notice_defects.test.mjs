@@ -17,6 +17,8 @@ import {
   assembleSubsidyLifecycle,
   projectFromIdaNotice,
   isIdaHearingNotice,
+  subsidyGapKind,
+  lagWeeksForStage,
 } from "../worker/src/lib/subsidy_lifecycle.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -152,4 +154,105 @@ test("subsidy: non-IDA notice stays unmatched when feed empty (class-b path)", (
     type_of_notice_description: "Award",
   }], []);
   assert.equal(lifecycle.join.matched, false);
+});
+
+// --- Age-aware gap kinds (too_soon / not_published / unavailable sibling) ---
+
+test("subsidyGapKind: young hearing is too_soon for project records and board decision", () => {
+  const asOf = new Date("2026-07-30T00:00:00Z");
+  assert.equal(
+    subsidyGapKind({ stage: "project_record", anchorDate: "2026-07-16", asOf, matched: false }),
+    "too_soon",
+  );
+  assert.equal(
+    subsidyGapKind({ stage: "board_decision", anchorDate: "2026-07-16", asOf, matched: false }),
+    "too_soon",
+  );
+});
+
+test("subsidyGapKind: aged hearing is not_published for later stages", () => {
+  const asOf = new Date("2026-07-30T00:00:00Z");
+  assert.equal(
+    subsidyGapKind({ stage: "project_record", anchorDate: "2023-11-02", asOf, matched: false }),
+    "not_published",
+  );
+  assert.equal(
+    subsidyGapKind({ stage: "board_decision", anchorDate: "2023-11-02", asOf, matched: false }),
+    "not_published",
+  );
+  assert.equal(
+    subsidyGapKind({ stage: "closing", anchorDate: "2023-11-02", asOf, matched: false }),
+    "not_published",
+  );
+  assert.ok(lagWeeksForStage("board_decision") >= 8);
+});
+
+test("aged IDA backtest: 2022–2024 hearings join City Record hearing; later stages not_published", () => {
+  const aged = [
+    {
+      request_id: "20231004016",
+      short_title: "NEW YORK CITY INDUSTRIAL DEVELOPMENT AGENCY - NOTICE OF PUBLIC HEARING TO BE HELD ON NOVEMBER 2ND, 2023",
+      agency_name: "Industrial Development Agency",
+      type_of_notice_description: "Public Hearings",
+      section_name: "Public Hearings and Meetings",
+      event_date: "2023-11-02T10:00:00.000",
+      start_date: "2023-10-19T00:00:00.000",
+      additional_description_1: "Company Name : Example Holdings LLC, a Delaware limited liability company (the Company)",
+    },
+    {
+      request_id: "20240617012",
+      short_title: "NEW YORK CITY INDUSTRIAL DEVELOPMENT AGENCY - NOTICE OF PUBLIC HEARING - July 18TH, 2024",
+      agency_name: "Industrial Development Agency",
+      type_of_notice_description: "Public Hearings",
+      section_name: "Public Hearings and Meetings",
+      event_date: "2024-07-18T10:00:00.000",
+      start_date: "2024-07-03T00:00:00.000",
+      additional_description_1: "Company Name : Aged Demo LLC, a Delaware limited liability company (the Company)",
+    },
+    {
+      request_id: "20220525018",
+      short_title: "NYCIDA SUPPLEMENTAL NOTICE OF PUBLIC HEARING - JUNE 9, 2022",
+      agency_name: "Industrial Development Agency",
+      type_of_notice_description: "Public Hearings",
+      section_name: "Public Hearings and Meetings",
+      event_date: "2022-06-09T10:00:00.000",
+      start_date: "2022-05-27T00:00:00.000",
+      additional_description_1: "Company Name : Historic Project LLC, a Delaware limited liability company (the Company)",
+    },
+  ];
+  for (const row of aged) {
+    const [lc] = assembleSubsidyLifecycle([row], []);
+    assert.equal(lc.join.matched, true, `${row.request_id} should city-record join`);
+    assert.equal(lc.join.method, "city-record-hearing");
+    const hearing = lc.timeline.find((e) => e.stage === "hearing");
+    assert.equal(hearing.status, "matched");
+    const board = lc.timeline.find((e) => e.stage === "board_decision");
+    assert.notEqual(board.status, "matched");
+    // gap_kind uses wall clock; for 2022–2024 anchors it must be not_published as of 2026
+    assert.equal(
+      subsidyGapKind({ stage: "board_decision", anchorDate: String(row.event_date).slice(0, 10), asOf: new Date("2026-07-30") }),
+      "not_published",
+      `${row.request_id} board should be aged not_published`,
+    );
+  }
+});
+
+test("young IDA hearing: board gap is too_soon (temporal, not not-published)", () => {
+  assert.equal(
+    subsidyGapKind({ stage: "board_decision", anchorDate: "2026-07-16", asOf: new Date("2026-07-30") }),
+    "too_soon",
+  );
+  const young = {
+    request_id: "20260617040",
+    short_title: "NEW YORK CITY INDUSTRIAL DEVELOPMENT AGENCY - NOTICE OF PUBLIC HEARING - July 16th, 2026",
+    agency_name: "Industrial Development Agency",
+    type_of_notice_description: "Public Hearings",
+    section_name: "Public Hearings and Meetings",
+    event_date: "2026-07-16T10:00:00.000",
+    start_date: "2026-07-02T00:00:00.000",
+    additional_description_1: "Company Name : Young Co LLC, a Delaware limited liability company (the Company)",
+  };
+  const [lc] = assembleSubsidyLifecycle([young], []);
+  assert.equal(lc.join.matched, true);
+  assert.ok(lc.timeline.find((e) => e.stage === "board_decision"));
 });

@@ -92,6 +92,11 @@ const helpers = new Function(
   extractFn("lifecycleOcpAwardHTML") +
   extractFn("lifecycleTimelineHTML") +
   extractFn("subsidyStageLabel") +
+  extractConst("SUBSIDY_STAGE_EXPECT_LAG_DAYS") +
+  extractFn("subsidyLagWeeks") +
+  extractFn("subsidyDaysSince") +
+  extractFn("subsidyGapKindClient") +
+  extractFn("subsidyAnchorFromNotice") +
   extractFn("subsidyStageHTML") +
   extractFn("subsidyLifecycleHTML") +
   extractFn("meetingOutcomesHTML") +

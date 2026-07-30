@@ -6387,7 +6387,42 @@ function subsidyStageLabel(stage){
   return stage;
 }
 
-function subsidyStageHTML(entry){
+// Hand-synced lag table with worker/src/lib/subsidy_lifecycle.mjs SUBSIDY_STAGE_EXPECT_LAG_DAYS.
+// Three honest gap states: too_soon / not_published / unavailable (fetch only).
+const SUBSIDY_STAGE_EXPECT_LAG_DAYS = {board_decision:60, closing:180, compliance:400, project_record:90};
+function subsidyLagWeeks(stage){
+  const days = SUBSIDY_STAGE_EXPECT_LAG_DAYS[stage] != null
+    ? SUBSIDY_STAGE_EXPECT_LAG_DAYS[stage]
+    : SUBSIDY_STAGE_EXPECT_LAG_DAYS.project_record;
+  return Math.max(1, Math.round(days / 7));
+}
+function subsidyDaysSince(iso, asOf){
+  const start = String(iso || "").slice(0, 10);
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(start)) return null;
+  const a = Date.UTC(+start.slice(0,4), +start.slice(5,7)-1, +start.slice(8,10));
+  const end = asOf instanceof Date ? asOf : new Date(asOf || Date.now());
+  if(Number.isNaN(end.valueOf())) return null;
+  const b = Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate());
+  return Math.floor((b - a) / 86400000);
+}
+function subsidyGapKindClient(stage, anchorDate, matched){
+  if(matched) return null;
+  const days = subsidyDaysSince(anchorDate);
+  if(days == null) return "not_published";
+  const lag = SUBSIDY_STAGE_EXPECT_LAG_DAYS[stage] != null
+    ? SUBSIDY_STAGE_EXPECT_LAG_DAYS[stage]
+    : SUBSIDY_STAGE_EXPECT_LAG_DAYS.project_record;
+  return days < lag ? "too_soon" : "not_published";
+}
+function subsidyAnchorFromNotice(notice, data){
+  const hearing = (data && data.timeline || []).find(e => e && e.stage === "hearing" && e.date);
+  if(hearing && hearing.date) return String(hearing.date).slice(0,10);
+  if(data && data.join && data.join.anchor_date) return String(data.join.anchor_date).slice(0,10);
+  const ev = notice && (notice.event_date || notice.start_date);
+  return ev ? String(ev).slice(0,10) : null;
+}
+
+function subsidyStageHTML(entry, anchorDate){
   const label = subsidyStageLabel(entry.stage);
   const dateHTML = entry.date ? `<div class="when">${fdate(entry.date)}</div>` : `<div class="when">—</div>`;
   let detailHTML = "";
@@ -6400,10 +6435,20 @@ function subsidyStageHTML(entry){
     const amt = entry.detail && entry.detail.amount != null ? `<div class="amt">${money(entry.detail.amount)}</div>` : "";
     detailHTML = amt + action + outcome;
   } else {
-    detailHTML = `<div class="lc-norecord">${t("subsidy_stage_unmatched_html",{
-      stage: label,
-      source: `<span lang="en" dir="ltr">${t("subsidy_source_build_nyc")}</span>`
-    })}</div>`;
+    const kind = entry.gap_kind || subsidyGapKindClient(entry.stage, anchorDate, false);
+    if(kind === "too_soon"){
+      detailHTML = `<div class="lc-norecord">${t("subsidy_stage_too_soon_html",{
+        stage: label,
+        date: fdate(anchorDate) || "—",
+        weeks: String(subsidyLagWeeks(entry.stage))
+      })}</div>`;
+    } else {
+      // Aged absence → class-(b) not-published register (not "not yet shown" ingest lag).
+      detailHTML = `<div class="lc-norecord">${t("subsidy_stage_not_published_html",{
+        stage: label,
+        source: `<span lang="en" dir="ltr">${t("subsidy_source_build_nyc")}</span>`
+      })}</div>`;
+    }
   }
   let link = "";
   if(entry.source && entry.source.status === "matched" && entry.source.url){
@@ -6420,25 +6465,36 @@ function subsidyStageHTML(entry){
 function subsidyLifecycleHTML(data, notice){
   if(!data) return "";
   const join = data.join || {};
+  const anchor = subsidyAnchorFromNotice(notice, data);
   // Ownership: project-level unmatched/unavailable is one gap note — do not also stack
   // per-stage "not yet shown" cards that re-classify the same absence.
   let stages = "";
   if(join.matched && data.source_status !== "unavailable"){
     const tl = Array.isArray(data.timeline) ? data.timeline : [];
     tl.forEach((entry, idx) => {
-      stages += subsidyStageHTML(entry);
+      stages += subsidyStageHTML(entry, anchor);
       if(idx < tl.length - 1) stages += '<div class="connector">→</div>';
     });
   }
 
   let joinNote = "";
   if(data.source_status === "unavailable"){
+    // Operational: fetch failure only — never a stand-in for young or unmatched.
     joinNote = t("subsidy_source_unavailable_html",{source:`<span lang="en" dir="ltr">${t("subsidy_source_build_nyc")}</span>`});
   } else if(join.matched === false){
-    joinNote = t("subsidy_unmatched_html",{
-      reason: escUiHtml(join.reason || t("subsidy_unmatched_default_reason")),
-      title: escUiHtml(cleanText(notice.short_title) || notice.request_id || "")
-    });
+    const kind = join.gap_kind || subsidyGapKindClient("project_record", anchor, false);
+    if(kind === "too_soon"){
+      joinNote = t("subsidy_join_too_soon_html",{
+        date: fdate(anchor) || "—",
+        weeks: String(subsidyLagWeeks("project_record")),
+        title: escUiHtml(cleanText(notice.short_title) || notice.request_id || "")
+      });
+    } else {
+      joinNote = t("subsidy_unmatched_html",{
+        reason: escUiHtml(join.reason || t("subsidy_unmatched_default_reason")),
+        title: escUiHtml(cleanText(notice.short_title) || notice.request_id || "")
+      });
+    }
   } else if(join.matched){
     const proj = data.project || {};
     joinNote = t("subsidy_matched_html",{
