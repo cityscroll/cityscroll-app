@@ -689,7 +689,7 @@
     banner_none_lot: "No rezoning filed on this lot ({label}). Recent rezonings in <b>{area}</b>:",
     no_zap_kw: " pour « {kw} »",
     zap_project_index_html: "ZAP indexe par <b>projet</b>, pas par adresse — un avis concernant votre pâté de maisons peut manquer ici tout en figurant dans <a href=\"https://a856-cityrecord.nyc.gov/Search/Advanced\" target=\"_blank\" rel=\"noopener noreferrer\">The City Record<span class=\"sr-only\"> (s'ouvre dans un nouvel onglet)</span></a>.",
-    zap_explainer_html: "Les données de révision de zonage proviennent du portail de demandes de zonage (ZAP) de NYC via NYC Open Data, que la ville met à jour environ chaque mois. Une modification sur le site ZAP en direct peut prendre plusieurs semaines pour apparaître ici. Les contours de parcelles utilisent la même jointure lot fiscal (BBL) → MapPLUTO que décrit ZAP Search ; lorsque les parcelles ne peuvent pas être appariées, la carte est approximative — confirmez sur ZoLa.",
+    zap_explainer_html: "Les données de révision de zonage proviennent du portail de demandes de zonage (ZAP) de NYC via NYC Open Data, que la ville met à jour environ chaque mois. Une modification sur le site ZAP en direct peut prendre plusieurs semaines pour apparaître ici. Les contours de parcelles utilisent la même jointure lot fiscal (BBL) → MapPLUTO que décrit ZAP Search. Lorsque les parcelles ne peuvent pas être appariées, la carte est approximative — confirmez sur ZoLa.",
     affordable_housing_tag: "logement abordable",
     unnamed_project: "(projet sans nom)",
     unnamed: "(sans nom)",

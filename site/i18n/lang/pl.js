@@ -617,7 +617,7 @@
     banner_none_lot: "No rezoning filed on this lot ({label}). Recent rezonings in <b>{area}</b>:",
     no_zap_kw: " dla „{kw}”",
     zap_project_index_html: "ZAP indeksuje według <b>projektu</b>, nie adresu — ogłoszenie dotyczące Twojego kwartału może tu nie występować, mimo że jest w <a href=\"https://a856-cityrecord.nyc.gov/Search/Advanced\" target=\"_blank\" rel=\"noopener noreferrer\">The City Record<span class=\"sr-only\"> (otwiera się w nowej karcie)</span></a>.",
-    zap_explainer_html: "Dane dotyczące zmian przeznaczenia pochodzą z Portalu Wniosków o Zagospodarowanie (ZAP) NYC przez NYC Open Data; miasto aktualizuje go mniej więcej co miesiąc. Zmiana na żywym serwisie ZAP może pojawić się tutaj dopiero po kilku tygodniach. Obrysy działek używają tego samego połączenia działki podatkowej (BBL) → MapPLUTO, które opisuje ZAP Search; gdy działek nie da się dopasować, mapa jest przybliżona — potwierdź na ZoLa.",
+    zap_explainer_html: "Dane dotyczące zmian przeznaczenia pochodzą z Portalu Wniosków o Zagospodarowanie (ZAP) NYC przez NYC Open Data. Miasto aktualizuje go mniej więcej co miesiąc. Zmiana na żywym serwisie ZAP może pojawić się tutaj dopiero po kilku tygodniach. Obrysy działek używają tego samego połączenia działki podatkowej (BBL) → MapPLUTO, które opisuje ZAP Search. Gdy działek nie da się dopasować, mapa jest przybliżona — potwierdź na ZoLa.",
     affordable_housing_tag: "mieszkania dostępne cenowo",
     unnamed_project: "(projekt bez nazwy)",
     unnamed: "(bez nazwy)",

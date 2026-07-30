@@ -599,7 +599,7 @@
     banner_none_lot: "No rezoning filed on this lot ({label}). Recent rezonings in <b>{area}</b>:",
     no_zap_kw: " 关于「{kw}」",
     zap_project_index_html: "ZAP 按<b>项目</b>建立索引，而非按地址 — 关于您所在街区的通知可能未出现在此处，但仍可能在 <a href=\"https://a856-cityrecord.nyc.gov/Search/Advanced\" target=\"_blank\" rel=\"noopener noreferrer\">The City Record<span class=\"sr-only\"> （在新标签页中打开）</span></a> 中。",
-    zap_explainer_html: "重划数据来自纽约市的分区申请门户（ZAP），经由 NYC Open Data 提供，城市大约每月更新一次。实时 ZAP 网站上的更改可能需要数周才能在此处显示。地块轮廓使用与 ZAP Search 相同的税地（BBL）→ MapPLUTO 匹配方式；无法匹配地块时，地图仅为近似 — 请在 ZoLa 上确认。",
+    zap_explainer_html: "重划数据来自纽约市的分区申请门户（ZAP），经由 NYC Open Data 提供，城市大约每月更新一次。实时 ZAP 网站上的更改可能需要数周才能在此处显示。地块轮廓使用与 ZAP Search 相同的税地（BBL）→ MapPLUTO 匹配方式。无法匹配地块时，地图仅为近似 — 请在 ZoLa 上确认。",
     affordable_housing_tag: "可负担住房",
     unnamed_project: "（未命名项目）",
     unnamed: "（无名称）",
