@@ -26,6 +26,23 @@ PIN↔`bid_number` join is **0%** on Procurement notices since 2025-01-01 and **
 receipts: `worker/src/lib/bid_tabulations_join.mjs`,
 `site/data/bid_tabulation_sources/`.
 
+## Legistar agenda/vote depth
+
+Ranked class-(a) meeting-outcomes depth. **Authenticated re-measure clears usefulness**
+(2026-07-30) with Worker/env secret `LEGISTAR_API_TOKEN` (full multi-segment key;
+first segment alone → 403):
+
+- Modern City Council notice → Legistar event join: **100%** (59/59)
+- Joined events with EventItems: **100%**; matter-linked items: **98.3%**; votes
+  sampled on ~**10%** of subcommittee hearings
+- Nested routes: `Events/{id}/EventItems`, `EventItems/{id}/Votes` (top-level
+  EventItems/Votes are 404)
+
+Open Data `m48u-yjt8` remains a **disabled** freeze through 2024-12-19 (0% modern).
+Strict join: `worker/src/lib/legistar_join.mjs`. Receipts: `site/data/legistar_sources/`.
+Demo frame: notice `20260706036` → event `22526` (matters + votes). Follow-up:
+edge materialize with `LEGISTAR_API_TOKEN` as a Wrangler/GitHub secret (not committed).
+
 ## Content and testing — lifecycle gap taxonomy
 
 **Standing contract:** every absent-data state on a lifecycle surface must tell the reader *which kind of gap* it is. Never ship an undifferentiated “no record” / “unknown” / blank slot when the product has decided a field is missing.
@@ -54,23 +71,6 @@ When adding a new lifecycle empty state: pick class a or b with evidence, add or
 Precompute-first on the notice page: never live Checkbook proxy; never render `lifecycle_unknown_html` (“Could not reach…”) as a public data gap. Coerce `unknown` → taxonomy unmatched, or **passed** when a later stage is matched. No-PIN collapses Checkbook stages into the single class-(b) note. Format zero amounts with `lifecycleMoney` (`$0` / `—`), never literal `null`.
 
 **One owner per fact (lifecycle vs detail):** when the Checkbook registration join exists, the payments card **summarizes** (`$X paid of $Y committed`, zero-lag note when $0-fresh) and anchor-links to `#follow-the-dollars`; it never emits class-(a) gap copy in parallel. Follow-the-Dollars owns paid-to-date detail and must not re-emit the payments gap. Gap register for payments only when the join is genuinely absent (no PIN / no registered record). Same ownership rule for subsidy: project-level unmatched is one note, not stacked per-stage gaps. Characterization: `node --test test/lifecycle_coherence_field_cases.test.mjs` (symptom: *joined payments rendered as not-shown, duplicated*). Captures: `python3 tools/capture_lifecycle_coherence.py`.
-
-
-## ZAP land outcomes (`zap-api-outcomes`)
-
-Decision documents, action approvals, and disposition votes beyond Open Data status
-chips. Machine path is the Planning Labs ZAP API (same feed as the public portal),
-not a second Socrata dataset:
-
-- API: `https://zap-api-production.herokuapp.com/projects/{project_id}`
-- Document proxy: `https://zap-api-production.herokuapp.com/document/{kind}/{id}`
-- Edge: `worker/src/zap_outcomes.mjs` → `GET /zap-outcomes?id=`
-- Pure join: `worker/src/lib/zap_outcomes.mjs` (exact `project_id`; DOB side-car exact BBL)
-- Receipts: `site/data/zap_outcome_sources/`
-- Characterization: `node --test test/zap_outcomes.test.mjs`
-- Captures: `python3 tools/capture_zap_outcomes.py`
-
-Demo-frame: project `2022M0258` (Timbale Terrace) at `#land/2022M0258`.
 
 ## Changelog harvest
 
