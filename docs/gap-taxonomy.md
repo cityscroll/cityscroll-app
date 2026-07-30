@@ -51,6 +51,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `checkbook-contracts` | landed | PIN, contract_id, registration_date | — | — |
 | `checkbook-nycha-contracts` | landed | contract_id | — | — |
 | `checkbook-spending` | landed | PIN, contract_id, check_amount, check_date | — | — |
+| `city-council-meetings-open-data` | disabled | event_id, agency, event_title, start_time | high-risk | 0% (modern_notices_strict) |
 | `city-record` | live-only | PIN, request_id, agency | — | — |
 | `current-solicitations-ocp` | not_ingested | PIN, request_id, agency | — | — |
 | `dcas-annual-exam-outcomes` | landed | exam_number | medium | — |
@@ -58,7 +59,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `dob-now-job-filings` | live-only | BBL, BIN, job_number | — | — |
 | `legacy-dob-job-filings` | live-only | BBL, BIN, job_number | — | — |
 | `mappluto` | live-only | BBL | — | — |
-| `nyc-council-legistar` | landed | matter_id, event_id, event_item_id, agency, event_title, start_time | — | — |
+| `nyc-council-legistar` | landed | matter_id, event_id, event_item_id, agency, event_title, start_time | medium | 100% (modern_notices_strict) |
 | `nyc-rules-rss` | landed | agency | — | — |
 | `nycida-build-nyc-projects` | landed | request_id, project_id, project_name, company_name, project_address, request_id_when_present | — | — |
 | `passport-public-contracts` | landed | EPIN, PIN, contract_id, agency | high-risk | 74% (all_notices_to_contracts) |
@@ -78,7 +79,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `city-record-pin-x-passport-contracts-epin` | `city-record` × `passport-public-contracts` | PIN · EPIN | 74% |
 | `city-record-pin-x-passport-rfx-epin` | `city-record` × `passport-public-rfx` | PIN · EPIN | 44.4% |
 | `city-record-request-x-nycida-projects` | `city-record` × `nycida-build-nyc-projects` | request_id | — |
-| `city-record-x-legistar-events` | `city-record` × `nyc-council-legistar` | agency | — |
+| `city-record-x-legistar-events` | `city-record` × `nyc-council-legistar` | agency | 100% |
 | `exam-number-x-dcas-outcomes` | `dcas-exam-notices` × `dcas-annual-exam-outcomes` | exam_number | — |
 | `zap-bbl-x-dob-now-filings` | `zap-bbl` × `dob-now-job-filings` | BBL | 56% |
 | `zap-project-x-bbl` | `zap-projects` × `zap-bbl` | project_id · BBL | — |
@@ -139,7 +140,7 @@ Ordered for dispatch. Full rows (effort, join risk, value scores) live in
 `site/data/gap_taxonomy.json` → `ranked_ingest_list`.
 
 1. **PASSPort Public contracts + solicitations** — procurement-pending-unmatched, procurement-registered-unmatched, procurement-solicitation-documents. Measured join **78%**. Predicted grade: **high-risk**. Measured 78% either-source EPIN↔PIN on PIN-bearing Procurement notices since 2025-01-01 (predicted pre-landing grade: high-risk). Medium — stable dataJs machine path; strict EPIN↔PIN join measured 78% either-source on PIN-bearing Procurement notices since 2025-01-01.
-2. **Legistar agenda/vote materialization depth** — meeting-outcomes-unmatched, meeting-votes-absent, meeting-matters-absent.
+2. **Legistar agenda/vote materialization depth** — meeting-outcomes-unmatched, meeting-votes-absent, meeting-matters-absent. Measured join **100%**. Predicted grade: **medium**. Measured 100% modern City Council notice → Legistar event join with LEGISTAR_API_TOKEN (predicted pre-auth grade: medium).
 3. **ZAP decision docs + DOB NOW outcome stitch** — land-outcome-detail. Measured join **100%**.
 4. **DCAS annual exam outcomes → exam card join** — exam-outcome-aggregate.
 5. **Current Solicitations Open Data 3khw-qi8f** — procurement-solicitation-documents.
@@ -170,4 +171,4 @@ node tools/depot_rederive.mjs          # write registry + docs + receipt
 node tools/depot_rederive.mjs --check  # CI drift gate (no writes)
 ```
 
-Last refresh fingerprint: `21f733186544…` · materialized 10 · candidates 44 · class changes 0.
+Last refresh fingerprint: `71b7d3da30d4…` · materialized 10 · candidates 44 · class changes 0.
