@@ -218,8 +218,11 @@ export function normalizeHearing(row) {
 export function applyGeocode(record, geocodes) {
   const out = structuredClone(record);
   if (out.venue.address && geocodes[out.venue.address]) {
-    out.venue.borough = geocodes[out.venue.address].borough || null;
-    out.venue.neighborhood = geocodes[out.venue.address].neighborhood || null;
+    const venueGeo = geocodes[out.venue.address];
+    out.venue.borough = venueGeo.borough || null;
+    out.venue.neighborhood = venueGeo.neighborhood || null;
+    if (Number.isFinite(venueGeo.latitude)) out.venue.latitude = venueGeo.latitude;
+    if (Number.isFinite(venueGeo.longitude)) out.venue.longitude = venueGeo.longitude;
   }
   out.affected_area.addresses = out.affected_area.addresses.map((address) => {
     const geo = geocodes[address.label] || {};
@@ -227,6 +230,12 @@ export function applyGeocode(record, geocodes) {
       label: address.label,
       borough: geo.borough || null,
       neighborhood: geo.neighborhood || null,
+      // Place-mapping fields (Dining Out cafe pins and other subject addresses).
+      latitude: Number.isFinite(geo.latitude) ? geo.latitude : null,
+      longitude: Number.isFinite(geo.longitude) ? geo.longitude : null,
+      bbl: /^\d{10}$/.test(geo.bbl || "") ? geo.bbl : null,
+      community_district: geo.community_district || null,
+      council_district: geo.council_district || null,
     };
   });
   out.affected_area.boroughs = unique([
