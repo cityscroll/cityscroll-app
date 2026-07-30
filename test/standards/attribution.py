@@ -9,6 +9,7 @@ import pathlib
 import sys
 
 ROOT = pathlib.Path(__file__).parents[2]
+SITE_ROOT = ROOT / "site"
 
 DATASET_IDS = ["dg92-zbpx", "k397-673e", "vx8i-nprf", "hgx4-8ukb"]
 
@@ -16,7 +17,7 @@ DATASET_IDS = ["dg92-zbpx", "k397-673e", "vx8i-nprf", "hgx4-8ukb"]
 def main():
     failures = []
 
-    about = (ROOT / "about.html").read_text(encoding="utf-8")
+    about = (SITE_ROOT / "about.html").read_text(encoding="utf-8")
     for dsid in DATASET_IDS:
         if dsid not in about:
             failures.append(f"about.html: missing dataset id {dsid!r}")
@@ -27,13 +28,13 @@ def main():
         if "data.cityofnewyork.us" not in window or "<a href=" not in window:
             failures.append(f"about.html: {dsid!r} present but not linked to its canonical open-data page")
 
-    index = (ROOT / "index.html").read_text(encoding="utf-8")
+    index = (SITE_ROOT / "index.html").read_text(encoding="utf-8")
     if 'data-i18n="footer_lede"' not in index:
         failures.append("index.html: footer source lede (footer_lede) missing")
     if "<footer" not in index:
         failures.append("index.html: <footer> element missing")
 
-    data_html = (ROOT / "data.html").read_text(encoding="utf-8")
+    data_html = (SITE_ROOT / "data.html").read_text(encoding="utf-8")
     if "data.cityofnewyork.us" not in data_html:
         failures.append("data.html: no link to the source open-data page")
 

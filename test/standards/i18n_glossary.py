@@ -24,6 +24,7 @@ import sys
 import pathlib
 
 ROOT = pathlib.Path(__file__).parents[2]
+SITE_ROOT = ROOT / "site"
 
 
 def load_strings():
@@ -31,7 +32,7 @@ def load_strings():
         ["node", "-e",
          "global.window={};require(process.argv[1]);"
          "console.log(JSON.stringify({strings:window.STRINGS,shipping:window.SHIPPING_LANGS}))",
-         str(ROOT / "i18n.js")], text=True)
+         str(SITE_ROOT / "i18n.js")], text=True)
     return json.loads(out)
 
 
@@ -117,7 +118,7 @@ def check_glossary_consistency(strings, shipping, glossary):
 def main():
     data = load_strings()
     strings, shipping = data["strings"], data["shipping"]
-    glossary = json.loads((ROOT / "i18n" / "glossary.json").read_text())["terms"]
+    glossary = json.loads((SITE_ROOT / "i18n" / "glossary.json").read_text())["terms"]
 
     failures = check_placeholder_parity(strings, shipping)
     failures += check_glossary_consistency(strings, shipping, glossary)

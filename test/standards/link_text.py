@@ -21,6 +21,7 @@ import subprocess
 import sys
 
 ROOT = pathlib.Path(__file__).parents[2]
+SITE_ROOT = ROOT / "site"
 PAGES = ["index.html", "about.html", "data.html", "stats.html", "api.html", "changelog.html", "standards.html"]
 
 GENERIC_PHRASES = {
@@ -43,7 +44,7 @@ def load_strings_en():
     out = subprocess.check_output(
         ["node", "-e",
          "global.window={};require(process.argv[1]);console.log(JSON.stringify(window.STRINGS))",
-         str(ROOT / "i18n.js")], text=True)
+         str(SITE_ROOT / "i18n.js")], text=True)
     return json.loads(out).get("en", {})
 
 
@@ -66,7 +67,7 @@ def main():
     strings_en = load_strings_en()
     findings = []
     for page in PAGES:
-        src = (ROOT / page).read_text(encoding="utf-8")
+        src = (SITE_ROOT / page).read_text(encoding="utf-8")
         for m in A_TAG_RE.finditer(src):
             attrs, inner = m.group(1), m.group(2)
             aria = ARIA_LABEL_RE.search(attrs)

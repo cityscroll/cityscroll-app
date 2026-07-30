@@ -11,6 +11,7 @@ from xml.etree import ElementTree
 
 
 ROOT = Path(__file__).resolve().parents[2]
+SITE_ROOT = ROOT / "site"
 PAGES = [
     "index.html",
     "about.html",
@@ -36,7 +37,7 @@ def main():
     failures = []
 
     for name in PAGES:
-        source = (ROOT / name).read_text()
+        source = (SITE_ROOT / name).read_text()
         required = {
             'content="CityScroll"': "Open Graph site name",
             'property="og:title"': "Open Graph title",
@@ -58,14 +59,14 @@ def main():
         if not canonical or not canonical.group(1).startswith("https://cityscroll.org"):
             failures.append(f"{name}: canonical domain changed or is missing")
 
-    for path in [ROOT / "i18n.js", *(ROOT / "i18n" / "lang" / f"{lang}.js" for lang in LANGUAGES)]:
+    for path in [SITE_ROOT / "i18n.js", *(SITE_ROOT / "i18n" / "lang" / f"{lang}.js" for lang in LANGUAGES)]:
         source = path.read_text()
         if LEGACY_NAME in source:
             failures.append(f"{path.relative_to(ROOT)}: legacy product name remains")
         if "CityScroll" not in source:
             failures.append(f"{path.relative_to(ROOT)}: CityScroll name is missing")
 
-    brand_css = (ROOT / "brand.css").read_text()
+    brand_css = (SITE_ROOT / "brand.css").read_text()
     for token in ("--color-brand:", "--font-brand:", "--space-1:"):
         if token not in brand_css:
             failures.append(f"brand.css: missing token family represented by {token}")
@@ -83,7 +84,7 @@ def main():
         "candidates/record-route.svg",
     ]
     for name in svg_files:
-        path = ROOT / "assets" / "brand" / name
+        path = SITE_ROOT / "assets" / "brand" / name
         try:
             tree = ElementTree.parse(path)
             root = tree.getroot()
@@ -97,11 +98,11 @@ def main():
         if root.find(f".//{SVG_NS}image") is not None:
             failures.append(f"{path.relative_to(ROOT)}: embedded raster image is not allowed")
 
-    mark_source = (ROOT / "assets" / "brand" / "cityscroll-mark.svg").read_text()
+    mark_source = (SITE_ROOT / "assets" / "brand" / "cityscroll-mark.svg").read_text()
     if "<desc" not in mark_source or "currentColor" not in mark_source:
         failures.append("cityscroll-mark.svg: missing description or currentColor adaptability")
 
-    manifest = json.loads((ROOT / "site.webmanifest").read_text())
+    manifest = json.loads((SITE_ROOT / "site.webmanifest").read_text())
     if manifest.get("name") != "CityScroll":
         failures.append("site.webmanifest: product name is not CityScroll")
 
@@ -113,7 +114,7 @@ def main():
         "cityscroll-social-card.png": (1200, 630),
     }
     for name, dimensions in expected_pngs.items():
-        path = ROOT / "assets" / "brand" / name
+        path = SITE_ROOT / "assets" / "brand" / name
         try:
             actual = png_dimensions(path)
         except (OSError, ValueError) as error:

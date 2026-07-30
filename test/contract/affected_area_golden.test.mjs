@@ -6,7 +6,7 @@ import { test } from "node:test";
 import { affectedAreaFromRow } from "../../worker/src/lib/hearings.mjs";
 
 const require = createRequire(import.meta.url);
-const { hearingAffectedArea } = require("../../hearing_location.js");
+const { hearingAffectedArea } = require("../../site/hearing_location.js");
 const corpus = JSON.parse(await readFile(
   new URL("./fixtures/affected_area_golden.json", import.meta.url),
   "utf8",

@@ -19,7 +19,7 @@ from playwright.sync_api import sync_playwright
 
 
 ROOT = pathlib.Path(__file__).parents[2]
-MANIFEST = json.loads((ROOT / "demo" / "demo-links.json").read_text())
+MANIFEST = json.loads((ROOT / "site" / "demo" / "demo-links.json").read_text())
 BASE = os.environ.get("CROL_BASE", "")
 MATTER_PINS = {
     "84124P0003001",
@@ -139,7 +139,7 @@ class DemoLinkContract(unittest.TestCase):
         global BASE
         cls.server = None
         if not BASE:
-            handler = functools.partial(QuietHandler, directory=str(ROOT))
+            handler = functools.partial(QuietHandler, directory=str(ROOT / "site"))
             cls.server = ThreadingHTTPServer(("127.0.0.1", 0), handler)
             threading.Thread(target=cls.server.serve_forever, daemon=True).start()
             BASE = f"http://127.0.0.1:{cls.server.server_port}/"

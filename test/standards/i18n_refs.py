@@ -32,8 +32,9 @@ import re
 import sys
 from pathlib import Path
 
-DEFAULT_ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(DEFAULT_ROOT / "tools"))
+REPO_ROOT = Path(__file__).resolve().parents[2]
+DEFAULT_ROOT = REPO_ROOT / "site"
+sys.path.insert(0, str(REPO_ROOT / "tools"))
 from stamp_i18n_assets import PAGES, StampError, verify_built, verify_source  # noqa: E402
 
 parser = argparse.ArgumentParser()

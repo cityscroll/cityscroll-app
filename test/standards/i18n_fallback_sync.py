@@ -49,7 +49,7 @@ from pathlib import Path
 # CROL_FALLBACK_SYNC_ROOT / _PAGES: test-only overrides (test/i18n_fallback_sync.test.mjs)
 # so the characterization test can point this gate at a hermetic fixture directory instead
 # of the real site — production runs (CI, local) always use the defaults.
-ROOT = Path(os.environ.get("CROL_FALLBACK_SYNC_ROOT") or Path(__file__).resolve().parents[2])
+ROOT = Path(os.environ["CROL_FALLBACK_SYNC_ROOT"]) if os.environ.get("CROL_FALLBACK_SYNC_ROOT") else Path(__file__).resolve().parents[2] / "site"
 _pages_override = os.environ.get("CROL_FALLBACK_SYNC_PAGES")
 PAGES = _pages_override.split(",") if _pages_override else [
     "index.html", "about.html", "data.html", "stats.html", "api.html", "changelog.html", "standards.html"]

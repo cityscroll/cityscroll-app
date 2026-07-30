@@ -9,13 +9,15 @@
 // know about. Only a small, safe header allowlist is forwarded; everything else is dropped.
 
 const ORIGIN = "https://crol-list.org";
-const FALLBACK_ORIGIN = "https://raw.githubusercontent.com/cityscroll/crol-list/main/";
+const SITE_FALLBACK_ORIGIN = "https://raw.githubusercontent.com/cityscroll/crol-list/main/site/";
+const REPOSITORY_FALLBACK_ORIGIN = "https://raw.githubusercontent.com/cityscroll/crol-list/main/";
 const FORWARD_REQUEST_HEADERS = ["accept", "accept-language", "if-none-match", "if-modified-since", "user-agent"];
 const MIRROR_HOSTS = new Set([
   "cityscroll.org",
   "www.cityscroll.org",
   "crol-list.org",
 ]);
+const ROOT_DOCUMENTS = new Set(["/CONTRIBUTING.md", "/MISSION.md", "/README.md", "/SECURITY.md"]);
 const FALLBACK_CONTENT_TYPES = new Map([
   [".css", "text/css; charset=utf-8"],
   [".html", "text/html; charset=utf-8"],
@@ -45,7 +47,10 @@ function redirectedToMirror(response) {
 function fallbackUrl(target) {
   let pathname = target.pathname;
   if (pathname.endsWith("/")) pathname += "index.html";
-  const url = new URL(pathname.replace(/^\/+/, ""), FALLBACK_ORIGIN);
+  const fallbackOrigin = pathname.startsWith("/docs/") || ROOT_DOCUMENTS.has(pathname)
+    ? REPOSITORY_FALLBACK_ORIGIN
+    : SITE_FALLBACK_ORIGIN;
+  const url = new URL(pathname.replace(/^\/+/, ""), fallbackOrigin);
   url.search = target.search;
   return url;
 }

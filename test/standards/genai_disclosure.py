@@ -13,19 +13,20 @@ import subprocess
 import sys
 
 ROOT = pathlib.Path(__file__).parents[2]
+SITE_ROOT = ROOT / "site"
 
 
 def load_strings():
     out = subprocess.check_output(
         ["node", "-e",
          "global.window={};require(process.argv[1]);console.log(JSON.stringify(window.STRINGS))",
-         str(ROOT / "i18n.js")], text=True)
+         str(SITE_ROOT / "i18n.js")], text=True)
     return json.loads(out)
 
 
 def main():
     failures = []
-    about = (ROOT / "about.html").read_text(encoding="utf-8")
+    about = (SITE_ROOT / "about.html").read_text(encoding="utf-8")
 
     if 'data-i18n="about_h_content"' not in about:
         failures.append("about.html: missing the \"About our content\" section (about_h_content)")

@@ -31,10 +31,10 @@ import {
   normalizeAuthorityAward,
   normalizeRecentAuthorityAwards,
   rankNychaAwardCandidates,
-} from "../external_awards.js";
+} from "../site/external_awards.js";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const indexSrc = readFileSync(join(ROOT, "index.html"), "utf8");
+const indexSrc = readFileSync(join(ROOT, "site", "index.html"), "utf8");
 
 function extractFn(name) {
   const asyncStart = indexSrc.indexOf("async function " + name + "(");

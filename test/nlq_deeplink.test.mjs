@@ -7,14 +7,14 @@ import { dirname, join } from "node:path";
 
 const require = createRequire(import.meta.url);
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const indexSource = readFileSync(join(ROOT, "index.html"), "utf8");
-const { parseNL } = require("../nl_parse.js");
+const indexSource = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+const { parseNL } = require("../site/nl_parse.js");
 const {
   buildMoneyDeepLink,
   parsePresetStore,
   savePreset,
   removePreset,
-} = require("../nl_deeplink.js");
+} = require("../site/nl_deeplink.js");
 
 test("pinned fixture resolves to the deterministic construction-awards hash", () => {
   const filter = parseNL("construction contracts over $500k");

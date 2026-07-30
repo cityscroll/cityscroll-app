@@ -11,7 +11,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
-const src = readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "data.html"), "utf8");
+const src = readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "site", "data.html"), "utf8");
 
 function extractFn(name) {
   const start = src.indexOf("function " + name + "(");

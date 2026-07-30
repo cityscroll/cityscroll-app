@@ -52,6 +52,7 @@ import sys
 from html.parser import HTMLParser
 
 ROOT = pathlib.Path(__file__).parents[2]
+SITE_ROOT = ROOT / "site"
 ALLOWLIST_FILE = pathlib.Path(__file__).parent / "nyc_copy_lint_allowlist.txt"
 PAGES = ["index.html", "about.html", "data.html", "stats.html", "api.html", "changelog.html", "standards.html"]
 
@@ -120,7 +121,7 @@ def load_strings_en():
     out = subprocess.check_output(
         ["node", "-e",
          "global.window={};require(process.argv[1]);console.log(JSON.stringify(window.STRINGS))",
-         str(ROOT / "i18n.js")], text=True)
+         str(SITE_ROOT / "i18n.js")], text=True)
     return json.loads(out).get("en", {})
 
 
@@ -260,7 +261,7 @@ def main():
     findings = []
 
     for page in PAGES:
-        src = (ROOT / page).read_text(encoding="utf-8")
+        src = (SITE_ROOT / page).read_text(encoding="utf-8")
         p = extract_page(src)
         for chunk in p.text_parts:
             chunk = re.sub(r"\s+", " ", chunk).strip()

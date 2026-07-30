@@ -12,7 +12,7 @@ const require = createRequire(import.meta.url);
 const {
   hearingMatchesArea,
   normalizeHearingRow,
-} = require("../../hearing_location.js");
+} = require("../../site/hearing_location.js");
 const fixtures = JSON.parse(await readFile(new URL("./fixtures/hearings.json", import.meta.url), "utf8"));
 
 for (const fixture of fixtures) {

@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 
 const root = new URL("../", import.meta.url);
+const siteRoot = new URL("../site/", import.meta.url);
 const publicPages = [
   "index.html",
   "about.html",
@@ -28,7 +29,7 @@ const fixtureOnlyOutputs = [
 
 test("fixture-only Wave 4 surfaces stay out of the public site", () => {
   for (const page of publicPages) {
-    const html = readFileSync(new URL(page, root), "utf8");
+    const html = readFileSync(new URL(page, siteRoot), "utf8");
     assert.doesNotMatch(html, /contract\.html|Reference preview|bounded fixtures/i, page);
     assert.doesNotMatch(
       html,
@@ -36,17 +37,17 @@ test("fixture-only Wave 4 surfaces stay out of the public site", () => {
       page,
     );
   }
-  assert.equal(existsSync(new URL("contract.html", root)), false);
-  assert.equal(existsSync(new URL("contract.js", root)), false);
+  assert.equal(existsSync(new URL("contract.html", siteRoot)), false);
+  assert.equal(existsSync(new URL("contract.js", siteRoot)), false);
   for (const output of fixtureOnlyOutputs) {
-    assert.equal(existsSync(new URL(`data/${output}`, root)), false, output);
+    assert.equal(existsSync(new URL(`data/${output}`, siteRoot)), false, output);
     assert.equal(existsSync(new URL(`test/fixtures/wave4/generated/${output}`, root)), true, output);
   }
 });
 
 test("the shipped notice surface keeps real joins and item-specific missing states", () => {
-  const html = readFileSync(new URL("index.html", root), "utf8");
-  const strings = readFileSync(new URL("i18n.js", root), "utf8");
+  const html = readFileSync(new URL("index.html", siteRoot), "utf8");
+  const strings = readFileSync(new URL("i18n.js", siteRoot), "utf8");
   assert.match(html, /async function checkbookByPin\(pin\)/);
   assert.match(html, /async function externalAwardForNotice\(r, el\)/);
   assert.match(html, /loadChain\(r\)/);

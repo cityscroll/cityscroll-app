@@ -24,17 +24,17 @@ function run(paths) {
 }
 
 test("both changelog-owned files changed: guard arms", () => {
-  const result = run(["changelog-data.json", "changelog.html"]);
+  const result = run(["site/changelog-data.json", "site/changelog.html"]);
   assert.equal(result.code, 0);
 });
 
 test("only one changelog-owned file changed: guard arms", () => {
-  const result = run(["changelog-data.json"]);
+  const result = run(["site/changelog-data.json"]);
   assert.equal(result.code, 0);
 });
 
 test("a changelog file plus an unrelated path: guard does not arm", () => {
-  const result = run(["changelog-data.json", "worker/src/index.mjs"]);
+  const result = run(["site/changelog-data.json", "worker/src/index.mjs"]);
   assert.equal(result.code, 1);
   assert.match(result.stderr, /worker\/src\/index\.mjs/);
 });

@@ -2,14 +2,14 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
-await import("../beta_flags.js");
+await import("../site/beta_flags.js");
 
 const {
   STORAGE_KEY,
   resolveFlag,
   syncStorage,
 } = globalThis.CROLBetaFlags;
-const registry = JSON.parse(readFileSync(new URL("../beta-flags.json", import.meta.url)));
+const registry = JSON.parse(readFileSync(new URL("../site/beta-flags.json", import.meta.url)));
 const flags = registry.flags;
 const today = "2026-07-29";
 
@@ -63,7 +63,7 @@ test("expired flags fail closed in the browser runtime", () => {
 });
 
 test("the active state creates a visible experimental banner with a clear link", () => {
-  const source = readFileSync(new URL("../beta_flags.js", import.meta.url), "utf8");
+  const source = readFileSync(new URL("../site/beta_flags.js", import.meta.url), "utf8");
   assert.match(source, /data-beta-flag-banner/);
   assert.match(source, /Experimental view:/);
   assert.match(source, /searchParams\.set\("beta", "0"\)/);
@@ -79,7 +79,7 @@ test("every public page loads the default-off flag runtime", () => {
     "standards.html",
     "stats.html",
   ]) {
-    const source = readFileSync(new URL(`../${page}`, import.meta.url), "utf8");
+    const source = readFileSync(new URL(`../site/${page}`, import.meta.url), "utf8");
     assert.match(source, /<script defer src="beta_flags\.js\?v=1\.0\.0"><\/script>/, page);
   }
 });

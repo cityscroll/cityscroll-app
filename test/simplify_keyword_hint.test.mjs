@@ -9,7 +9,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
-const src = readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "index.html"), "utf8");
+const src = readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "site", "index.html"), "utf8");
 
 function extractFn(name) {
   let start = src.indexOf("async function " + name + "(");

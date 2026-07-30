@@ -447,7 +447,7 @@ def transcode_video(raw: Path, destination: Path) -> None:
 
 def capture_changelog_verification(browser, output: Path) -> None:
     """Capture the generated changelog page itself at the two required review widths."""
-    with StaticServer(ROOT) as base_url:
+    with StaticServer(ROOT / "site") as base_url:
         for width, height in ((390, 844), (1440, 900)):
             context = browser.new_context(viewport={"width": width, "height": height}, device_scale_factor=1)
             page = context.new_page()
@@ -497,7 +497,7 @@ def main() -> None:
 
     merge = resolve_merge_commit(args.pr, args.merge_commit)
     before = run("git", "rev-parse", f"{merge}^1", capture=True)
-    output = ROOT / "media" / "changelog" / f"pr-{args.pr}"
+    output = ROOT / "site" / "media" / "changelog" / f"pr-{args.pr}"
     output.mkdir(parents=True, exist_ok=True)
 
     with tempfile.TemporaryDirectory(prefix=f"crol-pr-{args.pr}-") as temp:

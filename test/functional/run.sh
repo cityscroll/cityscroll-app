@@ -12,7 +12,7 @@ cd "$(dirname "$0")/../.."   # repo root
 
 SERVER_PID=""
 if [ -z "${CROL_BASE:-}" ]; then
-  python3 -m http.server 8000 >/dev/null 2>&1 &
+  python3 -m http.server 8000 --directory site >/dev/null 2>&1 &
   SERVER_PID=$!
   sleep 1
 fi
