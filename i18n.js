@@ -793,6 +793,32 @@ const STRINGS = {
     apply_pnote_html: "<b>Email a response</b> opens a pre-filled letter of intent to the listed contact — edit before sending. Competitive bids are ultimately submitted through <b>PASSPort</b>. Nothing leaves your device until you hit send.",
     apply_pnote_no_email_html: "This notice lists no direct contact — submit your response through <b>PASSPort</b>, or use the submission address above if one is listed.",
 
+    // Contract lifecycle timeline (PROC-001): compact horizontal timeline on notice detail
+    // showing solicitation/award → pending → registered → payment, consuming the precomputed
+    // read model from GET /contract-lifecycle. Unmatched/unknown/ambiguous stages render as
+    // specific statements, never blank.
+    lifecycle_heading: "Contract lifecycle",
+    lifecycle_stage_solicitation: "Solicitation",
+    lifecycle_stage_award: "Award",
+    lifecycle_stage_pending: "Pending contract",
+    lifecycle_stage_registered: "Registered contract",
+    lifecycle_stage_payment: "Payments",
+    lifecycle_amended_from_html: "amended from {original}",
+    lifecycle_payments_count_one: "{n} payment",
+    lifecycle_payments_count_other: "{n} payments",
+    lifecycle_latest_payment_html: "Latest: {amount} on {date}",
+    lifecycle_unmatched_pending_html: "No pending contract found in {source}. It may have already moved to registration.",
+    lifecycle_unmatched_registered_html: "No registered contract found in {source} yet. Registration often lags an award by weeks.",
+    lifecycle_unmatched_payment_html: "No payments recorded in {source} yet. Payments lag invoicing on a new contract.",
+    lifecycle_unmatched_generic_html: "No record found in {source}.",
+    lifecycle_unknown_html: "Could not reach {source} to check this step.",
+    lifecycle_ambiguous_html: "Multiple contracts found — cannot tell which one applies.",
+    lifecycle_source_city_record: "City Record",
+    lifecycle_source_checkbook: "Checkbook NYC",
+    lifecycle_provenance_note_html: "This timeline joins {city_record} notices to {checkbook} registrations and payments, matched by PIN {pin}.",
+    lifecycle_no_pin_note_html: "This notice has no Procurement ID (PIN), so the site cannot trace it through Checkbook NYC.",
+    lifecycle_amendment_note_html: "Budget changed: {original} became {current} (a difference of {delta}).",
+
     // Screen-reader announcements
     matching_roles_announce: "{n} matching roles",
     rezonings_announce: "{n} rezonings",
