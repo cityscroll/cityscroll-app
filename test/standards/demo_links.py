@@ -42,10 +42,14 @@ def validate_state(state: object, path: str) -> None:
 def validate_entry(entry: object, index: int) -> None:
     path = f"entries[{index}]"
     require(isinstance(entry, dict), f"{path} must be an object")
+    allowed_fields = {"id", "url", "feature", "description", "expectations", "localOnly"}
+    require(set(entry) <= allowed_fields, f"{path} has unknown fields")
     require(
-        set(entry) == {"id", "url", "feature", "description", "expectations"},
-        f"{path} fields differ from the schema",
+        {"id", "url", "feature", "description", "expectations"} <= set(entry),
+        f"{path} is missing required fields",
     )
+    if "localOnly" in entry:
+        require(isinstance(entry["localOnly"], bool), f"{path}.localOnly must be a boolean")
     require(isinstance(entry["id"], str) and ID_PATTERN.fullmatch(entry["id"]), f"{path}.id is invalid")
     require(
         isinstance(entry["feature"], str) and ID_PATTERN.fullmatch(entry["feature"]),

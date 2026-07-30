@@ -562,6 +562,7 @@
       "id": "task-can-i-bid",
       "url": "#task/can-i-bid",
       "feature": "task-first-entry",
+      "localOnly": true,
       "description": "Open the Can I bid? task-first examples with five real procurement solicitations.",
       "expectations": {
         "visible": [
@@ -586,6 +587,7 @@
       "id": "task-what-will-change",
       "url": "#task/what-will-change",
       "feature": "task-first-entry",
+      "localOnly": true,
       "description": "Open the What will change here? task-first examples with five real ZAP projects.",
       "expectations": {
         "visible": [
