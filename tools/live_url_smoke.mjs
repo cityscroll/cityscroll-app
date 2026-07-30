@@ -4,7 +4,7 @@
 // After a worker or site deploy, curls the public apex hosts plus a deep route,
 // asserts HTTP 200 with known page content, and fails the pipeline loudly on
 // redirect loops, non-200s, empty bodies, or error pages. GitHub Pages / Fastly
-// redirect caching can lag ~10 minutes after a bad CNAME or cutover change; the
+// redirect caching can lag ~10 minutes after a bad CNAME or DNS change; the
 // checker polls inside a bounded retry window before declaring failure.
 //
 // Field case (2026-07-30): cityscroll.org served ERR_TOO_MANY_REDIRECTS while the

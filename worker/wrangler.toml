@@ -6,9 +6,8 @@ compatibility_date = "2026-07-27"
 # New API and site URLs use cityscroll.org. api.crol-list.org remains a compatibility
 # alias for existing clients and in-flight confirmation links.
 #
-# The canonical cityscroll.org site is mirrored byte-for-byte from the GitHub Pages
-# origin at crol-list.org. The direct-visitor redirect documented in
-#  excludes Worker subrequests so the mirror cannot loop.
+# cityscroll.org is mirrored byte-for-byte from the GitHub Pages origin at crol-list.org.
+# Direct-visitor redirects must not apply to Worker origin subrequests (loop risk).
 routes = [
   { pattern = "api.cityscroll.org", custom_domain = true },
   { pattern = "api.crol-list.org", custom_domain = true },
@@ -23,50 +22,32 @@ workers_dev = true
 [triggers]
 crons = ["0 13 * * *"]
 
-# Non-secret config. Secrets (ANTHROPIC_API_KEY, RESEND_API_KEY, USAGE_KEY,
-# ANALYTICS_READ_TOKEN, ANALYTICS_DEV_KEY, ANALYTICS_ENVIRONMENT) go via `wrangler secret put`.
-# USAGE_KEY gates the read-only /usage endpoint; unset → /usage 404s. ANALYTICS_READ_TOKEN needs
-# . ANALYTICS_ENVIRONMENT must equal "production" for analytics writes;
-# keeping that runtime binding out of this file makes wrangler dev/preview fail closed by default.
+# Non-secret config. Secrets go via `wrangler secret put` (see worker/README.md).
+# USAGE_KEY gates the read-only /usage endpoint; unset → /usage 404s.
+# ANALYTICS_ENVIRONMENT must equal "production" for analytics writes; omit it here so
+# wrangler dev/preview fail closed by default.
 [vars]
 ALERTS_LIVE = "true"
 CONFIRM_BASE = "https://api.cityscroll.org"
-# The site owner formally decided the sender-domain switchover on 2026-07-29; see
-# .
+# Alerts sender (site owner decision 2026-07-29).
 ALERTS_FROM = "CityScroll <alerts@cityscroll.org>"
 # Spend guards (denial-of-wallet ceiling). MAX_SENDS_PER_DAY stays under Resend's free 100/day.
 MAX_PER_RUN = "25"
 MAX_SENDS_PER_DAY = "50"
-# Confidence feature: quiet days before a DAILY sub gets a "still watching" heartbeat (weekly subs
-# always get their weekly email). So silence never looks like a broken alert. Default 14.
+# Quiet days before a DAILY sub gets a "still watching" heartbeat (weekly subs always email).
 HEARTBEAT_DAYS = "14"
-# Operator inbox for /feedback notifications (non-secret → a var, not a secret). The Cloudflare
-# Email Routing catch-all already routes any *@crol-list.org here, so no new routing rule is
-# strictly required; a dedicated feedback@ rule just enables plus-alias auto-filtering.
+# Operator inbox for /feedback notifications (non-secret var).
 FEEDBACK_TO = "feedback@crol-list.org"
-# Inbound subscribe-by-email (Email Routing route: SUBSCRIBE_ADDRESS -> this Worker;
-# set the route in the dashboard). Spend ceilings for the LLM-backed surfaces:
+# Inbound subscribe-by-email address; spend ceilings for LLM-backed surfaces:
 SUBSCRIBE_ADDRESS = "subscribe@crol-list.org"
 INBOUND_MAX_PER_DAY = "100"
 MCP_MAX_CALLS_PER_DAY = "200"
 MCP_MAX_PER_IP_DAY = "300"
 # Digest delivery mode: "true" = queue fan-out (see [[queues.*]]), unset/other = inline.
 QUEUE_DIGESTS = "true"
-# Board-notification bridge (org webhook projects_v2_item -> issue comments), provided by
-# the optional "board-notify" npm dependency — see worker/README.md's "Board notifications"
-# section and https://github.com/jimdc/board-notify for the full config/secret reference.
-# Auth secrets (App-first, zero-downtime fallback):
-#   BOARDNOTIFY_APP_ID, BOARDNOTIFY_APP_PRIVATE_KEY, BOARDNOTIFY_INSTALLATION_ID — the
-#     board-notify GitHub App's own bot identity. Provision via 
-#     (one-click manifest-flow creation kit) then see its INSTALL.md for the secret puts.
-#    — fallback when the App secrets above are
-#     unset; keep configured until the App path is confirmed working, or drop it after.
-#   BOARD_HOOK_SECRET (HMAC) — required regardless of auth path; the webhook fails closed
-#     without it (and every var below is optional — a fork that never sets these ships a
-#     working crol-list with the bridge simply switched off).
-# BOARDNOTIFY_CC: comma-separated GitHub logins (no "@"), appended as "cc @a @b" on every
-# comment — mentions notify org members regardless of their own subscription state.
-# Non-secret, so it lives here rather than `wrangler secret put`. Empty = no cc line.
+# Optional board-notification bridge (see worker/README.md "Board notifications" and
+# https://github.com/jimdc/board-notify). Unconfigured forks leave /board-hook fail-closed.
+# BOARDNOTIFY_CC: comma-separated GitHub logins (no "@") for mention-cc on each comment.
 BOARDNOTIFY_CC = "jimdc,michaeljohnsheehan-a11y,devdoshi,abannabao"
 BOARD_PROJECT_IDS = "PVT_kwDOEgVDsM4BdE22"
 BOARD_ORG = "cityscroll"

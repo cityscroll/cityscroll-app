@@ -60,54 +60,22 @@ watches. Aggregate routing research publishes denominators and category totals.
 The intake rejects unknown events and dimensions. Payloads are capped at 1 KiB. Browser delivery is
 fail-soft, so analytics can never block the action being measured.
 
-## 
+## Development and preview traffic
 
 Analytics writes are fail-closed behind the `ANALYTICS_ENVIRONMENT` runtime binding. The shared
 event writer emits only when that value is exactly `production`; a missing value, `development`,
-or `preview` drops the event. 
-binding so code-only deploys retain it:
+or `preview` drops the event. Production sets that binding outside this repository so code-only
+deploys retain it. Local and preview environments leave it unset and therefore drop browser and
+Worker-generated events by default. Unit tests use an in-memory Analytics Engine mock and never
+contact production.
 
-```sh
-
-# Enter: production
-```
-
-Do not set that binding in `wrangler dev` or preview environments. Their missing binding drops
-browser and Worker-generated events by default. Unit tests use an in-memory Analytics Engine mock
-and never contact production.
-
-Developers who must inspect the production site can exclude a short session with a timestamped
-HMAC token. Configure a random secret of at least 32 characters only on the production Worker:
-
-```sh
-npx wrangler secret put ANALYTICS_DEV_KEY
-```
-
-Keep the same value in an approved operator credential store; never commit it. From `worker/`,
-provide that value to the token helper on standard input:
-
-```sh
- < "$ANALYTICS_DEV_KEY_FILE"
-```
-
-The helper prints a small browser-console statement. Paste it on the site before testing:
-
-```js
-
-```
-
-Remove it when finished:
-
-```js
-
-```
-
-`analytics.js` forwards this value without interpreting it. The Worker accepts only
+A short-lived developer exclusion token can suppress writes while someone inspects the live site.
+`analytics.js` may forward a browser-held value without interpreting it. The Worker accepts only
 `v1.<unix-seconds>.<HMAC-SHA256>` tokens signed with `ANALYTICS_DEV_KEY`, with a five-minute age
 limit and 30-second clock-skew allowance. Valid tokens suppress the write. Missing, expired,
 malformed, or incorrectly signed tokens count normally. All accepted event requests return the
 same empty HTTP 204 response, so token validity is not exposed as a response oracle. The token
-itself is never written to Analytics Engine.
+itself is never written to Analytics Engine. Never commit signing material.
 
 ## Aggregation and reading
 
