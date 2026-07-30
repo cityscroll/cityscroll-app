@@ -70,7 +70,7 @@ def annotate(page: Page, label: str, controls_visible: bool) -> None:
           const style=document.createElement("style");
           style.textContent=`
             html{scroll-behavior:auto!important}
-            .scenario-nav,#tab-money .nlbox,#tab-money .chiprow,
+            #tab-money .nlbox,#tab-money .chiprow,
             #tab-money .contract-examples,#tab-money .grid,
             footer{display:none!important}
             #tab-money{padding-top:12px!important}
@@ -97,7 +97,7 @@ def annotate(page: Page, label: str, controls_visible: bool) -> None:
             });
             document.body.append(mark);
           };
-          outline(document.querySelector("#todaystrip"), "#d60000");
+          outline(document.querySelector("#homeCta"), "#d60000");
           outline(
             document.querySelector(controlsVisible ? "#kw" : "#tab-money .filtertoggle"),
             "#005fcc"

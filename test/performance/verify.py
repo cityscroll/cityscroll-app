@@ -267,7 +267,15 @@ def nav_metrics(page: Page) -> dict[str, float]:
 
 
 def wait_for_home(page: Page) -> None:
-    page.locator("#todaystrip .t-card").first.wait_for(state="visible")
+    # Homepage: masthead CTA + default Contracts list (edition strip removed).
+    page.wait_for_function(
+        """() => {
+          const cta = document.getElementById('homeCta');
+          const listReady = document.querySelectorAll('#list .row').length > 0
+            || document.querySelector('#list .empty');
+          return !!cta && !!listReady;
+        }"""
+    )
     page.wait_for_timeout(120)
 
 

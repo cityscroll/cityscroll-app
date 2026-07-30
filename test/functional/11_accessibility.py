@@ -172,7 +172,7 @@ def run_index_states(pw, lang, viewport, failures):
     page.add_script_tag(path=AXE)
 
     if lang != "en":
-        page.click(f'#langSwitcher .lang-btn[data-lang="{lang}"]')
+        page.select_option("#langSelect", lang)
         page.wait_for_timeout(800)
 
     state = f"index.html [{lang}] [{viewport_name}] [load:money]"

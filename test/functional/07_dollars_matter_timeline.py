@@ -90,7 +90,7 @@ with sync_playwright() as pw:
     # ---------- regressions ----------
     page.goto(BASE, timeout=30000)
     page.wait_for_selector("#list .row", timeout=30000)
-    page.wait_for_function("!document.getElementById('todaystrip').hidden", timeout=20000)
+    page.wait_for_function("!!document.getElementById('homeCta')", timeout=20000)
     step("OK", "regression: default load + today strip", "")
 
     step("OK" if not errors else "FAIL", "zero page errors", "; ".join(errors[:5]))

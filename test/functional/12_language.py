@@ -20,20 +20,22 @@ with sync_playwright() as pw:
     page.wait_for_load_state("load")
     page.wait_for_timeout(1000)
 
-    # Switcher exists, native labels, English pressed by default.
-    en_btn = page.locator('#langSwitcher .lang-btn[data-lang="en"]')
-    es_btn = page.locator('#langSwitcher .lang-btn[data-lang="es"]')
-    assert en_btn.get_attribute("aria-pressed") == "true", "English should be active by default"
-    assert "Español" in es_btn.inner_text(), "native-language label required (USWDS pattern)"
-    step("OK", "switcher renders", "English active, native labels")
+    # Compact language dropdown: native labels, English selected by default.
+    sel = page.locator("#langSelect")
+    assert sel.count(), "language dropdown #langSelect must exist"
+    assert sel.input_value() == "en", "English should be selected by default"
+    opts = page.evaluate("""() => [...document.querySelectorAll('#langSelect option')].map(o => ({v:o.value, t:o.textContent.trim()}))""")
+    es_opt = next((o for o in opts if o["v"] == "es"), None)
+    assert es_opt and "Español" in es_opt["t"], "native-language label required (USWDS pattern)"
+    step("OK", "switcher renders", f"English active, {len(opts)} locales")
 
     money_tab_en = page.locator('[data-i18n="tab_money"]').first.inner_text()
     assert money_tab_en.strip().lower() == "contracts", f"expected English chrome, got {money_tab_en!r}"  # CSS uppercases tabs
 
     # Switch to Spanish.
-    es_btn.click()
+    page.select_option("#langSelect", "es")
     page.wait_for_timeout(400)
-    assert es_btn.get_attribute("aria-pressed") == "true", "Español should now be pressed"
+    assert sel.input_value() == "es", "Español should now be selected"
     money_tab_es = page.locator('[data-i18n="tab_money"]').first.inner_text()
     assert money_tab_es.strip().lower() != "money", "chrome must translate on switch"
     step("OK", "chrome translates", f"tab_money: {money_tab_en!r} -> {money_tab_es!r}")
@@ -62,7 +64,7 @@ with sync_playwright() as pw:
     # because real City Record PINs are key-shaped.
     import re as _re
     for tag in ("es", "en"):
-        page.locator(f'#langSwitcher .lang-btn[data-lang="{tag}"]').click()
+        page.select_option("#langSelect", tag)
         page.wait_for_timeout(400)
         chrome_text = page.evaluate("""() => {
           const out = [];
@@ -80,7 +82,7 @@ with sync_playwright() as pw:
         step("OK", f"no raw keys visible ({tag})")
 
     # And back to English.
-    page.locator('#langSwitcher .lang-btn[data-lang="en"]').click()
+    page.select_option("#langSelect", "en")
     page.wait_for_timeout(400)
     assert page.locator('[data-i18n="tab_money"]').first.inner_text().strip().lower() == "contracts"
     assert page.evaluate("document.documentElement.lang") == "en"
@@ -88,8 +90,7 @@ with sync_playwright() as pw:
 
     # ===== COVERAGE GATE: residual-English sentinel check =====
     # Switch back to Spanish for the coverage check.
-    es_btn = page.locator('#langSwitcher .lang-btn[data-lang="es"]')
-    es_btn.click()
+    page.select_option("#langSelect", "es")
     page.wait_for_timeout(500)
 
     # Collect visible text OUTSIDE translate="no" containers.

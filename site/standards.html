@@ -37,7 +37,7 @@
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--font-body);-webkit-font-smoothing:antialiased}
-  .wrap{max-width:760px;margin:0 auto;padding:0 22px 80px}
+  .wrap{position:relative;max-width:760px;margin:0 auto;padding:0 22px 80px}
   a{color:var(--oxblood)}
   .cr-rule{border-top:3px solid var(--ink)} .cr-rule--bottom{border-top:3px double var(--ink);margin-top:8px}
   header{padding-top:18px;text-align:center}
@@ -58,9 +58,7 @@
   .foot{margin-top:40px;border-top:1px solid var(--rule);padding-top:14px;font:13px/1.6 var(--ui);color:var(--muted);text-align:center}
   .foot a{color:var(--oxblood)}
   /* language switcher — matches index.html */
-  .lang-switcher{display:flex;gap:.4rem;justify-content:center;margin-block-start:10px;flex-wrap:wrap}
-  .lang-btn{font:600 11px/1 var(--ui);padding:3px 10px;min-height:32px;display:inline-flex;align-items:center;border-radius:12px;border:1px solid var(--rule-strong);background:transparent;color:var(--muted);cursor:pointer}
-  .lang-btn[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .lang-switcher{position:absolute;top:12px;inset-inline-end:22px;z-index:6;display:flex;align-items:center;gap:.35rem;margin:0;justify-content:flex-end}.lang-select{font:600 12px/1.2 ui-sans-serif,system-ui,sans-serif;padding:8px 28px 8px 10px;min-height:36px;min-width:7.5rem;max-width:12rem;border:1px solid var(--rule-strong);border-radius:8px;background:var(--card);color:var(--ink);cursor:pointer;appearance:auto}.lang-select:focus-visible{outline:2px solid var(--blue,#1f3a5f);outline-offset:2px}
   .lang-notice{font:12px/1.4 var(--ui);color:var(--muted);text-align:center;margin-block-start:4px;padding-inline:22px}
   :lang(zh-Hans),:lang(ko),:lang(bn),:lang(ar),:lang(ur){letter-spacing:normal !important;text-transform:none !important}
   .skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--ink);color:#fff;padding:11px 18px;border-radius:0 0 9px 0;font:600 13px/1 var(--ui);text-decoration:none}
@@ -103,19 +101,21 @@
   </a>
   <div class="kicker" data-i18n="site_kicker">The City Record, searchable</div>
   <h1 data-i18n="std_h1">Standards We Track</h1>
-  <div class="lang-switcher" id="langSwitcher" role="group" aria-label="Language / Idioma">
-    <button class="lang-btn" data-lang="en" aria-pressed="true"><span lang="en" dir="ltr">English</span></button>
-    <button class="lang-btn" data-lang="es" aria-pressed="false"><span lang="es" dir="ltr">Español</span></button>
-    <button class="lang-btn" data-lang="zh-Hans" aria-pressed="false"><span lang="zh-Hans" dir="ltr">中文（简体）</span></button>
-    <button class="lang-btn" data-lang="ru" aria-pressed="false"><span lang="ru" dir="ltr">Русский</span></button>
-    <button class="lang-btn" data-lang="bn" aria-pressed="false"><span lang="bn" dir="ltr">বাংলা</span></button>
-    <button class="lang-btn" data-lang="ht" aria-pressed="false"><span lang="ht" dir="ltr">Kreyòl ayisyen</span></button>
-    <button class="lang-btn" data-lang="ko" aria-pressed="false"><span lang="ko" dir="ltr">한국어</span></button>
-    <button class="lang-btn" data-lang="fr" aria-pressed="false"><span lang="fr" dir="ltr">Français</span></button>
-    <button class="lang-btn" data-lang="pl" aria-pressed="false"><span lang="pl" dir="ltr">Polski</span></button>
-    <button class="lang-btn" data-lang="ar" aria-pressed="false"><span lang="ar" dir="rtl">العربية</span></button>
-    <button class="lang-btn" data-lang="ur" aria-pressed="false"><span lang="ur" dir="rtl">اردو</span></button>
-  </div>
+      <div class="lang-switcher" id="langSwitcher">
+      <select id="langSelect" class="lang-select" data-i18n-aria="lang_switcher_label" aria-label="Language">
+        <option value="en" lang="en">English</option>
+        <option value="es" lang="es">Español</option>
+        <option value="zh-Hans" lang="zh-Hans">中文（简体）</option>
+        <option value="ru" lang="ru">Русский</option>
+        <option value="bn" lang="bn">বাংলা</option>
+        <option value="ht" lang="ht">Kreyòl ayisyen</option>
+        <option value="ko" lang="ko">한국어</option>
+        <option value="fr" lang="fr">Français</option>
+        <option value="pl" lang="pl">Polski</option>
+        <option value="ar" lang="ar" dir="rtl">العربية</option>
+        <option value="ur" lang="ur" dir="rtl">اردو</option>
+      </select>
+    </div>
   <div id="langNotice" class="lang-notice" hidden></div>
   <div class="cr-rule cr-rule--bottom"></div>
   <a class="backhome" href="index.html" data-i18n="back_to_crol">← Back to CityScroll</a>
@@ -240,7 +240,9 @@
   function renderPosture(counts) {
     var skip = !!document.querySelector(".skip");
     var main = !!document.querySelector("main#main");
-    var switcherGroup = !!document.querySelector('#langSwitcher[role="group"][aria-label]');
+    // Compact language dropdown: labelled <select id="langSelect"> (or legacy pill group).
+    var switcherOk = !!document.querySelector("#langSelect")
+      || !!document.querySelector('#langSwitcher[role="group"][aria-label]');
     function mark(id, ok) {
       var el = document.getElementById(id);
       el.classList.remove("check-yes", "check-no");
@@ -249,7 +251,7 @@
     }
     mark("chkSkip", skip);
     mark("chkMain", main);
-    mark("chkSwitcher", switcherGroup);
+    mark("chkSwitcher", switcherOk);
     document.getElementById("reviewCount").textContent = t("std_li_translation_review", {
       r: counts.reviewed, total: counts.total
     });

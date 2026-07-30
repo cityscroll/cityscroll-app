@@ -309,6 +309,10 @@ const STRINGS = {
     preview_digest_btn: "Preview today's digest",
     subscribe_btn:      "Subscribe →",
     subscribe_confirm_note: "We email a confirmation link — alerts begin only after you click it, so no one can sign you up but you.",
+    // Homepage primary conversion (under masthead tagline) — short words for the reading-level ratchet
+    home_cta_prompt:    "Want email updates?",
+    home_cta_submit:    "Sign up",
+    home_cta_topics:     "or pick topics",
     empty_preview:      "Build an alert and hit Preview to see the digest, populated with today's real notices.",
 
     // Time/schedule strings (9 a.m. form per NYC style guide T-01/T-02)
@@ -1760,20 +1764,22 @@ window.fmtNumber = fmtNumber;
 // keeps its own richer initLangSwitcher() because it must also repaint dynamically-built
 // search results; subpages have no such state, so applyStrings() alone is enough.
 // onChange(lang), if given, runs after each switch so a page can repaint its own dynamic bits.
+// Compact <select id="langSelect"> — same control shape as the homepage dropdown.
 function initSubpageLangSwitcher(onChange) {
   function init() {
-    var btns = document.querySelectorAll(".lang-btn");
+    var sel = document.getElementById("langSelect");
     var saved = window.LANG || "en";
-    btns.forEach(function(b){ b.setAttribute("aria-pressed", b.dataset.lang === saved ? "true" : "false"); });
+    if (sel) {
+      if ([].some.call(sel.options, function(o){ return o.value === saved; })) sel.value = saved;
+    }
     applyStrings();
-    btns.forEach(function(btn){
-      btn.addEventListener("click", function(){
-        var lang = btn.dataset.lang;
+    if (sel) {
+      sel.addEventListener("change", function(){
+        var lang = sel.value;
         setLang(lang, onChange ? function(){ onChange(lang); } : null);
-        btns.forEach(function(b){ b.setAttribute("aria-pressed", b.dataset.lang === lang ? "true" : "false"); });
         if (onChange) onChange(lang);
       });
-    });
+    }
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else init();
