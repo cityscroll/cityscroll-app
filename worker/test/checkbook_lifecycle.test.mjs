@@ -22,6 +22,7 @@ import {
 import {
   assembleLifecycle,
   aggregateContractsById,
+  recoverPaymentFromRegisteredJoin,
   parseContractTransactions,
   parseSpendingTransactions,
   classifyStage,
@@ -798,6 +799,50 @@ test("assembleLifecycle: pending stage also collapses same-id slices", () => {
   assert.equal(p.status, "matched");
   assert.equal(p.detail.contract_id, "P-1");
   assert.equal(p.detail.amount, 500000);
+});
+
+test("recoverPaymentFromRegisteredJoin: unknown payment + registered spent → from_registered", () => {
+  const lifecycle = {
+    ok: false,
+    timeline: [
+      { stage: "pending", status: "unknown", source: "checkbook-contracts", detail: null },
+      {
+        stage: "registered", status: "matched", source: "passport-public-contracts",
+        detail: {
+          contract_id: "CT1-071-20258800377",
+          current_amount: 7397875,
+          spent_to_date: 4018484.1,
+        },
+      },
+      { stage: "payment", status: "unknown", source: "checkbook-spending", detail: null },
+    ],
+  };
+  const out = recoverPaymentFromRegisteredJoin(lifecycle);
+  const pay = out.timeline.find((e) => e.stage === "payment");
+  const pending = out.timeline.find((e) => e.stage === "pending");
+  assert.equal(pay.status, "matched");
+  assert.equal(pay.detail.payment_state, "from_registered");
+  assert.equal(pay.detail.total_spent, 4018484.1);
+  assert.equal(pending.status, "passed");
+  assert.equal(out.ok, true);
+});
+
+test("recoverPaymentFromRegisteredJoin: unavailable + spent 0 stays unavailable", () => {
+  const lifecycle = {
+    ok: true,
+    timeline: [
+      {
+        stage: "registered", status: "matched", source: "checkbook-contracts",
+        detail: { contract_id: "C1", current_amount: 100, spent_to_date: 0 },
+      },
+      {
+        stage: "payment", status: "matched", source: "checkbook-spending",
+        detail: { payment_state: "unavailable", total_spent: null },
+      },
+    ],
+  };
+  const out = recoverPaymentFromRegisteredJoin(lifecycle);
+  assert.equal(out.timeline.find((e) => e.stage === "payment").detail.payment_state, "unavailable");
 });
 
 test("detectAmendments: current ≠ original → amendment", () => {

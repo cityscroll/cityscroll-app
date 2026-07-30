@@ -432,19 +432,34 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
       payment_state: "paid",
     };
   } else if (lookupStatus.spending === "error") {
-    // HONESTY: never paint a confident $0 (or any amount) when the spending lookup failed.
-    // With a registered join present, surface an explicit unavailable payment card.
-    // With no registration either, leave payment as unknown (total Checkbook failure).
+    // Spending feed failed. Prefer a non-zero paid-to-date from the registered join
+    // (Contracts/PASSPort) so the payments card and Follow-the-Dollars never disagree.
+    // HONESTY (PR 192): never invent a confident $0 when spending could not be checked —
+    // only "unavailable" when the registration join also has no positive paid figure.
     if (regStatus === "matched") {
-      spendStatus = "matched";
-      payDetail = {
-        total_payments: null,
-        total_spent: null,
-        latest_payment_date: null,
-        latest_payment_amount: null,
-        fiscal_year: null,
-        payment_state: "unavailable",
-      };
+      const regSpent = Number(registeredRows[0].spent) || 0;
+      if (regSpent > 0) {
+        spendStatus = "matched";
+        payDetail = {
+          total_payments: null,
+          total_spent: regSpent,
+          latest_payment_date: null,
+          latest_payment_amount: null,
+          fiscal_year: null,
+          derived_from: "registered",
+          payment_state: "from_registered",
+        };
+      } else {
+        spendStatus = "matched";
+        payDetail = {
+          total_payments: null,
+          total_spent: null,
+          latest_payment_date: null,
+          latest_payment_amount: null,
+          fiscal_year: null,
+          payment_state: "unavailable",
+        };
+      }
     } else {
       spendStatus = "unknown";
     }
@@ -509,6 +524,89 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
   // OCP side-car is optional on pure assemble; worker attach always sets it after fetch.
   if (opts.ocpAward) out.ocp_award = opts.ocpAward;
   return out;
+}
+
+// ---------------------------------------------------------------------------
+// Payment recovery from a later registration join
+// ---------------------------------------------------------------------------
+
+// When registration is filled after Checkbook assembly (e.g. PASSPort enrichment) or
+// spending stays unknown while registered.spent_to_date is known, promote the payment
+// stage so both the payments card and Follow-the-Dollars share one paid-to-date owner.
+// Does not override a real spending-feed "paid" result. Does not invent confident $0
+// over an explicit spending-error "unavailable" when registration spent is also 0.
+export function recoverPaymentFromRegisteredJoin(lifecycle) {
+  if (!lifecycle || !Array.isArray(lifecycle.timeline)) return lifecycle;
+  const timeline = lifecycle.timeline;
+  const reg = timeline.find((e) => e && e.stage === STAGE_REGISTERED);
+  const payIdx = timeline.findIndex((e) => e && e.stage === STAGE_PAYMENT);
+  if (payIdx < 0 || !reg || reg.status !== "matched" || !reg.detail) return lifecycle;
+
+  const spentRaw = reg.detail.spent_to_date;
+  if (spentRaw == null || !Number.isFinite(Number(spentRaw))) return lifecycle;
+  const spent = Number(spentRaw);
+
+  const pay = timeline[payIdx];
+  const d = pay.detail || null;
+  const state = d && d.payment_state;
+
+  // Spending transactions already joined — leave them.
+  if (pay.status === "matched" && state === "paid" && d && d.total_spent != null) {
+    return lifecycle;
+  }
+  // Already recovered / verified from registration.
+  if (pay.status === "matched" && (state === "from_registered" || state === "verified_zero")
+    && d && d.total_spent != null) {
+    return lifecycle;
+  }
+  // Explicit spending failure with $0 on the join: keep unavailable (no confident $0).
+  if (pay.status === "matched" && state === "unavailable" && spent === 0) {
+    return lifecycle;
+  }
+
+  // Recover when payment is missing, unmatched, unknown, unavailable-with-positive-join,
+  // or matched without a usable total.
+  const recoverable =
+    pay.status === "unknown"
+    || pay.status === "unmatched"
+    || (pay.status === "matched" && state === "unavailable" && spent > 0)
+    || (pay.status === "matched" && (!d || d.total_spent == null));
+
+  if (!recoverable) return lifecycle;
+
+  const newTimeline = timeline.slice();
+  newTimeline[payIdx] = {
+    ...pay,
+    status: "matched",
+    source: pay.source || "checkbook-spending",
+    date: pay.date || null,
+    source_timestamp: pay.source_timestamp || null,
+    detail: {
+      total_payments: null,
+      total_spent: spent,
+      latest_payment_date: null,
+      latest_payment_amount: null,
+      fiscal_year: null,
+      derived_from: "registered",
+      payment_state: spent === 0 ? "verified_zero" : "from_registered",
+    },
+  };
+
+  // Pending gap is superseded once registration is on record.
+  const pendingIdx = newTimeline.findIndex((e) => e && e.stage === STAGE_PENDING);
+  if (pendingIdx >= 0) {
+    const p = newTimeline[pendingIdx];
+    if (p.status === "unmatched" || p.status === "unknown") {
+      newTimeline[pendingIdx] = { ...p, status: "passed" };
+    }
+  }
+
+  const unresolved = newTimeline.some((e) => e.status === "unknown");
+  return {
+    ...lifecycle,
+    timeline: newTimeline,
+    ok: !unresolved,
+  };
 }
 
 // ---------------------------------------------------------------------------

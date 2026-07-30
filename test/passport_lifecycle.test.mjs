@@ -171,6 +171,57 @@ test("enrichment: registered stage filled from PASSPort Registered when Checkboo
   assert.equal(reg.detail.vendor, "MAKE IT ZESTY LLC");
 });
 
+// Field case #notice/20240723114 shape: Checkbook total failure leaves payment unknown;
+// PASSPort fills registered with paid_amount — payment stage must recover so panels agree.
+test("enrichment: PASSPort registered paid_amount recovers payment stage (no unavailable split)", () => {
+  const notice = {
+    request_id: "20240723114",
+    agency_name: "Homeless Services",
+    type_of_notice_description: "Award",
+    pin: "07124N0022001",
+    vendor_name: "Acacia Network Housing Inc.",
+    contract_amount: "7397875",
+    short_title: "NAE-Millennium Adult Family Facility",
+    start_date: "2024-07-29",
+  };
+  // Simulate Checkbook total failure (pending/registered/spending all error/unknown).
+  const base = assembleLifecycle(notice, [], [], null, {
+    pinStrategy: "exact",
+    lookupStatus: { pending: "error", registered: "error", spending: "error" },
+  });
+  assert.equal(base.timeline.find((e) => e.stage === "registered").status, "unknown");
+  assert.equal(base.timeline.find((e) => e.stage === "payment").status, "unknown");
+  assert.equal(base.ok, false);
+
+  const passportContract = {
+    epin: "07124N0022001",
+    epin_norm: "07124N0022001",
+    contract_id: "CT1-071-20258800377",
+    ctr_id: "CT1-071-20258800377",
+    vendor: "ACACIA NETWORK HOUSING INC",
+    status: "Registered",
+    award_amount: 7397875,
+    current_amount: 7397875,
+    paid_amount: 4018484.1,
+    start_date: "07/01/2024",
+    end_date: "06/30/2025",
+    registration_date: "07/22/2024",
+  };
+  const enriched = enrichLifecycleWithPassport(base, notice, {
+    contracts: [passportContract],
+    rfx: [],
+    lookupStatus: { contracts: "ok", rfx: "ok" },
+  });
+  const reg = enriched.timeline.find((e) => e.stage === "registered");
+  const pay = enriched.timeline.find((e) => e.stage === "payment");
+  assert.equal(reg.status, "matched");
+  assert.equal(reg.detail.spent_to_date, 4018484.1);
+  assert.equal(pay.status, "matched", "payment recovered from PASSPort paid_amount");
+  assert.equal(pay.detail.payment_state, "from_registered");
+  assert.equal(pay.detail.total_spent, 4018484.1);
+  assert.equal(enriched.ok, true, "no remaining unknown stages after recovery");
+});
+
 test("enrichment: unjoinable notice keeps unmatched pending with PASSPort in gap_sources", () => {
   const notice = cases.unjoinable_award.notice;
   const base = assembleLifecycle(notice, [], [], [], {

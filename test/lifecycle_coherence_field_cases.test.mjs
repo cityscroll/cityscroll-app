@@ -69,6 +69,7 @@ const sandbox = new Function(
   extractConst("LIFECYCLE_DOLLARS_ANCHOR") +
   extractFn("lifecycleDollarsFocusHref") +
   extractFn("lifecyclePaymentState") +
+  extractFn("lifecycleResolvedPayment") +
   extractFn("lifecyclePaymentSummaryHTML") +
   extractFn("lifecycleSourceLink") +
   extractFn("lifecycleDocumentsHTML") +
@@ -81,7 +82,7 @@ const sandbox = new Function(
   extractFn("cleanText") +
   extractFn("vendorStem") +
   extractFn("vendorNamesMatch") +
-  "return { lifecycleTimelineHTML, lifecycleDollarsHTML, lifecycleStageHTML, money, lifecycleMoney, vendorNamesMatch, checkbookSearchUrl, lifecyclePaymentState, lifecyclePaymentSummaryHTML };"
+  "return { lifecycleTimelineHTML, lifecycleDollarsHTML, lifecycleStageHTML, money, lifecycleMoney, vendorNamesMatch, checkbookSearchUrl, lifecyclePaymentState, lifecycleResolvedPayment, lifecyclePaymentSummaryHTML };"
 );
 
 const {
@@ -92,6 +93,7 @@ const {
   vendorNamesMatch,
   checkbookSearchUrl,
   lifecyclePaymentState,
+  lifecycleResolvedPayment,
   lifecyclePaymentSummaryHTML,
 } = sandbox(t, tn, windowStub);
 
@@ -318,6 +320,34 @@ test("assembleLifecycle: spending error never invents confident $0 (payment_stat
   assert.equal(result.ok, true); // unavailable is resolved, still cacheable
 });
 
+test("assembleLifecycle: spending error + registered spent > 0 → from_registered (panels agree)", () => {
+  const registered = [{
+    id: "CT1-071-20258800377",
+    vendor: "ACACIA",
+    registered: "2024-07-22",
+    original: 7397875,
+    current: 7397875,
+    spent: 4018484.1,
+  }];
+  const result = assembleLifecycle({
+    request_id: "20240723114",
+    agency_name: "Homeless Services",
+    type_of_notice_description: "Award",
+    pin: "07124N0022001",
+    vendor_name: "Acacia Network Housing Inc.",
+    contract_amount: "7397875",
+    short_title: "NAE-Millennium Adult Family Facility",
+    start_date: "2024-07-29",
+  }, [], registered, null, {
+    pinStrategy: "exact",
+    lookupStatus: { pending: "ok", registered: "ok", spending: "error" },
+  });
+  const pay = result.timeline.find((e) => e.stage === "payment");
+  assert.equal(pay.status, "matched");
+  assert.equal(pay.detail.payment_state, "from_registered");
+  assert.equal(pay.detail.total_spent, 4018484.1);
+});
+
 test("assembleLifecycle: healthy empty spending + registered $0 → verified_zero", () => {
   const registered = [{
     id: "CT184120268807929",
@@ -392,6 +422,84 @@ test("UI: unavailable payment does not show confident $0", () => {
   // Paid cell is unavailable — not a dollar amount (lag copy lives only on verified $0)
   assert.match(dollars, /Paid to date<\/dt><dd>Unavailable right now<\/dd>/);
   assert.doesNotMatch(dollars, /\$0 paid on a freshly registered/);
+});
+
+// Field case #notice/20240723114: Checkbook spending/pending unknown; PASSPort filled
+// registered with spent_to_date $4.02M. Live symptom was payments card "unavailable"
+// while Follow-the-Dollars showed $4.02M (54%). Both surfaces must use the join.
+const MILLENNIUM_NOTICE = {
+  request_id: "20240723114",
+  agency_name: "Homeless Services",
+  type_of_notice_description: "Award",
+  pin: "07124N0022001",
+  vendor_name: "Acacia Network Housing Inc.",
+  contract_amount: "7397875",
+  short_title: "NAE-Millennium Adult Family Facility+ Allowance - 100 Units",
+  start_date: "2024-07-29",
+};
+
+const MILLENNIUM_LIFECYCLE_LIVE_SHAPE = {
+  pin: "07124N0022001",
+  pin_strategy: "exact",
+  ok: false,
+  amendments: [],
+  timeline: [
+    {
+      stage: "award",
+      status: "matched",
+      source: "city-record",
+      date: "2024-07-29T00:00:00.000",
+      detail: {
+        request_id: "20240723114",
+        agency: "Homeless Services",
+        title: MILLENNIUM_NOTICE.short_title,
+        pin: "07124N0022001",
+        vendor: MILLENNIUM_NOTICE.vendor_name,
+        amount: 7397875,
+      },
+    },
+    { stage: "pending", status: "unknown", source: "checkbook-contracts", date: null, detail: null },
+    {
+      stage: "registered",
+      status: "matched",
+      source: "passport-public-contracts",
+      date: "2024-07-22",
+      detail: {
+        contract_id: "CT1-071-20258800377",
+        vendor: "ACACIA NETWORK HOUSING INC",
+        registration_date: "07/22/2024",
+        original_amount: 7397875,
+        current_amount: 7397875,
+        spent_to_date: 4018484.1,
+        start_date: "07/01/2024",
+        end_date: "06/30/2025",
+        duration: null,
+        mwbe: null,
+      },
+    },
+    // Payment never recovered pre-fix — detail null, status unknown.
+    { stage: "payment", status: "unknown", source: "checkbook-spending", date: null, detail: null },
+  ],
+};
+
+test("Millennium field case: join has paid-to-date → payments card and dollars agree (no unavailable)", () => {
+  const timeline = lifecycleTimelineHTML(MILLENNIUM_LIFECYCLE_LIVE_SHAPE, MILLENNIUM_NOTICE);
+  const dollars = lifecycleDollarsHTML(MILLENNIUM_LIFECYCLE_LIVE_SHAPE, MILLENNIUM_NOTICE);
+  const both = timeline + dollars;
+  assert.doesNotMatch(both, /Payment data unavailable right now/i);
+  assert.doesNotMatch(both, /Unavailable right now/i);
+  // Joined amount appears on both surfaces (~$4.02M of $7.40M)
+  assert.match(timeline, /\$4\.02M paid of \$7\.4/i);
+  assert.match(dollars, /\$4\.02M/);
+  assert.match(dollars, /\(54%\)/);
+  assert.match(dollars, /CT1-071-20258800377/);
+  // Shared resolver: registration spent wins over empty payment detail
+  const resolved = lifecycleResolvedPayment(
+    MILLENNIUM_LIFECYCLE_LIVE_SHAPE.timeline.find((e) => e.stage === "registered").detail,
+    null,
+  );
+  assert.equal(resolved.state, "from_registered");
+  assert.equal(resolved.spent, 4018484.1);
 });
 
 test("assembleLifecycle: no PIN marks Checkbook stages not_applicable (not unknown)", () => {
