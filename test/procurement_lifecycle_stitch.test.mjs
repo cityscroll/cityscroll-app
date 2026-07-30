@@ -121,6 +121,7 @@ try {
     const PASSPORT_CONTRACTS_URL = 'https://a0333-passportpublic.nyc.gov/contracts.html';
     const PASSPORT_RFX_URL = 'https://a0333-passportpublic.nyc.gov/rfx.html';
     const LIFECYCLE_STAGE_ORDER = {solicitation:0, award:1, pending:2, registered:3, payment:4};
+    const CURRENT_SOLICITATIONS_URL = 'https://data.cityofnewyork.us/d/3khw-qi8f';
     function pivotA(href, text){ return '<a href="'+href+'">'+text+'</a>'; }
     ` +
     extractFn("lifecycleStageLabel") +
@@ -131,6 +132,7 @@ try {
     extractFn("lifecycleHasLaterMatched") +
     extractFn("lifecyclePublicStatus") +
     extractFn("lifecycleSourceLink") +
+    extractFn("lifecycleDocumentsHTML") +
     extractFn("lifecycleStageHTML") +
     extractFn("lifecycleTimelineHTML") +
     extractFn("lifecycleDollarsHTML") +
