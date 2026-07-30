@@ -12,15 +12,28 @@
       "domain": "https://data.cityofnewyork.us",
       "dataset_id": "dg92-zbpx",
       "landing_page": "https://data.cityofnewyork.us/d/dg92-zbpx",
-      "required_fields": ["request_id", "start_date", "agency_name", "type_of_notice_description", "section_name"],
+      "required_fields": [
+        "request_id",
+        "start_date",
+        "agency_name",
+        "type_of_notice_description",
+        "section_name"
+      ],
       "max_stale_days": 7,
       "publisher_cadence": "Daily",
       "product_freshness": "Live browser queries use a five-minute cache; Worker mirrors and materialized views refresh daily.",
       "used_for": "Core notices, feeds, alerts, profiles, hearings, property records, prior-cycle matches, and aggregates.",
       "code_references": [
-        {"path": "index.html", "contains": "dg92-zbpx"},
-        {"path": "worker/src/ingest.mjs", "contains": "dg92-zbpx"}
-      ]
+        {
+          "path": "index.html",
+          "contains": "dg92-zbpx"
+        },
+        {
+          "path": "worker/src/ingest.mjs",
+          "contains": "dg92-zbpx"
+        }
+      ],
+      "delivery_tier": "live-only"
     },
     {
       "id": "checkbook-contracts",
@@ -32,15 +45,27 @@
       "endpoint": "https://www.checkbooknyc.com/api",
       "landing_page": "https://www.checkbooknyc.com/data-feeds/api",
       "data_type": "Contracts",
-      "required_fields": ["prime_contract_id", "prime_vendor", "prime_contract_current_amount", "prime_contract_registration_date"],
+      "required_fields": [
+        "prime_contract_id",
+        "prime_vendor",
+        "prime_contract_current_amount",
+        "prime_contract_registration_date"
+      ],
       "max_stale_days": 45,
       "publisher_cadence": "Ongoing registrations and spending updates",
       "product_freshness": "Queried live for contract details and daily for watched renewal estimates.",
       "used_for": "Pending and registered contract amounts, paid-to-date totals, contract terms, and the procurement lifecycle timeline.",
       "code_references": [
-        {"path": "worker/src/checkbook.mjs", "contains": "<type_of_data>Contracts</type_of_data>"},
-        {"path": "worker/src/checkbook_lifecycle.mjs", "contains": "<type_of_data>Contracts</type_of_data>"}
-      ]
+        {
+          "path": "worker/src/checkbook.mjs",
+          "contains": "<type_of_data>Contracts</type_of_data>"
+        },
+        {
+          "path": "worker/src/checkbook_lifecycle.mjs",
+          "contains": "<type_of_data>Contracts</type_of_data>"
+        }
+      ],
+      "delivery_tier": "edge-materialized"
     },
     {
       "id": "checkbook-spending",
@@ -52,13 +77,22 @@
       "endpoint": "https://www.checkbooknyc.com/api",
       "landing_page": "https://www.checkbooknyc.com/data-feeds/api",
       "data_type": "Spending",
-      "required_fields": ["spending_id", "vendor_name", "check_amount", "check_date"],
+      "required_fields": [
+        "spending_id",
+        "vendor_name",
+        "check_amount",
+        "check_date"
+      ],
       "publisher_cadence": "Ongoing spending and payment updates",
       "product_freshness": "Queried by PIN for the contract lifecycle timeline.",
       "used_for": "Individual payment records in the procurement lifecycle (solicitation to payment).",
       "code_references": [
-        {"path": "worker/src/checkbook_lifecycle.mjs", "contains": "<type_of_data>Spending</type_of_data>"}
-      ]
+        {
+          "path": "worker/src/checkbook_lifecycle.mjs",
+          "contains": "<type_of_data>Spending</type_of_data>"
+        }
+      ],
+      "delivery_tier": "edge-materialized"
     },
     {
       "id": "checkbook-nycha-contracts",
@@ -70,13 +104,22 @@
       "endpoint": "https://www.checkbooknyc.com/api",
       "landing_page": "https://www.checkbooknyc.com/data-feeds/api",
       "data_type": "Contracts_NYCHA",
-      "required_fields": ["contract_id", "record_type", "vendor", "pin"],
+      "required_fields": [
+        "contract_id",
+        "record_type",
+        "vendor",
+        "pin"
+      ],
       "publisher_cadence": "Ongoing contract updates",
       "product_freshness": "Queried by exact notice PIN on demand, with bounded daily prewarming.",
       "used_for": "Exact NYCHA solicitation-to-award matches.",
       "code_references": [
-        {"path": "worker/src/external_award.mjs", "contains": "<type_of_data>Contracts_NYCHA</type_of_data>"}
-      ]
+        {
+          "path": "worker/src/external_award.mjs",
+          "contains": "<type_of_data>Contracts_NYCHA</type_of_data>"
+        }
+      ],
+      "delivery_tier": "edge-materialized"
     },
     {
       "id": "abo-local-authorities",
@@ -88,14 +131,24 @@
       "domain": "https://data.ny.gov",
       "dataset_id": "8w5p-k45m",
       "landing_page": "https://data.ny.gov/d/8w5p-k45m",
-      "required_fields": ["authority_name", "vendor_name", "procurement_description", "award_date", "contract_amount"],
+      "required_fields": [
+        "authority_name",
+        "vendor_name",
+        "procurement_description",
+        "award_date",
+        "contract_amount"
+      ],
       "max_stale_days": 550,
       "publisher_cadence": "Approximately annual filings",
       "product_freshness": "Checked weekly; the last good cache is retained if the upstream request fails.",
       "used_for": "Possible award matches for mapped local-authority profiles.",
       "code_references": [
-        {"path": "external_awards.js", "contains": "8w5p-k45m"}
-      ]
+        {
+          "path": "external_awards.js",
+          "contains": "8w5p-k45m"
+        }
+      ],
+      "delivery_tier": "edge-materialized"
     },
     {
       "id": "abo-local-development-corporations",
@@ -107,14 +160,24 @@
       "domain": "https://data.ny.gov",
       "dataset_id": "d84c-dk28",
       "landing_page": "https://data.ny.gov/d/d84c-dk28",
-      "required_fields": ["authority_name", "vendor_name", "procurement_description", "award_date", "contract_amount"],
+      "required_fields": [
+        "authority_name",
+        "vendor_name",
+        "procurement_description",
+        "award_date",
+        "contract_amount"
+      ],
       "max_stale_days": 550,
       "publisher_cadence": "Approximately annual filings",
       "product_freshness": "Checked weekly; the last good cache is retained if the upstream request fails.",
       "used_for": "Possible award matches for mapped local-development-corporation profiles.",
       "code_references": [
-        {"path": "external_awards.js", "contains": "d84c-dk28"}
-      ]
+        {
+          "path": "external_awards.js",
+          "contains": "d84c-dk28"
+        }
+      ],
+      "delivery_tier": "edge-materialized"
     },
     {
       "id": "abo-state-authorities",
@@ -126,14 +189,24 @@
       "domain": "https://data.ny.gov",
       "dataset_id": "ehig-g5x3",
       "landing_page": "https://data.ny.gov/d/ehig-g5x3",
-      "required_fields": ["authority_name", "vendor_name", "procurement_description", "award_date", "contract_amount"],
+      "required_fields": [
+        "authority_name",
+        "vendor_name",
+        "procurement_description",
+        "award_date",
+        "contract_amount"
+      ],
       "max_stale_days": 550,
       "publisher_cadence": "Approximately annual filings",
       "product_freshness": "Checked weekly; the last good cache is retained if the upstream request fails.",
       "used_for": "Possible award matches for mapped state-authority profiles, including the MTA.",
       "code_references": [
-        {"path": "external_awards.js", "contains": "ehig-g5x3"}
-      ]
+        {
+          "path": "external_awards.js",
+          "contains": "ehig-g5x3"
+        }
+      ],
+      "delivery_tier": "edge-materialized"
     },
     {
       "id": "citywide-payroll",
@@ -145,14 +218,24 @@
       "domain": "https://data.cityofnewyork.us",
       "dataset_id": "k397-673e",
       "landing_page": "https://data.cityofnewyork.us/d/k397-673e",
-      "required_fields": ["fiscal_year", "agency_name", "last_name", "first_name", "title_description"],
+      "required_fields": [
+        "fiscal_year",
+        "agency_name",
+        "last_name",
+        "first_name",
+        "title_description"
+      ],
       "max_stale_days": 550,
       "publisher_cadence": "Fiscal-year releases",
       "product_freshness": "Queried live with a five-minute browser cache.",
       "used_for": "Title and pay history in the Staffing experience.",
       "code_references": [
-        {"path": "index.html", "contains": "k397-673e"}
-      ]
+        {
+          "path": "index.html",
+          "contains": "k397-673e"
+        }
+      ],
+      "delivery_tier": "live-only"
     },
     {
       "id": "active-civil-service-list",
@@ -164,15 +247,28 @@
       "domain": "https://data.cityofnewyork.us",
       "dataset_id": "vx8i-nprf",
       "landing_page": "https://data.cityofnewyork.us/d/vx8i-nprf",
-      "required_fields": ["exam_no", "list_no", "first_name", "last_name", "list_title_desc"],
+      "required_fields": [
+        "exam_no",
+        "list_no",
+        "first_name",
+        "last_name",
+        "list_title_desc"
+      ],
       "max_stale_days": 14,
       "publisher_cadence": "Frequent list updates",
       "product_freshness": "Queried live for list checks and captured in the Staffing build.",
       "used_for": "Competitive-list checks and active-list totals.",
       "code_references": [
-        {"path": "index.html", "contains": "vx8i-nprf"},
-        {"path": "tools/build_staffing_exams.mjs", "contains": "vx8i-nprf"}
-      ]
+        {
+          "path": "index.html",
+          "contains": "vx8i-nprf"
+        },
+        {
+          "path": "tools/build_staffing_exams.mjs",
+          "contains": "vx8i-nprf"
+        }
+      ],
+      "delivery_tier": "live-only"
     },
     {
       "id": "annual-examination-schedule",
@@ -184,14 +280,24 @@
       "domain": "https://data.cityofnewyork.us",
       "dataset_id": "4ptz-hmtc",
       "landing_page": "https://data.cityofnewyork.us/d/4ptz-hmtc",
-      "required_fields": ["exam_title", "exam_number", "application_period_start", "application_period_end_date", "data_current_as_of"],
+      "required_fields": [
+        "exam_title",
+        "exam_number",
+        "application_period_start",
+        "application_period_end_date",
+        "data_current_as_of"
+      ],
       "max_stale_days": 45,
       "publisher_cadence": "Annual schedule with in-year updates",
       "product_freshness": "Operator-built into data/staffing_exams.json; the artifact displays its source date.",
       "used_for": "Upcoming exam cards and application windows.",
       "code_references": [
-        {"path": "tools/build_staffing_exams.mjs", "contains": "4ptz-hmtc"}
-      ]
+        {
+          "path": "tools/build_staffing_exams.mjs",
+          "contains": "4ptz-hmtc"
+        }
+      ],
+      "delivery_tier": "inline-at-build"
     },
     {
       "id": "civil-service-list-certification",
@@ -203,14 +309,24 @@
       "domain": "https://data.cityofnewyork.us",
       "dataset_id": "a9md-ynri",
       "landing_page": "https://data.cityofnewyork.us/d/a9md-ynri",
-      "required_fields": ["exam_no", "list_title_desc", "cert_date", "no_certified", "no_vacancies"],
+      "required_fields": [
+        "exam_no",
+        "list_title_desc",
+        "cert_date",
+        "no_certified",
+        "no_vacancies"
+      ],
       "max_stale_days": 14,
       "publisher_cadence": "Frequent certification updates",
       "product_freshness": "Used in operator-built title and Staffing research artifacts.",
       "used_for": "Civil-service title cross-checking.",
       "code_references": [
-        {"path": "data/TITLE_MAPPING.md", "contains": "a9md-ynri"}
-      ]
+        {
+          "path": "data/TITLE_MAPPING.md",
+          "contains": "a9md-ynri"
+        }
+      ],
+      "delivery_tier": "inline-at-build"
     },
     {
       "id": "zap-projects",
@@ -222,14 +338,24 @@
       "domain": "https://data.cityofnewyork.us",
       "dataset_id": "hgx4-8ukb",
       "landing_page": "https://data.cityofnewyork.us/d/hgx4-8ukb",
-      "required_fields": ["project_id", "project_name", "project_status", "borough", "community_district"],
+      "required_fields": [
+        "project_id",
+        "project_name",
+        "project_status",
+        "borough",
+        "community_district"
+      ],
       "max_stale_days": 120,
       "publisher_cadence": "Periodic project updates",
       "product_freshness": "Queried live with a five-minute browser cache and used by daily subscriptions.",
       "used_for": "Rezoning search, status, milestones, applicants, and comments handoff.",
       "code_references": [
-        {"path": "index.html", "contains": "hgx4-8ukb"}
-      ]
+        {
+          "path": "index.html",
+          "contains": "hgx4-8ukb"
+        }
+      ],
+      "delivery_tier": "live-only"
     },
     {
       "id": "zap-bbl",
@@ -241,14 +367,24 @@
       "domain": "https://data.cityofnewyork.us",
       "dataset_id": "2iga-a6mk",
       "landing_page": "https://data.cityofnewyork.us/d/2iga-a6mk",
-      "required_fields": ["project_id", "bbl", "validated_borough", "validated_block", "validated_lot"],
+      "required_fields": [
+        "project_id",
+        "bbl",
+        "validated_borough",
+        "validated_block",
+        "validated_lot"
+      ],
       "max_stale_days": 120,
       "publisher_cadence": "Periodic project updates",
       "product_freshness": "Queried live with a five-minute browser cache.",
       "used_for": "Tax-lot joins from ZAP projects to MapPLUTO.",
       "code_references": [
-        {"path": "index.html", "contains": "2iga-a6mk"}
-      ]
+        {
+          "path": "index.html",
+          "contains": "2iga-a6mk"
+        }
+      ],
+      "delivery_tier": "live-only"
     },
     {
       "id": "mappluto",
@@ -259,14 +395,20 @@
       "kind": "arcgis",
       "endpoint": "https://services5.arcgis.com/GfwWNkhOj9bNBqoJ/arcgis/rest/services/MAPPLUTO/FeatureServer/0",
       "landing_page": "https://www.nyc.gov/content/planning/pages/resources/datasets/mappluto-pluto-change",
-      "required_fields": ["BBL"],
+      "required_fields": [
+        "BBL"
+      ],
       "max_stale_days": 120,
       "publisher_cadence": "Periodic PLUTO releases",
       "product_freshness": "Queried live for matched ZAP tax lots.",
       "used_for": "Tax-lot boundary geometry.",
       "code_references": [
-        {"path": "index.html", "contains": "rest/services/MAPPLUTO/FeatureServer/0"}
-      ]
+        {
+          "path": "index.html",
+          "contains": "rest/services/MAPPLUTO/FeatureServer/0"
+        }
+      ],
+      "delivery_tier": "live-only"
     },
     {
       "id": "nyc-geosearch",
@@ -277,14 +419,25 @@
       "kind": "geosearch",
       "endpoint": "https://geosearch.planninglabs.nyc/v2/search",
       "landing_page": "https://geosearch.planninglabs.nyc/",
-      "required_fields": ["features", "properties.label", "properties.borough"],
+      "required_fields": [
+        "features",
+        "properties.label",
+        "properties.borough"
+      ],
       "publisher_cadence": "No upstream data timestamp is published",
       "product_freshness": "Queried live; the verifier checks availability and response shape, not underlying data age.",
       "used_for": "Address, neighborhood, borough, and BBL resolution.",
       "code_references": [
-        {"path": "index.html", "contains": "geosearch.planninglabs.nyc/v2/search"},
-        {"path": "worker/src/hearings.mjs", "contains": "geosearch.planninglabs.nyc/v2/search"}
-      ]
+        {
+          "path": "index.html",
+          "contains": "geosearch.planninglabs.nyc/v2/search"
+        },
+        {
+          "path": "worker/src/hearings.mjs",
+          "contains": "geosearch.planninglabs.nyc/v2/search"
+        }
+      ],
+      "delivery_tier": "live-only"
     },
     {
       "id": "dob-now-job-filings",
@@ -296,14 +449,25 @@
       "domain": "https://data.cityofnewyork.us",
       "dataset_id": "w9ak-ipjd",
       "landing_page": "https://data.cityofnewyork.us/d/w9ak-ipjd",
-      "required_fields": ["job_filing_number", "filing_status", "borough", "block", "lot", "job_type"],
+      "required_fields": [
+        "job_filing_number",
+        "filing_status",
+        "borough",
+        "block",
+        "lot",
+        "job_type"
+      ],
       "max_stale_days": 14,
       "publisher_cadence": "Frequent filing updates",
       "product_freshness": "Queried live only when a demolition check is requested.",
       "used_for": "Current demolition-filing verification.",
       "code_references": [
-        {"path": "index.html", "contains": "w9ak-ipjd"}
-      ]
+        {
+          "path": "index.html",
+          "contains": "w9ak-ipjd"
+        }
+      ],
+      "delivery_tier": "live-only"
     },
     {
       "id": "legacy-dob-job-filings",
@@ -315,14 +479,26 @@
       "domain": "https://data.cityofnewyork.us",
       "dataset_id": "ic3t-wcy2",
       "landing_page": "https://data.cityofnewyork.us/d/ic3t-wcy2",
-      "required_fields": ["job__","job_status_descrp", "latest_action_date", "borough", "block", "lot", "job_type"],
+      "required_fields": [
+        "job__",
+        "job_status_descrp",
+        "latest_action_date",
+        "borough",
+        "block",
+        "lot",
+        "job_type"
+      ],
       "max_stale_days": 14,
       "publisher_cadence": "Frequent filing updates",
       "product_freshness": "Queried live as the fallback for demolition checks.",
       "used_for": "Legacy demolition-filing verification.",
       "code_references": [
-        {"path": "index.html", "contains": "ic3t-wcy2"}
-      ]
+        {
+          "path": "index.html",
+          "contains": "ic3t-wcy2"
+        }
+      ],
+      "delivery_tier": "live-only"
     },
     {
       "id": "nyc-agencies",
@@ -334,14 +510,25 @@
       "domain": "https://data.cityofnewyork.us",
       "dataset_id": "t3jq-9nkf",
       "landing_page": "https://data.cityofnewyork.us/d/t3jq-9nkf",
-      "required_fields": ["record_id", "operational_status", "organization_type", "name", "acronym", "url"],
+      "required_fields": [
+        "record_id",
+        "operational_status",
+        "organization_type",
+        "name",
+        "acronym",
+        "url"
+      ],
       "max_stale_days": 120,
       "publisher_cadence": "Slow-changing organizational data",
       "product_freshness": "Operator-built into the committed agency crosswalk.",
       "used_for": "Canonical agency identity, leadership, organization type, and official links.",
       "code_references": [
-        {"path": "tools/build_agency_crosswalk.mjs", "contains": "t3jq-9nkf"}
-      ]
+        {
+          "path": "tools/build_agency_crosswalk.mjs",
+          "contains": "t3jq-9nkf"
+        }
+      ],
+      "delivery_tier": "inline-at-build"
     },
     {
       "id": "expense-budget",
@@ -353,14 +540,24 @@
       "domain": "https://data.cityofnewyork.us",
       "dataset_id": "mwzb-yiwb",
       "landing_page": "https://data.cityofnewyork.us/d/mwzb-yiwb",
-      "required_fields": ["publication_date", "fiscal_year", "agency_number", "agency_name", "adopted_budget_amount"],
+      "required_fields": [
+        "publication_date",
+        "fiscal_year",
+        "agency_number",
+        "agency_name",
+        "adopted_budget_amount"
+      ],
       "max_stale_days": 550,
       "publisher_cadence": "Fiscal-year budget releases",
       "product_freshness": "Operator-built into the committed agency crosswalk.",
       "used_for": "Agency budget codes and adopted budget totals.",
       "code_references": [
-        {"path": "tools/build_agency_crosswalk.mjs", "contains": "mwzb-yiwb"}
-      ]
+        {
+          "path": "tools/build_agency_crosswalk.mjs",
+          "contains": "mwzb-yiwb"
+        }
+      ],
+      "delivery_tier": "inline-at-build"
     },
     {
       "id": "dcas-exam-notices",
@@ -374,8 +571,12 @@
       "product_freshness": "Manually reviewed during the Staffing build because the page blocks unattended refresh.",
       "used_for": "Official job details, qualifications, fees, waivers, and application links.",
       "code_references": [
-        {"path": "data/exam_sources/README.md", "contains": "dcas_open_competitive.json"}
-      ]
+        {
+          "path": "data/exam_sources/README.md",
+          "contains": "dcas_open_competitive.json"
+        }
+      ],
+      "delivery_tier": "inline-at-build"
     },
     {
       "id": "mocs-ll63-plans",
@@ -385,14 +586,21 @@
       "scope": "runtime",
       "kind": "mocs-disabled",
       "landing_page": "https://www.nyc.gov/site/mocs/resources/standard-professional-services-ll63.page",
-      "legacy_dataset_ids": ["egea-b8r5", "whpb-ebtd"],
+      "legacy_dataset_ids": [
+        "egea-b8r5",
+        "whpb-ebtd"
+      ],
       "publisher_cadence": "Annual plans with in-year agency spreadsheet updates",
       "product_freshness": "Disabled. No plan rows are read or shown, and stale plan cache entries are purged.",
       "used_for": "No current product output.",
       "gap": "The official page links rotating per-agency spreadsheets but provides no stable tabular feed or machine manifest. The former configured ID is non-tabular and the former documented ID does not exist.",
       "code_references": [
-        {"path": "worker/src/mocs_plan.mjs", "contains": "status: \"disabled\""}
-      ]
+        {
+          "path": "worker/src/mocs_plan.mjs",
+          "contains": "status: \"disabled\""
+        }
+      ],
+      "delivery_tier": "live-only"
     },
     {
       "id": "nyc-rules-rss",
@@ -403,14 +611,24 @@
       "kind": "rss",
       "endpoint": "https://rules.cityofnewyork.us/feed/",
       "landing_page": "https://rules.cityofnewyork.us/",
-      "required_fields": ["title", "link", "agency_name", "comment_by_date", "hearing_date_1"],
+      "required_fields": [
+        "title",
+        "link",
+        "agency_name",
+        "comment_by_date",
+        "hearing_date_1"
+      ],
       "max_stale_days": 45,
       "publisher_cadence": "Updated as rules are proposed, heard, adopted, or made effective",
       "product_freshness": "Daily materialized join in the Worker; a stale or unreachable feed falls back to City Record notices only with an explicit enrichment-gap marker.",
       "used_for": "Rule lifecycle enrichment: official comment/adoption page links, comment deadlines, hearing dates, adoption and effective dates joined to City Record Agency Rules notices.",
       "code_references": [
-        {"path": "worker/src/rules.mjs", "contains": "rules.cityofnewyork.us/feed/"}
-      ]
+        {
+          "path": "worker/src/rules.mjs",
+          "contains": "rules.cityofnewyork.us/feed/"
+        }
+      ],
+      "delivery_tier": "edge-materialized"
     }
   ]
 }

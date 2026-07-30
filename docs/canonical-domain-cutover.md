@@ -13,7 +13,7 @@ GitHub Pages deployment that the CityScroll Worker mirrors.
 | Beta pointer | `https://beta.cityscroll.org` | Draft preview aliases remain under `crol-list-beta.pages.dev` |
 | Beta API | `https://api-beta.cityscroll.org` | `api-beta.crol-list.org` remains a compatibility alias |
 | GitHub Pages origin | `https://crol-list.org` | Preferred origin; the mirror fetches it as a manual-redirect Worker subrequest |
-| Mirror failover | `https://raw.githubusercontent.com/cityscroll/crol-list/main/` | Public static-source seam used only when the preferred origin redirects back to CityScroll |
+| Mirror failover | `https://cityscroll.github.io/crol-list/` | Public static-source seam used only when the preferred origin redirects back to CityScroll |
 | Calendar UID namespace | `@crol-list` | Deliberately unchanged to prevent duplicate imported events |
 | Atom entry namespace | `tag:crol-list.org,2026:` | Deliberately unchanged to prevent duplicate feed-reader entries |
 | Alert email sending | `alerts@cityscroll.org` | Site owner decided the switchover 2026-07-29; `crol-list.org` stays verified as a fallback sending domain |
