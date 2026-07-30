@@ -1,0 +1,4 @@
+soda_raw=200 https://data.cityofnewyork.us/resource/buex-bi6w.json?$where=request_id='20220525018'&$select=request_id,short_title,additional_description_1,agency_name,event_date,section_name,type_of_notice_description,start_date,street_address_1,street_address_2,city,state,zip_code,building_name,other_info_1,printout_1
+prod_index=200 https://cityscroll.org/index.html
+prod_notice=https://cityscroll.org/index.html#notice/20220525018
+prod_meetings=https://cityscroll.org/index.html#meetings?when=past&q=IDA

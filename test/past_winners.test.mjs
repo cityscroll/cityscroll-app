@@ -45,7 +45,7 @@ const { pastWinnersHTML, chainHTML } = new Function(
   "t", "tn", "window",
   extractFn("cleanText") + extractFn("money") + extractFn("fdate") +
   extractConst("REQ_URL") + extractConst("EXT_ATTRS") + extractConst("extSR") +
-  extractConst("pivotA") + extractConst("vendorHref") +
+  extractConst("escUiHtml") + extractConst("pivotA") + extractConst("vendorHref") +
   extractFn("boxClass") +
   src.match(/const RENEWAL_SUFFIX_RE = [^;]*;/)[0] + extractFn("pinBase") +
   src.match(/const JUNK_PINS = new Set\(\[[^\]]*\]\);/)[0] + extractConst("JUNK_PIN_TEXT_RE") +
@@ -106,8 +106,9 @@ test("pastWinnersHTML: a real multi-cycle chain lists every award's year, vendor
   assert.match(html, /2022/);
   assert.match(html, /2024/);
   assert.match(html, /2026/);
-  assert.match(html, /The Perfect Playground OT PT & SLP LLC/);
-  assert.match(html, /The Perfect Playground OT PT & SLP PLLC/);
+  // pivotA escapes & for HTML (decode→escape-once discipline); assert the escaped form.
+  assert.match(html, /The Perfect Playground OT PT &amp; SLP LLC/);
+  assert.match(html, /The Perfect Playground OT PT &amp; SLP PLLC/);
   assert.match(html, /\$515K/);
   assert.match(html, /\$46K/);
   assert.match(html, /\$30K/);

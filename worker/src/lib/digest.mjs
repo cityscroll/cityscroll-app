@@ -7,6 +7,8 @@
 //   - daily subs get matches immediately, PLUS a heartbeat after HEARTBEAT_DAYS of quiet
 // and every send carries "since <date>" so the covered window is legible.
 
+import { cleanNoticeText } from "../../../site/text_clean.mjs";
+
 const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 // "2026-06-30" | full ISO -> "Jun 30". Manual formatting so we don't depend on Intl locale data
@@ -87,17 +89,11 @@ function locateAnyTerm(text, terms) {
 //     (SODA's $q also searches columns like contact/method fields) -- name the term rather
 //     than showing the notice with no explanation at all.
 // City Record fields arrive with embedded presentation HTML (styled spans,
-// paragraph wrappers). Strip markup and decode the common entities BEFORE
-// locating and slicing, so no consumer of the evidence (email digest, site
-// rows) can ever render raw tags, and so a match index can never land inside
-// a tag (James, 2026-07-23, live digest email).
+// paragraph wrappers). Strip markup and decode entities BEFORE locating and
+// slicing — shared owner is site/text_clean.mjs so digest snippets, API
+// previews, and on-page cards never diverge on &ldquo;/numeric forms.
 function stripHtml(s) {
-  return String(s || "")
-    .replace(/<[^>]*>/g, " ")
-    .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
-    .replace(/&nbsp;/g, " ").replace(/&#39;|&apos;/g, "'").replace(/&quot;/g, '"')
-    .replace(/\s+/g, " ")
-    .trim();
+  return cleanNoticeText(s);
 }
 
 export function matchEvidence(title, description, terms) {
