@@ -76,6 +76,21 @@ test("the marker heading is case-insensitive and tolerates ### instead of ##", (
   assert.equal(extractUserImpact(body), "You can now do the thing.");
 });
 
+// Field cases from major-labeled merges that used a near-synonym heading and used to produce
+// a green empty harvest. Aliases keep the significance gate (changelog:major) intact while
+// still extracting the impact line.
+test("accepted marker aliases extract the same user-impact line", () => {
+  for (const heading of [
+    "## What readers see",
+    "## What users can now see",
+    "## Changelog",
+    "### changelog",
+  ]) {
+    const body = `${heading}\nYou can now do the thing.\n\n## Test plan\n`;
+    assert.equal(extractUserImpact(body), "You can now do the thing.", heading);
+  }
+});
+
 test("collects a multi-line marker section up to the next heading or blank line", () => {
   const body = "## What this means for you\nFirst line of the statement,\nsecond line continues it.\n\n## Test plan\n- [x] done\n";
   assert.equal(

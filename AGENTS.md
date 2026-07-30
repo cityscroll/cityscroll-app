@@ -53,6 +53,17 @@ When adding a new lifecycle empty state: pick class a or b with evidence, add or
 
 Precompute-first on the notice page: never live Checkbook proxy; never render `lifecycle_unknown_html` (“Could not reach…”) as a public data gap. Coerce `unknown` → taxonomy unmatched, or **passed** when a later stage is matched. No-PIN collapses Checkbook stages into the single class-(b) note. Format zero amounts with `lifecycleMoney` (`$0` / `—`), never literal `null`. Field-case characterization: `node --test test/lifecycle_coherence_field_cases.test.mjs`. Captures: `python3 tools/capture_lifecycle_coherence.py`.
 
+## Changelog harvest
+
+Public surface: `site/changelog-data.json` + `site/changelog.html` (not repo-root). Workflow:
+`.github/workflows/update-changelog.yml` → `tools/prepare-changelog-base.sh` →
+`tools/gen_changelog.mjs`. Editorial bar: `changelog:major` **and** an accepted user-impact
+heading (canonical `## What this means for you`; aliases in `tools/changelog_extract.mjs`).
+**Vacuity tripwire:** major label with nothing extractable, or major with an empty `site/`
+delta that is not already-recorded, fails the job — never a green no-op. Convention:
+`CONTRIBUTING.md` “Changelog entries”. Characterization: `test/changelog_*.test.mjs`,
+`test/changelog_entry_gate.test.mjs`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

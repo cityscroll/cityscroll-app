@@ -15,11 +15,24 @@
 // the page, while keeping "is this significant" a deliberate per-PR decision instead of a
 // default.
 //
+// Accepted marker headings (same section semantics; any heading level, case-insensitive):
+//   - "What this means for you" (canonical, CONTRIBUTING.md)
+//   - "What readers see" / "What users can now see" (common plain-language variants)
+//   - "Changelog" (short alias used on some major feature PRs)
+// The `changelog:major` label remains the significance gate; these aliases only keep the
+// harvester from silently empty-skipping a labeled PR that wrote the impact under a near-
+// synonym heading.
+//
+// Vacuity: when a PR carries `changelog:major` but no accepted marker yields text, the
+// post-merge workflow fails closed (see tools/gen_changelog.mjs) — a silent green no-op is
+// not allowed for an explicitly labeled major change.
+//
 // Plain ESM (this repo's tools/ scripts and their tests use `.mjs` + import/export; the
 // require()-able-dictionary convention documented for i18n.js/nl_parse.js is specific to
 // runtime files loaded as plain <script> tags in the browser, which this is not).
 
-const MARKER_RE = /^#{1,6}\s*what this means for you\s*$/i;
+const MARKER_RE =
+  /^#{1,6}\s*(?:what this means for you|what readers see|what users can now see|changelog)\s*$/i;
 const HEADING_RE = /^#{1,6}\s+\S/;
 const LIST_MARKER_RE = /^(?:[-*+]|\d+[.)])\s+/;
 
