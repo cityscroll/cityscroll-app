@@ -354,16 +354,21 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
     };
   } else if (lookupStatus.spending === "error") {
     // HONESTY: never paint a confident $0 (or any amount) when the spending lookup failed.
-    // Registration may still be matched; payment is operationally unavailable.
-    spendStatus = "matched";
-    payDetail = {
-      total_payments: null,
-      total_spent: null,
-      latest_payment_date: null,
-      latest_payment_amount: null,
-      fiscal_year: null,
-      payment_state: "unavailable",
-    };
+    // With a registered join present, surface an explicit unavailable payment card.
+    // With no registration either, leave payment as unknown (total Checkbook failure).
+    if (regStatus === "matched") {
+      spendStatus = "matched";
+      payDetail = {
+        total_payments: null,
+        total_spent: null,
+        latest_payment_date: null,
+        latest_payment_amount: null,
+        fiscal_year: null,
+        payment_state: "unavailable",
+      };
+    } else {
+      spendStatus = "unknown";
+    }
   } else if (regStatus === "matched") {
     // Spending feed healthy — use registered spent_to_date as the verified figure
     // (often $0 / normal lag on a young contract).
