@@ -148,7 +148,6 @@ property clerk
 public auction
 request for proposal
 residential property
-response > status > result
 responses due
 text/calendar;charset=utf-8
 the a an of in on for to and or with show me find list all near over under within new nyc city our your their about that this

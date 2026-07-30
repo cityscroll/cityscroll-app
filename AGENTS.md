@@ -39,6 +39,10 @@ Keep **per-item** specificity (pending vs registered vs payments; subsidy outcom
 
 When adding a new lifecycle empty state: pick class a or b with evidence, add or update the inventory row, use the matching register in English and all shipping locales, and extend the characterization test. Prefer pointing new work at the inventory over inventing a third gap register.
 
+### Lifecycle rendering coherence (notice detail)
+
+Precompute-first on the notice page: never live Checkbook proxy; never render `lifecycle_unknown_html` (“Could not reach…”) as a public data gap. Coerce `unknown` → taxonomy unmatched, or **passed** when a later stage is matched. No-PIN collapses Checkbook stages into the single class-(b) note. Format zero amounts with `lifecycleMoney` (`$0` / `—`), never literal `null`. Field-case characterization: `node --test test/lifecycle_coherence_field_cases.test.mjs`. Captures: `python3 tools/capture_lifecycle_coherence.py`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

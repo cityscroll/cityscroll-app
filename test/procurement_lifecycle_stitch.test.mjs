@@ -72,9 +72,14 @@ const sandbox = new Function(
   extractConst("CHECKBOOK_SPENDING_URL") + "\n" +
   extractConst("PASSPORT_CONTRACTS_URL") + "\n" +
   extractConst("PASSPORT_RFX_URL") + "\n" +
+  extractConst("LIFECYCLE_STAGE_ORDER") + "\n" +
   extractFn("lifecycleStageLabel") + "\n" +
   extractFn("lifecycleAmount") + "\n" +
+  extractFn("lifecycleMoney") + "\n" +
   extractFn("lifecycleSourceName") + "\n" +
+  extractFn("lifecycleGapSourceName") + "\n" +
+  extractFn("lifecycleHasLaterMatched") + "\n" +
+  extractFn("lifecyclePublicStatus") + "\n" +
   extractFn("lifecycleSourceLink") + "\n" +
   extractFn("lifecycleStageHTML") + "\n" +
   extractFn("lifecycleTimelineHTML") + "\n" +
@@ -111,10 +116,18 @@ try {
     const EXT_ATTRS = 'target="_blank" rel="noopener noreferrer"';
     const CHECKBOOK_SEARCH_URL = 'https://www.checkbooknyc.com/contract_search';
     const CHECKBOOK_SPENDING_URL = 'https://www.checkbooknyc.com/spending_search';
+    const PASSPORT_CONTRACTS_URL = 'https://a0333-passportpublic.nyc.gov/contracts.html';
+    const PASSPORT_RFX_URL = 'https://a0333-passportpublic.nyc.gov/rfx.html';
+    const LIFECYCLE_STAGE_ORDER = {solicitation:0, award:1, pending:2, registered:3, payment:4};
     function pivotA(href, text){ return '<a href="'+href+'">'+text+'</a>'; }
     ` +
     extractFn("lifecycleStageLabel") +
     extractFn("lifecycleAmount") +
+    extractFn("lifecycleMoney") +
+    extractFn("lifecycleSourceName") +
+    extractFn("lifecycleGapSourceName") +
+    extractFn("lifecycleHasLaterMatched") +
+    extractFn("lifecyclePublicStatus") +
     extractFn("lifecycleSourceLink") +
     extractFn("lifecycleStageHTML") +
     extractFn("lifecycleTimelineHTML") +
@@ -201,14 +214,17 @@ const HNTB_LIFECYCLE = {
   ],
 };
 
-test("procurement detail: HNTB lifecycle fills award + registration; pending/payment are specific gaps", () => {
+test("procurement detail: HNTB lifecycle fills award + registration; pending/payment are coherent", () => {
   const html = lifecycleTimelineHTML(HNTB_LIFECYCLE, HNTB_NOTICE);
   assert.match(html, /Contract lifecycle/);
   assert.match(html, /Award/);
   assert.match(html, /Registered contract/);
   assert.match(html, /CT184120268807929|13\.53M|\$13/);
-  assert.match(html, /Not yet shown here — pending contracts live in/);
-  assert.match(html, /Could not reach/);
+  // Stage succession: pending is passed when registered is matched (not not-yet-shown)
+  assert.match(html, /Passed — the contract has registered/);
+  assert.doesNotMatch(html, /Not yet shown here — pending contracts live in/);
+  // Transient-error register never surfaces on notice detail
+  assert.doesNotMatch(html, /Could not reach/);
   assert.doesNotMatch(html, />unknown</i);
 });
 
@@ -217,7 +233,8 @@ test("procurement detail: dollars panel uses precomputed registration, not a bla
   assert.match(html, /Follow the dollars/);
   assert.match(html, /CT184120268807929/);
   assert.match(html, /Paid to date/);
-  assert.match(html, /Could not reach|Payments lag|payment/i);
+  assert.doesNotMatch(html, /Could not reach/);
+  assert.match(html, /Payments lag|payment|spending/i);
 });
 
 // ---------------------------------------------------------------------------
