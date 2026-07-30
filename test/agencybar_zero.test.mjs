@@ -93,7 +93,7 @@ test("agencyProfileBar: a verified-absent agency states the absence but keeps th
   const html = env.agencyProfileBar(null, 3, "Tax Commission");
   assert.doesNotMatch(html, /class="big">—/);
   assert.doesNotMatch(html, /class="big">0</);
-  assert.match(html, /not published in any open dataset/);
+  assert.match(html, /does not publish this agency's awards in an open dataset/);
   assert.match(html, />3</, "open RFPs count still renders");
 });
 

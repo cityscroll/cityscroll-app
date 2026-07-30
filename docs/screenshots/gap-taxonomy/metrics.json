@@ -1,0 +1,18 @@
+{
+  "viewports": [
+    390,
+    1440
+  ],
+  "captures": [
+    "docs/screenshots/gap-taxonomy/class-a-390.png",
+    "docs/screenshots/gap-taxonomy/class-a-1440.png",
+    "docs/screenshots/gap-taxonomy/class-b-390.png",
+    "docs/screenshots/gap-taxonomy/class-b-1440.png"
+  ],
+  "sha256": {
+    "docs/screenshots/gap-taxonomy/class-a-390.png": "bac415ed2d4e54acd71f1ab483c6ef5097eb078e8f79e7ef23756dbd270578b9",
+    "docs/screenshots/gap-taxonomy/class-a-1440.png": "cbec1ba1dc4ec5467e0ca034c2bbbe273fe28e25b815d697fc2b9dc4c71e515f",
+    "docs/screenshots/gap-taxonomy/class-b-390.png": "c48fbbeaa5e8b23e416e58f4989c1314a078554b77f5ff5cf07d798fb39fb48d",
+    "docs/screenshots/gap-taxonomy/class-b-1440.png": "e82da28fbea492227ad336548d7445925c22174940668ada319955d8697d5ecf"
+  }
+}
