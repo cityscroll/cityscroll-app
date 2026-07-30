@@ -200,19 +200,22 @@ test("class b: no-PIN provenance uses not-published register with Checkbook poin
 });
 
 // ---------------------------------------------------------------------------
-// Class (b) — real subsidy unmatched IDA hearing 20260617040
+// Class (b) — subsidy unmatched when no project feed row and notice is not an IDA hearing
+// (IDA hearings now derive a City Record hearing-stage join; unmatched is for non-hearing cases.)
 // ---------------------------------------------------------------------------
 
 test("class b: unmatched subsidy project uses not-published register", () => {
   const [lifecycle] = assembleSubsidyLifecycle([{
-    request_id: "20260617040",
-    short_title: "NEW YORK CITY INDUSTRIAL DEVELOPMENT AGENCY - NOTICE OF PUBLIC HEARING - July 16th, 2026",
-    agency_name: "Industrial Development Agency",
+    request_id: "20260101099",
+    short_title: "Parks concession award — unrelated to subsidy projects",
+    agency_name: "Parks and Recreation",
+    type_of_notice_description: "Award",
   }], []);
   const html = subsidyLifecycleHTML(lifecycle, {
-    request_id: "20260617040",
-    short_title: "NEW YORK CITY INDUSTRIAL DEVELOPMENT AGENCY - NOTICE OF PUBLIC HEARING - July 16th, 2026",
+    request_id: "20260101099",
+    short_title: "Parks concession award — unrelated to subsidy projects",
   });
+  assert.equal(lifecycle.join.matched, false);
   assert.match(html, CLASS_B_PREFIX);
   assert.match(html, /linked subsidy project/);
   assert.match(html, /NYCIDA\/Build NYC|would appear/i);

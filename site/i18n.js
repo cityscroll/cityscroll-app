@@ -403,6 +403,7 @@ const STRINGS = {
     read_official_notice: "Read official notice",
     join_online: "Join online",
     participation_link: "Participation link",
+    ida_meetings_page: "IDA meetings page",
     email_in_notice: "Email listed in notice",
     map_venue: "Map venue",
     venue_label: "Venue",
