@@ -1,9 +1,11 @@
 // cityscroll.org / www.cityscroll.org parallel-serving domain: handleMirror normally
-// reverse-proxies crol-list.org (the GitHub Pages origin) byte-for-byte, with a public
-// source failover when that origin redirects back to the mirror. It must never leak the
-// incoming Host header upstream (GitHub Pages virtual-hosts by Host and 404s otherwise).
+// reverse-proxies crol-list.org (the GitHub Pages origin) byte-for-byte, with a stamped
+// Cloudflare Pages failover when that origin redirects back to the mirror. It must never
+// leak the incoming Host header upstream (GitHub Pages virtual-hosts by Host and 404s
+// otherwise).
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { handleMirror } from "../src/mirror.mjs";
 import loopRedirectFixtures from "./fixtures/mirror_redirect_regressions.json" with { type: "json" };
 
@@ -68,7 +70,43 @@ for (const { requestPath, originStatus = 301, originLocation, expectedFallbackUr
   });
 }
 
-test("handleMirror: falls back to public GitHub source when the Pages origin redirects back to CityScroll", async () => {
+test("handleMirror: follows same-origin Pages pretty-URL redirects on the stamped fallback", async () => {
+  // Cloudflare Pages returns 308 /about.html → /about; the mirror must not hand that
+  // Location to the browser (it would re-enter the Worker without a body).
+  const originalFetch = globalThis.fetch;
+  const calls = [];
+  globalThis.fetch = async (url, opts) => {
+    calls.push({ url, opts });
+    if (calls.length === 1) {
+      return Response.redirect("https://cityscroll.org/about.html", 301);
+    }
+    if (url === "https://cityscroll.pages.dev/about.html") {
+      return new Response(null, { status: 308, headers: { location: "/about" } });
+    }
+    if (url === "https://cityscroll.pages.dev/about") {
+      return new Response('<html><script src="i18n.js?v=c4609cdfa552"></script>about</html>', {
+        status: 200,
+        headers: { "Content-Type": "text/html; charset=utf-8" },
+      });
+    }
+    return new Response("unexpected", { status: 500 });
+  };
+  try {
+    const res = await handleMirror(new Request("https://cityscroll.org/about.html"));
+    assert.equal(calls.length, 3);
+    assert.equal(calls[1].url, "https://cityscroll.pages.dev/about.html");
+    assert.equal(calls[2].url, "https://cityscroll.pages.dev/about");
+    assert.equal(res.status, 200);
+    assert.equal(res.headers.get("location"), null);
+    const body = await res.text();
+    assert.match(body, /i18n\.js\?v=c4609cdfa552/);
+    assert.doesNotMatch(body, /__I18N_ASSET_VERSION__/);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("handleMirror: falls back to stamped Pages artifact when the Pages origin redirects back to CityScroll", async () => {
   const originalFetch = globalThis.fetch;
   const calls = [];
   globalThis.fetch = async (url, opts) => {
@@ -76,11 +114,11 @@ test("handleMirror: falls back to public GitHub source when the Pages origin red
     if (calls.length === 1) {
       return Response.redirect("https://cityscroll.org/about.html?x=1", 301);
     }
-    return new Response("<html>from fallback</html>", {
+    // Stamped build artifact (not source) — must not carry unsubstituted tokens.
+    return new Response('<html><script src="i18n.js?v=c4609cdfa552"></script></html>', {
       status: 200,
       headers: {
-        "Content-Type": "text/plain; charset=utf-8",
-        "Content-Security-Policy": "default-src 'none'; sandbox",
+        "Content-Type": "text/html; charset=utf-8",
       },
     });
   };
@@ -91,16 +129,28 @@ test("handleMirror: falls back to public GitHub source when the Pages origin red
     assert.equal(calls[0].opts.redirect, "manual");
     assert.equal(
       calls[1].url,
-      "https://raw.githubusercontent.com/cityscroll/crol-list/main/site/about.html?x=1",
+      "https://cityscroll.pages.dev/about.html?x=1",
     );
     assert.equal(calls[1].opts.redirect, "manual");
     assert.equal(res.status, 200);
     assert.equal(res.headers.get("content-type"), "text/html; charset=utf-8");
-    assert.equal(res.headers.get("content-security-policy"), null);
-    assert.equal(await res.text(), "<html>from fallback</html>");
+    const body = await res.text();
+    assert.match(body, /i18n\.js\?v=c4609cdfa552/);
+    assert.doesNotMatch(body, /__I18N_ASSET_VERSION__/);
   } finally {
     globalThis.fetch = originalFetch;
   }
+});
+
+test("field case: site-root restructure must not serve unsubstituted __I18N_ASSET_VERSION__ via mirror fallback", () => {
+  // Symptom (2026-07-30): live homepage shipped src="i18n.js?v=__I18N_ASSET_VERSION__"
+  // because the mirror failover used raw GitHub source after the site/ move.
+  const source = readFileSync(new URL("../src/mirror.mjs", import.meta.url), "utf8");
+  assert.match(source, /SITE_FALLBACK_ORIGIN = "https:\/\/cityscroll\.pages\.dev\/"/);
+  assert.doesNotMatch(
+    source,
+    /SITE_FALLBACK_ORIGIN = "https:\/\/raw\.githubusercontent\.com\/cityscroll\/crol-list\/main\/site\/"/,
+  );
 });
 
 test("handleMirror: keeps public repository documentation on the root-source seam", async () => {

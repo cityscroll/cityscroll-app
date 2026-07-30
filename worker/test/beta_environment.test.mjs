@@ -49,6 +49,9 @@ test("production Worker routes carry canonical and compatibility domains", () =>
     assert.match(production, new RegExp(`pattern = "${hostname.replaceAll(".", "\\.")}"`));
   }
   assert.match(production, /crons = \["0 13 \* \* \*"\]/);
+  // Production analytics writes must not depend on a secret that can be forgotten —
+  // ANALYTICS_ENVIRONMENT=production is a vars gate (field case 2026-07-30: silent drops).
+  assert.match(production, /^ANALYTICS_ENVIRONMENT = "production"$/m);
 
   const deploy = read("../../.github/workflows/deploy-worker.yml");
   assert.match(deploy, /branches: \[main\]/);

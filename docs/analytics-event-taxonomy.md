@@ -64,9 +64,10 @@ fail-soft, so analytics can never block the action being measured.
 
 Analytics writes are fail-closed behind the `ANALYTICS_ENVIRONMENT` runtime binding. The shared
 event writer emits only when that value is exactly `production`; a missing value, `development`,
-or `preview` drops the event. Production sets that binding outside this repository so code-only
-deploys retain it. Local and preview environments leave it unset and therefore drop browser and
-Worker-generated events by default. Unit tests use an in-memory Analytics Engine mock and never
+or `preview` drops the event. Production sets `ANALYTICS_ENVIRONMENT = "production"` in
+`worker/wrangler.toml` `[vars]` so a deploy cannot silently drop every event. The beta Worker
+environment overrides it to `preview`. Local `wrangler dev` still fails closed when the
+`USAGE_ANALYTICS` binding is absent. Unit tests use an in-memory Analytics Engine mock and never
 contact production.
 
 A short-lived developer exclusion token can suppress writes while someone inspects the live site.
@@ -85,7 +86,18 @@ activity, scenario interest, deep links, exports, confirmed watches, selected bo
 and daily growth. Version 1.1.0 is additive; queries include compatible 1.0.0 rows so the existing
 rolling window remains continuous.
 Queries use `sum(_sample_interval * double1)`, so adaptive sampling remains represented in totals.
-The public response is edge-cached for about 15 minutes.
+The public response is edge-cached for about 15 minutes — that is the documented latency from an
+accepted `POST /events` until `/stats` is expected to reflect it.
+
+When `ANALYTICS_READ_TOKEN` is missing, the Analytics Engine SQL path alone would report
+`unavailable_reason=not-configured`. `/stats` then reconciles Site totals against the durable
+Worker stores (`ALERT_STATE` and `NL_METER` — the same namespaces used before and after the
+cityscroll.org domain flip): page views and dual-written usage events from `POST /events`,
+searches from the NL meter, digest-link clicks and investigation shares from outcome counters,
+and day-by-day growth from the existing history series. `usage.available` is true whenever any
+of those continuous stores has counts, so a missing SQL credential or an empty Analytics Engine
+dataset cannot reset accumulated totals to zero. Analytics Engine remains the preferred source
+when configured and populated; reconciliation takes the max per field.
 
 Analytics Engine retention is three months, so these event metrics are rolling-window measures,
 not lifetime user counts. Existing longer-lived operational counters retain their own explicit

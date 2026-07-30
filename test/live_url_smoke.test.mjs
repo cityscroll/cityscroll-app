@@ -110,6 +110,27 @@ test("classifyProbe rejects empty body, non-200, and marker-less error shells", 
   );
 });
 
+test("field case: live smoke fails on unsubstituted __I18N_ASSET_VERSION__ (and any __TOKEN__)", () => {
+  // Symptom (2026-07-30): homepage served src="i18n.js?v=__I18N_ASSET_VERSION__".
+  const result = classifyProbe({
+    statusChain: [{ status: 200 }],
+    finalStatus: 200,
+    body: '<title>CityScroll</title><script src="i18n.js?v=__I18N_ASSET_VERSION__"></script>',
+    marker: CONTENT_MARKER,
+  });
+  assert.equal(result.ok, false);
+  assert.match(result.reason, /unsubstituted build placeholder __I18N_ASSET_VERSION__/);
+  assert.equal(
+    classifyProbe({
+      statusChain: [{ status: 200 }],
+      finalStatus: 200,
+      body: '<title>CityScroll</title><script src="i18n.js?v=c4609cdfa552"></script>',
+      marker: CONTENT_MARKER,
+    }).ok,
+    true,
+  );
+});
+
 test("cache-bust query is applied so stale redirect caches cannot false-green", () => {
   const busted = cacheBustUrl("https://cityscroll.org/about.html", 42);
   assert.match(busted, /_smoke=42/);

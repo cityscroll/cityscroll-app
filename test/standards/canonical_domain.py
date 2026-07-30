@@ -99,14 +99,18 @@ def main() -> None:
     mirror = (ROOT / "worker/src/mirror.mjs").read_text()
     if 'const ORIGIN = "https://crol-list.org";' not in mirror:
         failures.append("mirror: primary GitHub Pages origin must remain crol-list.org")
-    if 'const SITE_FALLBACK_ORIGIN = "https://raw.githubusercontent.com/cityscroll/crol-list/main/site/";' not in mirror:
-        failures.append("mirror: public-source failover must resolve from the site directory")
+    # Site failover must be the stamped deploy host, not raw GitHub source (source keeps
+    # merge-stable __I18N_ASSET_VERSION__ tokens). Field case 2026-07-30.
+    if 'const SITE_FALLBACK_ORIGIN = "https://cityscroll.pages.dev/";' not in mirror:
+        failures.append("mirror: site failover must use the stamped cityscroll.pages.dev artifact")
     if 'const REPOSITORY_FALLBACK_ORIGIN = "https://raw.githubusercontent.com/cityscroll/crol-list/main/";' not in mirror:
         failures.append("mirror: public repository-document failover seam is missing")
     if 'redirect: "manual"' not in mirror:
         failures.append("mirror: origin fetches must not auto-follow redirects back to CityScroll")
     if "redirectedToMirror(originResponse)" not in mirror:
         failures.append("mirror: missing explicit redirect-loop failover")
+    if "fetchFallback" not in mirror:
+        failures.append("mirror: stamped site failover must follow same-origin pretty-URL redirects")
 
     feed = (ROOT / "worker/src/lib/feed.mjs").read_text()
     if "https://cityscroll.org/#notice/" not in feed:
