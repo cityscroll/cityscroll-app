@@ -5,6 +5,21 @@
 })(typeof globalThis !== "undefined" ? globalThis : this, function () {
   "use strict";
 
+  // Stable public OASys handoff. The City redirects this URL into the OASys host.
+  const OASY_APPLY_URL = "https://www.nyc.gov/examsforjobs";
+  const DCAS_OPEN_COMPETITIVE_URL =
+    "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page";
+  const INTEREST_AREAS = [
+    "public-safety",
+    "health-care",
+    "engineering-construction",
+    "technology-science",
+    "community-social-services",
+    "administration-finance",
+    "trades-operations",
+    "other",
+  ];
+
   function statusFor(exam, today) {
     if (exam.schedule_status === "canceled") return "canceled";
     if (exam.schedule_status === "postponed") return "postponed";
@@ -12,6 +27,19 @@
     if (today < exam.application_start) return "upcoming";
     if (today <= exam.application_end) return "open";
     return "closed";
+  }
+
+  /** Whole calendar days from today to application_end (noon UTC both sides). */
+  function applicationDaysLeft(endDate, today) {
+    if (!endDate || !today) return null;
+    const end = Date.parse(`${String(endDate).slice(0, 10)}T12:00:00Z`);
+    const now = Date.parse(`${String(today).slice(0, 10)}T12:00:00Z`);
+    if (!Number.isFinite(end) || !Number.isFinite(now)) return null;
+    return Math.round((end - now) / 86400000);
+  }
+
+  function isInterestArea(value) {
+    return INTEREST_AREAS.includes(String(value || ""));
   }
 
   function filterExams(exams, filters, today) {
@@ -26,6 +54,7 @@
       if (q && !`${exam.title} ${exam.exam_number} ${exam.summary || ""}`.toLowerCase().includes(q)) return false;
       return true;
     }).sort((a, b) => {
+      // Deadline-first: open windows first, then soonest application_end.
       const rank = { open: 0, upcoming: 1, postponed: 2, unscheduled: 3, closed: 4, canceled: 5 };
       const ar = rank[statusFor(a, today)] ?? 9;
       const br = rank[statusFor(b, today)] ?? 9;
@@ -148,7 +177,12 @@
   }
 
   return {
+    OASY_APPLY_URL,
+    DCAS_OPEN_COMPETITIVE_URL,
+    INTEREST_AREAS,
     statusFor,
+    applicationDaysLeft,
+    isInterestArea,
     filterExams,
     sourceAgeDays,
     sourceIsStale,

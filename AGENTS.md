@@ -41,6 +41,12 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   already shown; explanatory guidance appears only at the concept it explains or on a dedicated
   guide surface. The content-first Staffing exemplar and captures are in
   [PR #122](https://github.com/cityscroll/crol-list/pull/122).
+- Civil-service exam cards are precomputed: `tools/build_staffing_exams.mjs` builds
+  `data/staffing_exams.json` from `data/exam_sources/`. The open-competitive schedule page is
+  authoritative for open windows (source contract `dcas-exam-notices`); live checks land in
+  `data/exam_sources/verification_receipts/`. Cards sort deadline-first; visitors declare
+  interest-area attributes in the URL (`#people?view=guide&interest=…`), never a personal
+  profile. Capture evidence: `python3 tools/capture_deadline_exam_cards.py`.
 
 ## Maintaining this file
 
