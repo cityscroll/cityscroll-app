@@ -340,6 +340,20 @@
       "machine_var": "public_ctr_data"
     },
     {
+      "id": "bid-tabulations-historical",
+      "kind": "socrata",
+      "identifier": "9k82-ys7w",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": [
+        "bid_number",
+        "bid_title",
+        "bidder_name",
+        "bid_price",
+        "bid_opening_date"
+      ]
+    },
+    {
       "id": "passport-public-rfx",
       "kind": "html",
       "identifier": "rfx.html",

@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "observed_on": "2026-07-30",
+  "observed_at_utc": "2026-07-30T14:50:00Z",
+  "source_contracts": [
+    "bid-tabulations-historical"
+  ],
+  "access_surface": {
+    "catalog": "https://data.cityofnewyork.us/d/9k82-ys7w",
+    "metadata": "https://data.cityofnewyork.us/api/views/9k82-ys7w.json",
+    "resource": "https://data.cityofnewyork.us/resource/9k82-ys7w.json"
+  },
+  "curl_verified": {
+    "metadata_http": 200,
+    "resource_sample_http": 200,
+    "resource_count_http": 200,
+    "metadata_bytes": 25189,
+    "metadata_sha256": "930d37019643b676b4fb400bb60e7178a0bd53dcc08bebf7701ac3b6ccb96155",
+    "sample_bytes": 344,
+    "sample_sha256": "e4891296deee1e7ca31d791f9e5472a8347ed619d86ed6f5a65963cb5e2df97a",
+    "resource_last_modified": "Sat, 16 Sep 2023 20:06:07 GMT",
+    "x_soda2_truth_last_modified": "Sat, 16 Sep 2023 20:06:07 GMT",
+    "x_soda2_fields": [
+      "bid_number",
+      "bid_title",
+      "bid_item_number",
+      "class_number",
+      "bid_item",
+      "bidder_name",
+      "bid_price",
+      "bid_opening_date",
+      "contact_name",
+      "print_date",
+      "print_time"
+    ]
+  },
+  "dataset": {
+    "name": "Bid Tabulations (Historical)",
+    "asset_type": "dataset",
+    "rows_updated_at_unix": 1694894786,
+    "rows_updated_at_utc": "2023-09-16T20:06:26Z",
+    "row_count": 57704,
+    "unique_bid_numbers": 945,
+    "bid_opening_min": "2016-01-05",
+    "bid_opening_max": "2021-03-24",
+    "required_fields_present": [
+      "bid_number",
+      "bid_title",
+      "bidder_name",
+      "bid_price",
+      "bid_opening_date"
+    ],
+    "pin_or_epin_column": false
+  },
+  "update_cadence": {
+    "publisher_claim": "Historical / irregular; publisher labels the view historical tabulations",
+    "product_rule": "No daily product ingest. Source is contracted as disabled after join measurement below usefulness threshold.",
+    "max_stale_days_for_schema_probe": 5000
+  },
+  "join_measurement": {
+    "city_record_modern_universe": "dg92-zbpx section_name=Procurement, pin not empty, start_date >= 2025-01-01",
+    "city_record_modern_count": 7254,
+    "city_record_historical_universe": "dg92-zbpx section_name=Procurement, pin not empty, start_date in [2016-01-01, 2022-01-01)",
+    "city_record_historical_count": 23804,
+    "strategy": "exact | agency_prefix_bid_suffix (2-4 digit agency prefix + known 7-digit bid_number). Weak title-unique and digit-containment joins rejected.",
+    "rates": {
+      "modern_notices_strict": {
+        "joined": 0,
+        "total": 7254,
+        "rate": 0.0
+      },
+      "historical_notices_strict": {
+        "joined": 2158,
+        "total": 23804,
+        "rate": 0.0907
+      },
+      "historical_857_prefix_subset": {
+        "joined": 2127,
+        "total": 3180,
+        "rate": 0.6689
+      },
+      "historical_solicitation_strict": {
+        "joined": 935,
+        "total": 8667,
+        "rate": 0.1079
+      },
+      "historical_award_strict": {
+        "joined": 1223,
+        "total": 13241,
+        "rate": 0.0924
+      }
+    },
+    "rejected_weak_contrast": {
+      "historical_with_title_unique": {
+        "joined": 1345,
+        "total": 23804,
+        "rate": 0.0565,
+        "note": "Includes cross-year title collisions; not used for product."
+      },
+      "historical_with_pin_contains": {
+        "joined": 2622,
+        "total": 23804,
+        "rate": 0.1101,
+        "note": "Loose digit containment; rejected."
+      }
+    },
+    "usefulness_threshold": 0.3,
+    "verdict": "Below usefulness threshold (~30%) on both the modern product universe (0%) and the historical overlap universe (9.07%). Ship measured reconnaissance + source contract only; do not edge-materialize bid counts."
+  },
+  "field_cases": {
+    "joined_agency_prefix_pin": "8571600131",
+    "joined_agency_prefix_bid_number": "1600131",
+    "joined_agency_prefix_bidder_count": 9,
+    "joined_exact_pin": "1600265",
+    "joined_exact_bid_number": "1600265",
+    "unjoinable_modern_pin": "81626W0043001",
+    "rejected_title_unique_false_positive_pin": "8571500516"
+  }
+}

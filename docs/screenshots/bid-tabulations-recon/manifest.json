@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "observed_on": "2026-07-30",
+  "source_contract": "bid-tabulations-historical",
+  "dataset_id": "9k82-ys7w",
+  "files": [
+    {
+      "name": "joined-historical-390.png",
+      "bytes": 58998,
+      "sha256": "50035a238680c323b65823d61697f9e073b64c81258b060501db97f6ce83e64b",
+      "viewport": [
+        390,
+        844
+      ],
+      "stem": "joined-historical"
+    },
+    {
+      "name": "joined-historical-1440.png",
+      "bytes": 69932,
+      "sha256": "0042e306e9b0655f9cfa30ea11bd8e6a0b3cc20603b81b3e9b3e5eeb90b404a0",
+      "viewport": [
+        1440,
+        900
+      ],
+      "stem": "joined-historical"
+    },
+    {
+      "name": "unjoined-modern-gap-390.png",
+      "bytes": 65341,
+      "sha256": "71e9ba0804383157587a79f2ca036fa352a5a405af7b358e1cc618042fbee8ad",
+      "viewport": [
+        390,
+        844
+      ],
+      "stem": "unjoined-modern-gap"
+    },
+    {
+      "name": "unjoined-modern-gap-1440.png",
+      "bytes": 73732,
+      "sha256": "185e564a52e096bc3c51b1631f51ccf5aceef4a49903cdf3a02dfe2bcfd09a3f",
+      "viewport": [
+        1440,
+        900
+      ],
+      "stem": "unjoined-modern-gap"
+    },
+    {
+      "name": "measurement-stop-390.png",
+      "bytes": 80265,
+      "sha256": "4ada8bab6a58309d0612a35769e45346f245c7b4ab2e36a2673eb3a72f55ce24",
+      "viewport": [
+        390,
+        844
+      ],
+      "stem": "measurement-stop"
+    },
+    {
+      "name": "measurement-stop-1440.png",
+      "bytes": 89883,
+      "sha256": "20208bc3e6dade096dd939181a837fd8e6b1bca02adfc927624a282df91d5353",
+      "viewport": [
+        1440,
+        900
+      ],
+      "stem": "measurement-stop"
+    }
+  ]
+}
