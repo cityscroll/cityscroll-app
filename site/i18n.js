@@ -971,9 +971,9 @@ const STRINGS = {
     subsidy_stage_unmatched_html: "Not yet shown here — {stage} records live in {source}.",
     // Age-aware gaps: too_soon vs not_published vs unavailable (fetch). Temporal sibling of
     // paid / verified_zero / unavailable on the Checkbook payment path.
-    subsidy_stage_too_soon_html: "Hearing was {date} — {stage} records typically appear within about {weeks} weeks. Check back; too recent to treat as a permanent gap.",
+    subsidy_stage_too_soon_html: "Hearing was {date} — {stage} records typically appear within about {weeks} weeks. Check back. Too recent to treat as a permanent gap.",
     subsidy_stage_not_published_html: "The city does not publish this {stage} record on {source} — it would appear there if released.",
-    subsidy_join_too_soon_html: "Hearing was {date} — IDA project records for “{title}” usually appear within about {weeks} weeks of the hearing. Check back; too recent to treat as a permanent gap.",
+    subsidy_join_too_soon_html: "Hearing was {date} — IDA project records for “{title}” usually appear within about {weeks} weeks of the hearing. Check back. Too recent to treat as a permanent gap.",
     subsidy_source_build_nyc: "Build NYC and NYC Industrial Development Agency",
     subsidy_source_unavailable_html: "Could not reach {source} to check the subsidy timeline for this notice.",
     subsidy_unmatched_html: "The city does not publish a linked subsidy project for “{title}” — {reason}",
