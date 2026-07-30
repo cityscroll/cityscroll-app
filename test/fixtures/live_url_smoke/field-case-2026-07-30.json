@@ -1,0 +1,16 @@
+{
+  "id": "cityscroll-redirect-loop-2026-07-30",
+  "description": "On 2026-07-30 the public site at cityscroll.org served ERR_TOO_MANY_REDIRECTS while the deploy pipeline reported success. A GitHub Pages CNAME / domain-cutover misconfiguration produced a 301 loop between cityscroll.org and crol-list.org that Fastly absorbed then exposed. The post-deploy live-URL smoke gate did not exist; this fixture pins that failure shape so the gate cannot regress to a silent green deploy.",
+  "observed": "ERR_TOO_MANY_REDIRECTS",
+  "hosts": ["https://cityscroll.org/", "https://crol-list.org/"],
+  "redirect_loop": {
+    "https://cityscroll.org/": {
+      "status": 301,
+      "location": "https://crol-list.org/"
+    },
+    "https://crol-list.org/": {
+      "status": 301,
+      "location": "https://cityscroll.org/"
+    }
+  }
+}
