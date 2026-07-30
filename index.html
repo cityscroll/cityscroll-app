@@ -234,6 +234,11 @@
   .tag.amt{background:var(--paper-2);color:var(--ink-soft)}
   .tag.asset{background:var(--paper-2);color:var(--ink-soft)}
   .tag.renewal{background:var(--paper-2);color:var(--ink-soft)}
+  /* Rule-lifecycle status chips link to the official comment/adoption page. Comment-open
+     is the actionable moment, so it reuses the hot/soon/open urgency ladder; settled
+     stages read as quiet ink (color is reserved for what needs acting on). */
+  a.tag{cursor:pointer;text-decoration:none}
+  a.tag:hover{box-shadow:0 0 0 1px var(--rule-strong)}
   a.pivot{color:inherit;text-decoration:none;border-bottom:1px dotted var(--rule-strong)}
   a.pivot:hover{color:var(--oxblood);border-bottom-color:var(--oxblood)}
   .facetlbl{font:600 11px/2.4 ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-inline-end:4px}
@@ -4177,6 +4182,28 @@ function ruleLocationTools(){
   if(!ruleLocationToolsPromise) ruleLocationToolsPromise=import("./rule_location.mjs");
   return ruleLocationToolsPromise;
 }
+// Precompute-first rule-lifecycle enrichment: the /rules read model (KV key
+// rules:materialized:v1) joins City Record notices to NYC Rules official comment/adoption
+// pages and classifies a lifecycle stage. We consume it here — no live upstream NYC Rules
+// fetch from the client — and join to the live City Record rows by request_id.
+let rulesViewPromise=null;
+function loadRulesView(){
+  if(rulesViewPromise) return rulesViewPromise;
+  rulesViewPromise=workerFetch("/rules",{},12000).then(r=>r.ok?r.json():null).catch(()=>null);
+  return rulesViewPromise;
+}
+// Map request_id -> lifecycle record (stage + nyc_rules links/dates). Covers matched
+// notices (classified stage) and unmatched City Record notices (stage "proposed"); the
+// NYC-Rules-only entries carry request_id:null and are skipped (they have no City Record
+// row to enrich here).
+function buildRulesStageMap(view){
+  const m=new Map();
+  if(!view || !Array.isArray(view.rules)) return m;
+  for(const rec of view.rules){
+    if(rec.request_id) m.set(rec.request_id, rec);
+  }
+  return m;
+}
 
 async function loadSection(key){
   const cfg=SECTIONS[key];
@@ -4217,6 +4244,13 @@ async function loadSection(key){
           ? normalizeHearingRow(row).affected_area : null;
         row._ruleLocation=tools.ruleLocationFromRow(row,{hearingArea});
       });
+      // Attach precomputed lifecycle stage from the /rules read model (best-effort: a
+      // stale/unreachable read model just leaves _ruleStage unset and no chip renders —
+      // the row still shows as a City Record notice).
+      try{
+        const stageMap=buildRulesStageMap(await loadRulesView());
+        rows.forEach(row=>{ const rec=stageMap.get(row.request_id); if(rec) row._ruleStage=rec; });
+      }catch(e){}
       if(stale()) return;
     }
     feedRows[key]={}; rows.forEach(r=>feedRows[key][r.request_id]=r);
@@ -4510,6 +4544,58 @@ function rulePlaceChips(location){
   return `<div class="faddr">${[...new Set(values)].map(value=>`<span class="tag place">${escUiHtml(value)}</span>`).join(" ")}</div>`;
 }
 
+// Rule-lifecycle status chip for the Rules lens. Consumes the precomputed stage from the
+// /rules read model (r._ruleStage, joined by request_id in loadSection). Comment-open is
+// the actionable moment: it reuses the site's hot/soon/open urgency ladder and links the
+// official comment page; settled stages read as quiet ink (color is reserved for what
+// needs acting on). Returns "" when there is no stage — the row still shows as a City
+// Record notice, never a hollow chip.
+const RULE_STAGE_CFG = {
+  "proposed":       { key: "rule_stage_proposed",       cls: "asset",  dateField: null },
+  "comment-open":   { key: "rule_stage_comment_open",   cls: "urgency",dateField: "comment_by_date" },
+  "comment-closed": { key: "rule_stage_comment_closed", cls: "closed", dateField: null },
+  "hearing":        { key: "rule_stage_hearing",        cls: "open",   dateField: "hearing_date" },
+  "adopted":        { key: "rule_stage_adopted",        cls: "asset",  dateField: "adoption_date" },
+  "effective":      { key: "rule_stage_effective",      cls: "asset",  dateField: "adoption_date" },
+  "unknown":        { key: "rule_stage_unknown",        cls: "closed", dateField: null },
+};
+// The read model classifies stage at materialization time; correct the single most
+// time-sensitive case (comment-open whose deadline has actually passed) against the user's
+// clock so the chip and the comment action never invite a comment on a closed period.
+function ruleDisplayStage(rec){
+  if(rec && rec.stage==="comment-open" && rec.nyc_rules && rec.nyc_rules.comment_by_date
+     && daysLeft(rec.nyc_rules.comment_by_date) < 0) return "comment-closed";
+  return rec ? rec.stage : null;
+}
+function ruleStageChip(rec){
+  if(!rec) return "";
+  const stage=ruleDisplayStage(rec);
+  const cfg=RULE_STAGE_CFG[stage] || RULE_STAGE_CFG.unknown;
+  const nr=rec.nyc_rules||null;
+  let cls=cfg.cls;
+  if(cls==="urgency"){
+    const dl=nr?daysLeft(nr[cfg.dateField]):null;
+    cls=(dl!==null && dl>=0 && dl<=3)?"hot":(dl!==null && dl>=0 && dl<=14)?"soon":"open";
+  }
+  const dateVal=(cfg.dateField && nr && nr[cfg.dateField])?nr[cfg.dateField]:null;
+  const label=dateVal?t(cfg.key,{date:fdt(dateVal)}):t(cfg.key);
+  // Official page: comment page while comments are open, the rule/adoption record otherwise.
+  const href=nr?(stage==="comment-open"?(nr.comment_url||nr.url||null):(nr.url||null)):null;
+  return href
+    ? `<a class="tag ${cls}" href="${escUiHtml(href)}" ${EXT_ATTRS}>${label}${extSR()}</a>`
+    : `<span class="tag ${cls}">${label}</span>`;
+}
+// Primary call-to-action for comment-open rules: links the official comment page with the
+// deadline up front. Mirrors the site's contextual action-button emphasis (join_online etc.).
+function ruleCommentAction(rec){
+  if(ruleDisplayStage(rec)!=="comment-open") return "";
+  const nr=rec && rec.nyc_rules;
+  if(!nr || !nr.comment_by_date) return "";
+  const href=nr.comment_url||nr.url;
+  if(!href) return "";
+  return `<a class="act" href="${escUiHtml(href)}" ${EXT_ATTRS}>${t("rule_comment_btn",{date:fdt(nr.comment_by_date)})}${extSR()}</a>`;
+}
+
 async function loadSectionAgencies(key){
   const sel=$("#"+key+"agency"); if(!sel) return;
   try{
@@ -4532,7 +4618,10 @@ function feedCardHTML(key, r, terms){
   const addr=propertyAddress||(cfg.showAddr&&goodAddr(r.street_address_1)?cleanText(r.street_address_1):"");
   const scope=cleanText(r.additional_description_1).slice(0,200);
   const title=cleanText(r.short_title), mev=matchEvidence(title, matchText(r), terms);
-  let acts=`<a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("city_record_link")}${extSR()}</a>`;
+  // Comment-open is the actionable moment: lead with the official comment-page CTA so the
+  // primary action sits first in the row (matches the hearing-card join/participation lead).
+  const ruleAct=key==="rules"?ruleCommentAction(r._ruleStage):"";
+  let acts=(ruleAct?ruleAct:"")+`<a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("city_record_link")}${extSR()}</a>`;
   acts+=`<button class="act" type="button" data-link="${r.request_id}">${t("copy_link_btn")}</button>`;
   if(ev) acts+=`<button class="act" type="button" data-ev="${key}:${r.request_id}">${t("add_date_btn",{date:fdt(ev)})}</button>`;
   const geometry=key==="property"&&r._location?.geometry;
@@ -4541,9 +4630,12 @@ function feedCardHTML(key, r, terms){
   if(addr && key==="property") acts+=`<button class="act" type="button" data-demo="${r.request_id}">${t("still_standing_btn")}</button>`;
   const pbadges = key==="property" && (r._asset || r._badge)
     ? `<div>${r._asset?`<span class="tag asset">${ASSET_LABEL[r._asset]?t(ASSET_LABEL[r._asset]):""}</span>`:""}${r._badge?`<span class="tag amt">${r._badge}</span>`:""}</div>` : "";
+  const rstage=key==="rules"?ruleStageChip(r._ruleStage):"";
+  const rbadges=rstage?`<div>${rstage}</div>`:"";
   return `<div class="fcard">
       <div class="ftype">${r.type_of_notice_description||""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}${ev?` · <b style="color:var(--ink)">${fdt(ev)}</b>${eventTag(ev)}`:""}</div>
       ${pbadges}
+      ${rbadges}
       <div class="ftitle">${title ? digTitleHTML(title, mev) : t("untitled")}</div>
       ${key==="property"?propertyPlaceChips(r._location):addr?`<div class="faddr">${addr}</div>`:""}
       ${key==="rules"?rulePlaceChips(r._ruleLocation):""}

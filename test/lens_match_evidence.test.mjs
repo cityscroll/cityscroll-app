@@ -101,6 +101,11 @@ const {
   extractDecl("ASSET_BUCKETS") +
   extractDecl("ASSET_LABEL") +
   extractFn("rulePlaceChips") +
+  extractDecl("escUiHtml") +
+  extractDecl("RULE_STAGE_CFG") +
+  extractFn("ruleDisplayStage") +
+  extractFn("ruleStageChip") +
+  extractFn("ruleCommentAction") +
   extractFn("feedCardHTML") +
   extractFn("roleRowHTML") +
   extractFn("personRowHTML") +
