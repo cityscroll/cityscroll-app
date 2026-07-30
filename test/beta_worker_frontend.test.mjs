@@ -18,7 +18,7 @@ test("interactive pages honor the deploy-time beta API origin without production
     assert.match(source, /window\.CROL_API_ORIGIN \|\| "https:\/\/api\.cityscroll\.org"/, page);
     assert.match(
       source,
-      /window\.CROL_API_ORIGIN \|\| "https:\/\/crol-worker\.crol-worker\.workers\.dev"/,
+      /window\.CROL_API_FALLBACK_ORIGIN \|\| "https:\/\/crol-worker\.crol-worker\.workers\.dev"/,
       page,
     );
   }
