@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "observed_on": "2026-07-30",
+  "observed_at_utc": "2026-07-30T14:10:00Z",
+  "source_contracts": [
+    "passport-public-contracts",
+    "passport-public-rfx"
+  ],
+  "access_surface": {
+    "portal_home": "https://a0333-passportpublic.nyc.gov/",
+    "portal_contracts": "https://a0333-passportpublic.nyc.gov/contracts.html",
+    "portal_rfx": "https://a0333-passportpublic.nyc.gov/rfx.html",
+    "machine_contracts": "https://a0333-passportpublic.nyc.gov/dataJs/contractData.js",
+    "machine_rfx": "https://a0333-passportpublic.nyc.gov/dataJs/rfxData.js",
+    "open_data_socrata": "No dedicated PASSPort contracts/RFx dataset on data.cityofnewyork.us (catalog search 2026-07-30 returned only peripheral vendor/certification sets)."
+  },
+  "machine_path": {
+    "format": "JavaScript array dumps served from S3/CloudFront static site",
+    "contracts_var": "public_ctr_data",
+    "rfx_var": "public_rfx_data",
+    "contracts_http": 200,
+    "rfx_http": 200,
+    "contracts_bytes": 24521970,
+    "rfx_bytes": 3429157,
+    "contracts_last_modified": "Thu, 30 Jul 2026 05:37:12 GMT",
+    "rfx_last_modified": "Thu, 30 Jul 2026 05:37:13 GMT",
+    "contracts_sha256": "3767afb06bbb502002b8c1d20b05ef34f777c20b2755c922a8d1cf22394eead4",
+    "rfx_sha256": "6f805ba1178ab6726499097a7f99f199430fef5989fa890970ba8d30b9261f76",
+    "contracts_rows_parsed": 61451,
+    "rfx_rows_parsed": 12005
+  },
+  "update_cadence": {
+    "publisher_claim": "Portal shows ongoing refresh; dataJs Last-Modified advanced on observation morning (UTC).",
+    "product_rule": "Daily worker scheduled ingest rebuilds D1 passport_contracts and passport_rfx from dataJs dumps.",
+    "max_stale_days": 3
+  },
+  "terms": {
+    "portal_owner": "NYC Mayor's Office of Contract Services (MOCS)",
+    "public_page": true,
+    "notes": "Public portal; no API key. Static dumps are intended for the portal DataTables UI and are reused as the stable machine path in lieu of a Socrata dataset."
+  },
+  "join_measurement": {
+    "city_record_universe": "dg92-zbpx section_name=Procurement, pin not empty, start_date >= 2025-01-01",
+    "city_record_count": 7254,
+    "by_type": { "Award": 5170, "Solicitation": 1470, "Intent to Award": 614 },
+    "strategy": "exact | pin_strip_suffix | pin_prefix_of_epin | epin_prefix_of_pin (EPIN length >= 10; remainder digits or letter+2-4 digits). Weak shared-prefix joins rejected.",
+    "rates": {
+      "either_contracts_or_rfx": { "joined": 5660, "total": 7254, "rate": 0.78 },
+      "award_to_contracts": { "joined": 4581, "total": 5170, "rate": 0.886 },
+      "solicitation_to_rfx": { "joined": 653, "total": 1470, "rate": 0.444 },
+      "all_notices_to_contracts": { "joined": 5368, "total": 7254, "rate": 0.74 },
+      "all_notices_to_rfx": { "joined": 2526, "total": 7254, "rate": 0.348 }
+    },
+    "verdict": "Above usefulness threshold (~30%). Ship edge materialization + strict join."
+  },
+  "field_cases": {
+    "joined_award_pin": "81626W0043001",
+    "joined_solicitation_pin": "81026B0003",
+    "unjoinable_award_pin": "26026N0011044",
+    "unjoinable_solicitation_pin": "TGI-RED-AdaptiveReus",
+    "pending_status_example_epin": "26026O0002001R001"
+  }
+}

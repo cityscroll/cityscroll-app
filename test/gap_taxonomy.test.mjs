@@ -63,9 +63,12 @@ const helpers = new Function(
   const EXT_ATTRS = 'target="_blank" rel="noopener noreferrer"';
   const CHECKBOOK_SEARCH_URL = 'https://www.checkbooknyc.com/contract_search';
   const CHECKBOOK_SPENDING_URL = 'https://www.checkbooknyc.com/spending_search';
+  const PASSPORT_CONTRACTS_URL = 'https://a0333-passportpublic.nyc.gov/contracts.html';
+  const PASSPORT_RFX_URL = 'https://a0333-passportpublic.nyc.gov/rfx.html';
   ` +
   extractFn("lifecycleStageLabel") +
   extractFn("lifecycleAmount") +
+  extractFn("lifecycleSourceName") +
   extractFn("lifecycleSourceLink") +
   extractFn("lifecycleStageHTML") +
   extractFn("lifecycleTimelineHTML") +

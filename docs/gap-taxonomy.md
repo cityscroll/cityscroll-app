@@ -41,7 +41,7 @@ The executable inventory is [`site/data/gap_taxonomy.json`](../site/data/gap_tax
 
 Ordered for dispatch. Full rows (effort, join risk, value) live in `site/data/gap_taxonomy.json` → `ranked_ingest_list`.
 
-1. **PASSPort Public contracts + solicitations** — pending/pre-registration and RFx detail citywide; high effort; high join risk (EPIN↔PIN).
+1. **PASSPort Public contracts + solicitations** — pending/pre-registration and RFx detail citywide. Machine path is the portal `dataJs` dumps (no Socrata id). Measured strict EPIN↔PIN join (2026-07-30): **78%** of PIN-bearing Procurement notices since 2025-01-01 join either contracts or RFx; awards **88.6%** to contracts; solicitations **44.4%** to RFx.
 2. **DCAS exam outcomes on exam cards** — data already built; low effort; medium join risk on `exam_number`.
 3. **Open Data Current Solicitations `3khw-qi8f`** — low effort Socrata enrichment for OCP.
 4. **Open Data Recent Contract Awards `qyyg-4tf5`** — low effort OCP award side-car.
@@ -53,7 +53,7 @@ Ordered for dispatch. Full rows (effort, join risk, value) live in `site/data/ga
 ## Verification notes (2026-07-30)
 
 - Open Data views `3khw-qi8f`, `qyyg-4tf5`, `9k82-ys7w`, `72mk-a8z7` returned live metadata.
-- PASSPort Public `/contracts.html` and `/rfx.html` returned HTTP 200.
+- PASSPort Public `/contracts.html` and `/rfx.html` returned HTTP 200; machine dumps `dataJs/contractData.js` (~24.5 MB) and `dataJs/rfxData.js` (~3.3 MB) returned HTTP 200 with same-day Last-Modified (see `site/data/passport_sources/verification_receipts/`).
 - City Record type counts since 2025-01-01: Award ~5,173; Solicitation ~1,550; Public Hearings ~1,679; Intent to Award ~703.
 - EDC document portal may block unattended fetch; it remains the named HTML source for subsidy projects.
 

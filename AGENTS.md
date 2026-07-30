@@ -4,6 +4,19 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 
 - Add durable project-specific notes here as they are discovered through real work.
 
+
+## PASSPort Public machine path
+
+PASSPort Public has **no Socrata dataset** for contracts/RFx. Stable machine dumps:
+
+- `https://a0333-passportpublic.nyc.gov/dataJs/contractData.js` (`public_ctr_data`)
+- `https://a0333-passportpublic.nyc.gov/dataJs/rfxData.js` (`public_rfx_data`)
+
+Edge materialization: `worker/src/passport.mjs` → D1 `passport_contracts` / `passport_rfx`.
+Strict EPIN↔PIN join: `worker/src/lib/passport_join.mjs`. Measured rates live in
+`site/data/source_contracts.json` (`join_measurement`) and
+`site/data/passport_sources/verification_receipts/`.
+
 ## Content and testing — lifecycle gap taxonomy
 
 **Standing contract:** every absent-data state on a lifecycle surface must tell the reader *which kind of gap* it is. Never ship an undifferentiated “no record” / “unknown” / blank slot when the product has decided a field is missing.
