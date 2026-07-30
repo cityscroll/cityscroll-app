@@ -39,6 +39,9 @@ export const KEY_ALIASES = {
   event_item_id: "event_item_id",
   project_id: "project_id",
   ulurp_numbers: "ulurp_numbers",
+  ulurp_number: "ulurp_numbers",
+  ulurp_number_s: "ulurp_numbers",
+  ulurp_application_number: "ulurp_numbers",
   job_number: "job_number",
   bid_number: "bid_number",
   agency: "agency",
@@ -71,6 +74,8 @@ export const SEED_SOURCE_JOIN_KEYS = {
   "bid-tabulations-historical": ["bid_number", "PIN"],
   "zap-api-outcomes": ["project_id", "ulurp_numbers"],
   "doing-business-entities": ["organization_name", "vendor_name"],
+  "ulurp-recommendations": ["ulurp_numbers"],
+  "ulurp-recommendation-pdfs": ["ulurp_numbers"],
 };
 
 /**
@@ -235,6 +240,14 @@ export const PREDICTED_JOIN_GRADES = {
     grade: "medium",
     note: "Pre-recon estimate: organization name normalization against award vendor_name.",
   },
+  "ulurp-recommendations": {
+    grade: "high-risk",
+    note: "Pre-recon estimate: borough-scoped historical BP recommendations; tiny absolute N vs citywide ZAP ULURP projects.",
+  },
+  "ulurp-recommendation-pdfs": {
+    grade: "high-risk",
+    note: "Pre-recon estimate: small historical PDF companion; not a citywide live letter feed.",
+  },
 };
 
 export function loadGapTaxonomy(path = GAP_TAXONOMY_PATH) {
@@ -313,6 +326,10 @@ function pickPrimaryRate(rates) {
     // Doing Business vendor identity enrichment
     "modern_awards_stem_notices",
     "modern_awards_stem_vendors",
+    // ULURP recommendations recon (disabled; ZAP-side either-source headline)
+    "zap_ulurp_numbered_either",
+    "zap_ulurp_numbered_recommendations",
+    "zap_ulurp_numbered_pdfs",
     "ulurp_complete_useful_outcome",
     "mixed_sample_any_documents",
     "complete_sample_dob_any_filing",
@@ -831,6 +848,26 @@ export function rerankIngestList(registry, sources, candidates) {
           valueScore += 8;
         } else if (!/measured|usefulness/i.test(String(join_risk || ""))) {
           join_risk = `Medium — measured stem join ${Math.round(dbRate * 1000) / 10}%; below usefulness for vendor enrichment.`;
+        }
+      }
+      if (realizedRate != null && realizedRate < 0.3) valueScore -= 15;
+    }
+
+    // ULURP Borough President recommendations recon (disabled below usefulness)
+    if (
+      blob.includes("ulurp recommendation")
+      || blob.includes("4j6i-9rmr")
+      || blob.includes("gt5i-dmde")
+      || blob.includes("borough president")
+    ) {
+      const ulurp = sources.find((s) => s.id === "ulurp-recommendations")
+        || sources.find((s) => s.id === "ulurp-recommendation-pdfs");
+      const ulurpRate = ulurp?.join_coverage?.realized?.rate;
+      if (ulurpRate != null) {
+        realizedRate = ulurpRate;
+        predictedGrade = ulurp?.join_coverage?.predicted?.grade || "high-risk";
+        if (!/measured|0%|usefulness/i.test(String(join_risk || ""))) {
+          join_risk = `High — measured strict ULURP-token join ${Math.round(ulurpRate * 1000) / 10}% on ZAP projects with ulurp_numbers; below usefulness threshold.`;
         }
       }
       if (realizedRate != null && realizedRate < 0.3) valueScore -= 15;
