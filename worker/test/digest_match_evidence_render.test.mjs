@@ -112,10 +112,13 @@ test("an amount-only watch (no keywords) renders the notice with no evidence chr
 test("the education watch's notice link carries its own filter as a ?w= param, decodable back to {lens, filter}", async () => {
   const sentEmails = await runOneMoneySub({ keywords: ["education"] });
   const html = sentEmails[0].html;
-  const m = html.match(/href="(https:\/\/api\.cityscroll\.org\/r\/rfp\/20260701099\?w=[^"]+)"/);
-  assert.ok(m, "no ?w= link found in the sent digest HTML");
+  // Digest links may also carry a pins-scoped session token as s= (order-independent).
+  const m = html.match(/href="(https:\/\/api\.cityscroll\.org\/r\/rfp\/20260701099\?[^"]+)"/);
+  assert.ok(m, "no /r notice link found in the sent digest HTML");
   const url = new URL(m[1].replace(/&amp;/g, "&"));
   const w = url.searchParams.get("w");
+  assert.ok(w, "expected ?w= watch filter on the notice link");
+  assert.ok(url.searchParams.get("s"), "expected pins-scoped session token on the notice link");
   assert.deepEqual(JSON.parse(w), { lens: "money", filter: { keywords: ["education"] } });
 });
 
@@ -128,8 +131,8 @@ test("a multi-filter watch (keywords + agency + amount) carries every field in i
     keywords: ["education"], agency: "Office of the Comptroller", minAmount: 100000,
   });
   const html = sentEmails[0].html;
-  const m = html.match(/href="(https:\/\/api\.cityscroll\.org\/r\/award\/20260701099\?w=[^"]+)"/);
-  assert.ok(m, "no ?w= link found in the sent digest HTML");
+  const m = html.match(/href="(https:\/\/api\.cityscroll\.org\/r\/award\/20260701099\?[^"]+)"/);
+  assert.ok(m, "no /r notice link found in the sent digest HTML");
   const w = new URL(m[1].replace(/&amp;/g, "&")).searchParams.get("w");
   assert.deepEqual(JSON.parse(w), {
     lens: "money",
@@ -140,7 +143,7 @@ test("a multi-filter watch (keywords + agency + amount) carries every field in i
 test("an amount-only watch (no keywords) still carries its filter — minAmount alone is real signal", async () => {
   const sentEmails = await runOneMoneySub({ minAmount: 1000000 });
   const html = sentEmails[0].html;
-  const m = html.match(/href="(https:\/\/api\.cityscroll\.org\/r\/award\/20260701099\?w=[^"]+)"/);
+  const m = html.match(/href="(https:\/\/api\.cityscroll\.org\/r\/award\/20260701099\?[^"]+)"/);
   assert.ok(m);
   const w = new URL(m[1].replace(/&amp;/g, "&")).searchParams.get("w");
   assert.deepEqual(JSON.parse(w), { lens: "money", filter: { minAmount: 1000000 } });

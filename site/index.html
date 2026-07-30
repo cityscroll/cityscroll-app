@@ -676,6 +676,12 @@
   .lang-btn{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;padding:3px 10px;min-height:32px;display:inline-flex;align-items:center;border-radius:12px;border:1px solid var(--rule-strong);background:transparent;color:var(--muted);cursor:pointer}
   .lang-btn[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
   .lang-notice{font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);text-align:center;margin-block-start:4px;padding-inline:22px}
+  /* Magic-link session indicator: quiet, dismissible ("not you?" signs out). */
+  .session-banner{display:none;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:8px auto 0;max-width:720px;padding:8px 14px;background:#efe8d8;border:1px solid var(--rule);border-radius:8px;font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft);text-align:center}
+  .session-banner[data-open="true"]{display:flex}
+  .session-banner button{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;padding:6px 10px;min-height:32px;border-radius:6px;border:1px solid var(--rule-strong);background:var(--card);color:var(--ink);cursor:pointer}
+  .session-banner button:hover{border-color:var(--ink)}
+  .session-banner button.session-dismiss{border-color:transparent;background:transparent;color:var(--muted);text-decoration:underline}
 
   @media print{
     @page{margin:14mm}
@@ -764,6 +770,11 @@
       <button class="lang-btn" data-lang="ur" aria-pressed="false"><span lang="ur" dir="rtl">اردو</span></button>
     </div>
     <div id="langNotice" class="lang-notice" hidden></div>
+    <div id="sessionBanner" class="session-banner" role="status" aria-live="polite" data-open="false" hidden>
+      <span id="sessionBannerText" data-i18n="session_signed_in">Signed in via your email link — your pins can follow you on this device.</span>
+      <button type="button" id="sessionNotYou" class="session-dismiss" data-i18n="session_not_you">Not you?</button>
+      <button type="button" id="sessionDismiss" data-i18n="session_dismiss">Dismiss</button>
+    </div>
     <div class="cr-rule cr-rule--bottom"></div>
   </div>
 </header>
@@ -1344,11 +1355,20 @@ const API = window.CROL_API_ORIGIN || "https://api.cityscroll.org";
 const API_FALLBACK = window.CROL_API_FALLBACK_ORIGIN || "https://crol-worker.crol-worker.workers.dev";
 let apiBase = API;
 async function workerFetch(path, opts, timeoutMs){
+  // Session cookie lives on the API host. Credentialed calls are same-site
+  // (cityscroll.org → api.cityscroll.org) and only needed for /session + /pins.
+  const needsCreds = path === "/session" || path === "/session/logout" || path === "/pins"
+    || path.startsWith("/session?") || path.startsWith("/pins?");
+  const withCreds = (o) => {
+    const base = Object.assign({}, o || {});
+    if (needsCreds) base.credentials = "include";
+    return base;
+  };
   const attempt = async (base) => {
-    if(!timeoutMs) return fetch(base + path, opts);
+    if(!timeoutMs) return fetch(base + path, withCreds(opts));
     const ctl = new AbortController();
     const t = setTimeout(()=>ctl.abort(), timeoutMs);
-    try{ return await fetch(base + path, {...(opts||{}), signal: ctl.signal}); }
+    try{ return await fetch(base + path, {...withCreds(opts), signal: ctl.signal}); }
     finally{ clearTimeout(t); }
   };
   try{ return await attempt(apiBase); }
@@ -7189,13 +7209,96 @@ async function showVendor(name, initialTab){
 /* ===================== INVESTIGATION WORKSPACE (#investigation) =====================
    Aleph's Investigations, account-free: pin notices/entities/matters into a named local
    workspace (localStorage — nothing leaves the device), annotate, export citation-grade
-   CSV/JSON, print a dossier, or share a read-only snapshot via the worker's /inv store. */
+   CSV/JSON, print a dossier, or share a read-only snapshot via the worker's /inv store.
+   Recognized email sessions (magic-link from digests) also sync pins server-side so
+   phone and laptop share the same list; anonymous behavior is unchanged. */
 const INVKEY = "crd_invs_v1";
-function invStore(){
-  try{ const s = JSON.parse(localStorage.getItem(INVKEY)||"null"); if(s && s.invs && s.invs[s.current]) return s; }catch(e){}
+let invSessionRecognized = false;
+let invServerHydrated = false;
+let invSyncTimer = null;
+function invDefaultStore(){
   return {current:"inv1", invs:{inv1:{name:t("inv_default_name"), created:new Date().toISOString().slice(0,10), items:[]}}};
 }
-function invSave(s){ try{ localStorage.setItem(INVKEY, JSON.stringify(s)); }catch(e){} }
+function invStore(){
+  try{ const s = JSON.parse(localStorage.getItem(INVKEY)||"null"); if(s && s.invs && s.invs[s.current]) return s; }catch(e){}
+  return invDefaultStore();
+}
+function invSave(s){
+  try{ localStorage.setItem(INVKEY, JSON.stringify(s)); }catch(e){}
+  // Recognized sessions write through to the server (debounced). Failures keep local.
+  if(invSessionRecognized) invScheduleServerSave(s);
+}
+function invItemKey(it){ return String(it && it.t || "") + "|" + String(it && it.id || ""); }
+function invMergeItems(a, b){
+  const map = new Map();
+  for(const it of [...(a||[]), ...(b||[])]){
+    if(!it || !it.id || !it.t) continue;
+    const k = invItemKey(it);
+    const prev = map.get(k);
+    if(!prev){ map.set(k, {...it}); continue; }
+    map.set(k, {
+      ...prev,
+      title: (it.title||"").length >= (prev.title||"").length ? it.title : prev.title,
+      meta: (it.meta||"").length >= (prev.meta||"").length ? it.meta : prev.meta,
+      note: (it.note||"").length >= (prev.note||"").length ? it.note : prev.note,
+      added: prev.added && it.added ? (prev.added <= it.added ? prev.added : it.added) : (prev.added || it.added),
+    });
+  }
+  return [...map.values()];
+}
+/** Union two inv stores (dedupe items by type+id). Pure; used for first-session merge. */
+function invMergeStores(local, server){
+  if(!local && !server) return invDefaultStore();
+  if(!local) return server;
+  if(!server) return local;
+  const invs = {};
+  const ids = new Set([...Object.keys(local.invs||{}), ...Object.keys(server.invs||{})]);
+  for(const id of ids){
+    const la = (local.invs||{})[id], lb = (server.invs||{})[id];
+    if(la && lb){
+      invs[id] = {
+        name: lb.name || la.name,
+        created: la.created && lb.created ? (la.created <= lb.created ? la.created : lb.created) : (la.created || lb.created),
+        items: invMergeItems(la.items, lb.items),
+      };
+    } else invs[id] = la || lb;
+  }
+  let current = server.current && invs[server.current] ? server.current
+    : (local.current && invs[local.current] ? local.current : Object.keys(invs)[0]);
+  return { current, invs };
+}
+function invScheduleServerSave(s){
+  if(invSyncTimer) clearTimeout(invSyncTimer);
+  invSyncTimer = setTimeout(()=>{ invPushServer(s); }, 400);
+}
+async function invPushServer(s){
+  if(!invSessionRecognized || !API) return;
+  try{
+    await workerFetch("/pins", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ pins: s, merge: false }),
+    }, 10000);
+  }catch(e){ /* offline / API down — localStorage remains authoritative */ }
+}
+async function invPullAndMerge(){
+  if(!API) return;
+  try{
+    const r = await workerFetch("/pins", null, 10000);
+    if(!r || !r.ok) return;
+    const j = await r.json();
+    if(!j || !j.recognized){ invSessionRecognized = false; return; }
+    invSessionRecognized = true;
+    const local = invStore();
+    const server = j.pins || null;
+    // First recognized session (or any load): union local + server, write both ways.
+    const merged = invMergeStores(local, server);
+    try{ localStorage.setItem(INVKEY, JSON.stringify(merged)); }catch(e){}
+    invServerHydrated = true;
+    // Persist the union back so other devices see local pins.
+    await invPushServer(merged);
+  }catch(e){ /* stay local */ }
+}
 const INV_HREF = {notice:"#notice/", vendor:"#vendor/", agency:"#agency/", matter:"#matter/"};
 const invItemHref = it => (INV_HREF[it.t]||"#notice/") + encodeURIComponent(it.id);
 function pinBtn(t, id, title, meta){
@@ -8424,6 +8527,89 @@ function rerenderForLang(){
   }
   else if(tab && SECTIONS[tab] && feedLoaded[tab]){ loadSectionAgencies(tab); loadSection(tab); }
 }
+
+/* ===================== MAGIC-LINK SESSION (digest email recognition) =====================
+   Quiet sign-in: a pins-scoped token from an alert email is exchanged for an HttpOnly
+   session cookie on the API host. The token is stripped from the URL immediately so it
+   never sits in history/referrers. Account changes (unsubscribe, etc.) never use this. */
+function sessionShowBanner(open){
+  const el = document.getElementById("sessionBanner");
+  if(!el) return;
+  el.hidden = !open;
+  el.dataset.open = open ? "true" : "false";
+  if(open){
+    const txt = document.getElementById("sessionBannerText");
+    if(txt && window.t) txt.textContent = t("session_signed_in");
+    const ny = document.getElementById("sessionNotYou");
+    if(ny && window.t) ny.textContent = t("session_not_you");
+    const di = document.getElementById("sessionDismiss");
+    if(di && window.t) di.textContent = t("session_dismiss");
+  }
+}
+function sessionStripUrlToken(){
+  try{
+    const u = new URL(location.href);
+    if(!u.searchParams.has("s") && !u.searchParams.has("token")) return null;
+    const tok = u.searchParams.get("s") || u.searchParams.get("token") || null;
+    u.searchParams.delete("s");
+    u.searchParams.delete("token");
+    history.replaceState(null, "", u.pathname + u.search + u.hash);
+    return tok;
+  }catch(e){ return null; }
+}
+async function sessionExchange(token){
+  if(!token || !API) return false;
+  try{
+    const r = await workerFetch("/session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token }),
+    }, 10000);
+    if(!r || !r.ok) return false;
+    const j = await r.json();
+    return !!(j && j.recognized);
+  }catch(e){ return false; }
+}
+async function sessionCheck(){
+  if(!API) return false;
+  try{
+    const r = await workerFetch("/session", null, 8000);
+    if(!r || !r.ok) return false;
+    const j = await r.json();
+    return !!(j && j.recognized);
+  }catch(e){ return false; }
+}
+async function sessionLogout(){
+  try{
+    await workerFetch("/session/logout", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" }, 8000);
+  }catch(e){}
+  invSessionRecognized = false;
+  invServerHydrated = false;
+  sessionShowBanner(false);
+}
+async function sessionBoot(){
+  // Prefer a URL token (if a client ever lands with ?s=); usually the worker redirect
+  // already set the cookie and the token is gone from the final URL.
+  const fromUrl = sessionStripUrlToken();
+  let recognized = false;
+  if(fromUrl) recognized = await sessionExchange(fromUrl);
+  if(!recognized) recognized = await sessionCheck();
+  if(!recognized) return;
+  invSessionRecognized = true;
+  sessionShowBanner(true);
+  await invPullAndMerge();
+}
+(function initSessionUi(){
+  const wire = ()=>{
+    const ny = document.getElementById("sessionNotYou");
+    const di = document.getElementById("sessionDismiss");
+    if(ny) ny.addEventListener("click", ()=>{ sessionLogout(); });
+    if(di) di.addEventListener("click", ()=>{ sessionShowBanner(false); });
+    sessionBoot();
+  };
+  if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", wire);
+  else wire();
+})();
 
 // Language switcher init — runs after DOM is built; i18n.js already loaded in <head>.
 (function(){

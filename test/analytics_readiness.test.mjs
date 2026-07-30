@@ -355,10 +355,16 @@ test("privacy copy removes falsified exhaustive promises without adding a new en
   const about = await readFile(new URL("../site/about.html", import.meta.url), "utf8");
   const english = await readFile(new URL("../site/i18n.js", import.meta.url), "utf8");
   for (const source of [about, english]) {
-    assert.match(source, /uses no accounts, no cookies, no cross-site tracking, no ad tech/);
+    // Honest intro: no password accounts / no ad tech / no cross-site tracking.
+    // Session cookies exist only after an alert-email magic link (pins sync) — do not
+    // re-promise a blanket "no cookies" line that the product no longer keeps.
+    assert.match(source, /no password accounts and no ad tech/i);
+    assert.match(source, /does not track you across other sites/i);
     assert.match(source, /Searches and filters(?:<\/b>)? use NYC Open Data/);
+    assert.match(source, /Email links and pins/i);
     assert.doesNotMatch(source, /go straight to NYC Open Data|server never sees them|only keep a daily count/i);
     assert.doesNotMatch(source, /aggregate usage events|interaction taxonomy/i);
+    assert.doesNotMatch(source, /uses no accounts, no cookies, no cross-site tracking, no ad tech/);
   }
 });
 

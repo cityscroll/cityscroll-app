@@ -11,6 +11,8 @@ import { handleUsage } from "./usage.mjs";
 import { handleSubscribe } from "./subscribe.mjs";
 import { handleConfirm } from "./confirm.mjs";
 import { handleUnsubscribe } from "./unsubscribe.mjs";
+import { handleSession } from "./session.mjs";
+import { handlePins } from "./pins.mjs";
 import { handleFeedback } from "./feedback.mjs";
 import { handleAdminSubs, handleAdminFeedback } from "./admin.mjs";
 import { handleFeed } from "./feed.mjs";
@@ -59,6 +61,8 @@ export default {
     if (pathname === "/subscribe") return handleSubscribe(request, env);
     if (pathname === "/confirm") return handleConfirm(request, env);
     if (pathname === "/unsubscribe") return handleUnsubscribe(request, env);
+    if (pathname === "/session" || pathname === "/session/logout") return handleSession(request, env, pathname);
+    if (pathname === "/pins") return handlePins(request, env);
     if (pathname === "/feedback") return handleFeedback(request, env);
     if (pathname === "/feed.xml" || pathname === "/feed.json" || pathname === "/feed.ics") return handleFeed(request, env, ctx);
     if (pathname === "/batch") return handleBatch(request, env);

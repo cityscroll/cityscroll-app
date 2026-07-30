@@ -102,7 +102,8 @@ test("sumStat sums the window and treats gaps as zero", async () => {
 test("handleRedirect 302s to the permalink and counts total + per-kind", async () => {
   const kv = fakeKV();
   const waits = [];
-  const res = handleRedirect(
+  // handleRedirect is async (optional magic-link session exchange on ?s=).
+  const res = await handleRedirect(
     new Request("https://api.cityscroll.org/r/money/20260701123"),
     { ALERT_STATE: kv }, { waitUntil: (p) => waits.push(p) }, "/r/money/20260701123",
   );
@@ -120,7 +121,7 @@ test("handleRedirect 302s to the permalink and counts total + per-kind", async (
 test("handleRedirect carries a well-formed ?w= filter through to the notice's hash fragment", async () => {
   const kv = fakeKV();
   const w = encodeURIComponent('{"lens":"money","filter":{"keywords":["education"]}}');
-  const res = handleRedirect(
+  const res = await handleRedirect(
     new Request(`https://api.cityscroll.org/r/rfp/20260701123?w=${w}`),
     { ALERT_STATE: kv }, { waitUntil() {} }, "/r/rfp/20260701123",
   );
@@ -130,7 +131,7 @@ test("handleRedirect carries a well-formed ?w= filter through to the notice's ha
 
 test("handleRedirect drops an oversized/garbled ?w= rather than relay it — plain notice link, not a broken redirect", async () => {
   const kv = fakeKV();
-  const res = handleRedirect(
+  const res = await handleRedirect(
     new Request(`https://api.cityscroll.org/r/rfp/20260701123?w=${"x".repeat(3000)}`),
     { ALERT_STATE: kv }, { waitUntil() {} }, "/r/rfp/20260701123",
   );
@@ -139,7 +140,7 @@ test("handleRedirect drops an oversized/garbled ?w= rather than relay it — pla
 
 test("handleRedirect falls back to the homepage uncounted on junk paths", async () => {
   const kv = fakeKV();
-  const res = handleRedirect(new Request("https://api.cityscroll.org/r/x"), { ALERT_STATE: kv }, { waitUntil() {} }, "/r/x");
+  const res = await handleRedirect(new Request("https://api.cityscroll.org/r/x"), { ALERT_STATE: kv }, { waitUntil() {} }, "/r/x");
   assert.equal(res.status, 302);
   assert.equal(res.headers.get("Location"), "https://cityscroll.org/");
   assert.equal(kv.store.size, 0);
