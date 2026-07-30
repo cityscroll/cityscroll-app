@@ -12,7 +12,7 @@ import {
   streetRangesIn,
   taxLotsIn,
   unique,
-} from "../../../location_extract.mjs";
+} from "../../../site/location_extract.mjs";
 
 export { plainText };
 

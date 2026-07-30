@@ -220,7 +220,7 @@ test("nearMatchReasons: agency and title always present; PIN/amount conditional"
 
 test("ported lib matches index.html's client functions byte-for-behavior on the shared fixtures", () => {
   const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
-  const html = readFileSync(join(ROOT, "index.html"), "utf8");
+  const html = readFileSync(join(ROOT, "site", "index.html"), "utf8");
   const extractFn = (name) => {
     let start = html.indexOf("async function " + name + "(");
     if (start === -1) start = html.indexOf("function " + name + "(");

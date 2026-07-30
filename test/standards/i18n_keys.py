@@ -13,7 +13,8 @@ import sys
 import pathlib
 
 ROOT = pathlib.Path(__file__).parents[2]
-I18N = ROOT / "i18n.js"
+SITE_ROOT = ROOT / "site"
+I18N = SITE_ROOT / "i18n.js"
 
 if not I18N.exists():
     print(f"ERROR: {I18N} not found", file=sys.stderr)
@@ -58,7 +59,7 @@ def extract_shipping_langs(src):
 
 def extract_lang_file_keys(lang):
     """Extract the set of keys assigned in i18n/lang/<lang>.js's Object.assign(...) call."""
-    path = ROOT / "i18n" / "lang" / f"{lang}.js"
+    path = SITE_ROOT / "i18n" / "lang" / f"{lang}.js"
     if not path.exists():
         return None
     text = path.read_text(encoding="utf-8")

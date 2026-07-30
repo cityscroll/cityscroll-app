@@ -10,7 +10,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
-const src = readFileSync(join(ROOT, "index.html"), "utf8");
+const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
 
 function extractFn(name) {
   const asyncStart = src.indexOf(`async function ${name}(`);

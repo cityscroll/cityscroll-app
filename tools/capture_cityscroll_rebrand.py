@@ -14,7 +14,7 @@ from playwright.sync_api import sync_playwright
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "media" / "review" / "cityscroll-rebrand"
+OUTPUT = ROOT / "site" / "media" / "review" / "cityscroll-rebrand"
 VIEWPORTS = ((390, 844), (1440, 900))
 
 sys.path.insert(0, str(ROOT / "test" / "functional" / "assets"))
@@ -32,7 +32,7 @@ def main():
     parser.add_argument("--verify-only", action="store_true")
     args = parser.parse_args()
 
-    handler = functools.partial(QuietHandler, directory=str(ROOT))
+    handler = functools.partial(QuietHandler, directory=str(ROOT / "site"))
     server = ThreadingHTTPServer(("127.0.0.1", 0), handler)
     threading.Thread(target=server.serve_forever, daemon=True).start()
     base = f"http://127.0.0.1:{server.server_address[1]}/"

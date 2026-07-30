@@ -12,7 +12,7 @@ import { dirname, join } from "node:path";
 import assert from "node:assert/strict";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
-export const INDEX_HTML = readFileSync(join(ROOT, "index.html"), "utf8");
+export const INDEX_HTML = readFileSync(join(ROOT, "site", "index.html"), "utf8");
 
 // Extracts one function declaration's full source, brace-balanced, starting from wherever
 // `function name(` or `async function name(` first appears.

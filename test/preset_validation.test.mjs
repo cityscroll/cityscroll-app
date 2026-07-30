@@ -5,7 +5,7 @@ import {
   deadSelectedSuggestions,
   firstNonEmptyVariant,
   fruitfulSuggestionIndices,
-} from "../preset_validation.mjs";
+} from "../site/preset_validation.mjs";
 
 test("a zero-result week preset widens only to the first non-empty scope", () => {
   const variants = [

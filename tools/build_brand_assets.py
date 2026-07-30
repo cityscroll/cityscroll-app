@@ -9,7 +9,7 @@ from playwright.sync_api import sync_playwright
 
 
 ROOT = Path(__file__).resolve().parents[1]
-BRAND = ROOT / "assets" / "brand"
+BRAND = ROOT / "site" / "assets" / "brand"
 
 
 def convert(source: str, target: str, size: str):

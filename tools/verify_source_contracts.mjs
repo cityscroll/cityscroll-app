@@ -2,7 +2,7 @@
 
 import { readFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
-import { AWARD_SOURCE_REGISTRY } from "../external_awards.js";
+import { AWARD_SOURCE_REGISTRY } from "../site/external_awards.js";
 import { checkGeneratedSourceFiles } from "./generate_source_docs.mjs";
 import {
   awardCoverage,

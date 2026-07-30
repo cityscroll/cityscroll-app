@@ -9,6 +9,8 @@ in it.
 *   **Changelog:** [cityscroll.org/changelog.html](https://cityscroll.org/changelog.html)
 *   **System Stats:** [cityscroll.org/stats.html](https://cityscroll.org/stats.html)
 
+![CityScroll's Staffing guide, showing current City notices first and civil-service guidance in context](site/media/review/staffing-content-first/after-1440.png)
+
 ---
 
 ## See it in action
@@ -64,7 +66,7 @@ published them, and links each applicant to the official next step.
 
 <!-- BEGIN GENERATED SOURCE CONTRACTS -->
 
-The executable registry is [`data/source_contracts.json`](data/source_contracts.json);
+The executable registry is [`site/data/source_contracts.json`](site/data/source_contracts.json);
 [the generated source ledger](docs/data-sources.md) records coverage, cadence, freshness,
 required fields, and known gaps. Required pull-request checks validate recorded upstream
 shapes; a separate daily workflow runs the live verifier and reports publisher drift.
@@ -103,12 +105,12 @@ official plan forecasts until a source passes the executable contract.
 
 ## Under the hood
 
-This repository holds the complete system: a static client (`index.html`) and a serverless
+This repository holds the complete system: a static client (`site/`) and a serverless
 Cloudflare Worker backend (`worker/`) that handles email alerts, feeds, public metrics, and
 the plain-English search assistant. Civil-service exam sources are normalized at build time
-into `data/staffing_exams.json`, so career exploration needs one small static file and no
+into `site/data/staffing_exams.json`, so career exploration needs one small static file and no
 runtime API fan-out. Source provenance and refresh rules live in
-[`data/exam_sources/`](data/exam_sources/README.md). The project is designed to be forked and
+[`site/data/exam_sources/`](site/data/exam_sources/README.md). The project is designed to be forked and
 pointed at any city's open-data portal.
 
 For the code map and how the pieces fit together, see

@@ -6,7 +6,7 @@ import {
   buildArtifact,
 } from "../tools/build_staffing_exams.mjs";
 
-const artifact = JSON.parse(readFileSync(new URL("../data/staffing_exams.json", import.meta.url)));
+const artifact = JSON.parse(readFileSync(new URL("../site/data/staffing_exams.json", import.meta.url)));
 
 function source(id = "dcas-annual-schedule", overrides = {}) {
   return {

@@ -7,7 +7,7 @@
 // scope class, place geometry (coordinates/BBL/CD/council), modality,
 // accessibility, deadline, official action route, and outcome.
 
-import { ruleLocationFromRow } from "../../../rule_location.mjs";
+import { ruleLocationFromRow } from "../../../site/rule_location.mjs";
 import {
   cafeConsentPlacesFromRow,
   extractCafeConsentPetitions,
@@ -15,7 +15,7 @@ import {
 } from "./cafe_consent.mjs";
 import { classifyStage } from "./rules.mjs";
 import { venueFromRow } from "./hearings.mjs";
-import { plainText } from "../../../location_extract.mjs";
+import { plainText } from "../../../site/location_extract.mjs";
 
 export const CIVIC_SCOPE_SCHEMA_VERSION = "1.0.0";
 

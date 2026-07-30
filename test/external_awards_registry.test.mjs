@@ -5,7 +5,7 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { AWARD_SOURCE_REGISTRY as CLIENT } from "../external_awards.js";
+import { AWARD_SOURCE_REGISTRY as CLIENT } from "../site/external_awards.js";
 import { AWARD_SOURCE_REGISTRY as WORKER, aboSources, awardKvKey } from "../worker/src/lib/external_award.mjs";
 
 test("client and worker registries are byte-for-byte equivalent", () => {

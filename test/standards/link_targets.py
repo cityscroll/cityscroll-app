@@ -53,9 +53,10 @@ import sys
 from urllib.parse import urlparse
 
 ROOT = pathlib.Path(__file__).parents[2]
+SITE_ROOT = ROOT / "site"
 PAGES = ["index.html", "about.html", "data.html", "stats.html", "api.html", "changelog.html", "standards.html"]
 I18N_SOURCES = ["i18n.js"] + sorted(
-    str(pathlib.Path(p).relative_to(ROOT)) for p in glob.glob(str(ROOT / "i18n/lang/*.js"))
+    str(pathlib.Path(p).relative_to(SITE_ROOT)) for p in glob.glob(str(SITE_ROOT / "i18n/lang/*.js"))
 )
 
 # Resolved anchor text allowed to keep an arrow — internal navigation, not an external link.
@@ -187,7 +188,7 @@ def scan(src, label, failures, check_icons):
 def main():
     failures = []
     for page in PAGES:
-        src = (ROOT / page).read_text(encoding="utf-8")
+        src = (SITE_ROOT / page).read_text(encoding="utf-8")
         scan(src, page, failures, check_icons=True)
 
     for i18n_src in I18N_SOURCES:
@@ -197,7 +198,7 @@ def main():
         # translation of view_on_crol legitimately keeps the ↗ (see the comment on
         # ALLOWED_ICON_TEXT above) — that's a translation-completeness concern for the i18n
         # guards, not this gate.
-        src = (ROOT / i18n_src).read_text(encoding="utf-8").replace('\\"', '"')
+        src = (SITE_ROOT / i18n_src).read_text(encoding="utf-8").replace('\\"', '"')
         scan(src, i18n_src, failures, check_icons=False)
 
     if failures:

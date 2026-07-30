@@ -91,13 +91,35 @@ test("handleMirror: falls back to public GitHub source when the Pages origin red
     assert.equal(calls[0].opts.redirect, "manual");
     assert.equal(
       calls[1].url,
-      "https://raw.githubusercontent.com/cityscroll/crol-list/main/about.html?x=1",
+      "https://raw.githubusercontent.com/cityscroll/crol-list/main/site/about.html?x=1",
     );
     assert.equal(calls[1].opts.redirect, "manual");
     assert.equal(res.status, 200);
     assert.equal(res.headers.get("content-type"), "text/html; charset=utf-8");
     assert.equal(res.headers.get("content-security-policy"), null);
     assert.equal(await res.text(), "<html>from fallback</html>");
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("handleMirror: keeps public repository documentation on the root-source seam", async () => {
+  const originalFetch = globalThis.fetch;
+  const calls = [];
+  globalThis.fetch = async (url) => {
+    calls.push(url);
+    if (calls.length === 1) {
+      return Response.redirect("https://cityscroll.org/docs/architecture.md", 301);
+    }
+    return new Response("# Architecture", { status: 200 });
+  };
+  try {
+    const res = await handleMirror(new Request("https://cityscroll.org/docs/architecture.md"));
+    assert.equal(
+      calls[1],
+      "https://raw.githubusercontent.com/cityscroll/crol-list/main/docs/architecture.md",
+    );
+    assert.equal(await res.text(), "# Architecture");
   } finally {
     globalThis.fetch = originalFetch;
   }

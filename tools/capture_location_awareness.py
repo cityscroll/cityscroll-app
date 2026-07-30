@@ -330,7 +330,7 @@ def capture_state(
 
 
 def verify_permission_states(browser: Browser) -> None:
-    with StaticServer(ROOT) as base_url:
+    with StaticServer(ROOT / "site") as base_url:
         granted_context = browser.new_context(viewport={"width": 390, "height": 844})
         mock_location(granted_context)
         mock_permissions(granted_context, "granted")
@@ -371,7 +371,7 @@ def verify_permission_states(browser: Browser) -> None:
 
 
 def verify_denial_and_replay(browser: Browser) -> None:
-    with StaticServer(ROOT) as base_url:
+    with StaticServer(ROOT / "site") as base_url:
         denied_context = browser.new_context(viewport={"width": 390, "height": 844})
         mock_location(denied_context, denied=True)
         mock_permissions(denied_context, "denied")

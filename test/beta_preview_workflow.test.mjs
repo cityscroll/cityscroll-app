@@ -57,7 +57,7 @@ test("stable and preview lanes share one build, i18n stamp, and artifact gate", 
       && verify < boundary,
   );
 
-  const config = read("_config.yml");
+  const config = read("site/_config.yml");
   for (const path of ["AGENTS.md", "CLAUDE.md", "test", "tools", "worker"]) {
     assert.match(config, new RegExp(`- ${path.replace(".", "\\.")}$`, "m"), path);
   }

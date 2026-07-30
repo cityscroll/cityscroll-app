@@ -12,8 +12,8 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
-const src = readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "index.html"), "utf8");
-const i18nSrc = readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "i18n.js"), "utf8");
+const src = readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "site", "index.html"), "utf8");
+const i18nSrc = readFileSync(join(dirname(fileURLToPath(import.meta.url)), "..", "site", "i18n.js"), "utf8");
 
 function extractFn(name) {
   let start = src.indexOf("async function " + name + "(");
@@ -36,7 +36,7 @@ const windowStub = { LANG: "en", LANG_META: { en: { intlDate: "en-US" } } };
 const { t } = new Function("window", i18nSrc + "\nreturn { t: window.t };")(windowStub);
 const fmtNumber = new Function("window", i18nSrc + "\nreturn window.fmtNumber;")(windowStub);
 
-const { awardCoverage, awardSourceFor } = await import("../external_awards.js");
+const { awardCoverage, awardSourceFor } = await import("../site/external_awards.js");
 
 const env = new Function(
   "t", "fmtNumber", "window", "awardCoverage", "awardSourceFor", "EXT_ATTRS", "extSR",

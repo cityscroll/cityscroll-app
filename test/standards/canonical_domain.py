@@ -9,6 +9,7 @@ from xml.etree import ElementTree
 
 
 ROOT = Path(__file__).resolve().parents[2]
+SITE_ROOT = ROOT / "site"
 PAGES = [
     ("index.html", "https://cityscroll.org/"),
     ("about.html", "https://cityscroll.org/about.html"),
@@ -29,7 +30,7 @@ def main() -> None:
     failures: list[str] = []
 
     for filename, expected in PAGES:
-        source = (ROOT / filename).read_text()
+        source = (SITE_ROOT / filename).read_text()
         canonical = attribute(source, r'<link rel="canonical" href="([^"]+)">', "canonical")
         og_url = attribute(source, r'<meta property="og:url" content="([^"]+)">', "og:url")
         og_image = attribute(source, r'<meta property="og:image" content="([^"]+)">', "og:image")
@@ -42,11 +43,11 @@ def main() -> None:
         if '<meta name="robots" content="index,follow">' not in source:
             failures.append(f"{filename}: missing index,follow robots metadata")
 
-    robots = (ROOT / "robots.txt").read_text()
+    robots = (SITE_ROOT / "robots.txt").read_text()
     if "Sitemap: https://cityscroll.org/sitemap.xml" not in robots or "crol-list.org" in robots:
         failures.append("robots.txt: sitemap must use only cityscroll.org")
 
-    sitemap_path = ROOT / "sitemap.xml"
+    sitemap_path = SITE_ROOT / "sitemap.xml"
     try:
         root = ElementTree.parse(sitemap_path).getroot()
         locations = [
@@ -62,7 +63,7 @@ def main() -> None:
     if any(not location.startswith("https://cityscroll.org") for location in locations):
         failures.append("sitemap.xml: every URL must use cityscroll.org")
 
-    if (ROOT / "CNAME").read_text().strip() != "crol-list.org":
+    if (SITE_ROOT / "CNAME").read_text().strip() != "crol-list.org":
         failures.append("CNAME: must remain the GitHub Pages origin used by the CityScroll mirror")
 
     cors = (ROOT / "worker/src/lib/cors.mjs").read_text()
@@ -74,7 +75,7 @@ def main() -> None:
     usage = (ROOT / "worker/src/usage.mjs").read_text()
     if 'ALLOW.has(origin) ? origin : "https://cityscroll.org"' not in usage:
         failures.append("worker CORS: usage fallback origin must be cityscroll.org")
-    api_page = (ROOT / "api.html").read_text()
+    api_page = (SITE_ROOT / "api.html").read_text()
     if 'href="https://api.cityscroll.org/property-locations"' not in api_page:
         failures.append("API docs: Property location JSON link must use api.cityscroll.org")
 
@@ -98,8 +99,10 @@ def main() -> None:
     mirror = (ROOT / "worker/src/mirror.mjs").read_text()
     if 'const ORIGIN = "https://crol-list.org";' not in mirror:
         failures.append("mirror: primary GitHub Pages origin must remain crol-list.org")
-    if 'const FALLBACK_ORIGIN = "https://raw.githubusercontent.com/cityscroll/crol-list/main/";' not in mirror:
-        failures.append("mirror: missing independent public-source failover seam")
+    if 'const SITE_FALLBACK_ORIGIN = "https://raw.githubusercontent.com/cityscroll/crol-list/main/site/";' not in mirror:
+        failures.append("mirror: public-source failover must resolve from the site directory")
+    if 'const REPOSITORY_FALLBACK_ORIGIN = "https://raw.githubusercontent.com/cityscroll/crol-list/main/";' not in mirror:
+        failures.append("mirror: public repository-document failover seam is missing")
     if 'redirect: "manual"' not in mirror:
         failures.append("mirror: origin fetches must not auto-follow redirects back to CityScroll")
     if "redirectedToMirror(originResponse)" not in mirror:

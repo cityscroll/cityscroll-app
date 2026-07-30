@@ -3,7 +3,7 @@ description: Build the site once, derive its i18n stamp, and verify the public a
 
 inputs:
   source-dir:
-    description: Source checkout to build.
+    description: Repository checkout to build (supports the current site/ tree and legacy root layouts).
     required: false
     default: "."
   site-dir:
@@ -22,10 +22,21 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Resolve public site source
+      id: public-source
+      shell: bash
+      env:
+        SOURCE_DIR: ${{ inputs.source-dir }}
+      run: |
+        if [ -f "$SOURCE_DIR/site/index.html" ]; then
+          echo "path=$SOURCE_DIR/site" >> "$GITHUB_OUTPUT"
+        else
+          echo "path=$SOURCE_DIR" >> "$GITHUB_OUTPUT"
+        fi
     - name: Build with GitHub Pages
       uses: actions/jekyll-build-pages@v1
       with:
-        source: ${{ inputs.source-dir }}
+        source: ${{ steps.public-source.outputs.path }}
         destination: ${{ inputs.site-dir }}
     - name: Make generated artifact writable
       shell: bash

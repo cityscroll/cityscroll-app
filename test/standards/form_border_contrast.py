@@ -12,6 +12,7 @@ import sys
 import pathlib
 
 ROOT = pathlib.Path(__file__).parents[2]
+SITE_ROOT = ROOT / "site"
 PAGES = ["index.html", "about.html", "data.html", "stats.html", "changelog.html", "api.html", "standards.html"]
 
 FORM_TAG = re.compile(r"(?<![\w.#-])(input|select|textarea)\b")
@@ -19,7 +20,7 @@ BAD_BORDER = re.compile(r"border(?:-\w+)?\s*:\s*[^;]*var\(--rule\)(?!-strong)")
 
 failures = []
 for name in PAGES:
-    path = ROOT / name
+    path = SITE_ROOT / name
     if not path.exists():
         continue
     src = path.read_text(encoding="utf-8")

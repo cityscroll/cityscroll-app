@@ -237,7 +237,7 @@ def main() -> None:
                 for width, height in VIEWPORTS:
                     capture_state(browser, before, "before", width, height)
                     capture_state(browser, ROOT, "after", width, height)
-                with StaticServer(ROOT) as base_url:
+                with StaticServer(ROOT / "site") as base_url:
                     for width, height in VIEWPORTS:
                         verify_after(browser, base_url, width, height)
             finally:

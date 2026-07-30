@@ -25,7 +25,7 @@ test("an expired flag fails validation until removed or explicitly renewed", () 
   const root = mkdtempSync(join(tmpdir(), "crol-beta-flags-"));
   try {
     const registry = JSON.parse(
-      readFileSync(new URL("../beta-flags.json", import.meta.url), "utf8"),
+      readFileSync(new URL("../site/beta-flags.json", import.meta.url), "utf8"),
     );
     registry.flags[0].removal_date = "2026-07-28";
     const path = join(root, "registry.json");
@@ -46,7 +46,7 @@ test("access-control fields are rejected", () => {
   const root = mkdtempSync(join(tmpdir(), "crol-beta-flags-"));
   try {
     const registry = JSON.parse(
-      readFileSync(new URL("../beta-flags.json", import.meta.url), "utf8"),
+      readFileSync(new URL("../site/beta-flags.json", import.meta.url), "utf8"),
     );
     registry.flags[0].permissions = ["admin"];
     const path = join(root, "registry.json");

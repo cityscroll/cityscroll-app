@@ -21,7 +21,7 @@ from playwright.sync_api import Page, Route, sync_playwright
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "media" / "review" / "wcag22-upgrade"
+OUTPUT = ROOT / "site" / "media" / "review" / "wcag22-upgrade"
 PROJECT_ID = "2023M0452"
 PROJECT = {
     "project_id": PROJECT_ID,

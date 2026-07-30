@@ -19,6 +19,7 @@ import sys
 import pathlib
 
 ROOT = pathlib.Path(__file__).parents[2]
+SITE_ROOT = ROOT / "site"
 
 # wrong (accent-less) -> right. Checked case-insensitively on word boundaries.
 DIACRITICS = {
@@ -54,7 +55,7 @@ def main():
         ["node", "-e",
          "global.window={};require(process.argv[1]);"
          "console.log(JSON.stringify({s:window.STRINGS.es,sec:window.SECTION_I18N&&window.SECTION_I18N.es||{}}))",
-         str(ROOT / "i18n.js")], text=True))
+         str(SITE_ROOT / "i18n.js")], text=True))
     check_dict("STRINGS.es", site["s"], failures)
     check_dict("SECTION_I18N.es", site["sec"], failures)
 

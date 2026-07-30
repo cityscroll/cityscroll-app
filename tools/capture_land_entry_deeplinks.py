@@ -236,7 +236,7 @@ def capture_state(browser, tree: Path, state: str, width: int, height: int) -> N
 
 
 def verify_interactions(browser) -> None:
-    with StaticServer(ROOT) as base_url:
+    with StaticServer(ROOT / "site") as base_url:
         context = browser.new_context(
             viewport={"width": 390, "height": 844},
             permissions=["clipboard-read", "clipboard-write"],

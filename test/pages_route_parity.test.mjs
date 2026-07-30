@@ -10,7 +10,7 @@ import {
 } from "../tools/pages_route_parity.mjs";
 import { CONTENT_MARKER, targetsFromCli } from "../tools/live_url_smoke.mjs";
 
-const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
+const read = (path) => readFileSync(new URL(`../site/${path}`, import.meta.url), "utf8");
 
 test("route inventory covers every sitemap page plus robots and sitemap", () => {
   const sitemap = read("sitemap.xml");
