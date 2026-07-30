@@ -1492,7 +1492,7 @@
     {
       "id": "procurement-ocp-recent-awards",
       "surface": "award detail enrichment beyond City Record",
-      "i18n_key": null,
+      "i18n_key": "lifecycle_ocp_unmatched_html",
       "class": "not_yet_ingested",
       "public_source": {
         "name": "Recent Contract Awards (OCP)",
