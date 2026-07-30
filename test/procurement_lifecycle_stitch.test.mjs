@@ -349,17 +349,15 @@ test("meeting outcomes: matched chain shows matter and vote counts", () => {
   const model = buildMeetingOutcomes(
     meetingFixture.notices,
     meetingFixture.events,
-    meetingFixture.agenda_items,
-    meetingFixture.matters,
+    meetingFixture.event_items,
     meetingFixture.votes,
-    meetingFixture.documents,
   );
   const record = model.records[0];
   assert.equal(record.join.matched, true);
   const html = meetingOutcomesHTML(record);
   assert.match(html, /Council meeting outcomes/);
-  assert.match(html, /Council matter|Vote/);
-  assert.match(html, /aye|nay|6/i);
+  assert.match(html, /Council matter|Vote|Outcome/);
+  assert.match(html, /aye|nay|6|Approved/i);
 });
 
 test("meeting outcomes: unmatched renders the specific join reason", () => {
@@ -367,14 +365,14 @@ test("meeting outcomes: unmatched renders the specific join reason", () => {
     request_id: "20260714002",
     join: {
       matched: false,
-      reason: "No Council event matched this City Record notice on title/date/agency confidence.",
+      reason: "No Council event matched this City Record notice on the strict date + body join.",
     },
     council_event: null,
     agenda_items: [],
   });
   assert.match(html, /Council meeting outcomes/);
   assert.match(html, /Not yet shown here — Council outcomes live in NYC Council Legistar/);
-  assert.match(html, /title\/date\/agency|confidence/i);
+  assert.match(html, /date \+ body|strict date|hearing date and committee/i);
 });
 
 // ---------------------------------------------------------------------------

@@ -38,7 +38,8 @@ export async function handleMeetingOutcomes(request, env, ctx) {
 
   if (!parsed || stale) {
     try {
-      const view = await buildMeetingOutcomesView(fetch, new Date());
+      const token = env?.LEGISTAR_API_TOKEN || null;
+      const view = await buildMeetingOutcomesView({ token, fetchImpl: fetch, now: new Date() });
       raw = JSON.stringify(view);
       const write = env.ALERT_STATE.put(MEETING_OUTCOMES_KV_KEY, raw, {
         expirationTtl: 3 * 24 * 60 * 60,
@@ -76,8 +77,6 @@ export async function handleMeetingOutcomes(request, env, ctx) {
         join: {
           matched: false,
           reason: "No Council meeting-outcomes record for this notice in the current join window.",
-          score: 0,
-          confidence: "none",
         },
         notice: { request_id: requestId },
         council_event: null,

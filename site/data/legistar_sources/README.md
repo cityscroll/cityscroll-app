@@ -47,15 +47,12 @@ Depth among **joined modern** notices (59/59 events):
 universal on joined Council hearing notices; roll-call votes are sparse on
 subcommittee hearings (expected) but available when taken.
 
-**Follow-up ingest scope (recommended, not in this recon PR):**
-
-1. Daily edge materialization from `webapi.legistar.com/v1/nyc` with Worker secret
-   `LEGISTAR_API_TOKEN` (GitHub Actions / Wrangler secret — not set here).
-2. Window: Events with `EventDate` lookback matching City Record hearings (~180d).
-3. Per event: `Events/{id}/EventItems` → matters; `EventItems/{id}/Votes` +
-   `Attachments` when present.
-4. Join: strict `exact_date_body_tokens` (same day + unique body named in title).
-5. Two-register gap copy remains for unmatched / pre-vote slots.
+**Materialization (shipped):** daily Worker cron + stale-on-read rebuild via
+`worker/src/lib/legistar_client.mjs` and `worker/src/lib/meeting_outcomes.mjs`
+(KV `meeting-outcomes:materialized:v2`). Uses Worker secret `LEGISTAR_API_TOKEN`
+(synced from the GitHub Actions secret on deploy). Scope: ~180d Events, strict
+`exact_date_body_tokens` join, nested EventItems → Votes + Attachments (bounded).
+Two-register gap copy remains for unmatched / pre-vote slots.
 
 Receipt: `verification_receipts/legistar_depth_2026-07-30.json`.
 

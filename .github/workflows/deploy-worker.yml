@@ -42,6 +42,21 @@ jobs:
           # No `secrets:` or `vars:` inputs on purpose — this deploys code only. Passing vars
           # here would clobber real secrets of the same name (see worker/README.md).
 
+      # Idempotent single-secret sync for the authenticated Legistar Web API token. This is a
+      # targeted `wrangler secret put` (NOT the action's bulk secrets/vars inputs that the
+      # code-only deploy deliberately avoids). It only touches LEGISTAR_API_TOKEN, re-sets the
+      # same value each deploy, and is non-fatal so a stale or missing secret never blocks a
+      # code deploy. The value never appears in logs (env var piped to stdin via printf).
+      - name: Sync Legistar API token secret
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          LEGISTAR_API_TOKEN: ${{ secrets.LEGISTAR_API_TOKEN }}
+        working-directory: worker
+        run: |
+          if [ -z "$LEGISTAR_API_TOKEN" ]; then echo "No LEGISTAR_API_TOKEN secret; skipping."; exit 0; fi
+          printf '%s' "$LEGISTAR_API_TOKEN" | npx wrangler secret put LEGISTAR_API_TOKEN
+        continue-on-error: true
+
   # Mirror / route deploys can break the public apex without failing wrangler.
   # Same live-URL gate as Deploy site: real content on both apex hosts + a deep
   # route, or the workflow fails with URL + status-chain diagnostics.

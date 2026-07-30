@@ -6,8 +6,8 @@
       "agency_name": "City Council",
       "section_name": "Public Hearings and Meetings",
       "type_of_notice_description": "Public Hearing",
-      "short_title": "Queens Transit Routing and Street Improvements",
-      "event_date": "2026-07-28",
+      "short_title": "7-28-26 Subcommittee on Land Use — Queens items",
+      "event_date": "2026-07-28T16:00:00.000",
       "additional_description_1": "The proposed route change affects the Borough of Queens and neighboring communities.",
       "street_address_1": "120 Broad Street",
       "city": "New York",
@@ -18,54 +18,40 @@
   "events": [
     {
       "EventId": "evt-001",
-      "EventTitle": "Queens Transit Routing and Street Improvements",
-      "BodyText": "City Council Transportation Committee",
-      "StartDate": "2026-07-28T16:00:00-04:00",
-      "EndDate": "2026-07-28T18:00:00-04:00",
+      "EventBodyName": "Subcommittee on Land Use",
+      "EventDate": "2026-07-28T00:00:00",
+      "EventTime": "10:00 AM",
       "EventLocation": "Council Chambers, New York, NY",
-      "VenueName": "City Hall",
-      "VenueCity": "New York",
-      "VenueType": "in-person"
+      "EventAgendaFile": "https://nyc.legistar1.com/nyc/meetings/2026/7/22526_A_Agenda.pdf",
+      "EventMinutesFile": "https://nyc.legistar1.com/nyc/meetings/2026/7/22526_M_Minutes.pdf",
+      "EventInSiteURL": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22526",
+      "EventVideoStatus": "Public"
     }
   ],
-  "agenda_items": [
+  "event_items": [
     {
-      "AgendaItemId": "ag-001",
-      "EventId": "evt-001",
-      "AgendaItemNumber": "1",
-      "AgendaItemTitle": "Transit Improvement Funding",
-      "MatterId": "mat-001"
-    }
-  ],
-  "matters": [
-    {
-      "MatterId": "mat-001",
-      "EventId": "evt-001",
-      "AgendaItemId": "ag-001",
-      "MatterName": "Transit Improvement Funding",
-      "MatterText": "Approve budget amendment and implementation plan.",
-      "Status": "Final",
-      "Outcome": "Approved"
+      "EventItemId": "evtitem-001",
+      "EventItemEventId": "evt-001",
+      "EventItemAgendaNumber": "1",
+      "EventItemTitle": "Transit Improvement Funding",
+      "EventItemAgendaNote": "Public hearing on the proposed funding amendment.",
+      "EventItemActionName": "Approved by Subcommittee",
+      "EventItemActionText": "This matter was Approved by Subcommittee.",
+      "EventItemPassedFlagName": "Pass",
+      "EventItemRollCallFlag": 0,
+      "EventItemMatterId": "mat-001",
+      "EventItemMatterFile": "LU 0001-2026",
+      "EventItemMatterName": "Transit Improvement Funding",
+      "EventItemMatterType": "Land Use Application",
+      "EventItemMatterStatus": "Adopted"
     }
   ],
   "votes": [
     {
-      "VoteId": "vote-001",
-      "MatterId": "mat-001",
-      "Result": "Passed",
-      "Ayes": "6",
-      "Nays": "3",
-      "Abstain": "0",
-      "VoteDate": "2026-07-28T17:00:00-04:00"
-    }
-  ],
-  "documents": [
-    {
-      "DocumentId": "doc-001",
-      "MatterId": "mat-001",
-      "DocumentName": "Transit Vote Transcript",
-      "FileURL": "https://council.nyc.gov/records/transit-vote.pdf",
-      "Category": "Minutes"
+      "matter_id": "mat-001",
+      "result": "Passed",
+      "counts": { "aye": 6, "nay": 3, "abstain": 0 },
+      "person_count": 9
     }
   ]
 }

@@ -151,11 +151,11 @@ export const SEED_MATERIALIZED_CROSSWALKS = [
     id: "city-record-x-legistar-events",
     source_a: "city-record",
     source_b: "nyc-council-legistar",
-    key_path: ["agency"],
+    key_path: ["event_date", "committee/body_name_in_notice_title"],
     status: "materialized",
     lineage: {
       code: "worker/src/lib/legistar_join.mjs",
-      strategy: "exact_date_body_tokens (EventBodyName + EventDate); nested EventItems/Votes under LEGISTAR_API_TOKEN",
+      strategy: "exact_date_body_tokens (EventBodyName + EventDate); nested EventItems → Votes/Attachments under LEGISTAR_API_TOKEN",
       measurement_contract: "nyc-council-legistar",
       measurement_rate_key: "modern_notices_strict",
     },
@@ -811,7 +811,7 @@ export function rerankIngestList(registry, sources, candidates) {
           || "medium";
         if (modernRate >= 0.3) {
           join_risk = `Measured ${Math.round(modernRate * 1000) / 10}% modern City Council notice → Legistar event join with LEGISTAR_API_TOKEN (predicted pre-auth grade: medium).`;
-          effort_guess = "Medium — authenticated Web API ready; follow-up edge materialize Events→EventItems→Votes with Worker secret LEGISTAR_API_TOKEN.";
+          effort_guess = "Already built — daily edge materialization of Events→EventItems→Votes/Attachments with Worker secret LEGISTAR_API_TOKEN.";
           valueScore += 10;
         } else if (!/measured|0%|token|usefulness/i.test(String(join_risk || ""))) {
           join_risk = `High — measured modern join ${Math.round(modernRate * 1000) / 10}%; below usefulness for vote/agenda depth.`;
