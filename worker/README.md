@@ -87,9 +87,11 @@ deliberately — weekly empty check-ins and a "still watching" heartbeat after
 the site's `#notice/<id>` permalinks.
 
 **Email identity:** From is always the app's own (`ALERTS_FROM` =
-`CityScroll <alerts@crol-list.org>`, domain verified in Resend, DMARC passing); To is only
-ever the subscriber's own opted-in address. Never sends as a person. The sending
-domain is managed separately from the public website hostnames.
+`CityScroll <alerts@cityscroll.org>`, domain verified in Resend); Reply-To is
+`ALERTS_REPLY_TO` (`alerts@crol-list.org`) because cityscroll.org has no apex MX and
+replies to the From address would bounce — crol-list.org still has Cloudflare email
+routing. To is only ever the subscriber's own opted-in address. Never sends as a
+person. The sending domain is managed separately from the public website hostnames.
 
 ## Board notifications
 
@@ -180,7 +182,9 @@ Secrets (set outside the repository via Wrangler): `ANTHROPIC_API_KEY`, `RESEND_
 `BOARDNOTIFY_INSTALLATION_ID`, `ANALYTICS_READ_TOKEN`, and `ANALYTICS_DEV_KEY`. Board-notify
 secrets are optional — see "Board notifications" above. Vars (in `wrangler.toml`):
 `ANALYTICS_ENVIRONMENT` (`production` on the live Worker; beta overrides to `preview`),
-`ALERTS_LIVE` (master switch — anything but `"true"` = dry-run), `ALERTS_FROM`, `MAX_PER_RUN`,
+`ALERTS_LIVE` (master switch — anything but `"true"` = dry-run: still **renders** each
+digest and logs the full HTML + headers, but never calls Resend and never bumps send
+counters / last-sent clocks), `ALERTS_FROM`, `ALERTS_REPLY_TO`, `MAX_PER_RUN`,
 `MAX_SENDS_PER_DAY`, `HEARTBEAT_DAYS`, `FEEDBACK_TO`, `BOARD_PROJECT_IDS`, `BOARD_ORG`,
 `BOARD_URL`, `BOARD_HOOK_DRY`, `BOARD_HOOK_MAX_PER_DAY`, `BOARDNOTIFY_CC`. Fire the cron
 locally by hitting `/__scheduled` under `wrangler dev`.

@@ -87,7 +87,7 @@ sources:
   - test/fixtures/wave4/generated/process_spine.json
   - test/fixtures/wave4/generated/unresolved-joins.json
   - test/fixtures/wave4/generated/ocds-gap-table.json
-sources_hash: 91d912264dfae360ae14a1c84f57838954b054fd1e5b68dca184b41f8db63890
+sources_hash: a1f81d6cd49903d006bf9cde56861677574282f9c2359b0251956849d66cf35f
 ---
 
 # crol-list — architecture
@@ -134,7 +134,9 @@ Browser (cityscroll.org — canonical Worker mirror of static GitHub Pages)
 
 Inbound email (Email Routing: subscribe@crol-list.org → this worker): plain
 English → LLM-parsed watch → double-opt-in confirm reply (metered, loop-guarded).
-Outbound worker email to users comes from `alerts@cityscroll.org` (set by `ALERTS_FROM`).
+Outbound worker email to users comes from `alerts@cityscroll.org` (set by `ALERTS_FROM`),
+with Reply-To `alerts@crol-list.org` (`ALERTS_REPLY_TO`) so human replies land on a
+mailbox that still has MX (cityscroll.org apex has none).
 
 Cron (daily 13:00 UTC): (1) Socrata→D1 ingest refresh (fail-soft), (2) prior-cycle
   pre-warm for the freshly-ingested Award notices (bounded, fail-soft), (3) rebuild
@@ -185,7 +187,7 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 - Worker deployed via `wrangler deploy` from `worker/` to the canonical custom domains `api.cityscroll.org` and `www.cityscroll.org`; `api.crol-list.org` and workers.dev remain compatibility aliases for existing clients and in-flight confirmation links. Changes under `worker/**` deploy from `main` through `.github/workflows/deploy-worker.yml`; a manual Wrangler deploy remains the emergency path. Cron trigger `0 13 * * *` (~9am ET). D1 schema versioned in `worker/migrations/`, applied with `wrangler d1 migrations apply crol-notices --remote`.
 - `cityscroll.org` / `www.cityscroll.org` are the canonical site hosts (custom-domain routes in `worker/wrangler.toml`). The Worker normally reverse-proxies the GitHub Pages origin at `crol-list.org` byte-for-byte (`worker/src/mirror.mjs`). Origin redirects are manual; a redirect back to CityScroll trips a circuit breaker and retries through GitHub's public repository source seam.
 - Direct visitors to `crol-list.org` / `www.crol-list.org` receive a 301 to the matching CityScroll path and query. The mirror's independent redirect-loop failover keeps the canonical site available if an origin fetch is redirected back at the Worker. Fragments remain client-side and are retained by conforming browsers.
-- New feed, confirmation, redirect, and API URLs mint on CityScroll. Existing calendar UIDs retain `@crol-list` and Atom entries retain `tag:crol-list.org,2026:` so calendar and feed clients do not create duplicates. Outbound alerts are sent from `alerts@cityscroll.org`; inbound operational routing remains on `@crol-list.org` (`subscribe@`, `feedback@`) unless separately redirected by provider policy.
+- New feed, confirmation, redirect, and API URLs mint on CityScroll. Existing calendar UIDs retain `@crol-list` and Atom entries retain `tag:crol-list.org,2026:` so calendar and feed clients do not create duplicates. Outbound alerts are sent from `alerts@cityscroll.org` with Reply-To `alerts@crol-list.org` (still-routable); inbound operational routing remains on `@crol-list.org` (`subscribe@`, `feedback@`) unless separately redirected by provider policy.
 - Secrets are stored outside the repository (Wrangler secret bindings). Bindings referenced by code include `ANTHROPIC_API_KEY`, `RESEND_API_KEY`, `TURNSTILE_SECRET`, `TOKEN_SECRET`, `USAGE_KEY`, `ANALYTICS_READ_TOKEN`, and `ANALYTICS_DEV_KEY`. The production analytics write gate `ANALYTICS_ENVIRONMENT=production` is a non-secret var in `wrangler.toml` (beta overrides it to `preview`); a missing or non-production value drops Analytics Engine writes. The developer key authenticates short-lived HMAC exclusions. Spend guards are vars in `wrangler.toml`: `MAX_PER_RUN=25`, `MAX_SENDS_PER_DAY=50` (under Resend's free 100/day); `/subscribe` and `/feedback` fail closed (503) if their secrets are absent.
 - GitHub Actions is path-filtered in `CI` using `dorny/paths-filter`; worker/docs/frontend jobs run only when their lanes changed.
   PR and merge tests include source-contract verification against committed fixtures:
