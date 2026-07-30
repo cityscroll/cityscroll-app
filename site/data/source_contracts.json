@@ -643,10 +643,14 @@
       "landing_page": "https://a860-gpp.nyc.gov/concern/nyc_government_publications/zk51vm65n",
       "publisher_cadence": "Annual outcomes publication with potential corrections during the fiscal-year outcomes cycle",
       "product_freshness": "Built from a manually reviewed aggregate outcomes snapshot committed in data/exam_sources/dcas_exam_outcomes.json.",
-      "used_for": "Aggregate post-cycle outcomes such as certification and hire counts for Staffing records.",
+      "used_for": "Aggregate post-cycle outcomes (eligible-list size, hiring-pool certifications, hire counts) joined by exam_number onto deadline-first exam cards and exam detail in the precomputed staffing guide.",
+      "join_keys": ["exam_number"],
       "code_references": [
         {"path": "data/exam_sources/dcas_exam_outcomes.json", "contains": "dcas-annual-exam-outcomes"},
-        {"path": "tools/build_staffing_exams.mjs", "contains": "dcas-annual-exam-outcomes"}
+        {"path": "tools/build_staffing_exams.mjs", "contains": "dcas-annual-exam-outcomes"},
+        {"path": "data/staffing_exams.json", "contains": "\"outcome\""},
+        {"path": "staffing.js", "contains": "examOutcomeView"},
+        {"path": "index.html", "contains": "careerOutcomeHTML"}
       ],
       "delivery_tier": "inline-at-build"
     },

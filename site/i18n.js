@@ -575,6 +575,17 @@ const STRINGS = {
     career_source_details: "Sources and refresh rules",
     career_city_record_finding: "The City Record dataset was checked too. It does not publish DCAS Notices of Examination as an exam-announcement section, so this guide uses DCAS schedules and NOEs instead.",
     career_load_failed: "The precomputed exam guide could not load. Use the official DCAS exam schedule and try this page again later.",
+    career_outcomes_heading: "Post-cycle outcomes",
+    career_outcome_list_established: "on eligible list",
+    career_outcome_hiring_pool: "hiring pool (certified)",
+    career_outcome_hired: "hired",
+    career_outcome_applicants: "applicants (cycle)",
+    career_outcomes_joined_note: "Aggregate counts from the DCAS annual outcomes publication for cycle {cycle} (published {date}). Individual scores are not public.",
+    career_outcomes_source_name: "the DCAS annual civil-service exam outcomes publication",
+    career_outcome_stage_list: "eligible-list establishment",
+    career_outcome_stage_certification: "agency certification",
+    career_outcome_stage_appointment: "appointment",
+    career_outcomes_not_published_html: "The city does not publish post-cycle outcomes for this exam yet — they would appear in {source} after {stage}.",
 
     // Land panel
     recent_rezonings_heading: "Recent rezonings",

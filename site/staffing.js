@@ -176,6 +176,31 @@
       .map(([value]) => value);
   }
 
+  /**
+   * Build-time outcome join on exam_number. When present, return aggregate counts
+   * for the card UI; when absent, return the not-published gap (real-world pending).
+   */
+  function examOutcomeView(exam) {
+    if (exam && exam.outcome && typeof exam.outcome === "object") {
+      return {
+        kind: "joined",
+        applicant_count: Number(exam.outcome.applicant_count || 0),
+        list_establishment: Number(exam.outcome.list_establishment || 0),
+        certification_count: Number(exam.outcome.certification_count || 0),
+        appointment_count: Number(exam.outcome.appointment_count || 0),
+        hire_count: Number(exam.outcome.hire_count || 0),
+        published_on: exam.outcome.published_on || null,
+        application_cycle: exam.outcome.application_cycle || null,
+      };
+    }
+    const gap = exam && exam.outcome_gap ? exam.outcome_gap : null;
+    return {
+      kind: "not_published",
+      class: (gap && gap.class) || "not_published",
+      pending_stage: (gap && gap.pending_stage) || "list_establishment",
+    };
+  }
+
   return {
     OASY_APPLY_URL,
     DCAS_OPEN_COMPETITIVE_URL,
@@ -194,5 +219,6 @@
     hireNotices,
     filterHireNotices,
     topValues,
+    examOutcomeView,
   };
 });
