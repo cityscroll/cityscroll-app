@@ -3,8 +3,8 @@
  * Idempotently prepare the stable Cloudflare Pages project for parallel serving.
  *
  * The API token is read from the environment and is never printed or accepted
- * as a command-line argument. Custom domains are intentionally out of scope
- * here — see  for the operator cutover steps.
+ * as a command-line argument. Custom domain attachment is intentionally out of
+ * scope for this helper (project ensure only).
  */
 
 import { pathToFileURL } from "node:url";

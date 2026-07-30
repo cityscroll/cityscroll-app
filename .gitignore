@@ -2,13 +2,13 @@ node_modules/
 .DS_Store
 __pycache__/
 
-# internal planning + ops notes — 
+# Local notes and planning dirs (not part of the product tree)
 internal/
 tasks/
 backlog/
 *.local.md
 
-# 
+# Local editor / agent helper files
 AGENTS.md
 CLAUDE.md
 backlog/

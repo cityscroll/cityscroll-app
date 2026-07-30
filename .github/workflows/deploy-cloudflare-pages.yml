@@ -1,5 +1,5 @@
 # Deploys the verified static site to Cloudflare Pages in parallel with GitHub Pages.
-# Apex/www hostnames stay on the current production path 
+# Apex/www hostnames stay on the current production path; this workflow does not attach them.
 name: Deploy Cloudflare Pages
 
 on:
@@ -60,7 +60,7 @@ jobs:
             echo
             echo "Immutable deployment: [$DEPLOYMENT_URL]($DEPLOYMENT_URL)"
             echo
-            echo "GitHub Pages remains the public production origin "
+            echo "GitHub Pages remains the public production origin; this workflow deploys the parallel host only."
           } >> "$GITHUB_STEP_SUMMARY"
 
   smoke:

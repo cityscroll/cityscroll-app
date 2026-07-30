@@ -43,7 +43,6 @@ sources:
   - robots.txt
   - sitemap.xml
   - _config.yml
-  - 
   - tools/build_staffing_exams.mjs
   - data/source_contracts.json
   - docs/data-sources.md
@@ -88,7 +87,7 @@ sources:
   - test/fixtures/wave4/generated/process_spine.json
   - test/fixtures/wave4/generated/unresolved-joins.json
   - test/fixtures/wave4/generated/ocds-gap-table.json
-sources_hash: f2ee9adbefccc7ac664da035565141343299bc3e28e4319a301d00e1d16412dd
+sources_hash: 35a91725d226a218ecb72261d8a6b4e92de6d066f826cb3ef579f2f235ec552c
 ---
 
 # crol-list — architecture
@@ -184,9 +183,9 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 - Review artifacts select `api-beta.cityscroll.org` before page scripts run and never fall back to production. That Worker is an optional, manually deployed exact-commit environment with no inherited production secrets, storage, queues, or cron. Its browser routes accept beta Pages origins only under the beta runtime gate; paid, stateful, delivery, and write behavior fails closed when unconfigured.
 - Worker deployed via `wrangler deploy` from `worker/` to the canonical custom domains `api.cityscroll.org` and `www.cityscroll.org`; `api.crol-list.org` and workers.dev remain compatibility aliases for existing clients and in-flight confirmation links. Changes under `worker/**` deploy from `main` through `.github/workflows/deploy-worker.yml`; a manual Wrangler deploy remains the emergency path. Cron trigger `0 13 * * *` (~9am ET). D1 schema versioned in `worker/migrations/`, applied with `wrangler d1 migrations apply crol-notices --remote`.
 - `cityscroll.org` / `www.cityscroll.org` are the canonical site hosts (custom-domain routes in `worker/wrangler.toml`). The Worker normally reverse-proxies the GitHub Pages origin at `crol-list.org` byte-for-byte (`worker/src/mirror.mjs`). Origin redirects are manual; a redirect back to CityScroll trips a circuit breaker and retries through GitHub's public repository source seam.
-- Direct visitors to `crol-list.org` / `www.crol-list.org` receive a 301 to the matching CityScroll path and query through the externally activated Cloudflare Single Redirect in ``. The rule should exclude requests with a Worker upstream zone. The mirror's independent redirect-loop failover keeps the canonical site available if that rule is broadened accidentally. Fragments remain client-side and are retained by conforming browsers.
+- Direct visitors to `crol-list.org` / `www.crol-list.org` receive a 301 to the matching CityScroll path and query. The mirror's independent redirect-loop failover keeps the canonical site available if an origin fetch is redirected back at the Worker. Fragments remain client-side and are retained by conforming browsers.
 - New feed, confirmation, redirect, and API URLs mint on CityScroll. Existing calendar UIDs retain `@crol-list` and Atom entries retain `tag:crol-list.org,2026:` so calendar and feed clients do not create duplicates. Outbound alerts are sent from `alerts@cityscroll.org`; inbound operational routing remains on `@crol-list.org` (`subscribe@`, `feedback@`) unless separately redirected by provider policy.
-- Secrets via `wrangler secret put`: `ANTHROPIC_API_KEY`, `RESEND_API_KEY`, `TURNSTILE_SECRET`, `TOKEN_SECRET`, `USAGE_KEY`, `ANALYTICS_READ_TOKEN`, `ANALYTICS_DEV_KEY`, and the production-only `ANALYTICS_ENVIRONMENT` runtime gate. The analytics read token is scoped to Account Analytics Read; the developer key authenticates short-lived HMAC exclusions, while a missing/non-production runtime gate drops writes. Spend guards are vars in `wrangler.toml`: `MAX_PER_RUN=25`, `MAX_SENDS_PER_DAY=50` (under Resend's free 100/day); `/subscribe` and `/feedback` fail closed (503) if their secrets are absent.
+- Secrets are stored outside the repository (Wrangler secret bindings). Bindings referenced by code include `ANTHROPIC_API_KEY`, `RESEND_API_KEY`, `TURNSTILE_SECRET`, `TOKEN_SECRET`, `USAGE_KEY`, `ANALYTICS_READ_TOKEN`, `ANALYTICS_DEV_KEY`, and the production-only `ANALYTICS_ENVIRONMENT` write gate. A missing or non-production analytics environment drops writes; the developer key authenticates short-lived HMAC exclusions. Spend guards are vars in `wrangler.toml`: `MAX_PER_RUN=25`, `MAX_SENDS_PER_DAY=50` (under Resend's free 100/day); `/subscribe` and `/feedback` fail closed (503) if their secrets are absent.
 - GitHub Actions is path-filtered in `CI` using `dorny/paths-filter`; worker/docs/frontend jobs run only when their lanes changed.
   PR and merge tests include source-contract verification against committed fixtures:
   `tools/verify_source_contracts.mjs`, plus a blocking 20-sample p95 browser-performance
