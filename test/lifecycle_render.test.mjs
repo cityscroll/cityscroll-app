@@ -49,6 +49,7 @@ const sandbox = new Function(
   extractConst("PASSPORT_CONTRACTS_URL") +
   extractConst("PASSPORT_RFX_URL") +
   extractConst("LIFECYCLE_STAGE_ORDER") +
+  extractConst("CURRENT_SOLICITATIONS_URL") +
   extractFn("lifecycleStageLabel") +
   extractFn("lifecycleAmount") +
   extractFn("lifecycleMoney") +
@@ -57,6 +58,7 @@ const sandbox = new Function(
   extractFn("lifecycleHasLaterMatched") +
   extractFn("lifecyclePublicStatus") +
   extractFn("lifecycleSourceLink") +
+  extractFn("lifecycleDocumentsHTML") +
   extractFn("lifecycleStageHTML") +
   extractFn("lifecycleTimelineHTML") +
   "return { lifecycleStageLabel, lifecycleAmount, lifecycleSourceLink, lifecycleStageHTML, lifecycleTimelineHTML, lifecycleMoney };"
@@ -445,4 +447,72 @@ test("lifecycle: no PIN renders the no-pin note instead of the provenance note",
   assert.doesNotMatch(html, /Could not reach/);
   assert.doesNotMatch(html, /Not yet shown here/);
   assert.doesNotMatch(html, /Pending contract/);
+});
+
+// ---------------------------------------------------------------------------
+// 10. SOLICITATION DOCUMENTS: joined package links vs not-yet-ingested gap
+// ---------------------------------------------------------------------------
+
+test("lifecycle: solicitation with joined package documents renders real links", () => {
+  const docsLifecycle = {
+    pin: "85725P0001", pin_strategy: "exact", ok: true, amendments: [],
+    timeline: [
+      {
+        stage: "solicitation", status: "matched", source: "city-record",
+        date: "2024-10-01", documents_status: "matched",
+        detail: {
+          request_id: "20240816113",
+          agency: "Citywide Administrative Services",
+          title: "Mentor Program",
+          pin: "85725P0001",
+          due_date: "2024-10-07T10:30:00.000",
+          documents: [
+            "https://a856-cityrecord.nyc.gov/Search/GetFile?SectionID=6&RequestStatus=Archived&RequestID=20240816113&DocumentID=38698",
+          ],
+          n_documents: 1,
+          documents_status: "matched",
+        },
+      },
+      { stage: "pending", status: "unmatched", source: "checkbook-contracts", date: null, detail: null },
+      { stage: "registered", status: "unmatched", source: "checkbook-contracts", date: null, detail: null },
+      { stage: "payment", status: "unmatched", source: "checkbook-spending", date: null, detail: null },
+    ],
+  };
+  const html = lifecycleTimelineHTML(docsLifecycle, {
+    request_id: "20240816113", agency_name: "Citywide Administrative Services", pin: "85725P0001",
+  });
+  assert.match(html, /package document/);
+  assert.match(html, /Document 1/);
+  assert.match(html, /a856-cityrecord\.nyc\.gov\/Search\/GetFile/);
+  assert.doesNotMatch(html, /Not yet shown here — solicitation package/);
+});
+
+test("lifecycle: solicitation without package join uses not-yet-ingested register", () => {
+  const gapLifecycle = {
+    pin: "85726B0067", pin_strategy: "exact", ok: true, amendments: [],
+    timeline: [
+      {
+        stage: "solicitation", status: "matched", source: "city-record",
+        date: "2026-07-10", documents_status: "unmatched",
+        detail: {
+          request_id: "20260709023",
+          agency: "Citywide Administrative Services",
+          title: "FORKLIFTS DIESEL",
+          pin: "85726B0067",
+          documents: [],
+          n_documents: 0,
+          documents_status: "unmatched",
+        },
+      },
+      { stage: "pending", status: "unmatched", source: "checkbook-contracts", date: null, detail: null },
+      { stage: "registered", status: "unmatched", source: "checkbook-contracts", date: null, detail: null },
+      { stage: "payment", status: "unmatched", source: "checkbook-spending", date: null, detail: null },
+    ],
+  };
+  const html = lifecycleTimelineHTML(gapLifecycle, {
+    request_id: "20260709023", agency_name: "Citywide Administrative Services", pin: "85726B0067",
+  });
+  assert.match(html, /Not yet shown here — solicitation package details live in/);
+  assert.match(html, /Current Solicitations \(Open Data\)/);
+  assert.doesNotMatch(html, /package document/);
 });
