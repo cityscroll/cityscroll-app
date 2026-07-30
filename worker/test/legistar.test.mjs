@@ -5,7 +5,7 @@ import { test } from "node:test";
 import {
   applyApiLimits,
   buildMeetingOutcomes,
-  parseLegistarResponse,
+  MEETING_OUTCOMES_KV_KEY,
 } from "../src/lib/meeting_outcomes.mjs";
 import {
   handleMeetingOutcomes,
@@ -29,38 +29,30 @@ function nowIso(value) {
 
 const VIEW_NOW = new Date("2026-07-29T12:00:00.000Z");
 
-// ---------------------------------------------------------------------------
-// Parsing
-// ---------------------------------------------------------------------------
-
-test("parseLegistarResponse handles array-like payloads", () => {
-  assert.equal(parseLegistarResponse([{ id: 1 }]).length, 1);
-  assert.equal(parseLegistarResponse({ value: [{ id: 2 }] }).length, 1);
-  assert.equal(parseLegistarResponse({ d: [{ id: 3 }] }).length, 1);
-  assert.equal(parseLegistarResponse("noop").length, 0);
-});
-
-// ---------------------------------------------------------------------------
-// Chain coverage
-// ---------------------------------------------------------------------------
-
-test("buildMeetingOutcomes follows notice -> agenda -> matter -> vote -> document", () => {
-  const model = buildMeetingOutcomes(
-    fixture.notices,
-    fixture.events,
-    fixture.agenda_items,
-    fixture.matters,
-    fixture.votes,
-    fixture.documents,
+function modelFromFixture(overrides = {}) {
+  return buildMeetingOutcomes(
+    overrides.notices || fixture.notices,
+    overrides.events || fixture.events,
+    overrides.event_items || fixture.event_items,
+    overrides.votes || fixture.votes,
+    overrides.attachments || [],
   );
+}
+
+// ---------------------------------------------------------------------------
+// Chain coverage (strict join + inline matters)
+// ---------------------------------------------------------------------------
+
+test("buildMeetingOutcomes follows notice -> event -> agenda -> matter -> vote", () => {
+  const model = modelFromFixture();
 
   assert.equal(model.records.length, 1);
   assert.equal(model.counts.votes, 1);
-  assert.equal(model.counts.documents, 1);
+  assert.ok(model.counts.documents >= 2);
 
   const record = model.records[0];
   assert.equal(record.join.matched, true);
-  assert.equal(record.join.reason.includes("title overlap"), true);
+  assert.equal(record.join.method, "exact_date_body_tokens");
 
   const item = record.agenda_items[0];
   assert.equal(item.join.matched, true);
@@ -68,21 +60,14 @@ test("buildMeetingOutcomes follows notice -> agenda -> matter -> vote -> documen
 
   const matter = item.matters[0];
   assert.equal(matter.matter_id, "mat-001");
-  assert.equal(matter.votes[0].vote_id, "vote-001");
-  assert.equal(matter.documents[0].document_id, "doc-001");
+  assert.equal(matter.matter_file, "LU 0001-2026");
+  assert.equal(matter.outcome, "Approved by Subcommittee");
   assert.equal(matter.votes[0].counts.aye, 6);
   assert.equal(matter.join.matched, true);
 });
 
 test("notice venue does not become affected geography", () => {
-  const model = buildMeetingOutcomes(
-    fixture.notices,
-    fixture.events,
-    fixture.agenda_items,
-    fixture.matters,
-    fixture.votes,
-    fixture.documents,
-  );
+  const model = modelFromFixture();
   const record = model.records[0];
   assert.equal(record.notice.affected_area.scope, "local");
   assert.deepEqual(record.notice.affected_area.boroughs, ["Queens"]);
@@ -92,20 +77,15 @@ test("notice venue does not become affected geography", () => {
 });
 
 test("unmatched notice is explicit and machine-readable", () => {
-  const model = buildMeetingOutcomes(
-    [
+  const model = modelFromFixture({
+    notices: [
       {
         ...fixture.notices[0],
         request_id: "CR-1002",
         short_title: "Unmatched council item",
       },
     ],
-    fixture.events,
-    fixture.agenda_items,
-    fixture.matters,
-    fixture.votes,
-    fixture.documents,
-  );
+  });
 
   assert.equal(model.records.length, 1);
   assert.equal(model.records[0].join.matched, false);
@@ -113,6 +93,18 @@ test("unmatched notice is explicit and machine-readable", () => {
   assert.equal(model.records[0].council_event, null);
   assert.equal(Array.isArray(model.records[0].agenda_items), true);
   assert.equal(model.records[0].agenda_items.length, 0);
+});
+
+test("attachments attach to matter documents by agenda_item_id", () => {
+  const model = modelFromFixture({
+    attachments: [{
+      agenda_item_id: "evtitem-001",
+      documents: [{ url: "https://example.com/a.pdf", name: "Staff report", category: "Supporting" }],
+    }],
+  });
+  const matter = model.records[0].agenda_items[0].matters[0];
+  assert.equal(matter.documents.length, 1);
+  assert.equal(matter.documents[0].name, "Staff report");
 });
 
 // ---------------------------------------------------------------------------
@@ -130,14 +122,7 @@ test("API limit cap is enforced regardless of requested limit", () => {
 
 test("GET /meeting-outcomes serves capped JSON records", async () => {
   const kv = memoryKV();
-  const payload = buildMeetingOutcomes(
-    fixture.notices,
-    fixture.events,
-    fixture.agenda_items,
-    fixture.matters,
-    fixture.votes,
-    fixture.documents,
-  );
+  const payload = modelFromFixture();
   payload.generated_at = nowIso(VIEW_NOW);
   payload.records = Array.from({ length: 140 }, (_, i) => ({
     ...payload.records[0],
@@ -145,7 +130,7 @@ test("GET /meeting-outcomes serves capped JSON records", async () => {
     notice: { ...payload.records[0].notice, request_id: `CR-${i + 10}` },
     council_event: { ...payload.records[0].council_event, event_id: `evt-${i}` },
   }));
-  await kv.put("meeting-outcomes:materialized:v1", JSON.stringify(payload));
+  await kv.put(MEETING_OUTCOMES_KV_KEY, JSON.stringify(payload));
 
   const response = await handleMeetingOutcomes(
     new Request("https://api.cityscroll.org/meeting-outcomes?offset=0&limit=200"),

@@ -896,12 +896,16 @@
       "kind": "html",
       "landing_page": "https://council.nyc.gov/legislation/api/",
       "publisher_cadence": "Updated as meetings, agenda items, and votes change",
-      "product_freshness": "Authenticated Web API materialization is recommended after measured modern event join of 100% (2026-07-30) with LEGISTAR_API_TOKEN. Nested EventItems/Votes require the token as token= query on webapi.legistar.com/v1/nyc. Worker secret not installed in this recon PR.",
-      "used_for": "Meeting outcomes surface: matching notices to Council agenda trees, voting results, and supporting documents.",
+      "product_freshness": "Daily edge materialization (cron) fetches authenticated Events (180-day window), strict-joins City Record hearing notices, and materializes EventItems (agenda + matters + outcomes), best-effort roll-call votes, item attachments, and hearing documents (agenda/minutes PDFs) into the meeting-outcomes KV read model. Token reaches the Worker as secret LEGISTAR_API_TOKEN, synced idempotently from the GitHub Actions secret on each deploy.",
+      "used_for": "Meeting outcomes surface: matching notices to Council agenda trees, matters, action outcomes, roll-call votes, attachments, and supporting documents.",
       "code_references": [
         {
+          "path": "worker/src/lib/legistar_client.mjs",
+          "contains": "fetchLegistarEvents"
+        },
+        {
           "path": "worker/src/lib/meeting_outcomes.mjs",
-          "contains": "LEGISTAR_API_BASE"
+          "contains": "buildMeetingOutcomesView"
         },
         {
           "path": "worker/src/lib/legistar_join.mjs",
@@ -910,14 +914,16 @@
       ],
       "delivery_tier": "edge-materialized",
       "endpoint": "https://webapi.legistar.com/v1/nyc/",
-      "gap": "Authenticated recon (2026-07-30): modern City Council Public Hearings strict event join is 100% (59/59); EventItems on 100% of joined events; matter-linked items 98.3%; votes present on ~10% of joined subcommittee hearings when sampled. Clears ~30% usefulness for event/agenda depth. Follow-up: edge materialize Events\u2192EventItems\u2192Votes with Worker secret LEGISTAR_API_TOKEN (not set in this PR). Gaps remain class-(a) until that materialization ships.",
+      "gap": "Materialized (2026-07-30): daily edge ingest from authenticated webapi.legistar.com/v1/nyc with the strict exact_date_body_tokens join (modern event join 100%, 59/59). EventItems carry inline matters (98.3%) and action outcomes; best-effort roll-call votes and attachments are fetched for flagged items (~10% of events publish roll-call detail on the endpoint). Hearing agenda/minutes PDFs surface at the event level. Remaining sub-gap: pre-modern (pre-2025) historical events join at 73% and sparse roll-call detail is often not published on the endpoint for subcommittee voice votes.",
       "join_keys": [
         "matter_id",
         "event_id",
         "event_item_id",
         "agency",
         "event_title",
-        "start_time"
+        "start_time",
+        "event_date",
+        "committee/body_name_in_notice_title"
       ],
       "join_measurement": {
         "observed_on": "2026-07-30",
@@ -966,7 +972,7 @@
             "rate": 0.1017
           }
         },
-        "verdict": "Above usefulness threshold (~30%) for modern event/agenda depth: authenticated strict event join 100% (59/59); EventItems 100%; matter items 98.3%. Recommend edge materialization with LEGISTAR_API_TOKEN Worker secret (not set in this PR)."
+        "verdict": "Above usefulness threshold (~30%) for modern event/agenda depth: authenticated strict event join 100% (59/59); EventItems 100%; matter items 98.3%. Edge materialization shipped: daily ingest from webapi.legistar.com/v1/nyc with Worker secret LEGISTAR_API_TOKEN."
       }
     },
     {

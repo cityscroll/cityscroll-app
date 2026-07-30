@@ -116,6 +116,7 @@ EXTERNAL_HREF_EXPRS = (
     "${contractLink}",                # Checkbook NYC smart_search for a matched contract id
     "${escUiHtml(entry.source.url)}", # subsidy lifecycle: official Build NYC / NYCIDA document
     "${escUiHtml(d.url)}",            # council meeting outcomes: Legistar supporting document
+    "${escUiHtml(event.event_url)}",  # council meeting outcomes: Legistar MeetingDetail page
     "${escUiHtml(url)}",              # solicitation package document from Current Solicitations join
     "${escUiHtml(record.portal_url)}",  # land outcomes: official ZAP project portal
     "${escUiHtml(href)}",         # rule-lifecycle chip + comment action: NYC Rules comment/adoption page
