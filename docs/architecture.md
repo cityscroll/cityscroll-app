@@ -81,7 +81,7 @@ sources:
   - test/fixtures/wave4/generated/process_spine.json
   - test/fixtures/wave4/generated/unresolved-joins.json
   - test/fixtures/wave4/generated/ocds-gap-table.json
-sources_hash: 56e31c23f807bc6a7e4b5fd1f28c431690c45c139faed118348a81957c3b026d
+sources_hash: eb05c60aa69bbcfad0532f23e8327e68706bebb412a4d02a9ab0c12b11f60c34
 ---
 
 # crol-list — architecture
@@ -182,12 +182,12 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 - Secrets via `wrangler secret put`: `ANTHROPIC_API_KEY`, `RESEND_API_KEY`, `TURNSTILE_SECRET`, `TOKEN_SECRET`, `USAGE_KEY`, `ANALYTICS_READ_TOKEN`, `ANALYTICS_DEV_KEY`, and the production-only `ANALYTICS_ENVIRONMENT` runtime gate. The analytics read token is scoped to Account Analytics Read; the developer key authenticates short-lived HMAC exclusions, while a missing/non-production runtime gate drops writes. Spend guards are vars in `wrangler.toml`: `MAX_PER_RUN=25`, `MAX_SENDS_PER_DAY=50` (under Resend's free 100/day); `/subscribe` and `/feedback` fail closed (503) if their secrets are absent.
 - GitHub Actions is path-filtered in `CI` using `dorny/paths-filter`; worker/docs/frontend jobs run only when their lanes changed.
   PR and merge tests include source-contract verification against committed fixtures:
-  `tools/verify_source_contracts.mjs`.
+  `tools/verify_source_contracts.mjs`, plus a blocking 20-sample p95 browser-performance
+  contract against hermetic data fixtures.
   A separate daily workflow (`source-contracts-live.yml`) probes live sources and opens/updates an issue on drift.
   Actions also builds and deploys the stable site after merge, publishes explicitly labeled draft
   previews, promotes exact commits to beta only on manual dispatch, and deploys Worker changes
   when `worker/**` changes.
-- Performance budget gate work is in flight for merge protection and has not yet landed.
 
 ## Surface
 

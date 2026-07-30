@@ -16,3 +16,5 @@ PAPERCUTS.md
 .scrimignore
 .claude/
 .agents/
+# Local browser performance results
+test/performance/artifacts/
