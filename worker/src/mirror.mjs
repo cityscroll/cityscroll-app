@@ -9,7 +9,7 @@
 // know about. Only a small, safe header allowlist is forwarded; everything else is dropped.
 
 const ORIGIN = "https://crol-list.org";
-const FALLBACK_ORIGIN = "https://cityscroll.github.io/crol-list/";
+const FALLBACK_ORIGIN = "https://raw.githubusercontent.com/cityscroll/crol-list/main/";
 const FORWARD_REQUEST_HEADERS = ["accept", "accept-language", "if-none-match", "if-modified-since", "user-agent"];
 const MIRROR_HOSTS = new Set([
   "cityscroll.org",
