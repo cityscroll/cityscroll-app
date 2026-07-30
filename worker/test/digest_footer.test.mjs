@@ -81,6 +81,8 @@ test("after: the notice link still routes through the count-only /r redirect —
   const sentEmails = await runOneMoneySub({ keywords: ["elevator"] });
   const html = sentEmails[0].html;
   assert.match(html, /https:\/\/api\.cityscroll\.org\/r\/[^/"]+\/20260701200/, "redirect behavior is unchanged");
+  // Pins-scoped magic-link token rides on the same /r URL so a click can recognize the device.
+  assert.match(html, /[?&]s=[A-Za-z0-9_-]+\./, "digest notice links carry a signed session token");
 });
 
 test("after: the unsubscribe line still renders", async () => {

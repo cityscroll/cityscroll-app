@@ -128,7 +128,10 @@ test("processOneSub (award): a watched NYCHA notice whose PIN match appears in a
     assert.equal(sent.length, 1);
     assert.match(sent[0].html, /Award registered/);
     assert.match(sent[0].html, /NELLIGAN WHITE ARCHITECTS PLLC/);
-    assert.match(sent[0].html, /#notice\/20250110001/);
+    // Notice deep-link goes through /session (pins-scoped magic link) with next=
+    // pointing at #notice/<id> (URL-encoded in the query value).
+    assert.match(sent[0].html, /\/session\?token=/);
+    assert.match(sent[0].html, /notice(%2F|\/)20250110001/);
     assert.ok(!sent[0].html.includes("Possible award match"), "an exact NYCHA match must never render with the fuzzy label");
   } finally { globalThis.fetch = orig; }
 });
