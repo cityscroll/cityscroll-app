@@ -58,6 +58,9 @@ const sandbox = new Function(
   extractFn("lifecycleGapSourceName") +
   extractFn("lifecycleHasLaterMatched") +
   extractFn("lifecyclePublicStatus") +
+  extractFn("lifecycleMatchedRegisteredDetail") +
+  extractConst("LIFECYCLE_DOLLARS_ANCHOR") +
+  extractFn("lifecyclePaymentSummaryHTML") +
   extractFn("lifecycleSourceLink") +
   extractFn("lifecycleDocumentsHTML") +
   extractFn("lifecycleStageHTML") +
@@ -250,17 +253,21 @@ test("lifecycle: connectors between stages", () => {
   assert.equal(connectors, 3, "4 stages = 3 connectors");
 });
 
-test("lifecycle: registered stage shows spent-to-date percentage", () => {
+test("lifecycle: registered stage owns registration amount, not a second paid bar", () => {
   const html = lifecycleTimelineHTML(FULL_LIFECYCLE, notice);
-  assert.match(html, /\$1\.50M \/ \$5\.00M \(30%\)/);
-  assert.match(html, /class="lbar"/);
+  // Committed amount still on the registered card; paid-to-date is payments + dollars
+  assert.match(html, /\$5\.00M/);
+  assert.doesNotMatch(html, /\$1\.50M \/ \$5\.00M \(30%\)/);
 });
 
-test("lifecycle: payment stage shows payment count and latest", () => {
+test("lifecycle: payment stage shows payment count, summary, and dollars link", () => {
   const html = lifecycleTimelineHTML(FULL_LIFECYCLE, notice);
   assert.match(html, /3 payments/);
   assert.match(html, /Latest:/);
   assert.match(html, /\$250K/);
+  // total_spent from payment detail (not registered.spent_to_date) when present
+  assert.match(html, /\$750K paid of \$5\.00M committed/);
+  assert.match(html, /href="#follow-the-dollars"/);
 });
 
 test("lifecycle: provenance note names City Record, Checkbook, PASSPort, and the PIN", () => {

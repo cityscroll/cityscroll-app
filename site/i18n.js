@@ -894,6 +894,10 @@ const STRINGS = {
     lifecycle_passed_registered_html: "Passed — payments are on record.",
     lifecycle_passed_generic_html: "Passed — a later stage is on record.",
     lifecycle_paid_to_date_html: "Paid to date: {amount}",
+    // Payments card summary when Checkbook join exists (detail lives in Follow the dollars).
+    lifecycle_payment_summary_html: "{paid} paid of {committed} committed",
+    lifecycle_payment_zero_lag_html: "Payments lag invoicing — $0 paid on a freshly registered contract is normal.",
+    lifecycle_payment_details_link_html: "<a href=\"{href}\">Follow the dollars</a> for detail.",
     lifecycle_source_city_record: "City Record",
     lifecycle_source_checkbook: "Checkbook NYC",
     lifecycle_source_passport: "PASSPort Public",

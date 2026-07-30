@@ -5667,24 +5667,84 @@ function lifecycleHasLaterMatched(timeline, stage){
 // - unknown never surfaces as "Could not reach" — map to unmatched taxonomy, or passed
 //   when a later stage is already on record
 // - unmatched + later matched → passed (stage succession)
+// - payment with a matched registered join is never a public gap: paid-to-date lives on
+//   that join (Follow-the-Dollars = detail owner; payments card = summary)
 function lifecyclePublicStatus(entry, timeline){
   if(!entry) return "unmatched";
   if(entry.status === "not_applicable") return "not_applicable";
   if(entry.status === "matched" || entry.status === "ambiguous" || entry.status === "passed") return entry.status;
   if(lifecycleHasLaterMatched(timeline, entry.stage)) return "passed";
+  // Payment stage: when registration joined, $0/paid is a known Checkbook fact — not a gap.
+  if(entry.stage === "payment" && lifecycleMatchedRegisteredDetail(timeline)) return "matched";
   // Transient lookup failure and confirmed empty both use the taxonomy gap register
   // for the reader — never the operational "could not reach" wording on notice detail.
   if(entry.status === "unknown" || entry.status === "unmatched") return "unmatched";
   return entry.status;
 }
 
+// Matched registered contract detail from the same timeline (payment/dollars ownership).
+function lifecycleMatchedRegisteredDetail(timeline){
+  const reg = (timeline || []).find(e => e && e.stage === "registered" && e.status === "matched" && e.detail);
+  return reg ? reg.detail : null;
+}
+
+// Stable anchor for Follow-the-Dollars — payments card links here for money detail.
+const LIFECYCLE_DOLLARS_ANCHOR = "follow-the-dollars";
+
+// Payments card summary when Checkbook join exists: amounts + optional $0 lag note +
+// anchor to the dollars panel. Never gap copy while the join is present.
+function lifecyclePaymentSummaryHTML(paid, committed, opts){
+  opts = opts || {};
+  const paidN = paid != null ? Number(paid) : 0;
+  const committedN = committed != null ? Number(committed) : 0;
+  let html = `<div class="lc-pct">${t("lifecycle_payment_summary_html",{
+    paid: lifecycleMoney(paidN),
+    committed: lifecycleMoney(committedN)
+  })}</div>`;
+  if(paidN === 0 && opts.zeroLag !== false){
+    html += `<div class="lc-pct">${t("lifecycle_payment_zero_lag_html")}</div>`;
+  }
+  if(opts.link !== false){
+    html += `<div class="lc-pct">${t("lifecycle_payment_details_link_html",{
+      href: "#" + LIFECYCLE_DOLLARS_ANCHOR
+    })}</div>`;
+  }
+  return html;
+}
+
 function lifecycleStageHTML(entry, timeline){
-  const publicStatus = lifecyclePublicStatus(entry, timeline);
+  let publicStatus = lifecyclePublicStatus(entry, timeline);
   if(publicStatus === "not_applicable") return "";
 
   const label = lifecycleStageLabel(entry.stage);
   const dateHTML = entry.date ? `<div class="when">${fdate(entry.date)}</div>` : `<div class="when">—</div>`;
   let detailHTML = "";
+  const regDetail = lifecycleMatchedRegisteredDetail(timeline);
+
+  // Ownership: when Checkbook registration joined, payments card summarizes paid/committed
+  // and links to Follow-the-Dollars — never parallel gap copy (even on stale unmatched rows).
+  if(entry.stage === "payment" && regDetail){
+    publicStatus = "matched";
+    const d = entry.detail || {};
+    const paid = d.total_spent != null ? d.total_spent : (regDetail.spent_to_date != null ? regDetail.spent_to_date : 0);
+    const committed = regDetail.current_amount != null ? regDetail.current_amount : 0;
+    let extraHTML = "";
+    if(d.total_payments){
+      extraHTML += `<div class="lc-pcount">${tn("lifecycle_payments_count", d.total_payments)}</div>`;
+      if(d.latest_payment_amount != null){
+        extraHTML += `<div class="lc-pct">${t("lifecycle_latest_payment_html",{amount:lifecycleMoney(d.latest_payment_amount),date:fdate(d.latest_payment_date)})}</div>`;
+      }
+    }
+    extraHTML += lifecyclePaymentSummaryHTML(paid, committed, {zeroLag: Number(paid) === 0});
+    detailHTML = `<div class="amt">${lifecycleMoney(paid)}</div>` + extraHTML;
+    const link = lifecycleSourceLink(entry);
+    return `<div class="stage"><div class="box matched">
+      <div class="stage-name">${label}</div>
+      ${dateHTML}
+      ${detailHTML}
+      ${link}
+    </div></div>`;
+  }
 
   if(publicStatus === "matched"){
     const amt = lifecycleAmount(entry);
@@ -5695,18 +5755,15 @@ function lifecycleStageHTML(entry, timeline){
        Math.abs(d.current_amount - d.original_amount) > 1){
       extraHTML += `<div class="lc-amend">${t("lifecycle_amended_from_html",{original:lifecycleMoney(d.original_amount)})}</div>`;
     }
-    if(entry.stage === "registered" && d.spent_to_date != null){
-      const pct = d.current_amount > 0 ? Math.min(100, Math.round((d.spent_to_date / d.current_amount) * 100)) : 0;
-      extraHTML += `<div class="lc-pct">${lifecycleMoney(d.spent_to_date)} / ${lifecycleMoney(d.current_amount)} (${pct}%)</div>`;
-      extraHTML += `<div class="lbar" style="max-width:180px;margin-top:4px"><span style="width:${pct}%"></span></div>`;
-    }
+    // Paid-to-date is owned by the payments card + Follow-the-Dollars — not a second spent
+    // bar on the registration card (one owner per fact).
     if(entry.stage === "payment" && d.total_payments){
       extraHTML += `<div class="lc-pcount">${tn("lifecycle_payments_count", d.total_payments)}</div>`;
       if(d.latest_payment_amount != null){
         extraHTML += `<div class="lc-pct">${t("lifecycle_latest_payment_html",{amount:lifecycleMoney(d.latest_payment_amount),date:fdate(d.latest_payment_date)})}</div>`;
       }
     } else if(entry.stage === "payment" && d.total_spent != null && !d.total_payments){
-      // Derived from registered.spent when spending domain was unavailable
+      // No registered join — fall back to paid-to-date line only
       extraHTML += `<div class="lc-pct">${t("lifecycle_paid_to_date_html",{amount:lifecycleMoney(d.total_spent)})}</div>`;
     }
     if((entry.stage === "award" || entry.stage === "pending") && d.vendor){
@@ -5928,22 +5985,20 @@ function lifecycleDollarsHTML(data, notice){
     const amended = original > 0 && Math.abs(current - original) > 1;
     const vendorMismatch = notice.vendor_name && d.vendor && vendorStem(d.vendor) !== vendorStem(notice.vendor_name);
     const payPublic = pay ? lifecyclePublicStatus(pay, data.timeline) : "";
-    const payNote = pay && payPublic === "matched" && pay.detail
+    // Dollars owns paid-to-date detail. Never re-emit payments gap copy here when the
+    // registration join already supplies Paid to date (one owner; gap only if join absent).
+    const payNote = pay && payPublic === "matched" && pay.detail && pay.detail.total_payments != null
       ? t("lifecycle_dollars_payments_html",{
-          count: pay.detail.total_payments != null
-            ? tn("lifecycle_payments_count", pay.detail.total_payments || 0)
-            : t("lifecycle_paid_to_date_html",{amount:lifecycleMoney(pay.detail.total_spent)}),
+          count: tn("lifecycle_payments_count", pay.detail.total_payments || 0),
           latest: pay.detail.latest_payment_amount != null
             ? t("lifecycle_latest_payment_html",{amount:lifecycleMoney(pay.detail.latest_payment_amount),date:fdate(pay.detail.latest_payment_date)})
             : ""
         })
-      : (pay && payPublic === "unmatched"
-          ? t("lifecycle_unmatched_payment_html",{source:`<span lang="en" dir="ltr">${t("lifecycle_source_checkbook_spending")}</span>`})
-          : "");
+      : "";
     const contractLink = d.contract_id
       ? `https://www.checkbooknyc.com/smart_search/citywide?search_term=${encodeURIComponent(d.contract_id)}`
       : CHECKBOOK_SEARCH_URL;
-    return `<div class="apply" style="margin-top:14px"><h3>${t("lifecycle_dollars_heading")}</h3><div class="body">
+    return `<div class="apply" id="${LIFECYCLE_DOLLARS_ANCHOR}" style="margin-top:14px"><h3>${t("lifecycle_dollars_heading")}</h3><div class="body">
       <dl>
         <dt>${t("lifecycle_dollars_contract_lbl")}</dt><dd><code>${escUiHtml(d.contract_id||"—")}</code> · ${t("lifecycle_dollars_registered_on_html",{date:d.registration_date?fdate(d.registration_date):"—"})}</dd>
         <dt>${t("lifecycle_dollars_committed_lbl")}</dt><dd><b>${lifecycleMoney(current)}</b>${amended?` <span class="tag soon">${t("lifecycle_amended_from_html",{original:lifecycleMoney(original)})}</span>`:""}</dd>
@@ -6057,12 +6112,16 @@ function subsidyStageHTML(entry){
 function subsidyLifecycleHTML(data, notice){
   if(!data) return "";
   const join = data.join || {};
+  // Ownership: project-level unmatched/unavailable is one gap note — do not also stack
+  // per-stage "not yet shown" cards that re-classify the same absence.
   let stages = "";
-  const tl = Array.isArray(data.timeline) ? data.timeline : [];
-  tl.forEach((entry, idx) => {
-    stages += subsidyStageHTML(entry);
-    if(idx < tl.length - 1) stages += '<div class="connector">→</div>';
-  });
+  if(join.matched && data.source_status !== "unavailable"){
+    const tl = Array.isArray(data.timeline) ? data.timeline : [];
+    tl.forEach((entry, idx) => {
+      stages += subsidyStageHTML(entry);
+      if(idx < tl.length - 1) stages += '<div class="connector">→</div>';
+    });
+  }
 
   let joinNote = "";
   if(data.source_status === "unavailable"){
@@ -6081,7 +6140,7 @@ function subsidyLifecycleHTML(data, notice){
     });
   }
 
-  // Explicit field-level gaps for company/place/money when the join exists but a field is missing.
+  // Field-level gaps only when the join exists (detail under the matched summary).
   let fieldGaps = "";
   if(join.matched){
     if(data.company && data.company.status !== "matched"){
@@ -6890,11 +6949,10 @@ async function showMatter(pin){
   }
   items.sort((a,b)=>(a.date||"9999").localeCompare(b.date||"9999"));
   if(regDetail){
+    // Matter spine: paid-to-date is a joined Checkbook fact — never gap copy in parallel.
     const spent = regDetail.spent_to_date != null ? regDetail.spent_to_date : 0;
     const current = regDetail.current_amount != null ? regDetail.current_amount : 0;
-    const payExtra = pay && pay.status === "unmatched"
-      ? t("lifecycle_unmatched_payment_html",{source:t("lifecycle_source_checkbook")})
-      : `term ${fdate(regDetail.start_date)||"—"} → ${fdate(regDetail.end_date)||"—"} · <a href="https://www.checkbooknyc.com/smart_search/citywide?search_term=${encodeURIComponent(regDetail.contract_id||"")}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`;
+    const payExtra = `term ${fdate(regDetail.start_date)||"—"} → ${fdate(regDetail.end_date)||"—"} · <a href="https://www.checkbooknyc.com/smart_search/citywide?search_term=${encodeURIComponent(regDetail.contract_id||"")}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`;
     items.push({
       date: null,
       label: `<b>${t("lifecycle_dollars_paid_lbl")}: ${money(spent)||"$0"}</b> of ${money(current)||"—"}`,
