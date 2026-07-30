@@ -87,6 +87,7 @@ const sandbox = new Function(
   extractFn("lifecycleMatchedRegisteredDetail") + "\n" +
   extractConst("LIFECYCLE_DOLLARS_ANCHOR") + "\n" +
   extractFn("lifecycleDollarsFocusHref") + "\n" +
+  extractFn("lifecyclePaymentState") + "\n" +
   extractFn("lifecyclePaymentSummaryHTML") + "\n" +
   extractFn("lifecycleSourceLink") + "\n" +
   extractFn("lifecycleDocumentsHTML") + "\n" +
@@ -148,6 +149,7 @@ try {
     extractFn("lifecycleMatchedRegisteredDetail") +
     extractConst("LIFECYCLE_DOLLARS_ANCHOR") +
     extractFn("lifecycleDollarsFocusHref") +
+    extractFn("lifecyclePaymentState") +
     extractFn("lifecyclePaymentSummaryHTML") +
     extractFn("lifecycleSourceLink") +
     extractFn("lifecycleDocumentsHTML") +
@@ -236,7 +238,18 @@ const HNTB_LIFECYCLE = {
         mwbe: "Non-M/WBE",
       },
     },
-    { stage: "payment", status: "unknown", source: "checkbook-spending", date: null, detail: null },
+    {
+      stage: "payment",
+      status: "matched",
+      source: "checkbook-spending",
+      date: null,
+      detail: {
+        total_payments: null,
+        total_spent: 0,
+        derived_from: "registered",
+        payment_state: "verified_zero",
+      },
+    },
   ],
 };
 

@@ -5828,18 +5828,36 @@ function lifecycleDollarsFocusHref(noticeId){
   return `#notice/${encodeURIComponent(String(noticeId))}?focus=${encodeURIComponent(LIFECYCLE_DOLLARS_ANCHOR)}`;
 }
 
+// Resolve payment_state for three-state honesty (paid / verified_zero / unavailable).
+// Legacy payloads without payment_state: total_spent null → unavailable; else infer.
+function lifecyclePaymentState(detail){
+  if(!detail) return null;
+  if(detail.payment_state) return detail.payment_state;
+  if(detail.total_spent == null && detail.total_payments == null) return "unavailable";
+  if(detail.total_payments != null) return "paid";
+  if(Number(detail.total_spent) === 0) return "verified_zero";
+  return detail.derived_from === "registered" ? "from_registered" : "paid";
+}
+
 // Payments card summary when Checkbook join exists: amounts + optional $0 lag note +
 // notice-scoped deep link to the dollars panel. Never gap copy while the join is present.
+// payment_state "unavailable" never renders a confident $0.
 function lifecyclePaymentSummaryHTML(paid, committed, opts){
   opts = opts || {};
-  const paidN = paid != null ? Number(paid) : 0;
   const committedN = committed != null ? Number(committed) : 0;
-  let html = `<div class="lc-pct">${t("lifecycle_payment_summary_html",{
-    paid: lifecycleMoney(paidN),
-    committed: lifecycleMoney(committedN)
-  })}</div>`;
-  if(paidN === 0 && opts.zeroLag !== false){
-    html += `<div class="lc-pct">${t("lifecycle_payment_zero_lag_html")}</div>`;
+  const state = opts.paymentState || null;
+  let html = "";
+  if(state === "unavailable"){
+    html += `<div class="lc-pct">${t("lifecycle_payment_unavailable_html")}</div>`;
+  } else {
+    const paidN = paid != null ? Number(paid) : 0;
+    html += `<div class="lc-pct">${t("lifecycle_payment_summary_html",{
+      paid: lifecycleMoney(paidN),
+      committed: lifecycleMoney(committedN)
+    })}</div>`;
+    if(paidN === 0 && opts.zeroLag !== false){
+      html += `<div class="lc-pct">${t("lifecycle_payment_zero_lag_html")}</div>`;
+    }
   }
   if(opts.link !== false){
     html += `<div class="lc-pct">${t("lifecycle_payment_details_link_html",{
@@ -5865,10 +5883,13 @@ function lifecycleStageHTML(entry, timeline, notice){
 
   // Ownership: when Checkbook registration joined, payments card summarizes paid/committed
   // and links to Follow-the-Dollars — never parallel gap copy (even on stale unmatched rows).
+  // Three-state honesty: unavailable never shows a confident $0.
   if(entry.stage === "payment" && regDetail){
     publicStatus = "matched";
     const d = entry.detail || {};
-    const paid = d.total_spent != null ? d.total_spent : (regDetail.spent_to_date != null ? regDetail.spent_to_date : 0);
+    const payState = lifecyclePaymentState(d);
+    const paid = payState === "unavailable" ? null
+      : (d.total_spent != null ? d.total_spent : (regDetail.spent_to_date != null ? regDetail.spent_to_date : 0));
     const committed = regDetail.current_amount != null ? regDetail.current_amount : 0;
     let extraHTML = "";
     if(d.total_payments){
@@ -5878,10 +5899,14 @@ function lifecycleStageHTML(entry, timeline, notice){
       }
     }
     extraHTML += lifecyclePaymentSummaryHTML(paid, committed, {
-      zeroLag: Number(paid) === 0,
+      zeroLag: payState === "verified_zero" || (payState !== "unavailable" && Number(paid) === 0),
       noticeId: notice && notice.request_id,
+      paymentState: payState,
     });
-    detailHTML = `<div class="amt">${lifecycleMoney(paid)}</div>` + extraHTML;
+    const amtHTML = payState === "unavailable"
+      ? `<div class="amt muted">—</div>`
+      : `<div class="amt">${lifecycleMoney(paid)}</div>`;
+    detailHTML = amtHTML + extraHTML;
     const link = lifecycleSourceLink(entry, sourceCtx);
     return `<div class="stage"><div class="box matched">
       <div class="stage-name">${label}</div>
@@ -6129,10 +6154,19 @@ function lifecycleDollarsHTML(data, notice){
 
   if(reg && reg.status === "matched" && reg.detail){
     const d = reg.detail;
-    const spent = d.spent_to_date != null ? d.spent_to_date : 0;
+    const payState = lifecyclePaymentState(pay && pay.detail);
+    // Prefer payment-stage total when the spending feed joined; never invent $0 on unavailable.
+    let spent = null;
+    if(payState === "unavailable"){
+      spent = null;
+    } else if(pay && pay.detail && pay.detail.total_spent != null){
+      spent = pay.detail.total_spent;
+    } else {
+      spent = d.spent_to_date != null ? d.spent_to_date : 0;
+    }
     const current = d.current_amount != null ? d.current_amount : 0;
     const original = d.original_amount != null ? d.original_amount : 0;
-    const pct = current > 0 ? Math.min(100, Math.round((spent / current) * 100)) : 0;
+    const pct = (spent != null && current > 0) ? Math.min(100, Math.round((spent / current) * 100)) : null;
     const amended = original > 0 && Math.abs(current - original) > 1;
     // Entity-resolution match (stem + truncation/token overlap) — warn only on genuine mismatch.
     const sameVendor = !notice.vendor_name || !d.vendor || vendorNamesMatch(d.vendor, notice.vendor_name);
@@ -6160,16 +6194,23 @@ function lifecycleDollarsHTML(data, notice){
       : displayDiffers
         ? `<div class="note" style="margin-top:10px">${t("lifecycle_dollars_vendor_variant_html",{checkbook:escUiHtml(cleanText(d.vendor)),notice:escUiHtml(cleanText(notice.vendor_name))})}</div>`
         : "";
+    const paidDd = payState === "unavailable"
+      ? `<dd>${t("lifecycle_dollars_paid_unavailable_html")}</dd>`
+      : `<dd><b>${lifecycleMoney(spent)}</b>${pct != null ? ` (${pct}%)` : ""}<div class="lbar" style="max-width:220px;margin-top:5px"><span style="width:${pct || 0}%"></span></div></dd>`;
+    const lagNote = (payState === "verified_zero" || (payState !== "unavailable" && spent === 0))
+      ? `<div class="note" style="margin-top:10px">${t("lifecycle_payment_zero_lag_html")}</div>`
+      : "";
     return `<div class="apply" id="${LIFECYCLE_DOLLARS_ANCHOR}" style="margin-top:14px" tabindex="-1"><h3>${t("lifecycle_dollars_heading")}</h3><div class="body">
       <dl>
         <dt>${t("lifecycle_dollars_contract_lbl")}</dt><dd><code>${escUiHtml(d.contract_id||"—")}</code> · ${t("lifecycle_dollars_registered_on_html",{date:d.registration_date?fdate(d.registration_date):"—"})}</dd>
         <dt>${t("lifecycle_dollars_committed_lbl")}</dt><dd><b>${lifecycleMoney(current)}</b>${amended?` <span class="tag soon">${t("lifecycle_amended_from_html",{original:lifecycleMoney(original)})}</span>`:""}</dd>
-        <dt>${t("lifecycle_dollars_paid_lbl")}</dt><dd><b>${lifecycleMoney(spent)}</b> (${pct}%)<div class="lbar" style="max-width:220px;margin-top:5px"><span style="width:${pct}%"></span></div></dd>
+        <dt>${t("lifecycle_dollars_paid_lbl")}</dt>${paidDd}
         <dt>${t("lifecycle_dollars_term_lbl")}</dt><dd>${fdate(d.start_date)||"—"} → ${fdate(d.end_date)||"—"}</dd>
         ${d.mwbe?`<dt>${t("lifecycle_dollars_mwbe_lbl")}</dt><dd>${escUiHtml(d.mwbe)}</dd>`:""}
       </dl>
       ${vendorNote}
       ${payNote?`<div class="note" style="margin-top:10px">${payNote}</div>`:""}
+      ${lagNote}
       <div class="pnote">${t("lifecycle_dollars_provenance_html",{
         link:`<a href="${contractLink}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`,
         pin:`<code>${escUiHtml(data.pin||notice.pin||"")}</code>`

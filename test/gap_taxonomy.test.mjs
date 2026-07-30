@@ -81,6 +81,7 @@ const helpers = new Function(
   extractFn("lifecycleMatchedRegisteredDetail") +
   extractConst("LIFECYCLE_DOLLARS_ANCHOR") +
   extractFn("lifecycleDollarsFocusHref") +
+  extractFn("lifecyclePaymentState") +
   extractFn("lifecyclePaymentSummaryHTML") +
   extractFn("lifecycleSourceLink") +
   extractFn("lifecycleDocumentsHTML") +

@@ -63,13 +63,14 @@ const sandbox = new Function(
   extractFn("lifecycleMatchedRegisteredDetail") +
   extractConst("LIFECYCLE_DOLLARS_ANCHOR") +
   extractFn("lifecycleDollarsFocusHref") +
+  extractFn("lifecyclePaymentState") +
   extractFn("lifecyclePaymentSummaryHTML") +
   extractFn("lifecycleSourceLink") +
   extractFn("lifecycleDocumentsHTML") +
   extractFn("lifecycleStageHTML") +
   extractFn("lifecycleOcpAwardHTML") +
   extractFn("lifecycleTimelineHTML") +
-  "return { lifecycleStageLabel, lifecycleAmount, lifecycleSourceLink, lifecycleStageHTML, lifecycleOcpAwardHTML, lifecycleTimelineHTML, lifecycleMoney, checkbookSearchUrl, lifecycleDollarsFocusHref, lifecyclePaymentSummaryHTML };"
+  "return { lifecycleStageLabel, lifecycleAmount, lifecycleSourceLink, lifecycleStageHTML, lifecycleOcpAwardHTML, lifecycleTimelineHTML, lifecycleMoney, checkbookSearchUrl, lifecycleDollarsFocusHref, lifecyclePaymentSummaryHTML, lifecyclePaymentState };"
 );
 
 const {

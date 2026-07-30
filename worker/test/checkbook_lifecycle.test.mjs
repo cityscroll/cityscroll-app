@@ -155,20 +155,28 @@ function withMockedFetch(routes, fn) {
           return { ok: false, status: 403, text: async () => "" };
         }
 
-        // Route by type_of_data, status, and PIN criteria
+        // Route by type_of_data, status, PIN (contracts), or contract_id (spending)
         const dataType = body.match(/<type_of_data>([^<]*)<\/type_of_data>/)?.[1] || "";
-        const statusVal = body.match(/<name>status<\/name>.*?<value>([^<]*)<\/value>/)?.[1] || "";
-        const pinVal = body.match(/<name>pin<\/name>.*?<value>([^<]*)<\/value>/)?.[1] || "";
+        const statusVal = body.match(/<name>status<\/name>[\s\S]*?<value>([^<]*)<\/value>/)?.[1] || "";
+        const pinVal = body.match(/<name>pin<\/name>[\s\S]*?<value>([^<]*)<\/value>/)?.[1] || "";
+        const contractIdVal = body.match(/<name>contract_id<\/name>[\s\S]*?<value>([^<]*)<\/value>/)?.[1] || "";
 
         // Optional PIN-aware routing (for legacy-PIN fallback tests)
         if (routes.pinRouter) {
-          const routed = routes.pinRouter(pinVal, dataType, statusVal);
+          const routed = routes.pinRouter(pinVal, dataType, statusVal, contractIdVal);
           if (routed !== undefined) {
             return { ok: true, status: 200, text: async () => routed };
           }
         }
 
         if (dataType === "Spending") {
+          // Spending must be keyed by contract_id (PIN is invalid on this domain).
+          if (body.includes("<name>pin</name>")) {
+            return {
+              ok: true, status: 200,
+              text: async () => `<response><status><result>failure</result><messages><message><code>1101</code></message></messages></status></response>`,
+            };
+          }
           return { ok: true, status: 200, text: async () => routes.spending || emptySpendingResponse() };
         }
         if (dataType === "Contracts") {
@@ -256,6 +264,7 @@ test("FULL lifecycle: solicitation → pending → registered → payment with s
   assert.equal(payment.detail.total_payments, 2);
   assert.equal(payment.detail.total_spent, 1500000);
   assert.equal(payment.detail.latest_payment_date, "2025-08-20");
+  assert.equal(payment.detail.payment_state, "paid");
 
   // Source timestamps propagate
   assert.equal(pending.source_timestamp, "2025-03-15");
@@ -264,6 +273,39 @@ test("FULL lifecycle: solicitation → pending → registered → payment with s
   // Cached in D1
   assert.ok(db._cache["20250110001"], "lifecycle was cached in D1");
   assert.equal(res.headers.get("Cache-Control"), "public, max-age=300");
+}));
+
+test("Spending lookup uses contract_id, never pin (Checkbook code 1101)", withMockedFetch({
+  registered: contractsResponse([{
+    id: "CT184120268807929", vendor: "HNTB", pin: "84124P0003001",
+    status: "registered", current: "100", original: "100", spent: "0",
+    registered: "2026-06-22", start: "2024-10-11", end: "2032-10-10",
+  }]),
+  pending: emptyResponse(),
+  spending: emptySpendingResponse(),
+}, async (calls) => {
+  const db = fakeDB({
+    notices: {
+      "20260623008": {
+        request_id: "20260623008", start_date: "2026-06-29", agency: "Transportation",
+        type_of_notice: "Award", short_title: "Bridge", pin: "84124P0003001",
+        vendor_name: "HNTB", contract_amount: "100",
+      },
+    },
+  });
+  const res = await handleContractLifecycle(req("?id=20260623008"), { DB: db });
+  const body = await res.json();
+  assert.equal(body.ok, true);
+  const spendCalls = calls.filter((c) => c.url.includes("checkbooknyc") && String(c.body).includes("Spending"));
+  assert.ok(spendCalls.length >= 1, "at least one spending request");
+  for (const c of spendCalls) {
+    assert.match(c.body, /<name>contract_id<\/name>/);
+    assert.doesNotMatch(c.body, /<name>pin<\/name>/);
+    assert.match(c.body, /CT184120268807929/);
+  }
+  const payment = body.timeline.find((t) => t.stage === "payment");
+  assert.equal(payment.detail.payment_state, "verified_zero");
+  assert.equal(payment.detail.total_spent, 0);
 }));
 
 // ===========================================================================
@@ -458,13 +500,24 @@ test("CURSOR/CAP: Checkbook pagination capped at MAX_PAGES × PAGE_SIZE", async 
       const dataType = body.match(/<type_of_data>([^<]*)</)?.[1] || "";
 
       if (dataType === "Contracts") {
+        // Spending is keyed by contract_id — contracts must return an id so the
+        // spending domain is actually queried (PIN is invalid on Spending).
+        const statusVal = body.match(/<name>status<\/name>[\s\S]*?<value>([^<]*)<\/value>/)?.[1] || "";
+        if (statusVal === "registered") {
+          return {
+            ok: true, status: 200,
+            text: async () => contractsResponse([{
+              id: "C-CAP", vendor: "DELTA", pin: "05550R0001001", status: "registered",
+              current: "5000000", original: "5000000", spent: "0", registered: "2025-04-01",
+            }]),
+          };
+        }
         return { ok: true, status: 200, text: async () => emptyResponse() };
       }
       if (dataType === "Spending") {
         pageCalls++;
         const start = from - 1;
         const chunk = bigSpending.slice(start, start + 25);
-        const isLast = chunk.length < 25;
         if (chunk.length === 0) return { ok: true, status: 200, text: async () => emptySpendingResponse() };
         return { ok: true, status: 200, text: async () => spendingResponse(chunk) };
       }

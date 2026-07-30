@@ -897,6 +897,9 @@ const STRINGS = {
     // Payments card summary when Checkbook join exists (detail lives in Follow the dollars).
     lifecycle_payment_summary_html: "{paid} paid of {committed} committed",
     lifecycle_payment_zero_lag_html: "Payments lag invoicing — $0 paid on a freshly registered contract is normal.",
+    // Three-state honesty: spending feed error must not look like verified $0.
+    lifecycle_payment_unavailable_html: "Payment data unavailable right now — Checkbook spending could not be checked.",
+    lifecycle_dollars_paid_unavailable_html: "Unavailable right now",
     lifecycle_payment_details_link_html: "<a href=\"{href}\">Follow the dollars</a> for detail.",
     // Inline context/flags methodology (stays on the notice; full page is optional).
     context_strip_lbl: "Context",
@@ -948,7 +951,7 @@ const STRINGS = {
     lifecycle_dollars_vendor_mismatch_html: "⚠ Checkbook's vendor (<b>{checkbook}</b>) differs from the notice's (<b>{notice}</b>) — a PIN can cover multiple awards. Treat with care.",
     lifecycle_dollars_vendor_variant_html: "Same vendor as the notice (<b>{notice}</b>); Checkbook shows the name as <b>{checkbook}</b>.",
     lifecycle_dollars_payments_html: "{count}. {latest}",
-    lifecycle_dollars_provenance_html: "From the precomputed lifecycle join to {link}, matched by PIN {pin}. Payments lag invoicing — $0 paid on a freshly registered contract is normal.",
+    lifecycle_dollars_provenance_html: "From the precomputed lifecycle join to {link}, matched by PIN {pin}.",
     matter_spine_note: "The spine is every City Record notice sharing this PIN, in order. Checkbook events join deterministically on the same PIN via the precomputed contract lifecycle. Public-hearing notices rarely carry PINs, so hearings may be missing from the chronology.",
 
     // NYCIDA/Build NYC subsidy lifecycle on notice detail (SUB-001)
