@@ -89,10 +89,15 @@ Queries use `sum(_sample_interval * double1)`, so adaptive sampling remains repr
 The public response is edge-cached for about 15 minutes — that is the documented latency from an
 accepted `POST /events` until `/stats` is expected to reflect it.
 
-When `ANALYTICS_READ_TOKEN` is missing, full taxonomy cuts report `usage.available=false` with
-`unavailable_reason=not-configured`. `page_view` events still write a KV fallback under
-`ALERT_STATE`; once any page view exists in the rolling window, `/stats` sets `usage.available`
-true and surfaces those page-view totals even without SQL credentials.
+When `ANALYTICS_READ_TOKEN` is missing, the Analytics Engine SQL path alone would report
+`unavailable_reason=not-configured`. `/stats` then reconciles Site totals against the durable
+Worker stores (`ALERT_STATE` and `NL_METER` — the same namespaces used before and after the
+cityscroll.org domain flip): page views and dual-written usage events from `POST /events`,
+searches from the NL meter, digest-link clicks and investigation shares from outcome counters,
+and day-by-day growth from the existing history series. `usage.available` is true whenever any
+of those continuous stores has counts, so a missing SQL credential or an empty Analytics Engine
+dataset cannot reset accumulated totals to zero. Analytics Engine remains the preferred source
+when configured and populated; reconciliation takes the max per field.
 
 Analytics Engine retention is three months, so these event metrics are rolling-window measures,
 not lifetime user counts. Existing longer-lived operational counters retain their own explicit

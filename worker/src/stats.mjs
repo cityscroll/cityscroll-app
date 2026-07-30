@@ -11,7 +11,11 @@ import {
   dayStr, sumStat, readStatAllTime, readAllCategoryStats, readAllCategoryStatsWindow,
   readHistSeries, readHistEra, mergeRecoveredAllTime,
 } from "./lib/stats.mjs";
-import { completeLensCounts, readUsageAnalytics } from "./lib/analytics.mjs";
+import {
+  completeLensCounts,
+  readUsageAnalytics,
+  reconcileUsageWithDurableStores,
+} from "./lib/analytics.mjs";
 
 const WINDOW_DAYS = 7;
 const PAGE_VIEW_SURFACES = Object.freeze([
@@ -42,6 +46,23 @@ async function readFallbackPageViews(env, now = new Date()) {
   };
 }
 
+/** Fold day histories into growth rows without inventing missing days. */
+function growthFromHistories(nlHist = {}, digestHist = {}, pageViewHist = {}) {
+  const days = new Set([
+    ...Object.keys(nlHist || {}),
+    ...Object.keys(digestHist || {}),
+    ...Object.keys(pageViewHist || {}),
+  ]);
+  const byDay = {};
+  for (const day of days) {
+    byDay[day] = {
+      page_views: Number(pageViewHist[day]) || 0,
+      interactions: (Number(nlHist[day]) || 0) + (Number(digestHist[day]) || 0),
+    };
+  }
+  return byDay;
+}
+
 export async function handleStats(req, env, ctx, options = {}) {
   if (req.method !== "GET") {
     return new Response("Method not allowed", { status: 405 });
@@ -63,6 +84,7 @@ export async function handleStats(req, env, ctx, options = {}) {
     digestHist, digestEra, nlHist, nlEra,
     nl7d, nlByCategory7d, watchesHist, watchesEra, usage,
     pageViewsFallback,
+    nl30d, nlByCategory30d, clicks30d, shares30d, alertsConfirmed7d, alertsConfirmed30d,
   ] = await Promise.all([
       countActiveSubs(env),
       readInt(env.ALERT_STATE, `sendcount:${today}`),
@@ -87,26 +109,37 @@ export async function handleStats(req, env, ctx, options = {}) {
       readHistEra(env.ALERT_STATE, "watches_active"),
       readUsageAnalytics(env, { fetchImpl: options.fetchImpl, now }),
       readFallbackPageViews(env, now),
+      sumStat(env.NL_METER, "nl_search", 30, now),
+      readAllCategoryStatsWindow(env.NL_METER, "nl_search", 30, now),
+      sumStat(env.ALERT_STATE, "click", 30, now),
+      sumStat(env.ALERT_STATE, "share", 30, now),
+      sumStat(env.ALERT_STATE, "alert_confirmed", WINDOW_DAYS, now),
+      sumStat(env.ALERT_STATE, "alert_confirmed", 30, now),
     ]);
 
-  // When Analytics Engine SQL credentials are missing or the SQL path fails, page_view
-  // counts still surface from ALERT_STATE KV (written by POST /events). usage.available
-  // flips true once any page_view exists in that window. Full taxonomy cuts still need
-  // ANALYTICS_READ_TOKEN. Public responses are edge-cached ~15 minutes (Cache-Control
-  // max-age=900 below) — that is the documented latency after an accepted event.
-  const fallbackUsed = !usage.available && pageViewsFallback && (
-    pageViewsFallback.last7d || pageViewsFallback.last30d
-  );
-  if (fallbackUsed) {
-    usage.page_views = {
-      ...usage.page_views,
-      last7d: pageViewsFallback.last7d,
-      last30d: pageViewsFallback.last30d,
-      by_surface_last30d: pageViewsFallback.bySurfaceLast30d,
-    };
-    usage.available = true;
-    delete usage.unavailable_reason;
-  }
+  // Store continuity: same ALERT_STATE / NL_METER namespaces used before and after the
+  // cityscroll.org canonical flip. Analytics Engine may be empty or unreadable
+  // (not-configured); never let the Site totals panel restart at zero while these stores
+  // still hold pre-flip history. Documented latency for a fresh event is the 15-minute
+  // edge cache below.
+  const usageReconciled = reconcileUsageWithDurableStores(usage, {
+    pageViewsLast7d: pageViewsFallback?.last7d || 0,
+    pageViewsLast30d: pageViewsFallback?.last30d || 0,
+    pageViewsBySurfaceLast30d: pageViewsFallback?.bySurfaceLast30d || {},
+    searchesLast7d: nl7d,
+    searchesLast30d: nl30d,
+    searchesByLensLast7d: nlByCategory7d,
+    searchesByLensLast30d: nlByCategory30d,
+    deepLinksLast7d: clicks7d,
+    deepLinksLast30d: clicks30d,
+    sharesLast7d: shares7d,
+    sharesLast30d: shares30d,
+    alertsConfirmedLast7d: alertsConfirmed7d,
+    alertsConfirmedLast30d: alertsConfirmed30d,
+    growthByDay: growthFromHistories(nlHist, digestHist),
+  }, { measuredSince: env?.ANALYTICS_MEASURED_SINCE || usage?.measured_since || null });
+  // Replace rather than Object.assign: reconciliation may delete unavailable_reason.
+  const usagePublic = usageReconciled;
 
   // w12-14: the live all-time accumulators only count sends/searches from the moment they
   // shipped (digestEra/nlEra) forward. Recovered pre-era days (backfilled from an older,
@@ -137,7 +170,7 @@ export async function handleStats(req, env, ctx, options = {}) {
       nl_search: { by_day: nlHist, live_from: nlEra },
       watches_active: { by_day: watchesHist, live_from: watchesEra },
     },
-    usage,
+    usage: usagePublic,
   };
 
   const res = new Response(JSON.stringify(body, null, 2), {

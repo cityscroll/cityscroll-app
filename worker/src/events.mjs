@@ -102,18 +102,29 @@ export async function handleEvent(req, env, options = {}) {
     if (excluded) return new Response(null, { status: 204, headers: cors });
   }
 
-  // Await page_view KV fallback bumps before responding. A fire-and-forget write after the
-  // 204 returns is cancelled when the isolate freezes, so /stats never saw accepted events
-  // (field case 2026-07-30: POST /events 204, page_views stayed 0).
-  if (normalized.event === "page_view" && env?.ALERT_STATE) {
-    const surface = String(normalized.surface || "");
+  // Durable dual-write into ALERT_STATE (same namespace as digests/clicks/feeds). Analytics
+  // Engine is best-effort and historically empty when ANALYTICS_ENVIRONMENT was unset; the
+  // KV path is the continuous store that must survive domain/route flips. Await before the
+  // 204 — fire-and-forget writes are cancelled when the isolate freezes.
+  if (env?.ALERT_STATE) {
     try {
-      await Promise.all([
-        bumpStat(env.ALERT_STATE, "page_view", now),
-        bumpCategoryDayStat(env.ALERT_STATE, "page_view", surface || "home", now),
-      ]);
+      const tasks = [bumpStat(env.ALERT_STATE, `usage_${normalized.event}`, now)];
+      if (normalized.event === "page_view") {
+        const surface = String(normalized.surface || "home");
+        tasks.push(
+          bumpStat(env.ALERT_STATE, "page_view", now),
+          bumpCategoryDayStat(env.ALERT_STATE, "page_view", surface, now),
+        );
+      }
+      if (normalized.event === "search_run" && normalized.lens && normalized.lens !== "none") {
+        tasks.push(bumpCategoryDayStat(env.ALERT_STATE, "usage_search_run", normalized.lens, now));
+      }
+      if (normalized.event === "alert_confirmed") {
+        tasks.push(bumpStat(env.ALERT_STATE, "alert_confirmed", now));
+      }
+      await Promise.all(tasks);
     } catch {
-      // Counting is best-effort; a lost page view must not fail intake.
+      // Counting is best-effort; a lost count must not fail intake.
     }
   }
 
