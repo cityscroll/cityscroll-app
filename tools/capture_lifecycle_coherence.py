@@ -120,11 +120,11 @@ HNTB_BEFORE = """
       <div class="bug">✗ literal null for $0 spent</div>
     </div></div>
     <div class="connector">→</div>
-    <div class="stage"><div class="box unknown">
+    <div class="stage"><div class="box unmatched">
       <div class="stage-name">Payments</div>
       <div class="when">—</div>
-      <div class="lc-norecord">Could not reach Checkbook NYC to check this step.</div>
-      <div class="bug">✗ transient error as public data gap</div>
+      <div class="lc-norecord">Not yet shown here — payments live in Checkbook NYC spending.</div>
+      <div class="bug">✗ gap copy while the same join already supplies Paid to date $0</div>
     </div></div>
   </div>
   <div class="apply">
@@ -135,7 +135,9 @@ HNTB_BEFORE = """
         <dt>Committed</dt><dd><b>$13.53M</b></dd>
         <dt>Paid to date</dt><dd><b>$0</b> (0%)</dd>
       </dl>
-      <div class="bug">✗ same join shows Checkbook data while payments stage says unreachable</div>
+      <div class="lc-norecord">Not yet shown here — payments live in Checkbook NYC spending.</div>
+      <div class="pnote">Payments lag invoicing — $0 paid on a freshly registered contract is normal.</div>
+      <div class="bug">✗ identical “not yet shown” gap under Paid to date $0 (duplicated with payments card)</div>
     </div>
   </div>
   <div class="note">This timeline joins City Record notices to Checkbook NYC, matched by PIN <code>84124P0003001</code>.</div>
@@ -201,18 +203,20 @@ HNTB_AFTER = """
       <div class="stage-name">Registered contract</div>
       <div class="when">2026-06-22</div>
       <div class="amt">$13.53M</div>
-      <div class="lc-pct">$0 / $13.53M (0%)</div>
-      <div class="fix">✓ $0, never literal null</div>
+      <div class="fix">✓ registration amount only; paid fact owned elsewhere</div>
     </div></div>
     <div class="connector">→</div>
-    <div class="stage"><div class="box unmatched">
+    <div class="stage"><div class="box matched">
       <div class="stage-name">Payments</div>
       <div class="when">—</div>
-      <div class="lc-norecord">Not yet shown here — payments live in Checkbook NYC spending.</div>
-      <div class="fix">✓ taxonomy gap, not “could not reach”</div>
+      <div class="amt">$0</div>
+      <div class="lc-pct">$0 paid of $13.53M committed</div>
+      <div class="lc-pct">Payments lag invoicing — $0 paid on a freshly registered contract is normal.</div>
+      <div class="lc-pct"><a href="#follow-the-dollars">Follow the dollars</a> for detail.</div>
+      <div class="fix">✓ summary + link; no parallel “not yet shown” gap</div>
     </div></div>
   </div>
-  <div class="apply">
+  <div class="apply" id="follow-the-dollars">
     <h3>Follow the dollars — Checkbook NYC</h3>
     <div class="body">
       <dl>
@@ -220,7 +224,8 @@ HNTB_AFTER = """
         <dt>Committed</dt><dd><b>$13.53M</b></dd>
         <dt>Paid to date</dt><dd><b>$0</b> (0%)</dd>
       </dl>
-      <div class="fix">✓ dollars panel and timeline agree on the same precomputed join</div>
+      <div class="pnote">From the precomputed lifecycle join to Checkbook NYC, matched by PIN <code>84124P0003001</code>. Payments lag invoicing — $0 paid on a freshly registered contract is normal.</div>
+      <div class="fix">✓ dollars owns detail; no duplicate gap sentence</div>
     </div>
   </div>
   <div class="note">This timeline joins City Record notices to Checkbook NYC, matched by PIN <code>84124P0003001</code>.</div>

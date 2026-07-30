@@ -82,6 +82,9 @@ const sandbox = new Function(
   extractFn("lifecycleGapSourceName") + "\n" +
   extractFn("lifecycleHasLaterMatched") + "\n" +
   extractFn("lifecyclePublicStatus") + "\n" +
+  extractFn("lifecycleMatchedRegisteredDetail") + "\n" +
+  extractConst("LIFECYCLE_DOLLARS_ANCHOR") + "\n" +
+  extractFn("lifecyclePaymentSummaryHTML") + "\n" +
   extractFn("lifecycleSourceLink") + "\n" +
   extractFn("lifecycleDocumentsHTML") + "\n" +
   extractFn("lifecycleStageHTML") + "\n" +
@@ -134,6 +137,9 @@ try {
     extractFn("lifecycleGapSourceName") +
     extractFn("lifecycleHasLaterMatched") +
     extractFn("lifecyclePublicStatus") +
+    extractFn("lifecycleMatchedRegisteredDetail") +
+    extractConst("LIFECYCLE_DOLLARS_ANCHOR") +
+    extractFn("lifecyclePaymentSummaryHTML") +
     extractFn("lifecycleSourceLink") +
     extractFn("lifecycleDocumentsHTML") +
     extractFn("lifecycleStageHTML") +

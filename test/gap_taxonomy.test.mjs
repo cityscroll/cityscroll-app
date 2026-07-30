@@ -76,6 +76,9 @@ const helpers = new Function(
   extractFn("lifecycleGapSourceName") +
   extractFn("lifecycleHasLaterMatched") +
   extractFn("lifecyclePublicStatus") +
+  extractFn("lifecycleMatchedRegisteredDetail") +
+  extractConst("LIFECYCLE_DOLLARS_ANCHOR") +
+  extractFn("lifecyclePaymentSummaryHTML") +
   extractFn("lifecycleSourceLink") +
   extractFn("lifecycleDocumentsHTML") +
   extractFn("lifecycleStageHTML") +
@@ -300,6 +303,9 @@ test("all ten shipping locales define the gap taxonomy keys", () => {
     "lifecycle_passed_registered_html",
     "lifecycle_passed_generic_html",
     "lifecycle_paid_to_date_html",
+    "lifecycle_payment_summary_html",
+    "lifecycle_payment_zero_lag_html",
+    "lifecycle_payment_details_link_html",
     "lifecycle_source_checkbook_pending",
     "lifecycle_source_checkbook_registered",
     "lifecycle_source_checkbook_spending",
