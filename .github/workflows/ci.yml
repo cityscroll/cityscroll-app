@@ -132,6 +132,35 @@ jobs:
         run: node --test
         working-directory: worker
 
+  performance:
+    name: Performance budgets (20-sample p95)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pinned browser runner
+        run: |
+          pip install playwright==1.58.0
+          playwright install --with-deps chromium
+      - name: Run deterministic performance contract
+        run: |
+          python3 test/performance/verify.py \
+            --budgets performance-budgets.json \
+            --fixtures test/performance/fixtures \
+            --samples 20
+      - name: Preserve raw performance samples
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: performance-samples
+          path: test/performance/artifacts/results.json
+          if-no-files-found: error
+
   # w7-01: promotes the axe gate + language gate to every PR. The pages under test are
   # static + local (a plain http.server, no live open-data traffic), so the flakiness that
   # parks the heavier functional suite on manual dispatch doesn't apply here.
