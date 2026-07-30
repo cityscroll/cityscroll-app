@@ -19,7 +19,10 @@ BODY_RE = re.compile(r"(<body(?:\s[^>]*)?>)", re.IGNORECASE)
 def channel_banner(channel: str, commit: str) -> str:
     label = "Draft preview" if channel == "preview" else "Experimental beta"
     return f"""
-<script data-release-channel-config>window.CROL_API_ORIGIN = "https://api-beta.cityscroll.org";</script>
+<script data-release-channel-config>
+window.CROL_API_ORIGIN = "https://api-beta.cityscroll.org";
+window.CROL_API_FALLBACK_ORIGIN = "https://crol-worker.crol-worker.workers.dev";
+</script>
 <aside data-release-channel-banner role="note" lang="en" style="background:#1f3a5f;color:#fff;padding:10px 18px;text-align:center;font:600 14px/1.45 ui-sans-serif,system-ui,sans-serif">
   <strong>{html.escape(label)}</strong>
   <span aria-hidden="true"> · </span>
