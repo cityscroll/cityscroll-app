@@ -62,7 +62,15 @@
       "identifier": "qyyg-4tf5",
       "asset_type": "dataset",
       "sample_type": "array<object>",
-      "fields": ["request_id", "start_date", "agency_name", "type_of_notice_description", "pin", "contract_amount", "vendor_name"]
+      "fields": [
+        "request_id",
+        "start_date",
+        "agency_name",
+        "type_of_notice_description",
+        "pin",
+        "contract_amount",
+        "vendor_name"
+      ]
     },
     {
       "id": "checkbook-nycha-contracts",
@@ -201,6 +209,21 @@
         "validated_block",
         "validated_lot"
       ]
+    },
+    {
+      "id": "zap-api-outcomes",
+      "kind": "html",
+      "identifier": "",
+      "response_type": "text/html",
+      "fields": [
+        "project_id",
+        "public_status",
+        "actions",
+        "dispositions",
+        "documents"
+      ],
+      "machine_endpoint": "https://zap-api-production.herokuapp.com/projects/{project_id}",
+      "machine_response_type": "application/json"
     },
     {
       "id": "mappluto",

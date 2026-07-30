@@ -4256,6 +4256,7 @@ async function landSelect(i, el){
     <button class="act" type="button" id="landalert" data-q="${area.replace(/"/g,'')}">${t("alert_me_area")}</button>
     <a class="act" id="crfind" href="https://a856-cityrecord.nyc.gov/Search/Advanced" ${EXT_ATTRS}>${t("search_city_record")}${extSR()}</a>
   </div>
+  <div id="land-outcomes" class="land-outcomes"><div class="note"><span class="loading"></span> ${t("land_outcomes_loading")}</div></div>
   <div id="landmap"></div>
   <div id="landpan" class="map-pan-controls" role="group" aria-label="${t("map_pan_group_aria")}" hidden>
     <button type="button" data-map-pan="west" aria-controls="landmap" aria-label="${t("map_pan_west")}">←</button>
@@ -4265,6 +4266,7 @@ async function landSelect(i, el){
   </div>
   <div class="note" id="landmapnote"><span class="loading"></span> ${t("locating")}</div>`;
   $("#ldetail").innerHTML=html;
+  loadZapOutcomes(r, $("#land-outcomes"), selection);
   const landURL=landLink(r.project_id);
   const lc=$("#landcopy"); if(lc) lc.addEventListener("click",()=>copyText(landURL, lc));
   bindQRShare($("#landqr"), landURL);
@@ -4407,6 +4409,112 @@ function landToAlert(term){
   $("#awatch").value="rezone"; aWatchChange();
   if(term) $("#aparam").value=term;
   aPreview();
+}
+
+
+/* ===================== ZAP LAND OUTCOMES (decision docs + DOB side-car) =====================
+   Precompute-first: GET /zap-outcomes?id= — no live ZAP API or DOB Socrata from the browser. */
+function landOutcomesHTML(record){
+  if(!record){
+    return `<div class="chain-h">${t("land_outcomes_heading")}</div>
+      <div class="note">${t("land_outcomes_unmatched_html",{
+        reason: escUiHtml(t("land_outcomes_unmatched_default"))
+      })}</div>`;
+  }
+  const join = record.join || {};
+  if(!join.matched || !record.filled){
+    const reason = join.reason || t("land_outcomes_unmatched_default");
+    return `<div class="chain-h">${t("land_outcomes_heading")}</div>
+      <div class="note">${t("land_outcomes_unmatched_html",{
+        reason: escUiHtml(reason)
+      })}</div>`;
+  }
+  const actions = Array.isArray(record.approved_actions) ? record.approved_actions : [];
+  const dispositions = Array.isArray(record.dispositions) ? record.dispositions : [];
+  const documents = Array.isArray(record.documents) ? record.documents : [];
+  let actionHTML = "";
+  if(actions.length){
+    actionHTML = actions.slice(0, 8).map(a =>
+      `<div class="stage"><div class="box matched">
+        <div class="stage-name">${t("land_outcomes_action_lbl")}</div>
+        <div class="when">${escUiHtml(a.status || "—")}</div>
+        <div class="lc-pct" lang="en" dir="ltr">${escUiHtml([a.action, a.ulurp_number].filter(Boolean).join(" · ") || "—")}</div>
+      </div></div>`
+    ).join("");
+  }
+  let dispHTML = "";
+  const withOutcome = dispositions.filter(d => d.vote_date || d.community_board || d.borough_president);
+  if(withOutcome.length){
+    dispHTML = withOutcome.slice(0, 6).map(d => {
+      const rec = d.community_board || d.borough_president || d.borough_board || "—";
+      const vote = d.vote_date ? fdate(d.vote_date) : "—";
+      const tally = (d.votes_for != null || d.votes_against != null)
+        ? t("land_outcomes_vote_tally_html", {
+            favor: String(d.votes_for != null ? d.votes_for : "—"),
+            against: String(d.votes_against != null ? d.votes_against : "—")
+          })
+        : "";
+      return `<div class="stage"><div class="box matched">
+        <div class="stage-name">${t("land_outcomes_disposition_lbl")}</div>
+        <div class="when">${escUiHtml(vote)}</div>
+        <div class="lc-pct" lang="en" dir="ltr">${escUiHtml(d.name || d.representing || "—")}</div>
+        <div class="lc-pct">${t("land_outcomes_recommendation_html",{ rec: escUiHtml(rec) })}${tally?` · ${tally}`:""}</div>
+      </div></div>`;
+    }).join("");
+  }
+  let docsHTML = "";
+  if(documents.length){
+    const links = documents.slice(0, 10).map(d => {
+      if(!d.url) return "";
+      return `<a class="view" href="${escUiHtml(d.url)}" ${EXT_ATTRS}>${escUiHtml(d.name || t("land_outcomes_document_lbl"))}${extSR()}</a>`;
+    }).filter(Boolean).join(" · ");
+    if(links){
+      docsHTML = `<div class="note"><b>${t("land_outcomes_documents_lbl")}</b> ${links}</div>`;
+    }
+  } else {
+    docsHTML = `<div class="note">${t("land_outcomes_documents_gap_html")}</div>`;
+  }
+  let dobHTML = "";
+  const dob = record.dob || {};
+  if(dob.matched && Array.isArray(dob.filings) && dob.filings.length){
+    const rows = dob.filings.slice(0, 5).map(f =>
+      `<div class="lc-pct" lang="en" dir="ltr">${escUiHtml(f.job_type || "—")} · ${escUiHtml(f.filing_status || "—")}${f.filing_date?` · ${fdate(f.filing_date)}`:""}${f.job_filing_number?` · ${escUiHtml(f.job_filing_number)}`:""}</div>`
+    ).join("");
+    dobHTML = `<div class="note"><b>${t("land_outcomes_dob_lbl")}</b></div>${rows}`;
+  } else if(dob.reason){
+    dobHTML = `<div class="note">${t("land_outcomes_dob_gap_html",{ reason: escUiHtml(dob.reason) })}</div>`;
+  }
+  const portal = record.portal_url
+    ? `<a class="view" href="${escUiHtml(record.portal_url)}" ${EXT_ATTRS}>${t("land_outcomes_portal_link")}${extSR()}</a>`
+    : "";
+  return `<div class="chain-h">${t("land_outcomes_heading")}</div>
+    <div class="note">${t("land_outcomes_matched_html",{
+      status: escUiHtml(record.public_status || record.open_data?.public_status || "—"),
+      n_docs: String(record.n_documents || documents.length || 0)
+    })} ${portal}</div>
+    <div class="chain">${actionHTML}${dispHTML}</div>
+    ${docsHTML}
+    ${dobHTML}
+    <div class="note">${t("land_outcomes_provenance_html")}</div>`;
+}
+
+async function loadZapOutcomes(r, el, selection){
+  if(!el || !r || !r.project_id) return;
+  let data = null;
+  try{
+    const resp = await workerFetch("/zap-outcomes?id=" + encodeURIComponent(r.project_id), null, 12000);
+    if(resp && resp.ok) data = await resp.json();
+  }catch(e){}
+  if(selection !== undefined && selection !== landSelectionSeq) return;
+  if(!document.contains(el)) return;
+  if(!data || data.ok === false || !data.record){
+    el.innerHTML = `<div class="chain-h">${t("land_outcomes_heading")}</div>
+      <div class="note">${t("land_outcomes_unmatched_html",{
+        reason: escUiHtml(t("land_outcomes_unmatched_default"))
+      })}</div>`;
+    return;
+  }
+  el.innerHTML = landOutcomesHTML(data.record);
 }
 
 /* ===================== FEED LENSES (Property / Rules / Meetings) ===================== */

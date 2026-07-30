@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "feature": "zap-outcomes",
+  "observed_on": "2026-07-30",
+  "demo_frame": {
+    "project_id": "2022M0258",
+    "project_name": "Timbale Terrace",
+    "deep_link": "#land/2022M0258",
+    "portal": "https://zap.planning.nyc.gov/projects/2022M0258",
+    "why": "Completed ULURP with approved HA/PQ actions, CB disposition votes, and public decision PDFs via the ZAP document proxy."
+  },
+  "files": [
+    {
+      "name": "joined-timbale-390.png",
+      "bytes": 118374,
+      "sha256": "b48c798f9657da08689163b62f6688e1f6271b204730bb405ad7b0c844f274ae",
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "name": "joined-timbale-1440.png",
+      "bytes": 129135,
+      "sha256": "1ed3ffb4f4ef92f804a9306f9b22b80ac96dbff1811cc2c88b445e8f09198018",
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "name": "unjoined-gap-390.png",
+      "bytes": 105518,
+      "sha256": "8b81352e8f22a54761d8db6124570f15a9663253e5e72b84cc772f861cbd92d8",
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "name": "unjoined-gap-1440.png",
+      "bytes": 117207,
+      "sha256": "e21949631654ca93f74cef446aa704709398aadd417983cb1db6a59fd44b040e",
+      "viewport": [
+        1440,
+        900
+      ]
+    }
+  ]
+}

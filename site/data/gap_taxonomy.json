@@ -456,6 +456,32 @@
       "landing_page": "https://data.cityofnewyork.us/d/hgx4-8ukb"
     },
     {
+      "id": "zap-api-outcomes",
+      "name": "Zoning Application Portal — project outcomes (Planning Labs API)",
+      "source_contract_id": "zap-api-outcomes",
+      "status": "landed",
+      "join_keys": [
+        "project_id",
+        "BBL",
+        "ulurp_numbers"
+      ],
+      "join_coverage": {
+        "realized": {
+          "rate": 1,
+          "joined": 50,
+          "total": 50,
+          "metric": "ulurp_complete_useful_outcome",
+          "observed_on": "2026-07-30",
+          "universe": "ULURP projects from NYC Open Data hgx4-8ukb joined by exact project_id to zap-api-production.herokuapp.com/projects/{id}; DOB NOW w9ak-ipjd via exact BBL from zap-bbl",
+          "strategy": "exact_project_id | exact_bbl. Title-only and partial ULURP matches rejected.",
+          "verdict": "Above usefulness threshold (>=30%) on decision-document outcomes (100% useful on ULURP completed sample; 66.7% any documents on mixed active+completed). Ship edge materialization of ZAP API outcomes + DOB BBL side-car.",
+          "source": "source_contracts.join_measurement"
+        }
+      },
+      "landing_page": "https://zap.planning.nyc.gov/",
+      "delivery_tier": "edge-materialized"
+    },
+    {
       "id": "zap-bbl",
       "name": "Zoning Application Portal — tax lots",
       "source_contract_id": "zap-bbl",
@@ -649,6 +675,36 @@
       ]
     },
     {
+      "id": "zap-bbl-x-dob-now-filings",
+      "source_a": "zap-bbl",
+      "source_b": "dob-now-job-filings",
+      "key_path": [
+        "BBL"
+      ],
+      "status": "materialized",
+      "lineage": {
+        "code": "worker/src/zap_outcomes.mjs",
+        "strategy": "exact_bbl tax lots → DOB NOW filings side-car on land outcomes",
+        "measurement_contract": "zap-api-outcomes",
+        "measurement_rate_key": "complete_sample_dob_any_filing"
+      },
+      "realized_coverage": {
+        "rate": 0.56,
+        "joined": 14,
+        "total": 25,
+        "metric": "complete_sample_dob_any_filing",
+        "observed_on": "2026-07-30",
+        "universe": "ULURP projects from NYC Open Data hgx4-8ukb joined by exact project_id to zap-api-production.herokuapp.com/projects/{id}; DOB NOW w9ak-ipjd via exact BBL from zap-bbl",
+        "strategy": "exact_project_id | exact_bbl. Title-only and partial ULURP matches rejected.",
+        "verdict": "Above usefulness threshold (>=30%) on decision-document outcomes (100% useful on ULURP completed sample; 66.7% any documents on mixed active+completed). Ship edge materialization of ZAP API outcomes + DOB BBL side-car.",
+        "source": "source_contracts.join_measurement"
+      },
+      "worth_materializing": "already_materialized",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
       "id": "zap-project-x-bbl",
       "source_a": "zap-projects",
       "source_b": "zap-bbl",
@@ -662,6 +718,36 @@
         "strategy": "project_id + BBL lot expansion"
       },
       "realized_coverage": null,
+      "worth_materializing": "already_materialized",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "zap-projects-x-zap-api-outcomes",
+      "source_a": "zap-projects",
+      "source_b": "zap-api-outcomes",
+      "key_path": [
+        "project_id"
+      ],
+      "status": "materialized",
+      "lineage": {
+        "code": "worker/src/lib/zap_outcomes.mjs",
+        "strategy": "exact_project_id Open Data → ZAP API project detail (documents, dispositions, actions)",
+        "measurement_contract": "zap-api-outcomes",
+        "measurement_rate_key": "ulurp_complete_useful_outcome"
+      },
+      "realized_coverage": {
+        "rate": 1,
+        "joined": 50,
+        "total": 50,
+        "metric": "ulurp_complete_useful_outcome",
+        "observed_on": "2026-07-30",
+        "universe": "ULURP projects from NYC Open Data hgx4-8ukb joined by exact project_id to zap-api-production.herokuapp.com/projects/{id}; DOB NOW w9ak-ipjd via exact BBL from zap-bbl",
+        "strategy": "exact_project_id | exact_bbl. Title-only and partial ULURP matches rejected.",
+        "verdict": "Above usefulness threshold (>=30%) on decision-document outcomes (100% useful on ULURP completed sample; 66.7% any documents on mixed active+completed). Ship edge materialization of ZAP API outcomes + DOB BBL side-car.",
+        "source": "source_contracts.join_measurement"
+      },
       "worth_materializing": "already_materialized",
       "gaps_would_close": [
         "land-outcome-detail"
@@ -1010,6 +1096,23 @@
       "evidence": "Shared keys project_id; 2 taxonomy gap(s) could close."
     },
     {
+      "id": "nycida-build-nyc-projects-x-zap-api-outcomes-via-project_id",
+      "source_a": "nycida-build-nyc-projects",
+      "source_b": "zap-api-outcomes",
+      "key_path": [
+        "project_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "yes",
+      "gaps_would_close": [
+        "subsidy-stage-unmatched",
+        "land-outcome-detail"
+      ],
+      "score": 2,
+      "evidence": "Shared keys project_id; 2 taxonomy gap(s) could close."
+    },
+    {
       "id": "nycida-build-nyc-projects-x-zap-bbl-via-project_id",
       "source_a": "nycida-build-nyc-projects",
       "source_b": "zap-bbl",
@@ -1179,9 +1282,9 @@
       "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
     },
     {
-      "id": "dob-now-job-filings-x-zap-bbl-via-BBL",
+      "id": "dob-now-job-filings-x-zap-api-outcomes-via-BBL",
       "source_a": "dob-now-job-filings",
-      "source_b": "zap-bbl",
+      "source_b": "zap-api-outcomes",
       "key_path": [
         "BBL"
       ],
@@ -1214,6 +1317,22 @@
       "id": "legacy-dob-job-filings-x-unregistered-zoning-application-portal-projects-via-BBL",
       "source_a": "legacy-dob-job-filings",
       "source_b": "unregistered-zoning-application-portal-projects",
+      "key_path": [
+        "BBL"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "legacy-dob-job-filings-x-zap-api-outcomes-via-BBL",
+      "source_a": "legacy-dob-job-filings",
+      "source_b": "zap-api-outcomes",
       "key_path": [
         "BBL"
       ],
@@ -1275,6 +1394,22 @@
       "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
     },
     {
+      "id": "mappluto-x-zap-api-outcomes-via-BBL",
+      "source_a": "mappluto",
+      "source_b": "zap-api-outcomes",
+      "key_path": [
+        "BBL"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
+    },
+    {
       "id": "mappluto-x-zap-bbl-via-BBL",
       "source_a": "mappluto",
       "source_b": "zap-bbl",
@@ -1305,6 +1440,24 @@
       ],
       "score": 1,
       "evidence": "Shared keys BBL; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "unregistered-zoning-application-portal-projects-x-zap-api-outcomes-via-BBL+project_id+ulurp_numbers",
+      "source_a": "unregistered-zoning-application-portal-projects",
+      "source_b": "zap-api-outcomes",
+      "key_path": [
+        "project_id",
+        "BBL",
+        "ulurp_numbers"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys project_id, BBL, ulurp_numbers; 1 taxonomy gap(s) could close."
     },
     {
       "id": "unregistered-zoning-application-portal-projects-x-zap-bbl-via-BBL+project_id",
@@ -1340,6 +1493,23 @@
       ],
       "score": 1,
       "evidence": "Shared keys project_id, BBL, ulurp_numbers; 1 taxonomy gap(s) could close."
+    },
+    {
+      "id": "zap-api-outcomes-x-zap-bbl-via-BBL+project_id",
+      "source_a": "zap-api-outcomes",
+      "source_b": "zap-bbl",
+      "key_path": [
+        "project_id",
+        "BBL"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "land-outcome-detail"
+      ],
+      "score": 1,
+      "evidence": "Shared keys project_id, BBL; 1 taxonomy gap(s) could close."
     },
     {
       "id": "legacy-dob-job-filings-x-mappluto-via-BBL",
@@ -1710,7 +1880,7 @@
     {
       "id": "land-outcome-detail",
       "surface": "land / ZAP · final decision documents beyond status",
-      "i18n_key": null,
+      "i18n_key": "land_outcomes_unmatched_html",
       "class": "not_yet_ingested",
       "public_source": {
         "name": "Zoning Application Portal projects",
@@ -1775,6 +1945,20 @@
     },
     {
       "rank": 3,
+      "source": "ZAP decision docs + DOB NOW outcome stitch",
+      "access": "hgx4-8ukb, 2iga-a6mk, w9ak-ipjd (already contracted)",
+      "gaps_filled": [
+        "land-outcome-detail"
+      ],
+      "value": "Land and property readers see decision/filing outcomes beyond status chips.",
+      "effort_guess": "Medium-high — document links and BBL joins.",
+      "join_risk": "Medium — BBL multi-lot projects; ZAP lag vs live portal.",
+      "value_score": 36,
+      "realized_join_rate": 1,
+      "predicted_join_grade": null
+    },
+    {
+      "rank": 4,
       "source": "DCAS annual exam outcomes → exam card join",
       "access": "Already built: site/data/exam_sources/dcas_exam_outcomes.json (source contract dcas-annual-exam-outcomes)",
       "gaps_filled": [
@@ -1788,7 +1972,7 @@
       "predicted_join_grade": null
     },
     {
-      "rank": 4,
+      "rank": 5,
       "source": "Current Solicitations Open Data 3khw-qi8f",
       "access": "https://data.cityofnewyork.us/d/3khw-qi8f",
       "gaps_filled": [
@@ -1802,7 +1986,7 @@
       "predicted_join_grade": null
     },
     {
-      "rank": 5,
+      "rank": 6,
       "source": "Recent Contract Awards Open Data qyyg-4tf5",
       "access": "https://data.cityofnewyork.us/d/qyyg-4tf5",
       "gaps_filled": [
@@ -1811,20 +1995,6 @@
       "value": "OCP award side-car for Money detail when City Record fields are thin.",
       "effort_guess": "Low",
       "join_risk": "Medium — same City Record-shaped keys; scope limited to OCP.",
-      "value_score": 16,
-      "realized_join_rate": null,
-      "predicted_join_grade": null
-    },
-    {
-      "rank": 6,
-      "source": "ZAP decision docs + DOB NOW outcome stitch",
-      "access": "hgx4-8ukb, 2iga-a6mk, w9ak-ipjd (already contracted)",
-      "gaps_filled": [
-        "land-outcome-detail"
-      ],
-      "value": "Land and property readers see decision/filing outcomes beyond status chips.",
-      "effort_guess": "Medium-high — document links and BBL joins.",
-      "join_risk": "Medium — BBL multi-lot projects; ZAP lag vs live portal.",
       "value_score": 16,
       "realized_join_rate": null,
       "predicted_join_grade": null
@@ -1871,9 +2041,9 @@
   ],
   "depot_refresh": {
     "observed_on": "2026-07-30",
-    "source_contracts_fingerprint": "5c778a9f4f66daebadc665804cae54cd5cdfb3dcb5ebea3f8258e80bcbbe9d90",
-    "materialized_crosswalks": 8,
-    "candidate_crosswalks": 39,
+    "source_contracts_fingerprint": "21f73318654417fd52581f1702c98412ed19e4569e1945324869fd8f72095d5e",
+    "materialized_crosswalks": 10,
+    "candidate_crosswalks": 44,
     "class_changes": 0,
     "passport_realized_either_rate": 0.78
   }

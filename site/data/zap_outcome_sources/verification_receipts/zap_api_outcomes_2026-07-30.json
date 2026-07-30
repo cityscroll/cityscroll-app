@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "observed_on": "2026-07-30",
+  "observed_at_utc": "2026-07-30T17:30:00Z",
+  "source_contracts": [
+    "zap-api-outcomes",
+    "zap-projects",
+    "zap-bbl",
+    "dob-now-job-filings"
+  ],
+  "access_surface": {
+    "portal": "https://zap.planning.nyc.gov/",
+    "api_project": "https://zap-api-production.herokuapp.com/projects/{project_id}",
+    "api_document": "https://zap-api-production.herokuapp.com/document/{kind}/{serverRelativeUrl}",
+    "open_data_projects": "https://data.cityofnewyork.us/d/hgx4-8ukb",
+    "open_data_bbl": "https://data.cityofnewyork.us/d/2iga-a6mk",
+    "dob_now": "https://data.cityofnewyork.us/d/w9ak-ipjd"
+  },
+  "curl_verified": {
+    "zap_api_project": {
+      "url": "https://zap-api-production.herokuapp.com/projects/2022M0258",
+      "http": 200,
+      "bytes": 37994,
+      "sha256": "17015baf6a3353f133e503c9905ae192dd11e07688075364a822ec958f10a007",
+      "content_type": "application/json; charset=utf-8"
+    },
+    "zap_api_document": {
+      "url": "https://zap-api-production.herokuapp.com/document/disposition/01QY2C5KIBZCEY6GXBF5GYXG77TTQVOFUG",
+      "http": 200,
+      "bytes": 89369,
+      "sha256": "00f5d14b0010c3472df99ee8356412462667fcc4657bf8a4bd8cb699dc7c8d2d",
+      "content_type": "application/pdf"
+    },
+    "socrata_projects_meta": {
+      "url": "https://data.cityofnewyork.us/api/views/hgx4-8ukb.json",
+      "http": 200,
+      "bytes": 56385,
+      "sha256": "a907571a2261fe8035133ee9e53a5df372ffe293541b645ff664e9ad530a24e0",
+      "content_type": "application/json; charset=utf-8"
+    },
+    "socrata_bbl_meta": {
+      "url": "https://data.cityofnewyork.us/api/views/2iga-a6mk.json",
+      "http": 200,
+      "bytes": 21852,
+      "sha256": "79ff8f6130ab55ee020638b22cf3ee5ebaaf3dbfd514b2899cd7d97ce3248b77",
+      "content_type": "application/json; charset=utf-8"
+    },
+    "socrata_dob_meta": {
+      "url": "https://data.cityofnewyork.us/api/views/w9ak-ipjd.json",
+      "http": 200,
+      "bytes": 134123,
+      "sha256": "d0adfa1394739406e063599f81e7290136b6bf189345a34cd94c946e47e82044",
+      "content_type": "application/json; charset=utf-8"
+    },
+    "socrata_projects_sample": {
+      "url": "https://data.cityofnewyork.us/resource/hgx4-8ukb.json?$limit=1",
+      "http": 200,
+      "bytes": 119,
+      "sha256": "327e454e3d058ba5fc71d08c8b19e34060d74b9d89864fc84d99da4f72efb0a9",
+      "x_soda2_fields": "[\"project_id\",\"project_name\",\"public_status\"]",
+      "last_modified": "Tue, 26 May 2026 16:35:56 GMT"
+    }
+  },
+  "join_measurement": {
+    "observed_on": "2026-07-30",
+    "strategy": "exact_project_id | exact_bbl",
+    "usefulness_threshold": 0.3,
+    "rates": {
+      "ulurp_complete_useful_outcome": {
+        "joined": 50,
+        "total": 50,
+        "rate": 1.0
+      },
+      "ulurp_complete_any_documents": {
+        "joined": 50,
+        "total": 50,
+        "rate": 1.0
+      },
+      "ulurp_complete_disposition_vote": {
+        "joined": 45,
+        "total": 50,
+        "rate": 0.9
+      },
+      "ulurp_complete_approved_action": {
+        "joined": 34,
+        "total": 50,
+        "rate": 0.68
+      },
+      "mixed_sample_api_project_id": {
+        "joined": 60,
+        "total": 60,
+        "rate": 1.0
+      },
+      "mixed_sample_any_documents": {
+        "joined": 40,
+        "total": 60,
+        "rate": 0.667
+      },
+      "complete_sample_with_bbl": {
+        "joined": 22,
+        "total": 25,
+        "rate": 0.88
+      },
+      "complete_sample_dob_any_filing": {
+        "joined": 14,
+        "total": 25,
+        "rate": 0.56
+      }
+    },
+    "verdict": "Above usefulness threshold (>=30%). Ship edge materialization."
+  },
+  "field_cases": {
+    "demo_frame": {
+      "project_id": "2022M0258",
+      "project_name": "Timbale Terrace",
+      "deep_link": "#land/2022M0258",
+      "portal": "https://zap.planning.nyc.gov/projects/2022M0258",
+      "why": "Completed ULURP with approved HA/PQ actions, CB disposition votes, and public decision PDFs via the ZAP document proxy."
+    },
+    "joined_with_docs": "2022M0258",
+    "joined_legacy_thin_docs": "P2018X0210",
+    "active_early": "2026M0366",
+    "rejected_title_only": "must not join on project_name alone"
+  }
+}

@@ -117,6 +117,7 @@ EXTERNAL_HREF_EXPRS = (
     "${escUiHtml(entry.source.url)}", # subsidy lifecycle: official Build NYC / NYCIDA document
     "${escUiHtml(d.url)}",            # council meeting outcomes: Legistar supporting document
     "${escUiHtml(url)}",              # solicitation package document from Current Solicitations join
+    "${escUiHtml(record.portal_url)}",  # land outcomes: official ZAP project portal
     "${escUiHtml(href)}",         # rule-lifecycle chip + comment action: NYC Rules comment/adoption page
     # Explicit same-origin exception: this action promises to open the canonical shareable
     # search separately, so it follows the new-tab safety/accessibility checks below.
