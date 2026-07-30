@@ -127,11 +127,14 @@ D1 (`crol-notices`, schema versioned in `migrations/`): the `notices` mirror + i
 
 Analytics Engine (`crol_usage_events_v1`) holds the rolling 90-day interaction taxonomy described
 in `../docs/analytics-event-taxonomy.md`. Writes use the `USAGE_ANALYTICS` binding. `/stats`
-queries the SQL API with `ANALYTICS_READ_TOKEN`, then edge-caches the response for 15 minutes.
-Writes also require `ANALYTICS_ENVIRONMENT` to equal `production`; leave it unset in local and
-preview Workers so they drop events by default. `ANALYTICS_DEV_KEY` authenticates short-lived
-HMAC exclusion tokens for live-site testing; invalid or missing tokens count normally and receive
-the same response.
+queries the SQL API with `ANALYTICS_READ_TOKEN`, then edge-caches the response for 15 minutes
+(that is the documented latency for an accepted event to appear). Writes also require
+`ANALYTICS_ENVIRONMENT` to equal `production` — set in production `[vars]` in `wrangler.toml`;
+the beta environment overrides it to `preview`. Local `wrangler dev` drops events when the
+Analytics Engine binding is absent. `page_view` events also bump a KV fallback so page-view
+totals remain visible when SQL read credentials are missing. `ANALYTICS_DEV_KEY` authenticates
+short-lived HMAC exclusion tokens for live-site testing; invalid or missing tokens count
+normally and receive the same response.
 
 ## Dependencies — three libraries extracted from this worker
 
@@ -173,10 +176,10 @@ CROL_WORKER_URL=https://api.cityscroll.org npm run test:live   # live e2e over e
 Secrets (set outside the repository via Wrangler): `ANTHROPIC_API_KEY`, `RESEND_API_KEY`,
 `TOKEN_SECRET`, `TURNSTILE_SECRET`, `USAGE_KEY`, `ADMIN_KEY`, `BOARD_HOOK_SECRET`,
 `GITHUB_BOT_TOKEN`, `BOARDNOTIFY_APP_ID`, `BOARDNOTIFY_APP_PRIVATE_KEY`,
-`BOARDNOTIFY_INSTALLATION_ID`, `ANALYTICS_READ_TOKEN`, `ANALYTICS_DEV_KEY`, and
-`ANALYTICS_ENVIRONMENT` (`production` only on the live Worker). Board-notify secrets are
-optional — see "Board notifications" above. Vars (in `wrangler.toml`): `ALERTS_LIVE`
-(master switch — anything but `"true"` = dry-run), `ALERTS_FROM`, `MAX_PER_RUN`,
+`BOARDNOTIFY_INSTALLATION_ID`, `ANALYTICS_READ_TOKEN`, and `ANALYTICS_DEV_KEY`. Board-notify
+secrets are optional — see "Board notifications" above. Vars (in `wrangler.toml`):
+`ANALYTICS_ENVIRONMENT` (`production` on the live Worker; beta overrides to `preview`),
+`ALERTS_LIVE` (master switch — anything but `"true"` = dry-run), `ALERTS_FROM`, `MAX_PER_RUN`,
 `MAX_SENDS_PER_DAY`, `HEARTBEAT_DAYS`, `FEEDBACK_TO`, `BOARD_PROJECT_IDS`, `BOARD_ORG`,
 `BOARD_URL`, `BOARD_HOOK_DRY`, `BOARD_HOOK_MAX_PER_DAY`, `BOARDNOTIFY_CC`. Fire the cron
 locally by hitting `/__scheduled` under `wrangler dev`.

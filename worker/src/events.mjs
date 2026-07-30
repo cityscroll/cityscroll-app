@@ -90,16 +90,9 @@ export async function handleEvent(req, env, options = {}) {
   const normalized = normalizeUsageEvent(input);
   if (!normalized) return new Response("Invalid event", { status: 400, headers: cors });
 
-  if (normalized.event === "page_view" && env?.ALERT_STATE) {
-    const surface = String(normalized.surface || "");
-    void Promise.all([
-      bumpStat(env.ALERT_STATE, "page_view", now),
-      bumpCategoryDayStat(env.ALERT_STATE, "page_view", surface || "home", now),
-    ]).catch(() => {});
-  }
-
   // Header validity is deliberately invisible to callers: accepted events always return the
   // same 204. Invalid or missing exclusion tokens continue into the normal counting path.
+  // Exclusion must run before any counter write (KV fallback or Analytics Engine).
   if (env?.ANALYTICS_ENVIRONMENT === "production") {
     const excluded = await hasValidDeveloperExclusion(
       req,
@@ -107,6 +100,21 @@ export async function handleEvent(req, env, options = {}) {
       options.nowMs ?? Date.now(),
     );
     if (excluded) return new Response(null, { status: 204, headers: cors });
+  }
+
+  // Await page_view KV fallback bumps before responding. A fire-and-forget write after the
+  // 204 returns is cancelled when the isolate freezes, so /stats never saw accepted events
+  // (field case 2026-07-30: POST /events 204, page_views stayed 0).
+  if (normalized.event === "page_view" && env?.ALERT_STATE) {
+    const surface = String(normalized.surface || "");
+    try {
+      await Promise.all([
+        bumpStat(env.ALERT_STATE, "page_view", now),
+        bumpCategoryDayStat(env.ALERT_STATE, "page_view", surface || "home", now),
+      ]);
+    } catch {
+      // Counting is best-effort; a lost page view must not fail intake.
+    }
   }
 
   emitUsageEvent(env, normalized);

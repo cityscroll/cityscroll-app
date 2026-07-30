@@ -203,7 +203,11 @@ test("zero-state repro: without usage credentials, /stats reports unavailable us
   assert.equal(body.usage.page_views.last30d, 0);
 });
 
-test("repair fixture: page_view beacons remain visible when SQL read credentials are missing", async () => {
+test("field case: accepted page_view must be readable by /stats when SQL credentials are missing", async () => {
+  // Symptom (2026-07-30): POST /events returned 204 for a well-formed page_view, but
+  // /stats page_views stayed 0 and usage.available stayed false (unavailable_reason
+  // not-configured). Writer must await KV fallback; reader must promote those counts
+  // when the Analytics Engine SQL path is not configured.
   const points = [];
   const secret = "test-only-analytics-developer-key-32-chars";
   const alertState = fakeKV();
@@ -221,19 +225,30 @@ test("repair fixture: page_view beacons remain visible when SQL read credentials
     nowMs: nowMs + 1,
   });
 
+  // Bumps are awaited inside handleEvent — no sleep race. Immediately after 204, KV holds counts.
   const response = await handleStats(
     new Request("https://api.cityscroll.org/stats"),
     { SUBS: fakeKV(), ALERT_STATE: alertState, NL_METER: fakeKV() },
     { waitUntil() {} },
   );
-  await new Promise((resolve) => setTimeout(resolve, 20));
   const body = await response.json();
 
   assert.equal(body.usage.available, true);
+  assert.equal(body.usage.unavailable_reason, undefined);
   assert.equal(body.usage.page_views.last7d, 2);
   assert.equal(body.usage.page_views.last30d, 2);
   assert.equal(body.usage.page_views.by_surface_last30d.home, 1);
   assert.equal(body.usage.page_views.by_surface_last30d.stats, 1);
+  // Edge cache contract: public responses advertise the documented aggregation latency.
+  assert.match(response.headers.get("Cache-Control") || "", /max-age=900/);
+});
+
+test("field case: fire-and-forget page_view writes are rejected by the intake contract", async () => {
+  // Pin the regression shape: intake source must await page_view KV bumps, not void them.
+  const source = await readFile(new URL("../worker/src/events.mjs", import.meta.url), "utf8");
+  assert.match(source, /await Promise\.all\(\[/);
+  assert.match(source, /bumpStat\(env\.ALERT_STATE, "page_view"/);
+  assert.doesNotMatch(source, /void Promise\.all\(/);
 });
 
 test("aggregate windows exclude old rows without inventing missing values", () => {

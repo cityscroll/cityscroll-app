@@ -24,10 +24,13 @@ crons = ["0 13 * * *"]
 
 # Non-secret config. Secrets go via `wrangler secret put` (see worker/README.md).
 # USAGE_KEY gates the read-only /usage endpoint; unset → /usage 404s.
-# ANALYTICS_ENVIRONMENT must equal "production" for analytics writes; omit it here so
-# wrangler dev/preview fail closed by default.
+# ANALYTICS_ENVIRONMENT must equal "production" for Analytics Engine writes. It lives in
+# vars (not a secret) so a production deploy cannot silently drop every event. Local
+# wrangler dev still fails closed when the USAGE_ANALYTICS binding is absent. The beta
+# environment overrides this to "preview".
 [vars]
 ALERTS_LIVE = "true"
+ANALYTICS_ENVIRONMENT = "production"
 CONFIRM_BASE = "https://api.cityscroll.org"
 # Alerts sender (site owner decision 2026-07-29).
 ALERTS_FROM = "CityScroll <alerts@cityscroll.org>"

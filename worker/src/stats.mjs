@@ -89,6 +89,11 @@ export async function handleStats(req, env, ctx, options = {}) {
       readFallbackPageViews(env, now),
     ]);
 
+  // When Analytics Engine SQL credentials are missing or the SQL path fails, page_view
+  // counts still surface from ALERT_STATE KV (written by POST /events). usage.available
+  // flips true once any page_view exists in that window. Full taxonomy cuts still need
+  // ANALYTICS_READ_TOKEN. Public responses are edge-cached ~15 minutes (Cache-Control
+  // max-age=900 below) — that is the documented latency after an accepted event.
   const fallbackUsed = !usage.available && pageViewsFallback && (
     pageViewsFallback.last7d || pageViewsFallback.last30d
   );
@@ -100,6 +105,7 @@ export async function handleStats(req, env, ctx, options = {}) {
       by_surface_last30d: pageViewsFallback.bySurfaceLast30d,
     };
     usage.available = true;
+    delete usage.unavailable_reason;
   }
 
   // w12-14: the live all-time accumulators only count sends/searches from the moment they

@@ -64,9 +64,10 @@ fail-soft, so analytics can never block the action being measured.
 
 Analytics writes are fail-closed behind the `ANALYTICS_ENVIRONMENT` runtime binding. The shared
 event writer emits only when that value is exactly `production`; a missing value, `development`,
-or `preview` drops the event. Production sets that binding outside this repository so code-only
-deploys retain it. Local and preview environments leave it unset and therefore drop browser and
-Worker-generated events by default. Unit tests use an in-memory Analytics Engine mock and never
+or `preview` drops the event. Production sets `ANALYTICS_ENVIRONMENT = "production"` in
+`worker/wrangler.toml` `[vars]` so a deploy cannot silently drop every event. The beta Worker
+environment overrides it to `preview`. Local `wrangler dev` still fails closed when the
+`USAGE_ANALYTICS` binding is absent. Unit tests use an in-memory Analytics Engine mock and never
 contact production.
 
 A short-lived developer exclusion token can suppress writes while someone inspects the live site.
@@ -85,7 +86,13 @@ activity, scenario interest, deep links, exports, confirmed watches, selected bo
 and daily growth. Version 1.1.0 is additive; queries include compatible 1.0.0 rows so the existing
 rolling window remains continuous.
 Queries use `sum(_sample_interval * double1)`, so adaptive sampling remains represented in totals.
-The public response is edge-cached for about 15 minutes.
+The public response is edge-cached for about 15 minutes — that is the documented latency from an
+accepted `POST /events` until `/stats` is expected to reflect it.
+
+When `ANALYTICS_READ_TOKEN` is missing, full taxonomy cuts report `usage.available=false` with
+`unavailable_reason=not-configured`. `page_view` events still write a KV fallback under
+`ALERT_STATE`; once any page view exists in the rolling window, `/stats` sets `usage.available`
+true and surfaces those page-view totals even without SQL credentials.
 
 Analytics Engine retention is three months, so these event metrics are rolling-window measures,
 not lifetime user counts. Existing longer-lived operational counters retain their own explicit
