@@ -1,0 +1,164 @@
+#!/usr/bin/env python3
+"""Capture a synthetic admin ops dashboard frame for PR evidence.
+
+Renders offline HTML with synthetic (never real) subscriber data so the PNG
+is safe for a public pull request. Output:
+
+  docs/screenshots/admin-ops/dashboard.png
+
+  python3 tools/capture_admin_ops_dashboard.py
+"""
+from __future__ import annotations
+
+from pathlib import Path
+
+from playwright.sync_api import sync_playwright
+
+ROOT = Path(__file__).resolve().parents[1]
+OUT = ROOT / "docs" / "screenshots" / "admin-ops"
+OUT.mkdir(parents=True, exist_ok=True)
+
+# Synthetic fixture only — no real addresses, no live admin key.
+HTML = """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<title>Ops · digests · CityScroll (synthetic)</title>
+<style>
+  :root{
+    --paper:#f4efe4; --ink:#1a1714; --ink-soft:#3b342c; --muted:#5c5349;
+    --rule:#cdbfa6; --card:#fbf7ed; --green:#2f4a32; --oxblood:#7a1f1f; --amber:#9a6b1a;
+    --ui:ui-sans-serif,system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 Georgia,serif}
+  .wrap{max-width:960px;margin:0 auto;padding:18px 20px 40px}
+  .cr-rule{border-top:3px solid var(--ink)}
+  .kicker{font:700 11px/1 var(--ui);letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:12px 0 4px}
+  h1{font:900 28px/1.1 Georgia,serif;margin:.1em 0 .25em}
+  .lede{font:14px/1.5 var(--ui);color:var(--ink-soft);max-width:48em}
+  .banner{font:700 12px/1.3 var(--ui);color:var(--oxblood);background:#fdf0f0;border:1px solid #d9a0a0;
+    border-radius:8px;padding:8px 10px;margin:12px 0;display:inline-block}
+  .sanity{border-radius:10px;padding:12px 14px;font:14px/1.45 var(--ui);margin:14px 0;
+    background:#eef5ef;border:1px solid #9bb89f;color:var(--green)}
+  .grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:12px 0 18px}
+  .stat{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:12px 14px}
+  .stat .n{font:900 26px/1 Georgia,serif}
+  .stat .l{font:600 11px/1.3 var(--ui);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+  h2{font:700 12px/1.2 var(--ui);letter-spacing:.08em;text-transform:uppercase;color:var(--oxblood);
+    margin:22px 0 8px;border-top:1px solid var(--rule);padding-top:14px}
+  table{width:100%;border-collapse:collapse;font:13px/1.4 var(--ui)}
+  th,td{text-align:start;padding:7px 8px;border-bottom:1px solid var(--rule);vertical-align:top}
+  th{font:600 11px/1 var(--ui);text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+  td.n{text-align:end;font-variant-numeric:tabular-nums}
+  tr.selected{background:#f3ebe0}
+  .pill{display:inline-block;font:600 10px/1 var(--ui);letter-spacing:.04em;text-transform:uppercase;
+    padding:3px 7px;border-radius:999px;border:1px solid var(--rule);color:var(--muted)}
+  .pill.sent{border-color:var(--green);color:var(--green)}
+  .pill.zero{border-color:var(--amber);color:var(--amber)}
+  .drill{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:12px 14px;margin-top:10px}
+  .drill h3{margin:0 0 8px;font:700 14px/1.3 var(--ui)}
+  a{color:var(--oxblood)}
+  .mono{font-family:ui-monospace,Menlo,monospace;font-size:12px}
+  .hint{font:12px/1.4 var(--ui);color:var(--muted);margin-top:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="cr-rule"></div>
+  <div class="kicker">Internal · operator only · synthetic data</div>
+  <h1>Subscriptions &amp; digests</h1>
+  <p class="lede">Day-by-day send log with drill-down and a correctness check that re-runs each
+    subscription query against that day’s notices.</p>
+  <div class="banner">SYNTHETIC FIXTURE — no real subscriber addresses</div>
+
+  <div class="sanity" id="sanity">2026-07-30 · Correct: 2/2 subscription(s) match a fresh recount.</div>
+
+  <div class="grid">
+    <div class="stat"><div class="n">3</div><div class="l">Subscribers</div></div>
+    <div class="stat"><div class="n">1</div><div class="l">Sends · focus day</div></div>
+    <div class="stat"><div class="n">12</div><div class="l">Notices in sends</div></div>
+    <div class="stat"><div class="n">1</div><div class="l">Quiet queries</div></div>
+    <div class="stat"><div class="n">2</div><div class="l">Distinct searches</div></div>
+  </div>
+
+  <h2>Day by day</h2>
+  <table>
+    <thead><tr><th>Day</th><th class="n">Sent</th><th class="n">Notices</th><th class="n">Quiet</th><th>Log</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr class="selected">
+        <td class="mono">2026-07-30</td><td class="n">1</td><td class="n">12</td><td class="n"><span class="pill zero">1</span></td>
+        <td><span class="pill sent">logged</span></td><td></td>
+      </tr>
+      <tr>
+        <td class="mono">2026-07-29</td><td class="n">0</td><td class="n">0</td><td class="n"><span class="pill zero">2</span></td>
+        <td><span class="pill sent">logged</span></td><td>zero-send day</td>
+      </tr>
+      <tr>
+        <td class="mono">2026-07-28</td><td class="n">—</td><td class="n">—</td><td class="n"><span class="pill">—</span></td>
+        <td><span class="pill zero">no log</span></td><td>pre-deploy</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="drill">
+    <h3>2026-07-30 · 2 subscription outcomes</h3>
+    <div style="margin-bottom:12px;padding-bottom:10px;border-bottom:1px dashed var(--rule)">
+      <div><span class="pill sent">sent</span> <strong>contract money — about “education”</strong>
+        · <span class="mono">re***@example.com</span></div>
+      <div class="hint">yesterday's procurement digest: 12 notices — view the 12</div>
+      <div class="hint">
+        <a href="#">#notice/20260730001</a> ·
+        <a href="#">#notice/20260730002</a> ·
+        <a href="#">#notice/20260730003</a> ·
+        … +9
+      </div>
+    </div>
+    <div>
+      <div><span class="pill zero">zero match</span> <strong>contract money — about “unicorn-zzzx”</strong>
+        · <span class="mono">qu***@example.com</span></div>
+      <div class="hint">nothing matched · found 0 — absence shown, not skipped</div>
+    </div>
+  </div>
+
+  <h2>Subscriber roster</h2>
+  <table>
+    <thead><tr><th>Email</th><th>Query</th><th>Freq</th><th>Signed up</th><th>Last sent</th><th>Confirmed</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">re***@example.com</td><td>contract money — about “education”</td><td>daily</td><td class="mono">2026-07-01</td><td class="mono">2026-07-30</td><td>yes</td></tr>
+      <tr><td class="mono">qu***@example.com</td><td>contract money — about “unicorn-zzzx”</td><td>daily</td><td class="mono">2026-07-10</td><td class="mono">—</td><td>yes</td></tr>
+      <tr><td class="mono">la***@example.com</td><td>land &amp; rezonings — in Brooklyn</td><td>weekly</td><td class="mono">2026-06-15</td><td class="mono">2026-07-28</td><td>yes</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Saved searches</h2>
+  <table>
+    <thead><tr><th>Query</th><th>Lens</th><th class="n">Subscribers</th><th>Last sent (any)</th></tr></thead>
+    <tbody>
+      <tr><td>contract money — about “education”</td><td>money</td><td class="n">1</td><td class="mono">2026-07-30</td></tr>
+      <tr><td>contract money — about “unicorn-zzzx”</td><td>money</td><td class="n">1</td><td class="mono">—</td></tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>
+"""
+
+
+def main() -> None:
+    html_path = OUT / "fixture.html"
+    html_path.write_text(HTML, encoding="utf-8")
+    png_path = OUT / "dashboard.png"
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        page = browser.new_page(viewport={"width": 1440, "height": 1100})
+        page.goto(html_path.as_uri(), wait_until="load")
+        page.wait_for_selector("#sanity")
+        page.screenshot(path=str(png_path), full_page=True)
+        browser.close()
+    print(f"wrote {png_path.relative_to(ROOT)}")
+
+
+if __name__ == "__main__":
+    main()

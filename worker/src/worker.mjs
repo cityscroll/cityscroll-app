@@ -12,7 +12,7 @@ import { handleSubscribe } from "./subscribe.mjs";
 import { handleConfirm } from "./confirm.mjs";
 import { handleUnsubscribe } from "./unsubscribe.mjs";
 import { handleFeedback } from "./feedback.mjs";
-import { handleAdminSubs, handleAdminFeedback } from "./admin.mjs";
+import { handleAdminSubs, handleAdminFeedback, handleAdminRoster, handleAdminSends, handleAdminOps } from "./admin.mjs";
 import { handleFeed } from "./feed.mjs";
 import { handleBatch } from "./batch.mjs";
 import { handleAgencies } from "./agencies.mjs";
@@ -84,6 +84,9 @@ export default {
     if (pathname === "/api") return Response.redirect("https://cityscroll.org/api.html", 302);
     if (pathname === "/admin/subs") return handleAdminSubs(request, env);
     if (pathname === "/admin/feedback") return handleAdminFeedback(request, env);
+    if (pathname === "/admin/roster") return handleAdminRoster(request, env);
+    if (pathname === "/admin/sends") return handleAdminSends(request, env);
+    if (pathname === "/admin/ops") return handleAdminOps(request, env);
     if (pathname === "/admin/suggest-refresh") return handleAdminSuggestRefresh(request, env);
     if (pathname === "/" || pathname === "/health") {
       return new Response("crol-worker ok", { status: 200, headers: { "Content-Type": "text/plain" } });

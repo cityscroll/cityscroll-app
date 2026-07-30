@@ -31,6 +31,13 @@ import { bumpStatAllTime, bumpCategoryStat, bumpHistDay } from "./lib/stats.mjs"
 import { emitUsageEvent } from "./lib/analytics.mjs";
 import { nextSearchHealth, searchHealthStatus, alertsFixUrl, searchHealthNoteHtml } from "./lib/search_health.mjs";
 import { currentAwardCandidates } from "./external_award.mjs";
+import { redactEmail } from "./lib/subscriptions.mjs";
+import {
+  digestDayLogKey,
+  buildDayLog,
+  toDayLogEntry,
+  mergeDayLogEntry,
+} from "./lib/digest_ops.mjs";
 
 // A sent digest's category breakdown for the all-time stats: one bump per distinct City
 // Record section_name it carried (falling back to the watch's lens for sections without
@@ -41,14 +48,15 @@ async function bumpDigestCategories(env, rows, fallbackCategory) {
 }
 
 // ---- durable per-run receipt (ALERT_STATE) ---------------------------------
-// Digest operational keys live under sendcount:/seen:/lastsent:/sent:/digest:run:* —
-// deliberately disjoint from usage dual-write keys (stats:usage_*, stats:page_view,
-// stats:catday:*, stats:alert_confirmed) so a list-prefix scan or exact get can never
-// confuse a page-view counter with a send cap or last-sent clock.
+// Digest operational keys live under sendcount:/seen:/lastsent:/sent:/digest:run:* /
+// digest:daylog:* — deliberately disjoint from usage dual-write keys (stats:usage_*,
+// stats:page_view, stats:catday:*, stats:alert_confirmed) so a list-prefix scan or
+// exact get can never confuse a page-view counter with a send cap or last-sent clock.
 export const DIGEST_RUN_LATEST_KEY = "digest:run:latest";
 export function digestRunDayKey(day) {
   return `digest:run:${day}`;
 }
+export { digestDayLogKey };
 
 // Collapse one cron (or queue-consumer aggregate) into a public, low-cardinality receipt.
 // A silent skip must leave a non-null skipped_reason — never an empty "looks like nothing ran."
@@ -137,6 +145,49 @@ async function writeDigestRunReceipt(env, receipt) {
     await Promise.all(puts);
   } catch {
     // Receipt is observability, not load-bearing for delivery — never break the cron.
+  }
+}
+
+// Per-subscription day log: which digests went out, which notices, and zero-match
+// rows so quiet days stay visible. Fail-soft — never break the cron.
+export async function writeDigestDayLog(env, dayLog) {
+  if (!env?.ALERT_STATE || !dayLog?.day) return;
+  try {
+    await env.ALERT_STATE.put(digestDayLogKey(dayLog.day), JSON.stringify(dayLog));
+  } catch {
+    /* observability only */
+  }
+}
+
+export async function readDigestDayLog(env, day) {
+  if (!env?.ALERT_STATE || !day) return null;
+  try {
+    const raw = await env.ALERT_STATE.get(digestDayLogKey(day));
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object" ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+async function appendQueueDayLogEntry(env, day, jobResult) {
+  if (!env?.ALERT_STATE || !day || !jobResult) return;
+  try {
+    const entry = toDayLogEntry(jobResult, { day });
+    if (!entry) return;
+    const key = digestDayLogKey(day);
+    let existing = null;
+    try { existing = JSON.parse((await env.ALERT_STATE.get(key)) || "null"); } catch { existing = null; }
+    const merged = mergeDayLogEntry(existing, entry, {
+      day,
+      ranAt: new Date().toISOString(),
+      live: true,
+      mode: "queue",
+    });
+    await env.ALERT_STATE.put(key, JSON.stringify(merged));
+  } catch {
+    /* observability only */
   }
 }
 
@@ -275,7 +326,21 @@ export async function runAlerts(env, watches = cfg.watches || []) {
       // so the next run retries them once the cap clears, rather than losing them silently.
       if (rows.length && !capped) await markSeen(env, w.id, rows.map((r) => r.request_id).filter(Boolean));
 
-      results.push({ watch: w.id, found: rows.length, new: fresh.length, sent: send, capped, dryRun: underCap && !LIVE });
+      const noticeIds = fresh.map((r) => r.request_id).filter(Boolean).slice(0, 100);
+      results.push({
+        watch: w.id,
+        lens: w.type || null,
+        queryLabel: w.label || w.id,
+        emailRedacted: w.email ? redactEmail(w.email) : null,
+        found: rows.length,
+        new: fresh.length,
+        noticeIds,
+        action: fresh.length > 0 ? "match" : "none",
+        zeroMatch: fresh.length === 0,
+        sent: send,
+        capped,
+        dryRun: underCap && !LIVE,
+      });
     } catch (e) {
       results.push({ watch: w.id, error: String(e?.message || e) });
     }
@@ -317,6 +382,14 @@ export async function runAlerts(env, watches = cfg.watches || []) {
     ranAt, day, live: LIVE, mode, sentThisRun, sentToday, results, enqueued,
   });
   await writeDigestRunReceipt(env, receipt);
+  // Day log carries per-sub notice ids + zero-match rows for the ops dashboard.
+  // Queue mode only has the fan-out stub here; consumers append via mergeDayLogEntry.
+  if (mode !== "queue") {
+    await writeDigestDayLog(env, buildDayLog({ day, ranAt, live: LIVE, mode, results }));
+  } else {
+    // Seed an empty/queue daylog so the day is present even before consumers finish.
+    await writeDigestDayLog(env, buildDayLog({ day, ranAt, live: LIVE, mode, results: [] }));
+  }
   const summary = { ranAt, live: LIVE, sentThisRun, sentToday, caps: { perRun: maxPerRun, perDay: maxPerDay }, receipt, results };
   console.log("alerts run:", JSON.stringify(summary));
   return summary;
@@ -442,7 +515,22 @@ export async function processOneSub(env, s, ctx) {
     }
 
     if (rows.length && !capped) await markSeen(env, s.key, rows.map((r) => r[q.idField]).filter(Boolean));
-    return { sub: maskKey(s.key), lens: s.lens, found: rows.length, new: fresh.length, forecasts: forecasts.length, action: decision.action, sent: send, dryRun: underCap && !ctx.LIVE, capped };
+    const noticeIds = fresh.map((r) => r[q.idField]).filter(Boolean).slice(0, 100);
+    return {
+      sub: maskKey(s.key),
+      lens: s.lens,
+      queryLabel: describeFilter(s.lens, s.filter),
+      emailRedacted: redactEmail(s.email),
+      found: rows.length,
+      new: fresh.length,
+      noticeIds,
+      forecasts: forecasts.length,
+      action: decision.action,
+      zeroMatch: fresh.length === 0 && forecasts.length === 0 && decision.action === "none",
+      sent: send,
+      dryRun: underCap && !ctx.LIVE,
+      capped,
+    };
   } catch (e) {
     return { sub: maskKey(s.key), error: String(e?.message || e) };
   }
@@ -501,7 +589,23 @@ export async function processAwardSub(env, s, ctx) {
     // "mark on observe, not on send" posture the other lenses use for their own seen sets.
     if (candidates.length && !capped) await markSeen(env, seenId, candidates.map((c) => c.key).filter(Boolean));
 
-    return { sub: maskKey(s.key), lens: "award", found: candidates.length, new: fresh.length, sent: send, capped };
+    const noticeIds = fresh.length
+      ? [filter.requestId].filter(Boolean)
+      : [];
+    return {
+      sub: maskKey(s.key),
+      lens: "award",
+      queryLabel: describeFilter("award", filter),
+      emailRedacted: redactEmail(s.email),
+      found: candidates.length,
+      new: fresh.length,
+      noticeIds,
+      action: fresh.length > 0 ? "match" : "none",
+      zeroMatch: fresh.length === 0,
+      sent: send,
+      dryRun: underCap && !ctx.LIVE,
+      capped,
+    };
   } catch (e) {
     return { sub: maskKey(s.key), error: String(e?.message || e) };
   }
@@ -562,6 +666,7 @@ export async function consumeDigestJob(env, key) {
   const r = await processOneSub(env, s, ctx);
   console.log("digest job:", JSON.stringify(r));
   await recordQueueJobOutcome(env, day, r);
+  await appendQueueDayLogEntry(env, day, r);
   if (r?.error) {
     throw new Error(`digest job error for ${maskKey(key)}: ${r.error}`);
   }

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ops · digests · CityScroll</title>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="description" content="Internal operator dashboard for subscriptions and digest sends. Requires admin key.">
+<link rel="canonical" href="https://cityscroll.org/admin-ops.html">
+<meta name="theme-color" content="#173f55">
+<link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="brand.css">
+<style>
+  :root{
+    --paper:#f4efe4; --paper-2:#efe7d6; --ink:#1a1714; --ink-soft:#3b342c; --muted:#5c5349;
+    --rule:#cdbfa6; --rule-strong:#8a7c64; --card:#fbf7ed;
+    --shadow:0 1px 2px rgba(40,30,10,.05),0 6px 20px rgba(40,30,10,.06);
+    --green:#2f4a32; --oxblood:#7a1f1f; --amber:#9a6b1a;
+    --font-nameplate:Georgia,serif; --font-body:Georgia,serif;
+    --ui:ui-sans-serif,system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 var(--font-body);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:980px;margin:0 auto;padding:0 18px 72px}
+  a{color:var(--oxblood)}
+  .cr-rule{border-top:3px solid var(--ink)}
+  header{padding-top:16px}
+  .kicker{font:700 11px/1 var(--ui);letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:12px 0 4px}
+  h1{font-family:var(--font-nameplate);font-weight:900;font-size:clamp(1.6rem,4vw,2.2rem);margin:.1em 0 .2em;letter-spacing:-.02em}
+  .lede{color:var(--ink-soft);font:14px/1.55 var(--ui);max-width:52em}
+  .gate{background:var(--card);border:1px solid var(--rule);border-radius:12px;box-shadow:var(--shadow);padding:18px;margin:20px 0}
+  .gate label{display:block;font:600 12px/1.2 var(--ui);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:8px}
+  .gate-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .gate input[type=password],.gate input[type=text]{flex:1 1 220px;min-width:180px;padding:10px 12px;border:1px solid var(--rule-strong);border-radius:8px;font:14px/1.3 var(--ui);background:#fff}
+  .gate button,button.btn{font:600 13px/1 var(--ui);padding:11px 16px;border-radius:8px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer}
+  .gate button.secondary,button.btn.secondary{background:transparent;color:var(--ink);border-color:var(--rule-strong)}
+  .gate button:hover,button.btn:hover{opacity:.92}
+  .msg{font:13px/1.5 var(--ui);color:var(--muted);min-height:1.2em;margin-top:10px}
+  .msg.err{color:var(--oxblood);font-weight:600}
+  .hidden{display:none !important}
+  h2{font:700 13px/1.2 var(--ui);letter-spacing:.08em;text-transform:uppercase;color:var(--oxblood);margin:28px 0 10px;border-top:1px solid var(--rule);padding-top:16px}
+  .sanity{border-radius:10px;padding:12px 14px;font:14px/1.45 var(--ui);margin:12px 0 4px;border:1px solid var(--rule)}
+  .sanity.ok{background:#eef5ef;border-color:#9bb89f;color:var(--green)}
+  .sanity.diverge{background:#fdf0f0;border-color:#d9a0a0;color:var(--oxblood);font-weight:700}
+  .sanity.no_log,.sanity.unchecked{background:#faf6ee;border-color:var(--rule);color:var(--amber)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:12px 0}
+  .stat{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:12px 14px}
+  .stat .n{font-family:var(--font-nameplate);font-weight:900;font-size:1.7rem;line-height:1}
+  .stat .l{font:600 11px/1.3 var(--ui);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+  table{width:100%;border-collapse:collapse;font:13px/1.4 var(--ui);margin:8px 0}
+  th,td{text-align:start;padding:7px 8px;border-bottom:1px solid var(--rule);vertical-align:top}
+  th{font:600 11px/1 var(--ui);text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+  td.n{font-variant-numeric:tabular-nums;text-align:end}
+  tr.day-row{cursor:pointer}
+  tr.day-row:hover{background:rgba(40,30,10,.03)}
+  tr.day-row.selected{background:#f3ebe0}
+  .pill{display:inline-block;font:600 10px/1 var(--ui);letter-spacing:.04em;text-transform:uppercase;padding:3px 7px;border-radius:999px;border:1px solid var(--rule);color:var(--muted)}
+  .pill.zero{border-color:var(--amber);color:var(--amber)}
+  .pill.sent{border-color:var(--green);color:var(--green)}
+  .pill.flag{border-color:var(--oxblood);color:var(--oxblood)}
+  .drill{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:12px 14px;margin-top:10px}
+  .drill h3{margin:0 0 8px;font:700 14px/1.3 var(--ui)}
+  .notice-list{margin:6px 0 0;padding:0;list-style:none}
+  .notice-list li{margin:0 0 4px;font:13px/1.4 var(--ui)}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}
+  .foot{margin-top:36px;border-top:1px solid var(--rule);padding-top:12px;font:12px/1.5 var(--ui);color:var(--muted)}
+  .warn-banner{background:#fdf0f0;border:1px solid #d9a0a0;color:var(--oxblood);border-radius:8px;padding:10px 12px;font:13px/1.4 var(--ui);margin:12px 0}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.92em}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="cr-rule"></div>
+    <div class="kicker">Internal · operator only</div>
+    <h1>Subscriptions &amp; digests</h1>
+    <p class="lede">
+      Day-by-day send log, subscriber roster, and a correctness check that re-runs each
+      subscription query against that day’s notices. Personal data loads only after admin
+      auth — never cached, never indexed.
+    </p>
+  </header>
+
+  <section class="gate" id="gate">
+    <label for="adminKey">Admin key</label>
+    <div class="gate-row">
+      <input id="adminKey" type="password" autocomplete="current-password" spellcheck="false" placeholder="ADMIN_KEY">
+      <button type="button" id="loadBtn">Load dashboard</button>
+      <button type="button" class="secondary" id="clearBtn">Clear key</button>
+    </div>
+    <p class="msg" id="gateMsg">Key is sent as a Bearer token (not stored in the URL). Session-only.</p>
+  </section>
+
+  <div id="dash" class="hidden">
+    <div id="sanity" class="sanity" role="status"></div>
+    <div class="grid" id="summary"></div>
+
+    <h2>Day by day</h2>
+    <p class="lede" style="margin-top:0">Click a day to drill into each send. Zero-match days stay on the table — absence is the signal.</p>
+    <div style="overflow-x:auto">
+      <table id="daysTable" aria-label="Day-by-day digest sends">
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th class="n">Sent</th>
+            <th class="n">Notices</th>
+            <th class="n">Quiet</th>
+            <th>Log</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody id="daysBody"></tbody>
+      </table>
+    </div>
+    <div id="drill" class="drill hidden" aria-live="polite"></div>
+
+    <h2>Subscriber roster</h2>
+    <div style="overflow-x:auto">
+      <table aria-label="Subscriber roster">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Query</th>
+            <th>Freq</th>
+            <th>Signed up</th>
+            <th>Last sent</th>
+            <th>Confirmed</th>
+          </tr>
+        </thead>
+        <tbody id="rosterBody"></tbody>
+      </table>
+    </div>
+
+    <h2>Saved searches</h2>
+    <p class="lede" style="margin-top:0">Which subscription queries exist, and how many addresses hold each one.</p>
+    <div style="overflow-x:auto">
+      <table aria-label="Saved search interest">
+        <thead>
+          <tr>
+            <th>Query</th>
+            <th>Lens</th>
+            <th class="n">Subscribers</th>
+            <th>Last sent (any)</th>
+          </tr>
+        </thead>
+        <tbody id="queriesBody"></tbody>
+      </table>
+    </div>
+
+    <p class="foot">
+      Data from <code>/admin/ops</code> · <code>Cache-Control: private, no-store</code> ·
+      this page is <code>noindex</code>. Do not screenshot real addresses into public issues.
+    </p>
+  </div>
+</div>
+<script>
+(function () {
+  const API = window.CROL_API_ORIGIN || "https://api.cityscroll.org";
+  const KEY_STORAGE = "cityscroll_admin_ops_key";
+  // Never attach analytics to this page — no import of analytics.js.
+
+  const $ = (id) => document.getElementById(id);
+  const gateMsg = $("gateMsg");
+  const dash = $("dash");
+  let state = null;
+  let selectedDay = null;
+
+  function getKey() {
+    return ($("adminKey").value || "").trim() || sessionStorage.getItem(KEY_STORAGE) || "";
+  }
+  function setKey(k) {
+    if (k) sessionStorage.setItem(KEY_STORAGE, k);
+    else sessionStorage.removeItem(KEY_STORAGE);
+  }
+
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function fmtDay(d) {
+    if (!d) return "—";
+    return d;
+  }
+  function fmtTs(iso) {
+    if (!iso) return "—";
+    try { return new Date(iso).toISOString().slice(0, 16).replace("T", " ") + " UTC"; }
+    catch { return String(iso); }
+  }
+
+  async function load() {
+    const key = getKey();
+    if (!key) {
+      gateMsg.className = "msg err";
+      gateMsg.textContent = "Enter the admin key.";
+      return;
+    }
+    gateMsg.className = "msg";
+    gateMsg.textContent = "Loading…";
+    $("loadBtn").disabled = true;
+    try {
+      const url = API + "/admin/ops?days=14";
+      const res = await fetch(url, {
+        headers: {
+          "Authorization": "Bearer " + key,
+          "Accept": "application/json",
+        },
+        cache: "no-store",
+      });
+      if (res.status === 401) throw new Error("Unauthorized — check the admin key.");
+      if (res.status === 404) throw new Error("Admin routes not configured on this worker.");
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      state = await res.json();
+      setKey(key);
+      $("adminKey").value = key;
+      render(state);
+      dash.classList.remove("hidden");
+      gateMsg.className = "msg";
+      gateMsg.textContent = "Loaded " + (state.asOf || "") + " · focus " + (state.focusDay || "");
+    } catch (e) {
+      dash.classList.add("hidden");
+      gateMsg.className = "msg err";
+      gateMsg.textContent = String(e && e.message ? e.message : e);
+    } finally {
+      $("loadBtn").disabled = false;
+    }
+  }
+
+  function render(data) {
+    selectedDay = data.focusDay || (data.days && data.days[0] && data.days[0].day) || null;
+    renderSanity(data.correctness);
+    renderSummary(data);
+    renderDays(data.days || [], selectedDay);
+    renderDrill(data, selectedDay);
+    renderRoster(data.roster || []);
+    renderQueries(data.queries || []);
+  }
+
+  function renderSanity(c) {
+    const el = $("sanity");
+    if (!c) {
+      el.className = "sanity unchecked";
+      el.textContent = "Correctness check unavailable.";
+      return;
+    }
+    el.className = "sanity " + (c.status || "unchecked");
+    el.textContent = (c.day ? c.day + " · " : "") + (c.summary || c.status || "");
+    if (c.divergences && c.divergences.length) {
+      el.textContent += " — " + c.divergences.map(function (d) {
+        return (d.query || d.id || "?") + " logged " + d.logged + " / expected " + d.expected + " (" + d.reason + ")";
+      }).join("; ");
+    }
+  }
+
+  function renderSummary(data) {
+    const sentToday = (data.focus && data.focus.sent != null) ? data.focus.sent : "—";
+    const notices = (data.focus && data.focus.totalNotices != null) ? data.focus.totalNotices : "—";
+    const quiet = (data.focus && data.focus.zeroSendCount != null) ? data.focus.zeroSendCount : "—";
+    $("summary").innerHTML =
+      '<div class="stat"><div class="n">' + esc(data.subscriberCount ?? "—") + '</div><div class="l">Subscribers</div></div>' +
+      '<div class="stat"><div class="n">' + esc(sentToday) + '</div><div class="l">Sends · focus day</div></div>' +
+      '<div class="stat"><div class="n">' + esc(notices) + '</div><div class="l">Notices in sends</div></div>' +
+      '<div class="stat"><div class="n">' + esc(quiet) + '</div><div class="l">Quiet queries</div></div>' +
+      '<div class="stat"><div class="n">' + esc((data.queries || []).length) + '</div><div class="l">Distinct searches</div></div>';
+  }
+
+  function renderDays(days, selected) {
+    const body = $("daysBody");
+    if (!days.length) {
+      body.innerHTML = '<tr><td colspan="6">No day range returned.</td></tr>';
+      return;
+    }
+    body.innerHTML = days.map(function (d) {
+      const sel = d.day === selected ? " selected" : "";
+      const logPill = d.hasLog
+        ? '<span class="pill sent">logged</span>'
+        : '<span class="pill zero">no log</span>';
+      const note = d.skipped_reason
+        ? esc(d.skipped_reason)
+        : (d.zeroSendCount > 0 && (d.sent === 0 || d.sent == null) ? "zero-send day" : "");
+      const quietClass = (d.zeroSendCount > 0 && !d.sent) ? "zero" : "";
+      return '<tr class="day-row' + sel + '" data-day="' + esc(d.day) + '">' +
+        '<td class="mono">' + esc(fmtDay(d.day)) + '</td>' +
+        '<td class="n">' + esc(d.sent == null ? "—" : d.sent) + '</td>' +
+        '<td class="n">' + esc(d.totalNotices == null ? "—" : d.totalNotices) + '</td>' +
+        '<td class="n"><span class="pill ' + quietClass + '">' + esc(d.zeroSendCount == null ? "—" : d.zeroSendCount) + '</span></td>' +
+        '<td>' + logPill + '</td>' +
+        '<td>' + note + '</td>' +
+        '</tr>';
+    }).join("");
+
+    body.querySelectorAll("tr.day-row").forEach(function (tr) {
+      tr.addEventListener("click", function () {
+        selectedDay = tr.getAttribute("data-day");
+        renderDays(days, selectedDay);
+        renderDrill(state, selectedDay);
+      });
+    });
+  }
+
+  function renderDrill(data, day) {
+    const el = $("drill");
+    const row = (data.days || []).find(function (d) { return d.day === day; });
+    if (!row) {
+      el.classList.add("hidden");
+      el.innerHTML = "";
+      return;
+    }
+    el.classList.remove("hidden");
+    const sends = row.sends || [];
+    if (!row.hasLog) {
+      el.innerHTML = '<h3>' + esc(day) + '</h3><p class="lede">No per-subscription log for this day. Receipt: ' +
+        esc(row.receipt ? JSON.stringify(row.receipt) : "none") +
+        '. After deploy, new cron runs write notice-level day logs.</p>';
+      return;
+    }
+    if (!sends.length) {
+      el.innerHTML = '<h3>' + esc(day) + '</h3><p class="lede">Log present but empty — no subscriptions processed.</p>';
+      return;
+    }
+    el.innerHTML = '<h3>' + esc(day) + ' · ' + sends.length + ' subscription outcome' + (sends.length === 1 ? "" : "s") + '</h3>' +
+      sends.map(function (s) {
+        const status = s.sent
+          ? '<span class="pill sent">sent</span>'
+          : (s.zeroMatch ? '<span class="pill zero">zero match</span>'
+            : (s.dryRun ? '<span class="pill">dry-run</span>'
+              : (s.capped ? '<span class="pill flag">capped</span>'
+                : '<span class="pill">' + esc(s.action || "skip") + '</span>')));
+        const n = s.noticeCount || 0;
+        const correctnessHint = n > 0
+          ? (esc(s.query || s.lens || "digest") + ": " + n + " notice" + (n === 1 ? "" : "s") + " — view the " + n)
+          : esc(s.query || s.lens || "query") + ": nothing matched";
+        const links = (s.noticeLinks || []).map(function (u, i) {
+          const id = (s.noticeIds && s.noticeIds[i]) || u;
+          return '<li><a href="' + esc(u) + '" target="_blank" rel="noopener">' + esc(id) + '</a></li>';
+        }).join("");
+        return '<div style="margin:0 0 14px;padding-bottom:12px;border-bottom:1px dashed var(--rule)">' +
+          '<div>' + status + ' <strong>' + esc(s.query || s.lens || s.id || "—") + '</strong>' +
+          (s.email ? ' · <span class="mono">' + esc(s.email) + '</span>' : '') +
+          '</div>' +
+          '<div style="color:var(--muted);font:12px/1.4 var(--ui);margin-top:4px">' + correctnessHint +
+          (s.found != null ? ' · found ' + esc(s.found) : '') +
+          (s.forecasts ? ' · forecasts ' + esc(s.forecasts) : '') +
+          '</div>' +
+          (links ? '<ul class="notice-list">' + links + '</ul>' : '') +
+          (s.error ? '<div class="warn-banner">' + esc(s.error) + '</div>' : '') +
+          '</div>';
+      }).join("");
+  }
+
+  function renderRoster(roster) {
+    const body = $("rosterBody");
+    if (!roster.length) {
+      body.innerHTML = '<tr><td colspan="6">No confirmed subscriptions.</td></tr>';
+      return;
+    }
+    body.innerHTML = roster.map(function (r) {
+      return '<tr>' +
+        '<td class="mono">' + esc(r.email || r.emailRedacted || "—") + '</td>' +
+        '<td>' + esc(r.query || r.lens || "—") + '</td>' +
+        '<td>' + esc(r.freq || "—") + '</td>' +
+        '<td class="mono">' + esc(r.createdAt ? String(r.createdAt).slice(0, 10) : "—") + '</td>' +
+        '<td class="mono">' + esc(r.lastSent || "—") + '</td>' +
+        '<td>' + (r.confirmed ? "yes" : "no") + '</td>' +
+        '</tr>';
+    }).join("");
+  }
+
+  function renderQueries(queries) {
+    const body = $("queriesBody");
+    if (!queries.length) {
+      body.innerHTML = '<tr><td colspan="4">No saved searches.</td></tr>';
+      return;
+    }
+    body.innerHTML = queries.map(function (q) {
+      return '<tr>' +
+        '<td>' + esc(q.query || "—") + '</td>' +
+        '<td>' + esc(q.lens || "—") + '</td>' +
+        '<td class="n">' + esc(q.subscriberCount) + '</td>' +
+        '<td class="mono">' + esc(q.lastSentAny || "—") + '</td>' +
+        '</tr>';
+    }).join("");
+  }
+
+  $("loadBtn").addEventListener("click", load);
+  $("clearBtn").addEventListener("click", function () {
+    setKey("");
+    $("adminKey").value = "";
+    dash.classList.add("hidden");
+    gateMsg.className = "msg";
+    gateMsg.textContent = "Key cleared from this session.";
+  });
+  $("adminKey").addEventListener("keydown", function (ev) {
+    if (ev.key === "Enter") load();
+  });
+
+  // Prefill from session only (never from URL — keys and emails stay out of the address bar).
+  const existing = sessionStorage.getItem(KEY_STORAGE);
+  if (existing) {
+    $("adminKey").value = existing;
+  }
+})();
+</script>
+</body>
+</html>

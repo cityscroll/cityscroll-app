@@ -228,6 +228,22 @@ and community board minutes pages (`meeting_outcomes_non_council_*`). Council
 notices keep Legistar class-(a) unmatched copy. Detection: `isCityCouncilNotice`
 on `agency_name`.
 
+## Internal digest ops dashboard
+
+Operator surface for subscription roster + day-by-day digest sends (the checkable
+answer to “is it correct?” after silent zero-send outages). Admin-gated only
+(`checkAdminKey` in `worker/src/admin.mjs`):
+
+- API: `GET /admin/ops`, `/admin/roster`, `/admin/sends` (Bearer or `?key=`;
+  `Cache-Control: private, no-store`)
+- Day log KV: `digest:daylog:<YYYY-MM-DD>` written by `alerts.mjs` (zero-match rows
+  included). Pure helpers: `worker/src/lib/digest_ops.mjs`
+- Page: `site/admin-ops.html` (`noindex`, robots disallow, no analytics). Key in
+  sessionStorage + Bearer — never put subscriber emails in URLs or public screenshots.
+- Capture (synthetic): `python3 tools/capture_admin_ops_dashboard.py` →
+  `docs/screenshots/admin-ops/dashboard.png`
+- Tests: `cd worker && node --test test/digest_ops.test.mjs test/admin_ops.test.mjs`
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
