@@ -1,0 +1,18 @@
+{
+  "measured_at": "2026-07-30T20:00:00Z",
+  "api": "https://api.cityscroll.org",
+  "note": "Production sample before D1 passport schema was present. Every SELECT hit missing tables; lookup_status contracts/rfx = error.",
+  "sample_n": 40,
+  "error_n": 40,
+  "error_rate": 1.0,
+  "counts": {
+    "c=error|r=error": 40
+  },
+  "root_cause": "Remote D1 crol-notices had only notices/ingest_state tables; migrations 0002-0007 never applied. passport_contracts and passport_rfx missing.",
+  "example_ids": [
+    "20260724012",
+    "20260724020",
+    "20260724021",
+    "20260724018"
+  ]
+}

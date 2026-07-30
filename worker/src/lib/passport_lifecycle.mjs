@@ -101,7 +101,12 @@ function enrichSolicitation(entry, matchedRfx, join, lookupStatus) {
   if (lookupStatus === "error") {
     return {
       ...entry,
-      rfx: { status: "unknown", source: "passport-public-rfx", portal: RFX_PORTAL },
+      rfx: {
+        status: "unavailable",
+        source: "passport-public-rfx",
+        portal: RFX_PORTAL,
+      },
+      passport_lookup: "unavailable",
     };
   }
   if (entry.status === "matched" && matchedRfx.length === 1) {
@@ -149,9 +154,14 @@ function enrichSolicitation(entry, matchedRfx, join, lookupStatus) {
 function enrichPending(entry, pendingPool, join, lookupStatus) {
   // Prefer Checkbook when already matched.
   if (entry.status === "matched") return entry;
-  if (lookupStatus === "error" && entry.status === "unknown") {
-    // Leave Checkbook unknown; do not invent PASSPort if its lookup also failed.
-    return entry;
+  // Operational failure: never claim a confident empty / not-yet-ingested gap.
+  // Surface unavailable so the panel matches the three-state honesty pattern
+  // (ok / unmatched / unavailable) used for Checkbook payment_state.
+  if (lookupStatus === "error") {
+    return {
+      ...entry,
+      passport_lookup: "unavailable",
+    };
   }
   if (pendingPool.length === 1) {
     const c = pendingPool[0];
@@ -208,6 +218,12 @@ function enrichPending(entry, pendingPool, join, lookupStatus) {
 
 function enrichRegistered(entry, registeredPool, join, lookupStatus) {
   if (entry.status === "matched") return entry;
+  if (lookupStatus === "error") {
+    return {
+      ...entry,
+      passport_lookup: "unavailable",
+    };
+  }
   if (registeredPool.length === 1) {
     const c = registeredPool[0];
     return {

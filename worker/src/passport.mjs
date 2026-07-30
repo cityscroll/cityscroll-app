@@ -15,8 +15,85 @@ import { joinPinToEpin, normId, stripOneSuffix } from "./lib/passport_join.mjs";
 
 const BATCH = 80;
 
+/** Allowed table names for SQL interpolation (never user input). */
+const PASSPORT_TABLES = new Set(["passport_contracts", "passport_rfx"]);
+
+/**
+ * Idempotent schema ensure for the three PASSPort tables.
+ * Production deploys apply migrations via wrangler; this is the safety net so a
+ * missed migration cannot turn every lifecycle lookup into a silent "error".
+ * CREATE TABLE IF NOT EXISTS is cheap when tables already exist.
+ */
+export async function ensurePassportSchema(env) {
+  if (!env?.DB) return { ok: false, reason: "no-db" };
+  await env.DB.batch([
+    env.DB.prepare(`
+      CREATE TABLE IF NOT EXISTS passport_contracts (
+        epin            TEXT NOT NULL,
+        epin_norm       TEXT NOT NULL,
+        ctr_id          TEXT,
+        contract_id     TEXT,
+        title           TEXT,
+        agency          TEXT,
+        vendor          TEXT,
+        status          TEXT,
+        procurement_method TEXT,
+        contract_type   TEXT,
+        award_amount    REAL,
+        current_amount  REAL,
+        paid_amount     REAL,
+        start_date      TEXT,
+        end_date        TEXT,
+        registration_date TEXT,
+        payload         TEXT,
+        ingested_at     TEXT NOT NULL,
+        PRIMARY KEY (epin_norm, ctr_id)
+      )`),
+    env.DB.prepare(
+      "CREATE INDEX IF NOT EXISTS idx_passport_contracts_epin ON passport_contracts(epin_norm)",
+    ),
+    env.DB.prepare(
+      "CREATE INDEX IF NOT EXISTS idx_passport_contracts_status ON passport_contracts(status)",
+    ),
+    env.DB.prepare(`
+      CREATE TABLE IF NOT EXISTS passport_rfx (
+        epin            TEXT NOT NULL,
+        epin_norm       TEXT NOT NULL,
+        rfp_id          TEXT,
+        procurement_name TEXT,
+        agency          TEXT,
+        rfx_status      TEXT,
+        release_date    TEXT,
+        due_date        TEXT,
+        procurement_method TEXT,
+        main_commodity  TEXT,
+        industry        TEXT,
+        payload         TEXT,
+        ingested_at     TEXT NOT NULL,
+        PRIMARY KEY (epin_norm, rfp_id)
+      )`),
+    env.DB.prepare(
+      "CREATE INDEX IF NOT EXISTS idx_passport_rfx_epin ON passport_rfx(epin_norm)",
+    ),
+    env.DB.prepare(`
+      CREATE TABLE IF NOT EXISTS passport_ingest_meta (
+        key   TEXT PRIMARY KEY,
+        value TEXT NOT NULL
+      )`),
+  ]);
+  return { ok: true };
+}
+
 export async function ingestPassportPublic(env) {
   if (!env.DB) return { ok: false, reason: "no-db" };
+
+  // Ensure tables exist before DELETE/INSERT (missed remote migration → empty error storm).
+  try {
+    await ensurePassportSchema(env);
+  } catch (e) {
+    console.error("passport schema ensure failed:", String(e?.message || e));
+    return { ok: false, reason: "schema-ensure-failed" };
+  }
 
   const [ctrRes, rfxRes] = await Promise.all([
     fetch(CONTRACT_DATA_URL, { redirect: "follow" }),
@@ -137,6 +214,9 @@ function payloadsFrom(rows) {
  * the full EPIN corpus into memory.
  */
 async function resolveTableForPin(env, table, pin) {
+  if (!PASSPORT_TABLES.has(table)) {
+    throw new Error(`invalid passport table: ${table}`);
+  }
   const p = normId(pin);
   if (!p) return { rows: [], join: null };
 
@@ -213,8 +293,22 @@ async function resolveTableForPin(env, table, pin) {
   return { rows: [], join: null };
 }
 
+function classifyLookupError(err) {
+  const msg = String(err?.message || err || "");
+  // D1 / SQLite missing-table shapes seen in the field.
+  if (/no such table/i.test(msg) || /passport_(contracts|rfx)/i.test(msg) && /not found|does not exist/i.test(msg)) {
+    return "schema_missing";
+  }
+  return "query_failed";
+}
+
 /**
  * Look up PASSPort rows for a City Record PIN using strict EPIN join strategies.
+ *
+ * Three-state honesty (same family as payment_state in Checkbook lifecycle):
+ *   - ok: query succeeded (rows may still be empty → genuine unmatched)
+ *   - error: D1/query failure → panel must show unavailable, never confident empty
+ *   - skipped: no DB or no PIN
  */
 export async function lookupPassportForPin(env, pin) {
   if (!env.DB || !pin) {
@@ -224,6 +318,22 @@ export async function lookupPassportForPin(env, pin) {
       contractJoin: null,
       rfxJoin: null,
       lookupStatus: { contracts: "skipped", rfx: "skipped" },
+    };
+  }
+
+  try {
+    // Self-heal missing tables once per lookup path so a deploy without migrations
+    // degrades to empty-ok (source coverage) rather than operational error forever.
+    await ensurePassportSchema(env);
+  } catch (e) {
+    console.error("passport lookup schema ensure failed:", String(e?.message || e));
+    return {
+      contracts: [],
+      rfx: [],
+      contractJoin: null,
+      rfxJoin: null,
+      lookupStatus: { contracts: "error", rfx: "error" },
+      lookupError: "schema_ensure_failed",
     };
   }
 
@@ -239,13 +349,16 @@ export async function lookupPassportForPin(env, pin) {
       rfxJoin: rfx.join,
       lookupStatus: { contracts: "ok", rfx: "ok" },
     };
-  } catch {
+  } catch (e) {
+    const kind = classifyLookupError(e);
+    console.error("passport lookup failed:", kind, String(e?.message || e));
     return {
       contracts: [],
       rfx: [],
       contractJoin: null,
       rfxJoin: null,
       lookupStatus: { contracts: "error", rfx: "error" },
+      lookupError: kind,
     };
   }
 }

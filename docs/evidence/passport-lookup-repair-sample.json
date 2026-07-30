@@ -1,0 +1,21 @@
+{
+  "measured_at": "2026-07-30T20:06:43Z",
+  "api": "https://api.cityscroll.org",
+  "sample_n": 100,
+  "cache_bust": true,
+  "counts": {
+    "c=ok|r=ok": 97,
+    "c=None|r=None": 3
+  },
+  "error_n": 0,
+  "error_rate": 0.0,
+  "with_pin": 97,
+  "ok_with_join": 53,
+  "pending_unmatched": 4,
+  "pending_matched": 0,
+  "registered_unmatched": 0,
+  "registered_matched": 63,
+  "pin_bearing_n": 97,
+  "pin_bearing_error_rate": 0.0,
+  "note": "After applying pending D1 migrations and loading PASSPort Public dumps into passport_contracts / passport_rfx. Cache-busted GET /contract-lifecycle recomputes against repaired tables. Residual unmatched is source coverage, not lookup failure."
+}
