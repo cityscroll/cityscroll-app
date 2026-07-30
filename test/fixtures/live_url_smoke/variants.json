@@ -39,12 +39,23 @@
       ]
     },
     {
+      "id": "unsubstituted-i18n-placeholder-200",
+      "expect": "fail",
+      "reason_match": "unsubstituted build placeholder",
+      "hops": [
+        {
+          "status": 200,
+          "body": "<!doctype html><html lang=\"en\"><head><title>CityScroll</title><script src=\"i18n.js?v=__I18N_ASSET_VERSION__\"></script></head><body><h1 class=\"cr-title\">CityScroll</h1></body></html>"
+        }
+      ]
+    },
+    {
       "id": "healthy-cityscroll-200",
       "expect": "pass",
       "hops": [
         {
           "status": 200,
-          "body": "<!doctype html><html lang=\"en\"><head><title>CityScroll · track RFPs, rezonings, meetings</title><meta property=\"og:site_name\" content=\"CityScroll\"></head><body><h1 class=\"cr-title\">CityScroll</h1></body></html>"
+          "body": "<!doctype html><html lang=\"en\"><head><title>CityScroll · track RFPs, rezonings, meetings</title><meta property=\"og:site_name\" content=\"CityScroll\"><script src=\"i18n.js?v=c4609cdfa552\"></script></head><body><h1 class=\"cr-title\">CityScroll</h1></body></html>"
         }
       ]
     },

@@ -11,6 +11,7 @@ import {
   TAXONOMY_VERSION,
   buildUsageSnapshot,
   normalizeUsageEvent,
+  reconcileUsageWithDurableStores,
   usageAnalyticsQuery,
 } from "../worker/src/lib/analytics.mjs";
 
@@ -203,7 +204,11 @@ test("zero-state repro: without usage credentials, /stats reports unavailable us
   assert.equal(body.usage.page_views.last30d, 0);
 });
 
-test("repair fixture: page_view beacons remain visible when SQL read credentials are missing", async () => {
+test("field case: accepted page_view must be readable by /stats when SQL credentials are missing", async () => {
+  // Symptom (2026-07-30): POST /events returned 204 for a well-formed page_view, but
+  // /stats page_views stayed 0 and usage.available stayed false (unavailable_reason
+  // not-configured). Writer must await KV fallback; reader must promote those counts
+  // when the Analytics Engine SQL path is not configured.
   const points = [];
   const secret = "test-only-analytics-developer-key-32-chars";
   const alertState = fakeKV();
@@ -221,19 +226,95 @@ test("repair fixture: page_view beacons remain visible when SQL read credentials
     nowMs: nowMs + 1,
   });
 
+  // Bumps are awaited inside handleEvent — no sleep race. Immediately after 204, KV holds counts.
   const response = await handleStats(
     new Request("https://api.cityscroll.org/stats"),
     { SUBS: fakeKV(), ALERT_STATE: alertState, NL_METER: fakeKV() },
     { waitUntil() {} },
   );
-  await new Promise((resolve) => setTimeout(resolve, 20));
   const body = await response.json();
 
   assert.equal(body.usage.available, true);
+  assert.equal(body.usage.unavailable_reason, undefined);
   assert.equal(body.usage.page_views.last7d, 2);
   assert.equal(body.usage.page_views.last30d, 2);
   assert.equal(body.usage.page_views.by_surface_last30d.home, 1);
   assert.equal(body.usage.page_views.by_surface_last30d.stats, 1);
+  // Edge cache contract: public responses advertise the documented aggregation latency.
+  assert.match(response.headers.get("Cache-Control") || "", /max-age=900/);
+});
+
+test("field case: fire-and-forget page_view writes are rejected by the intake contract", async () => {
+  // Pin the regression shape: intake source must await page_view KV bumps, not void them.
+  const source = await readFile(new URL("../worker/src/events.mjs", import.meta.url), "utf8");
+  assert.match(source, /await Promise\.all\(tasks\)/);
+  assert.match(source, /bumpStat\(env\.ALERT_STATE, "page_view"/);
+  assert.doesNotMatch(source, /void Promise\.all\(/);
+});
+
+test("field case: domain migration store continuity — durable KV history must not reset Site totals to zero", async () => {
+  // Symptom (2026-07-30): after the crol-list.org → cityscroll.org flip, usage.available
+  // was false / not-configured and page_views showed zeros even though the pre-flip
+  // ALERT_STATE / NL_METER namespaces still held searches, digest-link clicks, and shares.
+  // Analytics Engine had zero rows; the reader must reconcile against the continuous store.
+  const emptyAe = {
+    available: false,
+    unavailable_reason: "not-configured",
+    measured_since: "2026-07-27",
+    page_views: { last7d: 0, last30d: 0, by_surface_last30d: {} },
+    searches: { last7d: 0, last30d: 0, by_lens_last30d: {} },
+    deep_links: { last7d: 0, last30d: 0, by_kind_last30d: {} },
+    lens_interest: { last7d: {}, last30d: {} },
+    alerts: { starts_last30d: 0, confirmed_last7d: 0, confirmed_last30d: 0 },
+    growth: { by_day: {} },
+  };
+  const reconciled = reconcileUsageWithDurableStores(emptyAe, {
+    searchesLast7d: 89,
+    searchesLast30d: 120,
+    searchesByLensLast7d: { money: 16, land: 10, meetings: 19 },
+    searchesByLensLast30d: { money: 32, land: 18, meetings: 19 },
+    deepLinksLast7d: 3,
+    deepLinksLast30d: 5,
+    sharesLast7d: 29,
+    sharesLast30d: 40,
+    growthByDay: {
+      "2026-07-29": { page_views: 0, interactions: 68 },
+      "2026-07-28": { page_views: 0, interactions: 2 },
+    },
+  }, { measuredSince: "2026-07-27" });
+
+  assert.equal(reconciled.available, true);
+  assert.equal(reconciled.unavailable_reason, undefined);
+  assert.equal(reconciled.searches.last7d, 89);
+  assert.equal(reconciled.searches.last30d, 120);
+  assert.equal(reconciled.searches.by_lens_last30d.money, 32);
+  assert.equal(reconciled.deep_links.last7d, 3 + 29);
+  assert.equal(reconciled.lens_interest.last30d.money, 32);
+  assert.equal(reconciled.growth.by_day["2026-07-29"].interactions, 68);
+
+  // End-to-end through /stats with the live KV shape (no AE credentials).
+  const today = new Date().toISOString().slice(0, 10);
+  const alertState = fakeKV({
+    [`stats:click:${today}`]: "3",
+    [`stats:share:${today}`]: "29",
+  });
+  const nlMeter = fakeKV({
+    [`stats:nl_search:${today}`]: "89",
+    [`stats:catday:nl_search:money:${today}`]: "16",
+    [`stats:catday:nl_search:land:${today}`]: "10",
+    [`hist:nl_search:2026-07-29`]: "68",
+    [`hist:era:nl_search`]: "2026-07-14",
+  });
+  const response = await handleStats(
+    new Request("https://api.cityscroll.org/stats"),
+    { SUBS: fakeKV(), ALERT_STATE: alertState, NL_METER: nlMeter },
+    { waitUntil() {} },
+  );
+  const body = await response.json();
+  assert.equal(body.usage.available, true);
+  assert.ok(body.usage.searches.last7d >= 89);
+  assert.ok(body.usage.deep_links.last7d >= 32);
+  assert.ok(body.usage.growth.by_day["2026-07-29"]?.interactions >= 68);
 });
 
 test("aggregate windows exclude old rows without inventing missing values", () => {

@@ -90,16 +90,9 @@ export async function handleEvent(req, env, options = {}) {
   const normalized = normalizeUsageEvent(input);
   if (!normalized) return new Response("Invalid event", { status: 400, headers: cors });
 
-  if (normalized.event === "page_view" && env?.ALERT_STATE) {
-    const surface = String(normalized.surface || "");
-    void Promise.all([
-      bumpStat(env.ALERT_STATE, "page_view", now),
-      bumpCategoryDayStat(env.ALERT_STATE, "page_view", surface || "home", now),
-    ]).catch(() => {});
-  }
-
   // Header validity is deliberately invisible to callers: accepted events always return the
   // same 204. Invalid or missing exclusion tokens continue into the normal counting path.
+  // Exclusion must run before any counter write (KV fallback or Analytics Engine).
   if (env?.ANALYTICS_ENVIRONMENT === "production") {
     const excluded = await hasValidDeveloperExclusion(
       req,
@@ -107,6 +100,32 @@ export async function handleEvent(req, env, options = {}) {
       options.nowMs ?? Date.now(),
     );
     if (excluded) return new Response(null, { status: 204, headers: cors });
+  }
+
+  // Durable dual-write into ALERT_STATE (same namespace as digests/clicks/feeds). Analytics
+  // Engine is best-effort and historically empty when ANALYTICS_ENVIRONMENT was unset; the
+  // KV path is the continuous store that must survive domain/route flips. Await before the
+  // 204 — fire-and-forget writes are cancelled when the isolate freezes.
+  if (env?.ALERT_STATE) {
+    try {
+      const tasks = [bumpStat(env.ALERT_STATE, `usage_${normalized.event}`, now)];
+      if (normalized.event === "page_view") {
+        const surface = String(normalized.surface || "home");
+        tasks.push(
+          bumpStat(env.ALERT_STATE, "page_view", now),
+          bumpCategoryDayStat(env.ALERT_STATE, "page_view", surface, now),
+        );
+      }
+      if (normalized.event === "search_run" && normalized.lens && normalized.lens !== "none") {
+        tasks.push(bumpCategoryDayStat(env.ALERT_STATE, "usage_search_run", normalized.lens, now));
+      }
+      if (normalized.event === "alert_confirmed") {
+        tasks.push(bumpStat(env.ALERT_STATE, "alert_confirmed", now));
+      }
+      await Promise.all(tasks);
+    } catch {
+      // Counting is best-effort; a lost count must not fail intake.
+    }
   }
 
   emitUsageEvent(env, normalized);

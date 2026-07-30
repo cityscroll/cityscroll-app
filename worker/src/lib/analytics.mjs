@@ -325,6 +325,131 @@ export async function readUsageAnalytics(env, options = {}) {
   }
 }
 
+/**
+ * Reconcile usage totals with the durable Worker stores (ALERT_STATE / NL_METER).
+ *
+ * Field case (domain migration 2026-07-29/30): Analytics Engine SQL was not-configured and
+ * the AE dataset itself held zero rows, so the "Site totals" panel looked reset. Outcome
+ * counters (searches, digest-link clicks, shares, feeds, batch checks) continued to live
+ * in the pre-flip KV namespaces. Prefer the max of AE vs durable so history never restarts
+ * at zero when the continuous store still has counts.
+ *
+ * @param {object} usage — result of readUsageAnalytics / blankUsage
+ * @param {object} durable — pre-loaded window totals from the same KV IDs as /stats
+ */
+export function reconcileUsageWithDurableStores(usage, durable = {}, options = {}) {
+  const measuredSince = options.measuredSince || usage?.measured_since || null;
+  const out = usage && typeof usage === "object"
+    ? JSON.parse(JSON.stringify(usage))
+    : blankUsage(measuredSince);
+
+  const page7 = Number(durable.pageViewsLast7d) || 0;
+  const page30 = Number(durable.pageViewsLast30d) || 0;
+  const pageBySurface = durable.pageViewsBySurfaceLast30d || {};
+  const searches7 = Number(durable.searchesLast7d) || 0;
+  const searches30 = Number(durable.searchesLast30d) || 0;
+  const searchesByLens = durable.searchesByLensLast30d || {};
+  const deep7 = Number(durable.deepLinksLast7d) || 0;
+  const deep30 = Number(durable.deepLinksLast30d) || 0;
+  const shares7 = Number(durable.sharesLast7d) || 0;
+  const shares30 = Number(durable.sharesLast30d) || 0;
+  const alertsConfirmed7 = Number(durable.alertsConfirmedLast7d) || 0;
+  const alertsConfirmed30 = Number(durable.alertsConfirmedLast30d) || 0;
+  const growthDays = durable.growthByDay || {};
+
+  const takeMax = (a, b) => Math.max(Number(a) || 0, Number(b) || 0);
+
+  out.page_views = out.page_views || { last7d: 0, last30d: 0, by_surface_last30d: fixedCounts(SURFACES) };
+  out.page_views.last7d = takeMax(out.page_views.last7d, page7);
+  out.page_views.last30d = takeMax(out.page_views.last30d, page30);
+  out.page_views.by_surface_last30d = fixedCounts(SURFACES, {
+    ...out.page_views.by_surface_last30d,
+    ...Object.fromEntries(
+      SURFACES.map((s) => [s, takeMax(out.page_views.by_surface_last30d?.[s], pageBySurface[s])]),
+    ),
+  });
+
+  out.searches = out.searches || { last7d: 0, last30d: 0, by_lens_last30d: fixedCounts(ANALYTICS_LENSES) };
+  out.searches.last7d = takeMax(out.searches.last7d, searches7);
+  out.searches.last30d = takeMax(out.searches.last30d, searches30);
+  out.searches.by_lens_last30d = fixedCounts(ANALYTICS_LENSES, {
+    ...out.searches.by_lens_last30d,
+    ...Object.fromEntries(
+      ANALYTICS_LENSES.map((lens) => [
+        lens,
+        takeMax(out.searches.by_lens_last30d?.[lens], searchesByLens[lens]),
+      ]),
+    ),
+  });
+
+  // Digest-link clicks and investigation shares are the continuous pre-flip proxies for
+  // deep-link interest when AE never retained events.
+  out.deep_links = out.deep_links || { last7d: 0, last30d: 0, by_kind_last30d: {} };
+  const deep7Merged = takeMax(out.deep_links.last7d, deep7 + shares7);
+  const deep30Merged = takeMax(out.deep_links.last30d, deep30 + shares30);
+  out.deep_links.last7d = deep7Merged;
+  out.deep_links.last30d = deep30Merged;
+  if (deep30 || shares30) {
+    out.deep_links.by_kind_last30d = {
+      ...out.deep_links.by_kind_last30d,
+      "digest-notice": takeMax(out.deep_links.by_kind_last30d?.["digest-notice"], deep30),
+      investigation: takeMax(out.deep_links.by_kind_last30d?.investigation, shares30),
+    };
+  }
+
+  out.alerts = out.alerts || { starts_last30d: 0, confirmed_last7d: 0, confirmed_last30d: 0 };
+  out.alerts.confirmed_last7d = takeMax(out.alerts.confirmed_last7d, alertsConfirmed7);
+  out.alerts.confirmed_last30d = takeMax(out.alerts.confirmed_last30d, alertsConfirmed30);
+
+  out.lens_interest = out.lens_interest || {
+    last7d: fixedCounts(ANALYTICS_LENSES),
+    last30d: fixedCounts(ANALYTICS_LENSES),
+  };
+  // Searches-by-lens are the continuous pre-flip signal for section interest.
+  out.lens_interest.last7d = fixedCounts(ANALYTICS_LENSES, {
+    ...out.lens_interest.last7d,
+    ...Object.fromEntries(
+      ANALYTICS_LENSES.map((lens) => [
+        lens,
+        takeMax(out.lens_interest.last7d?.[lens], durable.searchesByLensLast7d?.[lens]),
+      ]),
+    ),
+  });
+  out.lens_interest.last30d = fixedCounts(ANALYTICS_LENSES, {
+    ...out.lens_interest.last30d,
+    ...Object.fromEntries(
+      ANALYTICS_LENSES.map((lens) => [
+        lens,
+        takeMax(out.lens_interest.last30d?.[lens], searchesByLens[lens]),
+      ]),
+    ),
+  });
+
+  out.growth = out.growth || { by_day: {} };
+  out.growth.by_day = { ...out.growth.by_day };
+  for (const [day, counts] of Object.entries(growthDays)) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(day)) continue;
+    const prev = out.growth.by_day[day] || { page_views: 0, interactions: 0 };
+    out.growth.by_day[day] = {
+      page_views: takeMax(prev.page_views, counts.page_views),
+      interactions: takeMax(prev.interactions, counts.interactions),
+    };
+  }
+
+  const hasDurable = Boolean(
+    page7 || page30 || searches7 || searches30 || deep7 || deep30 || shares7 || shares30
+    || alertsConfirmed7 || alertsConfirmed30
+    || Object.keys(growthDays).length
+    || Object.values(searchesByLens).some((n) => n > 0),
+  );
+  if (hasDurable) {
+    out.available = true;
+    delete out.unavailable_reason;
+    if (!out.measured_since) out.measured_since = measuredSince;
+  }
+  return out;
+}
+
 export function completeLensCounts(observed = {}) {
   return fixedCounts(ANALYTICS_LENSES, observed);
 }
