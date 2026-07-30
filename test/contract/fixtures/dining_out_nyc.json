@@ -1,0 +1,232 @@
+{
+  "description": "Real Dining Out NYC characterization anchors for citywide rule vs address-level cafe consents. Bodies are City Record Online (dg92-zbpx) text as published; NYC Rules deep link is the official program page.",
+  "retrieved_note": "City Record fields captured for fixture stability; SODA body text for older Agency Rules rows may be empty while the notice identity remains real.",
+  "nyc_rules": {
+    "title": "DOT's Dining Out NYC Program",
+    "url": "https://rules.cityofnewyork.us/rule/dot-proposed-rule-outdoor-dining/",
+    "agency_name": "DOT",
+    "agency_abbr": "DOT",
+    "rule_status": "1",
+    "adoption_date": "2024-03-03",
+    "comment_by_date": null,
+    "hearing_date": null,
+    "summary": "NYC DOT's adopted rule establishes requirements relating to NYC DOT's Dining Out NYC program, including the granting of licenses and revocable consents for sidewalk and roadway cafes.",
+    "comment_url": "https://rules.cityofnewyork.us/rule/dot-proposed-rule-outdoor-dining/feed/",
+    "comment_count": 446,
+    "pub_date": "2024-02-02T00:00:00.000Z",
+    "guid": "https://rules.cityofnewyork.us/rule/dot-proposed-rule-outdoor-dining/"
+  },
+  "citywide_rule_row": {
+    "request_id": "20240129008",
+    "start_date": "2024-02-02T00:00:00.000",
+    "agency_name": "Transportation",
+    "type_of_notice_description": "Notice",
+    "section_name": "Agency Rules",
+    "short_title": "DOT Notice of Adoption--Dining Out NYC"
+  },
+  "proposed_rule_row": {
+    "request_id": "20231019033",
+    "start_date": "2023-10-20T00:00:00.000",
+    "agency_name": "Transportation",
+    "type_of_notice_description": "Notice",
+    "section_name": "Agency Rules",
+    "short_title": "DOT Proposed Rules relating to DOT Dining Out NYC program",
+    "event_date": "2023-11-20T10:00:00.000"
+  },
+  "consent_rows": [
+    {
+      "request_id": "20260723005",
+      "start_date": "2026-07-29T00:00:00.000",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "Dining Out NYC Public Hearings",
+      "event_date": "2026-08-13T11:00:00.000",
+      "additional_description_1": "<p><span style='color:#000000'>NOTICE IS HEREBY GIVEN, PURSUANT TO LAW, that the following proposed revocable consent has been scheduled for a public hearing by the New York City Department of Transportation. A draft copy of the revocable consent agreement(s) may be obtained at no cost by submitting a request at diningoutnyc.info/requestcopy</span></p><p><span style='color:#000000'>The public hearing will be held remotely via Zoom, commencing on August 13th, 2026, at 11:00 am, in the matter\u00a0of a proposed\u00a0revocable consent\u00a0authorizing the following:</span></p><ol>\t<li>\t<p><span style='color:#000000'>Cien\u00a0Fuegos\u00a0LLC\u00a0to\u00a0maintain, operate, and use a roadway cafe for a term of four years adjacent to\u00a096 Avenue A\u00a0in the Borough of\u00a0Manhattan</span></p>\t</li>\t<li>\t<p><span style='color:#000000'>Chama Mama At 113 Franklin LLC to maintain, operate, and use a roadway cafe for a term of four years adjacent to 113 Franklin Street in the Borough of Brooklyn</span></p>\t</li>\t<li>\t<p><span style='color:#000000'>Rich Mhasarn INC to maintain, operate, and use a roadway cafe for a term of four years adjacent to 131 Grand St in the Borough of Brooklyn.</span></p>\t</li></ol>"
+    },
+    {
+      "request_id": "20251021021",
+      "start_date": "2025-10-28T00:00:00.000",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "Dining Out NYC Sidewalk Public Hearing",
+      "event_date": "2025-11-10T11:00:00.000",
+      "additional_description_1": "<p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>NOTICE IS HEREBY GIVEN, PURSUANT TO LAW, that the following proposed revocable consent has been scheduled for a public hearing by the New York City Department of Transportation.\u00a0A draft copy of the revocable consent agreement(s) may be obtained at no cost by submitting a request at\u00a0diningoutnyc.info/requestcopy</span></span></p><p>\u00a0</p><p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>The public hearing will be held remotely via Zoom, commencing on 11/10/2025, at 11:00 am, on the following petition for revocable consent:</span></span></p><p>\u00a0</p><p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>To join the hearing via your browser either click on the following URL link or copy and paste it into your browser\u001as address bar.</span></span></p><p>\u00a0</p><p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>Join Zoom Meeting:\u00a0zoom.us/j/91467302621</span></span></p><p>\u00a0</p><p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>Meeting ID:\u00a091467302621</span></span></p><p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>To join the hearing only by phone, use the following information to connect:</span></span></p><p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>Phone: +1-929-205-6099</span></span></p><p><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>Meeting ID: 914 6730 2621</span></span></p><p>\u00a0</p><ol>\t<li><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>San Matteo to maintain, operate, and use a sidewalk cafe for a term of four years adjacent to the proposed revocable consent is for a term of four years adjacent to 1716 2nd Avenue\u00a0in the borough of Manhattan.</span></span></li></ol><p>\u00a0</p><ol start='2'>\t<li><span style='font-size:12pt'><span style='font-family:Aptos,sans-serif'>Mimi 86 Corp (Mimi's Pizza) to maintain, operate, and use a sidewalk cafe for a term of four years adjacent to the proposed revocable consent is for a term of four years adjacent to 217 East 86th Street in the borough of Manhattan.</span></span></li></ol>"
+    },
+    {
+      "request_id": "20260624036",
+      "start_date": "2026-07-01T00:00:00.000",
+      "agency_name": "Transportation",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "Dining Out NYC Public Hearing",
+      "event_date": "2026-07-16T11:00:00.000",
+      "additional_description_1": "<p>NOTICE IS HEREBY GIVEN, PURSUANT TO LAW, that the following proposed revocable consent has been scheduled for a public hearing by the New York City Department of Transportation. A draft copy of the revocable consent agreement(s) may be obtained at no cost by submitting a request at diningoutnyc.info/requestcopy</p><p>The public hearing will be held remotely via Zoom, commencing on July 16th, 2026, at 11:00 am, in the matter\u00a0of a proposed\u00a0revocable consent\u00a0authorizing the following:</p><ol>\t<li>Koulas Espresso Bar\u00a0LLC\u00a0to\u00a0maintain, operate, and use a roadway cafe for a term of four years adjacent to\u00a030-94 35 Ave\u00a0in the Borough of\u00a0Queens</li>\t<li>Pineapple Hospitality Consulting\u00a0LLC\u00a0to\u00a0maintain, operate, and use a roadway cafe for a term of four years adjacent to\u00a0964 Lexington Av\u00a0in the Borough of\u00a0Manhattan</li>\t<li>Lanzhou Hand Pulled Noodles House\u00a0LLC\u00a0to\u00a0maintain, operate, and use a roadway cafe for a term of four years adjacent to\u00a076 Mott St\u00a0in the Borough of\u00a0Manhattan</li>\t<li>\t<p>Cien\u00a0Fuegos\u00a0LLC\u00a0to\u00a0maintain, operate, and use a roadway cafe for a term of four years adjacent to\u00a096 Avenue A\u00a0in the Borough of\u00a0Manhattan\u00a0</p>\t</li>\t<li>Dahan 976A LLC\u00a0to\u00a0maintain, operate, and use a roadway cafe for a term of four years adjacent to\u00a0976A Lexington Ave\u00a0in the Borough of Manhattan\u00a0</li>\t<li>Shmuck or Die LLC\u00a0to\u00a0maintain, operate, and use a roadway cafe for a term of four years adjacent to\u00a097\u00a01\u00a0Ave\u00a0in the Borough of Manhattan</li>\t<li>Rich Mhasarn INC\u00a0to\u00a0maintain, operate, and use a roadway cafe for a term of four years adjacent to\u00a0131 Grand St\u00a0in the Borough of\u00a0Brooklyn</li>\t<li>Fusion Catering\u00a0Inc\u00a0to\u00a0maintain, operate, and use a roadway cafe for a term of four years adjacent to\u00a0525 Hudson\u00a0St\u00a0in the Borough of\u00a0Manhattan</li>\t<li>Anita USA INC\u00a0to\u00a0maintain, operate, and use a roadway cafe for a term of four years adjacent to 1561 2 Ave in the Borough of Manhattan</li>\t<li>\t<p>Maxi Mini LLC\u00a0to\u00a0maintain, operate, and use a roadway cafe for a term of four years adjacent to\u00a041 Essex St\u00a0in the Borough of Manhattan.\u00a0</p>\t</li></ol><p>To join the hearing enter the following URL link into your browser\u001as address bar: zoom.us/j/91467302621 Meeting ID: 914 6730 2621</p><p>To join the hearing only by phone, use the following information to connect: Phone: +1-929-205-6099 Meeting ID: 914 6730 2621</p>"
+    }
+  ],
+  "geocodes": {
+    "96 Avenue A|Manhattan": {
+      "borough": "Manhattan",
+      "neighborhood": "East Village",
+      "latitude": 40.725485,
+      "longitude": -73.983681,
+      "bbl": "1004020001",
+      "community_district": "103",
+      "council_district": "2"
+    },
+    "96 Avenue A": {
+      "borough": "Manhattan",
+      "neighborhood": "East Village",
+      "latitude": 40.725485,
+      "longitude": -73.983681,
+      "bbl": "1004020001",
+      "community_district": "103",
+      "council_district": "2"
+    },
+    "113 Franklin Street|Brooklyn": {
+      "borough": "Manhattan",
+      "neighborhood": "Tribeca",
+      "latitude": 40.71839,
+      "longitude": -74.006082,
+      "bbl": "1001770024",
+      "community_district": "101",
+      "council_district": "1"
+    },
+    "113 Franklin Street": {
+      "borough": "Manhattan",
+      "neighborhood": "Tribeca",
+      "latitude": 40.71839,
+      "longitude": -74.006082,
+      "bbl": "1001770024",
+      "community_district": "101",
+      "council_district": "1"
+    },
+    "131 Grand St|Brooklyn": {
+      "borough": "Manhattan",
+      "neighborhood": "SoHo",
+      "latitude": 40.72034,
+      "longitude": -74.000167,
+      "bbl": "1002327501",
+      "community_district": "102",
+      "council_district": "1"
+    },
+    "131 Grand St": {
+      "borough": "Manhattan",
+      "neighborhood": "SoHo",
+      "latitude": 40.72034,
+      "longitude": -74.000167,
+      "bbl": "1002327501",
+      "community_district": "102",
+      "council_district": "1"
+    },
+    "1716 2nd Avenue|Manhattan": {
+      "borough": "Manhattan",
+      "neighborhood": "Upper East Side",
+      "latitude": 40.779819,
+      "longitude": -73.949985,
+      "bbl": "1015520001",
+      "community_district": "108",
+      "council_district": "5"
+    },
+    "1716 2nd Avenue": {
+      "borough": "Manhattan",
+      "neighborhood": "Upper East Side",
+      "latitude": 40.779819,
+      "longitude": -73.949985,
+      "bbl": "1015520001",
+      "community_district": "108",
+      "council_district": "5"
+    },
+    "217 East 86th Street|Manhattan": {
+      "borough": "Manhattan",
+      "neighborhood": "Upper East Side",
+      "latitude": 40.778632,
+      "longitude": -73.952883,
+      "bbl": "1015320010",
+      "community_district": "108",
+      "council_district": "5"
+    },
+    "217 East 86th Street": {
+      "borough": "Manhattan",
+      "neighborhood": "Upper East Side",
+      "latitude": 40.778632,
+      "longitude": -73.952883,
+      "bbl": "1015320010",
+      "community_district": "108",
+      "council_district": "5"
+    },
+    "30-94 35 Ave|Queens": {
+      "borough": "Queens",
+      "neighborhood": "Astoria",
+      "latitude": 40.763147,
+      "longitude": -73.92037,
+      "bbl": "4006260001",
+      "community_district": "401",
+      "council_district": "22"
+    },
+    "30-94 35 Ave": {
+      "borough": "Queens",
+      "neighborhood": "Astoria",
+      "latitude": 40.763147,
+      "longitude": -73.92037,
+      "bbl": "4006260001",
+      "community_district": "401",
+      "council_district": "22"
+    },
+    "964 Lexington Av|Manhattan": {
+      "borough": "Manhattan",
+      "neighborhood": "Upper East Side",
+      "latitude": 40.76944,
+      "longitude": -73.96319,
+      "bbl": "1014050016",
+      "community_district": "108",
+      "council_district": "4"
+    },
+    "964 Lexington Av": {
+      "borough": "Manhattan",
+      "neighborhood": "Upper East Side",
+      "latitude": 40.76944,
+      "longitude": -73.96319,
+      "bbl": "1014050016",
+      "community_district": "108",
+      "council_district": "4"
+    },
+    "30-94 35th Ave|Queens": {
+      "borough": "Queens",
+      "neighborhood": "Astoria",
+      "latitude": 40.763147,
+      "longitude": -73.92037,
+      "bbl": "4006260001",
+      "community_district": "401",
+      "council_district": "22"
+    },
+    "30-94 35th Ave": {
+      "borough": "Queens",
+      "neighborhood": "Astoria",
+      "latitude": 40.763147,
+      "longitude": -73.92037,
+      "bbl": "4006260001",
+      "community_district": "401",
+      "council_district": "22"
+    },
+    "964 Lexington Ave|Manhattan": {
+      "borough": "Manhattan",
+      "neighborhood": "Upper East Side",
+      "latitude": 40.76944,
+      "longitude": -73.96319,
+      "bbl": "1014050016",
+      "community_district": "108",
+      "council_district": "4"
+    },
+    "964 Lexington Ave": {
+      "borough": "Manhattan",
+      "neighborhood": "Upper East Side",
+      "latitude": 40.76944,
+      "longitude": -73.96319,
+      "bbl": "1014050016",
+      "community_district": "108",
+      "council_district": "4"
+    }
+  }
+}

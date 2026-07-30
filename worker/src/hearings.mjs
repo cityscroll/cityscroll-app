@@ -42,10 +42,15 @@ async function geocodeAddress(fetchImpl, address) {
     const payload = await response.json();
     const feature = payload?.features?.[0];
     const properties = feature?.properties || {};
+    const pad = properties?.addendum?.pad || {};
+    const coordinates = feature?.geometry?.coordinates || [];
     if (!feature) return null;
     return {
       borough: properties.borough || null,
       neighborhood: properties.neighbourhood || null,
+      latitude: Number.isFinite(coordinates[1]) ? coordinates[1] : null,
+      longitude: Number.isFinite(coordinates[0]) ? coordinates[0] : null,
+      bbl: /^\d{10}$/.test(pad.bbl || "") ? pad.bbl : null,
     };
   } catch {
     return null;

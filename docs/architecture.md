@@ -78,13 +78,17 @@ sources:
   - worker/src/vendor_profile.mjs
   - docs/analytics-event-taxonomy.md
   - worker/src/lib/hearings.mjs
+  - worker/src/lib/civic_scope.mjs
+  - worker/src/lib/cafe_consent.mjs
+  - docs/civic-scope-schema.md
+  - test/contract/fixtures/dining_out_nyc.json
   - worker/src/mirror.mjs
   - worker/src/lib/cors.mjs
   - test/process-spine.test.mjs
   - test/fixtures/wave4/generated/process_spine.json
   - test/fixtures/wave4/generated/unresolved-joins.json
   - test/fixtures/wave4/generated/ocds-gap-table.json
-sources_hash: 4e33c24dc53efa405f76fab9d182c595718d661272f935c526aacc0e08761584
+sources_hash: ec01bee50466291b8f651a8b0ffc1ea9f51cb1b6df5699fded641ab64bdefe20
 ---
 
 # crol-list — architecture
@@ -160,7 +164,7 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 
 - **KV `SUBS`** — confirmed subscriptions: `sub:<token>` → `{email, lens, filters, frequency}`, plus per-IP/per-address rate-limit counters for `/subscribe`.
 - **KV `NL_METER`** — daily spend metering for `/nl` (the denial-of-wallet ceiling on the only Claude-billed route).
-- **KV `ALERT_STATE`** — digest/cron bookkeeping plus read models: `hearings:location:v1` → rules hearings and public meetings normalized into separate affected-area and venue fields, `property:location:v1` → Property Disposition notices with extracted site addresses/tax lots/BBLs and NYC GeoSearch geometry, `fc:<stem>` → estimated contract expirations from Checkbook contract terms, and versioned `vp:v1:*` whole-profile buckets behind `/vendor-profile`; stale or missing location views retain live Socrata fallbacks. The daily cleanup removes retired `plan:` keys so disabled MOCS rows cannot reappear.
+- **KV `ALERT_STATE`** — digest/cron bookkeeping plus read models: `hearings:location:v1` → rules hearings and public meetings normalized into separate affected-area and venue fields (subject addresses may carry coordinates/BBL for place mapping), `property:location:v1` → Property Disposition notices with extracted site addresses/tax lots/BBLs and NYC GeoSearch geometry, `fc:<stem>` → estimated contract expirations from Checkbook contract terms, and versioned `vp:v1:*` whole-profile buckets behind `/vendor-profile`; stale or missing location views retain live Socrata fallbacks. The daily cleanup removes retired `plan:` keys so disabled MOCS rows cannot reappear.
 - **KV `FEEDBACK`** — stored feedback rows (`fb:<ts>:<rand>`) + rate-limit counters.
 - **`index.html` localStorage** — client-side only: investigation workspace (pinned notices + notes), query cache, saved searches, plain/rigor toggle.
 - **Public beta flag localStorage** — one registered, default-off experiment slug selected by `?beta=<slug>`; `?beta=0` clears it. The registry enforces a removal date and on/off tests. It is presentation state only, never access control.
@@ -202,6 +206,7 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 - **Seven lenses:** Money (RFP→Award pipeline + forecast timeline), Staffing (plain-language civil-service guide + open/upcoming exam explorer + title decoder/payroll), Land (rezonings + map), Property (asset lifecycle), Rules, Meetings, Alerts (subscriptions + watchlist).
 - **Location-aware hearings:** Meetings joins public-meeting notices with dated rules hearings, offers rolling week/month filters plus affected borough and neighborhood controls, and groups unlocated notices visibly instead of dropping them. Hearing cards render affected area and venue as independent facts; location-aware meeting watches replay the same distinction in digest matching.
 - **Location-aware Property and Rules:** Property notices share the hearing extractor's geography primitives but use property-specific evidence scoping so agency/contact addresses cannot become site addresses. The lens offers borough, neighborhood, and coarse near-me filters; cards show addresses, tax lots, BBLs, and map links only when supported, with an explicit fallback for notices that state no location. Rules remain citywide by default, while explicitly borough/district-scoped rules and dated rule hearings display their supported affected-area chips.
+- **Civic scope (topic vs place):** `worker/src/lib/civic_scope.mjs` models the distinction the separate Rules and Meetings pipelines cannot express alone—topic-scoped citywide rules versus place-scoped cafe consent hearings—using Dining Out NYC as the characterization case (`docs/civic-scope-schema.md`). Place pins carry coordinates/BBL/community and council districts when geocoded; each record links official action routes and an explicit outcome (or the absence of one).
 - **Forecasting UI:** vertical timeline widget on vendor/agency profile panels for Checkbook-based contract-expiration estimates, labeled separately from active solicitations.
 - **Vendor profiles:** in response to user feedback, identity, top-agency chips, 15 recent notices, and forecasts now paint together from one daily precomputed KV projection. Full-text mentions stay behind an explicit disclosure because joining every vendor stem against the recent text corpus is disproportionate; missing or stale projection records use the original live Socrata resolver.
 - **External awards:** 13 City Record agency aliases map to 12 distinct ABO authorities across local-authority, local-development-corporation, and state-authority filings (`8w5p-k45m`, `d84c-dk28`, `ehig-g5x3`). Profiles show up to eight recent awards with source and lag labels. NYCHA solicitation details use exact-PIN Checkbook `Contracts_NYCHA` candidates only when the contract date is later than the solicitation date; matches remain separate from City Record rows.
