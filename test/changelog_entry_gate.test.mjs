@@ -21,8 +21,15 @@
 // it should have been, produces its entry.
 import test from "node:test";
 import assert from "node:assert/strict";
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
+import { spawnSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
 import { computeEntryAddition } from "../tools/gen_changelog.mjs";
 import { MAJOR_LABEL } from "../tools/changelog_extract.mjs";
+
+const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 
 const PR_77_INTERNAL_TOOLING_BODY = `## Summary
 Wires a pre-merge reading-level simulation into CI.
@@ -111,6 +118,35 @@ test("the changelog:major label alone, with no marker section, still produces no
   });
   assert.equal(result.reason, "no-marker");
   assert.equal(result.entries.length, 0);
+});
+
+// Vacuity tripwire (CLI): major + no marker must fail the post-merge job, not exit 0.
+// Characterization of the green-but-vacuous failure mode that left the public page stale
+// while Update changelog reported success.
+test("gen_changelog CLI exits non-zero when labeled changelog:major but no accepted marker section", () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "chg-vacuity-"));
+  const bodyFile = path.join(tmp, "body.md");
+  fs.writeFileSync(bodyFile, "## Summary\nNo impact section at all.\n");
+  // Run against the real tree's data paths; major+no-marker returns before any write.
+  const result = spawnSync(
+    process.execPath,
+    [
+      path.join(ROOT, "tools", "gen_changelog.mjs"),
+      "--number",
+      "999001",
+      "--url",
+      "https://example.invalid/999001",
+      "--merged-at",
+      "2026-07-30",
+      "--body-file",
+      bodyFile,
+      "--labels",
+      MAJOR_LABEL,
+    ],
+    { encoding: "utf8", cwd: ROOT }
+  );
+  assert.notEqual(result.status, 0, "CLI must fail closed on major+no-marker");
+  assert.match(result.stderr + result.stdout, /refusing silent no-op|no accepted user-impact/i);
 });
 
 test("an already-recorded PR number stays a no-op regardless of label", () => {
