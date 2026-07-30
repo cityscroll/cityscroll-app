@@ -1,0 +1,159 @@
+{
+  "schema": "hosting-migration-baseline.v1",
+  "captured_at": "2026-07-30T16:35:00Z",
+  "serving_shape": "github-pages-origin-via-worker-mirror",
+  "purpose": "Before side of the hosting-migration value scorecard. Claims such as ship faster, catch breaks faster, and roll back instantly are measured after cutover against these numbers — not asserted in advance.",
+  "claims_to_measure_after_cutover": [
+    {
+      "id": "ship-faster",
+      "claim": "merge-to-live wall-clock is shorter under Pages-primary than under GitHub Pages + mirror",
+      "baseline_field": "merge_to_live"
+    },
+    {
+      "id": "catch-breaks-faster",
+      "claim": "detection latency for visitor-visible outages is shorter with post-flip gates than manual discovery",
+      "baseline_field": "detection_latency_exemplars"
+    },
+    {
+      "id": "roll-back-instantly",
+      "claim": "operator restore wall-clock after a bad flip is shorter than multi-layer manual recovery",
+      "baseline_field": "rollback_estimate"
+    }
+  ],
+  "merge_to_live": {
+    "workflow": "Deploy site",
+    "workflow_path": ".github/workflows/deploy-pages.yml",
+    "unit": "seconds",
+    "method": "GitHub Actions run_started_at to updated_at on successful main-branch runs of Deploy site (build + deploy + live-URL smoke).",
+    "tag": "measured",
+    "samples": [
+      {
+        "run_id": 30561339118,
+        "title": "fix: fail closed when major changelog harvest is empty (#183)",
+        "run_started_at": "2026-07-30T16:24:51Z",
+        "updated_at": "2026-07-30T16:25:48Z",
+        "wall_clock_s": 57,
+        "conclusion": "success"
+      },
+      {
+        "run_id": 30561058328,
+        "title": "Join OCP Recent Contract Awards into the procurement lifecycle (#176)",
+        "run_started_at": "2026-07-30T16:21:10Z",
+        "updated_at": "2026-07-30T16:22:02Z",
+        "wall_clock_s": 52,
+        "conclusion": "success"
+      },
+      {
+        "run_id": 30557932055,
+        "title": "Join Current Solicitations Open Data into the procurement lifecycle",
+        "run_started_at": "2026-07-30T15:41:34Z",
+        "updated_at": "2026-07-30T15:43:24Z",
+        "wall_clock_s": 110,
+        "conclusion": "success"
+      },
+      {
+        "run_id": 30556497318,
+        "title": "Upgrade gap taxonomy into a join-graph depot with post-ingest re-derivation",
+        "run_started_at": "2026-07-30T15:24:11Z",
+        "updated_at": "2026-07-30T15:25:28Z",
+        "wall_clock_s": 77,
+        "conclusion": "success"
+      },
+      {
+        "run_id": 30555005024,
+        "title": "Record Bid Tabulations Historical recon below join usefulness (#181)",
+        "run_started_at": "2026-07-30T15:06:03Z",
+        "updated_at": "2026-07-30T15:07:08Z",
+        "wall_clock_s": 65,
+        "conclusion": "success"
+      },
+      {
+        "run_id": 30554414215,
+        "title": "Fix lifecycle rendering coherence on notice detail (#180)",
+        "run_started_at": "2026-07-30T14:59:01Z",
+        "updated_at": "2026-07-30T15:00:15Z",
+        "wall_clock_s": 74,
+        "conclusion": "success"
+      },
+      {
+        "run_id": 30552738820,
+        "title": "Ingest PASSPort Public contracts and RFx via edge EPIN joins (#179)",
+        "run_started_at": "2026-07-30T14:38:56Z",
+        "updated_at": "2026-07-30T14:40:19Z",
+        "wall_clock_s": 83,
+        "conclusion": "success"
+      },
+      {
+        "run_id": 30549780243,
+        "title": "Fix HTML-entity double-escaping in notice preview cards (#177)",
+        "run_started_at": "2026-07-30T14:02:38Z",
+        "updated_at": "2026-07-30T14:03:53Z",
+        "wall_clock_s": 75,
+        "conclusion": "success"
+      }
+    ],
+    "n": 8,
+    "min_s": 52,
+    "max_s": 110,
+    "mean_s": 74.1,
+    "median_s": 74.5,
+    "note": "Wall-clock is workflow end-to-end, not cold CDN propagation. Fastly/GH redirect-cache lag (~10 min class) is a separate residual after a bad DNS/CNAME change and is not included in these deploy times."
+  },
+  "detection_latency_exemplars": [
+    {
+      "incident_class": "redirect-loop-while-deploy-green",
+      "date": "2026-07-30",
+      "summary": "cityscroll.org served ERR_TOO_MANY_REDIRECTS while Deploy site reported success. Detection was a human browser visit, not an automated gate (live-URL smoke landed afterward as PR #156).",
+      "detection_channel": "manual browser by site operator",
+      "latency_minutes": null,
+      "related_bound_minutes": 10,
+      "related_bound_note": "Documented platform redirect-cache lag class after CNAME/DNS mistakes (tools/live_url_smoke.mjs retry window ~12 min).",
+      "tag": "measured-class-unquantified-latency",
+      "gate_that_would_catch_now": "default live_url_smoke + HUMAN-PATH JOURNEY on post-flip"
+    },
+    {
+      "incident_class": "silent-digest-sent-today-zero",
+      "date": "2026-07-30",
+      "summary": "Daily digest cron at 13:00 UTC left sent_today=0 with no durable last_run receipt (silent-five-day-alert / dual-write class). First observer reads of /stats at 13:06Z and 13:10Z.",
+      "detection_channel": "manual /stats read",
+      "cron_utc": "13:00",
+      "first_observed_utc": ["13:06", "13:10"],
+      "latency_minutes": { "min": 6, "max": 10 },
+      "tag": "measured",
+      "gate_that_would_catch_now": "EMAIL HEALTH + STATS SANITY named post-flip checks"
+    },
+    {
+      "incident_class": "could-not-reach-api-while-html-200",
+      "date": "2026-07-30",
+      "summary": "Worker/API CORS or route failure class: static HTML can still 200 while browser features die (subscribe, events, stats panels).",
+      "detection_channel": "feature failure / console; not covered by HTML-only smoke",
+      "latency_minutes": null,
+      "tag": "class-from-field-inventory",
+      "gate_that_would_catch_now": "WORKER ACCESS named post-flip check"
+    }
+  ],
+  "rollback_estimate": {
+    "source": "Operator static-hosting cutover runbook rollback sequence (Pages custom domains off, Worker apex/www routes restored, re-smoke)",
+    "steps": [
+      "Remove cityscroll.org and www.cityscroll.org from Pages project custom domains if attached",
+      "Restore Worker custom domains for cityscroll.org and www.cityscroll.org (dashboard first)",
+      "Confirm DNS apex/www records are not dangling; do not touch api.* or email MX",
+      "Re-run live_url_smoke until green (allow cache lag budget)"
+    ],
+    "estimated_operator_action_minutes": { "min": 5, "max": 15 },
+    "visitor_recovery_extra_minutes": {
+      "min": 0,
+      "max": 12,
+      "note": "Redirect/edge cache lag class after DNS or host ownership thrash"
+    },
+    "tag": "estimated",
+    "note": "Not a stopwatch trial. After cutover, record an actual timed rollback drill into after_cutover.rollback_wall_clock."
+  },
+  "after_cutover": {
+    "status": "not-yet-measured",
+    "merge_to_live": null,
+    "detection_latency": null,
+    "rollback_wall_clock": null,
+    "instructions": "Fill measured values only after a completed flip + soak. Do not invent improvements."
+  }
+}
