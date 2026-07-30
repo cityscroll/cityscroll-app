@@ -1,17 +1,38 @@
 // Daily materialized meeting-outcome read model for NYC Council.
-// City Record remains the event-discovery layer; NYC Council Legistar enriches
-// outcomes once notices, agenda items, matters, votes, and documents are present.
+//
+// City Record remains the event-discovery layer; the authenticated NYC Council
+// Legistar Web API (webapi.legistar.com/v1/nyc, secret LEGISTAR_API_TOKEN)
+// enriches outcomes — agenda items, matters, action outcomes, roll-call votes,
+// and hearing documents — once a council event is strictly joined to a notice.
+//
+// The strict join (exact_date_body_tokens, measured at 100% on modern notices)
+// lives in legistar_join.mjs; this module owns the fetch + assembly + KV cache.
 
 import { normalizeHearing } from "./hearings.mjs";
+import {
+  buildMeetingDateIndex,
+  joinNoticeToCouncilMeeting,
+  meetingDetailUrl,
+} from "./legistar_join.mjs";
+import {
+  fetchLegistarEvents,
+  fetchLegistarEventItems,
+  fetchLegistarItemVotes,
+  fetchLegistarItemAttachments,
+  boundedMap,
+  MAX_VOTE_PROBES_PER_EVENT,
+  MAX_TOTAL_VOTE_PROBES,
+  MAX_ATTACHMENT_PROBES_PER_EVENT,
+  MAX_TOTAL_ATTACHMENT_PROBES,
+} from "./legistar_client.mjs";
 
-export const MEETING_OUTCOMES_VIEW_VERSION = 1;
-export const MEETING_OUTCOMES_KV_KEY = "meeting-outcomes:materialized:v1";
-
-const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
-const LEGISTAR_API_BASE = "https://council.nyc.gov/legislation/api/";
+export const MEETING_OUTCOMES_VIEW_VERSION = 2;
+export const MEETING_OUTCOMES_KV_KEY = "meeting-outcomes:materialized:v2";
 export const MAX_AGE_MS = 36 * 60 * 60 * 1000;
 export const NOTICE_LIMIT = 500;
 export const API_RECORD_LIMIT = 100;
+
+const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 
 const NOTICE_SELECT = [
   "request_id", "start_date", "agency_name", "type_of_notice_description", "section_name",
@@ -50,51 +71,10 @@ function normalizeText(value) {
   return String(value).replace(/\s+/g, " ").trim();
 }
 
-function normalizeMatterIds(rawValue) {
-  if (!rawValue) return [];
-  return String(rawValue)
-    .split(/[,;\s]+/)
-    .map((value) => normalizeText(value))
-    .filter(Boolean);
-}
-
-function toNumber(value) {
-  if (value == null || value === "") return 0;
-  const parsed = Number.parseInt(String(value), 10);
-  if (Number.isFinite(parsed)) return parsed;
-  return 0;
-}
-
 function clamp(value, min, max, fallback) {
   const parsed = Number.parseInt(String(value || ""), 10);
   if (!Number.isFinite(parsed)) return fallback;
   return Math.max(min, Math.min(max, parsed));
-}
-
-function todayISO(now = new Date()) {
-  return now.toISOString().slice(0, 10);
-}
-
-function parseTitleText(text = "") {
-  return normalizeText(text).toLowerCase();
-}
-
-function tokenSet(value) {
-  const tokens = new Set();
-  const normalized = parseTitleText(value).replace(/[^a-z0-9\s]/g, " ");
-  for (const token of normalized.split(/\s+/)) {
-    if (token.length > 2) tokens.add(token);
-  }
-  return tokens;
-}
-
-function titleOverlap(a, b) {
-  const aSet = tokenSet(a);
-  const bSet = tokenSet(b);
-  if (!aSet.size || !bSet.size) return 0;
-  let overlap = 0;
-  for (const token of aSet) if (bSet.has(token)) overlap++;
-  return overlap / Math.min(aSet.size, bSet.size);
 }
 
 function groupBy(rows, key) {
@@ -127,248 +107,168 @@ function normalizeNoticeForOutcomes(row = {}) {
 }
 
 function normalizeCouncilLocation(raw = {}) {
-  const address = normalizeText(readFirst(raw, ["EventLocation", "Location", "location", "Venue", "VenueAddress"]));
-  const name = normalizeText(readFirst(raw, ["Building", "VenueName", "Room"]));
-  const city = normalizeText(readFirst(raw, ["VenueCity", "City", "city"]));
-  const borough = normalizeText(readFirst(raw, ["VenueBorough", "Borough", "borough"]));
-  const neighborhood = normalizeText(readFirst(raw, ["VenueNeighborhood", "Neighborhood", "neighborhood"]));
+  const rawLocation = readFirst(raw, ["EventLocation", "Location", "VenueAddress"]);
   return {
     mode: normalizeText(readFirst(raw, ["VenueType"])) || "in-person",
-    building: name || null,
-    address: address || null,
-    borough: borough || null,
-    neighborhood: neighborhood || null,
+    address: normalizeText(rawLocation) || null,
+    building: normalizeText(readFirst(raw, ["VenueName", "Building", "Room"])) || null,
   };
 }
 
 function normalizeCouncilEvent(raw = {}) {
-  const startTime = readFirst(raw, ["StartDate", "StartTime", "EventTime", "Date"]);
-  const endTime = readFirst(raw, ["EndDate", "EndTime"]);
+  const eventId = readFirst(raw, ["EventId", "eventId", "Event_ID", "id"]);
+  const bodyName = normalizeText(readFirst(raw, ["EventBodyName", "BodyName", "Body", "committee"]));
   return {
-    event_id: readFirst(raw, ["EventId", "eventId", "Event_ID", "id"]),
-    title: normalizeText(readFirst(raw, ["EventTitle", "Title", "Name", "event_name"])),
-    body_text: normalizeText(readFirst(raw, ["BodyText", "Description", "body_text"])),
-    body_name: normalizeText(readFirst(raw, ["BodyName", "Body", "committee", "agency"])),
-    event_url: readFirst(raw, ["EventUrl", "EventURL", "url", "link"]) || null,
-    start_time: toDateIso(startTime),
-    end_time: toDateIso(endTime),
-    event_date: toLocaleDate(startTime),
+    event_id: eventId ? String(eventId) : null,
+    title: bodyName || normalizeText(readFirst(raw, ["EventTitle", "Title", "Name"])),
+    body_name: bodyName,
+    event_url: readFirst(raw, ["EventInSiteURL", "EventUrl", "EventURL", "url", "link"]) || null,
+    start_time: toDateIso(readFirst(raw, ["EventDate", "StartDate", "EventTime"])),
+    event_date: toLocaleDate(readFirst(raw, ["EventDate", "StartDate", "Date"])),
+    agenda_file: readFirst(raw, ["EventAgendaFile"]) || null,
+    minutes_file: readFirst(raw, ["EventMinutesFile"]) || null,
+    video_status: readFirst(raw, ["EventVideoStatus"]) || null,
     venue: normalizeCouncilLocation(raw),
     raw,
   };
 }
 
+/**
+ * Normalize a Legistar EventItem. Items carry inline matter linkage
+ * (EventItemMatterFile/Name/Status) and the action outcome
+ * (EventItemActionName / EventItemPassedFlagName), so a single item row is both
+ * the agenda line and its matter in one.
+ */
 function normalizeCouncilAgendaItem(raw = {}) {
-  const agendaItemId = readFirst(raw, ["AgendaItemId", "AgendaItemID", "agendaItemId", "AgendaItem_Number"]);
-  const matterId = readFirst(raw, ["MatterId", "MatterID", "matterId", "Matter_ID"]);
+  const matterId = readFirst(raw, ["EventItemMatterId", "MatterId", "MatterID", "Matter_ID"]);
   return {
-    agenda_item_id: agendaItemId,
-    event_id: readFirst(raw, ["EventId", "eventId", "EventID"]),
-    agenda_number: normalizeText(readFirst(raw, ["AgendaItemNumber", "ItemNumber", "number"])) || null,
-    title: normalizeText(readFirst(raw, ["AgendaItemTitle", "Title", "name", "itemTitle"])),
-    body_text: normalizeText(readFirst(raw, ["AgendaItemText", "Body", "Description", "text"])) || null,
-    matter_id: matterId,
-    matter_ids: normalizeMatterIds(matterId),
-  };
-}
-
-function normalizeCouncilMatter(raw = {}) {
-  const matterId = readFirst(raw, ["MatterId", "MatterID", "matterId", "Matter_ID"]);
-  return {
-    matter_id: matterId,
-    event_id: readFirst(raw, ["EventId", "eventId", "EventID"]),
-    agenda_item_id: readFirst(raw, ["AgendaItemId", "AgendaItemID", "agendaItemId"]),
-    title: normalizeText(readFirst(raw, ["MatterName", "Title", "name", "MatterName"])),
-    body_text: normalizeText(readFirst(raw, ["MatterText", "Text", "Description", "body"])),
-    status: normalizeText(readFirst(raw, ["Status", "MatterStatus", "status"])),
-    outcome: normalizeText(readFirst(raw, ["Outcome", "MatterOutcome", "Result"])),
+    agenda_item_id: readFirst(raw, ["EventItemId", "AgendaItemId", "AgendaItemID"]),
+    event_id: readFirst(raw, ["EventItemEventId", "EventId", "eventId", "EventID"]),
+    agenda_number: normalizeText(readFirst(raw, ["EventItemAgendaNumber", "AgendaItemNumber"])) || null,
+    title: normalizeText(readFirst(raw, ["EventItemTitle", "AgendaItemTitle", "Title"])) || null,
+    body_text: normalizeText(readFirst(raw, ["EventItemAgendaNote", "EventItemActionText", "AgendaItemText"])) || null,
+    matter_id: matterId ? String(matterId) : null,
+    matter_file: readFirst(raw, ["EventItemMatterFile", "MatterFile"]) || null,
+    matter_name: normalizeText(readFirst(raw, ["EventItemMatterName", "MatterName", "Name"])) || null,
+    matter_type: readFirst(raw, ["EventItemMatterType", "MatterType"]) || null,
+    matter_status: readFirst(raw, ["EventItemMatterStatus", "Status", "MatterStatus"]) || null,
+    action_name: normalizeText(readFirst(raw, ["EventItemActionName", "ActionName", "Action"])) || null,
+    action_text: normalizeText(readFirst(raw, ["EventItemActionText"])) || null,
+    passed_flag: readFirst(raw, ["EventItemPassedFlagName", "PassedFlagName"]) || null,
+    roll_call_flag: readFirst(raw, ["EventItemRollCallFlag"]) || null,
     raw,
   };
 }
 
-function normalizeCouncilVote(raw = {}) {
-  const matterId = readFirst(raw, ["MatterId", "MatterID", "matterId", "Matter_ID"]);
-  return {
-    vote_id: readFirst(raw, ["VoteId", "VoteID", "voteId", "VoteIDText"]),
-    matter_id: matterId,
-    motion: normalizeText(readFirst(raw, ["Motion", "Title", "title", "Description"])) || null,
-    result: normalizeText(readFirst(raw, ["Result", "VoteResult", "Outcome", "Decision"])) || null,
-    passed: /\bpassed\b|\baye\b|\by\b/i.test(String(readFirst(raw, ["Result", "VoteResult", "Outcome"])) || ""),
-    counts: {
-      aye: toNumber(readFirst(raw, ["Ayes", "Yes", "Yea", "AyeCount"])),
-      nay: toNumber(readFirst(raw, ["Nays", "No", "Nay", "NoCount"])),
-      abstain: toNumber(readFirst(raw, ["Abstain", "Excused", "Absent", "ExcusedNoVote"])),
-    },
-    vote_date: toLocaleDate(readFirst(raw, ["VoteDate", "Date", "CreatedDate"])),
-    source_url: readFirst(raw, ["VoteUrl", "VoteURL", "vote_url", "url", "link"]) || null,
-    raw,
-  };
+function eventDocuments(event) {
+  const docs = [];
+  if (event.agenda_file) docs.push({ url: event.agenda_file, name: "Agenda", category: "Agenda" });
+  if (event.minutes_file) docs.push({ url: event.minutes_file, name: "Minutes", category: "Minutes" });
+  return docs;
 }
 
-function normalizeCouncilDocument(raw = {}) {
-  return {
-    document_id: readFirst(raw, ["DocumentId", "DocumentID", "documentId", "DocId"]),
-    matter_id: readFirst(raw, ["MatterId", "MatterID", "matterId", "Matter_ID"]),
-    title: normalizeText(readFirst(raw, ["DocumentName", "Title", "name", "FileName"])) || null,
-    file_url: readFirst(raw, ["FileUrl", "FileURL", "fileUrl", "fileURL", "url", "link"]) || null,
-    category: normalizeText(readFirst(raw, ["Category", "Type", "documentType", "DocType"])) || "Document",
-    uploaded_at: toLocaleDate(readFirst(raw, ["UploadDate", "CreatedDate", "Date"])),
-  };
-}
-
-export function parseLegistarResponse(raw) {
-  if (!raw) return [];
-  if (Array.isArray(raw)) return raw;
-  if (Array.isArray(raw.value)) return raw.value;
-  if (Array.isArray(raw.d)) return raw.d;
-  return [];
-}
-
-function matchNoticeToEvent(notice, event) {
-  let score = 0;
-  const reasonBits = [];
-
-  const eventAgency = parseTitleText(event.body_text || event.title || "");
-  const noticeAgency = parseTitleText(notice.agency || "");
-  if (noticeAgency && eventAgency && eventAgency.includes(noticeAgency)) {
-    score += 0.35;
-    reasonBits.push("agency match")
-  }
-
-  if (notice.event_date && event.event_date) {
-    const eventTime = Date.parse(notice.event_date);
-    const eventFromLegistar = Date.parse(event.event_date);
-    if (Number.isFinite(eventTime) && Number.isFinite(eventFromLegistar)) {
-      const days = Math.abs((eventTime - eventFromLegistar) / 86_400_000);
-      if (days <= 7) {
-        score += 0.45;
-        reasonBits.push("same-week date")
-      } else if (days <= 30) {
-        score += 0.25;
-        reasonBits.push("same-month date")
-      }
-    }
-  }
-
-  const overlap = titleOverlap(notice.title, event.title);
-  if (overlap > 0.15) {
-    score += Math.min(1, overlap);
-    reasonBits.push("title overlap")
-  }
-
-  if (score >= 1.1) {
-    return { matched: true, score, confidence: "high", reason: reasonBits.join(" + "), event };
-  }
-  if (score >= 1.0) {
-    return { matched: true, score, confidence: "medium", reason: reasonBits.join(" + "), event };
-  }
-  return {
-    matched: false,
-    score: 0,
-    confidence: "none",
-    reason: "No match with city-record notice title/date/agency evidence.",
-    event: null,
-  };
-}
-
-function assembleAgenda(agenda, mattersByAgenda, mattersByEvent, votesByMatter, documentsByMatter) {
+/**
+ * Build matter cards from one event's normalized items, attaching the
+ * best-effort roll-call vote summary and per-item attachments (plus event docs).
+ */
+function assembleAgenda(items, voteByMatter, docsByItem = new Map()) {
   const rows = [];
-  for (const item of agenda) {
-    const explicitIds = item.matter_ids.length ? item.matter_ids : [item.matter_id].filter(Boolean);
-    const matterRows = ([]);
-    for (const matterId of explicitIds) {
-      for (const matter of mattersByAgenda.get(matterId) || []) matterRows.push(matter);
-    }
-    if (!matterRows.length && item.event_id) {
-      for (const matter of mattersByEvent.get(item.event_id) || []) matterRows.push(matter);
-    }
-
-    const deduped = [];
-    const byId = new Set();
-    for (const matter of matterRows) {
-      if (!matter?.matter_id || byId.has(matter.matter_id)) continue;
-      byId.add(matter.matter_id);
-      deduped.push({
-        ...matter,
-        votes: (votesByMatter.get(matter.matter_id) || []).map((vote) => ({
-          ...vote,
+  for (const item of items) {
+    const itemDocs = docsByItem.get(String(item.agenda_item_id)) || [];
+    const matters = [];
+    if (item.matter_id) {
+      const voteSummary = voteByMatter.get(String(item.matter_id));
+      const votes = voteSummary && voteSummary.counts
+        ? [{
+          result: voteSummary.result || item.passed_flag || item.action_name || null,
+          counts: voteSummary.counts,
+          source_url: null,
           kind: "vote",
-        })),
-        documents: (documentsByMatter.get(matter.matter_id) || []).map((document) => ({
-          ...document,
-          kind: "document",
-        })),
-        join: {
-          matched: true,
-          reason: null,
-        },
+        }]
+        : [];
+      matters.push({
+        matter_id: item.matter_id,
+        matter_file: item.matter_file,
+        title: item.matter_name || item.title,
+        body_text: item.body_text || item.action_text,
+        status: item.matter_status,
+        outcome: item.action_name,
+        passed: item.passed_flag,
+        votes,
+        documents: itemDocs,
+        join: { matched: true, reason: null },
+      });
+    } else {
+      matters.push({
+        matter_id: null,
+        title: item.title,
+        body_text: item.body_text,
+        status: null,
+        outcome: item.action_name || null,
+        passed: item.passed_flag || null,
+        votes: [],
+        documents: itemDocs,
+        join: { matched: false, reason: "Agenda item has no linked Council matter yet." },
       });
     }
-
-    const matters = deduped.length
-      ? deduped
-      : [{
-          matter_id: null,
-          title: null,
-          body_text: null,
-          status: null,
-          outcome: null,
-          votes: [],
-          documents: [],
-          join: {
-            matched: false,
-            reason: "No matter rows linked to this agenda item yet.",
-          },
-        }];
-
     rows.push({
-      ...item,
+      agenda_item_id: item.agenda_item_id,
+      agenda_number: item.agenda_number,
+      title: item.title,
+      body_text: item.body_text,
       matters,
       join: {
-        matched: matterRows.length > 0,
-        reason: matterRows.length > 0
-          ? null
-          : "No matter row linked to this agenda item yet.",
+        matched: matters.some((m) => m.matter_id),
+        reason: null,
       },
     });
   }
   return rows;
 }
 
-export function buildMeetingOutcomes(noticeRows, eventRows, agendaRows, matterRows, voteRows, documentRows) {
-  const notices = (noticeRows || []).map(normalizeNoticeForOutcomes).filter((notice) => notice.request_id);
-  const events = (eventRows || []).map(normalizeCouncilEvent).filter((event) => event.event_id);
-  const agendaItems = (agendaRows || []).map(normalizeCouncilAgendaItem).filter((item) => item.agenda_item_id || item.event_id);
-  const matters = (matterRows || []).map(normalizeCouncilMatter).filter((matter) => matter.matter_id);
-  const votes = (voteRows || []).map(normalizeCouncilVote).filter((vote) => vote.matter_id);
-  const documents = (documentRows || []).map(normalizeCouncilDocument).filter((document) => document.matter_id);
+/**
+ * Pure assembly: strict-join City Record notices to Legistar events, then fold
+ * inline agenda items / matters / outcomes / votes into per-notice records.
+ *
+ * @param {object[]} noticeRows   — raw City Record (SODA) notice rows
+ * @param {object[]} eventRows    — raw authenticated Legistar Event rows
+ * @param {object[]} eventItemRows— raw Legistar EventItem rows (inline matters)
+ * @param {object[]} voteRows     — aggregated roll-call summaries [{matter_id,result,counts}]
+ * @param {object[]} attachmentRows — [{agenda_item_id, documents: [{url,name,category}]}]
+ */
+export function buildMeetingOutcomes(noticeRows, eventRows, eventItemRows, voteRows, attachmentRows = []) {
+  const notices = (noticeRows || []).map(normalizeNoticeForOutcomes).filter((n) => n.request_id);
+  const events = (eventRows || []).map(normalizeCouncilEvent).filter((e) => e.event_id);
+  const items = (eventItemRows || []).map(normalizeCouncilAgendaItem).filter((i) => i.event_id);
+  const voteByMatter = new Map();
+  for (const v of (voteRows || [])) {
+    if (v && v.matter_id) voteByMatter.set(String(v.matter_id), v);
+  }
+  const docsByItem = new Map();
+  for (const row of (attachmentRows || [])) {
+    if (!row?.agenda_item_id) continue;
+    docsByItem.set(String(row.agenda_item_id), Array.isArray(row.documents) ? row.documents : []);
+  }
 
-  const agendaByEvent = groupBy(agendaItems, (item) => item.event_id);
-  const mattersByAgenda = groupBy(matters, (matter) => matter.matter_id);
-  const mattersByEvent = groupBy(matters, (matter) => matter.event_id);
-  const votesByMatter = groupBy(votes, (vote) => vote.matter_id);
-  const documentsByMatter = groupBy(documents, (document) => document.matter_id);
+  const itemsByEvent = groupBy(items, (i) => String(i.event_id));
+  const eventsById = new Map(events.map((e) => [String(e.event_id), e]));
+  const byDate = buildMeetingDateIndex(eventRows);
 
   const matchedRecords = [];
   const unmatchedNotices = [];
 
   for (const notice of notices) {
-    let selected = null;
-    let best = null;
-    for (const event of events) {
-      const candidate = matchNoticeToEvent(notice, event);
-      if (candidate.matched && (!best || candidate.score > best.score)) {
-        best = candidate;
-      }
-    }
-    if (!best || !best.matched) {
+    const hit = joinNoticeToCouncilMeeting(
+      { event_date: notice.event_date, short_title: notice.title, title: notice.title },
+      byDate,
+    );
+    if (!hit) {
       unmatchedNotices.push({
         request_id: notice.request_id,
         join: {
           matched: false,
-          reason: "No Council event matched this City Record notice on title/date/agency confidence.",
-          score: 0,
-          confidence: "none",
+          method: null,
+          reason: "No Council event matched this City Record notice on the strict date + body join.",
         },
         notice: { ...notice },
         council_event: null,
@@ -376,42 +276,43 @@ export function buildMeetingOutcomes(noticeRows, eventRows, agendaRows, matterRo
       });
       continue;
     }
-    selected = best.event;
-    const items = agendaByEvent.get(selected.event_id) || [];
-    const assembledAgenda = assembleAgenda(items, mattersByAgenda, mattersByEvent, votesByMatter, documentsByMatter);
-    if (selected && !assembledAgenda.length) {
-      assembledAgenda.push({
+    const event = eventsById.get(String(hit.event_id));
+    if (!event) {
+      unmatchedNotices.push({
+        request_id: notice.request_id,
+        join: { matched: false, method: null, reason: "Joined event id not present in the event set." },
+        notice: { ...notice },
+        council_event: null,
+        agenda_items: [],
+      });
+      continue;
+    }
+    const docs = eventDocuments(event);
+    const eventItems = itemsByEvent.get(String(event.event_id)) || [];
+    const agenda = eventItems.length
+      ? assembleAgenda(eventItems, voteByMatter, docsByItem)
+      : [{
         agenda_item_id: null,
         title: null,
         body_text: null,
-        agenda_number: null,
         matters: [{
           matter_id: null,
           title: null,
-          body_text: null,
           status: null,
           outcome: null,
           votes: [],
           documents: [],
-          join: {
-            matched: false,
-            reason: "Council event exists but has no Agenda items in the latest enrichment.",
-          },
+          join: { matched: false, reason: "Council event exists but has no agenda items published yet." },
         }],
-        join: {
-          matched: false,
-          reason: "No agenda items were returned by NYC Council Legistar for this event.",
-        },
-      });
-    }
+        join: { matched: false, reason: "No agenda items returned for this event yet." },
+      }];
 
     matchedRecords.push({
       request_id: notice.request_id,
       join: {
         matched: true,
-        score: best.score,
-        confidence: best.confidence,
-        reason: best.reason,
+        method: hit.method,
+        reason: null,
       },
       notice: {
         request_id: notice.request_id,
@@ -425,25 +326,35 @@ export function buildMeetingOutcomes(noticeRows, eventRows, agendaRows, matterRo
         affected_area: notice.affected_area,
         venue: notice.venue,
       },
-      council_event: selected,
-      agenda_items: assembledAgenda,
+      council_event: {
+        event_id: event.event_id,
+        title: event.title,
+        body_name: event.body_name,
+        event_url: event.event_url || meetingDetailUrl({ EventId: event.event_id }),
+        start_time: event.start_time,
+        event_date: event.event_date,
+        venue: event.venue,
+        documents: docs,
+      },
+      agenda_items: agenda,
     });
   }
 
-  const matchedEventIds = new Set(matchedRecords.map((record) => record.council_event?.event_id).filter(Boolean));
+  const matchedEventIds = new Set(matchedRecords.map((r) => r.council_event?.event_id).filter(Boolean));
   const unmatchedEvents = events
-    .filter((event) => !matchedEventIds.has(event.event_id))
-    .map((event) => ({
-      event,
-      join: {
-        matched: false,
-        reason: "No City Record notice matched this Council event in the current look-back window.",
-      },
+    .filter((e) => !matchedEventIds.has(String(e.event_id)))
+    .map((e) => ({
+      event_id: e.event_id,
+      title: e.title,
+      event_date: e.event_date,
+      join: { matched: false, reason: "No City Record notice matched this Council event in the look-back window." },
     }));
 
-  const allMatters = matchedRecords.flatMap((record) => record.agenda_items.flatMap((item) => item.matters));
-  const totalVotes = allMatters.reduce((sum, matter) => sum + (matter.votes?.length || 0), 0);
-  const totalDocuments = allMatters.reduce((sum, matter) => sum + (matter.documents?.length || 0), 0);
+  const allMatters = matchedRecords.flatMap((r) => r.agenda_items.flatMap((i) => i.matters));
+  const totalVotes = allMatters.reduce((sum, m) => sum + (m.votes?.length || 0), 0);
+  const matterDocs = allMatters.reduce((sum, m) => sum + (m.documents?.length || 0), 0);
+  const eventDocs = matchedRecords.reduce((sum, r) => sum + (r.council_event?.documents?.length || 0), 0);
+  const totalDocs = matterDocs + eventDocs;
 
   return {
     schema_version: MEETING_OUTCOMES_VIEW_VERSION,
@@ -455,8 +366,8 @@ export function buildMeetingOutcomes(noticeRows, eventRows, agendaRows, matterRo
         url: "https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx",
       },
       enrichment: {
-        name: "NYC Council Legistar",
-        base_url: LEGISTAR_API_BASE,
+        name: "NYC Council Legistar (authenticated Web API)",
+        base_url: "https://webapi.legistar.com/v1/nyc",
       },
     },
     counts: {
@@ -464,19 +375,19 @@ export function buildMeetingOutcomes(noticeRows, eventRows, agendaRows, matterRo
       matched_notices: matchedRecords.length,
       unmatched_notices: unmatchedNotices.length,
       unmatched_events: unmatchedEvents.length,
-      agenda_items: matchedRecords.reduce((sum, record) => sum + record.agenda_items.length, 0),
-      matters: allMatters.length,
+      agenda_items: matchedRecords.reduce((sum, r) => sum + r.agenda_items.length, 0),
+      matters: allMatters.filter((m) => m.matter_id).length,
       votes: totalVotes,
-      documents: totalDocuments,
+      documents: totalDocs,
       records: matchedRecords.length + unmatchedNotices.length,
       event_rows: events.length,
-      raw_matter_rows: matters.length,
     },
     records: [...matchedRecords, ...unmatchedNotices],
     unmatched_events: unmatchedEvents,
-    notice_join_policy: {
-      required_fields: ["title", "agency", "event_date"],
-      no_vague_venue_fallback: true,
+    join_policy: {
+      strategy: "exact_date_body_tokens",
+      required_fields: ["event_date", "short_title"],
+      note: "Strict join: notice event_date equals EventDate AND the meeting body is uniquely named in the notice title.",
     },
   };
 }
@@ -496,44 +407,125 @@ async function buildNoticeRows(fetchImpl, now = new Date()) {
   return payload;
 }
 
-async function fetchLegistarRows(fetchImpl, path, now = new Date()) {
-  const url = new URL(`${LEGISTAR_API_BASE}${path}`);
-  url.searchParams.set("$top", "500");
-  url.searchParams.set("$orderby", "LastModified desc");
-  url.searchParams.set("$filter", `LastModified ge ${todayISO(now)}T00:00:00Z`);
-  const response = await fetchImpl(url.toString());
-  if (!response.ok) return [];
-  const payload = await response.json();
-  return parseLegistarResponse(payload);
+/**
+ * Collect best-effort roll-call vote summaries for matter-bearing items flagged
+ * for roll call. Bounded per-event and per-run so the materialization stays polite.
+ */
+async function collectVoteSummaries({ eventItemRows, token, fetchImpl }) {
+  const flagged = eventItemRows.filter(
+    (it) => it && it.EventItemMatterId && (it.EventItemRollCallFlag || it.EventItemPassedFlagName),
+  );
+  const byEvent = groupBy(flagged, (it) => String(it.EventItemEventId));
+  const summaries = [];
+  let total = 0;
+  for (const [, evItems] of byEvent) {
+    let perEvent = 0;
+    for (const it of evItems) {
+      if (perEvent >= MAX_VOTE_PROBES_PER_EVENT || total >= MAX_TOTAL_VOTE_PROBES) break;
+      perEvent += 1;
+      total += 1;
+      try {
+        const summary = await fetchLegistarItemVotes({
+          itemId: it.EventItemId,
+          token,
+          fetchImpl,
+        });
+        if (summary) {
+          summaries.push({ matter_id: String(it.EventItemMatterId), ...summary });
+        }
+      } catch {
+        // Best-effort: a single vote fetch failure is non-fatal.
+      }
+    }
+  }
+  return summaries;
 }
 
-export async function buildMeetingOutcomesView(fetchImpl = fetch, now = new Date()) {
-  const [noticeRows, eventRows, agendaRows, matterRows, voteRows, documentRows] = await Promise.all([
-    buildNoticeRows(fetchImpl, now),
-    fetchLegistarRows(fetchImpl, "Events", now),
-    fetchLegistarRows(fetchImpl, "AgendaItems", now),
-    fetchLegistarRows(fetchImpl, "Matters", now),
-    fetchLegistarRows(fetchImpl, "Votes", now),
-    fetchLegistarRows(fetchImpl, "Documents", now),
+/**
+ * Collect best-effort attachments for matter-bearing agenda items. Bounded like votes.
+ */
+async function collectAttachments({ eventItemRows, token, fetchImpl }) {
+  const candidates = eventItemRows.filter((it) => it && it.EventItemId && it.EventItemMatterId);
+  const byEvent = groupBy(candidates, (it) => String(it.EventItemEventId));
+  const out = [];
+  let total = 0;
+  for (const [, evItems] of byEvent) {
+    let perEvent = 0;
+    for (const it of evItems) {
+      if (perEvent >= MAX_ATTACHMENT_PROBES_PER_EVENT || total >= MAX_TOTAL_ATTACHMENT_PROBES) break;
+      perEvent += 1;
+      total += 1;
+      try {
+        const documents = await fetchLegistarItemAttachments({
+          itemId: it.EventItemId,
+          token,
+          fetchImpl,
+        });
+        if (documents.length) {
+          out.push({ agenda_item_id: String(it.EventItemId), documents });
+        }
+      } catch {
+        // Best-effort: a single attachment fetch failure is non-fatal.
+      }
+    }
+  }
+  return out;
+}
+
+/**
+ * Fetch + assemble the full meeting-outcomes view. When no token is configured
+ * the view degrades to notices-only with explicit "not yet ingested" gaps.
+ */
+export async function buildMeetingOutcomesView({ token = null, fetchImpl = fetch, now = new Date() } = {}) {
+  const noticeRows = await buildNoticeRows(fetchImpl, now);
+
+  if (!token) {
+    return buildMeetingOutcomes(noticeRows, [], [], []);
+  }
+
+  const eventRows = await fetchLegistarEvents({ token, fetchImpl, now });
+
+  // Strict join first so EventItems are fetched ONLY for matched events.
+  const byDate = buildMeetingDateIndex(eventRows);
+  const matchedEventIds = new Set();
+  for (const row of noticeRows) {
+    const notice = normalizeNoticeForOutcomes(row);
+    if (!notice.request_id) continue;
+    const hit = joinNoticeToCouncilMeeting(
+      { event_date: notice.event_date, short_title: notice.title, title: notice.title },
+      byDate,
+    );
+    if (hit) matchedEventIds.add(String(hit.event_id));
+  }
+
+  const matchedEvents = eventRows.filter((e) => matchedEventIds.has(String(e.EventId)));
+  const itemBatches = await boundedMap(
+    matchedEvents,
+    (ev) => fetchLegistarEventItems({ eventId: ev.EventId, token, fetchImpl }).catch(() => []),
+    6,
+  );
+  const eventItemRows = itemBatches.flat();
+
+  const [voteRows, attachmentRows] = await Promise.all([
+    collectVoteSummaries({ eventItemRows, token, fetchImpl }),
+    collectAttachments({ eventItemRows, token, fetchImpl }),
   ]);
 
-  return buildMeetingOutcomes(
-    noticeRows,
-    eventRows,
-    agendaRows,
-    matterRows,
-    voteRows,
-    documentRows,
-  );
+  return buildMeetingOutcomes(noticeRows, eventRows, eventItemRows, voteRows, attachmentRows);
 }
 
 export async function refreshMeetingOutcomes(env, fetchImpl = fetch, now = new Date()) {
   if (!env?.ALERT_STATE) return { status: "skipped", reason: "no-kv" };
-  const view = await buildMeetingOutcomesView(fetchImpl, now);
+  const token = env?.LEGISTAR_API_TOKEN || null;
+  const view = await buildMeetingOutcomesView({ token, fetchImpl, now });
   await env.ALERT_STATE.put(MEETING_OUTCOMES_KV_KEY, JSON.stringify(view), {
     expirationTtl: 3 * 24 * 60 * 60,
   });
-  return { status: "success", ...view.counts };
+  return {
+    status: token ? "success" : "no-token",
+    enrichment: token ? "authenticated" : "unavailable",
+    ...view.counts,
+  };
 }
 
 export function applyApiLimits(rows, params = {}) {

@@ -32,7 +32,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | subsidy lifecycle · no project join | b | NYCIDA/Build NYC financial public documents page if a project record is released for the notice |
 | subsidy lifecycle · company / place / money fields | b | the linked Build NYC project record if those fields are filled on publication |
 | Council meeting outcomes · no event join | a | NYC Council Legistar API |
-| Council meeting outcomes · matter without votes | a | NYC Council Legistar votes |
+| Council meeting outcomes · matter without roll-call detail | a | NYC Council Legistar votes |
 | Council meeting outcomes · event without agenda matters | a | NYC Council Legistar agenda items |
 | non-Council hearings · votes | b | community board or borough president open data / Legistar-class feeds if released as machine-readable votes |
 | staffing exam cards · post-cycle outcomes | a | DCAS annual civil-service exam outcome aggregates |
@@ -59,7 +59,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `dob-now-job-filings` | live-only | BBL, BIN, job_number | — | — |
 | `legacy-dob-job-filings` | live-only | BBL, BIN, job_number | — | — |
 | `mappluto` | live-only | BBL | — | — |
-| `nyc-council-legistar` | landed | matter_id, event_id, event_item_id, agency, event_title, start_time | medium | 100% (modern_notices_strict) |
+| `nyc-council-legistar` | landed | matter_id, event_id, event_item_id, agency, event_title, start_time, event_date, committee/body_name_in_notice_title | medium | 100% (modern_notices_strict) |
 | `nyc-rules-rss` | landed | agency | — | — |
 | `nycida-build-nyc-projects` | landed | request_id, project_id, project_name, company_name, project_address, request_id_when_present | — | — |
 | `passport-public-contracts` | landed | EPIN, PIN, contract_id, agency | high-risk | 74% (all_notices_to_contracts) |
@@ -79,7 +79,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `city-record-pin-x-passport-contracts-epin` | `city-record` × `passport-public-contracts` | PIN · EPIN | 74% |
 | `city-record-pin-x-passport-rfx-epin` | `city-record` × `passport-public-rfx` | PIN · EPIN | 44.4% |
 | `city-record-request-x-nycida-projects` | `city-record` × `nycida-build-nyc-projects` | request_id | — |
-| `city-record-x-legistar-events` | `city-record` × `nyc-council-legistar` | agency | 100% |
+| `city-record-x-legistar-events` | `city-record` × `nyc-council-legistar` | event_date · committee/body_name_in_notice_title | 100% |
 | `exam-number-x-dcas-outcomes` | `dcas-exam-notices` × `dcas-annual-exam-outcomes` | exam_number | — |
 | `zap-bbl-x-dob-now-filings` | `zap-bbl` × `dob-now-job-filings` | BBL | 56% |
 | `zap-project-x-bbl` | `zap-projects` × `zap-bbl` | project_id · BBL | — |
@@ -119,7 +119,7 @@ graph LR
   city_record[city-record] -->|PIN/EPIN| passport_public_contracts[passport-public-contracts]
   city_record[city-record] -->|PIN/EPIN| passport_public_rfx[passport-public-rfx]
   city_record[city-record] -->|request_id| nycida_build_nyc_projects[nycida-build-nyc-projects]
-  city_record[city-record] -->|agency| nyc_council_legistar[nyc-council-legistar]
+  city_record[city-record] -->|event_date/committee/body_name_in_notice_title| nyc_council_legistar[nyc-council-legistar]
   dcas_exam_notices[dcas-exam-notices] -->|exam_number| dcas_annual_exam_outcomes[dcas-annual-exam-outcomes]
   zap_bbl[zap-bbl] -->|BBL| dob_now_job_filings[dob-now-job-filings]
   zap_projects[zap-projects] -->|project_id/BBL| zap_bbl[zap-bbl]
@@ -171,4 +171,4 @@ node tools/depot_rederive.mjs          # write registry + docs + receipt
 node tools/depot_rederive.mjs --check  # CI drift gate (no writes)
 ```
 
-Last refresh fingerprint: `71b7d3da30d4…` · materialized 10 · candidates 44 · class changes 0.
+Last refresh fingerprint: `21e7b367e96a…` · materialized 10 · candidates 44 · class changes 0.

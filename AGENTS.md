@@ -28,20 +28,21 @@ receipts: `worker/src/lib/bid_tabulations_join.mjs`,
 
 ## Legistar agenda/vote depth
 
-Ranked class-(a) meeting-outcomes depth. **Authenticated re-measure clears usefulness**
-(2026-07-30) with Worker/env secret `LEGISTAR_API_TOKEN` (full multi-segment key;
-first segment alone → 403):
+Ranked class-(a) meeting-outcomes depth. **Edge materialization is live** (daily
+cron) with Worker secret `LEGISTAR_API_TOKEN` (full multi-segment key as `token=`
+query; first segment alone → 403). GitHub Actions secret syncs on worker deploy.
 
 - Modern City Council notice → Legistar event join: **100%** (59/59)
-- Joined events with EventItems: **100%**; matter-linked items: **98.3%**; votes
-  sampled on ~**10%** of subcommittee hearings
-- Nested routes: `Events/{id}/EventItems`, `EventItems/{id}/Votes` (top-level
-  EventItems/Votes are 404)
+- Joined events with EventItems: **100%**; matter-linked items: **98.3%**; roll-call
+  votes sampled on ~**10%** of subcommittee hearings (voice/committee outcomes use
+  inline `EventItemActionName`)
+- Nested routes: `Events/{id}/EventItems`, `EventItems/{id}/Votes`,
+  `EventItems/{id}/Attachments` (top-level EventItems/Votes are 404)
 
+Client: `worker/src/lib/legistar_client.mjs`. Strict join: `worker/src/lib/legistar_join.mjs`.
+Read model: `worker/src/lib/meeting_outcomes.mjs` → KV `meeting-outcomes:materialized:v2`.
 Open Data `m48u-yjt8` remains a **disabled** freeze through 2024-12-19 (0% modern).
-Strict join: `worker/src/lib/legistar_join.mjs`. Receipts: `site/data/legistar_sources/`.
-Demo frame: notice `20260706036` → event `22526` (matters + votes). Follow-up:
-edge materialize with `LEGISTAR_API_TOKEN` as a Wrangler/GitHub secret (not committed).
+Receipts: `site/data/legistar_sources/`. Demo: notice `20260706036` → event `22526`.
 
 ## Content and testing — lifecycle gap taxonomy
 

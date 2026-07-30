@@ -333,7 +333,9 @@
         "event_item_id",
         "agency",
         "event_title",
-        "start_time"
+        "start_time",
+        "event_date",
+        "committee/body_name_in_notice_title"
       ],
       "join_coverage": {
         "predicted": {
@@ -348,7 +350,7 @@
           "observed_on": "2026-07-30",
           "universe": null,
           "strategy": "exact_date_body_tokens against authenticated webapi.legistar.com/v1/nyc Events (EventBodyName + EventDate). Nested EventItems/{id}/Votes for depth.",
-          "verdict": "Above usefulness threshold (~30%) for modern event/agenda depth: authenticated strict event join 100% (59/59); EventItems 100%; matter items 98.3%. Recommend edge materialization with LEGISTAR_API_TOKEN Worker secret (not set in this PR).",
+          "verdict": "Above usefulness threshold (~30%) for modern event/agenda depth: authenticated strict event join 100% (59/59); EventItems 100%; matter items 98.3%. Edge materialization shipped: daily ingest from webapi.legistar.com/v1/nyc with Worker secret LEGISTAR_API_TOKEN.",
           "source": "source_contracts.join_measurement"
         }
       },
@@ -687,12 +689,13 @@
       "source_a": "city-record",
       "source_b": "nyc-council-legistar",
       "key_path": [
-        "agency"
+        "event_date",
+        "committee/body_name_in_notice_title"
       ],
       "status": "materialized",
       "lineage": {
         "code": "worker/src/lib/legistar_join.mjs",
-        "strategy": "exact_date_body_tokens (EventBodyName + EventDate); nested EventItems/Votes under LEGISTAR_API_TOKEN",
+        "strategy": "exact_date_body_tokens (EventBodyName + EventDate); nested EventItems → Votes/Attachments under LEGISTAR_API_TOKEN",
         "measurement_contract": "nyc-council-legistar",
         "measurement_rate_key": "modern_notices_strict"
       },
@@ -704,13 +707,11 @@
         "observed_on": "2026-07-30",
         "universe": null,
         "strategy": "exact_date_body_tokens against authenticated webapi.legistar.com/v1/nyc Events (EventBodyName + EventDate). Nested EventItems/{id}/Votes for depth.",
-        "verdict": "Above usefulness threshold (~30%) for modern event/agenda depth: authenticated strict event join 100% (59/59); EventItems 100%; matter items 98.3%. Recommend edge materialization with LEGISTAR_API_TOKEN Worker secret (not set in this PR).",
+        "verdict": "Above usefulness threshold (~30%) for modern event/agenda depth: authenticated strict event join 100% (59/59); EventItems 100%; matter items 98.3%. Edge materialization shipped: daily ingest from webapi.legistar.com/v1/nyc with Worker secret LEGISTAR_API_TOKEN.",
         "source": "source_contracts.join_measurement"
       },
       "worth_materializing": "already_materialized",
       "gaps_would_close": [
-        "procurement-pending-unmatched",
-        "procurement-ocp-recent-awards",
         "meeting-outcomes-unmatched",
         "meeting-matters-absent"
       ]
@@ -1814,36 +1815,34 @@
       "class": "not_yet_ingested",
       "public_source": {
         "name": "NYC Council Legistar API",
-        "access": "Legistar web API",
+        "access": "Legistar web API (authenticated)",
         "landing_page": "https://council.nyc.gov/legislation/api/",
         "update_cadence": "As meetings and votes change",
         "join_keys": [
-          "event title",
-          "start_time",
-          "agency/body",
-          "matter file"
+          "event_date",
+          "committee/body name in notice title"
         ]
       },
-      "notices_affected_estimate": "Public Hearings and Meetings notices that are Council-related but fail title/date/agency confidence (~1,600+ Public Hearings notices since 2025-01-01; only a fraction are Council).",
-      "evidence": "Legistar API is a live source contract. Unmatched is incomplete fuzzy join, not absence of a Council system of record."
+      "notices_affected_estimate": "Modern (2025+) Public Hearings notices join at 100% via the strict exact_date_body_tokens join. Remaining unmatched: pre-modern historical notices (73% strict join) and non-Council public hearings that have no Legistar event.",
+      "evidence": "Authenticated edge materialization is live. Modern strict event join is 100% (59/59). Unmatched is now genuine absence (non-Council hearing or pre-modern historical), not incomplete join."
     },
     {
       "id": "meeting-votes-absent",
-      "surface": "Council meeting outcomes · matter without votes",
+      "surface": "Council meeting outcomes · matter without roll-call detail",
       "i18n_key": "meeting_outcomes_no_votes_html",
       "class": "not_yet_ingested",
       "public_source": {
         "name": "NYC Council Legistar votes",
-        "access": "Legistar API vote endpoints",
+        "access": "Legistar web API (authenticated, nested EventItems/{id}/Votes)",
         "landing_page": "https://council.nyc.gov/legislation/api/",
-        "update_cadence": "As votes post",
+        "update_cadence": "As roll-call votes post",
         "join_keys": [
           "matter_id",
           "event_item_id"
         ]
       },
-      "notices_affected_estimate": "Matched Council matters before a vote posts or when the vote join misses.",
-      "evidence": "Votes are public in Legistar when taken; empty vote slot is join timing or incomplete materialization."
+      "notices_affected_estimate": "Items listed on the agenda but not yet acted upon at materialization time. Most acted items already show an inline outcome (Approved, Passed) from EventItemActionName; per-person roll-call detail is published on the endpoint only when a roll-call vote is taken (~10% of events).",
+      "evidence": "Authenticated edge materialization fetches roll-call tallies best-effort for flagged items. Voice votes and many committee approvals carry no roll-call rows on the API; those slots show the action outcome instead of a gap. Empty roll-call with no outcome is pending Council action, not a missing ingest."
     },
     {
       "id": "meeting-matters-absent",
@@ -1852,7 +1851,7 @@
       "class": "not_yet_ingested",
       "public_source": {
         "name": "NYC Council Legistar agenda items",
-        "access": "Legistar API",
+        "access": "Legistar web API (authenticated, nested Events/{id}/EventItems)",
         "landing_page": "https://council.nyc.gov/legislation/api/",
         "update_cadence": "As agendas publish",
         "join_keys": [
@@ -1860,8 +1859,8 @@
           "event_item_id"
         ]
       },
-      "notices_affected_estimate": "Matched Council events whose agenda tree was empty at materialization.",
-      "evidence": "Agenda items are public in Legistar; empty matters is incomplete join or pre-agenda event."
+      "notices_affected_estimate": "Modern joined events have agenda items 100% and matter-linked items 98.3%. Remaining: events whose agenda has not been published yet at materialization time.",
+      "evidence": "EventItems are materialized with inline matter linkage. Empty matters is now pre-agenda timing (the agenda PDF/minutes have not posted), not an absent ingest."
     },
     {
       "id": "meeting-community-board-votes",
@@ -1996,9 +1995,9 @@
         "meeting-matters-absent"
       ],
       "value": "Raises match rate and vote completeness on Council hearing notices without a new publisher.",
-      "effort_guess": "Medium — authenticated Web API ready; follow-up edge materialize Events→EventItems→Votes with Worker secret LEGISTAR_API_TOKEN.",
+      "effort_guess": "Already built — daily edge materialization of Events→EventItems→Votes/Attachments with Worker secret LEGISTAR_API_TOKEN.",
       "join_risk": "Measured 100% modern City Council notice → Legistar event join with LEGISTAR_API_TOKEN (predicted pre-auth grade: medium).",
-      "value_score": 46,
+      "value_score": 54,
       "realized_join_rate": 1,
       "predicted_join_grade": "medium"
     },
@@ -2100,7 +2099,7 @@
   ],
   "depot_refresh": {
     "observed_on": "2026-07-30",
-    "source_contracts_fingerprint": "71b7d3da30d4567e56250c87ee4fafee202397aea4c69d72f1999fee557e897a",
+    "source_contracts_fingerprint": "21e7b367e96a97f632422c533559c5850b7e8899d5bd638dd3522378c788ff15",
     "materialized_crosswalks": 10,
     "candidate_crosswalks": 44,
     "class_changes": 0,
