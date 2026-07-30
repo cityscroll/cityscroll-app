@@ -309,11 +309,10 @@ const STRINGS = {
     preview_digest_btn: "Preview today's digest",
     subscribe_btn:      "Subscribe →",
     subscribe_confirm_note: "We email a confirmation link — alerts begin only after you click it, so no one can sign you up but you.",
-    // Homepage primary conversion (under masthead tagline)
-    home_cta_prompt:    "Interested to learn more?",
-    home_cta_submit:    "Get updates",
-    home_cta_topics:     "or pick the topics that interest you",
-    lang_switcher_label:"Language",
+    // Homepage primary conversion (under masthead tagline) — short words for the reading-level ratchet
+    home_cta_prompt:    "Want email updates?",
+    home_cta_submit:    "Sign up",
+    home_cta_topics:     "or pick topics",
     empty_preview:      "Build an alert and hit Preview to see the digest, populated with today's real notices.",
 
     // Time/schedule strings (9 a.m. form per NYC style guide T-01/T-02)

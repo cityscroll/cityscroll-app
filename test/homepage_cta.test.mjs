@@ -23,7 +23,9 @@ test("edition highlight cards are gone from the homepage markup and paint path",
 
 test("language control is a top-right labelled select with all shipping locales", () => {
   assert.match(index, /id="langSelect"/);
-  assert.match(index, /data-i18n="lang_switcher_label"/);
+  // Accessible name via aria-label + data-i18n-aria (no extra visible/sr-only English word for the ratchet)
+  assert.match(index, /data-i18n-aria="lang_switcher_label"/);
+  assert.match(index, /aria-label="Language"/);
   assert.doesNotMatch(index, /class="lang-btn"/);
   for (const code of ["en", "es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar", "ur"]) {
     assert.match(index, new RegExp(`value="${code.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"`));
@@ -57,6 +59,7 @@ test("i18n carries homepage CTA keys in English", () => {
   for (const key of ["home_cta_prompt", "home_cta_submit", "home_cta_topics", "lang_switcher_label"]) {
     assert.match(i18n, new RegExp(`${key}\\s*:`));
   }
-  assert.match(i18n, /home_cta_prompt:\s*"Interested to learn more\?"/);
-  assert.match(i18n, /home_cta_submit:\s*"Get updates"/);
+  assert.match(i18n, /home_cta_prompt:\s*"Want email updates\?"/);
+  assert.match(i18n, /home_cta_submit:\s*"Sign up"/);
+  assert.match(i18n, /home_cta_topics:\s*"or pick topics"/);
 });

@@ -217,9 +217,9 @@
     preview_digest_btn: "Aperçu du bulletin d'aujourd'hui",
     subscribe_btn:      "S'abonner →",
     subscribe_confirm_note: "Nous envoyons un lien de confirmation par courriel — les alertes ne démarrent qu'après avoir cliqué dessus, afin que personne d'autre que vous ne puisse vous inscrire.",
-    home_cta_prompt: "Envie d'en savoir plus ?",
-    home_cta_submit: "Recevoir des nouvelles",
-    home_cta_topics: "ou choisissez les sujets qui vous intéressent",
+    home_cta_prompt: "Des nouvelles par e-mail ?",
+    home_cta_submit: "S'inscrire",
+    home_cta_topics: "ou choisir des sujets",
     lang_switcher_label: "Langue",
     empty_preview:      "Créez une alerte et cliquez sur Aperçu pour voir le bulletin, rempli avec les avis réels du jour.",
 
