@@ -84,6 +84,12 @@ OWN_HREF_EXPRS = (
     "${esc(v.entity)}",    # api.html entity link — always cityscroll.org (worker/src/batch.mjs)
     "${tel}",               # tel: scheme, not a page navigation
     "${mailtoFor(",         # mailto: scheme, not a page navigation
+    # Task-first entry cards: in-app hash routes (#task/…, #notice/…, #land/…, #money, #land).
+    "${taskEsc(itemHref)}",
+    "${taskEsc(noticeHref)}",
+    "${taskEsc(landHref)}",
+    "${TaskFirst.taskCollectionHash(",
+    "${backHref}",
 )
 # JS-templated hrefs known to resolve to an external host — must carry ${EXT_ATTRS}/${extSR()}.
 EXTERNAL_HREF_EXPRS = (
@@ -100,6 +106,9 @@ EXTERNAL_HREF_EXPRS = (
     # Explicit same-origin exception: this action promises to open the canonical shareable
     # search separately, so it follows the new-tab safety/accessibility checks below.
     "${nlqEscape(canonicalSearchURL(",
+    # Task-first entry cards: official City Record / ZAP project pages and lag sources.
+    "${taskEsc(sourceHref)}",
+    "${taskEsc(lag.source_url)}",
 )
 
 A_TAG_RE = re.compile(r"<a\b([^>]*)>(.*?)</a>", re.DOTALL)
