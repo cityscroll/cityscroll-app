@@ -36,6 +36,17 @@ PIN↔`bid_number` join is **0%** on Procurement notices since 2025-01-01 and **
 receipts: `worker/src/lib/bid_tabulations_join.mjs`,
 `site/data/bid_tabulation_sources/`.
 
+## Doing Business Search Entities (`72mk-a8z7`)
+
+Vendor identity enrichment (listing, ownership structure, phone, start date). **Measured
+above usefulness** (2026-07-30): `vendorStem` join is **70.42%** notice-level and
+**61.62%** of distinct vendors on modern awards (`start_date` ≥ 2025-01-01). Four
+columns only (no EIN/BIN/PIN). Source contract `doing-business-entities` is **live**
+edge-materialized onto daily vendor-profile rebuilds (`doingBusiness` field).
+Strategies and receipts: `worker/src/lib/doing_business_join.mjs`,
+`site/data/doing_business_sources/`. Publisher dates often use truncated `00YY` years —
+normalize to `20YY` before display.
+
 ## Legistar agenda/vote depth
 
 Ranked class-(a) meeting-outcomes depth. **Edge materialization is live** (daily

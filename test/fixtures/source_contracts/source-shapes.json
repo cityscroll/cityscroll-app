@@ -448,6 +448,19 @@
       ],
       "machine_endpoint": "https://zap-api-production.herokuapp.com/projects/{project_id}",
       "machine_response_type": "application/json"
+    },
+    {
+      "id": "doing-business-entities",
+      "kind": "socrata",
+      "identifier": "72mk-a8z7",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": [
+        "organization_name",
+        "ownership_structure_code",
+        "organization_phone",
+        "doing_business_start_date"
+      ]
     }
   ]
 }
