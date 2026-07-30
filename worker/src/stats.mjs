@@ -17,6 +17,22 @@ import {
   reconcileUsageWithDurableStores,
 } from "./lib/analytics.mjs";
 
+// Same key as alerts.mjs DIGEST_RUN_LATEST_KEY — kept local so /stats does not import the
+// full alerts module (cron + Resend path) on every public read.
+const DIGEST_RUN_LATEST_KEY = "digest:run:latest";
+
+async function readDigestRunReceipt(env) {
+  if (!env?.ALERT_STATE) return null;
+  try {
+    const raw = await env.ALERT_STATE.get(DIGEST_RUN_LATEST_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object" ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
 const WINDOW_DAYS = 7;
 const PAGE_VIEW_SURFACES = Object.freeze([
   "home",
@@ -89,6 +105,7 @@ export async function handleStats(req, env, ctx, options = {}) {
     nl7d, nlByCategory7d, watchesHist, watchesEra, usage,
     pageViewsFallback,
     nl30d, nlByCategory30d, clicks30d, shares30d, alertsConfirmed7d, alertsConfirmed30d,
+    digestLastRun,
   ] = await Promise.all([
       countActiveSubs(env),
       readInt(env.ALERT_STATE, `sendcount:${today}`),
@@ -119,6 +136,7 @@ export async function handleStats(req, env, ctx, options = {}) {
       sumStat(env.ALERT_STATE, "share", 30, now),
       sumStat(env.ALERT_STATE, "alert_confirmed", WINDOW_DAYS, now),
       sumStat(env.ALERT_STATE, "alert_confirmed", 30, now),
+      readDigestRunReceipt(env),
     ]);
 
   // Store continuity: same ALERT_STATE / NL_METER namespaces used before and after the
@@ -158,7 +176,15 @@ export async function handleStats(req, env, ctx, options = {}) {
     window_days: WINDOW_DAYS,
     note: "Aggregate counts only, grouped by day and category. Feed/batch counts are as observed at the origin (edge cache hits are not counted).",
     subscriptions: { active },
-    digests: { sent_today: sentToday, sent_last7d: sent7d, sent_all_time: digestsAllTime, by_category: digestsByCategory },
+    digests: {
+      sent_today: sentToday,
+      sent_last7d: sent7d,
+      sent_all_time: digestsAllTime,
+      by_category: digestsByCategory,
+      // Durable cron receipt: timestamp, matched, sent, skipped_reason. A silent skip must
+      // leave an explicit reason so sent_today=0 is never unexplained.
+      last_run: digestLastRun || null,
+    },
     digest_clicks: { today: clicksToday, last7d: clicks7d },
     feeds: { fetches_last7d: feeds7d },
     batch: { calls_last7d: batch7d },

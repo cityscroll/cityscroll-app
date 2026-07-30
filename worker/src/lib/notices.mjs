@@ -31,8 +31,15 @@ export function snippet(text, n = 240) {
 
 // opts: { termGroups?: string[][], section?, agency?, category?, noticeType?,
 //         minAmount?, maxAmount?, excludeSpecialCase?, excludeRollingDeadlines?,
-//         openOnly?, dueBefore?, sinceDate?, limit?, today? }
+//         openOnly?, dueBefore?, sinceDate?, limit?, today?,
+//         orderBy?: "start_date" | "contract_amount" | "score" }
 // termGroups is AND-of-ORs: every group must match via at least one of its terms.
+//
+// orderBy default for amount filters used to be contract_amount DESC. That is fine for
+// interactive "biggest awards" browse, but fatal for digests: a $637k Construction
+// award never enters LIMIT 25 under multi-billion mega-contracts, so the D1 fast path
+// silently stopped matching mid-size watches (field case Jul 2026). Digests pass
+// orderBy: "start_date" to match the SODA fallback ($order=start_date DESC).
 export function buildNoticesQuery(opts = {}) {
   const where = [];
   const params = [];
@@ -72,7 +79,11 @@ export function buildNoticesQuery(opts = {}) {
   const scoreExpr = scoreParts.length ? scoreParts.join(" + ") : "0";
 
   let orderBy;
-  if (hasAmount) orderBy = "contract_amount DESC, start_date DESC";
+  const explicit = opts.orderBy;
+  if (explicit === "start_date") orderBy = "start_date DESC";
+  else if (explicit === "contract_amount") orderBy = "contract_amount DESC, start_date DESC";
+  else if (explicit === "score" && allTerms.length) orderBy = "_score DESC, start_date DESC";
+  else if (hasAmount) orderBy = "contract_amount DESC, start_date DESC";
   else if (allTerms.length) orderBy = "_score DESC, start_date DESC";
   else orderBy = "start_date DESC";
 
