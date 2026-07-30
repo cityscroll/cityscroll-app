@@ -5530,9 +5530,12 @@ async function externalAwardForNotice(r, el){
     from GET /contract-lifecycle?id=<request_id> (worker/src/checkbook_lifecycle.mjs) — no
     live upstream fetch from the client. Unmatched/ambiguous/unknown stages render as specific
     statements in the established "no record found" register, never blank. Each stage links to
-    its authoritative source page (City Record or Checkbook NYC). */
+    its authoritative source page (City Record or Checkbook NYC). OCP Recent Contract Awards
+    (qyyg-4tf5) rides the same precomputed payload as an award side-car for date/amount
+    corroboration — disagreements name both sources. */
 const CHECKBOOK_SEARCH_URL = "https://www.checkbooknyc.com/contract_search";
 const CHECKBOOK_SPENDING_URL = "https://www.checkbooknyc.com/spending_search";
+const OCP_AWARDS_URL = "https://data.cityofnewyork.us/d/qyyg-4tf5";
 
 function lifecycleStageLabel(stage){
   if(stage === "solicitation") return t("lifecycle_stage_solicitation");
@@ -5773,6 +5776,69 @@ function lifecycleStageHTML(entry, timeline){
   </div></div>`;
 }
 
+// OCP Recent Contract Awards side-car (precomputed on the lifecycle payload — no live client
+// SODA fetch). Matched rows flip the not-yet-ingested gap to real joined data; when City
+// Record and OCP disagree on date or amount, both values render with sources named.
+function lifecycleOcpAwardHTML(data){
+  const ocp = data && data.ocp_award;
+  if(!ocp) return "";
+  const srcLink = `<a href="${OCP_AWARDS_URL}" ${EXT_ATTRS}><span lang="en" dir="ltr">${t("lifecycle_source_ocp")}</span>${extSR()}</a>`;
+  const srcName = `<span lang="en" dir="ltr">${t("lifecycle_source_ocp")}</span>`;
+  const cityName = `<span lang="en" dir="ltr">${t("lifecycle_source_city_record")}</span>`;
+
+  if(ocp.status === "unmatched"){
+    return `<div class="note" style="margin-top:10px"><b>${t("lifecycle_ocp_heading")}</b> ${t("lifecycle_ocp_unmatched_html",{source:srcLink})}</div>`;
+  }
+  if(ocp.status === "unknown"){
+    return `<div class="note" style="margin-top:10px"><b>${t("lifecycle_ocp_heading")}</b> ${t("lifecycle_ocp_unknown_html",{source:srcName})}</div>`;
+  }
+  if(ocp.status === "ambiguous"){
+    let cands = "";
+    if(Array.isArray(ocp.candidates) && ocp.candidates.length){
+      cands = `<div class="lc-candidates">${ocp.candidates.map(c =>
+        `<div>${money(c.amount) || "—"}${c.date ? " · " + fdate(c.date) : ""}${c.vendor ? " · " + escUiHtml(c.vendor) : ""}${c.request_id ? ` · <code>${escUiHtml(c.request_id)}</code>` : ""}</div>`
+      ).join("")}</div>`;
+    }
+    return `<div class="note" style="margin-top:10px"><b>${t("lifecycle_ocp_heading")}</b> ${t("lifecycle_ocp_ambiguous_html")}${cands}</div>`;
+  }
+  if(ocp.status !== "matched" || !ocp.detail) return "";
+
+  const d = ocp.detail;
+  let body = t("lifecycle_ocp_matched_html",{
+    source: srcLink,
+    vendor: d.vendor ? `<b lang="en" dir="ltr">${escUiHtml(d.vendor)}</b>` : "—",
+    amount: money(d.amount) || "—",
+    date: d.date ? fdate(d.date) : "—"
+  });
+
+  const corr = ocp.corroboration;
+  if(corr && corr.agree){
+    body += ` ${t("lifecycle_ocp_corroborated_html",{source:srcName})}`;
+  } else if(corr && !corr.agree){
+    body += ` ${t("lifecycle_ocp_disagreement_html",{source:srcName})}`;
+    const dis = Array.isArray(corr.disagreements) ? corr.disagreements : [];
+    for(const item of dis){
+      if(item.field === "amount"){
+        body += ` ${t("lifecycle_ocp_amount_pair_html",{
+          city_record_label: cityName,
+          city_amount: money(item.city_record) || "—",
+          ocp_label: srcName,
+          ocp_amount: money(item.ocp) || "—"
+        })}`;
+      } else if(item.field === "date"){
+        body += ` ${t("lifecycle_ocp_date_pair_html",{
+          city_record_label: cityName,
+          city_date: item.city_record ? fdate(item.city_record) : "—",
+          ocp_label: srcName,
+          ocp_date: item.ocp ? fdate(item.ocp) : "—"
+        })}`;
+      }
+    }
+  }
+
+  return `<div class="note" style="margin-top:10px"><b>${t("lifecycle_ocp_heading")}</b> ${body}</div>`;
+}
+
 function lifecycleTimelineHTML(data, notice){
   const raw = data.timeline || [];
   if(!raw.length) return "";
@@ -5833,10 +5899,13 @@ function lifecycleTimelineHTML(data, notice){
     })} · <a class="view" href="${PASSPORT_RFX_URL}" ${EXT_ATTRS}>${t("lifecycle_source_passport")}${extSR()}</a></div>`;
   }
 
+  const ocpHTML = lifecycleOcpAwardHTML(data);
+
   return `<div class="chain-h">${t("lifecycle_heading")}</div>
     ${stages ? `<div class="chain">${stages}</div>` : ""}
     ${amendmentsHTML}
     ${rfxHTML}
+    ${ocpHTML}
     <div class="note">${pinNote}</div>`;
 }
 

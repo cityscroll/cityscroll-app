@@ -135,8 +135,15 @@ function withMockedFetch(routes, fn) {
       const u = String(url);
       calls.push({ url: u, body: opts?.body || "" });
 
-      // SODA notice lookup
+      // SODA: City Record notice lookup (dg92) vs OCP recent awards (qyyg-4tf5)
       if (u.startsWith("https://data.cityofnewyork.us/resource/")) {
+        if (u.includes("qyyg-4tf5")) {
+          return {
+            ok: routes.ocpError ? false : true,
+            status: routes.ocpError ? 503 : 200,
+            json: async () => routes.ocpAwards || [],
+          };
+        }
         return { ok: true, status: 200, json: async () => routes.sodaNotice || [] };
       }
 
@@ -387,10 +394,12 @@ test("NO PIN: notice without a usable PIN → not_applicable stages, no Checkboo
   const orig = globalThis.fetch;
   let checkbookCalls = 0;
   let sodaCalls = 0;
+  let ocpCalls = 0;
   globalThis.fetch = async (url) => {
     const u = String(url);
     if (u.includes("checkbooknyc.com")) checkbookCalls++;
     if (u.includes("data.cityofnewyork.us")) sodaCalls++;
+    if (u.includes("qyyg-4tf5")) ocpCalls++;
     return { ok: true, json: async () => [], text: async () => "" };
   };
   try {
@@ -419,6 +428,9 @@ test("NO PIN: notice without a usable PIN → not_applicable stages, no Checkboo
     const sol = body.timeline.find((t) => t.stage === "solicitation");
     assert.ok(sol, "solicitation stage still present");
     assert.equal(sol.documents_status, "unmatched");
+    // OCP side-car still runs (request_id join) and is attached
+    assert.ok(ocpCalls >= 1, "OCP side-car lookup still runs without a PIN");
+    assert.ok(body.ocp_award, "ocp_award attached even without PIN");
   } finally { globalThis.fetch = orig; }
 });
 
@@ -541,7 +553,15 @@ test("prewarm: bounded, idempotent, skips already-cached ids", withMockedFetch({
       },
     },
     cache: {
-      "ALREADY": { lifecycle: JSON.stringify({ timeline: [], amendments: [], ok: true }) },
+      // Seed must include ocp_award so cacheGet treats it as a complete post-side-car entry.
+      "ALREADY": {
+        lifecycle: JSON.stringify({
+          timeline: [],
+          amendments: [],
+          ok: true,
+          ocp_award: { status: "unmatched", source: "ocp-recent-awards" },
+        }),
+      },
     },
   });
   const r = await prewarmContractLifecycle({ DB: db }, ["20250110008", "ALREADY", "20250110008"]);
@@ -690,3 +710,119 @@ test("assembleLifecycle: produces timeline with all stages and ok flag", () => {
   assert.equal(result.timeline[0].stage, "solicitation");
   assert.equal(result.timeline[2].status, "matched"); // registered
 });
+
+// ===========================================================================
+// OCP Recent Contract Awards side-car (qyyg-4tf5)
+// ===========================================================================
+
+test("OCP side-car: matched by request_id with amount/date agreement", withMockedFetch({
+  pending: emptyResponse(),
+  registered: emptyResponse(),
+  spending: emptySpendingResponse(),
+  ocpAwards: [{
+    request_id: "20260723031",
+    start_date: "2026-07-30T00:00:00.000",
+    agency_name: "Health and Mental Hygiene",
+    type_of_notice_description: "Award",
+    short_title: "Catering Services",
+    pin: "81626W0043001",
+    contract_amount: "250000",
+    vendor_name: "Make it Zesty LLC",
+  }],
+}, async () => {
+  const db = fakeDB({
+    notices: {
+      "20260723031": {
+        request_id: "20260723031", start_date: "2026-07-30", agency: "Health and Mental Hygiene",
+        type_of_notice: "Award", short_title: "Catering Services", pin: "81626W0043001",
+        contract_amount: "250000", vendor_name: "Make it Zesty LLC",
+      },
+    },
+  });
+  const res = await handleContractLifecycle(req("?id=20260723031"), { DB: db });
+  const body = await res.json();
+  assert.equal(body.ok, true);
+  assert.ok(body.ocp_award, "ocp_award side-car present");
+  assert.equal(body.ocp_award.status, "matched");
+  assert.equal(body.ocp_award.join_key, "request_id");
+  assert.equal(body.ocp_award.detail.vendor, "Make it Zesty LLC");
+  assert.equal(body.ocp_award.detail.amount, 250000);
+  assert.equal(body.ocp_award.corroboration.agree, true);
+  // Cached payload must include ocp_award so recompute is not required
+  const cached = JSON.parse(db._cache["20260723031"].lifecycle);
+  assert.equal(cached.ocp_award.status, "matched");
+}));
+
+test("OCP side-car: City Record / OCP amount disagreement keeps both values", withMockedFetch({
+  pending: emptyResponse(),
+  registered: emptyResponse(),
+  spending: emptySpendingResponse(),
+  ocpAwards: [{
+    request_id: "20260723031",
+    start_date: "2026-07-30T00:00:00.000",
+    type_of_notice_description: "Award",
+    pin: "81626W0043001",
+    contract_amount: "250000",
+    vendor_name: "Make it Zesty LLC",
+  }],
+}, async () => {
+  const db = fakeDB({
+    notices: {
+      "20260723031": {
+        request_id: "20260723031", start_date: "2026-07-15", agency: "Health and Mental Hygiene",
+        type_of_notice: "Award", short_title: "Catering Services", pin: "81626W0043001",
+        contract_amount: "999999", vendor_name: "Make it Zesty LLC",
+      },
+    },
+  });
+  const res = await handleContractLifecycle(req("?id=20260723031"), { DB: db });
+  const body = await res.json();
+  assert.equal(body.ocp_award.status, "matched");
+  assert.equal(body.ocp_award.corroboration.agree, false);
+  const amount = body.ocp_award.corroboration.disagreements.find((d) => d.field === "amount");
+  assert.equal(amount.city_record, 999999);
+  assert.equal(amount.ocp, 250000);
+  const date = body.ocp_award.corroboration.disagreements.find((d) => d.field === "date");
+  assert.equal(date.city_record, "2026-07-15");
+  assert.equal(date.ocp, "2026-07-30");
+}));
+
+test("OCP side-car: unmatched uses not-yet-ingested gap (empty OCP lookup)", withMockedFetch({
+  pending: emptyResponse(),
+  registered: emptyResponse(),
+  spending: emptySpendingResponse(),
+  ocpAwards: [],
+}, async () => {
+  const db = fakeDB({
+    notices: {
+      "20250110001": {
+        request_id: "20250110001", start_date: "2025-01-10", agency: "Sanitation",
+        type_of_notice: "Award", short_title: "Collection", pin: "08250R0001001",
+        contract_amount: "100", vendor_name: "ACME",
+      },
+    },
+  });
+  const res = await handleContractLifecycle(req("?id=20250110001"), { DB: db });
+  const body = await res.json();
+  assert.equal(body.ocp_award.status, "unmatched");
+}));
+
+test("OCP side-car: reach failure marks unknown (not unmatched gap)", withMockedFetch({
+  pending: emptyResponse(),
+  registered: emptyResponse(),
+  spending: emptySpendingResponse(),
+  ocpError: true,
+}, async () => {
+  const db = fakeDB({
+    notices: {
+      "20250110001": {
+        request_id: "20250110001", start_date: "2025-01-10", agency: "Sanitation",
+        type_of_notice: "Award", short_title: "Collection", pin: "08250R0001001",
+        contract_amount: "100", vendor_name: "ACME",
+      },
+    },
+  });
+  const res = await handleContractLifecycle(req("?id=20250110001"), { DB: db });
+  const body = await res.json();
+  assert.equal(body.ocp_award.status, "unknown");
+}));
