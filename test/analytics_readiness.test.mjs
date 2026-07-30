@@ -356,12 +356,16 @@ test("privacy copy removes falsified exhaustive promises without adding a new en
   const english = await readFile(new URL("../site/i18n.js", import.meta.url), "utf8");
   for (const source of [about, english]) {
     // Honest intro: no password accounts / no ad tech / no cross-site tracking.
-    // Session cookies exist only after an alert-email magic link (pins sync) — do not
+    // Session cookies exist only after an alert-email magic link (pins sync). Optional
+    // heatmaps (Clarity) may also set first-party cookies when configured — do not
     // re-promise a blanket "no cookies" line that the product no longer keeps.
     assert.match(source, /no password accounts and no ad tech/i);
     assert.match(source, /does not track you across other sites/i);
     assert.match(source, /Searches and filters(?:<\/b>)? use NYC Open Data/);
     assert.match(source, /Email links and pins/i);
+    // Optional heatmaps disclosed in plain language (masking + opt-out), not as tech inventory.
+    assert.match(source, /Microsoft Clarity/);
+    assert.match(source, /Do Not Track|Global Privacy Control/);
     assert.doesNotMatch(source, /go straight to NYC Open Data|server never sees them|only keep a daily count/i);
     assert.doesNotMatch(source, /aggregate usage events|interaction taxonomy/i);
     assert.doesNotMatch(source, /uses no accounts, no cookies, no cross-site tracking, no ad tech/);
