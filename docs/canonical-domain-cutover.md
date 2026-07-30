@@ -54,10 +54,21 @@ conforming browsers retain the original fragment when following the redirect
 
 ## Post-deploy checks
 
+After every site or worker deploy on `main`, CI runs
+`node tools/live_url_smoke.mjs` against `https://cityscroll.org/`,
+`https://crol-list.org/`, and `https://cityscroll.org/about.html`. The gate
+requires HTTP 200 with real CityScroll page content (not a redirect loop, empty
+body, or error shell), cache-busts each probe, and polls for up to ~12 minutes
+to absorb GitHub Pages / Fastly redirect-cache lag before failing the deploy
+workflow. Failure output names the URL, status chain, and a body snippet.
+
+Manual spot checks remain useful for header-level cutover confirmation:
+
 ```bash
 curl -I "https://crol-list.org/about.html?source=cutover"
 curl -I "https://cityscroll.org/about.html?source=cutover"
 curl -I "https://api.cityscroll.org/api"
+node tools/live_url_smoke.mjs --timeout-ms 60000 --interval-ms 5000
 CROL_BASE=https://cityscroll.org/ python3 test/functional/20_demo_links.py
 ```
 
