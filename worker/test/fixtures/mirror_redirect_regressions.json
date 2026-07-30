@@ -1,0 +1,16 @@
+{
+  "cases": [
+    {
+      "requestPath": "/",
+      "originStatus": 301,
+      "originLocation": "http://crol-list.org/index.html",
+      "expectedFallbackUrl": "https://cityscroll.github.io/crol-list/index.html"
+    },
+    {
+      "requestPath": "/index.html",
+      "originStatus": 301,
+      "originLocation": "http://crol-list.org/index.html",
+      "expectedFallbackUrl": "https://cityscroll.github.io/crol-list/index.html"
+    }
+  ]
+}
