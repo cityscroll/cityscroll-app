@@ -1,0 +1,28 @@
+{
+  "viewports": [
+    [
+      390,
+      844
+    ],
+    [
+      1440,
+      900
+    ]
+  ],
+  "acceptance_exams": [
+    "6125",
+    "7006",
+    "7013",
+    "7016",
+    "7331"
+  ],
+  "captures": [
+    "docs/screenshots/deadline-exam-cards/open-cards-390.png",
+    "docs/screenshots/deadline-exam-cards/exam-6125-390.png",
+    "docs/screenshots/deadline-exam-cards/interest-engineering-390.png",
+    "docs/screenshots/deadline-exam-cards/open-cards-1440.png",
+    "docs/screenshots/deadline-exam-cards/exam-6125-1440.png",
+    "docs/screenshots/deadline-exam-cards/interest-engineering-1440.png"
+  ],
+  "verify_only": false
+}
