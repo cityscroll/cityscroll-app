@@ -46,8 +46,11 @@ const sandbox = new Function(
   extractConst("EXT_ATTRS") +
   extractConst("CHECKBOOK_SEARCH_URL") +
   extractConst("CHECKBOOK_SPENDING_URL") +
+  extractConst("PASSPORT_CONTRACTS_URL") +
+  extractConst("PASSPORT_RFX_URL") +
   extractFn("lifecycleStageLabel") +
   extractFn("lifecycleAmount") +
+  extractFn("lifecycleSourceName") +
   extractFn("lifecycleSourceLink") +
   extractFn("lifecycleStageHTML") +
   extractFn("lifecycleTimelineHTML") +
@@ -249,11 +252,12 @@ test("lifecycle: payment stage shows payment count and latest", () => {
   assert.match(html, /\$250K/);
 });
 
-test("lifecycle: provenance note names both sources and the PIN", () => {
+test("lifecycle: provenance note names City Record, Checkbook, PASSPort, and the PIN", () => {
   const html = lifecycleTimelineHTML(FULL_LIFECYCLE, notice);
   assert.match(html, /This timeline joins/);
   assert.match(html, /City Record/);
   assert.match(html, /Checkbook NYC/);
+  assert.match(html, /PASSPort Public/);
   assert.match(html, /<code>08250R0001001<\/code>/);
 });
 

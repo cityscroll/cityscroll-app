@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "observed_on": "2026-07-29",
+  "observed_on": "2026-07-30",
   "sources": [
     {
       "id": "city-record",
@@ -8,35 +8,65 @@
       "identifier": "dg92-zbpx",
       "asset_type": "dataset",
       "sample_type": "array<object>",
-      "fields": ["request_id", "start_date", "agency_name", "type_of_notice_description", "section_name"]
+      "fields": [
+        "request_id",
+        "start_date",
+        "agency_name",
+        "type_of_notice_description",
+        "section_name"
+      ]
     },
     {
       "id": "nycida-build-nyc-projects",
       "kind": "html",
       "identifier": "financial-public-documents-recordings",
       "response_type": "text/html",
-      "fields": ["request_id", "project_id", "project_name", "company_name", "project_address", "requested_benefit_amount", "estimated_public_cost", "application_status"]
+      "fields": [
+        "request_id",
+        "project_id",
+        "project_name",
+        "company_name",
+        "project_address",
+        "requested_benefit_amount",
+        "estimated_public_cost",
+        "application_status"
+      ]
     },
     {
       "id": "checkbook-contracts",
       "kind": "checkbook",
       "identifier": "Contracts",
       "response_type": "xml-recordset",
-      "fields": ["prime_contract_id", "prime_vendor", "prime_contract_current_amount", "prime_contract_registration_date"]
+      "fields": [
+        "prime_contract_id",
+        "prime_vendor",
+        "prime_contract_current_amount",
+        "prime_contract_registration_date"
+      ]
     },
     {
       "id": "checkbook-spending",
       "kind": "checkbook",
       "identifier": "Spending",
       "response_type": "xml-recordset",
-      "fields": ["spending_id", "vendor_name", "check_amount", "check_date"]
+      "fields": [
+        "spending_id",
+        "vendor_name",
+        "check_amount",
+        "check_date"
+      ]
     },
     {
       "id": "checkbook-nycha-contracts",
       "kind": "checkbook",
       "identifier": "Contracts_NYCHA",
       "response_type": "xml-recordset",
-      "fields": ["contract_id", "record_type", "vendor", "pin"]
+      "fields": [
+        "contract_id",
+        "record_type",
+        "vendor",
+        "pin"
+      ]
     },
     {
       "id": "abo-local-authorities",
@@ -44,7 +74,13 @@
       "identifier": "8w5p-k45m",
       "asset_type": "dataset",
       "sample_type": "array<object>",
-      "fields": ["authority_name", "vendor_name", "procurement_description", "award_date", "contract_amount"]
+      "fields": [
+        "authority_name",
+        "vendor_name",
+        "procurement_description",
+        "award_date",
+        "contract_amount"
+      ]
     },
     {
       "id": "abo-local-development-corporations",
@@ -52,7 +88,13 @@
       "identifier": "d84c-dk28",
       "asset_type": "dataset",
       "sample_type": "array<object>",
-      "fields": ["authority_name", "vendor_name", "procurement_description", "award_date", "contract_amount"]
+      "fields": [
+        "authority_name",
+        "vendor_name",
+        "procurement_description",
+        "award_date",
+        "contract_amount"
+      ]
     },
     {
       "id": "abo-state-authorities",
@@ -60,7 +102,13 @@
       "identifier": "ehig-g5x3",
       "asset_type": "dataset",
       "sample_type": "array<object>",
-      "fields": ["authority_name", "vendor_name", "procurement_description", "award_date", "contract_amount"]
+      "fields": [
+        "authority_name",
+        "vendor_name",
+        "procurement_description",
+        "award_date",
+        "contract_amount"
+      ]
     },
     {
       "id": "citywide-payroll",
@@ -68,7 +116,13 @@
       "identifier": "k397-673e",
       "asset_type": "dataset",
       "sample_type": "array<object>",
-      "fields": ["fiscal_year", "agency_name", "last_name", "first_name", "title_description"]
+      "fields": [
+        "fiscal_year",
+        "agency_name",
+        "last_name",
+        "first_name",
+        "title_description"
+      ]
     },
     {
       "id": "active-civil-service-list",
@@ -76,7 +130,13 @@
       "identifier": "vx8i-nprf",
       "asset_type": "dataset",
       "sample_type": "array<object>",
-      "fields": ["exam_no", "list_no", "first_name", "last_name", "list_title_desc"]
+      "fields": [
+        "exam_no",
+        "list_no",
+        "first_name",
+        "last_name",
+        "list_title_desc"
+      ]
     },
     {
       "id": "annual-examination-schedule",
@@ -84,7 +144,13 @@
       "identifier": "4ptz-hmtc",
       "asset_type": "dataset",
       "sample_type": "array<object>",
-      "fields": ["exam_title", "exam_number", "application_period_start", "application_period_end_date", "data_current_as_of"]
+      "fields": [
+        "exam_title",
+        "exam_number",
+        "application_period_start",
+        "application_period_end_date",
+        "data_current_as_of"
+      ]
     },
     {
       "id": "civil-service-list-certification",
@@ -92,7 +158,13 @@
       "identifier": "a9md-ynri",
       "asset_type": "dataset",
       "sample_type": "array<object>",
-      "fields": ["exam_no", "list_title_desc", "cert_date", "no_certified", "no_vacancies"]
+      "fields": [
+        "exam_no",
+        "list_title_desc",
+        "cert_date",
+        "no_certified",
+        "no_vacancies"
+      ]
     },
     {
       "id": "zap-projects",
@@ -100,7 +172,13 @@
       "identifier": "hgx4-8ukb",
       "asset_type": "dataset",
       "sample_type": "array<object>",
-      "fields": ["project_id", "project_name", "project_status", "borough", "community_district"]
+      "fields": [
+        "project_id",
+        "project_name",
+        "project_status",
+        "borough",
+        "community_district"
+      ]
     },
     {
       "id": "zap-bbl",
@@ -108,7 +186,13 @@
       "identifier": "2iga-a6mk",
       "asset_type": "dataset",
       "sample_type": "array<object>",
-      "fields": ["project_id", "bbl", "validated_borough", "validated_block", "validated_lot"]
+      "fields": [
+        "project_id",
+        "bbl",
+        "validated_borough",
+        "validated_block",
+        "validated_lot"
+      ]
     },
     {
       "id": "mappluto",
@@ -116,14 +200,20 @@
       "identifier": "MAPPLUTO/FeatureServer/0",
       "asset_type": "Feature Layer",
       "sample_type": "FeatureCollection",
-      "fields": ["BBL"]
+      "fields": [
+        "BBL"
+      ]
     },
     {
       "id": "nyc-geosearch",
       "kind": "geosearch",
       "identifier": "v2/search",
       "response_type": "FeatureCollection",
-      "fields": ["features", "properties.label", "properties.borough"]
+      "fields": [
+        "features",
+        "properties.label",
+        "properties.borough"
+      ]
     },
     {
       "id": "dob-now-job-filings",
@@ -131,7 +221,14 @@
       "identifier": "w9ak-ipjd",
       "asset_type": "dataset",
       "sample_type": "array<object>",
-      "fields": ["job_filing_number", "filing_status", "borough", "block", "lot", "job_type"]
+      "fields": [
+        "job_filing_number",
+        "filing_status",
+        "borough",
+        "block",
+        "lot",
+        "job_type"
+      ]
     },
     {
       "id": "legacy-dob-job-filings",
@@ -139,7 +236,15 @@
       "identifier": "ic3t-wcy2",
       "asset_type": "dataset",
       "sample_type": "array<object>",
-      "fields": ["job__", "job_status_descrp", "latest_action_date", "borough", "block", "lot", "job_type"]
+      "fields": [
+        "job__",
+        "job_status_descrp",
+        "latest_action_date",
+        "borough",
+        "block",
+        "lot",
+        "job_type"
+      ]
     },
     {
       "id": "nyc-agencies",
@@ -147,7 +252,14 @@
       "identifier": "t3jq-9nkf",
       "asset_type": "dataset",
       "sample_type": "array<object>",
-      "fields": ["record_id", "operational_status", "organization_type", "name", "acronym", "url"]
+      "fields": [
+        "record_id",
+        "operational_status",
+        "organization_type",
+        "name",
+        "acronym",
+        "url"
+      ]
     },
     {
       "id": "expense-budget",
@@ -155,7 +267,13 @@
       "identifier": "mwzb-yiwb",
       "asset_type": "dataset",
       "sample_type": "array<object>",
-      "fields": ["publication_date", "fiscal_year", "agency_number", "agency_name", "adopted_budget_amount"]
+      "fields": [
+        "publication_date",
+        "fiscal_year",
+        "agency_number",
+        "agency_name",
+        "adopted_budget_amount"
+      ]
     },
     {
       "id": "dcas-exam-notices",
@@ -185,7 +303,13 @@
       "kind": "rss",
       "identifier": "feed",
       "response_type": "application/rss+xml",
-      "fields": ["title", "link", "agency_name", "comment_by_date", "hearing_date_1"]
+      "fields": [
+        "title",
+        "link",
+        "agency_name",
+        "comment_by_date",
+        "hearing_date_1"
+      ]
     },
     {
       "id": "nyc-council-legistar",
@@ -193,6 +317,45 @@
       "identifier": "api",
       "response_type": "text/html",
       "fields": []
+    },
+    {
+      "id": "passport-public-contracts",
+      "kind": "html",
+      "identifier": "contracts.html",
+      "response_type": "text/html",
+      "fields": [
+        "epin",
+        "contract_id",
+        "title",
+        "agency",
+        "vendor",
+        "status",
+        "current_amount",
+        "start_date",
+        "end_date",
+        "registration_date"
+      ],
+      "machine_endpoint": "dataJs/contractData.js",
+      "machine_response_type": "application/javascript",
+      "machine_var": "public_ctr_data"
+    },
+    {
+      "id": "passport-public-rfx",
+      "kind": "html",
+      "identifier": "rfx.html",
+      "response_type": "text/html",
+      "fields": [
+        "epin",
+        "procurement_name",
+        "agency",
+        "rfx_status",
+        "release_date",
+        "due_date",
+        "procurement_method"
+      ],
+      "machine_endpoint": "dataJs/rfxData.js",
+      "machine_response_type": "application/javascript",
+      "machine_var": "public_rfx_data"
     }
   ]
 }
