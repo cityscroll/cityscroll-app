@@ -193,13 +193,17 @@ locally by hitting `/__scheduled` under `wrangler dev`.
 
 `.github/workflows/deploy-worker.yml` deploys the Worker automatically on every push to `main`
 that touches `worker/**` (also runnable by hand via `workflow_dispatch` for a re-run without a
-new commit). It's a **code-only** deploy — plain `wrangler deploy` via `cloudflare/wrangler-action`,
-no `secrets:`/`vars:` inputs — because Cloudflare will silently overwrite a live secret with a
-`[vars]` entry of the same name on deploy; keep secrets going through `wrangler secret put` by
-hand (above) and never add one to `wrangler.toml`'s `[vars]` block or to the workflow. A
-`concurrency: worker-deploy` group (no cancel-in-progress) makes two quick merges deploy in
-order rather than racing. `npx wrangler deploy` from a laptop remains the escape hatch for an
-emergency deploy outside the merge flow.
+new commit). Each deploy **applies pending D1 migrations** (`wrangler d1 migrations apply
+crol-notices --remote`) before `wrangler deploy`, so schema changes under `migrations/` land
+with the code that needs them. Skipping that step left the PASSPort tables uncreated and every
+lifecycle PASSPort lookup returning `lookup_status=error`. The deploy is still **code-only**
+for secrets — no `secrets:`/`vars:` inputs on the action — because Cloudflare will silently
+overwrite a live secret with a `[vars]` entry of the same name on deploy; keep secrets going
+through `wrangler secret put` by hand (above) and never add one to `wrangler.toml`'s `[vars]`
+block or to the workflow. A `concurrency: worker-deploy` group (no cancel-in-progress) makes
+two quick merges deploy in order rather than racing. `npx wrangler deploy` from a laptop
+remains the escape hatch for an emergency deploy outside the merge flow (pair it with
+`npx wrangler d1 migrations apply crol-notices --remote` when schema changed).
 
 Requires a `CLOUDFLARE_API_TOKEN` repository secret for GitHub Actions. Prefer a
 least-privilege token limited to Workers deploys on this account. `wrangler.toml` does not set
