@@ -610,7 +610,8 @@
       "code_references": [
         {"path": "data/exam_sources/dcas_exam_outcomes.json", "contains": "dcas-annual-exam-outcomes"},
         {"path": "tools/build_staffing_exams.mjs", "contains": "dcas-annual-exam-outcomes"}
-      ]
+      ],
+      "delivery_tier": "inline-at-build"
     },
     {
       "id": "mocs-ll63-plans",
