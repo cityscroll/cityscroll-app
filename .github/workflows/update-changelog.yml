@@ -204,6 +204,22 @@ jobs:
             echo "paths_ok=false" >> "$GITHUB_ENV"
           fi
 
+      # Arm GitHub auto-merge (squash) once the path guard passes. The create step above writes
+      # the bot PR number to $RUNNER_TEMP/bot-pr-number (from gh pr create / gh pr list). With
+      # "Allow auto-merge" on and no remaining required checks, --auto may merge immediately;
+      # otherwise it waits until the required checks (dispatched below) are green. The bot PR
+      # body has no "## What this means for you" section, so a re-run after this merge is a
+      # fixed point and opens no further PR.
+      - name: Arm auto-merge on the bot PR
+        if: env.changed == 'true' && env.paths_ok == 'true'
+        run: |
+          PR_NUMBER="$(cat "$RUNNER_TEMP/bot-pr-number")"
+          if gh pr merge "$PR_NUMBER" --auto --squash; then
+            echo "Armed auto-merge (squash) on bot PR #$PR_NUMBER"
+          else
+            echo "::warning::could not arm auto-merge on PR #$PR_NUMBER — will still try the merge-queue enqueue after checks"
+          fi
+
       # See the file-header comment above for why this step exists: `pull_request`-triggered
       # CI on this branch would sit at "action_required" forever without a maintainer's click.
       - name: Dispatch CI directly on the bot branch (workflow_dispatch bypasses the pull_request-event approval gate) and wait for the required checks
