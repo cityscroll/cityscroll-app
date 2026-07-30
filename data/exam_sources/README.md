@@ -21,6 +21,9 @@ Sources and refresh rules:
   announcements; as of the recorded check, none are NOEs. This prevents contracts
   for exam services and unrelated uses of “examination” from becoming invented
   career listings.
+- `dcas_exam_outcomes.json` — a manually curated annual aggregate outcomes
+  snapshot from NYC DCAS publications. This is **not** an applicant-level feed:
+  only counts are kept to track certification and hiring outcomes per exam cycle.
 
 Run `node tools/build_staffing_exams.mjs --refresh` to refresh the Open Data
 snapshots and rebuild the client artifact. The DCAS current-page snapshot remains
