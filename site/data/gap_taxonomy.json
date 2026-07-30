@@ -2100,7 +2100,7 @@
   ],
   "depot_refresh": {
     "observed_on": "2026-07-30",
-    "source_contracts_fingerprint": "ee7e861e95c079fdf58e5bae65d3d0e59d6801aba18a7616793c3e23249daba7",
+    "source_contracts_fingerprint": "71b7d3da30d4567e56250c87ee4fafee202397aea4c69d72f1999fee557e897a",
     "materialized_crosswalks": 10,
     "candidate_crosswalks": 44,
     "class_changes": 0,
