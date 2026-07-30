@@ -11,6 +11,13 @@
       "fields": ["request_id", "start_date", "agency_name", "type_of_notice_description", "section_name"]
     },
     {
+      "id": "nycida-build-nyc-projects",
+      "kind": "html",
+      "identifier": "financial-public-documents-recordings",
+      "response_type": "text/html",
+      "fields": ["request_id", "project_id", "project_name", "company_name", "project_address", "requested_benefit_amount", "estimated_public_cost", "application_status"]
+    },
+    {
       "id": "checkbook-contracts",
       "kind": "checkbook",
       "identifier": "Contracts",
