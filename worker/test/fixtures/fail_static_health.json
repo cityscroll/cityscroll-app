@@ -1,0 +1,74 @@
+{
+  "field_case": {
+    "id": "2026-07-30-cname-redirect-loop",
+    "summary": "GitHub Pages CNAME 301 loop: origin reported deploy-green while cityscroll.org hit ERR_TOO_MANY_REDIRECTS. The worker mirror had absorbed the loop for a time, then exposed it. A canonical-host redirect loop must flip to fail-static and must not advance the last-known-good pin.",
+    "requestPath": "/",
+    "originStatus": 301,
+    "originLocation": "http://crol-list.org/index.html",
+    "expectedClass": "redirect_loop"
+  },
+  "variants": [
+    {
+      "id": "redirect-loop-canonical-host",
+      "requestPath": "/index.html",
+      "originStatus": 301,
+      "originLocation": "https://cityscroll.org/index.html",
+      "expectedClass": "redirect_loop",
+      "body": null
+    },
+    {
+      "id": "redirect-loop-www",
+      "requestPath": "/",
+      "originStatus": 302,
+      "originLocation": "https://www.cityscroll.org/",
+      "expectedClass": "redirect_loop",
+      "body": null
+    },
+    {
+      "id": "non-200-origin-500",
+      "requestPath": "/",
+      "originStatus": 500,
+      "originLocation": null,
+      "expectedClass": "non_200",
+      "body": "Internal Server Error"
+    },
+    {
+      "id": "non-200-origin-502",
+      "requestPath": "/",
+      "originStatus": 502,
+      "originLocation": null,
+      "expectedClass": "non_200",
+      "body": "Bad Gateway"
+    },
+    {
+      "id": "empty-body-200",
+      "requestPath": "/",
+      "originStatus": 200,
+      "originLocation": null,
+      "expectedClass": "empty_body",
+      "body": ""
+    },
+    {
+      "id": "error-page-200-github-pages",
+      "requestPath": "/",
+      "originStatus": 200,
+      "originLocation": null,
+      "expectedClass": "error_page",
+      "body": "There isn't a GitHub Pages site here.\n\nIf you're trying to publish one, read the docs."
+    },
+    {
+      "id": "error-page-200-not-found-shell",
+      "requestPath": "/index.html",
+      "originStatus": 200,
+      "originLocation": null,
+      "expectedClass": "error_page",
+      "body": "<!doctype html><html><body><h1>404</h1><p>File not found</p></body></html>"
+    }
+  ],
+  "healthy": {
+    "id": "healthy-index",
+    "requestPath": "/",
+    "originStatus": 200,
+    "body": "<!doctype html><html><head><title>CityScroll</title></head><body><main>ok</main></body></html>"
+  }
+}

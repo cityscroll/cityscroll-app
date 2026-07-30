@@ -12,6 +12,12 @@ hosts by reverse-proxying the GitHub Pages origin at `crol-list.org` byte-for-by
 subrequests, preventing a mirror loop. CORS allowlists use CityScroll by default
 while retaining the old origins for compatibility.
 
+**Fail-static / health-gated auto-rollback:** the mirror pins a last-known-good
+canary in `ALERT_STATE` and serves it when the Pages origin fails a bounded health
+probe (redirect loop, non-200, empty/error body). Promotion advances only after a
+healthy check. Responses carry `X-CityScroll-Serve: origin|fail-static`. Full
+operator runbook: [`docs/fail-static-serving.md`](../docs/fail-static-serving.md).
+
 > Maintenance rule: this README is updated with every significant feature change — if a
 > route, cron behavior, or defense changes, its description lands here in the same session.
 > (It previously went stale enough to still describe the retired Netlify deployment; don't

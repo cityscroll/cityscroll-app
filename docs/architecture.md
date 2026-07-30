@@ -27,7 +27,7 @@ summary: >-
   A public Cloudflare Pages beta lane provides stable draft-PR preview aliases
   and an owner-triggered pointer to one exact reviewed commit without changing
   the stable GitHub Pages host.
-updated: 2026-07-29
+updated: 2026-07-30
 sources:
   - README.md
   - MISSION.md
@@ -44,6 +44,7 @@ sources:
   - sitemap.xml
   - _config.yml
   - docs/canonical-domain-cutover.md
+  - docs/fail-static-serving.md
   - tools/build_staffing_exams.mjs
   - data/source_contracts.json
   - docs/data-sources.md
@@ -79,12 +80,13 @@ sources:
   - docs/analytics-event-taxonomy.md
   - worker/src/lib/hearings.mjs
   - worker/src/mirror.mjs
+  - worker/src/lib/fail_static.mjs
   - worker/src/lib/cors.mjs
   - test/process-spine.test.mjs
   - test/fixtures/wave4/generated/process_spine.json
   - test/fixtures/wave4/generated/unresolved-joins.json
   - test/fixtures/wave4/generated/ocds-gap-table.json
-sources_hash: 4e33c24dc53efa405f76fab9d182c595718d661272f935c526aacc0e08761584
+sources_hash: 4fc3213e9685b782ef95da7dd18ce06c6234114b1e228823b4225e4fa8aad241
 ---
 
 # crol-list — architecture
@@ -160,7 +162,7 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 
 - **KV `SUBS`** — confirmed subscriptions: `sub:<token>` → `{email, lens, filters, frequency}`, plus per-IP/per-address rate-limit counters for `/subscribe`.
 - **KV `NL_METER`** — daily spend metering for `/nl` (the denial-of-wallet ceiling on the only Claude-billed route).
-- **KV `ALERT_STATE`** — digest/cron bookkeeping plus read models: `hearings:location:v1` → rules hearings and public meetings normalized into separate affected-area and venue fields, `property:location:v1` → Property Disposition notices with extracted site addresses/tax lots/BBLs and NYC GeoSearch geometry, `fc:<stem>` → estimated contract expirations from Checkbook contract terms, and versioned `vp:v1:*` whole-profile buckets behind `/vendor-profile`; stale or missing location views retain live Socrata fallbacks. The daily cleanup removes retired `plan:` keys so disabled MOCS rows cannot reappear.
+- **KV `ALERT_STATE`** — digest/cron bookkeeping plus read models: `hearings:location:v1` → rules hearings and public meetings normalized into separate affected-area and venue fields, `property:location:v1` → Property Disposition notices with extracted site addresses/tax lots/BBLs and NYC GeoSearch geometry, `fc:<stem>` → estimated contract expirations from Checkbook contract terms, and versioned `vp:v1:*` whole-profile buckets behind `/vendor-profile`; stale or missing location views retain live Socrata fallbacks. The daily cleanup removes retired `plan:` keys so disabled MOCS rows cannot reappear. Site-mirror fail-static also stores `mirror:lkg:v1` (mode + pin) and `mirror:lkg:body:*` (last-known-good HTML snapshots) here — see `docs/fail-static-serving.md`.
 - **KV `FEEDBACK`** — stored feedback rows (`fb:<ts>:<rand>`) + rate-limit counters.
 - **`index.html` localStorage** — client-side only: investigation workspace (pinned notices + notes), query cache, saved searches, plain/rigor toggle.
 - **Public beta flag localStorage** — one registered, default-off experiment slug selected by `?beta=<slug>`; `?beta=0` clears it. The registry enforces a removal date and on/off tests. It is presentation state only, never access control.
@@ -180,6 +182,7 @@ Bottom-up, the way it's built: public Socrata feeds and Checkbook are the ground
 - Review artifacts select `api-beta.cityscroll.org` before page scripts run and never fall back to production. That Worker is an optional, manually deployed exact-commit environment with no inherited production secrets, storage, queues, or cron. Its browser routes accept beta Pages origins only under the beta runtime gate; paid, stateful, delivery, and write behavior fails closed when unconfigured.
 - Worker deployed via `wrangler deploy` from `worker/` to the canonical custom domains `api.cityscroll.org` and `www.cityscroll.org`; `api.crol-list.org` and workers.dev remain compatibility aliases for existing clients and in-flight confirmation links. Changes under `worker/**` deploy from `main` through `.github/workflows/deploy-worker.yml`; a manual Wrangler deploy remains the emergency path. Cron trigger `0 13 * * *` (~9am ET). D1 schema versioned in `worker/migrations/`, applied with `wrangler d1 migrations apply crol-notices --remote`.
 - `cityscroll.org` / `www.cityscroll.org` are the canonical site hosts (custom-domain routes in `worker/wrangler.toml`). The Worker normally reverse-proxies the GitHub Pages origin at `crol-list.org` byte-for-byte (`worker/src/mirror.mjs`). Origin redirects are manual; a redirect back to CityScroll trips a circuit breaker and retries through GitHub's public repository source seam.
+- **Fail-static / health-gated auto-rollback:** the mirror pins a last-known-good canary snapshot in `ALERT_STATE` (`mirror:lkg:v1` + `mirror:lkg:body:*`). After bounded retries, origin health failures (redirect loop, non-200, empty body, error page) flip serving to the pin and freeze promotion; recovery flips back and advances the pin only after a healthy canary. Mode is observable via the `X-CityScroll-Serve: origin|fail-static` response header. Operator runbook: `docs/fail-static-serving.md`. Field regression anchor: 2026-07-30 GitHub Pages CNAME 301 loop.
 - Direct visitors to `crol-list.org` / `www.crol-list.org` receive a 301 to the matching CityScroll path and query through the externally activated Cloudflare Single Redirect in `docs/canonical-domain-cutover.md`. The rule should exclude requests with a Worker upstream zone. The mirror's independent redirect-loop failover keeps the canonical site available if that rule is broadened accidentally. Fragments remain client-side and are retained by conforming browsers.
 - New feed, confirmation, redirect, and API URLs mint on CityScroll. Existing calendar UIDs retain `@crol-list` and Atom entries retain `tag:crol-list.org,2026:` so calendar and feed clients do not create duplicates. Outbound alerts are sent from `alerts@cityscroll.org`; inbound operational routing remains on `@crol-list.org` (`subscribe@`, `feedback@`) unless separately redirected by provider policy.
 - Secrets via `wrangler secret put`: `ANTHROPIC_API_KEY`, `RESEND_API_KEY`, `TURNSTILE_SECRET`, `TOKEN_SECRET`, `USAGE_KEY`, `ANALYTICS_READ_TOKEN`, `ANALYTICS_DEV_KEY`, and the production-only `ANALYTICS_ENVIRONMENT` runtime gate. The analytics read token is scoped to Account Analytics Read; the developer key authenticates short-lived HMAC exclusions, while a missing/non-production runtime gate drops writes. Spend guards are vars in `wrangler.toml`: `MAX_PER_RUN=25`, `MAX_SENDS_PER_DAY=50` (under Resend's free 100/day); `/subscribe` and `/feedback` fail closed (503) if their secrets are absent.

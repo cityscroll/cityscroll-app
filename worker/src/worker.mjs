@@ -45,7 +45,7 @@ const MIRROR_HOSTS = new Set(["cityscroll.org", "www.cityscroll.org"]);
 export default {
   async fetch(request, env, ctx) {
     const { pathname, hostname } = new URL(request.url);
-    if (MIRROR_HOSTS.has(hostname)) return handleMirror(request);
+    if (MIRROR_HOSTS.has(hostname)) return handleMirror(request, env);
     if (pathname === "/nl") return handleNl(request, env);
     if (pathname === "/mcp") return handleMcp(request, env);
     if (pathname === "/board-hook") return handleBoardHook(request, env);

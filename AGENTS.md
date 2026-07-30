@@ -24,6 +24,10 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   on `main`. It probes both public apex hosts plus a deep route for HTTP 200 with real content,
   with a bounded retry window for Pages/Fastly redirect-cache lag. Fixture-backed unit tests live
   in `test/live_url_smoke.test.mjs`.
+- Site-mirror fail-static / health-gated auto-rollback lives in `worker/src/lib/fail_static.mjs`
+  + `worker/src/mirror.mjs` (LKG pin in `ALERT_STATE`, `X-CityScroll-Serve` mode header). Operator
+  runbook: `docs/fail-static-serving.md`. After changing either copy run
+  `cd worker && node --test test/fail_static.test.mjs test/mirror.test.mjs`.
 - Hearing location extraction is deliberately dual-implemented in `hearing_location.js` and
   `worker/src/lib/hearings.mjs`; keep venue and affected area separate and run
   `test/contract/hearing_location.test.mjs` after changing either copy.
