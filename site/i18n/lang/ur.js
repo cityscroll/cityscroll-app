@@ -1206,6 +1206,17 @@
     career_source_details: "ذرائع اور ریفریش قواعد",
     career_city_record_finding: "سٹی ریکارڈ ڈیٹاسیٹ کو بھی چیک کیا گیا۔ یہ امتحان کے DCAS نوٹسز کو امتحان کے اعلان کے سیکشن کے طور پر شائع نہیں کرتا ہے، اس لیے یہ گائیڈ اس کی بجائے DCAS شیڈولز اور NOEs کا استعمال کرتا ہے۔",
     career_load_failed: "پہلے سے گنتی کی گئی امتحانی گائیڈ لوڈ نہیں ہو سکی۔ آفیشل DCAS امتحان کا شیڈول استعمال کریں اور اس صفحہ کو بعد میں دوبارہ آزمائیں۔",
+    career_outcomes_heading: "سائیکل کے بعد کے نتائج",
+    career_outcome_list_established: "اہل فہرست پر",
+    career_outcome_hiring_pool: "بھرتی پول (تصدیق شدہ)",
+    career_outcome_hired: "بھرتی شدہ",
+    career_outcome_applicants: "درخواست دہندگان (سائیکل)",
+    career_outcomes_joined_note: "DCAS سالانہ نتائج کی اشاعت سے مجموعی اعداد، سائیکل {cycle} (شائع {date})۔ انفرادی اسکور عوامی نہیں ہیں۔",
+    career_outcomes_source_name: "DCAS سالانہ سول سروس امتحانی نتائج کی اشاعت",
+    career_outcome_stage_list: "اہل فہرست کے قیام",
+    career_outcome_stage_certification: "ایجنسی تصدیق",
+    career_outcome_stage_appointment: "تقرری",
+    career_outcomes_not_published_html: "شہر ابھی اس امتحان کے سائیکل کے بعد کے نتائج شائع نہیں کرتا — وہ {stage} کے بعد {source} میں ظاہر ہوں گے۔",
     // END GENERATED CAREER GUIDE TRANSLATIONS
   });
   W.SECTION_I18N = W.SECTION_I18N || {};
