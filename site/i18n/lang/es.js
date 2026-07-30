@@ -565,6 +565,8 @@
     lifecycle_source_passport: "PASSPort Public",
     lifecycle_source_current_solicitations: "Solicitudes actuales (datos abiertos)",
     lifecycle_unmatched_documents_html: "Aún no se muestra aquí — los detalles del paquete de solicitud están en {source}.",
+    lifecycle_source_city_record_getfile: "archivos adjuntos del City Record",
+    lifecycle_documents_not_published_html: "La ciudad no publica documentos del paquete como un feed abierto para este aviso — aparecerían en {where} si se publicaran.",
     lifecycle_unmatched_solicitation_html: "Aún no se muestra aquí — el paquete de solicitud está en {source}.",
     lifecycle_documents_count_one: "{n} documento del paquete",
     lifecycle_documents_count_other: "{n} documentos del paquete",

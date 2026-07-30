@@ -565,6 +565,8 @@
     lifecycle_source_passport: "PASSPort Public",
     lifecycle_source_current_solicitations: "현재 입찰(공개 데이터)",
     lifecycle_unmatched_documents_html: "아직 여기 표시되지 않음 — 입찰 패키지 세부정보는 {source}에 있습니다.",
+    lifecycle_source_city_record_getfile: "City Record 첨부 파일",
+    lifecycle_documents_not_published_html: "시는 이 공고의 입찰 패키지 문서를 공개 피드로 게시하지 않습니다 — 공개되면 {where}에 나타납니다.",
     lifecycle_unmatched_solicitation_html: "아직 여기 표시되지 않음 — 입찰 패키지는 {source}에 있습니다.",
     lifecycle_documents_count_one: "패키지 문서 {n}개",
     lifecycle_documents_count_other: "패키지 문서 {n}개",

@@ -66,7 +66,7 @@
     {
       "id": "checkbook-contracts-x-passport-public-contracts-via-PIN+contract_id",
       "worth_materializing": "yes",
-      "score": 6,
+      "score": 5,
       "key_path": [
         "PIN",
         "contract_id"
@@ -75,7 +75,6 @@
         "procurement-pending-unmatched",
         "procurement-registered-unmatched",
         "procurement-payment-unmatched",
-        "procurement-solicitation-documents",
         "procurement-bid-counts",
         "procurement-ocp-recent-awards"
       ]
@@ -83,7 +82,7 @@
     {
       "id": "checkbook-contracts-x-passport-public-rfx-via-PIN",
       "worth_materializing": "yes",
-      "score": 6,
+      "score": 5,
       "key_path": [
         "PIN"
       ],
@@ -91,7 +90,6 @@
         "procurement-pending-unmatched",
         "procurement-registered-unmatched",
         "procurement-payment-unmatched",
-        "procurement-solicitation-documents",
         "procurement-bid-counts",
         "procurement-ocp-recent-awards"
       ]
@@ -99,7 +97,7 @@
     {
       "id": "checkbook-nycha-contracts-x-passport-public-contracts-via-contract_id",
       "worth_materializing": "yes",
-      "score": 6,
+      "score": 5,
       "key_path": [
         "contract_id"
       ],
@@ -107,7 +105,6 @@
         "procurement-pending-unmatched",
         "procurement-registered-unmatched",
         "procurement-payment-unmatched",
-        "procurement-solicitation-documents",
         "procurement-bid-counts",
         "procurement-ocp-recent-awards"
       ]
@@ -115,7 +112,7 @@
     {
       "id": "checkbook-spending-x-passport-public-contracts-via-PIN+contract_id",
       "worth_materializing": "yes",
-      "score": 6,
+      "score": 5,
       "key_path": [
         "PIN",
         "contract_id"
@@ -124,7 +121,6 @@
         "procurement-pending-unmatched",
         "procurement-registered-unmatched",
         "procurement-payment-unmatched",
-        "procurement-solicitation-documents",
         "procurement-bid-counts",
         "procurement-ocp-recent-awards"
       ]
@@ -132,7 +128,7 @@
     {
       "id": "checkbook-spending-x-passport-public-rfx-via-PIN",
       "worth_materializing": "yes",
-      "score": 6,
+      "score": 5,
       "key_path": [
         "PIN"
       ],
@@ -140,23 +136,8 @@
         "procurement-pending-unmatched",
         "procurement-registered-unmatched",
         "procurement-payment-unmatched",
-        "procurement-solicitation-documents",
         "procurement-bid-counts",
         "procurement-ocp-recent-awards"
-      ]
-    },
-    {
-      "id": "checkbook-contracts-x-current-solicitations-ocp-via-PIN",
-      "worth_materializing": "maybe",
-      "score": 4,
-      "key_path": [
-        "PIN"
-      ],
-      "gaps_would_close": [
-        "procurement-pending-unmatched",
-        "procurement-registered-unmatched",
-        "procurement-payment-unmatched",
-        "procurement-solicitation-documents"
       ]
     },
     {
@@ -171,20 +152,6 @@
         "procurement-registered-unmatched",
         "procurement-payment-unmatched",
         "procurement-ocp-recent-awards"
-      ]
-    },
-    {
-      "id": "checkbook-spending-x-current-solicitations-ocp-via-PIN",
-      "worth_materializing": "maybe",
-      "score": 4,
-      "key_path": [
-        "PIN"
-      ],
-      "gaps_would_close": [
-        "procurement-pending-unmatched",
-        "procurement-registered-unmatched",
-        "procurement-payment-unmatched",
-        "procurement-solicitation-documents"
       ]
     },
     {
@@ -229,6 +196,19 @@
       ]
     },
     {
+      "id": "checkbook-contracts-x-current-solicitations-ocp-via-PIN",
+      "worth_materializing": "maybe",
+      "score": 3,
+      "key_path": [
+        "PIN"
+      ],
+      "gaps_would_close": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-payment-unmatched"
+      ]
+    },
+    {
       "id": "checkbook-nycha-contracts-x-checkbook-spending-via-contract_id",
       "worth_materializing": "yes",
       "score": 3,
@@ -242,53 +222,16 @@
       ]
     },
     {
-      "id": "city-record-x-current-solicitations-ocp-via-PIN+request_id",
+      "id": "checkbook-spending-x-current-solicitations-ocp-via-PIN",
       "worth_materializing": "maybe",
-      "score": 2,
-      "key_path": [
-        "PIN",
-        "request_id"
-      ],
-      "gaps_would_close": [
-        "procurement-solicitation-documents",
-        "procurement-ocp-recent-awards"
-      ]
-    },
-    {
-      "id": "current-solicitations-ocp-x-nycida-build-nyc-projects-via-request_id",
-      "worth_materializing": "maybe",
-      "score": 2,
-      "key_path": [
-        "request_id"
-      ],
-      "gaps_would_close": [
-        "procurement-solicitation-documents",
-        "subsidy-stage-unmatched"
-      ]
-    },
-    {
-      "id": "current-solicitations-ocp-x-passport-public-contracts-via-PIN",
-      "worth_materializing": "maybe",
-      "score": 2,
+      "score": 3,
       "key_path": [
         "PIN"
       ],
       "gaps_would_close": [
+        "procurement-pending-unmatched",
         "procurement-registered-unmatched",
-        "procurement-solicitation-documents"
-      ]
-    },
-    {
-      "id": "current-solicitations-ocp-x-recent-contract-awards-ocp-via-PIN+request_id",
-      "worth_materializing": "maybe",
-      "score": 2,
-      "key_path": [
-        "PIN",
-        "request_id"
-      ],
-      "gaps_would_close": [
-        "procurement-solicitation-documents",
-        "procurement-ocp-recent-awards"
+        "procurement-payment-unmatched"
       ]
     },
     {
@@ -352,19 +295,6 @@
       ]
     },
     {
-      "id": "passport-public-contracts-x-passport-public-rfx-via-EPIN+PIN",
-      "worth_materializing": "yes",
-      "score": 2,
-      "key_path": [
-        "EPIN",
-        "PIN"
-      ],
-      "gaps_would_close": [
-        "procurement-registered-unmatched",
-        "procurement-solicitation-documents"
-      ]
-    },
-    {
       "id": "passport-public-contracts-x-recent-contract-awards-ocp-via-PIN",
       "worth_materializing": "maybe",
       "score": 2,
@@ -373,18 +303,6 @@
       ],
       "gaps_would_close": [
         "procurement-registered-unmatched",
-        "procurement-ocp-recent-awards"
-      ]
-    },
-    {
-      "id": "passport-public-rfx-x-recent-contract-awards-ocp-via-PIN",
-      "worth_materializing": "maybe",
-      "score": 2,
-      "key_path": [
-        "PIN"
-      ],
-      "gaps_would_close": [
-        "procurement-solicitation-documents",
         "procurement-ocp-recent-awards"
       ]
     },
@@ -400,6 +318,18 @@
       ]
     },
     {
+      "id": "city-record-x-current-solicitations-ocp-via-PIN+request_id",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "PIN",
+        "request_id"
+      ],
+      "gaps_would_close": [
+        "procurement-ocp-recent-awards"
+      ]
+    },
+    {
       "id": "city-record-x-recent-contract-awards-ocp-via-PIN+request_id",
       "worth_materializing": "maybe",
       "score": 1,
@@ -412,14 +342,37 @@
       ]
     },
     {
-      "id": "current-solicitations-ocp-x-passport-public-rfx-via-PIN",
+      "id": "current-solicitations-ocp-x-nycida-build-nyc-projects-via-request_id",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "request_id"
+      ],
+      "gaps_would_close": [
+        "subsidy-stage-unmatched"
+      ]
+    },
+    {
+      "id": "current-solicitations-ocp-x-passport-public-contracts-via-PIN",
       "worth_materializing": "maybe",
       "score": 1,
       "key_path": [
         "PIN"
       ],
       "gaps_would_close": [
-        "procurement-solicitation-documents"
+        "procurement-registered-unmatched"
+      ]
+    },
+    {
+      "id": "current-solicitations-ocp-x-recent-contract-awards-ocp-via-PIN+request_id",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "PIN",
+        "request_id"
+      ],
+      "gaps_would_close": [
+        "procurement-ocp-recent-awards"
       ]
     },
     {
@@ -568,6 +521,29 @@
       ]
     },
     {
+      "id": "passport-public-contracts-x-passport-public-rfx-via-EPIN+PIN",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "EPIN",
+        "PIN"
+      ],
+      "gaps_would_close": [
+        "procurement-registered-unmatched"
+      ]
+    },
+    {
+      "id": "passport-public-rfx-x-recent-contract-awards-ocp-via-PIN",
+      "worth_materializing": "maybe",
+      "score": 1,
+      "key_path": [
+        "PIN"
+      ],
+      "gaps_would_close": [
+        "procurement-ocp-recent-awards"
+      ]
+    },
+    {
       "id": "unregistered-zoning-application-portal-projects-x-zap-api-outcomes-via-BBL+project_id+ulurp_numbers",
       "worth_materializing": "maybe",
       "score": 1,
@@ -618,6 +594,15 @@
       ]
     },
     {
+      "id": "current-solicitations-ocp-x-passport-public-rfx-via-PIN",
+      "worth_materializing": "no",
+      "score": 0,
+      "key_path": [
+        "PIN"
+      ],
+      "gaps_would_close": []
+    },
+    {
       "id": "legacy-dob-job-filings-x-mappluto-via-BBL",
       "worth_materializing": "no",
       "score": 0,
@@ -644,34 +629,34 @@
   "ranked_ingest_top": [
     {
       "rank": 1,
-      "source": "PASSPort Public contracts + solicitations",
-      "value_score": 56.6,
-      "realized_join_rate": 0.78
+      "source": "Legistar agenda/vote materialization depth",
+      "value_score": 53,
+      "realized_join_rate": 1
     },
     {
       "rank": 2,
-      "source": "Legistar agenda/vote materialization depth",
-      "value_score": 54,
-      "realized_join_rate": 1
+      "source": "PASSPort Public contracts + solicitations",
+      "value_score": 45.6,
+      "realized_join_rate": 0.78
     },
     {
       "rank": 3,
       "source": "ZAP decision docs + DOB NOW outcome stitch",
-      "value_score": 36,
+      "value_score": 35,
       "realized_join_rate": 1
     },
     {
       "rank": 4,
       "source": "DCAS annual exam outcomes → exam card join",
-      "value_score": 16,
+      "value_score": 15,
       "realized_join_rate": null
     },
     {
       "rank": 5,
-      "source": "Current Solicitations Open Data 3khw-qi8f",
-      "value_score": 16,
+      "source": "Recent Contract Awards Open Data qyyg-4tf5",
+      "value_score": 15,
       "realized_join_rate": null
     }
   ],
-  "registry_sha256": "e1e973964c6ebedc6c10627b8a780b130179d256a606984b1a0051907173fdf8"
+  "registry_sha256": "31945aa374cebc60ab2a8be2409bf7f5277365ab2957cd849e5e25e03acb6175"
 }

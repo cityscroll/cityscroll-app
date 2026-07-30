@@ -565,6 +565,8 @@
     lifecycle_source_passport: "PASSPort Public",
     lifecycle_source_current_solicitations: "চলমান দরপত্র (উন্মুক্ত তথ্য)",
     lifecycle_unmatched_documents_html: "এখানে এখনও দেখানো হয়নি — দরপত্র প্যাকেজের বিবরণ {source}-এ আছে।",
+    lifecycle_source_city_record_getfile: "City Record ফাইল সংযুক্তি",
+    lifecycle_documents_not_published_html: "শহর এই নোটিশের জন্য প্যাকেজ নথি উন্মুক্ত ফিড হিসেবে প্রকাশ করে না — প্রকাশিত হলে সেগুলো {where}-এ দেখা যাবে।",
     lifecycle_unmatched_solicitation_html: "এখানে এখনও দেখানো হয়নি — দরপত্র প্যাকেজ {source}-এ আছে।",
     lifecycle_documents_count_one: "{n}টি প্যাকেজ নথি",
     lifecycle_documents_count_other: "{n}টি প্যাকেজ নথি",

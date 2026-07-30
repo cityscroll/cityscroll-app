@@ -31,6 +31,16 @@ is the runtime safety net. `lookup_status` is three-state: `ok` / `error` / `ski
 error must never render as a confident empty miss. Characterization:
 `node --test worker/test/passport_lookup.test.mjs`.
 
+**Package documents (measured stop, 2026-07-30):** `public_rfx_data` has **no document
+URL columns**. Kill sample on 50 Solicitation+PIN notices: EPIN join **38%**, document
+URL join **0%** (modern universe 0/1470). OCP `3khw-qi8f` and City Record solicitation
+`document_links` also **0%** for `start_date` ≥ 2025-01-01. Gap
+`procurement-solicitation-documents` is class (b) **not_published** → City Record
+GetFile (`a856-cityrecord.nyc.gov/Search/GetFile`). Do not edge-materialize package
+docs from RFx; RFx **metadata** materialization is unchanged. Helpers/receipt:
+`worker/src/lib/rfx_documents_join.mjs`,
+`site/data/passport_sources/verification_receipts/passport_rfx_documents_2026-07-30.json`.
+
 ## Bid Tabulations Historical (`9k82-ys7w`)
 
 Ranked class-(a) bid-count source. **Measured below usefulness** (2026-07-30): strict

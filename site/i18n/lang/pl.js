@@ -583,6 +583,8 @@
     lifecycle_source_passport: "PASSPort Public",
     lifecycle_source_current_solicitations: "Bieżące przetargi (otwarte dane)",
     lifecycle_unmatched_documents_html: "Jeszcze nie pokazane tutaj — szczegóły pakietu przetargowego są w {source}.",
+    lifecycle_source_city_record_getfile: "załączniki City Record",
+    lifecycle_documents_not_published_html: "Miasto nie publikuje dokumentów pakietu jako otwartego źródła dla tego ogłoszenia — pojawiłyby się w {where}, gdyby zostały udostępnione.",
     lifecycle_unmatched_solicitation_html: "Jeszcze nie pokazane tutaj — pakiet przetargowy jest w {source}.",
     lifecycle_documents_count_one: "{n} dokument pakietu",
     lifecycle_documents_count_other: "{n} dokumenty pakietu",

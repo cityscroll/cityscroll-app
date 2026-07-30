@@ -575,6 +575,8 @@
     lifecycle_source_passport: "PASSPort Public",
     lifecycle_source_current_solicitations: "Текущие закупки (открытые данные)",
     lifecycle_unmatched_documents_html: "Пока не показано здесь — сведения о пакете закупки есть в {source}.",
+    lifecycle_source_city_record_getfile: "вложения City Record",
+    lifecycle_documents_not_published_html: "Город не публикует пакет документов как открытый поток для этого уведомления — они появятся в {where}, если будут выпущены.",
     lifecycle_unmatched_solicitation_html: "Пока не показано здесь — пакет закупки есть в {source}.",
     lifecycle_documents_count_one: "{n} документ пакета",
     lifecycle_documents_count_other: "{n} документов пакета",

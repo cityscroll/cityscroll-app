@@ -565,6 +565,8 @@
     lifecycle_source_passport: "PASSPort 公开信息",
     lifecycle_source_current_solicitations: "当前招标（开放数据）",
     lifecycle_unmatched_documents_html: "此处尚未显示 — 招标文件包详情在 {source}。",
+    lifecycle_source_city_record_getfile: "City Record 附件",
+    lifecycle_documents_not_published_html: "本市未以开放数据形式发布本公告的招标文件包 — 若发布，将出现在 {where}。",
     lifecycle_unmatched_solicitation_html: "此处尚未显示 — 招标文件包在 {source}。",
     lifecycle_documents_count_one: "{n} 份招标文件",
     lifecycle_documents_count_other: "{n} 份招标文件",

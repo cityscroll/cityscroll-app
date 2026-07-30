@@ -67,6 +67,7 @@ const helpers = new Function(
   const PASSPORT_CONTRACTS_URL = 'https://a0333-passportpublic.nyc.gov/contracts.html';
   const PASSPORT_RFX_URL = 'https://a0333-passportpublic.nyc.gov/rfx.html';
   const CURRENT_SOLICITATIONS_URL = 'https://data.cityofnewyork.us/d/3khw-qi8f';
+  const CITY_RECORD_GETFILE_URL = 'https://a856-cityrecord.nyc.gov/Search/GetFile';
   const LIFECYCLE_STAGE_ORDER = {solicitation:0, award:1, pending:2, registered:3, payment:4};
   const OCP_AWARDS_URL = 'https://data.cityofnewyork.us/d/qyyg-4tf5';
   ` +
@@ -130,7 +131,10 @@ test("gap taxonomy registry enumerates class a/b gaps with evidence and ranked i
   // Ranked list is top-down dispatch order
   const ranks = registry.ranked_ingest_list.map((r) => r.rank);
   assert.deepEqual(ranks, [...ranks].sort((a, b) => a - b));
-  assert.ok(registry.ranked_ingest_list[0].source.includes("PASSPort"));
+  // PASSPort remains on the queue with measured either-source coverage (docs gap closed as class-b)
+  const passportRank = registry.ranked_ingest_list.find((r) => /PASSPort/i.test(r.source));
+  assert.ok(passportRank, "PASSPort still ranked");
+  assert.ok(passportRank.rank <= 3, `PASSPort near top, got rank ${passportRank.rank}`);
 });
 
 test("gap taxonomy report is present and names both registers", () => {
@@ -292,9 +296,49 @@ test("English dictionary pins both gap registers for lifecycle keys", () => {
   assert.match(t("lifecycle_unmatched_registered_html", { source: "Checkbook NYC" }), CLASS_A_PREFIX);
   assert.match(t("lifecycle_unmatched_payment_html", { source: "Checkbook NYC" }), CLASS_A_PREFIX);
   assert.match(t("lifecycle_no_pin_note_html"), CLASS_B_PREFIX);
+  assert.match(t("lifecycle_documents_not_published_html", { where: "City Record file attachments" }), CLASS_B_PREFIX);
   assert.match(t("subsidy_outcome_unknown_html"), CLASS_B_PREFIX);
   assert.match(t("agency_awards_none_open_data_html"), CLASS_B_PREFIX);
   assert.match(t("meeting_outcomes_no_votes_html", { matter: "Int 1" }), CLASS_A_PREFIX);
+});
+
+test("procurement-solicitation-documents is class (b) after RFx document-URL kill criterion", () => {
+  const gap = registry.gaps.find((g) => g.id === "procurement-solicitation-documents");
+  assert.ok(gap);
+  assert.equal(gap.class, "not_published");
+  assert.equal(gap.i18n_key, "lifecycle_documents_not_published_html");
+  assert.match(gap.would_appear_in, /GetFile|City Record/i);
+  assert.match(gap.evidence, /0%|0\/50|document/i);
+  assert.equal(gap.class_change?.to, "not_published");
+});
+
+test("unmatched package-documents sub-slot uses not-published register with GetFile pointer", () => {
+  const html = lifecycleTimelineHTML({
+    ok: true,
+    pin: "81026B0003",
+    pin_strategy: "exact",
+    amendments: [],
+    timeline: [{
+      stage: "solicitation",
+      status: "matched",
+      date: "2026-07-28",
+      source: "city-record",
+      documents_status: "unmatched",
+      detail: {
+        request_id: "20260707026",
+        agency: "Transportation",
+        title: "Sample",
+        pin: "81026B0003",
+        documents_status: "unmatched",
+        documents: [],
+        n_documents: 0,
+      },
+    }],
+  }, { request_id: "20260707026", pin: "81026B0003" });
+  assert.match(html, CLASS_B_PREFIX);
+  assert.match(html, /package documents|does not publish/i);
+  assert.match(html, /a856-cityrecord\.nyc\.gov\/Search\/GetFile/);
+  assert.doesNotMatch(html, /Not yet shown here — solicitation package/);
 });
 
 test("all ten shipping locales define the gap taxonomy keys", () => {
@@ -303,6 +347,8 @@ test("all ten shipping locales define the gap taxonomy keys", () => {
     "lifecycle_unmatched_registered_html",
     "lifecycle_unmatched_payment_html",
     "lifecycle_no_pin_note_html",
+    "lifecycle_documents_not_published_html",
+    "lifecycle_source_city_record_getfile",
     "lifecycle_passed_pending_html",
     "lifecycle_passed_registered_html",
     "lifecycle_passed_generic_html",
