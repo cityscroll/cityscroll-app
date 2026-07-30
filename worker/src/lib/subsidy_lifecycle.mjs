@@ -9,8 +9,8 @@ import {
   normalizeAddress,
   plainText,
   unique,
-} from "../../../location_extract.mjs";
-import { propertyLocationFromRow } from "../../../property_location.mjs";
+} from "../../../site/location_extract.mjs";
+import { propertyLocationFromRow } from "../../../site/property_location.mjs";
 
 export const STAGE_APPLICATION = "application";
 export const STAGE_HEARING = "hearing";
