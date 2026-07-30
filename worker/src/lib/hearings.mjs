@@ -168,11 +168,50 @@ function decisionSummary(row, body) {
   return title || "The notice does not give a short plain-language summary.";
 }
 
+// Strip trailing punctuation that the body regex often captures (e.g. URL + ",").
+// Dedupe runs on the cleaned form so "…hearings," and "…hearings" collapse to one link.
+function normalizeParticipationUrl(url) {
+  return String(url || "").replace(/[.,;:)\]]+$/g, "").trim();
+}
+
+function participationUrlKey(url) {
+  try {
+    const parsed = new URL(url);
+    return `${parsed.host}${parsed.pathname}`.toLowerCase().replace(/\/$/, "");
+  } catch {
+    return String(url || "").toLowerCase().replace(/\/$/, "");
+  }
+}
+
+// Honest labels: meeting-join platforms vs generic board calendars vs other.
+// The common NYCIDA notice only publishes the board-meetings landing page — that is
+// the deepest public target for those hearings, so label it as such rather than a
+// vague "Participation link".
+function participationLabel(url) {
+  if (/\b(?:zoom|webex|teams|meet\.google)\b/i.test(url)) return "Join online";
+  if (/nycida-board-meetings-public-hearings/i.test(url) || /edc\.nyc\/nycida(?:[/?#]|$)/i.test(url)) {
+    return "IDA meetings page";
+  }
+  return "Participation link";
+}
+
+// One outbound participation affordance per notice: prefer a live join URL, else the
+// most specific cleaned URL the body published (longest path wins among equals).
 function participationFromRow(row, body, sourceUrl) {
-  const links = unique(body.match(URL_RE) || []).slice(0, 8).map((url) => ({
-    label: /\b(?:zoom|webex|teams|meet\.google)\b/i.test(url) ? "Join online" : "Participation link",
-    url: url.replace(/[.,;]+$/, ""),
-  }));
+  const cleaned = (body.match(URL_RE) || []).map(normalizeParticipationUrl).filter(Boolean);
+  const byKey = new Map();
+  for (const url of cleaned) {
+    const key = participationUrlKey(url);
+    if (!key || byKey.has(key)) continue;
+    byKey.set(key, { label: participationLabel(url), url });
+  }
+  const ranked = [...byKey.values()].sort((a, b) => {
+    const aJoin = a.label === "Join online" ? 0 : 1;
+    const bJoin = b.label === "Join online" ? 0 : 1;
+    if (aJoin !== bJoin) return aJoin - bJoin;
+    return b.url.length - a.url.length;
+  });
+  const links = ranked.slice(0, 1);
   const emails = unique([...body.matchAll(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi)].map((match) => match[0])).slice(0, 4);
   const phones = unique([...body.matchAll(/(?:\+?1[-.\s]?)?\(?\d{3}\)?[-.\s]\d{3}[-.\s]\d{4}/g)].map((match) => match[0])).slice(0, 4);
   return {

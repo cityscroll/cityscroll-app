@@ -150,6 +150,44 @@ Migration value baseline (merge-to-live wall-clock, detection exemplars, rollbac
 Characterization: `node --test test/live_url_smoke.test.mjs test/post_flip_checks.test.mjs`. Operator flip procedure lives outside this public tree.
 
 
+## Hearing participation (one owner, list + detail)
+
+Meetings list cards and notice permalinks share one derivation:
+`normalizeHearing` / `normalizeHearingRow` → `participation.links` →
+`participationLinksHTML` in `site/index.html`. Strip trailing punctuation
+**before** dedupe (body often has `https://…hearings,` and `https://…hearings`);
+one outbound affordance per notice. NYCIDA board URL labels as **IDA meetings page**
+(the deepest public target those notices publish). Characterization:
+`node --test test/ida_notice_defects.test.mjs`. Captures:
+`python3 tools/capture_ida_notice_defects.py`.
+
+## Contract lifecycle category gate
+
+`isContractLifecycleEligible` — Procurement section or Solicitation/Award/Intent
+types only. Hearings, Agency Rules, Property Disposition, and Changes in Personnel
+never mount contract lifecycle / OCP / PIN gap modules (wrong-universe). Subsidy and
+meeting-outcomes keep their own eligibility helpers. Characterization:
+`test/ida_notice_defects.test.mjs`, `test/lifecycle_coherence_field_cases.test.mjs`.
+
+## Subsidy lifecycle (NYCIDA / Build NYC)
+
+Endpoint `GET /subsidy-lifecycle?id=` (`worker/src/subsidy_lifecycle.mjs`). The
+EDC documents page is often Cloudflare-blocked to edge fetch (HTTP 403 / challenge
+HTML) — treat as feed failure, do **not** permanently D1-cache `source_status:
+unavailable`. When the feed fails, `projectFromIdaNotice` derives a hearing-stage
+join from the City Record IDA hearing notice (company names, event date). Keep
+honest unavailable copy only when the feed is down **and** no notice-derived
+hearing applies. Schema safety net: `ensureSubsidySchema` (migration
+`0005_subsidy_lifecycle.sql`).
+
+**Age-aware gap kinds** (temporal sibling of paid / verified_zero / unavailable):
+`subsidyGapKind` → `too_soon` | `not_published` | (worker) `unavailable`. Lag table
+`SUBSIDY_STAGE_EXPECT_LAG_DAYS` (board ~60d, closing ~180d, project_record ~90d).
+Demo/backtest notices must be **aged** (2022–2024 hearings) so later stages read
+`not_published`, not “could not reach.” Young hearings use “check back” copy.
+Characterization: `test/subsidy_lifecycle.test.mjs`, `test/ida_notice_defects.test.mjs`.
+Aged demo ids: `20220525018`, `20231004016`, `20240617012`.
+
 ## Checkbook Contracts row identity
 
 Checkbook's Contracts domain returns **multiple rows per `prime_contract_id`** (one Prime Vendor row with amounts, plus Sub Vendor / expense-category slices with $0 on prime fields). Lifecycle assembly collapses rows with `aggregateContractsById` before `classifyStage` — one distinct id = matched; ≥2 distinct ids = ambiguous. Field case: notice `20231222103` / `CT107120248803393`. Do not count raw Contracts rows as separate contracts. Spending rows stay uncollapsed (many payments per contract is normal). Pure lib: `worker/src/lib/checkbook_lifecycle.mjs`.

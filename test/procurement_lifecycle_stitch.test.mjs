@@ -104,6 +104,11 @@ const sandbox = new Function(
   extractFn("vendorNamesMatch") + "\n" +
   extractFn("isSubsidyEligibleNotice") + "\n" +
   extractFn("subsidyStageLabel") + "\n" +
+  extractConst("SUBSIDY_STAGE_EXPECT_LAG_DAYS") + "\n" +
+  extractFn("subsidyLagWeeks") + "\n" +
+  extractFn("subsidyDaysSince") + "\n" +
+  extractFn("subsidyGapKindClient") + "\n" +
+  extractFn("subsidyAnchorFromNotice") + "\n" +
   extractFn("subsidyStageHTML") + "\n" +
   extractFn("subsidyLifecycleHTML") + "\n" +
   extractFn("isMeetingOutcomesEligible") + "\n" +
@@ -171,6 +176,11 @@ try {
     extractFn("vendorNamesMatch") +
     extractFn("isSubsidyEligibleNotice") +
     extractFn("subsidyStageLabel") +
+    extractConst("SUBSIDY_STAGE_EXPECT_LAG_DAYS") +
+    extractFn("subsidyLagWeeks") +
+    extractFn("subsidyDaysSince") +
+    extractFn("subsidyGapKindClient") +
+    extractFn("subsidyAnchorFromNotice") +
     extractFn("subsidyStageHTML") +
     extractFn("subsidyLifecycleHTML") +
     extractFn("isMeetingOutcomesEligible") +
@@ -320,12 +330,28 @@ const matchedSubsidy = assembleSubsidyLifecycle(
   subsidyProjects,
 )[0];
 
+// Non-IDA notice so city-record hearing derivation does not auto-match.
 const unmatchedSubsidy = assembleSubsidyLifecycle(
+  [{
+    request_id: "20260101099",
+    short_title: "Parks concession award — no subsidy project link",
+    agency_name: "Parks and Recreation",
+    type_of_notice_description: "Award",
+  }],
+  [],
+)[0];
+
+// Young IDA hearing: City Record hearing join; later stages too_soon (not unavailable).
+const youngIdaSubsidy = assembleSubsidyLifecycle(
   [{
     request_id: "20260617040",
     short_title: "NEW YORK CITY INDUSTRIAL DEVELOPMENT AGENCY - NOTICE OF PUBLIC HEARING - July 16th, 2026",
     agency_name: "Industrial Development Agency",
     type_of_notice_description: "Public Hearings",
+    section_name: "Public Hearings and Meetings",
+    event_date: "2026-07-16T10:00:00.000",
+    start_date: "2026-07-02T00:00:00.000",
+    additional_description_1: "Company Name : Young Co LLC, a Delaware limited liability company (the Company)",
   }],
   [],
 )[0];
@@ -346,16 +372,30 @@ test("subsidy detail: matched project renders stage, action, and outcome", () =>
   assert.match(html, /Official action|Outcome/i);
 });
 
-test("subsidy detail: unmatched IDA hearing renders specific gap, never generic unknown", () => {
+test("subsidy detail: unmatched non-IDA notice renders specific gap, never generic unknown", () => {
   const notice = {
-    request_id: "20260617040",
-    short_title: "NEW YORK CITY INDUSTRIAL DEVELOPMENT AGENCY - NOTICE OF PUBLIC HEARING - July 16th, 2026",
+    request_id: "20260101099",
+    short_title: "Parks concession award — no subsidy project link",
   };
+  assert.equal(unmatchedSubsidy.join.matched, false);
   const html = subsidyLifecycleHTML(unmatchedSubsidy, notice);
   assert.match(html, /Subsidy lifecycle/);
   assert.match(html, /does not publish a linked subsidy project for/);
-  assert.match(html, /20260617040|INDUSTRIAL DEVELOPMENT|would appear on the Build NYC|Industrial Development Agency|No matching NYCIDA/i);
+  assert.match(html, /20260101099|Parks concession|would appear on the Build NYC|No matching NYCIDA/i);
   assert.doesNotMatch(html, />\s*unknown\s*</i);
+});
+
+test("subsidy detail: young IDA hearing joins City Record hearing; later stages not unavailable", () => {
+  assert.equal(youngIdaSubsidy.join.matched, true);
+  assert.equal(youngIdaSubsidy.join.method, "city-record-hearing");
+  const html = subsidyLifecycleHTML(youngIdaSubsidy, {
+    request_id: "20260617040",
+    short_title: "NEW YORK CITY INDUSTRIAL DEVELOPMENT AGENCY - NOTICE OF PUBLIC HEARING - July 16th, 2026",
+    event_date: "2026-07-16T10:00:00.000",
+  });
+  assert.match(html, /Subsidy lifecycle/);
+  assert.match(html, /Hearing|Linked project/i);
+  assert.doesNotMatch(html, /Could not reach/i);
 });
 
 // ---------------------------------------------------------------------------

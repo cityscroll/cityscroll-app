@@ -2624,12 +2624,16 @@ function noticeAgencyBar(stats, agencyName, barClass){
 }
 function renderDetail(r, chain, stats){
   const pending = chain === null; // first paint from the in-memory record; chain/stats hydrate in
+  // Same participation derivation as the meetings list (normalizeHearingRow → one link).
+  const detailHearing=isMeetingOutcomesEligible(r)?normalizeHearingRow(r):null;
+  const detailParticipation=detailHearing?participationLinksHTML(detailHearing):"";
   let html = `<div class="actions" style="margin:0 0 12px">
     <button class="act" type="button" id="dcopy">${t("copy_link_notice")}</button>
     ${qrButtonHTML("dqr","act")}
     <button class="act export-control" type="button" id="dxlsx"${pending?' disabled aria-busy="true"':""}>${t("export_xlsx")}</button>
     <button class="act export-control" type="button" id="dprint">${t("print_save_pdf")}</button>
     ${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}
+    ${detailParticipation}
   </div>`;
   html += `<div id="dcontext"></div><div id="dlifecycle"></div><div id="ddollars"></div><div id="dsubsidy"></div><div id="dmeet"></div>`;
   // Solicitations get the richer how-to-respond panel below; everything else gets the glance box.
@@ -4714,6 +4718,24 @@ function hearingSafeURL(value){
   try{ const url=new URL(value); return url.protocol==="https:"||url.protocol==="http:" ? url.toString() : null; }
   catch(e){ return null; }
 }
+// Shared list+detail participation actions. Derives from normalizeHearingRow.participation
+// (one-owner): meetings cards and the notice permalink use the same links/labels.
+// Cap is one outbound affordance — duplicates were a body-regex trailing-comma bug.
+function participationLinksHTML(record){
+  const links=((record&&record.participation&&record.participation.links)||[])
+    .map(link=>({
+      url:hearingSafeURL(link.url),
+      label:String(link.label||""),
+      join:/\bjoin\b/i.test(link.label||""),
+      ida:/ida meetings/i.test(link.label||""),
+    }))
+    .filter(link=>link.url)
+    .slice(0,1);
+  return links.map(link=>{
+    const key=link.join?"join_online":(link.ida?"ida_meetings_page":"participation_link");
+    return `<a class="act" href="${escUiHtml(link.url)}" ${EXT_ATTRS}>${t(key)}${extSR()}</a>`;
+  }).join("");
+}
 function hearingAreaText(record){
   const area=record.affected_area||{};
   if(area.scope==="citywide") return t("citywide");
@@ -4740,13 +4762,11 @@ function hearingCardHTML(record){
   const scope=record.affected_area&&record.affected_area.scope||"unlocated";
   const sectionKey=record.source_section==="Agency Rules"?"rules_hearing_badge":"public_hearing_badge";
   const past=!!record.event_date&&String(record.event_date).slice(0,10)<todayISO().slice(0,10);
-  const participation=record.participation||{}, links=(participation.links||[])
-    .map(link=>({url:hearingSafeURL(link.url), join:/\bjoin\b/i.test(link.label||"")}))
-    .filter(link=>link.url).slice(0,2);
+  const participation=record.participation||{};
   let actions=`<a class="act" href="${record.source_url}" ${EXT_ATTRS}>${t("read_official_notice")}${extSR()}</a>`;
   actions+=`<button class="act" type="button" data-link="${record.request_id}">${t("copy_link_btn")}</button>`;
   if(record.event_date) actions+=`<button class="act" type="button" data-ev="meetings:${record.request_id}">${t("add_date_btn",{date:fdt(record.event_date)})}</button>`;
-  links.forEach(link=>{ actions+=`<a class="act" href="${escUiHtml(link.url)}" ${EXT_ATTRS}>${t(link.join?"join_online":"participation_link")}${extSR()}</a>`; });
+  actions+=participationLinksHTML(record);
   (participation.emails||[]).slice(0,1).forEach(email=>{
     actions+=`<a class="act" href="mailto:${encodeURIComponent(email)}">${t("email_in_notice")}</a>`;
   });
@@ -5662,7 +5682,24 @@ async function externalAwardForNotice(r, el){
     statements in the established "no record found" register, never blank. Each stage links to
     its authoritative source page (City Record or Checkbook NYC). OCP Recent Contract Awards
     (qyyg-4tf5) rides the same precomputed payload as an award side-car for date/amount
-    corroboration — disagreements name both sources. */
+    corroboration — disagreements name both sources.
+
+    Category-aware dispatch: only procurement notices mount this module. Hearings, rules,
+    property disposition, and staffing are wrong-universe for PIN/Checkbook/OCP gaps — leave
+    the slot empty rather than stacking "not found" cards on a public hearing. */
+
+// Contract lifecycle (PIN, Checkbook, OCP awards) is meaningful only for procurement.
+// Section is authoritative when present; notice type covers paths that omit section_name.
+function isContractLifecycleEligible(r){
+  if(!r) return false;
+  const section=String(r.section_name||"");
+  if(section==="Procurement") return true;
+  if(section==="Public Hearings and Meetings") return false;
+  if(section==="Agency Rules") return false;
+  if(section==="Property Disposition") return false;
+  if(section==="Changes in Personnel") return false;
+  return /^(Solicitation|Award|Intent to Award)$/.test(r.type_of_notice_description||"");
+}
 const CHECKBOOK_SEARCH_URL = "https://www.checkbooknyc.com/contract_search";
 const CHECKBOOK_SPENDING_URL = "https://www.checkbooknyc.com/spending_search";
 const CHECKBOOK_SMART_SEARCH = "https://www.checkbooknyc.com/smart_search/citywide";
@@ -6312,8 +6349,14 @@ function lifecycleDollarsHTML(data, notice){
 // Fetches the precomputed lifecycle from the worker and renders the timeline + dollars
 // panel. Fail-soft on network: says nothing rather than inventing a gap. The read model is
 // fully precomputed server-side (worker/src/checkbook_lifecycle.mjs) — no live upstream.
+// Category gate first: non-procurement notices never fetch or paint contract modules.
 async function loadLifecycle(r, el, dollarsEl){
   if((!el && !dollarsEl) || !r.request_id) return;
+  if(!isContractLifecycleEligible(r)){
+    if(el) el.innerHTML = "";
+    if(dollarsEl) dollarsEl.innerHTML = "";
+    return;
+  }
   let data = null;
   try{
     const resp = await workerFetch("/contract-lifecycle?id=" + encodeURIComponent(r.request_id), null, 8000);
@@ -6362,7 +6405,42 @@ function subsidyStageLabel(stage){
   return stage;
 }
 
-function subsidyStageHTML(entry){
+// Hand-synced lag table with worker/src/lib/subsidy_lifecycle.mjs SUBSIDY_STAGE_EXPECT_LAG_DAYS.
+// Three honest gap states: too_soon / not_published / unavailable (fetch only).
+const SUBSIDY_STAGE_EXPECT_LAG_DAYS = {board_decision:60, closing:180, compliance:400, project_record:90};
+function subsidyLagWeeks(stage){
+  const days = SUBSIDY_STAGE_EXPECT_LAG_DAYS[stage] != null
+    ? SUBSIDY_STAGE_EXPECT_LAG_DAYS[stage]
+    : SUBSIDY_STAGE_EXPECT_LAG_DAYS.project_record;
+  return Math.max(1, Math.round(days / 7));
+}
+function subsidyDaysSince(iso, asOf){
+  const start = String(iso || "").slice(0, 10);
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(start)) return null;
+  const a = Date.UTC(+start.slice(0,4), +start.slice(5,7)-1, +start.slice(8,10));
+  const end = asOf instanceof Date ? asOf : new Date(asOf || Date.now());
+  if(Number.isNaN(end.valueOf())) return null;
+  const b = Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate());
+  return Math.floor((b - a) / 86400000);
+}
+function subsidyGapKindClient(stage, anchorDate, matched){
+  if(matched) return null;
+  const days = subsidyDaysSince(anchorDate);
+  if(days == null) return "not_published";
+  const lag = SUBSIDY_STAGE_EXPECT_LAG_DAYS[stage] != null
+    ? SUBSIDY_STAGE_EXPECT_LAG_DAYS[stage]
+    : SUBSIDY_STAGE_EXPECT_LAG_DAYS.project_record;
+  return days < lag ? "too_soon" : "not_published";
+}
+function subsidyAnchorFromNotice(notice, data){
+  const hearing = (data && data.timeline || []).find(e => e && e.stage === "hearing" && e.date);
+  if(hearing && hearing.date) return String(hearing.date).slice(0,10);
+  if(data && data.join && data.join.anchor_date) return String(data.join.anchor_date).slice(0,10);
+  const ev = notice && (notice.event_date || notice.start_date);
+  return ev ? String(ev).slice(0,10) : null;
+}
+
+function subsidyStageHTML(entry, anchorDate){
   const label = subsidyStageLabel(entry.stage);
   const dateHTML = entry.date ? `<div class="when">${fdate(entry.date)}</div>` : `<div class="when">—</div>`;
   let detailHTML = "";
@@ -6375,10 +6453,20 @@ function subsidyStageHTML(entry){
     const amt = entry.detail && entry.detail.amount != null ? `<div class="amt">${money(entry.detail.amount)}</div>` : "";
     detailHTML = amt + action + outcome;
   } else {
-    detailHTML = `<div class="lc-norecord">${t("subsidy_stage_unmatched_html",{
-      stage: label,
-      source: `<span lang="en" dir="ltr">${t("subsidy_source_build_nyc")}</span>`
-    })}</div>`;
+    const kind = entry.gap_kind || subsidyGapKindClient(entry.stage, anchorDate, false);
+    if(kind === "too_soon"){
+      detailHTML = `<div class="lc-norecord">${t("subsidy_stage_too_soon_html",{
+        stage: label,
+        date: fdate(anchorDate) || "—",
+        weeks: String(subsidyLagWeeks(entry.stage))
+      })}</div>`;
+    } else {
+      // Aged absence → class-(b) not-published register (not "not yet shown" ingest lag).
+      detailHTML = `<div class="lc-norecord">${t("subsidy_stage_not_published_html",{
+        stage: label,
+        source: `<span lang="en" dir="ltr">${t("subsidy_source_build_nyc")}</span>`
+      })}</div>`;
+    }
   }
   let link = "";
   if(entry.source && entry.source.status === "matched" && entry.source.url){
@@ -6395,25 +6483,36 @@ function subsidyStageHTML(entry){
 function subsidyLifecycleHTML(data, notice){
   if(!data) return "";
   const join = data.join || {};
+  const anchor = subsidyAnchorFromNotice(notice, data);
   // Ownership: project-level unmatched/unavailable is one gap note — do not also stack
   // per-stage "not yet shown" cards that re-classify the same absence.
   let stages = "";
   if(join.matched && data.source_status !== "unavailable"){
     const tl = Array.isArray(data.timeline) ? data.timeline : [];
     tl.forEach((entry, idx) => {
-      stages += subsidyStageHTML(entry);
+      stages += subsidyStageHTML(entry, anchor);
       if(idx < tl.length - 1) stages += '<div class="connector">→</div>';
     });
   }
 
   let joinNote = "";
   if(data.source_status === "unavailable"){
+    // Operational: fetch failure only — never a stand-in for young or unmatched.
     joinNote = t("subsidy_source_unavailable_html",{source:`<span lang="en" dir="ltr">${t("subsidy_source_build_nyc")}</span>`});
   } else if(join.matched === false){
-    joinNote = t("subsidy_unmatched_html",{
-      reason: escUiHtml(join.reason || t("subsidy_unmatched_default_reason")),
-      title: escUiHtml(cleanText(notice.short_title) || notice.request_id || "")
-    });
+    const kind = join.gap_kind || subsidyGapKindClient("project_record", anchor, false);
+    if(kind === "too_soon"){
+      joinNote = t("subsidy_join_too_soon_html",{
+        date: fdate(anchor) || "—",
+        weeks: String(subsidyLagWeeks("project_record")),
+        title: escUiHtml(cleanText(notice.short_title) || notice.request_id || "")
+      });
+    } else {
+      joinNote = t("subsidy_unmatched_html",{
+        reason: escUiHtml(join.reason || t("subsidy_unmatched_default_reason")),
+        title: escUiHtml(cleanText(notice.short_title) || notice.request_id || "")
+      });
+    }
   } else if(join.matched){
     const proj = data.project || {};
     joinNote = t("subsidy_matched_html",{
@@ -7902,7 +8001,8 @@ function applyHash(){
   return true;
 }
 
-const NOTICE_SELECT = SELECT + ",event_date,street_address_1,section_name";
+// Extra description/printout fields so participation URL extraction matches the meetings list.
+const NOTICE_SELECT = SELECT + ",event_date,street_address_1,section_name,additional_description_2,additional_description_3,other_info_2,other_info_3,printout_1,printout_2,printout_3,building_name,city,state,zip_code";
 // watch: the {lens, filter} parseWatchParam() extracted from this link's own "?w=" (w12-12) --
 // null for a plain "#notice/<id>" link (unchanged behavior). When present, the title/evidence/
 // echo below render exactly as they would if the reader had run the watch themselves.
@@ -7928,6 +8028,9 @@ async function showNotice(id, watch){
     ? `${title.slice(0,ev.index)}<mark>${title.slice(ev.index, ev.index+ev.term.length)}</mark>${title.slice(ev.index+ev.term.length)}`
     : title;
   const watchChips = watch ? watchChipsFor(watch.lens, watch.filter) : [];
+  // Same one-owner participation link as meetings list cards (how-do-I-attend on the permalink).
+  const noticeHearing=isMeetingOutcomesEligible(r)?normalizeHearingRow(r):null;
+  const noticeParticipation=noticeHearing?participationLinksHTML(noticeHearing):"";
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("back_browse")}</a></p>
     <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
@@ -7946,6 +8049,7 @@ async function showNotice(id, watch){
         <button class="act export-control" type="button" id="nprint">${t("print_save_pdf")}</button>
         ${((r.due_date&&!isRollingDeadline(r.due_date))||r.event_date)?`<button class="act" type="button" id="nics">${t("add_to_calendar_btn")}</button>`:""}
         ${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}
+        ${noticeParticipation}
         <a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("view_in_city_record")}${extSR()}</a>
       </div>
       ${r.type_of_notice_description==="Solicitation"?buildApply(r):""}
