@@ -5,6 +5,16 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - Add durable project-specific notes here as they are discovered through real work.
 
 
+## README live screenshots
+
+`tools/capture_readme_screens.py` → `docs/readme/*.png` (linked from root `README.md`).
+Captures the live site. Each frame waits on data-bearing selectors (not network-idle /
+fixed sleep) and **fails if a skeleton is still visible** (`.today-skeleton`, `.empty.skel`,
+`.skl`). Homepage must clear Today's Edition (`#todaystrip[aria-busy=false]` + `#tdate` /
+`#tbig` / `#tcards`) and the default Contracts list (`#list .row`). Data page must clear
+section counts and chart bars (sections paint last; "Counting 1M…" / "Loading…" are not ready).
+Re-run: `python3 tools/capture_readme_screens.py`. Eyeball PNGs before commit.
+
 ## PASSPort Public machine path
 
 PASSPort Public has **no Socrata dataset** for contracts/RFx. Stable machine dumps:
