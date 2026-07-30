@@ -63,12 +63,14 @@ const helpers = new Function(
   const EXT_ATTRS = 'target="_blank" rel="noopener noreferrer"';
   const CHECKBOOK_SEARCH_URL = 'https://www.checkbooknyc.com/contract_search';
   const CHECKBOOK_SPENDING_URL = 'https://www.checkbooknyc.com/spending_search';
+  const CHECKBOOK_SMART_SEARCH = 'https://www.checkbooknyc.com/smart_search/citywide';
   const PASSPORT_CONTRACTS_URL = 'https://a0333-passportpublic.nyc.gov/contracts.html';
   const PASSPORT_RFX_URL = 'https://a0333-passportpublic.nyc.gov/rfx.html';
   const CURRENT_SOLICITATIONS_URL = 'https://data.cityofnewyork.us/d/3khw-qi8f';
   const LIFECYCLE_STAGE_ORDER = {solicitation:0, award:1, pending:2, registered:3, payment:4};
   const OCP_AWARDS_URL = 'https://data.cityofnewyork.us/d/qyyg-4tf5';
   ` +
+  extractFn("checkbookSearchUrl") +
   extractFn("lifecycleStageLabel") +
   extractFn("lifecycleAmount") +
   extractFn("lifecycleMoney") +
@@ -78,6 +80,8 @@ const helpers = new Function(
   extractFn("lifecyclePublicStatus") +
   extractFn("lifecycleMatchedRegisteredDetail") +
   extractConst("LIFECYCLE_DOLLARS_ANCHOR") +
+  extractFn("lifecycleDollarsFocusHref") +
+  extractFn("lifecyclePaymentState") +
   extractFn("lifecyclePaymentSummaryHTML") +
   extractFn("lifecycleSourceLink") +
   extractFn("lifecycleDocumentsHTML") +

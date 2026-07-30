@@ -62,9 +62,11 @@ function contractsRequestXml(pin, status, from) {
     + `</search_criteria></request>`;
 }
 
-function spendingRequestXml(pin, from) {
+// Spending domain rejects `pin` (Checkbook code 1101). Valid filters include contract_id,
+// payee_name, fiscal_year, … — join payments by the registered/pending contract id.
+function spendingRequestXml(contractId, from) {
   return `<request><type_of_data>Spending</type_of_data><records_from>${from}</records_from><max_records>${PAGE_SIZE}</max_records><search_criteria>`
-    + `<criteria><name>pin</name><type>value</type><value>${escXml(pin)}</value></criteria>`
+    + `<criteria><name>contract_id</name><type>value</type><value>${escXml(contractId)}</value></criteria>`
     + `</search_criteria></request>`;
 }
 
@@ -94,8 +96,8 @@ async function fetchCheckbookDomain(requestFn) {
   return { records, ok: true, capped: true }; // hit the page cap
 }
 
-// Fetch all spending pages (same pattern, different parser).
-async function fetchCheckbookSpending(pin) {
+// Fetch all spending pages for one contract id (same pattern, different parser).
+async function fetchCheckbookSpendingForContract(contractId) {
   const records = [];
   for (let page = 0; page < MAX_PAGES; page++) {
     const from = page * PAGE_SIZE + 1;
@@ -104,7 +106,7 @@ async function fetchCheckbookSpending(pin) {
       const r = await fetch(CHECKBOOK, {
         method: "POST",
         headers: { "Content-Type": "application/xml" },
-        body: spendingRequestXml(pin, from),
+        body: spendingRequestXml(contractId, from),
       });
       if (!r.ok) return { records: [], ok: false };
       text = await r.text();
@@ -117,6 +119,25 @@ async function fetchCheckbookSpending(pin) {
     if (txs.length < PAGE_SIZE) return { records, ok: true };
   }
   return { records, ok: true, capped: true };
+}
+
+// Spending is keyed by contract_id (not PIN). Pull each known id (bounded) and merge.
+// No contract ids yet → empty success (nothing to query; not a feed error).
+const MAX_SPENDING_CONTRACTS = 5;
+async function fetchCheckbookSpendingByContractIds(contractIds) {
+  const ids = [...new Set((contractIds || []).filter(Boolean))].slice(0, MAX_SPENDING_CONTRACTS);
+  if (!ids.length) return { records: [], ok: true };
+  const records = [];
+  let anyOk = false;
+  for (const id of ids) {
+    const page = await fetchCheckbookSpendingForContract(id);
+    if (page.ok) {
+      anyOk = true;
+      records.push(...page.records);
+    }
+  }
+  // Partial success counts as ok so one bad id does not mask the rest; total failure → error.
+  return { records, ok: anyOk };
 }
 
 // ---------------------------------------------------------------------------
@@ -294,6 +315,8 @@ export async function computeLifecycle(env, requestId, noticeRow) {
   }
 
   // Try each PIN (exact first, then legacy base). Use the first PIN that returns results.
+  // Spending is fetched second: Checkbook Spending rejects PIN filters (code 1101) and only
+  // accepts contract_id / payee / etc. — so we need contract ids from the Contracts domain first.
   let pin = pins[0];
   let pinStrategyUsed = strategy;
   let pending = { records: [], ok: false };
@@ -301,20 +324,28 @@ export async function computeLifecycle(env, requestId, noticeRow) {
   let spending = { records: [], ok: false };
 
   for (const candidatePin of pins) {
-    const [p, reg, spend] = await Promise.all([
+    const [p, reg] = await Promise.all([
       fetchCheckbookDomain((from) => contractsRequestXml(candidatePin, "pending", from)),
       fetchCheckbookDomain((from) => contractsRequestXml(candidatePin, "registered", from)),
-      fetchCheckbookSpending(candidatePin),
     ]);
 
-    // If exact PIN has any results, use them. If exact fails but base has results, use base.
-    const hasResults = p.records.length > 0 || reg.records.length > 0 || spend.records.length > 0;
+    // If exact PIN has any contract results, use them. If exact fails but base has results, use base.
+    const hasResults = p.records.length > 0 || reg.records.length > 0;
     if (hasResults || candidatePin === pins[pins.length - 1]) {
       pending = p;
       registered = reg;
-      spending = spend;
       pin = candidatePin;
       pinStrategyUsed = candidatePin === pins[0] ? "exact" : "legacy-base";
+      const contractIds = [
+        ...reg.records.map((r) => r.id).filter(Boolean),
+        ...p.records.map((r) => r.id).filter(Boolean),
+      ];
+      // Contracts failed with no ids → spending cannot be queried honestly (not "empty paid").
+      if (!contractIds.length && (!p.ok || !reg.ok)) {
+        spending = { records: [], ok: false };
+      } else {
+        spending = await fetchCheckbookSpendingByContractIds(contractIds);
+      }
       break;
     }
   }
