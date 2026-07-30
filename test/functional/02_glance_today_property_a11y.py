@@ -141,12 +141,19 @@ with sync_playwright() as pw:
     m.wait_for_selector("#list .row", timeout=30000)
     vis = m.evaluate("""({
         toggle: getComputedStyle(document.querySelector('#tab-money .filtertoggle')).display,
-        controls: getComputedStyle(document.querySelector('#tab-money .controls')).display
+        controls: getComputedStyle(document.querySelector('#tab-money .controls')).display,
+        exp: document.querySelector('#tab-money .filtertoggle').getAttribute('aria-expanded')
     })""")
     m.click("#tab-money .filtertoggle")
-    after = m.evaluate("({controls:getComputedStyle(document.querySelector('#tab-money .controls')).display, exp:document.querySelector('#tab-money .filtertoggle').getAttribute('aria-expanded')})")
-    ok = vis["toggle"]!="none" and vis["controls"]=="none" and after["controls"]!="none" and after["exp"]=="true"
-    step("OK" if ok else "FAIL", "#10 mobile filter tray", json.dumps({**vis, **after}))
+    collapsed = m.evaluate("({controls:getComputedStyle(document.querySelector('#tab-money .controls')).display, exp:document.querySelector('#tab-money .filtertoggle').getAttribute('aria-expanded')})")
+    m.click("#tabbtn-money")
+    activated = m.evaluate("({controls:getComputedStyle(document.querySelector('#tab-money .controls')).display, exp:document.querySelector('#tab-money .filtertoggle').getAttribute('aria-expanded')})")
+    ok = (
+        vis["toggle"]!="none" and vis["controls"]!="none" and vis["exp"]=="true"
+        and collapsed["controls"]=="none" and collapsed["exp"]=="false"
+        and activated["controls"]!="none" and activated["exp"]=="true"
+    )
+    step("OK" if ok else "FAIL", "#10 mobile filter tray", json.dumps({"initial":vis, "collapsed":collapsed, "activated":activated}))
     m.screenshot(path=SHOT + "mobile.png")
     m.close()
 
