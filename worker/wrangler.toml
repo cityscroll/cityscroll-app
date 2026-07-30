@@ -34,6 +34,9 @@ ANALYTICS_ENVIRONMENT = "production"
 CONFIRM_BASE = "https://api.cityscroll.org"
 # Alerts sender (site owner decision 2026-07-29).
 ALERTS_FROM = "CityScroll <alerts@cityscroll.org>"
+# Human replies: cityscroll.org has no apex MX, so replies to the From address bounce.
+# crol-list.org still has Cloudflare email routing; keep Reply-To on the old digest address.
+ALERTS_REPLY_TO = "alerts@crol-list.org"
 # Spend guards (denial-of-wallet ceiling). MAX_SENDS_PER_DAY stays under Resend's free 100/day.
 MAX_PER_RUN = "25"
 MAX_SENDS_PER_DAY = "50"

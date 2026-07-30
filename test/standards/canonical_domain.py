@@ -93,8 +93,13 @@ def main() -> None:
     for sender in ("alerts@cityscroll.org", "feedback@crol-list.org", "subscribe@crol-list.org"):
         if sender not in wrangler:
             failures.append(f"email scope: {sender} missing — the site owner's 2026-07-29 sender-domain decision moved alerts@ to cityscroll.org while leaving feedback@/subscribe@ unchanged")
-    if "alerts@crol-list.org" in wrangler:
-        failures.append("email scope: alerts@crol-list.org should no longer be the live ALERTS_FROM value")
+    if not re.search(r'ALERTS_FROM\s*=\s*"[^"]*alerts@cityscroll\.org', wrangler):
+        failures.append("email scope: ALERTS_FROM must send from alerts@cityscroll.org")
+    if re.search(r'ALERTS_FROM\s*=\s*"[^"]*alerts@crol-list\.org', wrangler):
+        failures.append("email scope: alerts@crol-list.org must not be the live ALERTS_FROM value")
+    # Reply-To stays on the still-routable old-domain address: cityscroll.org has no apex MX.
+    if 'ALERTS_REPLY_TO = "alerts@crol-list.org"' not in wrangler:
+        failures.append("email scope: ALERTS_REPLY_TO must keep human replies on alerts@crol-list.org (still-routable)")
 
     mirror = (ROOT / "worker/src/mirror.mjs").read_text()
     if 'const ORIGIN = "https://crol-list.org";' not in mirror:
