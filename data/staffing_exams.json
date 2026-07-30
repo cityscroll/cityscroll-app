@@ -52,6 +52,15 @@
       "refresh_cadence": "Daily",
       "stale_after_days": 3,
       "role": "Negative control: keyword candidates are reviewed so unrelated contracts and uses of “examination” are not presented as civil-service exam announcements."
+    },
+    {
+      "id": "dcas-annual-exam-outcomes",
+      "name": "DCAS Civil-Service Exam Outcomes (Annual Publication)",
+      "landing_page": "https://a860-gpp.nyc.gov/concern/nyc_government_publications/zk51vm65n",
+      "fetched_at": "2026-07-28",
+      "data_publication_date": "2026-07-28",
+      "refresh_cadence": "Annual outcomes publication with rolling corrections during each fiscal-year outcomes cycle.",
+      "stale_after_days": 365
     }
   ],
   "source_checks": {
@@ -66,6 +75,42 @@
       "candidate_rows": "183",
       "accepted_exam_announcements": 0,
       "finding": "The City Record dataset does not expose DCAS Notices of Examination as a notice section. DCAS schedule pages and NOEs are the authoritative application sources."
+    }
+  },
+  "outcomes": {
+    "source": {
+      "id": "dcas-annual-exam-outcomes",
+      "name": "DCAS Civil-Service Exam Outcomes (Annual Publication)",
+      "landing_page": "https://a860-gpp.nyc.gov/concern/nyc_government_publications/zk51vm65n",
+      "fetched_at": "2026-07-28",
+      "data_publication_date": "2026-07-28",
+      "refresh_cadence": "Annual outcomes publication with rolling corrections during each fiscal-year outcomes cycle.",
+      "stale_after_days": 365
+    },
+    "records": [
+      {
+        "exam_number": "6125",
+        "application_cycle": "2026",
+        "applicant_count": 1280,
+        "list_establishment": 1010,
+        "certification_count": 74,
+        "appointment_count": 68,
+        "hire_count": 68,
+        "published_on": "2026-07-22"
+      },
+      {
+        "exam_number": "7006",
+        "application_cycle": "2026",
+        "applicant_count": 910,
+        "list_establishment": 770,
+        "certification_count": 58,
+        "appointment_count": 40,
+        "hire_count": 40,
+        "published_on": "2026-07-22"
+      }
+    ],
+    "summary": {
+      "count": 2
     }
   },
   "exams": [
@@ -386,7 +431,7 @@
     {
       "exam_number": "7033",
       "title_code": "20122",
-      "title": "Estima\u0074or (General Construction)",
+      "title": "Estimator (General Construction)",
       "application_start": "2026-08-05",
       "application_end": "2026-08-25",
       "eligibility": "open_competitive",
@@ -1015,7 +1060,7 @@
       "application_end": "2026-11-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
+      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ]
@@ -1522,7 +1567,7 @@
       "application_end": "2027-02-23",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
+      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ]
@@ -1574,7 +1619,7 @@
       "application_end": "2027-03-23",
       "eligibility": "promotion",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
+      "interest_area": "administration-finance",
       "sources": [
         "dcas-annual-schedule"
       ]
@@ -1951,7 +1996,7 @@
       "application_end": "2027-05-25",
       "eligibility": "open_competitive",
       "schedule_status": "scheduled",
-      "interest_area": "public-safety",
+      "interest_area": "other",
       "sources": [
         "dcas-annual-schedule"
       ]
