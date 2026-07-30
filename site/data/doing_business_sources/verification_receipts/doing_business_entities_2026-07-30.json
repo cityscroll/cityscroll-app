@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "observed_on": "2026-07-30",
+  "observed_at_utc": "2026-07-30T18:55:00Z",
+  "source_contracts": [
+    "doing-business-entities"
+  ],
+  "access_surface": {
+    "catalog": "https://data.cityofnewyork.us/d/72mk-a8z7",
+    "metadata": "https://data.cityofnewyork.us/api/views/72mk-a8z7.json",
+    "resource": "https://data.cityofnewyork.us/resource/72mk-a8z7.json"
+  },
+  "curl_verified": {
+    "metadata_http": 200,
+    "resource_sample_http": 200,
+    "resource_count_http": 200,
+    "metadata_bytes": 11095,
+    "metadata_sha256": "1892457d09f6c37d16825192d8380f0808c16e9b8ffb376c465f57e17e91e768",
+    "sample_bytes": 502,
+    "sample_sha256": "d03887673e8fb26b6a68f304ef7d5c8a945d4cfcdb525a1907d325b0a2d0dcf8",
+    "resource_last_modified": "Fri, 21 Nov 2025 21:42:33 GMT",
+    "x_soda2_truth_last_modified": "Fri, 21 Nov 2025 21:42:33 GMT",
+    "x_soda2_fields": [
+      "organization_name",
+      "ownership_structure_code",
+      "organization_phone",
+      "doing_business_start_date"
+    ]
+  },
+  "dataset": {
+    "name": "Doing Business Search - Entities",
+    "asset_type": "dataset",
+    "rows_updated_at_unix": 1763761354,
+    "rows_updated_at_utc": "2025-11-21T21:42:34Z",
+    "row_count": 10787,
+    "unique_stems": 10750,
+    "required_fields_present": [
+      "organization_name",
+      "ownership_structure_code",
+      "organization_phone",
+      "doing_business_start_date"
+    ],
+    "ein_bin_pin_column": false,
+    "ownership_structure_code_top": {
+      "COR": 6094,
+      "LLC": 2915,
+      "OTH": 767,
+      "PAR": 731,
+      "IND": 131,
+      "PRO": 76,
+      "JNT": 63,
+      "GOV": 3
+    }
+  },
+  "update_cadence": {
+    "publisher_claim": "Irregular; resource Last-Modified 2025-11-21 at recon while catalog metadata refreshed later",
+    "product_rule": "Daily vendor-profile cron re-fetches the full list and attaches stem-joined rows. Schema probes use max_stale_days=400.",
+    "max_stale_days_for_schema_probe": 400
+  },
+  "join_measurement": {
+    "city_record_modern_awards_universe": "dg92-zbpx section_name=Procurement, type_of_notice_description=Award, vendor_name not empty, start_date >= 2025-01-01",
+    "city_record_modern_awards_count": 5173,
+    "city_record_historical_awards_universe": "same, start_date in [2016-01-01, 2025-01-01)",
+    "city_record_historical_awards_count": 22593,
+    "strategy": "vendor_stem only. Weak substring/token and phone-only joins rejected.",
+    "rates": {
+      "modern_awards_stem_notices": {
+        "joined": 3643,
+        "total": 5173,
+        "rate": 0.7042
+      },
+      "modern_awards_stem_vendors": {
+        "joined": 1567,
+        "total": 2543,
+        "rate": 0.6162
+      },
+      "modern_awards_exact_vendors": {
+        "joined": 769,
+        "total": 2543,
+        "rate": 0.3024
+      },
+      "historical_awards_stem_notices": {
+        "joined": 13507,
+        "total": 22593,
+        "rate": 0.5978
+      },
+      "historical_awards_stem_vendors": {
+        "joined": 3679,
+        "total": 8627,
+        "rate": 0.4265
+      }
+    },
+    "usefulness_threshold": 0.3,
+    "verdict": "Above usefulness threshold (~30%) on modern awards (70.42% notice-level stem join). Ship join + edge materialization onto vendor profiles."
+  },
+  "field_cases": {
+    "joined_camba_vendor": "Camba Inc.",
+    "joined_camba_organization_name": "CAMBA  INC",
+    "joined_camba_ownership": "COR",
+    "joined_camba_phone": "718-287-2600",
+    "joined_camba_start_normalized": "2009-05-16",
+    "joined_3g_vendor": "3G Warehouse, Inc.",
+    "joined_3g_organization_name": "3G WAREHOUSE INC",
+    "unjoined_modern_vendor": "1030 Production Services LLC",
+    "truncated_year_raw": "0009-05-16T00:00:00.000",
+    "truncated_year_normalized": "2009-05-16"
+  }
+}

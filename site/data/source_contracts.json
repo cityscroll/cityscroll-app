@@ -1294,6 +1294,97 @@
         }
       ],
       "delivery_tier": "edge-materialized"
+    },
+    {
+      "id": "doing-business-entities",
+      "name": "Doing Business Search - Entities",
+      "owner": "Mayor's Office of Contract Services (MOCS)",
+      "status": "live",
+      "scope": "runtime",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "72mk-a8z7",
+      "landing_page": "https://data.cityofnewyork.us/d/72mk-a8z7",
+      "required_fields": [
+        "organization_name",
+        "ownership_structure_code",
+        "organization_phone",
+        "doing_business_start_date"
+      ],
+      "max_stale_days": 400,
+      "publisher_cadence": "Irregular Open Data refresh (resource Last-Modified 2025-11-21 at recon; metadata updates more often)",
+      "product_freshness": "Worker re-fetches the full entity list during the daily vendor-profile rebuild and attaches stem-joined rows to matching profiles. Schema probes tolerate multi-month publisher lag via max_stale_days.",
+      "used_for": "Vendor identity enrichment on vendor profiles: Doing Business Search listing, ownership structure, organization phone, and doing-business start date when organization_name stems match a City Record award vendor.",
+      "join_keys": [
+        "organization_name",
+        "vendor_name"
+      ],
+      "join_measurement": {
+        "observed_on": "2026-07-30",
+        "universe_modern_awards": "City Record Online (dg92-zbpx) Procurement Award notices with non-empty vendor_name and start_date >= 2025-01-01",
+        "universe_modern_awards_count": 5173,
+        "universe_historical_awards": "Same notice type with start_date in [2016-01-01, 2025-01-01)",
+        "universe_historical_awards_count": 22593,
+        "doing_business_rows": 10787,
+        "doing_business_unique_stems": 10750,
+        "strategy": "vendor_stem (product vendorStem on organization_name equals vendorStem(vendor_name)). Substring/token-overlap and phone-only joins rejected.",
+        "rates": {
+          "modern_awards_stem_notices": {
+            "joined": 3643,
+            "total": 5173,
+            "rate": 0.7042
+          },
+          "modern_awards_stem_vendors": {
+            "joined": 1567,
+            "total": 2543,
+            "rate": 0.6162
+          },
+          "modern_awards_exact_vendors": {
+            "joined": 769,
+            "total": 2543,
+            "rate": 0.3024
+          },
+          "historical_awards_stem_notices": {
+            "joined": 13507,
+            "total": 22593,
+            "rate": 0.5978
+          },
+          "historical_awards_stem_vendors": {
+            "joined": 3679,
+            "total": 8627,
+            "rate": 0.4265
+          }
+        },
+        "usefulness_threshold": 0.3,
+        "verdict": "Above usefulness threshold (>=30%) on modern awards (70.42% notice-level stem join; 61.62% distinct-vendor stem join). Ship join + edge materialization onto vendor profiles."
+      },
+      "code_references": [
+        {
+          "path": "worker/src/lib/doing_business_join.mjs",
+          "contains": "joinVendorToDoingBusiness"
+        },
+        {
+          "path": "worker/src/vendor_profile.mjs",
+          "contains": "attachDoingBusiness"
+        },
+        {
+          "path": "site/data/doing_business_sources/README.md",
+          "contains": "72mk-a8z7"
+        },
+        {
+          "path": "site/data/doing_business_sources/verification_receipts/doing_business_entities_2026-07-30.json",
+          "contains": "doing-business-entities"
+        },
+        {
+          "path": "test/fixtures/doing_business/join_cases.json",
+          "contains": "joined-camba"
+        },
+        {
+          "path": "test/doing_business_join.test.mjs",
+          "contains": "doing-business-entities"
+        }
+      ],
+      "delivery_tier": "edge-materialized"
     }
   ]
 }

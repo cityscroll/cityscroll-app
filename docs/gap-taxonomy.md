@@ -57,6 +57,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `dcas-annual-exam-outcomes` | landed | exam_number | medium | — |
 | `dcas-exam-notices` | landed | exam_number | — | — |
 | `dob-now-job-filings` | live-only | BBL, BIN, job_number | — | — |
+| `doing-business-entities` | landed | organization_name, vendor_name | medium | 70.4% (modern_awards_stem_notices) |
 | `legacy-dob-job-filings` | live-only | BBL, BIN, job_number | — | — |
 | `mappluto` | live-only | BBL | — | — |
 | `nyc-council-legistar` | landed | matter_id, event_id, event_item_id, agency, event_title, start_time, event_date, committee/body_name_in_notice_title | medium | 100% (modern_notices_strict) |
@@ -79,6 +80,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `city-record-pin-x-passport-contracts-epin` | `city-record` × `passport-public-contracts` | PIN · EPIN | 74% |
 | `city-record-pin-x-passport-rfx-epin` | `city-record` × `passport-public-rfx` | PIN · EPIN | 44.4% |
 | `city-record-request-x-nycida-projects` | `city-record` × `nycida-build-nyc-projects` | request_id | — |
+| `city-record-vendor-x-doing-business-entities` | `city-record` × `doing-business-entities` | vendor_name · organization_name | 70.4% |
 | `city-record-x-legistar-events` | `city-record` × `nyc-council-legistar` | event_date · committee/body_name_in_notice_title | 100% |
 | `exam-number-x-dcas-outcomes` | `dcas-exam-notices` × `dcas-annual-exam-outcomes` | exam_number | — |
 | `zap-bbl-x-dob-now-filings` | `zap-bbl` × `dob-now-job-filings` | BBL | 56% |
@@ -119,6 +121,7 @@ graph LR
   city_record[city-record] -->|PIN/EPIN| passport_public_contracts[passport-public-contracts]
   city_record[city-record] -->|PIN/EPIN| passport_public_rfx[passport-public-rfx]
   city_record[city-record] -->|request_id| nycida_build_nyc_projects[nycida-build-nyc-projects]
+  city_record[city-record] -->|vendor_name/organization_name| doing_business_entities[doing-business-entities]
   city_record[city-record] -->|event_date/committee/body_name_in_notice_title| nyc_council_legistar[nyc-council-legistar]
   dcas_exam_notices[dcas-exam-notices] -->|exam_number| dcas_annual_exam_outcomes[dcas-annual-exam-outcomes]
   zap_bbl[zap-bbl] -->|BBL| dob_now_job_filings[dob-now-job-filings]
@@ -145,7 +148,7 @@ Ordered for dispatch. Full rows (effort, join risk, value scores) live in
 4. **DCAS annual exam outcomes → exam card join** — exam-outcome-aggregate.
 5. **Current Solicitations Open Data 3khw-qi8f** — procurement-solicitation-documents.
 6. **Recent Contract Awards Open Data qyyg-4tf5** — procurement-ocp-recent-awards.
-7. **Doing Business Search Entities 72mk-a8z7** — secondary enrichment.
+7. **Doing Business Search Entities 72mk-a8z7** — secondary enrichment. Measured join **70.4%**. Predicted grade: **medium**. Measured 70.4% modern award notice-level vendor_stem join (predicted pre-landing grade: medium). Measured — stem join above usefulness; edge-materialized onto vendor profiles.
 8. **Bid Tabulations Historical 9k82-ys7w** — procurement-bid-counts. Measured join **0%**. Predicted grade: **high-risk**. High — measured strict join 0% on modern notices (2025+), 9.07% on 2016-2021 overlap; no PIN column; openings end 2021-03-24. Contracted as disabled (bid-tabulations-historical). Measured — recon complete; materialization stopped below usefulness threshold.
 
 ## Verification notes (2026-07-30)
@@ -155,6 +158,7 @@ Ordered for dispatch. Full rows (effort, join risk, value scores) live in
 - City Record type counts since 2025-01-01: Award ~5173, Solicitation ~1550, Public Hearings ~1679, Intent to Award ~703.
 - EDC document portal may block unattended fetch (403); product already treats it as HTML source.
 - Bid Tabulations Historical 9k82-ys7w join recon (2026-07-30): strict PIN↔bid_number 0% modern / 9.07% historical overlap; below ~30% usefulness; source contract disabled without materialization.
+- Doing Business Search Entities 72mk-a8z7 join recon (2026-07-30): vendor_stem join 70.42% notice-level / 61.62% distinct vendors on modern awards; above ~30% usefulness; source contract live edge-materialized onto vendor profiles.
 
 ## UI copy keys (two registers)
 
@@ -171,4 +175,4 @@ node tools/depot_rederive.mjs          # write registry + docs + receipt
 node tools/depot_rederive.mjs --check  # CI drift gate (no writes)
 ```
 
-Last refresh fingerprint: `21e7b367e96a…` · materialized 10 · candidates 44 · class changes 0.
+Last refresh fingerprint: `ddc2afb7ab61…` · materialized 11 · candidates 45 · class changes 0.
