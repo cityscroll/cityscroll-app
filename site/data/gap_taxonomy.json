@@ -158,7 +158,7 @@
         ]
       },
       "notices_affected_estimate": "Competitive sealed bids with historical tabulations; incomplete for modern PASSPort-only solicitations.",
-      "evidence": "Dataset 9k82-ys7w verified live with bidder_name and bid_price columns. Modern bid counts are not consistently published as open tabular data outside PASSPort HTML."
+      "evidence": "Dataset 9k82-ys7w verified live (57,704 rows, 945 bid_numbers, openings 2016-01-05..2021-03-24, no PIN column). Strict PIN↔bid_number join measured 2026-07-30: 0% of Procurement notices with PIN since 2025-01-01; 9.07% of 2016-2021 overlap notices; 66.9% within historical 857* DCAS PIN subset. Below ~30% usefulness threshold — source contracted as disabled without edge materialization (see bid-tabulations-historical join_measurement)."
     },
     {
       "id": "procurement-ocp-recent-awards",
@@ -455,9 +455,9 @@
       "gaps_filled": [
         "procurement-bid-counts"
       ],
-      "value": "Fills OCDS tender/numberOfTenderers and contestability package signals for historical bids.",
-      "effort_guess": "Medium \u2014 fuzzy title/date join; historical coverage only.",
-      "join_risk": "High \u2014 bid_number rarely equals City Record PIN; modern PASSPort bids often missing."
+      "value": "Would fill OCDS tender/numberOfTenderers and contestability package signals for historical CSB bids only.",
+      "effort_guess": "Measured \u2014 recon complete; materialization stopped below usefulness threshold.",
+      "join_risk": "High \u2014 measured strict join 0% on modern notices (2025+), 9.07% on 2016-2021 overlap; no PIN column; openings end 2021-03-24. Contracted as disabled (bid-tabulations-historical)."
     },
     {
       "rank": 6,
@@ -503,6 +503,7 @@
     "Open Data views 3khw-qi8f, qyyg-4tf5, 9k82-ys7w, 72mk-a8z7 returned live metadata.",
     "PASSPort Public contracts and rfx pages returned HTTP 200.",
     "City Record type counts since 2025-01-01: Award ~5173, Solicitation ~1550, Public Hearings ~1679, Intent to Award ~703.",
-    "EDC document portal may block unattended fetch (403); product already treats it as HTML source."
+    "EDC document portal may block unattended fetch (403); product already treats it as HTML source.",
+    "Bid Tabulations Historical 9k82-ys7w join recon (2026-07-30): strict PIN↔bid_number 0% modern / 9.07% historical overlap; below ~30% usefulness; source contract disabled without materialization."
   ]
 }
