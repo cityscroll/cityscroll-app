@@ -398,6 +398,7 @@
   .staffing-upcoming-list{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:12px 0 0;min-height:0}
   .staffing-upcoming-item{display:block;border:1px solid var(--rule);border-radius:7px;padding:10px;background:#fff;text-decoration:none;color:var(--ink);min-width:0}
   .staffing-upcoming-item:hover{border-color:var(--oxblood);background:var(--paper-2)}
+  .staffing-upcoming-deadline{display:block;font:750 12px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--green);margin-top:4px}
   .staffing-upcoming-title{display:block;font:750 15px/1.25 var(--font-body);margin:5px 0 4px;overflow-wrap:anywhere}
   .staffing-upcoming-window{display:block;font:12px/1.35 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
   .career-guide{margin-bottom:34px;scroll-margin-top:12px}
@@ -436,6 +437,12 @@
   .career-card[data-status="closed"],.career-card[data-status="canceled"]{border-top-color:var(--rule-strong)}
   .career-card.selected{grid-column:1/-1;max-width:900px;outline:3px solid #7a1f1f33;outline-offset:2px}
   .route-item:focus{outline:3px solid var(--blue);outline-offset:3px}
+  .career-deadline-lead{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 12px;padding-bottom:8px;border-bottom:1px solid var(--rule)}
+  .career-deadline-primary{font:800 18px/1.15 var(--font-display);color:var(--ink);margin:0}
+  .career-deadline-countdown{font:750 13px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--green)}
+  .career-card[data-status="upcoming"] .career-deadline-countdown{color:var(--amber)}
+  .career-card[data-status="closed"] .career-deadline-countdown,
+  .career-card[data-status="canceled"] .career-deadline-countdown{color:var(--muted)}
   .career-card-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
   .career-card-title{font:800 22px/1.12 var(--font-display);margin:0;overflow-wrap:anywhere}
   .career-exam-number{font:700 12px/1.2 ui-monospace,Menlo,monospace;color:var(--muted);white-space:nowrap}
@@ -966,7 +973,7 @@
       <section class="career-browser" aria-labelledby="career-browser-heading">
         <div class="career-browser-head">
           <h3 class="career-section-heading" id="career-browser-heading" data-i18n="career_browser_heading">Find an exam you can act on</h3>
-          <p data-i18n="career_browser_note">Open exams come first. Upcoming dates are tentative until DCAS posts the NOE.</p>
+          <p data-i18n="career_browser_note">Open exams come first, sorted by the soonest application deadline. Upcoming dates are tentative until DCAS posts the NOE. Choose an interest area — never a personal profile.</p>
         </div>
         <div class="career-controls">
           <div class="field">
@@ -3310,6 +3317,9 @@ window.addEventListener("afterprint",clearPrintView);
 /* ===================== PEOPLE ===================== */
 let pRows = [], pMode = "role", competitiveSet = new Set();
 let careerData = null, careerLoadPromise = null, careerSelected = null, careerLimit = 16;
+// Declared guide filters from the hash (interest/eligibility/window) applied after the
+// precomputed artifact loads so options exist. Never stores a person identity.
+let careerRouteFilters = null;
 let careerHowPrepared = false;
 const CAREER_HOW_SEEN_KEY = "crol_exam_how_seen_v1";
 function prepareCareerHow(){
@@ -3467,12 +3477,29 @@ function careerWindowText(exam, status){
   if(status==="postponed") return t("career_postponed_copy");
   return t("career_date_unknown");
 }
+function careerCountdownText(exam, status){
+  if(status==="open"){
+    const days=CrolStaffing.applicationDaysLeft(exam.application_end, careerToday());
+    if(days==null) return "";
+    if(days<0) return t("career_deadline_passed");
+    if(days===0) return t("career_last_day");
+    return tn("days_left", days);
+  }
+  if(status==="upcoming" && exam.application_start){
+    const days=CrolStaffing.applicationDaysLeft(exam.application_start, careerToday());
+    if(days==null || days<0) return "";
+    return tn("event_in_n_days", days);
+  }
+  return "";
+}
 function staffingFeaturedExamHTML(exam){
   const status=CrolStaffing.statusFor(exam,careerToday());
+  const countdown=careerCountdownText(exam,status);
   return `<a class="staffing-upcoming-item" href="#exam/${encodeURIComponent(exam.exam_number)}">
     <span class="tag ${careerStatusClass(status)}">${careerStatusLabel(status)}</span>
+    <span class="staffing-upcoming-deadline">${careerWindowText(exam,status)}${countdown?` · ${countdown}`:""}</span>
     <span class="staffing-upcoming-title" lang="en" dir="ltr">${escUiHtml(exam.title)}</span>
-    <span class="staffing-upcoming-window">${careerWindowText(exam,status)} · ${t("career_exam_number",{number:escUiHtml(exam.exam_number)})}</span>
+    <span class="staffing-upcoming-window">${t("career_exam_number",{number:escUiHtml(exam.exam_number)})}</span>
   </a>`;
 }
 function renderStaffingHub(){
@@ -3500,11 +3527,12 @@ function careerCardHTML(exam){
   const status=CrolStaffing.statusFor(exam,careerToday());
   const title=escUiHtml(exam.title);
   const selected=careerSelected===exam.exam_number;
+  const countdown=careerCountdownText(exam,status);
   const notice=exam.notice_url
     ? `<a class="act" href="${escUiHtml(exam.notice_url)}" ${EXT_ATTRS}>${t("career_read_noe")}${extSR()}</a>`
-    : `<a class="act" href="https://www.nyc.gov/site/dcas/employment/how-can-you-find-upcoming-exams.page" ${EXT_ATTRS}>${t("career_official_schedule")}${extSR()}</a>`;
+    : `<a class="act" href="${escUiHtml(CrolStaffing.DCAS_OPEN_COMPETITIVE_URL)}" ${EXT_ATTRS}>${t("career_official_schedule")}${extSR()}</a>`;
   const apply=status==="open" && exam.notice_url
-    ? `<a class="act primary" href="https://www.nyc.gov/examsforjobs" ${EXT_ATTRS}>${t("career_apply_oasys")}${extSR()}</a>`:"";
+    ? `<a class="act primary" href="${escUiHtml(CrolStaffing.OASY_APPLY_URL)}" ${EXT_ATTRS}>${t("career_apply_oasys")}${extSR()}</a>`:"";
   const details=exam.notice_url ? `
     <div class="career-metrics">
       <div class="career-metric"><b>${careerMoney(exam.fee)}</b><span>${t("career_application_fee")}</span></div>
@@ -3517,13 +3545,16 @@ function careerCardHTML(exam){
     <p class="career-english-note">${t("career_official_english_note")}</p>`
     : `<p class="note">${t("career_noe_pending")}</p>`;
   return `<article class="career-card${selected?" selected route-item":""}" data-status="${status}" id="career-exam-${exam.exam_number}"${selected?' tabindex="-1"':""}>
+    <div class="career-deadline-lead">
+      <span class="tag ${careerStatusClass(status)}">${careerStatusLabel(status)}</span>
+      ${exam.eligibility==="promotion"?`<span class="tag soon">${t("career_promotion_badge")}</span>`:""}
+      <p class="career-deadline-primary">${careerWindowText(exam,status)}</p>
+      ${countdown?`<span class="career-deadline-countdown">${countdown}</span>`:""}
+    </div>
     <div class="career-card-head">
       <p class="career-card-title"><a href="#exam/${encodeURIComponent(exam.exam_number)}" lang="en" dir="ltr">${title}</a></p>
       <span class="career-exam-number">${t("career_exam_number",{number:escUiHtml(exam.exam_number)})}</span>
     </div>
-    <div class="career-statusline"><span class="tag ${careerStatusClass(status)}">${careerStatusLabel(status)}</span>
-      ${exam.eligibility==="promotion"?`<span class="tag soon">${t("career_promotion_badge")}</span>`:""}</div>
-    <div class="career-window">${careerWindowText(exam,status)}</div>
     ${exam.summary?`<p class="career-summary" lang="en" dir="ltr">${escUiHtml(exam.summary)}</p>`:""}
     ${details}
     <div class="actions">${apply}${notice}
@@ -3570,11 +3601,35 @@ function renderCareerGuide(){
   });
   $("#career-more")?.addEventListener("click",()=>{ careerLimit+=24; renderCareerGuide(); });
 }
+function applyCareerRouteFilters(){
+  if(!careerRouteFilters) return;
+  const {interest, eligibility, window: windowFilter} = careerRouteFilters;
+  const interestEl=$("#career-interest");
+  if(interestEl){
+    if(interest && CrolStaffing.isInterestArea(interest) && [...interestEl.options].some(option=>option.value===interest)){
+      interestEl.value=interest;
+    } else if(interest===null || interest==="all"){
+      interestEl.value="all";
+    }
+  }
+  const eligibilityEl=$("#career-eligibility");
+  if(eligibilityEl){
+    if(eligibility && ["open_competitive","promotion","all"].includes(eligibility)) eligibilityEl.value=eligibility;
+    else if(eligibility===null) eligibilityEl.value="open_competitive";
+  }
+  const windowEl=$("#career-window");
+  if(windowEl){
+    if(windowFilter && ["actionable","open","upcoming","all"].includes(windowFilter)) windowEl.value=windowFilter;
+    else if(windowFilter===null) windowEl.value="actionable";
+  }
+  careerRouteFilters=null;
+}
 function populateCareerInterests(){
   const select=$("#career-interest"), current=select.value||"all";
   select.innerHTML=`<option value="all">${t("career_all_interests")}</option>`+careerData.interest_areas
     .map(area=>`<option value="${area}">${t(CAREER_AREA_KEYS[area]||"career_area_other")}</option>`).join("");
   select.value=[...select.options].some(option=>option.value===current)?current:"all";
+  applyCareerRouteFilters();
 }
 async function loadCareerGuide(){
   if(careerData){ populateCareerInterests(); renderCareerGuide(); return careerData; }
@@ -6239,6 +6294,16 @@ function serializeState(){
     if($("#staffing-query").value.trim()) q.set("q", $("#staffing-query").value.trim());
     if(staffingFilters.role) q.set("role", staffingFilters.role);
     if(staffingFilters.agency) q.set("agency", staffingFilters.agency);
+    // Declarative interest routing only: structured attributes the visitor chose, never a profile.
+    if($("#career-guide") && !$("#career-guide").hidden){
+      q.set("view", "guide");
+      const interest=$("#career-interest")?.value;
+      if(interest && interest !== "all" && CrolStaffing.isInterestArea(interest)) q.set("interest", interest);
+      const eligibility=$("#career-eligibility")?.value;
+      if(eligibility && eligibility !== "open_competitive") q.set("eligibility", eligibility);
+      const windowFilter=$("#career-window")?.value;
+      if(windowFilter && windowFilter !== "actionable") q.set("window", windowFilter);
+    }
   } else if(tab === "land"){
     if($("#lboro").value) q.set("boro", $("#lboro").value);
     if(landCommunityDistrict) q.set("cd", landCommunityDistrict);
@@ -6454,8 +6519,29 @@ function applyHash(){
       staffingFilters.role=q.get("role")||"";
       staffingFilters.agency=q.get("agency")||"";
       $("#staffing-query").value=staffingFilters.query;
+      // A guide route is not an exam detail route — clear any prior #exam/ selection.
+      careerSelected=null;
+      // Declared structured attributes only (interest/eligibility/window). No identity profile.
+      const interest=q.get("interest");
+      const eligibility=q.get("eligibility");
+      const windowFilter=q.get("window");
+      if(
+        (interest && CrolStaffing.isInterestArea(interest))
+        || (eligibility && ["open_competitive","promotion","all"].includes(eligibility))
+        || (windowFilter && ["actionable","open","upcoming","all"].includes(windowFilter))
+      ){
+        careerRouteFilters={
+          interest: CrolStaffing.isInterestArea(interest)?interest:null,
+          eligibility: ["open_competitive","promotion","all"].includes(eligibility)?eligibility:null,
+          window: ["actionable","open","upcoming","all"].includes(windowFilter)?windowFilter:null,
+        };
+      } else if(q.get("view")==="guide"){
+        // Explicit guide landing without filters: reset controls to defaults.
+        careerRouteFilters={ interest:null, eligibility:"open_competitive", window:"actionable" };
+      }
       showTab("people");
       scrollStaffingView(q.get("view"));
+      if(q.get("view")==="guide" || careerRouteFilters) loadCareerGuide();
     } else if(tab === "land"){
       landResolvedArea=null;
       $("#lboro").value = DEEPLINK_BOROS.includes(q.get("boro"))?q.get("boro"):"";
@@ -6620,7 +6706,7 @@ $("#pkw").addEventListener("keydown", e=>{ if(e.key==="Enter") pSearch(); });
 $("#pkw").addEventListener("input", debounce(pSearch, 500));
 $("#pmode").addEventListener("change", ()=>{ $("#pkwlabel").textContent = $("#pmode").value==="role"?t("title_keyword_label"):t("person_name_label"); $("#pkw").placeholder = $("#pmode").value==="role"?t("kw_placeholder_people_role"):t("kw_placeholder_people_person"); });
 ["#career-interest","#career-eligibility","#career-window"].forEach(selector=>$(selector).addEventListener("change",()=>{
-  careerSelected=null; careerLimit=16; renderCareerGuide();
+  careerSelected=null; careerLimit=16; renderCareerGuide(); updateHash();
 }));
 $("#career-query").addEventListener("input",debounce(()=>{
   careerSelected=null; careerLimit=16; renderCareerGuide();

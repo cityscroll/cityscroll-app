@@ -4,6 +4,21 @@
 `data/staffing_exams.json`, the only file the browser loads. This is a build-time
 materialized view: the Staffing guide never fans out to City APIs at runtime.
 
+## Authoritative feed (open windows)
+
+For exams that are open to applications **right now**, the authoritative public
+source is the DCAS open-competitive schedule page and each linked Notice of
+Examination (NOE) PDF:
+
+- Schedule: https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page
+- OASys application handoff: https://www.nyc.gov/examsforjobs
+
+Registry entry: `dcas-exam-notices` in `data/source_contracts.json`. Live checks
+are recorded under `verification_receipts/` (for example
+`verification_receipts/dcas_open_competitive_2026-07-29.json`). The Annual
+Examination Schedule Open Data dataset (`4ptz-hmtc`) remains the fiscal-year
+planning table and can lag mid-cycle NOE amendments.
+
 Sources and refresh rules:
 
 - `annual_schedule.json` — DCAS/NYC Open Data dataset `4ptz-hmtc`. DCAS says the
