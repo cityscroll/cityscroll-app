@@ -55,7 +55,7 @@ published them, and links each applicant to the official next step.
 *   **Subscribe by Email:** Write to `subscribe@crol-list.org` in plain English; an LLM parses it into a watch and replies with a double-opt-in confirmation link.
 *   **MCP for AI Assistants:** Point any MCP client at `api.cityscroll.org/mcp` to search notices and create/preview watches programmatically ([docs](https://cityscroll.org/api.html)).
 *   **Proactive Alerts:** Receive morning email digests (queued per-subscriber delivery with independent retries) or subscribe to live RSS/Atom, JSON, and iCal feeds. Alerts deliver in your chosen language.
-*   **Multilingual UI:** Switch the interface to Spanish, Simplified Chinese, or Russian via the header language selector; your preference is remembered. City Record notices remain in English (the official source language).
+*   **Multilingual UI:** Switch the interface to Spanish, Simplified Chinese, or Russian via the header language selector; your preference is remembered. Official City Record notice text stays in English; an unofficial translation is available on demand for shipping languages.
 *   **[The Data](https://cityscroll.org/data.html):** the City Record at a glance — sections, volume, procurement mix, top agencies/vendors by cleaned dollars — computed live in the browser.
 *   **Unified Workspace:** Pin records, write local notes, export CSV/JSON dossiers, and generate shareable snapshot links.
 *   **Workflow exports:** Download any lens as Excel-safe CSV or a typed Excel workbook, export notice details with a separate contract-trail sheet, or print a clean permalink-and-date-stamped view to PDF.

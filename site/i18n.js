@@ -337,9 +337,18 @@ const STRINGS = {
     closes_in_1_day:  "closes in one day",
     closes_in_n_days: "closes in {n} days",
 
-    // Notice content language note (shown when non-English UI is active)
-    notices_in_english_note: "Notice text appears in the original English.",
-    notices_in_english_es:   "Los avisos aparecen en inglés original.",
+    // Notice content language note (shown when non-English UI is active).
+    // Softened once on-demand unofficial translation shipped: original stays official;
+    // translation is an aid available from the notice detail.
+    notices_in_english_note: "Official text in English. Unofficial translation available.",
+    notices_in_english_es:   "Texto oficial en inglés. Traducción no oficial disponible.",
+
+    // Informal notice translation (on-demand pane — minimal wording only)
+    unofficial_translation: "Unofficial translation",
+    unofficial_translation_show: "Show unofficial translation",
+    unofficial_translation_hide: "Hide unofficial translation",
+    unofficial_translation_loading: "Loading unofficial translation…",
+    unofficial_translation_unavailable: "Unofficial translation unavailable.",
 
     // Footer / nav
     about_link:     "About",
@@ -697,7 +706,7 @@ const STRINGS = {
     prefer_feeds_html: "Prefer feeds? This watch is also",
 
     // Notices-in-English
-    notices_in_english_note_inline: "Notice text appears in the original English.",
+    notices_in_english_note_inline: "Official text in English. Unofficial translation available.",
 
     // ---- Dynamically-built chrome (2026-07-13 hotfix: strings composed in JS
     // template literals bypassed the dictionary; every builder now routes here) ----

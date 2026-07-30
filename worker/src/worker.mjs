@@ -39,6 +39,7 @@ import { handleMeetingOutcomes, refreshMeetingOutcomes } from "./meeting_outcome
 import { handleSourceVault } from "./source_vault.mjs";
 import { handleContractLifecycle, prewarmContractLifecycle } from "./checkbook_lifecycle.mjs";
 import { handleSubsidyLifecycle, prewarmSubsidyLifecycle } from "./subsidy_lifecycle.mjs";
+import { handleTranslate } from "./translate.mjs";
 
 const MIRROR_HOSTS = new Set(["cityscroll.org", "www.cityscroll.org"]);
 
@@ -62,6 +63,7 @@ export default {
     if (pathname === "/agencies") return handleAgencies(request, env, ctx);
     if (pathname === "/inv" || pathname.startsWith("/inv/")) return handleInv(request, env, pathname, ctx);
     if (pathname.startsWith("/priorcycle/")) return handlePriorCycle(request, env, pathname, ctx);
+    if (pathname.startsWith("/translate/")) return handleTranslate(request, env, pathname, ctx);
     if (pathname === "/externalaward") return handleExternalAward(request, env, ctx);
     if (pathname === "/agency") return handleAgency(request, env, ctx);
     if (pathname === "/vendor-profile") return handleVendorProfile(request, env, ctx);
