@@ -83,6 +83,21 @@ means no entry — that's the intended way to keep the page selective, not an ov
 
 ## Running things
 
+### Content standards gates
+
+Style-guide and companion content gates live in the reusable
+[`civic-content-gates`](civic-content-gates/) package. House CI still invokes the stable
+wrappers under `test/standards/` (for example `python3 test/standards/link_text.py`,
+`python3 test/standards/reading_level.py --max-grade 7 about.html`). To run the whole
+suite against `site/`:
+
+```bash
+PYTHONPATH=civic-content-gates python3 -m civic_content_gates run \
+  --root site \
+  --allowlist test/standards/nyc_copy_lint_allowlist.txt \
+  --baseline site/reading-level-baseline.json
+```
+
 ```bash
 # site (static — any server works)
 python3 -m http.server 8000 --directory site  # then open http://localhost:8000
