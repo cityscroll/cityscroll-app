@@ -45,7 +45,7 @@ Ordered for dispatch. Full rows (effort, join risk, value) live in `site/data/ga
 2. **DCAS exam outcomes on exam cards** — data already built; low effort; medium join risk on `exam_number`.
 3. **Open Data Current Solicitations `3khw-qi8f`** — low effort Socrata enrichment for OCP.
 4. **Open Data Recent Contract Awards `qyyg-4tf5`** — low effort OCP award side-car.
-5. **Bid Tabulations Historical `9k82-ys7w`** — bid counts for contestability; high join risk.
+5. **Bid Tabulations Historical `9k82-ys7w`** — bid counts for contestability; **measured below usefulness** (strict join 0% modern / 9.07% historical overlap; contracted disabled, no materialization).
 6. **Legistar materialization depth** — improve Council vote/matter match rate on existing contract.
 7. **ZAP decision docs + DOB NOW stitch** — land outcome detail beyond status.
 8. **Doing Business Search Entities `72mk-a8z7`** — vendor identity enrichment (secondary).
@@ -56,6 +56,7 @@ Ordered for dispatch. Full rows (effort, join risk, value) live in `site/data/ga
 - PASSPort Public `/contracts.html` and `/rfx.html` returned HTTP 200; machine dumps `dataJs/contractData.js` (~24.5 MB) and `dataJs/rfxData.js` (~3.3 MB) returned HTTP 200 with same-day Last-Modified (see `site/data/passport_sources/verification_receipts/`).
 - City Record type counts since 2025-01-01: Award ~5,173; Solicitation ~1,550; Public Hearings ~1,679; Intent to Award ~703.
 - EDC document portal may block unattended fetch; it remains the named HTML source for subsidy projects.
+- Bid Tabulations Historical `9k82-ys7w` recon (2026-07-30): 57,704 rows / 945 bid numbers / openings 2016-01-05–2021-03-24 / no PIN column. Strict PIN↔`bid_number` join: **0%** of PIN-bearing Procurement notices since 2025-01-01; **9.07%** of 2016–2021 overlap; **66.9%** on historical `857*` DCAS PINs only. Below ~30% usefulness → source contract `bid-tabulations-historical` is **disabled** without edge materialization (receipts under `site/data/bid_tabulation_sources/`).
 
 ## UI copy keys (two registers)
 

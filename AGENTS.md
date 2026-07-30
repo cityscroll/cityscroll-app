@@ -17,6 +17,15 @@ Strict EPIN↔PIN join: `worker/src/lib/passport_join.mjs`. Measured rates live 
 `site/data/source_contracts.json` (`join_measurement`) and
 `site/data/passport_sources/verification_receipts/`.
 
+## Bid Tabulations Historical (`9k82-ys7w`)
+
+Ranked class-(a) bid-count source. **Measured below usefulness** (2026-07-30): strict
+PIN↔`bid_number` join is **0%** on Procurement notices since 2025-01-01 and **9.07%** on
+2016–2021 overlap (no PIN column; openings end 2021-03-24). Source contract
+`bid-tabulations-historical` is **disabled** — no edge materialization. Strategies and
+receipts: `worker/src/lib/bid_tabulations_join.mjs`,
+`site/data/bid_tabulation_sources/`.
+
 ## Content and testing — lifecycle gap taxonomy
 
 **Standing contract:** every absent-data state on a lifecycle surface must tell the reader *which kind of gap* it is. Never ship an undifferentiated “no record” / “unknown” / blank slot when the product has decided a field is missing.

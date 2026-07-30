@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "observed_on": "2026-07-30",
+  "source_contract": "bid-tabulations-historical",
+  "dataset_id": "9k82-ys7w",
+  "strategies_accepted": [
+    "exact",
+    "agency_prefix_bid_suffix"
+  ],
+  "strategies_rejected": [
+    "title_unique",
+    "pin_contains_bid_number",
+    "title_only"
+  ],
+  "cases": [
+    {
+      "id": "joined-agency-prefix-solicitation",
+      "expect": "joined",
+      "method": "agency_prefix_bid_suffix",
+      "notice": {
+        "request_id": "20160105002",
+        "pin": "8571600131",
+        "type_of_notice_description": "Solicitation",
+        "short_title": "AIR MATTRESS",
+        "start_date": "2016-01-11",
+        "agency_name": "Citywide Administrative Services"
+      },
+      "bid": {
+        "bid_number": "1600131",
+        "bid_title": "AIR MATTRESS",
+        "bid_opening_date": "2016-02-10",
+        "bidder_count": 9,
+        "sample_bidders": [
+          "ALDORAY & ASSOCIATES CORP",
+          "BEST HOME CARE MED & SURG SUPP",
+          "MMS - A MEDICAL SUPPLY COMPANY"
+        ]
+      }
+    },
+    {
+      "id": "joined-exact-pin-equals-bid-number",
+      "expect": "joined",
+      "method": "exact",
+      "notice": {
+        "request_id": "20160317006",
+        "pin": "1600265",
+        "type_of_notice_description": "Solicitation",
+        "short_title": "BEVERAGES",
+        "start_date": "2016-03-22",
+        "agency_name": "Citywide Administrative Services"
+      },
+      "bid": {
+        "bid_number": "1600265",
+        "bid_title": "BEVERAGES",
+        "bid_opening_date": "2016-04-14",
+        "bidder_count": 8
+      }
+    },
+    {
+      "id": "joined-agency-prefix-asphalt",
+      "expect": "joined",
+      "method": "agency_prefix_bid_suffix",
+      "notice": {
+        "request_id": "20151222024",
+        "pin": "8571500664",
+        "type_of_notice_description": "Solicitation",
+        "short_title": "AGGREGATES, HOT MIX ASPHALT(HWYS)",
+        "start_date": "2016-01-05",
+        "agency_name": "Citywide Administrative Services"
+      },
+      "bid": {
+        "bid_number": "1500664",
+        "bid_title": "AGGREGATES, HOT MIX ASPHALT(HWYS)",
+        "bid_opening_date": "2016-01-27",
+        "bidder_count": 2
+      }
+    },
+    {
+      "id": "unjoinable-modern-award",
+      "expect": "unjoined",
+      "method": null,
+      "notice": {
+        "request_id": "20260723031",
+        "pin": "81626W0043001",
+        "type_of_notice_description": "Award",
+        "short_title": "Catering Services",
+        "start_date": "2026-07-30",
+        "agency_name": null
+      },
+      "bid": null,
+      "gap_class": "not_yet_ingested",
+      "gap_note": "Bid Tabulations Historical has no openings after 2021-03-24; modern PASSPort-era PINs do not encode a 7-digit bid_number suffix that appears in 9k82-ys7w."
+    },
+    {
+      "id": "rejected-title-unique-false-positive",
+      "expect": "unjoined",
+      "method": null,
+      "note": "Title-only uniqueness would pair award PIN 8571500516 (PALLETS, WOODEN, 2016) with bid 2000141 from a later year — rejected as weak.",
+      "notice": {
+        "request_id": "20160105015",
+        "pin": "8571500516",
+        "type_of_notice_description": "Award",
+        "short_title": "PALLETS, WOODEN",
+        "start_date": "2016-01-12"
+      },
+      "weak_false_match_bid_number": "2000141"
+    }
+  ]
+}
