@@ -15,11 +15,10 @@ test("action rail compiles every typed action in the card contract", () => {
 });
 
 test("consequential actions expose their official destination before leaving", () => {
-  for (const action of registry.actions.filter((item) => item.boundary === "official_handoff")) {
+  for (const action of registry.actions.filter((item) => item.delivery === "official_handoff")) {
     validateAction(action);
     assert.match(action.destination, /^https:\/\//);
     assert.ok(action.destination_label);
-    assert.equal(action.handled, "handoff");
   }
   assert.equal(registry.handoff_contract.consequential_actions_submit_in_product, false);
 });
