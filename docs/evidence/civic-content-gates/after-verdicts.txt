@@ -1,0 +1,65 @@
+# Gate verdicts AFTER extraction
+# captured: 2026-07-30T11:17:34Z
+# commit: (see git log at capture time) (pre-commit working tree)
+
+=== link_text ===
+cmd: python3 test/standards/link_text.py
+exit: 0
+(node:52422) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+link-text lint OK — no generic link text across 7 page(s)
+---
+=== i18n_keys ===
+cmd: python3 test/standards/i18n_keys.py
+exit: 0
+i18n keys OK — en: 1138 keys; es: full coverage (1138 keys); zh-Hans: full coverage (1138 keys); ru: full coverage (1158 keys); bn: full coverage (1138 keys); ht: full coverage (1138 keys); ko: full coverage (1138 keys); fr: full coverage (1138 keys); pl: full coverage (1158 keys); ar: full coverage (1138 keys); ur: full coverage (1138 keys)
+---
+=== nyc_copy_lint ===
+cmd: python3 test/standards/nyc_copy_lint.py --gate
+exit: 0
+(node:52453) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+nyc_copy_lint: 14 finding(s) across 7 page(s) + i18n.js (0 not in the allowlist)
+  currency: 14
+
+nyc_copy_lint --gate OK — all findings allowlisted, 0 new, 0 stale
+---
+=== heading_punctuation ===
+cmd: python3 test/standards/heading_punctuation.py
+exit: 0
+(node:52471) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+heading-punctuation gate OK — h1/h2/h3 across 7 page(s) clean (changelog's archival release titles carved out)
+---
+=== page_metadata ===
+cmd: python3 test/standards/page_metadata.py
+exit: 0
+page-metadata gate OK — 7 page(s), all titles <60 chars with '·' separator, all descriptions 120-160 chars
+---
+=== genai_disclosure ===
+cmd: python3 test/standards/genai_disclosure.py
+exit: 0
+(node:52486) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+genai-disclosure gate OK — about.html discloses AI-drafted site copy (en+es)
+---
+=== reading_level_ratchet ===
+cmd: python3 test/standards/reading_level.py --root site --mode ratchet --baseline site/reading-level-baseline.json --format table about.html api.html changelog.html data.html index.html stats.html standards.html
+exit: 0
+STATUS        PATH                             GRADE     MAX  REASON
+--------------------------------------------------------------------
+pass          about.html                        6.69       7  grade 6.69 meets committed baseline 6.69
+pass          api.html                          9.87       7  grade 9.87 meets committed baseline 9.87 (still over preset target 7, tracked for future ratchet)
+pass          changelog.html                   10.15       7  grade 10.15 meets committed baseline 10.32 (still over preset target 7, tracked for future ratchet)
+pass          data.html                         6.99       7  grade 6.99 meets committed baseline 6.99
+pass          index.html                       12.79       7  grade 12.79 meets committed baseline 15.31 (still over preset target 7, tracked for future ratchet)
+pass          stats.html                        6.94       7  grade 6.94 meets committed baseline 6.98
+pass          standards.html                    8.92       7  grade 8.92 meets committed baseline 9.30 (still over preset target 7, tracked for future ratchet)
+---
+=== reading_level_card_path ===
+cmd: python3 test/standards/reading_level.py --max-grade 7 about.html
+exit: 0
+STATUS        PATH                             GRADE     MAX  REASON
+--------------------------------------------------------------------
+pass          about.html                        6.69     7.0  grade 6.69 within preset max 7.0
+---

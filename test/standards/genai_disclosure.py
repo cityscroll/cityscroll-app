@@ -1,53 +1,14 @@
 #!/usr/bin/env python3
-"""GenAI content-disclosure presence gate (w10-05) — NYC Web Content Style Guide GenAI
-tools section: "You should also disclose the use of generative AI to your audience."
-
-about.html already disclosed Claude for Ask-box query processing (the Privacy section),
-but nothing disclosed that the site's own COPY is AI-drafted with human review — and this
-repo's copy substantially is. attribution.py-style presence check (pure text, no browser)
-so a future copy edit can't silently drop the disclosure.
-"""
-import json
-import pathlib
-import subprocess
+"""GenAI content-disclosure presence gate — thin wrapper over civic_content_gates.genai_disclosure."""
 import sys
+from pathlib import Path
 
-ROOT = pathlib.Path(__file__).parents[2]
-SITE_ROOT = ROOT / "site"
+_REPO = Path(__file__).resolve().parents[2]
+_PKG = _REPO / "civic-content-gates"
+if str(_PKG) not in sys.path:
+    sys.path.insert(0, str(_PKG))
 
-
-def load_strings():
-    out = subprocess.check_output(
-        ["node", "-e",
-         "global.window={};require(process.argv[1]);console.log(JSON.stringify(window.STRINGS))",
-         str(SITE_ROOT / "i18n.js")], text=True)
-    return json.loads(out)
-
-
-def main():
-    failures = []
-    about = (SITE_ROOT / "about.html").read_text(encoding="utf-8")
-
-    if 'data-i18n="about_h_content"' not in about:
-        failures.append("about.html: missing the \"About our content\" section (about_h_content)")
-    if 'data-i18n-html="about_p_content_html"' not in about:
-        failures.append("about.html: missing the content-disclosure paragraph (about_p_content_html)")
-
-    strings = load_strings()
-    for lang in ("en", "es"):
-        text = strings.get(lang, {}).get("about_p_content_html", "")
-        if not text:
-            failures.append(f"i18n.js: about_p_content_html missing for lang={lang!r}")
-        elif "Claude" not in text and "IA" not in text and "AI" not in text:
-            failures.append(f"i18n.js: about_p_content_html ({lang}) doesn't name the AI assistant used")
-
-    if failures:
-        print("genai-disclosure gate FAILED:", file=sys.stderr)
-        for f in failures:
-            print(f"  {f}", file=sys.stderr)
-        sys.exit(1)
-    print("genai-disclosure gate OK — about.html discloses AI-drafted site copy (en+es)")
-
+from civic_content_gates.genai_disclosure import main  # noqa: E402
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main(site_root=_REPO / "site"))
