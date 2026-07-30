@@ -285,7 +285,7 @@ test("subsidy detail: unmatched IDA hearing renders specific gap, never generic 
   const html = subsidyLifecycleHTML(unmatchedSubsidy, notice);
   assert.match(html, /Subsidy lifecycle/);
   assert.match(html, /does not publish a linked subsidy project for/);
-  assert.match(html, /20260617040|INDUSTRIAL DEVELOPMENT|would appear on the NYCIDA|No matching NYCIDA/i);
+  assert.match(html, /20260617040|INDUSTRIAL DEVELOPMENT|would appear on the Build NYC|Industrial Development Agency|No matching NYCIDA/i);
   assert.doesNotMatch(html, />\s*unknown\s*</i);
 });
 

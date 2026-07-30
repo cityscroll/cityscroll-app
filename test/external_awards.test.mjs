@@ -64,7 +64,7 @@ const T = (key, vars) => {
     external_awards_possible_note: "Possible awards, matched by vendor and award date — not a confirmed City Record match.",
     external_awards_updated: "Source updated {date}.",
     external_award_none_note_html: "Not yet shown here — matching awards live in {source}.",
-    external_award_nycha_none_note_html: "Not yet shown here — NYCHA registrations live in {link}.",
+    external_award_nycha_none_note_html: "Not yet shown here — Housing Authority registrations live in {link}.",
     external_award_nycha_note_html: "{link} award matched by exact PIN <code>{pin}</code>.",
     agency_awards_elsewhere_note: "This agency files its contract awards with {source}, not the City Record.",
     agency_awards_none_open_data_html: "The city does not publish this agency's awards in an open dataset — they would appear in NYS Authorities Budget Office filings or Checkbook NYC if released. <a href=\"about.html#external-awards-sources\">See what we checked</a>.",
@@ -269,7 +269,7 @@ test("externalAwardHTML: NYCHA with no match, but a usable PIN, uses not-yet-ing
   const externalAwardHTML = buildExternalAwardHTML();
   const eligible = { type_of_notice_description: "Solicitation", pin: "510394" };
   const html = externalAwardHTML({ coverage: "exact", matches: [] }, eligible);
-  assert.match(html, /Not yet shown here — NYCHA registrations live in/);
+  assert.match(html, /Not yet shown here — Housing Authority registrations live in/);
   assert.match(html, /<a href="https:\/\/www\.checkbooknyc\.com\/nycha_contracts\/datasource\/checkbook_nycha\/agency\/162"[^>]*>Checkbook NYC/);
 });
 
