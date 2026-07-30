@@ -111,9 +111,11 @@ EXTERNAL_HREF_EXPRS = (
     "${lifecycleSourceUrl}",          # Checkbook NYC contract search or matched contract
     "${CHECKBOOK_SPENDING_URL}",      # Checkbook NYC spending search
     "${CHECKBOOK_SEARCH_URL}",        # Checkbook NYC contract search (registration gap CTA)
+    "${CURRENT_SOLICITATIONS_URL}",   # NYC Open Data Current Solicitations (3khw-qi8f) landing page
     "${contractLink}",                # Checkbook NYC smart_search for a matched contract id
     "${escUiHtml(entry.source.url)}", # subsidy lifecycle: official Build NYC / NYCIDA document
     "${escUiHtml(d.url)}",            # council meeting outcomes: Legistar supporting document
+    "${escUiHtml(url)}",              # solicitation package document from Current Solicitations join
     "${escUiHtml(href)}",         # rule-lifecycle chip + comment action: NYC Rules comment/adoption page
     # Explicit same-origin exception: this action promises to open the canonical shareable
     # search separately, so it follows the new-tab safety/accessibility checks below.

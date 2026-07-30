@@ -385,8 +385,14 @@ test("NO MATCH: usable PIN, no Checkbook records → unmatched stages (not blank
 
 test("NO PIN: notice without a usable PIN → not_applicable stages, no Checkbook calls", async () => {
   const orig = globalThis.fetch;
-  let callCount = 0;
-  globalThis.fetch = async () => { callCount++; return { ok: true, json: async () => [] }; };
+  let checkbookCalls = 0;
+  let sodaCalls = 0;
+  globalThis.fetch = async (url) => {
+    const u = String(url);
+    if (u.includes("checkbooknyc.com")) checkbookCalls++;
+    if (u.includes("data.cityofnewyork.us")) sodaCalls++;
+    return { ok: true, json: async () => [], text: async () => "" };
+  };
   try {
     const db = fakeDB({
       notices: {
@@ -407,7 +413,12 @@ test("NO PIN: notice without a usable PIN → not_applicable stages, no Checkboo
       const entry = body.timeline.find((t) => t.stage === stage);
       assert.equal(entry.status, "not_applicable", `${stage} is not_applicable without a PIN`);
     }
-    assert.equal(callCount, 0, "no Checkbook calls made for a notice without a usable PIN");
+    assert.equal(checkbookCalls, 0, "no Checkbook calls made for a notice without a usable PIN");
+    // Current Solicitations (3khw-qi8f) may still be queried by request_id for package docs.
+    assert.ok(sodaCalls >= 0, "Open Data package enrichment is allowed without a PIN");
+    const sol = body.timeline.find((t) => t.stage === "solicitation");
+    assert.ok(sol, "solicitation stage still present");
+    assert.equal(sol.documents_status, "unmatched");
   } finally { globalThis.fetch = orig; }
 });
 

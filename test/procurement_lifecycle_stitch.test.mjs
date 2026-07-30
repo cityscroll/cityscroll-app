@@ -73,6 +73,7 @@ const sandbox = new Function(
   extractConst("PASSPORT_CONTRACTS_URL") + "\n" +
   extractConst("PASSPORT_RFX_URL") + "\n" +
   extractConst("LIFECYCLE_STAGE_ORDER") + "\n" +
+  extractConst("CURRENT_SOLICITATIONS_URL") + "\n" +
   extractFn("lifecycleStageLabel") + "\n" +
   extractFn("lifecycleAmount") + "\n" +
   extractFn("lifecycleMoney") + "\n" +
@@ -81,6 +82,7 @@ const sandbox = new Function(
   extractFn("lifecycleHasLaterMatched") + "\n" +
   extractFn("lifecyclePublicStatus") + "\n" +
   extractFn("lifecycleSourceLink") + "\n" +
+  extractFn("lifecycleDocumentsHTML") + "\n" +
   extractFn("lifecycleStageHTML") + "\n" +
   extractFn("lifecycleTimelineHTML") + "\n" +
   extractFn("lifecycleDollarsHTML") + "\n" +
