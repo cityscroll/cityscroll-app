@@ -17,9 +17,12 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   artifact by `tools/stamp_i18n_assets.py` and verified by `test/standards/i18n_refs.py`—do not
   commit generated hashes to source pages or `i18n.js`. The CI gates covering this discipline are
   named `Stray-English guard` and `Accessibility + language gate`.
-- The static site is GitHub Pages, not Cloudflare — only the API (`api.crol-list.org`) and the
-  `cityscroll.org` parallel-domain mirror (`worker/src/mirror.mjs`) are Cloudflare Workers. Don't
-  assume a Cloudflare Pages project exists for the frontend.
+- Static hosting is dual during migration: GitHub Pages remains the public production origin
+  (`CNAME` → `crol-list.org`, mirrored to `cityscroll.org` via `worker/src/mirror.mjs`) while
+  Cloudflare Pages project `cityscroll` serves the parallel host at `https://cityscroll.pages.dev`
+  (workflow `Deploy Cloudflare Pages`, helper `tools/ensure_stable_pages.mjs`). Cutover steps are
+  in `docs/hosting-cutover-runbook.md`; do not change DNS from CI. The API Worker stays on
+  Cloudflare either way.
 - Post-deploy live-URL smoke (`tools/live_url_smoke.mjs`) runs after Deploy site and Deploy worker
   on `main`. It probes both public apex hosts plus a deep route for HTTP 200 with real content,
   with a bounded retry window for Pages/Fastly redirect-cache lag. Fixture-backed unit tests live

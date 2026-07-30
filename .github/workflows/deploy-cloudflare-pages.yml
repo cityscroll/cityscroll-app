@@ -1,0 +1,94 @@
+# Deploys the verified static site to Cloudflare Pages in parallel with GitHub Pages.
+# Apex/www hostnames stay on the current production path until the cutover runbook.
+name: Deploy Cloudflare Pages
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cloudflare-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy parallel Cloudflare Pages host
+    if: >-
+      github.event_name != 'pull_request' ||
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Ensure stable Pages project
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+        run: node tools/ensure_stable_pages.mjs project
+      - uses: actions/configure-pages@v5
+      - name: Build verified site artifact
+        uses: ./.github/actions/build-site
+      - name: Deploy to Cloudflare Pages
+        id: deploy
+        uses: cloudflare/wrangler-action@v3.14.1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          wranglerVersion: "4.110.0"
+          command: >-
+            pages deploy _site
+            --project-name=cityscroll
+            --branch=main
+            --commit-hash=${{ github.sha }}
+            --commit-message="Parallel static deploy"
+            --commit-dirty=false
+      - name: Publish deployment receipt
+        env:
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment-url }}
+          PAGES_URL: https://cityscroll.pages.dev
+        shell: bash
+        run: |
+          {
+            echo "## Cloudflare Pages (parallel host)"
+            echo
+            echo "Production alias: [$PAGES_URL]($PAGES_URL)"
+            echo
+            echo "Immutable deployment: [$DEPLOYMENT_URL]($DEPLOYMENT_URL)"
+            echo
+            echo "GitHub Pages remains the public production origin until the cutover runbook is executed."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  smoke:
+    name: Parallel host live URL smoke
+    needs: deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Smoke cityscroll.pages.dev
+        run: >-
+          node tools/live_url_smoke.mjs
+          --base-url https://cityscroll.pages.dev
+          --timeout-ms 720000
+          --interval-ms 20000
+      - name: Route inventory parity vs live site
+        run: >-
+          node tools/pages_route_parity.mjs
+          --reference https://cityscroll.org
+          --candidate https://cityscroll.pages.dev
+          --out docs/evidence/cloudflare-pages-route-parity.md
+      - name: Upload parity report
+        uses: actions/upload-artifact@v4
+        with:
+          name: cloudflare-pages-route-parity
+          path: docs/evidence/cloudflare-pages-route-parity.md
