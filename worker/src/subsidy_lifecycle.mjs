@@ -48,20 +48,59 @@ function parseEmbeddedProjectJson(text) {
   return [];
 }
 
+// Cloudflare challenge HTML is not a project feed — treat as source failure so callers can
+// fall back to City Record notice derivation instead of caching an empty "ok" feed forever.
+function looksLikeBotChallenge(text) {
+  return /just a moment|cf-browser-verification|challenge-platform|_cf_chl|cdn-cgi\/challenge/i
+    .test(String(text || ""));
+}
+
 async function fetchSubsidyProjects() {
   let text;
   try {
-    const r = await fetch(SUBSIDY_SOURCE, { headers: { Accept: "application/json, text/html" } });
+    const r = await fetch(SUBSIDY_SOURCE, {
+      headers: {
+        Accept: "application/json, text/html",
+        "User-Agent": "CityScrollBot/1.0 (+https://cityscroll.org; subsidy-lifecycle)",
+      },
+    });
     if (!r.ok) return { projects: [], ok: false, sourceError: `Feed returned ${r.status}` };
     text = await r.text();
   } catch (error) {
     return { projects: [], ok: false, sourceError: String(error?.message || error) };
   }
 
+  if (looksLikeBotChallenge(text)) {
+    return { projects: [], ok: false, sourceError: "Feed blocked by bot challenge" };
+  }
+
   const jsonRows = parseJsonishText(text);
   const scriptRows = jsonRows.length ? jsonRows : parseEmbeddedProjectJson(text);
   const projects = parseNYCIDAProjects(Array.isArray(scriptRows) ? scriptRows : []);
+  // Empty body with no project JSON is a soft failure when the page is the docs landing
+  // shell rather than a machine-readable feed (common when the host changes markup).
+  if (!projects.length && !jsonRows.length && !scriptRows.length) {
+    return { projects: [], ok: false, sourceError: "Feed returned no project records" };
+  }
   return { projects, ok: true };
+}
+
+// Runtime safety net if migration 0005 was not applied (same posture as PASSPort D1).
+export async function ensureSubsidySchema(env) {
+  if (!env?.DB) return;
+  try {
+    await env.DB.prepare(`
+      CREATE TABLE IF NOT EXISTS subsidy_lifecycle (
+        request_id  TEXT PRIMARY KEY,
+        agency      TEXT,
+        lifecycle   TEXT,
+        computed_at TEXT
+      )
+    `).run();
+    await env.DB.prepare(
+      "CREATE INDEX IF NOT EXISTS idx_subsidy_lifecycle_agency ON subsidy_lifecycle(agency)",
+    ).run();
+  } catch { /* non-fatal */ }
 }
 
 export async function fetchNoticeRow(env, requestId) {
@@ -87,11 +126,15 @@ export async function fetchNoticeRow(env, requestId) {
 async function cacheGet(env, requestId) {
   if (!env.DB) return null;
   try {
+    await ensureSubsidySchema(env);
     const row = await env.DB.prepare(
       "SELECT lifecycle FROM subsidy_lifecycle WHERE request_id = ?",
     ).bind(requestId).first();
     if (row && row.lifecycle) {
       const lifecycle = JSON.parse(row.lifecycle);
+      // Never serve a permanently cached feed-unavailable row — recompute so City Record
+      // derivation or a recovered feed can replace the operational error.
+      if (lifecycle && lifecycle.source_status === "unavailable") return null;
       if (lifecycle && Array.isArray(lifecycle.timeline)) return lifecycle;
     }
   } catch { /* miss */ }
@@ -99,8 +142,11 @@ async function cacheGet(env, requestId) {
 }
 
 async function cachePut(env, requestId, agency, lifecycle) {
-  if (!env.DB) return;
+  if (!env.DB || !lifecycle) return;
+  // Do not materialize unavailable — genuine transient failures must not stick forever.
+  if (lifecycle.source_status === "unavailable") return;
   try {
+    await ensureSubsidySchema(env);
     await env.DB.prepare(
       `INSERT OR REPLACE INTO subsidy_lifecycle (request_id, agency, lifecycle, computed_at)
          VALUES (?, ?, ?, ?)`,
@@ -112,12 +158,24 @@ export async function computeLifecycle(env, requestId, noticeRow) {
   const notice = noticeRow === undefined ? await fetchNoticeRow(env, requestId) : noticeRow;
   if (!notice) return { lifecycle: null, ok: false, sourceUnavailable: false };
   const { projects, ok } = await fetchSubsidyProjects();
-  if (!ok) {
-    const fallback = assembleSubsidyLifecycle([notice], [])[0] ?? null;
-    if (fallback) fallback.source_status = "unavailable";
-    return { lifecycle: fallback, ok: false, sourceUnavailable: true };
+  // assembleSubsidyLifecycle derives a City Record hearing project for IDA notices when
+  // the Build NYC feed is empty or blocked — that is a real public join, not "unavailable".
+  const [lifecycle] = assembleSubsidyLifecycle([notice], ok ? projects : []);
+  if (!lifecycle) return { lifecycle: null, ok: false, sourceUnavailable: !ok };
+  if (!ok && !lifecycle.join?.matched) {
+    // Feed down and no notice-derived hearing row → honest operational unavailable.
+    lifecycle.source_status = "unavailable";
+    return { lifecycle, ok: false, sourceUnavailable: true };
   }
-  const [lifecycle] = assembleSubsidyLifecycle([notice], projects);
+  // Feed down but City Record hearing matched: partial source, not a blank failure.
+  if (!ok && lifecycle.join?.matched) {
+    lifecycle.source_status = "ok";
+    lifecycle.join = {
+      ...lifecycle.join,
+      feed_status: "unavailable",
+      feed_note: "Build NYC document feed unreachable; hearing stage from City Record notice.",
+    };
+  }
   return { lifecycle, ok: true, sourceUnavailable: false };
 }
 
@@ -126,8 +184,7 @@ export async function getOrCompute(env, requestId) {
   if (cached) return { lifecycle: cached, ok: true, sourceUnavailable: cached.source_status === "unavailable" };
 
   const { lifecycle, ok, sourceUnavailable } = await computeLifecycle(env, requestId);
-  // Cache matched and explicit-gap rows so the notice detail always gets a structured
-  // lifecycle (join.matched false, source_status unavailable, etc.) — never a blank.
+  // Cache matched and explicit taxonomy-gap rows; never unavailable (see cachePut).
   if (lifecycle) {
     const row = await fetchNoticeRow(env, requestId).catch(() => null);
     await cachePut(env, requestId, row && row.agency_name, lifecycle);

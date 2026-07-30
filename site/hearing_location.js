@@ -227,15 +227,49 @@ function normalizeHearingRow(row) {
     published_at: row.start_date || null, decides: hearingDecision(row, body),
     affects: audience ? [audience[1]] : [], affected_area: hearingAffectedArea(row),
     venue: hearingVenue(row),
-    participation: {
-      links: hearingUnique(body.match(HEARING_URL_RE) || []).slice(0, 8).map(function (url) {
-        return { label: /\b(?:zoom|webex|teams|meet\.google)\b/i.test(url) ? "Join online" : "Participation link", url: url.replace(/[.,;]+$/, "") };
-      }),
-      emails: hearingUnique(Array.from(body.matchAll(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi)).map(function (match) { return match[0]; })).slice(0, 4),
-      phones: hearingUnique(Array.from(body.matchAll(/(?:\+?1[-.\s]?)?\(?\d{3}\)?[-.\s]\d{3}[-.\s]\d{4}/g)).map(function (match) { return match[0]; })).slice(0, 4),
-      source_url: source,
-    },
+    participation: hearingParticipationFromBody(body, source),
     source_url: source, description: body.slice(0, 1200),
+  };
+}
+// Hand-synced with worker/src/lib/hearings.mjs participationFromRow: strip trailing
+// punctuation before dedupe so "…hearings," and "…hearings" collapse; one affordance.
+function hearingNormalizeParticipationUrl(url) {
+  return String(url || "").replace(/[.,;:)\]]+$/g, "").trim();
+}
+function hearingParticipationUrlKey(url) {
+  try {
+    var parsed = new URL(url);
+    return (parsed.host + parsed.pathname).toLowerCase().replace(/\/$/, "");
+  } catch (e) {
+    return String(url || "").toLowerCase().replace(/\/$/, "");
+  }
+}
+function hearingParticipationLabel(url) {
+  if (/\b(?:zoom|webex|teams|meet\.google)\b/i.test(url)) return "Join online";
+  if (/nycida-board-meetings-public-hearings/i.test(url) || /edc\.nyc\/nycida(?:[/?#]|$)/i.test(url)) {
+    return "IDA meetings page";
+  }
+  return "Participation link";
+}
+function hearingParticipationFromBody(body, source) {
+  var cleaned = (String(body || "").match(HEARING_URL_RE) || []).map(hearingNormalizeParticipationUrl).filter(Boolean);
+  var byKey = Object.create(null);
+  cleaned.forEach(function (url) {
+    var key = hearingParticipationUrlKey(url);
+    if (!key || byKey[key]) return;
+    byKey[key] = { label: hearingParticipationLabel(url), url: url };
+  });
+  var ranked = Object.keys(byKey).map(function (k) { return byKey[k]; }).sort(function (a, b) {
+    var aJoin = a.label === "Join online" ? 0 : 1;
+    var bJoin = b.label === "Join online" ? 0 : 1;
+    if (aJoin !== bJoin) return aJoin - bJoin;
+    return b.url.length - a.url.length;
+  });
+  return {
+    links: ranked.slice(0, 1),
+    emails: hearingUnique(Array.from(String(body || "").matchAll(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi)).map(function (match) { return match[0]; })).slice(0, 4),
+    phones: hearingUnique(Array.from(String(body || "").matchAll(/(?:\+?1[-.\s]?)?\(?\d{3}\)?[-.\s]\d{3}[-.\s]\d{4}/g)).map(function (match) { return match[0]; })).slice(0, 4),
+    source_url: source,
   };
 }
 function hearingMatchesArea(record, filter) {
