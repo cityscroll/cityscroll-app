@@ -13,6 +13,7 @@ import {
   normId,
 } from "./passport_join.mjs";
 import { CONTRACTS_PORTAL, RFX_PORTAL } from "./passport_parse.mjs";
+import { recoverPaymentFromRegisteredJoin } from "./checkbook_lifecycle.mjs";
 
 export { buildEpinIndex, joinPinToEpin, normId };
 
@@ -69,9 +70,16 @@ export function enrichLifecycleWithPassport(lifecycle, notice, passport = {}) {
       ? { status: "ambiguous", join_method: rfxJoin?.method || null, candidates: matchedRfx.map(slimRfx) }
       : null;
 
-  return {
+  // PASSPort may fill registered after Checkbook left payment unknown/unavailable.
+  // Recover paid-to-date from registration so the payments card and Follow-the-Dollars
+  // agree (field case #notice/20240723114: join had $4.02M, payments said unavailable).
+  const withPayment = recoverPaymentFromRegisteredJoin({
     ...lifecycle,
     timeline,
+  });
+
+  return {
+    ...withPayment,
     passport: {
       contract_join: contractJoin,
       rfx_join: rfxJoin,

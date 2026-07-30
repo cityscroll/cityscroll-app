@@ -898,6 +898,9 @@ const STRINGS = {
     // Payments card summary when Checkbook join exists (detail lives in Follow the dollars).
     lifecycle_payment_summary_html: "{paid} paid of {committed} committed",
     lifecycle_payment_zero_lag_html: "Payments lag invoicing — $0 paid on a freshly registered contract is normal.",
+    // Term ended with underrun: committed is a registration ceiling, not a remaining bill
+    // (field case #notice/20230728114 — 57% of ceiling is complete Checkbook data).
+    lifecycle_committed_ceiling_note_html: "Committed is a registration ceiling, not a remaining balance due — human-services contracts often close below the registered amount.",
     // Three-state honesty: spending feed error must not look like verified $0.
     lifecycle_payment_unavailable_html: "Payment data unavailable right now — Checkbook spending could not be checked.",
     lifecycle_dollars_paid_unavailable_html: "Unavailable right now",

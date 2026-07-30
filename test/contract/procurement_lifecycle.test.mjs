@@ -12,6 +12,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
   assembleLifecycle,
+  aggregateContractsById,
   parseContractTransactions,
   parseSpendingTransactions,
   classifyStage,
@@ -327,6 +328,57 @@ test("ambiguous: multiple registered contracts list candidates", () => {
   const reg = result.timeline.find((t) => t.stage === "registered");
   assert.equal(reg.status, "ambiguous");
   assert.ok(reg.detail.candidates);
+  assert.equal(reg.detail.candidates.length, 2);
+});
+
+// Field case #notice/20231222103: Checkbook returns 7 Contracts rows for one
+// prime_contract_id (Prime Vendor + Sub Vendor slices). Distinct-id collapse
+// must yield a confident match; true multi-id stays ambiguous.
+test("registered: same-id Prime+Sub Vendor slices collapse to one matched contract", () => {
+  const notice = {
+    request_id: "20231222103",
+    agency_name: "Homeless Services",
+    type_of_notice_description: "Award",
+    start_date: "2023-12-28",
+    short_title: "City Sanctuary facility",
+    pin: "07123E0076001",
+    vendor_name: "Housing Options",
+    contract_amount: "24438023",
+  };
+  const registered = [
+    { id: "CT107120248803393", vendor: "HOUSING OPTIONS", current: 24438023, original: 24438023, spent: 14496646.77, registered: "2023-12-21" },
+    { id: "CT107120248803393", vendor: "HOUSING OPTIONS", current: 0, original: 0, spent: 0, registered: "2023-12-21" },
+    { id: "CT107120248803393", vendor: "HOUSING OPTIONS", current: 0, original: 0, spent: 0, registered: "2023-12-21" },
+    { id: "CT107120248803393", vendor: "HOUSING OPTIONS", current: 0, original: 0, spent: 0, registered: "2023-12-21" },
+    { id: "CT107120248803393", vendor: "HOUSING OPTIONS", current: 0, original: 0, spent: 0, registered: "2023-12-21" },
+    { id: "CT107120248803393", vendor: "HOUSING OPTIONS", current: 0, original: 0, spent: 0, registered: "2023-12-21" },
+    { id: "CT107120248803393", vendor: "HOUSING OPTIONS", current: 0, original: 0, spent: 0, registered: "2023-12-21" },
+  ];
+  assert.equal(aggregateContractsById(registered).length, 1);
+  const result = assembleLifecycle(notice, [], registered, [], {
+    lookupStatus: { pending: "ok", registered: "ok", spending: "ok" },
+  });
+  const reg = result.timeline.find((t) => t.stage === "registered");
+  assert.equal(reg.status, "matched");
+  assert.equal(reg.detail.contract_id, "CT107120248803393");
+  assert.equal(reg.detail.current_amount, 24438023);
+});
+
+test("registered: ≥2 distinct contract ids still list ambiguous candidates", () => {
+  const notice = {
+    request_id: "X", agency_name: "A", type_of_notice_description: "Solicitation",
+    start_date: "2025-01-01", short_title: "S", pin: "P",
+  };
+  const registered = [
+    { id: "C1", registered: "2025-04-01", current: 1000000, vendor: "V1" },
+    { id: "C1", registered: "2025-04-01", current: 0, vendor: "V1" },
+    { id: "C2", registered: "2025-04-05", current: 2000000, vendor: "V2" },
+  ];
+  const result = assembleLifecycle(notice, [], registered, [], {
+    lookupStatus: { pending: "ok", registered: "ok", spending: "ok" },
+  });
+  const reg = result.timeline.find((t) => t.stage === "registered");
+  assert.equal(reg.status, "ambiguous");
   assert.equal(reg.detail.candidates.length, 2);
 });
 

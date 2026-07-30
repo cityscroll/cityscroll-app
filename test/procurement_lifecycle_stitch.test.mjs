@@ -88,6 +88,9 @@ const sandbox = new Function(
   extractConst("LIFECYCLE_DOLLARS_ANCHOR") + "\n" +
   extractFn("lifecycleDollarsFocusHref") + "\n" +
   extractFn("lifecyclePaymentState") + "\n" +
+  extractFn("lifecycleResolvedPayment") +
+  extractFn("lifecycleTermEnded") +
+  extractFn("lifecycleCommittedUnderrun") + "\n" +
   extractFn("lifecyclePaymentSummaryHTML") + "\n" +
   extractFn("lifecycleSourceLink") + "\n" +
   extractFn("lifecycleDocumentsHTML") + "\n" +
@@ -150,6 +153,9 @@ try {
     extractConst("LIFECYCLE_DOLLARS_ANCHOR") +
     extractFn("lifecycleDollarsFocusHref") +
     extractFn("lifecyclePaymentState") +
+    extractFn("lifecycleResolvedPayment") +
+  extractFn("lifecycleTermEnded") +
+  extractFn("lifecycleCommittedUnderrun") +
     extractFn("lifecyclePaymentSummaryHTML") +
     extractFn("lifecycleSourceLink") +
     extractFn("lifecycleDocumentsHTML") +

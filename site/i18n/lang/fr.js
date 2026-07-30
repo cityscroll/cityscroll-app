@@ -674,6 +674,7 @@
     lifecycle_paid_to_date_html: "Payé à ce jour : {amount}",
     lifecycle_payment_summary_html: "{paid} payés sur {committed} engagés",
     lifecycle_payment_zero_lag_html: "Les paiements suivent la facturation — 0 $ payé sur un contrat fraîchement enregistré est normal.",
+    lifecycle_committed_ceiling_note_html: "Le montant engagé est un plafond d'enregistrement, pas un solde restant dû — les contrats de services humains se clôturent souvent en dessous du montant enregistré.",
     lifecycle_payment_unavailable_html: "Données de paiement indisponibles pour le moment — les dépenses Checkbook n'ont pas pu être vérifiées.",
     lifecycle_dollars_paid_unavailable_html: "Indisponible pour le moment",
     lifecycle_payment_details_link_html: "<a href=\"{href}\">Suivre l'argent</a> pour le détail.",
