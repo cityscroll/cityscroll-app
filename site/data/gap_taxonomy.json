@@ -1,0 +1,432 @@
+{
+  "schema_version": 1,
+  "generated_document": "docs/gap-taxonomy.md",
+  "doctrine": {
+    "class_a": {
+      "id": "not_yet_ingested",
+      "register": "Not yet shown here — this lives in <source>.",
+      "meaning": "A public source publishes this field. The empty slot is this product's incomplete join or missing adapter, not a city publication failure."
+    },
+    "class_b": {
+      "id": "not_published",
+      "register": "The city does not publish this — it would appear in <where> if released.",
+      "meaning": "No public, joinable release of this field is known. Name the logical home when one exists."
+    },
+    "non_gap": {
+      "id": "operational",
+      "meaning": "Transient reach failures and join ambiguity keep their existing operational wording; they are not publication taxonomy."
+    }
+  },
+  "gaps": [
+    {
+      "id": "procurement-pending-unmatched",
+      "surface": "contract lifecycle · pending stage",
+      "i18n_key": "lifecycle_unmatched_pending_html",
+      "class": "not_yet_ingested",
+      "public_source": {
+        "name": "Checkbook NYC Contracts",
+        "access": "Checkbook NYC data feeds API, type Contracts",
+        "landing_page": "https://www.checkbooknyc.com/data-feeds/api",
+        "update_cadence": "Ongoing registrations",
+        "join_keys": ["prime_pin", "contract_id"]
+      },
+      "also_published": [
+        {
+          "name": "PASSPort Public contracts",
+          "access": "HTML portal (no stable Socrata dataset id)",
+          "landing_page": "https://a0333-passportpublic.nyc.gov/contracts.html",
+          "update_cadence": "Ongoing; refresh date shown on portal",
+          "join_keys": ["EPIN", "contract_id", "agency"]
+        }
+      ],
+      "notices_affected_estimate": "Award and solicitation notices with a usable PIN that lack a pending Checkbook row (thousands of Money-lens awards per year; ~5,100 Award notices since 2025-01-01).",
+      "evidence": "Checkbook Contracts feed is already queried for pending status. PASSPort Public returns HTTP 200 for /contracts.html and lists pending contracts independently. Unmatched after a successful Checkbook lookup is product join lag or a record that only appears in PASSPort."
+    },
+    {
+      "id": "procurement-registered-unmatched",
+      "surface": "contract lifecycle · registered stage",
+      "i18n_key": "lifecycle_unmatched_registered_html",
+      "class": "not_yet_ingested",
+      "public_source": {
+        "name": "Checkbook NYC Contracts",
+        "access": "Checkbook NYC data feeds API, type Contracts",
+        "landing_page": "https://www.checkbooknyc.com/data-feeds/api",
+        "update_cadence": "Ongoing registrations",
+        "join_keys": ["prime_pin", "contract_id", "registration_date"]
+      },
+      "also_published": [
+        {
+          "name": "PASSPort Public registered contracts",
+          "access": "HTML portal",
+          "landing_page": "https://a0333-passportpublic.nyc.gov/contracts.html",
+          "update_cadence": "Ongoing",
+          "join_keys": ["EPIN", "contract_id"]
+        }
+      ],
+      "notices_affected_estimate": "Awards with PIN where Comptroller registration has not yet joined (~subset of ~5,100 Award notices since 2025-01-01).",
+      "evidence": "Comptroller registration is public in Checkbook NYC and PASSPort Public. Site already queries Checkbook; empty slot means join not resolved for this PIN."
+    },
+    {
+      "id": "procurement-payment-unmatched",
+      "surface": "contract lifecycle · payment stage",
+      "i18n_key": "lifecycle_unmatched_payment_html",
+      "class": "not_yet_ingested",
+      "public_source": {
+        "name": "Checkbook NYC Spending",
+        "access": "Checkbook NYC data feeds API, type Spending",
+        "landing_page": "https://www.checkbooknyc.com/data-feeds/api",
+        "update_cadence": "Ongoing spending updates",
+        "join_keys": ["prime_pin", "contract_id", "check_amount", "check_date"]
+      },
+      "notices_affected_estimate": "Registered awards with no spending rows yet; also awards whose payments are not PIN-joinable.",
+      "evidence": "Checkbook Spending is the public payment ledger. Product already queries it by PIN."
+    },
+    {
+      "id": "procurement-no-pin",
+      "surface": "contract lifecycle · provenance when PIN missing",
+      "i18n_key": "lifecycle_no_pin_note_html",
+      "class": "not_published",
+      "would_appear_in": "Checkbook NYC registrations and payments (joined by PIN) if the notice published a Procurement ID",
+      "notices_affected_estimate": "Solicitations and awards that omit PIN in City Record Online (dg92-zbpx).",
+      "evidence": "City Record Online field `pin` is optional. Without it there is no deterministic Checkbook join key."
+    },
+    {
+      "id": "procurement-solicitation-documents",
+      "surface": "contract lifecycle · tender documents (not yet a separate slot UI)",
+      "i18n_key": null,
+      "class": "not_yet_ingested",
+      "public_source": {
+        "name": "PASSPort Public solicitations (RFx)",
+        "access": "HTML portal",
+        "landing_page": "https://a0333-passportpublic.nyc.gov/rfx.html",
+        "update_cadence": "Ongoing RFx releases",
+        "join_keys": ["EPIN", "procurement_name", "agency"]
+      },
+      "also_published": [
+        {
+          "name": "Current Solicitations (OCP)",
+          "access": "NYC Open Data Socrata dataset 3khw-qi8f",
+          "landing_page": "https://data.cityofnewyork.us/d/3khw-qi8f",
+          "update_cadence": "Frequent (Open Data metadata)",
+          "join_keys": ["pin", "request_id", "agency_name"]
+        }
+      ],
+      "notices_affected_estimate": "~1,550 Solicitation notices since 2025-01-01 plus live PASSPort RFx rows.",
+      "evidence": "PASSPort Public /rfx.html returns HTTP 200. Dataset 3khw-qi8f verified live with fields pin, request_id, due_date."
+    },
+    {
+      "id": "procurement-bid-counts",
+      "surface": "OCDS tender/numberOfTenderers · contestability package",
+      "i18n_key": null,
+      "class": "not_yet_ingested",
+      "public_source": {
+        "name": "Bid Tabulations (Historical)",
+        "access": "NYC Open Data Socrata dataset 9k82-ys7w",
+        "landing_page": "https://data.cityofnewyork.us/d/9k82-ys7w",
+        "update_cadence": "Historical / irregular (publisher notes historical tabulations)",
+        "join_keys": ["bid_number", "bid_title", "bid_opening_date"]
+      },
+      "notices_affected_estimate": "Competitive sealed bids with historical tabulations; incomplete for modern PASSPort-only solicitations.",
+      "evidence": "Dataset 9k82-ys7w verified live with bidder_name and bid_price columns. Modern bid counts are not consistently published as open tabular data outside PASSPort HTML."
+    },
+    {
+      "id": "procurement-ocp-recent-awards",
+      "surface": "award detail enrichment beyond City Record",
+      "i18n_key": null,
+      "class": "not_yet_ingested",
+      "public_source": {
+        "name": "Recent Contract Awards (OCP)",
+        "access": "NYC Open Data Socrata dataset qyyg-4tf5",
+        "landing_page": "https://data.cityofnewyork.us/d/qyyg-4tf5",
+        "update_cadence": "Frequent",
+        "join_keys": ["pin", "request_id", "agency_name"]
+      },
+      "notices_affected_estimate": "OCP-managed awards (subset of ~5,100 Award notices).",
+      "evidence": "Dataset qyyg-4tf5 verified live; City Record-shaped fields including pin and request_id."
+    },
+    {
+      "id": "procurement-planning-budget",
+      "surface": "OCDS planning/budget and planning/rationale",
+      "i18n_key": null,
+      "class": "not_published",
+      "would_appear_in": "agency budget justifications or MOCS procurement plans if released as stable machine data",
+      "notices_affected_estimate": "All procurement processes in the OCDS gap table.",
+      "evidence": "Wave-4 OCDS gap table marks planning/budget and planning/rationale as not_published. MOCS LL63 plans are disabled: no stable tabular endpoint (source contract status disabled)."
+    },
+    {
+      "id": "subsidy-stage-unmatched",
+      "surface": "subsidy lifecycle · per-stage empty slot",
+      "i18n_key": "subsidy_stage_unmatched_html",
+      "class": "not_yet_ingested",
+      "public_source": {
+        "name": "NYCIDA/Build NYC public documents",
+        "access": "HTML document portal",
+        "landing_page": "https://edc.nyc/about-nycedc/financial-public-documents-recordings",
+        "update_cadence": "Daily document posts (when published)",
+        "join_keys": ["project_name", "company_name", "project_address", "request_id when present"]
+      },
+      "notices_affected_estimate": "IDA/Build NYC/EDC-eligible City Record notices without a linked stage document.",
+      "evidence": "Source contract nycida-build-nyc-projects is live. Stage rows exist only when a public document is linked; empty stage is incomplete join to published project pages."
+    },
+    {
+      "id": "subsidy-outcome-absent",
+      "surface": "subsidy lifecycle · stage outcome",
+      "i18n_key": "subsidy_outcome_unknown_html",
+      "class": "not_published",
+      "would_appear_in": "Build NYC / NYCIDA project documents (board minutes, closing packages) if an explicit outcome field is released",
+      "notices_affected_estimate": "Linked subsidy projects whose public docs omit an explicit outcome string.",
+      "evidence": "Worker subsidy assembler marks outcome unknown when board_decision_outcome and similar fields are blank on the public project record."
+    },
+    {
+      "id": "subsidy-project-unmatched",
+      "surface": "subsidy lifecycle · no project join",
+      "i18n_key": "subsidy_unmatched_html",
+      "class": "not_published",
+      "would_appear_in": "NYCIDA/Build NYC financial public documents page if a project record is released for the notice",
+      "notices_affected_estimate": "IDA-related City Record notices without a public project page match.",
+      "evidence": "No batch open dataset maps City Record request_id to Build NYC project_id; joins are fuzzy on name/address."
+    },
+    {
+      "id": "subsidy-field-company-place-money",
+      "surface": "subsidy lifecycle · company / place / money fields",
+      "i18n_keys": [
+        "subsidy_company_unknown_html",
+        "subsidy_place_unknown_html",
+        "subsidy_money_unknown_html"
+      ],
+      "class": "not_published",
+      "would_appear_in": "the linked Build NYC project record if those fields are filled on publication",
+      "notices_affected_estimate": "Matched projects with sparse public fields.",
+      "evidence": "Fields are optional on public project pages; worker exposes explicit unknown reasons when blank."
+    },
+    {
+      "id": "meeting-outcomes-unmatched",
+      "surface": "Council meeting outcomes · no event join",
+      "i18n_key": "meeting_outcomes_unmatched_html",
+      "class": "not_yet_ingested",
+      "public_source": {
+        "name": "NYC Council Legistar API",
+        "access": "Legistar web API",
+        "landing_page": "https://council.nyc.gov/legislation/api/",
+        "update_cadence": "As meetings and votes change",
+        "join_keys": ["event title", "start_time", "agency/body", "matter file"]
+      },
+      "notices_affected_estimate": "Public Hearings and Meetings notices that are Council-related but fail title/date/agency confidence (~1,600+ Public Hearings notices since 2025-01-01; only a fraction are Council).",
+      "evidence": "Legistar API is a live source contract. Unmatched is incomplete fuzzy join, not absence of a Council system of record."
+    },
+    {
+      "id": "meeting-votes-absent",
+      "surface": "Council meeting outcomes · matter without votes",
+      "i18n_key": "meeting_outcomes_no_votes_html",
+      "class": "not_yet_ingested",
+      "public_source": {
+        "name": "NYC Council Legistar votes",
+        "access": "Legistar API vote endpoints",
+        "landing_page": "https://council.nyc.gov/legislation/api/",
+        "update_cadence": "As votes post",
+        "join_keys": ["matter_id", "event_item_id"]
+      },
+      "notices_affected_estimate": "Matched Council matters before a vote posts or when the vote join misses.",
+      "evidence": "Votes are public in Legistar when taken; empty vote slot is join timing or incomplete materialization."
+    },
+    {
+      "id": "meeting-matters-absent",
+      "surface": "Council meeting outcomes · event without agenda matters",
+      "i18n_key": "meeting_outcomes_no_matters_html",
+      "class": "not_yet_ingested",
+      "public_source": {
+        "name": "NYC Council Legistar agenda items",
+        "access": "Legistar API",
+        "landing_page": "https://council.nyc.gov/legislation/api/",
+        "update_cadence": "As agendas publish",
+        "join_keys": ["event_id", "event_item_id"]
+      },
+      "notices_affected_estimate": "Matched Council events whose agenda tree was empty at materialization.",
+      "evidence": "Agenda items are public in Legistar; empty matters is incomplete join or pre-agenda event."
+    },
+    {
+      "id": "meeting-community-board-votes",
+      "surface": "non-Council hearings · votes",
+      "i18n_key": null,
+      "class": "not_published",
+      "would_appear_in": "community board or borough president open data / Legistar-class feeds if released as machine-readable votes",
+      "notices_affected_estimate": "Most Public Hearings notices that are not NYC Council.",
+      "evidence": "No citywide open vote feed for community boards was found. Only Council has a contracted Legistar API in the source registry."
+    },
+    {
+      "id": "exam-outcome-aggregate",
+      "surface": "staffing exam cards · post-cycle outcomes",
+      "i18n_key": null,
+      "class": "not_yet_ingested",
+      "public_source": {
+        "name": "DCAS annual civil-service exam outcome aggregates",
+        "access": "NYC Government Publications (manual snapshot) + build artifact data/exam_sources/dcas_exam_outcomes.json",
+        "landing_page": "https://a860-gpp.nyc.gov/concern/nyc_government_publications/zk51vm65n",
+        "update_cadence": "Annual with in-year corrections",
+        "join_keys": ["exam_number"]
+      },
+      "notices_affected_estimate": "Open and closed exams in staffing_exams.json that have a matching outcomes row by exam_number.",
+      "evidence": "Source contract dcas-annual-exam-outcomes is build-time live; artifact includes aggregate counts. Exam cards do not yet render those rows."
+    },
+    {
+      "id": "exam-outcome-individual",
+      "surface": "per-applicant exam results",
+      "i18n_key": null,
+      "class": "not_published",
+      "would_appear_in": "DCAS candidate portals only if individual results were released as public open data (they are not)",
+      "notices_affected_estimate": "All exams.",
+      "evidence": "Only aggregate outcomes are contracted. Privacy: product deliberately retains aggregates only."
+    },
+    {
+      "id": "exam-salary-fee-not-published",
+      "surface": "staffing exam card · fee or salary null",
+      "i18n_key": "career_not_published",
+      "class": "not_published",
+      "would_appear_in": "the Notice of Examination PDF / open-competitive schedule if DCAS states the amount",
+      "notices_affected_estimate": "Exams whose NOE omits fee or salary_min.",
+      "evidence": "UI already uses career_not_published when value is null."
+    },
+    {
+      "id": "external-awards-agency-absent",
+      "surface": "agency awards empty state · verified absent",
+      "i18n_key": "agency_awards_none_open_data_html",
+      "class": "not_published",
+      "would_appear_in": "NYS Authorities Budget Office procurement filings or Checkbook NYC if that agency released a joinable open dataset",
+      "notices_affected_estimate": "16 verified-absent agencies in the external-award registry.",
+      "evidence": "AWARD_SOURCE_REGISTRY kind absent entries verified 2026-07-16: no open batch-downloadable award dataset."
+    },
+    {
+      "id": "external-awards-abo-none",
+      "surface": "notice external-award empty after ABO check",
+      "i18n_key": "external_award_none_note_html",
+      "class": "not_yet_ingested",
+      "public_source": {
+        "name": "NYS Authorities Budget Office procurement datasets",
+        "access": "data.ny.gov Socrata 8w5p-k45m / d84c-dk28 / ehig-g5x3",
+        "landing_page": "https://data.ny.gov/",
+        "update_cadence": "Approximately annual filings",
+        "join_keys": ["authority_name", "vendor_name", "award_date", "contract_amount"]
+      },
+      "notices_affected_estimate": "Solicitations for ABO-mapped authorities with no fuzzy match yet.",
+      "evidence": "ABO datasets are live source contracts; empty is unresolved fuzzy join, not non-publication of authority awards."
+    },
+    {
+      "id": "land-outcome-detail",
+      "surface": "land / ZAP · final decision documents beyond status",
+      "i18n_key": null,
+      "class": "not_yet_ingested",
+      "public_source": {
+        "name": "Zoning Application Portal projects",
+        "access": "NYC Open Data hgx4-8ukb (+ tax lots 2iga-a6mk)",
+        "landing_page": "https://data.cityofnewyork.us/d/hgx4-8ukb",
+        "update_cadence": "Periodic project updates (monthly-class lag vs live ZAP UI)",
+        "join_keys": ["project_id", "bbl", "ulurp_numbers"]
+      },
+      "also_published": [
+        {
+          "name": "DOB NOW job filings",
+          "access": "NYC Open Data w9ak-ipjd (and legacy ic3t-wcy2)",
+          "landing_page": "https://data.cityofnewyork.us/d/w9ak-ipjd",
+          "update_cadence": "Frequent",
+          "join_keys": ["bbl", "bin", "job_number"]
+        }
+      ],
+      "notices_affected_estimate": "ZAP projects and property notices where decision PDFs or DOB outcomes are not stitched.",
+      "evidence": "ZAP and DOB NOW are live contracts for status and demolition checks; full decision document stitching is incomplete."
+    }
+  ],
+  "ranked_ingest_list": [
+    {
+      "rank": 1,
+      "source": "PASSPort Public contracts + solicitations",
+      "access": "https://a0333-passportpublic.nyc.gov/contracts.html and /rfx.html (HTML; third-party CSV mirrors exist at databook.nyc)",
+      "gaps_filled": [
+        "procurement-pending-unmatched",
+        "procurement-registered-unmatched",
+        "procurement-solicitation-documents"
+      ],
+      "value": "Pending and pre-registration status often appears in PASSPort before or beside Checkbook. Solicitation package metadata fills tender-document gaps. Affects Money-lens awards and solicitations at citywide scale (~5k awards + ~1.5k solicitations/year class volume).",
+      "effort_guess": "High — no stable Socrata id; HTML/CSV scrape or partner mirror; need EPIN↔PIN crosswalk.",
+      "join_risk": "High — EPIN vs PIN, multi-contract PINs, partial PASSPort coverage since 2020."
+    },
+    {
+      "rank": 2,
+      "source": "DCAS annual exam outcomes → exam card join",
+      "access": "Already built: site/data/exam_sources/dcas_exam_outcomes.json (source contract dcas-annual-exam-outcomes)",
+      "gaps_filled": ["exam-outcome-aggregate"],
+      "value": "Shows certification/hire aggregates on staffing exam cards without new upstream work. Affects every exam_number present in both schedule and outcomes.",
+      "effort_guess": "Low — UI + join by exam_number on existing artifact.",
+      "join_risk": "Medium — exam_number collisions across years; aggregate-only privacy must hold."
+    },
+    {
+      "rank": 3,
+      "source": "Current Solicitations Open Data 3khw-qi8f",
+      "access": "https://data.cityofnewyork.us/d/3khw-qi8f",
+      "gaps_filled": ["procurement-solicitation-documents"],
+      "value": "Stable Socrata enrichment for OCP solicitations (pin, due_date, request_id).",
+      "effort_guess": "Low — Socrata client pattern already used for City Record.",
+      "join_risk": "Medium — OCP subset only; overlap with City Record dg92-zbpx."
+    },
+    {
+      "rank": 4,
+      "source": "Recent Contract Awards Open Data qyyg-4tf5",
+      "access": "https://data.cityofnewyork.us/d/qyyg-4tf5",
+      "gaps_filled": ["procurement-ocp-recent-awards"],
+      "value": "OCP award side-car for Money detail when City Record fields are thin.",
+      "effort_guess": "Low",
+      "join_risk": "Medium — same City Record-shaped keys; scope limited to OCP."
+    },
+    {
+      "rank": 5,
+      "source": "Bid Tabulations Historical 9k82-ys7w",
+      "access": "https://data.cityofnewyork.us/d/9k82-ys7w",
+      "gaps_filled": ["procurement-bid-counts"],
+      "value": "Fills OCDS tender/numberOfTenderers and contestability package signals for historical bids.",
+      "effort_guess": "Medium — fuzzy title/date join; historical coverage only.",
+      "join_risk": "High — bid_number rarely equals City Record PIN; modern PASSPort bids often missing."
+    },
+    {
+      "rank": 6,
+      "source": "Legistar agenda/vote materialization depth",
+      "access": "https://council.nyc.gov/legislation/api/ (already contracted)",
+      "gaps_filled": [
+        "meeting-outcomes-unmatched",
+        "meeting-votes-absent",
+        "meeting-matters-absent"
+      ],
+      "value": "Raises match rate and vote completeness on Council hearing notices without a new publisher.",
+      "effort_guess": "Medium — improve join confidence and daily materialization, not a new source.",
+      "join_risk": "Medium — title/date/agency fuzzy match false positives."
+    },
+    {
+      "rank": 7,
+      "source": "ZAP decision docs + DOB NOW outcome stitch",
+      "access": "hgx4-8ukb, 2iga-a6mk, w9ak-ipjd (already contracted)",
+      "gaps_filled": ["land-outcome-detail"],
+      "value": "Land and property readers see decision/filing outcomes beyond status chips.",
+      "effort_guess": "Medium-high — document links and BBL joins.",
+      "join_risk": "Medium — BBL multi-lot projects; ZAP lag vs live portal."
+    },
+    {
+      "rank": 8,
+      "source": "Doing Business Search Entities 72mk-a8z7",
+      "access": "https://data.cityofnewyork.us/d/72mk-a8z7",
+      "gaps_filled": [],
+      "value": "Vendor identity enrichment for award chains (secondary to lifecycle gaps).",
+      "effort_guess": "Low-medium",
+      "join_risk": "Medium — organization name normalization."
+    }
+  ],
+  "operational_messages_not_in_taxonomy": [
+    "lifecycle_unknown_html",
+    "lifecycle_ambiguous_html",
+    "subsidy_source_unavailable_html"
+  ],
+  "verified_at": "2026-07-30",
+  "verification_notes": [
+    "Open Data views 3khw-qi8f, qyyg-4tf5, 9k82-ys7w, 72mk-a8z7 returned live metadata.",
+    "PASSPort Public contracts and rfx pages returned HTTP 200.",
+    "City Record type counts since 2025-01-01: Award ~5173, Solicitation ~1550, Public Hearings ~1679, Intent to Award ~703.",
+    "EDC document portal may block unattended fetch (403); product already treats it as HTML source."
+  ]
+}
