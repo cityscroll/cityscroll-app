@@ -190,10 +190,11 @@ test("GET /stats publishes all-time totals + category breakdown alongside the un
   assert.equal(res.status, 200);
   const body = await res.json();
 
-  // Existing 7-day/today shape is untouched — additive only.
-  assert.deepEqual(Object.keys(body.digests).sort(), ["by_category", "sent_all_time", "sent_last7d", "sent_today"]);
+  // Existing 7-day/today shape is untouched — additive only (last_run is the cron receipt).
+  assert.deepEqual(Object.keys(body.digests).sort(), ["by_category", "last_run", "sent_all_time", "sent_last7d", "sent_today"]);
   assert.equal(body.digests.sent_today, 0);
   assert.equal(body.digests.sent_last7d, 0);
+  assert.equal(body.digests.last_run, null);
 
   // New all-time + category fields.
   assert.equal(body.digests.sent_all_time, 42);
