@@ -44,6 +44,14 @@
 # flaky, and isn't in the ruleset's required list; waiting on the whole run instead of the
 # named checks would let an unrelated flake in that job block an otherwise-mergeable PR.
 #
+# Changelog-only fast path (ci.yml jobs.changes.outputs.changelog_only): the bot PR only
+# touches site/changelog-data.json + site/changelog.html. Those paths are paths-ignore'd on
+# pull_request, and a full unit suite can fail on generated changelog content. ci.yml therefore
+# detects that path set and makes each of the four required jobs report SUCCESS via a short
+# no-op instead of the heavy suite — on workflow_dispatch and on merge_group — so the merge
+# queue always sees named checks within about a minute and does not wait until the check
+# response timeout.
+#
 # Path guard: self-merge only arms when the bot's commit touches exclusively the files it owns
 # (changelog-data.json, changelog.html), checked by tools/changelog-path-guard.sh — see the
 # "Verify the bot only touched changelog-owned paths" step below and its test at
@@ -204,18 +212,20 @@ jobs:
             echo "paths_ok=false" >> "$GITHUB_ENV"
           fi
 
-      # Arm GitHub auto-merge (squash) once the path guard passes. The create step above writes
-      # the bot PR number to $RUNNER_TEMP/bot-pr-number (from gh pr create / gh pr list). With
-      # "Allow auto-merge" on and no remaining required checks, --auto may merge immediately;
-      # otherwise it waits until the required checks (dispatched below) are green. The bot PR
-      # body has no "## What this means for you" section, so a re-run after this merge is a
-      # fixed point and opens no further PR.
+      # Arm GitHub auto-merge once the path guard passes. The create step above writes the
+      # bot PR number to $RUNNER_TEMP/bot-pr-number (from gh pr create / gh pr list).
+      # `main` uses a merge queue whose strategy is SQUASH — pass `--auto` with no merge
+      # strategy flag so gh enqueues into the queue rather than fighting the ruleset with an
+      # explicit --squash/--merge. With "Allow auto-merge" on, --auto waits until required
+      # checks (dispatched below) report SUCCESS, then the queue merges. The bot PR body has
+      # no "## What this means for you" section, so a re-run after this merge is a fixed point
+      # and opens no further PR.
       - name: Arm auto-merge on the bot PR
         if: env.changed == 'true' && env.paths_ok == 'true'
         run: |
           PR_NUMBER="$(cat "$RUNNER_TEMP/bot-pr-number")"
-          if gh pr merge "$PR_NUMBER" --auto --squash; then
-            echo "Armed auto-merge (squash) on bot PR #$PR_NUMBER"
+          if gh pr merge "$PR_NUMBER" --auto; then
+            echo "Armed auto-merge (merge-queue default strategy) on bot PR #$PR_NUMBER"
           else
             echo "::warning::could not arm auto-merge on PR #$PR_NUMBER — will still try the merge-queue enqueue after checks"
           fi

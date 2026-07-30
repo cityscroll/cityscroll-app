@@ -105,6 +105,13 @@ delta that is not already-recorded, fails the job — never a green no-op. Conve
 `CONTRIBUTING.md` “Changelog entries”. Characterization: `test/changelog_*.test.mjs`,
 `test/changelog_entry_gate.test.mjs`.
 
+**Self-merge / merge queue:** main’s ruleset requires four named checks (see
+`update-changelog.yml` `REQUIRED_CHECKS` and `repos/.../rules/branches/main`). Changelog-only
+bot PRs take `ci.yml`’s `changelog_only` fast path so those check names report SUCCESS within
+about a minute (workflow_dispatch + merge_group); without that, the queue waits forever.
+Auto-merge arms with `gh pr merge --auto` (no strategy flag — the queue’s method is SQUASH).
+Path guard: `tools/changelog-path-guard.sh`. Characterization: `test/changelog_queue_checks.test.mjs`.
+
 ## Live-URL smoke target sets
 
 Post-deploy gate: `node tools/live_url_smoke.mjs` (default set includes apex, www, crol-list redirect host, about). Named opt-in sets do not change production routing:
