@@ -37,6 +37,7 @@ import { handleProperties, refreshProperties } from "./property.mjs";
 import { handleRules, refreshRules } from "./rules.mjs";
 import { handleSourceVault } from "./source_vault.mjs";
 import { handleContractLifecycle, prewarmContractLifecycle } from "./checkbook_lifecycle.mjs";
+import { handleSubsidyLifecycle, prewarmSubsidyLifecycle } from "./subsidy_lifecycle.mjs";
 
 const MIRROR_HOSTS = new Set(["cityscroll.org", "www.cityscroll.org"]);
 
@@ -64,6 +65,7 @@ export default {
     if (pathname === "/agency") return handleAgency(request, env, ctx);
     if (pathname === "/vendor-profile") return handleVendorProfile(request, env, ctx);
     if (pathname === "/contract-lifecycle") return handleContractLifecycle(request, env, ctx);
+    if (pathname === "/subsidy-lifecycle") return handleSubsidyLifecycle(request, env, ctx);
     if (pathname === "/hearings") return handleHearings(request, env, ctx);
     if (pathname === "/property-locations") return handleProperties(request, env, ctx);
     if (pathname === "/rules") return handleRules(request, env, ctx);
@@ -135,6 +137,18 @@ export default {
       }
     } catch (e) {
       console.error("contract lifecycle prewarm failed (digest continues):", String(e?.message || e));
+    }
+    // NYCIDA/Build NYC subsidy lifecycle (SUB-001): pre-warm the per-notice materialized join
+    // for freshly-ingested Award notices. One bounded request per candidate notice; misses or
+    // source hiccups are fail-soft and recomputed lazily on first read.
+    try {
+      const awardIds = ingestResult?.awardRequestIds || [];
+      if (awardIds.length) {
+        const r = await prewarmSubsidyLifecycle(env, awardIds);
+        console.log("subsidy lifecycle prewarm:", JSON.stringify(r));
+      }
+    } catch (e) {
+      console.error("subsidy lifecycle prewarm failed (digest continues):", String(e?.message || e));
     }
     // Suggestion-chip validation (w12-08): a candidate's failure is already caught inside
     // runSuggestionValidation itself; this outer catch is only for something the pipeline
