@@ -22,14 +22,20 @@ test("production origins remain allowed in every environment", () => {
   for (const origin of [
     "https://cityscroll.org",
     "https://www.cityscroll.org",
-    "https://cityscroll.org",
-    "https://www.cityscroll.org",
+    "https://crol-list.org",
+    "https://www.crol-list.org",
+    // Parallel Pages host: API from cityscroll.pages.dev during dual-serving soak.
+    "https://cityscroll.pages.dev",
     localDevelopmentOrigin,
     "",
   ]) {
     assert.equal(isAllowedRequestOrigin(origin, {}), true, origin);
     assert.equal(isAllowedRequestOrigin(origin, betaEnv), true, origin);
   }
+  assert.equal(
+    corsHeaders("https://cityscroll.pages.dev", {})["Access-Control-Allow-Origin"],
+    "https://cityscroll.pages.dev",
+  );
 });
 
 test("review origins are beta-only and external origins stay rejected", () => {
