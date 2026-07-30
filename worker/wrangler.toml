@@ -43,6 +43,9 @@ SUBSCRIBE_ADDRESS = "subscribe@crol-list.org"
 INBOUND_MAX_PER_DAY = "100"
 MCP_MAX_CALLS_PER_DAY = "200"
 MCP_MAX_PER_IP_DAY = "300"
+# Informal notice translation (GET /translate/<id>?lang=): daily ceiling on NEW
+# translations only — cache hits never spend the meter.
+TRANSLATE_MAX_CALLS_PER_DAY = "150"
 # Digest delivery mode: "true" = queue fan-out (see [[queues.*]]), unset/other = inline.
 QUEUE_DIGESTS = "true"
 # Optional board-notification bridge (see worker/README.md "Board notifications" and
