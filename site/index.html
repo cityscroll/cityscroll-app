@@ -6634,7 +6634,7 @@ async function showMatter(pin){
         ${pinBtn("matter", pin, t("meta_matter",{pin:safe}), [agency, vendor?cleanText(vendor):null].filter(Boolean).join(" × "))}
         <a class="act" href="${REQ_URL(rows[rows.length-1].request_id)}" ${EXT_ATTRS}>Latest notice in City Record${extSR()}</a>
       </div>
-      <div class="note">The spine is every City Record notice sharing this PIN, in order; Checkbook events join deterministically on the same PIN via the precomputed contract lifecycle. Public-hearing notices rarely carry PINs, so hearings may be missing from the chronology.</div>
+      <div class="note">${t("matter_spine_note")}</div>
     </div></div>`;
   $("#ecopy").addEventListener("click", ()=>copyText(link, $("#ecopy")));
   bindQRShare($("#eqr"), link);

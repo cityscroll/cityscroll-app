@@ -30,6 +30,7 @@ Parks and Recreation
 Procurement
 Property Disposition
 Public Hearings and Meetings
+Public Hearings
 Submit to
 Taxi and Limousine Commission
 Type
@@ -98,24 +99,17 @@ open RFPs
 # ── Entity / matter / investigation / shared views + digest mock shell (queued: language wave)
 %</b> of the agency's award $ (12 mo)
 %</b> of this agency's awards (last 12 mo, n=
-</b>) differs from the notice's (<b>
 project_id='
 type_of_notice_description='Award'
 type_of_notice_description='Solicitation'
 ">Follow this vendor</button> <button class="act" type="button" id="ecopy">Copy link</button>
 ">Follow: anything new from them</button> <button class="act" type="button" id="ecopy">Copy link</button>
 ">Search notices mentioning them →</a></div>
->Search Checkbook
 >Latest notice in City Record
-</a>, matched by PIN <code>
-</a> </div> <div class="note">The spine is every City Record notice sharing this PIN, in order; Checkbook events join deterministically on the same PIN. Public-hearing notices rarely carry PINs, so hearings may be missing from the chronology.</div> </div></div>
 (agency median
 (see notice)
 (untitled)
 </b> of
-</b>) — a PIN can cover multiple awards; treat with care.</div>
-</code>. Payments lag invoicing — $0 paid on a freshly registered contract is normal.</div> </div></div>
-</dd> <dt>Paid to date</dt><dd><b>
 </div> <div class="note">Figures are what this agency has <b>published in the City Record</b> (2003→present for procurement) — registration and payment lag; a per-entity follow across all lenses arrives with the entity-watch feature.</div> </div></div>
 </div> <div class="note">Identity is resolved by name normalization (case, punctuation, legal suffixes) — variants listed above; distinct companies sharing a name stem would be merged, so treat totals as <b>“published under this name,”</b> not a legal entity. Awards as published in the City Record; actual payments differ (Checkbook join coming).</div> </div></div>
 </div><div class="lbl">award notice
@@ -123,8 +117,6 @@ type_of_notice_description='Solicitation'
 </div><div class="lbl">first / latest<br>award published</div></div> </div>
 </div><div class="lbl">open RFPs<br>right now</div></div> </div>
 </div><div class="lbl">total awarded,<br>on record</div></div> <div><div class="big">
-<b>Contract registered</b> — <code>
-<b>Paid to date:
 <button class="act" type="button" data-aw="rules">Watch rules only</button> <button class="act" type="button" data-aw="meetings">Watch meetings only</button>
 <div class="chain-h">Mentioned in other notices (text match)</div><div class="timeline">
 <div class="chain-h">On the record — notices naming this vendor</div><div class="timeline">
@@ -137,7 +129,6 @@ type_of_notice_description='Solicitation'
 <div class="empty">No City Record notices carry PIN <code>
 <div class="empty">No City Record notices found for agency “
 <div class="empty">No awards on record for “
-<span class="tag soon">amended from
 Due:
 award to this vendor at this agency in 90 days
 block/lot
@@ -146,7 +137,6 @@ fiscal_year=
 forest management
 in the custody
 look up lookup someone somebody person people named name find search for a an the of about mr ms mrs role title
-more</b> under this PIN
 mortgage and note
 notice/
 task/what-will-change
