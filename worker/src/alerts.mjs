@@ -18,6 +18,7 @@
 import cfg from "../alerts.config.json" with { type: "json" };
 import { capDecision } from "@jimdc/sendcap";
 import { signToken, listUnsubscribe } from "optin-token";
+import { issueEmailSessionToken } from "./session.mjs";
 import { compileSub, vendorStem } from "./lib/compile.mjs";
 import { compileSub_d1, toDigestRow, OFF_MIRROR_LENSES } from "./lib/compile_d1.mjs";
 import { buildNoticesQuery, searchNotices } from "./lib/notices.mjs";
@@ -420,7 +421,10 @@ export async function processOneSub(env, s, ctx) {
         // encodeWatchFilter()) or a lens deep-links don't cover (rezone links straight to ZAP
         // below, never through here).
         const w = encodeWatchFilter(s.lens, s.filter);
-        html = subDigestHtml(label, q.kind, fresh, unsubUrl, since, env.CONFIRM_BASE || "https://api.cityscroll.org", forecasts, lang, keywords, w, healthNote);
+        // Pins-scoped magic-link token: every notice link carries it so a click
+        // quietly recognizes the browser (session cookie) without a login form.
+        const sessionTok = await issueEmailSessionToken(env, s.email);
+        html = subDigestHtml(label, q.kind, fresh, unsubUrl, since, env.CONFIRM_BASE || "https://api.cityscroll.org", forecasts, lang, keywords, w, healthNote, sessionTok);
       } else {
         subject = decision.action === "weekly-empty"
           ? `CityScroll: nothing new this week — ${label}`
@@ -482,7 +486,8 @@ export async function processAwardSub(env, s, ctx) {
       const lang = s.lang || "en";
       const unsubUrl = await unsubLink(env, s.key);
       const subject = emailT(lang, "award_watch_subject", { agency: filter.agency || "" });
-      const html = awardWatchDigestHtml(fresh, filter, unsubUrl, lang);
+      const sessionTok = await issueEmailSessionToken(env, s.email);
+      const html = awardWatchDigestHtml(fresh, filter, unsubUrl, lang, sessionTok);
       if (send) {
         await sendEmail(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true);
         await ctx.onSent();
@@ -510,10 +515,16 @@ export async function processAwardSub(env, s, ctx) {
 // award_watch email body — exact NYCHA matches render as a confident line, ABO fuzzy candidates
 // as an explicitly-labeled "possible" one, mirroring the notice page's nychaAwardBoxHTML() /
 // aboAwardsTimelineHTML() visual+verbal distinction (index.html).
-function awardWatchDigestHtml(candidates, filter, unsubUrl, lang = "en") {
+function awardWatchDigestHtml(candidates, filter, unsubUrl, lang = "en", sessionTok = null) {
   const usd = (n) => (n == null || n === "" || !n ? "" : "$" + Number(n).toLocaleString("en-US"));
   const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
-  const noticeUrl = `https://cityscroll.org/#notice/${encodeURIComponent(filter.requestId)}`;
+  // Route award-watch notice clicks through /session so the device is recognized
+  // (pins-scoped cookie) before landing on the notice permalink — token never stays in the URL.
+  const dest = `https://cityscroll.org/#notice/${encodeURIComponent(filter.requestId)}`;
+  const base = "https://api.cityscroll.org";
+  const noticeUrl = sessionTok
+    ? `${base}/session?token=${encodeURIComponent(sessionTok)}&next=${encodeURIComponent(dest)}`
+    : dest;
   const items = candidates.map((c) => {
     const vendor = c.vendor ? esc(c.vendor) : esc(emailT(lang, "award_watch_vendor_unlisted"));
     const meta = [vendor, usd(c.amount), c.date ? esc(String(c.date).slice(0, 10)) : ""].filter(Boolean).join(" · ");
@@ -827,7 +838,7 @@ function maskKey(n) {
 // subs match by name, not keyword, so they pass none and get no evidence line, correctly).
 // w: this watch's encodeWatchFilter() output (w12-12) — null for a rezone digest, which links
 // straight to ZAP below and never touches CityScroll's own notice view.
-function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.cityscroll.org", forecasts = [], lang = "en", keywords = [], w = null, healthNote = "") {
+function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.cityscroll.org", forecasts = [], lang = "en", keywords = [], w = null, healthNote = "", sessionTok = null) {
   const usd = (n) => (n == null || n === "" ? "" : "$" + Number(n).toLocaleString("en-US"));
   const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
   const cr = (id) => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
@@ -853,7 +864,12 @@ function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.c
     // The ?w= param (w12-12) rides along through the redirect unread and lands in the
     // permalink's own hash fragment — see src/redirect.mjs. `w` is already encodeWatchFilter()'s
     // own percent-encoded output, so it's placed directly, not re-encoded (that would double-encode).
-    const noticeLink = `${base}/r/${encodeURIComponent(kind)}/${encodeURIComponent(r.request_id)}${w ? `?w=${w}` : ""}`;
+    // Optional `s=` carries a pins-scoped magic-link token; /r exchanges it for a session
+    // cookie and never forwards the token to the final cityscroll.org URL.
+    const qs = [];
+    if (sessionTok) qs.push(`s=${encodeURIComponent(sessionTok)}`);
+    if (w) qs.push(`w=${w}`);
+    const noticeLink = `${base}/r/${encodeURIComponent(kind)}/${encodeURIComponent(r.request_id)}${qs.length ? `?${qs.join("&")}` : ""}`;
     acts.push(`<a href="${noticeLink}">↗ View on CityScroll</a>`);
     acts.push(`<a href="${cr(r.request_id)}">City Record</a>`);
     const meta = [r.agency_name, usd(r.contract_amount),

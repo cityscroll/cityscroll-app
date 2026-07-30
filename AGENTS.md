@@ -228,6 +228,20 @@ and community board minutes pages (`meeting_outcomes_non_council_*`). Council
 notices keep Legistar class-(a) unmatched copy. Detection: `isCityCouncilNotice`
 on `agency_name`.
 
+## Magic-link session + server pins
+
+Digest notice links carry a pins-scoped optin-token (`sc: "pins"`, ~30d) as `?s=`
+on `/r/...`. Exchange sets HttpOnly `cs_session` cookie (~14d); token never
+forwards to the final cityscroll.org URL. Scope is READ + pin sync only —
+unsubscribe/confirm keep purpose tokens and never accept the session.
+
+- Worker: `session.mjs`, `pins.mjs`, pure helpers `lib/session.mjs`
+- KV pin store: `pins:<opaqueActorId(email)>` in SUBS (alongside subscriptions)
+- Client: `invStore`/`invSave` still localStorage; recognized sessions merge
+  (union, dedupe by type+id) then read/write `/pins` with `credentials:include`
+- Banner: `#sessionBanner` ("Not you?" → `/session/logout`)
+- Characterization: `node --test worker/test/session_pins.test.mjs test/session_pins_client.test.mjs`
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
