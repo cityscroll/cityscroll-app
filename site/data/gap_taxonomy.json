@@ -146,6 +146,37 @@
       "delivery_tier": "edge-materialized"
     },
     {
+      "id": "city-council-meetings-open-data",
+      "name": "City Council Meetings (Open Data)",
+      "source_contract_id": "city-council-meetings-open-data",
+      "status": "disabled",
+      "join_keys": [
+        "event_id",
+        "agency",
+        "event_title",
+        "start_time"
+      ],
+      "join_coverage": {
+        "predicted": {
+          "grade": "high-risk",
+          "note": "Pre-recon estimate: meetings freeze may not cover modern City Council notices; no vote columns."
+        },
+        "realized": {
+          "rate": 0,
+          "joined": 0,
+          "total": 59,
+          "metric": "modern_notices_strict",
+          "observed_on": "2026-07-30",
+          "universe": null,
+          "strategy": "exact_date_committee_tokens (unique same-day committee named in notice title). Weak date-only and loose title overlaps rejected.",
+          "verdict": "Below usefulness threshold (~30%) for modern product universe (0% strict join; freeze ends 2024-12-19). Historical event-level join is useful for recon only and does not publish votes/agenda items. Do not edge-materialize modern meeting-outcome depth from this source.",
+          "source": "source_contracts.join_measurement"
+        }
+      },
+      "landing_page": "https://data.cityofnewyork.us/d/m48u-yjt8",
+      "delivery_tier": "edge-materialized"
+    },
+    {
       "id": "city-record",
       "name": "City Record Online",
       "source_contract_id": "city-record",
@@ -304,7 +335,23 @@
         "event_title",
         "start_time"
       ],
-      "join_coverage": {},
+      "join_coverage": {
+        "predicted": {
+          "grade": "medium",
+          "note": "Pre-depth estimate: title/date/agency fuzzy match; vote completeness depends on materialization window."
+        },
+        "realized": {
+          "rate": 1,
+          "joined": 59,
+          "total": 59,
+          "metric": "modern_notices_strict",
+          "observed_on": "2026-07-30",
+          "universe": null,
+          "strategy": "exact_date_body_tokens against authenticated webapi.legistar.com/v1/nyc Events (EventBodyName + EventDate). Nested EventItems/{id}/Votes for depth.",
+          "verdict": "Above usefulness threshold (~30%) for modern event/agenda depth: authenticated strict event join 100% (59/59); EventItems 100%; matter items 98.3%. Recommend edge materialization with LEGISTAR_API_TOKEN Worker secret (not set in this PR).",
+          "source": "source_contracts.join_measurement"
+        }
+      },
       "landing_page": "https://council.nyc.gov/legislation/api/",
       "delivery_tier": "edge-materialized"
     },
@@ -644,10 +691,22 @@
       ],
       "status": "materialized",
       "lineage": {
-        "code": "worker/src/lib/meeting_outcomes.mjs",
-        "strategy": "title/date/agency confidence match to Legistar events"
+        "code": "worker/src/lib/legistar_join.mjs",
+        "strategy": "exact_date_body_tokens (EventBodyName + EventDate); nested EventItems/Votes under LEGISTAR_API_TOKEN",
+        "measurement_contract": "nyc-council-legistar",
+        "measurement_rate_key": "modern_notices_strict"
       },
-      "realized_coverage": null,
+      "realized_coverage": {
+        "rate": 1,
+        "joined": 59,
+        "total": 59,
+        "metric": "modern_notices_strict",
+        "observed_on": "2026-07-30",
+        "universe": null,
+        "strategy": "exact_date_body_tokens against authenticated webapi.legistar.com/v1/nyc Events (EventBodyName + EventDate). Nested EventItems/{id}/Votes for depth.",
+        "verdict": "Above usefulness threshold (~30%) for modern event/agenda depth: authenticated strict event join 100% (59/59); EventItems 100%; matter items 98.3%. Recommend edge materialization with LEGISTAR_API_TOKEN Worker secret (not set in this PR).",
+        "source": "source_contracts.join_measurement"
+      },
       "worth_materializing": "already_materialized",
       "gaps_would_close": [
         "procurement-pending-unmatched",
@@ -1937,11 +1996,11 @@
         "meeting-matters-absent"
       ],
       "value": "Raises match rate and vote completeness on Council hearing notices without a new publisher.",
-      "effort_guess": "Medium — improve join confidence and daily materialization, not a new source.",
-      "join_risk": "Medium — title/date/agency fuzzy match false positives.",
-      "value_score": 36,
-      "realized_join_rate": null,
-      "predicted_join_grade": null
+      "effort_guess": "Medium — authenticated Web API ready; follow-up edge materialize Events→EventItems→Votes with Worker secret LEGISTAR_API_TOKEN.",
+      "join_risk": "Measured 100% modern City Council notice → Legistar event join with LEGISTAR_API_TOKEN (predicted pre-auth grade: medium).",
+      "value_score": 46,
+      "realized_join_rate": 1,
+      "predicted_join_grade": "medium"
     },
     {
       "rank": 3,
@@ -2041,7 +2100,7 @@
   ],
   "depot_refresh": {
     "observed_on": "2026-07-30",
-    "source_contracts_fingerprint": "21f73318654417fd52581f1702c98412ed19e4569e1945324869fd8f72095d5e",
+    "source_contracts_fingerprint": "ee7e861e95c079fdf58e5bae65d3d0e59d6801aba18a7616793c3e23249daba7",
     "materialized_crosswalks": 10,
     "candidate_crosswalks": 44,
     "class_changes": 0,

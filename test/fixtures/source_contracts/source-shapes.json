@@ -62,15 +62,7 @@
       "identifier": "qyyg-4tf5",
       "asset_type": "dataset",
       "sample_type": "array<object>",
-      "fields": [
-        "request_id",
-        "start_date",
-        "agency_name",
-        "type_of_notice_description",
-        "pin",
-        "contract_amount",
-        "vendor_name"
-      ]
+      "fields": ["request_id", "start_date", "agency_name", "type_of_notice_description", "pin", "contract_amount", "vendor_name"]
     },
     {
       "id": "checkbook-nycha-contracts",
@@ -211,21 +203,6 @@
       ]
     },
     {
-      "id": "zap-api-outcomes",
-      "kind": "html",
-      "identifier": "",
-      "response_type": "text/html",
-      "fields": [
-        "project_id",
-        "public_status",
-        "actions",
-        "dispositions",
-        "documents"
-      ],
-      "machine_endpoint": "https://zap-api-production.herokuapp.com/projects/{project_id}",
-      "machine_response_type": "application/json"
-    },
-    {
       "id": "mappluto",
       "kind": "arcgis",
       "identifier": "MAPPLUTO/FeatureServer/0",
@@ -347,7 +324,27 @@
       "kind": "html",
       "identifier": "api",
       "response_type": "text/html",
-      "fields": []
+      "fields": [],
+      "machine_endpoint": "https://webapi.legistar.com/v1/nyc/",
+      "machine_response_type": "application/json",
+      "notes": "Web API requires publisher-issued token (HTTP 403 without it, observed 2026-07-30)."
+    },
+    {
+      "id": "city-council-meetings-open-data",
+      "kind": "socrata",
+      "identifier": "m48u-yjt8",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": [
+        "event_id",
+        "committee",
+        "meeting_date",
+        "meeting_time",
+        "meeting_location",
+        "agenda_status",
+        "minutes_status",
+        "url"
+      ]
     },
     {
       "id": "passport-public-contracts",

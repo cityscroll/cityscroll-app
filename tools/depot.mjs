@@ -58,6 +58,7 @@ export const SEED_SOURCE_JOIN_KEYS = {
   "passport-public-contracts": ["EPIN", "PIN", "contract_id"],
   "passport-public-rfx": ["EPIN", "PIN"],
   "nyc-council-legistar": ["matter_id", "event_id", "event_item_id", "agency"],
+  "city-council-meetings-open-data": ["event_id", "agency", "event_title", "start_time"],
   "dcas-annual-exam-outcomes": ["exam_number"],
   "dcas-exam-notices": ["exam_number"],
   "zap-projects": ["project_id", "BBL", "ulurp_numbers"],
@@ -153,8 +154,10 @@ export const SEED_MATERIALIZED_CROSSWALKS = [
     key_path: ["agency"],
     status: "materialized",
     lineage: {
-      code: "worker/src/lib/meeting_outcomes.mjs",
-      strategy: "title/date/agency confidence match to Legistar events",
+      code: "worker/src/lib/legistar_join.mjs",
+      strategy: "exact_date_body_tokens (EventBodyName + EventDate); nested EventItems/Votes under LEGISTAR_API_TOKEN",
+      measurement_contract: "nyc-council-legistar",
+      measurement_rate_key: "modern_notices_strict",
     },
   },
   {
@@ -332,6 +335,7 @@ export function resolveSourceId(name, contractsById) {
     [/checkbook.*spend/, "checkbook-spending"],
     [/checkbook/, "checkbook-contracts"],
     [/city record/, "city-record"],
+    [/council meetings.*open data|m48u-yjt8/, "city-council-meetings-open-data"],
     [/legistar/, "nyc-council-legistar"],
     [/dcas.*outcome|exam outcome/, "dcas-annual-exam-outcomes"],
     [/dcas.*exam|open.?competitive/, "dcas-exam-notices"],
@@ -790,6 +794,29 @@ export function rerankIngestList(registry, sources, candidates) {
         }
       }
       // Demote hard when measured below usefulness
+      if (realizedRate != null && realizedRate < 0.3) valueScore -= 15;
+    }
+
+    // Legistar depth: prefer authenticated Web API measurement on nyc-council-legistar
+    if (blob.includes("legistar") || blob.includes("meeting-outcomes") || blob.includes("agenda/vote")) {
+      const meetings = sources.find((s) => s.id === "city-council-meetings-open-data");
+      const legistar = sources.find((s) => s.id === "nyc-council-legistar");
+      const modernRate = legistar?.join_coverage?.realized?.rate
+        ?? meetings?.join_coverage?.realized?.rate
+        ?? null;
+      if (modernRate != null) {
+        realizedRate = modernRate;
+        predictedGrade = legistar?.join_coverage?.predicted?.grade
+          || meetings?.join_coverage?.predicted?.grade
+          || "medium";
+        if (modernRate >= 0.3) {
+          join_risk = `Measured ${Math.round(modernRate * 1000) / 10}% modern City Council notice → Legistar event join with LEGISTAR_API_TOKEN (predicted pre-auth grade: medium).`;
+          effort_guess = "Medium — authenticated Web API ready; follow-up edge materialize Events→EventItems→Votes with Worker secret LEGISTAR_API_TOKEN.";
+          valueScore += 10;
+        } else if (!/measured|0%|token|usefulness/i.test(String(join_risk || ""))) {
+          join_risk = `High — measured modern join ${Math.round(modernRate * 1000) / 10}%; below usefulness for vote/agenda depth.`;
+        }
+      }
       if (realizedRate != null && realizedRate < 0.3) valueScore -= 15;
     }
 

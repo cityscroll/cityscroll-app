@@ -4,7 +4,7 @@
   "observed_on": "2026-07-30",
   "class_changes": [],
   "class_changes_loud": [],
-  "sources_count": 34,
+  "sources_count": 35,
   "materialized_crosswalks": [
     {
       "id": "city-record-pin-x-checkbook-contracts",
@@ -33,8 +33,8 @@
     },
     {
       "id": "city-record-x-legistar-events",
-      "rate": null,
-      "metric": null
+      "rate": 1,
+      "metric": "modern_notices_strict"
     },
     {
       "id": "exam-number-x-dcas-outcomes",
@@ -635,8 +635,8 @@
     {
       "rank": 2,
       "source": "Legistar agenda/vote materialization depth",
-      "value_score": 36,
-      "realized_join_rate": null
+      "value_score": 46,
+      "realized_join_rate": 1
     },
     {
       "rank": 3,
@@ -657,5 +657,5 @@
       "realized_join_rate": null
     }
   ],
-  "registry_sha256": "b31c877ff700f46f8d69c02428729bf6df6abc4ec6cb62278a871c587852c606"
+  "registry_sha256": "958aee35096f24c13735dfcc5ef6a71a27021a339aad2505d175e62203083438"
 }
