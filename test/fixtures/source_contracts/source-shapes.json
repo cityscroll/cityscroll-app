@@ -390,6 +390,31 @@
       ]
     },
     {
+      "id": "capital-projects",
+      "kind": "socrata",
+      "identifier": "n7gv-k5yt",
+      "asset_type": "dataset",
+      "sample_type": "array<object>",
+      "fields": [
+        "pid",
+        "project_name",
+        "managing_agency",
+        "client_agency",
+        "budget_forecast",
+        "current_phase",
+        "date_reported_as_of",
+        "description",
+        "category",
+        "borough",
+        "design_start",
+        "latest_budget_changes",
+        "total_budget_changes",
+        "forecast_completion",
+        "latest_schedule_changes",
+        "total_schedule_changes"
+      ]
+    },
+    {
       "id": "passport-public-rfx",
       "kind": "html",
       "identifier": "rfx.html",

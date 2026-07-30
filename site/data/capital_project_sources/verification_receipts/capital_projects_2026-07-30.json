@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "observed_on": "2026-07-30",
+  "observed_at_utc": "2026-07-30T20:54:35Z",
+  "source_contracts": [
+    "capital-projects"
+  ],
+  "access_surface": {
+    "catalog": "https://data.cityofnewyork.us/d/n7gv-k5yt",
+    "metadata": "https://data.cityofnewyork.us/api/views/n7gv-k5yt.json",
+    "resource": "https://data.cityofnewyork.us/resource/n7gv-k5yt.json"
+  },
+  "curl_verified": {
+    "metadata_http": 200,
+    "resource_sample_http": 200,
+    "resource_count_http": 200,
+    "metadata_bytes": 35370,
+    "metadata_sha256": "74d09e3a40e556de2c3b09829a11956b899b8483220eebd9fb021ce9ed5ee787",
+    "sample_bytes": 596,
+    "sample_sha256": "20f1668db5cb02cdb5bc5b82c6641ebf4093e8bf3f94efa961193fec71936193",
+    "resource_last_modified": "Wed, 04 Jun 2025 20:36:52 GMT",
+    "x_soda2_truth_last_modified": "Wed, 04 Jun 2025 20:36:52 GMT",
+    "x_soda2_fields": [
+      "date_reported_as_of",
+      "pid",
+      "project_name",
+      "description",
+      "category",
+      "borough",
+      "managing_agency",
+      "client_agency",
+      "current_phase",
+      "design_start",
+      "budget_forecast",
+      "latest_budget_changes",
+      "total_budget_changes",
+      "forecast_completion",
+      "latest_schedule_changes",
+      "total_schedule_changes"
+    ]
+  },
+  "dataset": {
+    "name": "Capital Projects",
+    "id": "n7gv-k5yt",
+    "attribution": "Mayor's Office of Operations (OPS)",
+    "row_count": 3320,
+    "distinct_pid": 363,
+    "required_fields_present": [
+      "pid",
+      "project_name",
+      "managing_agency",
+      "client_agency",
+      "budget_forecast",
+      "current_phase"
+    ],
+    "pin_or_epin_column": false,
+    "scope_note": "Major infrastructure and IT projects with budget of $25M+ in design, procurement, or construction. Time-series by date_reported_as_of."
+  },
+  "join_measurement": {
+    "city_record_universe": "dg92-zbpx section_name=Procurement, start_date >= 2025-01-01 (sample n=100 recent)",
+    "strategy": "agency+project_name fuzzy only (no PIN/EPIN column). Accepted probes: unique project_name substring in short_title; unique token Jaccard >=0.35 with margin. Weak multi-match rejected.",
+    "rates": {
+      "modern_procurement_substring_unique": {
+        "joined": 0,
+        "total": 100,
+        "rate": 0.0
+      },
+      "modern_procurement_fuzzy_unique": {
+        "joined": 1,
+        "total": 100,
+        "rate": 0.01
+      }
+    },
+    "usefulness_threshold": 0.3,
+    "verdict": "Below usefulness threshold (~30%). No unique-key join path without PIN/EPIN. Ship class-(b) pointer upgrade for procurement-planning-budget only; do not edge-materialize on fuzzy agency+name."
+  },
+  "product_decision": {
+    "edge_materialization": false,
+    "gap_register": "not_published",
+    "gap_id": "procurement-planning-budget",
+    "pointer": "https://data.cityofnewyork.us/d/n7gv-k5yt",
+    "copy_contract": "would appear in the Capital Projects dataset (n7gv-k5yt) if released with a PIN/EPIN"
+  }
+}

@@ -107,6 +107,7 @@ const sandbox = new Function(
   extractFn("subsidyStageHTML") + "\n" +
   extractFn("subsidyLifecycleHTML") + "\n" +
   extractFn("isMeetingOutcomesEligible") + "\n" +
+  extractFn("isCityCouncilNotice") + "\n" +
   extractFn("meetingOutcomesHTML") + "\n" +
   extractFn("priorCycleHTML") + "\n" +
   extractFn("priorCycleNoneHTML") + "\n" +
@@ -173,6 +174,7 @@ try {
     extractFn("subsidyStageHTML") +
     extractFn("subsidyLifecycleHTML") +
     extractFn("isMeetingOutcomesEligible") +
+    extractFn("isCityCouncilNotice") +
     extractFn("meetingOutcomesHTML") +
     `
     return {

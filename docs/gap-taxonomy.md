@@ -26,7 +26,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | contract lifecycle · tender / package documents **CLASS CHANGE** | b | City Record Online file attachments (GetFile on a856-cityrecord.nyc.gov) if the notice published package documents |
 | OCDS tender/numberOfTenderers · contestability package | a | Bid Tabulations (Historical) |
 | award detail enrichment beyond City Record | a | Recent Contract Awards (OCP) |
-| OCDS planning/budget and planning/rationale | b | agency budget justifications or MOCS procurement plans if released as stable machine data |
+| OCDS planning/budget and planning/rationale | b | the Capital Projects open dataset (n7gv-k5yt) if released with a PIN/EPIN that joins to the notice — https://data.cityofnewyork.us/d/n7gv-k5yt — or agency budget justifications / MOCS procurement plans if released as stable machine data |
 | subsidy lifecycle · per-stage empty slot | a | NYCIDA/Build NYC public documents |
 | subsidy lifecycle · stage outcome | b | Build NYC / NYCIDA project documents (board minutes, closing packages) if an explicit outcome field is released |
 | subsidy lifecycle · no project join | b | NYCIDA/Build NYC financial public documents page if a project record is released for the notice |
@@ -34,8 +34,8 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | Council meeting outcomes · no event join | a | NYC Council Legistar API |
 | Council meeting outcomes · matter without roll-call detail | a | NYC Council Legistar votes |
 | Council meeting outcomes · event without agenda matters | a | NYC Council Legistar agenda items |
-| non-Council hearings · votes | b | community board or borough president open data / Legistar-class feeds if released as machine-readable votes |
-| staffing exam cards · post-cycle outcomes | a | DCAS annual civil-service exam outcome aggregates |
+| non-Council hearings · votes | b | borough president websites and community board minutes / vote pages if released as a citywide machine-readable open data feed (not only member rosters) |
+| staffing exam cards · post-cycle outcomes | a | DCAS annual civil-service exam outcome aggregates + Civil Service List (Active) exam-level counts |
 | per-applicant exam results | b | DCAS candidate portals only if individual results were released as public open data (they are not) |
 | staffing exam card · fee or salary null | b | the Notice of Examination PDF / open-competitive schedule if DCAS states the amount |
 | agency awards empty state · verified absent | b | NYS Authorities Budget Office procurement filings or Checkbook NYC if that agency released a joinable open dataset |
@@ -47,14 +47,16 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | Source | Status | Join keys | Predicted grade | Realized coverage |
 |---|---|---|---|---|
 | `abo-local-authorities` | landed | authority_name, vendor_name, award_date, contract_amount | — | — |
+| `active-civil-service-list` | live-only | exam_no | — | 44.5% (closed_exams_list_presence) |
 | `bid-tabulations-historical` | disabled | bid_number, PIN, bid_title, bid_opening_date | high-risk | 0% (modern_notices_strict) |
+| `capital-projects` | disabled | project_name, managing_agency, client_agency, pid | — | 0% (modern_procurement_substring_unique) |
 | `checkbook-contracts` | landed | PIN, contract_id, registration_date | — | — |
 | `checkbook-nycha-contracts` | landed | contract_id | — | — |
 | `checkbook-spending` | landed | PIN, contract_id, check_amount, check_date | — | — |
 | `city-council-meetings-open-data` | disabled | event_id, agency, event_title, start_time | high-risk | 0% (modern_notices_strict) |
 | `city-record` | live-only | PIN, request_id, agency | — | — |
 | `current-solicitations-ocp` | not_ingested | PIN, request_id, agency | — | — |
-| `dcas-annual-exam-outcomes` | landed | exam_number | medium | — |
+| `dcas-annual-exam-outcomes` | landed | exam_number, exam_no | medium | — |
 | `dcas-exam-notices` | landed | exam_number | — | — |
 | `dob-now-job-filings` | live-only | BBL, BIN, job_number | — | — |
 | `doing-business-entities` | landed | organization_name, vendor_name | medium | 70.4% (modern_awards_stem_notices) |
@@ -112,7 +114,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `nycida-build-nyc-projects-x-zap-projects-via-project_id` | `nycida-build-nyc-projects` × `zap-projects` | project_id | yes | 2 |
 | `passport-public-contracts-x-recent-contract-awards-ocp-via-PIN` | `passport-public-contracts` × `recent-contract-awards-ocp` | PIN | maybe | 2 |
 | `abo-local-authorities-x-doing-business-entities-via-vendor_name` | `abo-local-authorities` × `doing-business-entities` | vendor_name | maybe | 1 |
-| `city-record-x-current-solicitations-ocp-via-PIN+request_id` | `city-record` × `current-solicitations-ocp` | PIN · request_id | maybe | 1 |
+| `active-civil-service-list-x-dcas-annual-exam-outcomes-via-exam_no` | `active-civil-service-list` × `dcas-annual-exam-outcomes` | exam_no | maybe | 1 |
 
 ## Graph view
 
@@ -167,6 +169,7 @@ Ordered for dispatch. Full rows (effort, join risk, value scores) live in
 - Bid Tabulations Historical 9k82-ys7w join recon (2026-07-30): strict PIN↔bid_number 0% modern / 9.07% historical overlap; below ~30% usefulness; source contract disabled without materialization.
 - Doing Business Search Entities 72mk-a8z7 join recon (2026-07-30): vendor_stem join 70.42% notice-level / 61.62% distinct vendors on modern awards; above ~30% usefulness; source contract live edge-materialized onto vendor profiles.
 - PASSPort RFx package documents (2026-07-30): document-URL join 0% on 50-notice kill sample and 0/1470 modern Solicitation+PIN; OCP/City Record modern document_links 0%. Gap procurement-solicitation-documents reclassified not_published → City Record GetFile. No RFx package-doc edge materialization.
+- Gap-pressure tail 2026-07-30: Capital Projects n7gv-k5yt fuzzy join ≤1% → class-b pointer for procurement-planning-budget; Civil Service List closed-exam overlap 44.54% → ship exam-level list aggregates; non-Council meeting outcomes reclassified not_published with BP/CB minutes pointers.
 
 ## UI copy keys (two registers)
 
@@ -183,4 +186,4 @@ node tools/depot_rederive.mjs          # write registry + docs + receipt
 node tools/depot_rederive.mjs --check  # CI drift gate (no writes)
 ```
 
-Last refresh fingerprint: `8914e50d72f1…` · materialized 11 · candidates 45 · class changes 0.
+Last refresh fingerprint: `84aa82661c40…` · materialized 11 · candidates 46 · class changes 0.
