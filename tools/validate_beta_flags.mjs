@@ -8,7 +8,7 @@ const valueAfter = (name, fallback) => {
   const index = args.indexOf(name);
   return index === -1 ? fallback : args[index + 1];
 };
-const registryPath = resolve(valueAfter("--registry", "beta-flags.json"));
+const registryPath = resolve(valueAfter("--registry", "site/beta-flags.json"));
 const today = valueAfter("--today", new Date().toISOString().slice(0, 10));
 const errors = [];
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;

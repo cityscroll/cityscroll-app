@@ -11,7 +11,7 @@ import {
   deadSelectedSuggestions,
   firstNonEmptyVariant,
   fruitfulSuggestionIndices,
-} from "../preset_validation.mjs";
+} from "../site/preset_validation.mjs";
 import {
   FALLBACK_INDICES,
   SUGGESTION_POOL,
@@ -19,8 +19,8 @@ import {
 } from "../worker/src/lib/suggestions.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const INDEX = join(ROOT, "index.html");
-const RECEIPT = join(ROOT, "data", "preset-validation.json");
+const INDEX = join(ROOT, "site", "index.html");
+const RECEIPT = join(ROOT, "site", "data", "preset-validation.json");
 const WORKER_SUGGESTIONS = join(ROOT, "worker", "src", "lib", "suggestions.mjs");
 const WRITE = process.argv.includes("--write");
 const CHECK = process.argv.includes("--check");

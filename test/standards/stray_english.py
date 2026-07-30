@@ -25,6 +25,7 @@ sys.path.insert(0, str(pathlib.Path(__file__).parent))
 from english_words import ENGLISH_WORDS  # noqa: E402
 
 ROOT = pathlib.Path(__file__).parents[2]
+SITE_ROOT = ROOT / "site"
 ALLOWLIST_FILE = pathlib.Path(__file__).parent / "stray_english_allowlist.txt"
 
 # Terms allowed as-printed (mirrors the runtime guard's case-sensitive acronym list).
@@ -216,12 +217,12 @@ HTML_PAGES = ["index.html", "about.html", "data.html", "stats.html", "api.html",
 def main():
     findings = []
     for page in HTML_PAGES:
-        src = (ROOT / page).read_text(encoding="utf-8")
+        src = (SITE_ROOT / page).read_text(encoding="utf-8")
         start, end = src.find("<script>"), src.rfind("</script>")
         findings += scan_js(src[start + 8:end] if start != -1 and end != -1 else "")
     # i18n.js: only the code AFTER the dictionaries (builders/helpers) is linted —
     # the STRINGS/SECTION_I18N tables *are* the i18n layer.
-    i18n_src = (ROOT / "i18n.js").read_text(encoding="utf-8")
+    i18n_src = (SITE_ROOT / "i18n.js").read_text(encoding="utf-8")
     tail_start = i18n_src.find("// Expose globals")
     findings += scan_js(i18n_src[tail_start:] if tail_start != -1 else "")
 

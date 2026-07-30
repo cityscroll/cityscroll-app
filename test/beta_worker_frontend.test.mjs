@@ -10,7 +10,7 @@ import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
 
-const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
+const read = (path) => readFileSync(new URL(`../site/${path}`, import.meta.url), "utf8");
 
 test("interactive pages honor the deploy-time beta API origin without production fallback", () => {
   for (const page of ["index.html", "about.html", "api.html"]) {

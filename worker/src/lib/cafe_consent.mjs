@@ -7,7 +7,7 @@ import {
   normalizeAddress,
   plainText,
   unique,
-} from "../../../location_extract.mjs";
+} from "../../../site/location_extract.mjs";
 
 const CAFE_KIND_RE = /\b(roadway|sidewalk)\s+cafe\b/i;
 const DINING_OUT_HINT_RE = /\b(?:dining\s*out\s*nyc|revocable\s+consent|roadway\s+cafe|sidewalk\s+cafe)\b/i;

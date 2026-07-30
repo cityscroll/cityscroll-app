@@ -9,10 +9,10 @@ import vm from "node:vm";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const require = createRequire(import.meta.url);
-const { coarseLandFilter } = require("../location_awareness.js");
-const { buildSearchDeepLink, canonicalSearchURL } = require("../nl_deeplink.js");
-const indexSource = readFileSync(join(ROOT, "index.html"), "utf8");
-const qrSource = readFileSync(join(ROOT, "qr_share.js"), "utf8");
+const { coarseLandFilter } = require("../site/location_awareness.js");
+const { buildSearchDeepLink, canonicalSearchURL } = require("../site/nl_deeplink.js");
+const indexSource = readFileSync(join(ROOT, "site", "index.html"), "utf8");
+const qrSource = readFileSync(join(ROOT, "site", "qr_share.js"), "utf8");
 const browserHarnessAvailable = spawnSync(
   "python3",
   ["-c", "import playwright"],

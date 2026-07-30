@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
-import { propertyLocationFromRow } from "../../property_location.mjs";
+import { propertyLocationFromRow } from "../../site/property_location.mjs";
 import { affectedAreaFromRow } from "../../worker/src/lib/hearings.mjs";
 
 const corpus = JSON.parse(await readFile(

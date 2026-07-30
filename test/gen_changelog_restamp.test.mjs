@@ -21,22 +21,23 @@ test("a full --rebuild run cannot put a generated hash back into source", () => 
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "gen-changelog-restamp-"));
   try {
     fs.mkdirSync(path.join(tmp, "tools"));
+    fs.mkdirSync(path.join(tmp, "site"));
     fs.copyFileSync(path.join(ROOT, "tools", "gen_changelog.mjs"), path.join(tmp, "tools", "gen_changelog.mjs"));
     fs.copyFileSync(path.join(ROOT, "tools", "changelog_extract.mjs"), path.join(tmp, "tools", "changelog_extract.mjs"));
 
     fs.writeFileSync(
-      path.join(tmp, "changelog-data.json"),
+      path.join(tmp, "site", "changelog-data.json"),
       JSON.stringify({ entries: [{ pr: 1, merged_at: "2026-07-01", url: "", text: "Fixture entry." }] }, null, 2) + "\n"
     );
     fs.writeFileSync(
-      path.join(tmp, "changelog.html"),
+      path.join(tmp, "site", "changelog.html"),
       '<script src="i18n.js?v=aaaaaaaa"></script>\n<ul>\n  <!-- CHANGELOG:AUTO:START -->\n  <!-- CHANGELOG:AUTO:END -->\n</ul>\n'
     );
-    fs.writeFileSync(path.join(tmp, "i18n.js"), "window.STRINGS = { en: { hello: \"hi\" } };\n");
+    fs.writeFileSync(path.join(tmp, "site", "i18n.js"), "window.STRINGS = { en: { hello: \"hi\" } };\n");
 
     execFileSync(process.execPath, [path.join(tmp, "tools", "gen_changelog.mjs"), "--rebuild"], { cwd: tmp });
 
-    const rebuilt = fs.readFileSync(path.join(tmp, "changelog.html"), "utf8");
+    const rebuilt = fs.readFileSync(path.join(tmp, "site", "changelog.html"), "utf8");
     assert.match(rebuilt, /src="i18n\.js\?v=__I18N_ASSET_VERSION__"/);
     assert.doesNotMatch(rebuilt, /v=aaaaaaaa/);
   } finally {

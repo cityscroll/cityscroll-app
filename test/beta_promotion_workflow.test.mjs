@@ -32,11 +32,11 @@ test("beta promotion is manual and pins one full commit SHA", () => {
   assert.match(workflow, /--commit-hash=\$\{\{ inputs\.commit_sha \}\}/);
 });
 
-test("promotion uses current release tooling while building the selected commit", () => {
+test("promotion uses the dispatched workflow tooling while building the selected commit", () => {
   const workflow = read(".github/workflows/promote-beta.yml");
 
   assert.match(workflow, /path: release-tools/);
-  assert.match(workflow, /ref: \$\{\{ inputs\.commit_sha \}\}/);
+  assert.match(workflow, /ref: \$\{\{ github\.workflow_sha \}\}/);
   assert.match(workflow, /path: source/);
   assert.match(workflow, /uses: \.\/release-tools\/\.github\/actions\/build-site/);
   assert.match(workflow, /source-dir: source/);

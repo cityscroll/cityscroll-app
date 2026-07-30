@@ -5,13 +5,13 @@ import { inflateRawSync } from "node:zlib";
 import { test } from "node:test";
 
 const require = createRequire(import.meta.url);
-const source = readFileSync(new URL("../index.html", import.meta.url), "utf8");
-const i18n = readFileSync(new URL("../i18n.js", import.meta.url), "utf8");
+const source = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
+const i18n = readFileSync(new URL("../site/i18n.js", import.meta.url), "utf8");
 const {
   excelSafeCsv,
   buildListWorkbook,
   buildNoticeWorkbook,
-} = require("../export_workflows.js");
+} = require("../site/export_workflows.js");
 
 function zipEntries(bytes) {
   const data = Buffer.from(bytes);
@@ -152,7 +152,7 @@ test("new export strings are present in English and every shipping language", ()
   for (const key of ["export_csv", "export_xlsx", "print_save_pdf"]) {
     assert.match(i18n, new RegExp(`\\b${key}:`), `English must define ${key}`);
     for (const lang of ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar", "ur"]) {
-      const translated = readFileSync(new URL(`../i18n/lang/${lang}.js`, import.meta.url), "utf8");
+      const translated = readFileSync(new URL(`../site/i18n/lang/${lang}.js`, import.meta.url), "utf8");
       assert.match(translated, new RegExp(`\\b${key}:`), `${lang} must define ${key}`);
     }
   }

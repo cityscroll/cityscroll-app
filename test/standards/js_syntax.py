@@ -14,13 +14,14 @@ import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+SITE_ROOT = ROOT / "site"
 HTML_PAGES = ["index.html", "about.html", "data.html", "stats.html", "changelog.html", "api.html", "standards.html"]
 # Source: the standalone first-party scripts loaded by index.html.
 JS_FILES = ["i18n.js", "nl_parse.js", "location_awareness.js", "hearing_location.js", "qr_share.js", "external_awards.js"]  # source: index.html script tags
 
 failures = 0
 for page in HTML_PAGES:
-    text = (ROOT / page).read_text()
+    text = (SITE_ROOT / page).read_text()
     for i, block in enumerate(re.findall(r"<script>(.*?)</script>", text, re.S)):
         with tempfile.NamedTemporaryFile("w", suffix=".js", delete=False) as f:
             f.write(block)
@@ -34,7 +35,7 @@ for page in HTML_PAGES:
             print(f"OK   {page} script block {i}")
 
 for js in JS_FILES:
-    r = subprocess.run(["node", "--check", str(ROOT / js)], capture_output=True, text=True)
+    r = subprocess.run(["node", "--check", str(SITE_ROOT / js)], capture_output=True, text=True)
     if r.returncode:
         failures += 1
         print(f"FAIL {js}: " + r.stderr.strip().splitlines()[-1][:200])

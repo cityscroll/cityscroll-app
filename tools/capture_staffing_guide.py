@@ -30,7 +30,7 @@ def file_metrics():
     paths = ["index.html", "i18n.js", "staffing.js", "data/staffing_exams.json"]  # Static guide dependencies.
     files = {}  # Exact size measurements keyed by dependency.
     for name in paths:
-        raw = (ROOT / name).read_bytes()
+        raw = (ROOT / "site" / name).read_bytes()
         files[name] = {"bytes": len(raw), "gzip_bytes": len(gzip.compress(raw, compresslevel=9))}  # Measured bytes.
     files["guide_incremental"] = {
         "bytes": files["staffing.js"]["bytes"] + files["data/staffing_exams.json"]["bytes"],
@@ -44,7 +44,7 @@ def main():
     parser.add_argument("--verify-only", action="store_true")
     args = parser.parse_args()
 
-    server = ThreadingHTTPServer(("127.0.0.1", 0), lambda *a, **kw: QuietHandler(*a, directory=str(ROOT), **kw))
+    server = ThreadingHTTPServer(("127.0.0.1", 0), lambda *a, **kw: QuietHandler(*a, directory=str(ROOT / "site"), **kw))
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
     base = f"http://127.0.0.1:{server.server_address[1]}/"

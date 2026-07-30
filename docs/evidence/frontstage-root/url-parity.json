@@ -1,0 +1,1450 @@
+{
+  "actual_base": "https://beta.cityscroll.org/",
+  "expected_base": "https://cityscroll.org/",
+  "failed": 0,
+  "html_comparison": "release metadata and delivery-layer i18n, beacon, and email-protection transforms normalized before hashing",
+  "matched": 144,
+  "paths_checked": 144,
+  "results": [
+    {
+      "actual_sha256": "20aa95374958cdbf080384b636f93c3a809f184ff2a5add766029e8c9dac791e",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/",
+      "expected_sha256": "20aa95374958cdbf080384b636f93c3a809f184ff2a5add766029e8c9dac791e",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/",
+      "matches": true,
+      "path": "/"
+    },
+    {
+      "actual_sha256": "f671848782b857d57fbaaffe1146feccfba90a567e478482bb4701148eaaea30",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/about",
+      "expected_sha256": "f671848782b857d57fbaaffe1146feccfba90a567e478482bb4701148eaaea30",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/about.html",
+      "matches": true,
+      "path": "/about.html"
+    },
+    {
+      "actual_sha256": "b6b810b10c50aa326b80b35d1a4514711f30a60aeb333abc09dac91c0e6bf0ab",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/analytics.js",
+      "expected_sha256": "b6b810b10c50aa326b80b35d1a4514711f30a60aeb333abc09dac91c0e6bf0ab",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/analytics.js",
+      "matches": true,
+      "path": "/analytics.js"
+    },
+    {
+      "actual_sha256": "354b9fc8380fab226b77343195481d426b6ab9647d24dd19f6cc2236586b5f4c",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/api",
+      "expected_sha256": "354b9fc8380fab226b77343195481d426b6ab9647d24dd19f6cc2236586b5f4c",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/api.html",
+      "matches": true,
+      "path": "/api.html"
+    },
+    {
+      "actual_sha256": "7ea6e8a2eefe626551b3219d5370d3b95526d473711025d829c8be65a3871dbf",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/assets/brand/apple-touch-icon.png",
+      "expected_sha256": "7ea6e8a2eefe626551b3219d5370d3b95526d473711025d829c8be65a3871dbf",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/assets/brand/apple-touch-icon.png",
+      "matches": true,
+      "path": "/assets/brand/apple-touch-icon.png"
+    },
+    {
+      "actual_sha256": "9ea2e5db2e8e57d9c4f7d44f2b7d2bc237b5511d00d2dfd76dd47965ae1c6499",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/assets/brand/candidates/civic-folio.svg",
+      "expected_sha256": "9ea2e5db2e8e57d9c4f7d44f2b7d2bc237b5511d00d2dfd76dd47965ae1c6499",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/assets/brand/candidates/civic-folio.svg",
+      "matches": true,
+      "path": "/assets/brand/candidates/civic-folio.svg"
+    },
+    {
+      "actual_sha256": "7d6dc62ba258d3653c10620e827d66bd09af6f6ccd7d46581da4334000ab8bba",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/assets/brand/candidates/open-ledger.svg",
+      "expected_sha256": "7d6dc62ba258d3653c10620e827d66bd09af6f6ccd7d46581da4334000ab8bba",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/assets/brand/candidates/open-ledger.svg",
+      "matches": true,
+      "path": "/assets/brand/candidates/open-ledger.svg"
+    },
+    {
+      "actual_sha256": "ac0e08d84e0c4a8f1be811ad4d8efa8e4bb4ab50c8bd0c490c4d6318934baead",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/assets/brand/candidates/record-route.svg",
+      "expected_sha256": "ac0e08d84e0c4a8f1be811ad4d8efa8e4bb4ab50c8bd0c490c4d6318934baead",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/assets/brand/candidates/record-route.svg",
+      "matches": true,
+      "path": "/assets/brand/candidates/record-route.svg"
+    },
+    {
+      "actual_sha256": "bd57f8cedb31279a3f8afe276e5f85a6f8440e54e482a333159db53ab2ecab20",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/assets/brand/cityscroll-app-icon.svg",
+      "expected_sha256": "bd57f8cedb31279a3f8afe276e5f85a6f8440e54e482a333159db53ab2ecab20",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/assets/brand/cityscroll-app-icon.svg",
+      "matches": true,
+      "path": "/assets/brand/cityscroll-app-icon.svg"
+    },
+    {
+      "actual_sha256": "daf5891908ad86f5b466a32f40eb8f7835a16fd515097f5367a3c494a4b527fe",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/assets/brand/cityscroll-lockup-on-dark.svg",
+      "expected_sha256": "daf5891908ad86f5b466a32f40eb8f7835a16fd515097f5367a3c494a4b527fe",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/assets/brand/cityscroll-lockup-on-dark.svg",
+      "matches": true,
+      "path": "/assets/brand/cityscroll-lockup-on-dark.svg"
+    },
+    {
+      "actual_sha256": "b8cf4a5326c470147f6044c1cc72b06ccf78cfaf3acdeeffae7d2ada695184ac",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/assets/brand/cityscroll-lockup.svg",
+      "expected_sha256": "b8cf4a5326c470147f6044c1cc72b06ccf78cfaf3acdeeffae7d2ada695184ac",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/assets/brand/cityscroll-lockup.svg",
+      "matches": true,
+      "path": "/assets/brand/cityscroll-lockup.svg"
+    },
+    {
+      "actual_sha256": "ebcdfab66f2a99d21abbc9fff9493405a6402787f6c8fb9945c620a67dfbcdc3",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/assets/brand/cityscroll-mark-on-dark.svg",
+      "expected_sha256": "ebcdfab66f2a99d21abbc9fff9493405a6402787f6c8fb9945c620a67dfbcdc3",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/assets/brand/cityscroll-mark-on-dark.svg",
+      "matches": true,
+      "path": "/assets/brand/cityscroll-mark-on-dark.svg"
+    },
+    {
+      "actual_sha256": "ffb6387c6ca700821a5c1ce6d66d21d3aaf99f8157dfd4f8777bd2e2013b1f09",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/assets/brand/cityscroll-mark.svg",
+      "expected_sha256": "ffb6387c6ca700821a5c1ce6d66d21d3aaf99f8157dfd4f8777bd2e2013b1f09",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/assets/brand/cityscroll-mark.svg",
+      "matches": true,
+      "path": "/assets/brand/cityscroll-mark.svg"
+    },
+    {
+      "actual_sha256": "6bc3bbb5baaf4d91873ac8bcf1faf66d141f1a5ec04d51c96ff3bb321d299db7",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/assets/brand/cityscroll-social-card.png",
+      "expected_sha256": "6bc3bbb5baaf4d91873ac8bcf1faf66d141f1a5ec04d51c96ff3bb321d299db7",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/assets/brand/cityscroll-social-card.png",
+      "matches": true,
+      "path": "/assets/brand/cityscroll-social-card.png"
+    },
+    {
+      "actual_sha256": "fe7f2a084e1bd9b4d955c21a178fe875c435dc39a1b7a30c1650bf9206479b85",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/assets/brand/cityscroll-social-card.svg",
+      "expected_sha256": "fe7f2a084e1bd9b4d955c21a178fe875c435dc39a1b7a30c1650bf9206479b85",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/assets/brand/cityscroll-social-card.svg",
+      "matches": true,
+      "path": "/assets/brand/cityscroll-social-card.svg"
+    },
+    {
+      "actual_sha256": "1c5490f9cdfc9279749956f6e16184713500e20751247dc3577a5fab594ca531",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/assets/brand/favicon-32.png",
+      "expected_sha256": "1c5490f9cdfc9279749956f6e16184713500e20751247dc3577a5fab594ca531",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/assets/brand/favicon-32.png",
+      "matches": true,
+      "path": "/assets/brand/favicon-32.png"
+    },
+    {
+      "actual_sha256": "86412ac9ae5fe526eb8ceb86412594743892029ca6a7db73f067a94c5fa7d72e",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/assets/brand/favicon.svg",
+      "expected_sha256": "86412ac9ae5fe526eb8ceb86412594743892029ca6a7db73f067a94c5fa7d72e",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/assets/brand/favicon.svg",
+      "matches": true,
+      "path": "/assets/brand/favicon.svg"
+    },
+    {
+      "actual_sha256": "311a8ae85c019a483ede215c678a78a5601544e0612884cc50f1b8fcec4bdd02",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/assets/brand/icon-192.png",
+      "expected_sha256": "311a8ae85c019a483ede215c678a78a5601544e0612884cc50f1b8fcec4bdd02",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/assets/brand/icon-192.png",
+      "matches": true,
+      "path": "/assets/brand/icon-192.png"
+    },
+    {
+      "actual_sha256": "2fcffae0ce7a55eebbd1de880b52100ae7d9708d514d4cb91cc5a763f858a860",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/assets/brand/icon-512.png",
+      "expected_sha256": "2fcffae0ce7a55eebbd1de880b52100ae7d9708d514d4cb91cc5a763f858a860",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/assets/brand/icon-512.png",
+      "matches": true,
+      "path": "/assets/brand/icon-512.png"
+    },
+    {
+      "actual_sha256": "7fa6d3cd66dc521acebe52af0e5bc072c6f2b106d38e36bc8e9365f1922c6255",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/beta-flags.json",
+      "expected_sha256": "7fa6d3cd66dc521acebe52af0e5bc072c6f2b106d38e36bc8e9365f1922c6255",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/beta-flags.json",
+      "matches": true,
+      "path": "/beta-flags.json"
+    },
+    {
+      "actual_sha256": "ef5625f84eb18d8d6bc55575a6e52be1ab79d4fd7b8c0daad2eafe87720473a7",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/beta_flags.js",
+      "expected_sha256": "ef5625f84eb18d8d6bc55575a6e52be1ab79d4fd7b8c0daad2eafe87720473a7",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/beta_flags.js",
+      "matches": true,
+      "path": "/beta_flags.js"
+    },
+    {
+      "actual_sha256": "5bf18339107d54487de8acf177495838b2e14430c7dc07f9c81ebe3997666764",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/brand.css",
+      "expected_sha256": "5bf18339107d54487de8acf177495838b2e14430c7dc07f9c81ebe3997666764",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/brand.css",
+      "matches": true,
+      "path": "/brand.css"
+    },
+    {
+      "actual_sha256": "39a509ba80833ca126d72e334c78751020b6e7631a61e3ed62b82308745ae3eb",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/changelog-data.json",
+      "expected_sha256": "39a509ba80833ca126d72e334c78751020b6e7631a61e3ed62b82308745ae3eb",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/changelog-data.json",
+      "matches": true,
+      "path": "/changelog-data.json"
+    },
+    {
+      "actual_sha256": "0fd7a77c960ade28aa4bdacced8d5a2cbd6d4ed55945aa6295286f373036667a",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/changelog",
+      "expected_sha256": "0fd7a77c960ade28aa4bdacced8d5a2cbd6d4ed55945aa6295286f373036667a",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/changelog.html",
+      "matches": true,
+      "path": "/changelog.html"
+    },
+    {
+      "actual_sha256": "48e02f0c0ce1d7e79725b76de7f412eb1a9908dc99689157a3c894cf9306b66d",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/data",
+      "expected_sha256": "48e02f0c0ce1d7e79725b76de7f412eb1a9908dc99689157a3c894cf9306b66d",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/data.html",
+      "matches": true,
+      "path": "/data.html"
+    },
+    {
+      "actual_sha256": "898b608c3cb413ab34e22cbfeff6c3a5458a217d5973911a04291c9dcc13aa35",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/data/compliance-snapshots.json",
+      "expected_sha256": "898b608c3cb413ab34e22cbfeff6c3a5458a217d5973911a04291c9dcc13aa35",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/data/compliance-snapshots.json",
+      "matches": true,
+      "path": "/data/compliance-snapshots.json"
+    },
+    {
+      "actual_sha256": "cc646509f96b5b30c07df3242b7d7e270aa776e08baa6c691129ddfc6b517982",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/data/exam_sources/active_list_summary.json",
+      "expected_sha256": "cc646509f96b5b30c07df3242b7d7e270aa776e08baa6c691129ddfc6b517982",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/data/exam_sources/active_list_summary.json",
+      "matches": true,
+      "path": "/data/exam_sources/active_list_summary.json"
+    },
+    {
+      "actual_sha256": "d90cd3149824ff9fe1786f97073416a25f13cbef1cb0624a8b83fd51d4ec5222",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/data/exam_sources/annual_schedule.json",
+      "expected_sha256": "d90cd3149824ff9fe1786f97073416a25f13cbef1cb0624a8b83fd51d4ec5222",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/data/exam_sources/annual_schedule.json",
+      "matches": true,
+      "path": "/data/exam_sources/annual_schedule.json"
+    },
+    {
+      "actual_sha256": "c78387ae00168fb5daade6b13df5802f21d691d03e26956716f1894e7d9a3817",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/data/exam_sources/city_record_check.json",
+      "expected_sha256": "c78387ae00168fb5daade6b13df5802f21d691d03e26956716f1894e7d9a3817",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/data/exam_sources/city_record_check.json",
+      "matches": true,
+      "path": "/data/exam_sources/city_record_check.json"
+    },
+    {
+      "actual_sha256": "587c6e04d2112fe92c13629988f8b4c265b1adddd31fc3c20e50b2d14815f5e6",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/data/exam_sources/dcas_open_competitive.json",
+      "expected_sha256": "587c6e04d2112fe92c13629988f8b4c265b1adddd31fc3c20e50b2d14815f5e6",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/data/exam_sources/dcas_open_competitive.json",
+      "matches": true,
+      "path": "/data/exam_sources/dcas_open_competitive.json"
+    },
+    {
+      "actual_sha256": "587592925202d49c81933293eefe4dac0e632a2bc62ab7e751a30d4e9ab8b26d",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/data/people_examples.json",
+      "expected_sha256": "587592925202d49c81933293eefe4dac0e632a2bc62ab7e751a30d4e9ab8b26d",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/data/people_examples.json",
+      "matches": true,
+      "path": "/data/people_examples.json"
+    },
+    {
+      "actual_sha256": "766305722a98fc5cfe651d874e62f1a7a85cbe1fa01e18f709089703ba2d7caf",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/data/preset-validation.json",
+      "expected_sha256": "766305722a98fc5cfe651d874e62f1a7a85cbe1fa01e18f709089703ba2d7caf",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/data/preset-validation.json",
+      "matches": true,
+      "path": "/data/preset-validation.json"
+    },
+    {
+      "actual_sha256": "5e7c8064532449b3e4d84a4f1dea017446bf49de140ce767f37ff465a27c9c10",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/data/source_contracts.json",
+      "expected_sha256": "5e7c8064532449b3e4d84a4f1dea017446bf49de140ce767f37ff465a27c9c10",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/data/source_contracts.json",
+      "matches": true,
+      "path": "/data/source_contracts.json"
+    },
+    {
+      "actual_sha256": "fae0fa2dca730b8bf75c9ed68b0820f55a8fa01d6038943df569b358be63d7a0",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/data/staffing_exams.json",
+      "expected_sha256": "fae0fa2dca730b8bf75c9ed68b0820f55a8fa01d6038943df569b358be63d7a0",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/data/staffing_exams.json",
+      "matches": true,
+      "path": "/data/staffing_exams.json"
+    },
+    {
+      "actual_sha256": "828519960feb9a9eff3f639e0ddfee018d3b96e0029c0f8e58107ad77fad2e87",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/data/title_crosswalk.json",
+      "expected_sha256": "828519960feb9a9eff3f639e0ddfee018d3b96e0029c0f8e58107ad77fad2e87",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/data/title_crosswalk.json",
+      "matches": true,
+      "path": "/data/title_crosswalk.json"
+    },
+    {
+      "actual_sha256": "4e49374ee48691726da4309eeb165ed4626e6fefb0514efc76ade8ed7e7df8ae",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/demo/demo-links.json",
+      "expected_sha256": "4e49374ee48691726da4309eeb165ed4626e6fefb0514efc76ade8ed7e7df8ae",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/demo/demo-links.json",
+      "matches": true,
+      "path": "/demo/demo-links.json"
+    },
+    {
+      "actual_sha256": "79c9b46c3eea608e70d6af1e9381212a89458a2136c27a0839f9778cd6558eee",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/demo/demo-links.schema.json",
+      "expected_sha256": "79c9b46c3eea608e70d6af1e9381212a89458a2136c27a0839f9778cd6558eee",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/demo/demo-links.schema.json",
+      "matches": true,
+      "path": "/demo/demo-links.schema.json"
+    },
+    {
+      "actual_sha256": "c6a25c09ee5ab0f4f669f205819f4efc6daf6df4e72a345de7adc5e84856253c",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/export_workflows.js",
+      "expected_sha256": "c6a25c09ee5ab0f4f669f205819f4efc6daf6df4e72a345de7adc5e84856253c",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/export_workflows.js",
+      "matches": true,
+      "path": "/export_workflows.js"
+    },
+    {
+      "actual_sha256": "faa2962adbad0318b47994d338431c24aca3763dcdd82ecb29bbb6c3319a7f3c",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/external_awards.js",
+      "expected_sha256": "faa2962adbad0318b47994d338431c24aca3763dcdd82ecb29bbb6c3319a7f3c",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/external_awards.js",
+      "matches": true,
+      "path": "/external_awards.js"
+    },
+    {
+      "actual_sha256": "2433f5294c761885598617c531b7b52c317e1db3f99f0e0a4fc1323bd0704e8b",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/hearing_location.js",
+      "expected_sha256": "2433f5294c761885598617c531b7b52c317e1db3f99f0e0a4fc1323bd0704e8b",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/hearing_location.js",
+      "matches": true,
+      "path": "/hearing_location.js"
+    },
+    {
+      "actual_sha256": "f3a613478a1f0d6d937472cb555502a36a7b76890e0a7ab7c8d7a5de4964ca9d",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/i18n.js",
+      "expected_sha256": "f3a613478a1f0d6d937472cb555502a36a7b76890e0a7ab7c8d7a5de4964ca9d",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/i18n.js",
+      "matches": true,
+      "path": "/i18n.js"
+    },
+    {
+      "actual_sha256": "8f772b880637bfe97d9bc25394c3ee550c892a903e423211430d2d493b54387f",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/i18n/glossary.json",
+      "expected_sha256": "8f772b880637bfe97d9bc25394c3ee550c892a903e423211430d2d493b54387f",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/i18n/glossary.json",
+      "matches": true,
+      "path": "/i18n/glossary.json"
+    },
+    {
+      "actual_sha256": "00c0fbfe2178f0ad0057f80cbe840623ff4420e7acb195c268ba0499323f6357",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/i18n/lang/ar.js",
+      "expected_sha256": "00c0fbfe2178f0ad0057f80cbe840623ff4420e7acb195c268ba0499323f6357",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/i18n/lang/ar.js",
+      "matches": true,
+      "path": "/i18n/lang/ar.js"
+    },
+    {
+      "actual_sha256": "a912ba686f1933375f98b81eaf7f1b4194052738f91f5b79130ef2969b6663f7",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/i18n/lang/bn.js",
+      "expected_sha256": "a912ba686f1933375f98b81eaf7f1b4194052738f91f5b79130ef2969b6663f7",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/i18n/lang/bn.js",
+      "matches": true,
+      "path": "/i18n/lang/bn.js"
+    },
+    {
+      "actual_sha256": "0af675fdccbf6066c4bb07167f5ccc9760d3c33ee42629cc006fc4c647133a29",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/i18n/lang/es.js",
+      "expected_sha256": "0af675fdccbf6066c4bb07167f5ccc9760d3c33ee42629cc006fc4c647133a29",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/i18n/lang/es.js",
+      "matches": true,
+      "path": "/i18n/lang/es.js"
+    },
+    {
+      "actual_sha256": "90f67359c4e0f67a233a352368a0966183344b908c3cb29e46b498f689ce521c",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/i18n/lang/fr.js",
+      "expected_sha256": "90f67359c4e0f67a233a352368a0966183344b908c3cb29e46b498f689ce521c",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/i18n/lang/fr.js",
+      "matches": true,
+      "path": "/i18n/lang/fr.js"
+    },
+    {
+      "actual_sha256": "7a226b21fd433b9afd786172f6d4b20dd883dad1a4d5a2e0e1cf31e34727eb00",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/i18n/lang/ht.js",
+      "expected_sha256": "7a226b21fd433b9afd786172f6d4b20dd883dad1a4d5a2e0e1cf31e34727eb00",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/i18n/lang/ht.js",
+      "matches": true,
+      "path": "/i18n/lang/ht.js"
+    },
+    {
+      "actual_sha256": "ebd2daf34449ce9cc751d192cdfc80c1d55b58217b83a165e753c5a3c3f0acea",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/i18n/lang/ko.js",
+      "expected_sha256": "ebd2daf34449ce9cc751d192cdfc80c1d55b58217b83a165e753c5a3c3f0acea",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/i18n/lang/ko.js",
+      "matches": true,
+      "path": "/i18n/lang/ko.js"
+    },
+    {
+      "actual_sha256": "949f4b16b84e4d3936b498fc52c95eaa9d4b92a88a2d6bbae6954522708b49ec",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/i18n/lang/pl.js",
+      "expected_sha256": "949f4b16b84e4d3936b498fc52c95eaa9d4b92a88a2d6bbae6954522708b49ec",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/i18n/lang/pl.js",
+      "matches": true,
+      "path": "/i18n/lang/pl.js"
+    },
+    {
+      "actual_sha256": "dd4cbfdf85d27ff12c2b170f07c149075864f999539103068bf18f0269fc97e2",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/i18n/lang/ru.js",
+      "expected_sha256": "dd4cbfdf85d27ff12c2b170f07c149075864f999539103068bf18f0269fc97e2",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/i18n/lang/ru.js",
+      "matches": true,
+      "path": "/i18n/lang/ru.js"
+    },
+    {
+      "actual_sha256": "7ff6492cfa67bb952801a85657767979a10fd1e5d3987772087699b076f93dec",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/i18n/lang/ur.js",
+      "expected_sha256": "7ff6492cfa67bb952801a85657767979a10fd1e5d3987772087699b076f93dec",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/i18n/lang/ur.js",
+      "matches": true,
+      "path": "/i18n/lang/ur.js"
+    },
+    {
+      "actual_sha256": "38b4ee77593a13b7e6cd5a9dfa367b579b3c0d0b643aa87fab597aec5c713be9",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/i18n/lang/zh-Hans.js",
+      "expected_sha256": "38b4ee77593a13b7e6cd5a9dfa367b579b3c0d0b643aa87fab597aec5c713be9",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/i18n/lang/zh-Hans.js",
+      "matches": true,
+      "path": "/i18n/lang/zh-Hans.js"
+    },
+    {
+      "actual_sha256": "53f211b524f7ea7a2b906ad505f2b95154f794aa1d82f69eaacbcc201dd4c5f4",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/location_awareness.js",
+      "expected_sha256": "53f211b524f7ea7a2b906ad505f2b95154f794aa1d82f69eaacbcc201dd4c5f4",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/location_awareness.js",
+      "matches": true,
+      "path": "/location_awareness.js"
+    },
+    {
+      "actual_sha256": "5b72c80ffa0ae2fa6d3fb6d93836e41501aa10407d6b901b32a1dce7ad84f6fa",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/location_extract.mjs",
+      "expected_sha256": "5b72c80ffa0ae2fa6d3fb6d93836e41501aa10407d6b901b32a1dce7ad84f6fa",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/location_extract.mjs",
+      "matches": true,
+      "path": "/location_extract.mjs"
+    },
+    {
+      "actual_sha256": "a99d455598c1bbd1a56c51c7bb4707e535d03ca962edfe9cc983f0926bf61277",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/changelog/pr-50/poster-780.png",
+      "expected_sha256": "a99d455598c1bbd1a56c51c7bb4707e535d03ca962edfe9cc983f0926bf61277",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/changelog/pr-50/poster-780.png",
+      "matches": true,
+      "path": "/media/changelog/pr-50/poster-780.png"
+    },
+    {
+      "actual_sha256": "ff0005a9a8006dba2c2edc7697e055b93e08ca861200c23b50a790f7a2340aaf",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/changelog/pr-50/quiz-nl.webm",
+      "expected_sha256": "ff0005a9a8006dba2c2edc7697e055b93e08ca861200c23b50a790f7a2340aaf",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/changelog/pr-50/quiz-nl.webm",
+      "matches": true,
+      "path": "/media/changelog/pr-50/quiz-nl.webm"
+    },
+    {
+      "actual_sha256": "084599a81c7eff57bb0733c6f9321a20513e6b73ac354bbb988979b46fb2c612",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/changelog/pr-62/after-1440.png",
+      "expected_sha256": "084599a81c7eff57bb0733c6f9321a20513e6b73ac354bbb988979b46fb2c612",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/changelog/pr-62/after-1440.png",
+      "matches": true,
+      "path": "/media/changelog/pr-62/after-1440.png"
+    },
+    {
+      "actual_sha256": "722cbc88d7f37a0491301e1280255ca4e42c20f60e3375bad66ead60a35d2f30",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/changelog/pr-62/before-1440.png",
+      "expected_sha256": "722cbc88d7f37a0491301e1280255ca4e42c20f60e3375bad66ead60a35d2f30",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/changelog/pr-62/before-1440.png",
+      "matches": true,
+      "path": "/media/changelog/pr-62/before-1440.png"
+    },
+    {
+      "actual_sha256": "e8a3fefd888afc2581746ce5a2186108fe9aee4c1e607143331f19ec664a9f54",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/changelog/pr-74/after-390.png",
+      "expected_sha256": "e8a3fefd888afc2581746ce5a2186108fe9aee4c1e607143331f19ec664a9f54",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/changelog/pr-74/after-390.png",
+      "matches": true,
+      "path": "/media/changelog/pr-74/after-390.png"
+    },
+    {
+      "actual_sha256": "2a5d866cfea8092bce7ec32a929c3d6ae70449cc2d6357ca92a7c9efe7037bbe",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/changelog/pr-74/before-390.png",
+      "expected_sha256": "2a5d866cfea8092bce7ec32a929c3d6ae70449cc2d6357ca92a7c9efe7037bbe",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/changelog/pr-74/before-390.png",
+      "matches": true,
+      "path": "/media/changelog/pr-74/before-390.png"
+    },
+    {
+      "actual_sha256": "152e439616f9366fae8463b96cadb199f0b676ae4c27a675da0dfa3bb878eb5a",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/changelog/pr-80/award-watch.webm",
+      "expected_sha256": "152e439616f9366fae8463b96cadb199f0b676ae4c27a675da0dfa3bb878eb5a",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/changelog/pr-80/award-watch.webm",
+      "matches": true,
+      "path": "/media/changelog/pr-80/award-watch.webm"
+    },
+    {
+      "actual_sha256": "85c4f18b9a0eef04ca70e11e5e6b7eff46a7685cf48d1cb10fe4be0627c818eb",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/changelog/pr-80/poster-780.png",
+      "expected_sha256": "85c4f18b9a0eef04ca70e11e5e6b7eff46a7685cf48d1cb10fe4be0627c818eb",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/changelog/pr-80/poster-780.png",
+      "matches": true,
+      "path": "/media/changelog/pr-80/poster-780.png"
+    },
+    {
+      "actual_sha256": "3ea3b224bc440e51869712d1866cf4d58e58ef878979c0a70c4c671a80f64ccd",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/changelog/pr-80/verification-changelog-1440.png",
+      "expected_sha256": "3ea3b224bc440e51869712d1866cf4d58e58ef878979c0a70c4c671a80f64ccd",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/changelog/pr-80/verification-changelog-1440.png",
+      "matches": true,
+      "path": "/media/changelog/pr-80/verification-changelog-1440.png"
+    },
+    {
+      "actual_sha256": "e6f6d5d89a94a4b0428549b94e7ef571ca867e2127d97f3499794bd4494e7c9e",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/changelog/pr-80/verification-changelog-390.png",
+      "expected_sha256": "e6f6d5d89a94a4b0428549b94e7ef571ca867e2127d97f3499794bd4494e7c9e",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/changelog/pr-80/verification-changelog-390.png",
+      "matches": true,
+      "path": "/media/changelog/pr-80/verification-changelog-390.png"
+    },
+    {
+      "actual_sha256": "690dbe09e4b6d2f960a01d98ed0569a0b552a6534fa4d96d03bce61fe40141d7",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/agency-crosswalk/after-1440.png",
+      "expected_sha256": "690dbe09e4b6d2f960a01d98ed0569a0b552a6534fa4d96d03bce61fe40141d7",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/agency-crosswalk/after-1440.png",
+      "matches": true,
+      "path": "/media/review/agency-crosswalk/after-1440.png"
+    },
+    {
+      "actual_sha256": "f69b27e49727fe1e287930da1afdcbb8e68215c3475cd457b9f286d31dfb51a5",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/agency-crosswalk/after-390.png",
+      "expected_sha256": "f69b27e49727fe1e287930da1afdcbb8e68215c3475cd457b9f286d31dfb51a5",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/agency-crosswalk/after-390.png",
+      "matches": true,
+      "path": "/media/review/agency-crosswalk/after-390.png"
+    },
+    {
+      "actual_sha256": "cab6e59c51bdb3901e302b22f98ca6082ab3a22f7f8df35d600b3b77ad111085",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/agency-crosswalk/before-1440.png",
+      "expected_sha256": "cab6e59c51bdb3901e302b22f98ca6082ab3a22f7f8df35d600b3b77ad111085",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/agency-crosswalk/before-1440.png",
+      "matches": true,
+      "path": "/media/review/agency-crosswalk/before-1440.png"
+    },
+    {
+      "actual_sha256": "d5602f9f4eb424b8c823cd3f9f9c454fc44b3100ff63a4f384b42c834c72b63c",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/agency-crosswalk/before-390.png",
+      "expected_sha256": "d5602f9f4eb424b8c823cd3f9f9c454fc44b3100ff63a4f384b42c834c72b63c",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/agency-crosswalk/before-390.png",
+      "matches": true,
+      "path": "/media/review/agency-crosswalk/before-390.png"
+    },
+    {
+      "actual_sha256": "eec47da47186f77cb95648e8a427f061289c5bf73d2a7dd0cab9b847ebf1bc67",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/audience-scenarios/after-1440.png",
+      "expected_sha256": "eec47da47186f77cb95648e8a427f061289c5bf73d2a7dd0cab9b847ebf1bc67",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/audience-scenarios/after-1440.png",
+      "matches": true,
+      "path": "/media/review/audience-scenarios/after-1440.png"
+    },
+    {
+      "actual_sha256": "84c91cd1b02067daf03572142fb9f5b38e38feaffea01879d3c827d1fa997cdb",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/audience-scenarios/after-390.png",
+      "expected_sha256": "84c91cd1b02067daf03572142fb9f5b38e38feaffea01879d3c827d1fa997cdb",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/audience-scenarios/after-390.png",
+      "matches": true,
+      "path": "/media/review/audience-scenarios/after-390.png"
+    },
+    {
+      "actual_sha256": "f72a0e9061c526312613cc9e71ce285cc6e7b94ba69fdb7f8f10fc85409bf841",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/cityscroll-rebrand/after-1440.png",
+      "expected_sha256": "f72a0e9061c526312613cc9e71ce285cc6e7b94ba69fdb7f8f10fc85409bf841",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/cityscroll-rebrand/after-1440.png",
+      "matches": true,
+      "path": "/media/review/cityscroll-rebrand/after-1440.png"
+    },
+    {
+      "actual_sha256": "c0f7fb0094f3b20b5e7a6063972deb8dc53048658e98ca993e23b94aff471f44",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/cityscroll-rebrand/after-390.png",
+      "expected_sha256": "c0f7fb0094f3b20b5e7a6063972deb8dc53048658e98ca993e23b94aff471f44",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/cityscroll-rebrand/after-390.png",
+      "matches": true,
+      "path": "/media/review/cityscroll-rebrand/after-390.png"
+    },
+    {
+      "actual_sha256": "fc9ef42cf55533e233ad107cf52dfdb009ffb91ad2e1225ad254b8273d66235f",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/cityscroll-rebrand/before-1440.png",
+      "expected_sha256": "fc9ef42cf55533e233ad107cf52dfdb009ffb91ad2e1225ad254b8273d66235f",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/cityscroll-rebrand/before-1440.png",
+      "matches": true,
+      "path": "/media/review/cityscroll-rebrand/before-1440.png"
+    },
+    {
+      "actual_sha256": "2000cba635a9b482aad63347da964f4f8ddf2a52984c09e5ca17e5563490ecdf",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/cityscroll-rebrand/before-390.png",
+      "expected_sha256": "2000cba635a9b482aad63347da964f4f8ddf2a52984c09e5ca17e5563490ecdf",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/cityscroll-rebrand/before-390.png",
+      "matches": true,
+      "path": "/media/review/cityscroll-rebrand/before-390.png"
+    },
+    {
+      "actual_sha256": "bc48ad028b3e2546d54ac4cde16b2564eaaf54c49d088664eab985bcdacc278b",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/data-viz-intuitive/after-1440-annotated.png",
+      "expected_sha256": "bc48ad028b3e2546d54ac4cde16b2564eaaf54c49d088664eab985bcdacc278b",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/data-viz-intuitive/after-1440-annotated.png",
+      "matches": true,
+      "path": "/media/review/data-viz-intuitive/after-1440-annotated.png"
+    },
+    {
+      "actual_sha256": "6ca1173e24a4903c21c1bc8f6b4779902e7316e7c9ce6dede1afa426688d7635",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/data-viz-intuitive/after-1440.png",
+      "expected_sha256": "6ca1173e24a4903c21c1bc8f6b4779902e7316e7c9ce6dede1afa426688d7635",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/data-viz-intuitive/after-1440.png",
+      "matches": true,
+      "path": "/media/review/data-viz-intuitive/after-1440.png"
+    },
+    {
+      "actual_sha256": "a759e7f92dc08c04460e4ba63c15ceaee5fb280c3cebff8bbc38a2ab97a62405",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/data-viz-intuitive/after-390-annotated.png",
+      "expected_sha256": "a759e7f92dc08c04460e4ba63c15ceaee5fb280c3cebff8bbc38a2ab97a62405",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/data-viz-intuitive/after-390-annotated.png",
+      "matches": true,
+      "path": "/media/review/data-viz-intuitive/after-390-annotated.png"
+    },
+    {
+      "actual_sha256": "4a7739152d7704ca99991533ab01a15d8ffee6ff85078377bb47d484de719fa5",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/data-viz-intuitive/after-390.png",
+      "expected_sha256": "4a7739152d7704ca99991533ab01a15d8ffee6ff85078377bb47d484de719fa5",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/data-viz-intuitive/after-390.png",
+      "matches": true,
+      "path": "/media/review/data-viz-intuitive/after-390.png"
+    },
+    {
+      "actual_sha256": "47db11a9d6b28d5ef48ea1d9ca6d47b347c34c76d768f248d6d8437d39f5a372",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/data-viz-intuitive/before-1440-annotated.png",
+      "expected_sha256": "47db11a9d6b28d5ef48ea1d9ca6d47b347c34c76d768f248d6d8437d39f5a372",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/data-viz-intuitive/before-1440-annotated.png",
+      "matches": true,
+      "path": "/media/review/data-viz-intuitive/before-1440-annotated.png"
+    },
+    {
+      "actual_sha256": "f714cf108356cc49877f32481b07de816b49186f563653b265fd319274eb100f",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/data-viz-intuitive/before-1440.png",
+      "expected_sha256": "f714cf108356cc49877f32481b07de816b49186f563653b265fd319274eb100f",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/data-viz-intuitive/before-1440.png",
+      "matches": true,
+      "path": "/media/review/data-viz-intuitive/before-1440.png"
+    },
+    {
+      "actual_sha256": "2cc3d4a7dd9e0cfbd1750b8d3e53b6b8a4cfb35ac8d62050d7cc2167f0736ba0",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/data-viz-intuitive/before-390-annotated.png",
+      "expected_sha256": "2cc3d4a7dd9e0cfbd1750b8d3e53b6b8a4cfb35ac8d62050d7cc2167f0736ba0",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/data-viz-intuitive/before-390-annotated.png",
+      "matches": true,
+      "path": "/media/review/data-viz-intuitive/before-390-annotated.png"
+    },
+    {
+      "actual_sha256": "e9f652d823a981ad6d5435a0a6599d9aebe68a3b45013bec5ad8b18e346b682e",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/data-viz-intuitive/before-390.png",
+      "expected_sha256": "e9f652d823a981ad6d5435a0a6599d9aebe68a3b45013bec5ad8b18e346b682e",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/data-viz-intuitive/before-390.png",
+      "matches": true,
+      "path": "/media/review/data-viz-intuitive/before-390.png"
+    },
+    {
+      "actual_sha256": "8cf8c348b62c79d4d563d60d10822697cc0365da142880e2ebdace417b7b4571",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/data-viz-intuitive/measurements.json",
+      "expected_sha256": "8cf8c348b62c79d4d563d60d10822697cc0365da142880e2ebdace417b7b4571",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/data-viz-intuitive/measurements.json",
+      "matches": true,
+      "path": "/media/review/data-viz-intuitive/measurements.json"
+    },
+    {
+      "actual_sha256": "fdfeb7ce75101a5d036a8083bb1746aaa0a6076fc063315c1841e332883f7be5",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/exam-polish/collapsed-1440.png",
+      "expected_sha256": "fdfeb7ce75101a5d036a8083bb1746aaa0a6076fc063315c1841e332883f7be5",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/exam-polish/collapsed-1440.png",
+      "matches": true,
+      "path": "/media/review/exam-polish/collapsed-1440.png"
+    },
+    {
+      "actual_sha256": "6656d7cf28e84339db44b8abf7299010d6e25d229ef4f56e30cb901e8af41b68",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/exam-polish/collapsed-390.png",
+      "expected_sha256": "6656d7cf28e84339db44b8abf7299010d6e25d229ef4f56e30cb901e8af41b68",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/exam-polish/collapsed-390.png",
+      "matches": true,
+      "path": "/media/review/exam-polish/collapsed-390.png"
+    },
+    {
+      "actual_sha256": "8d6a7445531c9ae03ad5357dfc8ad6908eead71cf813c832228adb8f264194d8",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/exam-polish/expanded-1440.png",
+      "expected_sha256": "8d6a7445531c9ae03ad5357dfc8ad6908eead71cf813c832228adb8f264194d8",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/exam-polish/expanded-1440.png",
+      "matches": true,
+      "path": "/media/review/exam-polish/expanded-1440.png"
+    },
+    {
+      "actual_sha256": "a351769f956fb7bced38fa6d7a312430a98b87a2efe71a257927b4e9b50578f4",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/exam-polish/expanded-390.png",
+      "expected_sha256": "a351769f956fb7bced38fa6d7a312430a98b87a2efe71a257927b4e9b50578f4",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/exam-polish/expanded-390.png",
+      "matches": true,
+      "path": "/media/review/exam-polish/expanded-390.png"
+    },
+    {
+      "actual_sha256": "18c169dee296a0bf57dd8e94fc1bd3fdaddb0e34d47b37b9930a1b14ba784a64",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/preset-widening/after-1440.png",
+      "expected_sha256": "18c169dee296a0bf57dd8e94fc1bd3fdaddb0e34d47b37b9930a1b14ba784a64",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/preset-widening/after-1440.png",
+      "matches": true,
+      "path": "/media/review/preset-widening/after-1440.png"
+    },
+    {
+      "actual_sha256": "e0cf80cc6845bb19e19ecc3cb68848d437e90fce1085119e0320461693247e7a",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/preset-widening/after-390.png",
+      "expected_sha256": "e0cf80cc6845bb19e19ecc3cb68848d437e90fce1085119e0320461693247e7a",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/preset-widening/after-390.png",
+      "matches": true,
+      "path": "/media/review/preset-widening/after-390.png"
+    },
+    {
+      "actual_sha256": "46046f417c9382cd2d0eb3307e34f449e09009bf245c82d6c5fd3fa9579c3a33",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/profile-fully-instant/after-1440-annotated.png",
+      "expected_sha256": "46046f417c9382cd2d0eb3307e34f449e09009bf245c82d6c5fd3fa9579c3a33",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/profile-fully-instant/after-1440-annotated.png",
+      "matches": true,
+      "path": "/media/review/profile-fully-instant/after-1440-annotated.png"
+    },
+    {
+      "actual_sha256": "59101698b24c7a7036ef2d3c8e4899c845c769584e50a06397e5093419ca5782",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/profile-fully-instant/after-1440.png",
+      "expected_sha256": "59101698b24c7a7036ef2d3c8e4899c845c769584e50a06397e5093419ca5782",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/profile-fully-instant/after-1440.png",
+      "matches": true,
+      "path": "/media/review/profile-fully-instant/after-1440.png"
+    },
+    {
+      "actual_sha256": "1e3eaf833b2b6c266ed0785eb045a8e24057c5bb713f1626c6405dde05f374be",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/profile-fully-instant/after-390-annotated.png",
+      "expected_sha256": "1e3eaf833b2b6c266ed0785eb045a8e24057c5bb713f1626c6405dde05f374be",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/profile-fully-instant/after-390-annotated.png",
+      "matches": true,
+      "path": "/media/review/profile-fully-instant/after-390-annotated.png"
+    },
+    {
+      "actual_sha256": "33f3dba71528915056d24025348045f99fd483d707afb97e57830c1d7c00344e",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/profile-fully-instant/after-390.png",
+      "expected_sha256": "33f3dba71528915056d24025348045f99fd483d707afb97e57830c1d7c00344e",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/profile-fully-instant/after-390.png",
+      "matches": true,
+      "path": "/media/review/profile-fully-instant/after-390.png"
+    },
+    {
+      "actual_sha256": "9be2fed61afd2cee8e03c036f27a92ff2e28e490767a6a7e5155e2502c002e92",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/profile-fully-instant/before-1440-annotated.png",
+      "expected_sha256": "9be2fed61afd2cee8e03c036f27a92ff2e28e490767a6a7e5155e2502c002e92",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/profile-fully-instant/before-1440-annotated.png",
+      "matches": true,
+      "path": "/media/review/profile-fully-instant/before-1440-annotated.png"
+    },
+    {
+      "actual_sha256": "3d701abd793a3ee2fc97ad40b0d7c2dd5b375f811942ca506125608f8dbfce03",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/profile-fully-instant/before-1440.png",
+      "expected_sha256": "3d701abd793a3ee2fc97ad40b0d7c2dd5b375f811942ca506125608f8dbfce03",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/profile-fully-instant/before-1440.png",
+      "matches": true,
+      "path": "/media/review/profile-fully-instant/before-1440.png"
+    },
+    {
+      "actual_sha256": "e112496115366e1fc5ce6d6fe2a522bc9bd1c9199b160ded60cc1422a3fe64dd",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/profile-fully-instant/before-390-annotated.png",
+      "expected_sha256": "e112496115366e1fc5ce6d6fe2a522bc9bd1c9199b160ded60cc1422a3fe64dd",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/profile-fully-instant/before-390-annotated.png",
+      "matches": true,
+      "path": "/media/review/profile-fully-instant/before-390-annotated.png"
+    },
+    {
+      "actual_sha256": "e7382aa317abd4814e362741ee90465ccd7b240d5843161bfc4face9487626c2",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/profile-fully-instant/before-390.png",
+      "expected_sha256": "e7382aa317abd4814e362741ee90465ccd7b240d5843161bfc4face9487626c2",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/profile-fully-instant/before-390.png",
+      "matches": true,
+      "path": "/media/review/profile-fully-instant/before-390.png"
+    },
+    {
+      "actual_sha256": "05e2bf5bd3da38c045c1eca06661dd83fc270d5215b4a2f553404b2f18c57574",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/staffing-content-first/after-1440.png",
+      "expected_sha256": "05e2bf5bd3da38c045c1eca06661dd83fc270d5215b4a2f553404b2f18c57574",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/staffing-content-first/after-1440.png",
+      "matches": true,
+      "path": "/media/review/staffing-content-first/after-1440.png"
+    },
+    {
+      "actual_sha256": "f5512f15afd85dada7b337b2257325a514f8cd60285c49d5931f824e7dabbb71",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/staffing-content-first/after-390.png",
+      "expected_sha256": "f5512f15afd85dada7b337b2257325a514f8cd60285c49d5931f824e7dabbb71",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/staffing-content-first/after-390.png",
+      "matches": true,
+      "path": "/media/review/staffing-content-first/after-390.png"
+    },
+    {
+      "actual_sha256": "84984a62d5788b6d605c820d1757fe6ea050508cd305c2ab0aed9bb416b63c65",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/staffing-content-first/before-1440.png",
+      "expected_sha256": "84984a62d5788b6d605c820d1757fe6ea050508cd305c2ab0aed9bb416b63c65",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/staffing-content-first/before-1440.png",
+      "matches": true,
+      "path": "/media/review/staffing-content-first/before-1440.png"
+    },
+    {
+      "actual_sha256": "37ab4fa6205c8c46bd5f92345466a210792e073558f90572e0db1b998abdfd6b",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/staffing-content-first/before-390.png",
+      "expected_sha256": "37ab4fa6205c8c46bd5f92345466a210792e073558f90572e0db1b998abdfd6b",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/staffing-content-first/before-390.png",
+      "matches": true,
+      "path": "/media/review/staffing-content-first/before-390.png"
+    },
+    {
+      "actual_sha256": "b0db12b41aaee646e6a6684bda0ed3c66caee04a43f5cb8a9d965fb7d86780fe",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/standards-page/after-1440.png",
+      "expected_sha256": "b0db12b41aaee646e6a6684bda0ed3c66caee04a43f5cb8a9d965fb7d86780fe",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/standards-page/after-1440.png",
+      "matches": true,
+      "path": "/media/review/standards-page/after-1440.png"
+    },
+    {
+      "actual_sha256": "adfe8e83e16d5a9154a054504b8a797ab85aff99eebe1a7e6d506e05e12a1bd6",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/standards-page/after-390.png",
+      "expected_sha256": "adfe8e83e16d5a9154a054504b8a797ab85aff99eebe1a7e6d506e05e12a1bd6",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/standards-page/after-390.png",
+      "matches": true,
+      "path": "/media/review/standards-page/after-390.png"
+    },
+    {
+      "actual_sha256": "a1aad42210f1704ec5d40216d698f619fd8d013f98185ae9df8442b403739f7c",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/standards-self-conformance/after-1440-annotated.png",
+      "expected_sha256": "a1aad42210f1704ec5d40216d698f619fd8d013f98185ae9df8442b403739f7c",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/standards-self-conformance/after-1440-annotated.png",
+      "matches": true,
+      "path": "/media/review/standards-self-conformance/after-1440-annotated.png"
+    },
+    {
+      "actual_sha256": "ff1dc211a1ff4cd018ec73fa6a1655b0accdb14e410d230ecf2eadf085a0e966",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/standards-self-conformance/after-1440.png",
+      "expected_sha256": "ff1dc211a1ff4cd018ec73fa6a1655b0accdb14e410d230ecf2eadf085a0e966",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/standards-self-conformance/after-1440.png",
+      "matches": true,
+      "path": "/media/review/standards-self-conformance/after-1440.png"
+    },
+    {
+      "actual_sha256": "050c2db1a887e6ac7c02e23c61c50b109b0536100f1161308191c33a4fc11f19",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/standards-self-conformance/after-390-annotated.png",
+      "expected_sha256": "050c2db1a887e6ac7c02e23c61c50b109b0536100f1161308191c33a4fc11f19",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/standards-self-conformance/after-390-annotated.png",
+      "matches": true,
+      "path": "/media/review/standards-self-conformance/after-390-annotated.png"
+    },
+    {
+      "actual_sha256": "45fb863df524ed405fa5bc59b20fba31282a4e8bf00c932536e995f234956718",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/standards-self-conformance/after-390.png",
+      "expected_sha256": "45fb863df524ed405fa5bc59b20fba31282a4e8bf00c932536e995f234956718",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/standards-self-conformance/after-390.png",
+      "matches": true,
+      "path": "/media/review/standards-self-conformance/after-390.png"
+    },
+    {
+      "actual_sha256": "abbbae734ebcdee7a72da0cfcdaeb07358dd3983b759087e2b79dc35ee3b5257",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/standards-self-conformance/before-1440-annotated.png",
+      "expected_sha256": "abbbae734ebcdee7a72da0cfcdaeb07358dd3983b759087e2b79dc35ee3b5257",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/standards-self-conformance/before-1440-annotated.png",
+      "matches": true,
+      "path": "/media/review/standards-self-conformance/before-1440-annotated.png"
+    },
+    {
+      "actual_sha256": "5a07962b227fdb20eddc5aae59c19df8791f0c110d836c24936bc6b72fb2cecf",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/standards-self-conformance/before-1440.png",
+      "expected_sha256": "5a07962b227fdb20eddc5aae59c19df8791f0c110d836c24936bc6b72fb2cecf",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/standards-self-conformance/before-1440.png",
+      "matches": true,
+      "path": "/media/review/standards-self-conformance/before-1440.png"
+    },
+    {
+      "actual_sha256": "a95c37f45a3154deafe66967f63e511502a16a29747aa583c0ab103311a9b437",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/standards-self-conformance/before-390-annotated.png",
+      "expected_sha256": "a95c37f45a3154deafe66967f63e511502a16a29747aa583c0ab103311a9b437",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/standards-self-conformance/before-390-annotated.png",
+      "matches": true,
+      "path": "/media/review/standards-self-conformance/before-390-annotated.png"
+    },
+    {
+      "actual_sha256": "35154e2c611040408d0556e64af7a80dc1cae971ce7bd0bff1e2faea9208de60",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/standards-self-conformance/before-390.png",
+      "expected_sha256": "35154e2c611040408d0556e64af7a80dc1cae971ce7bd0bff1e2faea9208de60",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/standards-self-conformance/before-390.png",
+      "matches": true,
+      "path": "/media/review/standards-self-conformance/before-390.png"
+    },
+    {
+      "actual_sha256": "63450fc0bfdfcdc63ef21d56d2fae89915756962fd6f4fc007280e944d1b6ec0",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/vendor-profile-instant/after-1440.png",
+      "expected_sha256": "63450fc0bfdfcdc63ef21d56d2fae89915756962fd6f4fc007280e944d1b6ec0",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/vendor-profile-instant/after-1440.png",
+      "matches": true,
+      "path": "/media/review/vendor-profile-instant/after-1440.png"
+    },
+    {
+      "actual_sha256": "a26c310aeb63746183d6435237e071a04585592dce5fdb5df68307ccef5b197c",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/vendor-profile-instant/after-390.png",
+      "expected_sha256": "a26c310aeb63746183d6435237e071a04585592dce5fdb5df68307ccef5b197c",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/vendor-profile-instant/after-390.png",
+      "matches": true,
+      "path": "/media/review/vendor-profile-instant/after-390.png"
+    },
+    {
+      "actual_sha256": "6de2ac8f0494a20e6b823c5d30b2c916df1ccad25d688854d345fca21cca74fe",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/vendor-profile-instant/before-1440.png",
+      "expected_sha256": "6de2ac8f0494a20e6b823c5d30b2c916df1ccad25d688854d345fca21cca74fe",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/vendor-profile-instant/before-1440.png",
+      "matches": true,
+      "path": "/media/review/vendor-profile-instant/before-1440.png"
+    },
+    {
+      "actual_sha256": "7603631a09ce669ed57e4f6109d62a5d1743085c869a7e1d129ba5fc966a6c51",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/vendor-profile-instant/before-390.png",
+      "expected_sha256": "7603631a09ce669ed57e4f6109d62a5d1743085c869a7e1d129ba5fc966a6c51",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/vendor-profile-instant/before-390.png",
+      "matches": true,
+      "path": "/media/review/vendor-profile-instant/before-390.png"
+    },
+    {
+      "actual_sha256": "c1942c9ecf1811a0a6a466d4397d5da74f25a2cbbc68afe39a7543ac0ab9fb86",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/wave4/alarms-1440.png",
+      "expected_sha256": "c1942c9ecf1811a0a6a466d4397d5da74f25a2cbbc68afe39a7543ac0ab9fb86",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/wave4/alarms-1440.png",
+      "matches": true,
+      "path": "/media/review/wave4/alarms-1440.png"
+    },
+    {
+      "actual_sha256": "a182dbfd7ee41aae8a72a659780d535169a5201dde5804ab3594773342698b69",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/wave4/alarms-390.png",
+      "expected_sha256": "a182dbfd7ee41aae8a72a659780d535169a5201dde5804ab3594773342698b69",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/wave4/alarms-390.png",
+      "matches": true,
+      "path": "/media/review/wave4/alarms-390.png"
+    },
+    {
+      "actual_sha256": "b7ab8919a437c0edfe04b0e6997bdc2a4471edf880df4c2b3e081e1aea4ef97c",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/wave4/dollars-1440.png",
+      "expected_sha256": "b7ab8919a437c0edfe04b0e6997bdc2a4471edf880df4c2b3e081e1aea4ef97c",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/wave4/dollars-1440.png",
+      "matches": true,
+      "path": "/media/review/wave4/dollars-1440.png"
+    },
+    {
+      "actual_sha256": "3bee2432e93a2b223b8f5a44c5d7fc89e5cc0a98d68cb4b302179ff5c62d55d5",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/wave4/dollars-390.png",
+      "expected_sha256": "3bee2432e93a2b223b8f5a44c5d7fc89e5cc0a98d68cb4b302179ff5c62d55d5",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/wave4/dollars-390.png",
+      "matches": true,
+      "path": "/media/review/wave4/dollars-390.png"
+    },
+    {
+      "actual_sha256": "78110e8bbd8fe34ebd40cafe07ee765479d9f06cb9f9799da3bfe02e31941670",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/wave4/review-1440.png",
+      "expected_sha256": "78110e8bbd8fe34ebd40cafe07ee765479d9f06cb9f9799da3bfe02e31941670",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/wave4/review-1440.png",
+      "matches": true,
+      "path": "/media/review/wave4/review-1440.png"
+    },
+    {
+      "actual_sha256": "c231f608a6eab5f011f5571dc4c7378ed79bc9955097d499140d2fef3b37cc21",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/wave4/review-390.png",
+      "expected_sha256": "c231f608a6eab5f011f5571dc4c7378ed79bc9955097d499140d2fef3b37cc21",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/wave4/review-390.png",
+      "matches": true,
+      "path": "/media/review/wave4/review-390.png"
+    },
+    {
+      "actual_sha256": "b7112fbfcfac148430ecd709273b902bcae992e5ce3cf39c1822a7ef787fa0f8",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/wave4/spine-1440.png",
+      "expected_sha256": "b7112fbfcfac148430ecd709273b902bcae992e5ce3cf39c1822a7ef787fa0f8",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/wave4/spine-1440.png",
+      "matches": true,
+      "path": "/media/review/wave4/spine-1440.png"
+    },
+    {
+      "actual_sha256": "88d80d7665a0e192b67d4107d2a2402a64e500e2e01ccb7fc78c48a004541926",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/wave4/spine-390.png",
+      "expected_sha256": "88d80d7665a0e192b67d4107d2a2402a64e500e2e01ccb7fc78c48a004541926",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/wave4/spine-390.png",
+      "matches": true,
+      "path": "/media/review/wave4/spine-390.png"
+    },
+    {
+      "actual_sha256": "57bb69b74cab91b9270cebfde1176ec0c74ef5377259fd7e58fea900029e41ca",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/wcag22-upgrade/after-1440-annotated.png",
+      "expected_sha256": "57bb69b74cab91b9270cebfde1176ec0c74ef5377259fd7e58fea900029e41ca",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/wcag22-upgrade/after-1440-annotated.png",
+      "matches": true,
+      "path": "/media/review/wcag22-upgrade/after-1440-annotated.png"
+    },
+    {
+      "actual_sha256": "17ff293b19f57e9911129064d0d7ce2b9f8d34e6779480d258a6e9925ac1d606",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/wcag22-upgrade/after-1440.png",
+      "expected_sha256": "17ff293b19f57e9911129064d0d7ce2b9f8d34e6779480d258a6e9925ac1d606",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/wcag22-upgrade/after-1440.png",
+      "matches": true,
+      "path": "/media/review/wcag22-upgrade/after-1440.png"
+    },
+    {
+      "actual_sha256": "6456fbaf1649fe3f836a409b20cf56a32b6a72d692c3b63c1b506027ce15aae2",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/wcag22-upgrade/after-390-annotated.png",
+      "expected_sha256": "6456fbaf1649fe3f836a409b20cf56a32b6a72d692c3b63c1b506027ce15aae2",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/wcag22-upgrade/after-390-annotated.png",
+      "matches": true,
+      "path": "/media/review/wcag22-upgrade/after-390-annotated.png"
+    },
+    {
+      "actual_sha256": "ce12ce53d280b9798aecd8a90accb74b8fd6d1b773ba9cbd49ff7a481cb4dca5",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/wcag22-upgrade/after-390.png",
+      "expected_sha256": "ce12ce53d280b9798aecd8a90accb74b8fd6d1b773ba9cbd49ff7a481cb4dca5",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/wcag22-upgrade/after-390.png",
+      "matches": true,
+      "path": "/media/review/wcag22-upgrade/after-390.png"
+    },
+    {
+      "actual_sha256": "04b22820aed4feabf08d79c900e4ac85fd5dcd4aae3c6362dd004353bdc660d8",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/wcag22-upgrade/before-1440-annotated.png",
+      "expected_sha256": "04b22820aed4feabf08d79c900e4ac85fd5dcd4aae3c6362dd004353bdc660d8",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/wcag22-upgrade/before-1440-annotated.png",
+      "matches": true,
+      "path": "/media/review/wcag22-upgrade/before-1440-annotated.png"
+    },
+    {
+      "actual_sha256": "f618eca6e306c4a8340fa596f5770c9300f89f4ce45f6966bb025f71176f4d97",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/wcag22-upgrade/before-1440.png",
+      "expected_sha256": "f618eca6e306c4a8340fa596f5770c9300f89f4ce45f6966bb025f71176f4d97",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/wcag22-upgrade/before-1440.png",
+      "matches": true,
+      "path": "/media/review/wcag22-upgrade/before-1440.png"
+    },
+    {
+      "actual_sha256": "5e6aaa9416da2d8bd7552dc8fa257300f2fc9b0e5de8c9be70dbef2ff0bc1678",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/wcag22-upgrade/before-390-annotated.png",
+      "expected_sha256": "5e6aaa9416da2d8bd7552dc8fa257300f2fc9b0e5de8c9be70dbef2ff0bc1678",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/wcag22-upgrade/before-390-annotated.png",
+      "matches": true,
+      "path": "/media/review/wcag22-upgrade/before-390-annotated.png"
+    },
+    {
+      "actual_sha256": "875baa9e39411b97ef70e8489bfa3fc707b66239f9716591536b7e4a6e691965",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/media/review/wcag22-upgrade/before-390.png",
+      "expected_sha256": "875baa9e39411b97ef70e8489bfa3fc707b66239f9716591536b7e4a6e691965",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/media/review/wcag22-upgrade/before-390.png",
+      "matches": true,
+      "path": "/media/review/wcag22-upgrade/before-390.png"
+    },
+    {
+      "actual_sha256": "ad5f73d12160b0f9f57be715c5579cf2b4cbf150e4ed3ff0479b4f8f1cac7f5d",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/nl_deeplink.js",
+      "expected_sha256": "ad5f73d12160b0f9f57be715c5579cf2b4cbf150e4ed3ff0479b4f8f1cac7f5d",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/nl_deeplink.js",
+      "matches": true,
+      "path": "/nl_deeplink.js"
+    },
+    {
+      "actual_sha256": "946961bab61f32af685a068b6d13343005ff64ffb4b3c6a53553049580152c1f",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/nl_parse.js",
+      "expected_sha256": "946961bab61f32af685a068b6d13343005ff64ffb4b3c6a53553049580152c1f",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/nl_parse.js",
+      "matches": true,
+      "path": "/nl_parse.js"
+    },
+    {
+      "actual_sha256": "7a12db6da830b8eb85d75b18b65e5a6d46b4e99c92a7d251a44bf10ded505b95",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/preset_validation.mjs",
+      "expected_sha256": "7a12db6da830b8eb85d75b18b65e5a6d46b4e99c92a7d251a44bf10ded505b95",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/preset_validation.mjs",
+      "matches": true,
+      "path": "/preset_validation.mjs"
+    },
+    {
+      "actual_sha256": "a530c68166b3a686dc23165eb4e6ab220b9dfad9150211dcab4fcd043aa2f75a",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/property_location.mjs",
+      "expected_sha256": "a530c68166b3a686dc23165eb4e6ab220b9dfad9150211dcab4fcd043aa2f75a",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/property_location.mjs",
+      "matches": true,
+      "path": "/property_location.mjs"
+    },
+    {
+      "actual_sha256": "e9a7015c2eea7ced4d3d266c1b7961a5530f91a25b937f25eed7905e63a3995e",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/qr_share.js",
+      "expected_sha256": "e9a7015c2eea7ced4d3d266c1b7961a5530f91a25b937f25eed7905e63a3995e",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/qr_share.js",
+      "matches": true,
+      "path": "/qr_share.js"
+    },
+    {
+      "actual_sha256": "19b999607c9a0b4cd3b6cbe34b01740d6e08a3ef7112dbd2a1ee59dd878befd5",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/reading-level-baseline.json",
+      "expected_sha256": "19b999607c9a0b4cd3b6cbe34b01740d6e08a3ef7112dbd2a1ee59dd878befd5",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/reading-level-baseline.json",
+      "matches": true,
+      "path": "/reading-level-baseline.json"
+    },
+    {
+      "actual_sha256": "66ccf813fff989d7503744a3b551632e57a140e58fc5a53350b7e4941f54089d",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/robots.txt",
+      "expected_sha256": "66ccf813fff989d7503744a3b551632e57a140e58fc5a53350b7e4941f54089d",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/robots.txt",
+      "matches": true,
+      "path": "/robots.txt"
+    },
+    {
+      "actual_sha256": "3d9029da8bf009f8141aec43c49343e8fdedb46f16598586a68754da276ab30a",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/rule_location.mjs",
+      "expected_sha256": "3d9029da8bf009f8141aec43c49343e8fdedb46f16598586a68754da276ab30a",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/rule_location.mjs",
+      "matches": true,
+      "path": "/rule_location.mjs"
+    },
+    {
+      "actual_sha256": "25aea3e677cceb0d79f454054ddcb8ccefdf0d9b626d7732b9e0a314a65b6242",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/site.webmanifest",
+      "expected_sha256": "25aea3e677cceb0d79f454054ddcb8ccefdf0d9b626d7732b9e0a314a65b6242",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/site.webmanifest",
+      "matches": true,
+      "path": "/site.webmanifest"
+    },
+    {
+      "actual_sha256": "c681bafdb040eee7c831bdfaefe27e7ca794e5f1866fe15538cd81bd6255065e",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/sitemap.xml",
+      "expected_sha256": "c681bafdb040eee7c831bdfaefe27e7ca794e5f1866fe15538cd81bd6255065e",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/sitemap.xml",
+      "matches": true,
+      "path": "/sitemap.xml"
+    },
+    {
+      "actual_sha256": "f6533f865b089a52adc0017379e7bc0e09e7dfad16b9be31a604a368b7a0d6b4",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/staffing.js",
+      "expected_sha256": "f6533f865b089a52adc0017379e7bc0e09e7dfad16b9be31a604a368b7a0d6b4",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/staffing.js",
+      "matches": true,
+      "path": "/staffing.js"
+    },
+    {
+      "actual_sha256": "66e1285cd047158d0ec4629e0d5054d34b56c3a12fadadf66d738d6dd85f1e57",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/standards",
+      "expected_sha256": "66e1285cd047158d0ec4629e0d5054d34b56c3a12fadadf66d738d6dd85f1e57",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/standards.html",
+      "matches": true,
+      "path": "/standards.html"
+    },
+    {
+      "actual_sha256": "f55540c42173dab512b76cab2af415916543280115f0d5c2837f3a99bc8a26bf",
+      "actual_status": 200,
+      "actual_url": "https://beta.cityscroll.org/stats",
+      "expected_sha256": "f55540c42173dab512b76cab2af415916543280115f0d5c2837f3a99bc8a26bf",
+      "expected_status": 200,
+      "expected_url": "https://cityscroll.org/stats.html",
+      "matches": true,
+      "path": "/stats.html"
+    }
+  ]
+}

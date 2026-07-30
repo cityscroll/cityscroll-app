@@ -51,6 +51,7 @@ function initRepo(dir) {
   git(dir, "init", "-q", "-b", "main");
   git(dir, "config", "user.email", "test@example.invalid");
   git(dir, "config", "user.name", "Test");
+  fs.mkdirSync(path.join(dir, "site"), { recursive: true });
 }
 
 function commitAll(dir, message) {
@@ -73,9 +74,9 @@ test("bot branch's stale changelog.html never overwrites the current tree's copy
     initRepo(seedDir);
 
     // main: the current, post-PR-#83 state — disclaimer already removed, one recorded entry.
-    fs.writeFileSync(path.join(seedDir, "changelog.html"), CURRENT_HTML_NO_DISCLAIMER);
+    fs.writeFileSync(path.join(seedDir, "site", "changelog.html"), CURRENT_HTML_NO_DISCLAIMER);
     fs.writeFileSync(
-      path.join(seedDir, "changelog-data.json"),
+      path.join(seedDir, "site", "changelog-data.json"),
       JSON.stringify({ entries: [{ pr: 83, merged_at: "2026-07-19", url: "", text: "Recorded." }] }, null, 2) + "\n"
     );
     commitAll(seedDir, "seed main");
@@ -84,9 +85,9 @@ test("bot branch's stale changelog.html never overwrites the current tree's copy
     // bot/changelog-update: a stale copy from BEFORE PR #83 — still has the disclaimer, plus
     // one pending entry (PR #84) that hasn't landed on main yet.
     git(seedDir, "checkout", "-q", "-b", "bot/changelog-update");
-    fs.writeFileSync(path.join(seedDir, "changelog.html"), STALE_HTML_WITH_DISCLAIMER);
+    fs.writeFileSync(path.join(seedDir, "site", "changelog.html"), STALE_HTML_WITH_DISCLAIMER);
     fs.writeFileSync(
-      path.join(seedDir, "changelog-data.json"),
+      path.join(seedDir, "site", "changelog-data.json"),
       JSON.stringify(
         {
           entries: [
@@ -107,8 +108,8 @@ test("bot branch's stale changelog.html never overwrites the current tree's copy
 
     execFileSync("bash", [SCRIPT, "bot/changelog-update"], { cwd: workDir, encoding: "utf8" });
 
-    const html = fs.readFileSync(path.join(workDir, "changelog.html"), "utf8");
-    const data = JSON.parse(fs.readFileSync(path.join(workDir, "changelog-data.json"), "utf8"));
+    const html = fs.readFileSync(path.join(workDir, "site", "changelog.html"), "utf8");
+    const data = JSON.parse(fs.readFileSync(path.join(workDir, "site", "changelog-data.json"), "utf8"));
 
     // changelog.html must stay main's current copy — no disclaimer residue from the bot branch.
     assert.equal(html, CURRENT_HTML_NO_DISCLAIMER);
@@ -135,21 +136,21 @@ test("no bot branch yet: changelog-data.json is left as the tree's own committed
     const seedDir = path.join(tmp, "seed");
     git(tmp, "clone", "-q", bareDir, seedDir);
     initRepo(seedDir);
-    fs.writeFileSync(path.join(seedDir, "changelog.html"), CURRENT_HTML_NO_DISCLAIMER);
+    fs.writeFileSync(path.join(seedDir, "site", "changelog.html"), CURRENT_HTML_NO_DISCLAIMER);
     fs.writeFileSync(
-      path.join(seedDir, "changelog-data.json"),
+      path.join(seedDir, "site", "changelog-data.json"),
       JSON.stringify({ entries: [{ pr: 83, merged_at: "2026-07-19", url: "", text: "Recorded." }] }, null, 2) + "\n"
     );
     commitAll(seedDir, "seed main");
     git(seedDir, "push", "-q", "origin", "main");
 
     git(tmp, "clone", "-q", bareDir, workDir);
-    const before = fs.readFileSync(path.join(workDir, "changelog-data.json"), "utf8");
+    const before = fs.readFileSync(path.join(workDir, "site", "changelog-data.json"), "utf8");
 
     execFileSync("bash", [SCRIPT, "bot/changelog-update"], { cwd: workDir, encoding: "utf8" });
 
-    const after = fs.readFileSync(path.join(workDir, "changelog-data.json"), "utf8");
-    const html = fs.readFileSync(path.join(workDir, "changelog.html"), "utf8");
+    const after = fs.readFileSync(path.join(workDir, "site", "changelog-data.json"), "utf8");
+    const html = fs.readFileSync(path.join(workDir, "site", "changelog.html"), "utf8");
     assert.equal(after, before);
     assert.equal(html, CURRENT_HTML_NO_DISCLAIMER);
   } finally {

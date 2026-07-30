@@ -4,13 +4,13 @@
       "requestPath": "/",
       "originStatus": 301,
       "originLocation": "http://crol-list.org/index.html",
-      "expectedFallbackUrl": "https://raw.githubusercontent.com/cityscroll/crol-list/main/index.html"
+      "expectedFallbackUrl": "https://raw.githubusercontent.com/cityscroll/crol-list/main/site/index.html"
     },
     {
       "requestPath": "/index.html",
       "originStatus": 301,
       "originLocation": "http://crol-list.org/index.html",
-      "expectedFallbackUrl": "https://raw.githubusercontent.com/cityscroll/crol-list/main/index.html"
+      "expectedFallbackUrl": "https://raw.githubusercontent.com/cityscroll/crol-list/main/site/index.html"
     }
   ]
 }

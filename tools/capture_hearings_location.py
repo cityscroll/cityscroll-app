@@ -26,7 +26,7 @@ class QuietHandler(SimpleHTTPRequestHandler):
 
 class StaticServer:
     def __init__(self) -> None:
-        handler = functools.partial(QuietHandler, directory=str(ROOT))
+        handler = functools.partial(QuietHandler, directory=str(ROOT / "site"))
         self.server = ThreadingHTTPServer(("127.0.0.1", 0), handler)
         self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
 

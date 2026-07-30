@@ -2,9 +2,9 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
-const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");
-const analytics = readFileSync(new URL("../analytics.js", import.meta.url), "utf8");
-const receipt = JSON.parse(readFileSync(new URL("../data/preset-validation.json", import.meta.url), "utf8"));
+const html = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
+const analytics = readFileSync(new URL("../site/analytics.js", import.meta.url), "utf8");
+const receipt = JSON.parse(readFileSync(new URL("../site/data/preset-validation.json", import.meta.url), "utf8"));
 
 const EXPECTED = new Map([
   ["city-work", ["money"]],

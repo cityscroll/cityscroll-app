@@ -6,7 +6,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 
-const html = await readFile(new URL("../../index.html", import.meta.url), "utf8");
+const html = await readFile(new URL("../../site/index.html", import.meta.url), "utf8");
 
 test("Rules lens consumes the /rules read model and joins it by request_id (precompute-first)", () => {
   // The lifecycle enrichment comes from the materialized read model, not a live upstream

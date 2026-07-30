@@ -34,7 +34,7 @@ from playwright.sync_api import Page, Route, sync_playwright
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "media" / "review" / "data-viz-intuitive"
+OUTPUT = ROOT / "site" / "media" / "review" / "data-viz-intuitive"
 SOURCE = "https://cityscroll.org/data.html"
 OBSERVED_AT = "2026-07-27"
 

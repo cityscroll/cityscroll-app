@@ -247,7 +247,7 @@ test("aggregate windows exclude old rows without inventing missing values", () =
 });
 
 test("stats page never success-gates its number panels and stamps each panel", async () => {
-  const html = await readFile(new URL("../stats.html", import.meta.url), "utf8");
+  const html = await readFile(new URL("../site/stats.html", import.meta.url), "utf8");
   for (const id of ["grid", "gridAllTime", "gridUsage", "gridTechnical"]) {
     assert.match(html, new RegExp(`id="${id}"(?![^>]*\\bhidden\\b)`));
   }
@@ -260,10 +260,10 @@ test("stats page never success-gates its number panels and stamps each panel", a
 
 test("every public page loads the first-party collector and every locale covers new labels", async () => {
   for (const page of ["index.html", "stats.html", "about.html", "data.html", "api.html", "changelog.html", "standards.html"]) {
-    assert.match(await readFile(new URL(`../${page}`, import.meta.url), "utf8"), /analytics\.js\?v=1\.2\.0/, page);
+    assert.match(await readFile(new URL(`../site/${page}`, import.meta.url), "utf8"), /analytics\.js\?v=1\.2\.0/, page);
   }
   for (const locale of ["es", "zh-Hans", "ru", "bn", "ht", "ko", "fr", "pl", "ar", "ur"]) {
-    const source = await readFile(new URL(`../i18n/lang/${locale}.js`, import.meta.url), "utf8");
+    const source = await readFile(new URL(`../site/i18n/lang/${locale}.js`, import.meta.url), "utf8");
     for (const key of ["stats_h_usage", "stats_lbl_pageviews", "stats_col_last30", "stats_metric_asof", "stats_area_queens"]) {
       assert.match(source, new RegExp(`${key}:`), `${locale}: ${key}`);
     }
@@ -271,8 +271,8 @@ test("every public page loads the first-party collector and every locale covers 
 });
 
 test("privacy copy removes falsified exhaustive promises without adding a new enumeration", async () => {
-  const about = await readFile(new URL("../about.html", import.meta.url), "utf8");
-  const english = await readFile(new URL("../i18n.js", import.meta.url), "utf8");
+  const about = await readFile(new URL("../site/about.html", import.meta.url), "utf8");
+  const english = await readFile(new URL("../site/i18n.js", import.meta.url), "utf8");
   for (const source of [about, english]) {
     assert.match(source, /uses no accounts, no cookies, no cross-site tracking, no ad tech/);
     assert.match(source, /Searches and filters(?:<\/b>)? use NYC Open Data/);

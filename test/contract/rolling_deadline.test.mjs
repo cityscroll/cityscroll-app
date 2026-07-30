@@ -23,7 +23,7 @@ const alertsSrc = readFileSync(join(ROOT, "worker/src/alerts.mjs"), "utf8");
 const workerDueLabel = new Function(extractFn("dueLabel", alertsSrc) + "\nreturn dueLabel;")();
 
 const windowStub = { LANG: "en", LANG_META: { en: { intlDate: "en-US" } } };
-const i18nSrc = readFileSync(join(ROOT, "i18n.js"), "utf8");
+const i18nSrc = readFileSync(join(ROOT, "site", "i18n.js"), "utf8");
 const { t } = new Function("window", i18nSrc + "\nreturn { t: window.t };")(windowStub);
 
 const { isRollingDeadline } = loadSite(["ROLLING_DUE_YEAR", "isRollingDeadline"]);
@@ -42,7 +42,7 @@ test("the site's rolling-deadline tag text is byte-identical to the worker's due
 });
 
 test("about.html already promises this exact phrase to readers — the label must match it", () => {
-  const about = readFileSync(join(ROOT, "about.html"), "utf8");
+  const about = readFileSync(join(ROOT, "site", "about.html"), "utf8");
   assert.match(about, /no fixed deadline \(rolling\)/, "about.html's honesty-rule copy uses a different phrase than the shipped label");
   assert.equal(t("rolling_deadline_tag"), "no fixed deadline (rolling)");
 });

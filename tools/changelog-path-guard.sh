@@ -7,8 +7,8 @@
 set -euo pipefail
 
 ALLOWED_PATHS=(
-  "changelog-data.json"
-  "changelog.html"
+  "site/changelog-data.json"
+  "site/changelog.html"
 )
 
 is_allowed() {

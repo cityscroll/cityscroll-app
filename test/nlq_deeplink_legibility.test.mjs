@@ -7,11 +7,11 @@ import { dirname, join } from "node:path";
 
 const require = createRequire(import.meta.url);
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const indexSource = readFileSync(join(ROOT, "index.html"), "utf8");
+const indexSource = readFileSync(join(ROOT, "site", "index.html"), "utf8");
 const {
   canonicalSearchURL,
   moneyActiveFilterItems,
-} = require("../nl_deeplink.js");
+} = require("../site/nl_deeplink.js");
 
 const PINNED_HASH =
   "#money?mode=award&min=500000&category=Construction%2FConstruction+Services";

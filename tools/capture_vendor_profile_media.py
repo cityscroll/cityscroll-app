@@ -26,7 +26,7 @@ from playwright.sync_api import Page, sync_playwright
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "media" / "review" / "vendor-profile-instant"
+OUTPUT = ROOT / "site" / "media" / "review" / "vendor-profile-instant"
 VIEWPORTS = ((390, 844), (1440, 900))
 
 CAMBA = {
@@ -58,7 +58,7 @@ class QuietHandler(SimpleHTTPRequestHandler):
 
 class StaticServer:
     def __init__(self) -> None:
-        handler = functools.partial(QuietHandler, directory=str(ROOT))
+        handler = functools.partial(QuietHandler, directory=str(ROOT / "site"))
         self.server = ThreadingHTTPServer(("127.0.0.1", 0), handler)
         self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
 

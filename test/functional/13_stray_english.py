@@ -57,7 +57,7 @@ def load_strings():
     out = subprocess.check_output(
         ["node", "-e",
          "global.window={};require(process.argv[1]);console.log(JSON.stringify(window.STRINGS))",
-         str(ROOT / "i18n.js")], text=True)
+         str(ROOT / "site" / "i18n.js")], text=True)
     return json.loads(out)
 
 
@@ -455,7 +455,7 @@ def main():
     server = None
     if not BASE:
         import http.server, threading, functools
-        handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=str(ROOT))
+        handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=str(ROOT / "site"))
         server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), handler)
         threading.Thread(target=server.serve_forever, daemon=True).start()
         BASE = f"http://127.0.0.1:{server.server_address[1]}/"

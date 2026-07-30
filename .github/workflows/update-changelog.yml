@@ -92,8 +92,8 @@ jobs:
       - name: Load the regeneration base (the bot branch's pending entries, if any; changelog.html always stays main's own current copy — see tools/prepare-changelog-base.sh)
         run: |
           bash tools/prepare-changelog-base.sh "$BOT_BRANCH"
-          cp changelog-data.json "$RUNNER_TEMP/before-data.json"
-          cp changelog.html "$RUNNER_TEMP/before-changelog.html"
+          cp site/changelog-data.json "$RUNNER_TEMP/before-data.json"
+          cp site/changelog.html "$RUNNER_TEMP/before-changelog.html"
 
       - name: Extract this PR's user-impact line (if labeled changelog:major) and regenerate the changelog
         env:
@@ -108,8 +108,8 @@ jobs:
 
       - name: Stop here if regeneration produced no change (explicit no-diff guard, before touching any branch)
         run: |
-          if diff -q "$RUNNER_TEMP/before-data.json" changelog-data.json >/dev/null \
-             && diff -q "$RUNNER_TEMP/before-changelog.html" changelog.html >/dev/null; then
+          if diff -q "$RUNNER_TEMP/before-data.json" site/changelog-data.json >/dev/null \
+             && diff -q "$RUNNER_TEMP/before-changelog.html" site/changelog.html >/dev/null; then
             echo "No new entry (not labeled changelog:major, no marker, already recorded, or nothing changed) — nothing to do."
             exit 0
           fi
@@ -121,7 +121,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout -B "$BOT_BRANCH"
-          git add changelog-data.json changelog.html
+          git add site/changelog-data.json site/changelog.html
           git commit -m "changelog: PR #${{ github.event.pull_request.number }} — ${{ github.event.pull_request.title }}"
           # Force-push is expected and safe here: this branch is bot-owned (never hand-edited),
           # rebuilt fresh from main's tip every run, and the concurrency group above serializes

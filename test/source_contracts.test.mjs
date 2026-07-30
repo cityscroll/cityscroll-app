@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { AWARD_SOURCE_REGISTRY } from "../external_awards.js";
+import { AWARD_SOURCE_REGISTRY } from "../site/external_awards.js";
 import { checkGeneratedSourceFiles } from "../tools/generate_source_docs.mjs";
 import {
   awardCoverage,

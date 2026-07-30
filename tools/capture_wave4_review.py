@@ -10,7 +10,7 @@ from playwright.sync_api import sync_playwright
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "media" / "review" / "wave4"
+OUTPUT = ROOT / "site" / "media" / "review" / "wave4"
 VIEWPORTS = ((390, 844), (1440, 900))
 
 CITY_RECORD_HNTB = "https://a856-cityrecord.nyc.gov/RequestDetail/20260623008"
