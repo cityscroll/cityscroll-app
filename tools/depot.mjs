@@ -68,6 +68,7 @@ export const SEED_SOURCE_JOIN_KEYS = {
   "nycida-build-nyc-projects": ["request_id", "project_id"],
   "nyc-rules-rss": ["agency"],
   "bid-tabulations-historical": ["bid_number", "PIN"],
+  "zap-api-outcomes": ["project_id", "ulurp_numbers"],
 };
 
 /**
@@ -167,6 +168,32 @@ export const SEED_MATERIALIZED_CROSSWALKS = [
       strategy: "project_id + BBL lot expansion",
     },
   },
+  {
+    id: "zap-projects-x-zap-api-outcomes",
+    source_a: "zap-projects",
+    source_b: "zap-api-outcomes",
+    key_path: ["project_id"],
+    status: "materialized",
+    lineage: {
+      code: "worker/src/lib/zap_outcomes.mjs",
+      strategy: "exact_project_id Open Data → ZAP API project detail (documents, dispositions, actions)",
+      measurement_contract: "zap-api-outcomes",
+      measurement_rate_key: "ulurp_complete_useful_outcome",
+    },
+  },
+  {
+    id: "zap-bbl-x-dob-now-filings",
+    source_a: "zap-bbl",
+    source_b: "dob-now-job-filings",
+    key_path: ["BBL"],
+    status: "materialized",
+    lineage: {
+      code: "worker/src/zap_outcomes.mjs",
+      strategy: "exact_bbl tax lots → DOB NOW filings side-car on land outcomes",
+      measurement_contract: "zap-api-outcomes",
+      measurement_rate_key: "complete_sample_dob_any_filing",
+    },
+  },
 ];
 
 /** Pre-landing predicted join grades retained for comparison against realized rates. */
@@ -262,6 +289,9 @@ function pickPrimaryRate(rates) {
     // Bid tabulations recon (disabled source; keep modern headline)
     "modern_notices_strict",
     "historical_notices_strict",
+    "ulurp_complete_useful_outcome",
+    "mixed_sample_any_documents",
+    "complete_sample_dob_any_filing",
   ];
   for (const key of preferred) {
     if (rates[key]) return { key, ...rates[key] };
@@ -306,6 +336,7 @@ export function resolveSourceId(name, contractsById) {
     [/dcas.*outcome|exam outcome/, "dcas-annual-exam-outcomes"],
     [/dcas.*exam|open.?competitive/, "dcas-exam-notices"],
     [/nycida|build nyc/, "nycida-build-nyc-projects"],
+    [/zap api|zap-api-outcomes|decision document/, "zap-api-outcomes"],
     [/zap/, "zap-projects"],
     [/dob now|dob-now/, "dob-now-job-filings"],
     [/current solicitations|3khw-qi8f/, "current-solicitations-ocp"],
@@ -714,6 +745,10 @@ export function rerankIngestList(registry, sources, candidates) {
     for (const src of sources) {
       const id = src.id;
       if (blob.includes("passport") && id.startsWith("passport-public")) {
+        realizedRate = src.join_coverage?.realized?.rate ?? realizedRate;
+        predictedGrade = src.join_coverage?.predicted?.grade ?? predictedGrade;
+      }
+      if ((blob.includes("zap") || blob.includes("land")) && (id === "zap-api-outcomes" || id === "zap-projects")) {
         realizedRate = src.join_coverage?.realized?.rate ?? realizedRate;
         predictedGrade = src.join_coverage?.predicted?.grade ?? predictedGrade;
       }

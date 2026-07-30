@@ -55,6 +55,23 @@ Precompute-first on the notice page: never live Checkbook proxy; never render `l
 
 **One owner per fact (lifecycle vs detail):** when the Checkbook registration join exists, the payments card **summarizes** (`$X paid of $Y committed`, zero-lag note when $0-fresh) and anchor-links to `#follow-the-dollars`; it never emits class-(a) gap copy in parallel. Follow-the-Dollars owns paid-to-date detail and must not re-emit the payments gap. Gap register for payments only when the join is genuinely absent (no PIN / no registered record). Same ownership rule for subsidy: project-level unmatched is one note, not stacked per-stage gaps. Characterization: `node --test test/lifecycle_coherence_field_cases.test.mjs` (symptom: *joined payments rendered as not-shown, duplicated*). Captures: `python3 tools/capture_lifecycle_coherence.py`.
 
+
+## ZAP land outcomes (`zap-api-outcomes`)
+
+Decision documents, action approvals, and disposition votes beyond Open Data status
+chips. Machine path is the Planning Labs ZAP API (same feed as the public portal),
+not a second Socrata dataset:
+
+- API: `https://zap-api-production.herokuapp.com/projects/{project_id}`
+- Document proxy: `https://zap-api-production.herokuapp.com/document/{kind}/{id}`
+- Edge: `worker/src/zap_outcomes.mjs` → `GET /zap-outcomes?id=`
+- Pure join: `worker/src/lib/zap_outcomes.mjs` (exact `project_id`; DOB side-car exact BBL)
+- Receipts: `site/data/zap_outcome_sources/`
+- Characterization: `node --test test/zap_outcomes.test.mjs`
+- Captures: `python3 tools/capture_zap_outcomes.py`
+
+Demo-frame: project `2022M0258` (Timbale Terrace) at `#land/2022M0258`.
+
 ## Changelog harvest
 
 Public surface: `site/changelog-data.json` + `site/changelog.html` (not repo-root). Workflow:

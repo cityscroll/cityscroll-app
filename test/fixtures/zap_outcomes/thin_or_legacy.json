@@ -1,0 +1,387 @@
+{
+  "meta": {},
+  "data": {
+    "type": "projects",
+    "id": "P2018X0210",
+    "attributes": {
+      "applicantteam": [
+        {
+          "name": "NYC HPD",
+          "role": "Primary Applicant"
+        },
+        {
+          "name": "Kay Real",
+          "role": "Primary Contact"
+        }
+      ],
+      "dcp-name": "P2018X0210",
+      "dcp-applicanttype": 717170001,
+      "dcp-borough": "Bronx",
+      "dcp-ceqrnumber": "19HPD011X",
+      "dcp-ceqrtype": "Unlisted",
+      "dcp-easeis": "EAS",
+      "dcp-certifiedreferred": "2018-12-03T18:59:23.000Z",
+      "dcp-femafloodzonea": false,
+      "dcp-femafloodzoneshadedx": false,
+      "dcp-sisubdivision": false,
+      "dcp-sischoolseat": false,
+      "dcp-projectbrief": "This is a public application by HPD and Phipps Houses as a co-applicants, requesting a zoning map change from R7-2 to C6-2, zoning text amendment to Appendix F to establish an MIH Area, a Zoning Special Permit (74-681), a disposition of City-owned property to facilitate a new 10-story, 100% affordable residential development, including 1,115 of community facility space and approximately 55 dwelling units, proposed for location at 156 Brook Avenue in Mott Haven in Bronx CD 1. ",
+      "dcp-additionalpublicinformation": null,
+      "dcp-projectid": "9e83c4b4-1e33-e811-8126-1458d04dc8c8",
+      "dcp-projectname": "Brook 156",
+      "dcp-publicstatus": "Completed",
+      "dcp-projectcompleted": "2019-07-16T17:54:34.000Z",
+      "dcp-hiddenprojectmetrictarget": 717170000,
+      "dcp-ulurp-nonulurp": "ULURP",
+      "dcp-validatedcommunitydistricts": "X01",
+      "dcp-bsanumber": null,
+      "dcp-wrpnumber": null,
+      "dcp-lpcnumber": null,
+      "dcp-lastmilestonedate": "2021-07-01T00:52:18.000Z",
+      "dcp-nydospermitnumber": null,
+      "bbls": [
+        "2023600003",
+        "2023600001"
+      ],
+      "bbl-featurecollection": {
+        "type": "FeatureCollection",
+        "features": [
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "MultiPolygon",
+              "coordinates": [
+                [
+                  [
+                    [
+                      -73.911698,
+                      40.820155
+                    ],
+                    [
+                      -73.91163,
+                      40.820142
+                    ],
+                    [
+                      -73.911741,
+                      40.819752
+                    ],
+                    [
+                      -73.911874,
+                      40.819801
+                    ],
+                    [
+                      -73.911958,
+                      40.819831
+                    ],
+                    [
+                      -73.911764,
+                      40.820167
+                    ],
+                    [
+                      -73.911698,
+                      40.820155
+                    ]
+                  ]
+                ]
+              ]
+            },
+            "properties": {}
+          }
+        ]
+      },
+      "keywords": [
+        "100% Affordable",
+        "Inclusionary Housing Option 2"
+      ],
+      "video-links": [],
+      "dcp-applicability": null,
+      "dcp-noticeddate": null,
+      "dcp-applicant-customer-value": "NYC HPD",
+      "dcp-applicantadministrator-customer-value": "Kay Real"
+    },
+    "relationships": {
+      "actions": {
+        "data": [
+          {
+            "type": "actions",
+            "id": "89280571-8a38-e811-812e-1458d04d95c0"
+          },
+          {
+            "type": "actions",
+            "id": "b3297757-4a3d-e811-8127-1458d04dc8c8"
+          },
+          {
+            "type": "actions",
+            "id": "b4297757-4a3d-e811-8127-1458d04dc8c8"
+          },
+          {
+            "type": "actions",
+            "id": "b5297757-4a3d-e811-8127-1458d04dc8c8"
+          }
+        ]
+      },
+      "milestones": {
+        "data": [
+          {
+            "type": "milestones",
+            "id": "ded413eb-9e3e-e811-812f-1458d04d95c0"
+          },
+          {
+            "type": "milestones",
+            "id": "d6d413eb-9e3e-e811-812f-1458d04d95c0"
+          },
+          {
+            "type": "milestones",
+            "id": "4df79d89-884d-e811-8132-1458d04d95c0"
+          },
+          {
+            "type": "milestones",
+            "id": "5df79d89-884d-e811-8132-1458d04d95c0"
+          },
+          {
+            "type": "milestones",
+            "id": "65f79d89-884d-e811-8132-1458d04d95c0"
+          },
+          {
+            "type": "milestones",
+            "id": "85f79d89-884d-e811-8132-1458d04d95c0"
+          },
+          {
+            "type": "milestones",
+            "id": "8ef79d89-884d-e811-8132-1458d04d95c0"
+          },
+          {
+            "type": "milestones",
+            "id": "a3f79d89-884d-e811-8132-1458d04d95c0"
+          },
+          {
+            "type": "milestones",
+            "id": "abf79d89-884d-e811-8132-1458d04d95c0"
+          },
+          {
+            "type": "milestones",
+            "id": "9a0efc61-9196-e911-a98c-001dd8308025"
+          },
+          {
+            "type": "milestones",
+            "id": "c7da9e98-9196-e911-a98c-001dd8308025"
+          },
+          {
+            "type": "milestones",
+            "id": "b3f79d89-884d-e811-8132-1458d04d95c0"
+          },
+          {
+            "type": "milestones",
+            "id": "bbf79d89-884d-e811-8132-1458d04d95c0"
+          },
+          {
+            "type": "milestones",
+            "id": "c3f79d89-884d-e811-8132-1458d04d95c0"
+          }
+        ]
+      },
+      "dispositions": {
+        "data": []
+      },
+      "packages": {
+        "data": []
+      },
+      "artifacts": {
+        "data": []
+      }
+    }
+  },
+  "included": [
+    {
+      "type": "actions",
+      "id": "89280571-8a38-e811-812e-1458d04d95c0",
+      "attributes": {
+        "dcp-name": "Disposition of Urban Renewal Site",
+        "statuscode": "Approved",
+        "statecode": "Active",
+        "dcp-ulurpnumber": "C190208PPX",
+        "dcp-ccresolutionnumber": null,
+        "dcp-action-value": "PP",
+        "dcp-zoningresolution-value": null,
+        "dcp-spabsoluteurl": null
+      }
+    },
+    {
+      "type": "actions",
+      "id": "b3297757-4a3d-e811-8127-1458d04dc8c8",
+      "attributes": {
+        "dcp-name": "Zoning Map Amendment",
+        "statuscode": "Approved",
+        "statecode": "Active",
+        "dcp-ulurpnumber": "C190207ZMX",
+        "dcp-ccresolutionnumber": null,
+        "dcp-action-value": "ZM",
+        "dcp-zoningresolution-value": null,
+        "dcp-spabsoluteurl": null
+      }
+    },
+    {
+      "type": "actions",
+      "id": "b4297757-4a3d-e811-8127-1458d04dc8c8",
+      "attributes": {
+        "dcp-name": "Zoning Text Amendment",
+        "statuscode": "Approved",
+        "statecode": "Active",
+        "dcp-ulurpnumber": "N190209ZRX",
+        "dcp-ccresolutionnumber": null,
+        "dcp-action-value": "ZR",
+        "dcp-zoningresolution-value": "AppendixF",
+        "dcp-spabsoluteurl": null
+      }
+    },
+    {
+      "type": "actions",
+      "id": "b5297757-4a3d-e811-8127-1458d04dc8c8",
+      "attributes": {
+        "dcp-name": "Zoning Special Permit",
+        "statuscode": "Approved",
+        "statecode": "Active",
+        "dcp-ulurpnumber": "C190210ZSX",
+        "dcp-ccresolutionnumber": null,
+        "dcp-action-value": "ZS",
+        "dcp-zoningresolution-value": "74-681",
+        "dcp-spabsoluteurl": null
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "ded413eb-9e3e-e811-812f-1458d04d95c0",
+      "attributes": {
+        "dcp-milestone": "663beec4-dad0-e711-8116-1458d04e2fb8",
+        "dcp-name": "ZM - Prepare Filed Land Use Application  ",
+        "milestonename": "Prepare Filed Land Use Application",
+        "dcp-plannedstartdate": "2018-10-24T19:22:55.000Z",
+        "dcp-plannedcompletiondate": "2018-10-29T19:22:55.000Z",
+        "dcp-actualstartdate": "2018-11-27T14:54:40.000Z",
+        "dcp-actualenddate": "2018-11-27T14:54:48.000Z",
+        "statuscode": "Completed",
+        "dcp-milestonesequence": 26,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": 0,
+        "dcp-goalduration": 5,
+        "dcp-actualdurationasoftoday": null,
+        "display-name": "Land Use Application Filed",
+        "outcome": null,
+        "dcp-reviewmeetingdate": null
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "d6d413eb-9e3e-e811-812f-1458d04d95c0",
+      "attributes": {
+        "dcp-milestone": "6a3beec4-dad0-e711-8116-1458d04e2fb8",
+        "dcp-name": "ZM - Land Use Fee Payment  ",
+        "milestonename": "Prepare Filed Land Use Fee Payment",
+        "dcp-plannedstartdate": "2018-11-01T19:22:55.000Z",
+        "dcp-plannedcompletiondate": "2018-11-02T19:22:55.000Z",
+        "dcp-actualstartdate": "2018-11-27T05:00:00.000Z",
+        "dcp-actualenddate": "2018-11-27T05:00:00.000Z",
+        "statuscode": "Completed",
+        "dcp-milestonesequence": 28,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": 0,
+        "dcp-goalduration": 1,
+        "dcp-actualdurationasoftoday": null,
+        "display-name": "Land Use Fee Paid",
+        "outcome": null,
+        "dcp-reviewmeetingdate": null
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "4df79d89-884d-e811-8132-1458d04d95c0",
+      "attributes": {
+        "dcp-milestone": "8e3beec4-dad0-e711-8116-1458d04e2fb8",
+        "dcp-name": "HA - Review Session - Certified / Referred  ",
+        "milestonename": "Review Session - Certified / Referred",
+        "dcp-plannedstartdate": "2018-12-03T23:58:15.000Z",
+        "dcp-plannedcompletiondate": "2018-12-08T23:58:15.000Z",
+        "dcp-actualstartdate": "2018-11-29T05:00:00.000Z",
+        "dcp-actualenddate": "2018-12-03T18:59:23.000Z",
+        "statuscode": "Completed",
+        "dcp-milestonesequence": 46,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": 0,
+        "dcp-goalduration": 5,
+        "dcp-actualdurationasoftoday": null,
+        "display-description": "A \"Review Session\" milestone signifies that the application has been sent to the City Planning Commission (CPC) and is ready for review. The \"Review\" milestone represents the period of time (up to 60 days) that the CPC reviews the application before their vote.",
+        "display-name": "Application Reviewed at City Planning Commission Review Session",
+        "outcome": "Certified",
+        "dcp-reviewmeetingdate": "2018-12-03T05:00:00.000Z"
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "5df79d89-884d-e811-8132-1458d04d95c0",
+      "attributes": {
+        "dcp-milestone": "923beec4-dad0-e711-8116-1458d04e2fb8",
+        "dcp-name": "HA - Community Board Referral  ",
+        "milestonename": "Community Board Referral",
+        "dcp-plannedstartdate": "2018-12-13T23:59:39.000Z",
+        "dcp-plannedcompletiondate": "2019-02-11T23:59:39.000Z",
+        "dcp-actualstartdate": "2018-12-12T05:00:00.000Z",
+        "dcp-actualenddate": "2019-02-08T22:32:41.000Z",
+        "statuscode": "Completed",
+        "dcp-milestonesequence": 48,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": 0,
+        "dcp-goalduration": 60,
+        "dcp-actualdurationasoftoday": null,
+        "display-description": "The Community Board has 60 days from the time of referral (nine days after certification) to hold a hearing and issue a recommendation.",
+        "display-name": "Community Board Review",
+        "outcome": "Approved",
+        "dcp-reviewmeetingdate": null
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "65f79d89-884d-e811-8132-1458d04d95c0",
+      "attributes": {
+        "dcp-milestone": "943beec4-dad0-e711-8116-1458d04e2fb8",
+        "dcp-name": "HA - Borough President Referral  ",
+        "milestonename": "Borough President Referral",
+        "dcp-plannedstartdate": "2019-02-09T03:32:53.000Z",
+        "dcp-plannedcompletiondate": "2019-03-12T02:32:53.000Z",
+        "dcp-actualstartdate": "2019-02-09T05:00:00.000Z",
+        "dcp-actualenddate": "2019-03-14T15:12:55.000Z",
+        "statuscode": "Completed",
+        "dcp-milestonesequence": 49,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": 0,
+        "dcp-goalduration": 30,
+        "dcp-actualdurationasoftoday": null,
+        "display-description": "The Borough President has 30 days after the Community Board issues a recommendation to review the application and issue a recommendation.",
+        "display-name": "Borough President Review",
+        "outcome": "Favorable",
+        "dcp-reviewmeetingdate": null
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "85f79d89-884d-e811-8132-1458d04d95c0",
+      "attributes": {
+        "dcp-milestone": "9c3beec4-dad0-e711-8116-1458d04e2fb8",
+        "dcp-name": "HA - Review Session - Pre-Hearing Review / Post Referral  ",
+        "milestonename": "Review Session - Pre-Hearing Review / Post Referral",
+        "dcp-plannedstartdate": "2019-03-20T22:08:45.000Z",
+        "dcp-plannedcompletiondate": "2019-03-25T22:08:45.000Z",
+        "dcp-actualstartdate": "2019-03-20T18:08:55.000Z",
+        "dcp-actualenddate": "2019-03-25T19:15:49.000Z",
+        "statuscode": "Completed",
+        "dcp-milestonesequence": 53,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": 0,
+        "dcp-goalduration": 5,
+        "dcp-actualdurationasoftoday": null,
+        "display-name": "Review Session - Pre-Hearing Review / Post Referral",
+        "outcome": "To Public Hearing",
+        "dcp-reviewmeetingdate": null
+      }
+    }
+  ]
+}

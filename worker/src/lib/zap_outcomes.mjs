@@ -1,0 +1,333 @@
+// Pure ZAP outcome parse + join helpers.
+//
+// Open Data hgx4-8ukb publishes project status; final decision documents, action
+// statuses, disposition votes, and board recommendations live on the Planning Labs
+// ZAP API (same machine path the public portal uses):
+//   https://zap-api-production.herokuapp.com/projects/{project_id}
+//
+// Measured 2026-07-30 (see site/data/zap_outcome_sources/ and source_contracts
+// join_measurement for zap-api-outcomes):
+//   ULURP completed sample (n=50): useful outcome 100%, any documents 100%,
+//     disposition votes 90%, approved actions 68%.
+//   Mixed active+completed sample (n=60): project_id exact join 100%,
+//     any documents 66.7%.
+//   Complete sample BBL→DOB NOW any filing: 56% (14/25); 63.6% of projects with BBL.
+//
+// Accepted join strategies (strict only):
+//   exact_project_id — Open Data project_id equals ZAP API project id (case-sensitive
+//                      after trim; IDs are alphanumeric with optional leading P).
+//   exact_bbl        — tax-lot BBL from zap-bbl equals DOB NOW bbl (digits only).
+//
+// Rejected as weak:
+//   title-only project match
+//   partial ULURP number containment without exact project_id
+//   BBL prefix / borough+block without full lot
+//
+// Verdict: above usefulness threshold (≥30%) on decision-document outcomes.
+// Ship edge materialization via GET /zap-outcomes (precompute-first for the browser).
+
+export const ZAP_API_BASE = "https://zap-api-production.herokuapp.com";
+export const ZAP_PORTAL_PROJECT = "https://zap.planning.nyc.gov/projects";
+export const ZAP_SODA_PROJECTS = "hgx4-8ukb";
+export const ZAP_SODA_BBL = "2iga-a6mk";
+export const DOB_NOW_DATASET = "w9ak-ipjd";
+export const ZAP_OUTCOMES_SOURCE = "zap-api-outcomes";
+export const ZAP_OUTCOMES_KV_PREFIX = "zap-outcome:v1:";
+export const ZAP_OUTCOMES_MAX_AGE_MS = 24 * 60 * 60 * 1000;
+
+const APPROVED_STATUSES = new Set(["approved", "adopted", "certified"]);
+
+/** Normalize a ZAP project_id for exact join. */
+export function normProjectId(value) {
+  const s = String(value || "").trim();
+  if (!s) return "";
+  // Product IDs are like 2022M0258 or P2018X0210 — keep case of the letter borough code.
+  return s.toUpperCase().replace(/[^A-Z0-9]/g, "");
+}
+
+/** Digits-only BBL (borough+block+lot). */
+export function normBbl(value) {
+  const digits = String(value || "").replace(/\D/g, "");
+  return digits.length >= 10 ? digits.slice(0, 10) : digits;
+}
+
+/**
+ * Strict Open Data project_id → ZAP API project id join.
+ * @returns {{ method: string, project_id: string } | null}
+ */
+export function joinProjectId(openDataProjectId, apiProjectId) {
+  const a = normProjectId(openDataProjectId);
+  const b = normProjectId(apiProjectId);
+  if (!a || !b) return null;
+  if (a === b) return { method: "exact_project_id", project_id: a };
+  return null;
+}
+
+/**
+ * Build public document proxy URL used by the ZAP portal.
+ * kind: disposition | artifact | package | projectaction
+ */
+export function documentProxyUrl(kind, serverRelativeUrl) {
+  const k = String(kind || "").toLowerCase().replace(/[^a-z]/g, "");
+  if (!k) return null;
+  const id = String(serverRelativeUrl || "").replace(/^\/+/, "").trim();
+  if (!id || !/^[A-Za-z0-9_-]{8,128}$/.test(id)) return null;
+  return `${ZAP_API_BASE}/document/${k}/${id}`;
+}
+
+function isoDate(value) {
+  if (!value) return null;
+  const s = String(value);
+  const m = s.match(/^(\d{4}-\d{2}-\d{2})/);
+  if (m) return m[1];
+  const t = Date.parse(s);
+  if (!Number.isFinite(t)) return null;
+  return new Date(t).toISOString().slice(0, 10);
+}
+
+function clean(value) {
+  if (value == null) return null;
+  const s = String(value).replace(/\s+/g, " ").trim();
+  return s || null;
+}
+
+function collectDocs(kind, attributes) {
+  const docs = [];
+  const list = attributes?.documents;
+  if (!Array.isArray(list)) return docs;
+  for (const d of list) {
+    const name = clean(d?.name);
+    const url = documentProxyUrl(kind, d?.serverRelativeUrl);
+    if (!name && !url) continue;
+    docs.push({
+      kind,
+      name: name || "Document",
+      url,
+      time_created: d?.timeCreated || null,
+    });
+  }
+  return docs;
+}
+
+/**
+ * Parse a ZAP API project payload into a product outcome record.
+ * Pure — no fetch.
+ */
+export function parseZapApiProject(payload) {
+  const data = payload?.data;
+  if (!data || data.type !== "projects") {
+    return {
+      join: { matched: false, method: null, reason: "ZAP API payload missing project data." },
+      project_id: null,
+      useful: false,
+    };
+  }
+  const attrs = data.attributes || {};
+  // Public ZAP project codes look like 2022M0258 / P2018X0210. CRM GUIDs live on
+  // attributes.dcp-projectid; JSON:API data.id and dcp-name carry the public code.
+  const candidates = [
+    data.id,
+    attrs["dcp-name"],
+    attrs["dcp-projectid"],
+    attrs.dcp_projectid,
+  ];
+  let projectId = null;
+  for (const cand of candidates) {
+    const c = clean(cand);
+    if (!c) continue;
+    if (/^[A-Z]?\d{4}[A-Z]\d{4}$/i.test(c) || /^P\d{4}[A-Z]\d{4}$/i.test(c)) {
+      projectId = c.toUpperCase().replace(/[^A-Z0-9]/g, "");
+      break;
+    }
+  }
+  if (!projectId) projectId = clean(data.id) || clean(attrs["dcp-name"]);
+  const included = Array.isArray(payload.included) ? payload.included : [];
+
+  const actions = [];
+  const dispositions = [];
+  const documents = [];
+
+  for (const item of included) {
+    const type = item?.type;
+    const a = item?.attributes || {};
+    if (type === "actions") {
+      const status = clean(a.statuscode);
+      const statusLower = (status || "").toLowerCase();
+      actions.push({
+        id: item.id || null,
+        action: clean(a["dcp-action-value"]),
+        ulurp_number: clean(a["dcp-ulurpnumber"]),
+        status,
+        approved: APPROVED_STATUSES.has(statusLower),
+        cc_resolution: clean(a["dcp-ccresolutionnumber"]),
+        sharepoint_url: clean(a["dcp-spabsoluteurl"]),
+      });
+    } else if (type === "dispositions") {
+      const docs = collectDocs("disposition", a);
+      documents.push(...docs);
+      dispositions.push({
+        id: item.id || null,
+        name: clean(a["dcp-name"]),
+        status: clean(a.statuscode),
+        representing: clean(a["dcp-representing"]),
+        vote_date: isoDate(a["dcp-dateofvote"]),
+        hearing_date: isoDate(a["dcp-dateofpublichearing"]),
+        community_board: clean(a["dcp-communityboardrecommendation"]),
+        borough_president: clean(a["dcp-boroughpresidentrecommendation"]),
+        borough_board: clean(a["dcp-boroughboardrecommendation"]),
+        votes_for: a["dcp-votinginfavorrecommendation"] ?? null,
+        votes_against: a["dcp-votingagainstrecommendation"] ?? null,
+        votes_abstain: a["dcp-votingabstainingonrecommendation"] ?? null,
+        n_documents: docs.length,
+      });
+    } else if (type === "artifacts") {
+      documents.push(...collectDocs("artifact", a));
+    } else if (type === "packages") {
+      documents.push(...collectDocs("package", a));
+    }
+  }
+
+  // De-dupe documents by url+name
+  const seenDoc = new Set();
+  const uniqueDocs = [];
+  for (const d of documents) {
+    const key = `${d.url || ""}|${d.name || ""}`;
+    if (seenDoc.has(key)) continue;
+    seenDoc.add(key);
+    uniqueDocs.push(d);
+  }
+
+  const approvedActions = actions.filter((a) => a.approved);
+  const withVote = dispositions.filter((d) => d.vote_date || d.community_board || d.borough_president);
+  const useful =
+    uniqueDocs.length > 0
+    || approvedActions.length > 0
+    || withVote.length > 0
+    || Boolean(attrs["dcp-projectcompleted"] || attrs["dcp-publicstatus"]);
+
+  return {
+    join: {
+      matched: true,
+      method: "exact_project_id",
+      reason: null,
+    },
+    project_id: projectId,
+    project_name: clean(attrs["dcp-projectname"]),
+    public_status: clean(attrs["dcp-publicstatus"]),
+    project_brief: clean(attrs["dcp-projectbrief"]),
+    completed_date: isoDate(attrs["dcp-projectcompleted"]),
+    certified_referred: isoDate(attrs["dcp-certifiedreferred"]),
+    last_milestone_date: isoDate(attrs["dcp-lastmilestonedate"]),
+    portal_url: projectId ? `${ZAP_PORTAL_PROJECT}/${encodeURIComponent(projectId)}` : null,
+    actions,
+    approved_actions: approvedActions,
+    dispositions,
+    documents: uniqueDocs.slice(0, 40),
+    n_documents: uniqueDocs.length,
+    n_dispositions: dispositions.length,
+    n_approved_actions: approvedActions.length,
+    useful,
+    source: ZAP_OUTCOMES_SOURCE,
+    api_base: ZAP_API_BASE,
+  };
+}
+
+/**
+ * Join an Open Data project row to a parsed ZAP API outcome.
+ */
+export function joinOpenDataToZapOutcome(openDataRow, apiPayload) {
+  const odId = openDataRow?.project_id;
+  const parsed = parseZapApiProject(apiPayload);
+  if (!parsed.join.matched) {
+    return {
+      ...parsed,
+      open_data: openDataRow || null,
+      join: {
+        matched: false,
+        method: null,
+        reason: parsed.join.reason || "ZAP API project detail not available.",
+      },
+    };
+  }
+  const hit = joinProjectId(odId, parsed.project_id);
+  if (!hit) {
+    return {
+      join: {
+        matched: false,
+        method: null,
+        reason: "Open Data project_id does not match ZAP API project id.",
+      },
+      project_id: odId || null,
+      open_data: openDataRow || null,
+      useful: false,
+    };
+  }
+  return {
+    ...parsed,
+    join: { matched: true, method: hit.method, reason: null },
+    open_data: openDataRow || null,
+  };
+}
+
+/**
+ * Normalize a DOB NOW filing row for land outcome side-car.
+ */
+export function normalizeDobFiling(row) {
+  const r = row || {};
+  return {
+    job_filing_number: clean(r.job_filing_number),
+    filing_status: clean(r.filing_status),
+    job_type: clean(r.job_type),
+    filing_date: isoDate(r.filing_date),
+    house_no: clean(r.house_no),
+    street_name: clean(r.street_name),
+    bbl: normBbl(r.bbl),
+    bin: clean(r.bin),
+  };
+}
+
+/**
+ * Strict BBL join: return filings whose BBL is in the project BBL set.
+ */
+export function joinDobFilingsToBbls(filings, bbls) {
+  const set = new Set((bbls || []).map(normBbl).filter((b) => b.length >= 10));
+  if (!set.size) {
+    return { matched: false, method: null, filings: [], reason: "No validated tax lots for this project." };
+  }
+  const hits = [];
+  for (const raw of filings || []) {
+    const f = normalizeDobFiling(raw);
+    if (f.bbl && set.has(f.bbl)) hits.push(f);
+  }
+  if (!hits.length) {
+    return {
+      matched: false,
+      method: "exact_bbl",
+      filings: [],
+      reason: "No DOB NOW filings on the project tax lots in the current window.",
+    };
+  }
+  // Prefer recent filings; cap for UI
+  hits.sort((a, b) => String(b.filing_date || "").localeCompare(String(a.filing_date || "")));
+  return {
+    matched: true,
+    method: "exact_bbl",
+    filings: hits.slice(0, 8),
+    reason: null,
+  };
+}
+
+/**
+ * Whether an outcome record should render as a filled slot (vs class-(a) gap copy).
+ */
+export function outcomeIsFilled(record) {
+  if (!record?.join?.matched) return false;
+  return Boolean(
+    record.useful
+    && (
+      (record.n_documents || 0) > 0
+      || (record.n_approved_actions || 0) > 0
+      || (record.dispositions || []).some((d) => d.vote_date || d.community_board)
+    ),
+  );
+}

@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "observed_on": "2026-07-30",
+  "join_measurement_topline": {
+    "ulurp_complete_useful_rate": 1.0,
+    "mixed_any_documents_rate": 0.667,
+    "dob_any_filing_rate": 0.56,
+    "usefulness_threshold": 0.3
+  },
+  "cases": [
+    {
+      "id": "joined-timbale-terrace",
+      "expect": "joined",
+      "method": "exact_project_id",
+      "open_data": {
+        "project_id": "2022M0258",
+        "project_name": "Timbale Terrace",
+        "public_status": "Completed",
+        "project_status": "Complete",
+        "approval_date": "2024-03-07T00:00:00.000",
+        "ulurp_numbers": "240046HAM; 240047PQM",
+        "borough": "Manhattan",
+        "community_district": "M11",
+        "actions": "HA; PQ"
+      },
+      "fixture": "joined_timbale_terrace.json",
+      "expect_min_documents": 1,
+      "expect_approved_actions": true,
+      "deep_link": "#land/2022M0258"
+    },
+    {
+      "id": "joined-legacy-complete",
+      "expect": "joined",
+      "method": "exact_project_id",
+      "open_data": {
+        "project_id": "P2018X0210",
+        "project_name": "Brook 156",
+        "public_status": "Completed",
+        "project_status": "Complete",
+        "completed_date": "2019-07-16T00:00:00.000",
+        "ulurp_numbers": "C190208PPX; C190207ZMX; N190209ZRX; C190210ZSX",
+        "borough": "Bronx",
+        "community_district": "X01"
+      },
+      "fixture": "thin_or_legacy.json",
+      "deep_link": "#land/P2018X0210"
+    },
+    {
+      "id": "joined-active-early",
+      "expect": "joined",
+      "method": "exact_project_id",
+      "open_data": {
+        "project_id": "2026M0366",
+        "project_name": "301 E 71st Street Transit Easement Certification",
+        "public_status": "Filed",
+        "project_status": "Active",
+        "ulurp_numbers": "260302ZCM",
+        "borough": "Manhattan",
+        "community_district": "M08",
+        "actions": "ZC"
+      },
+      "fixture": "active_early.json",
+      "deep_link": "#land/2026M0366"
+    },
+    {
+      "id": "reject-title-only",
+      "expect": "unjoined",
+      "method": null,
+      "open_data": {
+        "project_id": "9999Z9999",
+        "project_name": "Timbale Terrace"
+      },
+      "fixture": "joined_timbale_terrace.json",
+      "note": "Same title as demo project must not join without project_id match"
+    },
+    {
+      "id": "dob-exact-bbl",
+      "expect": "dob_joined",
+      "bbls": [
+        "2022740020"
+      ],
+      "filings": [
+        {
+          "job_filing_number": "X0000001",
+          "filing_status": "Permit Entire",
+          "job_type": "A1",
+          "filing_date": "2024-06-01T00:00:00.000",
+          "bbl": "2022740020",
+          "house_no": "351",
+          "street_name": "POWERS AVENUE"
+        },
+        {
+          "job_filing_number": "X0000002",
+          "filing_status": "Approved",
+          "job_type": "NB",
+          "filing_date": "2023-01-01T00:00:00.000",
+          "bbl": "1011110001"
+        }
+      ],
+      "expect_filing_numbers": [
+        "X0000001"
+      ]
+    },
+    {
+      "id": "dob-reject-wrong-bbl",
+      "expect": "dob_unjoined",
+      "bbls": [
+        "1011110001"
+      ],
+      "filings": [
+        {
+          "job_filing_number": "X0000001",
+          "filing_status": "Permit Entire",
+          "job_type": "A1",
+          "filing_date": "2024-06-01T00:00:00.000",
+          "bbl": "2022740020"
+        }
+      ]
+    }
+  ]
+}

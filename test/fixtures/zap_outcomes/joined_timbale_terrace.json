@@ -1,0 +1,953 @@
+{
+  "meta": {},
+  "data": {
+    "type": "projects",
+    "id": "2022M0258",
+    "attributes": {
+      "applicantteam": [
+        {
+          "name": "HPD - NYC Dept of Housing Preservation & Development",
+          "role": "Primary Applicant"
+        },
+        {
+          "name": "Felipe Cortes",
+          "role": "Primary Contact"
+        }
+      ],
+      "dcp-name": "2022M0258",
+      "dcp-applicanttype": 717170001,
+      "dcp-borough": "Manhattan",
+      "dcp-ceqrnumber": "22HPD059M",
+      "dcp-ceqrtype": "Type I",
+      "dcp-easeis": null,
+      "dcp-certifiedreferred": "2023-08-21T04:00:00.000Z",
+      "dcp-femafloodzonea": false,
+      "dcp-femafloodzoneshadedx": false,
+      "dcp-sisubdivision": false,
+      "dcp-sischoolseat": false,
+      "dcp-projectbrief": "HPD seeks approval of a UDAAP Designation, Project and Disposition (HA) and DCAS and NYPD for the Acquisition of city-owned property (PQ) for a replacement-in-kind of the NYPD parking lot. These actions would facilitate the development of a 19-story building, containing approximately 341 affordable housing units, located in East Harlem, Community District 11, Manhattan. ",
+      "dcp-additionalpublicinformation": null,
+      "dcp-projectid": "3e38cd7b-93f3-401d-b9d5-fc0af4728908",
+      "dcp-projectname": "Timbale Terrace",
+      "dcp-publicstatus": "Completed",
+      "dcp-projectcompleted": null,
+      "dcp-hiddenprojectmetrictarget": 717170002,
+      "dcp-ulurp-nonulurp": "ULURP",
+      "dcp-validatedcommunitydistricts": "M11",
+      "dcp-bsanumber": null,
+      "dcp-wrpnumber": null,
+      "dcp-lpcnumber": null,
+      "dcp-lastmilestonedate": "2024-03-13T13:08:18.000Z",
+      "dcp-nydospermitnumber": null,
+      "bbls": [
+        "1017670067",
+        "1017670069",
+        "1017670168",
+        "1017670071",
+        "1017670004",
+        "1017670003",
+        "1017670002",
+        "1017670001",
+        "1017670068",
+        "1017670072",
+        "1017670169"
+      ],
+      "bbl-featurecollection": {
+        "type": "FeatureCollection",
+        "features": [
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "MultiPolygon",
+              "coordinates": [
+                [
+                  [
+                    [
+                      -73.94202,
+                      40.800585
+                    ],
+                    [
+                      -73.941974,
+                      40.800648
+                    ],
+                    [
+                      -73.941927,
+                      40.800713
+                    ],
+                    [
+                      -73.941885,
+                      40.80077
+                    ],
+                    [
+                      -73.941837,
+                      40.800836
+                    ],
+                    [
+                      -73.941795,
+                      40.800894
+                    ],
+                    [
+                      -73.94175,
+                      40.800955
+                    ],
+                    [
+                      -73.941657,
+                      40.801082
+                    ],
+                    [
+                      -73.941555,
+                      40.801039
+                    ],
+                    [
+                      -73.941451,
+                      40.800995
+                    ],
+                    [
+                      -73.941368,
+                      40.80096
+                    ],
+                    [
+                      -73.94129,
+                      40.800927
+                    ],
+                    [
+                      -73.941214,
+                      40.800895
+                    ],
+                    [
+                      -73.941393,
+                      40.800649
+                    ],
+                    [
+                      -73.94147,
+                      40.800681
+                    ],
+                    [
+                      -73.941547,
+                      40.800714
+                    ],
+                    [
+                      -73.941595,
+                      40.800648
+                    ],
+                    [
+                      -73.941637,
+                      40.80059
+                    ],
+                    [
+                      -73.941685,
+                      40.800525
+                    ],
+                    [
+                      -73.94173,
+                      40.800463
+                    ],
+                    [
+                      -73.94202,
+                      40.800585
+                    ]
+                  ]
+                ]
+              ]
+            },
+            "properties": {}
+          }
+        ]
+      },
+      "keywords": [],
+      "video-links": [],
+      "dcp-applicability": "Yes",
+      "dcp-noticeddate": "2023-07-21T00:00:00.000Z",
+      "dcp-applicant-customer-value": "HPD - NYC Dept of Housing Preservation & Development",
+      "dcp-applicantadministrator-customer-value": "Felipe Cortes"
+    },
+    "relationships": {
+      "actions": {
+        "data": [
+          {
+            "type": "actions",
+            "id": "ad68e262-4c5d-ec11-8f8e-001dd8050708"
+          },
+          {
+            "type": "actions",
+            "id": "ed26e5e8-4c5d-ec11-8f8e-001dd8050708"
+          }
+        ]
+      },
+      "milestones": {
+        "data": [
+          {
+            "type": "milestones",
+            "id": "f168e262-4c5d-ec11-8f8e-001dd8050708"
+          },
+          {
+            "type": "milestones",
+            "id": "0b69e262-4c5d-ec11-8f8e-001dd8050708"
+          },
+          {
+            "type": "milestones",
+            "id": "2b69e262-4c5d-ec11-8f8e-001dd8050708"
+          },
+          {
+            "type": "milestones",
+            "id": "90b1da68-4c5d-ec11-8f8e-001dd8050708"
+          },
+          {
+            "type": "milestones",
+            "id": "a0b1da68-4c5d-ec11-8f8e-001dd8050708"
+          },
+          {
+            "type": "milestones",
+            "id": "c5b1da68-4c5d-ec11-8f8e-001dd8050708"
+          },
+          {
+            "type": "milestones",
+            "id": "d0b1da68-4c5d-ec11-8f8e-001dd8050708"
+          },
+          {
+            "type": "milestones",
+            "id": "d6b1da68-4c5d-ec11-8f8e-001dd8050708"
+          },
+          {
+            "type": "milestones",
+            "id": "edb1da68-4c5d-ec11-8f8e-001dd8050708"
+          },
+          {
+            "type": "milestones",
+            "id": "f5b1da68-4c5d-ec11-8f8e-001dd8050708"
+          },
+          {
+            "type": "milestones",
+            "id": "fbb1da68-4c5d-ec11-8f8e-001dd8050708"
+          }
+        ]
+      },
+      "dispositions": {
+        "data": [
+          {
+            "type": "dispositions",
+            "id": "30071106-9a2c-ee11-9965-001dd8305eae"
+          },
+          {
+            "type": "dispositions",
+            "id": "7b071106-9a2c-ee11-9965-001dd8305eae"
+          },
+          {
+            "type": "dispositions",
+            "id": "b8550318-9a2c-ee11-9965-001dd8305eae"
+          },
+          {
+            "type": "dispositions",
+            "id": "cc550318-9a2c-ee11-9965-001dd8305eae"
+          }
+        ]
+      },
+      "packages": {
+        "data": [
+          {
+            "type": "packages",
+            "id": "f6635c02-2006-ee11-8f6d-001dd806ebdb"
+          }
+        ]
+      },
+      "artifacts": {
+        "data": [
+          {
+            "type": "artifacts",
+            "id": "b0addbd3-c13d-ee11-bdf4-001dd804e004"
+          },
+          {
+            "type": "artifacts",
+            "id": "68d6ccf1-c13d-ee11-bdf4-001dd804e004"
+          },
+          {
+            "type": "artifacts",
+            "id": "486e60a3-778d-ee11-8179-001dd804e43e"
+          },
+          {
+            "type": "artifacts",
+            "id": "cc3b3aa0-0096-ee11-8179-001dd804e43e"
+          },
+          {
+            "type": "artifacts",
+            "id": "df6ee2e6-cd41-ee11-bdf3-001dd804e792"
+          },
+          {
+            "type": "artifacts",
+            "id": "0f98ede1-de3d-ee11-bdf4-001dd804eb39"
+          },
+          {
+            "type": "artifacts",
+            "id": "cb11f0d0-113d-ee11-bdf4-001dd804ed2e"
+          },
+          {
+            "type": "artifacts",
+            "id": "8b6d678f-dde8-ec11-bb3b-001dd805218f"
+          },
+          {
+            "type": "artifacts",
+            "id": "747cfa57-9a2c-ee11-9965-001dd8301fa9"
+          }
+        ]
+      }
+    }
+  },
+  "included": [
+    {
+      "type": "actions",
+      "id": "ad68e262-4c5d-ec11-8f8e-001dd8050708",
+      "attributes": {
+        "dcp-name": "Urban Development Action Area",
+        "statuscode": "Approved",
+        "statecode": "Active",
+        "dcp-ulurpnumber": "C240046HAM",
+        "dcp-ccresolutionnumber": null,
+        "dcp-action-value": "HA",
+        "dcp-zoningresolution-value": null,
+        "dcp-spabsoluteurl": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/HA - Urban Development Action Area - UDAAP _AD68E2624C5DEC118F8E001DD8050708"
+      }
+    },
+    {
+      "type": "actions",
+      "id": "ed26e5e8-4c5d-ec11-8f8e-001dd8050708",
+      "attributes": {
+        "dcp-name": "Acquisition of Property by the City",
+        "statuscode": "Approved",
+        "statecode": "Active",
+        "dcp-ulurpnumber": "C240047PQM",
+        "dcp-ccresolutionnumber": null,
+        "dcp-action-value": "PQ",
+        "dcp-zoningresolution-value": null,
+        "dcp-spabsoluteurl": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_projectaction/PQ - Acquisition of Property by the City _ED26E5E84C5DEC118F8E001DD8050708"
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "f168e262-4c5d-ec11-8f8e-001dd8050708",
+      "attributes": {
+        "dcp-milestone": "663beec4-dad0-e711-8116-1458d04e2fb8",
+        "dcp-name": "HA - Prepare Filed Land Use Application  ",
+        "milestonename": "Prepare Filed Land Use Application",
+        "dcp-plannedstartdate": "2023-06-20T14:03:13.000Z",
+        "dcp-plannedcompletiondate": "2023-06-28T17:14:18.000Z",
+        "dcp-actualstartdate": "2023-06-08T17:14:18.000Z",
+        "dcp-actualenddate": "2023-07-26T17:27:10.000Z",
+        "statuscode": "Completed",
+        "dcp-milestonesequence": 26,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": 0,
+        "dcp-goalduration": 20,
+        "dcp-actualdurationasoftoday": null,
+        "display-name": "Land Use Application Filed",
+        "outcome": null,
+        "dcp-reviewmeetingdate": null
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "0b69e262-4c5d-ec11-8f8e-001dd8050708",
+      "attributes": {
+        "dcp-milestone": "6c3beec4-dad0-e711-8116-1458d04e2fb8",
+        "dcp-name": "HA - Review Filed Land Use Application  ",
+        "milestonename": "Review Filed Land Use Application",
+        "dcp-plannedstartdate": "2023-07-31T01:26:04.000Z",
+        "dcp-plannedcompletiondate": "2023-08-02T18:45:33.000Z",
+        "dcp-actualstartdate": "2023-07-26T18:45:33.000Z",
+        "dcp-actualenddate": "2023-08-02T20:21:47.000Z",
+        "statuscode": "Completed",
+        "dcp-milestonesequence": 29,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": 0,
+        "dcp-goalduration": 7,
+        "dcp-actualdurationasoftoday": null,
+        "display-name": "Land Use Application Filed",
+        "outcome": null,
+        "dcp-reviewmeetingdate": null
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "2b69e262-4c5d-ec11-8f8e-001dd8050708",
+      "attributes": {
+        "dcp-milestone": "8e3beec4-dad0-e711-8116-1458d04e2fb8",
+        "dcp-name": "HA - Review Session - Certified / Referred  ",
+        "milestonename": "Review Session - Certified / Referred",
+        "dcp-plannedstartdate": "2023-08-10T14:45:03.000Z",
+        "dcp-plannedcompletiondate": "2023-08-30T14:45:59.000Z",
+        "dcp-actualstartdate": "2023-08-10T14:45:59.000Z",
+        "dcp-actualenddate": "2023-08-30T04:00:00.000Z",
+        "statuscode": "Completed",
+        "dcp-milestonesequence": 46,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": 0,
+        "dcp-goalduration": 20,
+        "dcp-actualdurationasoftoday": null,
+        "display-description": "A \"Review Session\" milestone signifies that the application has been sent to the City Planning Commission (CPC) and is ready for review. The \"Review\" milestone represents the period of time (up to 60 days) that the CPC reviews the application before their vote.",
+        "display-name": "Application Reviewed at City Planning Commission Review Session",
+        "outcome": "Certified",
+        "dcp-reviewmeetingdate": "2023-08-21T04:00:00.000Z"
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "90b1da68-4c5d-ec11-8f8e-001dd8050708",
+      "attributes": {
+        "dcp-milestone": "923beec4-dad0-e711-8116-1458d04e2fb8",
+        "dcp-name": "HA - Community Board Referral  ",
+        "milestonename": "Community Board Referral",
+        "dcp-plannedstartdate": "2023-08-29T18:53:21.000Z",
+        "dcp-plannedcompletiondate": "2023-10-30T04:00:00.000Z",
+        "dcp-actualstartdate": "2023-08-30T04:00:00.000Z",
+        "dcp-actualenddate": "2023-10-26T02:53:06.000Z",
+        "statuscode": "Completed",
+        "dcp-milestonesequence": 48,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": 0,
+        "dcp-goalduration": 61,
+        "dcp-actualdurationasoftoday": null,
+        "display-description": "The Community Board has 60 days from the time of referral (nine days after certification) to hold a hearing and issue a recommendation.",
+        "display-name": "Community Board Review",
+        "outcome": "Approved with Conditions",
+        "dcp-reviewmeetingdate": null
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "a0b1da68-4c5d-ec11-8f8e-001dd8050708",
+      "attributes": {
+        "dcp-milestone": "943beec4-dad0-e711-8116-1458d04e2fb8",
+        "dcp-name": "HA - Borough President Referral  ",
+        "milestonename": "Borough President Referral",
+        "dcp-plannedstartdate": "2023-10-26T02:53:14.000Z",
+        "dcp-plannedcompletiondate": "2023-11-24T05:00:00.000Z",
+        "dcp-actualstartdate": "2023-10-26T04:00:00.000Z",
+        "dcp-actualenddate": "2023-11-24T05:00:00.000Z",
+        "statuscode": "Completed",
+        "dcp-milestonesequence": 49,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": 0,
+        "dcp-goalduration": 29,
+        "dcp-actualdurationasoftoday": null,
+        "display-description": "The Borough President has 30 days after the Community Board issues a recommendation to review the application and issue a recommendation.",
+        "display-name": "Borough President Review",
+        "outcome": "Multiple Borough President Recommendations",
+        "dcp-reviewmeetingdate": null
+      }
+    },
+    {
+      "type": "milestones",
+      "id": "c5b1da68-4c5d-ec11-8f8e-001dd8050708",
+      "attributes": {
+        "dcp-milestone": "9c3beec4-dad0-e711-8116-1458d04e2fb8",
+        "dcp-name": "HA - Review Session - Pre-Hearing Review / Post Referral  ",
+        "milestonename": "Review Session - Pre-Hearing Review / Post Referral",
+        "dcp-plannedstartdate": "2023-11-25T04:00:00.000Z",
+        "dcp-plannedcompletiondate": "2023-12-01T10:01:10.000Z",
+        "dcp-actualstartdate": "2023-11-25T10:01:10.000Z",
+        "dcp-actualenddate": "2023-11-27T05:00:00.000Z",
+        "statuscode": "Completed",
+        "dcp-milestonesequence": 53,
+        "dcp-remainingplanneddayscalculated": null,
+        "dcp-remainingplanneddays": 0,
+        "dcp-goalduration": 6,
+        "dcp-actualdurationasoftoday": null,
+        "display-name": "Review Session - Pre-Hearing Review / Post Referral",
+        "outcome": "To Public Hearing",
+        "dcp-reviewmeetingdate": "2023-11-27T05:00:00.000Z"
+      }
+    },
+    {
+      "type": "dispositions",
+      "id": "30071106-9a2c-ee11-9965-001dd8305eae",
+      "attributes": {
+        "dcp-publichearinglocation": null,
+        "dcp-ispublichearingrequired": 717170001,
+        "dcp-dateofpublichearing": null,
+        "dcp-boroughpresidentrecommendation": "Conditional Favorable",
+        "dcp-boroughboardrecommendation": null,
+        "dcp-communityboardrecommendation": null,
+        "dcp-consideration": null,
+        "dcp-votelocation": null,
+        "dcp-datereceived": "2023-10-31T20:39:49.000Z",
+        "dcp-dateofvote": null,
+        "dcp-nameofpersoncompletingthisform": "ZAP LUP Portal",
+        "dcp-name": "2022M0258_HA_MN BP",
+        "statecode": "Inactive",
+        "statuscode": "Submitted",
+        "dcp-docketdescription": "IN THE MATTER OF an application submitted by the Department of Housing Preservation and Development (HPD) \n\n1) pursuant to Article 16 of the General Municipal Law of New York State for: \n\na. the designation of property located at 101 East 118th Street (Block 1767, Lots 1, 2, 3, 4, 67, 68, 69, 71, 72, 168 and169) as an Urban Development Action Area; and \n\nb.  an Urban Development Action Area Project for such area; and  \n\n \n2) pursuant to Section 197-c of the New York City Charter for the disposition of such property to a developer to be selected by HPD; \n \nto facilitate the development of a new 19-story mixed-use building containing approximately 340 affordable housing units, community facility space, and approximately 75 replacement parking spaces for NYPD, Borough of Manhattan, Community District 11. ",
+        "dcp-votinginfavorrecommendation": null,
+        "dcp-votingagainstrecommendation": null,
+        "dcp-votingabstainingonrecommendation": null,
+        "dcp-totalmembersappointedtotheboard": null,
+        "dcp-wasaquorumpresent": false,
+        "dcp-representing": "Borough President",
+        "dcp-recommendationsubmittedby-value": "MN BP",
+        "dcp-projectaction-value": "ad68e262-4c5d-ec11-8f8e-001dd8050708",
+        "dcp-visibility": 717170003,
+        "documents": [
+          {
+            "name": "Borough President Recommendation.pdf",
+            "timeCreated": "2023-11-01T03:03:17Z",
+            "serverRelativeUrl": "/01QY2C5KIBZCEY6GXBF5GYXG77TTQVOFUG"
+          },
+          {
+            "name": "MBP Levine Recommendation - Timbale Terrace - 2023-10-31.pdf",
+            "timeCreated": "2023-10-31T20:39:45Z",
+            "serverRelativeUrl": "/01QY2C5KKRKZVMWGHT6BGK7B4PZVX6V7VU"
+          }
+        ]
+      }
+    },
+    {
+      "type": "dispositions",
+      "id": "7b071106-9a2c-ee11-9965-001dd8305eae",
+      "attributes": {
+        "dcp-publichearinglocation": null,
+        "dcp-ispublichearingrequired": 717170001,
+        "dcp-dateofpublichearing": null,
+        "dcp-boroughpresidentrecommendation": "Conditional Favorable",
+        "dcp-boroughboardrecommendation": null,
+        "dcp-communityboardrecommendation": null,
+        "dcp-consideration": null,
+        "dcp-votelocation": null,
+        "dcp-datereceived": "2023-10-31T20:39:49.000Z",
+        "dcp-dateofvote": null,
+        "dcp-nameofpersoncompletingthisform": "ZAP LUP Portal",
+        "dcp-name": "2022M0258_PQ_MN BP",
+        "statecode": "Inactive",
+        "statuscode": "Submitted",
+        "dcp-docketdescription": "IN THE MATTER OF an application submitted by the New York City Police Department and the Department of Citywide Administrative Services, pursuant to Section 197-c of the New York City Charter, for the acquisition of property located at 101 East 118th Street (Block 1767, Lots  1, 2, 3, 4, 67, 68, 69, 71, 72, 168 and 169) for use as a replacement parking facility, Borough of Manhattan, Community District 11. \n\n ",
+        "dcp-votinginfavorrecommendation": null,
+        "dcp-votingagainstrecommendation": null,
+        "dcp-votingabstainingonrecommendation": null,
+        "dcp-totalmembersappointedtotheboard": null,
+        "dcp-wasaquorumpresent": false,
+        "dcp-representing": "Borough President",
+        "dcp-recommendationsubmittedby-value": "MN BP",
+        "dcp-projectaction-value": "ed26e5e8-4c5d-ec11-8f8e-001dd8050708",
+        "dcp-visibility": 717170003,
+        "documents": [
+          {
+            "name": "Borough President Recommendation.pdf",
+            "timeCreated": "2023-11-01T03:03:20Z",
+            "serverRelativeUrl": "/01QY2C5KJBPT5KGPPDDFHI4GQUV5QS3UX6"
+          },
+          {
+            "name": "MBP Levine Recommendation - Timbale Terrace - 2023-10-31.pdf",
+            "timeCreated": "2023-10-31T20:39:50Z",
+            "serverRelativeUrl": "/01QY2C5KJRKQZGVE7VSZGINMYWAF3DDNOJ"
+          }
+        ]
+      }
+    },
+    {
+      "type": "dispositions",
+      "id": "b8550318-9a2c-ee11-9965-001dd8305eae",
+      "attributes": {
+        "dcp-publichearinglocation": "DREAM Charter School, 1991 Second Avenue, New York, NY 10029",
+        "dcp-ispublichearingrequired": 717170000,
+        "dcp-dateofpublichearing": "2023-09-26T22:30:00.000Z",
+        "dcp-boroughpresidentrecommendation": null,
+        "dcp-boroughboardrecommendation": null,
+        "dcp-communityboardrecommendation": "Conditional Favorable",
+        "dcp-consideration": "CB11 recommends approval of Land Use applications C 240046 HAM and C 240047 PQM - Timbale Terrace with the following conditions, that:\n\nthe developer commit, to the extent legally permissible, targeted outreach in partnership with local community service organizations serving the formerly homeless and other low income residents of Manhattan Community District 11 (CD11) to ensure broad local awareness of the housing opportunities offered by this project;\nthe New York City Department of Housing Preservation and Development (HPD), New York City Human Resources Administration (HRA), and the developer commit to prioritizing applicants displaced from CD11 for any residential units set aside for eligible formerly homeless households, particularly single adults with children, seniors, survivors of domestic violence, and single young adults aging out of foster care;\nthe developer commits to CB11\u2019s local hiring preference guidelines, which sets local hiring targets of 35% for pre-construction jobs, 35% for construction jobs, 50% for post-construction hiring for residents of CD11; and 35% of the total value of all contracts being awarded to businesses located in CD11;\nthat the developer commit to proactively establish partnerships with local workforce development organizations to source qualified residents of CD11 for employment opportunities created by all phases of the Proposed Development;\nthat the developer establish a Community Advisory Board for the Timbale Terrace property to be facilitated in collaboration with CB11 that will be tasked with, including but not limited to, working with local businesses, community based organizations, the NYPD, and other city agencies to assist in improving the quality of life on the street.",
+        "dcp-votelocation": "1220 Fifth Avenue, NY NY 10029",
+        "dcp-datereceived": "2023-10-25T19:14:31.000Z",
+        "dcp-dateofvote": "2023-10-24T04:00:00.000Z",
+        "dcp-nameofpersoncompletingthisform": "ZAP LUP Portal",
+        "dcp-name": "2022M0258_HA_MN CB11",
+        "statecode": "Inactive",
+        "statuscode": "Submitted",
+        "dcp-docketdescription": "IN THE MATTER OF an application submitted by the Department of Housing Preservation and Development (HPD) \n\n1) pursuant to Article 16 of the General Municipal Law of New York State for: \n\na. the designation of property located at 101 East 118th Street (Block 1767, Lots 1, 2, 3, 4, 67, 68, 69, 71, 72, 168 and169) as an Urban Development Action Area; and \n\nb.  an Urban Development Action Area Project for such area; and  \n\n \n2) pursuant to Section 197-c of the New York City Charter for the disposition of such property to a developer to be selected by HPD; \n \nto facilitate the development of a new 19-story mixed-use building containing approximately 340 affordable housing units, community facility space, and approximately 75 replacement parking spaces for NYPD, Borough of Manhattan, Community District 11. ",
+        "dcp-votinginfavorrecommendation": 28,
+        "dcp-votingagainstrecommendation": 2,
+        "dcp-votingabstainingonrecommendation": 2,
+        "dcp-totalmembersappointedtotheboard": 48,
+        "dcp-wasaquorumpresent": false,
+        "dcp-representing": "Community Board",
+        "dcp-recommendationsubmittedby-value": "MN CB11",
+        "dcp-projectaction-value": "ad68e262-4c5d-ec11-8f8e-001dd8050708",
+        "dcp-visibility": 717170003,
+        "documents": [
+          {
+            "name": "CB Rec_ C 240046 HAM and C 240047 PQM - Timbale Terrace.pdf",
+            "timeCreated": "2023-10-25T19:14:28Z",
+            "serverRelativeUrl": "/01QY2C5KLQHDFWK3OZRVAZKZU3EZIVVVLX"
+          },
+          {
+            "name": "Community -Borough Board Recommendation.pdf",
+            "timeCreated": "2023-10-26T03:03:18Z",
+            "serverRelativeUrl": "/01QY2C5KIXAOMNYUS7B5GIBT56CMS4FZCK"
+          }
+        ]
+      }
+    },
+    {
+      "type": "dispositions",
+      "id": "cc550318-9a2c-ee11-9965-001dd8305eae",
+      "attributes": {
+        "dcp-publichearinglocation": "DREAM Charter School, 1991 Second Avenue, New York, NY 10029",
+        "dcp-ispublichearingrequired": 717170000,
+        "dcp-dateofpublichearing": "2023-09-26T22:30:00.000Z",
+        "dcp-boroughpresidentrecommendation": null,
+        "dcp-boroughboardrecommendation": null,
+        "dcp-communityboardrecommendation": "Conditional Favorable",
+        "dcp-consideration": "CB11 recommends approval of Land Use applications C 240046 HAM and C 240047 PQM - Timbale Terrace with the following conditions, that:\n\nthe developer commit, to the extent legally permissible, targeted outreach in partnership with local community service organizations serving the formerly homeless and other low income residents of Manhattan Community District 11 (CD11) to ensure broad local awareness of the housing opportunities offered by this project;\nthe New York City Department of Housing Preservation and Development (HPD), New York City Human Resources Administration (HRA), and the developer commit to prioritizing applicants displaced from CD11 for any residential units set aside for eligible formerly homeless households, particularly single adults with children, seniors, survivors of domestic violence, and single young adults aging out of foster care;\nthe developer commits to CB11\u2019s local hiring preference guidelines, which sets local hiring targets of 35% for pre-construction jobs, 35% for construction jobs, 50% for post-construction hiring for residents of CD11; and 35% of the total value of all contracts being awarded to businesses located in CD11;\nthat the developer commit to proactively establish partnerships with local workforce development organizations to source qualified residents of CD11 for employment opportunities created by all phases of the Proposed Development;\nthat the developer establish a Community Advisory Board for the Timbale Terrace property to be facilitated in collaboration with CB11 that will be tasked with, including but not limited to, working with local businesses, community based organizations, the NYPD, and other city agencies to assist in improving the quality of life on the street.",
+        "dcp-votelocation": "1220 Fifth Avenue, NY NY 10029",
+        "dcp-datereceived": "2023-10-25T19:14:31.000Z",
+        "dcp-dateofvote": "2023-10-24T04:00:00.000Z",
+        "dcp-nameofpersoncompletingthisform": "ZAP LUP Portal",
+        "dcp-name": "2022M0258_PQ_MN CB11",
+        "statecode": "Inactive",
+        "statuscode": "Submitted",
+        "dcp-docketdescription": "IN THE MATTER OF an application submitted by the New York City Police Department and the Department of Citywide Administrative Services, pursuant to Section 197-c of the New York City Charter, for the acquisition of property located at 101 East 118th Street (Block 1767, Lots  1, 2, 3, 4, 67, 68, 69, 71, 72, 168 and 169) for use as a replacement parking facility, Borough of Manhattan, Community District 11. \n\n ",
+        "dcp-votinginfavorrecommendation": 28,
+        "dcp-votingagainstrecommendation": 2,
+        "dcp-votingabstainingonrecommendation": 2,
+        "dcp-totalmembersappointedtotheboard": 48,
+        "dcp-wasaquorumpresent": false,
+        "dcp-representing": "Community Board",
+        "dcp-recommendationsubmittedby-value": "MN CB11",
+        "dcp-projectaction-value": "ed26e5e8-4c5d-ec11-8f8e-001dd8050708",
+        "dcp-visibility": 717170003,
+        "documents": [
+          {
+            "name": "CB Rec_ C 240046 HAM and C 240047 PQM - Timbale Terrace.pdf",
+            "timeCreated": "2023-10-25T19:14:31Z",
+            "serverRelativeUrl": "/01QY2C5KOOYGOJHVOSCZEZIT3RW3GYL3NV"
+          },
+          {
+            "name": "Community -Borough Board Recommendation.pdf",
+            "timeCreated": "2023-10-26T03:03:21Z",
+            "serverRelativeUrl": "/01QY2C5KPEUHB6NQ6NONBY6ECQWDEDUQQN"
+          }
+        ]
+      }
+    },
+    {
+      "type": "packages",
+      "id": "f6635c02-2006-ee11-8f6d-001dd806ebdb",
+      "attributes": {
+        "statuscode": 717170005,
+        "statecode": 1,
+        "dcp-packagetype": 717170011,
+        "dcp-visibility": 717170003,
+        "dcp-packageversion": 1,
+        "dcp-rwcdsform-value": null,
+        "dcp-pasform-value": null,
+        "dcp-landuseapplication-value": "02645c02-2006-ee11-8f6d-001dd806ebdb",
+        "dcp-packageid": "f6635c02-2006-ee11-8f6d-001dd806ebdb",
+        "dcp-name": "2022M0258_Filed LU Package_1",
+        "dcp-statusdate": "2023-08-29T18:53:09.000Z",
+        "dcp-packagesubmissiondate": "2023-07-26T17:27:06.000Z",
+        "dcp-packagenotes": null,
+        "documents": [
+          {
+            "name": "01.-Project-Description_7.26.23.pdf",
+            "timeCreated": "2023-07-26T18:02:15Z",
+            "serverRelativeUrl": "/01QY2C5KL72LELRWBRPFC2CAWHUEHV252S"
+          },
+          {
+            "name": "02.-Official-Zoning-Map_Timbale-Terrace.pdf",
+            "timeCreated": "2023-07-26T17:20:23Z",
+            "serverRelativeUrl": "/01QY2C5KKVBU3DF5J5JZF3T5N2TBAYJDAB"
+          },
+          {
+            "name": "03.-Tax-Map_FC-Edits.pdf",
+            "timeCreated": "2023-07-26T17:19:37Z",
+            "serverRelativeUrl": "/01QY2C5KNVIHPSJGDG5FEZWFIODMLZMFYQ"
+          },
+          {
+            "name": "04.-Photographs.PDF",
+            "timeCreated": "2023-07-26T17:19:42Z",
+            "serverRelativeUrl": "/01QY2C5KM3CRRZNXGDGVC2PBJVF2VI4KB7"
+          },
+          {
+            "name": "05.-Area-Map_Updated-2.23.2023.pdf",
+            "timeCreated": "2023-07-26T17:19:47Z",
+            "serverRelativeUrl": "/01QY2C5KL7AIQ76J5BM5E3XKG5YTIPSPS2"
+          },
+          {
+            "name": "06.-UDAAP-Project-Summary.pdf",
+            "timeCreated": "2023-07-26T18:02:30Z",
+            "serverRelativeUrl": "/01QY2C5KNJV2VIBWFKZJGZVNWPLXQQRQ6T"
+          },
+          {
+            "name": "07.-Renderings.pdf",
+            "timeCreated": "2023-07-26T17:19:51Z",
+            "serverRelativeUrl": "/01QY2C5KL3UNKKV6CWT5EKZLAEGMCPWNCS"
+          },
+          {
+            "name": "08.-Architectural-Drawings-and-Zoning-Analysis_R1_03.21.23.pdf",
+            "timeCreated": "2023-07-26T17:20:09Z",
+            "serverRelativeUrl": "/01QY2C5KKE3SZHTOIRFJAYCHV35TKNKUNC"
+          }
+        ]
+      }
+    },
+    {
+      "type": "artifacts",
+      "id": "b0addbd3-c13d-ee11-bdf4-001dd804e004",
+      "attributes": {
+        "dcp-artifactdocumentlocation": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_artifacts/2022M0258_Certified EAS_22HPD059M_1_B0ADDBD3C13DEE11BDF4001DD804E004",
+        "versionnumber": 650305072,
+        "dcp-submittedfilename": "2022M0258__8/18/2023 8:22 AM _1  ",
+        "dcp-artifactsid": "b0addbd3-c13d-ee11-bdf4-001dd804e004",
+        "dcp-name": "2022M0258_Certified EAS_22HPD059M_1",
+        "modifiedon": "2023-08-18T12:22:31.000Z",
+        "dcp-packagetype": null,
+        "dcp-visibility": 717170003,
+        "documents": [
+          {
+            "name": "22HPD059M_Certified_EAS_08042023.pdf",
+            "timeCreated": "2023-08-18T12:22:23Z",
+            "serverRelativeUrl": "/01QY2C5KIK6KKNX4Z57ZEJR63QZTNEZQEP"
+          }
+        ]
+      }
+    },
+    {
+      "type": "artifacts",
+      "id": "68d6ccf1-c13d-ee11-bdf4-001dd804e004",
+      "attributes": {
+        "dcp-artifactdocumentlocation": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_artifacts/2022M0258_Negative Declaration_1_68D6CCF1C13DEE11BDF4001DD804E004",
+        "versionnumber": 650305142,
+        "dcp-submittedfilename": "2022M0258__8/18/2023 8:22 AM _1  ",
+        "dcp-artifactsid": "68d6ccf1-c13d-ee11-bdf4-001dd804e004",
+        "dcp-name": "2022M0258_Negative Declaration_1",
+        "modifiedon": "2023-08-18T12:23:44.000Z",
+        "dcp-packagetype": null,
+        "dcp-visibility": 717170003,
+        "documents": [
+          {
+            "name": "22HPD059M_Negative_Declaration_08042023.pdf",
+            "timeCreated": "2023-08-18T12:23:04Z",
+            "serverRelativeUrl": "/01QY2C5KLBFUILQAEZ3VC3V5FAGNIHLRV7"
+          }
+        ]
+      }
+    },
+    {
+      "type": "artifacts",
+      "id": "486e60a3-778d-ee11-8179-001dd804e43e",
+      "attributes": {
+        "dcp-artifactdocumentlocation": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_artifacts/2022M0258_CPC Pre-Hearing Presentation_1_486E60A3778DEE118179001DD804E43E",
+        "versionnumber": 690073188,
+        "dcp-submittedfilename": "2022M0258_CPC Presentations_11/27/2023 5:52 PM _1  ",
+        "dcp-artifactsid": "486e60a3-778d-ee11-8179-001dd804e43e",
+        "dcp-name": "2022M0258_CPC Pre-Hearing Presentation_1",
+        "modifiedon": "2023-11-27T22:55:17.000Z",
+        "dcp-packagetype": null,
+        "dcp-visibility": 717170003,
+        "documents": [
+          {
+            "name": "TimbaleTerrace_PreHearing.pdf",
+            "timeCreated": "2023-11-27T22:54:21Z",
+            "serverRelativeUrl": "/01QY2C5KOKONZAX2OUQVB3PP36UE6PQANC"
+          }
+        ]
+      }
+    },
+    {
+      "type": "artifacts",
+      "id": "cc3b3aa0-0096-ee11-8179-001dd804e43e",
+      "attributes": {
+        "dcp-artifactdocumentlocation": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_artifacts/2022M0258_Timbale Terrace Post-Hearing CPC Presentation_1_CC3B3AA00096EE118179001DD804E43E",
+        "versionnumber": 694173163,
+        "dcp-submittedfilename": "2022M0258__12/8/2023 2:33 PM _1  ",
+        "dcp-artifactsid": "cc3b3aa0-0096-ee11-8179-001dd804e43e",
+        "dcp-name": "2022M0258_Timbale Terrace Post-Hearing CPC Presentation_1",
+        "modifiedon": "2023-12-08T19:34:09.000Z",
+        "dcp-packagetype": null,
+        "dcp-visibility": 717170003,
+        "documents": [
+          {
+            "name": "TimbaleTerrace_PostHearing.pdf",
+            "timeCreated": "2023-12-08T19:34:00Z",
+            "serverRelativeUrl": "/01QY2C5KJ3XMIJOXA25NCYNKW35JRNMBAJ"
+          }
+        ]
+      }
+    },
+    {
+      "type": "artifacts",
+      "id": "df6ee2e6-cd41-ee11-bdf3-001dd804e792",
+      "attributes": {
+        "dcp-artifactdocumentlocation": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_artifacts/2022M0258_Dockets_1_DF6EE2E6CD41EE11BDF3001DD804E792",
+        "versionnumber": 699237720,
+        "dcp-submittedfilename": "2022M0258__8/23/2023 11:58 AM _1  ",
+        "dcp-artifactsid": "df6ee2e6-cd41-ee11-bdf3-001dd804e792",
+        "dcp-name": "2022M0258_Dockets_1",
+        "modifiedon": "2023-12-21T03:15:33.000Z",
+        "dcp-packagetype": null,
+        "dcp-visibility": 717170003,
+        "documents": [
+          {
+            "name": "240046HAM_Dkt.pdf",
+            "timeCreated": "2023-08-23T16:25:50Z",
+            "serverRelativeUrl": "/01QY2C5KIJMK6O5H5AXBFY4YRK4M3NDE25"
+          },
+          {
+            "name": "240047PQM_Dkt .pdf",
+            "timeCreated": "2023-08-23T16:25:50Z",
+            "serverRelativeUrl": "/01QY2C5KPSMFE4FXAM7NHJQLSA6SSOTOVF"
+          }
+        ]
+      }
+    },
+    {
+      "type": "artifacts",
+      "id": "0f98ede1-de3d-ee11-bdf4-001dd804eb39",
+      "attributes": {
+        "dcp-artifactdocumentlocation": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_artifacts/2022M0258_CPC Presentation_1_0F98EDE1DE3DEE11BDF4001DD804EB39",
+        "versionnumber": 650363347,
+        "dcp-submittedfilename": "2022M0258__8/18/2023 11:50 AM _1  ",
+        "dcp-artifactsid": "0f98ede1-de3d-ee11-bdf4-001dd804eb39",
+        "dcp-name": "2022M0258_CPC Presentation_1",
+        "modifiedon": "2023-08-18T15:52:07.000Z",
+        "dcp-packagetype": null,
+        "dcp-visibility": 717170003,
+        "documents": [
+          {
+            "name": "TimbaleTerrace_RS.pdf",
+            "timeCreated": "2023-08-18T15:51:28Z",
+            "serverRelativeUrl": "/01QY2C5KNMO3DYP7ZCBJD223SC4UGVBX5E"
+          }
+        ]
+      }
+    },
+    {
+      "type": "artifacts",
+      "id": "cb11f0d0-113d-ee11-bdf4-001dd804ed2e",
+      "attributes": {
+        "dcp-artifactdocumentlocation": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_artifacts/2022M0258_Notice of Certification_1_CB11F0D0113DEE11BDF4001DD804ED2E",
+        "versionnumber": 652361473,
+        "dcp-submittedfilename": "2022M0258__8/17/2023 11:22 AM _1  ",
+        "dcp-artifactsid": "cb11f0d0-113d-ee11-bdf4-001dd804ed2e",
+        "dcp-name": "2022M0258_Notice of Certification_1",
+        "modifiedon": "2023-08-23T17:08:18.000Z",
+        "dcp-packagetype": null,
+        "dcp-visibility": 717170003,
+        "documents": [
+          {
+            "name": "00 Notice of Certification_Acquisition.pdf",
+            "timeCreated": "2023-08-23T17:05:18Z",
+            "serverRelativeUrl": "/01QY2C5KO57RNDGGM6M5EJF2DPF64KVQET"
+          },
+          {
+            "name": "00 Notice of Certification_UDAAP.pdf",
+            "timeCreated": "2023-08-23T17:05:17Z",
+            "serverRelativeUrl": "/01QY2C5KPPHRS7FNG4IBCJ5GYBEHLIETTD"
+          },
+          {
+            "name": "01.-Project-Description_7.26.23.pdf",
+            "timeCreated": "2023-08-23T15:52:30Z",
+            "serverRelativeUrl": "/01QY2C5KJRLLAPNZXWA5EK2ZRRUQSXK6AO"
+          },
+          {
+            "name": "02.-Official-Zoning-Map_Timbale-Terrace.pdf",
+            "timeCreated": "2023-08-23T15:52:31Z",
+            "serverRelativeUrl": "/01QY2C5KMQWJKS6RUASZHIOEJX63CHLEB2"
+          },
+          {
+            "name": "03.-Tax-Map_FC-Edits.pdf",
+            "timeCreated": "2023-08-23T15:52:30Z",
+            "serverRelativeUrl": "/01QY2C5KJUKLMOWGVLWRGLFIGHAD4ZAPJI"
+          },
+          {
+            "name": "04.-Photographs.PDF",
+            "timeCreated": "2023-08-23T15:52:32Z",
+            "serverRelativeUrl": "/01QY2C5KO24654J5W57NG2BGJWBKDXOUTH"
+          },
+          {
+            "name": "05.-Area-Map_Updated-2.23.2023.pdf",
+            "timeCreated": "2023-08-23T15:52:32Z",
+            "serverRelativeUrl": "/01QY2C5KIPC247V7LIGFHYP6SQE2Y7FBZN"
+          },
+          {
+            "name": "06.-UDAAP-Project-Summary.pdf",
+            "timeCreated": "2023-08-23T15:52:26Z",
+            "serverRelativeUrl": "/01QY2C5KNZA32RCCNMENA2K7OOUWQILM47"
+          }
+        ]
+      }
+    },
+    {
+      "type": "artifacts",
+      "id": "8b6d678f-dde8-ec11-bb3b-001dd805218f",
+      "attributes": {
+        "dcp-artifactdocumentlocation": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_artifacts/2022M0258 - Racial Equity Report - _8B6D678FDDE8EC11BB3B001DD805218F",
+        "versionnumber": 650408338,
+        "dcp-submittedfilename": null,
+        "dcp-artifactsid": "8b6d678f-dde8-ec11-bb3b-001dd805218f",
+        "dcp-name": "2022M0258 - Racial Equity Report - ",
+        "modifiedon": "2023-08-18T18:52:24.000Z",
+        "dcp-packagetype": null,
+        "dcp-visibility": 717170003,
+        "documents": [
+          {
+            "name": "Timbale-Terrace-RER-8.9.23.pdf",
+            "timeCreated": "2023-08-10T20:31:21Z",
+            "serverRelativeUrl": "/01QY2C5KLJ6I242ARHSJAJ4HTHPRN6OQKY"
+          }
+        ]
+      }
+    },
+    {
+      "type": "artifacts",
+      "id": "747cfa57-9a2c-ee11-9965-001dd8301fa9",
+      "attributes": {
+        "dcp-artifactdocumentlocation": "https://nyco365.sharepoint.com/sites/nycdcppfs/dcp_artifacts/2022M0258_Notice of Receipt_1_747CFA579A2CEE119965001DD8301FA9",
+        "versionnumber": 640629912,
+        "dcp-submittedfilename": "2022M0258__7/27/2023 12:26 PM _1  ",
+        "dcp-artifactsid": "747cfa57-9a2c-ee11-9965-001dd8301fa9",
+        "dcp-name": "2022M0258_Notice of Receipt_1",
+        "modifiedon": "2023-07-27T17:29:09.000Z",
+        "dcp-packagetype": null,
+        "dcp-visibility": 717170003,
+        "documents": [
+          {
+            "name": "00_ Notice of Receipt .pdf",
+            "timeCreated": "2023-07-27T17:00:05Z",
+            "serverRelativeUrl": "/01QY2C5KL46CGH3VJL6BEKJHUMB7WFM3JI"
+          },
+          {
+            "name": "01.-Project-Description_7.26.23.pdf",
+            "timeCreated": "2023-07-27T16:27:31Z",
+            "serverRelativeUrl": "/01QY2C5KOMOTAJY4QVWBHK4PWW47U7O22D"
+          },
+          {
+            "name": "02.-Official-Zoning-Map_Timbale-Terrace.pdf",
+            "timeCreated": "2023-07-27T16:27:32Z",
+            "serverRelativeUrl": "/01QY2C5KLKBXB5NDTCKVA22CJEJD6VZG3F"
+          },
+          {
+            "name": "02.-Zoning-Map-6b.pdf",
+            "timeCreated": "2023-07-27T16:27:33Z",
+            "serverRelativeUrl": "/01QY2C5KINRCF33OOQSVA3OLL7KWTJ56VZ"
+          },
+          {
+            "name": "03.-Tax-Map_FC-Edits.pdf",
+            "timeCreated": "2023-07-27T16:27:33Z",
+            "serverRelativeUrl": "/01QY2C5KO66LLRQR5FG5FK6C772KZEBWHV"
+          },
+          {
+            "name": "04.-Photographs.PDF",
+            "timeCreated": "2023-07-27T16:27:33Z",
+            "serverRelativeUrl": "/01QY2C5KJ52A5LEDMIPJF3DVRQ4HL3LPW3"
+          },
+          {
+            "name": "05.-Area-Map_Updated-2.23.2023.pdf",
+            "timeCreated": "2023-07-27T16:27:34Z",
+            "serverRelativeUrl": "/01QY2C5KK5CTFIXPIUMNBLA7FBFB2B3F4W"
+          },
+          {
+            "name": "06.-UDAAP-Project-Summary.pdf",
+            "timeCreated": "2023-07-27T16:27:34Z",
+            "serverRelativeUrl": "/01QY2C5KK7Y2H3IJVZXJC3GNM4RZGFPXCR"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -65,6 +65,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `passport-public-rfx` | landed | EPIN, PIN, procurement_name, agency | high-risk | 78% (either_contracts_or_rfx) |
 | `recent-contract-awards-ocp` | not_ingested | PIN, request_id, agency | — | — |
 | `unregistered-zoning-application-portal-projects` | not_ingested | project_id, BBL, ulurp_numbers | — | — |
+| `zap-api-outcomes` | landed | project_id, BBL, ulurp_numbers | — | 100% (ulurp_complete_useful_outcome) |
 | `zap-bbl` | live-only | BBL, project_id | — | — |
 | `zap-projects` | live-only | project_id, BBL, ulurp_numbers | — | — |
 
@@ -79,7 +80,9 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `city-record-request-x-nycida-projects` | `city-record` × `nycida-build-nyc-projects` | request_id | — |
 | `city-record-x-legistar-events` | `city-record` × `nyc-council-legistar` | agency | — |
 | `exam-number-x-dcas-outcomes` | `dcas-exam-notices` × `dcas-annual-exam-outcomes` | exam_number | — |
+| `zap-bbl-x-dob-now-filings` | `zap-bbl` × `dob-now-job-filings` | BBL | 56% |
 | `zap-project-x-bbl` | `zap-projects` × `zap-bbl` | project_id · BBL | — |
+| `zap-projects-x-zap-api-outcomes` | `zap-projects` × `zap-api-outcomes` | project_id | 100% |
 
 ## Candidate crosswalks (worth materializing?)
 
@@ -103,8 +106,8 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `current-solicitations-ocp-x-recent-contract-awards-ocp-via-PIN+request_id` | `current-solicitations-ocp` × `recent-contract-awards-ocp` | PIN · request_id | maybe | 2 |
 | `nycida-build-nyc-projects-x-recent-contract-awards-ocp-via-request_id` | `nycida-build-nyc-projects` × `recent-contract-awards-ocp` | request_id | maybe | 2 |
 | `nycida-build-nyc-projects-x-unregistered-zoning-application-portal-projects-via-project_id` | `nycida-build-nyc-projects` × `unregistered-zoning-application-portal-projects` | project_id | maybe | 2 |
+| `nycida-build-nyc-projects-x-zap-api-outcomes-via-project_id` | `nycida-build-nyc-projects` × `zap-api-outcomes` | project_id | yes | 2 |
 | `nycida-build-nyc-projects-x-zap-bbl-via-project_id` | `nycida-build-nyc-projects` × `zap-bbl` | project_id | yes | 2 |
-| `nycida-build-nyc-projects-x-zap-projects-via-project_id` | `nycida-build-nyc-projects` × `zap-projects` | project_id | yes | 2 |
 
 ## Graph view
 
@@ -117,7 +120,9 @@ graph LR
   city_record[city-record] -->|request_id| nycida_build_nyc_projects[nycida-build-nyc-projects]
   city_record[city-record] -->|agency| nyc_council_legistar[nyc-council-legistar]
   dcas_exam_notices[dcas-exam-notices] -->|exam_number| dcas_annual_exam_outcomes[dcas-annual-exam-outcomes]
+  zap_bbl[zap-bbl] -->|BBL| dob_now_job_filings[dob-now-job-filings]
   zap_projects[zap-projects] -->|project_id/BBL| zap_bbl[zap-bbl]
+  zap_projects[zap-projects] -->|project_id| zap_api_outcomes[zap-api-outcomes]
   checkbook_contracts-.->|PIN/contract_id candidate| passport_public_contracts
   checkbook_contracts-.->|PIN candidate| passport_public_rfx
   checkbook_nycha_contracts-.->|contract_id candidate| passport_public_contracts
@@ -135,10 +140,10 @@ Ordered for dispatch. Full rows (effort, join risk, value scores) live in
 
 1. **PASSPort Public contracts + solicitations** — procurement-pending-unmatched, procurement-registered-unmatched, procurement-solicitation-documents. Measured join **78%**. Predicted grade: **high-risk**. Measured 78% either-source EPIN↔PIN on PIN-bearing Procurement notices since 2025-01-01 (predicted pre-landing grade: high-risk). Medium — stable dataJs machine path; strict EPIN↔PIN join measured 78% either-source on PIN-bearing Procurement notices since 2025-01-01.
 2. **Legistar agenda/vote materialization depth** — meeting-outcomes-unmatched, meeting-votes-absent, meeting-matters-absent.
-3. **DCAS annual exam outcomes → exam card join** — exam-outcome-aggregate.
-4. **Current Solicitations Open Data 3khw-qi8f** — procurement-solicitation-documents.
-5. **Recent Contract Awards Open Data qyyg-4tf5** — procurement-ocp-recent-awards.
-6. **ZAP decision docs + DOB NOW outcome stitch** — land-outcome-detail.
+3. **ZAP decision docs + DOB NOW outcome stitch** — land-outcome-detail. Measured join **100%**.
+4. **DCAS annual exam outcomes → exam card join** — exam-outcome-aggregate.
+5. **Current Solicitations Open Data 3khw-qi8f** — procurement-solicitation-documents.
+6. **Recent Contract Awards Open Data qyyg-4tf5** — procurement-ocp-recent-awards.
 7. **Doing Business Search Entities 72mk-a8z7** — secondary enrichment.
 8. **Bid Tabulations Historical 9k82-ys7w** — procurement-bid-counts. Measured join **0%**. Predicted grade: **high-risk**. High — measured strict join 0% on modern notices (2025+), 9.07% on 2016-2021 overlap; no PIN column; openings end 2021-03-24. Contracted as disabled (bid-tabulations-historical). Measured — recon complete; materialization stopped below usefulness threshold.
 
@@ -165,4 +170,4 @@ node tools/depot_rederive.mjs          # write registry + docs + receipt
 node tools/depot_rederive.mjs --check  # CI drift gate (no writes)
 ```
 
-Last refresh fingerprint: `5c778a9f4f66…` · materialized 8 · candidates 39 · class changes 0.
+Last refresh fingerprint: `21f733186544…` · materialized 10 · candidates 44 · class changes 0.
