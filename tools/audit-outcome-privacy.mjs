@@ -9,7 +9,7 @@ for (const outcome of registry.outcomes) {
   assert.deepEqual(Object.keys(event).sort(), ["detail", "event", "surface"]);
   assert.ok(forbidden.every((field) => !Object.hasOwn(event, field)));
 }
-for (const action of registry.actions.filter((item) => item.boundary === "official_handoff")) {
+for (const action of registry.actions.filter((item) => item.delivery === "official_handoff")) {
   assert.match(action.destination, /^https:\/\//);
   assert.ok(action.destination_label);
 }
