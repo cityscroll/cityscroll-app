@@ -1,0 +1,109 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Before</title><style>
+:root {
+  --paper:#f4efe5; --paper2:#fbf8f0; --ink:#161512; --muted:#69635a;
+  --rule:#c8bfb0; --ox:#7b1f2b; --green:#285d49; --amber:#9a6b1a; --blue:#315e72;
+}
+* { box-sizing:border-box; }
+html,body { margin:0; background:var(--paper); color:var(--ink);
+  font-family:ui-sans-serif,system-ui,sans-serif; }
+.page { padding:18px clamp(14px,3vw,42px) 28px; max-width:980px; margin:0 auto; }
+.mast { display:flex; justify-content:space-between; align-items:baseline;
+  border-bottom:3px double var(--ink); padding-bottom:10px; margin-bottom:18px; }
+.brand { font-family:Georgia,serif; font-weight:900; font-size:26px; letter-spacing:-.03em; }
+.brand span { color:var(--ox); }
+.eyebrow { color:var(--ox); font-size:11px; font-weight:800; letter-spacing:.12em;
+  text-transform:uppercase; margin:0 0 6px; }
+h1 { font-family:Georgia,serif; font-size:clamp(20px,3.2vw,32px); line-height:1.1;
+  margin:0 0 8px; letter-spacing:-.03em; }
+.meta { color:var(--muted); font-size:13px; margin:0 0 16px; }
+.panel { background:var(--paper2); border:1px solid var(--rule); border-radius:8px;
+  padding:16px 18px; }
+.chain-h { font:700 12px/1 ui-sans-serif,system-ui,sans-serif; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--ink); margin:16px 0 10px; }
+.chain { display:flex; gap:0; flex-wrap:wrap; align-items:stretch; }
+.stage { flex:1 1 120px; min-width:110px; }
+.box { border:1px solid var(--rule); border-top:3px solid var(--rule); border-radius:8px;
+  background:#fff; padding:11px 12px; display:flex; flex-direction:column; gap:5px;
+  min-height:110px; }
+.box.matched { border-top-color:var(--green); }
+.box.matched .stage-name { color:var(--green); }
+.box.ambiguous { border-top-color:var(--amber); }
+.box.ambiguous .stage-name { color:var(--amber); }
+.box.unmatched { border-top-style:dashed; border-top-color:var(--amber); }
+.box.unmatched .stage-name { color:var(--amber); }
+.stage-name { font:700 11px/1 ui-sans-serif,system-ui,sans-serif; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--muted); }
+.when { font-size:13px; }
+.amt { font-weight:700; font-size:15px; }
+.lc-norecord, .note { font:12px/1.45 ui-sans-serif,system-ui,sans-serif; color:var(--muted); }
+.note { margin-top:10px; padding:10px 12px; background:#faf6ee; border-inline-start:3px solid var(--rule); border-radius:0 7px 7px 0; }
+.note.warn { border-inline-start-color:var(--amber); }
+.connector { display:flex; align-items:center; padding:0 4px; color:var(--muted); font-size:16px; }
+.apply { margin-top:14px; border:1px solid var(--rule); border-radius:8px; background:#fff; }
+.apply h3 { margin:0; padding:12px 14px; border-bottom:1px solid var(--rule);
+  font:700 14px/1.2 ui-sans-serif,system-ui,sans-serif; }
+.apply .body { padding:12px 14px; }
+.apply dl { display:grid; grid-template-columns:auto 1fr; gap:6px 12px; margin:0; font-size:13px; }
+.apply dt { color:var(--muted); }
+.lbar { height:7px; background:#eee; border-radius:99px; overflow:hidden; max-width:220px; margin-top:5px; }
+.lbar span { display:block; height:100%; background:var(--green); }
+.vend { font-size:12px; }
+.lc-pct { font:12px/1.4 ui-sans-serif,system-ui,sans-serif; color:var(--muted); }
+code { font-family:ui-monospace,SFMono-Regular,monospace; font-size:.92em; }
+.bug { border:2px solid var(--ox); background:#fff5f5; color:var(--ox);
+  font:700 11px/1.3 ui-sans-serif,system-ui,sans-serif; padding:6px 8px; border-radius:6px; margin:6px 0; }
+.fix { border:2px solid var(--green); background:#f0faf5; color:var(--green);
+  font:700 11px/1.3 ui-sans-serif,system-ui,sans-serif; padding:6px 8px; border-radius:6px; margin:6px 0; }
+.cand { font:11px/1.35 ui-monospace,SFMono-Regular,monospace; margin:2px 0; color:var(--muted); }
+@media(max-width:560px){ .connector{transform:rotate(90deg);height:24px} .stage{flex-basis:100%} }
+</style></head><body>
+<div class="page">
+  <div class="mast"><div class="brand">City<span>Scroll</span></div>
+    <div class="eyebrow">Registered contract identity</div></div>
+  
+<div class="eyebrow">Before · #notice/20231222103 · DHS award · $24.44M</div>
+<h1>Families with Children City Sanctuary facility (226 West 50th Street)</h1>
+<p class="meta">Award · Homeless Services · PIN <code>07123E0076001</code> · Housing Options &amp; Geriatric Association Resources</p>
+<div class="panel">
+  <div class="chain-h">Contract lifecycle</div>
+  <div class="chain">
+    <div class="stage"><div class="box matched">
+      <div class="stage-name">Award</div>
+      <div class="when">2023-12-28</div>
+      <div class="amt">$24.44M</div>
+      <div class="vend">Awarded to <b>Housing Options…</b></div>
+    </div></div>
+    <div class="connector">→</div>
+    <div class="stage"><div class="box unmatched">
+      <div class="stage-name">Pending contract</div>
+      <div class="when">—</div>
+      <div class="lc-norecord">Not yet shown here — pending contracts live in Checkbook NYC.</div>
+    </div></div>
+    <div class="connector">→</div>
+    <div class="stage"><div class="box ambiguous">
+      <div class="stage-name">Registered contract</div>
+      <div class="when">—</div>
+      <div class="lc-norecord">Multiple contracts found — cannot tell which one applies.</div>
+      <div class="cand">CT107120248803393 · $24.44M · 2023-12-21</div>
+      <div class="cand">CT107120248803393 · $0 · 2023-12-21</div>
+      <div class="cand">CT107120248803393 · $0 · 2023-12-21</div>
+      <div class="cand">CT107120248803393 · $0 · 2023-12-21</div>
+      <div class="cand">CT107120248803393 · $0 · 2023-12-21</div>
+      <div class="cand">CT107120248803393 · $0 · 2023-12-21</div>
+      <div class="cand">CT107120248803393 · $0 · 2023-12-21</div>
+      <div class="bug">✗ seven rows, one contract id — counted raw Checkbook slices</div>
+    </div></div>
+    <div class="connector">→</div>
+    <div class="stage"><div class="box matched">
+      <div class="stage-name">Payments</div>
+      <div class="when">—</div>
+      <div class="amt">$14.50M paid</div>
+      <div class="lc-pct">32 payments on record</div>
+    </div></div>
+  </div>
+  <div class="note warn" style="margin-top:12px"><b>Follow the dollars</b> Multiple contracts found — cannot tell which one applies.</div>
+</div>
+
+</div></body></html>

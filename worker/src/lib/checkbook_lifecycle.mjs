@@ -94,6 +94,75 @@ export function checkbookSuccess(xml) {
 }
 
 // ---------------------------------------------------------------------------
+// Contract-id aggregation (Checkbook row slicing)
+// ---------------------------------------------------------------------------
+
+// Checkbook's Contracts domain returns multiple <transaction> rows per
+// prime_contract_id. Verified 2026-07-30 on PIN 07123E0076001 (CT107120248803393):
+//   - one vendor_record_type="Prime Vendor" row carries the real
+//     prime_contract_current_amount / original / spent_to_date
+//   - sibling rows are vendor_record_type="Sub Vendor" slices (one per
+//     subcontract); prime-side amounts are 0.00 and the real dollars live in
+//     sub_contract_* fields
+// Expense-category / fiscal-year facets can multiply rows the same way.
+// Lifecycle identity is the prime contract id — collapse to one record per id
+// before classifyStage so "Multiple contracts found" fires only on ≥2 distinct
+// ids (a real case: one PIN covering multiple awards). Display amounts take
+// the max across slices so the Prime Vendor row wins over $0 sub-slices.
+function contractAmountScore(c) {
+  return Math.max(
+    Number(c && c.current) || 0,
+    Number(c && c.original) || 0,
+    Number(c && c.spent) || 0,
+  );
+}
+
+function collapseContractSlices(id, rows) {
+  const sorted = rows.slice().sort((a, b) => contractAmountScore(b) - contractAmountScore(a));
+  const best = sorted[0] || { id };
+  let current = 0;
+  let original = 0;
+  let spent = 0;
+  for (const r of rows) {
+    current = Math.max(current, Number(r.current) || 0);
+    original = Math.max(original, Number(r.original) || 0);
+    spent = Math.max(spent, Number(r.spent) || 0);
+  }
+  return {
+    ...best,
+    id,
+    current,
+    original,
+    spent,
+  };
+}
+
+// Collapse Contracts-domain rows to one entry per distinct prime_contract_id.
+// Rows missing an id are kept as-is (each remains a distinct candidate).
+// Spending transactions are NOT collapsed here — many payments per contract is normal.
+export function aggregateContractsById(records) {
+  if (!Array.isArray(records)) return [];
+  if (records.length === 0) return [];
+  const groups = new Map();
+  const noId = [];
+  for (const c of records) {
+    const id = c && c.id != null && String(c.id).trim() ? String(c.id).trim() : "";
+    if (!id) {
+      noId.push(c);
+      continue;
+    }
+    if (!groups.has(id)) groups.set(id, []);
+    groups.get(id).push(c);
+  }
+  const out = [];
+  for (const [id, rows] of groups) {
+    out.push(collapseContractSlices(id, rows));
+  }
+  out.push(...noId);
+  return out;
+}
+
+// ---------------------------------------------------------------------------
 // Stage classification
 // ---------------------------------------------------------------------------
 
@@ -112,6 +181,9 @@ export const STAGES = [STAGE_SOLICITATION, STAGE_AWARD, STAGE_PENDING, STAGE_REG
 //           surface this as a transient-error register — see lifecycle renderers)
 // passed = earlier stage superseded because a later stage is on record
 // not_applicable = stage cannot be joined (e.g. no PIN on the notice)
+//
+// Callers must pass already-aggregated contract lists (see aggregateContractsById).
+// Raw Checkbook Contracts rows over-count identity when Sub Vendor slices share an id.
 export function classifyStage(records) {
   if (!Array.isArray(records)) return "unknown";
   if (records.length === 0) return "unmatched";
@@ -281,19 +353,26 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
     };
   }
 
+  // Collapse Checkbook Contracts slices (Prime Vendor + Sub Vendor rows, etc.) to
+  // distinct prime_contract_id before classifyStage. Pending and registered both
+  // use the Contracts domain and share this defect; spending stays raw (many
+  // payments per contract is expected).
+  const pendingRows = aggregateContractsById(pending);
+  const registeredRows = aggregateContractsById(registered);
+
   // --- Checkbook pending stage ---
-  let pendingStatus = lookupStageStatus(lookupStatus.pending, pending);
+  let pendingStatus = lookupStageStatus(lookupStatus.pending, pendingRows);
   const pendingEntry = stageEntry(STAGE_PENDING, pendingStatus, "checkbook-contracts", {
-    date: pendingStatus === "matched" ? (pending[0].received || pending[0].start || null) : null,
-    source_timestamp: pendingStatus === "matched" ? (pending[0].received || pending[0].start || null) : null,
+    date: pendingStatus === "matched" ? (pendingRows[0].received || pendingRows[0].start || null) : null,
+    source_timestamp: pendingStatus === "matched" ? (pendingRows[0].received || pendingRows[0].start || null) : null,
     detail: pendingStatus === "matched" ? {
-      contract_id: pending[0].id,
-      vendor: pending[0].vendor,
-      received_date: pending[0].received || null,
-      start_date: pending[0].start || null,
-      amount: pending[0].current || pending[0].original || 0,
+      contract_id: pendingRows[0].id,
+      vendor: pendingRows[0].vendor,
+      received_date: pendingRows[0].received || null,
+      start_date: pendingRows[0].start || null,
+      amount: pendingRows[0].current || pendingRows[0].original || 0,
     } : pendingStatus === "ambiguous" ? {
-      candidates: pending.map((c) => ({
+      candidates: pendingRows.map((c) => ({
         contract_id: c.id, vendor: c.vendor, amount: c.current || c.original || 0,
         received_date: c.received || null,
       })),
@@ -301,28 +380,28 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
   });
 
   // --- Checkbook registered stage ---
-  let regStatus = lookupStageStatus(lookupStatus.registered, registered);
+  let regStatus = lookupStageStatus(lookupStatus.registered, registeredRows);
   const regDetail = regStatus === "matched" ? {
-    contract_id: registered[0].id,
-    vendor: registered[0].vendor,
-    registration_date: registered[0].registered || null,
-    original_amount: registered[0].original || 0,
-    current_amount: registered[0].current || 0,
-    spent_to_date: registered[0].spent || 0,
-    start_date: registered[0].start || null,
-    end_date: registered[0].end || null,
-    duration: registered[0].duration || null,
-    mwbe: registered[0].mwbe || null,
+    contract_id: registeredRows[0].id,
+    vendor: registeredRows[0].vendor,
+    registration_date: registeredRows[0].registered || null,
+    original_amount: registeredRows[0].original || 0,
+    current_amount: registeredRows[0].current || 0,
+    spent_to_date: registeredRows[0].spent || 0,
+    start_date: registeredRows[0].start || null,
+    end_date: registeredRows[0].end || null,
+    duration: registeredRows[0].duration || null,
+    mwbe: registeredRows[0].mwbe || null,
   } : regStatus === "ambiguous" ? {
-    candidates: registered.map((c) => ({
+    candidates: registeredRows.map((c) => ({
       contract_id: c.id, vendor: c.vendor,
       registration_date: c.registered || null,
       current_amount: c.current || 0,
     })),
   } : null;
   const regEntry = stageEntry(STAGE_REGISTERED, regStatus, "checkbook-contracts", {
-    date: regStatus === "matched" ? (registered[0].registered || null) : null,
-    source_timestamp: regStatus === "matched" ? (registered[0].registered || null) : null,
+    date: regStatus === "matched" ? (registeredRows[0].registered || null) : null,
+    source_timestamp: regStatus === "matched" ? (registeredRows[0].registered || null) : null,
     detail: regDetail,
   });
 
@@ -372,7 +451,7 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
   } else if (regStatus === "matched") {
     // Spending feed healthy — use registered spent_to_date as the verified figure
     // (often $0 / normal lag on a young contract).
-    const spent = Number(registered[0].spent) || 0;
+    const spent = Number(registeredRows[0].spent) || 0;
     spendStatus = "matched";
     payDetail = {
       total_payments: null,
@@ -404,8 +483,8 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
 
   timeline.push(pendingEntry, regEntry, payEntry);
 
-  // --- Amendments (derived from registered contracts) ---
-  const amendments = detectAmendments(regStatus === "matched" ? registered : []);
+  // --- Amendments (derived from aggregated registered contracts) ---
+  const amendments = detectAmendments(regStatus === "matched" ? registeredRows : []);
 
   // ok: true when every Checkbook stage is resolved to a public-facing status
   // (matched / unmatched / ambiguous / passed / not_applicable) — not stuck on unknown.

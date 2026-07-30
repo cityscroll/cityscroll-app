@@ -21,6 +21,7 @@ import {
 } from "../src/checkbook_lifecycle.mjs";
 import {
   assembleLifecycle,
+  aggregateContractsById,
   parseContractTransactions,
   parseSpendingTransactions,
   classifyStage,
@@ -689,6 +690,114 @@ test("classifyStage: 0 → unmatched, 1 → matched, 2+ → ambiguous", () => {
   assert.equal(classifyStage([{ id: "1" }]), "matched");
   assert.equal(classifyStage([{ id: "1" }, { id: "2" }]), "ambiguous");
   assert.equal(classifyStage(null), "unknown");
+});
+
+// Checkbook Contracts returns Prime Vendor + Sub Vendor slices under one
+// prime_contract_id (field case: CT107120248803393 / notice 20231222103).
+test("aggregateContractsById: collapses CT107120248803393-style prime+sub slices", () => {
+  const slices = [
+    { id: "CT107120248803393", vendor: "HOUSING OPTIONS", current: 24438023, original: 24438023, spent: 14496646.77, registered: "2023-12-21" },
+    { id: "CT107120248803393", vendor: "HOUSING OPTIONS", current: 0, original: 0, spent: 0, registered: "2023-12-21" },
+    { id: "CT107120248803393", vendor: "HOUSING OPTIONS", current: 0, original: 0, spent: 0, registered: "2023-12-21" },
+    { id: "CT107120248803393", vendor: "HOUSING OPTIONS", current: 0, original: 0, spent: 0, registered: "2023-12-21" },
+    { id: "CT107120248803393", vendor: "HOUSING OPTIONS", current: 0, original: 0, spent: 0, registered: "2023-12-21" },
+    { id: "CT107120248803393", vendor: "HOUSING OPTIONS", current: 0, original: 0, spent: 0, registered: "2023-12-21" },
+    { id: "CT107120248803393", vendor: "HOUSING OPTIONS", current: 0, original: 0, spent: 0, registered: "2023-12-21" },
+  ];
+  const out = aggregateContractsById(slices);
+  assert.equal(out.length, 1);
+  assert.equal(out[0].id, "CT107120248803393");
+  assert.equal(out[0].current, 24438023);
+  assert.equal(out[0].spent, 14496646.77);
+  assert.equal(classifyStage(out), "matched");
+});
+
+test("aggregateContractsById: distinct ids stay distinct", () => {
+  const out = aggregateContractsById([
+    { id: "C1", current: 100, original: 100 },
+    { id: "C2", current: 200, original: 200 },
+    { id: "C1", current: 0, original: 0 },
+  ]);
+  assert.equal(out.length, 2);
+  assert.equal(classifyStage(out), "ambiguous");
+  const c1 = out.find((r) => r.id === "C1");
+  assert.equal(c1.current, 100);
+});
+
+test("assembleLifecycle: CT107120248803393 duplicate-row shape → one confident registered contract", () => {
+  const notice = {
+    request_id: "20231222103",
+    agency_name: "Homeless Services",
+    type_of_notice_description: "Award",
+    start_date: "2023-12-28",
+    short_title: "Families with Children City Sanctuary",
+    pin: "07123E0076001",
+    vendor_name: "Housing Options",
+    contract_amount: "24438023",
+  };
+  // One Prime Vendor row + six $0 Sub Vendor siblings (Checkbook row-slicing).
+  const registered = [
+    { id: "CT107120248803393", vendor: "HOUSING OPTIONS", current: 24438023, original: 24438023, spent: 14496646.77, registered: "2023-12-21", start: "2023-04-25", end: "2028-06-30" },
+    { id: "CT107120248803393", vendor: "HOUSING OPTIONS", current: 0, original: 0, spent: 0, registered: "2023-12-21" },
+    { id: "CT107120248803393", vendor: "HOUSING OPTIONS", current: 0, original: 0, spent: 0, registered: "2023-12-21" },
+    { id: "CT107120248803393", vendor: "HOUSING OPTIONS", current: 0, original: 0, spent: 0, registered: "2023-12-21" },
+    { id: "CT107120248803393", vendor: "HOUSING OPTIONS", current: 0, original: 0, spent: 0, registered: "2023-12-21" },
+    { id: "CT107120248803393", vendor: "HOUSING OPTIONS", current: 0, original: 0, spent: 0, registered: "2023-12-21" },
+    { id: "CT107120248803393", vendor: "HOUSING OPTIONS", current: 0, original: 0, spent: 0, registered: "2023-12-21" },
+  ];
+  const result = assembleLifecycle(notice, [], registered, [
+    { amount: 500000, date: "2025-06-01", year: "2025" },
+  ], {
+    lookupStatus: { pending: "ok", registered: "ok", spending: "ok" },
+  });
+  const reg = result.timeline.find((t) => t.stage === "registered");
+  assert.equal(reg.status, "matched", "same contract id must not be ambiguous");
+  assert.equal(reg.detail.contract_id, "CT107120248803393");
+  assert.equal(reg.detail.current_amount, 24438023);
+  assert.equal(reg.detail.spent_to_date, 14496646.77);
+  assert.ok(!reg.detail.candidates, "no candidate list on a confident single-id match");
+  const pay = result.timeline.find((t) => t.stage === "payment");
+  assert.equal(pay.status, "matched");
+  assert.equal(pay.detail.payment_state, "paid");
+});
+
+test("assembleLifecycle: true multi-id registered still warns as ambiguous", () => {
+  const notice = {
+    request_id: "X", agency_name: "A", type_of_notice_description: "Award",
+    start_date: "2025-01-01", short_title: "S", pin: "P", vendor_name: "V", contract_amount: "100",
+  };
+  const registered = [
+    { id: "CT-AAA", vendor: "V1", current: 1000000, original: 1000000, registered: "2025-04-01" },
+    { id: "CT-BBB", vendor: "V2", current: 2000000, original: 2000000, registered: "2025-04-05" },
+    // Extra slice for CT-AAA must not create a third candidate
+    { id: "CT-AAA", vendor: "V1", current: 0, original: 0, registered: "2025-04-01" },
+  ];
+  const result = assembleLifecycle(notice, [], registered, [], {
+    lookupStatus: { pending: "ok", registered: "ok", spending: "ok" },
+  });
+  const reg = result.timeline.find((t) => t.stage === "registered");
+  assert.equal(reg.status, "ambiguous");
+  assert.equal(reg.detail.candidates.length, 2);
+  const ids = reg.detail.candidates.map((c) => c.contract_id).sort();
+  assert.deepEqual(ids, ["CT-AAA", "CT-BBB"]);
+});
+
+test("assembleLifecycle: pending stage also collapses same-id slices", () => {
+  const notice = {
+    request_id: "X", agency_name: "A", type_of_notice_description: "Solicitation",
+    start_date: "2025-01-01", short_title: "S", pin: "P",
+  };
+  const pending = [
+    { id: "P-1", vendor: "V", current: 500000, original: 500000, received: "2025-03-01" },
+    { id: "P-1", vendor: "V", current: 0, original: 0, received: "2025-03-01" },
+  ];
+  const result = assembleLifecycle(notice, pending, [], [], {
+    lookupStatus: { pending: "ok", registered: "ok", spending: "ok" },
+  });
+  const p = result.timeline.find((t) => t.stage === "pending");
+  assert.equal(p.status, "matched");
+  assert.equal(p.detail.contract_id, "P-1");
+  assert.equal(p.detail.amount, 500000);
 });
 
 test("detectAmendments: current ≠ original → amendment", () => {
