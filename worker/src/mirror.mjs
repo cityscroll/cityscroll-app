@@ -11,7 +11,11 @@
 const ORIGIN = "https://crol-list.org";
 const FALLBACK_ORIGIN = "https://cityscroll.github.io/crol-list/";
 const FORWARD_REQUEST_HEADERS = ["accept", "accept-language", "if-none-match", "if-modified-since", "user-agent"];
-const MIRROR_HOSTS = new Set(["cityscroll.org", "www.cityscroll.org"]);
+const MIRROR_HOSTS = new Set([
+  "cityscroll.org",
+  "www.cityscroll.org",
+  "crol-list.org",
+]);
 const FALLBACK_CONTENT_TYPES = new Map([
   [".css", "text/css; charset=utf-8"],
   [".html", "text/html; charset=utf-8"],
