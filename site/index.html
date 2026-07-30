@@ -6779,6 +6779,31 @@ function vendorProfileFromVariants(variants){
   };
 }
 
+function doingBusinessCardHTML(db){
+  if(!db || typeof db !== "object") return "";
+  const structure = db.ownership_structure
+    ? t("vendor_doing_business_structure",{structure: cleanText(db.ownership_structure)})
+    : "";
+  const phone = db.organization_phone
+    ? t("vendor_doing_business_phone",{phone: cleanText(db.organization_phone)})
+    : "";
+  const start = db.doing_business_start_date
+    ? t("vendor_doing_business_start",{date: fdate(db.doing_business_start_date)})
+    : "";
+  const listedAs = db.organization_name
+    ? `<div class="sub" style="margin-top:4px">${t("vendor_doing_business_listed_as",{name: cleanText(db.organization_name)})}</div>`
+    : "";
+  const facts = [structure, phone, start].filter(Boolean)
+    .map(line => `<div class="sub" style="margin-top:2px">${line}</div>`).join("");
+  return `<div style="margin:14px 0 0;padding:12px 14px;border:1px solid #c8bfb0;border-radius:8px;background:#fbf8f0">
+      <div class="chain-h" style="margin:0 0 6px">${t("vendor_doing_business_heading")}</div>
+      <div style="font-size:14px;font-weight:700">${t("vendor_doing_business_listed")}</div>
+      ${listedAs}
+      ${facts}
+      <div class="rmeta" style="margin-top:8px"><a class="pivot" href="https://data.cityofnewyork.us/d/72mk-a8z7" target="_blank" rel="noopener noreferrer">${t("vendor_doing_business_source")}<span class="sr-only"> ${t("ext_link_new_tab_sr")}</span></a></div>
+    </div>`;
+}
+
 function vendorProfileHeaderHTML(profile){
   const variants = Array.isArray(profile.variants) ? profile.variants : [];
   const display = cleanText(profile.display||variants[0]?.name||variants[0]?.vendor_name||"");
@@ -6790,7 +6815,8 @@ function vendorProfileHeaderHTML(profile){
         <div><div class="big">${money(profile.total)||"—"}</div><div class="lbl">total awarded,<br>on record</div></div>
         <div><div class="big">${nAwards.toLocaleString()}</div><div class="lbl">award notice${nAwards===1?"":"s"}</div></div>
         <div><div class="big" style="font-size:17px">${profile.first?fdate(profile.first):"—"} – ${profile.last?fdate(profile.last):"—"}</div><div class="lbl">first / latest<br>award published</div></div>
-      </div>`;
+      </div>
+      ${doingBusinessCardHTML(profile.doingBusiness)}`;
 }
 
 async function loadVendorProfileRecord(name){

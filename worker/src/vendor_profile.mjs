@@ -2,12 +2,19 @@
 //
 // The daily cron folds City Record Award rows into normalized vendor stems, publishes
 // versioned buckets to ALERT_STATE KV, then swaps a small manifest last. Each record is a
-// read model for the whole profile: identity totals, agency rollup, 15 recent notices, and
-// any Checkbook renewal-estimate payload already present in KV. GET /vendor-profile reads one bucket and
+// read model for the whole profile: identity totals, agency rollup, 15 recent notices,
+// Doing Business Search entity enrichment when the stem joins, and any Checkbook
+// renewal-estimate payload already present in KV. GET /vendor-profile reads one bucket and
 // rejects records older than 24 hours. Socrata remains the source of truth; a miss or refresh
 // failure falls back to the browser's live resolver.
 
 import { vendorStem } from "./lib/compile.mjs";
+import {
+  DOING_BUSINESS_SODA,
+  buildDoingBusinessIndex,
+  doingBusinessProfilePayload,
+  joinVendorToDoingBusiness,
+} from "./lib/doing_business_join.mjs";
 
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const MONEY_HONESTY_CAP = 10_000_000_000;
@@ -20,6 +27,7 @@ const RECORD_TTL_SECONDS = 28 * 60 * 60;
 const RECENT_NOTICE_LIMIT = 15;
 const FORECAST_PREFIXES = ["fc:"];
 const CACHE_SCHEMA = "source-contract-v2";
+const DOING_BUSINESS_PAGE = 5_000;
 
 function cacheKeyFor(req) {
   const url = new URL(req.url);
@@ -248,6 +256,52 @@ async function attachForecasts(profiles, kv) {
   return { listRequests, readRequests, recordsStored };
 }
 
+/**
+ * Fetch Doing Business Search Entities and attach a strict stem join to each profile.
+ * Failure is non-fatal: profiles keep doingBusiness=null so the cron still publishes.
+ */
+async function attachDoingBusiness(profiles, fetchImpl) {
+  for (const profile of Object.values(profiles)) profile.doingBusiness = null;
+  const rows = [];
+  let requests = 0;
+  for (let page = 0; page < MAX_PAGES; page++) {
+    const params = new URLSearchParams({
+      "$limit": String(DOING_BUSINESS_PAGE),
+      "$offset": String(page * DOING_BUSINESS_PAGE),
+      "$order": "organization_name",
+    });
+    requests++;
+    const response = await fetchImpl(`${DOING_BUSINESS_SODA}?${params}`);
+    if (!response.ok) throw new Error(`doing business SODA ${response.status}`);
+    const pageRows = await response.json();
+    if (!Array.isArray(pageRows)) {
+      throw new Error("doing business SODA returned a non-array response");
+    }
+    rows.push(...pageRows);
+    if (pageRows.length < DOING_BUSINESS_PAGE) break;
+  }
+
+  const index = buildDoingBusinessIndex(rows);
+  let matched = 0;
+  for (const profile of Object.values(profiles)) {
+    const hit = joinVendorToDoingBusiness(profile.display || profile.stem, index)
+      || joinVendorToDoingBusiness(profile.stem, index);
+    if (!hit) continue;
+    // Prefer a name-variant match when one of the published City Record names stems equal.
+    let best = hit;
+    for (const variant of profile.variants || []) {
+      const vHit = joinVendorToDoingBusiness(variant.name, index);
+      if (vHit) {
+        best = vHit;
+        break;
+      }
+    }
+    profile.doingBusiness = doingBusinessProfilePayload(best);
+    matched++;
+  }
+  return { requests, rows: rows.length, matched, indexSize: index.size };
+}
+
 function withoutTail(profile) {
   const { recentNotices, forecasts, ...identity } = profile;
   return identity;
@@ -267,6 +321,19 @@ export async function refreshVendorProfiles(env, options = {}) {
   const profiles = buildVendorProfiles(aggregate.rows);
   const recent = await attachRecentNotices(profiles, fetchImpl);
   const forecast = await attachForecasts(profiles, env.ALERT_STATE);
+
+  let doingBusiness = { requests: 0, rows: 0, matched: 0, indexSize: 0 };
+  try {
+    doingBusiness = await attachDoingBusiness(profiles, fetchImpl);
+  } catch (err) {
+    // Non-fatal: still publish award/forecast profiles without Doing Business enrichment.
+    console.error(
+      "doing business attach failed (vendor profiles continue):",
+      String(err?.message || err),
+    );
+    for (const profile of Object.values(profiles)) profile.doingBusiness = null;
+  }
+
   const buckets = new Map();
 
   for (const profile of Object.values(profiles)) {
@@ -308,10 +375,11 @@ export async function refreshVendorProfiles(env, options = {}) {
     buckets: buckets.size,
     cronCost: {
       socrataRequestsBefore: aggregate.requests,
-      socrataRequestsAfter: aggregate.requests + recent.requests,
+      socrataRequestsAfter: aggregate.requests + recent.requests + doingBusiness.requests,
       recentRowsScanned: recent.rowsScanned,
       forecastKvListRequests: forecast.listRequests,
       forecastKvReadRequests: forecast.readRequests,
+      doingBusinessRequests: doingBusiness.requests,
     },
     storage: {
       bucketCount: buckets.size,
@@ -323,6 +391,7 @@ export async function refreshVendorProfiles(env, options = {}) {
     included: {
       recentNotices: recent.rowsStored,
       forecasts: forecast.recordsStored,
+      doingBusiness: doingBusiness.matched,
       mentions: false,
     },
   };
