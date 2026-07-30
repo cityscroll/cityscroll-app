@@ -1224,6 +1224,17 @@
     career_source_details: "Источники и правила обновления",
     career_city_record_finding: "Набор данных City Record также был проверен. Уведомления об экзаменах DCAS не публикуются в разделе объявлений об экзаменах, поэтому в этом руководстве вместо них используются расписания DCAS и NOE.",
     career_load_failed: "Не удалось загрузить предварительно рассчитанное руководство по экзамену. Используйте официальное расписание экзаменов DCAS и повторите попытку позже.",
+    career_outcomes_heading: "Итоги после цикла",
+    career_outcome_list_established: "в списке допущенных",
+    career_outcome_hiring_pool: "кадровый резерв (сертифицировано)",
+    career_outcome_hired: "принято на работу",
+    career_outcome_applicants: "заявители (цикл)",
+    career_outcomes_joined_note: "Сводные показатели из ежегодной публикации итогов DCAS за цикл {cycle} (опубликовано {date}). Индивидуальные баллы не публикуются.",
+    career_outcomes_source_name: "ежегодной публикации итогов экзаменов гражданской службы DCAS",
+    career_outcome_stage_list: "формирования списка допущенных",
+    career_outcome_stage_certification: "сертификации в ведомство",
+    career_outcome_stage_appointment: "назначения",
+    career_outcomes_not_published_html: "Город пока не публикует итоги после цикла для этого экзамена — они появятся в {source} после {stage}.",
     // END GENERATED CAREER GUIDE TRANSLATIONS
   });
   W.SECTION_I18N = W.SECTION_I18N || {};

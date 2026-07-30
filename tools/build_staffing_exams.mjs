@@ -179,6 +179,45 @@ function buildOutcomes({ outcomes }) {
   };
 }
 
+/** Join key is exam_number only. When multiple cycles share a number, prefer the latest published_on. */
+export function outcomesByExamNumber(outcomeRecords) {
+  const map = new Map();
+  for (const row of outcomeRecords || []) {
+    const normalized = normalizeOutcome(row);
+    const existing = map.get(normalized.exam_number);
+    if (!existing) {
+      map.set(normalized.exam_number, normalized);
+      continue;
+    }
+    const existingOn = existing.published_on || "";
+    const nextOn = normalized.published_on || "";
+    if (nextOn >= existingOn) map.set(normalized.exam_number, normalized);
+  }
+  return map;
+}
+
+/** Attach a per-exam outcome object (or null) so cards never live-fetch the outcomes table. */
+export function joinOutcomeOntoExam(exam, outcomeMap) {
+  const matched = outcomeMap.get(exam.exam_number) || null;
+  if (!matched) {
+    return {
+      ...exam,
+      outcome: null,
+      outcome_gap: {
+        class: "not_published",
+        // Real-world pending: DCAS has not released aggregates for this exam_number yet.
+        pending_stage: "list_establishment",
+      },
+    };
+  }
+  const { exam_number: _examNumber, ...counts } = matched;
+  return {
+    ...exam,
+    outcome: counts,
+    outcome_gap: null,
+  };
+}
+
 function normalizeOutcomeSourceOutdatedCheck(source) {
   const publicationDate = source?.verified_at || source?.data_publication_date || source?.fetched_at;
   assert(publicationDate, `${source?.id || "source"}: outcomes source lacks a publication date`);
@@ -227,11 +266,14 @@ export function buildArtifact({ annual, current, activeList, cityRecord, outcome
     prior.delete(examNumber);
   }
 
-  const records = [...exams.values()].sort((a, b) => {
-    const ad = a.application_start || "9999-12-31";
-    const bd = b.application_start || "9999-12-31";
-    return ad.localeCompare(bd) || a.title.localeCompare(b.title) || a.exam_number.localeCompare(b.exam_number);
-  });
+  const outcomeMap = outcomesByExamNumber(outcomes.records);
+  const records = [...exams.values()]
+    .map((exam) => joinOutcomeOntoExam(exam, outcomeMap))
+    .sort((a, b) => {
+      const ad = a.application_start || "9999-12-31";
+      const bd = b.application_start || "9999-12-31";
+      return ad.localeCompare(bd) || a.title.localeCompare(b.title) || a.exam_number.localeCompare(b.exam_number);
+    });
 
   normalizeOutcomeSourceOutdatedCheck(outcomes.source);
 

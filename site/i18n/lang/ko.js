@@ -1210,6 +1210,17 @@
     career_source_details: "소스 및 새로 고침 규칙",
     career_city_record_finding: "City Record 데이터세트도 확인되었습니다. DCAS 시험 통지서를 시험 발표 섹션으로 게시하지 않으므로 이 안내서에서는 대신 DCAS 일정과 NOE를 사용합니다.",
     career_load_failed: "미리 계산된 시험 가이드를 로드할 수 없습니다. 공식 DCAS 시험 일정을 사용하고 나중에 이 페이지를 다시 시도해 보세요.",
+    career_outcomes_heading: "주기 후 결과",
+    career_outcome_list_established: "적격 명단",
+    career_outcome_hiring_pool: "채용 풀(인증)",
+    career_outcome_hired: "채용",
+    career_outcome_applicants: "지원자(주기)",
+    career_outcomes_joined_note: "DCAS 연간 결과 공고의 집계 수치, 주기 {cycle}(게시 {date}). 개인 점수는 공개되지 않습니다.",
+    career_outcomes_source_name: "DCAS 연간 공무원 시험 결과 공고",
+    career_outcome_stage_list: "적격 명단 확정",
+    career_outcome_stage_certification: "기관 인증",
+    career_outcome_stage_appointment: "임명",
+    career_outcomes_not_published_html: "시는 아직 이 시험의 주기 후 결과를 공개하지 않습니다 — {stage} 이후 {source}에 나타납니다.",
     // END GENERATED CAREER GUIDE TRANSLATIONS
   });
   W.SECTION_I18N = W.SECTION_I18N || {};

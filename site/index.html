@@ -477,6 +477,12 @@
   .career-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;border-block:1px solid var(--rule);padding:9px 0}
   .career-metric b{display:block;font:800 19px/1.05 var(--font-display);color:var(--green)}
   .career-metric span{display:block;font:11px/1.35 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:3px}
+  .career-outcomes{border:1px solid var(--rule);border-radius:6px;padding:10px 12px;background:var(--canvas,#f7f5f1)}
+  .career-outcomes-heading{font:750 12px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--ink);margin:0 0 8px;text-transform:uppercase;letter-spacing:.02em}
+  .career-outcomes-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .career-outcomes-metrics .career-metric b{color:var(--ink)}
+  .career-outcomes-gap{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft);margin:0}
+  .career-outcomes-note{font:11.5px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:8px 0 0}
   .career-detail-line{font:13px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft);margin:0}
   .career-detail-line b{color:var(--ink)}
   .career-card .actions{margin-top:auto;padding-top:4px;display:flex;gap:7px;flex-wrap:wrap}
@@ -3638,6 +3644,40 @@ function careerSourceHTML(){
     <ul>${careerData.sources.map(source=>`<li><span lang="en" dir="ltr">${escUiHtml(source.name)}</span> — ${escUiHtml(source.refresh_cadence||"")}</li>`).join("")}</ul>
     <p>${t("career_city_record_finding")}</p></details>`;
 }
+function careerCount(value){
+  return Number.isFinite(Number(value)) ? fmtNumber(Number(value)) : t("career_not_published");
+}
+function careerOutcomeHTML(exam){
+  const view=CrolStaffing.examOutcomeView(exam);
+  if(view.kind==="joined"){
+    return `<section class="career-outcomes" data-outcome="joined" aria-label="${escUiHtml(t("career_outcomes_heading"))}">
+      <h3 class="career-outcomes-heading">${t("career_outcomes_heading")}</h3>
+      <div class="career-outcomes-metrics">
+        <div class="career-metric"><b>${careerCount(view.list_establishment)}</b><span>${t("career_outcome_list_established")}</span></div>
+        <div class="career-metric"><b>${careerCount(view.certification_count)}</b><span>${t("career_outcome_hiring_pool")}</span></div>
+        <div class="career-metric"><b>${careerCount(view.hire_count)}</b><span>${t("career_outcome_hired")}</span></div>
+        <div class="career-metric"><b>${careerCount(view.applicant_count)}</b><span>${t("career_outcome_applicants")}</span></div>
+      </div>
+      <p class="career-outcomes-note">${t("career_outcomes_joined_note",{
+        cycle:escUiHtml(view.application_cycle||t("career_date_unknown")),
+        date:careerDate(view.published_on)
+      })}</p>
+    </section>`;
+  }
+  // Real-world pending: DCAS has not released aggregates for this exam yet (not an ingest gap).
+  const stageKey={
+    list_establishment:"career_outcome_stage_list",
+    certification:"career_outcome_stage_certification",
+    appointment:"career_outcome_stage_appointment"
+  }[view.pending_stage]||"career_outcome_stage_list";
+  return `<section class="career-outcomes" data-outcome="not_published" aria-label="${escUiHtml(t("career_outcomes_heading"))}">
+    <h3 class="career-outcomes-heading">${t("career_outcomes_heading")}</h3>
+    <p class="career-outcomes-gap">${t("career_outcomes_not_published_html",{
+      stage:t(stageKey),
+      source:t("career_outcomes_source_name")
+    })}</p>
+  </section>`;
+}
 function careerCardHTML(exam){
   const status=CrolStaffing.statusFor(exam,careerToday());
   const title=escUiHtml(exam.title);
@@ -3672,6 +3712,7 @@ function careerCardHTML(exam){
     </div>
     ${exam.summary?`<p class="career-summary" lang="en" dir="ltr">${escUiHtml(exam.summary)}</p>`:""}
     ${details}
+    ${careerOutcomeHTML(exam)}
     <div class="actions">${apply}${notice}
       <button class="act" type="button" data-career-copy="${exam.exam_number}">${t("copy_link_btn")}</button>
       ${careerSelected===exam.exam_number?`<button class="act" type="button" data-career-all>${t("career_back_all")}</button>`:""}

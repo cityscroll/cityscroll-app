@@ -186,7 +186,7 @@ test("deadline-first card markup leads with the deadline and keeps OASys + NOE a
   assert.match(html, /isInterestArea/);
   // Card structure: deadline lead appears before the title block in the template.
   const cardFnStart = html.indexOf("function careerCardHTML(exam)");
-  const cardFn = html.slice(cardFnStart, cardFnStart + 3500);
+  const cardFn = html.slice(cardFnStart, cardFnStart + 4500);
   assert.ok(cardFn.includes("career-deadline-lead"));
   assert.ok(
     cardFn.indexOf("career-deadline-lead") < cardFn.indexOf("career-card-title"),
@@ -196,4 +196,20 @@ test("deadline-first card markup leads with the deadline and keeps OASys + NOE a
   assert.ok(cardFn.includes("career_fee_waiver"));
   assert.ok(cardFn.includes("career_read_noe"));
   assert.ok(cardFn.includes("career_apply_oasys"));
+  assert.ok(cardFn.includes("careerOutcomeHTML"), "cards surface precomputed exam outcomes");
+});
+
+test("acceptance cards flip outcome slots from gaps to joined aggregates where published", () => {
+  const withOutcomes = ["6125", "7006"];
+  const withoutOutcomes = ["7013", "7016", "7331"];
+  for (const examNumber of withOutcomes) {
+    const exam = artifact.exams.find(item => item.exam_number === examNumber);
+    assert.ok(exam?.outcome, examNumber);
+    assert.equal(Staffing.examOutcomeView(exam).kind, "joined");
+  }
+  for (const examNumber of withoutOutcomes) {
+    const exam = artifact.exams.find(item => item.exam_number === examNumber);
+    assert.equal(exam.outcome, null, examNumber);
+    assert.equal(Staffing.examOutcomeView(exam).kind, "not_published");
+  }
 });

@@ -1203,6 +1203,17 @@
     career_source_details: "Sous ak rafrechi règ",
     career_city_record_finding: "Yo te tcheke seri done Dosye Vil la tou. Li pa pibliye Avi Egzamen DCAS kòm yon seksyon anons egzamen, kidonk gid sa a sèvi ak orè DCAS ak NOE pito.",
     career_load_failed: "Gid egzamen an precomputed pa t 'kapab chaje. Sèvi ak orè ofisyèl egzamen DCAS la epi eseye paj sa a ankò pita.",
+    career_outcomes_heading: "Rezilta apre sik la",
+    career_outcome_list_established: "sou lis kalifye a",
+    career_outcome_hiring_pool: "rezèv anbochaj (sètifye)",
+    career_outcome_hired: "anboche",
+    career_outcome_applicants: "kandida (sik)",
+    career_outcomes_joined_note: "Total agregasyon ki soti nan piblikasyon rezilta anyèl DCAS pou sik {cycle} (pibliye {date}). Nòt endividyèl yo pa piblik.",
+    career_outcomes_source_name: "piblikasyon anyèl rezilta egzamen sèvis sivil DCAS la",
+    career_outcome_stage_list: "etablisman lis kalifye a",
+    career_outcome_stage_certification: "sètifikasyon bay ajans lan",
+    career_outcome_stage_appointment: "nonmen",
+    career_outcomes_not_published_html: "Vil la poko pibliye rezilta apre sik pou egzamen sa a — yo ta parèt nan {source} apre {stage}.",
     // END GENERATED CAREER GUIDE TRANSLATIONS
   });
   W.SECTION_I18N = W.SECTION_I18N || {};

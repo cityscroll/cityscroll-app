@@ -1204,6 +1204,17 @@
     career_source_details: "来源和刷新规则",
     career_city_record_finding: "还检查了 City Record 数据集。它不会将 DCAS 考试通知作为考试公告部分发布，因此本指南使用 DCAS 时间表和 NOE 代替。",
     career_load_failed: "无法加载预先计算的考试指南。使用官方 DCAS 考试时间表并稍后重试此页面。",
+    career_outcomes_heading: "周期后结果",
+    career_outcome_list_established: "已列入合格名单",
+    career_outcome_hiring_pool: "招聘库（已认证）",
+    career_outcome_hired: "已录用",
+    career_outcome_applicants: "申请人数（本周期）",
+    career_outcomes_joined_note: "来自 DCAS 年度结果公告的汇总数据，周期 {cycle}（发布于 {date}）。个人分数不公开。",
+    career_outcomes_source_name: "DCAS 年度公务员考试结果公告",
+    career_outcome_stage_list: "合格名单建立",
+    career_outcome_stage_certification: "向机构认证",
+    career_outcome_stage_appointment: "任命",
+    career_outcomes_not_published_html: "市政府尚未公布本考试的周期后结果——在{stage}之后，它们会出现在{source}中。",
     // END GENERATED CAREER GUIDE TRANSLATIONS
   });
   W.SECTION_I18N = W.SECTION_I18N || {};

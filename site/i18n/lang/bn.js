@@ -1204,6 +1204,17 @@
     career_source_details: "উত্স এবং রিফ্রেশ নিয়ম",
     career_city_record_finding: "সিটি রেকর্ড ডেটাসেটও পরীক্ষা করা হয়েছিল। এটি একটি পরীক্ষা-ঘোষণা বিভাগ হিসাবে DCAS পরীক্ষার বিজ্ঞপ্তি প্রকাশ করে না, তাই এই নির্দেশিকা পরিবর্তে DCAS সময়সূচী এবং NOE ব্যবহার করে।",
     career_load_failed: "পূর্বনির্ধারিত পরীক্ষার নির্দেশিকা লোড করা যায়নি। অফিসিয়াল DCAS পরীক্ষার সময়সূচী ব্যবহার করুন এবং এই পৃষ্ঠাটি পরে আবার চেষ্টা করুন।",
+    career_outcomes_heading: "চক্র-পরবর্তী ফলাফল",
+    career_outcome_list_established: "যোগ্য তালিকায়",
+    career_outcome_hiring_pool: "নিয়োগ পুল (সার্টিফাইড)",
+    career_outcome_hired: "নিয়োগপ্রাপ্ত",
+    career_outcome_applicants: "আবেদনকারী (চক্র)",
+    career_outcomes_joined_note: "DCAS বার্ষিক ফলাফল প্রকাশনার সমষ্টিগত সংখ্যা, চক্র {cycle} (প্রকাশিত {date})। ব্যক্তিগত স্কোর প্রকাশ্য নয়।",
+    career_outcomes_source_name: "DCAS বার্ষিক সিভিল-সার্ভিস পরীক্ষার ফলাফল প্রকাশনা",
+    career_outcome_stage_list: "যোগ্য তালিকা প্রতিষ্ঠা",
+    career_outcome_stage_certification: "সংস্থায় সার্টিফিকেশন",
+    career_outcome_stage_appointment: "নিয়োগ",
+    career_outcomes_not_published_html: "শহর এখনও এই পরীক্ষার চক্র-পরবর্তী ফলাফল প্রকাশ করে না — {stage} এর পরে সেগুলি {source}-এ দেখা যাবে।",
     // END GENERATED CAREER GUIDE TRANSLATIONS
   });
   W.SECTION_I18N = W.SECTION_I18N || {};

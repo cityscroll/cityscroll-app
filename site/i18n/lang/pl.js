@@ -1232,6 +1232,17 @@
     career_source_details: "Źródła i zasady odświeżania",
     career_city_record_finding: "Sprawdzono także zbiór danych City Record. Nie publikuje Powiadomień o egzaminie DCAS jako sekcji zawierającej ogłoszenia o egzaminach, dlatego w tym przewodniku zastosowano zamiast tego harmonogramy DCAS i NOE.",
     career_load_failed: "Nie można załadować wstępnie obliczonego przewodnika po egzaminie. Skorzystaj z oficjalnego harmonogramu egzaminów DCAS i wypróbuj tę stronę ponownie później.",
+    career_outcomes_heading: "Wyniki po cyklu",
+    career_outcome_list_established: "na liście kwalifikującej",
+    career_outcome_hiring_pool: "pula rekrutacyjna (certyfikowani)",
+    career_outcome_hired: "zatrudnieni",
+    career_outcome_applicants: "kandydaci (cykl)",
+    career_outcomes_joined_note: "Zagregowane liczby z rocznej publikacji wyników DCAS dla cyklu {cycle} (opublikowano {date}). Indywidualne wyniki nie są publiczne.",
+    career_outcomes_source_name: "rocznej publikacji wyników egzaminów służby cywilnej DCAS",
+    career_outcome_stage_list: "ustanowieniu listy kwalifikującej",
+    career_outcome_stage_certification: "certyfikacji do agencji",
+    career_outcome_stage_appointment: "nominacji",
+    career_outcomes_not_published_html: "Miasto nie publikuje jeszcze wyników po cyklu dla tego egzaminu — pojawią się w {source} po {stage}.",
     // END GENERATED CAREER GUIDE TRANSLATIONS
   });
   W.SECTION_I18N = W.SECTION_I18N || {};

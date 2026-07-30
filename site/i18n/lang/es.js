@@ -1204,6 +1204,17 @@
     career_source_details: "Fuentes y reglas de actualización",
     career_city_record_finding: "También se verificó el conjunto de datos de City Record. No publica Avisos de examen de DCAS como una sección de anuncios de exámenes, por lo que esta guía utiliza horarios de DCAS y NOE en su lugar.",
     career_load_failed: "No se pudo cargar la guía del examen precalculada. Utilice el calendario oficial de exámenes DCAS y vuelva a visitar esta página más tarde.",
+    career_outcomes_heading: "Resultados posteriores al ciclo",
+    career_outcome_list_established: "en lista de elegibles",
+    career_outcome_hiring_pool: "bolsa de contratación (certificados)",
+    career_outcome_hired: "contratados",
+    career_outcome_applicants: "solicitantes (ciclo)",
+    career_outcomes_joined_note: "Totales agregados de la publicación anual de resultados de DCAS para el ciclo {cycle} (publicados {date}). Las puntuaciones individuales no son públicas.",
+    career_outcomes_source_name: "la publicación anual de resultados de exámenes de servicio civil de DCAS",
+    career_outcome_stage_list: "el establecimiento de la lista de elegibles",
+    career_outcome_stage_certification: "la certificación a la agencia",
+    career_outcome_stage_appointment: "el nombramiento",
+    career_outcomes_not_published_html: "La ciudad aún no publica resultados posteriores al ciclo para este examen: aparecerían en {source} después de {stage}.",
     // END GENERATED CAREER GUIDE TRANSLATIONS
   });
   W.SECTION_I18N = W.SECTION_I18N || {};
