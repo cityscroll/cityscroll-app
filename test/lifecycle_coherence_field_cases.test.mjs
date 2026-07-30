@@ -80,12 +80,13 @@ const sandbox = new Function(
   extractFn("lifecycleOcpAwardHTML") +
   extractFn("lifecycleTimelineHTML") +
   extractFn("lifecycleDollarsHTML") +
+  extractFn("isContractLifecycleEligible") +
   // Real vendorStem + vendorNamesMatch (entity-resolution for mismatch warning)
   extractConst("VENDOR_SUFFIX") +
   extractFn("cleanText") +
   extractFn("vendorStem") +
   extractFn("vendorNamesMatch") +
-  "return { lifecycleTimelineHTML, lifecycleDollarsHTML, lifecycleStageHTML, money, lifecycleMoney, vendorNamesMatch, checkbookSearchUrl, lifecyclePaymentState, lifecycleResolvedPayment, lifecycleCommittedUnderrun, lifecyclePaymentSummaryHTML };"
+  "return { lifecycleTimelineHTML, lifecycleDollarsHTML, lifecycleStageHTML, money, lifecycleMoney, vendorNamesMatch, checkbookSearchUrl, lifecyclePaymentState, lifecycleResolvedPayment, lifecycleCommittedUnderrun, lifecyclePaymentSummaryHTML, isContractLifecycleEligible };"
 );
 
 const {
@@ -99,6 +100,7 @@ const {
   lifecycleResolvedPayment,
   lifecycleCommittedUnderrun,
   lifecyclePaymentSummaryHTML,
+  isContractLifecycleEligible,
 } = sandbox(t, tn, windowStub);
 
 // Live-shaped fixture: HNTB award #notice/20260623008 (registered matched, payment was unknown)
@@ -171,17 +173,29 @@ const HNTB_LIFECYCLE_RAW = {
   ],
 };
 
-// Live-shaped fixture: IDA hearing #notice/20260617040 (no PIN)
+// Live-shaped fixture: IDA hearing #notice/20260617040 — wrong-universe for contract modules.
 const IDA_NOTICE = {
   request_id: "20260617040",
   agency_name: "Industrial Development Agency",
   type_of_notice_description: "Public Hearing",
+  section_name: "Public Hearings and Meetings",
   pin: null,
   short_title: "NEW YORK CITY INDUSTRIAL DEVELOPMENT AGENCY - NOTICE OF PUBLIC HEARING - July 16th, 2026",
   start_date: "2026-07-02",
 };
 
-const IDA_LIFECYCLE_RAW = {
+// Procurement no-PIN (still the correct universe for contract lifecycle gaps).
+const PROCUREMENT_NO_PIN = {
+  request_id: "20260101001",
+  agency_name: "Citywide Administrative Services",
+  type_of_notice_description: "Solicitation",
+  section_name: "Procurement",
+  pin: null,
+  short_title: "Widgets for city agencies",
+  start_date: "2026-01-01",
+};
+
+const PROCUREMENT_NO_PIN_LIFECYCLE = {
   pin: null,
   pin_strategy: "none",
   ok: false,
@@ -191,11 +205,11 @@ const IDA_LIFECYCLE_RAW = {
       stage: "solicitation",
       status: "matched",
       source: "city-record",
-      date: "2026-07-02",
+      date: "2026-01-01",
       detail: {
-        request_id: "20260617040",
-        agency: "Industrial Development Agency",
-        title: IDA_NOTICE.short_title,
+        request_id: "20260101001",
+        agency: "Citywide Administrative Services",
+        title: PROCUREMENT_NO_PIN.short_title,
         pin: null,
       },
     },
@@ -280,11 +294,21 @@ test("HNTB field case: registration card owns registration, not a second paid ba
 });
 
 // ---------------------------------------------------------------------------
-// 2. IDA no-PIN: single explanation; no stacked could-not-reach / not-yet-shown
+// 2. Category-aware dispatch + procurement no-PIN coherence
 // ---------------------------------------------------------------------------
 
-test("IDA no-PIN field case: single no-PIN explanation; dependent slots collapse", () => {
-  const html = lifecycleTimelineHTML(IDA_LIFECYCLE_RAW, IDA_NOTICE);
+test("IDA hearing is wrong-universe for contract lifecycle modules (category gate)", () => {
+  assert.equal(isContractLifecycleEligible(IDA_NOTICE), false);
+  assert.equal(isContractLifecycleEligible({
+    ...IDA_NOTICE,
+    request_id: "20250227021",
+    type_of_notice_description: "Public Hearings",
+  }), false);
+});
+
+test("procurement no-PIN: single no-PIN explanation; dependent slots collapse", () => {
+  assert.equal(isContractLifecycleEligible(PROCUREMENT_NO_PIN), true);
+  const html = lifecycleTimelineHTML(PROCUREMENT_NO_PIN_LIFECYCLE, PROCUREMENT_NO_PIN);
   assert.match(html, /does not publish a Procurement ID \(PIN\)/);
   assert.match(html, /would appear in Checkbook NYC if released with a PIN/);
   assert.doesNotMatch(html, TRANSIENT, "no stacked could-not-reach cards");
