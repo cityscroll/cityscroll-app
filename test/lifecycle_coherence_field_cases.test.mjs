@@ -51,11 +51,13 @@ const sandbox = new Function(
   extractConst("EXT_ATTRS") +
   extractConst("CHECKBOOK_SEARCH_URL") +
   extractConst("CHECKBOOK_SPENDING_URL") +
+  extractConst("CHECKBOOK_SMART_SEARCH") +
   extractConst("PASSPORT_CONTRACTS_URL") +
   extractConst("PASSPORT_RFX_URL") +
   extractConst("LIFECYCLE_STAGE_ORDER") +
   extractConst("CURRENT_SOLICITATIONS_URL") +
   extractConst("OCP_AWARDS_URL") +
+  extractFn("checkbookSearchUrl") +
   extractFn("lifecycleStageLabel") +
   extractFn("lifecycleAmount") +
   extractFn("lifecycleMoney") +
@@ -65,6 +67,7 @@ const sandbox = new Function(
   extractFn("lifecyclePublicStatus") +
   extractFn("lifecycleMatchedRegisteredDetail") +
   extractConst("LIFECYCLE_DOLLARS_ANCHOR") +
+  extractFn("lifecycleDollarsFocusHref") +
   extractFn("lifecyclePaymentSummaryHTML") +
   extractFn("lifecycleSourceLink") +
   extractFn("lifecycleDocumentsHTML") +
@@ -72,10 +75,12 @@ const sandbox = new Function(
   extractFn("lifecycleOcpAwardHTML") +
   extractFn("lifecycleTimelineHTML") +
   extractFn("lifecycleDollarsHTML") +
-  // vendorStem used by lifecycleDollarsHTML for mismatch warning
-  `function vendorStem(s){ return String(s||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim(); }
-   function cleanText(s){ return String(s||"").replace(/\\s+/g," ").trim(); }` +
-  "return { lifecycleTimelineHTML, lifecycleDollarsHTML, lifecycleStageHTML, money, lifecycleMoney };"
+  // Real vendorStem + vendorNamesMatch (entity-resolution for mismatch warning)
+  extractConst("VENDOR_SUFFIX") +
+  extractFn("cleanText") +
+  extractFn("vendorStem") +
+  extractFn("vendorNamesMatch") +
+  "return { lifecycleTimelineHTML, lifecycleDollarsHTML, lifecycleStageHTML, money, lifecycleMoney, vendorNamesMatch, checkbookSearchUrl };"
 );
 
 const {
@@ -83,6 +88,8 @@ const {
   lifecycleDollarsHTML,
   money,
   lifecycleMoney,
+  vendorNamesMatch,
+  checkbookSearchUrl,
 } = sandbox(t, tn, windowStub);
 
 // Live-shaped fixture: HNTB award #notice/20260623008 (registered matched, payment was unknown)
@@ -222,11 +229,15 @@ test("joined payments rendered as not-shown, duplicated: payments card summarize
   // No class-(a) payment gap while registered join exists
   assert.doesNotMatch(both, /Not yet shown here — payments live in/i);
   assert.doesNotMatch(both, /payments live in Checkbook NYC spending/i);
-  // Payments card: summary + $0 lag + anchor to dollars (one owner; dollars is detail)
+  // Payments card: summary + $0 lag + notice-scoped deep link to dollars
   assert.match(timeline, /\$0 paid of \$13\.5/i);
   assert.match(timeline, /Payments lag invoicing/i);
-  assert.match(timeline, /href="#follow-the-dollars"/);
+  assert.match(timeline, /href="#notice\/20260623008\?focus=follow-the-dollars"/);
+  assert.doesNotMatch(timeline, /href="#follow-the-dollars"/);
   assert.match(timeline, /class="box matched"/);
+  // Outbound Checkbook links carry the contract id (not bare spending_search)
+  assert.match(timeline, /smart_search\/citywide\?search_term=CT184120268807929/);
+  assert.doesNotMatch(timeline, /href="https:\/\/www\.checkbooknyc\.com\/spending_search"/);
   // Dollars is the detail owner: Paid to date $0, lag in provenance — no second gap line
   assert.match(dollars, /Paid to date/i);
   assert.match(dollars, /\$0/);
@@ -323,6 +334,50 @@ test("lifecycleMoney formats zero as $0 and nullish as em dash (never literal nu
   assert.equal(lifecycleMoney(undefined), "—");
   assert.equal(lifecycleMoney(13533763.08), money(13533763.08));
   assert.notEqual(String(lifecycleMoney(0)), "null");
+});
+
+// ---------------------------------------------------------------------------
+// 4. Entity resolution: HNTB truncation is same firm; true mismatch still warns
+// ---------------------------------------------------------------------------
+
+test("HNTB vendor pair: entity resolution matches Checkbook truncation to notice name", () => {
+  const checkbook = "HNTB NEW YORK ENGINEERING ARCHITECTURE AND LANDSCAPE ARCHITE";
+  const noticeName = "HNTB New York Engineering and Architecture, P.C.";
+  assert.equal(vendorNamesMatch(checkbook, noticeName), true);
+  const dollars = lifecycleDollarsHTML(HNTB_LIFECYCLE_RAW, HNTB_NOTICE);
+  // Soft variant note (or quiet match) — never the red mismatch warning
+  assert.doesNotMatch(dollars, /differs from the notice/i);
+  assert.doesNotMatch(dollars, /note warn/);
+  // Soft note when display strings differ but entity resolves
+  assert.match(dollars, /Same vendor as the notice|Checkbook shows the name/i);
+  // Specific outbound Checkbook link
+  assert.match(dollars, /smart_search\/citywide\?search_term=CT184120268807929/);
+});
+
+test("true vendor mismatch still warns", () => {
+  const other = {
+    ...HNTB_NOTICE,
+    vendor_name: "Acme Bridge Demolition LLC",
+  };
+  assert.equal(
+    vendorNamesMatch(
+      "HNTB NEW YORK ENGINEERING ARCHITECTURE AND LANDSCAPE ARCHITE",
+      other.vendor_name,
+    ),
+    false,
+  );
+  const dollars = lifecycleDollarsHTML(HNTB_LIFECYCLE_RAW, other);
+  assert.match(dollars, /differs from the notice/i);
+  assert.match(dollars, /note warn/);
+  assert.match(dollars, /Acme Bridge Demolition/);
+});
+
+test("checkbookSearchUrl constructs scoped Checkbook URLs", () => {
+  const u = checkbookSearchUrl({ contractId: "CT184120268807929" });
+  assert.equal(
+    u,
+    "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT184120268807929",
+  );
 });
 
 // ---------------------------------------------------------------------------

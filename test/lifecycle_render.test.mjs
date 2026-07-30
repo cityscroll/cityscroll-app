@@ -46,11 +46,13 @@ const sandbox = new Function(
   extractConst("EXT_ATTRS") +
   extractConst("CHECKBOOK_SEARCH_URL") +
   extractConst("CHECKBOOK_SPENDING_URL") +
+  extractConst("CHECKBOOK_SMART_SEARCH") +
   extractConst("PASSPORT_CONTRACTS_URL") +
   extractConst("PASSPORT_RFX_URL") +
   extractConst("LIFECYCLE_STAGE_ORDER") +
   extractConst("CURRENT_SOLICITATIONS_URL") +
   extractConst("OCP_AWARDS_URL") +
+  extractFn("checkbookSearchUrl") +
   extractFn("lifecycleStageLabel") +
   extractFn("lifecycleAmount") +
   extractFn("lifecycleMoney") +
@@ -60,13 +62,14 @@ const sandbox = new Function(
   extractFn("lifecyclePublicStatus") +
   extractFn("lifecycleMatchedRegisteredDetail") +
   extractConst("LIFECYCLE_DOLLARS_ANCHOR") +
+  extractFn("lifecycleDollarsFocusHref") +
   extractFn("lifecyclePaymentSummaryHTML") +
   extractFn("lifecycleSourceLink") +
   extractFn("lifecycleDocumentsHTML") +
   extractFn("lifecycleStageHTML") +
   extractFn("lifecycleOcpAwardHTML") +
   extractFn("lifecycleTimelineHTML") +
-  "return { lifecycleStageLabel, lifecycleAmount, lifecycleSourceLink, lifecycleStageHTML, lifecycleOcpAwardHTML, lifecycleTimelineHTML, lifecycleMoney };"
+  "return { lifecycleStageLabel, lifecycleAmount, lifecycleSourceLink, lifecycleStageHTML, lifecycleOcpAwardHTML, lifecycleTimelineHTML, lifecycleMoney, checkbookSearchUrl, lifecycleDollarsFocusHref, lifecyclePaymentSummaryHTML };"
 );
 
 const {
@@ -77,6 +80,9 @@ const {
   lifecycleOcpAwardHTML,
   lifecycleTimelineHTML,
   lifecycleMoney,
+  checkbookSearchUrl,
+  lifecycleDollarsFocusHref,
+  lifecyclePaymentSummaryHTML,
 } = sandbox(t, tn, windowStub);
 
 // ---------------------------------------------------------------------------
@@ -267,7 +273,9 @@ test("lifecycle: payment stage shows payment count, summary, and dollars link", 
   assert.match(html, /\$250K/);
   // total_spent from payment detail (not registered.spent_to_date) when present
   assert.match(html, /\$750K paid of \$5\.00M committed/);
-  assert.match(html, /href="#follow-the-dollars"/);
+  // Notice-scoped deep link — bare #follow-the-dollars ejects applyHash to money tab
+  assert.match(html, /href="#notice\/20250110001\?focus=follow-the-dollars"/);
+  assert.doesNotMatch(html, /href="#follow-the-dollars"/);
 });
 
 test("lifecycle: provenance note names City Record, Checkbook, PASSPort, and the PIN", () => {
@@ -378,12 +386,42 @@ test("lifecycleSourceLink: checkbook-contracts without contract_id links to cont
   assert.match(link, /checkbooknyc\.com\/contract_search/);
 });
 
-test("lifecycleSourceLink: checkbook-spending links to spending search", () => {
+test("lifecycleSourceLink: checkbook-spending without context links to spending search", () => {
   const link = lifecycleSourceLink({
     source: "checkbook-spending",
     detail: null,
   });
   assert.match(link, /checkbooknyc\.com\/spending_search/);
+});
+
+test("lifecycleSourceLink: checkbook-spending with contract_id links to smart search", () => {
+  const link = lifecycleSourceLink(
+    { source: "checkbook-spending", detail: null },
+    { contractId: "CT184120268807929" },
+  );
+  assert.match(link, /checkbooknyc\.com\/smart_search/);
+  assert.match(link, /CT184120268807929/);
+  assert.doesNotMatch(link, /spending_search/);
+});
+
+test("checkbookSearchUrl: prefers contract id, then pin, then vendor", () => {
+  assert.match(checkbookSearchUrl({ contractId: "CT1" }), /search_term=CT1/);
+  assert.match(checkbookSearchUrl({ pin: "84124P0003001" }), /search_term=84124P0003001/);
+  assert.match(checkbookSearchUrl({ vendor: "HNTB" }), /search_term=HNTB/);
+  assert.equal(checkbookSearchUrl({ kind: "spending" }), "https://www.checkbooknyc.com/spending_search");
+});
+
+test("lifecycleDollarsFocusHref: keeps notice context on the deep link", () => {
+  assert.equal(
+    lifecycleDollarsFocusHref("20260623008"),
+    "#notice/20260623008?focus=follow-the-dollars",
+  );
+  assert.equal(lifecycleDollarsFocusHref(null), "#follow-the-dollars");
+});
+
+test("lifecyclePaymentSummaryHTML: notice-scoped dollars link", () => {
+  const html = lifecyclePaymentSummaryHTML(0, 100, { noticeId: "20260623008" });
+  assert.match(html, /href="#notice\/20260623008\?focus=follow-the-dollars"/);
 });
 
 // ---------------------------------------------------------------------------

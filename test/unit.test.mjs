@@ -49,6 +49,32 @@ test("vendorStem: strips chained suffixes, keeps short names intact", () => {
   assert.equal(vendorStem("AB"), "AB"); // too short to strip into nothing
 });
 
+const { vendorNamesMatch } = new Function(
+  extractConst("VENDOR_SUFFIX") + extractFn("cleanText") + extractFn("vendorStem") + extractFn("vendorNamesMatch") +
+  "return { vendorNamesMatch };"
+)();
+
+test("vendorNamesMatch: HNTB Checkbook truncation matches notice legal name", () => {
+  assert.equal(
+    vendorNamesMatch(
+      "HNTB NEW YORK ENGINEERING ARCHITECTURE AND LANDSCAPE ARCHITE",
+      "HNTB New York Engineering and Architecture, P.C.",
+    ),
+    true,
+  );
+});
+
+test("vendorNamesMatch: true mismatch still fails", () => {
+  assert.equal(
+    vendorNamesMatch(
+      "HNTB NEW YORK ENGINEERING ARCHITECTURE AND LANDSCAPE ARCHITE",
+      "Acme Bridge Demolition LLC",
+    ),
+    false,
+  );
+  assert.equal(vendorNamesMatch("Sinergia Inc", "Sinergia Incorporated"), true);
+});
+
 // ---------- property explorer (round1 #9) ----------
 // dollarBadge routes its labels through t() (2026-07-13 i18n hotfix) — evaluate the REAL
 // dictionary from i18n.js so the assertions stay pinned to the shipped English strings.
