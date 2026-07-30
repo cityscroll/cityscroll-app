@@ -42,6 +42,19 @@ CLOUDFLARE_BEACON_RE = re.compile(
     rb'\s*<script type="module" src="https://static\.cloudflareinsights\.com/beacon\.min\.js/v[^"]+".*?</script>',
     re.IGNORECASE | re.DOTALL,
 )
+CLOUDFLARE_EMAIL_LINK_RE = re.compile(
+    rb'<a href="/cdn-cgi/l/email-protection(?P<fragment>#[0-9a-f]+)?"[^>]*>.*?</a>',
+    re.IGNORECASE | re.DOTALL,
+)
+CLOUDFLARE_EMAIL_VALUE_RE = re.compile(rb'data-cfemail="([0-9a-f]+)"', re.IGNORECASE)
+CLOUDFLARE_EMAIL_SPAN_RE = re.compile(
+    rb'<span class="__cf_email__"[^>]*>.*?</span>',
+    re.IGNORECASE | re.DOTALL,
+)
+CLOUDFLARE_EMAIL_SCRIPT_RE = re.compile(
+    rb'<script data-cfasync="false" src="/cdn-cgi/scripts/[^"]+/cloudflare-static/email-decode\.min\.js"></script>',
+    re.IGNORECASE,
+)
 
 
 def public_paths(site_root: Path) -> list[str]:
@@ -57,12 +70,38 @@ def public_paths(site_root: Path) -> list[str]:
     return sorted(paths)
 
 
+def decode_cfemail(value: bytes) -> bytes:
+    encoded = bytes.fromhex(value.decode("ascii"))
+    key = encoded[0]
+    return bytes(byte ^ key for byte in encoded[1:])
+
+
+def restore_cloudflare_email(match: re.Match[bytes]) -> bytes:
+    source = match.group(0)
+    value = CLOUDFLARE_EMAIL_VALUE_RE.search(source)
+    if value is None:
+        return source
+    address = decode_cfemail(value.group(1))
+    if match.group("fragment") is None:
+        return address
+    source = re.sub(
+        rb'href="/cdn-cgi/l/email-protection#[0-9a-f]+"',
+        b'href="mailto:' + address + b'"',
+        source,
+        count=1,
+        flags=re.IGNORECASE,
+    )
+    return CLOUDFLARE_EMAIL_SPAN_RE.sub(address, source, count=1)
+
+
 def normalize(path: str, body: bytes) -> bytes:
     if path == "/" or path.endswith(".html"):
         body = RELEASE_CONFIG_RE.sub(b"", body)
         body = RELEASE_BANNER_RE.sub(b"", body)
         body = I18N_STAMP_RE.sub(rb"\1__I18N_ASSET_VERSION__", body)
         body = CLOUDFLARE_BEACON_RE.sub(b"", body)
+        body = CLOUDFLARE_EMAIL_LINK_RE.sub(restore_cloudflare_email, body)
+        body = CLOUDFLARE_EMAIL_SCRIPT_RE.sub(b"", body)
     return body
 
 
@@ -125,7 +164,7 @@ def compare(expected_base: str, actual_base: str, site_root: Path) -> dict:
         "paths_checked": len(results),
         "matched": len(results) - len(failures),
         "failed": len(failures),
-        "html_comparison": "release metadata, build-only i18n stamps, and delivery-layer beacon injection removed before hashing",
+        "html_comparison": "release metadata and delivery-layer i18n, beacon, and email-protection transforms normalized before hashing",
         "results": results,
     }
 

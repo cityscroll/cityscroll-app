@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 from pathlib import Path
+from urllib.parse import urlsplit
 
 from playwright.sync_api import sync_playwright
 
@@ -23,18 +24,29 @@ def main() -> None:
         default=ROOT / "docs" / "evidence" / "frontstage-root",
     )
     args = parser.parse_args()
+    args.output = args.output.resolve()
     args.output.mkdir(parents=True, exist_ok=True)
 
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
         for label, url in (("stable", args.expected), ("beta", args.actual)):
+            allowed_host = urlsplit(url).hostname
             for width, height in VIEWPORTS:
                 page = browser.new_page(
                     viewport={"width": width, "height": height},
                     device_scale_factor=1,
                 )
+                page.route(
+                    "**/*",
+                    lambda route: (
+                        route.continue_()
+                        if urlsplit(route.request.url).hostname == allowed_host
+                        else route.abort()
+                    ),
+                )
                 page.goto(url, wait_until="domcontentloaded")
                 page.locator("main").first.wait_for(state="visible")
+                page.wait_for_timeout(200)
                 page.screenshot(
                     path=args.output / f"{label}-{width}.png",
                     full_page=True,

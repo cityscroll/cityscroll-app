@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from tools.check_url_parity import normalize, public_paths
+from tools.check_url_parity import decode_cfemail, normalize, public_paths
 
 
 def test_public_paths_cover_browser_assets_without_repository_markdown(tmp_path: Path):
@@ -25,3 +25,17 @@ def test_normalize_removes_only_beta_release_markup():
         b'<!doctype html><body>\n<main><script src="i18n.js?v=__I18N_ASSET_VERSION__"></script>Same public page</main>\n</body>'
     )
     assert normalize("/app.js", source) == source
+
+
+def test_normalize_restores_cloudflare_email_protection():
+    encoded = b"6b181e0918081902090e2b08190407460702181f4504190c"
+    protected = b"""<body>
+<a href="/cdn-cgi/l/email-protection#645751465747564d46416447564b4809484d57500a4b5643"><code><span class="__cf_email__" data-cfemail="6b181e0918081902090e2b08190407460702181f4504190c">[email protected]</span></code></a>
+<script data-cfasync="false" src="/cdn-cgi/scripts/test/cloudflare-static/email-decode.min.js"></script><script>start()</script>
+</body>"""
+
+    assert decode_cfemail(encoded) == b"subscribe@crol-list.org"
+    assert normalize("/api.html", protected) == b"""<body>
+<a href="mailto:subscribe@crol-list.org"><code>subscribe@crol-list.org</code></a>
+<script>start()</script>
+</body>"""
