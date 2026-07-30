@@ -68,8 +68,10 @@ separate, manually triggered exact-commit operation. See
 exists to surface the handful of changes worth a returning visitor's attention, not to mirror
 every merged PR. Two things earn a PR an entry, both required:
 
-1. A one-line `## What this means for you` section in the PR body — plain language, present
-   tense, no code names or internal jargon.
+1. A short user-impact section in the PR body — plain language, present tense, no code names
+   or internal jargon. Canonical heading: `## What this means for you`. Accepted aliases
+   (same section semantics): `## What readers see`, `## What users can now see`, and
+   `## Changelog`.
 2. The `changelog:major` label, applied when the change is genuinely significant to a
    visitor — a new feature, a new language, a meaningful fix to something visibly broken.
    Most PRs should NOT carry this label: a bug fix, an internal/tooling change, a wording
@@ -78,8 +80,10 @@ every merged PR. Two things earn a PR an entry, both required:
    changelog page is the curated highlights, not the log.
 
 A merge-triggered workflow (`.github/workflows/update-changelog.yml`) checks for the label,
-then extracts the marker line, and regenerates the page automatically. Missing either one
-means no entry — that's the intended way to keep the page selective, not an oversight to fix.
+then extracts the marker line, and regenerates the page under `site/changelog-data.json` and
+`site/changelog.html`. No label → no entry (intentional). The label without an accepted
+user-impact section fails the workflow closed — a silent green no-op is not allowed for an
+explicitly major-labeled merge.
 
 ## Running things
 

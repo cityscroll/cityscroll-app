@@ -310,9 +310,17 @@ function main() {
       console.log(`PR #${args.number} carries no "changelog:major" label — skipped.`);
       return;
     }
+    // Vacuity tripwire: changelog:major is an explicit claim that this merge belongs on the
+    // public page. "Labeled major but nothing extractable" used to exit 0 (green success with
+    // zero output) and strand the page while the workflow kept reporting success. Fail closed
+    // so the check is red until the PR body carries an accepted user-impact section (see
+    // tools/changelog_extract.mjs) or the label is removed.
     if (result.reason === "no-marker") {
-      console.log(`PR #${args.number} is labeled "changelog:major" but carries no "What this means for you" section — skipped.`);
-      return;
+      console.error(
+        `PR #${args.number} is labeled "changelog:major" but carries no accepted user-impact ` +
+          `section ("What this means for you" or documented alias) — refusing silent no-op.`
+      );
+      process.exit(1);
     }
     data.entries = result.entries;
     saveData(data);

@@ -95,6 +95,9 @@ jobs:
           cp site/changelog-data.json "$RUNNER_TEMP/before-data.json"
           cp site/changelog.html "$RUNNER_TEMP/before-changelog.html"
 
+      # Vacuity tripwire: tools/gen_changelog.mjs exits non-zero when the merged PR carries
+      # changelog:major but no accepted user-impact section — that used to be a green no-op
+      # while the public page went stale. Non-major merges still skip with exit 0.
       - name: Extract this PR's user-impact line (if labeled changelog:major) and regenerate the changelog
         env:
           PR_LABELS: ${{ join(github.event.pull_request.labels.*.name, ',') }}
@@ -107,10 +110,44 @@ jobs:
             --labels "$PR_LABELS"
 
       - name: Stop here if regeneration produced no change (explicit no-diff guard, before touching any branch)
+        env:
+          PR_LABELS: ${{ join(github.event.pull_request.labels.*.name, ',') }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_MERGED_AT: ${{ github.event.pull_request.merged_at }}
         run: |
           if diff -q "$RUNNER_TEMP/before-data.json" site/changelog-data.json >/dev/null \
              && diff -q "$RUNNER_TEMP/before-changelog.html" site/changelog.html >/dev/null; then
-            echo "No new entry (not labeled changelog:major, no marker, already recorded, or nothing changed) — nothing to do."
+            # Second vacuity check: a changelog:major merge that leaves site/changelog-*
+            # unchanged is only legal when the PR is already recorded. Any other empty delta
+            # (path mismatch after a site-root move, write landing outside site/, etc.) is a
+            # green lie — fail closed. Non-major merges are allowed to no-op.
+            if echo ",${PR_LABELS}," | grep -qi ',changelog:major,'; then
+              node --input-type=module -e '
+                import fs from "node:fs";
+                import { computeEntryAddition, parseLabels } from "./tools/gen_changelog.mjs";
+                const data = JSON.parse(fs.readFileSync("site/changelog-data.json", "utf8"));
+                const body = fs.readFileSync(process.env.RUNNER_TEMP + "/pr-body.md", "utf8");
+                const result = computeEntryAddition(data.entries || [], {
+                  number: Number(process.env.PR_NUMBER),
+                  url: process.env.PR_URL || "",
+                  mergedAt: process.env.PR_MERGED_AT || "",
+                  body,
+                  labels: parseLabels(process.env.PR_LABELS || ""),
+                });
+                if (result.reason === "already-recorded") {
+                  console.log("PR already recorded — empty delta is expected.");
+                  process.exit(0);
+                }
+                console.error(
+                  "Vacuity tripwire: labeled changelog:major but site/changelog-data.json and " +
+                    "site/changelog.html did not change (reason=" + result.reason + "). " +
+                    "Refusing silent no-op."
+                );
+                process.exit(1);
+              '
+            fi
+            echo "No new entry (not labeled changelog:major, already recorded, or nothing changed) — nothing to do."
             exit 0
           fi
           echo "changed=true" >> "$GITHUB_ENV"
