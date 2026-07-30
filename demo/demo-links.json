@@ -557,6 +557,56 @@
           }
         ]
       }
+    },
+    {
+      "id": "task-can-i-bid",
+      "url": "#task/can-i-bid",
+      "feature": "task-first-entry",
+      "localOnly": true,
+      "description": "Open the Can I bid? task-first examples with five real procurement solicitations.",
+      "expectations": {
+        "visible": [
+          {
+            "selector": ".task-first",
+            "text": "Can I bid?"
+          },
+          {
+            "selector": ".task-card",
+            "text": "Solicitation"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#taskview .loading"
+          }
+        ],
+        "hash": "#task/can-i-bid"
+      }
+    },
+    {
+      "id": "task-what-will-change",
+      "url": "#task/what-will-change",
+      "feature": "task-first-entry",
+      "localOnly": true,
+      "description": "Open the What will change here? task-first examples with five real ZAP projects.",
+      "expectations": {
+        "visible": [
+          {
+            "selector": ".task-first",
+            "text": "What will change here?"
+          },
+          {
+            "selector": ".task-card",
+            "text": "In Public Review"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#taskview .loading"
+          }
+        ],
+        "hash": "#task/what-will-change"
+      }
     }
   ]
 }

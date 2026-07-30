@@ -30,6 +30,21 @@ MATTER_PINS = {
 NOW = datetime.now()
 
 
+def is_production_base(base: str) -> bool:
+    """True when the contract is pointed at a public deploy, not the local fixture server."""
+    value = (base or "").strip().lower()
+    if not value:
+        return False
+    return value.startswith("https://") and "127.0.0.1" not in value and "localhost" not in value
+
+
+def entry_applies(entry: dict, base: str = BASE) -> bool:
+    """localOnly routes are hermetic PR coverage; skip them against production hosts."""
+    if entry.get("localOnly") and is_production_base(base):
+        return False
+    return True
+
+
 def iso_date(days: int, hour: int = 10) -> str:
     return (NOW + timedelta(days=days)).strftime(f"%Y-%m-%dT{hour:02d}:00:00.000")
 
@@ -205,6 +220,8 @@ class DemoLinkContract(unittest.TestCase):
 
 def add_manifest_test(entry: dict) -> None:
     def generated_test(self) -> None:
+        if not entry_applies(entry):
+            self.skipTest(f"{entry['id']} is localOnly and BASE={BASE!r} is production")
         self.run_entry(entry)
 
     name = "test_" + re.sub(r"[^a-z0-9]+", "_", entry["id"])

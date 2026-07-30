@@ -29,6 +29,9 @@ test("every item route has an intentional bare collection destination", () => {
       agency: bareCollectionHash("agency"),
       matter: bareCollectionHash("matter"),
       sharedInvestigation: bareCollectionHash("investigation/shared"),
+      taskCanIBid: bareCollectionHash("task/can-i-bid"),
+      taskWhatWillChange: bareCollectionHash("task/what-will-change"),
+      taskBare: bareCollectionHash("task"),
     },
     {
       notice: "#money",
@@ -38,6 +41,9 @@ test("every item route has an intentional bare collection destination", () => {
       agency: "#money",
       matter: "#money",
       sharedInvestigation: "#investigation",
+      taskCanIBid: "#task/can-i-bid",
+      taskWhatWillChange: "#task/what-will-change",
+      taskBare: "#money",
     },
   );
 });
