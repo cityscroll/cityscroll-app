@@ -65,10 +65,15 @@ const helpers = new Function(
   const CHECKBOOK_SPENDING_URL = 'https://www.checkbooknyc.com/spending_search';
   const PASSPORT_CONTRACTS_URL = 'https://a0333-passportpublic.nyc.gov/contracts.html';
   const PASSPORT_RFX_URL = 'https://a0333-passportpublic.nyc.gov/rfx.html';
+  const LIFECYCLE_STAGE_ORDER = {solicitation:0, award:1, pending:2, registered:3, payment:4};
   ` +
   extractFn("lifecycleStageLabel") +
   extractFn("lifecycleAmount") +
+  extractFn("lifecycleMoney") +
   extractFn("lifecycleSourceName") +
+  extractFn("lifecycleGapSourceName") +
+  extractFn("lifecycleHasLaterMatched") +
+  extractFn("lifecyclePublicStatus") +
   extractFn("lifecycleSourceLink") +
   extractFn("lifecycleStageHTML") +
   extractFn("lifecycleTimelineHTML") +
@@ -281,6 +286,13 @@ test("all ten shipping locales define the gap taxonomy keys", () => {
     "lifecycle_unmatched_registered_html",
     "lifecycle_unmatched_payment_html",
     "lifecycle_no_pin_note_html",
+    "lifecycle_passed_pending_html",
+    "lifecycle_passed_registered_html",
+    "lifecycle_passed_generic_html",
+    "lifecycle_paid_to_date_html",
+    "lifecycle_source_checkbook_pending",
+    "lifecycle_source_checkbook_registered",
+    "lifecycle_source_checkbook_spending",
     "subsidy_outcome_unknown_html",
     "subsidy_stage_unmatched_html",
     "subsidy_unmatched_html",

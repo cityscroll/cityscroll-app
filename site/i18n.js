@@ -886,11 +886,21 @@ const STRINGS = {
     lifecycle_unmatched_registered_html: "Not yet shown here — registered contracts live in {source}.",
     lifecycle_unmatched_payment_html: "Not yet shown here — payments live in {source}.",
     lifecycle_unmatched_generic_html: "Not yet shown here — this lives in {source}.",
+    // Operational key kept for non-public tooling; notice-detail never renders it (precompute-first).
     lifecycle_unknown_html: "Could not reach {source} to check this step.",
     lifecycle_ambiguous_html: "Multiple contracts found — cannot tell which one applies.",
+    // Stage succession: earlier stages when a later stage is already on record.
+    lifecycle_passed_pending_html: "Passed — the contract has registered.",
+    lifecycle_passed_registered_html: "Passed — payments are on record.",
+    lifecycle_passed_generic_html: "Passed — a later stage is on record.",
+    lifecycle_paid_to_date_html: "Paid to date: {amount}",
     lifecycle_source_city_record: "City Record",
     lifecycle_source_checkbook: "Checkbook NYC",
     lifecycle_source_passport: "PASSPort Public",
+    // Distinct Checkbook datasets for gap copy (source coherence with page joins).
+    lifecycle_source_checkbook_pending: "Checkbook NYC pending contracts",
+    lifecycle_source_checkbook_registered: "Checkbook NYC registered contracts",
+    lifecycle_source_checkbook_spending: "Checkbook NYC spending",
     lifecycle_provenance_note_html: "This timeline joins {city_record} notices to {checkbook} registrations and payments, and to {passport} pending contracts and RFx when EPIN joins the PIN {pin}.",
     lifecycle_no_pin_note_html: "The city does not publish a Procurement ID (PIN) on this notice — registration and payments would appear in Checkbook NYC if released with a PIN.",
     lifecycle_rfx_heading: "PASSPort solicitation (RFx)",
