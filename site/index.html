@@ -65,7 +65,7 @@
 
   /* masthead + tabs (City Record letterpress) */
   header.masthead{background:var(--paper)}
-  .masthead .wrap{padding:16px 22px 0;text-align:center}
+  .masthead .wrap{padding:16px 22px 0;text-align:center;position:relative}
   .cr-rule{height:0;border:0}
   .cr-rule--top{border-top:3px solid var(--ink)}
   .cr-rule--mid{border-top:1px solid var(--rule-strong);margin-top:3px}
@@ -74,32 +74,19 @@
   .cr-seal{width:44px;height:44px;color:var(--ink);display:block;margin:0 auto 3px}
   .cr-title{font-family:var(--font-nameplate);font-weight:900;font-size:clamp(2.5rem,8vw,4.8rem);line-height:.9;letter-spacing:.01em;text-transform:uppercase;color:var(--ink);margin:.04em 0 .1em}
   .cr-tagline{font-family:var(--font-body);font-size:15px;line-height:1.4;color:var(--ink-soft);margin:0 0 8px}
-  /* Today's Edition strip (front page) */
-  #todaystrip{box-sizing:border-box;min-height:224px;padding:10px 0 8px;border-bottom:1px solid var(--rule);position:relative}
-  .today-skeleton{position:absolute;inset:10px 0 8px;display:grid;grid-template-rows:12px 25px 18px 1fr;gap:8px;pointer-events:none}
-  .today-skeleton span{display:block;border-radius:5px;background:linear-gradient(90deg,var(--paper-2),#e8dfce,var(--paper-2))}
-  .today-skeleton .today-skeleton-date{width:38%;margin:0 auto}
-  .today-skeleton .today-skeleton-summary{width:56%;margin:0 auto}
-  .today-skeleton .today-skeleton-counts{width:70%;margin:0 auto}
-  .today-skeleton .today-skeleton-cards{width:min(860px,100%);margin:3px auto 0}
-  #todaystrip[aria-busy="false"] .today-skeleton{display:none}
-  .t-dateline{font-family:var(--font-sc);font-weight:600;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
-  .t-big{font-family:var(--font-display);font-weight:900;font-size:21px;margin:4px 0 3px}
-  .t-big b{color:var(--oxblood)}
-  .t-counts{font-family:var(--font-sc);font-size:12.5px;letter-spacing:.06em;color:var(--muted);display:flex;gap:5px 16px;justify-content:center;flex-wrap:wrap}
-  .t-counts a{color:var(--ink);text-decoration:none;border-bottom:1px dotted var(--rule-strong)}
-  .t-counts a:hover{color:var(--oxblood);border-bottom-color:var(--oxblood)}
-  .t-counts b{color:var(--oxblood)}
-  .t-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;max-width:860px;margin:11px auto 3px;text-align:start}
-  .t-card{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:9px 12px;box-shadow:var(--shadow);display:block;text-decoration:none;color:var(--ink)}
-  .t-card:hover{border-color:var(--rule-strong)}
-  .t-card .tlbl{font:600 9.5px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
-  .t-card .tttl{font-weight:700;font-size:13.5px;line-height:1.3;display:block}
-  .t-card .tmeta{font:11.5px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:3px;display:block}
+  /* Homepage email CTA — primary conversion, quiet card under the tagline */
+  .home-cta{max-width:520px;margin:2px auto 12px;padding:14px 16px 12px;background:var(--card);border:1px solid var(--rule);border-radius:10px;text-align:center}
+  .home-cta-prompt{font:700 17px/1.3 var(--font-body);margin:0 0 10px;color:var(--ink)}
+  .home-cta-form{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:stretch}
+  .home-cta-form input[type=email]{flex:1 1 220px;max-width:280px;min-height:44px}
+  .home-cta-form button{min-height:44px;flex:0 0 auto}
+  .home-cta-turnstile{display:flex;justify-content:center;margin-top:10px;min-height:0}
+  .home-cta-alt{margin:10px 0 0;font:14px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+  .home-cta-alt a{color:var(--oxblood);text-decoration:underline;text-underline-offset:2px}
+  .home-cta-msg{margin-top:8px;font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
   @media(max-width:680px){
-    #todaystrip{min-height:462px}
-    .t-cards{grid-template-columns:1fr}
-    .t-big{font-size:18px}
+    .home-cta{margin-inline:0;padding:12px}
+    .lang-switcher{top:8px;inset-inline-end:10px}
   }
 
   .tabs{display:flex;gap:.2rem;justify-content:center;flex-wrap:wrap;margin-top:4px}
@@ -108,18 +95,6 @@
   .tabbtn:hover{color:var(--ink)}
   .tabpane{display:none;padding:24px 0 10px}
   .tabpane.active{display:block}
-  /* Audience scenarios are an additive routing layer. Each route is a static hash that
-     opens the existing lens/filter grammar; the category tabs above stay unchanged. */
-  .scenario-nav{padding:22px 22px 0}
-  .scenario-head{display:flex;align-items:baseline;gap:8px 18px;justify-content:space-between;margin-bottom:11px}
-  .scenario-head h2{font:900 23px/1.1 var(--font-display);margin:0;color:var(--ink)}
-  .scenario-head p{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:0;max-width:620px}
-  .scenario-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
-  .scenario-card{min-width:0;background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:12px 13px;box-shadow:var(--shadow)}
-  .scenario-card h3{font:700 15px/1.3 var(--font-body);margin:0 0 9px;color:var(--ink)}
-  .scenario-routes{display:flex;gap:6px;flex-wrap:wrap}
-  .scenario-route{display:inline-flex;align-items:center;min-height:30px;padding:5px 9px;border:1px solid var(--rule-strong);border-radius:999px;background:#fff;color:var(--oxblood);text-decoration:none;font:600 11px/1.2 ui-sans-serif,system-ui,sans-serif}
-  .scenario-route:hover{border-color:var(--oxblood);background:var(--paper-2)}
   /* Task-first entry experiment: additive routes (#task/…), not a lens redesign. */
   .task-first{max-width:920px;margin:0 auto;padding:8px 0 28px}
   .task-first-head{margin:0 0 16px}
@@ -650,13 +625,6 @@
   .row:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
   .filtertoggle{display:none}
   @media(max-width:680px){
-    .scenario-nav{padding:16px 14px 0}
-    .scenario-head{display:block;margin-bottom:10px}
-    .scenario-head h2{font-size:20px}
-    .scenario-head p{margin-top:5px}
-    .scenario-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
-    .scenario-card{padding:10px}
-    .scenario-card h3{font-size:14px}
     .widening-note{align-items:flex-start;flex-direction:column}
     .filtertoggle{display:block;width:100%;margin-top:14px}
     .controls{display:none}
@@ -669,12 +637,10 @@
   footer{border-top:3px double var(--ink);margin-top:46px;padding:26px 0 60px;font:13px/1.6 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
   footer h3{font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 8px;color:var(--ink)}
   .caveat{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:14px 16px;margin-top:14px}
-  /* language switcher — CSS logical properties for future RTL support */
-  .lang-switcher{display:flex;gap:.4rem;justify-content:center;margin-block-start:5px;flex-wrap:wrap}
-  /* w9-10: 62-65x19px was AA-exempt (spacing) but well under the 44px AAA / mobile-comfort
-     bar; min-height + centered padding brings it to ~32px without changing the visual chip size much. */
-  .lang-btn{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;padding:3px 10px;min-height:32px;display:inline-flex;align-items:center;border-radius:12px;border:1px solid var(--rule-strong);background:transparent;color:var(--muted);cursor:pointer}
-  .lang-btn[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  /* language switcher — compact dropdown, top-right of the masthead */
+  .lang-switcher{position:absolute;top:12px;inset-inline-end:22px;z-index:6;display:flex;align-items:center;gap:.35rem;margin:0;justify-content:flex-end}
+  .lang-select{font:600 12px/1.2 ui-sans-serif,system-ui,sans-serif;padding:8px 28px 8px 10px;min-height:36px;min-width:7.5rem;max-width:12rem;border:1px solid var(--rule-strong);border-radius:8px;background:var(--card);color:var(--ink);cursor:pointer;appearance:auto}
+  .lang-select:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
   .lang-notice{font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);text-align:center;margin-block-start:4px;padding-inline:22px}
   /* Magic-link session indicator: quiet, dismissible ("not you?" signs out). */
   .session-banner{display:none;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:8px auto 0;max-width:720px;padding:8px 14px;background:#efe8d8;border:1px solid var(--rule);border-radius:8px;font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft);text-align:center}
@@ -688,7 +654,7 @@
     html,body{background:#fff!important;color:#000!important}
     body{font:11pt/1.4 Georgia,"Times New Roman",serif}
     body::before{content:attr(data-print-meta);display:block;padding:0 0 8pt;margin:0 0 12pt;border-bottom:1pt solid #000;font:9pt/1.35 ui-sans-serif,system-ui,sans-serif;overflow-wrap:anywhere}
-    header.masthead,footer,.skip,.scenario-nav,.controls,.filtertoggle,.nlbox,.chiprow,.exportbar,.export-actions,.actions,.factions{display:none!important}
+    header.masthead,footer,.skip,.controls,.filtertoggle,.nlbox,.chiprow,.exportbar,.export-actions,.actions,.factions,.home-cta,.lang-switcher{display:none!important}
     .tabpane:not(.active){display:none!important}
     .tabpane.active{display:block!important;padding:0}
     main,.wrap{max-width:none!important;margin:0!important;padding:0!important}
@@ -723,6 +689,21 @@
 <div id="srstatus" class="sr-only" role="status" aria-live="polite"></div>
 <header class="masthead">
   <div class="wrap">
+    <div class="lang-switcher" id="langSwitcher">
+      <select id="langSelect" class="lang-select" data-i18n-aria="lang_switcher_label" aria-label="Language">
+        <option value="en" lang="en">English</option>
+        <option value="es" lang="es">Español</option>
+        <option value="zh-Hans" lang="zh-Hans">中文（简体）</option>
+        <option value="ru" lang="ru">Русский</option>
+        <option value="bn" lang="bn">বাংলা</option>
+        <option value="ht" lang="ht">Kreyòl ayisyen</option>
+        <option value="ko" lang="ko">한국어</option>
+        <option value="fr" lang="fr">Français</option>
+        <option value="pl" lang="pl">Polski</option>
+        <option value="ar" lang="ar" dir="rtl">العربية</option>
+        <option value="ur" lang="ur" dir="rtl">اردو</option>
+      </select>
+    </div>
     <div class="cr-rule cr-rule--top"></div>
     <div class="nameplate">
       <div class="brand-lockup brand-lockup--masthead">
@@ -734,19 +715,20 @@
       </div>
       <p class="cr-tagline" data-i18n="site_tagline">Subscribe to NYC contracts, rezonings, and hearings that interest you.</p>
     </div>
-    <div class="cr-rule cr-rule--mid"></div>
-    <div id="todaystrip" aria-busy="true">
-      <div class="today-skeleton" aria-hidden="true">
-        <span class="today-skeleton-date"></span>
-        <span class="today-skeleton-summary"></span>
-        <span class="today-skeleton-counts"></span>
-        <span class="today-skeleton-cards"></span>
+    <div class="home-cta" id="homeCta">
+      <p class="home-cta-prompt" id="homeCtaPrompt" data-i18n="home_cta_prompt">Want email updates?</p>
+      <form id="homeCtaForm" class="home-cta-form" novalidate>
+        <label for="homeCtaEmail" class="sr-only" data-i18n="email_label">Email address</label>
+        <input type="email" id="homeCtaEmail" name="email" autocomplete="email" required placeholder="you@example.com" data-i18n-placeholder="email_placeholder" aria-describedby="homeCtaMsg">
+        <button type="submit" id="homeCtaSubmit" data-i18n="home_cta_submit">Sign up</button>
+      </form>
+      <div class="home-cta-turnstile">
+        <div class="cf-turnstile" data-sitekey="0x4AAAAAADtj-Mskk_RnVd5K" data-action="home-cta" data-response-field-name="home-cta-turnstile"></div>
       </div>
-      <div class="t-dateline" id="tdate"></div>
-      <div class="t-big" id="tbig"></div>
-      <div class="t-counts" id="tcounts"></div>
-      <div class="t-cards" id="tcards"></div>
+      <p class="home-cta-alt"><a href="#alerts" id="homeCtaTopics" data-i18n="home_cta_topics">or pick topics</a></p>
+      <div id="homeCtaMsg" class="home-cta-msg" role="status" data-i18n="subscribe_confirm_note">We email a confirmation link — alerts begin only after you click it, so no one can sign you up but you.</div>
     </div>
+    <div class="cr-rule cr-rule--mid"></div>
     <nav class="tabs">
       <button class="tabbtn active" data-tab="money" data-i18n="tab_money">Contracts</button>
       <button class="tabbtn" data-tab="people" data-i18n="tab_people">Staffing</button>
@@ -756,19 +738,6 @@
       <button class="tabbtn" data-tab="meetings" data-i18n="tab_meetings">Meetings</button>
       <button class="tabbtn" data-tab="alerts" data-i18n="tab_alerts">Alerts</button>
     </nav>
-    <div class="lang-switcher" id="langSwitcher" role="group" aria-label="Language / Idioma">
-      <button class="lang-btn" data-lang="en" aria-pressed="true"><span lang="en" dir="ltr">English</span></button>
-      <button class="lang-btn" data-lang="es" aria-pressed="false"><span lang="es" dir="ltr">Español</span></button>
-      <button class="lang-btn" data-lang="zh-Hans" aria-pressed="false"><span lang="zh-Hans" dir="ltr">中文（简体）</span></button>
-      <button class="lang-btn" data-lang="ru" aria-pressed="false"><span lang="ru" dir="ltr">Русский</span></button>
-      <button class="lang-btn" data-lang="bn" aria-pressed="false"><span lang="bn" dir="ltr">বাংলা</span></button>
-      <button class="lang-btn" data-lang="ht" aria-pressed="false"><span lang="ht" dir="ltr">Kreyòl ayisyen</span></button>
-      <button class="lang-btn" data-lang="ko" aria-pressed="false"><span lang="ko" dir="ltr">한국어</span></button>
-      <button class="lang-btn" data-lang="fr" aria-pressed="false"><span lang="fr" dir="ltr">Français</span></button>
-      <button class="lang-btn" data-lang="pl" aria-pressed="false"><span lang="pl" dir="ltr">Polski</span></button>
-      <button class="lang-btn" data-lang="ar" aria-pressed="false"><span lang="ar" dir="rtl">العربية</span></button>
-      <button class="lang-btn" data-lang="ur" aria-pressed="false"><span lang="ur" dir="rtl">اردو</span></button>
-    </div>
     <div id="langNotice" class="lang-notice" hidden></div>
     <div id="sessionBanner" class="session-banner" role="status" aria-live="polite" data-open="false" hidden>
       <span id="sessionBannerText" data-i18n="session_signed_in">Signed in via your email link — your pins can follow you on this device.</span>
@@ -779,60 +748,6 @@
   </div>
 </header>
 <main id="main" tabindex="-1">
-
-<section class="scenario-nav wrap" aria-labelledby="scenario-heading">
-  <div class="scenario-head">
-    <h2 id="scenario-heading" data-i18n="scenario_heading">What are you here to do?</h2>
-    <p data-i18n="scenario_intro">Choose a task to start with useful filters, or use the category tabs above.</p>
-  </div>
-  <div class="scenario-grid">
-    <article class="scenario-card">
-      <h3 data-i18n="scenario_city_work">I bid on city work</h3>
-      <div class="scenario-routes">
-        <a class="scenario-route" href="#money?mode=open&amp;closing=week" data-preset-id="city-work-closing" data-scenario="city-work" data-scenario-lens="money" data-i18n="closing_this_week">Closing this week</a>
-        <a class="scenario-route" href="#money?mode=open" data-preset-id="city-work-all" data-scenario="city-work" data-scenario-lens="money" data-i18n="tab_money">Contracts</a>
-        <a class="scenario-route" href="#task/can-i-bid" data-task-entry="can-i-bid" data-scenario="city-work" data-scenario-lens="task" data-i18n="task_can_i_bid_link">Can I bid? (examples)</a>
-      </div>
-    </article>
-    <article class="scenario-card">
-      <h3 data-i18n="scenario_neighborhood">I follow my neighborhood</h3>
-      <div class="scenario-routes">
-        <a class="scenario-route" href="#task/what-will-change" data-task-entry="what-will-change" data-scenario="neighborhood" data-scenario-lens="task" data-i18n="task_what_will_change_link">What will change here? (examples)</a>
-        <a class="scenario-route" href="#land" data-preset-id="neighborhood-land" data-scenario="neighborhood" data-scenario-lens="land" data-i18n="tab_land">Zoning</a>
-        <a class="scenario-route" href="#property" data-preset-id="neighborhood-property" data-scenario="neighborhood" data-scenario-lens="property" data-i18n="tab_property">Property</a>
-        <a class="scenario-route" href="#meetings?when=upcoming" data-preset-id="neighborhood-meetings" data-scenario="neighborhood" data-scenario-lens="meetings" data-i18n="tab_meetings">Meetings</a>
-      </div>
-    </article>
-    <article class="scenario-card">
-      <h3 data-i18n="scenario_hearings">I attend or comment on hearings</h3>
-      <div class="scenario-routes">
-        <a class="scenario-route" href="#meetings?when=upcoming" data-preset-id="hearings-meetings" data-scenario="hearings" data-scenario-lens="meetings" data-i18n="tab_meetings">Meetings</a>
-        <a class="scenario-route" href="#rules" data-preset-id="hearings-rules" data-scenario="hearings" data-scenario-lens="rules" data-i18n="tab_rules">Rules</a>
-      </div>
-    </article>
-    <article class="scenario-card">
-      <h3 data-i18n="scenario_city_career">I explore a city career</h3>
-      <div class="scenario-routes">
-        <a class="scenario-route" href="#people" data-preset-id="city-career-people" data-scenario="city-career" data-scenario-lens="people" data-i18n="tab_people">Staffing</a>
-      </div>
-    </article>
-    <article class="scenario-card">
-      <h3 data-i18n="scenario_subsidies_land">I track subsidies and land use</h3>
-      <div class="scenario-routes">
-        <a class="scenario-route" href="#meetings?when=past&amp;q=IDA" data-preset-id="subsidies-ida" data-scenario="subsidies-land-use" data-scenario-lens="meetings" data-i18n="scenario_ida_past">Past IDA meetings</a>
-        <a class="scenario-route" href="#land" data-preset-id="subsidies-land" data-scenario="subsidies-land-use" data-scenario-lens="land" data-i18n="tab_land">Zoning</a>
-      </div>
-    </article>
-    <article class="scenario-card">
-      <h3 data-i18n="scenario_legal_compliance">I watch legal or compliance notices</h3>
-      <div class="scenario-routes">
-        <a class="scenario-route" href="#property?asset=realty" data-preset-id="legal-property" data-scenario="legal-compliance" data-scenario-lens="property" data-i18n="tab_property">Property</a>
-        <a class="scenario-route" href="#rules" data-preset-id="legal-rules" data-scenario="legal-compliance" data-scenario-lens="rules" data-i18n="tab_rules">Rules</a>
-        <a class="scenario-route" href="#meetings?when=upcoming" data-preset-id="legal-meetings" data-scenario="legal-compliance" data-scenario-lens="meetings" data-i18n="tab_meetings">Meetings</a>
-      </div>
-    </article>
-  </div>
-</section>
 
 <!-- ============ MONEY ============ -->
 <section id="tab-money" class="tabpane active">
@@ -1574,9 +1489,6 @@ function showTab(name, push){
   const leavingLandEntry = name==="land" && push && location.hash.startsWith("#land/");
   document.querySelectorAll(".tabpane").forEach(p=>p.classList.toggle("active", p.id === "tab-"+name));
   document.querySelectorAll(".tabbtn").forEach(b=>b.classList.toggle("active", b.dataset.tab === name));
-  const scenarios=document.querySelector(".scenario-nav");
-  // Task-first entry and Staffing lead with their own content; hide the home task grid.
-  if(scenarios) scenarios.hidden=name==="people" || name==="task" || name==="notice" || name==="entity";
   syncTabAria();
   // Push BEFORE any lazy load below runs updateHash(), or the load's replaceState
   // rewrites the prior entry and the push turns into a no-op (Back would skip a tab).
@@ -5486,15 +5398,45 @@ function aLensFilter(){
   return {lens:"land", filter:{keywords:p?[p]:[], status:"all"}}; // rezonings — text match on the place
 }
 function aIsEmail(s){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s||""); }
+// Turnstile token from a scoped widget (homepage CTA and Alerts each have their own).
+function turnstileTokenIn(root){
+  if(!root) return "";
+  const field = root.querySelector('input[name="cf-turnstile-response"], input[name="home-cta-turnstile"]');
+  if(field && field.value) return field.value;
+  if(window.turnstile && typeof turnstile.getResponse === "function"){
+    try{
+      const widget = root.querySelector(".cf-turnstile");
+      if(widget){
+        const id = widget.getAttribute("data-widget-id") || widget.dataset.turnstileWidgetId;
+        if(id) return turnstile.getResponse(id) || "";
+      }
+    }catch(e){}
+  }
+  return "";
+}
+function resetTurnstileIn(root){
+  if(!(window.turnstile && typeof turnstile.reset === "function")) return;
+  try{
+    const widget = root && root.querySelector(".cf-turnstile");
+    if(widget){
+      const id = widget.getAttribute("data-widget-id") || widget.dataset.turnstileWidgetId;
+      if(id){ turnstile.reset(id); return; }
+    }
+    turnstile.reset();
+  }catch(e){}
+}
+function subscribeErrorWhy(reason){
+  return {turnstile:t("turnstile_fail"),"rate-limited":t("rate_limited"),"bad-email":t("bad_email"),"channel-unsupported":t("channel_unsupported"),"not-configured":t("not_configured"),"send-failed":t("send_failed"),"bad-lens":t("generic_error")}[reason]||t("generic_error");
+}
 async function aSubscribe(){
-  const msg=$("#asubmsg"), dest=$("#adest");
+  const msg=$("#asubmsg"), dest=$("#adest"), wrap=$("#asubwrap");
   if($("#awatch").value==="awardwatch" && !(awardWatchTarget && awardWatchTarget.requestId)){
     msg.innerHTML = t("award_watch_pick_notice_html"); return;
   }
   const email=dest.value.trim();
   if(!aIsEmail(email)){ msg.innerHTML=t("enter_valid_email"); dest.setAttribute("aria-invalid","true"); return; }
   dest.removeAttribute("aria-invalid");
-  const token=(window.turnstile&&turnstile.getResponse)?(turnstile.getResponse()||""):"";
+  const token=turnstileTokenIn(wrap) || ((window.turnstile&&turnstile.getResponse)?(turnstile.getResponse()||""):"");
   if(!token){ msg.innerHTML=t("complete_human_check"); return; }
   if(!API){ msg.innerHTML=t("subs_need_backend"); return; }
   const {lens,filter}=aLensFilter(), freq=$("#afreq").value.toLowerCase();
@@ -5504,60 +5446,43 @@ async function aSubscribe(){
     const j=await r.json().catch(()=>({}));
     if(j.ok){ msg.innerHTML="<b>" + t("check_inbox") + "</b> " + t("sent_confirm_to",{email:email.replace(/[<>&]/g," ")}); }
     else {
-      const why={turnstile:t("turnstile_fail"),"rate-limited":t("rate_limited"),"bad-email":t("bad_email"),"channel-unsupported":t("channel_unsupported"),"not-configured":t("not_configured"),"send-failed":t("send_failed")}[j.reason]||t("generic_error");
-      msg.innerHTML="⚠️ "+why; if(window.turnstile) turnstile.reset();
+      msg.innerHTML="⚠️ "+subscribeErrorWhy(j.reason); resetTurnstileIn(wrap);
     }
-  }catch(e){ msg.innerHTML="⚠️ " + t("cant_reach_server"); if(window.turnstile) turnstile.reset(); }
+  }catch(e){ msg.innerHTML="⚠️ " + t("cant_reach_server"); resetTurnstileIn(wrap); }
+  btn.disabled=false;
+}
+// Homepage general-interest CTA — same /subscribe double-opt-in path as Alerts.
+// Empty money filter = open solicitations (describeFilter: "contract money — all notices").
+async function homeCtaSubscribe(e){
+  if(e && e.preventDefault) e.preventDefault();
+  const msg=$("#homeCtaMsg"), dest=$("#homeCtaEmail"), root=$("#homeCta"), btn=$("#homeCtaSubmit");
+  if(!msg || !dest || !root || !btn) return;
+  const email=dest.value.trim();
+  if(!aIsEmail(email)){ msg.textContent=t("enter_valid_email"); dest.setAttribute("aria-invalid","true"); dest.focus(); return; }
+  dest.removeAttribute("aria-invalid");
+  const token=turnstileTokenIn(root);
+  if(!token){ msg.textContent=t("complete_human_check"); return; }
+  if(!API){ msg.textContent=t("subs_need_backend") || t("not_configured"); return; }
+  btn.disabled=true;
+  msg.innerHTML='<span class="loading"></span> ' + t("sending_confirm_link");
+  try{
+    const r=await workerFetch("/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
+      email,
+      lens:"money",
+      filter:{},
+      freq:"weekly",
+      lang:window.LANG||"en",
+      turnstileToken:token
+    })});
+    const j=await r.json().catch(()=>({}));
+    if(j.ok){ msg.innerHTML="<b>" + t("check_inbox") + "</b> " + t("sent_confirm_to",{email:email.replace(/[<>&]/g," ")}); dest.value=""; }
+    else { msg.innerHTML="⚠️ "+subscribeErrorWhy(j.reason); resetTurnstileIn(root); }
+  }catch(err){ msg.innerHTML="⚠️ " + t("cant_reach_server"); resetTurnstileIn(root); }
   btn.disabled=false;
 }
 
-/* ===================== TODAY'S EDITION (front-page strip) =====================
-   One aggregate pass over the latest edition date, cached in localStorage for an hour.
-   Degrades to invisible on any failure — same pattern as the NL box. */
+// Section → lens map for agency-profile section chips (not a homepage strip).
 const SECTION_LENS = {"Procurement":"money","Public Hearings and Meetings":"meetings","Agency Rules":"rules","Property Disposition":"property","Changes in Personnel":"people"};
-async function loadToday(){
-  // localStorage (not session): a returning visitor gets yesterday's strip painted on first
-  // frame — no pop-in, no layout shift — while a fresh copy loads behind it if it's stale.
-  const KEY = "crol_today_v2";
-  let cached = null;
-  try{ cached = JSON.parse(localStorage.getItem(KEY)||"null"); }catch(e){}
-  if(cached && cached.d){ try{ renderToday(cached.d); }catch(e){} }
-  let d = cached && Date.now()-cached.at < 3600000 ? cached.d : null;
-  if(!d){
-    try{
-      const [maxr] = await soda({"$select":"max(start_date) as m"});
-      const ed = (maxr && maxr.m || "").slice(0,10); if(!ed){ $("#todaystrip").setAttribute("aria-busy","false"); return; }
-      const iso = ed + "T00:00:00";
-      const [counts, agencies, award, closing, hearing] = await Promise.all([
-        soda({"$select":"section_name, count(1) as n","$where":`start_date='${iso}'`,"$group":"section_name","$order":"n DESC"}),
-        soda({"$select":"agency_name","$where":`start_date='${iso}'`,"$group":"agency_name","$limit":"300"}),
-        soda({"$select":"request_id,short_title,agency_name,contract_amount","$where":`start_date='${iso}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < ${MONEY_HONESTY_CAP}`,"$order":"contract_amount DESC","$limit":"1"}),
-        soda({"$select":"request_id,short_title,agency_name,due_date","$where":`type_of_notice_description='Solicitation' AND due_date > '${todayISO()}' AND due_date <= '${weekOutISO()}'`,"$order":"due_date ASC","$limit":"1"}),
-        soda({"$select":"request_id,short_title,agency_name,event_date","$where":`section_name='Public Hearings and Meetings' AND event_date > '${todayISO()}'`,"$order":"event_date ASC","$limit":"1"})
-      ]);
-      d = {ed, counts, nAgencies: agencies.length, award: award[0]||null, closing: closing[0]||null, hearing: hearing[0]||null};
-      try{ localStorage.setItem(KEY, JSON.stringify({at: Date.now(), d})); }catch(e){}
-    }catch(e){ $("#todaystrip").setAttribute("aria-busy","false"); return; }
-    try{ renderToday(d); }catch(e){} // fresh copy replaces the cached strip in place
-  }
-}
-function renderToday(d){
-  const total = (d.counts||[]).reduce((s,c)=>s+(+c.n||0),0);
-  if(!total) return;
-  const _lm=(window.LANG_META||{})[window.LANG||"en"]; const _loc=_lm?_lm.intlDate:"en-US"; $("#tdate").textContent = (new Date(d.ed+"T12:00:00").toLocaleDateString(_loc,{weekday:"long",month:"long",day:"numeric",year:"numeric"}) + " " + t("latest_edition_suffix")).toUpperCase();
-  $("#tbig").innerHTML = t("today_summary", {n: fmtNumber(total), a: fmtNumber(d.nAgencies)});
-  $("#tcounts").innerHTML = d.counts.map(c=>{
-    const lens = SECTION_LENS[c.section_name];
-    const label = `${tSection(c.section_name)} <b>${fmtNumber(+c.n)}</b>`;
-    return lens ? `<a href="#${lens}">${label}</a>` : `<span>${label}</span>`;
-  }).join("");
-  const cards = [];
-  if(d.closing) cards.push({lbl:t("closing_soon_lbl"), t:d.closing, meta:`${d.closing.agency_name} · ${t("due_on",{date:fdt(d.closing.due_date)})} ${deadlineTag(d.closing.due_date)}`});
-  if(d.award) cards.push({lbl:t("largest_award_lbl"), t:d.award, meta:`${money(d.award.contract_amount)} — ${d.award.agency_name}`});
-  if(d.hearing) cards.push({lbl:t("next_hearing_lbl"), t:d.hearing, meta:`${d.hearing.agency_name} · ${fdt(d.hearing.event_date)}${eventTag(d.hearing.event_date)}`});
-  $("#tcards").innerHTML = cards.map(c=>`<a class="t-card" href="#notice/${encodeURIComponent(c.t.request_id)}"><span class="tlbl">${c.lbl}</span><span class="tttl">${escUiHtml(cleanText(c.t.short_title))||t("untitled")}</span><span class="tmeta">${c.meta}</span></a>`).join("");
-  $("#todaystrip").setAttribute("aria-busy","false");
-}
 
 /* ===================== RED FLAGS & BENCHMARKS (context, never accusations) =====================
    OCP/Opentender-style computable signals + comparative stats, computed live per view from small
@@ -8482,7 +8407,6 @@ $("#propertyboro").addEventListener("change",()=>{ renderPropExplorer(); updateH
 $("#propertyneighborhood").addEventListener("keydown",event=>{ if(event.key==="Enter"){ renderPropExplorer(); updateHash(); renderSearchComponents("property"); } });
 $("#propertyneighborhood").addEventListener("input",debounce(()=>{ renderPropExplorer(); updateHash(); renderSearchComponents("property"); },500));
 loadAgencies();
-loadToday();
 window.addEventListener("hashchange", ()=>{ if(!hashLock && !applyHash()) showTab("money"); }); // empty/unknown hash (e.g. Back to the first entry) → default view
 if(!applyHash()) search(); // an incoming permalink wins over the default Money load
 // skipQuizSync=true: a fresh load must not make the quiz LOOK like a topic was already picked
@@ -8494,12 +8418,11 @@ updateAWhen();
 aRenderSaved();
 
 // Language switch must also repaint DYNAMICALLY-BUILT surfaces (2026-07-13 hotfix): applyStrings()
-// only covers data-i18n chrome, so the Today strip, lists, dropdowns and detail panels kept their
-// old language. Re-render from cache/memory — the 5-minute API cache makes the re-runs free.
+// only covers data-i18n chrome, so lists, dropdowns and detail panels kept their old language.
+// Re-render from cache/memory — the 5-minute API cache makes the re-runs free.
 function rerenderForLang(){
   document.querySelectorAll(".filtertoggle").forEach(b=>{ b.textContent = "☰ " + t("filters_toggle"); });
   const nav = document.querySelector(".tabs"); if(nav) nav.setAttribute("aria-label", t("tablist_label"));
-  try{ const c = JSON.parse(localStorage.getItem("crol_today_v2")||"null"); if(c && c.d) renderToday(c.d); }catch(e){}
   paintEditionSpan();
   loadAgencies();
   aWatchChange(true); updateAWhen(); aRenderSaved(); renderLandingShareActions(); renderNLQPresets(); // same skipQuizSync reasoning as the page-init call above
@@ -8611,43 +8534,40 @@ async function sessionBoot(){
   else wire();
 })();
 
-// Language switcher init — runs after DOM is built; i18n.js already loaded in <head>.
+// Language switcher init — compact <select> top-right; i18n.js already loaded in <head>.
 (function(){
   function initLangSwitcher(){
-    const btns = document.querySelectorAll(".lang-btn");
+    const sel = document.getElementById("langSelect");
+    if(!sel) return;
     const saved = window.LANG || "en";
-
-    // Reflect saved preference on buttons
-    btns.forEach(function(b){
-      const active = b.dataset.lang === saved;
-      b.setAttribute("aria-pressed", active ? "true" : "false");
-    });
+    if([...sel.options].some(function(o){ return o.value === saved; })) sel.value = saved;
     // applyStrings() also runs updateLangNotice() (i18n.js), which shows the "notices stay
     // English" + machine-translation-disclosure banner — no manual #langNotice wiring here.
     if(window.applyStrings) applyStrings();
 
-    btns.forEach(function(btn){
-      btn.addEventListener("click", function(){
-        const lang = btn.dataset.lang;
-        const changed = lang !== window.LANG;
-        // rerenderForLang() repaints DYNAMICALLY-BUILT content (search results, today-strip,
-        // detail panel — all t()/tn() template literals, invisible to applyStrings()'s
-        // [data-i18n] walk). setLang()'s second param re-runs it once a lazily-loaded
-        // shipping language's dictionary finishes fetching (it may not be loaded yet on the
-        // FIRST switch to a given language this session) — without this, content painted
-        // before the network request resolves would stay in English forever.
-        setLang(lang, changed ? rerenderForLang : null);
-        if(changed) rerenderForLang();
-        btns.forEach(function(b){
-          b.setAttribute("aria-pressed", b.dataset.lang === lang ? "true" : "false");
-        });
-      });
+    sel.addEventListener("change", function(){
+      const lang = sel.value;
+      const changed = lang !== window.LANG;
+      // rerenderForLang() repaints DYNAMICALLY-BUILT content (search results, today-strip,
+      // detail panel — all t()/tn() template literals, invisible to applyStrings()'s
+      // [data-i18n] walk). setLang()'s second param re-runs it once a lazily-loaded
+      // shipping language's dictionary finishes fetching.
+      setLang(lang, changed ? rerenderForLang : null);
+      if(changed) rerenderForLang();
     });
   }
-  if(document.readyState === "loading"){
-    document.addEventListener("DOMContentLoaded", initLangSwitcher);
-  } else {
+  function initHomeCta(){
+    const form = document.getElementById("homeCtaForm");
+    if(form) form.addEventListener("submit", homeCtaSubscribe);
+  }
+  function boot(){
     initLangSwitcher();
+    initHomeCta();
+  }
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", boot);
+  } else {
+    boot();
   }
 })();
 </script>

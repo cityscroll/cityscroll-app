@@ -55,12 +55,11 @@ def check_lang(pw, lang):
     border_ltr = page.locator(".tag").first.evaluate(
         "el => [getComputedStyle(el).marginLeft, getComputedStyle(el).marginRight]")
 
-    btn = page.locator(f'#langSwitcher .lang-btn[data-lang="{lang}"]')
-    if not btn.count():
-        failures.append(f"{lang}: no language selector button — add it before activating RTL")
+    if not page.locator("#langSelect").count():
+        failures.append(f"{lang}: no language dropdown — add it before activating RTL")
         browser.close()
         return failures
-    btn.click()
+    page.select_option("#langSelect", lang)
     page.wait_for_timeout(1200)
 
     # 1. dir/lang propagation.

@@ -1,7 +1,12 @@
 #!/usr/bin/env node
 // Validate task shortcuts and rotating suggestions against the same live datasets their
-// destination views use. `--write` refreshes the committed receipt and generated HTML choices;
-// `--check` replays the receipt's resolved filters against current data and fails on drift.
+// destination views use. `--write` refreshes the committed receipt and rotating-suggestion
+// fallbacks; `--check` replays the receipt's resolved filters against current data and fails
+// on drift.
+//
+// Homepage scenario-route anchors were removed (owner noise cut). Scenario hashes still live
+// in the receipt and demo-links catalog for deep-link validation; this tool no longer rewrites
+// or requires `<a class="scenario-route">` markup in index.html.
 
 import { readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
@@ -251,15 +256,17 @@ function htmlHref(value) {
 }
 
 function routeFromHTML(html, id) {
+  // Optional: homepage no longer ships scenario-route anchors. When present (legacy / branch),
+  // return them so write mode can still rewrite; when absent, callers use the receipt only.
   const pattern = new RegExp(`<a class="scenario-route" href="([^"]+)" data-preset-id="${id}"[^>]* data-i18n="([^"]+)">([^<]*)</a>`);
   const match = html.match(pattern);
-  if (!match) throw new Error(`index.html is missing data-preset-id="${id}"`);
+  if (!match) return null;
   return { href: match[1].replace(/&amp;/g, "&"), labelKey: match[2], label: match[3] };
 }
 
 function replaceRoute(html, id, selected) {
   const pattern = new RegExp(`(<a class="scenario-route" )href="[^"]+"( data-preset-id="${id}"[^>]* data-i18n=")[^"]+(">)[^<]*(</a>)`);
-  if (!pattern.test(html)) throw new Error(`index.html is missing generated route ${id}`);
+  if (!pattern.test(html)) return html; // no homepage scenario markup to rewrite
   return html.replace(
     pattern,
     `$1href="${htmlHref(selected.href)}"$2${selected.labelKey}$3${selected.label}$4`,
@@ -307,8 +314,11 @@ let html = await readFile(INDEX, "utf8");
 let workerSource = await readFile(WORKER_SUGGESTIONS, "utf8");
 
 if (CHECK) {
+  // When homepage still has scenario-route anchors, they must match the live-validated
+  // receipt. When they are absent (current product surface), only receipt + fallbacks gate.
   for (const [id, selected] of Object.entries(scenarios)) {
     const actual = routeFromHTML(html, id);
+    if (!actual) continue;
     if (actual.href !== selected.href || actual.labelKey !== selected.labelKey) {
       throw new Error(`${id} is stale: expected ${selected.href} (${selected.labelKey})`);
     }

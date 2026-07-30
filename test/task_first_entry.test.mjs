@@ -152,18 +152,17 @@ test("hash parser recognizes collection and item task routes", () => {
   assert.equal(TaskFirst.taskItemHash("can-i-bid", "20260624023"), "#task/can-i-bid/20260624023");
 });
 
-test("entry links and task pane are additive — existing lens tabs stay in place", () => {
+test("task pane is additive — existing lens tabs stay in place", () => {
+  // Homepage scenario entry links were removed (owner noise cut); task-first remains a
+  // deep-link hash route (#task/…) with its own pane, not a replacement for category tabs.
   assert.match(html, /id="tab-task"/);
-  assert.match(html, /href="#task\/can-i-bid"/);
-  assert.match(html, /href="#task\/what-will-change"/);
   assert.match(html, /src="task_first\.js"/);
   assert.match(html, /function showTaskFirst\(/);
+  assert.match(html, /"task\/can-i-bid"/);
+  assert.match(html, /"task\/what-will-change"/);
   for (const lens of ["money", "people", "land", "property", "rules", "meetings", "alerts"]) {
     assert.match(html, new RegExp(`data-tab="${lens}"`));
   }
-  // Scenario routes still open existing lenses; task entries are extra, not replacements.
-  assert.match(html, /href="#money\?mode=open&amp;closing=week"/);
-  assert.match(html, /href="#land"/);
 });
 
 test("English catalog ships task-first visitor strings", () => {

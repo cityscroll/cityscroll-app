@@ -279,7 +279,7 @@ def verify_interactions(browser: Browser) -> None:
         assert download_info.value.suggested_filename == "crol-list-qr.png"
         dialog.locator(".qr-dialog-actions button").last.click()
 
-        page.locator('.lang-btn[data-lang="es"]').click()
+        page.select_option("#langSelect", "es")
         page.wait_for_function(
             "() => document.querySelector('#landing-share-actions')?.textContent.includes('Código QR')"
         )

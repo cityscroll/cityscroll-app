@@ -119,7 +119,7 @@ with sync_playwright() as pw:
     page.wait_for_function("document.getElementById('reshead').textContent.includes('closing this week')", timeout=30000)
     page.click("#closingweek")
     step("OK", "regression: closing-week", "")
-    strip = page.evaluate("!document.getElementById('todaystrip').hidden")
+    strip = page.evaluate("!!document.getElementById('homeCta')")
     step("OK" if strip else "FAIL", "regression: today strip", "")
     page.click("#tabbtn-people"); page.wait_for_selector("#pchips .chip", timeout=15000)
     step("OK" if page.locator("#pchips .chip").count()==16 else "FAIL", "regression: people chips", "")

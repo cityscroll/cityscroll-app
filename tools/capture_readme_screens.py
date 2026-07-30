@@ -23,9 +23,8 @@ HEIGHT = 900
 READY_TIMEOUT_MS = 45_000
 
 # Loading placeholders the public site paints before hydration.
-# .today-skeleton — Today's Edition strip under the masthead
 # .empty.skel / .skl — content-shaped list placeholders
-SKELETON_SELECTOR = ".today-skeleton, .empty.skel, .skl"
+SKELETON_SELECTOR = ".empty.skel, .skl"
 
 
 def _is_visible_js() -> str:
@@ -94,25 +93,19 @@ def goto_hash(page: Page, hash_route: str | None = None) -> None:
 
 
 def capture_homepage(page: Page) -> None:
-    """Homepage task chooser — proves multi-domain aggregation.
+    """Homepage masthead flow — CTA under tagline, category tabs, Contracts list.
 
-    Must wait out the Today's Edition skeleton between masthead and tabs, and the
-    default Contracts list skeleton (money tab is active under the fold).
+    Must wait out the default Contracts list skeleton (money tab is active under the fold).
     """
     goto_hash(page)
     wait_ready(
         page,
         """() => {
-          const strip = document.querySelector('#todaystrip');
-          const todayReady = strip
-            && strip.getAttribute('aria-busy') === 'false'
-            && (document.querySelector('#tdate')?.textContent || '').trim().length > 0
-            && (document.querySelector('#tbig')?.textContent || '').trim().length > 0
-            && document.querySelectorAll('#tcards > *').length > 0;
+          const cta = document.getElementById('homeCta');
+          const tabs = document.querySelectorAll('.tabbtn').length >= 6;
           const listReady = document.querySelectorAll('#list .row').length > 0
             && !document.querySelector('#list .empty.skel');
-          const scenarios = document.querySelectorAll('.scenario-card').length >= 1;
-          return todayReady && listReady && scenarios;
+          return !!cta && tabs && listReady;
         }""",
         frame="homepage.png",
     )
