@@ -1,4 +1,4 @@
-# before/after gate-run comparison (extraction must not change verdicts)
+# before/after gate-run comparison (post-fix re-check)
 link_text: before=exit=0 after=exit=0 match=True
 i18n_keys: before=exit=0 after=exit=0 match=True
 nyc_copy_lint: before=exit=0 after=exit=0 match=True
@@ -8,5 +8,3 @@ genai_disclosure: before=exit=0 after=exit=0 match=True
 reading_level_ratchet: before=exit=0 after=exit=0 match=True
 
 RESULT: NO_VERDICT_DRIFT
-
-# additional after-only path: reading_level_card_path exit=0

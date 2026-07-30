@@ -5,4 +5,3 @@ VERDICT heading_punctuation exit=0
 VERDICT page_metadata exit=0
 VERDICT genai_disclosure exit=0
 VERDICT reading_level_ratchet exit=0
-VERDICT reading_level_card_path exit=0

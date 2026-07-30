@@ -36,6 +36,9 @@ def build_parser() -> argparse.ArgumentParser:
 def _add_run_args(p: argparse.ArgumentParser) -> None:
     p.add_argument("--root", type=Path, required=True,
                    help="Site root (HTML pages + i18n.js)")
+    p.add_argument("--page", action="append", dest="page_flags", default=None,
+                   help="Limit to this page (repeatable). Prefer this over trailing paths "
+                        "so options and page lists never fight argparse intermixing.")
     p.add_argument("--allowlist", type=Path, default=None,
                    help="nyc_copy_lint allowlist path")
     p.add_argument("--no-gate", action="store_true",
@@ -52,7 +55,17 @@ def _add_run_args(p: argparse.ArgumentParser) -> None:
     p.add_argument("--machine", action="store_true",
                    help="Print VERDICT lines suitable for before/after comparison")
     p.add_argument("--json", action="store_true", help="Print verdicts as JSON")
-    p.add_argument("pages", nargs="*", help="Optional page subset")
+    # Trailing positionals kept for convenience; combined with --page below.
+    p.add_argument("pages", nargs="*", help="Optional page subset (same as repeated --page)")
+
+
+def _resolve_pages(args) -> list | None:
+    pages: list[str] = []
+    if getattr(args, "page_flags", None):
+        pages.extend(args.page_flags)
+    if getattr(args, "pages", None):
+        pages.extend(args.pages)
+    return pages or None
 
 
 def main(argv=None) -> int:
@@ -88,7 +101,7 @@ def main(argv=None) -> int:
         verdicts = run_suite(
             args.root,
             members=members,
-            pages=args.pages or None,
+            pages=_resolve_pages(args),
             allowlist=args.allowlist,
             gate=not args.no_gate,
             reading_level_mode=args.reading_level_mode,

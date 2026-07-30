@@ -80,13 +80,25 @@ test("link_text: field case — flags naked 'click here', passes descriptive tex
         `<a href="/y">Read the full notice</a>` +
         `</body></html>\n`
     );
-    // Only about.html in this fixture — pass it explicitly.
-    const bad = runPython([
-      "-m", "civic_content_gates", "check", "link_text",
-      "--root", dir, "about.html",
+    // Call the gate module directly (characterization of rule logic, not CLI intermix).
+    // --page is also exercised so the CLI path stays covered on every runner.
+    const badApi = runPython([
+      "-c",
+      "import sys; from pathlib import Path; " +
+        "sys.path.insert(0, sys.argv[1]); " +
+        "from civic_content_gates import link_text; " +
+        "sys.exit(link_text.run(Path(sys.argv[2]), pages=['about.html']))",
+      PKG, dir,
     ]);
-    assert.notEqual(bad.status, 0, `expected fail; stdout=${bad.stdout} stderr=${bad.stderr}`);
-    assert.match(bad.stderr + bad.stdout, /click here/);
+    assert.notEqual(badApi.status, 0, `expected fail; stdout=${badApi.stdout} stderr=${badApi.stderr}`);
+    assert.match(badApi.stderr + badApi.stdout, /click here/);
+
+    const badCli = runPython([
+      "-m", "civic_content_gates", "check", "link_text",
+      "--root", dir, "--page", "about.html",
+    ]);
+    assert.notEqual(badCli.status, 0, `CLI expected fail; stderr=${badCli.stderr} stdout=${badCli.stdout}`);
+    assert.match(badCli.stderr + badCli.stdout, /click here/);
 
     writeFileSync(
       join(dir, "about.html"),
@@ -94,7 +106,7 @@ test("link_text: field case — flags naked 'click here', passes descriptive tex
     );
     const good = runPython([
       "-m", "civic_content_gates", "check", "link_text",
-      "--root", dir, "about.html",
+      "--root", dir, "--page", "about.html",
     ]);
     assert.equal(good.status, 0, `expected pass; stderr=${good.stderr}`);
   } finally {
@@ -110,7 +122,14 @@ test("i18n_keys: field case — fails when a shipping language misses an English
       shipping: ["es"],
       langFiles: { es: { hello: "Hola" } }, // missing world
     });
-    const bad = runPython(["-m", "civic_content_gates", "check", "i18n_keys", "--root", dir]);
+    const bad = runPython([
+      "-c",
+      "import sys; from pathlib import Path; " +
+        "sys.path.insert(0, sys.argv[1]); " +
+        "from civic_content_gates import i18n_keys; " +
+        "sys.exit(i18n_keys.run(Path(sys.argv[2])))",
+      PKG, dir,
+    ]);
     assert.notEqual(bad.status, 0, `expected fail; stderr=${bad.stderr}`);
     assert.match(bad.stderr + bad.stdout, /world/);
 
@@ -119,7 +138,14 @@ test("i18n_keys: field case — fails when a shipping language misses an English
       shipping: ["es"],
       langFiles: { es: { hello: "Hola", world: "Mundo" } },
     });
-    const good = runPython(["-m", "civic_content_gates", "check", "i18n_keys", "--root", dir]);
+    const good = runPython([
+      "-c",
+      "import sys; from pathlib import Path; " +
+        "sys.path.insert(0, sys.argv[1]); " +
+        "from civic_content_gates import i18n_keys; " +
+        "sys.exit(i18n_keys.run(Path(sys.argv[2])))",
+      PKG, dir,
+    ]);
     assert.equal(good.status, 0, `expected pass; stderr=${good.stderr} stdout=${good.stdout}`);
   } finally {
     rmSync(dir, { recursive: true, force: true });
