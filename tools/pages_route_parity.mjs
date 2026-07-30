@@ -240,7 +240,7 @@ function parseArgs(argv) {
 
 /**
  * Probe both origins until parity passes or the retry window elapses.
- * Fresh deploys can briefly return 522/5xx on pages.dev before the edge is ready.
+ * Fresh deploys can return 522/5xx on pages.dev for a short window before the edge is ready.
  */
 export async function runParity({
   reference,
