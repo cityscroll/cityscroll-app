@@ -1,36 +1,36 @@
 {
   "entries": {
-    "site/about.html": {
+    "about.html": {
       "formula": "flesch_kincaid_grade",
       "grade": 6.689099735313178,
       "language": "en"
     },
-    "site/api.html": {
+    "api.html": {
       "formula": "flesch_kincaid_grade",
       "grade": 9.870537160972173,
       "language": "en"
     },
-    "site/changelog.html": {
+    "changelog.html": {
       "formula": "flesch_kincaid_grade",
       "grade": 10.317544285583967,
       "language": "en"
     },
-    "site/data.html": {
+    "data.html": {
       "formula": "flesch_kincaid_grade",
       "grade": 6.990724637681161,
       "language": "en"
     },
-    "site/index.html": {
+    "index.html": {
       "formula": "flesch_kincaid_grade",
       "grade": 15.311218872870253,
       "language": "en"
     },
-    "site/standards.html": {
+    "standards.html": {
       "formula": "flesch_kincaid_grade",
       "grade": 9.299318572903523,
       "language": "en"
     },
-    "site/stats.html": {
+    "stats.html": {
       "formula": "flesch_kincaid_grade",
       "grade": 6.983771043771046,
       "language": "en"

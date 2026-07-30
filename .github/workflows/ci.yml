@@ -273,12 +273,13 @@ jobs:
       - name: Install readable-or-else
         run: pip install git+https://github.com/jimdc/readable-or-else.git
       - name: Reading-level ratchet gate
+        working-directory: site
         run: |
           readable-or-else check \
-            site/about.html site/api.html site/changelog.html site/data.html site/index.html site/stats.html site/standards.html \
+            about.html api.html changelog.html data.html index.html stats.html standards.html \
             --preset nycsg7 \
             --mode ratchet \
-            --baseline site/reading-level-baseline.json \
+            --baseline reading-level-baseline.json \
             --format gh-annotations
       # Opt-in only — a manually-labeled PR gets LLM-drafted plain-language suggestions as
       # PR-ready JSON (not auto-applied; a human reviews and accepts/discards). Needs
