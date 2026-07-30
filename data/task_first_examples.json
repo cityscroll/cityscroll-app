@@ -1,0 +1,312 @@
+{
+  "schema_version": 1,
+  "snapshot_date": "2026-07-29",
+  "description": "Bounded task-first entry examples: five procurement solicitations (Can I bid?) and five ZAP projects (What will change here?). Official fields are captured verbatim from NYC Open Data; presentation leads with the visitor task without dropping source facts.",
+  "delivery_tier": "inline-at-build",
+  "payment_lag_policy": {
+    "observed_lag_citable": true,
+    "bid_count_causality_measured": false,
+    "rule": "Any payment-lag statement may cite only observed lag figures with a named source. Do not claim that payment lag changes bid counts; that effect is not measured."
+  },
+  "tasks": {
+    "can-i-bid": {
+      "title_key": "task_can_i_bid_title",
+      "lead_fields": [
+        "bid_status",
+        "stage",
+        "method",
+        "deadline",
+        "agency",
+        "pin"
+      ],
+      "examples": [
+        {
+          "id": "20260624023",
+          "task": "can-i-bid",
+          "source": {
+            "dataset": "City Record Online",
+            "dataset_id": "dg92-zbpx",
+            "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260624023",
+            "open_data_url": "https://data.cityofnewyork.us/resource/dg92-zbpx.json?$where=request_id='20260624023'"
+          },
+          "official": {
+            "request_id": "20260624023",
+            "start_date": "2026-06-30T00:00:00.000",
+            "agency_name": "Citywide Administrative Services",
+            "type_of_notice_description": "Solicitation",
+            "category_description": "Goods",
+            "short_title": "85726B0060-2600042 - Tub Grinder - Parks",
+            "pin": "85726B0060",
+            "contract_amount": null,
+            "vendor_name": null,
+            "due_date": "2026-08-05T10:00:00.000",
+            "address_to_request": null,
+            "contact_name": null,
+            "contact_phone": null,
+            "email": null,
+            "selection_method_description": "Competitive Sealed Bids",
+            "additional_description_1": "<p>The New York City Department of Citywide Administrative Services ('DCAS') is issuing a solicitation to obtain bids for TUB GRINDER. This will be a 5-Year Requirements Contract ('RC'). Please see the solicitation documents in PASSPort for additional details. Please submit your proposals by both acknowledging the receipt of the RFx in the Acknowledgement tab and completing your response in the Manage Responses tab in the City's PASSPort System (nyc.gov/passport). Vendor resources and materials can be found at the link below under the Finding and Responding to RFx heading. If you need additional assistance with PASSPort, please contact the MOCS Service Desk at the link below.</p><p>MOCS Service Desk: nyc.gov/mocshelp</p><p>Vendor Resources: https://www.nyc.gov/site/mocs/passport/getting-started-with-passport.page https://www.nyc.gov/site/mocs/passport/passport-faqs.page</p><p>Bid Opening will be held virtually on August 5th at 10:00am est via Microsoft Teams. Please visit the PASSPort solicitation page for the link to this meeting. </p>",
+            "other_info_1": "Bid opening Location - DCAS 1 Centre Street New York NY 10007",
+            "section_name": "Procurement"
+          },
+          "observed_payment_lag": null
+        },
+        {
+          "id": "20260617050",
+          "task": "can-i-bid",
+          "source": {
+            "dataset": "City Record Online",
+            "dataset_id": "dg92-zbpx",
+            "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617050",
+            "open_data_url": "https://data.cityofnewyork.us/resource/dg92-zbpx.json?$where=request_id='20260617050'"
+          },
+          "official": {
+            "request_id": "20260617050",
+            "start_date": "2026-06-30T00:00:00.000",
+            "agency_name": "Housing Authority",
+            "type_of_notice_description": "Solicitation",
+            "category_description": "Construction/Construction Services",
+            "short_title": "SMD_A&CM_RFQ #517992 - Elevator Rehabilitation and Maintenance and Service at Gun Hill Houses",
+            "pin": "517992",
+            "contract_amount": null,
+            "vendor_name": null,
+            "due_date": "2026-08-05T11:00:00.000",
+            "address_to_request": "90 Church Street, New York, NY 10007",
+            "contact_name": "Shane Clark",
+            "contact_phone": "(212) 306-4558",
+            "email": "shane.clark@nycha.nyc.gov",
+            "selection_method_description": "Competitive Sealed Bids",
+            "additional_description_1": "<p><span style='font-size:14px'><span style='font-family:Tahoma,Geneva,sans-serif'><strong><u>Scope of work</u></strong></span></span></p><p><span style='font-size:14px'><span style='font-family:Tahoma,Geneva,sans-serif'>The work under this Contract consists of the rehabilitation, modernization, maintenance, and service of thirteen (13) elevators located in six (6) residential buildings at Gun Hill Houses. The Contractor shall furnish all labor, materials, equipment, supervision, tools, transportation, and incidental services necessary to complete the Work in accordance with the Contract Documents.</span></span></p><p><span style='font-size:14px'><span style='font-family:Tahoma,Geneva,sans-serif'>The Work includes, but is not limited to, the removal and replacement of existing elevator systems and the furnishing and installation of new elevator equipment, including elevator machines, controllers, hoistway components, car enclosures, entrance and car doors, communication systems, safety devices, and associated electrical and electronic components. The Work also includes all required testing, inspections, commissioning, training, and coordination with NYCHA and other contractors, including a separate electrical contractor.</span></span></p><p><span style='font-size:14px'><span style='font-family:Tahoma,Geneva,sans-serif'>The Work shall be performed in phased construction to maintain building operations and minimize disruptions to residents. The Contractor shall coordinate all activities to comply with the scheduling, outage duration, and performance requirements set forth in the Contract Documents.</span></span></p><p><span style='font-size:14px'><span style='font-family:Tahoma,Geneva,sans-serif'>In addition to the construction and modernization services described in Part A, the Contractor shall enter into a separate maintenance and service agreement (Part B) to provide preventive maintenance, repairs, inspections, emergency response, and related elevator support services following the completion and acceptance of the modernization work.</span></span></p><p><span style='font-size:14px'><span style='font-family:Tahoma,Geneva,sans-serif'><strong><u>RFQ Solicitation Timetable</u></strong><br><br>A non-mandatory virtual pre-bid conference will be held on07/09/2026 at 11:00 am, via Microsoft Teams. Pre bid TeamsMeeting information: (646) 838-1534 Conference ID: (227 605772 821 377) Passcode: ok3ap3DK. Although attendance is notmandatory; it is strongly recommended that all interestedvendors attend.</span></span></p><p><span style='font-size:14px'><span style='font-family:Tahoma,Geneva,sans-serif'>https://teams.microsoft.com/l/meetup-join/19%3ameeting_ODBlZmQzOTktNmI4MS00YmM1LWI5YzQtY2IyYjhjODEwNzE0%40thread.v2/0?context=%7b%22Tid%22%3a%22709ab558-a73c-4f8f-98ad-20bb096cd0f8%22%2c%22Oid%22%3a%22d3d463fd-7800-405e-81cf-ed221f645c8a%22%7d</span></span></p><p><span style='font-size:14px'><span style='font-family:Tahoma,Geneva,sans-serif'>All questions related to this RFQ are to be submitted viaemail to the A&CM Procurement Unit atacm.procurement@nycha.nyc.gov with the RFQ number as theSubject line by no later than 07/16/2026 on 2:00PM Bidderswill be permitted to ask additional questions at the Pre-bidConference. Responses to all submitted questions will beavailable for public viewing in Sourcing under the RFQ.<br><br><strong><u>Bid Submission Requirements</u></strong><br>Vendors shall electronically upload a single .pdf containing ALL components of the bid into iSupplier by the RFQ Bid Submission Deadline. NYCHA will NOT accept hardcopy Bids or bids via e-mail, fax, or mail.</span></span></p><p style='text-align:justify'><br><span style='font-size:14px'><span style='font-family:Tahoma,Geneva,sans-serif'>Instructions for registering for iSupplier can be found at http://www1.nyc.gov/site/nycha/business/isupplier-vendor-registration.page<br><br>Pre-Bid Conference - July 09, 2026 - 11:00 AM</span></span></p><p style='text-align:justify'><span style='font-size:14px'><span style='font-family:Tahoma,Geneva,sans-serif'>Site Visit - July 13, 2026 - 9:00 AM</span></span><br> </p><p style='text-align:justify'><span style='font-size:14px'><span style='font-family:Tahoma,Geneva,sans-serif'>RFQ Question Deadline - July 16 2026  - 02:00 PM</span></span></p><p style='text-align:justify'><span style='font-size:14px'><span style='font-family:Tahoma,Geneva,sans-serif'>Question and Answer Release Date - July 23, 2026<br><br>After Bidder registers for iSupplier, it typically takes 24 to 72 hours for Bidder\u001as iSupplier profile to be approved. </span></span></p><p><span style='font-size:14px'><span style='font-family:Tahoma,Geneva,sans-serif'>It is Vendors\u001a sole responsibility to complete iSupplier registration and submit its Bid before the RFQ Bid Submission Deadline. </span></span></p><p><span style='font-size:14px'><span style='font-family:Tahoma,Geneva,sans-serif'>NYCHA is not responsible for delays caused by technical difficulty or caused by any other occurrence. For assistance regarding iSupplier please email procurement@nycha.nyc.gov</span></span></p>",
+            "other_info_1": null,
+            "section_name": "Procurement"
+          },
+          "observed_payment_lag": null
+        },
+        {
+          "id": "20260708023",
+          "task": "can-i-bid",
+          "source": {
+            "dataset": "City Record Online",
+            "dataset_id": "dg92-zbpx",
+            "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708023",
+            "open_data_url": "https://data.cityofnewyork.us/resource/dg92-zbpx.json?$where=request_id='20260708023'"
+          },
+          "official": {
+            "request_id": "20260708023",
+            "start_date": "2026-07-15T00:00:00.000",
+            "agency_name": "Brooklyn Bridge Park",
+            "type_of_notice_description": "Solicitation",
+            "category_description": "Construction Related Services",
+            "short_title": "Brooklyn Bridge Park Pier 1 LED Lighting Install",
+            "pin": "BBP Pier 1 LED Insta",
+            "contract_amount": null,
+            "vendor_name": null,
+            "due_date": "2026-08-05T16:00:00.000",
+            "address_to_request": "334 Furman Street, Brooklyn, NY 11201",
+            "contact_name": "Project Manager, Capital Projects & Restoration",
+            "contact_phone": "(000) 000-0000",
+            "email": "proposals@bbp.nyc",
+            "selection_method_description": "Request for Proposals",
+            "additional_description_1": "<p>Brooklyn Bridge Park is an eighty-five (85) acre waterfront park in Brooklyn, NY. The Pier 1 section of the park is in need of lighting improvements to replace the aging metal halide lights installed during the build-out of the park. All proposed LED light fixtures will need to be tied into a recently installed new lighting panel. Brooklyn Bridge Park is Seeking proposals for an electrical contractor to remove the existing metal halide lighting fixtures and install the LED lighting fixtures and associated wiring.</p>",
+            "other_info_1": null,
+            "section_name": "Procurement"
+          },
+          "observed_payment_lag": null
+        },
+        {
+          "id": "20260616061",
+          "task": "can-i-bid",
+          "source": {
+            "dataset": "City Record Online",
+            "dataset_id": "dg92-zbpx",
+            "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260616061",
+            "open_data_url": "https://data.cityofnewyork.us/resource/dg92-zbpx.json?$where=request_id='20260616061'"
+          },
+          "official": {
+            "request_id": "20260616061",
+            "start_date": "2026-06-24T00:00:00.000",
+            "agency_name": "Economic Development Corporation",
+            "type_of_notice_description": "Solicitation",
+            "category_description": "Goods and Services",
+            "short_title": "Affordable Housing Insurance Program RFEI",
+            "pin": "10872",
+            "contract_amount": null,
+            "vendor_name": null,
+            "due_date": "2026-08-06T16:00:00.000",
+            "address_to_request": "1 Liberty Plaza, 12th Floor, New York, NY 10006",
+            "contact_name": "Hugo Job",
+            "contact_phone": "(212) 618-5462",
+            "email": "rfprequest@edc.nyc",
+            "selection_method_description": "Request for Information",
+            "additional_description_1": "<p>The New York City Economic Development Corporation ('NYCEDC' or 'EDC'), in coordination with the New York City Department of Housing Preservation and Development (\u001aNYCHPD\u001a or 'HPD') and the New York City Housing Development Corporation (\u001aNYCHDC\u001a or 'HDC'), is issuing this Request for Expressions of Interest ('RFEI') to solicit proposals from industry participants (each, an 'Applicant,' 'Respondent,' or 'Firm') on structuring and operating an insurance program (the 'Program') to reduce property and liability insurance costs for income-restricted affordable and rent-stabilized housing in New York City.</p><p>NYCEDC anticipates committing, on behalf of the City of New York (\u001athe City\u001a), up to $100 million over a three-year period as a one-time funding infusion to launch and sustain the Program. The structure, use, and guardrails around the $100 million investment will be informed by responses to this RFEI, but EDC's threshold expectations are clear: the Program must deliver policy outcomes over the long run while remaining financially solvent and self-sustaining, and the City's funding must, at a minimum, be preserved, with a preference for structures that generate a financial return. The Program is expected to operate indefinitely as part of the City\u001as affordable housing new construction and preservation system.</p><p>The Program seeks to ease costs for a population of income-restricted and rent-stabilized buildings which in large part have existing legal or contractual relationships with HPD and HDC. As lenders and regulators to many of these buildings, HPD and HDC monitor their financial and physical performance and act as key partners in asset management. As a result, the City has a distinct oversight role and regularly engages building owners about a range of operational issues, including insurance coverage.</p><p>NYCEDC seeks submissions from a broad range of industry participants, including insurance brokers, captive managers, insurance carriers and reinsurers, third-party administrators ('TPAs'), actuarial and risk advisory firms, program administrators, community development financial institutions ('CDFIs'), mutual insurance organizers, and other entities capable of operating at this scale. Joint ventures combining multiple entity types and proposals leveraging an existing vehicle or facility are equally welcome.</p><p>It is the policy of NYCEDC to comply with all federal, state and City laws and regulations which prohibit unlawful discrimination because of race, creed, color, national origin, sex, age, disability, marital status and other protected category and to take affirmative action in working with contracting parties to ensure certified Minority and Women-owned Business Enterprises (M/WBEs) share in the economic opportunities generated by NYCEDC\u001as projects and initiatives.</p><p>Companies who have been certified with the New York City Department of Small Business Services as Minority and Women Owned Business Enterprises (\u001aM/WBE\u001a) are strongly encouraged to apply. To learn more about M/WBE certification, NYCEDC\u001as M/WBE program, and programs to assist M/WBE in navigating current and upcoming opportunities on NYCEDC projects, please visit https://sbsconnect.nyc.gov/certification-directory-search/ and edc.nyc/opportunity-mwdbe.</p><p>An optional informational session will be held in person and virtually on Wednesday, July 8, 2026, at 2 P.M., at One Liberty Plaza, 14th Floor, New York, NY 10006. Those who wish to attend this session should RSVP to the RSVP web form, available at edc.nyc/RFPs no later than 5:00 p.m. ET on Friday, July 3, 2026. Meeting information will be emailed to those who RSVP for the session.</p><p>Respondents may submit questions and/or request clarifications from NYCEDC until July 10, 2026 at 5:00 P.M. Questions regarding the subject matter of this RFEI should be directed to the Q&A web form available at https://edc.nyc/rfps. Answers to all questions will be posted by Tuesday, July 21, 2026 to https://edc.nyc/rfps. Questions regarding the subject matter of this RFEI will not be accepted after 5:00 P.M. on Friday, July 10, 2026, however, technical questions pertaining to downloading and submitting proposals to this RFEI may be directed to RFPREQUEST@edc.nyc on or before Thursday, August 6, 2026.</p><p>Detailed submission guidelines and requirements are outlined in the RFEI, available as of Wednesday, June 24, 2026. To download a copy of the solicitation documents please visit https://edc.nyc/rfps. RESPONSES ARE DUE NO LATER THAN 4:00 P.M. ON Thursday, August 6, 2026. Please click the link in the \u001aDeadlines\u001a section of this project\u001as web page (which can be found on https://edc.nyc/rfps) to electronically upload a proposal for this solicitation. Please upload your response as a .zip file with your company name and the title of this project.</p>",
+            "other_info_1": null,
+            "section_name": "Procurement"
+          },
+          "observed_payment_lag": null
+        },
+        {
+          "id": "20260708001",
+          "task": "can-i-bid",
+          "source": {
+            "dataset": "City Record Online",
+            "dataset_id": "dg92-zbpx",
+            "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260708001",
+            "open_data_url": "https://data.cityofnewyork.us/resource/dg92-zbpx.json?$where=request_id='20260708001'"
+          },
+          "official": {
+            "request_id": "20260708001",
+            "start_date": "2026-07-17T00:00:00.000",
+            "agency_name": "Housing Preservation and Development",
+            "type_of_notice_description": "Solicitation",
+            "category_description": "Construction/Construction Services",
+            "short_title": "Gas-Fired Heating Plant Installation & Repair - Manhattan & The Bronx",
+            "pin": "80626B0060",
+            "contract_amount": null,
+            "vendor_name": null,
+            "due_date": "2026-08-07T13:00:00.000",
+            "address_to_request": ".",
+            "contact_name": "Brian C. Saunders",
+            "contact_phone": "(212) 863-6590",
+            "email": "contracts@hpd.nyc.gov",
+            "selection_method_description": "Competitive Sealed Bids",
+            "additional_description_1": "<p>NYC Department of Housing Preservation & Development ('HPD') is responsible to install and repair Gas-Fired Heating Plant to ensure essential heat and hot water services. HPD has neither sufficient staff with the requisite expertise, nor the equipment necessary to perform this type of work. Qualified bidders must have three years' experience performing this type of work.<br><br>Prospective bidders are encouraged to engage with this procurement, access solicitation documents and submit bids through PASSPort: http://www.nyc.gov/BusinessOpportunities (search for 'Gas-Fired'). Delivery of original bid security may be required as instructed in PASSPort.</p>",
+            "other_info_1": null,
+            "section_name": "Procurement"
+          },
+          "observed_payment_lag": null
+        }
+      ]
+    },
+    "what-will-change": {
+      "title_key": "task_what_will_change_title",
+      "lead_fields": [
+        "place",
+        "boundary",
+        "stage",
+        "brief"
+      ],
+      "examples": [
+        {
+          "id": "2026X0362",
+          "task": "what-will-change",
+          "source": {
+            "dataset": "Zoning Application Portal (ZAP) Project Data",
+            "dataset_id": "hgx4-8ukb",
+            "url": "https://zap.planning.nyc.gov/projects/2026X0362",
+            "open_data_url": "https://data.cityofnewyork.us/resource/hgx4-8ukb.json?$where=project_id='2026X0362'"
+          },
+          "official": {
+            "project_id": "2026X0362",
+            "project_name": "351 Powers Avenue (HPD ELURP)",
+            "project_brief": "The NYC Department of Housing Preservation and Development (HPD) seeks ELURP approval for a PP disposition of city-owned land to facilitate the development of a new 70,505 square feet (sqft) mixed-use development with 84 units, a theater, and a workforce development training center at 351 Powers Avenue in the Mott Haven neighborhood of Community District 1, the Bronx.",
+            "primary_applicant": "HPD - NYC Dept of Housing Preservation & Development",
+            "public_status": "In Public Review",
+            "project_status": "Active",
+            "borough": "Bronx",
+            "community_district": "X01",
+            "actions": "PP",
+            "mih_flag": "false",
+            "current_milestone": "PP - City Council Review",
+            "ulurp_numbers": null
+          }
+        },
+        {
+          "id": "2026R0186",
+          "task": "what-will-change",
+          "source": {
+            "dataset": "Zoning Application Portal (ZAP) Project Data",
+            "dataset_id": "hgx4-8ukb",
+            "url": "https://zap.planning.nyc.gov/projects/2026R0186",
+            "open_data_url": "https://data.cityofnewyork.us/resource/hgx4-8ukb.json?$where=project_id='2026R0186'"
+          },
+          "official": {
+            "project_id": "2026R0186",
+            "project_name": "336 Meredith Avenue Fleet Maintenance Facility",
+            "project_brief": "This is a public application from the New York City Department of Parks and Recreation (DPR) seeking a Combination Acquisition and Site Selection by the City to facilitate the purchase of an approximately 70,000 square foot lot and the establishment of a new fleet maintenance facility at 336-346 Meredith Avenue (Block 2810, Lot 80) in an M3-1 district in the Bloomfield neighborhood of Staten Island’s Community District 2.",
+            "primary_applicant": "DPR - Department of Parks & Recreation NYC",
+            "public_status": "In Public Review",
+            "project_status": "Active",
+            "borough": "Staten Island",
+            "community_district": "R02",
+            "actions": "PC",
+            "mih_flag": "false",
+            "current_milestone": "PC - Community Board Referral",
+            "ulurp_numbers": "260248PCR"
+          }
+        },
+        {
+          "id": "2026Q0210",
+          "task": "what-will-change",
+          "source": {
+            "dataset": "Zoning Application Portal (ZAP) Project Data",
+            "dataset_id": "hgx4-8ukb",
+            "url": "https://zap.planning.nyc.gov/projects/2026Q0210",
+            "open_data_url": "https://data.cityofnewyork.us/resource/hgx4-8ukb.json?$where=project_id='2026Q0210'"
+          },
+          "official": {
+            "project_id": "2026Q0210",
+            "project_name": "Atlantic Avenue Demapping",
+            "project_brief": "The Department of City Planning seeks a change to the City Map to a) narrow the street lines of Atlantic Avenue between the Van Wyck Expressway and 150th Street, b) eliminate the mapped but unbuilt portion of Atlantic Avenue between 150th Street and 157th Street,  c) eliminate the mapped but unbuilt portion of Sanders Place between Atlantic Avenue and 97th Avenue, and d) narrow the street lines of 150th Street between Atlantic Avenue and 97th Avenue in Jamaica, Queens Community District 12.",
+            "primary_applicant": "New York City Department of City Planning",
+            "public_status": "In Public Review",
+            "project_status": "Active",
+            "borough": "Queens",
+            "community_district": "Q12",
+            "actions": "MM",
+            "mih_flag": "false",
+            "current_milestone": "MM - Community Board Referral",
+            "ulurp_numbers": "260226MMQ"
+          }
+        },
+        {
+          "id": "2026M0118",
+          "task": "what-will-change",
+          "source": {
+            "dataset": "Zoning Application Portal (ZAP) Project Data",
+            "dataset_id": "hgx4-8ukb",
+            "url": "https://zap.planning.nyc.gov/projects/2026M0118",
+            "open_data_url": "https://data.cityofnewyork.us/resource/hgx4-8ukb.json?$where=project_id='2026M0118'"
+          },
+          "official": {
+            "project_id": "2026M0118",
+            "project_name": "1633 Broadway Cafe",
+            "project_brief": "Private application (LPB Holdings WV LLC) for a fifth modification to Special Permit CP-20250 (originally granted in 1968) to allow a 2,100 zsf outdoor café within the POPS at 1633 Broadway (Block 1022, Lot 43). The café would be operated by La Pecora Bianca, located in the southeast corner of the Development Site along the midblock of West 50th Street.",
+            "primary_applicant": "Mark Barak",
+            "public_status": "In Public Review",
+            "project_status": "Active",
+            "borough": "Manhattan",
+            "community_district": "M05",
+            "actions": "LD; ZS",
+            "mih_flag": "false",
+            "current_milestone": "ZS - Community Board Referral",
+            "ulurp_numbers": "260250LDM; M890860DZSM"
+          }
+        },
+        {
+          "id": "2026K0395",
+          "task": "what-will-change",
+          "source": {
+            "dataset": "Zoning Application Portal (ZAP) Project Data",
+            "dataset_id": "hgx4-8ukb",
+            "url": "https://zap.planning.nyc.gov/projects/2026K0395",
+            "open_data_url": "https://data.cityofnewyork.us/resource/hgx4-8ukb.json?$where=project_id='2026K0395'"
+          },
+          "official": {
+            "project_id": "2026K0395",
+            "project_name": "241 37th Street NYPD Office Space Acquisition",
+            "project_brief": "DCAS and NYPD seek to acquire office space (approximately 23, 496 square feet) at 241 37th Street (3-695-1) and 23 parking spaces (3-662-part of lot 1) for the NYPD Internal Affairs Bureau (IAB) for the operation of their Brooklyn Field Offices. Because the office located at 241 37th Street building has been there for numerous years and NYPD did not want to disrupt operations, NYPD found this the most suitable site for the NYPD IAB’s continued operation of the Brooklyn Field Office.",
+            "primary_applicant": "William Costello",
+            "public_status": "In Public Review",
+            "project_status": "Active",
+            "borough": "Brooklyn",
+            "community_district": "K07",
+            "actions": "PX",
+            "mih_flag": "false",
+            "current_milestone": "PX - City Council Review",
+            "ulurp_numbers": null
+          }
+        }
+      ]
+    }
+  }
+}

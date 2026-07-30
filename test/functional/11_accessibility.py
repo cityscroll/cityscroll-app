@@ -216,6 +216,17 @@ def run_index_states(pw, lang, viewport, failures):
     page.wait_for_timeout(1200)
     run_axe(page, f"index.html [{lang}] [{viewport_name}] [investigation:share-error]", failures)
 
+    # Task-first entry collections (precomputed local JSON; no live network).
+    for task_hash, task_state in (
+        ("#task/can-i-bid", "task:can-i-bid"),
+        ("#task/what-will-change", "task:what-will-change"),
+    ):
+        page.evaluate("(hash) => { location.hash = hash; }", task_hash)
+        page.wait_for_selector(".task-first .task-card", timeout=15000)
+        page.wait_for_timeout(400)
+        run_axe(page, f"index.html [{lang}] [{viewport_name}] [{task_state}]", failures)
+        run_focus_exposure(page, f"index.html [{lang}] [{viewport_name}] [{task_state}]", failures)
+
     browser.close()
 
 

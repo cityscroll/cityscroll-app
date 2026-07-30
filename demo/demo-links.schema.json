@@ -45,6 +45,10 @@
           "maxLength": 160,
           "pattern": "^[^\\r\\n<>]+$"
         },
+        "localOnly": {
+          "type": "boolean",
+          "description": "When true, the route is exercised only against the local fixture server, not production cityscroll.org (use for routes not yet deployed)."
+        },
         "expectations": {
           "$ref": "#/$defs/expectations"
         }
