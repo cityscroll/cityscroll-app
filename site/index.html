@@ -5595,6 +5595,8 @@ async function loadToday(){
   // localStorage (not session): a returning visitor gets yesterday's strip painted on first
   // frame — no pop-in, no layout shift — while a fresh copy loads behind it if it's stale.
   // v3: edition highlight cards removed; cache key bumped so old card-bearing payloads do not paint.
+  // Keep in lockstep with rerenderForLang()'s localStorage read — a key drift leaves the strip
+  // stuck in the language it first painted (stray-English guard regression).
   const KEY = "crol_today_v3";
   let cached = null;
   try{ cached = JSON.parse(localStorage.getItem(KEY)||"null"); }catch(e){}
@@ -8572,7 +8574,7 @@ aRenderSaved();
 function rerenderForLang(){
   document.querySelectorAll(".filtertoggle").forEach(b=>{ b.textContent = "☰ " + t("filters_toggle"); });
   const nav = document.querySelector(".tabs"); if(nav) nav.setAttribute("aria-label", t("tablist_label"));
-  try{ const c = JSON.parse(localStorage.getItem("crol_today_v2")||"null"); if(c && c.d) renderToday(c.d); }catch(e){}
+  try{ const c = JSON.parse(localStorage.getItem("crol_today_v3")||"null"); if(c && c.d) renderToday(c.d); }catch(e){}
   paintEditionSpan();
   loadAgencies();
   aWatchChange(true); updateAWhen(); aRenderSaved(); renderLandingShareActions(); renderNLQPresets(); // same skipQuizSync reasoning as the page-init call above

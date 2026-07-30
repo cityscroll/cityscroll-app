@@ -55,6 +55,13 @@ test("section counts that lack a lens are plain static text, not fake links", ()
   assert.match(index, /SECTION_LENS/);
 });
 
+test("today-strip cache key stays in sync for language re-render", () => {
+  // loadToday writes KEY; rerenderForLang must read the same key or the strip stays English.
+  const keys = [...index.matchAll(/crol_today_v\d+/g)].map(m => m[0]);
+  assert.ok(keys.length >= 2, `expected write+read of cache key, got ${keys}`);
+  assert.ok(keys.every(k => k === "crol_today_v3"), `mixed cache keys: ${keys}`);
+});
+
 test("i18n carries homepage CTA keys in English", () => {
   for (const key of ["home_cta_prompt", "home_cta_submit", "home_cta_topics", "lang_switcher_label"]) {
     assert.match(i18n, new RegExp(`${key}\\s*:`));
