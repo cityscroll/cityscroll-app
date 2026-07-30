@@ -152,10 +152,12 @@ export async function computeLifecycle(env, requestId, noticeRow) {
 
   const { pins, strategy } = pinMatchStrategy(r.pin);
   if (pins.length === 0) {
+    // No PIN → not a transient Checkbook failure. Stages are not_applicable; the
+    // renderer collapses them into the single class-(b) no-PIN note.
     return {
       lifecycle: assembleLifecycle(r, [], [], [], {
         pinStrategy: "none",
-        lookupStatus: { pending: "error", registered: "error", spending: "error" },
+        lookupStatus: { pending: "skip", registered: "skip", spending: "skip" },
       }),
       ok: true,
     };

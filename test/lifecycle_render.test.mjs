@@ -48,13 +48,18 @@ const sandbox = new Function(
   extractConst("CHECKBOOK_SPENDING_URL") +
   extractConst("PASSPORT_CONTRACTS_URL") +
   extractConst("PASSPORT_RFX_URL") +
+  extractConst("LIFECYCLE_STAGE_ORDER") +
   extractFn("lifecycleStageLabel") +
   extractFn("lifecycleAmount") +
+  extractFn("lifecycleMoney") +
   extractFn("lifecycleSourceName") +
+  extractFn("lifecycleGapSourceName") +
+  extractFn("lifecycleHasLaterMatched") +
+  extractFn("lifecyclePublicStatus") +
   extractFn("lifecycleSourceLink") +
   extractFn("lifecycleStageHTML") +
   extractFn("lifecycleTimelineHTML") +
-  "return { lifecycleStageLabel, lifecycleAmount, lifecycleSourceLink, lifecycleStageHTML, lifecycleTimelineHTML };"
+  "return { lifecycleStageLabel, lifecycleAmount, lifecycleSourceLink, lifecycleStageHTML, lifecycleTimelineHTML, lifecycleMoney };"
 );
 
 const {
@@ -284,17 +289,17 @@ test("lifecycle: unmatched stages render specific statements, never blank", () =
 });
 
 // ---------------------------------------------------------------------------
-// 3. UNKNOWN: could-not-reach statements
+// 3. UNKNOWN: never surface transient "could not reach" on notice detail
 // ---------------------------------------------------------------------------
 
-test("lifecycle: unknown stages render 'could not reach' statements", () => {
+test("lifecycle: unknown stages map to taxonomy unmatched (never transient-error register)", () => {
   const html = lifecycleTimelineHTML(UNKNOWN_LIFECYCLE, notice);
-  assert.match(html, /class="box unknown"/);
-
+  // Public UI coerces unknown → unmatched (class-a gap), never "Could not reach"
+  assert.doesNotMatch(html, /Could not reach/);
+  assert.match(html, /class="box unmatched"/);
+  assert.match(html, /Not yet shown here/);
   const norecordDivs = (html.match(/class="lc-norecord"/g) || []).length;
-  assert.equal(norecordDivs, 3, "each unknown stage has a statement");
-
-  assert.match(html, /Could not reach/);
+  assert.equal(norecordDivs, 3, "each unknown stage has a taxonomy statement");
 });
 
 // ---------------------------------------------------------------------------
@@ -436,4 +441,8 @@ test("lifecycle: no PIN renders the no-pin note instead of the provenance note",
   assert.match(html, /does not publish a Procurement ID \(PIN\)/);
   assert.match(html, /would appear in Checkbook NYC if released with a PIN/);
   assert.doesNotMatch(html, /matched by PIN/);
+  // Dependent Checkbook stages collapse into the single no-PIN explanation
+  assert.doesNotMatch(html, /Could not reach/);
+  assert.doesNotMatch(html, /Not yet shown here/);
+  assert.doesNotMatch(html, /Pending contract/);
 });

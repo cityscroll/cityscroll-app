@@ -99,8 +99,9 @@ test("lifecycle: solicitation notice produces solicitation → pending → regis
   assert.deepEqual(stages, ["solicitation", "pending", "registered", "payment"]);
 
   // Every stage has a machine-readable status
+  const VALID = ["matched", "unmatched", "ambiguous", "unknown", "passed", "not_applicable"];
   for (const entry of result.timeline) {
-    assert.ok(["matched", "unmatched", "ambiguous", "unknown"].includes(entry.status),
+    assert.ok(VALID.includes(entry.status),
       `stage ${entry.stage} has a valid status: ${entry.status}`);
     assert.ok(entry.source, `stage ${entry.stage} has a source`);
   }

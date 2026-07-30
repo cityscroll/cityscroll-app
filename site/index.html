@@ -354,6 +354,8 @@
      could not verify, solid amber = multiple records). */
   .box.matched{border-top-color:var(--green)}
   .box.matched .stage-name{color:var(--green)}
+  .box.passed{border-top-color:var(--green);opacity:.88}
+  .box.passed .stage-name{color:var(--muted)}
   .box.unmatched{border-top-style:dashed;border-top-color:var(--amber)}
   .box.unmatched .stage-name{color:var(--amber)}
   .box.unknown{border-top-style:dashed;border-top-color:var(--rule-strong)}
@@ -5497,41 +5499,9 @@ async function fillContext(r, el){
   if(html) el.innerHTML = html;
 }
 
-/* ===================== FOLLOW THE DOLLARS (Checkbook NYC join) =====================
-   The award says $X — was it paid? Checkbook's Contracts API accepts the City Record's own
-   PIN as a search criterion (verified live: exact 1:1 matches), so this join is deterministic,
-   not fuzzy. Calls go through the worker's /checkbook CORS proxy; no key on the path. */
-const escXml = s => String(s).replace(/[<>&'"]/g, c=>({"<":"&lt;",">":"&gt;","&":"&amp;","'":"&apos;",'"':"&quot;"}[c]));
-async function checkbookQueryByField(pin, field){
-  if(!API) return null;
-  const xml = `<request><type_of_data>Contracts</type_of_data><records_from>1</records_from><max_records>5</max_records><search_criteria>`
-    + `<criteria><name>status</name><type>value</type><value>registered</value></criteria>`
-    + `<criteria><name>category</name><type>value</type><value>expense</value></criteria>`
-    + `<criteria><name>${field}</name><type>value</type><value>${escXml(pin)}</value></criteria>`
-    + `</search_criteria></request>`;
-  const r = await workerFetch("/checkbook", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({xml})}, 25000);
-  const doc = new DOMParser().parseFromString(await r.text(), "application/xml");
-  if((doc.querySelector("response > status > result")||{}).textContent !== "success") return null;
-  const g = (el,tag)=>{ const n=el.getElementsByTagName(tag)[0]; return n ? n.textContent : ""; };
-  return [...doc.getElementsByTagName("transaction")].map(el=>({
-    id: g(el,"prime_contract_id"), vendor: g(el,"prime_vendor"),
-    current: +g(el,"prime_contract_current_amount")||0, original: +g(el,"prime_contract_original_amount")||0,
-    spent: +g(el,"prime_vendor_spent_to_date")||0,
-    start: g(el,"prime_contract_start_date"), end: g(el,"prime_contract_end_date"),
-    registered: g(el,"prime_contract_registration_date"),
-    mwbe: g(el,"prime_vendor_mwbe_category"), subs: g(el,"contract_includes_sub_vendors")
-  }));
-}
-// Checkbook's "pin" field only ever matched PASSPort-era (2013+) PINs at scale — pre-2013
-// PINs used an older contract-number format Checkbook stored under "apt_pin" instead. Retry
-// once against that field before treating an empty pin-field result as a genuine non-match.
-async function checkbookByPin(pin){
-  const primary = await checkbookQueryByField(pin, "pin");
-  if(primary === null || primary.length) return primary;
-  const legacy = await checkbookQueryByField(pin, "apt_pin");
-  return (legacy && legacy.length) ? legacy : primary;
-}
-
+/* ===================== FOLLOW THE DOLLARS =====================
+   Precompute-first: registration and payment amounts come from GET /contract-lifecycle
+   (lifecycleDollarsHTML). No live Checkbook proxy from the notice-detail page. */
 
 // Notice-detail external-award region. Covered agencies (exact NYCHA / fuzzy ABO) resolve the
 // precomputed set in one workerFetch; absent/unknown agencies say nothing here (their coverage
@@ -5573,6 +5543,16 @@ function lifecycleStageLabel(stage){
   return stage;
 }
 
+// Zero-safe money for lifecycle cards: never stringify as the literal "null".
+// money() treats 0 as null (hides empty award amounts elsewhere); lifecycle spent/current
+// lines must show $0 or an em dash instead.
+function lifecycleMoney(v){
+  if(v == null || v === "" || Number.isNaN(Number(v))) return "—";
+  const n = Number(v);
+  if(n === 0) return "$0";
+  return money(n) || "$0";
+}
+
 function lifecycleAmount(entry){
   const d = entry.detail;
   if(!d) return null;
@@ -5581,6 +5561,20 @@ function lifecycleAmount(entry){
   if(entry.stage === "registered") return d.current_amount != null ? d.current_amount : null;
   if(entry.stage === "payment") return d.total_spent != null ? d.total_spent : null;
   return null;
+}
+
+// Distinct dataset labels for gap copy — never claim "lives in Checkbook NYC" as a
+// blanket source when the page already joins another domain on the same notice.
+// PASSPort sources use lifecycleSourceName; Checkbook stages name the specific feed.
+function lifecycleGapSourceName(entry){
+  if(entry.source === "city-record") return t("lifecycle_source_city_record");
+  if(entry.source === "passport-public-contracts" || entry.source === "passport-public-rfx"){
+    return t("lifecycle_source_passport");
+  }
+  if(entry.stage === "pending") return t("lifecycle_source_checkbook_pending");
+  if(entry.stage === "registered") return t("lifecycle_source_checkbook_registered");
+  if(entry.stage === "payment" || entry.source === "checkbook-spending") return t("lifecycle_source_checkbook_spending");
+  return t("lifecycle_source_checkbook");
 }
 
 // The authoritative source link for each stage: City Record for solicitation/award,
@@ -5620,30 +5614,62 @@ function lifecycleSourceLink(entry){
   return "";
 }
 
-function lifecycleStageHTML(entry){
+// Stage order for succession: when a later stage is matched, earlier gaps are "passed".
+const LIFECYCLE_STAGE_ORDER = {solicitation:0, award:1, pending:2, registered:3, payment:4};
+
+function lifecycleHasLaterMatched(timeline, stage){
+  const order = LIFECYCLE_STAGE_ORDER[stage];
+  if(order == null) return false;
+  return (timeline || []).some(e =>
+    e && e.status === "matched" && (LIFECYCLE_STAGE_ORDER[e.stage] ?? -1) > order);
+}
+
+// Coerce precompute statuses for public display:
+// - not_applicable → omit (caller filters)
+// - unknown never surfaces as "Could not reach" — map to unmatched taxonomy, or passed
+//   when a later stage is already on record
+// - unmatched + later matched → passed (stage succession)
+function lifecyclePublicStatus(entry, timeline){
+  if(!entry) return "unmatched";
+  if(entry.status === "not_applicable") return "not_applicable";
+  if(entry.status === "matched" || entry.status === "ambiguous" || entry.status === "passed") return entry.status;
+  if(lifecycleHasLaterMatched(timeline, entry.stage)) return "passed";
+  // Transient lookup failure and confirmed empty both use the taxonomy gap register
+  // for the reader — never the operational "could not reach" wording on notice detail.
+  if(entry.status === "unknown" || entry.status === "unmatched") return "unmatched";
+  return entry.status;
+}
+
+function lifecycleStageHTML(entry, timeline){
+  const publicStatus = lifecyclePublicStatus(entry, timeline);
+  if(publicStatus === "not_applicable") return "";
+
   const label = lifecycleStageLabel(entry.stage);
   const dateHTML = entry.date ? `<div class="when">${fdate(entry.date)}</div>` : `<div class="when">—</div>`;
   let detailHTML = "";
 
-  if(entry.status === "matched"){
+  if(publicStatus === "matched"){
     const amt = lifecycleAmount(entry);
-    const amtHTML = (amt != null && money(amt)) ? `<div class="amt">${money(amt)}</div>` : "";
+    const amtHTML = (amt != null) ? `<div class="amt">${lifecycleMoney(amt)}</div>` : "";
     const d = entry.detail || {};
     let extraHTML = "";
     if(entry.stage === "registered" && d.current_amount > 0 && d.original_amount > 0 &&
        Math.abs(d.current_amount - d.original_amount) > 1){
-      extraHTML += `<div class="lc-amend">${t("lifecycle_amended_from_html",{original:money(d.original_amount)})}</div>`;
+      extraHTML += `<div class="lc-amend">${t("lifecycle_amended_from_html",{original:lifecycleMoney(d.original_amount)})}</div>`;
     }
     if(entry.stage === "registered" && d.spent_to_date != null){
       const pct = d.current_amount > 0 ? Math.min(100, Math.round((d.spent_to_date / d.current_amount) * 100)) : 0;
-      extraHTML += `<div class="lc-pct">${money(d.spent_to_date)} / ${money(d.current_amount)} (${pct}%)</div>`;
+      extraHTML += `<div class="lc-pct">${lifecycleMoney(d.spent_to_date)} / ${lifecycleMoney(d.current_amount)} (${pct}%)</div>`;
       extraHTML += `<div class="lbar" style="max-width:180px;margin-top:4px"><span style="width:${pct}%"></span></div>`;
     }
     if(entry.stage === "payment" && d.total_payments){
       extraHTML += `<div class="lc-pcount">${tn("lifecycle_payments_count", d.total_payments)}</div>`;
       if(d.latest_payment_amount != null){
-        extraHTML += `<div class="lc-pct">${t("lifecycle_latest_payment_html",{amount:money(d.latest_payment_amount),date:fdate(d.latest_payment_date)})}</div>`;
+        extraHTML += `<div class="lc-pct">${t("lifecycle_latest_payment_html",{amount:lifecycleMoney(d.latest_payment_amount),date:fdate(d.latest_payment_date)})}</div>`;
       }
+    } else if(entry.stage === "payment" && d.total_spent != null && !d.total_payments){
+      // Derived from registered.spent when spending domain was unavailable
+      extraHTML += `<div class="lc-pct">${t("lifecycle_paid_to_date_html",{amount:lifecycleMoney(d.total_spent)})}</div>`;
     }
     if((entry.stage === "award" || entry.stage === "pending") && d.vendor){
       extraHTML += `<div class="vend">${t("awarded_to")} <b lang="en" dir="ltr">${escUiHtml(d.vendor)}</b></div>`;
@@ -5662,34 +5688,39 @@ function lifecycleStageHTML(entry){
       if(rfx.procurement_method) extraHTML += `<div class="lc-pct">${t("lifecycle_rfx_method_html",{method:escUiHtml(rfx.procurement_method)})}</div>`;
     }
     detailHTML = amtHTML + extraHTML;
-  } else if(entry.status === "unmatched"){
-    const srcName = lifecycleSourceName(entry.source);
-    // Prefer naming both Checkbook and PASSPort when the edge join recorded both gap sources.
-    const multi = Array.isArray(entry.gap_sources) && entry.gap_sources.length > 1
-      ? entry.gap_sources.map(lifecycleSourceName).filter((v, i, a) => a.indexOf(v) === i).join(" · ")
-      : srcName;
-    const src = `<span lang="en" dir="ltr">${multi}</span>`;
+  } else if(publicStatus === "passed"){
+    const specificKey = "lifecycle_passed_" + entry.stage + "_html";
+    let note = t(specificKey);
+    if(note === specificKey) note = t("lifecycle_passed_generic_html");
+    detailHTML = `<div class="lc-norecord">${note}</div>`;
+  } else if(publicStatus === "unmatched"){
+    // Prefer naming both Checkbook and PASSPort when the edge join recorded both gap
+    // sources; otherwise use the stage-specific Checkbook dataset (or PASSPort) label.
+    let srcName;
+    if(Array.isArray(entry.gap_sources) && entry.gap_sources.length > 1){
+      srcName = entry.gap_sources.map(lifecycleSourceName).filter((v, i, a) => a.indexOf(v) === i).join(" · ");
+    } else {
+      srcName = lifecycleGapSourceName(entry);
+    }
+    const src = `<span lang="en" dir="ltr">${srcName}</span>`;
     const specificKey = "lifecycle_unmatched_" + entry.stage + "_html";
     let note = t(specificKey, {source: src});
     if(note === specificKey) note = t("lifecycle_unmatched_generic_html", {source: src});
     detailHTML = `<div class="lc-norecord">${note}</div>`;
-  } else if(entry.status === "unknown"){
-    const srcName = lifecycleSourceName(entry.source);
-    detailHTML = `<div class="lc-norecord">${t("lifecycle_unknown_html",{source:`<span lang="en" dir="ltr">${srcName}</span>`})}</div>`;
-  } else if(entry.status === "ambiguous"){
+  } else if(publicStatus === "ambiguous"){
     detailHTML = `<div class="lc-norecord">${t("lifecycle_ambiguous_html")}</div>`;
     if(entry.detail && Array.isArray(entry.detail.candidates)){
       const cands = entry.detail.candidates.map(c => {
         const amt = c.current_amount != null ? c.current_amount : (c.amount || 0);
         const dt = c.registration_date || c.received_date || null;
-        return `<div>${money(amt) || "—"}${dt ? " · " + fdate(dt) : ""}${c.contract_id ? ` · <code>${c.contract_id}</code>` : ""}</div>`;
+        return `<div>${lifecycleMoney(amt)}${dt ? " · " + fdate(dt) : ""}${c.contract_id ? ` · <code>${c.contract_id}</code>` : ""}</div>`;
       }).join("");
       detailHTML += `<div class="lc-candidates">${cands}</div>`;
     }
   }
 
-  const link = lifecycleSourceLink(entry);
-  return `<div class="stage"><div class="box ${entry.status}">
+  const link = publicStatus === "passed" ? "" : lifecycleSourceLink(entry);
+  return `<div class="stage"><div class="box ${publicStatus}">
     <div class="stage-name">${label}</div>
     ${dateHTML}
     ${detailHTML}
@@ -5698,34 +5729,47 @@ function lifecycleStageHTML(entry){
 }
 
 function lifecycleTimelineHTML(data, notice){
-  const tl = data.timeline || [];
-  if(!tl.length) return "";
+  const raw = data.timeline || [];
+  if(!raw.length) return "";
+
+  // No PIN: single class-(b) explanation — collapse dependent Checkbook stages entirely.
+  const noPin = !data.pin || data.pin_strategy === "none";
+  const tl = noPin
+    ? raw.filter(e => e.source === "city-record" || e.stage === "solicitation" || e.stage === "award")
+    : raw.filter(e => lifecyclePublicStatus(e, raw) !== "not_applicable");
 
   let stages = "";
-  tl.forEach((entry, idx) => {
-    stages += lifecycleStageHTML(entry);
-    if(idx < tl.length - 1) stages += '<div class="connector">→</div>';
+  const visible = tl.map(e => ({entry: e, html: lifecycleStageHTML(e, raw)})).filter(x => x.html);
+  visible.forEach((x, idx) => {
+    stages += x.html;
+    if(idx < visible.length - 1) stages += '<div class="connector">→</div>';
   });
 
   let amendmentsHTML = "";
   if(data.amendments && data.amendments.length){
     amendmentsHTML = data.amendments.map(a =>
       `<div class="note warn">${t("lifecycle_amendment_note_html",{
-        original:money(a.original_amount),
-        current:money(a.current_amount),
-        delta:money(Math.abs(a.delta))
+        original:lifecycleMoney(a.original_amount),
+        current:lifecycleMoney(a.current_amount),
+        delta:lifecycleMoney(Math.abs(a.delta))
       })}</div>`
     ).join("");
   }
 
-  const pinNote = data.pin
-    ? t("lifecycle_provenance_note_html",{
+  const pinNote = noPin
+    ? t("lifecycle_no_pin_note_html")
+    : t("lifecycle_provenance_note_html",{
         city_record:`<a href="${REQ_URL(notice.request_id)}" ${EXT_ATTRS}>${t("lifecycle_source_city_record")}${extSR()}</a>`,
         checkbook:`<a href="https://www.checkbooknyc.com/" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`,
         passport:`<a href="${PASSPORT_CONTRACTS_URL}" ${EXT_ATTRS}>${t("lifecycle_source_passport")}${extSR()}</a>`,
         pin:`<code>${escUiHtml(data.pin)}</code>`
-      })
-    : t("lifecycle_no_pin_note_html");
+      });
+
+  // No-PIN with no City Record stage in the timeline: still show the heading + single note.
+  if(noPin && !stages){
+    return `<div class="chain-h">${t("lifecycle_heading")}</div>
+      <div class="note">${pinNote}</div>`;
+  }
 
   let rfxHTML = "";
   const rfx = data.rfx_detail;
@@ -5745,7 +5789,7 @@ function lifecycleTimelineHTML(data, notice){
   }
 
   return `<div class="chain-h">${t("lifecycle_heading")}</div>
-    <div class="chain">${stages}</div>
+    ${stages ? `<div class="chain">${stages}</div>` : ""}
     ${amendmentsHTML}
     ${rfxHTML}
     <div class="note">${pinNote}</div>`;
@@ -5753,9 +5797,10 @@ function lifecycleTimelineHTML(data, notice){
 
 // Registration / payment detail drawn from the same precomputed lifecycle timeline — no
 // live Checkbook proxy from the client (precompute-first). Specific per-slot gaps use the
-// established "no record found" register.
+// established "no record found" register. Never the transient "Could not reach" wording.
 function lifecycleDollarsHTML(data, notice){
   if(!data || !Array.isArray(data.timeline)) return "";
+  if(!data.pin || data.pin_strategy === "none") return ""; // no-PIN: lifecycle note is enough
   const reg = data.timeline.find(e => e.stage === "registered") || null;
   const pay = data.timeline.find(e => e.stage === "payment") || null;
   if(!reg && !pay) return "";
@@ -5768,26 +5813,27 @@ function lifecycleDollarsHTML(data, notice){
     const pct = current > 0 ? Math.min(100, Math.round((spent / current) * 100)) : 0;
     const amended = original > 0 && Math.abs(current - original) > 1;
     const vendorMismatch = notice.vendor_name && d.vendor && vendorStem(d.vendor) !== vendorStem(notice.vendor_name);
-    const payNote = pay && pay.status === "matched" && pay.detail
+    const payPublic = pay ? lifecyclePublicStatus(pay, data.timeline) : "";
+    const payNote = pay && payPublic === "matched" && pay.detail
       ? t("lifecycle_dollars_payments_html",{
-          count: tn("lifecycle_payments_count", pay.detail.total_payments || 0),
+          count: pay.detail.total_payments != null
+            ? tn("lifecycle_payments_count", pay.detail.total_payments || 0)
+            : t("lifecycle_paid_to_date_html",{amount:lifecycleMoney(pay.detail.total_spent)}),
           latest: pay.detail.latest_payment_amount != null
-            ? t("lifecycle_latest_payment_html",{amount:money(pay.detail.latest_payment_amount),date:fdate(pay.detail.latest_payment_date)})
+            ? t("lifecycle_latest_payment_html",{amount:lifecycleMoney(pay.detail.latest_payment_amount),date:fdate(pay.detail.latest_payment_date)})
             : ""
         })
-      : (pay ? (pay.status === "unmatched"
-          ? t("lifecycle_unmatched_payment_html",{source:`<span lang="en" dir="ltr">${t("lifecycle_source_checkbook")}</span>`})
-          : pay.status === "unknown"
-            ? t("lifecycle_unknown_html",{source:`<span lang="en" dir="ltr">${t("lifecycle_source_checkbook")}</span>`})
-            : "") : "");
+      : (pay && payPublic === "unmatched"
+          ? t("lifecycle_unmatched_payment_html",{source:`<span lang="en" dir="ltr">${t("lifecycle_source_checkbook_spending")}</span>`})
+          : "");
     const contractLink = d.contract_id
       ? `https://www.checkbooknyc.com/smart_search/citywide?search_term=${encodeURIComponent(d.contract_id)}`
       : CHECKBOOK_SEARCH_URL;
     return `<div class="apply" style="margin-top:14px"><h3>${t("lifecycle_dollars_heading")}</h3><div class="body">
       <dl>
         <dt>${t("lifecycle_dollars_contract_lbl")}</dt><dd><code>${escUiHtml(d.contract_id||"—")}</code> · ${t("lifecycle_dollars_registered_on_html",{date:d.registration_date?fdate(d.registration_date):"—"})}</dd>
-        <dt>${t("lifecycle_dollars_committed_lbl")}</dt><dd><b>${money(current)||"$0"}</b>${amended?` <span class="tag soon">${t("lifecycle_amended_from_html",{original:money(original)})}</span>`:""}</dd>
-        <dt>${t("lifecycle_dollars_paid_lbl")}</dt><dd><b>${money(spent)||"$0"}</b> (${pct}%)<div class="lbar" style="max-width:220px;margin-top:5px"><span style="width:${pct}%"></span></div></dd>
+        <dt>${t("lifecycle_dollars_committed_lbl")}</dt><dd><b>${lifecycleMoney(current)}</b>${amended?` <span class="tag soon">${t("lifecycle_amended_from_html",{original:lifecycleMoney(original)})}</span>`:""}</dd>
+        <dt>${t("lifecycle_dollars_paid_lbl")}</dt><dd><b>${lifecycleMoney(spent)}</b> (${pct}%)<div class="lbar" style="max-width:220px;margin-top:5px"><span style="width:${pct}%"></span></div></dd>
         <dt>${t("lifecycle_dollars_term_lbl")}</dt><dd>${fdate(d.start_date)||"—"} → ${fdate(d.end_date)||"—"}</dd>
         ${d.mwbe?`<dt>${t("lifecycle_dollars_mwbe_lbl")}</dt><dd>${escUiHtml(d.mwbe)}</dd>`:""}
       </dl>
@@ -5800,15 +5846,14 @@ function lifecycleDollarsHTML(data, notice){
     </div></div>`;
   }
 
-  // Registration not matched — still name the specific gap (never a page-level blank).
+  // Registration not matched — taxonomy gap only (never transient "could not reach").
+  const regPublic = reg ? lifecyclePublicStatus(reg, data.timeline) : "";
   const regNote = !reg ? ""
-    : reg.status === "unmatched"
-      ? t("lifecycle_unmatched_registered_html",{source:`<span lang="en" dir="ltr">${t("lifecycle_source_checkbook")}</span>`})
-      : reg.status === "unknown"
-        ? t("lifecycle_unknown_html",{source:`<span lang="en" dir="ltr">${t("lifecycle_source_checkbook")}</span>`})
-        : reg.status === "ambiguous"
-          ? t("lifecycle_ambiguous_html")
-          : "";
+    : regPublic === "unmatched"
+      ? t("lifecycle_unmatched_registered_html",{source:`<span lang="en" dir="ltr">${t("lifecycle_source_checkbook_registered")}</span>`})
+      : regPublic === "ambiguous"
+        ? t("lifecycle_ambiguous_html")
+        : "";
   if(!regNote) return "";
   return `<div class="note" style="margin-top:12px"><b>${t("lifecycle_dollars_heading")}</b> ${regNote}
     <a href="${CHECKBOOK_SEARCH_URL}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a></div>`;
@@ -5827,17 +5872,15 @@ async function loadLifecycle(r, el, dollarsEl){
   if(el && !document.contains(el)) return;
   if(dollarsEl && !document.contains(dollarsEl)) return;
   if(!data){
-    // No PIN → explicit gap on the lifecycle slot when this is a procurement notice.
+    // No PIN → explicit class-(b) gap on the lifecycle slot for procurement notices.
     if(el && /^(Solicitation|Award|Intent to Award)$/.test(r.type_of_notice_description||"") && !usablePin(r.pin)){
       el.innerHTML = `<div class="chain-h">${t("lifecycle_heading")}</div><div class="note">${t("lifecycle_no_pin_note_html")}</div>`;
     }
+    // Network / total failure: say nothing — never "Could not reach" as a data gap.
     return;
   }
   if(data.ok === false && !Array.isArray(data.timeline)){
-    if(el && usablePin(r.pin)){
-      el.innerHTML = `<div class="chain-h">${t("lifecycle_heading")}</div>
-        <div class="note">${t("lifecycle_unknown_html",{source:`<span lang="en" dir="ltr">${t("lifecycle_source_checkbook")}</span>`})}</div>`;
-    }
+    // Unresolvable precompute without a timeline: fail soft (no transient-error card).
     return;
   }
   if(el && Array.isArray(data.timeline) && data.timeline.length){

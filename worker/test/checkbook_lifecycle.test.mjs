@@ -380,10 +380,10 @@ test("NO MATCH: usable PIN, no Checkbook records → unmatched stages (not blank
 }));
 
 // ===========================================================================
-// 5. NO USABLE PIN: notice has no PIN → all Checkbook stages unknown
+// 5. NO USABLE PIN: notice has no PIN → Checkbook stages not_applicable
 // ===========================================================================
 
-test("NO PIN: notice without a usable PIN → unknown stages, no Checkbook calls", async () => {
+test("NO PIN: notice without a usable PIN → not_applicable stages, no Checkbook calls", async () => {
   const orig = globalThis.fetch;
   let callCount = 0;
   globalThis.fetch = async () => { callCount++; return { ok: true, json: async () => [] }; };
@@ -399,10 +399,14 @@ test("NO PIN: notice without a usable PIN → unknown stages, no Checkbook calls
     const res = await handleContractLifecycle(req("?id=20250110005"), { DB: db });
     const body = await res.json();
 
-    // lifecycle.ok is false because Checkbook lookups could not run without a usable PIN
-    assert.equal(body.ok, false);
-    const pending = body.timeline.find((t) => t.stage === "pending");
-    assert.equal(pending.status, "unknown", "no usable PIN → unknown, not unmatched");
+    // No PIN is not a transient failure — stages are not_applicable; ok is true so the
+    // renderer can collapse them into the single class-(b) no-PIN note.
+    assert.equal(body.ok, true);
+    assert.equal(body.pin_strategy, "none");
+    for (const stage of ["pending", "registered", "payment"]) {
+      const entry = body.timeline.find((t) => t.stage === stage);
+      assert.equal(entry.status, "not_applicable", `${stage} is not_applicable without a PIN`);
+    }
     assert.equal(callCount, 0, "no Checkbook calls made for a notice without a usable PIN");
   } finally { globalThis.fetch = orig; }
 });
