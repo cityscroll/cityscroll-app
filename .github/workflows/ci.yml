@@ -219,8 +219,9 @@ jobs:
 
   performance:
     name: Performance budgets (20-sample p95)
-    needs: changes
-    if: needs.changes.outputs.changelog_only != 'true'
+    # Not required by merge rules, but fail-fast here for the same heavy-work safety.
+    needs: [changes, unit]
+    if: needs.changes.outputs.changelog_only != 'true' && needs.unit.result == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -254,69 +255,78 @@ jobs:
   # parks the heavier functional suite on manual dispatch doesn't apply here.
   a11y-pr:
     name: Accessibility + language gate (axe on every PR)
-    needs: changes
+    # Fail-fast: wait for Unit tests so we can skip the browser suite with a completed
+    # required-check conclusion when Unit checks already failed.
+    needs: [changes, unit]
+    if: always()
     # Always run so the required check name reports a conclusion. Job-level skips leave
     # the merge queue waiting when a changelog-only PR never produces this check.
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Changelog-only or non-frontend — report required check success
-        if: needs.changes.outputs.changelog_only == 'true' || needs.changes.outputs.frontend != 'true'
+      - name: Changelog-only, non-frontend, or unit-failed — report required check success
+        if: needs.changes.outputs.changelog_only == 'true' || needs.changes.outputs.frontend != 'true' || needs.unit.result != 'success'
         run: |
-          echo "Skipping heavy a11y suite (changelog_only=${{ needs.changes.outputs.changelog_only }}, frontend=${{ needs.changes.outputs.frontend }})."
+          if [ "${{ needs.unit.result }}" != "success" ] && \
+             [ "${{ needs.changes.outputs.changelog_only }}" != "true" ] && \
+             [ "${{ needs.changes.outputs.frontend }}" = "true" ]; then
+            echo "Skipping heavy a11y suite because unit failed — re-run after unit is green."
+          else
+            echo "Skipping heavy a11y suite (changelog_only=${{ needs.changes.outputs.changelog_only }}, frontend=${{ needs.changes.outputs.frontend }})."
+          fi
           echo "Reporting success for 'Accessibility + language gate (axe on every PR)'."
 
       - uses: actions/checkout@v4
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true'
+        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         with:
           persist-credentials: false
       - uses: actions/setup-python@v5
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true'
+        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         with:
           python-version: "3.12"
       - name: Install Playwright
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true'
+        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: |
           pip install playwright
           playwright install --with-deps chromium
       - name: QR share interaction and capture gate
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true'
+        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/functional/capture_qr_share.py --verify-only
       - name: Item hash-route scroll and focus gate
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true'
+        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/functional/19_hash_route_focus.py
       - name: Serve site locally
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true'
+        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: |
           python3 -m http.server 8000 --directory site &
           sleep 1
       - name: axe WCAG 2.2 accessibility gate (390px + 1440px, every activated state)
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true'
+        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/functional/11_accessibility.py
       - name: Language switcher gate
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true'
+        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/functional/12_language.py
       - name: Focus-visibility keyboard-walk gate
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true'
+        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/functional/14_focus_visible.py
       - name: Public demo-link regression contract
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true'
+        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         env:
           CROL_BASE: http://127.0.0.1:8000/
         run: python3 test/functional/20_demo_links.py
       - name: Public demo-link contract on cityscroll.org
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true'
+        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         env:
           CROL_BASE: https://cityscroll.org/
         run: python3 test/functional/20_demo_links.py
       - name: External-link new-tab characterization gate (City Record/PASSPort/Checkbook NYC)
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true'
+        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/functional/16_external_links.py
       - name: Label-coverage census (rendered DOM, incl. hidden + JS-built fields)
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true'
+        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/standards/label_coverage.py
       - name: Heading-uniqueness + landmark check (per rendered state)
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true'
+        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/standards/heading_uniqueness.py
 
   # The runtime stray-English guard is hermetic (fixture dataset, every upstream stubbed),
@@ -325,47 +335,56 @@ jobs:
   # languages ship (wave 7 activates one run per language).
   i18n-guard:
     name: Stray-English guard (runtime, fixtures)
-    needs: changes
+    # Fail-fast: wait for Unit tests so we can skip locale-heavy runs with a completed
+    # required-check conclusion when Unit checks already failed.
+    needs: [changes, unit]
+    if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Changelog-only or non-frontend — report required check success
-        if: needs.changes.outputs.changelog_only == 'true' || needs.changes.outputs.frontend != 'true'
+      - name: Changelog-only, non-frontend, or unit-failed — report required check success
+        if: needs.changes.outputs.changelog_only == 'true' || needs.changes.outputs.frontend != 'true' || needs.unit.result != 'success'
         run: |
-          echo "Skipping runtime i18n guard (changelog_only=${{ needs.changes.outputs.changelog_only }}, frontend=${{ needs.changes.outputs.frontend }})."
+          if [ "${{ needs.unit.result }}" != "success" ] && \
+             [ "${{ needs.changes.outputs.changelog_only }}" != "true" ] && \
+             [ "${{ needs.changes.outputs.frontend }}" = "true" ]; then
+            echo "Skipping runtime stray-English suite because unit failed — re-run after unit is green."
+          else
+            echo "Skipping runtime i18n guard (changelog_only=${{ needs.changes.outputs.changelog_only }}, frontend=${{ needs.changes.outputs.frontend }})."
+          fi
           echo "Reporting success for 'Stray-English guard (runtime, fixtures)'."
 
       - uses: actions/checkout@v4
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true'
+        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         with:
           persist-credentials: false
       - uses: actions/setup-node@v4
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true'
+        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         with:
           node-version: 20
       - uses: actions/setup-python@v5
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true'
+        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         with:
           python-version: "3.12"
       - name: Install Playwright
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true'
+        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: |
           pip install playwright
           playwright install --with-deps chromium
       - name: Run guard (es + zh-Hans + ru + bn + ht + ko + fr + pl + ar + ur, all pages)
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true'
+        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         env:
           CROL_GUARD_LANGS: es,zh-Hans,ru,bn,ht,ko,fr,pl,ar,ur
           CROL_GUARD_PAGES: index,about,data,stats,api,changelog
         run: python3 test/functional/13_stray_english.py
       - name: RTL guard (ar + ur — dir propagation, logical-property mirroring, bidi isolation)
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true'
+        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/functional/15_rtl.py
       - name: Forecast discoverability guard (reachable from notice detail, translates)
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true'
+        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/functional/16_forecast_discoverability.py
       - name: Default-example guard (Land/Staffing open on a live-picked example, deep links win)
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true'
+        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/functional/17_default_examples.py
 
   # readable-or-else (github.com/jimdc/readable-or-else): ratchet-mode reading-level gate
@@ -375,33 +394,42 @@ jobs:
   # Not yet on PyPI; install straight from the (public) source repo.
   reading-level:
     name: Reading-level ratchet gate (readable-or-else)
-    needs: changes
+    # Fail-fast: wait for Unit tests so we can skip the text-stat pass with a completed
+    # required-check conclusion when Unit checks already failed.
+    needs: [changes, unit]
+    if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Changelog-only or non-frontend — report required check success
-        if: needs.changes.outputs.changelog_only == 'true' || needs.changes.outputs.frontend != 'true'
+      - name: Changelog-only, non-frontend, or unit-failed — report required check success
+        if: needs.changes.outputs.changelog_only == 'true' || needs.changes.outputs.frontend != 'true' || needs.unit.result != 'success'
         run: |
-          echo "Skipping reading-level suite (changelog_only=${{ needs.changes.outputs.changelog_only }}, frontend=${{ needs.changes.outputs.frontend }})."
+          if [ "${{ needs.unit.result }}" != "success" ] && \
+             [ "${{ needs.changes.outputs.changelog_only }}" != "true" ] && \
+             [ "${{ needs.changes.outputs.frontend }}" = "true" ]; then
+            echo "Skipping reading-level suite because unit failed — re-run after unit is green."
+          else
+            echo "Skipping reading-level suite (changelog_only=${{ needs.changes.outputs.changelog_only }}, frontend=${{ needs.changes.outputs.frontend }})."
+          fi
           echo "Reporting success for 'Reading-level ratchet gate (readable-or-else)'."
 
       - uses: actions/checkout@v4
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true'
+        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         with:
           persist-credentials: false
       - uses: actions/setup-python@v5
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true'
+        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         with:
           python-version: "3.12"
       - uses: actions/setup-node@v4
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true'
+        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         with:
           node-version: 20
       - name: Install readable-or-else
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true'
+        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: pip install git+https://github.com/jimdc/readable-or-else.git
       - name: Reading-level ratchet gate
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true'
+        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: |
           python3 test/standards/reading_level.py \
             --root site \
@@ -418,7 +446,7 @@ jobs:
       # up from --suggest; wiring it as an auto-commit CI step is a separate, deliberate
       # opt-in this repo hasn't taken — see AGENTS.md.
       - name: Suggest simplifications (opt-in via PR label)
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && (contains(github.event.pull_request.labels.*.name, 'suggest-rewrite'))
+        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && (contains(github.event.pull_request.labels.*.name, 'suggest-rewrite'))
         env:
           READABLE_OR_ELSE_LLM_BASE: ${{ secrets.READABLE_OR_ELSE_LLM_BASE }}
           READABLE_OR_ELSE_LLM_KEY: ${{ secrets.READABLE_OR_ELSE_LLM_KEY }}
