@@ -1,15 +1,15 @@
-// POST /feedback — public feedback intake (bug / feature idea / general). Mirrors /subscribe's
-// posture exactly: Turnstile-gated, per-IP + per-address daily rate limits (KV), strict field
-// validation, and FAIL CLOSED (503) until TURNSTILE_SECRET + RESEND_API_KEY + FEEDBACK are set —
-// so deploying it is safe before Turnstile is provisioned (like /usage 404ing without USAGE_KEY).
+// POST /feedback — public feedback intake (bug / feature idea / general).
+// Rate-limited (per-IP + per-address daily caps in KV), strict field validation, and FAIL
+// CLOSED (503) until RESEND_API_KEY + FEEDBACK are set. Turnstile is not required on this
+// path: rate limits + validation are the spam controls (same posture as /subscribe).
 //
 // On a valid submission it does BOTH:
 //   (1) STORE an archive row in the FEEDBACK KV namespace
 //         fb:<ts>:<rand> → { category, message, email, ip, ua, at }
 //       so there's a reviewable record (read it back via /admin/feedback), and
-//   (2) NOTIFY the operator by email via Resend — To FEEDBACK_TO (default feedback@crol-list.org),
-//       From alerts@crol-list.org, Reply-To the submitter IF they left an address so the operator
-//       can just hit Reply.
+//   (2) NOTIFY the operator by email via Resend — To FEEDBACK_TO (default
+//       feedback@cityscroll.org), From alerts@crol-list.org, Reply-To the submitter IF they
+//       left an address so the operator can just hit Reply.
 // It deliberately does NOT auto-file GitHub issues (a public form that opens issues is a spam
 // vector); the operator triages the archive and files real issues by hand.
 
@@ -19,7 +19,7 @@ import { overActorLimit } from "./lib/meter.mjs";
 
 const MAX_FB_PER_IP_DAY = 10;
 const MAX_FB_PER_ADDR_DAY = 5;
-const DEFAULT_TO = "feedback@crol-list.org"; // routed by the crol-list.org catch-all; no personal inbox in source
+const DEFAULT_TO = "feedback@cityscroll.org";
 
 export async function handleFeedback(req, env) {
   const origin = req.headers.get("origin") || "";
@@ -30,7 +30,7 @@ export async function handleFeedback(req, env) {
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
   if (req.method !== "POST") return json({ ok: false, reason: "method" }, 405, cors);
 
-  if (!env.TURNSTILE_SECRET || !env.RESEND_API_KEY || !env.FEEDBACK) {
+  if (!env.RESEND_API_KEY || !env.FEEDBACK) {
     return json({ ok: false, reason: "not-configured" }, 503, cors);
   }
 
@@ -42,9 +42,8 @@ export async function handleFeedback(req, env) {
   const { category, message, email } = v.value;
 
   const ip = req.headers.get("CF-Connecting-IP") || "";
-  // Cheap KV rate-limit BEFORE spending a Turnstile verify, a store, or an email send.
+  // Cheap KV rate-limit BEFORE a store or an email send.
   if (await overLimit(env, ip, email)) return json({ ok: false, reason: "rate-limited" }, 429, cors);
-  if (!(await verifyTurnstile(env, body.turnstileToken, ip))) return json({ ok: false, reason: "turnstile" }, 403, cors);
 
   const record = {
     category, message, email,
@@ -125,21 +124,6 @@ function notifyHtml(r, label) {
 }
 function escHtml(s) {
   return String(s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
-}
-
-async function verifyTurnstile(env, token, ip) {
-  if (!token) return false;
-  try {
-    const r = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-      method: "POST",
-      headers: { "content-type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({ secret: env.TURNSTILE_SECRET, response: String(token), remoteip: ip }),
-    });
-    const j = await r.json();
-    return !!(j && j.success);
-  } catch {
-    return false;
-  }
 }
 
 async function overLimit(env, ip, email) {

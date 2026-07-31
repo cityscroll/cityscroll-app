@@ -80,7 +80,6 @@
   :is(a,button,select,input,textarea,summary):focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
 </style>
 <link rel="stylesheet" href="brand.css">
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
 <a class="skip" href="#main" data-i18n="skip_to_content">Skip to content</a>
@@ -188,6 +187,7 @@ registration and real payment. Nothing here says anyone did wrong. It just saves
 
 <h2 data-i18n="about_h_feedback">Send feedback</h2>
 <p class="src" data-i18n="about_p_feedback">Found a bug, want a feature, or have a thought? Send it here. We read everything. No account needed.</p>
+<p class="src" data-i18n-html="about_email_us_html">Or email us: <a href="mailto:feedback@cityscroll.org">feedback@cityscroll.org</a></p>
 <div class="card">
   <input type="hidden" id="fbcategory" value="bug">
   <label data-i18n="about_label_kind">What kind?</label>
@@ -203,8 +203,6 @@ registration and real payment. Nothing here says anyone did wrong. It just saves
   <label for="fbemail"><span data-i18n="about_label_email">Email</span> <span class="opt" data-i18n="about_label_email_opt">— optional, only if you'd like a reply</span></label>
   <input type="email" id="fbemail" data-clarity-mask="true" autocomplete="email" placeholder="you@example.com" data-i18n-placeholder="email_placeholder">
 
-  <div class="cf-turnstile" data-sitekey="0x4AAAAAADtj-Mskk_RnVd5K" data-action="feedback-v1" style="margin:14px 0 6px"></div>
-
   <button class="btn" id="fbsend" data-i18n="about_btn_send">Send feedback →</button>
   <div id="fbmsg" role="status"></div>
   <p class="note" data-i18n-html="about_note_feedback_html">If you add your email, we only use it to reply. Each submission also saves some basic info — your IP address and browser. We keep this info for a short time to stop spam. See <a href="#privacy">Privacy</a>.</p>
@@ -218,7 +216,7 @@ registration and real payment. Nothing here says anyone did wrong. It just saves
 <p data-i18n-html="about_p_content_html">An AI assistant (Claude) drafts this site's copy — headings, explanations, pages like this one. A human editor checks it before it goes live. The data is not AI-generated. Every notice, dollar figure, and date comes straight from <a href="https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx" target="_blank" rel="noopener noreferrer">NYC Open Data<span class="sr-only"> (opens in new tab)</span></a>, unedited.</p>
 
 </main>
-<footer class="foot" data-i18n-html="about_foot_html">CityScroll · a search interface over <a href="https://a856-cityrecord.nyc.gov/" target="_blank" rel="noopener noreferrer">The City Record<span class="sr-only"> (opens in new tab)</span></a> · <a href="changelog.html">Changelog</a> · <a href="stats.html">Stats</a> · <a href="index.html">Home</a></footer>
+<footer class="foot" data-i18n-html="about_foot_html">CityScroll · a search interface over <a href="https://a856-cityrecord.nyc.gov/" target="_blank" rel="noopener noreferrer">The City Record<span class="sr-only"> (opens in new tab)</span></a> · <a href="changelog.html">Changelog</a> · <a href="stats.html">Stats</a> · <a href="mailto:feedback@cityscroll.org">Feedback</a> · <a href="index.html">Home</a></footer>
 </div>
 
 <script>
@@ -248,19 +246,15 @@ async function sendFeedback(){
   if(message.length<10){ msg.innerHTML=t("about_err_short"); return; }
   if(message.length>2000){ msg.innerHTML=t("about_err_long"); return; }
   if(email && !fbIsEmail(email)){ msg.innerHTML=t("about_err_bademail"); return; }
-  const token=(window.turnstile&&turnstile.getResponse)?(turnstile.getResponse()||""):"";
-  if(!token){ msg.innerHTML=t("complete_human_check"); return; }
   const btn=$("#fbsend"); btn.disabled=true; msg.innerHTML='<span class="loading"></span> '+t("about_sending");
   try{
-    const r=await workerFetch("/feedback",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({category,message,email,turnstileToken:token})});
+    const r=await workerFetch("/feedback",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({category,message,email})});
     const j=await r.json().catch(()=>({}));
     if(j.ok){
       msg.innerHTML=t("about_thanks_html")+(email?t("about_thanks_reply"):"");
       $("#fbmessage").value=""; $("#fbemail").value="";
-      if(window.turnstile) turnstile.reset();
     } else {
       const why={
-        turnstile:t("turnstile_fail"),
         "rate-limited":t("about_reason_ratelimited"),
         "bad-email":t("about_err_bademail"),
         "bad-message":t("about_reason_badmessage"),
@@ -268,9 +262,9 @@ async function sendFeedback(){
         "not-configured":t("about_reason_notconfigured"),
         "send-failed":t("about_reason_sendfailed")
       }[j.reason]||t("generic_error");
-      msg.innerHTML="⚠️ "+why; if(window.turnstile) turnstile.reset();
+      msg.innerHTML="⚠️ "+why;
     }
-  }catch(e){ msg.innerHTML="⚠️ "+t("cant_reach_server"); if(window.turnstile) turnstile.reset(); }
+  }catch(e){ msg.innerHTML="⚠️ "+t("cant_reach_server"); }
   btn.disabled=false;
 }
 $("#fbsend").addEventListener("click", sendFeedback);
