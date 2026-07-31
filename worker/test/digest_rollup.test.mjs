@@ -227,6 +227,9 @@ test("digestSendTestForEmail: live sends one rollup without advancing state by d
     assert.equal(sentEmails.length, 1);
     assert.equal(await ALERT_STATE.get("seen:sub:test-a"), null);
     assert.equal(await ALERT_STATE.get("lastsent:sub:test-a"), null);
+    assert.equal(await ALERT_STATE.get("stats:alltime:digest"), null, "probe send must not bump all-time digest stats");
+    assert.equal(await ALERT_STATE.get(`stats:digest:${today}`), null, "probe send must not bump rolling digest stats");
+    assert.equal(await ALERT_STATE.get(`hist:digest:${today}`), null, "probe send must not bump digest history");
     assert.match(sentEmails[0].html, /Manage watches/i);
   });
 });
