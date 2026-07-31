@@ -11,10 +11,11 @@ import { handleUsage } from "./usage.mjs";
 import { handleSubscribe } from "./subscribe.mjs";
 import { handleConfirm } from "./confirm.mjs";
 import { handleUnsubscribe } from "./unsubscribe.mjs";
+import { handlePrefs } from "./prefs.mjs";
 import { handleSession } from "./session.mjs";
 import { handlePins } from "./pins.mjs";
 import { handleFeedback } from "./feedback.mjs";
-import { handleAdminSubs, handleAdminFeedback, handleAdminDigestCatchUp } from "./admin.mjs";
+import { handleAdminSubs, handleAdminFeedback, handleAdminDigestRollup, handleAdminDigestCatchUp } from "./admin.mjs";
 import { handleFeed } from "./feed.mjs";
 import { handleBatch } from "./batch.mjs";
 import { handleAgencies } from "./agencies.mjs";
@@ -61,6 +62,7 @@ export default {
     if (pathname === "/subscribe") return handleSubscribe(request, env);
     if (pathname === "/confirm") return handleConfirm(request, env);
     if (pathname === "/unsubscribe") return handleUnsubscribe(request, env);
+    if (pathname === "/prefs") return handlePrefs(request, env);
     if (pathname === "/session" || pathname === "/session/logout") return handleSession(request, env, pathname);
     if (pathname === "/pins") return handlePins(request, env);
     if (pathname === "/feedback") return handleFeedback(request, env);
@@ -88,6 +90,7 @@ export default {
     if (pathname === "/api") return Response.redirect("https://cityscroll.org/api.html", 302);
     if (pathname === "/admin/subs") return handleAdminSubs(request, env);
     if (pathname === "/admin/feedback") return handleAdminFeedback(request, env);
+    if (pathname === "/admin/digest-rollup") return handleAdminDigestRollup(request, env);
     if (pathname === "/admin/suggest-refresh") return handleAdminSuggestRefresh(request, env);
     if (pathname === "/admin/digest-catchup") return handleAdminDigestCatchUp(request, env);
     if (pathname === "/" || pathname === "/health") {
@@ -257,11 +260,12 @@ export default {
     ctx.waitUntil(handleInboundEmail(message, env));
   },
 
-  // Digest queue consumer: one subscription per message (see alerts.mjs).
+  // Digest queue consumer: one account job per message (single watch or rollup; see alerts.mjs).
   async queue(batch, env) {
     for (const msg of batch.messages) {
       try {
-        await consumeDigestJob(env, msg.body.key);
+        // Body is { type, key?, email?, keys? } or legacy { key }.
+        await consumeDigestJob(env, msg.body || {});
         msg.ack();
       } catch (e) {
         console.error("digest job failed", String(e?.message || e));

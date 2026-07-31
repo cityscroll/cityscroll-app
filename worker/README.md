@@ -49,7 +49,8 @@ continues to reject those origins. See `../docs/beta-channel.md`.
 | `/feed.xml` `/feed.json` `/feed.ics` | GET | **Any saved search as a standing feed** — Atom / JSON Feed 1.1 / subscribable calendar. Params: `lens=money\|land\|property\|rules\|meetings`, `q=`, `agency=`, `min=`. Same `compileSub()` queries the cron replays; entry links land on `cityscroll.org/#notice/<id>` permalinks; edge-cached 15 min; no paid key on the path. Calendar UIDs retain the `@crol-list` namespace so existing subscribers do not receive duplicate events | none |
 | `/subscribe` | POST | Double-opt-in signup (per-IP/per-address rate limits; no CAPTCHA on this path); emails a signed [`optin-token`](https://github.com/jimdc/optin-token) confirm link, stores nothing until clicked | fails closed 503 until `TOKEN_SECRET` + `RESEND_API_KEY` + `SUBS` |
 | `/confirm` | GET | Verifies the `optin-token`, writes the ACTIVE sub to KV | `TOKEN_SECRET` + `SUBS` |
-| `/unsubscribe` | GET/POST | Removes a sub; POST = RFC 8058 one-click (`optin-token`) | `TOKEN_SECRET` + `SUBS` |
+| `/unsubscribe` | GET/POST | Removes one watch (`{k}`) or all watches for an email (`{all:1,e}`); POST = RFC 8058 one-click | `TOKEN_SECRET` + `SUBS` |
+| `/prefs` | GET/POST | **Preference center** — magic-link list/edit/pause/delete watches for one email; changes take effect next daily cron (~9am ET) | `TOKEN_SECRET` + `SUBS` |
 | `/feedback` | POST | Stores + emails operator feedback (Turnstile, rate-limited; rows keep IP+UA) | fails closed 503 |
 | `/batch` | POST | Watchlist cross-reference: `{names:[…]}` (≤10) → per-name award/mention counts + vendor-profile links; 30/day/IP | none |
 | `/agencies` | GET | Public City Record agency-name crosswalk: one row per distinct source string → site id, preferred name, and full variant group. JSON by default; `?format=csv` for CSV; CORS-open and edge-cached one day | none |
@@ -62,6 +63,7 @@ continues to reject those origins. See `../docs/beta-channel.md`.
 | `/r/<kind>/<request_id>` | GET | **Count-only digest click-through** (R·B tier 3, team-approved 2026-07-02): bumps a per-day counter (`stats:click`, `stats:click.<kind>`) and 302s to `cityscroll.org/#notice/<id>`. Validated slug+id only — the path never carries a URL, so it cannot be an open redirect. No per-recipient tracking; digests disclose this in the footer | none |
 | `/api` | GET | 302 → cityscroll.org/api.html (the API docs) | none |
 | `/admin/subs` `/admin/feedback` | GET | Operator reads (redacted) | `ADMIN_KEY` → 404 if unset |
+| `/admin/digest-rollup` | GET | Dry-run account digest for `?email=` (no Resend); shows rollup vs single and day-log preview | `ADMIN_KEY` → 404 if unset |
 | `/admin/suggest-refresh` | POST | Runs the suggestion-chip validation (`/suggestions`' cron pipeline) on demand instead of waiting for the 13:00 UTC cron; returns the same summary JSON, fail-soft identical to the cron path | `ADMIN_KEY` → 404 if unset |
 | `/usage` | GET | Read-only Haiku spend report | `USAGE_KEY` → 404 if unset |
 | `/board-hook` | POST | **Board notifications** — see below | HMAC (`BOARD_HOOK_SECRET`) fails closed; fails closed 503 with no bot/App token configured |
@@ -77,7 +79,19 @@ anything unwarmed fills lazily on its first `/priorcycle/<id>` request).
 `scheduled` → `runAlerts()`: replays every confirmed subscription from `SUBS` KV via
 `lib/compile.mjs` `compileSub()` — a **deterministic** SODA/ZAP query per `{lens, filter}`,
 no model call at cron time — diffs against per-watch seen-IDs in `ALERT_STATE`, and emails
-only NEW notices via Resend. Cron-replayable lenses: **money** (awards ≥ threshold / RFP
+only NEW notices via Resend.
+
+**Account-level rollup:** when an email has more than one active (non-paused) watch, the run
+sends **one consolidated email** with a section per watch that has content (or a quiet
+summary). One rollup email counts as **one send unit** toward `MAX_PER_RUN` /
+`MAX_SENDS_PER_DAY`. Single-watch addresses keep the per-watch email shape. Queue mode
+enqueues one job per account (`type: rollup|sub`), not one job per watch for multi-watch
+accounts. Footers link to the **preference center** (`/prefs`) and support per-watch or
+all-watches unsubscribe. Preference edits take effect on the **next daily cron** (~9am ET).
+Design notes: [`docs/digest-rollup-prefs.md`](../docs/digest-rollup-prefs.md). Operator
+dry-run: `GET /admin/digest-rollup?key=…&email=…`.
+
+Cron-replayable lenses: **money** (awards ≥ threshold / RFP
 keywords), **land** (rezonings), **property / rules / meetings** (City Record section
 queries; meetings = upcoming events only), and **entity** (follow a vendor — name-stem
 resolved via a postFilter — or an agency across all sections). `people` compiles to `null` and is

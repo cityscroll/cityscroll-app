@@ -21,6 +21,8 @@ const EMAIL_STRINGS = {
     digest_no_date:       "{n} new {item}.",
     digest_subscribed:    "You subscribed to this on cityscroll.org.",
     digest_unsubscribe:   "Unsubscribe",
+    digest_unsubscribe_all: "Unsubscribe from all watches",
+    digest_manage:        "Manage watches",
 
     quiet_nothing_week:  "No new items this week for {label} — nothing new {since}.",
     quiet_still_watching:"Still watching {label} — nothing new {since}.",
@@ -67,6 +69,8 @@ const EMAIL_STRINGS = {
     digest_no_date:       "{n} {item} nuevo(s).",
     digest_subscribed:    "Se suscribió a esto en cityscroll.org.",
     digest_unsubscribe:   "Darse de baja",
+    digest_unsubscribe_all: "Darse de baja de todas las alertas",
+    digest_manage:        "Administrar alertas",
 
     quiet_nothing_week:  "No hay avisos nuevos esta semana para {label} — nada nuevo {since}.",
     quiet_still_watching:"Seguimos monitoreando {label} — nada nuevo {since}.",
