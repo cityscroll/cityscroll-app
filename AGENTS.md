@@ -112,6 +112,32 @@ Keep **per-item** specificity (pending vs registered vs payments; subsidy outcom
 - Characterization: `node --test test/gap_taxonomy.test.mjs test/depot_rederive.test.mjs`
 - Screenshot capture: `python3 tools/capture_gap_taxonomy.py`
 
+### Live source-contract monitor
+
+Daily workflow `.github/workflows/source-contracts-live.yml` →
+`node tools/verify_source_contracts.mjs --live`. Fixture check stays in PR CI; live
+alerts open/update the drift issue.
+
+**Probe classes (keep teeth, cut CI noise):**
+
+- **Ingest** (default Socrata/Checkbook/RSS): schema + sample + freshness gate
+- **Pointer** (`contract_class: "pointer"`, `stale_policy: "skip"`): existence +
+  schema only — Capital Projects is the exemplar
+- **Machine-primary HTML** (`endpoint` + `landing_probe: "bot_blocked"`): probe the
+  product machine path (PASSPort dataJs); do not treat runner-blocked landings as drift
+- **Auth API** (`auth_token_env`, e.g. Legistar): with token → 200 JSON; without →
+  HTTP 403/401 is the expected gate, not a failure. Wire `LEGISTAR_API_TOKEN` into the
+  live workflow when present
+- **Templated endpoints**: require `probe_sample_id` or `probe_endpoint` (never probe
+  the literal `{project_id}` path)
+- **Checkbook Spending**: product shape is Contracts-then-Spending-by-`contract_id`
+  (PIN is rejected); required XML fields are `contract_id`, `payee_name`,
+  `check_amount`, `issue_date`
+
+Every live failure line must name `source_id` and URL class. Never emit bare
+`fetch failed`. After registry edits that touch landing URLs, run
+`node tools/depot_rederive.mjs` so gap taxonomy does not retain a stale copy.
+
 When adding a new lifecycle empty state: pick class a or b with evidence, add or update the inventory row, use the matching register in English and all shipping locales, and extend the characterization test. Prefer pointing new work at the inventory over inventing a third gap register. After landing a source or stamping `join_measurement`, run `depot_rederive.mjs` so realized coverage, candidate crosswalks, and the ranked queue stay current.
 
 ### Lifecycle rendering coherence (notice detail)

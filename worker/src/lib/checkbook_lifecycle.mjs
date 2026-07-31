@@ -56,15 +56,23 @@ export function parseContractTransaction(txXml) {
 }
 
 // Parse a <transaction> block from the Spending domain.
+// Live Checkbook Spending XML uses payee_name / issue_date / document_id / agency
+// (not spending_id / vendor_name / check_date). Keep legacy aliases for fixtures.
 export function parseSpendingTransaction(txXml) {
   return {
-    id: extractTag(txXml, "spending_id") || extractTag(txXml, "transaction_id"),
+    id: extractTag(txXml, "document_id")
+      || extractTag(txXml, "spending_id")
+      || extractTag(txXml, "transaction_id"),
     contractId: extractTag(txXml, "contract_id") || extractTag(txXml, "prime_contract_id"),
-    vendor: extractTag(txXml, "vendor_name") || extractTag(txXml, "prime_vendor"),
-    agency: extractTag(txXml, "agency_name"),
+    vendor: extractTag(txXml, "payee_name")
+      || extractTag(txXml, "vendor_name")
+      || extractTag(txXml, "prime_vendor"),
+    agency: extractTag(txXml, "agency") || extractTag(txXml, "agency_name"),
     pin: extractTag(txXml, "pin"),
     amount: parseAmount(extractTag(txXml, "check_amount") || extractTag(txXml, "amount")),
-    date: extractTag(txXml, "check_date") || extractTag(txXml, "transaction_date"),
+    date: extractTag(txXml, "issue_date")
+      || extractTag(txXml, "check_date")
+      || extractTag(txXml, "transaction_date"),
     year: extractTag(txXml, "fiscal_year"),
   };
 }

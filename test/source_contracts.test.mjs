@@ -8,11 +8,17 @@ import {
   classifyMocsFieldCase,
   loadSourceContractFixtures,
   loadSourceContracts,
+  resolveProbeEndpoint,
   validateSourceContractFixtures,
   validateSourceContracts,
   verifyCodeReferences,
 } from "../tools/source_contracts.mjs";
-import { verifySocrata } from "../tools/verify_source_contracts.mjs";
+import {
+  formatFetchError,
+  verifyCheckbook,
+  verifyHtml,
+  verifySocrata,
+} from "../tools/verify_source_contracts.mjs";
 
 test("source-contract registry is valid and its generated public docs are current", () => {
   const registry = loadSourceContracts();
@@ -109,4 +115,167 @@ test("live Socrata verification rejects non-tabular and stale sources", async (t
     rowsUpdatedAt: 1,
   }), { status: 200, headers: { "Content-Type": "application/json" } });
   await assert.rejects(verifySocrata(contract), /source is stale/);
+});
+
+test("formatFetchError always names source id and URL class", () => {
+  const err = new Error("fetch failed");
+  err.cause = { code: "ENOTFOUND", hostname: "example.invalid", message: "getaddrinfo ENOTFOUND" };
+  const message = formatFetchError("city-record", "metadata", err, "https://example.invalid/api");
+  assert.match(message, /^city-record: metadata fetch failed/);
+  assert.match(message, /ENOTFOUND/);
+  assert.doesNotMatch(message, /^fetch failed$/);
+});
+
+test("checkbook-spending contract matches product contract_id spending shape", () => {
+  const registry = loadSourceContracts();
+  const spending = registry.contracts.find((c) => c.id === "checkbook-spending");
+  assert.ok(spending);
+  assert.equal(spending.data_type, "Spending");
+  assert.deepEqual(spending.required_fields, [
+    "contract_id",
+    "payee_name",
+    "check_amount",
+    "issue_date",
+  ]);
+  assert.ok(spending.probe_contract_id);
+  assert.match(spending.product_freshness, /contract_id/i);
+  assert.doesNotMatch(spending.product_freshness, /Queried by PIN/i);
+});
+
+test("live Checkbook spending probe uses contract_id criteria and real field names", async (t) => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => { globalThis.fetch = originalFetch; });
+  const bodies = [];
+  globalThis.fetch = async (url, options = {}) => {
+    bodies.push(options.body || "");
+    const xml = `<?xml version="1.0"?>
+      <response><status><result>success</result></status>
+      <result_records><spending_transactions>
+      <transaction>
+        <contract_id>CT107120248803393</contract_id>
+        <payee_name>EXAMPLE VENDOR</payee_name>
+        <check_amount>100.00</check_amount>
+        <issue_date>2025-07-01</issue_date>
+      </transaction>
+      </spending_transactions></result_records></response>`;
+    return new Response(xml, { status: 200, headers: { "Content-Type": "application/xml" } });
+  };
+  const detail = await verifyCheckbook({
+    id: "checkbook-spending",
+    endpoint: "https://www.checkbooknyc.com/api",
+    data_type: "Spending",
+    required_fields: ["contract_id", "payee_name", "check_amount", "issue_date"],
+    probe_contract_id: "CT107120248803393",
+  });
+  assert.match(detail, /Spending/);
+  assert.match(bodies[0], /<type_of_data>Spending<\/type_of_data>/);
+  assert.match(bodies[0], /<name>contract_id<\/name>/);
+  assert.match(bodies[0], /CT107120248803393/);
+  assert.doesNotMatch(bodies[0], /<name>pin<\/name>/);
+});
+
+test("pointer-class Socrata sources skip the ingest freshness gate", async (t) => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => { globalThis.fetch = originalFetch; });
+  globalThis.fetch = async (url) => {
+    const href = String(url);
+    if (href.includes("/api/views/")) {
+      return new Response(JSON.stringify({
+        assetType: "dataset",
+        columns: [
+          { fieldName: "pid" },
+          { fieldName: "project_name" },
+          { fieldName: "managing_agency" },
+          { fieldName: "client_agency" },
+          { fieldName: "budget_forecast" },
+          { fieldName: "current_phase" },
+        ],
+        rowsUpdatedAt: 1, // ancient
+      }), { status: 200, headers: { "Content-Type": "application/json" } });
+    }
+    return new Response(JSON.stringify([{ pid: "1" }]), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  };
+  const detail = await verifySocrata({
+    id: "capital-projects",
+    domain: "https://data.cityofnewyork.us",
+    dataset_id: "n7gv-k5yt",
+    required_fields: [
+      "pid", "project_name", "managing_agency", "client_agency",
+      "budget_forecast", "current_phase",
+    ],
+    max_stale_days: 120,
+    contract_class: "pointer",
+    stale_policy: "skip",
+  });
+  assert.match(detail, /pointer/i);
+  assert.doesNotMatch(detail, /source is stale/);
+});
+
+test("capital-projects registry row is pointer-class with no ingest freshness gate", () => {
+  const registry = loadSourceContracts();
+  const capital = registry.contracts.find((c) => c.id === "capital-projects");
+  assert.equal(capital.contract_class, "pointer");
+  assert.equal(capital.stale_policy, "skip");
+  assert.equal(capital.status, "disabled");
+});
+
+test("templated and auth machine endpoints resolve to probeable URLs", () => {
+  const registry = loadSourceContracts();
+  const zap = registry.contracts.find((c) => c.id === "zap-api-outcomes");
+  const legistar = registry.contracts.find((c) => c.id === "nyc-council-legistar");
+  assert.equal(
+    resolveProbeEndpoint(zap),
+    "https://zap-api-production.herokuapp.com/projects/2022M0258",
+  );
+  assert.equal(
+    resolveProbeEndpoint(legistar),
+    "https://webapi.legistar.com/v1/nyc/Bodies?$top=1",
+  );
+  assert.equal(legistar.auth_token_env, "LEGISTAR_API_TOKEN");
+  assert.equal(zap.endpoint_format, "json-api");
+});
+
+test("bot-blocked HTML with healthy machine endpoint is not drift", async (t) => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => { globalThis.fetch = originalFetch; });
+  globalThis.fetch = async (url) => {
+    const href = String(url);
+    if (href.includes("contractData.js")) {
+      return new Response("var public_ctr_data = " + JSON.stringify([["EPIN1234567890"].concat(Array(20).fill("x"))]) + ";", {
+        status: 200,
+        headers: { "Content-Type": "application/javascript" },
+      });
+    }
+    return new Response("blocked", { status: 403, headers: { "Content-Type": "text/html" } });
+  };
+  const detail = await verifyHtml({
+    id: "passport-public-contracts",
+    landing_page: "https://a0333-passportpublic.nyc.gov/contracts.html",
+    endpoint: "https://a0333-passportpublic.nyc.gov/dataJs/contractData.js",
+    endpoint_format: "js-dump",
+    landing_probe: "bot_blocked",
+    required_fields: ["epin"],
+  });
+  assert.match(detail, /machine dump reachable|HTML \+ machine dump/i);
+  assert.match(detail, /bot-blocked/i);
+});
+
+test("known bot-blocked landing without machine endpoint is explicit, not a 403 failure", async () => {
+  const detail = await verifyHtml({
+    id: "nycida-build-nyc-projects",
+    landing_page: "https://edc.nyc/about-nycedc/financial-public-documents-recordings",
+    landing_probe: "bot_blocked",
+  });
+  assert.match(detail, /known bot-blocked/i);
+});
+
+test("live workflow wires optional LEGISTAR_API_TOKEN for the auth probe", () => {
+  const live = readFileSync(
+    new URL("../.github/workflows/source-contracts-live.yml", import.meta.url),
+    "utf8",
+  );
+  assert.match(live, /LEGISTAR_API_TOKEN:\s*\$\{\{\s*secrets\.LEGISTAR_API_TOKEN\s*\}\}/);
 });

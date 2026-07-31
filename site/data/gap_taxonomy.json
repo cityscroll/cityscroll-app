@@ -380,7 +380,7 @@
       "status": "disabled",
       "join_keys": [],
       "join_coverage": {},
-      "landing_page": "https://www.nyc.gov/site/mocs/resources/standard-professional-services-ll63.page",
+      "landing_page": "https://www.nyc.gov/site/mocs/resources/standard-prof-services-ll63.page",
       "delivery_tier": "live-only"
     },
     {
@@ -2266,7 +2266,7 @@
     "Gap-pressure tail 2026-07-30: Capital Projects n7gv-k5yt fuzzy join ≤1% → class-b pointer for procurement-planning-budget; Civil Service List closed-exam overlap 44.54% → ship exam-level list aggregates; non-Council meeting outcomes reclassified not_published with BP/CB minutes pointers."
   ],
   "depot_refresh": {
-    "observed_on": "2026-07-30",
+    "observed_on": "2026-07-31",
     "source_contracts_fingerprint": "84aa82661c407276ecfc215fe9567fc50fa18c4b99f9c01e791c9b90b8c699d4",
     "materialized_crosswalks": 11,
     "candidate_crosswalks": 46,
