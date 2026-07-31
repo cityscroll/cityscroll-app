@@ -1,0 +1,404 @@
+#!/usr/bin/env node
+/**
+ * Entity-resolution metrics harness (eval only; no production traffic).
+ *
+ * Loads a versioned gold JSONL and prints the metric keys used by later matcher
+ * cards. With --dry-run (or without predictions), metric values are null.
+ *
+ * Usage:
+ *   node entity_resolution/eval/run_metrics.mjs \
+ *     --gold entity_resolution/eval/gold_v0.jsonl --dry-run
+ *
+ * Optional (later cards):
+ *   --predictions <path.jsonl>   predicted pairs {id|left,right, decision}
+ *   --blocker <name>             reserved for candidate generation (er-05)
+ *
+ * Exit codes:
+ *   0  gold valid; metrics printed
+ *   1  usage error, I/O failure, or malformed gold
+ */
+
+import { createHash } from "node:crypto";
+import { readFileSync, existsSync } from "node:fs";
+import { resolve } from "node:path";
+
+const METRIC_KEYS = [
+  "precision",
+  "recall",
+  "candidate_recall",
+  "unresolved_rate",
+  "false_merge",
+  "false_split",
+];
+
+const ENTITY_TYPES = new Set(["vendor", "agency", "procurement", "location"]);
+const LABELS = new Set(["same", "different"]);
+
+function usage(msg) {
+  if (msg) console.error(`error: ${msg}`);
+  console.error(`Usage: node entity_resolution/eval/run_metrics.mjs --gold <path.jsonl> [--dry-run]
+       [--predictions <path.jsonl>] [--blocker <name>] [--json]`);
+  process.exit(1);
+}
+
+function parseArgs(argv) {
+  const out = {
+    gold: null,
+    dryRun: false,
+    predictions: null,
+    blocker: null,
+    json: false,
+  };
+  for (let i = 2; i < argv.length; i++) {
+    const a = argv[i];
+    if (a === "--gold") out.gold = argv[++i];
+    else if (a === "--dry-run") out.dryRun = true;
+    else if (a === "--predictions") out.predictions = argv[++i];
+    else if (a === "--blocker") out.blocker = argv[++i];
+    else if (a === "--json") out.json = true;
+    else if (a === "--help" || a === "-h") usage();
+    else usage(`unknown argument: ${a}`);
+  }
+  if (!out.gold) usage("--gold is required");
+  return out;
+}
+
+function failGold(msg, detail) {
+  console.error(`malformed gold: ${msg}`);
+  if (detail) console.error(detail);
+  process.exit(1);
+}
+
+/**
+ * @param {string} text
+ * @returns {{ meta: object|null, cases: object[], contentHash: string }}
+ */
+export function loadGold(text) {
+  if (typeof text !== "string" || !text.trim()) {
+    failGold("file is empty");
+  }
+  const contentHash = createHash("sha256").update(text).digest("hex").slice(0, 16);
+  const lines = text.split(/\r?\n/);
+  let meta = null;
+  const cases = [];
+  const seenIds = new Set();
+
+  for (let i = 0; i < lines.length; i++) {
+    const lineNo = i + 1;
+    const raw = lines[i];
+    if (!raw.trim() || raw.trim().startsWith("#")) continue;
+
+    let obj;
+    try {
+      obj = JSON.parse(raw);
+    } catch (e) {
+      failGold(`line ${lineNo}: invalid JSON`, String(e.message || e));
+    }
+    if (obj == null || typeof obj !== "object" || Array.isArray(obj)) {
+      failGold(`line ${lineNo}: expected a JSON object`);
+    }
+
+    if (obj._meta === true) {
+      if (meta) failGold(`line ${lineNo}: duplicate _meta record`);
+      if (obj.schema_version == null) {
+        failGold(`line ${lineNo}: _meta requires schema_version`);
+      }
+      if (!obj.gold_version || typeof obj.gold_version !== "string") {
+        failGold(`line ${lineNo}: _meta requires gold_version string`);
+      }
+      meta = obj;
+      continue;
+    }
+
+    validateCase(obj, lineNo, seenIds);
+    cases.push(obj);
+  }
+
+  if (!meta) failGold("missing leading _meta record (versioned gold required)");
+  if (cases.length === 0) failGold("no labeled cases after _meta");
+  if (typeof meta.case_count === "number" && meta.case_count !== cases.length) {
+    failGold(
+      `_meta.case_count=${meta.case_count} but found ${cases.length} cases (update meta when adding cases)`,
+    );
+  }
+  return { meta, cases, contentHash };
+}
+
+function validateSide(side, path, lineNo) {
+  if (!side || typeof side !== "object" || Array.isArray(side)) {
+    failGold(`line ${lineNo}: ${path} must be an object`);
+  }
+  if (!side.source_system || typeof side.source_system !== "string") {
+    failGold(`line ${lineNo}: ${path}.source_system required string`);
+  }
+  if (!side.display_name || typeof side.display_name !== "string") {
+    failGold(`line ${lineNo}: ${path}.display_name required string`);
+  }
+  // native_key optional for pure spelling pairs; preferred for multi-source.
+}
+
+function validateCase(obj, lineNo, seenIds) {
+  if (!obj.id || typeof obj.id !== "string") {
+    failGold(`line ${lineNo}: id required string`);
+  }
+  if (seenIds.has(obj.id)) failGold(`line ${lineNo}: duplicate id ${obj.id}`);
+  seenIds.add(obj.id);
+
+  if (!ENTITY_TYPES.has(obj.entity_type)) {
+    failGold(
+      `line ${lineNo}: entity_type must be one of ${[...ENTITY_TYPES].join("|")}`,
+    );
+  }
+  if (!LABELS.has(obj.label)) {
+    failGold(`line ${lineNo}: label must be same|different`);
+  }
+  if (!Array.isArray(obj.sources) || obj.sources.length === 0) {
+    failGold(`line ${lineNo}: sources must be a non-empty array`);
+  }
+  for (const s of obj.sources) {
+    if (typeof s !== "string" || !s) {
+      failGold(`line ${lineNo}: sources entries must be non-empty strings`);
+    }
+  }
+  validateSide(obj.left, "left", lineNo);
+  validateSide(obj.right, "right", lineNo);
+}
+
+/**
+ * Load optional predictions JSONL.
+ * Each line: { "id": "<gold id>", "decision": "same"|"different"|"unresolved" }
+ * or { "gold_id": "...", "decision": "..." }
+ */
+export function loadPredictions(text) {
+  if (!text || !text.trim()) return new Map();
+  const map = new Map();
+  const lines = text.split(/\r?\n/);
+  for (let i = 0; i < lines.length; i++) {
+    const raw = lines[i];
+    if (!raw.trim() || raw.trim().startsWith("#")) continue;
+    let obj;
+    try {
+      obj = JSON.parse(raw);
+    } catch (e) {
+      console.error(`malformed predictions: line ${i + 1}: ${e.message || e}`);
+      process.exit(1);
+    }
+    const id = obj.id || obj.gold_id;
+    const decision = obj.decision;
+    if (!id || !decision) {
+      console.error(`malformed predictions: line ${i + 1}: need id and decision`);
+      process.exit(1);
+    }
+    if (!["same", "different", "unresolved"].includes(decision)) {
+      console.error(
+        `malformed predictions: line ${i + 1}: decision must be same|different|unresolved`,
+      );
+      process.exit(1);
+    }
+    map.set(id, decision);
+  }
+  return map;
+}
+
+/**
+ * Candidate set for candidate_recall: set of gold ids that made it past blocking.
+ * JSONL lines: { "id": "<gold id>" } or { "gold_id": "..." }
+ */
+export function loadCandidates(text) {
+  if (!text || !text.trim()) return null;
+  const set = new Set();
+  for (const raw of text.split(/\r?\n/)) {
+    if (!raw.trim() || raw.trim().startsWith("#")) continue;
+    let obj;
+    try {
+      obj = JSON.parse(raw);
+    } catch {
+      return null;
+    }
+    const id = obj.id || obj.gold_id;
+    if (id) set.add(id);
+  }
+  return set;
+}
+
+/**
+ * Compute metrics from gold cases + optional predictions.
+ * Without predictions (dry-run), all metric values are null.
+ *
+ * Definitions (pair-level on gold rows):
+ *   precision     = TP / (TP+FP) among predicted "same"
+ *   recall        = TP / (TP+FN) among gold "same"
+ *   candidate_recall = |gold same ∩ candidates| / |gold same|
+ *   unresolved_rate  = unresolved predictions / |gold|
+ *   false_merge   = FP count (pred same, gold different) — count, not rate
+ *   false_split   = FN count (pred different/unresolved, gold same) — count
+ */
+export function computeMetrics(cases, predictions, candidates) {
+  const empty = Object.fromEntries(METRIC_KEYS.map((k) => [k, null]));
+  if (!predictions || predictions.size === 0) {
+    // Dry-run / no matcher: keys present, values null.
+    // candidate_recall stays null until a blocker supplies candidates.
+    if (candidates && candidates.size >= 0) {
+      // If candidates provided without predictions, still compute candidate_recall.
+      const goldSame = cases.filter((c) => c.label === "same");
+      const denom = goldSame.length;
+      const hit = goldSame.filter((c) => candidates.has(c.id)).length;
+      return {
+        ...empty,
+        candidate_recall: denom === 0 ? null : hit / denom,
+      };
+    }
+    return empty;
+  }
+
+  let tp = 0;
+  let fp = 0;
+  let fn = 0;
+  let unresolved = 0;
+  let falseMerge = 0;
+  let falseSplit = 0;
+  let goldSame = 0;
+  let goldSameInCandidates = 0;
+
+  for (const c of cases) {
+    const pred = predictions.get(c.id) || "unresolved";
+    if (pred === "unresolved") unresolved += 1;
+
+    if (c.label === "same") {
+      goldSame += 1;
+      if (candidates && candidates.has(c.id)) goldSameInCandidates += 1;
+      if (pred === "same") tp += 1;
+      else {
+        fn += 1;
+        falseSplit += 1;
+      }
+    } else {
+      // gold different
+      if (pred === "same") {
+        fp += 1;
+        falseMerge += 1;
+      }
+    }
+  }
+
+  const precisionDen = tp + fp;
+  const recallDen = tp + fn;
+
+  return {
+    precision: precisionDen === 0 ? null : tp / precisionDen,
+    recall: recallDen === 0 ? null : tp / recallDen,
+    candidate_recall:
+      candidates == null
+        ? null
+        : goldSame === 0
+          ? null
+          : goldSameInCandidates / goldSame,
+    unresolved_rate: cases.length === 0 ? null : unresolved / cases.length,
+    false_merge: falseMerge,
+    false_split: falseSplit,
+  };
+}
+
+function composition(cases) {
+  const byType = {};
+  const byLabel = { same: 0, different: 0 };
+  const bySourcePair = {};
+  let multiSource = 0;
+  for (const c of cases) {
+    byType[c.entity_type] = (byType[c.entity_type] || 0) + 1;
+    byLabel[c.label] = (byLabel[c.label] || 0) + 1;
+    const uniq = new Set(c.sources);
+    if (uniq.size >= 2) multiSource += 1;
+    const pairKey = [...uniq].sort().join("+") || "unknown";
+    bySourcePair[pairKey] = (bySourcePair[pairKey] || 0) + 1;
+  }
+  return {
+    n: cases.length,
+    by_entity_type: byType,
+    by_label: byLabel,
+    multi_source: multiSource,
+    by_source_set: bySourcePair,
+  };
+}
+
+function main() {
+  const args = parseArgs(process.argv);
+  const goldPath = resolve(args.gold);
+  if (!existsSync(goldPath)) usage(`gold file not found: ${args.gold}`);
+
+  let goldText;
+  try {
+    goldText = readFileSync(goldPath, "utf8");
+  } catch (e) {
+    console.error(`error reading gold: ${e.message || e}`);
+    process.exit(1);
+  }
+
+  const { meta, cases, contentHash } = loadGold(goldText);
+
+  let predictions = null;
+  if (args.predictions && !args.dryRun) {
+    const pText = readFileSync(resolve(args.predictions), "utf8");
+    predictions = loadPredictions(pText);
+  } else if (args.dryRun) {
+    predictions = null;
+  }
+
+  // er-05 may pass --blocker; without a candidates file, candidate_recall stays null.
+  let candidates = null;
+  if (args.blocker && args.blocker !== "none") {
+    // Placeholder: blocker implementations land in er-05. For now, presence of
+    // --blocker without candidates keeps candidate_recall null (not an error).
+    candidates = null;
+  }
+
+  const metrics = computeMetrics(cases, predictions, candidates);
+  const report = {
+    gold_path: args.gold,
+    gold_version: meta.gold_version,
+    schema_version: meta.schema_version,
+    content_hash: contentHash,
+    dry_run: Boolean(args.dryRun || !predictions),
+    blocker: args.blocker || null,
+    composition: composition(cases),
+    metrics,
+  };
+
+  // Always print metric keys first as plain KEY=VALUE lines for greppability.
+  for (const k of METRIC_KEYS) {
+    const v = metrics[k];
+    const rendered = v === null || v === undefined ? "null" : String(v);
+    console.log(`${k}=${rendered}`);
+  }
+
+  if (args.json) {
+    console.log(JSON.stringify(report, null, 2));
+  } else {
+    console.log("---");
+    console.log(`gold_version=${meta.gold_version}`);
+    console.log(`schema_version=${meta.schema_version}`);
+    console.log(`content_hash=${contentHash}`);
+    console.log(`cases=${cases.length}`);
+    console.log(`dry_run=${report.dry_run}`);
+    console.log(
+      `composition=${JSON.stringify(report.composition)}`,
+    );
+  }
+
+  // Sanity: every metric key present.
+  for (const k of METRIC_KEYS) {
+    if (!(k in metrics)) {
+      console.error(`internal error: missing metric key ${k}`);
+      process.exit(1);
+    }
+  }
+}
+
+// Run when executed directly (not when imported by tests).
+const isMain =
+  process.argv[1] &&
+  resolve(process.argv[1]) === resolve(new URL(import.meta.url).pathname);
+
+if (isMain) {
+  main();
+}
