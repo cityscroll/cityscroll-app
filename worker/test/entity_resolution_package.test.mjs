@@ -94,14 +94,20 @@ test("package root re-exports match normalizers and worker shim", () => {
   assert.ok(sameAgency("POLICE DEPARTMENT", "Police Department"));
 });
 
-test("stub subpackages import and stay non-linking", () => {
-  assert.equal(CANDIDATE_GENERATION_VERSION, "stub");
+test("candidate generation uses token_v0 while later subpackages stay non-linking", () => {
+  assert.equal(CANDIDATE_GENERATION_VERSION, "token_v0_v0");
   assert.equal(FEATURES_VERSION, "stub");
   assert.equal(MATCHERS_VERSION, "stub");
   assert.equal(POLICIES_VERSION, "stub");
   assert.equal(REVIEW_VERSION, "possibly_same_v1");
 
-  assert.deepEqual(generateCandidates([{ name: "Acme" }]), []);
+  const candidates = generateCandidates([
+    { id: "a", display_name: "Acme Construction LLC", entity_type: "vendor" },
+    { id: "b", display_name: "Acme Construction Inc", entity_type: "vendor" },
+    { id: "c", display_name: "Different Vendor", entity_type: "vendor" },
+  ]);
+  assert.equal(candidates.length, 1);
+  assert.deepEqual(candidates[0].shared_keys, ["stem:ACME CONSTRUCTION", "tok:ACME", "tok:CONSTRUCTION"]);
   assert.deepEqual(extractFeatures({ a: 1 }, { b: 2 }), {});
 
   const scored = scorePair({ name: "A" }, { name: "B" }, {});

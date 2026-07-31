@@ -355,13 +355,16 @@ Full five-table sketch: [`docs/entity-resolution/schema-sketch.sql`](docs/entity
 No LLM matching as primary matcher. No public consumer reads link tables yet.
 
 **source_records dual-write (er-02):** migration `worker/migrations/0008_source_records.sql`;
-flag `CITY_RECORD_SOURCE_RECORD_DUAL_WRITE` (default off) on City Record ingest.
+flags `CITY_RECORD_SOURCE_RECORD_DUAL_WRITE=true` and `ENTITY_LINK_DUAL_WRITE=true` in the
+production Worker vars enable the fail-soft shadow path on City Record ingest; beta explicitly
+sets both false. Integration characterization: `node --test worker/test/er_ingest_integration.test.mjs`.
 Verify: `node --test worker/test/source_record_dual_write.test.mjs`.
 
 **entity_link + resolution_run (er-07):** migration `worker/migrations/0009_entity_link.sql`
 (+ `canonical_entity` for link targets). Opt-in shadow writer only for exact-stem
 `auto_link` cases (`method=vendor_stem_v1`): pure
-`worker/src/lib/entity_link.mjs`, flag `ENTITY_LINK_DUAL_WRITE` (default off).
+`worker/src/lib/entity_link.mjs`; production writes are shadow-only and public reads do not
+consume these tables.
 Verify: `node --test worker/test/entity_link_schema.test.mjs`.
 
 **Package boundary (er-08):** modular monolith under `entity_resolution/`
@@ -384,7 +387,8 @@ Gold set + metrics harness (eval only): `entity_resolution/eval/` —
 nulls OK until matchers).
 
 **Candidate generation v0 (er-05):** offline token/stem blocker
-`entity_resolution/eval/blockers/token_v0.mjs` — no production auto-links.
+`entity_resolution/eval/blockers/token_v0.mjs` — reused by the package candidate-generation
+surface; it remains matcher-neutral and does not merge source rows.
 Verify:
 `node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v0.jsonl --blocker token_v0`
 (`candidate_recall` ∈ [0,1]; blocked-in/out true matches printed).
