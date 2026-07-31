@@ -29,6 +29,12 @@ export function toDayLogEntry(result = {}, { day = null } = {}) {
   const dryRun = !!result.dryRun;
   const capped = !!result.capped;
   const action = result.action || (result.skipped ? `skipped:${result.skipped}` : null);
+  // Watermark recovery: stamp traffic_class so ops can distinguish multi-day catch-up
+  // from a normal daily drip (action alone is enough for historical rows).
+  const isCatchUp =
+    action === "catch_up" ||
+    result.mode === "catch_up" ||
+    result.traffic_class === "catch_up";
   const zeroMatch =
     result.zeroMatch === true ||
     (noticeCount === 0 && found === 0 && action === "none") ||
@@ -46,6 +52,7 @@ export function toDayLogEntry(result = {}, { day = null } = {}) {
     noticeIds,
     noticeLinks: noticeIds.map(noticeDeepLink),
     action,
+    traffic_class: isCatchUp ? "catch_up" : (result.traffic_class || null),
     sent,
     dryRun,
     capped,
@@ -53,6 +60,17 @@ export function toDayLogEntry(result = {}, { day = null } = {}) {
     error: result.error || null,
     forecasts: Number(result.forecasts) || 0,
   };
+}
+
+/** True when a day-log entry is a watermark-recovery catch-up send (not a daily drip). */
+export function isCatchUpDayLogEntry(entry, dayLog = null) {
+  if (!entry || typeof entry !== "object") return false;
+  if (entry.action === "catch_up") return true;
+  if (entry.traffic_class === "catch_up") return true;
+  if (entry.mode === "catch_up") return true;
+  // Pure catch-up day log (no mixed daily rows): exempt every recountable entry.
+  if (dayLog && dayLog.mode === "catch_up") return true;
+  return false;
 }
 
 /** Public site deep link for a City Record request id (no PII). */
@@ -171,6 +189,10 @@ export function summarizeDay({ day, dayLog = null, receipt = null, sendcount = n
   const zeroSendCount = hasLog
     ? Number(dayLog.zeroSendCount) || 0
     : null;
+  // Watermark-recovery rows for ops drill UI (pill / calm note, not daily drip).
+  const catchUpSendCount = hasLog
+    ? entries.filter((e) => e && isCatchUpDayLogEntry(e, dayLog) && e.sent).length
+    : 0;
   const skipped_reason = receipt?.skipped_reason ?? (hasLog && sent === 0 && entries.length === 0 ? "no_log" : null);
 
   return {
@@ -180,6 +202,7 @@ export function summarizeDay({ day, dayLog = null, receipt = null, sendcount = n
     matched,
     totalNotices,
     zeroSendCount,
+    catchUpSendCount,
     sendcount: sendcount == null ? null : Number(sendcount) || 0,
     skipped_reason,
     receipt: receipt
@@ -193,6 +216,7 @@ export function summarizeDay({ day, dayLog = null, receipt = null, sendcount = n
         }
       : null,
     // Per-send rows for drill-down (empty array when no log — not omitted).
+    // Each entry may carry action/traffic_class "catch_up" for recovery pills.
     sends: entries,
   };
 }
@@ -265,6 +289,11 @@ export function searchInterestSignal(roster = []) {
  * Catches the silent-outage class: logged zero / quiet when the query still
  * finds notices for that day. Exact count equality is checked when both sides
  * are positive; a zero-vs-positive mismatch is always a loud divergence.
+ *
+ * Catch-up / watermark-recovery sends intentionally cover a multi-day window
+ * since lastsent. Day-scoped recounts often under-count those emails; do not
+ * treat that as phantom_send or count_mismatch. Historical rows with only
+ * `action: "catch_up"` (no traffic_class) remain recognized.
  */
 export function correctnessCheck({ day, dayLog = null, recounts = {} } = {}) {
   const getRecount = (id) => {
@@ -282,12 +311,14 @@ export function correctnessCheck({ day, dayLog = null, recounts = {} } = {}) {
       divergences: [],
       checked: 0,
       matched: 0,
+      catchUpExempt: 0,
     };
   }
 
   const divergences = [];
   let checked = 0;
   let matched = 0;
+  let catchUpExempt = 0;
 
   for (const e of dayLog.entries) {
     if (!e || e.error) continue;
@@ -316,6 +347,16 @@ export function correctnessCheck({ day, dayLog = null, recounts = {} } = {}) {
     // Tertiary: sent "new" notices whose day-scoped recount is empty.
     const phantomSend = loggedNew > 0 && expected === 0;
 
+    const catchUp = isCatchUpDayLogEntry(e, dayLog);
+    // Catch-up recovery emails multi-day notices; day-scoped expected under-count
+    // is expected. Do not flag phantom_send / count_mismatch. Successful catch-up
+    // sends count as matched for the day-scoped check. silent_miss still flags.
+    if (catchUp && (phantomSend || countMismatch) && !silentMiss) {
+      matched++;
+      catchUpExempt++;
+      continue;
+    }
+
     if (!silentMiss && !countMismatch && !phantomSend) {
       matched++;
       continue;
@@ -336,8 +377,13 @@ export function correctnessCheck({ day, dayLog = null, recounts = {} } = {}) {
       delta: expected - loggedFound,
       loggedIds: e.noticeIds || [],
       expectedIds: Array.isArray(rc.noticeIds) ? rc.noticeIds.map(String) : [],
+      catchUp: !!catchUp,
     });
   }
+
+  const catchUpNote = catchUpExempt > 0
+    ? ` ${catchUpExempt} catch-up send(s) exempt from day-scoped phantom check.`
+    : "";
 
   let status;
   let summary;
@@ -346,13 +392,13 @@ export function correctnessCheck({ day, dayLog = null, recounts = {} } = {}) {
     summary = "No recountable subscriptions for this day.";
   } else if (divergences.length === 0) {
     status = "ok";
-    summary = `Correct: ${matched}/${checked} subscription(s) match a fresh recount.`;
+    summary = `Correct: ${matched}/${checked} subscription(s) match a fresh recount.${catchUpNote}`;
   } else {
     status = "diverge";
     const silent = divergences.filter((d) => d.reason === "silent_miss").length;
     summary = silent > 0
-      ? `DIVERGENCE: ${silent} silent miss(es) — digest reported zero while a fresh recount finds notices. (${divergences.length} total issue(s) of ${checked} checked)`
-      : `DIVERGENCE: ${divergences.length} of ${checked} subscription(s) disagree with a fresh recount.`;
+      ? `DIVERGENCE: ${silent} silent miss(es) — digest reported zero while a fresh recount finds notices. (${divergences.length} total issue(s) of ${checked} checked)${catchUpNote}`
+      : `DIVERGENCE: ${divergences.length} of ${checked} subscription(s) disagree with a fresh recount.${catchUpNote}`;
   }
 
   return {
@@ -363,6 +409,7 @@ export function correctnessCheck({ day, dayLog = null, recounts = {} } = {}) {
     divergences,
     checked,
     matched,
+    catchUpExempt,
   };
 }
 
