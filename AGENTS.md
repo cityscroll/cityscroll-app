@@ -242,6 +242,14 @@ unsubscribe/confirm keep purpose tokens and never accept the session.
 - Banner: `#sessionBanner` ("Not you?" → `/session/logout`)
 - Characterization: `node --test worker/test/session_pins.test.mjs test/session_pins_client.test.mjs`
 
+## Microsoft Clarity (optional heatmaps)
+
+Dormant until a project id is set. Loader: `site/clarity.js` (all public pages).
+Config: `window.CROL_CLARITY_PROJECT_ID`, meta `crol-clarity-project-id`, or
+`CONFIGURED_PROJECT_ID` in that file — leave empty to keep off. Skips on DNT/GPC;
+masks form inputs; operator must set dashboard Masking mode to **Strict**.
+Characterization: `node --test test/clarity.test.mjs`. Privacy copy: About → Privacy.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.

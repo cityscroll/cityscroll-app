@@ -673,6 +673,7 @@
 <script src="i18n.js?v=__I18N_ASSET_VERSION__"></script>
 <script defer src="beta_flags.js?v=1.0.0"></script>
 <script defer src="analytics.js?v=1.2.0"></script>
+<script defer src="clarity.js?v=1.0.0"></script>
 <script src="nl_parse.js"></script>
 <script src="nl_deeplink.js"></script>
 <script src="location_awareness.js"></script>
@@ -1197,7 +1198,7 @@
           </div>
           <div class="afield">
             <label id="adestlabel" for="adest" data-i18n="email_label">Email address</label>
-            <input type="email" id="adest" autocomplete="email" placeholder="you@example.com" data-i18n-placeholder="email_placeholder" aria-describedby="asubmsg">
+            <input type="email" id="adest" data-clarity-mask="true" autocomplete="email" placeholder="you@example.com" data-i18n-placeholder="email_placeholder" aria-describedby="asubmsg">
           </div>
           <div class="afield">
             <label for="afreq" data-i18n="freq_label">Frequency</label>

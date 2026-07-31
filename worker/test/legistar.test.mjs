@@ -123,7 +123,9 @@ test("API limit cap is enforced regardless of requested limit", () => {
 test("GET /meeting-outcomes serves capped JSON records", async () => {
   const kv = memoryKV();
   const payload = modelFromFixture();
-  payload.generated_at = nowIso(VIEW_NOW);
+  // Handler re-fetches live when generated_at is older than MAX_AGE_MS (~36h).
+  // Seed a fresh timestamp so this test stays hermetic against wall-clock drift.
+  payload.generated_at = new Date().toISOString();
   payload.records = Array.from({ length: 140 }, (_, i) => ({
     ...payload.records[0],
     request_id: `CR-${i + 10}`,

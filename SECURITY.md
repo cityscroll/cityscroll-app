@@ -32,7 +32,9 @@ prefer otherwise.
 - **Admin routes** are bearer-key-gated and 404 when unconfigured; their obscurity is not a
   defense.
 - **The static site** is dependency-free vanilla JS on GitHub Pages: no build pipeline to
-  poison, no third-party scripts beyond Cloudflare's cookieless analytics beacon.
+  poison. Third-party scripts are limited to Cloudflare's cookieless analytics beacon and,
+  when a project id is configured, Microsoft Clarity (masked heatmaps; skipped on
+  Do Not Track / Global Privacy Control — see `site/clarity.js`).
 
 - **The notices mirror (D1)** holds only already-public City Record data plus the raw source
   rows; nothing personal ever enters it. **Queues** carry subscription *keys*, not addresses.
