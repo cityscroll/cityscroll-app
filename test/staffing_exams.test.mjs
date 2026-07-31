@@ -116,6 +116,34 @@ test("actionable exam titles connect Staffing role rows to exact exam details", 
   assert.match(html, /staffing_view_exam_detail/);
 });
 
+test("exam mode renders staffingExamCardHTML when items exist (not a redirect-only panel)", () => {
+  // Role chips + staffingVisibleItems() can yield N exams while export still shipped N rows;
+  // the list must map those items to exam cards, never staffing-exam-redirect when N>0.
+  assert.match(html, /function staffingExamCardHTML\s*\(/);
+  assert.match(
+    html,
+    /items\.map\(item=>item\.kind==="exam"\?staffingExamCardHTML\(item\):staffingHireRowHTML\(item\)\)/,
+  );
+  assert.match(html, /staffing-notice-card" data-kind="exam"/);
+  assert.match(html, /#exam\/\$\{encodeURIComponent\(exam\.exam_number\)\}/);
+  // Non-empty results must never take the redirect-only path.
+  assert.doesNotMatch(
+    html,
+    /staffing-notice-list"\)\.innerHTML=`<div class="staffing-exam-redirect"/,
+  );
+  assert.doesNotMatch(
+    html,
+    /if\(isExam\)\{\s*const items=staffingVisibleItems\(\);\s*\$\("#staffing-result-count"\)\.textContent=t\("staffing_exam_count"/,
+  );
+
+  const today = "2026-07-28";
+  const title = "Police Communications Technician";
+  const featured = Staffing.featuredExams(artifact.exams, today, artifact.exams.length);
+  const roleMatches = featured.filter((exam) => exam.title === title);
+  assert.equal(roleMatches.length, 4, "fixture role used by deep-link repro must stay discoverable");
+  assert.ok(roleMatches.every((exam) => exam.exam_number));
+});
+
 test("source staleness is derived from the recorded cadence", () => {
   const current = artifact.sources.find(source => source.id === "dcas-open-competitive");
   assert.equal(Staffing.sourceIsStale(current, "2026-08-31"), false);
