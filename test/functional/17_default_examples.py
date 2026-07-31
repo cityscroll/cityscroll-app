@@ -54,12 +54,12 @@ def people_opens_on_a_populated_example(pw):
     page.goto(f"{BASE}#people", timeout=30000)
     page.wait_for_load_state("load")
     page.wait_for_timeout(1500)
-    first = page.locator("#staffing-notice-list .staffing-notice-card").first
+    first = page.locator("#staffing-notice-list .staffing-hire-row").first
     first.wait_for(state="visible")
     first_text = first.inner_text().strip()
     if "RIVERA,ANA M." not in first_text:
         failures.append(f"bare #people did not put the newest fixture first — got: {first_text!r}")
-    if page.locator("#staffing-notice-list .staffing-notice-card").count() != 4:
+    if page.locator("#staffing-notice-list .staffing-hire-row").count() != 4:
         failures.append("bare #people did not render all four recent appointment fixtures")
     if page.evaluate("location.hash") != "#people":
         failures.append("bare #people's default feed decorated the address bar")
@@ -82,7 +82,7 @@ def deep_link_still_overrides_the_default(pw):
     query = page.locator("#staffing-query").input_value()
     if query != "RODRIGUEZ":
         failures.append(f"#people?q=RODRIGUEZ did not populate the list search — got: {query!r}")
-    rows = page.locator("#staffing-notice-list .staffing-notice-card")
+    rows = page.locator("#staffing-notice-list .staffing-hire-row")
     if rows.count() != 1 or "RODRIGUEZ,LUIS A." not in rows.first.inner_text():
         failures.append("the query permalink did not refine the appointment list to Rodriguez")
     if page.evaluate("location.hash") != "#people?q=RODRIGUEZ":
