@@ -109,6 +109,60 @@ function collectDocs(kind, attributes) {
   return docs;
 }
 
+function actionCodeFromDispositionName(name) {
+  const match = String(name || "").match(/(?:^|_)(ZM|ZR|ZA|ZC|ZS|HA|PC|PQ|HG|LD|MM)(?:_|$)/i);
+  return match ? match[1].toUpperCase() : null;
+}
+
+function dispositionGroupKey(disposition) {
+  return [
+    disposition.representing,
+    disposition.vote_date,
+    disposition.community_board,
+    disposition.borough_president,
+    disposition.borough_board,
+    disposition.votes_for,
+    disposition.votes_against,
+    disposition.votes_abstain,
+  ].map((value) => value == null ? "" : String(value).trim().toLowerCase()).join("|");
+}
+
+/** Collapse ZM/ZR (and similar) rows that repeat one body's vote. */
+export function groupZapDispositions(dispositions) {
+  const groups = new Map();
+  for (const disposition of dispositions || []) {
+    const key = dispositionGroupKey(disposition);
+    const existing = groups.get(key);
+    const code = actionCodeFromDispositionName(disposition.name);
+    if (!existing) {
+      groups.set(key, {
+        ...disposition,
+        action_codes: code ? [code] : [],
+        source_ids: disposition.id ? [disposition.id] : [],
+      });
+      continue;
+    }
+    if (code && !existing.action_codes.includes(code)) existing.action_codes.push(code);
+    if (disposition.id && !existing.source_ids.includes(disposition.id)) existing.source_ids.push(disposition.id);
+    existing.n_documents += disposition.n_documents || 0;
+  }
+  return [...groups.values()].map((group) => ({
+    ...group,
+    action_codes: [...new Set(group.action_codes)].sort(),
+    n_source_rows: group.source_ids.length,
+  }));
+}
+
+function dedupeDocumentsByName(documents) {
+  const seen = new Set();
+  return (documents || []).filter((document) => {
+    const key = String(document.name || "").trim().toLocaleLowerCase();
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
 /**
  * Parse a ZAP API project payload into a product outcome record.
  * Pure — no fetch.
@@ -187,22 +241,14 @@ export function parseZapApiProject(payload) {
     }
   }
 
-  // De-dupe documents by url+name
-  const seenDoc = new Set();
-  const uniqueDocs = [];
-  for (const d of documents) {
-    const key = `${d.url || ""}|${d.name || ""}`;
-    if (seenDoc.has(key)) continue;
-    seenDoc.add(key);
-    uniqueDocs.push(d);
-  }
+  const groupedDispositions = groupZapDispositions(dispositions);
+  const uniqueDocs = dedupeDocumentsByName(documents);
 
   const approvedActions = actions.filter((a) => a.approved);
-  const withVote = dispositions.filter((d) => d.vote_date || d.community_board || d.borough_president);
   const useful =
     uniqueDocs.length > 0
     || approvedActions.length > 0
-    || withVote.length > 0
+    || groupedDispositions.some((d) => d.vote_date || d.community_board)
     || Boolean(attrs["dcp-projectcompleted"] || attrs["dcp-publicstatus"]);
 
   return {
@@ -221,10 +267,10 @@ export function parseZapApiProject(payload) {
     portal_url: projectId ? `${ZAP_PORTAL_PROJECT}/${encodeURIComponent(projectId)}` : null,
     actions,
     approved_actions: approvedActions,
-    dispositions,
+    dispositions: groupedDispositions,
     documents: uniqueDocs.slice(0, 40),
     n_documents: uniqueDocs.length,
-    n_dispositions: dispositions.length,
+    n_dispositions: groupedDispositions.length,
     n_approved_actions: approvedActions.length,
     useful,
     source: ZAP_OUTCOMES_SOURCE,
