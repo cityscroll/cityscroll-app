@@ -1,0 +1,50 @@
+// entity_resolution — modular monolith package root (er-08).
+//
+// Semantic boundary for identity work inside the existing Worker/D1 deploy
+// surface. Not an HTTP service. Import subpackages directly when possible;
+// this root re-exports the stable public surface for tests and thin shims.
+
+export {
+  VENDOR_STEM_METHOD,
+  VENDOR_STEM_VERSION,
+  VENDOR_SUFFIX,
+  vendorStem,
+  sameVendorStem,
+  canonicalAgency,
+  agencyCanonicalId,
+  sameAgency,
+  normalizeEntity,
+} from "./normalizers/index.mjs";
+
+export {
+  CANDIDATE_GENERATION_VERSION,
+  generateCandidates,
+} from "./candidate_generation/index.mjs";
+
+export {
+  FEATURES_VERSION,
+  extractFeatures,
+} from "./features/index.mjs";
+
+export {
+  MATCHERS_VERSION,
+  scorePair,
+} from "./matchers/index.mjs";
+
+export {
+  POLICIES_VERSION,
+  routeDecision,
+} from "./policies/index.mjs";
+
+export {
+  loadGold,
+  loadPredictions,
+  loadCandidates,
+  computeMetrics,
+  GOLD_V0_PATH,
+} from "./evaluation/index.mjs";
+
+export {
+  REVIEW_VERSION,
+  toReviewItem,
+} from "./review/index.mjs";
