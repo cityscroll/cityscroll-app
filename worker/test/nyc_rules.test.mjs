@@ -378,7 +378,9 @@ test("refresh writes the view to KV and the read route serves it", async () => {
   })];
   const kv = memoryKV();
 
-  const result = await refreshRules({ ALERT_STATE: kv }, multiSourceFetch(rss, crRows), NOW);
+  // handleRules live-refreshes when generated_at is older than MAX_AGE_MS (~36h).
+  // Use wall-clock "now" so the route serves the fixture write, not a live upstream pull.
+  const result = await refreshRules({ ALERT_STATE: kv }, multiSourceFetch(rss, crRows), new Date());
   assert.equal(result.status, "success");
   assert.ok(kv.values.has(RULES_KV_KEY));
 

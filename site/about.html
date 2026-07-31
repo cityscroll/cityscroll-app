@@ -23,6 +23,7 @@
 <script src="i18n.js?v=__I18N_ASSET_VERSION__"></script>
 <script defer src="beta_flags.js?v=1.0.0"></script>
 <script defer src="analytics.js?v=1.2.0"></script>
+<script defer src="clarity.js?v=1.0.0"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Spectral:ital,wght@0,400;0,600;0,800;1,400&family=Spectral+SC:wght@600&display=swap" rel="stylesheet">
@@ -200,7 +201,7 @@ registration and real payment. Nothing here says anyone did wrong. It just saves
   <textarea id="fbmessage" maxlength="2000" placeholder="What happened, what you'd want, or anything else — the more specific the better." data-i18n-placeholder="about_ph_message"></textarea>
 
   <label for="fbemail"><span data-i18n="about_label_email">Email</span> <span class="opt" data-i18n="about_label_email_opt">— optional, only if you'd like a reply</span></label>
-  <input type="email" id="fbemail" autocomplete="email" placeholder="you@example.com" data-i18n-placeholder="email_placeholder">
+  <input type="email" id="fbemail" data-clarity-mask="true" autocomplete="email" placeholder="you@example.com" data-i18n-placeholder="email_placeholder">
 
   <div class="cf-turnstile" data-sitekey="0x4AAAAAADtj-Mskk_RnVd5K" data-action="feedback-v1" style="margin:14px 0 6px"></div>
 
@@ -211,13 +212,7 @@ registration and real payment. Nothing here says anyone did wrong. It just saves
 
 <h2 id="privacy" data-i18n="about_h_privacy">Privacy</h2>
 <p class="src" data-i18n="about_p_privacy_intro">CityScroll has no password accounts and no ad tech. It does not track you across other sites.</p>
-<ul class="src" style="margin:8px 0;padding-left:20px" data-i18n-html="about_li_privacy_html">
-  <li><b>Searches and filters</b> use NYC Open Data.</li>
-  <li><b>The "Ask" box</b> lets you search in plain English. Your text is sent to Anthropic's Claude, which turns it into filters. We do not save your text.</li>
-  <li><b>Subscribing or sending feedback</b> saves what you send us. This includes your alert or message and your email, if you share one. We also keep some basic info about your request, like your IP address and browser. We keep this for a short time to stop spam and abuse. Every alert email has a one-click unsubscribe link.</li>
-  <li><b>Email links and pins</b> — clicking a link from your alert email signs you in on that device so your pinned items can follow you. A short banner says you are signed in and lets you sign out ("Not you?"). Changing or canceling a subscription still needs its own email link.</li>
-  <li><b>Page views</b> are tracked with Cloudflare Web Analytics. It uses no cookies and only shows totals. It counts visits. It does not know who you are or follow you to other sites.</li>
-</ul>
+<ul class="src" style="margin:8px 0;padding-left:20px" data-i18n-html="about_li_privacy_html"><li><b>Searches and filters</b> use NYC Open Data.</li><li><b>The "Ask" box</b> lets you search in plain English. Your text is sent to Anthropic's Claude, which turns it into filters. We do not save your text.</li><li><b>Subscribing or sending feedback</b> saves what you send us. This includes your alert or message and your email, if you share one. We also keep some basic info about your request, like your IP address and browser. We keep this for a short time to stop spam and abuse. Every alert email has a one-click unsubscribe link.</li><li><b>Email links and pins</b> — clicking a link from your alert email signs you in on that device so your pinned items can follow you. A short banner says you are signed in and lets you sign out ("Not you?"). Changing or canceling a subscription still needs its own email link.</li><li><b>Page views</b> are tracked with Cloudflare Web Analytics. It uses no cookies and only shows totals. It counts visits. It does not know who you are or follow you to other sites.</li><li><b>Click and scroll maps</b> (Microsoft Clarity, when turned on) show where people tap or scroll so we can fix hard-to-use spots. Typed text and form fields — including email — are masked and never sent as plain text. Clarity does not load if your browser signals Do Not Track or Global Privacy Control. It is not used for ads or personal profiles.</li></ul>
 
 <h2 data-i18n="about_h_content">About our content</h2>
 <p data-i18n-html="about_p_content_html">An AI assistant (Claude) drafts this site's copy — headings, explanations, pages like this one. A human editor checks it before it goes live. The data is not AI-generated. Every notice, dollar figure, and date comes straight from <a href="https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx" target="_blank" rel="noopener noreferrer">NYC Open Data<span class="sr-only"> (opens in new tab)</span></a>, unedited.</p>
