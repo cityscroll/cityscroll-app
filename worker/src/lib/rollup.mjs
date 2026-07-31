@@ -133,6 +133,12 @@ export function toRollupDayLogEntry(result = {}, { day = null } = {}) {
     ? result.noticeIds.map(String).filter(Boolean).slice(0, 100)
     : [];
   const noticeCount = Number.isFinite(result.new) ? Number(result.new) : noticeIds.length;
+  const action = result.action || (result.skipped ? `skipped:${result.skipped}` : "rollup");
+  // Mirror toDayLogEntry: stamp traffic_class for multi-day lag recovery / catch-up.
+  const isCatchUp =
+    action === "catch_up" ||
+    result.mode === "catch_up" ||
+    result.traffic_class === "catch_up";
   const sections = Array.isArray(result.sections)
     ? result.sections.map((sec) => ({
         id: sec.sub || sec.subKey || sec.key || null,
@@ -155,7 +161,8 @@ export function toRollupDayLogEntry(result = {}, { day = null } = {}) {
     noticeCount,
     noticeIds,
     noticeLinks: noticeIds.map((id) => `https://cityscroll.org/#notice/${encodeURIComponent(id)}`),
-    action: result.action || (result.skipped ? `skipped:${result.skipped}` : "rollup"),
+    action,
+    traffic_class: isCatchUp ? "catch_up" : (result.traffic_class || null),
     sent: !!result.sent,
     dryRun: !!result.dryRun,
     capped: !!result.capped,

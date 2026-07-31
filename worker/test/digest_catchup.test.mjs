@@ -3,7 +3,15 @@
 // Tests the selection logic, the send path, and the receipt/stats bookkeeping.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { runCatchUpDigests, readCatchUpReceipt } from "../src/alerts.mjs";
+import {
+  runCatchUpDigests,
+  readCatchUpReceipt,
+  readDigestDayLog,
+  isMultiDayLagRecovery,
+  processOneSub,
+} from "../src/alerts.mjs";
+import { toDayLogEntry, correctnessCheck, buildDayLog } from "../src/lib/digest_ops.mjs";
+import { toRollupDayLogEntry } from "../src/lib/rollup.mjs";
 
 class MockKV {
   constructor() { this.store = new Map(); }
@@ -133,4 +141,185 @@ test("catch-up: explicit subKeys forces catch-up for specified subs regardless o
     const r = await runCatchUpDigests(env, { subKeys: [key] });
     assert.equal(r.candidates, 1, "forced sub is targeted even though it's not lagging");
   } finally { globalThis.fetch = realFetch; }
+});
+
+// QUEUE_DIGESTS must not skip catch-up daylog merge — desk phantom_send exemption
+// requires stamped daylog rows (action/traffic_class catch_up).
+test("catch-up under queue mode: daylog entries are written with catch_up stamp", async () => {
+  const SUBS = new MockKV(), ALERT_STATE = new MockKV();
+  const key = "sub:queuecu@example.com:q01";
+  seedSub({ SUBS, ALERT_STATE }, key, { lastsent: "2026-07-28" });
+  const env = {
+    SUBS,
+    ALERT_STATE,
+    ALERTS_LIVE: "true",
+    RESEND_API_KEY: "rk",
+    TOKEN_SECRET: "s".repeat(32),
+    // Simulate production queue mode: catch-up must still write daylog (was gated off).
+    QUEUE_DIGESTS: "true",
+    DIGEST_QUEUE: { send: async () => {} },
+  };
+  const notices = [
+    { request_id: "20260729001", start_date: "2026-07-29T00:00:00.000", agency_name: "DDC", short_title: "Missed A", contract_amount: "900000", section_name: "Procurement" },
+    { request_id: "20260730001", start_date: "2026-07-30T00:00:00.000", agency_name: "DDC", short_title: "Missed B", contract_amount: "800000", section_name: "Procurement" },
+  ];
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = mockFetch(notices);
+  // Force Resend success path via mockFetch (ALERTS_LIVE true).
+  globalThis.fetch = async (url, opts) => {
+    const u = String(url);
+    if (u.includes("data.cityofnewyork.us") || u.includes("dg92-zbpx")) return Response.json(notices);
+    if (u.includes("api.resend.com")) return Response.json({ id: "catchup_q1" });
+    throw new Error("unexpected fetch: " + u);
+  };
+  try {
+    const r = await runCatchUpDigests(env, { minLagDays: 2 });
+    assert.equal(r.candidates, 1);
+    assert.ok(r.results[0]?.sent, "catch-up send happened");
+    const day = DAY();
+    const dayLog = await readDigestDayLog(env, day);
+    assert.ok(dayLog, "daylog must exist under queue mode after catch-up");
+    assert.ok(Array.isArray(dayLog.entries) && dayLog.entries.length >= 1, "daylog has catch-up entries");
+    const stamped = dayLog.entries.filter((e) => e.action === "catch_up" || e.traffic_class === "catch_up");
+    assert.ok(stamped.length >= 1, "at least one entry stamped catch_up");
+    assert.equal(stamped[0].traffic_class, "catch_up");
+    // Desk correctness: multi-day noticeCount vs day-scoped expected=0 is exempt.
+    const c = correctnessCheck({
+      day,
+      dayLog,
+      recounts: { [stamped[0].id]: { noticeCount: 0, noticeIds: [] } },
+    });
+    assert.equal(c.status, "ok", "stamped catch-up must not phantom_send");
+    assert.ok(c.catchUpExempt >= 1);
+  } finally {
+    globalThis.fetch = realFetch;
+  }
+});
+
+test("isMultiDayLagRecovery: lag > 1 day with fresh notices is recovery", () => {
+  assert.equal(isMultiDayLagRecovery("2026-07-28", "2026-07-31", 3), true);
+  assert.equal(isMultiDayLagRecovery("2026-07-30", "2026-07-31", 2), false, "1-day lag is normal daily");
+  assert.equal(isMultiDayLagRecovery("2026-07-31", "2026-07-31", 1), false);
+  assert.equal(isMultiDayLagRecovery("2026-07-28", "2026-07-31", 0), false, "no fresh → not recovery stamp");
+  assert.equal(isMultiDayLagRecovery(null, "2026-07-31", 2), false);
+});
+
+test("processOneSub lag recovery: stamps traffic_class catch_up; email stays match action", async () => {
+  const SUBS = new MockKV(), ALERT_STATE = new MockKV();
+  const key = "sub:lagrec@example.com:l01";
+  seedSub({ SUBS, ALERT_STATE }, key, { lastsent: "2026-07-28" });
+  const env = { SUBS, ALERT_STATE, ALERTS_LIVE: "true", RESEND_API_KEY: "rk", TOKEN_SECRET: "s".repeat(32) };
+  const notices = [
+    { request_id: "20260729001", start_date: "2026-07-29T00:00:00.000", agency_name: "DDC", short_title: "Backlog A construction", contract_amount: "900000", section_name: "Procurement" },
+    { request_id: "20260730001", start_date: "2026-07-30T00:00:00.000", agency_name: "DDC", short_title: "Backlog B construction", contract_amount: "800000", section_name: "Procurement" },
+  ];
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async (url) => {
+    const u = String(url);
+    if (u.includes("data.cityofnewyork.us") || u.includes("dg92-zbpx")) return Response.json(notices);
+    if (u.includes("api.resend.com")) return Response.json({ id: "lag_1" });
+    throw new Error("unexpected fetch: " + u);
+  };
+  try {
+    const r = await processOneSub(
+      env,
+      {
+        key,
+        email: "lagrec@example.com",
+        lens: "money",
+        filter: { minAmount: 500000, keywords: ["construction"] },
+        freq: "daily",
+        channel: "email",
+        createdAt: "2026-07-01T00:00:00.000Z",
+        lang: "en",
+      },
+      {
+        FROM: "CityScroll <alerts@cityscroll.org>",
+        LIVE: true,
+        heartbeatDays: 14,
+        today: "2026-07-31",
+        isMonday: false,
+        counts: () => ({ "per-run": 0, daily: 0 }),
+        caps: { "per-run": 25, daily: 50 },
+        onSent: async () => {},
+      },
+    );
+    assert.equal(r.sent, true);
+    assert.equal(r.action, "match", "daily path keeps match action (not catch_up branded)");
+    assert.equal(r.traffic_class, "catch_up");
+    const entry = toDayLogEntry(r, { day: "2026-07-31" });
+    assert.equal(entry.traffic_class, "catch_up");
+    assert.equal(entry.action, "match");
+    const c = correctnessCheck({
+      day: "2026-07-31",
+      dayLog: buildDayLog({ day: "2026-07-31", mode: "queue", results: [r] }),
+      recounts: { [entry.id]: { noticeCount: 0, noticeIds: [] } },
+    });
+    assert.equal(c.status, "ok");
+    assert.equal(c.catchUpExempt, 1);
+  } finally {
+    globalThis.fetch = realFetch;
+  }
+});
+
+test("processOneSub normal daily: lag=1 does not stamp catch_up", async () => {
+  const SUBS = new MockKV(), ALERT_STATE = new MockKV();
+  const key = "sub:normal@example.com:n01";
+  seedSub({ SUBS, ALERT_STATE }, key, { lastsent: "2026-07-30" });
+  const env = { SUBS, ALERT_STATE, ALERTS_LIVE: "true", RESEND_API_KEY: "rk", TOKEN_SECRET: "s".repeat(32) };
+  const notices = [
+    { request_id: "20260731001", start_date: "2026-07-31T00:00:00.000", agency_name: "DDC", short_title: "Today construction", contract_amount: "900000", section_name: "Procurement" },
+  ];
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async (url) => {
+    const u = String(url);
+    if (u.includes("data.cityofnewyork.us") || u.includes("dg92-zbpx")) return Response.json(notices);
+    if (u.includes("api.resend.com")) return Response.json({ id: "n1" });
+    throw new Error("unexpected fetch: " + u);
+  };
+  try {
+    const r = await processOneSub(
+      env,
+      {
+        key,
+        email: "normal@example.com",
+        lens: "money",
+        filter: { minAmount: 500000, keywords: ["construction"] },
+        freq: "daily",
+        channel: "email",
+        createdAt: "2026-07-01T00:00:00.000Z",
+        lang: "en",
+      },
+      {
+        FROM: "CityScroll <alerts@cityscroll.org>",
+        LIVE: true,
+        heartbeatDays: 14,
+        today: "2026-07-31",
+        isMonday: false,
+        counts: () => ({ "per-run": 0, daily: 0 }),
+        caps: { "per-run": 25, daily: 50 },
+        onSent: async () => {},
+      },
+    );
+    assert.equal(r.action, "match");
+    assert.equal(r.traffic_class, null);
+  } finally {
+    globalThis.fetch = realFetch;
+  }
+});
+
+test("toRollupDayLogEntry: traffic_class catch_up is preserved", () => {
+  const e = toRollupDayLogEntry({
+    sub: "account:ed***",
+    kind: "rollup",
+    found: 3,
+    new: 3,
+    noticeIds: ["a", "b", "c"],
+    action: "match",
+    traffic_class: "catch_up",
+    sent: true,
+    sections: [{ sub: "sub:a***", lens: "money", queryLabel: "education", new: 3, action: "match" }],
+  }, { day: "2026-07-31" });
+  assert.equal(e.action, "match");
+  assert.equal(e.traffic_class, "catch_up");
 });
