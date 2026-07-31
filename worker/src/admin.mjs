@@ -5,7 +5,21 @@
 // GET /admin/digest-rollup?key=…&email=… — dry-run account rollup for one email (no Resend send).
 
 import { redactEmail } from "./lib/subscriptions.mjs";
-import { dryRunRollupForEmail, runCatchUpDigests } from "./alerts.mjs";
+import { dryRunRollupForEmail, digestSendTestForEmail, runCatchUpDigests } from "./alerts.mjs";
+
+// Store digests rather than publishing the desk's private recipient addresses in this repo.
+const DIGEST_TEST_SEND_ALLOWLIST = new Set([
+  "a17c00b69ea8339da4543a92b20605a87efbd45067ebb8bce88fbe3e29368e03",
+  "ba4676e7d45accb8101c2cc1acdd8e5681319413608bd723e44b4081b19c9bec",
+  "aa0b61da59b2ad5210a4f4e425534b7437e6a0b8d0a388d82d660b60be1693e2",
+  "7878af20a7538ed0a03e11f6b0f67f9ad8cc29b7116da0b10d7a7fc078d503fe",
+]);
+
+async function isAllowedDigestTestRecipient(email) {
+  const bytes = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(email.trim().toLowerCase()));
+  const digest = [...new Uint8Array(bytes)].map((b) => b.toString(16).padStart(2, "0")).join("");
+  return DIGEST_TEST_SEND_ALLOWLIST.has(digest);
+}
 
 // Shared auth gate for every /admin/* route: key via ?key= or an Authorization: Bearer header.
 // FAIL CLOSED — 404 (not 401) until ADMIN_KEY is configured, so an unconfigured deploy doesn't
@@ -90,6 +104,39 @@ export async function handleAdminDigestRollup(req, env) {
   if (!email) return json({ error: "email-required" }, 400);
   try {
     const out = await dryRunRollupForEmail(env, email);
+    return json(out, 200);
+  } catch (e) {
+    return json({ error: String(e?.message || e) }, 500);
+  }
+}
+
+/**
+ * POST /admin/digest-send-test?key=…
+ * Evaluate, or send once through, the normal digest path for one email.
+ * State advancement is opt-in; test sends do not consume watermarks by default.
+ */
+export async function handleAdminDigestSendTest(req, env) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (req.method !== "POST") return json({ error: "method not allowed" }, 405);
+
+  let body = {};
+  try {
+    const raw = await req.text();
+    if (raw) body = JSON.parse(raw);
+  } catch {
+    return json({ error: "invalid-json" }, 400);
+  }
+  const email = typeof body.email === "string" ? body.email : "";
+  if (!email) return json({ error: "email-required" }, 400);
+  if (!await isAllowedDigestTestRecipient(email)) return json({ error: "recipient-not-allowed" }, 403);
+  if (body.live !== undefined && typeof body.live !== "boolean") return json({ error: "live-must-be-boolean" }, 400);
+  if (body.advanceState !== undefined && typeof body.advanceState !== "boolean") return json({ error: "advanceState-must-be-boolean" }, 400);
+  try {
+    const out = await digestSendTestForEmail(env, email, {
+      live: body.live === true,
+      advanceState: body.advanceState === true,
+    });
     return json(out, 200);
   } catch (e) {
     return json({ error: String(e?.message || e) }, 500);

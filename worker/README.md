@@ -64,6 +64,7 @@ continues to reject those origins. See `../docs/beta-channel.md`.
 | `/api` | GET | 302 → cityscroll.org/api.html (the API docs) | none |
 | `/admin/subs` `/admin/feedback` | GET | Operator reads (redacted) | `ADMIN_KEY` → 404 if unset |
 | `/admin/digest-rollup` | GET | Dry-run account digest for `?email=` (no Resend); shows rollup vs single and day-log preview | `ADMIN_KEY` → 404 if unset |
+| `/admin/digest-send-test` | POST | Evaluate or send one allowlisted address through the normal digest path; `live` is opt-in and `advanceState` defaults false | `ADMIN_KEY` → 404 if unset; recipient allowlist |
 | `/admin/suggest-refresh` | POST | Runs the suggestion-chip validation (`/suggestions`' cron pipeline) on demand instead of waiting for the 13:00 UTC cron; returns the same summary JSON, fail-soft identical to the cron path | `ADMIN_KEY` → 404 if unset |
 | `/usage` | GET | Read-only Haiku spend report | `USAGE_KEY` → 404 if unset |
 | `/board-hook` | POST | **Board notifications** — see below | HMAC (`BOARD_HOOK_SECRET`) fails closed; fails closed 503 with no bot/App token configured |
@@ -90,6 +91,9 @@ accounts. Footers link to the **preference center** (`/prefs`) and support per-w
 all-watches unsubscribe. Preference edits take effect on the **next daily cron** (~9am ET).
 Design notes: [`docs/digest-rollup-prefs.md`](../docs/digest-rollup-prefs.md). Operator
 dry-run: `GET /admin/digest-rollup?key=…&email=…`.
+Test-send evaluation (no Resend):
+`curl -X POST 'https://api.cityscroll.org/admin/digest-send-test?key=…' -H 'content-type: application/json' --data '{"email":"allowlisted-address@example.com"}'`.
+Add `"live":true` to send once. `"advanceState":true` is required to update seen/last-sent watermarks.
 
 Cron-replayable lenses: **money** (awards ≥ threshold / RFP
 keywords), **land** (rezonings), **property / rules / meetings** (City Record section

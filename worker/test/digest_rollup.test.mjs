@@ -1,7 +1,7 @@
 // Account-level digest rollup: multi-watch email → one consolidated send.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { runAlerts, processAccountRollup, dryRunRollupForEmail } from "../src/alerts.mjs";
+import { runAlerts, processAccountRollup, dryRunRollupForEmail, digestSendTestForEmail } from "../src/alerts.mjs";
 import { buildDayLog } from "../src/lib/digest_ops.mjs";
 
 function kv(map = {}) {
@@ -209,6 +209,25 @@ test("dryRunRollupForEmail: no Resend, returns rollup preview", async () => {
     assert.equal(out.wouldSend, true);
     assert.equal(out.dayLogPreview.kind, "rollup");
     assert.equal(sentEmails.length, 0, "dry-run never hits Resend");
+  });
+});
+
+test("digestSendTestForEmail: live sends one rollup without advancing state by default", async () => {
+  const today = new Date().toISOString().slice(0, 10);
+  const subsStore = {
+    "sub:test-a": JSON.stringify({ email: "example@example.com", lens: "money", filter: { keywords: ["construction"] }, freq: "daily", createdAt: today }),
+    "sub:test-b": JSON.stringify({ email: "example@example.com", lens: "money", filter: { keywords: ["education"] }, freq: "daily", createdAt: today }),
+  };
+  const { env, sentEmails, ALERT_STATE } = makeEnv(subsStore, { live: true });
+  await withMockFetch(sentEmails, null, async () => {
+    const out = await digestSendTestForEmail(env, "example@example.com", { live: true });
+    assert.equal(out.mode, "rollup");
+    assert.equal(out.wouldSend, true);
+    assert.equal(out.manageUrlPresent, true);
+    assert.equal(sentEmails.length, 1);
+    assert.equal(await ALERT_STATE.get("seen:sub:test-a"), null);
+    assert.equal(await ALERT_STATE.get("lastsent:sub:test-a"), null);
+    assert.match(sentEmails[0].html, /Manage watches/i);
   });
 });
 
