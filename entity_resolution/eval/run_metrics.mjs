@@ -3,15 +3,19 @@
  * Entity-resolution metrics harness (eval only; no production traffic).
  *
  * Loads a versioned gold JSONL and prints the metric keys used by later matcher
- * cards. With --dry-run (or without predictions), metric values are null.
+ * cards. With --dry-run (or without predictions), scorer metrics stay null.
+ * With --blocker token_v0, candidate_recall is computed offline (no auto-links).
  *
  * Usage:
  *   node entity_resolution/eval/run_metrics.mjs \
  *     --gold entity_resolution/eval/gold_v0.jsonl --dry-run
  *
+ *   node entity_resolution/eval/run_metrics.mjs \
+ *     --gold entity_resolution/eval/gold_v0.jsonl --blocker token_v0
+ *
  * Optional (later cards):
  *   --predictions <path.jsonl>   predicted pairs {id|left,right, decision}
- *   --blocker <name>             reserved for candidate generation (er-05)
+ *   --blocker <name>             token_v0 | none  (candidate generation)
  *
  * Exit codes:
  *   0  gold valid; metrics printed
@@ -21,6 +25,7 @@
 import { createHash } from "node:crypto";
 import { readFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
+import { applyTokenV0, BLOCKER_ID as TOKEN_V0_ID } from "./blockers/token_v0.mjs";
 
 const METRIC_KEYS = [
   "precision",
@@ -34,10 +39,13 @@ const METRIC_KEYS = [
 const ENTITY_TYPES = new Set(["vendor", "agency", "procurement", "location"]);
 const LABELS = new Set(["same", "different"]);
 
+const KNOWN_BLOCKERS = new Set(["token_v0", "none"]);
+
 function usage(msg) {
   if (msg) console.error(`error: ${msg}`);
   console.error(`Usage: node entity_resolution/eval/run_metrics.mjs --gold <path.jsonl> [--dry-run]
-       [--predictions <path.jsonl>] [--blocker <name>] [--json]`);
+       [--predictions <path.jsonl>] [--blocker token_v0|none] [--json]
+       [--examples N]   (blocked-in/out true-match examples; default 5 with blocker)`);
   process.exit(1);
 }
 
@@ -48,6 +56,7 @@ function parseArgs(argv) {
     predictions: null,
     blocker: null,
     json: false,
+    examples: null,
   };
   for (let i = 2; i < argv.length; i++) {
     const a = argv[i];
@@ -56,11 +65,40 @@ function parseArgs(argv) {
     else if (a === "--predictions") out.predictions = argv[++i];
     else if (a === "--blocker") out.blocker = argv[++i];
     else if (a === "--json") out.json = true;
-    else if (a === "--help" || a === "-h") usage();
+    else if (a === "--examples") {
+      const n = Number(argv[++i]);
+      if (!Number.isFinite(n) || n < 0) usage("--examples requires a non-negative number");
+      out.examples = n;
+    } else if (a === "--help" || a === "-h") usage();
     else usage(`unknown argument: ${a}`);
   }
   if (!out.gold) usage("--gold is required");
+  if (out.blocker != null && !KNOWN_BLOCKERS.has(out.blocker)) {
+    usage(`unknown blocker "${out.blocker}" (known: ${[...KNOWN_BLOCKERS].join(", ")})`);
+  }
   return out;
+}
+
+/**
+ * Run a named blocker over gold cases. Returns candidates Set + detail rows,
+ * or null when no blocker / blocker=none.
+ */
+export function runBlocker(name, cases) {
+  if (!name || name === "none") return null;
+  if (name === TOKEN_V0_ID || name === "token_v0") {
+    return applyTokenV0(cases);
+  }
+  return null;
+}
+
+/**
+ * Pick a few gold-same rows for blocked-in and blocked-out documentation.
+ */
+export function pickBlockExamples(details, limit = 5) {
+  const same = (details || []).filter((d) => d.label === "same");
+  const blockedIn = same.filter((d) => d.blocked_in).slice(0, limit);
+  const blockedOut = same.filter((d) => !d.blocked_in).slice(0, limit);
+  return { blocked_in: blockedIn, blocked_out: blockedOut };
 }
 
 function failGold(msg, detail) {
@@ -344,15 +382,34 @@ function main() {
     predictions = null;
   }
 
-  // er-05 may pass --blocker; without a candidates file, candidate_recall stays null.
+  // Candidate generation (er-05): offline blocker → candidate set for candidate_recall.
+  // No production auto-links; eval-only in-memory pairs.
   let candidates = null;
-  if (args.blocker && args.blocker !== "none") {
-    // Placeholder: blocker implementations land in er-05. For now, presence of
-    // --blocker without candidates keeps candidate_recall null (not an error).
-    candidates = null;
+  let blockerDetails = null;
+  const blockerResult = runBlocker(args.blocker, cases);
+  if (blockerResult) {
+    candidates = blockerResult.candidateIds;
+    blockerDetails = blockerResult.details;
   }
 
   const metrics = computeMetrics(cases, predictions, candidates);
+
+  // candidate_recall must land in [0,1] when a blocker supplies candidates.
+  if (metrics.candidate_recall != null) {
+    const cr = metrics.candidate_recall;
+    if (!(typeof cr === "number" && cr >= 0 && cr <= 1)) {
+      console.error(`internal error: candidate_recall out of range: ${cr}`);
+      process.exit(1);
+    }
+  }
+
+  const exampleLimit =
+    args.examples != null ? args.examples : blockerDetails ? 5 : 0;
+  const examples =
+    blockerDetails && exampleLimit > 0
+      ? pickBlockExamples(blockerDetails, exampleLimit)
+      : null;
+
   const report = {
     gold_path: args.gold,
     gold_version: meta.gold_version,
@@ -362,6 +419,7 @@ function main() {
     blocker: args.blocker || null,
     composition: composition(cases),
     metrics,
+    block_examples: examples,
   };
 
   // Always print metric keys first as plain KEY=VALUE lines for greppability.
@@ -380,9 +438,41 @@ function main() {
     console.log(`content_hash=${contentHash}`);
     console.log(`cases=${cases.length}`);
     console.log(`dry_run=${report.dry_run}`);
+    console.log(`blocker=${args.blocker || "null"}`);
     console.log(
       `composition=${JSON.stringify(report.composition)}`,
     );
+    if (examples) {
+      // Document blocked-in / blocked-out true matches (no silent drop).
+      console.log("---");
+      console.log("block_examples (gold label=same only)");
+      if (examples.blocked_in.length === 0) {
+        console.log("blocked_in: (none in sample)");
+      } else {
+        for (const d of examples.blocked_in) {
+          console.log(
+            `blocked_in\t${d.id}\t${d.entity_type}\tkeys=${d.shared_keys.join(",") || "-"}\t"${d.left_name}" ↔ "${d.right_name}"`,
+          );
+        }
+      }
+      if (examples.blocked_out.length === 0) {
+        console.log("blocked_out: (none — all gold same pairs retained)");
+      } else {
+        for (const d of examples.blocked_out) {
+          console.log(
+            `blocked_out\t${d.id}\t${d.entity_type}\tkeys=-\t"${d.left_name}" ↔ "${d.right_name}"`,
+          );
+        }
+      }
+      const goldSame = cases.filter((c) => c.label === "same").length;
+      const retained = candidates ? [...candidates].filter((id) => {
+        const row = cases.find((c) => c.id === id);
+        return row && row.label === "same";
+      }).length : 0;
+      console.log(
+        `blocker_summary\tgold_same=${goldSame}\tretained=${retained}\tdropped=${goldSame - retained}`,
+      );
+    }
   }
 
   // Sanity: every metric key present.
