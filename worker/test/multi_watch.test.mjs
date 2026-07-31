@@ -7,7 +7,7 @@
 //   4. unsubscribing one watch never touches the address's other watches
 //   5. the digest cron's KV listing sees every watch, not one-per-address
 //   6. (sharp edge, by design) /subscribe rate-limiting counts ATTEMPTS, not successes —
-//      failed Turnstile posts consume the per-address daily quota (MAX_SUB_PER_ADDR_DAY=5)
+//      failed sends still consume the per-address daily quota (MAX_SUB_PER_ADDR_DAY=5)
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -115,15 +115,14 @@ test("changing language does NOT create a duplicate watch (lang excluded from id
 test("sharp edge (by design): failed subscribe ATTEMPTS consume the per-address daily quota", async () => {
   const env = {
     TOKEN_SECRET: SECRET,
-    TURNSTILE_SECRET: "ts",
     RESEND_API_KEY: "rk",
     SUBS: new MockKV(),
   };
-  // Turnstile verify always FAILS; Resend never reached.
+  // Resend always fails; rate-limit counters still increment (spend guard runs first).
   const realFetch = globalThis.fetch;
   globalThis.fetch = async (url) => {
-    if (String(url).includes("challenges.cloudflare.com")) {
-      return new Response(JSON.stringify({ success: false }), { status: 200 });
+    if (String(url).includes("api.resend.com")) {
+      return new Response("upstream error", { status: 500 });
     }
     throw new Error("unexpected network call: " + url);
   };
@@ -133,17 +132,14 @@ test("sharp edge (by design): failed subscribe ATTEMPTS consume the per-address 
         new Request("https://api.cityscroll.org/subscribe", {
           method: "POST",
           headers: { "Content-Type": "application/json", "CF-Connecting-IP": "203.0.113.7" },
-          body: JSON.stringify({ email: "anna@example.com", lens: "money", filter: {}, turnstileToken: "bad" }),
+          body: JSON.stringify({ email: "anna@example.com", lens: "money", filter: {} }),
         }),
         env,
       );
-    // 5 failed attempts (MAX_SUB_PER_ADDR_DAY) → each 403, each consuming quota…
-    for (let i = 0; i < 5; i++) assert.equal((await post()).status, 403);
-    // …so the 6th attempt is rate-limited BEFORE Turnstile, even though zero
-    // subscriptions succeeded. Deliberate (spend guard runs first) — but it means a
-    // user fumbling the widget can lock themselves out for a day while setting up
-    // multiple watches. If Dev's multi-subscription repro was over HTTP, this is the
-    // likeliest culprit. Pinned here so any future change is a conscious one.
+    // 5 failed sends (MAX_SUB_PER_ADDR_DAY) → each 502, each consuming quota…
+    for (let i = 0; i < 5; i++) assert.equal((await post()).status, 502);
+    // …so the 6th attempt is rate-limited even though zero confirmations succeeded.
+    // Deliberate (spend guard runs first). Pinned so any future change is conscious.
     assert.equal((await post()).status, 429);
 
     const rateKeys = [...env.SUBS.store.keys()].filter((key) => key.startsWith("rl:"));

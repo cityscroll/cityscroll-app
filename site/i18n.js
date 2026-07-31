@@ -308,7 +308,7 @@ const STRINGS = {
     freq_weekly:        "Weekly",
     preview_digest_btn: "Preview today's digest",
     subscribe_btn:      "Subscribe →",
-    subscribe_confirm_note: "We email a confirmation link — alerts begin only after you click it, so no one can sign you up but you.",
+    subscribe_confirm_note: "We'll email a link to confirm.",
     // Homepage primary conversion (under masthead tagline) — short words for the reading-level ratchet
     home_cta_prompt:    "Want email updates?",
     home_cta_submit:    "Sign up",
@@ -323,8 +323,8 @@ const STRINGS = {
     loading_data:           "Loading…",
     retry_open_data:        "Could not reach NYC Open Data. Retry in a moment.",
     nothing_found:          "Nothing found. Try a broader keyword or \"All RFPs\".",
-    check_inbox:            "Check your inbox.",
-    sent_confirm_to:        "We sent a confirmation link to {email} — your alert starts once you click it.",
+    check_inbox:            "Check your inbox to confirm.",
+    sent_confirm_to:        "Sent to {email}.",
     turnstile_fail:         "The human check didn't pass — try it again.",
     rate_limited:           "Too many attempts — give it a minute.",
     bad_email:              "That email address looks off.",
@@ -332,8 +332,9 @@ const STRINGS = {
     not_configured:         "Subscriptions aren't switched on yet.",
     send_failed:            "Couldn't send the email just now — try again.",
     generic_error:          "Something went wrong — please try again.",
-    complete_human_check:   "Complete the “I’m human” check above first.",
-    sending_confirm_link:   "Sending your confirmation link…",
+    // Turnstile on signup is interaction-only (invisible for most visitors); this is the race/load case.
+    complete_human_check:   "Still verifying — try again in a moment.",
+    sending_confirm_link:   "Sending…",
     cant_reach_server:      "Couldn't reach the server — try again.",
 
     // Deadline chips (N-01: numbers under ten spelled out; {n} receives already-spelled value)

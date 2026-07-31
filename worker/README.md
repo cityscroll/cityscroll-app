@@ -47,7 +47,7 @@ continues to reject those origins. See `../docs/beta-channel.md`.
 | `/nl` | POST | Claude Haiku decodes English → lens filters | `ANTHROPIC_API_KEY`; degrades to `{degraded:true}` |
 | `/checkbook` | POST | CORS proxy to checkbooknyc.com/api | none |
 | `/feed.xml` `/feed.json` `/feed.ics` | GET | **Any saved search as a standing feed** — Atom / JSON Feed 1.1 / subscribable calendar. Params: `lens=money\|land\|property\|rules\|meetings`, `q=`, `agency=`, `min=`. Same `compileSub()` queries the cron replays; entry links land on `cityscroll.org/#notice/<id>` permalinks; edge-cached 15 min; no paid key on the path. Calendar UIDs retain the `@crol-list` namespace so existing subscribers do not receive duplicate events | none |
-| `/subscribe` | POST | Double-opt-in signup (Turnstile + per-IP/per-address rate limits); emails a signed [`optin-token`](https://github.com/jimdc/optin-token) confirm link, stores nothing until clicked | fails closed 503 until `TURNSTILE_SECRET` + `TOKEN_SECRET` + `RESEND_API_KEY` + `SUBS` |
+| `/subscribe` | POST | Double-opt-in signup (per-IP/per-address rate limits; no CAPTCHA on this path); emails a signed [`optin-token`](https://github.com/jimdc/optin-token) confirm link, stores nothing until clicked | fails closed 503 until `TOKEN_SECRET` + `RESEND_API_KEY` + `SUBS` |
 | `/confirm` | GET | Verifies the `optin-token`, writes the ACTIVE sub to KV | `TOKEN_SECRET` + `SUBS` |
 | `/unsubscribe` | GET/POST | Removes a sub; POST = RFC 8058 one-click (`optin-token`) | `TOKEN_SECRET` + `SUBS` |
 | `/feedback` | POST | Stores + emails operator feedback (Turnstile, rate-limited; rows keep IP+UA) | fails closed 503 |
@@ -113,7 +113,7 @@ else — you can ignore it entirely or point it at your own board.
 construction. Alert sending is bounded by `MAX_PER_RUN=25` and `MAX_SENDS_PER_DAY=50`
 (under Resend's free 100/day) via the [`sendcap`](https://github.com/jimdc/sendcap) spend
 guard; capped watches **defer** to the next run rather than dropping notices. Subscribe/feedback
-have Turnstile + per-IP/per-address daily rate limits and fail closed when unconfigured. Feeds
+use per-IP/per-address daily rate limits (`/feedback` still requires Turnstile) and fail closed when unconfigured. Feeds
 hold no key and are edge-cached.
 
 ## Storage — Cloudflare KV + D1 + Analytics Engine (no R2)

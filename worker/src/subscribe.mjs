@@ -4,12 +4,12 @@
 // double opt-in means a stranger can, at most, make us send ONE confirmation to an address
 // that then ignores it.
 //
-// FAIL CLOSED: returns 503 until TURNSTILE_SECRET + TOKEN_SECRET + RESEND_API_KEY + SUBS are
-// all configured (mirrors /usage 404ing without USAGE_KEY). So deploying it is safe before
-// Turnstile is provisioned. Defenses: Turnstile (bots), per-IP + per-address daily rate limits
-// (KV), strict validation (one address, known lenses only), and the existing send caps.
+// FAIL CLOSED: returns 503 until TOKEN_SECRET + RESEND_API_KEY + SUBS are configured
+// (mirrors /usage 404ing without USAGE_KEY). Bot friction is rate limits + double opt-in;
+// Cloudflare Turnstile was removed from this path for UX (feedback still uses it). Re-add
+// behind an explicit env flag if the sends dashboard shows abuse.
 
-import { sanitize, LENSES } from "./lib/filter.mjs";
+import { sanitize } from "./lib/filter.mjs";
 import { isValidEmail, buildSubscription } from "./lib/subscriptions.mjs";
 import { signToken } from "optin-token";
 import { confirmSubject, confirmEmailHtml } from "./lib/confirm_email.mjs";
@@ -32,7 +32,7 @@ export async function handleSubscribe(req, env) {
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
   if (req.method !== "POST") return json({ ok: false, reason: "method" }, 405, cors);
 
-  if (!env.TURNSTILE_SECRET || !env.TOKEN_SECRET || !env.RESEND_API_KEY || !env.SUBS) {
+  if (!env.TOKEN_SECRET || !env.RESEND_API_KEY || !env.SUBS) {
     return json({ ok: false, reason: "not-configured" }, 503, cors);
   }
 
@@ -46,9 +46,8 @@ export async function handleSubscribe(req, env) {
   if ((body.channel || "email") !== "email") return json({ ok: false, reason: "channel-unsupported" }, 400, cors); // SMS later
 
   const ip = req.headers.get("CF-Connecting-IP") || "";
-  // Cheap KV rate-limit BEFORE spending a Turnstile verify or an email send.
+  // Cheap KV rate-limit BEFORE spending an email send.
   if (await overLimit(env, ip, email)) return json({ ok: false, reason: "rate-limited" }, 429, cors);
-  if (!(await verifyTurnstile(env, body.turnstileToken, ip))) return json({ ok: false, reason: "turnstile" }, 403, cors);
 
   const lang = typeof body.lang === "string" ? body.lang : "en";
   const filter = sanitize(lens, body.filter);
@@ -79,21 +78,6 @@ export async function sendConfirm(env, to, lens, filter, freq, confirmUrl, lang 
     body: JSON.stringify({ from, to, subject: confirmSubject(lang), html: confirmEmailHtml({ confirmUrl, lens, filter, freq, lang }) }),
   });
   if (!r.ok) throw new Error(`Resend ${r.status}: ${await r.text()}`);
-}
-
-async function verifyTurnstile(env, token, ip) {
-  if (!token) return false;
-  try {
-    const r = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-      method: "POST",
-      headers: { "content-type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({ secret: env.TURNSTILE_SECRET, response: String(token), remoteip: ip }),
-    });
-    const j = await r.json();
-    return !!(j && j.success);
-  } catch {
-    return false;
-  }
 }
 
 async function overLimit(env, ip, email) {
