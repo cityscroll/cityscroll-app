@@ -46,6 +46,11 @@ const EMAIL_STRINGS = {
     award_watch_fuzzy_note:     "Matched by vendor and award date, not certain — named source only.",
     award_watch_vendor_unlisted:"vendor unlisted",
     award_watch_view_notice:    "View the notice on CityScroll →",
+
+    // catch_up: watermark-recovery digest sent after a delivery outage. Not a normal daily
+    // drip — the subscriber should understand why they're getting a batch.
+    catch_up_subject: "CityScroll: {n} items you may have missed — {label}",
+    catch_up_intro:   "Delivery was interrupted — here are {n} items since {date} that were missed.",
   },
 
   es: {
@@ -81,6 +86,9 @@ const EMAIL_STRINGS = {
     award_watch_fuzzy_note:     "Coincide por proveedor y fecha de adjudicación, no es certero — solo fuente citada.",
     award_watch_vendor_unlisted:"proveedor no indicado",
     award_watch_view_notice:    "Ver el aviso en CityScroll →",
+
+    catch_up_subject: "CityScroll: {n} avisos que podría haber perdido — {label}",
+    catch_up_intro:   "La entrega fue interrumpida — aquí hay {n} avisos desde {date} que se perdieron.",
   },
 };
 
