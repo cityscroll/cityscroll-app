@@ -3,6 +3,7 @@
 // CLI/dashboard view of the namespace. FAIL CLOSED: 404 until ADMIN_KEY is set. Read-only.
 
 import { redactEmail } from "./lib/subscriptions.mjs";
+import { runCatchUpDigests } from "./alerts.mjs";
 
 // Shared auth gate for every /admin/* route: key via ?key= or an Authorization: Bearer header.
 // FAIL CLOSED — 404 (not 401) until ADMIN_KEY is configured, so an unconfigured deploy doesn't
@@ -79,4 +80,36 @@ function maskKey(n) {
 }
 function json(obj, status) {
   return new Response(JSON.stringify(obj, null, 2), { status, headers: { "Content-Type": "application/json" } });
+}
+
+// POST /admin/digest-catchup?key=… — operator-triggered watermark recovery. Selects subs
+// whose lastsent lags by >= minLagDays (default 2) and sends one catch-up digest each.
+// Optional body: { minLagDays?: number, subKeys?: string[] }. FAIL CLOSED until ADMIN_KEY set.
+export async function handleAdminDigestCatchUp(req, env) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (req.method !== "POST") return json({ error: "method not allowed" }, 405);
+
+  let opts = {};
+  try {
+    const body = await req.text();
+    if (body) opts = JSON.parse(body);
+  } catch { /* empty body is fine */ }
+
+  const minLagDays = Number(opts.minLagDays) || 2;
+  const subKeys = Array.isArray(opts.subKeys) ? opts.subKeys.filter((k) => typeof k === "string") : null;
+
+  const result = await runCatchUpDigests(env, { minLagDays, subKeys });
+  return json({
+    mode: "catch_up",
+    live: result.live,
+    candidates: result.candidates,
+    sentThisRun: result.sentThisRun,
+    sentToday: result.sentToday,
+    results: result.results.map((r) => ({
+      sub: r.sub, lens: r.lens, action: r.action,
+      new: r.new || 0, found: r.found || 0, sent: !!r.sent,
+      capped: !!r.capped, error: r.error || null, zeroMatch: !!r.zeroMatch,
+    })),
+  }, 200);
 }

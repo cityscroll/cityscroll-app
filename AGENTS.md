@@ -249,6 +249,30 @@ open-exam overlap 0%. Artifact:
 `tools/build_staffing_exams.mjs` + `worker/src/lib/civil_service_list_join.mjs`.
 UI: `list_joined` outcome view when annual DCAS outcomes are absent.
 
+## Digest watermark recovery (catch-up digests)
+
+**markSeen policy (hard rule):** `markSeen` advances the delivery-adjacent seen set
+ONLY after a real send (`if (send && rows.length)`), never on observe. The old
+`!capped` gate advanced seen during dry-runs and quiet runs, silently swallowing
+fresh notices so the next run treated them as already-seen — the watermark-poisoning
+bug. Applies to all three paths: config watches, `processOneSub`, `processAwardSub`.
+
+**Catch-up mode** (`runCatchUpDigests`): when delivery was broken for days, recovery
+sends the **missed stream since the lastsent watermark**, not a single post-unclog drip.
+Procedure: detect lag (≥ `minLagDays`) → clear seen → recompute query with raised limit
++ `start_date >= watermark` floor → send one clearly-labeled catch-up email → advance
+watermark only on success. Tracks `digest_catchup` stats separately from normal volume.
+
+**Triggers:**
+- Admin: `POST /admin/digest-catchup` (ADMIN_KEY, body `{ minLagDays?, subKeys? }`)
+- Cron: env `DIGEST_CATCH_UP=1` (one-shot; prefer admin for operator control)
+
+**Stats:** `/stats` digests block carries `catch_up_sent_today`,
+`catch_up_sent_all_time`, `catch_up_last_run`, `lagging_subs`. Operator can show
+catch-up rows via daylog `action: "catch_up"`.
+
+Characterization: `node --test test/markseen_policy.test.mjs test/digest_catchup.test.mjs`.
+
 ## Non-Council hearing outcomes (copy)
 
 Non-Council unmatched slots use class-(b) copy naming borough president websites
