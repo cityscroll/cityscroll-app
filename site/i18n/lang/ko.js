@@ -397,6 +397,7 @@
     no_zap: "구역지정신청포털 (ZAP)에 구역 재지정 기록 없음",
     nothing_found_feed: "결과가 없습니다. 더 넓은 검색어를 시도해 보세요.",
     could_not_reach: "NYC Open Data에 연결할 수 없습니다. 다시 시도해 주세요.",
+    open_notice_btn: "공고 열기",
     city_record_link: "시정 기록부 / The City Record",
     copy_link_btn: "링크 복사",
     map_link: "지도",

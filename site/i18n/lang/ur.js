@@ -400,6 +400,7 @@
     no_zap: "زوننگ ایپلی کیشن پورٹل (ZAP) میں کوئی دوبارہ زوننگ نہیں",
     nothing_found_feed: "کچھ نہیں ملا۔ ایک وسیع تر تلاش آزمائیں۔",
     could_not_reach: "NYC Open Data تک رسائی نہیں ہو سکی۔ دوبارہ کوشش کریں۔",
+    open_notice_btn: "نوٹس کھولیں",
     city_record_link: "City Record",
     copy_link_btn: "لنک کاپی کریں",
     map_link: "نقشہ",

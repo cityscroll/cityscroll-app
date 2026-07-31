@@ -1740,6 +1740,29 @@
         "has_bbl": false
       },
       "labeling_note": "The property-clerk notice concerns unclaimed items and does not identify a property site."
+    },
+    {
+      "cohort": "lease-surrender",
+      "row": {
+        "request_id": "20241112003",
+        "start_date": "2024-11-15T00:00:00.000",
+        "agency_name": "Small Business Services",
+        "type_of_notice_description": "Public Hearings",
+        "section_name": "Property Disposition",
+        "short_title": "NOTICE OF VOLUNTARY PUBLIC HEARING",
+        "event_date": "2024-11-26T10:00:00.000",
+        "additional_description_1": "<p style='text-align:center'>NOTICE OF VOLUNTARY PUBLIC HEARING</p><p><br>PUBLIC NOTICE IS HEREBY GIVEN THAT a voluntary public hearing will be held on Tuesday November 26, 2024, commencing at 10:00 am via Conference Call No. 1-646-992-2010, Access Code 233-931-64438 relating to the early surrender of the lease by the tenant of The City of New York (the \"City\") on Block 644, Lot 1 (the \"Property\") in the Borough of Manhattan. </p><p><br>The Property is currently occupied by Gansevoort Market, Inc., pursuant to the lease from the City, acting by and through its Commissioner of the Department of Small Business Services, made as of September 1, 1974, as amended by the First Amendment dated December 21, 2001, the Second Amendment dated as of May 19, 2011, and the Third Amendment dated as of February 16, 2016. Gansevoort Market, Inc. desires to voluntarily surrender its interest in the Property prior to the expiration of the lease on December 31, 2032. The hearing is being held for the City to accept the early surrender of the lease in accordance with the lease on such terms and conditions as the City deems appropriate. </p><p><br>In order to access the Public Hearing and testify, please call 1-646-992-2010, Access Code: 233-931-64438 no later than 9:55 am on the day of the Public Hearing on Tuesday November 26, 2024. If you need further accommodations, please let us know at least five business days in advance of the Public Hearing via e-mail at disabilityaffairs@mocs.nyc.gov.</p>"
+      },
+      "expected": {
+        "scope": "local",
+        "boroughs": [
+          "Manhattan"
+        ],
+        "has_address": false,
+        "has_tax_lot": true,
+        "has_bbl": true
+      },
+      "labeling_note": "Voluntary lease-surrender hearing notice names Manhattan Block 644, Lot 1 (Gansevoort Market); the conference-call number is not a site."
     }
   ]
 }
