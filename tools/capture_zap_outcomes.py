@@ -69,6 +69,10 @@ code { font-family:ui-monospace,SFMono-Regular,monospace; font-size:.92em; }
   letter-spacing:.08em; text-transform:uppercase; padding:4px 8px; border-radius:999px;
   background:#e8dfd0; color:var(--ink); }
 .badge.ok { background:#d7ebe2; color:var(--green); }
+.action-chip { display:inline-block; padding:4px 8px; margin-right:4px; border:1px solid var(--rule);
+  border-radius:999px; background:#f4efe5; font:700 11px/1 ui-monospace,monospace; }
+details { margin-top:10px; }
+summary { cursor:pointer; font-weight:700; }
 """
 
 
@@ -170,6 +174,35 @@ def gap_html() -> str:
     )
 
 
+def field_case_html() -> str:
+    body = """
+    <div class="panel">
+      <h2>2024K0286 · grouped board disposition</h2>
+      <div class="card ok">
+        <div class="label">Community Board · April 14, 2026</div>
+        <div style="margin:4px 0 8px"><span class="action-chip">ZM</span><span class="action-chip">ZR</span></div>
+        <div class="val">Conditional Favorable</div>
+        <div class="sub">28 for · 0 against · 0 abstaining</div>
+        <details>
+          <summary>Decision documents · 1 unique name</summary>
+          <div class="sub" style="margin-top:8px">CB 1 Recommendation RE 200 Kent Avenue.pdf</div>
+        </details>
+        <details>
+          <summary>Related DOB NOW filings on project tax lots</summary>
+          <div class="sub" style="margin-top:8px">Collapsed until opened; long filing lists remain out of the primary reading path.</div>
+        </details>
+      </div>
+      <p class="note">The ZAP API returned separate ZM and ZR rows with the same body, date, recommendation, and vote tally. The public card keeps both action codes while showing one board decision.</p>
+    </div>
+    """
+    return page_shell(
+        "200 Kent Avenue — no duplicate board card",
+        "Field case · 2024K0286",
+        "One Community Board vote, represented by two related land-use actions.",
+        body,
+    )
+
+
 def capture(name: str, html: str, page, files: list) -> None:
     page.set_content(html, wait_until="load")
     for w, h in VIEWPORTS:
@@ -197,6 +230,7 @@ def main() -> None:
         page = browser.new_page()
         capture("joined-timbale", joined_html(), page, files)
         capture("unjoined-gap", gap_html(), page, files)
+        capture("field-case-2024K0286", field_case_html(), page, files)
         browser.close()
     manifest = {
         "schema_version": 1,

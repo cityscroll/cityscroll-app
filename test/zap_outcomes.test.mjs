@@ -107,6 +107,37 @@ test("Timbale Terrace demo frame has docs, approvals, and filled outcome", () =>
   }
 });
 
+test("field case groups identical Community Board votes and carries action chips", () => {
+  const disposition = (name, url) => ({
+    type: "dispositions",
+    id: name,
+    attributes: {
+      "dcp-name": name,
+      "dcp-representing": "Community Board",
+      "dcp-dateofvote": "2026-04-14T04:00:00.000Z",
+      "dcp-communityboardrecommendation": "Conditional Favorable",
+      "dcp-votinginfavorrecommendation": 28,
+      "dcp-votingagainstrecommendation": 0,
+      "dcp-votingabstainingonrecommendation": 0,
+      documents: [{ name: "CB recommendation.pdf", serverRelativeUrl: url }],
+    },
+  });
+  const payload = {
+    data: { type: "projects", id: "2024K0286", attributes: { "dcp-publicstatus": "In Public Review" } },
+    included: [
+      disposition("2024K0286_ZM_BK CB1", "/01QY2C5KJNEC3DOODTZZDIMXZ2NFCQGPZ6"),
+      disposition("2024K0286_ZR_BK CB1", "/01QY2C5KKS5KY2LWJ3MFBIPW6RRITGVFMV"),
+    ],
+  };
+  const record = parseZapApiProject(payload);
+  assert.equal(record.dispositions.length, 1);
+  const board = record.dispositions.find((d) => d.representing === "Community Board");
+  assert.deepEqual(board.action_codes, ["ZM", "ZR"]);
+  assert.equal(board.n_source_rows, 2);
+  assert.equal(board.n_documents, 2);
+  assert.equal(record.documents.length, 1);
+});
+
 test("DOB exact BBL side-car accepts and rejects correctly", () => {
   for (const c of cases.cases) {
     if (c.expect === "dob_joined") {
