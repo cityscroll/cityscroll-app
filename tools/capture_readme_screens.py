@@ -12,11 +12,13 @@ network-idle alone are not treated as readiness.
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 from playwright.sync_api import Page, sync_playwright
 
-BASE = "https://cityscroll.org/"
+# Override for local/preview captures, e.g. CROL_CAPTURE_BASE=http://127.0.0.1:8000/
+BASE = (os.environ.get("CROL_CAPTURE_BASE") or "https://cityscroll.org/").rstrip("/") + "/"
 OUT = Path(__file__).resolve().parents[1] / "docs" / "readme"
 WIDTH = 1440
 HEIGHT = 900
@@ -72,6 +74,21 @@ def wait_ready(page: Page, expression: str, *, frame: str, timeout: int = READY_
     except Exception as exc:
         raise TimeoutError(f"{frame}: content readiness timed out after {timeout}ms") from exc
     page.evaluate("document.fonts && document.fonts.ready")
+    # Inactive panes can still hold .skel nodes until their feeds settle; poll briefly
+    # so a race between list rows and off-tab placeholders does not fail capture.
+    try:
+        page.wait_for_function(
+            f"""() => {{
+              const isVisible = {_is_visible_js()};
+              return ![...document.querySelectorAll({SKELETON_SELECTOR!r})].some(isVisible);
+            }}""",
+            timeout=min(20_000, timeout),
+        )
+    except Exception as exc:
+        leftover = visible_skeletons(page)
+        raise AssertionError(
+            f"{frame}: skeleton/placeholder still visible after settle: {leftover}"
+        ) from exc
     assert_no_visible_skeletons(page, frame)
 
 
@@ -199,7 +216,12 @@ def capture_money_search(page: Page) -> None:
         }""",
         frame="money-search.png",
     )
-    page.evaluate("() => window.scrollTo(0, 1100)")
+    # Scroll the open-solicitations list into view (masthead height varies; fixed Y is fragile).
+    page.evaluate("""() => {
+      const list = document.querySelector('#list');
+      if (list) list.scrollIntoView({ block: 'start' });
+      else window.scrollTo(0, 900);
+    }""")
     page.wait_for_timeout(200)
     # After scroll, list must still be real rows (not re-skeletoned).
     page.wait_for_function(

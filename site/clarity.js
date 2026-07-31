@@ -15,7 +15,7 @@
   "use strict";
 
   // Operator: paste the Clarity project id between the quotes to enable. Leave empty for dormant.
-  const CONFIGURED_PROJECT_ID = "";
+  const CONFIGURED_PROJECT_ID = "xusuca7gsv";
 
   const TAG_ORIGIN = "https://www.clarity.ms/tag/";
   const META_NAME = "crol-clarity-project-id";
