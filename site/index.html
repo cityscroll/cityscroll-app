@@ -3807,6 +3807,8 @@ async function loadCareerGuide(){
 }
 function showExam(examNumber){
   careerSelected=examNumber; careerLimit=16;
+  staffingFilters.type="exam";
+  staffingFilters.query=""; staffingFilters.role=""; staffingFilters.agency="";
   showTab("people");
   $("#career-guide").hidden=false;
   prepareCareerHow();
