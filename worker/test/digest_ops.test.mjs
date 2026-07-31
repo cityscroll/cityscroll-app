@@ -395,3 +395,44 @@ test("toDayLogEntry: mode catch_up stamps traffic_class even if action differs",
   });
   assert.equal(e.traffic_class, "catch_up");
 });
+
+test("toDayLogEntry: traffic_class catch_up on match action (daily lag recovery)", () => {
+  const e = toDayLogEntry({
+    sub: "sub:sw***",
+    lens: "money",
+    queryLabel: "software",
+    found: 4,
+    new: 4,
+    noticeIds: ["1", "2", "3", "4"],
+    action: "match",
+    traffic_class: "catch_up",
+    sent: true,
+  }, { day: "2026-07-31" });
+  assert.equal(e.action, "match");
+  assert.equal(e.traffic_class, "catch_up");
+  // Desk banner case: queue-mode daylog, match action, multi-day recovery → exempt.
+  const c = correctnessCheck({
+    day: "2026-07-31",
+    dayLog: {
+      day: "2026-07-31",
+      mode: "queue",
+      entries: [e],
+    },
+    recounts: { "sub:sw***": { noticeCount: 0, noticeIds: [] } },
+  });
+  assert.equal(c.status, "ok");
+  assert.equal(c.catchUpExempt, 1);
+});
+
+test("toDayLogEntry: normal match without traffic_class stays null", () => {
+  const e = toDayLogEntry({
+    sub: "sub:a***",
+    lens: "money",
+    found: 1,
+    new: 1,
+    noticeIds: ["1"],
+    action: "match",
+    sent: true,
+  });
+  assert.equal(e.traffic_class, null);
+});
