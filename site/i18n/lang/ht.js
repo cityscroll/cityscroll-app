@@ -396,6 +396,7 @@
     no_zap: "Pa gen chanjman zonaj nan Pòtay Aplikasyon Zonaj (ZAP)",
     nothing_found_feed: "Nou pa jwenn anyen. Eseye yon rechèch pi laj.",
     could_not_reach: "Pa t kapab konekte ak NYC Open Data. Eseye ankò.",
+    open_notice_btn: "Louvri avis",
     city_record_link: "Rejis Minisipal",
     copy_link_btn: "Kopye lyen",
     map_link: "Kat",

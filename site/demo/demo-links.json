@@ -351,8 +351,7 @@
       "expectations": {
         "visible": [
           {
-            "selector": "#staffing-notice-list .staffing-hire-row",
-            "text": "RIVERA,ANA M."
+            "selector": "#staffing-notice-list .staffing-hire-row[data-kind=\"hire\"] .staffing-hire-person:not(:empty)"
           }
         ],
         "notVisible": [

@@ -85,6 +85,7 @@ OWN_HREF_EXPRS = (
     "${esc(v.entity)}",    # api.html entity link — always cityscroll.org (worker/src/batch.mjs)
     "${tel}",               # tel: scheme, not a page navigation
     "${mailtoFor(",         # mailto: scheme, not a page navigation
+    "${noticeHref}",        # rule cards — in-app #notice hash route
     # Task-first entry cards: in-app hash routes (#task/…, #notice/…, #land/…, #money, #land).
     "${taskEsc(itemHref)}",
     "${taskEsc(noticeHref)}",

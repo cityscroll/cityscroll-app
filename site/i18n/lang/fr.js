@@ -448,6 +448,7 @@
     could_not_reach:   "Impossible de joindre NYC Open Data. Réessayez.",
 
     // Feed card actions
+    open_notice_btn:        "Ouvrir l'avis",
     city_record_link:       "Registre municipal",
     copy_link_btn:          "Copier le lien",
     map_link:               "Carte",

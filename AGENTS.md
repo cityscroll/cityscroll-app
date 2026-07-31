@@ -367,6 +367,20 @@ Gold set + metrics harness (eval only): `entity_resolution/eval/` —
 (prints precision/recall/candidate_recall/unresolved_rate/false_merge/false_split;
 nulls OK until matchers). Details: `entity_resolution/eval/README.md`.
 
+## Property location extraction
+
+Site geography for Property Disposition: `site/property_location.mjs`
+(`propertyLocationFromRow`). Worker `/property-locations` imports the same
+module — keep edge and client in lockstep. Scope text is title +
+START_MARKER body chunks only; lease-surrender / voluntary-hearing language
+is covered. When markers yield no local signal, a bounded body fallback
+accepts **exactly one borough + Block/Lot** (never multi-borough clerk lists
+or street addresses from hearing dial-in / office boilerplate). Exemplar
+false-negative: notice `20241112003` (Manhattan Block 644 Lot 1). Golden +
+unit: `node --test test/contract/property_location_golden.test.mjs
+test/contract/property_location.test.mjs`. Feed cards deep-link
+`#notice/{id}` (title + Open notice), same pattern as Money dig items.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
