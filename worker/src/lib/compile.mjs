@@ -3,6 +3,9 @@
 // No model call — the filter was already compiled at subscribe time; this is deterministic replay.
 
 import { dateWindowEnd, hearingMatchesLocation } from "./hearings.mjs";
+// vendorStem lives in normalize.mjs (er-03); re-export for zero call-site churn.
+import { vendorStem } from "./normalize.mjs";
+export { vendorStem };
 
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json"; // City Record
 const ZAP = "https://data.cityofnewyork.us/resource/hgx4-8ukb.json";  // Zoning Application Portal
@@ -28,17 +31,6 @@ export function monthsFromISO(iso, months) {
   const d = new Date(iso + "T00:00:00Z");
   d.setUTCMonth(d.getUTCMonth() + months);
   return d.toISOString().slice(0, 10);
-}
-
-// Vendor-name identity: normalize to a stem (case / punctuation / legal suffixes) — mirrors
-// the frontend's read-time resolution, so a watch on "Sinergia Inc" also catches
-// "Sinergia Incorporated". Prefix-match server-side, exact-stem postFilter client-side.
-const VENDOR_SUFFIX = /\s+(INCORPORATED|INC|LLC|L\.L\.C|CORPORATION|CORP|COMPANY|CO|LTD|LIMITED|LP|LLP|PLLC|P\.C|PC|USA|OF NY|OF NEW YORK)\.?$/;
-export function vendorStem(name) {
-  let s = String(name || "").replace(/<[^>]*>/g, " ").toUpperCase().replace(/[.,'’&]/g, " ").replace(/\s+/g, " ").trim();
-  let prev;
-  do { prev = s; s = s.replace(VENDOR_SUFFIX, "").trim(); } while (s !== prev && s.length > 3);
-  return s;
 }
 
 // sub: { lens, filter }. todayISO: "YYYY-MM-DD" (for the RFP due-date floor). Returns
