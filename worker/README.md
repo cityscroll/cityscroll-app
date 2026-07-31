@@ -51,7 +51,7 @@ continues to reject those origins. See `../docs/beta-channel.md`.
 | `/confirm` | GET | Verifies the `optin-token`, writes the ACTIVE sub to KV | `TOKEN_SECRET` + `SUBS` |
 | `/unsubscribe` | GET/POST | Removes one watch (`{k}`) or all watches for an email (`{all:1,e}`); POST = RFC 8058 one-click | `TOKEN_SECRET` + `SUBS` |
 | `/prefs` | GET/POST | **Preference center** — magic-link list/edit/pause/delete watches for one email; changes take effect next daily cron (~9am ET) | `TOKEN_SECRET` + `SUBS` |
-| `/feedback` | POST | Stores + emails operator feedback (Turnstile, rate-limited; rows keep IP+UA) | fails closed 503 |
+| `/feedback` | POST | Stores + emails operator feedback (rate-limited; rows keep IP+UA; notifies `FEEDBACK_TO`, default `feedback@cityscroll.org`) | fails closed 503 without `RESEND_API_KEY` + `FEEDBACK` |
 | `/batch` | POST | Watchlist cross-reference: `{names:[…]}` (≤10) → per-name award/mention counts + vendor-profile links; 30/day/IP | none |
 | `/agencies` | GET | Public City Record agency-name crosswalk: one row per distinct source string → site id, preferred name, and full variant group. JSON by default; `?format=csv` for CSV; CORS-open and edge-cached one day | none |
 | `/property-locations` | GET | Daily Property Disposition projection with extracted site addresses, boroughs, tax lots, BBLs, and resolved map geometry; CORS-open and edge-cached 30 minutes | none |
@@ -127,7 +127,7 @@ else — you can ignore it entirely or point it at your own board.
 construction. Alert sending is bounded by `MAX_PER_RUN=25` and `MAX_SENDS_PER_DAY=50`
 (under Resend's free 100/day) via the [`sendcap`](https://github.com/jimdc/sendcap) spend
 guard; capped watches **defer** to the next run rather than dropping notices. Subscribe/feedback
-use per-IP/per-address daily rate limits (`/feedback` still requires Turnstile) and fail closed when unconfigured. Feeds
+use per-IP/per-address daily rate limits (no CAPTCHA on either path) and fail closed when unconfigured. Feeds
 hold no key and are edge-cached.
 
 ## Storage — Cloudflare KV + D1 + Analytics Engine (no R2)

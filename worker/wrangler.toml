@@ -43,7 +43,7 @@ MAX_SENDS_PER_DAY = "50"
 # Quiet days before a DAILY sub gets a "still watching" heartbeat (weekly subs always email).
 HEARTBEAT_DAYS = "14"
 # Operator inbox for /feedback notifications (non-secret var).
-FEEDBACK_TO = "feedback@crol-list.org"
+FEEDBACK_TO = "feedback@cityscroll.org"
 # Inbound subscribe-by-email address; spend ceilings for LLM-backed surfaces:
 SUBSCRIBE_ADDRESS = "subscribe@crol-list.org"
 INBOUND_MAX_PER_DAY = "100"

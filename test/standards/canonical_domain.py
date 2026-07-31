@@ -90,9 +90,9 @@ def main() -> None:
         failures.append("worker routes: beta confirmation links must mint on cityscroll.org")
     if 'CONFIRM_BASE = "https://api.cityscroll.org"' not in wrangler:
         failures.append("worker routes: production confirmation links must mint on cityscroll.org")
-    for sender in ("alerts@cityscroll.org", "feedback@crol-list.org", "subscribe@crol-list.org"):
+    for sender in ("alerts@cityscroll.org", "feedback@cityscroll.org", "subscribe@crol-list.org"):
         if sender not in wrangler:
-            failures.append(f"email scope: {sender} missing — the site owner's 2026-07-29 sender-domain decision moved alerts@ to cityscroll.org while leaving feedback@/subscribe@ unchanged")
+            failures.append(f"email scope: {sender} missing — alerts@ and feedback@ use cityscroll.org; subscribe@ remains on crol-list.org until inbound routing is migrated")
     if not re.search(r'ALERTS_FROM\s*=\s*"[^"]*alerts@cityscroll\.org', wrangler):
         failures.append("email scope: ALERTS_FROM must send from alerts@cityscroll.org")
     if re.search(r'ALERTS_FROM\s*=\s*"[^"]*alerts@crol-list\.org', wrangler):

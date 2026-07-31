@@ -93,7 +93,7 @@ function kv(map = {}) {
     list: async () => ({ keys: [], list_complete: true }),
   };
 }
-const configured = () => ({ TURNSTILE_SECRET: "ts", RESEND_API_KEY: "rk", FEEDBACK: kv() });
+const configured = () => ({ RESEND_API_KEY: "rk", FEEDBACK: kv() });
 const post = (body, headers = {}) =>
   new Request("https://w/feedback", {
     method: "POST",
@@ -101,12 +101,46 @@ const post = (body, headers = {}) =>
     body: typeof body === "string" ? body : JSON.stringify(body),
   });
 
-test("FAIL CLOSED: 503 not-configured until TURNSTILE_SECRET + RESEND_API_KEY + FEEDBACK all exist", async () => {
-  for (const env of [{}, { TURNSTILE_SECRET: "ts" }, { TURNSTILE_SECRET: "ts", RESEND_API_KEY: "rk" }]) {
+function withMockResend(fn) {
+  return async () => {
+    const prev = globalThis.fetch;
+    globalThis.fetch = async (url) => {
+      if (String(url).includes("api.resend.com")) {
+        return new Response(JSON.stringify({ id: "mock" }), { status: 200 });
+      }
+      return prev ? prev(url) : new Response("unexpected", { status: 500 });
+    };
+    try {
+      await fn();
+    } finally {
+      globalThis.fetch = prev;
+    }
+  };
+}
+
+test("FAIL CLOSED: 503 not-configured until RESEND_API_KEY + FEEDBACK both exist (Turnstile not required)", async () => {
+  for (const env of [{}, { RESEND_API_KEY: "rk" }, { FEEDBACK: kv() }, { TURNSTILE_SECRET: "ts", FEEDBACK: kv() }]) {
     const r = await handleFeedback(post(good()), env);
     assert.equal(r.status, 503);
     assert.equal((await r.json()).reason, "not-configured");
   }
+});
+
+test("accepts submission without turnstile token when Turnstile is not configured", withMockResend(async () => {
+  const store = {};
+  const env = { RESEND_API_KEY: "rk", FEEDBACK: kv(store), FEEDBACK_TO: "feedback@cityscroll.org" };
+  const body = good(); // no turnstileToken field
+  const r = await handleFeedback(post(body, { "CF-Connecting-IP": "203.0.113.10", origin: "https://cityscroll.org" }), env);
+  assert.equal(r.status, 200);
+  assert.equal((await r.json()).ok, true);
+  const fbKeys = Object.keys(store).filter((k) => k.startsWith("fb:"));
+  assert.equal(fbKeys.length, 1);
+}));
+
+test("rejects empty / too-short message with 400 bad-message", async () => {
+  const r = await handleFeedback(post(good({ message: "" })), configured());
+  assert.equal(r.status, 400);
+  assert.equal((await r.json()).reason, "bad-message");
 });
 
 test("OPTIONS preflight → 204 with CORS for an allowed origin, no config needed", async () => {
@@ -130,16 +164,16 @@ test("malformed JSON body → 400 bad-json", async () => {
   assert.equal((await r.json()).reason, "bad-json");
 });
 
-test("invalid fields are rejected (400) before any Turnstile/network call", async () => {
+test("invalid fields are rejected (400) before any network call", async () => {
   const r = await handleFeedback(post(good({ category: "nope" })), configured());
   assert.equal(r.status, 400);
   assert.equal((await r.json()).reason, "bad-category");
 });
 
-test("rate-limited (429) once the per-IP daily counter is exceeded — before Turnstile", async () => {
+test("rate-limited (429) once the per-IP daily counter is exceeded", async () => {
   const ip = "203.0.113.7";
   const store = {};
-  const env = { TURNSTILE_SECRET: "ts", RESEND_API_KEY: "rk", FEEDBACK: kv(store) };
+  const env = { RESEND_API_KEY: "rk", FEEDBACK: kv(store) };
   for (let i = 0; i < 10; i++) {
     assert.equal(await overActorLimit(env.FEEDBACK, "ip", ip, 10), false);
   }
