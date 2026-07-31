@@ -100,6 +100,14 @@ PYTHONPATH=civic-content-gates python3 -m civic_content_gates run \
   --root site \
   --allowlist test/standards/nyc_copy_lint_allowlist.txt \
   --baseline site/reading-level-baseline.json
+
+Before you open a PR, run:
+
+```bash
+./tools/preflight-required-checks.sh
+```
+
+This runs the local unit gates mirrored by CI's required checks.
 ```
 
 ```bash
