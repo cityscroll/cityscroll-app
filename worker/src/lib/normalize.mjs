@@ -1,6 +1,6 @@
 // Entity-resolution normalizers (er-03) — thin re-export of the package surface (er-08).
 //
-// Call sites (compile.mjs, tests, ingest projections) keep importing this path
+// Call sites (compile.mjs, tests, ingest paths) keep importing this path
 // so behavior and import graph stay stable while the modular monolith boundary
 // lives under entity_resolution/normalizers/.
 
