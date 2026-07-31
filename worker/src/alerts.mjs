@@ -323,9 +323,11 @@ export async function runAlerts(env, watches = cfg.watches || []) {
         }
       }
 
-      // Mark seen only when NOT capped. A capped watch is deferred — leave its notices unseen
-      // so the next run retries them once the cap clears, rather than losing them silently.
-      if (rows.length && !capped) await markSeen(env, w.id, rows.map((r) => r.request_id).filter(Boolean));
+      // Mark seen ONLY on a real send — never advance the seen set when the email wasn't
+      // delivered (dry-run, cap-deferred, or any path where send stays false). Marking on
+      // observe rather than on delivery was the watermark-poisoning bug: a run with no send
+      // silently swallowed fresh notices so the next run treated them as already-seen.
+      if (send && rows.length) await markSeen(env, w.id, rows.map((r) => r.request_id).filter(Boolean));
 
       results.push({
         watch: w.id,
@@ -517,7 +519,9 @@ export async function processOneSub(env, s, ctx) {
       }
     }
 
-    if (rows.length && !capped) await markSeen(env, s.key, rows.map((r) => r[q.idField]).filter(Boolean));
+    // Mark seen ONLY on a real send — advancing the seen set without delivery was the
+    // watermark-poisoning bug (dry-run, quiet, or any path where send stays false).
+    if (send && rows.length) await markSeen(env, s.key, rows.map((r) => r[q.idField]).filter(Boolean));
     return {
       sub: maskKey(s.key),
       lens: s.lens,
@@ -587,10 +591,8 @@ export async function processAwardSub(env, s, ctx) {
       }
     }
 
-    // Every candidate seen this run is marked, sent or not — a candidate that showed up while
-    // capped must not be re-notified once the cap clears (it was already accounted for), same
-    // "mark on observe, not on send" posture the other lenses use for their own seen sets.
-    if (candidates.length && !capped) await markSeen(env, seenId, candidates.map((c) => c.key).filter(Boolean));
+    // Mark seen ONLY on a real send — same watermark-poisoning fix as the other lenses.
+    if (send && candidates.length) await markSeen(env, seenId, candidates.map((c) => c.key).filter(Boolean));
 
     return {
       sub: maskKey(s.key),
@@ -677,6 +679,260 @@ export async function consumeDigestJob(env, key) {
     throw new Error(`digest job error for ${maskKey(key)}: ${r.error}`);
   }
   return r;
+}
+
+// ---- watermark recovery (catch-up digests) --------------------------------
+//
+// When delivery was broken for days (e.g. a Resend outage), recovery must re-send the
+// MISSED STREAM since the delivery watermark (lastsent:<key>), not a single post-unclog
+// drip. Catch-up mode:
+//   1. Select subs whose lastsent lags behind today by >= minLagDays.
+//   2. For each: clear seen, recompute the full query with a raised limit + start_date
+//      floor at the watermark, send ONE clearly-labeled catch-up email, then advance the
+//      watermark only on success.
+//   3. Track separately from normal daily volume so /stats shows recovery honestly.
+//
+// Prefer admin-triggered over automatic on every cron (avoid surprise multi-day dumps).
+
+const CATCHUP_RUN_LATEST_KEY = "digest:catchup:run:latest";
+function catchupRunDayKey(day) { return `digest:catchup:run:${day}`; }
+
+export async function runCatchUpDigests(env, { minLagDays = 2, subKeys = null, maxPerRun = null } = {}) {
+  const FROM = env.ALERTS_FROM || "CityScroll <alerts@cityscroll.org>";
+  const LIVE = env.ALERTS_LIVE === "true";
+  const day = new Date().toISOString().slice(0, 10);
+  const maxRun = Number(maxPerRun || env.MAX_PER_RUN) || 25;
+  const maxDay = Number(env.MAX_SENDS_PER_DAY) || 50;
+  let sentToday = await getSendCount(env, day);
+  let sentThisRun = 0;
+  const results = [];
+
+  const allSubs = await subWatches(env);
+  const today = day;
+
+  // Select lagging subs or explicit subKeys.
+  let targets = [];
+  if (subKeys && subKeys.length) {
+    const keySet = new Set(subKeys);
+    targets = allSubs.filter((s) => keySet.has(s.key));
+  } else {
+    for (const s of allSubs) {
+      const lastsent = await getLastSent(env, s.key);
+      const lagDays = lastsent ? daysBetweenUTC(lastsent, today) : Infinity;
+      if (lagDays >= minLagDays) targets.push(s);
+    }
+  }
+
+  const ctx = {
+    FROM, LIVE, today,
+    counts: () => ({ "per-run": sentThisRun, daily: sentToday }),
+    caps: { "per-run": maxRun, daily: maxDay },
+    onSent: async () => { sentThisRun++; sentToday++; await setSendCount(env, day, sentToday); },
+  };
+
+  for (const s of targets) {
+    try {
+      results.push(await processCatchUpSub(env, s, ctx));
+    } catch (e) {
+      results.push({ sub: maskKey(s.key), error: String(e?.message || e), action: "catch_up" });
+    }
+  }
+
+  const ranAt = new Date().toISOString();
+  const receipt = {
+    ranAt, day, live: LIVE, mode: "catch_up",
+    matched: results.filter((r) => !r.error && (Number(r.new) || 0) > 0).length,
+    sent: results.filter((r) => r.sent).length,
+    sentToday,
+    candidates: targets.length,
+    results,
+    skipped_reason: results.some((r) => r.sent) ? null : (targets.length === 0 ? "no_lagging_subs" : "no_sends"),
+  };
+  await writeCatchUpReceipt(env, receipt);
+  // Merge catch-up entries into the day log so the ops dashboard shows them.
+  if (mode_or_queue(env) !== "queue") {
+    try {
+      const existing = await readDigestDayLog(env, day);
+      const merged = existing
+        ? { ...existing, entries: [...(existing.entries || []), ...results.map((r) => toDayLogEntry(r, { day })).filter(Boolean)] }
+        : buildDayLog({ day, ranAt, live: LIVE, mode: "catch_up", results });
+      await writeDigestDayLog(env, recomputeDayLogTotalsLocal(merged));
+    } catch { /* observability only */ }
+  }
+  console.log("catch-up run:", JSON.stringify({ ranAt, sentThisRun, sentToday, candidates: targets.length }));
+  return { ranAt, live: LIVE, sentThisRun, sentToday, candidates: targets.length, receipt, results };
+}
+
+function mode_or_queue(env) {
+  return env.QUEUE_DIGESTS === "true" && env.DIGEST_QUEUE ? "queue" : "inline";
+}
+
+function recomputeDayLogTotalsLocal(log) {
+  const entries = Array.isArray(log.entries) ? log.entries : [];
+  const sentEntries = entries.filter((e) => e && e.sent);
+  return {
+    ...log,
+    entryCount: entries.length,
+    sentCount: sentEntries.length,
+    totalNotices: sentEntries.reduce((n, e) => n + (Number(e.noticeCount) || 0), 0),
+  };
+}
+
+async function writeCatchUpReceipt(env, receipt) {
+  if (!env?.ALERT_STATE || !receipt) return;
+  try {
+    const body = JSON.stringify(receipt);
+    const puts = [env.ALERT_STATE.put(CATCHUP_RUN_LATEST_KEY, body)];
+    if (receipt.day) puts.push(env.ALERT_STATE.put(catchupRunDayKey(receipt.day), body));
+    await Promise.all(puts);
+  } catch { /* observability only */ }
+}
+
+export async function readCatchUpReceipt(env) {
+  if (!env?.ALERT_STATE) return null;
+  try {
+    const raw = await env.ALERT_STATE.get(CATCHUP_RUN_LATEST_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object" ? parsed : null;
+  } catch { return null; }
+}
+
+// One subscription in catch-up mode: clear seen → fetch full window → send one email →
+// advance watermark on success. No heartbeat/weekly-empty logic — catch-up only fires when
+// there is real missed content to deliver.
+async function processCatchUpSub(env, s, ctx) {
+  try {
+    const watermark = await getLastSent(env, s.key) || s.createdAt || null;
+    if (!watermark) return { sub: maskKey(s.key), skipped: "no-watermark", action: "catch_up" };
+
+    // Award watches are per-notice one-shots — catch-up clears their seen set and re-runs
+    // normally; the award candidate diff is the same mechanism.
+    if (s.lens === "award") {
+      const seenId = `award:${s.key}`;
+      await clearSeen(env, seenId);
+      // Delegate to processAwardSub with a fresh ctx (it handles its own cap/send/markSeen).
+      return processAwardSub(env, s, ctx);
+    }
+
+    const q = compileSub(s, ctx.today);
+    if (!q) return { sub: maskKey(s.key), skipped: `lens:${s.lens}`, action: "catch_up" };
+
+    // Clear seen so all notices since the watermark are treated as fresh.
+    await clearSeen(env, s.key);
+
+    // Raise the limit and add a start_date floor at the watermark for City Record queries.
+    const catchUpParams = { ...q.params };
+    catchUpParams["$limit"] = "100";
+    if (catchUpParams.$where && q.idField === "request_id") {
+      catchUpParams.$where += ` AND start_date >= '${watermark}'`;
+    }
+
+    let rows;
+    if (env.DB && !OFF_MIRROR_LENSES.has(s.lens)) {
+      try {
+        const fresh = await isMirrorFresh(env.DB, ctx.today);
+        if (fresh) {
+          const d1 = compileSub_d1(s, ctx.today);
+          if (d1) {
+            const { sql, params } = buildNoticesQuery(d1.opts);
+            const res = await env.DB.prepare(sql).bind(...params).all();
+            let mapped = (res.results ?? []).map(toDigestRow);
+            if (d1.postFilter) mapped = mapped.filter(d1.postFilter);
+            rows = mapped;
+          }
+        }
+      } catch (e) {
+        console.warn("catch-up: D1 path failed, falling back to SODA:", String(e?.message || e));
+      }
+    }
+    if (!rows) {
+      rows = await fetchRows(q.url, catchUpParams);
+      if (q.postFilter) rows = rows.filter(q.postFilter);
+    }
+
+    const fresh = dedupeFreshByContent(rows.filter((r) => r[q.idField]));
+
+    if (fresh.length === 0) {
+      // No missed content — advance the watermark anyway so this sub isn't re-selected.
+      if (ctx.LIVE) await setLastSent(env, s.key, ctx.today);
+      return {
+        sub: maskKey(s.key), lens: s.lens,
+        queryLabel: describeFilter(s.lens, s.filter),
+        emailRedacted: redactEmail(s.email),
+        found: rows.length, new: 0,
+        noticeIds: [], forecasts: 0,
+        action: "catch_up", zeroMatch: true,
+        sent: false, dryRun: false, capped: false,
+      };
+    }
+
+    const { allow: underCap, capped } = capDecision({
+      want: !!s.email,
+      counts: ctx.counts(),
+      caps: ctx.caps,
+    });
+    const send = underCap && ctx.LIVE;
+
+    if (underCap) {
+      const label = describeFilter(s.lens, s.filter);
+      const unsubUrl = await unsubLink(env, s.key);
+      const lang = s.lang || "en";
+      const keywords = Array.isArray(s.filter && s.filter.keywords) ? s.filter.keywords : [];
+      const w = encodeWatchFilter(s.lens, s.filter);
+      const sessionTok = await issueEmailSessionToken(env, s.email);
+      const subject = emailT(lang, "catch_up_subject", { n: fresh.length, label });
+      const html = catchUpDigestHtml(label, q.kind, fresh, unsubUrl, watermark,
+        env.CONFIRM_BASE || "https://api.cityscroll.org", lang, keywords, w, sessionTok);
+      if (send) {
+        await sendEmail(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true);
+        await ctx.onSent();
+        await setLastSent(env, s.key, ctx.today);
+        await bumpStatAllTime(env.ALERT_STATE, "digest_catchup");
+        await bumpHistDay(env.ALERT_STATE, "digest_catchup", new Date());
+        if (fresh.length) await bumpDigestCategories(env, fresh, s.lens);
+        emitUsageEvent(env, { event: "digest_sent", lens: s.lens, surface: "email", mode: "catch_up" });
+      } else {
+        logDryRunEmail(emailPayload(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true));
+      }
+    }
+
+    // Mark seen ONLY on a real send (same watermark-poisoning fix).
+    if (send && rows.length) await markSeen(env, s.key, rows.map((r) => r[q.idField]).filter(Boolean));
+    return {
+      sub: maskKey(s.key), lens: s.lens,
+      queryLabel: describeFilter(s.lens, s.filter),
+      emailRedacted: redactEmail(s.email),
+      found: rows.length, new: fresh.length,
+      noticeIds: fresh.map((r) => r[q.idField]).filter(Boolean).slice(0, 100),
+      forecasts: 0,
+      action: "catch_up",
+      zeroMatch: fresh.length === 0,
+      sent: send, dryRun: underCap && !ctx.LIVE, capped,
+    };
+  } catch (e) {
+    return { sub: maskKey(s.key), error: String(e?.message || e), action: "catch_up" };
+  }
+}
+
+// Catch-up email: same item list as a normal digest, but with a clear "delivery was
+// interrupted" intro so it never reads as a normal daily drip. Apology framing is the
+// product decision: the subscriber should understand why they're getting a batch.
+function catchUpDigestHtml(label, kind, rows, unsubUrl, watermark, base, lang, keywords, w, sessionTok) {
+  const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
+  const body = subDigestHtml(label, kind, rows, unsubUrl, watermark, base, [], lang, keywords, w, "", sessionTok);
+  const intro = emailT(lang, "catch_up_intro", { n: rows.length, date: shortDate(watermark) });
+  return body.replace(
+    /(<h2[^>]*>CityScroll[^<]*<\/h2>)/,
+    `$1<p style="color:#a42;font-size:13px">${esc(intro)}</p>`,
+  );
+}
+
+function daysBetweenUTC(fromDay, toDay) {
+  const a = new Date(fromDay + "T00:00:00Z").getTime();
+  const b = new Date(toDay + "T00:00:00Z").getTime();
+  if (!Number.isFinite(a) || !Number.isFinite(b)) return Infinity;
+  return Math.round((b - a) / 86400000);
 }
 
 async function loadSub(env, key) {
@@ -849,6 +1105,15 @@ async function markSeen(env, id, ids) {
     // keep the last ~500 ids so the value doesn't grow without bound
     await env.ALERT_STATE.put(`seen:${id}`, JSON.stringify([...prev].slice(-500)));
   } catch { /* ignore */ }
+}
+
+// Reset the seen set for a subscription key — used by catch-up recovery so every notice
+// since the delivery watermark is treated as fresh, regardless of what a prior poisoned run
+// may have marked. This is the replay-from-last-success-watermark procedure: clear seen,
+// re-send the full missed stream, then markSeen advances only on the successful catch-up send.
+async function clearSeen(env, id) {
+  if (!env.ALERT_STATE) return;
+  try { await env.ALERT_STATE.put(`seen:${id}`, "[]"); } catch { /* ignore */ }
 }
 
 // ---- daily send counter (the denial-of-wallet ceiling, Workers KV) -------

@@ -20,6 +20,7 @@ import {
 // Same key as alerts.mjs DIGEST_RUN_LATEST_KEY — kept local so /stats does not import the
 // full alerts module (cron + Resend path) on every public read.
 const DIGEST_RUN_LATEST_KEY = "digest:run:latest";
+const CATCHUP_RUN_LATEST_KEY = "digest:catchup:run:latest";
 
 async function readDigestRunReceipt(env) {
   if (!env?.ALERT_STATE) return null;
@@ -31,6 +32,42 @@ async function readDigestRunReceipt(env) {
   } catch {
     return null;
   }
+}
+
+async function readCatchUpReceipt(env) {
+  if (!env?.ALERT_STATE) return null;
+  try {
+    const raw = await env.ALERT_STATE.get(CATCHUP_RUN_LATEST_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object" ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+// Count subscriptions whose delivery watermark (lastsent) lags behind today by >= threshold
+// days. No PII — a count only. Best-effort: a partial scan beats a 500.
+async function countLaggingSubs(env, thresholdDays = 2) {
+  if (!env?.SUBS || !env?.ALERT_STATE) return 0;
+  const today = new Date().toISOString().slice(0, 10);
+  const todayMs = new Date(today + "T00:00:00Z").getTime();
+  let n = 0, cursor;
+  try {
+    do {
+      const res = await env.SUBS.list({ prefix: "sub:", cursor });
+      for (const k of res.keys) {
+        try {
+          const lastsent = await env.ALERT_STATE.get(`lastsent:${k.name}`);
+          if (!lastsent) { n++; continue; } // never sent = lagging
+          const sentMs = new Date(lastsent + "T00:00:00Z").getTime();
+          if (!Number.isFinite(sentMs) || (todayMs - sentMs) >= thresholdDays * 86400000) n++;
+        } catch { /* skip */ }
+      }
+      cursor = res.list_complete ? null : res.cursor;
+    } while (cursor);
+  } catch { /* partial beats 500 */ }
+  return n;
 }
 
 const WINDOW_DAYS = 7;
@@ -87,7 +124,7 @@ export async function handleStats(req, env, ctx, options = {}) {
   const cache = typeof caches !== "undefined" ? caches.default : null;
   // Version the cache key when the usage reconciliation shape changes so a deploy cannot
   // keep serving a pre-flip empty usage block for the full max-age window.
-  const cacheKey = new Request(new URL("/stats?edge=usage-continuity-v2", req.url).toString(), {
+  const cacheKey = new Request(new URL("/stats?edge=catchup-v1", req.url).toString(), {
     method: "GET",
   });
   if (cache) {
@@ -106,6 +143,7 @@ export async function handleStats(req, env, ctx, options = {}) {
     pageViewsFallback,
     nl30d, nlByCategory30d, clicks30d, shares30d, alertsConfirmed7d, alertsConfirmed30d,
     digestLastRun,
+    catchUpSentToday, catchUpAllTime, catchUpLastRun, laggingSubs,
   ] = await Promise.all([
       countActiveSubs(env),
       readInt(env.ALERT_STATE, `sendcount:${today}`),
@@ -137,6 +175,10 @@ export async function handleStats(req, env, ctx, options = {}) {
       sumStat(env.ALERT_STATE, "alert_confirmed", WINDOW_DAYS, now),
       sumStat(env.ALERT_STATE, "alert_confirmed", 30, now),
       readDigestRunReceipt(env),
+      sumStat(env.ALERT_STATE, "digest_catchup", 1, now),
+      readStatAllTime(env.ALERT_STATE, "digest_catchup"),
+      readCatchUpReceipt(env),
+      countLaggingSubs(env, 2),
     ]);
 
   // Store continuity: same ALERT_STATE / NL_METER namespaces used before and after the
@@ -184,6 +226,13 @@ export async function handleStats(req, env, ctx, options = {}) {
       // Durable cron receipt: timestamp, matched, sent, skipped_reason. A silent skip must
       // leave an explicit reason so sent_today=0 is never unexplained.
       last_run: digestLastRun || null,
+      // Watermark recovery: catch-up digests are tracked separately so recovery volume is
+      // honest and does not inflate the normal daily-send trend.
+      catch_up_sent_today: catchUpSentToday,
+      catch_up_sent_all_time: catchUpAllTime,
+      catch_up_last_run: catchUpLastRun || null,
+      // Subs whose delivery watermark lags >= 2 days — a recovery candidate count, no PII.
+      lagging_subs: laggingSubs,
     },
     digest_clicks: { today: clicksToday, last7d: clicks7d },
     feeds: { fetches_last7d: feeds7d },
