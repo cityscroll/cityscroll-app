@@ -116,15 +116,15 @@ test("actionable exam titles connect Staffing role rows to exact exam details", 
   assert.match(html, /staffing_view_exam_detail/);
 });
 
-test("exam mode renders filtered exam rows in the notice list (not a redirect-only panel)", () => {
+test("exam mode renders staffingExamCardHTML when items exist (not a redirect-only panel)", () => {
   // Role chips + staffingVisibleItems() can yield N exams while export still shipped N rows;
-  // the list must map those items to exam rows, not replace the panel with redirect copy.
-  assert.match(html, /function staffingExamRowHTML\s*\(/);
+  // the list must map those items to exam cards, never staffing-exam-redirect when N>0.
+  assert.match(html, /function staffingExamCardHTML\s*\(/);
   assert.match(
     html,
-    /items\.map\(item=>item\.kind==="exam"\?staffingExamRowHTML\(item\):staffingHireRowHTML\(item\)\)/,
+    /items\.map\(item=>item\.kind==="exam"\?staffingExamCardHTML\(item\):staffingHireRowHTML\(item\)\)/,
   );
-  assert.match(html, /data-kind="exam"/);
+  assert.match(html, /staffing-notice-card" data-kind="exam"/);
   assert.match(html, /#exam\/\$\{encodeURIComponent\(exam\.exam_number\)\}/);
   // Non-empty results must never take the redirect-only path.
   assert.doesNotMatch(
