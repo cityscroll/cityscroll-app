@@ -6,6 +6,7 @@
 
 import { redactEmail } from "./lib/subscriptions.mjs";
 import { dryRunRollupForEmail, digestSendTestForEmail, runCatchUpDigests } from "./alerts.mjs";
+import { toReviewItems } from "../../entity_resolution/review/index.mjs";
 
 // Store digests rather than publishing the desk's private recipient addresses in this repo.
 const DIGEST_TEST_SEND_ALLOWLIST = new Set([
@@ -101,6 +102,58 @@ export async function handleAdminFeedback(req, env) {
   return json({ feedbackCount: items.length, totalFbKeys: totalKeys, items }, 200);
 }
 
+// GET /admin/possibly-same?key=… — read-only desk view of candidate vendor pairs.
+// Pair data is supplied by the operator through ER_REVIEW_PAIRS (JSON), which keeps this
+// surface useful for fixtures and dry runs without introducing a writable ER API or a new table.
+export async function handleAdminPossiblySame(req, env) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (req.method !== "GET") return json({ error: "method not allowed" }, 405);
+
+  let pairs = [];
+  try {
+    const raw = env.ER_REVIEW_PAIRS || env.ENTITY_REVIEW_FIXTURE || "[]";
+    pairs = JSON.parse(raw);
+  } catch {
+    return json({ error: "invalid-review-pairs" }, 500);
+  }
+  const items = toReviewItems(pairs);
+  if ((req.headers.get("accept") || "").includes("application/json")) {
+    return json({ reviewVersion: "possibly_same_v1", count: items.length, items }, 200);
+  }
+  return new Response(renderPossiblySamePage(items), {
+    status: 200,
+    headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" },
+  });
+}
+
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>\"']/g, (char) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;",
+  }[char]));
+}
+
+function confidenceLabel(value) {
+  return value == null ? "Score unavailable" : `${Math.round(value * 100)}% candidate score`;
+}
+
+export function renderPossiblySamePage(items = []) {
+  const cards = items.map((item) => `<article class="pair" data-pair-id="${escapeHtml(item.id)}">
+    <p class="eyebrow">${escapeHtml(item.label)}</p>
+    <h2>${escapeHtml(item.left.name)} <span aria-hidden="true">↔</span> ${escapeHtml(item.right.name)}</h2>
+    <p class="score">${escapeHtml(confidenceLabel(item.confidence))} · ${escapeHtml(item.method)}</p>
+    <dl><div><dt>Source record</dt><dd>${escapeHtml(item.left.id || "Not supplied")}</dd></div>
+      <div><dt>Candidate record</dt><dd>${escapeHtml(item.right.id || "Not supplied")}</dd></div></dl>
+    <p class="note">This is a review lead, not a finding. Confirm identity from the underlying records before taking action.</p>
+    <label>Review note <textarea readonly aria-label="Review note for ${escapeHtml(item.id)}" placeholder="Notes are not saved by this read-only view."></textarea></label>
+  </article>`).join("\n");
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Possibly same vendors</title>
+    <style>body{font:16px system-ui,sans-serif;max-width:960px;margin:40px auto;padding:0 20px;color:#17202a;background:#f6f3ed}.pair{background:white;border:1px solid #d8d2c8;border-radius:12px;padding:22px;margin:18px 0;box-shadow:0 2px 8px #0000000d}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#795548;font-weight:700}.pair h2{font-size:22px;margin:8px 0}.score{color:#40566a;font-family:ui-monospace,monospace}.pair dl{display:grid;grid-template-columns:1fr 1fr;gap:12px}.pair dl div{background:#f5f7f8;padding:10px;border-radius:6px}.pair dt{font-size:12px;color:#687783}.pair dd{margin:4px 0 0;overflow-wrap:anywhere}.note{border-left:3px solid #d39b36;padding-left:10px}.pair textarea{display:block;width:100%;min-height:60px;margin-top:6px;box-sizing:border-box}.empty{padding:24px;background:#fff;border-radius:12px}</style></head><body>
+    <header><p class="eyebrow">Desk review · read-only</p><h1>Possibly same vendors</h1><p>These candidate pairs are surfaced for human review. They are not combined, asserted, or exposed in the public site.</p></header>
+    ${cards || '<p class="empty">No candidate pairs are queued.</p>'}
+  </body></html>`;
+}
+
 /**
  * GET /admin/digest-rollup?key=…&email=…
  * Dry-run the account digest (rollup when >1 active watch) without sending mail.
@@ -157,7 +210,10 @@ function maskKey(n) {
   return n.replace(/^(sub:|rl:addr:)([^@:]{0,2})[^@:]*/, "$1$2***");
 }
 function json(obj, status) {
-  return new Response(JSON.stringify(obj, null, 2), { status, headers: { "Content-Type": "application/json" } });
+  return new Response(JSON.stringify(obj, null, 2), {
+    status,
+    headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
+  });
 }
 
 // POST /admin/digest-catchup?key=… — operator-triggered watermark recovery. Selects subs

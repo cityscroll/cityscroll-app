@@ -15,7 +15,7 @@ import { handlePrefs } from "./prefs.mjs";
 import { handleSession } from "./session.mjs";
 import { handlePins } from "./pins.mjs";
 import { handleFeedback } from "./feedback.mjs";
-import { handleAdminSubs, handleAdminFeedback, handleAdminDigestRollup, handleAdminDigestSendTest, handleAdminDigestCatchUp } from "./admin.mjs";
+import { handleAdminSubs, handleAdminFeedback, handleAdminPossiblySame, handleAdminDigestRollup, handleAdminDigestSendTest, handleAdminDigestCatchUp } from "./admin.mjs";
 import { handleFeed } from "./feed.mjs";
 import { handleBatch } from "./batch.mjs";
 import { handleAgencies } from "./agencies.mjs";
@@ -90,6 +90,7 @@ export default {
     if (pathname === "/api") return Response.redirect("https://cityscroll.org/api.html", 302);
     if (pathname === "/admin/subs") return handleAdminSubs(request, env);
     if (pathname === "/admin/feedback") return handleAdminFeedback(request, env);
+    if (pathname === "/admin/possibly-same") return handleAdminPossiblySame(request, env);
     if (pathname === "/admin/digest-rollup") return handleAdminDigestRollup(request, env);
     if (pathname === "/admin/digest-send-test") return handleAdminDigestSendTest(request, env);
     if (pathname === "/admin/suggest-refresh") return handleAdminSuggestRefresh(request, env);

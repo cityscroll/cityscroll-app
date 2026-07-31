@@ -1,19 +1,53 @@
-// entity_resolution/review — human review queue helpers (stub).
-//
-// Soft "possibly same" UI and review_status on entity_link land in later cards
-// (er-06+). This slot holds queue shaping only — no public HTTP review service.
+// entity_resolution/review — read-only, desk-only soft review cards.
+// This module deliberately does not decide identity and does not write review state.
 
-/** Stub version until review UI / queue cards land. */
-export const REVIEW_VERSION = "stub";
+export const REVIEW_VERSION = "possibly_same_v1";
+export const REVIEW_DECISION = "review";
+
+const clampConfidence = (value) => {
+  const n = Number(value);
+  return Number.isFinite(n) ? Math.max(0, Math.min(1, n)) : null;
+};
+
+const clean = (value, fallback = "") => String(value ?? fallback).replace(/\s+/g, " ").trim();
 
 /**
- * Shape a scorer result into a review-queue item.
- * Stub: returns null (nothing queued).
- *
- * @param {unknown} _pair
- * @param {unknown} _score
- * @returns {null}
+ * Shape one candidate/scorer result for a human review surface.
+ * No identity assertion is made: the returned decision is always `review`.
  */
-export function toReviewItem(_pair, _score) {
-  return null;
+export function toReviewItem(pair = {}, score = {}) {
+  const left = pair.left || pair.a || pair.source || {};
+  const right = pair.right || pair.b || pair.candidate || {};
+  const leftName = clean(left.vendor_name ?? left.name ?? pair.left_name);
+  const rightName = clean(right.vendor_name ?? right.name ?? pair.right_name);
+  if (!leftName || !rightName) return null;
+
+  const confidence = clampConfidence(score.confidence ?? pair.confidence ?? score.score ?? pair.score);
+  return {
+    id: clean(pair.id || pair.pair_id || `${leftName}::${rightName}`),
+    entity_type: "vendor",
+    label: "Possibly same vendor",
+    decision: REVIEW_DECISION,
+    confidence,
+    method: clean(score.method || pair.method, "candidate_review"),
+    matcher_version: clean(score.matcher_version || pair.matcher_version, REVIEW_VERSION),
+    left: {
+      id: clean(left.id ?? left.source_record_id),
+      name: leftName,
+      source: clean(left.source || left.source_system),
+    },
+    right: {
+      id: clean(right.id ?? right.source_record_id),
+      name: rightName,
+      source: clean(right.source || right.source_system),
+    },
+    evidence: score.evidence || pair.evidence || {},
+    review_status: "pending",
+  };
+}
+
+export function toReviewItems(pairs = []) {
+  return (Array.isArray(pairs) ? pairs : [])
+    .map((entry) => toReviewItem(entry.pair || entry, entry.score || entry))
+    .filter(Boolean);
 }
