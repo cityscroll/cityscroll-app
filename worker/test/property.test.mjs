@@ -64,10 +64,13 @@ test("Property view extracts sites, abstains honestly, and geocodes a representa
 
 test("Property refresh writes the materialized view and its route serves it", async () => {
   const kv = memoryKV();
+  // handleProperties live-refreshes when generated_at is older than MAX_AGE_MS (~36h).
+  // Use wall-clock "now" so the route serves the fixture write, not a live SODA pull.
+  const now = new Date();
   const result = await refreshProperties(
     { ALERT_STATE: kv },
     fetchFixture([]),
-    new Date("2026-07-29T12:00:00Z"),
+    now,
   );
   assert.equal(result.status, "success");
   assert.ok(kv.values.has(PROPERTY_KV_KEY));

@@ -901,7 +901,7 @@
     about_foot_html: "CityScroll · 面向 <a href=\"https://a856-cityrecord.nyc.gov/\" target=\"_blank\" rel=\"noopener noreferrer\">The City Record<span class=\"sr-only\"> （在新标签页中打开）</span></a> 的搜索界面 · <a href=\"changelog.html\">更新日志</a> · <a href=\"stats.html\">统计</a> · <a href=\"index.html\">首页</a>",
     about_h_privacy: "隐私",
     about_p_privacy_intro: "CityScroll 没有密码账户，也没有广告技术。不会跨站追踪您。",
-    about_li_privacy_html: "<li><b>搜索和筛选</b>使用 NYC Open Data。</li><li><b>「Ask」框</b>让您可以用普通英语搜索。您的文字会发送给 Anthropic 的 Claude，由它转换成筛选条件。我们不保存您的文字。</li><li><b>订阅或发送反馈</b>会保存您发给我们的内容。这包括您的提醒或消息以及您的邮箱（如果您提供）。我们还会保留一些关于您请求的基本信息，如您的 IP 地址和浏览器。我们会将其保留一小段时间，以阻止垃圾信息和滥用。每封提醒邮件都有一键取消订阅链接。</li><li><b>邮件链接与置顶</b> — 点击提醒邮件中的链接会在该设备上登录，以便您的置顶内容可以跟着您。简短横幅会说明您已登录，并允许退出（「不是您？」）。更改或取消订阅仍需要邮件中的专用链接。</li><li><b>页面访问量</b>通过 Cloudflare Web Analytics 跟踪。它不使用 cookie，只显示总数。它统计访问次数。它不知道您是谁，也不会跟踪您到其他网站。</li>",
+    about_li_privacy_html: "<li><b>搜索和筛选</b>使用 NYC Open Data。</li><li><b>「Ask」框</b>让您可以用普通英语搜索。您的文字会发送给 Anthropic 的 Claude，由它转换成筛选条件。我们不保存您的文字。</li><li><b>订阅或发送反馈</b>会保存您发给我们的内容。这包括您的提醒或消息以及您的邮箱（如果您提供）。我们还会保留一些关于您请求的基本信息，如您的 IP 地址和浏览器。我们会将其保留一小段时间，以阻止垃圾信息和滥用。每封提醒邮件都有一键取消订阅链接。</li><li><b>邮件链接与置顶</b> — 点击提醒邮件中的链接会在该设备上登录，以便您的置顶内容可以跟着您。简短横幅会说明您已登录，并允许退出（「不是您？」）。更改或取消订阅仍需要邮件中的专用链接。</li><li><b>页面访问量</b>通过 Cloudflare Web Analytics 跟踪。它不使用 cookie，只显示总数。它统计访问次数。它不知道您是谁，也不会跟踪您到其他网站。</li><li><b>点击与滚动热图</b>（Microsoft Clarity，开启时）显示人们点击或滚动的位置，以便我们改进难用的部分。输入的文字和表单字段——包括邮箱——会被遮盖，绝不以明文发送。若浏览器发出“请勿跟踪”或全球隐私控制信号，则不加载 Clarity。不用于广告或个人画像。</li>",
     session_signed_in: "已通过邮件链接登录 — 您的置顶可在此设备上跟随您。",
     session_not_you: "不是您？",
     session_dismiss: "关闭",
