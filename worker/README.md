@@ -64,7 +64,7 @@ continues to reject those origins. See `../docs/beta-channel.md`.
 | `/api` | GET | 302 → cityscroll.org/api.html (the API docs) | none |
 | `/admin/subs` `/admin/feedback` | GET | Operator reads (redacted) | `ADMIN_KEY` → 404 if unset |
 | `/admin/digest-rollup` | GET | Dry-run account digest for `?email=` (no Resend); shows rollup vs single and day-log preview | `ADMIN_KEY` → 404 if unset |
-| `/admin/digest-send-test` | POST | Evaluate or send one allowlisted address through the normal digest path; `live` is opt-in and `advanceState` defaults false | `ADMIN_KEY` → 404 if unset; recipient allowlist |
+| `/admin/digest-send-test` | POST | Evaluate or send one allowlisted address through the normal digest path; `live` is opt-in and `advanceState` defaults false | operator probe key (`ADMIN_KEY` or `ANALYTICS_DEV_KEY`) → 404 if neither is set; recipient allowlist |
 | `/admin/suggest-refresh` | POST | Runs the suggestion-chip validation (`/suggestions`' cron pipeline) on demand instead of waiting for the 13:00 UTC cron; returns the same summary JSON, fail-soft identical to the cron path | `ADMIN_KEY` → 404 if unset |
 | `/usage` | GET | Read-only Haiku spend report | `USAGE_KEY` → 404 if unset |
 | `/board-hook` | POST | **Board notifications** — see below | HMAC (`BOARD_HOOK_SECRET`) fails closed; fails closed 503 with no bot/App token configured |
@@ -94,6 +94,11 @@ dry-run: `GET /admin/digest-rollup?key=…&email=…`.
 Test-send evaluation (no Resend):
 `curl -X POST 'https://api.cityscroll.org/admin/digest-send-test?key=…' -H 'content-type: application/json' --data '{"email":"allowlisted-address@example.com"}'`.
 Add `"live":true` to send once. `"advanceState":true` is required to update seen/last-sent watermarks.
+The route accepts an **operator probe key** from either `ADMIN_KEY` or `ANALYTICS_DEV_KEY` via
+`?key=` or `Authorization: Bearer`. `ANALYTICS_DEV_KEY` is the same developer-exclusion class
+used for analytics testing, not a Cloudflare product credential; configure it with
+`wrangler secret put ANALYTICS_DEV_KEY`. Live sends with the default `advanceState:false` do not
+update seen/last-sent watermarks or public digest statistics.
 
 Cron-replayable lenses: **money** (awards ≥ threshold / RFP
 keywords), **land** (rezonings), **property / rules / meetings** (City Record section
