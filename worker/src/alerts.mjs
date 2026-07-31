@@ -32,13 +32,25 @@ import { bumpStatAllTime, bumpCategoryStat, bumpHistDay } from "./lib/stats.mjs"
 import { emitUsageEvent } from "./lib/analytics.mjs";
 import { nextSearchHealth, searchHealthStatus, alertsFixUrl, searchHealthNoteHtml } from "./lib/search_health.mjs";
 import { currentAwardCandidates } from "./external_award.mjs";
-import { redactEmail } from "./lib/subscriptions.mjs";
+import { redactEmail, normalizeEmail } from "./lib/subscriptions.mjs";
 import {
   digestDayLogKey,
   buildDayLog,
   toDayLogEntry,
   mergeDayLogEntry,
 } from "./lib/digest_ops.mjs";
+import {
+  groupSubsByEmail,
+  shouldRollup,
+  buildDigestJobs,
+  isWatchActive,
+  rollupSendDecision,
+  rollupSubject,
+  toRollupDayLogEntry,
+  accountLogId,
+  sectionWantsSend,
+} from "./lib/rollup.mjs";
+import { prefsLink } from "./prefs.mjs";
 
 // A sent digest's category breakdown for the all-time stats: one bump per distinct City
 // Record section_name it carried (falling back to the watch's lens for sections without
@@ -175,7 +187,9 @@ export async function readDigestDayLog(env, day) {
 async function appendQueueDayLogEntry(env, day, jobResult) {
   if (!env?.ALERT_STATE || !day || !jobResult) return;
   try {
-    const entry = toDayLogEntry(jobResult, { day });
+    const entry = jobResult.kind === "rollup"
+      ? toRollupDayLogEntry(jobResult, { day })
+      : toDayLogEntry(jobResult, { day });
     if (!entry) return;
     const key = digestDayLogKey(day);
     let existing = null;
@@ -349,11 +363,14 @@ export async function runAlerts(env, watches = cfg.watches || []) {
   }
 
   // ---- replay confirmed subscriptions from SUBS KV (the self-serve path) ----
-  // Two delivery modes, same per-sub logic (processOneSub):
-  //   inline (default): the loop below, per-run + daily caps enforced in-run.
-  //   queue  (QUEUE_DIGESTS="true" + DIGEST_QUEUE bound): one job per sub — each
-  //   independently retryable, poison subs land in the DLQ; the DAILY cap remains
-  //   the hard spend ceiling (per-run pacing becomes queue delivery itself).
+  // Account-level rollup: when an email has >1 active watch, one consolidated email
+  // (sections per watch). One rollup email = one send unit. Single-watch emails keep
+  // the per-watch path. Paused watches are skipped for delivery (still listed in prefs).
+  //
+  // Two delivery modes:
+  //   inline (default): group by email, process rollup or single per account.
+  //   queue  (QUEUE_DIGESTS="true" + DIGEST_QUEUE bound): one job per account
+  //   (type rollup | sub); the DAILY cap remains the hard spend ceiling.
   const today = day;
   const isMonday = new Date().getUTCDay() === 1;
   const ctx = {
@@ -364,16 +381,25 @@ export async function runAlerts(env, watches = cfg.watches || []) {
   };
   let mode = "inline";
   let enqueued = 0;
+  const allSubs = await subWatches(env);
   if (env.QUEUE_DIGESTS === "true" && env.DIGEST_QUEUE) {
     mode = "queue";
-    for (const s of await subWatches(env)) {
-      await env.DIGEST_QUEUE.send({ key: s.key });
+    const jobs = buildDigestJobs(allSubs);
+    for (const job of jobs) {
+      await env.DIGEST_QUEUE.send(job);
       enqueued++;
     }
     results.push({ mode: "queue", enqueued });
   } else {
-    for (const s of await subWatches(env)) {
-      results.push(await processOneSub(env, s, ctx));
+    const byEmail = groupSubsByEmail(allSubs);
+    for (const [, list] of byEmail) {
+      const active = list.filter(isWatchActive);
+      if (active.length === 0) continue;
+      if (shouldRollup(list)) {
+        results.push(await processAccountRollup(env, active, ctx));
+      } else {
+        results.push(await processOneSub(env, active[0], ctx));
+      }
     }
   }
 
@@ -400,9 +426,12 @@ export async function runAlerts(env, watches = cfg.watches || []) {
 // One subscription, end to end: compile → fetch → forecasts → confidence decision →
 // cap check → send → bookkeeping. ctx supplies identity, caps, counters, and clock so
 // the inline loop and the queue consumer share this logic exactly.
+//
+// For multi-watch accounts use processAccountRollup() instead — one email, one send unit.
 export async function processOneSub(env, s, ctx) {
   try {
-    if (s.freq === "weekly" && !ctx.isMonday) return { sub: maskKey(s.key), skipped: "weekly" };
+    if (s.paused) return { sub: maskKey(s.key), skipped: "paused", kind: "subscription" };
+    if (s.freq === "weekly" && !ctx.isMonday) return { sub: maskKey(s.key), skipped: "weekly", kind: "subscription" };
     // Award-arrival watches are one-notice, one-shot-per-award content, not a standing notices
     // query — they never run through compileSub()/digestDecision()'s heartbeat/weekly-empty
     // logic (a "still nothing" ping would contradict the whole point of a silent watch). See
@@ -482,6 +511,7 @@ export async function processOneSub(env, s, ctx) {
       const healthNote = healthStatus.quiet
         ? searchHealthNoteHtml({ lang, quietDays: healthStatus.quietDays, url: alertsFixUrl(s.lens, s.filter, s.freq) })
         : "";
+      const manageUrl = await prefsLink(env, s.email);
       if (hasActivity) {
         const freshLabel = fresh.length > 0 ? `${fresh.length} new` : "";
         const forecastLabel = forecasts.length > 0 ? `${forecasts.length} forecast(s)` : "";
@@ -498,12 +528,12 @@ export async function processOneSub(env, s, ctx) {
         // Pins-scoped magic-link token: every notice link carries it so a click
         // quietly recognizes the browser (session cookie) without a login form.
         const sessionTok = await issueEmailSessionToken(env, s.email);
-        html = subDigestHtml(label, q.kind, fresh, unsubUrl, since, env.CONFIRM_BASE || "https://api.cityscroll.org", forecasts, lang, keywords, w, healthNote, sessionTok);
+        html = subDigestHtml(label, q.kind, fresh, unsubUrl, since, env.CONFIRM_BASE || "https://api.cityscroll.org", forecasts, lang, keywords, w, healthNote, sessionTok, manageUrl);
       } else {
         subject = decision.action === "weekly-empty"
           ? `CityScroll: nothing new this week — ${label}`
           : `CityScroll: still watching — ${label}`;
-        html = quietHtml(label, decision.action, since, unsubUrl, lang, healthNote);
+        html = quietHtml(label, decision.action, since, unsubUrl, lang, healthNote, manageUrl);
       }
       if (send) {
         await sendEmail(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true);
@@ -524,6 +554,7 @@ export async function processOneSub(env, s, ctx) {
     if (send && rows.length) await markSeen(env, s.key, rows.map((r) => r[q.idField]).filter(Boolean));
     return {
       sub: maskKey(s.key),
+      kind: "subscription",
       lens: s.lens,
       queryLabel: describeFilter(s.lens, s.filter),
       emailRedacted: redactEmail(s.email),
@@ -536,10 +567,269 @@ export async function processOneSub(env, s, ctx) {
       sent: send,
       dryRun: underCap && !ctx.LIVE,
       capped,
+      sendUnits: send || (underCap && !ctx.LIVE) ? 1 : 0,
     };
   } catch (e) {
-    return { sub: maskKey(s.key), error: String(e?.message || e) };
+    return { sub: maskKey(s.key), kind: "subscription", error: String(e?.message || e) };
   }
+}
+
+/**
+ * Account-level digest rollup: evaluate every active watch for one email, then
+ * send at most one consolidated HTML email. Counts as one send unit.
+ *
+ * Preference-center edits (pause/freq/keywords) take effect next cron because
+ * this always reads the current SUBS records.
+ */
+export async function processAccountRollup(env, subs, ctx) {
+  const email = normalizeEmail(subs?.[0]?.email || "");
+  const accountId = accountLogId(email);
+  if (!email || !subs?.length) {
+    return { sub: accountId, kind: "rollup", skipped: "empty", emailRedacted: redactEmail(email) };
+  }
+
+  try {
+    const sections = [];
+    for (const s of subs) {
+      if (!isWatchActive(s)) {
+        sections.push({
+          sub: maskKey(s.key),
+          subKey: s.key,
+          lens: s.lens,
+          queryLabel: describeFilter(s.lens, s.filter),
+          skipped: "paused",
+          new: 0,
+          forecasts: 0,
+          action: "none",
+        });
+        continue;
+      }
+      sections.push(await evaluateSubSection(env, s, ctx));
+    }
+
+    const decision = rollupSendDecision(sections);
+    const wanting = sections.filter(sectionWantsSend);
+    const { allow: underCap, capped } = capDecision({
+      want: decision.wantSend && !!email,
+      counts: ctx.counts(),
+      caps: ctx.caps,
+    });
+    const send = underCap && ctx.LIVE;
+
+    const allNoticeIds = [];
+    let totalFound = 0;
+    for (const sec of sections) {
+      totalFound += Number(sec.found) || 0;
+      if (Array.isArray(sec.noticeIds)) allNoticeIds.push(...sec.noticeIds);
+    }
+
+    if (underCap && decision.wantSend) {
+      const lang = (wanting[0] && wanting[0].lang) || (subs[0] && subs[0].lang) || "en";
+      const unsubAllUrl = await unsubAllLink(env, email);
+      const manageUrl = await prefsLink(env, email);
+      const sessionTok = await issueEmailSessionToken(env, email);
+      const base = env.CONFIRM_BASE || "https://api.cityscroll.org";
+      const subject = rollupSubject({
+        totalNew: decision.totalNew,
+        totalForecasts: decision.totalForecasts,
+        labels: decision.labels,
+        quiet: decision.totalNew === 0 && decision.totalForecasts === 0,
+      });
+      const html = rollupDigestHtml({
+        sections: wanting.length ? wanting : sections.filter((s) => !s.skipped && !s.error),
+        unsubAllUrl,
+        manageUrl,
+        lang,
+        sessionTok,
+        base,
+      });
+      // List-Unsubscribe points at all-watches for rollup (account-level one-click).
+      if (send) {
+        await sendEmail(env, ctx.FROM, email, subject, html, `<${unsubAllUrl}>`, true);
+        await ctx.onSent();
+        for (const sec of sections) {
+          if (sec.subKey && sectionWantsSend(sec)) {
+            await setLastSent(env, sec.subKey, ctx.today);
+          }
+        }
+        await bumpStatAllTime(env.ALERT_STATE, "digest");
+        await bumpHistDay(env.ALERT_STATE, "digest", new Date());
+        for (const sec of sections) {
+          if (sec.freshRows?.length) await bumpDigestCategories(env, sec.freshRows, sec.lens);
+        }
+        emitUsageEvent(env, { event: "digest_sent", lens: "account", surface: "email" });
+      } else {
+        logDryRunEmail(emailPayload(env, ctx.FROM, email, subject, html, `<${unsubAllUrl}>`, true));
+      }
+    }
+
+    // Mark seen ONLY on a real send (same watermark-poisoning fix as single-sub path).
+    if (send) {
+      for (const sec of sections) {
+        if (sec.markSeenIds?.length && sec.seenId) {
+          await markSeen(env, sec.seenId, sec.markSeenIds);
+        }
+      }
+    }
+
+    const result = {
+      sub: accountId,
+      kind: "rollup",
+      emailRedacted: redactEmail(email),
+      queryLabel: `${sections.length} watches`,
+      found: totalFound,
+      new: decision.totalNew,
+      noticeIds: allNoticeIds.slice(0, 100),
+      forecasts: decision.totalForecasts,
+      action: decision.wantSend
+        ? (decision.totalNew > 0 || decision.totalForecasts > 0 ? "match" : "quiet-rollup")
+        : "none",
+      zeroMatch: !decision.wantSend,
+      sent: !!send,
+      dryRun: underCap && decision.wantSend && !ctx.LIVE,
+      capped,
+      sendUnits: (send || (underCap && decision.wantSend && !ctx.LIVE)) ? 1 : 0,
+      sections: sections.map((sec) => ({
+        sub: sec.sub,
+        lens: sec.lens,
+        queryLabel: sec.queryLabel,
+        new: sec.new,
+        found: sec.found,
+        action: sec.action,
+        skipped: sec.skipped || null,
+        error: sec.error || null,
+        forecasts: sec.forecasts || 0,
+      })),
+    };
+    return result;
+  } catch (e) {
+    return { sub: accountId, kind: "rollup", emailRedacted: redactEmail(email), error: String(e?.message || e) };
+  }
+}
+
+/**
+ * Evaluate one watch for rollup without sending. Side effects: search-health write.
+ * markSeen is deferred to the rollup caller so caps can defer the whole account.
+ */
+async function evaluateSubSection(env, s, ctx) {
+  const base = {
+    sub: maskKey(s.key),
+    subKey: s.key,
+    lens: s.lens,
+    queryLabel: describeFilter(s.lens, s.filter),
+    lang: s.lang || "en",
+    email: s.email,
+    new: 0,
+    found: 0,
+    forecasts: 0,
+    noticeIds: [],
+    action: "none",
+  };
+  try {
+    if (s.freq === "weekly" && !ctx.isMonday) {
+      return { ...base, skipped: "weekly" };
+    }
+    if (s.lens === "award") {
+      return evaluateAwardSection(env, s, ctx, base);
+    }
+    const q = compileSub(s, ctx.today);
+    if (!q) return { ...base, skipped: `lens:${s.lens}` };
+
+    const forecasts = await matchForecasts(env, s, ctx.today);
+    let rows;
+    let usedD1 = false;
+    if (env.DB && !OFF_MIRROR_LENSES.has(s.lens)) {
+      try {
+        const fresh = await isMirrorFresh(env.DB, ctx.today);
+        if (fresh) {
+          const d1 = compileSub_d1(s, ctx.today);
+          if (d1) {
+            const { sql, params } = buildNoticesQuery(d1.opts);
+            const res = await env.DB.prepare(sql).bind(...params).all();
+            let mapped = (res.results ?? []).map(toDigestRow);
+            if (d1.postFilter) mapped = mapped.filter(d1.postFilter);
+            rows = mapped;
+            usedD1 = true;
+          }
+        }
+      } catch (e) {
+        console.warn("alerts: D1 fast path failed (rollup), falling back to SODA:", String(e?.message || e));
+      }
+    }
+    if (!usedD1) {
+      rows = await fetchRows(q.url, q.params);
+      if (q.postFilter) rows = rows.filter(q.postFilter);
+    }
+    const seen = await getSeen(env, s.key);
+    const fresh = dedupeFreshByContent(rows.filter((r) => r[q.idField] && !seen.has(r[q.idField])));
+
+    const matched = fresh.length > 0;
+    const health = nextSearchHealth(s.health, matched, ctx.today);
+    const healthStatus = searchHealthStatus({ health, createdAt: s.createdAt, today: ctx.today });
+    await saveSubHealth(env, s, health);
+
+    const since = (await getLastSent(env, s.key)) || s.createdAt || null;
+    const effectiveCount = fresh.length + forecasts.length;
+    const decision = digestDecision({
+      freshCount: effectiveCount,
+      freq: s.freq,
+      lastSentDate: since,
+      today: ctx.today,
+      heartbeatDays: ctx.heartbeatDays,
+    });
+
+    const keywords = Array.isArray(s.filter && s.filter.keywords) ? s.filter.keywords : [];
+    const w = encodeWatchFilter(s.lens, s.filter);
+    const healthNote = healthStatus.quiet
+      ? searchHealthNoteHtml({ lang: s.lang || "en", quietDays: healthStatus.quietDays, url: alertsFixUrl(s.lens, s.filter, s.freq) })
+      : "";
+
+    return {
+      ...base,
+      found: rows.length,
+      new: fresh.length,
+      noticeIds: fresh.map((r) => r[q.idField]).filter(Boolean).slice(0, 100),
+      forecasts: forecasts.length,
+      action: decision.action,
+      since,
+      kind: q.kind,
+      freshRows: fresh,
+      forecastRows: forecasts,
+      keywords,
+      w,
+      healthNote,
+      label: base.queryLabel,
+      markSeenIds: rows.map((r) => r[q.idField]).filter(Boolean),
+      seenId: s.key,
+    };
+  } catch (e) {
+    return { ...base, error: String(e?.message || e) };
+  }
+}
+
+async function evaluateAwardSection(env, s, ctx, base) {
+  const filter = s.filter || {};
+  if (typeof filter.requestId !== "string" || !filter.requestId) {
+    return { ...base, skipped: "malformed-award-watch" };
+  }
+  const { ok, candidates } = await currentAwardCandidates(env, filter.requestId, filter.agency);
+  if (!ok) return { ...base, skipped: "award-lookup-failed" };
+  const seenId = `award:${s.key}`;
+  const seen = await getSeen(env, seenId);
+  const fresh = candidates.filter((c) => c.key && !seen.has(c.key));
+  return {
+    ...base,
+    found: candidates.length,
+    new: fresh.length,
+    noticeIds: fresh.length ? [filter.requestId].filter(Boolean) : [],
+    action: fresh.length > 0 ? "match" : "none",
+    kind: "award",
+    awardCandidates: fresh,
+    awardFilter: filter,
+    label: base.queryLabel,
+    markSeenIds: candidates.map((c) => c.key).filter(Boolean),
+    seenId,
+  };
 }
 
 // One award-arrival watch: diff the notice's current award candidates (currentAwardCandidates,
@@ -645,19 +935,19 @@ function awardWatchDigestHtml(candidates, filter, unsubUrl, lang = "en", session
   </div>`;
 }
 
-// Queue consumer entry: one digest job = one subscription key. Reads the daily send
-// count fresh per job (consumer max_concurrency=1 keeps the counter honest).
+// Queue consumer entry: one job = one account (single sub or rollup).
+// Body shapes:
+//   { type:"sub", key } | { key }           — legacy single-watch job
+//   { type:"rollup", email, keys: [...] }   — multi-watch account rollup
 //
+// Reads the daily send count fresh per job (consumer max_concurrency=1 keeps the counter honest).
 // Errors that prevented a real send are re-thrown so the queue retries (and eventually
-// DLQs) instead of acking a silent failure — that was one path to sent_today=0 with no
-// durable explanation.
-export async function consumeDigestJob(env, key) {
-  const s = await loadSub(env, key);
-  if (!s) {
-    const gone = { sub: maskKey(key), skipped: "gone" };
-    await recordQueueJobOutcome(env, new Date().toISOString().slice(0, 10), gone);
-    return gone;
-  }
+// DLQs) instead of acking a silent failure.
+export async function consumeDigestJob(env, jobOrKey) {
+  // Back-compat: tests and old queue messages may pass a bare key string.
+  const job = typeof jobOrKey === "string"
+    ? { type: "sub", key: jobOrKey }
+    : (jobOrKey && typeof jobOrKey === "object" ? jobOrKey : {});
   const day = new Date().toISOString().slice(0, 10);
   let daily = await getSendCount(env, day);
   const ctx = {
@@ -671,12 +961,40 @@ export async function consumeDigestJob(env, key) {
     caps: { "per-run": Number(env.MAX_PER_RUN) || 25, daily: Number(env.MAX_SENDS_PER_DAY) || 50 },
     onSent: async () => { daily++; await setSendCount(env, day, daily); },
   };
-  const r = await processOneSub(env, s, ctx);
+
+  let r;
+  if (job.type === "rollup" && Array.isArray(job.keys) && job.keys.length) {
+    const subs = [];
+    for (const k of job.keys) {
+      const s = await loadSub(env, k);
+      if (s && isWatchActive(s)) subs.push(s);
+    }
+    if (!subs.length) {
+      r = { sub: accountLogId(job.email), kind: "rollup", skipped: "gone" };
+    } else if (subs.length === 1) {
+      r = await processOneSub(env, subs[0], ctx);
+    } else {
+      r = await processAccountRollup(env, subs, ctx);
+    }
+  } else {
+    const key = job.key;
+    if (!key) {
+      r = { sub: "?", skipped: "bad-job" };
+    } else {
+      const s = await loadSub(env, key);
+      if (!s) {
+        r = { sub: maskKey(key), kind: "subscription", skipped: "gone" };
+      } else {
+        r = await processOneSub(env, s, ctx);
+      }
+    }
+  }
+
   console.log("digest job:", JSON.stringify(r));
   await recordQueueJobOutcome(env, day, r);
   await appendQueueDayLogEntry(env, day, r);
   if (r?.error) {
-    throw new Error(`digest job error for ${maskKey(key)}: ${r.error}`);
+    throw new Error(`digest job error for ${r.sub || "?"}: ${r.error}`);
   }
   return r;
 }
@@ -933,6 +1251,65 @@ function daysBetweenUTC(fromDay, toDay) {
   const b = new Date(toDay + "T00:00:00Z").getTime();
   if (!Number.isFinite(a) || !Number.isFinite(b)) return Infinity;
   return Math.round((b - a) / 86400000);
+}
+
+/**
+ * Admin / dry-run: evaluate rollup for an email without sending or advancing caps.
+ * LIVE is forced false so markSeen (send-gated) does not advance. Health writes may
+ * still occur via evaluateWatchForRollup; prefer a dedicated operator env for deep probes.
+ */
+export async function dryRunRollupForEmail(env, email) {
+  const want = normalizeEmail(email);
+  if (!want) return { ok: false, reason: "bad-email" };
+  const all = await subWatches(env);
+  const list = all.filter((s) => normalizeEmail(s.email) === want);
+  const active = list.filter(isWatchActive);
+  if (!active.length) {
+    return {
+      ok: true,
+      emailRedacted: redactEmail(want),
+      watchCount: list.length,
+      activeCount: 0,
+      wouldSend: false,
+      mode: list.length ? "all_paused" : "no_watches",
+      sections: list.map((s) => ({
+        key: maskKey(s.key),
+        lens: s.lens,
+        query: describeFilter(s.lens, s.filter),
+        paused: !!s.paused,
+      })),
+    };
+  }
+  const day = new Date().toISOString().slice(0, 10);
+  const ctx = {
+    FROM: env.ALERTS_FROM || "CityScroll <alerts@cityscroll.org>",
+    LIVE: false,
+    heartbeatDays: Number(env.HEARTBEAT_DAYS) || 14,
+    today: day,
+    isMonday: new Date().getUTCDay() === 1,
+    counts: () => ({ "per-run": 0, daily: 0 }),
+    caps: { "per-run": 9999, daily: 9999 },
+    onSent: async () => {},
+  };
+  let result;
+  if (active.length === 1) {
+    result = await processOneSub(env, active[0], ctx);
+  } else {
+    result = await processAccountRollup(env, active, ctx);
+  }
+  return {
+    ok: true,
+    emailRedacted: redactEmail(want),
+    watchCount: list.length,
+    activeCount: active.length,
+    rollup: active.length > 1,
+    wouldSend: !!(result.dryRun || result.sent),
+    mode: active.length > 1 ? "rollup" : "single",
+    result,
+    dayLogPreview: active.length > 1
+      ? toRollupDayLogEntry(result, { day })
+      : toDayLogEntry(result, { day }),
+  };
 }
 
 async function loadSub(env, key) {
@@ -1194,6 +1571,18 @@ async function unsubLink(env, subKey) {
   return `${base}/unsubscribe?token=${encodeURIComponent(token)}`;
 }
 
+// Account-level unsubscribe: removes every watch for this email.
+async function unsubAllLink(env, email) {
+  if (!env.TOKEN_SECRET) return "mailto:alerts@cityscroll.org?subject=unsubscribe-all";
+  const base = env.CONFIRM_BASE || "https://api.cityscroll.org";
+  const token = await signToken(
+    env.TOKEN_SECRET,
+    { all: 1, e: normalizeEmail(email) },
+    { ttlSeconds: 60 * 24 * 3600 },
+  );
+  return `${base}/unsubscribe?token=${encodeURIComponent(token)}`;
+}
+
 function maskKey(n) {
   return String(n).replace(/^(sub:)([^@:]{0,2})[^@:]*/, "$1$2***");
 }
@@ -1203,7 +1592,7 @@ function maskKey(n) {
 // subs match by name, not keyword, so they pass none and get no evidence line, correctly).
 // w: this watch's encodeWatchFilter() output (w12-12) — null for a rezone digest, which links
 // straight to ZAP below and never touches CityScroll's own notice view.
-function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.cityscroll.org", forecasts = [], lang = "en", keywords = [], w = null, healthNote = "", sessionTok = null) {
+function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.cityscroll.org", forecasts = [], lang = "en", keywords = [], w = null, healthNote = "", sessionTok = null, manageUrl = null) {
   const usd = (n) => (n == null || n === "" ? "" : "$" + Number(n).toLocaleString("en-US"));
   const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
   const cr = (id) => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
@@ -1268,31 +1657,118 @@ function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.c
     ? emailT(lang, "digest_new_items", { n: rows.length, item: itemWord, date: shortDate(since) })
     : emailT(lang, "digest_no_date", { n: rows.length, item: itemWord });
 
+  const manageLine = manageUrl
+    ? ` · <a href="${esc(manageUrl)}">${esc(emailT(lang, "digest_manage"))}</a>`
+    : "";
   return `<div style="font-family:Georgia,serif;max-width:620px">
     <h2 style="font-family:system-ui">CityScroll — ${esc(label)}</h2>
     <p style="color:#555">${esc(countLine)}</p>
     ${listHtml}
     ${forecastsHtml}
     ${healthNote}
-    <p style="color:#999;font-size:12px;margin-top:20px">${esc(emailT(lang, "digest_subscribed"))} <a href="${esc(unsubUrl)}">${esc(emailT(lang, "digest_unsubscribe"))}</a> (one-click).</p>
+    <p style="color:#999;font-size:12px;margin-top:20px">${esc(emailT(lang, "digest_subscribed"))} <a href="${esc(unsubUrl)}">${esc(emailT(lang, "digest_unsubscribe"))}</a> (one-click)${manageLine}.</p>
   </div>`;
 }
 
 // The "no news" email — a weekly check-in or a daily heartbeat. Same house style as the digest so
 // silence never reads as a malfunction: the subscriber hears from us on a predictable cadence.
-function quietHtml(label, action, since, unsubUrl, lang = "en", healthNote = "") {
+function quietHtml(label, action, since, unsubUrl, lang = "en", healthNote = "", manageUrl = null) {
   const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
   const sinceStr = since ? `since ${shortDate(since)}` : "so far";
   const leadKey = action === "weekly-empty" ? "quiet_nothing_week" : "quiet_still_watching";
   const leadTpl = emailT(lang, leadKey, { label, since: sinceStr });
   // Replace the label placeholder with bold markup (emailT escapes nothing; we escape the label)
   const lead = leadTpl.replace(esc(label), `<b>${esc(label)}</b>`);
+  const manageLine = manageUrl
+    ? ` · <a href="${esc(manageUrl)}">${esc(emailT(lang, "digest_manage"))}</a>`
+    : "";
   return `<div style="font-family:Georgia,serif;max-width:620px">
     <h2 style="font-family:system-ui">CityScroll</h2>
     <p style="color:#333">${lead}</p>
     <p style="color:#666;font-size:13px">${esc(emailT(lang, "quiet_working"))}</p>
     ${healthNote}
-    <p style="color:#999;font-size:12px">${esc(emailT(lang, "quiet_subscribed"))} <a href="${esc(unsubUrl)}">${esc(emailT(lang, "digest_unsubscribe"))}</a> (one-click).</p>
+    <p style="color:#999;font-size:12px">${esc(emailT(lang, "quiet_subscribed"))} <a href="${esc(unsubUrl)}">${esc(emailT(lang, "digest_unsubscribe"))}</a> (one-click)${manageLine}.</p>
+  </div>`;
+}
+
+/**
+ * Consolidated multi-watch digest HTML: one section per watch that wants send
+ * (or quiet sections when only heartbeats). Footer: manage prefs + unsub all.
+ */
+function rollupDigestHtml({ sections = [], unsubAllUrl, manageUrl, lang = "en", sessionTok = null, base = "https://api.cityscroll.org" } = {}) {
+  const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
+  const usd = (n) => (n == null || n === "" ? "" : "$" + Number(n).toLocaleString("en-US"));
+  const cr = (id) => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
+
+  const sectionHtml = sections.map((sec) => {
+    const label = sec.label || sec.queryLabel || sec.lens || "Watch";
+    if (sec.kind === "award" && Array.isArray(sec.awardCandidates)) {
+      const items = sec.awardCandidates.map((c) => {
+        const vendor = c.vendor ? esc(c.vendor) : esc(emailT(lang, "award_watch_vendor_unlisted"));
+        const meta = [vendor, usd(c.amount), c.date ? esc(String(c.date).slice(0, 10)) : ""].filter(Boolean).join(" · ");
+        return `<li style="margin:0 0 10px">${meta}</li>`;
+      }).join("");
+      return `<section style="margin:0 0 28px;padding-bottom:18px;border-bottom:1px solid #e5dfd3">
+        <h3 style="font-family:system-ui;margin:0 0 8px">${esc(label)}</h3>
+        <ul style="list-style:none;padding:0;margin:0">${items || `<li style="color:#666;font-style:italic">No new award updates.</li>`}</ul>
+        ${sec.subKey ? `<p style="font-size:12px;margin:10px 0 0"><a href="${esc("#")}"> </a></p>` : ""}
+      </section>`;
+    }
+
+    const rows = sec.freshRows || [];
+    const forecasts = sec.forecastRows || [];
+    const keywords = sec.keywords || [];
+    const w = sec.w || null;
+    const items = rows.map((r) => {
+      if (sec.kind === "rezone") {
+        const meta = [r.borough, r.community_district ? "CD " + r.community_district : "", r.public_status]
+          .filter(Boolean).map(esc).join(" · ");
+        return `<li style="margin:0 0 12px"><b><a href="https://zap.planning.nyc.gov/projects/${encodeURIComponent(r.project_id)}">${esc(r.project_name || "(unnamed)")}</a></b><br>
+          <span style="color:#555;font-size:13px">${meta}</span></li>`;
+      }
+      const titleText = r.short_title || "Notice";
+      const ev = matchEvidence(titleText, r.additional_description_1, keywords);
+      const qs = [];
+      if (sessionTok) qs.push(`s=${encodeURIComponent(sessionTok)}`);
+      if (w) qs.push(`w=${w}`);
+      const kind = sec.kind || "rfp";
+      const noticeLink = `${base}/r/${encodeURIComponent(kind)}/${encodeURIComponent(r.request_id)}${qs.length ? `?${qs.join("&")}` : ""}`;
+      const meta = [r.agency_name, usd(r.contract_amount), dueLabel(r.due_date)].filter(Boolean).map(esc).join(" · ");
+      return `<li style="margin:0 0 12px"><b><a href="${noticeLink}">${titleHtml(titleText, ev, esc)}</a></b><br>
+        <span style="color:#555;font-size:13px">${meta}</span><br>
+        ${evidenceLineHtml(ev, esc, lang)}
+        <span style="font-size:13px"><a href="${noticeLink}">↗ View on CityScroll</a> · <a href="${cr(r.request_id)}">City Record</a></span></li>`;
+    }).join("");
+
+    let forecastsHtml = "";
+    if (forecasts.length) {
+      forecastsHtml = `<p style="font-size:13px;color:#666;margin:10px 0 6px">Forecasts</p><ul style="list-style:none;padding:0">${forecasts.map((f) =>
+        `<li style="margin:0 0 8px;font-size:13px">${esc(f.vendor_name || "Vendor")} · ${usd(f.amount)} · exp ${esc(f.expiration_date || "")}</li>`
+      ).join("")}</ul>`;
+    }
+
+    const quiet = rows.length === 0 && forecasts.length === 0;
+    const body = quiet
+      ? `<p style="color:#666;font-style:italic;margin:0">Nothing new for this watch.</p>${sec.healthNote || ""}`
+      : `<ul style="list-style:none;padding:0;margin:0">${items}</ul>${forecastsHtml}${sec.healthNote || ""}`;
+
+    return `<section style="margin:0 0 28px;padding-bottom:18px;border-bottom:1px solid #e5dfd3">
+      <h3 style="font-family:system-ui;margin:0 0 8px">${esc(label)}</h3>
+      ${body}
+    </section>`;
+  }).join("");
+
+  const manageLine = manageUrl
+    ? `<a href="${esc(manageUrl)}">${esc(emailT(lang, "digest_manage"))}</a> · `
+    : "";
+  return `<div style="font-family:Georgia,serif;max-width:620px">
+    <h2 style="font-family:system-ui">CityScroll — your daily digest</h2>
+    <p style="color:#555;font-size:14px">${sections.length} watch${sections.length === 1 ? "" : "es"} with updates</p>
+    ${sectionHtml}
+    <p style="color:#999;font-size:12px;margin-top:20px">
+      ${manageLine}<a href="${esc(unsubAllUrl)}">${esc(emailT(lang, "digest_unsubscribe_all"))}</a> (one-click).
+      Preference changes take effect on the next daily run (~9am Eastern).
+    </p>
   </div>`;
 }
 
