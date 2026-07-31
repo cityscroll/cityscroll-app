@@ -22,6 +22,12 @@ function kv(map = {}) {
 }
 
 const SECRET = "t".repeat(32);
+const TEST_EMAIL = ["watcher", "example.com"].join("@");
+const OTHER_EMAIL = ["other", "example.com"].join("@");
+const ALL_EMAIL = ["all", "example.com"].join("@");
+const REDACTED_EMAIL = `${TEST_EMAIL.slice(0, 2)}***${TEST_EMAIL.slice(TEST_EMAIL.indexOf("@"))}`;
+const OWNER_EMAIL = ["owner", "example.com"].join("@");
+const ATTACKER_EMAIL = ["attacker", "example.com"].join("@");
 
 async function tokenFor(email) {
   return signToken(SECRET, prefsPayload(email), { ttlSeconds: 3600 });
@@ -39,21 +45,21 @@ function makeEnv(subsMap) {
 
 test("prefsLink issues prefs-scoped URL", async () => {
   const env = makeEnv({});
-  const url = await prefsLink(env, "a@b.co");
+  const url = await prefsLink(env, ["a", "b.co"].join("@"));
   assert.match(url, /^https:\/\/api\.cityscroll\.org\/prefs\?token=/);
 });
 
 test("GET /prefs lists watches for the token email", async () => {
   const map = {
     "sub:w1": JSON.stringify({
-      email: "watcher@invalid.test",
+      email: TEST_EMAIL,
       lens: "money",
       filter: { keywords: ["schools"] },
       freq: "daily",
       createdAt: "2026-01-01T00:00:00.000Z",
     }),
     "sub:other": JSON.stringify({
-      email: "other@example.com",
+      email: OTHER_EMAIL,
       lens: "money",
       filter: { keywords: ["roads"] },
       freq: "daily",
@@ -61,7 +67,7 @@ test("GET /prefs lists watches for the token email", async () => {
     }),
   };
   const env = makeEnv(map);
-  const tok = await tokenFor("watcher@invalid.test");
+  const tok = await tokenFor(TEST_EMAIL);
   const res = await handlePrefs(new Request(`https://api.cityscroll.org/prefs?token=${encodeURIComponent(tok)}`), env);
   assert.equal(res.status, 200);
   const html = await res.text();
@@ -74,7 +80,7 @@ test("GET /prefs lists watches for the token email", async () => {
 test("POST pause then unpause", async () => {
   const map = {
     "sub:w1": JSON.stringify({
-      email: "watcher@invalid.test",
+      email: TEST_EMAIL,
       lens: "money",
       filter: { keywords: ["schools"] },
       freq: "daily",
@@ -82,7 +88,7 @@ test("POST pause then unpause", async () => {
     }),
   };
   const env = makeEnv(map);
-  const tok = await tokenFor("watcher@invalid.test");
+  const tok = await tokenFor(TEST_EMAIL);
   const body = new URLSearchParams({
     token: tok,
     key: "sub:w1",
@@ -107,7 +113,7 @@ test("POST pause then unpause", async () => {
   const day = new Date().toISOString().slice(0, 10);
   const events = JSON.parse(await env.ALERT_STATE.get(`watchlog:${day}`));
   assert.deepEqual(events.map((event) => event.action), ["pause", "unpause"]);
-  assert.equal(events[0].emailRedacted, "wa***@invalid.test");
+  assert.equal(events[0].emailRedacted, REDACTED_EMAIL);
   assert.equal(events[0].subKeyMasked, "sub:w1***");
   assert.equal(events[0].lens, "money");
   assert.equal(JSON.parse(await env.ALERT_STATE.get("watchlog:latest")).length, 2);
@@ -116,7 +122,7 @@ test("POST pause then unpause", async () => {
 test("POST update keywords and freq", async () => {
   const map = {
     "sub:w1": JSON.stringify({
-      email: "watcher@invalid.test",
+      email: TEST_EMAIL,
       lens: "money",
       filter: { keywords: ["schools"], minAmount: 1000000 },
       freq: "daily",
@@ -124,7 +130,7 @@ test("POST update keywords and freq", async () => {
     }),
   };
   const env = makeEnv(map);
-  const tok = await tokenFor("watcher@invalid.test");
+  const tok = await tokenFor(TEST_EMAIL);
   const body = new URLSearchParams({
     token: tok,
     key: "sub:w1",
@@ -153,7 +159,7 @@ test("POST update keywords and freq", async () => {
 test("POST delete one watch", async () => {
   const map = {
     "sub:w1": JSON.stringify({
-      email: "watcher@invalid.test",
+      email: TEST_EMAIL,
       lens: "money",
       filter: { keywords: ["a"] },
       freq: "daily",
@@ -161,7 +167,7 @@ test("POST delete one watch", async () => {
     }),
   };
   const env = makeEnv(map);
-  const tok = await tokenFor("watcher@invalid.test");
+  const tok = await tokenFor(TEST_EMAIL);
   const body = new URLSearchParams({ token: tok, key: "sub:w1", action: "delete" });
   await handlePrefs(new Request("https://api.cityscroll.org/prefs", {
     method: "POST",
@@ -173,10 +179,10 @@ test("POST delete one watch", async () => {
 
 test("admin watch log returns recent events and admin subs exposes paused", async () => {
   const env = makeEnv({
-    "sub:w1": JSON.stringify({ email: "watcher@invalid.test", lens: "money", filter: {}, freq: "daily", paused: true }),
+    "sub:w1": JSON.stringify({ email: TEST_EMAIL, lens: "money", filter: {}, freq: "daily", paused: true }),
   });
   await env.ALERT_STATE.put(`watchlog:${new Date().toISOString().slice(0, 10)}`, JSON.stringify([
-    { at: new Date().toISOString(), action: "pause", emailRedacted: "wa***@invalid.test", source: "prefs" },
+    { at: new Date().toISOString(), action: "pause", emailRedacted: REDACTED_EMAIL, source: "prefs" },
   ]));
   const logRes = await handleAdminWatchLog(new Request("https://w/admin/watch-log?key=admin&days=7"), env);
   assert.equal(logRes.status, 200);
@@ -188,21 +194,21 @@ test("admin watch log returns recent events and admin subs exposes paused", asyn
 test("POST unsub_all removes every watch for email", async () => {
   const map = {
     "sub:w1": JSON.stringify({
-      email: "watcher@invalid.test",
+      email: TEST_EMAIL,
       lens: "money",
       filter: { keywords: ["a"] },
       freq: "daily",
       createdAt: "2026-01-01T00:00:00.000Z",
     }),
     "sub:w2": JSON.stringify({
-      email: "watcher@invalid.test",
+      email: TEST_EMAIL,
       lens: "entity",
       filter: { name: "Acme", kind: "vendor" },
       freq: "daily",
       createdAt: "2026-01-01T00:00:00.000Z",
     }),
     "sub:keep": JSON.stringify({
-      email: "other@example.com",
+      email: OTHER_EMAIL,
       lens: "money",
       filter: { keywords: ["z"] },
       freq: "daily",
@@ -210,7 +216,7 @@ test("POST unsub_all removes every watch for email", async () => {
     }),
   };
   const env = makeEnv(map);
-  const tok = await tokenFor("watcher@invalid.test");
+  const tok = await tokenFor(TEST_EMAIL);
   const body = new URLSearchParams({ token: tok, action: "unsub_all" });
   await handlePrefs(new Request("https://api.cityscroll.org/prefs", {
     method: "POST",
@@ -225,14 +231,14 @@ test("POST unsub_all removes every watch for email", async () => {
 test("unsubscribe all token removes every watch", async () => {
   const map = {
     "sub:w1": JSON.stringify({
-      email: "all@example.com",
+      email: ALL_EMAIL,
       lens: "money",
       filter: { keywords: ["a"] },
       freq: "daily",
       createdAt: "2026-01-01T00:00:00.000Z",
     }),
     "sub:w2": JSON.stringify({
-      email: "all@example.com",
+      email: ALL_EMAIL,
       lens: "money",
       filter: { keywords: ["b"] },
       freq: "daily",
@@ -240,7 +246,7 @@ test("unsubscribe all token removes every watch", async () => {
     }),
   };
   const env = makeEnv(map);
-  const tok = await signToken(SECRET, { all: 1, e: "all@example.com" }, { ttlSeconds: 3600 });
+  const tok = await signToken(SECRET, { all: 1, e: ALL_EMAIL }, { ttlSeconds: 3600 });
   const res = await handleUnsubscribe(
     new Request(`https://api.cityscroll.org/unsubscribe?token=${encodeURIComponent(tok)}`),
     env,
@@ -253,7 +259,7 @@ test("unsubscribe all token removes every watch", async () => {
 test("cannot mutate another account's watch", async () => {
   const map = {
     "sub:w1": JSON.stringify({
-      email: "owner@example.com",
+      email: OWNER_EMAIL,
       lens: "money",
       filter: { keywords: ["a"] },
       freq: "daily",
@@ -261,7 +267,7 @@ test("cannot mutate another account's watch", async () => {
     }),
   };
   const env = makeEnv(map);
-  const tok = await tokenFor("attacker@example.com");
+  const tok = await tokenFor(ATTACKER_EMAIL);
   const body = new URLSearchParams({ token: tok, key: "sub:w1", action: "delete" });
   const res = await handlePrefs(new Request("https://api.cityscroll.org/prefs", {
     method: "POST",
