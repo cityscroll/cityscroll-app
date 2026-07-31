@@ -360,6 +360,13 @@ call-site stability. Equal/distinct pin table:
 `worker/test/fixtures/normalize_pairs.json`. Verify:
 `node --test worker/test/vendor_stem.test.mjs worker/test/normalize_fixtures.test.mjs`.
 
+Gold set + metrics harness (eval only): `entity_resolution/eval/` —
+`gold_v0.jsonl` (versioned; never silent-mutate labels/membership) and
+`run_metrics.mjs`. Verify:
+`node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v0.jsonl --dry-run`
+(prints precision/recall/candidate_recall/unresolved_rate/false_merge/false_split;
+nulls OK until matchers). Details: `entity_resolution/eval/README.md`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
