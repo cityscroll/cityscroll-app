@@ -278,6 +278,16 @@ the multi-day recovery total. Detect via `action` / `traffic_class` / `mode`
 `catch_up` (historical rows may only have `action`). Result includes
 `catchUpExempt`. Characterization: `node --test test/digest_ops.test.mjs`.
 
+**Catch-up daylog under queue mode:** `runCatchUpDigests` always merges stamped
+daylog entries (`action`/`traffic_class: catch_up` via `toDayLogEntry`) even when
+`QUEUE_DIGESTS=true` — queue daily fan-out only seeds the daylog; catch-up is a
+separate path and must not skip observability. **Daily lag recovery stamp:**
+`processOneSub` / `processAccountRollup` set `traffic_class: "catch_up"` when
+lastsent lag is **>1 day** and fresh notices are sent (`isMultiDayLagRecovery`);
+email copy stays normal daily (`action: match`). `toRollupDayLogEntry` preserves
+the stamp. Without the stamp, desk shows false `phantom_send` for multi-day
+recovery under queue mode.
+
 Characterization: `node --test test/markseen_policy.test.mjs test/digest_catchup.test.mjs`.
 
 ## Non-Council hearing outcomes (copy)
