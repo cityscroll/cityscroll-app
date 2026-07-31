@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "observed_on": "2026-07-30",
+  "observed_on": "2026-07-31",
   "sources": [
     {
       "id": "city-record",
@@ -30,7 +30,8 @@
         "requested_benefit_amount",
         "estimated_public_cost",
         "application_status"
-      ]
+      ],
+      "landing_probe": "bot_blocked"
     },
     {
       "id": "checkbook-contracts",
@@ -50,10 +51,10 @@
       "identifier": "Spending",
       "response_type": "xml-recordset",
       "fields": [
-        "spending_id",
-        "vendor_name",
+        "contract_id",
+        "payee_name",
         "check_amount",
-        "check_date"
+        "issue_date"
       ]
     },
     {
@@ -303,7 +304,8 @@
       "kind": "html",
       "identifier": "zk51vm65n",
       "response_type": "text/html",
-      "fields": []
+      "fields": [],
+      "landing_probe": "bot_blocked"
     },
     {
       "id": "mocs-ll63-plans",
@@ -333,9 +335,10 @@
       "identifier": "api",
       "response_type": "text/html",
       "fields": [],
-      "machine_endpoint": "https://webapi.legistar.com/v1/nyc/",
+      "machine_endpoint": "https://webapi.legistar.com/v1/nyc/Bodies?$top=1",
       "machine_response_type": "application/json",
-      "notes": "Web API requires publisher-issued token (HTTP 403 without it, observed 2026-07-30)."
+      "notes": "Web API requires publisher-issued token (HTTP 403 without it). Live monitor probes Bodies?$top=1 with LEGISTAR_API_TOKEN when present; without token, 403 is the expected auth gate.",
+      "auth_token_env": "LEGISTAR_API_TOKEN"
     },
     {
       "id": "city-council-meetings-open-data",
@@ -373,7 +376,9 @@
       ],
       "machine_endpoint": "dataJs/contractData.js",
       "machine_response_type": "application/javascript",
-      "machine_var": "public_ctr_data"
+      "machine_var": "public_ctr_data",
+      "landing_probe": "bot_blocked",
+      "egress_class": "bot_blocked"
     },
     {
       "id": "bid-tabulations-historical",
@@ -412,7 +417,9 @@
         "forecast_completion",
         "latest_schedule_changes",
         "total_schedule_changes"
-      ]
+      ],
+      "contract_class": "pointer",
+      "stale_policy": "skip"
     },
     {
       "id": "passport-public-rfx",
@@ -430,7 +437,9 @@
       ],
       "machine_endpoint": "dataJs/rfxData.js",
       "machine_response_type": "application/javascript",
-      "machine_var": "public_rfx_data"
+      "machine_var": "public_rfx_data",
+      "landing_probe": "bot_blocked",
+      "egress_class": "bot_blocked"
     },
     {
       "id": "ocp-current-solicitations",
@@ -471,8 +480,9 @@
         "dispositions",
         "documents"
       ],
-      "machine_endpoint": "https://zap-api-production.herokuapp.com/projects/{project_id}",
-      "machine_response_type": "application/json"
+      "machine_endpoint": "https://zap-api-production.herokuapp.com/projects/2022M0258",
+      "machine_response_type": "application/json",
+      "probe_sample_id": "2022M0258"
     },
     {
       "id": "doing-business-entities",

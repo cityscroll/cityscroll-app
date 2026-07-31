@@ -442,16 +442,19 @@ function collectDepotSources(registry, sourceContracts) {
     });
   }
 
-  // Preserve hand-authored sources from an existing depot registry
+  // Preserve hand-authored sources from an existing depot registry.
+  // When a source contract exists, its landing_page / delivery_tier / status win
+  // so a moved publisher URL does not stay stuck on a stale depot copy.
   for (const src of registry.sources || []) {
     if (!src?.id) continue;
+    const fromContract = byId.get(src.id);
     upsert(src.id, {
       name: src.name || src.id,
       source_contract_id: src.source_contract_id ?? (byId.has(src.id) ? src.id : null),
-      status: src.status,
+      status: fromContract ? sourceStatus(fromContract) : src.status,
       join_keys: src.join_keys || [],
-      landing_page: src.landing_page,
-      delivery_tier: src.delivery_tier,
+      landing_page: fromContract?.landing_page || src.landing_page,
+      delivery_tier: fromContract?.delivery_tier || src.delivery_tier,
       join_coverage: src.join_coverage || {},
     });
   }
