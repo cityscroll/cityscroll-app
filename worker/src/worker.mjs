@@ -14,7 +14,7 @@ import { handleUnsubscribe } from "./unsubscribe.mjs";
 import { handleSession } from "./session.mjs";
 import { handlePins } from "./pins.mjs";
 import { handleFeedback } from "./feedback.mjs";
-import { handleAdminSubs, handleAdminFeedback } from "./admin.mjs";
+import { handleAdminSubs, handleAdminFeedback, handleAdminDigestCatchUp } from "./admin.mjs";
 import { handleFeed } from "./feed.mjs";
 import { handleBatch } from "./batch.mjs";
 import { handleAgencies } from "./agencies.mjs";
@@ -23,7 +23,7 @@ import { handleStats, countActiveSubs } from "./stats.mjs";
 import { handleEvent } from "./events.mjs";
 import { snapshotHistDay, ensureHistEra } from "./lib/stats.mjs";
 import { handleRedirect } from "./redirect.mjs";
-import { runAlerts, consumeDigestJob } from "./alerts.mjs";
+import { runAlerts, consumeDigestJob, runCatchUpDigests } from "./alerts.mjs";
 import { ingestNotices } from "./ingest.mjs";
 import { handlePriorCycle, prewarm as prewarmPriorCycle } from "./prior_cycle.mjs";
 import { handleExternalAward, refreshAboAwards, prewarmNycha } from "./external_award.mjs";
@@ -89,6 +89,7 @@ export default {
     if (pathname === "/admin/subs") return handleAdminSubs(request, env);
     if (pathname === "/admin/feedback") return handleAdminFeedback(request, env);
     if (pathname === "/admin/suggest-refresh") return handleAdminSuggestRefresh(request, env);
+    if (pathname === "/admin/digest-catchup") return handleAdminDigestCatchUp(request, env);
     if (pathname === "/" || pathname === "/health") {
       return new Response("crol-worker ok", { status: 200, headers: { "Content-Type": "text/plain" } });
     }
@@ -221,6 +222,19 @@ export default {
     }
     // Await directly (not ctx.waitUntil) so the runtime keeps the worker alive until the whole
     // digest run — config watches + every KV subscription — completes.
+
+    // Watermark recovery: when DIGEST_CATCH_UP is set, send catch-up digests to any sub whose
+    // lastsent lags >= 2 days before the normal run. One-shot env flag — unset after recovery.
+    // Prefer the admin POST /admin/digest-catchup endpoint for operator control.
+    if (env.DIGEST_CATCH_UP === "1" || env.DIGEST_CATCH_UP === "true") {
+      try {
+        const r = await runCatchUpDigests(env, { minLagDays: 2 });
+        console.log("catch-up (env trigger):", JSON.stringify({ sent: r.sentThisRun, candidates: r.candidates }));
+      } catch (e) {
+        console.error("catch-up (env trigger) failed (normal digest continues):", String(e?.message || e));
+      }
+    }
+
     await runAlerts(env);
 
     // w12-16: "active watches" is a live gauge (a KV list count), not something with a
