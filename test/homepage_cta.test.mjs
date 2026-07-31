@@ -57,12 +57,24 @@ test("homepage CTA wires into /subscribe with empty money filter + weekly cadenc
 });
 
 test("signup surfaces have no Turnstile widget or client token gate", () => {
-  // Homepage CTA + Alerts post to /subscribe without a CAPTCHA; feedback keeps Turnstile on about.html.
+  // Homepage CTA + Alerts post to /subscribe without a CAPTCHA.
   assert.doesNotMatch(index, /class="cf-turnstile"/);
   assert.doesNotMatch(index, /challenges\.cloudflare\.com\/turnstile/);
   assert.doesNotMatch(index, /turnstileToken/);
   assert.doesNotMatch(index, /complete_human_check/);
   assert.match(index, /workerFetch\("\/subscribe"/);
+});
+
+test("about feedback form has no Turnstile and exposes public feedback inbox", () => {
+  const about = readFileSync(join(ROOT, "site/about.html"), "utf8");
+  assert.doesNotMatch(about, /class="cf-turnstile"/);
+  assert.doesNotMatch(about, /challenges\.cloudflare\.com\/turnstile/);
+  assert.doesNotMatch(about, /turnstileToken/);
+  assert.doesNotMatch(about, /turnstile\.(getResponse|reset)/);
+  assert.match(about, /mailto:feedback@cityscroll\.org/);
+  assert.match(about, /workerFetch\("\/feedback"/);
+  assert.match(index, /mailto:feedback@cityscroll\.org/);
+  assert.match(index, /data-i18n="footer_feedback"/);
 });
 
 test("subscribe confirmation copy is short (no double-opt-in ceremony on the form)", () => {

@@ -24,8 +24,8 @@ prefer otherwise.
   capped route degrades, it doesn't fall open.
 - **Abuse of write routes** (`/subscribe`, `/feedback`, `/inv`, `/batch`): per-IP and
   per-address daily rate limits, strict validation, size clamps, TTLs on everything stored;
-  `/feedback` still uses Turnstile; `/subscribe` relies on rate limits + double opt-in (CAPTCHA
-  can return if abuse shows in the sends dashboard).
+  `/feedback` and `/subscribe` rely on rate limits + validation (`/subscribe` also uses double
+  opt-in; CAPTCHA can return on either path if abuse shows in the sends dashboard).
 - **Email**: double opt-in (nothing stored until the signed confirm link is clicked), signed
   one-click unsubscribe (RFC 8058), From is always the app's own identity.
 - **No open redirect**: `/r` accepts a validated slug + record id and constructs the target
