@@ -319,6 +319,14 @@ Config: `window.CROL_CLARITY_PROJECT_ID`, meta `crol-clarity-project-id`, or
 masks form inputs; operator must set dashboard Masking mode to **Strict**.
 Characterization: `node --test test/clarity.test.mjs`. Privacy copy: About → Privacy.
 
+## Public feedback
+
+Team inbox is **feedback@cityscroll.org** (footer mailto on `site/index.html` /
+`site/about.html`, About form one-liner, worker `FEEDBACK_TO` / `DEFAULT_TO`).
+`/feedback` is rate-limited + validated; **no Turnstile** on form or handler.
+Fails closed without `RESEND_API_KEY` + `FEEDBACK` KV only. Characterization:
+`node --test worker/test/feedback.test.mjs test/homepage_cta.test.mjs`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
