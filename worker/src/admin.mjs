@@ -1,9 +1,11 @@
 // GET /admin/subs?key=… — operator read of confirmed subscriptions, straight from the worker's
 // OWN SUBS binding. This answers "what does the worker actually see" independent of any external
 // CLI/dashboard view of the namespace. FAIL CLOSED: 404 until ADMIN_KEY is set. Read-only.
+//
+// GET /admin/digest-rollup?key=…&email=… — dry-run account rollup for one email (no Resend send).
 
 import { redactEmail } from "./lib/subscriptions.mjs";
-import { runCatchUpDigests } from "./alerts.mjs";
+import { dryRunRollupForEmail, runCatchUpDigests } from "./alerts.mjs";
 
 // Shared auth gate for every /admin/* route: key via ?key= or an Authorization: Bearer header.
 // FAIL CLOSED — 404 (not 401) until ADMIN_KEY is configured, so an unconfigured deploy doesn't
@@ -73,6 +75,25 @@ export async function handleAdminFeedback(req, env) {
 
   items.sort((a, b) => (String(a.at) < String(b.at) ? 1 : -1)); // newest first
   return json({ feedbackCount: items.length, totalFbKeys: totalKeys, items }, 200);
+}
+
+/**
+ * GET /admin/digest-rollup?key=…&email=…
+ * Dry-run the account digest (rollup when >1 active watch) without sending mail.
+ * Forces ALERTS_LIVE-off evaluation; returns sections + day-log preview.
+ */
+export async function handleAdminDigestRollup(req, env) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (req.method !== "GET") return json({ error: "method" }, 405);
+  const email = new URL(req.url).searchParams.get("email") || "";
+  if (!email) return json({ error: "email-required" }, 400);
+  try {
+    const out = await dryRunRollupForEmail(env, email);
+    return json(out, 200);
+  } catch (e) {
+    return json({ error: String(e?.message || e) }, 500);
+  }
 }
 
 function maskKey(n) {

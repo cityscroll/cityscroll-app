@@ -3,6 +3,7 @@
 
 import { redactEmail } from "./subscriptions.mjs";
 import { describeFilter } from "./confirm_email.mjs";
+import { toRollupDayLogEntry } from "./rollup.mjs";
 
 /** KV key for the durable per-day send log (ALERT_STATE). */
 export function digestDayLogKey(day) {
@@ -40,9 +41,12 @@ export function toDayLogEntry(result = {}, { day = null } = {}) {
     (noticeCount === 0 && found === 0 && action === "none") ||
     (noticeCount === 0 && found === 0 && !sent && !dryRun && !result.error && !result.skipped);
 
+  // Explicit kind from rollup / callers wins; else config vs single subscription.
+  const kind = result.kind
+    || (result.watch ? "config_watch" : "subscription");
   return {
     day: day || result.day || null,
-    kind: result.watch ? "config_watch" : "subscription",
+    kind,
     id: result.watch || result.sub || result.subKey || null,
     lens: result.lens || result.type || null,
     query: result.queryLabel || result.query || result.label || null,
@@ -59,6 +63,9 @@ export function toDayLogEntry(result = {}, { day = null } = {}) {
     zeroMatch,
     error: result.error || null,
     forecasts: Number(result.forecasts) || 0,
+    // Account rollup: nested section summaries (optional).
+    sections: Array.isArray(result.sections) ? result.sections : undefined,
+    sendUnits: result.sendUnits != null ? Number(result.sendUnits) : (result.sent || result.dryRun ? 1 : 0),
   };
 }
 
@@ -85,7 +92,9 @@ export function noticeDeepLink(requestId) {
 export function buildDayLog({ day, ranAt, live, mode, results = [] } = {}) {
   const entries = [];
   for (const r of results) {
-    const e = toDayLogEntry(r, { day });
+    const e = r?.kind === "rollup"
+      ? toRollupDayLogEntry(r, { day })
+      : toDayLogEntry(r, { day });
     if (e) entries.push(e);
   }
   const sentEntries = entries.filter((e) => e.sent);
