@@ -499,6 +499,7 @@ export async function processOneSub(env, s, ctx) {
     });
     const send = underCap && ctx.LIVE;
 
+    let manageUrlPresent = false;
     if (underCap) {
       const label = describeFilter(s.lens, s.filter);
       const unsubUrl = await unsubLink(env, s.key);
@@ -512,6 +513,7 @@ export async function processOneSub(env, s, ctx) {
         ? searchHealthNoteHtml({ lang, quietDays: healthStatus.quietDays, url: alertsFixUrl(s.lens, s.filter, s.freq) })
         : "";
       const manageUrl = await prefsLink(env, s.email);
+      manageUrlPresent = !!manageUrl;
       if (hasActivity) {
         const freshLabel = fresh.length > 0 ? `${fresh.length} new` : "";
         const forecastLabel = forecasts.length > 0 ? `${forecasts.length} forecast(s)` : "";
@@ -538,11 +540,13 @@ export async function processOneSub(env, s, ctx) {
       if (send) {
         await sendEmail(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true);
         await ctx.onSent();
-        await setLastSent(env, s.key, ctx.today);   // only on a real send, so the heartbeat clock tracks actual email
-        await bumpStatAllTime(env.ALERT_STATE, "digest");
-        await bumpHistDay(env.ALERT_STATE, "digest", new Date());
-        if (fresh.length) await bumpDigestCategories(env, fresh, s.lens);
-        emitUsageEvent(env, { event: "digest_sent", lens: s.lens, surface: "email" });
+        if (ctx.advanceState !== false) {
+          await setLastSent(env, s.key, ctx.today);   // only on a real send, so the heartbeat clock tracks actual email
+          await bumpStatAllTime(env.ALERT_STATE, "digest");
+          await bumpHistDay(env.ALERT_STATE, "digest", new Date());
+          if (fresh.length) await bumpDigestCategories(env, fresh, s.lens);
+          emitUsageEvent(env, { event: "digest_sent", lens: s.lens, surface: "email" });
+        }
       } else {
         // ALERTS_LIVE dry-run: render full payload, never call Resend / never bump counters.
         logDryRunEmail(emailPayload(env, ctx.FROM, s.email, subject, html, `<${unsubUrl}>`, true));
@@ -551,7 +555,7 @@ export async function processOneSub(env, s, ctx) {
 
     // Mark seen ONLY on a real send — advancing the seen set without delivery was the
     // watermark-poisoning bug (dry-run, quiet, or any path where send stays false).
-    if (send && rows.length) await markSeen(env, s.key, rows.map((r) => r[q.idField]).filter(Boolean));
+    if (send && ctx.advanceState !== false && rows.length) await markSeen(env, s.key, rows.map((r) => r[q.idField]).filter(Boolean));
     // Multi-day lag after a delivery outage: stamp traffic_class so desk ops can exempt
     // day-scoped phantom_send without treating a normal daily match as recovery.
     // Email copy stays the normal daily subject/body (not catch-up branded).
@@ -571,6 +575,7 @@ export async function processOneSub(env, s, ctx) {
       zeroMatch: fresh.length === 0 && forecasts.length === 0 && decision.action === "none",
       sent: send,
       dryRun: underCap && !ctx.LIVE,
+      manageUrlPresent,
       capped,
       sendUnits: send || (underCap && !ctx.LIVE) ? 1 : 0,
     };
@@ -595,6 +600,7 @@ export async function processAccountRollup(env, subs, ctx) {
 
   try {
     const sections = [];
+    let manageUrlPresent = false;
     for (const s of subs) {
       if (!isWatchActive(s)) {
         sections.push({
@@ -632,6 +638,7 @@ export async function processAccountRollup(env, subs, ctx) {
       const lang = (wanting[0] && wanting[0].lang) || (subs[0] && subs[0].lang) || "en";
       const unsubAllUrl = await unsubAllLink(env, email);
       const manageUrl = await prefsLink(env, email);
+      manageUrlPresent = !!manageUrl;
       const sessionTok = await issueEmailSessionToken(env, email);
       const base = env.CONFIRM_BASE || "https://api.cityscroll.org";
       const subject = rollupSubject({
@@ -652,24 +659,26 @@ export async function processAccountRollup(env, subs, ctx) {
       if (send) {
         await sendEmail(env, ctx.FROM, email, subject, html, `<${unsubAllUrl}>`, true);
         await ctx.onSent();
-        for (const sec of sections) {
-          if (sec.subKey && sectionWantsSend(sec)) {
-            await setLastSent(env, sec.subKey, ctx.today);
+        if (ctx.advanceState !== false) {
+          for (const sec of sections) {
+            if (sec.subKey && sectionWantsSend(sec)) {
+              await setLastSent(env, sec.subKey, ctx.today);
+            }
           }
+          await bumpStatAllTime(env.ALERT_STATE, "digest");
+          await bumpHistDay(env.ALERT_STATE, "digest", new Date());
+          for (const sec of sections) {
+            if (sec.freshRows?.length) await bumpDigestCategories(env, sec.freshRows, sec.lens);
+          }
+          emitUsageEvent(env, { event: "digest_sent", lens: "account", surface: "email" });
         }
-        await bumpStatAllTime(env.ALERT_STATE, "digest");
-        await bumpHistDay(env.ALERT_STATE, "digest", new Date());
-        for (const sec of sections) {
-          if (sec.freshRows?.length) await bumpDigestCategories(env, sec.freshRows, sec.lens);
-        }
-        emitUsageEvent(env, { event: "digest_sent", lens: "account", surface: "email" });
       } else {
         logDryRunEmail(emailPayload(env, ctx.FROM, email, subject, html, `<${unsubAllUrl}>`, true));
       }
     }
 
     // Mark seen ONLY on a real send (same watermark-poisoning fix as single-sub path).
-    if (send) {
+    if (send && ctx.advanceState !== false) {
       for (const sec of sections) {
         if (sec.markSeenIds?.length && sec.seenId) {
           await markSeen(env, sec.seenId, sec.markSeenIds);
@@ -698,6 +707,7 @@ export async function processAccountRollup(env, subs, ctx) {
       zeroMatch: !decision.wantSend,
       sent: !!send,
       dryRun: underCap && decision.wantSend && !ctx.LIVE,
+      manageUrlPresent,
       capped,
       sendUnits: (send || (underCap && decision.wantSend && !ctx.LIVE)) ? 1 : 0,
       sections: sections.map((sec) => ({
@@ -1292,6 +1302,7 @@ export async function dryRunRollupForEmail(env, email) {
       activeCount: 0,
       wouldSend: false,
       mode: list.length ? "all_paused" : "no_watches",
+      manageUrlPresent: false,
       sections: list.map((s) => ({
         key: maskKey(s.key),
         lens: s.lens,
@@ -1310,6 +1321,7 @@ export async function dryRunRollupForEmail(env, email) {
     counts: () => ({ "per-run": 0, daily: 0 }),
     caps: { "per-run": 9999, daily: 9999 },
     onSent: async () => {},
+    advanceState: true,
   };
   let result;
   if (active.length === 1) {
@@ -1329,6 +1341,59 @@ export async function dryRunRollupForEmail(env, email) {
     dayLogPreview: active.length > 1
       ? toRollupDayLogEntry(result, { day })
       : toDayLogEntry(result, { day }),
+  };
+}
+
+/**
+ * Admin test-send: run the normal digest path with live delivery enabled for this request only.
+ * State advancement is opt-in so a test message cannot consume tomorrow's notices by default.
+ */
+export async function digestSendTestForEmail(env, email, { live = false, advanceState = false } = {}) {
+  const want = normalizeEmail(email);
+  if (!want) return { ok: false, reason: "bad-email" };
+  const all = await subWatches(env);
+  const list = all.filter((s) => normalizeEmail(s.email) === want);
+  const active = list.filter(isWatchActive);
+  if (!active.length) {
+    return {
+      ok: true,
+      emailRedacted: redactEmail(want),
+      watchCount: list.length,
+      activeCount: 0,
+      wouldSend: false,
+      mode: list.length ? "all_paused" : "no_watches",
+      manageUrlPresent: false,
+      sections: list.map((s) => ({ key: maskKey(s.key), lens: s.lens, query: describeFilter(s.lens, s.filter), paused: !!s.paused })),
+    };
+  }
+  const day = new Date().toISOString().slice(0, 10);
+  const ctx = {
+    FROM: env.ALERTS_FROM || "CityScroll <alerts@cityscroll.org>",
+    LIVE: !!live,
+    advanceState: !!advanceState,
+    heartbeatDays: Number(env.HEARTBEAT_DAYS) || 14,
+    today: day,
+    isMonday: new Date().getUTCDay() === 1,
+    counts: () => ({ "per-run": 0, daily: 0 }),
+    caps: { "per-run": 9999, daily: 9999 },
+    onSent: async () => {},
+  };
+  const result = active.length === 1
+    ? await processOneSub(env, active[0], ctx)
+    : await processAccountRollup(env, active, ctx);
+  return {
+    ok: true,
+    live: !!live,
+    advanceState: !!advanceState,
+    emailRedacted: redactEmail(want),
+    watchCount: list.length,
+    activeCount: active.length,
+    rollup: active.length > 1,
+    wouldSend: !!(result.dryRun || result.sent),
+    mode: active.length > 1 ? "rollup" : "single",
+    manageUrlPresent: !!result.manageUrlPresent,
+    sections: result.sections || [{ lens: result.lens, query: result.queryLabel, new: result.new, action: result.action }],
+    result,
   };
 }
 
@@ -1460,15 +1525,17 @@ function emailPayload(env, from, to, subject, html, listUnsub, oneClick) {
 }
 
 function logDryRunEmail(payload) {
+  const safeUrl = (value) => String(value || "").replace(/([?&](?:token|s)=)[^&>\s]+/gi, "$1[redacted]");
+  const safeHtml = payload.html ? payload.html.replace(/([?&](?:token|s)=)[^\"'&\s<]+/gi, "$1[redacted]") : payload.html;
   console.log("alerts dry-run (no send):", JSON.stringify({
     from: payload.from,
     reply_to: payload.reply_to,
     to: payload.to,
     subject: payload.subject,
-    listUnsub: payload.headers?.["List-Unsubscribe"] || null,
+    listUnsub: safeUrl(payload.headers?.["List-Unsubscribe"] || null),
     htmlBytes: payload.html ? payload.html.length : 0,
-    html: payload.html,
-    headers: payload.headers || null,
+    html: safeHtml,
+    headers: payload.headers ? { ...payload.headers, "List-Unsubscribe": safeUrl(payload.headers["List-Unsubscribe"]) } : null,
   }));
 }
 

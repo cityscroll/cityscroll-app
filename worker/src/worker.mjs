@@ -15,7 +15,7 @@ import { handlePrefs } from "./prefs.mjs";
 import { handleSession } from "./session.mjs";
 import { handlePins } from "./pins.mjs";
 import { handleFeedback } from "./feedback.mjs";
-import { handleAdminSubs, handleAdminFeedback, handleAdminDigestRollup, handleAdminDigestCatchUp } from "./admin.mjs";
+import { handleAdminSubs, handleAdminFeedback, handleAdminDigestRollup, handleAdminDigestSendTest, handleAdminDigestCatchUp } from "./admin.mjs";
 import { handleFeed } from "./feed.mjs";
 import { handleBatch } from "./batch.mjs";
 import { handleAgencies } from "./agencies.mjs";
@@ -91,6 +91,7 @@ export default {
     if (pathname === "/admin/subs") return handleAdminSubs(request, env);
     if (pathname === "/admin/feedback") return handleAdminFeedback(request, env);
     if (pathname === "/admin/digest-rollup") return handleAdminDigestRollup(request, env);
+    if (pathname === "/admin/digest-send-test") return handleAdminDigestSendTest(request, env);
     if (pathname === "/admin/suggest-refresh") return handleAdminSuggestRefresh(request, env);
     if (pathname === "/admin/digest-catchup") return handleAdminDigestCatchUp(request, env);
     if (pathname === "/" || pathname === "/health") {
