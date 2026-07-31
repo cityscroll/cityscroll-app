@@ -806,6 +806,10 @@
           <option value="100000000">$100M+</option>
         </select>
       </div>
+      <div class="field" id="methodwrap" style="display:none">
+        <label for="methodselect" data-i18n="method_facet_label">Method:</label>
+        <select id="methodselect"><option value="" data-i18n="min_award_any">Any</option></select>
+      </div>
       <div class="field" style="flex:0 0 auto"><label>&nbsp;</label><button type="button" class="watchbtn" data-lens="money" data-i18n="watch_this_search">Watch this search</button></div>
     </div>
 
@@ -1612,8 +1616,11 @@ async function search(){
   mode = $("#mode").value;
   const agency = $("#agency").value, kw = $("#kw").value.trim();
   const sort = $("#sort").value, minamt = $("#minamt").value;
-  $("#minwrap").style.opacity = mode === "award" ? "1" : ".6";
+  const hasMethodDropdown = mode !== "award";
+  $("#minwrap").style.display = mode === "award" ? "" : "none";
+  $("#methodwrap").style.display = hasMethodDropdown ? "" : "none";
   $("#minamt").disabled = mode !== "award";
+  $("#methodfacet").style.display = hasMethodDropdown ? "none" : "";
   // The closing-week quick filter only makes sense for open RFPs.
   if(mode !== "open" && closingWeek){ closingWeek = false; $("#closingweek").classList.remove("on"); $("#closingweek").setAttribute("aria-pressed","false"); }
   $("#moneyquick").style.display = mode === "open" ? "" : "none";
@@ -1675,13 +1682,28 @@ async function search(){
    current filters minus the method clause itself, so clicking narrows, re-clicking clears. */
 async function loadMethodFacet(where, kw){
   const el = $("#methodfacet");
+  const select = $("#methodselect");
   try{
     const p = {"$select":"selection_method_description, count(1) as n",
       "$where": where + " AND selection_method_description IS NOT NULL",
       "$group":"selection_method_description","$order":"n DESC","$limit":"7"};
     if(kw) p["$q"] = kw;
     const rows = (await soda(p)).filter(r=>r.selection_method_description && r.selection_method_description.trim());
-    if(rows.length < 2 && !methodSel){ el.style.display="none"; return; }
+    if(rows.length < 2 && !methodSel){
+      el.style.display="none";
+      if(mode !== "award") $("#methodwrap").style.display="none";
+      return;
+    }
+    if(mode !== "award"){
+      select.innerHTML = `<option value="" data-i18n="min_award_any">${t("min_award_any")}</option>` + rows.map(r=>{
+        const m = r.selection_method_description;
+        return `<option value="${m.replace(/&/g,"&amp;").replace(/"/g,"&quot;")}">${m}</option>`;
+      }).join("");
+      select.value = methodSel;
+      $("#methodwrap").style.display = "";
+      el.style.display = "none";
+      return;
+    }
     el.style.display = "";
     el.innerHTML = `<span class="facetlbl">${t("method_facet_label")}</span>` + rows.map(r=>{
       const m = r.selection_method_description;
@@ -1691,7 +1713,10 @@ async function loadMethodFacet(where, kw){
       methodSel = methodSel === b.dataset.m ? "" : b.dataset.m;
       search();
     }));
-  }catch(e){ el.style.display = "none"; }
+  }catch(e){
+    el.style.display = "none";
+    if(mode !== "award") $("#methodwrap").style.display="none";
+  }
 }
 
 // moneyRowHTML: one Money/Contracts result row -- same title-highlight/evidence-line reuse of
@@ -8153,6 +8178,7 @@ soda({"$select":"min(start_date) as a, max(start_date) as b"}).then(r=>{ if(r&&r
 $("#kw").addEventListener("keydown", e=>{ if(e.key==="Enter") search(); });
 $("#kw").addEventListener("input", debounce(search, 500));
 ["#mode","#agency","#sort","#minamt"].forEach(s=>$(s).addEventListener("change", search));
+$("#methodselect").addEventListener("change", ()=>{ methodSel = $("#methodselect").value; search(); });
 $("#closingweek").addEventListener("click", ()=>{ closingWeek = !closingWeek; $("#closingweek").classList.toggle("on", closingWeek); $("#closingweek").setAttribute("aria-pressed", String(closingWeek)); search(); });
 
 $("#staffing-query").addEventListener("input",debounce(()=>{
