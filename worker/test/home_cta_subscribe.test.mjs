@@ -15,7 +15,6 @@ class MockKV {
 
 function configured() {
   return {
-    TURNSTILE_SECRET: "ts",
     TOKEN_SECRET: "tok-secret-for-tests-32bytes-min!!",
     RESEND_API_KEY: "rk",
     SUBS: new MockKV(),
@@ -28,15 +27,48 @@ test("describeFilter for empty money filter reads as general contract updates", 
   assert.match(describeFilter("money", {}), /all notices/i);
 });
 
+test("subscribe works without TURNSTILE_SECRET (captcha not required on this path)", async () => {
+  const env = configured();
+  assert.equal(env.TURNSTILE_SECRET, undefined);
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async (url, opts) => {
+    if (String(url).includes("api.resend.com")) {
+      return new Response(JSON.stringify({ id: "msg_test" }), { status: 200 });
+    }
+    throw new Error("unexpected fetch: " + url);
+  };
+  try {
+    const res = await handleSubscribe(
+      new Request("https://api.cityscroll.org/subscribe", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Origin: "https://cityscroll.org",
+          "CF-Connecting-IP": "198.51.100.10",
+        },
+        body: JSON.stringify({
+          email: "reader@example.com",
+          lens: "money",
+          filter: {},
+          freq: "weekly",
+          lang: "en",
+        }),
+      }),
+      env,
+    );
+    assert.equal(res.status, 200);
+    assert.equal((await res.json()).ok, true);
+  } finally {
+    globalThis.fetch = realFetch;
+  }
+});
+
 test("homepage CTA payload: empty money + weekly → confirm email, nothing stored yet", async () => {
   const env = configured();
   const sent = [];
   const realFetch = globalThis.fetch;
   globalThis.fetch = async (url, opts) => {
     const u = String(url);
-    if (u.includes("challenges.cloudflare.com")) {
-      return new Response(JSON.stringify({ success: true }), { status: 200 });
-    }
     if (u.includes("api.resend.com")) {
       sent.push(JSON.parse(opts.body));
       return new Response(JSON.stringify({ id: "msg_test" }), { status: 200 });
@@ -58,7 +90,6 @@ test("homepage CTA payload: empty money + weekly → confirm email, nothing stor
           filter: {},
           freq: "weekly",
           lang: "en",
-          turnstileToken: "ok",
         }),
       }),
       env,

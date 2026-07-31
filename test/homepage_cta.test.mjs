@@ -56,13 +56,13 @@ test("homepage CTA wires into /subscribe with empty money filter + weekly cadenc
   assert.match(index, /data-i18n="subscribe_confirm_note"/);
 });
 
-test("signup Turnstile widgets are interaction-only (invisible unless challenged)", () => {
-  // Homepage CTA + Alerts both gate /subscribe; managed widget stays hidden for clean traffic.
-  const widgets = index.match(/class="cf-turnstile"[^>]*>/g) || [];
-  assert.equal(widgets.length, 2, `expected 2 signup widgets, got ${widgets.length}`);
-  for (const w of widgets) {
-    assert.match(w, /data-appearance="interaction-only"/);
-  }
+test("signup surfaces have no Turnstile widget or client token gate", () => {
+  // Homepage CTA + Alerts post to /subscribe without a CAPTCHA; feedback keeps Turnstile on about.html.
+  assert.doesNotMatch(index, /class="cf-turnstile"/);
+  assert.doesNotMatch(index, /challenges\.cloudflare\.com\/turnstile/);
+  assert.doesNotMatch(index, /turnstileToken/);
+  assert.doesNotMatch(index, /complete_human_check/);
+  assert.match(index, /workerFetch\("\/subscribe"/);
 });
 
 test("subscribe confirmation copy is short (no double-opt-in ceremony on the form)", () => {

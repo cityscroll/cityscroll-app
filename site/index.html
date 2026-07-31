@@ -80,7 +80,6 @@
   .home-cta-form{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:stretch}
   .home-cta-form input[type=email]{flex:1 1 220px;max-width:280px;min-height:44px}
   .home-cta-form button{min-height:44px;flex:0 0 auto}
-  .home-cta-turnstile{display:flex;justify-content:center;margin-top:10px;min-height:0}
   .home-cta-alt{margin:10px 0 0;font:14px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
   .home-cta-alt a{color:var(--oxblood);text-decoration:underline;text-underline-offset:2px}
   .home-cta-msg{margin-top:8px;font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
@@ -683,7 +682,6 @@
 <script src="export_workflows.js"></script>
 <script src="staffing.js"></script>
 <script src="task_first.js"></script>
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
 <a class="skip" href="#main" data-i18n="skip_to_content">Skip to content</a>
@@ -723,9 +721,6 @@
         <input type="email" id="homeCtaEmail" name="email" autocomplete="email" required placeholder="you@example.com" data-i18n-placeholder="email_placeholder" aria-describedby="homeCtaMsg">
         <button type="submit" id="homeCtaSubmit" data-i18n="home_cta_submit">Sign up</button>
       </form>
-      <div class="home-cta-turnstile">
-        <div class="cf-turnstile" data-sitekey="0x4AAAAAADtj-Mskk_RnVd5K" data-action="home-cta" data-response-field-name="home-cta-turnstile" data-appearance="interaction-only"></div>
-      </div>
       <p class="home-cta-alt"><a href="#alerts" id="homeCtaTopics" data-i18n="home_cta_topics">or pick topics</a></p>
       <div id="homeCtaMsg" class="home-cta-msg" role="status" data-i18n="subscribe_confirm_note">We'll email a link to confirm.</div>
     </div>
@@ -1207,7 +1202,6 @@
           </div>
           <button id="apreview" data-i18n="preview_digest_btn">Preview today's digest</button>
           <div id="asubwrap" style="margin-top:16px;border-top:1px solid var(--rule);padding-top:14px">
-            <div class="cf-turnstile" data-sitekey="0x4AAAAAADtj-Mskk_RnVd5K" data-action="turnstile-spin-v1" data-appearance="interaction-only" style="margin-bottom:10px"></div>
             <button id="asubscribe" data-i18n="subscribe_btn">Subscribe →</button>
             <div id="asubmsg" class="muted" role="status" style="margin-top:10px;font:13px/1.5 ui-sans-serif,system-ui,sans-serif" data-i18n="subscribe_confirm_note">We'll email a link to confirm.</div>
             <div id="afeeds" class="muted" style="margin-top:12px;font:12.5px/1.6 ui-sans-serif,system-ui,sans-serif"></div>
@@ -5399,70 +5393,37 @@ function aLensFilter(){
   return {lens:"land", filter:{keywords:p?[p]:[], status:"all"}}; // rezonings — text match on the place
 }
 function aIsEmail(s){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s||""); }
-// Turnstile token from a scoped widget (homepage CTA and Alerts each have their own).
-function turnstileTokenIn(root){
-  if(!root) return "";
-  const field = root.querySelector('input[name="cf-turnstile-response"], input[name="home-cta-turnstile"]');
-  if(field && field.value) return field.value;
-  if(window.turnstile && typeof turnstile.getResponse === "function"){
-    try{
-      const widget = root.querySelector(".cf-turnstile");
-      if(widget){
-        const id = widget.getAttribute("data-widget-id") || widget.dataset.turnstileWidgetId;
-        if(id) return turnstile.getResponse(id) || "";
-      }
-    }catch(e){}
-  }
-  return "";
-}
-function resetTurnstileIn(root){
-  if(!(window.turnstile && typeof turnstile.reset === "function")) return;
-  try{
-    const widget = root && root.querySelector(".cf-turnstile");
-    if(widget){
-      const id = widget.getAttribute("data-widget-id") || widget.dataset.turnstileWidgetId;
-      if(id){ turnstile.reset(id); return; }
-    }
-    turnstile.reset();
-  }catch(e){}
-}
 function subscribeErrorWhy(reason){
-  return {turnstile:t("turnstile_fail"),"rate-limited":t("rate_limited"),"bad-email":t("bad_email"),"channel-unsupported":t("channel_unsupported"),"not-configured":t("not_configured"),"send-failed":t("send_failed"),"bad-lens":t("generic_error")}[reason]||t("generic_error");
+  return {"rate-limited":t("rate_limited"),"bad-email":t("bad_email"),"channel-unsupported":t("channel_unsupported"),"not-configured":t("not_configured"),"send-failed":t("send_failed"),"bad-lens":t("generic_error")}[reason]||t("generic_error");
 }
 async function aSubscribe(){
-  const msg=$("#asubmsg"), dest=$("#adest"), wrap=$("#asubwrap");
+  const msg=$("#asubmsg"), dest=$("#adest");
   if($("#awatch").value==="awardwatch" && !(awardWatchTarget && awardWatchTarget.requestId)){
     msg.innerHTML = t("award_watch_pick_notice_html"); return;
   }
   const email=dest.value.trim();
   if(!aIsEmail(email)){ msg.innerHTML=t("enter_valid_email"); dest.setAttribute("aria-invalid","true"); return; }
   dest.removeAttribute("aria-invalid");
-  const token=turnstileTokenIn(wrap) || ((window.turnstile&&turnstile.getResponse)?(turnstile.getResponse()||""):"");
-  if(!token){ msg.innerHTML=t("complete_human_check"); return; }
   if(!API){ msg.innerHTML=t("subs_need_backend"); return; }
   const {lens,filter}=aLensFilter(), freq=$("#afreq").value.toLowerCase();
   const btn=$("#asubscribe"); btn.disabled=true; msg.innerHTML='<span class="loading"></span> ' + t("sending_confirm_link");
   try{
-    const r=await workerFetch("/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,lens,filter,freq,lang:window.LANG||"en",turnstileToken:token})});
+    const r=await workerFetch("/subscribe",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,lens,filter,freq,lang:window.LANG||"en"})});
     const j=await r.json().catch(()=>({}));
     if(j.ok){ msg.innerHTML="<b>" + t("check_inbox") + "</b> " + t("sent_confirm_to",{email:email.replace(/[<>&]/g," ")}); }
-    else {
-      msg.innerHTML="⚠️ "+subscribeErrorWhy(j.reason); resetTurnstileIn(wrap);
-    }
-  }catch(e){ msg.innerHTML="⚠️ " + t("cant_reach_server"); resetTurnstileIn(wrap); }
+    else { msg.innerHTML="⚠️ "+subscribeErrorWhy(j.reason); }
+  }catch(e){ msg.innerHTML="⚠️ " + t("cant_reach_server"); }
   btn.disabled=false;
 }
 // Homepage general-interest CTA — same /subscribe double-opt-in path as Alerts.
 // Empty money filter = open solicitations (describeFilter: "contract money — all notices").
 async function homeCtaSubscribe(e){
   if(e && e.preventDefault) e.preventDefault();
-  const msg=$("#homeCtaMsg"), dest=$("#homeCtaEmail"), root=$("#homeCta"), btn=$("#homeCtaSubmit");
-  if(!msg || !dest || !root || !btn) return;
+  const msg=$("#homeCtaMsg"), dest=$("#homeCtaEmail"), btn=$("#homeCtaSubmit");
+  if(!msg || !dest || !btn) return;
   const email=dest.value.trim();
   if(!aIsEmail(email)){ msg.textContent=t("enter_valid_email"); dest.setAttribute("aria-invalid","true"); dest.focus(); return; }
   dest.removeAttribute("aria-invalid");
-  const token=turnstileTokenIn(root);
-  if(!token){ msg.textContent=t("complete_human_check"); return; }
   if(!API){ msg.textContent=t("subs_need_backend") || t("not_configured"); return; }
   btn.disabled=true;
   msg.innerHTML='<span class="loading"></span> ' + t("sending_confirm_link");
@@ -5472,13 +5433,12 @@ async function homeCtaSubscribe(e){
       lens:"money",
       filter:{},
       freq:"weekly",
-      lang:window.LANG||"en",
-      turnstileToken:token
+      lang:window.LANG||"en"
     })});
     const j=await r.json().catch(()=>({}));
     if(j.ok){ msg.innerHTML="<b>" + t("check_inbox") + "</b> " + t("sent_confirm_to",{email:email.replace(/[<>&]/g," ")}); dest.value=""; }
-    else { msg.innerHTML="⚠️ "+subscribeErrorWhy(j.reason); resetTurnstileIn(root); }
-  }catch(err){ msg.innerHTML="⚠️ " + t("cant_reach_server"); resetTurnstileIn(root); }
+    else { msg.innerHTML="⚠️ "+subscribeErrorWhy(j.reason); }
+  }catch(err){ msg.innerHTML="⚠️ " + t("cant_reach_server"); }
   btn.disabled=false;
 }
 
