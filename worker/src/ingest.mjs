@@ -13,6 +13,8 @@ const PAGE = 1000;
 const MAX_PAGES = 20; // safety cap per run
 const ROLLING_YEAR = 2090; // due dates >= this are rolling placeholders, not real deadlines
 const AMOUNT_CAP = 1e10;   // EDA: 3 rows >= $10B are data-entry errors (max legit ≈ $6.68B)
+const SOURCE_RECORD_SYSTEM = "city_record";
+const SOURCE_RECORD_DUAL_WRITE_FLAG = "CITY_RECORD_SOURCE_RECORD_DUAL_WRITE";
 
 export function pick(row, keys) {
   for (const k of keys) {
@@ -108,6 +110,36 @@ export function mapRow(row) {
   };
 }
 
+function canonicalJson(value) {
+  const t = typeof value;
+  if (value === null || t !== "object") return JSON.stringify(value);
+  if (Array.isArray(value)) {
+    return `[${value.map((entry) => canonicalJson(entry)).join(",")}]`;
+  }
+  const entries = Object.keys(value)
+    .sort()
+    .map((key) => `${JSON.stringify(key)}:${canonicalJson(value[key])}`);
+  return `{${entries.join(",")}}`;
+}
+
+async function contentSha256(input) {
+  const data = new TextEncoder().encode(input);
+  const digest = await crypto.subtle.digest("SHA-256", data);
+  return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+export async function computeSourceRecordHash(row) {
+  return contentSha256(canonicalJson(row));
+}
+
+function dualWriteEnabled(env) {
+  return String(env?.[SOURCE_RECORD_DUAL_WRITE_FLAG] || "").toLowerCase() === "true";
+}
+
+function pickSourceSystemId(mapped) {
+  return mapped.request_id;
+}
+
 async function stateGet(db, k) {
   const r = await db.prepare("SELECT v FROM ingest_state WHERE k = ?").bind(k).first();
   return r ? r.v : null;
@@ -147,6 +179,13 @@ export async function ingestNotices(env) {
         event_state, event_zip, document_urls, n_documents, haystack, raw, ingested_at)
      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
   );
+  const sourceRecordInsert = dualWriteEnabled(env)
+    ? env.DB.prepare(
+      `INSERT OR IGNORE INTO source_records
+         (source_system, source_system_id, content_hash, raw_snapshot, normalized_snapshot, ingested_at)
+       VALUES (?,?,?,?,?,?)`,
+    )
+    : null;
   const nowISO = new Date().toISOString();
 
   for (let page = 0; page < MAX_PAGES; page++) {
@@ -158,7 +197,8 @@ export async function ingestNotices(env) {
     if (rows.length === 0) break;
     fetched += rows.length;
 
-    const stmts = [];
+    const noticeStmts = [];
+    const sourceStmts = [];
     for (const row of rows) {
       const m = mapRow(row);
       if (!m.request_id) continue;
@@ -170,7 +210,7 @@ export async function ingestNotices(env) {
           && nychaRequestIds.length < NYCHA_IDS_CAP) {
         nychaRequestIds.push(m.request_id);
       }
-      stmts.push(
+      noticeStmts.push(
         insert.bind(
           m.request_id, m.section, m.agency, m.type_of_notice, m.category, m.short_title,
           m.selection_method, m.special_case_reason, m.pin, m.vendor_name, m.description,
@@ -179,10 +219,30 @@ export async function ingestNotices(env) {
           m.event_state, m.event_zip, m.document_urls, m.n_documents, m.haystack, m.raw, nowISO,
         ),
       );
+      if (sourceRecordInsert) {
+        const sourceRecordHash = await computeSourceRecordHash(row);
+        sourceStmts.push(sourceRecordInsert.bind(
+          SOURCE_RECORD_SYSTEM,
+          pickSourceSystemId(m),
+          sourceRecordHash,
+          m.raw,
+          JSON.stringify(m),
+          nowISO,
+        ));
+      }
     }
-    if (stmts.length) {
-      await env.DB.batch(stmts);
-      upserted += stmts.length;
+    if (noticeStmts.length) {
+      await env.DB.batch(noticeStmts);
+    }
+    if (sourceStmts.length) {
+      try {
+        await env.DB.batch(sourceStmts);
+      } catch {
+        // Dual-write failures must not stop the notices mirror from being refreshed.
+      }
+    }
+    if (noticeStmts.length) {
+      upserted += noticeStmts.length;
     }
     if (rows.length < PAGE) break;
   }
