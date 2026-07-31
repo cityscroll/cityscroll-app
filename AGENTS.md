@@ -4,6 +4,17 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 
 - Add durable project-specific notes here as they are discovered through real work.
 
+## PR and CI preflight
+
+- Run `./tools/preflight-required-checks.sh` before creating or handing back a PR URL and
+  before opening a pull request. CI still runs the full accessibility and runtime
+  stray-English work after Unit checks.
+
+## Maintaining this file
+
+- Keep this file for durable project-intrinsic facts that should outlive any one pull request.
+- Prefer pointers to authoritative commands/files over duplicating implementation details.
+
 
 ## README live screenshots
 

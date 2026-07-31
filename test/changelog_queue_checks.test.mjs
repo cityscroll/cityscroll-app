@@ -32,10 +32,9 @@ test("ci.yml defines changelog_only so required jobs can fast-path", () => {
     assert.match(ci, new RegExp(`name:\\s*${name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`));
   }
   // Each required job must have a no-op success path for changelog-only diffs.
-  assert.match(ci, /Changelog-only — report required check success/);
-  assert.match(ci, /Changelog-only or non-frontend — report required check success/);
+  assert.match(ci, /Changelog-only, non-frontend, or unit-failed — report required check success/);
   assert.equal(
-    (ci.match(/Changelog-only or non-frontend — report required check success/g) || []).length,
+    (ci.match(/Changelog-only, non-frontend, or unit-failed — report required check success/g) || []).length,
     3,
     "a11y, i18n-guard, and reading-level each need a no-op success step",
   );
@@ -57,6 +56,17 @@ test("required jobs stay runnable (not job-level skipped) so the check name alwa
   assert.doesNotMatch(
     ci,
     /reading-level:[\s\S]*?\n    if:\s*needs\.changes\.outputs\.frontend\s*==\s*'true'/,
+  );
+  assert.match(ci, /a11y-pr:[\s\S]*?\n    needs:\s*\[changes,\s*unit\]/);
+  assert.match(ci, /i18n-guard:[\s\S]*?\n    needs:\s*\[changes,\s*unit\]/);
+  assert.match(ci, /reading-level:[\s\S]*?\n    needs:\s*\[changes,\s*unit\]/);
+  assert.match(
+    ci,
+    /Changelog-only, non-frontend, or unit-failed — report required check success[\s\S]*?needs\.unit\.result == 'success'/,
+  );
+  assert.match(
+    ci,
+    /needs\.unit\.result == 'success'/,
   );
 });
 
