@@ -5,6 +5,7 @@ import { signToken } from "optin-token";
 import { handlePrefs, prefsLink } from "../src/prefs.mjs";
 import { prefsPayload } from "../src/lib/prefs.mjs";
 import { handleUnsubscribe } from "../src/unsubscribe.mjs";
+import { handleAdminWatchLog, handleAdminSubs } from "../src/admin.mjs";
 
 function kv(map = {}) {
   return {
@@ -30,6 +31,8 @@ function makeEnv(subsMap) {
   return {
     TOKEN_SECRET: SECRET,
     SUBS: kv(subsMap),
+    ALERT_STATE: kv(),
+    ADMIN_KEY: "admin",
     CONFIRM_BASE: "https://api.cityscroll.org",
   };
 }
@@ -101,6 +104,13 @@ test("POST pause then unpause", async () => {
     body: body2.toString(),
   }), env);
   assert.equal(JSON.parse(await env.SUBS.get("sub:w1")).paused, false);
+  const day = new Date().toISOString().slice(0, 10);
+  const events = JSON.parse(await env.ALERT_STATE.get(`watchlog:${day}`));
+  assert.deepEqual(events.map((event) => event.action), ["pause", "unpause"]);
+  assert.equal(events[0].emailRedacted, "us***@example.com");
+  assert.equal(events[0].subKeyMasked, "sub:w1***");
+  assert.equal(events[0].lens, "money");
+  assert.equal(JSON.parse(await env.ALERT_STATE.get("watchlog:latest")).length, 2);
 });
 
 test("POST update keywords and freq", async () => {
@@ -159,6 +169,20 @@ test("POST delete one watch", async () => {
     body: body.toString(),
   }), env);
   assert.equal(await env.SUBS.get("sub:w1"), null);
+});
+
+test("admin watch log returns recent events and admin subs exposes paused", async () => {
+  const env = makeEnv({
+    "sub:w1": JSON.stringify({ email: "user@example.com", lens: "money", filter: {}, freq: "daily", paused: true }),
+  });
+  await env.ALERT_STATE.put(`watchlog:${new Date().toISOString().slice(0, 10)}`, JSON.stringify([
+    { at: new Date().toISOString(), action: "pause", emailRedacted: "us***@example.com", source: "prefs" },
+  ]));
+  const logRes = await handleAdminWatchLog(new Request("https://w/admin/watch-log?key=admin&days=7"), env);
+  assert.equal(logRes.status, 200);
+  assert.equal((await logRes.json()).events[0].action, "pause");
+  const subsRes = await handleAdminSubs(new Request("https://w/admin/subs?key=admin"), env);
+  assert.equal((await subsRes.json()).subs[0].paused, true);
 });
 
 test("POST unsub_all removes every watch for email", async () => {

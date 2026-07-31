@@ -5,6 +5,7 @@
 // GET /admin/digest-rollup?key=…&email=… — dry-run account rollup for one email (no Resend send).
 
 import { redactEmail } from "./lib/subscriptions.mjs";
+import { readWatchLog } from "./lib/watchlog.mjs";
 import { dryRunRollupForEmail, digestSendTestForEmail, runCatchUpDigests } from "./alerts.mjs";
 
 // Store digests rather than publishing the desk's private recipient addresses in this repo.
@@ -58,13 +59,23 @@ export async function handleAdminSubs(req, env) {
       if (k.name.startsWith("sub:")) {
         let v = null;
         try { v = JSON.parse(await env.SUBS.get(k.name)); } catch { /* skip */ }
-        if (v) subs.push({ email: redactEmail(v.email), lens: v.lens, filter: v.filter, freq: v.freq, createdAt: v.createdAt });
+        if (v) subs.push({ email: redactEmail(v.email), lens: v.lens, filter: v.filter, freq: v.freq, paused: !!v.paused, createdAt: v.createdAt });
       }
     }
     cursor = res.list_complete ? null : res.cursor;
   } while (cursor);
 
   return json({ confirmedSubs: subs.length, totalKeysInStore: totalKeys, subs, sampleKeys }, 200);
+}
+
+// GET /admin/watch-log?key=…&days=7 — operator read of watch lifecycle changes.
+export async function handleAdminWatchLog(req, env) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (req.method !== "GET") return json({ error: "method not allowed" }, 405);
+  const days = new URL(req.url).searchParams.get("days") || "7";
+  const events = await readWatchLog(env, days);
+  return json({ days: Math.max(1, Math.min(31, Number(days) || 7)), events }, 200);
 }
 
 // GET /admin/feedback?key=… — operator read of stored feedback rows, straight from the worker's
