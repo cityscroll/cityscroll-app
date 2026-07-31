@@ -1064,7 +1064,7 @@
       ],
       "max_stale_days": 3,
       "publisher_cadence": "Portal dataJs dump refreshed about daily (Last-Modified on dataJs/contractData.js)",
-      "product_freshness": "Worker rebuilds the D1 passport_contracts table on the daily scheduled run; lifecycle reads join from that edge materialization with no live browser fetch to PASSPort.",
+      "product_freshness": "Worker rebuilds the D1 passport_contracts table on the daily scheduled run; lifecycle reads join from that edge materialization with no live browser fetch to PASSPort. CI runners are bot-blocked from both the HTML landing and dataJs dumps; product freshness is the Worker’s daily D1 materialization.",
       "used_for": "Pending and pre-registration contract stages on the procurement lifecycle when Checkbook is unmatched, plus registered-stage enrichment when EPIN joins a City Record PIN.",
       "join_keys": [
         "EPIN",
@@ -1129,7 +1129,8 @@
       ],
       "delivery_tier": "edge-materialized",
       "landing_probe": "bot_blocked",
-      "endpoint_format": "js-dump"
+      "endpoint_format": "js-dump",
+      "egress_class": "bot_blocked"
     },
     {
       "id": "passport-public-rfx",
@@ -1151,7 +1152,7 @@
       ],
       "max_stale_days": 3,
       "publisher_cadence": "Portal dataJs dump refreshed about daily (Last-Modified on dataJs/rfxData.js)",
-      "product_freshness": "Worker rebuilds the D1 passport_rfx table on the daily scheduled run; solicitation lifecycle stages read joined RFx detail from that materialization.",
+      "product_freshness": "Worker rebuilds the D1 passport_rfx table on the daily scheduled run; solicitation lifecycle stages read joined RFx detail from that materialization. CI runners are bot-blocked from both the HTML landing and dataJs dumps; product freshness is the Worker’s daily D1 materialization.",
       "used_for": "RFx metadata on solicitation lifecycle stages (due date, method, status, commodity) joined by EPIN to City Record PINs. Package document URLs are not published on the public dataJs dump (measured 0% document-URL join); do not treat RFx as a package-doc source.",
       "join_keys": [
         "EPIN",
@@ -1226,7 +1227,8 @@
       ],
       "delivery_tier": "edge-materialized",
       "landing_probe": "bot_blocked",
-      "endpoint_format": "js-dump"
+      "endpoint_format": "js-dump",
+      "egress_class": "bot_blocked"
     },
     {
       "id": "bid-tabulations-historical",

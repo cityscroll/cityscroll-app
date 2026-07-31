@@ -279,3 +279,33 @@ test("live workflow wires optional LEGISTAR_API_TOKEN for the auth probe", () =>
   );
   assert.match(live, /LEGISTAR_API_TOKEN:\s*\$\{\{\s*secrets\.LEGISTAR_API_TOKEN\s*\}\}/);
 });
+
+test("bot-blocked machine endpoint 403 on CI is not drift for egress_class sources", async (t) => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => { globalThis.fetch = originalFetch; });
+  globalThis.fetch = async () => new Response("blocked", {
+    status: 403,
+    headers: { "Content-Type": "text/html" },
+  });
+  const detail = await verifyHtml({
+    id: "passport-public-contracts",
+    landing_page: "https://a0333-passportpublic.nyc.gov/contracts.html",
+    endpoint: "https://a0333-passportpublic.nyc.gov/dataJs/contractData.js",
+    endpoint_format: "js-dump",
+    landing_probe: "bot_blocked",
+    egress_class: "bot_blocked",
+    required_fields: ["epin"],
+  });
+  assert.match(detail, /bot-blocked machine endpoint/i);
+  assert.match(detail, /product worker/i);
+});
+
+test("passport-public contracts declare bot-blocked CI egress", () => {
+  const registry = loadSourceContracts();
+  for (const id of ["passport-public-contracts", "passport-public-rfx"]) {
+    const c = registry.contracts.find((row) => row.id === id);
+    assert.equal(c.egress_class, "bot_blocked");
+    assert.equal(c.landing_probe, "bot_blocked");
+    assert.ok(c.endpoint.includes("dataJs"));
+  }
+});

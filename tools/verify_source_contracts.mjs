@@ -328,7 +328,14 @@ async function verifyJsonMachineEndpoint(contract, probeUrl) {
 
 async function verifyJsDumpMachineEndpoint(contract, probeUrl) {
   const dataRes = await labeledFetch(contract.id, "machine-endpoint", probeUrl, { redirect: "follow" });
-  if (!dataRes.ok) throw new Error(`${contract.id}: machine endpoint HTTP ${dataRes.status}`);
+  if (!dataRes.ok) {
+    // PASSPort Public (and similar) bot-block GitHub runner IPs on dataJs as well as HTML.
+    // Product materialization still reaches them from the Worker — do not treat runner 403 as drift.
+    if (dataRes.status === 403 && contract.egress_class === "bot_blocked") {
+      return "known bot-blocked machine endpoint on CI runners; product worker materialization is the contract";
+    }
+    throw new Error(`${contract.id}: machine endpoint HTTP ${dataRes.status}`);
+  }
   const dataType = dataRes.headers.get("content-type") || "";
   if (!/javascript|ecmascript|text\/plain|octet-stream/i.test(dataType) && !/json/i.test(dataType)) {
     // PASSPort often serves application/javascript; tolerate empty type if body looks like JS.

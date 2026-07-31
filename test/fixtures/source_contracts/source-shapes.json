@@ -377,7 +377,8 @@
       "machine_endpoint": "dataJs/contractData.js",
       "machine_response_type": "application/javascript",
       "machine_var": "public_ctr_data",
-      "landing_probe": "bot_blocked"
+      "landing_probe": "bot_blocked",
+      "egress_class": "bot_blocked"
     },
     {
       "id": "bid-tabulations-historical",
@@ -437,7 +438,8 @@
       "machine_endpoint": "dataJs/rfxData.js",
       "machine_response_type": "application/javascript",
       "machine_var": "public_rfx_data",
-      "landing_probe": "bot_blocked"
+      "landing_probe": "bot_blocked",
+      "egress_class": "bot_blocked"
     },
     {
       "id": "ocp-current-solicitations",

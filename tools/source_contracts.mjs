@@ -16,6 +16,7 @@ const ALLOWED_CONTRACT_CLASS = new Set(["ingest", "pointer"]);
 const ALLOWED_LANDING_PROBE = new Set(["require", "skip", "bot_blocked", "tolerate_bot_block"]);
 const ALLOWED_ENDPOINT_FORMAT = new Set(["js-dump", "json-api"]);
 const ALLOWED_STALE_POLICY = new Set(["error", "skip"]);
+const ALLOWED_EGRESS_CLASS = new Set(["open", "bot_blocked"]);
 
 /**
  * Concrete URL the live monitor should probe. Templates like
@@ -88,6 +89,9 @@ export function validateSourceContracts(registry) {
     }
     if (contract.stale_policy && !ALLOWED_STALE_POLICY.has(contract.stale_policy)) {
       errors.push(`${label}: invalid stale_policy ${contract.stale_policy}`);
+    }
+    if (contract.egress_class && !ALLOWED_EGRESS_CLASS.has(contract.egress_class)) {
+      errors.push(`${label}: invalid egress_class ${contract.egress_class}`);
     }
     if (contract.endpoint && /\{[a-zA-Z0-9_]+\}/.test(contract.endpoint)) {
       if (!contract.probe_endpoint && !contract.probe_sample_id) {

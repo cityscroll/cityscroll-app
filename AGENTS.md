@@ -123,8 +123,10 @@ alerts open/update the drift issue.
 - **Ingest** (default Socrata/Checkbook/RSS): schema + sample + freshness gate
 - **Pointer** (`contract_class: "pointer"`, `stale_policy: "skip"`): existence +
   schema only — Capital Projects is the exemplar
-- **Machine-primary HTML** (`endpoint` + `landing_probe: "bot_blocked"`): probe the
-  product machine path (PASSPort dataJs); do not treat runner-blocked landings as drift
+- **Bot-blocked egress** (`egress_class: "bot_blocked"`, often with
+  `landing_probe: "bot_blocked"`): CI runners get HTTP 403 from the publisher (PASSPort
+  HTML **and** dataJs). That is not upstream drift — product freshness is the Worker’s
+  materialization. Still fail on non-403 failures (404, DNS, empty body when reachable)
 - **Auth API** (`auth_token_env`, e.g. Legistar): with token → 200 JSON; without →
   HTTP 403/401 is the expected gate, not a failure. Wire `LEGISTAR_API_TOKEN` into the
   live workflow when present
