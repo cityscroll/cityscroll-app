@@ -12,6 +12,7 @@ import {
   VENDOR_STEM_VERSION,
   vendorStem,
 } from "./normalize.mjs";
+import { generateCandidates, CANDIDATE_GENERATION_VERSION } from "../../../entity_resolution/candidate_generation/index.mjs";
 
 /** Env flag — must be the string "true" (case-insensitive) to enable writes. */
 export const ENTITY_LINK_DUAL_WRITE_FLAG = "ENTITY_LINK_DUAL_WRITE";
@@ -220,6 +221,12 @@ export async function shadowWriteExactStemAutoLinks(env, observations, opts = {}
   const metrics = {
     considered: list.length,
     eligible: cases.length,
+    candidate_pairs: generateCandidates(list.map((observation) => ({
+      ...observation,
+      display_name: observation.vendor_name,
+      entity_type: "vendor",
+    })), { blocker: "token_v0" }).length,
+    blocker: CANDIDATE_GENERATION_VERSION,
     written: 0,
     method: VENDOR_STEM_METHOD,
     matcher_version: VENDOR_STEM_VERSION,

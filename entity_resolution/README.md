@@ -9,7 +9,7 @@ surface. **Not an HTTP microservice.**
 | Path | Role |
 | --- | --- |
 | `normalizers/` | Pure string identity (`vendorStem`, agency alias helpers) |
-| `candidate_generation/` | Blocking / candidate pairs (stub until er-05) |
+| `candidate_generation/` | Token/stem blocking candidate pairs (`token_v0`) |
 | `features/` | Pair feature extractors (stub) |
 | `matchers/` | Scorers + method ids (stub) |
 | `policies/` | Auto-link thresholds / decision routing (stub) |
@@ -66,8 +66,8 @@ not distributed cosplay for a single-maintainer product.
 
 - **No public HTTP ER routes** — no `/entity-resolution`, `/er/*`, or review API
   added by the package-boundary work. Callers import modules in-process.
-- **No production auto-links** from stubs; dual-write and matchers land in later cards
-  with flags off until characterization passes.
+- **No public reads or destructive merges** from the shadow path; production dual-write flags
+  capture source snapshots and exact-stem links for offline evaluation.
 - **No LLM as primary matcher** — residue adjudicator only after a conventional scorer,
   with stored prompts/version and human override (future; not this package).
 - **No destructive merge of source rows** — links only (`entity_link` taxonomy).
@@ -93,6 +93,6 @@ node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v
 ## Related cards
 
 - er-01 taxonomy ADR · er-03 normalizers · er-04 gold + metrics  
-- er-05 candidate generation (fills `candidate_generation/`)  
+- er-05 candidate generation (implemented by `candidate_generation/`)
 - er-06 soft “possibly same” UI · er-07 entity_link schema  
 - er-08 this package boundary
