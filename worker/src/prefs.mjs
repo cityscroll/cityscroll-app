@@ -13,6 +13,7 @@ import { htmlPage } from "./lib/confirm_email.mjs";
 import { describeFilter } from "./lib/confirm_email.mjs";
 import { overActorLimit } from "./lib/meter.mjs";
 import { normalizeEmail, redactEmail } from "./lib/subscriptions.mjs";
+import { appendWatchLog } from "./lib/watchlog.mjs";
 import {
   PREFS_SCOPE,
   PREFS_TOKEN_TTL_SECONDS,
@@ -172,6 +173,7 @@ async function applyPrefsAction(env, email, action, key, patch) {
 
   if (action === "delete") {
     try { await env.SUBS.delete(key); } catch { /* idempotent */ }
+    await appendWatchLog(env, { action, email: record.email, subKey: key, lens: record.lens, label: record.label, source: "prefs" });
     return { message: "Watch removed. Takes effect next daily run (~9am Eastern)." };
   }
 
@@ -179,6 +181,7 @@ async function applyPrefsAction(env, email, action, key, patch) {
     const applied = applyWatchPatch(record, { paused: true });
     if (!applied.ok) return { error: applied.reason };
     await env.SUBS.put(key, JSON.stringify(applied.record));
+    await appendWatchLog(env, { action, email: record.email, subKey: key, lens: record.lens, label: record.label, source: "prefs" });
     return { message: "Watch paused. No matches from it until you unpause (next daily run)." };
   }
 
@@ -186,6 +189,7 @@ async function applyPrefsAction(env, email, action, key, patch) {
     const applied = applyWatchPatch(record, { paused: false });
     if (!applied.ok) return { error: applied.reason };
     await env.SUBS.put(key, JSON.stringify(applied.record));
+    await appendWatchLog(env, { action, email: record.email, subKey: key, lens: record.lens, label: record.label, source: "prefs" });
     return { message: "Watch active again. Takes effect next daily run (~9am Eastern)." };
   }
 
@@ -193,6 +197,7 @@ async function applyPrefsAction(env, email, action, key, patch) {
     const applied = applyWatchPatch(record, patch);
     if (!applied.ok) return { error: applied.reason || "Invalid update." };
     await env.SUBS.put(key, JSON.stringify(applied.record));
+    await appendWatchLog(env, { action, email: record.email, subKey: key, lens: record.lens, label: record.label, source: "prefs" });
     return {
       message: `Updated: ${describeFilter(applied.record.lens, applied.record.filter)} · ${applied.record.freq}. ${CUTOVER_COPY}`,
     };
@@ -219,8 +224,11 @@ async function deleteAllForEmail(env, email) {
     } while (cursor);
     for (const k of keys) {
       try {
+        const raw = await env.SUBS.get(k);
+        const record = raw ? JSON.parse(raw) : null;
         await env.SUBS.delete(k);
         deleted++;
+        await appendWatchLog(env, { action: "unsub_all", email: record?.email || want, subKey: k, lens: record?.lens, label: record?.label, source: "prefs" });
       } catch { /* continue */ }
     }
   } catch { /* partial */ }

@@ -10,6 +10,7 @@
 import { verifyToken } from "optin-token";
 import { htmlPage } from "./lib/confirm_email.mjs";
 import { normalizeEmail } from "./lib/subscriptions.mjs";
+import { appendWatchLog } from "./lib/watchlog.mjs";
 
 export async function handleUnsubscribe(req, env) {
   const oneClick = req.method === "POST";
@@ -48,7 +49,15 @@ export async function handleUnsubscribe(req, env) {
     return oneClick ? new Response(null, { status: 400 }) : page("Link not valid", "This unsubscribe link is invalid or has expired.", 400);
   }
 
+  let record = null;
+  try {
+    const raw = await env.SUBS.get(key);
+    if (raw) record = JSON.parse(raw);
+  } catch { /* logging is best effort */ }
   try { await env.SUBS.delete(key); } catch { /* idempotent: ignore */ }
+  if (record?.email) {
+    await appendWatchLog(env, { action: "unsubscribe", email: record.email, subKey: key, lens: record.lens, label: record.label, source: "unsubscribe" });
+  }
 
   return oneClick
     ? new Response(null, { status: 200 })
@@ -73,8 +82,11 @@ async function deleteAllForEmail(env, email) {
     } while (cursor);
     for (const k of keys) {
       try {
+        const raw = await env.SUBS.get(k);
+        const record = raw ? JSON.parse(raw) : null;
         await env.SUBS.delete(k);
         deleted++;
+        await appendWatchLog(env, { action: "unsub_all", email: record?.email || want, subKey: k, lens: record?.lens, label: record?.label, source: "unsubscribe" });
       } catch { /* continue */ }
     }
   } catch { /* partial */ }
