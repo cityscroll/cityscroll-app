@@ -400,6 +400,7 @@
     no_zap: "لا توجد عمليات إعادة تقسيم مناطق في بوابة طلبات التقسيم (ZAP)",
     nothing_found_feed: "لم يُعثر على شيء. جرّب بحثًا أوسع.",
     could_not_reach: "تعذّر الاتصال بـ NYC Open Data. أعد المحاولة.",
+    open_notice_btn: "فتح الإشعار",
     city_record_link: "السجل البلدي",
     copy_link_btn: "نسخ الرابط",
     map_link: "خريطة",

@@ -547,6 +547,8 @@
   .fcard{background:var(--card);border:1px solid var(--rule);border-radius:8px;padding:14px 15px;display:flex;flex-direction:column;gap:7px}
   .fcard .ftype{font:600 11px/1.35 ui-sans-serif,system-ui,sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
   .fcard .ftitle{font-weight:700;font-size:15px;line-height:1.3}
+  .fcard .ftitle a{color:inherit;text-decoration:none}
+  .fcard .ftitle a:hover{color:var(--oxblood);text-decoration:underline}
   .fcard .faddr{font:13px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft)}
   .fcard .fscope{font-size:13.5px;line-height:1.5;color:#4a4338}
   .fcard .factions{display:flex;flex-wrap:wrap;gap:7px;margin-top:auto;padding-top:4px}
@@ -4960,14 +4962,20 @@ function feedCardHTML(key, r, terms){
   // when a later path escaped again, and could cut inside "&ldquo;".
   const scopeHtml=excerptHtml(r.additional_description_1,200);
   const title=cleanText(r.short_title), mev=matchEvidence(title, matchText(r), terms);
+  const noticeHref=`#notice/${encodeURIComponent(r.request_id)}`;
   // Comment-open is the actionable moment: lead with the official comment-page CTA so the
   // primary action sits first in the row (matches the hearing-card join/participation lead).
   const ruleAct=key==="rules"?ruleCommentAction(r._ruleStage):"";
-  let acts=(ruleAct?ruleAct:"")+`<a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("city_record_link")}${extSR()}</a>`;
+  // Primary in-app action first (Open notice), then the external City Record citation.
+  let acts=(ruleAct?ruleAct:"")+`<a class="act" href="${noticeHref}">${t("open_notice_btn")}</a>`+`<a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("city_record_link")}${extSR()}</a>`;
   acts+=`<button class="act" type="button" data-link="${r.request_id}">${t("copy_link_btn")}</button>`;
   if(ev) acts+=`<button class="act" type="button" data-ev="${key}:${r.request_id}">${t("add_date_btn",{date:fdt(ev)})}</button>`;
   const geometry=key==="property"&&r._location?.geometry;
-  const mapQuery=geometry?`${geometry.latitude},${geometry.longitude}`:addr?`${addr} New York NY`:"";
+  const taxLot=key==="property"&&r._location?.tax_lots?.[0];
+  // A located site without a street address can still map when it carries a
+  // borough + Block/Lot (Google Maps geocodes "Block 644 Lot 1 Manhattan").
+  const blockLotQuery=geometry?"":(taxLot&&r._location?.boroughs?.length?`${taxLot.label}, ${r._location.boroughs[0]}, New York NY`:"");
+  const mapQuery=geometry?`${geometry.latitude},${geometry.longitude}`:addr?`${addr} New York NY`:blockLotQuery;
   if(mapQuery) acts+=`<a class="act" href="https://www.google.com/maps/search/${encodeURIComponent(mapQuery)}" ${EXT_ATTRS}>${t("map_link")}${extSR()}</a>`;
   if(addr && key==="property") acts+=`<button class="act" type="button" data-demo="${r.request_id}">${t("still_standing_btn")}</button>`;
   const pbadges = key==="property" && (r._asset || r._badge)
@@ -4978,7 +4986,7 @@ function feedCardHTML(key, r, terms){
       <div class="ftype">${r.type_of_notice_description||""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}${ev?` · <b style="color:var(--ink)">${fdt(ev)}</b>${eventTag(ev)}`:""}</div>
       ${pbadges}
       ${rbadges}
-      <div class="ftitle">${title ? digTitleHTML(title, mev) : t("untitled")}</div>
+      <div class="ftitle"><a href="${noticeHref}">${title ? digTitleHTML(title, mev) : t("untitled")}</a></div>
       ${key==="property"?propertyPlaceChips(r._location):addr?`<div class="faddr">${addr}</div>`:""}
       ${key==="rules"?rulePlaceChips(r._ruleLocation):""}
       ${scopeHtml?`<div class="fscope">${scopeHtml}</div>`:""}

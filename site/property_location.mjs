@@ -20,10 +20,18 @@ const START_MARKERS = [
   /\bproperty to be sold is located\b/i,
   /\boffer the following (?:residential )?property\b/i,
   /\bproperty located at\b/i,
-  /\bRFP for the sale and potential development\b/i,
+  // "RFP … for the sale and potential development" — the RFP tag is often
+  // parenthesised ("RFP") or spelled out, so anchor on the disposition phrase.
+  /\bfor the sale and potential development\b/i,
   /\bone or more of three sites\b/i,
   /\bDisposition Area\b/i,
   /\bAcquisition Parcels\b/i,
+  // Lease surrender / termination / assignment — the scope clause names the
+  // site ("…on Block 644, Lot 1 … in the Borough of Manhattan").
+  /\brelating to the (?:early |voluntary )?(?:surrender|termination|assignment) of (?:its interest in )?the lease\b/i,
+  /\bdesires to (?:voluntarily )?surrender (?:its interest in )?(?:the lease|the Property)\b/i,
+  /\bthe Property is currently occupied\b/i,
+  /\bpremises known as\b/i,
 ];
 const STOP_MARKERS = [
   /\bUnder HPD['’]s\b/i,
@@ -38,6 +46,8 @@ const STOP_MARKERS = [
   /\bAs part of its commitment\b/i,
   /\bNYCEDC plans to select\b/i,
   /\bPLEASE TAKE NOTICE that a public hearing\b/i,
+  // Hearing-access / call-in boilerplate that follows the scope clause.
+  /\bIn order to access the (?:Public )?Hearing\b/i,
 ];
 
 function bodyFromRow(row) {
@@ -54,11 +64,35 @@ function boundedChunk(text, startPattern) {
   return tail.slice(0, stops.length ? Math.min(...stops) : 6000);
 }
 
+function markerChunks(body) {
+  return START_MARKERS.map((pattern) => boundedChunk(body, pattern)).filter(Boolean);
+}
+
 export function propertyScopeText(row) {
   const title = plainText(row.short_title);
   const body = bodyFromRow(row);
-  const chunks = START_MARKERS.map((pattern) => boundedChunk(body, pattern)).filter(Boolean);
+  const chunks = markerChunks(body);
   return plainText([title, ...chunks].join(" "));
+}
+
+// Safety net for notices whose scope clause the START_MARKERS do not enumerate
+// (e.g. a lease surrender phrased differently, a marker that anchored after the
+// property details). When the title and scope clauses yield nothing local, scan
+// a bounded body window — but trust only a tax lot (Block / Lot) that co-occurs
+// with exactly one NYC borough. A Block/Lot plus a single borough is an
+// unambiguous NYC site reference and resolves a BBL. A Block/Lot with no borough
+// (often a non-NYC parcel number or project code) or a body listing several
+// boroughs (property-clerk offices, citywide auctions) is boilerplate, never
+// the subject site. Street addresses are intentionally not extracted here — an
+// agency office or hearing venue must never become the property's geography.
+function propertyFallbackSignals(row) {
+  const body = bodyFromRow(row);
+  if (!body) return { boroughs: [], tax_lots: [] };
+  const window = body.slice(0, 12000);
+  const boroughs = unique(boroughsIn(window));
+  if (boroughs.length !== 1) return { boroughs: [], tax_lots: [] };
+  const tax_lots = propertyTaxLotsIn(window);
+  return tax_lots.length ? { boroughs, tax_lots } : { boroughs: [], tax_lots: [] };
 }
 
 function cleanPropertyAddress(value) {
@@ -113,8 +147,8 @@ export function propertyTaxLotsIn(text) {
 
 export function propertyLocationFromRow(row) {
   const scopeText = propertyScopeText(row);
-  const boroughs = unique(boroughsIn(scopeText));
-  const addresses = propertyAddressesIn(scopeText).map((label) => ({
+  let boroughs = unique(boroughsIn(scopeText));
+  let addresses = propertyAddressesIn(scopeText).map((label) => ({
     label,
     borough: null,
     neighborhood: null,
@@ -122,14 +156,30 @@ export function propertyLocationFromRow(row) {
     longitude: null,
     bbl: null,
   }));
-  const tax_lots = propertyTaxLotsIn(scopeText);
-  const explicitBbls = [...scopeText.matchAll(/\b(?:BBL|borough[- ]block[- ]lot)\s*[:#-]?\s*(\d{10})\b/gi)]
+  let tax_lots = propertyTaxLotsIn(scopeText);
+  let explicitBbls = [...scopeText.matchAll(/\b(?:BBL|borough[- ]block[- ]lot)\s*[:#-]?\s*(\d{10})\b/gi)]
     .map((match) => match[1]);
-  const inferredBbls = boroughs.length === 1
+  let inferredBbls = boroughs.length === 1
     ? tax_lots.flatMap((entry) => entry.lots.map((lot) => bblFor(boroughs[0], entry.block, lot)))
     : [];
-  const bbls = unique([...explicitBbls, ...inferredBbls]);
-  const local = boroughs.length || addresses.length || tax_lots.length || bbls.length;
+  let bbls = unique([...explicitBbls, ...inferredBbls]);
+  let local = boroughs.length || addresses.length || tax_lots.length || bbls.length;
+  // Fallback: the title and scope clauses yielded no local signal (either no
+  // marker matched, or the marker anchored after the property details). Scan a
+  // bounded body window for precise property identifiers only — never addresses
+  // or multi-borough admin lists, which are venue/boilerplate, not the site.
+  if (!local) {
+    const fallback = propertyFallbackSignals(row);
+    if (fallback.tax_lots.length) {
+      tax_lots = fallback.tax_lots;
+      boroughs = fallback.boroughs;
+      inferredBbls = boroughs.length === 1
+        ? tax_lots.flatMap((entry) => entry.lots.map((lot) => bblFor(boroughs[0], entry.block, lot)))
+        : [];
+      bbls = unique([...explicitBbls, ...inferredBbls]);
+      local = true;
+    }
+  }
   return {
     scope: local ? "local" : "unlocated",
     boroughs,
