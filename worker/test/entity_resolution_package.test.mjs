@@ -1,4 +1,4 @@
-// Package-boundary characterization for entity_resolution (er-08).
+// Package-boundary characterization for entity_resolution (er-08) and er-06 review shaping.
 //
 // Proves modular-monolith imports resolve (normalizers + stubs + evaluation
 // re-exports) and that the worker normalize shim stays behavior-identical.
@@ -99,7 +99,7 @@ test("stub subpackages import and stay non-linking", () => {
   assert.equal(FEATURES_VERSION, "stub");
   assert.equal(MATCHERS_VERSION, "stub");
   assert.equal(POLICIES_VERSION, "stub");
-  assert.equal(REVIEW_VERSION, "stub");
+  assert.equal(REVIEW_VERSION, "possibly_same_v1");
 
   assert.deepEqual(generateCandidates([{ name: "Acme" }]), []);
   assert.deepEqual(extractFeatures({ a: 1 }, { b: 2 }), {});

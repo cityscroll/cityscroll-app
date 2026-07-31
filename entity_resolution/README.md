@@ -15,7 +15,7 @@ surface. **Not an HTTP microservice.**
 | `policies/` | Auto-link thresholds / decision routing (stub) |
 | `evaluation/` | Re-exports gold + metrics helpers |
 | `eval/` | Offline gold JSONL + metrics CLI (er-04; keep path stable) |
-| `review/` | Human review queue shaping (stub) |
+| `review/` | Read-only, desk-only “possibly same vendor” review cards |
 | `index.mjs` | Package root public exports |
 
 Worker call sites that historically imported `worker/src/lib/normalize.mjs` keep
@@ -64,8 +64,8 @@ not distributed cosplay for a single-maintainer product.
 
 ## Non-goals (this package / boundary card)
 
-- **No public HTTP ER routes** — no `/entity-resolution`, `/er/*`, or review API
-  added by the package-boundary work. Callers import modules in-process.
+- **No public HTTP ER routes** — the only HTTP surface is the separately keyed
+  `/admin/possibly-same` desk view; callers import the pure review helpers in-process.
 - **No production auto-links** from stubs; dual-write and matchers land in later cards
   with flags off until characterization passes.
 - **No LLM as primary matcher** — residue adjudicator only after a conventional scorer,
@@ -94,5 +94,9 @@ node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v
 
 - er-01 taxonomy ADR · er-03 normalizers · er-04 gold + metrics  
 - er-05 candidate generation (fills `candidate_generation/`)  
-- er-06 soft “possibly same” UI · er-07 entity_link schema  
+- er-06 soft “possibly same” UI · er-07 entity_link schema
+
+The er-06 view is read-only and non-assertive. Candidate pairs are provided through the
+operator-configured `ER_REVIEW_PAIRS` JSON (with `ENTITY_REVIEW_FIXTURE` as a fixture alias);
+the route never writes review notes or entity links.
 - er-08 this package boundary
