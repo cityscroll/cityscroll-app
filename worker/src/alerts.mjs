@@ -552,6 +552,10 @@ export async function processOneSub(env, s, ctx) {
     // Mark seen ONLY on a real send — advancing the seen set without delivery was the
     // watermark-poisoning bug (dry-run, quiet, or any path where send stays false).
     if (send && rows.length) await markSeen(env, s.key, rows.map((r) => r[q.idField]).filter(Boolean));
+    // Multi-day lag after a delivery outage: stamp traffic_class so desk ops can exempt
+    // day-scoped phantom_send without treating a normal daily match as recovery.
+    // Email copy stays the normal daily subject/body (not catch-up branded).
+    const lagRecovery = isMultiDayLagRecovery(since, ctx.today, fresh.length);
     return {
       sub: maskKey(s.key),
       kind: "subscription",
@@ -563,6 +567,7 @@ export async function processOneSub(env, s, ctx) {
       noticeIds: fresh.map((r) => r[q.idField]).filter(Boolean).slice(0, 100),
       forecasts: forecasts.length,
       action: decision.action,
+      traffic_class: lagRecovery ? "catch_up" : null,
       zeroMatch: fresh.length === 0 && forecasts.length === 0 && decision.action === "none",
       sent: send,
       dryRun: underCap && !ctx.LIVE,
@@ -672,6 +677,11 @@ export async function processAccountRollup(env, subs, ctx) {
       }
     }
 
+    // Stamp account rollup when any section with fresh notices lagged >1 day (same
+    // desk-exemption path as single-sub lag recovery; email stays normal daily copy).
+    const lagRecovery = sections.some(
+      (sec) => isMultiDayLagRecovery(sec.since, ctx.today, Number(sec.new) || 0),
+    );
     const result = {
       sub: accountId,
       kind: "rollup",
@@ -684,6 +694,7 @@ export async function processAccountRollup(env, subs, ctx) {
       action: decision.wantSend
         ? (decision.totalNew > 0 || decision.totalForecasts > 0 ? "match" : "quiet-rollup")
         : "none",
+      traffic_class: lagRecovery ? "catch_up" : null,
       zeroMatch: !decision.wantSend,
       sent: !!send,
       dryRun: underCap && decision.wantSend && !ctx.LIVE,
@@ -1067,22 +1078,31 @@ export async function runCatchUpDigests(env, { minLagDays = 2, subKeys = null, m
     skipped_reason: results.some((r) => r.sent) ? null : (targets.length === 0 ? "no_lagging_subs" : "no_sends"),
   };
   await writeCatchUpReceipt(env, receipt);
-  // Merge catch-up entries into the day log so the ops dashboard shows them.
-  if (mode_or_queue(env) !== "queue") {
-    try {
-      const existing = await readDigestDayLog(env, day);
-      const merged = existing
-        ? { ...existing, entries: [...(existing.entries || []), ...results.map((r) => toDayLogEntry(r, { day })).filter(Boolean)] }
-        : buildDayLog({ day, ranAt, live: LIVE, mode: "catch_up", results });
-      await writeDigestDayLog(env, recomputeDayLogTotalsLocal(merged));
-    } catch { /* observability only */ }
-  }
+  // Always merge catch-up entries into the day log — including QUEUE_DIGESTS mode.
+  // Queue daily fan-out only seeds an empty daylog; catch-up is a separate path that
+  // must still stamp action/traffic_class catch_up so desk ops can exempt multi-day
+  // recovery from phantom_send without heuristics alone.
+  try {
+    const existing = await readDigestDayLog(env, day);
+    const catchUpEntries = results.map((r) => toDayLogEntry(r, { day })).filter(Boolean);
+    const merged = existing
+      ? { ...existing, entries: [...(existing.entries || []), ...catchUpEntries] }
+      : buildDayLog({ day, ranAt, live: LIVE, mode: "catch_up", results });
+    await writeDigestDayLog(env, recomputeDayLogTotalsLocal(merged));
+  } catch { /* observability only */ }
   console.log("catch-up run:", JSON.stringify({ ranAt, sentThisRun, sentToday, candidates: targets.length }));
   return { ranAt, live: LIVE, sentThisRun, sentToday, candidates: targets.length, receipt, results };
 }
 
-function mode_or_queue(env) {
-  return env.QUEUE_DIGESTS === "true" && env.DIGEST_QUEUE ? "queue" : "inline";
+/**
+ * Daily-path lag recovery: lastsent (or createdAt fallback) is more than one UTC day
+ * behind today and this run has fresh notices. Stamps traffic_class catch_up for desk
+ * exemption; does not change email branding (unlike runCatchUpDigests).
+ */
+export function isMultiDayLagRecovery(lastSentOrCreated, today, freshCount) {
+  if (!(Number(freshCount) > 0) || !lastSentOrCreated || !today) return false;
+  const lag = daysBetweenUTC(String(lastSentOrCreated).slice(0, 10), String(today).slice(0, 10));
+  return Number.isFinite(lag) && lag > 1;
 }
 
 function recomputeDayLogTotalsLocal(log) {
