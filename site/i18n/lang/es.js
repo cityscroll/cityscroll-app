@@ -397,6 +397,7 @@
     no_zap: "No hay rezonificaciones en el Portal de Solicitudes de Zonificación (ZAP)",
     nothing_found_feed: "No se encontró nada. Pruebe con una búsqueda más amplia.",
     could_not_reach: "No se pudo conectar a NYC Open Data. Intente de nuevo.",
+    open_notice_btn: "Abrir aviso",
     city_record_link: "Registro municipal",
     copy_link_btn: "Copiar enlace",
     map_link: "Mapa",

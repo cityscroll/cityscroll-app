@@ -685,6 +685,7 @@ const STRINGS = {
     could_not_reach:   "Could not reach NYC Open Data. Retry.",
 
     // Feed card actions
+    open_notice_btn:        "Open notice",
     city_record_link:       "City Record",
     copy_link_btn:          "Copy link",
     map_link:               "Map",
