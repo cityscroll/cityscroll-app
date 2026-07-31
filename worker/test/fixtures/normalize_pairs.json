@@ -1,0 +1,204 @@
+{
+  "must_equal": [
+    {
+      "kind": "vendor",
+      "a": "Sinergia Inc",
+      "b": "Sinergia Incorporated",
+      "note": "Inc vs full Incorporated legal form"
+    },
+    {
+      "kind": "vendor",
+      "a": "Sinergia Inc",
+      "b": "SINERGIA, INC.",
+      "note": "case + comma + trailing period"
+    },
+    {
+      "kind": "vendor",
+      "a": "Acme Construction, LLC.",
+      "b": "Acme Construction LLC",
+      "note": "LLC with and without trailing punctuation"
+    },
+    {
+      "kind": "vendor",
+      "a": "Metro Builders LP",
+      "b": "Metro Builders LLC",
+      "note": "LP vs LLC legal form (undotted)"
+    },
+    {
+      "kind": "vendor",
+      "a": "Turner   Construction   Company",
+      "b": "Turner Construction",
+      "note": "Company suffix + internal whitespace collapse"
+    },
+    {
+      "kind": "vendor",
+      "a": "Skyline Contracting of New York",
+      "b": "Skyline Contracting",
+      "note": "OF NEW YORK jurisdiction suffix"
+    },
+    {
+      "kind": "vendor",
+      "a": "O'Brien & Sons Co",
+      "b": "O’Brien Sons",
+      "note": "apostrophe + ampersand + Co suffix (CAMBA-class punctuation)"
+    },
+    {
+      "kind": "vendor",
+      "a": "LEON D. DEMATTEIS CONSTRUCTION CORP",
+      "b": "Leon D Dematteis Construction",
+      "note": "middle-initial period must not break stem equality"
+    },
+    {
+      "kind": "vendor",
+      "a": "CAMBA, Inc.",
+      "b": "CAMBA Incorporated",
+      "note": "CAMBA-class legal-form variants"
+    },
+    {
+      "kind": "vendor",
+      "a": "<b>Bold Vendor</b> Corp",
+      "b": "Bold Vendor",
+      "note": "embedded HTML stripped before stemming"
+    },
+    {
+      "kind": "vendor",
+      "a": "Acme Co Inc",
+      "b": "ACME",
+      "note": "chained legal suffixes stripped iteratively"
+    },
+    {
+      "kind": "vendor",
+      "a": "HNTB New York Engineering and Architecture, PC",
+      "b": "HNTB NEW YORK ENGINEERING AND ARCHITECTURE",
+      "note": "undotted PC professional corporation suffix"
+    },
+    {
+      "kind": "agency",
+      "a": "POLICE DEPARTMENT",
+      "b": "Police Department",
+      "note": "ALL-CAPS vs Title Case City Record pair"
+    },
+    {
+      "kind": "agency",
+      "a": "DEPT OF PARKS & RECREATION",
+      "b": "Parks and Recreation",
+      "note": "legacy abbreviated agency rename surface"
+    },
+    {
+      "kind": "agency",
+      "a": "DEPT. OF DESIGN & CONSTRUCTION",
+      "b": "Design and Construction",
+      "note": "Design and Construction alias variants"
+    },
+    {
+      "kind": "agency",
+      "a": "HRA/DEPT OF SOCIAL SERVICES",
+      "b": "Human Resources Administration",
+      "note": "HRA / DSS twin naming"
+    },
+    {
+      "kind": "agency",
+      "a": "DEPT OF INFO TECH & TELECOMM",
+      "b": "Information Technology and Telecommunications",
+      "note": "DoITT legacy abbreviation (pre-OTI rename path still aliases)"
+    },
+    {
+      "kind": "agency",
+      "a": "ADMIN FOR CHILDREN'S SERVICES",
+      "b": "Administration for Children's Services",
+      "note": "ACS abbreviation + possessive"
+    },
+    {
+      "kind": "agency",
+      "a": "CONSUMER AFFAIRS",
+      "b": "Consumer and Worker Protection",
+      "note": "agency rename: Consumer Affairs → DCWP"
+    },
+    {
+      "kind": "agency",
+      "a": "DEPARTMENT OF BUSINESS SERV.",
+      "b": "Small Business Services",
+      "note": "SBS former City Record name"
+    }
+  ],
+  "must_distinct": [
+    {
+      "kind": "vendor",
+      "a": "Sinergia Inc",
+      "b": "Sinergia Partners LLC",
+      "note": "shared prefix must not collapse distinct legal entities"
+    },
+    {
+      "kind": "vendor",
+      "a": "Metro Builders LLC",
+      "b": "Metro Builders Group LLC",
+      "note": "Group token is part of the firm name, not a legal suffix"
+    },
+    {
+      "kind": "vendor",
+      "a": "Turner Construction",
+      "b": "Turner Industries",
+      "note": "different final token after shared family name"
+    },
+    {
+      "kind": "vendor",
+      "a": "Acme Construction LLC",
+      "b": "Acme Scaffolding LLC",
+      "note": "same brand word, different trade"
+    },
+    {
+      "kind": "vendor",
+      "a": "CAMBA Inc",
+      "b": "CAMBA Housing Ventures LLC",
+      "note": "related-name affiliates stay distinct under stem-only policy"
+    },
+    {
+      "kind": "vendor",
+      "a": "HNTB New York Engineering and Architecture, PC",
+      "b": "AECOM USA Inc",
+      "note": "unrelated prime consultants"
+    },
+    {
+      "kind": "vendor",
+      "a": "Metro Builders LLC",
+      "b": "Metro Builders, L.L.C",
+      "note": "known gap: dotted L.L.C becomes L L C after punctuation fold and does not strip (stem stays distinct until a deliberate normalize fix)"
+    },
+    {
+      "kind": "vendor",
+      "a": "AB",
+      "b": "ABC Inc",
+      "note": "short stem must not strip into empty or over-merge"
+    },
+    {
+      "kind": "agency",
+      "a": "Police Department",
+      "b": "Fire Department",
+      "note": "distinct mayoral agencies"
+    },
+    {
+      "kind": "agency",
+      "a": "Department of Transportation",
+      "b": "Department of Sanitation",
+      "note": "DOT vs DSNY"
+    },
+    {
+      "kind": "agency",
+      "a": "Parks and Recreation",
+      "b": "Parks Recreation and Historic Preservation",
+      "note": "NYC Parks must not collapse with a differently named body"
+    },
+    {
+      "kind": "agency",
+      "a": "Human Resources Administration",
+      "b": "Housing Preservation and Development",
+      "note": "HRA vs HPD"
+    },
+    {
+      "kind": "agency",
+      "a": "City Council",
+      "b": "City Planning",
+      "note": "shared City prefix, distinct bodies"
+    }
+  ]
+}
