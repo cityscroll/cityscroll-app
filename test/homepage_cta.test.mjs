@@ -56,6 +56,23 @@ test("homepage CTA wires into /subscribe with empty money filter + weekly cadenc
   assert.match(index, /data-i18n="subscribe_confirm_note"/);
 });
 
+test("signup Turnstile widgets are interaction-only (invisible unless challenged)", () => {
+  // Homepage CTA + Alerts both gate /subscribe; managed widget stays hidden for clean traffic.
+  const widgets = index.match(/class="cf-turnstile"[^>]*>/g) || [];
+  assert.equal(widgets.length, 2, `expected 2 signup widgets, got ${widgets.length}`);
+  for (const w of widgets) {
+    assert.match(w, /data-appearance="interaction-only"/);
+  }
+});
+
+test("subscribe confirmation copy is short (no double-opt-in ceremony on the form)", () => {
+  assert.match(i18n, /subscribe_confirm_note:\s*"We'll email a link to confirm\."/);
+  assert.match(i18n, /check_inbox:\s*"Check your inbox to confirm\."/);
+  assert.match(i18n, /sent_confirm_to:\s*"Sent to \{email\}\."/);
+  assert.doesNotMatch(i18n, /no one can sign you up but you/);
+  assert.doesNotMatch(index, /no one can sign you up but you/);
+});
+
 test("i18n carries homepage CTA keys in English", () => {
   for (const key of ["home_cta_prompt", "home_cta_submit", "home_cta_topics", "lang_switcher_label"]) {
     assert.match(i18n, new RegExp(`${key}\\s*:`));
