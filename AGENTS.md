@@ -351,8 +351,18 @@ Fails closed without `RESEND_API_KEY` + `FEEDBACK` KV only. Characterization:
 ## Entity resolution (foundation)
 
 Link-not-merge taxonomy ADR: [`docs/adr/entity-resolution-taxonomy.md`](docs/adr/entity-resolution-taxonomy.md).
-Unapplied D1 sketch (five tables): [`docs/entity-resolution/schema-sketch.sql`](docs/entity-resolution/schema-sketch.sql).
-No production migration or runtime merge until later dual-write cards; no LLM matching as primary matcher.
+Full five-table sketch: [`docs/entity-resolution/schema-sketch.sql`](docs/entity-resolution/schema-sketch.sql).
+No LLM matching as primary matcher. No public consumer reads link tables yet.
+
+**source_records dual-write (er-02):** migration `worker/migrations/0008_source_records.sql`;
+flag `CITY_RECORD_SOURCE_RECORD_DUAL_WRITE` (default off) on City Record ingest.
+Verify: `node --test worker/test/source_record_dual_write.test.mjs`.
+
+**entity_link + resolution_run (er-07):** migration `worker/migrations/0009_entity_link.sql`
+(+ `canonical_entity` for link targets). Opt-in shadow writer only for exact-stem
+`auto_link` cases (`method=vendor_stem_v1`): pure
+`worker/src/lib/entity_link.mjs`, flag `ENTITY_LINK_DUAL_WRITE` (default off).
+Verify: `node --test worker/test/entity_link_schema.test.mjs`.
 
 **Package boundary (er-08):** modular monolith under `entity_resolution/`
 (`normalizers`, `candidate_generation`, `features`, `matchers`, `policies`,

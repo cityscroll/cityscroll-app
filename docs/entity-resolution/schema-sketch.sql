@@ -1,6 +1,10 @@
--- Entity resolution schema sketch (unapplied).
+-- Entity resolution schema sketch (design reference).
 -- Authoritative decision record: docs/adr/entity-resolution-taxonomy.md
--- DO NOT apply to production D1 until a dual-write card lands a real migration.
+-- Applied subset (er-07): worker/migrations/0009_entity_link.sql
+--   resolution_run, canonical_entity, entity_link
+-- Applied subset (er-02): worker/migrations/0008_source_records.sql
+--   source_records (composite PK; soft-referenced by entity_link.source_record_id)
+-- candidate_pair remains sketch-only until a candidate-gen card lands.
 -- Dialect: SQLite / Cloudflare D1.
 --
 -- Core tables:
