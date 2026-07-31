@@ -269,7 +269,14 @@ watermark only on success. Tracks `digest_catchup` stats separately from normal 
 
 **Stats:** `/stats` digests block carries `catch_up_sent_today`,
 `catch_up_sent_all_time`, `catch_up_last_run`, `lagging_subs`. Operator can show
-catch-up rows via daylog `action: "catch_up"`.
+catch-up rows via daylog `action: "catch_up"` (and `traffic_class: "catch_up"`).
+
+**Ops correctness (day-scoped recount):** `correctnessCheck` in
+`worker/src/lib/digest_ops.mjs` must **not** flag catch-up sends as
+`phantom_send` / `count_mismatch` when a focus-day recount is 0 or lower than
+the multi-day recovery total. Detect via `action` / `traffic_class` / `mode`
+`catch_up` (historical rows may only have `action`). Result includes
+`catchUpExempt`. Characterization: `node --test test/digest_ops.test.mjs`.
 
 Characterization: `node --test test/markseen_policy.test.mjs test/digest_catchup.test.mjs`.
 
