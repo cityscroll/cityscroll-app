@@ -73,6 +73,16 @@ def validate_entry(entry: object, index: int) -> None:
         require(isinstance(locators, list) and locators, f"{path}.expectations.{name} must not be empty")
         for locator_index, locator in enumerate(locators):
             validate_locator(locator, f"{path}.expectations.{name}[{locator_index}]")
+            if (
+                name == "visible"
+                and entry["feature"] == "scenario-city-career"
+                and not entry.get("localOnly")
+            ):
+                require(
+                    "text" not in locator,
+                    f"{path}.expectations.visible[{locator_index}] must assert staffing structure, "
+                    "not mutable live-record text",
+                )
     if "hash" in expectations:
         require(
             isinstance(expectations["hash"], str) and expectations["hash"].startswith("#"),
