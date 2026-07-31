@@ -354,15 +354,21 @@ Link-not-merge taxonomy ADR: [`docs/adr/entity-resolution-taxonomy.md`](docs/adr
 Unapplied D1 sketch (five tables): [`docs/entity-resolution/schema-sketch.sql`](docs/entity-resolution/schema-sketch.sql).
 No production migration or runtime merge until later dual-write cards; no LLM matching as primary matcher.
 
-**Normalize lib (er-03):** pure `worker/src/lib/normalize.mjs` owns `vendorStem` (+ agency
-`canonicalAgency` re-export / `sameAgency`). `compile.mjs` re-exports `vendorStem` for
-call-site stability. Equal/distinct pin table:
+**Package boundary (er-08):** modular monolith under `entity_resolution/`
+(`normalizers`, `candidate_generation`, `features`, `matchers`, `policies`,
+`evaluation`, `review`) — in-process only, **no public HTTP ER routes**.
+Extract criteria + non-goals: `entity_resolution/README.md`. Verify:
+`node --test worker/test/entity_resolution_package.test.mjs`.
+
+**Normalize lib (er-03):** `entity_resolution/normalizers/` owns `vendorStem` (+
+agency `canonicalAgency` re-export / `sameAgency`). `worker/src/lib/normalize.mjs`
+and `compile.mjs` re-export for call-site stability. Equal/distinct pin table:
 `worker/test/fixtures/normalize_pairs.json`. Verify:
 `node --test worker/test/vendor_stem.test.mjs worker/test/normalize_fixtures.test.mjs`.
 
 Gold set + metrics harness (eval only): `entity_resolution/eval/` —
 `gold_v0.jsonl` (versioned; never silent-mutate labels/membership) and
-`run_metrics.mjs`. Verify:
+`run_metrics.mjs` (also re-exported from `entity_resolution/evaluation/`). Verify:
 `node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v0.jsonl --dry-run`
 (prints precision/recall/candidate_recall/unresolved_rate/false_merge/false_split;
 nulls OK until matchers). Details: `entity_resolution/eval/README.md`.
