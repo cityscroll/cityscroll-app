@@ -99,7 +99,7 @@ with sync_playwright() as pw:
     page.wait_for_load_state("load")
     page.wait_for_timeout(1500)
     staffing_link = page.locator(
-        '#staffing-notice-list .staffing-notice-card a[href*="a856-cityrecord.nyc.gov"]'
+        '#staffing-notice-list .staffing-hire-row a[href*="a856-cityrecord.nyc.gov"]'
     ).first
     if staffing_link.count() != 1:
         failures.append("Staffing feed: expected a City Record link on the newest appointment")
