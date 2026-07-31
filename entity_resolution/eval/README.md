@@ -1,6 +1,7 @@
 # Entity resolution evaluation
 
-Offline gold set and metrics harness. No production traffic, no D1 writes.
+Offline gold set and metrics harness. No production traffic, no D1 writes,
+no auto-links.
 
 ## Layout
 
@@ -8,6 +9,7 @@ Offline gold set and metrics harness. No production traffic, no D1 writes.
 | --- | --- |
 | `gold_v0.jsonl` | Versioned hard-case gold (pair labels) |
 | `run_metrics.mjs` | Load gold, validate, print metric keys |
+| `blockers/token_v0.mjs` | Token/stem blocking v0 (eval candidate generation) |
 
 ## Run
 
@@ -20,16 +22,46 @@ node entity_resolution/eval/run_metrics.mjs \
 Dry-run exits 0 and prints:
 
 - `precision`, `recall`, `candidate_recall`, `unresolved_rate`, `false_merge`, `false_split`
-  (values may be `null` until matchers / blockers exist)
+  (scorer metrics stay `null` until predictions exist; `candidate_recall` stays
+  `null` until a blocker is named)
 - gold version, content hash, case composition
+
+### Candidate generation (token blocking v0)
+
+```bash
+node entity_resolution/eval/run_metrics.mjs \
+  --gold entity_resolution/eval/gold_v0.jsonl \
+  --blocker token_v0
+```
+
+With `--blocker token_v0`:
+
+- `candidate_recall` is a number in `[0, 1]` (fraction of gold `same` pairs that
+  share at least one block key)
+- the report lists sample **blocked_in** and **blocked_out** true matches
+  (gold `label=same`) so drops are never silent
+- scorer metrics remain `null` without `--predictions` (identity/no-op scorer)
+
+Block keys per side (eval-only, in memory):
+
+| Key | Meaning |
+| --- | --- |
+| `stem:<key>` | `vendorStem` (vendors) or agency canonical id |
+| `tok:<token>` | Significant tokens from the stem/display surface |
+| `pin:<PIN>` | Shared when both sides carry `attrs.pin` |
+
+A pair is **blocked-in** when left and right share ≥1 key. Token blocking is a
+high-recall gate — gold `different` pairs may still be candidates; later
+matchers own precision.
 
 Malformed gold (bad JSON, missing fields, duplicate ids, meta/`case_count` mismatch)
 exits non-zero.
 
-Optional later flags:
+Optional flags:
 
 - `--predictions <path.jsonl>` — decisions per gold `id` (`same` \| `different` \| `unresolved`)
-- `--blocker <name>` — reserved for candidate generation (er-05)
+- `--blocker token_v0\|none` — candidate generation (default: none → `candidate_recall=null`)
+- `--examples N` — how many blocked-in/out true-match lines to print (default 5 with blocker)
 - `--json` — full report object after the KEY=value lines
 
 ## Gold record shape
@@ -77,8 +109,10 @@ pairs are allowed when labeled honestly.
 | `false_merge` | Count of predicted `same` where gold is `different` |
 | `false_split` | Count of gold `same` predicted not-`same` |
 
-Dry-run leaves these `null` (no matcher). Candidate recall becomes numeric when a
-blocker supplies a candidate set (er-05).
+Dry-run without `--blocker` leaves scorer metrics and `candidate_recall` as
+`null`. `--blocker token_v0` fills `candidate_recall` only.
+
+Characterization: `node --test test/entity_resolution_blocker.test.mjs`.
 
 ## Related
 

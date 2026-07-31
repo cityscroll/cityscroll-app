@@ -371,7 +371,15 @@ Gold set + metrics harness (eval only): `entity_resolution/eval/` —
 `run_metrics.mjs` (also re-exported from `entity_resolution/evaluation/`). Verify:
 `node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v0.jsonl --dry-run`
 (prints precision/recall/candidate_recall/unresolved_rate/false_merge/false_split;
-nulls OK until matchers). Details: `entity_resolution/eval/README.md`.
+nulls OK until matchers).
+
+**Candidate generation v0 (er-05):** offline token/stem blocker
+`entity_resolution/eval/blockers/token_v0.mjs` — no production auto-links.
+Verify:
+`node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v0.jsonl --blocker token_v0`
+(`candidate_recall` ∈ [0,1]; blocked-in/out true matches printed).
+Characterization: `node --test test/entity_resolution_blocker.test.mjs`.
+Details: `entity_resolution/eval/README.md`.
 
 ## Property location extraction
 
