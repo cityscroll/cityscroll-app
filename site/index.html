@@ -400,8 +400,8 @@
   .staffing-hire-agency{font:12px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
   .staffing-hire-fact{font:12px/1.3 ui-monospace,Menlo,monospace;color:var(--muted)}
   .staffing-hire-date{font:600 11px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--muted);white-space:nowrap;margin-left:auto}
-  .staffing-exam-redirect{padding:32px 24px;text-align:center;color:var(--ink-soft);font:14px/1.55 ui-sans-serif,system-ui,sans-serif}
-  .staffing-exam-redirect a{font-weight:700;color:var(--oxblood)}
+  .staffing-hire-row[data-kind="exam"]>a{align-items:center}
+  .staffing-hire-row[data-kind="exam"] .tag{flex:0 0 auto;font-size:10px;padding:2px 7px}
   .staffing-upcoming{border:1px solid var(--rule);border-top:5px solid var(--green);border-radius:8px;background:var(--card);padding:15px;margin-bottom:24px}
   .staffing-upcoming-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
   .staffing-upcoming-head h3{font:800 22px/1.12 var(--font-display);margin:0}
@@ -3503,14 +3503,24 @@ function staffingHireRowHTML(item){
     </a>
   </article>`;
 }
+function staffingExamRowHTML(item){
+  const exam=item.exam, status=CrolStaffing.statusFor(exam,careerToday());
+  return `<article class="staffing-hire-row" data-kind="exam">
+    <a href="#exam/${encodeURIComponent(exam.exam_number)}">
+      <span class="staffing-hire-role" lang="en" dir="ltr">${escUiHtml(exam.title)}</span>
+      <span class="staffing-hire-agency" lang="en" dir="ltr">DCAS</span>
+      <span class="staffing-hire-fact">${t("career_exam_number",{number:escUiHtml(exam.exam_number)})}</span>
+      <span class="tag ${careerStatusClass(status)}">${careerStatusLabel(status)}</span>
+      <span class="staffing-hire-date">${careerWindowText(exam,status)}</span>
+    </a>
+  </article>`;
+}
 function syncStaffingModeUI(){
   const isExam=staffingFilters.type==="exam";
   const upcoming=$(".staffing-upcoming");
   const guide=$("#career-guide");
-  const exportActions=$(".staffing-export-actions");
   const feedMetaHeading=$("#staffing-feed-meta-heading");
   if(upcoming) upcoming.hidden=isExam;
-  if(exportActions) exportActions.hidden=isExam;
   if(feedMetaHeading) feedMetaHeading.textContent=isExam?t("staffing_exam_guide_heading"):t("staffing_appointments_heading");
   if(isExam){
     if(guide){
@@ -3533,17 +3543,15 @@ function renderStaffingFeed(){
     button.setAttribute("aria-pressed",String(button.dataset.staffingType===staffingFilters.type));
   });
   syncStaffingModeUI();
-  const isExam=staffingFilters.type==="exam";
-  if(isExam){
-    const items=staffingVisibleItems();
-    $("#staffing-result-count").textContent=t("staffing_exam_count",{n:fmtNumber(items.length)});
-    $("#staffing-notice-list").innerHTML=`<div class="staffing-exam-redirect">${t("staffing_exam_redirect_html")}</div>`;
-    return;
-  }
   const items=staffingVisibleItems();
-  $("#staffing-result-count").textContent=t("staffing_results_count",{n:fmtNumber(items.length)});
+  const isExam=staffingFilters.type==="exam";
+  $("#staffing-result-count").textContent=isExam
+    ? t("staffing_exam_count",{n:fmtNumber(items.length)})
+    : t("staffing_results_count",{n:fmtNumber(items.length)});
+  // Count, list, and people-lens export all use staffingVisibleItems() — never replace a
+  // non-empty exam set with redirect-only copy (that desynced list vs export/count).
   $("#staffing-notice-list").innerHTML=items.length
-    ? items.map(staffingHireRowHTML).join("")
+    ? items.map(item=>item.kind==="exam"?staffingExamRowHTML(item):staffingHireRowHTML(item)).join("")
     : `<div class="career-empty">${t("staffing_no_results")}</div>`;
 }
 async function loadStaffingFeed(){
@@ -3824,7 +3832,9 @@ function scrollStaffingView(view){
   const guide=$("#career-guide");
   guide.hidden=isExam?false:(view!=="guide");
   if(!guide.hidden) prepareCareerHow();
-  const target=isExam?guide:view==="guide"?guide:view==="notices"?$("#staffing-feed"):null;
+  // Exam mode still reveals the broader career browser, but the filtered list lives in
+  // #staffing-feed — only jump to the guide when the route explicitly asks for it.
+  const target=view==="guide"?guide:isExam||view==="notices"?$("#staffing-feed"):null;
   if(!target) return;
   requestAnimationFrame(()=>{
     target.scrollIntoView({block:"start"});
@@ -8146,7 +8156,7 @@ document.querySelectorAll("[data-staffing-type]").forEach(button=>button.addEven
   renderStaffingFeed(); updateHash();
   if(staffingFilters.type==="exam") loadCareerGuide().then(()=>{
     renderStaffingFeed();
-    requestAnimationFrame(()=>$("#career-guide")?.scrollIntoView({block:"start"}));
+    requestAnimationFrame(()=>$("#staffing-feed")?.scrollIntoView({block:"start"}));
   });
 }));
 
