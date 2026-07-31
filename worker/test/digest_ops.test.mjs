@@ -221,3 +221,177 @@ test("correctnessCheck: already-seen (found>0, new=0) is not a silent miss", () 
   });
   assert.equal(c.status, "ok", "seen notices still present in day-scoped recount must not flag");
 });
+
+// Catch-up digests intentionally send a multi-day window since the watermark.
+// A day-scoped recount for "today" can correctly be 0 while noticeCount is N —
+// that must not read as phantom_send (false ops alarm after recovery).
+test("correctnessCheck: catch-up send with day-scoped expected=0 is ok (not phantom_send)", () => {
+  const dayLog = buildDayLog({
+    day: "2026-07-31",
+    mode: "catch_up",
+    results: [
+      {
+        sub: "sub:edu***",
+        lens: "money",
+        queryLabel: "education",
+        found: 3,
+        new: 3,
+        noticeIds: ["a", "b", "c"],
+        action: "catch_up",
+        sent: true,
+      },
+    ],
+  });
+  const c = correctnessCheck({
+    day: "2026-07-31",
+    dayLog,
+    recounts: { "sub:edu***": { noticeCount: 0, noticeIds: [] } },
+  });
+  assert.equal(c.status, "ok", "catch-up multi-day recovery must not flag day-scoped zero as phantom");
+  assert.equal(c.ok, true);
+  assert.equal(c.divergences.length, 0);
+  assert.equal(c.checked, 1);
+  assert.equal(c.matched, 1);
+  assert.equal(c.catchUpExempt, 1);
+  assert.match(c.summary, /catch-up/i);
+});
+
+test("correctnessCheck: normal match with expected=0 is still phantom_send", () => {
+  const dayLog = buildDayLog({
+    day: "2026-07-31",
+    results: [
+      {
+        sub: "sub:edu***",
+        lens: "money",
+        queryLabel: "education",
+        found: 3,
+        new: 3,
+        noticeIds: ["a", "b", "c"],
+        action: "match",
+        sent: true,
+      },
+    ],
+  });
+  const c = correctnessCheck({
+    day: "2026-07-31",
+    dayLog,
+    recounts: { "sub:edu***": { noticeCount: 0, noticeIds: [] } },
+  });
+  assert.equal(c.status, "diverge");
+  assert.equal(c.ok, false);
+  assert.equal(c.divergences.length, 1);
+  assert.equal(c.divergences[0].reason, "phantom_send");
+  assert.equal(c.catchUpExempt || 0, 0);
+});
+
+test("correctnessCheck: silent_miss still diverges (unchanged)", () => {
+  const dayLog = buildDayLog({
+    day: "2026-07-15",
+    results: [
+      {
+        sub: "sub:a***",
+        lens: "money",
+        queryLabel: "procurement",
+        found: 0,
+        new: 0,
+        noticeIds: [],
+        action: "none",
+        zeroMatch: true,
+        sent: false,
+      },
+    ],
+  });
+  const c = correctnessCheck({
+    day: "2026-07-15",
+    dayLog,
+    recounts: {
+      "sub:a***": { noticeCount: 7, noticeIds: ["a", "b", "c", "d", "e", "f", "g"] },
+    },
+  });
+  assert.equal(c.status, "diverge");
+  assert.equal(c.divergences[0].reason, "silent_miss");
+});
+
+test("correctnessCheck: traffic_class catch_up without action string is exempt", () => {
+  // Historical / partial rows may only carry traffic_class.
+  const dayLog = {
+    day: "2026-07-31",
+    mode: "inline",
+    entries: [
+      {
+        id: "sub:sw***",
+        lens: "money",
+        query: "software",
+        found: 2,
+        noticeCount: 2,
+        noticeIds: ["x", "y"],
+        action: null,
+        traffic_class: "catch_up",
+        sent: true,
+        error: null,
+      },
+    ],
+  };
+  const c = correctnessCheck({
+    day: "2026-07-31",
+    dayLog,
+    recounts: { "sub:sw***": { noticeCount: 0, noticeIds: [] } },
+  });
+  assert.equal(c.status, "ok");
+  assert.equal(c.divergences.length, 0);
+  assert.equal(c.catchUpExempt, 1);
+});
+
+test("correctnessCheck: catch-up over-count vs day (count_mismatch) is exempt", () => {
+  const dayLog = buildDayLog({
+    day: "2026-07-31",
+    results: [
+      {
+        sub: "sub:edu***",
+        lens: "money",
+        queryLabel: "education",
+        found: 5,
+        new: 5,
+        noticeIds: ["1", "2", "3", "4", "5"],
+        action: "catch_up",
+        sent: true,
+      },
+    ],
+  });
+  const c = correctnessCheck({
+    day: "2026-07-31",
+    dayLog,
+    recounts: { "sub:edu***": { noticeCount: 1, noticeIds: ["5"] } },
+  });
+  assert.equal(c.status, "ok");
+  assert.equal(c.divergences.length, 0);
+  assert.equal(c.catchUpExempt, 1);
+});
+
+test("toDayLogEntry: catch_up action stamps traffic_class catch_up", () => {
+  const e = toDayLogEntry({
+    sub: "sub:a***",
+    lens: "money",
+    found: 3,
+    new: 3,
+    noticeIds: ["1", "2", "3"],
+    action: "catch_up",
+    sent: true,
+  });
+  assert.equal(e.action, "catch_up");
+  assert.equal(e.traffic_class, "catch_up");
+});
+
+test("toDayLogEntry: mode catch_up stamps traffic_class even if action differs", () => {
+  const e = toDayLogEntry({
+    sub: "sub:a***",
+    lens: "money",
+    found: 1,
+    new: 1,
+    noticeIds: ["1"],
+    mode: "catch_up",
+    action: "match",
+    sent: true,
+  });
+  assert.equal(e.traffic_class, "catch_up");
+});
