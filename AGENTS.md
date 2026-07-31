@@ -354,6 +354,12 @@ Link-not-merge taxonomy ADR: [`docs/adr/entity-resolution-taxonomy.md`](docs/adr
 Unapplied D1 sketch (five tables): [`docs/entity-resolution/schema-sketch.sql`](docs/entity-resolution/schema-sketch.sql).
 No production migration or runtime merge until later dual-write cards; no LLM matching as primary matcher.
 
+**Normalize lib (er-03):** pure `worker/src/lib/normalize.mjs` owns `vendorStem` (+ agency
+`canonicalAgency` re-export / `sameAgency`). `compile.mjs` re-exports `vendorStem` for
+call-site stability. Equal/distinct pin table:
+`worker/test/fixtures/normalize_pairs.json`. Verify:
+`node --test worker/test/vendor_stem.test.mjs worker/test/normalize_fixtures.test.mjs`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
