@@ -287,6 +287,16 @@ and community board minutes pages (`meeting_outcomes_non_council_*`). Council
 notices keep Legistar class-(a) unmatched copy. Detection: `isCityCouncilNotice`
 on `agency_name`.
 
+## Digest rollup + preference center
+
+Account-level digest: when an email has **>1 active watch**, one consolidated
+email per day (sections per watch); one email = one send unit. Preference
+center: `GET/POST /prefs` (token `sc: "prefs"`). Edits take effect **next daily
+cron (~9am ET)**. Unsub: per-watch `{k}` or all-watches `{all:1,e}`. Admin
+dry-run: `GET /admin/digest-rollup?key=&email=`. Design:
+[`docs/digest-rollup-prefs.md`](docs/digest-rollup-prefs.md). Tests:
+`cd worker && node --test test/rollup.test.mjs test/prefs_lib.test.mjs test/prefs.test.mjs test/digest_rollup.test.mjs`.
+
 ## Magic-link session + server pins
 
 Digest notice links carry a pins-scoped optin-token (`sc: "pins"`, ~30d) as `?s=`
