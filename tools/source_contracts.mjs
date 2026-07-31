@@ -12,6 +12,25 @@ export const README_END = "<!-- END GENERATED SOURCE CONTRACTS -->";
 const ALLOWED_STATUS = new Set(["live", "build-time", "manual", "disabled"]);
 const ALLOWED_KIND = new Set(["socrata", "checkbook", "arcgis", "geosearch", "html", "mocs-disabled", "rss"]);
 const ALLOWED_DELIVERY_TIERS = new Set(["inline-at-build", "edge-materialized", "live-only"]);
+const ALLOWED_CONTRACT_CLASS = new Set(["ingest", "pointer"]);
+const ALLOWED_LANDING_PROBE = new Set(["require", "skip", "bot_blocked", "tolerate_bot_block"]);
+const ALLOWED_ENDPOINT_FORMAT = new Set(["js-dump", "json-api"]);
+const ALLOWED_STALE_POLICY = new Set(["error", "skip"]);
+const ALLOWED_EGRESS_CLASS = new Set(["open", "bot_blocked"]);
+
+/**
+ * Concrete URL the live monitor should probe. Templates like
+ * `/projects/{project_id}` need `probe_endpoint` or `probe_sample_id`.
+ */
+export function resolveProbeEndpoint(contract) {
+  if (contract?.probe_endpoint) return contract.probe_endpoint;
+  const endpoint = contract?.endpoint;
+  if (!endpoint) return null;
+  if (!/\{[a-zA-Z0-9_]+\}/.test(endpoint)) return endpoint;
+  const sample = contract.probe_sample_id;
+  if (!sample) return null;
+  return endpoint.replace(/\{[a-zA-Z0-9_]+\}/g, sample);
+}
 
 export function loadSourceContracts() {
   return JSON.parse(readFileSync(REGISTRY_PATH, "utf8"));
@@ -59,6 +78,29 @@ export function validateSourceContracts(registry) {
       errors.push(`${label}: missing endpoint`);
     }
     if (contract.status === "disabled" && !contract.gap) errors.push(`${label}: disabled sources need a specific gap`);
+    if (contract.contract_class && !ALLOWED_CONTRACT_CLASS.has(contract.contract_class)) {
+      errors.push(`${label}: invalid contract_class ${contract.contract_class}`);
+    }
+    if (contract.landing_probe && !ALLOWED_LANDING_PROBE.has(contract.landing_probe)) {
+      errors.push(`${label}: invalid landing_probe ${contract.landing_probe}`);
+    }
+    if (contract.endpoint_format && !ALLOWED_ENDPOINT_FORMAT.has(contract.endpoint_format)) {
+      errors.push(`${label}: invalid endpoint_format ${contract.endpoint_format}`);
+    }
+    if (contract.stale_policy && !ALLOWED_STALE_POLICY.has(contract.stale_policy)) {
+      errors.push(`${label}: invalid stale_policy ${contract.stale_policy}`);
+    }
+    if (contract.egress_class && !ALLOWED_EGRESS_CLASS.has(contract.egress_class)) {
+      errors.push(`${label}: invalid egress_class ${contract.egress_class}`);
+    }
+    if (contract.endpoint && /\{[a-zA-Z0-9_]+\}/.test(contract.endpoint)) {
+      if (!contract.probe_endpoint && !contract.probe_sample_id) {
+        errors.push(`${label}: templated endpoint needs probe_endpoint or probe_sample_id`);
+      }
+    }
+    if (contract.auth_token_env && typeof contract.auth_token_env !== "string") {
+      errors.push(`${label}: auth_token_env must be a string env var name`);
+    }
   }
   return errors;
 }

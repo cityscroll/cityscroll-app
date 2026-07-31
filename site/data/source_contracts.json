@@ -55,8 +55,8 @@
         "application_status"
       ],
       "publisher_cadence": "Daily",
-      "product_freshness": "Freshness depends on the Build NYC document publication page; the worker caches joined lifecycle records for read-path latency.",
-      "used_for": "City Record \u2194 Build NYC subsidy timeline joins for application, hearing, board, closing, and compliance stages.",
+      "product_freshness": "Worker fetches the EDC documents page and treats Cloudflare challenge HTML as a feed failure (notice-derived hearing fallback). Live monitor marks the landing as known bot-blocked for CI runners.",
+      "used_for": "City Record ↔ Build NYC subsidy timeline joins for application, hearing, board, closing, and compliance stages.",
       "code_references": [
         {
           "path": "worker/src/subsidy_lifecycle.mjs",
@@ -66,7 +66,8 @@
           "path": "worker/src/lib/subsidy_lifecycle.mjs",
           "contains": "assembleSubsidyLifecycle"
         }
-      ]
+      ],
+      "landing_probe": "bot_blocked"
     },
     {
       "id": "checkbook-contracts",
@@ -111,21 +112,22 @@
       "landing_page": "https://www.checkbooknyc.com/data-feeds/api",
       "data_type": "Spending",
       "required_fields": [
-        "spending_id",
-        "vendor_name",
+        "contract_id",
+        "payee_name",
         "check_amount",
-        "check_date"
+        "issue_date"
       ],
       "publisher_cadence": "Ongoing spending and payment updates",
-      "product_freshness": "Queried by PIN for the contract lifecycle timeline.",
-      "used_for": "Individual payment records in the procurement lifecycle (solicitation to payment).",
+      "product_freshness": "Queried by contract_id after the Contracts-domain join (Checkbook Spending rejects PIN filters).",
+      "used_for": "Individual payment records in the procurement lifecycle (solicitation to payment), joined via registered/pending contract ids.",
       "code_references": [
         {
           "path": "worker/src/checkbook_lifecycle.mjs",
           "contains": "<type_of_data>Spending</type_of_data>"
         }
       ],
-      "delivery_tier": "edge-materialized"
+      "delivery_tier": "edge-materialized",
+      "probe_contract_id": "CT107120248803393"
     },
     {
       "id": "ocp-recent-contract-awards",
@@ -191,7 +193,7 @@
     },
     {
       "id": "abo-local-authorities",
-      "name": "NYS Authorities Budget Office \u2014 local authorities",
+      "name": "NYS Authorities Budget Office — local authorities",
       "owner": "NYS Authorities Budget Office",
       "status": "live",
       "scope": "runtime",
@@ -220,7 +222,7 @@
     },
     {
       "id": "abo-local-development-corporations",
-      "name": "NYS Authorities Budget Office \u2014 local development corporations",
+      "name": "NYS Authorities Budget Office — local development corporations",
       "owner": "NYS Authorities Budget Office",
       "status": "live",
       "scope": "runtime",
@@ -249,7 +251,7 @@
     },
     {
       "id": "abo-state-authorities",
-      "name": "NYS Authorities Budget Office \u2014 state authorities",
+      "name": "NYS Authorities Budget Office — state authorities",
       "owner": "NYS Authorities Budget Office",
       "status": "live",
       "scope": "runtime",
@@ -325,7 +327,7 @@
       "max_stale_days": 14,
       "publisher_cadence": "Frequent list updates",
       "product_freshness": "Queried live for list checks; exam-level aggregates captured at build into data/exam_sources/civil_service_list_aggregates.json and joined onto staffing exam cards.",
-      "used_for": "Competitive-list checks, active-list totals, and post-list aggregate depth on exam cards (list_count and established dates only \u2014 never per-applicant rows).",
+      "used_for": "Competitive-list checks, active-list totals, and post-list aggregate depth on exam cards (list_count and established dates only — never per-applicant rows).",
       "code_references": [
         {
           "path": "index.html",
@@ -360,7 +362,7 @@
         "observed_on": "2026-07-30",
         "universe_closed": "Annual Examination Schedule (4ptz-hmtc) distinct exam_number with application_period_end_date < 2026-07-30",
         "universe_open": "same schedule with application_period_end_date >= 2026-07-30",
-        "strategy": "exact exam_number \u2194 exam_no (zero-pad variants). Aggregates only via group-by.",
+        "strategy": "exact exam_number ↔ exam_no (zero-pad variants). Aggregates only via group-by.",
         "rates": {
           "closed_exams_list_presence": {
             "joined": 494,
@@ -370,7 +372,7 @@
           "open_exams_list_presence": {
             "joined": 0,
             "total": 141,
-            "rate": 0.0
+            "rate": 0
           }
         },
         "usefulness_threshold": 0.3,
@@ -441,7 +443,7 @@
     },
     {
       "id": "zap-projects",
-      "name": "Zoning Application Portal \u2014 projects",
+      "name": "Zoning Application Portal — projects",
       "owner": "NYC Department of City Planning",
       "status": "live",
       "scope": "runtime",
@@ -470,7 +472,7 @@
     },
     {
       "id": "zap-bbl",
-      "name": "Zoning Application Portal \u2014 tax lots",
+      "name": "Zoning Application Portal — tax lots",
       "owner": "NYC Department of City Planning",
       "status": "live",
       "scope": "runtime",
@@ -499,7 +501,7 @@
     },
     {
       "id": "zap-api-outcomes",
-      "name": "Zoning Application Portal \u2014 project outcomes (Planning Labs API)",
+      "name": "Zoning Application Portal — project outcomes (Planning Labs API)",
       "owner": "NYC Department of City Planning",
       "status": "live",
       "scope": "runtime",
@@ -513,7 +515,6 @@
         "dispositions",
         "documents"
       ],
-      "max_stale_days": 3,
       "publisher_cadence": "Live CRM-backed API used by the public ZAP portal; Open Data project table lags the portal by about a month",
       "product_freshness": "Worker materializes per-project outcomes on GET /zap-outcomes with a one-day edge cache; the browser never calls the ZAP API for this panel.",
       "used_for": "Land detail decision documents, action approvals, disposition votes/recommendations, and DOB NOW tax-lot filing side-car beyond Open Data status chips.",
@@ -536,12 +537,12 @@
           "ulurp_complete_useful_outcome": {
             "joined": 50,
             "total": 50,
-            "rate": 1.0
+            "rate": 1
           },
           "ulurp_complete_any_documents": {
             "joined": 50,
             "total": 50,
-            "rate": 1.0
+            "rate": 1
           },
           "ulurp_complete_disposition_vote": {
             "joined": 45,
@@ -556,7 +557,7 @@
           "mixed_sample_api_project_id": {
             "joined": 60,
             "total": 60,
-            "rate": 1.0
+            "rate": 1
           },
           "mixed_sample_any_documents": {
             "joined": 40,
@@ -590,7 +591,10 @@
           "contains": "zap-outcomes"
         }
       ],
-      "delivery_tier": "edge-materialized"
+      "delivery_tier": "edge-materialized",
+      "probe_sample_id": "2022M0258",
+      "endpoint_format": "json-api",
+      "landing_probe": "require"
     },
     {
       "id": "mappluto",
@@ -838,7 +842,8 @@
           "contains": "careerOutcomeHTML"
         }
       ],
-      "delivery_tier": "inline-at-build"
+      "delivery_tier": "inline-at-build",
+      "landing_probe": "bot_blocked"
     },
     {
       "id": "mocs-ll63-plans",
@@ -847,7 +852,7 @@
       "status": "disabled",
       "scope": "runtime",
       "kind": "mocs-disabled",
-      "landing_page": "https://www.nyc.gov/site/mocs/resources/standard-professional-services-ll63.page",
+      "landing_page": "https://www.nyc.gov/site/mocs/resources/standard-prof-services-ll63.page",
       "legacy_dataset_ids": [
         "egea-b8r5",
         "whpb-ebtd"
@@ -906,7 +911,7 @@
           "modern_document_links_fill": {
             "joined": 0,
             "total": 1550,
-            "rate": 0.0
+            "rate": 0
           },
           "all_time_document_links_fill_note": {
             "note": "Historical document_links exist (pre-2025 GetFile attachments); modern window empty"
@@ -970,7 +975,7 @@
         }
       ],
       "delivery_tier": "edge-materialized",
-      "endpoint": "https://webapi.legistar.com/v1/nyc/",
+      "endpoint": "https://webapi.legistar.com/v1/nyc/Bodies",
       "gap": "Materialized (2026-07-30): daily edge ingest from authenticated webapi.legistar.com/v1/nyc with the strict exact_date_body_tokens join (modern event join 100%, 59/59). EventItems carry inline matters (98.3%) and action outcomes; best-effort roll-call votes and attachments are fetched for flagged items (~10% of events publish roll-call detail on the endpoint). Hearing agenda/minutes PDFs surface at the event level. Remaining sub-gap: pre-modern (pre-2025) historical events join at 73% and sparse roll-call detail is often not published on the endpoint for subcommittee voice votes.",
       "join_keys": [
         "matter_id",
@@ -1001,7 +1006,7 @@
           "modern_notices_strict": {
             "joined": 59,
             "total": 59,
-            "rate": 1.0
+            "rate": 1
           },
           "historical_notices_strict": {
             "joined": 127,
@@ -1016,7 +1021,7 @@
           "modern_joined_with_event_items": {
             "joined": 59,
             "total": 59,
-            "rate": 1.0
+            "rate": 1
           },
           "modern_joined_with_matter_items": {
             "joined": 58,
@@ -1030,7 +1035,11 @@
           }
         },
         "verdict": "Above usefulness threshold (~30%) for modern event/agenda depth: authenticated strict event join 100% (59/59); EventItems 100%; matter items 98.3%. Edge materialization shipped: daily ingest from webapi.legistar.com/v1/nyc with Worker secret LEGISTAR_API_TOKEN."
-      }
+      },
+      "probe_endpoint": "https://webapi.legistar.com/v1/nyc/Bodies?$top=1",
+      "endpoint_format": "json-api",
+      "auth_token_env": "LEGISTAR_API_TOKEN",
+      "landing_probe": "require"
     },
     {
       "id": "passport-public-contracts",
@@ -1055,7 +1064,7 @@
       ],
       "max_stale_days": 3,
       "publisher_cadence": "Portal dataJs dump refreshed about daily (Last-Modified on dataJs/contractData.js)",
-      "product_freshness": "Worker rebuilds the D1 passport_contracts table on the daily scheduled run; lifecycle reads join from that edge materialization with no live browser fetch to PASSPort.",
+      "product_freshness": "Worker rebuilds the D1 passport_contracts table on the daily scheduled run; lifecycle reads join from that edge materialization with no live browser fetch to PASSPort. CI runners are bot-blocked from both the HTML landing and dataJs dumps; product freshness is the Worker’s daily D1 materialization.",
       "used_for": "Pending and pre-registration contract stages on the procurement lifecycle when Checkbook is unmatched, plus registered-stage enrichment when EPIN joins a City Record PIN.",
       "join_keys": [
         "EPIN",
@@ -1118,7 +1127,10 @@
           "contains": "passport_contracts"
         }
       ],
-      "delivery_tier": "edge-materialized"
+      "delivery_tier": "edge-materialized",
+      "landing_probe": "bot_blocked",
+      "endpoint_format": "js-dump",
+      "egress_class": "bot_blocked"
     },
     {
       "id": "passport-public-rfx",
@@ -1140,7 +1152,7 @@
       ],
       "max_stale_days": 3,
       "publisher_cadence": "Portal dataJs dump refreshed about daily (Last-Modified on dataJs/rfxData.js)",
-      "product_freshness": "Worker rebuilds the D1 passport_rfx table on the daily scheduled run; solicitation lifecycle stages read joined RFx detail from that materialization.",
+      "product_freshness": "Worker rebuilds the D1 passport_rfx table on the daily scheduled run; solicitation lifecycle stages read joined RFx detail from that materialization. CI runners are bot-blocked from both the HTML landing and dataJs dumps; product freshness is the Worker’s daily D1 materialization.",
       "used_for": "RFx metadata on solicitation lifecycle stages (due date, method, status, commodity) joined by EPIN to City Record PINs. Package document URLs are not published on the public dataJs dump (measured 0% document-URL join); do not treat RFx as a package-doc source.",
       "join_keys": [
         "EPIN",
@@ -1177,13 +1189,13 @@
           "solicitation_rfx_document_url": {
             "joined": 0,
             "total": 1470,
-            "rate": 0.0,
+            "rate": 0,
             "note": "public_rfx_data has no document URL columns; kill sample 0/50"
           },
           "kill_sample_solicitation_document_url": {
             "joined": 0,
             "total": 50,
-            "rate": 0.0,
+            "rate": 0,
             "note": "50 most recent Solicitation+PIN since 2025-01-01"
           }
         },
@@ -1213,7 +1225,10 @@
           "contains": "measureRfxDocumentJoin"
         }
       ],
-      "delivery_tier": "edge-materialized"
+      "delivery_tier": "edge-materialized",
+      "landing_probe": "bot_blocked",
+      "endpoint_format": "js-dump",
+      "egress_class": "bot_blocked"
     },
     {
       "id": "bid-tabulations-historical",
@@ -1256,7 +1271,7 @@
           "modern_notices_strict": {
             "joined": 0,
             "total": 7254,
-            "rate": 0.0
+            "rate": 0
           },
           "historical_notices_strict": {
             "joined": 2158,
@@ -1326,9 +1341,9 @@
       ],
       "max_stale_days": 120,
       "publisher_cadence": "Periodic capital dashboard refresh (time-series by date_reported_as_of)",
-      "product_freshness": "Disabled for product materialization. Recon only: no PIN/EPIN column for City Record join.",
+      "product_freshness": "Pointer-only class-(b) gap reference. Dataset existence is checked; publisher staleness is not an ingest failure (no edge materialization).",
       "used_for": "No current product output. Class-(b) pointer for procurement planning/budget names this dataset when a PIN/EPIN is not published on the notice.",
-      "gap": "Dataset n7gv-k5yt has no PIN/EPIN. Agency+name fuzzy join on 100 modern Procurement notices measured 2026-07-30 at 0% unique substring and 1% unique token Jaccard \u2014 both below ~30%. Keep procurement-planning-budget as not_published pointing at Capital Projects with deep link; do not edge-materialize.",
+      "gap": "Dataset n7gv-k5yt has no PIN/EPIN. Agency+name fuzzy join on 100 modern Procurement notices measured 2026-07-30 at 0% unique substring and 1% unique token Jaccard — both below ~30%. Keep procurement-planning-budget as not_published pointing at Capital Projects with deep link; do not edge-materialize.",
       "join_keys": [
         "project_name",
         "managing_agency",
@@ -1346,7 +1361,7 @@
           "modern_procurement_substring_unique": {
             "joined": 0,
             "total": 100,
-            "rate": 0.0
+            "rate": 0
           },
           "modern_procurement_fuzzy_unique": {
             "joined": 1,
@@ -1371,7 +1386,9 @@
           "contains": "capital-projects"
         }
       ],
-      "delivery_tier": "live-only"
+      "delivery_tier": "live-only",
+      "contract_class": "pointer",
+      "stale_policy": "skip"
     },
     {
       "id": "city-council-meetings-open-data",
@@ -1393,7 +1410,7 @@
       "publisher_cadence": "Historical series labeled 1999 to 2024; meetings end 2024-12-19; resource Last-Modified 2025-12-30",
       "product_freshness": "Disabled for product materialization. Historical event identity only; modern depth uses authenticated Legistar Web API instead.",
       "used_for": "No current product output for modern notice detail. Measured as an event-identity recon source only (no vote or agenda-item columns).",
-      "gap": "Open Data m48u-yjt8 freezes at 2024-12-19: modern City Council notice join is 0%; historical 2019\u20132024 strict event join 73.41%. No vote/agenda-item columns. Superseded for modern depth by authenticated Legistar Web API (see nyc-council-legistar join_measurement, 100% modern event join). Kept disabled for product materialization.",
+      "gap": "Open Data m48u-yjt8 freezes at 2024-12-19: modern City Council notice join is 0%; historical 2019–2024 strict event join 73.41%. No vote/agenda-item columns. Superseded for modern depth by authenticated Legistar Web API (see nyc-council-legistar join_measurement, 100% modern event join). Kept disabled for product materialization.",
       "join_keys": [
         "event_id",
         "agency",
@@ -1414,7 +1431,7 @@
           "modern_notices_strict": {
             "joined": 0,
             "total": 59,
-            "rate": 0.0
+            "rate": 0
           },
           "historical_notices_strict": {
             "joined": 127,
@@ -1549,7 +1566,7 @@
       "publisher_cadence": "Historical / irregular Brooklyn Borough President recommendations (resource Last-Modified 2021-06-29; 91 rows)",
       "product_freshness": "Disabled for product reads. Schema probes tolerate multi-year freeze via max_stale_days because the publication is intentionally historical and borough-scoped.",
       "used_for": "No current product output. Ranked land-outcome depth candidate was measured; strict ULURP-number join usefulness is below the materialization threshold.",
-      "gap": "Strict ULURP-token joins from ZAP projects with non-null ulurp_numbers cover 0.54% when combined with the PDF companion (gt5i-dmde) and 0.29% for this table alone (81/27,971) \u2014 both below the ~30% usefulness threshold. The catalog is Brooklyn Borough President history (91 rows), not a citywide live feed. Property Disposition notices are the wrong universe for this join. Borough President / community board recommendation letters remain not-yet-ingested on the land path until a higher-coverage source ships or usefulness is re-measured above threshold.",
+      "gap": "Strict ULURP-token joins from ZAP projects with non-null ulurp_numbers cover 0.54% when combined with the PDF companion (gt5i-dmde) and 0.29% for this table alone (81/27,971) — both below the ~30% usefulness threshold. The catalog is Brooklyn Borough President history (91 rows), not a citywide live feed. Property Disposition notices are the wrong universe for this join. Borough President / community board recommendation letters remain not-yet-ingested on the land path until a higher-coverage source ships or usefulness is re-measured above threshold.",
       "join_keys": [
         "ulurp_numbers",
         "ulurp_number_s"
@@ -1633,7 +1650,7 @@
       "publisher_cadence": "Historical / irregular PDF companion letters (resource Last-Modified 2018-01-25; 88 rows)",
       "product_freshness": "Disabled for product reads. Schema probes tolerate multi-year freeze via max_stale_days because the publication is intentionally historical.",
       "used_for": "No current product output. PDF companion to Borough President ULURP recommendations; measured below materialization usefulness with the position table.",
-      "gap": "Strict ULURP-token joins from ZAP projects with non-null ulurp_numbers cover 0.25% for this PDF table alone (71/27,971) and 0.54% combined with 4j6i-9rmr \u2014 below the ~30% usefulness threshold. Deep-link field is pdf_download (letter URL), not the dataset landing page. Kept disabled for product materialization alongside ulurp-recommendations.",
+      "gap": "Strict ULURP-token joins from ZAP projects with non-null ulurp_numbers cover 0.25% for this PDF table alone (71/27,971) and 0.54% combined with 4j6i-9rmr — below the ~30% usefulness threshold. Deep-link field is pdf_download (letter URL), not the dataset landing page. Kept disabled for product materialization alongside ulurp-recommendations.",
       "join_keys": [
         "ulurp_numbers",
         "ulurp_application_number"
