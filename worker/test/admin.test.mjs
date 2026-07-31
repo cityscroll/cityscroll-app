@@ -4,7 +4,7 @@
 // (checkAdminKey, admin.mjs): 404 until ADMIN_KEY is configured, 401 on a wrong/missing key.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { checkAdminKey, handleAdminDigestSendTest } from "../src/admin.mjs";
+import { checkAdminKey, checkOperatorProbeKey, handleAdminDigestSendTest } from "../src/admin.mjs";
 import { handleAdminSuggestRefresh } from "../src/suggest.mjs";
 import { SUGGESTIONS_KV_KEY } from "../src/suggest.mjs";
 
@@ -37,6 +37,15 @@ test("checkAdminKey: accepts the key via ?key= or an Authorization: Bearer heade
   assert.equal(checkAdminKey(post("https://w/admin/suggest-refresh", { authorization: "Bearer s3cr3t" }), env).ok, true);
 });
 
+test("checkOperatorProbeKey: accepts either ADMIN_KEY or ANALYTICS_DEV_KEY", () => {
+  const env = { ADMIN_KEY: "admin", ANALYTICS_DEV_KEY: "analytics" };
+  assert.equal(checkOperatorProbeKey(post("https://w/admin/digest-send-test?key=admin"), env).ok, true);
+  assert.equal(checkOperatorProbeKey(post("https://w/admin/digest-send-test?key=analytics"), env).ok, true);
+  assert.equal(checkOperatorProbeKey(post("https://w/admin/digest-send-test", { authorization: "Bearer analytics" }), env).ok, true);
+  assert.equal(checkOperatorProbeKey(post("https://w/admin/digest-send-test?key=wrong"), env).res.status, 401);
+  assert.equal(checkOperatorProbeKey(post(), {}).res.status, 404);
+});
+
 test("handleAdminDigestSendTest: fails closed and enforces the recipient allowlist", async () => {
   const body = (email) => new Request("https://w/admin/digest-send-test?key=s3cr3t", {
     method: "POST",
@@ -45,6 +54,7 @@ test("handleAdminDigestSendTest: fails closed and enforces the recipient allowli
   });
   assert.equal((await handleAdminDigestSendTest(body("example@example.com"), {})).status, 404);
   assert.equal((await handleAdminDigestSendTest(body("example@example.com"), { ADMIN_KEY: "s3cr3t" })).status, 403);
+  assert.equal((await handleAdminDigestSendTest(body("not-a-recipient"), { ANALYTICS_DEV_KEY: "s3cr3t" })).status, 403);
 });
 
 // ---- POST /admin/suggest-refresh ----------------------------------------------------------

@@ -32,6 +32,16 @@ export function checkAdminKey(req, env) {
   return { ok: true };
 }
 
+// The digest test-send probe also accepts the analytics developer-exclusion credential. It is
+// an operator probe key, not a Cloudflare-issued administrator credential.
+export function checkOperatorProbeKey(req, env) {
+  if (!env.ADMIN_KEY && !env.ANALYTICS_DEV_KEY) return { ok: false, res: json({ error: "not found" }, 404) };
+  const url = new URL(req.url);
+  const key = url.searchParams.get("key") || (req.headers.get("authorization") || "").replace(/^Bearer\s+/i, "");
+  if (key !== env.ADMIN_KEY && key !== env.ANALYTICS_DEV_KEY) return { ok: false, res: json({ error: "unauthorized" }, 401) };
+  return { ok: true };
+}
+
 export async function handleAdminSubs(req, env) {
   const auth = checkAdminKey(req, env);
   if (!auth.ok) return auth.res;
@@ -116,7 +126,7 @@ export async function handleAdminDigestRollup(req, env) {
  * State advancement is opt-in; test sends do not consume watermarks by default.
  */
 export async function handleAdminDigestSendTest(req, env) {
-  const auth = checkAdminKey(req, env);
+  const auth = checkOperatorProbeKey(req, env);
   if (!auth.ok) return auth.res;
   if (req.method !== "POST") return json({ error: "method not allowed" }, 405);
 
