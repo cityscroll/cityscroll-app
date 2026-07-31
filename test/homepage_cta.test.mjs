@@ -56,6 +56,23 @@ test("homepage CTA wires into /subscribe with empty money filter + weekly cadenc
   assert.match(index, /data-i18n="subscribe_confirm_note"/);
 });
 
+test("signup surfaces have no Turnstile widget or client token gate", () => {
+  // Homepage CTA + Alerts post to /subscribe without a CAPTCHA; feedback keeps Turnstile on about.html.
+  assert.doesNotMatch(index, /class="cf-turnstile"/);
+  assert.doesNotMatch(index, /challenges\.cloudflare\.com\/turnstile/);
+  assert.doesNotMatch(index, /turnstileToken/);
+  assert.doesNotMatch(index, /complete_human_check/);
+  assert.match(index, /workerFetch\("\/subscribe"/);
+});
+
+test("subscribe confirmation copy is short (no double-opt-in ceremony on the form)", () => {
+  assert.match(i18n, /subscribe_confirm_note:\s*"We'll email a link to confirm\."/);
+  assert.match(i18n, /check_inbox:\s*"Check your inbox to confirm\."/);
+  assert.match(i18n, /sent_confirm_to:\s*"Sent to \{email\}\."/);
+  assert.doesNotMatch(i18n, /no one can sign you up but you/);
+  assert.doesNotMatch(index, /no one can sign you up but you/);
+});
+
 test("i18n carries homepage CTA keys in English", () => {
   for (const key of ["home_cta_prompt", "home_cta_submit", "home_cta_topics", "lang_switcher_label"]) {
     assert.match(i18n, new RegExp(`${key}\\s*:`));

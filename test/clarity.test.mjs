@@ -70,24 +70,25 @@ function formField() {
   };
 }
 
-test("dormant when project id is empty", () => {
+test("does not load when project id resolves empty", () => {
   const api = loadClarity();
-  assert.equal(api.resolveProjectId({}, fakeDoc()), "");
   assert.equal(api.shouldLoad({ projectId: "", navigator: {} }), false);
-  const result = api.boot({ window: { CROL_CLARITY_PROJECT_ID: "" }, document: fakeDoc(), navigator: {} });
-  assert.equal(result.loaded, false);
-  assert.equal(result.reason, "unconfigured");
+  // Empty window override cannot blank a configured constant; use explicit empty projectId path.
+  const result = api.shouldLoad({ projectId: "", navigator: {} });
+  assert.equal(result, false);
 });
 
-test("resolves project id from window, then meta", () => {
+test("resolves project id from window, then configured constant, then meta", () => {
   const api = loadClarity();
   assert.equal(
     api.resolveProjectId({ CROL_CLARITY_PROJECT_ID: "  abc123  " }, fakeDoc()),
     "abc123",
   );
+  // Live constant is configured — wins over meta when window is unset.
+  assert.equal(api.resolveProjectId({}, fakeDoc()), "xusuca7gsv");
   const doc = fakeDoc();
   doc._store.set("meta:crol-clarity-project-id", "meta-id-9");
-  assert.equal(api.resolveProjectId({}, doc), "meta-id-9");
+  assert.equal(api.resolveProjectId({}, doc), "xusuca7gsv");
 });
 
 test("skips load when Do Not Track is set", () => {
@@ -176,6 +177,7 @@ test("email capture fields ship with data-clarity-mask in markup", () => {
   const index = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
   const about = readFileSync(new URL("../site/about.html", import.meta.url), "utf8");
   assert.match(index, /id="adest"[^>]*data-clarity-mask="true"/);
+  assert.match(index, /id="homeCtaEmail"[^>]*data-clarity-mask="true"/);
   assert.match(about, /id="fbemail"[^>]*data-clarity-mask="true"/);
 });
 
@@ -188,12 +190,16 @@ test("privacy copy discloses Clarity, masking, and DNT/GPC in English", () => {
     assert.match(src, /Global Privacy Control/);
     assert.match(src, /masked/i);
   }
-  // Configured project id must not be committed as a live placeholder
+  // Live project id is public (not a secret); activation is intentional.
   const clarity = readFileSync(new URL("../site/clarity.js", import.meta.url), "utf8");
-  assert.match(clarity, /const CONFIGURED_PROJECT_ID = "";/);
+  assert.match(clarity, /const CONFIGURED_PROJECT_ID = "xusuca7gsv";/);
 });
 
-test("CONFIGURED_PROJECT_ID stays empty (dormant until operator configures)", () => {
+test("CONFIGURED_PROJECT_ID is the live Clarity project (heatmaps enabled)", () => {
   const api = loadClarity();
-  assert.equal(api.CONFIGURED_PROJECT_ID, "");
+  assert.equal(api.CONFIGURED_PROJECT_ID, "xusuca7gsv");
+  const doc = fakeDoc();
+  const result = api.boot({ window: {}, document: doc, navigator: {} });
+  assert.equal(result.loaded, true);
+  assert.equal(result.projectId, "xusuca7gsv");
 });
