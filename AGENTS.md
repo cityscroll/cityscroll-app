@@ -327,6 +327,12 @@ Team inbox is **feedback@cityscroll.org** (footer mailto on `site/index.html` /
 Fails closed without `RESEND_API_KEY` + `FEEDBACK` KV only. Characterization:
 `node --test worker/test/feedback.test.mjs test/homepage_cta.test.mjs`.
 
+## Entity resolution (foundation)
+
+Link-not-merge taxonomy ADR: [`docs/adr/entity-resolution-taxonomy.md`](docs/adr/entity-resolution-taxonomy.md).
+Unapplied D1 sketch (five tables): [`docs/entity-resolution/schema-sketch.sql`](docs/entity-resolution/schema-sketch.sql).
+No production migration or runtime merge until later dual-write cards; no LLM matching as primary matcher.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
