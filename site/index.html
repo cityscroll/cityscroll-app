@@ -275,6 +275,13 @@
   .next-action-list .act.primary{background:var(--oxblood);border-color:var(--oxblood);color:#fff}
   .next-action-list .act-official{display:block;margin-top:4px;font:500 10px/1.2 ui-monospace,SFMono-Regular,monospace;opacity:.78;overflow-wrap:anywhere}
   .next-action-unavailable{flex:1 1 220px;padding:9px 11px;border:1px dashed var(--rule-strong);border-radius:7px;color:var(--muted);font:600 13px/1.35 ui-sans-serif,system-ui,sans-serif;background:var(--paper-2)}
+  .bid-guide{margin-top:12px;border-top:1px solid var(--rule);padding-top:10px}
+  .bid-guide summary{cursor:pointer;font:700 13px/1.35 ui-sans-serif,system-ui,sans-serif;color:var(--ink)}
+  .bid-guide-facts{display:grid;grid-template-columns:auto minmax(0,1fr);gap:5px 10px;margin:10px 0;font:12px/1.4 ui-sans-serif,system-ui,sans-serif}
+  .bid-guide-facts dt{color:var(--muted);font-weight:700}.bid-guide-facts dd{margin:0;min-width:0;overflow-wrap:anywhere}
+  .bid-guide-copy{margin-inline-start:6px;padding:3px 6px;border:1px solid var(--rule);border-radius:5px;background:#fff;color:var(--ink);font:600 10px/1 ui-sans-serif,system-ui,sans-serif;cursor:pointer}
+  .bid-guide ol{margin:8px 0 0;padding-inline-start:22px;font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft)}
+  .bid-guide li+li{margin-top:5px}.bid-guide .guide-warning{color:var(--oxblood);font-weight:700}
   .act.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
   .act:hover{filter:brightness(.97)}
   .exportbar{display:flex;justify-content:flex-end;align-items:center;gap:8px;flex-wrap:wrap;margin:12px 0}
@@ -1352,7 +1359,6 @@ async function workerFetch(path, opts, timeoutMs){
   }
 }
 const REQ_URL = id => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
-const PASSPORT = "https://a0333-passportpublic.nyc.gov/";
 // City Record/PASSPort/Checkbook NYC carve-out (test/standards/link_targets.py): these three
 // government systems open in a new tab so a bid workflow doesn't lose CityScroll's app state.
 const EXT_ATTRS = 'target="_blank" rel="noopener noreferrer"';
@@ -2417,7 +2423,6 @@ function glanceFor(r){
   if(r.contact_name) act.push(cleanText(r.contact_name));
   const where = cleanText(r.address_to_request) || (goodAddr(r.street_address_1) ? cleanText(r.street_address_1) : "");
   if(where) act.push(where);
-  if(r.type_of_notice_description === "Solicitation") act.push(`<a href="${PASSPORT}" ${EXT_ATTRS}>PASSPort${extSR()}</a>`);
   const body = row(t("glance_who"), who) + row(t("glance_what"), what) + row(t("glance_when"), when) + row(t("glance_act"), act.join(" · "));
   return body ? `<div class="glance">${body}</div>` : "";
 }
@@ -2484,7 +2489,6 @@ function buildApply(r, showActions=true){
     if(r.email) acts += `<a class="act primary" href="${mailtoFor(r)}">${t("email_a_response")}</a>`;
     if(tel) acts += `<a class="act" href="${tel}">${t("call_btn",{phone:cleanText(r.contact_phone)})}</a>`;
     if(r.due_date && !isRollingDeadline(r.due_date)) acts += `<button class="act" id="icsbtn" type="button">${t("add_deadline_calendar")}</button>`;
-    acts += `<a class="act" href="${PASSPORT}" ${EXT_ATTRS}>${t("bid_on_passport")}${extSR()}</a>`;
     acts += '</div>';
   }
   return `<div class="apply"><h3>${t("how_to_respond_heading")}</h3><div class="body">
@@ -2674,7 +2678,7 @@ function renderDetail(r, chain, stats){
   fillContext(r, $("#dcontext"));
   mountNoticeActionRail($("#dactions"),r);
   loadRuleLifecycle(r, $("#drules"));
-  loadLifecycle(r, $("#dlifecycle"), $("#ddollars"));
+  loadLifecycle(r, $("#dlifecycle"), $("#ddollars"), $("#dactions"));
   loadSubsidyLifecycle(r, $("#dsubsidy"));
   loadMeetingOutcomes(r, $("#dmeet"));
   externalAwardForNotice(r, $("#dexternal"));
@@ -4825,7 +4829,7 @@ function participationLinksHTML(record){
     return `<a class="act" href="${escUiHtml(link.url)}" ${EXT_ATTRS}>${t(key)}${extSR()}</a>`;
   }).join("");
 }
-function noticeActionMatter(r, ruleRecord){
+function noticeActionMatter(r, ruleRecord, lifecycleData){
   const hearing=isMeetingOutcomesEligible(r)?normalizeHearingRow(r):null;
   const participation=((hearing&&hearing.participation&&hearing.participation.links)||[])
     .map(link=>hearingSafeURL(link.url)).find(Boolean)||null;
@@ -4848,7 +4852,11 @@ function noticeActionMatter(r, ruleRecord){
       :rolling?null:r.due_date||null,
     rolling_deadline:rolling,
     official_notice_url:kind==="rule"?(rule&&rule.url||REQ_URL(r.request_id)):REQ_URL(r.request_id),
-    official_application_url:kind==="solicitation"?PASSPORT:null,
+    agency_name:r.agency_name,
+    pin:r.pin,
+    title:cleanText(r.short_title),
+    notice_text:[r.additional_description_1,r.other_info_1].filter(Boolean).join(" "),
+    rfx_detail:lifecycleData&&lifecycleData.rfx_detail,
     comment_url:rule&&(rule.comment_url||rule.url),
     participation_url:participation,
     project_url:zapParticipation?participation:null,
@@ -4856,6 +4864,38 @@ function noticeActionMatter(r, ruleRecord){
 }
 function actionRailLabel(action){
   return t(action.label_key,action.deadline?{date:fdt(action.deadline)}:{});
+}
+function actionRailGuideHTML(actions){
+  const action=actions.find(item=>item.guide);
+  const guide=action&&action.guide;
+  if(!guide) return "";
+  const copyFact=(label,value)=>value?`<dt>${label}</dt><dd><code>${escUiHtml(value)}</code><button type="button" class="bid-guide-copy" data-copy-value="${escUiHtml(value)}">${t("copy_value")}</button></dd>`:"";
+  const facts=[
+    copyFact(t("bid_guide_id_label"),guide.identifier),
+    copyFact(t("bid_guide_name_label"),guide.procurement_name),
+    guide.status?`<dt>${t("bid_guide_status_label")}</dt><dd><b>${escUiHtml(guide.status)}</b></dd>`:"",
+    action.deadline?`<dt>${t("bid_guide_due_label")}</dt><dd>${fdt(action.deadline)}</dd>`:"",
+  ].join("");
+  let steps=[];
+  if(guide.system==="nycha_isupplier"){
+    steps=[t("bid_guide_nycha_register_step"),t("bid_guide_nycha_search_step"),t("bid_guide_nycha_submit_step")];
+    if(guide.approval_delay) steps.splice(1,0,t("bid_guide_nycha_delay_step"));
+  }else if(guide.system==="notice_portal"){
+    steps=[
+      t("bid_guide_named_portal_open_step",{system:escUiHtml(guide.system_name||"")}),
+      t("bid_guide_named_portal_search_step"),
+      t("bid_guide_named_portal_submit_step"),
+    ];
+  }else{
+    steps=[t("bid_guide_passport_search_step")];
+    if(guide.mode==="matched"){
+      steps.push(String(guide.status||"").toLowerCase()==="released"
+        ? t("bid_guide_passport_released_step")
+        : `<span class="guide-warning">${t("bid_guide_passport_not_released_step",{status:escUiHtml(guide.status||"—")})}</span>`);
+      steps.push(t("bid_guide_passport_submit_step"));
+    }else steps.push(t("bid_guide_passport_unmatched_step"),t("bid_guide_passport_submit_step"));
+  }
+  return `<details class="bid-guide" open><summary>${t("bid_guide_heading")}</summary>${facts?`<dl class="bid-guide-facts">${facts}</dl>`:""}<ol>${steps.map(step=>`<li>${step}</li>`).join("")}</ol></details>`;
 }
 function actionRailHTML(actions){
   let primaryUsed=false;
@@ -4870,11 +4910,11 @@ function actionRailHTML(actions){
     if(action.type==="calendar") return `<button class="act" type="button" data-next-calendar>${label}</button>`;
     return `<a class="act" href="#alerts">${label}</a>`;
   }).join("");
-  return `<section class="next-action-rail"><h3>${t("next_action_heading")}</h3><div class="next-action-list">${items}</div></section>`;
+  return `<section class="next-action-rail"><h3>${t("next_action_heading")}</h3><div class="next-action-list">${items}</div>${actionRailGuideHTML(actions)}</section>`;
 }
-function paintNoticeActionRail(el,r,ruleRecord){
+function paintNoticeActionRail(el,r,ruleRecord,lifecycleData){
   if(!el||!window.CrolActions) return;
-  const actions=CrolActions.compileActionRail(noticeActionMatter(r,ruleRecord),{today:todayISO()});
+  const actions=CrolActions.compileActionRail(noticeActionMatter(r,ruleRecord,lifecycleData),{today:todayISO()});
   el.innerHTML=actionRailHTML(actions);
   const calendar=el.querySelector("[data-next-calendar]");
   if(calendar) calendar.addEventListener("click",()=>{
@@ -4883,6 +4923,7 @@ function paintNoticeActionRail(el,r,ruleRecord){
       downloadICS();
     }else downloadEventICS(r);
   });
+  el.querySelectorAll("[data-copy-value]").forEach(button=>button.addEventListener("click",()=>copyText(button.dataset.copyValue,button)));
 }
 async function mountNoticeActionRail(el,r){
   paintNoticeActionRail(el,r,null);
@@ -6594,7 +6635,7 @@ function lifecycleDollarsHTML(data, notice){
 // panel. Fail-soft on network: says nothing rather than inventing a gap. The read model is
 // fully precomputed server-side (worker/src/checkbook_lifecycle.mjs) — no live upstream.
 // Category gate first: non-procurement notices never fetch or paint contract modules.
-async function loadLifecycle(r, el, dollarsEl){
+async function loadLifecycle(r, el, dollarsEl, actionsEl){
   if((!el && !dollarsEl) || !r.request_id) return;
   if(!isContractLifecycleEligible(r)){
     if(el) el.innerHTML = "";
@@ -6620,6 +6661,7 @@ async function loadLifecycle(r, el, dollarsEl){
     // Unresolvable precompute without a timeline: fail soft (no transient-error card).
     return;
   }
+  if(actionsEl && document.contains(actionsEl)) paintNoticeActionRail(actionsEl,r,null,data);
   if(el && Array.isArray(data.timeline) && data.timeline.length){
     el.innerHTML = lifecycleTimelineHTML(data, r);
   }
@@ -8413,7 +8455,7 @@ async function showNotice(id, watch){
   fillContext(r, $("#ncontext"));
   mountNoticeActionRail($("#nactions"),r);
   loadRuleLifecycle(r, $("#nrules"));
-  loadLifecycle(r, $("#nlifecycle"), $("#ndollars"));
+  loadLifecycle(r, $("#nlifecycle"), $("#ndollars"), $("#nactions"));
   loadSubsidyLifecycle(r, $("#nsubsidy"));
   loadMeetingOutcomes(r, $("#nmeet"));
   externalAwardForNotice(r, $("#nexternal"));

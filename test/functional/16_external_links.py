@@ -82,17 +82,17 @@ with sync_playwright() as pw:
     else:
         step("OK", '"View in City Record" opens in a new tab', f"rel={info['rel']!r}")
 
-    # --- Reported link 2: "Bid on PASSPort" ------------------------------------------------
-    info = link_info(page, '#noticeview a.act[href="https://a0333-passportpublic.nyc.gov/"]')
+    # --- PASSPort RFx search handoff (never a generic homepage labelled as a bid) ------------
+    info = link_info(page, '#noticeview a.act[href="https://a0333-passportpublic.nyc.gov/rfx.html"]')
     if info["target"] != "_blank":
-        failures.append(f'"Bid on PASSPort": target={info["target"]!r}, want "_blank" '
+        failures.append(f'"Find this RFx in PASSPort": target={info["target"]!r}, want "_blank" '
                          "(the app-navigates-away regression this gate pins)")
     elif not info["rel"] or "noopener" not in info["rel"] or "noreferrer" not in info["rel"]:
-        failures.append(f'"Bid on PASSPort": rel={info["rel"]!r}, want noopener+noreferrer')
+        failures.append(f'"Find this RFx in PASSPort": rel={info["rel"]!r}, want noopener+noreferrer')
     elif not info["srText"] or not info["srText"].strip():
-        failures.append('"Bid on PASSPort": no accessible new-tab marking (.sr-only child)')
+        failures.append('"Find this RFx in PASSPort": no accessible new-tab marking (.sr-only child)')
     else:
-        step("OK", '"Bid on PASSPort" opens in a new tab', f"rel={info['rel']!r}")
+        step("OK", '"Find this RFx in PASSPort" opens in a new tab', f"rel={info['rel']!r}")
 
     # --- Staffing feed source record -------------------------------------------------------
     page.goto(f"{BASE}#people", timeout=30000)
