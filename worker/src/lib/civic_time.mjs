@@ -818,3 +818,351 @@ export function moneySpineAdapterCoverage(pairs = []) {
     kinds,
   };
 }
+
+/**
+ * Four civic clock families for completeness scoring.
+ * "event" is filled when any valid clock is present (valid_at or range).
+ */
+export const TEMPORAL_CLOCK_FAMILIES = Object.freeze([
+  "event",
+  "publication",
+  "observed",
+  "processed",
+]);
+
+/**
+ * Product spines → source-contract ids that feed their civic-time adapters.
+ * Used to join temporal completeness to source health so gaps are actionable.
+ */
+export const SPINE_SOURCE_CONTRACTS = Object.freeze({
+  money: Object.freeze([
+    "city-record",
+    "checkbook-contracts",
+    "checkbook-spending",
+    "passport-public-contracts",
+    "ocp-recent-contract-awards",
+  ]),
+  rules: Object.freeze(["city-record", "nyc-rules-rss"]),
+  land: Object.freeze(["city-record", "zap-api-outcomes", "zap-projects"]),
+  meetings: Object.freeze([
+    "city-record",
+    "nyc-council-legistar",
+    "city-council-meetings-open-data",
+  ]),
+});
+
+/** Map source_record_ref prefix → source-contract id (best-effort). */
+export const SOURCE_RECORD_PREFIX_TO_CONTRACT = Object.freeze({
+  "city-record": "city-record",
+  checkbook: "checkbook-contracts",
+  "checkbook-spending": "checkbook-spending",
+  "checkbook-contracts": "checkbook-contracts",
+  passport: "passport-public-contracts",
+  "passport-rfx": "passport-public-rfx",
+  legistar: "nyc-council-legistar",
+  "zap-api": "zap-api-outcomes",
+  "nyc-rules": "nyc-rules-rss",
+  ocp: "ocp-recent-contract-awards",
+});
+
+function clockValuePresent(value) {
+  return value != null && value !== "";
+}
+
+/**
+ * Per-event presence of the four clock families.
+ * @returns {{ event: boolean, publication: boolean, observed: boolean, processed: boolean }}
+ */
+export function eventClockPresence(event) {
+  if (!event || typeof event !== "object") {
+    return { event: false, publication: false, observed: false, processed: false };
+  }
+  const hasEvent =
+    clockValuePresent(event.valid_at) ||
+    clockValuePresent(event.valid_from) ||
+    clockValuePresent(event.valid_to);
+  return {
+    event: hasEvent,
+    publication: clockValuePresent(event.published_at),
+    observed: clockValuePresent(event.observed_at),
+    processed: clockValuePresent(event.processed_at),
+  };
+}
+
+/**
+ * Fraction of the four clock families present on one event (0..1).
+ */
+export function eventTemporalCompleteness(event) {
+  const presence = eventClockPresence(event);
+  let filled = 0;
+  for (const clock of TEMPORAL_CLOCK_FAMILIES) {
+    if (presence[clock]) filled += 1;
+  }
+  return filled / TEMPORAL_CLOCK_FAMILIES.length;
+}
+
+export function spineForEventKind(event_kind) {
+  const meta = EVENT_KIND_REGISTRY[event_kind];
+  return meta?.lens ?? null;
+}
+
+/**
+ * Best-effort source-contract id from source_record_ref ("prefix:rest").
+ */
+export function contractIdFromSourceRecordRef(source_record_ref) {
+  if (source_record_ref == null || source_record_ref === "") return null;
+  const raw = String(source_record_ref);
+  const colon = raw.indexOf(":");
+  const prefix = colon === -1 ? raw : raw.slice(0, colon);
+  if (Object.prototype.hasOwnProperty.call(SOURCE_RECORD_PREFIX_TO_CONTRACT, prefix)) {
+    return SOURCE_RECORD_PREFIX_TO_CONTRACT[prefix];
+  }
+  return prefix || null;
+}
+
+function emptyClockCounts() {
+  return { event: 0, publication: 0, observed: 0, processed: 0 };
+}
+
+function ratesFromCounts(counts, total) {
+  const rates = {};
+  for (const clock of TEMPORAL_CLOCK_FAMILIES) {
+    rates[clock] = total === 0 ? 0 : counts[clock] / total;
+  }
+  return rates;
+}
+
+function normalizeSourceHealth(sourceHealth) {
+  /** @type {Map<string, object>} */
+  const byId = new Map();
+  if (!sourceHealth) return byId;
+  if (Array.isArray(sourceHealth)) {
+    for (const row of sourceHealth) {
+      if (row && row.id) byId.set(String(row.id), row);
+    }
+    return byId;
+  }
+  if (typeof sourceHealth === "object") {
+    for (const [id, row] of Object.entries(sourceHealth)) {
+      if (row && typeof row === "object") {
+        byId.set(id, { id, ...row });
+      } else {
+        byId.set(id, { id, status: row });
+      }
+    }
+  }
+  return byId;
+}
+
+function sourceHealthStatus(row) {
+  if (!row) return "unknown";
+  const status = row.status != null ? String(row.status) : null;
+  if (status === "disabled") return "disabled";
+  if (status === "live" || status === "build-time" || status === "manual") {
+    if (row.fetch_status === "error" || row.fetch_status === "unavailable") return "unhealthy";
+    if (row.stale === true) return "stale";
+    return "live";
+  }
+  if (row.fetch_status === "error" || row.fetch_status === "unavailable") return "unhealthy";
+  if (status) return status;
+  return "unknown";
+}
+
+/**
+ * Classify why a clock gap is actionable given joined source health.
+ * - adapter_gap: live sources feed the spine but the clock is missing → map more fields
+ * - source_disabled: every known source for the spine is disabled
+ * - source_unhealthy: sources are failing/stale
+ * - source_unknown: no source-health rows joined
+ */
+export function classifyTemporalGap({ fill_rate, source_rows = [] }) {
+  if (fill_rate >= 1) return null;
+  if (!source_rows.length) {
+    return {
+      kind: "source_unknown",
+      action: "Attach source-contract health for this spine so the gap is attributable.",
+    };
+  }
+  const statuses = source_rows.map((r) => sourceHealthStatus(r));
+  if (statuses.every((s) => s === "disabled")) {
+    return {
+      kind: "source_disabled",
+      action: "Source contracts for this spine are disabled — completeness cannot improve until a live feed is restored or an alternate source is joined.",
+    };
+  }
+  if (statuses.some((s) => s === "unhealthy" || s === "stale")) {
+    return {
+      kind: "source_unhealthy",
+      action: "Upstream source health is degraded — restore fetch success before treating missing clocks as adapter debt.",
+    };
+  }
+  if (statuses.some((s) => s === "live")) {
+    return {
+      kind: "adapter_gap",
+      action: "Live sources feed this spine but the clock is absent on some events — extend the spine adapter to map the publisher field when present.",
+    };
+  }
+  return {
+    kind: "source_unknown",
+    action: "Source-health status is unrecognized; inspect the source-contract rows for this spine.",
+  };
+}
+
+/**
+ * Temporal completeness scorecard.
+ *
+ * Named headline metric: **temporal_completeness_rate**
+ *   = mean over events of (filled_clock_families / 4)
+ * where clock families are event (valid_at|range), publication, observed, processed.
+ *
+ * Also reports per-spine and per-clock fill rates, and joins optional source_health
+ * so incomplete clocks are labeled adapter_gap vs source_disabled / unhealthy.
+ *
+ * @param {object[]} events - civic-time envelopes (or fixture-mapped events)
+ * @param {object} [opts]
+ * @param {object|object[]} [opts.source_health] - source-contract rows (id + status [+ fetch_status/stale])
+ * @param {number} [opts.gap_threshold=1] - report gap when fill_rate < threshold (default: any miss)
+ * @returns {object} scorecard
+ */
+export function temporalCompletenessScorecard(events = [], opts = {}) {
+  const list = Array.isArray(events) ? events.filter((e) => e && typeof e === "object") : [];
+  const healthById = normalizeSourceHealth(opts.source_health);
+  const gapThreshold =
+    typeof opts.gap_threshold === "number" && Number.isFinite(opts.gap_threshold)
+      ? opts.gap_threshold
+      : 1;
+
+  const overallCounts = emptyClockCounts();
+  let completenessSum = 0;
+  /** @type {Record<string, { event_count: number, counts: object, kinds: Record<string, number> }>} */
+  const bySpine = {};
+
+  for (const event of list) {
+    const presence = eventClockPresence(event);
+    completenessSum += eventTemporalCompleteness(event);
+    for (const clock of TEMPORAL_CLOCK_FAMILIES) {
+      if (presence[clock]) overallCounts[clock] += 1;
+    }
+
+    const spine = spineForEventKind(event.event_kind) || "unknown";
+    if (!bySpine[spine]) {
+      bySpine[spine] = { event_count: 0, counts: emptyClockCounts(), kinds: {} };
+    }
+    const bucket = bySpine[spine];
+    bucket.event_count += 1;
+    for (const clock of TEMPORAL_CLOCK_FAMILIES) {
+      if (presence[clock]) bucket.counts[clock] += 1;
+    }
+    const kind = event.event_kind || "unknown";
+    bucket.kinds[kind] = (bucket.kinds[kind] || 0) + 1;
+  }
+
+  const event_count = list.length;
+  const temporal_completeness_rate = event_count === 0 ? 0 : completenessSum / event_count;
+  const clock_fill_rates = ratesFromCounts(overallCounts, event_count);
+
+  const spines = {};
+  const gaps = [];
+
+  for (const spine of Object.keys(bySpine).sort()) {
+    const bucket = bySpine[spine];
+    const rates = ratesFromCounts(bucket.counts, bucket.event_count);
+    const contractIds = SPINE_SOURCE_CONTRACTS[spine] || [];
+    const source_rows = contractIds.map((id) => {
+      const row = healthById.get(id);
+      if (row) {
+        return {
+          id,
+          status: row.status ?? null,
+          fetch_status: row.fetch_status ?? null,
+          stale: row.stale === true,
+          health: sourceHealthStatus(row),
+        };
+      }
+      return { id, status: null, fetch_status: null, stale: false, health: "unknown" };
+    });
+    const live_source_count = source_rows.filter((r) => r.health === "live").length;
+    const disabled_source_count = source_rows.filter((r) => r.health === "disabled").length;
+
+    spines[spine] = {
+      event_count: bucket.event_count,
+      temporal_completeness_rate:
+        bucket.event_count === 0
+          ? 0
+          : TEMPORAL_CLOCK_FAMILIES.reduce((sum, c) => sum + rates[c], 0) /
+            TEMPORAL_CLOCK_FAMILIES.length,
+      clock_fill_rates: rates,
+      clock_fill_counts: { ...bucket.counts },
+      kinds: { ...bucket.kinds },
+      source_contracts: contractIds.slice(),
+      source_health: source_rows,
+      live_source_count,
+      disabled_source_count,
+    };
+
+    for (const clock of TEMPORAL_CLOCK_FAMILIES) {
+      const fill_rate = rates[clock];
+      if (fill_rate < gapThreshold) {
+        const classification = classifyTemporalGap({ fill_rate, source_rows });
+        gaps.push({
+          spine,
+          clock,
+          fill_rate,
+          filled: bucket.counts[clock],
+          event_count: bucket.event_count,
+          kind: classification?.kind ?? "adapter_gap",
+          action: classification?.action ?? null,
+          source_health: source_rows,
+        });
+      }
+    }
+  }
+
+  // Prefer adapter_gap first (actionable in-repo), then unhealthy, disabled, unknown.
+  const kindOrder = { adapter_gap: 0, source_unhealthy: 1, source_stale: 1, source_disabled: 2, source_unknown: 3 };
+  gaps.sort((a, b) => {
+    const ko = (kindOrder[a.kind] ?? 9) - (kindOrder[b.kind] ?? 9);
+    if (ko !== 0) return ko;
+    if (a.fill_rate !== b.fill_rate) return a.fill_rate - b.fill_rate;
+    return `${a.spine}:${a.clock}`.localeCompare(`${b.spine}:${b.clock}`);
+  });
+
+  return {
+    metric: "temporal_completeness_rate",
+    schema_version: 1,
+    event_count,
+    temporal_completeness_rate,
+    clock_fill_rates,
+    clock_fill_counts: { ...overallCounts },
+    spines,
+    gaps,
+    gap_count: gaps.length,
+    // Convenience: share of events with every clock family present (stricter than the mean).
+    full_clock_rate:
+      event_count === 0
+        ? 0
+        : list.filter((e) => eventTemporalCompleteness(e) === 1).length / event_count,
+  };
+}
+
+/**
+ * Build a minimal source_health map from source_contracts.json `contracts` array.
+ * Pure; ignores contracts outside SPINE_SOURCE_CONTRACTS.
+ */
+export function sourceHealthFromContracts(contracts = []) {
+  const wanted = new Set();
+  for (const ids of Object.values(SPINE_SOURCE_CONTRACTS)) {
+    for (const id of ids) wanted.add(id);
+  }
+  const out = {};
+  for (const c of contracts) {
+    if (!c || !c.id || !wanted.has(c.id)) continue;
+    out[c.id] = {
+      id: c.id,
+      status: c.status ?? null,
+      kind: c.kind ?? null,
+      max_stale_days: c.max_stale_days ?? null,
+    };
+  }
+  return out;
+}
