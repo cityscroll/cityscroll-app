@@ -139,9 +139,12 @@ edges (official → matter|agenda_item), not only aye/nay tallies. Pure helpers:
 `entity_resolution/officials/`. Named metrics: `person_vote_retention_rate` and
 `official_votes_on_edge_rate` (receipt under
 `site/data/legistar_sources/verification_receipts/`). Meeting UI renders roll call
-when `by_person` is present. `source_records` dual-write for Legistar votes remains
-a gap. Verify: `node --test test/official_entity_family.test.mjs
-test/legistar_client.test.mjs test/contract/meeting_outcomes.test.mjs`.
+when `by_person` is present. Immutable `source_records` dual-write for Legistar
+Events/EventItems/Votes/Attachments is live under
+`LEGISTAR_SOURCE_RECORD_DUAL_WRITE` (`worker/src/lib/legistar_source_records.mjs`).
+Verify: `node --test test/official_entity_family.test.mjs
+test/legistar_client.test.mjs test/contract/meeting_outcomes.test.mjs
+worker/test/legistar_source_records.test.mjs`.
 
 ## Content and testing — lifecycle gap taxonomy
 
@@ -460,16 +463,19 @@ production Worker vars enable the fail-soft shadow path on City Record ingest; b
 sets both false. Integration characterization: `node --test worker/test/er_ingest_integration.test.mjs`.
 Verify: `node --test worker/test/source_record_dual_write.test.mjs`.
 
-**Source-observation coverage (er-22 + Checkbook contracts/spending):** machine-checked importer
+**Source-observation coverage (er-22 + Checkbook + Legistar):** machine-checked importer
 inventory and measured before/after coverage live in `entity_resolution/source_coverage.json`.
 PASSPort contracts/RFx use `PASSPORT_SOURCE_RECORD_DUAL_WRITE`; Checkbook Contracts and Spending
 request-time XML rows share `CHECKBOOK_SOURCE_RECORD_DUAL_WRITE` (fail-soft; Prime/Sub Vendor
 slices and payment documents keep distinct `source_system_id`s via
-`worker/src/lib/checkbook_source_records.mjs`). Public reads do not consume the observations.
-NYCHA, Legistar, ABO, doing-business, and NYCIDA streams remain inventory gaps. Metric:
-`source_coverage` covered/total (5/13 after spending dual-write). Verify:
+`worker/src/lib/checkbook_source_records.mjs`). Legistar meeting materialization dual-writes
+Events/EventItems/Votes/Attachments under `LEGISTAR_SOURCE_RECORD_DUAL_WRITE`
+(`worker/src/lib/legistar_source_records.mjs`). Public reads do not consume the observations.
+NYCHA, ABO, doing-business, and NYCIDA streams remain inventory gaps. Metric:
+`source_coverage` covered/total (9/13 after Legistar dual-write). Verify:
 `node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json &&
-node --test worker/test/er_source_coverage.test.mjs worker/test/checkbook_source_records.test.mjs`.
+node --test worker/test/er_source_coverage.test.mjs worker/test/checkbook_source_records.test.mjs
+worker/test/legistar_source_records.test.mjs`.
 
 **entity_link + resolution_run (er-07):** migration `worker/migrations/0009_entity_link.sql`
 (+ `canonical_entity` for link targets). Opt-in shadow writer only for exact-stem

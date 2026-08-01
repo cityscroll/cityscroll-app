@@ -115,6 +115,23 @@ export function summarizeLegistarVotes(rows, target = {}) {
 }
 
 /**
+ * Raw roll-call vote rows for one agenda item (publisher payload, no summarization).
+ * Used for immutable source_records dual-write and by fetchLegistarItemVotes.
+ */
+export async function fetchLegistarItemVoteRows({
+  itemId,
+  token,
+  fetchImpl = fetch,
+} = {}) {
+  if (!token || !itemId) return [];
+  return fetchJson(
+    fetchImpl,
+    authedUrl(`EventItems/${encodeURIComponent(itemId)}/Votes`, token, { $top: String(VOTES_TOP) }),
+    10000,
+  );
+}
+
+/**
  * Best-effort roll-call vote fetch for one agenda item. Returns an aggregated
  * summary with retained per-person rows (official objects + votes_on edges)
  * when the endpoint has recorded votes; null when empty.
@@ -127,11 +144,7 @@ export async function fetchLegistarItemVotes({
   agendaItemId = null,
 } = {}) {
   if (!token || !itemId) return null;
-  const rows = await fetchJson(
-    fetchImpl,
-    authedUrl(`EventItems/${encodeURIComponent(itemId)}/Votes`, token, { $top: String(VOTES_TOP) }),
-    10000,
-  );
+  const rows = await fetchLegistarItemVoteRows({ itemId, token, fetchImpl });
   if (!rows.length) return null;
   return summarizeLegistarVotes(rows, {
     matterId,
@@ -141,16 +154,27 @@ export async function fetchLegistarItemVotes({
 }
 
 /**
- * Best-effort attachment fetch for one agenda item. Returns [{url, name, category}]
- * or [] when the nested route is empty. Prefer MatterAttachment* fields when present.
+ * Raw attachment rows for one agenda item (publisher payload).
+ * Used for immutable source_records dual-write and document card mapping.
  */
-export async function fetchLegistarItemAttachments({ itemId, token, fetchImpl = fetch }) {
+export async function fetchLegistarItemAttachmentRows({
+  itemId,
+  token,
+  fetchImpl = fetch,
+} = {}) {
   if (!token || !itemId) return [];
-  const rows = await fetchJson(
+  return fetchJson(
     fetchImpl,
     authedUrl(`EventItems/${encodeURIComponent(itemId)}/Attachments`, token, { $top: "50" }),
     10000,
   );
+}
+
+/**
+ * Project raw Legistar attachment rows into public document cards.
+ * Prefer MatterAttachment* fields when present.
+ */
+export function projectLegistarAttachmentDocuments(rows = []) {
   const out = [];
   for (const row of rows) {
     const url = row.MatterAttachmentHyperlink
@@ -168,6 +192,15 @@ export async function fetchLegistarItemAttachments({ itemId, token, fetchImpl = 
     });
   }
   return out;
+}
+
+/**
+ * Best-effort attachment fetch for one agenda item. Returns [{url, name, category}]
+ * or [] when the nested route is empty.
+ */
+export async function fetchLegistarItemAttachments({ itemId, token, fetchImpl = fetch }) {
+  const rows = await fetchLegistarItemAttachmentRows({ itemId, token, fetchImpl });
+  return projectLegistarAttachmentDocuments(rows);
 }
 
 /**

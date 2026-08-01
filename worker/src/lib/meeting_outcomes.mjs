@@ -17,14 +17,17 @@ import {
 import {
   fetchLegistarEvents,
   fetchLegistarEventItems,
-  fetchLegistarItemVotes,
-  fetchLegistarItemAttachments,
+  fetchLegistarItemVoteRows,
+  fetchLegistarItemAttachmentRows,
+  projectLegistarAttachmentDocuments,
+  summarizeLegistarVotes,
   boundedMap,
   MAX_VOTE_PROBES_PER_EVENT,
   MAX_TOTAL_VOTE_PROBES,
   MAX_ATTACHMENT_PROBES_PER_EVENT,
   MAX_TOTAL_ATTACHMENT_PROBES,
 } from "./legistar_client.mjs";
+import { dualWriteLegistarObservations } from "./legistar_source_records.mjs";
 
 export const MEETING_OUTCOMES_VIEW_VERSION = 2;
 export const MEETING_OUTCOMES_KV_KEY = "meeting-outcomes:materialized:v2";
@@ -427,6 +430,7 @@ async function buildNoticeRows(fetchImpl, now = new Date()) {
 /**
  * Collect best-effort roll-call vote summaries for matter-bearing items flagged
  * for roll call. Bounded per-event and per-run so the materialization stays polite.
+ * Also returns publisher-raw person vote rows (EventItemId stamped) for dual-write.
  */
 async function collectVoteSummaries({ eventItemRows, token, fetchImpl }) {
   const flagged = eventItemRows.filter(
@@ -434,6 +438,7 @@ async function collectVoteSummaries({ eventItemRows, token, fetchImpl }) {
   );
   const byEvent = groupBy(flagged, (it) => String(it.EventItemEventId));
   const summaries = [];
+  const rawVotes = [];
   let total = 0;
   for (const [, evItems] of byEvent) {
     let perEvent = 0;
@@ -442,12 +447,23 @@ async function collectVoteSummaries({ eventItemRows, token, fetchImpl }) {
       perEvent += 1;
       total += 1;
       try {
-        const summary = await fetchLegistarItemVotes({
+        const rows = await fetchLegistarItemVoteRows({
           itemId: it.EventItemId,
           token,
           fetchImpl,
+        });
+        if (!rows.length) continue;
+        for (const row of rows) {
+          rawVotes.push({
+            ...row,
+            EventItemId: it.EventItemId,
+            EventItemMatterId: it.EventItemMatterId,
+          });
+        }
+        const summary = summarizeLegistarVotes(rows, {
           matterId: String(it.EventItemMatterId),
           agendaItemId: String(it.EventItemId),
+          eventItemId: it.EventItemId,
         });
         if (summary) {
           summaries.push({ matter_id: String(it.EventItemMatterId), ...summary });
@@ -457,16 +473,18 @@ async function collectVoteSummaries({ eventItemRows, token, fetchImpl }) {
       }
     }
   }
-  return summaries;
+  return { summaries, rawVotes };
 }
 
 /**
  * Collect best-effort attachments for matter-bearing agenda items. Bounded like votes.
+ * Also returns publisher-raw attachment rows (EventItemId stamped) for dual-write.
  */
 async function collectAttachments({ eventItemRows, token, fetchImpl }) {
   const candidates = eventItemRows.filter((it) => it && it.EventItemId && it.EventItemMatterId);
   const byEvent = groupBy(candidates, (it) => String(it.EventItemEventId));
   const out = [];
+  const rawAttachments = [];
   let total = 0;
   for (const [, evItems] of byEvent) {
     let perEvent = 0;
@@ -475,11 +493,19 @@ async function collectAttachments({ eventItemRows, token, fetchImpl }) {
       perEvent += 1;
       total += 1;
       try {
-        const documents = await fetchLegistarItemAttachments({
+        const rows = await fetchLegistarItemAttachmentRows({
           itemId: it.EventItemId,
           token,
           fetchImpl,
         });
+        if (!rows.length) continue;
+        for (const row of rows) {
+          rawAttachments.push({
+            ...row,
+            EventItemId: it.EventItemId,
+          });
+        }
+        const documents = projectLegistarAttachmentDocuments(rows);
         if (documents.length) {
           out.push({ agenda_item_id: String(it.EventItemId), documents });
         }
@@ -488,14 +514,23 @@ async function collectAttachments({ eventItemRows, token, fetchImpl }) {
       }
     }
   }
-  return out;
+  return { attachmentRows: out, rawAttachments };
 }
 
 /**
  * Fetch + assemble the full meeting-outcomes view. When no token is configured
  * the view degrades to notices-only with explicit "not yet ingested" gaps.
+ *
+ * When `env` is provided and LEGISTAR_SOURCE_RECORD_DUAL_WRITE is on, raw
+ * Events / EventItems / Votes / Attachments are fail-soft dual-written into
+ * source_records without changing the public KV view.
  */
-export async function buildMeetingOutcomesView({ token = null, fetchImpl = fetch, now = new Date() } = {}) {
+export async function buildMeetingOutcomesView({
+  token = null,
+  fetchImpl = fetch,
+  now = new Date(),
+  env = null,
+} = {}) {
   const noticeRows = await buildNoticeRows(fetchImpl, now);
 
   if (!token) {
@@ -525,18 +560,40 @@ export async function buildMeetingOutcomesView({ token = null, fetchImpl = fetch
   );
   const eventItemRows = itemBatches.flat();
 
-  const [voteRows, attachmentRows] = await Promise.all([
+  const [voteBag, attachmentBag] = await Promise.all([
     collectVoteSummaries({ eventItemRows, token, fetchImpl }),
     collectAttachments({ eventItemRows, token, fetchImpl }),
   ]);
 
-  return buildMeetingOutcomes(noticeRows, eventRows, eventItemRows, voteRows, attachmentRows);
+  const view = buildMeetingOutcomes(
+    noticeRows,
+    eventRows,
+    eventItemRows,
+    voteBag.summaries,
+    attachmentBag.attachmentRows,
+  );
+
+  // Shadow dual-write: never block the public meeting-outcomes materialization.
+  if (env) {
+    await dualWriteLegistarObservations(
+      env,
+      {
+        events: eventRows,
+        eventItems: eventItemRows,
+        votes: voteBag.rawVotes,
+        attachments: attachmentBag.rawAttachments,
+      },
+      view.generated_at,
+    );
+  }
+
+  return view;
 }
 
 export async function refreshMeetingOutcomes(env, fetchImpl = fetch, now = new Date()) {
   if (!env?.ALERT_STATE) return { status: "skipped", reason: "no-kv" };
   const token = env?.LEGISTAR_API_TOKEN || null;
-  const view = await buildMeetingOutcomesView({ token, fetchImpl, now });
+  const view = await buildMeetingOutcomesView({ token, fetchImpl, now, env });
   await env.ALERT_STATE.put(MEETING_OUTCOMES_KV_KEY, JSON.stringify(view), {
     expirationTtl: 3 * 24 * 60 * 60,
   });

@@ -115,7 +115,7 @@ test("public graph allowlist includes official nodes and votes_on edges", () => 
   assert.ok(PUBLIC_GRAPH_EDGE_TYPES.includes("votes_on"));
 });
 
-test("source_coverage documents legistar-votes person retention progress", () => {
+test("source_coverage documents legistar-votes person retention and dual-write", () => {
   const coverage = JSON.parse(
     readFileSync(join(root, "../entity_resolution/source_coverage.json"), "utf8"),
   );
@@ -123,8 +123,11 @@ test("source_coverage documents legistar-votes person retention progress", () =>
   assert.ok(votes);
   assert.ok(votes.identity_entities.includes("official"));
   assert.ok(votes.stable_source_key.includes("PersonId"));
+  assert.equal(votes.dual_write?.after, "complete");
+  assert.equal(votes.known_gap, null);
+  assert.equal(votes.dual_write?.flag, "LEGISTAR_SOURCE_RECORD_DUAL_WRITE");
   assert.ok(
-    /retain|person-level|official/i.test(votes.known_gap || ""),
-    "known_gap should describe remaining dual-write gap after person retention",
+    /source_records|retain/i.test(votes.person_retention?.status || ""),
+    "person_retention should note retention on meeting outcomes and/or source_records",
   );
 });

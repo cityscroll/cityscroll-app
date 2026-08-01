@@ -39,7 +39,7 @@ export async function handleMeetingOutcomes(request, env, ctx) {
   if (!parsed || stale) {
     try {
       const token = env?.LEGISTAR_API_TOKEN || null;
-      const view = await buildMeetingOutcomesView({ token, fetchImpl: fetch, now: new Date() });
+      const view = await buildMeetingOutcomesView({ token, fetchImpl: fetch, now: new Date(), env });
       raw = JSON.stringify(view);
       const write = env.ALERT_STATE.put(MEETING_OUTCOMES_KV_KEY, raw, {
         expirationTtl: 3 * 24 * 60 * 60,
