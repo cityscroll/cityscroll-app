@@ -10,9 +10,12 @@ import {
   DOB_NOW_DATASET,
   joinOpenDataToZapOutcome,
   joinDobFilingsToBbls,
+  joinCityRecordLandNotices,
+  buildLandEventSpine,
   normProjectId,
   outcomeIsFilled,
 } from "./lib/zap_outcomes.mjs";
+import { extractUlurpKeys } from "./lib/ulurp_recommendations_join.mjs";
 
 export {
   parseZapApiProject,
@@ -25,6 +28,13 @@ export {
 } from "./lib/zap_outcomes.mjs";
 
 const SODA = "https://data.cityofnewyork.us/resource";
+const CITY_RECORD_DATASET = "dg92-zbpx";
+const CITY_RECORD_SELECT = [
+  "request_id", "start_date", "event_date", "section_name", "agency_name",
+  "type_of_notice_description", "short_title", "additional_description_1",
+  "additional_description_2", "additional_description_3", "other_info_1",
+  "other_info_2", "other_info_3", "printout_1", "printout_2", "printout_3",
+].join(",");
 
 function corsHeaders() {
   return {
@@ -72,10 +82,47 @@ async function fetchOpenDataRow(projectId) {
   const where = `project_id='${String(projectId).replace(/'/g, "''")}'`;
   const url =
     `${SODA}/hgx4-8ukb.json?$select=project_id,project_name,public_status,project_status,`
-    + `approval_date,completed_date,ulurp_numbers,borough,community_district,actions,current_milestone`
+    + `approval_date,completed_date,ulurp_numbers,borough,community_district,actions,current_milestone,current_milestone_date`
     + `&$where=${encodeURIComponent(where)}&$limit=1`;
   const rows = await fetchJson(url);
   return Array.isArray(rows) && rows[0] ? rows[0] : { project_id: projectId };
+}
+
+async function fetchCityRecordCandidates(openData, projectName) {
+  const keys = [...extractUlurpKeys(openData?.ulurp_numbers)];
+  const spacedKeys = keys.map((key) => {
+    const match = key.match(/^([A-Z]?)(\d{6})([A-Z]+)$/);
+    return match ? [match[1], match[2], match[3]].filter(Boolean).join(" ") : key;
+  });
+  // City Record prose commonly prints `C 240046 HAM`, while ZAP stores
+  // `C240046HAM`; query both forms, then retain only strict parsed-token hits.
+  const terms = [
+    String(projectName || openData?.project_name || "").trim(),
+    ...keys,
+    ...spacedKeys,
+  ].filter((term, index, all) => term.length >= 4 && all.indexOf(term) === index).slice(0, 12);
+  if (!terms.length) return { rows: [], status: "ok" };
+
+  let successful = 0;
+  const rows = [];
+  const seen = new Set();
+  await Promise.all(terms.map(async (term) => {
+    const url = `${SODA}/${CITY_RECORD_DATASET}.json?$select=${CITY_RECORD_SELECT}`
+      + `&$q=${encodeURIComponent(term)}&$order=start_date DESC&$limit=40`;
+    try {
+      const found = await fetchJson(url, 10000);
+      successful++;
+      for (const row of found || []) {
+        const id = String(row?.request_id || "");
+        if (!id || seen.has(id)) continue;
+        seen.add(id);
+        rows.push(row);
+      }
+    } catch {
+      // A partial query failure must not erase successful strict-token candidates.
+    }
+  }));
+  return { rows, status: successful ? "ok" : "unavailable" };
 }
 
 async function fetchBbls(projectId) {
@@ -168,11 +215,23 @@ export async function buildZapOutcomeRecord(projectId, { fetchBbl = true } = {})
     }
   }
 
-  return {
+  const withDob = {
     ...record,
     dob,
     filled: outcomeIsFilled(record),
     generated_at: new Date().toISOString(),
+  };
+  const candidateResult = await fetchCityRecordCandidates(openData, record.project_name);
+  const cityRecordNotices = joinCityRecordLandNotices(
+    candidateResult.rows,
+    openData?.ulurp_numbers,
+  );
+  return {
+    ...withDob,
+    spine: buildLandEventSpine(withDob, {
+      cityRecordNotices,
+      noticeLookupStatus: candidateResult.status,
+    }),
   };
 }
 

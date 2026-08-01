@@ -26,6 +26,8 @@
 // Verdict: above usefulness threshold (≥30%) on decision-document outcomes.
 // Ship edge materialization via GET /zap-outcomes (precompute-first for the browser).
 
+import { extractUlurpKeys } from "./ulurp_recommendations_join.mjs";
+
 export const ZAP_API_BASE = "https://zap-api-production.herokuapp.com";
 export const ZAP_PORTAL_PROJECT = "https://zap.planning.nyc.gov/projects";
 export const ZAP_SODA_PROJECTS = "hgx4-8ukb";
@@ -36,6 +38,7 @@ export const ZAP_OUTCOMES_KV_PREFIX = "zap-outcome:v1:";
 export const ZAP_OUTCOMES_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 
 const APPROVED_STATUSES = new Set(["approved", "adopted", "certified"]);
+const CITY_RECORD_DETAIL = "https://a856-cityrecord.nyc.gov/RequestDetail";
 
 /** Normalize a ZAP project_id for exact join. */
 export function normProjectId(value) {
@@ -89,6 +92,33 @@ function clean(value) {
   if (value == null) return null;
   const s = String(value).replace(/\s+/g, " ").trim();
   return s || null;
+}
+
+function eventTime(value, basis, certainty = "actual") {
+  const date = isoDate(value);
+  return date ? { value: date, precision: "day", basis, certainty } : null;
+}
+
+function parseMilestone(item) {
+  const a = item?.attributes || {};
+  const actualEnd = eventTime(a["dcp-actualenddate"], "actual_end");
+  const reviewMeeting = eventTime(a["dcp-reviewmeetingdate"], "review_meeting");
+  const actualStart = eventTime(a["dcp-actualstartdate"], "actual_start");
+  const plannedEnd = eventTime(a["dcp-plannedcompletiondate"], "planned_completion", "planned");
+  // A published meeting date is the event itself; actual-end is the workflow close date.
+  const time = reviewMeeting || actualEnd || actualStart || plannedEnd;
+  if (!time) return null;
+  return {
+    id: item?.id || null,
+    title: clean(a["display-name"]) || clean(a.milestonename) || clean(a["dcp-name"]) || "ZAP milestone",
+    description: clean(a["display-description"]),
+    status: clean(a.statuscode),
+    outcome: clean(a.outcome),
+    sequence: Number.isFinite(Number(a["dcp-milestonesequence"]))
+      ? Number(a["dcp-milestonesequence"])
+      : null,
+    time,
+  };
 }
 
 function collectDocs(kind, attributes) {
@@ -198,6 +228,7 @@ export function parseZapApiProject(payload) {
   const included = Array.isArray(payload.included) ? payload.included : [];
 
   const actions = [];
+  const milestones = [];
   const dispositions = [];
   const documents = [];
 
@@ -216,6 +247,9 @@ export function parseZapApiProject(payload) {
         cc_resolution: clean(a["dcp-ccresolutionnumber"]),
         sharepoint_url: clean(a["dcp-spabsoluteurl"]),
       });
+    } else if (type === "milestones") {
+      const milestone = parseMilestone(item);
+      if (milestone) milestones.push(milestone);
     } else if (type === "dispositions") {
       const docs = collectDocs("disposition", a);
       documents.push(...docs);
@@ -266,6 +300,10 @@ export function parseZapApiProject(payload) {
     last_milestone_date: isoDate(attrs["dcp-lastmilestonedate"]),
     portal_url: projectId ? `${ZAP_PORTAL_PROJECT}/${encodeURIComponent(projectId)}` : null,
     actions,
+    milestones: milestones.sort((a, b) => (
+      String(a.time?.value || "").localeCompare(String(b.time?.value || ""))
+      || (a.sequence ?? 0) - (b.sequence ?? 0)
+    )),
     approved_actions: approvedActions,
     dispositions: groupedDispositions,
     documents: uniqueDocs.slice(0, 40),
@@ -275,6 +313,188 @@ export function parseZapApiProject(payload) {
     useful,
     source: ZAP_OUTCOMES_SOURCE,
     api_base: ZAP_API_BASE,
+  };
+}
+
+function cityRecordBlob(row) {
+  return [
+    row?.short_title,
+    row?.additional_description_1,
+    row?.additional_description_2,
+    row?.additional_description_3,
+    row?.other_info_1,
+    row?.other_info_2,
+    row?.other_info_3,
+    row?.printout_1,
+    row?.printout_2,
+    row?.printout_3,
+  ].filter(Boolean).join(" ").replace(/<[^>]*>/g, " ");
+}
+
+/** Strictly join City Record candidate rows by normalized ULURP application token. */
+export function joinCityRecordLandNotices(rows, ulurpNumbers) {
+  const projectKeys = extractUlurpKeys(ulurpNumbers);
+  if (!projectKeys.size) return [];
+  const joined = [];
+  const seen = new Set();
+  for (const row of rows || []) {
+    const requestId = clean(row?.request_id);
+    if (!requestId || seen.has(requestId)) continue;
+    const noticeKeys = extractUlurpKeys(cityRecordBlob(row));
+    const keys = [...projectKeys].filter((key) => noticeKeys.has(key)).sort();
+    if (!keys.length) continue;
+    seen.add(requestId);
+    joined.push({
+      ...row,
+      join: { method: "exact_ulurp_token", keys },
+    });
+  }
+  return joined.sort((a, b) => String(a.start_date || "").localeCompare(String(b.start_date || "")));
+}
+
+function source(id, label, url) {
+  return { id, label, url };
+}
+
+function milestoneEvent(milestone, record) {
+  return {
+    id: `zap-milestone:${milestone.id || milestone.sequence || milestone.time.value}`,
+    kind: "zap_milestone",
+    title: milestone.title,
+    detail: milestone.outcome || milestone.status || null,
+    status: milestone.status,
+    outcome: milestone.outcome,
+    time: milestone.time,
+    source: source("zap-project-api", "Zoning Application Portal", record.portal_url),
+  };
+}
+
+function dispositionEvent(disposition, index, record) {
+  const time = eventTime(disposition.vote_date, "vote_date")
+    || eventTime(disposition.hearing_date, "hearing_date");
+  if (!time) return null;
+  const recommendation = disposition.community_board
+    || disposition.borough_president
+    || disposition.borough_board
+    || disposition.status;
+  return {
+    id: `zap-disposition:${disposition.source_ids?.join("+") || disposition.id || index}`,
+    kind: "zap_disposition",
+    title: clean(disposition.representing) || "Land-use disposition",
+    detail: clean(recommendation),
+    status: disposition.status,
+    outcome: clean(recommendation),
+    time,
+    source: source("zap-project-api", "Zoning Application Portal", record.portal_url),
+  };
+}
+
+function noticeEvents(notice) {
+  const requestId = clean(notice.request_id);
+  const url = `${CITY_RECORD_DETAIL}/${encodeURIComponent(requestId)}`;
+  const src = source("city-record", "City Record", url);
+  const title = clean(notice.short_title) || clean(notice.type_of_notice_description) || "Land-use notice";
+  const events = [];
+  const published = eventTime(notice.start_date, "publication_date");
+  if (published) {
+    events.push({
+      id: `city-record:${requestId}:published`,
+      kind: "city_record_notice_published",
+      title,
+      detail: clean(notice.agency_name),
+      status: "published",
+      outcome: null,
+      time: published,
+      source: src,
+      join: notice.join,
+    });
+  }
+  const hearing = eventTime(notice.event_date, "event_date");
+  if (hearing) {
+    events.push({
+      id: `city-record:${requestId}:hearing`,
+      kind: "city_record_hearing",
+      title,
+      detail: clean(notice.agency_name),
+      status: "scheduled",
+      outcome: null,
+      time: hearing,
+      source: src,
+      join: notice.join,
+    });
+  }
+  return events;
+}
+
+function openDataPortalLag(record) {
+  const openDate = isoDate(record?.open_data?.current_milestone_date);
+  const portalDate = isoDate(record?.last_milestone_date);
+  if (!openDate || !portalDate) {
+    return { status: "unknown", days: null, open_data_date: openDate, portal_date: portalDate };
+  }
+  const days = Math.max(0, Math.round((Date.parse(portalDate) - Date.parse(openDate)) / 86400000));
+  return {
+    status: portalDate > openDate ? "behind" : "aligned",
+    days,
+    open_data_date: openDate,
+    portal_date: portalDate,
+  };
+}
+
+/**
+ * Combine ZAP portal milestones/outcomes and strictly joined City Record notices
+ * into one source-linked, date-normalized rail. Empty slots remain explicit.
+ */
+export function buildLandEventSpine(
+  record,
+  { cityRecordNotices = [], noticeLookupStatus = "ok" } = {},
+) {
+  const events = [];
+  for (const milestone of record?.milestones || []) events.push(milestoneEvent(milestone, record));
+  for (const [index, disposition] of (record?.dispositions || []).entries()) {
+    const event = dispositionEvent(disposition, index, record);
+    if (event) events.push(event);
+  }
+  for (const notice of cityRecordNotices || []) events.push(...noticeEvents(notice));
+  events.sort((a, b) => a.time.value.localeCompare(b.time.value) || a.id.localeCompare(b.id));
+
+  const gaps = [];
+  if (!(record?.milestones || []).length) {
+    gaps.push({
+      slot: "zap_milestones",
+      class: "not_yet_ingested",
+      taxonomy: true,
+      source: "Zoning Application Portal",
+    });
+  }
+  if (!(cityRecordNotices || []).length) {
+    gaps.push(noticeLookupStatus === "unavailable"
+      ? {
+          slot: "city_record_notices",
+          class: "source_unavailable",
+          taxonomy: false,
+          source: "City Record Online",
+        }
+      : {
+          slot: "city_record_notices",
+          class: "not_published",
+          taxonomy: true,
+          source: "City Record Online",
+        });
+  }
+
+  return {
+    schema_version: 1,
+    project_id: record?.project_id || record?.open_data?.project_id || null,
+    join: {
+      zap: record?.join || null,
+      city_record: cityRecordNotices.length
+        ? { matched: true, method: "exact_ulurp_token", count: cityRecordNotices.length }
+        : { matched: false, method: "exact_ulurp_token", count: 0 },
+    },
+    events,
+    gaps,
+    lag: { open_data_vs_portal: openDataPortalLag(record) },
   };
 }
 
