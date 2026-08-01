@@ -301,6 +301,14 @@ recovery under queue mode.
 
 Characterization: `node --test test/markseen_policy.test.mjs test/digest_catchup.test.mjs`.
 
+## Digest time ontology
+
+Digest freshness uses semantic delivery keys, not source timestamps: event time controls
+actionability, publication/recorded time are provenance, and source identity + actionable state
+is the idempotency key. This lets a late Rules/Legistar enrichment notify once without a
+republish sending twice. Contract: `docs/digest-time-ontology.md`; characterization:
+`node --test worker/test/alert_temporal.test.mjs`.
+
 ## Non-Council hearing outcomes (copy)
 
 Non-Council unmatched slots use class-(b) copy naming borough president websites

@@ -23,6 +23,8 @@ const EMAIL_STRINGS = {
     digest_unsubscribe:   "Unsubscribe",
     digest_unsubscribe_all: "Unsubscribe from all watches",
     digest_manage:        "Manage watches",
+    rules_comment_open:   "Comments open through {date}",
+    rules_comment_action: "Comment on NYC Rules",
 
     quiet_nothing_week:  "No new items this week for {label} — nothing new {since}.",
     quiet_still_watching:"Still watching {label} — nothing new {since}.",
@@ -71,6 +73,8 @@ const EMAIL_STRINGS = {
     digest_unsubscribe:   "Darse de baja",
     digest_unsubscribe_all: "Darse de baja de todas las alertas",
     digest_manage:        "Administrar alertas",
+    rules_comment_open:   "Comentarios abiertos hasta {date}",
+    rules_comment_action: "Comentar en NYC Rules",
 
     quiet_nothing_week:  "No hay avisos nuevos esta semana para {label} — nada nuevo {since}.",
     quiet_still_watching:"Seguimos monitoreando {label} — nada nuevo {since}.",

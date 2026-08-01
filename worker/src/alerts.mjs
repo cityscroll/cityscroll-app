@@ -51,6 +51,8 @@ import {
   sectionWantsSend,
 } from "./lib/rollup.mjs";
 import { prefsLink } from "./prefs.mjs";
+import { RULES_KV_KEY } from "./rules.mjs";
+import { reconcileTemporalCandidates } from "./lib/alert_temporal.mjs";
 
 // A sent digest's category breakdown for the all-time stats: one bump per distinct City
 // Record section_name it carried (falling back to the watch's lens for sections without
@@ -474,7 +476,9 @@ export async function processOneSub(env, s, ctx) {
       if (q.postFilter) rows = rows.filter(q.postFilter); // e.g. entity watches refine stem-prefix matches
     }
     const seen = await getSeen(env, s.key);
-    const fresh = dedupeFreshByContent(rows.filter((r) => r[q.idField] && !seen.has(r[q.idField])));
+    const rulesView = s.lens === "rules" ? await readJsonKv(env.ALERT_STATE, RULES_KV_KEY) : null;
+    const reconciled = reconcileTemporalCandidates({ lens: s.lens, rows, seen, rulesView, idField: q.idField });
+    const fresh = dedupeFreshByContent(reconciled.fresh);
 
     // Search health: has this watch matched anything new lately? Judged from `fresh` alone (not
     // forecasts — those are a different kind of content), and recorded on the sub's own SUBS
@@ -555,7 +559,9 @@ export async function processOneSub(env, s, ctx) {
 
     // Mark seen ONLY on a real send — advancing the seen set without delivery was the
     // watermark-poisoning bug (dry-run, quiet, or any path where send stays false).
-    if (send && ctx.advanceState !== false && rows.length) await markSeen(env, s.key, rows.map((r) => r[q.idField]).filter(Boolean));
+    if (send && ctx.advanceState !== false && reconciled.markSeenIds.length) {
+      await markSeen(env, s.key, reconciled.markSeenIds);
+    }
     // Multi-day lag after a delivery outage: stamp traffic_class so desk ops can exempt
     // day-scoped phantom_send without treating a normal daily match as recovery.
     // Email copy stays the normal daily subject/body (not catch-up branded).
@@ -782,7 +788,9 @@ async function evaluateSubSection(env, s, ctx) {
       if (q.postFilter) rows = rows.filter(q.postFilter);
     }
     const seen = await getSeen(env, s.key);
-    const fresh = dedupeFreshByContent(rows.filter((r) => r[q.idField] && !seen.has(r[q.idField])));
+    const rulesView = s.lens === "rules" ? await readJsonKv(env.ALERT_STATE, RULES_KV_KEY) : null;
+    const reconciled = reconcileTemporalCandidates({ lens: s.lens, rows, seen, rulesView, idField: q.idField });
+    const fresh = dedupeFreshByContent(reconciled.fresh);
 
     const matched = fresh.length > 0;
     const health = nextSearchHealth(s.health, matched, ctx.today);
@@ -820,7 +828,7 @@ async function evaluateSubSection(env, s, ctx) {
       w,
       healthNote,
       label: base.queryLabel,
-      markSeenIds: rows.map((r) => r[q.idField]).filter(Boolean),
+      markSeenIds: reconciled.markSeenIds,
       seenId: s.key,
     };
   } catch (e) {
@@ -1477,6 +1485,15 @@ function evidenceLineHtml(ev, esc, lang) {
   return `<div style="color:#666;font-size:12px;font-style:italic;margin-top:2px">${html}</div>`;
 }
 
+function temporalActionHtml(row, esc, lang = "en") {
+  const action = row?.temporal_action;
+  if (action?.kind !== "rules-comment-open" || !action.event_at || !action.url) return "";
+  const deadline = shortDate(action.event_at);
+  const status = emailT(lang, "rules_comment_open", { date: deadline });
+  const label = emailT(lang, "rules_comment_action");
+  return `<div style="color:#8a3d12;font-size:13px;margin:3px 0">${esc(status)} · <a href="${esc(action.url)}">${esc(label)}</a></div>`;
+}
+
 function digestHtml(w, rows) {
   const money = (n) => (n == null || n === "" ? "" : "$" + Number(n).toLocaleString("en-US"));
   const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
@@ -1559,6 +1576,16 @@ async function getSeen(env, id) {
     const raw = await env.ALERT_STATE.get(`seen:${id}`);
     return new Set(raw ? JSON.parse(raw) : []);
   } catch { return new Set(); }
+}
+
+async function readJsonKv(namespace, key) {
+  if (!namespace) return null;
+  try {
+    const raw = await namespace.get(key);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
 }
 
 async function markSeen(env, id, ids) {
@@ -1679,7 +1706,7 @@ function maskKey(n) {
 // subs match by name, not keyword, so they pass none and get no evidence line, correctly).
 // w: this watch's encodeWatchFilter() output (w12-12) — null for a rezone digest, which links
 // straight to ZAP below and never touches CityScroll's own notice view.
-function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.cityscroll.org", forecasts = [], lang = "en", keywords = [], w = null, healthNote = "", sessionTok = null, manageUrl = null) {
+export function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.cityscroll.org", forecasts = [], lang = "en", keywords = [], w = null, healthNote = "", sessionTok = null, manageUrl = null) {
   const usd = (n) => (n == null || n === "" ? "" : "$" + Number(n).toLocaleString("en-US"));
   const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
   const cr = (id) => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
@@ -1719,6 +1746,7 @@ function subDigestHtml(label, kind, rows, unsubUrl, since, base = "https://api.c
       .filter(Boolean).map(esc).join(" · ");
     return `<li style="margin:0 0 14px"><b><a href="${noticeLink}">${titleHtml(titleText, ev, esc)}</a></b><br>
       <span style="color:#555;font-size:13px">${meta}</span><br>
+      ${temporalActionHtml(r, esc, lang)}
       ${evidenceLineHtml(ev, esc, lang)}
       <span style="font-size:13px">${acts.join(" &nbsp; ")}</span></li>`;
   };
@@ -1823,6 +1851,7 @@ function rollupDigestHtml({ sections = [], unsubAllUrl, manageUrl, lang = "en", 
       const meta = [r.agency_name, usd(r.contract_amount), dueLabel(r.due_date)].filter(Boolean).map(esc).join(" · ");
       return `<li style="margin:0 0 12px"><b><a href="${noticeLink}">${titleHtml(titleText, ev, esc)}</a></b><br>
         <span style="color:#555;font-size:13px">${meta}</span><br>
+        ${temporalActionHtml(r, esc, lang)}
         ${evidenceLineHtml(ev, esc, lang)}
         <span style="font-size:13px"><a href="${noticeLink}">↗ View on CityScroll</a> · <a href="${cr(r.request_id)}">City Record</a></span></li>`;
     }).join("");
