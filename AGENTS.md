@@ -349,9 +349,12 @@ Clocks: valid, publication, observation, processing — never invent publication
 processing. ADR: `docs/adr/civic-time-event-contract.md`. Pure lib:
 `worker/src/lib/civic_time.mjs` (Rules/Land/Meetings adapters; Money production adapter
 `mapMoneyLifecycleToCivic` / `attachMoneyCivicEvents` on `computeLifecycle` →
-`civic_events` on `/contract-lifecycle`). Metric: `money_spine_adapter_coverage`
-(notices with ≥1 Money civic event / procurement lifecycles). Verify:
-`node --test worker/test/civic_time_contract.test.mjs worker/test/checkbook_lifecycle.test.mjs && node worker/scripts/civic-time-diff.mjs --fixtures worker/test/fixtures/civic-time --check`.
+`civic_events` on `/contract-lifecycle`). Metrics: `money_spine_adapter_coverage`
+(notices with ≥1 Money civic event / procurement lifecycles);
+`temporal_completeness_rate` (mean share of event/publication/observed/processed
+clocks filled per civic-time event, by spine, joined to source-contract health via
+`temporalCompletenessScorecard`). Verify:
+`node --test worker/test/civic_time_contract.test.mjs worker/test/temporal_completeness.test.mjs worker/test/checkbook_lifecycle.test.mjs && node worker/scripts/civic-time-diff.mjs --fixtures worker/test/fixtures/civic-time --check && node worker/scripts/temporal-completeness-scorecard.mjs --fixtures worker/test/fixtures/civic-time --check`.
 Digest delivery identity remains `docs/digest-time-ontology.md` (separate concern).
 
 ## Subject registry (cross-spine subject_ref)
