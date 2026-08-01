@@ -1048,8 +1048,18 @@ const STRINGS = {
     subsidy_company_unknown_html: "The city does not publish a company name on this Build NYC record — it would appear there if released.",
     subsidy_place_unknown_html: "The city does not publish a project address or BBL on this Build NYC record — it would appear there if released.",
     subsidy_money_unknown_html: "The city does not publish this {field} on the Build NYC record — it would appear there if released.",
+    // Class (a): structured Build NYC fields exist publicly but this path only has the City Record
+    // hearing (feed unreachable / not joined). Do not claim the city withheld the figure.
+    subsidy_company_not_yet_ingested_html: "Not yet shown here — company names live in {source}.",
+    subsidy_place_not_yet_ingested_html: "Not yet shown here — project addresses and BBLs live in {source}.",
+    subsidy_money_not_yet_ingested_html: "Not yet shown here — {field} figures live in {source}.",
+    subsidy_feed_unavailable_html: "Could not reach {source} for the full subsidy project record — hearing details below are from the City Record notice.",
+    subsidy_money_matched_html: "{field}: <b>{amount}</b>.",
+    subsidy_money_matched_city_record_html: "{field}: <b>{amount}</b> (from the City Record hearing notice).",
     subsidy_money_requested_lbl: "requested benefit",
     subsidy_money_estimated_lbl: "estimated public cost",
+    subsidy_money_total_project_cost_lbl: "total project cost",
+    subsidy_money_total_development_cost_lbl: "total development cost",
     subsidy_provenance_note_html: "Stages join City Record notices to {source} project records when a public match exists.",
 
     // Council meeting outcomes on notice detail (MEET-001)
