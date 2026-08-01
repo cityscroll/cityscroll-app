@@ -15,12 +15,12 @@
   "required_status_checks": [
     "Unit tests (site + worker)",
     "Accessibility + language gate (axe on every PR)",
-    "Stray-English guard (runtime, fixtures)",
     "Reading-level ratchet gate (readable-or-else)"
   ],
   "notes": [
     "min_entries_to_merge_wait_minutes=5 forms a short merge train so near-simultaneous PRs share one merge_group when independent.",
     "ALLGREEN is intentional: do not switch to looser grouping to hide composition failures.",
+    "Runtime multi-locale stray-English is not a required check; Unit static lint owns that class.",
     "A same-repo merge-when-ready seat cap (one auto-merge at a time) is complementary and lives outside this repo."
   ]
 }

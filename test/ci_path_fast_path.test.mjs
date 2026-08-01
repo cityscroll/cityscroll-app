@@ -40,20 +40,22 @@ test("browser jobs use the Playwright cache composite action", () => {
   assert.match(action, /playwright install --with-deps chromium/);
 });
 
-test("Stray-English required job is a single-language index smoke (stable check name)", () => {
+test("runtime multi-locale stray-English is not a CI job; static lint is the gate", () => {
   const ci = read(".github/workflows/ci.yml");
-  assert.match(ci, /name:\s*Stray-English guard \(runtime, fixtures\)/);
-  // Primary cost is static lint in Unit; runtime is es+index only (not the 10×6 matrix).
-  assert.match(ci, /CROL_GUARD_LANGS:\s*es\b/);
-  assert.match(ci, /CROL_GUARD_PAGES:\s*index\b/);
-  assert.match(ci, /test\/functional\/13_stray_english\.py/);
-  // Optional full matrix may be named in comments; CI must not *run* the shards script.
-  assert.doesNotMatch(ci, /run:\s*bash test\/functional\/run_stray_english_shards\.sh/);
-  assert.doesNotMatch(
-    ci,
-    /CROL_GUARD_LANGS:\s*es,zh-Hans,ru,bn,ht,ko,fr,pl,ar,ur/,
+  assert.doesNotMatch(ci, /name:\s*Stray-English guard \(runtime, fixtures\)/);
+  assert.doesNotMatch(ci, /i18n-guard:/);
+  assert.doesNotMatch(ci, /test\/functional\/13_stray_english\.py/);
+  assert.doesNotMatch(ci, /run_stray_english_shards\.sh/);
+  // Primary gate remains in Unit.
+  assert.match(ci, /Stray-English static lint/);
+  assert.match(ci, /test\/standards\/stray_english\.py/);
+  // Cheap locale companions stay under a11y (not the 7-min matrix).
+  assert.match(ci, /15_rtl\.py/);
+  const policy = JSON.parse(read("tools/merge_queue_policy.json"));
+  assert.ok(
+    !policy.required_status_checks.includes("Stray-English guard (runtime, fixtures)"),
   );
-  assert.match(ci, /static lint is the primary gate/);
+  assert.equal(policy.required_status_checks.length, 3);
 });
 
 test("merge queue policy documents train wait and apply tool", () => {
