@@ -722,6 +722,8 @@
     meeting_outcomes_outcome_lbl: "نتیجہ",
     meeting_outcomes_attachments_lbl: "منسلکات",
     meeting_outcomes_vote_html: "ووٹ: {result} (حق میں {aye} · مخالفت {nay})",
+    meeting_outcomes_roll_call_lbl: "رول کال",
+    meeting_outcomes_vote_person_html: "{name} ({vote})",
     meeting_outcomes_outcome_html: "نتیجہ: {outcome}",
     meeting_outcomes_no_votes_html: "ابھی یہاں نہیں دکھایا گیا — معاملہ “{matter}” کی رول کال ووٹیں NYC Council Legistar میں ہیں۔",
     meeting_outcomes_no_matters_html: "ابھی یہاں نہیں دکھایا گیا — ایجنڈا آئٹمز اور معاملات NYC Council Legistar میں ہیں۔",

@@ -715,6 +715,8 @@
     meeting_outcomes_outcome_lbl: "결과",
     meeting_outcomes_attachments_lbl: "첨부 문서",
     meeting_outcomes_vote_html: "투표: {result} (찬성 {aye} · 반대 {nay})",
+    meeting_outcomes_roll_call_lbl: "기명 투표",
+    meeting_outcomes_vote_person_html: "{name} ({vote})",
     meeting_outcomes_outcome_html: "결과: {outcome}",
     meeting_outcomes_no_votes_html: "아직 여기에 표시되지 않음 — 안건 “{matter}”의 호명 투표는 NYC Council Legistar에 있습니다.",
     meeting_outcomes_no_matters_html: "아직 여기 표시되지 않음 — 안건과 의제는 NYC Council Legistar에 있습니다.",

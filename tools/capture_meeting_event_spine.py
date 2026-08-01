@@ -54,7 +54,7 @@ h1{font:900 clamp(25px,4vw,42px)/1.04 Georgia,serif;letter-spacing:-.035em;margi
     <div class="connector" aria-hidden="true">→</div>
     <div class="stage"><div class="box"><div class="stage-name">Council matter</div><div class="when">LU 0001-2026</div><div class="bt">Transit Improvement Funding</div></div></div>
     <div class="connector" aria-hidden="true">→</div>
-    <div class="stage"><div class="box"><div class="stage-name">Outcome</div><div class="when">Approved by Subcommittee</div><div class="lc-pct">Vote: Passed (aye 6 · nay 3)</div></div></div>
+    <div class="stage"><div class="box"><div class="stage-name">Outcome</div><div class="when">Approved by Subcommittee</div><div class="lc-pct">Vote: Passed (aye 6 · nay 3)</div><div class="lc-pct meeting-roll-call" data-official-votes data-official-count="3">Roll call: <span class="meeting-roll-call-person" lang="en" dir="ltr" data-official-id="official:p-101">Ada Councilmember (aye)</span> · <span class="meeting-roll-call-person" lang="en" dir="ltr" data-official-id="official:p-102">Ben Councilmember (aye)</span> · <span class="meeting-roll-call-person" lang="en" dir="ltr" data-official-id="official:p-103">Cara Councilmember (nay)</span></div></div></div>
     <div class="connector" aria-hidden="true">→</div>
     <div class="stage"><div class="box"><div class="stage-name">Attachments</div><div class="docs"><a class="view" href="#">Staff report</a><a class="view" href="#">Agenda</a><a class="view" href="#">Minutes</a></div></div></div>
   </div></div>

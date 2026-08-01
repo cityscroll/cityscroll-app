@@ -87,7 +87,7 @@ One execution of a matcher pipeline: method + version + config hash + input scop
 started/finished timestamps + metrics summary. Required for reproducibility: a decision
 without a run cannot be re-audited when rules change.
 
-## Type families (four)
+## Type families (five)
 
 A shared framework (**normalize → candidates → score → decide → link**) applies to all
 families. Feature sets and auto-link policy differ by family.
@@ -115,6 +115,17 @@ not the full ontology.
 
 Geo + temporal co-reference (addresses, BBLs, capital projects, ULURP tokens). Later wave;
 included here so importers do not invent a fifth ad hoc identity space.
+
+### 5. Officials (person-level)
+
+Elected or appointed officials who cast recorded votes or otherwise act on public
+matters. Primary key pattern `official:{person_id}` (Legistar `PersonId` when present;
+name-keyed fallback only when the publisher supplies a display name without an id).
+Meeting-outcomes materialization retains person-level roll-call rows and emits typed
+`votes_on` edges (official → matter|agenda_item). Pure helpers live in
+`entity_resolution/officials/`. Auto-link policy for cross-source person identity is
+deferred until gold coverage exists; this family exists so votes and meetings can name
+**who acted** without discarding person observations into aggregate tallies only.
 
 ## Decision routing
 
@@ -161,7 +172,7 @@ CREATE TABLE IF NOT EXISTS resolution_run (
   method           TEXT NOT NULL,             -- e.g. vendor_stem_v1
   matcher_version  TEXT NOT NULL,
   config_hash      TEXT,                      -- hash of thresholds / feature flags
-  entity_type      TEXT,                      -- vendor | agency | procurement | location
+  entity_type      TEXT,                      -- vendor | agency | procurement | location | official
   scope_note       TEXT,                      -- human-readable input scope
   started_at       TEXT NOT NULL,             -- ISO-8601
   finished_at      TEXT,
@@ -188,7 +199,7 @@ CREATE INDEX IF NOT EXISTS idx_source_record_hash
 
 CREATE TABLE IF NOT EXISTS canonical_entity (
   id               TEXT PRIMARY KEY,
-  entity_type      TEXT NOT NULL,             -- vendor | agency | procurement | location
+  entity_type      TEXT NOT NULL,             -- vendor | agency | procurement | location | official
   display_name     TEXT NOT NULL,
   attrs_json       TEXT,                      -- type-specific attributes
   created_at       TEXT NOT NULL,

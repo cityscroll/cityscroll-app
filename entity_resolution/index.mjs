@@ -14,6 +14,20 @@ export {
 } from "./authority_keys/index.mjs";
 
 export {
+  ENTITY_TYPE_FAMILIES,
+  OFFICIAL_ENTITY_TYPE,
+  OFFICIAL_PRIMARY_KEY_PATTERN,
+  OFFICIAL_TYPE_FAMILY,
+  VOTES_ON_LINK_TYPE,
+  buildVotesOnEdges,
+  measureOfficialVoteMetrics,
+  normalizeVotePersonRow,
+  officialEntityId,
+  summarizePersonVotes,
+  voteBucket,
+} from "./officials/index.mjs";
+
+export {
   VENDOR_STEM_METHOD,
   VENDOR_STEM_VERSION,
   VENDOR_SUFFIX,

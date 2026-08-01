@@ -51,7 +51,108 @@
       "matter_id": "mat-001",
       "result": "Passed",
       "counts": { "aye": 6, "nay": 3, "abstain": 0 },
-      "person_count": 9
+      "person_count": 9,
+      "person_vote_retention_rate": 1,
+      "official_votes_on_edge_rate": 1,
+      "by_person": [
+        {
+          "person_id": "p-101",
+          "person_name": "Ada Councilmember",
+          "vote_value": "Aye",
+          "vote_bucket": "aye",
+          "official": {
+            "id": "official:p-101",
+            "entity_type": "official",
+            "display_name": "Ada Councilmember"
+          }
+        },
+        {
+          "person_id": "p-102",
+          "person_name": "Ben Councilmember",
+          "vote_value": "Aye",
+          "vote_bucket": "aye",
+          "official": {
+            "id": "official:p-102",
+            "entity_type": "official",
+            "display_name": "Ben Councilmember"
+          }
+        },
+        {
+          "person_id": "p-103",
+          "person_name": "Cara Councilmember",
+          "vote_value": "Nay",
+          "vote_bucket": "nay",
+          "official": {
+            "id": "official:p-103",
+            "entity_type": "official",
+            "display_name": "Cara Councilmember"
+          }
+        }
+      ],
+      "officials": [
+        {
+          "id": "official:p-101",
+          "entity_type": "official",
+          "display_name": "Ada Councilmember"
+        },
+        {
+          "id": "official:p-102",
+          "entity_type": "official",
+          "display_name": "Ben Councilmember"
+        },
+        {
+          "id": "official:p-103",
+          "entity_type": "official",
+          "display_name": "Cara Councilmember"
+        }
+      ],
+      "votes_on": [
+        {
+          "type": "votes_on",
+          "from": "official:p-101",
+          "to": "matter:mat-001",
+          "to_type": "matter",
+          "vote_bucket": "aye",
+          "vote_value": "Aye",
+          "person_id": "p-101",
+          "person_name": "Ada Councilmember",
+          "official": {
+            "id": "official:p-101",
+            "entity_type": "official",
+            "display_name": "Ada Councilmember"
+          }
+        },
+        {
+          "type": "votes_on",
+          "from": "official:p-102",
+          "to": "matter:mat-001",
+          "to_type": "matter",
+          "vote_bucket": "aye",
+          "vote_value": "Aye",
+          "person_id": "p-102",
+          "person_name": "Ben Councilmember",
+          "official": {
+            "id": "official:p-102",
+            "entity_type": "official",
+            "display_name": "Ben Councilmember"
+          }
+        },
+        {
+          "type": "votes_on",
+          "from": "official:p-103",
+          "to": "matter:mat-001",
+          "to_type": "matter",
+          "vote_bucket": "nay",
+          "vote_value": "Nay",
+          "person_id": "p-103",
+          "person_name": "Cara Councilmember",
+          "official": {
+            "id": "official:p-103",
+            "entity_type": "official",
+            "display_name": "Cara Councilmember"
+          }
+        }
+      ]
     }
   ],
   "attachments": [

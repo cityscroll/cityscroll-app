@@ -133,6 +133,16 @@ Read model: `worker/src/lib/meeting_outcomes.mjs` → KV `meeting-outcomes:mater
 Open Data `m48u-yjt8` remains a **disabled** freeze through 2024-12-19 (0% modern).
 Receipts: `site/data/legistar_sources/`. Demo: notice `20260706036` → event `22526`.
 
+**Official entity family (person-level votes):** Legistar roll-call rows retain
+`PersonId`/`PersonName` as `official:{person_id}` objects with typed `votes_on`
+edges (official → matter|agenda_item), not only aye/nay tallies. Pure helpers:
+`entity_resolution/officials/`. Named metrics: `person_vote_retention_rate` and
+`official_votes_on_edge_rate` (receipt under
+`site/data/legistar_sources/verification_receipts/`). Meeting UI renders roll call
+when `by_person` is present. `source_records` dual-write for Legistar votes remains
+a gap. Verify: `node --test test/official_entity_family.test.mjs
+test/legistar_client.test.mjs test/contract/meeting_outcomes.test.mjs`.
+
 ## Content and testing — lifecycle gap taxonomy
 
 **Standing contract:** every absent-data state on a lifecycle surface must tell the reader *which kind of gap* it is. Never ship an undifferentiated “no record” / “unknown” / blank slot when the product has decided a field is missing.

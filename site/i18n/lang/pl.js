@@ -733,6 +733,8 @@
     meeting_outcomes_outcome_lbl: "Wynik",
     meeting_outcomes_attachments_lbl: "Załączniki",
     meeting_outcomes_vote_html: "Głosowanie: {result} (za {aye} · przeciw {nay})",
+    meeting_outcomes_roll_call_lbl: "Głosowanie imienne",
+    meeting_outcomes_vote_person_html: "{name} ({vote})",
     meeting_outcomes_outcome_html: "Wynik: {outcome}",
     meeting_outcomes_no_votes_html: "Jeszcze nie pokazano tutaj — głosy imienne w sprawie „{matter}” są w NYC Council Legistar.",
     meeting_outcomes_no_matters_html: "Jeszcze nie pokazane tutaj — punkty porządku obrad i sprawy są w NYC Council Legistar.",

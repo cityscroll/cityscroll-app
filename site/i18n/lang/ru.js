@@ -725,6 +725,8 @@
     meeting_outcomes_outcome_lbl: "Итог",
     meeting_outcomes_attachments_lbl: "Вложения",
     meeting_outcomes_vote_html: "Голосование: {result} (за {aye} · против {nay})",
+    meeting_outcomes_roll_call_lbl: "Поимённое голосование",
+    meeting_outcomes_vote_person_html: "{name} ({vote})",
     meeting_outcomes_outcome_html: "Итог: {outcome}",
     meeting_outcomes_no_votes_html: "Пока не показано здесь — поименные голоса по вопросу «{matter}» есть в NYC Council Legistar.",
     meeting_outcomes_no_matters_html: "Пока не показано здесь — пункты повестки и дела есть в NYC Council Legistar.",

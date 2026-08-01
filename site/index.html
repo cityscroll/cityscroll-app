@@ -6918,11 +6918,24 @@ function meetingOutcomesHTML(record, notice){
       if(votes.length){
         outcomeHTML = votes.map(v => {
           const c = v.counts || {};
-          return `<div class="lc-pct">${t("meeting_outcomes_vote_html",{
+          const tally = `<div class="lc-pct">${t("meeting_outcomes_vote_html",{
             result: escUiHtml(v.result || "—"),
             aye: String(c.aye != null ? c.aye : "—"),
             nay: String(c.nay != null ? c.nay : "—")
           })}</div>`;
+          // Person-level roll call when officials were retained from Legistar.
+          const people = Array.isArray(v.by_person) ? v.by_person : [];
+          const rollCall = people.length
+            ? `<div class="lc-pct meeting-roll-call" data-official-votes data-official-count="${people.length}">${t("meeting_outcomes_roll_call_lbl")}: ${people.map(p => {
+              const name = (p.official && p.official.display_name) || p.person_name || p.person_id || "—";
+              const vote = p.vote_bucket || p.vote_value || "—";
+              return `<span class="meeting-roll-call-person" lang="en" dir="ltr" data-official-id="${escUiHtml((p.official && p.official.id) || "")}">${t("meeting_outcomes_vote_person_html",{
+                name: escUiHtml(name),
+                vote: escUiHtml(String(vote))
+              })}</span>`;
+            }).join(" · ")}</div>`
+            : "";
+          return tally + rollCall;
         }).join("");
       } else if(matter.outcome || matter.status || matter.passed){
         outcomeHTML = `<div class="lc-pct">${t("meeting_outcomes_outcome_html",{
