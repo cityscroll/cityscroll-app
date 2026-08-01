@@ -101,6 +101,8 @@ const helpers = new Function(
   extractFn("subsidyStageHTML") +
   extractFn("subsidyLifecycleHTML") +
   extractFn("isCityCouncilNotice") +
+  extractFn("meetingVoteStageHTML") +
+  extractFn("meetingVoteSpineHTML") +
   extractFn("meetingOutcomesHTML") +
   `
   return { lifecycleTimelineHTML, subsidyLifecycleHTML, meetingOutcomesHTML, t };
@@ -412,6 +414,7 @@ test("all ten shipping locales define the gap taxonomy keys", () => {
     "meeting_outcomes_unmatched_html",
     "meeting_outcomes_no_votes_html",
     "meeting_outcomes_no_matters_html",
+    "meeting_outcomes_no_action_html",
     "meeting_outcomes_non_council_not_published_html",
     "meeting_outcomes_non_council_where",
     "meeting_outcomes_heading_non_council",
