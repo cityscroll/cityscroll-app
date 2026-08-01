@@ -9,6 +9,8 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 const INDEX = fs.readFileSync(path.join(ROOT, "site/index.html"), "utf8");
+const I18N = fs.readFileSync(path.join(ROOT, "site/i18n.js"), "utf8");
+const SHIPPING_LANGS = ["ar", "bn", "es", "fr", "ht", "ko", "pl", "ru", "ur", "zh-Hans"];
 
 test("index.html defines inv merge + session boot (magic-link recognition)", () => {
   assert.match(INDEX, /function invMergeStores/);
@@ -30,8 +32,21 @@ test("anonymous invSave still writes localStorage only (server push gated)", () 
 test("session banner is dismissible and has a not-you affordance", () => {
   assert.match(INDEX, /id="sessionNotYou"/);
   assert.match(INDEX, /id="sessionDismiss"/);
+  assert.match(INDEX, /id="sessionManage"/);
   assert.match(INDEX, /role="status"/);
   assert.match(INDEX, /sessionLogout/);
+  assert.match(INDEX, /t\("session_signed_in",\s*\{\s*email:/);
+  assert.match(INDEX, /session\.prefsUrl/);
+});
+
+test("session identity and watch-management copy ships in every locale", () => {
+  assert.match(I18N, /session_signed_in:\s*"[^"]*\{email\}/);
+  assert.match(I18N, /session_manage_watches:/);
+  for (const lang of SHIPPING_LANGS) {
+    const dict = fs.readFileSync(path.join(ROOT, `site/i18n/lang/${lang}.js`), "utf8");
+    assert.match(dict, /session_signed_in:\s*"[^"]*\{email\}/, `${lang} names the account`);
+    assert.match(dict, /session_manage_watches:/, `${lang} translates Manage watches`);
+  }
 });
 
 // Pure merge logic mirrored from the client (keep in sync with invMergeStores).

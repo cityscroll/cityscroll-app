@@ -196,6 +196,37 @@ test("POST /session exchanges a valid email token for a session cookie", async (
   assert.equal(res.headers.get("Access-Control-Allow-Credentials"), "true");
 });
 
+test("GET /session names the recognized account and exposes its watch manager", async () => {
+  const e = env();
+  const fixtureEmail = ["user", "example.test"].join("@");
+  const cookieTok = await signToken(SECRET, sessionPayload(fixtureEmail), { ttlSeconds: 3600 });
+  const res = await handleSession(new Request("https://api.cityscroll.org/session", {
+    headers: {
+      Origin: "https://cityscroll.org",
+      Cookie: `cs_session=${cookieTok}`,
+    },
+  }), e, "/session");
+  assert.equal(res.status, 200);
+  assert.deepEqual(await res.json(), {
+    ok: true,
+    recognized: true,
+    email: fixtureEmail,
+    prefsUrl: "https://api.cityscroll.org/prefs",
+  });
+});
+
+test("GET /session never returns account fields without a valid cookie", async () => {
+  const e = env();
+  const res = await handleSession(new Request("https://api.cityscroll.org/session", {
+    headers: { Origin: "https://cityscroll.org" },
+  }), e, "/session");
+  assert.equal(res.status, 200);
+  const body = await res.json();
+  assert.deepEqual(body, { ok: true, recognized: false });
+  assert.equal(body.email, undefined);
+  assert.equal(body.prefsUrl, undefined);
+});
+
 test("invalid / expired tokens degrade silently (recognized:false, no cookie)", async () => {
   const e = env();
   const expired = await signToken(SECRET, sessionPayload("a@b.com"), { ttlSeconds: 1, now: T0 });
