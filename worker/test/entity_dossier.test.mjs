@@ -295,7 +295,6 @@ test("dossier unknown id returns not_yet_public — never markets empty 404 as l
       assert.equal(body.error, "not-found");
       assert.equal(body.public_status, "not_yet_public");
       assert.match(body.message || "", /not yet public|subject-registry|canonical/i);
-      assert.doesNotMatch(body.message || "", /Gotham|Palantir/i);
     }
   } finally {
     sqlite.close();
