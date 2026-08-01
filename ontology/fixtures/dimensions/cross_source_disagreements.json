@@ -1,0 +1,51 @@
+{
+  "schema": "cityscroll.cross_source_disagreements.v0",
+  "note": "Subjects where two public sources disagree on a field. Reconciliation cards retain both assertions; they never pick a silent winner.",
+  "disagreements": [
+    {
+      "id": "ocp-vs-city-record-award-amount",
+      "subject_ref": "notice:20231222103",
+      "field": "contract_amount",
+      "severity": "high",
+      "left": {
+        "source": "ocp-recent-contract-awards",
+        "value": 1500000,
+        "classification": "source_assertion"
+      },
+      "right": {
+        "source": "city-record",
+        "value": 1487500,
+        "classification": "source_assertion"
+      },
+      "claim_layer": true,
+      "resolved": false,
+      "demo_win": "OCP and City Record award amounts both remain labeled; the lifecycle shows disagreement without inventing a winner.",
+      "verify": "node --test worker/test/claim_layer.test.mjs # public_claim_labeled_disagree"
+    },
+    {
+      "id": "passport-vs-checkbook-vendor-name",
+      "subject_ref": "contract:CT107120248803393",
+      "field": "vendor_name",
+      "severity": "medium",
+      "left": {
+        "source": "passport-public-contracts",
+        "value": "HNTB NEW YORK ENGINEERING AND ARCHITECTURE PC"
+      },
+      "right": {
+        "source": "checkbook-contracts",
+        "value": "HNTB NEW YORK ENGINEERING AND ARCHITECTUR"
+      },
+      "resolved": false,
+      "demo_win": "Truncated Checkbook vendor names do not raise a false mismatch when stems match."
+    },
+    {
+      "id": "reconciled-example",
+      "subject_ref": "notice:demo-reconciled",
+      "field": "pin",
+      "left": { "source": "a", "value": "X" },
+      "right": { "source": "b", "value": "Y" },
+      "resolved": true,
+      "status": "reconciled"
+    }
+  ]
+}
