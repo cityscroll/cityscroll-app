@@ -14,8 +14,10 @@ creates links.
 | `run_authority.mjs` | Derive and score silver labels from `source_records` JSONL |
 | `fixtures/source_records_authority_v0.jsonl` | Representative source-record rows for characterization only |
 | `run_entity_components.mjs` | Sample whole components and score entity-level fragmentation / constraint violations |
+| `entity_audit_sampling.mjs` | Inclusion-probability-aware entity sampler and weighted rate helpers |
 | `clerical_audit.mjs` | Pure stratified sampling, label-sheet, and gold-promotion helpers |
 | `audits/<date>/` | Versioned sample, label sheet, and reproducibility receipt |
+| `entity_audits/<date>/` | Versioned entity sample, review sheet, and sampling receipt |
 
 ## Run
 
@@ -199,6 +201,48 @@ To commit a reproducible report and receipt, add
 
 Characterization:
 `node --test test/entity_resolution_entity_components.test.mjs`.
+
+## Entity-centric audit sampling
+
+Build a whole-entity review set from the component report:
+
+```bash
+node tools/export_entity_audit_sample.mjs \
+  --input entity_resolution/eval/components/2026-08-01/report.json \
+  --out-dir entity_resolution/eval/entity_audits/2026-08-01 \
+  --observed-on 2026-08-01 \
+  --sample-size 16
+```
+
+The component report retains pairwise precision, recall, false-merge,
+false-split, and `candidate_recall` metrics from `token_v0` beside the
+entity-level results, so the audit does not replace the established pair view.
+
+The exclusive strata are false splits, large clusters, singletons,
+low-confidence boundaries, authority-key cases, and remaining clusters. The
+allocation covers each available stratum before adding depth and gives false
+splits three allocation turns per control turn. Selection within a stratum is
+a seeded SHA-256 rank without replacement. Every review row therefore records
+its first-order inclusion probability and inverse-probability base weight.
+
+The command writes `audit_sample.jsonl`, `label_sheet.csv`, and `receipt.json`.
+Review judgments are `correct`, `false_split`, `false_merge`, `both`, or
+`uncertain`, with reviewer and date required for nonblank judgments. After
+review, generate Hájek weighted rates with:
+
+```bash
+node tools/export_entity_audit_sample.mjs \
+  --summarize entity_resolution/eval/entity_audits/2026-08-01/label_sheet.csv \
+  --summary-out entity_resolution/eval/entity_audits/2026-08-01/rates.json
+```
+
+Each stratum needs two usable judgments by default. A smaller stratum reports
+`insufficient` and leaves its rates—and the overall rate—null instead of
+generalizing from too few judgments. The checked-in fixture is characterization evidence,
+not a production error-rate measurement.
+
+Characterization:
+`node --test worker/test/entity_audit_sampling.test.mjs`.
 
 ## Clerical audit — false-split priority
 

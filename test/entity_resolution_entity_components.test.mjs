@@ -35,6 +35,14 @@ test("entity metrics distinguish fragmented truth components from negative-const
   assert.equal(report.metrics.gold.over_merged_predicted_components, 1);
   assert.equal(report.false_split_priority[0].record_count, 3);
   assert.ok(report.sample.some((row) => row.stratum === "gold_over_merge"));
+  assert.ok(report.audit_population.some((row) => row.over_merge_callout));
+  assert.ok(report.audit_population.some((row) => (
+    row.unit_kind === "reference_entity" && row.false_split_callout
+  )));
+  const singletonReport = buildEntityComponentReport({ goldCases: [
+    pair("separate", "different", side("s1", "North Consulting"), side("s2", "South Catering")),
+  ] });
+  assert.equal(singletonReport.audit_population.filter((row) => row.record_count === 1).length, 2);
 });
 
 test("sampling is deterministic, stratified, and never truncates a component", () => {
@@ -90,7 +98,10 @@ test("committed report and receipt reproduce the characterized fixture", () => {
   const committed = JSON.parse(readFileSync(COMMITTED_REPORT, "utf8"));
   const receipt = JSON.parse(readFileSync(COMMITTED_RECEIPT, "utf8"));
   assert.deepEqual(receipt.metrics, committed.metrics);
-  assert.equal(receipt.sample_sha256, "59e6fa9b60a4f17cfc80468a6bfdb534340eb517e7717d16ace3726fe358054f");
+  assert.deepEqual(receipt.pairwise_metrics, committed.pairwise_metrics);
+  assert.ok(committed.pairwise_metrics.candidate_recall >= 0);
+  assert.ok(committed.pairwise_metrics.candidate_recall <= 1);
+  assert.equal(receipt.sample_sha256, "06d1fafb3c080419be659e4f07bf6976c946414c9b269af1302a2408b9887fec");
   assert.deepEqual(committed.false_split_priority.map((row) => row.reference_case_ids), [["gv0-026"]]);
 });
 
