@@ -547,7 +547,11 @@ Pure model: `entity_resolution/review/assertion_evidence.mjs`. Characterization:
 derived conclusion. Charter: `docs/adr/evidence-assertion-layer.md`. Shared builders:
 `worker/src/lib/claim_layer.mjs`. First product surface: OCP award side-car disagreements
 on notice lifecycle (`lifecycleOcpAwardHTML` + `corroborateAward` claim_layer rows).
-Dossier display name is a `derived_conclusion`, not a publisher field. Verify:
+Dossier display name is a `derived_conclusion`, not a publisher field. Metric:
+`public_claim_labeled_disagree_rate` (OCP-joined awards with field disagreements that
+carry complete claim_layer labels / all such disagreements) —
+`measurePublicClaimLabeledDisagreeRate`; field cases
+`worker/test/fixtures/claim-layer/ocp_joined_awards.json`. Verify:
 `node --test worker/test/claim_layer.test.mjs worker/test/ocp_awards.test.mjs
 test/lifecycle_render.test.mjs`. Captures:
 `python3 tools/capture_assertion_claim_layer.py`.

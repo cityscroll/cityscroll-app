@@ -639,8 +639,42 @@ test("lifecycle OCP: disagreement names both City Record and OCP amounts and dat
       corroboration: {
         agree: false,
         disagreements: [
-          { field: "amount", city_record: 999999, ocp: 250000 },
-          { field: "date", city_record: "2026-07-15", ocp: "2026-07-30" },
+          {
+            field: "amount",
+            city_record: 999999,
+            ocp: 250000,
+            claim_layer: {
+              version: "claim_layer_v1",
+              assertions: [
+                { classification: "source_assertion", source_system: "city_record", value: 999999 },
+                { classification: "source_assertion", source_system: "ocp-recent-awards", value: 250000 },
+              ],
+              interpretation: {
+                classification: "cityscroll_interpretation",
+                resolution: "unresolved",
+                summary: "Values differ",
+              },
+              derived_conclusion: null,
+            },
+          },
+          {
+            field: "date",
+            city_record: "2026-07-15",
+            ocp: "2026-07-30",
+            claim_layer: {
+              version: "claim_layer_v1",
+              assertions: [
+                { classification: "source_assertion", source_system: "city_record", value: "2026-07-15" },
+                { classification: "source_assertion", source_system: "ocp-recent-awards", value: "2026-07-30" },
+              ],
+              interpretation: {
+                classification: "cityscroll_interpretation",
+                resolution: "unresolved",
+                summary: "Values differ",
+              },
+              derived_conclusion: null,
+            },
+          },
         ],
         fields: {
           amount: { city_record: 999999, ocp: 250000, agree: false },
