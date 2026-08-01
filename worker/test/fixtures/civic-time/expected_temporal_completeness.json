@@ -1,0 +1,241 @@
+{
+  "metric": "temporal_completeness_rate",
+  "schema_version": 1,
+  "event_count": 11,
+  "temporal_completeness_rate": 0.9091,
+  "full_clock_rate": 0.6364,
+  "clock_fill_rates": {
+    "event": 0.8182,
+    "publication": 0.8182,
+    "observed": 1,
+    "processed": 1
+  },
+  "clock_fill_counts": {
+    "event": 9,
+    "publication": 9,
+    "observed": 11,
+    "processed": 11
+  },
+  "spines": {
+    "land": {
+      "event_count": 3,
+      "temporal_completeness_rate": 0.8333,
+      "clock_fill_rates": {
+        "event": 0.6667,
+        "publication": 0.6667,
+        "observed": 1,
+        "processed": 1
+      },
+      "clock_fill_counts": {
+        "event": 2,
+        "publication": 2,
+        "observed": 3,
+        "processed": 3
+      },
+      "kinds": {
+        "land.zap_milestone": 1,
+        "land.city_record_notice": 1,
+        "land.city_record_hearing": 1
+      },
+      "source_contracts": [
+        "city-record",
+        "zap-api-outcomes",
+        "zap-projects"
+      ],
+      "live_source_count": 3,
+      "disabled_source_count": 0,
+      "source_health": [
+        {
+          "id": "city-record",
+          "status": "live",
+          "health": "live"
+        },
+        {
+          "id": "zap-api-outcomes",
+          "status": "live",
+          "health": "live"
+        },
+        {
+          "id": "zap-projects",
+          "status": "live",
+          "health": "live"
+        }
+      ]
+    },
+    "meetings": {
+      "event_count": 3,
+      "temporal_completeness_rate": 1,
+      "clock_fill_rates": {
+        "event": 1,
+        "publication": 1,
+        "observed": 1,
+        "processed": 1
+      },
+      "clock_fill_counts": {
+        "event": 3,
+        "publication": 3,
+        "observed": 3,
+        "processed": 3
+      },
+      "kinds": {
+        "meetings.council_event": 1,
+        "meetings.agenda_item_action": 1,
+        "meetings.roll_call_vote": 1
+      },
+      "source_contracts": [
+        "city-record",
+        "nyc-council-legistar",
+        "city-council-meetings-open-data"
+      ],
+      "live_source_count": 2,
+      "disabled_source_count": 1,
+      "source_health": [
+        {
+          "id": "city-record",
+          "status": "live",
+          "health": "live"
+        },
+        {
+          "id": "nyc-council-legistar",
+          "status": "live",
+          "health": "live"
+        },
+        {
+          "id": "city-council-meetings-open-data",
+          "status": "disabled",
+          "health": "disabled"
+        }
+      ]
+    },
+    "money": {
+      "event_count": 2,
+      "temporal_completeness_rate": 0.75,
+      "clock_fill_rates": {
+        "event": 0.5,
+        "publication": 0.5,
+        "observed": 1,
+        "processed": 1
+      },
+      "clock_fill_counts": {
+        "event": 1,
+        "publication": 1,
+        "observed": 2,
+        "processed": 2
+      },
+      "kinds": {
+        "procurement.notice_published": 1,
+        "procurement.award_registered": 1
+      },
+      "source_contracts": [
+        "city-record",
+        "checkbook-contracts",
+        "checkbook-spending",
+        "passport-public-contracts",
+        "ocp-recent-contract-awards"
+      ],
+      "live_source_count": 5,
+      "disabled_source_count": 0,
+      "source_health": [
+        {
+          "id": "city-record",
+          "status": "live",
+          "health": "live"
+        },
+        {
+          "id": "checkbook-contracts",
+          "status": "live",
+          "health": "live"
+        },
+        {
+          "id": "checkbook-spending",
+          "status": "live",
+          "health": "live"
+        },
+        {
+          "id": "passport-public-contracts",
+          "status": "live",
+          "health": "live"
+        },
+        {
+          "id": "ocp-recent-contract-awards",
+          "status": "live",
+          "health": "live"
+        }
+      ]
+    },
+    "rules": {
+      "event_count": 3,
+      "temporal_completeness_rate": 1,
+      "clock_fill_rates": {
+        "event": 1,
+        "publication": 1,
+        "observed": 1,
+        "processed": 1
+      },
+      "clock_fill_counts": {
+        "event": 3,
+        "publication": 3,
+        "observed": 3,
+        "processed": 3
+      },
+      "kinds": {
+        "rules.proposal_published": 1,
+        "rules.public_hearing": 1,
+        "rules.comment_close": 1
+      },
+      "source_contracts": [
+        "city-record",
+        "nyc-rules-rss"
+      ],
+      "live_source_count": 2,
+      "disabled_source_count": 0,
+      "source_health": [
+        {
+          "id": "city-record",
+          "status": "live",
+          "health": "live"
+        },
+        {
+          "id": "nyc-rules-rss",
+          "status": "live",
+          "health": "live"
+        }
+      ]
+    }
+  },
+  "gaps": [
+    {
+      "spine": "money",
+      "clock": "event",
+      "fill_rate": 0.5,
+      "filled": 1,
+      "event_count": 2,
+      "kind": "adapter_gap"
+    },
+    {
+      "spine": "money",
+      "clock": "publication",
+      "fill_rate": 0.5,
+      "filled": 1,
+      "event_count": 2,
+      "kind": "adapter_gap"
+    },
+    {
+      "spine": "land",
+      "clock": "event",
+      "fill_rate": 0.6667,
+      "filled": 2,
+      "event_count": 3,
+      "kind": "adapter_gap"
+    },
+    {
+      "spine": "land",
+      "clock": "publication",
+      "fill_rate": 0.6667,
+      "filled": 2,
+      "event_count": 3,
+      "kind": "adapter_gap"
+    }
+  ],
+  "gap_count": 4
+}
