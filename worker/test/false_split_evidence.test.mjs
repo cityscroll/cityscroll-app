@@ -38,13 +38,13 @@ function fixtureEnv() {
   insert.run(
     "city_record", "20260730001", "hash-a",
     JSON.stringify({ request_id: "20260730001" }),
-    JSON.stringify({ vendor_name: "Acme Construction LLC", pin: "PIN-44", agency_name: "Design and Construction" }),
+    JSON.stringify({ vendor_name: "Acme Construction LLC", pin: "85026P0001001", agency_name: "Design and Construction" }),
     now,
   );
   insert.run(
     "checkbook", "contract-44", "hash-b",
     JSON.stringify({ source_url: "https://www.checkbooknyc.com/contract-44" }),
-    JSON.stringify({ vendor_name: "Acme Builders Inc", pin: "PIN-45", contract_id: "CT-44" }),
+    JSON.stringify({ vendor_name: "Acme Builders Inc", pin: "85026P0002001", contract_id: "CT-44" }),
     now,
   );
   return { sqlite, env: { ADMIN_KEY: "secret", DB: d1(sqlite) } };
@@ -67,7 +67,7 @@ test("fixture tray measures candidates and exposes both source-linked records", 
     assert.equal(tray.items[0].left.source_record_key, "20260730001");
     assert.match(tray.items[0].left.source_url, /RequestDetail\/20260730001$/);
     assert.equal(tray.items[0].right.source_url, "https://www.checkbooknyc.com/contract-44");
-    assert.equal(tray.items[0].left.observed_fields.pin, "PIN-44");
+    assert.equal(tray.items[0].left.observed_fields.pin, "85026P0001001");
     assert.equal(tray.items[0].right.observed_fields.contract_id, "CT-44");
     assert.equal(tray.items[0].evidence.comparison_features.pin_epin_conflict, true);
   } finally {
