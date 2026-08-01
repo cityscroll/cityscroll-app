@@ -50,8 +50,9 @@ test("HNTB truncation is same through shared PIN hard evidence", () => {
 });
 
 test("PIN and EPIN share one identifier family", () => {
+  const row = goldCase("gv0-035");
   const { features, score } = scoreGold("gv0-035");
-  assert.deepEqual(features.shared_pin_epin, ["81626W0043001"]);
+  assert.deepEqual(features.shared_pin_epin, [row.left.attrs.pin]);
   assert.equal(features.pin_epin_equal, true);
   assert.equal(score.decision, "same");
 });

@@ -66,15 +66,15 @@ test("title vs PIN procurement pair is blocked-out (no shared keys)", () => {
 test("PIN and EPIN values enter the same candidate bucket", () => {
   const left = {
     display_name: "Catering Services",
-    attrs: { pin: "81626W0043001" },
+    attrs: { pin: "TEST-PIN-SHARED" },
   };
   const right = {
-    display_name: "PIN 26AE017201R0X00",
-    attrs: { epin: "81626W0043001" },
+    display_name: "Different procurement title",
+    attrs: { epin: "TEST-PIN-SHARED" },
   };
   assert.deepEqual(
     sharedBlockKeys(left, right, "procurement"),
-    ["pin:81626W0043001"],
+    ["pin:TESTPINSHARED"],
   );
 });
 
