@@ -87,7 +87,19 @@ test("built-in matcher yields numeric metrics while preserving candidate recall"
   }
   assert.equal(metrics.precision, 1);
   assert.equal(metrics.false_merge, 0);
-  assert.ok(metrics.recall > 0.85);
-  assert.ok(metrics.false_split > 0, "unresolved true matches remain visible as false splits");
-  assert.ok(metrics.candidate_recall > 0.93);
+  // Agency rename residual closed: DoITT→OTI, DA county↔borough, Business→SBS.
+  assert.equal(metrics.false_split, 0);
+  assert.equal(metrics.recall, 1);
+  assert.equal(metrics.candidate_recall, 1);
+});
+
+test("agency rename pairs resolve same without merging distinct DA offices", () => {
+  for (const id of ["gv0-026", "gv0-030", "gv0-032"]) {
+    const { features, score } = scoreGold(id);
+    assert.equal(features.stem_equal, true, `${id} must share agency canonical stem`);
+    assert.equal(score.decision, "same", `${id} must score same`);
+  }
+  const boroughTrap = scoreGold("gv0-031");
+  assert.equal(boroughTrap.features.stem_equal, false);
+  assert.equal(boroughTrap.score.decision, "different");
 });

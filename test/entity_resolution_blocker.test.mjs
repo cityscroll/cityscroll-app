@@ -146,10 +146,13 @@ test("CLI --blocker token_v0 prints candidate_recall in [0,1] and block examples
   const cr = Number(m[1]);
   assert.ok(cr >= 0 && cr <= 1, `candidate_recall ${cr} not in [0,1]`);
   assert.match(r.stdout, /^precision=[0-9.]+$/m);
-  assert.match(r.stdout, /^recall=[0-9.]+$/m);
-  assert.match(r.stdout, /^false_split=[0-9]+$/m);
+  assert.match(r.stdout, /^recall=1$/m);
+  assert.match(r.stdout, /^false_split=0$/m);
+  assert.match(r.stdout, /^false_merge=0$/m);
   assert.match(r.stdout, /blocked_in\t/);
-  assert.match(r.stdout, /blocked_out\tgv0-026\t/);
+  // DoITT→OTI (gv0-026) now shares a stem key; no gold-same pair is blocked out.
+  assert.doesNotMatch(r.stdout, /blocked_out\tgv0-026\t/);
+  assert.match(r.stdout, /blocker_summary.*dropped=0|blocker_summarygold_same=29retained=29dropped=0/);
   assert.match(r.stdout, /blocker=token_v0/);
   // No production side effects: harness is offline.
   assert.doesNotMatch(r.stdout, /auto.?link|D1|production/i);

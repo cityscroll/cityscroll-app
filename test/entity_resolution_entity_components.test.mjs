@@ -75,13 +75,15 @@ test("committed gold and authority fixture produce numeric entity-centric metric
     goldCases: gold.cases,
     authorityCases: deriveAuthorityCases(authorityRows),
   });
+  // After agency rename aliases (DoITT→OTI, DA county↔borough, Business→SBS),
+  // gold reference components recover fully: under_split drops 1 → 0.
   assert.deepEqual(report.metrics.gold, {
     reference_entity_components: 20,
-    recovered_entity_components: 19,
-    under_split_entity_components: 1,
-    entity_component_recall: 0.95,
-    under_split_entity_rate: 0.05,
-    predicted_multi_record_components: 22,
+    recovered_entity_components: 20,
+    under_split_entity_components: 0,
+    entity_component_recall: 1,
+    under_split_entity_rate: 0,
+    predicted_multi_record_components: 24,
     over_merged_predicted_components: 0,
     over_merge_component_rate: 0,
     negative_constraints: 7,
@@ -92,9 +94,12 @@ test("committed gold and authority fixture produce numeric entity-centric metric
   assert.equal(report.metrics.authority.under_split_entity_rate, 0);
   assert.ok(report.sample.length > 0 && report.sample.length <= 8);
   assert.equal(report.parameters.sampling_unit, "whole_reference_component");
+  assert.equal(report.false_split_priority.length, 0);
 });
 
 test("committed report and receipt reproduce the characterized fixture", () => {
+  // Frozen 2026-08-01 snapshot still records the pre-alias residual (gv0-026).
+  // Live metrics above prove the residual is closed on current HEAD.
   const committed = JSON.parse(readFileSync(COMMITTED_REPORT, "utf8"));
   const receipt = JSON.parse(readFileSync(COMMITTED_RECEIPT, "utf8"));
   assert.deepEqual(receipt.metrics, committed.metrics);

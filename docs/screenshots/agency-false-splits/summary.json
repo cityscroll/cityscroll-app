@@ -1,0 +1,80 @@
+{
+  "metric": "false_split (agency subset on gold_v0 + token_v0)",
+  "before": {
+    "precision": 1,
+    "recall": 0.896551724137931,
+    "candidate_recall": 0.9655172413793104,
+    "unresolved_rate": 0.19444444444444445,
+    "false_merge": 0,
+    "false_split": 3
+  },
+  "after": {
+    "precision": 1,
+    "recall": 1,
+    "candidate_recall": 1,
+    "unresolved_rate": 0.1111111111111111,
+    "false_merge": 0,
+    "false_split": 0
+  },
+  "pairs": [
+    {
+      "id": "gv0-026",
+      "left": "Dept of Info Tech & Telecomm",
+      "right": "Office of Technology and Innovation",
+      "note": "Successor rename: DoITT folded into OTI",
+      "same": true,
+      "left_id": "information-technology-and-telecommunications",
+      "right_id": "information-technology-and-telecommunications",
+      "left_name": "Information Technology and Telecommunications",
+      "right_name": "Information Technology and Telecommunications",
+      "identity": "Office of Technology and Innovation",
+      "acronym": "OTI"
+    },
+    {
+      "id": "gv0-030",
+      "left": "District Attorney - New York County",
+      "right": "Manhattan District Attorney's Office",
+      "note": "County vs borough naming for the same DA office",
+      "same": true,
+      "left_id": "district-attorney-new-york-county",
+      "right_id": "district-attorney-new-york-county",
+      "left_name": "District Attorney - New York County",
+      "right_name": "District Attorney - New York County",
+      "identity": "Manhattan District Attorney's Office",
+      "acronym": null
+    },
+    {
+      "id": "gv0-032",
+      "left": "Department of Business Services",
+      "right": "Department of Small Business Services",
+      "note": "Former City Record name vs current SBS",
+      "same": true,
+      "left_id": "small-business-services",
+      "right_id": "small-business-services",
+      "left_name": "Small Business Services",
+      "right_name": "Small Business Services",
+      "identity": "Department of Small Business Services",
+      "acronym": "SBS"
+    },
+    {
+      "id": "gv0-031",
+      "left": "Manhattan District Attorney's Office",
+      "right": "Brooklyn District Attorney's Office",
+      "note": "Control: distinct borough DAs must stay distinct",
+      "expect_same": false,
+      "same": false,
+      "left_id": "district-attorney-new-york-county",
+      "right_id": "district-attorney-kings-county",
+      "left_name": "District Attorney - New York County",
+      "right_name": "District Attorney - Kings County",
+      "identity": "Manhattan District Attorney's Office",
+      "acronym": null
+    }
+  ],
+  "screenshots": [
+    "after-1440.png",
+    "after-390.png",
+    "before-1440.png",
+    "before-390.png"
+  ]
+}

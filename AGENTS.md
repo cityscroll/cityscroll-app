@@ -488,6 +488,14 @@ and `compile.mjs` re-export for call-site stability. Equal/distinct pin table:
 `worker/test/fixtures/normalize_pairs.json`. Verify:
 `node --test worker/test/vendor_stem.test.mjs worker/test/normalize_fixtures.test.mjs`.
 
+**Agency rename residual (gold false_split):** alias dual names in
+`worker/src/lib/agencies.mjs` `GROUPS` so ER stem + identity enrichment share one
+`canonical_id` (DoITT→OTI, county DA↔borough DA office, Business→SBS). Keep site
+ids stable so `agency_crosswalk.json` keys still match. Borough DAs stay distinct.
+Verify: `node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v0.jsonl --blocker token_v0`
+→ `false_split=0` `false_merge=0` `recall=1`. Captures:
+`python3 tools/capture_agency_false_splits.py`.
+
 Gold set + metrics harness (eval only): `entity_resolution/eval/` —
 `gold_v0.jsonl` (versioned; never silent-mutate labels/membership) and
 `run_metrics.mjs` (also re-exported from `entity_resolution/evaluation/`). Verify:
