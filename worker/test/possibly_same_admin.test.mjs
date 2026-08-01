@@ -40,6 +40,7 @@ const liveRows = [
     source_system: "city_record",
     source_system_id: "notice-1",
     content_hash: "hash-1",
+    raw_snapshot: "{}",
     normalized_snapshot: JSON.stringify({ vendor_name: "Acme Construction LLC" }),
     ingested_at: "2026-07-30T12:00:00.000Z",
     canonical_entity_id: "vendor:acme-construction",
@@ -48,6 +49,7 @@ const liveRows = [
     source_system: "city_record",
     source_system_id: "notice-2",
     content_hash: "hash-2",
+    raw_snapshot: "{}",
     normalized_snapshot: JSON.stringify({ vendor_name: "Acme Builders Inc" }),
     ingested_at: "2026-07-29T12:00:00.000Z",
     canonical_entity_id: "vendor:acme-builders",
@@ -118,9 +120,10 @@ test("admin route fails closed and renders live pairs without writing", async ()
   assert.match(html, /shared token: ACME/i);
   assert.match(html, /not a finding/);
   assert.doesNotMatch(html, /merge/i);
-  assert.equal(DB.queries.length, 1);
+  assert.equal(DB.queries.length, 2);
   assert.match(DB.queries[0], /^\s*SELECT/i);
   assert.doesNotMatch(DB.queries[0], /\b(?:INSERT|UPDATE|DELETE)\b/i);
+  assert.match(DB.queries[1], /^\s*SELECT/i);
 });
 
 test("admin route supports a read-only JSON representation", async () => {

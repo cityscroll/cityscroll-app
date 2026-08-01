@@ -14,6 +14,11 @@ import {
 import { dryRunRollupForEmail, digestSendTestForEmail, runCatchUpDigests } from "./alerts.mjs";
 import { toReviewItems } from "../../entity_resolution/review/index.mjs";
 import { readPossiblySamePairs } from "./lib/possibly_same.mjs";
+import {
+  FALSE_SPLIT_EVIDENCE_VERSION,
+  appendFalseSplitDisposition,
+  readFalseSplitDispositions,
+} from "./lib/false_split_evidence.mjs";
 
 // Store digests rather than publishing the desk's private recipient addresses in this repo.
 const DIGEST_TEST_SEND_ALLOWLIST = new Set([
@@ -200,13 +205,12 @@ export async function handleAdminFeedback(req, env) {
   return json({ feedbackCount: items.length, totalFbKeys: totalKeys, items }, 200);
 }
 
-// GET /admin/possibly-same?key=… — read-only desk view of candidate vendor pairs from
-// recent source_record observations and entity_link decisions. Candidate generation is
-// in-process and does not introduce a writable ER API or review-state table.
+// GET/POST /admin/possibly-same?key=… — desk evidence for candidate vendor pairs.
+// POST appends a disposition audit event; it never mutates source records or entity links.
 export async function handleAdminPossiblySame(req, env) {
   const auth = checkAdminKey(req, env);
   if (!auth.ok) return auth.res;
-  if (req.method !== "GET") return json({ error: "method not allowed" }, 405);
+  if (!new Set(["GET", "POST"]).has(req.method)) return json({ error: "method not allowed" }, 405);
   if (!env.DB) return json({ error: "no-store" }, 503);
 
   let pairs = [];
@@ -215,11 +219,49 @@ export async function handleAdminPossiblySame(req, env) {
   } catch {
     return json({ error: "review-data-unavailable" }, 503);
   }
-  const items = toReviewItems(pairs);
-  if ((req.headers.get("accept") || "").includes("application/json")) {
-    return json({ reviewVersion: "possibly_same_v1", source: "live_dual_write", count: items.length, items }, 200);
+  if (req.method === "POST") {
+    let body;
+    try {
+      body = (req.headers.get("content-type") || "").includes("application/json")
+        ? await req.json()
+        : Object.fromEntries(await req.formData());
+    } catch {
+      return json({ error: "invalid-body" }, 400);
+    }
+    const pair = pairs.find((candidate) => candidate.id === String(body?.pair_id || ""));
+    let event;
+    try {
+      event = await appendFalseSplitDisposition(env.DB, pair, body);
+    } catch {
+      return json({ error: "disposition-write-failed" }, 503);
+    }
+    if (event.error) return json({ error: event.error }, event.error === "pair-not-found" ? 404 : 400);
+    if ((req.headers.get("accept") || "").includes("application/json")) {
+      return json({ event }, 201);
+    }
+    const target = new URL(req.url);
+    target.searchParams.set("saved", event.id);
+    return new Response(null, { status: 303, headers: { Location: target.toString(), "Cache-Control": "no-store" } });
   }
-  return new Response(renderPossiblySamePage(items), {
+
+  const items = toReviewItems(pairs);
+  let events;
+  try {
+    events = await readFalseSplitDispositions(env.DB, items.map((item) => item.id));
+  } catch {
+    return json({ error: "review-data-unavailable" }, 503);
+  }
+  const eventsByPair = Object.groupBy(events, (event) => event.pair_id);
+  if ((req.headers.get("accept") || "").includes("application/json")) {
+    return json({
+      reviewVersion: FALSE_SPLIT_EVIDENCE_VERSION,
+      source: "live_dual_write",
+      count: items.length,
+      measured: { candidates: items.length, disposition_events: events.length },
+      items: items.map((item) => ({ ...item, dispositions: eventsByPair[item.id] || [] })),
+    }, 200);
+  }
+  return new Response(renderPossiblySamePage(items, eventsByPair), {
     status: 200,
     headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" },
   });
@@ -245,20 +287,62 @@ function candidateBasis(evidence = {}) {
   }).join(" · ");
 }
 
-export function renderPossiblySamePage(items = []) {
+function observedFieldsHtml(side) {
+  const rows = Object.entries(side.observed_fields || {}).map(([field, value]) =>
+    `<tr><th scope="row">${escapeHtml(field)}</th><td>${escapeHtml(value)}</td></tr>`).join("");
+  return rows || '<tr><td colspan="2">No normalized fields recorded.</td></tr>';
+}
+
+function sourceRecordHtml(side, label) {
+  const source = side.source_url
+    ? `<a href="${escapeHtml(side.source_url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(side.source || "Open source")}</a>`
+    : escapeHtml(side.source || "Source unavailable");
+  return `<section class="record"><h3>${escapeHtml(label)} · ${escapeHtml(side.name)}</h3>
+    <dl><div><dt>Source</dt><dd>${source}</dd></div>
+      <div><dt>Source-record key</dt><dd>${escapeHtml(side.source_record_key || "Not supplied")}</dd></div>
+      <div><dt>Snapshot ID</dt><dd>${escapeHtml(side.id || "Not supplied")}</dd></div>
+      <div><dt>Observed</dt><dd>${escapeHtml(side.observed_at || "Not supplied")}</dd></div></dl>
+    <table><caption>Observed fields</caption><tbody>${observedFieldsHtml(side)}</tbody></table></section>`;
+}
+
+function comparisonFeaturesHtml(evidence = {}) {
+  const features = evidence.comparison_features || {};
+  const rows = Object.entries(features).map(([field, value]) =>
+    `<tr><th scope="row">${escapeHtml(field)}</th><td>${escapeHtml(Array.isArray(value) ? value.join(", ") || "—" : value)}</td></tr>`).join("");
+  return `<details><summary>Comparison features</summary><table><tbody>${rows || '<tr><td>No comparison features recorded.</td></tr>'}</tbody></table></details>`;
+}
+
+function dispositionHistoryHtml(events = []) {
+  if (!events.length) return '<p class="empty-history">No dispositions recorded.</p>';
+  return `<ol class="history">${events.map((event) => `<li><strong>${escapeHtml(event.decision)}</strong> by ${escapeHtml(event.actor)}
+    <time datetime="${escapeHtml(event.created_at)}">${escapeHtml(event.created_at)}</time>
+    ${event.note ? `<p>${escapeHtml(event.note)}</p>` : ""}
+    <small>${escapeHtml(event.evidence_version)} · event ${escapeHtml(event.id)}</small></li>`).join("")}</ol>`;
+}
+
+export function renderPossiblySamePage(items = [], eventsByPair = {}) {
   const cards = items.map((item) => `<article class="pair" data-pair-id="${escapeHtml(item.id)}">
     <p class="eyebrow">${escapeHtml(item.label)}</p>
     <h2>${escapeHtml(item.left.name)} <span aria-hidden="true">↔</span> ${escapeHtml(item.right.name)}</h2>
     <p class="score">${escapeHtml(confidenceLabel(item.confidence))} · ${escapeHtml(item.method)}</p>
     <p><strong>Candidate basis:</strong> ${escapeHtml(candidateBasis(item.evidence))}</p>
-    <dl><div><dt>Source record</dt><dd>${escapeHtml(item.left.id || "Not supplied")}</dd></div>
-      <div><dt>Candidate record</dt><dd>${escapeHtml(item.right.id || "Not supplied")}</dd></div></dl>
+    <div class="records">${sourceRecordHtml(item.left, "Record A")}${sourceRecordHtml(item.right, "Record B")}</div>
+    ${comparisonFeaturesHtml(item.evidence)}
     <p class="note">This is a review lead, not a finding. Confirm identity from the underlying records before taking action.</p>
-    <label>Review note <textarea readonly aria-label="Review note for ${escapeHtml(item.id)}" placeholder="Notes are not saved by this read-only view."></textarea></label>
+    <section><h3>Disposition history</h3>${dispositionHistoryHtml(eventsByPair[item.id] || [])}</section>
+    <form method="post"><input type="hidden" name="pair_id" value="${escapeHtml(item.id)}">
+      <label>Operator <input name="actor" required maxlength="120" autocomplete="username"></label>
+      <label>Evidence note <textarea name="note" maxlength="2000" aria-label="Evidence note for ${escapeHtml(item.id)}"></textarea></label>
+      <fieldset><legend>Append disposition</legend>
+        <button name="decision" value="same">Same</button>
+        <button name="decision" value="different">Different</button>
+        <button name="decision" value="defer">Defer</button></fieldset>
+      <small>Saving appends a ${FALSE_SPLIT_EVIDENCE_VERSION} audit event. It does not change entity links.</small>
+    </form>
   </article>`).join("\n");
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Possibly same vendors</title>
-    <style>body{font:16px system-ui,sans-serif;max-width:960px;margin:40px auto;padding:0 20px;color:#17202a;background:#f6f3ed}.pair{background:white;border:1px solid #d8d2c8;border-radius:12px;padding:22px;margin:18px 0;box-shadow:0 2px 8px #0000000d}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#795548;font-weight:700}.pair h2{font-size:22px;margin:8px 0}.score{color:#40566a;font-family:ui-monospace,monospace}.pair dl{display:grid;grid-template-columns:1fr 1fr;gap:12px}.pair dl div{background:#f5f7f8;padding:10px;border-radius:6px}.pair dt{font-size:12px;color:#687783}.pair dd{margin:4px 0 0;overflow-wrap:anywhere}.note{border-left:3px solid #d39b36;padding-left:10px}.pair textarea{display:block;width:100%;min-height:60px;margin-top:6px;box-sizing:border-box}.empty{padding:24px;background:#fff;border-radius:12px}</style></head><body>
-    <header><p class="eyebrow">Desk review · read-only</p><h1>Possibly same vendors</h1><p>These candidate pairs are surfaced for human review. They are not combined, asserted, or exposed in the public site.</p></header>
+    <style>body{font:16px system-ui,sans-serif;max-width:1120px;margin:40px auto;padding:0 20px;color:#17202a;background:#f6f3ed}.pair{background:white;border:1px solid #d8d2c8;border-radius:12px;padding:22px;margin:18px 0;box-shadow:0 2px 8px #0000000d}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#795548;font-weight:700}.pair h2{font-size:22px;margin:8px 0}.score{color:#40566a;font-family:ui-monospace,monospace}.records{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}.record{min-width:0;background:#f5f7f8;padding:14px;border-radius:8px}.pair dl{display:grid;grid-template-columns:1fr 1fr;gap:8px}.pair dl div{min-width:0}.pair dt{font-size:12px;color:#687783}.pair dd{margin:4px 0 0;overflow-wrap:anywhere}.pair table{width:100%;border-collapse:collapse;font-size:13px}.pair th,.pair td{text-align:left;vertical-align:top;border-top:1px solid #d8dfe3;padding:6px;overflow-wrap:anywhere}.pair th{width:35%}.note{border-left:3px solid #d39b36;padding-left:10px}.pair input,.pair textarea{display:block;width:100%;padding:8px;margin:6px 0 12px;box-sizing:border-box}.pair textarea{min-height:70px}.pair fieldset{border:0;padding:0;margin:8px 0}.pair button{padding:8px 14px;margin:4px 6px 4px 0}.history time,.history small{display:block;color:#687783}.empty,.empty-history{padding:18px;background:#fff;border-radius:12px}@media(max-width:720px){.records,.pair dl{grid-template-columns:1fr}}</style></head><body>
+    <header><p class="eyebrow">Authenticated desk review</p><h1>Possibly same vendors</h1><p>These candidate pairs are surfaced for human review. Dispositions are an append-only evidence trail; records are not combined or exposed in the public site.</p></header>
     ${cards || '<p class="empty">No candidate pairs are currently surfaced from recent dual-write observations.</p>'}
   </body></html>`;
 }
