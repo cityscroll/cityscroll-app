@@ -656,4 +656,12 @@ test("lifecycle OCP: disagreement names both City Record and OCP amounts and dat
   // Both amounts present (site money() short form) — never silently prefer one
   assert.match(html, /\$1000K|\$999,999|999999/);
   assert.match(html, /\$250K|\$250,000|250000/);
+  // Claim layer: source assertion vs unresolved interpretation vs no derived winner
+  assert.match(html, /data-claim-layer="claim_layer_v1"/);
+  assert.match(html, /source assertion/i);
+  assert.match(html, /CityScroll interpretation/i);
+  assert.match(html, /no derived conclusion/i);
+  assert.match(html, /data-claim="source_assertion"/);
+  assert.match(html, /data-claim="cityscroll_interpretation"/);
+  assert.doesNotMatch(html, /data-claim="derived_conclusion"/);
 });
