@@ -9,9 +9,10 @@ surface. **Not an HTTP microservice.**
 | Path | Role |
 | --- | --- |
 | `normalizers/` | Pure string identity (`vendorStem`, agency alias helpers) |
+| `authority_keys/` | Scoped identifier registry (`scheme`, issuer, value, scope) |
 | `candidate_generation/` | Token/stem blocking candidate pairs (`token_v0`) |
-| `features/` | Deterministic family-aware pair features (`pair_features_v0`) |
-| `matchers/` | Conventional `same` / `different` / `unresolved` scorer (`conventional_v0`) |
+| `features/` | Deterministic family-aware pair features (`pair_features_v1`) |
+| `matchers/` | Conventional `same` / `different` / `unresolved` scorer (`conventional_v1`) |
 | `policies/` | Auto-link thresholds / decision routing (stub) |
 | `evaluation/` | Re-exports gold, authority metrics, and clerical-audit helpers |
 | `eval/` | Versioned gold, metrics CLIs, authority fixtures, and audit receipts (keep paths stable) |
@@ -104,6 +105,7 @@ node entity_resolution/eval/run_authority.mjs --source-records entity_resolution
 - er-10 live false-split visibility from dual-write observations
 - er-11 offline silver authority labels + hard-identifier metrics
 - er-12 stratified clerical audit + append-only gold promotion
+- er-19 scoped PIN/EPIN authority-key registry
 
 The desk view is read-only and non-assertive. It blocks recent `source_records` with `token_v0`,
 omits pairs already joined to the same canonical entity, and renders the remaining candidates

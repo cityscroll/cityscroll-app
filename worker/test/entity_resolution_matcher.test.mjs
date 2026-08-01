@@ -34,9 +34,9 @@ function scoreGold(id) {
   return { features, score: scorePair(row.left, row.right, features) };
 }
 
-test("feature and matcher versions identify v0 conventional scoring", () => {
-  assert.equal(FEATURES_VERSION, "pair_features_v0");
-  assert.equal(MATCHERS_VERSION, "conventional_v0");
+test("feature and matcher versions identify scoped authority-key scoring", () => {
+  assert.equal(FEATURES_VERSION, "pair_features_v1");
+  assert.equal(MATCHERS_VERSION, "conventional_v1");
 });
 
 test("HNTB truncation is same through shared PIN hard evidence", () => {
@@ -45,7 +45,7 @@ test("HNTB truncation is same through shared PIN hard evidence", () => {
   assert.ok(features.token_jaccard > 0);
   assert.ok(features.length_ratio > 0 && features.length_ratio <= 1);
   assert.equal(score.decision, "same");
-  assert.equal(score.method, "pin_epin_equal_v0");
+  assert.equal(score.method, "scoped_authority_key_equal_v1");
   assert.equal(score.confidence, 0.995);
 });
 

@@ -5,6 +5,15 @@
 // this root re-exports the stable public surface for tests and thin shims.
 
 export {
+  AUTHORITY_KEY_REGISTRY,
+  AUTHORITY_KEY_REGISTRY_VERSION,
+  authorityKeyId,
+  authorityKeysForSide,
+  parseAuthorityKey,
+  sharedAuthorityKeys,
+} from "./authority_keys/index.mjs";
+
+export {
   VENDOR_STEM_METHOD,
   VENDOR_STEM_VERSION,
   VENDOR_SUFFIX,
