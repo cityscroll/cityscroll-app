@@ -88,21 +88,31 @@ small:
 - link: canonical entity id plus publisher system, publisher-native public id, and an optional
   HTTPS source URL
 - dossier: the entity, linked public source records, allowlisted source assertions, bounded
-  source/time scope, explicit disagreement and missingness, and public-safe derivation status
+  source/time scope, explicit disagreement and missingness, public-safe derivation status, and
+  per-link match-strength bands (`strong` / `tentative` / `not_scored`)
 - relationship graph: allowlisted vendor, agency, solicitation, contract, award, and official
   nodes joined only by named edge types (including `votes_on`) with publisher provenance,
   observed time, and public-safe confidence
 
-Raw and normalized snapshots, content hashes, canonical attributes JSON, matcher scores and
-versions, evidence, resolution-run ids, review state, reviewer identity, and notes are desk-only.
-The link serializer distinguishes a publisher-native id from the internal `source_record_id`,
-which contains a snapshot hash and is never public.
+Raw and normalized snapshots, content hashes, canonical attributes JSON, **numeric** matcher
+scores, matcher method/version strings, evidence, resolution-run ids, review state, reviewer
+identity, and notes are desk-only. Public surfaces map `entity_link.confidence` to a coarse
+`link_confidence` band only (`strong` when score ≥ 0.95, else `tentative` when scored,
+`not_scored` when null). The link serializer distinguishes a publisher-native id from the
+internal `source_record_id`, which contains a snapshot hash and is never public.
 
 `GET /entity-dossier?id=` queries by canonical entity id and returns HTML by default; JSON is
 available through `Accept: application/json` or `?format=json`. Source values remain exact and
 attributed. Conflicts never select a winner, and empty fields mean only “not observed in these
-linked records.” Public assertion confidence/review labels disclose only `not_scored`,
-`not_published`, or `not_public`; numeric matcher scores and desk dispositions stay private.
+linked records.” Each `linked_records[]` entry carries `link_confidence`; the dossier also
+exposes `link_confidence_summary`. Assertion confidence/review labels remain `not_scored` /
+`not_published` / `not_public` (field-level scoring is separate from link strength).
+
+Metric: `public_entity_link_confidence_rate` =
+banded linked records (`strong`|`tentative`) / all linked records on resolved dossiers.
+Pure measure: `measurePublicEntityLinkConfidenceRate` in
+`entity_resolution/publication/link_confidence.mjs`. Target **1.0** when every auto-link has a
+banded public status (baseline without surfacing: **0**).
 
 `GET /entity-relationships?id=` returns the accessible graph page; JSON is available through
 `Accept: application/json` or `?format=json`. Traversal is capped at two hops and 25 outgoing

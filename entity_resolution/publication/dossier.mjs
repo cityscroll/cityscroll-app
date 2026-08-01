@@ -9,6 +9,10 @@ import {
   assertionSnapshot,
   sourceAssertionForFact,
 } from "../review/assertion_evidence.mjs";
+import {
+  publicEntityLinkConfidence,
+  summarizeLinkConfidence,
+} from "./link_confidence.mjs";
 
 export const PUBLIC_DOSSIER_VERSION = "public_entity_dossier_v1";
 
@@ -95,6 +99,18 @@ function sourceFromObservation(observation) {
   return source;
 }
 
+function linkScoreFromRow(row) {
+  // Prefer the join alias used by the dossier query; accept bare confidence only
+  // when the row is already a hydrated link (not a desk dump of matcher internals).
+  if (Object.hasOwn(row, "link_confidence_score")) return row.link_confidence_score;
+  if (Object.hasOwn(row, "link_confidence")) {
+    const value = row.link_confidence;
+    if (value && typeof value === "object") return null;
+    return value;
+  }
+  return row.confidence;
+}
+
 function joinedObservations(rows) {
   const observations = new Map();
   for (const row of Array.isArray(rows) ? rows : []) {
@@ -113,6 +129,7 @@ function joinedObservations(rows) {
       source_url: sourceUrlForObservation(row, rawSnapshot),
       raw_snapshot: rawSnapshot,
       ingested_at: observedAt,
+      link_confidence: publicEntityLinkConfidence(linkScoreFromRow(row)),
     });
   }
   return [...observations.values()].sort((left, right) =>
@@ -192,6 +209,8 @@ function linkedRecords(entityId, observations) {
       entity_id: entityId,
       source,
       observed_at: observation.ingested_at,
+      link_confidence: observation.link_confidence
+        || publicEntityLinkConfidence(null),
     };
   }).filter((record) => record.source);
 }
@@ -237,6 +256,7 @@ export function serializePublicEntityDossier(rows = [], opts = {}) {
   const sources = [...new Set(observations.map((observation) => observation.source_system))].sort();
   const recordLimit = Math.max(0, Number(opts.recordLimit) || 0);
   const truncated = Boolean(opts.truncated);
+  const linked = linkedRecords(entity.id, observations);
 
   return {
     version: PUBLIC_DOSSIER_VERSION,
@@ -252,7 +272,8 @@ export function serializePublicEntityDossier(rows = [], opts = {}) {
         ? `This dossier shows the newest ${recordLimit} linked records from the listed sources. Older linked records may exist; absence is not proof that no record exists.`
         : "This dossier is limited to the listed linked sources and observation period. Absence is not proof that no record exists.",
     },
-    linked_records: linkedRecords(entity.id, observations),
+    linked_records: linked,
+    link_confidence_summary: summarizeLinkConfidence(linked),
     assertions: groups,
     derived_assertions: [derivedNameAssertion(entity, groups, observedThrough)],
   };

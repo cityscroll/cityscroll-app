@@ -79,13 +79,21 @@ DOSSIER = {
             "entity_id": "vendor:stem:ACME CONSTRUCTION",
             "source": SOURCE_ASSERTIONS[0]["provenance"]["source"],
             "observed_at": "2026-07-30T14:00:00.000Z",
+            "link_confidence": {"status": "strong", "basis": "entity_link"},
         },
         {
             "entity_id": "vendor:stem:ACME CONSTRUCTION",
             "source": SOURCE_ASSERTIONS[1]["provenance"]["source"],
             "observed_at": "2026-08-01T09:30:00.000Z",
+            "link_confidence": {"status": "tentative", "basis": "entity_link"},
         },
     ],
+    "link_confidence_summary": {
+        "strong": 1,
+        "tentative": 1,
+        "not_scored": 0,
+        "total": 2,
+    },
     "assertions": [
         {
             "fact": "contract_amount",

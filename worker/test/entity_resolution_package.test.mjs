@@ -145,7 +145,11 @@ test("candidate generation and conventional matcher stay non-linking", () => {
       source_system: "city_record",
       source_system_id: "notice-1",
     }),
-    { entity_id: "vendor:acme", source: { system: "city_record", id: "notice-1" } },
+    {
+      entity_id: "vendor:acme",
+      source: { system: "city_record", id: "notice-1" },
+      link_confidence: { status: "not_scored", basis: "entity_link" },
+    },
   );
 });
 
