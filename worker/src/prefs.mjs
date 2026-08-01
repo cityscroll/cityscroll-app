@@ -14,6 +14,7 @@ import { describeFilter } from "./lib/confirm_email.mjs";
 import { overActorLimit } from "./lib/meter.mjs";
 import { normalizeEmail, redactEmail } from "./lib/subscriptions.mjs";
 import { appendWatchLog, updateDetail, watchLabel, watchSnapshot } from "./lib/watchlog.mjs";
+import { emailFromRequest } from "./session.mjs";
 import {
   PREFS_SCOPE,
   PREFS_TOKEN_TTL_SECONDS,
@@ -38,6 +39,12 @@ export async function prefsLink(env, email) {
   return `${base}/prefs?token=${encodeURIComponent(token)}`;
 }
 
+async function issuePrefsCredential(env, email) {
+  return signToken(env.TOKEN_SECRET, prefsPayload(email), {
+    ttlSeconds: PREFS_TOKEN_TTL_SECONDS,
+  });
+}
+
 export async function handlePrefs(req, env) {
   if (!env.TOKEN_SECRET || !env.SUBS) {
     return page("Unavailable", "This link isn't available right now.", 503);
@@ -50,13 +57,20 @@ export async function handlePrefs(req, env) {
   }
 
   if (req.method === "GET") {
-    const token = url.searchParams.get("token") || "";
-    const email = await emailFromPrefsToken(env, token);
+    let credential = url.searchParams.get("token") || "";
+    let email = await emailFromPrefsToken(env, credential);
+    // A recognized email-link session may enter the preference center without a
+    // second magic link. Mint the existing narrower prefs token into the forms;
+    // POST authorization below remains prefs-token-only.
+    if (!credential && !email) {
+      email = normalizeEmail(await emailFromRequest(req, env));
+      if (email) credential = await issuePrefsCredential(env, email);
+    }
     if (!email) {
       return page("Link not valid", "This manage link is invalid or has expired. Use the link in a recent CityScroll email.", 400);
     }
     const watches = await listWatchesForEmail(env, email);
-    return prefsHtmlResponse(email, watches, token, null);
+    return prefsHtmlResponse(email, watches, credential, null);
   }
 
   if (req.method === "POST") {

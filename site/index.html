@@ -660,6 +660,8 @@
   .session-banner[data-open="true"]{display:flex}
   .session-banner button{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;padding:6px 10px;min-height:32px;border-radius:6px;border:1px solid var(--rule-strong);background:var(--card);color:var(--ink);cursor:pointer}
   .session-banner button:hover{border-color:var(--ink)}
+  .session-banner .session-manage{font:600 12px/1 ui-sans-serif,system-ui,sans-serif;padding:9px 10px;border-radius:6px;border:1px solid var(--rule-strong);background:var(--card);color:var(--ink);text-decoration:none}
+  .session-banner .session-manage:hover{border-color:var(--ink)}
   .session-banner button.session-dismiss{border-color:transparent;background:transparent;color:var(--muted);text-decoration:underline}
 
   @media print{
@@ -750,7 +752,8 @@
     </nav>
     <div id="langNotice" class="lang-notice" hidden></div>
     <div id="sessionBanner" class="session-banner" role="status" aria-live="polite" data-open="false" hidden>
-      <span id="sessionBannerText" data-i18n="session_signed_in">Signed in via your email link — your pins can follow you on this device.</span>
+      <span id="sessionBannerText" dir="auto">Signed in as your email — pins follow you on this device.</span>
+      <a id="sessionManage" class="session-manage" href="https://api.cityscroll.org/prefs" data-i18n="session_manage_watches">Manage watches</a>
       <button type="button" id="sessionNotYou" class="session-dismiss" data-i18n="session_not_you">Not you?</button>
       <button type="button" id="sessionDismiss" data-i18n="session_dismiss">Dismiss</button>
     </div>
@@ -8467,6 +8470,13 @@ aRenderSaved();
 // only covers data-i18n chrome, so lists, dropdowns and detail panels kept their old language.
 // Re-render from cache/memory — the 5-minute API cache makes the re-runs free.
 function rerenderForLang(){
+  const sessionBanner = document.getElementById("sessionBanner");
+  if(sessionBanner && sessionBanner.dataset.open === "true"){
+    sessionShowBanner({
+      email: sessionBanner.dataset.email || "",
+      prefsUrl: sessionBanner.dataset.prefsUrl || "",
+    });
+  }
   document.querySelectorAll(".filtertoggle").forEach(b=>{ b.textContent = "☰ " + t("filters_toggle"); });
   const nav = document.querySelector(".tabs"); if(nav) nav.setAttribute("aria-label", t("tablist_label"));
   paintEditionSpan();
@@ -8500,15 +8510,24 @@ function rerenderForLang(){
 /* ===================== MAGIC-LINK SESSION (digest email recognition) =====================
    Quiet sign-in: a pins-scoped token from an alert email is exchanged for an HttpOnly
    session cookie on the API host. The token is stripped from the URL immediately so it
-   never sits in history/referrers. Account changes (unsubscribe, etc.) never use this. */
-function sessionShowBanner(open){
+   never sits in history/referrers. The cookie may bootstrap the narrower watch manager;
+   unsubscribe and other purpose-specific actions never accept it directly. */
+function sessionShowBanner(session){
   const el = document.getElementById("sessionBanner");
   if(!el) return;
+  const open = !!session;
   el.hidden = !open;
   el.dataset.open = open ? "true" : "false";
   if(open){
+    el.dataset.email = String(session.email || "");
+    el.dataset.prefsUrl = String(session.prefsUrl || "");
     const txt = document.getElementById("sessionBannerText");
-    if(txt && window.t) txt.textContent = t("session_signed_in");
+    if(txt && window.t) txt.textContent = t("session_signed_in", { email: String(session.email || "") });
+    const manage = document.getElementById("sessionManage");
+    if(manage){
+      manage.href = session.prefsUrl || ((API || "https://api.cityscroll.org").replace(/\/+$/, "") + "/prefs");
+      if(window.t) manage.textContent = t("session_manage_watches");
+    }
     const ny = document.getElementById("sessionNotYou");
     if(ny && window.t) ny.textContent = t("session_not_you");
     const di = document.getElementById("sessionDismiss");
@@ -8540,13 +8559,13 @@ async function sessionExchange(token){
   }catch(e){ return false; }
 }
 async function sessionCheck(){
-  if(!API) return false;
+  if(!API) return null;
   try{
     const r = await workerFetch("/session", null, 8000);
-    if(!r || !r.ok) return false;
+    if(!r || !r.ok) return null;
     const j = await r.json();
-    return !!(j && j.recognized);
-  }catch(e){ return false; }
+    return j && j.recognized && j.email ? j : null;
+  }catch(e){ return null; }
 }
 async function sessionLogout(){
   try{
@@ -8560,12 +8579,11 @@ async function sessionBoot(){
   // Prefer a URL token (if a client ever lands with ?s=); usually the worker redirect
   // already set the cookie and the token is gone from the final URL.
   const fromUrl = sessionStripUrlToken();
-  let recognized = false;
-  if(fromUrl) recognized = await sessionExchange(fromUrl);
-  if(!recognized) recognized = await sessionCheck();
-  if(!recognized) return;
+  if(fromUrl) await sessionExchange(fromUrl);
+  const session = await sessionCheck();
+  if(!session) return;
   invSessionRecognized = true;
-  sessionShowBanner(true);
+  sessionShowBanner(session);
   await invPullAndMerge();
 }
 (function initSessionUi(){

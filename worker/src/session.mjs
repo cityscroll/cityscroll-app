@@ -3,7 +3,8 @@
 //
 // Email digests carry a pins-scoped signed token (optin-token). Clicking through
 // exchanges it for an HttpOnly Secure SameSite=Lax cookie. Scope is READ + pins
-// only; unsubscribe/confirm keep their own purpose tokens.
+// plus a preference-center bootstrap; watch mutations, unsubscribe, and confirm
+// keep their own purpose tokens.
 //
 // Invalid / expired / rate-limited tokens degrade silently to anonymous
 // (redirect without cookie, or JSON { ok:true, recognized:false }) — no scary errors.
@@ -79,7 +80,14 @@ export async function handleSession(req, env, pathname) {
 
 async function statusFromCookie(req, env, cors) {
   const email = await emailFromRequest(req, env);
-  return json({ ok: true, recognized: !!email }, 200, cors);
+  if (!email) return json({ ok: true, recognized: false }, 200, cors);
+  const base = String(env.CONFIRM_BASE || "https://api.cityscroll.org").replace(/\/+$/, "");
+  return json({
+    ok: true,
+    recognized: true,
+    email,
+    prefsUrl: `${base}/prefs`,
+  }, 200, cors);
 }
 
 async function handleLogout(req, cors) {

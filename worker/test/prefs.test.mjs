@@ -4,6 +4,7 @@ import assert from "node:assert/strict";
 import { signToken } from "optin-token";
 import { handlePrefs, prefsLink } from "../src/prefs.mjs";
 import { prefsPayload } from "../src/lib/prefs.mjs";
+import { sessionPayload } from "../src/lib/session.mjs";
 import { handleUnsubscribe } from "../src/unsubscribe.mjs";
 import { handleAdminWatchLog, handleAdminWatchLogEnrich, handleAdminSubs } from "../src/admin.mjs";
 
@@ -75,6 +76,72 @@ test("GET /prefs lists watches for the token email", async () => {
   assert.doesNotMatch(html, /roads/i);
   assert.match(html, /next daily digest run/i);
   assert.match(html, /9am Eastern/i);
+});
+
+test("GET /prefs bridges a recognized session into the same account's watch manager", async () => {
+  const env = makeEnv({
+    "sub:w1": JSON.stringify({
+      email: TEST_EMAIL,
+      lens: "money",
+      filter: { keywords: ["schools"] },
+      freq: "daily",
+      createdAt: "2026-01-01T00:00:00.000Z",
+    }),
+    "sub:other": JSON.stringify({
+      email: OTHER_EMAIL,
+      lens: "money",
+      filter: { keywords: ["roads"] },
+      freq: "daily",
+    }),
+  });
+  const sessionToken = await signToken(SECRET, sessionPayload(TEST_EMAIL), { ttlSeconds: 3600 });
+  const res = await handlePrefs(new Request("https://api.cityscroll.org/prefs", {
+    headers: { Cookie: `cs_session=${sessionToken}` },
+  }), env);
+  assert.equal(res.status, 200);
+  const html = await res.text();
+  assert.match(html, /schools/i);
+  assert.doesNotMatch(html, /roads/i);
+  assert.match(html, /name="token" value="[^\"]+"/);
+  assert.doesNotMatch(html, new RegExp(sessionToken.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+});
+
+test("GET /prefs shows the recognized account's empty state", async () => {
+  const env = makeEnv({});
+  const sessionToken = await signToken(SECRET, sessionPayload(TEST_EMAIL), { ttlSeconds: 3600 });
+  const res = await handlePrefs(new Request("https://api.cityscroll.org/prefs", {
+    headers: { Cookie: `cs_session=${sessionToken}` },
+  }), env);
+  assert.equal(res.status, 200);
+  assert.match(await res.text(), /No active watches for this address/i);
+});
+
+test("anonymous /prefs remains invalid and leaks no account email", async () => {
+  const env = makeEnv({
+    "sub:w1": JSON.stringify({ email: TEST_EMAIL, lens: "money", filter: {}, freq: "daily" }),
+  });
+  const res = await handlePrefs(new Request("https://api.cityscroll.org/prefs"), env);
+  assert.equal(res.status, 400);
+  const html = await res.text();
+  assert.doesNotMatch(html, new RegExp(TEST_EMAIL, "i"));
+  assert.doesNotMatch(html, /schools/i);
+});
+
+test("session cookie alone cannot POST a watch mutation", async () => {
+  const env = makeEnv({
+    "sub:w1": JSON.stringify({ email: TEST_EMAIL, lens: "money", filter: {}, freq: "daily" }),
+  });
+  const sessionToken = await signToken(SECRET, sessionPayload(TEST_EMAIL), { ttlSeconds: 3600 });
+  const res = await handlePrefs(new Request("https://api.cityscroll.org/prefs", {
+    method: "POST",
+    headers: {
+      Cookie: `cs_session=${sessionToken}`,
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: new URLSearchParams({ action: "delete", key: "sub:w1" }).toString(),
+  }), env);
+  assert.equal(res.status, 400);
+  assert.ok(await env.SUBS.get("sub:w1"));
 });
 
 test("POST pause then unpause", async () => {
