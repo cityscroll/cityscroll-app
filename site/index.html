@@ -335,6 +335,15 @@
   .inline-disclose-body a{color:var(--oxblood)}
   .pivot-disclose{display:inline-block;margin-inline-start:6px;vertical-align:baseline}
   .connector{display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:24px;flex:0 0 30px}
+  /* Rules carries five distinct event types; its denser spine gets a fixed five-column
+     reading order on wide notice detail and a vertical sequence on phones. */
+  .rule-chain{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:8px}
+  .rule-chain .stage{min-width:0}
+  .rule-chain .connector{display:none}
+  @media(max-width:600px){
+    .rule-chain{grid-template-columns:minmax(0,1fr);gap:0}
+    .rule-chain .connector{display:flex;height:24px;transform:rotate(90deg)}
+  }
   @media(max-width:560px){.connector{transform:rotate(90deg);height:24px}.stage{flex-basis:100%}}
 
   /* Council meeting spine: keep each Legistar agenda item, matter, outcome, and
@@ -2635,7 +2644,7 @@ function renderDetail(r, chain, stats){
     <button class="act export-control" type="button" id="dprint">${t("print_save_pdf")}</button>
     ${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}
   </div>`;
-  html += `<div id="dcontext"></div><div id="dactions"></div><div id="dlifecycle"></div><div id="ddollars"></div><div id="dsubsidy"></div><div id="dmeet"></div>`;
+  html += `<div id="dcontext"></div><div id="dactions"></div><div id="drules"></div><div id="dlifecycle"></div><div id="ddollars"></div><div id="dsubsidy"></div><div id="dmeet"></div>`;
   // Solicitations get the richer how-to-respond panel below; everything else gets the glance box.
   if(r.type_of_notice_description !== "Solicitation") html += glanceFor(r);
   if(r.type_of_notice_description === "Solicitation") html += buildApply(r,false);
@@ -2664,6 +2673,7 @@ function renderDetail(r, chain, stats){
   if(pending) return; // context/dollars fetch once, on the hydrated render
   fillContext(r, $("#dcontext"));
   mountNoticeActionRail($("#dactions"),r);
+  loadRuleLifecycle(r, $("#drules"));
   loadLifecycle(r, $("#dlifecycle"), $("#ddollars"));
   loadSubsidyLifecycle(r, $("#dsubsidy"));
   loadMeetingOutcomes(r, $("#dmeet"));
@@ -4640,7 +4650,7 @@ function ruleLocationTools(){
   return ruleLocationToolsPromise;
 }
 // Precompute-first rule-lifecycle enrichment: the /rules read model (KV key
-// rules:materialized:v1) joins City Record notices to NYC Rules official comment/adoption
+// rules:materialized:v2) joins City Record notices to NYC Rules official comment/adoption
 // pages and classifies a lifecycle stage. We consume it here — no live upstream NYC Rules
 // fetch from the client — and join to the live City Record rows by request_id.
 let rulesViewPromise=null;
@@ -5094,8 +5104,8 @@ const RULE_STAGE_CFG = {
   "comment-open":   { key: "rule_stage_comment_open",   cls: "urgency",dateField: "comment_by_date" },
   "comment-closed": { key: "rule_stage_comment_closed", cls: "closed", dateField: null },
   "hearing":        { key: "rule_stage_hearing",        cls: "open",   dateField: "hearing_date" },
-  "adopted":        { key: "rule_stage_adopted",        cls: "asset",  dateField: "adoption_date" },
-  "effective":      { key: "rule_stage_effective",      cls: "asset",  dateField: "adoption_date" },
+  "adopted":        { key: "rule_stage_adopted",        cls: "asset",  dateField: "adoption_published_at" },
+  "effective":      { key: "rule_stage_effective",      cls: "asset",  dateField: "effective_date" },
   "unknown":        { key: "rule_stage_unknown",        cls: "closed", dateField: null },
 };
 // The read model classifies stage at materialization time; correct the single most
@@ -5105,6 +5115,13 @@ function ruleDisplayStage(rec){
   if(rec && rec.stage==="comment-open" && rec.nyc_rules && rec.nyc_rules.comment_by_date
      && daysLeft(rec.nyc_rules.comment_by_date) < 0) return "comment-closed";
   return rec ? rec.stage : null;
+}
+function ruleDateLabel(value){
+  if(!value) return "";
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(value)) return fdt(value);
+  const _lm=(window.LANG_META||{})[window.LANG||"en"];
+  const _loc=_lm?_lm.intlDate:"en-US";
+  return new Date(`${value}T12:00:00Z`).toLocaleDateString(_loc,{year:"numeric",month:"long",day:"numeric",timeZone:"UTC"});
 }
 function ruleStageChip(rec){
   if(!rec) return "";
@@ -5117,7 +5134,7 @@ function ruleStageChip(rec){
     cls=(dl!==null && dl>=0 && dl<=3)?"hot":(dl!==null && dl>=0 && dl<=14)?"soon":"open";
   }
   const dateVal=(cfg.dateField && nr && nr[cfg.dateField])?nr[cfg.dateField]:null;
-  const label=dateVal?t(cfg.key,{date:fdt(dateVal)}):t(cfg.key);
+  const label=dateVal?t(cfg.key,{date:ruleDateLabel(dateVal)}):t(cfg.key);
   // Official page: comment page while comments are open, the rule/adoption record otherwise.
   const href=nr?(stage==="comment-open"?(nr.comment_url||nr.url||null):(nr.url||null)):null;
   return href
@@ -5132,7 +5149,104 @@ function ruleCommentAction(rec){
   if(!nr || !nr.comment_by_date) return "";
   const href=nr.comment_url||nr.url;
   if(!href) return "";
-  return `<a class="act" href="${escUiHtml(href)}" ${EXT_ATTRS}>${t("rule_comment_btn",{date:fdt(nr.comment_by_date)})}${extSR()}</a>`;
+  return `<a class="act" href="${escUiHtml(href)}" ${EXT_ATTRS}>${t("rule_comment_btn",{date:ruleDateLabel(nr.comment_by_date)})}${extSR()}</a>`;
+}
+
+const RULES_PUBLIC_URL="https://rules.cityofnewyork.us/";
+const RULE_EVENT_CFG={
+  "proposal_published":{label:"rule_event_proposal",dateLabel:"rule_event_published_on_html"},
+  "public_hearing":{label:"rule_event_hearing",dateLabel:"rule_event_scheduled_for_html"},
+  "comment_close":{label:"rule_event_comment_close",dateLabel:"rule_event_due_on_html"},
+  "adoption":{label:"rule_event_adoption",dateLabel:"rule_event_recorded_on_html"},
+  "effective":{label:"rule_event_effective",dateLabel:"rule_event_starts_on_html"},
+};
+
+function ruleEventCardHTML(type, event, rec){
+  const cfg=RULE_EVENT_CFG[type];
+  if(!cfg) return "";
+  const nr=rec&&rec.nyc_rules;
+  if(!event){
+    const linked=!!nr;
+    const gap=linked
+      ? t("rule_event_not_published_html",{event:t(cfg.label)})
+      : t("rule_event_not_yet_ingested_html",{event:t(cfg.label),source:`<span lang="en" dir="ltr">${t("rule_source_nyc_rules")}</span>`});
+    return `<div class="stage"><div class="box ${linked?"unmatched":"unknown"}">
+      <div class="stage-name">${t(cfg.label)}</div>
+      <div class="lc-norecord">${gap}</div>
+    </div></div>`;
+  }
+  const eventDate=event.valid_at||event.published_at;
+  const scheduled=event.status==="scheduled";
+  const boxClass=scheduled?"matched":"passed";
+  const official=nr&&(type==="comment_close"?(nr.comment_url||nr.url):nr.url);
+  const sourceLink=official
+    ? `<a class="view" href="${escUiHtml(official)}" ${EXT_ATTRS}>${t("rule_event_official_source")}${extSR()}</a>`
+    : "";
+  const commentAction=type==="comment_close"&&scheduled&&official
+    ? `<a class="act primary" href="${escUiHtml(official)}" ${EXT_ATTRS}>${t("rule_comment_btn",{date:ruleDateLabel(event.valid_at)})}${extSR()}</a>`
+    : "";
+  const calendarAction=type==="comment_close"
+    ? `<button class="act" type="button" data-rule-event="comment_close">${t("add_date_btn",{date:ruleDateLabel(event.valid_at)})}</button>`
+    : "";
+  return `<div class="stage"><div class="box ${boxClass}">
+    <div class="stage-name">${t(cfg.label)}</div>
+    <div class="when">${t(cfg.dateLabel,{date:ruleDateLabel(eventDate)})}</div>
+    ${sourceLink}
+    ${commentAction||calendarAction?`<div class="actions" style="margin:6px 0 0">${commentAction}${calendarAction}</div>`:""}
+  </div></div>`;
+}
+
+function ruleEventSpineHTML(rec){
+  const events=new Map((rec&&Array.isArray(rec.events)?rec.events:[]).map(event=>[event.event_type,event]));
+  const types=Object.keys(RULE_EVENT_CFG);
+  const cards=types.map(type=>ruleEventCardHTML(type,events.get(type)||null,rec));
+  const joined=!!(rec&&rec.nyc_rules);
+  const official=joined?(rec.nyc_rules.url||RULES_PUBLIC_URL):RULES_PUBLIC_URL;
+  const provenance=joined
+    ? t("rule_event_provenance_html",{source:`<a href="${escUiHtml(official)}" ${EXT_ATTRS}><span lang="en" dir="ltr">${t("rule_source_nyc_rules")}</span>${extSR()}</a>`})
+    : t("rule_event_join_gap_html",{source:`<a href="${RULES_PUBLIC_URL}" ${EXT_ATTRS}><span lang="en" dir="ltr">${t("rule_source_nyc_rules")}</span>${extSR()}</a>`});
+  return `<div class="chain-h">${t("rule_lifecycle_heading")}</div>
+    <div class="chain rule-chain">${cards.join('<div class="connector">→</div>')}</div>
+    <div class="note">${provenance}</div>`;
+}
+
+function ruleEventICS(r,event){
+  if(!r||!event||!/^\d{4}-\d{2}-\d{2}$/.test(event.valid_at||"")) return null;
+  const start=event.valid_at.replace(/-/g,"");
+  const endDate=new Date(`${event.valid_at}T00:00:00Z`);
+  endDate.setUTCDate(endDate.getUTCDate()+1);
+  const end=endDate.toISOString().slice(0,10).replace(/-/g,"");
+  const esc=s=>String(s||"").replace(/([,;\\])/g,"\\$1").replace(/\n/g,"\\n");
+  return ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//CityScroll//EN","CALSCALE:GREGORIAN","METHOD:PUBLISH",
+    "BEGIN:VEVENT",`UID:rule-comment-close-${r.request_id}@cityscroll.org`,`DTSTAMP:${new Date().toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,"")}`,
+    `DTSTART;VALUE=DATE:${start}`,`DTEND;VALUE=DATE:${end}`,
+    `SUMMARY:${esc(t("rule_event_calendar_title",{title:cleanText(r.short_title)}))}`,
+    `DESCRIPTION:${esc(`${r.agency_name||""} · ${noticeLink(r.request_id)}`)}`,
+    "BEGIN:VALARM","TRIGGER:-P1D","ACTION:DISPLAY",`DESCRIPTION:${esc(t("rule_event_calendar_reminder"))}`,"END:VALARM",
+    "END:VEVENT","END:VCALENDAR"].join("\r\n");
+}
+
+function downloadRuleEventICS(r,event){
+  const ics=ruleEventICS(r,event); if(!ics) return;
+  const blob=new Blob([ics],{type:"text/calendar;charset=utf-8"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob);
+  a.download=`rule-comment-deadline-${r.request_id}.ics`; document.body.appendChild(a); a.click(); a.remove();
+}
+
+async function loadRuleLifecycle(r,el){
+  if(!el||!r||r.section_name!=="Agency Rules") return;
+  let rec=null;
+  try{ rec=buildRulesStageMap(await loadRulesView()).get(r.request_id)||null; }catch(e){}
+  if(!document.contains(el)) return;
+  // A successful read model with no join is a class-(a) gap; a failed read stays fail-soft.
+  if(!rec){
+    let view=null; try{ view=await loadRulesView(); }catch(e){}
+    if(!view) return;
+    rec={request_id:r.request_id,stage:"unknown",nyc_rules:null,events:[],join:{matched:false}};
+  }
+  el.innerHTML=ruleEventSpineHTML(rec);
+  const commentEvent=(rec.events||[]).find(event=>event.event_type==="comment_close");
+  el.querySelectorAll("[data-rule-event]").forEach(button=>button.addEventListener("click",()=>downloadRuleEventICS(r,commentEvent)));
 }
 
 async function loadSectionAgencies(key){
@@ -8274,7 +8388,7 @@ async function showNotice(id, watch){
       ${watchChips.length ? `<div class="nlunderstood" role="status">${t("deeplink_watch_context_label")} ${watchChips.join(" ")}</div>` : ""}
       <div id="ncontext"></div><div id="nactions"></div>
       ${glanceFor(r)}
-      <div id="naddr"></div><div id="nlifecycle"></div><div id="ndollars"></div><div id="nsubsidy"></div><div id="nmeet"></div><div id="nexternal"></div>
+      <div id="naddr"></div><div id="nrules"></div><div id="nlifecycle"></div><div id="ndollars"></div><div id="nsubsidy"></div><div id="nmeet"></div><div id="nexternal"></div>
       <div class="actions" style="margin-top:14px">
         <button class="act primary" type="button" id="ncopy">${t("copy_link")}</button>
         ${qrButtonHTML("nqr","act")}
@@ -8298,6 +8412,7 @@ async function showNotice(id, watch){
   $("#nprint").addEventListener("click", ()=>printCurrentView("notice",link));
   fillContext(r, $("#ncontext"));
   mountNoticeActionRail($("#nactions"),r);
+  loadRuleLifecycle(r, $("#nrules"));
   loadLifecycle(r, $("#nlifecycle"), $("#ndollars"));
   loadSubsidyLifecycle(r, $("#nsubsidy"));
   loadMeetingOutcomes(r, $("#nmeet"));

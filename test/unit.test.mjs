@@ -348,12 +348,13 @@ test("daysBetween: absolute day gap, null on unparseable dates", () => {
 const ruleChipEnv = new Function(
   "function t(k,v){ if(v){Object.keys(v).forEach(function(x){ k=k.replace(new RegExp('\\\\{'+x+'\\\\}','g'),String(v[x])); });} return k; }\n" +
   "function fdt(s){ return s ? 'D['+s+']' : ''; }\n" +
+  "const window={LANG_META:{},LANG:'en'};\n" +
   "function escUiHtml(s){ return String(s==null?'':s); }\n" +
   "function extSR(){ return '[SR]'; }\n" +
   "const EXT_ATTRS='target=\"_blank\" rel=\"noopener noreferrer\"';\n" +
   extractFn("daysLeft") +
   extractConst("RULE_STAGE_CFG") +
-  extractFn("ruleDisplayStage") + extractFn("ruleStageChip") + extractFn("ruleCommentAction") +
+  extractFn("ruleDisplayStage") + extractFn("ruleDateLabel") + extractFn("ruleStageChip") + extractFn("ruleCommentAction") +
   "return { ruleStageChip, ruleCommentAction, ruleDisplayStage };"
 )();
 const ruleInDays = (n) => new Date(Date.now() + n * 86400000 + 3600000).toISOString();

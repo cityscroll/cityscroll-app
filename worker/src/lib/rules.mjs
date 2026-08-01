@@ -142,7 +142,10 @@ export function normalizeRuleItem(raw) {
   const fallback = extractFromContent(raw.content);
 
   const agencyAbbrVal = agencyAbbr(raw.agency_name) || agencyAbbr(fallback.agency_full);
-  const adoptionDate = parseCompactDate(raw.rule_adoption_date) || fallback.rule_effective_date || null;
+  // Despite its historical name, the official `rule_adoption_date` RSS field
+  // matches the "Rule Effective Date" printed in content:encoded. Keep that
+  // valid-time assertion separate from the publication clock of an adoption item.
+  const effectiveDate = parseCompactDate(raw.rule_adoption_date) || fallback.rule_effective_date || null;
   const commentDate = parseCompactDate(raw.comment_by_date) || fallback.comment_by_date || null;
   const hearingDate = parseCompactDate(raw.hearing_date_1) || fallback.hearing_date || null;
   const summary = raw.rule_short_summary
@@ -163,7 +166,9 @@ export function normalizeRuleItem(raw) {
     agency_full: fallback.agency_full || null,
     agency_abbr: agencyAbbrVal,
     rule_status: raw.rule_status || null,
-    adoption_date: adoptionDate,
+    adoption_published_at: (raw.rule_status === "1" || fallback.notice_type === "adoption") ? pubDate : null,
+    effective_date: effectiveDate,
+    effective_source_field: raw.rule_adoption_date ? "rule_adoption_date" : (fallback.rule_effective_date ? "content:Rule Effective Date" : null),
     comment_by_date: commentDate,
     hearing_date: hearingDate,
     summary,
@@ -180,18 +185,75 @@ export function normalizeRuleItem(raw) {
 
 export function classifyStage(rule, now = new Date()) {
   const nowMs = now.getTime();
-  const adoption = rule.adoption_date ? Date.parse(rule.adoption_date) : null;
+  const effective = rule.effective_date ? Date.parse(rule.effective_date) : null;
   const comment = rule.comment_by_date ? Date.parse(rule.comment_by_date) : null;
   const hearing = rule.hearing_date ? Date.parse(rule.hearing_date) : null;
 
-  if (adoption != null && Number.isFinite(adoption)) {
-    if (nowMs >= adoption) return "effective";
+  const adopted = rule.rule_status === "1" || rule.notice_type === "adoption" || !!rule.adoption_published_at;
+  if (adopted) {
+    if (effective != null && Number.isFinite(effective) && nowMs >= effective) return "effective";
     return "adopted";
   }
   if (comment != null && Number.isFinite(comment) && nowMs < comment) return "comment-open";
   if (hearing != null && Number.isFinite(hearing) && nowMs < hearing) return "hearing";
   if (comment != null && Number.isFinite(comment) && nowMs >= comment) return "comment-closed";
   return "proposed";
+}
+
+// ---------------------------------------------------------------------------
+// Event spine
+// ---------------------------------------------------------------------------
+
+const RULE_TIMEZONE = "America/New_York";
+
+function datedRuleEvent(rule, eventType, validAt, sourceField, now, { alert = false } = {}) {
+  if (!validAt) return null;
+  const dateOnly = /^\d{4}-\d{2}-\d{2}$/.test(validAt);
+  const event = {
+    event_type: eventType,
+    valid_at: validAt,
+    valid_at_precision: dateOnly ? "day" : "instant",
+    valid_timezone: dateOnly ? RULE_TIMEZONE : "UTC",
+    source_field: sourceField,
+    source_url: rule.url || null,
+    status: validAt.slice(0, 10) < now.toISOString().slice(0, 10) ? "occurred" : "scheduled",
+  };
+  if (alert) {
+    event.alert = {
+      eligible: true,
+      trigger_field: "valid_at",
+      lead_days: [14, 3, 1, 0],
+    };
+  }
+  return event;
+}
+
+/**
+ * Preserve each official Rules assertion as its own event. `stage` remains a compact
+ * list-view summary; detail and alerts consume this non-collapsed event spine.
+ * Date-only source fields stay date-only instead of inventing a closing clock time.
+ */
+export function deriveRuleEvents(rule, now = new Date()) {
+  const adopted = rule.rule_status === "1" || rule.notice_type === "adoption" || !!rule.adoption_published_at;
+  const adoptionEvent = adopted && rule.adoption_published_at
+    ? {
+        event_type: "adoption",
+        valid_at: null,
+        valid_at_precision: null,
+        valid_timezone: null,
+        published_at: rule.adoption_published_at,
+        source_field: "pubDate",
+        source_url: rule.url || null,
+        status: "occurred",
+      }
+    : null;
+  return [
+    adopted ? null : datedRuleEvent(rule, "proposal_published", rule.pub_date, "pubDate", now),
+    datedRuleEvent(rule, "public_hearing", rule.hearing_date, "hearing_date_1", now),
+    datedRuleEvent(rule, "comment_close", rule.comment_by_date, "comment_by_date", now, { alert: true }),
+    adoptionEvent,
+    datedRuleEvent(rule, "effective", rule.effective_date, rule.effective_source_field || "Rule Effective Date", now),
+  ].filter(Boolean);
 }
 
 // ---------------------------------------------------------------------------

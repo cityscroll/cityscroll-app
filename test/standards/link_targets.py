@@ -127,6 +127,8 @@ EXTERNAL_HREF_EXPRS = (
     "${escUiHtml(sourceURL)}",          # land event spine: City Record or ZAP source event
     "${escUiHtml(href)}",         # rule-lifecycle chip + comment action: NYC Rules comment/adoption page
     "${escUiHtml(action.destination)}",  # compiled next-action rail: validated HTTPS handoff
+    "${escUiHtml(official)}",     # rules event spine: official NYC Rules rule/comment page
+    "${RULES_PUBLIC_URL}",        # rules event spine: NYC Rules landing page for unmatched joins
     # Explicit same-origin exception: this action promises to open the canonical shareable
     # search separately, so it follows the new-tab safety/accessibility checks below.
     "${nlqEscape(canonicalSearchURL(",

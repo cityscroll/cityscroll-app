@@ -107,7 +107,7 @@ test("normalizeRuleItem converts compact dates to ISO and resolves agency abbrev
   assert.equal(rule.agency_abbr, "DOT");
   assert.equal(rule.comment_by_date, "2026-09-01");
   assert.equal(rule.hearing_date, "2026-09-01");
-  assert.equal(rule.adoption_date, null);
+  assert.equal(rule.adoption_published_at, null);
   assert.ok(rule.summary.length > 0);
 });
 
@@ -123,7 +123,7 @@ test("normalizeRuleItem falls back to content:encoded when custom fields are abs
   assert.equal(rule.hearing_date, "2026-08-27");
 });
 
-test("normalizeRuleItem parses adoption date from content:encoded effective date", () => {
+test("normalizeRuleItem keeps content:encoded effective date distinct from adoption", () => {
   const raw = parseRssItems(rssFeed([rssItem({
     title: "Adopted Rule",
     content: '<p><em>Agency: </em><strong>Housing Preservation and Development</strong></p><p><em>Rule Effective Date: </em><strong>01-01-2027</strong></p><p>Notice of Adoption</p>',
@@ -131,7 +131,8 @@ test("normalizeRuleItem parses adoption date from content:encoded effective date
     rule_short_summary: null,
   })]))[0];
   const rule = normalizeRuleItem(raw);
-  assert.equal(rule.adoption_date, "2027-01-01");
+  assert.equal(rule.adoption_published_at, "2026-07-28T12:00:00.000Z");
+  assert.equal(rule.effective_date, "2027-01-01");
   assert.equal(rule.notice_type, "adoption");
 });
 
@@ -162,16 +163,17 @@ test("classifyStage returns hearing when only a future hearing date exists", () 
   assert.equal(classifyStage(rule, NOW), "hearing");
 });
 
-test("classifyStage returns adopted when adoption date is set but in the future", () => {
+test("classifyStage returns adopted for an adoption item whose effective date is future", () => {
   const rule = normalizeRuleItem(parseRssItems(rssFeed([rssItem({
-    title: "Adopted Future", agency_name: "HPD", rule_adoption_date: "20270101",
+    title: "Adopted Future", agency_name: "HPD", rule_status: "1", rule_adoption_date: "20270101",
   })]))[0]);
   assert.equal(classifyStage(rule, NOW), "adopted");
 });
 
-test("classifyStage returns effective when adoption date has passed", () => {
+test("classifyStage returns effective when the official effective date has passed", () => {
   const rule = normalizeRuleItem(parseRssItems(rssFeed([rssItem({
-    title: "Effective Now", agency_name: "HPD", rule_adoption_date: "20260101",
+    title: "Effective Now", agency_name: "HPD", rule_status: "1", rule_adoption_date: "20260101",
+    content: '<p><em>Rule Effective Date: </em><strong>02-01-2026</strong></p>',
   })]))[0]);
   assert.equal(classifyStage(rule, NOW), "effective");
 });
@@ -306,7 +308,7 @@ test("buildRuleView joins RSS items to City Record notices and preserves officia
 
   const view = await buildRuleView(multiSourceFetch(rss, crRows), NOW);
 
-  assert.equal(view.schema_version, 1);
+  assert.equal(view.schema_version, 2);
   assert.equal(view.source.enrichment.status, "ok");
   assert.equal(view.counts.total, 3);
   assert.equal(view.counts.matched, 1);
@@ -319,12 +321,17 @@ test("buildRuleView joins RSS items to City Record notices and preserves officia
   assert.equal(matched.nyc_rules.url, "https://rules.cityofnewyork.us/rule/taxi-parking/");
   assert.equal(matched.nyc_rules.comment_by_date, "2026-09-01");
   assert.equal(matched.nyc_rules.hearing_date, "2026-09-01");
+  assert.deepEqual(matched.events.map((event) => event.event_type), [
+    "proposal_published", "public_hearing", "comment_close",
+  ]);
+  assert.equal(matched.events.find((event) => event.event_type === "comment_close").alert.eligible, true);
   assert.equal(matched.stage, "comment-open");
 
   const unmatchedNotice = view.rules.find((r) => r.city_record && !r.join.matched);
   assert.ok(unmatchedNotice);
   assert.ok(unmatchedNotice.join.reason);
   assert.equal(unmatchedNotice.nyc_rules, null);
+  assert.deepEqual(unmatchedNotice.events, []);
 
   const unmatchedRule = view.rules.find((r) => !r.city_record);
   assert.ok(unmatchedRule);
