@@ -4,6 +4,11 @@
 export const REVIEW_VERSION = "possibly_same_v1";
 export const REVIEW_DECISION = "review";
 
+export {
+  INVESTIGATION_WORKSPACE_VERSION,
+  buildInvestigationWorkspace,
+} from "./investigation_workspace.mjs";
+
 const clampConfidence = (value) => {
   const n = Number(value);
   return Number.isFinite(n) ? Math.max(0, Math.min(1, n)) : null;
