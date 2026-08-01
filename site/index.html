@@ -268,6 +268,13 @@
   .apply .pnote{font:12px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:10px}
   .actions{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 14px}
   .act{font:600 13px/1 ui-sans-serif,system-ui,sans-serif;padding:10px 13px;border-radius:7px;border:1px solid var(--rule);background:#fff;color:var(--ink);text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+  .next-action-rail{margin:14px 0 16px;padding:13px 14px 14px;border:1px solid var(--rule-strong);border-inline-start:4px solid var(--oxblood);border-radius:8px;background:var(--card)}
+  .next-action-rail h3{margin:0 0 10px;font:800 17px/1.2 var(--font-display);color:var(--ink)}
+  .next-action-list{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch}
+  .next-action-list .act{margin:0;min-height:44px}
+  .next-action-list .act.primary{background:var(--oxblood);border-color:var(--oxblood);color:#fff}
+  .next-action-list .act-official{display:block;margin-top:4px;font:500 10px/1.2 ui-monospace,SFMono-Regular,monospace;opacity:.78;overflow-wrap:anywhere}
+  .next-action-unavailable{flex:1 1 220px;padding:9px 11px;border:1px dashed var(--rule-strong);border-radius:7px;color:var(--muted);font:600 13px/1.35 ui-sans-serif,system-ui,sans-serif;background:var(--paper-2)}
   .act.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
   .act:hover{filter:brightness(.97)}
   .exportbar{display:flex;justify-content:flex-end;align-items:center;gap:8px;flex-wrap:wrap;margin:12px 0}
@@ -697,6 +704,7 @@
 <script src="external_awards.js"></script>
 <script src="export_workflows.js"></script>
 <script src="staffing.js"></script>
+<script src="action_registry.js"></script>
 <script src="task_first.js"></script>
 </head>
 <body>
@@ -2417,7 +2425,7 @@ function downloadICS(){
   document.body.appendChild(a); a.click(); a.remove();
 }
 
-function buildApply(r){
+function buildApply(r, showActions=true){
   const dl = daysLeft(r.due_date);
   const rows = [];
   if(r.selection_method_description) rows.push([t("apply_method_lbl"), cleanText(r.selection_method_description)]);
@@ -2437,12 +2445,15 @@ function buildApply(r){
       due = `<div class="due"><span class="d">${t("deadline_respond_by",{date:fdt(r.due_date)})}</span>${tag}</div>`;
     }
   }
-  let acts = '<div class="actions">';
-  if(r.email) acts += `<a class="act primary" href="${mailtoFor(r)}">${t("email_a_response")}</a>`;
-  if(tel) acts += `<a class="act" href="${tel}">${t("call_btn",{phone:cleanText(r.contact_phone)})}</a>`;
-  if(r.due_date && !isRollingDeadline(r.due_date)) acts += `<button class="act" id="icsbtn" type="button">${t("add_deadline_calendar")}</button>`;
-  acts += `<a class="act" href="${PASSPORT}" ${EXT_ATTRS}>${t("bid_on_passport")}${extSR()}</a>`;
-  acts += '</div>';
+  let acts = '';
+  if(showActions){
+    acts = '<div class="actions">';
+    if(r.email) acts += `<a class="act primary" href="${mailtoFor(r)}">${t("email_a_response")}</a>`;
+    if(tel) acts += `<a class="act" href="${tel}">${t("call_btn",{phone:cleanText(r.contact_phone)})}</a>`;
+    if(r.due_date && !isRollingDeadline(r.due_date)) acts += `<button class="act" id="icsbtn" type="button">${t("add_deadline_calendar")}</button>`;
+    acts += `<a class="act" href="${PASSPORT}" ${EXT_ATTRS}>${t("bid_on_passport")}${extSR()}</a>`;
+    acts += '</div>';
+  }
   return `<div class="apply"><h3>${t("how_to_respond_heading")}</h3><div class="body">
     ${due}${acts}${dts?`<dl>${dts}</dl>`:""}
     <div class="pnote">${r.email ? t("apply_pnote_html") : t("apply_pnote_no_email_html")}</div>
@@ -2593,21 +2604,17 @@ function noticeAgencyBar(stats, agencyName, barClass){
 }
 function renderDetail(r, chain, stats){
   const pending = chain === null; // first paint from the in-memory record; chain/stats hydrate in
-  // Same participation derivation as the meetings list (normalizeHearingRow → one link).
-  const detailHearing=isMeetingOutcomesEligible(r)?normalizeHearingRow(r):null;
-  const detailParticipation=detailHearing?participationLinksHTML(detailHearing):"";
   let html = `<div class="actions" style="margin:0 0 12px">
     <button class="act" type="button" id="dcopy">${t("copy_link_notice")}</button>
     ${qrButtonHTML("dqr","act")}
     <button class="act export-control" type="button" id="dxlsx"${pending?' disabled aria-busy="true"':""}>${t("export_xlsx")}</button>
     <button class="act export-control" type="button" id="dprint">${t("print_save_pdf")}</button>
     ${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}
-    ${detailParticipation}
   </div>`;
-  html += `<div id="dcontext"></div><div id="dlifecycle"></div><div id="ddollars"></div><div id="dsubsidy"></div><div id="dmeet"></div>`;
+  html += `<div id="dcontext"></div><div id="dactions"></div><div id="dlifecycle"></div><div id="ddollars"></div><div id="dsubsidy"></div><div id="dmeet"></div>`;
   // Solicitations get the richer how-to-respond panel below; everything else gets the glance box.
   if(r.type_of_notice_description !== "Solicitation") html += glanceFor(r);
-  if(r.type_of_notice_description === "Solicitation") html += buildApply(r);
+  if(r.type_of_notice_description === "Solicitation") html += buildApply(r,false);
 
   html += pending
     ? `<div class="chain-h">${t("paper_trail_heading")}</div>${listSkeleton(2)}`
@@ -2632,6 +2639,7 @@ function renderDetail(r, chain, stats){
   const dp = $("#dprint"); if(dp) dp.addEventListener("click", ()=>printCurrentView("notice", detailURL));
   if(pending) return; // context/dollars fetch once, on the hydrated render
   fillContext(r, $("#dcontext"));
+  mountNoticeActionRail($("#dactions"),r);
   loadLifecycle(r, $("#dlifecycle"), $("#ddollars"));
   loadSubsidyLifecycle(r, $("#dsubsidy"));
   loadMeetingOutcomes(r, $("#dmeet"));
@@ -4740,6 +4748,72 @@ function participationLinksHTML(record){
     const key=link.join?"join_online":(link.ida?"ida_meetings_page":"participation_link");
     return `<a class="act" href="${escUiHtml(link.url)}" ${EXT_ATTRS}>${t(key)}${extSR()}</a>`;
   }).join("");
+}
+function noticeActionMatter(r, ruleRecord){
+  const hearing=isMeetingOutcomesEligible(r)?normalizeHearingRow(r):null;
+  const participation=((hearing&&hearing.participation&&hearing.participation.links)||[])
+    .map(link=>hearingSafeURL(link.url)).find(Boolean)||null;
+  const zapParticipation=participation&&/^https:\/\/zap\.planning\.nyc\.gov\//i.test(participation);
+  const rule=ruleRecord&&ruleRecord.nyc_rules;
+  const rolling=!!(r.due_date&&isRollingDeadline(r.due_date));
+  let kind=r.section_name==="Agency Rules"?"rule"
+    :zapParticipation?"zoning"
+    :isMeetingOutcomesEligible(r)?"hearing"
+    :r.type_of_notice_description==="Solicitation"?"solicitation"
+    :/Award/.test(r.type_of_notice_description||"")?"award":"notice";
+  return {
+    kind,
+    section_name:r.section_name,
+    type_of_notice_description:r.type_of_notice_description,
+    lifecycle_stage:kind==="rule"?(ruleDisplayStage(ruleRecord)||"proposed")
+      :kind==="hearing"&&(r.event_date&&String(r.event_date).slice(0,10)<todayISO())?"past":null,
+    deadline:kind==="rule"?(rule&&rule.comment_by_date||null)
+      :kind==="hearing"?r.event_date
+      :rolling?null:r.due_date||null,
+    rolling_deadline:rolling,
+    official_notice_url:kind==="rule"?(rule&&rule.url||REQ_URL(r.request_id)):REQ_URL(r.request_id),
+    official_application_url:kind==="solicitation"?PASSPORT:null,
+    comment_url:rule&&(rule.comment_url||rule.url),
+    participation_url:participation,
+    project_url:zapParticipation?participation:null,
+  };
+}
+function actionRailLabel(action){
+  return t(action.label_key,action.deadline?{date:fdt(action.deadline)}:{});
+}
+function actionRailHTML(actions){
+  let primaryUsed=false;
+  const items=actions.map(action=>{
+    const label=actionRailLabel(action);
+    if(action.delivery==="unavailable") return `<div class="next-action-unavailable" role="status">${label}</div>`;
+    if(action.delivery==="official_handoff"){
+      const primary=primaryUsed?"":" primary"; primaryUsed=true;
+      return `<a class="act${primary}" href="${escUiHtml(action.destination)}" ${EXT_ATTRS}>`+
+        `<span>${label}<span class="act-official">${escUiHtml(action.destination_label)}</span></span>${extSR()}</a>`;
+    }
+    if(action.type==="calendar") return `<button class="act" type="button" data-next-calendar>${label}</button>`;
+    return `<a class="act" href="#alerts">${label}</a>`;
+  }).join("");
+  return `<section class="next-action-rail"><h3>${t("next_action_heading")}</h3><div class="next-action-list">${items}</div></section>`;
+}
+function paintNoticeActionRail(el,r,ruleRecord){
+  if(!el||!window.CrolActions) return;
+  const actions=CrolActions.compileActionRail(noticeActionMatter(r,ruleRecord),{today:todayISO()});
+  el.innerHTML=actionRailHTML(actions);
+  const calendar=el.querySelector("[data-next-calendar]");
+  if(calendar) calendar.addEventListener("click",()=>{
+    if(r.type_of_notice_description==="Solicitation"){
+      selectedRFP=r;
+      downloadICS();
+    }else downloadEventICS(r);
+  });
+}
+async function mountNoticeActionRail(el,r){
+  paintNoticeActionRail(el,r,null);
+  if(r.section_name!=="Agency Rules") return;
+  const view=await loadRulesView();
+  if(!document.contains(el)) return;
+  paintNoticeActionRail(el,r,buildRulesStageMap(view).get(r.request_id)||null);
 }
 function hearingAreaText(record){
   const area=record.affected_area||{};
@@ -8101,9 +8175,6 @@ async function showNotice(id, watch){
     ? `${title.slice(0,ev.index)}<mark>${title.slice(ev.index, ev.index+ev.term.length)}</mark>${title.slice(ev.index+ev.term.length)}`
     : title;
   const watchChips = watch ? watchChipsFor(watch.lens, watch.filter) : [];
-  // Same one-owner participation link as meetings list cards (how-do-I-attend on the permalink).
-  const noticeHearing=isMeetingOutcomesEligible(r)?normalizeHearingRow(r):null;
-  const noticeParticipation=noticeHearing?participationLinksHTML(noticeHearing):"";
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("back_browse")}</a></p>
     <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
@@ -8111,7 +8182,7 @@ async function showNotice(id, watch){
       <h2 class="rolename" lang="en" dir="ltr">${titleInner}</h2>
       ${digEvidenceHTML(ev)}
       ${watchChips.length ? `<div class="nlunderstood" role="status">${t("deeplink_watch_context_label")} ${watchChips.join(" ")}</div>` : ""}
-      <div id="ncontext"></div>
+      <div id="ncontext"></div><div id="nactions"></div>
       ${glanceFor(r)}
       <div id="naddr"></div><div id="nlifecycle"></div><div id="ndollars"></div><div id="nsubsidy"></div><div id="nmeet"></div><div id="nexternal"></div>
       <div class="actions" style="margin-top:14px">
@@ -8120,12 +8191,10 @@ async function showNotice(id, watch){
         <a class="act" href="mailto:?subject=${encodeURIComponent("City Record notice: "+(cleanText(r.short_title)||r.request_id))}&body=${encodeURIComponent(link+"\n\nVia CityScroll — The City Record, searchable.")}">${t("notice_email_btn")}</a>
         <button class="act export-control" type="button" id="nxlsx">${t("export_xlsx")}</button>
         <button class="act export-control" type="button" id="nprint">${t("print_save_pdf")}</button>
-        ${((r.due_date&&!isRollingDeadline(r.due_date))||r.event_date)?`<button class="act" type="button" id="nics">${t("add_to_calendar_btn")}</button>`:""}
         ${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}
-        ${noticeParticipation}
         <a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("view_in_city_record")}${extSR()}</a>
       </div>
-      ${r.type_of_notice_description==="Solicitation"?buildApply(r):""}
+      ${r.type_of_notice_description==="Solicitation"?buildApply(r,false):""}
       ${scope?`<details class="fulltext"${scope.length<=600?" open":""}><summary>${t("read_full_notice")}</summary><div class="scope" lang="en" dir="ltr" style="margin-top:10px">${scope.slice(0,6000)}${scope.length>6000?"…":""}</div></details>`:""}
       <div class="xlate" id="nxlate"></div>
       <div id="nprior"></div>
@@ -8137,9 +8206,8 @@ async function showNotice(id, watch){
   bindQRShare($("#nqr"), link);
   $("#nxlsx").addEventListener("click", async ()=>exportNoticeXlsx(r,await loadChain(r)));
   $("#nprint").addEventListener("click", ()=>printCurrentView("notice",link));
-  const ni=$("#nics"); if(ni) ni.addEventListener("click", ()=>{ if(r.due_date){ selectedRFP=r; downloadICS(); } else downloadEventICS(r); });
-  const ib=$("#icsbtn"); if(ib){ ib.addEventListener("click", ()=>{ selectedRFP=r; downloadICS(); }); }
   fillContext(r, $("#ncontext"));
+  mountNoticeActionRail($("#nactions"),r);
   loadLifecycle(r, $("#nlifecycle"), $("#ndollars"));
   loadSubsidyLifecycle(r, $("#nsubsidy"));
   loadMeetingOutcomes(r, $("#nmeet"));
