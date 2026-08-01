@@ -35,6 +35,16 @@ export const MAX_AGE_MS = 36 * 60 * 60 * 1000;
 export const NOTICE_LIMIT = 500;
 export const API_RECORD_LIMIT = 100;
 
+/** Ordered stages of one matter's legislative path on a Council event. */
+export const MEETING_VOTE_SPINE_STAGES = Object.freeze([
+  "agenda",
+  "matter",
+  "action",
+  "vote",
+  "attachment",
+]);
+export const MEETING_VOTE_SPINE_SCHEMA_VERSION = 1;
+
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 
 const NOTICE_SELECT = [
@@ -195,6 +205,176 @@ function projectVoteSummary(voteSummary, item) {
 }
 
 /**
+ * One matter-centric vote spine: agenda → matter → action → vote → attachment.
+ * The spine is the product object for a matter's path through a single Council event.
+ *
+ * @param {object} opts
+ * @param {object} [opts.item] - agenda item (from assembleAgenda)
+ * @param {object} [opts.matter] - matter card on that item
+ * @param {object} [opts.event] - council_event
+ * @param {object[]} [opts.eventDocuments] - event-level agenda/minutes docs
+ */
+export function buildMeetingVoteSpine({
+  item = {},
+  matter = {},
+  event = {},
+  eventDocuments = [],
+} = {}) {
+  const agendaMatched = Boolean(item?.agenda_item_id || item?.title);
+  const matterMatched = Boolean(matter?.matter_id);
+  const actionName =
+    matter?.outcome || matter?.passed || matter?.status || item?.action_name || null;
+  const actionMatched = Boolean(actionName);
+  const votes = Array.isArray(matter?.votes) ? matter.votes : [];
+  const voteMatched = votes.length > 0;
+  const docs = [
+    ...(Array.isArray(matter?.documents) ? matter.documents : []),
+    ...(Array.isArray(eventDocuments) ? eventDocuments : []),
+  ].filter((d, index, all) => d && d.url && all.findIndex((x) => x && x.url === d.url) === index);
+  const attachmentMatched = docs.length > 0;
+
+  const stages = [
+    {
+      kind: "agenda",
+      matched: agendaMatched,
+      agenda_item_id: item?.agenda_item_id ?? null,
+      agenda_number: item?.agenda_number ?? null,
+      title: item?.title ?? null,
+      body_text: item?.body_text ?? null,
+    },
+    {
+      kind: "matter",
+      matched: matterMatched,
+      matter_id: matter?.matter_id ?? null,
+      matter_file: matter?.matter_file ?? null,
+      title: matter?.title ?? null,
+      status: matter?.status ?? null,
+    },
+    {
+      kind: "action",
+      matched: actionMatched,
+      action_name: actionName,
+      action_text: matter?.body_text || item?.body_text || item?.action_text || null,
+      passed: matter?.passed ?? null,
+    },
+    {
+      kind: "vote",
+      matched: voteMatched,
+      votes,
+      result: votes[0]?.result ?? null,
+      counts: votes[0]?.counts ?? null,
+      by_person: votes[0]?.by_person ?? [],
+      officials: votes[0]?.officials ?? [],
+      votes_on: votes[0]?.votes_on ?? [],
+    },
+    {
+      kind: "attachment",
+      matched: attachmentMatched,
+      documents: docs,
+    },
+  ];
+
+  const matchedCount = stages.filter((s) => s.matched).length;
+  const gaps = stages
+    .filter((s) => !s.matched)
+    .map((s) => ({
+      slot: s.kind,
+      class: matterMatched || s.kind === "agenda" ? "not_yet_ingested" : "not_yet_ingested",
+      taxonomy: true,
+      source: "NYC Council Legistar",
+    }));
+
+  const matterId = matter?.matter_id ?? null;
+  const agendaItemId = item?.agenda_item_id ?? null;
+  return {
+    schema_version: MEETING_VOTE_SPINE_SCHEMA_VERSION,
+    subject_ref: matterId
+      ? `matter:${matterId}`
+      : agendaItemId
+        ? `agenda_item:${agendaItemId}`
+        : null,
+    event_id: event?.event_id ?? item?.event_id ?? null,
+    agenda_item_id: agendaItemId,
+    matter_id: matterId,
+    stages,
+    stage_fill: stages.length ? matchedCount / stages.length : 0,
+    matched_stages: matchedCount,
+    total_stages: stages.length,
+    full: matchedCount === stages.length,
+    gaps,
+  };
+}
+
+/**
+ * Build matter vote spines for one meeting-outcomes record (matched or not).
+ * Unmatched notices yield an empty list.
+ */
+export function buildMeetingVoteSpines(record) {
+  if (!record?.join?.matched) return [];
+  const event = record.council_event || {};
+  const eventDocs = Array.isArray(event.documents) ? event.documents : [];
+  const spines = [];
+  for (const item of record.agenda_items || []) {
+    const matters = Array.isArray(item.matters) && item.matters.length ? item.matters : [{}];
+    for (const matter of matters) {
+      spines.push(buildMeetingVoteSpine({
+        item,
+        matter,
+        event,
+        eventDocuments: eventDocs,
+      }));
+    }
+  }
+  return spines;
+}
+
+/**
+ * Named product metric: meeting_vote_spine_completeness_rate
+ *
+ * Mean stage_fill over matter-linked spines (agenda→matter→action→vote→attachment).
+ * When no matter spines exist, falls back to all spines so unmatched paths stay measurable.
+ *
+ * @param {object[]} records - meeting-outcomes records (prefer with `.spines` stamped)
+ * @returns {{ metric: string, meeting_vote_spine_completeness_rate: number, full_spine_rate: number, spine_count: number, matter_spine_count: number, stage_rates: object }}
+ */
+export function measureMeetingVoteSpineCompleteness(records = []) {
+  const spines = [];
+  for (const record of records || []) {
+    const list = Array.isArray(record?.spines) && record.spines.length
+      ? record.spines
+      : buildMeetingVoteSpines(record);
+    for (const spine of list) spines.push(spine);
+  }
+  const matterSpines = spines.filter((s) => s.matter_id);
+  const pool = matterSpines.length ? matterSpines : spines;
+  const stageCounts = Object.fromEntries(MEETING_VOTE_SPINE_STAGES.map((k) => [k, 0]));
+  let fillSum = 0;
+  let full = 0;
+  for (const spine of pool) {
+    fillSum += Number(spine.stage_fill) || 0;
+    if (spine.full) full += 1;
+    for (const stage of spine.stages || []) {
+      if (stage.matched && Object.prototype.hasOwnProperty.call(stageCounts, stage.kind)) {
+        stageCounts[stage.kind] += 1;
+      }
+    }
+  }
+  const n = pool.length;
+  const stage_rates = {};
+  for (const kind of MEETING_VOTE_SPINE_STAGES) {
+    stage_rates[kind] = n === 0 ? 0 : stageCounts[kind] / n;
+  }
+  return {
+    metric: "meeting_vote_spine_completeness_rate",
+    meeting_vote_spine_completeness_rate: n === 0 ? 0 : fillSum / n,
+    full_spine_rate: n === 0 ? 0 : full / n,
+    spine_count: n,
+    matter_spine_count: matterSpines.length,
+    stage_rates,
+  };
+}
+
+/**
  * Build matter cards from one event's normalized items, attaching the
  * best-effort roll-call vote summary and per-item attachments (plus event docs).
  */
@@ -293,6 +473,7 @@ export function buildMeetingOutcomes(noticeRows, eventRows, eventItemRows, voteR
         notice: { ...notice },
         council_event: null,
         agenda_items: [],
+        spines: [],
       });
       continue;
     }
@@ -304,6 +485,7 @@ export function buildMeetingOutcomes(noticeRows, eventRows, eventItemRows, voteR
         notice: { ...notice },
         council_event: null,
         agenda_items: [],
+        spines: [],
       });
       continue;
     }
@@ -327,7 +509,7 @@ export function buildMeetingOutcomes(noticeRows, eventRows, eventItemRows, voteR
         join: { matched: false, reason: "No agenda items returned for this event yet." },
       }];
 
-    matchedRecords.push({
+    const matchedRecord = {
       request_id: notice.request_id,
       join: {
         matched: true,
@@ -357,7 +539,10 @@ export function buildMeetingOutcomes(noticeRows, eventRows, eventItemRows, voteR
         documents: docs,
       },
       agenda_items: agenda,
-    });
+    };
+    // Matter-centric legislative path: agenda → matter → action → vote → attachment.
+    matchedRecord.spines = buildMeetingVoteSpines(matchedRecord);
+    matchedRecords.push(matchedRecord);
   }
 
   const matchedEventIds = new Set(matchedRecords.map((r) => r.council_event?.event_id).filter(Boolean));
@@ -375,6 +560,7 @@ export function buildMeetingOutcomes(noticeRows, eventRows, eventItemRows, voteR
   const matterDocs = allMatters.reduce((sum, m) => sum + (m.documents?.length || 0), 0);
   const eventDocs = matchedRecords.reduce((sum, r) => sum + (r.council_event?.documents?.length || 0), 0);
   const totalDocs = matterDocs + eventDocs;
+  const spineMetric = measureMeetingVoteSpineCompleteness(matchedRecords);
 
   return {
     schema_version: MEETING_OUTCOMES_VIEW_VERSION,
@@ -399,8 +585,15 @@ export function buildMeetingOutcomes(noticeRows, eventRows, eventItemRows, voteR
       matters: allMatters.filter((m) => m.matter_id).length,
       votes: totalVotes,
       documents: totalDocs,
+      spines: spineMetric.spine_count,
+      full_spines: Math.round(spineMetric.full_spine_rate * spineMetric.spine_count),
       records: matchedRecords.length + unmatchedNotices.length,
       event_rows: events.length,
+    },
+    metrics: {
+      meeting_vote_spine_completeness_rate: spineMetric.meeting_vote_spine_completeness_rate,
+      full_spine_rate: spineMetric.full_spine_rate,
+      stage_rates: spineMetric.stage_rates,
     },
     records: [...matchedRecords, ...unmatchedNotices],
     unmatched_events: unmatchedEvents,
