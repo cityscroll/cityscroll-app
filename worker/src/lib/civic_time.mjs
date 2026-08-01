@@ -122,6 +122,18 @@ export const EVENT_KIND_REGISTRY = Object.freeze({
     lens: "money",
     description: "City Record procurement notice publication",
   },
+  "procurement.solicitation_opened": {
+    lens: "money",
+    description: "PASSPort RFx release / solicitation open for responses",
+  },
+  "procurement.solicitation_addenda": {
+    lens: "money",
+    description: "PASSPort RFx addendum or package revision (only when a publisher date exists)",
+  },
+  "procurement.solicitation_due": {
+    lens: "money",
+    description: "PASSPort RFx response due date",
+  },
   "procurement.award_registered": {
     lens: "money",
     description: "Contract registration or award assertion",
@@ -201,7 +213,18 @@ export const SPINE_KIND_ALIASES = Object.freeze({
   award: "procurement.notice_published",
   registered: "procurement.award_registered",
   payment: "procurement.payment",
+  // PASSPort RFx production spine (open → addenda → due; award reuses notice/registered)
+  rfx_opened: "procurement.solicitation_opened",
+  rfx_addenda: "procurement.solicitation_addenda",
+  rfx_due: "procurement.solicitation_due",
 });
+
+/** Event kinds emitted from matched PASSPort RFx detail (solicitation production spine). */
+export const RFX_PRODUCTION_EVENT_KINDS = Object.freeze([
+  "procurement.solicitation_opened",
+  "procurement.solicitation_addenda",
+  "procurement.solicitation_due",
+]);
 
 const ENVELOPE_REQUIRED = [
   "event_id",
@@ -537,8 +560,9 @@ function dayStamp(value) {
   if (value == null || value === "") return null;
   const s = String(value).trim();
   if (/^\d{4}-\d{2}-\d{2}/.test(s)) return s.slice(0, 10);
-  // Checkbook / PASSPort often emit US slash dates (e.g. 07/22/2024).
-  const mdy = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  // Checkbook / PASSPort often emit US slash dates, optionally with a clock:
+  // "07/22/2024", "7/28/2026 9:00:00 AM".
+  const mdy = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
   if (mdy) {
     const mm = mdy[1].padStart(2, "0");
     const dd = mdy[2].padStart(2, "0");
@@ -738,6 +762,156 @@ export function clocksFromTemporalAction(action) {
 const MONEY_PAYMENT_EMIT_STATES = new Set(["paid", "from_registered", "verified_zero"]);
 
 /**
+ * Resolve matched PASSPort RFx detail from a lifecycle payload.
+ * Prefer root rfx_detail; fall back to the solicitation stage rfx block.
+ * @returns {{ detail: object, join_method: string|null } | null}
+ */
+export function matchedRfxDetail(lifecycle) {
+  if (!lifecycle || typeof lifecycle !== "object") return null;
+  const root = lifecycle.rfx_detail;
+  if (root && root.status === "matched" && root.detail && typeof root.detail === "object") {
+    return { detail: root.detail, join_method: root.join_method || null };
+  }
+  const timeline = Array.isArray(lifecycle.timeline) ? lifecycle.timeline : [];
+  for (const entry of timeline) {
+    if (!entry || entry.stage !== "solicitation") continue;
+    const rfx = entry.rfx;
+    if (rfx && rfx.status === "matched" && rfx.detail && typeof rfx.detail === "object") {
+      return { detail: rfx.detail, join_method: rfx.join_method || entry.detail?.rfx_join_method || null };
+    }
+    if (entry.detail?.rfx && typeof entry.detail.rfx === "object") {
+      return {
+        detail: entry.detail.rfx,
+        join_method: entry.detail.rfx_join_method || null,
+      };
+    }
+  }
+  return null;
+}
+
+/**
+ * Map matched PASSPort RFx fields into solicitation production civic-time events.
+ *
+ * Publisher clocks only (never invent):
+ *   release_date → procurement.solicitation_opened (valid_at)
+ *   due_date     → procurement.solicitation_due (valid_at)
+ *   addenda_*    → procurement.solicitation_addenda when a date field is present
+ *
+ * public_rfx_data publishes no addenda date columns — addenda stays registered but
+ * unemitted until a publisher field exists. Award on the chain reuses City Record
+ * notice_published / award_registered from the main money adapter.
+ *
+ * @param {object} lifecycle
+ * @param {object} [noticeRow]
+ * @param {object} [meta]
+ * @returns {object[]}
+ */
+export function mapPassportRfxToCivic(lifecycle, noticeRow = null, meta = {}) {
+  const notice = noticeRow || {};
+  const noticeId = notice.request_id || lifecycle?.request_id || null;
+  const observed_at = meta.observed_at ?? null;
+  const processed_at = meta.processed_at ?? null;
+  const run_id = meta.run_id ?? "money-lifecycle";
+  const matched = matchedRfxDetail(lifecycle);
+  if (!matched) return [];
+
+  const detail = matched.detail;
+  const epin = detail.epin || detail.epin_norm || null;
+  const rfpId = detail.rfp_id || null;
+  const sourceKey = epin || rfpId || noticeId;
+  if (!sourceKey) return [];
+
+  const subject_ref = noticeId
+    ? `notice:${noticeId}`
+    : epin
+      ? `pin:${epin}`
+      : null;
+  if (!subject_ref) return [];
+
+  const source_record_ref = `passport-rfx:${sourceKey}`;
+  const out = [];
+
+  const releaseDate = dayStamp(detail.release_date);
+  if (releaseDate) {
+    out.push(
+      mapCivicEvent(
+        {
+          event_kind: "procurement.solicitation_opened",
+          subject_ref,
+          source_record_ref,
+          source_revision: `rfx:${sourceKey}:release:${releaseDate}`,
+          source_field: "release_date",
+          valid_at: releaseDate,
+          published_at: releaseDate,
+          observed_at,
+          processed_at,
+          status: detail.rfx_status || "opened",
+          confidence: "high",
+          require_valid: false,
+        },
+        { run_id, processed_at },
+      ),
+    );
+  }
+
+  // Addenda: only when an explicit publisher date is present on the joined row.
+  // public_rfx_data has no addenda columns today — this path stays dark until one ships.
+  const addendaRaw =
+    detail.addenda_date ||
+    detail.addendum_date ||
+    detail.last_addenda_date ||
+    detail.amendment_date ||
+    null;
+  const addendaDate = dayStamp(addendaRaw);
+  if (addendaDate) {
+    out.push(
+      mapCivicEvent(
+        {
+          event_kind: "procurement.solicitation_addenda",
+          subject_ref,
+          source_record_ref,
+          source_revision: `rfx:${sourceKey}:addenda:${addendaDate}`,
+          source_field: "addenda_date",
+          valid_at: addendaDate,
+          published_at: null,
+          observed_at,
+          processed_at,
+          status: "occurred",
+          confidence: "high",
+          require_valid: false,
+        },
+        { run_id, processed_at },
+      ),
+    );
+  }
+
+  const dueDate = dayStamp(detail.due_date);
+  if (dueDate) {
+    out.push(
+      mapCivicEvent(
+        {
+          event_kind: "procurement.solicitation_due",
+          subject_ref,
+          source_record_ref,
+          source_revision: `rfx:${sourceKey}:due:${dueDate}`,
+          source_field: "due_date",
+          valid_at: dueDate,
+          published_at: null,
+          observed_at,
+          processed_at,
+          status: detail.rfx_status || "due",
+          confidence: "high",
+          require_valid: false,
+        },
+        { run_id, processed_at },
+      ),
+    );
+  }
+
+  return out;
+}
+
+/**
  * Map an assembled contract lifecycle (Checkbook + optional PASSPort) into
  * civic-time envelopes for Money event-kinds.
  *
@@ -745,9 +919,11 @@ const MONEY_PAYMENT_EMIT_STATES = new Set(["paid", "from_registered", "verified_
  *   solicitation | award (matched) → procurement.notice_published
  *   registered (matched)           → procurement.award_registered
  *   payment (matched, honest state)→ procurement.payment
+ *   matched PASSPort RFx detail    → solicitation_opened / addenda / due
  *
  * Unmatched / ambiguous / unknown / not_applicable / passed stages emit nothing.
  * payment_state "unavailable" never invents a $0 payment event.
+ * RFx addenda never invents a date when public_rfx_data omits addenda columns.
  *
  * @param {object} lifecycle - assembleLifecycle / getOrCompute result body
  * @param {object} [noticeRow] - City Record notice row (request_id, start_date, …)
@@ -871,6 +1047,12 @@ export function mapMoneyLifecycleToCivic(lifecycle, noticeRow = null, meta = {})
     }
   }
 
+  // Solicitation production spine from PASSPort RFx (open → addenda → due).
+  // Award continues to come from City Record / registration stages above.
+  for (const ev of mapPassportRfxToCivic(lifecycle, noticeRow, meta)) {
+    out.push(ev);
+  }
+
   return out;
 }
 
@@ -898,6 +1080,9 @@ export function moneySpineAdapterCoverage(pairs = []) {
   let with_events = 0;
   const kinds = {
     "procurement.notice_published": 0,
+    "procurement.solicitation_opened": 0,
+    "procurement.solicitation_addenda": 0,
+    "procurement.solicitation_due": 0,
     "procurement.award_registered": 0,
     "procurement.payment": 0,
   };
@@ -924,6 +1109,93 @@ export function moneySpineAdapterCoverage(pairs = []) {
 }
 
 /**
+ * Coverage metric for the PASSPort RFx solicitation production spine.
+ *
+ * rfx_spine_adapter_coverage =
+ *   lifecycles_with_matched_RFx_that_emit_≥1_RFx_production_event
+ *   / lifecycles_with_matched_RFx
+ *
+ * RFx production kinds: solicitation_opened, solicitation_addenda, solicitation_due.
+ * Baseline before this adapter is 0 (RFx detail was UI-only).
+ *
+ * @param {Array<{ lifecycle: object, notice?: object, meta?: object }>} pairs
+ * @returns {{
+ *   coverage: number,
+ *   with_rfx: number,
+ *   with_rfx_events: number,
+ *   open_due_pair_rate: number,
+ *   with_open_and_due: number,
+ *   with_open_and_due_dates: number,
+ *   kinds: object,
+ *   gaps: { addenda_not_published: number }
+ * }}
+ */
+export function rfxSpineAdapterCoverage(pairs = []) {
+  let with_rfx = 0;
+  let with_rfx_events = 0;
+  let with_open_and_due_dates = 0;
+  let with_open_and_due = 0;
+  let addenda_not_published = 0;
+  const kinds = {
+    "procurement.solicitation_opened": 0,
+    "procurement.solicitation_addenda": 0,
+    "procurement.solicitation_due": 0,
+  };
+  const rfxKindSet = new Set(RFX_PRODUCTION_EVENT_KINDS);
+
+  for (const pair of pairs) {
+    const lifecycle = pair?.lifecycle;
+    const matched = matchedRfxDetail(lifecycle);
+    if (!matched) continue;
+    with_rfx += 1;
+
+    const detail = matched.detail;
+    const hasOpenDate = Boolean(dayStamp(detail.release_date));
+    const hasDueDate = Boolean(dayStamp(detail.due_date));
+    if (hasOpenDate && hasDueDate) with_open_and_due_dates += 1;
+
+    // Public dump has no addenda date — count as class-(b) gap when RFx is matched.
+    const hasAddendaDate = Boolean(
+      dayStamp(
+        detail.addenda_date ||
+          detail.addendum_date ||
+          detail.last_addenda_date ||
+          detail.amendment_date ||
+          null,
+      ),
+    );
+    if (!hasAddendaDate) addenda_not_published += 1;
+
+    const events = mapPassportRfxToCivic(lifecycle, pair.notice || null, pair.meta || {});
+    const rfxEvents = events.filter((e) => rfxKindSet.has(e.event_kind));
+    if (rfxEvents.length >= 1) with_rfx_events += 1;
+
+    let hasOpen = false;
+    let hasDue = false;
+    for (const e of rfxEvents) {
+      if (Object.prototype.hasOwnProperty.call(kinds, e.event_kind)) {
+        kinds[e.event_kind] += 1;
+      }
+      if (e.event_kind === "procurement.solicitation_opened") hasOpen = true;
+      if (e.event_kind === "procurement.solicitation_due") hasDue = true;
+    }
+    if (hasOpen && hasDue) with_open_and_due += 1;
+  }
+
+  return {
+    coverage: with_rfx === 0 ? 0 : with_rfx_events / with_rfx,
+    with_rfx,
+    with_rfx_events,
+    open_due_pair_rate:
+      with_open_and_due_dates === 0 ? 0 : with_open_and_due / with_open_and_due_dates,
+    with_open_and_due,
+    with_open_and_due_dates,
+    kinds,
+    gaps: { addenda_not_published },
+  };
+}
+
+/**
  * Four civic clock families for completeness scoring.
  * "event" is filled when any valid clock is present (valid_at or range).
  */
@@ -944,6 +1216,7 @@ export const SPINE_SOURCE_CONTRACTS = Object.freeze({
     "checkbook-contracts",
     "checkbook-spending",
     "passport-public-contracts",
+    "passport-public-rfx",
     "ocp-recent-contract-awards",
   ]),
   rules: Object.freeze(["city-record", "nyc-rules-rss"]),
