@@ -35,6 +35,9 @@ import {
   GOLD_V0_PATH,
   loadGold,
   buildClericalAudit,
+  serializePublicEntity,
+  serializePublicEntityLink,
+  PUBLICATION_VERSION,
 } from "../../entity_resolution/index.mjs";
 import {
   vendorStem as workerVendorStem,
@@ -52,6 +55,7 @@ const REQUIRED_DIRS = [
   "policies",
   "evaluation",
   "review",
+  "publication",
 ];
 
 test("package directories and README exist", () => {
@@ -101,6 +105,7 @@ test("candidate generation and conventional matcher stay non-linking", () => {
   assert.equal(MATCHERS_VERSION, "conventional_v0");
   assert.equal(POLICIES_VERSION, "stub");
   assert.equal(REVIEW_VERSION, "possibly_same_v1");
+  assert.equal(PUBLICATION_VERSION, "public_er_v1");
 
   const candidates = generateCandidates([
     { id: "a", display_name: "Acme Construction LLC", entity_type: "vendor" },
@@ -123,6 +128,19 @@ test("candidate generation and conventional matcher stay non-linking", () => {
   const routed = routeDecision(scored);
   assert.equal(routed.auto_link, false);
   assert.equal(toReviewItem({ id: 1 }, scored), null);
+
+  assert.deepEqual(
+    serializePublicEntity({ id: "vendor:acme", entity_type: "vendor", display_name: "Acme" }),
+    { id: "vendor:acme", type: "vendor", name: "Acme" },
+  );
+  assert.deepEqual(
+    serializePublicEntityLink({
+      canonical_entity_id: "vendor:acme",
+      source_system: "city_record",
+      source_system_id: "notice-1",
+    }),
+    { entity_id: "vendor:acme", source: { system: "city_record", id: "notice-1" } },
+  );
 });
 
 test("evaluation re-exports load gold helpers", () => {

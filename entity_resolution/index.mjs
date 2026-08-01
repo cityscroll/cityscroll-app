@@ -68,3 +68,12 @@ export {
   toReviewItem,
   toReviewItems,
 } from "./review/index.mjs";
+
+export {
+  PUBLICATION_VERSION,
+  PUBLIC_ENTITY_FIELDS,
+  PUBLIC_ENTITY_LINK_FIELDS,
+  DESK_ONLY_ENTITY_RESOLUTION_FIELDS,
+  serializePublicEntity,
+  serializePublicEntityLink,
+} from "./publication/index.mjs";
