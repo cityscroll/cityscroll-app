@@ -648,6 +648,7 @@
     lifecycle_ocp_disagreement_html: "يختلف City Record و{source} — يُعرض كلاهما مع تسمية المصادر.",
     lifecycle_ocp_amount_pair_html: "المبلغ: {city_record_label} {city_amount} · {ocp_label} {ocp_amount}.",
     lifecycle_ocp_date_pair_html: "التاريخ: {city_record_label} {city_date} · {ocp_label} {ocp_date}.",
+    lifecycle_ocp_interpretation_html: "تفسير CityScroll: قيم {field} مختلفة؛ دون حل (لا استنتاج مشتق).",
     lifecycle_ocp_unmatched_html: "لم يُعرض هنا بعد — ترسيات OCP الأخيرة موجودة في {source}.",
     lifecycle_ocp_unknown_html: "تعذّر الوصول إلى {source} للتحقق من هذه الترسية.",
     lifecycle_ocp_ambiguous_html: "تطابقت عدة صفوف ترسية OCP — لا يمكن اختيار واحدة تلقائياً.",

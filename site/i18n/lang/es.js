@@ -641,6 +641,7 @@
     lifecycle_ocp_disagreement_html: "City Record y {source} no coinciden — se muestran ambos con las fuentes nombradas.",
     lifecycle_ocp_amount_pair_html: "Monto: {city_record_label} {city_amount} · {ocp_label} {ocp_amount}.",
     lifecycle_ocp_date_pair_html: "Fecha: {city_record_label} {city_date} · {ocp_label} {ocp_date}.",
+    lifecycle_ocp_interpretation_html: "Interpretación de CityScroll: valores de {field} distintos; resolución sin decidir (sin conclusión derivada).",
     lifecycle_ocp_unmatched_html: "Aún no se muestra aquí — las adjudicaciones recientes de OCP están en {source}.",
     lifecycle_ocp_unknown_html: "No se pudo contactar {source} para verificar esta adjudicación.",
     lifecycle_ocp_ambiguous_html: "Varias filas de adjudicación OCP coinciden — no se puede elegir una automáticamente.",

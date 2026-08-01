@@ -648,6 +648,7 @@
     lifecycle_ocp_disagreement_html: "City Record اور {source} متفق نہیں — دونوں ذرائع کے نام کے ساتھ دکھائے گئے۔",
     lifecycle_ocp_amount_pair_html: "رقم: {city_record_label} {city_amount} · {ocp_label} {ocp_amount}۔",
     lifecycle_ocp_date_pair_html: "تاریخ: {city_record_label} {city_date} · {ocp_label} {ocp_date}۔",
+    lifecycle_ocp_interpretation_html: "CityScroll کی تعبیر: مختلف {field} اقدار؛ غیر حل شدہ (کوئی ماخوذ نتیجہ نہیں)۔",
     lifecycle_ocp_unmatched_html: "ابھی یہاں نہیں دکھایا گیا — حالیہ OCP ایوارڈز {source} میں ہیں۔",
     lifecycle_ocp_unknown_html: "اس ایوارڈ کی تصدیق کے لیے {source} تک رسائی ممکن نہ ہوئی۔",
     lifecycle_ocp_ambiguous_html: "متعدد OCP ایوارڈ قطاریں ملیں — خودکار طور پر ایک منتخب نہیں کیا جا سکتا۔",

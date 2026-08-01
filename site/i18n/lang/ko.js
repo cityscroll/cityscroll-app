@@ -641,6 +641,7 @@
     lifecycle_ocp_disagreement_html: "City Record와 {source}가 일치하지 않습니다 — 출처를 명시한 채 둘 다 표시합니다.",
     lifecycle_ocp_amount_pair_html: "금액: {city_record_label} {city_amount} · {ocp_label} {ocp_amount}.",
     lifecycle_ocp_date_pair_html: "날짜: {city_record_label} {city_date} · {ocp_label} {ocp_date}.",
+    lifecycle_ocp_interpretation_html: "CityScroll 해석: {field} 값이 다름; 미해결(도출된 결론 없음).",
     lifecycle_ocp_unmatched_html: "아직 여기 표시되지 않음 — 최근 OCP 낙찰은 {source}에 있습니다.",
     lifecycle_ocp_unknown_html: "이 낙찰을 확인하기 위해 {source}에 연결할 수 없습니다.",
     lifecycle_ocp_ambiguous_html: "여러 OCP 낙찰 행이 일치함 — 자동으로 하나를 고를 수 없습니다.",

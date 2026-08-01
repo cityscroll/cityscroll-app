@@ -640,6 +640,7 @@
     lifecycle_ocp_disagreement_html: "City Record ak {source} pa dakò — tou de yo parèt ak sous yo nonmen.",
     lifecycle_ocp_amount_pair_html: "Montan: {city_record_label} {city_amount} · {ocp_label} {ocp_amount}.",
     lifecycle_ocp_date_pair_html: "Dat: {city_record_label} {city_date} · {ocp_label} {ocp_date}.",
+    lifecycle_ocp_interpretation_html: "Entèpretasyon CityScroll: valè {field} diferan; rezolisyon pa fèt (pa gen konklizyon sòti).",
     lifecycle_ocp_unmatched_html: "Pokò a pa montre isit la — akòdman OCP resan yo nan {source}.",
     lifecycle_ocp_unknown_html: "Pa t kapab rive jwenn {source} pou verifye akòdman sa a.",
     lifecycle_ocp_ambiguous_html: "Plizyè liy akòdman OCP matche — pa ka chwazi youn otomatikman.",

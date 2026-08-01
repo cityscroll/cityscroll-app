@@ -641,6 +641,7 @@
     lifecycle_ocp_disagreement_html: "市政公报与 {source} 不一致 — 两者均显示并标明来源。",
     lifecycle_ocp_amount_pair_html: "金额：{city_record_label} {city_amount}；{ocp_label} {ocp_amount}。",
     lifecycle_ocp_date_pair_html: "日期：{city_record_label} {city_date}；{ocp_label} {ocp_date}。",
+    lifecycle_ocp_interpretation_html: "CityScroll 解读：{field} 值不同；未解决（无派生结论）。",
     lifecycle_ocp_unmatched_html: "此处尚未显示 — 近期 OCP 中标记录在 {source}。",
     lifecycle_ocp_unknown_html: "无法访问 {source} 以核对该中标。",
     lifecycle_ocp_ambiguous_html: "匹配到多条 OCP 中标记录 — 无法自动选定一条。",
