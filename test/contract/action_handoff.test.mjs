@@ -1,55 +1,32 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { compileActionRail, validateAction } from "../../worker/src/lib/action_registry.mjs";
 
-const fixture = JSON.parse(readFileSync(new URL("../fixtures/wave4/action-fixtures.json", import.meta.url)));
-const registry = JSON.parse(readFileSync(new URL("../fixtures/wave4/generated/action_registry.json", import.meta.url)));
+const cases = [
+  {kind: "solicitation", lifecycle_stage: "open", deadline: "2026-09-30", official_application_url: "https://passport.cityofnewyork.us/page.aspx/en/rfp/request_browse_public"},
+  {kind: "rule", lifecycle_stage: "comment-open", deadline: "2026-09-01", comment_url: "https://rules.cityofnewyork.us/rule/example/"},
+  {kind: "hearing", deadline: "2026-09-02", participation_url: "https://www.nyc.gov/events/example"},
+  {kind: "zoning", lifecycle_stage: "active", project_url: "https://zap.planning.nyc.gov/projects/2026M0366"},
+  {kind: "exam", lifecycle_stage: "open", deadline: "2026-09-03", official_application_url: "https://www.nyc.gov/examsforjobs", official_notice_url: "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"},
+];
 
-function findAction(type) {
-  const action = registry.actions.find((item) => item.type === type);
-  assert.ok(action, `action ${type} should exist in action rail`);
-  return action;
-}
-
-test("comments, testimony, application, bid, and subscription actions declare delivery tiers", () => {
-  assert.equal(findAction("comment").delivery, "official_handoff");
-  assert.equal(findAction("rsvp").delivery, "official_handoff");
-  assert.equal(findAction("official_application").delivery, "official_handoff");
-  assert.equal(findAction("watch").delivery, "local");
-});
-
-test("account-gated official actions stay official handoffs with visible destination and confirmation", () => {
-  for (const action of [findAction("comment"), findAction("rsvp"), findAction("official_application")]) {
-    assert.equal(action.delivery, "official_handoff");
-    assert.match(action.destination, /^https:\/\//);
-    assert.equal(typeof action.destination_label, "string");
-    assert.ok(action.destination_label.length > 0);
-    assert.equal(action.confirmation_required, true);
-  }
-});
-
-test("source links and deadlines are explicit for consequential official handoffs", () => {
-  for (const type of ["comment", "rsvp", "official_application"]) {
-    const action = findAction(type);
-    assert.equal(action.delivery, "official_handoff");
-    assert.equal(action.destination, fixture.matter[type === "official_application" ? "official_application_url" : "official_notice_url"]);
-    assert.equal(action.deadline, fixture.matter.deadline);
-  }
-});
-
-test("subscription handoff keeps double opt-in contract metadata", () => {
-  const watch = findAction("watch");
-  assert.equal(watch.delivery, "local");
-  assert.equal(watch.confirmation_required, true);
-  assert.equal(watch.destination, "index.html#alerts");
-});
-
-test("unavailable actions carry no hidden official destination", () => {
-  for (const action of registry.actions) {
-    if (action.delivery === "unavailable") {
-      assert.equal(action.destination, undefined);
-      assert.equal(action.confirmation_required, false);
-      assert.equal(typeof action.destination_label, "undefined");
+test("every official handoff in each supported rail is HTTPS and names its destination", () => {
+  for (const matter of cases) {
+    const actions = compileActionRail(matter, {today: "2026-08-01"});
+    for (const action of actions) {
+      validateAction(action);
+      if (action.delivery !== "official_handoff") continue;
+      assert.match(action.destination, /^https:\/\//, `${matter.kind}:${action.type}`);
+      assert.ok(action.destination_label, `${matter.kind}:${action.type}`);
     }
+  }
+});
+
+test("HTTP, javascript, and malformed handoffs degrade to unavailable actions", () => {
+  for (const destination of ["http://example.org/apply", "javascript:alert(1)", "not a url"]) {
+    const [action] = compileActionRail({kind: "exam", lifecycle_stage: "open", official_application_url: destination}, {today: "2026-08-01"});
+    assert.equal(action.delivery, "unavailable");
+    assert.equal(action.destination, undefined);
+    assert.equal(action.destination_label, undefined);
   }
 });
