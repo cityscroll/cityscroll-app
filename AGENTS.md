@@ -450,6 +450,12 @@ Verify: `node --test test/authority_key_registry.test.mjs test/entity_resolution
 `worker/src/lib/possibly_same.mjs`. Characterization:
 `node --test worker/test/possibly_same_admin.test.mjs`.
 
+**False-split evidence tray (er-14):** the same authenticated route renders source-linked
+records and accepts `same` / `different` / `defer` dispositions. Migration
+`worker/migrations/0010_false_split_disposition.sql` makes those events append-only;
+they never update `entity_link`. Characterization:
+`node --test worker/test/false_split_evidence.test.mjs`.
+
 **Clerical audit (er-12):** `tools/export_er_clerical_audit.mjs` emits a
 false-split-priority sample (`near_miss` plus `auto_link` control), CSV label
 sheet, and receipt under `entity_resolution/eval/audits/<date>/`. Live mode is
