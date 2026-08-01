@@ -1,7 +1,8 @@
 # Entity resolution evaluation
 
-Offline gold set and metrics harness. No production traffic, no D1 writes,
-no auto-links.
+Versioned gold set, metrics harness, and clerical-audit sampler. Metrics stay
+offline; the sampler can issue read-only D1 queries. Neither path writes D1 or
+creates links.
 
 ## Layout
 
@@ -12,6 +13,8 @@ no auto-links.
 | `blockers/token_v0.mjs` | Token/stem blocking v0 (eval candidate generation) |
 | `run_authority.mjs` | Derive and score silver labels from `source_records` JSONL |
 | `fixtures/source_records_authority_v0.jsonl` | Representative source-record rows for characterization only |
+| `clerical_audit.mjs` | Pure stratified sampling, label-sheet, and gold-promotion helpers |
+| `audits/<date>/` | Versioned sample, label sheet, and reproducibility receipt |
 
 ## Run
 
@@ -155,6 +158,51 @@ The two metric keys are:
 
 Characterization:
 `node --test test/entity_resolution_authority.test.mjs`.
+
+## Clerical audit — false-split priority
+
+Generate a deterministic two-stratum sample from current production observations:
+
+```bash
+node tools/export_er_clerical_audit.mjs \
+  --live \
+  --out-dir entity_resolution/eval/audits/2026-07-31 \
+  --observed-on 2026-07-31
+```
+
+The command issues `SELECT` statements only and writes three repository artifacts:
+
+- `audit_sample.jsonl` — nested evidence for every sampled pair
+- `label_sheet.csv` — flat review sheet with `label`, `reviewer`, `reviewed_at`, and `notes`
+- `receipt.json` — input relation/counts, policy versions, thresholds, stratum counts, and hashes
+
+The `near_miss` stratum contains high-similarity pairs not accepted by the
+exact-stem auto-link policy; it leads the sheet because false splits are the
+primary maturity signal. The `auto_link` stratum is a false-merge control.
+Sampling prefers distinct display-pair shapes before filling with repeated live
+attempts. When `source_records` is empty, live mode replays the checked-in policy
+over vendor-bearing `notices` and records that fallback in the receipt.
+
+For an offline replay, replace `--live` with `--input <rows.json>`. Existing
+audit artifacts are idempotent when byte-identical and require `--replace` when
+they differ.
+
+After review, promote labeled rows into a new gold version:
+
+```bash
+node tools/export_er_clerical_audit.mjs \
+  --promote entity_resolution/eval/audits/2026-07-31/label_sheet.csv \
+  --base-gold entity_resolution/eval/gold_v0.jsonl \
+  --gold-out entity_resolution/eval/gold_v1.jsonl
+```
+
+Blank labels are skipped. Promoted rows must use `same` or `different` and must
+include reviewer/date evidence. Promotion rejects duplicate membership, requires
+a newer version, creates a promotion receipt, and refuses to overwrite any
+existing `gold_vN.jsonl`.
+
+Characterization:
+`node --test test/entity_resolution_clerical_audit.test.mjs`.
 
 ## Related
 

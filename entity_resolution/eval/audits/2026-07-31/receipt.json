@@ -1,0 +1,60 @@
+{
+  "kind": "er_clerical_audit",
+  "schema_version": 1,
+  "observed_on": "2026-07-31",
+  "primary_signal": "false_split",
+  "secondary_control": "false_merge",
+  "input_records": 955,
+  "candidate_pairs": 16231,
+  "strata": {
+    "auto_link": {
+      "eligible": 1182,
+      "sampled": 30
+    },
+    "near_miss": {
+      "eligible": 1540,
+      "sampled": 60
+    }
+  },
+  "parameters": {
+    "auto_link_size": 30,
+    "near_miss_size": 60,
+    "near_miss_min_similarity": 0.3
+  },
+  "versions": {
+    "candidate_generation": "token_v0_v0",
+    "features": "pair_features_v0",
+    "matcher": "conventional_v0",
+    "auto_link_method": "vendor_stem_v1",
+    "auto_link_matcher_version": "1"
+  },
+  "sample_sha256": "c6d76dfb0dde3747e3721a5dcfa1e52ab5c09826016166903009a9839028c7f6",
+  "input": {
+    "kind": "live_d1_read_only",
+    "database": "crol-notices",
+    "input_relation": "notices_replay",
+    "replay_reason": "source_records_empty",
+    "relation_counts": {
+      "notices": 1516,
+      "vendor_notices": 955,
+      "source_records": 0,
+      "entity_links": 0,
+      "stored_auto_links": 0
+    },
+    "selected_rows": 955,
+    "row_limit": 1000
+  },
+  "artifacts": {
+    "sample": {
+      "path": "entity_resolution/eval/audits/2026-07-31/audit_sample.jsonl",
+      "sha256": "fbcbcd65416bf9e0fcf138e761426073d0dc7a042c0f5e6c3cba03ccb929c665"
+    },
+    "label_sheet": {
+      "path": "entity_resolution/eval/audits/2026-07-31/label_sheet.csv",
+      "sha256": "0dc1453d4ad9dd72197c5da7e9fe833e4e829e5443bf8b637e86d12079d0beb4"
+    },
+    "receipt": {
+      "path": "entity_resolution/eval/audits/2026-07-31/receipt.json"
+    }
+  }
+}
