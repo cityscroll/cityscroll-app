@@ -17,6 +17,7 @@ surface. **Not an HTTP microservice.**
 | `evaluation/` | Re-exports gold, authority metrics, and clerical-audit helpers |
 | `eval/` | Versioned gold, metrics CLIs, authority fixtures, and audit receipts (keep paths stable) |
 | `review/` | Human review queue shaping (stub) |
+| `publication/` | Allowlist serializers that enforce the public sensitivity boundary |
 | `index.mjs` | Package root public exports |
 
 Worker call sites that historically imported `worker/src/lib/normalize.mjs` keep
@@ -76,12 +77,28 @@ not distributed cosplay for a single-maintainer product.
 - **Not a published npm package** — monorepo path imports; no separate versioned registry
   artifact required for Worker deploy.
 
+## Publication boundary
+
+Public entity-resolution responses must use `serializePublicEntity` or
+`serializePublicEntityLink` from `publication/`; database rows and desk review objects must
+not be serialized directly. The public contract is deliberately small:
+
+- entity: stable opaque id, type family, and display name
+- link: canonical entity id plus publisher system, publisher-native public id, and an optional
+  HTTPS source URL
+
+Raw and normalized snapshots, content hashes, canonical attributes JSON, matcher scores and
+versions, evidence, resolution-run ids, review state, reviewer identity, and notes are desk-only.
+The link serializer distinguishes a publisher-native id from the internal `source_record_id`,
+which contains a snapshot hash and is never public.
+
 ## Verify
 
 ```bash
 test -d entity_resolution/normalizers
 test -f entity_resolution/README.md
 node --test worker/test/entity_resolution_package.test.mjs
+node --test worker/test/entity_resolution_publication.test.mjs
 ```
 
 Existing normalize + gold harnesses stay green:
