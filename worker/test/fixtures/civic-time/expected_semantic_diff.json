@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "materializer": "civic_time_fixture_v1",
+  "counts": {
+    "added": 0,
+    "changed": 0,
+    "superseded": 1,
+    "unchanged": 10,
+    "previous": 11,
+    "current": 11
+  },
+  "added": [],
+  "changed": [],
+  "superseded": [
+    {
+      "previous": {
+        "event_id": "cte:b620b2e2b2be5d4d0819ded3",
+        "subject_ref": "notice:20260715001",
+        "event_kind": "rules.comment_close",
+        "source_revision": "rss:p=1234:comment:2026-09-15",
+        "payload_hash": "411ef166a50ecaab735e34d0fa1182235e597b765ae59ae29d4f45923affdf1b",
+        "valid_at": "2026-09-15",
+        "published_at": "2026-07-15T15:30:00.000Z",
+        "observed_at": "2026-07-16T08:00:00.000Z",
+        "processed_at": "2026-08-01T12:00:00.000Z",
+        "supersedes_event_id": null
+      },
+      "current": {
+        "event_id": "cte:5793c5d0e1c6784484879d38",
+        "subject_ref": "notice:20260715001",
+        "event_kind": "rules.comment_close",
+        "source_revision": "rss:p=1234:comment:2026-09-22",
+        "payload_hash": "c3f181c569469d64eaa5015de9387d3759e5dcc764f79219c0ba3f2f9c2860ab",
+        "valid_at": "2026-09-22",
+        "published_at": "2026-07-15T15:30:00.000Z",
+        "observed_at": "2026-08-02T10:00:00.000Z",
+        "processed_at": "2026-08-02T12:00:00.000Z",
+        "supersedes_event_id": "cte:b620b2e2b2be5d4d0819ded3"
+      }
+    }
+  ],
+  "unchanged": [
+    {
+      "event_id": "cte:181c17bff5b3d98b36b9b52e",
+      "subject_ref": "legistar-event:22526",
+      "event_kind": "meetings.council_event",
+      "source_revision": "legistar:22526:file:2026-07-06",
+      "payload_hash": "3dc674d189eeff4f79c9421ae118657b3f6d6401c55afa921676e1bd00a33702",
+      "valid_at": "2026-07-06",
+      "published_at": "2026-07-01T00:00:00.000Z",
+      "observed_at": "2026-07-07T06:00:00.000Z",
+      "processed_at": "2026-08-01T12:00:00.000Z",
+      "supersedes_event_id": null
+    },
+    {
+      "event_id": "cte:32b02c861f94912a8aee94a4",
+      "subject_ref": "notice:20240723114",
+      "event_kind": "procurement.notice_published",
+      "source_revision": "cr:20240723114:start_date:2024-07-23",
+      "payload_hash": "e4974c40ef2d65ca9ba88acb1e827550778d2a8d86ec21816a66e03f3aea3f70",
+      "valid_at": null,
+      "published_at": "2024-07-23T00:00:00.000",
+      "observed_at": "2024-07-24T09:15:00.000Z",
+      "processed_at": "2026-08-01T12:00:00.000Z",
+      "supersedes_event_id": null
+    },
+    {
+      "event_id": "cte:33d25d68d06715806490d287",
+      "subject_ref": "legistar-event:22526",
+      "event_kind": "meetings.agenda_item_action",
+      "source_revision": "legistar:item:90001:action:Approved",
+      "payload_hash": "66df1f50f00e38231e6cde1caef3c6740ced962a296c20d702c6981b079aeb82",
+      "valid_at": "2026-07-06",
+      "published_at": "2026-07-06T18:00:00.000Z",
+      "observed_at": "2026-07-07T06:00:00.000Z",
+      "processed_at": "2026-08-01T12:00:00.000Z",
+      "supersedes_event_id": null
+    },
+    {
+      "event_id": "cte:497298d76d0f690534caabb6",
+      "subject_ref": "notice:20260715001",
+      "event_kind": "rules.public_hearing",
+      "source_revision": "rss:p=1234:hearing:2026-09-10",
+      "payload_hash": "e1dcc10a6bce9572eb36ab56ed7d33f419c1d591ab6a2fe5d00da361f5f5b0b1",
+      "valid_at": "2026-09-10",
+      "published_at": "2026-07-15T15:30:00.000Z",
+      "observed_at": "2026-07-16T08:00:00.000Z",
+      "processed_at": "2026-08-02T12:00:00.000Z",
+      "supersedes_event_id": null
+    },
+    {
+      "event_id": "cte:4de1b43eea0c358d3094737b",
+      "subject_ref": "project:2022M0258",
+      "event_kind": "land.zap_milestone",
+      "source_revision": "zap:2022M0258:milestone:certified:2023-08-21",
+      "payload_hash": "ed5dbc9e032ee99c2b46e2851231398e8bfe7ebabfab3ee7b5b601c1606e3ffe",
+      "valid_at": "2023-08-21",
+      "published_at": null,
+      "observed_at": "2024-02-01T00:00:00.000Z",
+      "processed_at": "2026-08-01T12:00:00.000Z",
+      "supersedes_event_id": null
+    },
+    {
+      "event_id": "cte:691d012169ce2af5e9c5404d",
+      "subject_ref": "notice:20260715001",
+      "event_kind": "rules.proposal_published",
+      "source_revision": "rss:p=1234:pub:2026-07-15",
+      "payload_hash": "f5a0f0f92f9166e56b1ffdc2f6f55a8be45bcbf2838b4f2a2a185568cd158307",
+      "valid_at": "2026-07-15",
+      "published_at": "2026-07-15T15:30:00.000Z",
+      "observed_at": "2026-07-16T08:00:00.000Z",
+      "processed_at": "2026-08-02T12:00:00.000Z",
+      "supersedes_event_id": null
+    },
+    {
+      "event_id": "cte:85bb2e83b85205ff0034a11f",
+      "subject_ref": "project:2022M0258",
+      "event_kind": "land.city_record_notice",
+      "source_revision": "cr:20230912001:start_date:2023-09-12",
+      "payload_hash": "74c82d04cb836b4ecd639198e3419b7974b0cff244543dcdfcbec817681156e8",
+      "valid_at": null,
+      "published_at": "2023-09-12T00:00:00.000",
+      "observed_at": "2023-09-13T11:00:00.000Z",
+      "processed_at": "2026-08-01T12:00:00.000Z",
+      "supersedes_event_id": null
+    },
+    {
+      "event_id": "cte:9c1432292b4e0c7e3a4fe8a6",
+      "subject_ref": "project:2022M0258",
+      "event_kind": "land.city_record_hearing",
+      "source_revision": "cr:20230912001:event_date:2023-09-26",
+      "payload_hash": "cef0c7dc7054144de946963066f6b230b9db78c998c9fd11b538fd653a73c3d3",
+      "valid_at": "2023-09-26",
+      "published_at": "2023-09-12T00:00:00.000",
+      "observed_at": "2023-09-13T11:00:00.000Z",
+      "processed_at": "2026-08-01T12:00:00.000Z",
+      "supersedes_event_id": null
+    },
+    {
+      "event_id": "cte:b06233735abb5b44693fac76",
+      "subject_ref": "legistar-event:22526",
+      "event_kind": "meetings.roll_call_vote",
+      "source_revision": "legistar:item:90001:votes:v1",
+      "payload_hash": "90de0e69b3f89278e3576101a0aef19eaaf677fa0fc643ec7a6648998244f408",
+      "valid_at": "2026-07-06",
+      "published_at": "2026-07-06T18:05:00.000Z",
+      "observed_at": "2026-07-07T06:00:00.000Z",
+      "processed_at": "2026-08-01T12:00:00.000Z",
+      "supersedes_event_id": null
+    },
+    {
+      "event_id": "cte:fc512c2251ea06a20d46ffaf",
+      "subject_ref": "contract:CT107120248803393",
+      "event_kind": "procurement.award_registered",
+      "source_revision": "cb:CT107120248803393:reg:2024-08-01",
+      "payload_hash": "f6761892c3d6f8c5c2d3120befc895d4693fbdb7d1c16ad6f74d7a5e5f1c1f4e",
+      "valid_at": "2024-08-01",
+      "published_at": null,
+      "observed_at": "2024-08-02T14:00:00.000Z",
+      "processed_at": "2026-08-01T12:00:00.000Z",
+      "supersedes_event_id": null
+    }
+  ]
+}
