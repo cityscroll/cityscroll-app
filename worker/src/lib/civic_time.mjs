@@ -60,6 +60,10 @@ export const EVENT_KIND_REGISTRY = Object.freeze({
     lens: "land",
     description: "City Record land hearing event time",
   },
+  "land.zap_disposition": {
+    lens: "land",
+    description: "ZAP land-use disposition / vote outcome",
+  },
   // Meetings
   "meetings.council_event": {
     lens: "meetings",
@@ -73,6 +77,21 @@ export const EVENT_KIND_REGISTRY = Object.freeze({
     lens: "meetings",
     description: "Roll-call vote on an agenda item",
   },
+});
+
+/** Map product spine event_type / kind → registry id. Unknown kinds fail closed. */
+export const SPINE_KIND_ALIASES = Object.freeze({
+  // Rules deriveRuleEvents
+  proposal_published: "rules.proposal_published",
+  public_hearing: "rules.public_hearing",
+  comment_close: "rules.comment_close",
+  adoption: "rules.adoption",
+  effective: "rules.effective",
+  // Land buildLandEventSpine
+  zap_milestone: "land.zap_milestone",
+  city_record_notice_published: "land.city_record_notice",
+  city_record_hearing: "land.city_record_hearing",
+  zap_disposition: "land.zap_disposition",
 });
 
 const ENVELOPE_REQUIRED = [
@@ -397,4 +416,199 @@ export function clockTable(assertion) {
   push("observed_at", assertion.observed_at, "observation");
   push("processed_at", assertion.processed_at, "processing");
   return rows;
+}
+
+// ---------------------------------------------------------------------------
+// Product-spine adapters (read-only mapping; no production writer)
+// ---------------------------------------------------------------------------
+
+function dayStamp(value) {
+  if (value == null || value === "") return null;
+  const s = String(value);
+  if (/^\d{4}-\d{2}-\d{2}/.test(s)) return s.slice(0, 10);
+  return s;
+}
+
+/**
+ * Map `deriveRuleEvents` output into civic-time envelopes.
+ * Does not invent publication from processing; adoption keeps published_at only.
+ *
+ * @param {object} rule - normalized NYC Rules item (needs request_id or url)
+ * @param {object[]} ruleEvents - from deriveRuleEvents(rule)
+ * @param {object} [meta]
+ */
+export function mapRuleSpineToCivic(rule, ruleEvents = [], meta = {}) {
+  const noticeId = rule?.request_id || rule?.city_record?.request_id || null;
+  const subject_ref = noticeId
+    ? `notice:${noticeId}`
+    : `rules:${rule?.guid || rule?.url || "unknown"}`;
+  const source_record_ref = rule?.guid
+    ? `nyc-rules:guid:${rule.guid}`
+    : `nyc-rules:url:${rule?.url || "unknown"}`;
+  const observed_at = meta.observed_at ?? null;
+  const processed_at = meta.processed_at ?? null;
+  const run_id = meta.run_id ?? "rules-spine";
+  const pub = rule?.pub_date || rule?.adoption_published_at || null;
+
+  return (ruleEvents || []).map((ev) => {
+    const event_kind = SPINE_KIND_ALIASES[ev.event_type];
+    if (!event_kind) {
+      throw new TypeError(`unknown rules spine event_type: ${ev.event_type}`);
+    }
+    const revisionBase = `${ev.event_type}:${ev.valid_at || ev.published_at || "none"}:${ev.source_field || ""}`;
+    return mapCivicEvent(
+      {
+        event_kind,
+        subject_ref,
+        source_record_ref,
+        source_revision: `rules:${revisionBase}`,
+        source_field: ev.source_field || null,
+        valid_at: ev.valid_at ?? null,
+        published_at: ev.published_at ?? (ev.event_type === "proposal_published" ? pub : pub),
+        observed_at,
+        processed_at,
+        status: ev.status ?? null,
+        require_valid: false,
+      },
+      { run_id, processed_at },
+    );
+  });
+}
+
+/**
+ * Map `buildLandEventSpine` events into civic-time envelopes.
+ *
+ * @param {object} spine - { events: [...] }
+ * @param {object} [meta] - project_id, observed_at, processed_at, run_id
+ */
+export function mapLandSpineToCivic(spine, meta = {}) {
+  const projectId = meta.project_id || spine?.project_id || "unknown";
+  const subject_ref = `project:${projectId}`;
+  const observed_at = meta.observed_at ?? null;
+  const processed_at = meta.processed_at ?? null;
+  const run_id = meta.run_id ?? "land-spine";
+
+  return (spine?.events || []).map((ev) => {
+    const event_kind = SPINE_KIND_ALIASES[ev.kind];
+    if (!event_kind) {
+      throw new TypeError(`unknown land spine kind: ${ev.kind}`);
+    }
+    const valid_at = dayStamp(ev.time?.value);
+    const isPublication =
+      ev.kind === "city_record_notice_published" || ev.time?.basis === "publication_date";
+    return mapCivicEvent(
+      {
+        event_kind,
+        subject_ref,
+        source_record_ref: `${ev.source?.id || "land"}:${ev.id || ev.kind}`,
+        source_revision: `land:${ev.id || ev.kind}:${valid_at || "none"}`,
+        source_field: ev.time?.basis || null,
+        valid_at: isPublication ? null : valid_at,
+        published_at: isPublication ? valid_at : null,
+        observed_at,
+        processed_at,
+        status: ev.status ?? null,
+        require_valid: false,
+      },
+      { run_id, processed_at },
+    );
+  });
+}
+
+/**
+ * Map one meeting-outcomes matched record into civic-time envelopes.
+ *
+ * @param {object} record - matched notice + council_event + agenda_items
+ * @param {object} [meta]
+ */
+export function mapMeetingRecordToCivic(record, meta = {}) {
+  const eventId = record?.council_event?.event_id;
+  if (!eventId) return [];
+  const subject_ref = `legistar-event:${eventId}`;
+  const observed_at = meta.observed_at ?? null;
+  const processed_at = meta.processed_at ?? null;
+  const run_id = meta.run_id ?? "meetings-spine";
+  const noticePub = record?.notice?.start_date || null;
+  const out = [];
+
+  const start = record.council_event.start_time || record.council_event.event_date || null;
+  out.push(
+    mapCivicEvent(
+      {
+        event_kind: "meetings.council_event",
+        subject_ref,
+        source_record_ref: `legistar:Events/${eventId}`,
+        source_revision: `legistar:${eventId}:event:${dayStamp(start) || "none"}`,
+        source_field: "EventDate",
+        valid_at: dayStamp(start),
+        published_at: noticePub,
+        observed_at,
+        processed_at,
+        status: "occurred",
+        require_valid: false,
+      },
+      { run_id, processed_at },
+    ),
+  );
+
+  for (const item of record.agenda_items || []) {
+    const itemId = item.event_item_id || item.id || item.title || "item";
+    const actionName = item.action_name || item.action || item.status || null;
+    if (actionName) {
+      out.push(
+        mapCivicEvent(
+          {
+            event_kind: "meetings.agenda_item_action",
+            subject_ref,
+            source_record_ref: `legistar:EventItems/${itemId}`,
+            source_revision: `legistar:item:${itemId}:action:${actionName}`,
+            source_field: "EventItemActionName",
+            valid_at: dayStamp(item.action_date || start),
+            published_at: noticePub,
+            observed_at,
+            processed_at,
+            status: "occurred",
+            require_valid: false,
+          },
+          { run_id, processed_at },
+        ),
+      );
+    }
+    const votes = item.matters?.flatMap((m) => m.votes || []) || item.votes || [];
+    if (votes.length) {
+      out.push(
+        mapCivicEvent(
+          {
+            event_kind: "meetings.roll_call_vote",
+            subject_ref,
+            source_record_ref: `legistar:EventItems/${itemId}/Votes`,
+            source_revision: `legistar:item:${itemId}:votes:n${votes.length}`,
+            source_field: "Votes",
+            valid_at: dayStamp(item.action_date || start),
+            published_at: noticePub,
+            observed_at,
+            processed_at,
+            status: "occurred",
+            require_valid: false,
+          },
+          { run_id, processed_at },
+        ),
+      );
+    }
+  }
+  return out;
+}
+
+/**
+ * Label clocks on a digest temporal_action (alert path). Does not invent clocks.
+ * Event time = valid; publication_at = publication; recorded_at = observation.
+ */
+export function clocksFromTemporalAction(action) {
+  if (!action || typeof action !== "object") return [];
+  return clockTable({
+    valid_at: action.event_at ?? null,
+    published_at: action.publication_at ?? null,
+    observed_at: action.recorded_at ?? null,
+    processed_at: null,
+  });
 }

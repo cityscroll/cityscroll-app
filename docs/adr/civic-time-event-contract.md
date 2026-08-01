@@ -67,6 +67,20 @@ The registry is a closed list of kinds used by Money, Rules, Land, and Meetings 
 in this card. Adapters may propose new kinds in later PRs; unknown kinds fail closed in
 the mapper rather than collapsing stages (for example award ≠ amendment).
 
+### Product-spine adapters (read-only)
+
+Pure mappers convert already-shipped product spines into envelopes without writing:
+
+| Adapter | Source |
+| --- | --- |
+| `mapRuleSpineToCivic` | `deriveRuleEvents` (Rules) |
+| `mapLandSpineToCivic` | `buildLandEventSpine` (Land/ZAP) |
+| `mapMeetingRecordToCivic` | meeting-outcomes matched record |
+| `clocksFromTemporalAction` | digest `temporal_action` (alerts) |
+
+These generalize rules, zoning, meetings, and alert clocks onto one contract. They do not
+replace the product spines or open a production event store.
+
 ### Non-goals
 
 - No Worker route, KV/D1 writer, or production consumer in this card
