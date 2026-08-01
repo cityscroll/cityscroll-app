@@ -53,5 +53,17 @@
       "counts": { "aye": 6, "nay": 3, "abstain": 0 },
       "person_count": 9
     }
+  ],
+  "attachments": [
+    {
+      "agenda_item_id": "evtitem-001",
+      "documents": [
+        {
+          "name": "Staff report",
+          "category": "Supporting document",
+          "url": "https://nyc.legistar1.com/nyc/attachments/staff-report.pdf"
+        }
+      ]
+    }
   ]
 }
