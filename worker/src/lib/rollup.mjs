@@ -106,21 +106,40 @@ export function rollupSendDecision(sections = []) {
   };
 }
 
-/** Subject line for a rollup digest (English; i18n can wrap later). */
-export function rollupSubject({ totalNew, totalForecasts, labels = [], quiet = false } = {}) {
+/**
+ * Subject line for a rollup digest (English; i18n can wrap later).
+ *
+ * When the account has more than one active watch (`watchCount > 1`), always use the
+ * multi-watch form — even if only one section had matches. Naming the single wanting
+ * label made a real account-level rollup look like a single-watch notification.
+ */
+export function rollupSubject({ totalNew, totalForecasts, labels = [], quiet = false, watchCount = null } = {}) {
+  const nWatches = Number(watchCount);
+  const multi = (Number.isFinite(nWatches) && nWatches > 1) || labels.length > 1;
+  const multiN = (Number.isFinite(nWatches) && nWatches > 1) ? nWatches : (labels.length || 1);
+
   if (quiet || (totalNew === 0 && totalForecasts === 0)) {
-    const n = labels.length || 1;
-    return n === 1
-      ? `CityScroll: still watching — ${labels[0] || "your watches"}`
-      : `CityScroll: still watching — ${n} watches`;
+    if (multi) return `CityScroll: still watching — ${multiN} watches`;
+    return `CityScroll: still watching — ${labels[0] || "your watches"}`;
   }
   const parts = [];
   if (totalNew > 0) parts.push(`${totalNew} new`);
   if (totalForecasts > 0) parts.push(`${totalForecasts} forecast(s)`);
   const head = parts.join(" & ") || "update";
+  if (multi) return `CityScroll: ${head} — ${multiN} watches`;
   if (labels.length === 1) return `CityScroll: ${head} — ${labels[0]}`;
-  if (labels.length > 1) return `CityScroll: ${head} — ${labels.length} watches`;
   return `CityScroll: ${head}`;
+}
+
+/**
+ * Sections to render in a rollup body.
+ * Multi-watch accounts always include every evaluated watch (quiet + skipped cadence),
+ * not only sections that wanted send — so one match cannot collapse the email to a
+ * single-watch shape.
+ */
+export function rollupBodySections(sections = []) {
+  const list = Array.isArray(sections) ? sections : [];
+  return list.filter((s) => s && !s.error);
 }
 
 /**
