@@ -470,8 +470,8 @@ test("detail templates host lifecycle, subsidy, meeting, and prior-award slots",
   assert.match(src, /id="nprior"/);
   assert.match(src, /loadSubsidyLifecycle/);
   assert.match(src, /loadMeetingOutcomes/);
-  assert.match(src, /loadLifecycle\(r, \$\("#dlifecycle"\), \$\("#ddollars"\)\)/);
-  assert.match(src, /loadLifecycle\(r, \$\("#nlifecycle"\), \$\("#ndollars"\)\)/);
+  assert.match(src, /loadLifecycle\(r, \$\("#dlifecycle"\), \$\("#ddollars"\), \$\("#dactions"\)\)/);
+  assert.match(src, /loadLifecycle\(r, \$\("#nlifecycle"\), \$\("#ndollars"\), \$\("#nactions"\)\)/);
 });
 
 test("precompute-first: notice dollars and matter timeline use /contract-lifecycle, not live /checkbook", () => {
