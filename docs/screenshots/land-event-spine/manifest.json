@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "feature": "land-event-spine",
+  "project_id": "2022M0258",
+  "files": [
+    {
+      "name": "event-spine-390.png",
+      "bytes": 101337,
+      "sha256": "f3437eda2d496acace8528196dd9aabccf83cd085fd1e82c4d06807a644ea098",
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "name": "event-spine-1440.png",
+      "bytes": 103491,
+      "sha256": "30261eeef6cc4f58d6d1aac7a232c2849231aa76f23829daadbe1a4a61a4f643",
+      "viewport": [
+        1440,
+        900
+      ]
+    }
+  ]
+}
