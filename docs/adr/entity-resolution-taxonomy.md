@@ -120,7 +120,7 @@ included here so importers do not invent a fifth ad hoc identity space.
 
 | Decision | When | Production write |
 | --- | --- | --- |
-| `auto_link` | High confidence, method policy allows auto | May write `entity_link` when dual-write is enabled (later cards) |
+| `auto_link` | High confidence, method policy allows auto | May write `entity_link` when the shadow dual-write is enabled |
 | `separate` | Low confidence or clear distinct entities | No same-as link; optional negative evidence for audit |
 | `review` | Middle band | Queue for human (or later adjudicator); no silent auto-link |
 | `never_auto` | Material contradiction (e.g. conflicting hard identifiers) | Block auto-link permanently for the pair until policy revisits |
@@ -239,11 +239,13 @@ Also available as a copy-only file: [`docs/entity-resolution/schema-sketch.sql`]
 
 ## Non-goals (this card)
 
-1. **No production D1 migration** applied or referenced from `wrangler` migrate lists.
+1. **No public ER read migration**; the source snapshot and link tables are applied by the
+   Worker migration chain for shadow writes only.
 2. **No runtime merge** of vendor/agency rows; no consumer switch to `entity_link`.
 3. **No new deployable service** or HTTP identity API.
 4. **No LLM matching** and no middle-band adjudicator implementation.
-5. **No gold-set harness**, candidate generator, or dual-write (those are later cards).
+5. **No public ER read path or destructive merge**; the gold-set harness, token blocker, and
+   fail-soft shadow dual-write are implemented in their respective package/Worker paths.
 
 ## Consequences
 

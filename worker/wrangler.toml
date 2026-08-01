@@ -31,6 +31,9 @@ crons = ["0 13 * * *"]
 [vars]
 ALERTS_LIVE = "true"
 ANALYTICS_ENVIRONMENT = "production"
+# Shadow-only identity capture. Public reads do not consume these tables.
+CITY_RECORD_SOURCE_RECORD_DUAL_WRITE = "true"
+ENTITY_LINK_DUAL_WRITE = "true"
 CONFIRM_BASE = "https://api.cityscroll.org"
 # Alerts sender (site owner decision 2026-07-29).
 ALERTS_FROM = "CityScroll <alerts@cityscroll.org>"
@@ -149,6 +152,8 @@ workers_dev = true
 [env.beta.vars]
 DEPLOYMENT_CHANNEL = "beta"
 ALERTS_LIVE = "false"
+CITY_RECORD_SOURCE_RECORD_DUAL_WRITE = "false"
+ENTITY_LINK_DUAL_WRITE = "false"
 QUEUE_DIGESTS = "false"
 ANALYTICS_ENVIRONMENT = "preview"
 SOURCE_VAULT_ENABLED = "false"
