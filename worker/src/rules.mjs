@@ -84,6 +84,8 @@ export async function buildRuleView(fetchImpl = fetch, now = new Date()) {
       },
       nyc_rules: {
         url: m.rule.url,
+        guid: m.rule.guid,
+        pub_date: m.rule.pub_date,
         title: m.rule.title,
         agency_abbr: m.rule.agency_abbr,
         agency_name: m.rule.agency_name,
@@ -128,6 +130,8 @@ export async function buildRuleView(fetchImpl = fetch, now = new Date()) {
       city_record: null,
       nyc_rules: {
         url: rule.url,
+        guid: rule.guid,
+        pub_date: rule.pub_date,
         title: rule.title,
         agency_abbr: rule.agency_abbr,
         agency_name: rule.agency_name,
