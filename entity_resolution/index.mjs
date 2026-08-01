@@ -78,8 +78,10 @@ export {
 } from "./evaluation/index.mjs";
 
 export {
+  INVESTIGATION_WORKSPACE_VERSION,
   REVIEW_VERSION,
   REVIEW_DECISION,
+  buildInvestigationWorkspace,
   toReviewItem,
   toReviewItems,
 } from "./review/index.mjs";

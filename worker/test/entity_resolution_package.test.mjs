@@ -26,12 +26,14 @@ import {
   extractFeatures,
   scorePair,
   routeDecision,
+  buildInvestigationWorkspace,
   toReviewItem,
   CANDIDATE_GENERATION_VERSION,
   FEATURES_VERSION,
   MATCHERS_VERSION,
   POLICIES_VERSION,
   REVIEW_VERSION,
+  INVESTIGATION_WORKSPACE_VERSION,
   GOLD_V0_PATH,
   loadGold,
   buildClericalAudit,
@@ -106,6 +108,7 @@ test("candidate generation and conventional matcher stay non-linking", () => {
   assert.equal(MATCHERS_VERSION, "conventional_v1");
   assert.equal(POLICIES_VERSION, "stub");
   assert.equal(REVIEW_VERSION, "possibly_same_v1");
+  assert.equal(INVESTIGATION_WORKSPACE_VERSION, "private_evidence_workspace_v1");
   assert.equal(PUBLICATION_VERSION, "public_er_v1");
 
   const candidates = generateCandidates([
@@ -129,6 +132,7 @@ test("candidate generation and conventional matcher stay non-linking", () => {
   const routed = routeDecision(scored);
   assert.equal(routed.auto_link, false);
   assert.equal(toReviewItem({ id: 1 }, scored), null);
+  assert.equal(typeof buildInvestigationWorkspace, "function");
 
   assert.deepEqual(
     serializePublicEntity({ id: "vendor:acme", entity_type: "vendor", display_name: "Acme" }),
