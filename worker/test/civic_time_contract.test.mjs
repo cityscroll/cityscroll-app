@@ -10,6 +10,7 @@ import { test } from "node:test";
 
 import {
   EVENT_KIND_REGISTRY,
+  RFX_PRODUCTION_EVENT_KINDS,
   attachMoneyCivicEvents,
   clockTable,
   clocksFromTemporalAction,
@@ -21,9 +22,12 @@ import {
   mapLandSpineToCivic,
   mapMeetingRecordToCivic,
   mapMoneyLifecycleToCivic,
+  mapPassportRfxToCivic,
   mapRuleSpineToCivic,
+  matchedRfxDetail,
   moneySpineAdapterCoverage,
   publicDiff,
+  rfxSpineAdapterCoverage,
   semanticDiff,
 } from "../src/lib/civic_time.mjs";
 import { deriveRuleEvents, normalizeRuleItem, parseRssItems } from "../src/lib/rules.mjs";
@@ -33,6 +37,7 @@ import {
   parseZapApiProject,
 } from "../src/lib/zap_outcomes.mjs";
 import { assembleLifecycle } from "../src/lib/checkbook_lifecycle.mjs";
+import { enrichLifecycleWithPassport } from "../src/lib/passport_lifecycle.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "../..");
 const FIXTURE_DIR = join(ROOT, "worker/test/fixtures/civic-time");
@@ -527,4 +532,207 @@ test("money_spine_adapter_coverage > 0 on field-case procurement lifecycles", ()
   assert.ok(metric.kinds["procurement.notice_published"] >= 1);
   assert.ok(metric.kinds["procurement.award_registered"] >= 1);
   assert.ok(metric.kinds["procurement.payment"] >= 1);
+});
+
+// ---------------------------------------------------------------------------
+// PASSPort RFx solicitation production spine (open → addenda → due → award)
+// ---------------------------------------------------------------------------
+
+const RFX_SOLICITATION_NOTICE = {
+  request_id: "20260707026",
+  pin: "81026B0003",
+  type_of_notice_description: "Solicitation",
+  agency_name: "Buildings",
+  start_date: "2026-07-28T00:00:00.000",
+  short_title: "81026B0003-Records Remediation Project",
+};
+
+const RFX_PASSPORT_ROW = {
+  rfp_id: "36426",
+  epin: "81026B0003",
+  epin_norm: "81026B0003",
+  procurement_name: "81026B0003-Records remediation project",
+  agency: "DEPARTMENT OF BUILDINGS",
+  rfx_status: "Released",
+  release_date: "7/28/2026 9:00:00 AM",
+  due_date: "8/18/2026 1:00:00 PM",
+  procurement_method: "Competitive Sealed Bid",
+  main_commodity: "Historical Preservation Services",
+  industry: "Professional Services",
+};
+
+function lifecycleWithMatchedRfx(notice = RFX_SOLICITATION_NOTICE, rfx = RFX_PASSPORT_ROW) {
+  const base = assembleLifecycle(notice, [], [], [], {
+    pinStrategy: "exact",
+    lookupStatus: { pending: "ok", registered: "ok", spending: "ok" },
+  });
+  return enrichLifecycleWithPassport(base, notice, {
+    contracts: [],
+    rfx: [rfx],
+    lookupStatus: { contracts: "ok", rfx: "ok" },
+  });
+}
+
+test("RFx production kinds are registered on the money lens", () => {
+  for (const kind of RFX_PRODUCTION_EVENT_KINDS) {
+    assert.equal(isRegisteredEventKind(kind), true, kind);
+    assert.equal(EVENT_KIND_REGISTRY[kind].lens, "money");
+  }
+});
+
+test("matched RFx field case emits open + due; never invents addenda without a publisher date", () => {
+  const lifecycle = lifecycleWithMatchedRfx();
+  assert.equal(matchedRfxDetail(lifecycle)?.detail?.epin, "81026B0003");
+
+  const meta = {
+    observed_at: "2026-07-29T12:00:00.000Z",
+    processed_at: "2026-08-01T12:00:00.000Z",
+    run_id: "rfx-field-case",
+  };
+  const rfxOnly = mapPassportRfxToCivic(lifecycle, RFX_SOLICITATION_NOTICE, meta);
+  const kinds = rfxOnly.map((e) => e.event_kind);
+  assert.ok(kinds.includes("procurement.solicitation_opened"));
+  assert.ok(kinds.includes("procurement.solicitation_due"));
+  assert.ok(!kinds.includes("procurement.solicitation_addenda"), "no addenda date on public_rfx_data");
+
+  const opened = rfxOnly.find((e) => e.event_kind === "procurement.solicitation_opened");
+  assert.equal(opened.subject_ref, "notice:20260707026");
+  assert.equal(opened.valid_at, "2026-07-28");
+  assert.equal(opened.published_at, "2026-07-28");
+  assert.equal(opened.source_field, "release_date");
+  assert.match(opened.source_record_ref, /^passport-rfx:/);
+
+  const due = rfxOnly.find((e) => e.event_kind === "procurement.solicitation_due");
+  assert.equal(due.valid_at, "2026-08-18");
+  assert.equal(due.published_at, null);
+  assert.equal(due.source_field, "due_date");
+
+  // Full money adapter includes City Record notice_published + RFx open/due
+  const civic = mapMoneyLifecycleToCivic(lifecycle, RFX_SOLICITATION_NOTICE, meta);
+  assert.ok(civic.some((e) => e.event_kind === "procurement.notice_published"));
+  assert.ok(civic.some((e) => e.event_kind === "procurement.solicitation_opened"));
+  assert.ok(civic.some((e) => e.event_kind === "procurement.solicitation_due"));
+
+  // Idempotent event_id / payload_hash across re-runs
+  const again = mapPassportRfxToCivic(lifecycle, RFX_SOLICITATION_NOTICE, {
+    ...meta,
+    processed_at: "2026-08-02T00:00:00.000Z",
+    run_id: "rfx-field-case-rerun",
+  });
+  assert.equal(again.length, rfxOnly.length);
+  for (let i = 0; i < rfxOnly.length; i++) {
+    assert.equal(again[i].event_id, rfxOnly[i].event_id);
+    assert.equal(again[i].payload_hash, rfxOnly[i].payload_hash);
+  }
+});
+
+test("addenda emits only when an explicit publisher date is present on the RFx row", () => {
+  const lifecycle = lifecycleWithMatchedRfx(RFX_SOLICITATION_NOTICE, {
+    ...RFX_PASSPORT_ROW,
+    addenda_date: "8/01/2026 10:00:00 AM",
+  });
+  const events = mapPassportRfxToCivic(lifecycle, RFX_SOLICITATION_NOTICE, {
+    processed_at: "2026-08-01T12:00:00.000Z",
+  });
+  const addenda = events.find((e) => e.event_kind === "procurement.solicitation_addenda");
+  assert.ok(addenda);
+  assert.equal(addenda.valid_at, "2026-08-01");
+  assert.equal(addenda.source_field, "addenda_date");
+});
+
+test("unmatched RFx emits no solicitation production events", () => {
+  const base = assembleLifecycle(RFX_SOLICITATION_NOTICE, [], [], [], {
+    pinStrategy: "exact",
+    lookupStatus: { pending: "ok", registered: "ok", spending: "ok" },
+  });
+  const enriched = enrichLifecycleWithPassport(base, RFX_SOLICITATION_NOTICE, {
+    contracts: [],
+    rfx: [],
+    lookupStatus: { contracts: "ok", rfx: "ok" },
+  });
+  assert.equal(matchedRfxDetail(enriched), null);
+  const events = mapPassportRfxToCivic(enriched, RFX_SOLICITATION_NOTICE, {});
+  assert.equal(events.length, 0);
+});
+
+test("rfx_spine_adapter_coverage moves from 0 to 1.0 on matched RFx field cases", () => {
+  const pairs = [
+    {
+      notice: RFX_SOLICITATION_NOTICE,
+      lifecycle: lifecycleWithMatchedRfx(),
+    },
+    {
+      notice: {
+        request_id: "20260723031",
+        pin: "81626W0043001",
+        type_of_notice_description: "Award",
+        agency_name: "Health and Mental Hygiene",
+        start_date: "2026-07-30T00:00:00.000",
+        short_title: "Catering Services",
+      },
+      // Award notice with RFx still joined (live solicitation detail on award path)
+      lifecycle: enrichLifecycleWithPassport(
+        assembleLifecycle(
+          {
+            request_id: "20260723031",
+            pin: "81626W0043001",
+            type_of_notice_description: "Award",
+            agency_name: "Health and Mental Hygiene",
+            start_date: "2026-07-30T00:00:00.000",
+            short_title: "Catering Services",
+          },
+          [],
+          [],
+          [],
+          {
+            pinStrategy: "exact",
+            lookupStatus: { pending: "ok", registered: "ok", spending: "ok" },
+          },
+        ),
+        {
+          request_id: "20260723031",
+          pin: "81626W0043001",
+          type_of_notice_description: "Award",
+          agency_name: "Health and Mental Hygiene",
+          start_date: "2026-07-30T00:00:00.000",
+        },
+        {
+          contracts: [],
+          rfx: [
+            {
+              rfp_id: "999",
+              epin: "81626W0043001",
+              epin_norm: "81626W0043001",
+              rfx_status: "Closed",
+              release_date: "6/01/2026",
+              due_date: "7/01/2026",
+            },
+          ],
+          lookupStatus: { contracts: "ok", rfx: "ok" },
+        },
+      ),
+    },
+    {
+      notice: RFX_SOLICITATION_NOTICE,
+      // Unmatched control — excluded from denominator
+      lifecycle: enrichLifecycleWithPassport(
+        assembleLifecycle(RFX_SOLICITATION_NOTICE, [], [], [], {
+          pinStrategy: "exact",
+          lookupStatus: { pending: "ok", registered: "ok", spending: "ok" },
+        }),
+        RFX_SOLICITATION_NOTICE,
+        { contracts: [], rfx: [], lookupStatus: { contracts: "ok", rfx: "ok" } },
+      ),
+    },
+  ];
+
+  const metric = rfxSpineAdapterCoverage(pairs);
+  assert.equal(metric.with_rfx, 2, "two matched RFx lifecycles");
+  assert.equal(metric.with_rfx_events, 2);
+  assert.equal(metric.coverage, 1, "rfx_spine_adapter_coverage must be 1.0 on field cases");
+  assert.equal(metric.open_due_pair_rate, 1, "both dates present → open+due pair");
+  assert.ok(metric.kinds["procurement.solicitation_opened"] >= 2);
+  assert.ok(metric.kinds["procurement.solicitation_due"] >= 2);
+  assert.equal(metric.kinds["procurement.solicitation_addenda"], 0);
+  assert.equal(metric.gaps.addenda_not_published, 2);
 });

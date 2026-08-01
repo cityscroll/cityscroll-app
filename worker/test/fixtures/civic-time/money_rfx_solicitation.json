@@ -1,0 +1,64 @@
+{
+  "lens": "money",
+  "run_id": "fixture-rfx-solicitation",
+  "processed_at": "2026-08-01T12:00:00.000Z",
+  "description": "City Record solicitation notice + matched PASSPort RFx release/due clocks. Addenda is registered but not asserted — public_rfx_data publishes no addenda date columns.",
+  "assertions": [
+    {
+      "event_kind": "procurement.notice_published",
+      "subject_ref": "notice:20260707026",
+      "source_record_ref": "city-record:20260707026",
+      "source_revision": "cr:20260707026:solicitation:start_date:2026-07-28",
+      "source_field": "start_date",
+      "published_at": "2026-07-28",
+      "valid_at": null,
+      "observed_at": "2026-07-29T12:00:00.000Z",
+      "processed_at": "2026-08-01T12:00:00.000Z",
+      "status": "occurred",
+      "require_valid": false,
+      "clocks": {
+        "start_date": "publication",
+        "observed_at": "observation",
+        "processed_at": "processing"
+      }
+    },
+    {
+      "event_kind": "procurement.solicitation_opened",
+      "subject_ref": "notice:20260707026",
+      "source_record_ref": "passport-rfx:81026B0003",
+      "source_revision": "rfx:81026B0003:release:2026-07-28",
+      "source_field": "release_date",
+      "valid_at": "2026-07-28",
+      "published_at": "2026-07-28",
+      "observed_at": "2026-07-29T12:00:00.000Z",
+      "processed_at": "2026-08-01T12:00:00.000Z",
+      "status": "Released",
+      "confidence": "high",
+      "require_valid": false,
+      "clocks": {
+        "release_date": "valid",
+        "observed_at": "observation",
+        "processed_at": "processing"
+      }
+    },
+    {
+      "event_kind": "procurement.solicitation_due",
+      "subject_ref": "notice:20260707026",
+      "source_record_ref": "passport-rfx:81026B0003",
+      "source_revision": "rfx:81026B0003:due:2026-08-18",
+      "source_field": "due_date",
+      "valid_at": "2026-08-18",
+      "published_at": null,
+      "observed_at": "2026-07-29T12:00:00.000Z",
+      "processed_at": "2026-08-01T12:00:00.000Z",
+      "status": "Released",
+      "confidence": "high",
+      "require_valid": false,
+      "clocks": {
+        "due_date": "valid",
+        "observed_at": "observation",
+        "processed_at": "processing"
+      }
+    }
+  ]
+}

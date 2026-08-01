@@ -371,11 +371,16 @@ Clocks: valid, publication, observation, processing — never invent publication
 processing. ADR: `docs/adr/civic-time-event-contract.md`. Pure lib:
 `worker/src/lib/civic_time.mjs` (Rules/Land/Meetings adapters; Money production adapter
 `mapMoneyLifecycleToCivic` / `attachMoneyCivicEvents` on `computeLifecycle` →
-`civic_events` on `/contract-lifecycle`). Metrics: `money_spine_adapter_coverage`
-(notices with ≥1 Money civic event / procurement lifecycles);
-`temporal_completeness_rate` (mean share of event/publication/observed/processed
-clocks filled per civic-time event, by spine, joined to source-contract health via
-`temporalCompletenessScorecard`). Verify:
+`civic_events` on `/contract-lifecycle`). PASSPort RFx production spine (same path):
+matched `rfx_detail` → `mapPassportRfxToCivic` emits `procurement.solicitation_opened`
+(from `release_date`) and `procurement.solicitation_due` (from `due_date`); addenda kind
+is registered but not emitted until a publisher date column exists on `public_rfx_data`.
+Award continues as City Record notice_published / registration stages. Metrics:
+`money_spine_adapter_coverage` (notices with ≥1 Money civic event / procurement
+lifecycles); `rfx_spine_adapter_coverage` (matched-RFx lifecycles with ≥1 RFx production
+event / matched RFx); `temporal_completeness_rate` (mean share of
+event/publication/observed/processed clocks filled per civic-time event, by spine,
+joined to source-contract health via `temporalCompletenessScorecard`). Verify:
 `node --test worker/test/civic_time_contract.test.mjs worker/test/temporal_completeness.test.mjs worker/test/checkbook_lifecycle.test.mjs && node worker/scripts/civic-time-diff.mjs --fixtures worker/test/fixtures/civic-time --check && node worker/scripts/temporal-completeness-scorecard.mjs --fixtures worker/test/fixtures/civic-time --check`.
 Digest delivery identity remains `docs/digest-time-ontology.md` (separate concern).
 
