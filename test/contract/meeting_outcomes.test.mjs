@@ -55,6 +55,15 @@ test("contract fixture follows notice -> event -> agenda -> matter with strict j
   assert.equal(matter.votes[0].votes_on[0].to, "matter:mat-001");
   assert.equal(matter.votes[0].person_vote_retention_rate, 1);
   assert.equal(matter.documents[0].name, "Staff report");
+
+  // Matter-centric vote spine: one connected object for the full path.
+  assert.equal(record.spines.length, 1);
+  assert.equal(record.spines[0].subject_ref, "matter:mat-001");
+  assert.deepEqual(
+    record.spines[0].stages.map((s) => s.kind),
+    ["agenda", "matter", "action", "vote", "attachment"],
+  );
+  assert.equal(record.spines[0].full, true);
 });
 
 test("notice location and affected-area still surface through normalizeHearing", () => {

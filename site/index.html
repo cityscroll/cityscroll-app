@@ -6904,6 +6904,102 @@ function isCityCouncilNotice(r){
   return /\bcity council\b/i.test(agency);
 }
 
+function meetingVoteStageHTML(stage, spine){
+  const kind = stage && stage.kind;
+  if(kind === "agenda"){
+    const title = stage.title || stage.body_text || stage.agenda_item_id || "—";
+    const agendaNumber = stage.agenda_number
+      ? `<div class="when" lang="en" dir="ltr">#${escUiHtml(stage.agenda_number)}</div>`
+      : "";
+    return `<div class="stage"><div class="box ${stage.matched?"matched":"unmatched"}" data-spine-stage="agenda">
+      <div class="stage-name">${t("meeting_outcomes_agenda_lbl")}</div>
+      ${agendaNumber}
+      <div class="bt" lang="en" dir="ltr">${escUiHtml(title)}</div>
+    </div></div>`;
+  }
+  if(kind === "matter"){
+    return `<div class="stage"><div class="box ${stage.matched?"matched":"unmatched"}" data-spine-stage="matter">
+      <div class="stage-name">${t("meeting_outcomes_matter_lbl")}</div>
+      <div class="when" lang="en" dir="ltr">${escUiHtml(stage.matter_file || stage.status || "—")}</div>
+      <div class="bt" lang="en" dir="ltr">${escUiHtml(stage.title || stage.matter_id || "—")}</div>
+      ${stage.matched?"":`<div class="lc-norecord">${t("meeting_outcomes_no_matters_html")}</div>`}
+    </div></div>`;
+  }
+  if(kind === "action"){
+    const actionLabel = stage.action_name || stage.passed || "—";
+    let body = stage.matched
+      ? `<div class="lc-pct">${t("meeting_outcomes_outcome_html",{ outcome: escUiHtml(actionLabel) })}</div>`
+      : `<div class="lc-norecord">${t("meeting_outcomes_no_action_html")}</div>`;
+    return `<div class="stage"><div class="box ${stage.matched?"matched":"unmatched"}" data-spine-stage="action">
+      <div class="stage-name">${t("meeting_outcomes_action_lbl")}</div>
+      <div class="when" lang="en" dir="ltr">${escUiHtml(actionLabel)}</div>
+      ${body}
+    </div></div>`;
+  }
+  if(kind === "vote"){
+    const votes = Array.isArray(stage.votes) ? stage.votes : [];
+    let voteHTML = "";
+    if(votes.length){
+      voteHTML = votes.map(v => {
+        const c = v.counts || stage.counts || {};
+        const tally = `<div class="lc-pct">${t("meeting_outcomes_vote_html",{
+          result: escUiHtml(v.result || stage.result || "—"),
+          aye: String(c.aye != null ? c.aye : "—"),
+          nay: String(c.nay != null ? c.nay : "—")
+        })}</div>`;
+        const people = Array.isArray(v.by_person) ? v.by_person
+          : (Array.isArray(stage.by_person) ? stage.by_person : []);
+        const rollCall = people.length
+          ? `<div class="lc-pct meeting-roll-call" data-official-votes data-official-count="${people.length}">${t("meeting_outcomes_roll_call_lbl")}: ${people.map(p => {
+            const name = (p.official && p.official.display_name) || p.person_name || p.person_id || "—";
+            const vote = p.vote_bucket || p.vote_value || "—";
+            return `<span class="meeting-roll-call-person" lang="en" dir="ltr" data-official-id="${escUiHtml((p.official && p.official.id) || "")}">${t("meeting_outcomes_vote_person_html",{
+              name: escUiHtml(name),
+              vote: escUiHtml(String(vote))
+            })}</span>`;
+          }).join(" · ")}</div>`
+          : "";
+        return tally + rollCall;
+      }).join("");
+    } else {
+      const matterLabel = (spine && (spine.matter_id || spine.subject_ref)) || "—";
+      voteHTML = `<div class="lc-norecord">${t("meeting_outcomes_no_votes_html",{
+        matter: escUiHtml(matterLabel)
+      })}</div>`;
+    }
+    return `<div class="stage"><div class="box ${stage.matched?"matched":"unmatched"}" data-spine-stage="vote">
+      <div class="stage-name">${t("meeting_outcomes_vote_lbl")}</div>
+      ${voteHTML}
+    </div></div>`;
+  }
+  if(kind === "attachment"){
+    const documents = (Array.isArray(stage.documents) ? stage.documents : []).slice(0, 6);
+    const documentsHTML = documents.length
+      ? `<div class="meeting-spine-docs">${documents.map(d =>
+        `<a class="view" href="${escUiHtml(d.url)}" ${EXT_ATTRS}>${escUiHtml(d.name || d.document_id || t("meeting_outcomes_document_lbl"))}${extSR()}</a>`
+      ).join("")}</div>`
+      : `<div class="lc-norecord">${t("meeting_outcomes_no_attachments_html")}</div>`;
+    return `<div class="stage"><div class="box ${stage.matched?"matched":"unmatched"}" data-spine-stage="attachment">
+      <div class="stage-name">${t("meeting_outcomes_attachments_lbl")}</div>
+      ${documentsHTML}
+    </div></div>`;
+  }
+  return "";
+}
+
+function meetingVoteSpineHTML(spine){
+  const stages = Array.isArray(spine && spine.stages) ? spine.stages : [];
+  if(!stages.length) return "";
+  const parts = [];
+  for(let i = 0; i < stages.length; i++){
+    if(i) parts.push(`<div class="connector" aria-hidden="true">→</div>`);
+    parts.push(meetingVoteStageHTML(stages[i], spine));
+  }
+  const fill = spine.stage_fill != null ? String(spine.stage_fill) : "";
+  const subject = spine.subject_ref || spine.matter_id || "";
+  return `<div class="chain meeting-spine" data-meeting-spine data-spine-subject="${escUiHtml(subject)}" data-spine-fill="${escUiHtml(fill)}">${parts.join("")}</div>`;
+}
+
 function meetingOutcomesHTML(record, notice){
   if(!record) return "";
   const join = record.join || {};
@@ -6922,85 +7018,34 @@ function meetingOutcomesHTML(record, notice){
       })}</div>`;
   }
   const event = record.council_event || {};
-  const items = Array.isArray(record.agenda_items) ? record.agenda_items : [];
-  const eventDocs = Array.isArray(event.documents) ? event.documents : [];
-  let spinesHTML = "";
-  for(const item of items){
-    const matters = Array.isArray(item.matters) && item.matters.length ? item.matters : [{}];
-    for(const matter of matters){
-      const votes = Array.isArray(matter.votes) ? matter.votes : [];
-      let outcomeHTML = "";
-      if(votes.length){
-        outcomeHTML = votes.map(v => {
-          const c = v.counts || {};
-          const tally = `<div class="lc-pct">${t("meeting_outcomes_vote_html",{
-            result: escUiHtml(v.result || "—"),
-            aye: String(c.aye != null ? c.aye : "—"),
-            nay: String(c.nay != null ? c.nay : "—")
-          })}</div>`;
-          // Person-level roll call when officials were retained from Legistar.
-          const people = Array.isArray(v.by_person) ? v.by_person : [];
-          const rollCall = people.length
-            ? `<div class="lc-pct meeting-roll-call" data-official-votes data-official-count="${people.length}">${t("meeting_outcomes_roll_call_lbl")}: ${people.map(p => {
-              const name = (p.official && p.official.display_name) || p.person_name || p.person_id || "—";
-              const vote = p.vote_bucket || p.vote_value || "—";
-              return `<span class="meeting-roll-call-person" lang="en" dir="ltr" data-official-id="${escUiHtml((p.official && p.official.id) || "")}">${t("meeting_outcomes_vote_person_html",{
-                name: escUiHtml(name),
-                vote: escUiHtml(String(vote))
-              })}</span>`;
-            }).join(" · ")}</div>`
-            : "";
-          return tally + rollCall;
-        }).join("");
-      } else if(matter.outcome || matter.status || matter.passed){
-        outcomeHTML = `<div class="lc-pct">${t("meeting_outcomes_outcome_html",{
-          outcome: escUiHtml(matter.outcome || matter.passed || matter.status)
-        })}</div>`;
-      } else if(matter.matter_id){
-        outcomeHTML = `<div class="lc-norecord">${t("meeting_outcomes_no_votes_html",{
-          matter: escUiHtml(matter.title || matter.matter_file || matter.matter_id || "—")
-        })}</div>`;
-      } else {
-        outcomeHTML = `<div class="lc-norecord">${t("meeting_outcomes_no_matters_html")}</div>`;
+  // Prefer first-class matter spines (one connected legislative path per matter).
+  let spines = Array.isArray(record.spines) ? record.spines : [];
+  if(!spines.length){
+    // Client-side fallback when an older KV payload lacks .spines.
+    const items = Array.isArray(record.agenda_items) ? record.agenda_items : [];
+    const eventDocs = Array.isArray(event.documents) ? event.documents : [];
+    for(const item of items){
+      const matters = Array.isArray(item.matters) && item.matters.length ? item.matters : [{}];
+      for(const matter of matters){
+        const votes = Array.isArray(matter.votes) ? matter.votes : [];
+        const documents = [...(Array.isArray(matter.documents) ? matter.documents : []), ...eventDocs]
+          .filter((d, index, all) => d && d.url && all.findIndex(x => x && x.url === d.url) === index);
+        spines.push({
+          subject_ref: matter.matter_id ? ("matter:" + matter.matter_id) : null,
+          matter_id: matter.matter_id || null,
+          stage_fill: null,
+          stages: [
+            { kind: "agenda", matched: Boolean(item.agenda_item_id || item.title), agenda_item_id: item.agenda_item_id, agenda_number: item.agenda_number, title: item.title, body_text: item.body_text },
+            { kind: "matter", matched: Boolean(matter.matter_id), matter_id: matter.matter_id, matter_file: matter.matter_file, title: matter.title, status: matter.status },
+            { kind: "action", matched: Boolean(matter.outcome || matter.passed || matter.status), action_name: matter.outcome || matter.passed || matter.status || null, passed: matter.passed || null },
+            { kind: "vote", matched: votes.length > 0, votes, result: votes[0] && votes[0].result, counts: votes[0] && votes[0].counts, by_person: votes[0] && votes[0].by_person },
+            { kind: "attachment", matched: documents.length > 0, documents }
+          ]
+        });
       }
-      const documents = [...(Array.isArray(matter.documents) ? matter.documents : []), ...eventDocs]
-        .filter((d, index, all) => d && d.url && all.findIndex(x => x && x.url === d.url) === index)
-        .slice(0, 6);
-      const documentsHTML = documents.length
-        ? `<div class="meeting-spine-docs">${documents.map(d =>
-          `<a class="view" href="${escUiHtml(d.url)}" ${EXT_ATTRS}>${escUiHtml(d.name || d.document_id || t("meeting_outcomes_document_lbl"))}${extSR()}</a>`
-        ).join("")}</div>`
-        : `<div class="lc-norecord">${t("meeting_outcomes_no_attachments_html")}</div>`;
-      const agendaTitle = item.title || item.body_text || item.agenda_item_id || "—";
-      const agendaNumber = item.agenda_number ? `<div class="when" lang="en" dir="ltr">#${escUiHtml(item.agenda_number)}</div>` : "";
-      const matterMatched = Boolean(matter.matter_id);
-      spinesHTML += `<div class="chain meeting-spine" data-meeting-spine>
-        <div class="stage"><div class="box matched">
-          <div class="stage-name">${t("meeting_outcomes_agenda_lbl")}</div>
-          ${agendaNumber}
-          <div class="bt" lang="en" dir="ltr">${escUiHtml(agendaTitle)}</div>
-        </div></div>
-        <div class="connector" aria-hidden="true">→</div>
-        <div class="stage"><div class="box ${matterMatched?"matched":"unmatched"}">
-          <div class="stage-name">${t("meeting_outcomes_matter_lbl")}</div>
-          <div class="when" lang="en" dir="ltr">${escUiHtml(matter.matter_file || matter.status || "—")}</div>
-          <div class="bt" lang="en" dir="ltr">${escUiHtml(matter.title || matter.matter_id || agendaTitle)}</div>
-          ${matterMatched?"":`<div class="lc-norecord">${t("meeting_outcomes_no_matters_html")}</div>`}
-        </div></div>
-        <div class="connector" aria-hidden="true">→</div>
-        <div class="stage"><div class="box ${matterMatched?"matched":"unmatched"}">
-          <div class="stage-name">${t("meeting_outcomes_outcome_lbl")}</div>
-          <div class="when" lang="en" dir="ltr">${escUiHtml(matter.outcome || matter.passed || matter.status || "—")}</div>
-          ${outcomeHTML}
-        </div></div>
-        <div class="connector" aria-hidden="true">→</div>
-        <div class="stage"><div class="box ${documents.length?"matched":"unmatched"}">
-          <div class="stage-name">${t("meeting_outcomes_attachments_lbl")}</div>
-          ${documentsHTML}
-        </div></div>
-      </div>`;
     }
   }
+  let spinesHTML = spines.map(meetingVoteSpineHTML).filter(Boolean).join("");
   if(!spinesHTML){
     spinesHTML = `<div class="note">${t("meeting_outcomes_no_matters_html")}</div>`;
   }
