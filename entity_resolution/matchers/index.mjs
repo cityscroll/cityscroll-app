@@ -3,7 +3,7 @@
 
 import { extractFeatures } from "../features/index.mjs";
 
-export const MATCHERS_VERSION = "conventional_v0";
+export const MATCHERS_VERSION = "conventional_v1";
 
 function result(decision, confidence, method) {
   return {
@@ -24,8 +24,8 @@ export function scorePair(left = {}, right = {}, features = null, opts = {}) {
     ? features
     : extractFeatures(left, right, opts);
 
-  if (f.pin_epin_equal) {
-    return result("same", 0.995, "pin_epin_equal_v0");
+  if (f.authority_key_equal) {
+    return result("same", 0.995, "scoped_authority_key_equal_v1");
   }
 
   if (f.contract_id_equal) {
@@ -48,7 +48,7 @@ export function scorePair(left = {}, right = {}, features = null, opts = {}) {
     return result("same", 0.985, `${f.family}_stem_equal_v0`);
   }
 
-  if (!f.legal_form_conflict && f.token_jaccard >= 0.9) {
+  if (f.family !== "procurement" && !f.legal_form_conflict && f.token_jaccard >= 0.9) {
     return result("same", 0.95, `${f.family}_token_similarity_v0`);
   }
 

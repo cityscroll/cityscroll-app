@@ -46,7 +46,7 @@ With `--blocker token_v0`:
   share at least one block key)
 - the report lists sample **blocked_in** and **blocked_out** true matches
   (gold `label=same`) so drops are never silent
-- conventional matcher v0 supplies in-memory predictions when `--predictions`
+- conventional matcher v1 supplies in-memory predictions when `--predictions`
   is omitted, so precision, recall, unresolved rate, false merges, and false
   splits are numeric
 - blocked-out pairs remain unresolved rather than bypassing candidate generation
@@ -68,7 +68,7 @@ exits non-zero.
 
 Optional flags:
 
-- `--predictions <path.jsonl>` — override matcher v0 with decisions per gold `id` (`same` \| `different` \| `unresolved`)
+- `--predictions <path.jsonl>` — override matcher v1 with decisions per gold `id` (`same` \| `different` \| `unresolved`)
 - `--blocker token_v0\|none` — candidate generation (default: none → `candidate_recall=null`)
 - `--examples N` — how many blocked-in/out true-match lines to print (default 5 with blocker)
 - `--json` — full report object after the KEY=value lines
@@ -143,8 +143,10 @@ be a JSON string, as stored in D1, or an already-decoded object.
 Derivation is deterministic:
 
 - The newest immutable snapshot per `source_system` + `source_system_id` is retained.
-- Distinct rows sharing a normalized PIN/EPIN or contract identifier become silver
-  `same` pairs, whether they come from one publisher or several.
+- PIN and EPIN aliases parse through the authority-key registry into
+  `(scheme, issuing authority, value, scope)`. Distinct rows become silver `same`
+  pairs only when that complete tuple agrees; contract identifiers retain their
+  separate family.
 - Name-similar rows with comparable but disjoint hard identifiers become
   `never_auto` pressure pairs. A shared hard identifier takes precedence because one
   procurement lineage may contain several identifiers.
@@ -158,7 +160,7 @@ The two metric keys are:
 | `authority_conflict_auto_link_rate` | `never_auto` pairs scored `same`; this is potential auto-link pressure and should remain near zero |
 
 Characterization:
-`node --test test/entity_resolution_authority.test.mjs`.
+`node --test test/authority_key_registry.test.mjs test/entity_resolution_authority.test.mjs`.
 
 ## Entity-centric component evaluation
 

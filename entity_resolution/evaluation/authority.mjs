@@ -6,14 +6,17 @@ import {
   normalizeHardIdentifier,
 } from "../features/index.mjs";
 import { MATCHERS_VERSION, scorePair } from "../matchers/index.mjs";
+import {
+  authorityKeyId,
+  authorityKeysForSide,
+} from "../authority_keys/index.mjs";
 
-export const AUTHORITY_VERSION = "nyc_hard_keys_v0";
+export const AUTHORITY_VERSION = "nyc_scoped_authority_keys_v1";
 export const AUTHORITY_LABEL = Object.freeze({
   SAME: "same",
   NEVER_AUTO: "never_auto",
 });
 
-const PIN_KEYS = ["pin", "epin"];
 const CONTRACT_KEYS = [
   "contract_id",
   "contract_ids",
@@ -118,7 +121,7 @@ function displayName(snapshot, fallback) {
 
 function toObservation(row) {
   const snapshot = row.normalized_snapshot || {};
-  const pinEpin = valuesForKeys(snapshot, PIN_KEYS);
+  const authorityKeys = authorityKeysForSide({ attrs: snapshot });
   const contractIds = valuesForKeys(snapshot, CONTRACT_KEYS);
   return {
     source_record_id: `${row.source_system}:${row.source_system_id}:${row.content_hash}`,
@@ -127,11 +130,12 @@ function toObservation(row) {
     display_name: displayName(snapshot, row.source_system_id),
     entity_type: "procurement",
     attrs: {
-      pin: pinEpin,
+      ...snapshot,
+      authority_keys: authorityKeys,
       contract_ids: contractIds,
     },
     authority_ids: {
-      pin_epin: pinEpin,
+      scoped: authorityKeys,
       contract: contractIds,
     },
     ingested_at: row.ingested_at,
@@ -150,21 +154,34 @@ function orderedPair(left, right) {
 
 function hardKeySet(observation) {
   const keys = [];
-  for (const family of ["pin_epin", "contract"]) {
-    for (const value of observation.authority_ids[family]) keys.push(`${family}:${value}`);
+  for (const key of observation.authority_ids.scoped) {
+    keys.push(`authority:${authorityKeyId(key)}`);
   }
+  for (const value of observation.authority_ids.contract) keys.push(`contract:${value}`);
   return keys;
 }
 
 function pairEvidence(left, right) {
   const shared = [];
   const conflicts = [];
-  for (const family of ["pin_epin", "contract"]) {
-    const a = left.authority_ids[family];
-    const b = right.authority_ids[family];
-    const common = a.filter((value) => b.includes(value));
-    shared.push(...common.map((value) => `${family === "pin_epin" ? "pin" : family}:${value}`));
-    if (a.length > 0 && b.length > 0 && common.length === 0) conflicts.push(family);
+  const leftScoped = left.authority_ids.scoped;
+  const rightScoped = right.authority_ids.scoped;
+  const rightScopedIds = new Set(rightScoped.map(authorityKeyId));
+  const commonScoped = leftScoped.filter((key) => rightScopedIds.has(authorityKeyId(key)));
+  shared.push(...commonScoped.map((key) => `authority:${authorityKeyId(key)}`));
+  if (commonScoped.length === 0 && leftScoped.some((leftKey) =>
+    rightScoped.some((rightKey) =>
+      leftKey.scheme === rightKey.scheme && leftKey.scope === rightKey.scope
+    )
+  )) {
+    conflicts.push("scoped_authority_key");
+  }
+  const leftContracts = left.authority_ids.contract;
+  const rightContracts = right.authority_ids.contract;
+  const commonContracts = leftContracts.filter((value) => rightContracts.includes(value));
+  shared.push(...commonContracts.map((value) => `contract:${value}`));
+  if (leftContracts.length > 0 && rightContracts.length > 0 && commonContracts.length === 0) {
+    conflicts.push("contract");
   }
   return {
     shared_hard_ids: shared.sort(),

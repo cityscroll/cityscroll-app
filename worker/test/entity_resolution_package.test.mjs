@@ -46,6 +46,7 @@ const PACKAGE = join(ROOT, "entity_resolution");
 
 const REQUIRED_DIRS = [
   "normalizers",
+  "authority_keys",
   "candidate_generation",
   "features",
   "matchers",
@@ -97,8 +98,8 @@ test("package root re-exports match normalizers and worker shim", () => {
 
 test("candidate generation and conventional matcher stay non-linking", () => {
   assert.equal(CANDIDATE_GENERATION_VERSION, "token_v0_v0");
-  assert.equal(FEATURES_VERSION, "pair_features_v0");
-  assert.equal(MATCHERS_VERSION, "conventional_v0");
+  assert.equal(FEATURES_VERSION, "pair_features_v1");
+  assert.equal(MATCHERS_VERSION, "conventional_v1");
   assert.equal(POLICIES_VERSION, "stub");
   assert.equal(REVIEW_VERSION, "possibly_same_v1");
 
