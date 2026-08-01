@@ -73,3 +73,15 @@ export {
   PUBLIC_DOSSIER_VERSION,
   serializePublicEntityDossier,
 } from "./dossier.mjs";
+
+export {
+  PUBLIC_GRAPH_DEFAULT_DEPTH,
+  PUBLIC_GRAPH_DEFAULT_FAN_OUT,
+  PUBLIC_GRAPH_EDGE_LABELS,
+  PUBLIC_GRAPH_EDGE_TYPES,
+  PUBLIC_GRAPH_MAX_DEPTH,
+  PUBLIC_GRAPH_MAX_FAN_OUT,
+  PUBLIC_GRAPH_NODE_TYPES,
+  PUBLIC_RELATIONSHIP_GRAPH_VERSION,
+  serializePublicRelationshipGraph,
+} from "./relationship_graph.mjs";

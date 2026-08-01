@@ -470,6 +470,16 @@ matcher internals, and desk review state never cross the publication serializer.
 `entity_resolution/publication/dossier.mjs`; Worker route/view:
 `worker/src/entity_dossier.mjs`. Verify: `node --test worker/test/entity_dossier.test.mjs`.
 
+**Public relationship graph (er-16):** `GET /entity-relationships?id=` projects linked public
+procurement observations into allowlisted vendor, agency, solicitation, contract, and award nodes.
+Every connection uses a named edge type with publisher provenance, observed time, and public-safe
+confidence; unsupported records and relationship types fail closed rather than becoming generic
+lines. Traversal is capped at two hops and 25 outgoing edges per node, with explicit truncation.
+Pure model: `entity_resolution/publication/relationship_graph.mjs`; Worker route/view:
+`worker/src/public_relationship_graph.mjs`. Verify:
+`node --test worker/test/public_relationship_graph.test.mjs`; captures:
+`python3 tools/capture_public_relationship_graph.py`.
+
 **Clerical audit (er-12):** `tools/export_er_clerical_audit.mjs` emits a
 false-split-priority sample (`near_miss` plus `auto_link` control), CSV label
 sheet, and receipt under `entity_resolution/eval/audits/<date>/`. Live mode is
