@@ -7,7 +7,12 @@ import { join, resolve } from "node:path";
 
 import { buildEntityComponentReport } from "../evaluation/entity_components.mjs";
 import { deriveAuthorityCases, loadSourceRecords } from "../evaluation/authority.mjs";
-import { loadGold } from "./run_metrics.mjs";
+import {
+  computeMetrics,
+  loadGold,
+  predictWithMatcher,
+  runBlocker,
+} from "./run_metrics.mjs";
 
 function usage(message = null) {
   if (message) console.error(`error: ${message}`);
@@ -53,6 +58,13 @@ function main() {
     goldCases: gold.cases,
     authorityCases: deriveAuthorityCases(authorityRows),
   }, { sampleSize: args.sampleSize });
+  const blocker = runBlocker("token_v0", gold.cases);
+  report.pairwise_metrics = computeMetrics(
+    gold.cases,
+    predictWithMatcher(gold.cases, blocker.candidateIds),
+    blocker.candidateIds,
+  );
+  report.parameters.pairwise_blocker = "token_v0";
   const receipt = {
     kind: "entity_component_evaluation_receipt",
     schema_version: report.schema_version,
@@ -64,6 +76,7 @@ function main() {
     matcher_version: report.matcher_version,
     parameters: report.parameters,
     metrics: report.metrics,
+    pairwise_metrics: report.pairwise_metrics,
     sample_sha256: sha256(JSON.stringify(report.sample)),
   };
   if (args.outDir) {
@@ -79,6 +92,9 @@ function main() {
   }
   console.log(`sampled_components=${report.sample.length}`);
   console.log(`false_split_priority_components=${report.false_split_priority.length}`);
+  for (const [key, value] of Object.entries(report.pairwise_metrics)) {
+    console.log(`pairwise_${key}=${value == null ? "null" : value}`);
+  }
   if (args.json) console.log(JSON.stringify({ report, receipt }, null, 2));
 }
 

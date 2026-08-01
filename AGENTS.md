@@ -457,6 +457,13 @@ read-only and records a `notices_replay` fallback when shadow tables are empty.
 Gold promotion only creates a new `gold_vN.jsonl`; it never overwrites a version.
 Characterization: `node --test test/entity_resolution_clerical_audit.test.mjs`.
 
+**Entity-centric audit (er-20):** `tools/export_entity_audit_sample.mjs` samples
+whole resolved entities from the er-13 component report across false-split,
+large-cluster, singleton, low-confidence, authority-key, and control strata.
+The label sheet carries first-order inclusion probabilities; weighted estimates
+fail closed as `insufficient` for undersampled strata. Verify:
+`node --test worker/test/entity_audit_sampling.test.mjs`.
+
 ## Property location extraction
 
 Site geography for Property Disposition: `site/property_location.mjs`
