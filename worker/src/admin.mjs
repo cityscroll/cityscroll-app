@@ -23,6 +23,7 @@ import {
   appendFalseSplitDisposition,
   readFalseSplitDispositions,
 } from "./lib/false_split_evidence.mjs";
+import { appendActionLog, reviewActionFromDisposition } from "./lib/action_log.mjs";
 
 // Store digests rather than publishing the desk's private recipient addresses in this repo.
 const DIGEST_TEST_SEND_ALLOWLIST = new Set([
@@ -240,6 +241,9 @@ export async function handleAdminPossiblySame(req, env) {
       return json({ error: "disposition-write-failed" }, 503);
     }
     if (event.error) return json({ error: event.error }, event.error === "pair-not-found" ? 404 : 400);
+    // Fail-soft product action log: desk evidence remains authoritative; logging never blocks review.
+    const reviewAction = reviewActionFromDisposition(event);
+    if (reviewAction) await appendActionLog(env, reviewAction, { id: event.id });
     if ((req.headers.get("accept") || "").includes("application/json")) {
       return json({ event }, 201);
     }

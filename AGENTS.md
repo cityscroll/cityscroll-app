@@ -378,10 +378,14 @@ Fails closed without `RESEND_API_KEY` + `FEEDBACK` KV only. Characterization:
 
 ## Versioned action log
 
-Successful pin/watch interventions append privacy-safe rows to D1 `action_log` through
-`worker/src/lib/action_log.mjs`; no actor, email, IP, cookie, account, or session identifier is
-accepted. The ER review action is schema-reserved, but the current desk stays read-only. Contract
-and characterization: `docs/action-log.md`, `node --test worker/test/action_log.test.mjs`.
+Successful pin/watch interventions and false-split desk dispositions append privacy-safe rows to
+D1 `action_log` through `worker/src/lib/action_log.mjs`; no actor, email, IP, cookie, account, or
+session identifier is accepted. Desk evidence keeps operator-facing actor/note fields separately;
+the product log only records pair id + enumerated decision. Same/different review actions export
+to gold-ready candidates via `tools/export_review_actions_to_gold.mjs` (never overwrites
+`gold_vN.jsonl`). Contract and characterization: `docs/action-log.md`,
+`node --test worker/test/action_log.test.mjs worker/test/false_split_evidence.test.mjs
+test/review_action_export.test.mjs`.
 
 ## Entity resolution (foundation)
 

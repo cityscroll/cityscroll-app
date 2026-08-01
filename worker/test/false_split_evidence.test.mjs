@@ -31,7 +31,12 @@ function d1(sqlite) {
 
 function fixtureEnv() {
   const sqlite = new DatabaseSync(":memory:");
-  for (const migration of ["0008_source_records.sql", "0009_entity_link.sql", "0010_false_split_disposition.sql"]) {
+  for (const migration of [
+    "0008_source_records.sql",
+    "0009_entity_link.sql",
+    "0010_false_split_disposition.sql",
+    "0010_action_log.sql",
+  ]) {
     sqlite.exec(readFileSync(new URL(`../migrations/${migration}`, import.meta.url), "utf8"));
   }
   const insert = sqlite.prepare(
@@ -128,6 +133,30 @@ test("same, different, and defer dispositions append immutable evidence events",
       assert.equal(evidence.left.source_record_id, "city_record:20260730001:hash-a");
       assert.equal(evidence.right.source_record_id, "checkbook:contract-44:hash-b");
     }
+
+    // Product action log mirrors decisions without actors or free-text notes.
+    const actionRows = sqlite.prepare(
+      "SELECT id, action_type, object_type, object_id, method, method_version, metadata_json FROM action_log ORDER BY ts ASC, rowid ASC",
+    ).all();
+    assert.equal(actionRows.length, 3);
+    assert.deepEqual(actionRows.map((row) => JSON.parse(row.metadata_json).decision), [
+      "same",
+      "different",
+      "unresolved",
+    ]);
+    for (const row of actionRows) {
+      assert.equal(row.action_type, "review_decision");
+      assert.equal(row.object_type, "entity_pair");
+      assert.equal(row.object_id, pairId);
+      assert.equal(row.method, "false_split_desk");
+      assert.equal(row.method_version, "v1");
+      assert.equal(JSON.stringify(row).includes("desk-actor"), false);
+      assert.equal(JSON.stringify(row).includes("review "), false);
+    }
+    assert.deepEqual(
+      actionRows.map((row) => row.id),
+      tray.items[0].dispositions.map((event) => event.id),
+    );
 
     const eventId = tray.items[0].dispositions[0].id;
     assert.throws(

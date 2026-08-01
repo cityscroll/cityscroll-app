@@ -9,6 +9,8 @@ creates links.
 | Path | Role |
 | --- | --- |
 | `gold_v0.jsonl` | Versioned hard-case gold (pair labels) |
+| `review_action_export.mjs` | Pure export of privacy-safe desk/action-log reviews into gold-ready candidates |
+| `fixtures/review_actions_v0.json` | Characterization fixture for review-action export |
 | `run_metrics.mjs` | Load gold, run predictions, and print metric keys |
 | `blockers/token_v0.mjs` | Token/stem blocking v0 (eval candidate generation) |
 | `run_authority.mjs` | Derive and score silver labels from `source_records` JSONL |
