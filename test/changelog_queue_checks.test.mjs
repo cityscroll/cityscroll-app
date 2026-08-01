@@ -26,18 +26,21 @@ function read(rel) {
 test("ci.yml defines changelog_only so required jobs can fast-path", () => {
   const ci = read(".github/workflows/ci.yml");
   assert.match(ci, /changelog_only:/);
-  assert.match(ci, /id: changelog_only/);
+  assert.match(ci, /id: path_class/);
   assert.match(ci, /tools\/changelog-path-guard\.sh/);
+  assert.match(ci, /tools\/docs-only-path-guard\.sh/);
+  assert.match(ci, /unit_full:/);
   for (const name of REQUIRED_CHECK_NAMES) {
     assert.match(ci, new RegExp(`name:\\s*${name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`));
   }
-  // Each required job must have a no-op success path for changelog-only diffs.
+  // Each required browser job must have a no-op success path for non-frontend / fast-path diffs.
   assert.match(ci, /Changelog-only, non-frontend, or unit-failed — report required check success/);
   assert.equal(
     (ci.match(/Changelog-only, non-frontend, or unit-failed — report required check success/g) || []).length,
     3,
     "a11y, i18n-guard, and reading-level each need a no-op success step",
   );
+  assert.match(ci, /Changelog-only or docs-only — report required check success/);
 });
 
 test("required jobs stay runnable (not job-level skipped) so the check name always reports", () => {

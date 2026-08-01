@@ -1,0 +1,39 @@
+name: Setup Playwright Chromium
+description: >-
+  Install Playwright for Python with a durable browser cache so a11y, stray-English,
+  and performance jobs do not re-download Chromium every run.
+inputs:
+  python-version:
+    description: Python version for actions/setup-python
+    required: false
+    default: "3.12"
+  playwright-version:
+    description: Pin when the job needs a specific playwright package
+    required: false
+    default: ""
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+    - name: Cache Playwright browsers
+      uses: actions/cache@v4
+      id: pw-cache
+      with:
+        path: ~/.cache/ms-playwright
+        key: ${{ runner.os }}-playwright-${{ inputs.playwright-version != '' && inputs.playwright-version || 'latest' }}-v1
+        restore-keys: |
+          ${{ runner.os }}-playwright-
+    - name: Install Playwright package and Chromium
+      shell: bash
+      run: |
+        set -euo pipefail
+        if [ -n "${{ inputs.playwright-version }}" ]; then
+          pip install "playwright==${{ inputs.playwright-version }}"
+        else
+          pip install playwright
+        fi
+        # --with-deps is needed once per runner image; cache hits still re-run
+        # the install command but skip the multi-hundred-MB download.
+        playwright install --with-deps chromium

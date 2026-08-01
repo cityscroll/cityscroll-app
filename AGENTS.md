@@ -10,6 +10,18 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   before opening a pull request. CI still runs the full accessibility and runtime
   stray-English work after Unit checks.
 
+## CI path fast paths and merge queue
+
+- Required checks always report a conclusion (never stay missing). Fast paths:
+  `changelog_only` (bot-owned changelog files) and `docs_only` (`tools/docs-only-path-guard.sh`)
+  skip the full unit suite; non-frontend PRs skip browser a11y / Stray-English / reading-level
+  heavy work while still posting SUCCESS. Performance budgets run only when `frontend` changes.
+- Stray-English (required) runs ten locales via `test/functional/run_stray_english_shards.sh`
+  (parallel shards; stable job name for the ruleset).
+- Playwright installs go through `.github/actions/setup-playwright` (browser cache).
+- Merge-queue parameters: `tools/merge_queue_policy.json` + `node tools/apply_merge_queue_policy.mjs`
+  (short train wait). Factory merge-cap for this repo is enforced by firstmate, not this tree.
+
 ## Maintaining this file
 
 - Keep this file for durable project-intrinsic facts that should outlive any one pull request.
