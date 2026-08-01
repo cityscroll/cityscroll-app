@@ -1,0 +1,51 @@
+{
+  "metric": "procurement_lifecycle_coherence_rate",
+  "version": "lifecycle_coherence_v1",
+  "eligible": 5,
+  "coherent": 2,
+  "procurement_lifecycle_coherence_rate": 0.4,
+  "issue_counts": {
+    "orphaned_award": 1,
+    "payment_exceeds_commitment": 1,
+    "out_of_order_dates": 2
+  },
+  "cases": [
+    {
+      "id": "coherent-solicitation-path",
+      "eligible": true,
+      "coherent": true,
+      "issue_kinds": []
+    },
+    {
+      "id": "orphaned-award-no-solicitation",
+      "eligible": true,
+      "coherent": false,
+      "issue_kinds": [
+        "orphaned_award",
+        "out_of_order_dates"
+      ]
+    },
+    {
+      "id": "payment-exceeds-award",
+      "eligible": true,
+      "coherent": false,
+      "issue_kinds": [
+        "payment_exceeds_commitment"
+      ]
+    },
+    {
+      "id": "out-of-order-registered-before-award",
+      "eligible": true,
+      "coherent": false,
+      "issue_kinds": [
+        "out_of_order_dates"
+      ]
+    },
+    {
+      "id": "coherent-award-with-solicitation-package",
+      "eligible": true,
+      "coherent": true,
+      "issue_kinds": []
+    }
+  ]
+}

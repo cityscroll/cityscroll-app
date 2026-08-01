@@ -203,6 +203,25 @@ Precompute-first on the notice page: never live Checkbook proxy; never render `l
 
 **One owner per fact (lifecycle vs detail):** when the Checkbook registration join exists, the payments card **summarizes** (`$X paid of $Y committed`, zero-lag note when $0-fresh) and anchor-links to `#follow-the-dollars`; it never emits class-(a) gap copy in parallel. Follow-the-Dollars owns paid-to-date detail and must not re-emit the payments gap. Gap register for payments only when the join is genuinely absent (no PIN / no registered record). Same ownership rule for subsidy: project-level unmatched is one note, not stacked per-stage gaps. Characterization: `node --test test/lifecycle_coherence_field_cases.test.mjs` (symptom: *joined payments rendered as not-shown, duplicated*). Captures: `python3 tools/capture_lifecycle_coherence.py`.
 
+### Procurement lifecycle coherence counters
+
+Detect orphaned/contradictory Money stages on assembled lifecycles and measure them:
+
+- **Issue kinds:** `orphaned_award` (matched award, no solicitation stage),
+  `payment_exceeds_commitment` (paid-to-date > award/registered commitment),
+  `out_of_order_dates` (matched stage dates violate solicitation→…→payment order)
+- **Side-car:** `assembleLifecycle` / `recoverPaymentFromRegisteredJoin` stamp
+  `lifecycle.coherence` (`version`, `coherent`, `findings`, `issue_kinds`)
+- **Named metric:** `procurement_lifecycle_coherence_rate` =
+  coherent / eligible (eligible = non-empty timeline with ≥1 matched stage)
+- Pure lib: `worker/src/lib/lifecycle_coherence.mjs`
+- Fixtures: `worker/test/fixtures/lifecycle-coherence/`
+- Verify:
+  `node --test worker/test/lifecycle_coherence.test.mjs &&
+  node worker/scripts/lifecycle-coherence-scorecard.mjs --fixtures
+  worker/test/fixtures/lifecycle-coherence --check`
+
+
 ## Changelog harvest
 
 Public surface: `site/changelog-data.json` + `site/changelog.html` (not repo-root). Workflow:
