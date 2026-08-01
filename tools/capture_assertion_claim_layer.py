@@ -60,6 +60,16 @@ h1 { font-family:Georgia,serif; font-size:clamp(22px,3.4vw,36px); line-height:1.
   padding:10px 12px; background:#faf6ee; border-inline-start:3px solid var(--rule);
   border-radius:0 7px 7px 0; }
 .note.warn { color:var(--ox); border-inline-start-color:var(--ox); background:#fff8f5; }
+/* Match site claim-layer markers: publisher claim vs product reading */
+.note[data-claim-layer] [data-claim="source_assertion"] {
+  display:inline; box-decoration-break:clone; -webkit-box-decoration-break:clone;
+  padding:.05em .28em; border-radius:4px; background:#fff; border:1px solid var(--rule);
+}
+.note[data-claim-layer] [data-claim="cityscroll_interpretation"] {
+  display:inline; box-decoration-break:clone; -webkit-box-decoration-break:clone;
+  padding:.05em .28em; border-radius:4px; background:#fff8ef; border:1px solid #d39355;
+  color:var(--amber);
+}
 .claim-tag { display:inline-block; font:700 10px/1 ui-sans-serif,system-ui,sans-serif;
   letter-spacing:.06em; text-transform:uppercase; border:1px solid var(--rule);
   border-radius:999px; padding:2px 7px; margin-right:4px; color:var(--ink); background:#fff; }

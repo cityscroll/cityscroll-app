@@ -402,6 +402,15 @@
   .land-spine-source{font:600 11px/1.35 ui-sans-serif,system-ui,sans-serif}
   .note{font:13px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted);background:#f4eee2;border-inline-start:3px solid var(--rule);padding:10px 12px;border-start-end-radius:8px;border-end-end-radius:8px;margin-top:14px}
   .note.warn{border-inline-start-color:var(--rose)}
+  /* Claim layer: publisher claim vs product reading (assertion ≠ interpretation) */
+  .note[data-claim-layer] [data-claim="source_assertion"]{
+    display:inline;box-decoration-break:clone;-webkit-box-decoration-break:clone;
+    padding:.05em .28em;border-radius:4px;background:#fff;border:1px solid var(--rule);
+  }
+  .note[data-claim-layer] [data-claim="cityscroll_interpretation"]{
+    display:inline;box-decoration-break:clone;-webkit-box-decoration-break:clone;
+    padding:.05em .28em;border-radius:4px;background:#fff8ef;border:1px solid #d39355;color:var(--amber);
+  }
   .widening-note{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:12px 0 0;border-inline-start-color:var(--blue);color:var(--ink)}
   .widening-note span{min-width:0}
   .widening-note .mini{flex:0 0 auto}
@@ -6442,13 +6451,16 @@ function lifecycleOcpAwardHTML(data){
   } else if(corr && !corr.agree){
     // Claim layer: both publisher values stay source assertions; the disagreement is an
     // unresolved CityScroll interpretation — never a derived winning amount/date.
+    // Prefer classifications from claim_layer on each row when the product join stamped them.
     body += ` ${t("lifecycle_ocp_disagreement_html",{source:srcName})}`;
     const dis = Array.isArray(corr.disagreements) ? corr.disagreements : [];
     const fields = [];
     for(const item of dis){
+      const assertClass = (item.claim_layer && item.claim_layer.assertions && item.claim_layer.assertions[0]
+        && item.claim_layer.assertions[0].classification) || "source_assertion";
       if(item.field === "amount"){
         fields.push("amount");
-        body += ` <span data-claim="source_assertion">${t("lifecycle_ocp_amount_pair_html",{
+        body += ` <span data-claim="${escUiHtml(assertClass)}">${t("lifecycle_ocp_amount_pair_html",{
           city_record_label: cityName,
           city_amount: money(item.city_record) || "—",
           ocp_label: srcName,
@@ -6456,7 +6468,7 @@ function lifecycleOcpAwardHTML(data){
         })}</span>`;
       } else if(item.field === "date"){
         fields.push("date");
-        body += ` <span data-claim="source_assertion">${t("lifecycle_ocp_date_pair_html",{
+        body += ` <span data-claim="${escUiHtml(assertClass)}">${t("lifecycle_ocp_date_pair_html",{
           city_record_label: cityName,
           city_date: item.city_record ? fdate(item.city_record) : "—",
           ocp_label: srcName,
@@ -6466,7 +6478,10 @@ function lifecycleOcpAwardHTML(data){
     }
     if(fields.length){
       const fieldLabel = fields.map(f => f === "amount" ? "amount" : "date").join(" and ");
-      body += ` <span data-claim="cityscroll_interpretation">${t("lifecycle_ocp_interpretation_html",{
+      const firstLayer = dis.find(d => d && d.claim_layer && d.claim_layer.interpretation);
+      const interpClass = (firstLayer && firstLayer.claim_layer.interpretation.classification)
+        || "cityscroll_interpretation";
+      body += ` <span data-claim="${escUiHtml(interpClass)}">${t("lifecycle_ocp_interpretation_html",{
         field: fieldLabel
       })}</span>`;
     }

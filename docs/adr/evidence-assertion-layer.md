@@ -69,6 +69,23 @@ so new surfaces do not invent a fourth register.
 - Later `cs-ev-*` cards (provenance coverage, first-class contradiction rails) attach to
   this vocabulary rather than redefining it.
 
+## Coverage metric
+
+`public_claim_labeled_disagree_rate` on OCP-joined awards:
+
+```
+labeled_disagreements / ocp_joined_with_field_disagreement
+```
+
+A matched OCP join is eligible only when City Record and OCP disagree on amount and/or
+date. It is labeled only when every disagreement row carries a complete `claim_layer`
+bundle (two `source_assertion` values, unresolved `cityscroll_interpretation`, null
+`derived_conclusion`). Agreeing joins and unmatched/unknown/ambiguous joins are not
+eligible. Pure measure: `measurePublicClaimLabeledDisagreeRate` in
+`worker/src/lib/claim_layer.mjs`. Field cases:
+`worker/test/fixtures/claim-layer/ocp_joined_awards.json`. Target: **1.0** on product
+join output (baseline without claim labels: **0**).
+
 ## Verify
 
 ```bash
