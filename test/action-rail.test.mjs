@@ -94,6 +94,19 @@ test("a notice-named agency portal is used only with matching system and approve
   assert.equal(unrelated.destination, null);
 });
 
+test("an unknown submission system does not duplicate the page's City Record action", () => {
+  const actions = compileActionRail({
+    kind: "solicitation",
+    pin: "8502026HP0099",
+    title: "Rehabilitation of public restrooms",
+    deadline: "2026-09-01",
+    official_notice_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20260701099",
+  }, {today: "2026-08-01"});
+  assert.deepEqual(actions.map(action => action.type), ["official_application", "calendar", "watch"]);
+  assert.equal(actions[0].delivery, "unavailable");
+  assert.equal(actions.some(action => action.type === "document"), false);
+});
+
 test("closed solicitations replace the bid handoff with an honest unavailable state", () => {
   const actions = compileActionRail({...fixture.matter, lifecycle_stage: "closed"}, {today: "2026-08-01"});
   assert.equal(actions[0].delivery, "unavailable");

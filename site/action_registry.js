@@ -223,7 +223,7 @@
         ? [unavailable("official_application", "next_action_bid_closed", "The response deadline has passed.", deadline), notice(), watch]
         : handoff.destination
           ? [official("official_application", handoff.label_key, handoff.label, handoff.destination, deadline, {guide: handoff})]
-          : [unavailable("official_application", handoff.label_key, handoff.label, deadline), notice()];
+          : [unavailable("official_application", handoff.label_key, handoff.label, deadline)];
       if (!closed && deadline && !matter.rolling_deadline) actions.push(calendar);
       if (!closed) actions.push(watch);
     } else if (kind === "rule") {

@@ -80,7 +80,7 @@ NOTICE_PERMALINK_ROW = {
     "pin": "8502026HP0099", "due_date": _iso(25), "address_to_request": "100 Gold Street, New York, NY 10038",
     "contact_name": "Jane Roe", "contact_phone": "(212) 555-0100", "email": "rfp@hpd.nyc.gov",
     "selection_method_description": "Competitive Sealed Proposals",
-    "additional_description_1": "The Department of Housing Preservation and Development requests proposals for the rehabilitation of public restrooms citywide.",
+    "additional_description_1": "The Department of Housing Preservation and Development requests proposals for the rehabilitation of public restrooms citywide. Responses are submitted in PASSPort.",
 }
 CHAIN_ROWS = [
     dict(RFP_OPEN),
