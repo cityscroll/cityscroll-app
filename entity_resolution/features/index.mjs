@@ -109,19 +109,54 @@ function familyStem(side, entityType) {
   return comparisonSurface(name);
 }
 
-function normalizedIdentifier(value) {
-  return String(value || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+const NULLISH_IDENTIFIERS = new Set([
+  "0",
+  "NA",
+  "NONE",
+  "NULL",
+  "TBD",
+  "UNKNOWN",
+  "UNAVAILABLE",
+  "NOTAPPLICABLE",
+  "NOTPROVIDED",
+]);
+
+/** Normalize a hard identifier while rejecting publisher null sentinels. */
+export function normalizeHardIdentifier(value) {
+  const normalized = String(value || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+  return NULLISH_IDENTIFIERS.has(normalized) ? "" : normalized;
+}
+
+function identifierValues(side, keys) {
+  const values = [];
+  for (const key of keys) {
+    for (const container of [side, side?.attrs]) {
+      const raw = container?.[key];
+      const list = Array.isArray(raw) ? raw : [raw];
+      for (const value of list) {
+        const normalized = normalizeHardIdentifier(value);
+        if (normalized) values.push(normalized);
+      }
+    }
+  }
+  return [...new Set(values)].sort();
 }
 
 /** Treat PIN and EPIN as the same identifier family. */
 export function pinEpinValues(side) {
-  const values = [
-    side?.pin,
-    side?.epin,
-    side?.attrs?.pin,
-    side?.attrs?.epin,
-  ].map(normalizedIdentifier).filter(Boolean);
-  return [...new Set(values)].sort();
+  return identifierValues(side, ["pin", "epin"]);
+}
+
+/** Contract identifiers form a separate NYC authority family. */
+export function contractIdValues(side) {
+  return identifierValues(side, [
+    "contract_id",
+    "contract_ids",
+    "contractId",
+    "ctr_id",
+    "prime_contract_id",
+    "contract_number",
+  ]);
 }
 
 function jaccard(left, right) {
@@ -169,6 +204,12 @@ export function extractFeatures(left = {}, right = {}, opts = {}) {
   const leftIds = pinEpinValues(left);
   const rightIds = pinEpinValues(right);
   const sharedIds = leftIds.filter((id) => rightIds.includes(id));
+  const leftContractIds = contractIdValues(left);
+  const rightContractIds = contractIdValues(right);
+  const sharedContractIds = leftContractIds.filter((id) => rightContractIds.includes(id));
+  const pinEpinConflict = leftIds.length > 0 && rightIds.length > 0 && sharedIds.length === 0;
+  const contractIdConflict = leftContractIds.length > 0 && rightContractIds.length > 0 && sharedContractIds.length === 0;
+  const hardIdEqual = sharedIds.length > 0 || sharedContractIds.length > 0;
   const leftForm = family === "vendor" ? legalForm(leftName) : null;
   const rightForm = family === "vendor" ? legalForm(rightName) : null;
   const leftPlaces = family === "agency" ? agencyPlaces(leftPieces) : [];
@@ -190,8 +231,13 @@ export function extractFeatures(left = {}, right = {}, opts = {}) {
       (leftSurface.includes(rightSurface) || rightSurface.includes(leftSurface)),
     ),
     pin_epin_equal: sharedIds.length > 0,
-    pin_epin_conflict: leftIds.length > 0 && rightIds.length > 0 && sharedIds.length === 0,
+    pin_epin_conflict: pinEpinConflict,
     shared_pin_epin: sharedIds,
+    contract_id_equal: sharedContractIds.length > 0,
+    contract_id_conflict: contractIdConflict,
+    shared_contract_ids: sharedContractIds,
+    hard_id_equal: hardIdEqual,
+    hard_id_conflict: !hardIdEqual && (pinEpinConflict || contractIdConflict),
     left_legal_form: leftForm,
     right_legal_form: rightForm,
     legal_form_conflict: Boolean(leftForm && rightForm && leftForm !== rightForm),
