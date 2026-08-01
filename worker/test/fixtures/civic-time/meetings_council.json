@@ -1,0 +1,62 @@
+{
+  "lens": "meetings",
+  "run_id": "fixture-meetings-baseline",
+  "processed_at": "2026-08-01T12:00:00.000Z",
+  "description": "Council Legistar event with agenda action and optional roll-call.",
+  "assertions": [
+    {
+      "event_kind": "meetings.council_event",
+      "subject_ref": "legistar-event:22526",
+      "source_record_ref": "legistar:Events/22526",
+      "source_revision": "legistar:22526:file:2026-07-06",
+      "source_field": "EventDate",
+      "valid_at": "2026-07-06",
+      "published_at": "2026-07-01T00:00:00.000Z",
+      "observed_at": "2026-07-07T06:00:00.000Z",
+      "processed_at": "2026-08-01T12:00:00.000Z",
+      "status": "occurred",
+      "clocks": {
+        "EventDate": "valid",
+        "FileDate_or_LastModified": "publication",
+        "observed_at": "observation",
+        "processed_at": "processing"
+      }
+    },
+    {
+      "event_kind": "meetings.agenda_item_action",
+      "subject_ref": "legistar-event:22526",
+      "source_record_ref": "legistar:EventItems/90001",
+      "source_revision": "legistar:item:90001:action:Approved",
+      "source_field": "EventItemActionName",
+      "valid_at": "2026-07-06",
+      "published_at": "2026-07-06T18:00:00.000Z",
+      "observed_at": "2026-07-07T06:00:00.000Z",
+      "processed_at": "2026-08-01T12:00:00.000Z",
+      "status": "occurred",
+      "clocks": {
+        "EventItemActionDate_or_EventDate": "valid",
+        "published_at": "publication",
+        "observed_at": "observation",
+        "processed_at": "processing"
+      }
+    },
+    {
+      "event_kind": "meetings.roll_call_vote",
+      "subject_ref": "legistar-event:22526",
+      "source_record_ref": "legistar:EventItems/90001/Votes",
+      "source_revision": "legistar:item:90001:votes:v1",
+      "source_field": "Votes",
+      "valid_at": "2026-07-06",
+      "published_at": "2026-07-06T18:05:00.000Z",
+      "observed_at": "2026-07-07T06:00:00.000Z",
+      "processed_at": "2026-08-01T12:00:00.000Z",
+      "status": "occurred",
+      "clocks": {
+        "vote_time_or_EventDate": "valid",
+        "published_at": "publication",
+        "observed_at": "observation",
+        "processed_at": "processing"
+      }
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "lens": "rules",
+  "run_id": "fixture-rules-baseline",
+  "processed_at": "2026-08-01T12:00:00.000Z",
+  "description": "Open-comment Agency Rules notice with NYC Rules RSS enrichment.",
+  "assertions": [
+    {
+      "event_kind": "rules.proposal_published",
+      "subject_ref": "notice:20260715001",
+      "source_record_ref": "nyc-rules:guid:https://rules.cityofnewyork.us/?p=1234",
+      "source_revision": "rss:p=1234:pub:2026-07-15",
+      "source_field": "pubDate",
+      "valid_at": "2026-07-15",
+      "published_at": "2026-07-15T15:30:00.000Z",
+      "observed_at": "2026-07-16T08:00:00.000Z",
+      "processed_at": "2026-08-01T12:00:00.000Z",
+      "status": "occurred",
+      "clocks": {
+        "pubDate": "publication",
+        "valid_at_from_pubDate": "valid",
+        "observed_at": "observation",
+        "processed_at": "processing"
+      }
+    },
+    {
+      "event_kind": "rules.public_hearing",
+      "subject_ref": "notice:20260715001",
+      "source_record_ref": "nyc-rules:guid:https://rules.cityofnewyork.us/?p=1234",
+      "source_revision": "rss:p=1234:hearing:2026-09-10",
+      "source_field": "hearing_date_1",
+      "valid_at": "2026-09-10",
+      "published_at": "2026-07-15T15:30:00.000Z",
+      "observed_at": "2026-07-16T08:00:00.000Z",
+      "processed_at": "2026-08-01T12:00:00.000Z",
+      "status": "scheduled",
+      "clocks": {
+        "hearing_date_1": "valid",
+        "pubDate": "publication",
+        "observed_at": "observation",
+        "processed_at": "processing"
+      }
+    },
+    {
+      "event_kind": "rules.comment_close",
+      "subject_ref": "notice:20260715001",
+      "source_record_ref": "nyc-rules:guid:https://rules.cityofnewyork.us/?p=1234",
+      "source_revision": "rss:p=1234:comment:2026-09-15",
+      "source_field": "comment_by_date",
+      "valid_at": "2026-09-15",
+      "published_at": "2026-07-15T15:30:00.000Z",
+      "observed_at": "2026-07-16T08:00:00.000Z",
+      "processed_at": "2026-08-01T12:00:00.000Z",
+      "status": "scheduled",
+      "clocks": {
+        "comment_by_date": "valid",
+        "pubDate": "publication",
+        "observed_at": "observation",
+        "processed_at": "processing"
+      }
+    }
+  ]
+}
