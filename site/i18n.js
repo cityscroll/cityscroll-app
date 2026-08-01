@@ -625,7 +625,9 @@ const STRINGS = {
     career_outcome_stage_list: "eligible-list establishment",
     career_outcome_stage_certification: "agency certification",
     career_outcome_stage_appointment: "appointment",
+    // Class-(b) retained for individual scores / legacy; aggregate empty slots use class-(a).
     career_outcomes_not_published_html: "The city does not publish post-cycle outcomes for this exam yet — they would appear in {source} after {stage}.",
+    career_outcomes_not_yet_ingested_html: "Not yet shown here — post-cycle aggregates live in {source} (and Civil Service List open data) after {stage}.",
 
     // Land panel
     recent_rezonings_heading: "Recent rezonings",

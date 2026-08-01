@@ -1384,6 +1384,7 @@
     career_outcome_stage_certification: "기관 인증",
     career_outcome_stage_appointment: "임명",
     career_outcomes_not_published_html: "시는 아직 이 시험의 주기 후 결과를 공개하지 않습니다 — {stage} 이후 {source}에 나타납니다.",
+    career_outcomes_not_yet_ingested_html: "아직 여기에 표시되지 않음 — 주기 후 집계는 {stage} 이후 {source}(및 Civil Service List 공개 데이터)에 있습니다.",
     // END GENERATED CAREER GUIDE TRANSLATIONS
   });
   W.SECTION_I18N = W.SECTION_I18N || {};

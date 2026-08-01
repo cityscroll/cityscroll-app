@@ -1378,6 +1378,7 @@
     career_outcome_stage_certification: "la certificación a la agencia",
     career_outcome_stage_appointment: "el nombramiento",
     career_outcomes_not_published_html: "La ciudad aún no publica resultados posteriores al ciclo para este examen: aparecerían en {source} después de {stage}.",
+    career_outcomes_not_yet_ingested_html: "Aún no se muestra aquí: los agregados posteriores al ciclo están en {source} (y en los datos abiertos de la Lista de Servicio Civil) después de {stage}.",
     // END GENERATED CAREER GUIDE TRANSLATIONS
   });
   W.SECTION_I18N = W.SECTION_I18N || {};

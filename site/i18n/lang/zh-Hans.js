@@ -1378,6 +1378,7 @@
     career_outcome_stage_certification: "向机构认证",
     career_outcome_stage_appointment: "任命",
     career_outcomes_not_published_html: "市政府尚未公布本考试的周期后结果——在{stage}之后，它们会出现在{source}中。",
+    career_outcomes_not_yet_ingested_html: "此处尚未显示——周期后汇总结果可在{stage}之后于{source}（及公务员名单开放数据）查看。",
     // END GENERATED CAREER GUIDE TRANSLATIONS
   });
   W.SECTION_I18N = W.SECTION_I18N || {};

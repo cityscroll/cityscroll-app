@@ -178,7 +178,8 @@
 
   /**
    * Build-time outcome join on exam_number. Prefer full annual DCAS aggregates;
-   * else post-list Civil Service List counts (no PII); else not-published gap.
+   * else post-list Civil Service List counts (no PII); else class-(a) not-yet-ingested
+   * (public sources exist — never a false class-(b) city-withhold for aggregates).
    */
   function examOutcomeView(exam) {
     if (exam && exam.outcome && typeof exam.outcome === "object") {
@@ -206,9 +207,13 @@
       };
     }
     const gap = exam && exam.outcome_gap ? exam.outcome_gap : null;
+    const gapClass = (gap && gap.class) || "not_yet_ingested";
+    // Aggregate post-cycle depth has public sources; only individual scores are class-(b).
+    // Accept legacy not_published stamps as not_yet_ingested so old artifacts do not blame the city.
+    const kind = gapClass === "not_published" ? "not_yet_ingested" : (gapClass || "not_yet_ingested");
     return {
-      kind: "not_published",
-      class: (gap && gap.class) || "not_published",
+      kind: kind === "not_yet_ingested" ? "not_yet_ingested" : kind,
+      class: kind === "not_yet_ingested" ? "not_yet_ingested" : gapClass,
       pending_stage: (gap && gap.pending_stage) || "list_establishment",
     };
   }

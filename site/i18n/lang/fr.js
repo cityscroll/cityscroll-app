@@ -1484,6 +1484,7 @@
     career_outcome_stage_certification: "la certification auprès de l'organisme",
     career_outcome_stage_appointment: "la nomination",
     career_outcomes_not_published_html: "La ville ne publie pas encore de résultats post-cycle pour cet examen — ils apparaîtraient dans {source} après {stage}.",
+    career_outcomes_not_yet_ingested_html: "Pas encore affiché ici — les agrégats post-cycle se trouvent dans {source} (et les données ouvertes de la Civil Service List) après {stage}.",
     // END GENERATED CAREER GUIDE TRANSLATIONS
   });
   W.SECTION_I18N = W.SECTION_I18N || {};

@@ -332,7 +332,11 @@ Closed-exam exam_no overlap **44.54%** (494/1,109) — ship post-list depth;
 open-exam overlap 0%. Artifact:
 `site/data/exam_sources/civil_service_list_aggregates.json` joined at build via
 `tools/build_staffing_exams.mjs` + `worker/src/lib/civil_service_list_join.mjs`.
-UI: `list_joined` outcome view when annual DCAS outcomes are absent.
+Closed exams that leave the current FY annual snapshot stay joinable through
+`list_depth_closed_exams.json` (open 7xxx series has 0% list presence). UI:
+`list_joined` when list depth attaches; empty aggregate slots use class-(a)
+`not_yet_ingested` (`career_outcomes_not_yet_ingested_html`) — never class-(b)
+city-withhold for aggregates. Individual scores remain class-(b).
 
 ## Digest watermark recovery (catch-up digests)
 
