@@ -47,6 +47,13 @@ test("contract fixture follows notice -> event -> agenda -> matter with strict j
   assert.equal(matter.votes[0].result, "Passed");
   assert.equal(matter.votes[0].counts.aye, 6);
   assert.equal(matter.votes[0].counts.nay, 3);
+  assert.equal(matter.votes[0].by_person.length, 3);
+  assert.equal(matter.votes[0].officials.length, 3);
+  assert.equal(matter.votes[0].votes_on.length, 3);
+  assert.equal(matter.votes[0].votes_on[0].type, "votes_on");
+  assert.equal(matter.votes[0].votes_on[0].from, "official:p-101");
+  assert.equal(matter.votes[0].votes_on[0].to, "matter:mat-001");
+  assert.equal(matter.votes[0].person_vote_retention_rate, 1);
   assert.equal(matter.documents[0].name, "Staff report");
 });
 

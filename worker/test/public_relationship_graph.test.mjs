@@ -148,14 +148,18 @@ test("public graph returns only typed, evidence-bearing procurement relationship
   try {
     const graph = await readPublicRelationshipGraph(env.DB, ENTITY_ID, { depth: 2, fanOut: 20 });
     assert.equal(graph.version, PUBLIC_RELATIONSHIP_GRAPH_VERSION);
-    assert.deepEqual(PUBLIC_GRAPH_NODE_TYPES, ["vendor", "agency", "solicitation", "contract", "award"]);
+    assert.deepEqual(PUBLIC_GRAPH_NODE_TYPES, [
+      "vendor", "agency", "solicitation", "contract", "award", "official",
+    ]);
     assert.deepEqual(PUBLIC_GRAPH_EDGE_TYPES, [
       "named_vendor_on_award",
       "named_vendor_on_solicitation",
       "published_by_agency",
       "references_contract",
+      "votes_on",
     ]);
     assert.equal(graph.root.id, ENTITY_ID);
+    // Procurement fixture graph does not emit official nodes; allowlist still includes them.
     assert.deepEqual(new Set(graph.nodes.map((node) => node.type)), new Set([
       "vendor", "agency", "solicitation", "contract", "award",
     ]));

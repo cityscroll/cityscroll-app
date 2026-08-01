@@ -52,6 +52,7 @@ const PACKAGE = join(ROOT, "entity_resolution");
 const REQUIRED_DIRS = [
   "normalizers",
   "authority_keys",
+  "officials",
   "candidate_generation",
   "features",
   "matchers",

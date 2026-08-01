@@ -714,6 +714,8 @@
     meeting_outcomes_outcome_lbl: "Rezilta",
     meeting_outcomes_attachments_lbl: "Dokiman anekse",
     meeting_outcomes_vote_html: "Vòt: {result} (pou {aye} · kont {nay})",
+    meeting_outcomes_roll_call_lbl: "Apèl non",
+    meeting_outcomes_vote_person_html: "{name} ({vote})",
     meeting_outcomes_outcome_html: "Rezilta: {outcome}",
     meeting_outcomes_no_votes_html: "Pokò a pa montre isit la — vòt non non pou zafè “{matter}” yo nan NYC Council Legistar.",
     meeting_outcomes_no_matters_html: "Pokò a pa montre isit la — atik ajanda ak zafè yo nan NYC Council Legistar.",

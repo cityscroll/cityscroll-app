@@ -108,13 +108,19 @@
       "id": "legistar-votes",
       "source_system": "nyc_legistar_votes",
       "importer": "worker/src/lib/meeting_outcomes.mjs#collectVoteSummaries",
-      "identity_entities": ["matter", "person", "vote"],
-      "stable_source_key": "EventItemId plus PersonId (not yet retained)",
+      "identity_entities": ["matter", "person", "vote", "official"],
+      "stable_source_key": "EventItemId plus PersonId (retained on meeting-outcomes vote rows; not yet dual-written to source_records)",
       "observation_schema": null,
       "dual_write": { "flag": null, "before": "gap", "after": "gap", "default": null, "fail_soft": null },
       "fixture": "test/contract/meeting_outcomes.test.mjs",
-      "replay_test": null,
-      "known_gap": "Roll-call rows are aggregated to counts before persistence, discarding person-level source observations."
+      "replay_test": "test/official_entity_family.test.mjs",
+      "known_gap": "Person-level rows and official votes_on edges are retained on the meeting-outcomes read model (person_vote_retention_rate). Immutable source_records dual-write for Legistar vote rows remains open.",
+      "person_retention": {
+        "metric": "person_vote_retention_rate",
+        "status": "retained_on_meeting_outcomes",
+        "official_link_type": "votes_on",
+        "primary_key_pattern": "official:{person_id}"
+      }
     },
     {
       "id": "legistar-attachments",

@@ -18,6 +18,8 @@ export const PUBLIC_GRAPH_NODE_TYPES = Object.freeze([
   "solicitation",
   "contract",
   "award",
+  // Official person-level identity for Council roll-call votes (meeting outcomes).
+  "official",
 ]);
 
 export const PUBLIC_GRAPH_EDGE_TYPES = Object.freeze([
@@ -25,6 +27,8 @@ export const PUBLIC_GRAPH_EDGE_TYPES = Object.freeze([
   "named_vendor_on_solicitation",
   "published_by_agency",
   "references_contract",
+  // official → matter|agenda_item (populated from retained Legistar person votes).
+  "votes_on",
 ]);
 
 export const PUBLIC_GRAPH_EDGE_LABELS = Object.freeze({
@@ -32,6 +36,7 @@ export const PUBLIC_GRAPH_EDGE_LABELS = Object.freeze({
   named_vendor_on_solicitation: "Named vendor on solicitation",
   published_by_agency: "Published by agency",
   references_contract: "References contract",
+  votes_on: "Votes on",
 });
 
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();

@@ -10,6 +10,7 @@ surface. **Not an HTTP microservice.**
 | --- | --- |
 | `normalizers/` | Pure string identity (`vendorStem`, agency alias helpers) |
 | `authority_keys/` | Scoped identifier registry (`scheme`, issuer, value, scope) |
+| `officials/` | Official person-level type family + `votes_on` edges from Legistar votes |
 | `candidate_generation/` | Token/stem blocking candidate pairs (`token_v0`) |
 | `features/` | Deterministic family-aware pair features (`pair_features_v1`) |
 | `matchers/` | Conventional `same` / `different` / `unresolved` scorer (`conventional_v1`) |
@@ -83,13 +84,14 @@ Public entity-resolution responses must use the serializers in `publication/`; d
 and desk review objects must not be serialized directly. The public contract is deliberately
 small:
 
-- entity: stable opaque id, type family, and display name
+- entity: stable opaque id, type family (vendor/agency/procurement/location/**official**), and display name
 - link: canonical entity id plus publisher system, publisher-native public id, and an optional
   HTTPS source URL
 - dossier: the entity, linked public source records, allowlisted source assertions, bounded
   source/time scope, explicit disagreement and missingness, and public-safe derivation status
-- relationship graph: allowlisted vendor, agency, solicitation, contract, and award nodes joined
-  only by named edge types with publisher provenance, observed time, and public-safe confidence
+- relationship graph: allowlisted vendor, agency, solicitation, contract, award, and official
+  nodes joined only by named edge types (including `votes_on`) with publisher provenance,
+  observed time, and public-safe confidence
 
 Raw and normalized snapshots, content hashes, canonical attributes JSON, matcher scores and
 versions, evidence, resolution-run ids, review state, reviewer identity, and notes are desk-only.

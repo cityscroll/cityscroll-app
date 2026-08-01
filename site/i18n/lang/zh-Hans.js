@@ -715,6 +715,8 @@
     meeting_outcomes_outcome_lbl: "结果",
     meeting_outcomes_attachments_lbl: "附件",
     meeting_outcomes_vote_html: "表决：{result}（赞成 {aye} · 反对 {nay}）",
+    meeting_outcomes_roll_call_lbl: "点名表决",
+    meeting_outcomes_vote_person_html: "{name}（{vote}）",
     meeting_outcomes_outcome_html: "结果：{outcome}",
     meeting_outcomes_no_votes_html: "此处尚未显示 — 事项“{matter}”的唱名表决结果在 NYC Council Legistar。",
     meeting_outcomes_no_matters_html: "此处尚未显示 — 议程项目与事项在 NYC Council Legistar。",
