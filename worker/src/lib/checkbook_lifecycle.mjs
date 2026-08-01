@@ -16,6 +16,7 @@ import {
   applySolicitationDetail,
   documentsStatusFor,
 } from "./current_solicitations.mjs";
+import { attachLifecycleCoherence } from "./lifecycle_coherence.mjs";
 import { linksFromLifecycle } from "./subject_registry.mjs";
 
 export { usablePin, pinBase };
@@ -368,7 +369,8 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
     const subjects = linksFromLifecycle(partial, r);
     partial.subject_refs = subjects.subject_refs;
     partial.subject_links = subjects.subject_links;
-    return partial;
+    // Orphan / amount / date coherence counters (metric + side-car).
+    return attachLifecycleCoherence(partial);
   }
 
   // Collapse Checkbook Contracts slices (Prime Vendor + Sub Vendor rows, etc.) to
@@ -546,7 +548,9 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
   out.subject_links = subjects.subject_links;
   // OCP side-car is optional on pure assemble; worker attach always sets it after fetch.
   if (opts.ocpAward) out.ocp_award = opts.ocpAward;
-  return out;
+  // Coherence side-car: orphaned award, payment > commitment, out-of-order dates.
+  // Named metric: procurement_lifecycle_coherence_rate (see lifecycle_coherence.mjs).
+  return attachLifecycleCoherence(out);
 }
 
 // ---------------------------------------------------------------------------
@@ -625,11 +629,11 @@ export function recoverPaymentFromRegisteredJoin(lifecycle) {
   }
 
   const unresolved = newTimeline.some((e) => e.status === "unknown");
-  return {
+  return attachLifecycleCoherence({
     ...lifecycle,
     timeline: newTimeline,
     ok: !unresolved,
-  };
+  });
 }
 
 // ---------------------------------------------------------------------------
