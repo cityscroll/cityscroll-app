@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-30",
+  "generated_at": "2026-08-01",
   "data_current_as_of": "2026-07-22",
   "interest_areas": [
     "public-safety",
@@ -28,7 +28,7 @@
       "dataset_id": "4ptz-hmtc",
       "url": "https://data.cityofnewyork.us/resource/4ptz-hmtc.json",
       "landing_page": "https://data.cityofnewyork.us/d/4ptz-hmtc",
-      "fetched_at": "2026-07-28",
+      "fetched_at": "2026-08-01",
       "data_current_as_of": "2026-07-22",
       "refresh_cadence": "DCAS says the public schedule is updated monthly; Open Data metadata says annual updates and quarterly data changes.",
       "stale_after_days": 95
@@ -38,7 +38,7 @@
       "name": "Civil Service List (Active)",
       "dataset_id": "vx8i-nprf",
       "url": "https://data.cityofnewyork.us/resource/vx8i-nprf.json",
-      "fetched_at": "2026-07-28",
+      "fetched_at": "2026-08-01",
       "refresh_cadence": "Daily",
       "stale_after_days": 3,
       "privacy": "Only aggregate counts are retained; candidate records and names are not copied."
@@ -48,7 +48,8 @@
       "name": "City Record Online exam-announcement check",
       "dataset_id": "dg92-zbpx",
       "url": "https://data.cityofnewyork.us/resource/dg92-zbpx.json",
-      "fetched_at": "2026-07-28",
+      "landing_page": "https://data.cityofnewyork.us/d/dg92-zbpx",
+      "fetched_at": "2026-08-01",
       "refresh_cadence": "Daily",
       "stale_after_days": 3,
       "role": "Negative control: keyword candidates are reviewed so unrelated contracts and uses of “examination” are not presented as civil-service exam announcements."
@@ -65,9 +66,9 @@
   ],
   "source_checks": {
     "active_list": {
-      "candidate_rows": "407420",
-      "distinct_exams": "851",
-      "distinct_titles": "431",
+      "candidate_rows": "408276",
+      "distinct_exams": "854",
+      "distinct_titles": "432",
       "latest_established": "2026-07-22T00:00:00.000",
       "latest_extension": "2027-07-20T00:00:00.000"
     },

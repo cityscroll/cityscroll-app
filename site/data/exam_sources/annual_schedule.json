@@ -5,7 +5,7 @@
     "dataset_id": "4ptz-hmtc",
     "url": "https://data.cityofnewyork.us/resource/4ptz-hmtc.json",
     "landing_page": "https://data.cityofnewyork.us/d/4ptz-hmtc",
-    "fetched_at": "2026-07-28",
+    "fetched_at": "2026-08-01",
     "data_current_as_of": "2026-07-22",
     "refresh_cadence": "DCAS says the public schedule is updated monthly; Open Data metadata says annual updates and quarterly data changes.",
     "stale_after_days": 95
@@ -157,7 +157,7 @@
     },
     {
       "title_code": "20122",
-      "exam_title": "Estima\u0074or (General Construction)",
+      "exam_title": "Estimator (General Construction)",
       "exam_number": "7033",
       "application_period_start": "2026-08-05T00:00:00.000",
       "application_period_end_date": "2026-08-25T00:00:00.000",
