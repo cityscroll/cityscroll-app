@@ -430,12 +430,19 @@ disjoint comparable ids measure `authority_conflict_auto_link_rate`. The committ
 fixture is characterization data, not a production measurement. Verify:
 `node --test test/entity_resolution_authority.test.mjs`.
 
-**Features + matcher v0 (er-09):** `entity_resolution/features/` extracts deterministic,
-family-aware stem/token/PIN/EPIN/length signals; `entity_resolution/matchers/` emits
+**Features + matcher (er-09, extended by er-19):** `entity_resolution/features/` extracts
+deterministic family-aware stem/token/authority-key/length signals;
+`entity_resolution/matchers/` emits
 `same` / `different` / `unresolved` without LLM scoring. PIN and EPIN share one candidate
 identifier family; blocked-out true matches remain visible in the metrics report. Verify:
 `node --test worker/test/entity_resolution_matcher.test.mjs` and
 `node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v0.jsonl --blocker token_v0`.
+
+**Scoped authority keys (er-19):** PIN/EPIN matcher evidence is a complete
+`(scheme, issuing authority, value, scope)` tuple from
+`entity_resolution/authority_keys/`, never raw-value equality across schemes or scopes.
+Parser fixtures: `entity_resolution/eval/fixtures/authority_key_pin_epin_v1.json`.
+Verify: `node --test test/authority_key_registry.test.mjs test/entity_resolution_authority.test.mjs`.
 
 **Live false-split desk (er-10):** keyed GET `/admin/possibly-same` reads recent
 `source_records`, blocks them with `token_v0`, and excludes pairs sharing a

@@ -42,7 +42,16 @@ test("sampling is deterministic, stratified, and never truncates a component", (
     pair("g-same", "same", side("g1", "Gold Fragment One"), side("g2", "Other Gold Name")),
   ];
   const authorityCases = [
-    { ...pair("a-same", "same", side("a1", "Authority Exact LLC"), side("a2", "AUTHORITY EXACT LLC"), "procurement"), authority_label: "same" },
+    {
+      ...pair(
+        "a-same",
+        "same",
+        side("a1", "Authority Exact LLC", { pin: "84124P0003001" }),
+        side("a2", "AUTHORITY EXACT LLC", { epin: "84124P0003001" }),
+        "procurement",
+      ),
+      authority_label: "same",
+    },
   ];
   const first = buildEntityComponentReport({ goldCases, authorityCases }, { sampleSize: 2 });
   const second = buildEntityComponentReport({ goldCases, authorityCases }, { sampleSize: 2 });
