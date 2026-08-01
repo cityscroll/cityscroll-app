@@ -57,7 +57,7 @@ function runDiff(fixtureDir) {
   const land = mapFixtureDoc(loadJson(join(fixtureDir, "land_zap_milestone.json")));
   const meetings = mapFixtureDoc(loadJson(join(fixtureDir, "meetings_council.json")));
 
-  // Baseline projection: all four lenses at first revision.
+  // Baseline current view: all four lenses at first revision.
   const previous = [...money, ...rules, ...land, ...meetings];
   // Current: money/land/meetings unchanged; rules comment deadline revised.
   const current = [...money, ...rulesRevised, ...land, ...meetings];
