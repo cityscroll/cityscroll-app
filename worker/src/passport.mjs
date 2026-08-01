@@ -12,8 +12,14 @@ import {
   parseRfxDump,
 } from "./lib/passport_parse.mjs";
 import { joinPinToEpin, normId, stripOneSuffix } from "./lib/passport_join.mjs";
+import {
+  computeSourceRecordHash,
+  SOURCE_RECORD_INSERT_SQL,
+  sourceRecordDualWriteEnabled,
+} from "./lib/source_records.mjs";
 
 const BATCH = 80;
+export const PASSPORT_SOURCE_RECORD_DUAL_WRITE_FLAG = "PASSPORT_SOURCE_RECORD_DUAL_WRITE";
 
 /** Allowed table names for SQL interpolation (never user input). */
 const PASSPORT_TABLES = new Set(["passport_contracts", "passport_rfx"]);
@@ -109,6 +115,14 @@ export async function ingestPassportPublic(env) {
   if (!rfx.length) return { ok: false, reason: "rfx-empty" };
 
   const ingestedAt = new Date().toISOString();
+  let sourceRecordInsert = null;
+  if (sourceRecordDualWriteEnabled(env, PASSPORT_SOURCE_RECORD_DUAL_WRITE_FLAG)) {
+    try {
+      sourceRecordInsert = env.DB.prepare(SOURCE_RECORD_INSERT_SQL);
+    } catch {
+      // A missing observation schema must not block PASSPort materialization.
+    }
+  }
   const lastModified = {
     contracts: ctrRes.headers.get("last-modified") || null,
     rfx: rfxRes.headers.get("last-modified") || null,
@@ -148,6 +162,22 @@ export async function ingestPassportPublic(env) {
       ),
     );
     await env.DB.batch(stmts);
+    if (sourceRecordInsert) {
+      try {
+        const sourceStmts = await Promise.all(chunk.map(async (contract) =>
+          sourceRecordInsert.bind(
+            "passport_public_contracts",
+            passportSourceSystemId("contract", contract),
+            await computeSourceRecordHash(contract),
+            JSON.stringify(contract),
+            JSON.stringify(contract),
+            ingestedAt,
+          )));
+        await env.DB.batch(sourceStmts);
+      } catch {
+        // Observation shadow writes must never block PASSPort materialization.
+      }
+    }
   }
 
   for (let i = 0; i < rfx.length; i += BATCH) {
@@ -176,6 +206,22 @@ export async function ingestPassportPublic(env) {
       ),
     );
     await env.DB.batch(stmts);
+    if (sourceRecordInsert) {
+      try {
+        const sourceStmts = await Promise.all(chunk.map(async (record) =>
+          sourceRecordInsert.bind(
+            "passport_public_rfx",
+            passportSourceSystemId("rfx", record),
+            await computeSourceRecordHash(record),
+            JSON.stringify(record),
+            JSON.stringify(record),
+            ingestedAt,
+          )));
+        await env.DB.batch(sourceStmts);
+      } catch {
+        // Observation shadow writes must never block PASSPort materialization.
+      }
+    }
   }
 
   await env.DB.batch([
@@ -200,6 +246,18 @@ export async function ingestPassportPublic(env) {
     ingested_at: ingestedAt,
     last_modified: lastModified,
   };
+}
+
+/** Publisher-stable source key matching each PASSPort materialization primary key. */
+export function passportSourceSystemId(kind, record) {
+  const epin = String(record?.epin_norm || normId(record?.epin) || "").trim();
+  if (kind === "contract") {
+    return `contract:${epin}:${String(record?.ctr_id || epin).trim()}`;
+  }
+  if (kind === "rfx") {
+    return `rfx:${epin}:${String(record?.rfp_id || epin).trim()}`;
+  }
+  throw new Error(`unknown PASSPort observation kind: ${kind}`);
 }
 
 function payloadsFrom(rows) {
