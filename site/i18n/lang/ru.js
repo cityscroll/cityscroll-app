@@ -651,6 +651,7 @@
     lifecycle_ocp_disagreement_html: "City Record и {source} расходятся — показаны оба значения с указанием источников.",
     lifecycle_ocp_amount_pair_html: "Сумма: {city_record_label} {city_amount} · {ocp_label} {ocp_amount}.",
     lifecycle_ocp_date_pair_html: "Дата: {city_record_label} {city_date} · {ocp_label} {ocp_date}.",
+    lifecycle_ocp_interpretation_html: "Интерпретация CityScroll: разные значения {field}; без разрешения (нет производного вывода).",
     lifecycle_ocp_unmatched_html: "Пока не показано здесь — недавние присуждения OCP есть в {source}.",
     lifecycle_ocp_unknown_html: "Не удалось связаться с {source}, чтобы проверить это присуждение.",
     lifecycle_ocp_ambiguous_html: "Найдено несколько строк присуждений OCP — нельзя выбрать одну автоматически.",

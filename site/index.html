@@ -6440,28 +6440,39 @@ function lifecycleOcpAwardHTML(data){
   if(corr && corr.agree){
     body += ` ${t("lifecycle_ocp_corroborated_html",{source:srcName})}`;
   } else if(corr && !corr.agree){
+    // Claim layer: both publisher values stay source assertions; the disagreement is an
+    // unresolved CityScroll interpretation — never a derived winning amount/date.
     body += ` ${t("lifecycle_ocp_disagreement_html",{source:srcName})}`;
     const dis = Array.isArray(corr.disagreements) ? corr.disagreements : [];
+    const fields = [];
     for(const item of dis){
       if(item.field === "amount"){
-        body += ` ${t("lifecycle_ocp_amount_pair_html",{
+        fields.push("amount");
+        body += ` <span data-claim="source_assertion">${t("lifecycle_ocp_amount_pair_html",{
           city_record_label: cityName,
           city_amount: money(item.city_record) || "—",
           ocp_label: srcName,
           ocp_amount: money(item.ocp) || "—"
-        })}`;
+        })}</span>`;
       } else if(item.field === "date"){
-        body += ` ${t("lifecycle_ocp_date_pair_html",{
+        fields.push("date");
+        body += ` <span data-claim="source_assertion">${t("lifecycle_ocp_date_pair_html",{
           city_record_label: cityName,
           city_date: item.city_record ? fdate(item.city_record) : "—",
           ocp_label: srcName,
           ocp_date: item.ocp ? fdate(item.ocp) : "—"
-        })}`;
+        })}</span>`;
       }
+    }
+    if(fields.length){
+      const fieldLabel = fields.map(f => f === "amount" ? "amount" : "date").join(" and ");
+      body += ` <span data-claim="cityscroll_interpretation">${t("lifecycle_ocp_interpretation_html",{
+        field: fieldLabel
+      })}</span>`;
     }
   }
 
-  return `<div class="note" style="margin-top:10px"><b>${t("lifecycle_ocp_heading")}</b> ${body}</div>`;
+  return `<div class="note" data-claim-layer="claim_layer_v1" style="margin-top:10px"><b>${t("lifecycle_ocp_heading")}</b> ${body}</div>`;
 }
 
 function lifecycleTimelineHTML(data, notice){

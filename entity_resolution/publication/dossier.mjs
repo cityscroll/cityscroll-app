@@ -204,7 +204,9 @@ function derivedNameAssertion(entity, groups, observedAt) {
     id: `${encodeURIComponent(entity.id)}:assertion:canonical_name`,
     fact: "canonical_name",
     label: "Dossier name",
-    classification: "cityscroll_interpretation",
+    // Product-facing display name from linked name assertions — not a publisher field and
+    // not a conflict interpretation (see docs/adr/evidence-assertion-layer.md).
+    classification: "derived_conclusion",
     value: entity.name,
     provenance: {
       source: { system: "cityscroll", id: entity.id },
