@@ -1,4 +1,9 @@
 {
+  "_provenance": {
+    "before_metrics_source": "measured — node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v0.jsonl --blocker token_v0 on pre-alias HEAD",
+    "after_metrics_source": "measured — same command on this commit",
+    "pairs_source": "entity_resolution/eval/gold_v0.jsonl (gv0-026, gv0-030, gv0-032, gv0-031)"
+  },
   "metric": "false_split (agency subset on gold_v0 + token_v0)",
   "before": {
     "precision": 1,

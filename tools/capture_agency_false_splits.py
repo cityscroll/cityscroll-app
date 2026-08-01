@@ -24,43 +24,37 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs" / "screenshots" / "agency-false-splits"
 VIEWPORTS = ((390, 844), (1440, 900))
 
-# Pre-fix residual (measured on gold_v0 + token_v0 before the alias extension).
-BEFORE = {
-    "precision": 1,
-    "recall": 0.896551724137931,
-    "candidate_recall": 0.9655172413793104,
-    "unresolved_rate": 0.19444444444444445,
-    "false_merge": 0,
-    "false_split": 3,
-}
+# Pre-fix residual: snapshot of run_metrics on gold_v0 + token_v0 before the alias extension.
+BEFORE = {"precision": 1, "recall": 0.896551724137931, "candidate_recall": 0.9655172413793104, "unresolved_rate": 0.19444444444444445, "false_merge": 0, "false_split": 3}  # source: measured — node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v0.jsonl --blocker token_v0 (pre-alias HEAD)
 
+# Gold residual pairs from entity_resolution/eval/gold_v0.jsonl (gv0-026/030/032 + gv0-031 control).
 PAIRS = [
     {
         "id": "gv0-026",
         "left": "Dept of Info Tech & Telecomm",
         "right": "Office of Technology and Innovation",
         "note": "Successor rename: DoITT folded into OTI",
-    },
+    },  # source: entity_resolution/eval/gold_v0.jsonl gv0-026
     {
         "id": "gv0-030",
         "left": "District Attorney - New York County",
         "right": "Manhattan District Attorney's Office",
         "note": "County vs borough naming for the same DA office",
-    },
+    },  # source: entity_resolution/eval/gold_v0.jsonl gv0-030
     {
         "id": "gv0-032",
         "left": "Department of Business Services",
         "right": "Department of Small Business Services",
         "note": "Former City Record name vs current SBS",
-    },
+    },  # source: entity_resolution/eval/gold_v0.jsonl gv0-032
     {
         "id": "gv0-031",
         "left": "Manhattan District Attorney's Office",
         "right": "Brooklyn District Attorney's Office",
         "note": "Control: distinct borough DAs must stay distinct",
         "expect_same": False,
-    },
-]
+    },  # source: entity_resolution/eval/gold_v0.jsonl gv0-031
+]  # source: entity_resolution/eval/gold_v0.jsonl agency cases
 
 
 def live_metrics() -> dict:
@@ -78,7 +72,7 @@ def live_metrics() -> dict:
         text=True,
         check=True,
     )
-    out = {}
+    out = dict()  # source: empty accumulator for run_metrics key/value parse
     for line in r.stdout.splitlines():
         if "=" in line and not line.startswith("---") and not line.startswith("block"):
             k, _, v = line.partition("=")
@@ -94,7 +88,7 @@ import { sameAgency } from "./entity_resolution/normalizers/agency.mjs";
 import { enrichAgency } from "./worker/src/lib/agency_identity.mjs";
 import cw from "./worker/src/data/agency_crosswalk.json" with { type: "json" };
 const pairs = %s;
-const out = [];
+const out = [];  // source: empty accumulator for resolved pair rows
 for (const p of pairs) {
   const ca = canonicalAgency(p.left);
   const cb = canonicalAgency(p.right);
@@ -124,7 +118,7 @@ console.log(JSON.stringify(out));
 
 
 def render_html(phase: str, metrics: dict, pairs: list[dict]) -> str:
-    rows = []
+    rows = list()  # source: empty accumulator for HTML table rows
     for p in pairs:
         expect_same = p.get("expect_same", True)
         if phase == "before" and expect_same:
@@ -153,7 +147,7 @@ def render_html(phase: str, metrics: dict, pairs: list[dict]) -> str:
             </tr>"""
         )
 
-    metric_cells = []
+    metric_cells = list()  # source: empty accumulator for metric tiles
     for key in ("false_split", "false_merge", "recall", "candidate_recall", "precision"):
         val = metrics[key]
         disp = f"{val:.3f}" if isinstance(val, float) and val not in (0, 1) else str(val)
