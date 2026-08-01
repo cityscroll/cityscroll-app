@@ -491,18 +491,24 @@ sets both false. Integration characterization: `node --test worker/test/er_inges
 Verify: `node --test worker/test/source_record_dual_write.test.mjs`.
 
 **Source-observation coverage (er-22 + Checkbook + Legistar):** machine-checked importer
-inventory and measured before/after coverage live in `entity_resolution/source_coverage.json`.
-PASSPort contracts/RFx use `PASSPORT_SOURCE_RECORD_DUAL_WRITE`; Checkbook Contracts and Spending
-request-time XML rows share `CHECKBOOK_SOURCE_RECORD_DUAL_WRITE` (fail-soft; Prime/Sub Vendor
-slices and payment documents keep distinct `source_system_id`s via
-`worker/src/lib/checkbook_source_records.mjs`). Legistar meeting materialization dual-writes
-Events/EventItems/Votes/Attachments under `LEGISTAR_SOURCE_RECORD_DUAL_WRITE`
-(`worker/src/lib/legistar_source_records.mjs`). Public reads do not consume the observations.
-NYCHA, ABO, doing-business, and NYCIDA streams remain inventory gaps. Metric:
-`source_coverage` covered/total (9/13 after Legistar dual-write). Verify:
+inventory and **live** row-count honesty live in `entity_resolution/source_coverage.json`.
+Adapter readiness (flag + fixture + schema) is tracked separately from production coverage.
+`dual_write.after` is one of `complete` / `partial` / `stale` / `empty-declared-live` / `gap`
+and **must** match measured `live_observation.row_count` — a stream with 0 rows must not report
+`complete`. Pure gate: `entity_resolution/evaluation/source_coverage_honesty.mjs` (emits
+coverage-dimension bug cards for empty-declared-live). PASSPort contracts/RFx use
+`PASSPORT_SOURCE_RECORD_DUAL_WRITE`; Checkbook Contracts and Spending request-time XML rows share
+`CHECKBOOK_SOURCE_RECORD_DUAL_WRITE` (fail-soft; Prime/Sub Vendor slices and payment documents
+keep distinct `source_system_id`s via `worker/src/lib/checkbook_source_records.mjs`). Legistar
+meeting materialization dual-writes Events/EventItems/Votes/Attachments under
+`LEGISTAR_SOURCE_RECORD_DUAL_WRITE` (`worker/src/lib/legistar_source_records.mjs`). Public reads
+do not consume the observations. Measured live (2026-08-01): Checkbook contracts+spending
+`complete` (non-zero rows); City Record `partial`; PASSPort + Legistar `empty-declared-live`
+(0 rows despite flags on); NYCHA, ABO, doing-business, NYCIDA `gap`. Named metric
+`source_coverage` = live complete/total (**2/13**). Verify:
 `node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json &&
-node --test worker/test/er_source_coverage.test.mjs worker/test/checkbook_source_records.test.mjs
-worker/test/legistar_source_records.test.mjs`.
+node --test test/source_coverage_honesty.test.mjs worker/test/er_source_coverage.test.mjs
+worker/test/checkbook_source_records.test.mjs worker/test/legistar_source_records.test.mjs`.
 
 **entity_link + resolution_run (er-07):** migration `worker/migrations/0009_entity_link.sql`
 (+ `canonical_entity` for link targets). Opt-in shadow writer only for exact-stem

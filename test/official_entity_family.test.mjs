@@ -123,9 +123,13 @@ test("source_coverage documents legistar-votes person retention and dual-write",
   assert.ok(votes);
   assert.ok(votes.identity_entities.includes("official"));
   assert.ok(votes.stable_source_key.includes("PersonId"));
-  assert.equal(votes.dual_write?.after, "complete");
-  assert.equal(votes.known_gap, null);
+  // Adapter is ready (flag + fixture) but production source_records are empty —
+  // honesty status is empty-declared-live, never false-complete with 0 rows.
+  assert.equal(votes.dual_write?.after, "empty-declared-live");
+  assert.equal(votes.dual_write?.adapter, "ready");
+  assert.equal(votes.live_observation?.row_count, 0);
   assert.equal(votes.dual_write?.flag, "LEGISTAR_SOURCE_RECORD_DUAL_WRITE");
+  assert.ok(votes.known_gap, "empty dual-write must name the gap");
   assert.ok(
     /source_records|retain/i.test(votes.person_retention?.status || ""),
     "person_retention should note retention on meeting outcomes and/or source_records",
