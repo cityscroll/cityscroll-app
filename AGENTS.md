@@ -686,6 +686,19 @@ timeline). Verify:
 `node --test worker/test/rules_event_spine.test.mjs test/rules_deadline_render.test.mjs worker/test/alert_temporal.test.mjs && python3 test/functional/19_rules_time_spine.py --screenshots artifacts/cs-time-02`.
 Captures: `python3 tools/capture_rule_event_spine.py` (before/after at 390 and 1440).
 
+## Multi-dimension improvement flywheel
+
+Standing MAPE loops under `ontology/` emit a ranked, deduplicated card queue (not a
+one-shot backlog). Dimensions: data-integrity, readability, ontology-enrichment,
+coverage, cross-source-consistency. Entrypoint:
+`node tools/flywheel-run.mjs --fixture --emit <dir>`. Idempotent ledger:
+`ontology/queue/ledger.json`. Consumer contract + schedule:
+[`docs/multi-flywheel.md`](docs/multi-flywheel.md). Verify:
+`./tools/verify_multi_flywheel.sh`. Hourly CI artifact: `multi-flywheel-queue`
+(`.github/workflows/multi-flywheel.yml`). Recurring classes append to
+`ontology/engineering-lessons.md`. Do not hand-author parallel metric-driven
+roadmap cards; re-run the flywheel after merges.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
