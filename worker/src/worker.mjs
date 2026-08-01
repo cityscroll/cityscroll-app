@@ -45,6 +45,7 @@ import { handleSubsidyLifecycle, prewarmSubsidyLifecycle } from "./subsidy_lifec
 import { ingestPassportPublic } from "./passport.mjs";
 import { handleZapOutcomes } from "./zap_outcomes.mjs";
 import { handleTranslate } from "./translate.mjs";
+import { handleEntityDossier } from "./entity_dossier.mjs";
 
 const MIRROR_HOSTS = new Set(["cityscroll.org", "www.cityscroll.org"]);
 
@@ -72,6 +73,7 @@ export default {
     if (pathname === "/inv" || pathname.startsWith("/inv/")) return handleInv(request, env, pathname, ctx);
     if (pathname.startsWith("/priorcycle/")) return handlePriorCycle(request, env, pathname, ctx);
     if (pathname.startsWith("/translate/")) return handleTranslate(request, env, pathname, ctx);
+    if (pathname === "/entity-dossier") return handleEntityDossier(request, env);
     if (pathname === "/externalaward") return handleExternalAward(request, env, ctx);
     if (pathname === "/agency") return handleAgency(request, env, ctx);
     if (pathname === "/vendor-profile") return handleVendorProfile(request, env, ctx);
