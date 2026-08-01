@@ -35,6 +35,8 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | Council meeting outcomes · matter without roll-call detail | a | NYC Council Legistar votes |
 | Council meeting outcomes · event without agenda matters | a | NYC Council Legistar agenda items |
 | non-Council hearings · votes | b | borough president websites and community board minutes / vote pages if released as a citywide machine-readable open data feed (not only member rosters) |
+| Agency Rules notice detail · lifecycle event slots without an NYC Rules join | a | NYC Rules RSS feed |
+| Agency Rules notice detail · missing hearing, comment, adoption, or effective date on a joined rule | b | the official NYC Rules rule page and RSS fields if the agency releases that lifecycle date |
 | staffing exam cards · post-cycle outcomes | a | DCAS annual civil-service exam outcome aggregates + Civil Service List (Active) exam-level counts |
 | per-applicant exam results | b | DCAS candidate portals only if individual results were released as public open data (they are not) |
 | staffing exam card · fee or salary null | b | the Notice of Examination PDF / open-competitive schedule if DCAS states the amount |
@@ -63,7 +65,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `legacy-dob-job-filings` | live-only | BBL, BIN, job_number | — | — |
 | `mappluto` | live-only | BBL | — | — |
 | `nyc-council-legistar` | landed | matter_id, event_id, event_item_id, agency, event_title, start_time, event_date, committee/body_name_in_notice_title | medium | 100% (modern_notices_strict) |
-| `nyc-rules-rss` | landed | agency | — | — |
+| `nyc-rules-rss` | landed | agency, publication_date, title_tokens | — | — |
 | `nycida-build-nyc-projects` | landed | request_id, project_id, project_name, company_name, project_address, request_id_when_present | — | — |
 | `passport-public-contracts` | landed | EPIN, PIN, contract_id, agency | high-risk | 74% (all_notices_to_contracts) |
 | `passport-public-rfx` | landed | EPIN, PIN, procurement_name, agency | high-risk | 78% (either_contracts_or_rfx) |

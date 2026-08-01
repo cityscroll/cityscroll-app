@@ -5,12 +5,13 @@
 
 import {
   classifyStage,
+  deriveRuleEvents,
   joinRulesToNotices,
   normalizeRuleItem,
   parseRssItems,
 } from "./lib/rules.mjs";
 
-export const RULES_KV_KEY = "rules:materialized:v1";
+export const RULES_KV_KEY = "rules:materialized:v2";
 const RULES_RSS_URL = "https://rules.cityofnewyork.us/feed/";
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const MAX_AGE_MS = 36 * 60 * 60 * 1000;
@@ -89,13 +90,16 @@ export async function buildRuleView(fetchImpl = fetch, now = new Date()) {
         title: m.rule.title,
         agency_abbr: m.rule.agency_abbr,
         agency_name: m.rule.agency_name,
-        adoption_date: m.rule.adoption_date,
+        adoption_published_at: m.rule.adoption_published_at,
+        effective_date: m.rule.effective_date,
+        effective_source_field: m.rule.effective_source_field,
         comment_by_date: m.rule.comment_by_date,
         hearing_date: m.rule.hearing_date,
         comment_url: m.rule.comment_url,
         comment_count: m.rule.comment_count,
         summary: m.rule.summary,
       },
+      events: deriveRuleEvents(m.rule, now),
       join: {
         matched: true,
         confidence: m.join.confidence,
@@ -116,6 +120,7 @@ export async function buildRuleView(fetchImpl = fetch, now = new Date()) {
         notice_type: notice.type_of_notice_description,
       },
       nyc_rules: null,
+      events: [],
       join: {
         matched: false,
         reason: "No NYC Rules entry found for this agency and notice",
@@ -135,13 +140,16 @@ export async function buildRuleView(fetchImpl = fetch, now = new Date()) {
         title: rule.title,
         agency_abbr: rule.agency_abbr,
         agency_name: rule.agency_name,
-        adoption_date: rule.adoption_date,
+        adoption_published_at: rule.adoption_published_at,
+        effective_date: rule.effective_date,
+        effective_source_field: rule.effective_source_field,
         comment_by_date: rule.comment_by_date,
         hearing_date: rule.hearing_date,
         comment_url: rule.comment_url,
         comment_count: rule.comment_count,
         summary: rule.summary,
       },
+      events: deriveRuleEvents(rule, now),
       join: {
         matched: false,
         reason: "No matching City Record Agency Rules notice within the look-back window",
@@ -158,7 +166,7 @@ export async function buildRuleView(fetchImpl = fetch, now = new Date()) {
   };
 
   return {
-    schema_version: 1,
+    schema_version: 2,
     generated_at: now.toISOString(),
     source: {
       primary: {
