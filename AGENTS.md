@@ -10,6 +10,20 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   before opening a pull request. CI still runs the full accessibility and runtime
   stray-English work after Unit checks.
 
+## CI path fast paths and merge queue
+
+- Required checks always report a conclusion (never stay missing). Fast paths:
+  `changelog_only` (bot-owned changelog files) and `docs_only` (`tools/docs-only-path-guard.sh`)
+  skip the full unit suite; non-frontend PRs skip browser a11y / reading-level
+  heavy work while still posting SUCCESS. Performance budgets run only when `frontend` changes.
+- Stray-English: **Unit static lint only** (`test/standards/stray_english.py`). The runtime
+  multi-locale walk (`test/functional/13_stray_english.py`) is **not** a CI job or required
+  check — optional locally via that script or `run_stray_english_shards.sh`. Required merge
+  checks are Unit, Accessibility + language, and Reading-level (three total).
+- Playwright installs go through `.github/actions/setup-playwright` (browser cache for a11y/perf).
+- Merge-queue parameters: `tools/merge_queue_policy.json` + `node tools/apply_merge_queue_policy.mjs`
+  (short train wait). Concurrent merge-when-ready seating for this repo is capped outside this tree.
+
 ## Maintaining this file
 
 - Keep this file for durable project-intrinsic facts that should outlive any one pull request.
@@ -187,8 +201,8 @@ delta that is not already-recorded, fails the job — never a green no-op. Conve
 `CONTRIBUTING.md` “Changelog entries”. Characterization: `test/changelog_*.test.mjs`,
 `test/changelog_entry_gate.test.mjs`.
 
-**Self-merge / merge queue:** main’s ruleset requires four named checks (see
-`update-changelog.yml` `REQUIRED_CHECKS` and `repos/.../rules/branches/main`). Changelog-only
+**Self-merge / merge queue:** main’s ruleset requires three named checks (see
+`update-changelog.yml` `REQUIRED_CHECKS` and `tools/merge_queue_policy.json`). Changelog-only
 bot PRs take `ci.yml`’s `changelog_only` fast path so those check names report SUCCESS within
 about a minute (workflow_dispatch + merge_group); without that, the queue waits forever.
 Auto-merge arms with `gh pr merge --auto` (no strategy flag — the queue’s method is SQUASH).

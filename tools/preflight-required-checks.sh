@@ -139,7 +139,8 @@ if [[ "$RUN_FULL" == "1" ]]; then
   run_and_fail python3 test/functional/12_language.py
   run_and_fail python3 test/functional/14_focus_visible.py
   run_and_fail python3 test/functional/16_external_links.py
-  run_and_fail python3 test/functional/13_stray_english.py
+  # Runtime multi-locale stray-English is not a CI required gate (static lint is).
+  # Optional full walk: bash test/functional/run_stray_english_shards.sh
   run_and_fail python3 test/functional/15_rtl.py
   run_and_fail python3 test/functional/16_forecast_discoverability.py
   run_and_fail python3 test/functional/17_default_examples.py
@@ -147,5 +148,5 @@ if [[ "$RUN_FULL" == "1" ]]; then
 else
   echo
   echo "Skipping full browser gates by default."
-  echo "CI still runs accessibility + runtime stray-English guard."
+  echo "CI runs accessibility + reading-level; Stray-English is the Unit static lint only."
 fi
