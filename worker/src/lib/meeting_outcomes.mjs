@@ -168,6 +168,30 @@ function eventDocuments(event) {
 }
 
 /**
+ * Project a vote summary (counts + retained persons) onto the agenda matter card.
+ * Person-level rows and votes_on edges are first-class when the publisher
+ * retained PersonId/PersonName; aggregate tallies always remain.
+ */
+function projectVoteSummary(voteSummary, item) {
+  if (!voteSummary || !voteSummary.counts) return [];
+  const byPerson = Array.isArray(voteSummary.by_person) ? voteSummary.by_person : [];
+  const officials = Array.isArray(voteSummary.officials) ? voteSummary.officials : [];
+  const votesOn = Array.isArray(voteSummary.votes_on) ? voteSummary.votes_on : [];
+  return [{
+    result: voteSummary.result || item.passed_flag || item.action_name || null,
+    counts: voteSummary.counts,
+    person_count: voteSummary.person_count ?? byPerson.length,
+    by_person: byPerson,
+    officials,
+    votes_on: votesOn,
+    person_vote_retention_rate: voteSummary.person_vote_retention_rate ?? null,
+    official_votes_on_edge_rate: voteSummary.official_votes_on_edge_rate ?? null,
+    source_url: null,
+    kind: "vote",
+  }];
+}
+
+/**
  * Build matter cards from one event's normalized items, attaching the
  * best-effort roll-call vote summary and per-item attachments (plus event docs).
  */
@@ -178,14 +202,7 @@ function assembleAgenda(items, voteByMatter, docsByItem = new Map()) {
     const matters = [];
     if (item.matter_id) {
       const voteSummary = voteByMatter.get(String(item.matter_id));
-      const votes = voteSummary && voteSummary.counts
-        ? [{
-          result: voteSummary.result || item.passed_flag || item.action_name || null,
-          counts: voteSummary.counts,
-          source_url: null,
-          kind: "vote",
-        }]
-        : [];
+      const votes = projectVoteSummary(voteSummary, item);
       matters.push({
         matter_id: item.matter_id,
         matter_file: item.matter_file,
@@ -233,7 +250,7 @@ function assembleAgenda(items, voteByMatter, docsByItem = new Map()) {
  * @param {object[]} noticeRows   — raw City Record (SODA) notice rows
  * @param {object[]} eventRows    — raw authenticated Legistar Event rows
  * @param {object[]} eventItemRows— raw Legistar EventItem rows (inline matters)
- * @param {object[]} voteRows     — aggregated roll-call summaries [{matter_id,result,counts}]
+ * @param {object[]} voteRows     — roll-call summaries [{matter_id,result,counts,by_person?,officials?,votes_on?}]
  * @param {object[]} attachmentRows — [{agenda_item_id, documents: [{url,name,category}]}]
  */
 export function buildMeetingOutcomes(noticeRows, eventRows, eventItemRows, voteRows, attachmentRows = []) {
@@ -429,6 +446,8 @@ async function collectVoteSummaries({ eventItemRows, token, fetchImpl }) {
           itemId: it.EventItemId,
           token,
           fetchImpl,
+          matterId: String(it.EventItemMatterId),
+          agendaItemId: String(it.EventItemId),
         });
         if (summary) {
           summaries.push({ matter_id: String(it.EventItemMatterId), ...summary });

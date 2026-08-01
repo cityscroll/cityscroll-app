@@ -715,6 +715,8 @@
     meeting_outcomes_outcome_lbl: "ফলাফল",
     meeting_outcomes_attachments_lbl: "সংযুক্তি",
     meeting_outcomes_vote_html: "ভোট: {result} (পক্ষে {aye} · বিপক্ষে {nay})",
+    meeting_outcomes_roll_call_lbl: "নাম ধরে ভোট",
+    meeting_outcomes_vote_person_html: "{name} ({vote})",
     meeting_outcomes_outcome_html: "ফলাফল: {outcome}",
     meeting_outcomes_no_votes_html: "এখানে এখনও দেখানো হয়নি — “{matter}” বিষয়ের নামধারী ভোট NYC Council Legistar-এ আছে।",
     meeting_outcomes_no_matters_html: "এখানে এখনও দেখানো হয়নি — এজেন্ডার আইটেম ও বিষয় NYC Council Legistar-এ আছে।",

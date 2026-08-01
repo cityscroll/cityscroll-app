@@ -1065,6 +1065,8 @@ const STRINGS = {
     meeting_outcomes_outcome_lbl: "Outcome",
     meeting_outcomes_attachments_lbl: "Attachments",
     meeting_outcomes_vote_html: "Vote: {result} (aye {aye} · nay {nay})",
+    meeting_outcomes_roll_call_lbl: "Roll call",
+    meeting_outcomes_vote_person_html: "{name} ({vote})",
     meeting_outcomes_outcome_html: "Outcome: {outcome}",
     meeting_outcomes_no_votes_html: "Not yet shown here — roll-call votes for matter “{matter}” live in NYC Council Legistar.",
     meeting_outcomes_no_matters_html: "Not yet shown here — agenda items and matters live in NYC Council Legistar.",

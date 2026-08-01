@@ -39,7 +39,7 @@ const METRIC_KEYS = [
   "false_split",
 ];
 
-const ENTITY_TYPES = new Set(["vendor", "agency", "procurement", "location"]);
+const ENTITY_TYPES = new Set(["vendor", "agency", "procurement", "location", "official"]);
 const LABELS = new Set(["same", "different"]);
 
 const KNOWN_BLOCKERS = new Set(["token_v0", "none"]);

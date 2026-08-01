@@ -10,10 +10,16 @@ import {
   fetchLegistarEventItems,
   fetchLegistarItemVotes,
   fetchLegistarItemAttachments,
+  summarizeLegistarVotes,
   boundedMap,
   LEGISTAR_API_BASE,
 } from "../worker/src/lib/legistar_client.mjs";
 import { buildMeetingOutcomesView } from "../worker/src/lib/meeting_outcomes.mjs";
+import {
+  measureOfficialVoteMetrics,
+  OFFICIAL_ENTITY_TYPE,
+  VOTES_ON_LINK_TYPE,
+} from "../entity_resolution/officials/index.mjs";
 
 const TOKEN = "test-token-do-not-log";
 
@@ -60,8 +66,11 @@ const ITEM = {
 };
 
 const VOTES = [
-  { VoteValue: "Aye" }, { VoteValue: "Aye" }, { VoteValue: "Aye" },
-  { VoteValue: "Nay" }, { VoteValue: "Nay" },
+  { PersonId: 101, PersonName: "Ada Councilmember", VoteValue: "Aye" },
+  { PersonId: 102, PersonName: "Ben Councilmember", VoteValue: "Aye" },
+  { PersonId: 103, PersonName: "Cara Councilmember", VoteValue: "Aye" },
+  { PersonId: 104, PersonName: "Dee Councilmember", VoteValue: "Nay" },
+  { PersonId: 105, PersonName: "Eli Councilmember", VoteValue: "Nay" },
 ];
 
 const NOTICE = {
@@ -118,10 +127,41 @@ test("fetchLegistarItemVotes aggregates per-person rows into aye/nay tallies", a
     itemId: 440244,
     token: TOKEN,
     fetchImpl: async () => new Response(JSON.stringify(VOTES), { status: 200 }),
+    matterId: "79193",
   });
   assert.equal(summary.counts.aye, 3);
   assert.equal(summary.counts.nay, 2);
   assert.equal(summary.result, "Passed");
+  assert.equal(summary.by_person.length, 5);
+  assert.equal(summary.officials[0].entity_type, OFFICIAL_ENTITY_TYPE);
+  assert.equal(summary.votes_on[0].type, VOTES_ON_LINK_TYPE);
+  assert.equal(summary.votes_on[0].to, "matter:79193");
+  assert.equal(summary.person_vote_retention_rate, 1);
+  assert.equal(summary.official_votes_on_edge_rate, 1);
+});
+
+test("summarizeLegistarVotes retains person identity for the official family", () => {
+  const summary = summarizeLegistarVotes(VOTES, { matterId: "79193", agendaItemId: "440244" });
+  const metrics = measureOfficialVoteMetrics(summary);
+  // Named product metric: person_vote_retention_rate (0 → 1 on identified rows).
+  assert.equal(metrics.person_vote_retention_rate, 1);
+  assert.equal(metrics.official_votes_on_edge_rate, 1);
+  assert.equal(metrics.distinct_officials, 5);
+  assert.equal(metrics.votes_on_edges, 5);
+  assert.equal(summary.by_person[0].official.id, "official:101");
+});
+
+test("summarizeLegistarVotes keeps tallies when person identity is absent", () => {
+  const anonymous = [
+    { VoteValue: "Aye" },
+    { VoteValue: "Nay" },
+  ];
+  const summary = summarizeLegistarVotes(anonymous, { matterId: "x" });
+  assert.equal(summary.counts.aye, 1);
+  assert.equal(summary.counts.nay, 1);
+  assert.equal(summary.by_person.length, 0);
+  assert.equal(summary.person_vote_retention_rate, 0);
+  assert.equal(summary.official_votes_on_edge_rate, 0);
 });
 
 test("fetchLegistarItemVotes returns null when no votes are recorded", async () => {
@@ -206,6 +246,10 @@ test("buildMeetingOutcomesView strict-joins notices to events and materializes m
   assert.equal(matter.outcome, "Approved by Subcommittee");
   assert.equal(matter.votes[0].counts.aye, 3);
   assert.equal(matter.votes[0].counts.nay, 2);
+  assert.equal(matter.votes[0].by_person.length, 5);
+  assert.equal(matter.votes[0].votes_on.length, 5);
+  assert.equal(matter.votes[0].officials[0].entity_type, "official");
+  assert.equal(matter.votes[0].person_vote_retention_rate, 1);
 });
 
 test("buildMeetingOutcomesView degrades to notices-only gaps without a token", async () => {

@@ -797,6 +797,8 @@
     meeting_outcomes_outcome_lbl: "Résultat",
     meeting_outcomes_attachments_lbl: "Pièces jointes",
     meeting_outcomes_vote_html: "Vote : {result} (pour {aye} · contre {nay})",
+    meeting_outcomes_roll_call_lbl: "Appel nominal",
+    meeting_outcomes_vote_person_html: "{name} ({vote})",
     meeting_outcomes_outcome_html: "Résultat : {outcome}",
     meeting_outcomes_no_votes_html: "Pas encore affiché ici — les votes par appel nominal pour l’affaire « {matter} » sont dans NYC Council Legistar.",
     meeting_outcomes_no_matters_html: "Pas encore affiché ici — les points d'ordre du jour et les affaires sont dans NYC Council Legistar.",

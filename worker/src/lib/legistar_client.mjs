@@ -8,6 +8,11 @@
 // Materialization is polite: one paginated Events fetch per run, then a nested
 // EventItems fetch ONLY for events that the strict notice→event join matched,
 // plus a bounded best-effort roll-call vote fetch. No per-user live fan-out.
+//
+// Person-level vote rows are retained (not only aye/nay tallies) so the official
+// entity family can form votes_on edges from who acted on each matter.
+
+import { summarizePersonVotes } from "../../../entity_resolution/officials/index.mjs";
 
 export const LEGISTAR_API_BASE = "https://webapi.legistar.com/v1/nyc";
 export const LEGISTAR_LOOKBACK_DAYS = 180;
@@ -21,9 +26,6 @@ export const MAX_VOTE_PROBES_PER_EVENT = 6;
 export const MAX_TOTAL_VOTE_PROBES = 240;
 export const MAX_ATTACHMENT_PROBES_PER_EVENT = 8;
 export const MAX_TOTAL_ATTACHMENT_PROBES = 320;
-
-const VOTE_AYE = /^(aye|yes|yea|y\b|in favor|approve)/i;
-const VOTE_NAY = /^(nay|no|n\b|against|reject|deny)/i;
 
 /**
  * Stitch the token into a URL without ever materializing it in a log line.
@@ -98,11 +100,32 @@ export async function fetchLegistarEventItems({ eventId, token, fetchImpl = fetc
 }
 
 /**
- * Best-effort roll-call vote fetch for one agenda item. Returns an aggregated
- * { result, counts } summary, or null when the endpoint has no recorded votes.
- * Per-person rows are folded into aye/nay/abstain tallies.
+ * Pure roll-call summarizer shared by the live client and characterization tests.
+ * Retains person-level identity when Legistar publishes PersonId / PersonName.
+ *
+ * @param {Array<object>} rows
+ * @param {{ matterId?: string|null, agendaItemId?: string|null, eventItemId?: string|null }} [target]
  */
-export async function fetchLegistarItemVotes({ itemId, token, fetchImpl = fetch }) {
+export function summarizeLegistarVotes(rows, target = {}) {
+  return summarizePersonVotes(rows, {
+    matterId: target.matterId ?? null,
+    agendaItemId: target.agendaItemId ?? target.eventItemId ?? null,
+    eventItemId: target.eventItemId ?? null,
+  });
+}
+
+/**
+ * Best-effort roll-call vote fetch for one agenda item. Returns an aggregated
+ * summary with retained per-person rows (official objects + votes_on edges)
+ * when the endpoint has recorded votes; null when empty.
+ */
+export async function fetchLegistarItemVotes({
+  itemId,
+  token,
+  fetchImpl = fetch,
+  matterId = null,
+  agendaItemId = null,
+} = {}) {
   if (!token || !itemId) return null;
   const rows = await fetchJson(
     fetchImpl,
@@ -110,23 +133,11 @@ export async function fetchLegistarItemVotes({ itemId, token, fetchImpl = fetch 
     10000,
   );
   if (!rows.length) return null;
-  const counts = { aye: 0, nay: 0, abstain: 0 };
-  for (const row of rows) {
-    const value = String(
-      row.VoteValue || row.VoteTypeName || row.VoteResult || row.PersonVote || "",
-    ).trim();
-    if (VOTE_AYE.test(value)) counts.aye += 1;
-    else if (VOTE_NAY.test(value)) counts.nay += 1;
-    else counts.abstain += 1;
-  }
-  const result = counts.aye > counts.nay
-    ? "Passed"
-    : counts.nay > counts.aye
-      ? "Failed"
-      : counts.aye
-        ? "Tied"
-        : null;
-  return { result, counts, person_count: rows.length };
+  return summarizeLegistarVotes(rows, {
+    matterId,
+    agendaItemId: agendaItemId ?? itemId,
+    eventItemId: itemId,
+  });
 }
 
 /**

@@ -722,6 +722,8 @@
     meeting_outcomes_outcome_lbl: "النتيجة",
     meeting_outcomes_attachments_lbl: "المرفقات",
     meeting_outcomes_vote_html: "التصويت: {result} (موافق {aye} · معارض {nay})",
+    meeting_outcomes_roll_call_lbl: "نداء الأسماء",
+    meeting_outcomes_vote_person_html: "{name} ({vote})",
     meeting_outcomes_outcome_html: "النتيجة: {outcome}",
     meeting_outcomes_no_votes_html: "لم يُعرض بعد هنا — أصوات النداء الاسمي للموضوع “{matter}” موجودة في NYC Council Legistar.",
     meeting_outcomes_no_matters_html: "لم يُعرض هنا بعد — بنود جدول الأعمال والمسائل موجودة في NYC Council Legistar.",
