@@ -67,3 +67,9 @@ export function serializePublicEntityLink(link = {}) {
   if (url) source.url = url;
   return { entity_id: entityId, source };
 }
+
+export {
+  PUBLIC_DOSSIER_FACT_DEFINITIONS,
+  PUBLIC_DOSSIER_VERSION,
+  serializePublicEntityDossier,
+} from "./dossier.mjs";

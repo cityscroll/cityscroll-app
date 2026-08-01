@@ -156,9 +156,9 @@ test("evaluation re-exports load gold helpers", () => {
   assert.equal(typeof buildClericalAudit, "function");
 });
 
-test("no new public HTTP entity-resolution routes in worker route modules", () => {
-  // Boundary card must not add ER as a network service. Scan route-table entry
-  // points for new ER path strings introduced as HTTP handlers.
+test("no generic public entity-resolution service routes in worker modules", () => {
+  // The bounded dossier read model is allowed; the ER engine itself remains an
+  // in-process package rather than a generic network service.
   const routeFiles = [
     "worker/src/index.mjs",
     "worker/src/worker.mjs",
@@ -181,7 +181,7 @@ test("no new public HTTP entity-resolution routes in worker route modules", () =
       assert.equal(
         re.test(src),
         false,
-        `${file} must not register public ER HTTP routes (matched ${re})`,
+        `${file} must not register a generic public ER service route (matched ${re})`,
       );
     }
   }
@@ -192,6 +192,7 @@ test("README documents extract criteria and non-goals", () => {
   assert.match(readme, /Extract criteria/i);
   assert.match(readme, /Non-goals/i);
   assert.match(readme, /Multi-app consumers/i);
-  assert.match(readme, /No public HTTP/i);
+  assert.match(readme, /No writable public HTTP/i);
+  assert.match(readme, /\/entity-dossier/);
   assert.match(readme, /modular/i);
 });
