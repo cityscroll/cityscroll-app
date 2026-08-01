@@ -2,8 +2,12 @@
 
 import { agencyCanonicalId } from "../normalizers/agency.mjs";
 import { vendorStem } from "../normalizers/vendor_stem.mjs";
+import {
+  authorityKeyId,
+  authorityKeysForSide,
+} from "../authority_keys/index.mjs";
 
-export const FEATURES_VERSION = "pair_features_v0";
+export const FEATURES_VERSION = "pair_features_v1";
 
 const LEGAL_FORMS = new Map([
   ["INC", "INC"],
@@ -142,7 +146,7 @@ function identifierValues(side, keys) {
   return [...new Set(values)].sort();
 }
 
-/** Treat PIN and EPIN as the same identifier family. */
+/** Raw PIN/EPIN values for display and backwards-compatible diagnostics only. */
 export function pinEpinValues(side) {
   return identifierValues(side, ["pin", "epin"]);
 }
@@ -203,11 +207,22 @@ export function extractFeatures(left = {}, right = {}, opts = {}) {
   const sharedPieces = leftPieces.filter((piece) => rightPieces.includes(piece)).sort();
   const leftIds = pinEpinValues(left);
   const rightIds = pinEpinValues(right);
-  const sharedIds = leftIds.filter((id) => rightIds.includes(id));
+  const leftAuthorityKeys = authorityKeysForSide(left);
+  const rightAuthorityKeys = authorityKeysForSide(right);
+  const rightAuthorityIds = new Set(rightAuthorityKeys.map(authorityKeyId));
+  const sharedAuthorityKeys = leftAuthorityKeys.filter((key) =>
+    rightAuthorityIds.has(authorityKeyId(key))
+  );
+  const sharedIds = [...new Set(sharedAuthorityKeys.map((key) => key.value))].sort();
   const leftContractIds = contractIdValues(left);
   const rightContractIds = contractIdValues(right);
   const sharedContractIds = leftContractIds.filter((id) => rightContractIds.includes(id));
-  const pinEpinConflict = leftIds.length > 0 && rightIds.length > 0 && sharedIds.length === 0;
+  const comparableAuthority = (leftKey, rightKey) =>
+    leftKey.scheme === rightKey.scheme &&
+    leftKey.scope === rightKey.scope;
+  const pinEpinConflict = sharedAuthorityKeys.length === 0 && leftAuthorityKeys.some((leftKey) =>
+    rightAuthorityKeys.some((rightKey) => comparableAuthority(leftKey, rightKey))
+  );
   const contractIdConflict = leftContractIds.length > 0 && rightContractIds.length > 0 && sharedContractIds.length === 0;
   const hardIdEqual = sharedIds.length > 0 || sharedContractIds.length > 0;
   const leftForm = family === "vendor" ? legalForm(leftName) : null;
@@ -233,6 +248,11 @@ export function extractFeatures(left = {}, right = {}, opts = {}) {
     pin_epin_equal: sharedIds.length > 0,
     pin_epin_conflict: pinEpinConflict,
     shared_pin_epin: sharedIds,
+    authority_key_equal: sharedAuthorityKeys.length > 0,
+    authority_key_conflict: pinEpinConflict,
+    shared_authority_keys: sharedAuthorityKeys,
+    left_authority_keys: leftAuthorityKeys,
+    right_authority_keys: rightAuthorityKeys,
     contract_id_equal: sharedContractIds.length > 0,
     contract_id_conflict: contractIdConflict,
     shared_contract_ids: sharedContractIds,

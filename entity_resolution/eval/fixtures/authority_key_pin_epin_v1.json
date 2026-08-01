@@ -1,0 +1,44 @@
+{
+  "version": "authority_key_pin_epin_v1",
+  "valid": [
+    {
+      "name": "City Record PIN",
+      "field": "pin",
+      "value": "84124P0003001",
+      "expected": {
+        "scheme": "nyc_procurement_pin",
+        "issuing_authority": "841",
+        "value": "84124P0003001",
+        "scope": "nyc_procurement"
+      }
+    },
+    {
+      "name": "PASSPort EPIN alias with separators",
+      "field": "epin",
+      "value": "816-26-W0043-001",
+      "expected": {
+        "scheme": "nyc_procurement_pin",
+        "issuing_authority": "816",
+        "value": "81626W0043001",
+        "scope": "nyc_procurement"
+      }
+    },
+    {
+      "name": "explicit issuer preserves a narrower agency scope",
+      "field": "pin",
+      "value": "84124P0003001",
+      "context": { "issuing_authority": "NYC-DDC", "scope": "nyc:ddc:procurement" },
+      "expected": {
+        "scheme": "nyc_procurement_pin",
+        "issuing_authority": "NYCDDC",
+        "value": "84124P0003001",
+        "scope": "nyc:ddc:procurement"
+      }
+    }
+  ],
+  "invalid": [
+    { "name": "publisher null sentinel", "field": "pin", "value": "N/A" },
+    { "name": "too short to carry an agency prefix", "field": "epin", "value": "123" },
+    { "name": "unknown field is a different scheme", "field": "contract_id", "value": "84124P0003001" }
+  ]
+}

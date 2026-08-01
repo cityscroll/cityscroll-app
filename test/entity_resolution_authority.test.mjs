@@ -47,13 +47,18 @@ test("silver authority cases use the latest immutable snapshot and publisher har
   );
   assert.equal(same.length, 4);
   assert.equal(conflicts.length, 1);
-  assert.ok(same.some((row) => row.evidence.shared_hard_ids.includes("pin:84124P0003001")));
+  assert.ok(same.some((row) => row.evidence.shared_hard_ids.includes(
+    "authority:nyc_procurement_pin:841:84124P0003001:nyc_procurement",
+  )));
   assert.ok(
     same.some((row) =>
       row.evidence.shared_hard_ids.includes("contract:CT184120268807929")
     ),
   );
-  assert.deepEqual(conflicts[0].evidence.conflicting_hard_id_families, ["pin_epin"]);
+  assert.deepEqual(
+    conflicts[0].evidence.conflicting_hard_id_families,
+    ["scoped_authority_key"],
+  );
   assert.doesNotMatch(JSON.stringify(cases), /OLDPIN/);
   assert.doesNotMatch(JSON.stringify(cases), /missing-pin/);
   assert.ok(same.some((row) => row.left.source_system === row.right.source_system));
@@ -78,8 +83,8 @@ test("matcher recognizes contract agreement and rejects name-similar hard-id con
   );
 
   const conflictFeatures = extractFeatures(
-    { display_name: "Bridge Inspection Services", attrs: { pin: "PIN-A" } },
-    { display_name: "Bridge Inspection Services", attrs: { epin: "PIN-B" } },
+    { display_name: "Bridge Inspection Services", attrs: { pin: "07112R0001001" } },
+    { display_name: "Bridge Inspection Services", attrs: { epin: "84199P0009001" } },
     { entityType: "procurement" },
   );
   const conflictScore = scorePair({}, {}, conflictFeatures);
