@@ -5,7 +5,7 @@ import { signToken } from "optin-token";
 import { handlePrefs, prefsLink } from "../src/prefs.mjs";
 import { prefsPayload } from "../src/lib/prefs.mjs";
 import { handleUnsubscribe } from "../src/unsubscribe.mjs";
-import { handleAdminWatchLog, handleAdminSubs } from "../src/admin.mjs";
+import { handleAdminWatchLog, handleAdminWatchLogEnrich, handleAdminSubs } from "../src/admin.mjs";
 
 function kv(map = {}) {
   return {
@@ -116,6 +116,10 @@ test("POST pause then unpause", async () => {
   assert.equal(events[0].emailRedacted, REDACTED_EMAIL);
   assert.equal(events[0].subKeyMasked, "sub:w1***");
   assert.equal(events[0].lens, "money");
+  assert.equal(events[0].label, "contract money — about “schools”");
+  assert.equal(events[0].freq, "daily");
+  assert.equal(events[1].label, "contract money — about “schools”");
+  assert.equal(events[1].freq, "daily");
   assert.equal(JSON.parse(await env.ALERT_STATE.get("watchlog:latest")).length, 2);
 });
 
@@ -154,6 +158,41 @@ test("POST update keywords and freq", async () => {
   assert.equal(stored.freq, "weekly");
   assert.deepEqual(stored.filter.keywords, ["education", "libraries"]);
   assert.equal(stored.filter.minAmount, 1000000);
+  const events = JSON.parse(await env.ALERT_STATE.get("watchlog:latest"));
+  assert.equal(events[0].label, "contract money — about “education / libraries” · ≥ $1,000,000");
+  assert.equal(events[0].freq, "weekly");
+  assert.match(events[0].detail, /freq daily → weekly/);
+  assert.match(events[0].detail, /filter: .*schools.* → .*education \/ libraries/);
+  assert.deepEqual(events[0].before, {
+    label: "contract money — about “schools” · ≥ $1,000,000",
+    freq: "daily",
+    paused: false,
+  });
+  assert.deepEqual(events[0].after, {
+    label: "contract money — about “education / libraries” · ≥ $1,000,000",
+    freq: "weekly",
+    paused: false,
+  });
+});
+
+test("POST update describes a filter-only change", async () => {
+  const env = makeEnv({
+    "sub:w1": JSON.stringify({
+      email: TEST_EMAIL,
+      lens: "money",
+      filter: { keywords: ["schools"] },
+      freq: "daily",
+    }),
+  });
+  const tok = await tokenFor(TEST_EMAIL);
+  await handlePrefs(new Request("https://api.cityscroll.org/prefs", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ token: tok, key: "sub:w1", action: "update", keywords: "parks" }),
+  }), env);
+  const [event] = JSON.parse(await env.ALERT_STATE.get("watchlog:latest"));
+  assert.equal(event.freq, "daily");
+  assert.match(event.detail, /^filter: .*schools.* → .*parks/);
 });
 
 test("POST delete one watch", async () => {
@@ -175,6 +214,54 @@ test("POST delete one watch", async () => {
     body: body.toString(),
   }), env);
   assert.equal(await env.SUBS.get("sub:w1"), null);
+  const [event] = JSON.parse(await env.ALERT_STATE.get("watchlog:latest"));
+  assert.equal(event.label, "contract money — about “a”");
+  assert.equal(event.freq, "daily");
+});
+
+test("admin watch-log enrich uses live watches and explicit deleted-watch overrides", async () => {
+  const env = makeEnv({
+    "sub:w1-long-key": JSON.stringify({
+      email: TEST_EMAIL,
+      lens: "entity",
+      filter: { name: "Acacia", kind: "vendor" },
+      freq: "weekly",
+    }),
+  });
+  const at = "2026-08-01T00:58:39.000Z";
+  const missingAt = "2026-08-01T00:57:00.000Z";
+  const events = [
+    { at, action: "delete", subKeyMasked: "sub:15***", source: "prefs" },
+    { at: "2026-08-01T00:58:53.000Z", action: "update", subKeyMasked: "sub:w1***", source: "prefs" },
+    { at: missingAt, action: "delete", subKeyMasked: "sub:zz***", source: "prefs" },
+  ];
+  await env.ALERT_STATE.put("watchlog:latest", JSON.stringify(events));
+  await env.ALERT_STATE.put("watchlog:2026-08-01", JSON.stringify(events));
+  const res = await handleAdminWatchLogEnrich(new Request("https://w/admin/watch-log/enrich?key=admin", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      days: 1,
+      date: "2026-08-01",
+      overrides: [{
+        at,
+        action: "delete",
+        subKeyMasked: "sub:15***",
+        label: "contract money — awards only · ≥ $100,000,000",
+        freq: "daily",
+        detail: "deleted",
+      }],
+    }),
+  }), env);
+  assert.equal(res.status, 200);
+  const result = await res.json();
+  assert.deepEqual(result, { scanned: 6, enriched: 4, unchanged: 2 });
+  const enriched = JSON.parse(await env.ALERT_STATE.get("watchlog:latest"));
+  assert.equal(enriched[0].label, "contract money — awards only · ≥ $100,000,000");
+  assert.equal(enriched[0].detail, "deleted");
+  assert.equal(enriched[1].label, "vendor “Acacia” — every new City Record notice naming them");
+  assert.equal(enriched[1].freq, "weekly");
+  assert.equal(enriched[2].label, undefined);
 });
 
 test("admin watch log returns recent events and admin subs exposes paused", async () => {
@@ -254,6 +341,12 @@ test("unsubscribe all token removes every watch", async () => {
   assert.equal(res.status, 200);
   assert.equal(await env.SUBS.get("sub:w1"), null);
   assert.equal(await env.SUBS.get("sub:w2"), null);
+  const events = JSON.parse(await env.ALERT_STATE.get("watchlog:latest"));
+  assert.deepEqual(events.map((event) => event.label), [
+    "contract money — about “a”",
+    "contract money — about “b”",
+  ]);
+  assert.deepEqual(events.map((event) => event.freq), ["daily", "daily"]);
 });
 
 test("cannot mutate another account's watch", async () => {

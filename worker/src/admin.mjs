@@ -5,7 +5,12 @@
 // GET /admin/digest-rollup?key=…&email=… — dry-run account rollup for one email (no Resend send).
 
 import { redactEmail } from "./lib/subscriptions.mjs";
-import { readWatchLog } from "./lib/watchlog.mjs";
+import {
+  WATCHLOG_LATEST_KEY,
+  enrichWatchLogEvents,
+  maskKey as watchLogMaskKey,
+  readWatchLog,
+} from "./lib/watchlog.mjs";
 import { dryRunRollupForEmail, digestSendTestForEmail, runCatchUpDigests } from "./alerts.mjs";
 import { toReviewItems } from "../../entity_resolution/review/index.mjs";
 
@@ -77,6 +82,87 @@ export async function handleAdminWatchLog(req, env) {
   const days = new URL(req.url).searchParams.get("days") || "7";
   const events = await readWatchLog(env, days);
   return json({ days: Math.max(1, Math.min(31, Number(days) || 7)), events }, 200);
+}
+
+// POST /admin/watch-log/enrich?key=… — retrofit thin stored lifecycle events from live SUBS.
+// JSON: { days?: 1..31, date?: "YYYY-MM-DD", overrides?: [{ at?, subKeyMasked?, action?, label, freq?, detail? }] }
+// `date` selects the newest UTC day and is intended for bounded historical repairs.
+export async function handleAdminWatchLogEnrich(req, env) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (req.method !== "POST") return json({ error: "method not allowed" }, 405);
+  if (!env.ALERT_STATE || !env.SUBS) return json({ error: "no-store" }, 503);
+
+  let body = {};
+  try {
+    const raw = await req.text();
+    if (raw) body = JSON.parse(raw);
+  } catch {
+    return json({ error: "invalid-json" }, 400);
+  }
+  const days = Math.max(1, Math.min(31, Number(body.days) || 7));
+  const hasDate = body.date != null;
+  const endDate = hasDate && /^\d{4}-\d{2}-\d{2}$/.test(body.date)
+    ? new Date(`${body.date}T00:00:00.000Z`)
+    : new Date();
+  if (hasDate && (!/^\d{4}-\d{2}-\d{2}$/.test(body.date)
+      || Number.isNaN(endDate.valueOf()) || endDate.toISOString().slice(0, 10) !== body.date)) {
+    return json({ error: "invalid-date" }, 400);
+  }
+  const overrides = Array.isArray(body.overrides) ? body.overrides : [];
+  const liveSubsByMask = await liveWatchRecordsByMask(env.SUBS);
+  const keys = [WATCHLOG_LATEST_KEY];
+  const cursor = new Date(endDate);
+  cursor.setUTCHours(0, 0, 0, 0);
+  for (let i = 0; i < days; i++) {
+    keys.push(`watchlog:${cursor.toISOString().slice(0, 10)}`);
+    cursor.setUTCDate(cursor.getUTCDate() - 1);
+  }
+
+  let scanned = 0;
+  let enriched = 0;
+  let unchanged = 0;
+  for (const key of keys) {
+    let raw;
+    try { raw = await env.ALERT_STATE.get(key); } catch { continue; }
+    if (!raw) continue;
+    let events;
+    try { events = JSON.parse(raw); } catch { continue; }
+    if (!Array.isArray(events)) continue;
+    const result = enrichWatchLogEvents(events, liveSubsByMask, overrides);
+    if (result.enriched) {
+      try {
+        await env.ALERT_STATE.put(key, JSON.stringify(result.events));
+      } catch {
+        return json({ error: "write-failed", scanned, enriched, unchanged }, 503);
+      }
+    }
+    scanned += events.length;
+    enriched += result.enriched;
+    unchanged += result.unchanged;
+  }
+  return json({ scanned, enriched, unchanged }, 200);
+}
+
+async function liveWatchRecordsByMask(store) {
+  const records = new Map();
+  let cursor;
+  try {
+    do {
+      const page = await store.list({ prefix: "sub:", cursor });
+      for (const key of page.keys) {
+        const masked = watchLogMaskKey(key.name);
+        if (!masked) continue;
+        let record;
+        try { record = JSON.parse(await store.get(key.name)); } catch { continue; }
+        // The mask deliberately hides most of the key. Do not guess when two live keys collide.
+        if (records.has(masked)) records.set(masked, null);
+        else if (record) records.set(masked, record);
+      }
+      cursor = page.list_complete ? null : page.cursor;
+    } while (cursor);
+  } catch { /* return the records collected so far */ }
+  return records;
 }
 
 // GET /admin/feedback?key=… — operator read of stored feedback rows, straight from the worker's
