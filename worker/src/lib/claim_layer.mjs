@@ -134,10 +134,13 @@ export function conflictClaimBundle(input = {}) {
 
 /**
  * Attach claim_layer bundles onto OCP-style disagreement rows (field + city_record + ocp).
+ * When opts.subject_ref is a valid registry ref (e.g. notice:20240723114), every claim
+ * row carries the same subject so assertion layer and civic-time agree on the object.
  */
 export function labelOcpDisagreements(disagreements = [], opts = {}) {
   const citySystem = clean(opts.city_source_system) || "city_record";
   const ocpSystem = clean(opts.ocp_source_system) || "ocp-recent-awards";
+  const subjectRef = clean(opts.subject_ref);
   const list = Array.isArray(disagreements) ? disagreements : [];
   return list.map((row) => {
     if (!row || typeof row !== "object") return row;
@@ -146,7 +149,7 @@ export function labelOcpDisagreements(disagreements = [], opts = {}) {
     const label = field === "amount" ? "Contract amount" : field === "date" ? "Start date" : field;
     const cityField = field === "amount" ? "contract_amount" : "start_date";
     const ocpField = field === "amount" ? "contract_amount" : "start_date";
-    const claim_layer = conflictClaimBundle({
+    let claim_layer = conflictClaimBundle({
       fact: field === "amount" ? "contract_amount" : field === "date" ? "start_date" : field,
       label,
       left: {
@@ -162,6 +165,9 @@ export function labelOcpDisagreements(disagreements = [], opts = {}) {
         source_system_id: opts.ocp_source_system_id,
       },
     });
+    if (claim_layer && subjectRef) {
+      claim_layer = { ...claim_layer, subject_ref: subjectRef };
+    }
     return { ...row, claim_layer };
   });
 }

@@ -16,6 +16,7 @@ import {
   applySolicitationDetail,
   documentsStatusFor,
 } from "./current_solicitations.mjs";
+import { linksFromLifecycle } from "./subject_registry.mjs";
 
 export { usablePin, pinBase };
 export { CURRENT_SOLICITATIONS_SOURCE };
@@ -350,7 +351,7 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
         date: null, source_timestamp: null, detail: null,
       }));
     }
-    return {
+    const partial = {
       pin: null,
       pin_strategy: "none",
       timeline,
@@ -363,6 +364,11 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
         source: CURRENT_SOLICITATIONS_SOURCE,
       },
     };
+    // Notice subject only — no PIN means no contract join edge.
+    const subjects = linksFromLifecycle(partial, r);
+    partial.subject_refs = subjects.subject_refs;
+    partial.subject_links = subjects.subject_links;
+    return partial;
   }
 
   // Collapse Checkbook Contracts slices (Prime Vendor + Sub Vendor rows, etc.) to
@@ -533,6 +539,11 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
       source: CURRENT_SOLICITATIONS_SOURCE,
     },
   };
+  // Typed subject links: notice ↔ contract stay distinct refs connected by edges.
+  // Civic-time, claim layer, and ER resolve the same real-world award via this graph.
+  const subjects = linksFromLifecycle(out, r);
+  out.subject_refs = subjects.subject_refs;
+  out.subject_links = subjects.subject_links;
   // OCP side-car is optional on pure assemble; worker attach always sets it after fetch.
   if (opts.ocpAward) out.ocp_award = opts.ocpAward;
   return out;

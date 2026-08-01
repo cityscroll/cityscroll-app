@@ -47,6 +47,23 @@ export function actionLogDecisionFromDisposition(decision) {
 }
 
 /**
+ * Map an action-log object onto the shared subject_ref vocabulary when the type
+ * is registry-known (entity_pair → entity-pair:…). Returns null for pin_store/watch
+ * and other non-registry object types so callers can keep legacy object ids.
+ */
+export function subjectRefForActionObject(object = {}) {
+  const type = String(object.type || object.object_type || "").trim().toLowerCase().replace(/_/g, "-");
+  const id = String(object.id || object.object_id || "").trim();
+  if (!type || !id) return null;
+  if (type === "entity-pair") return `entity-pair:${id}`;
+  // Already a kind:id string
+  if (/^(notice|contract|project|pin|vendor|agency|legistar-event|rules|entity|entity-pair):/.test(id)) {
+    return id;
+  }
+  return null;
+}
+
+/**
  * Build a review_decision action-log input from a false-split disposition event.
  * Never accepts actor, note, email, or free text — those stay on the desk evidence table.
  */
