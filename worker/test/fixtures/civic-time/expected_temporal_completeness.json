@@ -131,9 +131,10 @@
         "checkbook-contracts",
         "checkbook-spending",
         "passport-public-contracts",
+        "passport-public-rfx",
         "ocp-recent-contract-awards"
       ],
-      "live_source_count": 5,
+      "live_source_count": 6,
       "disabled_source_count": 0,
       "source_health": [
         {
@@ -153,6 +154,11 @@
         },
         {
           "id": "passport-public-contracts",
+          "status": "live",
+          "health": "live"
+        },
+        {
+          "id": "passport-public-rfx",
           "status": "live",
           "health": "live"
         },
