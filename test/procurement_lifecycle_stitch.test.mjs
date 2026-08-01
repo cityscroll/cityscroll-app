@@ -113,6 +113,10 @@ const sandbox = new Function(
   extractFn("subsidyLifecycleHTML") + "\n" +
   extractFn("isMeetingOutcomesEligible") + "\n" +
   extractFn("isCityCouncilNotice") + "\n" +
+  extractFn("meetingOutcomeBucket") + "\n" +
+  extractFn("meetingMatterShortTitle") + "\n" +
+  extractFn("collapseMeetingAgenda") + "\n" +
+  extractFn("meetingVotesHTML") + "\n" +
   extractFn("meetingOutcomesHTML") + "\n" +
   extractFn("priorCycleHTML") + "\n" +
   extractFn("priorCycleNoneHTML") + "\n" +
@@ -185,6 +189,10 @@ try {
     extractFn("subsidyLifecycleHTML") +
     extractFn("isMeetingOutcomesEligible") +
     extractFn("isCityCouncilNotice") +
+    extractFn("meetingOutcomeBucket") +
+    extractFn("meetingMatterShortTitle") +
+    extractFn("collapseMeetingAgenda") +
+    extractFn("meetingVotesHTML") +
     extractFn("meetingOutcomesHTML") +
     `
     return {
@@ -420,7 +428,7 @@ test("meeting outcomes eligible: hearing notices qualify", () => {
   }), false);
 });
 
-test("meeting outcomes: matched chain shows matter and vote counts", () => {
+test("meeting outcomes: matter-centric agenda shows badge, summary, and vote counts", () => {
   const model = buildMeetingOutcomes(
     meetingFixture.notices,
     meetingFixture.events,
@@ -432,12 +440,17 @@ test("meeting outcomes: matched chain shows matter and vote counts", () => {
   assert.equal(record.join.matched, true);
   const html = meetingOutcomesHTML(record);
   assert.match(html, /Council meeting outcomes/);
+  // One scan row per matter (not one four-stage chain per Legistar action).
+  assert.equal((html.match(/data-meeting-matter/g) || []).length, 1);
   assert.equal((html.match(/data-meeting-spine/g) || []).length, 1);
-  assert.match(html, /Agenda item[\s\S]*Council matter[\s\S]*Outcome[\s\S]*Attachments/);
+  assert.match(html, /meeting-badge--approved|Approved/i);
+  assert.match(html, /meeting-summary|approved/i);
   assert.match(html, /aye|nay|6|Approved/i);
   assert.match(html, /Staff report/);
   assert.match(html, /Agenda/);
   assert.match(html, /Minutes/);
+  // Event docs once at the meeting level — not a 4-stage chain dump.
+  assert.doesNotMatch(html, /Agenda item[\s\S]*Council matter[\s\S]*Outcome[\s\S]*Attachments/);
 });
 
 test("meeting outcomes: unmatched renders the specific join reason", () => {

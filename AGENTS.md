@@ -133,6 +133,11 @@ Read model: `worker/src/lib/meeting_outcomes.mjs` → KV `meeting-outcomes:mater
 Open Data `m48u-yjt8` remains a **disabled** freeze through 2024-12-19 (0% modern).
 Receipts: `site/data/legistar_sources/`. Demo: notice `20260706036` → event `22526`.
 
+**Meeting outcomes UI:** matter-centric scan list (summary chips + short title +
+outcome badge + progressive disclosure), not one four-stage lifecycle chain per
+Legistar action row. Render: `meetingOutcomesHTML` in `site/index.html`.
+Characterization: `node --test test/meeting_view_readability.test.mjs`.
+
 **Official entity family (person-level votes):** Legistar roll-call rows retain
 `PersonId`/`PersonName` as `official:{person_id}` objects with typed `votes_on`
 edges (official → matter|agenda_item), not only aye/nay tallies. Pure helpers:

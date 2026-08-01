@@ -101,6 +101,10 @@ const helpers = new Function(
   extractFn("subsidyStageHTML") +
   extractFn("subsidyLifecycleHTML") +
   extractFn("isCityCouncilNotice") +
+  extractFn("meetingOutcomeBucket") +
+  extractFn("meetingMatterShortTitle") +
+  extractFn("collapseMeetingAgenda") +
+  extractFn("meetingVotesHTML") +
   extractFn("meetingOutcomesHTML") +
   `
   return { lifecycleTimelineHTML, subsidyLifecycleHTML, meetingOutcomesHTML, t };
