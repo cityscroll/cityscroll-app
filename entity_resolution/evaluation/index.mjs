@@ -11,6 +11,15 @@ export {
   computeMetrics,
 } from "../eval/run_metrics.mjs";
 
+export {
+  CLERICAL_AUDIT_SCHEMA_VERSION,
+  buildClericalAudit,
+  formatAuditJsonl,
+  formatLabelSheet,
+  parseLabelSheet,
+  promoteLabelsToGold,
+} from "../eval/clerical_audit.mjs";
+
 /** Package-relative path to the v0 gold set (repo root as cwd). */
 export const GOLD_V0_PATH = "entity_resolution/eval/gold_v0.jsonl";
 

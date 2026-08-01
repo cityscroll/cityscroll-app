@@ -34,6 +34,7 @@ import {
   REVIEW_VERSION,
   GOLD_V0_PATH,
   loadGold,
+  buildClericalAudit,
 } from "../../entity_resolution/index.mjs";
 import {
   vendorStem as workerVendorStem,
@@ -133,6 +134,7 @@ test("evaluation re-exports load gold helpers", () => {
   assert.ok(Array.isArray(cases) && cases.length > 0);
   assert.equal(typeof contentHash, "string");
   assert.ok(contentHash.length >= 8);
+  assert.equal(typeof buildClericalAudit, "function");
 });
 
 test("no new public HTTP entity-resolution routes in worker route modules", () => {
