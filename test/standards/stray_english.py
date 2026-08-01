@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """Static stray-English lint — every user-facing string literal routes through t()/tSection().
 
-Companion to the runtime guard (test/functional/13_stray_english.py): the guard proves what a
-reader SEES; this lint catches the source pattern that causes it — an English-looking string
-literal inside the inline <script> of index.html (or a builder in i18n.js) that is emitted
-into the DOM without passing through the i18n layer. Born from the 2026-07-13 regression
-("36 notices from 16 agencies" + raw section names in es mode).
+PRIMARY CI gate for the 2026-07-13 regression class ("36 notices from 16 agencies" + raw
+section names in es mode). Catches the source pattern: an English-looking string literal
+inside the inline <script> of index.html (or a builder in i18n.js) that is emitted into the
+DOM without passing through the i18n layer. The runtime walk (test/functional/13_stray_english.py)
+is a narrow smoke in CI (es + index) for re-render-on-language-switch only — not a second
+full matrix of the same source bugs.
 
 Mechanism: extract every string/template literal from the JS (template literals contribute
 their literal parts, ${…} expressions stripped), discard literals that cannot be UI text

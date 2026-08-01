@@ -21,9 +21,9 @@
 #      accumulate onto that SAME open PR (each run reads the bot branch's current pending
 #      state as its base) rather than opening one bot PR per entry.
 #
-# Self-landing (PR #83): main's ruleset requires four named status checks
+# Self-landing (PR #83): main's ruleset requires three named status checks
 # ("Unit tests (site + worker)", "Accessibility + language gate (axe on every PR)",
-# "Stray-English guard (runtime, fixtures)", "Reading-level ratchet gate (readable-or-else)")
+# "Reading-level ratchet gate (readable-or-else)")
 # on top of the merge queue, so arming auto-merge alone isn't enough — the bot PR still needs
 # those checks to actually run and pass on its head SHA before it's mergeable at all. They
 # never do on their own: GitHub requires a maintainer to click "Approve and run workflows" for
@@ -38,7 +38,7 @@
 # the same required checks a pull_request-triggered run would have. Once those pass, the
 # existing enqueuePullRequest call (moved to after the wait) succeeds on its own.
 #
-# The wait step polls the bot PR's own statusCheckRollup for the four REQUIRED check names
+# The wait step polls the bot PR's own statusCheckRollup for the three REQUIRED check names
 # specifically, not the dispatched run's overall pass/fail — ci.yml's "functional" job (the
 # Playwright suite against live APIs) only runs on workflow_dispatch, is documented as
 # flaky, and isn't in the ruleset's required list; waiting on the whole run instead of the
@@ -47,7 +47,7 @@
 # Changelog-only fast path (ci.yml jobs.changes.outputs.changelog_only): the bot PR only
 # touches site/changelog-data.json + site/changelog.html. Those paths are paths-ignore'd on
 # pull_request, and a full unit suite can fail on generated changelog content. ci.yml therefore
-# detects that path set and makes each of the four required jobs report SUCCESS via a short
+# detects that path set and makes each of the three required jobs report SUCCESS via a short
 # no-op instead of the heavy suite — on workflow_dispatch and on merge_group — so the merge
 # queue always sees named checks within about a minute and does not wait until the check
 # response timeout.
@@ -244,7 +244,6 @@ jobs:
           REQUIRED_CHECKS=(
             "Unit tests (site + worker)"
             "Accessibility + language gate (axe on every PR)"
-            "Stray-English guard (runtime, fixtures)"
             "Reading-level ratchet gate (readable-or-else)"
           )
 

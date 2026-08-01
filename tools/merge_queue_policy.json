@@ -1,0 +1,26 @@
+{
+  "description": "Operator-applied GitHub merge-queue parameters for main. Not enforced by CI; apply with tools/apply_merge_queue_policy.mjs. Goal: batch independent green PRs into one merge-group validation when they arrive close together, while keeping ALLGREEN so composition failures still block.",
+  "ruleset_name": "main merge queue",
+  "ruleset_id": 18899568,
+  "repository": "cityscroll/crol-list",
+  "merge_queue": {
+    "merge_method": "SQUASH",
+    "grouping_strategy": "ALLGREEN",
+    "max_entries_to_build": 5,
+    "min_entries_to_merge": 1,
+    "max_entries_to_merge": 5,
+    "min_entries_to_merge_wait_minutes": 5,
+    "check_response_timeout_minutes": 60
+  },
+  "required_status_checks": [
+    "Unit tests (site + worker)",
+    "Accessibility + language gate (axe on every PR)",
+    "Reading-level ratchet gate (readable-or-else)"
+  ],
+  "notes": [
+    "min_entries_to_merge_wait_minutes=5 forms a short merge train so near-simultaneous PRs share one merge_group when independent.",
+    "ALLGREEN is intentional: do not switch to looser grouping to hide composition failures.",
+    "Runtime multi-locale stray-English is not a required check; Unit static lint owns that class.",
+    "A same-repo merge-when-ready seat cap (one auto-merge at a time) is complementary and lives outside this repo."
+  ]
+}

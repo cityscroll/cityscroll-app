@@ -35,7 +35,11 @@ jobs:
       # (site/changelog-data.json, site/changelog.html). Used so required checks
       # still report SUCCESS on changelog-only PRs without running the full suite —
       # otherwise path filters + skipped jobs leave the merge queue waiting forever.
-      changelog_only: ${{ steps.changelog_only.outputs.changelog_only }}
+      changelog_only: ${{ steps.path_class.outputs.changelog_only }}
+      # true when every path is docs/** or top-level Markdown (see tools/docs-only-path-guard.sh).
+      docs_only: ${{ steps.path_class.outputs.docs_only }}
+      # true when the full unit/standards suite must run (neither changelog nor docs-only).
+      unit_full: ${{ steps.path_class.outputs.unit_full }}
     steps:
       # Checkout is required for merge_group, push, workflow_dispatch, and for the
       # changelog path-guard script; pull_request file lists still come from the API.
@@ -53,6 +57,7 @@ jobs:
             frontend:
               - 'site/**'
               - '.github/actions/build-site/**'
+              - '.github/actions/setup-playwright/**'
               - '.github/workflows/deploy-pages.yml'
               - '.github/workflows/deploy-beta-preview.yml'
               - '.github/workflows/promote-beta.yml'
@@ -61,8 +66,8 @@ jobs:
             docs:
               - 'docs/**'
               - '*.md'
-      - name: Detect changelog-only path set
-        id: changelog_only
+      - name: Classify path set (changelog_only / docs_only / unit_full)
+        id: path_class
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -81,12 +86,25 @@ jobs:
           esac
           echo "Changed paths (${#files[@]}):"
           printf '  %s\n' "${files[@]}"
+          changelog_only=false
+          docs_only=false
           if printf '%s\n' "${files[@]}" | bash tools/changelog-path-guard.sh; then
-            echo "changelog_only=true" >> "$GITHUB_OUTPUT"
+            changelog_only=true
             echo "Changelog-only path set — required checks will take the fast path."
-          else
-            echo "changelog_only=false" >> "$GITHUB_OUTPUT"
+          elif printf '%s\n' "${files[@]}" | bash tools/docs-only-path-guard.sh; then
+            docs_only=true
+            echo "Docs-only path set — unit suite and browser gates take the fast path."
           fi
+          if [ "$changelog_only" = true ] || [ "$docs_only" = true ]; then
+            unit_full=false
+          else
+            unit_full=true
+          fi
+          {
+            echo "changelog_only=${changelog_only}"
+            echo "docs_only=${docs_only}"
+            echo "unit_full=${unit_full}"
+          } >> "$GITHUB_OUTPUT"
 
   unit:
     name: Unit tests (site + worker)
@@ -94,147 +112,147 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Required check name must always report SUCCESS/FAILURE (never stay missing).
-      # Changelog-only diffs previously starved the merge queue: path filters skipped
-      # the pull_request workflow, and a full unit run can fail on generated changelog
-      # content that is not a product regression.
-      - name: Changelog-only — report required check success
-        if: needs.changes.outputs.changelog_only == 'true'
+      # Changelog-only and docs-only diffs take a no-op SUCCESS path so the merge
+      # queue never waits on skipped check names (same contract as Agents.md).
+      - name: Changelog-only or docs-only — report required check success
+        if: needs.changes.outputs.unit_full != 'true'
         run: |
-          echo "Only site/changelog-data.json and site/changelog.html changed."
+          if [ "${{ needs.changes.outputs.changelog_only }}" = "true" ]; then
+            echo "Only site/changelog-data.json and site/changelog.html changed."
+          else
+            echo "Docs-only path set (docs/** and/or top-level Markdown)."
+          fi
           echo "Reporting success for 'Unit tests (site + worker)' without the full suite."
 
       - uses: actions/checkout@v4
-        if: needs.changes.outputs.changelog_only != 'true'
+        if: needs.changes.outputs.unit_full == 'true'
         with:
           persist-credentials: false
       - uses: actions/setup-node@v4
-        if: needs.changes.outputs.changelog_only != 'true'
+        if: needs.changes.outputs.unit_full == 'true'
         with:
           node-version: "22"
           cache: npm
           cache-dependency-path: worker/package-lock.json
       - name: Beta preview alias contract
-        if: needs.changes.outputs.changelog_only != 'true' && (github.event_name == 'pull_request')
+        if: needs.changes.outputs.unit_full == 'true' && (github.event_name == 'pull_request')
         run: node tools/check_beta_review_contract.mjs
       - name: Expiring beta flag contract
-        if: needs.changes.outputs.changelog_only != 'true'
+        if: needs.changes.outputs.unit_full == 'true'
         run: node tools/validate_beta_flags.mjs
       - name: Generated source-contract docs
-        if: needs.changes.outputs.changelog_only != 'true'
+        if: needs.changes.outputs.unit_full == 'true'
         run: node tools/generate_source_docs.mjs --check
       - name: Recorded civic-data source contracts
-        if: needs.changes.outputs.changelog_only != 'true'
+        if: needs.changes.outputs.unit_full == 'true'
         # Pull-request CI is deterministic. The daily source-contract workflow owns live
         # upstream checks and opens an issue when a publisher drifts.
         run: node tools/verify_source_contracts.mjs
       - name: Depot re-derivation drift gate
-        if: needs.changes.outputs.changelog_only != 'true'
+        if: needs.changes.outputs.unit_full == 'true'
         # Gauge-fired on PR/push (never cron). Re-derives the join graph from the committed
         # source-contract measurements + gap taxonomy; fails if the registry is stale so an
         # ingest PR must carry its own depot refresh. Writes nothing in CI.
         run: node tools/depot_rederive.mjs --check
       - name: Script syntax gate (all pages + i18n.js)
-        if: needs.changes.outputs.changelog_only != 'true'
+        if: needs.changes.outputs.unit_full == 'true'
         run: python3 test/standards/js_syntax.py
       - name: i18n key parity
-        if: needs.changes.outputs.changelog_only != 'true'
+        if: needs.changes.outputs.unit_full == 'true'
         run: python3 test/standards/i18n_keys.py
       - name: i18n reference + cache-skew gate
-        if: needs.changes.outputs.changelog_only != 'true'
+        if: needs.changes.outputs.unit_full == 'true'
         run: python3 test/standards/i18n_refs.py
       - name: i18n static-fallback sync gate (fallback text vs. en dictionary)
-        if: needs.changes.outputs.changelog_only != 'true'
+        if: needs.changes.outputs.unit_full == 'true'
         run: python3 test/standards/i18n_fallback_sync.py
       - name: Stray-English static lint
-        if: needs.changes.outputs.changelog_only != 'true'
+        if: needs.changes.outputs.unit_full == 'true'
         run: python3 test/standards/stray_english.py
       - name: Spanish diacritics gate
-        if: needs.changes.outputs.changelog_only != 'true'
+        if: needs.changes.outputs.unit_full == 'true'
         run: python3 test/standards/es_diacritics.py
       - name: i18n glossary + placeholder-parity gate
-        if: needs.changes.outputs.changelog_only != 'true'
+        if: needs.changes.outputs.unit_full == 'true'
         run: python3 test/standards/i18n_glossary.py
       - name: Attribution-presence gate (open-data citation, LL11/2012)
-        if: needs.changes.outputs.changelog_only != 'true'
+        if: needs.changes.outputs.unit_full == 'true'
         run: python3 test/standards/attribution.py
       - name: Descriptive-link-text lint (NYC Web Content Style Guide)
-        if: needs.changes.outputs.changelog_only != 'true'
+        if: needs.changes.outputs.unit_full == 'true'
         run: python3 test/standards/link_text.py
       - name: Static outline:none guard (focus-visible companion)
-        if: needs.changes.outputs.changelog_only != 'true'
+        if: needs.changes.outputs.unit_full == 'true'
         run: python3 test/standards/outline_guard.py
       - name: Form-control border contrast gate (WCAG 1.4.11)
-        if: needs.changes.outputs.changelog_only != 'true'
+        if: needs.changes.outputs.unit_full == 'true'
         run: python3 test/standards/form_border_contrast.py
       - name: NYC copy lint (NYC Web Content Style Guide)
-        if: needs.changes.outputs.changelog_only != 'true'
+        if: needs.changes.outputs.unit_full == 'true'
         run: python3 test/standards/nyc_copy_lint.py --gate
       - name: Page-metadata gate (meta description length, title format)
-        if: needs.changes.outputs.changelog_only != 'true'
+        if: needs.changes.outputs.unit_full == 'true'
         run: python3 test/standards/page_metadata.py
       - name: CityScroll brand, SVG, and icon-family gate
-        if: needs.changes.outputs.changelog_only != 'true'
+        if: needs.changes.outputs.unit_full == 'true'
         run: python3 test/standards/brand_identity.py
       - name: CityScroll canonical-domain contract
-        if: needs.changes.outputs.changelog_only != 'true'
+        if: needs.changes.outputs.unit_full == 'true'
         run: python3 test/standards/canonical_domain.py
       - name: External-link presentation gate (same-tab, no link icons)
-        if: needs.changes.outputs.changelog_only != 'true'
+        if: needs.changes.outputs.unit_full == 'true'
         run: python3 test/standards/link_targets.py
       - name: Heading-punctuation lint (NYC Web Content Style Guide)
-        if: needs.changes.outputs.changelog_only != 'true'
+        if: needs.changes.outputs.unit_full == 'true'
         run: python3 test/standards/heading_punctuation.py
       - name: GenAI content-disclosure presence gate
-        if: needs.changes.outputs.changelog_only != 'true'
+        if: needs.changes.outputs.unit_full == 'true'
         run: python3 test/standards/genai_disclosure.py
       - name: NL-input clarity gate (quiz keyword field vs. Ask box, parsed-chip status label)
-        if: needs.changes.outputs.changelog_only != 'true'
+        if: needs.changes.outputs.unit_full == 'true'
         run: python3 test/standards/nl_input_clarity.py
       - name: Public demo-link manifest schema
-        if: needs.changes.outputs.changelog_only != 'true'
+        if: needs.changes.outputs.unit_full == 'true'
         run: python3 test/standards/demo_links.py
       - name: Site unit tests
-        if: needs.changes.outputs.changelog_only != 'true'
+        if: needs.changes.outputs.unit_full == 'true'
         # Scoped to test/ — a bare `node --test` also recurses into worker/test/,
         # which needs worker/node_modules (installed in the next step).
         run: node --test test/*.test.mjs
       - name: Preset shortcuts and rotating suggestions resolve to live results
-        if: needs.changes.outputs.changelog_only != 'true'
+        if: needs.changes.outputs.unit_full == 'true'
         run: node tools/validate_presets.mjs --check
       - name: Site/worker contract tests (drift guard — see docs/drift-inventory.md)
-        if: needs.changes.outputs.changelog_only != 'true'
+        if: needs.changes.outputs.unit_full == 'true'
         # test/contract/*.test.mjs imports worker/src/lib/*.mjs modules directly (all
         # dependency-free — no worker/node_modules needed) alongside functions extracted from
         # index.html, and runs one shared fixture set through both. A change that makes either
         # side disagree with the other on the same input fails here, not in production.
         run: node --test test/contract/*.test.mjs
       - name: Worker dependencies
-        if: needs.changes.outputs.changelog_only != 'true'
+        if: needs.changes.outputs.unit_full == 'true'
         run: npm ci
         working-directory: worker
       - name: Worker unit tests
-        if: needs.changes.outputs.changelog_only != 'true'
+        if: needs.changes.outputs.unit_full == 'true'
         run: node --test
         working-directory: worker
 
   performance:
     name: Performance budgets (20-sample p95)
-    # Not required by merge rules, but fail-fast here for the same heavy-work safety.
+    # Not required by merge rules. Frontend-only: worker/docs PRs skip the 8-minute
+    # browser budget (measured long pole, non-blocking but burns Actions minutes).
     needs: [changes, unit]
-    if: needs.changes.outputs.changelog_only != 'true' && needs.unit.result == 'success'
+    if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
-      - uses: actions/setup-python@v5
+      - uses: ./.github/actions/setup-playwright
         with:
-          python-version: "3.12"
-      - name: Install pinned browser runner
-        run: |
-          pip install playwright==1.58.0
-          playwright install --with-deps chromium
+          playwright-version: "1.58.0"
       - name: Run deterministic performance contract
         run: |
           python3 test/performance/verify.py \
@@ -265,132 +283,78 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Changelog-only, non-frontend, or unit-failed — report required check success
-        if: needs.changes.outputs.changelog_only == 'true' || needs.changes.outputs.frontend != 'true' || needs.unit.result != 'success'
+        if: needs.changes.outputs.unit_full != 'true' || needs.changes.outputs.frontend != 'true' || needs.unit.result != 'success'
         run: |
           if [ "${{ needs.unit.result }}" != "success" ] && \
-             [ "${{ needs.changes.outputs.changelog_only }}" != "true" ] && \
+             [ "${{ needs.changes.outputs.unit_full }}" = "true" ] && \
              [ "${{ needs.changes.outputs.frontend }}" = "true" ]; then
             echo "Skipping heavy a11y suite because unit failed — re-run after unit is green."
           else
-            echo "Skipping heavy a11y suite (changelog_only=${{ needs.changes.outputs.changelog_only }}, frontend=${{ needs.changes.outputs.frontend }})."
+            echo "Skipping heavy a11y suite (unit_full=${{ needs.changes.outputs.unit_full }}, frontend=${{ needs.changes.outputs.frontend }})."
           fi
           echo "Reporting success for 'Accessibility + language gate (axe on every PR)'."
 
       - uses: actions/checkout@v4
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         with:
           persist-credentials: false
-      - uses: actions/setup-python@v5
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
-        with:
-          python-version: "3.12"
-      - name: Install Playwright
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
-        run: |
-          pip install playwright
-          playwright install --with-deps chromium
+      - uses: ./.github/actions/setup-playwright
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
       - name: QR share interaction and capture gate
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/functional/capture_qr_share.py --verify-only
       - name: Item hash-route scroll and focus gate
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/functional/19_hash_route_focus.py
       - name: Serve site locally
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: |
           python3 -m http.server 8000 --directory site &
           sleep 1
       - name: axe WCAG 2.2 accessibility gate (390px + 1440px, every activated state)
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/functional/11_accessibility.py
       - name: Language switcher gate
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/functional/12_language.py
       - name: Focus-visibility keyboard-walk gate
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/functional/14_focus_visible.py
       - name: Public demo-link regression contract
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         env:
           CROL_BASE: http://127.0.0.1:8000/
         run: python3 test/functional/20_demo_links.py
       - name: Public demo-link contract on cityscroll.org
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         env:
           CROL_BASE: https://cityscroll.org/
         run: python3 test/functional/20_demo_links.py
       - name: External-link new-tab characterization gate (City Record/PASSPort/Checkbook NYC)
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/functional/16_external_links.py
       - name: Label-coverage census (rendered DOM, incl. hidden + JS-built fields)
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/standards/label_coverage.py
       - name: Heading-uniqueness + landmark check (per rendered state)
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/standards/heading_uniqueness.py
-
-  # The runtime stray-English guard is hermetic (fixture dataset, every upstream stubbed),
-  # so unlike the live-API functional layer it runs on EVERY PR: untranslated chrome in a
-  # shipped language mode fails the build. Parameterized by CROL_GUARD_LANGS as LL30
-  # languages ship (wave 7 activates one run per language).
-  i18n-guard:
-    name: Stray-English guard (runtime, fixtures)
-    # Fail-fast: wait for Unit tests so we can skip locale-heavy runs with a completed
-    # required-check conclusion when Unit checks already failed.
-    needs: [changes, unit]
-    if: always()
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - name: Changelog-only, non-frontend, or unit-failed — report required check success
-        if: needs.changes.outputs.changelog_only == 'true' || needs.changes.outputs.frontend != 'true' || needs.unit.result != 'success'
-        run: |
-          if [ "${{ needs.unit.result }}" != "success" ] && \
-             [ "${{ needs.changes.outputs.changelog_only }}" != "true" ] && \
-             [ "${{ needs.changes.outputs.frontend }}" = "true" ]; then
-            echo "Skipping runtime stray-English suite because unit failed — re-run after unit is green."
-          else
-            echo "Skipping runtime i18n guard (changelog_only=${{ needs.changes.outputs.changelog_only }}, frontend=${{ needs.changes.outputs.frontend }})."
-          fi
-          echo "Reporting success for 'Stray-English guard (runtime, fixtures)'."
-
-      - uses: actions/checkout@v4
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
-        with:
-          persist-credentials: false
-      - uses: actions/setup-node@v4
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
-        with:
-          node-version: 20
-      - uses: actions/setup-python@v5
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
-        with:
-          python-version: "3.12"
-      - name: Install Playwright
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
-        run: |
-          pip install playwright
-          playwright install --with-deps chromium
-      - name: Run guard (es + zh-Hans + ru + bn + ht + ko + fr + pl + ar + ur, all pages)
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
-        env:
-          CROL_GUARD_LANGS: es,zh-Hans,ru,bn,ht,ko,fr,pl,ar,ur
-          CROL_GUARD_PAGES: index,about,data,stats,api,changelog
-        run: python3 test/functional/13_stray_english.py
+      # Locale/layout companions (cheap; reuse this job's Playwright install).
+      # Runtime multi-locale stray-English walk (13_stray_english.py) is NOT in CI —
+      # Unit static lint is the gate (see AGENTS.md / tools/merge_queue_policy.json notes).
       - name: RTL guard (ar + ur — dir propagation, logical-property mirroring, bidi isolation)
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/functional/15_rtl.py
       - name: Forecast discoverability guard (reachable from notice detail, translates)
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/functional/16_forecast_discoverability.py
       - name: Default-example guard (Land/Staffing open on a live-picked example, deep links win)
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/functional/17_default_examples.py
 
   # readable-or-else (github.com/jimdc/readable-or-else): ratchet-mode reading-level gate
   # against the committed baseline (nycsg7 = NYC Web Content Style Guide, FK grade 7). Its
-  # own job per docs/consumers/crol-list.md in that repo, mirroring the unit / i18n-guard
-  # split — it's the first job to need textstat/beautifulsoup4, keep that isolated too.
+  # own job — the first that needs textstat/beautifulsoup4, keep that isolated.
   # Not yet on PyPI; install straight from the (public) source repo.
   reading-level:
     name: Reading-level ratchet gate (readable-or-else)
@@ -402,34 +366,34 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Changelog-only, non-frontend, or unit-failed — report required check success
-        if: needs.changes.outputs.changelog_only == 'true' || needs.changes.outputs.frontend != 'true' || needs.unit.result != 'success'
+        if: needs.changes.outputs.unit_full != 'true' || needs.changes.outputs.frontend != 'true' || needs.unit.result != 'success'
         run: |
           if [ "${{ needs.unit.result }}" != "success" ] && \
-             [ "${{ needs.changes.outputs.changelog_only }}" != "true" ] && \
+             [ "${{ needs.changes.outputs.unit_full }}" = "true" ] && \
              [ "${{ needs.changes.outputs.frontend }}" = "true" ]; then
             echo "Skipping reading-level suite because unit failed — re-run after unit is green."
           else
-            echo "Skipping reading-level suite (changelog_only=${{ needs.changes.outputs.changelog_only }}, frontend=${{ needs.changes.outputs.frontend }})."
+            echo "Skipping reading-level suite (unit_full=${{ needs.changes.outputs.unit_full }}, frontend=${{ needs.changes.outputs.frontend }})."
           fi
           echo "Reporting success for 'Reading-level ratchet gate (readable-or-else)'."
 
       - uses: actions/checkout@v4
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         with:
           persist-credentials: false
       - uses: actions/setup-python@v5
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         with:
           python-version: "3.12"
       - uses: actions/setup-node@v4
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         with:
           node-version: 20
       - name: Install readable-or-else
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: pip install git+https://github.com/jimdc/readable-or-else.git
       - name: Reading-level ratchet gate
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: |
           python3 test/standards/reading_level.py \
             --root site \
@@ -446,7 +410,7 @@ jobs:
       # up from --suggest; wiring it as an auto-commit CI step is a separate, deliberate
       # opt-in this repo hasn't taken — see AGENTS.md.
       - name: Suggest simplifications (opt-in via PR label)
-        if: needs.changes.outputs.changelog_only != 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && (contains(github.event.pull_request.labels.*.name, 'suggest-rewrite'))
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success' && (contains(github.event.pull_request.labels.*.name, 'suggest-rewrite'))
         env:
           READABLE_OR_ELSE_LLM_BASE: ${{ secrets.READABLE_OR_ELSE_LLM_BASE }}
           READABLE_OR_ELSE_LLM_KEY: ${{ secrets.READABLE_OR_ELSE_LLM_KEY }}
@@ -515,19 +479,13 @@ jobs:
   functional:
     name: Functional (Playwright, manual)
     needs: changes
-    if: github.event_name == 'workflow_dispatch' && needs.changes.outputs.changelog_only != 'true'
+    if: github.event_name == 'workflow_dispatch' && needs.changes.outputs.unit_full == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Install Playwright
-        run: |
-          pip install playwright
-          playwright install --with-deps chromium
+      - uses: ./.github/actions/setup-playwright
       - name: Run functional suite
         run: bash test/functional/run.sh
