@@ -426,13 +426,18 @@ test("meeting outcomes: matched chain shows matter and vote counts", () => {
     meetingFixture.events,
     meetingFixture.event_items,
     meetingFixture.votes,
+    meetingFixture.attachments,
   );
   const record = model.records[0];
   assert.equal(record.join.matched, true);
   const html = meetingOutcomesHTML(record);
   assert.match(html, /Council meeting outcomes/);
-  assert.match(html, /Council matter|Vote|Outcome/);
+  assert.equal((html.match(/data-meeting-spine/g) || []).length, 1);
+  assert.match(html, /Agenda item[\s\S]*Council matter[\s\S]*Outcome[\s\S]*Attachments/);
   assert.match(html, /aye|nay|6|Approved/i);
+  assert.match(html, /Staff report/);
+  assert.match(html, /Agenda/);
+  assert.match(html, /Minutes/);
 });
 
 test("meeting outcomes: unmatched renders the specific join reason", () => {

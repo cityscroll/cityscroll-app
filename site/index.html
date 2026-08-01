@@ -337,6 +337,21 @@
   .connector{display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:24px;flex:0 0 30px}
   @media(max-width:560px){.connector{transform:rotate(90deg);height:24px}.stage{flex-basis:100%}}
 
+  /* Council meeting spine: keep each Legistar agenda item, matter, outcome, and
+     attachment set in one ordered row so their provenance remains visible. */
+  .meeting-spines{display:flex;flex-direction:column;gap:12px}
+  .meeting-spine{flex-wrap:nowrap}
+  .meeting-spine .stage{flex:1 1 0;min-width:0}
+  .meeting-spine .box{min-width:0}
+  .meeting-spine .bt,.meeting-spine .lc-pct{overflow-wrap:anywhere}
+  .meeting-spine-docs{display:flex;flex-direction:column;align-items:flex-start;gap:2px}
+  .meeting-spine-docs .view{margin-top:0}
+  @media(max-width:780px){
+    .meeting-spine{flex-wrap:wrap}
+    .meeting-spine .stage{flex-basis:100%;min-width:100%}
+    .meeting-spine .connector{transform:rotate(90deg);height:24px;flex-basis:100%}
+  }
+
   /* Lifecycle timeline (PROC-001): compact horizontal stages with status-aware styling.
      Reuses the .chain/.stage/.box/.connector grid above; the modifiers below set the
      status accent (solid green = confirmed, dashed amber = nothing found, dashed muted =
@@ -6675,16 +6690,15 @@ function meetingOutcomesHTML(record, notice){
   }
   const event = record.council_event || {};
   const items = Array.isArray(record.agenda_items) ? record.agenda_items : [];
-  const eventDocs = (event.documents || []).slice(0,4).map(d =>
-    d.url ? `<a class="view" href="${escUiHtml(d.url)}" ${EXT_ATTRS}>${escUiHtml(d.name || t("meeting_outcomes_document_lbl"))}${extSR()}</a>` : ""
-  ).filter(Boolean).join(" \u00b7 ");
-  let mattersHTML = "";
+  const eventDocs = Array.isArray(event.documents) ? event.documents : [];
+  let spinesHTML = "";
   for(const item of items){
-    for(const matter of (item.matters || [])){
+    const matters = Array.isArray(item.matters) && item.matters.length ? item.matters : [{}];
+    for(const matter of matters){
       const votes = Array.isArray(matter.votes) ? matter.votes : [];
-      let detailHTML = "";
+      let outcomeHTML = "";
       if(votes.length){
-        detailHTML = votes.map(v => {
+        outcomeHTML = votes.map(v => {
           const c = v.counts || {};
           return `<div class="lc-pct">${t("meeting_outcomes_vote_html",{
             result: escUiHtml(v.result || "—"),
@@ -6693,30 +6707,56 @@ function meetingOutcomesHTML(record, notice){
           })}</div>`;
         }).join("");
       } else if(matter.outcome || matter.status || matter.passed){
-        detailHTML = `<div class="lc-pct">${t("meeting_outcomes_outcome_html",{
+        outcomeHTML = `<div class="lc-pct">${t("meeting_outcomes_outcome_html",{
           outcome: escUiHtml(matter.outcome || matter.passed || matter.status)
         })}</div>`;
       } else if(matter.matter_id){
-        detailHTML = `<div class="lc-norecord">${t("meeting_outcomes_no_votes_html",{
+        outcomeHTML = `<div class="lc-norecord">${t("meeting_outcomes_no_votes_html",{
           matter: escUiHtml(matter.title || matter.matter_file || matter.matter_id || "—")
         })}</div>`;
+      } else {
+        outcomeHTML = `<div class="lc-norecord">${t("meeting_outcomes_no_matters_html")}</div>`;
       }
-      const matterFile = matter.matter_file ? `<div class="lc-pct" lang="en" dir="ltr">${escUiHtml(matter.matter_file)}</div>` : "";
-      const docs = (matter.documents || []).slice(0, 3).map(d =>
-        d.url ? `<a class="view" href="${escUiHtml(d.url)}" ${EXT_ATTRS}>${escUiHtml(d.name || d.document_id || t("meeting_outcomes_document_lbl"))}${extSR()}</a>` : ""
-      ).filter(Boolean).join(" \u00b7 ");
-      mattersHTML += `<div class="stage"><div class="box matched">
-        <div class="stage-name">${t("meeting_outcomes_matter_lbl")}</div>
-        <div class="when">${escUiHtml(matter.status || matter.outcome || matter.passed || "—")}</div>
-        ${matterFile}
-        <div class="lc-pct" lang="en" dir="ltr">${escUiHtml(matter.title || matter.matter_id || "—")}</div>
-        ${detailHTML}
-        ${docs?`<div class="lc-pct">${docs}</div>`:""}
-      </div></div>`;
+      const documents = [...(Array.isArray(matter.documents) ? matter.documents : []), ...eventDocs]
+        .filter((d, index, all) => d && d.url && all.findIndex(x => x && x.url === d.url) === index)
+        .slice(0, 6);
+      const documentsHTML = documents.length
+        ? `<div class="meeting-spine-docs">${documents.map(d =>
+          `<a class="view" href="${escUiHtml(d.url)}" ${EXT_ATTRS}>${escUiHtml(d.name || d.document_id || t("meeting_outcomes_document_lbl"))}${extSR()}</a>`
+        ).join("")}</div>`
+        : `<div class="lc-norecord">${t("meeting_outcomes_no_attachments_html")}</div>`;
+      const agendaTitle = item.title || item.body_text || item.agenda_item_id || "—";
+      const agendaNumber = item.agenda_number ? `<div class="when" lang="en" dir="ltr">#${escUiHtml(item.agenda_number)}</div>` : "";
+      const matterMatched = Boolean(matter.matter_id);
+      spinesHTML += `<div class="chain meeting-spine" data-meeting-spine>
+        <div class="stage"><div class="box matched">
+          <div class="stage-name">${t("meeting_outcomes_agenda_lbl")}</div>
+          ${agendaNumber}
+          <div class="bt" lang="en" dir="ltr">${escUiHtml(agendaTitle)}</div>
+        </div></div>
+        <div class="connector" aria-hidden="true">→</div>
+        <div class="stage"><div class="box ${matterMatched?"matched":"unmatched"}">
+          <div class="stage-name">${t("meeting_outcomes_matter_lbl")}</div>
+          <div class="when" lang="en" dir="ltr">${escUiHtml(matter.matter_file || matter.status || "—")}</div>
+          <div class="bt" lang="en" dir="ltr">${escUiHtml(matter.title || matter.matter_id || agendaTitle)}</div>
+          ${matterMatched?"":`<div class="lc-norecord">${t("meeting_outcomes_no_matters_html")}</div>`}
+        </div></div>
+        <div class="connector" aria-hidden="true">→</div>
+        <div class="stage"><div class="box ${matterMatched?"matched":"unmatched"}">
+          <div class="stage-name">${t("meeting_outcomes_outcome_lbl")}</div>
+          <div class="when" lang="en" dir="ltr">${escUiHtml(matter.outcome || matter.passed || matter.status || "—")}</div>
+          ${outcomeHTML}
+        </div></div>
+        <div class="connector" aria-hidden="true">→</div>
+        <div class="stage"><div class="box ${documents.length?"matched":"unmatched"}">
+          <div class="stage-name">${t("meeting_outcomes_attachments_lbl")}</div>
+          ${documentsHTML}
+        </div></div>
+      </div>`;
     }
   }
-  if(!mattersHTML){
-    mattersHTML = `<div class="note">${t("meeting_outcomes_no_matters_html")}</div>`;
+  if(!spinesHTML){
+    spinesHTML = `<div class="note">${t("meeting_outcomes_no_matters_html")}</div>`;
   }
   const eventLink = event.event_url
     ? `<a class="view" href="${escUiHtml(event.event_url)}" ${EXT_ATTRS}>${escUiHtml(event.body_name || event.title || event.event_id || "—")}${extSR()}</a>`
@@ -6726,8 +6766,7 @@ function meetingOutcomesHTML(record, notice){
       event: eventLink,
       date: event.start_time ? fdate(String(event.start_time).slice(0,10)) : (event.event_date || "—")
     })}</div>
-    ${eventDocs?`<div class="lc-pct">${eventDocs}</div>`:""}
-    <div class="chain">${mattersHTML}</div>
+    <div class="meeting-spines">${spinesHTML}</div>
     <div class="note">${t("meeting_outcomes_provenance_html")}</div>`;
 }
 
