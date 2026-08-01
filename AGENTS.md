@@ -277,18 +277,29 @@ Endpoint `GET /subsidy-lifecycle?id=` (`worker/src/subsidy_lifecycle.mjs`). The
 EDC documents page is often Cloudflare-blocked to edge fetch (HTTP 403 / challenge
 HTML) — treat as feed failure, do **not** permanently D1-cache `source_status:
 unavailable`. When the feed fails, `projectFromIdaNotice` derives a hearing-stage
-join from the City Record IDA hearing notice (company names, event date). Keep
-honest unavailable copy only when the feed is down **and** no notice-derived
-hearing applies. Schema safety net: `ensureSubsidySchema` (migration
-`0005_subsidy_lifecycle.sql`).
+join from the City Record IDA hearing notice (company names, event date, and
+labeled **Total Project Cost** / **Total Development Cost** dollars via
+`parseHearingMoneyFromBody`). Keep honest unavailable copy only when the feed is
+down **and** no notice-derived hearing applies. Schema safety net:
+`ensureSubsidySchema` (migration `0005_subsidy_lifecycle.sql`).
+
+**Money honesty on hearing-only joins:** when `join.method=city-record-hearing`
+(and/or `feed_status=unavailable`), never label blank structured money as class
+(b) “city does not publish on the Build NYC record.” Use class (a)
+`not_yet_ingested` / feed-unreachable copy for structured Build NYC fields, and
+**show** parsed City Record costs when present (`total_project_cost` / `total_development_cost` on the money object). Durable EDC structured-feed
+ingestion remains a follow-up (bot-blocked host). Fixture:
+`worker/test/fixtures/subsidy-hearing-money/20220525018.json`. Verify:
+`node --test test/subsidy_hearing_money.test.mjs`.
 
 **Age-aware gap kinds** (temporal sibling of paid / verified_zero / unavailable):
 `subsidyGapKind` → `too_soon` | `not_published` | (worker) `unavailable`. Lag table
 `SUBSIDY_STAGE_EXPECT_LAG_DAYS` (board ~60d, closing ~180d, project_record ~90d).
 Demo/backtest notices must be **aged** (2022–2024 hearings) so later stages read
 `not_published`, not “could not reach.” Young hearings use “check back” copy.
-Characterization: `test/subsidy_lifecycle.test.mjs`, `test/ida_notice_defects.test.mjs`.
-Aged demo ids: `20220525018`, `20231004016`, `20240617012`.
+Characterization: `test/subsidy_lifecycle.test.mjs`, `test/ida_notice_defects.test.mjs`,
+`test/subsidy_hearing_money.test.mjs`.
+Aged demo ids: `20220525018` (non-null parsed cost), `20231004016`, `20240617012`.
 
 ## Checkbook Contracts row identity
 

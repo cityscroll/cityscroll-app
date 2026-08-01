@@ -6834,27 +6834,79 @@ function subsidyLifecycleHTML(data, notice){
     });
   }
 
-  // Field-level gaps only when the join exists (detail under the matched summary).
+  // Field-level money + company/place: show matched amounts; gap copy depends on whether
+  // we only have a City Record hearing fallback (structured Build NYC feed not joined).
+  const cityRecordHearing = join.method === "city-record-hearing";
+  const feedUnavailable = join.feed_status === "unavailable";
+  // Class (a) when structured Build NYC fields were never joined (feed down / hearing-only).
+  // Class (b) "city does not publish" only when a real Build NYC project row is linked and blank.
+  const moneyGapClassA = cityRecordHearing || feedUnavailable;
   let fieldGaps = "";
   if(join.matched){
     if(data.company && data.company.status !== "matched"){
-      fieldGaps += `<div class="lc-norecord">${t("subsidy_company_unknown_html")}</div>`;
+      fieldGaps += moneyGapClassA
+        ? `<div class="lc-norecord">${t("subsidy_company_not_yet_ingested_html",{source:`<span lang="en" dir="ltr">${t("subsidy_source_build_nyc")}</span>`})}</div>`
+        : `<div class="lc-norecord">${t("subsidy_company_unknown_html")}</div>`;
     }
     if(data.place && data.place.status !== "matched"){
-      fieldGaps += `<div class="lc-norecord">${t("subsidy_place_unknown_html")}</div>`;
+      fieldGaps += moneyGapClassA
+        ? `<div class="lc-norecord">${t("subsidy_place_not_yet_ingested_html",{source:`<span lang="en" dir="ltr">${t("subsidy_source_build_nyc")}</span>`})}</div>`
+        : `<div class="lc-norecord">${t("subsidy_place_unknown_html")}</div>`;
     }
     if(data.money){
-      if(data.money.requested_benefit && data.money.requested_benefit.status !== "matched"){
-        fieldGaps += `<div class="lc-norecord">${t("subsidy_money_unknown_html",{field:t("subsidy_money_requested_lbl")})}</div>`;
-      }
-      if(data.money.estimated_cost && data.money.estimated_cost.status !== "matched"){
-        fieldGaps += `<div class="lc-norecord">${t("subsidy_money_unknown_html",{field:t("subsidy_money_estimated_lbl")})}</div>`;
+      const moneyFieldLabel = (slot) => {
+        if(slot && slot.field === "total_project_cost") return t("subsidy_money_total_project_cost_lbl");
+        if(slot && slot.field === "total_development_cost") return t("subsidy_money_total_development_cost_lbl");
+        return null;
+      };
+      const renderMoneySlot = (slot, defaultFieldLbl) => {
+        if(!slot) return;
+        const field = moneyFieldLabel(slot) || defaultFieldLbl;
+        if(slot.status === "matched" && slot.value != null){
+          const fromHearing = slot.source === "city-record-hearing" || cityRecordHearing;
+          fieldGaps += `<div class="lc-detail">${t(fromHearing ? "subsidy_money_matched_city_record_html" : "subsidy_money_matched_html",{
+            field,
+            amount: lifecycleMoney(slot.value)
+          })}</div>`;
+          return;
+        }
+        if(slot.status !== "matched"){
+          fieldGaps += moneyGapClassA
+            ? `<div class="lc-norecord">${t("subsidy_money_not_yet_ingested_html",{
+                field,
+                source:`<span lang="en" dir="ltr">${t("subsidy_source_build_nyc")}</span>`
+              })}</div>`
+            : `<div class="lc-norecord">${t("subsidy_money_unknown_html",{field})}</div>`;
+        }
+      };
+      renderMoneySlot(data.money.estimated_cost, t("subsidy_money_estimated_lbl"));
+      // Requested benefit: still class-a/b when unknown; rarely present on hearing body.
+      if(data.money.requested_benefit && data.money.requested_benefit.status === "matched" && data.money.requested_benefit.value != null){
+        fieldGaps += `<div class="lc-detail">${t("subsidy_money_matched_html",{
+          field: t("subsidy_money_requested_lbl"),
+          amount: lifecycleMoney(data.money.requested_benefit.value)
+        })}</div>`;
+      } else if(data.money.requested_benefit && data.money.requested_benefit.status !== "matched"){
+        // On hearing-only joins, skip a second "not yet ingested" for requested benefit when
+        // we already showed the cost figure (or its gap) — requested benefit is not a labeled
+        // hearing-body field. Still surface class-b when a real Build NYC row is linked.
+        if(!moneyGapClassA){
+          fieldGaps += `<div class="lc-norecord">${t("subsidy_money_unknown_html",{field:t("subsidy_money_requested_lbl")})}</div>`;
+        }
       }
     }
   }
 
+  let feedNote = "";
+  if(join.matched && feedUnavailable){
+    feedNote = t("subsidy_feed_unavailable_html",{
+      source:`<span lang="en" dir="ltr">${t("subsidy_source_build_nyc")}</span>`
+    });
+  }
+
   return `<div class="chain-h">${t("subsidy_lifecycle_heading")}</div>
     ${joinNote?`<div class="note">${joinNote}</div>`:""}
+    ${feedNote?`<div class="note">${feedNote}</div>`:""}
     ${stages?`<div class="chain">${stages}</div>`:""}
     ${fieldGaps}
     <div class="note">${t("subsidy_provenance_note_html",{
