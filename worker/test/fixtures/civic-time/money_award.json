@@ -2,7 +2,19 @@
   "lens": "money",
   "run_id": "fixture-money-baseline",
   "processed_at": "2026-08-01T12:00:00.000Z",
-  "description": "City Record award notice + Checkbook registration; clocks labeled per field.",
+  "description": "City Record award notice + Checkbook registration; clocks labeled per field. Subjects stay distinct (notice vs contract); subject_links connect them without rewrite.",
+  "subject_links": [
+    {
+      "type": "registered_as",
+      "from": "notice:20240723114",
+      "to": "contract:CT107120248803393",
+      "evidence": {
+        "basis": "checkbook_registration_join",
+        "contract_id": "CT107120248803393",
+        "request_id": "20240723114"
+      }
+    }
+  ],
   "assertions": [
     {
       "event_kind": "procurement.notice_published",

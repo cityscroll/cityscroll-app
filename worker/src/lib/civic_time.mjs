@@ -260,6 +260,8 @@ export function validateEnvelope(event) {
 
 /**
  * Map a fixture document (array of source assertions + optional prior events) to envelopes.
+ * Does not rewrite assertion subject_ref values. Optional doc.subject_links are not
+ * folded into envelopes — load them with linksFromCivicFixtureDoc from subject_registry.
  */
 export function mapFixtureDoc(doc, opts = {}) {
   const run_id = opts.run_id ?? doc.run_id ?? "fixture-run";

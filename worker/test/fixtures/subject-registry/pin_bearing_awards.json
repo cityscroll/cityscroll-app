@@ -1,0 +1,30 @@
+{
+  "description": "Modern PIN-bearing award field cases for cross_subject_link_rate. Each row needs notice_id + contract_id + pin; links are supplied by the product surface under test (lifecycle or fixture), not invented here.",
+  "metric": "cross_subject_link_rate",
+  "cases": [
+    {
+      "id": "field-hntb-20260623008",
+      "notice_id": "20260623008",
+      "contract_id": "CT184120268807929",
+      "pin": "84124P0003001",
+      "sources": ["city_record", "checkbook"],
+      "notes": "HNTB truncation gold pair gv0-001 — same PIN across City Record award and Checkbook registration."
+    },
+    {
+      "id": "field-housing-options-20231222103",
+      "notice_id": "20231222103",
+      "contract_id": "CT107120248803393",
+      "pin": "07123E0076001",
+      "sources": ["city_record", "checkbook"],
+      "notes": "Checkbook multi-row collapse field case; lifecycle registered join yields one CT."
+    },
+    {
+      "id": "field-money-fixture-20240723114",
+      "notice_id": "20240723114",
+      "contract_id": "CT107120248803393",
+      "pin": "07123E0076001",
+      "sources": ["city_record", "checkbook"],
+      "notes": "Civic-time money_award fixture subjects (notice vs contract split)."
+    }
+  ]
+}

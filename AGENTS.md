@@ -329,6 +329,18 @@ meeting-outcomes records, and digest `temporal_action` clock labels).
 Verify: `node --test worker/test/civic_time_contract.test.mjs && node worker/scripts/civic-time-diff.mjs --fixtures worker/test/fixtures/civic-time --check`.
 Digest delivery identity remains `docs/digest-time-ontology.md` (separate concern).
 
+## Subject registry (cross-spine subject_ref)
+
+Shared `kind:id` subject vocabulary + typed links so civic-time, lifecycle, ER source
+records, claim layer, and ops action objects resolve the **same** real-world object
+without silently rewriting `notice:` into `contract:`. Pure lib:
+`worker/src/lib/subject_registry.mjs`. Product surface: `assembleLifecycle` stamps
+`subject_refs` + `subject_links` on confident notice↔contract joins. Metric:
+`cross_subject_link_rate` on PIN-bearing awards
+(`worker/test/fixtures/subject-registry/pin_bearing_awards.json`). ADR:
+`docs/adr/subject-registry.md`. Verify:
+`node --test worker/test/subject_registry.test.mjs`.
+
 ## Ops contract (desk ↔ worker)
 
 Versioned machine-readable ops schema so private desk panels stay mechanically aligned
