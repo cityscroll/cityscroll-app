@@ -1,0 +1,106 @@
+{
+  "kind": "entity_centric_audit_receipt",
+  "schema_version": 1,
+  "primary_signal": "false_split",
+  "population_size": 37,
+  "sample_size": 16,
+  "parameters": {
+    "sample_size": 16,
+    "seed": "entity-audit-v1",
+    "large_cluster_min": 4,
+    "low_confidence_min": 0.6,
+    "sampling_unit": "whole_entity"
+  },
+  "strata": {
+    "false_split": {
+      "eligible": 1,
+      "sampled": 1,
+      "inclusion_probability": 1
+    },
+    "large_cluster": {
+      "eligible": 5,
+      "sampled": 4,
+      "inclusion_probability": 0.8
+    },
+    "singleton": {
+      "eligible": 13,
+      "sampled": 3,
+      "inclusion_probability": 0.23076923076923078
+    },
+    "low_confidence": {
+      "eligible": 2,
+      "sampled": 2,
+      "inclusion_probability": 1
+    },
+    "authority_key": {
+      "eligible": 3,
+      "sampled": 3,
+      "inclusion_probability": 1
+    },
+    "other_cluster": {
+      "eligible": 13,
+      "sampled": 3,
+      "inclusion_probability": 0.23076923076923078
+    }
+  },
+  "selection": "seeded_sha256_rank_without_replacement",
+  "sample_sha256": "06e2147003f498e4318d8ee422885bc8dc5f34b7fdd659e08b21631ef3510732",
+  "observed_on": "2026-08-01",
+  "input": {
+    "kind": "entity_component_evaluation",
+    "path": "entity_resolution/eval/components/2026-08-01/report.json",
+    "sha256": "7380108d69213bd97c7a81861dadc6a1146c5ed15f0254aa40f34ce30f9046ef",
+    "schema_version": 1,
+    "matcher_version": "conventional_v1",
+    "population_size": 37,
+    "pairwise_metrics": {
+      "precision": 1,
+      "recall": 0.896551724137931,
+      "candidate_recall": 0.9655172413793104,
+      "unresolved_rate": 0.19444444444444445,
+      "false_merge": 0,
+      "false_split": 3
+    },
+    "entity_metrics": {
+      "gold": {
+        "reference_entity_components": 20,
+        "recovered_entity_components": 19,
+        "under_split_entity_components": 1,
+        "entity_component_recall": 0.95,
+        "under_split_entity_rate": 0.05,
+        "predicted_multi_record_components": 22,
+        "over_merged_predicted_components": 0,
+        "over_merge_component_rate": 0,
+        "negative_constraints": 7,
+        "violated_negative_constraints": 0,
+        "negative_constraint_violation_rate": 0
+      },
+      "authority": {
+        "reference_entity_components": 1,
+        "recovered_entity_components": 1,
+        "under_split_entity_components": 0,
+        "entity_component_recall": 1,
+        "under_split_entity_rate": 0,
+        "predicted_multi_record_components": 1,
+        "over_merged_predicted_components": 0,
+        "over_merge_component_rate": 0,
+        "negative_constraints": 1,
+        "violated_negative_constraints": 0,
+        "negative_constraint_violation_rate": 0
+      }
+    }
+  },
+  "artifacts": {
+    "sample": {
+      "path": "entity_resolution/eval/entity_audits/2026-08-01/audit_sample.jsonl",
+      "sha256": "f73a3beb38146d8c4e07002ba7cd3edcb335ab856e966de578256cd6dad7a6e6"
+    },
+    "label_sheet": {
+      "path": "entity_resolution/eval/entity_audits/2026-08-01/label_sheet.csv",
+      "sha256": "681561f6e83a783c528300a9730bf1a6481ea35a5a84bad83ea52a378fe20d13"
+    },
+    "receipt": {
+      "path": "entity_resolution/eval/entity_audits/2026-08-01/receipt.json"
+    }
+  }
+}

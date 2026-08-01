@@ -14,10 +14,11 @@
       "rows": 9
     }
   },
-  "matcher_version": "conventional_v0",
+  "matcher_version": "conventional_v1",
   "parameters": {
     "sample_size": 8,
-    "sampling_unit": "whole_reference_component"
+    "sampling_unit": "whole_reference_component",
+    "pairwise_blocker": "token_v0"
   },
   "metrics": {
     "gold": {
@@ -47,5 +48,13 @@
       "negative_constraint_violation_rate": 0
     }
   },
-  "sample_sha256": "59e6fa9b60a4f17cfc80468a6bfdb534340eb517e7717d16ace3726fe358054f"
+  "pairwise_metrics": {
+    "precision": 1,
+    "recall": 0.896551724137931,
+    "candidate_recall": 0.9655172413793104,
+    "unresolved_rate": 0.19444444444444445,
+    "false_merge": 0,
+    "false_split": 3
+  },
+  "sample_sha256": "06d1fafb3c080419be659e4f07bf6976c946414c9b269af1302a2408b9887fec"
 }

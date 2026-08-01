@@ -86,6 +86,17 @@ function safeRate(numerator, denominator) {
   return denominator === 0 ? null : numerator / denominator;
 }
 
+function observationHasAuthorityKey(observation) {
+  const attrs = observation?.attrs || {};
+  return [
+    attrs.authority_keys,
+    attrs.contract_ids,
+    attrs.pin,
+    attrs.epin,
+    attrs.contract_id,
+  ].some((value) => Array.isArray(value) ? value.length > 0 : clean(value).length > 0);
+}
+
 function evaluateCorpus(inputCases, corpus) {
   const cases = inputCases.map((row) => normalizeCase(row, corpus));
   const observations = new Map();
@@ -105,6 +116,7 @@ function evaluateCorpus(inputCases, corpus) {
 
   const evaluated = [];
   const overMergeComponents = [];
+  const auditEntities = [];
   const violatedNegativeIds = new Set();
   let negativeConstraints = 0;
   let violatedNegativeConstraints = 0;
@@ -117,6 +129,7 @@ function evaluateCorpus(inputCases, corpus) {
       .filter((row) => row.label === "same")
       .map((row) => [row.left_id, row.right_id]);
     const predictedLinks = [];
+    const pairScores = [];
     for (let leftIndex = 0; leftIndex < entry.ids.length; leftIndex++) {
       for (let rightIndex = leftIndex + 1; rightIndex < entry.ids.length; rightIndex++) {
         const leftId = entry.ids[leftIndex];
@@ -124,7 +137,9 @@ function evaluateCorpus(inputCases, corpus) {
         const left = entry.observations.get(leftId);
         const right = entry.observations.get(rightId);
         const features = extractFeatures(left, right, { entityType });
-        if (scorePair(left, right, features).decision === "same") {
+        const score = scorePair(left, right, features);
+        pairScores.push({ left_id: leftId, right_id: rightId, ...score });
+        if (score.decision === "same") {
           predictedLinks.push([leftId, rightId]);
         }
       }
@@ -188,9 +203,64 @@ function evaluateCorpus(inputCases, corpus) {
         observations: members.map((id) => ({ id, ...entry.observations.get(id) })),
       });
     }
+
+    const falseSplitMembers = new Set(
+      evaluated
+        .filter((component) => component.entity_type === entityType && component.under_split)
+        .flatMap((component) => component.observations.map((observation) => observation.id)),
+    );
+    for (const members of predicted) {
+      if (members.some((member) => falseSplitMembers.has(member))) continue;
+      const memberSet = new Set(members);
+      const observationsForEntity = members.map((id) => ({ id, ...entry.observations.get(id) }));
+      const internalSame = pairScores.filter((pair) => (
+        pair.decision === "same" && memberSet.has(pair.left_id) && memberSet.has(pair.right_id)
+      ));
+      const boundaryUnresolved = pairScores.filter((pair) => (
+        pair.decision === "unresolved" &&
+        (memberSet.has(pair.left_id) !== memberSet.has(pair.right_id))
+      ));
+      const sources = [...new Set(observationsForEntity.map((observation) => observation.source_system))].sort();
+      const predictedId = componentId(corpus, entityType, members);
+      const violatedNegativeCaseIds = [...(violatedByPredicted.get(predictedId) || [])].sort();
+      auditEntities.push({
+        audit_id: `era-${predictedId}`,
+        component_id: predictedId,
+        corpus,
+        entity_type: entityType,
+        unit_kind: "resolved_entity",
+        record_count: members.length,
+        source_count: sources.length,
+        sources,
+        min_link_confidence: internalSame.length
+          ? Math.min(...internalSame.map((pair) => pair.confidence))
+          : null,
+        max_boundary_unresolved_confidence: boundaryUnresolved.length
+          ? Math.max(...boundaryUnresolved.map((pair) => pair.confidence))
+          : null,
+        authority_key_case: observationsForEntity.some(observationHasAuthorityKey),
+        false_split_callout: false,
+        over_merge_callout: violatedNegativeCaseIds.length > 0,
+        violated_negative_case_ids: violatedNegativeCaseIds,
+        observations: observationsForEntity,
+      });
+    }
   }
 
   const underSplit = evaluated.filter((component) => component.under_split);
+  for (const component of underSplit) {
+    auditEntities.push({
+      ...component,
+      audit_id: `era-${component.component_id}-false-split`,
+      unit_kind: "reference_entity",
+      min_link_confidence: null,
+      max_boundary_unresolved_confidence: null,
+      authority_key_case: component.observations.some(observationHasAuthorityKey),
+      false_split_callout: true,
+      over_merge_callout: false,
+      violated_negative_case_ids: [],
+    });
+  }
   return {
     corpus,
     components: evaluated.sort((a, b) => a.component_id.localeCompare(b.component_id)),
@@ -209,6 +279,7 @@ function evaluateCorpus(inputCases, corpus) {
       negative_constraint_violation_rate: safeRate(violatedNegativeConstraints, negativeConstraints),
     },
     violated_negative_case_ids: [...violatedNegativeIds].sort(),
+    audit_entities: auditEntities.sort((a, b) => a.audit_id.localeCompare(b.audit_id)),
   };
 }
 
@@ -268,6 +339,8 @@ export function buildEntityComponentReport({ goldCases = [], authorityCases = []
     parameters: { sample_size: sampleSize, sampling_unit: "whole_reference_component" },
     metrics: { gold: gold.metrics, authority: authority.metrics },
     false_split_priority: falseSplitPriority,
+    audit_population: [...authority.audit_entities, ...gold.audit_entities]
+      .sort((a, b) => a.audit_id.localeCompare(b.audit_id)),
     sample,
     composition: Object.fromEntries(stratumOrder.map((stratum) => [
       stratum,
