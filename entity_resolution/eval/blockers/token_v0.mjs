@@ -1,8 +1,9 @@
 /**
- * Token / stem blocking v0 (eval-only candidate generation).
+ * Token / stem blocking v0 (pure candidate generation).
  *
- * Offline blocker for gold-pair candidate_recall. Does not write production
- * links or touch D1/KV. Later matcher cards (er-06+) may reuse the same keys.
+ * The evaluation harness uses this for gold-pair candidate_recall. The package
+ * candidate-generation surface also reuses these keys; this module itself
+ * never writes links or touches D1/KV.
  *
  * Block keys per side:
  *   - stem:<normalized identity key>   (vendor stem or agency canonical id)
