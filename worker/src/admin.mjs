@@ -12,7 +12,11 @@ import {
   readWatchLog,
 } from "./lib/watchlog.mjs";
 import { dryRunRollupForEmail, digestSendTestForEmail, runCatchUpDigests } from "./alerts.mjs";
-import { toReviewItems } from "../../entity_resolution/review/index.mjs";
+import {
+  INVESTIGATION_WORKSPACE_VERSION,
+  buildInvestigationWorkspace,
+  toReviewItems,
+} from "../../entity_resolution/review/index.mjs";
 import { readPossiblySamePairs } from "./lib/possibly_same.mjs";
 import {
   FALSE_SPLIT_EVIDENCE_VERSION,
@@ -252,6 +256,22 @@ export async function handleAdminPossiblySame(req, env) {
     return json({ error: "review-data-unavailable" }, 503);
   }
   const eventsByPair = Object.groupBy(events, (event) => event.pair_id);
+  const selectedPairId = new URL(req.url).searchParams.get("pair") || "";
+  if (selectedPairId) {
+    const workspace = buildInvestigationWorkspace(selectedPairId, items);
+    if (!workspace) return json({ error: "pair-not-found" }, 404);
+    const workspaceEvents = Object.fromEntries(workspace.comparisons.map((comparison) => [
+      comparison.id,
+      eventsByPair[comparison.id] || [],
+    ]));
+    if ((req.headers.get("accept") || "").includes("application/json")) {
+      return json({ workspace, dispositions: workspaceEvents }, 200);
+    }
+    return new Response(renderInvestigationWorkspacePage(workspace, workspaceEvents, req.url), {
+      status: 200,
+      headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" },
+    });
+  }
   if ((req.headers.get("accept") || "").includes("application/json")) {
     return json({
       reviewVersion: FALSE_SPLIT_EVIDENCE_VERSION,
@@ -261,7 +281,7 @@ export async function handleAdminPossiblySame(req, env) {
       items: items.map((item) => ({ ...item, dispositions: eventsByPair[item.id] || [] })),
     }, 200);
   }
-  return new Response(renderPossiblySamePage(items, eventsByPair), {
+  return new Response(renderPossiblySamePage(items, eventsByPair, req.url), {
     status: 200,
     headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" },
   });
@@ -345,12 +365,19 @@ function dispositionHistoryHtml(events = []) {
     <small>${escapeHtml(event.evidence_version)} · event ${escapeHtml(event.id)}</small></li>`).join("")}</ol>`;
 }
 
-export function renderPossiblySamePage(items = [], eventsByPair = {}) {
+export function renderPossiblySamePage(items = [], eventsByPair = {}, currentUrl = "https://desk.invalid/admin/possibly-same") {
+  const workspaceHref = (pairId) => {
+    const url = new URL(currentUrl);
+    url.searchParams.delete("saved");
+    url.searchParams.set("pair", pairId);
+    return `${url.pathname}${url.search}`;
+  };
   const cards = items.map((item) => `<article class="pair" data-pair-id="${escapeHtml(item.id)}">
     <p class="eyebrow">${escapeHtml(item.label)}</p>
     <h2>${escapeHtml(item.left.name)} <span aria-hidden="true">↔</span> ${escapeHtml(item.right.name)}</h2>
     <p class="score">${escapeHtml(confidenceLabel(item.confidence))} · ${escapeHtml(item.method)}</p>
     <p><strong>Candidate basis:</strong> ${escapeHtml(candidateBasis(item.evidence))}</p>
+    <p><a class="workspace-link" href="${escapeHtml(workspaceHref(item.id))}">Open private evidence workspace</a></p>
     <div class="records">${sourceRecordHtml(item.left, "Record A")}${sourceRecordHtml(item.right, "Record B")}</div>
     ${assertionInterpretationHtml(item.evidence)}
     ${comparisonFeaturesHtml(item.evidence)}
@@ -371,6 +398,73 @@ export function renderPossiblySamePage(items = [], eventsByPair = {}) {
     <header><p class="eyebrow">Authenticated desk review</p><h1>Possibly same vendors</h1><p>These candidate pairs are surfaced for human review. Dispositions are an append-only evidence trail; records are not combined or exposed in the public site.</p></header>
     ${cards || '<p class="empty">No candidate pairs are currently surfaced from recent dual-write observations.</p>'}
   </body></html>`;
+}
+
+function workspaceAssertionRailHtml(rail = {}) {
+  const assertions = (rail.assertions || []).map(assertionSourceHtml).join("");
+  const interpretations = (rail.interpretations || []).map((interpretation) =>
+    `<li><span class="evidence-label interpretation-label">CityScroll interpretation</span>
+      <strong>${escapeHtml(interpretedStatus(interpretedStatusValue(interpretation)))}</strong>
+      <p>${escapeHtml(interpretation.summary || "No comparison summary recorded.")}</p>
+      <small>Comparison ${escapeHtml(interpretation.pair_id)}</small></li>`).join("");
+  return `<article class="workspace-assertion"><h3>${escapeHtml(rail.label)}</h3>
+    <ul class="assertions">${assertions || '<li>No publisher assertions recorded.</li>'}</ul>
+    <ol class="interpretations">${interpretations || '<li>No interpretation recorded.</li>'}</ol></article>`;
+}
+
+function interpretedStatusValue(interpretation = {}) {
+  return [interpretation.status, interpretation.resolution].filter(Boolean).join(" · ") || "unresolved";
+}
+
+function interpretedStatus(value) {
+  const text = String(value || "unresolved");
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+function sourceDisplayName(value) {
+  return String(value || "Source")
+    .replace(/[_-]+/g, " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+function workspaceSourceRailHtml(rail = {}) {
+  return `<section class="source-rail"><h2>${escapeHtml(sourceDisplayName(rail.source))}</h2>
+    <p>${rail.records.length} immutable source snapshot${rail.records.length === 1 ? "" : "s"}</p>
+    ${rail.records.map((record) => sourceRecordHtml(record, "Source record")).join("")}</section>`;
+}
+
+function workspaceDispositionHtml(comparison, events = []) {
+  return `<article class="comparison"><h3>Candidate comparison</h3>
+    <dl><div><dt>Pair ID</dt><dd>${escapeHtml(comparison.id)}</dd></div>
+      <div><dt>Method</dt><dd>${escapeHtml(comparison.method)}</dd></div>
+      <div><dt>Shared keys</dt><dd>${escapeHtml((comparison.shared_keys || []).join(", ") || "None recorded")}</dd></div></dl>
+    <h4>Disposition history</h4>${dispositionHistoryHtml(events)}</article>`;
+}
+
+export function renderInvestigationWorkspacePage(workspace, eventsByPair = {}, currentUrl = "https://desk.invalid/admin/possibly-same") {
+  const backUrl = new URL(currentUrl);
+  backUrl.searchParams.delete("pair");
+  backUrl.searchParams.delete("saved");
+  const selectedEvents = eventsByPair[workspace.id] || [];
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Private evidence workspace</title>
+    <style>body{font:16px system-ui,sans-serif;max-width:1220px;margin:36px auto;padding:0 20px;color:#17202a;background:#f2eee6}a{color:#175f78}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.09em;color:#795548;font-weight:750}.scope{max-width:760px}.summary{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.summary span{background:#e3ddd1;border-radius:999px;padding:7px 11px;font:600 13px ui-monospace,monospace}.source-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px;align-items:start}.source-rail{min-width:0;background:#fff;border-top:5px solid #8c6a3e;border-radius:10px;padding:18px;box-shadow:0 2px 8px #0000000d}.source-rail>h2{text-transform:capitalize;margin-top:0}.record{min-width:0;background:#f6f7f7;padding:14px;border-radius:8px;margin-top:12px}.record h3{font-size:16px}.record dl,.comparison dl{display:grid;grid-template-columns:1fr 1fr;gap:8px}.record dl div,.comparison dl div{min-width:0}.record dt,.comparison dt{font-size:12px;color:#687783}.record dd,.comparison dd{margin:4px 0 0;overflow-wrap:anywhere}.record table{width:100%;border-collapse:collapse;font-size:13px}.record th,.record td{text-align:left;vertical-align:top;border-top:1px solid #d8dfe3;padding:6px;overflow-wrap:anywhere}.record th{width:35%}.assertion-section,.comparison-section,.decision{margin-top:24px}.workspace-assertion,.comparison,.decision{background:#fff;border:1px solid #d8d2c8;border-radius:10px;padding:18px;margin:12px 0}.assertions{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:10px;list-style:none;padding:0}.assertion{min-width:0;padding:12px;border:1px solid #ded7ca;border-radius:7px}.assertion strong,.assertion-value,.assertion small{display:block;overflow-wrap:anywhere}.assertion-value{margin:6px 0;font:600 15px ui-monospace,monospace}.assertion small{color:#687783}.interpretations{background:#eaf3f7;border-left:4px solid #39788f;padding:12px 12px 12px 34px}.evidence-label{display:inline-block;margin-bottom:6px;padding:2px 6px;border-radius:4px;font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase}.assertion-label{background:#f1e9d9;color:#604a25}.interpretation-label{background:#cfe5ee;color:#194f64}.history time,.history small{display:block;color:#687783}.decision input,.decision textarea{display:block;width:100%;padding:8px;margin:6px 0 12px;box-sizing:border-box}.decision textarea{min-height:80px}.decision fieldset{border:0;padding:0}.decision button{padding:8px 14px;margin-right:6px}@media(max-width:620px){.record dl,.comparison dl{grid-template-columns:1fr}}</style></head><body>
+    <nav><a href="${escapeHtml(`${backUrl.pathname}${backUrl.search}`)}">← Candidate tray</a></nav>
+    <header><p class="eyebrow">Authenticated desk · ${escapeHtml(INVESTIGATION_WORKSPACE_VERSION)}</p><h1>Private evidence workspace</h1>
+      <p class="scope">${escapeHtml(workspace.scope.note)}</p>
+      <div class="summary"><span>${workspace.scope.source_rails} source rails</span><span>${workspace.scope.source_records} source records</span><span>${workspace.scope.candidate_pairs} candidate comparisons</span></div></header>
+    <main><section aria-labelledby="source-rails"><h2 id="source-rails">Publisher evidence rails</h2><div class="source-grid">${workspace.sources.map(workspaceSourceRailHtml).join("")}</div></section>
+      <section class="assertion-section" aria-labelledby="assertion-rails"><h2 id="assertion-rails">Assertion and interpretation rails</h2>
+        <p>Publisher assertions remain separate from CityScroll interpretations. Conflicts are left unresolved.</p>
+        ${workspace.assertions.map(workspaceAssertionRailHtml).join("") || '<p>No cross-source assertion conflicts are recorded for this case.</p>'}</section>
+      <section class="comparison-section" aria-labelledby="comparisons"><h2 id="comparisons">Candidate comparisons</h2>
+        ${workspace.comparisons.map((comparison) => workspaceDispositionHtml(comparison, eventsByPair[comparison.id] || [])).join("")}</section>
+      <form class="decision" method="post"><h2>Append a disposition for the selected pair</h2><input type="hidden" name="pair_id" value="${escapeHtml(workspace.id)}">
+        <label>Operator <input name="actor" required maxlength="120" autocomplete="username"></label>
+        <label>Evidence note <textarea name="note" maxlength="2000"></textarea></label>
+        <fieldset><legend>Disposition</legend><button name="decision" value="same">Same</button><button name="decision" value="different">Different</button><button name="decision" value="defer">Defer</button></fieldset>
+        <small>Saving appends an immutable evidence event. It does not change entity links or source assertions.</small>
+        ${selectedEvents.length ? `<p>${selectedEvents.length} prior event${selectedEvents.length === 1 ? "" : "s"} for this pair.</p>` : ""}</form>
+    </main></body></html>`;
 }
 
 /**

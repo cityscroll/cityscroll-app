@@ -462,6 +462,14 @@ detection are separately labeled CityScroll interpretations and never select a w
 Pure model: `entity_resolution/review/assertion_evidence.mjs`. Characterization:
 `node --test test/entity_resolution_assertion_evidence.test.mjs`.
 
+**Private evidence workspace (er-17):** the authenticated
+`/admin/possibly-same?pair=` view expands a selected pair into its connected candidate
+component, grouped into independent publisher rails. It composes the assertion rail and
+append-only disposition history without selecting canonical values or changing links.
+Pure model: `entity_resolution/review/investigation_workspace.mjs`. Characterization and
+capture: `node --test worker/test/private_evidence_workspace.test.mjs`,
+`python3 tools/capture_private_evidence_workspace.py`.
+
 **Public entity dossier (er-15):** `GET /entity-dossier?id=` reads canonical entities and
 linked immutable source snapshots into a bounded, allowlisted view. Exact source
 assertions retain publisher provenance and observation time; disagreements keep every value,
