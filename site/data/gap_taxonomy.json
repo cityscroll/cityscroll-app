@@ -444,7 +444,9 @@
       "source_contract_id": "nyc-rules-rss",
       "status": "landed",
       "join_keys": [
-        "agency"
+        "agency",
+        "publication_date",
+        "title_tokens"
       ],
       "join_coverage": {},
       "landing_page": "https://rules.cityofnewyork.us/",
@@ -2039,6 +2041,34 @@
       "evidence": "Measured 2026-07-30: 40/40 non-Council public hearings unmatched on /meeting-outcomes. Open Data community board datasets (e.g. ruf7-3wgc, 3gkd-ddzn) are contacts/rosters, not votes. No citywide open vote feed for community boards or borough presidents. Product copy uses the not_published register with specific pointers; Council-matched Legistar behavior is unchanged."
     },
     {
+      "id": "rules-event-spine-unmatched",
+      "surface": "Agency Rules notice detail · lifecycle event slots without an NYC Rules join",
+      "i18n_key": "rule_event_not_yet_ingested_html",
+      "class": "not_yet_ingested",
+      "public_source": {
+        "name": "NYC Rules RSS feed",
+        "access": "Official NYC Rules RSS 2.0 feed",
+        "landing_page": "https://rules.cityofnewyork.us/",
+        "update_cadence": "As rules are published or revised",
+        "join_keys": [
+          "agency",
+          "publication_date",
+          "title_tokens"
+        ]
+      },
+      "notices_affected_estimate": "Agency Rules notices inside the materialization window that do not have a confident NYC Rules join.",
+      "evidence": "The edge-materialized NYC Rules read model exposes official lifecycle dates. A City Record notice without a joined RSS item is an incomplete adapter/join slot, so the public detail uses the not-yet-ingested register and names NYC Rules."
+    },
+    {
+      "id": "rules-event-date-unpublished",
+      "surface": "Agency Rules notice detail · missing hearing, comment, adoption, or effective date on a joined rule",
+      "i18n_key": "rule_event_not_published_html",
+      "class": "not_published",
+      "would_appear_in": "the official NYC Rules rule page and RSS fields if the agency releases that lifecycle date",
+      "notices_affected_estimate": "Joined rules whose official RSS item omits one or more lifecycle dates.",
+      "evidence": "The event spine maps all date fields present on the joined official item without stage collapse. Once the item is joined, an absent source field is not an ingest failure; the slot uses the not-published register and points to the official rule page."
+    },
+    {
       "id": "exam-outcome-aggregate",
       "surface": "staffing exam cards · post-cycle outcomes",
       "i18n_key": null,
@@ -2266,7 +2296,7 @@
     "Gap-pressure tail 2026-07-30: Capital Projects n7gv-k5yt fuzzy join ≤1% → class-b pointer for procurement-planning-budget; Civil Service List closed-exam overlap 44.54% → ship exam-level list aggregates; non-Council meeting outcomes reclassified not_published with BP/CB minutes pointers."
   ],
   "depot_refresh": {
-    "observed_on": "2026-07-31",
+    "observed_on": "2026-08-01",
     "source_contracts_fingerprint": "84aa82661c407276ecfc215fe9567fc50fa18c4b99f9c01e791c9b90b8c699d4",
     "materialized_crosswalks": 11,
     "candidate_crosswalks": 46,

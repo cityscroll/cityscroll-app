@@ -25,6 +25,7 @@ function rssItem(opts) {
   if (opts.comment_by_date) parts.push(`<comment_by_date>${opts.comment_by_date}</comment_by_date>`);
   if (opts.hearing_date_1) parts.push(`<hearing_date_1>${opts.hearing_date_1}</hearing_date_1>`);
   if (opts.rule_short_summary) parts.push(`<rule_short_summary><![CDATA[${opts.rule_short_summary}]]></rule_short_summary>`);
+  if (opts.content) parts.push(`<content:encoded><![CDATA[${opts.content}]]></content:encoded>`);
   parts.push(`<wfw:commentRss>${opts.url}feed/</wfw:commentRss>`);
   parts.push(`<slash:comments>${opts.commentCount || 0}</slash:comments>`);
   return `<item>${parts.join("")}</item>`;
@@ -119,7 +120,9 @@ const FIXTURES = {
       url: "https://rules.cityofnewyork.us/rule/sidewalk-cafe/",
       pubDate: "Mon, 20 Jul 2026 15:05:56 +0000",
       agency_name: "DCP",
+      rule_status: "1",
       rule_adoption_date: "20260615",
+      content: "<em>Rule Effective Date:</em> <strong>06-15-2026</strong>",
       comment_by_date: "20260501",
       hearing_date_1: "20260501",
       rule_short_summary: "Updated sidewalk cafe regulations.",
@@ -167,18 +170,21 @@ test("hearing: future hearing date without open comment classifies as hearing", 
   assert.equal(rule.url, "https://rules.cityofnewyork.us/rule/energy-code/");
 });
 
-test("adopted: future adoption date classifies as adopted with adoption date preserved", () => {
+test("adopted: adoption publication with a future effective date remains adopted", () => {
   const rule = parseRss(FIXTURES.adopted.rss);
   assert.equal(classifyStage(rule, NOW), "adopted");
-  assert.equal(rule.adoption_date, "2027-01-01");
+  assert.equal(rule.effective_date, "2027-01-01");
+  assert.equal(rule.adoption_published_at, "2026-07-28T13:32:11.000Z");
   assert.equal(rule.rule_status, "1");
   assert.equal(rule.url, "https://rules.cityofnewyork.us/rule/gas-detectors/");
 });
 
-test("effective: past adoption date classifies as effective", () => {
+test("effective: official effective date classifies as effective without collapsing adoption", () => {
   const rule = parseRss(FIXTURES.effective.rss);
   assert.equal(classifyStage(rule, NOW), "effective");
-  assert.equal(rule.adoption_date, "2026-06-15");
+  assert.equal(rule.effective_date, "2026-06-15");
+  assert.equal(rule.adoption_published_at, "2026-07-20T15:05:56.000Z");
+  assert.equal(rule.effective_date, "2026-06-15");
   assert.equal(rule.url, "https://rules.cityofnewyork.us/rule/sidewalk-cafe/");
 });
 
@@ -253,14 +259,15 @@ test("the comment URL links to the official NYC Rules comment feed, not a copied
   assert.ok(!m.rule.summary.includes("comment text"));
 });
 
-test("adoption and effective dates from the RSS are preserved exactly", () => {
+test("adoption publication and effective dates from the RSS remain distinct", () => {
   const adoptedRule = parseRss(FIXTURES.adopted.rss);
-  assert.equal(adoptedRule.adoption_date, "2027-01-01");
+  assert.equal(adoptedRule.effective_date, "2027-01-01");
 
   const effectiveRule = parseRss(FIXTURES.effective.rss);
-  assert.equal(effectiveRule.adoption_date, "2026-06-15");
+  assert.equal(effectiveRule.effective_date, "2026-06-15");
+  assert.equal(effectiveRule.effective_date, "2026-06-15");
 
   const proposedRule = parseRss(FIXTURES.proposed.rss);
-  assert.equal(proposedRule.adoption_date, null);
+  assert.equal(proposedRule.adoption_published_at, null);
   assert.equal(proposedRule.comment_by_date, null);
 });

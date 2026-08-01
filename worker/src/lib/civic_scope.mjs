@@ -217,14 +217,17 @@ export function normalizeCitywideRuleRecord({
   const stage = nycRules ? classifyStage(nycRules, now) : "proposed";
   const commentDeadline = nycRules?.comment_by_date || null;
   const hearingDate = nycRules?.hearing_date || cityRecordRow?.event_date || null;
-  const effectiveDate = nycRules?.adoption_date || null;
+  const adoptionPublishedAt = nycRules?.adoption_published_at || null;
+  const effectiveDate = nycRules?.effective_date || null;
   const deadline = commentDeadline
     ? { type: "comment", at: commentDeadline, label: "Comment deadline" }
     : hearingDate
       ? { type: "hearing", at: hearingDate, label: "Hearing date" }
       : effectiveDate
         ? { type: "effective", at: effectiveDate, label: "Effective date" }
-        : null;
+        : adoptionPublishedAt
+          ? { type: "adoption", at: adoptionPublishedAt, label: "Adoption published" }
+          : null;
 
   const nycRulesUrl = nycRules?.url || null;
   const cityRecordId = cityRecordRow?.request_id || null;
@@ -318,7 +321,8 @@ export function normalizeCitywideRuleRecord({
           comment_url: nycRules.comment_url || null,
           comment_by_date: nycRules.comment_by_date || null,
           hearing_date: nycRules.hearing_date || null,
-          adoption_date: nycRules.adoption_date || null,
+          adoption_published_at: nycRules.adoption_published_at || null,
+          effective_date: nycRules.effective_date || null,
         }
         : null,
     },

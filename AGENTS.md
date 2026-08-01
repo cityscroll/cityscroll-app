@@ -464,6 +464,16 @@ so existing alert and contract-spine paths can consume it. Publisher columns alw
 Characterization and real-notice metrics: `node --test test/notice_facts.test.mjs
 worker/test/ingest_map.test.mjs`.
 
+## Rules event spine
+
+NYC Rules lifecycle dates remain distinct events in `worker/src/lib/rules.mjs`:
+proposal publication, public hearing, comment close, adoption, and effective date.
+Date-only fields are New York calendar dates, not inferred clock times; comment close
+events carry alert metadata. The `/rules` read model is `rules:materialized:v2`, and
+Agency Rules notice detail owns the public spine. Verify:
+`node --test worker/test/rules_event_spine.test.mjs test/rules_deadline_render.test.mjs`.
+Captures: `python3 tools/capture_rule_event_spine.py`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
