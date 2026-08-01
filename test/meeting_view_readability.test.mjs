@@ -119,7 +119,7 @@ test("multi-matter multi-action meeting collapses and suppresses empty tallies",
     },
     agenda_items: [
       {
-        title: "Application number N 1 (Public School 15 Annex) submitted by LPC…",
+        title: "Application number N 1 (Public School 15 Annex) submitted by LPC.",
         matters: [{
           matter_id: "79062",
           matter_file: "LU 0091-2026",
@@ -129,7 +129,7 @@ test("multi-matter multi-action meeting collapses and suppresses empty tallies",
         }],
       },
       {
-        title: "Application number N 1 (Public School 15 Annex) submitted by LPC…",
+        title: "Application number N 1 (Public School 15 Annex) submitted by LPC.",
         matters: [{
           matter_id: "79062",
           matter_file: "LU 0091-2026",
@@ -140,7 +140,7 @@ test("multi-matter multi-action meeting collapses and suppresses empty tallies",
         }],
       },
       {
-        title: "Application number N 2 (Church of Saint Mary) submitted by LPC…",
+        title: "Application number N 2 (Church of Saint Mary) submitted by LPC.",
         matters: [{
           matter_id: "79063",
           matter_file: "LU 0092-2026",
@@ -150,7 +150,7 @@ test("multi-matter multi-action meeting collapses and suppresses empty tallies",
         }],
       },
       {
-        title: "Application number N 2 (Church of Saint Mary) submitted by LPC…",
+        title: "Application number N 2 (Church of Saint Mary) submitted by LPC.",
         matters: [{
           matter_id: "79063",
           matter_file: "LU 0092-2026",

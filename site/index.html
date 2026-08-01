@@ -6949,11 +6949,11 @@ function meetingMatterShortTitle(entry){
     if(core) return core;
   }
   if(matter && matter.length <= 100) return matter;
-  if(matter) return matter.slice(0, 97) + "…";
+  if(matter) return matter.slice(0, 97) + "...";
   const agenda = String(entry.agendaTitle || "");
   const paren = agenda.match(/\(([^)]{5,90})\)/);
   if(paren) return paren[1].trim();
-  if(agenda.length > 100) return agenda.slice(0, 97) + "…";
+  if(agenda.length > 100) return agenda.slice(0, 97) + "...";
   return agenda || "—";
 }
 
