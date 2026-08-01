@@ -42,6 +42,13 @@ is the runtime safety net. `lookup_status` is three-state: `ok` / `error` / `ski
 error must never render as a confident empty miss. Characterization:
 `node --test worker/test/passport_lookup.test.mjs`.
 
+Solicitation response handoffs are evidence records, not generic bid links:
+`site/action_registry.js` → `solicitationHandoff`. Notice-named agency systems take
+precedence; PASSPort matches hydrate the guide from `rfx_detail`; unmatched EPIN-shaped
+notices get a search recipe because PASSPort Public has no stable per-RFx URL. Keep the
+field cases in `test/action-rail.test.mjs` and visual evidence in
+`tools/capture_passport_bid_guide.py`.
+
 **Package documents (measured stop, 2026-07-30):** `public_rfx_data` has **no document
 URL columns**. Kill sample on 50 Solicitation+PIN notices: EPIN join **38%**, document
 URL join **0%** (modern universe 0/1470). OCP `3khw-qi8f` and City Record solicitation
