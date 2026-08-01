@@ -23,6 +23,7 @@ import {
   usablePin,
   checkbookSuccess,
 } from "./lib/checkbook_lifecycle.mjs";
+import { dualWriteCheckbookContractObservations } from "./lib/checkbook_source_records.mjs";
 import { enrichLifecycleWithPassport } from "./lib/passport_lifecycle.mjs";
 import { lookupPassportForPin } from "./passport.mjs";
 import { CURRENT_SOLICITATIONS_DATASET } from "./lib/current_solicitations.mjs";
@@ -355,6 +356,24 @@ export async function computeLifecycle(env, requestId, noticeRow) {
     registered: registered.ok ? "ok" : "error",
     spending: spending.ok ? "ok" : "error",
   };
+
+  // Shadow dual-write: retain publisher Contracts rows (Prime + Sub slices) as
+  // immutable observations. Fail-soft and independent of lifecycle assembly.
+  // Spending stays a separate coverage gap (keyed by contract_id, not PIN).
+  if (pending.ok || registered.ok) {
+    const contractRows = [];
+    if (pending.ok) {
+      for (const row of pending.records) {
+        contractRows.push(row?.status ? row : { ...row, status: "pending" });
+      }
+    }
+    if (registered.ok) {
+      for (const row of registered.records) {
+        contractRows.push(row?.status ? row : { ...row, status: "registered" });
+      }
+    }
+    await dualWriteCheckbookContractObservations(env, contractRows, new Date().toISOString());
+  }
 
   const [currentSolicitation, ocpFetch] = await Promise.all([csPromise, ocpPromise]);
   let lifecycle = assembleLifecycle(r, pending.records, registered.records, spending.records, {
