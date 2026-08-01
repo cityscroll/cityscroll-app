@@ -88,7 +88,10 @@ export {
   PUBLICATION_VERSION,
   PUBLIC_ENTITY_FIELDS,
   PUBLIC_ENTITY_LINK_FIELDS,
+  PUBLIC_DOSSIER_FACT_DEFINITIONS,
+  PUBLIC_DOSSIER_VERSION,
   DESK_ONLY_ENTITY_RESOLUTION_FIELDS,
   serializePublicEntity,
+  serializePublicEntityDossier,
   serializePublicEntityLink,
 } from "./publication/index.mjs";
