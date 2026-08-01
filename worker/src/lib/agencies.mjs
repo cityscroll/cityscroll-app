@@ -37,10 +37,26 @@ const GROUPS = {
   "Cultural Affairs": ["CULTURAL AFFAIRS"],
   "Department Of Employment": ["DEPARTMENT OF EMPLOYMENT"],
   "Design and Construction": ["DESIGN AND CONSTRUCTION", "DEPT. OF DESIGN & CONSTRUCTION"],
-  "District Attorney - Kings County": ["DISTRICT ATTORNEY KINGS COUNTY"],
-  "District Attorney - New York County": ["DISTRICT ATTORNEY-MANHATTAN"],
-  "District Attorney - Queens County": ["DISTRICT ATTORNEY QNS COUNTY"],
-  "District Attorney - Richmond County": ["DISTRICT ATTORNEY RICHMOND COU"],
+  "District Attorney - Kings County": [
+    "DISTRICT ATTORNEY KINGS COUNTY",
+    "Brooklyn District Attorney's Office",
+  ],
+  "District Attorney - New York County": [
+    "DISTRICT ATTORNEY-MANHATTAN",
+    "Manhattan District Attorney's Office",
+  ],
+  "District Attorney - Queens County": [
+    "DISTRICT ATTORNEY QNS COUNTY",
+    "Queens District Attorney's Office",
+  ],
+  "District Attorney - Richmond County": [
+    "DISTRICT ATTORNEY RICHMOND COU",
+    "Staten Island District Attorney's Office",
+  ],
+  "District Attorney - Bronx County": [
+    "BRONX DISTRICT ATTORNEY",
+    "Bronx District Attorney's Office",
+  ],
   "Districting Commission": ["DISTRICTING COMMISSION"],
   "Education": ["DEPARTMENT OF EDUCATION ADMIN"],
   "Emergency Management": ["OFFICE OF EMERGENCY MANAGEMENT"],
@@ -57,8 +73,14 @@ const GROUPS = {
     "Dept. of Social Svcs/Human Resources Administration",
   ],
   "Independent Budget Office": ["INDEPENDENT BUDGET OFFICE"],
+  // DoITT was folded into the Office of Technology and Innovation; keep the site
+  // canonical_id stable (information-technology-and-telecommunications) so the
+  // precompiled identity crosswalk continues to key the same enrichment card.
   "Information Technology and Telecommunications": [
-    "DEPT OF INFO TECH & TELECOMM", "TECHNOLOGY & INNOVATION",
+    "DEPT OF INFO TECH & TELECOMM",
+    "TECHNOLOGY & INNOVATION",
+    "Office of Technology and Innovation",
+    "Office of Technology & Innovation",
   ],
   "Investigation": ["DEPARTMENT OF INVESTIGATION"],
   "Juvenile Justice": ["DEPARTMENT OF JUVENILE JUSTICE"],
@@ -85,7 +107,12 @@ const GROUPS = {
   "Public Advocate": ["PUBLIC ADVOCATE"],
   "Records and Information Services": ["DEPT OF RECORDS & INFO SERVICE"],
   "Sanitation": ["DEPARTMENT OF SANITATION"],
-  "Small Business Services": ["DEPARTMENT OF BUSINESS SERV."],
+  "Small Business Services": [
+    "DEPARTMENT OF BUSINESS SERV.",
+    "Department of Business Services",
+    "Department of Small Business Services",
+    "DEPARTMENT OF SMALL BUSINESS SERVICES",
+  ],
   "Tax Commission": ["TAX COMMISSION"],
   "Taxi and Limousine Commission": ["TAXI & LIMOUSINE COMMISSION"],
   "Teachers' Retirement System": ["TEACHERS RETIREMENT SYSTEM"],
@@ -117,6 +144,7 @@ function patternCanonical(raw, key) {
   }
   if (key === "BOARD OF ELECTION POLL WORKERS") return "Board of Elections";
   if (key === "PUBLIC SERVICE CORPS") return "Citywide Administrative Services";
+  // Bronx DA is also in GROUPS; pattern remains a safety net for spelling drift.
   if (key === "BRONX DISTRICT ATTORNEY") return "District Attorney - Bronx County";
   if (key === "PUBLIC ADMINISTRATOR BRONX") return "Public Administrator - Bronx County";
   if (key === "PUBLIC ADMINISTRATOR KINGS") return "Public Administrator - Kings County";

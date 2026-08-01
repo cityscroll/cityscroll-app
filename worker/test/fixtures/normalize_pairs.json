@@ -119,6 +119,24 @@
       "a": "DEPARTMENT OF BUSINESS SERV.",
       "b": "Small Business Services",
       "note": "SBS former City Record name"
+    },
+    {
+      "kind": "agency",
+      "a": "Dept of Info Tech & Telecomm",
+      "b": "Office of Technology and Innovation",
+      "note": "DoITT successor rename → OTI (gold gv0-026)"
+    },
+    {
+      "kind": "agency",
+      "a": "District Attorney - New York County",
+      "b": "Manhattan District Attorney's Office",
+      "note": "County vs borough naming for the same DA office (gold gv0-030)"
+    },
+    {
+      "kind": "agency",
+      "a": "Department of Business Services",
+      "b": "Department of Small Business Services",
+      "note": "Former City Record name vs current SBS (gold gv0-032)"
     }
   ],
   "must_distinct": [
@@ -199,6 +217,12 @@
       "a": "City Council",
       "b": "City Planning",
       "note": "shared City prefix, distinct bodies"
+    },
+    {
+      "kind": "agency",
+      "a": "Manhattan District Attorney's Office",
+      "b": "Brooklyn District Attorney's Office",
+      "note": "same office type, different boroughs must not merge (gold gv0-031)"
     }
   ]
 }
