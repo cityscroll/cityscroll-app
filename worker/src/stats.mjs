@@ -124,7 +124,7 @@ export async function handleStats(req, env, ctx, options = {}) {
   const cache = typeof caches !== "undefined" ? caches.default : null;
   // Version the cache key when the usage reconciliation shape changes so a deploy cannot
   // keep serving a pre-flip empty usage block for the full max-age window.
-  const cacheKey = new Request(new URL("/stats?edge=catchup-v1", req.url).toString(), {
+  const cacheKey = new Request(new URL("/stats?edge=watch-account-v1", req.url).toString(), {
     method: "GET",
   });
   if (cache) {
@@ -145,7 +145,7 @@ export async function handleStats(req, env, ctx, options = {}) {
     digestLastRun,
     catchUpSentToday, catchUpAllTime, catchUpLastRun, laggingSubs,
   ] = await Promise.all([
-      countActiveSubs(env),
+      countSubscriptionMetrics(env),
       readInt(env.ALERT_STATE, `sendcount:${today}`),
       sumSendCounts(env, now),
       sumStat(env.ALERT_STATE, "click", 1, now),
@@ -217,7 +217,7 @@ export async function handleStats(req, env, ctx, options = {}) {
     generated: now.toISOString(),
     window_days: WINDOW_DAYS,
     note: "Aggregate counts only, grouped by day and category. Feed/batch counts are as observed at the origin (edge cache hits are not counted).",
-    subscriptions: { active },
+    subscriptions: { active: active.active, accounts: active.accounts },
     digests: {
       sent_today: sentToday,
       sent_last7d: sent7d,
@@ -267,20 +267,37 @@ export async function handleStats(req, env, ctx, options = {}) {
   return res;
 }
 
-// Count confirmed subscriptions — a cursor walk that never reads the values, so no addresses
-// pass through here. Exported so the cron job can snapshot this same gauge daily (see
-// worker.mjs's scheduled() + lib/stats.mjs's snapshotHistDay).
-export async function countActiveSubs(env) {
-  if (!env.SUBS) return 0;
-  let n = 0, cursor = undefined;
+// Count confirmed subscriptions and the distinct accounts behind them. Values are read only
+// inside this aggregate operation; neither addresses nor subscription records leave the worker.
+export async function countSubscriptionMetrics(env) {
+  if (!env?.SUBS) return { active: 0, accounts: 0 };
+  let active = 0;
+  const accounts = new Set();
+  let cursor = undefined;
   try {
     do {
       const res = await env.SUBS.list({ prefix: "sub:", cursor });
-      n += res.keys.length;
+      for (const key of res.keys || []) {
+        try {
+          const raw = await env.SUBS.get(key.name);
+          const sub = raw ? JSON.parse(raw) : null;
+          if (!sub || sub.paused) continue;
+          const email = typeof sub.email === "string" ? sub.email.trim().toLowerCase() : "";
+          if (!email) continue;
+          active++;
+          accounts.add(email);
+        } catch { /* malformed records do not become confident public counts */ }
+      }
       cursor = res.list_complete ? null : res.cursor;
     } while (cursor);
   } catch { /* partial count beats a 500 */ }
-  return n;
+  return { active, accounts: accounts.size };
+}
+
+// Exported so the cron job can snapshot this same gauge daily (see worker.mjs's scheduled()
+// + lib/stats.mjs's snapshotHistDay).
+export async function countActiveSubs(env) {
+  return (await countSubscriptionMetrics(env)).active;
 }
 
 async function readInt(kv, key) {
