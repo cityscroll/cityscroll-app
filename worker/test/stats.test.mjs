@@ -9,7 +9,7 @@ import {
   snapshotHistDay, ensureHistEra,
 } from "../src/lib/stats.mjs";
 import { handleRedirect } from "../src/redirect.mjs";
-import { handleStats } from "../src/stats.mjs";
+import { countSubscriptionMetrics, handleStats } from "../src/stats.mjs";
 
 // A minimal in-memory KV double (get/put/list subset used by the stats helpers).
 function fakeKV(seed = {}) {
@@ -355,6 +355,28 @@ test("GET /stats publishes a 7-day nl_search total and its per-lens breakdown al
   assert.equal(body.nl_search.by_category_last7d.money, 2);
   assert.equal(body.nl_search.by_category_last7d.land, 1);
   assert.equal(body.nl_search.by_category_last7d.meetings, 0);
+});
+
+test("GET /stats separates active watches from unique accounts and keeps digest counts as send units", async () => {
+  const today = dayStr(new Date());
+  const subs = fakeKV({
+    "sub:ada-1": JSON.stringify({ email: "Shared-Account", lens: "money" }),
+    "sub:ada-2": JSON.stringify({ email: "shared-account", lens: "land" }),
+    "sub:ada-paused": JSON.stringify({ email: "shared-account", paused: true, lens: "people" }),
+    "sub:bo": JSON.stringify({ email: "Other-Account", lens: "rules" }),
+  });
+  const alertState = fakeKV({ [`sendcount:${today}`]: "1" });
+  const metrics = await countSubscriptionMetrics({ SUBS: subs });
+  assert.deepEqual(metrics, { active: 3, accounts: 2 });
+
+  const res = await handleStats(
+    new Request("https://api.cityscroll.org/stats"),
+    { ALERT_STATE: alertState, NL_METER: fakeKV(), SUBS: subs },
+    { waitUntil: async (p) => p },
+  );
+  const body = await res.json();
+  assert.deepEqual(body.subscriptions, { active: 3, accounts: 2 });
+  assert.equal(body.digests.sent_today, 1, "two watches in one account remain one digest send unit");
 });
 
 // ---- w12-16: daily gauge snapshots (active watches has no discrete "event") -------------
