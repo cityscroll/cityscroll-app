@@ -84,10 +84,10 @@ SOURCE_VAULT_ENABLED = "false"
 binding = "USAGE_ANALYTICS"
 dataset = "crol_usage_events_v1"
 
-# Digest delivery queue. QUEUE_DIGESTS="true" switches the cron from
-# the inline send loop to one-job-per-subscription fan-out: independently retryable,
-# poison subs -> DLQ, daily send cap still enforced in the consumer. max_concurrency=1
-# keeps the shared daily counter honest.
+# Digest delivery queue. QUEUE_DIGESTS="true" switches the cron from the inline
+# send loop to one-job-per-account fan-out (type rollup | sub via buildDigestJobs):
+# independently retryable, poison jobs -> DLQ, daily send cap still enforced in the
+# consumer. max_concurrency=1 keeps the shared daily counter honest.
 [[queues.producers]]
 binding = "DIGEST_QUEUE"
 queue = "crol-digests"

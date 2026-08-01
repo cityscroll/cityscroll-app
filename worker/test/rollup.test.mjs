@@ -9,6 +9,7 @@ import {
   sectionWantsSend,
   rollupSendDecision,
   rollupSubject,
+  rollupBodySections,
   toRollupDayLogEntry,
   accountLogId,
 } from "../src/lib/rollup.mjs";
@@ -105,6 +106,30 @@ test("rollupSubject: multi-watch with matches", () => {
     rollupSubject({ totalNew: 0, totalForecasts: 0, labels: ["a", "b"], quiet: true }),
     /still watching — 2 watches/,
   );
+});
+
+test("rollupSubject: multi-watch account with only one wanting label still says N watches", () => {
+  // Production incident shape: 4 active watches, only shelter matched → labels.length === 1.
+  // Subject must not collapse to the single-watch form naming only that label.
+  const subject = rollupSubject({
+    totalNew: 1,
+    totalForecasts: 0,
+    labels: ["contract money — about “shelter” · awards only"],
+    watchCount: 4,
+  });
+  assert.match(subject, /1 new — 4 watches/);
+  assert.doesNotMatch(subject, /shelter/);
+});
+
+test("rollupBodySections: keeps quiet and weekly sections, drops errors", () => {
+  const body = rollupBodySections([
+    { queryLabel: "a", action: "match", new: 1 },
+    { queryLabel: "b", action: "none", new: 0 },
+    { queryLabel: "c", skipped: "weekly", new: 0 },
+    { queryLabel: "d", error: "boom", new: 0 },
+  ]);
+  assert.equal(body.length, 3);
+  assert.deepEqual(body.map((s) => s.queryLabel), ["a", "b", "c"]);
 });
 
 test("toRollupDayLogEntry: kind=rollup and sendUnits=1", () => {
