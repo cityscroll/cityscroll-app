@@ -88,7 +88,8 @@ test("event intake writes only bounded taxonomy dimensions", async () => {
   });
 
   assert.equal(points.length, 1);
-  assert.deepEqual(points[0].blobs, ["search_run", "land", "filters", "queens", "home", TAXONOMY_VERSION]);
+  // blob7 traffic_class defaults to production; developer traffic is excluded from AE writes.
+  assert.deepEqual(points[0].blobs, ["search_run", "land", "filters", "queens", "home", TAXONOMY_VERSION, "production"]);
   assert.deepEqual(points[0].doubles, [1]);
   assert.deepEqual(points[0].indexes, ["search_run"]);
   assert.ok(!JSON.stringify(points[0]).includes("this value"));

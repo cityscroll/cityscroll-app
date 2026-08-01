@@ -3,11 +3,18 @@
 // One Analytics Engine point represents one allowed event. The schema intentionally has no
 // visitor, request, IP, user-agent, query-text, entity-name, or notice-id field. All dimensions
 // are small enumerations from docs/analytics-event-taxonomy.md.
+//
+// traffic_class (blob7): production | developer. Public /stats SQL keeps production only so
+// operator probes and valid developer-exclusion tokens do not inflate Site totals. See
+// worker/src/lib/ops_contract.mjs and docs/analytics-event-taxonomy.md.
+
+import { normalizeUsageTrafficClass } from "./ops_contract.mjs";
 
 export const TAXONOMY_VERSION = "1.1.0";
 export const COMPATIBLE_TAXONOMY_VERSIONS = Object.freeze(["1.0.0", TAXONOMY_VERSION]);
 export const DEFAULT_ANALYTICS_DATASET = "crol_usage_events_v1";
 export const ANALYTICS_RETENTION_DAYS = 90;
+export { normalizeUsageTrafficClass };
 
 export const ANALYTICS_LENSES = Object.freeze([
   "money", "people", "land", "property", "rules", "meetings", "alerts",
@@ -118,12 +125,15 @@ export function normalizeUsageEvent(input) {
   if (spec.details && detail === NONE) return null;
   if (spec.surfaces && surface === NONE) return null;
 
+  const traffic_class = normalizeUsageTrafficClass(input.traffic_class);
+
   return {
     event,
     lens,
     detail,
     geography,
     surface,
+    traffic_class,
     taxonomy_version: TAXONOMY_VERSION,
   };
 }
@@ -133,20 +143,47 @@ export function usageDataPoint(input) {
   if (!event) return null;
   return {
     // SQL: blob1 event, blob2 lens, blob3 detail, blob4 geography, blob5 surface,
-    // blob6 taxonomy version; double1 count. index1 keeps sampling independent per event type.
-    blobs: [event.event, event.lens, event.detail, event.geography, event.surface, event.taxonomy_version],
+    // blob6 taxonomy version, blob7 traffic_class; double1 count.
+    // index1 keeps sampling independent per event type.
+    blobs: [
+      event.event,
+      event.lens,
+      event.detail,
+      event.geography,
+      event.surface,
+      event.taxonomy_version,
+      event.traffic_class,
+    ],
     doubles: [1],
     indexes: [event.event],
   };
+}
+
+/**
+ * Whether this event should write to the production Analytics Engine dataset and
+ * dual-write durable production counters. Missing traffic_class defaults to production
+ * (pre-traffic_class callers and ordinary site events). Only explicit developer is excluded.
+ */
+export function isProductionUsageTraffic(eventOrClass) {
+  if (eventOrClass == null) return true;
+  if (typeof eventOrClass === "string") {
+    return normalizeUsageTrafficClass(eventOrClass) === "production";
+  }
+  if (typeof eventOrClass === "object") {
+    return normalizeUsageTrafficClass(eventOrClass.traffic_class) === "production";
+  }
+  return true;
 }
 
 export function emitUsageEvent(env, input) {
   const point = usageDataPoint(input);
   // Production is an explicit runtime binding. Missing or non-production bindings fail closed,
   // so wrangler dev, preview deployments, and unit-test mocks cannot pollute public counts.
+  // Developer traffic_class is also excluded so probes never inflate public metrics.
   if (
     env?.ANALYTICS_ENVIRONMENT !== "production"
     || !point
+    || !isProductionUsageTraffic(input?.traffic_class)
     || !env?.USAGE_ANALYTICS?.writeDataPoint
   ) return false;
   try {
@@ -170,6 +207,8 @@ function checkedDataset(value) {
 export function usageAnalyticsQuery(datasetName = DEFAULT_ANALYTICS_DATASET) {
   const dataset = checkedDataset(datasetName);
   const versions = COMPATIBLE_TAXONOMY_VERSIONS.map((version) => `'${version}'`).join(", ");
+  // blob7 traffic_class: include rows with missing/empty blob7 (pre-traffic_class era) and
+  // explicit production. Exclude developer so desk and /stats share one production cut.
   return `SELECT
   formatDateTime(timestamp, '%Y-%m-%d', 'Etc/UTC') AS day,
   blob1 AS event,
@@ -181,6 +220,7 @@ export function usageAnalyticsQuery(datasetName = DEFAULT_ANALYTICS_DATASET) {
 FROM ${dataset}
 WHERE timestamp >= NOW() - INTERVAL '${ANALYTICS_RETENTION_DAYS}' DAY
   AND blob6 IN (${versions})
+  AND (blob7 IS NULL OR blob7 = '' OR blob7 = 'production')
 GROUP BY day, event, lens, detail, geography, surface
 ORDER BY day ASC`;
 }

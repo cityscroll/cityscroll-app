@@ -1,6 +1,6 @@
 // POST /events — bounded first-party event intake for the static site.
 
-import { emitUsageEvent, normalizeUsageEvent } from "./lib/analytics.mjs";
+import { emitUsageEvent, isProductionUsageTraffic, normalizeUsageEvent } from "./lib/analytics.mjs";
 import { corsHeaders, isAllowedRequestOrigin } from "./lib/cors.mjs";
 import { bumpCategoryDayStat, bumpStat } from "./lib/stats.mjs";
 
@@ -92,34 +92,40 @@ export async function handleEvent(req, env, options = {}) {
 
   // Header validity is deliberately invisible to callers: accepted events always return the
   // same 204. Invalid or missing exclusion tokens continue into the normal counting path.
-  // Exclusion must run before any counter write (KV fallback or Analytics Engine).
+  // A valid developer-exclusion token stamps traffic_class=developer so desk/ops can filter;
+  // production dual-write counters and AE points stay production-only.
+  let trafficClass = normalized.traffic_class;
   if (env?.ANALYTICS_ENVIRONMENT === "production") {
     const excluded = await hasValidDeveloperExclusion(
       req,
       env,
       options.nowMs ?? Date.now(),
     );
-    if (excluded) return new Response(null, { status: 204, headers: cors });
+    if (excluded) trafficClass = "developer";
+  } else if (env?.ANALYTICS_ENVIRONMENT && env.ANALYTICS_ENVIRONMENT !== "production") {
+    trafficClass = "developer";
   }
+  const stamped = { ...normalized, traffic_class: trafficClass };
 
   // Durable dual-write into ALERT_STATE (same namespace as digests/clicks/feeds). Analytics
   // Engine is best-effort and historically empty when ANALYTICS_ENVIRONMENT was unset; the
   // KV path is the continuous store that must survive domain/route flips. Await before the
   // 204 — fire-and-forget writes are cancelled when the isolate freezes.
-  if (env?.ALERT_STATE) {
+  // Production counters only: developer traffic must not inflate public /stats.
+  if (env?.ALERT_STATE && isProductionUsageTraffic(stamped)) {
     try {
-      const tasks = [bumpStat(env.ALERT_STATE, `usage_${normalized.event}`, now)];
-      if (normalized.event === "page_view") {
-        const surface = String(normalized.surface || "home");
+      const tasks = [bumpStat(env.ALERT_STATE, `usage_${stamped.event}`, now)];
+      if (stamped.event === "page_view") {
+        const surface = String(stamped.surface || "home");
         tasks.push(
           bumpStat(env.ALERT_STATE, "page_view", now),
           bumpCategoryDayStat(env.ALERT_STATE, "page_view", surface, now),
         );
       }
-      if (normalized.event === "search_run" && normalized.lens && normalized.lens !== "none") {
-        tasks.push(bumpCategoryDayStat(env.ALERT_STATE, "usage_search_run", normalized.lens, now));
+      if (stamped.event === "search_run" && stamped.lens && stamped.lens !== "none") {
+        tasks.push(bumpCategoryDayStat(env.ALERT_STATE, "usage_search_run", stamped.lens, now));
       }
-      if (normalized.event === "alert_confirmed") {
+      if (stamped.event === "alert_confirmed") {
         tasks.push(bumpStat(env.ALERT_STATE, "alert_confirmed", now));
       }
       await Promise.all(tasks);
@@ -128,6 +134,6 @@ export async function handleEvent(req, env, options = {}) {
     }
   }
 
-  emitUsageEvent(env, normalized);
+  emitUsageEvent(env, stamped);
   return new Response(null, { status: 204, headers: cors });
 }

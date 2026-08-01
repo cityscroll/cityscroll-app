@@ -24,6 +24,7 @@ import {
   readFalseSplitDispositions,
 } from "./lib/false_split_evidence.mjs";
 import { appendActionLog, reviewActionFromDisposition } from "./lib/action_log.mjs";
+import { buildOpsContract } from "./lib/ops_contract.mjs";
 
 // Store digests rather than publishing the desk's private recipient addresses in this repo.
 const DIGEST_TEST_SEND_ALLOWLIST = new Set([
@@ -469,6 +470,18 @@ export function renderInvestigationWorkspacePage(workspace, eventsByPair = {}, c
         <small>Saving appends an immutable evidence event. It does not change entity links or source assertions.</small>
         ${selectedEvents.length ? `<p>${selectedEvents.length} prior event${selectedEvents.length === 1 ? "" : "s"} for this pair.</p>` : ""}</form>
     </main></body></html>`;
+}
+
+/**
+ * GET /admin/ops-contract?key=…
+ * Versioned machine-readable ops contract for desk panels (no secrets).
+ * FAIL CLOSED: same ADMIN_KEY gate as other /admin/* routes. Never on public /stats.
+ */
+export async function handleAdminOpsContract(req, env) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (req.method !== "GET") return json({ error: "method not allowed" }, 405);
+  return json(buildOpsContract(), 200);
 }
 
 /**
