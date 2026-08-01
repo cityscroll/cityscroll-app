@@ -34,7 +34,6 @@ const { t, tn } = new Function("window", i18nSrc + "\nreturn { t: window.t, tn: 
 
 const { buildApply, mailtoFor, icsForRFP } = new Function(
   "t", "tn", "window",
-  extractConst("PASSPORT") +
   extractConst("REQ_URL") +
   extractConst("EXT_ATTRS") +
   extractConst("extSR") +
@@ -62,11 +61,12 @@ const base = {
   due_date: new Date(Date.now() + 10 * 86400000).toISOString(),
 };
 
-test("no contact email: explainer skips the Email-a-response callout and leads with PASSPort", () => {
+test("no contact email: explainer skips Email-a-response and defers to the system-aware guide", () => {
   const html = buildApply({ ...base, email: null, contact_phone: null });
   assert.doesNotMatch(html, /Email a response/, "no button for a button that isn't there");
   assert.match(html, /no direct contact/i);
-  assert.match(html, /PASSPort/);
+  assert.match(html, /system-specific guide/i);
+  assert.doesNotMatch(html, /PASSPort/);
 });
 
 test("no contact email: no mailto action is rendered either", () => {

@@ -23,3 +23,12 @@ test("the rail exposes official domains and unavailable actions as status text",
   assert.match(html, /next-action-unavailable" role="status"/);
   assert.match(html, /CrolActions\.compileActionRail/);
 });
+
+test("solicitation rail hydrates from lifecycle evidence and renders a copyable response guide", () => {
+  assert.match(html, /rfx_detail:lifecycleData&&lifecycleData\.rfx_detail/);
+  assert.match(html, /paintNoticeActionRail\(actionsEl,r,null,data\)/);
+  assert.match(html, /class="bid-guide" open/);
+  assert.match(html, /data-copy-value/);
+  assert.doesNotMatch(html, /href="\$\{PASSPORT\}"/);
+  assert.doesNotMatch(html, /official_application_url:kind==="solicitation"\?PASSPORT/);
+});
