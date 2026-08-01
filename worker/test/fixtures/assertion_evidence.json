@@ -1,0 +1,26 @@
+{
+  "left": {
+    "source_system": "city_record",
+    "source_system_id": "20260730001",
+    "source_record_id": "city_record:20260730001:hash-a",
+    "source_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260730001",
+    "raw_snapshot": {
+      "vendor_name": "Acme Construction LLC",
+      "contract_amount": "$1,000,000.00",
+      "start_date": "2026-07-01T00:00:00.000",
+      "end_date": "2027-06-30T00:00:00.000"
+    }
+  },
+  "right": {
+    "source_system": "checkbook",
+    "source_system_id": "contract-44",
+    "source_record_id": "checkbook:contract-44:hash-b",
+    "source_url": "https://www.checkbooknyc.com/contract-44",
+    "raw_snapshot": {
+      "payee_name": "Acme Builders Inc",
+      "prime_contract_current_amount": "1250000",
+      "prime_contract_start_date": "07/15/2026",
+      "prime_contract_end_date": "06/30/2027"
+    }
+  }
+}

@@ -456,6 +456,12 @@ records and accepts `same` / `different` / `defer` dispositions. Migration
 they never update `entity_link`. Characterization:
 `node --test worker/test/false_split_evidence.test.mjs`.
 
+**Assertion evidence rail (er-18):** conflicting amount/date values in the tray retain
+their exact publisher field and value as source assertions; normalization and conflict
+detection are separately labeled CityScroll interpretations and never select a winner.
+Pure model: `entity_resolution/review/assertion_evidence.mjs`. Characterization:
+`node --test test/entity_resolution_assertion_evidence.test.mjs`.
+
 **Clerical audit (er-12):** `tools/export_er_clerical_audit.mjs` emits a
 false-split-priority sample (`near_miss` plus `auto_link` control), CSV label
 sheet, and receipt under `entity_resolution/eval/audits/<date>/`. Live mode is
