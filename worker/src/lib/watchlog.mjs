@@ -3,6 +3,7 @@
 
 import { redactEmail } from "./subscriptions.mjs";
 import { describeFilter } from "./confirm_email.mjs";
+import { appendActionLog } from "./action_log.mjs";
 
 export const WATCHLOG_LATEST_KEY = "watchlog:latest";
 export const WATCHLOG_LATEST_LIMIT = 100;
@@ -98,6 +99,23 @@ export async function appendWatchLog(env, {
   action, email, subKey, lens, label, freq, detail, before, after, source,
   at = new Date().toISOString(),
 }) {
+  const actionType = {
+    update: "watch_updated",
+    pause: "watch_paused",
+    unpause: "watch_resumed",
+    delete: "watch_removed",
+    unsubscribe: "watch_removed",
+    unsub_all: "watch_removed",
+  }[action];
+  if (actionType) {
+    await appendActionLog(env, {
+      action_type: actionType,
+      object: { type: "watch", id: lens || "unknown" },
+      method: { name: source === "prefs" ? "preference_center" : "unsubscribe", version: "v1" },
+      metadata: { lens, freq, source },
+      ts: at,
+    });
+  }
   if (!env?.ALERT_STATE || !action || !email || !source) return;
   const event = {
     at,
