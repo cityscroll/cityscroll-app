@@ -95,8 +95,10 @@ node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v
 - er-01 taxonomy ADR · er-03 normalizers · er-04 gold + metrics  
 - er-05 candidate generation (implemented by `candidate_generation/`)
 - er-06 soft “possibly same” UI · er-07 entity_link schema
+- er-10 live false-split visibility from dual-write observations
 
-The er-06 view is read-only and non-assertive. Candidate pairs are provided through the
-operator-configured `ER_REVIEW_PAIRS` JSON (with `ENTITY_REVIEW_FIXTURE` as a fixture alias);
-the route never writes review notes or entity links.
+The desk view is read-only and non-assertive. It blocks recent `source_records` with `token_v0`,
+omits pairs already joined to the same canonical entity, and renders the remaining candidates
+without writing review notes or entity links. The live path is implemented in
+`worker/src/lib/possibly_same.mjs`.
 - er-08 this package boundary
