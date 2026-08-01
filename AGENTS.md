@@ -351,6 +351,13 @@ Team inbox is **feedback@cityscroll.org** (footer mailto on `site/index.html` /
 Fails closed without `RESEND_API_KEY` + `FEEDBACK` KV only. Characterization:
 `node --test worker/test/feedback.test.mjs test/homepage_cta.test.mjs`.
 
+## Versioned action log
+
+Successful pin/watch interventions append privacy-safe rows to D1 `action_log` through
+`worker/src/lib/action_log.mjs`; no actor, email, IP, cookie, account, or session identifier is
+accepted. The ER review action is schema-reserved, but the current desk stays read-only. Contract
+and characterization: `docs/action-log.md`, `node --test worker/test/action_log.test.mjs`.
+
 ## Entity resolution (foundation)
 
 Link-not-merge taxonomy ADR: [`docs/adr/entity-resolution-taxonomy.md`](docs/adr/entity-resolution-taxonomy.md).
