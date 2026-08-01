@@ -14,7 +14,7 @@ surface. **Not an HTTP microservice.**
 | `matchers/` | Conventional `same` / `different` / `unresolved` scorer (`conventional_v0`) |
 | `policies/` | Auto-link thresholds / decision routing (stub) |
 | `evaluation/` | Re-exports gold + metrics helpers |
-| `eval/` | Offline gold JSONL + metrics CLI (er-04; keep path stable) |
+| `eval/` | Offline gold and silver-authority metrics CLIs (keep paths stable) |
 | `review/` | Human review queue shaping (stub) |
 | `index.mjs` | Package root public exports |
 
@@ -90,6 +90,7 @@ node --test worker/test/vendor_stem.test.mjs worker/test/normalize_fixtures.test
 node --test worker/test/entity_resolution_matcher.test.mjs
 node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v0.jsonl --dry-run
 node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v0.jsonl --blocker token_v0
+node entity_resolution/eval/run_authority.mjs --source-records entity_resolution/eval/fixtures/source_records_authority_v0.jsonl
 ```
 
 ## Related cards
@@ -100,6 +101,7 @@ node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v
 - er-08 this package boundary
 - er-09 deterministic features + conventional matcher v0
 - er-10 live false-split visibility from dual-write observations
+- er-11 offline silver authority labels + hard-identifier metrics
 
 The desk view is read-only and non-assertive. It blocks recent `source_records` with `token_v0`,
 omits pairs already joined to the same canonical entity, and renders the remaining candidates

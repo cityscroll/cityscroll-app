@@ -395,6 +395,13 @@ Verify:
 Characterization: `node --test test/entity_resolution_blocker.test.mjs`.
 Details: `entity_resolution/eval/README.md`.
 
+**Silver authority harness (er-11):** `entity_resolution/eval/run_authority.mjs`
+derives silver labels from the newest immutable `source_records` snapshots.
+Shared PIN/EPIN or contract ids measure `authority_recall`; name-similar rows with
+disjoint comparable ids measure `authority_conflict_auto_link_rate`. The committed
+fixture is characterization data, not a production measurement. Verify:
+`node --test test/entity_resolution_authority.test.mjs`.
+
 **Features + matcher v0 (er-09):** `entity_resolution/features/` extracts deterministic,
 family-aware stem/token/PIN/EPIN/length signals; `entity_resolution/matchers/` emits
 `same` / `different` / `unresolved` without LLM scoring. PIN and EPIN share one candidate

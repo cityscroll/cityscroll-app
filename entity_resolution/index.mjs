@@ -23,7 +23,10 @@ export {
 
 export {
   FEATURES_VERSION,
+  contractIdValues,
   extractFeatures,
+  normalizeHardIdentifier,
+  pinEpinValues,
 } from "./features/index.mjs";
 
 export {
@@ -42,6 +45,15 @@ export {
   loadCandidates,
   computeMetrics,
   GOLD_V0_PATH,
+  AUTHORITY_LABEL,
+  AUTHORITY_VERSION,
+  AUTHORITY_FIXTURE_V0_PATH,
+  buildAuthorityReport,
+  computeAuthorityMetrics,
+  deriveAuthorityCases,
+  latestSourceRecords,
+  loadSourceRecords,
+  predictAuthorityCases,
 } from "./evaluation/index.mjs";
 
 export {
