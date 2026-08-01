@@ -175,3 +175,146 @@ export function labelOcpDisagreements(disagreements = [], opts = {}) {
 export function readerLabelFor(classification) {
   return CLAIM_READER_LABELS[clean(classification)] || clean(classification);
 }
+
+/**
+ * True when a claim_layer bundle fully labels a multi-source disagreement:
+ * ≥2 source assertions, unresolved CityScroll interpretation, no derived winner.
+ */
+export function isCompleteClaimLayer(layer) {
+  if (!layer || typeof layer !== "object") return false;
+  if (clean(layer.version) !== CLAIM_LAYER_VERSION) return false;
+  const assertions = Array.isArray(layer.assertions) ? layer.assertions : [];
+  if (assertions.length < 2) return false;
+  if (!assertions.every((a) => a && a.classification === CLAIM_CLASSIFICATIONS.SOURCE_ASSERTION)) {
+    return false;
+  }
+  const interp = layer.interpretation;
+  if (!interp || interp.classification !== CLAIM_CLASSIFICATIONS.CITYSCROLL_INTERPRETATION) {
+    return false;
+  }
+  if (clean(interp.resolution) !== "unresolved") return false;
+  // Hard rule: labeled public disagreements must not pick a winner.
+  if (layer.derived_conclusion != null) return false;
+  if (Object.hasOwn(interp, "selected_value")) return false;
+  return true;
+}
+
+/**
+ * True when every disagreement row on a join carries a complete claim_layer.
+ */
+export function disagreementsFullyLabeled(disagreements = []) {
+  const list = Array.isArray(disagreements) ? disagreements : [];
+  if (!list.length) return false;
+  return list.every((row) => isCompleteClaimLayer(row?.claim_layer));
+}
+
+/**
+ * Extract corroboration / disagreement payload from a join result, lifecycle
+ * side-car, or a bare corroboration object.
+ */
+function extractCorroboration(input) {
+  if (!input || typeof input !== "object") return null;
+  if (input.ocp_award && typeof input.ocp_award === "object") {
+    return extractCorroboration(input.ocp_award);
+  }
+  if (input.corroboration && typeof input.corroboration === "object") {
+    return input.corroboration;
+  }
+  if (Array.isArray(input.disagreements) || Object.hasOwn(input, "agree")) {
+    return input;
+  }
+  return null;
+}
+
+/**
+ * public_claim_labeled_disagree_rate on OCP-joined awards:
+ *
+ *   labeled_disagreements / ocp_joined_with_field_disagreement
+ *
+ * Eligible cases are OCP **matched** joins (or bare corroborations) that have
+ * at least one amount/date disagreement. A case is labeled only when every
+ * disagreement row has a complete claim_layer (source assertions + unresolved
+ * interpretation + null derived_conclusion).
+ *
+ * Agreeing joins and unmatched/unknown/ambiguous joins are not eligible —
+ * there is no public multi-source conflict to label.
+ *
+ * @param {Array<object>} cases join results, { ocp_award }, or corroborations
+ * @returns {{
+ *   metric: string,
+ *   version: string,
+ *   eligible: number,
+ *   labeled: number,
+ *   rate: number,
+ *   cases: Array<object>
+ * }}
+ */
+export function measurePublicClaimLabeledDisagreeRate(cases = []) {
+  const rows = Array.isArray(cases) ? cases : [];
+  const details = [];
+  let eligible = 0;
+  let labeled = 0;
+
+  for (const row of rows) {
+    if (!row || typeof row !== "object") continue;
+    const id = clean(row.id) || clean(row.notice_id) || clean(row.request_id) || null;
+
+    // Prefer explicit join status when present (ocp_award or join result).
+    const joinStatus = clean(
+      row.status
+      || row.ocp_award?.status
+      || (row.corroboration || Array.isArray(row.disagreements) ? "matched" : ""),
+    );
+
+    if (joinStatus && joinStatus !== "matched") {
+      details.push({
+        id,
+        eligible: false,
+        labeled: false,
+        reason: `join_status_${joinStatus || "missing"}`,
+      });
+      continue;
+    }
+
+    const corr = extractCorroboration(row);
+    if (!corr) {
+      details.push({ id, eligible: false, labeled: false, reason: "no_corroboration" });
+      continue;
+    }
+
+    const disagreements = Array.isArray(corr.disagreements) ? corr.disagreements : [];
+    const hasDisagreement = disagreements.length > 0 || corr.agree === false;
+    if (!hasDisagreement || disagreements.length === 0) {
+      details.push({
+        id,
+        eligible: false,
+        labeled: false,
+        reason: "no_field_disagreement",
+        agree: corr.agree !== false && disagreements.length === 0,
+      });
+      continue;
+    }
+
+    eligible += 1;
+    const ok = disagreementsFullyLabeled(disagreements);
+    if (ok) labeled += 1;
+    details.push({
+      id,
+      eligible: true,
+      labeled: ok,
+      disagreement_count: disagreements.length,
+      fields: disagreements.map((d) => clean(d?.field)).filter(Boolean),
+      labeled_rows: disagreements.filter((d) => isCompleteClaimLayer(d?.claim_layer)).length,
+    });
+  }
+
+  const rate = eligible === 0 ? 0 : labeled / eligible;
+  return {
+    metric: "public_claim_labeled_disagree_rate",
+    version: CLAIM_LAYER_VERSION,
+    eligible,
+    labeled,
+    rate,
+    cases: details,
+  };
+}
