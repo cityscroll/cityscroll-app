@@ -109,7 +109,7 @@ DOSSIER = {
             "id": "vendor:acme:assertion:canonical_name",
             "fact": "canonical_name",
             "label": "Dossier name",
-            "classification": "cityscroll_interpretation",
+            "classification": "derived_conclusion",
             "value": "Acme Construction LLC",
             "provenance": {
                 "source": {"system": "cityscroll", "id": "vendor:stem:ACME CONSTRUCTION"},

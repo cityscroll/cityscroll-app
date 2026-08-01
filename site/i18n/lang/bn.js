@@ -641,6 +641,7 @@
     lifecycle_ocp_disagreement_html: "City Record এবং {source} একমত নয় — উভয়ই উৎসের নামসহ দেখানো হয়েছে।",
     lifecycle_ocp_amount_pair_html: "অর্থরাশি: {city_record_label} {city_amount} · {ocp_label} {ocp_amount}।",
     lifecycle_ocp_date_pair_html: "তারিখ: {city_record_label} {city_date} · {ocp_label} {ocp_date}।",
+    lifecycle_ocp_interpretation_html: "CityScroll ব্যাখ্যা: ভিন্ন {field} মান; অমীমাংসিত (কোনো নিষ্পন্ন সিদ্ধান্ত নেই)।",
     lifecycle_ocp_unmatched_html: "এখানে এখনও দেখানো হয়নি — সাম্প্রতিক OCP প্রদান {source}-এ আছে।",
     lifecycle_ocp_unknown_html: "এই প্রদান যাচাই করতে {source}-এ পৌঁছানো যায়নি।",
     lifecycle_ocp_ambiguous_html: "একাধিক OCP প্রদান সারি মিলেছে — স্বয়ংক্রিয়ভাবে একটি বেছে নেওয়া যায় না।",

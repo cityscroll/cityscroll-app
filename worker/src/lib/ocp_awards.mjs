@@ -3,11 +3,14 @@
 // Joins Mayor's Office of Contract Services "Recent Contract Awards" Open Data rows to a
 // City Record notice by request_id (preferred) then PIN. Corroborates award date and amount
 // against City Record fields: when they disagree, both values are returned with sources
-// named — never silently preferring one feed.
+// named — never silently preferring one feed. Disagreements carry claim_layer labels
+// (source assertion ≠ CityScroll interpretation ≠ derived conclusion).
 //
 // This module is pure (no fetch, no env) so characterization tests exercise real field cases
 // offline. The worker endpoint (checkbook_lifecycle.mjs) fetches SODA and attaches the
 // result onto the precomputed lifecycle read model.
+
+import { labelOcpDisagreements } from "./claim_layer.mjs";
 
 export const OCP_DATASET_ID = "qyyg-4tf5";
 export const OCP_SOURCE = "ocp-recent-awards";
@@ -81,21 +84,28 @@ export function corroborateAward(cityFields, ocpDetail) {
     },
   };
 
-  const disagreements = [];
+  const rawDisagreements = [];
   if (!amountAgree && (cityAmount != null || ocpAmount != null)) {
-    disagreements.push({
+    rawDisagreements.push({
       field: "amount",
       city_record: cityAmount,
       ocp: ocpAmount,
     });
   }
   if (!dateAgree && (cityDate || ocpDate)) {
-    disagreements.push({
+    rawDisagreements.push({
       field: "date",
       city_record: cityDate,
       ocp: ocpDate,
     });
   }
+
+  // Label each disagreement: both publisher values stay source assertions; the compare
+  // step is an unresolved CityScroll interpretation with no derived winner.
+  const disagreements = labelOcpDisagreements(rawDisagreements, {
+    city_source_system: "city_record",
+    ocp_source_system: OCP_SOURCE,
+  });
 
   return {
     agree: disagreements.length === 0,

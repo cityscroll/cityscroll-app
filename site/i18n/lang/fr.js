@@ -723,6 +723,7 @@
     lifecycle_ocp_disagreement_html: "Le City Record et {source} divergent — les deux valeurs sont affichées avec les sources nommées.",
     lifecycle_ocp_amount_pair_html: "Montant : {city_record_label} {city_amount}  · {ocp_label} {ocp_amount}.",
     lifecycle_ocp_date_pair_html: "Date : {city_record_label} {city_date}  · {ocp_label} {ocp_date}.",
+    lifecycle_ocp_interpretation_html: "Interprétation CityScroll : valeurs de {field} différentes ; non résolu (pas de conclusion dérivée).",
     lifecycle_ocp_unmatched_html: "Pas encore affiché ici — les attributions OCP récentes sont dans {source}.",
     lifecycle_ocp_unknown_html: "Impossible de joindre {source} pour vérifier cette attribution.",
     lifecycle_ocp_ambiguous_html: "Plusieurs lignes d'attribution OCP correspondent — impossible d'en choisir une automatiquement.",

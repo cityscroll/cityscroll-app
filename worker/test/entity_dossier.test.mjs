@@ -184,6 +184,7 @@ test("dossier query retains conflicting assertions with public provenance", asyn
     });
 
     const derivedName = dossier.derived_assertions[0];
+    assert.equal(derivedName.classification, "derived_conclusion");
     assert.equal(derivedName.derivation.status, "derived");
     assert.equal(derivedName.derivation.evidence_assertion_ids.length, 2);
     assert.equal(derivedName.confidence.status, "not_published");
@@ -213,7 +214,8 @@ test("public dossier route serves JSON and an attributed disagreement page", asy
     assert.match(html, /Acme Construction LLC/);
     assert.match(html, /Linked sources report different values/);
     assert.match(html, /Source assertion/);
-    assert.match(html, /Derived assertion/);
+    assert.match(html, /Derived conclusion/);
+    assert.match(html, /CityScroll display name \(not a publisher field\)/);
     assert.match(html, /Not observed/);
     assert.match(html, /Absence is not proof/);
     assert.match(html, /Explore typed public relationships/);
