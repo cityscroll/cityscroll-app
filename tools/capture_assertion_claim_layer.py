@@ -119,15 +119,15 @@ AFTER = page_html(
     <div class="note warn" data-claim-layer="claim_layer_v1"><b>OCP award record</b> Joined from
       <a href="https://data.cityofnewyork.us/d/qyyg-4tf5">Recent Contract Awards (OCP)</a>:
       <b>Make it Zesty LLC</b> · $250,000 on July 30, 2026.
-      City Record and Recent Contract Awards (OCP) disagree. Each value stays a source assertion;
+      City Record and Recent Contract Awards (OCP) disagree. Each value stays a source assertion.
       CityScroll records an unresolved interpretation and does not derive a winning amount or date.
-      <span data-claim="source_assertion">Amount — source assertion City Record: $999,999;
-      source assertion Recent Contract Awards (OCP): $250,000.</span>
-      <span data-claim="source_assertion">Date — source assertion City Record: 2026-07-15;
-      source assertion Recent Contract Awards (OCP): 2026-07-30.</span>
+      <span data-claim="source_assertion">Amount — source assertion City Record: $999,999
+      · source assertion Recent Contract Awards (OCP): $250,000.</span>
+      <span data-claim="source_assertion">Date — source assertion City Record: 2026-07-15
+      · source assertion Recent Contract Awards (OCP): 2026-07-30.</span>
       <span data-claim="cityscroll_interpretation">
         <span class="claim-tag interp">CityScroll interpretation</span>
-        different amount and date values; resolution unresolved (no derived conclusion).
+        different amount and date values. Resolution unresolved (no derived conclusion).
       </span>
     </div>
     """,
