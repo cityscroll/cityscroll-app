@@ -18,6 +18,7 @@ No passwords or full login accounts. Identity is the confirmed email, same as ma
 - **Paused** watches are skipped for delivery; they remain visible in the preference center.
 - **Send caps:** one rollup email counts as **one send unit** toward `MAX_PER_RUN` and `MAX_SENDS_PER_DAY`, regardless of section count.
 - **Queue mode:** cron enqueues one job per account (`type: "rollup"` with `keys`, or `type: "sub"` with `key`), not one job per watch for multi-watch accounts.
+- **Multi-watch presentation:** when the account has more than one active watch, the subject always uses the `N watches` form (for example `CityScroll: 1 new — 4 watches`), even if only one watch had matches. The body lists every evaluated watch (matches, quiet, and weekly cadence notes), not only sections that wanted send — so a one-match day cannot look like a single-watch notification.
 
 ## Cutover rule (preference center)
 

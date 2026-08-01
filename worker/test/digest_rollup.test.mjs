@@ -1,8 +1,9 @@
 // Account-level digest rollup: multi-watch email → one consolidated send.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { runAlerts, processAccountRollup, dryRunRollupForEmail, digestSendTestForEmail } from "../src/alerts.mjs";
+import { runAlerts, processAccountRollup, dryRunRollupForEmail, digestSendTestForEmail, consumeDigestJob } from "../src/alerts.mjs";
 import { buildDayLog } from "../src/lib/digest_ops.mjs";
+import { buildDigestJobs } from "../src/lib/rollup.mjs";
 
 function kv(map = {}) {
   return {
@@ -260,4 +261,168 @@ test("buildDayLog: rollup kind preserved", () => {
   assert.equal(log.entries.find((e) => e.kind === "rollup")?.noticeCount, 3);
   assert.equal(log.entries.find((e) => e.kind === "subscription")?.noticeCount, 1);
   assert.equal(log.sentCount, 2);
+});
+
+test("multi-watch with only one matching section: subject names N watches, body lists all sections", async () => {
+  const today = new Date().toISOString().slice(0, 10);
+  const subsStore = {
+    "sub:one-hit": JSON.stringify({
+      email: "partial@example.com",
+      lens: "money",
+      filter: { keywords: ["construction"] },
+      freq: "daily",
+      channel: "email",
+      createdAt: today,
+      lang: "en",
+    }),
+    "sub:quiet-2": JSON.stringify({
+      email: "partial@example.com",
+      lens: "money",
+      // Keyword that mock SODA never returns as a row title — stays quiet after seen seed.
+      filter: { keywords: ["zzzznonexistentterm"] },
+      freq: "daily",
+      channel: "email",
+      createdAt: today,
+      lang: "en",
+    }),
+    "sub:weekly-3": JSON.stringify({
+      email: "partial@example.com",
+      lens: "meetings",
+      filter: { keywords: ["brooklyn"] },
+      freq: "weekly",
+      channel: "email",
+      createdAt: today,
+      lang: "en",
+    }),
+  };
+  const { env, sentEmails } = makeEnv(subsStore, { live: true });
+  // Seed seen empty so construction matches; force non-Monday weekly skip via process path.
+  await withMockFetch(sentEmails, null, async () => {
+    const summary = await runAlerts(env, []);
+    assert.equal(sentEmails.length, 1, "one rollup email");
+    assert.equal(summary.sentThisRun, 1);
+    const mail = sentEmails[0];
+    // Multi-watch subject even when only one section had content.
+    assert.match(mail.subject, /\d+ new — 3 watches/);
+    assert.doesNotMatch(mail.subject, /^CityScroll: \d+ new — contract money/);
+    assert.match(mail.html, /your daily digest/i);
+    assert.match(mail.html, /of 3 watches with updates/i);
+    // Quiet + weekly sections stay in the body (not collapsed to a single-watch email).
+    assert.match(mail.html, /zzzznonexistentterm|Nothing new for this watch/i);
+    assert.match(mail.html, /weekly|Monday/i);
+    assert.match(mail.html, /Unsubscribe from all|unsubscribe/i);
+  });
+});
+
+test("queue path: multi-watch account enqueues one rollup job and consumeDigestJob sends rollup chrome", async () => {
+  const today = new Date().toISOString().slice(0, 10);
+  const subsStore = {
+    "sub:q-a": JSON.stringify({
+      email: "queue-multi@example.com",
+      lens: "money",
+      filter: { keywords: ["construction"] },
+      freq: "daily",
+      channel: "email",
+      createdAt: today,
+    }),
+    "sub:q-b": JSON.stringify({
+      email: "queue-multi@example.com",
+      lens: "money",
+      filter: { keywords: ["education"] },
+      freq: "daily",
+      channel: "email",
+      createdAt: today,
+    }),
+  };
+  const sentEmails = [];
+  const queueJobs = [];
+  const ALERT_STATE = kv({});
+  const SUBS = kv(subsStore);
+  const env = {
+    ALERT_STATE,
+    SUBS,
+    ALERTS_LIVE: "true",
+    RESEND_API_KEY: "re-test",
+    TOKEN_SECRET: "s".repeat(32),
+    CONFIRM_BASE: "https://api.cityscroll.org",
+    MAX_PER_RUN: "25",
+    MAX_SENDS_PER_DAY: "50",
+    HEARTBEAT_DAYS: "14",
+    QUEUE_DIGESTS: "true",
+    DIGEST_QUEUE: {
+      send: async (job) => { queueJobs.push(job); },
+    },
+  };
+
+  await withMockFetch(sentEmails, null, async () => {
+    const summary = await runAlerts(env, []);
+    assert.equal(summary.mode || summary.receipt?.mode, "queue");
+    assert.equal(queueJobs.length, 1, "one account job");
+    assert.equal(queueJobs[0].type, "rollup");
+    assert.equal(queueJobs[0].keys.length, 2);
+
+    // Fan-out → consumer (production scheduled path with QUEUE_DIGESTS=true).
+    const result = await consumeDigestJob(env, queueJobs[0]);
+    assert.equal(result.kind, "rollup");
+    assert.equal(sentEmails.length, 1);
+    assert.match(sentEmails[0].subject, /watches/);
+    assert.match(sentEmails[0].html, /your daily digest/i);
+    assert.match(sentEmails[0].html, /Manage watches|manage/i);
+  });
+});
+
+test("queue path: type=rollup with only one key still uses rollup path (no single-watch fallback)", async () => {
+  const today = new Date().toISOString().slice(0, 10);
+  const subsStore = {
+    "sub:only-one": JSON.stringify({
+      email: "fallback@example.com",
+      lens: "money",
+      filter: { keywords: ["construction"] },
+      freq: "daily",
+      channel: "email",
+      createdAt: today,
+    }),
+  };
+  const sentEmails = [];
+  const ALERT_STATE = kv({});
+  const SUBS = kv(subsStore);
+  const env = {
+    ALERT_STATE,
+    SUBS,
+    ALERTS_LIVE: "true",
+    RESEND_API_KEY: "re-test",
+    TOKEN_SECRET: "s".repeat(32),
+    CONFIRM_BASE: "https://api.cityscroll.org",
+    MAX_PER_RUN: "25",
+    MAX_SENDS_PER_DAY: "50",
+    HEARTBEAT_DAYS: "14",
+  };
+
+  await withMockFetch(sentEmails, null, async () => {
+    // Simulate a multi-watch rollup job where sibling keys no longer load.
+    const result = await consumeDigestJob(env, {
+      type: "rollup",
+      email: "fallback@example.com",
+      keys: ["sub:only-one", "sub:gone-sibling"],
+    });
+    assert.equal(result.kind, "rollup");
+    assert.equal(sentEmails.length, 1);
+    assert.match(sentEmails[0].html, /your daily digest/i);
+    assert.doesNotMatch(sentEmails[0].html, /^CityScroll — contract money/i);
+  });
+});
+
+test("buildDigestJobs: production-shaped multi-watch account is one rollup job", () => {
+  const jobs = buildDigestJobs([
+    { key: "sub:a", email: "owner@example.com", paused: false },
+    { key: "sub:b", email: "owner@example.com", paused: false },
+    { key: "sub:c", email: "owner@example.com", paused: false },
+    { key: "sub:d", email: "owner@example.com", paused: false },
+    { key: "sub:solo", email: "other@example.com", paused: false },
+  ]);
+  assert.equal(jobs.length, 2);
+  const rollup = jobs.find((j) => j.type === "rollup");
+  assert.ok(rollup);
+  assert.equal(rollup.keys.length, 4);
+  assert.equal(jobs.find((j) => j.type === "sub")?.key, "sub:solo");
 });
