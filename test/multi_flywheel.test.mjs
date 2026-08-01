@@ -199,6 +199,10 @@ test("CLI flywheel-run emits queue.json and stays quiet on second ledger pass", 
         "--ledger",
         ledgerPath,
         "--update-ledger",
+        // High enough that one pass ledgers every candidate (cap must not
+        // leave a tail that reappears on the next idempotent run).
+        "--limit",
+        "200",
         "--generated-at",
         "1970-01-01T00:00:00.000Z",
         ...extra,

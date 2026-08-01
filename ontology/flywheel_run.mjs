@@ -34,6 +34,9 @@ export function loadDefaultInputs(root, { mode = "fixture" } = {}) {
   };
 
   const features = readJson("ontology/fixtures/dimensions/data_integrity_features.json");
+  const not_published_samples = readJson(
+    "ontology/fixtures/dimensions/not_published_claim_samples.json",
+  );
   const views = readJson("ontology/fixtures/dimensions/readability_views.json");
   const disagreements = readJson("ontology/fixtures/dimensions/cross_source_disagreements.json");
   const source_coverage = readJson("entity_resolution/source_coverage.json");
@@ -64,10 +67,11 @@ export function loadDefaultInputs(root, { mode = "fixture" } = {}) {
   return {
     mode,
     features: features?.features || features || [],
+    not_published_samples,
+    gap_taxonomy,
     views: views?.views || views || [],
     disagreements: disagreements?.disagreements || disagreements || [],
     source_coverage,
-    gap_taxonomy,
     source_contracts,
     registry_sync,
     cross_spine,

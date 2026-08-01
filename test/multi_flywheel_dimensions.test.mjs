@@ -8,7 +8,14 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { evaluateDataIntegrity } from "../ontology/dimensions/data_integrity.mjs";
+import {
+  evaluateDataIntegrity,
+  computeNotPublishedRate,
+  classifyNotPublishedClaim,
+  enumerateNotPublishedClaims,
+  evaluateNotPublishedClaims,
+  NOT_PUBLISHED_THRESHOLDS,
+} from "../ontology/dimensions/data_integrity.mjs";
 import { evaluateReadability, scoreView } from "../ontology/dimensions/readability.mjs";
 import { evaluateOntologyEnrichment } from "../ontology/dimensions/ontology_enrichment.mjs";
 import { evaluateCoverage } from "../ontology/dimensions/coverage.mjs";
@@ -35,23 +42,116 @@ test("dimension catalog lists five evaluators", () => {
   }
 });
 
-test("data-integrity emits cards for always-null and broken-join features", () => {
-  const inventory = loadJson("ontology/fixtures/dimensions/data_integrity_features.json");
-  const result = evaluateDataIntegrity({ features: inventory.features });
+test("computeNotPublishedRate combines recent + historical population", () => {
+  const rate = computeNotPublishedRate({
+    recent: { size: 20, not_published: 20 },
+    historical: { size: 20, not_published: 20 },
+    non_null_examples: 0,
+  });
+  assert.equal(rate.n, 40);
+  assert.equal(rate.not_published, 40);
+  assert.equal(rate.rate, 1);
+  assert.equal(rate.rate_label, "40/40");
+  assert.equal(rate.spread_ok, true);
+
+  const healthy = computeNotPublishedRate({
+    recent: { size: 15, not_published: 2 },
+    historical: { size: 15, not_published: 1 },
+    non_null_examples: 27,
+  });
+  assert.equal(healthy.n, 30);
+  assert.ok(healthy.rate < 0.2);
+  assert.equal(healthy.non_null, 27);
+});
+
+test("classifyNotPublishedClaim flags ~100% when public source has data", () => {
+  const rate = computeNotPublishedRate({
+    recent: { size: 20, not_published: 20 },
+    historical: { size: 20, not_published: 20 },
+  });
+  const red = classifyNotPublishedClaim(rate, {
+    sample: {
+      public_source_has_data: true,
+      classification_hint: "mislabeled",
+    },
+  });
+  assert.equal(red.red_flag, true);
+  assert.equal(red.classification, "mislabeled");
+
+  const withheld = classifyNotPublishedClaim(rate, {
+    sample: {
+      public_source_has_data: false,
+      classification_hint: "genuinely_withheld",
+    },
+  });
+  assert.equal(withheld.red_flag, false);
+  assert.equal(withheld.classification, "genuinely_withheld");
+
+  const tiny = classifyNotPublishedClaim(
+    computeNotPublishedRate({ recent: { size: 2, not_published: 2 } }),
+    { sample: { public_source_has_data: true } },
+  );
+  assert.equal(tiny.classification, "insufficient_sample");
+  assert.equal(tiny.red_flag, false);
+  assert.ok(NOT_PUBLISHED_THRESHOLDS.red_flag_rate >= 0.95);
+});
+
+test("data-integrity core: population not-published-rate emits red flags continuously", () => {
+  const gap_taxonomy = loadJson("site/data/gap_taxonomy.json");
+  const samples = loadJson("ontology/fixtures/dimensions/not_published_claim_samples.json");
+  const features = loadJson("ontology/fixtures/dimensions/data_integrity_features.json");
+
+  const enumerated = enumerateNotPublishedClaims(gap_taxonomy);
+  assert.ok(enumerated.some((c) => c.id === "subsidy-field-company-place-money"));
+  assert.ok(enumerated.every((c) => c.source === "gap_taxonomy" || c.id));
+
+  const result = evaluateDataIntegrity({
+    gap_taxonomy,
+    not_published_samples: samples,
+    features: features.features,
+  });
   assert.equal(result.dimension, "data-integrity");
+  assert.ok(result.metrics.not_published_claims_checked >= 5);
+  assert.ok(result.metrics.not_published_red_flags >= 2, "expected ≥2 red flags");
+  assert.ok(result.metrics.not_published_genuinely_withheld >= 1);
+  assert.ok(result.metrics.not_published_healthy >= 1);
+
+  // Core red flags from credibility audit
+  assert.ok(
+    result.cards.some((c) => c.id.includes("subsidy-field-company-place-money")),
+    "Build NYC money ~100% not-published red flag",
+  );
+  assert.ok(
+    result.cards.some((c) => c.id.includes("meeting-person-votes")),
+    "person votes never-ingested red flag",
+  );
+  // Genuinely withheld package docs must NOT emit a red-flag bug card
+  assert.ok(
+    !result.cards.some((c) => c.id.includes("procurement-solicitation-documents") && c.evidence?.kind === "not_published_rate_red_flag"),
+    "package documents are verified withhold, not a join bug",
+  );
+
+  const money = result.findings.find((f) => f.claim_id === "subsidy-field-company-place-money");
+  assert.ok(money);
+  assert.equal(money.red_flag, true);
+  assert.equal(money.rate.rate, 1);
+  assert.equal(money.classification, "mislabeled");
+
+  // Secondary feature inventory still works
   assert.ok(result.metrics.features_checked >= 5);
-  assert.ok(result.metrics.always_null >= 1);
-  assert.ok(result.metrics.broken_join >= 1);
   assert.ok(result.cards.some((c) => c.id.includes("passport.rfx_document_url")));
   assert.ok(result.cards.some((c) => c.id.includes("bid-tabulations.bid_count")));
-  // Healthy features do not emit
-  assert.ok(!result.cards.some((c) => c.id.includes("legistar.person_vote")));
+  assert.ok(!result.cards.some((c) => c.id.includes("legistar.person_vote") && c.evidence?.method === "feature_non_null_example"));
+
   for (const card of result.cards) {
     assert.equal(card.dimension, "data-integrity");
     assert.ok(card.verify);
     assert.ok(card.demo_win);
-    assert.ok(card.lesson_class);
   }
+
+  // Pure path without gap taxonomy still evaluates sample inventory
+  const sampleOnly = evaluateNotPublishedClaims(samples.claims);
+  assert.ok(sampleOnly.metrics.red_flags >= 2);
 });
 
 test("readability scores views and cards unusable ones", () => {

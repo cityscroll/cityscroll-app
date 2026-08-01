@@ -12,11 +12,25 @@ Public vocabulary is neutral. This is an object–link–action **catalog** plus
 
 | Dimension | What it monitors | Emits when |
 | --- | --- | --- |
-| `data-integrity` | Joined/imputed feature inventory | Always-null or broken-join feature |
+| `data-integrity` | **Core:** population not-published-rate for every “city does not publish X” register (recent + historical sample). Secondary: always-null feature inventory | ~100% not-published with public-source data (broken join / never-ingested / mislabeled); undersampled claims; always-null features |
 | `readability` | Views that render joined data | Weak hierarchy, over-density, data-dump smell |
 | `ontology-enrichment` | Registry sync, class-(a) gaps, dual-write, cross-spine | Metric-driven enrichment (legacy intelligence flywheel) |
 | `coverage` | Declared `source_contracts` vs observation coverage | Declared-not-ingested or dual-write gap |
 | `cross-source-consistency` | Disagreement inventory + cross-spine fail fixtures | Unreconciled source disagreements |
+
+### Data-integrity core: not-published-rate credibility audit
+
+A false “the city does not publish X” damages credibility more than a visible gap.
+The continuous test (pure, re-run every flywheel schedule):
+
+1. **Enumerate** class-(b) / withheld registers from `site/data/gap_taxonomy.json` plus sample inventory extras.
+2. **Sample** recent + historical product entries per claim (fixture inventory today; live side-car later).
+3. **Rate** = `not_published_count / n`. Thresholds: red ≥ 0.95, suspicious ≥ 0.85, min sample 10.
+4. **Flag** ~100% rates when `public_source_has_data` (or investigation needed). Classify `broken_join` / `never_ingested` / `mislabeled` / `genuinely_withheld`.
+5. **Do not** emit join-bug cards for verified genuine withholds (e.g. package documents, individual exam results).
+
+Implementation: `ontology/dimensions/not_published_rate.mjs` + samples in
+`ontology/fixtures/dimensions/not_published_claim_samples.json`.
 
 Each dimension is an evaluator under `ontology/dimensions/`. New dimensions
 register in `ontology/dimensions/index.mjs` and `DIMENSION_IDS`.

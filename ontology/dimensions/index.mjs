@@ -1,7 +1,10 @@
 // Dimension catalog — register evaluators for the multi-flywheel runner.
 
 import { DIMENSION_IDS } from "./shared.mjs";
-import { evaluateDataIntegrity, DIMENSION_ID as DATA_INTEGRITY } from "./data_integrity.mjs";
+import {
+  evaluateDataIntegrity,
+  DIMENSION_ID as DATA_INTEGRITY,
+} from "./data_integrity.mjs";
 import { evaluateReadability, DIMENSION_ID as READABILITY } from "./readability.mjs";
 import { evaluateOntologyEnrichment, DIMENSION_ID as ONTOLOGY_ENRICHMENT } from "./ontology_enrichment.mjs";
 import { evaluateCoverage, DIMENSION_ID as COVERAGE } from "./coverage.mjs";

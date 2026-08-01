@@ -699,6 +699,13 @@ coverage, cross-source-consistency. Entrypoint:
 `ontology/engineering-lessons.md`. Do not hand-author parallel metric-driven
 roadmap cards; re-run the flywheel after merges.
 
+**data-integrity core:** population **not-published-rate** credibility audit —
+for every “city does not publish X” register, sample recent + historical entries;
+~100% not-published with public-source evidence → broken-join / never-ingested /
+mislabeled red-flag card (not a polite class-(b) mask). Pure helpers:
+`ontology/dimensions/not_published_rate.mjs`; samples:
+`ontology/fixtures/dimensions/not_published_claim_samples.json`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
