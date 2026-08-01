@@ -1,0 +1,77 @@
+{
+  "description": "Fixture review actions for characterization of action-log → gold export. No personal identifiers.",
+  "observed_on": "2026-08-01",
+  "rows": [
+    {
+      "id": "act-same-001",
+      "pair_id": "pair-hntb-truncation",
+      "decision": "same",
+      "created_at": "2026-08-01T12:00:00.000Z",
+      "method": "false_split_desk",
+      "method_version": "v1",
+      "evidence": {
+        "pair_id": "pair-hntb-truncation",
+        "left": {
+          "source_system": "city_record",
+          "source_system_id": "20260623008",
+          "source_record_id": "city_record:20260623008:hash-l",
+          "display_name": "HNTB New York Engineering and Architecture, P.C.",
+          "observed_fields": { "pin": "84124P0003001" }
+        },
+        "right": {
+          "source_system": "checkbook",
+          "source_system_id": "CT184120268807929",
+          "source_record_id": "checkbook:CT184120268807929:hash-r",
+          "display_name": "HNTB NEW YORK ENGINEERING ARCHITECTURE AND LANDSCAPE ARCHITE",
+          "observed_fields": { "pin": "84124P0003001" }
+        }
+      }
+    },
+    {
+      "id": "act-diff-001",
+      "pair_id": "pair-acme-trades",
+      "decision": "different",
+      "created_at": "2026-08-01T12:05:00.000Z",
+      "method": "false_split_desk",
+      "method_version": "v1",
+      "evidence": {
+        "pair_id": "pair-acme-trades",
+        "left": {
+          "source_system": "city_record",
+          "source_system_id": "acme-build",
+          "source_record_id": "city_record:acme-build:hash-a",
+          "display_name": "Acme Construction LLC"
+        },
+        "right": {
+          "source_system": "city_record",
+          "source_system_id": "acme-consult",
+          "source_record_id": "city_record:acme-consult:hash-b",
+          "display_name": "Acme Consulting LLC"
+        }
+      }
+    },
+    {
+      "id": "act-defer-001",
+      "pair_id": "pair-needs-more-evidence",
+      "decision": "defer",
+      "created_at": "2026-08-01T12:10:00.000Z",
+      "method": "false_split_desk",
+      "method_version": "v1",
+      "evidence": {
+        "pair_id": "pair-needs-more-evidence",
+        "left": {
+          "source_system": "city_record",
+          "source_system_id": "sinergia-inc",
+          "source_record_id": "city_record:sinergia-inc:hash-c",
+          "display_name": "Sinergia Inc"
+        },
+        "right": {
+          "source_system": "city_record",
+          "source_system_id": "sinergia-partners",
+          "source_record_id": "city_record:sinergia-partners:hash-d",
+          "display_name": "Sinergia Partners LLC"
+        }
+      }
+    }
+  ]
+}

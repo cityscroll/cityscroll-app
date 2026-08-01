@@ -37,6 +37,43 @@ const SOURCES = new Set(["confirm", "pins", "prefs", "unsubscribe", "review_desk
 const FREQUENCIES = new Set(["daily", "weekly"]);
 const DECISIONS = new Set(["same", "different", "unresolved"]);
 
+/** Map desk disposition labels onto the privacy-safe action-log decision enum. */
+export function actionLogDecisionFromDisposition(decision) {
+  const clean = String(decision || "").trim().toLowerCase();
+  if (clean === "same" || clean === "different") return clean;
+  // Desk "defer" is an opened-but-undecided judgment, not a gold label.
+  if (clean === "defer" || clean === "unresolved") return "unresolved";
+  return undefined;
+}
+
+/**
+ * Build a review_decision action-log input from a false-split disposition event.
+ * Never accepts actor, note, email, or free text — those stay on the desk evidence table.
+ */
+export function reviewActionFromDisposition(disposition, opts = {}) {
+  if (!disposition || typeof disposition !== "object") return null;
+  const decision = actionLogDecisionFromDisposition(disposition.decision);
+  if (!decision) return null;
+  const pairId = String(disposition.pair_id || disposition.object_id || "").trim();
+  if (!pairId || !OBJECT_ID.test(pairId) || pairId.includes("@") || looksLikeNetworkAddress(pairId)) {
+    return null;
+  }
+  return {
+    action_type: "review_decision",
+    object: { type: "entity_pair", id: pairId },
+    method: {
+      name: String(opts.methodName || "false_split_desk").trim().toLowerCase() || "false_split_desk",
+      version: String(opts.methodVersion || "v1").trim().toLowerCase() || "v1",
+    },
+    metadata: {
+      source: "review_desk",
+      decision,
+    },
+    ts: disposition.created_at || disposition.ts || undefined,
+    id: disposition.id || undefined,
+  };
+}
+
 function enumValue(value, allowed) {
   const clean = String(value || "").trim().toLowerCase();
   return allowed.has(clean) ? clean : undefined;

@@ -1,0 +1,24 @@
+{
+  "kind": "review_action_gold_export",
+  "schema_version": 1,
+  "export_method": "review_action_export_v1",
+  "exported_on": "2026-08-01",
+  "gold_version_target": "v1",
+  "input_rows": 3,
+  "exportable_cases": 2,
+  "skipped_rows": 1,
+  "skipped_reasons": {
+    "non_exportable_decision": 1
+  },
+  "case_ids": [
+    "gv1-001",
+    "gv1-002"
+  ],
+  "action_ids": [
+    "act-same-001",
+    "act-diff-001"
+  ],
+  "payload_sha256": "c5303ff7d22c439ba4c6f5207abfdf322c2f11e7fef15afdba4f8b6c44f72f2d",
+  "input_path": "entity_resolution/eval/fixtures/review_actions_v0.json",
+  "fixture_mode": true
+}
