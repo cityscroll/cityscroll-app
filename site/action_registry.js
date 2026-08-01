@@ -262,5 +262,13 @@
     return Object.freeze({event: "outcome_recorded", detail: value.replace("_", "-"), surface: "home"});
   }
 
-  return {OUTCOME_ENUM, compileActionRail, solicitationHandoff, validateAction, outcomeEvent};
+  return {
+    OUTCOME_ENUM,
+    ACTION_TYPES,
+    ACTION_DELIVERIES,
+    compileActionRail,
+    solicitationHandoff,
+    validateAction,
+    outcomeEvent,
+  };
 });

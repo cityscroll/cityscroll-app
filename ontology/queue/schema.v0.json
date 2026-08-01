@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cityscroll.multi_flywheel_queue.v0",
+  "title": "Multi-dimension improvement flywheel card queue",
+  "type": "object",
+  "required": ["schema", "policy_version", "generated_at", "cards", "stats"],
+  "properties": {
+    "schema": { "const": "cityscroll.multi_flywheel_queue.v0" },
+    "policy_version": { "type": "string" },
+    "generated_at": { "type": "string" },
+    "mode": { "type": "string", "enum": ["fixture", "live"] },
+    "content_hash": { "type": "string" },
+    "stats": {
+      "type": "object",
+      "properties": {
+        "card_count": { "type": "integer" },
+        "by_dimension": { "type": "object" },
+        "skipped": { "type": "integer" },
+        "regressions": { "type": "integer" }
+      }
+    },
+    "dimension_metrics": { "type": "object" },
+    "skipped": { "type": "array" },
+    "regressions": { "type": "array" },
+    "cards": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "dimension", "title", "verify", "demo_win", "rank"],
+        "properties": {
+          "schema": { "const": "cityscroll.multi_flywheel_card.v0" },
+          "id": { "type": "string" },
+          "dimension": {
+            "type": "string",
+            "enum": [
+              "data-integrity",
+              "readability",
+              "ontology-enrichment",
+              "coverage",
+              "cross-source-consistency"
+            ]
+          },
+          "title": { "type": "string" },
+          "status": { "type": "string" },
+          "rank": { "type": "integer" },
+          "rank_score": { "type": "number" },
+          "verify": { "type": "string" },
+          "demo_win": { "type": "string" },
+          "evidence": { "type": "object" },
+          "context": { "type": "array", "items": { "type": "string" } },
+          "lesson_class": { "type": ["string", "null"] },
+          "emitted_by": { "type": "string" },
+          "content_hash": { "type": "string" }
+        }
+      }
+    }
+  }
+}

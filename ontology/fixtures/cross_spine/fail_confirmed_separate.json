@@ -1,0 +1,21 @@
+{
+  "schema": "cityscroll.cross_spine_bundle.v0",
+  "subject_ref": "notice:demo-confirmed-separate",
+  "er": {
+    "pin": "PIN999",
+    "vendor_stem": "alpha",
+    "decision": "separate"
+  },
+  "process_spine": {
+    "join_confidence": "confirmed"
+  },
+  "lifecycle": {
+    "pin": "PIN999",
+    "vendor_stem": "alpha"
+  },
+  "civic_time_events": [],
+  "actions": {
+    "lookup_status": "ok",
+    "confident_empty": false
+  }
+}

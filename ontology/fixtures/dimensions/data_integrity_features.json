@@ -1,0 +1,64 @@
+{
+  "schema": "cityscroll.data_integrity_features.v0",
+  "note": "Joined/imputed feature inventory for the data-integrity flywheel dimension. Each row must eventually have a non-null example from the named public source.",
+  "features": [
+    {
+      "id": "doing-business.ownership_structure",
+      "surface": "vendor_profile",
+      "field": "ownership_structure",
+      "join_path": "doing_business_join.mjs → vendor profile doingBusiness",
+      "public_source": "Doing Business Search Entities (72mk-a8z7)",
+      "example_non_null": "Corporation",
+      "example_ref": "site/data/doing_business_sources/verification_receipts",
+      "always_null": false,
+      "broken_join": false
+    },
+    {
+      "id": "passport.rfx_document_url",
+      "surface": "solicitation_handoff",
+      "field": "document_url",
+      "join_path": "rfx_documents_join.mjs",
+      "public_source": "PASSPort Public RFx dataJs",
+      "example_non_null": null,
+      "example_ref": null,
+      "always_null": true,
+      "broken_join": false,
+      "demo_win": "Solicitation package documents open from the notice handoff when the city publishes a joinable URL.",
+      "verify": "node --test test/multi_flywheel_dimensions.test.mjs # data-integrity:passport.rfx_document_url"
+    },
+    {
+      "id": "bid-tabulations.bid_count",
+      "surface": "award_lifecycle",
+      "field": "bid_count",
+      "join_path": "bid_tabulations_join.mjs",
+      "public_source": "Bid Tabulations Historical (9k82-ys7w)",
+      "example_non_null": null,
+      "always_null": true,
+      "broken_join": true,
+      "demo_win": "Award cards show a measured bid count when a useful joinable tabulation source is enabled.",
+      "verify": "node --test test/multi_flywheel_dimensions.test.mjs # data-integrity:bid-tabulations.bid_count"
+    },
+    {
+      "id": "legistar.person_vote",
+      "surface": "meeting_outcomes",
+      "field": "by_person",
+      "join_path": "meeting_outcomes.mjs → by_person",
+      "public_source": "Legistar EventItems Votes",
+      "example_non_null": "Aye",
+      "example_ref": "notice 20260706036 / event 22526",
+      "always_null": false,
+      "broken_join": false
+    },
+    {
+      "id": "lifecycle.spent_to_date",
+      "surface": "follow_the_dollars",
+      "field": "spent_to_date",
+      "join_path": "checkbook_lifecycle.mjs → recoverPaymentFromRegisteredJoin",
+      "public_source": "Checkbook NYC Spending",
+      "example_non_null": 4020000,
+      "example_ref": "notice 20240723114",
+      "always_null": false,
+      "broken_join": false
+    }
+  ]
+}
