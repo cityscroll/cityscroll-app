@@ -9,12 +9,15 @@
 // never to let block the alerts run. Cursor (max ingested start_date) lives in the
 // ingest_state table; first run backfills 30 days.
 
+import { shadowWriteExactStemAutoLinks } from "./lib/entity_link.mjs";
+
 const PAGE = 1000;
 const MAX_PAGES = 20; // safety cap per run
 const ROLLING_YEAR = 2090; // due dates >= this are rolling placeholders, not real deadlines
 const AMOUNT_CAP = 1e10;   // EDA: 3 rows >= $10B are data-entry errors (max legit ≈ $6.68B)
 const SOURCE_RECORD_SYSTEM = "city_record";
 const SOURCE_RECORD_DUAL_WRITE_FLAG = "CITY_RECORD_SOURCE_RECORD_DUAL_WRITE";
+const ENTITY_LINK_DUAL_WRITE_FLAG = "ENTITY_LINK_DUAL_WRITE";
 
 export function pick(row, keys) {
   for (const k of keys) {
@@ -199,6 +202,7 @@ export async function ingestNotices(env) {
 
     const noticeStmts = [];
     const sourceStmts = [];
+    const entityObservations = [];
     for (const row of rows) {
       const m = mapRow(row);
       if (!m.request_id) continue;
@@ -219,16 +223,24 @@ export async function ingestNotices(env) {
           m.event_state, m.event_zip, m.document_urls, m.n_documents, m.haystack, m.raw, nowISO,
         ),
       );
-      if (sourceRecordInsert) {
+      if (sourceRecordInsert || String(env?.[ENTITY_LINK_DUAL_WRITE_FLAG] || "").toLowerCase() === "true") {
         const sourceRecordHash = await computeSourceRecordHash(row);
-        sourceStmts.push(sourceRecordInsert.bind(
-          SOURCE_RECORD_SYSTEM,
-          pickSourceSystemId(m),
-          sourceRecordHash,
-          m.raw,
-          JSON.stringify(m),
-          nowISO,
-        ));
+        if (sourceRecordInsert) {
+          sourceStmts.push(sourceRecordInsert.bind(
+            SOURCE_RECORD_SYSTEM,
+            pickSourceSystemId(m),
+            sourceRecordHash,
+            m.raw,
+            JSON.stringify(m),
+            nowISO,
+          ));
+        }
+        if (String(env?.[ENTITY_LINK_DUAL_WRITE_FLAG] || "").toLowerCase() === "true") {
+          entityObservations.push({
+            source_record_id: `${SOURCE_RECORD_SYSTEM}:${m.request_id}:${sourceRecordHash}`,
+            vendor_name: m.vendor_name,
+          });
+        }
       }
     }
     if (noticeStmts.length) {
@@ -239,6 +251,16 @@ export async function ingestNotices(env) {
         await env.DB.batch(sourceStmts);
       } catch {
         // Dual-write failures must not stop the notices mirror from being refreshed.
+      }
+    }
+    if (entityObservations.length && String(env?.[ENTITY_LINK_DUAL_WRITE_FLAG] || "").toLowerCase() === "true") {
+      try {
+        const entityResult = await shadowWriteExactStemAutoLinks(env, entityObservations, {
+          scope_note: "city-record ingest",
+        });
+        console.log("entity-link shadow:", JSON.stringify(entityResult));
+      } catch {
+        // Entity-resolution shadow writes must never stop the notices mirror.
       }
     }
     if (noticeStmts.length) {
