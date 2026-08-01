@@ -37,3 +37,9 @@ export {
 /** Representative source_records rows for authority-harness characterization. */
 export const AUTHORITY_FIXTURE_V0_PATH =
   "entity_resolution/eval/fixtures/source_records_authority_v0.jsonl";
+
+export {
+  DEFAULT_COMPONENT_SAMPLE_SIZE,
+  ENTITY_COMPONENT_SCHEMA_VERSION,
+  buildEntityComponentReport,
+} from "./entity_components.mjs";
