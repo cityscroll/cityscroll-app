@@ -1,0 +1,44 @@
+{
+  "lens": "money",
+  "run_id": "fixture-money-baseline",
+  "processed_at": "2026-08-01T12:00:00.000Z",
+  "description": "City Record award notice + Checkbook registration; clocks labeled per field.",
+  "assertions": [
+    {
+      "event_kind": "procurement.notice_published",
+      "subject_ref": "notice:20240723114",
+      "source_record_ref": "city-record:20240723114",
+      "source_revision": "cr:20240723114:start_date:2024-07-23",
+      "source_field": "start_date",
+      "published_at": "2024-07-23T00:00:00.000",
+      "valid_at": null,
+      "observed_at": "2024-07-24T09:15:00.000Z",
+      "processed_at": "2026-08-01T12:00:00.000Z",
+      "status": "occurred",
+      "require_valid": false,
+      "clocks": {
+        "start_date": "publication",
+        "observed_at": "observation",
+        "processed_at": "processing"
+      }
+    },
+    {
+      "event_kind": "procurement.award_registered",
+      "subject_ref": "contract:CT107120248803393",
+      "source_record_ref": "checkbook:CT107120248803393",
+      "source_revision": "cb:CT107120248803393:reg:2024-08-01",
+      "source_field": "registration_date",
+      "valid_at": "2024-08-01",
+      "published_at": null,
+      "observed_at": "2024-08-02T14:00:00.000Z",
+      "processed_at": "2026-08-01T12:00:00.000Z",
+      "status": "occurred",
+      "confidence": "high",
+      "clocks": {
+        "registration_date": "valid",
+        "observed_at": "observation",
+        "processed_at": "processing"
+      }
+    }
+  ]
+}
