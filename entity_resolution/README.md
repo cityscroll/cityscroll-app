@@ -66,10 +66,10 @@ not distributed cosplay for a single-maintainer product.
 
 ## Non-goals (this package / boundary card)
 
-- **No public HTTP ER routes** — the only HTTP surface is the separately keyed
-  `/admin/possibly-same` desk view; callers import the pure review helpers in-process.
-- **No public reads or destructive merges** from the shadow path; production dual-write flags
-  capture source snapshots and exact-stem links for offline evaluation.
+- **No writable public HTTP ER routes** — `/entity-dossier` is a read-only, allowlisted
+  view; the separately keyed `/admin/possibly-same` desk owns review writes.
+- **No destructive merges** from the shadow path; production dual-write flags capture source
+  snapshots and exact-stem links without changing publisher records.
 - **No LLM as primary matcher** — residue adjudicator only after a conventional scorer,
   with stored prompts/version and human override (future; not this package).
 - **No destructive merge of source rows** — links only (`entity_link` taxonomy).
@@ -79,18 +79,26 @@ not distributed cosplay for a single-maintainer product.
 
 ## Publication boundary
 
-Public entity-resolution responses must use `serializePublicEntity` or
-`serializePublicEntityLink` from `publication/`; database rows and desk review objects must
-not be serialized directly. The public contract is deliberately small:
+Public entity-resolution responses must use the serializers in `publication/`; database rows
+and desk review objects must not be serialized directly. The public contract is deliberately
+small:
 
 - entity: stable opaque id, type family, and display name
 - link: canonical entity id plus publisher system, publisher-native public id, and an optional
   HTTPS source URL
+- dossier: the entity, linked public source records, allowlisted source assertions, bounded
+  source/time scope, explicit disagreement and missingness, and public-safe derivation status
 
 Raw and normalized snapshots, content hashes, canonical attributes JSON, matcher scores and
 versions, evidence, resolution-run ids, review state, reviewer identity, and notes are desk-only.
 The link serializer distinguishes a publisher-native id from the internal `source_record_id`,
 which contains a snapshot hash and is never public.
+
+`GET /entity-dossier?id=` queries by canonical entity id and returns HTML by default; JSON is
+available through `Accept: application/json` or `?format=json`. Source values remain exact and
+attributed. Conflicts never select a winner, and empty fields mean only “not observed in these
+linked records.” Public assertion confidence/review labels disclose only `not_scored`,
+`not_published`, or `not_public`; numeric matcher scores and desk dispositions stay private.
 
 ## Verify
 
@@ -99,6 +107,7 @@ test -d entity_resolution/normalizers
 test -f entity_resolution/README.md
 node --test worker/test/entity_resolution_package.test.mjs
 node --test worker/test/entity_resolution_publication.test.mjs
+node --test worker/test/entity_dossier.test.mjs
 ```
 
 Existing normalize + gold harnesses stay green:

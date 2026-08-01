@@ -462,6 +462,14 @@ detection are separately labeled CityScroll interpretations and never select a w
 Pure model: `entity_resolution/review/assertion_evidence.mjs`. Characterization:
 `node --test test/entity_resolution_assertion_evidence.test.mjs`.
 
+**Public entity dossier (er-15):** `GET /entity-dossier?id=` reads canonical entities and
+linked immutable source snapshots into a bounded, allowlisted view. Exact source
+assertions retain publisher provenance and observation time; disagreements keep every value,
+and missing fields mean only “not observed in linked records.” Raw snapshots, content hashes,
+matcher internals, and desk review state never cross the publication serializer. Pure model:
+`entity_resolution/publication/dossier.mjs`; Worker route/view:
+`worker/src/entity_dossier.mjs`. Verify: `node --test worker/test/entity_dossier.test.mjs`.
+
 **Clerical audit (er-12):** `tools/export_er_clerical_audit.mjs` emits a
 false-split-priority sample (`near_miss` plus `auto_link` control), CSV label
 sheet, and receipt under `entity_resolution/eval/audits/<date>/`. Live mode is
