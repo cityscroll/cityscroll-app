@@ -26,5 +26,6 @@
     "worker/src/lib/meeting_outcomes.mjs",
     "site/index.html#meetingOutcomesHTML"
   ],
-  "remaining_gap": "Immutable source_records dual-write for Legistar vote streams remains open (entity_resolution/source_coverage.json legistar-votes dual_write=gap)."
+  "remaining_gap": "Immutable source_records dual-write for Legistar vote streams is adapter-ready but empty in production (entity_resolution/source_coverage.json legistar-votes dual_write.after=empty-declared-live, row_count=0)."
 }
+
