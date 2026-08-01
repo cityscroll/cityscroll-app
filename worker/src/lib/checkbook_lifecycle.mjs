@@ -35,6 +35,9 @@ function parseAmount(s) {
 }
 
 // Parse a <transaction> block from the Contracts domain (pending or registered).
+// vendor_record_type is retained so immutable observations can distinguish Prime
+// Vendor amount rows from Sub Vendor / expense-category slices of the same
+// prime_contract_id (see aggregateContractsById).
 export function parseContractTransaction(txXml) {
   return {
     id: extractTag(txXml, "prime_contract_id"),
@@ -42,6 +45,7 @@ export function parseContractTransaction(txXml) {
     agency: extractTag(txXml, "agency_name"),
     pin: extractTag(txXml, "pin"),
     status: extractTag(txXml, "status"),
+    vendorRecordType: extractTag(txXml, "vendor_record_type"),
     current: parseAmount(extractTag(txXml, "prime_contract_current_amount")),
     original: parseAmount(extractTag(txXml, "prime_contract_original_amount")),
     spent: parseAmount(extractTag(txXml, "prime_vendor_spent_to_date")),
