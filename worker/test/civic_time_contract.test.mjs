@@ -10,6 +10,7 @@ import { test } from "node:test";
 
 import {
   EVENT_KIND_REGISTRY,
+  attachMoneyCivicEvents,
   clockTable,
   clocksFromTemporalAction,
   isRegisteredEventKind,
@@ -19,7 +20,9 @@ import {
   mapFixtureDoc,
   mapLandSpineToCivic,
   mapMeetingRecordToCivic,
+  mapMoneyLifecycleToCivic,
   mapRuleSpineToCivic,
+  moneySpineAdapterCoverage,
   publicDiff,
   semanticDiff,
 } from "../src/lib/civic_time.mjs";
@@ -29,6 +32,7 @@ import {
   joinCityRecordLandNotices,
   parseZapApiProject,
 } from "../src/lib/zap_outcomes.mjs";
+import { assembleLifecycle } from "../src/lib/checkbook_lifecycle.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "../..");
 const FIXTURE_DIR = join(ROOT, "worker/test/fixtures/civic-time");
@@ -315,4 +319,212 @@ test("alert temporal_action clocks map event/publication/recorded without invent
   ]);
   // No processing clock invented
   assert.ok(!clocks.some((row) => row.clock === "processing"));
+});
+
+// ---------------------------------------------------------------------------
+// Money lifecycle production adapter
+// ---------------------------------------------------------------------------
+
+const MILLENNIUM_NOTICE = {
+  request_id: "20240723114",
+  agency_name: "Homeless Services",
+  type_of_notice_description: "Award",
+  pin: "07124N0022001",
+  vendor_name: "Acacia Network Housing Inc.",
+  contract_amount: "7397875",
+  short_title: "NAE-Millennium Adult Family Facility",
+  start_date: "2024-07-29",
+};
+
+test("money lifecycle adapter: notice 20240723114 emits notice_published + award_registered with stable event_id", () => {
+  const registered = [{
+    id: "CT1-071-20258800377",
+    vendor: "ACACIA",
+    registered: "2024-07-22",
+    original: 7397875,
+    current: 7397875,
+    spent: 4018484.1,
+  }];
+  const lifecycle = assembleLifecycle(MILLENNIUM_NOTICE, [], registered, null, {
+    pinStrategy: "exact",
+    lookupStatus: { pending: "ok", registered: "ok", spending: "error" },
+  });
+  const meta = {
+    observed_at: "2024-08-02T14:00:00.000Z",
+    processed_at: "2026-08-01T12:00:00.000Z",
+    run_id: "money-field-case",
+  };
+  const civic = mapMoneyLifecycleToCivic(lifecycle, MILLENNIUM_NOTICE, meta);
+  const kinds = civic.map((e) => e.event_kind);
+  assert.ok(kinds.includes("procurement.notice_published"), "award notice publication");
+  assert.ok(kinds.includes("procurement.award_registered"), "Checkbook/PASSPort registration");
+  assert.ok(kinds.includes("procurement.payment"), "from_registered payment assertion");
+  assert.ok(civic.length >= 2, "fixture gate: ≥2 envelopes");
+
+  const noticeEv = civic.find((e) => e.event_kind === "procurement.notice_published");
+  assert.equal(noticeEv.subject_ref, "notice:20240723114");
+  assert.equal(noticeEv.published_at, "2024-07-29");
+  assert.equal(noticeEv.valid_at, null);
+
+  const regEv = civic.find((e) => e.event_kind === "procurement.award_registered");
+  assert.equal(regEv.subject_ref, "contract:CT1-071-20258800377");
+  assert.equal(regEv.valid_at, "2024-07-22");
+
+  const payEv = civic.find((e) => e.event_kind === "procurement.payment");
+  assert.equal(payEv.status, "from_registered");
+  assert.notEqual(payEv.valid_at, null);
+
+  // Idempotent event_id / payload_hash across runs (processing clock may differ)
+  const again = mapMoneyLifecycleToCivic(lifecycle, MILLENNIUM_NOTICE, {
+    ...meta,
+    processed_at: "2026-08-02T00:00:00.000Z",
+    run_id: "money-field-case-rerun",
+  });
+  assert.equal(again.length, civic.length);
+  for (let i = 0; i < civic.length; i++) {
+    assert.equal(again[i].event_id, civic[i].event_id);
+    assert.equal(again[i].payload_hash, civic[i].payload_hash);
+  }
+
+  const attached = attachMoneyCivicEvents(lifecycle, MILLENNIUM_NOTICE, meta);
+  assert.ok(Array.isArray(attached.civic_events));
+  assert.equal(attached.civic_events.length, civic.length);
+});
+
+test("money lifecycle adapter: unavailable payment never invents a payment event", () => {
+  const lifecycle = {
+    timeline: [
+      {
+        stage: "award",
+        status: "matched",
+        source: "city-record",
+        date: "2024-07-29",
+        detail: { request_id: "20240723114" },
+      },
+      {
+        stage: "payment",
+        status: "matched",
+        source: "checkbook-spending",
+        date: null,
+        detail: { payment_state: "unavailable", total_spent: null },
+      },
+    ],
+  };
+  const civic = mapMoneyLifecycleToCivic(lifecycle, MILLENNIUM_NOTICE, {
+    processed_at: "2026-08-01T12:00:00.000Z",
+  });
+  assert.ok(civic.some((e) => e.event_kind === "procurement.notice_published"));
+  assert.ok(!civic.some((e) => e.event_kind === "procurement.payment"));
+});
+
+test("money_spine_adapter_coverage > 0 on field-case procurement lifecycles", () => {
+  const hntbNotice = {
+    request_id: "20260623008",
+    agency_name: "Transportation",
+    type_of_notice_description: "Award",
+    pin: "84124P0003001",
+    vendor_name: "HNTB NEW YORK ENGINEERING AND ARCHITECTURE PC",
+    contract_amount: "13533763.08",
+    short_title: "CM Services",
+    start_date: "2026-06-23",
+  };
+  const pairs = [
+    {
+      notice: MILLENNIUM_NOTICE,
+      lifecycle: assembleLifecycle(
+        MILLENNIUM_NOTICE,
+        [],
+        [{
+          id: "CT1-071-20258800377",
+          vendor: "ACACIA",
+          registered: "2024-07-22",
+          original: 7397875,
+          current: 7397875,
+          spent: 4018484.1,
+        }],
+        null,
+        {
+          pinStrategy: "exact",
+          lookupStatus: { pending: "ok", registered: "ok", spending: "error" },
+        },
+      ),
+    },
+    {
+      notice: hntbNotice,
+      lifecycle: assembleLifecycle(
+        hntbNotice,
+        [],
+        [{
+          id: "CT184120268807929",
+          vendor: "HNTB",
+          registered: "2026-06-22",
+          original: 13533763.08,
+          current: 13533763.08,
+          spent: 0,
+          start: "2024-10-11",
+          end: "2032-10-10",
+        }],
+        [],
+        {
+          pinStrategy: "exact",
+          lookupStatus: { pending: "ok", registered: "ok", spending: "ok" },
+        },
+      ),
+    },
+    {
+      notice: {
+        request_id: "20231222103",
+        agency_name: "Housing Preservation",
+        type_of_notice_description: "Award",
+        pin: "07123E0076001",
+        start_date: "2023-12-22",
+        short_title: "Housing Options",
+      },
+      lifecycle: assembleLifecycle(
+        {
+          request_id: "20231222103",
+          agency_name: "Housing Preservation",
+          type_of_notice_description: "Award",
+          pin: "07123E0076001",
+          start_date: "2023-12-22",
+          short_title: "Housing Options",
+        },
+        [],
+        [
+          {
+            id: "CT107120248803393",
+            vendor: "HOUSING OPTIONS",
+            registered: "2023-12-21",
+            original: 24438023,
+            current: 24438023,
+            spent: 14496646.77,
+            vendorRecordType: "Prime Vendor",
+          },
+          {
+            id: "CT107120248803393",
+            vendor: "SUBCO",
+            registered: "2023-12-21",
+            original: 0,
+            current: 0,
+            spent: 0,
+            vendorRecordType: "Sub Vendor",
+          },
+        ],
+        [{ amount: 100, date: "2024-01-15", contractId: "CT107120248803393" }],
+        {
+          pinStrategy: "exact",
+          lookupStatus: { pending: "ok", registered: "ok", spending: "ok" },
+        },
+      ),
+    },
+  ];
+
+  const metric = moneySpineAdapterCoverage(pairs);
+  // Baseline before this adapter was 0; production path must move the metric above zero.
+  assert.ok(metric.with_lifecycle >= 3, `expected field cases, got ${metric.with_lifecycle}`);
+  assert.ok(metric.coverage > 0, `money_spine_adapter_coverage must be >0, got ${metric.coverage}`);
+  assert.equal(metric.coverage, 1, "all three field cases emit ≥1 Money civic event");
+  assert.ok(metric.kinds["procurement.notice_published"] >= 1);
+  assert.ok(metric.kinds["procurement.award_registered"] >= 1);
+  assert.ok(metric.kinds["procurement.payment"] >= 1);
 });

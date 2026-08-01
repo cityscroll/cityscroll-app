@@ -4,9 +4,9 @@
 | --- | --- |
 | Status | Accepted |
 | Date | 2026-08-01 |
-| Scope | Library seam only — pure mapper, kind registry, fixture diff |
+| Scope | Pure mapper + kind registry + fixture diff; Money production adapter on contract lifecycle |
 | Supersedes | — |
-| Blocks | Optional later adapters that emit production events under this envelope |
+| Blocks | Optional later writers for Rules/Land/Meetings under this envelope |
 
 ## Context
 
@@ -67,26 +67,29 @@ The registry is a closed list of kinds used by Money, Rules, Land, and Meetings 
 in this card. Adapters may propose new kinds in later PRs; unknown kinds fail closed in
 the mapper rather than collapsing stages (for example award ≠ amendment).
 
-### Product-spine adapters (read-only)
+### Product-spine adapters
 
-Pure mappers convert already-shipped product spines into envelopes without writing:
+Pure mappers convert already-shipped product spines into envelopes:
 
-| Adapter | Source |
-| --- | --- |
-| `mapRuleSpineToCivic` | `deriveRuleEvents` (Rules) |
-| `mapLandSpineToCivic` | `buildLandEventSpine` (Land/ZAP) |
-| `mapMeetingRecordToCivic` | meeting-outcomes matched record |
-| `clocksFromTemporalAction` | digest `temporal_action` (alerts) |
+| Adapter | Source | Production attach |
+| --- | --- | --- |
+| `mapMoneyLifecycleToCivic` | `assembleLifecycle` timeline (Checkbook + PASSPort) | `attachMoneyCivicEvents` on `computeLifecycle` → `civic_events` on `/contract-lifecycle` |
+| `mapRuleSpineToCivic` | `deriveRuleEvents` (Rules) | library only |
+| `mapLandSpineToCivic` | `buildLandEventSpine` (Land/ZAP) | library only |
+| `mapMeetingRecordToCivic` | meeting-outcomes matched record | library only |
+| `clocksFromTemporalAction` | digest `temporal_action` (alerts) | library only |
 
-These generalize rules, zoning, meetings, and alert clocks onto one contract. They do not
-replace the product spines or open a production event store.
+Money is the first production path: matched solicitation/award/registration/payment stages
+emit `procurement.*` envelopes cached with the lifecycle JSON. Rules/Land/Meetings remain
+read-only mappers until a later materializer opts in. Adapters do not replace the product
+spines as source of truth.
 
 ### Non-goals
 
-- No Worker route, KV/D1 writer, or production consumer in this card
-- No graph store, event bus, or multi-hop ontology product
+- No separate civic-event D1 table or event bus (Money events ride the existing lifecycle cache)
+- No graph store or multi-hop ontology product
 - No replacement of existing spine renderers (`deriveRuleEvents`, land spine, meeting
-  outcomes, Checkbook lifecycle) — those remain source of truth until an adapter opts in
+  outcomes, Checkbook lifecycle) — adapters project them into the shared envelope
 
 ## Consequences
 
@@ -100,10 +103,17 @@ replace the product spines or open a production event store.
 
 ```bash
 node --test worker/test/civic_time_contract.test.mjs
+node --test worker/test/checkbook_lifecycle.test.mjs
 node worker/scripts/civic-time-diff.mjs --fixtures worker/test/fixtures/civic-time --check
 ```
 
+Coverage metric (Money adapter): `money_spine_adapter_coverage` =
+notices with ≥1 Money civic event / procurement notices with a lifecycle (target >0 from 0).
+Pinned in `worker/test/civic_time_contract.test.mjs`.
+
 ## Rollback
 
-Delete `worker/src/lib/civic_time.mjs`, fixtures under `worker/test/fixtures/civic-time/`,
-the characterization test, the CLI, and this ADR. No migration or route exists.
+Remove `mapMoneyLifecycleToCivic` / `attachMoneyCivicEvents` wiring from
+`worker/src/checkbook_lifecycle.mjs` and drop `civic_events` from the cache completeness
+check. Delete `worker/src/lib/civic_time.mjs`, fixtures under `worker/test/fixtures/civic-time/`,
+the characterization tests, the CLI, and this ADR if rolling back the whole seam.

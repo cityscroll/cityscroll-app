@@ -92,6 +92,11 @@ export const SPINE_KIND_ALIASES = Object.freeze({
   city_record_notice_published: "land.city_record_notice",
   city_record_hearing: "land.city_record_hearing",
   zap_disposition: "land.zap_disposition",
+  // Money / contract lifecycle stages (assembleLifecycle timeline)
+  solicitation: "procurement.notice_published",
+  award: "procurement.notice_published",
+  registered: "procurement.award_registered",
+  payment: "procurement.payment",
 });
 
 const ENVELOPE_REQUIRED = [
@@ -426,8 +431,15 @@ export function clockTable(assertion) {
 
 function dayStamp(value) {
   if (value == null || value === "") return null;
-  const s = String(value);
+  const s = String(value).trim();
   if (/^\d{4}-\d{2}-\d{2}/.test(s)) return s.slice(0, 10);
+  // Checkbook / PASSPort often emit US slash dates (e.g. 07/22/2024).
+  const mdy = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (mdy) {
+    const mm = mdy[1].padStart(2, "0");
+    const dd = mdy[2].padStart(2, "0");
+    return `${mdy[3]}-${mm}-${dd}`;
+  }
   return s;
 }
 
@@ -613,4 +625,196 @@ export function clocksFromTemporalAction(action) {
     observed_at: action.recorded_at ?? null,
     processed_at: null,
   });
+}
+
+// ---------------------------------------------------------------------------
+// Money / contract lifecycle adapter (production emitter path)
+// ---------------------------------------------------------------------------
+
+const MONEY_PAYMENT_EMIT_STATES = new Set(["paid", "from_registered", "verified_zero"]);
+
+/**
+ * Map an assembled contract lifecycle (Checkbook + optional PASSPort) into
+ * civic-time envelopes for Money event-kinds.
+ *
+ * Stage → kind:
+ *   solicitation | award (matched) → procurement.notice_published
+ *   registered (matched)           → procurement.award_registered
+ *   payment (matched, honest state)→ procurement.payment
+ *
+ * Unmatched / ambiguous / unknown / not_applicable / passed stages emit nothing.
+ * payment_state "unavailable" never invents a $0 payment event.
+ *
+ * @param {object} lifecycle - assembleLifecycle / getOrCompute result body
+ * @param {object} [noticeRow] - City Record notice row (request_id, start_date, …)
+ * @param {object} [meta] - observed_at, processed_at, run_id
+ * @returns {object[]} civic-time envelopes
+ */
+export function mapMoneyLifecycleToCivic(lifecycle, noticeRow = null, meta = {}) {
+  const notice = noticeRow || {};
+  const noticeId = notice.request_id || lifecycle?.request_id || null;
+  const observed_at = meta.observed_at ?? null;
+  const processed_at = meta.processed_at ?? null;
+  const run_id = meta.run_id ?? "money-lifecycle";
+  const timeline = Array.isArray(lifecycle?.timeline) ? lifecycle.timeline : [];
+  const out = [];
+
+  const registeredEntry = timeline.find(
+    (e) => e && e.stage === "registered" && e.status === "matched" && e.detail?.contract_id,
+  );
+  const contractIdFromReg = registeredEntry?.detail?.contract_id
+    ? String(registeredEntry.detail.contract_id)
+    : null;
+  const regDateFallback = dayStamp(
+    registeredEntry?.detail?.registration_date || registeredEntry?.date || null,
+  );
+
+  for (const entry of timeline) {
+    if (!entry || entry.status !== "matched") continue;
+    const stage = entry.stage;
+
+    if (stage === "solicitation" || stage === "award") {
+      const rid = entry.detail?.request_id || noticeId;
+      if (!rid) continue;
+      const pubDate = dayStamp(entry.date || entry.source_timestamp || notice.start_date);
+      if (!pubDate) continue; // publication-only event needs a publication clock
+      out.push(
+        mapCivicEvent(
+          {
+            event_kind: "procurement.notice_published",
+            subject_ref: `notice:${rid}`,
+            source_record_ref: `${entry.source || "city-record"}:${rid}`,
+            source_revision: `cr:${rid}:${stage}:start_date:${pubDate}`,
+            source_field: "start_date",
+            published_at: pubDate,
+            valid_at: null,
+            observed_at,
+            processed_at,
+            status: "occurred",
+            require_valid: false,
+          },
+          { run_id, processed_at },
+        ),
+      );
+      continue;
+    }
+
+    if (stage === "registered") {
+      const contractId = entry.detail?.contract_id;
+      if (!contractId) continue;
+      const regDate = dayStamp(entry.detail?.registration_date || entry.date || entry.source_timestamp);
+      if (!regDate) continue;
+      out.push(
+        mapCivicEvent(
+          {
+            event_kind: "procurement.award_registered",
+            subject_ref: `contract:${contractId}`,
+            source_record_ref: `${entry.source || "checkbook-contracts"}:${contractId}`,
+            source_revision: `cb:${contractId}:reg:${regDate}`,
+            source_field: "registration_date",
+            valid_at: regDate,
+            published_at: null,
+            observed_at,
+            processed_at,
+            status: "occurred",
+            confidence: "high",
+            require_valid: false,
+          },
+          { run_id, processed_at },
+        ),
+      );
+      continue;
+    }
+
+    if (stage === "payment") {
+      const detail = entry.detail || {};
+      const state = detail.payment_state;
+      // Never invent a payment assertion from an unavailable feed.
+      if (!MONEY_PAYMENT_EMIT_STATES.has(state)) continue;
+      const contractId = contractIdFromReg || detail.contract_id || null;
+      const subject_ref = contractId
+        ? `contract:${contractId}`
+        : noticeId
+          ? `notice:${noticeId}`
+          : null;
+      if (!subject_ref) continue;
+      const payDate = dayStamp(
+        detail.latest_payment_date || entry.date || entry.source_timestamp || regDateFallback,
+      );
+      // paid needs a publisher payment date when possible; fall back to registration day
+      // so from_registered / verified_zero still emit a clock-honest envelope.
+      if (!payDate) continue;
+      const sourceKey = contractId || noticeId || "payment";
+      out.push(
+        mapCivicEvent(
+          {
+            event_kind: "procurement.payment",
+            subject_ref,
+            source_record_ref: `${entry.source || "checkbook-spending"}:${sourceKey}`,
+            source_revision: `pay:${sourceKey}:${state}:${payDate}:${detail.total_spent ?? "na"}`,
+            source_field: state === "paid" ? "issue_date" : "spent_to_date",
+            valid_at: payDate,
+            published_at: null,
+            observed_at,
+            processed_at,
+            status: state,
+            confidence: state === "paid" ? "high" : "medium",
+            require_valid: false,
+          },
+          { run_id, processed_at },
+        ),
+      );
+    }
+  }
+
+  return out;
+}
+
+/**
+ * Attach civic_events to a lifecycle payload for the production /contract-lifecycle path.
+ * Pure; does not invent observation clocks.
+ */
+export function attachMoneyCivicEvents(lifecycle, noticeRow = null, meta = {}) {
+  if (!lifecycle || typeof lifecycle !== "object") return lifecycle;
+  const civic_events = mapMoneyLifecycleToCivic(lifecycle, noticeRow, meta);
+  return { ...lifecycle, civic_events };
+}
+
+/**
+ * Coverage metric: share of procurement lifecycles that emit ≥1 Money civic event.
+ *
+ * money_spine_adapter_coverage = notices_with_≥1_money_civic_event
+ *                              / procurement_notices_with_lifecycle
+ *
+ * @param {Array<{ lifecycle: object, notice?: object }>} pairs
+ * @returns {{ coverage: number, with_events: number, with_lifecycle: number, kinds: object }}
+ */
+export function moneySpineAdapterCoverage(pairs = []) {
+  let with_lifecycle = 0;
+  let with_events = 0;
+  const kinds = {
+    "procurement.notice_published": 0,
+    "procurement.award_registered": 0,
+    "procurement.payment": 0,
+  };
+  for (const pair of pairs) {
+    const lifecycle = pair?.lifecycle;
+    if (!lifecycle || !Array.isArray(lifecycle.timeline) || lifecycle.timeline.length === 0) {
+      continue;
+    }
+    with_lifecycle += 1;
+    const events = mapMoneyLifecycleToCivic(lifecycle, pair.notice || null, pair.meta || {});
+    if (events.length >= 1) with_events += 1;
+    for (const e of events) {
+      if (Object.prototype.hasOwnProperty.call(kinds, e.event_kind)) {
+        kinds[e.event_kind] += 1;
+      }
+    }
+  }
+  return {
+    coverage: with_lifecycle === 0 ? 0 : with_events / with_lifecycle,
+    with_events,
+    with_lifecycle,
+    kinds,
+  };
 }
