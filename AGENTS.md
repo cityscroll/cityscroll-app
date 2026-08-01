@@ -569,10 +569,13 @@ worker/test/ingest_map.test.mjs`.
 NYC Rules lifecycle dates remain distinct events in `worker/src/lib/rules.mjs`:
 proposal publication, public hearing, comment close, adoption, and effective date.
 Date-only fields are New York calendar dates, not inferred clock times; comment close
-events carry alert metadata. The `/rules` read model is `rules:materialized:v2`, and
-Agency Rules notice detail owns the public spine. Verify:
-`node --test worker/test/rules_event_spine.test.mjs test/rules_deadline_render.test.mjs`.
-Captures: `python3 tools/capture_rule_event_spine.py`.
+events carry alert metadata. Digests cite comment-close by `valid_at` from the spine
+(`worker/src/lib/alert_temporal.mjs` → `commentCloseValidAt`), not publication or
+processing time. The `/rules` read model is `rules:materialized:v2`, and Agency Rules
+notice detail owns the public spine (same `.chain` pattern as the Money contract
+timeline). Verify:
+`node --test worker/test/rules_event_spine.test.mjs test/rules_deadline_render.test.mjs worker/test/alert_temporal.test.mjs && python3 test/functional/19_rules_time_spine.py --screenshots artifacts/cs-time-02`.
+Captures: `python3 tools/capture_rule_event_spine.py` (before/after at 390 and 1440).
 
 ## Maintaining this file
 

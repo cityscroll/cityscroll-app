@@ -10,9 +10,25 @@ function text(value) {
   return value == null ? "" : String(value).trim();
 }
 
+/**
+ * Comment-close valid time for digest identity and copy.
+ *
+ * Prefer the materialized event spine (`events[].event_type === "comment_close"`.valid_at)
+ * so digests cite the same clock the notice-detail Rules timeline uses. Fall back to the
+ * flattened NYC Rules field when a view was written before the spine landed.
+ */
+export function commentCloseValidAt(record) {
+  const events = Array.isArray(record?.events) ? record.events : [];
+  const close = events.find((event) => event?.event_type === "comment_close");
+  const fromEvent = text(close?.valid_at);
+  if (fromEvent) return fromEvent.slice(0, 10);
+  const fromFlat = text(record?.nyc_rules?.comment_by_date);
+  return fromFlat ? fromFlat.slice(0, 10) : "";
+}
+
 export function ruleActionKey(record) {
   if (!record?.request_id || record?.stage !== "comment-open") return null;
-  const deadline = text(record?.nyc_rules?.comment_by_date);
+  const deadline = commentCloseValidAt(record);
   const url = text(record?.nyc_rules?.url);
   if (!deadline || !url) return null;
   return `temporal:rules:${record.request_id}:comment-open:${deadline}`;
@@ -29,12 +45,18 @@ function rulesByNotice(view) {
 
 function withRuleAction(row, match, view) {
   if (!match) return row;
-  const rule = match.record.nyc_rules;
+  const rule = match.record.nyc_rules || {};
+  const eventAt = commentCloseValidAt(match.record);
+  if (!eventAt || !rule.url) return row;
   return {
     ...row,
     temporal_action: {
       kind: "rules-comment-open",
-      event_at: rule.comment_by_date,
+      // Digest copy and calendar semantics: comment-close by valid (event) time — never
+      // publication or materializer processing time.
+      event_at: eventAt,
+      trigger_field: "valid_at",
+      event_type: "comment_close",
       publication_at: rule.pub_date || null,
       recorded_at: view?.generated_at || null,
       url: rule.url,

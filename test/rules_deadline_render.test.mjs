@@ -32,3 +32,11 @@ test("comment-close detail keeps the official action and calendar affordance", (
   assert.match(html, /data-rule-event=/);
   assert.match(html, /downloadRuleEventICS/);
 });
+
+test("digest temporal path cites comment-close by valid_at from the event spine", async () => {
+  const alertTemporal = await readFile(new URL("../worker/src/lib/alert_temporal.mjs", import.meta.url), "utf8");
+  assert.match(alertTemporal, /commentCloseValidAt/);
+  assert.match(alertTemporal, /event_type === "comment_close"/);
+  assert.match(alertTemporal, /trigger_field:\s*"valid_at"/);
+  assert.match(alertTemporal, /event_type:\s*"comment_close"/);
+});
