@@ -78,27 +78,27 @@ export function legalForm(value) {
   return null;
 }
 
-function stripLegalForm(tokens) {
-  const joined = tokens.join(" ");
+function stripLegalForm(pieces) {
+  const joined = pieces.join(" ");
   for (const suffix of [...LEGAL_FORMS.keys()].sort((a, b) => b.length - a.length)) {
     if (joined === suffix) return [];
     if (joined.endsWith(` ${suffix}`)) {
       return joined.slice(0, -(suffix.length + 1)).split(" ").filter(Boolean);
     }
   }
-  return tokens;
+  return pieces;
 }
 
 /** Family-aware identity tokens used for overlap features. */
 export function identityTokens(side, entityType = "vendor") {
-  let tokens = comparisonSurface(displayName(side)).split(" ").filter(Boolean);
-  if (entityType === "vendor") tokens = stripLegalForm(tokens);
+  let pieces = comparisonSurface(displayName(side)).split(" ").filter(Boolean);
+  if (entityType === "vendor") pieces = stripLegalForm(pieces);
   if (entityType === "agency") {
-    tokens = tokens.map((token) => AGENCY_EXPANSIONS.get(token) || token);
+    pieces = pieces.map((piece) => AGENCY_EXPANSIONS.get(piece) || piece);
   }
-  return [...new Set(tokens.filter((token) => {
-    if (COMMON_STOPWORDS.has(token)) return false;
-    return entityType !== "agency" || !AGENCY_STOPWORDS.has(token);
+  return [...new Set(pieces.filter((piece) => {
+    if (COMMON_STOPWORDS.has(piece)) return false;
+    return entityType !== "agency" || !AGENCY_STOPWORDS.has(piece);
   }))];
 }
 
@@ -139,10 +139,10 @@ function ratio(a, b) {
   return longer === 0 ? 0 : Math.min(a.length, b.length) / longer;
 }
 
-function agencyPlaces(tokens) {
+function agencyPlaces(pieces) {
   const places = new Set();
-  for (const token of tokens) {
-    const place = AGENCY_PLACES.get(token);
+  for (const piece of pieces) {
+    const place = AGENCY_PLACES.get(piece);
     if (place) places.add(place);
   }
   return [...places].sort();
@@ -165,7 +165,7 @@ export function extractFeatures(left = {}, right = {}, opts = {}) {
   const rightStem = familyStem(right, family);
   const leftTokens = identityTokens(left, family);
   const rightTokens = identityTokens(right, family);
-  const sharedTokens = leftTokens.filter((token) => rightTokens.includes(token)).sort();
+  const sharedTokens = leftTokens.filter((piece) => rightTokens.includes(piece)).sort();
   const leftIds = pinEpinValues(left);
   const rightIds = pinEpinValues(right);
   const sharedIds = leftIds.filter((id) => rightIds.includes(id));
