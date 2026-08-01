@@ -12,7 +12,15 @@ import {
 } from "./lib/rules.mjs";
 
 export const RULES_KV_KEY = "rules:materialized:v2";
-const RULES_RSS_URL = "https://rules.cityofnewyork.us/feed/";
+export const RULES_RSS_URL = "https://rules.cityofnewyork.us/feed/";
+/** Identifying UA — Cloudflare on rules.cityofnewyork.us returns HTTP 403
+ *  "Just a moment…" when the request has an empty or missing User-Agent
+ *  (Workers edge subrequests send none by default). */
+export const RULES_RSS_UA = "CityScrollBot/1.0 (+https://cityscroll.org; nyc-rules-rss)";
+export const RULES_RSS_HEADERS = Object.freeze({
+  Accept: "application/rss+xml, application/xml, text/xml, */*",
+  "User-Agent": RULES_RSS_UA,
+});
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const MAX_AGE_MS = 36 * 60 * 60 * 1000;
 const RSS_MAX_AGE_DAYS = 14;
@@ -24,10 +32,22 @@ const CR_SELECT = [
   "additional_description_3",
 ].join(",");
 
+/** Cloudflare challenge HTML is not an RSS feed — surface as fetch failure. */
+export function looksLikeBotChallenge(text) {
+  return /just a moment|cf-browser-verification|challenge-platform|_cf_chl|cdn-cgi\/challenge/i
+    .test(String(text || ""));
+}
+
 async function fetchRulesRss(fetchImpl) {
-  const response = await fetchImpl(RULES_RSS_URL);
+  const response = await fetchImpl(RULES_RSS_URL, { headers: { ...RULES_RSS_HEADERS } });
   if (!response.ok) throw new Error(`NYC Rules RSS ${response.status}`);
   const xml = await response.text();
+  if (looksLikeBotChallenge(xml)) {
+    throw new Error("NYC Rules RSS blocked by bot challenge");
+  }
+  if (!/<rss[\s>]/i.test(xml) || !/<item[\s>]/i.test(xml)) {
+    throw new Error("NYC Rules RSS response is not a feed with items");
+  }
   return parseRssItems(xml).map(normalizeRuleItem);
 }
 

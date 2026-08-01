@@ -693,8 +693,15 @@ events carry alert metadata. Digests cite comment-close by `valid_at` from the s
 (`worker/src/lib/alert_temporal.mjs` → `commentCloseValidAt`), not publication or
 processing time. The `/rules` read model is `rules:materialized:v2`, and Agency Rules
 notice detail owns the public spine (same `.chain` pattern as the Money contract
-timeline). Verify:
-`node --test worker/test/rules_event_spine.test.mjs test/rules_deadline_render.test.mjs worker/test/alert_temporal.test.mjs && python3 test/functional/19_rules_time_spine.py --screenshots artifacts/cs-time-02`.
+timeline).
+
+**RSS egress (hard):** `worker/src/rules.mjs` must send `RULES_RSS_HEADERS`
+(`User-Agent` + RSS Accept) on `https://rules.cityofnewyork.us/feed/`. An empty or
+missing User-Agent gets Cloudflare HTTP 403 challenge HTML ("Just a moment…"), so
+Workers subrequests with no default UA produce zero enrichment rows. Challenge HTML
+is treated as a fetch failure (`looksLikeBotChallenge`), not an empty feed. Verify:
+`node --test worker/test/nyc_rules.test.mjs worker/test/rules_event_spine.test.mjs
+test/rules_deadline_render.test.mjs worker/test/alert_temporal.test.mjs`.
 Captures: `python3 tools/capture_rule_event_spine.py` (before/after at 390 and 1440).
 
 ## Maintaining this file
