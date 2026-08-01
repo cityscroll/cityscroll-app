@@ -7,8 +7,10 @@ import { signToken } from "optin-token";
 import {
   ACTION_LOG_COLUMNS,
   ACTION_LOG_SCHEMA_VERSION,
+  actionLogDecisionFromDisposition,
   appendActionLog,
   normalizeActionEvent,
+  reviewActionFromDisposition,
 } from "../src/lib/action_log.mjs";
 import { appendWatchLog } from "../src/lib/watchlog.mjs";
 import { sessionPayload } from "../src/lib/session.mjs";
@@ -77,6 +79,33 @@ test("normalizer rejects email-shaped object ids and unknown methods", () => {
   assert.equal(normalizeActionEvent({ ...base, object: { type: "watch", id: "192.0.2.1" } }), null);
   assert.equal(normalizeActionEvent({ ...base, object: { type: "watch", id: "2001:db8::1" } }), null);
   assert.equal(normalizeActionEvent({ ...base, object: { type: "watch", id: "money" }, method: { name: "bad method", version: "v1" } }), null);
+});
+
+test("desk dispositions map to privacy-safe review actions", () => {
+  assert.equal(actionLogDecisionFromDisposition("same"), "same");
+  assert.equal(actionLogDecisionFromDisposition("different"), "different");
+  assert.equal(actionLogDecisionFromDisposition("defer"), "unresolved");
+  assert.equal(actionLogDecisionFromDisposition("merge"), undefined);
+
+  const action = reviewActionFromDisposition({
+    id: "disp-1",
+    pair_id: "pair-abc",
+    decision: "same",
+    actor: "desk-actor:fixture",
+    note: "should never reach the action log",
+    created_at: "2026-08-01T12:00:00Z",
+  });
+  assert.deepEqual(action, {
+    action_type: "review_decision",
+    object: { type: "entity_pair", id: "pair-abc" },
+    method: { name: "false_split_desk", version: "v1" },
+    metadata: { source: "review_desk", decision: "same" },
+    ts: "2026-08-01T12:00:00Z",
+    id: "disp-1",
+  });
+  const encoded = JSON.stringify(action);
+  assert.equal(encoded.includes("desk-actor"), false);
+  assert.equal(encoded.includes("should never"), false);
 });
 
 test("append writes one queryable row with method lineage", async () => {
