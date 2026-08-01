@@ -63,6 +63,21 @@ test("title vs PIN procurement pair is blocked-out (no shared keys)", () => {
   assert.deepEqual(sharedBlockKeys(left, right, "procurement"), []);
 });
 
+test("PIN and EPIN values enter the same candidate bucket", () => {
+  const left = {
+    display_name: "Catering Services",
+    attrs: { pin: "TEST-PIN-SHARED" },
+  };
+  const right = {
+    display_name: "Different procurement title",
+    attrs: { epin: "TEST-PIN-SHARED" },
+  };
+  assert.deepEqual(
+    sharedBlockKeys(left, right, "procurement"),
+    ["pin:TESTPINSHARED"],
+  );
+});
+
 test("Camba legal-suffix variants share stem key", () => {
   const left = { display_name: "Camba Inc." };
   const right = { display_name: "CAMBA  INC" };
@@ -130,7 +145,11 @@ test("CLI --blocker token_v0 prints candidate_recall in [0,1] and block examples
   assert.notEqual(m[1], "null");
   const cr = Number(m[1]);
   assert.ok(cr >= 0 && cr <= 1, `candidate_recall ${cr} not in [0,1]`);
+  assert.match(r.stdout, /^precision=[0-9.]+$/m);
+  assert.match(r.stdout, /^recall=[0-9.]+$/m);
+  assert.match(r.stdout, /^false_split=[0-9]+$/m);
   assert.match(r.stdout, /blocked_in\t/);
+  assert.match(r.stdout, /blocked_out\tgv0-026\t/);
   assert.match(r.stdout, /blocker=token_v0/);
   // No production side effects: harness is offline.
   assert.doesNotMatch(r.stdout, /auto.?link|D1|production/i);

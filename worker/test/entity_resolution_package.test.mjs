@@ -1,6 +1,6 @@
 // Package-boundary characterization for entity_resolution (er-08) and er-06 review shaping.
 //
-// Proves modular-monolith imports resolve (normalizers + stubs + evaluation
+// Proves modular-monolith imports resolve (normalizers + matcher + evaluation
 // re-exports) and that the worker normalize shim stays behavior-identical.
 // No public HTTP ER routes are introduced by this card.
 //
@@ -94,10 +94,10 @@ test("package root re-exports match normalizers and worker shim", () => {
   assert.ok(sameAgency("POLICE DEPARTMENT", "Police Department"));
 });
 
-test("candidate generation uses token_v0 while later subpackages stay non-linking", () => {
+test("candidate generation and conventional matcher stay non-linking", () => {
   assert.equal(CANDIDATE_GENERATION_VERSION, "token_v0_v0");
-  assert.equal(FEATURES_VERSION, "stub");
-  assert.equal(MATCHERS_VERSION, "stub");
+  assert.equal(FEATURES_VERSION, "pair_features_v0");
+  assert.equal(MATCHERS_VERSION, "conventional_v0");
   assert.equal(POLICIES_VERSION, "stub");
   assert.equal(REVIEW_VERSION, "possibly_same_v1");
 
@@ -108,11 +108,16 @@ test("candidate generation uses token_v0 while later subpackages stay non-linkin
   ]);
   assert.equal(candidates.length, 1);
   assert.deepEqual(candidates[0].shared_keys, ["stem:ACME CONSTRUCTION", "tok:ACME", "tok:CONSTRUCTION"]);
-  assert.deepEqual(extractFeatures({ a: 1 }, { b: 2 }), {});
+  const features = extractFeatures(
+    { display_name: "Acme Construction LLC" },
+    { display_name: "ACME CONSTRUCTION, INC." },
+  );
+  assert.equal(features.stem_equal, true);
+  assert.equal(features.token_jaccard, 1);
 
-  const scored = scorePair({ name: "A" }, { name: "B" }, {});
+  const scored = scorePair({ name: "A" }, { name: "B" });
   assert.equal(scored.decision, "unresolved");
-  assert.equal(scored.confidence, null);
+  assert.equal(typeof scored.confidence, "number");
 
   const routed = routeDecision(scored);
   assert.equal(routed.auto_link, false);

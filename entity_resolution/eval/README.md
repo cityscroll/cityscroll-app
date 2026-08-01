@@ -8,7 +8,7 @@ no auto-links.
 | Path | Role |
 | --- | --- |
 | `gold_v0.jsonl` | Versioned hard-case gold (pair labels) |
-| `run_metrics.mjs` | Load gold, validate, print metric keys |
+| `run_metrics.mjs` | Load gold, run predictions, and print metric keys |
 | `blockers/token_v0.mjs` | Token/stem blocking v0 (eval candidate generation) |
 
 ## Run
@@ -22,7 +22,7 @@ node entity_resolution/eval/run_metrics.mjs \
 Dry-run exits 0 and prints:
 
 - `precision`, `recall`, `candidate_recall`, `unresolved_rate`, `false_merge`, `false_split`
-  (scorer metrics stay `null` until predictions exist; `candidate_recall` stays
+  (scorer metrics stay `null`; `candidate_recall` stays
   `null` until a blocker is named)
 - gold version, content hash, case composition
 
@@ -40,7 +40,10 @@ With `--blocker token_v0`:
   share at least one block key)
 - the report lists sample **blocked_in** and **blocked_out** true matches
   (gold `label=same`) so drops are never silent
-- scorer metrics remain `null` without `--predictions` (identity/no-op scorer)
+- conventional matcher v0 supplies in-memory predictions when `--predictions`
+  is omitted, so precision, recall, unresolved rate, false merges, and false
+  splits are numeric
+- blocked-out pairs remain unresolved rather than bypassing candidate generation
 
 Block keys per side (eval-only, in memory):
 
@@ -48,7 +51,7 @@ Block keys per side (eval-only, in memory):
 | --- | --- |
 | `stem:<key>` | `vendorStem` (vendors) or agency canonical id |
 | `tok:<token>` | Significant tokens from the stem/display surface |
-| `pin:<PIN>` | Shared when both sides carry `attrs.pin` |
+| `pin:<PIN-or-EPIN>` | Shared when either side carries the same PIN/EPIN identifier |
 
 A pair is **blocked-in** when left and right share ≥1 key. Token blocking is a
 high-recall gate — gold `different` pairs may still be candidates; later
@@ -59,7 +62,7 @@ exits non-zero.
 
 Optional flags:
 
-- `--predictions <path.jsonl>` — decisions per gold `id` (`same` \| `different` \| `unresolved`)
+- `--predictions <path.jsonl>` — override matcher v0 with decisions per gold `id` (`same` \| `different` \| `unresolved`)
 - `--blocker token_v0\|none` — candidate generation (default: none → `candidate_recall=null`)
 - `--examples N` — how many blocked-in/out true-match lines to print (default 5 with blocker)
 - `--json` — full report object after the KEY=value lines

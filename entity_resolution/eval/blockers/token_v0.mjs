@@ -8,7 +8,7 @@
  * Block keys per side:
  *   - stem:<normalized identity key>   (vendor stem or agency canonical id)
  *   - tok:<token>                      (non-stop tokens from the stem surface)
- *   - pin:<PIN>                        (when attrs.pin is present)
+ *   - pin:<PIN-or-EPIN>                (shared procurement identifier family)
  *
  * A gold pair is blocked-in when left and right share at least one block key.
  */
@@ -133,10 +133,10 @@ export function blockKeysForSide(side, entityType) {
     keys.add(`tok:${t}`);
   }
 
-  const pin = side.attrs?.pin;
-  if (pin) {
-    const p = normalizePin(pin);
-    if (p) keys.add(`pin:${p}`);
+  for (const pin of [side.pin, side.epin, side.attrs?.pin, side.attrs?.epin]) {
+    if (!pin) continue;
+    const normalized = normalizePin(pin);
+    if (normalized) keys.add(`pin:${normalized}`);
   }
 
   return keys;
