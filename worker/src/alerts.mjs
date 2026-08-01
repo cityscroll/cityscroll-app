@@ -46,6 +46,7 @@ import {
   isWatchActive,
   rollupSendDecision,
   rollupSubject,
+  rollupBodySections,
   toRollupDayLogEntry,
   accountLogId,
   sectionWantsSend,
@@ -647,14 +648,21 @@ export async function processAccountRollup(env, subs, ctx) {
       manageUrlPresent = !!manageUrl;
       const sessionTok = await issueEmailSessionToken(env, email);
       const base = env.CONFIRM_BASE || "https://api.cityscroll.org";
+      // Account watch count (all evaluated sections, including quiet/weekly) drives the
+      // multi-watch subject form even when only one section wanted send.
+      const watchCount = sections.length;
+      const bodySections = rollupBodySections(sections);
       const subject = rollupSubject({
         totalNew: decision.totalNew,
         totalForecasts: decision.totalForecasts,
         labels: decision.labels,
         quiet: decision.totalNew === 0 && decision.totalForecasts === 0,
+        watchCount,
       });
       const html = rollupDigestHtml({
-        sections: wanting.length ? wanting : sections.filter((s) => !s.skipped && !s.error),
+        sections: bodySections.length ? bodySections : wanting,
+        wantingCount: wanting.length,
+        watchCount,
         unsubAllUrl,
         manageUrl,
         lang,
@@ -1000,9 +1008,11 @@ export async function consumeDigestJob(env, jobOrKey) {
     }
     if (!subs.length) {
       r = { sub: accountLogId(job.email), kind: "rollup", skipped: "gone" };
-    } else if (subs.length === 1) {
-      r = await processOneSub(env, subs[0], ctx);
     } else {
+      // Always the account rollup path for type:"rollup" jobs — even if only one key
+      // still loads. Falling back to processOneSub made a multi-watch account emit a
+      // single-watch subject/body when other watches were quiet, paused mid-queue, or
+      // failed to load.
       r = await processAccountRollup(env, subs, ctx);
     }
   } else {
@@ -1807,16 +1817,43 @@ function quietHtml(label, action, since, unsubUrl, lang = "en", healthNote = "",
 }
 
 /**
- * Consolidated multi-watch digest HTML: one section per watch that wants send
- * (or quiet sections when only heartbeats). Footer: manage prefs + unsub all.
+ * Consolidated multi-watch digest HTML: one section per evaluated watch (matches,
+ * quiet, or cadence-skipped). Footer: manage prefs + unsub all.
  */
-function rollupDigestHtml({ sections = [], unsubAllUrl, manageUrl, lang = "en", sessionTok = null, base = "https://api.cityscroll.org" } = {}) {
-  const esc = (s) => String(s == null ? "" : s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
+function rollupDigestHtml({
+  sections = [],
+  wantingCount = null,
+  watchCount = null,
+  unsubAllUrl,
+  manageUrl,
+  lang = "en",
+  sessionTok = null,
+  base = "https://api.cityscroll.org",
+} = {}) {
+  const esc = (s) => String(s == null ? "" : s).replace(/[<>&"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", '"': "&quot;" }[c]));
   const usd = (n) => (n == null || n === "" ? "" : "$" + Number(n).toLocaleString("en-US"));
   const cr = (id) => `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
+  const nTotal = Number.isFinite(Number(watchCount)) ? Number(watchCount) : sections.length;
+  const nWant = Number.isFinite(Number(wantingCount))
+    ? Number(wantingCount)
+    : sections.filter((s) => (Number(s.new) || 0) > 0 || (Number(s.forecasts) || 0) > 0 || s.action === "match" || s.action === "heartbeat" || s.action === "weekly-empty").length;
+  const summaryLine = nTotal > 1
+    ? `${nWant} of ${nTotal} watches with updates`
+    : `${nWant} watch${nWant === 1 ? "" : "es"} with updates`;
 
   const sectionHtml = sections.map((sec) => {
     const label = sec.label || sec.queryLabel || sec.lens || "Watch";
+    if (sec.skipped) {
+      const skipNote = sec.skipped === "weekly"
+        ? "This watch is weekly — next check is Monday."
+        : sec.skipped === "paused"
+          ? "This watch is paused."
+          : `Skipped (${sec.skipped}).`;
+      return `<section style="margin:0 0 28px;padding-bottom:18px;border-bottom:1px solid #e5dfd3">
+        <h3 style="font-family:system-ui;margin:0 0 8px">${esc(label)}</h3>
+        <p style="color:#666;font-style:italic;margin:0">${esc(skipNote)}</p>
+      </section>`;
+    }
     if (sec.kind === "award" && Array.isArray(sec.awardCandidates)) {
       const items = sec.awardCandidates.map((c) => {
         const vendor = c.vendor ? esc(c.vendor) : esc(emailT(lang, "award_watch_vendor_unlisted"));
@@ -1879,7 +1916,7 @@ function rollupDigestHtml({ sections = [], unsubAllUrl, manageUrl, lang = "en", 
     : "";
   return `<div style="font-family:Georgia,serif;max-width:620px">
     <h2 style="font-family:system-ui">CityScroll — your daily digest</h2>
-    <p style="color:#555;font-size:14px">${sections.length} watch${sections.length === 1 ? "" : "es"} with updates</p>
+    <p style="color:#555;font-size:14px">${esc(summaryLine)}</p>
     ${sectionHtml}
     <p style="color:#999;font-size:12px;margin-top:20px">
       ${manageLine}<a href="${esc(unsubAllUrl)}">${esc(emailT(lang, "digest_unsubscribe_all"))}</a> (one-click).
