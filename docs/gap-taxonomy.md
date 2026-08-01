@@ -31,6 +31,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | subsidy lifecycle · stage outcome | b | Build NYC / NYCIDA project documents (board minutes, closing packages) if an explicit outcome field is released |
 | subsidy lifecycle · no project join | b | NYCIDA/Build NYC financial public documents page if a project record is released for the notice |
 | subsidy lifecycle · company / place / money fields | b | the linked Build NYC project record if those fields are filled on publication |
+| subsidy lifecycle · company / place / money when only City Record hearing is joined | a | NYCIDA/Build NYC public documents |
 | Council meeting outcomes · no event join | a | NYC Council Legistar API |
 | Council meeting outcomes · matter without roll-call detail | a | NYC Council Legistar votes |
 | Council meeting outcomes · event without agenda matters | a | NYC Council Legistar agenda items |
@@ -109,14 +110,14 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `checkbook-contracts-x-current-solicitations-ocp-via-PIN` | `checkbook-contracts` × `current-solicitations-ocp` | PIN | maybe | 3 |
 | `checkbook-nycha-contracts-x-checkbook-spending-via-contract_id` | `checkbook-nycha-contracts` × `checkbook-spending` | contract_id | yes | 3 |
 | `checkbook-spending-x-current-solicitations-ocp-via-PIN` | `checkbook-spending` × `current-solicitations-ocp` | PIN | maybe | 3 |
-| `nycida-build-nyc-projects-x-recent-contract-awards-ocp-via-request_id` | `nycida-build-nyc-projects` × `recent-contract-awards-ocp` | request_id | maybe | 2 |
-| `nycida-build-nyc-projects-x-unregistered-zoning-application-portal-projects-via-project_id` | `nycida-build-nyc-projects` × `unregistered-zoning-application-portal-projects` | project_id | maybe | 2 |
-| `nycida-build-nyc-projects-x-zap-api-outcomes-via-project_id` | `nycida-build-nyc-projects` × `zap-api-outcomes` | project_id | yes | 2 |
-| `nycida-build-nyc-projects-x-zap-bbl-via-project_id` | `nycida-build-nyc-projects` × `zap-bbl` | project_id | yes | 2 |
-| `nycida-build-nyc-projects-x-zap-projects-via-project_id` | `nycida-build-nyc-projects` × `zap-projects` | project_id | yes | 2 |
+| `nycida-build-nyc-projects-x-recent-contract-awards-ocp-via-request_id` | `nycida-build-nyc-projects` × `recent-contract-awards-ocp` | request_id | maybe | 3 |
+| `nycida-build-nyc-projects-x-unregistered-zoning-application-portal-projects-via-project_id` | `nycida-build-nyc-projects` × `unregistered-zoning-application-portal-projects` | project_id | maybe | 3 |
+| `nycida-build-nyc-projects-x-zap-api-outcomes-via-project_id` | `nycida-build-nyc-projects` × `zap-api-outcomes` | project_id | yes | 3 |
+| `nycida-build-nyc-projects-x-zap-bbl-via-project_id` | `nycida-build-nyc-projects` × `zap-bbl` | project_id | yes | 3 |
+| `nycida-build-nyc-projects-x-zap-projects-via-project_id` | `nycida-build-nyc-projects` × `zap-projects` | project_id | yes | 3 |
+| `current-solicitations-ocp-x-nycida-build-nyc-projects-via-request_id` | `current-solicitations-ocp` × `nycida-build-nyc-projects` | request_id | maybe | 2 |
 | `passport-public-contracts-x-recent-contract-awards-ocp-via-PIN` | `passport-public-contracts` × `recent-contract-awards-ocp` | PIN | maybe | 2 |
 | `abo-local-authorities-x-doing-business-entities-via-vendor_name` | `abo-local-authorities` × `doing-business-entities` | vendor_name | maybe | 1 |
-| `active-civil-service-list-x-dcas-annual-exam-outcomes-via-exam_no` | `active-civil-service-list` × `dcas-annual-exam-outcomes` | exam_no | maybe | 1 |
 
 ## Graph view
 
