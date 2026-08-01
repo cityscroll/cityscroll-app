@@ -726,6 +726,7 @@
     meeting_outcomes_vote_person_html: "{name} ({vote})",
     meeting_outcomes_outcome_html: "نتیجہ: {outcome}",
     meeting_outcomes_no_votes_html: "ابھی یہاں نہیں دکھایا گیا — معاملہ “{matter}” کی رول کال ووٹیں NYC Council Legistar میں ہیں۔",
+    meeting_outcomes_no_person_votes_html: "ابھی یہاں نہیں دکھایا گیا — فرد کی سطح کی رول کال ووٹ NYC Council Legistar میں ہیں۔",
     meeting_outcomes_no_matters_html: "ابھی یہاں نہیں دکھایا گیا — ایجنڈا آئٹمز اور معاملات NYC Council Legistar میں ہیں۔",
     meeting_outcomes_no_attachments_html: "ابھی یہاں نہیں دکھایا گیا — معاون منسلکات NYC Council Legistar میں ہیں۔",
     meeting_outcomes_document_lbl: "دستاویز",

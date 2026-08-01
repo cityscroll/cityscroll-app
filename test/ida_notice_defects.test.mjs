@@ -19,6 +19,7 @@ import {
   isIdaHearingNotice,
   subsidyGapKind,
   lagWeeksForStage,
+  stampSubsidyFeedUnavailable,
 } from "../worker/src/lib/subsidy_lifecycle.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -255,4 +256,37 @@ test("young IDA hearing: board gap is too_soon (temporal, not not-published)", (
   const [lc] = assembleSubsidyLifecycle([young], []);
   assert.equal(lc.join.matched, true);
   assert.ok(lc.timeline.find((e) => e.stage === "board_decision"));
+});
+
+test("feed unavailable: aged later stages remap not_published → not_yet_ingested", () => {
+  const aged = {
+    request_id: "20220525018",
+    short_title: "NYCIDA SUPPLEMENTAL NOTICE OF PUBLIC HEARING - JUNE 9, 2022",
+    agency_name: "Industrial Development Agency",
+    type_of_notice_description: "Public Hearings",
+    section_name: "Public Hearings and Meetings",
+    event_date: "2022-06-09T10:00:00.000",
+    start_date: "2022-05-27T00:00:00.000",
+    additional_description_1: "Company Name : Historic Project LLC, a Delaware limited liability company (the Company)",
+  };
+  const [raw] = assembleSubsidyLifecycle([aged], []);
+  assert.equal(raw.join.matched, true);
+  assert.equal(raw.join.method, "city-record-hearing");
+  const boardBefore = raw.timeline.find((e) => e.stage === "board_decision");
+  assert.equal(boardBefore.gap_kind, "not_published");
+
+  const stamped = stampSubsidyFeedUnavailable(raw);
+  assert.equal(stamped.join.feed_status, "unavailable");
+  assert.match(stamped.join.feed_note || "", /unreachable|City Record/i);
+  for (const stage of ["board_decision", "closing", "compliance"]) {
+    const entry = stamped.timeline.find((e) => e.stage === stage);
+    assert.equal(entry.status, "unknown");
+    assert.equal(
+      entry.gap_kind,
+      "not_yet_ingested",
+      `${stage} must not claim city-withholds when feed never joined`,
+    );
+  }
+  // Hearing stay matched; too_soon would be preserved if present (aged → remapped).
+  assert.equal(stamped.timeline.find((e) => e.stage === "hearing").status, "matched");
 });

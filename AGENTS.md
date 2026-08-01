@@ -133,16 +133,22 @@ Read model: `worker/src/lib/meeting_outcomes.mjs` → KV `meeting-outcomes:mater
 Open Data `m48u-yjt8` remains a **disabled** freeze through 2024-12-19 (0% modern).
 Receipts: `site/data/legistar_sources/`. Demo: notice `20260706036` → event `22526`.
 
-**Official entity family (person-level votes):** Legistar roll-call rows retain
+**Official entity family (person-level votes):** Code path retains
 `PersonId`/`PersonName` as `official:{person_id}` objects with typed `votes_on`
-edges (official → matter|agenda_item), not only aye/nay tallies. Pure helpers:
-`entity_resolution/officials/`. Named metrics: `person_vote_retention_rate` and
-`official_votes_on_edge_rate` (receipt under
-`site/data/legistar_sources/verification_receipts/`). Meeting UI renders roll call
-when `by_person` is present. Immutable `source_records` dual-write for Legistar
-Events/EventItems/Votes/Attachments is live under
-`LEGISTAR_SOURCE_RECORD_DUAL_WRITE` (`worker/src/lib/legistar_source_records.mjs`).
-Verify: `node --test test/official_entity_family.test.mjs
+edges (official → matter|agenda_item) when Legistar returns person rows. Pure
+helpers: `entity_resolution/officials/`. Named metrics:
+`person_vote_retention_rate` and `official_votes_on_edge_rate` (fixture receipt
+under `site/data/legistar_sources/verification_receipts/` — **fixture retention
+is not a production rate**). **Production measured 2026-08-01:** demo event
+22526 and 0/15 recent matched Council hearings had non-empty `by_person` on the
+meeting-outcomes KV read model (tallies only). Meeting UI renders person roll
+call **only when** `by_person` is non-empty; otherwise class-(a) copy
+`meeting_outcomes_no_person_votes_html` (“Not yet shown here — person-level…”).
+Do not market person-level “who voted” as live until production retention > 0.
+Immutable `source_records` dual-write for Legistar Events/EventItems/Votes/
+Attachments is live under `LEGISTAR_SOURCE_RECORD_DUAL_WRITE`
+(`worker/src/lib/legistar_source_records.mjs`). Verify:
+`node --test test/official_entity_family.test.mjs
 test/legistar_client.test.mjs test/contract/meeting_outcomes.test.mjs
 worker/test/legistar_source_records.test.mjs`.
 
@@ -283,12 +289,22 @@ hearing applies. Schema safety net: `ensureSubsidySchema` (migration
 `0005_subsidy_lifecycle.sql`).
 
 **Age-aware gap kinds** (temporal sibling of paid / verified_zero / unavailable):
-`subsidyGapKind` → `too_soon` | `not_published` | (worker) `unavailable`. Lag table
-`SUBSIDY_STAGE_EXPECT_LAG_DAYS` (board ~60d, closing ~180d, project_record ~90d).
-Demo/backtest notices must be **aged** (2022–2024 hearings) so later stages read
-`not_published`, not “could not reach.” Young hearings use “check back” copy.
-Characterization: `test/subsidy_lifecycle.test.mjs`, `test/ida_notice_defects.test.mjs`.
-Aged demo ids: `20220525018`, `20231004016`, `20240617012`.
+`subsidyGapKind` → `too_soon` | `not_published` | (worker stamp)
+`not_yet_ingested` | `unavailable`. Lag table `SUBSIDY_STAGE_EXPECT_LAG_DAYS`
+(board ~60d, closing ~180d, project_record ~90d).
+
+**Feed-down partial join (hard rule):** when `join.method=city-record-hearing` and
+`join.feed_status=unavailable`, later unmatched stages (board / closing /
+compliance) must use **not_yet_ingested** (class-a “Not yet shown here…”) — never
+class-(b) “the city does not publish.” Only after a successful Build NYC project-
+feed join may aged empty stages use `not_published`. Pure stamp:
+`stampSubsidyFeedUnavailable` in `worker/src/lib/subsidy_lifecycle.mjs`. UI
+defensive remap in `subsidyStageHTML` when `feed_status=unavailable`.
+
+Young hearings still use “check back” (`too_soon`). Characterization:
+`test/subsidy_lifecycle.test.mjs`, `test/ida_notice_defects.test.mjs`,
+`test/procurement_lifecycle_stitch.test.mjs`. Aged demo ids: `20220525018`,
+`20231004016`, `20240617012`.
 
 ## Checkbook Contracts row identity
 
@@ -607,23 +623,28 @@ Pure model: `entity_resolution/review/investigation_workspace.mjs`. Characteriza
 capture: `node --test worker/test/private_evidence_workspace.test.mjs`,
 `python3 tools/capture_private_evidence_workspace.py`.
 
-**Public entity dossier (er-15):** `GET /entity-dossier?id=` reads canonical entities and
-linked immutable source snapshots into a bounded, allowlisted view. Exact source
-assertions retain publisher provenance and observation time; disagreements keep every value,
-and missing fields mean only “not observed in linked records.” Each linked record surfaces a
-public `link_confidence` band (`strong` / `tentative` / `not_scored`) derived from
-`entity_link.confidence` — numeric scores and matcher method stay desk-only. Metric:
-`public_entity_link_confidence_rate` (`measurePublicEntityLinkConfidenceRate`). Pure model:
-`entity_resolution/publication/dossier.mjs` + `link_confidence.mjs`; Worker route/view:
+**Public entity dossier (er-15) — foundation, not yet a live product surface:**
+`GET /entity-dossier?id=` reads canonical entities and linked immutable source
+snapshots when a published `canonical_entity` id exists. **Production measured
+2026-08-01:** name-shaped and contract subject ids used on demos (e.g.
+`vendor:name:…`, `contract:CT…`) return **404** with
+`public_status: "not_yet_public"` — do **not** market dossier as live. Subject
+registry on `/contract-lifecycle` (`subject_refs` / `subject_links`) **is**
+healthy and remains the live cross-spine surface. When a dossier does resolve:
+assertions keep publisher provenance; disagreements keep every value; missing
+fields mean only “not observed in linked records”; each linked record surfaces
+`link_confidence` (`strong` / `tentative` / `not_scored`). Metric:
+`public_entity_link_confidence_rate`. Pure model:
+`entity_resolution/publication/dossier.mjs` + `link_confidence.mjs`; Worker:
 `worker/src/entity_dossier.mjs`. Verify:
 `node --test worker/test/entity_dossier.test.mjs worker/test/entity_resolution_publication.test.mjs`.
 
-**Public relationship graph (er-16):** `GET /entity-relationships?id=` projects linked public
-procurement observations into allowlisted vendor, agency, solicitation, contract, and award nodes.
-Every connection uses a named edge type with publisher provenance, observed time, and public-safe
-confidence; unsupported records and relationship types fail closed rather than becoming generic
-lines. Traversal is capped at two hops and 25 outgoing edges per node, with explicit truncation.
-Pure model: `entity_resolution/publication/relationship_graph.mjs`; Worker route/view:
+**Public relationship graph (er-16) — same gate as dossier:**
+`GET /entity-relationships?id=` projects linked procurement observations when a
+canonical entity exists; otherwise **404** + `public_status: "not_yet_public"`.
+Do not market as live for subject-registry ids. When resolved: named edge types,
+publisher provenance, public-safe confidence; depth/fan-out caps. Pure model:
+`entity_resolution/publication/relationship_graph.mjs`; Worker:
 `worker/src/public_relationship_graph.mjs`. Verify:
 `node --test worker/test/public_relationship_graph.test.mjs`; captures:
 `python3 tools/capture_public_relationship_graph.py`.

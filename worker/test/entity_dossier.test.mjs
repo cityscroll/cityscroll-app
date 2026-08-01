@@ -276,3 +276,28 @@ test("dossier route fails closed for missing, unknown, and injected ids", async 
     sqlite.close();
   }
 });
+
+test("dossier unknown id returns not_yet_public — never markets empty 404 as live dossier", async () => {
+  const { sqlite, env } = fixture();
+  try {
+    // Name-shaped / contract subject-registry ids used on demos are not canonical entity ids.
+    for (const id of [
+      "vendor:name:camba inc",
+      "contract:CT126020278800692",
+      "vendor:unknown",
+    ]) {
+      const response = await handleEntityDossier(
+        new Request(`https://api.cityscroll.org/entity-dossier?id=${encodeURIComponent(id)}&format=json`),
+        env,
+      );
+      assert.equal(response.status, 404, id);
+      const body = await response.json();
+      assert.equal(body.error, "not-found");
+      assert.equal(body.public_status, "not_yet_public");
+      assert.match(body.message || "", /not yet public|subject-registry|canonical/i);
+      assert.doesNotMatch(body.message || "", /Gotham|Palantir/i);
+    }
+  } finally {
+    sqlite.close();
+  }
+});

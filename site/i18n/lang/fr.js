@@ -801,6 +801,7 @@
     meeting_outcomes_vote_person_html: "{name} ({vote})",
     meeting_outcomes_outcome_html: "Résultat : {outcome}",
     meeting_outcomes_no_votes_html: "Pas encore affiché ici — les votes par appel nominal pour l’affaire « {matter} » sont dans NYC Council Legistar.",
+    meeting_outcomes_no_person_votes_html: "Pas encore affiché ici — les votes nominatifs par personne sont dans NYC Council Legistar.",
     meeting_outcomes_no_matters_html: "Pas encore affiché ici — les points d'ordre du jour et les affaires sont dans NYC Council Legistar.",
     meeting_outcomes_no_attachments_html: "Pas encore affiché ici — les pièces jointes justificatives sont dans NYC Council Legistar.",
     meeting_outcomes_document_lbl: "Document",

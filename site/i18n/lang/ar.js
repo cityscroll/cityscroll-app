@@ -726,6 +726,7 @@
     meeting_outcomes_vote_person_html: "{name} ({vote})",
     meeting_outcomes_outcome_html: "النتيجة: {outcome}",
     meeting_outcomes_no_votes_html: "لم يُعرض بعد هنا — أصوات النداء الاسمي للموضوع “{matter}” موجودة في NYC Council Legistar.",
+    meeting_outcomes_no_person_votes_html: "لم يُعرض هنا بعد — أصوات النداء الاسمي على مستوى الأشخاص موجودة في NYC Council Legistar.",
     meeting_outcomes_no_matters_html: "لم يُعرض هنا بعد — بنود جدول الأعمال والمسائل موجودة في NYC Council Legistar.",
     meeting_outcomes_no_attachments_html: "لم تُعرض هنا بعد — المرفقات الداعمة موجودة في NYC Council Legistar.",
     meeting_outcomes_document_lbl: "مستند",

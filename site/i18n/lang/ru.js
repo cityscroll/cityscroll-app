@@ -729,6 +729,7 @@
     meeting_outcomes_vote_person_html: "{name} ({vote})",
     meeting_outcomes_outcome_html: "Итог: {outcome}",
     meeting_outcomes_no_votes_html: "Пока не показано здесь — поименные голоса по вопросу «{matter}» есть в NYC Council Legistar.",
+    meeting_outcomes_no_person_votes_html: "Пока не показано здесь — поимённые голоса по людям есть в NYC Council Legistar.",
     meeting_outcomes_no_matters_html: "Пока не показано здесь — пункты повестки и дела есть в NYC Council Legistar.",
     meeting_outcomes_no_attachments_html: "Пока не показано здесь — сопроводительные вложения есть в NYC Council Legistar.",
     meeting_outcomes_document_lbl: "Документ",

@@ -719,6 +719,7 @@
     meeting_outcomes_vote_person_html: "{name}（{vote}）",
     meeting_outcomes_outcome_html: "结果：{outcome}",
     meeting_outcomes_no_votes_html: "此处尚未显示 — 事项“{matter}”的唱名表决结果在 NYC Council Legistar。",
+    meeting_outcomes_no_person_votes_html: "此处尚未显示 — 个人唱名表决结果在 NYC Council Legistar。",
     meeting_outcomes_no_matters_html: "此处尚未显示 — 议程项目与事项在 NYC Council Legistar。",
     meeting_outcomes_no_attachments_html: "此处尚未显示 — 相关附件在 NYC Council Legistar。",
     meeting_outcomes_document_lbl: "文件",
