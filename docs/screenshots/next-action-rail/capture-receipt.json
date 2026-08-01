@@ -1,0 +1,10 @@
+{
+  "notice_id": "20260716022",
+  "source": "NYC Open Data City Record Online (dg92-zbpx)",
+  "captured_before": "https://cityscroll.org/",
+  "captured_after": "local static site",
+  "viewports": [
+    390,
+    1440
+  ]
+}
