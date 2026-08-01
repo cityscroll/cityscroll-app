@@ -322,8 +322,11 @@ dry-run: `GET /admin/digest-rollup?key=&email=`. Design:
 
 Digest notice links carry a pins-scoped optin-token (`sc: "pins"`, ~30d) as `?s=`
 on `/r/...`. Exchange sets HttpOnly `cs_session` cookie (~14d); token never
-forwards to the final cityscroll.org URL. Scope is READ + pin sync only —
-unsubscribe/confirm keep purpose tokens and never accept the session.
+forwards to the final cityscroll.org URL. Scope is READ + pin sync +
+preference-center bootstrap. Recognized `GET /session` returns the account email
+and clean `/prefs` URL; cookie-authenticated `GET /prefs` mints the narrower prefs
+token used by its forms. Watch mutations, unsubscribe, and confirm keep purpose
+tokens and never accept the session directly.
 
 - Worker: `session.mjs`, `pins.mjs`, pure helpers `lib/session.mjs`
 - KV pin store: `pins:<opaqueActorId(email)>` in SUBS (alongside subscriptions)

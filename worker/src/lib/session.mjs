@@ -1,8 +1,9 @@
 // Pure helpers for email magic-link sessions and the server pin store.
 //
 // Tokens reuse optin-token (HMAC + exp). Scope is explicit: payload.sc === "pins"
-// means READ + pin sync only. Account-affecting actions (unsubscribe, confirm,
-// email change) use their own purpose tokens and never the session cookie.
+// means READ + pin sync plus a preference-center bootstrap. Watch mutations still
+// use a separately minted prefs-purpose token; unsubscribe, confirm, and email
+// changes never accept the session cookie directly.
 
 import { normalizeEmail } from "./subscriptions.mjs";
 import { opaqueActorId } from "./meter.mjs";
