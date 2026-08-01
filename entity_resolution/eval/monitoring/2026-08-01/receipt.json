@@ -1,0 +1,219 @@
+{
+  "kind": "entity_resolution_shadow_monitor_receipt",
+  "schema_version": 1,
+  "monitor_version": "shadow_monitor_v1",
+  "observed_at": "2026-08-01T12:00:00.000Z",
+  "window": {
+    "start": "2026-07-02T12:00:00.000Z",
+    "end": "2026-08-01T12:00:00.000Z"
+  },
+  "parameters": {
+    "window_days": 30,
+    "source_stale_after_days": 2
+  },
+  "policy_versions": {
+    "authority": "nyc_scoped_authority_keys_v1",
+    "candidate_generation": "token_v0_v0",
+    "matcher": "conventional_v1",
+    "shadow_run_matchers": [
+      "vendor_stem_v1"
+    ]
+  },
+  "input": {
+    "kind": "characterization_fixture",
+    "source_records": 6,
+    "latest_source_records": 5,
+    "entity_links": 6,
+    "resolution_runs": 2,
+    "current_records": 6,
+    "snapshot_sha256": "0e64b67e03545c333958b33da316d8bb697f322df742c679f54c79ecfc8fc6de",
+    "relation_sha256": {
+      "source_records": "b65d266d77b23e4bc3393568d6d9bc17a0e1193d71f099907f3ae7cbb1fb182f",
+      "entity_links": "c2eb81e0ed171b2de7fc9f9e90123b9c0af55d418204ff664de679c3e4f3911a",
+      "resolution_runs": "c5116836fb708e48a0bb0f2bf973ed8a1eb2c2cb432ee30efbc7e98fb36d555e",
+      "current_records": "b5b8f361d8f19b8b68b704dae5b273be774e83a9321d0c351971e1cf0b51bbef"
+    },
+    "source_snapshot_sha256": {
+      "city_record": "1430f49c664e964bce5333b242195fd89345562f8b390176afba1c620fac8d50",
+      "passport": "284e4d6ad53fef3444266592c626467bb0618806ad13cc119aa31a402e52cf5c"
+    },
+    "source_observed_range": {
+      "earliest": "2026-06-15T09:00:00.000Z",
+      "latest": "2026-07-31T11:00:00.000Z"
+    },
+    "truncated": false
+  },
+  "signals": {
+    "candidates": {
+      "observations": 5,
+      "candidates": 4,
+      "unresolved_rate": {
+        "status": "measured",
+        "numerator": 2,
+        "denominator": 4,
+        "value": 0.5,
+        "caveat": null
+      },
+      "false_split_leads_per_observation": {
+        "status": "measured",
+        "numerator": 2,
+        "denominator": 5,
+        "value": 0.4,
+        "caveat": null
+      },
+      "score_distribution": {
+        "status": "measured",
+        "count": 4,
+        "minimum": 0.57,
+        "p50": 0.57,
+        "p90": 0.995,
+        "maximum": 0.995,
+        "buckets": {
+          "[0,0.5)": 0,
+          "[0.5,0.8)": 2,
+          "[0.8,0.9)": 0,
+          "[0.9,0.95)": 0,
+          "[0.95,1]": 2
+        },
+        "decisions": {
+          "same": 2,
+          "different": 0,
+          "unresolved": 2
+        }
+      }
+    },
+    "authority": {
+      "silver_same_pairs": 1,
+      "authority_conflict_pairs": 1,
+      "candidate_recall": {
+        "status": "measured",
+        "numerator": 1,
+        "denominator": 1,
+        "value": 1,
+        "caveat": null
+      },
+      "authority_conflict_auto_link_rate": {
+        "status": "measured",
+        "numerator": 0,
+        "denominator": 1,
+        "value": 0,
+        "caveat": null
+      }
+    },
+    "coverage": {
+      "orphan_rate": {
+        "status": "measured",
+        "numerator": 1,
+        "denominator": 5,
+        "value": 0.2,
+        "caveat": null
+      },
+      "shadow_link_coverage": {
+        "status": "measured",
+        "numerator": 4,
+        "denominator": 5,
+        "value": 0.8,
+        "caveat": null
+      },
+      "shadow_capture_coverage": {
+        "status": "measured",
+        "numerator": 5,
+        "denominator": 6,
+        "value": 0.8333333333333334,
+        "caveat": null
+      },
+      "shadow_current_read_delta": {
+        "current_records": 6,
+        "shadow_records": 5,
+        "missing_from_shadow": 1,
+        "shadow_only": 0
+      },
+      "by_source": [
+        {
+          "source_system": "city_record",
+          "capture_coverage": {
+            "status": "measured",
+            "numerator": 4,
+            "denominator": 5,
+            "value": 0.8,
+            "caveat": null
+          }
+        },
+        {
+          "source_system": "passport",
+          "capture_coverage": {
+            "status": "measured",
+            "numerator": 1,
+            "denominator": 1,
+            "value": 1,
+            "caveat": null
+          }
+        }
+      ]
+    },
+    "clusters": {
+      "status": "measured",
+      "clusters": 3,
+      "multi_record_clusters": 2,
+      "maximum_cluster_size": 2,
+      "p50_cluster_size": 2,
+      "expanded_clusters": 2,
+      "links_before_window": 2,
+      "links_added_in_window": 3,
+      "link_growth_rate": {
+        "status": "measured",
+        "numerator": 3,
+        "denominator": 2,
+        "value": 1.5,
+        "caveat": null
+      }
+    },
+    "contradiction_rate": {
+      "status": "measured",
+      "numerator": 1,
+      "denominator": 4,
+      "value": 0.25,
+      "caveat": null,
+      "source_records_with_multiple_canonicals": 1,
+      "source_records_with_opposing_decisions": 1
+    },
+    "source_freshness": {
+      "status": "measured",
+      "stale_sources": 1,
+      "sources": [
+        {
+          "source_system": "city_record",
+          "latest_ingested_at": "2026-07-31T11:00:00.000Z",
+          "age_days": 1.042,
+          "stale_after_days": 2,
+          "state": "fresh"
+        },
+        {
+          "source_system": "passport",
+          "latest_ingested_at": "2026-07-20T08:00:00.000Z",
+          "age_days": 12.167,
+          "stale_after_days": 2,
+          "state": "stale"
+        }
+      ]
+    },
+    "resolution_runs": {
+      "total": 2,
+      "completed": 2,
+      "failed": 0,
+      "matcher_versions": [
+        "vendor_stem_v1"
+      ],
+      "emitted_score_distributions": 1
+    }
+  },
+  "caveats": [
+    "Shadow metrics do not change entity links, review dispositions, or public reads.",
+    "Authority metrics are silver-label checks derived only from comparable hard identifiers."
+  ],
+  "comparison": {
+    "status": "not_requested",
+    "reasons": [],
+    "deltas": {}
+  }
+}

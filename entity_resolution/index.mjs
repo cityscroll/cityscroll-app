@@ -69,6 +69,12 @@ export {
   formatLabelSheet,
   parseLabelSheet,
   promoteLabelsToGold,
+  DEFAULT_MONITOR_WINDOW_DAYS,
+  DEFAULT_SOURCE_STALE_AFTER_DAYS,
+  SHADOW_MONITOR_SCHEMA_VERSION,
+  SHADOW_MONITOR_VERSION,
+  buildShadowMonitorReceipt,
+  compareShadowMonitorReceipts,
 } from "./evaluation/index.mjs";
 
 export {
