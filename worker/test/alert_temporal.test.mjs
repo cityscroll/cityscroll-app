@@ -3,7 +3,11 @@ import { test } from "node:test";
 
 import { processOneSub, subDigestHtml } from "../src/alerts.mjs";
 import { RULES_KV_KEY } from "../src/rules.mjs";
-import { reconcileTemporalCandidates } from "../src/lib/alert_temporal.mjs";
+import {
+  commentCloseValidAt,
+  reconcileTemporalCandidates,
+  ruleActionKey,
+} from "../src/lib/alert_temporal.mjs";
 
 class MockKV {
   constructor(seed = {}) {
@@ -168,4 +172,65 @@ test("the actionable late-arrival line follows the digest language", () => {
   assert.match(html, /Comentarios abiertos hasta Sep 15/);
   assert.match(html, /Comentar en NYC Rules/);
   assert.doesNotMatch(html, /Comments open through/);
+});
+
+test("comment-close valid_at from the event spine wins over a stale flattened field", () => {
+  const record = {
+    request_id: NOTICE_ID,
+    stage: "comment-open",
+    nyc_rules: {
+      url: "https://rules.cityofnewyork.us/rule/commercial-curb-use/",
+      comment_by_date: "2026-09-01",
+      pub_date: "2026-07-15T12:00:00.000Z",
+    },
+    events: [{
+      event_type: "comment_close",
+      valid_at: "2026-09-20",
+      valid_at_precision: "day",
+      status: "scheduled",
+      alert: { eligible: true, trigger_field: "valid_at", lead_days: [14, 3, 1, 0] },
+    }],
+  };
+  assert.equal(commentCloseValidAt(record), "2026-09-20");
+  assert.equal(ruleActionKey(record), `temporal:rules:${NOTICE_ID}:comment-open:2026-09-20`);
+
+  const reconciled = reconcileTemporalCandidates({
+    lens: "rules",
+    rows: [notice],
+    seen: new Set([NOTICE_ID]),
+    rulesView: { generated_at: "2026-08-01T12:00:00.000Z", rules: [record] },
+  });
+  assert.equal(reconciled.fresh.length, 1);
+  assert.deepEqual(reconciled.fresh[0].temporal_action, {
+    kind: "rules-comment-open",
+    event_at: "2026-09-20",
+    trigger_field: "valid_at",
+    event_type: "comment_close",
+    publication_at: "2026-07-15T12:00:00.000Z",
+    recorded_at: "2026-08-01T12:00:00.000Z",
+    url: "https://rules.cityofnewyork.us/rule/commercial-curb-use/",
+  });
+});
+
+test("without a spine event, digests still cite the flattened comment_by_date as valid time", () => {
+  const record = {
+    request_id: NOTICE_ID,
+    stage: "comment-open",
+    nyc_rules: {
+      url: "https://rules.cityofnewyork.us/rule/commercial-curb-use/",
+      comment_by_date: "2026-09-15",
+      pub_date: "2026-07-15T12:00:00.000Z",
+    },
+    events: [],
+  };
+  assert.equal(commentCloseValidAt(record), "2026-09-15");
+  const reconciled = reconcileTemporalCandidates({
+    lens: "rules",
+    rows: [notice],
+    seen: new Set(),
+    rulesView: { generated_at: "2026-08-01T12:00:00.000Z", rules: [record] },
+  });
+  assert.equal(reconciled.fresh[0].temporal_action.event_at, "2026-09-15");
+  assert.equal(reconciled.fresh[0].temporal_action.trigger_field, "valid_at");
+  assert.equal(reconciled.fresh[0].temporal_action.event_type, "comment_close");
 });
