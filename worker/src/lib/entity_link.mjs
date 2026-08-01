@@ -230,6 +230,27 @@ export async function shadowWriteExactStemAutoLinks(env, observations, opts = {}
     written: 0,
     method: VENDOR_STEM_METHOD,
     matcher_version: VENDOR_STEM_VERSION,
+    decisions: {
+      auto_link: cases.length,
+      separate: 0,
+      review: 0,
+      never_auto: 0,
+    },
+    score_distribution: {
+      population: "eligible_exact_stem_links",
+      count: cases.length,
+      minimum: cases.length ? EXACT_STEM_AUTO_CONFIDENCE : null,
+      p50: cases.length ? EXACT_STEM_AUTO_CONFIDENCE : null,
+      p90: cases.length ? EXACT_STEM_AUTO_CONFIDENCE : null,
+      maximum: cases.length ? EXACT_STEM_AUTO_CONFIDENCE : null,
+      buckets: {
+        "[0,0.5)": 0,
+        "[0.5,0.8)": 0,
+        "[0.8,0.9)": 0,
+        "[0.9,0.95)": 0,
+        "[0.95,1]": cases.length,
+      },
+    },
   };
 
   await env.DB.prepare(

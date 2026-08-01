@@ -18,6 +18,8 @@ creates links.
 | `clerical_audit.mjs` | Pure stratified sampling, label-sheet, and gold-promotion helpers |
 | `audits/<date>/` | Versioned sample, label sheet, and reproducibility receipt |
 | `entity_audits/<date>/` | Versioned entity sample, review sheet, and sampling receipt |
+| `fixtures/shadow_monitoring_v0.json` | Characterization snapshot for quiet-debt monitoring |
+| `monitoring/<date>/receipt.json` | Versioned read-only monitor receipt with denominators and provenance |
 
 ## Run
 
@@ -74,6 +76,29 @@ Optional flags:
 - `--blocker token_v0\|none` — candidate generation (default: none → `candidate_recall=null`)
 - `--examples N` — how many blocked-in/out true-match lines to print (default 5 with blocker)
 - `--json` — full report object after the KEY=value lines
+
+## Shadow monitoring
+
+The shadow monitor reads immutable observations, resolution runs, and entity
+links without changing any of them. Fixture mode is deterministic:
+
+```bash
+node tools/run_er_shadow_monitor.mjs --fixture \
+  --out entity_resolution/eval/monitoring/2026-08-01/receipt.json --check
+```
+
+Production mode runs bounded D1 `SELECT` statements only:
+
+```bash
+node tools/run_er_shadow_monitor.mjs --live --out /tmp/er-shadow-receipt.json
+```
+
+Receipts report score distributions, candidate recall, unresolved and false-split
+lead rates, authority conflicts, shadow capture/link coverage, cluster growth,
+orphans, graph contradictions, and per-source freshness. Every rate carries its
+numerator and denominator. `--compare <prior-receipt.json>` emits deltas only when
+the schema, policy versions, window, and thresholds are compatible; otherwise it
+records `incompatible`. Empty populations remain `insufficient`, never zero.
 
 ## Gold record shape
 

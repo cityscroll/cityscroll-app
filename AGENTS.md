@@ -464,6 +464,13 @@ The label sheet carries first-order inclusion probabilities; weighted rates
 fail closed as `insufficient` for undersampled strata. Verify:
 `node --test worker/test/entity_audit_sampling.test.mjs`.
 
+**Shadow monitoring (er-23):** `tools/run_er_shadow_monitor.mjs` reads D1 with
+bounded `SELECT` queries or the committed fixture and emits provenance-stamped
+rates/distributions under `entity_resolution/eval/monitoring/`. Missing
+populations are `insufficient`; receipt comparisons refuse changed policy/window
+versions. Verify: `node --test test/entity_resolution_shadow_monitor.test.mjs &&
+node tools/run_er_shadow_monitor.mjs --fixture`.
+
 ## Property location extraction
 
 Site geography for Property Disposition: `site/property_location.mjs`

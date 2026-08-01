@@ -197,6 +197,28 @@ test("shadow writer: flag on writes exact-stem auto_link only (one run, shared c
   assert.equal(runs[0].matcher_version, VENDOR_STEM_VERSION);
   assert.equal(runs[0].status, "completed");
   assert.equal(runs[0].entity_type, "vendor");
+  const runMetrics = JSON.parse(runs[0].metrics_json);
+  assert.deepEqual(runMetrics.decisions, {
+    auto_link: 3,
+    separate: 0,
+    review: 0,
+    never_auto: 0,
+  });
+  assert.deepEqual(runMetrics.score_distribution, {
+    population: "eligible_exact_stem_links",
+    count: 3,
+    minimum: 1,
+    p50: 1,
+    p90: 1,
+    maximum: 1,
+    buckets: {
+      "[0,0.5)": 0,
+      "[0.5,0.8)": 0,
+      "[0.8,0.9)": 0,
+      "[0.9,0.95)": 0,
+      "[0.95,1]": 3,
+    },
+  });
 
   const links = db.prepare("SELECT * FROM entity_link ORDER BY source_record_id").all();
   assert.equal(links.length, 3);

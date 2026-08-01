@@ -1,0 +1,150 @@
+{
+  "observed_at": "2026-08-01T12:00:00.000Z",
+  "input_kind": "characterization_fixture",
+  "source_records": [
+    {
+      "source_system": "city_record",
+      "source_system_id": "100",
+      "content_hash": "hash-a-old",
+      "normalized_snapshot": { "vendor_name": "Acme Services", "pin": "84124P0003001" },
+      "ingested_at": "2026-06-15T09:00:00.000Z"
+    },
+    {
+      "source_system": "city_record",
+      "source_system_id": "100",
+      "content_hash": "hash-a-new",
+      "normalized_snapshot": { "vendor_name": "Acme Services Inc", "pin": "84124P0003001" },
+      "ingested_at": "2026-07-31T09:00:00.000Z"
+    },
+    {
+      "source_system": "city_record",
+      "source_system_id": "101",
+      "content_hash": "hash-b",
+      "normalized_snapshot": { "vendor_name": "ACME SERVICES INCORPORATED", "pin": "84124P0003001" },
+      "ingested_at": "2026-07-31T10:00:00.000Z"
+    },
+    {
+      "source_system": "city_record",
+      "source_system_id": "102",
+      "content_hash": "hash-c",
+      "normalized_snapshot": { "vendor_name": "Beta Builder LLC", "pin": "84124P0004001" },
+      "ingested_at": "2026-07-31T10:30:00.000Z"
+    },
+    {
+      "source_system": "city_record",
+      "source_system_id": "103",
+      "content_hash": "hash-d",
+      "normalized_snapshot": { "vendor_name": "Beta Builder LLC", "pin": "84124P0005001" },
+      "ingested_at": "2026-07-31T11:00:00.000Z"
+    },
+    {
+      "source_system": "passport",
+      "source_system_id": "900",
+      "content_hash": "hash-e",
+      "normalized_snapshot": { "vendor_name": "Acme Consulting Group" },
+      "ingested_at": "2026-07-20T08:00:00.000Z"
+    }
+  ],
+  "entity_links": [
+    {
+      "source_record_id": "city_record:100:hash-a-new",
+      "canonical_entity_id": "vendor:acme",
+      "decision": "auto_link",
+      "confidence": 0.985,
+      "method": "vendor_stem_v1",
+      "matcher_version": "vendor_stem_v1",
+      "resolution_run_id": "run-1",
+      "created_at": "2026-07-01T09:00:00.000Z"
+    },
+    {
+      "source_record_id": "city_record:101:hash-b",
+      "canonical_entity_id": "vendor:acme",
+      "decision": "auto_link",
+      "confidence": 0.95,
+      "method": "vendor_stem_v1",
+      "matcher_version": "vendor_stem_v1",
+      "resolution_run_id": "run-2",
+      "created_at": "2026-07-20T09:00:00.000Z"
+    },
+    {
+      "source_record_id": "city_record:102:hash-c",
+      "canonical_entity_id": "vendor:beta",
+      "decision": "auto_link",
+      "confidence": 0.985,
+      "method": "vendor_stem_v1",
+      "matcher_version": "vendor_stem_v1",
+      "resolution_run_id": "run-1",
+      "created_at": "2026-06-20T09:00:00.000Z"
+    },
+    {
+      "source_record_id": "city_record:103:hash-d",
+      "canonical_entity_id": "vendor:beta",
+      "decision": "auto_link",
+      "confidence": 0.985,
+      "method": "vendor_stem_v1",
+      "matcher_version": "vendor_stem_v1",
+      "resolution_run_id": "run-2",
+      "created_at": "2026-07-21T09:00:00.000Z"
+    },
+    {
+      "source_record_id": "city_record:103:hash-d",
+      "canonical_entity_id": "vendor:beta-duplicate",
+      "decision": "auto_link",
+      "confidence": 0.95,
+      "method": "candidate_review_v1",
+      "matcher_version": "conventional_v0",
+      "resolution_run_id": "run-2",
+      "created_at": "2026-07-21T10:00:00.000Z"
+    },
+    {
+      "source_record_id": "city_record:103:hash-d",
+      "canonical_entity_id": "vendor:beta",
+      "decision": "separate",
+      "confidence": 0.995,
+      "method": "authority_conflict_v1",
+      "matcher_version": "conventional_v0",
+      "resolution_run_id": "run-2",
+      "created_at": "2026-07-22T10:00:00.000Z"
+    }
+  ],
+  "resolution_runs": [
+    {
+      "id": "run-1",
+      "method": "vendor_stem_v1",
+      "matcher_version": "vendor_stem_v1",
+      "started_at": "2026-06-20T09:00:00.000Z",
+      "finished_at": "2026-06-20T09:01:00.000Z",
+      "status": "completed",
+      "metrics_json": { "considered": 2, "eligible": 2, "written": 2 }
+    },
+    {
+      "id": "run-2",
+      "method": "vendor_stem_v1",
+      "matcher_version": "vendor_stem_v1",
+      "started_at": "2026-07-21T09:00:00.000Z",
+      "finished_at": "2026-07-21T09:01:00.000Z",
+      "status": "completed",
+      "metrics_json": {
+        "considered": 3,
+        "eligible": 3,
+        "written": 3,
+        "score_distribution": {
+          "count": 3,
+          "minimum": 1,
+          "p50": 1,
+          "p90": 1,
+          "maximum": 1,
+          "buckets": { "[0.95,1]": 3 }
+        }
+      }
+    }
+  ],
+  "current_records": [
+    { "source_system": "city_record", "source_system_id": "100" },
+    { "source_system": "city_record", "source_system_id": "101" },
+    { "source_system": "city_record", "source_system_id": "102" },
+    { "source_system": "city_record", "source_system_id": "103" },
+    { "source_system": "city_record", "source_system_id": "104" },
+    { "source_system": "passport", "source_system_id": "900" }
+  ]
+}
