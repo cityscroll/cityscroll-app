@@ -1,0 +1,37 @@
+{
+  "description": "Field cases for procurement_lifecycle_coherence_rate. Mixed coherent and issue-bearing lifecycles so the metric is measurable and moves when detectors fire.",
+  "metric": "procurement_lifecycle_coherence_rate",
+  "version": "lifecycle_coherence_v1",
+  "cases": [
+    {
+      "id": "coherent-solicitation-path",
+      "expect_coherent": true,
+      "expect_kinds": [],
+      "notes": "Solicitation → pending → registered → payment under commitment, dates ordered."
+    },
+    {
+      "id": "orphaned-award-no-solicitation",
+      "expect_coherent": false,
+      "expect_kinds": ["orphaned_award"],
+      "notes": "Award notice with no Current Solicitations join leaves solicitation stage absent."
+    },
+    {
+      "id": "payment-exceeds-award",
+      "expect_coherent": false,
+      "expect_kinds": ["payment_exceeds_commitment"],
+      "notes": "Spending total exceeds award and registered current_amount."
+    },
+    {
+      "id": "out-of-order-registered-before-award",
+      "expect_coherent": false,
+      "expect_kinds": ["out_of_order_dates"],
+      "notes": "Registration date earlier than City Record award date."
+    },
+    {
+      "id": "coherent-award-with-solicitation-package",
+      "expect_coherent": true,
+      "expect_kinds": [],
+      "notes": "Award with matched Current Solicitations package prepends solicitation; amounts and dates clean."
+    }
+  ]
+}
