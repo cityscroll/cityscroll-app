@@ -460,12 +460,14 @@ production Worker vars enable the fail-soft shadow path on City Record ingest; b
 sets both false. Integration characterization: `node --test worker/test/er_ingest_integration.test.mjs`.
 Verify: `node --test worker/test/source_record_dual_write.test.mjs`.
 
-**Source-observation coverage (er-22 + Checkbook contracts):** machine-checked importer inventory
-and measured before/after coverage live in `entity_resolution/source_coverage.json`. PASSPort
-contracts/RFx use `PASSPORT_SOURCE_RECORD_DUAL_WRITE`; Checkbook Contracts request-time XML rows
-use `CHECKBOOK_SOURCE_RECORD_DUAL_WRITE` (fail-soft; Prime/Sub Vendor slices keep distinct
-`source_system_id`s via `worker/src/lib/checkbook_source_records.mjs`). Public reads do not
-consume the observations. Spending and other streams remain inventory gaps. Verify:
+**Source-observation coverage (er-22 + Checkbook contracts/spending):** machine-checked importer
+inventory and measured before/after coverage live in `entity_resolution/source_coverage.json`.
+PASSPort contracts/RFx use `PASSPORT_SOURCE_RECORD_DUAL_WRITE`; Checkbook Contracts and Spending
+request-time XML rows share `CHECKBOOK_SOURCE_RECORD_DUAL_WRITE` (fail-soft; Prime/Sub Vendor
+slices and payment documents keep distinct `source_system_id`s via
+`worker/src/lib/checkbook_source_records.mjs`). Public reads do not consume the observations.
+NYCHA, Legistar, ABO, doing-business, and NYCIDA streams remain inventory gaps. Metric:
+`source_coverage` covered/total (5/13 after spending dual-write). Verify:
 `node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json &&
 node --test worker/test/er_source_coverage.test.mjs worker/test/checkbook_source_records.test.mjs`.
 
