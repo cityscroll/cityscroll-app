@@ -216,6 +216,8 @@ test("public dossier route serves JSON and an attributed disagreement page", asy
     assert.match(html, /Derived assertion/);
     assert.match(html, /Not observed/);
     assert.match(html, /Absence is not proof/);
+    assert.match(html, /Explore typed public relationships/);
+    assert.match(html, /\/entity-relationships\?id=vendor%3Astem%3AACME%20CONSTRUCTION/);
     assertSensitivityBoundary(html);
   } finally {
     sqlite.close();
