@@ -10,6 +10,7 @@
 // ingest_state table; first run backfills 30 days.
 
 import { shadowWriteExactStemAutoLinks } from "./lib/entity_link.mjs";
+import { extractNoticeFacts, noticeFactsFallbacks } from "./lib/notice_facts.mjs";
 
 const PAGE = 1000;
 const MAX_PAGES = 20; // safety cap per run
@@ -37,6 +38,11 @@ export function toDateISO(v) {
 
 export function toDateTimeISO(v) {
   if (!v) return { iso: null, year: null };
+  const normalized = v.match(/^(\d{4}-\d{2}-\d{2})(?:[ T](\d{2}:\d{2}(?::\d{2})?))?/);
+  if (normalized) {
+    const time = (normalized[2] || "00:00:00").padEnd(8, ":00");
+    return { iso: `${normalized[1]} ${time}`, year: Number(normalized[1].slice(0, 4)) };
+  }
   if (v.includes("T")) {
     const iso = v.replace("T", " ").slice(0, 19);
     return { iso, year: Number(iso.slice(0, 4)) };
@@ -73,7 +79,9 @@ export function mapRow(row) {
   const printout = pick(row, ["printout_1"]);
   const agency = pick(row, ["agency_name"]);
   const shortTitle = pick(row, ["short_title"]);
-  const due = toDateTimeISO(pick(row, ["due_date"]));
+  const structuredFacts = extractNoticeFacts(row);
+  const fallbacks = noticeFactsFallbacks(structuredFacts);
+  const due = toDateTimeISO(pick(row, ["due_date"]) || fallbacks.due_date);
   const amt = cleanAmount(pick(row, ["contract_amount"]));
   const docs = docUrls(pick(row, ["document_links"]));
   const haystack = [shortTitle, description, printout, otherInfo, agency]
@@ -90,7 +98,7 @@ export function mapRow(row) {
     short_title: shortTitle,
     selection_method: pick(row, ["selection_method_description"]),
     special_case_reason: pick(row, ["special_case_reason_description"]),
-    pin: pick(row, ["pin"]),
+    pin: pick(row, ["pin"]) || fallbacks.pin,
     vendor_name: pick(row, ["vendor_name"]),
     description,
     other_info: otherInfo,
@@ -108,6 +116,7 @@ export function mapRow(row) {
     event_zip: pick(row, ["zip_code"]),
     document_urls: JSON.stringify(docs),
     n_documents: docs.length,
+    structured_facts: JSON.stringify(structuredFacts),
     haystack,
     raw: JSON.stringify(row),
   };
@@ -179,8 +188,9 @@ export async function ingestNotices(env) {
         selection_method, special_case_reason, pin, vendor_name, description,
         other_info, printout, contract_amount, contract_amount_valid, start_date,
         due_date, due_year, event_date, event_building, event_addr1, event_city,
-        event_state, event_zip, document_urls, n_documents, haystack, raw, ingested_at)
-     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+        event_state, event_zip, document_urls, n_documents, structured_facts,
+        haystack, raw, ingested_at)
+     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
   );
   const sourceRecordInsert = dualWriteEnabled(env)
     ? env.DB.prepare(
@@ -220,7 +230,8 @@ export async function ingestNotices(env) {
           m.selection_method, m.special_case_reason, m.pin, m.vendor_name, m.description,
           m.other_info, m.printout, m.contract_amount, m.contract_amount_valid, m.start_date,
           m.due_date, m.due_year, m.event_date, m.event_building, m.event_addr1, m.event_city,
-          m.event_state, m.event_zip, m.document_urls, m.n_documents, m.haystack, m.raw, nowISO,
+          m.event_state, m.event_zip, m.document_urls, m.n_documents, m.structured_facts,
+          m.haystack, m.raw, nowISO,
         ),
       );
       if (sourceRecordInsert || String(env?.[ENTITY_LINK_DUAL_WRITE_FLAG] || "").toLowerCase() === "true") {

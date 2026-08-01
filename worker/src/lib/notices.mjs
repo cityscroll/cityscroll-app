@@ -95,6 +95,10 @@ export function toRecord(r) {
   const rolling = r.due_year != null && r.due_year >= ROLLING_YEAR;
   let docs = [];
   try { docs = r.document_urls ? JSON.parse(r.document_urls) : []; } catch { docs = []; }
+  let structuredFacts = { identifiers: [], deadlines: [], parties: [] };
+  try {
+    if (r.structured_facts) structuredFacts = JSON.parse(r.structured_facts);
+  } catch { /* malformed cache data degrades to no extracted facts */ }
   const eventLoc = [r.event_building, r.event_addr1, r.event_city, r.event_state, r.event_zip]
     .filter(Boolean)
     .join(" ");
@@ -118,6 +122,7 @@ export function toRecord(r) {
     event_location: eventLoc || null,
     n_documents: r.n_documents || 0,
     documents: docs.slice(0, 8),
+    structured_facts: structuredFacts,
   };
 }
 
