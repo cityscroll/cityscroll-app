@@ -1,25 +1,53 @@
-// entity_resolution/matchers — scoring + decision methods (stub).
-//
-// Matchers consume features and emit same | different | unresolved (or review).
-// LLM matching is out of scope as a primary matcher (taxonomy ADR).
-// No production auto-links from this package boundary card.
+// entity_resolution/matchers — conventional deterministic matcher v0.
+// Middle-band pairs remain unresolved; no LLM participates in scoring.
 
-/** Stub version until matcher cards land. */
-export const MATCHERS_VERSION = "stub";
+import { extractFeatures } from "../features/index.mjs";
 
-/**
- * Score a candidate pair. Stub: always unresolved with null confidence.
- *
- * @param {unknown} _left
- * @param {unknown} _right
- * @param {Record<string, unknown>} [_features]
- * @returns {{ decision: "unresolved", confidence: null, method: string, matcher_version: string }}
- */
-export function scorePair(_left, _right, _features = {}) {
+export const MATCHERS_VERSION = "conventional_v0";
+
+function result(decision, confidence, method) {
   return {
-    decision: "unresolved",
-    confidence: null,
-    method: "stub",
+    decision,
+    confidence,
+    method,
     matcher_version: MATCHERS_VERSION,
   };
+}
+
+/**
+ * Score one pair as same | different | unresolved.
+ * Hard identifiers and exact family identity are the only broad auto-same
+ * paths. Similarity alone must clear a narrow high-confidence threshold.
+ */
+export function scorePair(left = {}, right = {}, features = null, opts = {}) {
+  const f = features?.features_version
+    ? features
+    : extractFeatures(left, right, opts);
+
+  if (f.pin_epin_equal) {
+    return result("same", 0.995, "pin_epin_equal_v0");
+  }
+
+  if (f.family === "procurement" && f.pin_epin_conflict) {
+    return result("different", 0.995, "pin_epin_conflict_v0");
+  }
+
+  if (f.family === "agency" && f.agency_place_conflict) {
+    return result("different", 0.98, "agency_place_conflict_v0");
+  }
+
+  if (f.family === "vendor" && f.legal_form_conflict && f.token_jaccard === 1) {
+    return result("different", 0.97, "vendor_legal_form_conflict_v0");
+  }
+
+  if (f.stem_equal && f.family !== "procurement") {
+    return result("same", 0.985, `${f.family}_stem_equal_v0`);
+  }
+
+  if (!f.legal_form_conflict && f.token_jaccard >= 0.9) {
+    return result("same", 0.95, `${f.family}_token_similarity_v0`);
+  }
+
+  const confidence = Math.min(0.84, 0.45 + (f.token_jaccard * 0.35) + (f.length_ratio * 0.04));
+  return result("unresolved", Number(confidence.toFixed(3)), `${f.family}_similarity_v0`);
 }
