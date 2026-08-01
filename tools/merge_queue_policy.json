@@ -19,8 +19,8 @@
     "Reading-level ratchet gate (readable-or-else)"
   ],
   "notes": [
-    "min_entries_to_merge_wait_minutes=5 forms a short merge train so near-simultaneous factory PRs share one merge_group when independent.",
+    "min_entries_to_merge_wait_minutes=5 forms a short merge train so near-simultaneous PRs share one merge_group when independent.",
     "ALLGREEN is intentional: do not switch to looser grouping to hide composition failures.",
-    "Factory-side merge-cap (one auto-merge at a time) is complementary and lives outside this repo."
+    "A same-repo merge-when-ready seat cap (one auto-merge at a time) is complementary and lives outside this repo."
   ]
 }

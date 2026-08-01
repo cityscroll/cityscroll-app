@@ -20,7 +20,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   (parallel shards; stable job name for the ruleset).
 - Playwright installs go through `.github/actions/setup-playwright` (browser cache).
 - Merge-queue parameters: `tools/merge_queue_policy.json` + `node tools/apply_merge_queue_policy.mjs`
-  (short train wait). Factory merge-cap for this repo is enforced by firstmate, not this tree.
+  (short train wait). Concurrent merge-when-ready seating for this repo is capped outside this tree.
 
 ## Maintaining this file
 
