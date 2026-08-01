@@ -1,6 +1,8 @@
 {
   "snapshot_date": "2026-07-28",
   "matter": {
+    "kind": "solicitation",
+    "lifecycle_stage": "open",
     "process_id": "process:pin:84124p0003001",
     "title": "Bus radio communications services",
     "matter_href": "index.html#matter/84124P0003001",

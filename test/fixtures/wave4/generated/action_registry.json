@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0.0",
   "snapshot_date": "2026-07-28",
-  "source_snapshot_hash": "3e1244dfcc19bc8c2fdc534080a147e765d5690eb97a1baeb6fd44ed2ab6749b",
+  "source_snapshot_hash": "f899f79cfd16982989f3e96e753aabf613f2ec103a8551019b2535e6f58ee9be",
   "coverage": {
     "scope": "Wave 4 reference matter",
     "full_corpus": false
@@ -13,6 +13,8 @@
     "return_state": "matter permalink"
   },
   "matter": {
+    "kind": "solicitation",
+    "lifecycle_stage": "open",
     "process_id": "process:pin:84124p0003001",
     "title": "Bus radio communications services",
     "matter_href": "index.html#matter/84124P0003001",
@@ -27,77 +29,9 @@
   },
   "actions": [
     {
-      "type": "watch",
-      "label": "Watch this matter",
-      "delivery": "local",
-      "destination": "index.html#alerts",
-      "deadline": null,
-      "confirmation_required": true
-    },
-    {
-      "type": "calendar",
-      "label": "Add deadline to calendar",
-      "delivery": "local",
-      "destination": null,
-      "deadline": "2026-09-30",
-      "confirmation_required": false
-    },
-    {
-      "type": "document",
-      "label": "Open official document",
-      "delivery": "official_handoff",
-      "destination": "https://www.nyc.gov/assets/dcas/downloads/pdf/example-public-report.pdf",
-      "destination_label": "www.nyc.gov",
-      "deadline": "2026-09-30",
-      "confirmation_required": false,
-      "vault_fallback": true
-    },
-    {
-      "type": "contact",
-      "label": "Contact the responsible office",
-      "delivery": "official_handoff",
-      "destination": "https://www.nyc.gov/site/mocs/passport/about-passport.page",
-      "destination_label": "www.nyc.gov",
-      "deadline": null,
-      "confirmation_required": false
-    },
-    {
-      "type": "rsvp",
-      "label": "RSVP on the official site",
-      "delivery": "official_handoff",
-      "destination": "https://a856-cityrecord.nyc.gov/RequestDetail/2141200",
-      "destination_label": "a856-cityrecord.nyc.gov",
-      "deadline": "2026-09-30",
-      "confirmation_required": true
-    },
-    {
-      "type": "comment",
-      "label": "Testify or comment",
-      "delivery": "official_handoff",
-      "destination": "https://a856-cityrecord.nyc.gov/RequestDetail/2141200",
-      "destination_label": "a856-cityrecord.nyc.gov",
-      "deadline": "2026-09-30",
-      "confirmation_required": true
-    },
-    {
-      "type": "attend",
-      "label": "Prepare to attend",
-      "delivery": "local",
-      "destination": null,
-      "deadline": null,
-      "confirmation_required": false
-    },
-    {
-      "type": "bid_checklist",
-      "label": "Open bid checklist",
-      "delivery": "local",
-      "destination": null,
-      "deadline": null,
-      "confirmation_required": false
-    },
-    {
       "type": "official_application",
-      "label": "Open the official application",
+      "label_key": "bid_on_passport",
+      "label": "Bid in PASSPort",
       "delivery": "official_handoff",
       "destination": "https://passport.cityofnewyork.us/page.aspx/en/rfp/request_browse_public",
       "destination_label": "passport.cityofnewyork.us",
@@ -105,20 +39,22 @@
       "confirmation_required": true
     },
     {
-      "type": "return_to_matter",
-      "label": "Return to matter",
+      "type": "calendar",
+      "label_key": "add_deadline_calendar",
+      "label": "Add deadline to calendar",
       "delivery": "local",
-      "destination": "index.html#matter/84124P0003001",
-      "deadline": null,
+      "destination": null,
+      "deadline": "2026-09-30",
       "confirmation_required": false
     },
     {
-      "type": "local_note",
-      "label": "Add a private note",
+      "type": "watch",
+      "label_key": "next_action_watch",
+      "label": "Watch this notice",
       "delivery": "local",
-      "destination": null,
+      "destination": "#alerts",
       "deadline": null,
-      "confirmation_required": false
+      "confirmation_required": true
     }
   ],
   "outcomes": [
