@@ -28,8 +28,12 @@ export function scorePair(left = {}, right = {}, features = null, opts = {}) {
     return result("same", 0.995, "pin_epin_equal_v0");
   }
 
-  if (f.family === "procurement" && f.pin_epin_conflict) {
-    return result("different", 0.995, "pin_epin_conflict_v0");
+  if (f.contract_id_equal) {
+    return result("same", 0.995, "contract_id_equal_v0");
+  }
+
+  if (f.family === "procurement" && f.hard_id_conflict) {
+    return result("different", 0.995, "hard_id_conflict_v0");
   }
 
   if (f.family === "agency" && f.agency_place_conflict) {

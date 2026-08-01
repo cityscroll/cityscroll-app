@@ -13,3 +13,18 @@ export {
 
 /** Package-relative path to the v0 gold set (repo root as cwd). */
 export const GOLD_V0_PATH = "entity_resolution/eval/gold_v0.jsonl";
+
+export {
+  AUTHORITY_LABEL,
+  AUTHORITY_VERSION,
+  buildAuthorityReport,
+  computeAuthorityMetrics,
+  deriveAuthorityCases,
+  latestSourceRecords,
+  loadSourceRecords,
+  predictAuthorityCases,
+} from "./authority.mjs";
+
+/** Representative source_records rows for authority-harness characterization. */
+export const AUTHORITY_FIXTURE_V0_PATH =
+  "entity_resolution/eval/fixtures/source_records_authority_v0.jsonl";
