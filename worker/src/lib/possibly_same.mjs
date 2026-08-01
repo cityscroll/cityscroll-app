@@ -7,6 +7,7 @@ import {
   generateCandidates,
 } from "../../../entity_resolution/candidate_generation/index.mjs";
 import { extractFeatures } from "../../../entity_resolution/features/index.mjs";
+import { buildAssertionEvidence } from "../../../entity_resolution/review/assertion_evidence.mjs";
 
 export const POSSIBLY_SAME_LOOKBACK_DAYS = 30;
 export const POSSIBLY_SAME_RECORD_LIMIT = 250;
@@ -67,6 +68,7 @@ function observationFromRow(row) {
     ingested_at: clean(row.ingested_at),
     source_url: sourceUrl(sourceSystem, sourceSystemId, snapshot, rawSnapshot),
     observed_fields: observedFields(snapshot),
+    raw_snapshot: rawSnapshot,
     attrs: snapshot,
     canonical_entity_ids: new Set(),
   };
@@ -145,6 +147,7 @@ export function reviewPairsFromDualWriteRows(rows = [], opts = {}) {
         left_linked: left.canonical_entity_ids.size > 0,
         right_linked: right.canonical_entity_ids.size > 0,
         comparison_features: extractFeatures(left, right, { entityType: "vendor" }),
+        assertion_interpretation: buildAssertionEvidence(left, right),
       },
       observed_at: [left.ingested_at, right.ingested_at].sort().at(-1) || "",
     });
