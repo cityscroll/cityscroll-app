@@ -68,17 +68,77 @@ function docState(url) {
   };
 }
 
-function moneyState(raw) {
+function moneyState(raw, meta = {}) {
   const value = toAmount(raw);
   if (value === null) {
     return {
       status: UNKNOWN,
       value: null,
       currency: "USD",
-      reason: "public money amount is not stated in this source",
+      reason: meta.reason || "public money amount is not stated in this source",
+      ...(meta.source ? { source: meta.source } : {}),
     };
   }
-  return { status: "matched", value, currency: "USD" };
+  return {
+    status: "matched",
+    value,
+    currency: "USD",
+    ...(meta.source ? { source: meta.source } : {}),
+    ...(meta.field ? { field: meta.field } : {}),
+  };
+}
+
+/**
+ * Parse published project/development cost dollars from a City Record IDA/Build NYC
+ * hearing notice body. Notices often list "Total Project Cost : $…" and/or
+ * "Total Development Cost : $…" per company. Returns every hit plus a preferred
+ * estimated_cost for the lifecycle money card (first Total Project Cost, else first
+ * Total Development Cost).
+ *
+ * Pure: no fetch. The structured Build NYC feed is a separate path — when that
+ * feed is bot-blocked, these notice-body figures are the honest public amounts.
+ */
+export function parseHearingMoneyFromBody(bodyText) {
+  const text = plainText(bodyText || "");
+  const costs = [];
+  if (!text) {
+    return {
+      costs,
+      total_project_cost: null,
+      total_development_cost: null,
+      estimated_cost: moneyState(null, {
+        source: "city-record-hearing",
+        reason: "no Total Project Cost or Total Development Cost in City Record hearing body",
+      }),
+    };
+  }
+  const re = /Total\s+(Project|Development)\s+Cost\s*:?\s*\$?\s*([\d,]+(?:\.\d+)?)/gi;
+  let match;
+  while ((match = re.exec(text)) !== null) {
+    const value = toAmount(match[2]);
+    if (value === null) continue;
+    const kind = String(match[1]).toLowerCase() === "project"
+      ? "total_project_cost"
+      : "total_development_cost";
+    costs.push({ kind, value, currency: "USD" });
+  }
+  const firstProject = costs.find((c) => c.kind === "total_project_cost") || null;
+  const firstDevelopment = costs.find((c) => c.kind === "total_development_cost") || null;
+  const preferred = firstProject || firstDevelopment;
+  return {
+    costs,
+    total_project_cost: firstProject ? firstProject.value : null,
+    total_development_cost: firstDevelopment ? firstDevelopment.value : null,
+    estimated_cost: preferred
+      ? moneyState(preferred.value, {
+        source: "city-record-hearing",
+        field: preferred.kind,
+      })
+      : moneyState(null, {
+        source: "city-record-hearing",
+        reason: "no Total Project Cost or Total Development Cost in City Record hearing body",
+      }),
+  };
 }
 
 function pickFirst(...values) {
@@ -397,6 +457,10 @@ export function projectFromIdaNotice(notice = {}) {
   const company = companies[0] || "";
   const cityRecordUrl = `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(requestId)}`;
   const hearingDate = toDate(notice.event_date || notice.start_date);
+  // Dollar amounts are often published in the hearing body even when the Build NYC
+  // structured document feed is unreachable (Cloudflare bot-block). Parse them so
+  // the money card is not a false "city does not publish" null.
+  const hearingMoney = parseHearingMoneyFromBody(body);
   return {
     request_id: requestId,
     project_id: `city-record:${requestId}`,
@@ -406,8 +470,14 @@ export function projectFromIdaNotice(notice = {}) {
     location_text: body.slice(0, 400),
     bbl: null,
     bbls: [],
-    requested_benefit: moneyState(null),
-    estimated_cost: moneyState(null),
+    requested_benefit: moneyState(null, {
+      source: "city-record-hearing",
+      reason: "requested benefit amount is not a labeled dollar field on this City Record hearing notice",
+    }),
+    estimated_cost: hearingMoney.estimated_cost,
+    total_project_cost: hearingMoney.total_project_cost,
+    total_development_cost: hearingMoney.total_development_cost,
+    hearing_costs: hearingMoney.costs,
     application: {
       date: toDate(notice.start_date),
       status: companies.length ? "filed" : "",
@@ -540,6 +610,12 @@ export function assembleSubsidyLifecycle(notices = [], projects = []) {
       money: {
         requested_benefit: matched.requested_benefit,
         estimated_cost: matched.estimated_cost,
+        // City Record hearing-derived totals (null when the feed row supplied money).
+        total_project_cost: fromCityRecord ? (matched.total_project_cost ?? null) : null,
+        total_development_cost: fromCityRecord ? (matched.total_development_cost ?? null) : null,
+        hearing_costs: fromCityRecord && Array.isArray(matched.hearing_costs)
+          ? matched.hearing_costs
+          : undefined,
       },
       documents: {
         application: docState(matched.application.url),

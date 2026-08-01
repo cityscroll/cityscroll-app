@@ -821,7 +821,8 @@
       "worth_materializing": "already_materialized",
       "gaps_would_close": [
         "procurement-ocp-recent-awards",
-        "subsidy-stage-unmatched"
+        "subsidy-stage-unmatched",
+        "subsidy-field-city-record-hearing-feed"
       ]
     },
     {
@@ -1225,10 +1226,11 @@
       "worth_materializing": "maybe",
       "gaps_would_close": [
         "procurement-ocp-recent-awards",
-        "subsidy-stage-unmatched"
+        "subsidy-stage-unmatched",
+        "subsidy-field-city-record-hearing-feed"
       ],
-      "score": 2,
-      "evidence": "Shared keys request_id; 2 taxonomy gap(s) could close."
+      "score": 3,
+      "evidence": "Shared keys request_id; 3 taxonomy gap(s) could close."
     },
     {
       "id": "nycida-build-nyc-projects-x-unregistered-zoning-application-portal-projects-via-project_id",
@@ -1242,10 +1244,11 @@
       "worth_materializing": "maybe",
       "gaps_would_close": [
         "subsidy-stage-unmatched",
+        "subsidy-field-city-record-hearing-feed",
         "land-outcome-detail"
       ],
-      "score": 2,
-      "evidence": "Shared keys project_id; 2 taxonomy gap(s) could close."
+      "score": 3,
+      "evidence": "Shared keys project_id; 3 taxonomy gap(s) could close."
     },
     {
       "id": "nycida-build-nyc-projects-x-zap-api-outcomes-via-project_id",
@@ -1259,10 +1262,11 @@
       "worth_materializing": "yes",
       "gaps_would_close": [
         "subsidy-stage-unmatched",
+        "subsidy-field-city-record-hearing-feed",
         "land-outcome-detail"
       ],
-      "score": 2,
-      "evidence": "Shared keys project_id; 2 taxonomy gap(s) could close."
+      "score": 3,
+      "evidence": "Shared keys project_id; 3 taxonomy gap(s) could close."
     },
     {
       "id": "nycida-build-nyc-projects-x-zap-bbl-via-project_id",
@@ -1276,10 +1280,11 @@
       "worth_materializing": "yes",
       "gaps_would_close": [
         "subsidy-stage-unmatched",
+        "subsidy-field-city-record-hearing-feed",
         "land-outcome-detail"
       ],
-      "score": 2,
-      "evidence": "Shared keys project_id; 2 taxonomy gap(s) could close."
+      "score": 3,
+      "evidence": "Shared keys project_id; 3 taxonomy gap(s) could close."
     },
     {
       "id": "nycida-build-nyc-projects-x-zap-projects-via-project_id",
@@ -1293,10 +1298,28 @@
       "worth_materializing": "yes",
       "gaps_would_close": [
         "subsidy-stage-unmatched",
+        "subsidy-field-city-record-hearing-feed",
         "land-outcome-detail"
       ],
+      "score": 3,
+      "evidence": "Shared keys project_id; 3 taxonomy gap(s) could close."
+    },
+    {
+      "id": "current-solicitations-ocp-x-nycida-build-nyc-projects-via-request_id",
+      "source_a": "current-solicitations-ocp",
+      "source_b": "nycida-build-nyc-projects",
+      "key_path": [
+        "request_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "subsidy-stage-unmatched",
+        "subsidy-field-city-record-hearing-feed"
+      ],
       "score": 2,
-      "evidence": "Shared keys project_id; 2 taxonomy gap(s) could close."
+      "evidence": "Shared keys request_id; 2 taxonomy gap(s) could close."
     },
     {
       "id": "passport-public-contracts-x-recent-contract-awards-ocp-via-PIN",
@@ -1380,22 +1403,6 @@
       ],
       "score": 1,
       "evidence": "Shared keys PIN, request_id; 1 taxonomy gap(s) could close."
-    },
-    {
-      "id": "current-solicitations-ocp-x-nycida-build-nyc-projects-via-request_id",
-      "source_a": "current-solicitations-ocp",
-      "source_b": "nycida-build-nyc-projects",
-      "key_path": [
-        "request_id"
-      ],
-      "status": "candidate",
-      "realized_coverage": null,
-      "worth_materializing": "maybe",
-      "gaps_would_close": [
-        "subsidy-stage-unmatched"
-      ],
-      "score": 1,
-      "evidence": "Shared keys request_id; 1 taxonomy gap(s) could close."
     },
     {
       "id": "current-solicitations-ocp-x-passport-public-contracts-via-PIN",
@@ -1975,7 +1982,32 @@
       "class": "not_published",
       "would_appear_in": "the linked Build NYC project record if those fields are filled on publication",
       "notices_affected_estimate": "Matched projects with sparse public fields.",
-      "evidence": "Fields are optional on public project pages; worker exposes explicit unknown reasons when blank."
+      "evidence": "Fields are optional on public project pages; worker exposes explicit unknown reasons when blank. Class (b) only when a real Build NYC project row is linked — never for city-record-hearing fallback."
+    },
+    {
+      "id": "subsidy-field-city-record-hearing-feed",
+      "surface": "subsidy lifecycle · company / place / money when only City Record hearing is joined",
+      "i18n_keys": [
+        "subsidy_company_not_yet_ingested_html",
+        "subsidy_place_not_yet_ingested_html",
+        "subsidy_money_not_yet_ingested_html",
+        "subsidy_feed_unavailable_html"
+      ],
+      "class": "not_yet_ingested",
+      "public_source": {
+        "name": "NYCIDA/Build NYC public documents",
+        "access": "HTML document portal (edge fetch often Cloudflare-blocked)",
+        "landing_page": "https://edc.nyc/about-nycedc/financial-public-documents-recordings",
+        "update_cadence": "Daily document posts (when published)",
+        "join_keys": [
+          "project_name",
+          "company_name",
+          "project_address",
+          "request_id when present"
+        ]
+      },
+      "notices_affected_estimate": "IDA/Build NYC City Record hearing notices when the structured Build NYC feed is unreachable or empty.",
+      "evidence": "EDC financial-documents host returns Cloudflare 403 to automated edge fetch, so structured project rows are not ingested. City Record hearing bodies often publish Total Project Cost / Total Development Cost — those are parsed into the subsidy money cost fields. Remaining structured fields use class (a) not_yet_ingested copy, not class (b) withheld. Durable EDC-feed ingestion is a separate follow-up."
     },
     {
       "id": "meeting-outcomes-unmatched",
