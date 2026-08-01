@@ -415,6 +415,13 @@ identifier family; blocked-out true matches remain visible in the metrics report
 `worker/src/lib/possibly_same.mjs`. Characterization:
 `node --test worker/test/possibly_same_admin.test.mjs`.
 
+**Clerical audit (er-12):** `tools/export_er_clerical_audit.mjs` emits a
+false-split-priority sample (`near_miss` plus `auto_link` control), CSV label
+sheet, and receipt under `entity_resolution/eval/audits/<date>/`. Live mode is
+read-only and records a `notices_replay` fallback when shadow tables are empty.
+Gold promotion only creates a new `gold_vN.jsonl`; it never overwrites a version.
+Characterization: `node --test test/entity_resolution_clerical_audit.test.mjs`.
+
 ## Property location extraction
 
 Site geography for Property Disposition: `site/property_location.mjs`

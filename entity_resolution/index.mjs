@@ -54,6 +54,12 @@ export {
   latestSourceRecords,
   loadSourceRecords,
   predictAuthorityCases,
+  CLERICAL_AUDIT_SCHEMA_VERSION,
+  buildClericalAudit,
+  formatAuditJsonl,
+  formatLabelSheet,
+  parseLabelSheet,
+  promoteLabelsToGold,
 } from "./evaluation/index.mjs";
 
 export {
