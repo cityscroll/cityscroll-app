@@ -68,9 +68,10 @@ function fakeDb() {
               event_zip: args[23],
               document_urls: args[24],
               n_documents: args[25],
-              haystack: args[26],
-              raw: args[27],
-              ingested_at: args[28],
+              structured_facts: args[26],
+              haystack: args[27],
+              raw: args[28],
+              ingested_at: args[29],
             };
             notices.set(row.request_id, row);
             return { success: true };

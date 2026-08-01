@@ -58,3 +58,32 @@ test("mapRow: full row maps with honest fields + lowercased haystack + raw prese
 test("mapRow: missing request_id maps to null (caller skips the row)", () => {
   assert.equal(mapRow({ short_title: "x" }).request_id, null);
 });
+
+test("mapRow: unique labeled body facts fill absent PIN/deadline and retain evidence", () => {
+  const mapped = mapRow({
+    request_id: "20251209013",
+    section_name: "Property Disposition",
+    additional_description_1:
+      "Request for Proposals — PIN# 11203 — RESPONSES ARE DUE NO LATER THAN Thursday, July 24, 2025 at 11:59 P.M.",
+  });
+  assert.equal(mapped.pin, "11203");
+  assert.equal(mapped.due_date, "2025-07-24 23:59:00");
+  assert.equal(mapped.due_year, 2025);
+  const facts = JSON.parse(mapped.structured_facts);
+  assert.deepEqual(facts.identifiers.map(({ kind, value }) => ({ kind, value })), [
+    { kind: "pin", value: "11203" },
+  ]);
+  assert.equal(facts.deadlines[0].source, "notice_body");
+});
+
+test("mapRow: publisher fields remain authoritative over text-derived facts", () => {
+  const mapped = mapRow({
+    request_id: "source-wins",
+    pin: "OFFICIAL-PIN-9",
+    due_date: "2026-08-12T12:00:00.000",
+    additional_description_1:
+      "PIN# BODY-PIN-7. Responses are due July 24, 2025 at 11:59 P.M.",
+  });
+  assert.equal(mapped.pin, "OFFICIAL-PIN-9");
+  assert.equal(mapped.due_date, "2026-08-12 12:00:00");
+});

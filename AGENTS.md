@@ -439,6 +439,16 @@ unit: `node --test test/contract/property_location_golden.test.mjs
 test/contract/property_location.test.mjs`. Feed cards deep-link
 `#notice/{id}` (title + Open notice), same pattern as Money dig items.
 
+## Structured notice-body facts
+
+Pure parser: `worker/src/lib/notice_facts.mjs`. It extracts only explicitly labeled
+PIN/EPIN values, submission/testimony deadlines, and applicant/owner parties, retaining
+the source excerpt for every fact. Ingest stores the full result in `structured_facts`;
+only a unique PIN/EPIN or unique submission deadline may fill an absent source column,
+so existing alert and contract-spine paths can consume it. Publisher columns always win.
+Characterization and real-notice metrics: `node --test test/notice_facts.test.mjs
+worker/test/ingest_map.test.mjs`.
+
 ## Maintaining this file
 
 Keep this file for knowledge useful to almost every future agent session in this project.
