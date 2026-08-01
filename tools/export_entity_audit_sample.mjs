@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 
 import {
   buildEntityAuditSample,
-  estimateEntityAudit,
+  summarizeEntityAuditRates,
   formatEntityAuditJsonl,
   formatEntityAuditLabelSheet,
 } from "../entity_resolution/eval/entity_audit_sampling.mjs";
@@ -19,8 +19,8 @@ function usage(message = null) {
   console.error(`Usage:
   node tools/export_entity_audit_sample.mjs --input <component-report.json> \\
     --out-dir <directory> --observed-on YYYY-MM-DD [options]
-  node tools/export_entity_audit_sample.mjs --estimate <label-sheet.csv> \\
-    --estimate-out <report.json> [--min-reviewed-per-stratum N]
+  node tools/export_entity_audit_sample.mjs --summarize <label-sheet.csv> \\
+    --summary-out <report.json> [--min-reviewed-per-stratum N]
 
 Export options:
   --sample-size N             default 30
@@ -45,8 +45,8 @@ function parseArgs(argv) {
     largeClusterMin: 4,
     lowConfidenceMin: 0.6,
     replace: false,
-    estimate: null,
-    estimateOut: null,
+    summarize: null,
+    summaryOut: null,
     minReviewedPerStratum: 2,
   };
   const flags = new Map([
@@ -57,8 +57,8 @@ function parseArgs(argv) {
     ["--seed", "seed"],
     ["--large-cluster-min", "largeClusterMin"],
     ["--low-confidence-min", "lowConfidenceMin"],
-    ["--estimate", "estimate"],
-    ["--estimate-out", "estimateOut"],
+    ["--summarize", "summarize"],
+    ["--summary-out", "summaryOut"],
     ["--min-reviewed-per-stratum", "minReviewedPerStratum"],
   ]);
   for (let index = 0; index < argv.length; index++) {
@@ -146,20 +146,20 @@ function exportSample(args) {
   }
 }
 
-function exportEstimate(args) {
-  if (!args.estimate || !args.estimateOut) {
-    throw new Error("estimate mode requires --estimate and --estimate-out");
+function exportRateSummary(args) {
+  if (!args.summarize || !args.summaryOut) {
+    throw new Error("summary mode requires --summarize and --summary-out");
   }
-  const labels = readFileSync(resolve(args.estimate), "utf8");
-  const report = estimateEntityAudit(labels, { minReviewedPerStratum: args.minReviewedPerStratum });
-  const out = resolve(args.estimateOut);
+  const labels = readFileSync(resolve(args.summarize), "utf8");
+  const report = summarizeEntityAuditRates(labels, { minReviewedPerStratum: args.minReviewedPerStratum });
+  const out = resolve(args.summaryOut);
   console.log(`${writeArtifact(out, `${JSON.stringify(report, null, 2)}\n`, args.replace)} ${repoPath(out)}`);
 }
 
 try {
   const args = parseArgs(process.argv.slice(2));
   if (args.help) usage();
-  else if (args.estimate || args.estimateOut) exportEstimate(args);
+  else if (args.summarize || args.summaryOut) exportRateSummary(args);
   else exportSample(args);
 } catch (error) {
   usage(error.message);

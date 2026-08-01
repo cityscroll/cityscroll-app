@@ -201,7 +201,7 @@ export function parseEntityAuditLabelSheet(text) {
 }
 
 /** Hájek weighted error rates; small reviewed strata are reported as insufficient. */
-export function estimateEntityAudit(labelSheetText, opts = {}) {
+export function summarizeEntityAuditRates(labelSheetText, opts = {}) {
   const minReviewedPerStratum = Number(opts.minReviewedPerStratum ?? 2);
   const allowed = new Set(["correct", "false_split", "false_merge", "both", "uncertain"]);
   const rows = parseEntityAuditLabelSheet(labelSheetText);
@@ -214,7 +214,7 @@ export function estimateEntityAudit(labelSheetText, opts = {}) {
     const probability = Number(row.inclusion_probability);
     if (!(probability > 0 && probability <= 1)) throw new Error(`audit ${row.audit_id} has invalid inclusion_probability`);
   }
-  const estimates = {};
+  const ratesByStratum = {};
   for (const stratum of ENTITY_AUDIT_STRATA) {
     const sampledRows = rows.filter((row) => row.stratum === stratum);
     const stratumRows = reviewed.filter((row) => row.stratum === stratum && row.judgment !== "uncertain");
@@ -228,8 +228,8 @@ export function estimateEntityAudit(labelSheetText, opts = {}) {
         [kind, "both"].includes(row.judgment) ? weight(row) : 0
       ), 0) / denominator
       : null;
-    estimates[stratum] = {
-      status: sufficient ? "estimated" : "insufficient",
+    ratesByStratum[stratum] = {
+      status: sufficient ? "sufficient" : "insufficient",
       eligible,
       sampled: Number(sampledRows[0]?.stratum_sampled || 0),
       reviewed: stratumRows.length,
@@ -241,7 +241,7 @@ export function estimateEntityAudit(labelSheetText, opts = {}) {
   const usable = reviewed.filter((row) => row.judgment !== "uncertain");
   const allSufficient = ENTITY_AUDIT_STRATA
     .filter((stratum) => rows.some((row) => row.stratum === stratum))
-    .every((stratum) => estimates[stratum].status === "estimated");
+    .every((stratum) => ratesByStratum[stratum].status === "sufficient");
   const totalWeight = usable.reduce((sum, row) => sum + (1 / Number(row.inclusion_probability)), 0);
   const overallRate = (kind) => allSufficient && totalWeight > 0
     ? usable.reduce((sum, row) => sum + (
@@ -249,13 +249,13 @@ export function estimateEntityAudit(labelSheetText, opts = {}) {
     ), 0) / totalWeight
     : null;
   return {
-    kind: "entity_centric_audit_estimate",
+    kind: "entity_centric_audit_rates",
     schema_version: ENTITY_AUDIT_SCHEMA_VERSION,
-    status: allSufficient ? "estimated" : "insufficient",
+    status: allSufficient ? "sufficient" : "insufficient",
     reviewed: reviewed.length,
     false_split_rate: overallRate("false_split"),
     false_merge_rate: overallRate("false_merge"),
-    strata: estimates,
+    strata: ratesByStratum,
   };
 }
 

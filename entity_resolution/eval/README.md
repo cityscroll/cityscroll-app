@@ -14,7 +14,7 @@ creates links.
 | `run_authority.mjs` | Derive and score silver labels from `source_records` JSONL |
 | `fixtures/source_records_authority_v0.jsonl` | Representative source-record rows for characterization only |
 | `run_entity_components.mjs` | Sample whole components and score entity-level fragmentation / constraint violations |
-| `entity_audit_sampling.mjs` | Inclusion-probability-aware entity sampler and weighted estimate helpers |
+| `entity_audit_sampling.mjs` | Inclusion-probability-aware entity sampler and weighted rate helpers |
 | `clerical_audit.mjs` | Pure stratified sampling, label-sheet, and gold-promotion helpers |
 | `audits/<date>/` | Versioned sample, label sheet, and reproducibility receipt |
 | `entity_audits/<date>/` | Versioned entity sample, review sheet, and sampling receipt |
@@ -232,13 +232,13 @@ review, generate Hájek weighted rates with:
 
 ```bash
 node tools/export_entity_audit_sample.mjs \
-  --estimate entity_resolution/eval/entity_audits/2026-08-01/label_sheet.csv \
-  --estimate-out entity_resolution/eval/entity_audits/2026-08-01/estimate.json
+  --summarize entity_resolution/eval/entity_audits/2026-08-01/label_sheet.csv \
+  --summary-out entity_resolution/eval/entity_audits/2026-08-01/rates.json
 ```
 
 Each stratum needs two usable judgments by default. A smaller stratum reports
 `insufficient` and leaves its rates—and the overall rate—null instead of
-extrapolating silently. The checked-in fixture is characterization evidence,
+generalizing from too few judgments. The checked-in fixture is characterization evidence,
 not a production error-rate measurement.
 
 Characterization:

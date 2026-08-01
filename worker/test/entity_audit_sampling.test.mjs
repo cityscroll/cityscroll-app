@@ -7,7 +7,7 @@ import { spawnSync } from "node:child_process";
 
 import {
   buildEntityAuditSample,
-  estimateEntityAudit,
+  summarizeEntityAuditRates,
   formatEntityAuditLabelSheet,
 } from "../../entity_resolution/eval/entity_audit_sampling.mjs";
 
@@ -70,7 +70,7 @@ test("sampling is deterministic, covers every stratum, and oversamples false spl
   )));
 });
 
-test("weighted estimates use recorded probabilities and suppress undersampled strata", () => {
+test("weighted rates use recorded probabilities and suppress undersampled strata", () => {
   const selected = buildEntityAuditSample(population().slice(0, 4), { sampleSize: 4 }).sample;
   selected[0].judgment = "false_split";
   selected[1].judgment = "correct";
@@ -78,15 +78,15 @@ test("weighted estimates use recorded probabilities and suppress undersampled st
     row.reviewer = "reviewer-1";
     row.reviewed_at = "2026-08-01";
   }
-  let report = estimateEntityAudit(formatEntityAuditLabelSheet(selected), { minReviewedPerStratum: 2 });
-  assert.equal(report.status, "estimated");
+  let report = summarizeEntityAuditRates(formatEntityAuditLabelSheet(selected), { minReviewedPerStratum: 2 });
+  assert.equal(report.status, "sufficient");
   assert.equal(report.false_split_rate, 0.5);
-  assert.equal(report.strata.false_split.status, "estimated");
+  assert.equal(report.strata.false_split.status, "sufficient");
 
   selected[1].judgment = "";
   selected[1].reviewer = "";
   selected[1].reviewed_at = "";
-  report = estimateEntityAudit(formatEntityAuditLabelSheet(selected), { minReviewedPerStratum: 2 });
+  report = summarizeEntityAuditRates(formatEntityAuditLabelSheet(selected), { minReviewedPerStratum: 2 });
   assert.equal(report.status, "insufficient");
   assert.equal(report.false_split_rate, null);
   assert.equal(report.strata.false_split.status, "insufficient");
@@ -99,9 +99,9 @@ test("a completely reviewed one-entity stratum is a sufficient census", () => {
   sample[0].judgment = "false_split";
   sample[0].reviewer = "reviewer-1";
   sample[0].reviewed_at = "2026-08-01";
-  const report = estimateEntityAudit(formatEntityAuditLabelSheet(sample), { minReviewedPerStratum: 2 });
-  assert.equal(report.status, "estimated");
-  assert.equal(report.strata.false_split.status, "estimated");
+  const report = summarizeEntityAuditRates(formatEntityAuditLabelSheet(sample), { minReviewedPerStratum: 2 });
+  assert.equal(report.status, "sufficient");
+  assert.equal(report.strata.false_split.status, "sufficient");
   assert.equal(report.false_split_rate, 1);
 });
 
