@@ -32,6 +32,7 @@ import {
   attachOcpAward,
   OCP_DATASET_ID,
 } from "./lib/ocp_awards.mjs";
+import { attachMoneyCivicEvents } from "./lib/civic_time.mjs";
 
 const CHECKBOOK = "https://www.checkbooknyc.com/api";
 const SODA_NYC = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
@@ -302,17 +303,19 @@ export async function computeLifecycle(env, requestId, noticeRow) {
     const ocpAward = joinOcpAward(r, ocpFetch.rows, {
       lookupStatus: ocpFetch.ok ? "ok" : "error",
     });
-    return {
-      lifecycle: attachOcpAward(
-        assembleLifecycle(r, [], [], [], {
-          pinStrategy: "none",
-          lookupStatus: { pending: "skip", registered: "skip", spending: "skip" },
-          currentSolicitation,
-        }),
-        ocpAward,
-      ),
-      ok: true,
-    };
+    let noPinLifecycle = attachOcpAward(
+      assembleLifecycle(r, [], [], [], {
+        pinStrategy: "none",
+        lookupStatus: { pending: "skip", registered: "skip", spending: "skip" },
+        currentSolicitation,
+      }),
+      ocpAward,
+    );
+    noPinLifecycle = attachMoneyCivicEvents(noPinLifecycle, r, {
+      processed_at: new Date().toISOString(),
+      run_id: `contract-lifecycle:${requestId}`,
+    });
+    return { lifecycle: noPinLifecycle, ok: true };
   }
 
   // Try each PIN (exact first, then legacy base). Use the first PIN that returns results.
@@ -401,6 +404,13 @@ export async function computeLifecycle(env, requestId, noticeRow) {
   });
   lifecycle = attachOcpAward(lifecycle, ocpAward);
 
+  // Money civic-time events: map matched lifecycle stages into the shared envelope
+  // so /contract-lifecycle emits real procurement events (not fixture-only seams).
+  lifecycle = attachMoneyCivicEvents(lifecycle, r, {
+    processed_at: new Date().toISOString(),
+    run_id: `contract-lifecycle:${requestId}`,
+  });
+
   return { lifecycle, ok: true };
 }
 
@@ -416,8 +426,16 @@ async function cacheGet(env, requestId) {
     ).bind(requestId).first();
     if (row && row.lifecycle) {
       const m = JSON.parse(row.lifecycle);
-      // Require ocp_award so pre-OCP cache entries recompute with the side-car.
-      if (m && Array.isArray(m.timeline) && m.ocp_award) return m;
+      // Require ocp_award + civic_events so older cache rows recompute with the
+      // OCP side-car and Money civic-time production adapter.
+      if (
+        m
+        && Array.isArray(m.timeline)
+        && m.ocp_award
+        && Array.isArray(m.civic_events)
+      ) {
+        return m;
+      }
     }
   } catch { /* miss */ }
   return null;
