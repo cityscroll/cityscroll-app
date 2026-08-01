@@ -1,0 +1,7 @@
+{
+  "schema": "cityscroll.multi_flywheel_ledger.v0",
+  "policy_version": "v0",
+  "updated_at": "1970-01-01T00:00:00.000Z",
+  "cards": {},
+  "note": "Idempotency ledger for the multi-dimension flywheel. Runners merge proposed cards here; fixed cards with a passing verify gate are never re-emitted."
+}

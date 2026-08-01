@@ -1,0 +1,55 @@
+{
+  "schema": "cityscroll.readability_views.v0",
+  "note": "View manifests that render joined data. Scores are 0–1 (hierarchy higher=better; density and dump_smell higher=worse).",
+  "views": [
+    {
+      "id": "notice-lifecycle-money",
+      "surface": "notice_detail.lifecycle",
+      "file": "site/index.html",
+      "joined_fields": ["solicitation", "award", "registration", "payments"],
+      "hierarchy_score": 0.72,
+      "density_score": 0.48,
+      "dump_smell": 0.22,
+      "demo_win": "Money lifecycle stages read as a clear chain with one owner per fact."
+    },
+    {
+      "id": "entity-dossier",
+      "surface": "entity_dossier",
+      "file": "worker/src/entity_dossier.mjs",
+      "joined_fields": ["source_assertions", "link_confidence"],
+      "hierarchy_score": 0.68,
+      "density_score": 0.55,
+      "dump_smell": 0.3
+    },
+    {
+      "id": "raw-source-records-dump",
+      "surface": "admin.possibly_same",
+      "file": "worker/src/lib/possibly_same.mjs",
+      "joined_fields": ["source_records", "tokens"],
+      "hierarchy_score": 0.28,
+      "density_score": 0.91,
+      "dump_smell": 0.84,
+      "unusable": true,
+      "demo_win": "The false-split desk shows grouped publisher rails instead of a raw source-record dump.",
+      "verify": "node --test test/multi_flywheel_dimensions.test.mjs # readability:raw-source-records-dump"
+    },
+    {
+      "id": "meeting-outcomes-rollcall",
+      "surface": "notice_detail.meeting_outcomes",
+      "joined_fields": ["event_items", "by_person"],
+      "hierarchy_score": 0.62,
+      "density_score": 0.58,
+      "dump_smell": 0.35
+    },
+    {
+      "id": "gap-taxonomy-dense-table",
+      "surface": "docs.gap_taxonomy",
+      "file": "docs/gap-taxonomy.md",
+      "joined_fields": ["gaps", "sources", "crosswalks"],
+      "hierarchy_score": 0.35,
+      "density_score": 0.88,
+      "dump_smell": 0.7,
+      "demo_win": "Gap inventory reads as ranked opportunities with class labels, not a dense dump table."
+    }
+  ]
+}

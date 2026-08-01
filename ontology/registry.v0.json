@@ -1,0 +1,1060 @@
+{
+  "schema": "cityscroll.ontology.registry.v0",
+  "version": "0.1.0",
+  "generated_note": "Catalog only \u2014 no production writer or public route. Characterization imports live allowlists and fails if a code type is missing here.",
+  "sources": {
+    "public_graph": "entity_resolution/publication/relationship_graph.mjs",
+    "civic_time": "worker/src/lib/civic_time.mjs",
+    "assertion_evidence": "entity_resolution/review/assertion_evidence.mjs",
+    "public_dossier": "entity_resolution/publication/dossier.mjs",
+    "action_log": "worker/src/lib/action_log.mjs",
+    "action_registry": "site/action_registry.js",
+    "er_taxonomy": "docs/adr/entity-resolution-taxonomy.md",
+    "process_spine": "worker/src/lib/process_spine.mjs"
+  },
+  "object_types": [
+    {
+      "id": "vendor",
+      "status": "registered",
+      "layer": "semantic",
+      "primary_key_pattern": "vendor:{canonical_id|name_stem}",
+      "families": [
+        "er:vendor"
+      ],
+      "backing": [
+        "public_graph.node",
+        "canonical_entity",
+        "source_records"
+      ],
+      "properties_ref": [
+        "name",
+        "pin",
+        "epin",
+        "contract_id",
+        "contract_amount",
+        "start_date",
+        "end_date",
+        "registration_date",
+        "due_date"
+      ]
+    },
+    {
+      "id": "agency",
+      "status": "registered",
+      "layer": "semantic",
+      "primary_key_pattern": "agency:{canonical_id|name}",
+      "families": [
+        "er:agency"
+      ],
+      "backing": [
+        "public_graph.node",
+        "canonical_entity",
+        "source_records"
+      ],
+      "properties_ref": [
+        "name",
+        "agency"
+      ]
+    },
+    {
+      "id": "solicitation",
+      "status": "registered",
+      "layer": "semantic",
+      "primary_key_pattern": "solicitation:{source_system}:{source_id}",
+      "families": [
+        "er:procurement"
+      ],
+      "backing": [
+        "public_graph.node",
+        "passport_rfx",
+        "source_records"
+      ],
+      "properties_ref": [
+        "name",
+        "agency",
+        "epin",
+        "pin",
+        "due_date"
+      ]
+    },
+    {
+      "id": "contract",
+      "status": "registered",
+      "layer": "semantic",
+      "primary_key_pattern": "contract:{prime_contract_id|epin}",
+      "families": [
+        "er:procurement"
+      ],
+      "backing": [
+        "public_graph.node",
+        "checkbook_contracts",
+        "passport_contracts",
+        "source_records"
+      ],
+      "properties_ref": [
+        "contract_id",
+        "pin",
+        "epin",
+        "contract_amount",
+        "start_date",
+        "end_date",
+        "registration_date"
+      ]
+    },
+    {
+      "id": "award",
+      "status": "registered",
+      "layer": "semantic",
+      "primary_key_pattern": "award:{source_system}:{source_id}",
+      "families": [
+        "er:procurement"
+      ],
+      "backing": [
+        "public_graph.node",
+        "city_record",
+        "source_records"
+      ],
+      "properties_ref": [
+        "name",
+        "agency",
+        "pin",
+        "epin",
+        "contract_amount"
+      ]
+    },
+    {
+      "id": "notice",
+      "status": "registered",
+      "layer": "semantic",
+      "primary_key_pattern": "notice:{request_id}",
+      "families": [
+        "er:procurement"
+      ],
+      "backing": [
+        "d1.notices",
+        "source_records"
+      ],
+      "properties_ref": [
+        "name",
+        "agency",
+        "pin",
+        "epin",
+        "due_date",
+        "start_date"
+      ]
+    },
+    {
+      "id": "canonical_entity",
+      "status": "registered",
+      "layer": "identity",
+      "primary_key_pattern": "opaque canonical id",
+      "families": [
+        "er:vendor",
+        "er:agency",
+        "er:procurement",
+        "er:location"
+      ],
+      "backing": [
+        "d1.canonical_entity"
+      ],
+      "properties_ref": [
+        "name"
+      ]
+    },
+    {
+      "id": "source_record",
+      "status": "registered",
+      "layer": "identity",
+      "primary_key_pattern": "source_record:{id}",
+      "families": [],
+      "backing": [
+        "d1.source_records"
+      ],
+      "properties_ref": []
+    },
+    {
+      "id": "entity_pair",
+      "status": "registered",
+      "layer": "kinetic_object",
+      "primary_key_pattern": "pair id (desk)",
+      "families": [],
+      "backing": [
+        "action_log.object",
+        "false_split_disposition"
+      ],
+      "properties_ref": []
+    },
+    {
+      "id": "pin_store",
+      "status": "registered",
+      "layer": "kinetic_object",
+      "primary_key_pattern": "session pin store key",
+      "families": [],
+      "backing": [
+        "action_log.object",
+        "kv.pins"
+      ],
+      "properties_ref": []
+    },
+    {
+      "id": "watch",
+      "status": "registered",
+      "layer": "kinetic_object",
+      "primary_key_pattern": "subscription token",
+      "families": [],
+      "backing": [
+        "action_log.object",
+        "kv.sub"
+      ],
+      "properties_ref": []
+    },
+    {
+      "id": "process",
+      "status": "registered",
+      "layer": "spine",
+      "primary_key_pattern": "process:{key}",
+      "families": [
+        "er:procurement"
+      ],
+      "backing": [
+        "process_spine"
+      ],
+      "properties_ref": []
+    },
+    {
+      "id": "project",
+      "status": "registered",
+      "layer": "spine",
+      "primary_key_pattern": "project:{key}",
+      "families": [
+        "er:location"
+      ],
+      "backing": [
+        "process_spine",
+        "zap"
+      ],
+      "properties_ref": []
+    },
+    {
+      "id": "payment",
+      "status": "unregistered",
+      "layer": "semantic",
+      "reason": "Checkbook Spending rows are summarized; no immutable source_records dual-write yet (source_coverage checkbook-spending).",
+      "primary_key_pattern": "payment:{row_id}",
+      "families": [
+        "er:procurement"
+      ],
+      "backing": [],
+      "properties_ref": [
+        "contract_amount"
+      ]
+    },
+    {
+      "id": "matter",
+      "status": "unregistered",
+      "layer": "semantic",
+      "reason": "Legistar matters folded into meeting-outcomes KV; not independent ontology objects.",
+      "primary_key_pattern": "matter:{legistar_id}",
+      "families": [],
+      "backing": [],
+      "properties_ref": []
+    },
+    {
+      "id": "meeting",
+      "status": "unregistered",
+      "layer": "semantic",
+      "reason": "Council events materialize to KV view without source_records dual-write.",
+      "primary_key_pattern": "meeting:{event_id}",
+      "families": [],
+      "backing": [],
+      "properties_ref": []
+    },
+    {
+      "id": "agenda_item",
+      "status": "unregistered",
+      "layer": "semantic",
+      "reason": "EventItems retained only inside assembled meeting-outcomes view.",
+      "primary_key_pattern": "agenda_item:{event_item_id}",
+      "families": [],
+      "backing": [],
+      "properties_ref": []
+    },
+    {
+      "id": "vote",
+      "status": "unregistered",
+      "layer": "semantic",
+      "reason": "Roll-call rows aggregated; person-level identity discarded (source_coverage legistar-votes).",
+      "primary_key_pattern": "vote:{event_item_id}:{person_id}",
+      "families": [],
+      "backing": [],
+      "properties_ref": []
+    },
+    {
+      "id": "official",
+      "status": "registered",
+      "layer": "semantic",
+      "primary_key_pattern": "official:{person_id}",
+      "families": [],
+      "backing": [
+        "public_graph.node",
+        "legistar_votes"
+      ],
+      "properties_ref": [
+        "person_id",
+        "person_name"
+      ]
+    },
+    {
+      "id": "rule",
+      "status": "unregistered",
+      "layer": "semantic",
+      "reason": "Rules spine exists as product events; no first-class rule object id in ER or public graph.",
+      "primary_key_pattern": "rule:{rule_id|notice_id}",
+      "families": [],
+      "backing": [
+        "rules_spine"
+      ],
+      "properties_ref": []
+    },
+    {
+      "id": "property_site",
+      "status": "unregistered",
+      "layer": "semantic",
+      "reason": "Property location extraction is product geography, not yet a cataloged graph node.",
+      "primary_key_pattern": "property:{bbl|notice_id}",
+      "families": [
+        "er:location"
+      ],
+      "backing": [],
+      "properties_ref": []
+    },
+    {
+      "id": "exam",
+      "status": "unregistered",
+      "layer": "semantic",
+      "reason": "Staffing exams are build-time materializations outside the ER/public graph allowlists.",
+      "primary_key_pattern": "exam:{exam_no}",
+      "families": [],
+      "backing": [],
+      "properties_ref": []
+    },
+    {
+      "id": "subsidy_project",
+      "status": "unregistered",
+      "layer": "semantic",
+      "reason": "Subsidy lifecycle caches per-notice stages without immutable project observations.",
+      "primary_key_pattern": "subsidy:{project_id}",
+      "families": [
+        "er:location"
+      ],
+      "backing": [],
+      "properties_ref": []
+    }
+  ],
+  "link_types": [
+    {
+      "id": "named_vendor_on_award",
+      "status": "registered",
+      "from": "vendor",
+      "to": "award",
+      "backing": [
+        "public_graph.edge"
+      ],
+      "label": "Named vendor on award"
+    },
+    {
+      "id": "named_vendor_on_solicitation",
+      "status": "registered",
+      "from": "vendor",
+      "to": "solicitation",
+      "backing": [
+        "public_graph.edge"
+      ],
+      "label": "Named vendor on solicitation"
+    },
+    {
+      "id": "published_by_agency",
+      "status": "registered",
+      "from": "award|solicitation|contract",
+      "to": "agency",
+      "backing": [
+        "public_graph.edge"
+      ],
+      "label": "Published by agency"
+    },
+    {
+      "id": "references_contract",
+      "status": "registered",
+      "from": "award",
+      "to": "contract",
+      "backing": [
+        "public_graph.edge"
+      ],
+      "label": "References contract"
+    },
+    {
+      "id": "same_as",
+      "status": "registered",
+      "from": "source_record",
+      "to": "canonical_entity",
+      "backing": [
+        "entity_link.auto_link"
+      ],
+      "label": "Same as (identity link)"
+    },
+    {
+      "id": "separate",
+      "status": "registered",
+      "from": "source_record",
+      "to": "source_record",
+      "backing": [
+        "entity_link.separate"
+      ],
+      "label": "Separate entities"
+    },
+    {
+      "id": "never_auto",
+      "status": "registered",
+      "from": "source_record",
+      "to": "source_record",
+      "backing": [
+        "entity_link.never_auto"
+      ],
+      "label": "Never auto-link"
+    },
+    {
+      "id": "reviewed_as",
+      "status": "registered",
+      "from": "entity_pair",
+      "to": "decision",
+      "backing": [
+        "action_log.review_decision"
+      ],
+      "label": "Desk review decision"
+    },
+    {
+      "id": "paid_under",
+      "status": "unregistered",
+      "from": "contract",
+      "to": "payment",
+      "reason": "Payment object unregistered; spending not dual-written.",
+      "backing": [],
+      "label": "Paid under"
+    },
+    {
+      "id": "votes_on",
+      "status": "registered",
+      "from": "official",
+      "to": "matter|agenda_item",
+      "backing": [
+        "public_graph.edge",
+        "legistar_votes"
+      ],
+      "label": "Votes on"
+    },
+    {
+      "id": "about_project",
+      "status": "unregistered",
+      "from": "notice",
+      "to": "project",
+      "reason": "Land spine joins exist in product code without a shared link-type id.",
+      "backing": [
+        "land_event_spine"
+      ],
+      "label": "About project"
+    },
+    {
+      "id": "item_on_agenda",
+      "status": "unregistered",
+      "from": "meeting",
+      "to": "agenda_item",
+      "reason": "Meeting objects unregistered; edges live inside KV assembly.",
+      "backing": [
+        "meeting_outcomes"
+      ],
+      "label": "Item on agenda"
+    },
+    {
+      "id": "registered_as",
+      "status": "unregistered",
+      "from": "notice",
+      "to": "contract",
+      "reason": "Checkbook lifecycle join is product code, not ontology link registry.",
+      "backing": [
+        "checkbook_lifecycle"
+      ],
+      "label": "Registered as"
+    }
+  ],
+  "event_kinds": [
+    {
+      "id": "procurement.notice_published",
+      "status": "registered",
+      "lens": "money",
+      "backing": [
+        "civic_time"
+      ]
+    },
+    {
+      "id": "procurement.award_registered",
+      "status": "registered",
+      "lens": "money",
+      "backing": [
+        "civic_time"
+      ]
+    },
+    {
+      "id": "procurement.payment",
+      "status": "registered",
+      "lens": "money",
+      "backing": [
+        "civic_time"
+      ]
+    },
+    {
+      "id": "procurement.solicitation_opened",
+      "status": "registered",
+      "lens": "money",
+      "backing": [
+        "civic_time",
+        "passport_rfx"
+      ]
+    },
+    {
+      "id": "procurement.solicitation_due",
+      "status": "registered",
+      "lens": "money",
+      "backing": [
+        "civic_time",
+        "passport_rfx"
+      ]
+    },
+    {
+      "id": "procurement.solicitation_addenda",
+      "status": "registered",
+      "lens": "money",
+      "backing": [
+        "civic_time"
+      ]
+    },
+    {
+      "id": "rules.proposal_published",
+      "status": "registered",
+      "lens": "rules",
+      "backing": [
+        "civic_time"
+      ]
+    },
+    {
+      "id": "rules.public_hearing",
+      "status": "registered",
+      "lens": "rules",
+      "backing": [
+        "civic_time"
+      ]
+    },
+    {
+      "id": "rules.comment_close",
+      "status": "registered",
+      "lens": "rules",
+      "backing": [
+        "civic_time"
+      ]
+    },
+    {
+      "id": "rules.adoption",
+      "status": "registered",
+      "lens": "rules",
+      "backing": [
+        "civic_time"
+      ]
+    },
+    {
+      "id": "rules.effective",
+      "status": "registered",
+      "lens": "rules",
+      "backing": [
+        "civic_time"
+      ]
+    },
+    {
+      "id": "land.zap_milestone",
+      "status": "registered",
+      "lens": "land",
+      "backing": [
+        "civic_time"
+      ]
+    },
+    {
+      "id": "land.city_record_notice",
+      "status": "registered",
+      "lens": "land",
+      "backing": [
+        "civic_time"
+      ]
+    },
+    {
+      "id": "land.city_record_hearing",
+      "status": "registered",
+      "lens": "land",
+      "backing": [
+        "civic_time"
+      ]
+    },
+    {
+      "id": "land.zap_disposition",
+      "status": "registered",
+      "lens": "land",
+      "backing": [
+        "civic_time"
+      ]
+    },
+    {
+      "id": "meetings.council_event",
+      "status": "registered",
+      "lens": "meetings",
+      "backing": [
+        "civic_time"
+      ]
+    },
+    {
+      "id": "meetings.agenda_item_action",
+      "status": "registered",
+      "lens": "meetings",
+      "backing": [
+        "civic_time"
+      ]
+    },
+    {
+      "id": "meetings.roll_call_vote",
+      "status": "registered",
+      "lens": "meetings",
+      "backing": [
+        "civic_time"
+      ]
+    }
+  ],
+  "assertion_classifications": [
+    {
+      "id": "source_assertion",
+      "status": "registered",
+      "meaning": "Exact publisher field and value retained with provenance",
+      "backing": [
+        "assertion_evidence",
+        "public_dossier",
+        "public_graph"
+      ]
+    },
+    {
+      "id": "cityscroll_interpretation",
+      "status": "registered",
+      "meaning": "Product comparison or conflict label; never selects a canonical winner",
+      "backing": [
+        "assertion_evidence"
+      ]
+    }
+  ],
+  "assertion_facts": [
+    {
+      "id": "contract_amount",
+      "status": "registered",
+      "kind": "amount",
+      "backing": [
+        "assertion_evidence"
+      ]
+    },
+    {
+      "id": "start_date",
+      "status": "registered",
+      "kind": "date",
+      "backing": [
+        "assertion_evidence"
+      ]
+    },
+    {
+      "id": "end_date",
+      "status": "registered",
+      "kind": "date",
+      "backing": [
+        "assertion_evidence"
+      ]
+    },
+    {
+      "id": "registration_date",
+      "status": "registered",
+      "kind": "date",
+      "backing": [
+        "assertion_evidence"
+      ]
+    },
+    {
+      "id": "due_date",
+      "status": "registered",
+      "kind": "date",
+      "backing": [
+        "assertion_evidence"
+      ]
+    },
+    {
+      "id": "name",
+      "status": "registered",
+      "kind": "text",
+      "backing": [
+        "public_dossier"
+      ]
+    },
+    {
+      "id": "agency",
+      "status": "registered",
+      "kind": "text",
+      "backing": [
+        "public_dossier"
+      ]
+    },
+    {
+      "id": "pin",
+      "status": "registered",
+      "kind": "text",
+      "backing": [
+        "public_dossier"
+      ]
+    },
+    {
+      "id": "epin",
+      "status": "registered",
+      "kind": "text",
+      "backing": [
+        "public_dossier"
+      ]
+    },
+    {
+      "id": "contract_id",
+      "status": "registered",
+      "kind": "text",
+      "backing": [
+        "public_dossier"
+      ]
+    }
+  ],
+  "kinetic_action_types": {
+    "reader_actions": [
+      {
+        "id": "watch",
+        "status": "registered",
+        "backing": [
+          "action_registry"
+        ]
+      },
+      {
+        "id": "calendar",
+        "status": "registered",
+        "backing": [
+          "action_registry"
+        ]
+      },
+      {
+        "id": "document",
+        "status": "registered",
+        "backing": [
+          "action_registry"
+        ]
+      },
+      {
+        "id": "contact",
+        "status": "registered",
+        "backing": [
+          "action_registry"
+        ]
+      },
+      {
+        "id": "rsvp",
+        "status": "registered",
+        "backing": [
+          "action_registry"
+        ]
+      },
+      {
+        "id": "comment",
+        "status": "registered",
+        "backing": [
+          "action_registry"
+        ]
+      },
+      {
+        "id": "attend",
+        "status": "registered",
+        "backing": [
+          "action_registry"
+        ]
+      },
+      {
+        "id": "bid_checklist",
+        "status": "registered",
+        "backing": [
+          "action_registry"
+        ]
+      },
+      {
+        "id": "official_application",
+        "status": "registered",
+        "backing": [
+          "action_registry"
+        ]
+      },
+      {
+        "id": "return_to_matter",
+        "status": "registered",
+        "backing": [
+          "action_registry"
+        ]
+      },
+      {
+        "id": "local_note",
+        "status": "registered",
+        "backing": [
+          "action_registry"
+        ]
+      }
+    ],
+    "action_deliveries": [
+      {
+        "id": "local",
+        "status": "registered",
+        "backing": [
+          "action_registry"
+        ]
+      },
+      {
+        "id": "official_handoff",
+        "status": "registered",
+        "backing": [
+          "action_registry"
+        ]
+      },
+      {
+        "id": "unavailable",
+        "status": "registered",
+        "backing": [
+          "action_registry"
+        ]
+      }
+    ],
+    "product_method_log": [
+      {
+        "id": "pins_saved",
+        "status": "registered",
+        "object_types": [
+          "pin_store"
+        ],
+        "backing": [
+          "action_log"
+        ]
+      },
+      {
+        "id": "watch_confirmed",
+        "status": "registered",
+        "object_types": [
+          "watch"
+        ],
+        "backing": [
+          "action_log"
+        ]
+      },
+      {
+        "id": "watch_updated",
+        "status": "registered",
+        "object_types": [
+          "watch"
+        ],
+        "backing": [
+          "action_log"
+        ]
+      },
+      {
+        "id": "watch_paused",
+        "status": "registered",
+        "object_types": [
+          "watch"
+        ],
+        "backing": [
+          "action_log"
+        ]
+      },
+      {
+        "id": "watch_resumed",
+        "status": "registered",
+        "object_types": [
+          "watch"
+        ],
+        "backing": [
+          "action_log"
+        ]
+      },
+      {
+        "id": "watch_removed",
+        "status": "registered",
+        "object_types": [
+          "watch"
+        ],
+        "backing": [
+          "action_log"
+        ]
+      },
+      {
+        "id": "review_decision",
+        "status": "registered",
+        "object_types": [
+          "entity_pair"
+        ],
+        "backing": [
+          "action_log"
+        ]
+      }
+    ],
+    "outcomes": [
+      {
+        "id": "submitted",
+        "status": "registered",
+        "backing": [
+          "action_registry"
+        ]
+      },
+      {
+        "id": "attended",
+        "status": "registered",
+        "backing": [
+          "action_registry"
+        ]
+      },
+      {
+        "id": "bid",
+        "status": "registered",
+        "backing": [
+          "action_registry"
+        ]
+      },
+      {
+        "id": "won",
+        "status": "registered",
+        "backing": [
+          "action_registry"
+        ]
+      },
+      {
+        "id": "not_useful",
+        "status": "registered",
+        "backing": [
+          "action_registry"
+        ]
+      }
+    ]
+  },
+  "er_type_families": [
+    {
+      "id": "vendor",
+      "status": "registered",
+      "backing": [
+        "er_taxonomy"
+      ]
+    },
+    {
+      "id": "agency",
+      "status": "registered",
+      "backing": [
+        "er_taxonomy"
+      ]
+    },
+    {
+      "id": "procurement",
+      "status": "registered",
+      "backing": [
+        "er_taxonomy"
+      ]
+    },
+    {
+      "id": "location",
+      "status": "registered",
+      "backing": [
+        "er_taxonomy"
+      ]
+    }
+  ],
+  "er_decisions": [
+    {
+      "id": "auto_link",
+      "status": "registered",
+      "backing": [
+        "er_taxonomy",
+        "entity_link"
+      ]
+    },
+    {
+      "id": "separate",
+      "status": "registered",
+      "backing": [
+        "er_taxonomy",
+        "entity_link"
+      ]
+    },
+    {
+      "id": "review",
+      "status": "registered",
+      "backing": [
+        "er_taxonomy",
+        "entity_link"
+      ]
+    },
+    {
+      "id": "never_auto",
+      "status": "registered",
+      "backing": [
+        "er_taxonomy",
+        "entity_link"
+      ]
+    }
+  ],
+  "process_spine_join_confidence": [
+    {
+      "id": "confirmed",
+      "status": "registered",
+      "backing": [
+        "process_spine"
+      ]
+    },
+    {
+      "id": "review",
+      "status": "registered",
+      "backing": [
+        "process_spine"
+      ]
+    },
+    {
+      "id": "unmatched",
+      "status": "registered",
+      "backing": [
+        "process_spine"
+      ]
+    }
+  ],
+  "flywheel": {
+    "schema": "cityscroll.multi_flywheel_queue.v0",
+    "policy_version": "v0",
+    "dimensions": [
+      "data-integrity",
+      "readability",
+      "ontology-enrichment",
+      "coverage",
+      "cross-source-consistency"
+    ],
+    "legacy_intelligence_receipt": "cityscroll.intelligence_receipt.v0",
+    "legacy_card_classes": [
+      "coverage",
+      "contradiction",
+      "gap_a",
+      "er_quality",
+      "actionability",
+      "registry"
+    ],
+    "note": "Multi-dimension cards are emitted by tools/flywheel-run.mjs; ontology-enrichment reuses tools/intelligence_flywheel.mjs. Do not hand-author parallel metric-driven roadmaps."
+  }
+}
