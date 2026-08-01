@@ -312,6 +312,31 @@ function comparisonFeaturesHtml(evidence = {}) {
   return `<details><summary>Comparison features</summary><table><tbody>${rows || '<tr><td>No comparison features recorded.</td></tr>'}</tbody></table></details>`;
 }
 
+function assertionSourceHtml(assertion = {}) {
+  const sourceLabel = assertion.source_system || "Source";
+  const source = assertion.source_url
+    ? `<a href="${escapeHtml(assertion.source_url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(sourceLabel)}</a>`
+    : escapeHtml(sourceLabel);
+  return `<li class="assertion"><span class="evidence-label assertion-label">Source assertion</span>
+    <strong>${source}</strong>
+    <span class="assertion-value">${escapeHtml(assertion.value)}</span>
+    <small>${escapeHtml(assertion.source_field)} · record ${escapeHtml(assertion.source_system_id || assertion.source_record_id || "not supplied")}</small></li>`;
+}
+
+function assertionInterpretationHtml(evidence = {}) {
+  const rail = evidence.assertion_interpretation;
+  if (!rail?.conflicts?.length) return "";
+  return `<section class="evidence-rail"><h3>Assertion vs interpretation</h3>
+    <p>Publisher values are shown as assertions. CityScroll's comparison is labeled separately and does not replace either source.</p>
+    ${rail.conflicts.map((conflict) => `<article class="field-conflict">
+      <h4>${escapeHtml(conflict.label)}</h4>
+      <ul class="assertions">${conflict.assertions.map(assertionSourceHtml).join("")}</ul>
+      <div class="interpretation"><span class="evidence-label interpretation-label">CityScroll interpretation</span>
+        <strong>Conflict · unresolved</strong><p>${escapeHtml(conflict.interpretation?.summary)}</p></div>
+    </article>`).join("")}
+  </section>`;
+}
+
 function dispositionHistoryHtml(events = []) {
   if (!events.length) return '<p class="empty-history">No dispositions recorded.</p>';
   return `<ol class="history">${events.map((event) => `<li><strong>${escapeHtml(event.decision)}</strong> by ${escapeHtml(event.actor)}
@@ -327,6 +352,7 @@ export function renderPossiblySamePage(items = [], eventsByPair = {}) {
     <p class="score">${escapeHtml(confidenceLabel(item.confidence))} · ${escapeHtml(item.method)}</p>
     <p><strong>Candidate basis:</strong> ${escapeHtml(candidateBasis(item.evidence))}</p>
     <div class="records">${sourceRecordHtml(item.left, "Record A")}${sourceRecordHtml(item.right, "Record B")}</div>
+    ${assertionInterpretationHtml(item.evidence)}
     ${comparisonFeaturesHtml(item.evidence)}
     <p class="note">This is a review lead, not a finding. Confirm identity from the underlying records before taking action.</p>
     <section><h3>Disposition history</h3>${dispositionHistoryHtml(eventsByPair[item.id] || [])}</section>
@@ -341,7 +367,7 @@ export function renderPossiblySamePage(items = [], eventsByPair = {}) {
     </form>
   </article>`).join("\n");
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Possibly same vendors</title>
-    <style>body{font:16px system-ui,sans-serif;max-width:1120px;margin:40px auto;padding:0 20px;color:#17202a;background:#f6f3ed}.pair{background:white;border:1px solid #d8d2c8;border-radius:12px;padding:22px;margin:18px 0;box-shadow:0 2px 8px #0000000d}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#795548;font-weight:700}.pair h2{font-size:22px;margin:8px 0}.score{color:#40566a;font-family:ui-monospace,monospace}.records{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}.record{min-width:0;background:#f5f7f8;padding:14px;border-radius:8px}.pair dl{display:grid;grid-template-columns:1fr 1fr;gap:8px}.pair dl div{min-width:0}.pair dt{font-size:12px;color:#687783}.pair dd{margin:4px 0 0;overflow-wrap:anywhere}.pair table{width:100%;border-collapse:collapse;font-size:13px}.pair th,.pair td{text-align:left;vertical-align:top;border-top:1px solid #d8dfe3;padding:6px;overflow-wrap:anywhere}.pair th{width:35%}.note{border-left:3px solid #d39b36;padding-left:10px}.pair input,.pair textarea{display:block;width:100%;padding:8px;margin:6px 0 12px;box-sizing:border-box}.pair textarea{min-height:70px}.pair fieldset{border:0;padding:0;margin:8px 0}.pair button{padding:8px 14px;margin:4px 6px 4px 0}.history time,.history small{display:block;color:#687783}.empty,.empty-history{padding:18px;background:#fff;border-radius:12px}@media(max-width:720px){.records,.pair dl{grid-template-columns:1fr}}</style></head><body>
+    <style>body{font:16px system-ui,sans-serif;max-width:1120px;margin:40px auto;padding:0 20px;color:#17202a;background:#f6f3ed}.pair{background:white;border:1px solid #d8d2c8;border-radius:12px;padding:22px;margin:18px 0;box-shadow:0 2px 8px #0000000d}.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#795548;font-weight:700}.pair h2{font-size:22px;margin:8px 0}.score{color:#40566a;font-family:ui-monospace,monospace}.records{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}.record{min-width:0;background:#f5f7f8;padding:14px;border-radius:8px}.pair dl{display:grid;grid-template-columns:1fr 1fr;gap:8px}.pair dl div{min-width:0}.pair dt{font-size:12px;color:#687783}.pair dd{margin:4px 0 0;overflow-wrap:anywhere}.pair table{width:100%;border-collapse:collapse;font-size:13px}.pair th,.pair td{text-align:left;vertical-align:top;border-top:1px solid #d8dfe3;padding:6px;overflow-wrap:anywhere}.pair th{width:35%}.evidence-rail{margin:18px 0;padding:16px;border:1px solid #d8b36a;border-radius:10px;background:#fffaf0}.field-conflict{padding:12px 0;border-top:1px solid #ead8b6}.field-conflict h4{margin:0 0 8px}.assertions{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;list-style:none;padding:0}.assertion,.interpretation{min-width:0;padding:12px;border-radius:7px}.assertion{background:#fff;border:1px solid #ded7ca}.assertion strong,.assertion-value,.assertion small,.interpretation strong{display:block;overflow-wrap:anywhere}.assertion-value{margin:6px 0;font:600 15px ui-monospace,monospace}.assertion small{color:#687783}.interpretation{margin-top:10px;background:#eaf3f7;border-left:4px solid #39788f}.evidence-label{display:inline-block;margin-bottom:6px;padding:2px 6px;border-radius:4px;font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase}.assertion-label{background:#f1e9d9;color:#604a25}.interpretation-label{background:#cfe5ee;color:#194f64}.interpretation p{margin-bottom:0}.note{border-left:3px solid #d39b36;padding-left:10px}.pair input,.pair textarea{display:block;width:100%;padding:8px;margin:6px 0 12px;box-sizing:border-box}.pair textarea{min-height:70px}.pair fieldset{border:0;padding:0;margin:8px 0}.pair button{padding:8px 14px;margin:4px 6px 4px 0}.history time,.history small{display:block;color:#687783}.empty,.empty-history{padding:18px;background:#fff;border-radius:12px}@media(max-width:720px){.records,.pair dl,.assertions{grid-template-columns:1fr}}</style></head><body>
     <header><p class="eyebrow">Authenticated desk review</p><h1>Possibly same vendors</h1><p>These candidate pairs are surfaced for human review. Dispositions are an append-only evidence trail; records are not combined or exposed in the public site.</p></header>
     ${cards || '<p class="empty">No candidate pairs are currently surfaced from recent dual-write observations.</p>'}
   </body></html>`;

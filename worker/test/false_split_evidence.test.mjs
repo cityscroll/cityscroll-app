@@ -8,6 +8,11 @@ import {
   dispositionInput,
 } from "../src/lib/false_split_evidence.mjs";
 
+const ASSERTION_FIXTURE = JSON.parse(readFileSync(
+  new URL("./fixtures/assertion_evidence.json", import.meta.url),
+  "utf8",
+));
+
 function d1(sqlite) {
   return {
     prepare(sql) {
@@ -37,13 +42,13 @@ function fixtureEnv() {
   const now = new Date().toISOString();
   insert.run(
     "city_record", "20260730001", "hash-a",
-    JSON.stringify({ request_id: "20260730001" }),
+    JSON.stringify(ASSERTION_FIXTURE.left.raw_snapshot),
     JSON.stringify({ vendor_name: "Acme Construction LLC", pin: "85026P0001001", agency_name: "Design and Construction" }),
     now,
   );
   insert.run(
     "checkbook", "contract-44", "hash-b",
-    JSON.stringify({ source_url: "https://www.checkbooknyc.com/contract-44" }),
+    JSON.stringify({ ...ASSERTION_FIXTURE.right.raw_snapshot, source_url: ASSERTION_FIXTURE.right.source_url }),
     JSON.stringify({ vendor_name: "Acme Builders Inc", pin: "85026P0002001", contract_id: "CT-44" }),
     now,
   );
@@ -70,6 +75,25 @@ test("fixture tray measures candidates and exposes both source-linked records", 
     assert.equal(tray.items[0].left.observed_fields.pin, "85026P0001001");
     assert.equal(tray.items[0].right.observed_fields.contract_id, "CT-44");
     assert.equal(tray.items[0].evidence.comparison_features.pin_epin_conflict, true);
+    assert.deepEqual(
+      tray.items[0].evidence.assertion_interpretation.conflicts.map((entry) => entry.fact),
+      ["contract_amount", "start_date"],
+    );
+    const [amountConflict] = tray.items[0].evidence.assertion_interpretation.conflicts;
+    assert.equal(amountConflict.assertions[0].classification, "source_assertion");
+    assert.equal(amountConflict.assertions[1].classification, "source_assertion");
+    assert.equal(amountConflict.interpretation.classification, "cityscroll_interpretation");
+    assert.equal(amountConflict.interpretation.resolution, "unresolved");
+
+    const htmlResponse = await handleAdminPossiblySame(
+      new Request("https://w/admin/possibly-same?key=secret"),
+      env,
+    );
+    const html = await htmlResponse.text();
+    assert.match(html, /Assertion vs interpretation/);
+    assert.match(html, /Source assertion/);
+    assert.match(html, /CityScroll interpretation/);
+    assert.match(html, /Conflict · unresolved/);
   } finally {
     sqlite.close();
   }
