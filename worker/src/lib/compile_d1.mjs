@@ -138,6 +138,7 @@ export function toDigestRow(r) {
     // D1 "description" → SODA "additional_description_1" -- matchEvidence() (lib/digest.mjs)
     // reads this name regardless of which path served the row.
     additional_description_1: r.description ?? null,
+    structured_facts: r.structured_facts ?? null,
   };
 }
 

@@ -68,12 +68,14 @@ test("toRecord: invalid amount nulled, rolling due date becomes deadline_note", 
     due_date: "2090-01-01 00:00:00",
     due_year: 2090,
     document_urls: '["https://a.example/f"]',
+    structured_facts: '{"identifiers":[{"kind":"epin","value":"85826Y1367"}],"deadlines":[],"parties":[]}',
   });
   assert.equal(rec.contract_amount, null);           // corrupt amount never displayed
   assert.equal(rec.contract_amount_display, null);
   assert.equal(rec.due_date, null);                  // no fake 2090 date
   assert.equal(rec.deadline_note, "rolling / no fixed deadline (e.g. pre-qualified list)");
   assert.deepEqual(rec.documents, ["https://a.example/f"]);
+  assert.equal(rec.structured_facts.identifiers[0].value, "85826Y1367");
 });
 
 test("compileSub money vocab merge: maxAmount bounds and category filters (both branches)", () => {
