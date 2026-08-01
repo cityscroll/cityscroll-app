@@ -586,10 +586,13 @@ capture: `node --test worker/test/private_evidence_workspace.test.mjs`,
 **Public entity dossier (er-15):** `GET /entity-dossier?id=` reads canonical entities and
 linked immutable source snapshots into a bounded, allowlisted view. Exact source
 assertions retain publisher provenance and observation time; disagreements keep every value,
-and missing fields mean only “not observed in linked records.” Raw snapshots, content hashes,
-matcher internals, and desk review state never cross the publication serializer. Pure model:
-`entity_resolution/publication/dossier.mjs`; Worker route/view:
-`worker/src/entity_dossier.mjs`. Verify: `node --test worker/test/entity_dossier.test.mjs`.
+and missing fields mean only “not observed in linked records.” Each linked record surfaces a
+public `link_confidence` band (`strong` / `tentative` / `not_scored`) derived from
+`entity_link.confidence` — numeric scores and matcher method stay desk-only. Metric:
+`public_entity_link_confidence_rate` (`measurePublicEntityLinkConfidenceRate`). Pure model:
+`entity_resolution/publication/dossier.mjs` + `link_confidence.mjs`; Worker route/view:
+`worker/src/entity_dossier.mjs`. Verify:
+`node --test worker/test/entity_dossier.test.mjs worker/test/entity_resolution_publication.test.mjs`.
 
 **Public relationship graph (er-16):** `GET /entity-relationships?id=` projects linked public
 procurement observations into allowlisted vendor, agency, solicitation, contract, and award nodes.

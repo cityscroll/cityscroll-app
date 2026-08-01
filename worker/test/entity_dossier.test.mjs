@@ -9,6 +9,9 @@ import {
   handleEntityDossier,
   readEntityDossier,
 } from "../src/entity_dossier.mjs";
+import {
+  measurePublicEntityLinkConfidenceRate,
+} from "../../entity_resolution/publication/link_confidence.mjs";
 
 const ENTITY_ID = "vendor:stem:ACME CONSTRUCTION";
 
@@ -158,6 +161,28 @@ test("dossier query retains conflicting assertions with public provenance", asyn
       id: "20260730001",
       url: "https://a856-cityrecord.nyc.gov/RequestDetail/20260730001",
     });
+    assert.deepEqual(dossier.linked_records[0].link_confidence, {
+      status: "strong",
+      basis: "entity_link",
+    });
+    assert.deepEqual(dossier.linked_records[1].link_confidence, {
+      status: "tentative",
+      basis: "entity_link",
+    });
+    assert.deepEqual(dossier.link_confidence_summary, {
+      strong: 1,
+      tentative: 1,
+      not_scored: 0,
+      total: 2,
+    });
+    // Numeric desk scores must not appear on the public contract.
+    assert.doesNotMatch(JSON.stringify(dossier), /0\.98|0\.84/);
+
+    const linkMetric = measurePublicEntityLinkConfidenceRate([dossier]);
+    assert.equal(linkMetric.metric, "public_entity_link_confidence_rate");
+    assert.equal(linkMetric.rate, 1);
+    assert.equal(linkMetric.labeled, 2);
+    assert.equal(linkMetric.eligible, 2);
 
     const amounts = fact(dossier, "contract_amount");
     assert.equal(amounts.status, "disagreement");
@@ -220,6 +245,12 @@ test("public dossier route serves JSON and an attributed disagreement page", asy
     assert.match(html, /Absence is not proof/);
     assert.match(html, /Explore typed public relationships/);
     assert.match(html, /\/entity-relationships\?id=vendor%3Astem%3AACME%20CONSTRUCTION/);
+    assert.match(html, /Strong link/);
+    assert.match(html, /Tentative link/);
+    assert.match(html, /data-link-confidence-summary/);
+    assert.match(html, /1 strong · 1 tentative/);
+    assert.match(html, /match strength \(strong vs tentative\)/);
+    assert.doesNotMatch(html, /0\.98|0\.84|98%|84%/);
     assertSensitivityBoundary(html);
   } finally {
     sqlite.close();
