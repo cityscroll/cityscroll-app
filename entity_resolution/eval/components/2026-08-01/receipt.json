@@ -1,0 +1,51 @@
+{
+  "kind": "entity_component_evaluation_receipt",
+  "schema_version": 1,
+  "observed_on": "2026-08-01",
+  "inputs": {
+    "gold": {
+      "path": "entity_resolution/eval/gold_v0.jsonl",
+      "sha256": "49f5d2f7a887d9af3b22218e6583305a31e0d2c7cd28f05b10bf4450d27295bb",
+      "cases": 36
+    },
+    "source_records": {
+      "path": "entity_resolution/eval/fixtures/source_records_authority_v0.jsonl",
+      "sha256": "9517d93e67b9a71eb43e42a7b7e3fec347b7d030c89904de360f2a6edbf4261b",
+      "rows": 9
+    }
+  },
+  "matcher_version": "conventional_v0",
+  "parameters": {
+    "sample_size": 8,
+    "sampling_unit": "whole_reference_component"
+  },
+  "metrics": {
+    "gold": {
+      "reference_entity_components": 20,
+      "recovered_entity_components": 19,
+      "under_split_entity_components": 1,
+      "entity_component_recall": 0.95,
+      "under_split_entity_rate": 0.05,
+      "predicted_multi_record_components": 22,
+      "over_merged_predicted_components": 0,
+      "over_merge_component_rate": 0,
+      "negative_constraints": 7,
+      "violated_negative_constraints": 0,
+      "negative_constraint_violation_rate": 0
+    },
+    "authority": {
+      "reference_entity_components": 1,
+      "recovered_entity_components": 1,
+      "under_split_entity_components": 0,
+      "entity_component_recall": 1,
+      "under_split_entity_rate": 0,
+      "predicted_multi_record_components": 1,
+      "over_merged_predicted_components": 0,
+      "over_merge_component_rate": 0,
+      "negative_constraints": 1,
+      "violated_negative_constraints": 0,
+      "negative_constraint_violation_rate": 0
+    }
+  },
+  "sample_sha256": "59e6fa9b60a4f17cfc80468a6bfdb534340eb517e7717d16ace3726fe358054f"
+}

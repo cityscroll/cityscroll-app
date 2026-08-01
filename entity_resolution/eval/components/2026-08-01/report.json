@@ -1,0 +1,418 @@
+{
+  "kind": "entity_component_evaluation",
+  "schema_version": 1,
+  "matcher_version": "conventional_v0",
+  "parameters": {
+    "sample_size": 8,
+    "sampling_unit": "whole_reference_component"
+  },
+  "metrics": {
+    "gold": {
+      "reference_entity_components": 20,
+      "recovered_entity_components": 19,
+      "under_split_entity_components": 1,
+      "entity_component_recall": 0.95,
+      "under_split_entity_rate": 0.05,
+      "predicted_multi_record_components": 22,
+      "over_merged_predicted_components": 0,
+      "over_merge_component_rate": 0,
+      "negative_constraints": 7,
+      "violated_negative_constraints": 0,
+      "negative_constraint_violation_rate": 0
+    },
+    "authority": {
+      "reference_entity_components": 1,
+      "recovered_entity_components": 1,
+      "under_split_entity_components": 0,
+      "entity_component_recall": 1,
+      "under_split_entity_rate": 0,
+      "predicted_multi_record_components": 1,
+      "over_merged_predicted_components": 0,
+      "over_merge_component_rate": 0,
+      "negative_constraints": 1,
+      "violated_negative_constraints": 0,
+      "negative_constraint_violation_rate": 0
+    }
+  },
+  "false_split_priority": [
+    {
+      "component_id": "erc-8b4ac57c0c74e414",
+      "corpus": "gold",
+      "entity_type": "agency",
+      "record_count": 2,
+      "source_count": 1,
+      "sources": [
+        "city_record"
+      ],
+      "reference_case_ids": [
+        "gv0-026"
+      ],
+      "predicted_partition_count": 2,
+      "under_split": true,
+      "observations": [
+        {
+          "id": "gold:agency:city_record:agency-doit-legacy",
+          "source_system": "city_record",
+          "native_key": "agency-doit-legacy",
+          "display_name": "Dept of Info Tech & Telecomm",
+          "attrs": {}
+        },
+        {
+          "id": "gold:agency:city_record:agency-oti",
+          "source_system": "city_record",
+          "native_key": "agency-oti",
+          "display_name": "Office of Technology and Innovation",
+          "attrs": {}
+        }
+      ],
+      "stratum": "gold_false_split"
+    }
+  ],
+  "sample": [
+    {
+      "component_id": "erc-8b4ac57c0c74e414",
+      "corpus": "gold",
+      "entity_type": "agency",
+      "record_count": 2,
+      "source_count": 1,
+      "sources": [
+        "city_record"
+      ],
+      "reference_case_ids": [
+        "gv0-026"
+      ],
+      "predicted_partition_count": 2,
+      "under_split": true,
+      "observations": [
+        {
+          "id": "gold:agency:city_record:agency-doit-legacy",
+          "source_system": "city_record",
+          "native_key": "agency-doit-legacy",
+          "display_name": "Dept of Info Tech & Telecomm",
+          "attrs": {}
+        },
+        {
+          "id": "gold:agency:city_record:agency-oti",
+          "source_system": "city_record",
+          "native_key": "agency-oti",
+          "display_name": "Office of Technology and Innovation",
+          "attrs": {}
+        }
+      ],
+      "stratum": "gold_false_split"
+    },
+    {
+      "component_id": "erc-ae7b214171fae63e",
+      "corpus": "authority",
+      "entity_type": "procurement",
+      "record_count": 4,
+      "source_count": 3,
+      "sources": [
+        "checkbook",
+        "city_record",
+        "passport"
+      ],
+      "reference_case_ids": [
+        "authority:checkbook:CT184120268807929:checkbook-hntb|city_record:20260623008:new-hntb",
+        "authority:checkbook:CT184120268807929:checkbook-hntb|city_record:20260701009:later-hntb",
+        "authority:checkbook:CT184120268807929:checkbook-hntb|passport:5755276:passport-hntb",
+        "authority:city_record:20260623008:new-hntb|city_record:20260701009:later-hntb"
+      ],
+      "predicted_partition_count": 1,
+      "under_split": false,
+      "observations": [
+        {
+          "id": "authority:procurement:checkbook:checkbook:CT184120268807929:checkbook-hntb",
+          "source_record_id": "checkbook:CT184120268807929:checkbook-hntb",
+          "source_system": "checkbook",
+          "native_key": "CT184120268807929",
+          "display_name": "Engineering and architecture registration",
+          "entity_type": "procurement",
+          "attrs": {
+            "pin": [
+              "84124P0003001"
+            ],
+            "contract_ids": [
+              "CT184120268807929"
+            ]
+          },
+          "authority_ids": {
+            "pin_epin": [
+              "84124P0003001"
+            ],
+            "contract": [
+              "CT184120268807929"
+            ]
+          },
+          "ingested_at": "2026-06-24T11:00:00.000Z"
+        },
+        {
+          "id": "authority:procurement:city_record:city_record:20260623008:new-hntb",
+          "source_record_id": "city_record:20260623008:new-hntb",
+          "source_system": "city_record",
+          "native_key": "20260623008",
+          "display_name": "Bridge design services",
+          "entity_type": "procurement",
+          "attrs": {
+            "pin": [
+              "84124P0003001"
+            ],
+            "contract_ids": []
+          },
+          "authority_ids": {
+            "pin_epin": [
+              "84124P0003001"
+            ],
+            "contract": []
+          },
+          "ingested_at": "2026-06-24T10:00:00.000Z"
+        },
+        {
+          "id": "authority:procurement:city_record:city_record:20260701009:later-hntb",
+          "source_record_id": "city_record:20260701009:later-hntb",
+          "source_system": "city_record",
+          "native_key": "20260701009",
+          "display_name": "Construction support services",
+          "entity_type": "procurement",
+          "attrs": {
+            "pin": [
+              "84124P0003001"
+            ],
+            "contract_ids": []
+          },
+          "authority_ids": {
+            "pin_epin": [
+              "84124P0003001"
+            ],
+            "contract": []
+          },
+          "ingested_at": "2026-07-01T10:00:00.000Z"
+        },
+        {
+          "id": "authority:procurement:passport:passport:5755276:passport-hntb",
+          "source_record_id": "passport:5755276:passport-hntb",
+          "source_system": "passport",
+          "native_key": "5755276",
+          "display_name": "Registered professional services",
+          "entity_type": "procurement",
+          "attrs": {
+            "pin": [],
+            "contract_ids": [
+              "CT184120268807929"
+            ]
+          },
+          "authority_ids": {
+            "pin_epin": [],
+            "contract": [
+              "CT184120268807929"
+            ]
+          },
+          "ingested_at": "2026-06-24T12:00:00.000Z"
+        }
+      ],
+      "stratum": "authority_control"
+    },
+    {
+      "component_id": "erc-1cd3e93af62e1a09",
+      "corpus": "gold",
+      "entity_type": "vendor",
+      "record_count": 2,
+      "source_count": 1,
+      "sources": [
+        "city_record"
+      ],
+      "reference_case_ids": [
+        "gv0-021"
+      ],
+      "predicted_partition_count": 1,
+      "under_split": false,
+      "observations": [
+        {
+          "id": "gold:vendor:city_record:html-vendor",
+          "source_system": "city_record",
+          "native_key": "html-vendor",
+          "display_name": "<b>Bold Vendor</b> Corp",
+          "attrs": {}
+        },
+        {
+          "id": "gold:vendor:city_record:plain-vendor",
+          "source_system": "city_record",
+          "native_key": "plain-vendor",
+          "display_name": "Bold Vendor Corporation",
+          "attrs": {}
+        }
+      ],
+      "stratum": "gold_control"
+    },
+    {
+      "component_id": "erc-344ccbfb2733fab0",
+      "corpus": "gold",
+      "entity_type": "agency",
+      "record_count": 2,
+      "source_count": 1,
+      "sources": [
+        "city_record"
+      ],
+      "reference_case_ids": [
+        "gv0-027"
+      ],
+      "predicted_partition_count": 1,
+      "under_split": false,
+      "observations": [
+        {
+          "id": "gold:agency:city_record:agency-hra-a",
+          "source_system": "city_record",
+          "native_key": "agency-hra-a",
+          "display_name": "HRA/Dept of Social Services",
+          "attrs": {}
+        },
+        {
+          "id": "gold:agency:city_record:agency-hra-b",
+          "source_system": "city_record",
+          "native_key": "agency-hra-b",
+          "display_name": "Human Resources Administration",
+          "attrs": {}
+        }
+      ],
+      "stratum": "gold_control"
+    },
+    {
+      "component_id": "erc-348849ed9f1ec9dd",
+      "corpus": "gold",
+      "entity_type": "vendor",
+      "record_count": 2,
+      "source_count": 1,
+      "sources": [
+        "city_record"
+      ],
+      "reference_case_ids": [
+        "gv0-006"
+      ],
+      "predicted_partition_count": 1,
+      "under_split": false,
+      "observations": [
+        {
+          "id": "gold:vendor:city_record:sinergia-c",
+          "source_system": "city_record",
+          "native_key": "sinergia-c",
+          "display_name": "SINERGIA INC",
+          "attrs": {}
+        },
+        {
+          "id": "gold:vendor:city_record:sinergia-d",
+          "source_system": "city_record",
+          "native_key": "sinergia-d",
+          "display_name": "SINERGIA, INC.",
+          "attrs": {}
+        }
+      ],
+      "stratum": "gold_control"
+    },
+    {
+      "component_id": "erc-3ef871be0f4e342c",
+      "corpus": "gold",
+      "entity_type": "vendor",
+      "record_count": 2,
+      "source_count": 2,
+      "sources": [
+        "city_record",
+        "doing_business"
+      ],
+      "reference_case_ids": [
+        "gv0-011"
+      ],
+      "predicted_partition_count": 1,
+      "under_split": false,
+      "observations": [
+        {
+          "id": "gold:vendor:city_record:22nd-cr",
+          "source_system": "city_record",
+          "native_key": "22nd-cr",
+          "display_name": "22nd Century Technologies Inc.",
+          "attrs": {}
+        },
+        {
+          "id": "gold:vendor:doing_business:22ND CENTURY TECHNOLOGIES INC",
+          "source_system": "doing_business",
+          "native_key": "22ND CENTURY TECHNOLOGIES INC",
+          "display_name": "22ND CENTURY TECHNOLOGIES INC",
+          "attrs": {}
+        }
+      ],
+      "stratum": "gold_control"
+    },
+    {
+      "component_id": "erc-611125a72b5a43ba",
+      "corpus": "gold",
+      "entity_type": "vendor",
+      "record_count": 2,
+      "source_count": 1,
+      "sources": [
+        "city_record"
+      ],
+      "reference_case_ids": [
+        "gv0-020"
+      ],
+      "predicted_partition_count": 1,
+      "under_split": false,
+      "observations": [
+        {
+          "id": "gold:vendor:city_record:uri-a",
+          "source_system": "city_record",
+          "native_key": "uri-a",
+          "display_name": "Urban Resource Institute",
+          "attrs": {}
+        },
+        {
+          "id": "gold:vendor:city_record:uri-b",
+          "source_system": "city_record",
+          "native_key": "uri-b",
+          "display_name": "URBAN RESOURCE INSTITUTE, INC.",
+          "attrs": {}
+        }
+      ],
+      "stratum": "gold_control"
+    },
+    {
+      "component_id": "erc-68333deb1433dea4",
+      "corpus": "gold",
+      "entity_type": "vendor",
+      "record_count": 2,
+      "source_count": 2,
+      "sources": [
+        "city_record",
+        "doing_business"
+      ],
+      "reference_case_ids": [
+        "gv0-012"
+      ],
+      "predicted_partition_count": 1,
+      "under_split": false,
+      "observations": [
+        {
+          "id": "gold:vendor:city_record:3m-cr",
+          "source_system": "city_record",
+          "native_key": "3m-cr",
+          "display_name": "3M Company",
+          "attrs": {}
+        },
+        {
+          "id": "gold:vendor:doing_business:3M COMPANY",
+          "source_system": "doing_business",
+          "native_key": "3M COMPANY",
+          "display_name": "3M COMPANY",
+          "attrs": {}
+        }
+      ],
+      "stratum": "gold_control"
+    }
+  ],
+  "composition": {
+    "authority_false_split": 0,
+    "gold_false_split": 1,
+    "authority_over_merge": 0,
+    "gold_over_merge": 0,
+    "authority_control": 1,
+    "gold_control": 19
+  }
+}
