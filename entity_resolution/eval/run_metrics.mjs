@@ -2,9 +2,10 @@
 /**
  * Entity-resolution metrics harness (eval only; no production traffic).
  *
- * Loads a versioned gold JSONL and prints the metric keys used by later matcher
- * cards. With --dry-run (or without predictions), scorer metrics stay null.
- * With --blocker token_v0, candidate_recall is computed offline (no auto-links).
+ * Loads a versioned gold JSONL and prints pair-level scorer metrics. Unless
+ * --dry-run or --predictions is supplied, conventional matcher v0 generates
+ * in-memory predictions. With --blocker token_v0, candidate_recall is also
+ * computed and blocked-out pairs remain unresolved.
  *
  * Usage:
  *   node entity_resolution/eval/run_metrics.mjs \
@@ -13,7 +14,7 @@
  *   node entity_resolution/eval/run_metrics.mjs \
  *     --gold entity_resolution/eval/gold_v0.jsonl --blocker token_v0
  *
- * Optional (later cards):
+ * Optional:
  *   --predictions <path.jsonl>   predicted pairs {id|left,right, decision}
  *   --blocker <name>             token_v0 | none  (candidate generation)
  *
@@ -26,6 +27,8 @@ import { createHash } from "node:crypto";
 import { readFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { applyTokenV0, BLOCKER_ID as TOKEN_V0_ID } from "./blockers/token_v0.mjs";
+import { extractFeatures } from "../features/index.mjs";
+import { MATCHERS_VERSION, scorePair } from "../matchers/index.mjs";
 
 const METRIC_KEYS = [
   "precision",
@@ -89,6 +92,26 @@ export function runBlocker(name, cases) {
     return applyTokenV0(cases);
   }
   return null;
+}
+
+/**
+ * Run conventional matcher v0 over gold rows. When candidateIds is supplied,
+ * blocked-out rows stay unresolved so evaluation preserves blocker semantics.
+ */
+export function predictWithMatcher(cases, candidateIds = null) {
+  const predictions = new Map();
+  for (const row of cases) {
+    if (candidateIds && !candidateIds.has(row.id)) {
+      predictions.set(row.id, "unresolved");
+      continue;
+    }
+    const features = extractFeatures(row.left, row.right, {
+      entityType: row.entity_type,
+    });
+    const score = scorePair(row.left, row.right, features);
+    predictions.set(row.id, score.decision);
+  }
+  return predictions;
 }
 
 /**
@@ -374,14 +397,6 @@ function main() {
 
   const { meta, cases, contentHash } = loadGold(goldText);
 
-  let predictions = null;
-  if (args.predictions && !args.dryRun) {
-    const pText = readFileSync(resolve(args.predictions), "utf8");
-    predictions = loadPredictions(pText);
-  } else if (args.dryRun) {
-    predictions = null;
-  }
-
   // Candidate generation (er-05): offline blocker → candidate set for candidate_recall.
   // No production auto-links; eval-only in-memory pairs.
   let candidates = null;
@@ -390,6 +405,19 @@ function main() {
   if (blockerResult) {
     candidates = blockerResult.candidateIds;
     blockerDetails = blockerResult.details;
+  }
+
+  let predictions = null;
+  let predictionsSource = null;
+  if (args.dryRun) {
+    predictions = null;
+  } else if (args.predictions) {
+    const pText = readFileSync(resolve(args.predictions), "utf8");
+    predictions = loadPredictions(pText);
+    predictionsSource = args.predictions;
+  } else {
+    predictions = predictWithMatcher(cases, candidates);
+    predictionsSource = MATCHERS_VERSION;
   }
 
   const metrics = computeMetrics(cases, predictions, candidates);
@@ -415,7 +443,8 @@ function main() {
     gold_version: meta.gold_version,
     schema_version: meta.schema_version,
     content_hash: contentHash,
-    dry_run: Boolean(args.dryRun || !predictions),
+    dry_run: Boolean(args.dryRun),
+    predictions_source: predictionsSource,
     blocker: args.blocker || null,
     composition: composition(cases),
     metrics,
@@ -438,6 +467,7 @@ function main() {
     console.log(`content_hash=${contentHash}`);
     console.log(`cases=${cases.length}`);
     console.log(`dry_run=${report.dry_run}`);
+    console.log(`predictions_source=${predictionsSource || "null"}`);
     console.log(`blocker=${args.blocker || "null"}`);
     console.log(
       `composition=${JSON.stringify(report.composition)}`,

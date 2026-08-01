@@ -10,8 +10,8 @@ surface. **Not an HTTP microservice.**
 | --- | --- |
 | `normalizers/` | Pure string identity (`vendorStem`, agency alias helpers) |
 | `candidate_generation/` | Token/stem blocking candidate pairs (`token_v0`) |
-| `features/` | Pair feature extractors (stub) |
-| `matchers/` | Scorers + method ids (stub) |
+| `features/` | Deterministic family-aware pair features (`pair_features_v0`) |
+| `matchers/` | Conventional `same` / `different` / `unresolved` scorer (`conventional_v0`) |
 | `policies/` | Auto-link thresholds / decision routing (stub) |
 | `evaluation/` | Re-exports gold + metrics helpers |
 | `eval/` | Offline gold JSONL + metrics CLI (er-04; keep path stable) |
@@ -87,7 +87,9 @@ Existing normalize + gold harnesses stay green:
 
 ```bash
 node --test worker/test/vendor_stem.test.mjs worker/test/normalize_fixtures.test.mjs
+node --test worker/test/entity_resolution_matcher.test.mjs
 node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v0.jsonl --dry-run
+node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v0.jsonl --blocker token_v0
 ```
 
 ## Related cards
@@ -95,10 +97,11 @@ node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v
 - er-01 taxonomy ADR · er-03 normalizers · er-04 gold + metrics  
 - er-05 candidate generation (implemented by `candidate_generation/`)
 - er-06 soft “possibly same” UI · er-07 entity_link schema
+- er-08 this package boundary
+- er-09 deterministic features + conventional matcher v0
 - er-10 live false-split visibility from dual-write observations
 
 The desk view is read-only and non-assertive. It blocks recent `source_records` with `token_v0`,
 omits pairs already joined to the same canonical entity, and renders the remaining candidates
 without writing review notes or entity links. The live path is implemented in
 `worker/src/lib/possibly_same.mjs`.
-- er-08 this package boundary
