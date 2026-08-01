@@ -162,6 +162,13 @@ test("corroboration: amount disagreement renders both sources (never prefer one)
     c.disagreements.map((d) => d.field),
     ["amount"],
   );
+  const amountLayer = c.disagreements[0].claim_layer;
+  assert.ok(amountLayer);
+  assert.equal(amountLayer.assertions[0].classification, "source_assertion");
+  assert.equal(amountLayer.assertions[1].classification, "source_assertion");
+  assert.equal(amountLayer.interpretation.classification, "cityscroll_interpretation");
+  assert.equal(amountLayer.interpretation.resolution, "unresolved");
+  assert.equal(amountLayer.derived_conclusion, null);
 });
 
 test("corroboration: date disagreement keeps both dates", () => {

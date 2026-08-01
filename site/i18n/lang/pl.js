@@ -659,6 +659,7 @@
     lifecycle_ocp_disagreement_html: "City Record i {source} się nie zgadzają — obie wartości pokazano ze wskazaniem źródeł.",
     lifecycle_ocp_amount_pair_html: "Kwota: {city_record_label} {city_amount} · {ocp_label} {ocp_amount}.",
     lifecycle_ocp_date_pair_html: "Data: {city_record_label} {city_date} · {ocp_label} {ocp_date}.",
+    lifecycle_ocp_interpretation_html: "Interpretacja CityScroll: różne wartości {field}; nierozstrzygnięte (brak wniosku pochodnego).",
     lifecycle_ocp_unmatched_html: "Jeszcze nie pokazano tutaj — ostatnie przyznania OCP są w {source}.",
     lifecycle_ocp_unknown_html: "Nie udało się połączyć z {source}, aby sprawdzić to przyznanie.",
     lifecycle_ocp_ambiguous_html: "Pasuje wiele wierszy przyznania OCP — nie można automatycznie wybrać jednego.",

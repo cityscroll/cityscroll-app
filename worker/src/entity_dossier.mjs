@@ -87,10 +87,10 @@ export function renderEntityDossierPage(dossier) {
   const records = dossier.linked_records.map((record) => `<li>${sourceLink(record.source)}<span><time datetime="${escapeHtml(record.observed_at)}">${escapeHtml(observedTime(record.observed_at))}</time></span></li>`).join("");
   const facts = dossier.assertions.map(assertionGroupHtml).join("\n");
   const derived = dossier.derived_assertions.map((assertion) => `<section class="derived">
-    <p class="eyebrow">Derived assertion</p>
+    <p class="eyebrow">Derived conclusion</p>
     <h2>${escapeHtml(assertion.label)}</h2>
     <p class="derived-value">${escapeHtml(assertion.value)}</p>
-    <p>Derivation: ${escapeHtml(humanStatus(assertion.derivation.status))} from ${assertion.derivation.evidence_assertion_ids.length} linked source assertion${assertion.derivation.evidence_assertion_ids.length === 1 ? "" : "s"}. Confidence: ${escapeHtml(humanStatus(assertion.confidence.status))}. Review: ${escapeHtml(humanStatus(assertion.review.status))}.</p>
+    <p>CityScroll display name (not a publisher field). Derivation: ${escapeHtml(humanStatus(assertion.derivation.status))} from ${assertion.derivation.evidence_assertion_ids.length} linked source assertion${assertion.derivation.evidence_assertion_ids.length === 1 ? "" : "s"}. Confidence: ${escapeHtml(humanStatus(assertion.confidence.status))}. Review: ${escapeHtml(humanStatus(assertion.review.status))}.</p>
   </section>`).join("");
   const relationshipsUrl = `/entity-relationships?id=${encodeURIComponent(dossier.entity.id)}`;
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
