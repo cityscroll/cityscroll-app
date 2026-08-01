@@ -74,8 +74,8 @@ test("different-entity traps do not auto-same", () => {
   assert.equal(procurementTrap.features.pin_epin_conflict, true);
   assert.equal(procurementTrap.score.decision, "different");
 
-  const tokenTrap = scoreGold("gv0-007");
-  assert.equal(tokenTrap.score.decision, "unresolved");
+  const overlapTrap = scoreGold("gv0-007");
+  assert.equal(overlapTrap.score.decision, "unresolved");
 });
 
 test("built-in matcher yields numeric metrics while preserving candidate recall", () => {

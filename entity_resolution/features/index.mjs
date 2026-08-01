@@ -163,16 +163,16 @@ export function extractFeatures(left = {}, right = {}, opts = {}) {
   const rightSurface = comparisonSurface(rightName);
   const leftStem = familyStem(left, family);
   const rightStem = familyStem(right, family);
-  const leftTokens = identityTokens(left, family);
-  const rightTokens = identityTokens(right, family);
-  const sharedTokens = leftTokens.filter((piece) => rightTokens.includes(piece)).sort();
+  const leftPieces = identityTokens(left, family);
+  const rightPieces = identityTokens(right, family);
+  const sharedPieces = leftPieces.filter((piece) => rightPieces.includes(piece)).sort();
   const leftIds = pinEpinValues(left);
   const rightIds = pinEpinValues(right);
   const sharedIds = leftIds.filter((id) => rightIds.includes(id));
   const leftForm = family === "vendor" ? legalForm(leftName) : null;
   const rightForm = family === "vendor" ? legalForm(rightName) : null;
-  const leftPlaces = family === "agency" ? agencyPlaces(leftTokens) : [];
-  const rightPlaces = family === "agency" ? agencyPlaces(rightTokens) : [];
+  const leftPlaces = family === "agency" ? agencyPlaces(leftPieces) : [];
+  const rightPlaces = family === "agency" ? agencyPlaces(rightPieces) : [];
 
   return {
     features_version: FEATURES_VERSION,
@@ -180,10 +180,10 @@ export function extractFeatures(left = {}, right = {}, opts = {}) {
     left_stem: leftStem,
     right_stem: rightStem,
     stem_equal: Boolean(leftStem && leftStem === rightStem),
-    token_jaccard: jaccard(leftTokens, rightTokens),
-    shared_tokens: sharedTokens,
-    left_token_count: leftTokens.length,
-    right_token_count: rightTokens.length,
+    token_jaccard: jaccard(leftPieces, rightPieces),
+    shared_tokens: sharedPieces,
+    left_token_count: leftPieces.length,
+    right_token_count: rightPieces.length,
     length_ratio: ratio(leftSurface, rightSurface),
     name_containment: Boolean(
       leftSurface && rightSurface &&
