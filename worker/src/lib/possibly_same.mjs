@@ -6,6 +6,7 @@ import {
   CANDIDATE_GENERATION_VERSION,
   generateCandidates,
 } from "../../../entity_resolution/candidate_generation/index.mjs";
+import { extractFeatures } from "../../../entity_resolution/features/index.mjs";
 
 export const POSSIBLY_SAME_LOOKBACK_DAYS = 30;
 export const POSSIBLY_SAME_RECORD_LIMIT = 250;
@@ -27,8 +28,29 @@ function sourceRecordId(row) {
   return [row.source_system, row.source_system_id, row.content_hash].map(clean).join(":");
 }
 
+function sourceUrl(sourceSystem, sourceSystemId, snapshot, rawSnapshot) {
+  for (const record of [snapshot, rawSnapshot]) {
+    for (const key of ["source_url", "record_url", "url", "web_url"]) {
+      const value = clean(record?.[key]);
+      if (/^https?:\/\//i.test(value)) return value;
+    }
+  }
+  if (sourceSystem === "city_record") {
+    return `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(sourceSystemId)}`;
+  }
+  return "";
+}
+
+function observedFields(snapshot) {
+  return Object.fromEntries(Object.entries(snapshot)
+    .filter(([, value]) => value != null && value !== "" && ["string", "number", "boolean"].includes(typeof value))
+    .slice(0, 30)
+    .map(([key, value]) => [key, typeof value === "string" ? value.slice(0, 500) : value]));
+}
+
 function observationFromRow(row) {
   const snapshot = snapshotObject(row.normalized_snapshot);
+  const rawSnapshot = snapshotObject(row.raw_snapshot);
   const vendorName = clean(snapshot.vendor_name);
   const sourceSystem = clean(row.source_system);
   const sourceSystemId = clean(row.source_system_id);
@@ -43,6 +65,9 @@ function observationFromRow(row) {
     vendor_name: vendorName,
     display_name: vendorName,
     ingested_at: clean(row.ingested_at),
+    source_url: sourceUrl(sourceSystem, sourceSystemId, snapshot, rawSnapshot),
+    observed_fields: observedFields(snapshot),
+    attrs: snapshot,
     canonical_entity_ids: new Set(),
   };
 }
@@ -101,16 +126,25 @@ export function reviewPairsFromDualWriteRows(rows = [], opts = {}) {
         source_record_id: left.source_record_id,
         vendor_name: left.vendor_name,
         source_system: left.source_system,
+        source_system_id: left.source_system_id,
+        source_url: left.source_url,
+        observed_fields: left.observed_fields,
+        ingested_at: left.ingested_at,
       },
       right: {
         source_record_id: right.source_record_id,
         vendor_name: right.vendor_name,
         source_system: right.source_system,
+        source_system_id: right.source_system_id,
+        source_url: right.source_url,
+        observed_fields: right.observed_fields,
+        ingested_at: right.ingested_at,
       },
       evidence: {
         shared_keys: sharedKeys,
         left_linked: left.canonical_entity_ids.size > 0,
         right_linked: right.canonical_entity_ids.size > 0,
+        comparison_features: extractFeatures(left, right, { entityType: "vendor" }),
       },
       observed_at: [left.ingested_at, right.ingested_at].sort().at(-1) || "",
     });
@@ -131,11 +165,11 @@ export async function readPossiblySamePairs(db, opts = {}) {
   const recordLimit = Math.max(1, Math.min(1000, Number(opts.recordLimit) || POSSIBLY_SAME_RECORD_LIMIT));
   const query = db.prepare(
     `SELECT recent.source_system, recent.source_system_id, recent.content_hash,
-            recent.normalized_snapshot, recent.ingested_at,
+            recent.raw_snapshot, recent.normalized_snapshot, recent.ingested_at,
             link.canonical_entity_id, link.decision AS link_decision
        FROM (
          SELECT source_system, source_system_id, content_hash,
-                normalized_snapshot, ingested_at
+                raw_snapshot, normalized_snapshot, ingested_at
            FROM source_records
           WHERE julianday(ingested_at) >= julianday('now', ?)
           ORDER BY ingested_at DESC
