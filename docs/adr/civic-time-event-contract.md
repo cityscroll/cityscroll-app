@@ -103,13 +103,29 @@ spines as source of truth.
 
 ```bash
 node --test worker/test/civic_time_contract.test.mjs
+node --test worker/test/temporal_completeness.test.mjs
 node --test worker/test/checkbook_lifecycle.test.mjs
 node worker/scripts/civic-time-diff.mjs --fixtures worker/test/fixtures/civic-time --check
+node worker/scripts/temporal-completeness-scorecard.mjs --fixtures worker/test/fixtures/civic-time --check
 ```
 
 Coverage metric (Money adapter): `money_spine_adapter_coverage` =
 notices with ≥1 Money civic event / procurement notices with a lifecycle (target >0 from 0).
 Pinned in `worker/test/civic_time_contract.test.mjs`.
+
+### Temporal completeness scorecard
+
+Named metric: **`temporal_completeness_rate`** — mean over civic-time events of
+(filled clock families / 4), where families are **event** (`valid_at` or range),
+**publication** (`published_at`), **observed** (`observed_at`), and **processed**
+(`processed_at`). The scorecard also reports per-spine and per-clock fill rates and
+joins `site/data/source_contracts.json` status so missing clocks are classified as
+`adapter_gap` (live source, incomplete map), `source_disabled`, `source_unhealthy`,
+or `source_unknown`.
+
+Pure builder: `temporalCompletenessScorecard` in `worker/src/lib/civic_time.mjs`.
+CLI: `node worker/scripts/temporal-completeness-scorecard.mjs --fixtures worker/test/fixtures/civic-time --check`.
+Characterization: `node --test worker/test/temporal_completeness.test.mjs`.
 
 ## Rollback
 
