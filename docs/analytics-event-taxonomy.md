@@ -21,6 +21,7 @@ Each accepted event produces one Workers Analytics Engine data point:
 | `blob4` | geography of interest | NYC borough selected in a search, or `none`; never inferred visitor location |
 | `blob5` | surface | `home`, `stats`, `about`, `data`, `api`, `changelog`, `standards`, `digest`, or `email` as allowed per event |
 | `blob6` | taxonomy version | `1.1.0` (the reader also accepts compatible `1.0.0` rows) |
+| `blob7` | traffic class | `production` (default) or `developer`; omitted on pre-traffic_class rows |
 | `double1` | count | Always `1` |
 | `index1` | sampling key | Event name |
 | `timestamp` | event time | Added by Analytics Engine |
@@ -70,13 +71,22 @@ environment overrides it to `preview`. Local `wrangler dev` still fails closed w
 `USAGE_ANALYTICS` binding is absent. Unit tests use an in-memory Analytics Engine mock and never
 contact production.
 
-A short-lived developer exclusion token can suppress writes while someone inspects the live site.
-`analytics.js` may forward a browser-held value without interpreting it. The Worker accepts only
-`v1.<unix-seconds>.<HMAC-SHA256>` tokens signed with `ANALYTICS_DEV_KEY`, with a five-minute age
-limit and 30-second clock-skew allowance. Valid tokens suppress the write. Missing, expired,
-malformed, or incorrectly signed tokens count normally. All accepted event requests return the
-same empty HTTP 204 response, so token validity is not exposed as a response oracle. The token
-itself is never written to Analytics Engine. Never commit signing material.
+A short-lived developer exclusion token stamps `traffic_class=developer` while someone inspects
+the live site. `analytics.js` may forward a browser-held value without interpreting it. The Worker
+accepts only `v1.<unix-seconds>.<HMAC-SHA256>` tokens signed with `ANALYTICS_DEV_KEY`, with a
+five-minute age limit and 30-second clock-skew allowance. Valid tokens set
+`traffic_class=developer` and skip production dual-write counters and Analytics Engine points
+that feed public `/stats`. Missing, expired, malformed, or incorrectly signed tokens count as
+`production`. Non-production `ANALYTICS_ENVIRONMENT` values also classify as developer and fail
+closed on the writer. All accepted event requests return the same empty HTTP 204 response, so
+token validity is not exposed as a response oracle. The token itself is never written to Analytics
+Engine. Never commit signing material.
+
+Configure the signing secret with `wrangler secret put ANALYTICS_DEV_KEY` (minimum 32 characters).
+That secret is the **developer key** documented in the ops contract (`GET /admin/ops-contract` /
+`worker/ops-contract.v1.json`). It is distinct from `USAGE_KEY` (Haiku `/usage` spend report only)
+and from `ADMIN_KEY` (operator admin routes). Public SQL for `/stats` keeps rows where `blob7` is
+null, empty, or `production`, so pre-traffic_class history stays continuous.
 
 ## Aggregation and reading
 

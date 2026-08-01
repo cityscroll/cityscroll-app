@@ -329,6 +329,19 @@ meeting-outcomes records, and digest `temporal_action` clock labels).
 Verify: `node --test worker/test/civic_time_contract.test.mjs && node worker/scripts/civic-time-diff.mjs --fixtures worker/test/fixtures/civic-time --check`.
 Digest delivery identity remains `docs/digest-time-ontology.md` (separate concern).
 
+## Ops contract (desk ↔ worker)
+
+Versioned machine-readable ops schema so private desk panels stay mechanically aligned
+with the public worker (digest modes, daylog actions/fields, stats metrics, admin routes
++ auth classes, KV prefixes, feature flags). No secrets; never on public `/stats`.
+
+- Pure builder: `worker/src/lib/ops_contract.mjs` → committed fixture
+  `worker/ops-contract.v1.json`
+- Served: `GET /admin/ops-contract` (`ADMIN_KEY`, fail closed)
+- Usage `traffic_class`: `production` | `developer` (`blob7`; public SQL keeps production
+  only). Developer key is `ANALYTICS_DEV_KEY` (not `USAGE_KEY` / Haiku meter).
+- Verify: `node --test worker/test/ops_contract.test.mjs`
+
 ## Digest time ontology
 
 Digest freshness uses semantic delivery keys, not source timestamps: event time controls
