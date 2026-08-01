@@ -3,20 +3,22 @@
  * Operator reseed for PASSPort Public product tables + dual-write source_records.
  *
  * Downloads the live portal dataJs dumps (reachable from a non-bot-blocked host),
- * then writes remote D1 via the Cloudflare API using the logged-in wrangler OAuth
- * token. Use when daily Worker ingest has stalled or dual-write observations are empty.
+ * then writes remote D1 via the Cloudflare API using the logged-in wrangler session.
+ * Use when daily Worker ingest has stalled or dual-write observations are empty.
  *
  * Usage (from repo root, with wrangler logged in):
  *   node tools/passport_remote_reseed.mjs
  *   node tools/passport_remote_reseed.mjs --dry-run
  *   node tools/passport_remote_reseed.mjs --dual-write-only   # observations from existing product rows
  *
- * Env overrides:
- *   CF_ACCOUNT_ID, CF_D1_DATABASE_ID, CLOUDFLARE_API_TOKEN
+ * Credentials: CLOUDFLARE_API_TOKEN env, or a logged-in wrangler config.
+ * Account + D1 ids default from worker/wrangler.toml (override with CF_ACCOUNT_ID /
+ * CF_D1_DATABASE_ID).
  */
 import { readFileSync } from "node:fs";
 import { homedir } from "node:os";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { createHash } from "node:crypto";
 import {
   CONTRACT_DATA_URL,
@@ -26,8 +28,7 @@ import {
 } from "../worker/src/lib/passport_parse.mjs";
 import { passportSourceSystemId } from "../worker/src/passport.mjs";
 
-const ACCOUNT_ID = process.env.CF_ACCOUNT_ID || "8162581cb1d97e20a172031adb8a13af";
-const DATABASE_ID = process.env.CF_D1_DATABASE_ID || "df70a39c-6465-4b4a-b108-a792c79e74e8";
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const BATCH = 40;
 const FETCH_HEADERS = {
   "User-Agent":
@@ -39,13 +40,39 @@ const args = new Set(process.argv.slice(2));
 const DRY = args.has("--dry-run");
 const DUAL_ONLY = args.has("--dual-write-only");
 
+function loadWranglerIds() {
+  const toml = readFileSync(join(ROOT, "worker/wrangler.toml"), "utf8");
+  const account =
+    process.env.CF_ACCOUNT_ID
+    || toml.match(/ANALYTICS_ACCOUNT_ID\s*=\s*"([^"]+)"/)?.[1]
+    || null;
+  const database =
+    process.env.CF_D1_DATABASE_ID
+    || toml.match(/database_id\s*=\s*"([^"]+)"/)?.[1]
+    || null;
+  if (!account || !database) {
+    throw new Error("missing CF account or D1 database id (env or worker/wrangler.toml)");
+  }
+  return { account, database };
+}
+
 function loadToken() {
   if (process.env.CLOUDFLARE_API_TOKEN) return process.env.CLOUDFLARE_API_TOKEN;
-  const path = join(homedir(), "Library/Preferences/.wrangler/config/default.toml");
-  const text = readFileSync(path, "utf8");
-  const m = text.match(/oauth_token\s*=\s*"([^"]+)"/) || text.match(/api_token\s*=\s*"([^"]+)"/);
-  if (!m) throw new Error("no Cloudflare token (set CLOUDFLARE_API_TOKEN or login with wrangler)");
-  return m[1];
+  const candidates = [
+    join(homedir(), "Library/Preferences/.wrangler/config/default.toml"),
+    join(homedir(), ".wrangler/config/default.toml"),
+    join(homedir(), ".config/.wrangler/config/default.toml"),
+  ];
+  for (const path of candidates) {
+    try {
+      const text = readFileSync(path, "utf8");
+      const m = text.match(/oauth_token\s*=\s*"([^"]+)"/) || text.match(/api_token\s*=\s*"([^"]+)"/);
+      if (m) return m[1];
+    } catch {
+      /* try next */
+    }
+  }
+  throw new Error("no Cloudflare API credential (set CLOUDFLARE_API_TOKEN or login with wrangler)");
 }
 
 function sqlQuote(value) {
@@ -67,12 +94,12 @@ function contentHash(record) {
   return createHash("sha256").update(canonical(record)).digest("hex");
 }
 
-async function d1Query(token, sql) {
-  const url = `https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/d1/database/${DATABASE_ID}/query`;
+async function d1Query(ctx, sql) {
+  const url = `https://api.cloudflare.com/client/v4/accounts/${ctx.account}/d1/database/${ctx.database}/query`;
   const res = await fetch(url, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${ctx.token}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ sql }),
@@ -85,18 +112,18 @@ async function d1Query(token, sql) {
   return body.result?.[0] || {};
 }
 
-async function d1BatchSql(token, statements) {
+async function d1BatchSql(ctx, statements) {
   // D1 REST accepts one SQL string; join with semicolons for small batches.
   const sql = statements.join(";\n");
-  return d1Query(token, sql);
+  return d1Query(ctx, sql);
 }
 
-async function writeMeta(token, pairs) {
+async function writeMeta(ctx, pairs) {
   const stmts = pairs.map(
     ([k, v]) =>
       `INSERT OR REPLACE INTO passport_ingest_meta (key, value) VALUES (${sqlQuote(k)}, ${sqlQuote(v)})`,
   );
-  await d1BatchSql(token, stmts);
+  await d1BatchSql(ctx, stmts);
 }
 
 function contractInsertSql(c, ingestedAt) {
@@ -142,11 +169,11 @@ function sourceInsertSql(system, kind, record, ingestedAt) {
    )`;
 }
 
-async function writeInBatches(token, statements, label) {
+async function writeInBatches(ctx, statements, label) {
   let written = 0;
   for (let i = 0; i < statements.length; i += BATCH) {
     const chunk = statements.slice(i, i + BATCH);
-    if (!DRY) await d1BatchSql(token, chunk);
+    if (!DRY) await d1BatchSql(ctx, chunk);
     written += chunk.length;
     if (written % 2000 === 0 || written === statements.length) {
       console.log(`  ${label}: ${written}/${statements.length}`);
@@ -155,7 +182,7 @@ async function writeInBatches(token, statements, label) {
   return written;
 }
 
-async function dualWriteFromProduct(token, ingestedAt) {
+async function dualWriteFromProduct(ctx, ingestedAt) {
   console.log("Dual-write from existing product payloads…");
   let offset = 0;
   let contracts = 0;
@@ -164,7 +191,7 @@ async function dualWriteFromProduct(token, ingestedAt) {
   async function drain(table, kind, system) {
     for (;;) {
       const res = await d1Query(
-        token,
+        ctx,
         `SELECT payload FROM ${table} ORDER BY rowid LIMIT ${BATCH} OFFSET ${offset}`,
       );
       const rows = res.results || [];
@@ -180,7 +207,7 @@ async function dualWriteFromProduct(token, ingestedAt) {
         if (!record) continue;
         stmts.push(sourceInsertSql(system, kind, record, ingestedAt));
       }
-      if (stmts.length && !DRY) await d1BatchSql(token, stmts);
+      if (stmts.length && !DRY) await d1BatchSql(ctx, stmts);
       if (kind === "contract") contracts += stmts.length;
       else rfx += stmts.length;
       offset += rows.length;
@@ -195,7 +222,7 @@ async function dualWriteFromProduct(token, ingestedAt) {
   await drain("passport_contracts", "contract", "passport_public_contracts");
   await drain("passport_rfx", "rfx", "passport_public_rfx");
   if (!DRY) {
-    await writeMeta(token, [
+    await writeMeta(ctx, [
       ["dual_write_contracts", String(contracts)],
       ["dual_write_rfx", String(rfx)],
       ["dual_write_backfill_at", ingestedAt],
@@ -205,12 +232,13 @@ async function dualWriteFromProduct(token, ingestedAt) {
 }
 
 async function main() {
-  const token = loadToken();
+  const ids = loadWranglerIds();
+  const ctx = { token: loadToken(), account: ids.account, database: ids.database };
   const ingestedAt = new Date().toISOString();
   console.log(`mode=${DRY ? "dry-run" : "write"} dual_only=${DUAL_ONLY} ingested_at=${ingestedAt}`);
 
   if (DUAL_ONLY) {
-    const r = await dualWriteFromProduct(token, ingestedAt);
+    const r = await dualWriteFromProduct(ctx, ingestedAt);
     console.log("done dual-write-only", r);
     return;
   }
@@ -234,18 +262,18 @@ async function main() {
   }
 
   console.log("Clearing product tables…");
-  await d1Query(token, "DELETE FROM passport_contracts");
-  await d1Query(token, "DELETE FROM passport_rfx");
+  await d1Query(ctx, "DELETE FROM passport_contracts");
+  await d1Query(ctx, "DELETE FROM passport_rfx");
 
   console.log("Inserting contracts…");
   await writeInBatches(
-    token,
+    ctx,
     contracts.map((c) => contractInsertSql(c, ingestedAt)),
     "contracts",
   );
   console.log("Inserting rfx…");
   await writeInBatches(
-    token,
+    ctx,
     rfx.map((r) => rfxInsertSql(r, ingestedAt)),
     "rfx",
   );
@@ -257,15 +285,15 @@ async function main() {
   const rfxObs = rfx.map((r) =>
     sourceInsertSql("passport_public_rfx", "rfx", r, ingestedAt),
   );
-  await writeInBatches(token, ctrObs, "source_contracts");
-  await writeInBatches(token, rfxObs, "source_rfx");
+  await writeInBatches(ctx, ctrObs, "source_contracts");
+  await writeInBatches(ctx, rfxObs, "source_rfx");
 
   const lastModified = {
     contracts: ctrRes.headers.get("last-modified") || null,
     rfx: rfxRes.headers.get("last-modified") || null,
     source: "passport-remote-reseed",
   };
-  await writeMeta(token, [
+  await writeMeta(ctx, [
     ["ingested_at", ingestedAt],
     ["contract_rows", String(contracts.length)],
     ["rfx_rows", String(rfx.length)],
@@ -279,12 +307,12 @@ async function main() {
   ]);
 
   const check = await d1Query(
-    token,
+    ctx,
     `SELECT source_system, COUNT(*) AS n FROM source_records
      WHERE source_system LIKE 'passport%' GROUP BY source_system`,
   );
   const meta = await d1Query(
-    token,
+    ctx,
     "SELECT key, value FROM passport_ingest_meta WHERE key IN ('ingested_at','contract_rows','rfx_rows')",
   );
   console.log("source_records", check.results);
