@@ -10,6 +10,8 @@ no auto-links.
 | `gold_v0.jsonl` | Versioned hard-case gold (pair labels) |
 | `run_metrics.mjs` | Load gold, run predictions, and print metric keys |
 | `blockers/token_v0.mjs` | Token/stem blocking v0 (eval candidate generation) |
+| `run_authority.mjs` | Derive and score silver labels from `source_records` JSONL |
+| `fixtures/source_records_authority_v0.jsonl` | Representative source-record rows for characterization only |
 
 ## Run
 
@@ -116,6 +118,43 @@ Dry-run without `--blocker` leaves scorer metrics and `candidate_recall` as
 `null`. `--blocker token_v0` fills `candidate_recall` only.
 
 Characterization: `node --test test/entity_resolution_blocker.test.mjs`.
+
+## Silver authority evaluation
+
+The authority harness derives labels from an offline newline-delimited export of
+`source_records`. It is separate from the versioned human-labeled gold set:
+
+```bash
+node entity_resolution/eval/run_authority.mjs \
+  --source-records entity_resolution/eval/fixtures/source_records_authority_v0.jsonl \
+  --json
+```
+
+The committed fixture verifies behavior; its rates are not production measurements.
+Run the same command against a current export to measure live dual-write observations.
+Each line must contain `source_system`, `source_system_id`, `content_hash`,
+`normalized_snapshot`, and `ingested_at`, matching the table columns. The snapshot may
+be a JSON string, as stored in D1, or an already-decoded object.
+
+Derivation is deterministic:
+
+- The newest immutable snapshot per `source_system` + `source_system_id` is retained.
+- Distinct rows sharing a normalized PIN/EPIN or contract identifier become silver
+  `same` pairs, whether they come from one publisher or several.
+- Name-similar rows with comparable but disjoint hard identifiers become
+  `never_auto` pressure pairs. A shared hard identifier takes precedence because one
+  procurement lineage may contain several identifiers.
+- The process is read-only: it does not write source records, links, or review state.
+
+The two metric keys are:
+
+| Metric | Meaning |
+| --- | --- |
+| `authority_recall` | Silver `same` pairs scored `same` by the conventional matcher |
+| `authority_conflict_auto_link_rate` | `never_auto` pairs scored `same`; this is potential auto-link pressure and should remain near zero |
+
+Characterization:
+`node --test test/entity_resolution_authority.test.mjs`.
 
 ## Related
 
