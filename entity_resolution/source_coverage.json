@@ -2,10 +2,10 @@
   "schema_version": 1,
   "measurement": {
     "unit": "identity-bearing importer streams",
-    "before": { "covered": 3, "total": 13, "rate": 0.2308 },
-    "after": { "covered": 5, "total": 13, "rate": 0.3846 },
-    "change": { "covered": 2, "percentage_points": 15.38 },
-    "basis": "Static inventory of production importer paths on 2026-08-01; coverage means immutable source_records capture with a stable key, fixture, and replay test. This after closes checkbook-contracts and checkbook-spending (request-time Contracts + Spending XML rows) while NYCHA, Legistar, ABO, doing-business, and NYCIDA streams remain gaps."
+    "before": { "covered": 5, "total": 13, "rate": 0.3846 },
+    "after": { "covered": 9, "total": 13, "rate": 0.6923 },
+    "change": { "covered": 4, "percentage_points": 30.77 },
+    "basis": "Static inventory of production importer paths on 2026-08-01; coverage means immutable source_records capture with a stable key, fixture, and replay test. This after closes legistar-events, legistar-event-items, legistar-votes, and legistar-attachments (meeting materialization dual-write) while NYCHA, ABO, doing-business, and NYCIDA streams remain gaps. Named metric: source_coverage covered/total (5/13 → 9/13)."
   },
   "sources": [
     {
@@ -51,7 +51,7 @@
       "identity_entities": ["contract", "prime_vendor", "sub_vendor", "PIN", "contract_id"],
       "stable_source_key": "contract:<status>:<prime_contract_id>:<vendor>:<vendor_record_type>:<anchor_date>",
       "observation_schema": "worker/migrations/0008_source_records.sql",
-      "dual_write": { "flag": "CHECKBOOK_SOURCE_RECORD_DUAL_WRITE", "before": "gap", "after": "complete", "default": "off", "fail_soft": true },
+      "dual_write": { "flag": "CHECKBOOK_SOURCE_RECORD_DUAL_WRITE", "before": "complete", "after": "complete", "default": "off", "fail_soft": true },
       "fixture": "worker/test/checkbook_source_records.test.mjs",
       "replay_test": "worker/test/checkbook_source_records.test.mjs",
       "known_gap": null
@@ -63,7 +63,7 @@
       "identity_entities": ["payment", "payee", "contract_id"],
       "stable_source_key": "payment:<contract_id>:<document_id>:<payee>:<issue_date>:<amount>",
       "observation_schema": "worker/migrations/0008_source_records.sql",
-      "dual_write": { "flag": "CHECKBOOK_SOURCE_RECORD_DUAL_WRITE", "before": "gap", "after": "complete", "default": "off", "fail_soft": true },
+      "dual_write": { "flag": "CHECKBOOK_SOURCE_RECORD_DUAL_WRITE", "before": "complete", "after": "complete", "default": "off", "fail_soft": true },
       "fixture": "worker/test/checkbook_source_records.test.mjs",
       "replay_test": "worker/test/checkbook_source_records.test.mjs",
       "known_gap": null
@@ -85,39 +85,39 @@
       "source_system": "nyc_legistar_events",
       "importer": "worker/src/lib/meeting_outcomes.mjs#buildMeetingOutcomesView",
       "identity_entities": ["event", "council_body"],
-      "stable_source_key": "EventId",
-      "observation_schema": null,
-      "dual_write": { "flag": null, "before": "gap", "after": "gap", "default": null, "fail_soft": null },
-      "fixture": "test/legistar_join.test.mjs",
-      "replay_test": null,
-      "known_gap": "Raw authenticated API rows are folded into one KV view and are not replayable independently."
+      "stable_source_key": "event:<EventId>",
+      "observation_schema": "worker/migrations/0008_source_records.sql",
+      "dual_write": { "flag": "LEGISTAR_SOURCE_RECORD_DUAL_WRITE", "before": "gap", "after": "complete", "default": "off", "fail_soft": true },
+      "fixture": "worker/test/legistar_source_records.test.mjs",
+      "replay_test": "worker/test/legistar_source_records.test.mjs",
+      "known_gap": null
     },
     {
       "id": "legistar-event-items",
       "source_system": "nyc_legistar_event_items",
       "importer": "worker/src/lib/meeting_outcomes.mjs#buildMeetingOutcomesView",
       "identity_entities": ["agenda_item", "matter"],
-      "stable_source_key": "EventItemId",
-      "observation_schema": null,
-      "dual_write": { "flag": null, "before": "gap", "after": "gap", "default": null, "fail_soft": null },
-      "fixture": "test/contract/meeting_outcomes.test.mjs",
-      "replay_test": null,
-      "known_gap": "EventItems and inline matter identity are retained only inside the assembled KV view."
+      "stable_source_key": "event-item:<EventItemId>",
+      "observation_schema": "worker/migrations/0008_source_records.sql",
+      "dual_write": { "flag": "LEGISTAR_SOURCE_RECORD_DUAL_WRITE", "before": "gap", "after": "complete", "default": "off", "fail_soft": true },
+      "fixture": "worker/test/legistar_source_records.test.mjs",
+      "replay_test": "worker/test/legistar_source_records.test.mjs",
+      "known_gap": null
     },
     {
       "id": "legistar-votes",
       "source_system": "nyc_legistar_votes",
       "importer": "worker/src/lib/meeting_outcomes.mjs#collectVoteSummaries",
       "identity_entities": ["matter", "person", "vote", "official"],
-      "stable_source_key": "EventItemId plus PersonId (retained on meeting-outcomes vote rows; not yet dual-written to source_records)",
-      "observation_schema": null,
-      "dual_write": { "flag": null, "before": "gap", "after": "gap", "default": null, "fail_soft": null },
-      "fixture": "test/contract/meeting_outcomes.test.mjs",
-      "replay_test": "test/official_entity_family.test.mjs",
-      "known_gap": "Person-level rows and official votes_on edges are retained on the meeting-outcomes read model (person_vote_retention_rate). Immutable source_records dual-write for Legistar vote rows remains open.",
+      "stable_source_key": "vote:<EventItemId>:<PersonId>",
+      "observation_schema": "worker/migrations/0008_source_records.sql",
+      "dual_write": { "flag": "LEGISTAR_SOURCE_RECORD_DUAL_WRITE", "before": "gap", "after": "complete", "default": "off", "fail_soft": true },
+      "fixture": "worker/test/legistar_source_records.test.mjs",
+      "replay_test": "worker/test/legistar_source_records.test.mjs",
+      "known_gap": null,
       "person_retention": {
         "metric": "person_vote_retention_rate",
-        "status": "retained_on_meeting_outcomes",
+        "status": "retained_on_meeting_outcomes_and_source_records",
         "official_link_type": "votes_on",
         "primary_key_pattern": "official:{person_id}"
       }
@@ -127,12 +127,12 @@
       "source_system": "nyc_legistar_attachments",
       "importer": "worker/src/lib/meeting_outcomes.mjs#collectAttachments",
       "identity_entities": ["agenda_item", "document"],
-      "stable_source_key": "EventItemId plus AttachmentId (not yet retained)",
-      "observation_schema": null,
-      "dual_write": { "flag": null, "before": "gap", "after": "gap", "default": null, "fail_soft": null },
-      "fixture": "test/contract/meeting_outcomes.test.mjs",
-      "replay_test": null,
-      "known_gap": "Attachment rows are normalized into the KV view without immutable raw observations."
+      "stable_source_key": "attachment:<EventItemId>:<AttachmentId>",
+      "observation_schema": "worker/migrations/0008_source_records.sql",
+      "dual_write": { "flag": "LEGISTAR_SOURCE_RECORD_DUAL_WRITE", "before": "gap", "after": "complete", "default": "off", "fail_soft": true },
+      "fixture": "worker/test/legistar_source_records.test.mjs",
+      "replay_test": "worker/test/legistar_source_records.test.mjs",
+      "known_gap": null
     },
     {
       "id": "abo-external-awards",
