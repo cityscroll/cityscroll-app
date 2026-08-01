@@ -353,6 +353,15 @@
   .zap-action-chip{display:inline-block;padding:3px 7px;border:1px solid var(--rule);border-radius:999px;background:var(--paper-2,#f7f1e4);font:700 11px/1 ui-monospace,SFMono-Regular,monospace;color:var(--ink);margin-inline-end:4px}
   .zap-docs-list{display:flex;flex-wrap:wrap;gap:0 8px}
   .zap-docs-list .view{margin-top:0!important}
+  .land-spine{position:relative;display:grid;gap:0;margin:12px 0 16px;padding-inline-start:22px}
+  .land-spine::before{content:"";position:absolute;inset-block:7px 10px;inset-inline-start:7px;width:2px;background:var(--rule)}
+  .land-spine-event{position:relative;min-width:0;padding:0 0 15px 12px}
+  .land-spine-event::before{content:"";position:absolute;inset-block-start:5px;inset-inline-start:-20px;width:10px;height:10px;border-radius:50%;background:var(--paper);border:2px solid var(--green)}
+  .land-spine-event.planned::before{border-color:var(--amber);border-style:dashed}
+  .land-spine-date{font:700 11px/1.3 ui-monospace,SFMono-Regular,monospace;color:var(--muted)}
+  .land-spine-title{font:700 13px/1.35 ui-sans-serif,system-ui,sans-serif;color:var(--ink);overflow-wrap:anywhere}
+  .land-spine-detail{font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);overflow-wrap:anywhere}
+  .land-spine-source{font:600 11px/1.35 ui-sans-serif,system-ui,sans-serif}
   .note{font:13px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted);background:#f4eee2;border-inline-start:3px solid var(--rule);padding:10px 12px;border-start-end-radius:8px;border-end-end-radius:8px;margin-top:14px}
   .note.warn{border-inline-start-color:var(--rose)}
   .widening-note{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:12px 0 0;border-inline-start-color:var(--blue);color:var(--ink)}
@@ -4436,6 +4445,46 @@ function landToAlert(term){
 
 /* ===================== ZAP LAND OUTCOMES (decision docs + DOB side-car) =====================
    Precompute-first: GET /zap-outcomes?id= — no live ZAP API or DOB Socrata from the browser. */
+function landSpineHTML(spine){
+  if(!spine) return "";
+  const lag=spine.lag?.open_data_vs_portal || {};
+  let lagHTML=`<div class="note">${t("land_spine_lag_unknown")}</div>`;
+  if(lag.status==="behind"){
+    lagHTML=`<div class="note warn">${t("land_spine_lag_behind_html",{
+      days:String(lag.days), open_date:fdate(lag.open_data_date), portal_date:fdate(lag.portal_date)
+    })}</div>`;
+  }else if(lag.status==="aligned"){
+    lagHTML=`<div class="note">${t("land_spine_lag_aligned_html",{
+      open_date:fdate(lag.open_data_date), portal_date:fdate(lag.portal_date)
+    })}</div>`;
+  }
+  const events=Array.isArray(spine.events)?spine.events:[];
+  const rail=events.map(event=>{
+    const planned=event.time?.certainty==="planned";
+    const sourceURL=event.source?.url;
+    const sourceLabel=event.source?.label || "—";
+    const sourceHTML=sourceURL
+      ? `<a class="land-spine-source" href="${escUiHtml(sourceURL)}" ${EXT_ATTRS}>${escUiHtml(sourceLabel)}${extSR()}</a>`
+      : `<span class="land-spine-source">${escUiHtml(sourceLabel)}</span>`;
+    return `<div class="land-spine-event${planned?" planned":""}">
+      <div class="land-spine-date">${event.time?.value?fdate(event.time.value):"—"}${planned?` · ${t("land_spine_planned")}`:""}</div>
+      <div class="land-spine-title" lang="en" dir="ltr">${escUiHtml(event.title || "—")}</div>
+      ${event.detail?`<div class="land-spine-detail" lang="en" dir="ltr">${escUiHtml(event.detail)}</div>`:""}
+      ${sourceHTML}
+    </div>`;
+  }).join("");
+  const gapKey={
+    not_yet_ingested:"land_spine_gap_not_yet_ingested_html",
+    not_published:"land_spine_gap_not_published_html",
+    source_unavailable:"land_spine_gap_unavailable_html"
+  };
+  const gaps=(Array.isArray(spine.gaps)?spine.gaps:[]).map(gap=>{
+    const key=gapKey[gap.class] || "land_spine_gap_unavailable_html";
+    return `<div class="note">${t(key,{source:escUiHtml(gap.source || "—")})}</div>`;
+  }).join("");
+  return `<div class="chain-h">${t("land_spine_heading")}</div>${lagHTML}${rail?`<div class="land-spine">${rail}</div>`:""}${gaps}`;
+}
+
 function landOutcomesHTML(record){
   if(!record){
     return `<div class="chain-h">${t("land_outcomes_heading")}</div>
@@ -4443,13 +4492,14 @@ function landOutcomesHTML(record){
         reason: escUiHtml(t("land_outcomes_unmatched_default"))
       })}</div>`;
   }
+  const spineHTML=landSpineHTML(record.spine);
   const join = record.join || {};
   if(!join.matched || !record.filled){
     const reason = join.reason || t("land_outcomes_unmatched_default");
     return `<div class="chain-h">${t("land_outcomes_heading")}</div>
       <div class="note">${t("land_outcomes_unmatched_html",{
         reason: escUiHtml(reason)
-      })}</div>`;
+      })}</div>${spineHTML}`;
   }
   const actions = Array.isArray(record.approved_actions) ? record.approved_actions : [];
   const dispositions = Array.isArray(record.dispositions) ? record.dispositions : [];
@@ -4521,6 +4571,7 @@ function landOutcomesHTML(record){
       status: escUiHtml(record.public_status || record.open_data?.public_status || "—"),
       n_docs: String(record.n_documents || documents.length || 0)
     })} ${portal}</div>
+    ${spineHTML}
     <div class="chain">${actionHTML}${dispHTML}</div>
     ${docsHTML}
     ${dobHTML}

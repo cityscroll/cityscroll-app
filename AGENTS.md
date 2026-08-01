@@ -84,6 +84,16 @@ Disposition notices are not ZAP projects — do not use that slice as a success 
 Strategies and receipts: `worker/src/lib/ulurp_recommendations_join.mjs`,
 `site/data/ulurp_recommendation_sources/`.
 
+## Land/ZAP event spine
+
+`GET /zap-outcomes?id=` returns `record.spine`: a date-normalized rail joining ZAP API
+milestones/dispositions with City Record notices by strict ULURP token. Each event carries
+`time` (value/precision/basis/certainty) and a named source URL; `gaps` preserves class-(a),
+class-(b), and operational-unavailable states, while `lag.open_data_vs_portal` compares the
+two published milestone dates without treating Open Data as live. Pure characterization:
+`node --test test/land_event_spine.test.mjs`. UI capture:
+`python3 tools/capture_land_event_spine.py`.
+
 ## Legistar agenda/vote depth
 
 Ranked class-(a) meeting-outcomes depth. **Edge materialization is live** (daily
