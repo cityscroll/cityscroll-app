@@ -80,7 +80,7 @@ the mapper rather than collapsing stages (for example award ≠ amendment).
   changes, supersedes, and unchanged events for one materializer run.
 - Characterization tests pin clock honesty and idempotency before any production writer.
 - Digest time ontology remains the delivery contract for alerts; this envelope is the
-  shared vocabulary for **events and projections**, not a second digest system.
+  shared vocabulary for **events and current views**, not a second digest system.
 
 ## Verify
 

@@ -255,8 +255,8 @@ export function mapFixtureDoc(doc, opts = {}) {
 }
 
 /**
- * Semantic diff of two event sets keyed by (subject_ref, event_kind) for projection
- * identity, and by event_id for exact equality.
+ * Semantic diff of two event sets keyed by (subject_ref, event_kind) for the
+ * current civic fact, and by event_id for exact equality.
  *
  * @returns {{ added, changed, superseded, unchanged, schema_version }}
  */
@@ -264,7 +264,7 @@ export function semanticDiff(previousEvents = [], currentEvents = []) {
   const prevById = new Map(previousEvents.map((e) => [e.event_id, e]));
   const currById = new Map(currentEvents.map((e) => [e.event_id, e]));
 
-  // Projection key: subject + kind (current projection of that civic fact).
+  // Subject+kind key for the latest assertion of that civic fact.
   const projKey = (e) => `${e.subject_ref}\0${e.event_kind}`;
   const prevByProj = new Map();
   for (const e of previousEvents) {
@@ -312,7 +312,7 @@ export function semanticDiff(previousEvents = [], currentEvents = []) {
     });
   }
 
-  // Events only in previous projection that disappeared from current (treated as not current).
+  // Facts only in the previous run that disappeared from the current run.
   for (const [key, prev] of prevByProj) {
     if (!currByProj.has(key)) {
       changed.push({
@@ -374,7 +374,7 @@ function summarize(event) {
   };
 }
 
-/** Public projection of a diff (no private _ fields). */
+/** Public shape of a diff (no private _ fields). */
 export function publicDiff(diff) {
   const { _prev_ids, _curr_ids, ...rest } = diff;
   return rest;

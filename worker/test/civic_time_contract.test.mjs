@@ -143,7 +143,7 @@ test("revised source revision supersedes prior comment_close without silent over
   assert.equal(diff.superseded[0].current.supersedes_event_id, priorComment.event_id);
   assert.equal(diff.superseded[0].current.valid_at, "2026-09-22");
   assert.equal(diff.superseded[0].previous.valid_at, "2026-09-15");
-  // Unchanged proposal + hearing remain in the projection
+  // Unchanged proposal + hearing remain current
   assert.ok(diff.counts.unchanged >= 2);
   // History is additive: both event ids exist across the two runs
   assert.ok(baseline.some((e) => e.event_id === priorComment.event_id));
