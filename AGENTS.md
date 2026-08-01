@@ -133,6 +133,17 @@ Read model: `worker/src/lib/meeting_outcomes.mjs` → KV `meeting-outcomes:mater
 Open Data `m48u-yjt8` remains a **disabled** freeze through 2024-12-19 (0% modern).
 Receipts: `site/data/legistar_sources/`. Demo: notice `20260706036` → event `22526`.
 
+**Meeting vote spine (matter path as one object):** each matched notice record
+carries `spines[]` — one object per matter for the connected path
+**agenda → matter → action → vote → attachment** (`buildMeetingVoteSpine` /
+`buildMeetingVoteSpines` in `meeting_outcomes.mjs`). UI renders five stages
+(`data-meeting-spine`, `data-spine-stage=*`). Named metric:
+`meeting_vote_spine_completeness_rate` (mean stage fill over matter spines;
+also `full_spine_rate` + per-stage rates on the view `metrics` block).
+Verify: `node --test test/meeting_vote_spine.test.mjs
+test/contract/meeting_outcomes.test.mjs test/procurement_lifecycle_stitch.test.mjs`.
+Capture: `python3 tools/capture_meeting_event_spine.py`.
+
 **Official entity family (person-level votes):** Legistar roll-call rows retain
 `PersonId`/`PersonName` as `official:{person_id}` objects with typed `votes_on`
 edges (official → matter|agenda_item), not only aye/nay tallies. Pure helpers:

@@ -669,9 +669,69 @@ export function mapMeetingRecordToCivic(record, meta = {}) {
     ),
   );
 
+  // Prefer first-class matter spines (agenda→matter→action→vote→attachment)
+  // when present; fall back to nested agenda_items for older fixtures.
+  const spines = Array.isArray(record.spines) && record.spines.length
+    ? record.spines
+    : null;
+
+  if (spines) {
+    for (const spine of spines) {
+      const itemId = spine.agenda_item_id || spine.matter_id || "item";
+      const actionStage = (spine.stages || []).find((s) => s.kind === "action");
+      const voteStage = (spine.stages || []).find((s) => s.kind === "vote");
+      const actionName = actionStage?.action_name || null;
+      if (actionStage?.matched && actionName) {
+        out.push(
+          mapCivicEvent(
+            {
+              event_kind: "meetings.agenda_item_action",
+              subject_ref,
+              source_record_ref: `legistar:EventItems/${itemId}`,
+              source_revision: `legistar:item:${itemId}:action:${actionName}`,
+              source_field: "EventItemActionName",
+              valid_at: dayStamp(start),
+              published_at: noticePub,
+              observed_at,
+              processed_at,
+              status: "occurred",
+              require_valid: false,
+            },
+            { run_id, processed_at },
+          ),
+        );
+      }
+      const votes = voteStage?.votes || [];
+      if (voteStage?.matched && votes.length) {
+        out.push(
+          mapCivicEvent(
+            {
+              event_kind: "meetings.roll_call_vote",
+              subject_ref,
+              source_record_ref: `legistar:EventItems/${itemId}/Votes`,
+              source_revision: `legistar:item:${itemId}:votes:n${votes.length}`,
+              source_field: "Votes",
+              valid_at: dayStamp(start),
+              published_at: noticePub,
+              observed_at,
+              processed_at,
+              status: "occurred",
+              require_valid: false,
+            },
+            { run_id, processed_at },
+          ),
+        );
+      }
+    }
+    return out;
+  }
+
   for (const item of record.agenda_items || []) {
-    const itemId = item.event_item_id || item.id || item.title || "item";
-    const actionName = item.action_name || item.action || item.status || null;
+    const itemId = item.agenda_item_id || item.event_item_id || item.id || item.title || "item";
+    // Action lives on the matter card in the production assembly shape;
+    // older civic-time fixtures put it on the agenda item itself.
+    const matterAction = (item.matters || []).map((m) => m.outcome || m.passed || m.status).find(Boolean);
+    const actionName = item.action_name || item.action || item.status || matterAction || null;
     if (actionName) {
       out.push(
         mapCivicEvent(

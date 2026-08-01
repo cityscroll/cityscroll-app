@@ -1,0 +1,37 @@
+{
+  "metric": "meeting_vote_spine_completeness_rate",
+  "measured_at": "2026-08-01",
+  "definition": "Mean stage_fill over matter-linked spines. Each spine is one Council matter path: agenda → matter → action → vote → attachment (five stages). full_spine_rate is the share with all five stages matched.",
+  "stages": ["agenda", "matter", "action", "vote", "attachment"],
+  "fixture": {
+    "path": "test/contract/fixtures/meeting_outcomes.json",
+    "meeting_vote_spine_completeness_rate": 1,
+    "full_spine_rate": 1,
+    "spine_count": 1,
+    "stage_rates": {
+      "agenda": 1,
+      "matter": 1,
+      "action": 1,
+      "vote": 1,
+      "attachment": 1
+    }
+  },
+  "partial_control": {
+    "description": "agenda + matter only (no action/vote/attachment)",
+    "meeting_vote_spine_completeness_rate": 0.4
+  },
+  "empty_control": {
+    "meeting_vote_spine_completeness_rate": 0,
+    "spine_count": 0
+  },
+  "product_surface": {
+    "read_model": "worker/src/lib/meeting_outcomes.mjs",
+    "builders": ["buildMeetingVoteSpine", "buildMeetingVoteSpines", "measureMeetingVoteSpineCompleteness"],
+    "record_field": "spines",
+    "view_metrics": "metrics.meeting_vote_spine_completeness_rate",
+    "ui": "site/index.html#meetingOutcomesHTML",
+    "data_attrs": ["data-meeting-spine", "data-spine-stage", "data-spine-subject", "data-spine-fill"]
+  },
+  "verify": "node --test test/meeting_vote_spine.test.mjs test/contract/meeting_outcomes.test.mjs test/procurement_lifecycle_stitch.test.mjs",
+  "capture": "python3 tools/capture_meeting_event_spine.py"
+}
