@@ -288,6 +288,11 @@ function enrichRegistered(entry, registeredPool, join, lookupStatus) {
 }
 
 function slimRfx(r) {
+  // public_rfx_data has no addenda date columns today; keep optional fields when a
+  // future dump or side-car provides them so the civic-time RFx spine can emit
+  // procurement.solicitation_addenda without a second join path.
+  const addenda_date =
+    r.addenda_date || r.addendum_date || r.last_addenda_date || r.amendment_date || null;
   return {
     epin: r.epin || null,
     procurement_name: r.procurement_name || null,
@@ -299,6 +304,7 @@ function slimRfx(r) {
     main_commodity: r.main_commodity || null,
     industry: r.industry || null,
     rfp_id: r.rfp_id || null,
+    ...(addenda_date ? { addenda_date } : {}),
   };
 }
 

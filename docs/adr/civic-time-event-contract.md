@@ -80,9 +80,25 @@ Pure mappers convert already-shipped product spines into envelopes:
 | `clocksFromTemporalAction` | digest `temporal_action` (alerts) | library only |
 
 Money is the first production path: matched solicitation/award/registration/payment stages
-emit `procurement.*` envelopes cached with the lifecycle JSON. Rules/Land/Meetings remain
-read-only mappers until a later materializer opts in. Adapters do not replace the product
-spines as source of truth.
+emit `procurement.*` envelopes cached with the lifecycle JSON. When PASSPort RFx detail is
+matched (EPIN↔PIN), the same adapter also emits solicitation production events:
+
+| Publisher field | Event kind | Clock |
+| --- | --- | --- |
+| `release_date` | `procurement.solicitation_opened` | valid + publication |
+| addenda date (when present) | `procurement.solicitation_addenda` | valid |
+| `due_date` | `procurement.solicitation_due` | valid |
+
+`public_rfx_data` publishes no addenda date columns — the addenda kind is registered but
+stays unemitted (class-(b) gap) until a publisher field exists. Award on the chain continues
+to use City Record `procurement.notice_published` and Checkbook/PASSPort
+`procurement.award_registered` rather than inventing a fourth RFx-only award kind.
+
+Named metric: **`rfx_spine_adapter_coverage`** = matched-RFx lifecycles that emit ≥1 RFx
+production event / all matched-RFx lifecycles (baseline 0 → 1.0 on field cases).
+
+Rules/Land/Meetings remain read-only mappers until a later materializer opts in. Adapters
+do not replace the product spines as source of truth.
 
 ### Non-goals
 
@@ -109,9 +125,13 @@ node worker/scripts/civic-time-diff.mjs --fixtures worker/test/fixtures/civic-ti
 node worker/scripts/temporal-completeness-scorecard.mjs --fixtures worker/test/fixtures/civic-time --check
 ```
 
-Coverage metric (Money adapter): `money_spine_adapter_coverage` =
-notices with ≥1 Money civic event / procurement notices with a lifecycle (target >0 from 0).
-Pinned in `worker/test/civic_time_contract.test.mjs`.
+Coverage metrics (Money adapter), pinned in `worker/test/civic_time_contract.test.mjs`:
+
+- `money_spine_adapter_coverage` = notices with ≥1 Money civic event / procurement notices
+  with a lifecycle (target >0 from 0).
+- `rfx_spine_adapter_coverage` = matched PASSPort RFx lifecycles that emit ≥1 of
+  `solicitation_opened` / `solicitation_addenda` / `solicitation_due` / matched RFx
+  lifecycles (target 1.0 on field cases with release+due dates).
 
 ### Temporal completeness scorecard
 
