@@ -4,9 +4,15 @@
 // helpers construct new objects from the small public contract so new internal
 // columns remain private by default.
 
+import { publicEntityLinkConfidence } from "./link_confidence.mjs";
+
 export const PUBLICATION_VERSION = "public_er_v1";
 export const PUBLIC_ENTITY_FIELDS = Object.freeze(["id", "type", "name"]);
-export const PUBLIC_ENTITY_LINK_FIELDS = Object.freeze(["entity_id", "source"]);
+export const PUBLIC_ENTITY_LINK_FIELDS = Object.freeze([
+  "entity_id",
+  "source",
+  "link_confidence",
+]);
 
 export const DESK_ONLY_ENTITY_RESOLUTION_FIELDS = Object.freeze([
   "source_record_id",
@@ -14,6 +20,7 @@ export const DESK_ONLY_ENTITY_RESOLUTION_FIELDS = Object.freeze([
   "normalized_snapshot",
   "content_hash",
   "attrs_json",
+  // Raw numeric matcher score — public surfaces use link_confidence bands only.
   "confidence",
   "method",
   "matcher_version",
@@ -49,10 +56,11 @@ export function serializePublicEntity(entity = {}) {
 }
 
 /**
- * Map a hydrated entity_link to public provenance.
+ * Map a hydrated entity_link to public provenance + banded link confidence.
  *
  * `source_system_id` is the publisher-native public identifier. It is not the
  * internal `source_record_id`, which includes an immutable snapshot hash.
+ * Numeric matcher scores and method strings stay desk-only.
  */
 export function serializePublicEntityLink(link = {}) {
   if (!link || typeof link !== "object") return null;
@@ -65,8 +73,24 @@ export function serializePublicEntityLink(link = {}) {
   const source = { system, id };
   const url = publicSourceUrl(link.source_url ?? nestedSource.url);
   if (url) source.url = url;
-  return { entity_id: entityId, source };
+  const score = link.link_confidence_score ?? link.confidence;
+  return {
+    entity_id: entityId,
+    source,
+    link_confidence: publicEntityLinkConfidence(score),
+  };
 }
+
+export {
+  PUBLIC_LINK_CONFIDENCE_READER_LABELS,
+  PUBLIC_LINK_CONFIDENCE_STATUSES,
+  PUBLIC_LINK_CONFIDENCE_STRONG_MIN,
+  PUBLIC_LINK_CONFIDENCE_VERSION,
+  measurePublicEntityLinkConfidenceRate,
+  publicEntityLinkConfidence,
+  readerLabelForLinkConfidence,
+  summarizeLinkConfidence,
+} from "./link_confidence.mjs";
 
 export {
   PUBLIC_DOSSIER_FACT_DEFINITIONS,
