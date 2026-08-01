@@ -388,6 +388,12 @@ production Worker vars enable the fail-soft shadow path on City Record ingest; b
 sets both false. Integration characterization: `node --test worker/test/er_ingest_integration.test.mjs`.
 Verify: `node --test worker/test/source_record_dual_write.test.mjs`.
 
+**Source-observation coverage (er-22):** machine-checked importer inventory and measured
+before/after coverage live in `entity_resolution/source_coverage.json`. PASSPort contracts and
+RFx have an independent, fail-soft shadow flag, `PASSPORT_SOURCE_RECORD_DUAL_WRITE`; public reads
+do not consume the observations. Verify: `node tools/check_er_source_coverage.mjs --matrix
+entity_resolution/source_coverage.json && node --test worker/test/er_source_coverage.test.mjs`.
+
 **entity_link + resolution_run (er-07):** migration `worker/migrations/0009_entity_link.sql`
 (+ `canonical_entity` for link targets). Opt-in shadow writer only for exact-stem
 `auto_link` cases (`method=vendor_stem_v1`): pure

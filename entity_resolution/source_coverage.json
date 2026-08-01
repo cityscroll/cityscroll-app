@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "measurement": {
+    "unit": "identity-bearing importer streams",
+    "before": { "covered": 1, "total": 13, "rate": 0.0769 },
+    "after": { "covered": 3, "total": 13, "rate": 0.2308 },
+    "change": { "covered": 2, "percentage_points": 15.39 },
+    "basis": "Static inventory of production importer paths on 2026-08-01; coverage means immutable source_records capture with a stable key, fixture, and replay test."
+  },
+  "sources": [
+    {
+      "id": "city-record-notices",
+      "source_system": "city_record",
+      "importer": "worker/src/ingest.mjs#ingestNotices",
+      "identity_entities": ["notice", "vendor", "agency", "PIN"],
+      "stable_source_key": "request_id",
+      "observation_schema": "worker/migrations/0008_source_records.sql",
+      "dual_write": { "flag": "CITY_RECORD_SOURCE_RECORD_DUAL_WRITE", "before": "complete", "after": "complete", "default": "off", "fail_soft": true },
+      "fixture": "worker/test/source_record_dual_write.test.mjs",
+      "replay_test": "worker/test/source_record_dual_write.test.mjs",
+      "known_gap": null
+    },
+    {
+      "id": "passport-public-contracts",
+      "source_system": "passport_public_contracts",
+      "importer": "worker/src/passport.mjs#ingestPassportPublic",
+      "identity_entities": ["contract", "contract_amendment_snapshot", "vendor", "agency", "EPIN", "contract_id"],
+      "stable_source_key": "contract:<epin_norm>:<ctr_id-or-epin_norm>",
+      "observation_schema": "worker/migrations/0008_source_records.sql",
+      "dual_write": { "flag": "PASSPORT_SOURCE_RECORD_DUAL_WRITE", "before": "gap", "after": "complete", "default": "off", "fail_soft": true },
+      "fixture": "worker/test/er_source_coverage.test.mjs",
+      "replay_test": "worker/test/er_source_coverage.test.mjs",
+      "known_gap": null
+    },
+    {
+      "id": "passport-public-rfx",
+      "source_system": "passport_public_rfx",
+      "importer": "worker/src/passport.mjs#ingestPassportPublic",
+      "identity_entities": ["solicitation", "agency", "EPIN", "rfp_id"],
+      "stable_source_key": "rfx:<epin_norm>:<rfp_id-or-epin_norm>",
+      "observation_schema": "worker/migrations/0008_source_records.sql",
+      "dual_write": { "flag": "PASSPORT_SOURCE_RECORD_DUAL_WRITE", "before": "gap", "after": "complete", "default": "off", "fail_soft": true },
+      "fixture": "worker/test/er_source_coverage.test.mjs",
+      "replay_test": "worker/test/er_source_coverage.test.mjs",
+      "known_gap": null
+    },
+    {
+      "id": "checkbook-contracts",
+      "source_system": "checkbook_contracts",
+      "importer": "worker/src/checkbook_lifecycle.mjs#fetchContracts",
+      "identity_entities": ["contract", "prime_vendor", "sub_vendor", "PIN", "contract_id"],
+      "stable_source_key": "prime_contract_id plus publisher row identity (not yet derived)",
+      "observation_schema": null,
+      "dual_write": { "flag": null, "before": "gap", "after": "gap", "default": null, "fail_soft": null },
+      "fixture": "worker/test/checkbook_lifecycle.test.mjs",
+      "replay_test": null,
+      "known_gap": "Request-time XML reads are assembled into lifecycle output but are not retained as immutable observations; multi-row contract identity must preserve Prime/Sub Vendor rows."
+    },
+    {
+      "id": "checkbook-spending",
+      "source_system": "checkbook_spending",
+      "importer": "worker/src/checkbook_lifecycle.mjs#fetchSpending",
+      "identity_entities": ["payment", "payee", "contract_id"],
+      "stable_source_key": "publisher payment row identity (not yet derived)",
+      "observation_schema": null,
+      "dual_write": { "flag": null, "before": "gap", "after": "gap", "default": null, "fail_soft": null },
+      "fixture": "worker/test/checkbook_lifecycle.test.mjs",
+      "replay_test": null,
+      "known_gap": "Request-time XML payment rows are summarized but not retained; PIN is not a valid Spending lookup key."
+    },
+    {
+      "id": "checkbook-nycha-contracts",
+      "source_system": "checkbook_nycha_contracts",
+      "importer": "worker/src/external_award.mjs#checkbookNychaByPin",
+      "identity_entities": ["contract", "vendor", "contract_id"],
+      "stable_source_key": "prime_contract_id plus publisher row identity (not yet derived)",
+      "observation_schema": null,
+      "dual_write": { "flag": null, "before": "gap", "after": "gap", "default": null, "fail_soft": null },
+      "fixture": "test/external_awards.test.mjs",
+      "replay_test": null,
+      "known_gap": "Bounded NYCHA prewarm caches joined output without immutable publisher observations."
+    },
+    {
+      "id": "legistar-events",
+      "source_system": "nyc_legistar_events",
+      "importer": "worker/src/lib/meeting_outcomes.mjs#buildMeetingOutcomesView",
+      "identity_entities": ["event", "council_body"],
+      "stable_source_key": "EventId",
+      "observation_schema": null,
+      "dual_write": { "flag": null, "before": "gap", "after": "gap", "default": null, "fail_soft": null },
+      "fixture": "test/legistar_join.test.mjs",
+      "replay_test": null,
+      "known_gap": "Raw authenticated API rows are folded into one KV view and are not replayable independently."
+    },
+    {
+      "id": "legistar-event-items",
+      "source_system": "nyc_legistar_event_items",
+      "importer": "worker/src/lib/meeting_outcomes.mjs#buildMeetingOutcomesView",
+      "identity_entities": ["agenda_item", "matter"],
+      "stable_source_key": "EventItemId",
+      "observation_schema": null,
+      "dual_write": { "flag": null, "before": "gap", "after": "gap", "default": null, "fail_soft": null },
+      "fixture": "test/contract/meeting_outcomes.test.mjs",
+      "replay_test": null,
+      "known_gap": "EventItems and inline matter identity are retained only inside the assembled KV view."
+    },
+    {
+      "id": "legistar-votes",
+      "source_system": "nyc_legistar_votes",
+      "importer": "worker/src/lib/meeting_outcomes.mjs#collectVoteSummaries",
+      "identity_entities": ["matter", "person", "vote"],
+      "stable_source_key": "EventItemId plus PersonId (not yet retained)",
+      "observation_schema": null,
+      "dual_write": { "flag": null, "before": "gap", "after": "gap", "default": null, "fail_soft": null },
+      "fixture": "test/contract/meeting_outcomes.test.mjs",
+      "replay_test": null,
+      "known_gap": "Roll-call rows are aggregated to counts before persistence, discarding person-level source observations."
+    },
+    {
+      "id": "legistar-attachments",
+      "source_system": "nyc_legistar_attachments",
+      "importer": "worker/src/lib/meeting_outcomes.mjs#collectAttachments",
+      "identity_entities": ["agenda_item", "document"],
+      "stable_source_key": "EventItemId plus AttachmentId (not yet retained)",
+      "observation_schema": null,
+      "dual_write": { "flag": null, "before": "gap", "after": "gap", "default": null, "fail_soft": null },
+      "fixture": "test/contract/meeting_outcomes.test.mjs",
+      "replay_test": null,
+      "known_gap": "Attachment rows are normalized into the KV view without immutable raw observations."
+    },
+    {
+      "id": "abo-external-awards",
+      "source_system": "nys_abo_awards",
+      "importer": "worker/src/external_award.mjs#refreshAboAwards",
+      "identity_entities": ["authority", "vendor", "award"],
+      "stable_source_key": "dataset-specific composite (not yet derived)",
+      "observation_schema": null,
+      "dual_write": { "flag": null, "before": "gap", "after": "gap", "default": null, "fail_soft": null },
+      "fixture": "test/external_awards.test.mjs",
+      "replay_test": null,
+      "known_gap": "Live SODA matches are returned or cached as joined output without immutable source rows."
+    },
+    {
+      "id": "doing-business-entities",
+      "source_system": "doing_business_entities",
+      "importer": "worker/src/vendor_profile.mjs#attachDoingBusiness",
+      "identity_entities": ["organization", "vendor"],
+      "stable_source_key": "organization_name plus source row identity (not yet derived)",
+      "observation_schema": null,
+      "dual_write": { "flag": null, "before": "gap", "after": "gap", "default": null, "fail_soft": null },
+      "fixture": "test/doing_business_join.test.mjs",
+      "replay_test": null,
+      "known_gap": "Build-time enrichment publishes joined profile fields but does not populate source_records."
+    },
+    {
+      "id": "nycida-build-nyc-projects",
+      "source_system": "nycida_build_nyc_projects",
+      "importer": "worker/src/subsidy_lifecycle.mjs#computeLifecycle",
+      "identity_entities": ["project", "company", "address"],
+      "stable_source_key": "project_id",
+      "observation_schema": null,
+      "dual_write": { "flag": null, "before": "gap", "after": "gap", "default": null, "fail_soft": null },
+      "fixture": "test/subsidy_lifecycle.test.mjs",
+      "replay_test": null,
+      "known_gap": "Fetched project rows are reduced to per-notice lifecycle cache entries without immutable project observations."
+    }
+  ]
+}

@@ -11,6 +11,11 @@
 
 import { shadowWriteExactStemAutoLinks } from "./lib/entity_link.mjs";
 import { extractNoticeFacts, noticeFactsFallbacks } from "./lib/notice_facts.mjs";
+import {
+  computeSourceRecordHash,
+  SOURCE_RECORD_INSERT_SQL,
+  sourceRecordDualWriteEnabled,
+} from "./lib/source_records.mjs";
 
 const PAGE = 1000;
 const MAX_PAGES = 20; // safety cap per run
@@ -122,30 +127,10 @@ export function mapRow(row) {
   };
 }
 
-function canonicalJson(value) {
-  const t = typeof value;
-  if (value === null || t !== "object") return JSON.stringify(value);
-  if (Array.isArray(value)) {
-    return `[${value.map((entry) => canonicalJson(entry)).join(",")}]`;
-  }
-  const entries = Object.keys(value)
-    .sort()
-    .map((key) => `${JSON.stringify(key)}:${canonicalJson(value[key])}`);
-  return `{${entries.join(",")}}`;
-}
-
-async function contentSha256(input) {
-  const data = new TextEncoder().encode(input);
-  const digest = await crypto.subtle.digest("SHA-256", data);
-  return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
-}
-
-export async function computeSourceRecordHash(row) {
-  return contentSha256(canonicalJson(row));
-}
+export { computeSourceRecordHash };
 
 function dualWriteEnabled(env) {
-  return String(env?.[SOURCE_RECORD_DUAL_WRITE_FLAG] || "").toLowerCase() === "true";
+  return sourceRecordDualWriteEnabled(env, SOURCE_RECORD_DUAL_WRITE_FLAG);
 }
 
 function pickSourceSystemId(mapped) {
@@ -193,11 +178,7 @@ export async function ingestNotices(env) {
      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
   );
   const sourceRecordInsert = dualWriteEnabled(env)
-    ? env.DB.prepare(
-      `INSERT OR IGNORE INTO source_records
-         (source_system, source_system_id, content_hash, raw_snapshot, normalized_snapshot, ingested_at)
-       VALUES (?,?,?,?,?,?)`,
-    )
+    ? env.DB.prepare(SOURCE_RECORD_INSERT_SQL)
     : null;
   const nowISO = new Date().toISOString();
 
