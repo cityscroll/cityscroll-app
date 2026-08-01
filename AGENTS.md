@@ -320,13 +320,14 @@ Characterization: `node --test test/markseen_policy.test.mjs test/digest_catchup
 
 ## Civic-time event contract
 
-Shared event envelope + bounded kind registry for Money/Rules/Land/Meetings
-(library seam only — no production writer). Clocks: valid, publication, observation,
-processing — never invent publication from processing. ADR:
-`docs/adr/civic-time-event-contract.md`. Pure lib: `worker/src/lib/civic_time.mjs`
-(includes read-only adapters from Rules `deriveRuleEvents`, Land `buildLandEventSpine`,
-meeting-outcomes records, and digest `temporal_action` clock labels).
-Verify: `node --test worker/test/civic_time_contract.test.mjs && node worker/scripts/civic-time-diff.mjs --fixtures worker/test/fixtures/civic-time --check`.
+Shared event envelope + bounded kind registry for Money/Rules/Land/Meetings.
+Clocks: valid, publication, observation, processing — never invent publication from
+processing. ADR: `docs/adr/civic-time-event-contract.md`. Pure lib:
+`worker/src/lib/civic_time.mjs` (Rules/Land/Meetings adapters; Money production adapter
+`mapMoneyLifecycleToCivic` / `attachMoneyCivicEvents` on `computeLifecycle` →
+`civic_events` on `/contract-lifecycle`). Metric: `money_spine_adapter_coverage`
+(notices with ≥1 Money civic event / procurement lifecycles). Verify:
+`node --test worker/test/civic_time_contract.test.mjs worker/test/checkbook_lifecycle.test.mjs && node worker/scripts/civic-time-diff.mjs --fixtures worker/test/fixtures/civic-time --check`.
 Digest delivery identity remains `docs/digest-time-ontology.md` (separate concern).
 
 ## Ops contract (desk ↔ worker)

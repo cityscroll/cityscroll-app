@@ -272,6 +272,17 @@ test("FULL lifecycle: solicitation → pending → registered → payment with s
   assert.equal(pending.source_timestamp, "2025-03-15");
   assert.equal(registered.source_timestamp, "2025-04-01");
 
+  // Production Money civic-time events (not a library-only seam)
+  assert.ok(Array.isArray(body.civic_events), "civic_events attached on production path");
+  assert.ok(body.civic_events.length >= 2, "solicitation + registration (+ payment) emit");
+  const civicKinds = body.civic_events.map((e) => e.event_kind);
+  assert.ok(civicKinds.includes("procurement.notice_published"));
+  assert.ok(civicKinds.includes("procurement.award_registered"));
+  assert.ok(civicKinds.includes("procurement.payment"));
+  assert.ok(body.civic_events.every((e) => /^cte:[a-f0-9]{24}$/.test(e.event_id)));
+  const cachedPayload = JSON.parse(db._cache["20250110001"].lifecycle);
+  assert.ok(Array.isArray(cachedPayload.civic_events), "cached lifecycle retains civic_events");
+
   // Cached in D1
   assert.ok(db._cache["20250110001"], "lifecycle was cached in D1");
   assert.equal(res.headers.get("Cache-Control"), "public, max-age=300");
@@ -608,13 +619,14 @@ test("prewarm: bounded, idempotent, skips already-cached ids", withMockedFetch({
       },
     },
     cache: {
-      // Seed must include ocp_award so cacheGet treats it as a complete post-side-car entry.
+      // Seed must include ocp_award + civic_events so cacheGet treats it as complete.
       "ALREADY": {
         lifecycle: JSON.stringify({
           timeline: [],
           amendments: [],
           ok: true,
           ocp_award: { status: "unmatched", source: "ocp-recent-awards" },
+          civic_events: [],
         }),
       },
     },
