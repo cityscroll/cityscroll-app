@@ -15,6 +15,7 @@ function model() {
     fixture.events,
     fixture.event_items,
     fixture.votes,
+    fixture.attachments,
   );
 }
 
@@ -46,6 +47,7 @@ test("contract fixture follows notice -> event -> agenda -> matter with strict j
   assert.equal(matter.votes[0].result, "Passed");
   assert.equal(matter.votes[0].counts.aye, 6);
   assert.equal(matter.votes[0].counts.nay, 3);
+  assert.equal(matter.documents[0].name, "Staff report");
 });
 
 test("notice location and affected-area still surface through normalizeHearing", () => {
