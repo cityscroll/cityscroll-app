@@ -13,6 +13,7 @@ creates links.
 | `blockers/token_v0.mjs` | Token/stem blocking v0 (eval candidate generation) |
 | `run_authority.mjs` | Derive and score silver labels from `source_records` JSONL |
 | `fixtures/source_records_authority_v0.jsonl` | Representative source-record rows for characterization only |
+| `run_entity_components.mjs` | Sample whole components and score entity-level fragmentation / constraint violations |
 | `clerical_audit.mjs` | Pure stratified sampling, label-sheet, and gold-promotion helpers |
 | `audits/<date>/` | Versioned sample, label sheet, and reproducibility receipt |
 
@@ -158,6 +159,44 @@ The two metric keys are:
 
 Characterization:
 `node --test test/entity_resolution_authority.test.mjs`.
+
+## Entity-centric component evaluation
+
+Pair metrics can hide a fragmented real-world entity behind several individually
+correct edges. The component harness evaluates the partition implied by the same
+gold and silver-authority evidence:
+
+```bash
+node entity_resolution/eval/run_entity_components.mjs \
+  --gold entity_resolution/eval/gold_v0.jsonl \
+  --source-records entity_resolution/eval/fixtures/source_records_authority_v0.jsonl \
+  --sample-size 8 --json
+```
+
+Positive labels define reference components. Negative labels remain explicit
+must-not-link constraints; missing labels are unknown and are never silently
+treated as different. Conventional matcher links produce the predicted
+components in memory. The small-N sample is deterministic, stratified by corpus
+and false-split/over-merge/control status, and always includes whole components.
+
+| Metric | Meaning |
+| --- | --- |
+| `entity_component_recall` | Reference multi-record entities recovered as one predicted component |
+| `under_split_entity_rate` | Reference entities fragmented into two or more predicted components |
+| `over_merge_component_rate` | Predicted multi-record components that violate a labeled must-not-link constraint |
+| `negative_constraint_violation_rate` | Labeled different pairs connected through any predicted path |
+
+`false_split_priority` lists fragmented authority components first, then
+fragmented human-gold components. These are the highest-value maturity cases for
+product language that needs to explain why records known to belong together are
+still presented separately. The fixture rates characterize the harness only;
+measure current shadow data with a current offline `source_records` export.
+
+To commit a reproducible report and receipt, add
+`--observed-on YYYY-MM-DD --out-dir entity_resolution/eval/components/YYYY-MM-DD`.
+
+Characterization:
+`node --test test/entity_resolution_entity_components.test.mjs`.
 
 ## Clerical audit — false-split priority
 
