@@ -1,0 +1,113 @@
+{
+  "description": "OCP-joined award field cases for public_claim_labeled_disagree_rate. Each case is a City Record notice + OCP Recent Contract Awards row; product surface attaches claim_layer on disagreements via corroborateAward / joinOcpAward.",
+  "metric": "public_claim_labeled_disagree_rate",
+  "cases": [
+    {
+      "id": "field-catering-amount-date-disagree",
+      "notice_id": "20260723031",
+      "expect_eligible": true,
+      "notice": {
+        "request_id": "20260723031",
+        "type_of_notice_description": "Award",
+        "pin": "81626W0043001",
+        "contract_amount": "999999",
+        "start_date": "2026-07-15T00:00:00.000",
+        "vendor_name": "Make it Zesty LLC",
+        "agency_name": "Health and Mental Hygiene"
+      },
+      "ocp_rows": [
+        {
+          "request_id": "20260723031",
+          "start_date": "2026-07-30T00:00:00.000",
+          "agency_name": "Health and Mental Hygiene",
+          "type_of_notice_description": "Award",
+          "short_title": "Catering Services",
+          "pin": "81626W0043001",
+          "contract_amount": "250000",
+          "vendor_name": "Make it Zesty LLC"
+        }
+      ],
+      "notes": "Real OCP catering award with deliberate City Record amount/date lag — both fields disagree."
+    },
+    {
+      "id": "field-heat-pump-date-disagree",
+      "notice_id": "20260724010",
+      "expect_eligible": true,
+      "notice": {
+        "request_id": "20260724010",
+        "type_of_notice_description": "Award",
+        "pin": "85726B0027001",
+        "contract_amount": "7977500",
+        "start_date": "2026-07-29T00:00:00.000",
+        "vendor_name": "Samuel17",
+        "agency_name": "Citywide Administrative Services"
+      },
+      "ocp_rows": [
+        {
+          "request_id": "20260724010",
+          "start_date": "2026-07-30T00:00:00.000",
+          "agency_name": "Citywide Administrative Services",
+          "type_of_notice_description": "Award",
+          "short_title": "Heat Pump Water Heaters",
+          "pin": "85726B0027001",
+          "contract_amount": "7977500",
+          "vendor_name": "Samuel17"
+        }
+      ],
+      "notes": "Date-only disagreement; amount corroborates."
+    },
+    {
+      "id": "field-catering-agree",
+      "notice_id": "20260723031-agree",
+      "expect_eligible": false,
+      "notice": {
+        "request_id": "20260723031",
+        "type_of_notice_description": "Award",
+        "pin": "81626W0043001",
+        "contract_amount": "250000",
+        "start_date": "2026-07-30T00:00:00.000",
+        "vendor_name": "Make it Zesty LLC",
+        "agency_name": "Health and Mental Hygiene"
+      },
+      "ocp_rows": [
+        {
+          "request_id": "20260723031",
+          "start_date": "2026-07-30T00:00:00.000",
+          "agency_name": "Health and Mental Hygiene",
+          "type_of_notice_description": "Award",
+          "short_title": "Catering Services",
+          "pin": "81626W0043001",
+          "contract_amount": "250000",
+          "vendor_name": "Make it Zesty LLC"
+        }
+      ],
+      "notes": "Matched and corroborating — not eligible for disagree rate denominator."
+    },
+    {
+      "id": "field-unmatched-solicitation",
+      "notice_id": "20250101099",
+      "expect_eligible": false,
+      "notice": {
+        "request_id": "20250101099",
+        "type_of_notice_description": "Solicitation",
+        "pin": "NOMATCHPIN0001",
+        "contract_amount": null,
+        "start_date": "2025-01-01T00:00:00.000",
+        "vendor_name": null
+      },
+      "ocp_rows": [
+        {
+          "request_id": "20260723031",
+          "start_date": "2026-07-30T00:00:00.000",
+          "agency_name": "Health and Mental Hygiene",
+          "type_of_notice_description": "Award",
+          "short_title": "Catering Services",
+          "pin": "81626W0043001",
+          "contract_amount": "250000",
+          "vendor_name": "Make it Zesty LLC"
+        }
+      ],
+      "notes": "Unmatched join — not eligible."
+    }
+  ]
+}
