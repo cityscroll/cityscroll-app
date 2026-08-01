@@ -4,7 +4,11 @@ import { test } from "node:test";
 import {
   buildRuleView,
   handleRules,
+  looksLikeBotChallenge,
   RULES_KV_KEY,
+  RULES_RSS_HEADERS,
+  RULES_RSS_UA,
+  RULES_RSS_URL,
   refreshRules,
 } from "../src/rules.mjs";
 import {
@@ -260,9 +264,10 @@ test("joinRulesToNotices marks unmatched notices and rules explicitly", () => {
 // Materialized view build
 // ---------------------------------------------------------------------------
 
-function multiSourceFetch(rssXml, cityRows) {
-  return async (url) => {
+function multiSourceFetch(rssXml, cityRows, onRulesFetch) {
+  return async (url, init) => {
     if (url.startsWith("https://rules.cityofnewyork.us/")) {
+      if (onRulesFetch) onRulesFetch(url, init);
       return new Response(rssXml, { status: 200, headers: { "Content-Type": "application/rss+xml" } });
     }
     if (url.startsWith("https://data.cityofnewyork.us/")) {
@@ -337,6 +342,64 @@ test("buildRuleView joins RSS items to City Record notices and preserves officia
   assert.ok(unmatchedRule);
   assert.ok(unmatchedRule.join.reason);
   assert.ok(unmatchedRule.nyc_rules.url);
+});
+
+// ---------------------------------------------------------------------------
+// Egress headers (empty UA → Cloudflare 403 on rules.cityofnewyork.us)
+// ---------------------------------------------------------------------------
+
+test("looksLikeBotChallenge detects Cloudflare interstitial HTML", () => {
+  assert.equal(looksLikeBotChallenge("<!DOCTYPE html><title>Just a moment...</title>"), true);
+  assert.equal(looksLikeBotChallenge('challenge-platform" data-ray'), true);
+  assert.equal(looksLikeBotChallenge(rssFeed([rssItem({ title: "Ok", agency_name: "DOT" })])), false);
+});
+
+test("buildRuleView sends identifying User-Agent and Accept on the NYC Rules RSS request", async () => {
+  let rulesInit = null;
+  const rss = rssFeed([rssItem({
+    title: "Metered Parking",
+    agency_name: "DOT",
+    comment_by_date: "20260901",
+  })]);
+  const view = await buildRuleView(
+    multiSourceFetch(rss, [], (url, init) => {
+      rulesInit = { url, init };
+    }),
+    NOW,
+  );
+  assert.equal(view.source.enrichment.status, "ok");
+  assert.ok(rulesInit, "Rules RSS fetch should have been called");
+  assert.equal(rulesInit.url, RULES_RSS_URL);
+  assert.equal(rulesInit.init?.headers?.["User-Agent"], RULES_RSS_UA);
+  assert.equal(rulesInit.init?.headers?.Accept, RULES_RSS_HEADERS.Accept);
+  assert.match(RULES_RSS_UA, /cityscroll\.org/i);
+  assert.ok(view.counts.unmatched_rules >= 1 || view.counts.matched >= 0);
+  assert.ok(view.rules.some((r) => r.nyc_rules));
+});
+
+test("buildRuleView marks enrichment stale when RSS returns Cloudflare bot-challenge HTML", async () => {
+  const challengeHtml = `<!DOCTYPE html><html><head><title>Just a moment...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<script src="/cdn-cgi/challenge-platform/h/g/orchestrate/chl_page/v1"></script>
+</head><body>Enable JavaScript</body></html>`;
+  const fetchImpl = async (url) => {
+    if (url.startsWith("https://rules.cityofnewyork.us/")) {
+      return new Response(challengeHtml, { status: 200, headers: { "Content-Type": "text/html" } });
+    }
+    if (url.startsWith("https://data.cityofnewyork.us/")) {
+      return new Response(JSON.stringify([
+        cityRecordNotice({ request_id: "CR-only", short_title: "City Record only rule" }),
+      ]), { status: 200 });
+    }
+    return new Response("not found", { status: 404 });
+  };
+
+  const view = await buildRuleView(fetchImpl, NOW);
+  assert.equal(view.source.enrichment.status, "stale");
+  assert.match(view.source.enrichment.error, /bot challenge/i);
+  assert.equal(view.counts.matched, 0);
+  assert.equal(view.counts.unmatched_notices, 1);
+  assert.equal(view.counts.unmatched_rules, 0);
 });
 
 // ---------------------------------------------------------------------------
