@@ -1,0 +1,79 @@
+{
+  "source": "NYC City Record Online dataset dg92-zbpx; excerpts retained from repository golden fixtures or fetched from the public dataset by request_id",
+  "observed_at": "2026-08-01",
+  "cases": [
+    {
+      "request_id": "20251209013",
+      "note": "NYCEDC solar RFP supplement; structured PIN and due date are absent from the retained row but explicitly published in the body.",
+      "row": {
+        "section_name": "Property Disposition",
+        "type_of_notice_description": "Notice",
+        "additional_description_1": "<p>- Request for Proposals - PIN# 11203 - Due 7-24-25 at 11:59 P.M.</p><p>Respondents may submit questions and/or request clarifications from NYCEDC by no later than 5:00 P.M. on Friday, June 20, 2025.</p><p>RESPONSES ARE DUE NO LATER THAN Thursday, July 24, 2025 at 11:59 P.M.</p>"
+      },
+      "expected": {
+        "identifiers": [{ "kind": "pin", "value": "11203" }],
+        "deadlines": [{ "kind": "submission", "at": "2025-07-24 23:59:00" }],
+        "parties": []
+      }
+    },
+    {
+      "request_id": "20260618041",
+      "note": "DoITT intent-to-award notice; source PIN is empty while one EPIN is explicitly published in the response instruction.",
+      "row": {
+        "section_name": "Procurement",
+        "type_of_notice_description": "Intent to Award",
+        "additional_description_1": "<p>Any firm that believes it is qualified to provide these goods and services is invited to do so. Please indicate your interest by responding to the RFI, EPIN: 85826Y1367 in PASSPort no later than July 13, 2026 at 3:00PM.</p>"
+      },
+      "expected": {
+        "identifiers": [{ "kind": "epin", "value": "85826Y1367" }],
+        "deadlines": [],
+        "parties": []
+      }
+    },
+    {
+      "request_id": "20251110015",
+      "note": "Queens Borough President hearing; testimony deadline is distinct from a procurement submission deadline.",
+      "row": {
+        "section_name": "Public Hearings and Meetings",
+        "type_of_notice_description": "Public Hearing",
+        "additional_description_1": "<p>All written testimony must be received by 5:00 p.m. on Thursday, November 20, 2025 and may be submitted by e-mail.</p><p>CD 1 – ULURP #250068 MMQ – IN THE MATTER OF an application submitted by Grace Evangelical Lutheran Church of Long Island City.</p>"
+      },
+      "expected": {
+        "identifiers": [],
+        "deadlines": [{ "kind": "testimony", "at": "2025-11-20 17:00:00" }],
+        "parties": []
+      }
+    },
+    {
+      "request_id": "20260612004",
+      "note": "Board of Standards and Appeals calendar excerpt with explicitly labeled applicant and owner.",
+      "row": {
+        "section_name": "Public Hearings and Meetings",
+        "type_of_notice_description": "Public Hearing",
+        "additional_description_1": "<p>2025-26-BZ</p><p>APPLICANT – Eric Palatnik, PC, for BOLLA EM Realty, LLC, owner.</p><p>SUBJECT – Application August 14, 2025 – Special Permit to permit the operation of a Gasoline Service Station.</p>"
+      },
+      "expected": {
+        "identifiers": [],
+        "deadlines": [],
+        "parties": [
+          { "role": "applicant", "name": "Eric Palatnik, PC" },
+          { "role": "owner", "name": "BOLLA EM Realty, LLC" }
+        ]
+      }
+    },
+    {
+      "request_id": "20251110001",
+      "note": "FCRC hearing contains contract-term dates and document-request dates that must not become a proposal deadline.",
+      "row": {
+        "section_name": "Public Hearings and Meetings",
+        "type_of_notice_description": "Public Hearing",
+        "additional_description_1": "<p>The proposed franchise agreement has a term lasting until 06/26/2032.</p><p>A draft copy may be obtained by submitting a request from 10/17/2025 through 11/07/2025.</p>"
+      },
+      "expected": {
+        "identifiers": [],
+        "deadlines": [],
+        "parties": []
+      }
+    }
+  ]
+}

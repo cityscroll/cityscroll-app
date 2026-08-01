@@ -34,7 +34,7 @@ const fixture = [
 
 test("production shadow ingest accumulates source and entity rows idempotently", async () => {
   const db = new DatabaseSync(":memory:");
-  for (const migration of ["0001_notices.sql", "0008_source_records.sql", "0009_entity_link.sql"]) {
+  for (const migration of ["0001_notices.sql", "0008_source_records.sql", "0009_entity_link.sql", "0010_notice_facts.sql"]) {
     db.exec(readFileSync(new URL(`../migrations/${migration}`, import.meta.url), "utf8"));
   }
   const DB = d1FromSqlite(db);
