@@ -12,6 +12,7 @@ import {
   mergePinStores,
   serializePinStore,
 } from "./lib/session.mjs";
+import { appendActionLog } from "./lib/action_log.mjs";
 
 const CORS_OPTS = {
   methods: "GET, PUT, OPTIONS",
@@ -78,6 +79,18 @@ export async function handlePins(req, env) {
     } catch {
       return json({ ok: false, reason: "store-failed" }, 500, cors);
     }
+    const investigations = Object.values(serialized.invs || {});
+    await appendActionLog(env, {
+      action_type: "pins_saved",
+      object: { type: "pin_store", id: "recognized" },
+      method: { name: "session_pins", version: "v1" },
+      metadata: {
+        source: "pins",
+        merge: body.merge === true,
+        investigation_count: investigations.length,
+        item_count: investigations.reduce((sum, inv) => sum + (Array.isArray(inv?.items) ? inv.items.length : 0), 0),
+      },
+    });
     return json({ ok: true, recognized: true, pins: normalizePinStore(serialized) }, 200, cors);
   }
 
