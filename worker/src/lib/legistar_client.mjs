@@ -10,7 +10,7 @@
 // plus a bounded best-effort roll-call vote fetch. No per-user live fan-out.
 //
 // Person-level vote rows are retained (not only aye/nay tallies) so the official
-// entity family can form votes_on edges from who acted on each matter.
+// entity family can form votes_on edges naming the members who cast each vote.
 
 import { summarizePersonVotes } from "../../../entity_resolution/officials/index.mjs";
 
