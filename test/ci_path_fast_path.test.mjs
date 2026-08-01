@@ -40,19 +40,20 @@ test("browser jobs use the Playwright cache composite action", () => {
   assert.match(action, /playwright install --with-deps chromium/);
 });
 
-test("Stray-English required job runs parallel shards (stable check name)", () => {
+test("Stray-English required job is a single-language index smoke (stable check name)", () => {
   const ci = read(".github/workflows/ci.yml");
   assert.match(ci, /name:\s*Stray-English guard \(runtime, fixtures\)/);
-  assert.match(ci, /run_stray_english_shards\.sh/);
+  // Primary cost is static lint in Unit; runtime is es+index only (not the 10×6 matrix).
+  assert.match(ci, /CROL_GUARD_LANGS:\s*es\b/);
+  assert.match(ci, /CROL_GUARD_PAGES:\s*index\b/);
+  assert.match(ci, /test\/functional\/13_stray_english\.py/);
+  // Optional full matrix may be named in comments; CI must not *run* the shards script.
+  assert.doesNotMatch(ci, /run:\s*bash test\/functional\/run_stray_english_shards\.sh/);
   assert.doesNotMatch(
     ci,
     /CROL_GUARD_LANGS:\s*es,zh-Hans,ru,bn,ht,ko,fr,pl,ar,ur/,
   );
-  const shard = read("test/functional/run_stray_english_shards.sh");
-  assert.match(shard, /es,zh-Hans,ru,bn/);
-  assert.match(shard, /ht,ko,fr,pl/);
-  assert.match(shard, /ar,ur/);
-  assert.match(shard, /wait/);
+  assert.match(ci, /static lint is the primary gate/);
 });
 
 test("merge queue policy documents train wait and apply tool", () => {

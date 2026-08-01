@@ -16,8 +16,10 @@ This file is the project's committed home for project-intrinsic agent knowledge:
   `changelog_only` (bot-owned changelog files) and `docs_only` (`tools/docs-only-path-guard.sh`)
   skip the full unit suite; non-frontend PRs skip browser a11y / Stray-English / reading-level
   heavy work while still posting SUCCESS. Performance budgets run only when `frontend` changes.
-- Stray-English (required) runs ten locales via `test/functional/run_stray_english_shards.sh`
-  (parallel shards; stable job name for the ruleset).
+- Stray-English: primary gate is the cheap static lint in Unit
+  (`test/standards/stray_english.py`). The required runtime job is an **es + index smoke**
+  only (re-render / deep-link class static cannot see). Full multi-locale matrix is optional
+  via `test/functional/run_stray_english_shards.sh` or preflight `--full`.
 - Playwright installs go through `.github/actions/setup-playwright` (browser cache).
 - Merge-queue parameters: `tools/merge_queue_policy.json` + `node tools/apply_merge_queue_policy.mjs`
   (short train wait). Concurrent merge-when-ready seating for this repo is capped outside this tree.

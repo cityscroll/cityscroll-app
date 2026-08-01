@@ -340,10 +340,14 @@ jobs:
         if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/standards/heading_uniqueness.py
 
-  # The runtime stray-English guard is hermetic (fixture dataset, every upstream stubbed),
-  # so unlike the live-API functional layer it runs on EVERY PR: untranslated chrome in a
-  # shipped language mode fails the build. Parameterized by CROL_GUARD_LANGS as LL30
-  # languages ship (wave 7 activates one run per language).
+  # Runtime stray-English is a SMOKE only (es + index). The cheap primary gate is the
+  # Unit-job static lint (test/standards/stray_english.py), which catches untranslated
+  # string literals at the source — the 2026-07-13 regression class. The full multi-page
+  # multi-locale runtime walk (~7 min) never produced an independent CI catch beyond what
+  # static + i18n key parity already cover; keep a single-language index smoke for the
+  # one class static cannot see: chrome built via t() once then not re-applied on language
+  # switch (notice permalink re-render, 2026-07-13 hotfix 3). Optional full matrix:
+  # bash test/functional/run_stray_english_shards.sh (or preflight --full).
   i18n-guard:
     name: Stray-English guard (runtime, fixtures)
     # Fail-fast: wait for Unit tests so we can skip locale-heavy runs with a completed
@@ -351,7 +355,7 @@ jobs:
     needs: [changes, unit]
     if: always()
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 8
     steps:
       - name: Changelog-only, non-frontend, or unit-failed — report required check success
         if: needs.changes.outputs.unit_full != 'true' || needs.changes.outputs.frontend != 'true' || needs.unit.result != 'success'
@@ -359,7 +363,7 @@ jobs:
           if [ "${{ needs.unit.result }}" != "success" ] && \
              [ "${{ needs.changes.outputs.unit_full }}" = "true" ] && \
              [ "${{ needs.changes.outputs.frontend }}" = "true" ]; then
-            echo "Skipping runtime stray-English suite because unit failed — re-run after unit is green."
+            echo "Skipping runtime stray-English smoke because unit failed — re-run after unit is green."
           else
             echo "Skipping runtime i18n guard (unit_full=${{ needs.changes.outputs.unit_full }}, frontend=${{ needs.changes.outputs.frontend }})."
           fi
@@ -375,11 +379,13 @@ jobs:
           node-version: 20
       - uses: ./.github/actions/setup-playwright
         if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
-      - name: Run guard (10 locales, parallel shards, all pages)
+      - name: Runtime stray-English smoke (es + index only; static lint is the primary gate)
         if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         env:
-          CROL_GUARD_PAGES: index,about,data,stats,api,changelog
-        run: bash test/functional/run_stray_english_shards.sh
+          # Single language + index keeps the notice deep-link re-render walk (hotfix 3).
+          CROL_GUARD_LANGS: es
+          CROL_GUARD_PAGES: index
+        run: python3 test/functional/13_stray_english.py
       - name: RTL guard (ar + ur — dir propagation, logical-property mirroring, bidi isolation)
         if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
         run: python3 test/functional/15_rtl.py

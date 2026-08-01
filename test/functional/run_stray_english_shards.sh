@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# Parallel Stray-English locale shards for CI wall-clock (single required job).
-# Each shard is a separate process with its own Playwright browser so N locales
-# no longer run strictly serially. Failures from any shard fail the job.
+# OPTIONAL full multi-locale Stray-English matrix (not the default CI gate).
+# CI uses a single-language index smoke; static lint is the primary gate.
+# Run this locally or in preflight when you need the full 10-locale walk.
+# Each shard is a separate process with its own Playwright browser.
 #
 # Env (same as 13_stray_english.py):
 #   CROL_GUARD_LANGS  — if set, run that set only (no sharding; for local debug)
