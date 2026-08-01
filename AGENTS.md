@@ -395,6 +395,12 @@ Verify:
 Characterization: `node --test test/entity_resolution_blocker.test.mjs`.
 Details: `entity_resolution/eval/README.md`.
 
+**Live false-split desk (er-10):** keyed GET `/admin/possibly-same` reads recent
+`source_records`, blocks them with `token_v0`, and excludes pairs sharing a
+`canonical_entity_id`; it never writes review or merge state. Pure/read path:
+`worker/src/lib/possibly_same.mjs`. Characterization:
+`node --test worker/test/possibly_same_admin.test.mjs`.
+
 ## Property location extraction
 
 Site geography for Property Disposition: `site/property_location.mjs`
