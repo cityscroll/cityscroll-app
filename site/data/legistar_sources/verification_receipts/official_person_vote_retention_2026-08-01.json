@@ -26,5 +26,5 @@
     "worker/src/lib/meeting_outcomes.mjs",
     "site/index.html#meetingOutcomesHTML"
   ],
-  "remaining_gap": "Immutable source_records dual-write for Legistar vote streams remains open (entity_resolution/source_coverage.json legistar-votes dual_write=gap)."
+  "remaining_gap": "Vote dual-write is live (nyc_legistar_votes source_records populated under LEGISTAR_SOURCE_RECORD_DUAL_WRITE). Nested EventItems/Attachments may still be empty when product documents are only event Agenda/Minutes files on Events; those fields are retained on nyc_legistar_events snapshots."
 }
