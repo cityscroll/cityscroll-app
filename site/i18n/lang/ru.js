@@ -1353,6 +1353,8 @@
     career_area_other: "Другая городская работа",
     career_date_unknown: "Дата не опубликована",
     career_not_published: "Не опубликовано — при публикации появилось бы в уведомлении об экзамене",
+    career_fee_salary_not_yet_ingested_html: "Пока не показано здесь — плата и зарплата есть в {source}.",
+    career_noe_source_name: "уведомлении DCAS об экзамене",
     career_status_open: "Открыть сейчас",
     career_status_upcoming: "Предстоящие",
     career_status_closed: "Закрыто",

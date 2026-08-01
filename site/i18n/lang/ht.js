@@ -1332,6 +1332,8 @@
     career_area_other: "Lòt travay vil la",
     career_date_unknown: "Dat pa pibliye",
     career_not_published: "Pa pibliye — li t ap parèt nan Avi Egzamen an si yo pibliye l",
+    career_fee_salary_not_yet_ingested_html: "Pokò ap montre isit la — frè ak salè yo nan {source}.",
+    career_noe_source_name: "Avi Egzamen DCAS la",
     career_status_open: "Louvri kounye a",
     career_status_upcoming: "Pwochen",
     career_status_closed: "Fèmen",

@@ -1335,6 +1335,8 @@
     career_area_other: "دوسرے شہر کے کام",
     career_date_unknown: "تاریخ شائع نہیں ہوئی۔",
     career_not_published: "شائع نہیں — اگر جاری ہو تو امتحان کے نوٹس میں ظاہر ہوتا",
+    career_fee_salary_not_yet_ingested_html: "ابھی یہاں نہیں دکھایا گیا — فیس اور تنخواہ {source} میں ہیں۔",
+    career_noe_source_name: "DCAS امتحان کے نوٹس",
     career_status_open: "اب کھولیں۔",
     career_status_upcoming: "آنے والا",
     career_status_closed: "بند",

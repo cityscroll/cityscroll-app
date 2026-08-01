@@ -1361,6 +1361,8 @@
     career_area_other: "Inne prace miejskie",
     career_date_unknown: "Data nieopublikowana",
     career_not_published: "Nieopublikowane — pojawiłoby się w ogłoszeniu o egzaminie, gdyby zostało wydane",
+    career_fee_salary_not_yet_ingested_html: "Jeszcze nie pokazano tutaj — opłata i pensja są w {source}.",
+    career_noe_source_name: "zawiadomieniu o egzaminie DCAS",
     career_status_open: "Otwórz teraz",
     career_status_upcoming: "Nadchodzące",
     career_status_closed: "Zamknięte",

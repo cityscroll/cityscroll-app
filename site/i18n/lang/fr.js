@@ -1439,6 +1439,8 @@
     career_area_other: "Autres travaux de la Ville",
     career_date_unknown: "Date non publiée",
     career_not_published: "Non publié — apparaîtrait sur l'avis d'examen s'il était publié",
+    career_fee_salary_not_yet_ingested_html: "Pas encore affiché ici — les frais et le salaire figurent dans {source}.",
+    career_noe_source_name: "l’avis d’examen DCAS",
     career_status_open: "Ouvert maintenant",
     career_status_upcoming: "À venir",
     career_status_closed: "Fermé",

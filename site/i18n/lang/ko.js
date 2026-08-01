@@ -1339,6 +1339,8 @@
     career_area_other: "기타 시 업무",
     career_date_unknown: "게시되지 않은 날짜",
     career_not_published: "미공개 — 공개되면 시험 공고에 나타납니다",
+    career_fee_salary_not_yet_ingested_html: "아직 여기 표시되지 않음 — 수수료와 급여는 {source}에 있습니다.",
+    career_noe_source_name: "DCAS 시험 공고",
     career_status_open: "지금 열기",
     career_status_upcoming: "예정",
     career_status_closed: "휴무",
