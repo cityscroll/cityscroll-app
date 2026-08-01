@@ -2,10 +2,10 @@
   "schema_version": 1,
   "measurement": {
     "unit": "identity-bearing importer streams",
-    "before": { "covered": 1, "total": 13, "rate": 0.0769 },
-    "after": { "covered": 3, "total": 13, "rate": 0.2308 },
-    "change": { "covered": 2, "percentage_points": 15.39 },
-    "basis": "Static inventory of production importer paths on 2026-08-01; coverage means immutable source_records capture with a stable key, fixture, and replay test."
+    "before": { "covered": 3, "total": 13, "rate": 0.2308 },
+    "after": { "covered": 4, "total": 13, "rate": 0.3077 },
+    "change": { "covered": 1, "percentage_points": 7.69 },
+    "basis": "Static inventory of production importer paths on 2026-08-01; coverage means immutable source_records capture with a stable key, fixture, and replay test. This after closes checkbook-contracts (request-time Contracts XML rows) while spending and other streams remain gaps."
   },
   "sources": [
     {
@@ -27,7 +27,7 @@
       "identity_entities": ["contract", "contract_amendment_snapshot", "vendor", "agency", "EPIN", "contract_id"],
       "stable_source_key": "contract:<epin_norm>:<ctr_id-or-epin_norm>",
       "observation_schema": "worker/migrations/0008_source_records.sql",
-      "dual_write": { "flag": "PASSPORT_SOURCE_RECORD_DUAL_WRITE", "before": "gap", "after": "complete", "default": "off", "fail_soft": true },
+      "dual_write": { "flag": "PASSPORT_SOURCE_RECORD_DUAL_WRITE", "before": "complete", "after": "complete", "default": "off", "fail_soft": true },
       "fixture": "worker/test/er_source_coverage.test.mjs",
       "replay_test": "worker/test/er_source_coverage.test.mjs",
       "known_gap": null
@@ -39,7 +39,7 @@
       "identity_entities": ["solicitation", "agency", "EPIN", "rfp_id"],
       "stable_source_key": "rfx:<epin_norm>:<rfp_id-or-epin_norm>",
       "observation_schema": "worker/migrations/0008_source_records.sql",
-      "dual_write": { "flag": "PASSPORT_SOURCE_RECORD_DUAL_WRITE", "before": "gap", "after": "complete", "default": "off", "fail_soft": true },
+      "dual_write": { "flag": "PASSPORT_SOURCE_RECORD_DUAL_WRITE", "before": "complete", "after": "complete", "default": "off", "fail_soft": true },
       "fixture": "worker/test/er_source_coverage.test.mjs",
       "replay_test": "worker/test/er_source_coverage.test.mjs",
       "known_gap": null
@@ -47,14 +47,14 @@
     {
       "id": "checkbook-contracts",
       "source_system": "checkbook_contracts",
-      "importer": "worker/src/checkbook_lifecycle.mjs#fetchContracts",
+      "importer": "worker/src/checkbook_lifecycle.mjs#computeLifecycle",
       "identity_entities": ["contract", "prime_vendor", "sub_vendor", "PIN", "contract_id"],
-      "stable_source_key": "prime_contract_id plus publisher row identity (not yet derived)",
-      "observation_schema": null,
-      "dual_write": { "flag": null, "before": "gap", "after": "gap", "default": null, "fail_soft": null },
-      "fixture": "worker/test/checkbook_lifecycle.test.mjs",
-      "replay_test": null,
-      "known_gap": "Request-time XML reads are assembled into lifecycle output but are not retained as immutable observations; multi-row contract identity must preserve Prime/Sub Vendor rows."
+      "stable_source_key": "contract:<status>:<prime_contract_id>:<vendor>:<vendor_record_type>:<anchor_date>",
+      "observation_schema": "worker/migrations/0008_source_records.sql",
+      "dual_write": { "flag": "CHECKBOOK_SOURCE_RECORD_DUAL_WRITE", "before": "gap", "after": "complete", "default": "off", "fail_soft": true },
+      "fixture": "worker/test/checkbook_source_records.test.mjs",
+      "replay_test": "worker/test/checkbook_source_records.test.mjs",
+      "known_gap": null
     },
     {
       "id": "checkbook-spending",
