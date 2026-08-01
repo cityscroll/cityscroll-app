@@ -80,6 +80,30 @@ test("the class generalizes: several real agency strings each resolve to a plaus
   }
 });
 
+test("agency rename pairs share one identity card (false-split residual closed)", () => {
+  // Gold gv0-026 / gv0-030 / gv0-032: modern and legacy spellings must land on the
+  // same precompiled crosswalk entry — not two entities with separate cards.
+  const pairs = [
+    ["Dept of Info Tech & Telecomm", "Office of Technology and Innovation", /Technology and Innovation|OTI/i],
+    ["District Attorney - New York County", "Manhattan District Attorney's Office", /Manhattan District Attorney/i],
+    ["Department of Business Services", "Department of Small Business Services", /Small Business Services/i],
+  ];
+  for (const [left, right, nameRe] of pairs) {
+    const a = enrichAgency(entries, left);
+    const b = enrichAgency(entries, right);
+    assert.ok(a, `${left} must resolve`);
+    assert.ok(b, `${right} must resolve`);
+    assert.deepEqual(a, b, `${left} ↔ ${right} must share one identity card`);
+    assert.match(a.canonical_name, nameRe);
+    assert.equal(canonicalAgency(left).canonical_id, canonicalAgency(right).canonical_id);
+  }
+  // Distinct borough DAs stay distinct (gold gv0-031).
+  assert.notEqual(
+    canonicalAgency("Manhattan District Attorney's Office").canonical_id,
+    canonicalAgency("Brooklyn District Attorney's Office").canonical_id,
+  );
+});
+
 test("composition: the join routes through the site's canonicalAgency, not a second resolver", () => {
   // The high-volume poll-worker string is folded into Board of Elections by the SHARED
   // crosswalk (lib/agencies.mjs), and the identity card is attached to that canonical agency.
