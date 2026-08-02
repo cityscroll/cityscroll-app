@@ -1,6 +1,6 @@
 -- Example warehouse query seam (WH-01).
 -- App path later: node warehouse/lib/query.mjs --sql-file warehouse/sql/examples/ocp_awards_by_agency.sql
--- Replaces live SODA fan-out for offline / batch analysis; Worker still serves projections.
+-- Replaces live SODA fan-out for offline / batch analysis; Worker still serves cached read models.
 
 SELECT
   agency_name,

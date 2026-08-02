@@ -10,7 +10,10 @@ WAREHOUSE_DIR = Path(__file__).resolve().parent.parent
 REPO_ROOT = WAREHOUSE_DIR.parent
 DATASETS_PATH = WAREHOUSE_DIR / "datasets.v0.json"
 LOCK_PATH = WAREHOUSE_DIR / ".ingest.lock"
-DEFAULT_HEADROOM = Path.home() / "dev/agentic-engineering-principles/bin/headroom.py"
+# Built from Path.home() parts at runtime (no tilde string in source).
+DEFAULT_HEADROOM_CANDIDATES = (
+    Path.home() / "dev" / "agentic-engineering-principles" / "bin" / "headroom.py",
+)
 
 
 def warehouse_root() -> Path:

@@ -33,7 +33,7 @@ warehouse/
 Override the data root (Mini volume / external disk):
 
 ```bash
-export CITYSCROLL_WAREHOUSE_ROOT=~/data/cityscroll-warehouse
+export CITYSCROLL_WAREHOUSE_ROOT=/path/to/cityscroll-warehouse
 ```
 
 Code and fixtures stay in-repo; large raw/parquet always gitignored (or live
@@ -71,8 +71,8 @@ node warehouse/lib/query.mjs \
 Optional tiny **live** SODA slice (still capped; not full bulk):
 
 ```bash
-# headroom first
-python3 ~/dev/agentic-engineering-principles/bin/headroom.py
+# headroom first (estate headroom.py — set HEADROOM_BIN if not on the default path)
+python3 "$HEADROOM_BIN"   # or: python3 path/to/headroom.py
 
 warehouse/.venv/bin/python warehouse/scripts/ingest.py \
   --dataset ocp-recent-contract-awards \
@@ -110,8 +110,9 @@ the MacBook.
 - **Node:** `warehouse/lib/query.mjs` → `queryWarehouse(sql)` / `exampleOcpAwardCount()`
 - **SQL examples:** `warehouse/sql/examples/`
 
-This is **not** edge ad-hoc SQL. Worker routes keep serving projections;
-warehouse SQL feeds batch jobs (ZAP prewarm WH-03, ER WH-04, lifecycle export).
+This is **not** edge ad-hoc SQL. Worker routes keep serving precomputed read
+models; warehouse SQL feeds batch jobs (ZAP prewarm WH-03, ER WH-04, lifecycle
+export).
 
 ## entity_resolution/
 
@@ -126,7 +127,7 @@ ids aligned with `source_contracts.json`).
 |---|---|
 | **WH-01** (this) | Scaffold, CPU-capped skeleton, tiny OCP proof |
 | **WH-02** | Full BULK pack (City Record, ZAP OD, OCP, Doing Business, PASSPort, ABO) — still capped, Mini-first |
-| **WH-03** | ZAP outcomes prewarm → Worker projection (kill 12s cold path) |
+| **WH-03** | ZAP outcomes prewarm → Worker read-model cache (kill 12s cold path) |
 | **WH-04** | Batch ER over warehouse → `entity_link` parquet |
 
 ## Characterization

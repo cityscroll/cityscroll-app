@@ -12,7 +12,7 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
-USER_AGENT = "CityScrollWarehouse/0.1 (+https://cityscroll.org; WH-01 scaffold; contact feedback@cityscroll.org)"
+USER_AGENT = "CityScrollWarehouse/0.1 (+https://cityscroll.org; WH-01 scaffold)"
 
 
 def soda_csv_url(domain: str, dataset_id: str, *, limit: int, order: str | None = None) -> str:

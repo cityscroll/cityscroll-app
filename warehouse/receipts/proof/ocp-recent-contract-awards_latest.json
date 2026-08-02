@@ -7,9 +7,9 @@
   },
   "dataset_id": "ocp-recent-contract-awards",
   "limit": 5,
-  "observed_at": "2026-08-02T02:54:15Z",
+  "observed_at": "2026-08-02T02:56:14Z",
   "parquet": {
-    "bytes": 2139,
+    "bytes": 2069,
     "columns": [
       "request_id",
       "start_date",
@@ -27,11 +27,11 @@
   },
   "phase": "WH-01",
   "raw": {
-    "bytes": 787,
+    "bytes": 788,
     "mode": "fixture",
     "path": "warehouse/raw/ocp-recent-contract-awards/snapshot_date=2026-08-02/sample.csv",
     "row_count": 5,
-    "sha256": "22af8804ca25eb5572eaea79ef1b1ff459444d21befe3cac962f1ce2ac91a62e",
+    "sha256": "a57dd6ea49eda05d5bc103166857050b2ff1912a7859f974b9de93afc45661b2",
     "source": "warehouse/fixtures/ocp-recent-contract-awards/sample.csv"
   },
   "register": {

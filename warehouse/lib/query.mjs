@@ -2,9 +2,9 @@
 /**
  * DuckDB query seam for the app/ops layer (WH-01).
  *
- * Public product routes stay precompute-first (Worker projections). This module
- * is the local SQL interface future batch jobs and WH-03/WH-04 tooling call
- * instead of live Socrata fan-out.
+ * Public product routes stay precompute-first (Worker cached read models). This
+ * module is the local SQL interface future batch jobs and WH-03/WH-04 tooling
+ * call instead of live Socrata fan-out.
  *
  * Implementation: spawn the warehouse Python query CLI (DuckDB lives in the
  * warehouse venv). No native node-duckdb dependency on the Worker path.

@@ -17,9 +17,10 @@ import sys
 import time
 from pathlib import Path
 
-from paths import DEFAULT_HEADROOM, LOCK_PATH
+from paths import DEFAULT_HEADROOM_CANDIDATES, LOCK_PATH
 
 _lock_fh = None
+_DEFAULT_HEADROOM_CANDIDATES = DEFAULT_HEADROOM_CANDIDATES
 
 
 class IngestLock:
@@ -75,8 +76,9 @@ def headroom_script() -> Path | None:
     env = os.environ.get("HEADROOM_BIN", "").strip()
     if env and Path(env).is_file():
         return Path(env)
-    if DEFAULT_HEADROOM.is_file():
-        return DEFAULT_HEADROOM
+    for cand in _DEFAULT_HEADROOM_CANDIDATES:
+        if cand.is_file():
+            return cand
     return None
 
 
@@ -117,7 +119,7 @@ def check_headroom(*, force: bool = False) -> dict:
         raise SystemExit(
             "Headroom CONSTRAINED — refusing warehouse ingest (CPU discipline).\n"
             f"  status={status} returncode={proc.returncode}\n"
-            "  Re-check: python3 ~/dev/agentic-engineering-principles/bin/headroom.py\n"
+            "  Re-check: python3 \"$HEADROOM_BIN\" (estate headroom.py)\n"
             "  Defer, run on Mini, or re-try with --force-headroom only for tiny proof.\n"
             f"  detail={json.dumps(payload)[:400]}"
         )
