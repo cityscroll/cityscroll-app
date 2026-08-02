@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "labeling": "Field cases for franchise/concession review spine. Stages: solicitation | public_hearing | committee_meeting | award. Join by party stem, plan year, or rules subject.",
+  "notices": [
+    {
+      "request_id": "full-chain-solicitation",
+      "start_date": "2025-08-01T00:00:00.000",
+      "event_date": null,
+      "agency_name": "Information Technology and Telecommunications",
+      "type_of_notice_description": "Solicitation",
+      "section_name": "Procurement",
+      "short_title": "Request for Proposals — Information Services Franchise",
+      "additional_description_1": "<p>Request for Proposals (RFP) for a nonexclusive information services franchise. The eventual franchise agreement would be subject to Franchise and Concession Review Committee (FCRC) review. Relative to OneChronos Information Services LLC.</p>",
+      "vendor_name": "OneChronos Information Services LLC"
+    },
+    {
+      "request_id": "20251007003",
+      "start_date": "2025-10-17T00:00:00.000",
+      "event_date": "2025-11-10T14:30:00.000",
+      "agency_name": "Information Technology and Telecommunications",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "Notice of Franchise and Concession Review Committee Hearing - OneChronos LLC",
+      "additional_description_1": "<p>NOTICE OF A FRANCHISE AND CONCESSION REVIEW COMMITTEE (FCRC) PUBLIC HEARING to be held on 11/10/2025, at 2:30 P.M. at 22 Reade Street, Spector Hall, New York, NY 10007 relative to the proposed information services franchise agreement between the City of New York and OneChronos Information Services LLC. The proposed franchise agreement would grant a nonexclusive franchise to construct, install, use, operate and/or maintain wire, cable, and/or optical fiber.</p>"
+    },
+    {
+      "request_id": "full-chain-meeting",
+      "start_date": "2025-11-01T00:00:00.000",
+      "event_date": "2025-11-12T14:30:00.000",
+      "agency_name": "Franchise and Concession Review Committee",
+      "type_of_notice_description": "Meeting",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "FCRC NOVEMBER PUBLIC MEETING — OneChronos Information Services LLC",
+      "additional_description_1": "<p>PUBLIC NOTICE IS HEREBY GIVEN that the Franchise and Concession Review Committee will hold a public meeting on Wednesday, November 12, 2025, at 2:30 P.M. Agenda includes the proposed information services franchise agreement between the City of New York and OneChronos Information Services LLC.</p>"
+    },
+    {
+      "request_id": "full-chain-award",
+      "start_date": "2025-12-01T00:00:00.000",
+      "event_date": null,
+      "agency_name": "Information Technology and Telecommunications",
+      "type_of_notice_description": "Award",
+      "section_name": "Procurement",
+      "short_title": "Award of Information Services Franchise — OneChronos Information Services LLC",
+      "additional_description_1": "<p>Notice that the franchise has been awarded to OneChronos Information Services LLC following Franchise and Concession Review Committee (FCRC) approval.</p>",
+      "vendor_name": "OneChronos Information Services LLC"
+    },
+    {
+      "request_id": "20260512008",
+      "start_date": "2026-05-21T00:00:00.000",
+      "event_date": "2026-06-08T14:30:00.000",
+      "agency_name": "Franchise and Concession Review Committee",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "NOTICE OF FRANCHISE AND CONCESSION REVIEW COMMITTEE PUBLIC HEARING",
+      "additional_description_1": "<p>Notice of a Franchise and Concession Review Committee (FCRC) Public Hearing on Agency Annual Concession Plans for Fiscal Year 2027 pursuant to Section 1-10 of the Concession Rules of the City of New York, to be held on Monday, June 8, 2026.</p>"
+    },
+    {
+      "request_id": "20260710032",
+      "start_date": "2026-07-24T00:00:00.000",
+      "event_date": "2026-08-12T14:30:00.000",
+      "agency_name": "Franchise and Concession Review Committee",
+      "type_of_notice_description": "Meeting",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "FCRC AUGUST PUBLIC MEETING",
+      "additional_description_1": "<p>PUBLIC NOTICE IS HEREBY GIVEN that the Franchise and Concession Review Committee, will hold a public meeting, on Wednesday, August 12, 2026, at 2:30 P.M., at 255 Greenwich Street, New York, NY 10007.</p>"
+    },
+    {
+      "request_id": "20251020016",
+      "start_date": "2025-10-24T00:00:00.000",
+      "event_date": null,
+      "agency_name": "Franchise and Concession Review Committee",
+      "type_of_notice_description": "Notice",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "NOTICE OF ADOPTION - AMENDMENT OF FCRC RULES",
+      "additional_description_1": "<p>Notice of Adoption of amendments to the Concession Rules of the City of New York (FCRC Rules).</p>"
+    },
+    {
+      "request_id": "council-zoning-franchises",
+      "start_date": "2026-05-13T00:00:00.000",
+      "event_date": "2026-05-19T12:30:00.000",
+      "agency_name": "City Council",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "5-19-26 Subcommittee on Zoning and Franchises meeting",
+      "additional_description_1": "<p>City Council Subcommittee on Zoning and Franchises will meet on land-use applications.</p>"
+    },
+    {
+      "request_id": "cross-party-other",
+      "start_date": "2025-09-01T00:00:00.000",
+      "event_date": "2025-09-15T14:30:00.000",
+      "agency_name": "Information Technology and Telecommunications",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "Notice of Franchise and Concession Review Committee Hearing - OtherNet Corp",
+      "additional_description_1": "<p>NOTICE OF A FRANCHISE AND CONCESSION REVIEW COMMITTEE (FCRC) PUBLIC HEARING relative to the proposed franchise agreement between the City of New York and OtherNet Corp.</p>"
+    }
+  ]
+}
