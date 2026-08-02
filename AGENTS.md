@@ -486,6 +486,9 @@ ingestion remains a follow-up (bot-blocked host). Fixture:
 `not_yet_ingested` | `unavailable`. Lag table `SUBSIDY_STAGE_EXPECT_LAG_DAYS`
 (board ~60d, closing ~180d, project_record ~90d).
 
+
+**Phase-group presentation (Money-collapse):** empty future stages collapse into a compact “not yet reached” indicator + stepper. Lead with current stage + action; detail cards only for material stages. Pure model: `site/subsidy_phase_spine.mjs`. Verify: `node --test test/subsidy_phase_spine.test.mjs test/procurement_lifecycle_stitch.test.mjs`.
+
 **Feed-down partial join (hard rule):** when `join.method=city-record-hearing` and
 `join.feed_status=unavailable`, later unmatched stages (board / closing /
 compliance) must use **not_yet_ingested** (class-a “Not yet shown here…”) — never
