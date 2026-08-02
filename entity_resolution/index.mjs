@@ -20,9 +20,12 @@ export {
   OFFICIAL_TYPE_FAMILY,
   VOTES_ON_LINK_TYPE,
   buildVotesOnEdges,
+  classifyVoteIdentity,
   measureOfficialVoteMetrics,
   normalizeVotePersonRow,
   officialEntityId,
+  readVotePersonIdentity,
+  readVoteValueLabel,
   summarizePersonVotes,
   voteBucket,
 } from "./officials/index.mjs";

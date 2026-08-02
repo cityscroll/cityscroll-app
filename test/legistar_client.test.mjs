@@ -65,12 +65,22 @@ const ITEM = {
   EventItemMatterStatus: "Adopted",
 };
 
+// Fixture shape kept for backward compatibility (PersonId / VoteValue).
 const VOTES = [
   { PersonId: 101, PersonName: "Ada Councilmember", VoteValue: "Aye" },
   { PersonId: 102, PersonName: "Ben Councilmember", VoteValue: "Aye" },
   { PersonId: 103, PersonName: "Cara Councilmember", VoteValue: "Aye" },
   { PersonId: 104, PersonName: "Dee Councilmember", VoteValue: "Nay" },
   { PersonId: 105, PersonName: "Eli Councilmember", VoteValue: "Nay" },
+];
+
+// Live Granicus Votes shape (VotePersonId / VoteValueName) — production field names.
+const LIVE_VOTES = [
+  { VotePersonId: 7801, VotePersonName: "Christopher Marte", VoteValueName: "Affirmative", VoteEventItemId: 440494 },
+  { VotePersonId: 7802, VotePersonName: "Ben Councilmember", VoteValueName: "Affirmative", VoteEventItemId: 440494 },
+  { VotePersonId: 7803, VotePersonName: "Cara Councilmember", VoteValueName: "Affirmative", VoteEventItemId: 440494 },
+  { VotePersonId: 7804, VotePersonName: "Dee Councilmember", VoteValueName: "Negative", VoteEventItemId: 440494 },
+  { VotePersonId: 7805, VotePersonName: "Eli Councilmember", VoteValueName: "Negative", VoteEventItemId: 440494 },
 ];
 
 const NOTICE = {
@@ -162,6 +172,23 @@ test("summarizeLegistarVotes keeps tallies when person identity is absent", () =
   assert.equal(summary.by_person.length, 0);
   assert.equal(summary.person_vote_retention_rate, 0);
   assert.equal(summary.official_votes_on_edge_rate, 0);
+  assert.equal(summary.vote_identity, "tally_only");
+});
+
+test("summarizeLegistarVotes retains live VotePersonId/VotePersonName rows", () => {
+  const summary = summarizeLegistarVotes(LIVE_VOTES, {
+    matterId: "79193",
+    agendaItemId: "440494",
+  });
+  assert.equal(summary.person_count, 5);
+  assert.equal(summary.by_person.length, 5);
+  assert.equal(summary.person_vote_retention_rate, 1);
+  assert.equal(summary.vote_identity, "roll_call");
+  assert.equal(summary.counts.aye, 3);
+  assert.equal(summary.counts.nay, 2);
+  assert.equal(summary.by_person[0].official.id, "official:7801");
+  assert.equal(summary.by_person[0].person_name, "Christopher Marte");
+  assert.equal(summary.votes_on[0].to, "matter:79193");
 });
 
 test("fetchLegistarItemVotes returns null when no votes are recorded", async () => {

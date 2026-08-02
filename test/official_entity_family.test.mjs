@@ -14,6 +14,7 @@ import {
   OFFICIAL_PRIMARY_KEY_PATTERN,
   VOTES_ON_LINK_TYPE,
   buildVotesOnEdges,
+  classifyVoteIdentity,
   measureOfficialVoteMetrics,
   normalizeVotePersonRow,
   officialEntityId,
@@ -57,6 +58,67 @@ test("normalizeVotePersonRow maps Legistar person fields", () => {
   assert.equal(row.official.id, "official:42");
   assert.equal(row.vote_bucket, "aye");
   assert.equal(voteBucket("Against"), "nay");
+});
+
+test("normalizeVotePersonRow retains live Granicus VotePerson* fields", () => {
+  // Live EventItems/{id}/Votes shape (event 22526 / item 440494 audit 2026-08-02).
+  const row = normalizeVotePersonRow({
+    VoteId: 1031408,
+    VotePersonId: 7801,
+    VotePersonName: "Christopher Marte",
+    VoteValueId: 15,
+    VoteValueName: "Affirmative",
+    VoteResult: 1,
+    VoteEventItemId: 440494,
+  });
+  assert.equal(row.person_id, "7801");
+  assert.equal(row.person_name, "Christopher Marte");
+  assert.equal(row.official.id, "official:7801");
+  assert.equal(row.vote_value, "Affirmative");
+  assert.equal(row.vote_bucket, "aye");
+  assert.equal(voteBucket("Negative"), "nay");
+  assert.equal(voteBucket("Affirmative"), "aye");
+});
+
+test("summarizePersonVotes: live VotePerson* retained; absent → tally_only", () => {
+  const live = summarizePersonVotes(
+    [
+      {
+        VotePersonId: 7801,
+        VotePersonName: "Christopher Marte",
+        VoteValueName: "Affirmative",
+        VoteResult: 1,
+      },
+      {
+        VotePersonId: 7802,
+        VotePersonName: "Example Member",
+        VoteValueName: "Negative",
+        VoteResult: 0,
+      },
+    ],
+    { matterId: "79193" },
+  );
+  assert.equal(live.person_count, 2);
+  assert.equal(live.by_person.length, 2);
+  assert.equal(live.person_vote_retention_rate, 1);
+  assert.equal(live.vote_identity, "roll_call");
+  assert.equal(live.counts.aye, 1);
+  assert.equal(live.counts.nay, 1);
+  assert.equal(live.by_person[0].official.id, "official:7801");
+  assert.equal(live.votes_on.length, 2);
+
+  // Rows with vote labels but no person identity: keep tallies, mark tally_only.
+  const voice = summarizePersonVotes(
+    [{ VoteValueName: "Affirmative" }, { VoteValueName: "Negative" }],
+    { matterId: "x" },
+  );
+  assert.equal(voice.person_count, 2);
+  assert.equal(voice.by_person.length, 0);
+  assert.equal(voice.person_vote_retention_rate, 0);
+  assert.equal(voice.vote_identity, "tally_only");
+  assert.equal(classifyVoteIdentity(voice), "tally_only");
+  assert.equal(classifyVoteIdentity(live), "roll_call");
+  assert.equal(classifyVoteIdentity(null), "empty");
 });
 
 test("buildVotesOnEdges links officials to matters", () => {

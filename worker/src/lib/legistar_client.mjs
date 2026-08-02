@@ -101,7 +101,8 @@ export async function fetchLegistarEventItems({ eventId, token, fetchImpl = fetc
 
 /**
  * Pure roll-call summarizer shared by the live client and characterization tests.
- * Retains person-level identity when Legistar publishes PersonId / PersonName.
+ * Retains person-level identity when Legistar publishes VotePersonId /
+ * VotePersonName (live) or PersonId / PersonName (fixtures / aliases).
  *
  * @param {Array<object>} rows
  * @param {{ matterId?: string|null, agendaItemId?: string|null, eventItemId?: string|null }} [target]
