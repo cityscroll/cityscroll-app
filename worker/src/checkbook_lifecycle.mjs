@@ -21,8 +21,10 @@ import {
   assembleLifecycle,
   pinMatchStrategy,
   usablePin,
+  pinBase,
   checkbookSuccess,
 } from "./lib/checkbook_lifecycle.mjs";
+import { stripOneSuffix, normId } from "./lib/passport_join.mjs";
 import {
   dualWriteCheckbookContractObservations,
   dualWriteCheckbookSpendingObservations,
@@ -205,8 +207,12 @@ export async function fetchRelatedProcurementNotices(env, noticeRow) {
   const focalId = r.request_id != null ? String(r.request_id) : null;
   const typeList = PROCUREMENT_NOTICE_TYPES.map((t) => `'${sq(t)}'`).join(",");
 
-  // D1 mirror first (same path as fetchNoticeRow).
-  if (env?.DB) {
+  // Candidate PIN forms: exact, renewal base, strip letter+digits suffix (task/amend).
+  // City Record often puts the solicitation on a shorter stem than the award PIN.
+  const pinCandidates = relatedPinCandidates(pin);
+
+  async function queryD1(pinValue) {
+    if (!env?.DB) return [];
     try {
       const rows = await env.DB.prepare(
         `SELECT request_id, start_date, agency AS agency_name, type_of_notice AS type_of_notice_description,
@@ -216,29 +222,101 @@ export async function fetchRelatedProcurementNotices(env, noticeRow) {
             AND type_of_notice IN (${PROCUREMENT_NOTICE_TYPES.map(() => "?").join(",")})
           ORDER BY start_date ASC
           LIMIT ?`,
-      ).bind(pin, ...PROCUREMENT_NOTICE_TYPES, RELATED_NOTICE_LIMIT).all();
+      ).bind(pinValue, ...PROCUREMENT_NOTICE_TYPES, RELATED_NOTICE_LIMIT).all();
       const list = (rows && rows.results) || rows || [];
-      if (Array.isArray(list) && list.length) {
-        return list.filter((row) => !focalId || String(row.request_id) !== focalId);
-      }
-    } catch { /* fall through to SODA */ }
+      return Array.isArray(list) ? list : [];
+    } catch {
+      return [];
+    }
   }
 
-  try {
-    const params = new URLSearchParams({
-      $select: RELATED_NOTICE_SELECT,
-      $where: `pin='${sq(pin)}' AND type_of_notice_description IN (${typeList})`,
-      $order: "start_date",
-      $limit: String(RELATED_NOTICE_LIMIT),
-    });
-    const res = await fetch(`${SODA_NYC}?${params}`);
-    if (!res.ok) return [];
-    const rows = await res.json();
-    if (!Array.isArray(rows)) return [];
-    return rows.filter((row) => !focalId || String(row.request_id) !== focalId);
-  } catch {
-    return [];
+  async function querySoda(pinValue) {
+    try {
+      const params = new URLSearchParams({
+        $select: RELATED_NOTICE_SELECT,
+        $where: `pin='${sq(pinValue)}' AND type_of_notice_description IN (${typeList})`,
+        $order: "start_date",
+        $limit: String(RELATED_NOTICE_LIMIT),
+      });
+      const res = await fetch(`${SODA_NYC}?${params}`);
+      if (!res.ok) return [];
+      const rows = await res.json();
+      return Array.isArray(rows) ? rows : [];
+    } catch {
+      return [];
+    }
   }
+
+  const seen = new Set();
+  const out = [];
+  function take(list) {
+    for (const row of list) {
+      if (!row) continue;
+      const id = row.request_id != null ? String(row.request_id) : "";
+      if (focalId && id === focalId) continue;
+      const key = id || JSON.stringify(row);
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push(row);
+    }
+  }
+
+  for (const candidate of pinCandidates) {
+    const d1 = await queryD1(candidate);
+    if (d1.length) take(d1);
+    // Prefer D1 for this candidate; still try SODA when D1 empty.
+    if (!d1.length) {
+      const soda = await querySoda(candidate);
+      take(soda);
+    }
+    // Stop early once we have a Solicitation sibling — primary recovery goal.
+    if (out.some((row) => String(row.type_of_notice_description || row.type_of_notice || "") === "Solicitation")) {
+      break;
+    }
+  }
+
+  return out.slice(0, RELATED_NOTICE_LIMIT);
+}
+
+/**
+ * PIN forms to try when City Record siblings miss on the exact award PIN.
+ * Exact first; then renewal base; then strip trailing letter+3–4 digit suffixes.
+ * Never invent fuzzy title joins.
+ */
+export function relatedPinCandidates(pin) {
+  const exact = String(pin || "").trim();
+  if (!usablePin(exact)) return [];
+  const out = [];
+  const seen = new Set();
+  function add(v) {
+    const s = String(v || "").trim();
+    if (!s || seen.has(s)) return;
+    // Keep stems usable as join keys (letter + digits, length ≥ 8).
+    if (s.length < 8 && s !== exact) return;
+    seen.add(s);
+    out.push(s);
+  }
+  add(exact);
+  const base = pinBase(exact);
+  if (base) add(base);
+  // Alnum-normalized strip of A001 / R001-style tails (and a second strip).
+  let n = normId(exact);
+  for (let i = 0; i < 2; i += 1) {
+    const stripped = stripOneSuffix(n);
+    if (!stripped || stripped === n) break;
+    add(stripped);
+    n = stripped;
+  }
+  // Numeric task-order tail (…001) — common on award PINs vs solicitation stems.
+  n = normId(exact);
+  for (let i = 0; i < 2; i += 1) {
+    const m = n.match(/^(.+[A-Z].*?)(\d{3})$/);
+    if (!m || m[1].length < 8) break;
+    if (m[1] === n) break;
+    add(m[1]);
+    n = m[1];
+  }
+  return out;
 }
 
 
@@ -349,9 +427,12 @@ export async function fetchCurrentSolicitationRows(noticeRow) {
     if (r.request_id) {
       await pull(`request_id='${sq(r.request_id)}'`, 5);
     }
-    // Also gather pin-siblings when a usable PIN is present (award → prior solicitation).
+    // Award → prior solicitation: try exact PIN then stem forms (task/renewal tails).
     if (usablePin(r.pin) && rows.length === 0) {
-      await pull(`pin='${sq(r.pin)}'`, 15);
+      for (const candidate of relatedPinCandidates(r.pin)) {
+        await pull(`pin='${sq(candidate)}'`, 15);
+        if (rows.length) break;
+      }
     }
     return { status: "ok", rows };
   } catch {
