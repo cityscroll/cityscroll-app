@@ -53,6 +53,7 @@ const { chainHTML, pinBase } = new Function(
   extractConst("CADENCE_YEAR_THRESHOLD_MONTHS") +
   extractFn("isBlanketChain") + extractFn("cadenceEstimate") + extractFn("cadenceMonthYear") +
   extractFn("cadenceApart") + extractFn("cadenceHTML") +
+  extractFn("chainHTMLFlat") +
   extractFn("chainHTML") +
   "return { chainHTML, pinBase };"
 )(t, tn, windowStub);
@@ -72,9 +73,10 @@ const renewalAward = {
 
 test("chainHTML: a renewal-linked entry (different literal PIN) gets the renewal badge", () => {
   const html = chainHTML(renewalAward, [baseAward, renewalAward]);
-  // baseAward's box: different PIN from the opened notice (renewalAward) -- badged.
-  const baseBox = html.slice(0, html.indexOf(renewalAward.request_id));
-  assert.match(baseBox, /<span class="tag renewal">Renewal<\/span>/);
+  // baseAward (different literal PIN than the opened renewal) is still badged — even when
+  // City Record links are deduped to one portal chrome link for the opened notice.
+  assert.match(html, /RequestDetail\/R1[\s\S]*?<span class="tag renewal">Renewal<\/span>|<span class="tag renewal">Renewal<\/span>[\s\S]*?RequestDetail\/R1|#notice\/R1[\s\S]*?Renewal|Renewal[\s\S]*?#notice\/R1/);
+  assert.match(html, /<span class="tag renewal">Renewal<\/span>/);
 });
 
 test("chainHTML: a same-PIN duplicate stage (identical literal PIN) is NOT badged", () => {

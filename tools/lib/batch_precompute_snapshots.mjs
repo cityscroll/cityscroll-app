@@ -201,7 +201,28 @@ export async function fetchDataPageCharts(fetchImpl = fetch, now = new Date()) {
   return Object.fromEntries(entries);
 }
 
-export async function fetchLandDefaultProjects(fetchImpl = fetch) {
+/**
+ * Prefer warehouse zap-projects (WH-05) when DuckDB has the table; otherwise live SODA.
+ * Parameterized land search stays live — this is the default Active ULURP strip only.
+ */
+export async function fetchLandDefaultProjects(fetchImpl = fetch, opts = {}) {
+  const preferWarehouse = opts.preferWarehouse !== false;
+  if (preferWarehouse) {
+    try {
+      const { catalogExists } = await import("../../warehouse/lib/catalog.mjs");
+      if (catalogExists()) {
+        const { exportLandDefaultFromWarehouse } = await import(
+          "../../warehouse/lib/zap_lookup.mjs"
+        );
+        const rows = exportLandDefaultFromWarehouse({ limit: LAND_DEFAULT_LIMIT });
+        if (Array.isArray(rows) && rows.length) {
+          return rows.map((r) => ({ ...r, lookup_path: "warehouse" }));
+        }
+      }
+    } catch {
+      // Fall through to live SODA (table missing, venv down, etc.).
+    }
+  }
   const rows = await fetchJson(fetchImpl, sodaUrl(LAND_DEFAULT_DATASET, landDefaultQuery()));
   if (!Array.isArray(rows)) throw new Error("land default SODA returned a non-array");
   return rows;

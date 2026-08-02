@@ -12,6 +12,9 @@
   the ER batch can show cross-table vendor_stem hits without packing
   `72mk-a8z7`. Synthetic only; phone column is unformatted `55501xx` placeholders
   (not real contacts; not measured from Socrata `72mk-a8z7`).
+- `doing-business-entities/sample.csv` + `product_seed.csv` — WH-05 fixture pack
+  and product demos (includes public CAMBA field-case shape used by vendor-profile
+  characterization). Full `72mk-a8z7` bulk stays local via capped WH-02 runner.
 - `zap-projects/sample.csv` — synthetic + demo rows for offline WH-05 fixture
   ingest (`hgx4-8ukb` shape).
 - `zap-projects/product_seed.csv` — public ZAP field-case rows (includes demo
