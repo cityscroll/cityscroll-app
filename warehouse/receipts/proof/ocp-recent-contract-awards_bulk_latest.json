@@ -8,10 +8,10 @@
     "taskpolicy_or_nice_wrap": true
   },
   "data_provenance": {
-    "source": "NYC Open Data Socrata dataset qyyg-4tf5 (Recent Contract Awards)",
     "export_url": "https://data.cityofnewyork.us/api/views/qyyg-4tf5/rows.csv?accessType=DOWNLOAD",
+    "raw_sha256_basis": "sha256 of full rows.csv download",
     "row_count_basis": "DuckDB COUNT(*) on warehouse parquet after bulk convert (measured 2026-08-02)",
-    "raw_sha256_basis": "sha256 of full rows.csv download"
+    "source": "NYC Open Data Socrata dataset qyyg-4tf5 (Recent Contract Awards)"
   },
   "dataset_id": "ocp-recent-contract-awards",
   "headroom": {

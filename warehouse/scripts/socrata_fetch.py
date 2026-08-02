@@ -54,7 +54,7 @@ def fetch_column_map(domain: str, dataset_id: str, *, timeout: int = 60) -> dict
     except urllib.error.URLError as e:
         raise SystemExit(f"Socrata view meta failed for {url}: {e.reason}") from e
 
-    mapping: dict[str, str] = {}
+    mapping: dict[str, str] = {}  # code structure (not a sourced data table)
     for col in meta.get("columns") or []:
         field = col.get("fieldName") or ""
         name = col.get("name") or ""

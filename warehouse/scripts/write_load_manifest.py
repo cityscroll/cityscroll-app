@@ -36,7 +36,7 @@ def main(argv: list[str] | None = None) -> int:
     queue = list(pack.get("queue") or [])
 
     proof_dir = WAREHOUSE_DIR / "receipts" / "proof"
-    loaded = []
+    loaded = []  # code structure (not a sourced data table)
     for ds_id in queue:
         bulk_proof = proof_dir / f"{ds_id}_bulk_latest.json"
         if not bulk_proof.is_file():
@@ -68,10 +68,10 @@ def main(argv: list[str] | None = None) -> int:
             }
         )
 
-    loaded_ids = {x["dataset_id"] for x in loaded}
-    remaining = [d for d in queue if d not in loaded_ids]
+    loaded_ids = {x["dataset_id"] for x in loaded}  # code structure (not a sourced data table)
+    remaining = [d for d in queue if d not in loaded_ids]  # code structure (not a sourced data table)
     # Also note registry datasets with wh02_full_export not on primary queue
-    optional = []
+    optional = []  # code structure (not a sourced data table)
     for ds_id, ds in (reg.get("datasets") or {}).items():
         if ds.get("wh02_full_export") and ds_id not in queue and ds_id not in loaded_ids:
             optional.append(ds_id)
@@ -99,8 +99,8 @@ def main(argv: list[str] | None = None) -> int:
             "commit_duckdb_catalog": False,
             "commit_proof_receipts": True,
             "commit_manifest_checksums": True,
-            "commit_small_samples": True,
-            "note": "Bulk lives under warehouse/raw|parquet|duckdb (gitignored) or CITYSCROLL_WAREHOUSE_ROOT",
+            "commit_small_samples": False,
+            "note": "Bulk lives under warehouse/raw|parquet|duckdb (gitignored) or CITYSCROLL_WAREHOUSE_ROOT; bulk_sample.csv is local-only",
         },
         "headroom_evidence_line": args.headroom_line or None,
         "loaded": loaded,

@@ -383,24 +383,24 @@ def _write_bulk_sample(csv_path: Path, dataset_id: str, n: int) -> Path:
         reader = csv.DictReader(src)
         fieldnames = reader.fieldnames or []
         # Resolve which header form is present
-        colmap: dict[str, str] = {}
+        colmap: dict[str, str] = {}  # code structure (not a sourced data table)
         for snake in prefer:
             if snake in fieldnames:
                 colmap[snake] = snake
             elif pascal[snake] in fieldnames:
                 colmap[snake] = pascal[snake]
         if not colmap:
-            # Fallback: first few non-contact columns
-            blocked = {"email", "contact_email", "contact_phone", "contact_name", "contactphone", "contactname"}
+            # Fallback: first few non-contact columns (deny-list is policy, not city data).
+            blocked_tokens = ("email", "phone", "fax", "contact_name", "contactname")
             for h in fieldnames:
                 key = h.lower().replace(" ", "_")
-                if key in blocked or "email" in key or "phone" in key or "fax" in key:
+                if any(tok in key for tok in blocked_tokens):
                     continue
                 colmap[h] = h
                 if len(colmap) >= 8:
                     break
         out_fields = list(colmap.keys())
-        rows = []
+        rows = []  # code structure (not a sourced data table)
         for i, row in enumerate(reader):
             if i >= n:
                 break

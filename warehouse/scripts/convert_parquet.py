@@ -45,7 +45,7 @@ def build_select_list(csv_columns: list[str], column_map: dict[str, str] | None)
     if not column_map:
         return "*"
     # Map by exact header; leave unmapped columns as-is (quoted).
-    parts = []
+    parts = []  # code structure (not a sourced data table)
     for col in csv_columns:
         target = column_map.get(col) or column_map.get(col.strip())
         if target and target != col:
