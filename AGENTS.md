@@ -32,19 +32,29 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 Object-link layer across money / land / rules / meetings / people for one agency or
 vendor (`entity_resolution/cross_domain/`). Reuses subject registry kinds + ER
 normalizers + warehouse OCP/ZAP/ZAP-BBL fixtures — does not reinvent matchers.
-Land projects gain `sited_on_parcel` edges when BBL join keys exist. Every link
-carries provenance. Instant materialization:
+Land projects gain `sited_on_parcel` edges when BBL join keys exist. Money awards
+also emit join-key edges when present: PIN → `shares_authority_key`, contract_id →
+`references_contract` (+ `contract_published_by_agency`), Checkbook spending →
+`paid_to_vendor` / `payment_on_contract`. Every link carries provenance.
+
+Instant materialization + warehouse edge index (CPU-light, fixture path):
 
 ```bash
 node tools/build_entity_intelligence.mjs
 node tools/build_entity_intelligence.mjs --check
-node --test test/cross_domain_object_links.test.mjs worker/test/entity_intelligence.test.mjs
+node warehouse/lib/entity_intelligence_index.mjs --from-fixture --limit 400
+node warehouse/lib/entity_intelligence_index.mjs --check
+node --test test/cross_domain_object_links.test.mjs \
+  test/warehouse_entity_intelligence_index.test.mjs \
+  worker/test/entity_intelligence.test.mjs
 ```
 
 Serve: `GET /entity-intelligence?demo=1` (Parks multi-domain) or
 `?kind=agency&name=…`. Agency profile UI mounts `#entity-intelligence`. People
 stays class-(a) `not_yet_ingested` until person-level Legistar retention > 0.
-ADR: `docs/adr/cross-domain-object-links.md`.
+ADR: `docs/adr/cross-domain-object-links.md`. Warehouse SQL shape:
+`warehouse/sql/examples/entity_intelligence_index.sql`; proof receipt:
+`warehouse/receipts/proof/wh_entity_intelligence_index_latest.json`.
 
 ## DuckDB + parquet warehouse (WH-01…WH-06)
 

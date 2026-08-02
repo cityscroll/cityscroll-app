@@ -31,11 +31,17 @@ import {
   SUBJECT_LINK_METHOD_VERSION,
 } from "../../worker/src/lib/subject_registry.mjs";
 
-export const CROSS_DOMAIN_OBJECT_LINK_VERSION = "cross_domain_object_link_v1";
-export const CROSS_DOMAIN_METHOD = "cross_domain_identity_v1";
-export const CROSS_DOMAIN_METHOD_VERSION = "1.0.0";
+export const CROSS_DOMAIN_OBJECT_LINK_VERSION = "cross_domain_object_link_v2";
+export const CROSS_DOMAIN_METHOD = "cross_domain_identity_v2";
+export const CROSS_DOMAIN_METHOD_VERSION = "2.0.0";
 export const AGENCY_METHOD = "agency_canonical_v1";
 export const AGENCY_METHOD_VERSION = "1";
+export const PIN_METHOD = "pin_authority_key_v1";
+export const PIN_METHOD_VERSION = "1";
+export const CONTRACT_METHOD = "contract_id_join_v1";
+export const CONTRACT_METHOD_VERSION = "1";
+export const PAYMENT_METHOD = "checkbook_payment_v1";
+export const PAYMENT_METHOD_VERSION = "1";
 
 /** Domains the intelligence surface covers (closed set). */
 export const CROSS_DOMAIN_DOMAINS = Object.freeze([
@@ -89,6 +95,32 @@ export const CROSS_DOMAIN_LINK_TYPES = Object.freeze({
   sited_on_parcel: {
     description: "Land project is sited on a published tax lot (BBL) via ZAP BBL",
     domains: Object.freeze(["land"]),
+    registry: false,
+  },
+  // --- v2 join-key edges (PIN / contract / payment) ---
+  shares_authority_key: {
+    description: "Notice or contract shares a structured PIN/EPIN authority key",
+    domains: Object.freeze(["money"]),
+    registry: true,
+  },
+  references_contract: {
+    description: "Award notice references a Checkbook/PASSPort contract id",
+    domains: Object.freeze(["money"]),
+    registry: true,
+  },
+  paid_to_vendor: {
+    description: "Checkbook spending payment is paid to a vendor (payee)",
+    domains: Object.freeze(["money"]),
+    registry: false,
+  },
+  payment_on_contract: {
+    description: "Spending document is drawn on a contract id",
+    domains: Object.freeze(["money"]),
+    registry: false,
+  },
+  contract_published_by_agency: {
+    description: "Registered contract subject is published by an agency (award join)",
+    domains: Object.freeze(["money"]),
     registry: false,
   },
 });
@@ -221,22 +253,29 @@ export function observationFromMoneyRow(row, opts = {}) {
   const sourceSystem = clean(opts.sourceSystem || row.source_system || "ocp-recent-contract-awards");
   const requestId = clean(row.request_id || row.id);
   const pin = clean(row.pin);
-  const nativeKey = requestId || (pin ? `pin:${pin}` : "");
+  const contractId = clean(
+    row.contract_id || row.prime_contract_id || row.ct_id || row.registered_contract_id,
+  );
+  const nativeKey = requestId || (pin ? `pin:${pin}` : "") || (contractId ? `ct:${contractId}` : "");
   if (!nativeKey) return null;
   const agencyName = clean(row.agency_name);
   const vendorName = clean(row.vendor_name);
   if (!agencyName && !vendorName) return null;
 
+  const typeDesc = clean(row.type_of_notice_description).toLowerCase();
+  let object_kind = "award";
+  if (typeDesc.includes("solicit")) object_kind = "solicitation";
+  else if (typeDesc.includes("intent to award")) object_kind = "intent_to_award";
+
   return {
     domain: "money",
-    object_kind: clean(row.type_of_notice_description).toLowerCase().includes("solicit")
-      ? "solicitation"
-      : "award",
+    object_kind,
     source_system: sourceSystem,
     source_record_id: `${sourceSystem}:${nativeKey}`,
     native_key: nativeKey,
     request_id: requestId || null,
     pin: pin || null,
+    contract_id: contractId || null,
     agency_name: agencyName || null,
     vendor_name: vendorName || null,
     label: clean(row.short_title) || vendorName || agencyName || requestId || nativeKey,
@@ -246,6 +285,72 @@ export function observationFromMoneyRow(row, opts = {}) {
         ? Number(row.contract_amount)
         : null,
     subject_ref: requestId ? formatSubjectRef("notice", requestId) : null,
+  };
+}
+
+/**
+ * Shape a Checkbook spending / payment observation (money domain).
+ * Join keys: payee_name → vendor, contract_id → contract, optional pin / agency.
+ * Never invents a payment without payee or contract identity.
+ * @param {object} row
+ * @param {{ sourceSystem?: string }} [opts]
+ */
+export function observationFromPaymentRow(row, opts = {}) {
+  if (!row || typeof row !== "object") return null;
+  const sourceSystem = clean(
+    opts.sourceSystem || row.source_system || "checkbook-spending",
+  );
+  const documentId = clean(
+    row.document_id || row.check_id || row.payment_id || row.id,
+  );
+  const contractId = clean(
+    row.contract_id || row.prime_contract_id || row.ct_id,
+  );
+  const pin = clean(row.pin);
+  const payee = clean(row.payee_name || row.vendor_name);
+  const agencyName = clean(row.agency_name);
+  if (!payee && !contractId) return null;
+  const nativeKey =
+    documentId
+    || (contractId && payee ? `${contractId}:${payee}` : "")
+    || contractId
+    || (pin ? `pin:${pin}:pay` : "");
+  if (!nativeKey) return null;
+
+  const subject_ref = documentId
+    ? formatSubjectRef("entity", `spending:${documentId}`)
+    : contractId
+      ? formatSubjectRef("contract", contractId)
+      : null;
+  if (!subject_ref) return null;
+
+  return {
+    domain: "money",
+    object_kind: "payment",
+    source_system: sourceSystem,
+    source_record_id: `${sourceSystem}:${nativeKey}`,
+    native_key: nativeKey,
+    document_id: documentId || null,
+    contract_id: contractId || null,
+    pin: pin || null,
+    request_id: null,
+    agency_name: agencyName || null,
+    vendor_name: payee || null,
+    payee_name: payee || null,
+    label:
+      clean(row.short_title)
+      || (payee && contractId ? `${payee} · ${contractId}` : "")
+      || payee
+      || contractId
+      || nativeKey,
+    when: clean(row.issue_date || row.payment_date || row.check_date || row.date) || null,
+    amount:
+      row.check_amount != null && row.check_amount !== ""
+        ? Number(row.check_amount)
+        : row.amount != null && row.amount !== ""
+          ? Number(row.amount)
+          : null,
+    subject_ref,
   };
 }
 
@@ -512,6 +617,18 @@ export function rootsForObservation(obs) {
     return roots;
   }
 
+  // Payments are vendor-centric (payee). Agency identity on spending rows is often the
+  // contracting agency column — attach via contract_published_by_agency on the award
+  // path, not as published_by_agency from entity:spending (registry from_kinds).
+  if (obs.domain === "money" && obs.object_kind === "payment") {
+    const payee = clean(obs.payee_name || obs.vendor_name);
+    if (payee) {
+      const vendor = resolveVendorSubject(payee);
+      if (vendor) roots.push({ kind: "vendor", subject: vendor, field: "payee_name" });
+    }
+    return roots;
+  }
+
   if (obs.agency_name) {
     const agency = resolveAgencySubject(obs.agency_name);
     if (agency) roots.push({ kind: "agency", subject: agency, field: "agency_name" });
@@ -551,10 +668,16 @@ function comparisonSuggestsAgency(raw, resolved) {
 }
 
 /**
- * Link type for (domain, root kind, field).
+ * Link type for (domain, root kind, field [, object_kind]).
  */
-function linkTypeFor(domain, rootKind, field) {
+function linkTypeFor(domain, rootKind, field, objectKind = null) {
   if (domain === "money" && rootKind === "agency") return "published_by_agency";
+  if (domain === "money" && rootKind === "vendor" && field === "payee_name") {
+    return "paid_to_vendor";
+  }
+  if (domain === "money" && rootKind === "vendor" && objectKind === "payment") {
+    return "paid_to_vendor";
+  }
   if (domain === "money" && rootKind === "vendor") return "named_vendor";
   if (domain === "land" && rootKind === "agency") return "applicant_agency";
   if (domain === "land" && rootKind === "vendor") return "applicant_vendor";
@@ -570,6 +693,7 @@ function linkTypeFor(domain, rootKind, field) {
 function confidenceFor(rootKind, field, obs) {
   if (rootKind === "agency" && field === "agency_name") return "strong";
   if (rootKind === "vendor" && field === "vendor_name") return "strong";
+  if (rootKind === "vendor" && field === "payee_name") return "strong";
   if (rootKind === "agency" && field === "primary_applicant") {
     // Applicant strings are noisier than City Record agency_name columns.
     return comparisonSuggestsAgency(obs.applicant, resolveAgencySubject(obs.applicant))
@@ -588,9 +712,12 @@ function confidenceFor(rootKind, field, obs) {
 export function linkObservation(obs) {
   if (!obs || !DOMAIN_SET.has(obs.domain)) return { objects: [], links: [] };
   const roots = rootsForObservation(obs);
-  // Land tax-lot enrichments may lack agency/vendor roots but still emit parcel edges.
+  // Join-key edges may exist without agency/vendor roots (parcel / pin / contract).
   const parcelLinks = parcelLinksForObservation(obs);
-  if (!roots.length && !parcelLinks.length) return { objects: [], links: [] };
+  const joinKeyLinks = joinKeyLinksForObservation(obs);
+  if (!roots.length && !parcelLinks.length && !joinKeyLinks.length) {
+    return { objects: [], links: [] };
+  }
 
   const objects = [];
   const links = [];
@@ -598,15 +725,23 @@ export function linkObservation(obs) {
   const bbls = Array.isArray(obs.bbls) ? obs.bbls.map(normalizeBbl).filter(Boolean) : [];
 
   for (const root of roots) {
-    const type = linkTypeFor(obs.domain, root.kind, root.field);
+    const type = linkTypeFor(obs.domain, root.kind, root.field, obs.object_kind);
     if (!type || !objectSubject) continue;
 
     const method = root.kind === "agency"
       ? AGENCY_METHOD
-      : VENDOR_STEM_METHOD;
+      : (type === "paid_to_vendor" ? PAYMENT_METHOD : VENDOR_STEM_METHOD);
     const method_version = root.kind === "agency"
       ? AGENCY_METHOD_VERSION
-      : VENDOR_STEM_VERSION;
+      : (type === "paid_to_vendor" ? PAYMENT_METHOD_VERSION : VENDOR_STEM_VERSION);
+
+    const inputValue = root.field === "primary_applicant"
+      ? obs.applicant
+      : root.field === "agency_name"
+        ? obs.agency_name
+        : root.field === "payee_name"
+          ? (obs.payee_name || obs.vendor_name)
+          : obs.vendor_name;
 
     const provenance = makeProvenance({
       source_system: obs.source_system,
@@ -614,11 +749,7 @@ export function linkObservation(obs) {
       source_fields: [root.field],
       basis: `${obs.domain}_${root.field}`,
       observed_at: obs.when,
-      input_value: root.field === "primary_applicant"
-        ? obs.applicant
-        : root.field === "agency_name"
-          ? obs.agency_name
-          : obs.vendor_name,
+      input_value: inputValue,
     });
     if (!provenance) continue;
 
@@ -645,6 +776,8 @@ export function linkObservation(obs) {
       amount: Number.isFinite(obs.amount) ? obs.amount : null,
       public_status: obs.public_status || null,
       pin: obs.pin || null,
+      contract_id: obs.contract_id || null,
+      document_id: obs.document_id || null,
       project_id: obs.project_id || null,
       request_id: obs.request_id || null,
       event_id: obs.event_id || null,
@@ -671,7 +804,146 @@ export function linkObservation(obs) {
     }
   }
 
+  // PIN / contract join-key edges (award → pin, award → contract, payment → contract).
+  for (const edge of joinKeyLinks) {
+    if (edge) links.push(edge);
+  }
+
   return { objects, links };
+}
+
+/**
+ * Join-key edges that are not root-identity edges: PIN, contract_id, payment→contract.
+ * Each edge carries provenance; never invents a key when the field is empty.
+ * @param {object} obs
+ * @returns {object[]}
+ */
+export function joinKeyLinksForObservation(obs) {
+  if (!obs || obs.domain !== "money") return [];
+  const edges = [];
+  const objectSubject = obs.subject_ref;
+  const pin = clean(obs.pin);
+  const contractId = clean(obs.contract_id);
+
+  // notice|entity → pin (authority key)
+  if (objectSubject && pin) {
+    const pinRef = formatSubjectRef("pin", pin);
+    if (pinRef) {
+      const provenance = makeProvenance({
+        source_system: obs.source_system,
+        source_record_id: obs.source_record_id,
+        source_fields: ["pin"],
+        basis: "money_pin",
+        observed_at: obs.when,
+        input_value: pin,
+      });
+      if (provenance) {
+        // Registry path when both kinds are in shares_authority_key vocabulary.
+        const fromKind = parseSubjectRef(objectSubject)?.kind;
+        if (fromKind === "notice" || fromKind === "contract" || fromKind === "vendor") {
+          const edge = makeObjectLink({
+            type: "shares_authority_key",
+            from: objectSubject,
+            to: pinRef,
+            domain: "money",
+            confidence: "strong",
+            method: PIN_METHOD,
+            method_version: PIN_METHOD_VERSION,
+            provenance,
+          });
+          if (edge) edges.push(edge);
+        }
+      }
+    }
+  }
+
+  // Award notice → contract (references_contract registry type)
+  if (
+    objectSubject
+    && contractId
+    && obs.object_kind !== "payment"
+    && parseSubjectRef(objectSubject)?.kind === "notice"
+  ) {
+    const contractRef = formatSubjectRef("contract", contractId);
+    if (contractRef) {
+      const provenance = makeProvenance({
+        source_system: obs.source_system,
+        source_record_id: obs.source_record_id,
+        source_fields: ["contract_id"],
+        basis: "money_contract_id",
+        observed_at: obs.when,
+        input_value: contractId,
+      });
+      if (provenance) {
+        const edge = makeObjectLink({
+          type: "references_contract",
+          from: objectSubject,
+          to: contractRef,
+          domain: "money",
+          confidence: "strong",
+          method: CONTRACT_METHOD,
+          method_version: CONTRACT_METHOD_VERSION,
+          provenance,
+        });
+        if (edge) edges.push(edge);
+
+        // contract → agency when agency resolved (local; contract not always registry from-kind for published_by)
+        const agency = obs.agency_name ? resolveAgencySubject(obs.agency_name) : null;
+        if (agency) {
+          const agencyEdge = makeObjectLink({
+            type: "contract_published_by_agency",
+            from: contractRef,
+            to: agency.ref,
+            domain: "money",
+            confidence: "strong",
+            method: CONTRACT_METHOD,
+            method_version: CONTRACT_METHOD_VERSION,
+            provenance: makeProvenance({
+              source_system: obs.source_system,
+              source_record_id: obs.source_record_id,
+              source_fields: ["contract_id", "agency_name"],
+              basis: "money_contract_agency",
+              observed_at: obs.when,
+              input_value: obs.agency_name,
+            }),
+          });
+          if (agencyEdge) edges.push(agencyEdge);
+        }
+      }
+    }
+  }
+
+  // Payment document → contract
+  if (objectSubject && contractId && obs.object_kind === "payment") {
+    const contractRef = formatSubjectRef("contract", contractId);
+    const from = parseSubjectRef(objectSubject);
+    // Only when payment is not already the contract subject (avoid self-edge).
+    if (contractRef && from && from.ref !== contractRef) {
+      const provenance = makeProvenance({
+        source_system: obs.source_system,
+        source_record_id: obs.source_record_id,
+        source_fields: ["contract_id"],
+        basis: "money_payment_contract",
+        observed_at: obs.when,
+        input_value: contractId,
+      });
+      if (provenance) {
+        const edge = makeObjectLink({
+          type: "payment_on_contract",
+          from: objectSubject,
+          to: contractRef,
+          domain: "money",
+          confidence: "strong",
+          method: PAYMENT_METHOD,
+          method_version: PAYMENT_METHOD_VERSION,
+          provenance,
+        });
+        if (edge) edges.push(edge);
+      }
+    }
+  }
+
+  return edges;
 }
 
 /**
@@ -734,14 +1006,23 @@ function hrefForObject(obs) {
  * @param {Iterable<object>} observations
  * @returns {Map<string, { root: object, objects: object[], links: object[] }>}
  */
+/** Link types that are join-key sidecars (not the primary identity edge per object). */
+const SIDE_LINK_TYPES = new Set([
+  "sited_on_parcel",
+  "shares_authority_key",
+  "references_contract",
+  "payment_on_contract",
+  "contract_published_by_agency",
+]);
+
 export function indexObservationsByRoot(observations) {
   const byRoot = new Map();
 
   for (const obs of observations || []) {
     const { objects, links } = linkObservation(obs);
-    // Identity edges (agency/vendor) share the object list order; parcel edges are extras.
-    const identityLinks = (links || []).filter((l) => l?.type !== "sited_on_parcel");
-    const parcelLinks = (links || []).filter((l) => l?.type === "sited_on_parcel");
+    // Identity edges (agency/vendor) share the object list order; join-key edges are extras.
+    const identityLinks = (links || []).filter((l) => l && !SIDE_LINK_TYPES.has(l.type));
+    const sideLinks = (links || []).filter((l) => l && SIDE_LINK_TYPES.has(l.type));
 
     for (let i = 0; i < objects.length; i++) {
       const obj = objects[i];
@@ -764,11 +1045,11 @@ export function indexObservationsByRoot(observations) {
       }
       bucket.objects.push(obj);
       if (edge) bucket.links.push(edge);
-      // Attach project→parcel edges onto the same root bucket so land intelligence
-      // carries ZAP BBL provenance when the project already linked to this root.
-      if (parcelLinks.length && obj.project_id) {
-        for (const pEdge of parcelLinks) {
-          if (pEdge) bucket.links.push(pEdge);
+      // Attach join-key side edges (BBL, PIN, contract, payment) onto the root bucket
+      // when this object participates in the same observation.
+      if (sideLinks.length) {
+        for (const sEdge of sideLinks) {
+          if (sEdge) bucket.links.push(sEdge);
         }
       }
     }
@@ -776,7 +1057,7 @@ export function indexObservationsByRoot(observations) {
 
   for (const bucket of byRoot.values()) {
     bucket.links = dedupeObjectLinks(bucket.links);
-    // Dedupe objects by subject_ref + domain
+    // Dedupe objects by subject_ref + domain + link_type
     const seen = new Set();
     bucket.objects = bucket.objects.filter((o) => {
       const key = `${o.domain}|${o.subject_ref}|${o.link_type}`;
@@ -804,16 +1085,15 @@ export function dedupeObjectLinks(links = []) {
 }
 
 /**
- * Build the intelligence view for one root entity from an observation corpus.
+ * Build the intelligence view for one root from a pre-built root index bucket.
+ * Prefer this over re-scanning observations when the index is already materialised.
  *
- * @param {{ kind: 'agency'|'vendor', name?: string, id?: string, ref?: string }} rootQuery
- * @param {Iterable<object>} observations
+ * @param {object} root resolved root (from resolveRootQuery)
+ * @param {{ objects?: object[], links?: object[] }} bucket
  * @param {{ max_per_domain?: number }} [opts]
- * @returns {object}
  */
-export function buildEntityIntelligence(rootQuery, observations, opts = {}) {
+export function buildEntityIntelligenceFromBucket(root, bucket, opts = {}) {
   const maxPerDomain = Math.max(1, Number(opts.max_per_domain) || 12);
-  const root = resolveRootQuery(rootQuery);
   if (!root) {
     return {
       ok: false,
@@ -826,18 +1106,16 @@ export function buildEntityIntelligence(rootQuery, observations, opts = {}) {
     };
   }
 
-  const index = indexObservationsByRoot(observations);
-  const bucket = index.get(root.ref) || { root, objects: [], links: [] };
-
-  // Attach display identity on root.
   const displayRoot = {
     ...root,
     display_name: root.display_name || root.canonical_name || root.stem || root.id,
   };
+  const objects = Array.isArray(bucket?.objects) ? bucket.objects : [];
+  const rawLinks = Array.isArray(bucket?.links) ? bucket.links : [];
 
   const domains = {};
   for (const domain of CROSS_DOMAIN_DOMAINS) {
-    const domainObjects = bucket.objects
+    const domainObjects = objects
       .filter((o) => o.domain === domain)
       .sort((a, b) => String(b.when || "").localeCompare(String(a.when || "")))
       .slice(0, maxPerDomain);
@@ -865,13 +1143,20 @@ export function buildEntityIntelligence(rootQuery, observations, opts = {}) {
     };
   }
 
-  const links = dedupeObjectLinks(bucket.links);
+  const links = dedupeObjectLinks(rawLinks);
   const domainsWithLinks = CROSS_DOMAIN_DOMAINS.filter(
     (d) => domains[d].status === "matched",
   ).length;
-  // People often not_yet_ingested; eligible = domains that are not structural gaps only.
-  // Coverage = matched / all five domains (honest: people empty lowers the rate).
   const totalObjects = CROSS_DOMAIN_DOMAINS.reduce((n, d) => n + domains[d].count, 0);
+  const joinKeyTypes = [
+    "sited_on_parcel",
+    "shares_authority_key",
+    "references_contract",
+    "payment_on_contract",
+    "paid_to_vendor",
+    "contract_published_by_agency",
+  ];
+  const join_key_link_count = links.filter((l) => joinKeyTypes.includes(l.type)).length;
 
   return {
     ok: true,
@@ -891,9 +1176,38 @@ export function buildEntityIntelligence(rootQuery, observations, opts = {}) {
       domains_empty: CROSS_DOMAIN_DOMAINS.filter((d) => domains[d].status === "empty").length,
       total_linked_objects: totalObjects,
       link_count: links.length,
+      join_key_link_count,
       coverage_rate: domainsWithLinks / CROSS_DOMAIN_DOMAINS.length,
     },
   };
+}
+
+/**
+ * Build the intelligence view for one root entity from an observation corpus.
+ *
+ * @param {{ kind: 'agency'|'vendor', name?: string, id?: string, ref?: string }} rootQuery
+ * @param {Iterable<object>} observations
+ * @param {{ max_per_domain?: number, index?: Map }} [opts]
+ * @returns {object}
+ */
+export function buildEntityIntelligence(rootQuery, observations, opts = {}) {
+  const root = resolveRootQuery(rootQuery);
+  if (!root) {
+    return {
+      ok: false,
+      version: CROSS_DOMAIN_OBJECT_LINK_VERSION,
+      reason: "unresolved_root",
+      root: null,
+      domains: emptyDomainBlock(),
+      links: [],
+      metrics: null,
+    };
+  }
+
+  // Reuse a pre-built index when provided (warehouse materialization path).
+  const index = opts.index || indexObservationsByRoot(observations);
+  const bucket = index.get(root.ref) || { root, objects: [], links: [] };
+  return buildEntityIntelligenceFromBucket(root, bucket, opts);
 }
 
 function emptyDomainBlock() {
@@ -1014,7 +1328,8 @@ export function buildIntelligenceCorpus(observations, opts = {}) {
   const maxEntities = Math.max(1, Number(opts.max_entities) || 80);
   /** Prefer multi-domain entities; keep high-fan-out single-domain only as fillers. */
   const preferMultiDomain = opts.prefer_multi_domain !== false;
-  const index = indexObservationsByRoot(observations);
+  // Single pass index — corpus no longer re-scans observations per entity.
+  const index = opts.index || indexObservationsByRoot(observations);
 
   const entities = [];
   for (const [ref, bucket] of index) {
@@ -1023,11 +1338,14 @@ export function buildIntelligenceCorpus(observations, opts = {}) {
     // Recover a human display name from provenance input when possible.
     const sampleInput = bucket.objects.find((o) => o.provenance?.input_value)
       ?.provenance?.input_value;
-    const view = buildEntityIntelligence(
-      { kind, ref, name: sampleInput || undefined },
-      observations,
-      opts,
-    );
+    const root = resolveRootQuery({ kind, ref, name: sampleInput || undefined })
+      || {
+        kind,
+        ref,
+        id: bucket.root.id,
+        display_name: sampleInput || ref,
+      };
+    const view = buildEntityIntelligenceFromBucket(root, bucket, opts);
     if (kind === "agency") {
       const fromName = sampleInput ? resolveAgencySubject(sampleInput) : null;
       view.root.display_name = fromName?.canonical_name

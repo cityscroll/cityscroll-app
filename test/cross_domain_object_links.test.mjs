@@ -17,10 +17,12 @@ import {
   resolveAgencySubject,
   resolveVendorSubject,
   observationFromMoneyRow,
+  observationFromPaymentRow,
   observationFromLandRow,
   observationFromRulesRow,
   observationFromMeetingsRow,
   linkObservation,
+  joinKeyLinksForObservation,
   buildEntityIntelligence,
   buildIntelligenceCorpus,
   lookupEntityIntelligence,
@@ -31,6 +33,11 @@ import {
   buildEntityIntelligenceDoc,
   collectCrossDomainObservations,
 } from "../tools/lib/entity_intelligence_build.mjs";
+import {
+  buildEntityIntelligenceIndex,
+  lookupFromIndex,
+  ENTITY_INTELLIGENCE_INDEX_VERSION,
+} from "../warehouse/lib/entity_intelligence_index.mjs";
 import { sameAgency, canonicalAgency } from "../entity_resolution/index.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -68,11 +75,14 @@ describe("observation → links with provenance", () => {
     });
     const { objects, links } = linkObservation(obs);
     assert.equal(objects.length, 2);
-    assert.equal(links.length, 2);
+    // Identity edges + optional PIN join-key edge when pin is present.
+    assert.ok(links.length >= 2);
     const agencyEdge = links.find((l) => l.type === "published_by_agency");
     const vendorEdge = links.find((l) => l.type === "named_vendor");
+    const pinEdge = links.find((l) => l.type === "shares_authority_key");
     assert.ok(agencyEdge);
     assert.ok(vendorEdge);
+    assert.ok(pinEdge, "PIN join key when pin column is set");
     assert.equal(agencyEdge.to, "agency:id:parks-and-recreation");
     assert.equal(agencyEdge.domain, "money");
     assert.equal(agencyEdge.provenance.source_system, "ocp-recent-contract-awards");
@@ -115,6 +125,54 @@ describe("observation → links with provenance", () => {
     assert.ok(parcelEdges.every((e) => e.to.startsWith("parcel:")));
     assert.equal(parcelEdges[0].provenance.source_fields.includes("bbl"), true);
     assert.equal(parcelEdges[0].method, "zap_bbl_project_id_v1");
+  });
+
+  it("links award PIN and contract_id join keys with provenance", () => {
+    const obs = observationFromMoneyRow({
+      request_id: "FIX005",
+      agency_name: "Department of Parks and Recreation",
+      vendor_name: "FIXTURE VENDOR E",
+      pin: "PIN-FIXTURE-5",
+      contract_id: "CT-PARKS-FIX005",
+      short_title: "Parks award with contract",
+      start_date: "2024-07-05",
+    });
+    assert.equal(obs.contract_id, "CT-PARKS-FIX005");
+    const { links } = linkObservation(obs);
+    const pinEdge = links.find((l) => l.type === "shares_authority_key");
+    const ctEdge = links.find((l) => l.type === "references_contract");
+    const agencyCt = links.find((l) => l.type === "contract_published_by_agency");
+    assert.ok(pinEdge, "PIN join edge");
+    assert.equal(pinEdge.to, "pin:PIN-FIXTURE-5");
+    assert.equal(pinEdge.provenance.source_fields.includes("pin"), true);
+    assert.ok(ctEdge, "contract_id join edge");
+    assert.equal(ctEdge.to, "contract:CT-PARKS-FIX005");
+    assert.ok(agencyCt, "contract → agency");
+    assert.equal(agencyCt.to, "agency:id:parks-and-recreation");
+    assert.ok(joinKeyLinksForObservation(obs).length >= 2);
+  });
+
+  it("links Checkbook payment payee + contract (vendor ↔ awards ↔ payments chain)", () => {
+    const pay = observationFromPaymentRow({
+      document_id: "CHK-PARKS-001",
+      payee_name: "FIXTURE VENDOR E",
+      contract_id: "CT-PARKS-FIX005",
+      check_amount: "250.00",
+      issue_date: "2024-08-15",
+      agency_name: "Department of Parks and Recreation",
+      pin: "PIN-FIXTURE-5",
+    });
+    assert.equal(pay.object_kind, "payment");
+    const { objects, links } = linkObservation(pay);
+    assert.equal(objects.length, 1);
+    assert.equal(objects[0].link_type, "paid_to_vendor");
+    const paid = links.find((l) => l.type === "paid_to_vendor");
+    const onCt = links.find((l) => l.type === "payment_on_contract");
+    assert.ok(paid);
+    assert.match(paid.to, /^vendor:stem:/);
+    assert.ok(onCt);
+    assert.equal(onCt.to, "contract:CT-PARKS-FIX005");
+    assert.equal(paid.provenance.source_system, "checkbook-spending");
   });
 
   it("does not invent people links without person rows", () => {
@@ -201,6 +259,8 @@ describe("entity intelligence view — Parks multi-domain", () => {
   it("materialization corpus includes Parks as multi-domain demo", () => {
     const observations = collectCrossDomainObservations(ROOT);
     assert.ok(observations.length > 10, "expected warehouse + seed observations");
+    const payments = observations.filter((o) => o.object_kind === "payment");
+    assert.ok(payments.length >= 1, "expected checkbook payment fixtures");
     const doc = buildEntityIntelligenceDoc(ROOT);
     assert.ok(doc.multi_domain_count >= 1);
     assert.equal(doc.verified_demo?.ref, "agency:id:parks-and-recreation");
@@ -213,6 +273,17 @@ describe("entity intelligence view — Parks multi-domain", () => {
     assert.equal(hit.ok, true);
     assert.equal(hit.root.ref, "agency:id:parks-and-recreation");
     assert.ok(hit.domains.money.count + hit.domains.land.count >= 2);
+    // Join-key edges present on multi-domain demo when fixtures carry PIN/BBL
+    const joinTypes = new Set([
+      "sited_on_parcel",
+      "shares_authority_key",
+      "references_contract",
+      "contract_published_by_agency",
+    ]);
+    assert.ok(
+      (hit.links || []).some((l) => joinTypes.has(l.type)),
+      "expected at least one join-key edge on Parks",
+    );
 
     // Miss returns honest empty, not fabricated links
     const miss = lookupEntityIntelligence(doc, {
@@ -222,6 +293,44 @@ describe("entity intelligence view — Parks multi-domain", () => {
     assert.equal(miss.ok, true);
     assert.equal(miss.serve, "materialization_miss");
     assert.equal(miss.metrics.total_linked_objects, 0);
+  });
+
+  it("warehouse entity-intelligence index powers root lookup without re-scan", () => {
+    const observations = collectCrossDomainObservations(ROOT);
+    const indexDoc = buildEntityIntelligenceIndex(observations, {
+      max_entities: 40,
+      max_per_domain: 6,
+    });
+    assert.equal(indexDoc.version, ENTITY_INTELLIGENCE_INDEX_VERSION);
+    assert.ok(indexDoc.edge_count > 0);
+    assert.ok(indexDoc.join_key_edge_count > 0, "expected PIN/BBL/contract/payment edges");
+    assert.ok(indexDoc.root_count >= 1);
+    assert.ok(indexDoc.link_type_counts.paid_to_vendor >= 1);
+    assert.ok(
+      indexDoc.link_type_counts.shares_authority_key >= 1
+        || indexDoc.link_type_counts.references_contract >= 1
+        || indexDoc.link_type_counts.sited_on_parcel >= 1,
+    );
+
+    const fromIndex = lookupFromIndex(indexDoc, {
+      kind: "agency",
+      name: "Department of Parks and Recreation",
+    });
+    assert.equal(fromIndex.ok, true);
+    assert.equal(fromIndex.serve, "warehouse_index");
+    assert.equal(fromIndex.root.ref, "agency:id:parks-and-recreation");
+    assert.ok(fromIndex.metrics.domains_matched >= 3);
+
+    // Vendor payment chain: award named_vendor + payment paid_to_vendor share stem
+    const vendorHit = lookupFromIndex(indexDoc, {
+      kind: "vendor",
+      name: "FIXTURE VENDOR E",
+    });
+    assert.equal(vendorHit.ok, true);
+    if (vendorHit.serve === "warehouse_index") {
+      const types = new Set((vendorHit.links || []).map((l) => l.type));
+      assert.ok(types.has("named_vendor") || types.has("paid_to_vendor"));
+    }
   });
 
   it("committed lookup artifact exists and matches rebuild shape", () => {
