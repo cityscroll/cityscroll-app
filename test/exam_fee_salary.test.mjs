@@ -12,6 +12,8 @@ import {
   feeSalaryGapFor,
   attachFeeSalaryGap,
   buildArtifact,
+  applyNoeFeeSalaryFromBody,
+  parseNoeFeeSalaryFromBody,
 } from "../tools/build_staffing_exams.mjs";
 
 const require = createRequire(import.meta.url);
@@ -110,8 +112,32 @@ test("UI careerMoney uses class-a copy for never-ingested fee/salary nulls", () 
   assert.match(html, /career_fee_salary_not_yet_ingested_html/);
   assert.match(html, /examFeeSalaryView/);
   assert.match(html, /data-fee-salary=/);
+  assert.match(html, /function careerSalaryHTML/);
   assert.match(i18n, /career_fee_salary_not_yet_ingested_html:\s*"Not yet shown here/);
   assert.match(i18n, /career_noe_source_name:/);
+});
+
+test("build densifies fee/salary from raw NOE body when structured fields are missing", () => {
+  const body = `
+WHEN TO APPLY: From: July 1, 2026 APPLICATION FEE: $68.00
+THE SALARY:
+  The current minimum salary is $48,206 per annum. This rate is subject to change.
+`;
+  const parsed = parseNoeFeeSalaryFromBody(body);
+  assert.equal(parsed.fee, 68);
+  assert.equal(parsed.salary_min, 48206);
+
+  const densified = applyNoeFeeSalaryFromBody({
+    exam_number: "7016",
+    title: "Caseworker",
+    notice_url: "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277016000.pdf",
+    sources: ["dcas-open-competitive"],
+    noe_body: body,
+  });
+  assert.equal(densified.fee, 68);
+  assert.equal(densified.salary_min, 48206);
+  assert.equal(attachFeeSalaryGap(densified).fee_salary_gap, null);
+  assert.equal(Staffing.examFeeSalaryView(densified).kind, "joined");
 });
 
 test("buildArtifact retains prior NOE amounts for annual-only survivors", () => {

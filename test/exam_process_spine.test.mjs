@@ -183,6 +183,9 @@ test("public exam detail mounts the process spine; guide steps stay teaching-onl
   assert.match(index, /exam_stage_list_establishment/);
   assert.match(index, /exam_stage_certification/);
   assert.match(index, /exam_stage_appointment/);
+  // Phase-group surface (stepper + lead) on top of the process stages.
+  assert.match(index, /buildExamPhaseView|exam_phase_spine/);
+  assert.match(index, /exam-phase-stepper|exam_phase_now_html/);
   // Static guide steps remain (teaching), distinct from process spine mount.
   assert.match(index, /career_step4_title/);
   assert.match(index, /careerOutcomeHTML/);
