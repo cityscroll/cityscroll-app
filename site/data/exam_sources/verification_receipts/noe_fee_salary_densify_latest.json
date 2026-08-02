@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "source_contract_id": "dcas-noe-fee-salary-densify",
+  "verified_at": "2026-08-02",
+  "verified_at_utc": "2026-08-02T20:10:57.838Z",
+  "fee_salary_non_null_before": {
+    "total": 228,
+    "both": 8,
+    "rate": 0.03508771929824561
+  },
+  "fee_salary_non_null_after": {
+    "total": 228,
+    "both": 21,
+    "rate": 0.09210526315789473
+  },
+  "densify_records": 13,
+  "densify_applied": 13,
+  "policy": {
+    "public_noe_path_only": true,
+    "annual_schedule_has_no_fee_columns": true,
+    "never_fabricate": true
+  },
+  "note": "Before = after open-competitive merge + retainNoeDetailFields; after = plus NOE body densify cache."
+}

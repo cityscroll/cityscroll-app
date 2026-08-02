@@ -14,6 +14,10 @@ import {
   buildArtifact,
   applyNoeFeeSalaryFromBody,
   parseNoeFeeSalaryFromBody,
+  applyNoeDensifyRecord,
+  feeSalaryNonNullStats,
+  extractNoeExamNumbers,
+  STAFFING_EXAMS_SCHEMA_VERSION,
 } from "../tools/build_staffing_exams.mjs";
 
 const require = createRequire(import.meta.url);
@@ -21,6 +25,12 @@ const Staffing = require("../site/staffing.js");
 const artifact = JSON.parse(readFileSync(new URL("../site/data/staffing_exams.json", import.meta.url)));
 const openCompetitive = JSON.parse(
   readFileSync(new URL("../site/data/exam_sources/dcas_open_competitive.json", import.meta.url)),
+);
+const densify = JSON.parse(
+  readFileSync(new URL("../site/data/exam_sources/noe_fee_salary_densify.json", import.meta.url)),
+);
+const densifyReceipt = JSON.parse(
+  readFileSync(new URL("../site/data/exam_sources/verification_receipts/noe_fee_salary_densify_latest.json", import.meta.url)),
 );
 const html = readFileSync(new URL("../site/index.html", import.meta.url), "utf8");
 const i18n = readFileSync(new URL("../site/i18n.js", import.meta.url), "utf8");
@@ -115,6 +125,68 @@ test("UI careerMoney uses class-a copy for never-ingested fee/salary nulls", () 
   assert.match(html, /function careerSalaryHTML/);
   assert.match(i18n, /career_fee_salary_not_yet_ingested_html:\s*"Not yet shown here/);
   assert.match(i18n, /career_noe_source_name:/);
+});
+
+test("NOE body densify raises fee/salary non-null rate with stamped receipt", () => {
+  assert.equal(artifact.schema_version, STAFFING_EXAMS_SCHEMA_VERSION);
+  const stats = feeSalaryNonNullStats(artifact.exams);
+  assert.equal(stats.total, 228);
+  assert.ok(stats.both >= 21, `expected densified both>=21, got ${stats.both}`);
+  assert.ok(
+    densifyReceipt.fee_salary_non_null_after.both > densifyReceipt.fee_salary_non_null_before.both,
+    "receipt must show densify raised the non-null count",
+  );
+  assert.equal(densifyReceipt.fee_salary_non_null_before.both, 8);
+  assert.equal(densifyReceipt.fee_salary_non_null_after.both, stats.both);
+  assert.equal(densifyReceipt.policy.never_fabricate, true);
+  assert.equal(densifyReceipt.policy.public_noe_path_only, true);
+
+  // Field cases from multi-exam Police Officer NOE + Assistant Electrical Engineer.
+  const po = artifact.exams.find((row) => row.exam_number === "7311");
+  assert.ok(po);
+  assert.equal(po.fee, 0);
+  assert.equal(po.salary_min, 55942);
+  assert.equal(po.salary_max, 109352);
+  assert.ok(po.notice_url && po.notice_url.includes("20277311000"));
+  assert.equal(Staffing.examFeeSalaryView(po).kind, "joined");
+
+  const laterWindow = artifact.exams.find((row) => row.exam_number === "7322");
+  assert.ok(laterWindow);
+  assert.equal(laterWindow.fee, 0);
+  assert.equal(laterWindow.salary_min, 55942);
+
+  const aee = artifact.exams.find((row) => row.exam_number === "7007");
+  assert.ok(aee);
+  assert.equal(aee.fee, 82);
+  assert.equal(aee.salary_min, 66330);
+  assert.equal(aee.fee_salary_gap, null);
+});
+
+test("applyNoeDensifyRecord never overwrites structured fee and multi-exam numbers extract", () => {
+  const kept = applyNoeDensifyRecord(
+    { exam_number: "7016", fee: 68, salary_min: 48206, sources: ["dcas-open-competitive"] },
+    densify.records.find((r) => r.exam_number === "7007"),
+  );
+  assert.equal(kept.fee, 68);
+  assert.equal(kept.salary_min, 48206);
+
+  const multiHeader =
+    "Exam No. 7311, 7312, 7313, 7314, 7315, 7316, 7317, 7318, 7319, 7320, 7321, and 7322";
+  const nums = extractNoeExamNumbers(multiHeader);
+  assert.equal(nums.length, 12);
+  assert.equal(nums[0], "7311");
+  assert.equal(nums.at(-1), "7322");
+});
+
+test("#exam deep-link preserves detail hash and paints detail shell before list", () => {
+  assert.match(html, /function showExam\s*\(/);
+  assert.match(html, /function paintExamDetailShell\s*\(/);
+  assert.match(html, /Preserve #exam\/<id>/);
+  assert.match(html, /careerSelected && \/\^\\d\{4\}\$\//);
+  assert.match(html, /feed\.hidden\s*=\s*examDetail/);
+  assert.match(html, /data-exam-loading/);
+  // serializeState must not rewrite an open exam detail into #people?view=guide.
+  assert.match(html, /return "#exam\/"\+encodeURIComponent/);
 });
 
 test("build densifies fee/salary from raw NOE body when structured fields are missing", () => {

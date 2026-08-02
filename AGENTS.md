@@ -655,15 +655,22 @@ metrics grid stays for joined counts. Civic-time kinds (library-only):
 
 ## Exam fee / salary (NOE path)
 
-Fee and starting salary come **only** from the open-competitive Notice of
-Examination path (`site/data/exam_sources/dcas_open_competitive.json`), not the
-annual schedule table (`4ptz-hmtc` has no fee columns). Build retains NOE fields
-when an exam drops off the open snapshot but stays on the annual table
-(`retainNoeDetailFields`). Schedule-only nulls stamp
-`fee_salary_gap.class = not_yet_ingested` (class a); class b only if a linked
-NOE omits the field. UI: `examFeeSalaryView` + `career_fee_salary_not_yet_ingested_html`.
-Non-null field case: exam `7016` Caseworker fee `$68` / salary `$48,206`.
-Verify: `node --test test/exam_fee_salary.test.mjs test/deadline_exam_cards.test.mjs`.
+Fee and starting salary come **only** from public Notice of Examination bodies,
+never the annual schedule table (`4ptz-hmtc` has no fee columns). Sources:
+`dcas_open_competitive.json` (live open-window snapshot) plus
+`noe_fee_salary_densify.json` (body-parsed densify cache for multi-exam and
+other NOEs the open page does not list). Build retains NOE fields when an exam
+drops off the open snapshot (`retainNoeDetailFields`) and merges densify via
+`applyNoeDensifyRecord` (`STAFFING_EXAMS_SCHEMA_VERSION` bump when densify shape
+changes). Schedule-only nulls stamp `fee_salary_gap.class = not_yet_ingested`
+(class a); class b only if a linked NOE omits the field. UI:
+`examFeeSalaryView` + `career_fee_salary_not_yet_ingested_html`. Field case:
+exam `7016` Caseworker fee `$68` / salary `$48,206`. Deep-link `#exam/<id>`
+keeps hash + paints detail shell first (`showExam` / `paintExamDetailShell` /
+`serializeState`). Receipt:
+`site/data/exam_sources/verification_receipts/noe_fee_salary_densify_latest.json`.
+Verify: `node --test test/exam_fee_salary.test.mjs test/noe_fee_salary.test.mjs
+test/deadline_exam_cards.test.mjs`.
 
 ## Digest watermark recovery (catch-up digests)
 
