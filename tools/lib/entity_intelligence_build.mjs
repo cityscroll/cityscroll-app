@@ -15,6 +15,7 @@ import {
   observationFromPeopleRow,
   observationsFromRulesMaterialization,
   observationsFromMeetingsMaterialization,
+  observationsFromPeopleMaterialization,
   mergeBblsOntoLandObservations,
   observationFromPropertyRow,
   buildIntelligenceCorpus,
@@ -222,7 +223,6 @@ export function collectCrossDomainObservations(root, opts = {}) {
   }
 
   // --- Meetings: live City Record hearings snapshot (meeting-outcomes-compatible) ---
-  // Person-level votes are not loaded here — production by_person retention is empty.
   const meetingsLimit = Number.isFinite(opts.meetings_limit) ? opts.meetings_limit : 250;
   const meetingsSnapshots = [
     path.join(root, "site/data/meetings_domain_observations.json"),
@@ -241,6 +241,38 @@ export function collectCrossDomainObservations(root, opts = {}) {
     })) {
       observations.push(obs);
     }
+  }
+
+  // --- People: person-level Legistar votes retained on meeting-outcomes ---
+  // Prefer the people domain snapshot (built from live by_person). Fallback walks
+  // meeting-outcomes fixtures that carry by_person. Never invents officials.
+  const peopleLimit = Number.isFinite(opts.people_limit) ? opts.people_limit : 200;
+  const peopleSnapshots = [
+    path.join(root, "site/data/people_domain_observations.json"),
+    path.join(root, "worker/test/fixtures/entity-intelligence/people_domain_observations.json"),
+    path.join(root, "worker/test/fixtures/entity-intelligence/meeting_outcomes_materialized_v2.json"),
+  ];
+  let peopleLoaded = 0;
+  for (const p of peopleSnapshots) {
+    if (peopleLoaded > 0 && p.endsWith("meeting_outcomes_materialized_v2.json")) {
+      // Domain snapshot already supplied people; skip the meetings fixture walk.
+      continue;
+    }
+    const doc = loadJsonIfExists(p);
+    if (!doc) continue;
+    const sourceSystem = cleanSourceSystem(
+      doc.source?.system || doc.source_system,
+      "legistar",
+    );
+    const batch = observationsFromPeopleMaterialization(doc, {
+      sourceSystem,
+      limit: peopleLimit,
+    });
+    for (const obs of batch) {
+      observations.push(obs);
+      peopleLoaded += 1;
+    }
+    if (peopleLoaded > 0 && String(p).includes("people_domain_observations")) break;
   }
 
   // --- Seed: property multi-domain demos + optional people (only when person_id present) ---
@@ -266,9 +298,12 @@ export function collectCrossDomainObservations(root, opts = {}) {
         if (obs) observations.push(obs);
       }
     }
-    for (const row of seed.people || []) {
-      const obs = observationFromPeopleRow(row);
-      if (obs) observations.push(obs);
+    // People seed only when no live people observations were loaded.
+    if (peopleLoaded === 0) {
+      for (const row of seed.people || []) {
+        const obs = observationFromPeopleRow(row);
+        if (obs) observations.push(obs);
+      }
     }
     // Optional extra money/land/payment rows for multi-domain demos
     for (const row of seed.money || []) {
@@ -330,11 +365,17 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
     max_entities: opts.max_entities || 40,
   });
 
-  // Pick a verified multi-domain demo (prefer Parks — money fixture + land applicant)
+  // Prefer a multi-domain demo that includes live people when present; else Parks
+  // (money fixture + land applicant); else first multi-domain entity.
+  const multi = corpus.entities.filter((e) => (e.metrics?.domains_matched || 0) >= 2);
+  const withPeople = multi.find((e) => e.domains?.people?.status === "matched");
   const parks = corpus.entities.find(
     (e) => e.root?.kind === "agency" && /parks/i.test(e.root?.ref || e.root?.canonical_id || ""),
   );
-  const multi = corpus.entities.filter((e) => (e.metrics?.domains_matched || 0) >= 2);
+  // Demo must show people when the domain is productized (acceptance: people matched).
+  // City Council (meetings + people) qualifies; Parks remains the densest multi-domain
+  // when people is empty on other roots.
+  const demoEntity = withPeople || parks || multi[0] || null;
 
   return {
     schema_version: 1,
@@ -347,24 +388,17 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
     multi_domain_count: corpus.multi_domain_count,
     domains: corpus.domains,
     demo_refs: corpus.demo_refs,
-    verified_demo: parks
+    verified_demo: demoEntity
       ? {
-          ref: parks.root.ref,
-          display_name: parks.root.display_name,
-          domains_matched: parks.metrics.domains_matched,
-          total_linked_objects: parks.metrics.total_linked_objects,
+          ref: demoEntity.root.ref,
+          display_name: demoEntity.root.display_name,
+          domains_matched: demoEntity.metrics.domains_matched,
+          total_linked_objects: demoEntity.metrics.total_linked_objects,
           domain_status: Object.fromEntries(
-            Object.entries(parks.domains).map(([k, v]) => [k, { status: v.status, count: v.count }]),
+            Object.entries(demoEntity.domains).map(([k, v]) => [k, { status: v.status, count: v.count }]),
           ),
         }
-      : multi[0]
-        ? {
-            ref: multi[0].root.ref,
-            display_name: multi[0].root.display_name,
-            domains_matched: multi[0].metrics.domains_matched,
-            total_linked_objects: multi[0].metrics.total_linked_objects,
-          }
-        : null,
+      : null,
     entities: corpus.entities,
     by_ref: corpus.by_ref,
     provenance: {
@@ -379,6 +413,7 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
         "site/data/land_default_ulurp.json",
         "site/data/rules_domain_observations.json",
         "site/data/meetings_domain_observations.json",
+        "site/data/people_domain_observations.json",
         "worker/test/fixtures/entity-intelligence/domain_observations.json",
         "worker/test/fixtures/property-cross-domain/corpus.json",
         "test/fixtures/property_disposition/multi_notice_bbl.json",
@@ -395,11 +430,12 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
         "disposition_owner_label_v1",
         "rules_agency_issued_v1",
         "meetings_agency_hosts_v1",
+        "people_votes_as_official_v1",
         "exact_ulurp_token_v1",
         "zap_project_ref_v1",
       ],
       note:
-        "Links only when identity normalizers or join keys resolve. Identity: agency/vendor across money/land/property/rules/meetings. Join keys: PIN (shares_authority_key), contract_id (references_contract / payment_on_contract), BBL (sited_on_parcel / property exact BBL), payee (paid_to_vendor), meeting body ULURP/ZAP → decides_land_project when the land project is in corpus. Rules and meetings densify from City Record domain snapshots (Agency Rules + Public Hearings), not invented contract/vendor joins. Property attaches via City Record agency_name and labeled disposition owners. Empty domains are explicit; people defaults to not_yet_ingested without by_person rows.",
+        "Links only when identity normalizers or join keys resolve. Identity: agency/vendor across money/land/property/rules/meetings/people. Join keys: PIN (shares_authority_key), contract_id (references_contract / payment_on_contract), BBL (sited_on_parcel / property exact BBL), payee (paid_to_vendor), meeting body ULURP/ZAP → decides_land_project when the land project is in corpus. Rules and meetings densify from City Record domain snapshots; people densify from Legistar by_person retained on meeting-outcomes (never invented tallies). Property attaches via City Record agency_name and labeled disposition owners. Empty domains are explicit per entity.",
     },
   };
 }

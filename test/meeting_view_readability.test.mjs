@@ -47,6 +47,7 @@ const {
   matterDetailUrl,
   nonCouncilWhereHTML,
   nonCouncilHearingOutcomesHTML,
+  officialHref,
 } = new Function(
   "t", "fdate", "cleanText", "escUiHtml",
   `
@@ -61,6 +62,10 @@ const {
   extractFn("nonCouncilStageLabel") +
   extractFn("nonCouncilHearingOutcomesHTML") +
   extractFn("collapseMeetingAgenda") +
+  extractFn("officialIdFromPerson") +
+  extractFn("officialHref") +
+  extractFn("collectRollCallPeople") +
+  extractFn("meetingRollCallChipHTML") +
   extractFn("meetingVotesHTML") +
   extractFn("isCityCouncilNotice") +
   extractFn("meetingPhaseLabel") +
@@ -70,7 +75,7 @@ const {
   extractFn("meetingPhaseLeadHTML") +
   extractFn("meetingMatterPhaseHTML") +
   extractFn("meetingOutcomesHTML") +
-  `return { meetingOutcomeBucket, collapseMeetingAgenda, meetingOutcomesHTML, meetingMatterPhaseHTML, matterDetailUrl, nonCouncilWhereHTML, nonCouncilHearingOutcomesHTML };`,
+  `return { meetingOutcomeBucket, collapseMeetingAgenda, meetingOutcomesHTML, meetingMatterPhaseHTML, matterDetailUrl, nonCouncilWhereHTML, nonCouncilHearingOutcomesHTML, meetingRollCallChipHTML, meetingVotesHTML, officialHref };`,
 )(t, fdate, cleanText, escUiHtml);
 
 test("outcome bucket maps approve / hold / refer", () => {
@@ -265,4 +270,108 @@ test("phase tools render lead → stepper → panels on fixture spines", () => {
 test("meetingMatterPhaseHTML is empty for empty views", () => {
   assert.equal(meetingMatterPhaseHTML(null), "");
   assert.equal(meetingMatterPhaseHTML({ empty: true }), "");
+});
+
+test("roll-call chip surfaces on matter card when by_person is retained", () => {
+  const html = meetingOutcomesHTML({
+    request_id: "20260706036",
+    join: { matched: true },
+    council_event: {
+      event_id: "22526",
+      body_name: "Subcommittee on Landmarks",
+      event_date: "2026-07-14",
+    },
+    agenda_items: [
+      {
+        title: "Demo matter",
+        matters: [
+          {
+            matter_id: "79193",
+            matter_file: "LU 0112-2026",
+            title: "East Harlem Article XI",
+            outcome: "Approved by Subcommittee",
+            votes: [
+              {
+                result: "Passed",
+                vote_identity: "roll_call",
+                counts: { aye: 6, nay: 0, abstain: 1 },
+                by_person: [
+                  {
+                    person_id: "7801",
+                    person_name: "Christopher Marte",
+                    vote_value: "Affirmative",
+                    vote_bucket: "aye",
+                    official: {
+                      id: "official:7801",
+                      entity_type: "official",
+                      display_name: "Christopher Marte",
+                    },
+                  },
+                  {
+                    person_id: "7825",
+                    person_name: "Alexa Avilés",
+                    vote_value: "Affirmative",
+                    vote_bucket: "aye",
+                    official: {
+                      id: "official:7825",
+                      entity_type: "official",
+                      display_name: "Alexa Avilés",
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  });
+  // Chip is on the matter card, not only inside collapsed detail
+  assert.match(html, /meeting-roll-call-chip/);
+  assert.match(html, /data-vote-identity="roll_call"/);
+  assert.match(html, /data-official-count="2"/);
+  // Names deep-link to event-scoped official skim
+  assert.match(html, /#official\/7801/);
+  assert.match(html, /notice=20260706036/);
+  assert.match(html, /event=22526/);
+  assert.match(html, /Christopher Marte/);
+});
+
+test("tally_only votes do not invent a roll-call chip", () => {
+  const html = meetingOutcomesHTML({
+    request_id: "x",
+    join: { matched: true },
+    council_event: { event_id: "1", body_name: "City Council" },
+    agenda_items: [
+      {
+        title: "Voice vote",
+        matters: [
+          {
+            matter_id: "9",
+            matter_file: "Res 1",
+            title: "Voice",
+            outcome: "Approved",
+            votes: [
+              {
+                result: "Passed",
+                vote_identity: "tally_only",
+                counts: { aye: 5, nay: 0 },
+                by_person: [],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  });
+  assert.doesNotMatch(html, /meeting-roll-call-chip/);
+  assert.doesNotMatch(html, /data-vote-identity="roll_call"/);
+});
+
+test("officialHref builds event-scoped deep link", () => {
+  assert.equal(
+    officialHref("7801", { eventId: "22526", noticeId: "20260706036" }),
+    "#official/7801?event=22526&notice=20260706036",
+  );
+  assert.equal(officialHref("", { eventId: "1" }), "");
 });

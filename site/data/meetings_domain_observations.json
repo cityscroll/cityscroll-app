@@ -2,7 +2,7 @@
   "schema_version": 1,
   "domain": "meetings",
   "title": "Meetings domain observations for entity intelligence",
-  "description": "City Record Public Hearings and Meetings rows (and Agency Rules public hearings with event_date) for offline entity-intelligence materialization. Mirrors meeting-outcomes / hearings discovery notices. Person-level votes are not included (production by_person retention is empty).",
+  "description": "City Record Public Hearings and Meetings rows (and Agency Rules public hearings with event_date) for offline entity-intelligence materialization. Mirrors meeting-outcomes / hearings discovery notices. Person-level votes live in the people domain snapshot (by_person from meeting-outcomes), not here.",
   "retrieved_at": "2026-08-02T13:38:55.781Z",
   "window_days": 180,
   "source": {
@@ -77,7 +77,7 @@
     {
       "request_id": "20260716022",
       "agency_name": "Parks and Recreation",
-      "short_title": "Notice of Joint Public Hearing: 8/10/2026; for the Development, Operation and Maintenance of an Outdoor Café and Other Amenities in WNYC Transmitter Park, Brooklyn (Solicitation # B385-SB-2025)",
+      "short_title": "Notice of Joint Public Hearing: 8/10/2026; for the Development, Operation and Maintenance of an Outdoor Caf\u00e9 and Other Amenities in WNYC Transmitter Park, Brooklyn (Solicitation # B385-SB-2025)",
       "start_date": "2026-07-24T00:00:00.000",
       "event_date": "2026-08-10T14:30:00.000",
       "type_of_notice_description": "Public Hearings",

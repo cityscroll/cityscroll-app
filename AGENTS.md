@@ -44,7 +44,7 @@ Rules/meetings densify from live City Record domain snapshots
 `hosts_meeting`; meetings also emit `decides_land_project` when a hearing body
 cites a ULURP token or ZAP project URL that resolves to a known land project in
 the corpus (strict `extractUlurpKeys` / portal URL only — no title-only invent).
-People stay `not_yet_ingested` until production `by_person` retention > 0.
+People densify from Legistar `by_person` on meeting-outcomes (`site/data/people_domain_observations.json`).
 Refresh snapshots: `node tools/build_rules_meetings_domain_observations.mjs`
 (extracts ULURP/ZAP keys from body at build time — raw body is not committed)
 then rebuild entity intelligence.
@@ -63,9 +63,10 @@ node --test test/cross_domain_object_links.test.mjs \
   worker/test/entity_intelligence.test.mjs
 ```
 
-Serve: `GET /entity-intelligence?demo=1` (Parks multi-domain) or
-`?kind=agency&name=…`. Agency profile UI mounts `#entity-intelligence`. People
-stays class-(a) `not_yet_ingested` until person-level Legistar retention > 0.
+Serve: `GET /entity-intelligence?demo=1` (prefers multi-domain with people when
+live — City Council field case) or `?kind=agency&name=…`. Agency profile UI mounts
+`#entity-intelligence`. People is matched when person-level Legistar votes are
+retained (`by_person`); Parks remains multi-domain without inventing officials.
 ADR: `docs/adr/cross-domain-object-links.md`. Warehouse SQL shape:
 `warehouse/sql/examples/entity_intelligence_index.sql`; proof receipt:
 `warehouse/receipts/proof/wh_entity_intelligence_index_latest.json`.
@@ -379,11 +380,14 @@ with typed `votes_on` edges (official → matter|agenda_item). Pure helpers:
 `official_votes_on_edge_rate`. **Live audit 2026-08-02 (event 22526):** 49/49
 vote rows retained after VotePerson* mapping (`person_vote_retention_rate=1`);
 receipt `official_person_vote_retention_2026-08-02.json`. Public meeting-outcomes
-KV still needs re-materialization before readers see non-empty `by_person`.
 `vote_identity` is `roll_call` when persons retained, `tally_only` when rows
-exist without identity (no fabrication). Meeting UI renders person roll call
-**only when** `by_person` is non-empty; otherwise class-(a) copy
-`meeting_outcomes_no_person_votes_html`.
+exist without identity (no fabrication). Meeting UI surfaces a one-line roll-call
+chip on the matter card when `by_person` is non-empty (not only inside collapsed
+Decision) and deep-links names to `#official/{id}?notice=&event=` (event-scoped
+skim). Entity intelligence loads people from
+`site/data/people_domain_observations.json` (built via
+`tools/build_rules_meetings_domain_observations.mjs` from meeting-outcomes
+`by_person`). Never invent roll call for `tally_only`.
 Immutable `source_records` dual-write for Legistar Events/EventItems/Votes/
 Attachments is live under `LEGISTAR_SOURCE_RECORD_DUAL_WRITE`
 (`worker/src/lib/legistar_source_records.mjs`).

@@ -34,6 +34,7 @@ export {
   flattenMeetingsMaterializationRecord,
   observationsFromRulesMaterialization,
   observationsFromMeetingsMaterialization,
+  observationsFromPeopleMaterialization,
   hearingBodyBlob,
   extractZapProjectIds,
   extractMeetingLandRefs,

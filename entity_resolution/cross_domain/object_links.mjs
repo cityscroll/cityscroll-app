@@ -1148,41 +1148,231 @@ export function observationsFromMeetingsMaterialization(viewOrRows, opts = {}) {
 
 /**
  * Shape a people-domain observation (official vote retention).
- * Only emits when person id is present — production often has tallies only.
+ * Only emits when person id + name are present — never invents officials from
+ * tallies. Live Legistar Votes use VotePersonId / VotePersonName; normalized
+ * meeting-outcomes rows use person_id / person_name; older fixtures may use
+ * PersonId / PersonName.
  * @param {object} row
  * @param {{ sourceSystem?: string }} [opts]
  */
 export function observationFromPeopleRow(row, opts = {}) {
   if (!row || typeof row !== "object") return null;
   const sourceSystem = clean(opts.sourceSystem || row.source_system || "legistar");
-  // Live Legistar Votes: VotePersonId / VotePersonName. Normalized rows:
-  // person_id / person_name. Older fixtures: PersonId / PersonName.
   const personId = clean(
     row.person_id || row.VotePersonId || row.PersonId || row.PersonID || "",
   );
   const personName = clean(
-    row.person_name || row.VotePersonName || row.PersonName || row.PersonFullName || "",
+    row.person_name
+      || row.VotePersonName
+      || row.PersonName
+      || row.PersonFullName
+      || row.official?.display_name
+      || "",
   );
   if (!personId || !personName) return null;
   const matterId = clean(row.matter_id || row.MatterId);
   const eventId = clean(row.event_id || row.EventId || row.VoteEventItemId);
+  const requestId = clean(row.request_id || row.notice_id);
+  // Legistar person-level votes on City Council hearings default to City Council
+  // when the publisher row omits agency_name (typical for Votes nested under Event).
+  const agencyName =
+    clean(row.agency_name)
+    || clean(row.body_name)
+    || (sourceSystem === "legistar" || /legistar/i.test(sourceSystem)
+      ? "City Council"
+      : "");
+  const vote =
+    clean(row.vote || row.vote_value || row.VoteValueName || row.VoteValue) || null;
+  const voteBucket = clean(row.vote_bucket) || null;
+  const matterFile = clean(row.matter_file) || null;
+  const labelBits = [personName];
+  if (vote) labelBits.push(vote);
+  if (matterFile) labelBits.push(matterFile);
 
   return {
     domain: "people",
     object_kind: "vote",
     source_system: sourceSystem,
-    source_record_id: `${sourceSystem}:person:${personId}${matterId ? `:matter:${matterId}` : ""}`,
+    source_record_id: `${sourceSystem}:person:${personId}${matterId ? `:matter:${matterId}` : ""}${eventId ? `:event:${eventId}` : ""}`,
     native_key: personId,
     person_id: personId,
     person_name: personName,
-    agency_name: clean(row.agency_name) || null, // rarely present
-    label: personName,
+    agency_name: agencyName || null,
+    label: labelBits.join(" · "),
     when: clean(row.vote_date || row.event_date) || null,
-    vote: clean(row.vote || row.vote_value || row.VoteValueName || row.VoteValue) || null,
+    vote,
+    vote_bucket: voteBucket,
     subject_ref: formatSubjectRef("entity", `official:${personId}`),
     matter_id: matterId || null,
+    matter_file: matterFile,
+    matter_title: clean(row.matter_title) || null,
     event_id: eventId || null,
+    request_id: requestId || null,
   };
+}
+
+/**
+ * Emit people observations from a people domain snapshot ({ rows }), a
+ * meeting-outcomes:materialized:v2 view (walks by_person on matter votes), or
+ * a bare array of person-vote rows. Skips tally_only / empty by_person.
+ * @param {object|object[]} viewOrRows
+ * @param {{ sourceSystem?: string, limit?: number, agencyName?: string, requestId?: string, eventId?: string }} [opts]
+ * @returns {object[]}
+ */
+export function observationsFromPeopleMaterialization(viewOrRows, opts = {}) {
+  const limit = Number.isFinite(opts.limit) ? Math.max(0, opts.limit) : 500;
+  if (!viewOrRows) return [];
+
+  // Domain snapshot shape: { rows: [ person vote rows ] }
+  if (Array.isArray(viewOrRows?.rows) && viewOrRows.domain === "people") {
+    const sourceSystem = clean(
+      opts.sourceSystem
+        || viewOrRows?.source?.system
+        || viewOrRows?.source_system
+        || "legistar",
+    );
+    const out = [];
+    for (const row of viewOrRows.rows) {
+      if (out.length >= limit) break;
+      const obs = observationFromPeopleRow(row, { sourceSystem });
+      if (obs) out.push(obs);
+    }
+    return out;
+  }
+
+  // Bare person-vote row array
+  if (Array.isArray(viewOrRows) && viewOrRows.length && (viewOrRows[0]?.person_id || viewOrRows[0]?.VotePersonId || viewOrRows[0]?.by_person == null)) {
+    const looksLikePerson = viewOrRows.some(
+      (r) => r && (r.person_id || r.VotePersonId || r.PersonId || r.person_name),
+    );
+    if (looksLikePerson && !viewOrRows.some((r) => Array.isArray(r?.agenda_items) || Array.isArray(r?.matters))) {
+      const sourceSystem = clean(opts.sourceSystem || "legistar");
+      const out = [];
+      for (const row of viewOrRows) {
+        if (out.length >= limit) break;
+        const obs = observationFromPeopleRow(row, { sourceSystem });
+        if (obs) out.push(obs);
+      }
+      return out;
+    }
+  }
+
+  // Meeting-outcomes materialization / single record: walk agenda matters' votes.
+  const records = Array.isArray(viewOrRows)
+    ? viewOrRows
+    : Array.isArray(viewOrRows?.records)
+      ? viewOrRows.records
+      : viewOrRows?.request_id || viewOrRows?.agenda_items
+        ? [viewOrRows]
+        : Array.isArray(viewOrRows?.rows)
+          ? viewOrRows.rows
+          : [];
+
+  const sourceSystem = clean(
+    opts.sourceSystem
+      || viewOrRows?.source?.system
+      || viewOrRows?.source_system
+      || "legistar",
+  );
+  const out = [];
+  const seen = new Set();
+
+  for (const rec of records) {
+    if (out.length >= limit) break;
+    if (!rec || typeof rec !== "object") continue;
+    const requestId =
+      clean(opts.requestId)
+      || clean(rec.request_id)
+      || clean(rec.notice?.request_id)
+      || "";
+    const eventId =
+      clean(opts.eventId)
+      || clean(rec.council_event?.event_id)
+      || clean(rec.event_id)
+      || "";
+    const agencyName =
+      clean(opts.agencyName)
+      || clean(rec.notice?.agency)
+      || clean(rec.council_event?.body_name)
+      || clean(rec.agency_name)
+      || "City Council";
+    const eventDate =
+      clean(rec.council_event?.event_date)
+      || clean(rec.council_event?.start_time)
+      || clean(rec.notice?.event_date)
+      || clean(rec.event_date)
+      || "";
+
+    const agenda = Array.isArray(rec.agenda_items) ? rec.agenda_items : [];
+    // Also accept a flat matters list (tests / slim fixtures).
+    const matterBags = agenda.length
+      ? agenda.flatMap((item) =>
+        (Array.isArray(item?.matters) ? item.matters : []).map((m) => ({
+          ...m,
+          agenda_number: item.agenda_number,
+        }))
+      )
+      : Array.isArray(rec.matters)
+        ? rec.matters
+        : [];
+
+    for (const matter of matterBags) {
+      if (out.length >= limit) break;
+      const matterId = clean(matter?.matter_id || matter?.MatterId);
+      const votes = Array.isArray(matter?.votes) ? matter.votes : [];
+      for (const vote of votes) {
+        if (out.length >= limit) break;
+        if (vote?.vote_identity === "tally_only") continue;
+        const people = Array.isArray(vote?.by_person) ? vote.by_person : [];
+        for (const person of people) {
+          if (out.length >= limit) break;
+          const row = {
+            ...person,
+            person_id: person?.person_id || person?.official?.id?.replace(/^official:/, ""),
+            person_name:
+              person?.person_name || person?.official?.display_name,
+            vote: person?.vote_value || person?.vote || vote?.result,
+            vote_bucket: person?.vote_bucket,
+            matter_id: matterId,
+            matter_file: clean(matter?.matter_file),
+            matter_title: clean(matter?.title),
+            event_id: eventId,
+            request_id: requestId,
+            agency_name: agencyName,
+            event_date: eventDate,
+            source_system: sourceSystem,
+          };
+          const obs = observationFromPeopleRow(row, { sourceSystem });
+          if (!obs) continue;
+          if (seen.has(obs.source_record_id)) continue;
+          seen.add(obs.source_record_id);
+          out.push(obs);
+        }
+      }
+    }
+
+    // Flat by_person on the record (seed / slim fixtures)
+    if (Array.isArray(rec.by_person) && rec.by_person.length) {
+      for (const person of rec.by_person) {
+        if (out.length >= limit) break;
+        const obs = observationFromPeopleRow(
+          {
+            ...person,
+            event_id: eventId,
+            request_id: requestId,
+            agency_name: agencyName,
+            event_date: eventDate,
+            source_system: sourceSystem,
+          },
+          { sourceSystem },
+        );
+        if (!obs || seen.has(obs.source_record_id)) continue;
+        seen.add(obs.source_record_id);
+        out.push(obs);
+      }
+    }
+  }
+  return out;
 }
 
 /**
@@ -1233,6 +1423,22 @@ export function rootsForObservation(obs) {
     if (payee) {
       const vendor = resolveVendorSubject(payee);
       if (vendor) roots.push({ kind: "vendor", subject: vendor, field: "payee_name" });
+    }
+    return roots;
+  }
+
+  // People votes attach to the hearing body (City Council for Legistar person
+  // rows). Official subject_ref rides on the object; the identity root is the
+  // agency so agency intelligence can list people objects.
+  if (obs.domain === "people") {
+    const agencyName =
+      clean(obs.agency_name)
+      || (obs.source_system === "legistar" || /legistar/i.test(clean(obs.source_system))
+        ? "City Council"
+        : "");
+    if (agencyName) {
+      const agency = resolveAgencySubject(agencyName);
+      if (agency) roots.push({ kind: "agency", subject: agency, field: "agency_name" });
     }
     return roots;
   }
@@ -1633,6 +1839,14 @@ function parcelLinksForObservation(obs) {
 }
 
 function hrefForObject(obs) {
+  // Official skim: event-scoped vote summary when person id is known.
+  if (obs.domain === "people" && obs.person_id) {
+    const q = new URLSearchParams();
+    if (obs.event_id) q.set("event", obs.event_id);
+    if (obs.request_id) q.set("notice", obs.request_id);
+    const qs = q.toString();
+    return `#official/${encodeURIComponent(obs.person_id)}${qs ? `?${qs}` : ""}`;
+  }
   if (obs.request_id) return `#notice/${encodeURIComponent(obs.request_id)}`;
   if (obs.project_id) return `#land?project=${encodeURIComponent(obs.project_id)}`;
   if (obs.event_id) return `#notice/`; // meetings often via notice; leave soft
@@ -1766,18 +1980,8 @@ export function buildEntityIntelligenceFromBucket(root, bucket, opts = {}) {
       .sort((a, b) => String(b.when || "").localeCompare(String(a.when || "")))
       .slice(0, maxPerDomain);
 
-    if (domain === "people" && domainObjects.length === 0) {
-      domains[domain] = {
-        status: "not_yet_ingested",
-        gap_class: "not_yet_ingested",
-        note:
-          "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
-        objects: [],
-        count: 0,
-      };
-      continue;
-    }
-
+    // People is a live domain once by_person retention ships — empty here means
+    // no person-vote objects linked to THIS entity (not a permanent product gap).
     domains[domain] = {
       status: domainObjects.length ? "matched" : "empty",
       gap_class: domainObjects.length ? null : "empty_in_corpus",
@@ -2103,17 +2307,9 @@ export function lookupEntityIntelligence(doc, query) {
   };
 }
 
+/** Miss path: all domains empty (people no longer hard-coded as not_yet_ingested). */
 function emptyDomainBlockWithPeopleGap() {
-  const domains = emptyDomainBlock();
-  domains.people = {
-    status: "not_yet_ingested",
-    gap_class: "not_yet_ingested",
-    note:
-      "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
-    objects: [],
-    count: 0,
-  };
-  return domains;
+  return emptyDomainBlock();
 }
 
 // Re-export identity helpers tests may want.
