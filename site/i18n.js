@@ -581,6 +581,8 @@ const STRINGS = {
     career_area_other: "Other City work",
     career_date_unknown: "Date not published",
     career_not_published: "Not published — would appear on the Notice of Examination if released",
+    career_fee_salary_not_yet_ingested_html: "Not yet shown here — fee and salary live in {source}.",
+    career_noe_source_name: "the DCAS Notice of Examination",
     career_status_open: "Open now",
     career_status_upcoming: "Upcoming",
     career_status_closed: "Closed",

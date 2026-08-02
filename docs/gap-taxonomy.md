@@ -40,7 +40,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | Agency Rules notice detail · missing hearing, comment, adoption, or effective date on a joined rule | b | the official NYC Rules rule page and RSS fields if the agency releases that lifecycle date |
 | staffing exam cards · post-cycle outcomes | a | DCAS annual civil-service exam outcome aggregates + Civil Service List (Active) exam-level counts |
 | per-applicant exam results | b | DCAS candidate portals only if individual results were released as public open data (they are not) |
-| staffing exam card · fee or salary null | b | the Notice of Examination PDF / open-competitive schedule if DCAS states the amount |
+| staffing exam card · fee or salary null **CLASS CHANGE** | a | DCAS open-competitive exam schedule and Notices of Examination |
 | agency awards empty state · verified absent | b | NYS Authorities Budget Office procurement filings or Checkbook NYC if that agency released a joinable open dataset |
 | notice external-award empty after ABO check | a | NYS Authorities Budget Office procurement datasets |
 | land / ZAP · final decision documents beyond status | a | Zoning Application Portal projects |
@@ -161,6 +161,7 @@ Ordered for dispatch. Full rows (effort, join risk, value scores) live in
 ## Class changes (loud)
 
 - **CLASS CHANGE** `procurement-solicitation-documents`: not_yet_ingested → not_published — Kill-criterion failed: RFx document URL join 0% (<30%). Public machine dumps do not publish package document URLs; modern OCP/City Record document_links fill 0%.
+- **CLASS CHANGE** `exam-salary-fee-not-published`: not_published → not_yet_ingested — Open-competitive NOE path is a landed public source; schedule-only nulls are never-ingested, not withheld
 
 
 ## Verification notes (2026-07-30)

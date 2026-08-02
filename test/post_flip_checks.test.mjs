@@ -34,21 +34,21 @@ test("named post-flip checks cover the four incident-encoded gates", () => {
 });
 
 test("EMAIL HEALTH fails on null last_run (silent digest class) and passes with receipt + motion", () => {
-  // Receipt-day freshness is relative to "now" (stale after 2 days). Keep pass cases
-  // on a recent UTC day so this characterization does not fail when the calendar rolls.
-  const recentDay = new Date().toISOString().slice(0, 10);
-  const recentAt = `${recentDay}T13:00:00.000Z`;
+  // Fixed "now" so absolute day comparisons stay inside the 2-day receipt window.
+  const now = new Date("2026-08-01T15:00:00.000Z");
+  const day = "2026-08-01";
+  const ranAt = "2026-08-01T13:00:00.000Z";
 
   assert.equal(
     classifyEmailHealth({
       digests: { sent_today: 0, sent_last7d: 6, sent_all_time: 27, last_run: null },
-    }).ok,
+    }, { now }).ok,
     false,
   );
   assert.match(
     classifyEmailHealth({
       digests: { sent_today: 0, sent_last7d: 6, last_run: null },
-    }).reason,
+    }, { now }).reason,
     /silent-five-day-alert|last_run is null/,
   );
 
@@ -58,9 +58,9 @@ test("EMAIL HEALTH fails on null last_run (silent digest class) and passes with 
       digests: {
         sent_today: 0,
         sent_last7d: 6,
-        last_run: { ranAt: recentAt, day: recentDay, sent: 0 },
+        last_run: { ranAt, day, sent: 0 },
       },
-    }).ok,
+    }, { now }).ok,
     false,
   );
 
@@ -71,14 +71,14 @@ test("EMAIL HEALTH fails on null last_run (silent digest class) and passes with 
         sent_last7d: 6,
         sent_all_time: 27,
         last_run: {
-          ranAt: recentAt,
-          day: recentDay,
+          ranAt,
+          day,
           sent: 0,
           skipped_reason: "all_quiet",
           matched: 0,
         },
       },
-    }).ok,
+    }, { now }).ok,
     true,
   );
 
@@ -88,13 +88,13 @@ test("EMAIL HEALTH fails on null last_run (silent digest class) and passes with 
         sent_today: 2,
         sent_last7d: 8,
         last_run: {
-          ranAt: recentAt,
-          day: recentDay,
+          ranAt,
+          day,
           sent: 2,
           skipped_reason: null,
         },
       },
-    }).ok,
+    }, { now }).ok,
     true,
   );
 });
@@ -207,15 +207,16 @@ test("HUMAN-PATH JOURNEY requires home/search/notice/deeplink/subscribe steps", 
 });
 
 test("runPostFlipNamedChecks aggregates classifiers with incident annotations", async () => {
-  const recentDay = new Date().toISOString().slice(0, 10);
+  // Keep receipt day inside classifyEmailHealth's 2-day freshness window relative to now.
+  const now = new Date("2026-08-01T15:00:00.000Z");
   const statsBody = {
     digests: {
       sent_today: 0,
       sent_last7d: 6,
       sent_all_time: 27,
       last_run: {
-        ranAt: `${recentDay}T13:00:00.000Z`,
-        day: recentDay,
+        ranAt: "2026-08-01T13:00:00.000Z",
+        day: "2026-08-01",
         sent: 0,
         skipped_reason: "all_quiet",
         matched: 0,
@@ -265,6 +266,7 @@ test("runPostFlipNamedChecks aggregates classifiers with incident annotations", 
 
   const result = await runPostFlipNamedChecks({
     fetchImpl,
+    now,
     runJourney: true,
     journeyRunner: async () => ({
       steps: [

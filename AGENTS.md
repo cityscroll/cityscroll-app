@@ -15,7 +15,10 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - Required checks always report a conclusion (never stay missing). Fast paths:
   `changelog_only` (bot-owned changelog files) and `docs_only` (`tools/docs-only-path-guard.sh`)
   skip the full unit suite; non-frontend PRs skip browser a11y / reading-level
-  heavy work while still posting SUCCESS. Performance budgets run only when `frontend` changes.
+  heavy work while still posting SUCCESS. Performance budgets (20-sample p95) use a
+  narrower `perf` path filter (site HTML/CSS/JS/media + budget harness) — not all of
+  `site/**` — so data-only / worker-only diffs report SUCCESS without the long measure.
+  Performance is not a merge-queue required check (`tools/merge_queue_policy.json`).
 - Stray-English: **Unit static lint only** (`test/standards/stray_english.py`). The runtime
   multi-locale walk (`test/functional/13_stray_english.py`) is **not** a CI job or required
   check — optional locally via that script or `run_stray_english_shards.sh`. Required merge
@@ -47,14 +50,24 @@ PASSPort Public has **no Socrata dataset** for contracts/RFx. Stable machine dum
 - `https://a0333-passportpublic.nyc.gov/dataJs/contractData.js` (`public_ctr_data`)
 - `https://a0333-passportpublic.nyc.gov/dataJs/rfxData.js` (`public_rfx_data`)
 
-Edge materialization: `worker/src/passport.mjs` → D1 `passport_contracts` / `passport_rfx`.
+Edge materialization: `worker/src/passport.mjs` → D1 `passport_contracts` / `passport_rfx`
+(+ dual-write `source_records` when `PASSPORT_SOURCE_RECORD_DUAL_WRITE=true`).
 Strict EPIN↔PIN join: `worker/src/lib/passport_join.mjs`. Measured rates live in
 `site/data/source_contracts.json` (`join_measurement`) and
 `site/data/passport_sources/verification_receipts/`.
 Deploy applies D1 migrations before worker code (`deploy-worker.yml`); `ensurePassportSchema`
 is the runtime safety net. `lookup_status` is three-state: `ok` / `error` / `skipped` —
 error must never render as a confident empty miss. Characterization:
-`node --test worker/test/passport_lookup.test.mjs`.
+`node --test worker/test/passport_lookup.test.mjs worker/test/er_source_coverage.test.mjs`.
+
+**Freshness / dual-write (load-bearing):** daily cron runs `ingestPassportPublic` with a
+browser-like User-Agent (empty UA → portal HTTP 403). Failed attempts stamp
+`passport_ingest_meta` (`last_attempt_at`, `last_error`, `last_ok`) without wiping the last
+good `ingested_at`. On fetch failure, dual-write **backfills** from existing product
+payloads so observation coverage is not stuck at zero. Staleness helper:
+`passportIngestIsStale` (default 48h). Operator force: `POST /admin/passport-ingest`
+(`ADMIN_KEY`). Host-side full reseed when edge cannot reach dataJs:
+`node tools/passport_remote_reseed.mjs` (optional `--dual-write-only`).
 
 Solicitation response handoffs are evidence records, not generic bid links:
 `site/action_registry.js` → `solicitationHandoff`. Notice-named agency systems take
@@ -355,6 +368,18 @@ open-exam overlap 0%. Artifact:
 `site/data/exam_sources/civil_service_list_aggregates.json` joined at build via
 `tools/build_staffing_exams.mjs` + `worker/src/lib/civil_service_list_join.mjs`.
 UI: `list_joined` outcome view when annual DCAS outcomes are absent.
+
+## Exam fee / salary (NOE path)
+
+Fee and starting salary come **only** from the open-competitive Notice of
+Examination path (`site/data/exam_sources/dcas_open_competitive.json`), not the
+annual schedule table (`4ptz-hmtc` has no fee columns). Build retains NOE fields
+when an exam drops off the open snapshot but stays on the annual table
+(`retainNoeDetailFields`). Schedule-only nulls stamp
+`fee_salary_gap.class = not_yet_ingested` (class a); class b only if a linked
+NOE omits the field. UI: `examFeeSalaryView` + `career_fee_salary_not_yet_ingested_html`.
+Non-null field case: exam `7016` Caseworker fee `$68` / salary `$48,206`.
+Verify: `node --test test/exam_fee_salary.test.mjs test/deadline_exam_cards.test.mjs`.
 
 ## Digest watermark recovery (catch-up digests)
 

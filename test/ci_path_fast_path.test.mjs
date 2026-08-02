@@ -23,12 +23,47 @@ test("ci.yml emits docs_only and unit_full and wires unit fast path", () => {
   assert.match(ci, /needs\.changes\.outputs\.unit_full == 'true'/);
 });
 
-test("performance job is frontend-gated (not every non-changelog PR)", () => {
+test("performance job is perf-path-gated and always reports a conclusion", () => {
   const ci = read(".github/workflows/ci.yml");
-  assert.match(
-    ci,
-    /performance:[\s\S]*?if:\s*needs\.changes\.outputs\.unit_full == 'true' && needs\.changes\.outputs\.frontend == 'true'/,
+  // Narrower than frontend: site/data receipts and worker-only PRs must not pay
+  // for the 20-sample measure. Job always runs so the check name reports SUCCESS.
+  assert.match(ci, /perf:\s*\$\{\{\s*steps\.filter\.outputs\.perf\s*\}\}/);
+  assert.match(ci, /site\/\*\*\/\*\.html/);
+  assert.match(ci, /performance-budgets\.json/);
+  assert.match(ci, /test\/performance\/\*\*/);
+
+  // Scope to the performance job only (a11y still uses the broad frontend filter).
+  const job = ci.match(
+    /\n  performance:\n([\s\S]*?)\n  # w7-01:|\n  performance:\n([\s\S]*?)\n  a11y-pr:/,
   );
+  assert.ok(job, "expected performance job before a11y-pr");
+  const body = job[1] || job[2];
+  assert.match(body, /^\s+if:\s*always\(\)/m);
+  assert.match(body, /Non-perf path set or unit-failed — report success/);
+  assert.match(body, /needs\.changes\.outputs\.perf == 'true'/);
+  assert.match(body, /Reporting success for 'Performance budgets \(20-sample p95\)' without measuring/);
+  // Heavy steps must not use the broad frontend filter alone.
+  assert.doesNotMatch(
+    body,
+    /Run deterministic performance contract[\s\S]*?outputs\.frontend == 'true'/,
+  );
+  assert.match(
+    body,
+    /Run deterministic performance contract[\s\S]*?outputs\.perf == 'true'/,
+  );
+});
+
+test("performance path filter excludes site/data and includes chrome assets", () => {
+  const ci = read(".github/workflows/ci.yml");
+  // Extract the perf: filter block between "perf:" and the next top-level filter key.
+  const m = ci.match(/\n\s+perf:\n([\s\S]*?)\n\s+worker:/);
+  assert.ok(m, "expected perf filter block before worker:");
+  const block = m[1];
+  assert.match(block, /site\/\*\*\/\*\.js/);
+  assert.match(block, /site\/assets\/\*\*/);
+  assert.doesNotMatch(block, /site\/\*\*(?![/.*])/); // not the broad site/**
+  assert.doesNotMatch(block, /site\/data/);
+  assert.doesNotMatch(block, /worker\/\*\*/);
 });
 
 test("browser jobs use the Playwright cache composite action", () => {

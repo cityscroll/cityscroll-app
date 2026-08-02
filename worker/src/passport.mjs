@@ -21,8 +21,60 @@ import {
 const BATCH = 80;
 export const PASSPORT_SOURCE_RECORD_DUAL_WRITE_FLAG = "PASSPORT_SOURCE_RECORD_DUAL_WRITE";
 
+/** Default max age for a healthy materialization (48h covers one missed daily cron). */
+export const PASSPORT_STALE_AFTER_MS = 48 * 60 * 60 * 1000;
+
+/**
+ * Browser-like fetch headers. Empty User-Agent is rejected by the portal (HTTP 403);
+ * Workers must not rely on the default subrequest UA for these dumps.
+ */
+export const PASSPORT_FETCH_HEADERS = Object.freeze({
+  "User-Agent":
+    "Mozilla/5.0 (compatible; CityScrollBot/1.0; +https://cityscroll.org; PASSPort Public dataJs materialization)",
+  Accept: "application/javascript, text/javascript, */*;q=0.8",
+  "Accept-Language": "en-US,en;q=0.9",
+});
+
 /** Allowed table names for SQL interpolation (never user input). */
 const PASSPORT_TABLES = new Set(["passport_contracts", "passport_rfx"]);
+
+/**
+ * Pure staleness guard for passport_ingest_meta.ingested_at.
+ * @param {string|null|undefined} ingestedAtIso
+ * @param {number|Date} [now]
+ * @param {number} [maxAgeMs]
+ */
+export function passportIngestIsStale(
+  ingestedAtIso,
+  now = Date.now(),
+  maxAgeMs = PASSPORT_STALE_AFTER_MS,
+) {
+  if (!ingestedAtIso) return true;
+  const t = Date.parse(String(ingestedAtIso));
+  if (!Number.isFinite(t)) return true;
+  const nowMs = now instanceof Date ? now.getTime() : Number(now);
+  return nowMs - t > maxAgeMs;
+}
+
+/**
+ * Classify a downloaded dataJs body before parse. HTML challenges and empty
+ * bodies must not be treated as a successful empty corpus.
+ * @param {string} text
+ * @param {"contracts"|"rfx"} kind
+ * @returns {null|string} error reason or null when the body looks like a dump
+ */
+export function classifyPassportDumpBody(text, kind) {
+  const src = String(text || "").replace(/^\uFEFF/, "").trim();
+  if (!src) return `${kind}-body-empty`;
+  if (/^<!DOCTYPE\b/i.test(src) || /^<html\b/i.test(src)) {
+    return `${kind}-body-html`;
+  }
+  const varname = kind === "rfx" ? "public_rfx_data" : "public_ctr_data";
+  if (!new RegExp(`var\\s+${varname}\\s*=`).test(src)) {
+    return `${kind}-body-missing-var`;
+  }
+  return null;
+}
 
 /**
  * Idempotent schema ensure for the three PASSPort tables.
@@ -90,6 +142,144 @@ export async function ensurePassportSchema(env) {
   return { ok: true };
 }
 
+async function writePassportMeta(env, pairs) {
+  if (!env?.DB || !pairs?.length) return;
+  const stmts = pairs.map(([key, value]) =>
+    env.DB.prepare(
+      "INSERT OR REPLACE INTO passport_ingest_meta (key, value) VALUES (?, ?)",
+    ).bind(String(key), String(value)),
+  );
+  await env.DB.batch(stmts);
+}
+
+/**
+ * Persist a failed attempt so silent cron failures leave an operator-visible trail.
+ * Does not touch ingested_at / row counts (last successful materialization stays).
+ */
+export async function recordPassportIngestFailure(env, reason, extra = {}) {
+  const at = new Date().toISOString();
+  const pairs = [
+    ["last_attempt_at", at],
+    ["last_error", String(reason || "unknown")],
+    ["last_ok", "false"],
+  ];
+  if (extra && Object.keys(extra).length) {
+    pairs.push(["last_error_detail", JSON.stringify(extra)]);
+  }
+  try {
+    await writePassportMeta(env, pairs);
+  } catch (e) {
+    console.error("passport meta failure write failed:", String(e?.message || e));
+  }
+  return { at, reason: String(reason || "unknown") };
+}
+
+function sourceRecordInsertOrNull(env) {
+  if (!sourceRecordDualWriteEnabled(env, PASSPORT_SOURCE_RECORD_DUAL_WRITE_FLAG)) {
+    return null;
+  }
+  try {
+    return env.DB.prepare(SOURCE_RECORD_INSERT_SQL);
+  } catch {
+    // A missing observation schema must not block PASSPort materialization.
+    return null;
+  }
+}
+
+/**
+ * Dual-write source_records from already-materialized product rows.
+ * Used when a full dump reload fails (or for ops recovery) so observation
+ * coverage is not stuck at zero while product tables still have data.
+ */
+export async function backfillPassportSourceRecordsFromProduct(env, opts = {}) {
+  if (!env?.DB) return { ok: false, reason: "no-db" };
+  if (!sourceRecordDualWriteEnabled(env, PASSPORT_SOURCE_RECORD_DUAL_WRITE_FLAG)) {
+    return { ok: false, reason: "dual-write-off" };
+  }
+  const sourceRecordInsert = sourceRecordInsertOrNull(env);
+  if (!sourceRecordInsert) return { ok: false, reason: "source-records-unavailable" };
+
+  const ingestedAt = opts.ingestedAt || new Date().toISOString();
+  let contracts = 0;
+  let rfx = 0;
+  let errors = 0;
+
+  async function drain(table, kind, system) {
+    let offset = 0;
+    for (;;) {
+      const res = await env.DB.prepare(
+        `SELECT payload FROM ${table} ORDER BY rowid LIMIT ? OFFSET ?`,
+      ).bind(BATCH, offset).all();
+      const rows = res?.results || [];
+      if (!rows.length) break;
+      try {
+        const stmts = await Promise.all(rows.map(async (row) => {
+          let record;
+          try {
+            record = JSON.parse(row.payload);
+          } catch {
+            record = null;
+          }
+          if (!record) return null;
+          const snap = JSON.stringify(record);
+          return sourceRecordInsert.bind(
+            system,
+            passportSourceSystemId(kind, record),
+            await computeSourceRecordHash(record),
+            snap,
+            snap,
+            ingestedAt,
+          );
+        }));
+        const bound = stmts.filter(Boolean);
+        if (bound.length) await env.DB.batch(bound);
+        if (kind === "contract") contracts += bound.length;
+        else rfx += bound.length;
+      } catch (e) {
+        errors += 1;
+        console.error("passport dual-write backfill batch failed:", String(e?.message || e));
+      }
+      offset += rows.length;
+      if (rows.length < BATCH) break;
+    }
+  }
+
+  await drain("passport_contracts", "contract", "passport_public_contracts");
+  await drain("passport_rfx", "rfx", "passport_public_rfx");
+
+  try {
+    await writePassportMeta(env, [
+      ["dual_write_contracts", String(contracts)],
+      ["dual_write_rfx", String(rfx)],
+      ["dual_write_backfill_at", ingestedAt],
+    ]);
+  } catch {
+    /* meta is best-effort */
+  }
+
+  return {
+    ok: errors === 0 && (contracts > 0 || rfx > 0),
+    contracts,
+    rfx,
+    errors,
+    ingested_at: ingestedAt,
+  };
+}
+
+async function dualWriteChunkWithEnv(env, sourceRecordInsert, system, kind, chunk, ingestedAt) {
+  const sourceStmts = await Promise.all(chunk.map(async (record) =>
+    sourceRecordInsert.bind(
+      system,
+      passportSourceSystemId(kind, record),
+      await computeSourceRecordHash(record),
+      JSON.stringify(record),
+      JSON.stringify(record),
+      ingestedAt,
+    )));
+  await env.DB.batch(sourceStmts);
+  return sourceStmts.length;
+}
+
 export async function ingestPassportPublic(env) {
   if (!env.DB) return { ok: false, reason: "no-db" };
 
@@ -98,36 +288,84 @@ export async function ingestPassportPublic(env) {
     await ensurePassportSchema(env);
   } catch (e) {
     console.error("passport schema ensure failed:", String(e?.message || e));
+    await recordPassportIngestFailure(env, "schema-ensure-failed", {
+      message: String(e?.message || e),
+    });
     return { ok: false, reason: "schema-ensure-failed" };
   }
 
-  const [ctrRes, rfxRes] = await Promise.all([
-    fetch(CONTRACT_DATA_URL, { redirect: "follow" }),
-    fetch(RFX_DATA_URL, { redirect: "follow" }),
-  ]);
-  if (!ctrRes.ok) return { ok: false, reason: `contracts-http-${ctrRes.status}` };
-  if (!rfxRes.ok) return { ok: false, reason: `rfx-http-${rfxRes.status}` };
+  let ctrRes;
+  let rfxRes;
+  try {
+    [ctrRes, rfxRes] = await Promise.all([
+      fetch(CONTRACT_DATA_URL, { redirect: "follow", headers: PASSPORT_FETCH_HEADERS }),
+      fetch(RFX_DATA_URL, { redirect: "follow", headers: PASSPORT_FETCH_HEADERS }),
+    ]);
+  } catch (e) {
+    const reason = "fetch-threw";
+    await recordPassportIngestFailure(env, reason, { message: String(e?.message || e) });
+    const dual_write_backfill = await backfillPassportSourceRecordsFromProduct(env).catch(() => null);
+    return { ok: false, reason, dual_write_backfill };
+  }
+
+  if (!ctrRes.ok) {
+    const reason = `contracts-http-${ctrRes.status}`;
+    await recordPassportIngestFailure(env, reason);
+    const dual_write_backfill = await backfillPassportSourceRecordsFromProduct(env).catch(() => null);
+    return { ok: false, reason, dual_write_backfill };
+  }
+  if (!rfxRes.ok) {
+    const reason = `rfx-http-${rfxRes.status}`;
+    await recordPassportIngestFailure(env, reason);
+    const dual_write_backfill = await backfillPassportSourceRecordsFromProduct(env).catch(() => null);
+    return { ok: false, reason, dual_write_backfill };
+  }
 
   const [ctrText, rfxText] = await Promise.all([ctrRes.text(), rfxRes.text()]);
+  const ctrBodyErr = classifyPassportDumpBody(ctrText, "contracts");
+  if (ctrBodyErr) {
+    await recordPassportIngestFailure(env, ctrBodyErr, {
+      content_type: ctrRes.headers.get("content-type"),
+      body_prefix: String(ctrText || "").slice(0, 80),
+    });
+    const dual_write_backfill = await backfillPassportSourceRecordsFromProduct(env).catch(() => null);
+    return { ok: false, reason: ctrBodyErr, dual_write_backfill };
+  }
+  const rfxBodyErr = classifyPassportDumpBody(rfxText, "rfx");
+  if (rfxBodyErr) {
+    await recordPassportIngestFailure(env, rfxBodyErr, {
+      content_type: rfxRes.headers.get("content-type"),
+      body_prefix: String(rfxText || "").slice(0, 80),
+    });
+    const dual_write_backfill = await backfillPassportSourceRecordsFromProduct(env).catch(() => null);
+    return { ok: false, reason: rfxBodyErr, dual_write_backfill };
+  }
+
   const contracts = parseContractsDump(ctrText);
   const rfx = parseRfxDump(rfxText);
-  if (!contracts.length) return { ok: false, reason: "contracts-empty" };
-  if (!rfx.length) return { ok: false, reason: "rfx-empty" };
+  if (!contracts.length) {
+    await recordPassportIngestFailure(env, "contracts-empty");
+    const dual_write_backfill = await backfillPassportSourceRecordsFromProduct(env).catch(() => null);
+    return { ok: false, reason: "contracts-empty", dual_write_backfill };
+  }
+  if (!rfx.length) {
+    await recordPassportIngestFailure(env, "rfx-empty");
+    const dual_write_backfill = await backfillPassportSourceRecordsFromProduct(env).catch(() => null);
+    return { ok: false, reason: "rfx-empty", dual_write_backfill };
+  }
 
   const ingestedAt = new Date().toISOString();
-  let sourceRecordInsert = null;
-  if (sourceRecordDualWriteEnabled(env, PASSPORT_SOURCE_RECORD_DUAL_WRITE_FLAG)) {
-    try {
-      sourceRecordInsert = env.DB.prepare(SOURCE_RECORD_INSERT_SQL);
-    } catch {
-      // A missing observation schema must not block PASSPort materialization.
-    }
-  }
+  const sourceRecordInsert = sourceRecordInsertOrNull(env);
   const lastModified = {
     contracts: ctrRes.headers.get("last-modified") || null,
     rfx: rfxRes.headers.get("last-modified") || null,
   };
 
+  let dualWriteContracts = 0;
+  let dualWriteRfx = 0;
+  let dualWriteErrors = 0;
+
+  // Only wipe product tables after dumps parse non-empty — never leave a silent empty hole.
   await env.DB.prepare("DELETE FROM passport_contracts").run();
   await env.DB.prepare("DELETE FROM passport_rfx").run();
 
@@ -164,18 +402,17 @@ export async function ingestPassportPublic(env) {
     await env.DB.batch(stmts);
     if (sourceRecordInsert) {
       try {
-        const sourceStmts = await Promise.all(chunk.map(async (contract) =>
-          sourceRecordInsert.bind(
-            "passport_public_contracts",
-            passportSourceSystemId("contract", contract),
-            await computeSourceRecordHash(contract),
-            JSON.stringify(contract),
-            JSON.stringify(contract),
-            ingestedAt,
-          )));
-        await env.DB.batch(sourceStmts);
-      } catch {
-        // Observation shadow writes must never block PASSPort materialization.
+        dualWriteContracts += await dualWriteChunkWithEnv(
+          env,
+          sourceRecordInsert,
+          "passport_public_contracts",
+          "contract",
+          chunk,
+          ingestedAt,
+        );
+      } catch (e) {
+        dualWriteErrors += 1;
+        console.error("passport contracts dual-write failed:", String(e?.message || e));
       }
     }
   }
@@ -208,36 +445,47 @@ export async function ingestPassportPublic(env) {
     await env.DB.batch(stmts);
     if (sourceRecordInsert) {
       try {
-        const sourceStmts = await Promise.all(chunk.map(async (record) =>
-          sourceRecordInsert.bind(
-            "passport_public_rfx",
-            passportSourceSystemId("rfx", record),
-            await computeSourceRecordHash(record),
-            JSON.stringify(record),
-            JSON.stringify(record),
-            ingestedAt,
-          )));
-        await env.DB.batch(sourceStmts);
-      } catch {
-        // Observation shadow writes must never block PASSPort materialization.
+        dualWriteRfx += await dualWriteChunkWithEnv(
+          env,
+          sourceRecordInsert,
+          "passport_public_rfx",
+          "rfx",
+          chunk,
+          ingestedAt,
+        );
+      } catch (e) {
+        dualWriteErrors += 1;
+        console.error("passport rfx dual-write failed:", String(e?.message || e));
       }
     }
   }
 
-  await env.DB.batch([
-    env.DB.prepare(
-      "INSERT OR REPLACE INTO passport_ingest_meta (key, value) VALUES (?, ?)",
-    ).bind("ingested_at", ingestedAt),
-    env.DB.prepare(
-      "INSERT OR REPLACE INTO passport_ingest_meta (key, value) VALUES (?, ?)",
-    ).bind("contract_rows", String(contracts.length)),
-    env.DB.prepare(
-      "INSERT OR REPLACE INTO passport_ingest_meta (key, value) VALUES (?, ?)",
-    ).bind("rfx_rows", String(rfx.length)),
-    env.DB.prepare(
-      "INSERT OR REPLACE INTO passport_ingest_meta (key, value) VALUES (?, ?)",
-    ).bind("last_modified", JSON.stringify(lastModified)),
+  await writePassportMeta(env, [
+    ["ingested_at", ingestedAt],
+    ["contract_rows", String(contracts.length)],
+    ["rfx_rows", String(rfx.length)],
+    ["last_modified", JSON.stringify(lastModified)],
+    ["last_attempt_at", ingestedAt],
+    ["last_ok", "true"],
+    ["last_error", ""],
+    ["dual_write_contracts", String(dualWriteContracts)],
+    ["dual_write_rfx", String(dualWriteRfx)],
+    ["dual_write_errors", String(dualWriteErrors)],
   ]);
+
+  // Dual-write enabled but wrote nothing while product has rows — recover from product payloads.
+  if (
+    sourceRecordDualWriteEnabled(env, PASSPORT_SOURCE_RECORD_DUAL_WRITE_FLAG)
+    && dualWriteContracts === 0
+    && dualWriteRfx === 0
+    && (contracts.length > 0 || rfx.length > 0)
+  ) {
+    const bf = await backfillPassportSourceRecordsFromProduct(env, { ingestedAt }).catch(() => null);
+    if (bf?.ok) {
+      dualWriteContracts = bf.contracts;
+      dualWriteRfx = bf.rfx;
+    }
+  }
 
   return {
     ok: true,
@@ -245,6 +493,11 @@ export async function ingestPassportPublic(env) {
     rfx: rfx.length,
     ingested_at: ingestedAt,
     last_modified: lastModified,
+    dual_write: {
+      contracts: dualWriteContracts,
+      rfx: dualWriteRfx,
+      errors: dualWriteErrors,
+    },
   };
 }
 
