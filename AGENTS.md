@@ -177,6 +177,11 @@ edges (official → matter|agenda_item), not only aye/nay tallies. Pure helpers:
 when `by_person` is present. Immutable `source_records` dual-write for Legistar
 Events/EventItems/Votes/Attachments is live under
 `LEGISTAR_SOURCE_RECORD_DUAL_WRITE` (`worker/src/lib/legistar_source_records.mjs`).
+Writes are chunked and stream-isolated; `refreshMeetingOutcomes` returns
+`dual_write` stats (not cached on the public KV view). On-demand operator
+trigger: `POST /admin/meeting-outcomes-refresh` (`ADMIN_KEY`). Nested
+Attachments can honestly be empty when product documents are only event
+Agenda/Minutes on Events (those fields ride on `nyc_legistar_events` snapshots).
 Verify: `node --test test/official_entity_family.test.mjs
 test/legistar_client.test.mjs test/contract/meeting_outcomes.test.mjs
 worker/test/legistar_source_records.test.mjs`.

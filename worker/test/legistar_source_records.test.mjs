@@ -243,3 +243,110 @@ test("direct dual-write helper skips when bags are empty", async () => {
   assert.equal(sqlite.prepare("SELECT COUNT(*) AS n FROM source_records").get().n, 0);
   sqlite.close();
 });
+
+test("dual-write with non-empty bags always writes >0 rows when flag and schema are ready", async () => {
+  const { sqlite, DB } = database();
+  const env = { DB, [LEGISTAR_SOURCE_RECORD_DUAL_WRITE_FLAG]: "true" };
+  const result = await dualWriteLegistarObservations(
+    env,
+    {
+      events: [EVENT],
+      eventItems: [ITEM],
+      votes: VOTES.map((v) => ({ ...v, EventItemId: ITEM.EventItemId })),
+      attachments: ATTACHMENTS.map((a) => ({ ...a, EventItemId: ITEM.EventItemId })),
+    },
+    "2026-08-01T12:00:00.000Z",
+  );
+  assert.ok(result.written > 0, `expected written>0, got ${result.written}`);
+  assert.equal(result.failed, false);
+  assert.equal(result.skipped, null);
+  const bySystem = Object.fromEntries(
+    sqlite.prepare(
+      "SELECT source_system, COUNT(*) AS n FROM source_records GROUP BY source_system",
+    ).all().map((r) => [r.source_system, r.n]),
+  );
+  assert.equal(bySystem[LEGISTAR_EVENTS_SOURCE_SYSTEM], 1);
+  assert.equal(bySystem[LEGISTAR_EVENT_ITEMS_SOURCE_SYSTEM], 1);
+  assert.equal(bySystem[LEGISTAR_VOTES_SOURCE_SYSTEM], 3);
+  assert.equal(bySystem[LEGISTAR_ATTACHMENTS_SOURCE_SYSTEM], 1);
+  sqlite.close();
+});
+
+test("dual-write chunks large event bags without dropping rows", async () => {
+  const { sqlite, DB } = database();
+  const env = { DB, [LEGISTAR_SOURCE_RECORD_DUAL_WRITE_FLAG]: "true" };
+  // Larger than LEGISTAR_SOURCE_RECORD_BATCH (40) so chunking is exercised.
+  const events = Array.from({ length: 95 }, (_, i) => ({
+    EventId: 30000 + i,
+    EventBodyName: `Body ${i}`,
+    EventDate: "2026-07-01T00:00:00",
+  }));
+  const result = await dualWriteLegistarObservations(
+    env,
+    { events },
+    "2026-08-01T12:00:00.000Z",
+  );
+  assert.equal(result.written, 95);
+  assert.equal(result.failed, false);
+  assert.equal(
+    sqlite.prepare(
+      "SELECT COUNT(*) AS n FROM source_records WHERE source_system = ?",
+    ).get(LEGISTAR_EVENTS_SOURCE_SYSTEM).n,
+    95,
+  );
+  sqlite.close();
+});
+
+test("stream isolation keeps successful streams when one bag fails", async () => {
+  const { sqlite } = database();
+  let batchCalls = 0;
+  const DB = {
+    prepare(sql) {
+      return {
+        bind(...values) {
+          const statement = sqlite.prepare(sql);
+          const args = values;
+          return {
+            async run() {
+              statement.run(...args);
+              return { success: true };
+            },
+          };
+        },
+      };
+    },
+    async batch(statements) {
+      batchCalls += 1;
+      // Fail only the second stream batch (event items) so events still land.
+      if (batchCalls === 2) throw new Error("simulated-batch-fail");
+      for (const statement of statements) await statement.run();
+      return [];
+    },
+  };
+  const env = { DB, [LEGISTAR_SOURCE_RECORD_DUAL_WRITE_FLAG]: "true" };
+  const result = await dualWriteLegistarObservations(
+    env,
+    {
+      events: [EVENT],
+      eventItems: [ITEM],
+      votes: [],
+      attachments: [],
+    },
+    "2026-08-01T12:00:00.000Z",
+  );
+  assert.equal(result.failed, true);
+  assert.ok(result.written >= 1, "events stream should still write");
+  assert.equal(
+    sqlite.prepare(
+      "SELECT COUNT(*) AS n FROM source_records WHERE source_system = ?",
+    ).get(LEGISTAR_EVENTS_SOURCE_SYSTEM).n,
+    1,
+  );
+  assert.equal(
+    sqlite.prepare(
+      "SELECT COUNT(*) AS n FROM source_records WHERE source_system = ?",
+    ).get(LEGISTAR_EVENT_ITEMS_SOURCE_SYSTEM).n,
+    0,
+  );
+  sqlite.close();
+});

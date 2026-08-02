@@ -767,8 +767,9 @@ export async function buildMeetingOutcomesView({
   );
 
   // Shadow dual-write: never block the public meeting-outcomes materialization.
+  let dualWrite = null;
   if (env) {
-    await dualWriteLegistarObservations(
+    dualWrite = await dualWriteLegistarObservations(
       env,
       {
         events: eventRows,
@@ -778,22 +779,41 @@ export async function buildMeetingOutcomesView({
       },
       view.generated_at,
     );
+    // Guardrail: authenticated materialization with events must leave observations.
+    // Nested Attachments may honestly be empty (event Agenda/Minutes live on Events).
+    if (
+      token
+      && eventRows.length > 0
+      && dualWrite
+      && dualWrite.skipped !== "flag-off"
+      && dualWrite.skipped !== "no-db"
+      && dualWrite.skipped !== "no-schema"
+      && (dualWrite.written || 0) <= 0
+    ) {
+      console.error(
+        "legistar source_records dual-write wrote 0 rows after authenticated fetch:",
+        JSON.stringify(dualWrite),
+      );
+    }
   }
 
-  return view;
+  return { ...view, dual_write: dualWrite };
 }
 
 export async function refreshMeetingOutcomes(env, fetchImpl = fetch, now = new Date()) {
   if (!env?.ALERT_STATE) return { status: "skipped", reason: "no-kv" };
   const token = env?.LEGISTAR_API_TOKEN || null;
   const view = await buildMeetingOutcomesView({ token, fetchImpl, now, env });
-  await env.ALERT_STATE.put(MEETING_OUTCOMES_KV_KEY, JSON.stringify(view), {
+  // dual_write is operator telemetry only — strip before KV so public clients never see it.
+  const { dual_write: dualWrite, ...publicView } = view;
+  await env.ALERT_STATE.put(MEETING_OUTCOMES_KV_KEY, JSON.stringify(publicView), {
     expirationTtl: 3 * 24 * 60 * 60,
   });
   return {
     status: token ? "success" : "no-token",
     enrichment: token ? "authenticated" : "unavailable",
-    ...view.counts,
+    ...publicView.counts,
+    dual_write: dualWrite || null,
   };
 }
 
