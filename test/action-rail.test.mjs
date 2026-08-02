@@ -2,7 +2,13 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
-import { compileActionRail, solicitationHandoff, hearingHandoff, validateAction } from "../worker/src/lib/action_registry.mjs";
+import {
+  compileActionRail,
+  solicitationHandoff,
+  hearingHandoff,
+  ruleHandoff,
+  validateAction,
+} from "../worker/src/lib/action_registry.mjs";
 
 const require = createRequire(import.meta.url);
 const { normalizeHearingRow } = require("../site/hearing_location.js");
@@ -191,6 +197,11 @@ test("open rule comments and upcoming hearings use their joined deadlines and ha
   }, {today: "2026-08-01"});
   assert.deepEqual(rule.map(action => action.type), ["comment", "calendar", "watch"]);
   assert.equal(rule[0].destination_label, "rules.cityofnewyork.us");
+  // Comment-open attaches a rules guide (deadline + how-to-comment), not a bare link.
+  assert.equal(rule[0].guide?.system, "rules_extracted");
+  assert.equal(rule[0].guide?.mode, "comment_open");
+  assert.equal(rule[0].guide?.comment_deadline, "2026-08-12");
+  assert.equal(rule[0].guide?.comment_url, "https://rules.cityofnewyork.us/rule/example/");
 
   const hearing = compileActionRail({
     kind: "hearing", deadline: "2026-08-10T14:30:00.000",
@@ -200,6 +211,81 @@ test("open rule comments and upcoming hearings use their joined deadlines and ha
   // Non-join agenda URL stays an honest participation link + guide, not "Join online".
   assert.equal(hearing[0].label_key, "participation_link");
   assert.equal(hearing[0].guide?.system, "hearing_extracted");
+});
+
+test("ruleHandoff surfaces comment-by deadline, portal, and hearing attend without inventing fields", () => {
+  const EXAMPLE_RULE_EMAIL = ["rules-comments", "example.com"].join("@");
+  const matter = {
+    kind: "rule",
+    lifecycle_stage: "comment-open",
+    deadline: "2026-09-15",
+    comment_by_date: "2026-09-15",
+    comment_url: "https://rules.cityofnewyork.us/rule/dot-example/feed/",
+    official_notice_url: "https://rules.cityofnewyork.us/rule/dot-example/",
+    hearing_date: "2026-09-10",
+    agency_name: "Department of Transportation",
+    title: "Proposed outdoor dining rules",
+    notice_text: [
+      "NOTICE OF PUBLIC HEARING AND OPPORTUNITY TO COMMENT",
+      "on proposed rules of the Department of Transportation.",
+      `Written comments may be submitted electronically to ${EXAMPLE_RULE_EMAIL}.`,
+      "A public hearing will be held on September 10, 2026 at 22 Reade Street, New York, NY 10007.",
+      "Join online at https://zoom.us/j/987654321.",
+    ].join(" "),
+    venue: {mode: "hybrid", building: null, address: "22 Reade Street, New York, NY 10007"},
+    street_address_1: "22 Reade Street",
+    city: "New York",
+    state: "NY",
+    zip_code: "10007",
+  };
+  const handoff = ruleHandoff(matter, {today: "2026-08-02"});
+  assert.equal(handoff.system, "rules_extracted");
+  assert.equal(handoff.mode, "comment_open");
+  assert.equal(handoff.comment_open, true);
+  assert.equal(handoff.comment_deadline, "2026-09-15");
+  assert.equal(handoff.comment_url, "https://rules.cityofnewyork.us/rule/dot-example/feed/");
+  assert.equal(handoff.hearing_date, "2026-09-10");
+  assert.equal(handoff.hearing_upcoming, true);
+  assert.equal(handoff.participation_url, "https://zoom.us/j/987654321");
+  assert.equal(handoff.join_kind, "join");
+  assert.match(handoff.venue_address || "", /22 Reade/i);
+  assert.equal(handoff.testimony_email, EXAMPLE_RULE_EMAIL);
+
+  const actions = compileActionRail(matter, {today: "2026-08-02"});
+  assert.equal(actions[0].type, "comment");
+  assert.equal(actions[0].guide?.system, "rules_extracted");
+  assert.equal(actions[0].guide?.hearing_date, "2026-09-10");
+  assert.deepEqual(actions.map((a) => a.type), ["comment", "calendar", "watch"]);
+});
+
+test("hearing-stage rule without comment window still gets attend guide from published fields", () => {
+  const actions = compileActionRail({
+    kind: "rule",
+    lifecycle_stage: "hearing",
+    hearing_date: "2026-08-20",
+    official_notice_url: "https://rules.cityofnewyork.us/rule/hearing-only/",
+    venue: {mode: "in-person", address: "253 Broadway, New York, NY 10007"},
+    notice_text: "Public hearing on August 20, 2026 at 253 Broadway.",
+  }, {today: "2026-08-02"});
+  assert.equal(actions[0].guide?.system, "rules_extracted");
+  assert.equal(actions[0].guide?.mode, "hearing");
+  assert.equal(actions[0].guide?.hearing_date, "2026-08-20");
+  assert.match(actions[0].guide?.venue_address || "", /253 Broadway/i);
+  // Calendar uses the upcoming hearing date.
+  assert.ok(actions.some((a) => a.type === "calendar"));
+  assert.equal(actions.find((a) => a.type === "calendar")?.deadline, "2026-08-20");
+});
+
+test("closed rule comment window does not invent a comment portal or hearing", () => {
+  const actions = compileActionRail({
+    kind: "rule",
+    lifecycle_stage: "comment-closed",
+    deadline: "2026-07-01",
+    official_notice_url: "https://rules.cityofnewyork.us/rule/closed/",
+  }, {today: "2026-08-02"});
+  assert.equal(actions[0].delivery, "unavailable");
+  assert.equal(actions[0].label_key, "next_action_comment_closed");
+  assert.equal(actions.some((a) => a.guide), false);
 });
 
 test("missing hearing participation stays visible without inventing a destination", () => {

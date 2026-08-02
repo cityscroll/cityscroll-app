@@ -550,6 +550,151 @@
   }
 
   /**
+   * Rules handoff: concrete comment-by-deadline + how-to-comment and hearing
+   * attend/testify steps from NYC Rules fields + City Record body. Never invents
+   * a comment portal, email, venue, or hearing date — omits steps when absent.
+   */
+  function ruleHandoff(matter, options) {
+    const opts = options || {};
+    const today = String(opts.today || new Date().toISOString().slice(0, 10)).slice(0, 10);
+    const m = matter || {};
+    const stage = String(m.lifecycle_stage || "").toLowerCase();
+    const commentDeadline = m.deadline || m.comment_by_date || null;
+    const open = stage === "comment-open" && commentDeadline && !isPast(commentDeadline, today);
+    const commentUrl = httpsUrl(m.comment_url) || null;
+    const ruleUrl = httpsUrl(m.official_notice_url) || httpsUrl(m.rule_url) || null;
+
+    // Upcoming hearing from RSS hearing_date and/or City Record event_date.
+    const hearingCandidates = [m.hearing_date, m.event_date].filter(Boolean);
+    let hearingDate = null;
+    for (const candidate of hearingCandidates) {
+      if (!isPast(candidate, today)) {
+        hearingDate = candidate;
+        break;
+      }
+    }
+    // Stage "hearing" with only a past date stays closed for attend — do not invent.
+    const hearingUpcoming = !!hearingDate;
+
+    // Reuse hearing participation extraction for venue / join / testimony from the notice body.
+    const bits = hearingParticipationBits({
+      request_id: m.request_id,
+      event_date: hearingDate || m.event_date || m.hearing_date || null,
+      agency: m.agency_name,
+      title: m.title,
+      notice_text: m.notice_text,
+      participation_url: m.participation_url,
+      participation: m.participation,
+      venue: m.venue,
+      street_address_1: m.street_address_1,
+      street_address_2: m.street_address_2,
+      city: m.city,
+      state: m.state,
+      zip_code: m.zip_code,
+      building_name: m.building_name,
+      email: m.email,
+      contact_name: m.contact_name,
+      contact_phone: m.contact_phone,
+      source_url: m.official_notice_url,
+    }, today);
+
+    const body = String(m.notice_text || "");
+    const commentEmail = (bits && bits.testimony_email) || extractTestimonyEmail(body) || null;
+    const contactName = String((bits && bits.contact_name) || m.contact_name || "").trim() || null;
+    const contactEmail = (bits && bits.email)
+      || String(m.email || "").trim()
+      || commentEmail
+      || null;
+    const contactPhone = (bits && bits.contact_phone)
+      || String(m.contact_phone || "").trim()
+      || null;
+
+    let mode = "closed";
+    if (open) mode = "comment_open";
+    else if (hearingUpcoming || stage === "hearing") mode = hearingUpcoming ? "hearing" : "closed";
+    else if (stage === "proposed") mode = "proposed";
+
+    // Primary kinetic destination: comment portal while open; else join/hearing notice; else rule page.
+    let destination = null;
+    let labelKey = "read_official_notice";
+    let label = "Read the official notice";
+    let primaryType = "document";
+    if (open && (commentUrl || ruleUrl)) {
+      destination = commentUrl || ruleUrl;
+      labelKey = "rule_comment_btn";
+      label = "Comment on the official rule page";
+      primaryType = "comment";
+    } else if (hearingUpcoming && bits && bits.participation_url && bits.join_kind === "join") {
+      destination = bits.participation_url;
+      labelKey = "join_online";
+      label = "Join online";
+      primaryType = "attend";
+    } else if (hearingUpcoming && bits && bits.participation_url) {
+      destination = bits.participation_url;
+      labelKey = "participation_link";
+      label = "Participation link";
+      primaryType = "attend";
+    } else if (hearingUpcoming && (ruleUrl || (bits && bits.source_url))) {
+      destination = ruleUrl || bits.source_url;
+      labelKey = "rule_action_open_rule_page";
+      label = "Open the official rule page";
+      primaryType = "document";
+    } else if (open && commentEmail) {
+      // No portal URL but a published comment email — guide-first (destination null).
+      destination = null;
+      labelKey = "next_action_rule_guide";
+      label = "Follow the comment and hearing steps below";
+      primaryType = "comment";
+    } else if (ruleUrl) {
+      destination = ruleUrl;
+      labelKey = "read_official_notice";
+      label = "Read the official notice";
+      primaryType = "document";
+    }
+
+    const hasFields = !!(
+      commentUrl
+      || commentDeadline
+      || hearingDate
+      || commentEmail
+      || contactName
+      || contactEmail
+      || contactPhone
+      || (bits && (bits.venue_address || bits.venue_building || bits.participation_url))
+      || ruleUrl
+      || m.summary
+    );
+
+    return {
+      system: "rules_extracted",
+      mode,
+      destination,
+      label_key: mode === "closed" ? "next_action_comment_closed" : labelKey,
+      label: mode === "closed" ? "Public comment is not open now." : label,
+      primary_type: mode === "closed" ? "comment" : primaryType,
+      comment_open: open,
+      comment_deadline: open ? commentDeadline : null,
+      comment_url: commentUrl,
+      rule_url: ruleUrl,
+      summary: String(m.summary || "").trim() || null,
+      hearing_date: hearingDate,
+      hearing_upcoming: hearingUpcoming,
+      participation_url: bits ? bits.participation_url : null,
+      join_kind: bits ? bits.join_kind : null,
+      venue_address: bits ? bits.venue_address : null,
+      venue_building: bits ? bits.venue_building : null,
+      venue_mode: bits ? bits.venue_mode : null,
+      testimony_email: commentEmail,
+      testimony_until: bits ? bits.testimony_until : null,
+      contact_name: contactName,
+      email: contactEmail,
+      contact_phone: contactPhone,
+      official_notice_url: ruleUrl || (bits ? bits.source_url : null),
+      has_fields: hasFields,
+    };
+  }
+
+  /**
    * Land / ULURP handoff: phase-tied next steps from ZAP + joined City Record hearings.
    * Never fabricates a hearing, comment email, or join link — omits when absent.
    */
@@ -854,10 +999,50 @@
       if (!closed && deadline && !matter.rolling_deadline) actions.push(calendar);
       if (!closed) actions.push(watch);
     } else if (kind === "rule") {
-      const open = stage === "comment-open" && !isPast(deadline, today);
-      actions = open
-        ? [official("comment", "rule_comment_btn", "Comment on the official rule page", matter.comment_url || matter.official_notice_url, deadline), calendar, watch]
-        : [unavailable("comment", "next_action_comment_closed", "Public comment is not open now.", deadline), notice(), watch];
+      // Guide-first: comment-by-deadline + how-to-comment and hearing attend when fields exist.
+      const handoff = ruleHandoff(matter, {today});
+      const actionDeadline = handoff.comment_deadline || handoff.hearing_date || deadline || null;
+      const ruleCalendar = actionDeadline && !isPast(actionDeadline, today)
+        ? local("calendar", "add_deadline_calendar", "Add deadline to calendar", null, actionDeadline)
+        : null;
+      if (handoff.mode === "closed" || handoff.mode === "proposed") {
+        actions = [
+          unavailable("comment", "next_action_comment_closed", "Public comment is not open now.", actionDeadline),
+          notice(),
+          watch,
+        ];
+      } else if (handoff.destination) {
+        const type = handoff.primary_type === "attend"
+          ? "attend"
+          : handoff.primary_type === "document"
+            ? "document"
+            : "comment";
+        actions = [
+          official(type, handoff.label_key, handoff.label, handoff.destination, actionDeadline, {guide: handoff}),
+        ];
+        if (ruleCalendar) actions.push(ruleCalendar);
+        actions.push(watch);
+      } else if (handoff.has_fields) {
+        // Comment email / hearing venue without a single outbound URL — guide-first.
+        actions = [validateAction({
+          type: "bid_checklist",
+          label_key: handoff.label_key || "next_action_rule_guide",
+          label: handoff.label || "Follow the comment and hearing steps below",
+          delivery: "local",
+          destination: null,
+          deadline: actionDeadline,
+          confirmation_required: false,
+          guide: handoff,
+        })];
+        if (ruleCalendar) actions.push(ruleCalendar);
+        actions.push(watch);
+      } else {
+        actions = [
+          unavailable("comment", "next_action_comment_closed", "Public comment is not open now.", actionDeadline),
+          notice(),
+          watch,
+        ];
+      }
     } else if (kind === "hearing") {
       const past = stage === "past" || isPast(deadline, today);
       if (past) {
@@ -1024,6 +1209,7 @@
     compileActionRail,
     solicitationHandoff,
     hearingHandoff,
+    ruleHandoff,
     zoningHandoff,
     zoningStage,
     landHearingBody,

@@ -5843,13 +5843,24 @@ function noticeActionMatter(r, ruleRecord, lifecycleData){
       :kind==="hearing"&&(r.event_date&&String(r.event_date).slice(0,10)<todayISO())?"past"
       :kind==="property"?(r.disposition_stage||null):null,
     disposition_stage:kind==="property"?(r.disposition_stage||null):null,
-    deadline:kind==="rule"?(rule&&rule.comment_by_date||null)
+    deadline:kind==="rule"?(
+      // Prefer open comment deadline; hearing-stage calendar uses hearing_date when comment is closed.
+      (rule&&rule.comment_by_date)
+      || (rule&&rule.hearing_date)
+      || r.event_date
+      || null
+    )
       :kind==="hearing"?r.event_date
       :kind==="property"?r.event_date||null
       :rolling?null:r.due_date||null,
     event_date:r.event_date||null,
+    // NYC Rules RSS fields for concrete comment + hearing rail steps.
+    comment_by_date:rule&&rule.comment_by_date||null,
+    hearing_date:rule&&rule.hearing_date||null,
+    summary:rule&&rule.summary||null,
     rolling_deadline:rolling,
     official_notice_url:kind==="rule"?(rule&&rule.url||REQ_URL(r.request_id)):REQ_URL(r.request_id),
+    request_id:r.request_id||null,
     agency_name:r.agency_name,
     pin:r.pin,
     title:cleanText(r.short_title),
@@ -5865,6 +5876,7 @@ function noticeActionMatter(r, ruleRecord, lifecycleData){
     comment_url:rule&&(rule.comment_url||rule.url),
     participation_url:participation,
     // Hearing venue + participation (from hearing_location.js) for step extraction.
+    // Agency Rules Public Hearings also normalize so rule rails can attend/testify.
     venue:hearing&&hearing.venue||null,
     participation:hearing&&hearing.participation||null,
     building_name:r.building_name||null,
@@ -5940,6 +5952,68 @@ function actionRailGuideHTML(actions){
       steps.push(t("hearing_guide_contact_step_html",{who}));
     }
     if(!steps.length) steps.push(t("hearing_guide_fallback_step"));
+  }
+  else if(guide.system==="rules_extracted"){
+    // Comment-open + hearing-day: deadline, how-to-comment, attend/testify — only published fields.
+    headingKey="rule_guide_heading";
+    const commentWhen=guide.comment_deadline||(guide.comment_open?action.deadline:null);
+    const hearingWhen=guide.hearing_date;
+    const whereBits=[guide.venue_building,guide.venue_address].filter(Boolean);
+    const where=whereBits.map(escUiHtml).join(" · ");
+    facts=[
+      commentWhen?`<dt>${t("rule_guide_deadline_label")}</dt><dd>${fdt(commentWhen)}</dd>`:"",
+      hearingWhen?`<dt>${t("rule_guide_hearing_label")}</dt><dd>${fdt(hearingWhen)}</dd>`:"",
+      where?`<dt>${t("venue_label")}</dt><dd>${where}</dd>`:"",
+      guide.testimony_email?`<dt>${t("hearing_guide_testimony_label")}</dt><dd><a href="mailto:${escUiHtml(guide.testimony_email)}">${escUiHtml(guide.testimony_email)}</a></dd>`:"",
+      (()=>{
+        const bits=[];
+        if(guide.contact_name) bits.push(escUiHtml(guide.contact_name));
+        if(guide.email && (!guide.testimony_email || String(guide.email).toLowerCase()!==String(guide.testimony_email).toLowerCase())){
+          bits.push(`<a href="mailto:${escUiHtml(guide.email)}">${escUiHtml(guide.email)}</a>`);
+        }
+        if(guide.contact_phone) bits.push(escUiHtml(guide.contact_phone));
+        return bits.length?`<dt>${t("apply_contact_lbl")}</dt><dd>${bits.join(" · ")}</dd>`:"";
+      })(),
+    ].join("");
+    if(commentWhen) steps.push(t("rule_guide_comment_by_step",{date:fdt(commentWhen)}));
+    if(guide.comment_url){
+      const host=escUiHtml(hostOf(guide.comment_url));
+      steps.push(t("rule_guide_comment_portal_step_html",{url:escUiHtml(guide.comment_url),host}));
+    }else if(guide.testimony_email || (guide.email && guide.comment_open)){
+      const email=escUiHtml(guide.testimony_email||guide.email);
+      steps.push(t("rule_guide_comment_email_step_html",{email}));
+    }else if(guide.rule_url && guide.comment_open){
+      const host=escUiHtml(hostOf(guide.rule_url));
+      steps.push(t("rule_guide_comment_rule_page_step_html",{url:escUiHtml(guide.rule_url),host}));
+    }
+    if(hearingWhen && where) steps.push(t("rule_guide_attend_step",{date:fdt(hearingWhen),where}));
+    else if(hearingWhen) steps.push(t("rule_guide_attend_date_step",{date:fdt(hearingWhen)}));
+    else if(where && guide.hearing_upcoming) steps.push(t("rule_guide_attend_where_step",{where}));
+    if(guide.participation_url){
+      const host=escUiHtml(hostOf(guide.participation_url));
+      steps.push(guide.join_kind==="join"
+        ? t("rule_guide_join_step_html",{url:escUiHtml(guide.participation_url),host})
+        : t("rule_guide_materials_step_html",{url:escUiHtml(guide.participation_url),host}));
+    }
+    // Testimony for a hearing is distinct from the comment-email how-to step above when both exist.
+    if(guide.testimony_email && hearingWhen){
+      const email=escUiHtml(guide.testimony_email);
+      if(guide.testimony_until&&guide.testimony_until.kind==="datetime"&&guide.testimony_until.label){
+        steps.push(t("rule_guide_testimony_until_date_step_html",{email,date:escUiHtml(guide.testimony_until.label)}));
+      }else if(guide.testimony_until&&guide.testimony_until.kind==="hearing_close"){
+        steps.push(t("rule_guide_testimony_until_close_step_html",{email}));
+      }else if(!guide.comment_open || guide.comment_url){
+        // Avoid duplicating the how-to-comment email step when that was the only email path.
+        steps.push(t("rule_guide_testimony_step_html",{email}));
+      }
+    }
+    if(guide.contact_name || (guide.email && guide.email!==guide.testimony_email) || guide.contact_phone){
+      const who=[guide.contact_name,
+        (guide.email && guide.email!==guide.testimony_email)?guide.email:null,
+        guide.contact_phone].filter(Boolean).map(escUiHtml).join(" · ");
+      if(who) steps.push(t("rule_guide_contact_step_html",{who}));
+    }
+    if(!steps.length) steps.push(t("rule_guide_fallback_step"));
   }
   else if(guide.system==="zoning_extracted"){
     // Land / ULURP: phase context + next hearing participation (only fields the city published).

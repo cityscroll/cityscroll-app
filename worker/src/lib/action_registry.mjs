@@ -5,6 +5,7 @@ export const {
   compileActionRail,
   solicitationHandoff,
   hearingHandoff,
+  ruleHandoff,
   zoningHandoff,
   zoningStage,
   landHearingBody,
