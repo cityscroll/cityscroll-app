@@ -5832,12 +5832,14 @@ function noticeActionMatter(r, ruleRecord, lifecycleData){
   const rule=ruleRecord&&ruleRecord.nyc_rules;
   const rolling=!!(r.due_date&&isRollingDeadline(r.due_date));
   const isProperty=r.section_name==="Property Disposition";
+  const noticeType=r.type_of_notice_description||"";
   let kind=r.section_name==="Agency Rules"?"rule"
     :isProperty?"property"
     :zapParticipation?"zoning"
     :isMeetingOutcomesEligible(r)?"hearing"
-    :r.type_of_notice_description==="Solicitation"?"solicitation"
-    :/Award/.test(r.type_of_notice_description||"")?"award":"notice";
+    :noticeType==="Solicitation"?"solicitation"
+    // Award + selection intermediates (Intent to Award matches /Award/; Negotiate/Vendor List do not).
+    :/Award|Intent to Negotiate|Vendor List/i.test(noticeType)?"award":"notice";
   // Full ingested body for hearing participation steps (testimony, contact, venue prose).
   const noticeBody=[
     r.additional_description_1,r.additional_description_2,r.additional_description_3,
@@ -5845,6 +5847,9 @@ function noticeActionMatter(r, ruleRecord, lifecycleData){
     r.printout_1,r.printout_2,r.printout_3,
   ].filter(Boolean).join(" ");
   const propBbl=isProperty?(r._property_bbl||r.primary_bbl||null):null;
+  // Lifecycle stages for the award action rail (vendor / registration / spending).
+  const timeline=lifecycleData&&Array.isArray(lifecycleData.timeline)?lifecycleData.timeline:[];
+  const stageOf=name=>timeline.find(e=>e&&e.stage===name)||null;
   return {
     kind,
     section_name:r.section_name,
@@ -5873,6 +5878,9 @@ function noticeActionMatter(r, ruleRecord, lifecycleData){
     request_id:r.request_id||null,
     agency_name:r.agency_name,
     pin:r.pin,
+    // City Record award fields (also used before lifecycle hydrates).
+    vendor_name:r.vendor_name||null,
+    contract_amount:r.contract_amount!=null&&r.contract_amount!==""?Number(r.contract_amount):null,
     title:cleanText(r.short_title),
     notice_text:noticeBody||[r.additional_description_1,r.other_info_1,r.additional_description_2].filter(Boolean).join(" "),
     // Structured response fields from the City Record row — used to build concrete steps
@@ -5883,6 +5891,13 @@ function noticeActionMatter(r, ruleRecord, lifecycleData){
     address_to_request:r.address_to_request||null,
     selection_method:r.selection_method_description||null,
     rfx_detail:lifecycleData&&lifecycleData.rfx_detail,
+    // Award rail: Checkbook registration/payment + OCP side-car already on /contract-lifecycle.
+    lifecycle_pin:lifecycleData&&lifecycleData.pin||null,
+    registration:stageOf("registered"),
+    payment:stageOf("payment"),
+    pending:stageOf("pending"),
+    award_stage:stageOf("award")||stageOf("intent_to_award"),
+    ocp_award:lifecycleData&&lifecycleData.ocp_award||null,
     comment_url:rule&&(rule.comment_url||rule.url),
     participation_url:participation,
     // Hearing venue + participation (from hearing_location.js) for step extraction.
@@ -5901,7 +5916,14 @@ function noticeActionMatter(r, ruleRecord, lifecycleData){
   };
 }
 function actionRailLabel(action){
-  return t(action.label_key,action.deadline?{date:fdt(action.deadline)}:{});
+  const vars=Object.assign(
+    {},
+    action.deadline?{date:fdt(action.deadline)}:{},
+    action.label_vars&&typeof action.label_vars==="object"?action.label_vars:{}
+  );
+  // Registered date is an ISO day — format when present.
+  if(vars.date&&/^\d{4}-\d{2}-\d{2}/.test(String(vars.date))) vars.date=fdate(vars.date)||vars.date;
+  return t(action.label_key,vars);
 }
 function actionRailGuideHTML(actions){
   const action=actions.find(item=>item.guide);
@@ -6102,6 +6124,43 @@ function actionRailGuideHTML(actions){
       if(body) steps.push(t("land_guide_other_hearing_step",{body:escUiHtml(body),date:fdt(h.event_date)}));
     });
     if(!steps.length) steps.push(t("land_guide_fallback_step"));
+  }else if(guide.system==="award_lifecycle"){
+    // Award / selection: vendor, amount, registration, spending — only published fields.
+    // Never a "submit a bid" step (solicitation is over for Award and selection intermediates).
+    headingKey=guide.mode==="selection"?"award_guide_selection_heading":"award_guide_heading";
+    const regDate=guide.registration_date?fdate(guide.registration_date):null;
+    facts=[
+      guide.vendor?`<dt>${t("award_guide_vendor_label")}</dt><dd lang="en" dir="ltr"><b>${escUiHtml(guide.vendor)}</b></dd>`:"",
+      guide.amount?`<dt>${t("award_guide_amount_label")}</dt><dd><b>${escUiHtml(guide.amount)}</b></dd>`:"",
+      regDate?`<dt>${t("award_guide_registered_label")}</dt><dd>${escUiHtml(regDate)}</dd>`:"",
+      guide.pending_registration&&!guide.registered
+        ?`<dt>${t("award_guide_pending_label")}</dt><dd>${t("award_guide_pending_status")}</dd>`:"",
+      guide.spent?`<dt>${t("award_guide_spent_label")}</dt><dd><b>${escUiHtml(guide.spent)}</b></dd>`:"",
+      guide.contract_id?`<dt>${t("award_guide_contract_label")}</dt><dd><code>${escUiHtml(guide.contract_id)}</code><button type="button" class="bid-guide-copy" data-copy-value="${escUiHtml(guide.contract_id)}">${t("copy_value")}</button></dd>`:"",
+      guide.pin?`<dt>${t("award_guide_pin_label")}</dt><dd><code>${escUiHtml(guide.pin)}</code><button type="button" class="bid-guide-copy" data-copy-value="${escUiHtml(guide.pin)}">${t("copy_value")}</button></dd>`:"",
+    ].join("");
+    if(guide.mode==="selection"){
+      if(guide.selection_phase==="intent_to_award") steps.push(t("award_guide_selection_intent_award_step"));
+      else if(guide.selection_phase==="intent_to_negotiate") steps.push(t("award_guide_selection_intent_negotiate_step"));
+      else if(guide.selection_phase==="vendor_list") steps.push(t("award_guide_selection_vendor_list_step"));
+      else steps.push(t("award_guide_selection_intent_award_step"));
+      if(guide.vendor) steps.push(t("award_guide_vendor_step",{vendor:escUiHtml(guide.vendor)}));
+      if(guide.amount) steps.push(t("award_guide_amount_step",{amount:escUiHtml(guide.amount)}));
+      steps.push(t("award_guide_no_bid_step"));
+      steps.push(t("award_guide_selection_watch_step"));
+    }else{
+      if(guide.vendor) steps.push(t("award_guide_vendor_step",{vendor:escUiHtml(guide.vendor)}));
+      if(guide.amount) steps.push(t("award_guide_amount_step",{amount:escUiHtml(guide.amount)}));
+      if(guide.registered&&regDate) steps.push(t("award_guide_registered_step",{date:escUiHtml(regDate)}));
+      else if(guide.pending_registration) steps.push(t("award_guide_pending_step"));
+      if(guide.spent) steps.push(t("award_guide_spent_step",{amount:escUiHtml(guide.spent)}));
+      steps.push(t("award_guide_no_bid_step"));
+    }
+    if(guide.checkbook_url){
+      const host=escUiHtml(hostOf(guide.checkbook_url));
+      steps.push(t("award_guide_checkbook_step_html",{url:escUiHtml(guide.checkbook_url),host}));
+    }
+    if(!steps.length) steps.push(t("award_guide_fallback_step"));
   }else if(guide.system==="parcel_lookup"){
     if(guide.bbl) steps.push(t("property_guide_bbl_step",{bbl:escUiHtml(guide.bbl)}));
     if(guide.zola_url) steps.push(t("property_guide_zola_step_html",{url:escUiHtml(guide.zola_url)}));

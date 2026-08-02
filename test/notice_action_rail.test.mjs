@@ -59,3 +59,23 @@ test("rules action matter passes hearing_date, summary, and comment fields for g
   assert.match(html, /rule_guide_attend_step/);
   assert.match(html, /rule_guide_attend_date_step/);
 });
+
+test("award action matter passes vendor, amount, and lifecycle stages for the next-action rail", () => {
+  // Kind includes selection intermediates that do not match /Award/ alone.
+  assert.match(html, /Award\|Intent to Negotiate\|Vendor List/);
+  assert.match(html, /vendor_name:r\.vendor_name\|\|null/);
+  assert.match(html, /contract_amount:r\.contract_amount/);
+  assert.match(html, /registration:stageOf\("registered"\)/);
+  assert.match(html, /payment:stageOf\("payment"\)/);
+  assert.match(html, /pending:stageOf\("pending"\)/);
+  assert.match(html, /award_stage:stageOf\("award"\)\|\|stageOf\("intent_to_award"\)/);
+  assert.match(html, /ocp_award:lifecycleData&&lifecycleData\.ocp_award/);
+  assert.match(html, /guide\.system==="award_lifecycle"/);
+  assert.match(html, /award_guide_heading/);
+  assert.match(html, /award_guide_selection_heading/);
+  assert.match(html, /award_guide_no_bid_step/);
+  assert.match(html, /award_guide_spent_step/);
+  assert.match(html, /award_guide_checkbook_step_html/);
+  // Dynamic CTA labels (vendor / amount / registration date).
+  assert.match(html, /action\.label_vars/);
+});

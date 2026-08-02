@@ -19,6 +19,8 @@
   const NYCHA_ISUPPLIER_URL = "https://www.nyc.gov/site/nycha/business/isupplier-vendor-registration.page";
   // Stable public OASys handoff (city redirect → a856-exams.nyc.gov/oasysweb). No public per-exam apply URL.
   const OASY_APPLY_URL = "https://www.nyc.gov/examsforjobs";
+  // Checkbook smart search — same shape as site/index.html checkbookSearchUrl (no bare landing as primary).
+  const CHECKBOOK_SMART_SEARCH = "https://www.checkbooknyc.com/smart_search/citywide";
 
   function httpsUrl(value) {
     if (!value) return null;
@@ -127,8 +129,244 @@
     if (section === "Property Disposition") return "property";
     if (section === "Public Hearings and Meetings" || /hearing|meeting/i.test(type)) return "hearing";
     if (type === "Solicitation") return "solicitation";
-    if (/Award/.test(type)) return "award";
+    // Award chain + selection intermediates (Intent to Award already matches /Award/).
+    if (/Award|Intent to Negotiate|Vendor List/i.test(type)) return "award";
     return "notice";
+  }
+
+  /** Format a published dollar amount for award rail labels (no fabrication of missing values). */
+  function formatAwardMoney(value) {
+    if (value == null || value === "") return null;
+    const n = Number(value);
+    if (!Number.isFinite(n)) return null;
+    if (n === 0) return "$0";
+    try {
+      return "$" + n.toLocaleString("en-US", { maximumFractionDigits: 0 });
+    } catch (_e) {
+      return "$" + String(Math.round(n));
+    }
+  }
+
+  /**
+   * Checkbook handoff URL when a join key exists. Prefer a verified detail URL / agid
+   * path; else smart_search by contract id, PIN, or vendor. Never a bare landing.
+   */
+  function checkbookHandoffUrl(opts) {
+    const o = opts || {};
+    if (o.detailUrl) {
+      const safe = httpsUrl(o.detailUrl);
+      if (safe && /checkbooknyc\.com/i.test(new URL(safe).hostname)) return safe;
+    }
+    const agid = o.agid != null ? String(o.agid).trim() : "";
+    if (/^\d+$/.test(agid)) {
+      let code = String(o.documentCode || o.doctype || "").trim().toUpperCase();
+      if (!code) {
+        const m = String(o.contractId || "").trim().match(/^([A-Za-z]+)(\d)/);
+        code = m ? (m[1] + m[2]).toUpperCase() : "CT1";
+      }
+      return `https://www.checkbooknyc.com/contract_details/agid/${encodeURIComponent(agid)}/doctype/${encodeURIComponent(code)}`;
+    }
+    const term = o.contractId || o.pin || o.vendor;
+    if (term) return `${CHECKBOOK_SMART_SEARCH}?search_term=${encodeURIComponent(String(term))}`;
+    return null;
+  }
+
+  /**
+   * Selection-phase notice types on the money chain (past solicitation; not a bid CTA).
+   * Intent to Award matches /Award/ for kind routing but is still selection until Award.
+   */
+  function awardSelectionPhase(typeOfNotice) {
+    const type = String(typeOfNotice || "").trim();
+    if (/^Intent to Negotiate$/i.test(type)) return "intent_to_negotiate";
+    if (/^Vendor List$/i.test(type)) return "vendor_list";
+    if (/^Intent to Award$/i.test(type)) return "intent_to_award";
+    return null;
+  }
+
+  /**
+   * Award / selection handoff from City Record fields + /contract-lifecycle stages already
+   * painted on the notice. Primary CTA is dollars/vendor/registration-aware — never "bid"
+   * on closed awards, and never a solicitation submit CTA on Intent to Award / Negotiate.
+   * Only surface steps when the field is present; empty lifecycle degrades to pointer.
+   */
+  function awardHandoff(matter) {
+    const m = matter || {};
+    const type = String(m.type_of_notice_description || "").trim();
+    const selectionPhase = awardSelectionPhase(type);
+    const pin = String(m.pin || m.lifecycle_pin || "").trim() || null;
+    const reg = m.registration && typeof m.registration === "object" ? m.registration : null;
+    const pay = m.payment && typeof m.payment === "object" ? m.payment : null;
+    const pending = m.pending && typeof m.pending === "object" ? m.pending : null;
+    const awardStage = m.award_stage && typeof m.award_stage === "object" ? m.award_stage : null;
+    const regDetail = reg && reg.status === "matched" && reg.detail ? reg.detail : null;
+    const payDetail = pay && pay.status === "matched" && pay.detail ? pay.detail : null;
+    const pendingDetail = pending && pending.status === "matched" && pending.detail ? pending.detail : null;
+    const awardDetail = awardStage && awardStage.status === "matched" && awardStage.detail
+      ? awardStage.detail : null;
+    const ocp = m.ocp_award && typeof m.ocp_award === "object" ? m.ocp_award : null;
+    const ocpMatched = ocp && (ocp.status === "matched" || ocp.matched)
+      ? (ocp.detail || ocp.match || ocp) : null;
+
+    const vendor = String(
+      m.vendor_name
+      || (regDetail && regDetail.vendor)
+      || (pendingDetail && pendingDetail.vendor)
+      || (awardDetail && awardDetail.vendor)
+      || (ocpMatched && (ocpMatched.vendor || ocpMatched.vendor_name))
+      || ""
+    ).trim() || null;
+
+    let amountRaw = m.contract_amount;
+    if (amountRaw == null && awardDetail && awardDetail.amount != null) amountRaw = awardDetail.amount;
+    if (amountRaw == null && regDetail && regDetail.current_amount != null) amountRaw = regDetail.current_amount;
+    if (amountRaw == null && pendingDetail && pendingDetail.amount != null) amountRaw = pendingDetail.amount;
+    if (amountRaw == null && ocpMatched && (ocpMatched.amount != null || ocpMatched.contract_amount != null)) {
+      amountRaw = ocpMatched.amount != null ? ocpMatched.amount : ocpMatched.contract_amount;
+    }
+    const amount = formatAwardMoney(amountRaw);
+
+    const contractId = String(
+      (regDetail && regDetail.contract_id)
+      || (pendingDetail && pendingDetail.contract_id)
+      || m.contract_id
+      || ""
+    ).trim() || null;
+
+    const registrationDate = regDetail
+      ? (regDetail.registration_date || reg.date || null)
+      : null;
+    const registered = !!regDetail;
+
+    // Paid-to-date: prefer spending match; else registration spent_to_date when present.
+    let spent = null;
+    if (payDetail && payDetail.total_spent != null && Number.isFinite(Number(payDetail.total_spent))) {
+      if (payDetail.payment_state !== "unavailable") spent = formatAwardMoney(payDetail.total_spent);
+    } else if (regDetail && regDetail.spent_to_date != null && Number.isFinite(Number(regDetail.spent_to_date))) {
+      spent = formatAwardMoney(regDetail.spent_to_date);
+    }
+
+    const pendingRegistration = !registered
+      && pending
+      && pending.status === "matched";
+
+    const destination = checkbookHandoffUrl({
+      contractId,
+      pin,
+      vendor,
+      agid: (regDetail && (regDetail.agid || regDetail.checkbook_agid))
+        || (pendingDetail && (pendingDetail.agid || pendingDetail.checkbook_agid))
+        || null,
+      documentCode: (regDetail && (regDetail.document_code || regDetail.doctype))
+        || (pendingDetail && (pendingDetail.document_code || pendingDetail.doctype))
+        || null,
+      detailUrl: (regDetail && regDetail.checkbook_detail_url)
+        || (pendingDetail && pendingDetail.checkbook_detail_url)
+        || null,
+    });
+
+    const hasFields = !!(
+      vendor || amount || registered || pendingRegistration || spent || pin || contractId
+      || selectionPhase
+    );
+
+    // Selection-phase guide: Intent to Award / Negotiate / Vendor List — not a bid CTA.
+    // Outbound Checkbook only when registration/pending already matched (otherwise guide-first).
+    if (selectionPhase) {
+      let labelKey = "next_action_selection_guide";
+      let label = "What happens next in selection";
+      if (selectionPhase === "intent_to_award") {
+        labelKey = "next_action_intent_to_award";
+        label = "Intent to Award — selection in progress";
+      } else if (selectionPhase === "intent_to_negotiate") {
+        labelKey = "next_action_intent_to_negotiate";
+        label = "Intent to Negotiate — selection in progress";
+      } else if (selectionPhase === "vendor_list") {
+        labelKey = "next_action_vendor_list";
+        label = "Vendor list — selection in progress";
+      }
+      // Prefer vendor/amount lead when Intent to Award published a winner.
+      const labelVars = {};
+      if (selectionPhase === "intent_to_award" && vendor && amount) {
+        labelKey = "next_action_award_to";
+        label = `Awarded to ${vendor} · ${amount}`;
+        labelVars.vendor = vendor;
+        labelVars.amount = amount;
+      } else if (selectionPhase === "intent_to_award" && vendor) {
+        labelKey = "next_action_award_to_vendor";
+        label = `Awarded to ${vendor}`;
+        labelVars.vendor = vendor;
+      }
+      const selectionDestination = (registered || pendingRegistration) ? destination : null;
+      return {
+        system: "award_lifecycle",
+        mode: "selection",
+        selection_phase: selectionPhase,
+        destination: selectionDestination,
+        label_key: labelKey,
+        label,
+        label_vars: Object.keys(labelVars).length ? labelVars : null,
+        vendor,
+        amount,
+        spent,
+        pin,
+        contract_id: contractId,
+        registration_date: registrationDate,
+        registered: false,
+        pending_registration: pendingRegistration,
+        checkbook_url: selectionDestination,
+        has_fields: hasFields,
+        official_notice_url: httpsUrl(m.official_notice_url),
+      };
+    }
+
+    // Closed / published Award — never a bid CTA.
+    let labelKey = "next_action_award_guide";
+    let label = "Track this award below";
+    const labelVars = {};
+    if (registered && registrationDate) {
+      labelKey = "next_action_award_registered";
+      label = `Registered ${String(registrationDate).slice(0, 10)}`;
+      labelVars.date = String(registrationDate).slice(0, 10);
+    } else if (registered) {
+      labelKey = "next_action_award_checkbook";
+      label = "Open this contract on Checkbook";
+    } else if (pendingRegistration) {
+      labelKey = "next_action_award_pending";
+      label = "Pending registration on Checkbook";
+    } else if (vendor && amount) {
+      labelKey = "next_action_award_to";
+      label = `Awarded to ${vendor} · ${amount}`;
+      labelVars.vendor = vendor;
+      labelVars.amount = amount;
+    } else if (vendor) {
+      labelKey = "next_action_award_to_vendor";
+      label = `Awarded to ${vendor}`;
+      labelVars.vendor = vendor;
+    } else if (destination) {
+      labelKey = "next_action_award_checkbook";
+      label = "Open this contract on Checkbook";
+    }
+
+    return {
+      system: "award_lifecycle",
+      mode: registered ? "registered" : pendingRegistration ? "pending" : "award",
+      selection_phase: null,
+      destination: destination || null,
+      label_key: labelKey,
+      label,
+      label_vars: Object.keys(labelVars).length ? labelVars : null,
+      vendor,
+      amount,
+      spent,
+      pin,
+      contract_id: contractId,
+      registration_date: registrationDate,
+      registered,
+      pending_registration: pendingRegistration,
+      checkbook_url: destination,
+      has_fields: hasFields,
+      official_notice_url: httpsUrl(m.official_notice_url),
+    };
   }
 
   /** Parcel deep-links when a 10-digit BBL is known (ZoLa / ACRIS / Who Owns What). */
@@ -1183,6 +1421,39 @@
           ? [...parcelActs, notice(), watch]
           : [notice(), watch];
       }
+    } else if (kind === "award") {
+      // Money award / selection rail: use lifecycle vendor, amount, registration, spending.
+      // Never a solicitation "bid" CTA. Empty lifecycle degrades to notice + watch.
+      const handoff = awardHandoff(matter);
+      const labelExtra = handoff.label_vars ? { label_vars: handoff.label_vars } : {};
+      if (handoff.has_fields) {
+        if (handoff.destination) {
+          actions = [official(
+            "document",
+            handoff.label_key,
+            handoff.label,
+            handoff.destination,
+            null,
+            { guide: handoff, ...labelExtra },
+          )];
+        } else {
+          actions = [validateAction({
+            type: "bid_checklist",
+            label_key: handoff.label_key || "next_action_award_guide",
+            label: handoff.label || "Track this award below",
+            delivery: "local",
+            destination: null,
+            deadline: null,
+            confirmation_required: false,
+            guide: handoff,
+            ...labelExtra,
+          })];
+        }
+        if (matter.official_notice_url) actions.push(notice());
+        actions.push(watch);
+      } else {
+        actions = [notice(), watch];
+      }
     } else {
       actions = [notice(), watch];
     }
@@ -1208,12 +1479,14 @@
     examApplyUrl,
     compileActionRail,
     solicitationHandoff,
+    awardHandoff,
     hearingHandoff,
     ruleHandoff,
     zoningHandoff,
     zoningStage,
     landHearingBody,
     parcelLookupActions,
+    checkbookHandoffUrl,
     validateAction,
     outcomeEvent,
   };
