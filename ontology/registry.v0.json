@@ -632,6 +632,42 @@
       "backing": [
         "civic_time"
       ]
+    },
+    {
+      "id": "staffing.application_window",
+      "status": "registered",
+      "lens": "people",
+      "backing": [
+        "civic_time",
+        "exam_process_spine"
+      ]
+    },
+    {
+      "id": "staffing.list_established",
+      "status": "registered",
+      "lens": "people",
+      "backing": [
+        "civic_time",
+        "exam_process_spine"
+      ]
+    },
+    {
+      "id": "staffing.certification",
+      "status": "registered",
+      "lens": "people",
+      "backing": [
+        "civic_time",
+        "exam_process_spine"
+      ]
+    },
+    {
+      "id": "staffing.appointment",
+      "status": "registered",
+      "lens": "people",
+      "backing": [
+        "civic_time",
+        "exam_process_spine"
+      ]
     }
   ],
   "assertion_classifications": [
