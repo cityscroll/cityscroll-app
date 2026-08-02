@@ -10481,9 +10481,7 @@ function vendorProfileHTML(profile, details, hydrating){
         <div class="chain-h">${t("vendor_mentions_heading")}</div><div class="empty" style="padding:12px"><span class="loading"></span></div>
         <div class="chain-h">${t("forecast_section_heading")}</div><div class="empty" style="padding:12px"><span class="loading"></span></div>
       </div>` : "";
-  const checkbookHref = checkbookSearchUrl({ vendor: display });
-  const checkbookLink = `<a href="${escUiHtml(checkbookHref)}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`;
-
+  // Checkbook outbound is only in the phase lead (one per profile) — note names the source only.
   return `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px">${routeBackHTML("#money")}</p>
     <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
@@ -10512,7 +10510,7 @@ function vendorProfileHTML(profile, details, hydrating){
         ${pinBtn("vendor", display, display, t("meta_vendor_profile"))}
         ${API?`<a class="act" href="${API.replace(/\/+$/,"")}/feed.xml?lens=entity&kind=vendor&name=${encodeURIComponent(display)}">RSS</a>`:""}
       </div>
-      <div class="note">${t("vendor_identity_note_html",{link: checkbookLink})}</div>
+      <div class="note">${t("vendor_identity_note_html",{source: t("lifecycle_source_checkbook")})}</div>
     </div></div>`;
 }
 
