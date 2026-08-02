@@ -31,7 +31,8 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 
 Object-link layer across money / land / rules / meetings / people for one agency or
 vendor (`entity_resolution/cross_domain/`). Reuses subject registry kinds + ER
-normalizers + warehouse OCP/ZAP fixtures — does not reinvent matchers. Every link
+normalizers + warehouse OCP/ZAP/ZAP-BBL fixtures — does not reinvent matchers.
+Land projects gain `sited_on_parcel` edges when BBL join keys exist. Every link
 carries provenance. Instant materialization:
 
 ```bash
@@ -45,7 +46,7 @@ Serve: `GET /entity-intelligence?demo=1` (Parks multi-domain) or
 stays class-(a) `not_yet_ingested` until person-level Legistar retention > 0.
 ADR: `docs/adr/cross-domain-object-links.md`.
 
-## DuckDB + parquet warehouse (WH-01…WH-05)
+## DuckDB + parquet warehouse (WH-01…WH-06)
 
 Local lake under `warehouse/` (bulk raw/parquet/duckdb gitignored). CPU-capped
 ingest: single-job lock, headroom gate, `taskpolicy`/nice wrap, tiny row
@@ -56,15 +57,19 @@ time). Setup + fixture proof:
 python3 -m venv warehouse/.venv && warehouse/.venv/bin/pip install -r warehouse/requirements.txt
 warehouse/.venv/bin/python warehouse/scripts/ingest.py --dataset ocp-recent-contract-awards --from-fixture --limit 5
 warehouse/.venv/bin/python warehouse/scripts/ingest.py --dataset zap-projects --from-fixture --limit 5
+warehouse/.venv/bin/python warehouse/scripts/ingest.py --dataset zap-bbl --from-fixture --limit 20
 node --test test/warehouse_scaffold.test.mjs test/warehouse_bulk.test.mjs \
   test/warehouse_ocp_lookup.test.mjs test/warehouse_zap_lookup.test.mjs \
+  test/warehouse_zap_bbl_lookup.test.mjs \
   worker/test/ocp_warehouse_lookup.test.mjs worker/test/zap_warehouse_lookup.test.mjs \
+  worker/test/zap_bbl_warehouse_lookup.test.mjs \
   test/warehouse_er_batch.test.mjs
 ```
 
-**Bulk packs (loaded):** OCP awards `qyyg-4tf5` + ZAP projects `hgx4-8ukb` full
-`rows.csv` through the capped runner. Manifest + checksums (no multi-MB bulk in
-git): `warehouse/manifests/wh02_load_manifest.json`. Reproduce bulk:
+**Bulk packs (loaded):** OCP awards `qyyg-4tf5` + ZAP projects `hgx4-8ukb` +
+ZAP BBL `2iga-a6mk` full `rows.csv` through the capped runner. Manifest +
+checksums (no multi-MB bulk in git): `warehouse/manifests/wh02_load_manifest.json`.
+Reproduce bulk:
 
 ```bash
 python3 "$HEADROOM_BIN"   # estate headroom.py; CONSTRAINED → defer
@@ -76,6 +81,10 @@ warehouse/.venv/bin/python warehouse/scripts/ingest.py \
   --dataset zap-projects --bulk --ack-large --write-sample 25
 warehouse/.venv/bin/python warehouse/scripts/query.py \
   --sql-file warehouse/sql/examples/zap_bulk_verify.sql
+warehouse/.venv/bin/python warehouse/scripts/ingest.py \
+  --dataset zap-bbl --bulk --ack-large --write-sample 25
+warehouse/.venv/bin/python warehouse/scripts/query.py \
+  --sql-file warehouse/sql/examples/zap_bbl_bulk_verify.sql
 ```
 
 **WH-03 OCP serve:** materialize warehouse OCP into
@@ -98,10 +107,22 @@ node tools/build_zap_warehouse_lookup.mjs --fixture --bench
 # receipt: warehouse/receipts/proof/wh05_zap_lookup_speed.json
 ```
 
-**Remaining bulk (sequential, only if headroom green):** `zap-bbl`
-(`2iga-a6mk`) → `city-record` (`dg92-zbpx`). Optional later:
-`doing-business-entities`. Query seam: `warehouse/lib/query.mjs` /
-`warehouse/scripts/query.py`. Details: `warehouse/README.md`.
+**WH-06 ZAP BBL serve:** materialize project→BBL groups (+ demo `2022M0258`)
+into `site/data/zap_bbl_warehouse_lookup.json` (+ Worker twin). Replaces live
+SODA in `fetchBbls` (`/zap-outcomes` DOB tax-lot side-car) for materialization
+hits; live SODA remains the miss fallback. Cross-domain land objects gain
+`sited_on_parcel` edges when BBL join keys exist:
+
+```bash
+node tools/build_zap_bbl_warehouse_lookup.mjs --fixture --bench
+# receipt: warehouse/receipts/proof/wh06_zap_bbl_lookup_speed.json
+node tools/build_entity_intelligence.mjs
+```
+
+**Remaining bulk (sequential, only if headroom green):** `city-record`
+(`dg92-zbpx`). Optional later: `doing-business-entities`. Query seam:
+`warehouse/lib/query.mjs` / `warehouse/scripts/query.py`. Details:
+`warehouse/README.md`.
 
 ## Warehouse batch ER (WH-04)
 

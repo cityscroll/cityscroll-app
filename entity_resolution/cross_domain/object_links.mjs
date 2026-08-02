@@ -86,6 +86,11 @@ export const CROSS_DOMAIN_LINK_TYPES = Object.freeze({
     domains: Object.freeze(["people"]),
     registry: false,
   },
+  sited_on_parcel: {
+    description: "Land project is sited on a published tax lot (BBL) via ZAP BBL",
+    domains: Object.freeze(["land"]),
+    registry: false,
+  },
 });
 
 const DOMAIN_SET = new Set(CROSS_DOMAIN_DOMAINS);
@@ -245,7 +250,32 @@ export function observationFromMoneyRow(row, opts = {}) {
 }
 
 /**
+ * Normalize a 10-digit NYC BBL string. Fails closed on non-BBL values.
+ * @param {string|number|null|undefined} value
+ * @returns {string|null}
+ */
+export function normalizeBbl(value) {
+  let s = clean(value).replace(/\.0$/, "");
+  if (!s) return null;
+  if (/^\d+$/.test(s) && s.length < 10) s = s.padStart(10, "0");
+  return /^\d{10}$/.test(s) ? s : null;
+}
+
+/**
+ * Parcel subject_ref from a 10-digit BBL.
+ * @returns {{ ref: string, bbl: string } | null}
+ */
+export function resolveParcelSubject(bbl) {
+  const id = normalizeBbl(bbl);
+  if (!id) return null;
+  const ref = formatSubjectRef("parcel", id);
+  if (!ref) return null;
+  return { ref, bbl: id };
+}
+
+/**
  * Shape a land-domain observation (ZAP project row).
+ * Optional `bbls` / single `bbl` attach tax-lot join keys from ZAP BBL (WH-06).
  * @param {object} row
  * @param {{ sourceSystem?: string }} [opts]
  */
@@ -256,6 +286,12 @@ export function observationFromLandRow(row, opts = {}) {
   if (!projectId) return null;
   const applicant = clean(row.primary_applicant || row.applicant);
   if (!applicant) return null;
+
+  const bblInputs = [
+    ...(Array.isArray(row.bbls) ? row.bbls : []),
+    ...(row.bbl != null ? [row.bbl] : []),
+  ];
+  const bbls = [...new Set(bblInputs.map(normalizeBbl).filter(Boolean))].sort().slice(0, 25);
 
   return {
     domain: "land",
@@ -277,8 +313,70 @@ export function observationFromLandRow(row, opts = {}) {
     ) || null,
     public_status: clean(row.public_status) || null,
     ulurp_numbers: clean(row.ulurp_numbers) || null,
+    bbls,
     subject_ref: formatSubjectRef("project", projectId),
   };
+}
+
+/**
+ * Shape a ZAP BBL tax-lot row as a land-side enrichment observation.
+ * Does not invent an agency/vendor root by itself — pair with a project row via
+ * mergeBblsOntoLandObservations, or use when project_id is already known.
+ * @param {object} row
+ * @param {{ sourceSystem?: string }} [opts]
+ * @returns {{ project_id: string, bbl: string, source_system: string, source_record_id: string } | null}
+ */
+export function observationFromZapBblRow(row, opts = {}) {
+  if (!row || typeof row !== "object") return null;
+  const sourceSystem = clean(opts.sourceSystem || row.source_system || "zap-bbl");
+  const projectId = clean(row.project_id || row.id);
+  const bbl = normalizeBbl(row.bbl);
+  if (!projectId || !bbl) return null;
+  return {
+    domain: "land",
+    object_kind: "tax_lot",
+    source_system: sourceSystem,
+    source_record_id: `${sourceSystem}:${projectId}:${bbl}`,
+    native_key: `${projectId}:${bbl}`,
+    project_id: projectId,
+    bbl,
+    bbls: [bbl],
+    subject_ref: formatSubjectRef("parcel", bbl),
+  };
+}
+
+/**
+ * Merge project_id → BBLs onto land project observations (join key: project_id).
+ * Mutates nothing; returns a new observation list.
+ * @param {object[]} observations
+ * @param {Array<{ project_id: string, bbl?: string, bbls?: string[] }>} bblRows
+ */
+export function mergeBblsOntoLandObservations(observations, bblRows = []) {
+  /** @type {Map<string, string[]>} */
+  const byProject = new Map();
+  for (const row of bblRows || []) {
+    const pid = clean(row?.project_id);
+    if (!pid) continue;
+    const list = [
+      ...(Array.isArray(row.bbls) ? row.bbls : []),
+      ...(row.bbl != null ? [row.bbl] : []),
+    ]
+      .map(normalizeBbl)
+      .filter(Boolean);
+    if (!list.length) continue;
+    const cur = byProject.get(pid) || [];
+    byProject.set(pid, [...new Set([...cur, ...list])].sort().slice(0, 25));
+  }
+  if (!byProject.size) return [...(observations || [])];
+
+  return (observations || []).map((obs) => {
+    if (!obs || obs.domain !== "land" || obs.object_kind !== "project") return obs;
+    const pid = clean(obs.project_id);
+    const extra = byProject.get(pid);
+    if (!extra?.length) return obs;
+    const bbls = [...new Set([...(obs.bbls || []), ...extra])].sort().slice(0, 25);
+    return { ...obs, bbls };
+  });
 }
 
 /**
@@ -490,11 +588,14 @@ function confidenceFor(rootKind, field, obs) {
 export function linkObservation(obs) {
   if (!obs || !DOMAIN_SET.has(obs.domain)) return { objects: [], links: [] };
   const roots = rootsForObservation(obs);
-  if (!roots.length) return { objects: [], links: [] };
+  // Land tax-lot enrichments may lack agency/vendor roots but still emit parcel edges.
+  const parcelLinks = parcelLinksForObservation(obs);
+  if (!roots.length && !parcelLinks.length) return { objects: [], links: [] };
 
   const objects = [];
   const links = [];
   const objectSubject = obs.subject_ref || null;
+  const bbls = Array.isArray(obs.bbls) ? obs.bbls.map(normalizeBbl).filter(Boolean) : [];
 
   for (const root of roots) {
     const type = linkTypeFor(obs.domain, root.kind, root.field);
@@ -548,6 +649,7 @@ export function linkObservation(obs) {
       request_id: obs.request_id || null,
       event_id: obs.event_id || null,
       ulurp_numbers: obs.ulurp_numbers || null,
+      bbls: bbls.length ? bbls : null,
       root_ref: root.subject.ref,
       root_kind: root.kind,
       href: hrefForObject(obs),
@@ -559,7 +661,65 @@ export function linkObservation(obs) {
     links.push(edge);
   }
 
+  // Project → parcel edges (ZAP BBL join). Always from project subject when present.
+  const projectRef = obs.project_id
+    ? formatSubjectRef("project", clean(obs.project_id))
+    : (objectSubject && parseSubjectRef(objectSubject)?.kind === "project" ? objectSubject : null);
+  if (projectRef && parcelLinks.length) {
+    for (const edge of parcelLinks) {
+      if (edge) links.push(edge);
+    }
+  }
+
   return { objects, links };
+}
+
+/**
+ * Emit sited_on_parcel edges for land observations that carry BBL join keys.
+ * @param {object} obs
+ * @returns {object[]}
+ */
+function parcelLinksForObservation(obs) {
+  if (!obs || obs.domain !== "land") return [];
+  const projectId = clean(obs.project_id);
+  if (!projectId) return [];
+  const projectRef = formatSubjectRef("project", projectId);
+  if (!projectRef) return [];
+  const bbls = [
+    ...(Array.isArray(obs.bbls) ? obs.bbls : []),
+    ...(obs.bbl != null ? [obs.bbl] : []),
+  ]
+    .map(normalizeBbl)
+    .filter(Boolean)
+    .slice(0, 25);
+  if (!bbls.length) return [];
+
+  const edges = [];
+  for (const bbl of bbls) {
+    const parcel = resolveParcelSubject(bbl);
+    if (!parcel) continue;
+    const provenance = makeProvenance({
+      source_system: obs.source_system || "zap-bbl",
+      source_record_id: `${obs.source_system || "zap-bbl"}:${projectId}:${bbl}`,
+      source_fields: ["bbl", "project_id"],
+      basis: "land_project_bbl",
+      observed_at: obs.when,
+      input_value: bbl,
+    });
+    if (!provenance) continue;
+    const edge = makeObjectLink({
+      type: "sited_on_parcel",
+      from: projectRef,
+      to: parcel.ref,
+      domain: "land",
+      confidence: "strong",
+      method: "zap_bbl_project_id_v1",
+      method_version: "1",
+      provenance,
+    });
+    if (edge) edges.push(edge);
+  }
+  return edges;
 }
 
 function hrefForObject(obs) {
@@ -579,9 +739,13 @@ export function indexObservationsByRoot(observations) {
 
   for (const obs of observations || []) {
     const { objects, links } = linkObservation(obs);
+    // Identity edges (agency/vendor) share the object list order; parcel edges are extras.
+    const identityLinks = (links || []).filter((l) => l?.type !== "sited_on_parcel");
+    const parcelLinks = (links || []).filter((l) => l?.type === "sited_on_parcel");
+
     for (let i = 0; i < objects.length; i++) {
       const obj = objects[i];
-      const edge = links[i];
+      const edge = identityLinks[i] || null;
       const rootRef = obj.root_ref;
       if (!rootRef) continue;
       let bucket = byRoot.get(rootRef);
@@ -600,6 +764,13 @@ export function indexObservationsByRoot(observations) {
       }
       bucket.objects.push(obj);
       if (edge) bucket.links.push(edge);
+      // Attach project→parcel edges onto the same root bucket so land intelligence
+      // carries ZAP BBL provenance when the project already linked to this root.
+      if (parcelLinks.length && obj.project_id) {
+        for (const pEdge of parcelLinks) {
+          if (pEdge) bucket.links.push(pEdge);
+        }
+      }
     }
   }
 

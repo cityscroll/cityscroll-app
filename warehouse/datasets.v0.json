@@ -99,7 +99,7 @@
       "required_fields": [
         "project_id"
       ],
-      "notes": "BBL join companion to zap-projects. Next after projects when headroom green."
+      "notes": "WH-06 third bulk pack + fetchBbls materialization. ~132k rows; project_id ↔ BBL."
     },
     "doing-business-entities": {
       "id": "doing-business-entities",
