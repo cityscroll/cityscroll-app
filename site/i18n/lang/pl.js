@@ -934,6 +934,8 @@
     fetching_notice_id: "pobieranie ogłoszenia {id}…",
     notice_not_found_html: "Ogłoszenia <code>{id}</code> nie znaleziono w otwartych danych The City Record — może być bardzo nowe, lub identyfikator może być błędnie wpisany.",
     back_browse: "← Wróć do CityScroll",
+    back_previous_view: "← Wróć do poprzedniego widoku",
+    vendor_name_too_short: "Nazwa „{name}” jest zbyt krótka, aby rozpoznać dostawcę.",
     try_city_record: "sprawdź w The City Record",
     notice_email_btn: "E-mail",
     notice_print_btn: "Drukuj",

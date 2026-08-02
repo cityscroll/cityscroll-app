@@ -32,6 +32,16 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - Keep this file for durable project-intrinsic facts that should outlive any one pull request.
 - Prefer pointers to authoritative commands/files over duplicating implementation details.
 
+## Global item-route navigation
+
+Detail-route Back controls use the session-history sidecar in `site/index.html`
+(`rememberItemRouteContext` / `routeBackHTML`) so returning to a lens restores its
+serialized filters and scroll position. New item-route chrome must use
+`routeBackHTML` with an explicit cold-entry fallback; keep fallback routing in
+`itemRouteFallbackHash`. Verify:
+`node --test test/navigation_history.test.mjs` and
+`python3 test/functional/20_navigation_history.py` with `site/` served locally.
+
 
 ## README live screenshots
 

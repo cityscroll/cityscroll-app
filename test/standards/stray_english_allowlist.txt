@@ -158,5 +158,4 @@ via GeoSearch — verify the match</span></div>
 >Who Owns What portfolio
 you@example.com
 © OpenStreetMap © CARTO · lots © NYC MapPLUTO
-” is too short to resolve to a vendor. <a href="#money">← Browse</a></div>
 ⚑ non-competitive method:
