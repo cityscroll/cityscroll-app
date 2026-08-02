@@ -69,6 +69,22 @@ test("buildMeetingOutcomes stamps one connected spine object per matter", () => 
   assert.equal(vote.by_person.length, 3);
   assert.ok(attachment.documents.some((d) => d.name === "Staff report"));
   assert.ok(attachment.documents.some((d) => d.name === "Agenda"));
+  // Fixture matter_id is non-numeric ("mat-001") → no invented matter_url
+  const matterStage = spine.stages.find((s) => s.kind === "matter");
+  assert.equal(matterStage.matter_url, null);
+});
+
+test("buildMeetingVoteSpine stamps Gateway matter_url for numeric MatterIds", () => {
+  const spine = buildMeetingVoteSpine({
+    item: { agenda_item_id: "a1", title: "Item" },
+    matter: { matter_id: "79062", matter_file: "LU 0091-2026", title: "Public School 15 Annex" },
+    event: { event_id: "22526" },
+  });
+  const matter = spine.stages.find((s) => s.kind === "matter");
+  assert.equal(
+    matter.matter_url,
+    "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79062",
+  );
 });
 
 test("meeting_vote_spine_completeness_rate moves from 0 (empty) to 1 (full fixture)", () => {
