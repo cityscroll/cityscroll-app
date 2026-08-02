@@ -35,3 +35,6 @@ warehouse/.ingest.lock
 warehouse/**/__pycache__/
 *.duckdb
 *.duckdb.wal
+
+# Generated WH-02 bulk samples (may contain public notice fields; not committed)
+warehouse/fixtures/**/bulk_sample.csv

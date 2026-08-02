@@ -19,8 +19,21 @@ def main() -> int:
     p.add_argument("--parquet", required=True)
     p.add_argument("--threads", type=int, default=1)
     p.add_argument("--meta-out", default=None)
+    p.add_argument(
+        "--column-map",
+        default=None,
+        help="JSON file mapping source CSV headers → target column names",
+    )
     args = p.parse_args()
-    meta = csv_to_parquet(Path(args.csv), Path(args.parquet), threads=args.threads)
+    column_map = None
+    if args.column_map:
+        column_map = json.loads(Path(args.column_map).read_text(encoding="utf-8"))
+    meta = csv_to_parquet(
+        Path(args.csv),
+        Path(args.parquet),
+        threads=args.threads,
+        column_map=column_map,
+    )
     if args.meta_out:
         Path(args.meta_out).parent.mkdir(parents=True, exist_ok=True)
         Path(args.meta_out).write_text(json.dumps(meta, indent=2) + "\n", encoding="utf-8")
