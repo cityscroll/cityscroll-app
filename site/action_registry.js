@@ -13,7 +13,12 @@
   const ACTION_DELIVERIES = Object.freeze(["local", "official_handoff", "unavailable"]);
   const CONFIRMATION_ACTIONS = new Set(["rsvp", "comment", "official_application"]);
   const PASSPORT_RFX_URL = "https://a0333-passportpublic.nyc.gov/rfx.html";
+  // Same path PASSPort Public uses for procurement-name links in rfx.js (login ReturnUrl → RFx).
+  const PASSPORT_RFX_EXTRANET_BASE =
+    "https://passport.cityofnewyork.us/page.aspx/en/bpm/process_manage_extranet";
   const NYCHA_ISUPPLIER_URL = "https://www.nyc.gov/site/nycha/business/isupplier-vendor-registration.page";
+  // Stable public OASys handoff (city redirect → a856-exams.nyc.gov/oasysweb). No public per-exam apply URL.
+  const OASY_APPLY_URL = "https://www.nyc.gov/examsforjobs";
 
   function httpsUrl(value) {
     if (!value) return null;
@@ -23,6 +28,41 @@
     } catch (_error) {
       return null;
     }
+  }
+
+  /** Numeric PASSPort Public rfp_id only (strips BOM). */
+  function cleanPassportRfpId(value) {
+    const id = String(value || "").replace(/^\uFEFF/, "").trim();
+    return /^\d{3,}$/.test(id) ? id : null;
+  }
+
+  /**
+   * RFx handoff: publisher extranet deep link when rfp_id is known, else public browse.
+   * Prefer an already-deep portal stamped on the join payload when present.
+   */
+  function passportRfxHandoffUrl(rfpId, portalFallback) {
+    const id = cleanPassportRfpId(rfpId);
+    if (id) return `${PASSPORT_RFX_EXTRANET_BASE}/${encodeURIComponent(id)}`;
+    const portal = httpsUrl(portalFallback);
+    if (portal && /process_manage_extranet\/\d+/i.test(portal)) return portal;
+    return portal || PASSPORT_RFX_URL;
+  }
+
+  /** Prefer a publisher-supplied apply URL when it is not the generic OASys landing. */
+  function examApplyUrl(matter) {
+    const explicit = httpsUrl(matter && matter.official_application_url);
+    if (explicit) {
+      try {
+        const u = new URL(explicit);
+        const path = (u.pathname || "").replace(/\/+$/, "") || "/";
+        const isLanding = /examsforjobs/i.test(u.hostname + path)
+          || (u.hostname.includes("nyc.gov") && /\/examsforjobs$/i.test(path));
+        if (!isLanding) return explicit;
+      } catch (_e) {
+        return explicit;
+      }
+    }
+    return OASY_APPLY_URL;
   }
 
   function validateAction(action) {
@@ -181,11 +221,11 @@
     };
   }
 
-  // A solicitation handoff is an evidence record, not a guessed deep link. PASSPort Public
-  // exposes a searchable RFx browse surface but no stable per-RFx URL, so matched and unmatched
-  // records both carry the exact search terms the reader needs. Agency-specific systems only win
-  // when the notice itself names the system. When no portal is named, still surface a guide from
-  // the notice's own package URL / contact / submission fields — never "read the official notice."
+  // A solicitation handoff is an evidence record, not a guessed deep link. Matched PASSPort
+  // RFx rows carry rfp_id → the same process_manage_extranet deep link PASSPort Public uses.
+  // Without rfp_id the handoff stays a public browse search recipe (EPIN/name guide). Agency
+  // systems only win when the notice names them. When no portal is named, surface the notice's
+  // own package URL / contact / submission fields — never "read the official notice."
   function solicitationHandoff(matter) {
     const body = String(matter.notice_text || "");
     const agency = String(matter.agency_name || "");
@@ -195,8 +235,13 @@
     const detail = rfx && rfx.status === "matched" ? (rfx.detail || {}) : null;
     const explicitUrl = httpsUrl(matter.official_application_url);
     const fields = noticeFieldGuidance(matter);
+    // Prefer notice-published package/submit URL for iSupplier RFQ depth when present.
+    const nychaNoticeUrl = httpsUrl(matter.official_notice_url);
 
     if (/housing authority|\bnycha\b/i.test(agency) && /\bisupplier\b/i.test(body)) {
+      // No public per-RFQ iSupplier URL is published. Registration guide remains the
+      // kinetic destination; keep RFQ/PIN copyable and prefer City Record notice when known
+      // as the package/document handoff for this solicitation.
       return {
         system: "nycha_isupplier",
         mode: "notice_named",
@@ -207,7 +252,11 @@
         procurement_name: title,
         status: null,
         approval_delay: /24\s*(?:to|–|-)\s*72\s*hours/i.test(body),
+        // Outbound for the RFQ identity when City Record request_id is known.
+        identifier_url: nychaNoticeUrl,
         ...fields,
+        // package_url from body wins; else official notice is the deepest public package link.
+        package_url: fields.package_url || nychaNoticeUrl,
       };
     }
 
@@ -228,15 +277,22 @@
     }
 
     if (detail) {
+      const rfpId = detail.rfp_id;
+      const destination = passportRfxHandoffUrl(rfpId, rfx.portal);
+      const deep = !!cleanPassportRfpId(rfpId)
+        || /process_manage_extranet\/\d+/i.test(String(destination));
       return {
         system: "passport",
         mode: "matched",
-        destination: httpsUrl(rfx.portal) || PASSPORT_RFX_URL,
+        destination,
         label_key: "search_passport_rfx",
         label: "Find this RFx in PASSPort",
         identifier: String(detail.epin || pin || "").trim() || null,
+        // EPIN still useful on the public browse when deep link is auth-gated.
+        identifier_url: deep ? PASSPORT_RFX_URL : null,
         procurement_name: String(detail.procurement_name || title || "").trim() || null,
         status: String(detail.rfx_status || "").trim() || null,
+        rfp_id: cleanPassportRfpId(rfpId),
         ...fields,
       };
     }
@@ -355,8 +411,17 @@
         : [unavailable("comment", "next_action_comment_closed", "Public comment is not open now.", deadline), notice(), watch];
     } else if (kind === "exam") {
       const open = stage === "open";
+      // Prefer exam-specific apply URL when publisher supplies one; else stable OASys landing.
+      const applyUrl = examApplyUrl(matter);
       actions = open
-        ? [official("official_application", "career_apply_oasys", "Apply in OASys", matter.official_application_url, deadline), calendar, notice()]
+        ? [official("official_application", "career_apply_oasys", "Apply in OASys", applyUrl, deadline, {
+            guide: {
+              system: "oasys",
+              mode: applyUrl === OASY_APPLY_URL ? "landing" : "deep",
+              identifier: String(matter.exam_number || matter.pin || "").trim() || null,
+              identifier_url: httpsUrl(matter.official_notice_url || matter.notice_url),
+            },
+          }), calendar, notice()]
         : [unavailable("official_application", stage === "closed" ? "next_action_exam_closed" : "next_action_exam_not_open", stage === "closed" ? "The application window has closed." : "Applications are not open yet.", deadline), notice()];
     } else {
       actions = [notice(), watch];
@@ -374,6 +439,13 @@
     OUTCOME_ENUM,
     ACTION_TYPES,
     ACTION_DELIVERIES,
+    PASSPORT_RFX_URL,
+    PASSPORT_RFX_EXTRANET_BASE,
+    NYCHA_ISUPPLIER_URL,
+    OASY_APPLY_URL,
+    passportRfxHandoffUrl,
+    cleanPassportRfpId,
+    examApplyUrl,
     compileActionRail,
     solicitationHandoff,
     validateAction,
