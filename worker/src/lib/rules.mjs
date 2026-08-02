@@ -469,21 +469,104 @@ export function rulemakingTitleCore(title) {
 }
 
 /**
- * Reference tokens that can anchor a rulemaking across notices when shared
- * (RCNY cites, section/chapter numbers). Normalized lowercase.
+ * True when a ref token is specific enough to high-confidence stitch alone.
+ * Requires a title-scoped RCNY section cite (`34rcny section 4-08`), not a bare
+ * `section 4-01` (those numbers recycle across agencies/chapters) and not bare
+ * Title-N / chapter-alone boilerplate.
+ */
+export function isExactRulemakingRef(token) {
+  const t = String(token || "").toLowerCase().replace(/\s+/g, " ").trim();
+  if (!t) return false;
+  // compound: "28rcny section 12-01" / "34rcny chapter 4 section 4-08"
+  if (/\d+rcny/.test(t) && /section\s+\S*\d/.test(t)) return true;
+  return false;
+}
+
+/** Collect digit-bearing section numbers from a text window. */
+function sectionNumbersIn(window) {
+  const out = [];
+  for (const sm of String(window || "").matchAll(/\bsections?\s+(\d[\w.-]*)/gi)) {
+    out.push(String(sm[1]).toLowerCase());
+  }
+  for (const sm of String(window || "").matchAll(/§\s*(\d[\w.-]*)/gi)) {
+    out.push(String(sm[1]).toLowerCase());
+  }
+  // "sections 4-01 and 4-08" — first pass gets 4-01; pick up trailing list nums
+  for (const sm of String(window || "").matchAll(
+    /\bsections?\s+((?:\d[\w.-]*)(?:\s*(?:,|and|&)\s*\d[\w.-]*)+)/gi,
+  )) {
+    const nums = String(sm[1]).match(/\d[\w.-]*/g) || [];
+    for (const n of nums) out.push(n.toLowerCase());
+  }
+  return [...new Set(out.filter((n) => /\d/.test(n)))];
+}
+
+/**
+ * Reference tokens that can anchor a rulemaking across notices when shared.
+ * Generic boilerplate is dropped (false-merge risk under a wide date window):
+ *   - bare `title N` / `Title N of the RCNY` (agency-wide)
+ *   - bare `N RCNY` title-level without a section cite
+ *   - non-numeric "sections" (regex trap: `section` + `s`)
+ *   - chapter-alone without a section number
+ * Prefer compound `Nrcny section X-Y` (exact) and bare `section X-Y` (needs
+ * title-core floor at match time).
  */
 export function extractRulemakingRefTokens(text) {
   const raw = String(text || "");
   const found = new Set();
-  for (const m of raw.matchAll(/\b\d+(?:-\d+)?\s*rcny\b/gi)) {
-    found.add(m[0].toLowerCase().replace(/\s+/g, ""));
+
+  // Compound high-specificity: "N RCNY" + nearby chapter/section in a window.
+  // Bare title-level `N RCNY` alone is NOT emitted.
+  for (const m of raw.matchAll(/\b(\d+(?:-\d+)?)\s*rcny\b/gi)) {
+    const titleNum = m[1];
+    const from = (m.index ?? 0) + m[0].length;
+    // Look both slightly before (rare) and after the RCNY marker.
+    const window = raw.slice(Math.max(0, (m.index ?? 0) - 40), from + 160);
+    const chapterM = window.match(/\bchapter\s*([\d.a-z-]+)/i);
+    const chapter = chapterM && /\d/.test(chapterM[1])
+      ? String(chapterM[1]).toLowerCase()
+      : null;
+    for (const section of sectionNumbersIn(window)) {
+      const parts = [`${titleNum}rcny`];
+      if (chapter) parts.push(`chapter ${chapter}`);
+      parts.push(`section ${section}`);
+      found.add(parts.join(" "));
+    }
   }
-  for (const m of raw.matchAll(/\b(?:chapter|section|§)\s*[\d.a-z-]+\b/gi)) {
-    found.add(m[0].toLowerCase().replace(/\s+/g, " ").trim());
+
+  // "Title 34 of the Rules of the City of New York" / "Title 34 of the RCNY"
+  // with nearby section numbers → same compound as N RCNY (exact path).
+  // Bare Title N without a section is never emitted.
+  for (const m of raw.matchAll(
+    /\btitle\s+(\d+)\b(?:\s+of\s+the\s+(?:rules\s+of\s+the\s+city\s+of\s+new\s+york|rcny))?/gi,
+  )) {
+    const titleNum = m[1];
+    const center = m.index ?? 0;
+    // Sections often appear BEFORE "of Title 34" ("sections 4-01 … of Chapter 4 of Title 34").
+    const window = raw.slice(Math.max(0, center - 120), center + m[0].length + 80);
+    const chapterM = window.match(/\bchapter\s*([\d.a-z-]+)/i);
+    const chapter = chapterM && /\d/.test(chapterM[1])
+      ? String(chapterM[1]).toLowerCase()
+      : null;
+    for (const section of sectionNumbersIn(window)) {
+      const parts = [`${titleNum}rcny`];
+      if (chapter) parts.push(`chapter ${chapter}`);
+      parts.push(`section ${section}`);
+      found.add(parts.join(" "));
+    }
   }
-  for (const m of raw.matchAll(/\btitle\s+\d+\b/gi)) {
-    found.add(m[0].toLowerCase().replace(/\s+/g, " ").trim());
+
+  // Standalone section numbers — singular or plural lead-in.
+  // "sections 4-01 and 4-08" must yield section 4-01 + section 4-08, never the
+  // bare token "sections" (old regex matched `section` + trailing `s`).
+  // These alone are NOT exact — matchRulemakingSiblings requires title-core
+  // unless a title-scoped compound also matches.
+  for (const section of sectionNumbersIn(raw)) {
+    found.add(`section ${section}`);
   }
+
+  // Bare title N, bare Nrcny, chapter-alone, non-numeric "sections" — intentionally
+  // omitted. They are the false-merge fuel for DOT/DOB/HPD agency-wide clusters.
   return [...found].sort();
 }
 
@@ -609,11 +692,14 @@ export function classifyRulemakingRole(record) {
 
 /**
  * Confident sibling match only. Ambiguous pairs return matched:false —
- * separate subjects are the correct fallback.
+ * separate subjects are the correct fallback. False merge is worse than split.
  *
  * High confidence when:
  *   1) same agency + shared NYC Rules guid/url, or
- *   2) same agency + shared reference token (RCNY / section) + date window, or
+ *   2) same agency + shared *specific* reference + date window + title-core
+ *      floor (exact section cites alone are not enough — the same 34 RCNY
+ *      §4-01 can be amended by unrelated DOT rulemakings; generic Title-N /
+ *      bare "sections" are never emitted), or
  *   3) same agency + high title-core overlap (≥ 0.55, ≥2 tokens) + date window.
  */
 export function matchRulemakingSiblings(a, b) {
@@ -649,25 +735,41 @@ export function matchRulemakingSiblings(a, b) {
   }
   const inWindow = daysApart != null && daysApart <= RULEMAKING_SIBLING_WINDOW_DAYS;
 
-  const refsA = new Set(extractRulemakingRefTokens(recordBodyBlob(a)));
-  const refsB = new Set(extractRulemakingRefTokens(recordBodyBlob(b)));
-  const sharedRefs = [...refsA].filter((r) => refsB.has(r));
-  if (sharedRefs.length && inWindow) {
-    return {
-      matched: true,
-      confidence: "high",
-      basis: `agency ${agencyA} + shared ref (${sharedRefs[0]}) + date (${Math.round(daysApart)}d)`,
-      method: "shared_reference",
-      agency: agencyA,
-      shared_refs: sharedRefs,
-      days_apart: Math.round(daysApart),
-    };
-  }
-
   const coreA = rulemakingTitleCore(recordTitle(a));
   const coreB = rulemakingTitleCore(recordTitle(b));
   const tokA = tokens(coreA);
   const tokB = tokens(coreB);
+  const overlap = titleOverlap(coreA, coreB);
+  const titleCoreOk =
+    tokA.size >= RULEMAKING_MIN_CORE_TOKENS
+    && tokB.size >= RULEMAKING_MIN_CORE_TOKENS
+    && overlap >= RULEMAKING_TITLE_OVERLAP_MIN;
+
+  const refsA = new Set(extractRulemakingRefTokens(recordBodyBlob(a)));
+  const refsB = new Set(extractRulemakingRefTokens(recordBodyBlob(b)));
+  const sharedRefs = [...refsA].filter((r) => refsB.has(r));
+  if (sharedRefs.length && inWindow && titleCoreOk) {
+    // Title-core floor is mandatory even for exact RCNY section cites: the same
+    // title/chapter/section can be amended by unrelated rulemakings (e.g. FHV
+    // parking and bicycle racks both touch 34 RCNY §4-01). Generic refs are
+    // already banned at extract time; this gate stops residual chain-merges.
+    const exactRefs = sharedRefs.filter(isExactRulemakingRef);
+    const primary = exactRefs[0] || sharedRefs[0];
+    return {
+      matched: true,
+      confidence: "high",
+      basis: exactRefs.length
+        ? `agency ${agencyA} + exact ref (${primary}) + title-core (${Math.round(overlap * 100)}%) + date (${Math.round(daysApart)}d)`
+        : `agency ${agencyA} + shared ref (${primary}) + title-core (${Math.round(overlap * 100)}%) + date (${Math.round(daysApart)}d)`,
+      method: "shared_reference",
+      agency: agencyA,
+      shared_refs: sharedRefs,
+      exact_refs: exactRefs,
+      title_overlap: overlap,
+      days_apart: Math.round(daysApart),
+    };
+  }
+
   if (tokA.size < RULEMAKING_MIN_CORE_TOKENS || tokB.size < RULEMAKING_MIN_CORE_TOKENS) {
     return {
       matched: false,
@@ -675,7 +777,6 @@ export function matchRulemakingSiblings(a, b) {
       basis: "title core too thin for confident stitch",
     };
   }
-  const overlap = titleOverlap(coreA, coreB);
   if (inWindow && overlap >= RULEMAKING_TITLE_OVERLAP_MIN) {
     return {
       matched: true,
@@ -838,6 +939,71 @@ export function groupRulemakingSiblings(records = []) {
     return da - db || String(a.subject_ref).localeCompare(String(b.subject_ref));
   });
   return out;
+}
+
+/**
+ * False-merge proxy for multi-notice rulemaking groups.
+ *
+ * Prior receipt only examined title-core cohesion and under-counted
+ * shared_reference chain-merges (generic Title-N / "sections" clusters look
+ * fine to a title-only density check when the *method* is shared_reference).
+ * This proxy always scores every multi-notice group — including
+ * shared_reference — by mean pairwise title-core overlap and pair-match
+ * density.
+ *
+ * Flagged when:
+ *   - mean pairwise title-core overlap < RULEMAKING_TITLE_OVERLAP_MIN, or
+ *   - size > 8 and pair-match density < 0.85
+ *
+ * @param {Array<{ notices: object[], join?: object, subject_ref?: string }>} groups
+ * @returns {{ multi_groups: number, flagged_groups: number, false_merge_rate: number|null, audits: object[] }}
+ */
+export function measureRulemakingSiblingFalseMerge(groups = []) {
+  const multi = (groups || []).filter((g) => (g?.notices?.length || 0) > 1);
+  const audits = [];
+  let flagged = 0;
+  for (const g of multi) {
+    const notices = g.notices || [];
+    const n = notices.length;
+    let pairSum = 0;
+    let pairCount = 0;
+    let matchPairs = 0;
+    for (let i = 0; i < n; i++) {
+      for (let j = i + 1; j < n; j++) {
+        const coreA = rulemakingTitleCore(recordTitle(notices[i]));
+        const coreB = rulemakingTitleCore(recordTitle(notices[j]));
+        pairSum += titleOverlap(coreA, coreB);
+        pairCount += 1;
+        const pair = matchRulemakingSiblings(notices[i], notices[j]);
+        if (pair.matched && pair.confidence === "high") matchPairs += 1;
+      }
+    }
+    const avgOverlap = pairCount ? pairSum / pairCount : 1;
+    const density = pairCount ? matchPairs / pairCount : 1;
+    const lowCohesion = avgOverlap < RULEMAKING_TITLE_OVERLAP_MIN;
+    const sparseLarge = n > 8 && density < 0.85;
+    const isFlag = lowCohesion || sparseLarge;
+    if (isFlag) flagged += 1;
+    audits.push({
+      subject_ref: g.subject_ref || null,
+      notice_count: n,
+      method: g.join?.method || null,
+      avg_title_core_overlap: Math.round(avgOverlap * 1000) / 1000,
+      pair_match_density: Math.round(density * 1000) / 1000,
+      flagged_false_merge_risk: isFlag,
+      flag_reasons: [
+        ...(lowCohesion ? ["low_title_core_overlap"] : []),
+        ...(sparseLarge ? ["sparse_large_cluster"] : []),
+      ],
+      sample_titles: notices.slice(0, 6).map((r) => recordTitle(r)).filter(Boolean),
+    });
+  }
+  return {
+    multi_groups: multi.length,
+    flagged_groups: flagged,
+    false_merge_rate: multi.length ? flagged / multi.length : null,
+    audits,
+  };
 }
 
 function recordEventDateRaw(record) {
