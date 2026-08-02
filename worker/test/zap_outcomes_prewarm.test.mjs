@@ -157,8 +157,12 @@ test("refreshZapOutcomes: no-kv skip; lists + prewarms with fixture fetch", asyn
     ok: true,
     json: async () => [{ project_id: "2023Q0315" }, { project_id: "2024K0280" }],
   });
-  const build = async (projectId) => recordFor(projectId, "2026-08-01T12:00:00.000Z");
-  const r = await refreshZapOutcomes(env, { fetchImpl, build, max: 5, nowMs: Date.parse("2026-08-01T12:00:00.000Z") });
+  // now-relative fixture: handleZapOutcomes uses real Date.now() for freshness
+  // (hardcoded 2026-08-01 aged past the 24h TTL and failed body.cached === true).
+  const nowMs = Date.now();
+  const nowIso = new Date(nowMs).toISOString();
+  const build = async (projectId) => recordFor(projectId, nowIso);
+  const r = await refreshZapOutcomes(env, { fetchImpl, build, max: 5, nowMs });
   assert.equal(r.status, "ok");
   assert.ok(r.listed >= 1);
   assert.ok(r.computed >= 1);
