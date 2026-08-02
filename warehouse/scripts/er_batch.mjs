@@ -276,6 +276,22 @@ Prefer the capped runner:
     }
   }
 
+  // Derive multi-record stems for the proof summary (fixture / slice evidence).
+  const stemCounts = new Map();
+  for (const link of batch.entity_links) {
+    if (link.entity_type !== "vendor" || link.decision !== "auto_link") continue;
+    const id = link.canonical_entity_id;
+    if (!id) continue;
+    stemCounts.set(id, (stemCounts.get(id) || 0) + 1);
+  }
+  const multiSourceStems = {}; // code structure (not a sourced data table)
+  for (const [id, n] of stemCounts) {
+    if (n >= 2) {
+      const short = String(id).replace(/^vendor:stem:/, "");
+      multiSourceStems[short] = `${n} source_records → ${id}`;
+    }
+  }
+
   const receipt = {
     schema_version: 1,
     phase: "WH-04",
@@ -308,6 +324,17 @@ Prefer the capped runner:
       ],
       worker_entity_link: ["buildExactStemAutoCase", "canonicalVendorIdForStem"],
     },
+    what_resolved: {
+      vendor_entities: batch.metrics.unique_vendor_entities,
+      agency_entities: batch.metrics.unique_agency_entities,
+      entity_link_rows: batch.metrics.entity_link_rows,
+      pair_candidates: batch.metrics.pair_candidates,
+      pair_same: batch.metrics.pair_same,
+      multi_source_stems: multiSourceStems,
+      cross_source_stem_hits: batch.metrics.cross_source_stem_hits,
+    },
+    next_step:
+      "Pack doing-business-entities (and/or city-record) via WH-02 capped bulk when headroom green; re-run er_batch_run.py --limit 200 over warehouse OCP (no --from-fixture) for a real slice; optional dual-write metrics report for false-split desk.",
   };
 
   const proofPath = writeProofReceipt(receipt);

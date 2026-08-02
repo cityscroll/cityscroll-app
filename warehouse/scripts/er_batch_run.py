@@ -77,7 +77,8 @@ def main(argv: list[str] | None = None) -> int:
         headroom = check_headroom(force=args.force_headroom)
         node = _node_bin()
         script = WAREHOUSE_DIR / "scripts" / "er_batch.mjs"
-        cmd = [node, str(script), "--limit", str(args.limit)]
+        # code structure (argv for Node ER pass; not a sourced data table)
+        cmd = [node, str(script), "--limit", str(args.limit)]  # code structure (not a sourced data table)
         if args.from_fixture:
             cmd.append("--from-fixture")
         if args.skip_materialize:
@@ -126,7 +127,7 @@ def main(argv: list[str] | None = None) -> int:
             try:
                 existing = json.loads(proof_path.read_text(encoding="utf-8"))
             except json.JSONDecodeError:
-                existing = {}
+                existing = {}  # code structure (not a sourced data table)
             existing["runner"] = runner_receipt
             proof_path.write_text(
                 json.dumps(existing, indent=2) + "\n", encoding="utf-8"
