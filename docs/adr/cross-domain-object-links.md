@@ -21,24 +21,35 @@ with **typed edges and provenance** on a single intelligence surface.
 
 ## Decision
 
-1. **Pure layer** `entity_resolution/cross_domain/object_links.mjs`
+1. **Pure layer** `entity_resolution/cross_domain/object_links.mjs` (v2)
    - Root entities: `agency:id:{canonical_id}` and `vendor:stem:{stem}` via existing
      `canonicalAgency` / `vendorStem` (no new matcher).
-   - Domain observations shaped from OCP, ZAP, rules notices, meeting notices,
-     and optional person-vote rows.
+   - Domain observations shaped from OCP, Checkbook spending, ZAP (+ BBL), rules
+     notices, meeting notices, and optional person-vote rows.
+   - **Join-key edges** (in addition to identity): PIN → `shares_authority_key`,
+     contract_id → `references_contract` / `contract_published_by_agency`, payee →
+     `paid_to_vendor` + `payment_on_contract`, BBL → `sited_on_parcel`.
    - Every edge carries `provenance` (`source_system`, `source_record_id`,
      `source_fields`, `basis`, optional `input_value`).
    - Empty domains are explicit; **people** defaults to class-(a)
      `not_yet_ingested` when no `by_person` rows exist (production retention is 0).
+   - Corpus build is single-pass (`indexObservationsByRoot` once →
+     `buildEntityIntelligenceFromBucket` per root).
 
 2. **Materialization** `tools/build_entity_intelligence.mjs` →
    `site/data/entity_intelligence_lookup.json` (+ Worker twin). Instant serve;
    no live SODA fan-out on the request path. Fixture/warehouse only (CPU-light).
 
-3. **HTTP** `GET /entity-intelligence` — `kind`+`name`/`id`, `ref`, `list=1`, `demo=1`.
+3. **Warehouse edge index** `warehouse/lib/entity_intelligence_index.mjs` flattens
+   the same graph into root + edge rows (proof under
+   `warehouse/receipts/proof/wh_entity_intelligence_index_latest.json`). SQL shape:
+   `warehouse/sql/examples/entity_intelligence_index.sql`.
 
-4. **UI** Agency profile panel renders the materialization when the worker responds
-   (additive; i18n keys for all shipping locales).
+4. **HTTP** `GET /entity-intelligence` — `kind`+`name`/`id`, `ref`, `list=1`, `demo=1`.
+
+5. **UI** Agency profile panel renders the materialization when the worker responds
+   (additive; i18n keys for all shipping locales). Data/join layer changes must not
+   require `site/index.html` edits.
 
 ### Metric
 
@@ -56,8 +67,11 @@ money + land + rules + meetings matched; people not_yet_ingested.
 ## Verify
 
 ```bash
-node --test test/cross_domain_object_links.test.mjs worker/test/entity_intelligence.test.mjs
+node --test test/cross_domain_object_links.test.mjs \
+  test/warehouse_entity_intelligence_index.test.mjs \
+  worker/test/entity_intelligence.test.mjs
 node tools/build_entity_intelligence.mjs --check
+node warehouse/lib/entity_intelligence_index.mjs --check
 node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v0.jsonl --blocker token_v0
 ```
 
