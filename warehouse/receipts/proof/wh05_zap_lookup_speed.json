@@ -1,0 +1,64 @@
+{
+  "phase": "WH-05",
+  "measured_at": "2026-08-02T10:18:37.246Z",
+  "replaced_fetch": {
+    "function": "fetchOpenDataRow",
+    "file": "worker/src/zap_outcomes.mjs",
+    "soda_dataset": "hgx4-8ukb",
+    "product": "ZAP Open Data project row on GET /zap-outcomes"
+  },
+  "warehouse_duckdb_build_path": {
+    "samples_ms": [
+      66.15,
+      64.68,
+      64.33,
+      62.3,
+      62.13
+    ],
+    "p50_ms": 64.33,
+    "mean_ms": 63.92,
+    "n": 5,
+    "path": "warehouse",
+    "hit": true,
+    "project_id": "2022M0258",
+    "note": "Python DuckDB CLI spawn per query — build/ops only, not Worker request path"
+  },
+  "materialized_index_edge_path": {
+    "samples_ms": [
+      0.0011,
+      0.0005,
+      0.0004,
+      0.0004,
+      0.0019
+    ],
+    "p50_ms": 0.0001,
+    "mean_ms": 0.0002,
+    "n": 200,
+    "path": "materialized_index",
+    "hit": true,
+    "project_id": "2022M0258",
+    "note": "Worker hot path after warehouse materialization import"
+  },
+  "soda_live_previous_path": {
+    "samples_ms": [
+      405.08,
+      97.81,
+      112.51
+    ],
+    "p50_ms": 112.51,
+    "mean_ms": 205.13,
+    "n": 3,
+    "path": "soda_live",
+    "rows": 1,
+    "url_class": "socrata_hgx4-8ukb_project_id",
+    "project_id": "2022M0258",
+    "note": "Previous live path in fetchOpenDataRow"
+  },
+  "speedup": {
+    "soda_p50_ms": 112.51,
+    "warehouse_materialized_p50_ms": 0.0001,
+    "ratio_vs_0_01ms_floor": 11251,
+    "summary": "ZAP Open Data lookup p50: live SODA 112.51ms → warehouse materialization 0.0001ms (sub-ms; removes a SODA RTT)",
+    "note": "Edge path is the materialized index; DuckDB spawn is build-time only"
+  }
+}

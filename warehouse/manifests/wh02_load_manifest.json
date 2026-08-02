@@ -2,7 +2,7 @@
   "schema_version": 1,
   "phase": "WH-02",
   "title": "First bulk pack into the warehouse (CPU-capped, incremental)",
-  "updated_at": "2026-08-02T03:16:30Z",
+  "updated_at": "2026-08-02T10:18:36Z",
   "strategy": "smallest_or_most_valuable_first_sequential",
   "first_pick": "ocp-recent-contract-awards",
   "first_pick_rationale": "Named on the WH-02 card, already WH-01 fixture-proven, ~53k rows \u2014 real bulk volume without City Record's ~1.1M row surface. Money-spine value high.",
@@ -24,7 +24,7 @@
     "commit_small_samples": false,
     "note": "Bulk lives under warehouse/raw|parquet|duckdb (gitignored) or CITYSCROLL_WAREHOUSE_ROOT; bulk_sample.csv is local-only"
   },
-  "headroom_evidence_line": "headroom OK (post-pack; see proof receipt)",
+  "headroom_evidence_line": "headroom OK \u00b7 load 3.8/4c \u00b7 cpu 27% \u00b7 runq 1 \u00b7 mem 41% \u00b7 mem_fit 4 \u00b7 agents 10 \u00b7 disk 44.6GB \u00b7 local=2 api=4",
   "loaded": [
     {
       "dataset_id": "ocp-recent-contract-awards",
@@ -49,31 +49,62 @@
         "status": "ok"
       },
       "proof_receipt": "warehouse/receipts/proof/ocp-recent-contract-awards_bulk_latest.json",
-      "verify_sql": "warehouse/sql/examples/ocp_bulk_verify.sql",
-      "row_count_source": "DuckDB COUNT(*) after bulk convert of Socrata qyyg-4tf5 rows.csv"
+      "verify_sql": "warehouse/sql/examples/ocp_bulk_verify.sql"
+    },
+    {
+      "dataset_id": "zap-projects",
+      "socrata_dataset_id": "hgx4-8ukb",
+      "table_name": "zap_projects",
+      "snapshot_date": "2026-08-02",
+      "observed_at": "2026-08-02T10:16:58Z",
+      "mode": "soda_bulk",
+      "row_count": 32931,
+      "raw_bytes": 9182677,
+      "raw_sha256": "93014bddd92b28b239f9a1639aaf2b25eb907f076fc30a12432aa9c7cbce851c",
+      "parquet_bytes": 1884056,
+      "parquet_row_count": 32931,
+      "headroom": {
+        "constrained": false,
+        "ok": true,
+        "post_ingest": {
+          "constrained": false,
+          "ok": true,
+          "problems": [],
+          "returncode": 0,
+          "status": "ok"
+        },
+        "pre_convert": {
+          "constrained": false,
+          "ok": true,
+          "problems": [],
+          "returncode": 0,
+          "status": "ok"
+        },
+        "problems": [],
+        "returncode": 0,
+        "status": "ok"
+      },
+      "proof_receipt": "warehouse/receipts/proof/zap-projects_bulk_latest.json",
+      "verify_sql": "warehouse/sql/examples/zap_bulk_verify.sql"
     }
   ],
   "remaining_primary_queue": [
-    "zap-projects",
     "zap-bbl",
     "city-record"
   ],
   "optional_later": [
     "doing-business-entities"
   ],
-  "next_dataset": "zap-projects",
-  "next_dataset_notes": "zap-projects (hgx4-8ukb, ~33k rows) for WH-03 prewarm \u2014 only when headroom stays green",
+  "next_dataset": "zap-bbl",
+  "next_dataset_notes": "zap-bbl (2iga-a6mk) BBL companion after zap-projects \u2014 only when headroom stays green",
   "how_to_reproduce": [
     "python3 \"$HEADROOM_BIN\"  # estate headroom.py; must not be CONSTRAINED",
     "python3 -m venv warehouse/.venv && warehouse/.venv/bin/pip install -r warehouse/requirements.txt",
     "warehouse/.venv/bin/python warehouse/scripts/ingest.py --dataset ocp-recent-contract-awards --bulk --ack-large --write-sample 25",
     "warehouse/.venv/bin/python warehouse/scripts/query.py --sql-file warehouse/sql/examples/ocp_bulk_verify.sql",
-    "warehouse/.venv/bin/python warehouse/scripts/write_load_manifest.py"
-  ],
-  "data_provenance": {
-    "source": "NYC Open Data Socrata dataset qyyg-4tf5 (Recent Contract Awards)",
-    "export_url": "https://data.cityofnewyork.us/api/views/qyyg-4tf5/rows.csv?accessType=DOWNLOAD",
-    "row_count_basis": "DuckDB COUNT(*) on warehouse parquet after bulk convert (measured 2026-08-02)",
-    "raw_sha256_basis": "sha256 of full rows.csv download"
-  }
+    "warehouse/.venv/bin/python warehouse/scripts/ingest.py --dataset zap-projects --bulk --ack-large --write-sample 25",
+    "warehouse/.venv/bin/python warehouse/scripts/query.py --sql-file warehouse/sql/examples/zap_bulk_verify.sql",
+    "warehouse/.venv/bin/python warehouse/scripts/write_load_manifest.py",
+    "node tools/build_zap_warehouse_lookup.mjs --fixture --bench"
+  ]
 }

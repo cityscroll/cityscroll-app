@@ -24,27 +24,44 @@ _DEFAULT_HEADROOM_CANDIDATES = DEFAULT_HEADROOM_CANDIDATES
 
 
 class IngestLock:
-    """Exclusive non-blocking lock so only one ingest job runs at a time."""
+    """Exclusive lock so only one ingest job runs at a time.
 
-    def __init__(self, path: Path = LOCK_PATH):
+    Still one job at a time (CPU discipline). By default waits briefly for the
+    holder to finish so parallel test runners serialize instead of hard-failing;
+    set WAREHOUSE_INGEST_LOCK_WAIT=0 for the old fail-fast non-blocking behavior.
+    """
+
+    def __init__(self, path: Path = LOCK_PATH, wait_s: float | None = None):
         self.path = path
         self._fh = None
+        if wait_s is None:
+            env = os.environ.get("WAREHOUSE_INGEST_LOCK_WAIT", "90").strip()
+            try:
+                wait_s = float(env)
+            except ValueError:
+                wait_s = 90.0
+        self.wait_s = max(0.0, float(wait_s))
 
     def __enter__(self):
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self._fh = open(self.path, "a+", encoding="utf-8")
-        try:
-            fcntl.flock(self._fh.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
-        except BlockingIOError:
-            self._fh.seek(0)
-            holder = self._fh.read().strip() or "(unknown holder)"
-            self._fh.close()
-            self._fh = None
-            raise SystemExit(
-                f"Another warehouse ingest holds the lock at {self.path}:\n"
-                f"  {holder}\n"
-                "One job at a time (CPU discipline). Wait or release the lock."
-            )
+        deadline = time.monotonic() + self.wait_s
+        while True:
+            try:
+                fcntl.flock(self._fh.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+                break
+            except BlockingIOError:
+                if time.monotonic() >= deadline:
+                    self._fh.seek(0)
+                    holder = self._fh.read().strip() or "(unknown holder)"
+                    self._fh.close()
+                    self._fh = None
+                    raise SystemExit(
+                        f"Another warehouse ingest holds the lock at {self.path}:\n"
+                        f"  {holder}\n"
+                        "One job at a time (CPU discipline). Wait or release the lock."
+                    )
+                time.sleep(0.25)
         payload = {
             "pid": os.getpid(),
             "started_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),

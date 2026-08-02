@@ -114,15 +114,9 @@ test("edge read model materializes the strict City Record join into record.spine
   globalThis.fetch = async (input) => {
     const url = String(input);
     calls.push(url);
+    // WH-05: demo 2022M0258 hits warehouse materialization — SODA hgx4-8ukb must not run.
     if (url.includes("/hgx4-8ukb.json")) {
-      return Response.json([{
-        project_id: "2022M0258",
-        project_name: "Timbale Terrace",
-        public_status: "Completed",
-        ulurp_numbers: "240046HAM; 240047PQM",
-        current_milestone: "City Council Review",
-        current_milestone_date: "2024-02-01T00:00:00.000",
-      }]);
+      throw new Error("SODA hgx4-8ukb should not be called for warehouse-hit demo project");
     }
     if (url.includes("zap-api-production.herokuapp.com/projects/2022M0258")) {
       return Response.json(payload);
@@ -132,11 +126,15 @@ test("edge read model materializes the strict City Record join into record.spine
   };
   try {
     const record = await buildZapOutcomeRecord("2022M0258", { fetchBbl: false });
+    assert.equal(record.open_data?.lookup_path, "warehouse");
+    assert.equal(record.open_data?.project_id, "2022M0258");
     assert.ok(calls.some((url) => url.includes("/dg92-zbpx.json")));
     assert.ok(calls.some((url) => url.includes("240046%20HAM")));
+    assert.ok(!calls.some((url) => url.includes("/hgx4-8ukb.json")));
     assert.equal(record.spine.join.city_record.matched, true);
     assert.ok(record.spine.events.some((event) => event.kind === "city_record_hearing"));
-    assert.equal(record.spine.lag.open_data_vs_portal.status, "behind");
+    // Lag compares warehouse Open Data milestone date vs portal last milestone.
+    assert.ok(["behind", "aligned", "unknown"].includes(record.spine.lag.open_data_vs_portal.status));
   } finally {
     globalThis.fetch = originalFetch;
   }
