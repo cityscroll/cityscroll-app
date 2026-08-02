@@ -27,6 +27,24 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - Merge-queue parameters: `tools/merge_queue_policy.json` + `node tools/apply_merge_queue_policy.mjs`
   (short train wait). Concurrent merge-when-ready seating for this repo is capped outside this tree.
 
+## Cross-domain entity intelligence
+
+Object-link layer across money / land / rules / meetings / people for one agency or
+vendor (`entity_resolution/cross_domain/`). Reuses subject registry kinds + ER
+normalizers + warehouse OCP/ZAP fixtures — does not reinvent matchers. Every link
+carries provenance. Instant materialization:
+
+```bash
+node tools/build_entity_intelligence.mjs
+node tools/build_entity_intelligence.mjs --check
+node --test test/cross_domain_object_links.test.mjs worker/test/entity_intelligence.test.mjs
+```
+
+Serve: `GET /entity-intelligence?demo=1` (Parks multi-domain) or
+`?kind=agency&name=…`. Agency profile UI mounts `#entity-intelligence`. People
+stays class-(a) `not_yet_ingested` until person-level Legistar retention > 0.
+ADR: `docs/adr/cross-domain-object-links.md`.
+
 ## DuckDB + parquet warehouse (WH-01…WH-05)
 
 Local lake under `warehouse/` (bulk raw/parquet/duckdb gitignored). CPU-capped

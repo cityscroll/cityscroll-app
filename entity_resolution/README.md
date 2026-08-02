@@ -78,6 +78,16 @@ not distributed cosplay for a single-maintainer product.
 - **Not a published npm package** — monorepo path imports; no separate versioned registry
   artifact required for Worker deploy.
 
+## Cross-domain object links
+
+`cross_domain/` links the **same** agency or vendor across money / land / rules /
+meetings / people without merging publisher subjects. Identity reuses
+`canonicalAgency` / `vendorStem`; every edge carries provenance. Materialization:
+`node tools/build_entity_intelligence.mjs` → `site/data/entity_intelligence_lookup.json`
+(+ Worker twin). Serve: `GET /entity-intelligence` (`demo=1`, `kind`+`name`, `list=1`).
+ADR: `docs/adr/cross-domain-object-links.md`. Verify:
+`node --test test/cross_domain_object_links.test.mjs worker/test/entity_intelligence.test.mjs`.
+
 ## Publication boundary
 
 Public entity-resolution responses must use the serializers in `publication/`; database rows
