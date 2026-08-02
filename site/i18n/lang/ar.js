@@ -927,6 +927,8 @@
     fetching_notice_id: "جارٍ جلب الإشعار {id}…",
     notice_not_found_html: "لم يُعثر على الإشعار <code>{id}</code> في بيانات السجل البلدي المفتوحة — قد يكون حديثًا جدًا، أو قد يكون المعرّف مكتوبًا بشكل خاطئ.",
     back_browse: "→ تصفّح CityScroll",
+    back_previous_view: "→ العودة إلى العرض السابق",
+    vendor_name_too_short: "الاسم “{name}” أقصر من أن يُستخدم لتحديد مورد.",
     try_city_record: "جرّبه في السجل البلدي",
     notice_email_btn: "بريد إلكتروني",
     notice_print_btn: "طباعة",

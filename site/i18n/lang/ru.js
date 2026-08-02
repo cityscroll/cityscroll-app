@@ -926,6 +926,8 @@
     fetching_notice_id: "загружаем уведомление {id}…",
     notice_not_found_html: "Уведомление <code>{id}</code> не найдено в открытых данных Городского вестника / The City Record — возможно, оно совсем новое, или ID указан с ошибкой.",
     back_browse: "← Вернуться к CityScroll",
+    back_previous_view: "← Вернуться к предыдущему экрану",
+    vendor_name_too_short: "Название «{name}» слишком короткое, чтобы определить поставщика.",
     try_city_record: "поискать в Городском вестнике / The City Record",
     notice_email_btn: "Эл. почта",
     notice_print_btn: "Печать",
