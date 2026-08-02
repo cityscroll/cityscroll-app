@@ -1,0 +1,83 @@
+/**
+ * Warehouse entity-intelligence edge index (join layer).
+ *
+ * verify:
+ *   node --test test/warehouse_entity_intelligence_index.test.mjs test/cross_domain_object_links.test.mjs
+ *   node warehouse/lib/entity_intelligence_index.mjs --from-fixture --limit 200
+ *   node warehouse/lib/entity_intelligence_index.mjs --check
+ */
+import assert from "node:assert/strict";
+import { existsSync, readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+import { describe, it } from "node:test";
+
+import {
+  buildEntityIntelligenceIndex,
+  flattenIndexToEdges,
+  flattenIndexToRoots,
+  collectFixtureObservations,
+  writeIndexProof,
+  ENTITY_INTELLIGENCE_INDEX_VERSION,
+  lookupFromIndex,
+} from "../warehouse/lib/entity_intelligence_index.mjs";
+import { indexObservationsByRoot } from "../entity_resolution/cross_domain/index.mjs";
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const PROOF = join(ROOT, "warehouse/receipts/proof/wh_entity_intelligence_index_latest.json");
+
+describe("warehouse entity intelligence index", () => {
+  it("indexes roots and join-key edges from fixture observations", () => {
+    const observations = collectFixtureObservations(ROOT, { limit: 400 });
+    assert.ok(observations.length > 10);
+    const index = indexObservationsByRoot(observations);
+    const edges = flattenIndexToEdges(index, { max_edges: 5000 });
+    const roots = flattenIndexToRoots(index, { max_roots: 100 });
+    assert.ok(edges.length > 0);
+    assert.ok(roots.length > 0);
+    assert.ok(edges.every((e) => e.source_system && e.source_record_id));
+    const types = new Set(edges.map((e) => e.link_type));
+    // Identity + at least one join-key family from fixtures
+    assert.ok(types.has("published_by_agency") || types.has("named_vendor"));
+    assert.ok(
+      types.has("sited_on_parcel")
+        || types.has("shares_authority_key")
+        || types.has("references_contract")
+        || types.has("paid_to_vendor"),
+      `expected join-key type, got ${[...types].join(",")}`,
+    );
+  });
+
+  it("buildEntityIntelligenceIndex is self-consistent for Parks demo", () => {
+    const observations = collectFixtureObservations(ROOT, { limit: 400 });
+    const doc = buildEntityIntelligenceIndex(observations, {
+      max_entities: 40,
+      max_per_domain: 6,
+    });
+    assert.equal(doc.version, ENTITY_INTELLIGENCE_INDEX_VERSION);
+    assert.ok(doc.join_key_edge_count >= 1);
+    assert.ok(doc.multi_domain_count >= 1);
+    const parks = lookupFromIndex(doc, {
+      kind: "agency",
+      name: "Parks and Recreation",
+    });
+    assert.equal(parks.ok, true);
+    assert.equal(parks.root.ref, "agency:id:parks-and-recreation");
+    assert.ok(parks.metrics.domains_matched >= 3);
+  });
+
+  it("proof receipt exists after materialize (or can be written)", () => {
+    const observations = collectFixtureObservations(ROOT, { limit: 400 });
+    const doc = buildEntityIntelligenceIndex(observations, {
+      max_entities: 40,
+      max_per_domain: 6,
+    });
+    const proof = writeIndexProof(doc, PROOF);
+    assert.ok(existsSync(PROOF));
+    assert.equal(proof.version, ENTITY_INTELLIGENCE_INDEX_VERSION);
+    assert.ok(proof.edge_count > 0);
+    assert.ok(proof.join_key_edge_count > 0);
+    const disk = JSON.parse(readFileSync(PROOF, "utf8"));
+    assert.equal(disk.root_count, proof.root_count);
+  });
+});

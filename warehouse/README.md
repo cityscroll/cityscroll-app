@@ -1,4 +1,4 @@
-# CityScroll data warehouse (WH-01…WH-06)
+# CityScroll data warehouse (WH-01…WH-06 + entity-intelligence index)
 
 DuckDB + parquet lake **inside this repo**, for offline ownership of NYC bulk
 sources and batch joins. Public browser routes stay **precompute-first** — the
@@ -143,10 +143,28 @@ the MacBook.
 - **OCP lookup:** `warehouse/lib/ocp_lookup.mjs` → `lookupOcpAwardRowsFromWarehouse`
 - **ZAP lookup:** `warehouse/lib/zap_lookup.mjs` → `lookupZapProjectFromWarehouse`
 - **ZAP BBL lookup:** `warehouse/lib/zap_bbl_lookup.mjs` → `lookupZapBblsFromWarehouse`
+- **Entity intelligence index:** `warehouse/lib/entity_intelligence_index.mjs` →
+  root + edge rows for cross-domain object links (PIN / contract / payment / BBL)
 - **SQL examples:** `warehouse/sql/examples/`
 
 This is **not** edge ad-hoc SQL. Worker routes keep serving precomputed read
 models; warehouse SQL feeds materialization jobs and batch ER.
+
+## Entity-intelligence edge index (join layer)
+
+Cross-domain object links live in `entity_resolution/cross_domain/`. The warehouse
+index flattens them for faster root lookup and a DuckDB-shaped query:
+
+```bash
+node warehouse/lib/entity_intelligence_index.mjs --from-fixture --limit 400
+node warehouse/lib/entity_intelligence_index.mjs --check
+# proof: warehouse/receipts/proof/wh_entity_intelligence_index_latest.json
+# SQL shape: warehouse/sql/examples/entity_intelligence_index.sql
+```
+
+Join keys only when present: PIN, contract_id, payee/payment, BBL↔project.
+Product materialization remains `tools/build_entity_intelligence.mjs` (site +
+Worker lookup).
 
 ## WH-03: serve OCP awards from the warehouse (own-the-data payoff)
 

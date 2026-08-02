@@ -1,4 +1,4 @@
-request_id,start_date,agency_name,type_of_notice_description,pin,contract_amount,vendor_name,short_title
-20260723031,2026-07-30T00:00:00.000,Health and Mental Hygiene,Award,81626W0043001,250000,Make it Zesty LLC,Catering Services
-20260724010,2026-07-30T00:00:00.000,Citywide Administrative Services,Award,85726B0027001,7977500,Samuel17,Heat Pump Water Heaters
-20260724015,2026-07-30T00:00:00.000,Youth and Community Development,Award,26026N0011014,2540261,Child Development Center - Mosholu Montefiore Community Center,Summer Youth Employment Program NAQ: Career Ready
+request_id,start_date,agency_name,type_of_notice_description,pin,contract_amount,vendor_name,short_title,contract_id
+20260723031,2026-07-30T00:00:00.000,Health and Mental Hygiene,Award,81626W0043001,250000,Make it Zesty LLC,Catering Services,CT81626W0043001
+20260724010,2026-07-30T00:00:00.000,Citywide Administrative Services,Award,85726B0027001,7977500,Samuel17,Heat Pump Water Heaters,CT85726B0027001
+20260724015,2026-07-30T00:00:00.000,Youth and Community Development,Award,26026N0011014,2540261,Child Development Center - Mosholu Montefiore Community Center,Summer Youth Employment Program NAQ: Career Ready,CT26026N0011014
