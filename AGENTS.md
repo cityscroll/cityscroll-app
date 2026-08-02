@@ -1115,18 +1115,21 @@ notice detail owns the public spine (same `.chain` pattern as the Money contract
 timeline). Public demo: `#notice/20260714029` (`rules-lifecycle-spine` in
 `site/demo/demo-links.json`).
 
-**Multi-notice rulemaking stitch (backend):** one rulemaking often spans multiple
+**Multi-notice rulemaking stitch:** one rulemaking often spans multiple
 City Record rows (proposal / hearing / adoption). `attachRulemakingSiblings` in
 `worker/src/lib/rules.mjs` groups high-confidence siblings (shared NYC Rules id,
 shared RCNY/section ref, or agency + title-core overlap ≥ 0.55 within a 540-day
 window) and stamps `rulemaking_subject_ref`, `related_notices[]`, and
-`rulemaking_join` on `buildRuleView` rows. Ambiguous pairs stay separate subjects.
+`rulemaking_join` on `buildRuleView` rows (served on `/rules` + counts
+`multi_notice_rulemakings`). Ambiguous pairs stay separate subjects.
 Subject registry adds `same_rulemaking` notice↔notice links — never merges
-`notice:` identities. UI presentation of the stitched subject is a follow-up
-(phase-group rules spine); do not invent render hooks in `site/index.html` from
-this path alone. Verify:
+`notice:` identities. **Public rules lens:** `stitchRulemakingRecord` /
+`buildRulesPhaseView` in `site/rules_phase_spine.mjs` (via `loadRuleLifecycle`)
+merge confident siblings into one phase-group lifecycle and list sibling
+notices — only when `rulemaking_join` is high-confidence multi-notice.
+Verify:
 `node --test worker/test/rulemaking_siblings.test.mjs worker/test/nyc_rules.test.mjs
-worker/test/subject_registry.test.mjs`.
+worker/test/subject_registry.test.mjs test/rules_phase_spine.test.mjs`.
 
 **RSS egress (hard):** `worker/src/rules.mjs` must send `RULES_RSS_HEADERS`
 (`User-Agent` + RSS Accept) on `https://rules.cityofnewyork.us/feed/`. An empty or

@@ -572,6 +572,15 @@
   .rule-phase-stepper .lc-step.future{opacity:1;color:#5c564c;background:#f3eee3;border-style:dashed;border-color:#a39a88}
   .rule-chain.rule-phase-cards{margin-top:4px}
   .rule-spine-lead .lc-phase-action .act{margin-inline-end:6px}
+  /* Multi-notice rulemaking siblings (high-confidence stitch only) */
+  .rule-siblings{margin:0 0 12px;padding:10px 12px;border:1px solid var(--rule);border-radius:10px;background:var(--paper-2,#f7f1e4)}
+  .rule-siblings-h{font-weight:600;margin:0 0 4px;color:var(--ink)}
+  .rule-siblings-lead{margin:0 0 6px}
+  .rule-siblings-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+  .rule-sibling{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;min-width:0}
+  .rule-sibling a{font-weight:600;word-break:break-word}
+  .rule-sibling-meta{font-size:.92em;color:var(--muted,#5c564c)}
+  .rule-sibling.is-self a{text-decoration:none;color:var(--ink)}
   .zap-action-chip{display:inline-block;padding:3px 7px;border:1px solid var(--rule);border-radius:999px;background:var(--paper-2,#f7f1e4);font:700 11px/1 ui-monospace,SFMono-Regular,monospace;color:var(--ink);margin-inline-end:4px}
   .zap-docs-list{display:flex;flex-wrap:wrap;gap:0 8px}
   .zap-docs-list .view{margin-top:0!important}
@@ -7460,9 +7469,43 @@ function rulePhaseLeadHTML(view, rec){
   </div>`;
 }
 
+function ruleSiblingRoleLabel(sib){
+  if(!sib) return "";
+  if(sib.role_label_key) return t(sib.role_label_key);
+  const role=String(sib.role||"");
+  if(role==="proposal") return t("rule_sibling_role_proposal");
+  if(role==="hearing") return t("rule_sibling_role_hearing");
+  if(role==="adoption") return t("rule_sibling_role_adoption");
+  return t("rule_sibling_role_notice");
+}
+
+/** Sibling City Record notices for one high-confidence multi-notice rulemaking. */
+function ruleSiblingsHTML(view){
+  if(!view || !view.multi_notice || !(view.sibling_notices||[]).length) return "";
+  const items=(view.sibling_notices||[]).filter(s=>s&&s.request_id).map(sib=>{
+    const role=escUiHtml(ruleSiblingRoleLabel(sib));
+    const date=sib.notice_date?ruleDateLabel(sib.notice_date):(sib.event_date?ruleDateLabel(sib.event_date):"");
+    const title=sib.title?escUiHtml(cleanText(sib.title)):escUiHtml(sib.request_id);
+    const selfMark=sib.is_self?` <span class="muted">(${t("rule_sibling_this_notice")})</span>`:"";
+    const href=`#notice/${encodeURIComponent(sib.request_id)}`;
+    return `<li class="rule-sibling${sib.is_self?" is-self":""}">
+      <a href="${href}">${title}</a>
+      <span class="rule-sibling-meta">${role}${date?` · ${escUiHtml(date)}`:""}${selfMark}</span>
+    </li>`;
+  }).join("");
+  if(!items) return "";
+  const n=String(view.notice_count||view.sibling_notices.length);
+  return `<div class="rule-siblings" data-rule-siblings="1" role="group" aria-label="${escUiHtml(t("rule_siblings_heading"))}">
+    <div class="rule-siblings-h">${t("rule_siblings_heading")}</div>
+    <p class="rule-siblings-lead note">${t("rule_siblings_count",{n})}</p>
+    <ul class="rule-siblings-list">${items}</ul>
+  </div>`;
+}
+
 function ruleEventSpineHTMLPhase(view, rec){
   if(!view) return "";
   const lead=rulePhaseLeadHTML(view, rec);
+  const siblings=ruleSiblingsHTML(view);
   const stepper=rulePhaseStepperHTML(view);
   const currentPanel=(view.phases||[]).filter(p=>p.state==="current")
     .map(p=>rulePhasePanelHTML(p, rec, view)).join("");
@@ -7478,9 +7521,11 @@ function ruleEventSpineHTMLPhase(view, rec){
   const provenance=joined
     ? t("rule_event_provenance_html",{source:`<a href="${escUiHtml(official)}" ${EXT_ATTRS}><span lang="en" dir="ltr">${t("rule_source_nyc_rules")}</span>${extSR()}</a>`})
     : t("rule_event_join_gap_html",{source:`<a href="${RULES_PUBLIC_URL}" ${EXT_ATTRS}><span lang="en" dir="ltr">${t("rule_source_nyc_rules")}</span>${extSR()}</a>`});
-  const how=`<details class="inline-disclose lc-how"><summary>${t("rule_phase_how_summary")}</summary><div class="inline-disclose-body">${t("rule_phase_how_html")}</div></details>`;
+  const howBody=view.multi_notice?t("rule_phase_how_multi_html"):t("rule_phase_how_html");
+  const how=`<details class="inline-disclose lc-how"><summary>${t("rule_phase_how_summary")}</summary><div class="inline-disclose-body">${howBody}</div></details>`;
   return `<div class="chain-h">${t("rule_lifecycle_heading")}</div>
     ${lead}
+    ${siblings}
     ${stepper}
     ${currentPanel}
     ${futurePanels}
@@ -7504,10 +7549,14 @@ function ruleEventSpineHTMLFlat(rec){
     <div class="note">${provenance}</div>`;
 }
 
-function ruleEventSpineHTML(rec, phaseTools){
+function ruleEventSpineHTML(rec, phaseTools, recordsById){
   if(phaseTools && typeof phaseTools.buildRulesPhaseView==="function"){
-    const view=phaseTools.buildRulesPhaseView(rec||{});
-    return ruleEventSpineHTMLPhase(view, rec);
+    const view=phaseTools.buildRulesPhaseView(rec||{},{recordsById:recordsById||null});
+    // Prefer stitched record for nyc_rules / stage when multi-notice merge ran.
+    const paintRec=(view&&view.stitched&&phaseTools.stitchRulemakingRecord)
+      ? phaseTools.stitchRulemakingRecord(rec||{}, recordsById||null)
+      : rec;
+    return ruleEventSpineHTMLPhase(view, paintRec||rec);
   }
   return ruleEventSpineHTMLFlat(rec);
 }
@@ -7555,20 +7604,32 @@ function downloadRuleEventICS(r,event){
 
 async function loadRuleLifecycle(r,el){
   if(!el||!r||r.section_name!=="Agency Rules") return;
+  let rulesView=null;
+  let stageMap=new Map();
   let rec=null;
-  try{ rec=buildRulesStageMap(await loadRulesView()).get(r.request_id)||null; }catch(e){}
+  try{
+    rulesView=await loadRulesView();
+    stageMap=buildRulesStageMap(rulesView);
+    rec=stageMap.get(r.request_id)||null;
+  }catch(e){}
   if(!document.contains(el)) return;
   // A successful read model with no join is a class-(a) gap; a failed read stays fail-soft.
   if(!rec){
-    let view=null; try{ view=await loadRulesView(); }catch(e){}
-    if(!view) return;
-    rec={request_id:r.request_id,stage:"unknown",nyc_rules:null,events:[],join:{matched:false}};
+    if(!rulesView) return;
+    rec={request_id:r.request_id,stage:"unknown",nyc_rules:null,events:[],join:{matched:false},related_notices:[],rulemaking_join:{matched:false}};
   }
   const phaseTools=await ensureRulesPhaseSpineTools();
   if(!document.contains(el)) return;
-  el.innerHTML=ruleEventSpineHTML(rec, phaseTools);
+  // High-confidence multi-notice stitch: merge sibling events via related_notices
+  // + stage map so proposal/hearing/adoption show as one lifecycle (not three cards).
+  el.innerHTML=ruleEventSpineHTML(rec, phaseTools, stageMap);
   bindRulesPhaseUI(el);
-  const commentEvent=(rec.events||[]).find(event=>event.event_type==="comment_close");
+  // Comment deadline may come from a sibling’s NYC Rules join after stitch.
+  let commentEvent=(rec.events||[]).find(event=>event.event_type==="comment_close");
+  if(!commentEvent && phaseTools && typeof phaseTools.stitchRulemakingRecord==="function"){
+    const stitched=phaseTools.stitchRulemakingRecord(rec, stageMap);
+    commentEvent=(stitched?.events||[]).find(event=>event.event_type==="comment_close");
+  }
   el.querySelectorAll("[data-rule-event]").forEach(button=>button.addEventListener("click",()=>downloadRuleEventICS(r,commentEvent)));
 }
 
