@@ -6,18 +6,19 @@
     "rulemaking_months_apart_multi_rate"
   ],
   "measured_at": "2026-08-02",
-  "subject": "City Record Agency Rules multi-notice rulemaking stitch after lookback widen",
+  "subject": "City Record Agency Rules multi-notice rulemaking stitch after lookback widen + generic-ref false-merge hotfix",
   "lookback": {
     "city_record_lookback_days": 540,
     "sibling_window_days": 540,
     "soda_limit": 500,
-    "rules_view_version": 4,
+    "rules_view_version": 5,
     "prior_lookback_days": 14,
     "prior_multi_notice_rulemakings": 0,
-    "note": "Prior 14-day materialization almost never co-located proposal/hearing/adoption siblings; multi_notice_rulemakings stayed 0 on live."
+    "prior_false_merge_note": "v4 after lookback widen over-stitched via generic Title-N / bare 'sections' tokens (e.g. demo #notice/20260714029 listed bicycle racks, truck routes, FY agenda as siblings under rulemaking:dot:ref:sections). False-merge proxy then only scored title_agency_window cohesion and under-counted shared_reference clusters.",
+    "note": "Prior 14-day materialization almost never co-located proposal/hearing/adoption siblings; multi_notice_rulemakings stayed 0 on live. v5 demotes generic refs and requires title-core floor for shared_reference."
   },
   "sample": {
-    "source": "SODA dg92-zbpx Agency Rules",
+    "source": "SODA dg92-zbpx Agency Rules + NYC Rules RSS (50-item feed) for summary refs",
     "where": "section_name='Agency Rules' AND start_date >= (now - 540d)",
     "notice_count": 355,
     "date_range": {
@@ -40,17 +41,37 @@
     "methods": {
       "title_agency_window": 62
     },
-    "months_apart_multi_groups": 47,
-    "months_apart_multi_rate": 0.7581,
+    "months_apart_multi_groups": 60,
+    "months_apart_multi_rate": 0.9677,
     "false_merge": {
-      "definition": "Multi-notice group whose mean pairwise title-core overlap is below RULEMAKING_TITLE_OVERLAP_MIN (0.55), or size>8 with pair-match density < 0.85. Confidence thresholds were NOT lowered; title-core noise strip was tightened so wider window does not chain-merge DCWP house-style titles.",
+      "definition": "Multi-notice group under ANY method (including shared_reference) whose mean pairwise title-core overlap is below RULEMAKING_TITLE_OVERLAP_MIN (0.55), or size>8 with pair-match density < 0.85. Helper: measureRulemakingSiblingFalseMerge. Prior receipt used a title-core proxy that missed shared_reference chain-merges.",
       "flagged_groups": 1,
       "multi_groups": 62,
       "false_merge_rate": 0.0161,
-      "verdict": "Low false-merge rate under proxy; residual clusters reviewed in audits (often phased program notices, e.g. commercial waste zones)."
+      "verdict": "Low false-merge rate under the tightened proxy; residual cluster is DSNY commercial-waste phased program notices (title_agency_window), not generic Title-N/ref:sections. Demo FHV parking no longer absorbs unrelated DOT rulemakings."
     }
   },
   "field_cases": {
+    "fhv_commercial_meters_20260714029": {
+      "request_id": "20260714029",
+      "matched_multi_notice": false,
+      "subject_ref_prefix": "rulemaking:dot:rules:",
+      "related_request_ids": [],
+      "must_not_include": [
+        "20260317026",
+        "20260706041",
+        "20260417003"
+      ],
+      "note": "Documented demo rules-lifecycle-spine. After hotfix: singleton (no false siblings). Must not be rulemaking:dot:ref:sections with bicycle racks / truck routes / FY agenda."
+    },
+    "bicycle_racks_proposal_adoption": {
+      "notices": [
+        "20260317026",
+        "20260706041"
+      ],
+      "matched": true,
+      "note": "Genuine City-Owned Bicycle Racks siblings still stitch (title-core); not merged into FHV parking."
+    },
     "mopeds_on_bridges_months_apart": {
       "notices": 2,
       "matched": true,
@@ -67,6 +88,14 @@
     "restaurant_vs_car_wash_must_not_merge": {
       "matched": false,
       "basis": "title-core overlap too low (0%) or missing dates"
+    },
+    "title_1_dob_boilerplate_must_not_merge": {
+      "matched": false,
+      "basis": "bare Title 1 / non-numeric sections not emitted; no title-core floor"
+    },
+    "exact_section_4_01_without_title_core_must_not_merge": {
+      "matched": false,
+      "basis": "shared 34 RCNY §4-01 alone is not high confidence without title-core (FHV parking vs bicycle racks)"
     }
   },
   "audits": [
@@ -103,9 +132,16 @@
       ]
     }
   ],
-  "confidence_thresholds_unchanged": {
+  "confidence_thresholds": {
     "RULEMAKING_TITLE_OVERLAP_MIN": 0.55,
-    "RULEMAKING_SIBLING_WINDOW_DAYS": 540
+    "RULEMAKING_SIBLING_WINDOW_DAYS": 540,
+    "shared_reference_requires_title_core": true,
+    "generic_refs_banned": [
+      "bare title N",
+      "bare N RCNY title-level",
+      "non-numeric sections",
+      "chapter-alone"
+    ]
   },
   "characterization": [
     "node --test worker/test/rulemaking_siblings.test.mjs worker/test/nyc_rules.test.mjs worker/test/rules_event_spine.test.mjs"
