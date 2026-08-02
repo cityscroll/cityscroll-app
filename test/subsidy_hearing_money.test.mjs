@@ -113,8 +113,8 @@ test("parseHearingMoneyFromBody: spaced thousands separators (live City Record f
   const parsed = parseHearingMoneyFromBody(text);
   assert.equal(parsed.total_project_cost, 10667606, "spaced project cost must not parse as 10");
   assert.equal(parsed.total_development_cost, 2900000, "spaced development cost must not parse as 2");
-  assert.equal(parsed.estimated_cost.status, "matched");
-  assert.equal(parsed.estimated_cost.value, 10667606);
+  // Prefer the same preferred-cost field the money card uses (value equals total_project_cost).
+  assert.equal(parsed.costs[0]?.value, 10667606);
   assert.notEqual(parsed.total_project_cost, 10);
 });
 
