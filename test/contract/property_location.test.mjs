@@ -1,7 +1,13 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import { propertyLocationFromRow, propertyScopeText } from "../../site/property_location.mjs";
+import {
+  parcelLinksFromBbl,
+  parseBbl,
+  primaryPropertyBbl,
+  propertyLocationFromRow,
+  propertyScopeText,
+} from "../../site/property_location.mjs";
 
 const LEASE_SURRENDER_ROW = {
   request_id: "20241112003",
@@ -62,4 +68,39 @@ test("propertyScopeText does not collapse to the title alone when scope clauses 
   const text = propertyScopeText(LEASE_SURRENDER_ROW);
   assert.match(text, /Block 644/);
   assert.match(text, /Borough of Manhattan/);
+});
+
+test("parseBbl and parcelLinksFromBbl share ZoLa/ACRIS/Who Owns What targets", () => {
+  assert.equal(parseBbl("not-a-bbl"), null);
+  assert.equal(parcelLinksFromBbl("123"), null);
+  const links = parcelLinksFromBbl("1006440001");
+  assert.deepEqual(parseBbl("1006440001"), {
+    bbl: "1006440001",
+    borough_code: "1",
+    block: "644",
+    lot: "1",
+  });
+  assert.equal(links.zola_url, "https://zola.planning.nyc.gov/l/lot/1/644/1");
+  assert.equal(
+    links.acris_url,
+    "https://a836-acris.nyc.gov/bblsearch/bblsearch.asp?borough=1&block=644&lot=1",
+  );
+  assert.equal(links.who_owns_what_url, "https://whoownswhat.justfix.org/bbl/1006440001");
+});
+
+test("body-fallback location yields a primary BBL for parcel-link resolution", () => {
+  const location = propertyLocationFromRow(LEASE_SURRENDER_ROW);
+  assert.equal(primaryPropertyBbl(location), "1006440001");
+  const links = parcelLinksFromBbl(primaryPropertyBbl(location));
+  assert.ok(links);
+  assert.match(links.zola_url, /\/l\/lot\/1\/644\/1$/);
+});
+
+test("primaryPropertyBbl does not invent a BBL from multi-borough locations", () => {
+  assert.equal(primaryPropertyBbl({
+    bbls: [],
+    boroughs: ["Manhattan", "Brooklyn"],
+    tax_lots: [{ block: "100", lots: ["1"] }],
+  }), null);
+  assert.equal(primaryPropertyBbl({ bbls: ["1006440001"], boroughs: [], tax_lots: [] }), "1006440001");
 });

@@ -20,3 +20,5 @@ currency	(uses the $1M+ threshold — tune it below)
 currency	for example, education contracts over $200K due in 3 months, or awards over $1M
 # sugg_alerts_1 is a one-line "try this" sample query, same register as the placeholder above.
 currency	education contracts over $200K due in 3 months
+# Official city product name (ACRIS = Automated City Register Information System).
+all_caps	ACRIS deeds

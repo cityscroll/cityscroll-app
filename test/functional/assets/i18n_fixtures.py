@@ -201,6 +201,29 @@ LAND_DEFAULT_SNAPSHOT = {
     "projects": [{k: r[k] for k in _LAND_LIST_FIELDS if k in r} for r in ZAP_ROWS],
 }
 
+# Production-stable Property Disposition notice used by the property-bbl-fallback demo.
+# Site geography is only in the body (Block/Lot + borough) — no usable street_address_1.
+# Exemplar for propertyLocationFromRow body-fallback → BBL 1006440001.
+PROPERTY_BBL_FALLBACK_NOTICE = {
+    "request_id": "20241112003",
+    "start_date": "2024-11-12T00:00:00.000",
+    "agency_name": "Small Business Services",
+    "type_of_notice_description": "Public Hearing",
+    "section_name": "Property Disposition",
+    "short_title": "NOTICE OF VOLUNTARY PUBLIC HEARING",
+    "event_date": "2024-11-26T10:00:00.000",
+    "additional_description_1": (
+        "PUBLIC NOTICE IS HEREBY GIVEN THAT a voluntary public hearing will be held on "
+        "Tuesday November 26, 2024, commencing at 10:00 am via Conference Call No. "
+        "1-555-0100, Access Code 555-0199 relating to the early surrender of the "
+        "lease by the tenant of The City of New York (the “City”) on Block 644, Lot 1 "
+        "(the “Property”) in the Borough of Manhattan. The Property is currently occupied "
+        "by Gansevoort Market, Inc., pursuant to the lease from the City, acting by and "
+        "through its Commissioner of the Department of Small Business Services. In order "
+        "to access the Public Hearing and testify, please call 1-555-0100."
+    ),
+}
+
 PROPERTY_ROWS = [
     {"request_id": "20260701006", "start_date": _iso(-3), "agency_name": "Citywide Administrative Services",
      "type_of_notice_description": "Sale by Auction", "event_date": _iso(10),
@@ -213,6 +236,7 @@ PROPERTY_ROWS = [
     {"request_id": "20260701008", "start_date": _iso(-8), "agency_name": "Police Department",
      "type_of_notice_description": "Notice", "short_title": "OWNERS ARE WANTED FOR PROPERTY IN THE CUSTODY OF THE PROPERTY CLERK",
      "additional_description_1": "Property in the custody of the property clerk division."},
+    dict(PROPERTY_BBL_FALLBACK_NOTICE),
 ]
 # Production-stable Agency Rules notice used by the rules-lifecycle-spine demo.
 # Matches the live City Record id that joins to NYC Rules commercial-meter parking.
@@ -449,7 +473,14 @@ def _soda_response(url):
     if "request_id='" in where:
         m = re.search(r"request_id='([^']*)'", where)
         rid = m.group(1) if m else None
-        for row in (RFP_OPEN, RFP_OPEN_2, AWARD_ROW, NOTICE_PERMALINK_ROW, RULES_LIFECYCLE_NOTICE):
+        for row in (
+            RFP_OPEN,
+            RFP_OPEN_2,
+            AWARD_ROW,
+            NOTICE_PERMALINK_ROW,
+            RULES_LIFECYCLE_NOTICE,
+            PROPERTY_BBL_FALLBACK_NOTICE,
+        ):
             if row.get("request_id") == rid:
                 return [row]
         return []
