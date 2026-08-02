@@ -20,6 +20,7 @@
   "notes": [
     "min_entries_to_merge_wait_minutes=5 forms a short merge train so near-simultaneous PRs share one merge_group when independent.",
     "ALLGREEN is intentional: do not switch to looser grouping to hide composition failures.",
+    "Required checks are only Unit, Accessibility, and Reading-level — not Performance budgets (20-sample p95). That job path-filters on `perf` (site chrome/assets + budget harness) and reports SUCCESS without measuring for data/worker/docs diffs.",
     "Runtime multi-locale stray-English is not a required check; Unit static lint owns that class.",
     "A same-repo merge-when-ready seat cap (one auto-merge at a time) is complementary and lives outside this repo."
   ]
