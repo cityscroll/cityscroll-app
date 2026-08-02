@@ -126,6 +126,7 @@ EXTERNAL_HREF_EXPRS = (
     "${escUiHtml(d.url)}",            # council meeting outcomes: Legistar supporting document
     "${escUiHtml(event.event_url)}",  # council meeting outcomes: Legistar MeetingDetail page
     "${escUiHtml(matterHref)}",       # council matter deep-link: Legistar Gateway M=L / matter_url
+    "${escUiHtml(view.official_url)}",  # council matter phase lead: Legistar legislation URL
     "${escUiHtml(l.url)}",            # non-Council outcomes: borough president / CB minutes HTTPS
     "${escUiHtml(url)}",              # solicitation package document from Current Solicitations join
     "${escUiHtml(record.portal_url)}",  # land outcomes: official ZAP project portal
