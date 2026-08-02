@@ -35,7 +35,12 @@ function toDate(value) {
 }
 
 function toAmount(value) {
-  const normalized = String(value || "").trim().replace(/[$,]/g, "").replace(/\s+/g, "");
+  // Strip currency symbols and thousand separators, including spaced forms like
+  // "$10, 667, 606" (comma + space after each group) that City Record bodies use.
+  const normalized = String(value || "")
+    .trim()
+    .replace(/[$,]/g, "")
+    .replace(/\s+/g, "");
   if (!normalized) return null;
   const n = Number(normalized);
   return Number.isFinite(n) ? n : null;
@@ -112,7 +117,10 @@ export function parseHearingMoneyFromBody(bodyText) {
       }),
     };
   }
-  const re = /Total\s+(Project|Development)\s+Cost\s*:?\s*\$?\s*([\d,]+(?:\.\d+)?)/gi;
+  // Amount group allows optional whitespace after each thousands separator so
+  // "$10, 667, 606" and "$10,667,606" both capture the full figure (not just "10").
+  // Leading digits only (not [\d,]+) so the first comma-space group is not swallowed.
+  const re = /Total\s+(Project|Development)\s+Cost\s*:?\s*\$?\s*(\d{1,3}(?:\s*,\s*\d{3})+(?:\.\d+)?|\d+(?:\.\d+)?)/gi;
   let match;
   while ((match = re.exec(text)) !== null) {
     const value = toAmount(match[2]);
@@ -173,34 +181,109 @@ function resolveStage(project) {
   return STAGE_APPLICATION;
 }
 
+/**
+ * Short place hint from an IDA hearing body — never the full body dump.
+ * Prefers a facility street line ("located at …" / "at 4425-4429 1st Avenue, Brooklyn"),
+ * else borough names only.
+ */
+export function placeHintFromIdaBody(bodyText) {
+  const text = plainText(bodyText || "");
+  if (!text) return { address: "", location_text: "", boroughs: [] };
+
+  const cleanAddr = (raw) => {
+    let s = plainText(raw || "")
+      .replace(/\s*\(the\s+.*$/i, "")
+      .replace(/\s*,?\s*(New York|NY)\s*\d{0,5}\s*$/i, "")
+      .replace(/\s*,?\s*$/, "")
+      .trim();
+    if (s.length > 120) s = s.slice(0, 120).replace(/,\s*\S*$/, "").trim();
+    return s;
+  };
+
+  // "parcel of land at 69 Hinsdale Street, Brooklyn, New York" / "located at …"
+  const located = text.match(
+    /\b(?:located\s+at|parcel\s+of\s+land\s+at)\s+([0-9][^.()]{6,110}?)(?:\s*\(|\.|;|$)/i,
+  );
+  if (located) {
+    const address = cleanAddr(located[1]);
+    if (address.length >= 8) {
+      return {
+        address,
+        location_text: address,
+        boroughs: boroughsIn(address),
+      };
+    }
+  }
+
+  // "at 4425-4429 1st Avenue, Brooklyn" (Project Description style)
+  const atStreet = text.match(
+    /\bat\s+([0-9][-0-9]*\s+[^.()]{3,70}?\b(?:Avenue|Ave\.?|Street|St\.?|Road|Rd\.?|Boulevard|Blvd\.?|Place|Pl\.?|Drive|Dr\.?|Lane|Ln\.?|Way|Court|Ct\.?)\b[^.]{0,50}?)(?:\.|;|$)/i,
+  );
+  if (atStreet) {
+    const address = cleanAddr(atStreet[1]);
+    if (address.length >= 8) {
+      return {
+        address,
+        location_text: address,
+        boroughs: boroughsIn(address),
+      };
+    }
+  }
+
+  const boroughs = boroughsIn(text);
+  if (boroughs.length) {
+    const location_text = boroughs.join(", ");
+    return { address: location_text, location_text, boroughs };
+  }
+  return { address: "", location_text: "", boroughs: [] };
+}
+
 function buildPlace(notice = {}, project = {}) {
+  const projectAddress = plainText(project.project_address || "");
+  const locationText = plainText(project.location_text || "");
+  // Extraction source: structured project fields + short title. Do not join full
+  // notice body into the display address (city-record hearing bodies are multi-KB).
+  const extractionSource = [
+    projectAddress,
+    locationText,
+    plainText(notice.short_title || "").slice(0, 160),
+  ].filter(Boolean).join(" ");
+  const bodyForHints = plainText([
+    notice.additional_description_1,
+    notice.additional_description_2,
+    notice.additional_description_3,
+    notice.other_info_1,
+  ].filter(Boolean).join(" "));
   const locationHint = normalizeAddress(
-    [
-      project.project_address || "",
-      project.location_text || "",
-      notice.short_title || "",
-      notice.additional_description_1 || "",
-      notice.additional_description_2 || "",
-      notice.additional_description_3 || "",
-      notice.other_info_1 || "",
-    ].filter(Boolean).join(" "),
+    extractionSource || bodyForHints.slice(0, 240),
   );
   const extracted = propertyLocationFromRow({
     short_title: pickFirst(project.project_name, notice.short_title),
-    additional_description_1: locationHint,
+    additional_description_1: projectAddress || locationText || locationHint || bodyForHints.slice(0, 400),
   });
-  const boroughHints = boroughsIn(locationHint);
+  const boroughHints = unique([
+    ...boroughsIn(locationHint),
+    ...boroughsIn(projectAddress),
+    ...boroughsIn(locationText),
+    ...boroughsIn(bodyForHints),
+  ]);
   const explicit = splitBbls([project.bbl, ...(project.bbls || [])]);
   const inferred = unique([...extracted.bbls, ...explicit]);
   const boroughs = unique([...boroughHints, ...extracted.boroughs]);
-  const hasEvidence = !!locationHint || inferred.length || extracted.addresses.length || extracted.tax_lots.length || extracted.boroughs.length;
-  const address = locationHint || null;
+  // Prefer the short structured address over a concatenated locationHint dump.
+  const address = projectAddress
+    || (extracted.addresses && extracted.addresses[0])
+    || (locationText && locationText.length <= 160 ? locationText : null)
+    || (boroughs.length === 1 ? boroughs[0] : boroughs.length ? boroughs.join(", ") : null)
+    || null;
+  const hasEvidence = !!address || !!locationHint || inferred.length
+    || extracted.addresses.length || extracted.tax_lots.length || boroughs.length;
   if (hasEvidence) {
     return {
       status: "matched",
-        boroughs,
-        addresses: extracted.addresses,
-        bbls: inferred,
+      boroughs,
+      addresses: extracted.addresses,
+      bbls: inferred,
       address,
       source: "property_location + NYCIDA address fields",
       reason: null,
@@ -396,13 +479,23 @@ export function lagWeeksForStage(stage) {
 //   not_published     — lag elapsed after a real project-feed join; class-(b) absence
 //   not_yet_ingested  — project feed never joined (or unreachable); class-(a) incomplete ingest
 //   unavailable       — whole-feed operational failure with no City Record fallback
-export function subsidyGapKind({ stage = "project_record", anchorDate = null, asOf = new Date(), matched = false } = {}) {
+//
+// feedJoined=false (City Record hearing only / feed-down): aged empties are
+// not_yet_ingested — never "city does not publish" when we never fetched Build NYC.
+export function subsidyGapKind({
+  stage = "project_record",
+  anchorDate = null,
+  asOf = new Date(),
+  matched = false,
+  feedJoined = true,
+} = {}) {
   if (matched) return null;
   const days = daysSinceIso(anchorDate, asOf);
-  if (days == null) return "not_published";
+  const agedClass = feedJoined ? "not_published" : "not_yet_ingested";
+  if (days == null) return agedClass;
   const lag = SUBSIDY_STAGE_EXPECT_LAG_DAYS[stage] ?? SUBSIDY_STAGE_EXPECT_LAG_DAYS.project_record;
   if (days < lag) return "too_soon";
-  return "not_published";
+  return agedClass;
 }
 
 /**
@@ -495,13 +588,15 @@ export function projectFromIdaNotice(notice = {}) {
   // structured document feed is unreachable (Cloudflare bot-block). Parse them so
   // the money card is not a false "city does not publish" null.
   const hearingMoney = parseHearingMoneyFromBody(body);
+  // Short address/borough only — never dump the multi-KB hearing body into place.
+  const placeHint = placeHintFromIdaBody(body);
   return {
     request_id: requestId,
     project_id: `city-record:${requestId}`,
     project_name: plainText(notice.short_title || notice.title || `IDA hearing ${requestId}`),
     company,
-    project_address: "",
-    location_text: body.slice(0, 400),
+    project_address: placeHint.address || "",
+    location_text: placeHint.location_text || "",
     bbl: null,
     bbls: [],
     requested_benefit: moneyState(null, {
@@ -530,7 +625,7 @@ export function projectFromIdaNotice(notice = {}) {
   };
 }
 
-function withGapKinds(timeline, anchorDate) {
+function withGapKinds(timeline, anchorDate, { feedJoined = true } = {}) {
   return (timeline || []).map((entry) => {
     if (!entry || entry.status === "matched") return entry;
     return {
@@ -539,6 +634,7 @@ function withGapKinds(timeline, anchorDate) {
         stage: entry.stage,
         anchorDate,
         matched: false,
+        feedJoined,
       }),
     };
   });
@@ -604,10 +700,14 @@ export function assembleSubsidyLifecycle(notices = [], projects = []) {
 
     const place = buildPlace(notice, matched);
     const hearingAnchor = matched.hearing?.date || anchor || subsidyAnchorDate(notice, null);
-    const timeline = withGapKinds(buildTimeline(matched), hearingAnchor);
-    const current = resolveStage(matched);
     const fromCityRecord = matched._derived_from === "city-record-hearing"
       || String(matched.project_id || "").startsWith("city-record:");
+    // City Record–only joins never touched the Build NYC project feed — aged empty
+    // stages are not_yet_ingested (class a), not not_published (class b).
+    const timeline = withGapKinds(buildTimeline(matched), hearingAnchor, {
+      feedJoined: !fromCityRecord,
+    });
+    const current = resolveStage(matched);
     const joinSource = fromCityRecord ? "City Record" : "Build NYC";
     const joinMethod = fromCityRecord
       ? "city-record-hearing"
