@@ -207,4 +207,8 @@ test("index land detail loads outcomes from worker path only", () => {
   assert.match(src, /\/zap-outcomes\?id=/);
   assert.doesNotMatch(src, /zap-api-production\.herokuapp\.com\/projects/);
   assert.match(src, /landOutcomesHTML|loadZapOutcomes/);
+  // Write-ahead prewarm + session prefetch: list paints, then warms visible project ids
+  // so first select does not pay the multi-second cold materialization spinner.
+  assert.match(src, /prefetchZapOutcomesForList/);
+  assert.match(src, /ZAP_OUTCOMES_MEM/);
 });
