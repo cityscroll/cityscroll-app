@@ -414,6 +414,8 @@
   .matter-phase-action{font:600 13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--ink);margin:8px 0 0}
   .matter-phase-next{font:13px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:6px 0 0}
   .matter-phase-stepper .lc-step{cursor:pointer}
+  /* Future chips: no opacity fade (axe color-contrast). Dashed border still signals not-started. */
+  .matter-phase-stepper .lc-step.future{opacity:1;color:#5c564c;background:#f3eee3;border-style:dashed;border-color:#a39a88}
   .matter-phase{border:1px solid var(--rule);border-radius:10px;margin:0 0 8px;background:#fffdf8;overflow:hidden}
   .matter-phase[open]{background:#fff}
   .matter-phase.current-phase{border-color:color-mix(in srgb,var(--oxblood) 45%,var(--rule));box-shadow:0 0 0 1px color-mix(in srgb,var(--oxblood) 22%,transparent)}
