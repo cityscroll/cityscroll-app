@@ -3,17 +3,18 @@
   "phase": "cross-domain-object-links",
   "title": "Entity intelligence — cross-domain object links",
   "version": "cross_domain_object_link_v2",
-  "generated_at": "2026-08-02T18:47:20.596Z",
-  "observation_count": 702,
+  "generated_at": "2026-08-02T19:27:42.561Z",
+  "observation_count": 715,
   "entity_count": 40,
-  "multi_domain_count": 21,
+  "multi_domain_count": 24,
   "domains": [
     "money",
     "land",
     "property",
     "rules",
     "meetings",
-    "people"
+    "people",
+    "franchise"
   ],
   "demo_refs": [
     "agency:id:parks-and-recreation",
@@ -51,6 +52,10 @@
       "people": {
         "status": "matched",
         "count": 6
+      },
+      "franchise": {
+        "status": "empty",
+        "count": 0
       }
     }
   },
@@ -546,6 +551,113 @@
           "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
+        },
+        "franchise": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "notice:20260116002",
+              "domain": "franchise",
+              "object_kind": "public_hearing",
+              "label": "Notice of Joint Public Hearing, February 9, 2026: Intent to Award a Concession Agreement to Flushing GC LLC for the renovation, operation, and maintenance of the Pitch and Putt Golf Facility at Flushing Meadows Corona Park, Queens",
+              "when": "2026-02-09T14:30:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260116002",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:parks-and-recreation",
+              "root_kind": "agency",
+              "href": "#notice/20260116002",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:franchise:20260116002",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "franchise_agency_name",
+                "observed_at": "2026-02-09T14:30:00.000",
+                "input_value": "Parks and Recreation"
+              },
+              "link_type": "reviews_franchise",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20251211004",
+              "domain": "franchise",
+              "object_kind": "public_hearing",
+              "label": "Notice of Joint Public Hearing, January 12, 2026: Intent to Award a Concession Agreement to Flushing GC LLC for the renovation, operation, and maintenance of the Pitch and Putt Golf Facility at Flushing Meadows Corona Park, Queens",
+              "when": "2026-01-12T14:30:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20251211004",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:parks-and-recreation",
+              "root_kind": "agency",
+              "href": "#notice/20251211004",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:franchise:20251211004",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "franchise_agency_name",
+                "observed_at": "2026-01-12T14:30:00.000",
+                "input_value": "Parks and Recreation"
+              },
+              "link_type": "reviews_franchise",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20251231024",
+              "domain": "franchise",
+              "object_kind": "public_hearing",
+              "label": "CANCELLED: Notice of Joint Public Hearing, January 12, 2026: Intent to Award a Concession Agreement to Flushing GC LLC for the renovation, operation, and maintenance of the Pitch and Putt Golf Facility at Flushing Meadows Corona Park, Queens",
+              "when": "2026-01-12T14:30:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20251231024",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:parks-and-recreation",
+              "root_kind": "agency",
+              "href": "#notice/20251231024",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:franchise:20251231024",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "franchise_agency_name",
+                "observed_at": "2026-01-12T14:30:00.000",
+                "input_value": "Parks and Recreation"
+              },
+              "link_type": "reviews_franchise",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            }
+          ],
+          "count": 3
         }
       },
       "links": [
@@ -599,6 +711,66 @@
             "basis": "property_agency_name",
             "observed_at": "2025-03-20",
             "input_value": "Department of Parks and Recreation"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "reviews_franchise",
+          "from": "notice:20251211004",
+          "to": "agency:id:parks-and-recreation",
+          "domain": "franchise",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:franchise:20251211004",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "franchise_agency_name",
+            "observed_at": "2026-01-12T14:30:00.000",
+            "input_value": "Parks and Recreation"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "reviews_franchise",
+          "from": "notice:20251231024",
+          "to": "agency:id:parks-and-recreation",
+          "domain": "franchise",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:franchise:20251231024",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "franchise_agency_name",
+            "observed_at": "2026-01-12T14:30:00.000",
+            "input_value": "Parks and Recreation"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "reviews_franchise",
+          "from": "notice:20260116002",
+          "to": "agency:id:parks-and-recreation",
+          "domain": "franchise",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:franchise:20260116002",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "franchise_agency_name",
+            "observed_at": "2026-02-09T14:30:00.000",
+            "input_value": "Parks and Recreation"
           },
           "layer": "cross_domain_object_link_v2"
         },
@@ -979,14 +1151,14 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
-        "domains_matched": 5,
+        "domains_total": 7,
+        "domains_matched": 6,
         "domains_not_yet_ingested": 0,
         "domains_empty": 1,
-        "total_linked_objects": 13,
-        "link_count": 19,
+        "total_linked_objects": 16,
+        "link_count": 22,
         "join_key_link_count": 3,
-        "coverage_rate": 0.8333333333333334
+        "coverage_rate": 0.8571428571428571
       }
     },
     "agency:id:housing-preservation-and-development": {
@@ -1565,6 +1737,13 @@
           "status": "empty",
           "gap_class": "empty_in_corpus",
           "note": "No people objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -6049,14 +6228,14 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 4,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 2,
+        "domains_empty": 3,
         "total_linked_objects": 14,
         "link_count": 147,
         "join_key_link_count": 12,
-        "coverage_rate": 0.6666666666666666
+        "coverage_rate": 0.5714285714285714
       }
     },
     "agency:id:transportation": {
@@ -6513,6 +6692,13 @@
           "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
         }
       },
       "links": [
@@ -6863,14 +7049,14 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 3,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 12,
         "link_count": 16,
         "join_key_link_count": 1,
-        "coverage_rate": 0.5
+        "coverage_rate": 0.42857142857142855
       }
     },
     "agency:id:citywide-administrative-services": {
@@ -7226,6 +7412,13 @@
           "status": "empty",
           "gap_class": "empty_in_corpus",
           "note": "No people objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -7640,14 +7833,14 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 3,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 9,
         "link_count": 16,
         "join_key_link_count": 6,
-        "coverage_rate": 0.5
+        "coverage_rate": 0.42857142857142855
       }
     },
     "agency:id:health-and-mental-hygiene": {
@@ -8005,6 +8198,13 @@
           "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
         }
       },
       "links": [
@@ -8288,14 +8488,14 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 3,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 9,
         "link_count": 12,
         "join_key_link_count": 3,
-        "coverage_rate": 0.5
+        "coverage_rate": 0.42857142857142855
       }
     },
     "agency:id:city-planning": {
@@ -8487,6 +8687,13 @@
           "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
         }
       },
       "links": [
@@ -8572,14 +8779,14 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 3,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 4,
         "link_count": 4,
         "join_key_link_count": 0,
-        "coverage_rate": 0.5
+        "coverage_rate": 0.42857142857142855
       }
     },
     "agency:id:city-council": {
@@ -9035,6 +9242,13 @@
             }
           ],
           "count": 6
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
         }
       },
       "links": [
@@ -9301,14 +9515,14 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 2,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 4,
+        "domains_empty": 5,
         "total_linked_objects": 12,
         "link_count": 13,
         "join_key_link_count": 0,
-        "coverage_rate": 0.3333333333333333
+        "coverage_rate": 0.2857142857142857
       }
     },
     "agency:id:consumer-and-worker-protection": {
@@ -9729,6 +9943,13 @@
           "status": "empty",
           "gap_class": "empty_in_corpus",
           "note": "No people objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -10217,14 +10438,14 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 2,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 4,
+        "domains_empty": 5,
         "total_linked_objects": 11,
         "link_count": 24,
         "join_key_link_count": 0,
-        "coverage_rate": 0.3333333333333333
+        "coverage_rate": 0.2857142857142857
       }
     },
     "agency:id:city-planning-commission": {
@@ -10548,6 +10769,13 @@
           "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
         }
       },
       "links": [
@@ -10714,14 +10942,14 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 2,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 4,
+        "domains_empty": 5,
         "total_linked_objects": 8,
         "link_count": 8,
         "join_key_link_count": 0,
-        "coverage_rate": 0.3333333333333333
+        "coverage_rate": 0.2857142857142857
       }
     },
     "agency:id:finance": {
@@ -11045,6 +11273,13 @@
           "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
         }
       },
       "links": [
@@ -11331,14 +11566,14 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 2,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 4,
+        "domains_empty": 5,
         "total_linked_objects": 8,
         "link_count": 14,
         "join_key_link_count": 0,
-        "coverage_rate": 0.3333333333333333
+        "coverage_rate": 0.2857142857142857
       }
     },
     "agency:id:sanitation": {
@@ -11662,6 +11897,13 @@
           "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
         }
       },
       "links": [
@@ -11848,14 +12090,14 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 2,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 4,
+        "domains_empty": 5,
         "total_linked_objects": 8,
         "link_count": 9,
         "join_key_link_count": 0,
-        "coverage_rate": 0.3333333333333333
+        "coverage_rate": 0.2857142857142857
       }
     },
     "agency:id:buildings": {
@@ -12146,6 +12388,13 @@
           "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
         }
       },
       "links": [
@@ -12332,14 +12581,465 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 2,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 4,
+        "domains_empty": 5,
         "total_linked_objects": 7,
         "link_count": 9,
         "join_key_link_count": 0,
-        "coverage_rate": 0.3333333333333333
+        "coverage_rate": 0.2857142857142857
+      }
+    },
+    "agency:id:information-technology-and-telecommunications": {
+      "ok": true,
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
+      "root": {
+        "kind": "agency",
+        "ref": "agency:id:information-technology-and-telecommunications",
+        "id": "id:information-technology-and-telecommunications",
+        "canonical_id": "information-technology-and-telecommunications",
+        "canonical_name": "Information Technology and Telecommunications",
+        "display_name": "Information Technology and Telecommunications"
+      },
+      "domains": {
+        "money": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No money objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "land": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No land objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "rules": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "notice:20260512030",
+              "domain": "rules",
+              "object_kind": "rule",
+              "label": "OTI FY 2027 Regulatory Agenda - per the New York City Administrative Procedure Act (CAPA)",
+              "when": "2026-05-19T00:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260512030",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:information-technology-and-telecommunications",
+              "root_kind": "agency",
+              "href": "#notice/20260512030",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260512030",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "rules_agency_name",
+                "observed_at": "2026-05-19T00:00:00.000",
+                "input_value": "Information Technology and Telecommunications"
+              },
+              "link_type": "issued_rule",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            }
+          ],
+          "count": 1
+        },
+        "meetings": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No meetings objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "people": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "franchise": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "notice:full-chain-award",
+              "domain": "franchise",
+              "object_kind": "award",
+              "label": "Award of Information Services Franchise — OneChronos Information Services LLC",
+              "when": "2025-12-01T00:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "full-chain-award",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:information-technology-and-telecommunications",
+              "root_kind": "agency",
+              "href": "#notice/full-chain-award",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:franchise:full-chain-award",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "franchise_agency_name",
+                "observed_at": "2025-12-01T00:00:00.000",
+                "input_value": "Information Technology and Telecommunications"
+              },
+              "link_type": "reviews_franchise",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20251007003",
+              "domain": "franchise",
+              "object_kind": "public_hearing",
+              "label": "Notice of Franchise and Concession Review Committee Hearing - OneChronos LLC",
+              "when": "2025-11-10T14:30:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20251007003",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:information-technology-and-telecommunications",
+              "root_kind": "agency",
+              "href": "#notice/20251007003",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:franchise:20251007003",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "franchise_agency_name",
+                "observed_at": "2025-11-10T14:30:00.000",
+                "input_value": "Information Technology and Telecommunications"
+              },
+              "link_type": "reviews_franchise",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:cross-party-other",
+              "domain": "franchise",
+              "object_kind": "public_hearing",
+              "label": "Notice of Franchise and Concession Review Committee Hearing - OtherNet Corp",
+              "when": "2025-09-15T14:30:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "cross-party-other",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:information-technology-and-telecommunications",
+              "root_kind": "agency",
+              "href": "#notice/cross-party-other",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:franchise:cross-party-other",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "franchise_agency_name",
+                "observed_at": "2025-09-15T14:30:00.000",
+                "input_value": "Information Technology and Telecommunications"
+              },
+              "link_type": "reviews_franchise",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:full-chain-solicitation",
+              "domain": "franchise",
+              "object_kind": "solicitation",
+              "label": "Request for Proposals — Information Services Franchise",
+              "when": "2025-08-01T00:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "full-chain-solicitation",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:information-technology-and-telecommunications",
+              "root_kind": "agency",
+              "href": "#notice/full-chain-solicitation",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:franchise:full-chain-solicitation",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "franchise_agency_name",
+                "observed_at": "2025-08-01T00:00:00.000",
+                "input_value": "Information Technology and Telecommunications"
+              },
+              "link_type": "reviews_franchise",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20250109036",
+              "domain": "franchise",
+              "object_kind": "public_hearing",
+              "label": "NOTICE OF A FRANCHISE AND CONCESSION REVIEW COMMITTEE (FCRC) PUBLIC HEARING",
+              "when": "2025-02-10T14:30:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20250109036",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:information-technology-and-telecommunications",
+              "root_kind": "agency",
+              "href": "#notice/20250109036",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:franchise:20250109036",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "franchise_agency_name",
+                "observed_at": "2025-02-10T14:30:00.000",
+                "input_value": "Information Technology and Telecommunications"
+              },
+              "link_type": "reviews_franchise",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20241220018",
+              "domain": "franchise",
+              "object_kind": "public_hearing",
+              "label": "NOTICE OF A FRANCHISE AND CONCESSION REVIEW COMMITTEE (FCRC) PUBLIC HEARING to be held on January 13, 2025",
+              "when": "2025-01-13T14:30:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20241220018",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:information-technology-and-telecommunications",
+              "root_kind": "agency",
+              "href": "#notice/20241220018",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:franchise:20241220018",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "franchise_agency_name",
+                "observed_at": "2025-01-13T14:30:00.000",
+                "input_value": "Information Technology and Telecommunications"
+              },
+              "link_type": "reviews_franchise",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            }
+          ],
+          "count": 6
+        }
+      },
+      "links": [
+        {
+          "type": "reviews_franchise",
+          "from": "notice:20241220018",
+          "to": "agency:id:information-technology-and-telecommunications",
+          "domain": "franchise",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:franchise:20241220018",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "franchise_agency_name",
+            "observed_at": "2025-01-13T14:30:00.000",
+            "input_value": "Information Technology and Telecommunications"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "reviews_franchise",
+          "from": "notice:20250109036",
+          "to": "agency:id:information-technology-and-telecommunications",
+          "domain": "franchise",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:franchise:20250109036",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "franchise_agency_name",
+            "observed_at": "2025-02-10T14:30:00.000",
+            "input_value": "Information Technology and Telecommunications"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "reviews_franchise",
+          "from": "notice:20251007003",
+          "to": "agency:id:information-technology-and-telecommunications",
+          "domain": "franchise",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:franchise:20251007003",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "franchise_agency_name",
+            "observed_at": "2025-11-10T14:30:00.000",
+            "input_value": "Information Technology and Telecommunications"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "issued_rule",
+          "from": "notice:20260512030",
+          "to": "agency:id:information-technology-and-telecommunications",
+          "domain": "rules",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260512030",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "rules_agency_name",
+            "observed_at": "2026-05-19T00:00:00.000",
+            "input_value": "Information Technology and Telecommunications"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "reviews_franchise",
+          "from": "notice:cross-party-other",
+          "to": "agency:id:information-technology-and-telecommunications",
+          "domain": "franchise",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:franchise:cross-party-other",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "franchise_agency_name",
+            "observed_at": "2025-09-15T14:30:00.000",
+            "input_value": "Information Technology and Telecommunications"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "reviews_franchise",
+          "from": "notice:full-chain-award",
+          "to": "agency:id:information-technology-and-telecommunications",
+          "domain": "franchise",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:franchise:full-chain-award",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "franchise_agency_name",
+            "observed_at": "2025-12-01T00:00:00.000",
+            "input_value": "Information Technology and Telecommunications"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "reviews_franchise",
+          "from": "notice:full-chain-solicitation",
+          "to": "agency:id:information-technology-and-telecommunications",
+          "domain": "franchise",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:franchise:full-chain-solicitation",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "franchise_agency_name",
+            "observed_at": "2025-08-01T00:00:00.000",
+            "input_value": "Information Technology and Telecommunications"
+          },
+          "layer": "cross_domain_object_link_v2"
+        }
+      ],
+      "metrics": {
+        "metric": "cross_domain_object_link_coverage",
+        "domains_total": 7,
+        "domains_matched": 2,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 5,
+        "total_linked_objects": 7,
+        "link_count": 7,
+        "join_key_link_count": 0,
+        "coverage_rate": 0.2857142857142857
       }
     },
     "agency:id:landmarks-preservation-commission": {
@@ -12630,6 +13330,13 @@
           "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
         }
       },
       "links": [
@@ -12776,14 +13483,14 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 2,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 4,
+        "domains_empty": 5,
         "total_linked_objects": 7,
         "link_count": 7,
         "join_key_link_count": 0,
-        "coverage_rate": 0.3333333333333333
+        "coverage_rate": 0.2857142857142857
       }
     },
     "agency:id:rent-guidelines-board": {
@@ -13074,6 +13781,13 @@
           "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
         }
       },
       "links": [
@@ -13220,14 +13934,412 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 2,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 4,
+        "domains_empty": 5,
         "total_linked_objects": 7,
         "link_count": 7,
         "join_key_link_count": 0,
-        "coverage_rate": 0.3333333333333333
+        "coverage_rate": 0.2857142857142857
+      }
+    },
+    "agency:id:franchise-and-concession-review-committee": {
+      "ok": true,
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
+      "root": {
+        "kind": "agency",
+        "ref": "agency:id:franchise-and-concession-review-committee",
+        "id": "id:franchise-and-concession-review-committee",
+        "canonical_id": "franchise-and-concession-review-committee",
+        "canonical_name": "Franchise and Concession Review Committee",
+        "display_name": "Franchise and Concession Review Committee"
+      },
+      "domains": {
+        "money": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No money objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "land": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No land objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "rules": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No rules objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "meetings": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "notice:20260710032",
+              "domain": "meetings",
+              "object_kind": "hearing",
+              "label": "FCRC AUGUST PUBLIC MEETING",
+              "when": "2026-08-12T14:30:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260710032",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:franchise-and-concession-review-committee",
+              "root_kind": "agency",
+              "href": "#notice/20260710032",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260710032",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "meetings_agency_name",
+                "observed_at": "2026-08-12T14:30:00.000",
+                "input_value": "Franchise and Concession Review Committee"
+              },
+              "link_type": "hosts_meeting",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20260512010",
+              "domain": "meetings",
+              "object_kind": "hearing",
+              "label": "FCRC JUNE PUBLIC MEETING",
+              "when": "2026-06-10T14:30:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260512010",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:franchise-and-concession-review-committee",
+              "root_kind": "agency",
+              "href": "#notice/20260512010",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260512010",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "meetings_agency_name",
+                "observed_at": "2026-06-10T14:30:00.000",
+                "input_value": "Franchise and Concession Review Committee"
+              },
+              "link_type": "hosts_meeting",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20260512008",
+              "domain": "meetings",
+              "object_kind": "hearing",
+              "label": "NOTICE OF FRANCHISE AND CONCESSION REVIEW COMMITTEE PUBLIC HEARING",
+              "when": "2026-06-08T14:30:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260512008",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:franchise-and-concession-review-committee",
+              "root_kind": "agency",
+              "href": "#notice/20260512008",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260512008",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "meetings_agency_name",
+                "observed_at": "2026-06-08T14:30:00.000",
+                "input_value": "Franchise and Concession Review Committee"
+              },
+              "link_type": "hosts_meeting",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            }
+          ],
+          "count": 3
+        },
+        "people": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "franchise": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "notice:20260512008",
+              "domain": "franchise",
+              "object_kind": "public_hearing",
+              "label": "NOTICE OF FRANCHISE AND CONCESSION REVIEW COMMITTEE PUBLIC HEARING",
+              "when": "2026-06-08T14:30:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260512008",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:franchise-and-concession-review-committee",
+              "root_kind": "agency",
+              "href": "#notice/20260512008",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:franchise:20260512008",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "franchise_agency_name",
+                "observed_at": "2026-06-08T14:30:00.000",
+                "input_value": "Franchise and Concession Review Committee"
+              },
+              "link_type": "reviews_franchise",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:full-chain-meeting",
+              "domain": "franchise",
+              "object_kind": "committee_meeting",
+              "label": "FCRC NOVEMBER PUBLIC MEETING — OneChronos Information Services LLC",
+              "when": "2025-11-12T14:30:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "full-chain-meeting",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:franchise-and-concession-review-committee",
+              "root_kind": "agency",
+              "href": "#notice/full-chain-meeting",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:franchise:full-chain-meeting",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "franchise_agency_name",
+                "observed_at": "2025-11-12T14:30:00.000",
+                "input_value": "Franchise and Concession Review Committee"
+              },
+              "link_type": "reviews_franchise",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20251020016",
+              "domain": "franchise",
+              "object_kind": "award",
+              "label": "NOTICE OF ADOPTION - AMENDMENT OF FCRC RULES",
+              "when": "2025-10-24T00:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20251020016",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:franchise-and-concession-review-committee",
+              "root_kind": "agency",
+              "href": "#notice/20251020016",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:franchise:20251020016",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "franchise_agency_name",
+                "observed_at": "2025-10-24T00:00:00.000",
+                "input_value": "Franchise and Concession Review Committee"
+              },
+              "link_type": "reviews_franchise",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            }
+          ],
+          "count": 3
+        }
+      },
+      "links": [
+        {
+          "type": "reviews_franchise",
+          "from": "notice:20251020016",
+          "to": "agency:id:franchise-and-concession-review-committee",
+          "domain": "franchise",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:franchise:20251020016",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "franchise_agency_name",
+            "observed_at": "2025-10-24T00:00:00.000",
+            "input_value": "Franchise and Concession Review Committee"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "hosts_meeting",
+          "from": "notice:20260512008",
+          "to": "agency:id:franchise-and-concession-review-committee",
+          "domain": "meetings",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260512008",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "meetings_agency_name",
+            "observed_at": "2026-06-08T14:30:00.000",
+            "input_value": "Franchise and Concession Review Committee"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "reviews_franchise",
+          "from": "notice:20260512008",
+          "to": "agency:id:franchise-and-concession-review-committee",
+          "domain": "franchise",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:franchise:20260512008",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "franchise_agency_name",
+            "observed_at": "2026-06-08T14:30:00.000",
+            "input_value": "Franchise and Concession Review Committee"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "hosts_meeting",
+          "from": "notice:20260512010",
+          "to": "agency:id:franchise-and-concession-review-committee",
+          "domain": "meetings",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260512010",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "meetings_agency_name",
+            "observed_at": "2026-06-10T14:30:00.000",
+            "input_value": "Franchise and Concession Review Committee"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "hosts_meeting",
+          "from": "notice:20260710032",
+          "to": "agency:id:franchise-and-concession-review-committee",
+          "domain": "meetings",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260710032",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "meetings_agency_name",
+            "observed_at": "2026-08-12T14:30:00.000",
+            "input_value": "Franchise and Concession Review Committee"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "reviews_franchise",
+          "from": "notice:full-chain-meeting",
+          "to": "agency:id:franchise-and-concession-review-committee",
+          "domain": "franchise",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:franchise:full-chain-meeting",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "franchise_agency_name",
+            "observed_at": "2025-11-12T14:30:00.000",
+            "input_value": "Franchise and Concession Review Committee"
+          },
+          "layer": "cross_domain_object_link_v2"
+        }
+      ],
+      "metrics": {
+        "metric": "cross_domain_object_link_coverage",
+        "domains_total": 7,
+        "domains_matched": 2,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 5,
+        "total_linked_objects": 6,
+        "link_count": 6,
+        "join_key_link_count": 0,
+        "coverage_rate": 0.2857142857142857
       }
     },
     "agency:id:board-of-standards-and-appeals": {
@@ -13452,6 +14564,13 @@
           "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
         }
       },
       "links": [
@@ -13558,14 +14677,14 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 2,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 4,
+        "domains_empty": 5,
         "total_linked_objects": 5,
         "link_count": 5,
         "join_key_link_count": 0,
-        "coverage_rate": 0.3333333333333333
+        "coverage_rate": 0.2857142857142857
       }
     },
     "agency:id:small-business-services": {
@@ -13794,6 +14913,13 @@
           "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
         }
       },
       "links": [
@@ -13924,14 +15050,14 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 2,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 4,
+        "domains_empty": 5,
         "total_linked_objects": 5,
         "link_count": 5,
         "join_key_link_count": 0,
-        "coverage_rate": 0.3333333333333333
+        "coverage_rate": 0.2857142857142857
       }
     },
     "agency:id:city-university": {
@@ -14129,6 +15255,13 @@
           "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
         }
       },
       "links": [
@@ -14251,14 +15384,14 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 2,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 4,
+        "domains_empty": 5,
         "total_linked_objects": 4,
         "link_count": 4,
         "join_key_link_count": 0,
-        "coverage_rate": 0.3333333333333333
+        "coverage_rate": 0.2857142857142857
       }
     },
     "agency:id:board-of-correction": {
@@ -14417,6 +15550,13 @@
           "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
         }
       },
       "links": [
@@ -14483,14 +15623,14 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 2,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 4,
+        "domains_empty": 5,
         "total_linked_objects": 3,
         "link_count": 3,
         "join_key_link_count": 0,
-        "coverage_rate": 0.3333333333333333
+        "coverage_rate": 0.2857142857142857
       }
     },
     "agency:id:comptroller": {
@@ -14649,6 +15789,13 @@
           "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
         }
       },
       "links": [
@@ -14715,14 +15862,14 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 2,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 4,
+        "domains_empty": 5,
         "total_linked_objects": 3,
         "link_count": 3,
         "join_key_link_count": 0,
-        "coverage_rate": 0.3333333333333333
+        "coverage_rate": 0.2857142857142857
       }
     },
     "agency:id:taxi-and-limousine-commission": {
@@ -14881,6 +16028,13 @@
           "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
         }
       },
       "links": [
@@ -14947,14 +16101,14 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 2,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 4,
+        "domains_empty": 5,
         "total_linked_objects": 3,
         "link_count": 3,
         "join_key_link_count": 0,
-        "coverage_rate": 0.3333333333333333
+        "coverage_rate": 0.2857142857142857
       }
     },
     "agency:id:mayors-office-of-contract-services": {
@@ -15080,6 +16234,13 @@
           "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
         }
       },
       "links": [
@@ -15126,14 +16287,200 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 2,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 4,
+        "domains_empty": 5,
         "total_linked_objects": 2,
         "link_count": 2,
         "join_key_link_count": 0,
-        "coverage_rate": 0.3333333333333333
+        "coverage_rate": 0.2857142857142857
+      }
+    },
+    "agency:id:police-department": {
+      "ok": true,
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
+      "root": {
+        "kind": "agency",
+        "ref": "agency:id:police-department",
+        "id": "id:police-department",
+        "canonical_id": "police-department",
+        "canonical_name": "Police Department",
+        "display_name": "Police Department"
+      },
+      "domains": {
+        "money": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No money objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "land": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No land objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "rules": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No rules objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "meetings": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "notice:20260709028",
+              "domain": "meetings",
+              "object_kind": "hearing",
+              "label": "Concession for Operation and Maintenance of Cafeteria at the NYPD Police Academy",
+              "when": "2026-08-10T14:30:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260709028",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:police-department",
+              "root_kind": "agency",
+              "href": "#notice/20260709028",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260709028",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "meetings_agency_name",
+                "observed_at": "2026-08-10T14:30:00.000",
+                "input_value": "Police Department"
+              },
+              "link_type": "hosts_meeting",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            }
+          ],
+          "count": 1
+        },
+        "people": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "franchise": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "notice:20260709028",
+              "domain": "franchise",
+              "object_kind": "public_hearing",
+              "label": "Concession for Operation and Maintenance of Cafeteria at the NYPD Police Academy",
+              "when": "2026-08-10T14:30:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260709028",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:police-department",
+              "root_kind": "agency",
+              "href": "#notice/20260709028",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:franchise:20260709028",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "franchise_agency_name",
+                "observed_at": "2026-08-10T14:30:00.000",
+                "input_value": "Police Department"
+              },
+              "link_type": "reviews_franchise",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            }
+          ],
+          "count": 1
+        }
+      },
+      "links": [
+        {
+          "type": "hosts_meeting",
+          "from": "notice:20260709028",
+          "to": "agency:id:police-department",
+          "domain": "meetings",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260709028",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "meetings_agency_name",
+            "observed_at": "2026-08-10T14:30:00.000",
+            "input_value": "Police Department"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "reviews_franchise",
+          "from": "notice:20260709028",
+          "to": "agency:id:police-department",
+          "domain": "franchise",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:franchise:20260709028",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "franchise_agency_name",
+            "observed_at": "2026-08-10T14:30:00.000",
+            "input_value": "Police Department"
+          },
+          "layer": "cross_domain_object_link_v2"
+        }
+      ],
+      "metrics": {
+        "metric": "cross_domain_object_link_coverage",
+        "domains_total": 7,
+        "domains_matched": 2,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 5,
+        "total_linked_objects": 2,
+        "link_count": 2,
+        "join_key_link_count": 0,
+        "coverage_rate": 0.2857142857142857
       }
     },
     "agency:id:board-meetings": {
@@ -15390,6 +16737,13 @@
           "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
         }
       },
       "links": [
@@ -15576,14 +16930,14 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 1,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 5,
+        "domains_empty": 6,
         "total_linked_objects": 6,
         "link_count": 9,
         "join_key_link_count": 0,
-        "coverage_rate": 0.16666666666666666
+        "coverage_rate": 0.14285714285714285
       }
     },
     "agency:id:charter-revision-commission": {
@@ -15840,6 +17194,13 @@
           "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
         }
       },
       "links": [
@@ -15986,14 +17347,14 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 1,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 5,
+        "domains_empty": 6,
         "total_linked_objects": 6,
         "link_count": 7,
         "join_key_link_count": 0,
-        "coverage_rate": 0.16666666666666666
+        "coverage_rate": 0.14285714285714285
       }
     },
     "agency:id:community-boards": {
@@ -16217,6 +17578,13 @@
           "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
         }
       },
       "links": [
@@ -16345,14 +17713,14 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 1,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 5,
+        "domains_empty": 6,
         "total_linked_objects": 5,
         "link_count": 6,
         "join_key_link_count": 1,
-        "coverage_rate": 0.16666666666666666
+        "coverage_rate": 0.14285714285714285
       }
     },
     "agency:id:economic-development-corporation": {
@@ -16555,6 +17923,13 @@
           "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
         }
       },
       "links": [
@@ -16689,14 +18064,14 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 1,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 5,
+        "domains_empty": 6,
         "total_linked_objects": 4,
         "link_count": 4,
         "join_key_link_count": 0,
-        "coverage_rate": 0.16666666666666666
+        "coverage_rate": 0.14285714285714285
       }
     },
     "vendor:stem:EXTELL%20DEVELOPMENT": {
@@ -16909,6 +18284,13 @@
           "status": "empty",
           "gap_class": "empty_in_corpus",
           "note": "No people objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -17496,14 +18878,304 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 1,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 5,
+        "domains_empty": 6,
         "total_linked_objects": 4,
         "link_count": 29,
         "join_key_link_count": 25,
-        "coverage_rate": 0.16666666666666666
+        "coverage_rate": 0.14285714285714285
+      }
+    },
+    "vendor:stem:ONECHRONOS%20INFORMATION%20SERVICES": {
+      "ok": true,
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
+      "root": {
+        "kind": "vendor",
+        "ref": "vendor:stem:ONECHRONOS%20INFORMATION%20SERVICES",
+        "id": "stem:ONECHRONOS%20INFORMATION%20SERVICES",
+        "stem": "ONECHRONOS INFORMATION SERVICES",
+        "display_name": "OneChronos Information Services LLC"
+      },
+      "domains": {
+        "money": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No money objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "land": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No land objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "rules": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No rules objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "meetings": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No meetings objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "people": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "franchise": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "notice:full-chain-award",
+              "domain": "franchise",
+              "object_kind": "award",
+              "label": "Award of Information Services Franchise — OneChronos Information Services LLC",
+              "when": "2025-12-01T00:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "full-chain-award",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:ONECHRONOS%20INFORMATION%20SERVICES",
+              "root_kind": "vendor",
+              "href": "#notice/full-chain-award",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:franchise:full-chain-award",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "franchise_vendor_name",
+                "observed_at": "2025-12-01T00:00:00.000",
+                "input_value": "OneChronos Information Services LLC"
+              },
+              "link_type": "named_franchisee",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            },
+            {
+              "subject_ref": "notice:full-chain-meeting",
+              "domain": "franchise",
+              "object_kind": "committee_meeting",
+              "label": "FCRC NOVEMBER PUBLIC MEETING — OneChronos Information Services LLC",
+              "when": "2025-11-12T14:30:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "full-chain-meeting",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:ONECHRONOS%20INFORMATION%20SERVICES",
+              "root_kind": "vendor",
+              "href": "#notice/full-chain-meeting",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:franchise:full-chain-meeting",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "franchise_vendor_name",
+                "observed_at": "2025-11-12T14:30:00.000",
+                "input_value": "OneChronos Information Services LLC"
+              },
+              "link_type": "named_franchisee",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            },
+            {
+              "subject_ref": "notice:20251007003",
+              "domain": "franchise",
+              "object_kind": "public_hearing",
+              "label": "Notice of Franchise and Concession Review Committee Hearing - OneChronos LLC",
+              "when": "2025-11-10T14:30:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20251007003",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:ONECHRONOS%20INFORMATION%20SERVICES",
+              "root_kind": "vendor",
+              "href": "#notice/20251007003",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:franchise:20251007003",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "franchise_vendor_name",
+                "observed_at": "2025-11-10T14:30:00.000",
+                "input_value": "OneChronos Information Services LLC"
+              },
+              "link_type": "named_franchisee",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            },
+            {
+              "subject_ref": "notice:full-chain-solicitation",
+              "domain": "franchise",
+              "object_kind": "solicitation",
+              "label": "Request for Proposals — Information Services Franchise",
+              "when": "2025-08-01T00:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "full-chain-solicitation",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:ONECHRONOS%20INFORMATION%20SERVICES",
+              "root_kind": "vendor",
+              "href": "#notice/full-chain-solicitation",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:franchise:full-chain-solicitation",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "franchise_vendor_name",
+                "observed_at": "2025-08-01T00:00:00.000",
+                "input_value": "OneChronos Information Services LLC"
+              },
+              "link_type": "named_franchisee",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            }
+          ],
+          "count": 4
+        }
+      },
+      "links": [
+        {
+          "type": "named_franchisee",
+          "from": "notice:20251007003",
+          "to": "vendor:stem:ONECHRONOS%20INFORMATION%20SERVICES",
+          "domain": "franchise",
+          "confidence": "strong",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:franchise:20251007003",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "franchise_vendor_name",
+            "observed_at": "2025-11-10T14:30:00.000",
+            "input_value": "OneChronos Information Services LLC"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "named_franchisee",
+          "from": "notice:full-chain-award",
+          "to": "vendor:stem:ONECHRONOS%20INFORMATION%20SERVICES",
+          "domain": "franchise",
+          "confidence": "strong",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:franchise:full-chain-award",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "franchise_vendor_name",
+            "observed_at": "2025-12-01T00:00:00.000",
+            "input_value": "OneChronos Information Services LLC"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "named_franchisee",
+          "from": "notice:full-chain-meeting",
+          "to": "vendor:stem:ONECHRONOS%20INFORMATION%20SERVICES",
+          "domain": "franchise",
+          "confidence": "strong",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:franchise:full-chain-meeting",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "franchise_vendor_name",
+            "observed_at": "2025-11-12T14:30:00.000",
+            "input_value": "OneChronos Information Services LLC"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "named_franchisee",
+          "from": "notice:full-chain-solicitation",
+          "to": "vendor:stem:ONECHRONOS%20INFORMATION%20SERVICES",
+          "domain": "franchise",
+          "confidence": "strong",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:franchise:full-chain-solicitation",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "franchise_vendor_name",
+            "observed_at": "2025-08-01T00:00:00.000",
+            "input_value": "OneChronos Information Services LLC"
+          },
+          "layer": "cross_domain_object_link_v2"
+        }
+      ],
+      "metrics": {
+        "metric": "cross_domain_object_link_coverage",
+        "domains_total": 7,
+        "domains_matched": 1,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 6,
+        "total_linked_objects": 4,
+        "link_count": 4,
+        "join_key_link_count": 0,
+        "coverage_rate": 0.14285714285714285
       }
     },
     "agency:id:board-of-education-retirement-system": {
@@ -17661,6 +19333,13 @@
           "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
         }
       },
       "links": [
@@ -17727,14 +19406,14 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 1,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 5,
+        "domains_empty": 6,
         "total_linked_objects": 3,
         "link_count": 3,
         "join_key_link_count": 0,
-        "coverage_rate": 0.16666666666666666
+        "coverage_rate": 0.14285714285714285
       }
     },
     "agency:id:borough-president-brooklyn": {
@@ -17892,6 +19571,13 @@
           "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
         }
       },
       "links": [
@@ -17958,14 +19644,14 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 1,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 5,
+        "domains_empty": 6,
         "total_linked_objects": 3,
         "link_count": 3,
         "join_key_link_count": 0,
-        "coverage_rate": 0.16666666666666666
+        "coverage_rate": 0.14285714285714285
       }
     },
     "agency:id:edc-economic-development-corporation-for-nyc": {
@@ -18122,6 +19808,13 @@
           "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
         }
       },
       "links": [
@@ -18187,14 +19880,14 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 1,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 5,
+        "domains_empty": 6,
         "total_linked_objects": 3,
         "link_count": 3,
         "join_key_link_count": 0,
-        "coverage_rate": 0.16666666666666666
+        "coverage_rate": 0.14285714285714285
       }
     },
     "agency:id:fire-department": {
@@ -18352,6 +20045,13 @@
           "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
         }
       },
       "links": [
@@ -18418,245 +20118,14 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 1,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 5,
+        "domains_empty": 6,
         "total_linked_objects": 3,
         "link_count": 3,
         "join_key_link_count": 0,
-        "coverage_rate": 0.16666666666666666
-      }
-    },
-    "agency:id:franchise-and-concession-review-committee": {
-      "ok": true,
-      "version": "cross_domain_object_link_v2",
-      "method": "cross_domain_identity_v2",
-      "method_version": "2.0.0",
-      "root": {
-        "kind": "agency",
-        "ref": "agency:id:franchise-and-concession-review-committee",
-        "id": "id:franchise-and-concession-review-committee",
-        "canonical_id": "franchise-and-concession-review-committee",
-        "canonical_name": "Franchise and Concession Review Committee",
-        "display_name": "Franchise and Concession Review Committee"
-      },
-      "domains": {
-        "money": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No money objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "land": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No land objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "property": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No property objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "rules": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No rules objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "meetings": {
-          "status": "matched",
-          "gap_class": null,
-          "note": null,
-          "objects": [
-            {
-              "subject_ref": "notice:20260710032",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "FCRC AUGUST PUBLIC MEETING",
-              "when": "2026-08-12T14:30:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260710032",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:franchise-and-concession-review-committee",
-              "root_kind": "agency",
-              "href": "#notice/20260710032",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260710032",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-08-12T14:30:00.000",
-                "input_value": "Franchise and Concession Review Committee"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:20260512010",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "FCRC JUNE PUBLIC MEETING",
-              "when": "2026-06-10T14:30:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260512010",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:franchise-and-concession-review-committee",
-              "root_kind": "agency",
-              "href": "#notice/20260512010",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260512010",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-06-10T14:30:00.000",
-                "input_value": "Franchise and Concession Review Committee"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:20260512008",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "NOTICE OF FRANCHISE AND CONCESSION REVIEW COMMITTEE PUBLIC HEARING",
-              "when": "2026-06-08T14:30:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260512008",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:franchise-and-concession-review-committee",
-              "root_kind": "agency",
-              "href": "#notice/20260512008",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260512008",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-06-08T14:30:00.000",
-                "input_value": "Franchise and Concession Review Committee"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            }
-          ],
-          "count": 3
-        },
-        "people": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No people objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        }
-      },
-      "links": [
-        {
-          "type": "hosts_meeting",
-          "from": "notice:20260512008",
-          "to": "agency:id:franchise-and-concession-review-committee",
-          "domain": "meetings",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260512008",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "meetings_agency_name",
-            "observed_at": "2026-06-08T14:30:00.000",
-            "input_value": "Franchise and Concession Review Committee"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "hosts_meeting",
-          "from": "notice:20260512010",
-          "to": "agency:id:franchise-and-concession-review-committee",
-          "domain": "meetings",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260512010",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "meetings_agency_name",
-            "observed_at": "2026-06-10T14:30:00.000",
-            "input_value": "Franchise and Concession Review Committee"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "hosts_meeting",
-          "from": "notice:20260710032",
-          "to": "agency:id:franchise-and-concession-review-committee",
-          "domain": "meetings",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260710032",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "meetings_agency_name",
-            "observed_at": "2026-08-12T14:30:00.000",
-            "input_value": "Franchise and Concession Review Committee"
-          },
-          "layer": "cross_domain_object_link_v2"
-        }
-      ],
-      "metrics": {
-        "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
-        "domains_matched": 1,
-        "domains_not_yet_ingested": 0,
-        "domains_empty": 5,
-        "total_linked_objects": 3,
-        "link_count": 3,
-        "join_key_link_count": 0,
-        "coverage_rate": 0.16666666666666666
+        "coverage_rate": 0.14285714285714285
       }
     },
     "agency:id:housing-authority": {
@@ -18814,6 +20283,13 @@
           "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
         }
       },
       "links": [
@@ -18880,14 +20356,14 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 1,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 5,
+        "domains_empty": 6,
         "total_linked_objects": 3,
         "link_count": 3,
         "join_key_link_count": 0,
-        "coverage_rate": 0.16666666666666666
+        "coverage_rate": 0.14285714285714285
       }
     },
     "agency:id:lpc-nyc-landmarks-preservation-commission": {
@@ -19045,6 +20521,13 @@
           "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
         }
       },
       "links": [
@@ -19111,14 +20594,251 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 1,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 5,
+        "domains_empty": 6,
         "total_linked_objects": 3,
         "link_count": 3,
         "join_key_link_count": 0,
-        "coverage_rate": 0.16666666666666666
+        "coverage_rate": 0.14285714285714285
+      }
+    },
+    "vendor:stem:FLUSHING%20GC": {
+      "ok": true,
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
+      "root": {
+        "kind": "vendor",
+        "ref": "vendor:stem:FLUSHING%20GC",
+        "id": "stem:FLUSHING%20GC",
+        "stem": "FLUSHING GC",
+        "display_name": "Flushing GC LLC"
+      },
+      "domains": {
+        "money": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No money objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "land": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No land objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "rules": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No rules objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "meetings": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No meetings objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "people": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "franchise": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "notice:20260116002",
+              "domain": "franchise",
+              "object_kind": "public_hearing",
+              "label": "Notice of Joint Public Hearing, February 9, 2026: Intent to Award a Concession Agreement to Flushing GC LLC for the renovation, operation, and maintenance of the Pitch and Putt Golf Facility at Flushing Meadows Corona Park, Queens",
+              "when": "2026-02-09T14:30:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260116002",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:FLUSHING%20GC",
+              "root_kind": "vendor",
+              "href": "#notice/20260116002",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:franchise:20260116002",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "franchise_vendor_name",
+                "observed_at": "2026-02-09T14:30:00.000",
+                "input_value": "Flushing GC LLC"
+              },
+              "link_type": "named_franchisee",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            },
+            {
+              "subject_ref": "notice:20251211004",
+              "domain": "franchise",
+              "object_kind": "public_hearing",
+              "label": "Notice of Joint Public Hearing, January 12, 2026: Intent to Award a Concession Agreement to Flushing GC LLC for the renovation, operation, and maintenance of the Pitch and Putt Golf Facility at Flushing Meadows Corona Park, Queens",
+              "when": "2026-01-12T14:30:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20251211004",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:FLUSHING%20GC",
+              "root_kind": "vendor",
+              "href": "#notice/20251211004",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:franchise:20251211004",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "franchise_vendor_name",
+                "observed_at": "2026-01-12T14:30:00.000",
+                "input_value": "Flushing GC LLC"
+              },
+              "link_type": "named_franchisee",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            },
+            {
+              "subject_ref": "notice:20251231024",
+              "domain": "franchise",
+              "object_kind": "public_hearing",
+              "label": "CANCELLED: Notice of Joint Public Hearing, January 12, 2026: Intent to Award a Concession Agreement to Flushing GC LLC for the renovation, operation, and maintenance of the Pitch and Putt Golf Facility at Flushing Meadows Corona Park, Queens",
+              "when": "2026-01-12T14:30:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20251231024",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:FLUSHING%20GC",
+              "root_kind": "vendor",
+              "href": "#notice/20251231024",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:franchise:20251231024",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "franchise_vendor_name",
+                "observed_at": "2026-01-12T14:30:00.000",
+                "input_value": "Flushing GC LLC"
+              },
+              "link_type": "named_franchisee",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            }
+          ],
+          "count": 3
+        }
+      },
+      "links": [
+        {
+          "type": "named_franchisee",
+          "from": "notice:20251211004",
+          "to": "vendor:stem:FLUSHING%20GC",
+          "domain": "franchise",
+          "confidence": "strong",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:franchise:20251211004",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "franchise_vendor_name",
+            "observed_at": "2026-01-12T14:30:00.000",
+            "input_value": "Flushing GC LLC"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "named_franchisee",
+          "from": "notice:20251231024",
+          "to": "vendor:stem:FLUSHING%20GC",
+          "domain": "franchise",
+          "confidence": "strong",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:franchise:20251231024",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "franchise_vendor_name",
+            "observed_at": "2026-01-12T14:30:00.000",
+            "input_value": "Flushing GC LLC"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "named_franchisee",
+          "from": "notice:20260116002",
+          "to": "vendor:stem:FLUSHING%20GC",
+          "domain": "franchise",
+          "confidence": "strong",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:franchise:20260116002",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "franchise_vendor_name",
+            "observed_at": "2026-02-09T14:30:00.000",
+            "input_value": "Flushing GC LLC"
+          },
+          "layer": "cross_domain_object_link_v2"
+        }
+      ],
+      "metrics": {
+        "metric": "cross_domain_object_link_coverage",
+        "domains_total": 7,
+        "domains_matched": 1,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 6,
+        "total_linked_objects": 3,
+        "link_count": 3,
+        "join_key_link_count": 0,
+        "coverage_rate": 0.14285714285714285
       }
     },
     "agency:id:borough-president-bronx": {
@@ -19243,6 +20963,13 @@
           "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
         }
       },
       "links": [
@@ -19333,14 +21060,14 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 1,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 5,
+        "domains_empty": 6,
         "total_linked_objects": 2,
         "link_count": 4,
         "join_key_link_count": 2,
-        "coverage_rate": 0.16666666666666666
+        "coverage_rate": 0.14285714285714285
       }
     },
     "agency:id:borough-president-queens": {
@@ -19463,6 +21190,13 @@
           "status": "empty",
           "gap_class": "empty_in_corpus",
           "note": "No people objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -19599,14 +21333,14 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 1,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 5,
+        "domains_empty": 6,
         "total_linked_objects": 2,
         "link_count": 6,
         "join_key_link_count": 4,
-        "coverage_rate": 0.16666666666666666
+        "coverage_rate": 0.14285714285714285
       }
     },
     "agency:id:conflicts-of-interest-board": {
@@ -19731,6 +21465,13 @@
           "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
+        },
+        "franchise": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No franchise objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
         }
       },
       "links": [
@@ -19777,724 +21518,14 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
+        "domains_total": 7,
         "domains_matched": 1,
         "domains_not_yet_ingested": 0,
-        "domains_empty": 5,
+        "domains_empty": 6,
         "total_linked_objects": 2,
         "link_count": 2,
         "join_key_link_count": 0,
-        "coverage_rate": 0.16666666666666666
-      }
-    },
-    "agency:id:dot-nyc-dept-of-transportation": {
-      "ok": true,
-      "version": "cross_domain_object_link_v2",
-      "method": "cross_domain_identity_v2",
-      "method_version": "2.0.0",
-      "root": {
-        "kind": "agency",
-        "ref": "agency:id:dot-nyc-dept-of-transportation",
-        "id": "id:dot-nyc-dept-of-transportation",
-        "canonical_id": "dot-nyc-dept-of-transportation",
-        "canonical_name": "DOT - NYC Dept of Transportation",
-        "display_name": "DOT - NYC Dept of Transportation"
-      },
-      "domains": {
-        "money": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No money objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "land": {
-          "status": "matched",
-          "gap_class": null,
-          "note": null,
-          "objects": [
-            {
-              "subject_ref": "project:P2018X0328",
-              "domain": "land",
-              "object_kind": "project",
-              "label": "Grand ConCourse Bridge Rehabilitation",
-              "when": "2020-08-19",
-              "amount": null,
-              "public_status": "Filed",
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": "P2018X0328",
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": "200003MMX",
-              "bbls": null,
-              "root_ref": "agency:id:dot-nyc-dept-of-transportation",
-              "root_kind": "agency",
-              "href": "#land?project=P2018X0328",
-              "provenance": {
-                "source_system": "warehouse",
-                "source_record_id": "warehouse:P2018X0328",
-                "source_fields": [
-                  "primary_applicant"
-                ],
-                "basis": "land_primary_applicant",
-                "observed_at": "2020-08-19",
-                "input_value": "DOT - NYC Dept of Transportation"
-              },
-              "link_type": "applicant_agency",
-              "confidence": "tentative",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "project:P2014R0345",
-              "domain": "land",
-              "object_kind": "project",
-              "label": "Woodrow Road City Map Change",
-              "when": null,
-              "amount": null,
-              "public_status": "Filed",
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": "P2014R0345",
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": "I160165MMR",
-              "bbls": null,
-              "root_ref": "agency:id:dot-nyc-dept-of-transportation",
-              "root_kind": "agency",
-              "href": "#land?project=P2014R0345",
-              "provenance": {
-                "source_system": "warehouse",
-                "source_record_id": "warehouse:P2014R0345",
-                "source_fields": [
-                  "primary_applicant"
-                ],
-                "basis": "land_primary_applicant",
-                "input_value": "DOT - NYC Dept of Transportation"
-              },
-              "link_type": "applicant_agency",
-              "confidence": "tentative",
-              "method": "agency_canonical_v1"
-            }
-          ],
-          "count": 2
-        },
-        "property": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No property objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "rules": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No rules objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "meetings": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No meetings objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "people": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No people objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        }
-      },
-      "links": [
-        {
-          "type": "applicant_agency",
-          "from": "project:P2014R0345",
-          "to": "agency:id:dot-nyc-dept-of-transportation",
-          "domain": "land",
-          "confidence": "tentative",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "warehouse",
-            "source_record_id": "warehouse:P2014R0345",
-            "source_fields": [
-              "primary_applicant"
-            ],
-            "basis": "land_primary_applicant",
-            "input_value": "DOT - NYC Dept of Transportation"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "applicant_agency",
-          "from": "project:P2018X0328",
-          "to": "agency:id:dot-nyc-dept-of-transportation",
-          "domain": "land",
-          "confidence": "tentative",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "warehouse",
-            "source_record_id": "warehouse:P2018X0328",
-            "source_fields": [
-              "primary_applicant"
-            ],
-            "basis": "land_primary_applicant",
-            "observed_at": "2020-08-19",
-            "input_value": "DOT - NYC Dept of Transportation"
-          },
-          "layer": "cross_domain_object_link_v2"
-        }
-      ],
-      "metrics": {
-        "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
-        "domains_matched": 1,
-        "domains_not_yet_ingested": 0,
-        "domains_empty": 5,
-        "total_linked_objects": 2,
-        "link_count": 2,
-        "join_key_link_count": 0,
-        "coverage_rate": 0.16666666666666666
-      }
-    },
-    "agency:id:environmental-control-board": {
-      "ok": true,
-      "version": "cross_domain_object_link_v2",
-      "method": "cross_domain_identity_v2",
-      "method_version": "2.0.0",
-      "root": {
-        "kind": "agency",
-        "ref": "agency:id:environmental-control-board",
-        "id": "id:environmental-control-board",
-        "canonical_id": "environmental-control-board",
-        "canonical_name": "Environmental Control Board",
-        "display_name": "Environmental Control Board"
-      },
-      "domains": {
-        "money": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No money objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "land": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No land objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "property": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No property objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "rules": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No rules objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "meetings": {
-          "status": "matched",
-          "gap_class": null,
-          "note": null,
-          "objects": [
-            {
-              "subject_ref": "notice:20260716025",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "New York City Environmental Control Board Meeting August 6, 2026",
-              "when": "2026-08-06T09:30:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260716025",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:environmental-control-board",
-              "root_kind": "agency",
-              "href": "#notice/20260716025",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260716025",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-08-06T09:30:00.000",
-                "input_value": "Environmental Control Board"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:20260429031",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "New York City Environmental Control Board Meeting June 11, 2026",
-              "when": "2026-06-11T09:30:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260429031",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:environmental-control-board",
-              "root_kind": "agency",
-              "href": "#notice/20260429031",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260429031",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-06-11T09:30:00.000",
-                "input_value": "Environmental Control Board"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            }
-          ],
-          "count": 2
-        },
-        "people": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No people objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        }
-      },
-      "links": [
-        {
-          "type": "hosts_meeting",
-          "from": "notice:20260429031",
-          "to": "agency:id:environmental-control-board",
-          "domain": "meetings",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260429031",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "meetings_agency_name",
-            "observed_at": "2026-06-11T09:30:00.000",
-            "input_value": "Environmental Control Board"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "hosts_meeting",
-          "from": "notice:20260716025",
-          "to": "agency:id:environmental-control-board",
-          "domain": "meetings",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260716025",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "meetings_agency_name",
-            "observed_at": "2026-08-06T09:30:00.000",
-            "input_value": "Environmental Control Board"
-          },
-          "layer": "cross_domain_object_link_v2"
-        }
-      ],
-      "metrics": {
-        "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
-        "domains_matched": 1,
-        "domains_not_yet_ingested": 0,
-        "domains_empty": 5,
-        "total_linked_objects": 2,
-        "link_count": 2,
-        "join_key_link_count": 0,
-        "coverage_rate": 0.16666666666666666
-      }
-    },
-    "agency:id:environmental-protection": {
-      "ok": true,
-      "version": "cross_domain_object_link_v2",
-      "method": "cross_domain_identity_v2",
-      "method_version": "2.0.0",
-      "root": {
-        "kind": "agency",
-        "ref": "agency:id:environmental-protection",
-        "id": "id:environmental-protection",
-        "canonical_id": "environmental-protection",
-        "canonical_name": "Environmental Protection",
-        "display_name": "Environmental Protection"
-      },
-      "domains": {
-        "money": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No money objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "land": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No land objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "property": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No property objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "rules": {
-          "status": "matched",
-          "gap_class": null,
-          "note": null,
-          "objects": [
-            {
-              "subject_ref": "notice:20260521002",
-              "domain": "rules",
-              "object_kind": "rule",
-              "label": "FY 27 Regulatory Agenda",
-              "when": "2026-05-29T00:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260521002",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:environmental-protection",
-              "root_kind": "agency",
-              "href": "#notice/20260521002",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260521002",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "rules_agency_name",
-                "observed_at": "2026-05-29T00:00:00.000",
-                "input_value": "Environmental Protection"
-              },
-              "link_type": "issued_rule",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:20260423016",
-              "domain": "rules",
-              "object_kind": "rule",
-              "label": "Construction Noise Monitoring Penalty Rule",
-              "when": "2026-05-01T00:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260423016",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:environmental-protection",
-              "root_kind": "agency",
-              "href": "#notice/20260423016",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260423016",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "rules_agency_name",
-                "observed_at": "2026-05-01T00:00:00.000",
-                "input_value": "Environmental Protection"
-              },
-              "link_type": "issued_rule",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            }
-          ],
-          "count": 2
-        },
-        "meetings": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No meetings objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "people": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No people objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        }
-      },
-      "links": [
-        {
-          "type": "issued_rule",
-          "from": "notice:20260423016",
-          "to": "agency:id:environmental-protection",
-          "domain": "rules",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260423016",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "rules_agency_name",
-            "observed_at": "2026-05-01T00:00:00.000",
-            "input_value": "Environmental Protection"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "issued_rule",
-          "from": "notice:20260521002",
-          "to": "agency:id:environmental-protection",
-          "domain": "rules",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260521002",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "rules_agency_name",
-            "observed_at": "2026-05-29T00:00:00.000",
-            "input_value": "Environmental Protection"
-          },
-          "layer": "cross_domain_object_link_v2"
-        }
-      ],
-      "metrics": {
-        "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
-        "domains_matched": 1,
-        "domains_not_yet_ingested": 0,
-        "domains_empty": 5,
-        "total_linked_objects": 2,
-        "link_count": 2,
-        "join_key_link_count": 0,
-        "coverage_rate": 0.16666666666666666
-      }
-    },
-    "agency:id:equal-employment-practices-commission": {
-      "ok": true,
-      "version": "cross_domain_object_link_v2",
-      "method": "cross_domain_identity_v2",
-      "method_version": "2.0.0",
-      "root": {
-        "kind": "agency",
-        "ref": "agency:id:equal-employment-practices-commission",
-        "id": "id:equal-employment-practices-commission",
-        "canonical_id": "equal-employment-practices-commission",
-        "canonical_name": "Equal Employment Practices Commission",
-        "display_name": "Equal Employment Practices Commission"
-      },
-      "domains": {
-        "money": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No money objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "land": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No land objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "property": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No property objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "rules": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No rules objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "meetings": {
-          "status": "matched",
-          "gap_class": null,
-          "note": null,
-          "objects": [
-            {
-              "subject_ref": "notice:20260708015",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "EEPC COMMISSION MEETING #289",
-              "when": "2026-07-30T10:15:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260708015",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:equal-employment-practices-commission",
-              "root_kind": "agency",
-              "href": "#notice/20260708015",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260708015",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-07-30T10:15:00.000",
-                "input_value": "Equal Employment Practices Commission"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:20260528021",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "EEPC COMMISSION MEETING #288",
-              "when": "2026-06-11T10:15:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260528021",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:equal-employment-practices-commission",
-              "root_kind": "agency",
-              "href": "#notice/20260528021",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260528021",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-06-11T10:15:00.000",
-                "input_value": "Equal Employment Practices Commission"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            }
-          ],
-          "count": 2
-        },
-        "people": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No people objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        }
-      },
-      "links": [
-        {
-          "type": "hosts_meeting",
-          "from": "notice:20260528021",
-          "to": "agency:id:equal-employment-practices-commission",
-          "domain": "meetings",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260528021",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "meetings_agency_name",
-            "observed_at": "2026-06-11T10:15:00.000",
-            "input_value": "Equal Employment Practices Commission"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "hosts_meeting",
-          "from": "notice:20260708015",
-          "to": "agency:id:equal-employment-practices-commission",
-          "domain": "meetings",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260708015",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "meetings_agency_name",
-            "observed_at": "2026-07-30T10:15:00.000",
-            "input_value": "Equal Employment Practices Commission"
-          },
-          "layer": "cross_domain_object_link_v2"
-        }
-      ],
-      "metrics": {
-        "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
-        "domains_matched": 1,
-        "domains_not_yet_ingested": 0,
-        "domains_empty": 5,
-        "total_linked_objects": 2,
-        "link_count": 2,
-        "join_key_link_count": 0,
-        "coverage_rate": 0.16666666666666666
+        "coverage_rate": 0.14285714285714285
       }
     }
   },
@@ -20503,9 +21534,9 @@
       "ref": "agency:id:parks-and-recreation",
       "kind": "agency",
       "display_name": "Parks and Recreation",
-      "domains_matched": 5,
-      "total_linked_objects": 13,
-      "coverage_rate": 0.8333333333333334
+      "domains_matched": 6,
+      "total_linked_objects": 16,
+      "coverage_rate": 0.8571428571428571
     },
     {
       "ref": "agency:id:housing-preservation-and-development",
@@ -20513,7 +21544,7 @@
       "display_name": "Housing Preservation and Development",
       "domains_matched": 4,
       "total_linked_objects": 14,
-      "coverage_rate": 0.6666666666666666
+      "coverage_rate": 0.5714285714285714
     },
     {
       "ref": "agency:id:transportation",
@@ -20521,7 +21552,7 @@
       "display_name": "Transportation",
       "domains_matched": 3,
       "total_linked_objects": 12,
-      "coverage_rate": 0.5
+      "coverage_rate": 0.42857142857142855
     },
     {
       "ref": "agency:id:citywide-administrative-services",
@@ -20529,7 +21560,7 @@
       "display_name": "Citywide Administrative Services",
       "domains_matched": 3,
       "total_linked_objects": 9,
-      "coverage_rate": 0.5
+      "coverage_rate": 0.42857142857142855
     },
     {
       "ref": "agency:id:health-and-mental-hygiene",
@@ -20537,7 +21568,7 @@
       "display_name": "Health and Mental Hygiene",
       "domains_matched": 3,
       "total_linked_objects": 9,
-      "coverage_rate": 0.5
+      "coverage_rate": 0.42857142857142855
     },
     {
       "ref": "agency:id:city-planning",
@@ -20545,7 +21576,7 @@
       "display_name": "City Planning",
       "domains_matched": 3,
       "total_linked_objects": 4,
-      "coverage_rate": 0.5
+      "coverage_rate": 0.42857142857142855
     },
     {
       "ref": "agency:id:city-council",
@@ -20553,7 +21584,7 @@
       "display_name": "City Council",
       "domains_matched": 2,
       "total_linked_objects": 12,
-      "coverage_rate": 0.3333333333333333
+      "coverage_rate": 0.2857142857142857
     },
     {
       "ref": "agency:id:consumer-and-worker-protection",
@@ -20561,7 +21592,7 @@
       "display_name": "Consumer and Worker Protection",
       "domains_matched": 2,
       "total_linked_objects": 11,
-      "coverage_rate": 0.3333333333333333
+      "coverage_rate": 0.2857142857142857
     },
     {
       "ref": "agency:id:city-planning-commission",
@@ -20569,7 +21600,7 @@
       "display_name": "City Planning Commission",
       "domains_matched": 2,
       "total_linked_objects": 8,
-      "coverage_rate": 0.3333333333333333
+      "coverage_rate": 0.2857142857142857
     },
     {
       "ref": "agency:id:finance",
@@ -20577,7 +21608,7 @@
       "display_name": "Finance",
       "domains_matched": 2,
       "total_linked_objects": 8,
-      "coverage_rate": 0.3333333333333333
+      "coverage_rate": 0.2857142857142857
     },
     {
       "ref": "agency:id:sanitation",
@@ -20585,7 +21616,7 @@
       "display_name": "Sanitation",
       "domains_matched": 2,
       "total_linked_objects": 8,
-      "coverage_rate": 0.3333333333333333
+      "coverage_rate": 0.2857142857142857
     },
     {
       "ref": "agency:id:buildings",
@@ -20593,7 +21624,15 @@
       "display_name": "Buildings",
       "domains_matched": 2,
       "total_linked_objects": 7,
-      "coverage_rate": 0.3333333333333333
+      "coverage_rate": 0.2857142857142857
+    },
+    {
+      "ref": "agency:id:information-technology-and-telecommunications",
+      "kind": "agency",
+      "display_name": "Information Technology and Telecommunications",
+      "domains_matched": 2,
+      "total_linked_objects": 7,
+      "coverage_rate": 0.2857142857142857
     },
     {
       "ref": "agency:id:landmarks-preservation-commission",
@@ -20601,7 +21640,7 @@
       "display_name": "Landmarks Preservation Commission",
       "domains_matched": 2,
       "total_linked_objects": 7,
-      "coverage_rate": 0.3333333333333333
+      "coverage_rate": 0.2857142857142857
     },
     {
       "ref": "agency:id:rent-guidelines-board",
@@ -20609,7 +21648,15 @@
       "display_name": "Rent Guidelines Board",
       "domains_matched": 2,
       "total_linked_objects": 7,
-      "coverage_rate": 0.3333333333333333
+      "coverage_rate": 0.2857142857142857
+    },
+    {
+      "ref": "agency:id:franchise-and-concession-review-committee",
+      "kind": "agency",
+      "display_name": "Franchise and Concession Review Committee",
+      "domains_matched": 2,
+      "total_linked_objects": 6,
+      "coverage_rate": 0.2857142857142857
     },
     {
       "ref": "agency:id:board-of-standards-and-appeals",
@@ -20617,7 +21664,7 @@
       "display_name": "Board of Standards and Appeals",
       "domains_matched": 2,
       "total_linked_objects": 5,
-      "coverage_rate": 0.3333333333333333
+      "coverage_rate": 0.2857142857142857
     },
     {
       "ref": "agency:id:small-business-services",
@@ -20625,7 +21672,7 @@
       "display_name": "Small Business Services",
       "domains_matched": 2,
       "total_linked_objects": 5,
-      "coverage_rate": 0.3333333333333333
+      "coverage_rate": 0.2857142857142857
     },
     {
       "ref": "agency:id:city-university",
@@ -20633,7 +21680,7 @@
       "display_name": "City University",
       "domains_matched": 2,
       "total_linked_objects": 4,
-      "coverage_rate": 0.3333333333333333
+      "coverage_rate": 0.2857142857142857
     },
     {
       "ref": "agency:id:board-of-correction",
@@ -20641,7 +21688,7 @@
       "display_name": "Board of Correction",
       "domains_matched": 2,
       "total_linked_objects": 3,
-      "coverage_rate": 0.3333333333333333
+      "coverage_rate": 0.2857142857142857
     },
     {
       "ref": "agency:id:comptroller",
@@ -20649,7 +21696,7 @@
       "display_name": "Comptroller",
       "domains_matched": 2,
       "total_linked_objects": 3,
-      "coverage_rate": 0.3333333333333333
+      "coverage_rate": 0.2857142857142857
     },
     {
       "ref": "agency:id:taxi-and-limousine-commission",
@@ -20657,7 +21704,7 @@
       "display_name": "Taxi and Limousine Commission",
       "domains_matched": 2,
       "total_linked_objects": 3,
-      "coverage_rate": 0.3333333333333333
+      "coverage_rate": 0.2857142857142857
     },
     {
       "ref": "agency:id:mayors-office-of-contract-services",
@@ -20665,7 +21712,15 @@
       "display_name": "Mayor's Office of Contract Services",
       "domains_matched": 2,
       "total_linked_objects": 2,
-      "coverage_rate": 0.3333333333333333
+      "coverage_rate": 0.2857142857142857
+    },
+    {
+      "ref": "agency:id:police-department",
+      "kind": "agency",
+      "display_name": "Police Department",
+      "domains_matched": 2,
+      "total_linked_objects": 2,
+      "coverage_rate": 0.2857142857142857
     },
     {
       "ref": "agency:id:board-meetings",
@@ -20673,7 +21728,7 @@
       "display_name": "Board Meetings",
       "domains_matched": 1,
       "total_linked_objects": 6,
-      "coverage_rate": 0.16666666666666666
+      "coverage_rate": 0.14285714285714285
     },
     {
       "ref": "agency:id:charter-revision-commission",
@@ -20681,7 +21736,7 @@
       "display_name": "Charter Revision Commission",
       "domains_matched": 1,
       "total_linked_objects": 6,
-      "coverage_rate": 0.16666666666666666
+      "coverage_rate": 0.14285714285714285
     },
     {
       "ref": "agency:id:community-boards",
@@ -20689,7 +21744,7 @@
       "display_name": "Community Boards",
       "domains_matched": 1,
       "total_linked_objects": 5,
-      "coverage_rate": 0.16666666666666666
+      "coverage_rate": 0.14285714285714285
     },
     {
       "ref": "agency:id:economic-development-corporation",
@@ -20697,7 +21752,7 @@
       "display_name": "Economic Development Corporation",
       "domains_matched": 1,
       "total_linked_objects": 4,
-      "coverage_rate": 0.16666666666666666
+      "coverage_rate": 0.14285714285714285
     },
     {
       "ref": "vendor:stem:EXTELL%20DEVELOPMENT",
@@ -20705,7 +21760,15 @@
       "display_name": "Extell Development",
       "domains_matched": 1,
       "total_linked_objects": 4,
-      "coverage_rate": 0.16666666666666666
+      "coverage_rate": 0.14285714285714285
+    },
+    {
+      "ref": "vendor:stem:ONECHRONOS%20INFORMATION%20SERVICES",
+      "kind": "vendor",
+      "display_name": "OneChronos Information Services LLC",
+      "domains_matched": 1,
+      "total_linked_objects": 4,
+      "coverage_rate": 0.14285714285714285
     },
     {
       "ref": "agency:id:board-of-education-retirement-system",
@@ -20713,7 +21776,7 @@
       "display_name": "Board of Education Retirement System",
       "domains_matched": 1,
       "total_linked_objects": 3,
-      "coverage_rate": 0.16666666666666666
+      "coverage_rate": 0.14285714285714285
     },
     {
       "ref": "agency:id:borough-president-brooklyn",
@@ -20721,7 +21784,7 @@
       "display_name": "Borough President - Brooklyn",
       "domains_matched": 1,
       "total_linked_objects": 3,
-      "coverage_rate": 0.16666666666666666
+      "coverage_rate": 0.14285714285714285
     },
     {
       "ref": "agency:id:edc-economic-development-corporation-for-nyc",
@@ -20729,7 +21792,7 @@
       "display_name": "EDC - Economic Development Corporation for NYC",
       "domains_matched": 1,
       "total_linked_objects": 3,
-      "coverage_rate": 0.16666666666666666
+      "coverage_rate": 0.14285714285714285
     },
     {
       "ref": "agency:id:fire-department",
@@ -20737,15 +21800,7 @@
       "display_name": "Fire Department",
       "domains_matched": 1,
       "total_linked_objects": 3,
-      "coverage_rate": 0.16666666666666666
-    },
-    {
-      "ref": "agency:id:franchise-and-concession-review-committee",
-      "kind": "agency",
-      "display_name": "Franchise and Concession Review Committee",
-      "domains_matched": 1,
-      "total_linked_objects": 3,
-      "coverage_rate": 0.16666666666666666
+      "coverage_rate": 0.14285714285714285
     },
     {
       "ref": "agency:id:housing-authority",
@@ -20753,7 +21808,7 @@
       "display_name": "Housing Authority",
       "domains_matched": 1,
       "total_linked_objects": 3,
-      "coverage_rate": 0.16666666666666666
+      "coverage_rate": 0.14285714285714285
     },
     {
       "ref": "agency:id:lpc-nyc-landmarks-preservation-commission",
@@ -20761,7 +21816,15 @@
       "display_name": "LPC - NYC Landmarks Preservation Commission",
       "domains_matched": 1,
       "total_linked_objects": 3,
-      "coverage_rate": 0.16666666666666666
+      "coverage_rate": 0.14285714285714285
+    },
+    {
+      "ref": "vendor:stem:FLUSHING%20GC",
+      "kind": "vendor",
+      "display_name": "Flushing GC LLC",
+      "domains_matched": 1,
+      "total_linked_objects": 3,
+      "coverage_rate": 0.14285714285714285
     },
     {
       "ref": "agency:id:borough-president-bronx",
@@ -20769,7 +21832,7 @@
       "display_name": "Borough President - Bronx",
       "domains_matched": 1,
       "total_linked_objects": 2,
-      "coverage_rate": 0.16666666666666666
+      "coverage_rate": 0.14285714285714285
     },
     {
       "ref": "agency:id:borough-president-queens",
@@ -20777,7 +21840,7 @@
       "display_name": "Borough President - Queens",
       "domains_matched": 1,
       "total_linked_objects": 2,
-      "coverage_rate": 0.16666666666666666
+      "coverage_rate": 0.14285714285714285
     },
     {
       "ref": "agency:id:conflicts-of-interest-board",
@@ -20785,39 +21848,7 @@
       "display_name": "Conflicts of Interest Board",
       "domains_matched": 1,
       "total_linked_objects": 2,
-      "coverage_rate": 0.16666666666666666
-    },
-    {
-      "ref": "agency:id:dot-nyc-dept-of-transportation",
-      "kind": "agency",
-      "display_name": "DOT - NYC Dept of Transportation",
-      "domains_matched": 1,
-      "total_linked_objects": 2,
-      "coverage_rate": 0.16666666666666666
-    },
-    {
-      "ref": "agency:id:environmental-control-board",
-      "kind": "agency",
-      "display_name": "Environmental Control Board",
-      "domains_matched": 1,
-      "total_linked_objects": 2,
-      "coverage_rate": 0.16666666666666666
-    },
-    {
-      "ref": "agency:id:environmental-protection",
-      "kind": "agency",
-      "display_name": "Environmental Protection",
-      "domains_matched": 1,
-      "total_linked_objects": 2,
-      "coverage_rate": 0.16666666666666666
-    },
-    {
-      "ref": "agency:id:equal-employment-practices-commission",
-      "kind": "agency",
-      "display_name": "Equal Employment Practices Commission",
-      "domains_matched": 1,
-      "total_linked_objects": 2,
-      "coverage_rate": 0.16666666666666666
+      "coverage_rate": 0.14285714285714285
     }
   ],
   "provenance": {
@@ -20834,6 +21865,9 @@
       "site/data/meetings_domain_observations.json",
       "site/data/people_domain_observations.json",
       "site/data/property_domain_observations.json",
+      "site/data/franchise_domain_observations.json",
+      "test/fixtures/franchise_concession/field_cases.json",
+      "test/fixtures/franchise_concession/multi_notice_densify.json",
       "worker/test/fixtures/entity-intelligence/domain_observations.json",
       "worker/test/fixtures/property-cross-domain/corpus.json",
       "test/fixtures/property_disposition/multi_notice_bbl.json"
@@ -20852,8 +21886,9 @@
       "meetings_agency_hosts_v1",
       "people_votes_as_official_v1",
       "exact_ulurp_token_v1",
-      "zap_project_ref_v1"
+      "zap_project_ref_v1",
+      "franchise_party_stem_v1"
     ],
-    "note": "Links only when identity normalizers or join keys resolve. Identity: agency/vendor across money/land/property/rules/meetings/people. Join keys: PIN (shares_authority_key), contract_id (references_contract / payment_on_contract), BBL (sited_on_parcel / property exact BBL), payee (paid_to_vendor), meeting body ULURP/ZAP → decides_land_project when the land project is in corpus. Rules and meetings densify from City Record domain snapshots; people densify from Legistar by_person retained on meeting-outcomes (never invented tallies). Property attaches via City Record agency_name and labeled disposition owners. Empty domains are explicit per entity."
+    "note": "Links only when identity normalizers or join keys resolve. Identity: agency/vendor across money/land/property/rules/meetings/people/franchise. Join keys: PIN (shares_authority_key), contract_id (references_contract / payment_on_contract), BBL (sited_on_parcel / property exact BBL), payee (paid_to_vendor), meeting body ULURP/ZAP → decides_land_project when the land project is in corpus, franchise party stem (named_franchisee). Rules and meetings densify from City Record domain snapshots; people densify from Legistar by_person retained on meeting-outcomes (never invented tallies). Property attaches via City Record agency_name and labeled disposition owners. Franchise densifies from FCRC / joint concession notices with confident firm counterparties only. Empty domains are explicit per entity."
   }
 }

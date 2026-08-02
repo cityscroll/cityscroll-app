@@ -13,9 +13,11 @@ import {
   observationFromRulesRow,
   observationFromMeetingsRow,
   observationFromPeopleRow,
+  observationFromFranchise,
   observationsFromRulesMaterialization,
   observationsFromMeetingsMaterialization,
   observationsFromPeopleMaterialization,
+  observationsFromFranchiseMaterialization,
   mergeBblsOntoLandObservations,
   observationFromPropertyRow,
   buildIntelligenceCorpus,
@@ -347,6 +349,37 @@ export function collectCrossDomainObservations(root, opts = {}) {
     }
   }
 
+  // --- Franchise / concession: densify fixtures + optional domain snapshot ---
+  // Field cases include multi-notice party chains (OneChronos, Flushing GC) so
+  // vendor lens gains named_franchisee edges. Calendar-only FCRC meetings
+  // without parties are skipped by observationFromFranchise.
+  const franchiseLimit = Number.isFinite(opts.franchise_limit) ? opts.franchise_limit : 200;
+  const franchisePaths = [
+    path.join(root, "site/data/franchise_domain_observations.json"),
+    path.join(root, "test/fixtures/franchise_concession/field_cases.json"),
+    path.join(root, "test/fixtures/franchise_concession/multi_notice_densify.json"),
+  ];
+  for (const p of franchisePaths) {
+    const doc = loadJsonIfExists(p);
+    if (!doc) continue;
+    for (const obs of observationsFromFranchiseMaterialization(doc, {
+      sourceSystem: cleanSourceSystem(
+        doc.source?.system || doc.source_system,
+        "city_record",
+      ),
+      limit: franchiseLimit,
+    })) {
+      observations.push(obs);
+    }
+  }
+  // Optional seed franchise rows (hand-labelled firm parties).
+  if (seed?.franchise) {
+    for (const row of seed.franchise) {
+      const obs = observationFromFranchise(row);
+      if (obs) observations.push(obs);
+    }
+  }
+
   // Dedupe by source_record_id + domain
   const seen = new Set();
   const out = [];
@@ -419,6 +452,9 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
         "site/data/meetings_domain_observations.json",
         "site/data/people_domain_observations.json",
         "site/data/property_domain_observations.json",
+        "site/data/franchise_domain_observations.json",
+        "test/fixtures/franchise_concession/field_cases.json",
+        "test/fixtures/franchise_concession/multi_notice_densify.json",
         "worker/test/fixtures/entity-intelligence/domain_observations.json",
         "worker/test/fixtures/property-cross-domain/corpus.json",
         "test/fixtures/property_disposition/multi_notice_bbl.json",
@@ -438,9 +474,10 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
         "people_votes_as_official_v1",
         "exact_ulurp_token_v1",
         "zap_project_ref_v1",
+        "franchise_party_stem_v1",
       ],
       note:
-        "Links only when identity normalizers or join keys resolve. Identity: agency/vendor across money/land/property/rules/meetings/people. Join keys: PIN (shares_authority_key), contract_id (references_contract / payment_on_contract), BBL (sited_on_parcel / property exact BBL), payee (paid_to_vendor), meeting body ULURP/ZAP → decides_land_project when the land project is in corpus. Rules and meetings densify from City Record domain snapshots; people densify from Legistar by_person retained on meeting-outcomes (never invented tallies). Property attaches via City Record agency_name and labeled disposition owners. Empty domains are explicit per entity.",
+        "Links only when identity normalizers or join keys resolve. Identity: agency/vendor across money/land/property/rules/meetings/people/franchise. Join keys: PIN (shares_authority_key), contract_id (references_contract / payment_on_contract), BBL (sited_on_parcel / property exact BBL), payee (paid_to_vendor), meeting body ULURP/ZAP → decides_land_project when the land project is in corpus, franchise party stem (named_franchisee). Rules and meetings densify from City Record domain snapshots; people densify from Legistar by_person retained on meeting-outcomes (never invented tallies). Property attaches via City Record agency_name and labeled disposition owners. Franchise densifies from FCRC / joint concession notices with confident firm counterparties only. Empty domains are explicit per entity.",
     },
   };
 }
