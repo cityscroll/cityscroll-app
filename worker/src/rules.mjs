@@ -4,6 +4,7 @@
 // authoritative discovery layer; NYC Rules provides lifecycle enrichment.
 
 import {
+  attachCityRecordPublicHearingEvents,
   attachRulemakingSiblings,
   classifyStage,
   deriveRuleEvents,
@@ -28,10 +29,12 @@ const MAX_AGE_MS = 36 * 60 * 60 * 1000;
 const RSS_MAX_AGE_DAYS = 14;
 const RULE_LIMIT = 500;
 
+// event_date is required so Public Hearings under Agency Rules can supply the
+// rules spine `public_hearing` event (Meetings lens already has this column).
 const CR_SELECT = [
   "request_id", "start_date", "agency_name", "type_of_notice_description",
-  "section_name", "short_title", "additional_description_1", "additional_description_2",
-  "additional_description_3",
+  "section_name", "short_title", "event_date",
+  "additional_description_1", "additional_description_2", "additional_description_3",
 ].join(",");
 
 /** Cloudflare challenge HTML is not an RSS feed — surface as fetch failure. */
@@ -92,8 +95,21 @@ export async function buildRuleView(fetchImpl = fetch, now = new Date()) {
   }
 
   // Build rows first, then stitch multi-notice rulemaking siblings (proposal /
-  // hearing / adoption), then stamp subject registry so same_rulemaking edges
-  // see related_notices. Notice identities stay distinct (link-not-merge).
+  // hearing / adoption), promote City Record Public Hearings event_date into
+  // the public_hearing spine event, then stamp subject registry so
+  // same_rulemaking edges see related_notices. Notice identities stay distinct.
+  function cityRecordBlock(notice) {
+    return {
+      request_id: notice.request_id,
+      agency: notice.agency_name,
+      title: notice.short_title,
+      notice_date: notice.start_date,
+      notice_type: notice.type_of_notice_description,
+      section_name: notice.section_name || "Agency Rules",
+      event_date: notice.event_date || null,
+    };
+  }
+
   const rawRecords = [
     ...matched.map((m) => ({
       request_id: m.city_record.request_id,
@@ -101,13 +117,7 @@ export async function buildRuleView(fetchImpl = fetch, now = new Date()) {
       title: m.city_record.short_title || m.rule.title,
       notice_date: m.city_record.start_date,
       stage: m.stage,
-      city_record: {
-        request_id: m.city_record.request_id,
-        agency: m.city_record.agency_name,
-        title: m.city_record.short_title,
-        notice_date: m.city_record.start_date,
-        notice_type: m.city_record.type_of_notice_description,
-      },
+      city_record: cityRecordBlock(m.city_record),
       nyc_rules: {
         url: m.rule.url,
         guid: m.rule.guid,
@@ -137,13 +147,7 @@ export async function buildRuleView(fetchImpl = fetch, now = new Date()) {
       title: notice.short_title,
       notice_date: notice.start_date,
       stage: "proposed",
-      city_record: {
-        request_id: notice.request_id,
-        agency: notice.agency_name,
-        title: notice.short_title,
-        notice_date: notice.start_date,
-        notice_type: notice.type_of_notice_description,
-      },
+      city_record: cityRecordBlock(notice),
       nyc_rules: null,
       events: [],
       join: {
@@ -183,7 +187,10 @@ export async function buildRuleView(fetchImpl = fetch, now = new Date()) {
   ];
 
   const stitched = attachRulemakingSiblings(rawRecords);
-  const records = stitched.map((record) => {
+  // Promote Public Hearings event_date onto the rules public_hearing spine
+  // (self + high-confidence siblings). Ambiguous hearings stay meetings-only.
+  const withHearings = attachCityRecordPublicHearingEvents(stitched, now);
+  const records = withHearings.map((record) => {
     const subjects = linksFromRuleRecord(record);
     return {
       ...record,
