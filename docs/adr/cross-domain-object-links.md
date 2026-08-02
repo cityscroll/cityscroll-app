@@ -29,7 +29,9 @@ surface.
      notices, meeting notices, and optional person-vote rows.
    - **Join-key edges** (in addition to identity): PIN → `shares_authority_key`,
      contract_id → `references_contract` / `contract_published_by_agency`, payee →
-     `paid_to_vendor` + `payment_on_contract`, BBL → `sited_on_parcel`.
+     `paid_to_vendor` + `payment_on_contract`, BBL → `sited_on_parcel`, meeting
+     body ULURP/ZAP → `decides_land_project` (only when the land project is in
+     corpus; reuses land-side `extractUlurpKeys`).
    - Every edge carries `provenance` (`source_system`, `source_record_id`,
      `source_fields`, `basis`, optional `input_value`).
    - Empty domains are explicit; **people** defaults to class-(a)

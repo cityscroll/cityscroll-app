@@ -136,6 +136,7 @@ export function buildEntityIntelligenceIndex(observations, opts = {}) {
     "payment_on_contract",
     "paid_to_vendor",
     "contract_published_by_agency",
+    "decides_land_project",
   ];
   const join_key_edge_count = edges.filter((e) => joinKeyTypes.includes(e.link_type)).length;
 
@@ -267,9 +268,11 @@ export function writeIndexProof(indexDoc, outPath = PROOF_PATH) {
         "pin_authority_key_v1",
         "contract_id_join_v1",
         "checkbook_payment_v1",
+        "exact_ulurp_token_v1",
+        "zap_project_ref_v1",
       ],
       note:
-        "Edge index materialised from warehouse fixtures + domain seeds. Join-key edges require PIN, contract_id, BBL, or payee fields.",
+        "Edge index materialised from warehouse fixtures + domain seeds. Join-key edges require PIN, contract_id, BBL, payee, or meeting body ULURP/ZAP resolved to a known land project.",
     },
   };
   writeFileSync(outPath, `${JSON.stringify(proof, null, 2)}\n`);
@@ -287,9 +290,11 @@ function cli(argv) {
   const args = argv.slice(2);
   const fromFixture = args.includes("--from-fixture");
   const check = args.includes("--check");
-  let limit = 400;
+  // Default high enough to include live rules/meetings domain snapshots after
+  // money/land fixture rows (meeting → land reverse joins need both sides).
+  let limit = 600;
   for (let i = 0; i < args.length; i++) {
-    if (args[i] === "--limit") limit = Number(args[++i]) || 400;
+    if (args[i] === "--limit") limit = Number(args[++i]) || 600;
   }
 
   if (check) {
