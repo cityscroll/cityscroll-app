@@ -193,6 +193,15 @@ export const EVENT_KIND_REGISTRY = Object.freeze({
     lens: "meetings",
     description: "Roll-call vote on an agenda item",
   },
+  // Non-Council hearing process spine (notice → hearing; outcome/minutes class-b only)
+  "meetings.non_council_notice": {
+    lens: "meetings",
+    description: "Non-Council City Record hearing notice publication",
+  },
+  "meetings.non_council_hearing": {
+    lens: "meetings",
+    description: "Non-Council scheduled public hearing event time",
+  },
   // People / civil-service exam process spine
   "staffing.application_window": {
     lens: "people",
@@ -261,6 +270,9 @@ export const SPINE_KIND_ALIASES = Object.freeze({
   franchise_public_hearing: "franchise.public_hearing",
   franchise_committee_meeting: "franchise.committee_meeting",
   franchise_award: "franchise.award",
+  // Non-Council hearing process spine (matched stages only; never invent votes)
+  non_council_notice_published: "meetings.non_council_notice",
+  non_council_hearing: "meetings.non_council_hearing",
 });
 
 /** Event kinds emitted from matched PASSPort RFx detail (solicitation production spine). */
@@ -768,6 +780,47 @@ export function mapFranchiseConcessionSpineToCivic(spine, meta = {}) {
         subject_ref,
         source_record_ref: `${ev.source?.id || "city-record"}:${ev.id || ev.kind}`,
         source_revision: `franchise:${requestId}:${ev.kind}:${valid_at || "none"}`,
+        source_field: ev.time?.basis || null,
+        valid_at: isPublication ? null : valid_at,
+        published_at: isPublication ? valid_at : null,
+        observed_at,
+        processed_at,
+        status: ev.status ?? null,
+        require_valid: false,
+      },
+      { run_id, processed_at },
+    );
+  });
+}
+
+/**
+ * Map a non-Council hearing process spine into civic-time envelopes.
+ * Emits only matched fillable events (notice publication + hearing date).
+ * Never invents outcome/vote/minutes events for class-(b) gaps.
+ *
+ * @param {object} spine - non-Council hearing process spine
+ * @param {object} [meta]
+ */
+export function mapNonCouncilHearingSpineToCivic(spine, meta = {}) {
+  const subject_ref = spine?.subject_ref || "hearing:non_council:unknown";
+  const observed_at = meta.observed_at ?? null;
+  const processed_at = meta.processed_at ?? null;
+  const run_id = meta.run_id ?? "non-council-hearing-spine";
+  const requestId = spine?.request_id || "unknown";
+
+  return (spine?.events || []).map((ev) => {
+    const event_kind = SPINE_KIND_ALIASES[ev.kind];
+    if (!event_kind) {
+      throw new TypeError(`unknown non-council hearing spine kind: ${ev.kind}`);
+    }
+    const valid_at = dayStamp(ev.time?.value);
+    const isPublication = ev.time?.basis === "publication_date";
+    return mapCivicEvent(
+      {
+        event_kind,
+        subject_ref,
+        source_record_ref: `${ev.source?.id || "city-record"}:${requestId}`,
+        source_revision: `non-council:${requestId}:${ev.kind}:${valid_at || "none"}`,
         source_field: ev.time?.basis || null,
         valid_at: isPublication ? null : valid_at,
         published_at: isPublication ? valid_at : null,
