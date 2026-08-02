@@ -30,9 +30,11 @@ const SELECT = [
 
 // Socrata SoQL: FCRC agency rows + titles that name the committee / FCRC.
 // Client-side isFranchiseConcessionEligible still excludes Council zoning-franchises.
-const SODA_WHERE = [
+// SoQL escapes a single quote inside a string by doubling it (''), not with \'.
+// A backslash escape is query.compiler.malformed and zeros the whole OR query.
+export const SODA_WHERE = [
   "agency_name='Franchise and Concession Review Committee'",
-  "agency_name='Mayor\\'s Office of Contract Services'",
+  "agency_name='Mayor''s Office of Contract Services'",
   "upper(short_title) like '%FCRC%'",
   "upper(short_title) like '%FRANCHISE AND CONCESSION%'",
   "upper(short_title) like '%PROPOSED FRANCHISE%'",
