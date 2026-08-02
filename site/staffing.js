@@ -177,6 +177,45 @@
   }
 
   /**
+   * Fee/salary from the Notice of Examination path, or an honest gap class.
+   * Schedule-only nulls are not_yet_ingested (NOE not in the precomputed extract),
+   * never a false "city does not publish" when the open-competitive NOE path exists.
+   */
+  function examFeeSalaryView(exam) {
+    const fee = exam && exam.fee != null ? exam.fee : null;
+    const salaryMin = exam && exam.salary_min != null && exam.salary_min !== ""
+      ? exam.salary_min
+      : null;
+    if (fee != null && salaryMin != null) {
+      return {
+        kind: "joined",
+        fee,
+        salary_min: salaryMin,
+        fee_waiver: exam.fee_waiver || null,
+        salary_note: exam.salary_note || null,
+        notice_url: exam.notice_url || null,
+      };
+    }
+    const gap = exam && exam.fee_salary_gap && typeof exam.fee_salary_gap === "object"
+      ? exam.fee_salary_gap
+      : null;
+    const gapClass = gap && gap.class
+      ? gap.class
+      : (exam && exam.notice_url ? "not_published" : "not_yet_ingested");
+    return {
+      kind: gapClass === "not_published" ? "not_published" : "not_yet_ingested",
+      class: gapClass,
+      fee,
+      salary_min: salaryMin,
+      missing: (gap && gap.missing) || [
+        fee == null ? "fee" : null,
+        salaryMin == null ? "salary_min" : null,
+      ].filter(Boolean),
+      notice_url: (exam && exam.notice_url) || null,
+    };
+  }
+
+  /**
    * Build-time outcome join on exam_number. Prefer full annual DCAS aggregates;
    * else post-list Civil Service List counts (no PII); else not-published gap.
    */
@@ -231,6 +270,7 @@
     hireNotices,
     filterHireNotices,
     topValues,
+    examFeeSalaryView,
     examOutcomeView,
   };
 });

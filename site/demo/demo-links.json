@@ -118,6 +118,14 @@
             "text": "Caseworker"
           },
           {
+            "selector": "#career-exam-7016 .career-metrics",
+            "text": "$68"
+          },
+          {
+            "selector": "#career-exam-7016 .career-metrics",
+            "text": "$48,206"
+          },
+          {
             "selector": "#career-exam-7016 .actions"
           }
         ],
@@ -127,6 +135,12 @@
           },
           {
             "selector": "#career-results .loading"
+          },
+          {
+            "selector": "#career-exam-7016 [data-fee-salary='not_yet_ingested']"
+          },
+          {
+            "selector": "#career-exam-7016 [data-fee-salary='not_published']"
           }
         ],
         "focus": "#career-exam-7016"

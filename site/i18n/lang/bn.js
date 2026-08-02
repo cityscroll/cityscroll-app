@@ -1341,6 +1341,8 @@
     career_area_other: "শহরের অন্যান্য কাজ",
     career_date_unknown: "তারিখ প্রকাশিত হয়নি",
     career_not_published: "প্রকাশিত নয় — প্রকাশিত হলে পরীক্ষার বিজ্ঞপ্তিতে থাকত",
+    career_fee_salary_not_yet_ingested_html: "এখানে এখনও দেখানো হয়নি — ফি ও বেতন {source}-এ আছে।",
+    career_noe_source_name: "DCAS পরীক্ষার নোটিশে",
     career_status_open: "এখন খুলুন",
     career_status_upcoming: "আসন্ন",
     career_status_closed: "বন্ধ",
