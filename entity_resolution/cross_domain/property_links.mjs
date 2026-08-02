@@ -38,7 +38,23 @@ export const OWNER_EXTRACT_METHOD_VERSION = "1.0.0";
 
 const clean = (value) => String(value ?? "").replace(/\s+/g, " ").trim();
 
-/** Normalize to 10-digit NYC BBL or null. */
+/** Strip HTML so disposition owner labels in City Record bodies can match. */
+export function stripNoticeHtml(value) {
+  return clean(
+    String(value ?? "")
+      .replace(/<script[\s\S]*?<\/script>/gi, " ")
+      .replace(/<style[\s\S]*?<\/style>/gi, " ")
+      .replace(/<[^>]+>/g, " ")
+      .replace(/&nbsp;/gi, " ")
+      .replace(/&amp;/gi, "&")
+      .replace(/&lt;/gi, "<")
+      .replace(/&gt;/gi, ">")
+      .replace(/&quot;/gi, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&#\d+;/g, " "),
+  );
+}
+
 /** subject_ref for a tax parcel: bbl:{digits}. */
 export function bblSubjectRef(bbl) {
   const id = normalizeBbl(bbl);
@@ -68,7 +84,7 @@ export function bblsFromPropertyRow(row) {
  * @returns {{ name: string, evidence: string, basis: string } | null}
  */
 export function extractDispositionOwner(row) {
-  const text = clean([
+  const text = stripNoticeHtml([
     row?.short_title,
     row?.additional_description_1,
     row?.additional_description_2,
@@ -105,8 +121,14 @@ export function extractDispositionOwner(row) {
       .replace(/\s+for\s+\$[\d,]+(?:\.\d+)?\b.*$/i, "")
       .replace(/\s+in\s+the\s+amount\s+of\s+\$[\d,]+.*$/i, "")
       .replace(/[,\s]+$/, "");
-    // Reject too-short / placeholder names
+    // Reject too-short / placeholder / infinitive-purpose fragments
+    // ("Deed to permit development…" is not a grantee name).
     if (!name || name.length < 3 || /^(the|a|an|city|nyc)\b/i.test(name)) continue;
+    if (/^(permit|allow|enable|facilitate|provide|construct|develop|build|use)\b/i.test(name)) {
+      continue;
+    }
+    // Grantee names are proper nouns — require an initial capital letter.
+    if (!/^[A-Z0-9]/.test(name)) continue;
     if (vendorStem(name).length < 3) continue;
     return { name, evidence: clean(m[0]).slice(0, 280), basis };
   }
@@ -591,7 +613,7 @@ export function buildParcelIntelligence(bbl, corpus = {}) {
     };
   }
   const propertyObs = (corpus.propertyRows || [])
-    .map((r) => (r.domain === "property" ? r : observationFromPropertyRow(r)))
+    .map((r) => coercePropertyObservation(r))
     .filter((o) => o && (o.bbls || []).includes(id));
 
   const zapJoin = joinPropertyToZapByBbl(
@@ -701,11 +723,29 @@ export function buildParcelIntelligence(bbl, corpus = {}) {
 }
 
 /**
+ * Coerce a raw disposition row or a pre-shaped property observation.
+ * Rows stamped domain=property without subject_ref/bbls (live feed snapshots)
+ * still need observationFromPropertyRow — do not treat domain alone as shaped.
+ */
+export function coercePropertyObservation(row) {
+  if (!row || typeof row !== "object") return null;
+  if (
+    row.domain === "property" &&
+    row.subject_ref &&
+    Array.isArray(row.bbls) &&
+    row.request_id
+  ) {
+    return row;
+  }
+  return observationFromPropertyRow(row);
+}
+
+/**
  * Build a materialization slice of property cross-domain joins for the product.
  */
 export function buildPropertyCrossDomainDoc(corpus = {}) {
   const propertyObs = (corpus.propertyRows || [])
-    .map((r) => (r.domain === "property" ? r : observationFromPropertyRow(r)))
+    .map((r) => coercePropertyObservation(r))
     .filter(Boolean);
   const zapJoin = joinPropertyToZapByBbl(
     propertyObs,
@@ -723,36 +763,66 @@ export function buildPropertyCrossDomainDoc(corpus = {}) {
     agencyLinks.push(...links);
   }
 
+  const agencyLinkCount = agencyLinks.filter((l) => l.type === "published_by_agency").length;
+  const ownerLinkCount = agencyLinks.filter((l) => l.type === "named_owner").length;
+  const parcelLinkCount = agencyLinks.filter((l) => l.type === "sits_on_parcel").length;
+  const bblCount = zapJoin.metrics.bbl_count;
+  const matchedBblCount = zapJoin.metrics.matched_bbl_count;
+  const rowsWithBbl = propertyObs.filter((o) => (o.bbls || []).length > 0).length;
+  const observationCount = propertyObs.length;
+  const fractionWithBbl = observationCount ? rowsWithBbl / observationCount : 0;
+  const zapMatchedFraction = bblCount ? matchedBblCount / bblCount : 0;
+
+  const coverage = {
+    by_bbl_count: bblCount,
+    property_observation_count: observationCount,
+    property_rows_with_bbl: rowsWithBbl,
+    fraction_observations_with_bbl: Number(fractionWithBbl.toFixed(4)),
+    zap_matched_bbl_count: matchedBblCount,
+    zap_matched_fraction: Number(zapMatchedFraction.toFixed(4)),
+    agency_link_count: agencyLinkCount,
+    owner_link_count: ownerLinkCount,
+    parcel_link_count: parcelLinkCount,
+    owner_count: ownerJoin.metrics.owner_count,
+    owners_with_contracts: ownerJoin.metrics.owners_with_contracts,
+  };
+
   return {
     schema_version: 1,
     version: PROPERTY_CROSS_DOMAIN_VERSION,
     generated_at: new Date().toISOString(),
-    property_observation_count: propertyObs.length,
+    property_observation_count: observationCount,
     by_bbl: zapJoin.by_bbl,
     by_owner: ownerJoin.by_owner,
     links: [...zapJoin.links, ...ownerJoin.links, ...agencyLinks],
     agency_objects: agencyObjects,
     metrics: {
       property_bbl_zap_join_rate: zapJoin.metrics.property_bbl_zap_join_rate,
-      bbl_count: zapJoin.metrics.bbl_count,
-      matched_bbl_count: zapJoin.metrics.matched_bbl_count,
+      bbl_count: bblCount,
+      matched_bbl_count: matchedBblCount,
       bbl_link_pair_count: zapJoin.metrics.link_pair_count,
       property_owner_contract_join_rate: ownerJoin.metrics.property_owner_contract_join_rate,
       owner_count: ownerJoin.metrics.owner_count,
       owners_with_contracts: ownerJoin.metrics.owners_with_contracts,
       owner_contract_link_count: ownerJoin.metrics.link_count,
-      property_agency_link_count: agencyLinks.filter((l) => l.type === "published_by_agency").length,
-      property_owner_link_count: agencyLinks.filter((l) => l.type === "named_owner").length,
+      property_agency_link_count: agencyLinkCount,
+      property_owner_link_count: ownerLinkCount,
+      property_parcel_link_count: parcelLinkCount,
+      property_rows_with_bbl: rowsWithBbl,
+      fraction_observations_with_bbl: coverage.fraction_observations_with_bbl,
     },
+    coverage,
     provenance: {
       sources: [
         "city_record Property Disposition",
+        "property-locations materialization / property_domain_observations",
         "zap-bbl (2iga-a6mk)",
         "ocp-recent-contract-awards",
       ],
       methods: [BBL_JOIN_METHOD, OWNER_EXTRACT_METHOD, VENDOR_STEM_METHOD, "agency_canonical_v1"],
+      coverage,
       note:
-        "BBL→ZAP is exact tax-lot only. Owner→contract is vendorStem only when a labeled winning bidder exists. No fuzzy address geocode invents land links.",
+        "BBL→ZAP is exact tax-lot only; ZAP edges stay sparse until the full zap-bbl lookup is densified. Owner→contract is vendorStem only when a labeled winning bidder exists. Agency + parcel edges densify from every disposition row with a BBL. No fuzzy address geocode invents land links.",
     },
   };
 }

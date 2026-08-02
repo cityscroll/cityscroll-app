@@ -164,13 +164,54 @@ describe("parcel intelligence + entity property domain", () => {
     assert.ok(objects.some((o) => o.root_kind === "vendor"));
   });
 
-  it("materialization artifact exists after build", () => {
+  it("materialization artifact densifies well above fixture-scale (5 BBLs)", () => {
     const path = join(ROOT, "site/data/property_cross_domain_lookup.json");
     // Allow missing only before first build in CI of this PR — create if needed by caller.
     if (!existsSync(path)) return;
     const doc = JSON.parse(readFileSync(path, "utf8"));
     assert.equal(doc.version, "property_cross_domain_v1");
     assert.ok(doc.demos?.["1006440001"]?.land?.status === "matched");
+
+    const byBblCount = Object.keys(doc.by_bbl || {}).length;
+    // Live property feed exposes ~320 unique BBLs; densify must leave fixture-scale (5).
+    assert.ok(
+      byBblCount >= 50,
+      `expected by_bbl densify (≥50), got ${byBblCount}`,
+    );
+    assert.ok(
+      (doc.coverage?.by_bbl_count || doc.metrics?.bbl_count || 0) >= 50,
+      "coverage.by_bbl_count must reflect densified parcels",
+    );
+    assert.ok(
+      (doc.metrics?.property_agency_link_count || 0) >= 20,
+      "agency edges should densify from live disposition rows",
+    );
+    // ZAP stays sparse until Mini bulk zap-bbl — do not require high matched rate.
+    assert.ok(doc.coverage, "coverage block stamped in provenance path");
+    assert.equal(typeof doc.coverage.fraction_observations_with_bbl, "number");
+
+    // Demos beyond the two hand-picked lots show property cross-domain links.
+    const demoBbls = doc.demo_bbls || Object.keys(doc.demos || {});
+    assert.ok(demoBbls.length >= 4, `expected extra live demo BBLs, got ${demoBbls.length}`);
+    const extras = demoBbls.filter((b) => !["1006440001", "3025180036"].includes(b));
+    assert.ok(extras.length >= 1, "need at least one demo BBL beyond the hand-picked pair");
+    for (const bbl of extras.slice(0, 3)) {
+      const demo = doc.demos?.[bbl];
+      assert.ok(demo, `missing demo for ${bbl}`);
+      assert.equal(demo.property?.status, "matched", `demo ${bbl} should have property notices`);
+      assert.ok(
+        (demo.agencies || []).length >= 1 || (demo.property?.count || 0) >= 1,
+        `demo ${bbl} should carry agency or property links`,
+      );
+    }
+  });
+
+  it("committed property domain observations feed densify", () => {
+    const path = join(ROOT, "site/data/property_domain_observations.json");
+    if (!existsSync(path)) return;
+    const obs = JSON.parse(readFileSync(path, "utf8"));
+    assert.ok((obs.property_rows || []).length >= 50);
+    assert.ok((obs.bbl_count || 0) >= 50);
   });
 
   it("buildPropertyCrossDomainDoc is provenance-complete", () => {
@@ -183,5 +224,17 @@ describe("parcel intelligence + entity property domain", () => {
     assert.ok(doc.metrics.matched_bbl_count >= 1);
     assert.ok(doc.links.length >= 1);
     assert.ok(doc.links.every((l) => l.provenance?.source_system && l.provenance?.source_record_id));
+    assert.ok(doc.coverage?.by_bbl_count >= 1);
+    assert.ok(doc.provenance?.coverage?.by_bbl_count >= 1);
+  });
+
+  it("extractDispositionOwner reads labeled language through HTML bodies", () => {
+    const owner = extractDispositionOwner({
+      short_title: "Notice of tentative winning bidders",
+      additional_description_1:
+        "<p>The property has been <strong>sold to</strong> Make it Zesty LLC for $275,000.</p>",
+    });
+    assert.equal(owner?.name, "Make it Zesty LLC");
+    assert.equal(owner?.basis, "sold_to");
   });
 });
