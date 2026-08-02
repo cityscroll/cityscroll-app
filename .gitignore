@@ -19,6 +19,9 @@ PAPERCUTS.md
 # Local browser performance results
 test/performance/artifacts/
 
+# Cloudflare Wrangler local cache (never commit)
+.wrangler/
+
 # CityScroll warehouse bulk data (WH-01) — code/fixtures stay tracked; bulk never in git
 warehouse/raw/**
 !warehouse/raw/.gitkeep
