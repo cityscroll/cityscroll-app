@@ -195,6 +195,9 @@ test("flag on writes immutable event/item/vote/attachment rows and replay does n
   const first = await buildMeetingOutcomesView({ token: "test-token", fetchImpl, now, env });
   assert.equal(first.counts.matched_notices, 1);
   assert.equal(first.records[0].join.matched, true);
+  // Refresh path dual-write telemetry: written > 0 for the three populated streams.
+  assert.ok(first.dual_write?.written > 0, `dual_write.written=${first.dual_write?.written}`);
+  assert.equal(first.dual_write?.failed, false);
 
   const rows = sqlite.prepare(
     "SELECT source_system, source_system_id, content_hash FROM source_records ORDER BY source_system, source_system_id",
@@ -212,6 +215,14 @@ test("flag on writes immutable event/item/vote/attachment rows and replay does n
     bySystem(LEGISTAR_ATTACHMENTS_SOURCE_SYSTEM)[0].source_system_id,
     "attachment:440244:9001",
   );
+  // Named metric: non-zero source_records for events/items/votes exits empty-declared-live.
+  for (const system of [
+    LEGISTAR_EVENTS_SOURCE_SYSTEM,
+    LEGISTAR_EVENT_ITEMS_SOURCE_SYSTEM,
+    LEGISTAR_VOTES_SOURCE_SYSTEM,
+  ]) {
+    assert.ok(bySystem(system).length > 0, system);
+  }
 
   const voteSnap = sqlite.prepare(
     `SELECT raw_snapshot FROM source_records
