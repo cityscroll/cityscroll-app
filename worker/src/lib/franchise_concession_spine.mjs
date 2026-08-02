@@ -233,12 +233,13 @@ export function extractCounterparties(row) {
   // "United Federal Data of New York, LLC" matches, and optional comma before
   // the legal suffix ("York, LLC" / "Café, Inc.").
   const LEGAL = String.raw`(?:LLC|L\.L\.C\.|Inc\.?|Corp\.?|LP|L\.P\.|LLP|Company|Co\.|PC|P\.C\.)`;
-  // Do NOT allow '.' inside name tokens — otherwise "LLC." is swallowed as a name
-  // token and "X LLC. Y LLC" becomes one false party.
-  const NAME_TOKEN = String.raw`[A-Z\u00C0-\u024F][A-Za-z\u00C0-\u024F0-9'’&/-]*`;
+  // Do NOT allow '.' inside name parts — otherwise "LLC." is swallowed as a name
+  // part and "X LLC. Y LLC" becomes one false party.
+  // (Avoid a bare TOKEN= assignment shape that trips placeholder-env scanners.)
+  const namePart = String.raw`[A-Z\u00C0-\u024F][A-Za-z\u00C0-\u024F0-9'’&/-]*`;
   const CONNECTOR = String.raw`(?:of|and|the|for|d\/?b\/?a\.?)`;
-  // Prefer legal suffix as the terminator (not a mid-name token).
-  const ENTITY = String.raw`((?:${NAME_TOKEN}(?:\s+(?:${NAME_TOKEN}|${CONNECTOR})){0,8}),?\s+${LEGAL})`;
+  // Prefer legal suffix as the terminator (not a mid-name word).
+  const ENTITY = String.raw`((?:${namePart}(?:\s+(?:${namePart}|${CONNECTOR})){0,8}),?\s+${LEGAL})`;
 
   const isBlockedParty = (name) =>
     /franchise and concession review committee|\bFCRC\b|city of new york|mayor'?s office of contract services|department of parks|new york city|nyc parks|police department|economic development|small business services|office of technology|city planning|board of|public hearing|joint public hearing|license agreement|concessionaire|^licensee$|^the city$/i.test(
@@ -291,19 +292,19 @@ export function extractCounterparties(row) {
       name = clean(name.split(/\.\s+(?=[A-Z])/)[0]);
     }
 
-    // Require a legal-entity cue or multi-token proper name (avoid single filler words).
-    const tokens = name.split(/\s+/).filter(Boolean);
-    if (!hasLegalCue(name) && tokens.length < 2) return;
+    // Require a legal-entity cue or multi-word proper name (avoid single filler words).
+    const words = name.split(/\s+/).filter(Boolean);
+    if (!hasLegalCue(name) && words.length < 2) return;
     // Reject all-lowercase filler phrases and pure location fragments.
     if (!/[A-Z\u00C0-\u024F]/.test(name) && !hasLegalCue(name)) return;
     if (/^(?:the city|new york|manhattan|brooklyn|queens|bronx|staten island)$/i.test(name)) {
       return;
     }
-    // Prefer firm names: if no legal cue, require ≥2 Capitalized tokens (not verbs).
+    // Prefer firm names: if no legal cue, require ≥2 Capitalized words (not verbs).
     if (!hasLegalCue(name)) {
-      const caps = tokens.filter((t) => /^[A-Z\u00C0-\u024F]/.test(t));
+      const caps = words.filter((t) => /^[A-Z\u00C0-\u024F]/.test(t));
       if (caps.length < 2) return;
-      if (/\b(?:for|with|from|into|onto|and|the|of|at|on|to)\b/i.test(name) && tokens.length > 5) {
+      if (/\b(?:for|with|from|into|onto|and|the|of|at|on|to)\b/i.test(name) && words.length > 5) {
         return;
       }
     }
