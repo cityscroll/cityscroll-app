@@ -803,7 +803,7 @@
     land_spine_lag_aligned_html: "NYC Open Data ({open_date}) is at least as current as the live ZAP portal milestone ({portal_date}).",
     land_spine_lag_unknown: "Portal lag cannot be measured because one of the two milestone dates is not published.",
     land_spine_gap_not_yet_ingested_html: "Not yet shown here — dated milestones live in {source}.",
-    land_spine_gap_not_published_html: "The city does not publish a City Record notice carrying this project's ULURP numbers. It would appear in {source} if released.",
+    land_spine_gap_not_published_html: "No City Record notice matching this project's ULURP numbers has been published yet. If one is released, it will appear in {source}.",
     land_spine_gap_unavailable_html: "Could not reach {source} to check for land-use notices.",
     land_spine_planned: "planned",
     land_outcomes_loading: "Loading decision documents and outcomes…",
