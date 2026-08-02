@@ -1285,6 +1285,7 @@
     notice_not_found_html: "নোটিশ <code>{id}</code> নগর নথির উন্মুক্ত উপাত্তে পাওয়া যায়নি — এটি খুব নতুন হতে পারে, অথবা আইডি ভুল টাইপ করা হয়ে থাকতে পারে।",
     back_browse: "← CityScroll ব্রাউজ করুন",
     back_previous_view: "← আগের দৃশ্যে ফিরে যান",
+    back_to_view: "← {view}-এ ফিরে যান",
     vendor_name_too_short: "“{name}” নামটি বিক্রেতা শনাক্ত করার জন্য খুব ছোট।",
     try_city_record: "নগর নথিতে খুঁজে দেখুন",
     notice_email_btn: "ইমেইল",
