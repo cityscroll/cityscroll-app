@@ -16,6 +16,9 @@ export const LEGISTAR_EVENT_ITEMS_SOURCE_SYSTEM = "nyc_legistar_event_items";
 export const LEGISTAR_VOTES_SOURCE_SYSTEM = "nyc_legistar_votes";
 export const LEGISTAR_ATTACHMENTS_SOURCE_SYSTEM = "nyc_legistar_attachments";
 
+/** D1 batch size for observation inserts (bound statements stay under request limits). */
+export const LEGISTAR_SOURCE_RECORD_BATCH = 40;
+
 function normPart(value, fallback = "unknown") {
   const s = String(value ?? "").trim();
   return s || fallback;
@@ -95,28 +98,78 @@ export function legistarAttachmentSourceSystemId(row) {
   return `attachment:${itemId}:${attachId}`;
 }
 
+async function writeStreamChunks(env, insert, sourceSystem, idFn, rows, ingestedAt) {
+  const list = Array.isArray(rows) ? rows.filter(Boolean) : [];
+  if (!list.length) {
+    return { source_system: sourceSystem, written: 0, skipped: "empty", failed: false };
+  }
+
+  let written = 0;
+  try {
+    for (let i = 0; i < list.length; i += LEGISTAR_SOURCE_RECORD_BATCH) {
+      const chunk = list.slice(i, i + LEGISTAR_SOURCE_RECORD_BATCH);
+      const stmts = await Promise.all(chunk.map(async (row) => {
+        const snapshot = { ...row };
+        return insert.bind(
+          sourceSystem,
+          idFn(row),
+          await computeSourceRecordHash(snapshot),
+          JSON.stringify(snapshot),
+          JSON.stringify(snapshot),
+          ingestedAt,
+        );
+      }));
+      await env.DB.batch(stmts);
+      written += chunk.length;
+    }
+    return { source_system: sourceSystem, written, skipped: null, failed: false };
+  } catch (err) {
+    const message = String(err?.message || err || "batch-failed");
+    console.error(
+      "legistar source_records dual-write failed:",
+      sourceSystem,
+      `written_before_fail=${written}`,
+      message,
+    );
+    return {
+      source_system: sourceSystem,
+      written,
+      skipped: null,
+      failed: true,
+      error: message,
+    };
+  }
+}
+
 /**
  * Fail-soft dual-write of raw Legistar meeting rows into source_records.
  * Never throws; never blocks meeting-outcomes KV materialization.
+ * Streams are isolated so one failed bag cannot zero another stream's writes.
  *
  * @param {object} env
  * @param {{ events?: object[], eventItems?: object[], votes?: object[], attachments?: object[] }} bags
  * @param {string} [ingestedAt]
+ * @returns {Promise<{
+ *   written: number,
+ *   skipped: string|null,
+ *   failed: boolean,
+ *   streams: Array<{source_system: string, written: number, skipped: string|null, failed: boolean, error?: string}>
+ * }>}
  */
 export async function dualWriteLegistarObservations(env, bags = {}, ingestedAt) {
   if (!sourceRecordDualWriteEnabled(env, LEGISTAR_SOURCE_RECORD_DUAL_WRITE_FLAG)) {
-    return { written: 0, skipped: "flag-off" };
+    return { written: 0, skipped: "flag-off", failed: false, streams: [] };
   }
-  if (!env?.DB) return { written: 0, skipped: "no-db" };
+  if (!env?.DB) return { written: 0, skipped: "no-db", failed: false, streams: [] };
 
   let insert;
   try {
     insert = env.DB.prepare(SOURCE_RECORD_INSERT_SQL);
   } catch {
-    return { written: 0, skipped: "no-schema" };
+    return { written: 0, skipped: "no-schema", failed: false, streams: [] };
   }
 
-  const streams = [
+  const streamDefs = [
     {
       sourceSystem: LEGISTAR_EVENTS_SOURCE_SYSTEM,
       rows: bags.events,
@@ -140,27 +193,27 @@ export async function dualWriteLegistarObservations(env, bags = {}, ingestedAt) 
   ];
 
   const at = ingestedAt || new Date().toISOString();
-  let written = 0;
-  try {
-    for (const stream of streams) {
-      const list = Array.isArray(stream.rows) ? stream.rows.filter(Boolean) : [];
-      if (!list.length) continue;
-      const stmts = await Promise.all(list.map(async (row) => {
-        const snapshot = { ...row };
-        return insert.bind(
-          stream.sourceSystem,
-          stream.idFn(row),
-          await computeSourceRecordHash(snapshot),
-          JSON.stringify(snapshot),
-          JSON.stringify(snapshot),
-          at,
-        );
-      }));
-      await env.DB.batch(stmts);
-      written += list.length;
-    }
-    return { written, skipped: written ? null : "empty" };
-  } catch {
-    return { written: 0, failed: true };
+  const streams = [];
+  for (const def of streamDefs) {
+    // Isolate each stream so a single bag failure cannot roll back others.
+    // eslint-disable-next-line no-await-in-loop
+    const result = await writeStreamChunks(env, insert, def.sourceSystem, def.idFn, def.rows, at);
+    streams.push(result);
   }
+
+  const written = streams.reduce((sum, s) => sum + (s.written || 0), 0);
+  const failed = streams.some((s) => s.failed);
+  const allEmpty = streams.every((s) => s.skipped === "empty" || s.written === 0);
+  let skipped = null;
+  if (!written && !failed && allEmpty) skipped = "empty";
+  if (!written && failed) skipped = "failed";
+
+  if (failed) {
+    console.error(
+      "legistar source_records dual-write summary:",
+      JSON.stringify({ written, failed, streams }),
+    );
+  }
+
+  return { written, skipped, failed, streams };
 }
