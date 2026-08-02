@@ -359,10 +359,24 @@ describe("entity intelligence view — Parks multi-domain", () => {
     assert.ok(meetingsObs.length >= 20, `expected dense live meetings observations, got ${meetingsObs.length}`);
     assert.ok(rulesObs.every((o) => o.source_record_id && o.agency_name));
     assert.ok(meetingsObs.every((o) => o.source_record_id && o.agency_name));
-    // People densified from by_person snapshot (field case Marte / event 22526)
+    // People densified from by_person snapshot (multi-notice roll_call, field case Marte)
     assert.ok(peopleObs.length >= 1, `expected people observations, got ${peopleObs.length}`);
     assert.ok(peopleObs.every((o) => o.person_id && o.person_name && o.subject_ref));
     assert.ok(peopleObs.some((o) => o.person_id === "7801" || /Marte/i.test(o.person_name || "")));
+    const peopleNotices = new Set(
+      peopleObs.map((o) => String(o.request_id || "")).filter(Boolean),
+    );
+    const peopleEvents = new Set(
+      peopleObs.map((o) => String(o.event_id || "")).filter(Boolean),
+    );
+    assert.ok(
+      peopleNotices.size >= 2,
+      `expected people observations from ≥2 notices after densify, got ${peopleNotices.size}`,
+    );
+    assert.ok(
+      peopleEvents.size >= 2,
+      `expected people observations from ≥2 events after densify, got ${peopleEvents.size}`,
+    );
 
     const doc = buildEntityIntelligenceDoc(ROOT);
     assert.ok(doc.multi_domain_count >= 1);
@@ -371,6 +385,24 @@ describe("entity intelligence view — Parks multi-domain", () => {
     const demoView = lookupEntityIntelligence(doc, { ref: doc.verified_demo.ref });
     assert.equal(demoView.domains.people.status, "matched");
     assert.ok(demoView.domains.people.count >= 1);
+    // More than one official on the people domain (not a single-seed skim).
+    assert.ok(
+      demoView.domains.people.count > 1,
+      `demo people should list >1 official after densify, got ${demoView.domains.people.count}`,
+    );
+    const demoOfficials = new Set(
+      (demoView.domains.people.objects || []).map((o) => String(o.subject_ref || "")),
+    );
+    const demoEventIds = new Set(
+      (demoView.domains.people.objects || [])
+        .map((o) => String(o.event_id || ""))
+        .filter(Boolean),
+    );
+    assert.ok(demoOfficials.size > 1, "demo people shows more than one official");
+    assert.ok(
+      demoEventIds.size > 1,
+      `demo people should surface >1 event after multi-notice densify, got ${demoEventIds.size}`,
+    );
     assert.ok(
       (doc.provenance?.sources || []).some((s) => String(s).includes("rules_domain_observations")),
       "provenance lists rules domain snapshot",

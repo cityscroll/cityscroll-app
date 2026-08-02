@@ -2130,10 +2130,14 @@ export function indexObservationsByRoot(observations) {
 
   for (const bucket of byRoot.values()) {
     bucket.links = dedupeObjectLinks(bucket.links);
-    // Dedupe objects by subject_ref + domain + link_type
+    // Dedupe objects by subject_ref + domain + link_type.
+    // People: also keep event scope so multi-notice roll_call densify is not
+    // collapsed to a single seed event per official (deep-links are event-scoped).
     const seen = new Set();
     bucket.objects = bucket.objects.filter((o) => {
-      const key = `${o.domain}|${o.subject_ref}|${o.link_type}`;
+      const eventBit =
+        o.domain === "people" && o.event_id ? `|event:${o.event_id}` : "";
+      const key = `${o.domain}|${o.subject_ref}|${o.link_type}${eventBit}`;
       if (seen.has(key)) return false;
       seen.add(key);
       return true;
@@ -2155,6 +2159,70 @@ export function dedupeObjectLinks(links = []) {
     || String(a.type).localeCompare(String(b.type))
     || String(a.to).localeCompare(String(b.to)),
   );
+}
+
+/**
+ * Sample people-domain objects for an intelligence card: prefer distinct events
+ * and distinct officials so multi-notice roll_call densify is visible within
+ * max_per_domain (round-robin by event, then fill remaining slots).
+ * @param {object[]} objects already sorted newest-first
+ * @param {number} max
+ * @returns {object[]}
+ */
+export function pickDiversePeopleObjects(objects = [], max = 12) {
+  const limit = Math.max(1, Number(max) || 12);
+  if (!Array.isArray(objects) || !objects.length) return [];
+  if (objects.length <= limit) return objects.slice();
+
+  // Preserve event insertion order from the already newest-first object list.
+  const byEvent = new Map();
+  for (const o of objects) {
+    const key = String(o.event_id || o.request_id || "_");
+    if (!byEvent.has(key)) byEvent.set(key, []);
+    byEvent.get(key).push(o);
+  }
+  const eventKeys = [...byEvent.keys()];
+  const out = [];
+  const seenOfficial = new Set();
+  const seenRow = new Set();
+  const cursor = Object.fromEntries(eventKeys.map((k) => [k, 0]));
+
+  const rowKeyOf = (o) =>
+    `${o.subject_ref}|${o.event_id || ""}|${o.request_id || ""}|${o.when || ""}`;
+
+  // Pass 1: one new official per event (round-robin) so multi-notice densify shows.
+  let progress = true;
+  while (out.length < limit && progress) {
+    progress = false;
+    for (const ek of eventKeys) {
+      if (out.length >= limit) break;
+      const list = byEvent.get(ek) || [];
+      while (cursor[ek] < list.length) {
+        const next = list[cursor[ek]++];
+        const rk = rowKeyOf(next);
+        if (seenRow.has(rk)) continue;
+        const official = String(next.subject_ref || "");
+        if (official && seenOfficial.has(official)) continue; // try next in this event
+        seenRow.add(rk);
+        if (official) seenOfficial.add(official);
+        out.push(next);
+        progress = true;
+        break; // one take per event per pass
+      }
+    }
+  }
+
+  // Pass 2: fill remaining slots newest-first (may repeat officials / events).
+  if (out.length < limit) {
+    for (const o of objects) {
+      if (out.length >= limit) break;
+      const rk = rowKeyOf(o);
+      if (seenRow.has(rk)) continue;
+      seenRow.add(rk);
+      out.push(o);
+    }
+  }
+  return out;
 }
 
 /**
@@ -2188,10 +2256,16 @@ export function buildEntityIntelligenceFromBucket(root, bucket, opts = {}) {
 
   const domains = {};
   for (const domain of CROSS_DOMAIN_DOMAINS) {
-    const domainObjects = objects
+    const domainObjectsRaw = objects
       .filter((o) => o.domain === domain)
-      .sort((a, b) => String(b.when || "").localeCompare(String(a.when || "")))
-      .slice(0, maxPerDomain);
+      .sort((a, b) => String(b.when || "").localeCompare(String(a.when || "")));
+    // People densify spans many notices/events — pick a diverse sample so the
+    // surface shows more than one official and more than one event (not only the
+    // newest seed hearing's full roll call).
+    const domainObjects =
+      domain === "people"
+        ? pickDiversePeopleObjects(domainObjectsRaw, maxPerDomain)
+        : domainObjectsRaw.slice(0, maxPerDomain);
 
     // People is a live domain once by_person retention ships — empty here means
     // no person-vote objects linked to THIS entity (not a permanent product gap).

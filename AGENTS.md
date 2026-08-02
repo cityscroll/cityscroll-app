@@ -46,7 +46,7 @@ Rules/meetings densify from live City Record domain snapshots
 `hosts_meeting`; meetings also emit `decides_land_project` when a hearing body
 cites a ULURP token or ZAP project URL that resolves to a known land project in
 the corpus (strict `extractUlurpKeys` / portal URL only — no title-only invent).
-People densify from Legistar `by_person` on meeting-outcomes (`site/data/people_domain_observations.json`).
+People densify from Legistar `by_person` on **all** meeting-outcomes records that already carry roll-call names (`site/data/people_domain_observations.json` — list densify via `tools/build_rules_meetings_domain_observations.mjs --people-only`; never invents from `tally_only`).
 Refresh snapshots: `node tools/build_rules_meetings_domain_observations.mjs`
 (extracts ULURP/ZAP keys from body at build time — raw body is not committed)
 then rebuild entity intelligence.
