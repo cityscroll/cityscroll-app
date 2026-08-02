@@ -1285,6 +1285,7 @@
     notice_not_found_html: "在市政公报 / The City Record 开放数据中未找到通告 <code>{id}</code> —— 可能是刚发布不久，或 ID 输入有误。",
     back_browse: "← 返回浏览 CityScroll",
     back_previous_view: "← 返回上一页",
+    back_to_view: "← 返回{view}",
     vendor_name_too_short: "“{name}”太短，无法识别供应商。",
     try_city_record: "在市政公报 / The City Record 中查询",
     notice_email_btn: "电子邮件",

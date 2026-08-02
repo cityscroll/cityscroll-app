@@ -1298,6 +1298,7 @@
     notice_not_found_html: "نوٹس <code>{id}</code> سٹی ریکارڈ اوپن ڈیٹا میں نہیں ملا — یہ بہت نیا ہو سکتا ہے، یا ID غلط ٹائپ ہوئی ہو سکتی ہے۔",
     back_browse: "→ CityScroll براؤز کریں",
     back_previous_view: "→ پچھلے منظر پر واپس جائیں",
+    back_to_view: "→ {view} پر واپس جائیں",
     vendor_name_too_short: "“{name}” کسی وینڈر کی شناخت کے لیے بہت مختصر ہے۔",
     try_city_record: "اسے City Record میں آزمائیں",
     notice_email_btn: "ای میل",

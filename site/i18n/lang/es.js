@@ -1285,6 +1285,7 @@
     notice_not_found_html: "El aviso <code>{id}</code> no se encontró en los Datos Abiertos del City Record — puede ser muy reciente, o el ID puede estar mal escrito.",
     back_browse: "← Volver a CityScroll",
     back_previous_view: "← Volver a la vista anterior",
+    back_to_view: "← Volver a {view}",
     vendor_name_too_short: "“{name}” es demasiado corto para identificar a un proveedor.",
     try_city_record: "búsquelo en el City Record",
     notice_email_btn: "Correo",
