@@ -395,9 +395,11 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
         "disposition_owner_label_v1",
         "rules_agency_issued_v1",
         "meetings_agency_hosts_v1",
+        "exact_ulurp_token_v1",
+        "zap_project_ref_v1",
       ],
       note:
-        "Links only when identity normalizers or join keys resolve. Identity: agency/vendor across money/land/property/rules/meetings. Join keys: PIN (shares_authority_key), contract_id (references_contract / payment_on_contract), BBL (sited_on_parcel / property exact BBL), payee (paid_to_vendor). Rules and meetings densify from City Record domain snapshots (Agency Rules + Public Hearings), not invented contract/vendor joins. Property attaches via City Record agency_name and labeled disposition owners. Empty domains are explicit; people defaults to not_yet_ingested without by_person rows.",
+        "Links only when identity normalizers or join keys resolve. Identity: agency/vendor across money/land/property/rules/meetings. Join keys: PIN (shares_authority_key), contract_id (references_contract / payment_on_contract), BBL (sited_on_parcel / property exact BBL), payee (paid_to_vendor), meeting body ULURP/ZAP → decides_land_project when the land project is in corpus. Rules and meetings densify from City Record domain snapshots (Agency Rules + Public Hearings), not invented contract/vendor joins. Property attaches via City Record agency_name and labeled disposition owners. Empty domains are explicit; people defaults to not_yet_ingested without by_person rows.",
     },
   };
 }

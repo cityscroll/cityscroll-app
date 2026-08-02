@@ -18,13 +18,19 @@
 import { writeFileSync, readFileSync, existsSync, mkdirSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { extractMeetingLandRefs } from "../entity_resolution/cross_domain/index.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT_RULES = path.join(ROOT, "site/data/rules_domain_observations.json");
 const OUT_MEETINGS = path.join(ROOT, "site/data/meetings_domain_observations.json");
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
+// Body fields are fetched only to extract ULURP / ZAP project keys for reverse
+// land joins — raw body text is NOT written into the committed snapshot
+// (emails / phones / testimony contacts must not land on the public PR surface).
 const SELECT =
-  "request_id,start_date,agency_name,type_of_notice_description,section_name,short_title,event_date";
+  "request_id,start_date,agency_name,type_of_notice_description,section_name,short_title,event_date,"
+  + "additional_description_1,additional_description_2,additional_description_3,"
+  + "other_info_1,printout_1";
 
 function parseArgs(argv) {
   const out = { check: false, rulesLimit: 100, meetingsLimit: 120, windowDays: 180 };
@@ -93,6 +99,17 @@ function cleanHearing(row) {
     section_name: row.section_name != null ? String(row.section_name) : null,
     source_system: "city_record",
   };
+  // Stamp ULURP / ZAP keys extracted from body — never commit the raw body.
+  const landRefs = extractMeetingLandRefs({
+    short_title: shortTitle,
+    additional_description_1: row.additional_description_1,
+    additional_description_2: row.additional_description_2,
+    additional_description_3: row.additional_description_3,
+    other_info_1: row.other_info_1,
+    printout_1: row.printout_1,
+  });
+  if (landRefs.ulurp_keys.length) out.ulurp_keys = landRefs.ulurp_keys;
+  if (landRefs.zap_project_ids.length) out.zap_project_ids = landRefs.zap_project_ids;
   // Measured Council demo join (notice → Legistar event 22526).
   if (out.request_id === "20260706036") {
     out.event_id = "22526";

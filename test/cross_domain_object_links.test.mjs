@@ -30,6 +30,12 @@ import {
   lookupEntityIntelligence,
   makeObjectLink,
   makeProvenance,
+  extractMeetingLandRefs,
+  extractZapProjectIds,
+  joinMeetingsToLandProjects,
+  stampMeetingLandLinksOnCorpus,
+  MEETING_LAND_ULURP_METHOD,
+  MEETING_LAND_ZAP_METHOD,
 } from "../entity_resolution/cross_domain/index.mjs";
 import {
   buildEntityIntelligenceDoc,
@@ -437,6 +443,138 @@ describe("agency GROUPS multi-surface aliases used by the layer", () => {
     assert.equal(
       canonicalAgency("Department of Citywide Administrative Services").canonical_id,
       canonicalAgency("Citywide Administrative Services").canonical_id,
+    );
+  });
+});
+
+describe("meeting → land reverse object-link (ULURP / ZAP)", () => {
+  const LAND_TIMBALE = observationFromLandRow({
+    project_id: "2022M0258",
+    project_name: "Timbale Terrace",
+    primary_applicant: "HPD - NYC Dept of Housing Preservation & Development",
+    public_status: "Completed",
+    ulurp_numbers: "240046HAM; 240047PQM",
+  });
+
+  it("extracts ULURP tokens and ZAP project URLs from hearing body text", () => {
+    const refs = extractMeetingLandRefs({
+      short_title: "City Planning Commission public hearing",
+      additional_description_1:
+        "Application C 240046 HAM and related actions. See also "
+        + "https://zap.planning.nyc.gov/projects/2022M0258 for the project record.",
+    });
+    assert.ok(refs.ulurp_keys.includes("240046HAM"));
+    assert.ok(refs.zap_project_ids.includes("2022M0258"));
+    assert.equal(extractZapProjectIds("no portal link here").size, 0);
+    assert.equal(extractMeetingLandRefs("plain hearing agenda with no land keys").ulurp_keys.length, 0);
+  });
+
+  it("hearing body with a ULURP number produces decides_land_project when land resolves", () => {
+    const hearing = observationFromMeetingsRow({
+      request_id: "20240801001",
+      agency_name: "City Planning Commission",
+      short_title: "Public hearing on ULURP application",
+      event_date: "2024-09-15",
+      additional_description_1:
+        "NOTICE IS HEREBY GIVEN that the City Planning Commission will hold a public "
+        + "hearing on Application No. C 240046 HAM (Timbale Terrace) and 240047PQM.",
+    });
+    assert.ok(hearing);
+    assert.ok(hearing.ulurp_keys.includes("240046HAM") || hearing.ulurp_keys.includes("C240046HAM"));
+
+    const join = joinMeetingsToLandProjects([hearing], [LAND_TIMBALE]);
+    assert.equal(join.metrics.matched_meeting_count, 1);
+    assert.ok(join.links.length >= 1);
+    const edge = join.links.find((l) => l.type === "decides_land_project");
+    assert.ok(edge, "expected decides_land_project edge");
+    assert.equal(edge.from, "notice:20240801001");
+    assert.equal(edge.to, "project:2022M0258");
+    assert.equal(edge.domain, "meetings");
+    assert.equal(edge.method, MEETING_LAND_ULURP_METHOD);
+    assert.ok(edge.provenance?.source_system);
+    assert.ok(edge.provenance?.source_record_id);
+    assert.ok(
+      edge.provenance.source_fields.includes("body")
+        || edge.provenance.source_fields.includes("ulurp_numbers"),
+    );
+    assert.equal(join.by_notice["20240801001"].status, "matched");
+    assert.equal(join.by_notice["20240801001"].related_projects[0].project_id, "2022M0258");
+  });
+
+  it("hearing body with a ZAP project URL produces reverse link when project is known", () => {
+    const hearing = observationFromMeetingsRow({
+      request_id: "20240801002",
+      agency_name: "City Planning Commission",
+      short_title: "ZAP project hearing",
+      event_date: "2024-10-01",
+      additional_description_1:
+        "The project record is at https://zap.planning.nyc.gov/projects/2022M0258.",
+    });
+    const join = joinMeetingsToLandProjects([hearing], [LAND_TIMBALE]);
+    const edge = join.links.find((l) => l.type === "decides_land_project");
+    assert.ok(edge);
+    assert.equal(edge.to, "project:2022M0258");
+    assert.equal(edge.method, MEETING_LAND_ZAP_METHOD);
+  });
+
+  it("hearing body with no ULURP/ZAP ref produces no land reverse link", () => {
+    const hearing = observationFromMeetingsRow({
+      request_id: "20240801003",
+      agency_name: "Parks and Recreation",
+      short_title: "Concession hearing for outdoor café",
+      event_date: "2024-08-10",
+      additional_description_1:
+        "A public hearing will be held regarding a proposed outdoor café concession. "
+        + "No land-use application number is cited.",
+    });
+    assert.equal(hearing.ulurp_keys.length, 0);
+    assert.equal(hearing.zap_project_ids.length, 0);
+
+    const join = joinMeetingsToLandProjects([hearing], [LAND_TIMBALE]);
+    assert.equal(join.links.length, 0);
+    assert.equal(join.metrics.matched_meeting_count, 0);
+    assert.equal(join.by_notice["20240801003"].status, "no_ref");
+  });
+
+  it("ULURP in body that does not hit a known land project produces no link (honest punt)", () => {
+    const hearing = observationFromMeetingsRow({
+      request_id: "20240801004",
+      agency_name: "City Planning Commission",
+      short_title: "Hearing on unknown ULURP",
+      additional_description_1: "Application C 999999 ZMK is on the calendar.",
+    });
+    assert.ok(hearing.ulurp_keys.length >= 1, "extractor still finds the token");
+    const join = joinMeetingsToLandProjects([hearing], [LAND_TIMBALE]);
+    assert.equal(join.links.length, 0);
+    assert.equal(join.by_notice["20240801004"].status, "no_land_match");
+  });
+
+  it("corpus stamp attaches decides_land_project side edge on agency intelligence view", () => {
+    const hearing = observationFromMeetingsRow({
+      request_id: "20240801005",
+      agency_name: "Housing Preservation and Development",
+      short_title: "HPD ULURP hearing",
+      event_date: "2024-09-01",
+      additional_description_1: "ULURP No. 240046HAM for Timbale Terrace.",
+    });
+    const stamped = stampMeetingLandLinksOnCorpus([hearing, LAND_TIMBALE]);
+    const meeting = stamped.find((o) => o.domain === "meetings");
+    assert.ok(meeting.related_projects?.some((p) => p.project_id === "2022M0258"));
+
+    const { links } = linkObservation(meeting);
+    assert.ok(links.some((l) => l.type === "hosts_meeting"));
+    assert.ok(links.some((l) => l.type === "decides_land_project" && l.to === "project:2022M0258"));
+
+    const view = buildEntityIntelligence(
+      { kind: "agency", name: "Housing Preservation and Development" },
+      [hearing, LAND_TIMBALE],
+    );
+    assert.equal(view.ok, true);
+    assert.ok(
+      (view.links || []).some(
+        (l) => l.type === "decides_land_project" && l.to === "project:2022M0258",
+      ),
+      "HPD agency view surfaces meeting→land reverse edge",
     );
   });
 });

@@ -2,7 +2,7 @@
   "schema_version": 1,
   "version": "wh_entity_intelligence_index_v1",
   "object_link_version": "cross_domain_object_link_v2",
-  "generated_at": "2026-08-02T13:15:47.802Z",
+  "generated_at": "2026-08-02T13:38:56.526Z",
   "observation_count": 400,
   "root_count": 200,
   "edge_count": 485,
@@ -2130,8 +2130,10 @@
       "zap_bbl_project_id_v1",
       "pin_authority_key_v1",
       "contract_id_join_v1",
-      "checkbook_payment_v1"
+      "checkbook_payment_v1",
+      "exact_ulurp_token_v1",
+      "zap_project_ref_v1"
     ],
-    "note": "Edge index materialised from warehouse fixtures + domain seeds. Join-key edges require PIN, contract_id, BBL, or payee fields."
+    "note": "Edge index materialised from warehouse fixtures + domain seeds. Join-key edges require PIN, contract_id, BBL, payee, or meeting body ULURP/ZAP resolved to a known land project."
   }
 }
