@@ -55,9 +55,14 @@ Pure modules under `ontology/` plus CLIs:
 | CLI cross-spine | `tools/cross_spine_validate.mjs` |
 
 **Monitor** committed inventories (`source_coverage`, gap taxonomy, registry sync, pass
-cross-spine fixtures). **Analyze** into metrics. **Plan** ranked enrichment cards (coverage,
-gap_a, contradiction, er_quality, actionability, registry). **Execute** in this card means
-write cards + receipt only — agent dispatch remains the software-factory / ops layer.
+cross-spine fixtures, destination-class actionability sample). **Analyze** into metrics.
+**Plan** ranked enrichment cards (coverage, gap_a, contradiction, er_quality, actionability,
+registry). **Execute** in this card means write cards + receipt only — agent dispatch remains
+the software-factory / ops layer.
+
+`actionability_rate_sample` is deep-link rate over
+`ontology/fixtures/dimensions/actionability_sample.json` (via
+`ontology/actionability_sample.mjs`), not `ACTION_TYPES.length`.
 
 P3+ work is **flywheel-emitted**, not hand-authored in this ADR.
 

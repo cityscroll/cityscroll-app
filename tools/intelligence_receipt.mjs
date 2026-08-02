@@ -9,6 +9,10 @@ import { spawnSync } from "node:child_process";
 import { buildIntelligenceReceipt } from "../ontology/flywheel.mjs";
 import { checkOntologyRegistrySync } from "../ontology/sync.mjs";
 import { validateCrossSpineFixtures } from "../ontology/cross_spine.mjs";
+import {
+  actionabilityInputFromSample,
+  measureActionabilitySample,
+} from "../ontology/actionability_sample.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const require = createRequire(import.meta.url);
@@ -93,12 +97,15 @@ export function buildFixtureReceipt(opts = {}) {
   const er_metrics = opts.withErMetrics ? runErMetrics() : null;
 
   const actions = require(join(ROOT, "site/action_registry.js"));
-  const readerCount = (actions.ACTION_TYPES || []).length;
-  const actionability = {
-    sample_size: readerCount,
-    actionable: readerCount,
-    rate: readerCount > 0 ? 1 : 0,
-  };
+  const sampleFixture = readJson("ontology/fixtures/dimensions/actionability_sample.json");
+  const actionability = actionabilityInputFromSample(
+    measureActionabilitySample({
+      matters: sampleFixture.matters || [],
+      static_handoffs: sampleFixture.static_handoffs || [],
+      today: sampleFixture.today || "2026-08-01",
+      compileActionRail: actions.compileActionRail,
+    }),
+  );
 
   return buildIntelligenceReceipt({
     mode: "fixture",
