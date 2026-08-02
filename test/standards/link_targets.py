@@ -107,6 +107,8 @@ EXTERNAL_HREF_EXPRS = (
     "${escUiHtml(link.url)}",     # notice-supplied remote participation URL
     "${escUiHtml(exam.notice_url)}",  # official DCAS Notice of Examination PDF
     "${escUiHtml(CrolStaffing.OASY_APPLY_URL)}",  # DCAS OASys application handoff
+    "${escUiHtml(applyUrl)}",  # career apply: OASys landing or exam-specific official_application_url
+    "${escUiHtml(guide.identifier_url)}",  # bid-guide id outbound (City Record / public RFx browse)
     "${escUiHtml(CrolStaffing.DCAS_OPEN_COMPETITIVE_URL)}",  # DCAS open-competitive schedule page
     "${lifecycleSourceUrl}",          # Checkbook NYC contract search or matched contract
     "${CHECKBOOK_SPENDING_URL}",      # Checkbook NYC spending search

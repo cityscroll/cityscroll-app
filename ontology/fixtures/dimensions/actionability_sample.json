@@ -12,11 +12,12 @@
       "official_notice_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260718010",
       "rfx_detail": {
         "status": "matched",
-        "portal": "https://a0333-passportpublic.nyc.gov/rfx.html",
+        "portal": "https://passport.cityofnewyork.us/page.aspx/en/bpm/process_manage_extranet/36426",
         "detail": {
           "epin": "81026B0003",
           "procurement_name": "81026B0003-Records remediation project",
-          "rfx_status": "Released"
+          "rfx_status": "Released",
+          "rfp_id": "36426"
         }
       }
     },
@@ -100,6 +101,11 @@
       "id": "checkbook-smart-search-ct",
       "label": "Checkbook citywide smart_search with contract term",
       "url": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT107120248803393"
+    },
+    {
+      "id": "checkbook-citywide-detail-agid",
+      "label": "Checkbook citywide contract detail when agid is known",
+      "url": "https://www.checkbooknyc.com/contract_details/agid/6032530/doctype/CT1"
     },
     {
       "id": "checkbook-bare-contract-search",

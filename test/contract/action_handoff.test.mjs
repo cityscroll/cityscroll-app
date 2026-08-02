@@ -23,10 +23,26 @@ test("every official handoff in each supported rail is HTTPS and names its desti
 });
 
 test("HTTP, javascript, and malformed handoffs degrade to unavailable actions", () => {
+  // Hearing has no stable landing fallback — bad URLs must not ship as official_handoff.
   for (const destination of ["http://example.org/apply", "javascript:alert(1)", "not a url"]) {
-    const [action] = compileActionRail({kind: "exam", lifecycle_stage: "open", official_application_url: destination}, {today: "2026-08-01"});
+    const [action] = compileActionRail({kind: "hearing", participation_url: destination}, {today: "2026-08-01"});
     assert.equal(action.delivery, "unavailable");
     assert.equal(action.destination, undefined);
     assert.equal(action.destination_label, undefined);
+  }
+});
+
+test("open exams with unsafe or missing apply URLs fall back to the OASys landing (never embed them)", () => {
+  // Product: open exams always surface Apply via the stable OASys landing when no
+  // publisher HTTPS apply URL exists. Unsafe schemes must never become destination.
+  for (const destination of ["http://example.org/apply", "javascript:alert(1)", "not a url", null, ""]) {
+    const [action] = compileActionRail(
+      {kind: "exam", lifecycle_stage: "open", official_application_url: destination},
+      {today: "2026-08-01"},
+    );
+    assert.equal(action.delivery, "official_handoff");
+    assert.equal(action.destination, "https://www.nyc.gov/examsforjobs");
+    assert.equal(action.guide?.mode, "landing");
+    assert.notEqual(action.destination, destination);
   }
 });

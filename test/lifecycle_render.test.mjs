@@ -53,6 +53,7 @@ const sandbox = new Function(
   extractConst("CURRENT_SOLICITATIONS_URL") +
   extractConst("CITY_RECORD_GETFILE_URL") +
   extractConst("OCP_AWARDS_URL") +
+  extractFn("checkbookDocumentCode") +
   extractFn("checkbookSearchUrl") +
   extractFn("lifecycleStageLabel") +
   extractFn("lifecycleAmount") +
@@ -430,6 +431,18 @@ test("checkbookSearchUrl: prefers contract id, then pin, then vendor", () => {
   assert.match(checkbookSearchUrl({ pin: "84124P0003001" }), /search_term=84124P0003001/);
   assert.match(checkbookSearchUrl({ vendor: "HNTB" }), /search_term=HNTB/);
   assert.equal(checkbookSearchUrl({ kind: "spending" }), "https://www.checkbooknyc.com/spending_search");
+});
+
+test("checkbookSearchUrl: agid builds citywide contract-detail deep link", () => {
+  assert.equal(
+    checkbookSearchUrl({ contractId: "CT107120248803393", agid: "6032530", documentCode: "CT1" }),
+    "https://www.checkbooknyc.com/contract_details/agid/6032530/doctype/CT1",
+  );
+  // Infer CT1 from the leading letters+digit of the contract id when doctype omitted.
+  assert.equal(
+    checkbookSearchUrl({ contractId: "CT107120248803393", agid: "6032530" }),
+    "https://www.checkbooknyc.com/contract_details/agid/6032530/doctype/CT1",
+  );
 });
 
 test("lifecycleDollarsFocusHref: keeps notice context on the deep link", () => {
