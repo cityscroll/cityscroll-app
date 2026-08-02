@@ -122,10 +122,70 @@
     return null;
   }
 
+  // Pull concrete response facts from structured City Record fields + the notice body.
+  // Prefer an explicit package/submit HTTPS URL published in the notice over a deferral.
+  function extractNoticeUrls(body) {
+    return (String(body || "").match(/https?:\/\/[^\s<>"']+/gi) || [])
+      .map(raw => raw.replace(/&amp;/gi, "&").replace(/[),.;\]}>]+$/g, ""))
+      .map(httpsUrl)
+      .filter(Boolean);
+  }
+
+  function packageUrlFromBody(body) {
+    const text = String(body || "");
+    if (!text) return null;
+    const urls = extractNoticeUrls(text);
+    if (!urls.length) return null;
+    // Score URLs by nearby download / solicitation / submit language (window of 160 chars).
+    let best = null;
+    let bestScore = -1;
+    for (const url of urls) {
+      const idx = text.indexOf(url);
+      const window = text.slice(Math.max(0, idx - 160), Math.min(text.length, idx + url.length + 80));
+      let score = 0;
+      // Package handoff requires download/solicitation language and/or a clear RFP path —
+      // bare "submit … as instructed" near a generic /procurement URL must not invent a portal.
+      if (/(download|solicitation documents?|copy of the (?:solicitation|RFP|RFQ)|RFP package|bid documents?)/i.test(window)) score += 4;
+      if (/(to download|download a copy|solicitation documents?)/i.test(window)) score += 2;
+      if (/(electronically upload|upload a proposal|submit (?:your )?(?:proposal|response|bid))/i.test(window)) score += 2;
+      if (/(visit|available at|found at)/i.test(window)) score += 1;
+      if (/\/rfps?\b|\/rfp\b|\/bids?\b|\/opportunities\b/i.test(url)) score += 3;
+      // Skip pure MWBE / certification / financing directories when better options exist.
+      if (/(certification-directory|opportunity-mwdbe|sbsconnect)/i.test(url)) score -= 5;
+      if (score > bestScore) {
+        bestScore = score;
+        best = url;
+      }
+    }
+    // Threshold 4: EDC "download … visit …/rfps" scores well; loose "learn more" does not.
+    return bestScore >= 4 ? best : null;
+  }
+
+  function noticeFieldGuidance(matter) {
+    const body = String(matter.notice_text || "");
+    const packageUrl = packageUrlFromBody(body) || httpsUrl(matter.package_url) || null;
+    const email = String(matter.email || "").trim() || null;
+    const contactName = String(matter.contact_name || "").trim() || null;
+    const contactPhone = String(matter.contact_phone || "").trim() || null;
+    const address = String(matter.address_to_request || "").trim() || null;
+    const method = String(matter.selection_method || "").trim() || null;
+    const hasFields = !!(packageUrl || email || contactName || contactPhone || address || method || matter.deadline);
+    return {
+      package_url: packageUrl,
+      email,
+      contact_name: contactName,
+      contact_phone: contactPhone,
+      address_to_request: address,
+      selection_method: method,
+      has_fields: hasFields,
+    };
+  }
+
   // A solicitation handoff is an evidence record, not a guessed deep link. PASSPort Public
   // exposes a searchable RFx browse surface but no stable per-RFx URL, so matched and unmatched
   // records both carry the exact search terms the reader needs. Agency-specific systems only win
-  // when the notice itself names the system.
+  // when the notice itself names the system. When no portal is named, still surface a guide from
+  // the notice's own package URL / contact / submission fields — never "read the official notice."
   function solicitationHandoff(matter) {
     const body = String(matter.notice_text || "");
     const agency = String(matter.agency_name || "");
@@ -134,6 +194,7 @@
     const rfx = matter.rfx_detail || null;
     const detail = rfx && rfx.status === "matched" ? (rfx.detail || {}) : null;
     const explicitUrl = httpsUrl(matter.official_application_url);
+    const fields = noticeFieldGuidance(matter);
 
     if (/housing authority|\bnycha\b/i.test(agency) && /\bisupplier\b/i.test(body)) {
       return {
@@ -146,6 +207,7 @@
         procurement_name: title,
         status: null,
         approval_delay: /24\s*(?:to|–|-)\s*72\s*hours/i.test(body),
+        ...fields,
       };
     }
 
@@ -161,6 +223,7 @@
         identifier: pin,
         procurement_name: title,
         status: null,
+        ...fields,
       };
     }
 
@@ -174,6 +237,7 @@
         identifier: String(detail.epin || pin || "").trim() || null,
         procurement_name: String(detail.procurement_name || title || "").trim() || null,
         status: String(detail.rfx_status || "").trim() || null,
+        ...fields,
       };
     }
 
@@ -190,18 +254,50 @@
         identifier: pin,
         procurement_name: title,
         status: null,
+        ...fields,
+      };
+    }
+
+    // Notice-published package / RFP page (e.g. edc.nyc/rfps) — concrete destination from body.
+    if (fields.package_url) {
+      return {
+        system: "notice_extracted",
+        mode: "notice_fields",
+        destination: fields.package_url,
+        label_key: "open_rfp_package",
+        label: "Get the RFP package",
+        identifier: pin,
+        procurement_name: title,
+        status: null,
+        ...fields,
+      };
+    }
+
+    // No portal URL, but the notice still has contact / submit-to / method — guide from fields.
+    if (fields.has_fields) {
+      return {
+        system: "notice_extracted",
+        mode: "notice_fields",
+        destination: null,
+        label_key: "next_action_response_guide",
+        label: "Follow the response steps below",
+        identifier: pin,
+        procurement_name: title,
+        status: null,
+        ...fields,
       };
     }
 
     return {
-      system: null,
-      mode: "notice_only",
+      system: "notice_extracted",
+      mode: "notice_fields",
       destination: null,
-      label_key: "next_action_response_instructions",
-      label: "Use the response instructions in the official notice.",
+      label_key: "next_action_response_guide",
+      label: "Follow the response steps below",
       identifier: pin,
       procurement_name: title,
       status: null,
+      ...fields,
     };
   }
 
@@ -219,11 +315,23 @@
     if (kind === "solicitation") {
       const closed = stage === "closed" || (!matter.rolling_deadline && isPast(deadline, today));
       const handoff = solicitationHandoff(matter);
-      actions = closed
-        ? [unavailable("official_application", "next_action_bid_closed", "The response deadline has passed.", deadline), notice(), watch]
-        : handoff.destination
-          ? [official("official_application", handoff.label_key, handoff.label, handoff.destination, deadline, {guide: handoff})]
-          : [unavailable("official_application", handoff.label_key, handoff.label, deadline)];
+      if (closed) {
+        actions = [unavailable("official_application", "next_action_bid_closed", "The response deadline has passed.", deadline), notice(), watch];
+      } else if (handoff.destination) {
+        actions = [official("official_application", handoff.label_key, handoff.label, handoff.destination, deadline, {guide: handoff})];
+      } else {
+        // Guide-first: never punt with "use the response instructions in the official notice."
+        actions = [validateAction({
+          type: "bid_checklist",
+          label_key: handoff.label_key || "next_action_response_guide",
+          label: handoff.label || "Follow the response steps below",
+          delivery: "local",
+          destination: null,
+          deadline,
+          confirmation_required: false,
+          guide: handoff,
+        })];
+      }
       if (!closed && deadline && !matter.rolling_deadline) actions.push(calendar);
       if (!closed) actions.push(watch);
     } else if (kind === "rule") {

@@ -71,6 +71,8 @@ const sandbox = new Function(
   extractFn("lifecyclePaymentSummaryHTML") +
   extractFn("lifecycleSourceLink") +
   extractFn("lifecycleDocumentsHTML") +
+  extractFn("lifecycleCurrentStageKey") +
+  extractFn("lifecycleStepperHTML") +
   extractFn("lifecycleStageHTML") +
   extractFn("lifecycleOcpAwardHTML") +
   extractFn("lifecycleTimelineHTML") +
@@ -248,9 +250,10 @@ test("lifecycle: full lifecycle renders all stages with dates, amounts, and sour
   assert.match(html, /\$5\.00M/);
   assert.match(html, /\$750K/);
 
-  // Source links
-  assert.match(html, /a856-cityrecord\.nyc\.gov/);
+  // One actionable source link on the current stage (payments → Checkbook)
   assert.match(html, /checkbooknyc\.com/);
+  // City Record is named in methodology; outbound link only when that stage is current
+  assert.match(html, /City Record/);
 });
 
 test("lifecycle: matched stages have green box class", () => {
@@ -258,10 +261,13 @@ test("lifecycle: matched stages have green box class", () => {
   assert.match(html, /class="box matched"/);
 });
 
-test("lifecycle: connectors between stages", () => {
+test("lifecycle: connectors between expanded matched stages", () => {
   const html = lifecycleTimelineHTML(FULL_LIFECYCLE, notice);
   const connectors = (html.match(/class="connector"/g) || []).length;
-  assert.equal(connectors, 3, "4 stages = 3 connectors");
+  assert.equal(connectors, 3, "4 matched detail cards = 3 connectors");
+  // Compact stepper also lists every stage
+  assert.match(html, /class="lc-stepper"/);
+  assert.equal((html.match(/class="lc-step /g) || []).length, 4);
 });
 
 test("lifecycle: registered stage owns registration amount, not a second paid bar", () => {
@@ -285,47 +291,57 @@ test("lifecycle: payment stage shows payment count, summary, and dollars link", 
 
 test("lifecycle: provenance note names City Record, Checkbook, PASSPort, and the PIN", () => {
   const html = lifecycleTimelineHTML(FULL_LIFECYCLE, notice);
+  // Methodology is demoted to a disclosure — names sources without duplicating outbound links
+  assert.match(html, /How this timeline works/);
   assert.match(html, /This timeline joins/);
   assert.match(html, /City Record/);
   assert.match(html, /Checkbook NYC/);
   assert.match(html, /PASSPort Public/);
   assert.match(html, /<code>08250R0001001<\/code>/);
+  assert.match(html, /<details class="inline-disclose lc-how">/);
+  // Disclosure body uses text names, not a second set of source URLs
+  const howBody = html.match(/inline-disclose-body">([\s\S]*?)<\/div><\/details>/);
+  assert.ok(howBody);
+  assert.doesNotMatch(howBody[1], /href=/);
 });
 
 // ---------------------------------------------------------------------------
-// 2. UNMATCHED: specific "no record found" statements (never blank)
+// 2. UNMATCHED: future stages collapse into grey stepper chips (no gap paragraphs)
 // ---------------------------------------------------------------------------
 
-test("lifecycle: unmatched stages render specific statements, never blank", () => {
+test("lifecycle: unmatched future stages are greyed stepper chips, not gap paragraphs", () => {
   const html = lifecycleTimelineHTML(UNMATCHED_LIFECYCLE, notice);
-  assert.match(html, /class="box unmatched"/);
-
-  const norecordDivs = (html.match(/class="lc-norecord"/g) || []).length;
-  assert.equal(norecordDivs, 3, "pending + registered + payment each have a no-record statement");
-
-  // Two-register class-(a) copy: not-yet-ingested, per-stage specificity
-  assert.match(html, /Not yet shown here/);
-  assert.match(html, /pending contracts live in/);
-  assert.match(html, /registered contracts live in/);
-  assert.match(html, /payments live in/);
-
-  // Each names the source
-  const checkbookCount = (html.match(/Checkbook NYC/g) || []).length;
-  assert.ok(checkbookCount >= 3, "each unmatched statement names Checkbook NYC");
+  // Compact stepper still names every stage
+  assert.match(html, /class="lc-stepper"/);
+  assert.match(html, /Solicitation/);
+  assert.match(html, /Pending contract/);
+  assert.match(html, /Registered contract/);
+  assert.match(html, /Payments/);
+  // Future unmatched: grey chips only — no class-(a) paragraphs or unmatched boxes
+  assert.doesNotMatch(html, /class="box unmatched"/);
+  assert.doesNotMatch(html, /Not yet shown here/);
+  assert.doesNotMatch(html, /pending contracts live in/);
+  assert.doesNotMatch(html, /registered contracts live in/);
+  assert.doesNotMatch(html, /payments live in/);
+  // Current matched stage still expands as a detail card
+  assert.match(html, /class="box matched/);
+  // No repeated Checkbook outbound on empty future stages
+  const checkbookLinks = (html.match(/checkbooknyc\.com/g) || []).length;
+  assert.ok(checkbookLinks <= 1, `at most one Checkbook URL in methodology, got ${checkbookLinks}`);
 });
 
 // ---------------------------------------------------------------------------
 // 3. UNKNOWN: never surface transient "could not reach" on notice detail
 // ---------------------------------------------------------------------------
 
-test("lifecycle: unknown stages map to taxonomy unmatched (never transient-error register)", () => {
+test("lifecycle: unknown stages map to collapsed future steps (never transient-error register)", () => {
   const html = lifecycleTimelineHTML(UNKNOWN_LIFECYCLE, notice);
-  // Public UI coerces unknown → unmatched (class-a gap), never "Could not reach"
+  // Public UI coerces unknown → unmatched (collapsed), never "Could not reach"
   assert.doesNotMatch(html, /Could not reach/);
-  assert.match(html, /class="box unmatched"/);
-  assert.match(html, /Not yet shown here/);
-  const norecordDivs = (html.match(/class="lc-norecord"/g) || []).length;
-  assert.equal(norecordDivs, 3, "each unknown stage has a taxonomy statement");
+  assert.doesNotMatch(html, /class="box unmatched"/);
+  assert.doesNotMatch(html, /Not yet shown here/);
+  assert.match(html, /class="lc-stepper"/);
+  assert.match(html, /class="box matched/);
 });
 
 // ---------------------------------------------------------------------------
@@ -334,7 +350,7 @@ test("lifecycle: unknown stages map to taxonomy unmatched (never transient-error
 
 test("lifecycle: ambiguous stage lists candidates", () => {
   const html = lifecycleTimelineHTML(AMBIGUOUS_LIFECYCLE, notice);
-  assert.match(html, /class="box ambiguous"/);
+  assert.match(html, /class="box ambiguous/);
   assert.match(html, /Multiple contracts found/);
   assert.match(html, /class="lc-candidates"/);
   assert.match(html, /C1/);
@@ -472,7 +488,9 @@ test("lifecycle: award notice renders Award stage with vendor and amount", () =>
   assert.match(html, /Award/);
   assert.match(html, /ACME CORP/);
   assert.match(html, /\$5\.00M/);
-  assert.match(html, /class="box matched"/);
+  assert.match(html, /class="box matched/);
+  // Future Checkbook stages stay grey chips — no not-yet-shown paragraphs
+  assert.doesNotMatch(html, /Not yet shown here/);
 });
 
 // ---------------------------------------------------------------------------
@@ -541,7 +559,7 @@ test("lifecycle: solicitation with joined package documents renders real links",
   assert.doesNotMatch(html, /Not yet shown here — solicitation package/);
 });
 
-test("lifecycle: solicitation without package documents uses not-published register", () => {
+test("lifecycle: solicitation without package documents uses short not-published caveat", () => {
   const gapLifecycle = {
     pin: "85726B0067", pin_strategy: "exact", ok: true, amendments: [],
     timeline: [
@@ -566,17 +584,19 @@ test("lifecycle: solicitation without package documents uses not-published regis
   const html = lifecycleTimelineHTML(gapLifecycle, {
     request_id: "20260709023", agency_name: "Citywide Administrative Services", pin: "85726B0067",
   });
-  assert.match(html, /The city does not publish package documents/);
+  assert.match(html, /The city does not publish package documents as an open feed/);
   assert.match(html, /a856-cityrecord\.nyc\.gov\/Search\/GetFile/);
   assert.match(html, /City Record file attachments/);
   assert.doesNotMatch(html, /Not yet shown here — solicitation package/);
+  // Single GetFile pointer — not a multi-link hedge
+  assert.equal((html.match(/GetFile/g) || []).length, 1);
 });
 
 // ---------------------------------------------------------------------------
 // OCP award side-car render (qyyg-4tf5)
 // ---------------------------------------------------------------------------
 
-test("lifecycle OCP: unmatched renders not-yet-ingested register with source link", () => {
+test("lifecycle OCP: unmatched collapses (no empty OCP gap paragraph)", () => {
   const data = {
     ...UNMATCHED_LIFECYCLE,
     ocp_award: {
@@ -588,10 +608,9 @@ test("lifecycle OCP: unmatched renders not-yet-ingested register with source lin
     },
   };
   const html = lifecycleTimelineHTML(data, notice);
-  assert.match(html, /OCP award record/);
-  assert.match(html, /Not yet shown here/);
-  assert.match(html, /qyyg-4tf5/);
-  assert.match(html, /Recent Contract Awards \(OCP\)/);
+  assert.doesNotMatch(html, /OCP award record/);
+  assert.doesNotMatch(html, /Not yet shown here — recent OCP awards/);
+  assert.doesNotMatch(html, /qyyg-4tf5/);
 });
 
 test("lifecycle OCP: matched + agreement shows corroboration copy", () => {
