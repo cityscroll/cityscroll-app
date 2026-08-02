@@ -173,6 +173,34 @@ ZAP_ROWS = [
      "current_milestone": "Approved", "current_milestone_date": _iso(-60), "ulurp_numbers": "C260002ZMQ"},
 ]
 
+# Wave-2 land default snapshot (site/data/land_default_ulurp.json) paints before SODA.
+# Hermetic routes must serve the same fixture projects so demo/a11y still see
+# "Example Street Rezoning" on #land — list fields only (brief hydrates live).
+_LAND_LIST_FIELDS = (
+    "project_id", "project_name", "primary_applicant", "public_status", "project_status",
+    "borough", "community_district", "actions", "mih_flag", "current_milestone",
+    "current_milestone_date", "ulurp_numbers",
+)
+LAND_DEFAULT_SNAPSHOT = {
+    "schema_version": 1,
+    "delivery_tier": "inline-at-build",
+    "generated_at": _iso(0),
+    "source": {
+        "name": "Zoning Application Portal projects (Open Data)",
+        "dataset": "hgx4-8ukb",
+        "url": "https://data.cityofnewyork.us/d/hgx4-8ukb",
+    },
+    "query": {
+        "$select": ",".join(_LAND_LIST_FIELDS),
+        "$where": "ulurp_non='ULURP' AND project_status='Active'",
+        "$order": "current_milestone_date DESC",
+        "$limit": "40",
+        "note": "Hermetic fixture mirror of land default snapshot; list fields only.",
+    },
+    "count": len(ZAP_ROWS),
+    "projects": [{k: r[k] for k in _LAND_LIST_FIELDS if k in r} for r in ZAP_ROWS],
+}
+
 PROPERTY_ROWS = [
     {"request_id": "20260701006", "start_date": _iso(-3), "agency_name": "Citywide Administrative Services",
      "type_of_notice_description": "Sale by Auction", "event_date": _iso(10),
@@ -491,3 +519,6 @@ def install_routes(page):
     # Committed seed data: empty in fixtures — the guard exercises the live-search path.
     page.route("**/data/people_examples.json", fixed([]))
     page.route("**/data/title_crosswalk.json", fixed(TITLE_CROSSWALK))
+    # Wave-2 batch-precompute first paint: align land default snapshot with ZAP_ROWS so
+    # #land auto-select still yields "Example Street Rezoning" in hermetic demo/a11y gates.
+    page.route("**/data/land_default_ulurp.json", fixed(LAND_DEFAULT_SNAPSHOT))
