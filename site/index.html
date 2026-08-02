@@ -6491,21 +6491,42 @@ async function awardContext(r){
   return `<div class="glance" style="border-inline-start-color:var(--amber)"><div class="gl"><b>${t("context_strip_lbl")}</b><span>${bits.join(" · ")} · <details class="inline-disclose"><summary>${t("context_how_computed_summary")}</summary><div class="inline-disclose-body">${t("context_how_computed_body_html")} <a href="about.html#context">${t("context_full_methodology_link")}</a></div></details></span></div></div>`;
 }
 
-/* Address cross-links: geocode → BBL → deep links into the city's other property records.
+/* Address / parcel cross-links: street-address geocode first; for Property Disposition,
+   fall back to BBL resolved from notice body tax-lot text (same extractor as the list).
    The Datasette lesson — cheap outbound joins deliver most of a warehouse's value. */
+function parcelLinksHTML(links, provenanceKey){
+  if(!links) return "";
+  return `<div class="rmeta2 property-parcel-links" style="margin:8px 0">${t("parcel_elsewhere_label")}
+    <a href="${escUiHtml(links.zola_url)}" ${EXT_ATTRS}>${t("parcel_link_zola")}${extSR()}</a> ·
+    <a href="${escUiHtml(links.acris_url)}" ${EXT_ATTRS}>${t("parcel_link_acris")}${extSR()}</a> ·
+    <a href="${escUiHtml(links.who_owns_what_url)}" ${EXT_ATTRS}>${t("parcel_link_wow")}${extSR()}</a>
+    <span class="muted" style="font-size:12px">· ${t(provenanceKey,{bbl:links.bbl})}</span></div>`;
+}
 async function fillAddressLinks(r, el){
-  if(!el || !goodAddr(r.street_address_1)) return;
-  const addr = cleanText(r.street_address_1);
+  if(!el || !r) return;
   let geo = null;
-  try{ geo = await geocode(addr + " New York NY"); }catch(e){}
+  if(goodAddr(r.street_address_1)){
+    const addr = cleanText(r.street_address_1);
+    try{ geo = await geocode(addr + " New York NY"); }catch(e){}
+  }
   if(!document.contains(el)) return;
-  if(!geo || !geo.bbl || !/^\d{10}$/.test(geo.bbl)) return;
-  const b = geo.bbl[0], block = String(parseInt(geo.bbl.slice(1,6),10)), lot = String(parseInt(geo.bbl.slice(6),10));
-  el.innerHTML = `<div class="rmeta2" style="margin:8px 0">This address elsewhere:
-    <a href="https://zola.planning.nyc.gov/l/lot/${b}/${block}/${lot}" ${EXT_ATTRS}>ZoLa zoning${extSR()}</a> ·
-    <a href="https://a836-acris.nyc.gov/bblsearch/bblsearch.asp?borough=${b}&block=${block}&lot=${lot}" ${EXT_ATTRS}>ACRIS deeds${extSR()}</a> ·
-    <a href="https://whoownswhat.justfix.org/bbl/${geo.bbl}" ${EXT_ATTRS}>Who Owns What portfolio${extSR()}</a>
-    <span class="muted" style="font-size:12px">· lot ${geo.bbl} via GeoSearch — verify the match</span></div>`;
+  if(geo && geo.bbl && /^\d{10}$/.test(geo.bbl)){
+    const tools = await propertyLocationTools();
+    if(!document.contains(el)) return;
+    const links = tools.parcelLinksFromBbl(geo.bbl);
+    if(links){ el.innerHTML = parcelLinksHTML(links, "parcel_via_geosearch"); return; }
+  }
+  // BBL fallback: Property notices often name the site as Block/Lot in the body with no
+  // usable street_address_1. Resolve the parcel from extracted tax-lot evidence only —
+  // never from multi-borough clerk boilerplate (propertyLocationFromRow already abstains).
+  if(r.section_name !== "Property Disposition") return;
+  const tools = await propertyLocationTools();
+  if(!document.contains(el)) return;
+  const location = tools.propertyLocationFromRow(r);
+  const bbl = tools.primaryPropertyBbl(location);
+  const links = tools.parcelLinksFromBbl(bbl);
+  if(!links || location.scope !== "local") return;
+  el.innerHTML = `${propertyPlaceChips(location)}${parcelLinksHTML(links, "parcel_via_notice_tax_lot")}`;
 }
 
 // Fill a placeholder div asynchronously; bail if the view moved on while queries ran.

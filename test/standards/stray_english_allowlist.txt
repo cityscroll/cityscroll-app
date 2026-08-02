@@ -154,8 +154,6 @@ the a an of in on for to and or with show me find list all near over under withi
 the procurement officer
 this vendor holds <b>
 vendor_name in(
-via GeoSearch — verify the match</span></div>
->Who Owns What portfolio
 you@example.com
 © OpenStreetMap © CARTO · lots © NYC MapPLUTO
 ⚑ non-competitive method:

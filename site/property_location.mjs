@@ -191,6 +191,56 @@ export function propertyLocationFromRow(row) {
   };
 }
 
+/**
+ * Parse a 10-digit NYC BBL into borough/block/lot components used by ZoLa, ACRIS,
+ * and Who Owns What. Returns null when the value is not a complete BBL.
+ */
+export function parseBbl(bbl) {
+  const digits = String(bbl || "").replace(/\D/g, "");
+  if (!/^\d{10}$/.test(digits)) return null;
+  return {
+    bbl: digits,
+    borough_code: digits[0],
+    block: String(parseInt(digits.slice(1, 6), 10)),
+    lot: String(parseInt(digits.slice(6, 10), 10)),
+  };
+}
+
+/**
+ * Official parcel deep-links for one BBL. Shared by address-geocode and notice
+ * tax-lot fallback paths so both surfaces present the same outbound targets.
+ */
+export function parcelLinksFromBbl(bbl) {
+  const parts = parseBbl(bbl);
+  if (!parts) return null;
+  const { bbl: id, borough_code, block, lot } = parts;
+  return {
+    ...parts,
+    zola_url: `https://zola.planning.nyc.gov/l/lot/${borough_code}/${block}/${lot}`,
+    acris_url: `https://a836-acris.nyc.gov/bblsearch/bblsearch.asp?borough=${borough_code}&block=${block}&lot=${lot}`,
+    who_owns_what_url: `https://whoownswhat.justfix.org/bbl/${id}`,
+  };
+}
+
+/**
+ * Prefer an explicit 10-digit BBL already on the location; otherwise infer from a
+ * single borough + tax-lot pair. Never invent a BBL from multi-borough lists.
+ */
+export function primaryPropertyBbl(location = {}) {
+  const explicit = unique(location.bbls || []).find((value) => /^\d{10}$/.test(String(value)));
+  if (explicit) return String(explicit);
+  const boroughs = location.boroughs || [];
+  const taxLots = location.tax_lots || [];
+  if (boroughs.length !== 1 || !taxLots.length) return null;
+  for (const entry of taxLots) {
+    for (const lot of entry.lots || []) {
+      const bbl = bblFor(boroughs[0], entry.block, lot);
+      if (bbl) return bbl;
+    }
+  }
+  return null;
+}
+
 export function applyPropertyGeocodes(location, geocodes = {}) {
   const out = structuredClone(location);
   out.addresses = out.addresses.map((address) => {
