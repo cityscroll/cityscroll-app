@@ -394,9 +394,11 @@
   .meeting-spines{display:flex;flex-direction:column;gap:12px}
   .meeting-spine-docs{display:flex;flex-direction:column;align-items:flex-start;gap:2px}
 
-  /* Lifecycle timeline (PROC-001): compact stepper for the whole path + detail cards only
-     for populated / attention stages. Future unmatched steps stay grey chips — never a
-     paragraph of "Not yet shown here" per empty stage. */
+  /* Lifecycle timeline (PROC-001): phase-grouped stepper (Solicitation → Selection →
+     Award & registration → Payments) + detail only for material stages. Same progressive-
+     disclosure pattern as land_phase_spine; pure model in site/procurement_phase_spine.mjs.
+     Future unmatched steps stay grey chips — never a paragraph of "Not yet shown here"
+     per empty stage. */
   .lc-stepper{display:flex;flex-wrap:wrap;align-items:center;gap:4px 2px;list-style:none;margin:0 0 12px;padding:0}
   .lc-stepper > li{display:flex;align-items:center;gap:2px;min-width:0}
   .lc-step{font:700 10px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:7px 10px;border-radius:999px;border:1px solid var(--rule);background:var(--paper-2,#f7f1e4);color:var(--muted);white-space:nowrap}
@@ -411,6 +413,35 @@
   .lc-docs-caveat{font:12px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:6px}
   .lc-how{display:block;margin-top:10px}
   .lc-how>summary{font:600 12px/1.4 ui-sans-serif,system-ui,sans-serif}
+  /* Procurement phase spine (action-first lead + expandable phase panels) */
+  .lc-phase-lead{background:linear-gradient(180deg,#fff 0%,var(--paper-2,#f7f1e4) 100%);border:1px solid var(--rule);border-radius:10px;padding:12px 14px;margin:0 0 12px}
+  .lc-phase-now-label{font:700 10px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--oxblood);margin:0 0 4px}
+  .lc-phase-now-phase{font:700 16px/1.3 ui-sans-serif,system-ui,sans-serif;margin:0 0 4px;color:var(--ink)}
+  .lc-phase-now-detail{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;margin:0 0 8px;color:var(--ink)}
+  .lc-phase-action{font:600 13px/1.45 ui-sans-serif,system-ui,sans-serif;margin:0 0 8px;color:var(--ink)}
+  .lc-phase-action a{font-weight:700}
+  .lc-phase-next{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;margin:0;padding-top:8px;border-top:1px solid var(--rule);color:var(--muted)}
+  .lc-phase-next strong{color:var(--ink);font-weight:700}
+  .lc-phase-stepper .lc-step{cursor:pointer;font-family:inherit}
+  .lc-phase{border:1px solid var(--rule);border-radius:10px;margin:0 0 8px;background:#fffdf8;overflow:hidden}
+  .lc-phase[open]{background:#fff}
+  .lc-phase.current-phase{border-color:color-mix(in srgb,var(--oxblood) 45%,var(--rule));box-shadow:0 0 0 1px color-mix(in srgb,var(--oxblood) 22%,transparent)}
+  .lc-phase > summary{list-style:none;cursor:pointer;padding:10px 12px;display:grid;grid-template-columns:1fr auto;gap:3px 12px;align-items:baseline}
+  .lc-phase > summary::-webkit-details-marker{display:none}
+  .lc-phase-name{font:700 13px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--ink)}
+  .lc-phase-state{font:700 10px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .lc-phase.current-phase .lc-phase-state{color:var(--oxblood)}
+  .lc-phase-summary{grid-column:1 / -1;font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+  .lc-phase-body{padding:0 12px 12px;border-top:1px solid var(--rule)}
+  .lc-phase-body .stage{margin-top:8px}
+  .lc-phase-body .connector{display:none}
+  .lc-phase-agg{padding:8px 0;border-bottom:1px solid color-mix(in srgb,var(--rule) 70%,transparent)}
+  .lc-phase-agg:last-child{border-bottom:0}
+  .lc-phase-agg-title{font:700 13px/1.35 ui-sans-serif,system-ui,sans-serif;color:var(--ink);overflow-wrap:anywhere}
+  .lc-phase-agg-meta{font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+  .lc-phase-count{display:inline-block;font:700 11px/1 ui-monospace,SFMono-Regular,monospace;background:var(--paper-2,#f7f1e4);border:1px solid var(--rule);border-radius:999px;padding:3px 7px;margin-inline-start:6px;vertical-align:middle}
+  .lc-phase-history{margin-top:10px}
+  .lc-phase-history > summary{font:600 12px/1.4 ui-sans-serif,system-ui,sans-serif;cursor:pointer;color:var(--muted)}
   .box.matched{border-top-color:var(--green)}
   .box.matched .stage-name{color:var(--green)}
   .box.passed{border-top-color:var(--green);opacity:.88}
@@ -7325,11 +7356,238 @@ function lifecycleOcpAwardHTML(data){
   return `<div class="note" data-claim-layer="claim_layer_v1" style="margin-top:10px"><b>${t("lifecycle_ocp_heading")}</b> ${body}</div>`;
 }
 
-function lifecycleTimelineHTML(data, notice){
+/* ===================== PROCUREMENT PHASE SPINE (phase-group / dedupe / aggregate) =====
+   Pure model: site/procurement_phase_spine.mjs (same shape as land_phase_spine).
+   When the module loads, lifecycleTimelineHTML phase-groups milestones; flat stepper is
+   the fallback only if the import fails. */
+let procurementPhaseSpineToolsPromise = null;
+function ensureProcurementPhaseSpineTools(){
+  if(!procurementPhaseSpineToolsPromise){
+    procurementPhaseSpineToolsPromise = import("./procurement_phase_spine.mjs").catch(() => null);
+  }
+  return procurementPhaseSpineToolsPromise;
+}
+
+function lifecyclePhaseLabel(phase){
+  if(!phase) return "—";
+  if(phase.label_key) return t(phase.label_key);
+  if(typeof phase === "string"){
+    const meta = {
+      solicitation: "lifecycle_phase_solicitation",
+      selection: "lifecycle_phase_selection",
+      award_registration: "lifecycle_phase_award_registration",
+      payments: "lifecycle_phase_payments",
+    };
+    return meta[phase] ? t(meta[phase]) : phase;
+  }
+  return phase.short || "—";
+}
+
+function lifecyclePhaseActionHTML(view, notice){
+  const cur = view && view.current;
+  if(!cur) return "";
+  const key = cur.action_key || "lifecycle_phase_action_respond";
+  if(key === "lifecycle_phase_action_follow_money"){
+    return t(key, { href: lifecycleDollarsFocusHref(notice && notice.request_id) });
+  }
+  return t(key);
+}
+
+function lifecyclePhaseAggregateHTML(agg){
+  if(!agg) return "";
+  if(agg.count <= 1) return "";
+  const range = agg.first && agg.last && agg.first !== agg.last
+    ? t("lifecycle_phase_aggregate_range", { first: fdate(agg.first), last: fdate(agg.last) })
+    : (agg.first ? fdate(agg.first) : "");
+  return `<div class="lc-phase-agg">
+    <div class="lc-phase-agg-title" lang="en" dir="ltr">${escUiHtml(agg.title)}<span class="lc-phase-count">×${agg.count}</span></div>
+    <div class="lc-phase-agg-meta">${range || "—"}</div>
+  </div>`;
+}
+
+function lifecyclePhasePanelHTML(phase, raw, notice, currentKey){
+  if(!phase) return "";
+  // Future empty phases: chip only (no empty panel clutter).
+  if(phase.state === "future" && !phase.event_count) return "";
+  // Passed empty: omit.
+  if(phase.state === "passed" && !phase.event_count) return "";
+
+  const open = phase.state === "current" ? " open" : "";
+  const stateWord = phase.state === "current"
+    ? t("lifecycle_phase_current")
+    : phase.state === "passed"
+      ? t("lifecycle_phase_done")
+      : t("lifecycle_phase_future");
+  let summary = "";
+  if(phase.event_count){
+    const parts = [
+      t("lifecycle_phase_milestones_count", { n: String(phase.event_count) }),
+      phase.first && phase.last && phase.first !== phase.last
+        ? t("lifecycle_phase_aggregate_range", { first: fdate(phase.first), last: fdate(phase.last) })
+        : (phase.first ? fdate(phase.first) : ""),
+    ].filter(Boolean);
+    summary = parts.join(" · ");
+  } else {
+    summary = t("lifecycle_phase_empty");
+  }
+
+  // Material milestones as stage cards; one outbound source link on the phase's chosen stage
+  // (dedupe across Checkbook/City Record/PASSPort families within the phase).
+  let body = "";
+  const multiAggs = (phase.aggregates || []).filter(a => a.count >= 2);
+  if(multiAggs.length){
+    body += multiAggs.map(lifecyclePhaseAggregateHTML).join("");
+  }
+  const entries = (phase.milestones || []).map(m => m.entry).filter(Boolean);
+  let stages = "";
+  entries.forEach((entry, idx) => {
+    const isPhaseLink = phase.state === "current" && entry.stage === phase.phase_link_stage;
+    const html = lifecycleStageHTML(entry, raw, notice, {
+      currentKey,
+      isCurrent: entry.stage === currentKey,
+      showSourceLink: isPhaseLink,
+    });
+    if(html){
+      stages += html;
+      if(idx < entries.length - 1) stages += '<div class="connector">→</div>';
+    }
+  });
+  if(stages) body += `<div class="lc-stage-detail"><div class="chain">${stages}</div></div>`;
+  if(!body) body = `<div class="lc-phase-summary">${t("lifecycle_phase_empty")}</div>`;
+
+  return `<details class="lc-phase${phase.state === "current" ? " current-phase" : ""}"${open} id="lc-phase-${escUiHtml(phase.id)}" data-lc-phase-panel="${escUiHtml(phase.id)}">
+    <summary>
+      <span class="lc-phase-name">${escUiHtml(lifecyclePhaseLabel(phase))}</span>
+      <span class="lc-phase-state">${escUiHtml(stateWord)}</span>
+      <span class="lc-phase-summary">${escUiHtml(summary)}</span>
+    </summary>
+    <div class="lc-phase-body">${body}</div>
+  </details>`;
+}
+
+function lifecyclePhaseStepperHTML(view){
+  if(!view || !view.phases || !view.phases.length) return "";
+  const items = view.phases.map((p, i) => {
+    const cls = p.state === "current" ? "current" : p.state === "passed" ? "passed" : "future";
+    const aria = p.state === "current" ? ` aria-current="step"` : "";
+    const arrow = i < view.phases.length - 1
+      ? `<span class="lc-step-arrow" aria-hidden="true">→</span>`
+      : "";
+    return `<li><button type="button" class="lc-step ${cls}" data-lc-phase="${escUiHtml(p.id)}"${aria} title="${escUiHtml(lifecyclePhaseLabel(p))}">${escUiHtml(p.short || lifecyclePhaseLabel(p))}</button>${arrow}</li>`;
+  }).join("");
+  return `<ol class="lc-stepper lc-phase-stepper" aria-label="${escUiHtml(t("lifecycle_heading"))}">${items}</ol>`;
+}
+
+function lifecyclePhaseTimelineHTML(view, data, notice){
+  if(!view) return "";
+  const raw = data.timeline || [];
+  const currentKey = view.current && view.current.stage;
+  const noPin = view.no_pin;
+
+  const cur = view.current || {};
+  const phaseName = lifecyclePhaseLabel({ label_key: cur.label_key });
+  const actionHTML = lifecyclePhaseActionHTML(view, notice);
+  const lead = noPin ? "" : `<div class="lc-phase-lead">
+    <div class="lc-phase-now-label">${t("lifecycle_phase_now_label")}</div>
+    <p class="lc-phase-now-phase">${escUiHtml(phaseName)}</p>
+    <p class="lc-phase-now-detail" lang="en" dir="ltr">${escUiHtml(cur.milestone_label || lifecycleStageLabel(cur.stage) || "—")}${cur.since ? ` · ${t("lifecycle_phase_since", { date: fdate(cur.since) })}` : ""}</p>
+    ${actionHTML ? `<p class="lc-phase-action">${actionHTML}</p>` : ""}
+    ${view.next ? `<p class="lc-phase-next">${t("lifecycle_phase_next_html", { phase: escUiHtml(lifecyclePhaseLabel(view.next)) })}</p>` : ""}
+  </div>`;
+
+  const stepper = noPin ? "" : lifecyclePhaseStepperHTML(view);
+
+  // Current phase first (open); earlier phases collapsed under "Earlier phases" disclosure.
+  const currentPanel = (view.phases || []).filter(p => p.state === "current")
+    .map(p => lifecyclePhasePanelHTML(p, raw, notice, currentKey)).join("");
+  const historyPanels = (view.phases || []).filter(p => p.state === "passed")
+    .map(p => lifecyclePhasePanelHTML(p, raw, notice, currentKey)).filter(Boolean).join("");
+  // Future phases with planned material (rare) still expand below.
+  const futurePanels = (view.phases || []).filter(p => p.state === "future" && p.event_count)
+    .map(p => lifecyclePhasePanelHTML(p, raw, notice, currentKey)).join("");
+  const historyWrap = historyPanels
+    ? `<details class="lc-phase-history"><summary>${t("lifecycle_phase_show_history")}</summary>${historyPanels}</details>`
+    : "";
+
+  let amendmentsHTML = "";
+  if(data.amendments && data.amendments.length){
+    amendmentsHTML = data.amendments.map(a =>
+      `<div class="note warn">${t("lifecycle_amendment_note_html",{
+        original:lifecycleMoney(a.original_amount),
+        current:lifecycleMoney(a.current_amount),
+        delta:lifecycleMoney(Math.abs(a.delta))
+      })}</div>`
+    ).join("");
+  }
+
+  const howBody = noPin
+    ? t("lifecycle_no_pin_note_html")
+    : t("lifecycle_provenance_note_html",{
+        city_record:`<span lang="en" dir="ltr">${t("lifecycle_source_city_record")}</span>`,
+        checkbook:`<span lang="en" dir="ltr">${t("lifecycle_source_checkbook")}</span>`,
+        passport:`<span lang="en" dir="ltr">${t("lifecycle_source_passport")}</span>`,
+        pin:`<code>${escUiHtml(data.pin)}</code>`
+      });
+  const howHTML = noPin
+    ? `<div class="note">${howBody}</div>`
+    : `<details class="inline-disclose lc-how"><summary>${t("lifecycle_how_summary")}</summary><div class="inline-disclose-body">${howBody}</div></details>`;
+
+  if(noPin && !currentPanel && !historyPanels){
+    return `<div class="chain-h">${t("lifecycle_heading")}</div>
+      <div class="note">${howBody}</div>`;
+  }
+
+  let rfxHTML = "";
+  const rfx = data.rfx_detail;
+  if(rfx && rfx.status === "matched" && rfx.detail){
+    const d = rfx.detail;
+    rfxHTML = `<div class="note" style="margin-top:8px"><b>${t("lifecycle_rfx_heading")}</b>
+      ${d.procurement_name ? ` · <span lang="en" dir="ltr">${escUiHtml(d.procurement_name)}</span>` : ""}
+      ${d.due_date ? ` · ${t("lifecycle_rfx_due_html",{date:fdate(d.due_date) || escUiHtml(d.due_date)})}` : ""}
+      ${d.rfx_status ? ` · ${t("lifecycle_rfx_status_html",{status:escUiHtml(d.rfx_status)})}` : ""}
+      ${d.procurement_method ? ` · ${t("lifecycle_rfx_method_html",{method:escUiHtml(d.procurement_method)})}` : ""}
+      · <a class="view" href="${rfx.portal || PASSPORT_RFX_URL}" ${EXT_ATTRS}>${t("lifecycle_source_passport")}${extSR()}</a>
+    </div>`;
+  }
+
+  const ocpHTML = lifecycleOcpAwardHTML(data);
+
+  return `<div class="chain-h">${t("lifecycle_heading")}</div>
+    ${lead}
+    ${stepper}
+    ${currentPanel}
+    ${futurePanels}
+    ${historyWrap}
+    ${amendmentsHTML}
+    ${rfxHTML}
+    ${ocpHTML}
+    ${howHTML}`;
+}
+
+function bindProcurementPhaseUI(root){
+  if(!root || root.dataset.lcPhaseBound === "1") return;
+  root.dataset.lcPhaseBound = "1";
+  root.addEventListener("click", (ev) => {
+    const step = ev.target.closest?.("[data-lc-phase]");
+    if(step && root.contains(step)){
+      const id = step.getAttribute("data-lc-phase");
+      const panel = root.querySelector(`[data-lc-phase-panel="${CSS.escape(id)}"]`);
+      if(panel){
+        // Opening a historical phase panel: expand the history disclosure first.
+        const hist = panel.closest?.(".lc-phase-history");
+        if(hist) hist.open = true;
+        panel.open = true;
+        try{ panel.scrollIntoView({ behavior: "smooth", block: "nearest" }); }catch(_e){}
+      }
+    }
+  });
+}
+
+// Flat fallback (pre-phase-group stepper + detail cards) when the pure module fails to load.
+function lifecycleTimelineHTMLFlat(data, notice){
   const raw = data.timeline || [];
   if(!raw.length) return "";
 
-  // No PIN: single class-(b) explanation — collapse dependent Checkbook stages entirely.
   const noPin = !data.pin || data.pin_strategy === "none";
   const tl = noPin
     ? raw.filter(e => e.source === "city-record" || e.stage === "solicitation" || e.stage === "award")
@@ -7344,7 +7602,6 @@ function lifecycleTimelineHTML(data, notice){
     html: lifecycleStageHTML(e, raw, notice, {
       currentKey,
       isCurrent: e.stage === currentKey,
-      // One outbound source link on the current stage only — never one per empty step.
       showSourceLink: e.stage === currentKey,
     }),
   })).filter(x => x.html);
@@ -7364,9 +7621,6 @@ function lifecycleTimelineHTML(data, notice){
     ).join("");
   }
 
-  // Methodology demoted to a disclosure. Source *names* only (no outbound links) so the
-  // current-stage card keeps the single actionable link without 3× City Record / Checkbook
-  // duplicates in the join-logic note.
   const howBody = noPin
     ? t("lifecycle_no_pin_note_html")
     : t("lifecycle_provenance_note_html",{
@@ -7379,13 +7633,11 @@ function lifecycleTimelineHTML(data, notice){
     ? `<div class="note">${howBody}</div>`
     : `<details class="inline-disclose lc-how"><summary>${t("lifecycle_how_summary")}</summary><div class="inline-disclose-body">${howBody}</div></details>`;
 
-  // No-PIN with no City Record stage in the timeline: still show the heading + single note.
   if(noPin && !stages){
     return `<div class="chain-h">${t("lifecycle_heading")}</div>
       <div class="note">${howBody}</div>`;
   }
 
-  // Matched RFx only — unmatched PASSPort RFx is a grey future step, not a gap paragraph.
   let rfxHTML = "";
   const rfx = data.rfx_detail;
   if(rfx && rfx.status === "matched" && rfx.detail){
@@ -7408,6 +7660,16 @@ function lifecycleTimelineHTML(data, notice){
     ${rfxHTML}
     ${ocpHTML}
     ${howHTML}`;
+}
+
+function lifecycleTimelineHTML(data, notice, phaseTools){
+  const raw = data.timeline || [];
+  if(!raw.length) return "";
+  if(phaseTools && typeof phaseTools.buildProcurementPhaseView === "function"){
+    const view = phaseTools.buildProcurementPhaseView(data, { notice });
+    return lifecyclePhaseTimelineHTML(view, data, notice);
+  }
+  return lifecycleTimelineHTMLFlat(data, notice);
 }
 
 // Registration / payment detail drawn from the same precomputed lifecycle timeline — no
@@ -7518,6 +7780,7 @@ async function loadLifecycle(r, el, dollarsEl, actionsEl){
     if(dollarsEl) dollarsEl.innerHTML = "";
     return;
   }
+  const phaseToolsP = ensureProcurementPhaseSpineTools();
   let data = null;
   try{
     const resp = await workerFetch("/contract-lifecycle?id=" + encodeURIComponent(r.request_id), null, 8000);
@@ -7539,7 +7802,10 @@ async function loadLifecycle(r, el, dollarsEl, actionsEl){
   }
   if(actionsEl && document.contains(actionsEl)) paintNoticeActionRail(actionsEl,r,null,data);
   if(el && Array.isArray(data.timeline) && data.timeline.length){
-    el.innerHTML = lifecycleTimelineHTML(data, r);
+    const phaseTools = await phaseToolsP;
+    if(el && !document.contains(el)) return;
+    el.innerHTML = lifecycleTimelineHTML(data, r, phaseTools);
+    bindProcurementPhaseUI(el);
   }
   if(dollarsEl && /^(Award|Intent to Award|Intent to Negotiate|Vendor List)$/.test(r.type_of_notice_description||"")){
     dollarsEl.innerHTML = lifecycleDollarsHTML(data, r);

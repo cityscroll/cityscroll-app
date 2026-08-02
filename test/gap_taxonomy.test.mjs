@@ -97,6 +97,7 @@ const helpers = new Function(
   extractFn("lifecycleStepperHTML") +
   extractFn("lifecycleStageHTML") +
   extractFn("lifecycleOcpAwardHTML") +
+  extractFn("lifecycleTimelineHTMLFlat") +
   extractFn("lifecycleTimelineHTML") +
   extractFn("subsidyStageLabel") +
   extractConst("SUBSIDY_STAGE_EXPECT_LAG_DAYS") +
