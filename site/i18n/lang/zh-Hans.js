@@ -971,6 +971,7 @@
     subsidy_feed_unavailable_html: "无法访问 {source} 以获取完整补贴项目记录 — 以下听证详情来自市政公报通知。",
     subsidy_money_matched_html: "{field}：<b>{amount}</b>。",
     subsidy_money_matched_city_record_html: "{field}：<b>{amount}</b>（来自市政公报听证通知）。",
+    subsidy_place_matched_html: "地点：<b>{address}</b>。",
     subsidy_money_requested_lbl: "申请优惠",
     subsidy_money_estimated_lbl: "估计公共成本",
     subsidy_money_total_project_cost_lbl: "项目总成本",

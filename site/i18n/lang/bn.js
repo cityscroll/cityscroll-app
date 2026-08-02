@@ -971,6 +971,7 @@
     subsidy_feed_unavailable_html: "সম্পূর্ণ ভর্তুকি প্রকল্প রেকর্ডের জন্য {source}-এ পৌঁছানো যায়নি — নিচের শুনানির বিবরণ City Record বিজ্ঞপ্তি থেকে।",
     subsidy_money_matched_html: "{field}: <b>{amount}</b>।",
     subsidy_money_matched_city_record_html: "{field}: <b>{amount}</b> (City Record শুনানি বিজ্ঞপ্তি থেকে)।",
+    subsidy_place_matched_html: "স্থান: <b>{address}</b>।",
     subsidy_money_requested_lbl: "অনুরোধকৃত সুবিধা",
     subsidy_money_estimated_lbl: "আনুমানিক সরকারি ব্যয়",
     subsidy_money_total_project_cost_lbl: "মোট প্রকল্প ব্যয়",

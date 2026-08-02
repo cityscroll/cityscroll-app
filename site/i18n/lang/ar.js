@@ -978,6 +978,7 @@
     subsidy_feed_unavailable_html: "تعذّر الوصول إلى {source} لسجل مشروع الدعم الكامل — تفاصيل جلسة الاستماع أدناه من إشعار City Record.",
     subsidy_money_matched_html: "{field}: <b>{amount}</b>.",
     subsidy_money_matched_city_record_html: "{field}: <b>{amount}</b> (من إشعار جلسة الاستماع في City Record).",
+    subsidy_place_matched_html: "المكان: <b>{address}</b>.",
     subsidy_money_requested_lbl: "المنفعة المطلوبة",
     subsidy_money_estimated_lbl: "التكلفة العامة المقدّرة",
     subsidy_money_total_project_cost_lbl: "التكلفة الإجمالية للمشروع",

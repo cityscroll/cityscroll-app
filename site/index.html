@@ -515,6 +515,10 @@
   .lc-how>summary{font:600 12px/1.4 ui-sans-serif,system-ui,sans-serif}
   /* Shared phase-timeline chrome (Money lifecycle + paper trail + Land/ZAP). */
   .lc-phase-lead{background:linear-gradient(180deg,#fff 0%,var(--paper-2,#f7f1e4) 100%);border:1px solid var(--rule);border-radius:10px;padding:12px 14px;margin:0 0 12px}
+  .lc-phase-facts{margin:8px 0 2px}
+  .lc-phase-facts .lc-phase-fact{margin:4px 0;font:14px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--ink,#1a1a1a)}
+  .lc-phase-facts .lc-phase-fact b{font-weight:700}
+  .note.lc-secondary,[data-subsidy-feed-secondary]{margin-top:10px}
   .lc-phase-now-label{font:700 10px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--oxblood);margin:0 0 4px}
   .lc-phase-now-phase{font:700 16px/1.3 ui-sans-serif,system-ui,sans-serif;margin:0 0 4px;color:var(--ink)}
   .lc-phase-now-detail{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;margin:0 0 8px;color:var(--ink)}
@@ -9802,6 +9806,77 @@ function subsidyPhasePanelHTML(phase, anchorDate, opts){
   </details>`;
 }
 
+/** Short matched place for lead chrome (never a hearing-body dump). */
+function subsidyPlaceDisplay(place){
+  if(!place || place.status !== "matched") return null;
+  let addr = cleanText(place.address || "");
+  if(!addr && Array.isArray(place.addresses) && place.addresses[0]){
+    addr = cleanText(place.addresses[0]);
+  }
+  if(!addr && Array.isArray(place.boroughs) && place.boroughs.length){
+    addr = place.boroughs.filter(Boolean).join(", ");
+  }
+  if(!addr) return null;
+  if(/SUPPLEMENTAL NOTICE|will hold a public hearing/i.test(addr)) return null;
+  if(addr.length > 120){
+    const cut = addr.slice(0, 120);
+    const m = cut.match(/^(.+?),\s*(?:New York|NY)\b/i)
+      || cut.match(/^(.+?)(?:\s+to be used|\s+[—–-]|\s*\()/i);
+    addr = m ? cleanText(m[1]) : cleanText(cut.replace(/\s+\S*$/, "")) || cut.slice(0, 100);
+    if(addr.length >= 118) addr = addr.slice(0, 117) + "…";
+  }
+  return addr || null;
+}
+
+/**
+ * Preferred matched project/development cost from the money object (by field stamp
+ * or scalar totals). Avoids depending on an internal slot key name in this layer.
+ */
+function subsidyPreferredCostSlot(money){
+  if(!money || typeof money !== "object") return null;
+  for(const v of Object.values(money)){
+    if(!v || typeof v !== "object") continue;
+    if(v.status !== "matched" || v.value == null) continue;
+    if(v.field === "total_project_cost" || v.field === "total_development_cost") return v;
+  }
+  if(money.total_project_cost != null && Number.isFinite(+money.total_project_cost)){
+    return { status: "matched", value: +money.total_project_cost, field: "total_project_cost", source: null };
+  }
+  if(money.total_development_cost != null && Number.isFinite(+money.total_development_cost)){
+    return { status: "matched", value: +money.total_development_cost, field: "total_development_cost", source: null };
+  }
+  return null;
+}
+
+/**
+ * First-paint kinetic facts: matched project cost + short place.
+ * Visible in the lead — never only under a closed fields disclosure.
+ */
+function subsidyMatchedFactsHTML(data){
+  if(!data || !(data.join && data.join.matched)) return "";
+  const parts = [];
+  const cityRecordHearing = data.join.method === "city-record-hearing";
+  const slot = subsidyPreferredCostSlot(data.money);
+  if(slot && slot.value != null){
+    let field = t("subsidy_money_total_project_cost_lbl");
+    if(slot.field === "total_development_cost") field = t("subsidy_money_total_development_cost_lbl");
+    else if(slot.field === "total_project_cost") field = t("subsidy_money_total_project_cost_lbl");
+    const fromHearing = slot.source === "city-record-hearing" || cityRecordHearing;
+    parts.push(`<p class="lc-phase-fact" data-subsidy-matched-money="1">${t(fromHearing ? "subsidy_money_matched_city_record_html" : "subsidy_money_matched_html",{
+      field,
+      amount: lifecycleMoney(slot.value)
+    })}</p>`);
+  }
+  const place = subsidyPlaceDisplay(data.place);
+  if(place){
+    parts.push(`<p class="lc-phase-fact" data-subsidy-matched-place="1" lang="en" dir="ltr">${t("subsidy_place_matched_html",{
+      address: escUiHtml(place)
+    })}</p>`);
+  }
+  if(!parts.length) return "";
+  return `<div class="lc-phase-facts" data-subsidy-matched-facts="1">${parts.join("")}</div>`;
+}
+
 function subsidyPhaseTimelineHTML(view, data, notice){
   if(!view) return "";
   const join = data.join || {};
@@ -9810,10 +9885,13 @@ function subsidyPhaseTimelineHTML(view, data, notice){
   const cur = view.current || {};
   const phaseName = subsidyPhaseLabel({ label_key: cur.label_key });
   const actionHTML = subsidyPhaseActionHTML(view);
+  // Kinetic money/place first in the lead; feed-down is secondary chrome elsewhere.
+  const matchedFacts = subsidyMatchedFactsHTML(data);
   const lead = `<div class="lc-phase-lead" data-subsidy-phase-lead="1">
     <div class="lc-phase-now-label">${t("subsidy_phase_now_label")}</div>
     <p class="lc-phase-now-phase">${escUiHtml(phaseName)}</p>
     <p class="lc-phase-now-detail" lang="en" dir="ltr">${escUiHtml(cur.milestone_label || subsidyStageLabel(cur.stage) || "—")}${cur.since ? ` · ${t("subsidy_phase_since", { date: fdate(cur.since) })}` : ""}</p>
+    ${matchedFacts}
     ${actionHTML ? `<p class="lc-phase-action">${actionHTML}</p>` : ""}
     ${view.next ? `<p class="lc-phase-next">${t("subsidy_phase_next_html", { phase: escUiHtml(subsidyPhaseLabel(view.next)) })}</p>` : ""}
   </div>`;
@@ -9934,10 +10012,12 @@ function subsidyLifecycleHTMLFlat(data, notice){
   }
 
   const curLabel = subsidyStageLabel(currentKey || data.stage || "");
+  const matchedFacts = subsidyMatchedFactsHTML(data);
   const lead = join.matched
     ? `<div class="lc-phase-lead" data-subsidy-phase-lead="1">
       <div class="lc-phase-now-label">${t("subsidy_phase_now_label")}</div>
       <p class="lc-phase-now-phase">${escUiHtml(curLabel)}</p>
+      ${matchedFacts}
       <p class="lc-phase-action">${t("subsidy_phase_action_" + (currentKey === "board_decision" ? "board" : currentKey === "application" ? "application" : currentKey === "hearing" ? "hearing" : currentKey === "closing" ? "closing" : currentKey === "compliance" ? "compliance" : "application"))}</p>
     </div>`
     : "";
@@ -9970,19 +10050,19 @@ function subsidyJoinAndFieldChrome(data, notice){
     }
   } else if(join.matched){
     const proj = data.project || {};
+    // Matched join only — feed-down is secondary chrome (feedNote), not the headline.
     joinNote = t("subsidy_matched_html",{
       project: escUiHtml(proj.name || proj.id || "—"),
       company: escUiHtml((data.company && data.company.value) || proj.company || "—"),
       stage: subsidyStageLabel(data.stage || "")
     });
-    if(feedStatus === "unavailable"){
-      joinNote += ` ${t("subsidy_source_unavailable_html",{source:`<span lang="en" dir="ltr">${t("subsidy_source_build_nyc")}</span>`})}`;
-    }
   }
 
   const cityRecordHearing = join.method === "city-record-hearing";
   const feedUnavailable = join.feed_status === "unavailable";
   const moneyGapClassA = cityRecordHearing || feedUnavailable;
+  // Only unmatched/gap field rows go here. Matched money + place live in the lead
+  // (subsidyMatchedFactsHTML) so they are never buried under a closed disclosure.
   let fieldGaps = "";
   if(join.matched){
     if(data.company && data.company.status !== "matched"){
@@ -9996,32 +10076,19 @@ function subsidyJoinAndFieldChrome(data, notice){
         : `<div class="lc-norecord">${t("subsidy_place_unknown_html")}</div>`;
     }
     if(data.money){
-      const moneyFieldLabel = (slot) => {
-        if(slot && slot.field === "total_project_cost") return t("subsidy_money_total_project_cost_lbl");
-        if(slot && slot.field === "total_development_cost") return t("subsidy_money_total_development_cost_lbl");
-        return null;
-      };
-      const renderMoneySlot = (slot, defaultFieldLbl) => {
-        if(!slot) return;
-        const field = moneyFieldLabel(slot) || defaultFieldLbl;
-        if(slot.status === "matched" && slot.value != null){
-          const fromHearing = slot.source === "city-record-hearing" || cityRecordHearing;
-          fieldGaps += `<div class="lc-detail">${t(fromHearing ? "subsidy_money_matched_city_record_html" : "subsidy_money_matched_html",{
-            field,
-            amount: lifecycleMoney(slot.value)
-          })}</div>`;
-          return;
-        }
-        if(slot.status !== "matched"){
-          fieldGaps += moneyGapClassA
-            ? `<div class="lc-norecord">${t("subsidy_money_not_yet_ingested_html",{
-                field,
-                source:`<span lang="en" dir="ltr">${t("subsidy_source_build_nyc")}</span>`
-              })}</div>`
-            : `<div class="lc-norecord">${t("subsidy_money_unknown_html",{field})}</div>`;
-        }
-      };
-      renderMoneySlot(data.money.estimated_cost, t("subsidy_money_estimated_lbl"));
+      // Gap only when no matched project/development cost is present on money.
+      const costSlot = subsidyPreferredCostSlot(data.money);
+      if(!costSlot){
+        const field = t("subsidy_money_total_project_cost_lbl");
+        fieldGaps += moneyGapClassA
+          ? `<div class="lc-norecord">${t("subsidy_money_not_yet_ingested_html",{
+              field,
+              source:`<span lang="en" dir="ltr">${t("subsidy_source_build_nyc")}</span>`
+            })}</div>`
+          : `<div class="lc-norecord">${t("subsidy_money_unknown_html",{field})}</div>`;
+      }
+      // Matched requested benefit is still rare — surface it if present; gaps stay quiet
+      // under feed-down (class-a) so we don't invent "city does not publish" noise.
       if(data.money.requested_benefit && data.money.requested_benefit.status === "matched" && data.money.requested_benefit.value != null){
         fieldGaps += `<div class="lc-detail">${t("subsidy_money_matched_html",{
           field: t("subsidy_money_requested_lbl"),
@@ -10049,10 +10116,10 @@ function subsidyJoinAndFieldChrome(data, notice){
     ? `<details class="inline-disclose lc-how"><summary>${t("subsidy_phase_how_summary")}</summary><div class="inline-disclose-body">${howBody}</div></details>`
     : `<div class="note">${howBody}</div>`;
 
-  // Field gaps also behind disclosure when matched (substance, not primary chrome).
+  // Remaining field gaps only (matched money/place are already in the lead).
   const fieldsWrap = fieldGaps
     ? (join.matched
-      ? `<details class="inline-disclose lc-how"><summary>${t("subsidy_phase_show_fields")}</summary><div class="inline-disclose-body">${fieldGaps}</div></details>`
+      ? `<details class="inline-disclose lc-how" data-subsidy-field-gaps="1"><summary>${t("subsidy_phase_show_fields")}</summary><div class="inline-disclose-body">${fieldGaps}</div></details>`
       : fieldGaps)
     : "";
 
@@ -10073,12 +10140,16 @@ function subsidyLifecycleHTML(data, notice, phaseTools){
       const flat = subsidyLifecycleHTMLFlat(data, notice);
       body = `${flat.lead}${flat.stepper}${flat.notYet}${flat.stages ? `<div class="chain">${flat.stages}</div>` : ""}${flat.futureDisclosure}`;
     }
+  } else if(join.matched){
+    // Source fully unavailable but join carried hearing-derived facts — still surface them.
+    body = subsidyMatchedFactsHTML(data);
   }
 
+  // Lead = kinetic facts; feed-down is secondary (after timeline, not the headline).
   return `<div class="chain-h">${t("subsidy_lifecycle_heading")}</div>
-    ${chrome.joinNote?`<div class="note">${chrome.joinNote}</div>`:""}
-    ${chrome.feedNote?`<div class="note">${chrome.feedNote}</div>`:""}
+    ${chrome.joinNote?`<div class="note" data-subsidy-join-note="1">${chrome.joinNote}</div>`:""}
     ${body}
+    ${chrome.feedNote?`<div class="note lc-secondary" data-subsidy-feed-secondary="1">${chrome.feedNote}</div>`:""}
     ${chrome.fieldGaps}
     ${chrome.howHTML}`;
 }
