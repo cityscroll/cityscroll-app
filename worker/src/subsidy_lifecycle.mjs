@@ -8,6 +8,7 @@
 import {
   parseNYCIDAProjects,
   assembleSubsidyLifecycle,
+  stampSubsidyFeedUnavailable,
 } from "./lib/subsidy_lifecycle.mjs";
 
 const CITY_RECORD_NOTICE_SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
@@ -168,13 +169,10 @@ export async function computeLifecycle(env, requestId, noticeRow) {
     return { lifecycle, ok: false, sourceUnavailable: true };
   }
   // Feed down but City Record hearing matched: partial source, not a blank failure.
+  // Remap later-stage not_published → not_yet_ingested so UI never says the city
+  // withholds board/closing/compliance when we never fetched the project feed.
   if (!ok && lifecycle.join?.matched) {
-    lifecycle.source_status = "ok";
-    lifecycle.join = {
-      ...lifecycle.join,
-      feed_status: "unavailable",
-      feed_note: "Build NYC document feed unreachable; hearing stage from City Record notice.",
-    };
+    lifecycle = stampSubsidyFeedUnavailable(lifecycle);
   }
   return { lifecycle, ok: true, sourceUnavailable: false };
 }

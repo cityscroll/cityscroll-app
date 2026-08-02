@@ -6785,7 +6785,8 @@ function subsidyAnchorFromNotice(notice, data){
   return ev ? String(ev).slice(0,10) : null;
 }
 
-function subsidyStageHTML(entry, anchorDate){
+function subsidyStageHTML(entry, anchorDate, opts){
+  const feedStatus = opts && opts.feedStatus;
   const label = subsidyStageLabel(entry.stage);
   const dateHTML = entry.date ? `<div class="when">${fdate(entry.date)}</div>` : `<div class="when">—</div>`;
   let detailHTML = "";
@@ -6798,16 +6799,25 @@ function subsidyStageHTML(entry, anchorDate){
     const amt = entry.detail && entry.detail.amount != null ? `<div class="amt">${money(entry.detail.amount)}</div>` : "";
     detailHTML = amt + action + outcome;
   } else {
-    const kind = entry.gap_kind || subsidyGapKindClient(entry.stage, anchorDate, false);
+    let kind = entry.gap_kind || subsidyGapKindClient(entry.stage, anchorDate, false);
+    // Production partial join: Build NYC feed never landed. Do not claim class-(b)
+    // "city does not publish" for later stages — use not-yet-ingested / unreachable.
+    if(feedStatus === "unavailable" && kind === "not_published") kind = "not_yet_ingested";
     if(kind === "too_soon"){
       detailHTML = `<div class="lc-norecord">${t("subsidy_stage_too_soon_html",{
         stage: label,
         date: fdate(anchorDate) || "—",
         weeks: String(subsidyLagWeeks(entry.stage))
       })}</div>`;
+    } else if(kind === "not_yet_ingested" || kind === "unavailable"){
+      // Class-(a) incomplete ingest / source unreachable — never "city does not publish".
+      detailHTML = `<div class="lc-norecord" data-subsidy-gap="${escUiHtml(kind)}">${t("subsidy_stage_unmatched_html",{
+        stage: label,
+        source: `<span lang="en" dir="ltr">${t("subsidy_source_build_nyc")}</span>`
+      })}</div>`;
     } else {
-      // Aged absence → class-(b) not-published register (not "not yet shown" ingest lag).
-      detailHTML = `<div class="lc-norecord">${t("subsidy_stage_not_published_html",{
+      // Aged absence after a real project-feed join → class-(b) not-published.
+      detailHTML = `<div class="lc-norecord" data-subsidy-gap="not_published">${t("subsidy_stage_not_published_html",{
         stage: label,
         source: `<span lang="en" dir="ltr">${t("subsidy_source_build_nyc")}</span>`
       })}</div>`;
@@ -6831,11 +6841,12 @@ function subsidyLifecycleHTML(data, notice){
   const anchor = subsidyAnchorFromNotice(notice, data);
   // Ownership: project-level unmatched/unavailable is one gap note — do not also stack
   // per-stage "not yet shown" cards that re-classify the same absence.
+  const feedStatus = join.feed_status || null;
   let stages = "";
   if(join.matched && data.source_status !== "unavailable"){
     const tl = Array.isArray(data.timeline) ? data.timeline : [];
     tl.forEach((entry, idx) => {
-      stages += subsidyStageHTML(entry, anchor);
+      stages += subsidyStageHTML(entry, anchor, { feedStatus });
       if(idx < tl.length - 1) stages += '<div class="connector">→</div>';
     });
   }
@@ -6865,6 +6876,10 @@ function subsidyLifecycleHTML(data, notice){
       company: escUiHtml((data.company && data.company.value) || proj.company || "—"),
       stage: subsidyStageLabel(data.stage || "")
     });
+    // Partial City Record hearing join with unreachable project feed: disclose it.
+    if(feedStatus === "unavailable"){
+      joinNote += ` ${t("subsidy_source_unavailable_html",{source:`<span lang="en" dir="ltr">${t("subsidy_source_build_nyc")}</span>`})}`;
+    }
   }
 
   // Field-level money + company/place: show matched amounts; gap copy depends on whether
@@ -7070,7 +7085,10 @@ function collapseMeetingAgenda(items){
   return { matters: Array.from(byKey.values()), procedural, actionRows };
 }
 
-/** Vote tallies only when aye/nay are non-zero or a person roll call exists. */
+/** Vote tallies only when aye/nay are non-zero or a person roll call exists.
+ * Person-level roll call only when production retained officials. When tallies
+ * exist but by_person is empty, use class-(a) not-yet-shown — never imply
+ * person-level "who voted" is live when the payload has none. */
 function meetingVotesHTML(votes){
   if(!Array.isArray(votes) || !votes.length) return "";
   return votes.map(v => {
@@ -7096,6 +7114,8 @@ function meetingVotesHTML(votes){
           vote: escUiHtml(String(vote))
         })}</span>`;
       }).join(" · ")}</div>`;
+    } else if(meaningful){
+      html += `<div class="lc-norecord" data-person-votes-gap="not_yet_ingested">${t("meeting_outcomes_no_person_votes_html")}</div>`;
     }
     return html;
   }).join("");

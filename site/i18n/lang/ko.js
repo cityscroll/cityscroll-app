@@ -729,6 +729,7 @@
     meeting_outcomes_vote_person_html: "{name} ({vote})",
     meeting_outcomes_outcome_html: "결과: {outcome}",
     meeting_outcomes_no_votes_html: "아직 여기에 표시되지 않음 — 안건 “{matter}”의 호명 투표는 NYC Council Legistar에 있습니다.",
+    meeting_outcomes_no_person_votes_html: "아직 여기에 표시되지 않음 — 개인 단위 호명 투표는 NYC Council Legistar에 있습니다.",
     meeting_outcomes_no_matters_html: "아직 여기 표시되지 않음 — 안건과 의제는 NYC Council Legistar에 있습니다.",
     meeting_outcomes_no_action_html: "아직 여기에 표시되지 않음 — 이 안건에 대한 위원회 조치는 NYC Council Legistar에 있습니다.",
     meeting_outcomes_no_attachments_html: "아직 여기에 표시되지 않음 — 관련 첨부 문서는 NYC Council Legistar에 있습니다.",

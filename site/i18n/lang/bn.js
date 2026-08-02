@@ -729,6 +729,7 @@
     meeting_outcomes_vote_person_html: "{name} ({vote})",
     meeting_outcomes_outcome_html: "ফলাফল: {outcome}",
     meeting_outcomes_no_votes_html: "এখানে এখনও দেখানো হয়নি — “{matter}” বিষয়ের নামধারী ভোট NYC Council Legistar-এ আছে।",
+    meeting_outcomes_no_person_votes_html: "এখানে এখনও দেখানো হয়নি — ব্যক্তি-স্তরের রোল-কল ভোট NYC Council Legistar-এ আছে।",
     meeting_outcomes_no_matters_html: "এখানে এখনও দেখানো হয়নি — এজেন্ডার আইটেম ও বিষয় NYC Council Legistar-এ আছে।",
     meeting_outcomes_no_action_html: "এখানে এখনও দেখানো হয়নি — এই বিষয়ে কমিটির পদক্ষেপ NYC Council Legistar-এ আছে।",
     meeting_outcomes_no_attachments_html: "এখানে এখনও দেখানো হয়নি — সহায়ক সংযুক্তিগুলি NYC Council Legistar-এ আছে।",

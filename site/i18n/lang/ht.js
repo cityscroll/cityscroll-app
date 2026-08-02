@@ -728,6 +728,7 @@
     meeting_outcomes_vote_person_html: "{name} ({vote})",
     meeting_outcomes_outcome_html: "Rezilta: {outcome}",
     meeting_outcomes_no_votes_html: "Pokò a pa montre isit la — vòt non non pou zafè “{matter}” yo nan NYC Council Legistar.",
+    meeting_outcomes_no_person_votes_html: "Pokò anko montre isit la — vòt non pa non moun pa moun yo nan NYC Council Legistar.",
     meeting_outcomes_no_matters_html: "Pokò a pa montre isit la — atik ajanda ak zafè yo nan NYC Council Legistar.",
     meeting_outcomes_no_action_html: "Yo poko montre li isit la — aksyon komite a sou zafè sa a nan NYC Council Legistar.",
     meeting_outcomes_no_attachments_html: "Pokò a pa montre isit la — dokiman sipò yo nan NYC Council Legistar.",

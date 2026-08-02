@@ -1083,6 +1083,8 @@ const STRINGS = {
     meeting_outcomes_vote_person_html: "{name} ({vote})",
     meeting_outcomes_outcome_html: "Outcome: {outcome}",
     meeting_outcomes_no_votes_html: "Not yet shown here — roll-call votes for matter “{matter}” live in NYC Council Legistar.",
+    // Class-(a): tallies may be present while person-level rows are not yet in the read model.
+    meeting_outcomes_no_person_votes_html: "Not yet shown here — person-level roll-call votes live in NYC Council Legistar.",
     meeting_outcomes_no_matters_html: "Not yet shown here — agenda items and matters live in NYC Council Legistar.",
     meeting_outcomes_no_action_html: "Not yet shown here — the committee action for this matter lives in NYC Council Legistar.",
     meeting_outcomes_no_attachments_html: "Not yet shown here — supporting attachments live in NYC Council Legistar.",

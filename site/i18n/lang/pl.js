@@ -747,6 +747,7 @@
     meeting_outcomes_vote_person_html: "{name} ({vote})",
     meeting_outcomes_outcome_html: "Wynik: {outcome}",
     meeting_outcomes_no_votes_html: "Jeszcze nie pokazano tutaj — głosy imienne w sprawie „{matter}” są w NYC Council Legistar.",
+    meeting_outcomes_no_person_votes_html: "Jeszcze nie pokazano tutaj — imienne głosy osób są w NYC Council Legistar.",
     meeting_outcomes_no_matters_html: "Jeszcze nie pokazane tutaj — punkty porządku obrad i sprawy są w NYC Council Legistar.",
     meeting_outcomes_no_action_html: "Jeszcze nie pokazano tutaj — działanie komisji w tej sprawie jest w NYC Council Legistar.",
     meeting_outcomes_no_attachments_html: "Jeszcze nie pokazane tutaj — załączniki pomocnicze są w NYC Council Legistar.",

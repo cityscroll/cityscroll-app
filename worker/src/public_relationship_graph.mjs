@@ -26,6 +26,14 @@ function escapeHtml(value) {
   }[char]));
 }
 
+/** Public-facing status when no canonical entity graph is published for this id. */
+export const GRAPH_NOT_YET_PUBLIC = {
+  error: "not-found",
+  public_status: "not_yet_public",
+  message:
+    "No public relationship graph is available for this id. Subject-registry links on notice lifecycles are live; this graph surface only returns typed edges for canonical entity ids published from the resolution store. Do not treat name-shaped or contract ids as live graph keys until a resolved entity returns linked records.",
+};
+
 function json(body, status = 200) {
   return new Response(JSON.stringify(body), {
     status,
@@ -33,6 +41,31 @@ function json(body, status = 200) {
       "Content-Type": "application/json; charset=utf-8",
       "Cache-Control": status === 200 ? GRAPH_CACHE : "no-store",
       "Access-Control-Allow-Origin": "*",
+    },
+  });
+}
+
+function notYetPublicResponse(request) {
+  const url = new URL(request.url);
+  const wantsJson = url.searchParams.get("format") === "json"
+    || (request.headers.get("accept") || "").includes("application/json");
+  if (wantsJson || !request.headers.get("accept")?.includes("text/html")) {
+    return json(GRAPH_NOT_YET_PUBLIC, 404);
+  }
+  const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Relationship graph not yet public · CityScroll</title>
+    <style>body{margin:0;background:#f7f2e8;color:#17202a;font:16px/1.5 system-ui,sans-serif}main{width:min(720px,calc(100% - 32px));margin:48px auto}h1{font:700 2rem Georgia,serif}.note{color:#5e6a73;max-width:60ch}</style>
+    </head><body><main>
+      <p style="text-transform:uppercase;letter-spacing:.1em;font-size:.72rem;font-weight:800;color:#9c3f32">CityScroll · not yet public</p>
+      <h1>Relationship graph not yet public</h1>
+      <p class="note">${escapeHtml(GRAPH_NOT_YET_PUBLIC.message)}</p>
+      <p class="note">Subject-registry fields on contract lifecycles remain the live cross-spine identifiers.</p>
+    </main></body></html>`;
+  return new Response(html, {
+    status: 404,
+    headers: {
+      "Content-Type": "text/html; charset=utf-8",
+      "Cache-Control": "no-store",
     },
   });
 }
@@ -179,7 +212,7 @@ export async function handlePublicRelationshipGraph(request, env) {
   } catch {
     return json({ error: "relationship-graph-unavailable" }, 503);
   }
-  if (!graph) return json({ error: "not-found" }, 404);
+  if (!graph) return notYetPublicResponse(request);
   if (url.searchParams.get("format") === "json"
       || (request.headers.get("accept") || "").includes("application/json")) {
     return json(graph);
