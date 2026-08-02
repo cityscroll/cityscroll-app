@@ -28,11 +28,50 @@ import {
   measureFranchiseConcessionSpineCompleteness,
   spineForNotice,
 } from "../worker/src/lib/franchise_concession_spine.mjs";
+import { SODA_WHERE } from "../worker/src/franchise_concession.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const fixture = JSON.parse(
   readFileSync(join(ROOT, "test/fixtures/franchise_concession/field_cases.json"), "utf8"),
 );
+
+/**
+ * SoQL string literals escape a single quote by doubling it ('').
+ * A backslash-escaped apostrophe (Mayor\'s) is invalid SoQL and returns HTTP 400
+ * from Socrata — which zeroed the whole franchise/FCRC materialization OR-query.
+ */
+function soqlClauseEscapesApostrophe(clause, valueWithApostrophe) {
+  const literal = `'${valueWithApostrophe.replaceAll("'", "''")}'`;
+  return clause.includes(literal) && !clause.includes(`\\'`);
+}
+
+test("SODA_WHERE escapes MOCS apostrophe with SoQL doubling (not backslash)", () => {
+  // Regression: unescaped / backslash-escaped ' in Mayor's broke the entire OR query
+  // (SODA query.compiler.malformed → empty franchise spine on the public surface).
+  assert.match(SODA_WHERE, /agency_name='Mayor''s Office of Contract Services'/);
+  assert.equal(SODA_WHERE.includes("\\'"), false, "SoQL does not use backslash escapes");
+  assert.equal(
+    soqlClauseEscapesApostrophe(SODA_WHERE, "Mayor's Office of Contract Services"),
+    true,
+  );
+  // Keep the MOCS clause — do not drop it to "fix" the query.
+  assert.match(SODA_WHERE, /Mayor''s Office of Contract Services/);
+  assert.match(SODA_WHERE, /Franchise and Concession Review Committee/);
+  assert.match(SODA_WHERE, /%FCRC%/);
+});
+
+test("broken SoQL apostrophe escape is distinguishable from the fixed clause", () => {
+  const broken = "agency_name='Mayor\\'s Office of Contract Services'";
+  const fixed = "agency_name='Mayor''s Office of Contract Services'";
+  // The historical bug: JS produced Mayor\'s (backslash + quote) in the $where string.
+  assert.equal(broken.includes("\\'"), true);
+  assert.equal(broken.includes("Mayor''s"), false);
+  assert.equal(fixed.includes("Mayor''s"), true);
+  assert.equal(fixed.includes("\\'"), false);
+  // Product query must match the fixed shape, not the broken one.
+  assert.ok(SODA_WHERE.includes(fixed));
+  assert.ok(!SODA_WHERE.includes(broken));
+});
 
 test("FRANCHISE_CONCESSION_STAGES is solicitation → public_hearing → committee_meeting → award", () => {
   assert.deepEqual([...FRANCHISE_CONCESSION_STAGES], [
