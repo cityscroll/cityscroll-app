@@ -231,7 +231,7 @@
         "banner": {
           "selector": "#meetingswidening .widening-note",
           "visible": true,
-          "text": "Showing recent past meetings for “IDA” (none upcoming)."
+          "text": "Showing recent past meetings for \u201cIDA\u201d (none upcoming)."
         }
       }
     },
@@ -452,7 +452,7 @@
       "id": "rules-lifecycle-spine",
       "url": "#notice/20260714029",
       "feature": "rules-lifecycle-spine",
-      "description": "Show proposal, hearing, and comment-deadline stages on a commercial-meter parking rule notice.",
+      "description": "Show the phase-grouped rule lifecycle (proposal \u2192 public process \u2192 adoption \u2192 effective) on a commercial-meter parking rule notice.",
       "expectations": {
         "visible": [
           {
@@ -460,19 +460,22 @@
             "text": "Rule lifecycle"
           },
           {
-            "selector": "#nrules .rule-chain .stage-name",
-            "text": "Proposal published"
+            "selector": "#nrules .rule-phase-stepper"
           },
           {
-            "selector": "#nrules .rule-chain .stage-name",
+            "selector": "#nrules .rule-spine-lead .lc-phase-now-phase",
+            "text": "Public process"
+          },
+          {
+            "selector": "#nrules .stage-name",
             "text": "Public hearing"
           },
           {
-            "selector": "#nrules .rule-chain .stage-name",
+            "selector": "#nrules .stage-name",
             "text": "Comment deadline"
           },
           {
-            "selector": "#nrules .rule-chain .box.matched"
+            "selector": "#nrules .box.matched"
           }
         ],
         "notVisible": [
@@ -484,7 +487,8 @@
           }
         ],
         "focus": "#noticeview .route-item"
-      }
+      },
+      "localOnly": true
     },
     {
       "id": "property-bbl-fallback",
