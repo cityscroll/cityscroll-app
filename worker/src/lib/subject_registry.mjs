@@ -88,6 +88,11 @@ export const SUBJECT_LINK_TYPES = Object.freeze({
     from_kinds: Object.freeze(["notice"]),
     to_kinds: Object.freeze(["vendor"]),
   },
+  same_rulemaking: {
+    description: "City Record notices that belong to the same rulemaking lifecycle (proposal / hearing / adoption siblings)",
+    from_kinds: Object.freeze(["notice"]),
+    to_kinds: Object.freeze(["notice"]),
+  },
 });
 
 const KIND_SET = new Set(Object.keys(SUBJECT_KINDS));
@@ -390,6 +395,9 @@ export function rulesNativeId(nycRules = {}) {
  * Build subject_refs + typed links from a rules:materialized:v2 record.
  * Stamps notice and/or rules subjects from real ids only. The notice↔rules
  * about_notice edge is emitted only when join.matched and both subjects resolve.
+ * When multi-notice rulemaking siblings are stamped (related_notices with
+ * high-confidence join), emits same_rulemaking notice↔notice edges — link not
+ * merge; each notice keeps its own subject_ref.
  *
  * @param {object} record - public rules materialization row
  * @returns {{ subject_refs: object, subject_links: object[] }}
@@ -433,6 +441,45 @@ export function linksFromRuleRecord(record = {}) {
       },
     });
     if (edge) links.push(edge);
+  }
+
+  // Multi-notice rulemaking siblings (proposal / hearing / adoption). Only
+  // high-confidence related_notices entries get same_rulemaking edges.
+  const selfNotice = subject_refs.notice;
+  const related = Array.isArray(r.related_notices) ? r.related_notices : [];
+  if (selfNotice && related.length) {
+    for (const sib of related) {
+      const sibId = clean(sib?.request_id || sib?.id);
+      if (!sibId || sibId === requestId) continue;
+      const joinOk = sib?.join?.matched === true && sib?.join?.confidence === "high";
+      // When related_notices lack per-sibling join detail, fall back to the
+      // record-level rulemaking_join (attach only sets matched on high-conf groups).
+      const groupOk = r.rulemaking_join?.matched === true
+        && r.rulemaking_join?.confidence === "high";
+      if (!joinOk && !groupOk) continue;
+      const sibRef = formatSubjectRef("notice", sibId);
+      if (!sibRef) continue;
+      // Emit ordered by request_id so undirected pairs dedupe cleanly.
+      const [from, to] = selfNotice < sibRef ? [selfNotice, sibRef] : [sibRef, selfNotice];
+      const edge = makeSubjectLink({
+        type: "same_rulemaking",
+        from,
+        to,
+        evidence: {
+          basis: "rulemaking_sibling_stitch",
+          source: "city-record",
+          method: clean(sib?.join?.method || r.rulemaking_join?.method) || null,
+          confidence: clean(sib?.join?.confidence || r.rulemaking_join?.confidence) || "high",
+          join_basis: clean(sib?.join?.basis || r.rulemaking_join?.basis) || null,
+          rulemaking_subject_ref: clean(r.rulemaking_subject_ref) || null,
+          request_id: requestId || null,
+          sibling_request_id: sibId,
+          role: clean(r.rulemaking_join?.role || sib?.role) || null,
+          sibling_role: clean(sib?.role) || null,
+        },
+      });
+      if (edge) links.push(edge);
+    }
   }
 
   return {
