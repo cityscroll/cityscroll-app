@@ -4349,6 +4349,44 @@ function zapDistrictWhere(communityDistrict){
     : "";
 }
 
+// Commit-time default Active ULURP list (wave-2 batch precompute). Filter/keyword/geo stay live SODA.
+const LAND_DEFAULT_SNAPSHOT_URL="data/land_default_ulurp.json";
+let landDefaultSnapshotPromise=null;
+function loadLandDefaultSnapshot(){
+  if(!landDefaultSnapshotPromise){
+    landDefaultSnapshotPromise=fetch(LAND_DEFAULT_SNAPSHOT_URL)
+      .then(r=>r.ok?r.json():null)
+      .catch(()=>null);
+  }
+  return landDefaultSnapshotPromise;
+}
+function isDefaultLandSearchState(status, boro, kw, located){
+  return status==="active" && !boro && !kw && !landCommunityDistrict && !located;
+}
+function paintLandRows(rows, banner, kw, block, boro, stale, autoSelect){
+  if(stale()) return;
+  // Preserve selection across hybrid refresh (snapshot → live) when the project is still present.
+  const selectedId=(!autoSelect && Array.isArray(lRows))
+    ? (document.querySelector("#llist .row.sel") && lRows[+document.querySelector("#llist .row.sel").dataset.i]?.project_id)
+    : null;
+  lRows=rows; landBanner=banner||"";
+  unbusy("#llist");
+  $("#lrescount").textContent=lRows.length>=40?"40+":lRows.length;
+  announce(t("rezonings_announce",{n:lRows.length>=40?"40+":lRows.length}));
+  // A resolved block/nearby lookup doesn't filter rows by kw as TEXT (it's a BBL join) --
+  // match evidence would misrepresent that as a keyword hit, so only pass kw through when
+  // it actually became the $q text filter below. boro is always a structured filter -- passed
+  // separately as a contextTerm (see landRenderList).
+  // Hybrid refresh after a snapshot paint must not re-autoSelect (would wipe a chosen row).
+  landRenderList(kw, !block, boro, autoSelect);
+  if(selectedId){
+    const idx=lRows.findIndex(r=>r.project_id===selectedId);
+    if(idx>=0){
+      const el=document.querySelector(`#llist .row[data-i="${idx}"]`);
+      if(el) el.classList.add("sel");
+    }
+  }
+}
 async function landSearch(){
   const boro=$("#lboro").value, kw=$("#lkw").value.trim(), status=$("#lstatus").value;
   const located=!!(landResolvedArea && !kw && landResolvedArea.borough===boro);
@@ -4367,6 +4405,19 @@ async function landSearch(){
   const stale = staleGuard("land");
   let geo=located?landResolvedArea:null, block=located?landResolvedArea.block:null;
   if(kw){ geo=await geocode(kw); if(geo&&geo.bbl&&/^\d{10}$/.test(geo.bbl)) block=geo.bbl.slice(0,6); }
+  // Default Land tab: paint prebuilt Active ULURP snapshot first (no SODA wait), then hybrid-refresh.
+  const useDefaultSnapshot=isDefaultLandSearchState(status, boro, kw, located) && !block;
+  let paintedFromSnapshot=false;
+  if(useDefaultSnapshot){
+    try{
+      const snap=await loadLandDefaultSnapshot();
+      const projects=snap&&Array.isArray(snap.projects)?snap.projects:[];
+      if(projects.length){
+        paintLandRows(projects, "", kw, false, boro, stale, true);
+        paintedFromSnapshot=true;
+      }
+    }catch(e){}
+  }
   try{
     let rows, banner="";
     if(block){
@@ -4385,17 +4436,14 @@ async function landSearch(){
       const p={"$select":ZAP_SELECT,"$where":w,"$order":"current_milestone_date DESC","$limit":"40"}; if(kw) p["$q"]=kw;
       rows=await api(ZAP,p);
     }
-    if(stale()) return;
-    lRows=rows; landBanner=banner;
-    unbusy("#llist");
-    $("#lrescount").textContent=lRows.length>=40?"40+":lRows.length;
-    announce(t("rezonings_announce",{n:lRows.length>=40?"40+":lRows.length}));
-    // A resolved block/nearby lookup doesn't filter rows by kw as TEXT (it's a BBL join) --
-    // match evidence would misrepresent that as a keyword hit, so only pass kw through when
-    // it actually became the $q text filter below. boro is always a structured filter -- passed
-    // separately as a contextTerm (see landRenderList).
-    landRenderList(kw, !block, boro);
-  }catch(e){ if(!stale()){ unbusy("#llist"); $("#llist").innerHTML='<div class="empty">' + t("could_not_reach") + '</div>'; } }
+    // If snapshot already painted the default list, refresh rows without re-clicking the first item.
+    paintLandRows(rows, banner, kw, !!block, boro, stale, paintedFromSnapshot ? false : true);
+  }catch(e){
+    if(!stale() && !paintedFromSnapshot){
+      unbusy("#llist");
+      $("#llist").innerHTML='<div class="empty">' + t("could_not_reach") + '</div>';
+    }
+  }
 }
 
 async function landNearby(geo,status){
@@ -4468,7 +4516,8 @@ async function landSelect(i, el){
       <div><div class="big" style="font-size:17px">${r.primary_applicant||"—"}</div><div class="lbl">${t("applicant_lbl")}</div></div>
       <div><div class="big" style="font-size:17px">${r.borough||""}${r.community_district?" · CD "+r.community_district:""}</div><div class="lbl">${t("where_lbl")}</div></div>
     </div>`;
-  if(r.project_brief) html+=`<div class="scope"><span class="lbl">${t("in_plain_english")}</span>${excerptHtml(r.project_brief,900)}</div>`;
+  if(r.project_brief) html+=`<div class="scope" id="land-brief"><span class="lbl">${t("in_plain_english")}</span>${excerptHtml(r.project_brief,900)}</div>`;
+  else html+=`<div class="scope" id="land-brief" hidden></div>`;
   if(actList.length) html+=`<div class="rmeta2" style="margin-top:10px"><b>${t("actions_lbl")}</b> ${actList.join(" · ")}</div>`;
   const area=(r.project_name||r.borough||"").replace(/(rezoning|demapping|rezone|special permit|special district|text amendment|mapping actions?|modification|disposition|non-?ulurp).*/i,"").trim().split(/\s+/).slice(0,3).join(" ")||r.borough||"";
   html+=`<div class="actions" style="margin-top:12px">
@@ -4487,6 +4536,23 @@ async function landSelect(i, el){
   </div>
   <div class="note" id="landmapnote"><span class="loading"></span> ${t("locating")}</div>`;
   $("#ldetail").innerHTML=html;
+  // List snapshots omit project_brief; hydrate once from Open Data when detail opens.
+  if(!r.project_brief && r.project_id){
+    api(ZAP,{"$select":ZAP_SELECT,"$where":`project_id='${String(r.project_id).replace(/'/g,"''")}'`,"$limit":"1"})
+      .then(rows=>{
+        if(selection!==landSelectionSeq) return;
+        const full=rows&&rows[0];
+        if(!full||!full.project_brief) return;
+        r.project_brief=full.project_brief;
+        if(full.actions!=null) r.actions=full.actions;
+        const brief=$("#land-brief");
+        if(brief){
+          brief.hidden=false;
+          brief.innerHTML=`<span class="lbl">${t("in_plain_english")}</span>${excerptHtml(full.project_brief,900)}`;
+        }
+      })
+      .catch(()=>{});
+  }
   loadZapOutcomes(r, $("#land-outcomes"), selection);
   const landURL=landLink(r.project_id);
   const lc=$("#landcopy"); if(lc) lc.addEventListener("click",()=>copyText(landURL, lc));
