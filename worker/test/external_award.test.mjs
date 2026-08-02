@@ -13,7 +13,10 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { handleExternalAward, refreshAboAwards, prewarmNycha } from "../src/external_award.mjs";
+import {
+  handleExternalAward, refreshAboAwards, prewarmNycha, getOrComputeNycha,
+  NYCHA_EMPTY_CACHE_TTL_MS,
+} from "../src/external_award.mjs";
 
 // --- in-memory D1 (external_award_matches) + KV (award:* keys) stubs ---------------------------
 function fakeDB(seed = {}) {
@@ -116,6 +119,60 @@ test("EXACT NYCHA: a Checkbook/WAF failure is ok:false and NOT cached (retry nex
     assert.equal(body.ok, false);
     assert.equal(res.headers.get("Cache-Control"), "no-store");
     assert.equal(db._cache["20250110001"], undefined, "a failed lookup must not be cached");
+  } finally { globalThis.fetch = orig; }
+});
+
+test("EXACT NYCHA: empty matches expire so a later award can surface", withMockedFetch({
+  checkbook: nychaResponse([{ id: "C-NEW", pin: "337474", vendor: "LATER VENDOR", amount: "100", approved: "2025-06-01", start: "2025-06-01" }]),
+}, async () => {
+  const staleEmptyAt = new Date(Date.parse("2025-06-15T00:00:00.000Z") - NYCHA_EMPTY_CACHE_TTL_MS - 1000).toISOString();
+  const db = fakeDB({
+    notices: { "20250110001": { request_id: "20250110001", start_date: "2025-01-10", agency: "Housing Authority", type_of_notice: "Solicitation", pin: "337474" } },
+    cache: { "20250110001": { matches: JSON.stringify({ matches: [] }), computed_at: staleEmptyAt } },
+  });
+  const { matches, ok } = await getOrComputeNycha({ DB: db }, "20250110001", undefined, Date.parse("2025-06-15T00:00:00.000Z"));
+  assert.equal(ok, true);
+  assert.equal(matches.length, 1, "stale empty cache must recompute");
+  assert.equal(matches[0].vendor, "LATER VENDOR");
+}));
+
+test("EXACT NYCHA: fresh empty cache is still a confirmed empty (no re-fetch)", withMockedFetch({
+  checkbook: nychaResponse([{ id: "SHOULD-NOT-SEE", pin: "337474", vendor: "X", amount: "1", approved: "2025-06-01", start: "2025-06-01" }]),
+}, async (calls) => {
+  const freshAt = new Date(Date.parse("2025-06-15T00:00:00.000Z") - 60_000).toISOString();
+  const db = fakeDB({
+    notices: { "20250110001": { request_id: "20250110001", start_date: "2025-01-10", agency: "Housing Authority", type_of_notice: "Solicitation", pin: "337474" } },
+    cache: { "20250110001": { matches: JSON.stringify({ matches: [] }), computed_at: freshAt } },
+  });
+  const { matches, ok } = await getOrComputeNycha({ DB: db }, "20250110001", undefined, Date.parse("2025-06-15T00:00:00.000Z"));
+  assert.equal(ok, true);
+  assert.deepEqual(matches, []);
+  assert.equal(calls.filter((c) => c.includes("checkbooknyc")).length, 0, "fresh empty must not re-hit Checkbook");
+}));
+
+test("EXACT NYCHA: page-budget exhaust still returns Agreement rows already seen", async () => {
+  const orig = globalThis.fetch;
+  let page = 0;
+  globalThis.fetch = async (u) => {
+    if (!String(u).includes("checkbooknyc")) return { ok: true, json: async () => [] };
+    page++;
+    // Every page is full (25 txs). Page 1 carries the Agreement; later pages are Line noise only.
+    if (page === 1) {
+      const rows = [{ id: "BA1", pin: "999001", vendor: "FULL PAGE VENDOR", amount: "5000", approved: "2025-04-01", start: "2025-04-01", recordType: "Agreement" }];
+      for (let i = 0; i < 24; i++) rows.push({ id: "BA1", pin: "999001", vendor: "FULL PAGE VENDOR", amount: "", approved: "2025-04-01", start: "2025-04-01", recordType: "Line" });
+      return { ok: true, status: 200, text: async () => nychaResponse(rows) };
+    }
+    const lines = [];
+    for (let i = 0; i < 25; i++) lines.push({ id: "BA1", pin: "999001", vendor: "FULL PAGE VENDOR", amount: "", approved: "2025-04-01", start: "2025-04-01", recordType: "Line" });
+    return { ok: true, status: 200, text: async () => nychaResponse(lines) };
+  };
+  try {
+    const db = fakeDB({ notices: { "20250110002": { request_id: "20250110002", start_date: "2025-01-10", agency: "Housing Authority", type_of_notice: "Solicitation", pin: "999001" } } });
+    const res = await handleExternalAward(req("?id=20250110002"), { DB: db });
+    const body = await res.json();
+    assert.equal(body.ok, true, "must not fail closed after seeing an Agreement");
+    assert.equal(body.matches.length, 1);
+    assert.equal(body.matches[0].vendor, "FULL PAGE VENDOR");
   } finally { globalThis.fetch = orig; }
 });
 
@@ -228,7 +285,8 @@ test("prewarmNycha: bounded, idempotent, fail-soft; skips already-cached ids", w
 }, async () => {
   const db = fakeDB({
     notices: { "20250110001": { request_id: "20250110001", start_date: "2025-01-10", agency: "Housing Authority", type_of_notice: "Solicitation", pin: "337474" } },
-    cache: { "ALREADY": { matches: JSON.stringify({ matches: [] }) } },
+    // Fresh empty cache (with computed_at) must skip; empties without computed_at are legacy and re-check.
+    cache: { "ALREADY": { matches: JSON.stringify({ matches: [] }), computed_at: new Date().toISOString() } },
   });
   const r = await prewarmNycha({ DB: db }, ["20250110001", "ALREADY", "20250110001"]);
   assert.equal(r.requested, 2, "deduped");
