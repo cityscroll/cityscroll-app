@@ -51,6 +51,26 @@ test("English land banner copy updated for no-distance fallback", () => {
   assert.equal(en.banner_none_lot, "No rezoning filed on this lot ({label}). Recent rezonings in <b>{area}</b>:");
 });
 
+// City Record ULURP join gap is "none found yet", not a categorical withhold.
+// "does not publish" + "would appear if released" is self-contradictory here.
+const LAND_SPINE_GAP_NOT_PUBLISHED =
+  "No City Record notice matching this project's ULURP numbers has been published yet. If one is released, it will appear in {source}.";
+
+test("land_spine_gap_not_published_html uses not-yet framing, not false withhold", () => {
+  assert.equal(en.land_spine_gap_not_published_html, LAND_SPINE_GAP_NOT_PUBLISHED);
+  assert.doesNotMatch(en.land_spine_gap_not_published_html, /does not publish/i);
+  assert.match(en.land_spine_gap_not_published_html, /has been published yet/i);
+  assert.match(en.land_spine_gap_not_published_html, /\{source\}/);
+  // Shipping langs keep key parity; machine-drafted files may still ship English.
+  for (const lang of shippingLangs) {
+    const v = langCopies[lang].land_spine_gap_not_published_html;
+    assert.ok(typeof v === "string" && v.length > 0, `${lang} missing land_spine_gap_not_published_html`);
+    assert.doesNotMatch(v, /does not publish/i, `${lang} still has false withhold`);
+    assert.doesNotMatch(v, /no publica un aviso del City Record/i, `${lang} Spanish withhold remnant`);
+    assert.doesNotMatch(v, /市政府未发布/, `${lang} Chinese absolute-withhold remnant`);
+  }
+});
+
 for (const lang of shippingLangs) {
   test(`Land methodology note ships for ${lang}`, () => {
     assert.equal(langCopies[lang].banner_none_nearest, "No rezoning on this block. In <b>{area}</b>:", `${lang}.banner_none_nearest`);
