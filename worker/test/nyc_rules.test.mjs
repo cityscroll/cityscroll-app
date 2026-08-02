@@ -52,8 +52,9 @@ function cityRecordNotice(opts) {
     start_date: opts.start_date || "2026-07-28T00:00:00.000",
     agency_name: opts.agency_name || "Department of Transportation",
     type_of_notice_description: opts.type || "Agency Rules",
-    section_name: "Agency Rules",
+    section_name: opts.section_name || "Agency Rules",
     short_title: opts.short_title || "Proposed rule amendment",
+    event_date: opts.event_date || null,
     additional_description_1: opts.additional_description_1 || "",
     additional_description_2: "",
     additional_description_3: "",
@@ -384,6 +385,7 @@ test("buildRuleView stitches proposal/hearing/adoption City Record siblings into
       short_title: "Public Hearing on Natural Gas Detectors in Dwelling Units",
       start_date: "2026-04-15T00:00:00.000",
       type: "Public Hearings",
+      event_date: "2026-04-20T10:00:00.000",
     }),
     cityRecordNotice({
       request_id: "20260701011",
@@ -418,6 +420,125 @@ test("buildRuleView stitches proposal/hearing/adoption City Record siblings into
   // Notice identities stay distinct.
   assert.equal(byId["20260301011"].subject_refs.notice, "notice:20260301011");
   assert.equal(byId["20260701011"].subject_refs.notice, "notice:20260701011");
+
+  // Public Hearings event_date becomes public_hearing on the hearing notice and
+  // high-confidence siblings (proposal / adoption), not the unrelated rulemaking.
+  const hearingEv = (row) => (row.events || []).find((e) => e.event_type === "public_hearing");
+  assert.ok(hearingEv(byId["20260415011"]), "hearing notice must carry public_hearing from event_date");
+  assert.equal(hearingEv(byId["20260415011"]).source_field, "city_record.event_date");
+  assert.equal(hearingEv(byId["20260415011"]).valid_at, "2026-04-20T10:00:00");
+  assert.equal(hearingEv(byId["20260415011"]).provenance?.request_id, "20260415011");
+  assert.ok(hearingEv(byId["20260301011"]), "proposal sibling receives joined public_hearing");
+  assert.equal(hearingEv(byId["20260301011"]).provenance?.request_id, "20260415011");
+  assert.ok(hearingEv(byId["20260701011"]), "adoption sibling receives joined public_hearing");
+  assert.equal(hearingEv(byId["20260320099"]), undefined, "unrelated notice must not receive hearing");
+});
+
+test("buildRuleView: Public Hearings notice matching a rulemaking joins as public_hearing; non-matching does not", async () => {
+  // RSS has a proposal without hearing_date_1 — City Record supplies the hearing.
+  const rss = rssFeed([
+    rssItem({
+      title: "Natural Gas Detectors in Dwelling Units",
+      url: "https://rules.cityofnewyork.us/rule/gas-detectors/",
+      pubDate: "Sun, 01 Mar 2026 12:00:00 +0000",
+      agency_name: "HPD",
+      comment_by_date: "20260430",
+      // deliberately no hearing_date_1 — join must come from City Record
+    }),
+  ]);
+  const crRows = [
+    cityRecordNotice({
+      request_id: "PROP-GAS",
+      agency_name: "Housing Preservation and Development",
+      short_title: "Proposed Rule — Natural Gas Detectors in Dwelling Units",
+      start_date: "2026-03-01T00:00:00.000",
+      type: "Notice",
+    }),
+    cityRecordNotice({
+      request_id: "HEAR-GAS",
+      agency_name: "Housing Preservation and Development",
+      short_title: "Public Hearing on Natural Gas Detectors in Dwelling Units",
+      start_date: "2026-04-01T00:00:00.000",
+      type: "Public Hearings",
+      event_date: "2026-04-15T11:00:00.000",
+    }),
+    // Unrelated Public Hearings (CAPA / other) — must not join onto gas detectors.
+    cityRecordNotice({
+      request_id: "HEAR-CAPA",
+      agency_name: "Housing Preservation and Development",
+      short_title: "Public Hearing — Tenant Harassment Penalty Case 99-ABC",
+      start_date: "2026-04-02T00:00:00.000",
+      type: "Public Hearings",
+      event_date: "2026-04-18T14:00:00.000",
+    }),
+  ];
+
+  const view = await buildRuleView(multiSourceFetch(rss, crRows), NOW);
+  const byId = Object.fromEntries(view.rules.filter((r) => r.request_id).map((r) => [r.request_id, r]));
+
+  const prop = byId["PROP-GAS"];
+  const hear = byId["HEAR-GAS"];
+  const capa = byId["HEAR-CAPA"];
+  assert.ok(prop && hear && capa);
+
+  // Matching hearing is stitched into the gas-detectors rulemaking.
+  assert.equal(prop.rulemaking_subject_ref, hear.rulemaking_subject_ref);
+  assert.notEqual(capa.rulemaking_subject_ref, prop.rulemaking_subject_ref);
+
+  const propHearing = (prop.events || []).find((e) => e.event_type === "public_hearing");
+  assert.ok(propHearing, "matched proposal must gain public_hearing from City Record sibling");
+  assert.equal(propHearing.source_field, "city_record.event_date");
+  assert.equal(propHearing.valid_at, "2026-04-15T11:00:00");
+  assert.equal(propHearing.provenance?.source, "city_record");
+  assert.equal(propHearing.provenance?.request_id, "HEAR-GAS");
+  assert.equal(propHearing.provenance?.join?.confidence, "high");
+  assert.match(propHearing.source_url, /HEAR-GAS/);
+
+  const hearSelf = (hear.events || []).find((e) => e.event_type === "public_hearing");
+  assert.ok(hearSelf, "hearing notice itself carries public_hearing");
+  assert.equal(hearSelf.provenance?.request_id, "HEAR-GAS");
+
+  // Non-matching CAPA hearing: self may show its own event_date hearing, but
+  // must NOT appear on the gas-detectors proposal spine.
+  const capaOnProp = (prop.events || []).find(
+    (e) => e.event_type === "public_hearing" && e.provenance?.request_id === "HEAR-CAPA",
+  );
+  assert.equal(capaOnProp, undefined);
+  const capaSelf = (capa.events || []).find((e) => e.event_type === "public_hearing");
+  assert.ok(capaSelf, "standalone Public Hearings notice keeps its own hearing event");
+  assert.equal(capaSelf.provenance?.request_id, "HEAR-CAPA");
+  assert.equal(capaSelf.valid_at, "2026-04-18T14:00:00");
+});
+
+test("buildRuleView does not duplicate public_hearing when RSS already has hearing_date_1", async () => {
+  const rss = rssFeed([
+    rssItem({
+      title: "Taxi Parking at Commercial Meters",
+      url: "https://rules.cityofnewyork.us/rule/taxi-parking/",
+      pubDate: "Thu, 23 Jul 2026 16:18:07 +0000",
+      agency_name: "DOT",
+      comment_by_date: "20260901",
+      hearing_date_1: "20260901",
+    }),
+  ]);
+  const crRows = [
+    cityRecordNotice({
+      request_id: "20260714029",
+      agency_name: "Department of Transportation",
+      short_title: "Notice of Public Hearing and Opportunity to Comment — FHV and Taxi Parking at Commercial Meters",
+      start_date: "2026-07-22T00:00:00.000",
+      type: "Public Hearings",
+      event_date: "2026-09-01T10:00:00.000",
+    }),
+  ];
+  const view = await buildRuleView(multiSourceFetch(rss, crRows), NOW);
+  const matched = view.rules.find((r) => r.request_id === "20260714029");
+  assert.ok(matched);
+  const hearings = (matched.events || []).filter((e) => e.event_type === "public_hearing");
+  assert.equal(hearings.length, 1, "exactly one public_hearing event");
+  // RSS field wins when already present.
+  assert.equal(hearings[0].source_field, "hearing_date_1");
+  assert.equal(hearings[0].valid_at, "2026-09-01");
 });
 
 // ---------------------------------------------------------------------------

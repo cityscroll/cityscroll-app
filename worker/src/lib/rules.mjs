@@ -256,6 +256,29 @@ export function deriveRuleEvents(rule, now = new Date()) {
   ].filter(Boolean);
 }
 
+const CITY_RECORD_DETAIL_URL = "https://a856-cityrecord.nyc.gov/RequestDetail/";
+
+/**
+ * Normalize a City Record event_date for the rules spine.
+ * Date-only / midnight → day precision; wall-clock times keep instant precision.
+ */
+export function normalizeCityRecordEventDate(raw) {
+  if (raw == null || raw === "") return null;
+  const s = String(raw).trim();
+  if (!s) return null;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+  // SODA often returns "2026-08-27T11:00:00.000" (no Z) — keep the publisher wall clock.
+  const isoLocal = s.match(/^(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2})(?:\.\d+)?/);
+  if (isoLocal) {
+    const [, day, time] = isoLocal;
+    if (time === "00:00:00") return day;
+    return `${day}T${time}`;
+  }
+  const ms = Date.parse(s);
+  if (!Number.isFinite(ms)) return null;
+  return new Date(ms).toISOString().slice(0, 10);
+}
+
 // ---------------------------------------------------------------------------
 // Title similarity (token overlap)
 // ---------------------------------------------------------------------------
@@ -795,13 +818,23 @@ export function groupRulemakingSiblings(records = []) {
   return out;
 }
 
+function recordEventDateRaw(record) {
+  return (
+    record?.city_record?.event_date
+    || record?.event_date
+    || null
+  );
+}
+
 function relatedNoticeEntry(record, pairResult = null) {
   const requestId = recordRequestId(record);
+  const eventDate = recordEventDateRaw(record);
   return {
     request_id: requestId,
     role: classifyRulemakingRole(record),
     title: recordTitle(record) || null,
     notice_date: record?.notice_date || record?.city_record?.notice_date || record?.city_record?.start_date || null,
+    event_date: eventDate || null,
     stage: record?.stage || null,
     agency: record?.agency || record?.city_record?.agency || null,
     ...(pairResult
@@ -889,5 +922,255 @@ export function attachRulemakingSiblings(records = []) {
         role: classifyRulemakingRole(record),
       },
     };
+  });
+}
+
+// ---------------------------------------------------------------------------
+// City Record Public Hearings → rules spine `public_hearing` event
+//
+// Agency Rules notices with type "Public Hearings" already land in the rules
+// materialization and sibling-stitch as role=hearing, but their event_date was
+// never promoted into the event spine (only NYC Rules RSS hearing_date_1 was).
+// That left rulemaking hearings visible only in the Meetings lens.
+// ---------------------------------------------------------------------------
+
+/**
+ * True when a materialization row is a City Record Public Hearings notice that
+ * can supply a rules-lifecycle hearing date (not a generic Meetings-section
+ * row without hearing classification).
+ */
+export function isRulesPublicHearingNotice(record) {
+  if (!record) return false;
+  const type = String(
+    record?.city_record?.notice_type
+    || record?.city_record?.type_of_notice_description
+    || record?.type_of_notice_description
+    || "",
+  );
+  if (/\bpublic hearings?\b/i.test(type)) return true;
+  // Title/role-classified hearing under Agency Rules (sibling stitch role).
+  if (classifyRulemakingRole(record) === "hearing" && recordEventDateRaw(record)) {
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Build a spine `public_hearing` event from a City Record hearing notice.
+ * Returns null when event_date is missing or the row is not a hearing notice.
+ *
+ * @param {object} record - rules materialization row (or related_notice-shaped)
+ * @param {Date} [now]
+ * @param {object} [join] - optional sibling-join provenance
+ */
+export function cityRecordPublicHearingEvent(record, now = new Date(), join = null) {
+  if (!isRulesPublicHearingNotice(record) && !recordEventDateRaw(record)) return null;
+  // Require hearing classification for any event emission.
+  if (!isRulesPublicHearingNotice(record)) return null;
+
+  const raw = recordEventDateRaw(record);
+  const validAt = normalizeCityRecordEventDate(raw);
+  if (!validAt) return null;
+
+  const requestId = recordRequestId(record);
+  const dateOnly = /^\d{4}-\d{2}-\d{2}$/.test(validAt);
+  const noticeType = String(
+    record?.city_record?.notice_type
+    || record?.city_record?.type_of_notice_description
+    || record?.type_of_notice_description
+    || null,
+  ) || null;
+  const sectionName = String(
+    record?.city_record?.section_name
+    || record?.section_name
+    || "Agency Rules",
+  ) || null;
+
+  const event = {
+    event_type: "public_hearing",
+    valid_at: validAt,
+    valid_at_precision: dateOnly ? "day" : "instant",
+    valid_timezone: dateOnly ? RULE_TIMEZONE : "UTC",
+    source_field: "city_record.event_date",
+    source_url: requestId ? `${CITY_RECORD_DETAIL_URL}${encodeURIComponent(requestId)}` : null,
+    status: validAt.slice(0, 10) < now.toISOString().slice(0, 10) ? "occurred" : "scheduled",
+    provenance: {
+      source: "city_record",
+      request_id: requestId,
+      notice_type: noticeType,
+      section_name: sectionName,
+      field: "event_date",
+      ...(join
+        ? {
+            join: {
+              matched: join.matched !== false,
+              confidence: join.confidence || null,
+              basis: join.basis || null,
+              method: join.method || null,
+            },
+          }
+        : {}),
+    },
+  };
+  return event;
+}
+
+function hasPublicHearingEvent(events = []) {
+  return (events || []).some((e) => e && e.event_type === "public_hearing");
+}
+
+/**
+ * Insert a public_hearing event in canonical spine order (after proposal_published
+ * when present; otherwise first among non-adoption lifecycle events).
+ */
+function insertPublicHearingEvent(events, hearingEvent) {
+  const list = Array.isArray(events) ? [...events] : [];
+  if (!hearingEvent || hasPublicHearingEvent(list)) return list;
+  const afterProposal = list.findIndex((e) => e.event_type === "proposal_published");
+  if (afterProposal >= 0) {
+    list.splice(afterProposal + 1, 0, hearingEvent);
+    return list;
+  }
+  const beforeComment = list.findIndex((e) =>
+    e.event_type === "comment_close"
+    || e.event_type === "adoption"
+    || e.event_type === "effective");
+  if (beforeComment >= 0) {
+    list.splice(beforeComment, 0, hearingEvent);
+    return list;
+  }
+  list.push(hearingEvent);
+  return list;
+}
+
+/**
+ * After sibling stitch: promote City Record Public Hearings `event_date` into
+ * the rules event spine as `public_hearing`, with provenance.
+ *
+ * Honest limits:
+ *  - Only hearing-classified notices with a real event_date produce events.
+ *  - Propagation to siblings requires high-confidence rulemaking stitch
+ *    (reuse matchRulemakingSiblings / rulemaking_join) — ambiguous hearings
+ *    stay on the hearing notice alone (Meetings lens remains the fallback).
+ *  - Does not replace or duplicate an existing RSS-derived public_hearing
+ *    (hearing_date_1 wins when already present).
+ *
+ * Pure — returns a new array of records.
+ */
+export function attachCityRecordPublicHearingEvents(records = [], now = new Date()) {
+  const list = Array.isArray(records) ? records : [];
+  if (!list.length) return [];
+
+  // Collect hearing sources that can supply an event.
+  const hearingSources = [];
+  for (const record of list) {
+    if (!isRulesPublicHearingNotice(record)) continue;
+    const selfJoin = record?.rulemaking_join?.matched
+      ? {
+          matched: true,
+          confidence: record.rulemaking_join.confidence,
+          basis: record.rulemaking_join.basis,
+          method: record.rulemaking_join.method || "rulemaking_sibling_stitch",
+        }
+      : {
+          matched: true,
+          confidence: "self",
+          basis: "City Record Public Hearings notice with event_date",
+          method: "city_record_hearing_self",
+        };
+    const event = cityRecordPublicHearingEvent(record, now, selfJoin);
+    if (!event) continue;
+    hearingSources.push({ record, event, requestId: recordRequestId(record) });
+  }
+
+  if (!hearingSources.length) {
+    return list.map((r) => ({ ...r, events: Array.isArray(r.events) ? [...r.events] : [] }));
+  }
+
+  // Map request_id → best hearing event for self-attachment.
+  const selfHearingById = new Map();
+  for (const src of hearingSources) {
+    if (src.requestId) selfHearingById.set(src.requestId, src);
+  }
+
+  // Map rulemaking_subject_ref → hearing sources only when the group is a
+  // high-confidence multi-notice stitch (ambiguous stay unpropagated).
+  const hearingsBySubject = new Map();
+  for (const src of hearingSources) {
+    const join = src.record?.rulemaking_join;
+    // Only high-confidence multi-notice groups propagate hearing → siblings.
+    const multiHigh =
+      join?.matched === true
+      && join.confidence === "high"
+      && (join.notice_count || 0) > 1;
+    if (!multiHigh) continue;
+    const subject = src.record.rulemaking_subject_ref;
+    if (!subject) continue;
+    const arr = hearingsBySubject.get(subject) || [];
+    arr.push(src);
+    hearingsBySubject.set(subject, arr);
+  }
+
+  return list.map((record) => {
+    const rid = recordRequestId(record);
+    let events = Array.isArray(record.events) ? [...record.events] : [];
+    if (hasPublicHearingEvent(events)) {
+      // RSS (or prior) hearing already present — do not invent a second one.
+      return { ...record, events };
+    }
+
+    // 1) Self: this row is the Public Hearings notice.
+    const selfSrc = rid ? selfHearingById.get(rid) : null;
+    if (selfSrc) {
+      events = insertPublicHearingEvent(events, selfSrc.event);
+      return { ...record, events };
+    }
+
+    // 2) Sibling propagation: only high-confidence multi-notice rulemakings.
+    const subject = record.rulemaking_subject_ref;
+    const groupJoin = record.rulemaking_join;
+    const canReceiveSibling =
+      subject
+      && groupJoin?.matched
+      && groupJoin.confidence === "high"
+      && (groupJoin.notice_count || 0) > 1;
+    if (!canReceiveSibling) {
+      return { ...record, events };
+    }
+
+    const candidates = hearingsBySubject.get(subject) || [];
+    if (!candidates.length) {
+      return { ...record, events };
+    }
+
+    // Prefer the sibling with the strongest pair match to this record.
+    let best = null;
+    let bestRank = -1;
+    for (const src of candidates) {
+      if (src.requestId && src.requestId === rid) continue;
+      const pair = matchRulemakingSiblings(record, src.record);
+      if (!pair.matched || pair.confidence !== "high") continue;
+      const rank = pair.method === "shared_rules_id" ? 3
+        : pair.method === "shared_reference" ? 2
+        : 1;
+      if (rank > bestRank) {
+        bestRank = rank;
+        best = { src, pair };
+      }
+    }
+    if (!best) {
+      return { ...record, events };
+    }
+
+    const siblingEvent = cityRecordPublicHearingEvent(best.src.record, now, {
+      matched: true,
+      confidence: best.pair.confidence,
+      basis: best.pair.basis,
+      method: best.pair.method || "rulemaking_sibling_stitch",
+    });
+    if (siblingEvent) {
+      events = insertPublicHearingEvent(events, siblingEvent);
+    }
+    return { ...record, events };
   });
 }
