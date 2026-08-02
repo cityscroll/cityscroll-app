@@ -2,7 +2,7 @@
   "schema_version": 1,
   "phase": "WH-02",
   "title": "First bulk pack into the warehouse (CPU-capped, incremental)",
-  "updated_at": "2026-08-02T10:18:36Z",
+  "updated_at": "2026-08-02T11:46:57Z",
   "strategy": "smallest_or_most_valuable_first_sequential",
   "first_pick": "ocp-recent-contract-awards",
   "first_pick_rationale": "Named on the WH-02 card, already WH-01 fixture-proven, ~53k rows \u2014 real bulk volume without City Record's ~1.1M row surface. Money-spine value high.",
@@ -24,7 +24,7 @@
     "commit_small_samples": false,
     "note": "Bulk lives under warehouse/raw|parquet|duckdb (gitignored) or CITYSCROLL_WAREHOUSE_ROOT; bulk_sample.csv is local-only"
   },
-  "headroom_evidence_line": "headroom OK \u00b7 load 3.8/4c \u00b7 cpu 27% \u00b7 runq 1 \u00b7 mem 41% \u00b7 mem_fit 4 \u00b7 agents 10 \u00b7 disk 44.6GB \u00b7 local=2 api=4",
+  "headroom_evidence_line": "headroom OK \u00b7 load 7.5/4c \u00b7 cpu 15% \u00b7 runq 2 \u00b7 mem 28% \u00b7 mem_fit 1 \u00b7 agents 12 \u00b7 disk 44.1GB \u00b7 local=2 api=1",
   "loaded": [
     {
       "dataset_id": "ocp-recent-contract-awards",
@@ -86,17 +86,52 @@
       },
       "proof_receipt": "warehouse/receipts/proof/zap-projects_bulk_latest.json",
       "verify_sql": "warehouse/sql/examples/zap_bulk_verify.sql"
+    },
+    {
+      "dataset_id": "zap-bbl",
+      "socrata_dataset_id": "2iga-a6mk",
+      "table_name": "zap_bbl",
+      "snapshot_date": "2026-08-02",
+      "observed_at": "2026-08-02T11:46:34Z",
+      "mode": "soda_bulk",
+      "row_count": 131960,
+      "raw_bytes": 9698912,
+      "raw_sha256": "4414b0d8c51966561b871e619031d448ee4ee854917966a2cdfcbc26751c22d5",
+      "parquet_bytes": 1047648,
+      "parquet_row_count": 131960,
+      "headroom": {
+        "constrained": false,
+        "ok": true,
+        "post_ingest": {
+          "constrained": false,
+          "ok": true,
+          "problems": [],
+          "returncode": 0,
+          "status": "ok"
+        },
+        "pre_convert": {
+          "constrained": false,
+          "ok": true,
+          "problems": [],
+          "returncode": 0,
+          "status": "ok"
+        },
+        "problems": [],
+        "returncode": 0,
+        "status": "ok"
+      },
+      "proof_receipt": "warehouse/receipts/proof/zap-bbl_bulk_latest.json",
+      "verify_sql": "warehouse/sql/examples/zap_bbl_bulk_verify.sql"
     }
   ],
   "remaining_primary_queue": [
-    "zap-bbl",
     "city-record"
   ],
   "optional_later": [
     "doing-business-entities"
   ],
-  "next_dataset": "zap-bbl",
-  "next_dataset_notes": "zap-bbl (2iga-a6mk) BBL companion after zap-projects \u2014 only when headroom stays green",
+  "next_dataset": "city-record",
+  "next_dataset_notes": "city-record (dg92-zbpx, largest) last \u2014 Mini overnight preferred",
   "how_to_reproduce": [
     "python3 \"$HEADROOM_BIN\"  # estate headroom.py; must not be CONSTRAINED",
     "python3 -m venv warehouse/.venv && warehouse/.venv/bin/pip install -r warehouse/requirements.txt",
@@ -104,7 +139,10 @@
     "warehouse/.venv/bin/python warehouse/scripts/query.py --sql-file warehouse/sql/examples/ocp_bulk_verify.sql",
     "warehouse/.venv/bin/python warehouse/scripts/ingest.py --dataset zap-projects --bulk --ack-large --write-sample 25",
     "warehouse/.venv/bin/python warehouse/scripts/query.py --sql-file warehouse/sql/examples/zap_bulk_verify.sql",
+    "warehouse/.venv/bin/python warehouse/scripts/ingest.py --dataset zap-bbl --bulk --ack-large --write-sample 25",
+    "warehouse/.venv/bin/python warehouse/scripts/query.py --sql-file warehouse/sql/examples/zap_bbl_bulk_verify.sql",
     "warehouse/.venv/bin/python warehouse/scripts/write_load_manifest.py",
-    "node tools/build_zap_warehouse_lookup.mjs --fixture --bench"
+    "node tools/build_zap_warehouse_lookup.mjs --fixture --bench",
+    "node tools/build_zap_bbl_warehouse_lookup.mjs --fixture --bench"
   ]
 }

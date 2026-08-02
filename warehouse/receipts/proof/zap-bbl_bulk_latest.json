@@ -1,0 +1,95 @@
+{
+  "bulk": true,
+  "cpu_discipline": {
+    "duckdb_threads": 1,
+    "headroom_gated": true,
+    "sequential_one_dataset": true,
+    "single_job_lock": true,
+    "taskpolicy_or_nice_wrap": true
+  },
+  "dataset_id": "zap-bbl",
+  "headroom": {
+    "constrained": false,
+    "ok": true,
+    "post_ingest": {
+      "constrained": false,
+      "ok": true,
+      "problems": [],
+      "returncode": 0,
+      "status": "ok"
+    },
+    "pre_convert": {
+      "constrained": false,
+      "ok": true,
+      "problems": [],
+      "returncode": 0,
+      "status": "ok"
+    },
+    "problems": [],
+    "returncode": 0,
+    "status": "ok"
+  },
+  "limit": null,
+  "observed_at": "2026-08-02T11:46:34Z",
+  "parquet": {
+    "bytes": 1047648,
+    "column_map_applied": true,
+    "column_map_size": 10,
+    "columns": [
+      "project_id",
+      "bbl",
+      "validated_borough",
+      "validated_block",
+      "validated_lot",
+      "validated",
+      "validated_date",
+      "unverified_borough",
+      "unverified_block",
+      "unverified_lot",
+      "snapshot_date"
+    ],
+    "parquet_path": "warehouse/parquet/zap-bbl/snapshot_date=2026-08-02/part-000.parquet",
+    "row_count": 131960,
+    "threads": 1
+  },
+  "phase": "WH-02",
+  "raw": {
+    "bytes": 9698912,
+    "column_map_entries": 10,
+    "column_map_path": "warehouse/raw/zap-bbl/snapshot_date=2026-08-02/column_map.json",
+    "content_type": "text/csv; charset=utf-8",
+    "elapsed_s": 33.17,
+    "http_status": 200,
+    "last_modified": "Tue, 26 May 2026 16:32:24 GMT",
+    "mode": "soda_bulk",
+    "path": "warehouse/raw/zap-bbl/snapshot_date=2026-08-02/2iga-a6mk_bulk.csv",
+    "row_count": 131960,
+    "sha256": "4414b0d8c51966561b871e619031d448ee4ee854917966a2cdfcbc26751c22d5",
+    "url": "https://data.cityofnewyork.us/api/views/2iga-a6mk/rows.csv?accessType=DOWNLOAD"
+  },
+  "register": {
+    "catalog": "warehouse/duckdb/cityscroll.duckdb",
+    "columns": [
+      "project_id",
+      "bbl",
+      "validated_borough",
+      "validated_block",
+      "validated_lot",
+      "validated",
+      "validated_date",
+      "unverified_borough",
+      "unverified_block",
+      "unverified_lot",
+      "snapshot_date"
+    ],
+    "parquet_glob": "warehouse/parquet/zap-bbl/snapshot_date=2026-08-02/*.parquet",
+    "row_count": 131960,
+    "table": "zap_bbl"
+  },
+  "schema_version": 1,
+  "snapshot_date": "2026-08-02",
+  "socrata_dataset_id": "2iga-a6mk",
+  "source_contract_id": "zap-bbl",
+  "table_name": "zap_bbl",
+  "warehouse_root": "warehouse"
+}

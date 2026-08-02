@@ -90,10 +90,31 @@ describe("observation → links with provenance", () => {
     });
     const { objects, links } = linkObservation(obs);
     assert.equal(objects.length, 1);
-    assert.equal(links[0].type, "applicant_agency");
-    assert.equal(links[0].to, "agency:id:parks-and-recreation");
-    assert.equal(links[0].confidence, "tentative");
-    assert.equal(links[0].provenance.input_value, "DPR - Department of Parks & Recreation NYC");
+    const agencyEdge = links.find((l) => l.type === "applicant_agency");
+    assert.ok(agencyEdge);
+    assert.equal(agencyEdge.to, "agency:id:parks-and-recreation");
+    assert.equal(agencyEdge.confidence, "tentative");
+    assert.equal(agencyEdge.provenance.input_value, "DPR - Department of Parks & Recreation NYC");
+  });
+
+  it("attaches ZAP BBL parcels as sited_on_parcel edges with provenance", () => {
+    const obs = observationFromLandRow({
+      project_id: "2022M0258",
+      project_name: "Timbale Terrace",
+      primary_applicant: "HPD - NYC Dept of Housing Preservation & Development",
+      public_status: "Completed",
+      bbls: ["1017670001", "1017670002"],
+    });
+    assert.deepEqual(obs.bbls, ["1017670001", "1017670002"]);
+    const { objects, links } = linkObservation(obs);
+    assert.ok(objects.length >= 1);
+    assert.ok(objects[0].bbls?.includes("1017670001"));
+    const parcelEdges = links.filter((l) => l.type === "sited_on_parcel");
+    assert.equal(parcelEdges.length, 2);
+    assert.equal(parcelEdges[0].from, "project:2022M0258");
+    assert.ok(parcelEdges.every((e) => e.to.startsWith("parcel:")));
+    assert.equal(parcelEdges[0].provenance.source_fields.includes("bbl"), true);
+    assert.equal(parcelEdges[0].method, "zap_bbl_project_id_v1");
   });
 
   it("does not invent people links without person rows", () => {
