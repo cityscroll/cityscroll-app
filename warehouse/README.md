@@ -1,4 +1,4 @@
-# CityScroll data warehouse (WH-01 scaffold + WH-02 bulk + WH-03 OCP serve)
+# CityScroll data warehouse (WH-01…WH-04)
 
 DuckDB + parquet lake **inside this repo**, for offline ownership of NYC bulk
 sources and batch joins. Public browser routes stay **precompute-first** — the
@@ -178,28 +178,69 @@ Product seed demos (public field cases):
 **Not in this card:** ZAP outcomes prewarm (needs `zap-projects` bulk next in
 the WH-02 queue). That remains a follow-on once ZAP lands in the lake.
 
-## entity_resolution/
+## entity_resolution/ (WH-04 batch)
 
-Reuse the existing package for identity (`vendorStem`, `token_v0`, matchers).
-**Do not** reimplement matchers in SQL. Batch ER over warehouse tables is
-**WH-04**. WH-01 only leaves a clear landing zone (parquet tables + registry
-ids aligned with `source_contracts.json`).
+Reuse the existing package for identity (`vendorStem`, `token_v0`,
+`scorePair` / conventional matcher, `canonicalAgency`). **Do not** reimplement
+matchers in SQL. DuckDB owns set joins once keys exist.
 
-## Roadmap (do not pull forward)
+### Capped batch run
+
+```bash
+python3 "$HEADROOM_BIN"   # CONSTRAINED → defer
+
+# Offline proof (fixture OCP sample + stem variants + tiny Doing Business sample)
+warehouse/.venv/bin/python warehouse/scripts/er_batch_run.py \
+  --from-fixture --limit 25 --force-headroom
+
+# Incremental warehouse slice (after WH-01/02 OCP load; default limit 200)
+warehouse/.venv/bin/python warehouse/scripts/er_batch_run.py --limit 200
+
+warehouse/.venv/bin/python warehouse/scripts/query.py \
+  --sql-file warehouse/sql/examples/er_entity_links_verify.sql
+```
+
+| Guard | Behavior |
+|---|---|
+| **Single-job lock** | Same `warehouse/.ingest.lock` as ingest |
+| **Headroom gate** | Refuses when CONSTRAINED unless `--force-headroom` (fixture only) |
+| **taskpolicy / nice** | Warehouse slices go through `headroom.py wrap`; tiny fixture may skip wrap |
+| **Default limit** | 200 OCP rows (not full bulk) |
+| **DuckDB threads** | 1 on materialize |
+
+### Materialized views
+
+| View | Grain |
+|---|---|
+| `er_entity_link` | source_record → canonical_entity (auto_link) |
+| `er_canonical_entity` | vendor:stem:… / agency:id:… |
+| `er_resolution_run` | batch run + metrics_json |
+| `er_pair_receipt` | token_v0 candidate pair scores |
+| `er_ocp_vendor_resolved` | OCP awards LEFT JOIN vendor links (when OCP view present) |
+
+Parquet under `warehouse/parquet/er_*/` (gitignored). Proof receipt:
+`warehouse/receipts/proof/wh04_er_batch_latest.json`.
+
+Pure lib: `warehouse/lib/er_batch.mjs` (imports `entity_resolution/` +
+`worker/src/lib/entity_link.mjs` exact-stem builder). Identity is never
+reimplemented in SQL.
+
+## Roadmap
 
 | Card | Scope |
 |---|---|
 | **WH-01** | Scaffold, CPU-capped skeleton, tiny OCP proof |
 | **WH-02** | First bulk export(s) via capped runner — OCP first; ZAP / City Record sequential next |
-| **WH-03** (this serve) | Materialize warehouse OCP → replace live SODA in `fetchOcpAwardRows` (+ live miss fallback) |
+| **WH-03** | Materialize warehouse OCP → replace live SODA in `fetchOcpAwardRows` (+ live miss fallback) |
 | **WH-03b** (follow-on) | ZAP outcomes prewarm once `zap-projects` bulk is loaded |
-| **WH-04** | Batch ER over warehouse → `entity_link` parquet |
+| **WH-04** (this pack) | Batch ER over warehouse → `er_entity_link` parquet + SQL views |
 
 ## Characterization
 
 ```bash
 node --test test/warehouse_scaffold.test.mjs test/warehouse_bulk.test.mjs \
-  test/warehouse_ocp_lookup.test.mjs worker/test/ocp_warehouse_lookup.test.mjs
+  test/warehouse_ocp_lookup.test.mjs worker/test/ocp_warehouse_lookup.test.mjs \
+  test/warehouse_er_batch.test.mjs
 ```
 
 Optional: re-run the fixture ingest before the query assertions if the local
