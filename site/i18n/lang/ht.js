@@ -1162,6 +1162,12 @@
     franchise_source_city_record: 'City Record Online',
     franchise_provenance_html: 'Timeline joins Franchise and Concession Review Committee (FCRC) notices that share a counterparty, annual concession plan year, or FCRC rules subject. Empty stages mean no matching City Record notice is in the current window — not that the city withheld a public source.',
 
+    franchise_phase_action_solicitation: "Review the solicitation and response steps",
+    franchise_phase_action_public_hearing: "Prepare for the FCRC public hearing",
+    franchise_phase_action_committee_meeting: "Prepare for the FCRC committee meeting",
+    franchise_phase_action_award: "Review the franchise or concession award",
+    franchise_phase_now_html: 'Now: <b>{phase}</b> — {action}',
+    franchise_phase_next_html: "Next: {phase}",
     alerts_rollup_heading: "Kijan rezime plizyè alèt rive",
     alerts_rollup_lead: "Lè yon imèl gen plis pase yon alèt aktif, CityScroll voye yon sèl rezime chak jou ak yon seksyon pou chak alèt — pa yon imèl apa pou chak. Gwoupe alèt demonstrasyon yo anba a pa sijè, ajans oswa jewografi pou wè kijan alèt ki gen rapò rasanble.",
     alerts_rollup_group_label: "Gwoupe alèt ki gen rapò pa",

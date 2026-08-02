@@ -133,6 +133,7 @@ EXTERNAL_HREF_EXPRS = (
     "${escUiHtml(view.portal_url)}",    # land phase spine: single Full project on ZAP link
     "${escUiHtml(portalUrl)}",          # land phase spine flat fallback: project portal link
     "${escUiHtml(sourceURL)}",          # land event spine: City Record or ZAP source event
+    "${escUiHtml(p.source_url)}",       # franchise phase card: deduped City Record / source URL
     "${escUiHtml(href)}",         # rule-lifecycle chip + comment action: NYC Rules comment/adoption page
     "${escUiHtml(action.destination)}",  # compiled next-action rail: validated HTTPS handoff
     "${escUiHtml(official)}",     # rules event spine: official NYC Rules rule/comment page
