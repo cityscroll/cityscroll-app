@@ -1,0 +1,113 @@
+{
+  "schema": "cityscroll.join_measurement.v1",
+  "metric": "multi_notice_rulemakings",
+  "related_metrics": [
+    "rulemaking_sibling_false_merge_rate",
+    "rulemaking_months_apart_multi_rate"
+  ],
+  "measured_at": "2026-08-02",
+  "subject": "City Record Agency Rules multi-notice rulemaking stitch after lookback widen",
+  "lookback": {
+    "city_record_lookback_days": 540,
+    "sibling_window_days": 540,
+    "soda_limit": 500,
+    "rules_view_version": 4,
+    "prior_lookback_days": 14,
+    "prior_multi_notice_rulemakings": 0,
+    "note": "Prior 14-day materialization almost never co-located proposal/hearing/adoption siblings; multi_notice_rulemakings stayed 0 on live."
+  },
+  "sample": {
+    "source": "SODA dg92-zbpx Agency Rules",
+    "where": "section_name='Agency Rules' AND start_date >= (now - 540d)",
+    "notice_count": 355,
+    "date_range": {
+      "earliest": "2025-02-11",
+      "latest": "2026-07-24"
+    }
+  },
+  "join_measurement": {
+    "multi_notice_rulemakings": 62,
+    "singleton_rulemakings": 209,
+    "total_rulemaking_subjects": 271,
+    "multi_notice_rate": 0.2288,
+    "multi_notice_notices": 146,
+    "size_histogram": {
+      "2": 53,
+      "3": 4,
+      "4": 4,
+      "12": 1
+    },
+    "methods": {
+      "title_agency_window": 62
+    },
+    "months_apart_multi_groups": 47,
+    "months_apart_multi_rate": 0.7581,
+    "false_merge": {
+      "definition": "Multi-notice group whose mean pairwise title-core overlap is below RULEMAKING_TITLE_OVERLAP_MIN (0.55), or size>8 with pair-match density < 0.85. Confidence thresholds were NOT lowered; title-core noise strip was tightened so wider window does not chain-merge DCWP house-style titles.",
+      "flagged_groups": 1,
+      "multi_groups": 62,
+      "false_merge_rate": 0.0161,
+      "verdict": "Low false-merge rate under proxy; residual clusters reviewed in audits (often phased program notices, e.g. commercial waste zones)."
+    }
+  },
+  "field_cases": {
+    "mopeds_on_bridges_months_apart": {
+      "notices": 2,
+      "matched": true,
+      "confidence": "high",
+      "days_apart": 75,
+      "basis": "agency DOT + title-core overlap (100%) + date (75d)"
+    },
+    "credit_card_limitations_noh_noa": {
+      "notices": 2,
+      "matched": true,
+      "confidence": "high",
+      "days_apart": 114
+    },
+    "restaurant_vs_car_wash_must_not_merge": {
+      "matched": false,
+      "basis": "title-core overlap too low (0%) or missing dates"
+    }
+  },
+  "audits": [
+    {
+      "subject_ref": "rulemaking:dohmh:cards-care-child-performance-programs-summary",
+      "notice_count": 4,
+      "method": "title_agency_window",
+      "avg_title_core_overlap": 0.833,
+      "pair_match_density": 1,
+      "span_days": 268,
+      "flagged_false_merge_risk": false,
+      "sample_titles": [
+        "Performance Summary Cards for Child Care Programs",
+        "Performance Summary Cards for Child Care Programs",
+        "Amendment of Rules Relating to Child Care and Child Supervision Programs",
+        "Amendment of Rules Relating to Child Care and Child Supervision Programs"
+      ]
+    },
+    {
+      "subject_ref": "rulemaking:dsny:commercial-dates-department-implementation-sanitation-seventh-sixth-waste-zones",
+      "notice_count": 12,
+      "method": "title_agency_window",
+      "avg_title_core_overlap": 0.619,
+      "pair_match_density": 0.682,
+      "span_days": 440,
+      "flagged_false_merge_risk": true,
+      "sample_titles": [
+        "DSNY Final Rule Relating to Commercial Waste Customers and Private Carters",
+        "DSNY Proposed Implementation Dates for Second and Third Commercial Waste Zones",
+        "DSNY Notice of Adoption - Implementation Start Dates for Second and Third Commercial Waste Zones",
+        "DSNY PROPOSED AMENDMENT OF RULES RELATED TO COLLECTION OF COMMERCIAL WASTE",
+        "DSNY Proposed Implementation Dates for Sixth and Seventh Commercial Waste Zones",
+        "FINAL AMENDMENT OF RULES RELATING TO COLLECTION OF COMMERCIAL WASTE"
+      ]
+    }
+  ],
+  "confidence_thresholds_unchanged": {
+    "RULEMAKING_TITLE_OVERLAP_MIN": 0.55,
+    "RULEMAKING_SIBLING_WINDOW_DAYS": 540
+  },
+  "characterization": [
+    "node --test worker/test/rulemaking_siblings.test.mjs worker/test/nyc_rules.test.mjs worker/test/rules_event_spine.test.mjs"
+  ]
+}
