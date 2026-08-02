@@ -7,6 +7,7 @@ import {
   ZAP_OUTCOMES_KV_PREFIX,
   ZAP_OUTCOMES_MAX_AGE_MS,
   ZAP_SODA_BBL,
+  ZAP_SODA_PROJECTS,
   DOB_NOW_DATASET,
   joinOpenDataToZapOutcome,
   joinDobFilingsToBbls,
@@ -16,6 +17,7 @@ import {
   outcomeIsFilled,
 } from "./lib/zap_outcomes.mjs";
 import { extractUlurpKeys } from "./lib/ulurp_recommendations_join.mjs";
+import { checkAdminKey } from "./admin.mjs";
 
 export {
   parseZapApiProject,
@@ -25,6 +27,8 @@ export {
   documentProxyUrl,
   outcomeIsFilled,
   ZAP_API_BASE,
+  ZAP_OUTCOMES_KV_PREFIX,
+  ZAP_OUTCOMES_MAX_AGE_MS,
 } from "./lib/zap_outcomes.mjs";
 
 const SODA = "https://data.cityofnewyork.us/resource";
@@ -35,6 +39,25 @@ const CITY_RECORD_SELECT = [
   "additional_description_2", "additional_description_3", "other_info_1",
   "other_info_2", "other_info_3", "printout_1", "printout_2", "printout_3",
 ].join(",");
+
+// Sell-facing land universe for daily write-ahead prewarm. Order is priority:
+// public-review first (what the default Land list shows), then noticed/active/filed.
+// Full corpus (~33k) is never prewarmed — compute-on-miss remains the fallback.
+export const ZAP_PREWARM_STATUSES = Object.freeze([
+  "In Public Review",
+  "Noticed",
+  "Active",
+  "Filed",
+]);
+/** Always pin the demo-frame project so #land/2022M0258 never cold-misses. */
+export const ZAP_PREWARM_DEMO_IDS = Object.freeze(["2022M0258"]);
+/** Cap per cron/admin run — ~200 × multi-source build stays inside a daily cron budget. */
+export const ZAP_PREWARM_MAX = 200;
+/** Concurrent builds per wave (ZAP API + SODA fan-out is the cost). */
+export const ZAP_PREWARM_CONCURRENCY = 4;
+/** Refresh before 24h expiry so the warm window does not gap between daily crons. */
+export const ZAP_PREWARM_REFRESH_AGE_MS = Math.floor(ZAP_OUTCOMES_MAX_AGE_MS * 0.75);
+export const ZAP_OUTCOMES_KV_TTL_SEC = 2 * 24 * 60 * 60;
 
 function corsHeaders() {
   return {
@@ -55,8 +78,237 @@ function response(body, status = 200, maxAge = 1800) {
   });
 }
 
-function kvKey(projectId) {
+export function kvKey(projectId) {
   return `${ZAP_OUTCOMES_KV_PREFIX}${normProjectId(projectId)}`;
+}
+
+function cacheAgeMs(record, nowMs = Date.now()) {
+  if (!record?.generated_at) return Number.POSITIVE_INFINITY;
+  const t = new Date(record.generated_at).getTime();
+  if (!Number.isFinite(t)) return Number.POSITIVE_INFINITY;
+  return Math.max(0, nowMs - t);
+}
+
+export function outcomeCacheIsFresh(record, nowMs = Date.now(), maxAgeMs = ZAP_OUTCOMES_MAX_AGE_MS) {
+  return cacheAgeMs(record, nowMs) < maxAgeMs;
+}
+
+/** Fresh enough that daily prewarm may skip (leaves a buffer before public max-age). */
+export function outcomeCacheIsPrewarmFresh(record, nowMs = Date.now()) {
+  return cacheAgeMs(record, nowMs) < ZAP_PREWARM_REFRESH_AGE_MS;
+}
+
+async function kvGetRecord(env, projectId) {
+  if (!env?.ALERT_STATE) return null;
+  try {
+    const raw = await env.ALERT_STATE.get(kvKey(projectId));
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+async function kvPutRecord(env, record) {
+  if (!env?.ALERT_STATE || !record?.project_id) return;
+  await env.ALERT_STATE.put(kvKey(record.project_id), JSON.stringify(record), {
+    expirationTtl: ZAP_OUTCOMES_KV_TTL_SEC,
+  });
+}
+
+/**
+ * List project_ids for the sell-facing land statuses (priority order, deduped, capped).
+ * Pure SODA — no ZAP API. Fail-soft per status so one query outage still yields others.
+ */
+export async function listPrewarmProjectIds({
+  fetchImpl = fetch,
+  statuses = ZAP_PREWARM_STATUSES,
+  max = ZAP_PREWARM_MAX,
+  demoIds = ZAP_PREWARM_DEMO_IDS,
+} = {}) {
+  const cap = Math.max(1, Math.min(Number(max) || ZAP_PREWARM_MAX, 500));
+  const ordered = [];
+  const seen = new Set();
+
+  function pushId(raw) {
+    const id = String(raw || "").trim();
+    if (!id || !/^[A-Za-z0-9][A-Za-z0-9_-]{2,24}$/.test(id)) return;
+    const key = normProjectId(id);
+    if (!key || seen.has(key)) return;
+    seen.add(key);
+    ordered.push(id);
+  }
+
+  for (const demo of demoIds || []) pushId(demo);
+
+  const statusList = Array.isArray(statuses) ? statuses : ZAP_PREWARM_STATUSES;
+  for (const status of statusList) {
+    if (ordered.length >= cap) break;
+    const remaining = cap - ordered.length;
+    const where = `public_status='${String(status).replace(/'/g, "''")}'`;
+    const url =
+      `${SODA}/${ZAP_SODA_PROJECTS}.json?$select=project_id`
+      + `&$where=${encodeURIComponent(where)}`
+      + `&$order=current_milestone_date DESC`
+      + `&$limit=${remaining}`;
+    const ctl = new AbortController();
+    const timer = setTimeout(() => ctl.abort(), 12000);
+    try {
+      const res = await fetchImpl(url, {
+        headers: { Accept: "application/json", "User-Agent": "cityscroll-zap-outcomes/1.0" },
+        signal: ctl.signal,
+      });
+      if (!res.ok) continue;
+      const rows = await res.json();
+      for (const row of rows || []) {
+        if (ordered.length >= cap) break;
+        pushId(row?.project_id);
+      }
+    } catch {
+      // Partial status list is fine — prewarm what we can.
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+  return ordered.slice(0, cap);
+}
+
+/**
+ * Materialize one project into KV when missing or aging out of the prewarm window.
+ * Returns a small status token for cron/admin receipts.
+ */
+export async function prewarmOneZapOutcome(env, projectId, {
+  build = buildZapOutcomeRecord,
+  nowMs = Date.now(),
+  force = false,
+} = {}) {
+  const id = String(projectId || "").trim();
+  if (!id) return { status: "failed", reason: "bad-id" };
+  const cached = await kvGetRecord(env, id);
+  if (!force && outcomeCacheIsPrewarmFresh(cached, nowMs)) {
+    return { status: "skipped", project_id: id, generated_at: cached.generated_at };
+  }
+  try {
+    const record = await build(id);
+    if (!record || !record.project_id) {
+      return { status: "failed", project_id: id, reason: "empty-record" };
+    }
+    await kvPutRecord(env, record);
+    return {
+      status: "computed",
+      project_id: id,
+      generated_at: record.generated_at,
+      filled: !!record.filled,
+      matched: !!(record.join && record.join.matched),
+    };
+  } catch (error) {
+    return {
+      status: "failed",
+      project_id: id,
+      reason: String(error?.message || error),
+    };
+  }
+}
+
+/**
+ * Bounded write-ahead prewarm for Land detail outcomes.
+ * Idempotent: already-fresh KV rows are skipped. Fail-soft per id.
+ */
+export async function prewarmZapOutcomes(env, projectIds, {
+  build = buildZapOutcomeRecord,
+  concurrency = ZAP_PREWARM_CONCURRENCY,
+  force = false,
+  nowMs = Date.now(),
+} = {}) {
+  const ids = Array.isArray(projectIds)
+    ? [...new Set(projectIds.map((id) => String(id || "").trim()).filter(Boolean))].slice(0, ZAP_PREWARM_MAX)
+    : [];
+  let computed = 0;
+  let skipped = 0;
+  let failed = 0;
+  const wave = Math.max(1, Math.min(Number(concurrency) || ZAP_PREWARM_CONCURRENCY, 8));
+
+  for (let i = 0; i < ids.length; i += wave) {
+    const chunk = ids.slice(i, i + wave);
+    const results = await Promise.all(
+      chunk.map((id) => prewarmOneZapOutcome(env, id, { build, nowMs, force })),
+    );
+    for (const r of results) {
+      if (r.status === "computed") computed++;
+      else if (r.status === "skipped") skipped++;
+      else failed++;
+    }
+  }
+  return { requested: ids.length, computed, skipped, failed };
+}
+
+/**
+ * Daily / admin path: list sell-facing project_ids, then prewarm into KV.
+ * Same shape as refreshMeetingOutcomes — skip cleanly when KV is unbound.
+ */
+export async function refreshZapOutcomes(env, opts = {}) {
+  if (!env?.ALERT_STATE) {
+    return { status: "skipped", reason: "no-kv" };
+  }
+  const max = opts.max ?? ZAP_PREWARM_MAX;
+  const force = opts.force === true;
+  let projectIds = Array.isArray(opts.projectIds) ? opts.projectIds : null;
+  let listed = 0;
+  if (!projectIds) {
+    projectIds = await listPrewarmProjectIds({
+      max,
+      statuses: opts.statuses || ZAP_PREWARM_STATUSES,
+      demoIds: opts.demoIds || ZAP_PREWARM_DEMO_IDS,
+      fetchImpl: opts.fetchImpl || fetch,
+    });
+    listed = projectIds.length;
+  } else {
+    projectIds = projectIds.slice(0, max);
+    listed = projectIds.length;
+  }
+  const summary = await prewarmZapOutcomes(env, projectIds, {
+    build: opts.build || buildZapOutcomeRecord,
+    concurrency: opts.concurrency || ZAP_PREWARM_CONCURRENCY,
+    force,
+    nowMs: opts.nowMs || Date.now(),
+  });
+  return {
+    status: "ok",
+    listed,
+    ...summary,
+    generated_at: new Date(opts.nowMs || Date.now()).toISOString(),
+  };
+}
+
+function adminJson(body, status = 200) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" },
+  });
+}
+
+// POST /admin/zap-outcomes-refresh?key=… — on-demand Land outcomes prewarm (same path as cron).
+// Optional JSON body: { projectIds?: string[], max?: number, force?: boolean }
+export async function handleAdminZapOutcomesRefresh(req, env) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (req.method !== "POST") return adminJson({ error: "method" }, 405);
+  let body = {};
+  try {
+    const text = await req.text();
+    if (text && text.trim()) body = JSON.parse(text);
+  } catch {
+    return adminJson({ error: "bad-json" }, 400);
+  }
+  try {
+    const result = await refreshZapOutcomes(env, {
+      projectIds: Array.isArray(body.projectIds) ? body.projectIds : undefined,
+      max: body.max,
+      force: body.force === true,
+    });
+    return adminJson({ ...result, triggeredAt: new Date().toISOString() }, 200);
+  } catch (e) {
+    return adminJson({ status: "error", error: String(e?.message || e) }, 500);
+  }
 }
 
 async function fetchJson(url, timeoutMs = 12000) {
@@ -249,23 +501,9 @@ export async function handleZapOutcomes(request, env, ctx) {
     return response(JSON.stringify({ ok: false, reason: "bad-id" }), 400);
   }
 
-  const key = kvKey(projectId);
-  let cached = null;
-  if (env?.ALERT_STATE) {
-    try {
-      const raw = await env.ALERT_STATE.get(key);
-      cached = raw ? JSON.parse(raw) : null;
-    } catch {
-      cached = null;
-    }
-  }
+  const cached = await kvGetRecord(env, projectId);
 
-  const fresh =
-    cached
-    && cached.generated_at
-    && (Date.now() - new Date(cached.generated_at).getTime()) < ZAP_OUTCOMES_MAX_AGE_MS;
-
-  if (fresh) {
+  if (outcomeCacheIsFresh(cached)) {
     return response(JSON.stringify({
       ok: true,
       cached: true,
@@ -277,9 +515,7 @@ export async function handleZapOutcomes(request, env, ctx) {
   try {
     const record = await buildZapOutcomeRecord(projectId);
     if (env?.ALERT_STATE) {
-      const write = env.ALERT_STATE.put(key, JSON.stringify(record), {
-        expirationTtl: 2 * 24 * 60 * 60,
-      });
+      const write = kvPutRecord(env, record);
       if (ctx?.waitUntil) ctx.waitUntil(write);
       else await write;
     }

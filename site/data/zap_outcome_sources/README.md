@@ -22,7 +22,13 @@ document proxy (`/document/disposition|artifact|package|projectaction/…`).
 1. Browser land detail calls only `GET /zap-outcomes?id={project_id}` (no live ZAP API).
 2. Worker fetches Open Data row + ZAP API project detail, parses documents/actions/dispositions,
    optionally joins DOB NOW filings on exact BBL from `zap-bbl`, and caches in KV (~1 day).
-3. Unmatched or empty outcome slots use the class-(a) register: name the public source.
+3. **Daily write-ahead prewarm** (`refreshZapOutcomes` on the digest cron, and
+   `POST /admin/zap-outcomes-refresh`) materializes sell-facing project ids first
+   (In Public Review → Noticed → Active → Filed, capped, plus demo `2022M0258`).
+   Cold multi-source builds take ~12s; warm KV reads are sub-second. Unlisted ids
+   still compute-on-miss. The land list also session-prefetches the first screenful
+   of project ids after paint.
+4. Unmatched or empty outcome slots use the class-(a) register: name the public source.
 
 ## Join
 
