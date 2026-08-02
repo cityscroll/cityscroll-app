@@ -101,7 +101,7 @@ const CAMBA_DOING_BUSINESS = [
   {
     organization_name: "CAMBA  INC",
     ownership_structure_code: "COR",
-    organization_phone: "7182872600",
+    organization_phone: "5550100",
     doing_business_start_date: "0009-05-16T00:00:00.000",
   },
 ];
@@ -132,8 +132,10 @@ test("cron refresh writes versioned buckets before publishing the manifest", asy
   assert.equal(result.profiles, 1);
   assert.equal(result.buckets, 1);
   assert.equal(result.cronCost.socrataRequestsBefore, 1);
-  assert.equal(result.cronCost.socrataRequestsAfter, 3);
-  assert.equal(result.cronCost.doingBusinessRequests, 1);
+  // WH-05: Doing Business comes from warehouse materialization (0 SODA catalog pages)
+  // when the committed snapshot includes the vendor stem (CAMBA product seed).
+  assert.equal(result.cronCost.doingBusinessRequests, 0);
+  assert.equal(result.cronCost.socrataRequestsAfter, 2);
   assert.equal(result.included.recentNotices, 15);
   assert.equal(result.included.forecasts, 1);
   assert.equal(result.included.doingBusiness, 1);
@@ -148,7 +150,8 @@ test("cron refresh writes versioned buckets before publishing the manifest", asy
   assert.equal(bucket.profiles.CAMBA.recentNotices[0].vendor_name, undefined);
   assert.deepEqual(bucket.profiles.CAMBA.forecasts, forecast);
   assert.equal(bucket.profiles.CAMBA.doingBusiness.organization_name, "CAMBA  INC");
-  assert.equal(bucket.profiles.CAMBA.doingBusiness.organization_phone, "718-287-2600");
+  // Warehouse product seed uses fictional 555 phone (scrim L081); SODA path keeps live shape.
+  assert.equal(bucket.profiles.CAMBA.doingBusiness.organization_phone, "5550100");
   assert.equal(bucket.profiles.CAMBA.doingBusiness.doing_business_start_date, "2009-05-16");
   const manifest = JSON.parse(store.values.get("vp:manifest:v1"));
   assert.equal(manifest.schema, 2);

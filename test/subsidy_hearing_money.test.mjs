@@ -76,6 +76,14 @@ const { subsidyLifecycleHTML, lifecycleMoney } = new Function(
   extractFn("subsidyGapKindClient") +
   extractFn("subsidyAnchorFromNotice") +
   extractFn("subsidyStageHTML") +
+  extractFn("subsidyPhaseLabel") +
+  extractFn("subsidyPhaseActionHTML") +
+  extractFn("subsidyPhaseStepperHTML") +
+  extractFn("subsidyPhaseNotYetHTML") +
+  extractFn("subsidyPhasePanelHTML") +
+  extractFn("subsidyPhaseTimelineHTML") +
+  extractFn("subsidyLifecycleHTMLFlat") +
+  extractFn("subsidyJoinAndFieldChrome") +
   extractFn("subsidyLifecycleHTML") +
   `
   return { subsidyLifecycleHTML, lifecycleMoney };

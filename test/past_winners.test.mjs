@@ -56,6 +56,7 @@ const { pastWinnersHTML, chainHTML } = new Function(
   extractConst("CADENCE_YEAR_THRESHOLD_MONTHS") +
   extractFn("isBlanketChain") + extractFn("cadenceEstimate") + extractFn("cadenceMonthYear") +
   extractFn("cadenceApart") + extractFn("cadenceHTML") +
+  extractFn("chainHTMLFlat") +
   extractFn("chainHTML") +
   "return { pastWinnersHTML, chainHTML };"
 )(t, tn, windowStub);

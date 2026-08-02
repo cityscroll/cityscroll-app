@@ -52,6 +52,20 @@ export const ZAP_SELL_FACING_STATUSES = Object.freeze([
   "Filed",
 ]);
 
+/** Active ULURP default land list — same filter spirit as batch_precompute_snapshots. */
+export const LAND_DEFAULT_LIMIT = 40;
+
+export function sqlZapLandDefault(table = zapTableName(), limit = LAND_DEFAULT_LIMIT) {
+  const cols = ZAP_ALL_COLS.join(", ");
+  return (
+    `SELECT ${cols} FROM ${table} ` +
+    `WHERE CAST(project_status AS VARCHAR) = 'Active' ` +
+    `ORDER BY current_milestone_date DESC NULLS LAST ` +
+    `LIMIT ${Math.floor(Number(limit))}`
+  );
+}
+
+
 function sq(s) {
   return String(s || "").replace(/'/g, "''");
 }
@@ -184,6 +198,30 @@ export function exportZapRowsFromWarehouse(opts = {}) {
 /**
  * Pure index over materialized ZAP rows (no DuckDB). Used by Worker + tests.
  */
+/**
+ * Active ULURP default land list from warehouse (host rebuild path).
+ * Failures bubble as empty to callers that catch and fall back to SODA.
+ */
+export function exportLandDefaultFromWarehouse(opts = {}) {
+  if (!catalogExists()) {
+    throw new Error("DuckDB catalog missing; run warehouse ingest first");
+  }
+  const limit = opts.limit != null ? opts.limit : LAND_DEFAULT_LIMIT;
+  try {
+    const raw = queryWarehouse(sqlZapLandDefault(zapTableName(), limit));
+    return raw.map(rowToSodaShape).filter(Boolean);
+  } catch (e) {
+    const msg = String(e && e.message ? e.message : e);
+    if (/does not exist|Catalog Error|Table with name/i.test(msg)) {
+      throw new Error(
+        `warehouse table ${zapTableName()} missing — ingest zap-projects first`,
+      );
+    }
+    throw e;
+  }
+}
+
+
 export function buildZapLookupIndex(rows) {
   const list = Array.isArray(rows) ? rows.map(rowToSodaShape).filter(Boolean) : [];
   /** @type {Map<string, object>} */

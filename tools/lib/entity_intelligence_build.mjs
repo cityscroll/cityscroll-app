@@ -14,6 +14,7 @@ import {
   observationFromMeetingsRow,
   observationFromPeopleRow,
   mergeBblsOntoLandObservations,
+  observationFromPropertyRow,
   buildIntelligenceCorpus,
   CROSS_DOMAIN_OBJECT_LINK_VERSION,
 } from "../../entity_resolution/cross_domain/index.mjs";
@@ -228,6 +229,29 @@ export function collectCrossDomainObservations(root, opts = {}) {
       const obs = observationFromLandRow(row);
       if (obs) observations.push(obs);
     }
+    for (const row of seed.property || []) {
+      const obs = observationFromPropertyRow(row);
+      if (obs) observations.push(obs);
+    }
+  }
+
+  // --- Property: disposition fixtures + property cross-domain corpus ---
+  const propPaths = [
+    path.join(root, "worker/test/fixtures/property-cross-domain/corpus.json"),
+    path.join(root, "test/fixtures/property_disposition/multi_notice_bbl.json"),
+  ];
+  for (const p of propPaths) {
+    const doc = loadJsonIfExists(p);
+    if (!doc) continue;
+    const rows = doc.property_rows || doc.notices || [];
+    for (const row of rows) {
+      const obs = observationFromPropertyRow({
+        ...row,
+        section_name: row.section_name || "Property Disposition",
+        source_system: row.source_system || "city_record",
+      });
+      if (obs) observations.push(obs);
+    }
   }
 
   // Dedupe by source_record_id + domain
@@ -300,6 +324,8 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
         "site/data/zap_bbl_warehouse_lookup.json",
         "site/data/land_default_ulurp.json",
         "worker/test/fixtures/entity-intelligence/domain_observations.json",
+        "worker/test/fixtures/property-cross-domain/corpus.json",
+        "test/fixtures/property_disposition/multi_notice_bbl.json",
       ],
       methods: [
         "agency_canonical_v1",
@@ -309,9 +335,11 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
         "pin_authority_key_v1",
         "contract_id_join_v1",
         "checkbook_payment_v1",
+        "exact_bbl_v1",
+        "disposition_owner_label_v1",
       ],
       note:
-        "Links only when identity normalizers or join keys resolve. Identity: agency/vendor across money/land/rules/meetings. Join keys: PIN (shares_authority_key), contract_id (references_contract / payment_on_contract), BBL (sited_on_parcel), payee (paid_to_vendor). Empty domains are explicit; people defaults to not_yet_ingested without by_person rows.",
+        "Links only when identity normalizers or join keys resolve. Identity: agency/vendor across money/land/property/rules/meetings. Join keys: PIN (shares_authority_key), contract_id (references_contract / payment_on_contract), BBL (sited_on_parcel / property exact BBL), payee (paid_to_vendor). Property attaches via City Record agency_name and labeled disposition owners. Empty domains are explicit; people defaults to not_yet_ingested without by_person rows.",
     },
   };
 }
