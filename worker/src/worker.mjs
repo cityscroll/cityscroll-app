@@ -25,6 +25,7 @@ import {
   handleAdminDigestRollup,
   handleAdminDigestSendTest,
   handleAdminDigestCatchUp,
+  handleAdminPassportIngest,
 } from "./admin.mjs";
 import { handleFeed } from "./feed.mjs";
 import { handleBatch } from "./batch.mjs";
@@ -112,6 +113,7 @@ export default {
     if (pathname === "/admin/digest-send-test") return handleAdminDigestSendTest(request, env);
     if (pathname === "/admin/suggest-refresh") return handleAdminSuggestRefresh(request, env);
     if (pathname === "/admin/digest-catchup") return handleAdminDigestCatchUp(request, env);
+    if (pathname === "/admin/passport-ingest") return handleAdminPassportIngest(request, env);
     if (pathname === "/" || pathname === "/health") {
       return new Response("crol-worker ok", { status: 200, headers: { "Content-Type": "text/plain" } });
     }
