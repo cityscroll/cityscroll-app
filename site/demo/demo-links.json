@@ -487,6 +487,43 @@
       }
     },
     {
+      "id": "property-bbl-fallback",
+      "url": "#notice/20241112003",
+      "feature": "property-bbl-fallback",
+      "description": "Show a Property notice whose site BBL comes from body tax-lot text, not a street-address geocode.",
+      "expectations": {
+        "visible": [
+          {
+            "selector": "#naddr .tag.place",
+            "text": "Manhattan"
+          },
+          {
+            "selector": "#naddr .tag.place",
+            "text": "Block 644, Lot 1"
+          },
+          {
+            "selector": "#naddr .tag.place",
+            "text": "BBL 1006440001"
+          },
+          {
+            "selector": "#naddr a[href*='zola.planning.nyc.gov/l/lot/1/644/1']"
+          },
+          {
+            "selector": "#naddr a[href*='whoownswhat.justfix.org/bbl/1006440001']"
+          }
+        ],
+        "notVisible": [
+          {
+            "selector": "#noticeview .empty"
+          },
+          {
+            "selector": "#noticeview .loading"
+          }
+        ],
+        "focus": "#noticeview .route-item"
+      }
+    },
+    {
       "id": "property-brooklyn-sites",
       "url": "#property?boro=Brooklyn",
       "feature": "property-location-filter",
