@@ -23,38 +23,31 @@ import {
 
 const CACHE = "public, max-age=300";
 
-const ALLOW = new Set([
-  "https://cityscroll.org",
-  "https://www.cityscroll.org",
-  "https://crol-list.org",
-  "https://www.crol-list.org",
-  "https://cityscroll.pages.dev",
-  "https://crol-list.jimdc.com",
-  "https://jimdc.github.io",
-  "http://localhost:8000",
-  "http://localhost:8787",
-]);
-
-function corsHeaders(origin) {
-  const o = ALLOW.has(origin) ? origin : "https://cityscroll.org";
-  return {
-    "Access-Control-Allow-Origin": o,
+function json(body, status = 200, cache) {
+  const headers = {
+    "Content-Type": "application/json; charset=utf-8",
+    // Public read model — same open CORS posture as entity-dossier.
+    "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "GET, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",
-    Vary: "Origin",
   };
-}
-
-function json(body, status, cors, cache) {
-  const headers = { ...cors, "Content-Type": "application/json; charset=utf-8" };
   if (cache) headers["Cache-Control"] = cache;
+  else if (status !== 200) headers["Cache-Control"] = "no-store";
   return new Response(JSON.stringify(body), { status, headers });
 }
 
 export async function handleEntityIntelligence(req, env, ctx) {
-  const cors = corsHeaders(req.headers.get("origin") || "");
-  if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
-  if (req.method !== "GET") return json({ ok: false, reason: "method" }, 405, cors);
+  if (req.method === "OPTIONS") {
+    return new Response(null, {
+      status: 204,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+      },
+    });
+  }
+  if (req.method !== "GET") return json({ ok: false, reason: "method" }, 405);
 
   const url = new URL(req.url);
   const list = url.searchParams.get("list") === "1";
@@ -75,7 +68,6 @@ export async function handleEntityIntelligence(req, env, ctx) {
         provenance: materialization.provenance,
       },
       200,
-      cors,
       CACHE,
     );
   }
@@ -86,14 +78,12 @@ export async function handleEntityIntelligence(req, env, ctx) {
       return json(
         { ok: false, reason: "no_demo", version: CROSS_DOMAIN_OBJECT_LINK_VERSION },
         404,
-        cors,
       );
     }
     const view = lookupEntityIntelligence(materialization, { ref });
     return json(
       { ...view, demo: true, materialization_meta: materialization.verified_demo },
       200,
-      cors,
       CACHE,
     );
   }
@@ -112,7 +102,6 @@ export async function handleEntityIntelligence(req, env, ctx) {
         version: CROSS_DOMAIN_OBJECT_LINK_VERSION,
       },
       400,
-      cors,
     );
   }
 
@@ -126,12 +115,11 @@ export async function handleEntityIntelligence(req, env, ctx) {
         version: CROSS_DOMAIN_OBJECT_LINK_VERSION,
       },
       400,
-      cors,
     );
   }
 
   const view = lookupEntityIntelligence(materialization, query);
-  return json(view, 200, cors, CACHE);
+  return json(view, 200, CACHE);
 }
 
 export function getEntityIntelligenceMaterialization() {
