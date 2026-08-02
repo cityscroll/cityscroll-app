@@ -10,6 +10,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { buildMeetingOutcomes } from "../worker/src/lib/meeting_outcomes.mjs";
+import { buildPhaseViewForMatter } from "../site/meeting_phase_spine.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
@@ -42,6 +43,7 @@ const {
   meetingOutcomeBucket,
   collapseMeetingAgenda,
   meetingOutcomesHTML,
+  meetingMatterPhaseHTML,
   matterDetailUrl,
   nonCouncilWhereHTML,
   nonCouncilHearingOutcomesHTML,
@@ -61,8 +63,14 @@ const {
   extractFn("collapseMeetingAgenda") +
   extractFn("meetingVotesHTML") +
   extractFn("isCityCouncilNotice") +
+  extractFn("meetingPhaseLabel") +
+  extractFn("meetingPhaseGapHTML") +
+  extractFn("meetingPhasePanelHTML") +
+  extractFn("meetingPhaseStepperHTML") +
+  extractFn("meetingPhaseLeadHTML") +
+  extractFn("meetingMatterPhaseHTML") +
   extractFn("meetingOutcomesHTML") +
-  `return { meetingOutcomeBucket, collapseMeetingAgenda, meetingOutcomesHTML, matterDetailUrl, nonCouncilWhereHTML, nonCouncilHearingOutcomesHTML };`,
+  `return { meetingOutcomeBucket, collapseMeetingAgenda, meetingOutcomesHTML, meetingMatterPhaseHTML, matterDetailUrl, nonCouncilWhereHTML, nonCouncilHearingOutcomesHTML };`,
 )(t, fdate, cleanText, escUiHtml);
 
 test("outcome bucket maps approve / hold / refer", () => {
@@ -230,4 +238,31 @@ test("nonCouncilHearingOutcomesHTML fills notice+hearing dates when present", ()
   assert.match(html, /2026-06-20|06\/20\/2026|Jun/); // fdate stub is ISO slice
   assert.match(html, /2026-07-01/);
   assert.match(html, /Notice published|Hearing|Outcome|Minutes/i);
+});
+
+test("phase tools render lead → stepper → panels on fixture spines", () => {
+  const model = buildMeetingOutcomes(
+    fixture.notices,
+    fixture.events,
+    fixture.event_items,
+    fixture.votes,
+    fixture.attachments,
+  );
+  const phaseTools = { buildPhaseViewForMatter };
+  const html = meetingOutcomesHTML(model.records[0], null, phaseTools);
+  assert.match(html, /meeting-phase-stepper/);
+  assert.match(html, /meeting-spine-lead/);
+  assert.match(html, /data-meeting-matter-phase/);
+  assert.match(html, /data-meeting-phase-panel="decision"/);
+  assert.match(html, /data-meeting-phase-panel="record"/);
+  // Scan list still one row per matter (attribute boundary so phase wrappers do not count).
+  assert.equal((html.match(/data-meeting-matter(?:=|[\s>])/g) || []).length, 1);
+  // Not a flat 4-stage chain dump of labels in order.
+  assert.doesNotMatch(html, /class="chain meeting-spine"/);
+  assert.match(html, /How this timeline works|meeting_phase_how/);
+});
+
+test("meetingMatterPhaseHTML is empty for empty views", () => {
+  assert.equal(meetingMatterPhaseHTML(null), "");
+  assert.equal(meetingMatterPhaseHTML({ empty: true }), "");
 });
