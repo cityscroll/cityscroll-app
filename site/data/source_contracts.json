@@ -168,7 +168,7 @@
       "id": "checkbook-nycha-contracts",
       "name": "Checkbook NYC NYCHA contracts",
       "owner": "Office of the New York City Comptroller",
-      "status": "live",
+      "status": "disabled",
       "scope": "runtime",
       "kind": "checkbook",
       "endpoint": "https://www.checkbooknyc.com/api",
@@ -181,15 +181,53 @@
         "pin"
       ],
       "publisher_cadence": "Ongoing contract updates",
-      "product_freshness": "Queried by exact notice PIN on demand, with bounded daily prewarming.",
-      "used_for": "Exact NYCHA solicitation-to-award matches.",
+      "product_freshness": "Disabled for dense product materialization of exact solicitation→award matches after join measurement below usefulness. On-demand PIN lookup may still run; empty answers expire so later awards are not permanently sticky.",
+      "used_for": "No current dense product output. Ranked exact-PIN NYCHA award join was measured; temporal join usefulness is below the materialization threshold.",
+      "gap": "Strict temporal exact-PIN joins from City Record Housing Authority solicitations to Checkbook Contracts_NYCHA cover 0% of the modern product notice window (23 PIN-bearing solicitations; 0 non-empty external_award_matches on 2026-08-01) and 0% of a 30-notice historical sample before Checkbook WAF limits. City Record RFQ-style pins and Checkbook pin values largely do not share a joinable key; PIN reuse yields pre-solicitation agreements the temporal filter correctly rejects. Exact solicitation→award matches remain not-yet-ingested as a product surface until a higher-coverage key or source ships or usefulness is re-measured above threshold.",
+      "join_keys": [
+        "pin"
+      ],
+      "join_measurement": {
+        "observed_on": "2026-08-01",
+        "universe_modern": "Housing Authority Solicitation notices with non-empty pin in the live D1 notice mirror",
+        "universe_modern_count": 23,
+        "universe_historical_sample": "City Record Online (dg92-zbpx) Housing Authority Solicitation with non-empty pin, start_date in [2019-01-01, 2023-01-01), first 30 by start_date DESC",
+        "universe_historical_sample_count": 30,
+        "strategy": "exact_pin_temporal — Agreement.pin equals notice.pin and (approved_date || start_date) > notice.start_date. PIN-reuse without temporal rejected.",
+        "rates": {
+          "modern_d1_temporal_exact": {
+            "joined": 0,
+            "total": 23,
+            "rate": 0
+          },
+          "historical_sample_temporal_exact": {
+            "joined": 0,
+            "total": 30,
+            "rate": 0
+          }
+        },
+        "usefulness_threshold": 0.3,
+        "verdict": "Below usefulness threshold (~30%) on the modern product universe (0% temporal exact-PIN join). Ship measured reconnaissance + disabled source contract; do not claim dense exact NYCHA award matches as a live product surface."
+      },
       "code_references": [
         {
           "path": "worker/src/external_award.mjs",
           "contains": "<type_of_data>Contracts_NYCHA</type_of_data>"
+        },
+        {
+          "path": "worker/src/lib/nycha_awards_join.mjs",
+          "contains": "classifyNychaPinJoin"
+        },
+        {
+          "path": "site/data/nycha_award_sources/verification_receipts/nycha_awards_2026-08-01.json",
+          "contains": "checkbook-nycha-contracts"
+        },
+        {
+          "path": "test/nycha_awards_join.test.mjs",
+          "contains": "checkbook-nycha-contracts"
         }
       ],
-      "delivery_tier": "edge-materialized"
+      "delivery_tier": "live-only"
     },
     {
       "id": "abo-local-authorities",

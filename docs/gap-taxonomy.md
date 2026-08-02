@@ -54,7 +54,7 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `bid-tabulations-historical` | disabled | bid_number, PIN, bid_title, bid_opening_date | high-risk | 0% (modern_notices_strict) |
 | `capital-projects` | disabled | project_name, managing_agency, client_agency, pid | — | 0% (modern_procurement_substring_unique) |
 | `checkbook-contracts` | landed | PIN, contract_id, registration_date | — | — |
-| `checkbook-nycha-contracts` | landed | contract_id | — | — |
+| `checkbook-nycha-contracts` | disabled | PIN, contract_id | — | 0% (modern_d1_temporal_exact) |
 | `checkbook-spending` | landed | PIN, contract_id, check_amount, check_date | — | — |
 | `city-council-meetings-open-data` | disabled | event_id, agency, event_title, start_time | high-risk | 0% (modern_notices_strict) |
 | `city-record` | live-only | PIN, request_id, agency | — | — |
@@ -100,15 +100,12 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 |---|---|---|---|---|
 | `checkbook-contracts-x-passport-public-contracts-via-PIN+contract_id` | `checkbook-contracts` × `passport-public-contracts` | PIN · contract_id | yes | 5 |
 | `checkbook-contracts-x-passport-public-rfx-via-PIN` | `checkbook-contracts` × `passport-public-rfx` | PIN | yes | 5 |
-| `checkbook-nycha-contracts-x-passport-public-contracts-via-contract_id` | `checkbook-nycha-contracts` × `passport-public-contracts` | contract_id | yes | 5 |
 | `checkbook-spending-x-passport-public-contracts-via-PIN+contract_id` | `checkbook-spending` × `passport-public-contracts` | PIN · contract_id | yes | 5 |
 | `checkbook-spending-x-passport-public-rfx-via-PIN` | `checkbook-spending` × `passport-public-rfx` | PIN | yes | 5 |
 | `checkbook-contracts-x-recent-contract-awards-ocp-via-PIN` | `checkbook-contracts` × `recent-contract-awards-ocp` | PIN | maybe | 4 |
 | `checkbook-spending-x-recent-contract-awards-ocp-via-PIN` | `checkbook-spending` × `recent-contract-awards-ocp` | PIN | maybe | 4 |
-| `checkbook-contracts-x-checkbook-nycha-contracts-via-contract_id` | `checkbook-contracts` × `checkbook-nycha-contracts` | contract_id | yes | 3 |
 | `checkbook-contracts-x-checkbook-spending-via-PIN+contract_id` | `checkbook-contracts` × `checkbook-spending` | PIN · contract_id | yes | 3 |
 | `checkbook-contracts-x-current-solicitations-ocp-via-PIN` | `checkbook-contracts` × `current-solicitations-ocp` | PIN | maybe | 3 |
-| `checkbook-nycha-contracts-x-checkbook-spending-via-contract_id` | `checkbook-nycha-contracts` × `checkbook-spending` | contract_id | yes | 3 |
 | `checkbook-spending-x-current-solicitations-ocp-via-PIN` | `checkbook-spending` × `current-solicitations-ocp` | PIN | maybe | 3 |
 | `nycida-build-nyc-projects-x-recent-contract-awards-ocp-via-request_id` | `nycida-build-nyc-projects` × `recent-contract-awards-ocp` | request_id | maybe | 3 |
 | `nycida-build-nyc-projects-x-unregistered-zoning-application-portal-projects-via-project_id` | `nycida-build-nyc-projects` × `unregistered-zoning-application-portal-projects` | project_id | maybe | 3 |
@@ -118,6 +115,9 @@ Refresh with `node tools/depot_rederive.mjs` after any source-contract or taxono
 | `current-solicitations-ocp-x-nycida-build-nyc-projects-via-request_id` | `current-solicitations-ocp` × `nycida-build-nyc-projects` | request_id | maybe | 2 |
 | `passport-public-contracts-x-recent-contract-awards-ocp-via-PIN` | `passport-public-contracts` × `recent-contract-awards-ocp` | PIN | maybe | 2 |
 | `abo-local-authorities-x-doing-business-entities-via-vendor_name` | `abo-local-authorities` × `doing-business-entities` | vendor_name | maybe | 1 |
+| `active-civil-service-list-x-dcas-annual-exam-outcomes-via-exam_no` | `active-civil-service-list` × `dcas-annual-exam-outcomes` | exam_no | maybe | 1 |
+| `city-record-x-current-solicitations-ocp-via-PIN+request_id` | `city-record` × `current-solicitations-ocp` | PIN · request_id | maybe | 1 |
+| `city-record-x-recent-contract-awards-ocp-via-PIN+request_id` | `city-record` × `recent-contract-awards-ocp` | PIN · request_id | maybe | 1 |
 
 ## Graph view
 
@@ -136,12 +136,12 @@ graph LR
   zap_projects[zap-projects] -->|project_id| zap_api_outcomes[zap-api-outcomes]
   checkbook_contracts-.->|PIN/contract_id candidate| passport_public_contracts
   checkbook_contracts-.->|PIN candidate| passport_public_rfx
-  checkbook_nycha_contracts-.->|contract_id candidate| passport_public_contracts
   checkbook_spending-.->|PIN/contract_id candidate| passport_public_contracts
   checkbook_spending-.->|PIN candidate| passport_public_rfx
-  checkbook_contracts-.->|contract_id candidate| checkbook_nycha_contracts
   checkbook_contracts-.->|PIN/contract_id candidate| checkbook_spending
-  checkbook_nycha_contracts-.->|contract_id candidate| checkbook_spending
+  nycida_build_nyc_projects-.->|project_id candidate| zap_api_outcomes
+  nycida_build_nyc_projects-.->|project_id candidate| zap_bbl
+  nycida_build_nyc_projects-.->|project_id candidate| zap_projects
 ```
 
 ## Ranked class-(a) ingest list
@@ -190,4 +190,4 @@ node tools/depot_rederive.mjs          # write registry + docs + receipt
 node tools/depot_rederive.mjs --check  # CI drift gate (no writes)
 ```
 
-Last refresh fingerprint: `84aa82661c40…` · materialized 11 · candidates 46 · class changes 0.
+Last refresh fingerprint: `d19b9db65045…` · materialized 11 · candidates 43 · class changes 0.
