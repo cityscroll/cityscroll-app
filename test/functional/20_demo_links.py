@@ -94,11 +94,22 @@ class QuietHandler(SimpleHTTPRequestHandler):
 
 def install_demo_routes(page) -> None:
     def worker(route) -> None:
-        if urlparse(route.request.url).path == "/hearings":
+        path = urlparse(route.request.url).path
+        if path == "/hearings":
             route.fulfill(
                 status=200,
                 content_type="application/json",
                 body=json.dumps({"hearings": [UPCOMING_HEARING]}),
+            )
+        elif path == "/zap-outcomes":
+            # Land detail always requests this. Abort-or-hang races the 12s workerFetch
+            # budget (and a fallback host) and keeps the outcomes spinner up past the
+            # old 15s assert. Fulfill a fast unmatched shell so the spinner clears;
+            # demo assertions still require the fixture project name on the detail.
+            route.fulfill(
+                status=200,
+                content_type="application/json",
+                body=json.dumps({"ok": True, "record": None}),
             )
         else:
             route.fallback()
@@ -133,6 +144,62 @@ def visible_locator(page, expected: dict):
     return locator
 
 
+# Land/zoning detail hydrates GET /zap-outcomes on select. Cold edge builds have been
+# measured at ~12–17s ("Loading decision documents and outcomes…"), so a flat 15s
+# wait_for races that spinner and flakes every merge-group candidate. Wait out the
+# known-slow load rather than weakening the assertions.
+DEFAULT_WAIT_MS = 15_000
+SLOW_LAND_WAIT_MS = 30_000
+DEFAULT_GOTO_MS = 30_000
+SLOW_LAND_GOTO_MS = 45_000
+SLOW_LAND_ENTRY_IDS = frozenset({
+    "scenario-neighborhood",
+})
+SLOW_LAND_FEATURES = frozenset({
+    "scenario-neighborhood",
+})
+
+
+def is_slow_land_entry(entry: dict) -> bool:
+    """True for demo routes that hit the Land list + detail (zap-outcomes) cold path."""
+    return entry.get("id") in SLOW_LAND_ENTRY_IDS or entry.get("feature") in SLOW_LAND_FEATURES
+
+
+def entry_wait_ms(entry: dict) -> int:
+    return SLOW_LAND_WAIT_MS if is_slow_land_entry(entry) else DEFAULT_WAIT_MS
+
+
+def entry_goto_ms(entry: dict) -> int:
+    return SLOW_LAND_GOTO_MS if is_slow_land_entry(entry) else DEFAULT_GOTO_MS
+
+
+def wait_land_detail_ready(page, timeout_ms: int) -> None:
+    """Wait for the Land cold path to finish before asserting demo targets.
+
+    Sequence: list rows paint → detail shell (rolename) → outcomes spinner clears.
+    Deterministic on both warm and cold /zap-outcomes; does not change what is asserted.
+    """
+    page.locator("#llist .row").first.wait_for(state="visible", timeout=timeout_ms)
+    page.wait_for_function(
+        """() => {
+            const detail = document.querySelector('#ldetail');
+            if (!detail) return false;
+            // List/detail skeletons: direct-child loading only (outcomes uses a nested one).
+            if (detail.querySelector(':scope > .loading, :scope > .empty.skel, :scope > .skl')) {
+                return false;
+            }
+            if (!detail.querySelector('.rolename')) return false;
+            const outcomes = detail.querySelector('#land-outcomes');
+            if (!outcomes) return true;
+            if (outcomes.querySelector('.loading')) return false;
+            const note = outcomes.querySelector('.note');
+            if (note && /loading/i.test(note.textContent || '')) return false;
+            return true;
+        }""",
+        timeout=timeout_ms,
+    )
+
+
 class DemoLinkContract(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
@@ -165,15 +232,19 @@ class DemoLinkContract(unittest.TestCase):
     def run_entry(self, entry: dict) -> None:
         page = self.page
         expectations = entry["expectations"]
+        wait_ms = entry_wait_ms(entry)
         self.page_errors.clear()
-        page.goto(BASE + entry["url"], wait_until="domcontentloaded", timeout=30000)
+        page.goto(BASE + entry["url"], wait_until="domcontentloaded", timeout=entry_goto_ms(entry))
+
+        if is_slow_land_entry(entry):
+            wait_land_detail_ready(page, wait_ms)
 
         for expected in expectations["visible"]:
             locator = visible_locator(page, expected)
-            locator.first.wait_for(state="visible", timeout=15000)
+            locator.first.wait_for(state="visible", timeout=wait_ms)
 
         expected_hash = expectations.get("hash", entry["url"])
-        page.wait_for_function("value => location.hash === value", arg=expected_hash, timeout=15000)
+        page.wait_for_function("value => location.hash === value", arg=expected_hash, timeout=wait_ms)
         self.assertEqual(page.evaluate("location.hash"), expected_hash)
 
         for expected in expectations["notVisible"]:
@@ -188,7 +259,7 @@ class DemoLinkContract(unittest.TestCase):
 
         for state in expectations.get("states", []):
             locator = page.locator(state["selector"]).first
-            locator.wait_for(state="attached", timeout=15000)
+            locator.wait_for(state="attached", timeout=wait_ms)
             actual = (
                 locator.get_attribute(state["attribute"])
                 if "attribute" in state
@@ -200,7 +271,7 @@ class DemoLinkContract(unittest.TestCase):
             banner = expectations["banner"]
             locator = page.locator(banner["selector"])
             if banner["visible"]:
-                locator.wait_for(state="visible", timeout=15000)
+                locator.wait_for(state="visible", timeout=wait_ms)
                 if banner.get("text"):
                     self.assertIn(banner["text"], locator.inner_text())
             else:
@@ -211,7 +282,7 @@ class DemoLinkContract(unittest.TestCase):
             page.wait_for_function(
                 "selector => document.activeElement?.matches(selector)",
                 arg=expectations["focus"],
-                timeout=15000,
+                timeout=wait_ms,
             )
             self.assertTrue(page.locator(expectations["focus"]).first.is_visible())
 
