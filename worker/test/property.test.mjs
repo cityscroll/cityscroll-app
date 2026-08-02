@@ -60,6 +60,11 @@ test("Property view extracts sites, abstains honestly, and geocodes a representa
   assert.ok(view.properties[0].property_location.bbls.includes("5006840261"));
   assert.equal(view.properties[1].property_location.scope, "unlocated");
   assert.deepEqual(view.counts, { total: 2, local: 1, unlocated: 1, geometry: 1 });
+  // Disposition process spines are stamped on the view (separate from list filters).
+  assert.ok(Array.isArray(view.disposition_spines));
+  assert.ok(view.disposition_spines.length >= 1);
+  assert.equal(view.disposition_metrics.metric, "property_disposition_spine_completeness_rate");
+  assert.ok(view.properties[0].disposition_join_keys.some((k) => k.startsWith("bbl:")));
 });
 
 test("Property refresh writes the materialized view and its route serves it", async () => {

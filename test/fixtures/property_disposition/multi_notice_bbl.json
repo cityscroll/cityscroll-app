@@ -1,0 +1,193 @@
+{
+  "schema_version": 1,
+  "labeling": "Synthetic field cases for property disposition spine. Two+ notices share an exact BBL (or borough+block/lot) and form one process chain. Stages: hearing | auction_or_rfp | award_or_conveyance.",
+  "notices": [
+    {
+      "request_id": "20150421106",
+      "start_date": "2015-05-01T00:00:00.000",
+      "event_date": "2015-06-10T10:00:00.000",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Property Disposition",
+      "short_title": "Excelsior II",
+      "additional_description_1": "Pursuant to Section 695(2)(b) of the General Municipal Law, notice is hereby given of a public hearing for the disposition of City-owned property in the Borough of Brooklyn, Block 2518 Lot 36 and Block 2518 Lot 31.",
+      "property_location": {
+        "scope": "local",
+        "boroughs": ["Brooklyn"],
+        "neighborhoods": [],
+        "addresses": [],
+        "tax_lots": [
+          { "label": "Block 2518, Lots 36, 31", "block": "2518", "lots": ["36", "31"], "source": "Block 2518 Lot 36" }
+        ],
+        "bbls": ["3025180036", "3025180031"],
+        "geometry": null
+      }
+    },
+    {
+      "request_id": "20150609105",
+      "start_date": "2015-06-12T00:00:00.000",
+      "event_date": "2015-07-15T01:00:00.000",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Property Disposition",
+      "short_title": "Excelsior II",
+      "additional_description_1": "Rescheduled public hearing for disposition of City-owned property in the Borough of Brooklyn, Block 2518 Lot 36.",
+      "property_location": {
+        "scope": "local",
+        "boroughs": ["Brooklyn"],
+        "neighborhoods": [],
+        "addresses": [],
+        "tax_lots": [
+          { "label": "Block 2518, Lot 36", "block": "2518", "lots": ["36"], "source": "Block 2518 Lot 36" }
+        ],
+        "bbls": ["3025180036"],
+        "geometry": null
+      }
+    },
+    {
+      "request_id": "20220504006",
+      "start_date": "2022-05-04T00:00:00.000",
+      "event_date": null,
+      "agency_name": "Economic Development Corporation",
+      "type_of_notice_description": "Sale",
+      "section_name": "Property Disposition",
+      "short_title": "REQUEST FOR PROPOSALS - INDUSTRY ROAD",
+      "additional_description_1": "NYCEDC is pleased to release this Request for Proposals (RFP) for the sale and potential development of property located at Industry Road, Brooklyn, Block 4444 Lot 1.",
+      "property_location": {
+        "scope": "local",
+        "boroughs": ["Brooklyn"],
+        "neighborhoods": [],
+        "addresses": [{ "label": "Industry Road", "borough": "Brooklyn", "neighborhood": null, "latitude": null, "longitude": null, "bbl": "3044440001" }],
+        "tax_lots": [
+          { "label": "Block 4444, Lot 1", "block": "4444", "lots": ["1"], "source": "Block 4444 Lot 1" }
+        ],
+        "bbls": ["3044440001"],
+        "geometry": null
+      }
+    },
+    {
+      "request_id": "20220425010",
+      "start_date": "2022-04-25T00:00:00.000",
+      "event_date": null,
+      "agency_name": "Economic Development Corporation",
+      "type_of_notice_description": "Sale",
+      "section_name": "Property Disposition",
+      "short_title": "Request for Proposals - Industry Road",
+      "additional_description_1": "NYCEDC Request for Proposals (RFP) for the sale and potential development of Industry Road, Brooklyn Block 4444 Lot 1.",
+      "property_location": {
+        "scope": "local",
+        "boroughs": ["Brooklyn"],
+        "neighborhoods": [],
+        "addresses": [],
+        "tax_lots": [
+          { "label": "Block 4444, Lot 1", "block": "4444", "lots": ["1"], "source": "Block 4444 Lot 1" }
+        ],
+        "bbls": ["3044440001"],
+        "geometry": null
+      }
+    },
+    {
+      "request_id": "full-chain-hearing",
+      "start_date": "2021-01-10T00:00:00.000",
+      "event_date": "2021-02-01T10:00:00.000",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Property Disposition",
+      "short_title": "Disposition hearing — 35 Beebe Street",
+      "additional_description_1": "Public hearing for the proposed sale of City-owned residential property at 35 Beebe Street, Staten Island, Block 684 Lot 261.",
+      "property_location": {
+        "scope": "local",
+        "boroughs": ["Staten Island"],
+        "neighborhoods": [],
+        "addresses": [{ "label": "35 Beebe Street", "borough": "Staten Island", "neighborhood": null, "latitude": null, "longitude": null, "bbl": "5006840261" }],
+        "tax_lots": [
+          { "label": "Block 684, Lot 261", "block": "684", "lots": ["261"], "source": "Block 684 Lot 261" }
+        ],
+        "bbls": ["5006840261"],
+        "geometry": null
+      }
+    },
+    {
+      "request_id": "full-chain-auction",
+      "start_date": "2021-03-15T00:00:00.000",
+      "event_date": "2021-04-01T16:00:00.000",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Notice",
+      "section_name": "Property Disposition",
+      "short_title": "Notice of Public Sale of Residential Property located at 35 Beebe Street, Staten Island",
+      "additional_description_1": "Notice of Public Sale of Residential Property at 35 Beebe Street, Staten Island. Block 684 Lot 261. Upset price $250,000.",
+      "property_location": {
+        "scope": "local",
+        "boroughs": ["Staten Island"],
+        "neighborhoods": [],
+        "addresses": [{ "label": "35 Beebe Street", "borough": "Staten Island", "neighborhood": null, "latitude": null, "longitude": null, "bbl": "5006840261" }],
+        "tax_lots": [
+          { "label": "Block 684, Lot 261", "block": "684", "lots": ["261"], "source": "Block 684 Lot 261" }
+        ],
+        "bbls": ["5006840261"],
+        "geometry": null
+      }
+    },
+    {
+      "request_id": "full-chain-award",
+      "start_date": "2021-05-20T00:00:00.000",
+      "event_date": null,
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Notice",
+      "section_name": "Property Disposition",
+      "short_title": "Notice of tentative winning bidders",
+      "additional_description_1": "List of tentative winning bidders for the public sale of 35 Beebe Street, Staten Island, Block 684 Lot 261. The property has been sold for $275,000.",
+      "property_location": {
+        "scope": "local",
+        "boroughs": ["Staten Island"],
+        "neighborhoods": [],
+        "addresses": [{ "label": "35 Beebe Street", "borough": "Staten Island", "neighborhood": null, "latitude": null, "longitude": null, "bbl": "5006840261" }],
+        "tax_lots": [
+          { "label": "Block 684, Lot 261", "block": "684", "lots": ["261"], "source": "Block 684 Lot 261" }
+        ],
+        "bbls": ["5006840261"],
+        "geometry": null
+      }
+    },
+    {
+      "request_id": "singleton-unlocated",
+      "start_date": "2022-07-01T00:00:00.000",
+      "event_date": null,
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Sale",
+      "section_name": "Property Disposition",
+      "short_title": "AUTO AUCTION",
+      "additional_description_1": "Registration is free. Auctions are held online each week. No specific Block or Lot is named.",
+      "property_location": {
+        "scope": "unlocated",
+        "boroughs": [],
+        "neighborhoods": [],
+        "addresses": [],
+        "tax_lots": [],
+        "bbls": [],
+        "geometry": null
+      }
+    },
+    {
+      "request_id": "cross-agency-same-lot",
+      "start_date": "2018-01-01T00:00:00.000",
+      "event_date": "2018-02-01T10:00:00.000",
+      "agency_name": "Small Business Services",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Property Disposition",
+      "short_title": "Unrelated hearing on same tax lot different agency",
+      "additional_description_1": "Public hearing regarding a lease surrender on Block 684 Lot 261 in the Borough of Staten Island.",
+      "property_location": {
+        "scope": "local",
+        "boroughs": ["Staten Island"],
+        "neighborhoods": [],
+        "addresses": [],
+        "tax_lots": [
+          { "label": "Block 684, Lot 261", "block": "684", "lots": ["261"], "source": "Block 684 Lot 261" }
+        ],
+        "bbls": ["5006840261"],
+        "geometry": null
+      }
+    }
+  ]
+}
