@@ -1406,6 +1406,7 @@
     career_outcome_stage_certification: "sètifikasyon bay ajans lan",
     career_outcome_stage_appointment: "nonmen",
     career_outcomes_not_published_html: "Vil la poko pibliye rezilta apre sik pou egzamen sa a — yo ta parèt nan {source} apre {stage}.",
+    career_outcomes_not_yet_ingested_html: "Pokò a pa montre isit la — total agreg apre sik la ap viv nan {source} (ak done ouvè Civil Service List) apre {stage}.",
     // END GENERATED CAREER GUIDE TRANSLATIONS
   });
   W.SECTION_I18N = W.SECTION_I18N || {};

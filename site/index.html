@@ -3799,15 +3799,16 @@ function careerOutcomeHTML(exam){
       })}</p>
     </section>`;
   }
-  // Real-world pending: DCAS has not released aggregates for this exam yet (not an ingest gap).
+  // Class-(a): public annual + Civil Service List sources exist; empty slot is incomplete
+  // join or cycle pending — never a false class-(b) "city does not publish" for aggregates.
   const stageKey={
     list_establishment:"career_outcome_stage_list",
     certification:"career_outcome_stage_certification",
     appointment:"career_outcome_stage_appointment"
   }[view.pending_stage]||"career_outcome_stage_list";
-  return `<section class="career-outcomes" data-outcome="not_published" aria-label="${escUiHtml(t("career_outcomes_heading"))}">
+  return `<section class="career-outcomes" data-outcome="not_yet_ingested" aria-label="${escUiHtml(t("career_outcomes_heading"))}">
     <h3 class="career-outcomes-heading">${t("career_outcomes_heading")}</h3>
-    <p class="career-outcomes-gap">${t("career_outcomes_not_published_html",{
+    <p class="career-outcomes-gap">${t("career_outcomes_not_yet_ingested_html",{
       stage:t(stageKey),
       source:t("career_outcomes_source_name")
     })}</p>

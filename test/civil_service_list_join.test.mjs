@@ -134,10 +134,31 @@ test("staffing artifact and card template support list_joined depth", () => {
   }
 });
 
-test("joinListAggregateOntoExam alone leaves outcome gap intact", () => {
+test("joinListAggregateOntoExam alone leaves list counts; full path clears gap on list hit", () => {
   const index = buildListAggregateIndex([{ exam_number: "9000", list_count: 3 }]);
   const exam = joinListAggregateOntoExam({ exam_number: "9000" }, index);
   assert.equal(exam.list_aggregate.list_count, 3);
   const withGap = joinOutcomeOntoExam(exam, outcomesByExamNumber([]));
-  assert.equal(withGap.outcome_gap.class, "not_published");
+  assert.equal(withGap.outcome_gap.class, "not_yet_ingested");
+  const full = joinOutcomesAndListOntoExam({ exam_number: "9000" }, outcomesByExamNumber([]), index);
+  assert.equal(full.list_aggregate.list_count, 3);
+  assert.equal(full.outcome_gap, null);
+  assert.equal(Staffing.examOutcomeView(full).kind, "list_joined");
+});
+
+test("artifact ships non-null list_aggregate examples from closed list-depth exams", () => {
+  const withList = artifact.exams.filter(
+    (exam) => exam.list_aggregate && Number(exam.list_aggregate.list_count) > 0,
+  );
+  assert.ok(withList.length >= 10, `expected many list joins, got ${withList.length}`);
+  assert.ok(
+    Number(artifact.list_aggregates?.summary?.exams_with_list_aggregate || 0) >= 10,
+  );
+  // Never class-(b) not_published for aggregate outcome gaps.
+  for (const exam of artifact.exams) {
+    if (exam.outcome_gap) {
+      assert.notEqual(exam.outcome_gap.class, "not_published", exam.exam_number);
+      assert.equal(exam.outcome_gap.class, "not_yet_ingested", exam.exam_number);
+    }
+  }
 });

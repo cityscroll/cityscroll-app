@@ -1409,6 +1409,7 @@
     career_outcome_stage_certification: "التصديق لدى الجهة",
     career_outcome_stage_appointment: "التعيين",
     career_outcomes_not_published_html: "المدينة لا تنشر بعد نتائج ما بعد الدورة لهذا الامتحان — ستظهر في {source} بعد {stage}.",
+    career_outcomes_not_yet_ingested_html: "لم يُعرض هنا بعد — مجاميع ما بعد الدورة موجودة في {source} (وفي بيانات Civil Service List المفتوحة) بعد {stage}.",
     // END GENERATED CAREER GUIDE TRANSLATIONS
   });
   W.SECTION_I18N = W.SECTION_I18N || {};

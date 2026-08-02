@@ -201,6 +201,7 @@ test("deadline-first card markup leads with the deadline and keeps OASys + NOE a
 
 test("acceptance cards flip outcome slots from gaps to joined aggregates where published", () => {
   const withOutcomes = ["6125", "7006"];
+  // Open exams without annual or list depth: class-(a) not-yet-ingested (public sources exist).
   const withoutOutcomes = ["7013", "7016", "7331"];
   for (const examNumber of withOutcomes) {
     const exam = artifact.exams.find(item => item.exam_number === examNumber);
@@ -210,6 +211,10 @@ test("acceptance cards flip outcome slots from gaps to joined aggregates where p
   for (const examNumber of withoutOutcomes) {
     const exam = artifact.exams.find(item => item.exam_number === examNumber);
     assert.equal(exam.outcome, null, examNumber);
-    assert.equal(Staffing.examOutcomeView(exam).kind, "not_published");
+    assert.equal(Staffing.examOutcomeView(exam).kind, "not_yet_ingested");
   }
+  // Closed exam with Civil Service List depth lands list_joined (non-null example).
+  const listJoined = artifact.exams.find(item => item.exam_number === "6024");
+  assert.ok(listJoined?.list_aggregate?.list_count > 0);
+  assert.equal(Staffing.examOutcomeView(listJoined).kind, "list_joined");
 });

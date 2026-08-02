@@ -1409,6 +1409,7 @@
     career_outcome_stage_certification: "ایجنسی تصدیق",
     career_outcome_stage_appointment: "تقرری",
     career_outcomes_not_published_html: "شہر ابھی اس امتحان کے سائیکل کے بعد کے نتائج شائع نہیں کرتا — وہ {stage} کے بعد {source} میں ظاہر ہوں گے۔",
+    career_outcomes_not_yet_ingested_html: "ابھی یہاں نہیں دکھایا گیا — سائیکل کے بعد کے مجموعی نتائج {stage} کے بعد {source} میں (اور Civil Service List اوپن ڈیٹا میں) موجود ہیں۔",
     // END GENERATED CAREER GUIDE TRANSLATIONS
   });
   W.SECTION_I18N = W.SECTION_I18N || {};

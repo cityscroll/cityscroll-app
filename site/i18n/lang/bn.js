@@ -1407,6 +1407,7 @@
     career_outcome_stage_certification: "সংস্থায় সার্টিফিকেশন",
     career_outcome_stage_appointment: "নিয়োগ",
     career_outcomes_not_published_html: "শহর এখনও এই পরীক্ষার চক্র-পরবর্তী ফলাফল প্রকাশ করে না — {stage} এর পরে সেগুলি {source}-এ দেখা যাবে।",
+    career_outcomes_not_yet_ingested_html: "এখানে এখনও দেখানো হয়নি — চক্র-পরবর্তী সামগ্রিক ফলাফল {stage} এর পরে {source}-এ (এবং Civil Service List উন্মুক্ত তথ্যে) থাকে।",
     // END GENERATED CAREER GUIDE TRANSLATIONS
   });
   W.SECTION_I18N = W.SECTION_I18N || {};

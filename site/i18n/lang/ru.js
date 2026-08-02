@@ -1427,6 +1427,7 @@
     career_outcome_stage_certification: "сертификации в ведомство",
     career_outcome_stage_appointment: "назначения",
     career_outcomes_not_published_html: "Город пока не публикует итоги после цикла для этого экзамена — они появятся в {source} после {stage}.",
+    career_outcomes_not_yet_ingested_html: "Пока не показано здесь — итоговые агрегаты после цикла есть в {source} (и в открытых данных Civil Service List) после {stage}.",
     // END GENERATED CAREER GUIDE TRANSLATIONS
   });
   W.SECTION_I18N = W.SECTION_I18N || {};

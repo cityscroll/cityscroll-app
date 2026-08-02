@@ -1435,6 +1435,7 @@
     career_outcome_stage_certification: "certyfikacji do agencji",
     career_outcome_stage_appointment: "nominacji",
     career_outcomes_not_published_html: "Miasto nie publikuje jeszcze wyników po cyklu dla tego egzaminu — pojawią się w {source} po {stage}.",
+    career_outcomes_not_yet_ingested_html: "Jeszcze nie pokazane tutaj — zagregowane wyniki po cyklu są w {source} (oraz w otwartych danych Civil Service List) po {stage}.",
     // END GENERATED CAREER GUIDE TRANSLATIONS
   });
   W.SECTION_I18N = W.SECTION_I18N || {};

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Capture exam-card outcome joins at review viewports (joined + not-published)."""
+"""Capture exam-card outcome joins at review viewports (joined, list_joined, not-yet-ingested)."""
 from __future__ import annotations
 
 import argparse
@@ -71,33 +71,51 @@ def main():
                     card.screenshot(path=path, animations="disabled")
                     captures.append(str(path.relative_to(ROOT)))
 
-                # Not-published gap on Automotive Service Worker (7013).
+                # Class-(a) not-yet-ingested gap on Automotive Service Worker (7013).
                 page.evaluate("location.hash='#exam/7013'")
                 pending = page.locator("#career-exam-7013")
                 pending.wait_for(state="visible", timeout=10000)
-                gap = pending.locator('.career-outcomes[data-outcome="not_published"]')
+                gap = pending.locator('.career-outcomes[data-outcome="not_yet_ingested"]')
                 if gap.count() != 1:
-                    failures.append(f"{width}px: exam 7013 missing not-published outcomes block")
+                    failures.append(f"{width}px: exam 7013 missing not-yet-ingested outcomes block")
                 else:
                     gap_text = gap.inner_text()
-                    if "does not publish" not in gap_text and "eligible-list" not in gap_text:
-                        # Locale may vary; English default is expected on bare fixture.
-                        if "does not publish" not in gap_text:
-                            failures.append(f"{width}px: 7013 gap missing not-published register")
+                    lower = gap_text.lower()
+                    if "not yet shown" not in lower and "eligible-list" not in lower:
+                        failures.append(f"{width}px: 7013 gap missing class-(a) register")
+                    if "does not publish" in lower:
+                        failures.append(f"{width}px: 7013 still uses false class-(b) city-withhold copy")
 
                 if not args.verify_only:
                     path = OUTPUT / f"pending-7013-{width}.png"
                     pending.screenshot(path=path, animations="disabled")
                     captures.append(str(path.relative_to(ROOT)))
 
-                # Open list with both states visible.
+                # list_joined depth on a closed exam with Civil Service List presence (6024).
+                page.evaluate("location.hash='#exam/6024'")
+                list_card = page.locator("#career-exam-6024")
+                list_card.wait_for(state="visible", timeout=10000)
+                list_block = list_card.locator('.career-outcomes[data-outcome="list_joined"]')
+                if list_block.count() != 1:
+                    failures.append(f"{width}px: exam 6024 missing list_joined outcomes block")
+                else:
+                    list_text = list_block.inner_text().lower()
+                    if "civil service list" not in list_text and "eligible list" not in list_text:
+                        failures.append(f"{width}px: 6024 list_joined missing list copy")
+
+                if not args.verify_only:
+                    path = OUTPUT / f"list-joined-6024-{width}.png"
+                    list_card.screenshot(path=path, animations="disabled")
+                    captures.append(str(path.relative_to(ROOT)))
+
+                # Open list with joined + class-(a) gap states visible.
                 page.evaluate("location.hash='#people?view=guide&window=open'")
                 page.locator("#career-results .career-card").first.wait_for(state="visible")
                 page.wait_for_timeout(200)
                 if page.locator('.career-outcomes[data-outcome="joined"]').count() < 1:
                     failures.append(f"{width}px: open list has no joined outcome cards")
-                if page.locator('.career-outcomes[data-outcome="not_published"]').count() < 1:
-                    failures.append(f"{width}px: open list has no not-published outcome cards")
+                if page.locator('.career-outcomes[data-outcome="not_yet_ingested"]').count() < 1:
+                    failures.append(f"{width}px: open list has no not-yet-ingested outcome cards")
 
                 if not args.verify_only:
                     path = OUTPUT / f"open-list-{width}.png"
