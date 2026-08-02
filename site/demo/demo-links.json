@@ -487,7 +487,8 @@
           }
         ],
         "focus": "#noticeview .route-item"
-      }
+      },
+      "localOnly": true
     },
     {
       "id": "property-bbl-fallback",
