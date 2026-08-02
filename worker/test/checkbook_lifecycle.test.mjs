@@ -18,6 +18,9 @@ import {
   handleContractLifecycle,
   computeLifecycle,
   prewarmContractLifecycle,
+  getOrCompute,
+  CONTRACT_LIFECYCLE_ASSEMBLY_VERSION,
+  contractLifecycleCacheIsCurrent,
 } from "../src/checkbook_lifecycle.mjs";
 import {
   assembleLifecycle,
@@ -282,6 +285,11 @@ test("FULL lifecycle: solicitation → pending → registered → payment with s
   assert.ok(body.civic_events.every((e) => /^cte:[a-f0-9]{24}$/.test(e.event_id)));
   const cachedPayload = JSON.parse(db._cache["20250110001"].lifecycle);
   assert.ok(Array.isArray(cachedPayload.civic_events), "cached lifecycle retains civic_events");
+  assert.equal(
+    cachedPayload.assembly_version,
+    CONTRACT_LIFECYCLE_ASSEMBLY_VERSION,
+    "cachePut stamps assembly_version so later logic bumps force recompute",
+  );
 
   // Cached in D1
   assert.ok(db._cache["20250110001"], "lifecycle was cached in D1");
@@ -619,7 +627,7 @@ test("prewarm: bounded, idempotent, skips already-cached ids", withMockedFetch({
       },
     },
     cache: {
-      // Seed must include ocp_award + civic_events so cacheGet treats it as complete.
+      // Seed must include assembly_version + ocp_award + civic_events so cacheGet treats it as complete.
       "ALREADY": {
         lifecycle: JSON.stringify({
           timeline: [],
@@ -627,6 +635,7 @@ test("prewarm: bounded, idempotent, skips already-cached ids", withMockedFetch({
           ok: true,
           ocp_award: { status: "unmatched", source: "ocp-recent-awards" },
           civic_events: [],
+          assembly_version: CONTRACT_LIFECYCLE_ASSEMBLY_VERSION,
         }),
       },
     },
@@ -636,6 +645,144 @@ test("prewarm: bounded, idempotent, skips already-cached ids", withMockedFetch({
   assert.equal(r.skipped, 1);
   assert.equal(r.computed, 1);
 }));
+
+// ===========================================================================
+// 8b. CACHE VERSION GUARD: old assembly_version is a miss; current is a hit
+//     (same pattern as subsidy parser_version / rules schema_version — #358)
+// ===========================================================================
+
+const STALE_ASSEMBLY = {
+  timeline: [
+    { stage: "award", status: "matched", source: "city-record", date: "2025-01-10" },
+    // Pre-#362: matched award with no solicitation recovery.
+  ],
+  amendments: [],
+  ok: true,
+  ocp_award: { status: "unmatched", source: "ocp-recent-awards" },
+  civic_events: [],
+  coherence: { version: "lifecycle_coherence_v1", issues: [{ kind: "orphaned_award" }] },
+  // no assembly_version — pre-version-guard rows
+};
+
+const CURRENT_ASSEMBLY = {
+  ...STALE_ASSEMBLY,
+  assembly_version: CONTRACT_LIFECYCLE_ASSEMBLY_VERSION,
+  coherence: { version: "lifecycle_coherence_v2", issues: [] },
+  solicitation_recovery: { status: "matched", source: "city-record", sources_checked: [] },
+  timeline: [
+    { stage: "solicitation", status: "matched", source: "city-record", date: "2024-11-01" },
+    { stage: "award", status: "matched", source: "city-record", date: "2025-01-10" },
+  ],
+};
+
+test("CONTRACT_LIFECYCLE_ASSEMBLY_VERSION is a positive integer", () => {
+  assert.equal(typeof CONTRACT_LIFECYCLE_ASSEMBLY_VERSION, "number");
+  assert.ok(CONTRACT_LIFECYCLE_ASSEMBLY_VERSION >= 1);
+});
+
+test("contractLifecycleCacheIsCurrent rejects missing/old assembly_version", () => {
+  assert.equal(contractLifecycleCacheIsCurrent(STALE_ASSEMBLY), false);
+  assert.equal(
+    contractLifecycleCacheIsCurrent({ ...STALE_ASSEMBLY, assembly_version: 1 }),
+    false,
+  );
+  assert.equal(contractLifecycleCacheIsCurrent(CURRENT_ASSEMBLY), true);
+});
+
+test("contractLifecycleCacheIsCurrent still requires ocp_award + civic_events", () => {
+  assert.equal(
+    contractLifecycleCacheIsCurrent({
+      ...CURRENT_ASSEMBLY,
+      ocp_award: null,
+    }),
+    false,
+  );
+  assert.equal(
+    contractLifecycleCacheIsCurrent({
+      ...CURRENT_ASSEMBLY,
+      civic_events: undefined,
+    }),
+    false,
+  );
+});
+
+test("getOrCompute recomputes a cached pre-version row after assembly_version bump", withMockedFetch({
+  pending: emptyResponse(),
+  registered: contractsResponse([{
+    id: "C-VGUARD", vendor: "VERSION GUARD LLC", agency: "Sanitation", pin: "08250R0001999",
+    status: "registered", current: "100000", original: "100000", spent: "0",
+    registered: "2025-04-01", start: "2025-03-01",
+  }]),
+  spending: emptySpendingResponse(),
+}, async () => {
+  const noticeId = "20250110999";
+  const db = fakeDB({
+    notices: {
+      [noticeId]: {
+        request_id: noticeId, start_date: "2025-01-10", agency: "Sanitation",
+        type_of_notice: "Award", short_title: "Version Guard Award", pin: "08250R0001999",
+        vendor_name: "VERSION GUARD LLC", contract_amount: "100000",
+      },
+    },
+    cache: {
+      [noticeId]: {
+        request_id: noticeId,
+        agency: "Sanitation",
+        lifecycle: JSON.stringify(STALE_ASSEMBLY),
+        computed_at: "2026-07-01T00:00:00.000Z",
+      },
+    },
+  });
+
+  const result = await getOrCompute({ DB: db }, noticeId);
+  assert.ok(result.lifecycle, "recompute must return a lifecycle");
+  // Stale orphaned-award-only shape must not be served.
+  assert.notEqual(
+    result.lifecycle.coherence?.version,
+    "lifecycle_coherence_v1",
+    "pre-fix coherence must not be served from stale cache",
+  );
+  // Cache row rewritten with current assembly_version.
+  const stored = JSON.parse(db._cache[noticeId].lifecycle);
+  assert.equal(stored.assembly_version, CONTRACT_LIFECYCLE_ASSEMBLY_VERSION);
+  assert.ok(
+    Array.isArray(stored.timeline) && stored.timeline.length > 0,
+    "recomputed timeline is present",
+  );
+}));
+
+test("getOrCompute serves a current-version cache hit without recompute", async () => {
+  const noticeId = "20250110998";
+  const db = fakeDB({
+    cache: {
+      [noticeId]: {
+        request_id: noticeId,
+        agency: "Sanitation",
+        lifecycle: JSON.stringify(CURRENT_ASSEMBLY),
+        computed_at: "2026-08-02T12:00:00.000Z",
+      },
+    },
+  });
+  let fetched = false;
+  const orig = globalThis.fetch;
+  globalThis.fetch = async () => {
+    fetched = true;
+    return { ok: false, status: 503, text: async () => "", json: async () => [] };
+  };
+  try {
+    const result = await getOrCompute({ DB: db }, noticeId);
+    assert.equal(result.ok, true);
+    assert.equal(result.lifecycle.assembly_version, CONTRACT_LIFECYCLE_ASSEMBLY_VERSION);
+    assert.equal(
+      result.lifecycle.coherence.version,
+      "lifecycle_coherence_v2",
+      "current-version hit returns the stamped payload",
+    );
+    assert.equal(fetched, false, "current-version hit must not hit upstream");
+  } finally {
+    globalThis.fetch = orig;
+  }
+});
 
 // ===========================================================================
 // 9. ROUTING/VALIDATION
