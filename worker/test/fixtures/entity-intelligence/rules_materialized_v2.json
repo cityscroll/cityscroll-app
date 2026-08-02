@@ -1,0 +1,54 @@
+{
+  "schema_version": 2,
+  "description": "Minimal rules:materialized:v2-shaped fixture for extractor characterization (not the production density snapshot).",
+  "generated_at": "2026-08-02T00:00:00.000Z",
+  "source": {
+    "primary": {
+      "name": "City Record Online",
+      "dataset": "dg92-zbpx"
+    },
+    "system": "city_record"
+  },
+  "rules": [
+    {
+      "request_id": "20260714029",
+      "agency": "Transportation",
+      "title": "Proposed rule: street design and curb management",
+      "notice_date": "2026-07-14T00:00:00.000",
+      "stage": "comment-open",
+      "city_record": {
+        "request_id": "20260714029",
+        "agency": "Transportation",
+        "title": "Proposed rule: street design and curb management",
+        "notice_date": "2026-07-14T00:00:00.000",
+        "notice_type": "Proposed Rules"
+      },
+      "nyc_rules": {
+        "url": "https://rules.cityofnewyork.us/rule/example-dot/",
+        "guid": "https://rules.cityofnewyork.us/?p=9991",
+        "pub_date": "2026-07-14T15:00:00.000Z",
+        "title": "DOT curb management",
+        "agency_abbr": "DOT",
+        "agency_name": "Department of Transportation",
+        "comment_by_date": "2026-09-01"
+      },
+      "join": { "matched": true, "confidence": "high", "basis": "agency+date+title" }
+    },
+    {
+      "request_id": "20260521021",
+      "agency": "Parks and Recreation",
+      "title": "Update to Parks List of Qualifying Documents for Disability Membership Fee",
+      "notice_date": "2026-06-01T00:00:00.000",
+      "stage": "proposed",
+      "city_record": {
+        "request_id": "20260521021",
+        "agency": "Parks and Recreation",
+        "title": "Update to Parks List of Qualifying Documents for Disability Membership Fee",
+        "notice_date": "2026-06-01T00:00:00.000",
+        "notice_type": "Notice"
+      },
+      "nyc_rules": null,
+      "join": { "matched": false, "reason": "No NYC Rules entry found for this agency and notice" }
+    }
+  ]
+}
