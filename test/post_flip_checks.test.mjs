@@ -34,6 +34,11 @@ test("named post-flip checks cover the four incident-encoded gates", () => {
 });
 
 test("EMAIL HEALTH fails on null last_run (silent digest class) and passes with receipt + motion", () => {
+  // Receipt-day freshness is relative to "now" (stale after 2 days). Keep pass cases
+  // on a recent UTC day so this characterization does not fail when the calendar rolls.
+  const recentDay = new Date().toISOString().slice(0, 10);
+  const recentAt = `${recentDay}T13:00:00.000Z`;
+
   assert.equal(
     classifyEmailHealth({
       digests: { sent_today: 0, sent_last7d: 6, sent_all_time: 27, last_run: null },
@@ -53,7 +58,7 @@ test("EMAIL HEALTH fails on null last_run (silent digest class) and passes with 
       digests: {
         sent_today: 0,
         sent_last7d: 6,
-        last_run: { ranAt: "2026-07-30T13:00:00.000Z", day: "2026-07-30", sent: 0 },
+        last_run: { ranAt: recentAt, day: recentDay, sent: 0 },
       },
     }).ok,
     false,
@@ -66,8 +71,8 @@ test("EMAIL HEALTH fails on null last_run (silent digest class) and passes with 
         sent_last7d: 6,
         sent_all_time: 27,
         last_run: {
-          ranAt: "2026-07-30T13:00:00.000Z",
-          day: "2026-07-30",
+          ranAt: recentAt,
+          day: recentDay,
           sent: 0,
           skipped_reason: "all_quiet",
           matched: 0,
@@ -83,8 +88,8 @@ test("EMAIL HEALTH fails on null last_run (silent digest class) and passes with 
         sent_today: 2,
         sent_last7d: 8,
         last_run: {
-          ranAt: "2026-07-30T13:00:00.000Z",
-          day: "2026-07-30",
+          ranAt: recentAt,
+          day: recentDay,
           sent: 2,
           skipped_reason: null,
         },
@@ -202,14 +207,15 @@ test("HUMAN-PATH JOURNEY requires home/search/notice/deeplink/subscribe steps", 
 });
 
 test("runPostFlipNamedChecks aggregates classifiers with incident annotations", async () => {
+  const recentDay = new Date().toISOString().slice(0, 10);
   const statsBody = {
     digests: {
       sent_today: 0,
       sent_last7d: 6,
       sent_all_time: 27,
       last_run: {
-        ranAt: "2026-07-30T13:00:00.000Z",
-        day: "2026-07-30",
+        ranAt: `${recentDay}T13:00:00.000Z`,
+        day: recentDay,
         sent: 0,
         skipped_reason: "all_quiet",
         matched: 0,
