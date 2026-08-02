@@ -1387,6 +1387,7 @@
     notice_not_found_html: "L'avis <code>{id}</code> est introuvable dans les données ouvertes du City Record — il est peut-être très récent, ou l'ID est peut-être mal saisi.",
     back_browse: "← Retour à CityScroll",
     back_previous_view: "← Retour à la vue précédente",
+    back_to_view: "← Retour à {view}",
     vendor_name_too_short: "« {name} » est trop court pour identifier un fournisseur.",
     try_city_record: "essayez-le dans le City Record",
     notice_email_btn: "Courriel",

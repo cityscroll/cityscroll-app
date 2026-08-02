@@ -1698,6 +1698,7 @@ const STRINGS = {
     notice_not_found_html: "Notice <code>{id}</code> wasn't found in the City Record Open Data — it may be very new, or the ID may be mistyped.",
     back_browse: "← Browse CityScroll",
     back_previous_view: "← Back to previous view",
+    back_to_view: "← Back to {view}",
     vendor_name_too_short: "“{name}” is too short to resolve to a vendor.",
     try_city_record: "try it in the City Record",
     notice_email_btn: "Email",
