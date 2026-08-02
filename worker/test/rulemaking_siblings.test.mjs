@@ -68,6 +68,16 @@ test("rulemakingTitleCore strips proposal / hearing / adoption boilerplate", () 
   assert.ok(!/\badoption\b/i.test(coreB));
 });
 
+test("rulemakingTitleCore strips DCWP NOH/NOA and rules-relating house style", () => {
+  const a = rulemakingTitleCore("DCWP NOH Rules Relating to Restaurant Surcharges");
+  const b = rulemakingTitleCore("DCWP NOA Rules Relating to Restaurant Surcharges");
+  assert.match(a.toLowerCase(), /restaurant surcharges/);
+  assert.match(b.toLowerCase(), /restaurant surcharges/);
+  assert.ok(!/\bdcwp\b/i.test(a));
+  assert.ok(!/\bnoh\b/i.test(a));
+  assert.ok(!/\brelating\b/i.test(a));
+});
+
 test("extractRulemakingRefTokens finds RCNY and section cites", () => {
   const cites = extractRulemakingRefTokens(
     "Amends 28 RCNY Chapter 12 and Section 12-01 regarding detectors",
@@ -160,6 +170,71 @@ test("matchRulemakingSiblings: unrelated titles do not stitch", () => {
   });
   const result = matchRulemakingSiblings(gas, parking);
   assert.equal(result.matched, false);
+});
+
+test("matchRulemakingSiblings: months-apart genuine siblings still stitch; DCWP boilerplate does not", () => {
+  const proposal = ruleNotice({
+    request_id: "MOPED-P",
+    agency: "Department of Transportation",
+    agency_abbr: "DOT",
+    title: "Proposed Rule — Operation of Mopeds on Bridges",
+    notice_date: "2026-01-15T00:00:00.000",
+  });
+  const adoption = ruleNotice({
+    request_id: "MOPED-A",
+    agency: "Department of Transportation",
+    agency_abbr: "DOT",
+    title: "Notice of Adoption — Operation of Mopeds on Bridges",
+    notice_date: "2026-07-20T00:00:00.000",
+    stage: "adopted",
+  });
+  const mopeds = matchRulemakingSiblings(proposal, adoption);
+  assert.equal(mopeds.matched, true);
+  assert.equal(mopeds.confidence, "high");
+  assert.ok(mopeds.days_apart >= 180, "proposal and adoption months apart");
+
+  // Shared "Rules Relating to" / NOH / NOA house style must not join unrelated matters.
+  const restaurant = ruleNotice({
+    request_id: "DCWP-R",
+    agency: "Consumer and Worker Protection",
+    agency_abbr: "DCWP",
+    title: "DCWP NOH Rules Relating to Restaurant Surcharges",
+    notice_date: "2026-02-01T00:00:00.000",
+  });
+  const carWash = ruleNotice({
+    request_id: "DCWP-C",
+    agency: "Consumer and Worker Protection",
+    agency_abbr: "DCWP",
+    title: "DCWP NOA Rules Relating to Car Wash Records",
+    notice_date: "2026-05-15T00:00:00.000",
+  });
+  const delivery = ruleNotice({
+    request_id: "DCWP-D",
+    agency: "Consumer and Worker Protection",
+    agency_abbr: "DCWP",
+    title: "DCWP NOH Rules Relating to Contracted Delivery Workers",
+    notice_date: "2026-03-10T00:00:00.000",
+  });
+  assert.equal(matchRulemakingSiblings(restaurant, carWash).matched, false);
+  assert.equal(matchRulemakingSiblings(restaurant, delivery).matched, false);
+  assert.equal(matchRulemakingSiblings(carWash, delivery).matched, false);
+
+  // Same topic under NOH/NOA still stitches (genuine DCWP sibling pair).
+  const creditNoh = ruleNotice({
+    request_id: "DCWP-CC1",
+    agency: "Consumer and Worker Protection",
+    agency_abbr: "DCWP",
+    title: "DCWP NOH: Credit Card Limitations",
+    notice_date: "2026-02-12T00:00:00.000",
+  });
+  const creditNoa = ruleNotice({
+    request_id: "DCWP-CC2",
+    agency: "Consumer and Worker Protection",
+    agency_abbr: "DCWP",
+    title: "DCWP NOA Credit Card Limitations",
+    notice_date: "2026-06-06T00:00:00.000",
+  });
+  assert.equal(matchRulemakingSiblings(creditNoh, creditNoa).matched, true);
 });
 
 test("matchRulemakingSiblings: different agencies do not stitch", () => {

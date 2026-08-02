@@ -3,12 +3,15 @@ import { test } from "node:test";
 
 import {
   buildRuleView,
+  CITY_RECORD_RULES_LIMIT,
+  CITY_RECORD_RULES_LOOKBACK_DAYS,
   handleRules,
   looksLikeBotChallenge,
   RULES_KV_KEY,
   RULES_RSS_HEADERS,
   RULES_RSS_UA,
   RULES_RSS_URL,
+  RULES_VIEW_VERSION,
   refreshRules,
   rulesViewNeedsRefresh,
 } from "../src/rules.mjs";
@@ -19,6 +22,7 @@ import {
   matchRuleToNotice,
   normalizeRuleItem,
   parseRssItems,
+  RULEMAKING_SIBLING_WINDOW_DAYS,
   titleOverlap,
 } from "../src/lib/rules.mjs";
 
@@ -315,7 +319,13 @@ test("buildRuleView joins RSS items to City Record notices and preserves officia
 
   const view = await buildRuleView(multiSourceFetch(rss, crRows), NOW);
 
-  assert.equal(view.schema_version, 3);
+  assert.equal(view.schema_version, RULES_VIEW_VERSION);
+  assert.equal(view.schema_version, 4);
+  assert.equal(view.source.primary.lookback_days, CITY_RECORD_RULES_LOOKBACK_DAYS);
+  assert.equal(view.source.primary.limit, CITY_RECORD_RULES_LIMIT);
+  // Lookback must cover the sibling stitch window so months-apart rulemakings can co-appear.
+  assert.equal(CITY_RECORD_RULES_LOOKBACK_DAYS, RULEMAKING_SIBLING_WINDOW_DAYS);
+  assert.ok(CITY_RECORD_RULES_LIMIT <= 500, "single SODA page — do not fetch unboundedly");
   assert.equal(view.source.enrichment.status, "ok");
   assert.equal(view.counts.total, 3);
   assert.equal(view.counts.matched, 1);
@@ -366,6 +376,71 @@ test("buildRuleView joins RSS items to City Record notices and preserves officia
   assert.equal(unmatchedRule.subject_refs.notice, undefined);
   assert.equal(unmatchedRule.subject_refs.rules, "rules:https://rules.cityofnewyork.us/rule/energy-code/");
   assert.equal(unmatchedRule.subject_links.length, 0);
+});
+
+test("buildRuleView stitches months-apart proposal/adoption siblings within the lookback window", async () => {
+  // Proposal in January, adoption in July — never co-appear under a 14-day
+  // materialization window; the widened lookback must let them stitch.
+  const rss = rssFeed([]);
+  const crRows = [
+    cityRecordNotice({
+      request_id: "20260115001",
+      agency_name: "Department of Transportation",
+      short_title: "Proposed Rule — Operation of Mopeds on Bridges",
+      start_date: "2026-01-15T00:00:00.000",
+    }),
+    cityRecordNotice({
+      request_id: "20260720001",
+      agency_name: "Department of Transportation",
+      short_title: "Notice of Adoption — Operation of Mopeds on Bridges",
+      start_date: "2026-07-20T00:00:00.000",
+    }),
+    // Unrelated DCWP-style titles months apart — must NOT chain-merge on boilerplate.
+    cityRecordNotice({
+      request_id: "20260201010",
+      agency_name: "Consumer and Worker Protection",
+      short_title: "DCWP NOH Rules Relating to Restaurant Surcharges",
+      start_date: "2026-02-01T00:00:00.000",
+    }),
+    cityRecordNotice({
+      request_id: "20260515010",
+      agency_name: "Consumer and Worker Protection",
+      short_title: "DCWP NOA Rules Relating to Car Wash Records",
+      start_date: "2026-05-15T00:00:00.000",
+    }),
+    cityRecordNotice({
+      request_id: "20260310010",
+      agency_name: "Consumer and Worker Protection",
+      short_title: "DCWP NOH Rules Relating to Contracted Delivery Workers",
+      start_date: "2026-03-10T00:00:00.000",
+    }),
+  ];
+
+  const view = await buildRuleView(multiSourceFetch(rss, crRows), NOW);
+  assert.equal(view.counts.city_record_notices, 5);
+  assert.ok(view.counts.multi_notice_rulemakings >= 1);
+
+  const byId = Object.fromEntries(view.rules.map((r) => [r.request_id, r]));
+  assert.equal(
+    byId["20260115001"].rulemaking_subject_ref,
+    byId["20260720001"].rulemaking_subject_ref,
+  );
+  assert.equal(byId["20260115001"].related_notices.length, 1);
+  assert.equal(byId["20260115001"].related_notices[0].request_id, "20260720001");
+  assert.equal(byId["20260115001"].rulemaking_join.confidence, "high");
+
+  // Unrelated DCWP rulemakings stay singletons (false merge worse than split).
+  assert.equal(byId["20260201010"].related_notices.length, 0);
+  assert.equal(byId["20260515010"].related_notices.length, 0);
+  assert.equal(byId["20260310010"].related_notices.length, 0);
+  assert.notEqual(
+    byId["20260201010"].rulemaking_subject_ref,
+    byId["20260515010"].rulemaking_subject_ref,
+  );
+  assert.notEqual(
+    byId["20260201010"].rulemaking_subject_ref,
+    byId["20260310010"].rulemaking_subject_ref,
+  );
 });
 
 test("buildRuleView stitches proposal/hearing/adoption City Record siblings into one rulemaking subject", async () => {
@@ -638,18 +713,18 @@ test("rulesViewNeedsRefresh retries young views whose RSS enrichment is still st
   const nowMs = Date.parse("2026-08-01T18:00:00.000Z");
   assert.equal(rulesViewNeedsRefresh(null, nowMs), true);
   assert.equal(rulesViewNeedsRefresh({
-    schema_version: 3,
+    schema_version: 4,
     generated_at: "2026-08-01T17:00:00.000Z",
     source: { enrichment: { status: "ok" } },
   }, nowMs), false);
   assert.equal(rulesViewNeedsRefresh({
-    schema_version: 3,
+    schema_version: 4,
     generated_at: "2026-08-01T17:00:00.000Z",
     source: { enrichment: { status: "stale", error: "NYC Rules RSS 403" } },
   }, nowMs), true);
   // Older than MAX_AGE_MS (~36h) even when enrichment is ok.
   assert.equal(rulesViewNeedsRefresh({
-    schema_version: 3,
+    schema_version: 4,
     generated_at: "2026-07-30T17:00:00.000Z",
     source: { enrichment: { status: "ok" } },
   }, nowMs), true);
@@ -663,8 +738,14 @@ test("rulesViewNeedsRefresh rebuilds young KV written under an older schema_vers
     generated_at: "2026-08-02T17:00:00.000Z",
     source: { enrichment: { status: "ok" } },
   }, nowMs), true);
+  // Pre-lookback-widen materialization (schema 3) must rebuild for wider CR window.
   assert.equal(rulesViewNeedsRefresh({
     schema_version: 3,
+    generated_at: "2026-08-02T17:00:00.000Z",
+    source: { enrichment: { status: "ok" } },
+  }, nowMs), true);
+  assert.equal(rulesViewNeedsRefresh({
+    schema_version: 4,
     generated_at: "2026-08-02T17:00:00.000Z",
     source: { enrichment: { status: "ok" } },
   }, nowMs), false);
