@@ -1,5 +1,5 @@
 /**
- * Contract / procurement lifecycle — phase projection.
+ * Contract / procurement lifecycle — phase grouping view model.
  *
  * Pure view model over assembleLifecycle timeline entries: group by canonical
  * procurement phases, aggregate verbatim-repeated milestones, derive current
