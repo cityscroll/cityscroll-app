@@ -117,8 +117,14 @@
       "summary": "Daily digest cron at 13:00 UTC left sent_today=0 with no durable last_run receipt (silent-five-day-alert / dual-write class). First observer reads of /stats at 13:06Z and 13:10Z.",
       "detection_channel": "manual /stats read",
       "cron_utc": "13:00",
-      "first_observed_utc": ["13:06", "13:10"],
-      "latency_minutes": { "min": 6, "max": 10 },
+      "first_observed_utc": [
+        "13:06",
+        "13:10"
+      ],
+      "latency_minutes": {
+        "min": 6,
+        "max": 10
+      },
       "tag": "measured",
       "gate_that_would_catch_now": "EMAIL HEALTH + STATS SANITY named post-flip checks"
     },
@@ -140,7 +146,10 @@
       "Confirm DNS apex/www records are not dangling; do not touch api.* or email MX",
       "Re-run live_url_smoke until green (allow cache lag budget)"
     ],
-    "estimated_operator_action_minutes": { "min": 5, "max": 15 },
+    "estimated_operator_action_minutes": {
+      "min": 5,
+      "max": 15
+    },
     "visitor_recovery_extra_minutes": {
       "min": 0,
       "max": 12,
@@ -154,6 +163,267 @@
     "merge_to_live": null,
     "detection_latency": null,
     "rollback_wall_clock": null,
-    "instructions": "Fill measured values only after a completed flip + soak. Do not invent improvements."
-  }
+    "instructions": "After an authorized flip + soak: (1) re-run dual-host metrics with `node tools/measure_hosting_baseline.mjs --phase after-cutover --samples 5 --out-receipt docs/evidence/hosting-dual-host-metrics-after.json --write-baseline docs/evidence/hosting-migration-baseline.json`; (2) fill merge_to_live, detection_latency, and rollback_wall_clock from deploy history and timed drills. Do not invent improvements. dual_host_live_metrics may be re-measured independently of the scorecard fields.",
+    "dual_host_live_metrics": null,
+    "re_run": {
+      "dual_host_command": "node tools/measure_hosting_baseline.mjs --phase after-cutover --samples 5 --out-receipt docs/evidence/hosting-dual-host-metrics-after.json --write-baseline docs/evidence/hosting-migration-baseline.json",
+      "note": "Read-only. Does not change DNS, Worker routes, Pages custom domains, or deploy config."
+    }
+  },
+  "dual_host_live_metrics": {
+    "schema": "hosting-dual-host-metrics.v1",
+    "phase": "pre-cutover",
+    "captured_at": "2026-08-02T01:26:17.267Z",
+    "samples_per_path": 5,
+    "hosts": {
+      "production_mirror": {
+        "origin": "https://cityscroll.org",
+        "role": "visitor-facing Worker reverse-proxy on cityscroll.org (custom domain)",
+        "availability_rate": 1,
+        "paths_ok": 10,
+        "paths_total": 10,
+        "ttfb_ms": {
+          "n": 50,
+          "min_ms": 31.2,
+          "max_ms": 113.6,
+          "mean_ms": 45.3,
+          "median_ms": 43.2,
+          "p95_ms": 59.8
+        },
+        "total_ms": {
+          "n": 50,
+          "min_ms": 31.8,
+          "max_ms": 134.4,
+          "mean_ms": 47,
+          "median_ms": 45.4,
+          "p95_ms": 60.5
+        },
+        "redirect_ok": true,
+        "redirect_classes": [
+          "direct_200"
+        ],
+        "cache": {
+          "cf_cache_status_values": [],
+          "cache_control_values": [
+            "public, max-age=0, must-revalidate"
+          ],
+          "x_github_request_id_present": false
+        }
+      },
+      "production_www": {
+        "origin": "https://www.cityscroll.org",
+        "role": "visitor-facing Worker reverse-proxy on www (custom domain)",
+        "availability_rate": 1,
+        "paths_ok": 10,
+        "paths_total": 10,
+        "ttfb_ms": {
+          "n": 50,
+          "min_ms": 29.5,
+          "max_ms": 91.8,
+          "mean_ms": 44.5,
+          "median_ms": 45,
+          "p95_ms": 57.3
+        },
+        "total_ms": {
+          "n": 50,
+          "min_ms": 30,
+          "max_ms": 116.4,
+          "mean_ms": 46.2,
+          "median_ms": 46.6,
+          "p95_ms": 58
+        },
+        "redirect_ok": true,
+        "redirect_classes": [
+          "direct_200"
+        ],
+        "cache": {
+          "cf_cache_status_values": [],
+          "cache_control_values": [
+            "public, max-age=0, must-revalidate"
+          ],
+          "x_github_request_id_present": false
+        }
+      },
+      "pages_parallel": {
+        "origin": "https://cityscroll.pages.dev",
+        "role": "Cloudflare Pages parallel host (no custom-domain cutover required to measure)",
+        "availability_rate": 1,
+        "paths_ok": 10,
+        "paths_total": 10,
+        "ttfb_ms": {
+          "n": 50,
+          "min_ms": 15,
+          "max_ms": 98.5,
+          "mean_ms": 23.1,
+          "median_ms": 19,
+          "p95_ms": 44.7
+        },
+        "total_ms": {
+          "n": 50,
+          "min_ms": 15,
+          "max_ms": 115.1,
+          "mean_ms": 24.1,
+          "median_ms": 19.1,
+          "p95_ms": 49.6
+        },
+        "redirect_ok": true,
+        "redirect_classes": [
+          "direct_200",
+          "pretty_url_redirect_then_200"
+        ],
+        "cache": {
+          "cf_cache_status_values": [],
+          "cache_control_values": [
+            "public, max-age=0, must-revalidate"
+          ],
+          "x_github_request_id_present": false
+        }
+      },
+      "gh_pages_hostname": {
+        "origin": "https://crol-list.org",
+        "role": "documented GitHub Pages origin hostname (mirror.mjs ORIGIN); visitors currently redirect to cityscroll.org",
+        "availability_rate": 1,
+        "paths_ok": 10,
+        "paths_total": 10,
+        "ttfb_ms": {
+          "n": 50,
+          "min_ms": 8.5,
+          "max_ms": 45.5,
+          "mean_ms": 13.9,
+          "median_ms": 12,
+          "p95_ms": 19.5
+        },
+        "total_ms": {
+          "n": 50,
+          "min_ms": 8.5,
+          "max_ms": 45.5,
+          "mean_ms": 14,
+          "median_ms": 12,
+          "p95_ms": 19.5
+        },
+        "redirect_ok": true,
+        "redirect_classes": [
+          "legacy_hostname_redirect"
+        ],
+        "cache": {
+          "cf_cache_status_values": [],
+          "cache_control_values": [],
+          "x_github_request_id_present": false
+        }
+      }
+    },
+    "payload_parity": {
+      "compared": 10,
+      "matched": 10,
+      "rate": 1,
+      "reference_host": "production_mirror",
+      "candidate_host": "pages_parallel",
+      "rows": [
+        {
+          "path": "/",
+          "match": true,
+          "match_kind": "sha256",
+          "production_bytes": 565682,
+          "pages_bytes": 565682,
+          "production_sha256": "ad99b4821c431cecce7efac9cf31ccbf6ba062a9f08bf9b81edb7bff98e07fc6",
+          "pages_sha256": "ad99b4821c431cecce7efac9cf31ccbf6ba062a9f08bf9b81edb7bff98e07fc6"
+        },
+        {
+          "path": "/about.html",
+          "match": true,
+          "match_kind": "sha256",
+          "production_bytes": 23668,
+          "pages_bytes": 23668,
+          "production_sha256": "ea34e2ed7726c715800f145a526fed4bdcc573af28a96ee17ff7a542a16705ba",
+          "pages_sha256": "ea34e2ed7726c715800f145a526fed4bdcc573af28a96ee17ff7a542a16705ba"
+        },
+        {
+          "path": "/api.html",
+          "match": true,
+          "match_kind": "sha256",
+          "production_bytes": 19441,
+          "pages_bytes": 19441,
+          "production_sha256": "37d659b4dfa896380ee2f55a2910012064f43c3dfdc911d75bebafe7c9486b95",
+          "pages_sha256": "37d659b4dfa896380ee2f55a2910012064f43c3dfdc911d75bebafe7c9486b95"
+        },
+        {
+          "path": "/changelog.html",
+          "match": true,
+          "match_kind": "sha256",
+          "production_bytes": 42787,
+          "pages_bytes": 42787,
+          "production_sha256": "380f0c71e84d8418cb75aae57e4743079f8d838d2f54481397e9ec47e214b158",
+          "pages_sha256": "380f0c71e84d8418cb75aae57e4743079f8d838d2f54481397e9ec47e214b158"
+        },
+        {
+          "path": "/data.html",
+          "match": true,
+          "match_kind": "sha256",
+          "production_bytes": 16489,
+          "pages_bytes": 16489,
+          "production_sha256": "e19022f7d59aa6f37e1a2c12ef00a6382e77f9abf7908b082358a0a23e4022d5",
+          "pages_sha256": "e19022f7d59aa6f37e1a2c12ef00a6382e77f9abf7908b082358a0a23e4022d5"
+        },
+        {
+          "path": "/standards.html",
+          "match": true,
+          "match_kind": "sha256",
+          "production_bytes": 19083,
+          "pages_bytes": 19083,
+          "production_sha256": "4bd6d31bd2bd70aa2481224c727261053f24fe9062845390482e5aa77486e8b9",
+          "pages_sha256": "4bd6d31bd2bd70aa2481224c727261053f24fe9062845390482e5aa77486e8b9"
+        },
+        {
+          "path": "/stats.html",
+          "match": true,
+          "match_kind": "sha256",
+          "production_bytes": 31559,
+          "pages_bytes": 31559,
+          "production_sha256": "4f896986a58204c3882b578db6b2fd372fd1677add8559ac739561c2ec705075",
+          "pages_sha256": "4f896986a58204c3882b578db6b2fd372fd1677add8559ac739561c2ec705075"
+        },
+        {
+          "path": "/robots.txt",
+          "match": true,
+          "match_kind": "sha256",
+          "production_bytes": 68,
+          "pages_bytes": 68,
+          "production_sha256": "66ccf813fff989d7503744a3b551632e57a140e58fc5a53350b7e4941f54089d",
+          "pages_sha256": "66ccf813fff989d7503744a3b551632e57a140e58fc5a53350b7e4941f54089d"
+        },
+        {
+          "path": "/sitemap.xml",
+          "match": true,
+          "match_kind": "sha256",
+          "production_bytes": 511,
+          "pages_bytes": 511,
+          "production_sha256": "c681bafdb040eee7c831bdfaefe27e7ca794e5f1866fe15538cd81bd6255065e",
+          "pages_sha256": "c681bafdb040eee7c831bdfaefe27e7ca794e5f1866fe15538cd81bd6255065e"
+        },
+        {
+          "path": "/assets/brand/apple-touch-icon.png",
+          "match": true,
+          "match_kind": "sha256",
+          "production_bytes": 1708,
+          "pages_bytes": 1708,
+          "production_sha256": "7ea6e8a2eefe626551b3219d5370d3b95526d473711025d829c8be65a3871dbf",
+          "pages_sha256": "7ea6e8a2eefe626551b3219d5370d3b95526d473711025d829c8be65a3871dbf"
+        }
+      ]
+    },
+    "redirects": {
+      "ok": true,
+      "redirect_loops_detected": 0
+    },
+    "provenance": {
+      "harness": "tools/measure_hosting_baseline.mjs",
+      "node": "v26.5.0",
+      "command": "node tools/measure_hosting_baseline.mjs --phase pre-cutover --samples 5 --write-baseline docs/evidence/hosting-migration-baseline.json --out-receipt docs/evidence/hosting-dual-host-metrics.json",
+      "measured_from": "operator workstation / CI runner network path to public hosts",
+      "tag": "measured"
+    },
+    "full_receipt": "docs/evidence/hosting-dual-host-metrics.json",
+    "tag": "measured"
+  },
+  "dual_host_metrics_captured_at": "2026-08-02T01:26:17.267Z"
 }
