@@ -15,6 +15,8 @@ import {
 import { linksFromRuleRecord } from "./lib/subject_registry.mjs";
 
 export const RULES_KV_KEY = "rules:materialized:v2";
+/** Bump when rulemaking stitch / multi-notice fields change so young-but-stale KV rebuilds. */
+export const RULES_VIEW_VERSION = 3;
 export const RULES_RSS_URL = "https://rules.cityofnewyork.us/feed/";
 /** Identifying UA — Cloudflare on rules.cityofnewyork.us returns HTTP 403
  *  "Just a moment…" when the request has an empty or missing User-Agent
@@ -216,7 +218,7 @@ export async function buildRuleView(fetchImpl = fetch, now = new Date()) {
   };
 
   return {
-    schema_version: 2,
+    schema_version: RULES_VIEW_VERSION,
     generated_at: now.toISOString(),
     source: {
       primary: {
@@ -269,12 +271,15 @@ function jsonResponse(body, status = 200) {
  * Age alone is not enough: a failed RSS materialization still stamps
  * generated_at, so a young enrichment status of "stale" would otherwise stick
  * until MAX_AGE even after egress is fixed (e.g. User-Agent headers).
+ * schema_version mismatches force rebuild after multi-notice stitch (and similar)
+ * ships so a young pre-fix KV is not served until MAX_AGE.
  */
 export function rulesViewNeedsRefresh(parsed, nowMs = Date.now()) {
   if (!parsed || !parsed.generated_at) return true;
   const age = nowMs - new Date(parsed.generated_at).getTime();
   if (!Number.isFinite(age) || age > MAX_AGE_MS) return true;
   if (parsed?.source?.enrichment?.status === "stale") return true;
+  if (parsed.schema_version !== RULES_VIEW_VERSION) return true;
   return false;
 }
 

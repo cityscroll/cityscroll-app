@@ -255,7 +255,7 @@ test("buildMeetingOutcomesView strict-joins notices to events and materializes m
     now: new Date("2026-08-01"),
   });
 
-  assert.equal(view.schema_version, 2);
+  assert.equal(view.schema_version, 3);
   assert.equal(view.counts.notices, 1);
   assert.equal(view.counts.matched_notices, 1);
   assert.equal(view.counts.event_rows, 1);
