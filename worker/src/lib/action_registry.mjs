@@ -4,6 +4,7 @@ export const {
   OUTCOME_ENUM,
   compileActionRail,
   solicitationHandoff,
+  awardHandoff,
   hearingHandoff,
   ruleHandoff,
   zoningHandoff,
