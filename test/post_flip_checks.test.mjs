@@ -17,6 +17,19 @@ const baseline = JSON.parse(
   readFileSync(new URL("../docs/evidence/hosting-migration-baseline.json", import.meta.url), "utf8"),
 );
 
+/** Fresh last_run receipt within the classifier's 2-day window (wall-clock independent). */
+function freshLastRun(overrides = {}) {
+  const day = new Date().toISOString().slice(0, 10);
+  return {
+    ranAt: `${day}T13:00:00.000Z`,
+    day,
+    sent: 0,
+    skipped_reason: "all_quiet",
+    matched: 0,
+    ...overrides,
+  };
+}
+
 test("named post-flip checks cover the four incident-encoded gates", () => {
   assert.deepEqual([...POST_FLIP_NAMED_CHECK_IDS].sort(), [
     "email-health",
@@ -53,7 +66,18 @@ test("EMAIL HEALTH fails on null last_run (silent digest class) and passes with 
       digests: {
         sent_today: 0,
         sent_last7d: 6,
-        last_run: { ranAt: "2026-07-30T13:00:00.000Z", day: "2026-07-30", sent: 0 },
+        last_run: freshLastRun({ sent: 0, skipped_reason: undefined }),
+      },
+    }).ok,
+    false,
+  );
+  // Explicit empty skipped_reason (key present) still fails unexplained zero.
+  assert.equal(
+    classifyEmailHealth({
+      digests: {
+        sent_today: 0,
+        sent_last7d: 6,
+        last_run: freshLastRun({ sent: 0, skipped_reason: null }),
       },
     }).ok,
     false,
@@ -65,13 +89,7 @@ test("EMAIL HEALTH fails on null last_run (silent digest class) and passes with 
         sent_today: 0,
         sent_last7d: 6,
         sent_all_time: 27,
-        last_run: {
-          ranAt: "2026-07-30T13:00:00.000Z",
-          day: "2026-07-30",
-          sent: 0,
-          skipped_reason: "all_quiet",
-          matched: 0,
-        },
+        last_run: freshLastRun(),
       },
     }).ok,
     true,
@@ -82,12 +100,7 @@ test("EMAIL HEALTH fails on null last_run (silent digest class) and passes with 
       digests: {
         sent_today: 2,
         sent_last7d: 8,
-        last_run: {
-          ranAt: "2026-07-30T13:00:00.000Z",
-          day: "2026-07-30",
-          sent: 2,
-          skipped_reason: null,
-        },
+        last_run: freshLastRun({ sent: 2, skipped_reason: null }),
       },
     }).ok,
     true,
@@ -118,7 +131,7 @@ test("STATS SANITY rejects frozen gauges and unexplained sent_today zero", () =>
     classifyStatsSanity({
       digests: {
         sent_today: 0,
-        last_run: { ranAt: "2026-07-30T13:00:00.000Z", sent: 0, skipped_reason: "all_quiet" },
+        last_run: freshLastRun({ sent: 0, skipped_reason: "all_quiet" }),
       },
       usage: {
         available: true,
@@ -207,13 +220,7 @@ test("runPostFlipNamedChecks aggregates classifiers with incident annotations", 
       sent_today: 0,
       sent_last7d: 6,
       sent_all_time: 27,
-      last_run: {
-        ranAt: "2026-07-30T13:00:00.000Z",
-        day: "2026-07-30",
-        sent: 0,
-        skipped_reason: "all_quiet",
-        matched: 0,
-      },
+      last_run: freshLastRun(),
     },
     usage: {
       available: true,
