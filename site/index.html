@@ -411,6 +411,41 @@
   .lc-docs-caveat{font:12px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:6px}
   .lc-how{display:block;margin-top:10px}
   .lc-how>summary{font:600 12px/1.4 ui-sans-serif,system-ui,sans-serif}
+  /* Shared phase-timeline chrome (Money lifecycle PR + paper trail + Land/ZAP when merged).
+     Same class family so those surfaces converge — do not invent a second stepper stack. */
+  .lc-phase-lead{background:linear-gradient(180deg,#fff 0%,var(--paper-2,#f7f1e4) 100%);border:1px solid var(--rule);border-radius:10px;padding:12px 14px;margin:0 0 12px}
+  .lc-phase-now-label{font:700 10px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--oxblood);margin:0 0 4px}
+  .lc-phase-now-phase{font:700 16px/1.3 ui-sans-serif,system-ui,sans-serif;margin:0 0 4px;color:var(--ink)}
+  .lc-phase-now-detail{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;margin:0 0 8px;color:var(--ink)}
+  .lc-phase-action{font:600 13px/1.45 ui-sans-serif,system-ui,sans-serif;margin:0 0 8px;color:var(--ink)}
+  .lc-phase-action a{font-weight:700}
+  .lc-phase-next{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;margin:0;padding-top:8px;border-top:1px solid var(--rule);color:var(--muted)}
+  .lc-phase-next strong{color:var(--ink);font-weight:700}
+  .lc-phase-stepper .lc-step{cursor:pointer;font-family:inherit}
+  .lc-phase{border:1px solid var(--rule);border-radius:10px;margin:0 0 8px;background:#fffdf8;overflow:hidden}
+  .lc-phase[open]{background:#fff}
+  .lc-phase.current-phase{border-color:color-mix(in srgb,var(--oxblood) 45%,var(--rule));box-shadow:0 0 0 1px color-mix(in srgb,var(--oxblood) 22%,transparent)}
+  .lc-phase > summary{list-style:none;cursor:pointer;padding:10px 12px;display:grid;grid-template-columns:1fr auto;gap:3px 12px;align-items:baseline}
+  .lc-phase > summary::-webkit-details-marker{display:none}
+  .lc-phase-name{font:700 13px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--ink)}
+  .lc-phase-state{font:700 10px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .lc-phase.current-phase .lc-phase-state{color:var(--oxblood)}
+  .lc-phase-summary{grid-column:1 / -1;font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+  .lc-phase-body{padding:0 12px 12px;border-top:1px solid var(--rule)}
+  .lc-phase-body .stage{margin-top:8px}
+  .lc-phase-body .connector{display:none}
+  .lc-phase-agg{padding:8px 0;border-bottom:1px solid color-mix(in srgb,var(--rule) 70%,transparent)}
+  .lc-phase-agg:last-child{border-bottom:0}
+  .lc-phase-agg-title{font:700 13px/1.35 ui-sans-serif,system-ui,sans-serif;color:var(--ink);overflow-wrap:anywhere}
+  .lc-phase-agg-meta{font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);overflow-wrap:anywhere}
+  .lc-phase-count{display:inline-block;font:700 11px/1 ui-monospace,SFMono-Regular,monospace;background:var(--paper-2,#f7f1e4);border:1px solid var(--rule);border-radius:999px;padding:3px 7px;margin-inline-start:6px;vertical-align:middle}
+  .lc-phase-history{margin-top:10px}
+  .lc-phase-history > summary{font:600 12px/1.4 ui-sans-serif,system-ui,sans-serif;cursor:pointer;color:var(--muted)}
+  .lc-phase-dates{display:none;list-style:none;margin:8px 0 0;padding:0 0 0 12px;border-inline-start:2px solid var(--rule)}
+  .lc-phase-dates.show{display:block}
+  .lc-phase-dates > li{font:12px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted);padding:3px 0;overflow-wrap:anywhere}
+  .lc-phase-toggle{display:inline-block;margin-top:6px;font:600 12px/1.3 ui-sans-serif,system-ui,sans-serif;background:none;border:0;padding:0;color:var(--oxblood);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+  .lc-phase-portal{display:inline-flex;align-items:center;gap:6px;font:600 13px/1.3 ui-sans-serif,system-ui,sans-serif;margin:0 0 12px}
   .box.matched{border-top-color:var(--green)}
   .box.matched .stage-name{color:var(--green)}
   .box.passed{border-top-color:var(--green);opacity:.88}
@@ -2684,23 +2719,245 @@ function cadenceHTML(est){
   return `<div class="note">${awards}, ${apart}. ${next} <span class="tag renewal">${t("cadence_estimate_tag")}</span></div>`;
 }
 
-function chainHTML(r, chain){
+/* ===================== PAPER TRAIL PHASE UI (PIN siblings) =====================
+   Phase-group + aggregate + one City Record link by default. Pure model:
+   site/paper_trail_phase.mjs — same shape as land_phase_spine / procurement_phase_spine
+   so those surfaces can share a generic phase-timeline chrome later. */
+let paperTrailPhaseToolsPromise = null;
+function ensurePaperTrailPhaseTools(){
+  if(!paperTrailPhaseToolsPromise){
+    paperTrailPhaseToolsPromise = import("./paper_trail_phase.mjs").catch(() => null);
+  }
+  return paperTrailPhaseToolsPromise;
+}
+
+function paperTrailPhaseLabel(phase){
+  if(!phase) return "—";
+  if(phase.label_key) return t(phase.label_key);
+  if(typeof phase === "string"){
+    const meta = {
+      solicitation: "paper_trail_phase_solicitation",
+      selection: "paper_trail_phase_selection",
+      award: "paper_trail_phase_award",
+    };
+    return meta[phase] ? t(meta[phase]) : phase;
+  }
+  return phase.short || "—";
+}
+
+/** One notice row inside an expanded aggregate — City Record links only here (disclosure). */
+function paperTrailMemberRowHTML(c, opened){
+  if(!c) return "";
+  const amt = money(c.contract_amount);
+  const renewed = c.pin && opened && opened.pin && c.pin !== opened.pin;
+  const isOpened = opened && c.request_id && opened.request_id && c.request_id === opened.request_id;
+  return `<li class="paper-trail-member${isOpened?" is-opened":""}">
+    <span class="paper-trail-member-when">${fdate(c.start_date)}</span>
+    <span class="paper-trail-member-type" lang="en" dir="ltr">${escUiHtml(c.type_of_notice_description||t("notice_fallback"))}${renewed?` <span class="tag renewal">${t("renewal_badge")}</span>`:""}</span>
+    ${c.vendor_name?`<span class="paper-trail-member-vend">→ ${pivotA(vendorHref(c.vendor_name), cleanText(c.vendor_name))}</span>`:""}
+    ${amt?`<span class="paper-trail-member-amt">${amt}</span>`:""}
+    ${c.request_id?`<a class="view paper-trail-member-cr" href="${REQ_URL(c.request_id)}" ${EXT_ATTRS}>${t("view_in_city_record")}${extSR()}</a>`:""}
+    ${c.request_id?` · <a class="pivot" href="#notice/${encodeURIComponent(c.request_id)}">${t("paper_trail_open_on_site")}</a>`:""}
+  </li>`;
+}
+
+function paperTrailAggregateHTML(agg, phaseId, idx, opened){
+  if(!agg) return "";
+  if(agg.count === 1){
+    const c = agg.members[0] || {};
+    const amt = money(c.contract_amount);
+    const renewed = c.pin && opened && opened.pin && c.pin !== opened.pin;
+    return `<div class="lc-phase-agg paper-trail-row">
+      <div class="lc-phase-agg-title" lang="en" dir="ltr">${escUiHtml(agg.type)}${renewed?` <span class="tag renewal">${t("renewal_badge")}</span>`:""}</div>
+      <div class="lc-phase-agg-meta">${agg.first?fdate(agg.first):"—"}${c.vendor_name?` · → ${pivotA(vendorHref(c.vendor_name), cleanText(c.vendor_name))}`:""}${amt?` · ${amt}`:""}</div>
+      <div class="lc-phase-agg-meta" lang="en" dir="ltr">${escUiHtml(cleanText(c.short_title)||t("untitled"))}</div>
+      ${c.request_id?`<button type="button" class="lc-phase-toggle" data-pt-dates="pt-agg-${escUiHtml(phaseId)}-${idx}" aria-expanded="false">${t("paper_trail_show_notices",{n:"1"})}</button>
+      <ul class="lc-phase-dates" id="pt-agg-${escUiHtml(phaseId)}-${idx}">${paperTrailMemberRowHTML(c, opened)}</ul>`:""}
+    </div>`;
+  }
+  const listId = `pt-agg-${phaseId}-${idx}`;
+  const vendorBit = agg.vendor_count
+    ? t("paper_trail_vendors_count", { n: String(agg.vendor_count) })
+    : "";
+  const range = agg.first && agg.last && agg.first !== agg.last
+    ? t("paper_trail_aggregate_range", { first: fdate(agg.first), last: fdate(agg.last) })
+    : (agg.first ? fdate(agg.first) : "—");
+  const poolTitle = t("paper_trail_pool_title", {
+    type: escUiHtml(agg.type),
+    n: String(agg.count),
+  });
+  return `<div class="lc-phase-agg paper-trail-pool">
+    <div class="lc-phase-agg-title" lang="en" dir="ltr">${poolTitle}<span class="lc-phase-count">×${agg.count}</span></div>
+    <div class="lc-phase-agg-meta">${range}${vendorBit?` · ${vendorBit}`:""}${agg.amount_sum!=null?` · ${money(agg.amount_sum)}`:""}</div>
+    <div class="lc-phase-agg-meta" lang="en" dir="ltr">${escUiHtml(agg.title)}</div>
+    <button type="button" class="lc-phase-toggle" data-pt-dates="${escUiHtml(listId)}" aria-expanded="false">${t("paper_trail_show_notices",{n:String(agg.count)})}</button>
+    <ul class="lc-phase-dates" id="${escUiHtml(listId)}">
+      ${(agg.members||[]).map(m=>paperTrailMemberRowHTML(m, opened)).join("")}
+    </ul>
+  </div>`;
+}
+
+function paperTrailPhasePanelHTML(phase, opened){
+  if(!phase) return "";
+  if(phase.state === "future" && !phase.event_count) return "";
+  if(phase.state === "passed" && !phase.event_count) return "";
+  const open = phase.state === "current" ? " open" : "";
+  const stateWord = phase.state === "current"
+    ? t("paper_trail_phase_current")
+    : phase.state === "passed"
+      ? t("paper_trail_phase_done")
+      : t("paper_trail_phase_future");
+  let summary = "";
+  if(phase.event_count){
+    const parts = [
+      tn("paper_trail_notices_count", phase.event_count, { n: phase.event_count }),
+      phase.first && phase.last && phase.first !== phase.last
+        ? t("paper_trail_aggregate_range", { first: fdate(phase.first), last: fdate(phase.last) })
+        : (phase.first ? fdate(phase.first) : ""),
+    ].filter(Boolean);
+    summary = parts.join(" · ");
+  } else {
+    summary = t("paper_trail_phase_empty");
+  }
+  const body = (phase.aggregates||[]).map((a, idx)=>paperTrailAggregateHTML(a, phase.id, idx, opened)).join("")
+    || `<div class="lc-phase-summary">${t("paper_trail_phase_empty")}</div>`;
+  return `<details class="lc-phase${phase.state==="current"?" current-phase":""}"${open} id="pt-phase-${escUiHtml(phase.id)}" data-pt-phase-panel="${escUiHtml(phase.id)}">
+    <summary>
+      <span class="lc-phase-name">${escUiHtml(paperTrailPhaseLabel(phase))}</span>
+      <span class="lc-phase-state">${escUiHtml(stateWord)}</span>
+      <span class="lc-phase-summary">${escUiHtml(summary)}</span>
+    </summary>
+    <div class="lc-phase-body">${body}</div>
+  </details>`;
+}
+
+function paperTrailPhaseStepperHTML(view){
+  if(!view || !view.phases || !view.phases.length) return "";
+  const items = view.phases.map((p, i) => {
+    const cls = p.state === "current" ? "current" : p.state === "passed" ? "passed" : "future";
+    const aria = p.state === "current" ? ` aria-current="step"` : "";
+    const arrow = i < view.phases.length - 1
+      ? `<span class="lc-step-arrow" aria-hidden="true">→</span>`
+      : "";
+    return `<li><button type="button" class="lc-step ${cls}" data-pt-phase="${escUiHtml(p.id)}"${aria} title="${escUiHtml(paperTrailPhaseLabel(p))}">${escUiHtml(p.short || paperTrailPhaseLabel(p))}</button>${arrow}</li>`;
+  }).join("");
+  return `<ol class="lc-stepper lc-phase-stepper" aria-label="${escUiHtml(t("paper_trail_heading"))}">${items}</ol>`;
+}
+
+function paperTrailPhaseHTML(view, r){
+  if(!view) return "";
+  const tlink = usablePin(r.pin)
+    ? ` · <a class="pivot" href="#matter/${encodeURIComponent(r.pin)}">${t("full_timeline_link")}</a>`
+    : "";
+  const crId = view.default_city_record_request_id;
+  const portal = crId
+    ? `<a class="view lc-phase-portal" href="${REQ_URL(crId)}" ${EXT_ATTRS}>${t("paper_trail_open_notice")}${extSR()}</a>`
+    : "";
+  const cur = view.current || {};
+  const phaseName = paperTrailPhaseLabel({ label_key: cur.label_key });
+  const actionKey = cur.action_key || "paper_trail_action_track_award";
+  const actionHTML = t(actionKey);
+  const lead = `<div class="lc-phase-lead">
+    <div class="lc-phase-now-label">${t("paper_trail_now_label")}</div>
+    <p class="lc-phase-now-phase">${escUiHtml(phaseName)}</p>
+    <p class="lc-phase-now-detail" lang="en" dir="ltr">${escUiHtml(cur.notice_type || "—")}${cur.milestone_label?` · ${escUiHtml(cur.milestone_label)}`:""}${cur.since?` · ${t("paper_trail_since",{date:fdate(cur.since)})}`:""}${cur.vendor_name?`<br>→ ${escUiHtml(cur.vendor_name)}`:""}</p>
+    <p class="lc-phase-action">${actionHTML}</p>
+    ${view.next?`<p class="lc-phase-next">${t("paper_trail_next_html",{phase:escUiHtml(paperTrailPhaseLabel(view.next))})}</p>`:""}
+  </div>`;
+  const stepper = paperTrailPhaseStepperHTML(view);
+  const currentPanel = (view.phases||[]).filter(p => p.state === "current")
+    .map(p => paperTrailPhasePanelHTML(p, r)).join("");
+  const historyPanels = (view.phases||[]).filter(p => p.state === "passed")
+    .map(p => paperTrailPhasePanelHTML(p, r)).filter(Boolean).join("");
+  const futurePanels = (view.phases||[]).filter(p => p.state === "future" && p.event_count)
+    .map(p => paperTrailPhasePanelHTML(p, r)).join("");
+  const historyWrap = historyPanels
+    ? `<details class="lc-phase-history"><summary>${t("paper_trail_show_history")}</summary>${historyPanels}</details>`
+    : "";
+  const chrono = (view.chronological||[]).map(c => paperTrailMemberRowHTML(c, r)).join("");
+  const how = `<details class="lc-how inline-disclose">
+    <summary>${t("paper_trail_show_all")}</summary>
+    <ul class="lc-phase-dates show paper-trail-chrono">${chrono}</ul>
+  </details>
+  <details class="lc-how inline-disclose">
+    <summary>${t("paper_trail_how_summary")}</summary>
+    <div class="inline-disclose-body">${t("paper_trail_how_html")}</div>
+  </details>`;
+  let notes = "";
+  if(view.blanket){
+    notes += `<div class="note warn">${t("blanket_note",{pin:r.pin||view.pin||"—", n:view.notice_count})}</div>`;
+  }
+  return `<div class="chain-h">${t("paper_trail_heading")}${tlink}</div>
+    ${portal}
+    ${lead}
+    ${stepper}
+    ${currentPanel}
+    ${futurePanels}
+    ${historyWrap}
+    ${how}
+    ${notes}`;
+}
+
+function bindPaperTrailPhaseUI(root){
+  if(!root || root.dataset.paperTrailBound === "1") return;
+  root.dataset.paperTrailBound = "1";
+  root.addEventListener("click", (ev) => {
+    const step = ev.target.closest?.("[data-pt-phase]");
+    if(step && root.contains(step)){
+      const id = step.getAttribute("data-pt-phase");
+      const panel = root.querySelector(`[data-pt-phase-panel="${CSS.escape(id)}"]`);
+      if(panel){
+        panel.open = true;
+        try{ panel.scrollIntoView({ behavior: "smooth", block: "nearest" }); }catch(_e){}
+      }
+      return;
+    }
+    const btn = ev.target.closest?.("[data-pt-dates]");
+    if(btn && root.contains(btn)){
+      const listId = btn.getAttribute("data-pt-dates");
+      const list = listId ? root.querySelector("#" + CSS.escape(listId)) : null;
+      if(!list) return;
+      const show = !list.classList.contains("show");
+      list.classList.toggle("show", show);
+      btn.setAttribute("aria-expanded", show ? "true" : "false");
+      const n = list.children.length;
+      btn.textContent = show
+        ? t("paper_trail_hide_notices")
+        : t("paper_trail_show_notices", { n: String(n) });
+    }
+  });
+}
+
+/**
+ * Flat paper trail — used for single-notice chains and when the phase module fails.
+ * Multi-notice fallback still dedupes City Record: one portal link + members without
+ * per-row spam (substance stays readable; renewal badges preserved).
+ */
+function chainHTMLFlat(r, chain){
   const blanket = isBlanketChain(chain);
   const tlink = usablePin(r.pin) ? ` · <a class="pivot" href="#matter/${encodeURIComponent(r.pin)}">${t("full_timeline_link")}</a>` : "";
-  let html = `<div class="chain-h">${t("paper_trail_heading")}${tlink}</div><div class="chain">`;
+  const multi = chain.length > 1;
+  const primaryId = r.request_id || (chain[0] && chain[0].request_id) || null;
+  let portal = "";
+  if(multi && primaryId){
+    portal = `<a class="view lc-phase-portal" href="${REQ_URL(primaryId)}" ${EXT_ATTRS}>${t("paper_trail_open_notice")}${extSR()}</a>`;
+  }
+  let html = `<div class="chain-h">${t("paper_trail_heading")}${tlink}</div>${portal}<div class="chain">`;
   chain.forEach((c,idx)=>{
     const amt = money(c.contract_amount);
     // A chain entry pulled in by the renewal-suffix prefix widening (pinBase()) carries a
     // DIFFERENT literal PIN than the notice we opened -- badge it so it reads as "linked via
     // renewal", distinct from a same-PIN duplicate stage (no badge, same literal PIN as r.pin).
     const renewed = c.pin && r.pin && c.pin !== r.pin;
+    const showCr = !multi || (primaryId && c.request_id === primaryId);
     html += `<div class="stage"><div class="box ${boxClass(c.type_of_notice_description)}">
         <div class="stage-name">${c.type_of_notice_description||t("notice_fallback")}${renewed?` <span class="tag renewal">${t("renewal_badge")}</span>`:""}</div>
         <div class="when">${fdate(c.start_date)}</div>
         <div class="bt">${escUiHtml(cleanText(c.short_title))||t("untitled")}</div>
         ${amt? `<div class="amt">${amt}</div>`:""}
         ${c.vendor_name? `<div class="vend">→ ${pivotA(vendorHref(c.vendor_name), cleanText(c.vendor_name))}</div>`:""}
-        <a class="view" href="${REQ_URL(c.request_id)}" ${EXT_ATTRS}>${t("view_in_city_record")}${extSR()}</a>
+        ${showCr && c.request_id?`<a class="view" href="${REQ_URL(c.request_id)}" ${EXT_ATTRS}>${t("view_in_city_record")}${extSR()}</a>`:""}
+        ${!showCr && c.request_id?`<a class="pivot" href="#notice/${encodeURIComponent(c.request_id)}">${t("paper_trail_open_on_site")}</a>`:""}
       </div></div>`;
     if(idx < chain.length-1) html += '<div class="connector">→</div>';
   });
@@ -2713,9 +2970,29 @@ function chainHTML(r, chain){
   } else if(blanket){
     html += `<div class="note warn">${t("blanket_note",{pin:r.pin, n:chain.length})}</div>`;
   }
-  html += pastWinnersHTML(chain);
-  html += cadenceHTML(cadenceEstimate(chain));
   return html;
+}
+
+function chainHTML(r, chain, phaseTools){
+  let body = "";
+  if(chain.length > 1 && phaseTools && typeof phaseTools.buildPaperTrailPhaseView === "function"){
+    const view = phaseTools.buildPaperTrailPhaseView(chain, r);
+    if(view && view.needs_phase_ui){
+      body = paperTrailPhaseHTML(view, r);
+    }
+  }
+  if(!body) body = chainHTMLFlat(r, chain);
+  body += pastWinnersHTML(chain);
+  body += cadenceHTML(cadenceEstimate(chain));
+  return body;
+}
+
+/** Async paint helper: loads phase tools then writes chainHTML + binds disclosure UI. */
+async function paintPaperTrail(el, r, chain){
+  if(!el) return;
+  const tools = await ensurePaperTrailPhaseTools();
+  el.innerHTML = chainHTML(r, chain, tools);
+  bindPaperTrailPhaseUI(el);
 }
 
 // SODA's count(1) aggregate comes back as the STRING "0" (not the number 0) when an agency has
@@ -2747,7 +3024,7 @@ function renderDetail(r, chain, stats){
 
   html += pending
     ? `<div class="chain-h">${t("paper_trail_heading")}</div>${listSkeleton(2)}`
-    : chainHTML(r, chain);
+    : `<div id="dchain">${chainHTMLFlat(r, chain)}${pastWinnersHTML(chain)}${cadenceHTML(cadenceEstimate(chain))}</div>`;
 
   // Original English notice text is the official record — always rendered first.
   // excerptHtml: decode entities, truncate on plain text, escape once (same discipline as cards).
@@ -2777,6 +3054,8 @@ function renderDetail(r, chain, stats){
   priorCycleAwards(r, $("#dprior"));
   agencyForecastTeaser(r, $("#dforecast"));
   mountUnofficialTranslation($("#dxlate"), r);
+  // Phase-group / aggregate paper trail once the module is ready (flat paint above first).
+  if(chain && chain.length > 1) paintPaperTrail($("#dchain"), r, chain).catch(()=>{});
 }
 
 // parseNL() itself lives in nl_parse.js (loaded above, plain global — same convention as
@@ -9799,7 +10078,7 @@ async function showNotice(id, watch){
   priorCycleAwards(r, $("#nprior"));
   agencyForecastTeaser(r, $("#nforecast"));
   mountUnofficialTranslation($("#nxlate"), r);
-  if(usablePin(r.pin)){ loadChain(r).then(chain=>{ if(chain.length>1) $("#nchain").innerHTML = chainHTML(r, chain); }).catch(()=>{}); }
+  if(usablePin(r.pin)){ loadChain(r).then(chain=>{ if(chain.length>1) paintPaperTrail($("#nchain"), r, chain); }).catch(()=>{}); }
   focusItemRouteTarget(box.querySelector(".route-item"));
 }
 
