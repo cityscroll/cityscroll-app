@@ -17,7 +17,9 @@ import {
   outcomeIsFilled,
 } from "./lib/zap_outcomes.mjs";
 import { extractUlurpKeys } from "./lib/ulurp_recommendations_join.mjs";
-import { checkAdminKey } from "./admin.mjs";
+// Do not static-import admin.mjs here: it pulls alerts.mjs → @jimdc/sendcap, and
+// test/land_event_spine.test.mjs imports buildZapOutcomeRecord from this module
+// during site unit tests (before worker npm ci). Auth is loaded only on the admin path.
 
 export {
   parseZapApiProject,
@@ -289,6 +291,7 @@ function adminJson(body, status = 200) {
 // POST /admin/zap-outcomes-refresh?key=… — on-demand Land outcomes prewarm (same path as cron).
 // Optional JSON body: { projectIds?: string[], max?: number, force?: boolean }
 export async function handleAdminZapOutcomesRefresh(req, env) {
+  const { checkAdminKey } = await import("./admin.mjs");
   const auth = checkAdminKey(req, env);
   if (!auth.ok) return auth.res;
   if (req.method !== "POST") return adminJson({ error: "method" }, 405);
