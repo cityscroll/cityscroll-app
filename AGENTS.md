@@ -291,9 +291,7 @@ Post-deploy gate: `node tools/live_url_smoke.mjs` (default set includes apex, ww
 - `--set pages-dev` — parallel host only (or `--base-url https://cityscroll.pages.dev`)
 - `--set post-flip` — post-cutover URL matrix **plus** named incident checks (EMAIL HEALTH, STATS SANITY, WORKER ACCESS, HUMAN-PATH JOURNEY in `tools/post_flip_checks.mjs` + `tools/human_path_journey.py`); select only after an owner-authorized flip
 
-Migration value baseline (merge-to-live wall-clock, detection exemplars, rollback estimate): `docs/evidence/hosting-migration-baseline.json`. After cutover, measure against it — do not assert improvements.
-
-Characterization: `node --test test/live_url_smoke.test.mjs test/post_flip_checks.test.mjs`. Operator flip procedure lives outside this public tree.
+Migration value baseline (merge-to-live wall-clock, detection exemplars, rollback estimate, dual-host live metrics): `docs/evidence/hosting-migration-baseline.json` + full receipt `docs/evidence/hosting-dual-host-metrics.json`. After cutover, measure against it — do not assert improvements. Re-measure dual-host only (read-only, no DNS/route changes): `node tools/measure_hosting_baseline.mjs --phase after-cutover --samples 5 --out-receipt docs/evidence/hosting-dual-host-metrics-after.json --write-baseline docs/evidence/hosting-migration-baseline.json`. Characterization: `node --test test/measure_hosting_baseline.test.mjs test/live_url_smoke.test.mjs test/post_flip_checks.test.mjs`. Operator flip procedure lives outside this public tree.
 
 
 ## Hearing participation (one owner, list + detail)
