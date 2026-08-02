@@ -279,6 +279,12 @@ export const ADMIN_ROUTES = Object.freeze([
     description: "On-demand suggestion-chip validation (cron pipeline).",
   },
   {
+    path: "/admin/meeting-outcomes-refresh",
+    methods: ["POST"],
+    auth: "ADMIN_KEY",
+    description: "On-demand Council meeting-outcomes materialization and Legistar source_records dual-write (cron pipeline).",
+  },
+  {
     path: "/admin/passport-ingest",
     methods: ["POST"],
     auth: "ADMIN_KEY",
