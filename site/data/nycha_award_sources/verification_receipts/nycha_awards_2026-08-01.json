@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "observed_on": "2026-08-01",
+  "observed_at_utc": "2026-08-01T22:00:00Z",
+  "source_contracts": [
+    "checkbook-nycha-contracts"
+  ],
+  "access_surface": {
+    "api": "https://www.checkbooknyc.com/api",
+    "landing": "https://www.checkbooknyc.com/data-feeds/api",
+    "type_of_data": "Contracts_NYCHA"
+  },
+  "curl_verified": {
+    "api_post_http": 200,
+    "api_result": "success",
+    "unfiltered_sample_transactions": 25,
+    "pin_lookup_337474_transactions": 5,
+    "pin_lookup_340881_transactions": 2,
+    "pin_lookup_525302_transactions": 0,
+    "notes": "Host probe 2026-08-01. Contracts_NYCHA responds success for valid criteria. Heavy fan-out trips Incapsula HTTP 403 (same WAF posture the Worker avoids by one-PIN-per-request)."
+  },
+  "dataset": {
+    "name": "Checkbook NYC NYCHA contracts",
+    "data_type": "Contracts_NYCHA",
+    "searchable_fields": [
+      "fiscal_year",
+      "purchase_order_type",
+      "contract_id",
+      "vendor_name",
+      "vendor_code",
+      "responsibility_center",
+      "contract_type",
+      "award_method",
+      "industry",
+      "current_amount",
+      "other_government_entities_code",
+      "purpose",
+      "pin",
+      "start_date",
+      "end_date",
+      "approved_date"
+    ],
+    "agreement_record_type": "Agreement",
+    "pin_column": true
+  },
+  "update_cadence": {
+    "publisher_claim": "Ongoing contract updates",
+    "product_rule": "No dense product materialization of exact solicitation→award matches after join measurement below usefulness. On-demand PIN lookup may still run for rare true positives; empty answers are not permanently sticky.",
+    "empty_cache_ttl_days": 3
+  },
+  "product_inventory_2026_08_01": {
+    "d1_external_award_matches_rows": 6,
+    "d1_external_award_matches_nonempty": 0,
+    "d1_housing_authority_solicitations_with_pin": 23,
+    "sample_api_empty_matches": [
+      "20260603042",
+      "20260724027",
+      "20260723001",
+      "20260617050",
+      "20260626002",
+      "20260512043"
+    ]
+  },
+  "join_measurement": {
+    "strategy": "exact_pin_temporal — Checkbook Agreement.pin equals City Record notice.pin and (approved_date || start_date) is strictly after notice.start_date. PIN-reuse without temporal is rejected.",
+    "universe_modern": "Housing Authority Solicitation notices with non-empty pin in the live D1 notice mirror (product window as of 2026-08-01)",
+    "universe_modern_count": 23,
+    "universe_historical_sample": "City Record Online (dg92-zbpx) Housing Authority Solicitation with non-empty pin, start_date in [2019-01-01, 2023-01-01), first 30 by start_date DESC before Checkbook WAF 403",
+    "universe_historical_sample_count": 30,
+    "field_cases": [
+      {
+        "id": "pin-reuse-340881",
+        "request_id": "20260610071",
+        "pin": "340881",
+        "notice_start": "2026-06-30",
+        "checkbook": "PO1125076 Agreement start 2011-10-28 TAVARES RESTAURANT #2 $488",
+        "outcome": "reuse_only"
+      },
+      {
+        "id": "modern-rfq-miss-525302",
+        "request_id": "20260724027",
+        "pin": "525302",
+        "notice_start": "2026-07-31",
+        "checkbook": "success, 0 transactions",
+        "outcome": "no_agreement"
+      },
+      {
+        "id": "modern-checkbook-pin-not-in-city-record",
+        "pin": "18974290",
+        "checkbook": "BA2021022 Agreement start 2023-02-02 RJ BRUNO INC",
+        "city_record_pin_lookup": "0 rows",
+        "outcome": "key_space_mismatch"
+      }
+    ],
+    "rates": {
+      "modern_d1_temporal_exact": {
+        "joined": 0,
+        "total": 23,
+        "rate": 0,
+        "basis": "Product inventory: 0 non-empty external_award_matches; sampled public /externalaward and Checkbook pin probes on the cached notice set returned empty or reuse-only"
+      },
+      "historical_sample_temporal_exact": {
+        "joined": 0,
+        "total": 30,
+        "rate": 0,
+        "basis": "Probe completed 1 PIN (reuse-only) before Checkbook WAF 403; no temporal match observed in the reachable prefix"
+      },
+      "fixture_temporal_exact": {
+        "joined": 1,
+        "total": 4,
+        "rate": 0.25,
+        "basis": "Committed characterization fixtures in test/fixtures/nycha_awards/join_cases.json (includes one synthetic true-positive control)"
+      }
+    },
+    "usefulness_threshold": 0.3,
+    "verdict": "Below usefulness threshold (~30%) on the modern product universe (0% temporal exact-PIN join). City Record RFQ-style pins and Checkbook Contracts_NYCHA pin values largely do not share a joinable key; PIN reuse produces pre-solicitation agreements the temporal filter correctly rejects. Disable product claims of dense exact NYCHA award matches; keep the ranker and non-sticky on-demand path for rare true positives."
+  }
+}

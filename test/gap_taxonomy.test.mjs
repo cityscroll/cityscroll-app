@@ -357,6 +357,20 @@ test("meeting-community-board-votes class (b) names borough president and commun
   assert.match(gap.evidence, /40\/40|non-Council/i);
 });
 
+test("exam fee/salary null is class (a) not_yet_ingested when NOE path is the public home", () => {
+  const gap = registry.gaps.find((g) => g.id === "exam-salary-fee-not-published");
+  assert.ok(gap);
+  assert.equal(gap.class, "not_yet_ingested");
+  assert.equal(gap.i18n_key, "career_fee_salary_not_yet_ingested_html");
+  assert.match(gap.public_source?.name || "", /Notice of Examination|open-competitive/i);
+  assert.match(gap.evidence, /8\/8|open-competitive|not a city withhold/i);
+  assert.equal(gap.class_change?.to, "not_yet_ingested");
+  assert.match(
+    t("career_fee_salary_not_yet_ingested_html", { source: "the DCAS Notice of Examination" }),
+    CLASS_A_PREFIX,
+  );
+});
+
 test("unmatched package-documents sub-slot uses not-published register with GetFile pointer", () => {
   const html = lifecycleTimelineHTML({
     ok: true,
@@ -411,6 +425,14 @@ test("all ten shipping locales define the gap taxonomy keys", () => {
     "subsidy_company_unknown_html",
     "subsidy_place_unknown_html",
     "subsidy_money_unknown_html",
+    "subsidy_company_not_yet_ingested_html",
+    "subsidy_place_not_yet_ingested_html",
+    "subsidy_money_not_yet_ingested_html",
+    "subsidy_feed_unavailable_html",
+    "subsidy_money_matched_html",
+    "subsidy_money_matched_city_record_html",
+    "subsidy_money_total_project_cost_lbl",
+    "subsidy_money_total_development_cost_lbl",
     "meeting_outcomes_unmatched_html",
     "meeting_outcomes_no_votes_html",
     "meeting_outcomes_no_matters_html",
@@ -421,6 +443,8 @@ test("all ten shipping locales define the gap taxonomy keys", () => {
     "agency_awards_none_open_data_html",
     "external_award_none_note_html",
     "career_not_published",
+    "career_fee_salary_not_yet_ingested_html",
+    "career_noe_source_name",
     "career_outcomes_list_joined_note",
     "career_outcomes_list_source_name",
   ];

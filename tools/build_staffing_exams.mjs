@@ -19,6 +19,18 @@ const CURRENT_ID = "dcas-open-competitive";
 const NOE_ID = "dcas-noe";
 const LIST_AGGREGATES_FILE = "civil_service_list_aggregates.json";
 
+/** Fields that only come from the Notice of Examination / open-competitive path. */
+export const NOE_DETAIL_FIELDS = [
+  "notice_url",
+  "fee",
+  "fee_waiver",
+  "salary_min",
+  "salary_note",
+  "summary",
+  "qualifications",
+  "test_method",
+];
+
 const INTEREST_RULES = [
   ["public-safety", /\b(police|correction|safety|special officer|fire|probation)\b/i],
   ["health-care", /\b(health|hospital|medical|dental|nurse|therap|emergency medical|mortuary|addiction)\b/i],
@@ -118,6 +130,82 @@ function mergeCurrent(annualRow, currentRow) {
   merged.sources = [...new Set([...(annualRow?.sources || []), ...(currentRow?.sources || []), CURRENT_ID, NOE_ID])];
   merged.interest_area = currentRow.interest_area || annualRow.interest_area || classifyInterest(merged.title || "");
   return merged;
+}
+
+/**
+ * Keep NOE fee/salary/notice fields when an exam drops off the open-competitive
+ * snapshot but remains on the annual schedule. Without this, rebuilds wipe real
+ * NOE amounts and the card falls through to a false "city does not publish" gap.
+ */
+export function retainNoeDetailFields(exam, prior) {
+  if (!exam || !prior) return exam;
+  const out = { ...exam };
+  let retained = false;
+  for (const field of NOE_DETAIL_FIELDS) {
+    const currentMissing = out[field] == null || out[field] === "";
+    const priorHas = prior[field] != null && prior[field] !== "";
+    // fee may legitimately be 0 (no application fee) — treat 0 as present.
+    if (field === "fee") {
+      if (out.fee == null && prior.fee != null) {
+        out.fee = prior.fee;
+        retained = true;
+      }
+      continue;
+    }
+    if (currentMissing && priorHas) {
+      out[field] = prior[field];
+      retained = true;
+    }
+  }
+  if (retained || out.notice_url || out.fee != null || out.salary_min != null) {
+    const sources = [...(out.sources || [])];
+    if (out.notice_url || out.fee != null || out.salary_min != null) {
+      sources.push(NOE_ID);
+      if (prior.sources?.includes(CURRENT_ID)) sources.push(CURRENT_ID);
+    }
+    out.sources = [...new Set(sources)];
+  }
+  return out;
+}
+
+/**
+ * Classify fee/salary absence.
+ * - Both present → no gap (NOE path delivered amounts).
+ * - notice_url present but a field null → true NOE omit (class b rare).
+ * - No NOE in the extract → not yet ingested (class a); annual schedule has no fee columns.
+ */
+export function feeSalaryGapFor(exam) {
+  const hasFee = exam?.fee != null;
+  const hasSalary = exam?.salary_min != null && exam.salary_min !== "";
+  if (hasFee && hasSalary) return null;
+  const missing = [];
+  if (!hasFee) missing.push("fee");
+  if (!hasSalary) missing.push("salary_min");
+  if (exam?.notice_url) {
+    return {
+      class: "not_published",
+      missing,
+      would_appear_in: "the Notice of Examination if DCAS stated the amount",
+    };
+  }
+  return {
+    class: "not_yet_ingested",
+    missing,
+    public_source: {
+      name: "DCAS open-competitive exam schedule and Notices of Examination",
+      access: "Open-competitive schedule page + linked Notice of Examination PDFs",
+      landing_page: "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page",
+    },
+  };
+}
+
+export function attachFeeSalaryGap(exam) {
+  const gap = feeSalaryGapFor(exam);
+  if (!gap) {
+    const { fee_salary_gap: _drop, ...rest } = exam;
+    return { ...rest, fee_salary_gap: null };
+  }
+  return { ...exam, fee_salary_gap: gap };
 }
 
 function normalizeOutcome(row) {
@@ -299,10 +387,15 @@ export function buildArtifact({
     exams.set(normalized.exam_number, merged);
   }
 
+  // Snapshot priors before the mutation loop so retain can see original NOE fields.
+  const priorByNumber = new Map((priorArtifact?.exams || []).map((exam) => [exam.exam_number, exam]));
+
   for (const [examNumber, priorRow] of prior.entries()) {
     const exam = exams.get(examNumber);
-    if (exam) exams.set(examNumber, annotateAmendment(exam, priorRow));
-    else if (
+    if (exam) {
+      const retained = retainNoeDetailFields(exam, priorRow);
+      exams.set(examNumber, annotateAmendment(retained, priorRow));
+    } else if (
       priorRow.schedule_status !== "canceled"
       && examStatusFor(priorRow, generatedAt) !== "closed"
     ) {
@@ -311,10 +404,17 @@ export function buildArtifact({
     prior.delete(examNumber);
   }
 
+  // Also retain for exams already merged from current (no-op) and any prior that
+  // remained in the map only as annual rows without re-entering the loop above.
+  for (const [examNumber, exam] of exams.entries()) {
+    const priorRow = priorByNumber.get(examNumber);
+    if (priorRow) exams.set(examNumber, retainNoeDetailFields(exam, priorRow));
+  }
+
   const outcomeMap = outcomesByExamNumber(outcomes.records);
   const listIndex = buildListAggregateIndex(listAggregates?.records || []);
   const records = [...exams.values()]
-    .map((exam) => joinOutcomesAndListOntoExam(exam, outcomeMap, listIndex))
+    .map((exam) => attachFeeSalaryGap(joinOutcomesAndListOntoExam(exam, outcomeMap, listIndex)))
     .sort((a, b) => {
       const ad = a.application_start || "9999-12-31";
       const bd = b.application_start || "9999-12-31";

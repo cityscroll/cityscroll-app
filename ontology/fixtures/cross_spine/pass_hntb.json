@@ -1,0 +1,38 @@
+{
+  "schema": "cityscroll.cross_spine_bundle.v0",
+  "subject_ref": "notice:20260623008",
+  "er": {
+    "pin": "84124P0003001",
+    "vendor_name": "HNTB New York Engineering and Architecture, P.C.",
+    "vendor_stem": "hntb new york engineering architecture",
+    "decision": "auto_link"
+  },
+  "process_spine": {
+    "join_confidence": "confirmed"
+  },
+  "lifecycle": {
+    "pin": "84124P0003001",
+    "vendor_name": "HNTB NEW YORK ENGINEERING ARCHITECTURE AND LANDSCAPE ARCHITE",
+    "vendor_stem": "hntb new york engineering architecture landscape archite",
+    "registered_at": "2026-06-01",
+    "first_payment_at": "2026-07-15",
+    "lookup_status": "ok"
+  },
+  "civic_time_events": [
+    {
+      "event_kind": "procurement.notice_published",
+      "subject_ref": "notice:20260623008",
+      "valid_at": "2026-06-23"
+    },
+    {
+      "event_kind": "procurement.award_registered",
+      "subject_ref": "notice:20260623008",
+      "valid_at": "2026-06-01"
+    }
+  ],
+  "actions": {
+    "lookup_status": "ok",
+    "handoff_delivery": "official_handoff",
+    "confident_empty": false
+  }
+}

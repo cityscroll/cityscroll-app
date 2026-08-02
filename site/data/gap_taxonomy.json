@@ -163,13 +163,26 @@
       "id": "checkbook-nycha-contracts",
       "name": "Checkbook NYC NYCHA contracts",
       "source_contract_id": "checkbook-nycha-contracts",
-      "status": "landed",
+      "status": "disabled",
       "join_keys": [
+        "PIN",
         "contract_id"
       ],
-      "join_coverage": {},
+      "join_coverage": {
+        "realized": {
+          "rate": 0,
+          "joined": 0,
+          "total": 23,
+          "metric": "modern_d1_temporal_exact",
+          "observed_on": "2026-08-01",
+          "universe": null,
+          "strategy": "exact_pin_temporal — Agreement.pin equals notice.pin and (approved_date || start_date) > notice.start_date. PIN-reuse without temporal rejected.",
+          "verdict": "Below usefulness threshold (~30%) on the modern product universe (0% temporal exact-PIN join). Ship measured reconnaissance + disabled source contract; do not claim dense exact NYCHA award matches as a live product surface.",
+          "source": "source_contracts.join_measurement"
+        }
+      },
       "landing_page": "https://www.checkbooknyc.com/data-feeds/api",
-      "delivery_tier": "edge-materialized"
+      "delivery_tier": "live-only"
     },
     {
       "id": "checkbook-spending",
@@ -821,7 +834,8 @@
       "worth_materializing": "already_materialized",
       "gaps_would_close": [
         "procurement-ocp-recent-awards",
-        "subsidy-stage-unmatched"
+        "subsidy-stage-unmatched",
+        "subsidy-field-city-record-hearing-feed"
       ]
     },
     {
@@ -900,7 +914,8 @@
       "realized_coverage": null,
       "worth_materializing": "already_materialized",
       "gaps_would_close": [
-        "exam-outcome-aggregate"
+        "exam-outcome-aggregate",
+        "exam-salary-fee-not-published"
       ]
     },
     {
@@ -1024,26 +1039,6 @@
       "evidence": "Shared keys PIN; 5 taxonomy gap(s) could close."
     },
     {
-      "id": "checkbook-nycha-contracts-x-passport-public-contracts-via-contract_id",
-      "source_a": "checkbook-nycha-contracts",
-      "source_b": "passport-public-contracts",
-      "key_path": [
-        "contract_id"
-      ],
-      "status": "candidate",
-      "realized_coverage": null,
-      "worth_materializing": "yes",
-      "gaps_would_close": [
-        "procurement-pending-unmatched",
-        "procurement-registered-unmatched",
-        "procurement-payment-unmatched",
-        "procurement-bid-counts",
-        "procurement-ocp-recent-awards"
-      ],
-      "score": 5,
-      "evidence": "PASSPort Public contract rows expose contract_id alongside EPIN; Checkbook Contracts expose prime_contract_id (canonicalized to contract_id). Direct equality is not yet measured — candidate only. Transitive path already exists via City Record PIN."
-    },
-    {
       "id": "checkbook-spending-x-passport-public-contracts-via-PIN+contract_id",
       "source_a": "checkbook-spending",
       "source_b": "passport-public-contracts",
@@ -1123,24 +1118,6 @@
       "evidence": "Shared keys PIN; 4 taxonomy gap(s) could close."
     },
     {
-      "id": "checkbook-contracts-x-checkbook-nycha-contracts-via-contract_id",
-      "source_a": "checkbook-contracts",
-      "source_b": "checkbook-nycha-contracts",
-      "key_path": [
-        "contract_id"
-      ],
-      "status": "candidate",
-      "realized_coverage": null,
-      "worth_materializing": "yes",
-      "gaps_would_close": [
-        "procurement-pending-unmatched",
-        "procurement-registered-unmatched",
-        "procurement-payment-unmatched"
-      ],
-      "score": 3,
-      "evidence": "Shared keys contract_id; 3 taxonomy gap(s) could close."
-    },
-    {
       "id": "checkbook-contracts-x-checkbook-spending-via-PIN+contract_id",
       "source_a": "checkbook-contracts",
       "source_b": "checkbook-spending",
@@ -1178,24 +1155,6 @@
       "evidence": "Shared keys PIN; 3 taxonomy gap(s) could close."
     },
     {
-      "id": "checkbook-nycha-contracts-x-checkbook-spending-via-contract_id",
-      "source_a": "checkbook-nycha-contracts",
-      "source_b": "checkbook-spending",
-      "key_path": [
-        "contract_id"
-      ],
-      "status": "candidate",
-      "realized_coverage": null,
-      "worth_materializing": "yes",
-      "gaps_would_close": [
-        "procurement-pending-unmatched",
-        "procurement-registered-unmatched",
-        "procurement-payment-unmatched"
-      ],
-      "score": 3,
-      "evidence": "Shared keys contract_id; 3 taxonomy gap(s) could close."
-    },
-    {
       "id": "checkbook-spending-x-current-solicitations-ocp-via-PIN",
       "source_a": "checkbook-spending",
       "source_b": "current-solicitations-ocp",
@@ -1225,10 +1184,11 @@
       "worth_materializing": "maybe",
       "gaps_would_close": [
         "procurement-ocp-recent-awards",
-        "subsidy-stage-unmatched"
+        "subsidy-stage-unmatched",
+        "subsidy-field-city-record-hearing-feed"
       ],
-      "score": 2,
-      "evidence": "Shared keys request_id; 2 taxonomy gap(s) could close."
+      "score": 3,
+      "evidence": "Shared keys request_id; 3 taxonomy gap(s) could close."
     },
     {
       "id": "nycida-build-nyc-projects-x-unregistered-zoning-application-portal-projects-via-project_id",
@@ -1242,10 +1202,11 @@
       "worth_materializing": "maybe",
       "gaps_would_close": [
         "subsidy-stage-unmatched",
+        "subsidy-field-city-record-hearing-feed",
         "land-outcome-detail"
       ],
-      "score": 2,
-      "evidence": "Shared keys project_id; 2 taxonomy gap(s) could close."
+      "score": 3,
+      "evidence": "Shared keys project_id; 3 taxonomy gap(s) could close."
     },
     {
       "id": "nycida-build-nyc-projects-x-zap-api-outcomes-via-project_id",
@@ -1259,10 +1220,11 @@
       "worth_materializing": "yes",
       "gaps_would_close": [
         "subsidy-stage-unmatched",
+        "subsidy-field-city-record-hearing-feed",
         "land-outcome-detail"
       ],
-      "score": 2,
-      "evidence": "Shared keys project_id; 2 taxonomy gap(s) could close."
+      "score": 3,
+      "evidence": "Shared keys project_id; 3 taxonomy gap(s) could close."
     },
     {
       "id": "nycida-build-nyc-projects-x-zap-bbl-via-project_id",
@@ -1276,10 +1238,11 @@
       "worth_materializing": "yes",
       "gaps_would_close": [
         "subsidy-stage-unmatched",
+        "subsidy-field-city-record-hearing-feed",
         "land-outcome-detail"
       ],
-      "score": 2,
-      "evidence": "Shared keys project_id; 2 taxonomy gap(s) could close."
+      "score": 3,
+      "evidence": "Shared keys project_id; 3 taxonomy gap(s) could close."
     },
     {
       "id": "nycida-build-nyc-projects-x-zap-projects-via-project_id",
@@ -1293,10 +1256,28 @@
       "worth_materializing": "yes",
       "gaps_would_close": [
         "subsidy-stage-unmatched",
+        "subsidy-field-city-record-hearing-feed",
         "land-outcome-detail"
       ],
+      "score": 3,
+      "evidence": "Shared keys project_id; 3 taxonomy gap(s) could close."
+    },
+    {
+      "id": "current-solicitations-ocp-x-nycida-build-nyc-projects-via-request_id",
+      "source_a": "current-solicitations-ocp",
+      "source_b": "nycida-build-nyc-projects",
+      "key_path": [
+        "request_id"
+      ],
+      "status": "candidate",
+      "realized_coverage": null,
+      "worth_materializing": "maybe",
+      "gaps_would_close": [
+        "subsidy-stage-unmatched",
+        "subsidy-field-city-record-hearing-feed"
+      ],
       "score": 2,
-      "evidence": "Shared keys project_id; 2 taxonomy gap(s) could close."
+      "evidence": "Shared keys request_id; 2 taxonomy gap(s) could close."
     },
     {
       "id": "passport-public-contracts-x-recent-contract-awards-ocp-via-PIN",
@@ -1380,22 +1361,6 @@
       ],
       "score": 1,
       "evidence": "Shared keys PIN, request_id; 1 taxonomy gap(s) could close."
-    },
-    {
-      "id": "current-solicitations-ocp-x-nycida-build-nyc-projects-via-request_id",
-      "source_a": "current-solicitations-ocp",
-      "source_b": "nycida-build-nyc-projects",
-      "key_path": [
-        "request_id"
-      ],
-      "status": "candidate",
-      "realized_coverage": null,
-      "worth_materializing": "maybe",
-      "gaps_would_close": [
-        "subsidy-stage-unmatched"
-      ],
-      "score": 1,
-      "evidence": "Shared keys request_id; 1 taxonomy gap(s) could close."
     },
     {
       "id": "current-solicitations-ocp-x-passport-public-contracts-via-PIN",
@@ -1975,7 +1940,32 @@
       "class": "not_published",
       "would_appear_in": "the linked Build NYC project record if those fields are filled on publication",
       "notices_affected_estimate": "Matched projects with sparse public fields.",
-      "evidence": "Fields are optional on public project pages; worker exposes explicit unknown reasons when blank."
+      "evidence": "Fields are optional on public project pages; worker exposes explicit unknown reasons when blank. Class (b) only when a real Build NYC project row is linked — never for city-record-hearing fallback."
+    },
+    {
+      "id": "subsidy-field-city-record-hearing-feed",
+      "surface": "subsidy lifecycle · company / place / money when only City Record hearing is joined",
+      "i18n_keys": [
+        "subsidy_company_not_yet_ingested_html",
+        "subsidy_place_not_yet_ingested_html",
+        "subsidy_money_not_yet_ingested_html",
+        "subsidy_feed_unavailable_html"
+      ],
+      "class": "not_yet_ingested",
+      "public_source": {
+        "name": "NYCIDA/Build NYC public documents",
+        "access": "HTML document portal (edge fetch often Cloudflare-blocked)",
+        "landing_page": "https://edc.nyc/about-nycedc/financial-public-documents-recordings",
+        "update_cadence": "Daily document posts (when published)",
+        "join_keys": [
+          "project_name",
+          "company_name",
+          "project_address",
+          "request_id when present"
+        ]
+      },
+      "notices_affected_estimate": "IDA/Build NYC City Record hearing notices when the structured Build NYC feed is unreachable or empty.",
+      "evidence": "EDC financial-documents host returns Cloudflare 403 to automated edge fetch, so structured project rows are not ingested. City Record hearing bodies often publish Total Project Cost / Total Development Cost — those are parsed into the subsidy money cost fields. Remaining structured fields use class (a) not_yet_ingested copy, not class (b) withheld. Durable EDC-feed ingestion is a separate follow-up."
     },
     {
       "id": "meeting-outcomes-unmatched",
@@ -2098,11 +2088,26 @@
     {
       "id": "exam-salary-fee-not-published",
       "surface": "staffing exam card · fee or salary null",
-      "i18n_key": "career_not_published",
-      "class": "not_published",
-      "would_appear_in": "the Notice of Examination PDF / open-competitive schedule if DCAS states the amount",
-      "notices_affected_estimate": "Exams whose NOE omits fee or salary_min.",
-      "evidence": "UI already uses career_not_published when value is null."
+      "i18n_key": "career_fee_salary_not_yet_ingested_html",
+      "class": "not_yet_ingested",
+      "public_source": {
+        "name": "DCAS open-competitive exam schedule and Notices of Examination",
+        "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+        "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page",
+        "update_cadence": "Monthly schedule posts with mid-cycle NOE amendments; re-check daily while windows are open",
+        "join_keys": [
+          "exam_number"
+        ]
+      },
+      "would_appear_in": "the Notice of Examination PDF / open-competitive schedule when DCAS publishes the amount for that exam",
+      "notices_affected_estimate": "Schedule-only exams in the annual Open Data table without a joined open-competitive NOE (measured ~143/151 on 2026-08-01). Open-competitive NOE path is 8/8 fee+salary when present.",
+      "evidence": "Annual schedule 4ptz-hmtc has no fee/salary columns. Open-competitive + NOE snapshot publishes fee and salary_min for every linked NOE (8/8). Null fee/salary is missing NOE join or NOE not yet posted for upcoming windows — not a city withhold. UI uses career_fee_salary_not_yet_ingested_html (class a) unless a linked NOE omits the field (class b career_not_published).",
+      "class_change": {
+        "from": "not_published",
+        "to": "not_yet_ingested",
+        "reason": "Open-competitive NOE path is a landed public source; schedule-only nulls are never-ingested, not withheld",
+        "observed_on": "2026-08-01"
+      }
     },
     {
       "id": "external-awards-agency-absent",
@@ -2296,10 +2301,10 @@
     "Gap-pressure tail 2026-07-30: Capital Projects n7gv-k5yt fuzzy join ≤1% → class-b pointer for procurement-planning-budget; Civil Service List closed-exam overlap 44.54% → ship exam-level list aggregates; non-Council meeting outcomes reclassified not_published with BP/CB minutes pointers."
   ],
   "depot_refresh": {
-    "observed_on": "2026-08-01",
-    "source_contracts_fingerprint": "84aa82661c407276ecfc215fe9567fc50fa18c4b99f9c01e791c9b90b8c699d4",
+    "observed_on": "2026-08-02",
+    "source_contracts_fingerprint": "d19b9db65045c6447ef34d780c989c3e07c72dd1add6bffe9e6697b6dd4cd9c3",
     "materialized_crosswalks": 11,
-    "candidate_crosswalks": 46,
+    "candidate_crosswalks": 43,
     "class_changes": 0,
     "passport_realized_either_rate": 0.78
   }

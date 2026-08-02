@@ -52,3 +52,21 @@ export {
   buildShadowMonitorReceipt,
   compareShadowMonitorReceipts,
 } from "./shadow_monitoring.mjs";
+
+export {
+  ADAPTER_READY_STATUSES,
+  COVERED_STATUSES,
+  DEFAULT_STALE_AFTER_DAYS,
+  LIVE_OBSERVATION_STATUSES,
+  POPULATED_STATUSES,
+  classifyLiveObservation,
+  emitCoverageHonestyCards,
+  findCoverageHonestyViolations,
+  isAdapterReadyFromRow,
+  measureLiveCoverage,
+  measurementNow,
+  observationAgeDays,
+  recomputeMeasurement,
+  resolveLiveObservation,
+  validateSourceCoverageMatrix,
+} from "./source_coverage_honesty.mjs";

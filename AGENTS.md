@@ -15,7 +15,10 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - Required checks always report a conclusion (never stay missing). Fast paths:
   `changelog_only` (bot-owned changelog files) and `docs_only` (`tools/docs-only-path-guard.sh`)
   skip the full unit suite; non-frontend PRs skip browser a11y / reading-level
-  heavy work while still posting SUCCESS. Performance budgets run only when `frontend` changes.
+  heavy work while still posting SUCCESS. Performance budgets (20-sample p95) use a
+  narrower `perf` path filter (site HTML/CSS/JS/media + budget harness) — not all of
+  `site/**` — so data-only / worker-only diffs report SUCCESS without the long measure.
+  Performance is not a merge-queue required check (`tools/merge_queue_policy.json`).
 - Stray-English: **Unit static lint only** (`test/standards/stray_english.py`). The runtime
   multi-locale walk (`test/functional/13_stray_english.py`) is **not** a CI job or required
   check — optional locally via that script or `run_stray_english_shards.sh`. Required merge
@@ -47,14 +50,24 @@ PASSPort Public has **no Socrata dataset** for contracts/RFx. Stable machine dum
 - `https://a0333-passportpublic.nyc.gov/dataJs/contractData.js` (`public_ctr_data`)
 - `https://a0333-passportpublic.nyc.gov/dataJs/rfxData.js` (`public_rfx_data`)
 
-Edge materialization: `worker/src/passport.mjs` → D1 `passport_contracts` / `passport_rfx`.
+Edge materialization: `worker/src/passport.mjs` → D1 `passport_contracts` / `passport_rfx`
+(+ dual-write `source_records` when `PASSPORT_SOURCE_RECORD_DUAL_WRITE=true`).
 Strict EPIN↔PIN join: `worker/src/lib/passport_join.mjs`. Measured rates live in
 `site/data/source_contracts.json` (`join_measurement`) and
 `site/data/passport_sources/verification_receipts/`.
 Deploy applies D1 migrations before worker code (`deploy-worker.yml`); `ensurePassportSchema`
 is the runtime safety net. `lookup_status` is three-state: `ok` / `error` / `skipped` —
 error must never render as a confident empty miss. Characterization:
-`node --test worker/test/passport_lookup.test.mjs`.
+`node --test worker/test/passport_lookup.test.mjs worker/test/er_source_coverage.test.mjs`.
+
+**Freshness / dual-write (load-bearing):** daily cron runs `ingestPassportPublic` with a
+browser-like User-Agent (empty UA → portal HTTP 403). Failed attempts stamp
+`passport_ingest_meta` (`last_attempt_at`, `last_error`, `last_ok`) without wiping the last
+good `ingested_at`. On fetch failure, dual-write **backfills** from existing product
+payloads so observation coverage is not stuck at zero. Staleness helper:
+`passportIngestIsStale` (default 48h). Operator force: `POST /admin/passport-ingest`
+(`ADMIN_KEY`). Host-side full reseed when edge cannot reach dataJs:
+`node tools/passport_remote_reseed.mjs` (optional `--dual-write-only`).
 
 Solicitation response handoffs are evidence records, not generic bid links:
 `site/action_registry.js` → `solicitationHandoff`. Notice-named agency systems take
@@ -81,6 +94,17 @@ PIN↔`bid_number` join is **0%** on Procurement notices since 2025-01-01 and **
 `bid-tabulations-historical` is **disabled** — no edge materialization. Strategies and
 receipts: `worker/src/lib/bid_tabulations_join.mjs`,
 `site/data/bid_tabulation_sources/`.
+
+## Checkbook NYCHA awards (`Contracts_NYCHA`)
+
+Ranked exact-PIN solicitation→award join. **Measured below usefulness** (2026-08-01):
+temporal exact-PIN rate **0%** on the modern product notice window (23 PIN-bearing Housing
+Authority solicitations; 0 non-empty `external_award_matches`). City Record RFQ-style pins
+and Checkbook pin values largely do not share a joinable key; PIN reuse is correctly
+rejected by the temporal filter. Source contract `checkbook-nycha-contracts` is
+**disabled** for dense materialization. On-demand lookup may still run; empty cache TTL is
+3 days (do not permanently sticky-cache empties). Strategies and receipts:
+`worker/src/lib/nycha_awards_join.mjs`, `site/data/nycha_award_sources/`.
 
 ## Doing Business Search Entities (`72mk-a8z7`)
 
@@ -293,18 +317,29 @@ Endpoint `GET /subsidy-lifecycle?id=` (`worker/src/subsidy_lifecycle.mjs`). The
 EDC documents page is often Cloudflare-blocked to edge fetch (HTTP 403 / challenge
 HTML) — treat as feed failure, do **not** permanently D1-cache `source_status:
 unavailable`. When the feed fails, `projectFromIdaNotice` derives a hearing-stage
-join from the City Record IDA hearing notice (company names, event date). Keep
-honest unavailable copy only when the feed is down **and** no notice-derived
-hearing applies. Schema safety net: `ensureSubsidySchema` (migration
-`0005_subsidy_lifecycle.sql`).
+join from the City Record IDA hearing notice (company names, event date, and
+labeled **Total Project Cost** / **Total Development Cost** dollars via
+`parseHearingMoneyFromBody`). Keep honest unavailable copy only when the feed is
+down **and** no notice-derived hearing applies. Schema safety net:
+`ensureSubsidySchema` (migration `0005_subsidy_lifecycle.sql`).
+
+**Money honesty on hearing-only joins:** when `join.method=city-record-hearing`
+(and/or `feed_status=unavailable`), never label blank structured money as class
+(b) “city does not publish on the Build NYC record.” Use class (a)
+`not_yet_ingested` / feed-unreachable copy for structured Build NYC fields, and
+**show** parsed City Record costs when present (`total_project_cost` / `total_development_cost` on the money object). Durable EDC structured-feed
+ingestion remains a follow-up (bot-blocked host). Fixture:
+`worker/test/fixtures/subsidy-hearing-money/20220525018.json`. Verify:
+`node --test test/subsidy_hearing_money.test.mjs`.
 
 **Age-aware gap kinds** (temporal sibling of paid / verified_zero / unavailable):
 `subsidyGapKind` → `too_soon` | `not_published` | (worker) `unavailable`. Lag table
 `SUBSIDY_STAGE_EXPECT_LAG_DAYS` (board ~60d, closing ~180d, project_record ~90d).
 Demo/backtest notices must be **aged** (2022–2024 hearings) so later stages read
 `not_published`, not “could not reach.” Young hearings use “check back” copy.
-Characterization: `test/subsidy_lifecycle.test.mjs`, `test/ida_notice_defects.test.mjs`.
-Aged demo ids: `20220525018`, `20231004016`, `20240617012`.
+Characterization: `test/subsidy_lifecycle.test.mjs`, `test/ida_notice_defects.test.mjs`,
+`test/subsidy_hearing_money.test.mjs`.
+Aged demo ids: `20220525018` (non-null parsed cost), `20231004016`, `20240617012`.
 
 ## Checkbook Contracts row identity
 
@@ -338,6 +373,18 @@ open-exam overlap 0%. Artifact:
 `site/data/exam_sources/civil_service_list_aggregates.json` joined at build via
 `tools/build_staffing_exams.mjs` + `worker/src/lib/civil_service_list_join.mjs`.
 UI: `list_joined` outcome view when annual DCAS outcomes are absent.
+
+## Exam fee / salary (NOE path)
+
+Fee and starting salary come **only** from the open-competitive Notice of
+Examination path (`site/data/exam_sources/dcas_open_competitive.json`), not the
+annual schedule table (`4ptz-hmtc` has no fee columns). Build retains NOE fields
+when an exam drops off the open snapshot but stays on the annual table
+(`retainNoeDetailFields`). Schedule-only nulls stamp
+`fee_salary_gap.class = not_yet_ingested` (class a); class b only if a linked
+NOE omits the field. UI: `examFeeSalaryView` + `career_fee_salary_not_yet_ingested_html`.
+Non-null field case: exam `7016` Caseworker fee `$68` / salary `$48,206`.
+Verify: `node --test test/exam_fee_salary.test.mjs test/deadline_exam_cards.test.mjs`.
 
 ## Digest watermark recovery (catch-up digests)
 
@@ -507,18 +554,24 @@ sets both false. Integration characterization: `node --test worker/test/er_inges
 Verify: `node --test worker/test/source_record_dual_write.test.mjs`.
 
 **Source-observation coverage (er-22 + Checkbook + Legistar):** machine-checked importer
-inventory and measured before/after coverage live in `entity_resolution/source_coverage.json`.
-PASSPort contracts/RFx use `PASSPORT_SOURCE_RECORD_DUAL_WRITE`; Checkbook Contracts and Spending
-request-time XML rows share `CHECKBOOK_SOURCE_RECORD_DUAL_WRITE` (fail-soft; Prime/Sub Vendor
-slices and payment documents keep distinct `source_system_id`s via
-`worker/src/lib/checkbook_source_records.mjs`). Legistar meeting materialization dual-writes
-Events/EventItems/Votes/Attachments under `LEGISTAR_SOURCE_RECORD_DUAL_WRITE`
-(`worker/src/lib/legistar_source_records.mjs`). Public reads do not consume the observations.
-NYCHA, ABO, doing-business, and NYCIDA streams remain inventory gaps. Metric:
-`source_coverage` covered/total (9/13 after Legistar dual-write). Verify:
+inventory and **live** row-count honesty live in `entity_resolution/source_coverage.json`.
+Adapter readiness (flag + fixture + schema) is tracked separately from production coverage.
+`dual_write.after` is one of `complete` / `partial` / `stale` / `empty-declared-live` / `gap`
+and **must** match measured `live_observation.row_count` — a stream with 0 rows must not report
+`complete`. Pure gate: `entity_resolution/evaluation/source_coverage_honesty.mjs` (emits
+coverage-dimension bug cards for empty-declared-live). PASSPort contracts/RFx use
+`PASSPORT_SOURCE_RECORD_DUAL_WRITE`; Checkbook Contracts and Spending request-time XML rows share
+`CHECKBOOK_SOURCE_RECORD_DUAL_WRITE` (fail-soft; Prime/Sub Vendor slices and payment documents
+keep distinct `source_system_id`s via `worker/src/lib/checkbook_source_records.mjs`). Legistar
+meeting materialization dual-writes Events/EventItems/Votes/Attachments under
+`LEGISTAR_SOURCE_RECORD_DUAL_WRITE` (`worker/src/lib/legistar_source_records.mjs`). Public reads
+do not consume the observations. Measured live (2026-08-01): Checkbook contracts+spending
+`complete` (non-zero rows); City Record `partial`; PASSPort + Legistar `empty-declared-live`
+(0 rows despite flags on); NYCHA, ABO, doing-business, NYCIDA `gap`. Named metric
+`source_coverage` = live complete/total (**2/13**). Verify:
 `node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json &&
-node --test worker/test/er_source_coverage.test.mjs worker/test/checkbook_source_records.test.mjs
-worker/test/legistar_source_records.test.mjs`.
+node --test test/source_coverage_honesty.test.mjs worker/test/er_source_coverage.test.mjs
+worker/test/checkbook_source_records.test.mjs worker/test/legistar_source_records.test.mjs`.
 
 **entity_link + resolution_run (er-07):** migration `worker/migrations/0009_entity_link.sql`
 (+ `canonical_entity` for link targets). Opt-in shadow writer only for exact-stem
@@ -708,6 +761,26 @@ is treated as a fetch failure (`looksLikeBotChallenge`), not an empty feed. Veri
 `node --test worker/test/nyc_rules.test.mjs worker/test/rules_event_spine.test.mjs
 test/rules_deadline_render.test.mjs worker/test/alert_temporal.test.mjs`.
 Captures: `python3 tools/capture_rule_event_spine.py` (before/after at 390 and 1440).
+
+## Multi-dimension improvement flywheel
+
+Standing MAPE loops under `ontology/` emit a ranked, deduplicated card queue (not a
+one-shot backlog). Dimensions: data-integrity, readability, ontology-enrichment,
+coverage, cross-source-consistency. Entrypoint:
+`node tools/flywheel-run.mjs --fixture --emit <dir>`. Idempotent ledger:
+`ontology/queue/ledger.json`. Consumer contract + schedule:
+[`docs/multi-flywheel.md`](docs/multi-flywheel.md). Verify:
+`./tools/verify_multi_flywheel.sh`. Hourly CI artifact: `multi-flywheel-queue`
+(`.github/workflows/multi-flywheel.yml`). Recurring classes append to
+`ontology/engineering-lessons.md`. Do not hand-author parallel metric-driven
+roadmap cards; re-run the flywheel after merges.
+
+**data-integrity core:** population **not-published-rate** credibility audit —
+for every “city does not publish X” register, sample recent + historical entries;
+~100% not-published with public-source evidence → broken-join / never-ingested /
+mislabeled red-flag card (not a polite class-(b) mask). Pure helpers:
+`ontology/dimensions/not_published_rate.mjs`; samples:
+`ontology/fixtures/dimensions/not_published_claim_samples.json`.
 
 ## Maintaining this file
 

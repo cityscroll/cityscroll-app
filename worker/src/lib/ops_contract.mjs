@@ -285,6 +285,12 @@ export const ADMIN_ROUTES = Object.freeze([
     description: "On-demand Council meeting-outcomes materialization and Legistar source_records dual-write (cron pipeline).",
   },
   {
+    path: "/admin/passport-ingest",
+    methods: ["POST"],
+    auth: "ADMIN_KEY",
+    description: "Rebuild PASSPort Public product tables and dual-write observations.",
+  },
+  {
     path: "/usage",
     methods: ["GET"],
     auth: "USAGE_KEY",

@@ -1,0 +1,176 @@
+{
+  "schema": "cityscroll.not_published_claim_samples.v0",
+  "method": "Population not-published-rate credibility audit: for each reader-facing 'city does not publish X' register, sample recent + historical product entries, compute rate = not_published / n, and flag ~100% rates when the real public source has data (broken join / never-ingested / mislabeled).",
+  "thresholds": {
+    "red_flag_rate": 0.95,
+    "suspicious_rate": 0.85,
+    "min_sample": 10
+  },
+  "generated_note": "Fixture samples grounded in production measurements (2026-08-01 demo integrity audit + gap taxonomy). Re-measure live in scheduled runs; replace sample counts when side-cars land.",
+  "claims": [
+    {
+      "id": "subsidy-field-company-place-money",
+      "field": "requested_benefit / estimated_public_cost",
+      "surface": "notice_detail.subsidy_lifecycle money slots",
+      "render": "site/index.html subsidy panel · subsidy_money_unknown_html",
+      "i18n_keys": ["subsidy_money_unknown_html", "subsidy_company_unknown_html", "subsidy_place_unknown_html"],
+      "gap_id": "subsidy-field-company-place-money",
+      "visibility": "high",
+      "would_appear_in": "Build NYC / NYCIDA project documents",
+      "public_source": "City Record SODA dg92-zbpx notice bodies; EDC project docs landing",
+      "sample": {
+        "recent": {
+          "size": 20,
+          "not_published": 20,
+          "entry_ids": ["20260617040", "20250227021", "202407*", "2025-ida-sample"]
+        },
+        "historical": {
+          "size": 20,
+          "not_published": 20,
+          "entry_ids": ["20220525018", "20231004016", "20240617012", "2022-2024-ida-sample"]
+        },
+        "non_null_examples": 0,
+        "public_source_has_data": true,
+        "public_source_evidence": "City Record notice 20220525018 body prints Total Project Cost $10,667,606 and $2,900,000; production /subsidy-lifecycle money fields null 0/40 IDA-ish notices (join method city-record-hearing, feed unavailable).",
+        "classification_hint": "mislabeled",
+        "fix": "Stop class-(b) money copy when feed_status=unavailable; parse Total Project Cost from City Record body or ingest durable Build NYC machine path.",
+        "verify": "node --test test/multi_flywheel_dimensions.test.mjs # not-published-rate:subsidy-field-company-place-money red_flag"
+      },
+      "demo_win": "Aged IDA notices show real project costs (or honest not-yet-ingested / source-unreachable copy) instead of a false 'city does not publish' money mask."
+    },
+    {
+      "id": "subsidy-stage-feed-backed",
+      "field": "board / closing / compliance stages",
+      "surface": "notice_detail.subsidy_lifecycle later stages",
+      "render": "subsidy_stage_not_published_html after lag",
+      "i18n_keys": ["subsidy_stage_not_published_html", "subsidy_outcome_unknown_html"],
+      "gap_id": "subsidy-outcome-absent",
+      "visibility": "high",
+      "sample": {
+        "recent": { "size": 15, "not_published": 15 },
+        "historical": { "size": 15, "not_published": 15 },
+        "non_null_examples": 0,
+        "public_source_has_data": true,
+        "public_source_evidence": "EDC board/hearings pages and cost-benefit packages are promised in hearing notices; production never attaches Build NYC project feed (feed_status unavailable). Taxonomy marks stage empties not_yet_ingested while UI says city does not publish.",
+        "classification_hint": "mislabeled",
+        "fix": "When feed_status=unavailable, label later stages source-unreachable / not-yet-ingested, not class-(b) withhold."
+      },
+      "demo_win": "Later subsidy stages only claim 'city does not publish' after a successful project-record join that still lacks the stage."
+    },
+    {
+      "id": "meeting-person-votes",
+      "field": "by_person roll-call votes",
+      "surface": "notice_detail.meeting_outcomes",
+      "render": "meeting outcomes roll-call (empty by_person)",
+      "i18n_keys": [],
+      "visibility": "high",
+      "public_source": "Legistar EventItems/{id}/Votes",
+      "sample": {
+        "recent": { "size": 8, "not_published": 8 },
+        "historical": { "size": 7, "not_published": 7 },
+        "non_null_examples": 0,
+        "public_source_has_data": true,
+        "public_source_evidence": "Legistar publishes person votes; production meeting-outcomes materialization 0/15 matched Council hearings with non-empty by_person (agenda outcomes do populate).",
+        "classification_hint": "never_ingested",
+        "fix": "Retain person-level votes in meeting-outcomes KV materialization or stop marketing person roll-call as live."
+      },
+      "demo_win": "Council hearings show named yes/no roll call when Legistar published votes for the event."
+    },
+    {
+      "id": "procurement-solicitation-documents",
+      "field": "package document URLs",
+      "surface": "contract lifecycle · tender documents",
+      "render": "lifecycle_documents_not_published_html",
+      "i18n_keys": ["lifecycle_documents_not_published_html"],
+      "gap_id": "procurement-solicitation-documents",
+      "visibility": "medium",
+      "sample": {
+        "recent": { "size": 25, "not_published": 25 },
+        "historical": { "size": 25, "not_published": 25 },
+        "non_null_examples": 0,
+        "public_source_has_data": false,
+        "public_source_evidence": "Measured 2026-07-30: PASSPort public_rfx_data has no document URL columns; OCP document_links 0% modern; class-(b) keep.",
+        "classification_hint": "genuinely_withheld"
+      },
+      "demo_win": "Honest class-(b) package-doc copy remains when no joinable open feed exists."
+    },
+    {
+      "id": "meeting-community-board-votes",
+      "field": "non-Council hearing votes",
+      "surface": "non-Council hearings · votes",
+      "render": "meeting_outcomes_non_council_not_published_html",
+      "i18n_keys": ["meeting_outcomes_non_council_not_published_html"],
+      "gap_id": "meeting-community-board-votes",
+      "visibility": "medium",
+      "sample": {
+        "recent": { "size": 20, "not_published": 20 },
+        "historical": { "size": 20, "not_published": 20 },
+        "non_null_examples": 0,
+        "public_source_has_data": false,
+        "public_source_evidence": "Measured 2026-07-30: 40/40 non-Council public hearings unmatched; no citywide open vote feed.",
+        "classification_hint": "genuinely_withheld"
+      }
+    },
+    {
+      "id": "exam-outcome-individual",
+      "field": "per-applicant exam results",
+      "surface": "staffing exams",
+      "gap_id": "exam-outcome-individual",
+      "visibility": "low",
+      "sample": {
+        "recent": { "size": 30, "not_published": 30 },
+        "historical": { "size": 30, "not_published": 30 },
+        "non_null_examples": 0,
+        "public_source_has_data": false,
+        "public_source_evidence": "Privacy: product deliberately retains exam-level aggregates only; individual results are not public open data.",
+        "classification_hint": "genuinely_withheld"
+      }
+    },
+    {
+      "id": "lifecycle-checkbook-payments-healthy",
+      "field": "spent_to_date / payment_state",
+      "surface": "follow_the_dollars",
+      "render": "payments card + #follow-the-dollars",
+      "i18n_keys": [],
+      "visibility": "high",
+      "sample": {
+        "recent": { "size": 15, "not_published": 2 },
+        "historical": { "size": 15, "not_published": 1 },
+        "non_null_examples": 27,
+        "public_source_has_data": true,
+        "public_source_evidence": "Checkbook Spending joins live; multiple demo notices show paid amounts.",
+        "classification_hint": "healthy"
+      }
+    },
+    {
+      "id": "exam-aggregate-outcomes-healthy",
+      "field": "list_establishment / hire_count aggregates",
+      "surface": "staffing exam outcomes",
+      "visibility": "medium",
+      "sample": {
+        "recent": { "size": 12, "not_published": 3 },
+        "historical": { "size": 12, "not_published": 2 },
+        "non_null_examples": 19,
+        "public_source_has_data": true,
+        "public_source_evidence": "Build-time dcas_exam_outcomes artifact joins exam 6125 with non-null aggregates.",
+        "classification_hint": "healthy"
+      }
+    },
+    {
+      "id": "procurement-no-pin",
+      "field": "PIN on notice",
+      "surface": "contract lifecycle provenance",
+      "i18n_keys": ["lifecycle_no_pin_note_html"],
+      "gap_id": "procurement-no-pin",
+      "visibility": "medium",
+      "sample": {
+        "recent": { "size": 25, "not_published": 8 },
+        "historical": { "size": 25, "not_published": 10 },
+        "non_null_examples": 32,
+        "public_source_has_data": true,
+        "public_source_evidence": "Many notices publish PIN; class-(b) only when City Record omits pin — not a 100% mask.",
+        "classification_hint": "healthy"
+      }
+    }
+  ]
+}
