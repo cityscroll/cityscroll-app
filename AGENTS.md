@@ -802,6 +802,18 @@ coverage, cross-source-consistency. Entrypoint:
 `ontology/engineering-lessons.md`. Do not hand-author parallel metric-driven
 roadmap cards; re-run the flywheel after merges.
 
+**Actionability sample (honesty):** `actionability_rate_sample` is the **deep**
+destination-class rate over a committed handoff sample — not
+`ACTION_TYPES.length` (that always yielded rate=1 and could not police
+search-page / landing / unavailable gaps). Classes: `deep` / `scoped_search` /
+`search_page` / `landing` / `unavailable` / `local` / `unknown`. Pure lib:
+`ontology/actionability_sample.mjs`; fixture:
+`ontology/fixtures/dimensions/actionability_sample.json` (primary kinetic
+`compileActionRail` rows + static lifecycle handoff URLs). Named metric rate =
+deep / sample_size; deep rate < 0.5 emits `actionability-low`. Verify:
+`node --test test/actionability_sample.test.mjs` and
+`./tools/verify_ontology_flywheel.sh`.
+
 **data-integrity core:** population **not-published-rate** credibility audit —
 for every “city does not publish X” register, sample recent + historical entries;
 ~100% not-published with public-source evidence → broken-join / never-ingested /
