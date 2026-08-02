@@ -108,13 +108,29 @@ test("flag on adds stable immutable observations and repeat ingest does not dupl
     const before = currentRows(sqlite);
 
     const env = { DB, PASSPORT_SOURCE_RECORD_DUAL_WRITE: "true" };
-    await ingestPassportPublic(env);
+    const result = await ingestPassportPublic(env);
     const after = currentRows(sqlite);
     assert.deepEqual(after, before);
+
+    // Ingest path dual-write stamps operator telemetry and leaves source_records rows.
+    assert.equal(result.ok, true);
+    assert.ok(result.dual_write?.contracts >= 1, `contracts dual-write=${result.dual_write?.contracts}`);
+    assert.ok(result.dual_write?.rfx >= 1, `rfx dual-write=${result.dual_write?.rfx}`);
 
     const first = sqlite.prepare("SELECT source_system, source_system_id, content_hash FROM source_records ORDER BY source_system").all();
     assert.equal(first.length, 2);
     assert.deepEqual(first.map((row) => row.source_system), ["passport_public_contracts", "passport_public_rfx"]);
+    // Named metric: row_count > 0 is what moves passport streams out of empty-declared-live.
+    assert.ok(
+      sqlite.prepare(
+        "SELECT COUNT(*) AS n FROM source_records WHERE source_system = 'passport_public_contracts'",
+      ).get().n > 0,
+    );
+    assert.ok(
+      sqlite.prepare(
+        "SELECT COUNT(*) AS n FROM source_records WHERE source_system = 'passport_public_rfx'",
+      ).get().n > 0,
+    );
 
     await ingestPassportPublic(env);
     const replay = sqlite.prepare("SELECT source_system, source_system_id, content_hash FROM source_records ORDER BY source_system").all();

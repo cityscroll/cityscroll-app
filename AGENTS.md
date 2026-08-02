@@ -873,10 +873,12 @@ coverage-dimension bug cards for empty-declared-live). PASSPort contracts/RFx us
 keep distinct `source_system_id`s via `worker/src/lib/checkbook_source_records.mjs`). Legistar
 meeting materialization dual-writes Events/EventItems/Votes/Attachments under
 `LEGISTAR_SOURCE_RECORD_DUAL_WRITE` (`worker/src/lib/legistar_source_records.mjs`). Public reads
-do not consume the observations. Measured live (2026-08-01): Checkbook contracts+spending
-`complete` (non-zero rows); City Record `partial`; PASSPort + Legistar `empty-declared-live`
-(0 rows despite flags on); NYCHA, ABO, doing-business, NYCIDA `gap`. Named metric
-`source_coverage` = live complete/total (**2/13**). Verify:
+do not consume the observations. Measured live (2026-08-02): Checkbook contracts+spending
+`complete`; PASSPort contracts+RFx `complete` (ingest dual-write); Legistar events/items/votes
+`complete` (meeting-outcomes dual-write); Legistar attachments `empty-declared-live` (nested
+Attachments bag empty — Agenda/Minutes live on Events); City Record `partial`; NYCHA, ABO,
+doing-business, NYCIDA `gap`. Named metric `source_coverage` = live complete/total (**7/13**).
+Verify:
 `node tools/check_er_source_coverage.mjs --matrix entity_resolution/source_coverage.json &&
 node --test test/source_coverage_honesty.test.mjs worker/test/er_source_coverage.test.mjs
 worker/test/checkbook_source_records.test.mjs worker/test/legistar_source_records.test.mjs`.
