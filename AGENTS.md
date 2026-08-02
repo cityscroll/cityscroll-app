@@ -601,12 +601,30 @@ is the idempotency key. This lets a late Rules/Legistar enrichment notify once w
 republish sending twice. Contract: `docs/digest-time-ontology.md`; characterization:
 `node --test worker/test/alert_temporal.test.mjs`.
 
-## Non-Council hearing outcomes (copy)
+## Non-Council hearing outcomes (process spine)
 
-Non-Council unmatched slots use class-(b) copy naming borough president websites
-and community board minutes pages (`meeting_outcomes_non_council_*`). Council
-notices keep Legistar class-(a) unmatched copy. Detection: `isCityCouncilNotice`
-on `agency_name`.
+Non-Council hearings reconstruct **notice_published → hearing → outcome →
+minutes** as a process spine (same chain presentation as property/exam/franchise).
+Pure builder: `site/non_council_hearing_spine.mjs` (re-export
+`worker/src/lib/non_council_hearing_spine.mjs`). UI:
+`nonCouncilHearingOutcomesHTML` on unmatched non-Council meeting-outcomes.
+
+- **Fillable from City Record:** notice publication (`start_date`) and hearing
+  (`event_date`) when present.
+- **Structural class-(b):** outcome/votes and minutes — no citywide machine
+  feed; never invent votes. Gap slots use
+  `meeting_outcomes_non_council_not_published_html` with real HTTPS landings via
+  `nonCouncilWhereHTML` / `nonCouncilBodyLinks` (agency-mapped BP when known +
+  CB directory) — never text-only "where".
+- **Council path unchanged:** Legistar agenda→matter→action→vote→attachment.
+  Detection: `isCityCouncilNotice` on `agency_name`.
+- Civic-time kinds (library-only): `meetings.non_council_notice` /
+  `meetings.non_council_hearing` + `mapNonCouncilHearingSpineToCivic` (matched
+  stages only). Metric: `non_council_hearing_spine_completeness_rate` (mean
+  **fillable_rate** over eligible spines; outcome/minutes excluded from
+  fillable).
+- Verify: `node --test test/non_council_hearing_spine.test.mjs
+  test/meeting_view_readability.test.mjs test/gap_taxonomy.test.mjs`.
 
 ## Digest rollup + preference center
 

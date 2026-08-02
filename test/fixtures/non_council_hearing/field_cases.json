@@ -1,0 +1,40 @@
+{
+  "notices": [
+    {
+      "request_id": "20260701001",
+      "start_date": "2026-06-20",
+      "event_date": "2026-07-01",
+      "agency_name": "Manhattan Borough President",
+      "section_name": "Public Hearings and Meetings",
+      "type_of_notice_description": "Public Hearings",
+      "short_title": "Manhattan Borough President public hearing on ULURP application C 240001 ZMM"
+    },
+    {
+      "request_id": "20260515012",
+      "start_date": "2026-05-10",
+      "event_date": "2026-05-15",
+      "agency_name": "Community Boards",
+      "section_name": "Public Hearings and Meetings",
+      "type_of_notice_description": "Meeting",
+      "short_title": "Community Board public hearing — land use calendar"
+    },
+    {
+      "request_id": "20260401099",
+      "start_date": "2026-03-28",
+      "event_date": null,
+      "agency_name": "Queens Borough President",
+      "section_name": "Public Hearings and Meetings",
+      "type_of_notice_description": "Public Hearings",
+      "short_title": "Queens Borough President hearing notice without scheduled event date"
+    },
+    {
+      "request_id": "council-hearing-exclude",
+      "start_date": "2026-07-14",
+      "event_date": "2026-07-14",
+      "agency_name": "City Council",
+      "section_name": "Public Hearings and Meetings",
+      "type_of_notice_description": "Public Hearings",
+      "short_title": "City Council Zoning and Franchises Subcommittee hearing"
+    }
+  ]
+}

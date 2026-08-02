@@ -33,6 +33,7 @@ function extractFn(name) {
 const windowStub = { LANG: "en", LANG_META: { en: { intlDate: "en-US" } } };
 const { t } = new Function("window", i18nSrc + "\nreturn { t: window.t };")(windowStub);
 function fdate(s) { return s ? String(s).slice(0, 10) : ""; }
+function cleanText(s) { return String(s || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim(); }
 function escUiHtml(s) {
   return String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
@@ -43,8 +44,9 @@ const {
   meetingOutcomesHTML,
   matterDetailUrl,
   nonCouncilWhereHTML,
+  nonCouncilHearingOutcomesHTML,
 } = new Function(
-  "t", "fdate", "escUiHtml",
+  "t", "fdate", "cleanText", "escUiHtml",
   `
   const extSR = () => '<span class="sr-only"> (opens in new tab)</span>';
   const EXT_ATTRS = 'target="_blank" rel="noopener noreferrer"';
@@ -54,12 +56,14 @@ const {
   extractFn("matterDetailUrl") +
   extractFn("nonCouncilBodyLinks") +
   extractFn("nonCouncilWhereHTML") +
+  extractFn("nonCouncilStageLabel") +
+  extractFn("nonCouncilHearingOutcomesHTML") +
   extractFn("collapseMeetingAgenda") +
   extractFn("meetingVotesHTML") +
   extractFn("isCityCouncilNotice") +
   extractFn("meetingOutcomesHTML") +
-  `return { meetingOutcomeBucket, collapseMeetingAgenda, meetingOutcomesHTML, matterDetailUrl, nonCouncilWhereHTML };`,
-)(t, fdate, escUiHtml);
+  `return { meetingOutcomeBucket, collapseMeetingAgenda, meetingOutcomesHTML, matterDetailUrl, nonCouncilWhereHTML, nonCouncilHearingOutcomesHTML };`,
+)(t, fdate, cleanText, escUiHtml);
 
 test("outcome bucket maps approve / hold / refer", () => {
   assert.equal(meetingOutcomeBucket("Approved by Subcommittee"), "approved");
@@ -193,11 +197,37 @@ test("matterDetailUrl only accepts numeric Legistar MatterIds", () => {
 test("non-Council unmatched outcomes render real HTTPS landings", () => {
   const html = meetingOutcomesHTML(
     { join: { matched: false } },
-    { agency_name: "Manhattan Borough President", section_name: "Public Hearings and Meetings" },
+    {
+      request_id: "20260701001",
+      start_date: "2026-06-20",
+      event_date: "2026-07-01",
+      agency_name: "Manhattan Borough President",
+      section_name: "Public Hearings and Meetings",
+      short_title: "Manhattan Borough President public hearing",
+    },
   );
   assert.match(html, /manhattanbp\.nyc\.gov/);
   assert.match(html, /community-boards/);
   assert.match(html, /href="https:\/\//);
   // No longer a bare text-only "where" with zero outbound
   assert.doesNotMatch(html, /where: t\("meeting_outcomes_non_council_where"\)/);
+  // Process spine: notice → hearing → outcome → minutes with chain presentation
+  assert.match(html, /data-non-council-spine="1"/);
+  assert.match(html, /class="chain"/);
+  assert.match(html, /aria-hidden="true"/); // connectors are decorative
+  assert.match(html, /data-gap-class="not_published"/);
+  assert.equal((html.match(/data-gap-class="not_published"/g) || []).length, 2);
+});
+
+test("nonCouncilHearingOutcomesHTML fills notice+hearing dates when present", () => {
+  const html = nonCouncilHearingOutcomesHTML({
+    request_id: "20260701001",
+    start_date: "2026-06-20",
+    event_date: "2026-07-01",
+    agency_name: "Manhattan Borough President",
+    short_title: "ULURP hearing",
+  });
+  assert.match(html, /2026-06-20|06\/20\/2026|Jun/); // fdate stub is ISO slice
+  assert.match(html, /2026-07-01/);
+  assert.match(html, /Notice published|Hearing|Outcome|Minutes/i);
 });
