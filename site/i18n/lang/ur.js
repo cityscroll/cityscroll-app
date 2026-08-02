@@ -978,6 +978,7 @@
     subsidy_feed_unavailable_html: "مکمل سبسڈی پروجیکٹ ریکارڈ کے لیے {source} تک رسائی نہ ہو سکی — نیچے سماعت کی تفصیلات City Record نوٹس سے ہیں۔",
     subsidy_money_matched_html: "{field}: <b>{amount}</b>۔",
     subsidy_money_matched_city_record_html: "{field}: <b>{amount}</b> (City Record سماعت نوٹس سے)۔",
+    subsidy_place_matched_html: "مقام: <b>{address}</b>۔",
     subsidy_money_requested_lbl: "درخواست شدہ فائدہ",
     subsidy_money_estimated_lbl: "تخمینی عوامی لاگت",
     subsidy_money_total_project_cost_lbl: "کل پروجیکٹ لاگت",

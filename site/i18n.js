@@ -1359,6 +1359,7 @@ const STRINGS = {
     subsidy_feed_unavailable_html: "Could not reach {source} for the full subsidy project record — hearing details below are from the City Record notice.",
     subsidy_money_matched_html: "{field}: <b>{amount}</b>.",
     subsidy_money_matched_city_record_html: "{field}: <b>{amount}</b> (from the City Record hearing notice).",
+    subsidy_place_matched_html: "Place: <b>{address}</b>.",
     subsidy_money_requested_lbl: "requested benefit",
     subsidy_money_estimated_lbl: "estimated public cost",
     subsidy_money_total_project_cost_lbl: "total project cost",

@@ -157,6 +157,94 @@ function milestoneTitle(entry) {
 }
 
 /**
+ * Short matched place for the subsidy lead (never a body dump).
+ * Prefer place.address, then first addresses[], then boroughs join.
+ * @param {object|null|undefined} place
+ * @returns {string|null}
+ */
+export function shortPlaceFromSubsidy(place) {
+  if (!place || place.status !== "matched") return null;
+  let addr = clean(place.address || "");
+  if (!addr && Array.isArray(place.addresses) && place.addresses.length) {
+    addr = clean(place.addresses[0]);
+  }
+  if (!addr && Array.isArray(place.boroughs) && place.boroughs.length) {
+    addr = place.boroughs.map(clean).filter(Boolean).join(", ") || null;
+  }
+  if (!addr) return null;
+  // Body dumps / hearing boilerplate are not places.
+  if (/SUPPLEMENTAL NOTICE|will hold a public hearing/i.test(addr)) return null;
+  // Cap length for lead chrome; keep street + borough when possible.
+  if (addr.length > 120) {
+    const cut = addr.slice(0, 120);
+    const m =
+      cut.match(/^(.+?),\s*(?:New York|NY)\b/i) ||
+      cut.match(/^(.+?)(?:\s+to be used|\s+[—–-]|\s*\()/i);
+    addr = m ? clean(m[1]) : clean(cut.replace(/\s+\S*$/, "")) || cut.slice(0, 100);
+    if (addr && addr.length >= 118) addr = `${addr.slice(0, 117)}…`;
+  }
+  return addr || null;
+}
+
+/**
+ * Preferred matched dollar slot on a subsidy money object (project or development
+ * cost). Walks values so callers do not need the internal slot key on the PR surface.
+ * @param {object|null|undefined} money
+ * @returns {{ value: number, field: string|null, source: string|null }|null}
+ */
+export function preferredMatchedCost(money) {
+  if (!money || typeof money !== "object") return null;
+  for (const v of Object.values(money)) {
+    if (!v || typeof v !== "object") continue;
+    if (v.status !== "matched" || v.value == null || !Number.isFinite(+v.value)) continue;
+    if (v.field === "total_project_cost" || v.field === "total_development_cost") {
+      return {
+        value: +v.value,
+        field: v.field || null,
+        source: v.source || null,
+      };
+    }
+  }
+  // Scalar fallbacks when the structured slot is absent but totals shipped.
+  if (money.total_project_cost != null && Number.isFinite(+money.total_project_cost)) {
+    return {
+      value: +money.total_project_cost,
+      field: "total_project_cost",
+      source: null,
+    };
+  }
+  if (money.total_development_cost != null && Number.isFinite(+money.total_development_cost)) {
+    return {
+      value: +money.total_development_cost,
+      field: "total_development_cost",
+      source: null,
+    };
+  }
+  return null;
+}
+
+/**
+ * Kinetic matched facts for first-paint lead (money + short place).
+ * Only surfaces fields that are actually matched — never invents.
+ * @param {object|null|undefined} data
+ */
+export function matchedSubsidyFacts(data) {
+  const join = data?.join || {};
+  if (!join.matched) {
+    return { project_cost: null, place_address: null, company: null };
+  }
+  const company =
+    data?.company?.status === "matched" && clean(data.company.value)
+      ? clean(data.company.value)
+      : clean(data?.project?.company) || null;
+  return {
+    project_cost: preferredMatchedCost(data?.money),
+    place_address: shortPlaceFromSubsidy(data?.place),
+    company,
+  };
+}
+
+/**
  * Build phase-grouped subsidy lifecycle view model.
  *
  * @param {object|null|undefined} data - assembleSubsidyLifecycle payload
@@ -293,6 +381,8 @@ export function buildSubsidyPhaseView(data, opts = {}) {
     ? currentEntry
     : raw.find((e) => e && e.stage === stageKey) || currentEntry;
 
+  const facts = matchedSubsidyFacts(data);
+
   return {
     schema_version: SUBSIDY_PHASE_SPINE_SCHEMA_VERSION,
     current: {
@@ -320,5 +410,7 @@ export function buildSubsidyPhaseView(data, opts = {}) {
     stage: data?.stage || currentPhaseId,
     project: data?.project || null,
     company: data?.company || null,
+    // First-paint kinetic facts (money + short place) — UI lead, not footnotes.
+    matched_facts: facts,
   };
 }
