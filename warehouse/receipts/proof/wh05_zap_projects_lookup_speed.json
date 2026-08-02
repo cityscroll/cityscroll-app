@@ -1,0 +1,49 @@
+{
+  "phase": "WH-05",
+  "measured_at": "2026-08-02T10:32:30.722Z",
+  "replaces_live_fetch": {
+    "function": "fetchOpenDataRow",
+    "soda_dataset": "hgx4-8ukb",
+    "note": "Previous live path in zap_outcomes.mjs#fetchOpenDataRow"
+  },
+  "materialization": {
+    "row_count": 15,
+    "probe_project_id": "2024Q0135"
+  },
+  "edge_materialization_lookup": {
+    "samples_ms": [
+      0.013,
+      0.0008,
+      0.0005,
+      0.0005,
+      0.0007
+    ],
+    "p50_ms": 0.0002,
+    "mean_ms": 0.0005,
+    "n": 50,
+    "note": "Worker hot path after warehouse materialization import"
+  },
+  "warehouse_duckdb_lookup": {
+    "samples_ms": [
+      64.254,
+      62.977,
+      63.483,
+      63.175,
+      63.812
+    ],
+    "p50_ms": 63.483,
+    "mean_ms": 63.54,
+    "n": 5
+  },
+  "prior_live_soda": {
+    "samples_ms": [
+      187.45,
+      120.53,
+      141.82
+    ],
+    "p50_ms": 141.82,
+    "mean_ms": 149.93,
+    "n": 3
+  },
+  "summary": "ZAP open_data lookup p50: live SODA 141.82ms → warehouse materialization 0.0002ms (sub-ms; removes a SODA RTT)"
+}

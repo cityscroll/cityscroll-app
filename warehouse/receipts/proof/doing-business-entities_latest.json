@@ -1,0 +1,63 @@
+{
+  "bulk": false,
+  "cpu_discipline": {
+    "duckdb_threads": 1,
+    "headroom_gated": true,
+    "sequential_one_dataset": true,
+    "single_job_lock": true,
+    "taskpolicy_or_nice_wrap": true
+  },
+  "dataset_id": "doing-business-entities",
+  "headroom": {
+    "constrained": false,
+    "ok": true,
+    "problems": [],
+    "returncode": 0,
+    "status": "ok"
+  },
+  "limit": 5,
+  "observed_at": "2026-08-02T10:32:29Z",
+  "parquet": {
+    "bytes": 1009,
+    "column_map_applied": false,
+    "column_map_size": 0,
+    "columns": [
+      "organization_name",
+      "ownership_structure_code",
+      "organization_phone",
+      "doing_business_start_date",
+      "snapshot_date"
+    ],
+    "parquet_path": "warehouse/parquet/doing-business-entities/snapshot_date=fixture/part-000.parquet",
+    "row_count": 3,
+    "threads": 1
+  },
+  "phase": "WH-01",
+  "raw": {
+    "bytes": 217,
+    "mode": "fixture",
+    "path": "warehouse/raw/doing-business-entities/snapshot_date=fixture/sample.csv",
+    "row_count": 3,
+    "sha256": "133d93a4bbef37bc6eea27c6f5b2ae85270ce1b01c2e89a65b368d30b9ddca28",
+    "source": "warehouse/fixtures/doing-business-entities/sample.csv"
+  },
+  "register": {
+    "catalog": "warehouse/duckdb/cityscroll.duckdb",
+    "columns": [
+      "organization_name",
+      "ownership_structure_code",
+      "organization_phone",
+      "doing_business_start_date",
+      "snapshot_date"
+    ],
+    "parquet_glob": "warehouse/parquet/doing-business-entities/snapshot_date=fixture/*.parquet",
+    "row_count": 3,
+    "table": "doing_business_entities"
+  },
+  "schema_version": 1,
+  "snapshot_date": "fixture",
+  "socrata_dataset_id": "72mk-a8z7",
+  "source_contract_id": "doing-business-entities",
+  "table_name": "doing_business_entities",
+  "warehouse_root": "warehouse"
+}

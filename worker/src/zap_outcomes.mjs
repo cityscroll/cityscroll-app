@@ -17,6 +17,7 @@ import {
   outcomeIsFilled,
 } from "./lib/zap_outcomes.mjs";
 import { extractUlurpKeys } from "./lib/ulurp_recommendations_join.mjs";
+import { lookupZapProjectFromWarehouseMaterialization } from "./lib/zap_projects_warehouse_lookup.mjs";
 // Do not static-import admin.mjs here: it pulls alerts.mjs → @jimdc/sendcap, and
 // test/land_event_spine.test.mjs imports buildZapOutcomeRecord from this module
 // during site unit tests (before worker npm ci). Auth is loaded only on the admin path.
@@ -334,13 +335,20 @@ async function fetchJson(url, timeoutMs = 12000) {
 }
 
 async function fetchOpenDataRow(projectId) {
+  // WH-05: warehouse materialization first (no network); live SODA on miss.
+  const wh = lookupZapProjectFromWarehouseMaterialization(projectId);
+  if (wh.hit && wh.row) {
+    return { ...wh.row, lookup_path: "warehouse" };
+  }
+
   const where = `project_id='${String(projectId).replace(/'/g, "''")}'`;
   const url =
     `${SODA}/hgx4-8ukb.json?$select=project_id,project_name,public_status,project_status,`
     + `approval_date,completed_date,ulurp_numbers,borough,community_district,actions,current_milestone,current_milestone_date`
     + `&$where=${encodeURIComponent(where)}&$limit=1`;
   const rows = await fetchJson(url);
-  return Array.isArray(rows) && rows[0] ? rows[0] : { project_id: projectId };
+  const row = Array.isArray(rows) && rows[0] ? rows[0] : { project_id: projectId };
+  return { ...row, lookup_path: "soda" };
 }
 
 async function fetchCityRecordCandidates(openData, projectName) {

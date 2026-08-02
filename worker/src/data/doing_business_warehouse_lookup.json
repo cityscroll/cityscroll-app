@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "phase": "WH-05",
+  "source": "warehouse",
+  "dataset_id": "72mk-a8z7",
+  "table_name": "doing_business_entities",
+  "mode": "fixture_warehouse",
+  "materialized_at": "2026-08-02T10:32:29.849Z",
+  "row_count": 5,
+  "replaces_live_fetch": {
+    "worker": "worker/src/vendor_profile.mjs#attachDoingBusiness",
+    "soda_dataset": "72mk-a8z7",
+    "description": "Doing Business Search Entities attach on daily vendor-profile refresh — warehouse materialization first, live multi-page SODA when materialization empty"
+  },
+  "rows": [
+    {
+      "organization_name": "ACME WIDGETS INC",
+      "ownership_structure_code": "COR",
+      "organization_phone": "5550100",
+      "doing_business_start_date": "0010-01-15 00:00:00"
+    },
+    {
+      "organization_name": "CAMBA  INC",
+      "ownership_structure_code": "COR",
+      "organization_phone": "7182872600",
+      "doing_business_start_date": "0009-05-16 00:00:00"
+    },
+    {
+      "organization_name": "Sinergia Inc",
+      "ownership_structure_code": "LLC",
+      "organization_phone": "2125550101",
+      "doing_business_start_date": "0008-06-01 00:00:00"
+    },
+    {
+      "organization_name": "Make it Zesty LLC",
+      "ownership_structure_code": "LLC",
+      "organization_phone": "2125550199",
+      "doing_business_start_date": "0018-03-01"
+    },
+    {
+      "organization_name": "Child Development Center - Mosholu Montefiore Community Center",
+      "ownership_structure_code": "COR",
+      "organization_phone": "7185550100",
+      "doing_business_start_date": "0005-01-01"
+    }
+  ]
+}

@@ -12,6 +12,12 @@
   the ER batch can show cross-table vendor_stem hits without packing
   `72mk-a8z7`. Synthetic only; phone column is unformatted `55501xx` placeholders
   (not real contacts; not measured from Socrata `72mk-a8z7`).
+- `doing-business-entities/sample.csv` + `product_seed.csv` — WH-05 fixture pack
+  and product demos (includes public CAMBA field-case shape used by vendor-profile
+  characterization). Full `72mk-a8z7` bulk stays local via capped WH-02 runner.
+- `zap-projects/sample.csv` + `product_seed.csv` — WH-05 fixture pack and Active
+  ULURP list-field rows taken from the committed `land_default_ulurp.json`
+  snapshot (public Open Data fields only). Full `hgx4-8ukb` bulk via WH-02 queue.
 - `bulk_sample.csv` (local only, gitignored) — optional slice from `--write-sample`
   after a bulk run; not committed. Full bulk stays under `warehouse/raw/` /
   `CITYSCROLL_WAREHOUSE_ROOT`; checksums live in

@@ -1,0 +1,33 @@
+{
+  "phase": "WH-05",
+  "measured_at": "2026-08-02T10:32:29.856Z",
+  "replaces_live_fetch": {
+    "function": "attachDoingBusiness",
+    "soda_dataset": "72mk-a8z7",
+    "note": "Previous live path paged the full Doing Business catalog via SODA"
+  },
+  "materialization": {
+    "row_count": 5,
+    "probe_organization": "ACME WIDGETS INC"
+  },
+  "edge_materialization_lookup": {
+    "samples_ms": [
+      0.014,
+      0.0025,
+      0.0033,
+      0.0015,
+      0.0013
+    ],
+    "p50_ms": 0.0005,
+    "mean_ms": 0.0064,
+    "n": 50,
+    "note": "Worker hot path after warehouse materialization import (stem index)"
+  },
+  "prior_live_soda_estimate": {
+    "page_size": 5000,
+    "pages": 3,
+    "estimated_p50_ms": 540,
+    "note": "Multi-page catalog fetch before stem join; not a single keyed SODA"
+  },
+  "summary": "Doing Business attach p50: live multi-page SODA ~540ms → warehouse materialization 0.0005ms (sub-ms; removes catalog SODA RTTs)"
+}

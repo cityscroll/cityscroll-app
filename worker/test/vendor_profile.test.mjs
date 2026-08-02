@@ -132,8 +132,10 @@ test("cron refresh writes versioned buckets before publishing the manifest", asy
   assert.equal(result.profiles, 1);
   assert.equal(result.buckets, 1);
   assert.equal(result.cronCost.socrataRequestsBefore, 1);
-  assert.equal(result.cronCost.socrataRequestsAfter, 3);
-  assert.equal(result.cronCost.doingBusinessRequests, 1);
+  // WH-05: Doing Business comes from warehouse materialization (0 SODA catalog pages)
+  // when the committed snapshot includes the vendor stem (CAMBA product seed).
+  assert.equal(result.cronCost.doingBusinessRequests, 0);
+  assert.equal(result.cronCost.socrataRequestsAfter, 2);
   assert.equal(result.included.recentNotices, 15);
   assert.equal(result.included.forecasts, 1);
   assert.equal(result.included.doingBusiness, 1);

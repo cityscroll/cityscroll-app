@@ -63,9 +63,26 @@ node tools/build_ocp_warehouse_lookup.mjs --fixture --bench
 # receipt: warehouse/receipts/proof/wh03_ocp_lookup_speed.json
 ```
 
+**WH-05 more warehouse lookups (batch-precompute via warehouse):** same pattern
+for the next BATCHABLE live-fetch shortlist items the lake covers:
+
+| Live fetch | Materialization | Miss fallback |
+|---|---|---|
+| `attachDoingBusiness` (`72mk-a8z7` multi-page) | `site/data/doing_business_warehouse_lookup.json` | Live SODA when empty/partial |
+| `fetchOpenDataRow` (`hgx4-8ukb`) | `site/data/zap_projects_warehouse_lookup.json` | Live SODA per project_id |
+| Land default rebuild | DuckDB `zap_projects` when packed | Live SODA Active ULURP 40 |
+
+```bash
+node tools/build_doing_business_warehouse_lookup.mjs --fixture --bench
+node tools/build_zap_projects_warehouse_lookup.mjs --fixture --bench
+# receipts: warehouse/receipts/proof/wh05_*_lookup_speed.json
+node --test test/warehouse_wh05_lookups.test.mjs worker/test/wh05_warehouse_lookups.test.mjs
+```
+
 **Remaining bulk (sequential, only if headroom green):** `zap-projects`
 (`hgx4-8ukb`) → `zap-bbl` (`2iga-a6mk`) → `city-record` (`dg92-zbpx`). Optional
-later: `doing-business-entities`. Query seam: `warehouse/lib/query.mjs` /
+later: `doing-business-entities` (small ~11k; enables full-catalog WH-05 attach
+with zero SODA pages). Query seam: `warehouse/lib/query.mjs` /
 `warehouse/scripts/query.py`. Details: `warehouse/README.md`.
 
 ## Warehouse batch ER (WH-04)

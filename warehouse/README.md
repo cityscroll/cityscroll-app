@@ -1,4 +1,4 @@
-# CityScroll data warehouse (WH-01…WH-04)
+# CityScroll data warehouse (WH-01…WH-05)
 
 DuckDB + parquet lake **inside this repo**, for offline ownership of NYC bulk
 sources and batch joins. Public browser routes stay **precompute-first** — the
@@ -141,6 +141,8 @@ the MacBook.
 - **Python:** `warehouse/scripts/query.py`
 - **Node:** `warehouse/lib/query.mjs` → `queryWarehouse(sql)` / `exampleOcpAwardCount()`
 - **OCP lookup:** `warehouse/lib/ocp_lookup.mjs` → `lookupOcpAwardRowsFromWarehouse`
+- **Doing Business lookup (WH-05):** `warehouse/lib/doing_business_lookup.mjs`
+- **ZAP projects lookup (WH-05):** `warehouse/lib/zap_projects_lookup.mjs`
 - **SQL examples:** `warehouse/sql/examples/`
 
 This is **not** edge ad-hoc SQL. Worker routes keep serving precomputed read
@@ -233,14 +235,44 @@ reimplemented in SQL.
 | **WH-02** | First bulk export(s) via capped runner — OCP first; ZAP / City Record sequential next |
 | **WH-03** | Materialize warehouse OCP → replace live SODA in `fetchOcpAwardRows` (+ live miss fallback) |
 | **WH-03b** (follow-on) | ZAP outcomes prewarm once `zap-projects` bulk is loaded |
-| **WH-04** (this pack) | Batch ER over warehouse → `er_entity_link` parquet + SQL views |
+| **WH-04** | Batch ER over warehouse → `er_entity_link` parquet + SQL views |
+| **WH-05** (this pack) | Materialize Doing Business + ZAP projects → replace more live SODA (+ miss fallback) |
+
+## WH-05: more live fetches → warehouse materialization
+
+Extends the WH-03 pattern to the next BATCHABLE shortlist surfaces that map to
+warehouse-registered datasets (`doing-business-entities`, `zap-projects`):
+
+| Live fetch replaced | Path now |
+|---|---|
+| `attachDoingBusiness` multi-page SODA `72mk-a8z7` | Warehouse stem index first; full-catalog or all-matched skips SODA; partial fixture keeps SODA gap-fill |
+| `fetchOpenDataRow` SODA `hgx4-8ukb` | Materialization by `project_id` first; live SODA on miss |
+| Land default Active ULURP rebuild | `fetchLandDefaultProjects` prefers DuckDB when `zap_projects` is packed |
+
+```bash
+# Offline / CI
+node tools/build_doing_business_warehouse_lookup.mjs --fixture --bench
+node tools/build_zap_projects_warehouse_lookup.mjs --fixture --bench
+
+# After capped WH-02 pack of each dataset
+warehouse/.venv/bin/python warehouse/scripts/ingest.py \
+  --dataset doing-business-entities --bulk --ack-large
+node tools/build_doing_business_warehouse_lookup.mjs --bench
+
+warehouse/.venv/bin/python warehouse/scripts/ingest.py \
+  --dataset zap-projects --bulk --ack-large
+node tools/build_zap_projects_warehouse_lookup.mjs --bench
+```
+
+Speed receipts: `warehouse/receipts/proof/wh05_*_lookup_speed.json`.
 
 ## Characterization
 
 ```bash
 node --test test/warehouse_scaffold.test.mjs test/warehouse_bulk.test.mjs \
   test/warehouse_ocp_lookup.test.mjs worker/test/ocp_warehouse_lookup.test.mjs \
-  test/warehouse_er_batch.test.mjs
+  test/warehouse_er_batch.test.mjs test/warehouse_wh05_lookups.test.mjs \
+  worker/test/wh05_warehouse_lookups.test.mjs
 ```
 
 Optional: re-run the fixture ingest before the query assertions if the local
