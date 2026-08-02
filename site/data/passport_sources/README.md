@@ -14,8 +14,13 @@ There is no dedicated Socrata dataset for these tables. The static `dataJs` dump
 ## Product path
 
 1. Daily worker cron: `ingestPassportPublic` → D1 `passport_contracts` / `passport_rfx`
+   (and dual-write `source_records` when `PASSPORT_SOURCE_RECORD_DUAL_WRITE` is on)
 2. Lifecycle compute: Checkbook first, then `enrichLifecycleWithPassport` via strict EPIN↔PIN join
 3. Browser: only `GET /contract-lifecycle` (precompute-first; no live PASSPort fetch)
+
+Failed cron attempts leave `passport_ingest_meta.last_error` / `last_attempt_at` without
+clearing the last good `ingested_at`. Operator rebuild: `POST /admin/passport-ingest`.
+Host-side reseed: `node tools/passport_remote_reseed.mjs`.
 
 ## Join
 
