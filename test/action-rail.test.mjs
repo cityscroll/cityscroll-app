@@ -8,6 +8,7 @@ import {
   awardHandoff,
   hearingHandoff,
   ruleHandoff,
+  franchiseHandoff,
   validateAction,
 } from "../worker/src/lib/action_registry.mjs";
 
@@ -502,6 +503,91 @@ test("property award/conveyance with BBL opens ZoLa as primary parcel action", (
   }, {today: "2026-08-01"});
   assert.equal(actions[0].label_key, "property_action_lookup_zola");
   assert.equal(actions[0].guide.owner_name, "Make it Zesty LLC");
+  actions.forEach(validateAction);
+});
+
+// --- Franchise / FCRC stage-tied action rail (phase spine + notice fields) ---
+
+test("franchise public_hearing extracts venue/testimony as guide, not a link-only punt", () => {
+  const matter = {
+    kind: "franchise",
+    franchise_stage: "public_hearing",
+    lifecycle_stage: "public_hearing",
+    deadline: "2026-08-10T14:30:00.000",
+    event_date: "2026-08-10T14:30:00.000",
+    official_notice_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20260716022",
+    notice_text: [
+      "NOTICE OF A JOINT PUBLIC HEARING of the Franchise and Concession Review Committee",
+      "to be held on 8/10/2026, at 255 Greenwich Street, 8th Floor, in Manhattan.",
+      "Written testimony may be submitted electronically to " + EXAMPLE_EMAIL + ".",
+      "Agenda at https://www.nyc.gov/site/mocs/opportunities/franchises-concessions.page",
+    ].join(" "),
+    venue: { mode: "in-person", building: null, address: "255 Greenwich Street, New York, NY, 10007" },
+    participation_url: "https://www.nyc.gov/site/mocs/opportunities/franchises-concessions.page",
+  };
+  const handoff = franchiseHandoff(matter);
+  assert.equal(handoff.stage, "public_hearing");
+  assert.equal(handoff.has_fields, true);
+  assert.equal(handoff.testimony_email, EXAMPLE_EMAIL);
+  assert.match(handoff.venue_address || "", /255 Greenwich/i);
+
+  const [action] = compileActionRail(matter, { today: "2026-08-01" });
+  assert.notEqual(action.label_key, "next_action_participation_missing");
+  assert.notEqual(action.label_key, "next_action_watch");
+  assert.ok(action.guide);
+  assert.equal(action.guide.testimony_email, EXAMPLE_EMAIL);
+  // Primary is not watch-only and not a bare "use the official notice" punt.
+  assert.ok(["attend", "bid_checklist", "document"].includes(action.type));
+});
+
+test("franchise solicitation leads with package or response guide, never award bid CTA", () => {
+  const matter = {
+    kind: "franchise",
+    franchise_stage: "solicitation",
+    lifecycle_stage: "solicitation",
+    deadline: "2026-09-01T17:00:00.000",
+    official_notice_url: "https://a856-cityrecord.nyc.gov/RequestDetail/full-chain-solicitation",
+    title: "Request for Proposals — Information Services Franchise",
+    notice_text: "Submit proposals by email to " + EXAMPLE_EMAIL + ". Package at https://www.nyc.gov/site/doitt/business/franchises.page",
+    email: EXAMPLE_EMAIL,
+  };
+  const handoff = franchiseHandoff(matter);
+  assert.equal(handoff.stage, "solicitation");
+  assert.equal(handoff.has_fields, true);
+  const actions = compileActionRail(matter, { today: "2026-08-01" });
+  assert.ok(actions.length >= 1);
+  assert.notEqual(actions[0].label_key, "next_action_watch");
+  // No award "bid" framing on a franchise solicitation rail primary.
+  assert.notEqual(actions[0].type, "rsvp");
+  actions.forEach(validateAction);
+});
+
+test("franchise award primary is review award, never bid or solicitation submit", () => {
+  const actions = compileActionRail({
+    kind: "franchise",
+    franchise_stage: "award",
+    lifecycle_stage: "award",
+    official_notice_url: "https://a856-cityrecord.nyc.gov/RequestDetail/full-chain-award",
+    title: "Award of Information Services Franchise",
+  }, { today: "2026-08-01" });
+  assert.equal(actions[0].label_key, "franchise_phase_action_award");
+  assert.equal(actions[0].type, "document");
+  assert.ok(!actions.some((a) => a.type === "official_application"));
+  actions.forEach(validateAction);
+});
+
+test("franchise committee_meeting past date degrades to event-passed, not invent attend", () => {
+  const actions = compileActionRail({
+    kind: "franchise",
+    franchise_stage: "committee_meeting",
+    lifecycle_stage: "committee_meeting",
+    deadline: "2025-01-01T14:30:00.000",
+    event_date: "2025-01-01T14:30:00.000",
+    official_notice_url: "https://a856-cityrecord.nyc.gov/RequestDetail/full-chain-meeting",
+    venue: { mode: "in-person", address: "22 Reade Street" },
+  }, { today: "2026-08-01" });
+  assert.equal(actions[0].delivery, "unavailable");
+  assert.equal(actions[0].label_key, "next_action_event_passed");
   actions.forEach(validateAction);
 });
 

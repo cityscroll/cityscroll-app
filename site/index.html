@@ -542,6 +542,12 @@
      procurement/land; future chips solid muted (axe contrast, no opacity fade). */
   .subsidy-phase-stepper .lc-step{cursor:pointer;font-family:inherit}
   .subsidy-phase-stepper .lc-step.future,.lc-phase-stepper .lc-step.future{opacity:1;color:#5c564c;background:#f3eee3;border-style:dashed;border-color:#a39a88}
+  /* Franchise + property disposition steppers use done/current/todo chips; todo must
+     stay solid muted (axe contrast) — same treatment as .lc-step.future elsewhere. */
+  .franchise-phase-stepper .lc-step.todo,
+  .disposition-phase-stepper .lc-step.todo{opacity:1;color:#5c564c;background:#f3eee3;border-style:dashed;border-color:#a39a88}
+  .franchise-phase-stepper .lc-step.done,
+  .disposition-phase-stepper .lc-step.done{border-color:#9bb39a;background:#f0f4ef;color:var(--muted)}
   .subsidy-phase-not-yet{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:0 0 10px;padding:8px 12px;border:1px dashed var(--rule);border-radius:8px;background:var(--paper-2,#f7f1e4)}
   .box.matched{border-top-color:var(--green)}
   .box.matched .stage-name{color:var(--green)}
@@ -5832,9 +5838,14 @@ function noticeActionMatter(r, ruleRecord, lifecycleData){
   const rule=ruleRecord&&ruleRecord.nyc_rules;
   const rolling=!!(r.due_date&&isRollingDeadline(r.due_date));
   const isProperty=r.section_name==="Property Disposition";
+  const isFranchise=isFranchiseConcessionNoticeEligible(r);
+  const franchiseStage=isFranchise?(r.franchise_stage||inferFranchiseStageFromNotice(r)||null):null;
   const noticeType=r.type_of_notice_description||"";
+  // Franchise/FCRC eligible notices use the stage-tied franchise rail (solicitation →
+  // hearing → committee → award). Prefer that over generic solicitation/hearing/award.
   let kind=r.section_name==="Agency Rules"?"rule"
     :isProperty?"property"
+    :isFranchise?"franchise"
     :zapParticipation?"zoning"
     :isMeetingOutcomesEligible(r)?"hearing"
     :noticeType==="Solicitation"?"solicitation"
@@ -5850,14 +5861,17 @@ function noticeActionMatter(r, ruleRecord, lifecycleData){
   // Lifecycle stages for the award action rail (vendor / registration / spending).
   const timeline=lifecycleData&&Array.isArray(lifecycleData.timeline)?lifecycleData.timeline:[];
   const stageOf=name=>timeline.find(e=>e&&e.stage===name)||null;
+  const franchiseHearingStage=franchiseStage==="public_hearing"||franchiseStage==="committee_meeting";
   return {
     kind,
     section_name:r.section_name,
     type_of_notice_description:r.type_of_notice_description,
     lifecycle_stage:kind==="rule"?(ruleDisplayStage(ruleRecord)||"proposed")
       :kind==="hearing"&&(r.event_date&&String(r.event_date).slice(0,10)<todayISO())?"past"
-      :kind==="property"?(r.disposition_stage||null):null,
+      :kind==="property"?(r.disposition_stage||null)
+      :kind==="franchise"?franchiseStage:null,
     disposition_stage:kind==="property"?(r.disposition_stage||null):null,
+    franchise_stage:kind==="franchise"?franchiseStage:null,
     deadline:kind==="rule"?(
       // Prefer open comment deadline; hearing-stage calendar uses hearing_date when comment is closed.
       (rule&&rule.comment_by_date)
@@ -5867,6 +5881,7 @@ function noticeActionMatter(r, ruleRecord, lifecycleData){
     )
       :kind==="hearing"?r.event_date
       :kind==="property"?r.event_date||null
+      :kind==="franchise"?(franchiseHearingStage?r.event_date:rolling?null:r.due_date||r.event_date||null)
       :rolling?null:r.due_date||null,
     event_date:r.event_date||null,
     // NYC Rules RSS fields for concrete comment + hearing rail steps.
@@ -6551,9 +6566,101 @@ function franchiseStageLabel(kind){
   if(kind==="award") return t("franchise_stage_award");
   return kind || "—";
 }
-function franchiseConcessionSpineHTML(spine, notice){
+/** Infer process stage from the notice type/title when the spine has not stamped yet. */
+function inferFranchiseStageFromNotice(r){
+  if(!r) return null;
+  if(r.franchise_stage) return r.franchise_stage;
+  const type=String(r.type_of_notice_description||"");
+  const title=cleanText(r.short_title||"");
+  const body=cleanText(r.additional_description_1||"");
+  const hay=`${title} ${body}`;
+  // Publisher type labels matched via regex (not string literals) so stray-english stays green.
+  if(/^Award$/i.test(type) || /\b(?:has been awarded|award of (?:the )?(?:franchise|concession)|franchise has been granted)\b/i.test(hay)) return "award";
+  if(/^Solicitation$/i.test(type) || (/\b(?:request for proposals?|\brfp\b|solicitation)\b/i.test(hay) && !/\bpublic hearing\b/i.test(hay))) return "solicitation";
+  if(/^Meeting$/i.test(type) || /\bpublic meeting\b/i.test(title) || /\bFCRC\b.*\bmeeting\b/i.test(title)) return "committee_meeting";
+  if(/^Public Hearings$/i.test(type) || /\bpublic hearing\b/i.test(hay) || /\bFCRC\b.*\bhearing\b/i.test(hay)) return "public_hearing";
+  return null;
+}
+let franchisePhaseSpineToolsPromise=null;
+function franchisePhaseSpineTools(){
+  if(!franchisePhaseSpineToolsPromise){
+    franchisePhaseSpineToolsPromise=import("./franchise_phase_spine.mjs").catch(()=>null);
+  }
+  return franchisePhaseSpineToolsPromise;
+}
+function franchiseConcessionSpineHTML(spine, notice, phaseView){
   if(!spine) return "";
   const join = spine.join || {};
+  const keyNote = (join.keys && join.keys.length)
+    ? t("franchise_join_matched_html",{
+        method: escUiHtml(join.method || "—"),
+        n: String(join.notice_count || 0),
+        subject: escUiHtml(spine.subject_ref || "—")
+      })
+    : t("franchise_join_singleton_html",{
+        title: escUiHtml(cleanText(notice && notice.short_title) || (notice && notice.request_id) || "—")
+      });
+
+  // Phase-grouped compact stepper (same pattern as property / land / rules) when the pure module loads.
+  if(phaseView && Array.isArray(phaseView.phases) && phaseView.phases.length){
+    const cur=phaseView.current;
+    const actionLead=cur?`<p class="land-spine-status franchise-phase-lead">${t("franchise_phase_now_html",{
+      phase:escUiHtml(franchiseStageLabel(cur.id)),
+      action:escUiHtml(t(cur.action_key||"franchise_phase_action_solicitation"))
+    })}${phaseView.next?` · ${t("franchise_phase_next_html",{phase:escUiHtml(franchiseStageLabel(phaseView.next.id))})}`:""}</p>`:"";
+    const stepper=`<ol class="lc-stepper franchise-phase-stepper" aria-label="${escUiHtml(t("franchise_spine_heading"))}">${
+      phaseView.phases.map((p,i)=>{
+        const cls=p.matched?(cur&&p.id===cur.id?"current":"done"):"todo";
+        const aria=cur&&p.id===cur.id?` aria-current="step"`:"";
+        const arrow=i<phaseView.phases.length-1?`<span class="lc-step-arrow" aria-hidden="true">→</span>`:"";
+        return `<li><span class="lc-step ${cls}"${aria} title="${escUiHtml(franchiseStageLabel(p.id))}">${escUiHtml(p.short||franchiseStageLabel(p.id))}</span>${arrow}</li>`;
+      }).join("")
+    }</ol>`;
+    // Detail only for matched phases + current (collapse pure-future empties to stepper chips).
+    const cards=phaseView.phases.filter(p=>p.matched||(cur&&p.id===cur.id)).map(p=>{
+      if(!p.matched){
+        return `<div class="stage"><div class="box">
+          <div class="stage-name">${franchiseStageLabel(p.id)}</div>
+          <div class="lc-norecord">${t("franchise_stage_not_yet_ingested_html",{
+            source:`<span lang="en" dir="ltr">${t("franchise_source_city_record")}</span>`
+          })}</div>
+        </div></div>`;
+      }
+      const when=p.primary?.when?fdate(p.primary.when):"—";
+      const title=p.primary?.title?cleanText(p.primary.title):"";
+      const more=p.notice_count>1
+        ?` · ${t("franchise_stage_notice_count",{n:String(p.notice_count)})}`
+        :"";
+      // Aggregate verbatim-repeated titles under one line when multiple notices share wording.
+      const aggNote=(Array.isArray(p.aggregates) && p.aggregates.length===1 && p.aggregates[0].count>1)
+        ?` · ${t("franchise_stage_notice_count",{n:String(p.aggregates[0].count)})}`
+        :"";
+      const noticeLink=p.primary?.request_id
+        ?`<div class="lc-pct"><a href="#notice/${escUiHtml(p.primary.request_id)}">${escUiHtml(p.primary.request_id)}</a>${more||aggNote}</div>`
+        :((more||aggNote)?`<div class="lc-pct">${more||aggNote}</div>`:"");
+      // One outbound source family per phase (deduped).
+      const sourceLink=p.source_url
+        ?`<div class="lc-pct"><a href="${escUiHtml(p.source_url)}" ${EXT_ATTRS}>${t("view_in_city_record")}${extSR()}</a></div>`
+        :"";
+      return `<div class="stage"><div class="box matched">
+        <div class="stage-name">${franchiseStageLabel(p.id)}</div>
+        <div class="when">${escUiHtml(when)}</div>
+        ${title?`<div class="lc-pct" lang="en" dir="ltr">${escUiHtml(title)}</div>`:""}
+        ${noticeLink}
+        ${sourceLink}
+      </div></div>`;
+    }).join('<div class="connector" aria-hidden="true">→</div>');
+    return `<section class="franchise-spine" data-franchise-spine="1" data-franchise-phase="1" aria-label="${escUiHtml(t("franchise_spine_heading"))}">
+      <div class="chain-h">${t("franchise_spine_heading")}</div>
+      <div class="note">${keyNote}</div>
+      ${actionLead}
+      ${stepper}
+      <div class="chain franchise-phase-cards">${cards}</div>
+      <div class="note">${t("franchise_provenance_html")}</div>
+    </section>`;
+  }
+
+  // Flat fallback when the phase module is unavailable.
   const stages = Array.isArray(spine.stages) ? spine.stages : [];
   let chain = "";
   stages.forEach((stage, idx) => {
@@ -6585,15 +6692,6 @@ function franchiseConcessionSpineHTML(spine, notice){
     }
     if(idx < stages.length - 1) chain += '<div class="connector" aria-hidden="true">→</div>';
   });
-  const keyNote = (join.keys && join.keys.length)
-    ? t("franchise_join_matched_html",{
-        method: escUiHtml(join.method || "—"),
-        n: String(join.notice_count || 0),
-        subject: escUiHtml(spine.subject_ref || "—")
-      })
-    : t("franchise_join_singleton_html",{
-        title: escUiHtml(cleanText(notice && notice.short_title) || (notice && notice.request_id) || "—")
-      });
   return `<section class="franchise-spine" data-franchise-spine="1" aria-label="${escUiHtml(t("franchise_spine_heading"))}">
     <div class="chain-h">${t("franchise_spine_heading")}</div>
     <div class="note">${keyNote}</div>
@@ -6607,6 +6705,7 @@ async function loadFranchiseConcessionSpine(r, el){
     return;
   }
   let spine = null;
+  let francRow = null;
   try{
     const response = await workerFetch("/franchise-concessions", {}, 12000);
     if(response && response.ok){
@@ -6617,43 +6716,84 @@ async function loadFranchiseConcessionSpine(r, el){
         (Array.isArray(s.events) && s.events.some(e => e && e.request_id === id))
         || (Array.isArray(s.stages) && s.stages.some(st => Array.isArray(st.request_ids) && st.request_ids.includes(id)))
       ) || null;
-      // Fallback: singleton from this notice if the cached view is stale/missing.
-      if(!spine && Array.isArray(payload.notices)){
-        const row = payload.notices.find(p => p && p.request_id === id);
-        if(row){
-          const stageOrder = ["solicitation","public_hearing","committee_meeting","award"];
-          const subject = row.franchise_subject_ref || id;
-          spine = {
-            schema_version: 1,
-            subject_ref: subject,
-            join: {
-              matched: Array.isArray(row.franchise_join_keys) && row.franchise_join_keys.length > 0,
-              method: (row.franchise_join_keys && row.franchise_join_keys.length) ? "exact_party" : "single_notice",
-              keys: row.franchise_join_keys || [],
-              notice_count: 1
-            },
-            stages: stageOrder.map(kind => {
-              const matched = row.franchise_stage === kind;
-              const whenRaw = row.event_date || row.start_date || "";
-              return {
-                kind,
-                matched,
-                notice_count: matched ? 1 : 0,
-                request_ids: matched ? [id] : [],
-                events: matched ? [{
-                  request_id: id,
-                  title: cleanText(row.short_title) || id,
-                  time: { value: String(whenRaw).slice(0,10) || null }
-                }] : []
-              };
-            }),
-            events: [],
-            gaps: []
-          };
+      if(Array.isArray(payload.notices)){
+        francRow = payload.notices.find(p => p && p.request_id === id) || null;
+        if(francRow){
+          r.franchise_stage = francRow.franchise_stage || r.franchise_stage || null;
+          r.franchise_join_keys = francRow.franchise_join_keys || null;
+          r.franchise_subject_ref = francRow.franchise_subject_ref || null;
         }
+      }
+      // Fallback: singleton from this notice if the cached view is stale/missing.
+      if(!spine && francRow){
+        const stageOrder = ["solicitation","public_hearing","committee_meeting","award"];
+        const subject = francRow.franchise_subject_ref || id;
+        spine = {
+          schema_version: 1,
+          subject_ref: subject,
+          join: {
+            matched: Array.isArray(francRow.franchise_join_keys) && francRow.franchise_join_keys.length > 0,
+            method: (francRow.franchise_join_keys && francRow.franchise_join_keys.length) ? "exact_party" : "single_notice",
+            keys: francRow.franchise_join_keys || [],
+            notice_count: 1
+          },
+          stages: stageOrder.map(kind => {
+            const matched = francRow.franchise_stage === kind;
+            const whenRaw = francRow.event_date || francRow.start_date || "";
+            return {
+              kind,
+              matched,
+              notice_count: matched ? 1 : 0,
+              request_ids: matched ? [id] : [],
+              events: matched ? [{
+                request_id: id,
+                title: cleanText(francRow.short_title) || id,
+                time: { value: String(whenRaw).slice(0,10) || null }
+              }] : []
+            };
+          }),
+          events: [],
+          gaps: []
+        };
       }
     }
   }catch(e){}
+  // Client-side singleton when the endpoint is unreachable: still phase-group this notice.
+  if(!spine){
+    const stage = inferFranchiseStageFromNotice(r);
+    if(stage){
+      r.franchise_stage = r.franchise_stage || stage;
+      const id = String(r.request_id || "");
+      const stageOrder = ["solicitation","public_hearing","committee_meeting","award"];
+      const whenRaw = r.event_date || r.start_date || "";
+      spine = {
+        schema_version: 1,
+        subject_ref: r.franchise_subject_ref || id,
+        join: {
+          matched: false,
+          method: "single_notice",
+          keys: r.franchise_join_keys || [],
+          notice_count: 1
+        },
+        stages: stageOrder.map(kind => {
+          const matched = kind === stage;
+          return {
+            kind,
+            matched,
+            notice_count: matched ? 1 : 0,
+            request_ids: matched ? [id] : [],
+            events: matched ? [{
+              request_id: id,
+              title: cleanText(r.short_title) || id,
+              time: { value: String(whenRaw).slice(0,10) || null }
+            }] : []
+          };
+        }),
+        events: [],
+        gaps: []
+      };
+    }
+  }
   if(!document.contains(el)) return;
   if(!spine){
     // Honest empty: City Record is the source; we simply have no chain for this notice yet.
@@ -6665,7 +6805,23 @@ async function loadFranchiseConcessionSpine(r, el){
     </section>`;
     return;
   }
-  el.innerHTML = franchiseConcessionSpineHTML(spine, r);
+  // Stamp current stage for the action rail when the spine resolves a later matched stage.
+  if(Array.isArray(spine.stages)){
+    let lastMatched = null;
+    for(const st of spine.stages){
+      if(st && st.matched) lastMatched = st.kind;
+    }
+    if(lastMatched) r.franchise_stage = lastMatched;
+  }
+  const phaseTools = await franchisePhaseSpineTools();
+  const phaseView = phaseTools && phaseTools.buildFranchisePhaseView
+    ? phaseTools.buildFranchisePhaseView(spine)
+    : null;
+  el.innerHTML = franchiseConcessionSpineHTML(spine, r, phaseView);
+  // Re-mount action rail once franchise stage is stamped (stage-tied next steps).
+  try{
+    if($("#nactions")) mountNoticeActionRail($("#nactions"), r);
+  }catch(_e){}
 }
 
 /* ===== Property disposition process spine (multi-notice chain by BBL / block-lot).

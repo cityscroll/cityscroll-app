@@ -265,6 +265,11 @@ test("public notice detail mounts the franchise spine UI chrome", () => {
   assert.match(index, /franchise_stage_committee_meeting/);
   assert.match(index, /franchise_stage_award/);
   assert.match(index, /nfranchise/);
+  // Phase-group surface (stepper + lead action) — not flat-only chain.
+  assert.match(index, /franchise_phase_spine|buildFranchisePhaseView/);
+  assert.match(index, /franchise-phase-stepper/);
+  assert.match(index, /franchise_phase_now_html/);
+  assert.match(index, /franchise_phase_action_solicitation/);
 });
 
 test("mapFranchiseConcessionSpineToCivic emits registered franchise kinds", async () => {
