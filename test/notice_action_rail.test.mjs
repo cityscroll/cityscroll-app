@@ -47,3 +47,15 @@ test("hearing action matter passes venue, participation, and full body for step 
   assert.match(html, /hearing_guide_attend_step/);
   assert.match(html, /hearing_guide_testimony/);
 });
+
+test("rules action matter passes hearing_date, summary, and comment fields for guide steps", () => {
+  assert.match(html, /comment_by_date:rule&&rule\.comment_by_date\|\|null/);
+  assert.match(html, /hearing_date:rule&&rule\.hearing_date\|\|null/);
+  assert.match(html, /summary:rule&&rule\.summary\|\|null/);
+  assert.match(html, /guide\.system==="rules_extracted"/);
+  assert.match(html, /rule_guide_heading/);
+  assert.match(html, /rule_guide_comment_by_step/);
+  assert.match(html, /rule_guide_comment_portal_step_html/);
+  assert.match(html, /rule_guide_attend_step/);
+  assert.match(html, /rule_guide_attend_date_step/);
+});
