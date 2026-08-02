@@ -41,16 +41,19 @@ Instant materialization + warehouse edge index (CPU-light, fixture path).
 Rules/meetings densify from live City Record domain snapshots
 (`site/data/rules_domain_observations.json`,
 `site/data/meetings_domain_observations.json`) — agency → `issued_rule` /
-`hosts_meeting` only; no invented contract/vendor joins; people stay
-`not_yet_ingested` until production `by_person` retention > 0. Refresh
-snapshots: `node tools/build_rules_meetings_domain_observations.mjs` then
-rebuild entity intelligence.
+`hosts_meeting`; meetings also emit `decides_land_project` when a hearing body
+cites a ULURP token or ZAP project URL that resolves to a known land project in
+the corpus (strict `extractUlurpKeys` / portal URL only — no title-only invent).
+People stay `not_yet_ingested` until production `by_person` retention > 0.
+Refresh snapshots: `node tools/build_rules_meetings_domain_observations.mjs`
+(extracts ULURP/ZAP keys from body at build time — raw body is not committed)
+then rebuild entity intelligence.
 
 ```bash
 node tools/build_rules_meetings_domain_observations.mjs --check
 node tools/build_entity_intelligence.mjs
 node tools/build_entity_intelligence.mjs --check
-node warehouse/lib/entity_intelligence_index.mjs --from-fixture --limit 400
+node warehouse/lib/entity_intelligence_index.mjs --from-fixture --limit 600
 node warehouse/lib/entity_intelligence_index.mjs --check
 node tools/build_property_cross_domain.mjs
 node tools/build_property_cross_domain.mjs --check

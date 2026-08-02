@@ -30,6 +30,8 @@ import {
   SUBJECT_LINK_METHOD,
   SUBJECT_LINK_METHOD_VERSION,
 } from "../../worker/src/lib/subject_registry.mjs";
+// Reuse land-side strict ULURP token extractor (same as joinCityRecordLandNotices).
+import { extractUlurpKeys } from "../../worker/src/lib/ulurp_recommendations_join.mjs";
 
 export const CROSS_DOMAIN_OBJECT_LINK_VERSION = "cross_domain_object_link_v2";
 export const CROSS_DOMAIN_METHOD = "cross_domain_identity_v2";
@@ -42,6 +44,12 @@ export const CONTRACT_METHOD = "contract_id_join_v1";
 export const CONTRACT_METHOD_VERSION = "1";
 export const PAYMENT_METHOD = "checkbook_payment_v1";
 export const PAYMENT_METHOD_VERSION = "1";
+/** Meeting body → land project via exact ULURP token (mirrors land CR join). */
+export const MEETING_LAND_ULURP_METHOD = "exact_ulurp_token_v1";
+export const MEETING_LAND_ULURP_METHOD_VERSION = "1";
+/** Meeting body → land project via explicit ZAP portal / project id. */
+export const MEETING_LAND_ZAP_METHOD = "zap_project_ref_v1";
+export const MEETING_LAND_ZAP_METHOD_VERSION = "1";
 
 /** Domains the intelligence surface covers (closed set). */
 export const CROSS_DOMAIN_DOMAINS = Object.freeze([
@@ -111,6 +119,12 @@ export const CROSS_DOMAIN_LINK_TYPES = Object.freeze({
   sited_on_parcel: {
     description: "Land project is sited on a published tax lot (BBL) via ZAP BBL",
     domains: Object.freeze(["land"]),
+    registry: false,
+  },
+  decides_land_project: {
+    description:
+      "Hearing/meeting body cites a ULURP application number or ZAP project that the hearing decides",
+    domains: Object.freeze(["meetings"]),
     registry: false,
   },
   // --- v2 join-key edges (PIN / contract / payment) ---
@@ -579,6 +593,26 @@ export function flattenMeetingsMaterializationRecord(record) {
       || council?.body_name,
   );
   if ((!requestId && !eventId) || !agencyName) return null;
+  // Preserve body/description surfaces so ULURP / ZAP reverse joins can run
+  // (same fields land uses via cityRecordBlob).
+  const bodySource = {
+    short_title: record.short_title || notice?.title || notice?.short_title,
+    title: record.title || notice?.title,
+    additional_description_1:
+      record.additional_description_1 || notice?.additional_description_1,
+    additional_description_2:
+      record.additional_description_2 || notice?.additional_description_2,
+    additional_description_3:
+      record.additional_description_3 || notice?.additional_description_3,
+    other_info_1: record.other_info_1 || notice?.other_info_1,
+    other_info_2: record.other_info_2 || notice?.other_info_2,
+    other_info_3: record.other_info_3 || notice?.other_info_3,
+    printout_1: record.printout_1 || notice?.printout_1,
+    printout_2: record.printout_2 || notice?.printout_2,
+    printout_3: record.printout_3 || notice?.printout_3,
+    body: record.body || record.body_text || notice?.body || notice?.body_text,
+    body_text: record.body_text || notice?.body_text,
+  };
   return {
     request_id: requestId || null,
     event_id: eventId || null,
@@ -598,7 +632,357 @@ export function flattenMeetingsMaterializationRecord(record) {
     ) || null,
     start_date: clean(record.start_date || notice?.start_date) || null,
     source_system: clean(record.source_system) || "city_record",
+    ...bodySource,
+    // Optional pre-stamped join keys (domain snapshot / tests).
+    ulurp_numbers: clean(record.ulurp_numbers || notice?.ulurp_numbers) || null,
+    project_id: clean(record.project_id || notice?.project_id) || null,
+    related_project_ids: Array.isArray(record.related_project_ids)
+      ? record.related_project_ids
+      : null,
   };
+}
+
+/**
+ * Free-text blob from a hearing / City Record notice row — same field set as
+ * land-side `cityRecordBlob` used by joinCityRecordLandNotices.
+ * @param {object} row
+ * @returns {string}
+ */
+export function hearingBodyBlob(row) {
+  if (!row || typeof row !== "object") return "";
+  return [
+    row.short_title,
+    row.title,
+    row.body,
+    row.body_text,
+    row.additional_description_1,
+    row.additional_description_2,
+    row.additional_description_3,
+    row.other_info_1,
+    row.other_info_2,
+    row.other_info_3,
+    row.printout_1,
+    row.printout_2,
+    row.printout_3,
+    row.ulurp_numbers,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/** ZAP portal / API project URL path segment → project_id. */
+const ZAP_PROJECT_URL_RE =
+  /(?:zap\.planning\.nyc\.gov|zap-api-production\.herokuapp\.com)\/projects\/([A-Za-z0-9]+)/gi;
+
+/**
+ * Extract ZAP project ids from free text (portal or API URLs only — never bare
+ * year tokens). Reuses the same strict URL surface the land action rail already
+ * treats as a deep project handoff.
+ * @param {string|null|undefined} value
+ * @returns {Set<string>}
+ */
+export function extractZapProjectIds(value) {
+  const ids = new Set();
+  if (value == null) return ids;
+  const text = String(value);
+  for (const m of text.matchAll(ZAP_PROJECT_URL_RE)) {
+    const id = clean(m[1]);
+    if (id) ids.add(id);
+  }
+  return ids;
+}
+
+/**
+ * Collect ULURP tokens + ZAP project ids from a hearing body / row.
+ * Does not invent matches — only publisher-shaped refs.
+ * @param {object|string|null|undefined} rowOrText
+ * @returns {{ ulurp_keys: string[], zap_project_ids: string[], body_blob: string }}
+ */
+export function extractMeetingLandRefs(rowOrText) {
+  const body_blob = typeof rowOrText === "string"
+    ? clean(rowOrText)
+    : hearingBodyBlob(rowOrText || {});
+  const ulurp = extractUlurpKeys(body_blob);
+  const zap = extractZapProjectIds(body_blob);
+  // Also accept pre-stamped keys / project_id on structured rows (domain snapshots
+  // store keys without committing raw body text).
+  if (rowOrText && typeof rowOrText === "object") {
+    for (const k of extractUlurpKeys(rowOrText.ulurp_numbers)) ulurp.add(k);
+    for (const k of Array.isArray(rowOrText.ulurp_keys) ? rowOrText.ulurp_keys : []) {
+      const key = clean(k).toUpperCase();
+      if (key) ulurp.add(key);
+    }
+    for (const id of Array.isArray(rowOrText.related_project_ids)
+      ? rowOrText.related_project_ids
+      : []) {
+      const cleanId = clean(id);
+      if (cleanId) zap.add(cleanId);
+    }
+    for (const id of Array.isArray(rowOrText.zap_project_ids) ? rowOrText.zap_project_ids : []) {
+      const cleanId = clean(id);
+      if (cleanId) zap.add(cleanId);
+    }
+    // Explicit project_id on the row only when it matches ZAP shape YYYY + borough letter + digits
+    // (e.g. 2022M0258) — never a bare integer notice id.
+    const explicit = clean(rowOrText.project_id);
+    if (explicit && /^[0-9]{4}[A-Z][0-9]+$/i.test(explicit)) zap.add(explicit);
+  }
+  return {
+    ulurp_keys: [...ulurp].sort(),
+    zap_project_ids: [...zap].sort(),
+    body_blob,
+  };
+}
+
+/**
+ * Index land project observations for reverse ULURP / project_id join.
+ * @param {Iterable<object>} landObservations
+ * @returns {{ byUlurp: Map<string, object[]>, byProjectId: Map<string, object> }}
+ */
+export function buildLandProjectJoinIndex(landObservations = []) {
+  /** @type {Map<string, object[]>} */
+  const byUlurp = new Map();
+  /** @type {Map<string, object>} */
+  const byProjectId = new Map();
+  for (const obs of landObservations || []) {
+    if (!obs || obs.domain !== "land") continue;
+    const projectId = clean(obs.project_id);
+    if (!projectId) continue;
+    if (obs.object_kind && obs.object_kind !== "project") continue;
+    byProjectId.set(projectId, obs);
+    for (const key of extractUlurpKeys(obs.ulurp_numbers)) {
+      if (!byUlurp.has(key)) byUlurp.set(key, []);
+      byUlurp.get(key).push(obs);
+    }
+  }
+  return { byUlurp, byProjectId };
+}
+
+/**
+ * Resolve meeting land refs against a land project index.
+ * Only returns projects that exist in the index (no speculative links).
+ * @param {object} meetingObs
+ * @param {{ byUlurp: Map, byProjectId: Map }} landIndex
+ * @returns {object[]} related_projects
+ */
+export function resolveMeetingLandProjects(meetingObs, landIndex) {
+  if (!meetingObs || meetingObs.domain !== "meetings" || !landIndex) return [];
+  const refs = {
+    ulurp_keys: Array.isArray(meetingObs.ulurp_keys) ? meetingObs.ulurp_keys : [],
+    zap_project_ids: Array.isArray(meetingObs.zap_project_ids)
+      ? meetingObs.zap_project_ids
+      : [],
+  };
+  // Re-extract when body fields are present but keys were not pre-stamped.
+  if (!refs.ulurp_keys.length && !refs.zap_project_ids.length) {
+    const extracted = extractMeetingLandRefs(meetingObs);
+    refs.ulurp_keys = extracted.ulurp_keys;
+    refs.zap_project_ids = extracted.zap_project_ids;
+  }
+
+  /** @type {Map<string, object>} */
+  const hits = new Map();
+
+  for (const key of refs.ulurp_keys) {
+    const list = landIndex.byUlurp?.get(key) || [];
+    for (const land of list) {
+      const pid = clean(land.project_id);
+      if (!pid) continue;
+      const cur = hits.get(pid) || {
+        project_id: pid,
+        subject_ref: land.subject_ref || formatSubjectRef("project", pid),
+        label: land.label || pid,
+        join_method: MEETING_LAND_ULURP_METHOD,
+        join_keys: [],
+      };
+      if (!cur.join_keys.includes(key)) cur.join_keys.push(key);
+      cur.join_method = MEETING_LAND_ULURP_METHOD;
+      hits.set(pid, cur);
+    }
+  }
+
+  for (const pid of refs.zap_project_ids) {
+    const land = landIndex.byProjectId?.get(pid);
+    if (!land) continue; // unknown project → no link (honest punt)
+    const cur = hits.get(pid) || {
+      project_id: pid,
+      subject_ref: land.subject_ref || formatSubjectRef("project", pid),
+      label: land.label || pid,
+      join_method: MEETING_LAND_ZAP_METHOD,
+      join_keys: [],
+    };
+    if (!cur.join_keys.includes(pid)) cur.join_keys.push(pid);
+    // Prefer ULURP method when both match; otherwise stamp ZAP URL method.
+    if (cur.join_method !== MEETING_LAND_ULURP_METHOD) {
+      cur.join_method = MEETING_LAND_ZAP_METHOD;
+    }
+    hits.set(pid, cur);
+  }
+
+  return [...hits.values()]
+    .map((h) => ({
+      ...h,
+      join_keys: [...h.join_keys].sort(),
+      href: `#land?project=${encodeURIComponent(h.project_id)}`,
+    }))
+    .sort((a, b) => String(a.project_id).localeCompare(String(b.project_id)));
+}
+
+/**
+ * Stamp related_projects onto a meeting observation when land index hits.
+ * Returns a new observation (does not mutate). No-op when nothing resolves.
+ * @param {object} meetingObs
+ * @param {{ byUlurp: Map, byProjectId: Map }} landIndex
+ */
+export function stampMeetingLandProjects(meetingObs, landIndex) {
+  if (!meetingObs || meetingObs.domain !== "meetings") return meetingObs;
+  const related = resolveMeetingLandProjects(meetingObs, landIndex);
+  if (!related.length) {
+    // Still surface extracted keys for diagnostics / tests when body had refs
+    // that did not resolve (honest empty related_projects).
+    const extracted = extractMeetingLandRefs(meetingObs);
+    if (!extracted.ulurp_keys.length && !extracted.zap_project_ids.length) {
+      return meetingObs;
+    }
+    return {
+      ...meetingObs,
+      ulurp_keys: extracted.ulurp_keys,
+      zap_project_ids: extracted.zap_project_ids,
+      related_projects: [],
+    };
+  }
+  const extracted = extractMeetingLandRefs(meetingObs);
+  return {
+    ...meetingObs,
+    ulurp_keys: extracted.ulurp_keys.length
+      ? extracted.ulurp_keys
+      : (meetingObs.ulurp_keys || []),
+    zap_project_ids: extracted.zap_project_ids.length
+      ? extracted.zap_project_ids
+      : (meetingObs.zap_project_ids || []),
+    related_projects: related,
+  };
+}
+
+/**
+ * Stamp every meetings observation in a corpus against land projects present
+ * in the same corpus. Unknown ULURP/ZAP refs produce no link.
+ * @param {object[]} observations
+ * @returns {object[]}
+ */
+export function stampMeetingLandLinksOnCorpus(observations = []) {
+  const list = Array.isArray(observations) ? observations : [];
+  const land = list.filter(
+    (o) => o && o.domain === "land" && o.object_kind === "project" && o.project_id,
+  );
+  if (!land.length) return list;
+  const index = buildLandProjectJoinIndex(land);
+  return list.map((obs) => {
+    if (!obs || obs.domain !== "meetings") return obs;
+    return stampMeetingLandProjects(obs, index);
+  });
+}
+
+/**
+ * Corpus-level join: emit decides_land_project edges for meetings that resolve
+ * to known land projects. Pure — does not mutate inputs.
+ * @param {object[]} meetingObservations
+ * @param {object[]} landObservations
+ * @returns {{ links: object[], by_notice: object, metrics: object }}
+ */
+export function joinMeetingsToLandProjects(meetingObservations = [], landObservations = []) {
+  const landIndex = buildLandProjectJoinIndex(landObservations);
+  const links = [];
+  const by_notice = {};
+  let matched = 0;
+  let withRefs = 0;
+
+  for (const raw of meetingObservations || []) {
+    if (!raw || raw.domain !== "meetings") continue;
+    const obs = stampMeetingLandProjects(raw, landIndex);
+    const noticeKey = clean(obs.request_id || obs.event_id || obs.native_key);
+    if (!noticeKey) continue;
+    const hasRefs = (obs.ulurp_keys && obs.ulurp_keys.length)
+      || (obs.zap_project_ids && obs.zap_project_ids.length);
+    if (hasRefs) withRefs += 1;
+
+    const related = obs.related_projects || [];
+    by_notice[noticeKey] = {
+      request_id: obs.request_id || null,
+      event_id: obs.event_id || null,
+      subject_ref: obs.subject_ref,
+      ulurp_keys: obs.ulurp_keys || [],
+      zap_project_ids: obs.zap_project_ids || [],
+      related_projects: related,
+      status: related.length ? "matched" : (hasRefs ? "no_land_match" : "no_ref"),
+    };
+    if (!related.length) continue;
+    matched += 1;
+
+    for (const project of related) {
+      const edge = makeMeetingLandProjectLink(obs, project);
+      if (edge) links.push(edge);
+    }
+  }
+
+  return {
+    links: dedupeObjectLinks(links),
+    by_notice,
+    metrics: {
+      metric: "meeting_land_reverse_link_rate",
+      meeting_count: (meetingObservations || []).filter((o) => o?.domain === "meetings").length,
+      meetings_with_land_ref: withRefs,
+      matched_meeting_count: matched,
+      link_pair_count: links.length,
+      meeting_land_reverse_link_rate: withRefs ? matched / withRefs : 0,
+    },
+  };
+}
+
+/**
+ * Build one decides_land_project edge (meeting notice → land project).
+ * @param {object} meetingObs
+ * @param {object} project — { project_id, subject_ref, join_method, join_keys }
+ */
+export function makeMeetingLandProjectLink(meetingObs, project) {
+  if (!meetingObs?.subject_ref || !project?.project_id) return null;
+  const projectRef = project.subject_ref || formatSubjectRef("project", project.project_id);
+  if (!projectRef) return null;
+  const method = project.join_method === MEETING_LAND_ZAP_METHOD
+    ? MEETING_LAND_ZAP_METHOD
+    : MEETING_LAND_ULURP_METHOD;
+  const method_version = method === MEETING_LAND_ZAP_METHOD
+    ? MEETING_LAND_ZAP_METHOD_VERSION
+    : MEETING_LAND_ULURP_METHOD_VERSION;
+  const sourceFields = method === MEETING_LAND_ZAP_METHOD
+    ? ["body", "zap_project_url"]
+    : ["body", "ulurp_numbers"];
+  const provenance = makeProvenance({
+    source_system: meetingObs.source_system || "city_record",
+    source_record_id: meetingObs.source_record_id
+      || `${meetingObs.source_system || "city_record"}:${meetingObs.native_key}`,
+    source_fields: sourceFields,
+    basis: method === MEETING_LAND_ZAP_METHOD
+      ? "meeting_body_zap_project"
+      : "meeting_body_ulurp_token",
+    observed_at: meetingObs.when,
+    input_value: (project.join_keys || []).join(";") || project.project_id,
+    source_url: `https://zap.planning.nyc.gov/projects/${encodeURIComponent(project.project_id)}`,
+  });
+  if (!provenance) return null;
+  return makeObjectLink({
+    type: "decides_land_project",
+    from: meetingObs.subject_ref,
+    to: projectRef,
+    domain: "meetings",
+    confidence: "strong",
+    method,
+    method_version,
+    provenance,
+  });
 }
 
 /**
@@ -633,6 +1017,9 @@ export function observationFromRulesRow(row, opts = {}) {
 /**
  * Shape a meetings-domain observation (hearing notice or Legistar event).
  * Accepts raw City Record rows, domain-snapshot rows, or meeting-outcomes records.
+ * When body / description fields carry ULURP or ZAP URLs, stamps ulurp_keys and
+ * zap_project_ids for reverse land joins (no project link until resolve against
+ * a known land subject).
  * @param {object} row
  * @param {{ sourceSystem?: string }} [opts]
  */
@@ -650,7 +1037,19 @@ export function observationFromMeetingsRow(row, opts = {}) {
     ? formatSubjectRef("legistar-event", eventId)
     : formatSubjectRef("notice", requestId || nativeKey);
 
-  return {
+  // Prefer flat (includes nested notice body); fall back to raw row fields.
+  // Domain snapshots may already stamp ulurp_keys / zap_project_ids without body.
+  const landRefs = extractMeetingLandRefs({ ...row, ...flat });
+  const preUlurp = Array.isArray(row.ulurp_keys)
+    ? row.ulurp_keys.map(clean).filter(Boolean)
+    : (Array.isArray(flat.ulurp_keys) ? flat.ulurp_keys.map(clean).filter(Boolean) : []);
+  const preZap = Array.isArray(row.zap_project_ids)
+    ? row.zap_project_ids.map(clean).filter(Boolean)
+    : (Array.isArray(flat.zap_project_ids) ? flat.zap_project_ids.map(clean).filter(Boolean) : []);
+  const ulurp_keys = [...new Set([...landRefs.ulurp_keys, ...preUlurp])].sort();
+  const zap_project_ids = [...new Set([...landRefs.zap_project_ids, ...preZap])].sort();
+
+  const obs = {
     domain: "meetings",
     object_kind: eventId && !requestId ? "legistar_event" : "hearing",
     source_system: sourceSystem,
@@ -662,7 +1061,22 @@ export function observationFromMeetingsRow(row, opts = {}) {
     label: clean(flat.short_title || flat.title || flat.event_name || row.short_title || row.title) || nativeKey,
     when: clean(flat.event_date || flat.start_date) || null,
     subject_ref,
+    // Optional body surfaces (tests / live materialization). Domain snapshots
+    // stamp ulurp_keys / zap_project_ids instead of committing raw body text.
+    short_title: clean(flat.short_title || row.short_title) || null,
+    additional_description_1: clean(flat.additional_description_1 || row.additional_description_1) || null,
+    additional_description_2: clean(flat.additional_description_2 || row.additional_description_2) || null,
+    additional_description_3: clean(flat.additional_description_3 || row.additional_description_3) || null,
+    other_info_1: clean(flat.other_info_1 || row.other_info_1) || null,
+    printout_1: clean(flat.printout_1 || row.printout_1) || null,
+    body: clean(flat.body || flat.body_text || row.body || row.body_text) || null,
+    ulurp_keys,
+    zap_project_ids,
+    related_projects: Array.isArray(row.related_projects)
+      ? row.related_projects
+      : (Array.isArray(flat.related_projects) ? flat.related_projects : null),
   };
+  return obs;
 }
 
 /**
@@ -906,10 +1320,11 @@ function confidenceFor(rootKind, field, obs) {
 export function linkObservation(obs) {
   if (!obs || !DOMAIN_SET.has(obs.domain)) return { objects: [], links: [] };
   const roots = rootsForObservation(obs);
-  // Join-key edges may exist without agency/vendor roots (parcel / pin / contract).
+  // Join-key edges may exist without agency/vendor roots (parcel / pin / contract / land).
   const parcelLinks = parcelLinksForObservation(obs);
   const joinKeyLinks = joinKeyLinksForObservation(obs);
-  if (!roots.length && !parcelLinks.length && !joinKeyLinks.length) {
+  const meetingLandLinks = meetingLandLinksForObservation(obs);
+  if (!roots.length && !parcelLinks.length && !joinKeyLinks.length && !meetingLandLinks.length) {
     return { objects: [], links: [] };
   }
 
@@ -1003,7 +1418,30 @@ export function linkObservation(obs) {
     if (edge) links.push(edge);
   }
 
+  // Meeting → land reverse edges (ULURP / ZAP refs resolved to known projects).
+  for (const edge of meetingLandLinks) {
+    if (edge) links.push(edge);
+  }
+
   return { objects, links };
+}
+
+/**
+ * Emit decides_land_project edges for meetings with related_projects already
+ * resolved against a known land corpus. Never invents a project id from body alone.
+ * @param {object} obs
+ * @returns {object[]}
+ */
+export function meetingLandLinksForObservation(obs) {
+  if (!obs || obs.domain !== "meetings") return [];
+  const related = Array.isArray(obs.related_projects) ? obs.related_projects : [];
+  if (!related.length) return [];
+  const edges = [];
+  for (const project of related) {
+    const edge = makeMeetingLandProjectLink(obs, project);
+    if (edge) edges.push(edge);
+  }
+  return edges;
 }
 
 /**
@@ -1211,12 +1649,16 @@ const SIDE_LINK_TYPES = new Set([
   "references_contract",
   "payment_on_contract",
   "contract_published_by_agency",
+  "decides_land_project",
 ]);
 
 export function indexObservationsByRoot(observations) {
   const byRoot = new Map();
+  // Resolve meeting → land reverse links against land projects in the same corpus
+  // before identity indexing so decides_land_project edges ride with agency roots.
+  const stamped = stampMeetingLandLinksOnCorpus(observations);
 
-  for (const obs of observations || []) {
+  for (const obs of stamped || []) {
     const { objects, links } = linkObservation(obs);
     // Identity edges (agency/vendor) share the object list order; join-key edges are extras.
     const identityLinks = (links || []).filter((l) => l && !SIDE_LINK_TYPES.has(l.type));
@@ -1353,6 +1795,7 @@ export function buildEntityIntelligenceFromBucket(root, bucket, opts = {}) {
     "payment_on_contract",
     "paid_to_vendor",
     "contract_published_by_agency",
+    "decides_land_project",
   ];
   const join_key_link_count = links.filter((l) => joinKeyTypes.includes(l.type)).length;
 
