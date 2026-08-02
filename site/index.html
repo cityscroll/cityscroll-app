@@ -5094,9 +5094,134 @@ async function loadHearings(){
   }
 }
 
+/* ===== Property disposition process spine (multi-notice chain by BBL / block-lot).
+   Distinct from the explorer "lifecycle rail" below (propStage/PROP_STAGES = temporal list
+   filters: proposed/soon/upcoming/past). This spine reconstructs hearing → auction/RFP →
+   award/conveyance for one asset from City Record Property Disposition notices. ===== */
+function isPropertyDispositionEligible(r){
+  return (r && r.section_name === "Property Disposition");
+}
+function dispositionStageLabel(kind){
+  if(kind==="hearing") return t("disposition_stage_hearing");
+  if(kind==="auction_or_rfp") return t("disposition_stage_auction_or_rfp");
+  if(kind==="award_or_conveyance") return t("disposition_stage_award_or_conveyance");
+  return kind || "—";
+}
+function propertyDispositionSpineHTML(spine, notice){
+  if(!spine) return "";
+  const join = spine.join || {};
+  const stages = Array.isArray(spine.stages) ? spine.stages : [];
+  let chain = "";
+  stages.forEach((stage, idx) => {
+    const matched = stage && stage.matched;
+    const stageEvents = Array.isArray(stage.events) ? stage.events : [];
+    const primary = stageEvents[0] || null;
+    const when = primary?.time?.value ? fdate(primary.time.value) : "—";
+    const title = primary ? (cleanText(primary.title) || "—") : "";
+    const more = stage.notice_count > 1
+      ? ` · ${t("disposition_stage_notice_count",{n:String(stage.notice_count)})}`
+      : "";
+    const noticeLink = primary?.request_id
+      ? `<div class="lc-pct"><a href="#notice/${escUiHtml(primary.request_id)}">${escUiHtml(primary.request_id)}</a>${more}</div>`
+      : (more ? `<div class="lc-pct">${more}</div>` : "");
+    if(matched){
+      chain += `<div class="stage"><div class="box matched">
+        <div class="stage-name">${dispositionStageLabel(stage.kind)}</div>
+        <div class="when">${escUiHtml(when)}</div>
+        ${title?`<div class="lc-pct" lang="en" dir="ltr">${escUiHtml(title)}</div>`:""}
+        ${noticeLink}
+      </div></div>`;
+    } else {
+      chain += `<div class="stage"><div class="box">
+        <div class="stage-name">${dispositionStageLabel(stage.kind)}</div>
+        <div class="lc-norecord">${t("disposition_stage_not_yet_ingested_html",{
+          source:`<span lang="en" dir="ltr">${t("disposition_source_city_record")}</span>`
+        })}</div>
+      </div></div>`;
+    }
+    if(idx < stages.length - 1) chain += '<div class="connector">→</div>';
+  });
+  const keyNote = (join.keys && join.keys.length)
+    ? t("disposition_join_matched_html",{
+        method: escUiHtml(join.method || "—"),
+        n: String(join.notice_count || 0),
+        subject: escUiHtml(spine.subject_ref || "—")
+      })
+    : t("disposition_join_singleton_html",{
+        title: escUiHtml(cleanText(notice && notice.short_title) || (notice && notice.request_id) || "—")
+      });
+  return `<div class="chain-h">${t("disposition_spine_heading")}</div>
+    <div class="note">${keyNote}</div>
+    <div class="chain">${chain}</div>
+    <div class="note">${t("disposition_provenance_html")}</div>`;
+}
+async function loadPropertyDispositionSpine(r, el){
+  if(!el || !r || !isPropertyDispositionEligible(r)) return;
+  let spine = null;
+  try{
+    const response = await workerFetch("/property-locations", {}, 12000);
+    if(response && response.ok){
+      const payload = await response.json();
+      const spines = Array.isArray(payload.disposition_spines) ? payload.disposition_spines : [];
+      const id = String(r.request_id || "");
+      spine = spines.find(s =>
+        (Array.isArray(s.events) && s.events.some(e => e && e.request_id === id))
+        || (Array.isArray(s.stages) && s.stages.some(st => Array.isArray(st.request_ids) && st.request_ids.includes(id)))
+      ) || null;
+      // Fallback: build a singleton from this notice if the cached view is stale/missing.
+      if(!spine && Array.isArray(payload.properties)){
+        const row = payload.properties.find(p => p && p.request_id === id);
+        if(row){
+          const stageOrder = ["hearing","auction_or_rfp","award_or_conveyance"];
+          const subject = row.disposition_subject_ref || id;
+          spine = {
+            schema_version: 1,
+            subject_ref: subject,
+            join: {
+              matched: Array.isArray(row.disposition_join_keys) && row.disposition_join_keys.length > 0,
+              method: (row.disposition_join_keys && row.disposition_join_keys.length) ? "exact_bbl" : "single_notice",
+              keys: row.disposition_join_keys || [],
+              notice_count: 1
+            },
+            stages: stageOrder.map(kind => {
+              const matched = row.disposition_stage === kind;
+              const whenRaw = row.event_date || row.start_date || "";
+              return {
+                kind,
+                matched,
+                notice_count: matched ? 1 : 0,
+                request_ids: matched ? [id] : [],
+                events: matched ? [{
+                  request_id: id,
+                  title: cleanText(row.short_title) || id,
+                  time: { value: String(whenRaw).slice(0,10) || null }
+                }] : []
+              };
+            }),
+            events: [],
+            gaps: []
+          };
+        }
+      }
+    }
+  }catch(e){}
+  if(!document.contains(el)) return;
+  if(!spine){
+    // Honest empty: City Record is the source; we simply have no chain for this notice yet.
+    el.innerHTML = `<div class="chain-h">${t("disposition_spine_heading")}</div>
+      <div class="note">${t("disposition_spine_unavailable_html",{
+        source:`<span lang="en" dir="ltr">${t("disposition_source_city_record")}</span>`
+      })}</div>`;
+    return;
+  }
+  el.innerHTML = propertyDispositionSpineHTML(spine, r);
+}
+
 /* ===== Property explorer: asset-type tabs + lifecycle rail (design: property-ux report §2–3).
    Asset type is derived from the notice text (no category column exists — 98% coverage on the
-   validation set); dollar figures are shown only as LABELED badges, never a filter (§2b). ===== */
+   validation set); dollar figures are shown only as LABELED badges, never a filter (§2b).
+   The rail below is a LIST FILTER (proposed/soon/upcoming/past), not the multi-notice
+   disposition process spine mounted on notice detail. ===== */
 // Values are i18n keys — render with t() so the explorer chrome follows the active language.
 const ASSET_BUCKETS=[["realty","asset_realty"],["forest","asset_forest"],["vehequip","asset_vehequip"],["medallion","asset_medallion"],["seized","asset_seized"],["other","asset_other"]];
 const ASSET_LABEL=Object.fromEntries(ASSET_BUCKETS);
@@ -8822,7 +8947,7 @@ async function showNotice(id, watch){
       ${watchChips.length ? `<div class="nlunderstood" role="status">${t("deeplink_watch_context_label")} ${watchChips.join(" ")}</div>` : ""}
       <div id="ncontext"></div><div id="nactions"></div>
       ${glanceFor(r)}
-      <div id="naddr"></div><div id="nrules"></div><div id="nlifecycle"></div><div id="ndollars"></div><div id="nsubsidy"></div><div id="nmeet"></div><div id="nexternal"></div>
+      <div id="naddr"></div><div id="nrules"></div><div id="nlifecycle"></div><div id="ndollars"></div><div id="nsubsidy"></div><div id="ndisposition"></div><div id="nmeet"></div><div id="nexternal"></div>
       <div class="actions" style="margin-top:14px">
         <button class="act primary" type="button" id="ncopy">${t("copy_link")}</button>
         ${qrButtonHTML("nqr","act")}
@@ -8849,6 +8974,7 @@ async function showNotice(id, watch){
   loadRuleLifecycle(r, $("#nrules"));
   loadLifecycle(r, $("#nlifecycle"), $("#ndollars"), $("#nactions"));
   loadSubsidyLifecycle(r, $("#nsubsidy"));
+  loadPropertyDispositionSpine(r, $("#ndisposition"));
   loadMeetingOutcomes(r, $("#nmeet"));
   externalAwardForNotice(r, $("#nexternal"));
   fillAddressLinks(r, $("#naddr"));
