@@ -440,6 +440,43 @@
   .land-spine-title{font:700 13px/1.35 ui-sans-serif,system-ui,sans-serif;color:var(--ink);overflow-wrap:anywhere}
   .land-spine-detail{font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);overflow-wrap:anywhere}
   .land-spine-source{font:600 11px/1.35 ui-sans-serif,system-ui,sans-serif}
+  /* Land phase spine (ULURP grouping — progressive disclosure) */
+  .land-spine-lead{background:linear-gradient(180deg,#fff 0%,var(--paper-2,#f7f1e4) 100%);border:1px solid var(--rule);border-radius:10px;padding:12px 14px;margin:0 0 12px}
+  .land-spine-now-label{font:700 10px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--oxblood);margin:0 0 4px}
+  .land-spine-now-phase{font:700 16px/1.3 ui-sans-serif,system-ui,sans-serif;margin:0 0 4px;color:var(--ink)}
+  .land-spine-now-detail{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;margin:0 0 8px;color:var(--ink)}
+  .land-spine-next{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;margin:0;padding-top:8px;border-top:1px solid var(--rule);color:var(--muted)}
+  .land-spine-next strong{color:var(--ink);font-weight:700}
+  .land-spine-portal{display:inline-flex;align-items:center;gap:6px;font:600 13px/1.3 ui-sans-serif,system-ui,sans-serif;margin:0 0 12px}
+  .land-phase-stepper{display:flex;flex-wrap:wrap;align-items:center;gap:4px 2px;list-style:none;margin:0 0 12px;padding:0}
+  .land-phase-stepper > li{display:flex;align-items:center;gap:2px;min-width:0}
+  .land-phase-step{font:700 10px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.05em;text-transform:uppercase;padding:7px 10px;border-radius:999px;border:1px solid var(--rule);background:var(--paper-2,#f7f1e4);color:var(--muted);cursor:pointer}
+  .land-phase-step.passed{border-color:#9bb39a;background:#f0f4ef;color:var(--muted)}
+  .land-phase-step.current{box-shadow:0 0 0 2px var(--oxblood);border-color:var(--oxblood);background:#fff;color:var(--ink)}
+  .land-phase-step.future{opacity:.55;border-style:dashed}
+  .land-phase-arrow{color:var(--muted);font-size:13px;padding:0 2px;user-select:none}
+  .land-phase{border:1px solid var(--rule);border-radius:10px;margin:0 0 8px;background:#fffdf8;overflow:hidden}
+  .land-phase[open]{background:#fff}
+  .land-phase.current-phase{border-color:color-mix(in srgb,var(--oxblood) 45%,var(--rule));box-shadow:0 0 0 1px color-mix(in srgb,var(--oxblood) 22%,transparent)}
+  .land-phase > summary{list-style:none;cursor:pointer;padding:10px 12px;display:grid;grid-template-columns:1fr auto;gap:3px 12px;align-items:baseline}
+  .land-phase > summary::-webkit-details-marker{display:none}
+  .land-phase-name{font:700 13px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--ink)}
+  .land-phase-state{font:700 10px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .land-phase.current-phase .land-phase-state{color:var(--oxblood)}
+  .land-phase-summary{grid-column:1 / -1;font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+  .land-phase-body{padding:0 12px 12px;border-top:1px solid var(--rule)}
+  .land-phase-row,.land-phase-agg{padding:8px 0;border-bottom:1px solid color-mix(in srgb,var(--rule) 70%,transparent)}
+  .land-phase-row:last-child,.land-phase-agg:last-child{border-bottom:0}
+  .land-phase-row-title,.land-phase-agg-title{font:700 13px/1.35 ui-sans-serif,system-ui,sans-serif;color:var(--ink);overflow-wrap:anywhere}
+  .land-phase-row-meta,.land-phase-agg-meta{font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);overflow-wrap:anywhere}
+  .land-phase-count{display:inline-block;font:700 11px/1 ui-monospace,SFMono-Regular,monospace;background:var(--paper-2,#f7f1e4);border:1px solid var(--rule);border-radius:999px;padding:3px 7px;margin-inline-start:6px;vertical-align:middle}
+  .land-phase-dates{margin:6px 0 0;padding:0;list-style:none;display:none;font:12px/1.55 ui-monospace,SFMono-Regular,monospace;color:var(--muted);columns:2;gap:0 16px}
+  .land-phase-dates.show{display:block}
+  .land-phase-toggle{margin-top:6px;font:600 12px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--oxblood);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+  .land-spine-how{display:block;margin-top:10px}
+  .land-spine-how > summary{font:600 12px/1.4 ui-sans-serif,system-ui,sans-serif;cursor:pointer;color:var(--muted)}
+  .land-spine-how-body{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:8px}
+  .land-spine-chrono{max-height:280px;overflow:auto;margin-top:8px}
   .note{font:13px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted);background:#f4eee2;border-inline-start:3px solid var(--rule);padding:10px 12px;border-start-end-radius:8px;border-end-end-radius:8px;margin-top:14px}
   .note.warn{border-inline-start-color:var(--rose)}
   /* Claim layer: publisher claim vs product reading (assertion ≠ interpretation) */
@@ -4747,55 +4784,232 @@ function landToAlert(term){
 
 
 /* ===================== ZAP LAND OUTCOMES (decision docs + DOB side-car) =====================
-   Precompute-first: GET /zap-outcomes?id= — no live ZAP API or DOB Socrata from the browser. */
-function landSpineHTML(spine){
-  if(!spine) return "";
-  const lag=spine.lag?.open_data_vs_portal || {};
-  let lagHTML=`<div class="note">${t("land_spine_lag_unknown")}</div>`;
+   Precompute-first: GET /zap-outcomes?id= — no live ZAP API or DOB Socrata from the browser.
+   Project timeline is phase-grouped (ULURP) via site/land_phase_spine.mjs — compact stepper
+   by default; aggregates + disclosure keep every date reachable; one project portal link. */
+let landPhaseSpineToolsPromise=null;
+function ensureLandPhaseSpineTools(){
+  if(!landPhaseSpineToolsPromise){
+    landPhaseSpineToolsPromise=import("./land_phase_spine.mjs").catch(()=>null);
+  }
+  return landPhaseSpineToolsPromise;
+}
+function landPhaseLabel(phase){
+  if(!phase) return "—";
+  const key=phase.label_key || (typeof phase==="string"?null:null);
+  if(phase.label_key) return t(phase.label_key);
+  if(typeof phase==="string"){
+    const meta={
+      pre_application:"land_phase_pre_application",
+      environmental:"land_phase_environmental",
+      pre_certification:"land_phase_pre_certification",
+      certification:"land_phase_certification",
+      community_board:"land_phase_community_board",
+      borough_president:"land_phase_borough_president",
+      cpc:"land_phase_cpc",
+      city_council:"land_phase_city_council",
+      mayoral_appeals:"land_phase_mayoral_appeals"
+    };
+    return meta[phase]?t(meta[phase]):phase;
+  }
+  return phase.short || "—";
+}
+function landSpineLagHTML(lag){
+  lag=lag||{};
   if(lag.status==="behind"){
-    lagHTML=`<div class="note warn">${t("land_spine_lag_behind_html",{
+    return `<div class="note warn">${t("land_spine_lag_behind_html",{
       days:String(lag.days), open_date:fdate(lag.open_data_date), portal_date:fdate(lag.portal_date)
     })}</div>`;
-  }else if(lag.status==="aligned"){
-    lagHTML=`<div class="note">${t("land_spine_lag_aligned_html",{
+  }
+  if(lag.status==="aligned"){
+    return `<div class="note">${t("land_spine_lag_aligned_html",{
       open_date:fdate(lag.open_data_date), portal_date:fdate(lag.portal_date)
     })}</div>`;
   }
-  const events=Array.isArray(spine.events)?spine.events:[];
-  const rail=events.map(event=>{
-    const planned=event.time?.certainty==="planned";
-    const sourceURL=event.source?.url;
-    const sourceLabel=event.source?.label || "—";
-    const sourceHTML=sourceURL
-      ? `<a class="land-spine-source" href="${escUiHtml(sourceURL)}" ${EXT_ATTRS}>${escUiHtml(sourceLabel)}${extSR()}</a>`
-      : `<span class="land-spine-source">${escUiHtml(sourceLabel)}</span>`;
-    return `<div class="land-spine-event${planned?" planned":""}">
-      <div class="land-spine-date">${event.time?.value?fdate(event.time.value):"—"}${planned?` · ${t("land_spine_planned")}`:""}</div>
-      <div class="land-spine-title" lang="en" dir="ltr">${escUiHtml(event.title || "—")}</div>
-      ${event.detail?`<div class="land-spine-detail" lang="en" dir="ltr">${escUiHtml(event.detail)}</div>`:""}
-      ${sourceHTML}
-    </div>`;
-  }).join("");
+  return `<div class="note">${t("land_spine_lag_unknown")}</div>`;
+}
+function landSpineGapsHTML(gaps){
   const gapKey={
     not_yet_ingested:"land_spine_gap_not_yet_ingested_html",
     not_published:"land_spine_gap_not_published_html",
     source_unavailable:"land_spine_gap_unavailable_html"
   };
-  const gaps=(Array.isArray(spine.gaps)?spine.gaps:[]).map(gap=>{
+  return (Array.isArray(gaps)?gaps:[]).map(gap=>{
     const key=gapKey[gap.class] || "land_spine_gap_unavailable_html";
     return `<div class="note">${t(key,{source:escUiHtml(gap.source || "—")})}</div>`;
   }).join("");
-  return `<div class="chain-h">${t("land_spine_heading")}</div>${lagHTML}${rail?`<div class="land-spine">${rail}</div>`:""}${gaps}`;
+}
+/** Per-event row for chronological disclosure — never repeats the project portal URL. */
+function landSpineEventRowHTML(event, portalUrl, isPortalUrl){
+  const planned=event.time?.certainty==="planned" || /not started/i.test(String(event.detail||event.status||""));
+  const sourceURL=event.source?.url;
+  const sourceLabel=event.source?.label || "—";
+  const dup=typeof isPortalUrl==="function"
+    ? isPortalUrl(sourceURL, portalUrl)
+    : (portalUrl && sourceURL && String(sourceURL).replace(/\/+$/,"")===String(portalUrl).replace(/\/+$/,""));
+  let sourceHTML="";
+  if(sourceURL && !dup){
+    sourceHTML=`<a class="land-spine-source" href="${escUiHtml(sourceURL)}" ${EXT_ATTRS}>${escUiHtml(sourceLabel)}${extSR()}</a>`;
+  }
+  return `<div class="land-spine-event${planned?" planned":""}">
+    <div class="land-spine-date">${event.time?.value?fdate(event.time.value):"—"}${planned?` · ${t("land_spine_planned")}`:""}</div>
+    <div class="land-spine-title" lang="en" dir="ltr">${escUiHtml(event.title || "—")}</div>
+    ${event.detail?`<div class="land-spine-detail" lang="en" dir="ltr">${escUiHtml(event.detail)}</div>`:""}
+    ${sourceHTML}
+  </div>`;
+}
+function landPhaseAggregateHTML(agg, phaseId, idx){
+  if(!agg) return "";
+  if(agg.count===1){
+    const e=agg.members[0]||{};
+    const planned=e.time?.certainty==="planned" || /not started/i.test(String(e.detail||e.status||""));
+    return `<div class="land-phase-row">
+      <div class="land-phase-row-title" lang="en" dir="ltr">${escUiHtml(agg.title)}</div>
+      <div class="land-phase-row-meta">${agg.first?fdate(agg.first):"—"}${planned?` · ${t("land_spine_planned")}`:""}${e.detail?` · ${escUiHtml(e.detail)}`:""}</div>
+    </div>`;
+  }
+  const listId=`land-agg-${phaseId}-${idx}`;
+  const statusTxt=(agg.statuses||[]).filter(Boolean).join(", ");
+  return `<div class="land-phase-agg">
+    <div class="land-phase-agg-title" lang="en" dir="ltr">${escUiHtml(agg.title)}<span class="land-phase-count">×${agg.count}</span></div>
+    <div class="land-phase-agg-meta">${agg.first&&agg.last?t("land_spine_aggregate_range",{first:fdate(agg.first),last:fdate(agg.last)}):(agg.first?fdate(agg.first):"—")}${statusTxt?` · ${escUiHtml(statusTxt)}`:""}</div>
+    <button type="button" class="land-phase-toggle" data-land-dates="${listId}" aria-expanded="false">${t("land_spine_show_dates",{n:String(agg.count)})}</button>
+    <ul class="land-phase-dates" id="${listId}">
+      ${(agg.members||[]).map(m=>`<li>${m.time?.value?fdate(m.time.value):"—"}${m.detail?` · ${escUiHtml(m.detail)}`:""}</li>`).join("")}
+    </ul>
+  </div>`;
+}
+function landPhaseSpineHTML(view, tools){
+  if(!view) return "";
+  const isPortalUrl=tools?.isProjectPortalUrl;
+  const portal=view.portal_url
+    ? `<a class="view land-spine-portal" href="${escUiHtml(view.portal_url)}" ${EXT_ATTRS}>${t("land_spine_portal_link")}${extSR()}</a>`
+    : "";
+  const cur=view.current||{};
+  const phaseName=landPhaseLabel({label_key:cur.label_key});
+  let statusExtra="";
+  if(cur.noticed && !cur.in_public_review){
+    statusExtra=t("land_spine_status_noticed_html");
+  }else if(cur.public_status){
+    statusExtra=t("land_spine_status_public_html",{status:escUiHtml(cur.public_status)});
+  }
+  const lead=`<div class="land-spine-lead">
+    <div class="land-spine-now-label">${t("land_spine_now_label")}</div>
+    <p class="land-spine-now-phase">${escUiHtml(phaseName)}</p>
+    <p class="land-spine-now-detail" lang="en" dir="ltr">${escUiHtml(cur.milestone_label || "—")}${cur.since?` · ${t("land_spine_since",{date:fdate(cur.since)})}`:""}${statusExtra?`<br>${statusExtra}`:""}</p>
+    ${view.next?`<p class="land-spine-next">${t("land_spine_next_html",{phase:escUiHtml(landPhaseLabel(view.next))})}</p>`:""}
+  </div>`;
+  const stepper=`<ol class="land-phase-stepper lc-stepper" aria-label="${escUiHtml(t("land_spine_heading"))}">${
+    (view.phases||[]).map((p,i)=>{
+      const cls=p.state==="current"?"current":p.state==="passed"?"passed":"future";
+      const aria=p.state==="current"?` aria-current="step"`:"";
+      const arrow=i<(view.phases.length-1)?`<span class="land-phase-arrow lc-step-arrow" aria-hidden="true">→</span>`:"";
+      return `<li><button type="button" class="land-phase-step lc-step ${cls}" data-land-phase="${escUiHtml(p.id)}"${aria} title="${escUiHtml(landPhaseLabel(p))}">${escUiHtml(p.short||landPhaseLabel(p))}</button>${arrow}</li>`;
+    }).join("")
+  }</ol>`;
+  const panels=(view.phases||[]).map(p=>{
+    const open=p.state==="current"?" open":"";
+    const stateWord=p.state==="current"?t("land_spine_phase_current"):p.state==="passed"?t("land_spine_phase_done"):t("land_spine_phase_future");
+    let summary="";
+    if(p.state==="future"){
+      if(p.first){
+        summary=p.last&&p.last!==p.first
+          ? t("land_spine_planned_window",{first:fdate(p.first),last:fdate(p.last)})
+          : t("land_spine_planned_window_one",{date:fdate(p.first)});
+      }else summary=t("land_spine_phase_empty");
+    }else{
+      const notes=(p.aggregates||[]).filter(a=>a.count>=2).map(a=>`${a.title} ×${a.count}`).join(" · ");
+      const parts=[
+        p.event_count?t("land_spine_milestones_count",{n:String(p.event_count)}):"",
+        p.first&&p.last?t("land_spine_aggregate_range",{first:fdate(p.first),last:fdate(p.last)}):(p.first?fdate(p.first):""),
+        notes
+      ].filter(Boolean);
+      summary=parts.join(" · ") || t("land_spine_phase_empty");
+    }
+    const body=(p.aggregates||[]).map((a,idx)=>landPhaseAggregateHTML(a,p.id,idx)).join("")
+      || `<div class="land-phase-row"><div class="land-phase-row-meta">${t("land_spine_phase_empty")}</div></div>`;
+    return `<details class="land-phase${p.state==="current"?" current-phase":""}"${open} id="land-phase-${escUiHtml(p.id)}" data-land-phase-panel="${escUiHtml(p.id)}">
+      <summary>
+        <span class="land-phase-name">${escUiHtml(landPhaseLabel(p))}</span>
+        <span class="land-phase-state">${escUiHtml(stateWord)}</span>
+        <span class="land-phase-summary" lang="en" dir="ltr">${escUiHtml(summary)}</span>
+      </summary>
+      <div class="land-phase-body">${body}</div>
+    </details>`;
+  }).join("");
+  const chrono=(view.chronological||[]).map(e=>landSpineEventRowHTML(e, view.portal_url, isPortalUrl)).join("");
+  const how=`<details class="land-spine-how lc-how">
+    <summary>${t("land_spine_show_all")}</summary>
+    <div class="land-spine land-spine-chrono">${chrono}</div>
+  </details>
+  <details class="land-spine-how lc-how">
+    <summary>${t("land_spine_how_summary")}</summary>
+    <div class="land-spine-how-body">${t("land_spine_how_html")}</div>
+  </details>`;
+  const lagHTML=landSpineLagHTML(view.lag?.open_data_vs_portal || {});
+  const gaps=landSpineGapsHTML(view.gaps);
+  return `<div class="chain-h">${t("land_spine_heading")}</div>${portal}${lead}${stepper}${panels}${how}${lagHTML}${gaps}`;
+}
+/** Flat fallback if phase module fails to load — still dedupes project portal links. */
+function landSpineHTMLFlat(spine, record){
+  if(!spine) return "";
+  const portalUrl=record?.portal_url || null;
+  const events=Array.isArray(spine.events)?spine.events:[];
+  const portal=portalUrl
+    ? `<a class="view land-spine-portal" href="${escUiHtml(portalUrl)}" ${EXT_ATTRS}>${t("land_spine_portal_link")}${extSR()}</a>`
+    : "";
+  const rail=events.map(e=>landSpineEventRowHTML(e, portalUrl, null)).join("");
+  return `<div class="chain-h">${t("land_spine_heading")}</div>${portal}${landSpineLagHTML(spine.lag?.open_data_vs_portal||{})}${rail?`<div class="land-spine">${rail}</div>`:""}${landSpineGapsHTML(spine.gaps)}`;
+}
+function landSpineHTML(spine, record, phaseTools){
+  if(!spine) return "";
+  if(phaseTools && typeof phaseTools.buildLandPhaseView==="function"){
+    const view=phaseTools.buildLandPhaseView(spine, {
+      open_data: record?.open_data || null,
+      portal_url: record?.portal_url || null,
+      public_status: record?.public_status || record?.open_data?.public_status || null,
+      project_id: record?.project_id || spine.project_id || null
+    });
+    return landPhaseSpineHTML(view, phaseTools);
+  }
+  return landSpineHTMLFlat(spine, record);
+}
+function bindLandSpineUI(root){
+  if(!root || root.dataset.landSpineBound==="1") return;
+  root.dataset.landSpineBound="1";
+  root.addEventListener("click", (ev)=>{
+    const step=ev.target.closest?.("[data-land-phase]");
+    if(step && root.contains(step)){
+      const id=step.getAttribute("data-land-phase");
+      const panel=root.querySelector(`[data-land-phase-panel="${CSS.escape(id)}"]`);
+      if(panel){
+        panel.open=true;
+        try{ panel.scrollIntoView({behavior:"smooth", block:"nearest"}); }catch(_e){}
+      }
+      return;
+    }
+    const btn=ev.target.closest?.("[data-land-dates]");
+    if(btn && root.contains(btn)){
+      const listId=btn.getAttribute("data-land-dates");
+      const list=listId?root.querySelector("#"+CSS.escape(listId)):null;
+      if(!list) return;
+      const show=!list.classList.contains("show");
+      list.classList.toggle("show", show);
+      btn.setAttribute("aria-expanded", show?"true":"false");
+      const n=list.children.length;
+      btn.textContent=show?t("land_spine_hide_dates"):t("land_spine_show_dates",{n:String(n)});
+    }
+  });
 }
 
-function landOutcomesHTML(record){
+function landOutcomesHTML(record, phaseTools){
   if(!record){
     return `<div class="chain-h">${t("land_outcomes_heading")}</div>
       <div class="note">${t("land_outcomes_unmatched_html",{
         reason: escUiHtml(t("land_outcomes_unmatched_default"))
       })}</div>`;
   }
-  const spineHTML=landSpineHTML(record.spine);
+  const spineHTML=landSpineHTML(record.spine, record, phaseTools);
   const join = record.join || {};
   if(!join.matched || !record.filled){
     const reason = join.reason || t("land_outcomes_unmatched_default");
@@ -4936,14 +5150,19 @@ function prefetchZapOutcomesForList(rows){
 }
 async function loadZapOutcomes(r, el, selection){
   if(!el || !r || !r.project_id) return;
+  const phaseToolsP = ensureLandPhaseSpineTools();
   const warm = zapOutcomesMemGet(r.project_id);
   if(warm?.data?.ok !== false && warm?.data?.record){
     if(selection !== undefined && selection !== landSelectionSeq) return;
     if(!document.contains(el)) return;
-    el.innerHTML = landOutcomesHTML(warm.data.record);
+    const phaseTools = await phaseToolsP;
+    if(selection !== undefined && selection !== landSelectionSeq) return;
+    if(!document.contains(el)) return;
+    el.innerHTML = landOutcomesHTML(warm.data.record, phaseTools);
+    bindLandSpineUI(el);
     return;
   }
-  const data = await fetchZapOutcomesPayload(r.project_id);
+  const [data, phaseTools] = await Promise.all([fetchZapOutcomesPayload(r.project_id), phaseToolsP]);
   if(selection !== undefined && selection !== landSelectionSeq) return;
   if(!document.contains(el)) return;
   if(!data || data.ok === false || !data.record){
@@ -4953,7 +5172,8 @@ async function loadZapOutcomes(r, el, selection){
       })}</div>`;
     return;
   }
-  el.innerHTML = landOutcomesHTML(data.record);
+  el.innerHTML = landOutcomesHTML(data.record, phaseTools);
+  bindLandSpineUI(el);
 }
 
 /* ===================== FEED LENSES (Property / Rules / Meetings) ===================== */

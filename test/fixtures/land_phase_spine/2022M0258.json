@@ -1,0 +1,180 @@
+{
+  "project_id": "2022M0258",
+  "portal_url": "https://zap.planning.nyc.gov/projects/2022M0258",
+  "public_status": "In Public Review",
+  "open_data": {
+    "project_id": "2022M0258",
+    "ulurp_numbers": "240046HAM; 240047PQM",
+    "current_milestone": "City Council Review",
+    "current_milestone_date": "2024-02-01T00:00:00.000",
+    "public_status": "In Public Review",
+    "project_status": "Active"
+  },
+  "spine": {
+    "schema_version": 1,
+    "project_id": "2022M0258",
+    "join": {
+      "zap": {
+        "matched": true,
+        "method": "exact_project_id",
+        "reason": null
+      },
+      "city_record": {
+        "matched": false,
+        "method": "exact_ulurp_token",
+        "count": 0
+      }
+    },
+    "events": [
+      {
+        "id": "zap-milestone:f168e262-4c5d-ec11-8f8e-001dd8050708",
+        "kind": "zap_milestone",
+        "title": "Land Use Application Filed",
+        "detail": "Completed",
+        "status": "Completed",
+        "outcome": null,
+        "time": {
+          "value": "2023-07-26",
+          "precision": "day",
+          "basis": "actual_end",
+          "certainty": "actual"
+        },
+        "source": {
+          "id": "zap-project-api",
+          "label": "Zoning Application Portal",
+          "url": "https://zap.planning.nyc.gov/projects/2022M0258"
+        }
+      },
+      {
+        "id": "zap-milestone:0b69e262-4c5d-ec11-8f8e-001dd8050708",
+        "kind": "zap_milestone",
+        "title": "Land Use Application Filed",
+        "detail": "Completed",
+        "status": "Completed",
+        "outcome": null,
+        "time": {
+          "value": "2023-08-02",
+          "precision": "day",
+          "basis": "actual_end",
+          "certainty": "actual"
+        },
+        "source": {
+          "id": "zap-project-api",
+          "label": "Zoning Application Portal",
+          "url": "https://zap.planning.nyc.gov/projects/2022M0258"
+        }
+      },
+      {
+        "id": "zap-milestone:2b69e262-4c5d-ec11-8f8e-001dd8050708",
+        "kind": "zap_milestone",
+        "title": "Application Reviewed at City Planning Commission Review Session",
+        "detail": "Certified",
+        "status": "Completed",
+        "outcome": "Certified",
+        "time": {
+          "value": "2023-08-21",
+          "precision": "day",
+          "basis": "review_meeting",
+          "certainty": "actual"
+        },
+        "source": {
+          "id": "zap-project-api",
+          "label": "Zoning Application Portal",
+          "url": "https://zap.planning.nyc.gov/projects/2022M0258"
+        }
+      },
+      {
+        "id": "zap-disposition:b8550318-9a2c-ee11-9965-001dd8305eae+cc550318-9a2c-ee11-9965-001dd8305eae",
+        "kind": "zap_disposition",
+        "title": "Community Board",
+        "detail": "Conditional Favorable",
+        "status": "Submitted",
+        "outcome": "Conditional Favorable",
+        "time": {
+          "value": "2023-10-24",
+          "precision": "day",
+          "basis": "vote_date",
+          "certainty": "actual"
+        },
+        "source": {
+          "id": "zap-project-api",
+          "label": "Zoning Application Portal",
+          "url": "https://zap.planning.nyc.gov/projects/2022M0258"
+        }
+      },
+      {
+        "id": "zap-milestone:90b1da68-4c5d-ec11-8f8e-001dd8050708",
+        "kind": "zap_milestone",
+        "title": "Community Board Review",
+        "detail": "Approved with Conditions",
+        "status": "Completed",
+        "outcome": "Approved with Conditions",
+        "time": {
+          "value": "2023-10-26",
+          "precision": "day",
+          "basis": "actual_end",
+          "certainty": "actual"
+        },
+        "source": {
+          "id": "zap-project-api",
+          "label": "Zoning Application Portal",
+          "url": "https://zap.planning.nyc.gov/projects/2022M0258"
+        }
+      },
+      {
+        "id": "zap-milestone:a0b1da68-4c5d-ec11-8f8e-001dd8050708",
+        "kind": "zap_milestone",
+        "title": "Borough President Review",
+        "detail": "Multiple Borough President Recommendations",
+        "status": "Completed",
+        "outcome": "Multiple Borough President Recommendations",
+        "time": {
+          "value": "2023-11-24",
+          "precision": "day",
+          "basis": "actual_end",
+          "certainty": "actual"
+        },
+        "source": {
+          "id": "zap-project-api",
+          "label": "Zoning Application Portal",
+          "url": "https://zap.planning.nyc.gov/projects/2022M0258"
+        }
+      },
+      {
+        "id": "zap-milestone:c5b1da68-4c5d-ec11-8f8e-001dd8050708",
+        "kind": "zap_milestone",
+        "title": "Review Session - Pre-Hearing Review / Post Referral",
+        "detail": "To Public Hearing",
+        "status": "Completed",
+        "outcome": "To Public Hearing",
+        "time": {
+          "value": "2023-11-27",
+          "precision": "day",
+          "basis": "review_meeting",
+          "certainty": "actual"
+        },
+        "source": {
+          "id": "zap-project-api",
+          "label": "Zoning Application Portal",
+          "url": "https://zap.planning.nyc.gov/projects/2022M0258"
+        }
+      }
+    ],
+    "gaps": [
+      {
+        "slot": "city_record_notices",
+        "class": "not_published",
+        "taxonomy": true,
+        "source": "City Record Online"
+      }
+    ],
+    "lag": {
+      "open_data_vs_portal": {
+        "status": "behind",
+        "days": 41,
+        "open_data_date": "2024-02-01",
+        "portal_date": "2024-03-13"
+      }
+    }
+  }
+}
