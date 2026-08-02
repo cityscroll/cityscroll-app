@@ -33,6 +33,16 @@ test("comment-close detail keeps the official action and calendar affordance", (
   assert.match(html, /downloadRuleEventICS/);
 });
 
+test("public demo contract includes a Rules lifecycle spine notice", async () => {
+  const demo = JSON.parse(await readFile(new URL("../site/demo/demo-links.json", import.meta.url), "utf8"));
+  const entry = demo.entries.find((row) => row.id === "rules-lifecycle-spine");
+  assert.ok(entry, "demo-links must include rules-lifecycle-spine");
+  assert.equal(entry.feature, "rules-lifecycle-spine");
+  assert.match(entry.url, /^#notice\//);
+  assert.ok(entry.expectations.visible.some((loc) => /rule-chain|chain-h/.test(loc.selector)));
+  assert.ok(entry.expectations.visible.some((loc) => /Proposal published|Comment deadline|Public hearing|Rule lifecycle/.test(loc.text || "")));
+});
+
 test("digest temporal path cites comment-close by valid_at from the event spine", async () => {
   const alertTemporal = await readFile(new URL("../worker/src/lib/alert_temporal.mjs", import.meta.url), "utf8");
   assert.match(alertTemporal, /commentCloseValidAt/);
