@@ -2,8 +2,10 @@
 //
 // Pure module (no fetch). When Checkbook leaves pending/registered unmatched, a strict
 // EPIN↔PIN join can fill those stages from PASSPort. Solicitations gain an RFx detail
-// block when a join succeeds. Unmatched stays in the not-yet-ingested register with a
-// specific PASSPort source name — never a blank slot.
+// block when a join succeeds. When City Record and OCP Current Solicitations leave the
+// solicitation stage empty, a matched RFx row recovers it as a first-class timeline
+// stage (honest source: passport-public-rfx) — never invents a City Record notice.
+// Unmatched stays in the not-yet-ingested register with named sources.
 
 import {
   buildEpinIndex,
@@ -14,6 +16,13 @@ import {
 } from "./passport_join.mjs";
 import { CONTRACTS_PORTAL, RFX_PORTAL, passportRfxHandoffUrl } from "./passport_parse.mjs";
 import { recoverPaymentFromRegisteredJoin } from "./checkbook_lifecycle.mjs";
+import {
+  attachLifecycleCoherence,
+  DATE_BASIS_EVENT,
+  DATE_BASIS_RECEIVED,
+  DATE_BASIS_REGISTRATION,
+  SOLICITATION_RECOVERY_SOURCES,
+} from "./lifecycle_coherence.mjs";
 
 export { buildEpinIndex, joinPinToEpin, normId };
 
@@ -48,7 +57,7 @@ export function enrichLifecycleWithPassport(lifecycle, notice, passport = {}) {
     ? pendingContracts
     : matchedContracts.filter((c) => c.status && !isPassportRegisteredStatus(c.status));
 
-  const timeline = lifecycle.timeline.map((entry) => {
+  let timeline = lifecycle.timeline.map((entry) => {
     if (entry.stage === "solicitation") {
       return enrichSolicitation(entry, matchedRfx, rfxJoin, lookup.rfx);
     }
@@ -60,6 +69,15 @@ export function enrichLifecycleWithPassport(lifecycle, notice, passport = {}) {
     }
     return entry;
   });
+
+  // Recovery: when CR + OCP left solicitation empty but RFx joined uniquely, inject
+  // a matched solicitation stage from PASSPort RFx (honest source, not a CR invent).
+  const hasSolicitation = timeline.some((e) => e && e.stage === "solicitation");
+  if (!hasSolicitation && matchedRfx.length === 1 && lookup.rfx !== "error") {
+    timeline = injectSolicitationFromRfx(timeline, matchedRfx[0], rfxJoin);
+  } else if (!hasSolicitation && matchedRfx.length > 1 && lookup.rfx !== "error") {
+    // Ambiguous RFx — do not invent a solicitation stage; root rfx_detail carries candidates.
+  }
 
   // Solicitation-only notices: inject solicitation stage RFx enrichment already handled.
   // If there is no solicitation stage but we have RFx (award notice that still has live RFx),
@@ -78,8 +96,18 @@ export function enrichLifecycleWithPassport(lifecycle, notice, passport = {}) {
     timeline,
   });
 
-  return {
+  const solMatched = (withPayment.timeline || []).find(
+    (e) => e && e.stage === "solicitation" && e.status === "matched",
+  );
+  const solicitation_recovery = {
+    status: solMatched ? "matched" : "unmatched",
+    source: solMatched?.source || null,
+    sources_checked: SOLICITATION_RECOVERY_SOURCES.slice(),
+  };
+
+  const enriched = {
     ...withPayment,
+    solicitation_recovery,
     passport: {
       contract_join: contractJoin,
       rfx_join: rfxJoin,
@@ -92,6 +120,52 @@ export function enrichLifecycleWithPassport(lifecycle, notice, passport = {}) {
     },
     rfx_detail: rfxDetail,
   };
+
+  // Re-stamp coherence after RFx may have filled solicitation / payment recovery.
+  return attachLifecycleCoherence(enriched);
+}
+
+/**
+ * Prepend a matched solicitation stage recovered from PASSPort RFx.
+ * Uses release_date as event time (not City Record publication).
+ */
+export function injectSolicitationFromRfx(timeline, rfxRow, join) {
+  const r = rfxRow || {};
+  const release = parseUsDate(r.release_date) || null;
+  const due = parseUsDate(r.due_date) || null;
+  const entry = {
+    stage: "solicitation",
+    status: "matched",
+    source: "passport-public-rfx",
+    date: release,
+    source_timestamp: release,
+    date_basis: DATE_BASIS_EVENT,
+    event_date: release,
+    documents_status: "unmatched", // public_rfx_data has no document URL columns
+    detail: {
+      request_id: null,
+      agency: r.agency || null,
+      title: r.procurement_name || null,
+      pin: r.epin || null,
+      epin: r.epin || null,
+      due_date: due,
+      rfx: slimRfx(r),
+      rfx_join_method: join?.method || null,
+      recovery_source: "passport-public-rfx",
+    },
+    rfx: {
+      status: "matched",
+      source: "passport-public-rfx",
+      portal: passportRfxHandoffUrl(r.rfp_id),
+      join_method: join?.method || null,
+      detail: slimRfx(r),
+    },
+  };
+  const rest = Array.isArray(timeline) ? timeline.slice() : [];
+  // Insert before first non-solicitation stage (timeline may start at intermediates).
+  const insertAt = rest.findIndex((e) => e && e.stage !== "solicitation");
+  if (insertAt < 0) return [entry, ...rest];
+  return [...rest.slice(0, insertAt), entry, ...rest.slice(insertAt)];
 }
 
 function groupByEpin(rows) {
@@ -179,6 +253,7 @@ function enrichPending(entry, pendingPool, join, lookupStatus) {
       source: "passport-public-contracts",
       date: parseUsDate(c.start_date) || null,
       source_timestamp: parseUsDate(c.start_date) || null,
+      date_basis: DATE_BASIS_RECEIVED,
       detail: {
         contract_id: c.contract_id || c.ctr_id || null,
         vendor: c.vendor || null,
@@ -240,6 +315,7 @@ function enrichRegistered(entry, registeredPool, join, lookupStatus) {
       source: "passport-public-contracts",
       date: parseUsDate(c.registration_date) || null,
       source_timestamp: parseUsDate(c.registration_date) || null,
+      date_basis: DATE_BASIS_REGISTRATION,
       detail: {
         contract_id: c.contract_id || c.ctr_id || null,
         vendor: c.vendor || null,
