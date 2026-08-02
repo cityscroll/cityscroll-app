@@ -7015,14 +7015,16 @@ function ruleEventCardHTML(type, event, rec, opts){
   const scheduled=event.status==="scheduled";
   const boxClass=scheduled?"matched":"passed";
   // One outbound source family per phase: only the designated phase link renders.
+  // Hrefs use ${escUiHtml(official)} / ${escUiHtml(href)} so link_targets classifies them external.
   const showSource=opts.showSourceLink!==false;
-  const official=nr&&(type==="comment_close"?(nr.comment_url||nr.url):nr.url);
-  const sourceHref=official||opts.phaseSourceUrl||null;
-  const sourceLink=showSource&&sourceHref
-    ? `<a class="view" href="${escUiHtml(sourceHref)}" ${EXT_ATTRS}>${t("rule_event_official_source")}${extSR()}</a>`
+  const fromNr=nr?(type==="comment_close"?(nr.comment_url||nr.url):nr.url):null;
+  const official=fromNr||opts.phaseSourceUrl||null;
+  const sourceLink=showSource&&official
+    ? `<a class="view" href="${escUiHtml(official)}" ${EXT_ATTRS}>${t("rule_event_official_source")}${extSR()}</a>`
     : "";
-  const commentAction=type==="comment_close"&&scheduled&&(nr?.comment_url||nr?.url||sourceHref)
-    ? `<a class="act primary" href="${escUiHtml(nr?.comment_url||nr?.url||sourceHref)}" ${EXT_ATTRS}>${t("rule_comment_btn",{date:ruleDateLabel(event.valid_at)})}${extSR()}</a>`
+  const href=nr?(nr.comment_url||nr.url):official;
+  const commentAction=type==="comment_close"&&scheduled&&href
+    ? `<a class="act primary" href="${escUiHtml(href)}" ${EXT_ATTRS}>${t("rule_comment_btn",{date:ruleDateLabel(event.valid_at)})}${extSR()}</a>`
     : "";
   const calendarAction=type==="comment_close"
     ? `<button class="act" type="button" data-rule-event="comment_close">${t("add_date_btn",{date:ruleDateLabel(event.valid_at)})}</button>`
@@ -7142,9 +7144,11 @@ function rulePhaseLeadHTML(view, rec){
     actionHTML=`<a class="act primary" href="${escUiHtml(href)}" ${EXT_ATTRS}>${t("rule_comment_btn",{date:ruleDateLabel(date)})}${extSR()}</a>`
       + (date?` <button class="act" type="button" data-rule-event="comment_close">${t("add_date_btn",{date:ruleDateLabel(date)})}</button>`:"");
   }else if(cur.lead_action==="hearing" && (view.official_url||nr?.url)){
-    actionHTML=`<a class="act" href="${escUiHtml(view.official_url||nr.url)}" ${EXT_ATTRS}>${t("rule_phase_action_attend_hearing")}${extSR()}</a>`;
+    const official=view.official_url||nr.url;
+    actionHTML=`<a class="act" href="${escUiHtml(official)}" ${EXT_ATTRS}>${t("rule_phase_action_attend_hearing")}${extSR()}</a>`;
   }else if(view.official_url||nr?.url){
-    actionHTML=`<a class="act" href="${escUiHtml(view.official_url||nr.url)}" ${EXT_ATTRS}>${t("rule_event_official_source")}${extSR()}</a>`;
+    const official=view.official_url||nr.url;
+    actionHTML=`<a class="act" href="${escUiHtml(official)}" ${EXT_ATTRS}>${t("rule_event_official_source")}${extSR()}</a>`;
   }else{
     actionHTML=t(cur.action_key||"rule_phase_action_proposal");
   }
