@@ -282,6 +282,7 @@
       /written\s+testimony[\s\S]{0,160}?\b(?:electronically\s+)?(?:to|at)\s+([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})\b/i,
       /(?:submit|send)\s+(?:all\s+)?(?:written\s+)?(?:testimony|comments?)[\s\S]{0,120}?\b(?:to|at)\s+([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})\b/i,
       /([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})\b[\s\S]{0,100}?written\s+testimony/i,
+      /comments?\s+(?:may|must|can)\s+be\s+(?:submitted|sent)[\s\S]{0,120}?\b(?:to|at)\s+([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})\b/i,
     ];
     for (const pattern of patterns) {
       const match = pattern.exec(text);
@@ -402,6 +403,283 @@
       contact_phone: contactPhone,
       emails,
       phones,
+      has_fields: hasFields,
+    };
+  }
+
+  /**
+   * Classify land-use body (CB / BP / CPC / Council) for phase-tied steps.
+   * Pure title/agency heuristics — never invents a hearing that is not present.
+   */
+  function landHearingBody(hearing) {
+    const hay = [
+      hearing && hearing.agency,
+      hearing && hearing.agency_name,
+      hearing && hearing.title,
+      hearing && hearing.short_title,
+      hearing && hearing.detail,
+      hearing && hearing.notice_text,
+      hearing && hearing.representing,
+    ].filter(Boolean).join(" ").toLowerCase();
+    if (/community board|\bcb\s*\d|\bcb\b/.test(hay)) return "community_board";
+    if (/borough president|borough board/.test(hay)) return "borough_president";
+    if (/city planning|\bcpc\b|planning commission/.test(hay)) return "cpc";
+    if (/city council|council review|subcommittee on zoning/.test(hay)) return "city_council";
+    return null;
+  }
+
+  const LAND_PUBLIC_PHASES = Object.freeze([
+    "community_board", "borough_president", "cpc", "city_council",
+  ]);
+
+  const LAND_PHASE_LABELS = Object.freeze({
+    pre_application: "Pre-application and filing",
+    environmental: "Environmental review (CEQR)",
+    pre_certification: "Pre-certification notice",
+    certification: "Certification",
+    community_board: "Community Board review",
+    borough_president: "Borough President review",
+    cpc: "City Planning Commission",
+    city_council: "City Council review",
+    mayoral_appeals: "Mayoral and appeals review",
+  });
+
+  /**
+   * Map public_status / lifecycle_stage / phase_id into a coarse land stage for the rail.
+   * Does not invent openness — completed-like statuses close comment; public-review opens it.
+   */
+  function zoningStage(matter) {
+    const stage = String((matter && matter.lifecycle_stage) || "").toLowerCase().trim();
+    if (stage) return stage;
+    const status = String((matter && matter.public_status) || "").toLowerCase();
+    if (/completed|withdrawn|terminated|approved|disapproved/.test(status)) return "closed";
+    if (/public review/.test(status)) return "public-review";
+    if (/noticed/.test(status)) return "noticed";
+    if (/active|filed/.test(status)) return "active";
+    const phase = String((matter && matter.phase_id) || "").toLowerCase();
+    if (LAND_PUBLIC_PHASES.includes(phase)) return "public-review";
+    if (phase === "pre_certification") return "noticed";
+    if (phase === "mayoral_appeals") return "closed";
+    return stage || "active";
+  }
+
+  function participationUrlFromBody(body) {
+    const urls = (String(body || "").match(/https?:\/\/[^\s<>"']+/gi) || [])
+      .map((raw) => raw.replace(/&amp;/gi, "&").replace(/[),.;\]}>]+$/g, ""))
+      .map(httpsUrl)
+      .filter(Boolean);
+    // Prefer Zoom/Webex/Teams join links over generic agency pages.
+    const join = urls.find((url) => isJoinPlatformUrl(url));
+    if (join) return join;
+    // Agenda/materials pages near hearing language.
+    for (const url of urls) {
+      if (/legistar|planning\.nyc|communityboard|cb\d|franchise|hearing|agenda/i.test(url)) {
+        return url;
+      }
+    }
+    return urls[0] || null;
+  }
+
+  function hearingParticipationBits(hearing, today) {
+    if (!hearing) return null;
+    const body = String(hearing.notice_text || hearing.description || "");
+    const venue = venueFromMatter(hearing);
+    const participation = hearing.participation || {};
+    const linkUrl = httpsUrl(hearing.participation_url)
+      || httpsUrl(((participation.links || [])[0] || {}).url)
+      || participationUrlFromBody(body);
+    const joinKind = linkUrl ? (isJoinPlatformUrl(linkUrl) ? "join" : "link") : null;
+    const testimonyEmail = extractTestimonyEmail(body);
+    const testimonyUntil = extractTestimonyUntil(body);
+    const bodyEmails = extractEmails(body);
+    const bodyPhones = extractPhones(body);
+    const emails = uniqueStrings([
+      hearing.email,
+      ...(participation.emails || []),
+      ...bodyEmails,
+    ]);
+    const phones = uniqueStrings([
+      hearing.contact_phone,
+      ...(participation.phones || []),
+      ...bodyPhones,
+    ]);
+    const contactName = String(hearing.contact_name || "").trim() || null;
+    const contactEmail = uniqueStrings(emails.filter((email) => {
+      if (!testimonyEmail) return true;
+      return email.toLowerCase() !== String(testimonyEmail).toLowerCase();
+    }))[0] || testimonyEmail || null;
+    const contactPhone = phones[0] || null;
+    const eventDate = hearing.event_date || hearing.deadline || null;
+    const past = eventDate ? isPast(eventDate, today) : false;
+    const bodyKind = landHearingBody(hearing);
+    const sourceUrl = httpsUrl(hearing.source_url || hearing.official_notice_url)
+      || (hearing.request_id
+        ? `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(hearing.request_id)}`
+        : null);
+    const hasFields = !!(
+      linkUrl
+      || venue.address
+      || venue.building
+      || testimonyEmail
+      || contactName
+      || contactEmail
+      || contactPhone
+      || eventDate
+      || sourceUrl
+    );
+    return {
+      request_id: String(hearing.request_id || "").trim() || null,
+      title: String(hearing.title || hearing.short_title || "").trim() || null,
+      agency: String(hearing.agency || hearing.agency_name || "").trim() || null,
+      body_kind: bodyKind,
+      event_date: eventDate,
+      past,
+      participation_url: linkUrl,
+      join_kind: joinKind,
+      venue_address: venue.address,
+      venue_building: venue.building,
+      venue_mode: venue.mode,
+      testimony_email: testimonyEmail,
+      testimony_until: testimonyUntil,
+      contact_name: contactName,
+      email: contactEmail,
+      contact_phone: contactPhone,
+      source_url: sourceUrl,
+      has_fields: hasFields,
+    };
+  }
+
+  /**
+   * Land / ULURP handoff: phase-tied next steps from ZAP + joined City Record hearings.
+   * Never fabricates a hearing, comment email, or join link — omits when absent.
+   */
+  function zoningHandoff(matter, options) {
+    const opts = options || {};
+    const today = String(opts.today || new Date().toISOString().slice(0, 10)).slice(0, 10);
+    const m = matter || {};
+    const projectUrl = httpsUrl(m.project_url)
+      || (m.project_id
+        ? `https://zap.planning.nyc.gov/projects/${encodeURIComponent(String(m.project_id))}`
+        : null);
+    const stage = zoningStage(m);
+    const phaseId = String(m.phase_id || "").trim() || null;
+    const phaseLabel = String(m.phase_label || "").trim()
+      || (phaseId && LAND_PHASE_LABELS[phaseId])
+      || null;
+    const publicStatus = String(m.public_status || "").trim() || null;
+    const rawHearings = Array.isArray(m.hearings) ? m.hearings.slice() : [];
+    // Also accept a single hearing-shaped payload stamped on the matter.
+    if (!rawHearings.length && (m.notice_text || m.event_date || m.participation_url || m.venue)) {
+      rawHearings.push({
+        request_id: m.request_id,
+        event_date: m.event_date || m.deadline,
+        agency: m.agency_name,
+        title: m.title,
+        notice_text: m.notice_text,
+        participation_url: m.participation_url,
+        participation: m.participation,
+        venue: m.venue,
+        street_address_1: m.street_address_1,
+        street_address_2: m.street_address_2,
+        city: m.city,
+        state: m.state,
+        zip_code: m.zip_code,
+        building_name: m.building_name,
+        email: m.email,
+        contact_name: m.contact_name,
+        contact_phone: m.contact_phone,
+        source_url: m.official_notice_url,
+      });
+    }
+    const hearings = rawHearings
+      .map((h) => hearingParticipationBits(h, today))
+      .filter(Boolean);
+    // Prefer upcoming hearing matching current phase, else nearest future, else most recent with fields.
+    const upcoming = hearings
+      .filter((h) => h.event_date && !h.past)
+      .sort((a, b) => String(a.event_date).localeCompare(String(b.event_date)));
+    let nextHearing = null;
+    if (phaseId && upcoming.length) {
+      nextHearing = upcoming.find((h) => h.body_kind === phaseId) || upcoming[0];
+    } else if (upcoming.length) {
+      nextHearing = upcoming[0];
+    } else {
+      nextHearing = hearings
+        .filter((h) => h.has_fields)
+        .sort((a, b) => String(b.event_date || "").localeCompare(String(a.event_date || "")))[0] || null;
+    }
+
+    const closed = stage === "closed" || stage === "completed" || stage === "past";
+    const publicReview = stage === "public-review" || stage === "hearing"
+      || LAND_PUBLIC_PHASES.includes(phaseId);
+    const preReview = !closed && !publicReview;
+
+    // Primary kinetic destination: online join when published; else hearing notice; else ZAP.
+    let destination = null;
+    let labelKey = "view_comment_zap";
+    let label = "View and comment on ZAP";
+    let primaryType = "comment";
+    if (nextHearing && !nextHearing.past && nextHearing.participation_url && nextHearing.join_kind === "join") {
+      destination = nextHearing.participation_url;
+      labelKey = "join_online";
+      label = "Join online";
+      primaryType = "attend";
+    } else if (nextHearing && !nextHearing.past && nextHearing.source_url && nextHearing.has_fields) {
+      destination = nextHearing.source_url;
+      labelKey = "land_action_open_hearing_notice";
+      label = "Open the hearing notice";
+      primaryType = "document";
+    } else if (publicReview && projectUrl) {
+      destination = projectUrl;
+      labelKey = "view_comment_zap";
+      label = "View and comment on ZAP";
+      primaryType = "comment";
+    } else if (projectUrl) {
+      destination = projectUrl;
+      labelKey = "zap_full_project";
+      label = "Full project on ZAP";
+      primaryType = "document";
+    }
+
+    const hasFields = !!(
+      projectUrl
+      || nextHearing
+      || phaseId
+      || publicStatus
+      || m.deadline
+      || hearings.length
+    );
+
+    return {
+      system: "zoning_extracted",
+      mode: closed ? "closed" : publicReview ? "public_review" : preReview ? "pre_review" : "active",
+      destination,
+      label_key: closed ? "next_action_comment_closed" : labelKey,
+      label: closed ? "Public comment is not open now." : label,
+      primary_type: closed ? "comment" : primaryType,
+      project_url: projectUrl,
+      project_id: String(m.project_id || "").trim() || null,
+      project_name: String(m.title || m.project_name || "").trim() || null,
+      public_status: publicStatus,
+      phase_id: phaseId,
+      phase_label: phaseLabel,
+      stage,
+      deadline: m.deadline || (nextHearing && !nextHearing.past ? nextHearing.event_date : null),
+      next_hearing: nextHearing,
+      hearings: hearings.slice(0, 6),
+      // Flatten next-hearing participation for guide renderers shared with hearing rails.
+      participation_url: nextHearing ? nextHearing.participation_url : null,
+      join_kind: nextHearing ? nextHearing.join_kind : null,
+      venue_address: nextHearing ? nextHearing.venue_address : null,
+      venue_building: nextHearing ? nextHearing.venue_building : null,
+      venue_mode: nextHearing ? nextHearing.venue_mode : null,
+      event_date: nextHearing ? nextHearing.event_date : null,
+      testimony_email: nextHearing ? nextHearing.testimony_email : null,
+      testimony_until: nextHearing ? nextHearing.testimony_until : null,
+      contact_name: nextHearing ? nextHearing.contact_name : null,
+      email: nextHearing ? nextHearing.email : null,
+      contact_phone: nextHearing ? nextHearing.contact_phone : null,
+      official_notice_url: nextHearing ? nextHearing.source_url : httpsUrl(m.official_notice_url),
       has_fields: hasFields,
     };
   }
@@ -608,10 +886,54 @@
         actions.push(watch);
       }
     } else if (kind === "zoning") {
-      const active = !stage || ["active", "public-review", "hearing"].includes(stage);
-      actions = active
-        ? [official("comment", "view_comment_zap", "View and comment on ZAP", matter.project_url, deadline), watch]
-        : [unavailable("comment", "next_action_comment_closed", "Public comment is not open now.", deadline), notice(), watch];
+      const handoff = zoningHandoff(matter, {today});
+      const actionDeadline = deadline || handoff.deadline || null;
+      const landWatch = local("watch", "next_action_watch_rezone", "Watch this rezoning", "#alerts", null);
+      if (handoff.mode === "closed") {
+        actions = [
+          unavailable("comment", "next_action_comment_closed", "Public comment is not open now.", actionDeadline),
+        ];
+        if (handoff.project_url) {
+          actions.push(official("document", "zap_full_project", "Full project on ZAP", handoff.project_url, null));
+        } else if (matter.official_notice_url) {
+          actions.push(notice());
+        }
+        actions.push(landWatch);
+      } else if (handoff.destination) {
+        const type = handoff.primary_type === "attend"
+          ? "attend"
+          : handoff.primary_type === "document"
+            ? "document"
+            : "comment";
+        actions = [
+          official(type, handoff.label_key, handoff.label, handoff.destination, actionDeadline, {guide: handoff}),
+        ];
+        if (actionDeadline && !isPast(actionDeadline, today)) {
+          actions.push(local("calendar", "add_deadline_calendar", "Add deadline to calendar", null, actionDeadline));
+        }
+        actions.push(landWatch);
+      } else if (handoff.has_fields) {
+        // Phase context and/or hearing fields without a single outbound URL — guide-first.
+        actions = [validateAction({
+          type: "bid_checklist",
+          label_key: "next_action_land_guide",
+          label: "Follow the land-use participation steps below",
+          delivery: "local",
+          destination: null,
+          deadline: actionDeadline,
+          confirmation_required: false,
+          guide: handoff,
+        })];
+        if (actionDeadline && !isPast(actionDeadline, today)) {
+          actions.push(local("calendar", "add_deadline_calendar", "Add deadline to calendar", null, actionDeadline));
+        }
+        actions.push(landWatch);
+      } else {
+        actions = [
+          unavailable("comment", "next_action_land_steps_missing", "No participation steps are published for this rezoning yet.", actionDeadline),
+          landWatch,
+        ];
+      }
     } else if (kind === "exam") {
       const open = stage === "open";
       // Prefer exam-specific apply URL when publisher supplies one; else stable OASys landing.
@@ -702,6 +1024,9 @@
     compileActionRail,
     solicitationHandoff,
     hearingHandoff,
+    zoningHandoff,
+    zoningStage,
+    landHearingBody,
     parcelLookupActions,
     validateAction,
     outcomeEvent,

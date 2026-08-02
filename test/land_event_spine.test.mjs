@@ -133,6 +133,10 @@ test("edge read model materializes the strict City Record join into record.spine
     assert.ok(!calls.some((url) => url.includes("/hgx4-8ukb.json")));
     assert.equal(record.spine.join.city_record.matched, true);
     assert.ok(record.spine.events.some((event) => event.kind === "city_record_hearing"));
+    // Action rail payload: slim City Record rows ride with the outcomes record.
+    assert.ok(Array.isArray(record.city_record_notices));
+    assert.equal(record.city_record_notices[0]?.request_id, "20230912001");
+    assert.ok(record.city_record_notices[0]?.additional_description_1);
     // Lag compares warehouse Open Data milestone date vs portal last milestone.
     assert.ok(["behind", "aligned", "unknown"].includes(record.spine.lag.open_data_vs_portal.status));
   } finally {

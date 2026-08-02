@@ -86,6 +86,7 @@ OWN_HREF_EXPRS = (
     "${tel}",               # tel: scheme, not a page navigation
     "${mailtoFor(",         # mailto: scheme, not a page navigation
     "${noticeHref}",        # rule cards — in-app #notice hash route
+    "${landHref}",          # rezone dig items — in-app #land/{project_id} hash route
     # Task-first entry cards: in-app hash routes (#task/…, #notice/…, #land/…, #money, #land).
     "${taskEsc(itemHref)}",
     "${taskEsc(noticeHref)}",
