@@ -37,11 +37,19 @@ const CITY_RECORD_URL = "https://a856-cityrecord.nyc.gov/RequestDetail/";
 const MOCS_FCRC_URL =
   "https://www.nyc.gov/site/mocs/opportunities/franchises-concessions.page";
 
-const FCRC_AGENCY_RE =
-  /^(?:franchise and concession review committee|mayor'?s office of contract services)$/i;
+const FCRC_AGENCY_RE = /^franchise and concession review committee$/i;
 
 function clean(value) {
   return String(value ?? "").replace(/\s+/g, " ").trim();
+}
+
+/** True when hay names the FCRC / franchise-concession review path (not bare "franchise"). */
+function namesFcrcPath(hay) {
+  return (
+    /\bFCRC\b/i.test(hay)
+    || /franchise and concession review committee/i.test(hay)
+    || /franchise and concession review/i.test(hay)
+  );
 }
 
 function plainText(value) {
@@ -84,7 +92,9 @@ function titleText(row) {
 
 /**
  * True when a City Record row belongs on the franchise/concession review spine.
- * Excludes Council zoning-and-franchises land-use hearings.
+ * Excludes Council zoning-and-franchises land-use hearings, standing "Board Meetings"
+ * calendars that merely list FCRC in a citywide roster, and bare MOCS LL63 plan
+ * notices that never name a franchise/concession matter.
  */
 export function isFranchiseConcessionEligible(row) {
   if (!row || !clean(row.request_id)) return false;
@@ -101,20 +111,37 @@ export function isFranchiseConcessionEligible(row) {
     return false;
   }
 
+  // Standing multi-body calendars list FCRC among many boards — not an FCRC matter.
+  if (
+    /^board meetings$/i.test(agency)
+    || /^board meetings$/i.test(title)
+    || (/\bcity planning commission\b/i.test(hay)
+      && /\bcity council\b/i.test(hay)
+      && /\bfranchise and concession review committee\b/i.test(hay)
+      && /\bcontract awards public hearing\b/i.test(hay))
+  ) {
+    return false;
+  }
+
+  // Bare MOCS LL63 annual contracting-plan notices are not FCRC franchise matters.
+  // Keep MOCS only when the notice actually names FCRC / franchise-concession review.
+  if (/mayor'?s office of contract services/i.test(agency) && !namesFcrcPath(hay)) {
+    return false;
+  }
+
   if (FCRC_AGENCY_RE.test(agency)) return true;
-  if (/\bFCRC\b/i.test(hay)) return true;
-  if (/franchise and concession review committee/i.test(hay)) return true;
+  if (namesFcrcPath(hay)) return true;
   if (
     /proposed (?:information services )?franchise agreement/i.test(hay)
     || /franchise agreement between the city of new york/i.test(hay)
   ) {
     return true;
   }
-  // Significant concession solicitations / awards that name the FCRC path.
+  // Significant concession solicitations / awards / intent-to-award that name the FCRC path.
   if (
     /\bconcession\b/i.test(hay)
-    && /\b(request for proposals?|rfp|award|awarded|intent to award)\b/i.test(hay)
-    && (/\bFCRC\b/i.test(hay) || /franchise and concession/i.test(hay))
+    && /\b(request for proposals?|rfp|award|awarded|intent to award|license agreement)\b/i.test(hay)
+    && namesFcrcPath(hay)
   ) {
     return true;
   }
@@ -123,7 +150,7 @@ export function isFranchiseConcessionEligible(row) {
 
 /**
  * Extract join keys for multi-notice chaining.
- * Prefer counterparty stem; annual plan year; FCRC rules subject.
+ * Prefer counterparty stem; annual plan year; FCRC rules subject; concession id.
  * Never invent a bare monthly calendar key that would falsely merge all items.
  */
 export function franchiseConcessionJoinKeys(row) {
@@ -133,24 +160,49 @@ export function franchiseConcessionJoinKeys(row) {
   const body = bodyText(row);
   const hay = `${title} ${body}`;
 
-  // Annual Agency Concession Plan hearing/meeting.
+  // Annual Agency Concession Plan hearing/meeting (multiple phrasings).
   const plan =
-    hay.match(/agency annual concession plans?\s+for\s+fiscal\s+year\s+(\d{4})/i)
+    hay.match(/agency annual\.?\s*concession plans?\s+for\s+fiscal\s+year\s+(\d{4})/i)
+    || hay.match(/annual concession plans?\s+for\s+fiscal\s+year\s+(\d{4})/i)
     || hay.match(/concession plans?\s+for\s+fiscal\s+year\s+(\d{4})/i)
-    || hay.match(/\bfiscal year\s+(\d{4})\b.*\bconcession plan/i);
+    || hay.match(/\bfiscal year\s+(\d{4})\b.*\bconcession plan/i)
+    || hay.match(/\bconcession plans?\b.*\bfiscal year\s+(\d{4})/i)
+    || hay.match(/\bFY\s*(\d{4})\b.*\b(?:annual )?concession plan/i);
   if (plan) keys.add(`plan:fy${plan[1]}`);
 
-  // FCRC rules amendment / adoption package.
+  // FCRC rules amendment / adoption / proposed-changes package.
   if (
-    /amendment of fcrc rules|fcrc rules|concession rules of the city of new york/i.test(hay)
-    && /(?:notice of adoption|proposed (?:amendments?|rules)|public hearing on proposed rules)/i.test(
+    /(?:amendment of fcrc rules|fcrc rules|fcrc concession rules|concession rules of the city of new york|proposed changes to the (?:fcrc )?concession rules)/i.test(
+      hay,
+    )
+    && /(?:notice of adoption|proposed (?:amendments?|rules|changes)|public hearing on proposed rules|what are we proposing)/i.test(
       hay,
     )
   ) {
     keys.add("rules:fcrc");
   }
 
-  // Counterparty / franchisee from title or "between the City … and X".
+  // Publisher concession id when present (stable across holdover / cancel / re-notice).
+  const concessionId = hay.match(
+    /concession\s+id\s*(?:no\.?|number|#)?\s*[:\s]*([A-Z0-9][A-Z0-9\s\-.]{4,40})/i,
+  );
+  if (concessionId) {
+    const id = clean(concessionId[1])
+      .replace(/[^A-Za-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "")
+      .toLowerCase();
+    if (id.length >= 6) keys.add(`concession:${id}`);
+  }
+
+  // Parks / EDC solicitation number on joint concession hearings (e.g. B385-SB-2025).
+  const solicitation = hay.match(
+    /\bsolicitation\s*(?:#|no\.?|number)?\s*([A-Z0-9][A-Z0-9\-]{4,24})\b/i,
+  );
+  if (solicitation && /concession|franchise|license agreement/i.test(hay)) {
+    keys.add(`solicitation:${solicitation[1].toLowerCase()}`);
+  }
+
+  // Counterparty / franchisee from title or body patterns.
   const parties = extractCounterparties(row);
   for (const party of parties) {
     const stem = vendorStem(party);
@@ -165,56 +217,183 @@ export function franchiseConcessionJoinKeys(row) {
 /**
  * Pull counterparty names from title and body without guessing bare surnames.
  * Never treats "Franchise and Concession Review Committee" as a party.
+ * Prefer explicit award / between-City / intent-to-award party phrases that
+ * already produce the known party keys (e.g. OneChronos, SHI International).
+ *
+ * Capture class allows Latin letters beyond ASCII (Café) but push() rejects
+ * verb/date filler so "to be held on January 13" never becomes a party key.
  */
 export function extractCounterparties(row) {
   const title = titleText(row);
   const body = bodyText(row);
+  const hay = `${title} ${body}`;
   const found = [];
+  // Firm-name token: letters (incl. Latin-1), digits, common name punctuation.
+  // ENTITY allows short lowercase connectors (of / and / the) so
+  // "United Federal Data of New York, LLC" matches, and optional comma before
+  // the legal suffix ("York, LLC" / "Café, Inc.").
+  const LEGAL = String.raw`(?:LLC|L\.L\.C\.|Inc\.?|Corp\.?|LP|L\.P\.|LLP|Company|Co\.|PC|P\.C\.)`;
+  // Do NOT allow '.' inside name parts — otherwise "LLC." is swallowed as a name
+  // part and "X LLC. Y LLC" becomes one false party.
+  const namePart = String.raw`[A-Z\u00C0-\u024F][A-Za-z\u00C0-\u024F0-9'’&/-]*`;
+  const CONNECTOR = String.raw`(?:of|and|the|for|d\/?b\/?a\.?)`;
+  // Prefer legal suffix as the terminator (not a mid-name word).
+  const ENTITY = String.raw`((?:${namePart}(?:\s+(?:${namePart}|${CONNECTOR})){0,8}),?\s+${LEGAL})`;
+
   const isBlockedParty = (name) =>
-    /franchise and concession review committee|\bFCRC\b|city of new york|mayor'?s office of contract services/i.test(
+    /franchise and concession review committee|\bFCRC\b|city of new york|mayor'?s office of contract services|department of parks|new york city|nyc parks|police department|economic development|small business services|office of technology|city planning|board of|public hearing|joint public hearing|license agreement|concessionaire|^licensee$|^the city$/i.test(
       name,
     );
 
+  const hasLegalCue = (name) =>
+    /(?:LLC|L\.L\.C\.|Inc\.?|Corp\.?|LP|L\.P\.|LLP|Company|Co\.|PC|P\.C\.|PLC)\b/i.test(name);
+
+  const looksLikeDateOrVerbPhrase = (name) =>
+    /^(?:be held|held on|award|intent|enter|notice|proposed|relative|following)\b/i.test(name)
+    || /\b(?:january|february|march|april|may|june|july|august|september|october|november|december)\b/i.test(
+      name,
+    )
+    || /\b(?:to award|concession agreement to|intent to|be held|public hearing)\b/i.test(name)
+    || /^\d{1,2}[\/\-]\d{1,2}/.test(name);
+
   const push = (raw) => {
     let name = clean(raw)
+      .replace(/\s*\((?:Licensee|Concessionaire|the (?:Licensee|Concessionaire)|License|the City)\)\s*$/i, "")
       .replace(/\s+relative to.*$/i, "")
-      .replace(/\s+for the provision.*$/i, "")
-      .replace(/[.,;:]+$/g, "")
+      .replace(/\s+for the (?:provision|renovation|development|operation|maintenance|non-?exclusive).*$/i, "")
+      .replace(/\s+d\/?b\/?a\b.*$/i, "")
+      .replace(/\s*\([^)]{0,40}\)\s*$/g, "")
+      .replace(/[.,;:'"“”]+$/g, "")
+      .replace(/^['"“”]+|['"“”]+$/g, "")
       .trim();
+    // Drop leading articles / role words.
+    name = name.replace(/^(?:the|a|an)\s+/i, "").trim();
     if (!name || name.length < 3) return;
     if (isBlockedParty(name)) return;
-    // Require a legal-entity cue or multi-token proper name (avoid single filler words).
-    if (
-      !/(?:LLC|L\.L\.C\.|Inc\.?|Corp\.?|LP|L\.P\.|Company|Co\.)\b/i.test(name)
-      && name.split(/\s+/).length < 2
-    ) {
+    if (looksLikeDateOrVerbPhrase(name)) return;
+
+    // If a long phrase still contains a trailing legal entity, prefer that entity.
+    if (!hasLegalCue(name) || /\b(?:award|agreement|concession|intent|hearing|notice|license)\b/i.test(name)) {
+      const trail = name.match(new RegExp(`${ENTITY}\\s*$`, "i"));
+      if (trail && trail[1] && trail[1].length < name.length) {
+        name = clean(trail[1]);
+      } else if (!hasLegalCue(name) && /\b(?:award|agreement|concession|intent|hearing|notice)\b/i.test(name)) {
+        return;
+      }
+    }
+    // Split accidental double-entity captures ("X LLC. Y LLC" → keep first firm).
+    const doubleEntity = name.match(
+      new RegExp(String.raw`^(${ENTITY.replace(/^\(|\)$/g, "")})\.\s+${ENTITY.replace(/^\(|\)$/g, "")}$`, "i"),
+    );
+    if (doubleEntity) name = clean(doubleEntity[1]);
+    // Simpler split: two legal cues separated by ". "
+    if ((name.match(new RegExp(LEGAL, "gi")) || []).length >= 2 && /\.\s+[A-Z]/.test(name)) {
+      name = clean(name.split(/\.\s+(?=[A-Z])/)[0]);
+    }
+
+    // Require a legal-entity cue or multi-word proper name (avoid single filler words).
+    const words = name.split(/\s+/).filter(Boolean);
+    if (!hasLegalCue(name) && words.length < 2) return;
+    // Reject all-lowercase filler phrases and pure location fragments.
+    if (!/[A-Z\u00C0-\u024F]/.test(name) && !hasLegalCue(name)) return;
+    if (/^(?:the city|new york|manhattan|brooklyn|queens|bronx|staten island)$/i.test(name)) {
       return;
     }
+    // Prefer firm names: if no legal cue, require ≥2 Capitalized words (not verbs).
+    if (!hasLegalCue(name)) {
+      const caps = words.filter((t) => /^[A-Z\u00C0-\u024F]/.test(t));
+      if (caps.length < 2) return;
+      if (/\b(?:for|with|from|into|onto|and|the|of|at|on|to)\b/i.test(name) && words.length > 5) {
+        return;
+      }
+    }
     if (!found.some((x) => x.toLowerCase() === name.toLowerCase())) found.push(name);
+
+    // Also retain a parenthetical DBA short name when multi-token and proper.
+    const dba = clean(raw).match(/\((?:d\/?b\/?a|d\.b\.a\.?)\s+([^)]{2,60})\)/i);
+    if (dba) push(dba[1]);
   };
 
   // Prefer explicit body parties first (most reliable).
-  const between = body.match(
-    /between the City of New York and\s+([A-Z][\w .,'&-]{2,100}?)(?:\.|,|\s+The\s|\s+for\s|\s+to\s)/i,
-  );
-  if (between) push(between[1]);
+  // "between the City of New York and X" / with parentheticals: "(the City) and X".
+  // Require legal-entity ending so prose after "and" never becomes a party key.
+  const betweenPatterns = [
+    new RegExp(
+      String.raw`between the City of New York(?:\s*\([^)]*\))?\s+and\s+${ENTITY}\b`,
+      "i",
+    ),
+    new RegExp(
+      String.raw`franchise agreement between the City of New York and\s+${ENTITY}\b`,
+      "i",
+    ),
+    new RegExp(
+      String.raw`(?:franchise|concession) agreement[^.]*?\band\s+${ENTITY}\b`,
+      "i",
+    ),
+  ];
+  for (const re of betweenPatterns) {
+    const m = hay.match(re);
+    if (m) push(m[1]);
+  }
 
-  const agreement = body.match(
-    /(?:franchise|concession) agreement[^.]*?\band\s+([A-Z][\w .,'&-]{2,80}(?:LLC|L\.L\.C\.|Inc\.?|Corp\.?|LP|Company))/i,
+  // "whereby X, LLC, holder of …" (franchise assignment / sale notices).
+  const whereby = hay.match(new RegExp(String.raw`whereby\s+${ENTITY}\b`, "i"));
+  if (whereby) push(whereby[1]);
+
+  // "sold … to X, LLC" / "sold in its entirety to X".
+  const soldTo = hay.match(
+    new RegExp(String.raw`sold(?:\s+in\s+its\s+entirety)?\s+to\s+${ENTITY}\b`, "i"),
   );
-  if (agreement) push(agreement[1]);
+  if (soldTo) push(soldTo[1]);
+
+  // Intent-to-award / license / concession → party (joint FCRC + Parks/EDC path).
+  // Require a legal-entity ending on the capture so "to Award a Concession…" is rejected.
+  const awardToPatterns = [
+    new RegExp(
+      String.raw`intent to award[\s\S]{0,200}?\bto\s+${ENTITY}\s*(?:\((?:Licensee|Concessionaire)\))?(?:\s+for\s+the|\s+for\s+[a-z]|\.|,|$)`,
+      "i",
+    ),
+    new RegExp(
+      String.raw`(?:license agreement|sole source license agreement|concession agreement)\s*(?:\([^)]*\))?\s+to\s+${ENTITY}\s*(?:\((?:Licensee|Concessionaire)\))?(?:\s+for\s+the|\s+for\s+[a-z]|\.|,|$)`,
+      "i",
+    ),
+    new RegExp(
+      String.raw`\bto\s+${ENTITY}\s*(?:\((?:Licensee|Concessionaire)\))?(?:\s+for\s+the|\s+for\s+[a-z])`,
+      "i",
+    ),
+    new RegExp(
+      String.raw`negotiate a[^.]*?agreement with\s+${ENTITY}\s+for\b`,
+      "i",
+    ),
+    new RegExp(
+      String.raw`award(?:ed)?(?:\s+as a concession)?[^.]*?\bto\s+${ENTITY}\b`,
+      "i",
+    ),
+  ];
+  for (const re of awardToPatterns) {
+    const m = hay.match(re);
+    if (m) push(m[1]);
+  }
+
+  // Title: only "… to Name LLC for …" (legal cue required — never "to be held on …").
+  const titleTo = title.match(
+    new RegExp(String.raw`\bto\s+${ENTITY}(?:\s+for\s+the|\s+for\s+[a-z]|;|,|\s|$)`, "i"),
+  );
+  if (titleTo) push(titleTo[1]);
 
   // Title trailing " - Name LLC" (not "Franchise and Concession…").
   const dash = title.match(
-    /[-–—]\s*([A-Z][A-Za-z0-9 .,'&-]{1,80}(?:LLC|L\.L\.C\.|Inc\.?|Corp\.?|LP|Company))\s*$/i,
+    new RegExp(String.raw`[-–—]\s*${ENTITY}\s*$`, "i"),
   );
   if (dash) push(dash[1]);
 
-  // Award / franchise titles ending in an entity name.
-  const trailingEntity = title.match(
-    /\b((?:[A-Z][\w'.&-]+(?:\s+[A-Z][\w'.&-]+){0,6})\s+(?:LLC|L\.L\.C\.|Inc\.?|Corp\.?|LP|Company))\s*$/,
-  );
+  // Title trailing entity: "… Uniti National LLC" / "… OncChronos LLC".
+  const trailingEntity = title.match(new RegExp(String.raw`${ENTITY}\s*$`, "i"));
   if (trailingEntity) push(trailingEntity[1]);
+
+  // "relative to X LLC" when X is an entity (title-only hearings with empty body).
+  const relativeTo = hay.match(new RegExp(String.raw`relative to\s+${ENTITY}\b`, "i"));
+  if (relativeTo) push(relativeTo[1]);
 
   const vendor = clean(row?.vendor_name);
   if (vendor) push(vendor);
@@ -234,21 +413,10 @@ export function classifyFranchiseConcessionStage(row) {
   const body = bodyText(row);
   const hay = `${title} ${body}`;
 
-  // Award / adoption wins when both award and hearing language appear.
-  if (
-    type === "Award"
-    || /\bnotice of adoption\b/i.test(hay)
-    || /\b(?:has been awarded|award of (?:the )?(?:franchise|concession)|franchise has been granted|concession has been awarded|intent to award)\b/i.test(
-      hay,
-    )
-  ) {
-    return STAGE_AWARD;
-  }
-
-  // Solicitation / RFP before hearing language wins only when no hearing/meeting.
   const isHearing =
     type === "Public Hearings"
     || /\bpublic hearing\b/i.test(hay)
+    || /\bjoint public hearing\b/i.test(hay)
     || /\bFCRC\b.*\bhearing\b/i.test(hay)
     || /\bhearing\b.*\bFCRC\b/i.test(hay);
   const isMeeting =
@@ -256,6 +424,19 @@ export function classifyFranchiseConcessionStage(row) {
     || /\bpublic meeting\b/i.test(hay)
     || /\bFCRC\b.*\b(?:public )?meeting\b/i.test(title)
     || /\bPUBLIC MEETING\b/i.test(title);
+
+  // Award / adoption: real awards and notice-of-adoption.
+  // "Intent to award" on a Public Hearings / joint-hearing notice is the hearing
+  // stage (FCRC calendar item), not a completed award.
+  const isCompletedAward =
+    type === "Award"
+    || /\bnotice of adoption\b/i.test(hay)
+    || /\b(?:has been awarded|award of (?:the )?(?:franchise|concession)|franchise has been granted|concession has been awarded)\b/i.test(
+      hay,
+    );
+  if (isCompletedAward && (type === "Award" || !isHearing)) {
+    return STAGE_AWARD;
+  }
 
   if (
     !isHearing
@@ -335,6 +516,10 @@ function noticeEvent(row, stage) {
 function subjectFromKeys(keys, notices) {
   const party = keys.find((k) => k.startsWith("party:"));
   if (party) return `franchise:${party}`;
+  const concession = keys.find((k) => k.startsWith("concession:"));
+  if (concession) return `franchise:${concession}`;
+  const solicitation = keys.find((k) => k.startsWith("solicitation:"));
+  if (solicitation) return `franchise:${solicitation}`;
   const plan = keys.find((k) => k.startsWith("plan:"));
   if (plan) return `franchise:${plan}`;
   const rules = keys.find((k) => k.startsWith("rules:"));
@@ -364,13 +549,15 @@ export function buildFranchiseConcessionSpine(notices = [], options = {}) {
 
   const method = joinKeys.some((k) => k.startsWith("party:"))
     ? "exact_party"
-    : joinKeys.some((k) => k.startsWith("plan:"))
-      ? "exact_plan_year"
-      : joinKeys.some((k) => k.startsWith("rules:"))
-        ? "exact_rules_subject"
-        : rows.length
-          ? "single_notice"
-          : null;
+    : joinKeys.some((k) => k.startsWith("concession:") || k.startsWith("solicitation:"))
+      ? "exact_concession_id"
+      : joinKeys.some((k) => k.startsWith("plan:"))
+        ? "exact_plan_year"
+        : joinKeys.some((k) => k.startsWith("rules:"))
+          ? "exact_rules_subject"
+          : rows.length
+            ? "single_notice"
+            : null;
 
   const events = [];
   const stageNotices = Object.fromEntries(FRANCHISE_CONCESSION_STAGES.map((s) => [s, []]));
