@@ -759,6 +759,24 @@ unit: `node --test test/contract/property_location_golden.test.mjs
 test/contract/property_location.test.mjs`. Feed cards deep-link
 `#notice/{id}` (title + Open notice), same pattern as Money dig items.
 
+## Property disposition process spine
+
+Multi-notice lifecycle for one parcel/asset: **hearing → auction_or_rfp →
+award_or_conveyance**. Pure builder: `worker/src/lib/property_disposition_spine.mjs`
+(`groupDispositionSpines` / `buildPropertyDispositionSpine`). Join keys are
+strict **BBL** or **borough + block/lot** (never bare block alone); same
+`agency_name` required. Materialized on `/property-locations` as
+`disposition_spines` + per-row `disposition_stage` / `disposition_subject_ref`
+via `attachDispositionSpines` in `buildPropertyView`. Notice detail mounts
+`propertyDispositionSpineHTML` / `loadPropertyDispositionSpine` (`#ndisposition`).
+
+**Not the list filter rail:** `propStage` / `PROP_STAGES` remain temporal
+feed filters (proposed / soon / upcoming / past) — do not re-label those chips
+as process stages. Empty spine stages use class-(a) `not_yet_ingested` naming
+City Record Online; never invent auction/award events. Metric:
+`property_disposition_spine_completeness_rate`. Verify:
+`node --test test/property_disposition_spine.test.mjs worker/test/property.test.mjs`.
+
 ## Structured notice-body facts
 
 Pure parser: `worker/src/lib/notice_facts.mjs`. It extracts only explicitly labeled

@@ -1,10 +1,13 @@
 // Daily materialized Property view. City Record remains authoritative; this projection
 // extracts property-site evidence and resolves one representative site address per notice.
+// Also stamps multi-notice disposition process spines (hearing → auction/RFP → award)
+// joined by BBL or borough+block/lot — separate from the list filter "lifecycle rail".
 
 import {
   applyPropertyGeocodes,
   propertyLocationFromRow,
 } from "../../site/property_location.mjs";
+import { attachDispositionSpines } from "./lib/property_disposition_spine.mjs";
 
 export const PROPERTY_KV_KEY = "property:location:v1";
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
@@ -83,7 +86,7 @@ export async function buildPropertyView(fetchImpl = fetch, now = new Date()) {
     ...row,
     property_location: applyPropertyGeocodes(row.property_location, geocodes),
   }));
-  return {
+  const view = {
     schema_version: 1,
     generated_at: now.toISOString(),
     source: {
@@ -99,6 +102,7 @@ export async function buildPropertyView(fetchImpl = fetch, now = new Date()) {
     },
     properties,
   };
+  return attachDispositionSpines(view);
 }
 
 export async function refreshProperties(env, fetchImpl = fetch, now = new Date()) {

@@ -1136,6 +1136,19 @@ const STRINGS = {
     land_outcomes_portal_link: "Open full ZAP project",
     land_outcomes_provenance_html: "Outcomes join Open Data project rows to the public ZAP project API (exact project_id) and optional DOB NOW filings (exact BBL). The browser only reads a worker cache.",
 
+    // Property disposition process spine (multi-notice by parcel — not the list filter rail)
+    disposition_spine_heading: "Disposition timeline",
+    disposition_stage_hearing: "Hearing",
+    disposition_stage_auction_or_rfp: "Auction / RFP",
+    disposition_stage_award_or_conveyance: "Award / conveyance",
+    disposition_stage_notice_count: "{n} notices",
+    disposition_stage_not_yet_ingested_html: "Not yet shown here — later disposition notices live in {source}.",
+    disposition_join_matched_html: "Joined {n} City Record notice(s) for {subject} ({method}).",
+    disposition_join_singleton_html: "Single notice chain for {title} — no second City Record notice shares this parcel yet.",
+    disposition_spine_unavailable_html: "Not yet shown here — multi-notice disposition chains are built from {source} Property Disposition notices.",
+    disposition_source_city_record: "City Record Online",
+    disposition_provenance_html: "Timeline joins Property Disposition notices that share an exact BBL or borough + block/lot and the same agency. Empty stages mean no matching City Record notice is in the current window — not that a filter chip is missing.",
+
     // Screen-reader announcements
     matching_roles_announce: "{n} matching roles",
     rezonings_announce: "{n} rezonings",
