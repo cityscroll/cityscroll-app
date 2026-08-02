@@ -53,12 +53,14 @@ const LENS_FIXTURES = {
   meetings: "meetings_council.json",
 };
 
-test("event-kind registry is bounded and covers the four lenses", () => {
+test("event-kind registry is bounded and covers money/rules/land/meetings/people", () => {
   const lenses = new Set(Object.values(EVENT_KIND_REGISTRY).map((m) => m.lens));
-  assert.deepEqual([...lenses].sort(), ["land", "meetings", "money", "rules"]);
+  assert.deepEqual([...lenses].sort(), ["land", "meetings", "money", "people", "rules"]);
   assert.equal(isRegisteredEventKind("rules.comment_close"), true);
+  assert.equal(isRegisteredEventKind("staffing.list_established"), true);
   assert.equal(isRegisteredEventKind("procurement.award_and_amendment"), false);
   assert.ok(listEventKinds("rules").every((k) => k.lens === "rules"));
+  assert.ok(listEventKinds("people").every((k) => k.lens === "people"));
 });
 
 test("four lens fixtures map with explicit clock labels and null unknowns", () => {

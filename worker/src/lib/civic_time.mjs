@@ -193,6 +193,23 @@ export const EVENT_KIND_REGISTRY = Object.freeze({
     lens: "meetings",
     description: "Roll-call vote on an agenda item",
   },
+  // People / civil-service exam process spine
+  "staffing.application_window": {
+    lens: "people",
+    description: "Civil-service exam application window (NOE / DCAS schedule)",
+  },
+  "staffing.list_established": {
+    lens: "people",
+    description: "Eligible civil-service list established (aggregate)",
+  },
+  "staffing.certification": {
+    lens: "people",
+    description: "Agency certification from eligible list (aggregate)",
+  },
+  "staffing.appointment": {
+    lens: "people",
+    description: "Civil-service appointment / hire aggregate",
+  },
 });
 
 /** Map product spine event_type / kind → registry id. Unknown kinds fail closed. */
@@ -217,6 +234,11 @@ export const SPINE_KIND_ALIASES = Object.freeze({
   rfx_opened: "procurement.solicitation_opened",
   rfx_addenda: "procurement.solicitation_addenda",
   rfx_due: "procurement.solicitation_due",
+  // Exam process spine (application → list → certification → appointment)
+  exam_application: "staffing.application_window",
+  exam_list_establishment: "staffing.list_established",
+  exam_certification: "staffing.certification",
+  exam_appointment: "staffing.appointment",
 });
 
 /** Event kinds emitted from matched PASSPort RFx detail (solicitation production spine). */
@@ -646,6 +668,47 @@ export function mapLandSpineToCivic(spine, meta = {}) {
         source_revision: `land:${ev.id || ev.kind}:${valid_at || "none"}`,
         source_field: ev.time?.basis || null,
         valid_at: isPublication ? null : valid_at,
+        published_at: isPublication ? valid_at : null,
+        observed_at,
+        processed_at,
+        status: ev.status ?? null,
+        require_valid: false,
+      },
+      { run_id, processed_at },
+    );
+  });
+}
+
+/**
+ * Map `buildExamProcessSpine` events into civic-time envelopes (library-only).
+ *
+ * @param {object} spine - exam process spine
+ * @param {object} [meta] - observed_at, processed_at, run_id
+ */
+export function mapExamProcessSpineToCivic(spine, meta = {}) {
+  const examNumber = spine?.exam_number || "unknown";
+  const subject_ref = spine?.subject_ref || `exam:${examNumber}`;
+  const observed_at = meta.observed_at ?? null;
+  const processed_at = meta.processed_at ?? null;
+  const run_id = meta.run_id ?? "exam-process-spine";
+
+  return (spine?.events || []).map((ev) => {
+    const event_kind = SPINE_KIND_ALIASES[ev.kind];
+    if (!event_kind) {
+      throw new TypeError(`unknown exam process spine kind: ${ev.kind}`);
+    }
+    const valid_at = dayStamp(ev.time?.value);
+    const valid_to = dayStamp(ev.time?.value_to);
+    const isPublication = ev.time?.basis === "publication_date";
+    return mapCivicEvent(
+      {
+        event_kind,
+        subject_ref,
+        source_record_ref: `${ev.source?.id || "staffing"}:${ev.id || ev.kind}`,
+        source_revision: `exam:${examNumber}:${ev.kind}:${valid_at || "none"}`,
+        source_field: ev.time?.basis || null,
+        valid_at: isPublication ? null : valid_at,
+        valid_to: isPublication ? null : valid_to,
         published_at: isPublication ? valid_at : null,
         observed_at,
         processed_at,
