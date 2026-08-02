@@ -1,0 +1,75 @@
+name: Multi-dimension improvement flywheel
+
+# Standing scheduled runner: measures all improvement dimensions and emits a
+# ranked, deduplicated card queue artifact for dispatch consumers.
+on:
+  schedule:
+    # Hourly at :17 — offset from other crons
+    - cron: "17 * * * *"
+  workflow_dispatch:
+  push:
+    paths:
+      - "ontology/**"
+      - "tools/flywheel-run.mjs"
+      - "tools/intelligence_flywheel.mjs"
+      - "tools/verify_multi_flywheel.sh"
+      - "entity_resolution/source_coverage.json"
+      - "site/data/gap_taxonomy.json"
+      - "site/data/source_contracts.json"
+      - "test/multi_flywheel*.test.mjs"
+      - ".github/workflows/multi-flywheel.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: multi-dimension-flywheel
+  cancel-in-progress: true
+
+jobs:
+  flywheel:
+    name: Run multi-dimension flywheel
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Characterization tests
+        run: |
+          node --test \
+            test/ontology_registry.test.mjs \
+            test/intelligence_flywheel.test.mjs \
+            test/multi_flywheel.test.mjs \
+            test/multi_flywheel_dimensions.test.mjs
+
+      - name: Emit card queue
+        run: |
+          mkdir -p artifacts/multi-flywheel
+          node tools/flywheel-run.mjs \
+            --fixture \
+            --emit artifacts/multi-flywheel \
+            --generated-at "$(date -u +%Y-%m-%dT%H:%M:%S.000Z)"
+          echo "--- queue summary ---"
+          python3 - <<'PY'
+          import json
+          q = json.load(open("artifacts/multi-flywheel/queue.json"))
+          print("schema", q["schema"])
+          print("cards", q["stats"]["card_count"])
+          print("by_dimension", q["stats"].get("by_dimension"))
+          print("hash", q.get("content_hash"))
+          for c in q["cards"][:15]:
+              print(f"  #{c['rank']} [{c['dimension']}] {c['id']}")
+          PY
+
+      - name: Upload emitted queue
+        uses: actions/upload-artifact@v4
+        with:
+          name: multi-flywheel-queue
+          path: artifacts/multi-flywheel/
+          if-no-files-found: error
+          retention-days: 14

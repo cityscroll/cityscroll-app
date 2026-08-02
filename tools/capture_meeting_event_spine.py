@@ -49,16 +49,18 @@ h1{font:900 clamp(25px,4vw,42px)/1.04 Georgia,serif;letter-spacing:-.035em;margi
 <section class="panel" aria-labelledby="council-heading">
   <div class="chain-h" id="council-heading">Council meeting outcomes</div>
   <div class="note">Matched Council event: <b>Subcommittee on Land Use</b> (July 28, 2026).</div>
-  <div class="meeting-spines"><div class="chain">
-    <div class="stage"><div class="box"><div class="stage-name">Agenda item</div><div class="when">#1</div><div class="bt">Transit Improvement Funding</div></div></div>
+  <div class="meeting-spines"><div class="chain meeting-spine" data-meeting-spine data-spine-subject="matter:mat-001" data-spine-fill="1">
+    <div class="stage"><div class="box matched" data-spine-stage="agenda"><div class="stage-name">Agenda item</div><div class="when">#1</div><div class="bt">Transit Improvement Funding</div></div></div>
     <div class="connector" aria-hidden="true">→</div>
-    <div class="stage"><div class="box"><div class="stage-name">Council matter</div><div class="when">LU 0001-2026</div><div class="bt">Transit Improvement Funding</div></div></div>
+    <div class="stage"><div class="box matched" data-spine-stage="matter"><div class="stage-name">Council matter</div><div class="when">LU 0001-2026</div><div class="bt">Transit Improvement Funding</div></div></div>
     <div class="connector" aria-hidden="true">→</div>
-    <div class="stage"><div class="box"><div class="stage-name">Outcome</div><div class="when">Approved by Subcommittee</div><div class="lc-pct">Vote: Passed (aye 6 · nay 3)</div><div class="lc-pct meeting-roll-call" data-official-votes data-official-count="3">Roll call: <span class="meeting-roll-call-person" lang="en" dir="ltr" data-official-id="official:p-101">Ada Councilmember (aye)</span> · <span class="meeting-roll-call-person" lang="en" dir="ltr" data-official-id="official:p-102">Ben Councilmember (aye)</span> · <span class="meeting-roll-call-person" lang="en" dir="ltr" data-official-id="official:p-103">Cara Councilmember (nay)</span></div></div></div>
+    <div class="stage"><div class="box matched" data-spine-stage="action"><div class="stage-name">Action</div><div class="when">Approved by Subcommittee</div><div class="lc-pct">Outcome: Approved by Subcommittee</div></div></div>
     <div class="connector" aria-hidden="true">→</div>
-    <div class="stage"><div class="box"><div class="stage-name">Attachments</div><div class="docs"><a class="view" href="#">Staff report</a><a class="view" href="#">Agenda</a><a class="view" href="#">Minutes</a></div></div></div>
+    <div class="stage"><div class="box matched" data-spine-stage="vote"><div class="stage-name">Vote</div><div class="lc-pct">Vote: Passed (aye 6 · nay 3)</div><div class="lc-pct meeting-roll-call" data-official-votes data-official-count="3">Roll call: <span class="meeting-roll-call-person" lang="en" dir="ltr" data-official-id="official:p-101">Ada Councilmember (aye)</span> · <span class="meeting-roll-call-person" lang="en" dir="ltr" data-official-id="official:p-102">Ben Councilmember (aye)</span> · <span class="meeting-roll-call-person" lang="en" dir="ltr" data-official-id="official:p-103">Cara Councilmember (nay)</span></div></div></div>
+    <div class="connector" aria-hidden="true">→</div>
+    <div class="stage"><div class="box matched" data-spine-stage="attachment"><div class="stage-name">Attachments</div><div class="docs"><a class="view" href="#">Staff report</a><a class="view" href="#">Agenda</a><a class="view" href="#">Minutes</a></div></div></div>
   </div></div>
-  <div class="note">Outcomes join City Record hearing notices to NYC Council Legistar events, agenda items, matters, and votes.</div>
+  <div class="note">Each spine is one Council matter’s path: agenda item → matter → action → vote → attachments, joined from City Record notices to NYC Council Legistar.</div>
 </section>
 <section class="panel gap" aria-labelledby="other-heading">
   <div class="chain-h" id="other-heading">Hearing outcomes</div>

@@ -25,6 +25,7 @@ import {
 } from "./lib/false_split_evidence.mjs";
 import { appendActionLog, reviewActionFromDisposition } from "./lib/action_log.mjs";
 import { buildOpsContract } from "./lib/ops_contract.mjs";
+import { ingestPassportPublic } from "./passport.mjs";
 
 // Store digests rather than publishing the desk's private recipient addresses in this repo.
 const DIGEST_TEST_SEND_ALLOWLIST = new Set([
@@ -576,4 +577,15 @@ export async function handleAdminDigestCatchUp(req, env) {
       capped: !!r.capped, error: r.error || null, zeroMatch: !!r.zeroMatch,
     })),
   }, 200);
+}
+
+// POST /admin/passport-ingest?key=… — operator-triggered PASSPort Public rebuild
+// (product tables + dual-write source_records when the flag is on). Same path as
+// the daily cron. FAIL CLOSED until ADMIN_KEY is set.
+export async function handleAdminPassportIngest(req, env) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (req.method !== "POST") return json({ error: "method not allowed" }, 405);
+  const result = await ingestPassportPublic(env);
+  return json({ mode: "passport_ingest", ...result }, result.ok ? 200 : 502);
 }

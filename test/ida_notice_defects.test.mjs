@@ -217,7 +217,12 @@ test("aged IDA backtest: 2022–2024 hearings join City Record hearing; later st
       section_name: "Public Hearings and Meetings",
       event_date: "2022-06-09T10:00:00.000",
       start_date: "2022-05-27T00:00:00.000",
-      additional_description_1: "Company Name : Historic Project LLC, a Delaware limited liability company (the Company)",
+      // Real body dollars (field case): Total Project Cost $10,667,606 + Total Development Cost $2,900,000
+      additional_description_1:
+        "Company Name : Global Wood Distributors Inc., a New York corporation (the Company). "
+        + "Total Project Cost : $10,667,606. Jobs : 8. "
+        + "Company Name : St. Ann's Meat Corp., a New York business corporation (the Company). "
+        + "Total Development Cost: $2,900,000.",
     },
   ];
   for (const row of aged) {
@@ -235,6 +240,10 @@ test("aged IDA backtest: 2022–2024 hearings join City Record hearing; later st
       `${row.request_id} board should be aged not_published`,
     );
   }
+  // Demo capability: 20220525018 must surface a non-null parsed cost (not a false null seam).
+  const [demoLc] = assembleSubsidyLifecycle([aged.find((r) => r.request_id === "20220525018")], []);
+  assert.equal(demoLc.money.estimated_cost.status, "matched");
+  assert.equal(demoLc.money.estimated_cost.value, 10667606);
 });
 
 test("young IDA hearing: board gap is too_soon (temporal, not not-published)", () => {

@@ -237,61 +237,78 @@
     {
       "id": "nycida-build-nyc-projects-x-recent-contract-awards-ocp-via-request_id",
       "worth_materializing": "maybe",
-      "score": 2,
+      "score": 3,
       "key_path": [
         "request_id"
       ],
       "gaps_would_close": [
         "procurement-ocp-recent-awards",
-        "subsidy-stage-unmatched"
+        "subsidy-stage-unmatched",
+        "subsidy-field-city-record-hearing-feed"
       ]
     },
     {
       "id": "nycida-build-nyc-projects-x-unregistered-zoning-application-portal-projects-via-project_id",
       "worth_materializing": "maybe",
-      "score": 2,
+      "score": 3,
       "key_path": [
         "project_id"
       ],
       "gaps_would_close": [
         "subsidy-stage-unmatched",
+        "subsidy-field-city-record-hearing-feed",
         "land-outcome-detail"
       ]
     },
     {
       "id": "nycida-build-nyc-projects-x-zap-api-outcomes-via-project_id",
       "worth_materializing": "yes",
-      "score": 2,
+      "score": 3,
       "key_path": [
         "project_id"
       ],
       "gaps_would_close": [
         "subsidy-stage-unmatched",
+        "subsidy-field-city-record-hearing-feed",
         "land-outcome-detail"
       ]
     },
     {
       "id": "nycida-build-nyc-projects-x-zap-bbl-via-project_id",
       "worth_materializing": "yes",
-      "score": 2,
+      "score": 3,
       "key_path": [
         "project_id"
       ],
       "gaps_would_close": [
         "subsidy-stage-unmatched",
+        "subsidy-field-city-record-hearing-feed",
         "land-outcome-detail"
       ]
     },
     {
       "id": "nycida-build-nyc-projects-x-zap-projects-via-project_id",
       "worth_materializing": "yes",
-      "score": 2,
+      "score": 3,
       "key_path": [
         "project_id"
       ],
       "gaps_would_close": [
         "subsidy-stage-unmatched",
+        "subsidy-field-city-record-hearing-feed",
         "land-outcome-detail"
+      ]
+    },
+    {
+      "id": "current-solicitations-ocp-x-nycida-build-nyc-projects-via-request_id",
+      "worth_materializing": "maybe",
+      "score": 2,
+      "key_path": [
+        "request_id"
+      ],
+      "gaps_would_close": [
+        "subsidy-stage-unmatched",
+        "subsidy-field-city-record-hearing-feed"
       ]
     },
     {
@@ -350,17 +367,6 @@
       ],
       "gaps_would_close": [
         "procurement-ocp-recent-awards"
-      ]
-    },
-    {
-      "id": "current-solicitations-ocp-x-nycida-build-nyc-projects-via-request_id",
-      "worth_materializing": "maybe",
-      "score": 1,
-      "key_path": [
-        "request_id"
-      ],
-      "gaps_would_close": [
-        "subsidy-stage-unmatched"
       ]
     },
     {
@@ -669,5 +675,5 @@
       "realized_join_rate": null
     }
   ],
-  "registry_sha256": "93aa7fc7df5a96cd5e1caf1b4817f0f3c9c91fe6846311326400fa90f9e97056"
+  "registry_sha256": "7afa9b816175d1a95cb834e93a711a6b346e6af8d8c242dfec688b46791f81b8"
 }

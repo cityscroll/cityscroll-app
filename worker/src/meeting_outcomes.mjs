@@ -1,6 +1,7 @@
-import { applyApiLimits, buildMeetingOutcomesView, MAX_AGE_MS, MEETING_OUTCOMES_KV_KEY } from "./lib/meeting_outcomes.mjs";
+import { applyApiLimits, buildMeetingOutcomesView, MAX_AGE_MS, MEETING_OUTCOMES_KV_KEY, refreshMeetingOutcomes } from "./lib/meeting_outcomes.mjs";
+import { checkAdminKey } from "./admin.mjs";
 
-export { refreshMeetingOutcomes } from "./lib/meeting_outcomes.mjs";
+export { refreshMeetingOutcomes };
 
 function corsHeaders() {
   return {
@@ -8,6 +9,28 @@ function corsHeaders() {
     "Access-Control-Allow-Methods": "GET, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",
   };
+}
+
+function adminJson(body, status = 200) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" },
+  });
+}
+
+// POST /admin/meeting-outcomes-refresh?key=… — on-demand meeting-outcomes materialization
+// (same path as the 13:00 UTC cron), so Legistar source_records dual-write can run without
+// waiting for the daily schedule. Fail-soft matches the cron path.
+export async function handleAdminMeetingOutcomesRefresh(req, env) {
+  const auth = checkAdminKey(req, env);
+  if (!auth.ok) return auth.res;
+  if (req.method !== "POST") return adminJson({ error: "method" }, 405);
+  try {
+    const result = await refreshMeetingOutcomes(env);
+    return adminJson({ ...result, triggeredAt: new Date().toISOString() }, 200);
+  } catch (e) {
+    return adminJson({ status: "error", error: String(e?.message || e) }, 500);
+  }
 }
 
 function response(body, status = 200) {
@@ -40,12 +63,14 @@ export async function handleMeetingOutcomes(request, env, ctx) {
     try {
       const token = env?.LEGISTAR_API_TOKEN || null;
       const view = await buildMeetingOutcomesView({ token, fetchImpl: fetch, now: new Date(), env });
-      raw = JSON.stringify(view);
+      // dual_write is operator telemetry only — never cache it on the public read path.
+      const { dual_write: _dualWrite, ...publicView } = view;
+      raw = JSON.stringify(publicView);
       const write = env.ALERT_STATE.put(MEETING_OUTCOMES_KV_KEY, raw, {
         expirationTtl: 3 * 24 * 60 * 60,
       });
       if (ctx?.waitUntil) ctx.waitUntil(write); else await write;
-      parsed = view;
+      parsed = publicView;
     } catch (error) {
       if (!parsed) {
         return response(JSON.stringify({ ok: false, reason: "upstream", detail: String(error?.message || error) }), 502);

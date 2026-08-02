@@ -32,6 +32,10 @@ const ABO_RECENT_LIMIT = 8;         // recent awards cached per source (matches 
 const ABO_REFRESH_DAYS = 7;         // weekly gate — the sources refresh ~annually, daily buys nothing
 const NYCHA_PAGE = 25, NYCHA_MAX_PAGES = 8; // one notice's paginated Checkbook lookup (mirrors index.html)
 const PREWARM_MAX = 40;             // cron pre-warm cap per run — bounded, never a full-corpus backfill
+// Empty answers must not stick forever: a solicitation with no award yet should re-check after a
+// short TTL so a later Checkbook registration can surface. Non-empty matches keep a longer TTL.
+export const NYCHA_EMPTY_CACHE_TTL_MS = 3 * 86400000;
+export const NYCHA_MATCH_CACHE_TTL_MS = 30 * 86400000;
 const JUNK_PINS = new Set(["NOPINFOUND", "SEE BELOW", "LINE 17 BELOW", "TBD", "N/A", "NONE", "VARIOUS", "SEE ATTACHED", "123456"]);
 const JUNK_PIN_TEXT_RE = /\bsee\b|\bbelow\b|\bline\s*17\b|\bn\/?a\b|\btbd\b|\bvarious\b|\bpending\b|\battached\b/i;
 
@@ -145,6 +149,9 @@ function parseNychaContracts(xml) {
 
 // Fetch one PIN's Contracts_NYCHA agreements — a single logical lookup (paginated), never a
 // per-PIN fan-out. Returns null on any non-success page (proxy/WAF failure → say nothing).
+// Checkbook often returns many Line/Release rows per agreement; if the page budget is exhausted
+// after we already saw Agreement rows, return those rather than failing closed as if the lookup
+// never completed (that used to hide true positives behind dense line-item streams).
 async function checkbookNychaByPin(pin) {
   const agreements = [];
   for (let page = 0; page < NYCHA_MAX_PAGES; page++) {
@@ -164,7 +171,9 @@ async function checkbookNychaByPin(pin) {
     agreements.push(...txs.filter((c) => c.recordType === "Agreement"));
     if (txs.length < NYCHA_PAGE) return agreements;
   }
-  return null; // bounded page limit exhausted — fail closed
+  // Page budget exhausted: keep any Agreement rows already collected; only fail closed when the
+  // stream was pure Line/Release noise with zero agreements (incomplete read of an unknown set).
+  return agreements.length ? agreements : null;
 }
 
 // Resolve the notice's own row (D1 mirror first, then a live SODA lookup). Null if unresolvable.
@@ -199,15 +208,25 @@ async function computeNychaMatches(env, noticeRow) {
   return { matches: rankNychaAwardCandidates(r, rows), ok: true };
 }
 
-async function nychaCacheGet(env, requestId) {
+function nychaCacheFresh(matches, computedAt, nowMs) {
+  if (!matches || !Array.isArray(matches.matches)) return false;
+  const computed = Date.parse(computedAt || "");
+  if (!Number.isFinite(computed)) return matches.matches.length > 0; // legacy rows without computed_at: keep non-empty only
+  const age = (typeof nowMs === "number" ? nowMs : Date.now()) - computed;
+  if (!Number.isFinite(age) || age < 0) return false;
+  const ttl = matches.matches.length ? NYCHA_MATCH_CACHE_TTL_MS : NYCHA_EMPTY_CACHE_TTL_MS;
+  return age < ttl;
+}
+
+async function nychaCacheGet(env, requestId, nowMs) {
   if (!env.DB) return null;
   try {
     const row = await env.DB.prepare(
-      "SELECT matches FROM external_award_matches WHERE request_id = ?",
+      "SELECT matches, computed_at FROM external_award_matches WHERE request_id = ?",
     ).bind(requestId).first();
     if (row && row.matches) {
       const m = JSON.parse(row.matches);
-      if (m && Array.isArray(m.matches)) return m;
+      if (m && Array.isArray(m.matches) && nychaCacheFresh(m, row.computed_at, nowMs)) return m;
     }
   } catch { /* miss */ }
   return null;
@@ -223,8 +242,8 @@ async function nychaCachePut(env, requestId, agency, matches) {
   } catch { /* a cache-write failure must never break the compute */ }
 }
 
-export async function getOrComputeNycha(env, requestId, noticeRow) {
-  const cached = await nychaCacheGet(env, requestId);
+export async function getOrComputeNycha(env, requestId, noticeRow, nowMs) {
+  const cached = await nychaCacheGet(env, requestId, nowMs);
   if (cached) return { matches: cached.matches, ok: true };
   const row = noticeRow === undefined ? await fetchNoticeRow(env, requestId) : noticeRow;
   const { matches, ok } = await computeNychaMatches(env, row);

@@ -25,6 +25,7 @@ import {
   handleAdminDigestRollup,
   handleAdminDigestSendTest,
   handleAdminDigestCatchUp,
+  handleAdminPassportIngest,
 } from "./admin.mjs";
 import { handleFeed } from "./feed.mjs";
 import { handleBatch } from "./batch.mjs";
@@ -48,7 +49,7 @@ import { handleMirror } from "./mirror.mjs";
 import { handleHearings, refreshHearings } from "./hearings.mjs";
 import { handleProperties, refreshProperties } from "./property.mjs";
 import { handleRules, refreshRules } from "./rules.mjs";
-import { handleMeetingOutcomes, refreshMeetingOutcomes } from "./meeting_outcomes.mjs";
+import { handleMeetingOutcomes, handleAdminMeetingOutcomesRefresh, refreshMeetingOutcomes } from "./meeting_outcomes.mjs";
 import { handleSourceVault } from "./source_vault.mjs";
 import { handleContractLifecycle, prewarmContractLifecycle } from "./checkbook_lifecycle.mjs";
 import { handleSubsidyLifecycle, prewarmSubsidyLifecycle } from "./subsidy_lifecycle.mjs";
@@ -111,7 +112,9 @@ export default {
     if (pathname === "/admin/digest-rollup") return handleAdminDigestRollup(request, env);
     if (pathname === "/admin/digest-send-test") return handleAdminDigestSendTest(request, env);
     if (pathname === "/admin/suggest-refresh") return handleAdminSuggestRefresh(request, env);
+    if (pathname === "/admin/meeting-outcomes-refresh") return handleAdminMeetingOutcomesRefresh(request, env);
     if (pathname === "/admin/digest-catchup") return handleAdminDigestCatchUp(request, env);
+    if (pathname === "/admin/passport-ingest") return handleAdminPassportIngest(request, env);
     if (pathname === "/" || pathname === "/health") {
       return new Response("crol-worker ok", { status: 200, headers: { "Content-Type": "text/plain" } });
     }

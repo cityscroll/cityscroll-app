@@ -1,0 +1,29 @@
+{
+  "schema": "cityscroll.cross_spine_bundle.v0",
+  "subject_ref": "notice:demo-pin-mismatch",
+  "er": {
+    "pin": "AAA111",
+    "vendor_stem": "acme",
+    "decision": "auto_link"
+  },
+  "process_spine": {
+    "join_confidence": "confirmed"
+  },
+  "lifecycle": {
+    "pin": "BBB222",
+    "vendor_stem": "acme",
+    "registered_at": "2025-01-01",
+    "first_payment_at": "2025-02-01"
+  },
+  "civic_time_events": [
+    {
+      "event_kind": "procurement.award_registered",
+      "subject_ref": "notice:demo-pin-mismatch"
+    }
+  ],
+  "actions": {
+    "lookup_status": "ok",
+    "handoff_delivery": "local",
+    "confident_empty": false
+  }
+}

@@ -13,6 +13,9 @@
 // fails on any divergence.
 //
 //   kind "checkbook-nycha" — exact join by PIN against Checkbook NYC's Contracts_NYCHA domain.
+//                            Measured 2026-08-01: modern temporal exact-PIN usefulness is below
+//                            threshold (source contract disabled for dense materialization; see
+//                            site/data/nycha_award_sources/). Ranker + on-demand path remain.
 //   kind "abo"             — fuzzy join (vendor + date + amount) against a NYS Authorities Budget
 //                            Office procurement dataset on data.ny.gov, keyed by authority_name.
 //   kind "absent"          — verified: no open dataset publishes this agency's awards.
