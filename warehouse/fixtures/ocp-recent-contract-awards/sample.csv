@@ -1,0 +1,6 @@
+request_id,start_date,agency_name,type_of_notice_description,pin,contract_amount,vendor_name,short_title
+20240701001,2024-07-01T00:00:00.000,Department of Citywide Administrative Services,Award,85724P0001,125000.00,ACME CIVIC SERVICES LLC,Sample award one
+20240702002,2024-07-02T00:00:00.000,Department of Transportation,Award,84124P0002,250000.50,BRIDGE WORKS INC,Sample award two
+20240703003,2024-07-03T00:00:00.000,Department of Environmental Protection,Award,82624P0003,99000.00,WATER MAIN PARTNERS,Sample award three
+20240704004,2024-07-04T00:00:00.000,Department of Education,Award,04024P0004,1500000.00,SCHOOL SUPPLY CO,Sample award four
+20240705005,2024-07-05T00:00:00.000,Department of Parks and Recreation,Award,84624P0005,45000.00,GREENSPACE CONTRACTORS LLC,Sample award five
