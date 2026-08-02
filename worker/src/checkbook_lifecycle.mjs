@@ -598,6 +598,33 @@ export async function computeLifecycle(env, requestId, noticeRow) {
 // D1 cache (contract_lifecycle table)
 // ---------------------------------------------------------------------------
 
+/**
+ * Bump when assembly / solicitation-recovery / coherence logic changes so D1 rows
+ * assembled under the old logic recompute instead of serving forever.
+ * Missing or mismatched assembly_version on a cached row is a cache miss.
+ *
+ * v2 covers the money-chain honesty path: solicitation recovery from City Record /
+ * OCP Current Solicitations / PASSPort RFx plus lifecycle_coherence_v2 (no false
+ * out_of_order on CR publication vs Checkbook registration). Same pattern as
+ * subsidy parser_version and rules/meeting-outcomes schema_version guards (#358).
+ */
+export const CONTRACT_LIFECYCLE_ASSEMBLY_VERSION = 2;
+
+/**
+ * True when a cached lifecycle was assembled by the current recovery/coherence path.
+ * Still requires ocp_award + civic_events (prior shape guards) so incomplete rows miss.
+ */
+export function contractLifecycleCacheIsCurrent(
+  lifecycle,
+  assemblyVersion = CONTRACT_LIFECYCLE_ASSEMBLY_VERSION,
+) {
+  if (!lifecycle || !Array.isArray(lifecycle.timeline)) return false;
+  if (!lifecycle.ocp_award || !Array.isArray(lifecycle.civic_events)) return false;
+  // Pre-version rows (and any older assembly) must recompute after recovery/coherence ships.
+  if (lifecycle.assembly_version !== assemblyVersion) return false;
+  return true;
+}
+
 async function cacheGet(env, requestId) {
   if (!env.DB) return null;
   try {
@@ -606,28 +633,23 @@ async function cacheGet(env, requestId) {
     ).bind(requestId).first();
     if (row && row.lifecycle) {
       const m = JSON.parse(row.lifecycle);
-      // Require ocp_award + civic_events so older cache rows recompute with the
-      // OCP side-car and Money civic-time production adapter.
-      if (
-        m
-        && Array.isArray(m.timeline)
-        && m.ocp_award
-        && Array.isArray(m.civic_events)
-      ) {
-        return m;
-      }
+      if (contractLifecycleCacheIsCurrent(m)) return m;
     }
   } catch { /* miss */ }
   return null;
 }
 
 async function cachePut(env, requestId, agency, lifecycle) {
-  if (!env.DB) return;
+  if (!env.DB || !lifecycle) return;
   try {
+    const stamped = {
+      ...lifecycle,
+      assembly_version: CONTRACT_LIFECYCLE_ASSEMBLY_VERSION,
+    };
     await env.DB.prepare(
       `INSERT OR REPLACE INTO contract_lifecycle (request_id, agency, lifecycle, computed_at)
          VALUES (?, ?, ?, ?)`,
-    ).bind(requestId, agency || null, JSON.stringify(lifecycle), new Date().toISOString()).run();
+    ).bind(requestId, agency || null, JSON.stringify(stamped), new Date().toISOString()).run();
   } catch { /* a cache-write failure must never break the compute */ }
 }
 
