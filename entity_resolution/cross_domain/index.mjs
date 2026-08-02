@@ -1,0 +1,28 @@
+// Cross-domain object-link layer (entity_resolution package surface).
+
+export {
+  CROSS_DOMAIN_OBJECT_LINK_VERSION,
+  CROSS_DOMAIN_METHOD,
+  CROSS_DOMAIN_METHOD_VERSION,
+  CROSS_DOMAIN_DOMAINS,
+  CROSS_DOMAIN_LINK_TYPES,
+  AGENCY_METHOD,
+  AGENCY_METHOD_VERSION,
+  resolveAgencySubject,
+  resolveVendorSubject,
+  resolveRootQuery,
+  makeProvenance,
+  makeObjectLink,
+  observationFromMoneyRow,
+  observationFromLandRow,
+  observationFromRulesRow,
+  observationFromMeetingsRow,
+  observationFromPeopleRow,
+  rootsForObservation,
+  linkObservation,
+  indexObservationsByRoot,
+  dedupeObjectLinks,
+  buildEntityIntelligence,
+  buildIntelligenceCorpus,
+  lookupEntityIntelligence,
+} from "./object_links.mjs";

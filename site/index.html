@@ -251,6 +251,21 @@
   .aidk{font:600 11px/1.3 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0}
   .aidv{font-size:15px;color:var(--ink);margin:0;word-break:break-word}
   .aidprov{font-size:12px;line-height:1.5;color:var(--muted);margin:12px 0 0;padding-top:10px;border-top:1px solid var(--rule)}
+  .eicard{border:1px solid var(--rule);border-radius:8px;background:#faf7f0;padding:14px 16px;margin:14px 0 18px}
+  .ei-lead{font-size:14px;line-height:1.45;margin:0 0 10px;color:var(--ink)}
+  .ei-cov{color:var(--muted);font-size:13px}
+  .ei-domains{display:grid;gap:10px}
+  .ei-domain-h{font-family:var(--font-sc);font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 4px;display:flex;flex-wrap:wrap;align-items:baseline;gap:8px}
+  .ei-status{font-size:10px;letter-spacing:.06em;font-weight:700;color:var(--muted)}
+  .ei-status-matched{color:var(--oxblood)}
+  .ei-list{list-style:none;margin:0;padding:0}
+  .ei-obj{padding:4px 0;border-top:1px solid var(--rule);font-size:13px;line-height:1.35}
+  .ei-obj:first-child{border-top:0}
+  .ei-obj-main{display:block}
+  .ei-when,.ei-conf{margin-inline-start:8px;color:var(--muted);font-size:12px}
+  .ei-prov{display:block;font-size:11px;color:var(--muted);margin-top:2px}
+  .ei-empty{font-size:13px;color:var(--muted);margin:0;max-width:60ch}
+  .ei-method{margin-top:10px}
   .agencybar .lbl{font:600 11px/1.3 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
   .agencybar.sub{margin-top:16px;margin-bottom:0}
   .agencybar.sub .big{font-size:19px}
@@ -2492,6 +2507,69 @@ function agencyIdentityHTML(resp){
       </div>
       <dl class="aidgrid">${defs}</dl>
       <p class="aidprov">${provLine}</p>
+    </div>`;
+}
+
+const CROSS_DOMAIN_ORDER = ["money","land","rules","meetings","people"];
+
+/** Cross-domain entity intelligence panel (materialized object links + provenance). */
+function entityIntelligenceHTML(resp){
+  if(!resp || !resp.ok || !resp.root) return "";
+  const domains = resp.domains || {};
+  const matched = Object.entries(domains).filter(([,d]) => d && d.status === "matched");
+  const other = Object.entries(domains).filter(([,d]) => d && d.status !== "matched");
+  if(!matched.length && !other.length) return "";
+
+  const domainLabel = (key) => t("entity_intel_domain_"+key) || key;
+  const statusLabel = (st) => {
+    if(st === "matched") return t("entity_intel_status_matched");
+    if(st === "not_yet_ingested") return t("entity_intel_status_not_yet");
+    return t("entity_intel_status_empty");
+  };
+
+  const domainBlocks = CROSS_DOMAIN_ORDER.map((key) => {
+    const d = domains[key];
+    if(!d) return "";
+    const objs = Array.isArray(d.objects) ? d.objects.slice(0, 4) : [];
+    const items = objs.map((o) => {
+      const label = escUiHtml(o.label || o.subject_ref || "");
+      const when = o.when ? `<span class="ei-when">${escUiHtml(fdate(o.when))}</span>` : "";
+      const href = o.href && String(o.href).startsWith("#")
+        ? pivotA(o.href, label)
+        : label;
+      const conf = o.confidence && o.confidence !== "strong"
+        ? `<span class="ei-conf">${escUiHtml(o.confidence)}</span>`
+        : "";
+      const prov = o.provenance
+        ? `<span class="ei-prov">${escUiHtml(o.provenance.source_system||"")} · ${escUiHtml(o.provenance.source_record_id||"")}</span>`
+        : "";
+      return `<li class="ei-obj"><span class="ei-obj-main">${href}${when}${conf}</span>${prov}</li>`;
+    }).join("");
+    const list = items
+      ? `<ul class="ei-list">${items}</ul>`
+      : `<p class="ei-empty">${escUiHtml(d.note || statusLabel(d.status))}</p>`;
+    const count = d.count != null ? ` <span class="ct">${fmtNumber(+d.count||0)}</span>` : "";
+    return `<section class="ei-domain" data-domain="${escUiHtml(key)}" data-status="${escUiHtml(d.status||"")}">
+      <h3 class="ei-domain-h">${domainLabel(key)}${count}
+        <span class="ei-status ei-status-${escUiHtml(d.status||"empty")}">${statusLabel(d.status)}</span>
+      </h3>
+      ${list}
+    </section>`;
+  }).join("");
+
+  const cov = resp.metrics && resp.metrics.domains_matched != null
+    ? t("entity_intel_coverage", {
+        matched: String(resp.metrics.domains_matched),
+        total: String(resp.metrics.domains_total || 5),
+      })
+    : "";
+  const rootName = escUiHtml(resp.root.display_name || resp.root.ref || "");
+
+  return `<div class="eicard" id="entity-intelligence" data-root="${escUiHtml(resp.root.ref||"")}">
+      <div class="chain-h" style="margin:16px 0 8px">${t("entity_intel_heading")}</div>
+      <p class="ei-lead">${t("entity_intel_lead", {name: rootName})}${cov?` <span class="ei-cov">${cov}</span>`:""}</p>
+      <div class="ei-domains">${domainBlocks}</div>
+      <p class="aidprov ei-method">${t("entity_intel_method_note")}</p>
     </div>`;
 }
 
@@ -8350,7 +8428,7 @@ async function showAgency(name, initialTab){
   delete box.dataset.vendorStem;
   const nm = String(name||"").trim(), safe = nm.replace(/[<>&]/g,""), q = nm.replace(/'/g,"''");
   box.innerHTML = `<div class="empty"><span class="loading"></span> building profile: ${safe}…</div>`;
-  const [stats, sections, vendors, rfps, events, forecastData, externalAward, agencyIdentity] = await Promise.all([
+  const [stats, sections, vendors, rfps, events, forecastData, externalAward, agencyIdentity, entityIntel] = await Promise.all([
     loadAgencyStats(nm),
     soda({"$select":"section_name, count(1) as n","$where":`agency_name='${q}'`,"$group":"section_name","$order":"n DESC"}).catch(()=>[]),
     soda({"$select":"vendor_name, count(1) as n, sum(contract_amount) as t","$where":`agency_name='${q}' AND type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < ${MONEY_HONESTY_CAP} AND vendor_name IS NOT NULL`,"$group":"vendor_name","$order":"t DESC","$limit":"8"}).catch(()=>[]),
@@ -8363,7 +8441,10 @@ async function showAgency(name, initialTab){
     // Agency-identity join: resolve this agency's City Record name to its canonical identity
     // card (website, head, budget) from the Worker's static NYC Open Data crosswalk. Fail-soft —
     // a miss or an error just leaves the card unrendered, never blocks the profile.
-    workerFetch("/agency?name=" + encodeURIComponent(nm), null, 8000).then(r => r.ok ? r.json() : null).catch(() => null)
+    workerFetch("/agency?name=" + encodeURIComponent(nm), null, 8000).then(r => r.ok ? r.json() : null).catch(() => null),
+    // Cross-domain object links (money/land/rules/meetings/people) from warehouse materialization.
+    workerFetch("/entity-intelligence?kind=agency&name=" + encodeURIComponent(nm), null, 8000)
+      .then(r => r.ok ? r.json() : null).catch(() => null)
   ]);
   if(!(stats && +stats.n) && !sections.length){
     box.innerHTML = `<div class="empty">No City Record notices found for agency “${safe}”. ${routeBackHTML("#money")}</div>`;
@@ -8402,6 +8483,7 @@ async function showAgency(name, initialTab){
 
       <div id="overview-content">
         ${agencyIdentityHTML(agencyIdentity)}
+        ${entityIntelligenceHTML(entityIntel)}
         ${externalAwardHTML(externalAward)}
         <div class="chain-h">Notices by section — click to browse that lens, filtered to this agency</div>
         <div class="chiprow" style="margin-top:6px">${secChips}</div>

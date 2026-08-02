@@ -101,6 +101,28 @@ export {
 } from "./review/index.mjs";
 
 export {
+  CROSS_DOMAIN_OBJECT_LINK_VERSION,
+  CROSS_DOMAIN_METHOD,
+  CROSS_DOMAIN_METHOD_VERSION,
+  CROSS_DOMAIN_DOMAINS,
+  CROSS_DOMAIN_LINK_TYPES,
+  resolveAgencySubject,
+  resolveVendorSubject,
+  resolveRootQuery,
+  makeProvenance,
+  makeObjectLink,
+  observationFromMoneyRow,
+  observationFromLandRow,
+  observationFromRulesRow,
+  observationFromMeetingsRow,
+  observationFromPeopleRow,
+  linkObservation,
+  buildEntityIntelligence,
+  buildIntelligenceCorpus,
+  lookupEntityIntelligence,
+} from "./cross_domain/index.mjs";
+
+export {
   PUBLICATION_VERSION,
   PUBLIC_ENTITY_FIELDS,
   PUBLIC_ENTITY_LINK_FIELDS,
