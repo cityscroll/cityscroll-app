@@ -1029,6 +1029,8 @@ test("OCP side-car: matched by request_id with amount/date agreement", withMocke
   assert.equal(body.ocp_award.detail.vendor, "Make it Zesty LLC");
   assert.equal(body.ocp_award.detail.amount, 250000);
   assert.equal(body.ocp_award.corroboration.agree, true);
+  // WH-03: demo request_id is in warehouse materialization — no live SODA needed.
+  assert.equal(body.ocp_award.lookup_path, "warehouse");
   // Cached payload must include ocp_award so recompute is not required
   const cached = JSON.parse(db._cache["20260723031"].lifecycle);
   assert.equal(cached.ocp_award.status, "matched");

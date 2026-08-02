@@ -27,7 +27,7 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - Merge-queue parameters: `tools/merge_queue_policy.json` + `node tools/apply_merge_queue_policy.mjs`
   (short train wait). Concurrent merge-when-ready seating for this repo is capped outside this tree.
 
-## DuckDB + parquet warehouse (WH-01 + WH-02 first bulk)
+## DuckDB + parquet warehouse (WH-01 + WH-02 bulk + WH-03 OCP serve)
 
 Local lake under `warehouse/` (bulk raw/parquet/duckdb gitignored). CPU-capped
 ingest: single-job lock, headroom gate, `taskpolicy`/nice wrap, tiny row
@@ -37,7 +37,8 @@ time). Setup + fixture proof:
 ```bash
 python3 -m venv warehouse/.venv && warehouse/.venv/bin/pip install -r warehouse/requirements.txt
 warehouse/.venv/bin/python warehouse/scripts/ingest.py --dataset ocp-recent-contract-awards --from-fixture --limit 5
-node --test test/warehouse_scaffold.test.mjs test/warehouse_bulk.test.mjs
+node --test test/warehouse_scaffold.test.mjs test/warehouse_bulk.test.mjs \
+  test/warehouse_ocp_lookup.test.mjs worker/test/ocp_warehouse_lookup.test.mjs
 ```
 
 **WH-02 first pack:** OCP awards `qyyg-4tf5` full `rows.csv` through the capped
@@ -52,9 +53,19 @@ warehouse/.venv/bin/python warehouse/scripts/query.py \
   --sql-file warehouse/sql/examples/ocp_bulk_verify.sql
 ```
 
-**Remaining (sequential, only if headroom green):** `zap-projects` (`hgx4-8ukb`)
-→ `zap-bbl` (`2iga-a6mk`) → `city-record` (`dg92-zbpx`). Optional later:
-`doing-business-entities`. Query seam: `warehouse/lib/query.mjs` /
+**WH-03 serve path:** materialize warehouse OCP into
+`site/data/ocp_awards_warehouse_lookup.json` (+ Worker twin). Replaces live SODA
+in `fetchOcpAwardRows` for materialization hits; live SODA remains the miss
+fallback. Rebuild + speed receipt:
+
+```bash
+node tools/build_ocp_warehouse_lookup.mjs --fixture --bench
+# receipt: warehouse/receipts/proof/wh03_ocp_lookup_speed.json
+```
+
+**Remaining bulk (sequential, only if headroom green):** `zap-projects`
+(`hgx4-8ukb`) → `zap-bbl` (`2iga-a6mk`) → `city-record` (`dg92-zbpx`). Optional
+later: `doing-business-entities`. Query seam: `warehouse/lib/query.mjs` /
 `warehouse/scripts/query.py`. Details: `warehouse/README.md`.
 
 ## Global item-route navigation
