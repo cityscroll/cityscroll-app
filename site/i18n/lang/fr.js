@@ -909,6 +909,22 @@
     franchise_source_city_record: 'City Record Online',
     franchise_provenance_html: 'Timeline joins Franchise and Concession Review Committee (FCRC) notices that share a counterparty, annual concession plan year, or FCRC rules subject. Empty stages mean no matching City Record notice is in the current window — not that the city withheld a public source.',
 
+    alerts_rollup_heading: "Comment arrivent les bulletins multi-veilles",
+    alerts_rollup_lead: "Lorsqu'une adresse e-mail a plus d'une veille active, CityScroll envoie un seul bulletin quotidien avec une section par veille — pas un e-mail séparé pour chacune. Regroupez les veilles de démonstration ci-dessous par thème, agence ou géographie pour voir comment les alertes liées se regroupent.",
+    alerts_rollup_group_label: "Regrouper les veilles liées par",
+    alerts_rollup_group_topic: "Thème",
+    alerts_rollup_group_agency: "Agence",
+    alerts_rollup_group_geography: "Géographie",
+    alerts_rollup_email_heading: "Bulletin consolidé (démo)",
+    alerts_rollup_prefs_lead: "Modifiez la fréquence, mettez une veille en pause ou désabonnez-vous depuis le centre de préférences lié dans le pied de chaque bulletin.",
+    alerts_rollup_manage_btn: "Gérer les veilles",
+    alerts_rollup_cutover: "Les changements de préférences prennent effet au prochain envoi quotidien du bulletin (~9 h, heure de l'Est).",
+    alerts_rollup_section_quiet: "Rien de nouveau pour cette veille.",
+    alerts_rollup_no_groups: "Aucune veille active à regrouper.",
+    alerts_rollup_watch_fallback: "Veille",
+    alerts_rollup_digest_footer: "Gérer les veilles · Tout désabonner (un clic). Les changements de préférences prennent effet au prochain envoi quotidien (~9 h, heure de l'Est).",
+    alerts_rollup_group_announce: "Regroupé par {dim}",
+
 
     // Screen-reader announcements
     matching_roles_announce: "{n} postes correspondants",
