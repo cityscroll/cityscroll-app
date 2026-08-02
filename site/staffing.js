@@ -186,11 +186,15 @@
     const salaryMin = exam && exam.salary_min != null && exam.salary_min !== ""
       ? exam.salary_min
       : null;
+    const salaryMax = exam && exam.salary_max != null && exam.salary_max !== ""
+      ? exam.salary_max
+      : null;
     if (fee != null && salaryMin != null) {
       return {
         kind: "joined",
         fee,
         salary_min: salaryMin,
+        salary_max: salaryMax,
         fee_waiver: exam.fee_waiver || null,
         salary_note: exam.salary_note || null,
         notice_url: exam.notice_url || null,
@@ -207,6 +211,7 @@
       class: gapClass,
       fee,
       salary_min: salaryMin,
+      salary_max: salaryMax,
       missing: (gap && gap.missing) || [
         fee == null ? "fee" : null,
         salaryMin == null ? "salary_min" : null,

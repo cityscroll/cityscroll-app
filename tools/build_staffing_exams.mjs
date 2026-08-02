@@ -7,6 +7,7 @@ import {
   buildListAggregateIndex,
   joinExamToListAggregate,
 } from "../worker/src/lib/civil_service_list_join.mjs";
+import { applyNoeFeeSalaryFromBody } from "../worker/src/lib/noe_fee_salary.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SOURCE_DIR = path.join(ROOT, "site", "data", "exam_sources");
@@ -26,11 +27,16 @@ export const NOE_DETAIL_FIELDS = [
   "fee",
   "fee_waiver",
   "salary_min",
+  "salary_max",
   "salary_note",
   "summary",
   "qualifications",
   "test_method",
+  "noe_body",
 ];
+
+// Re-export body densify so build callers and tests share one entry.
+export { applyNoeFeeSalaryFromBody, parseNoeFeeSalaryFromBody, toMoneyAmount } from "../worker/src/lib/noe_fee_salary.mjs";
 
 const INTEREST_RULES = [
   ["public-safety", /\b(police|correction|safety|special officer|fire|probation)\b/i],
@@ -109,7 +115,8 @@ export function normalizeAnnual(row) {
 function normalizeCurrent(row) {
   const examNumber = String(row.exam_number || "").trim();
   assert(/^\d{4}$/.test(examNumber), `invalid current exam number: ${row.exam_number}`);
-  return {
+  // When a raw NOE body is present, densify missing fee/salary before merge.
+  const densified = applyNoeFeeSalaryFromBody({
     exam_number: examNumber,
     ...row,
     application_start: isoDate(row.application_start),
@@ -119,7 +126,13 @@ function normalizeCurrent(row) {
       "dcas-open-competitive",
       NOE_ID,
     ],
-  };
+  });
+  // Drop bulky body from the client artifact once structured fields are filled.
+  if (densified.noe_body && densified.fee != null && densified.salary_min != null) {
+    const { noe_body: _drop, body: _b, noe_text: _t, ...rest } = densified;
+    return rest;
+  }
+  return densified;
 }
 
 function mergeCurrent(annualRow, currentRow) {
@@ -176,8 +189,11 @@ export function retainNoeDetailFields(exam, prior) {
  * - No NOE in the extract → not yet ingested (class a); annual schedule has no fee columns.
  */
 export function feeSalaryGapFor(exam) {
-  const hasFee = exam?.fee != null;
-  const hasSalary = exam?.salary_min != null && exam.salary_min !== "";
+  // Prefer structured fields; densify from body when the open-competitive extract
+  // carried raw NOE text without pre-parsed amounts.
+  const densified = applyNoeFeeSalaryFromBody(exam);
+  const hasFee = densified?.fee != null;
+  const hasSalary = densified?.salary_min != null && densified.salary_min !== "";
   if (hasFee && hasSalary) return null;
   const missing = [];
   if (!hasFee) missing.push("fee");
@@ -201,12 +217,19 @@ export function feeSalaryGapFor(exam) {
 }
 
 export function attachFeeSalaryGap(exam) {
-  const gap = feeSalaryGapFor(exam);
+  // Densify from NOE body first so gap classification sees structured amounts.
+  const densified = applyNoeFeeSalaryFromBody(exam);
+  const { noe_body: _body, body: _b, noe_text: _t, ...withoutBody } = densified;
+  const base =
+    densified.fee != null && densified.salary_min != null
+      ? withoutBody
+      : densified;
+  const gap = feeSalaryGapFor(base);
   if (!gap) {
-    const { fee_salary_gap: _drop, ...rest } = exam;
+    const { fee_salary_gap: _drop, ...rest } = base;
     return { ...rest, fee_salary_gap: null };
   }
-  return { ...exam, fee_salary_gap: gap };
+  return { ...base, fee_salary_gap: gap };
 }
 
 function normalizeOutcome(row) {
