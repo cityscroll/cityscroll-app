@@ -913,6 +913,8 @@
     fetching_notice_id: "ap chèche avi {id}…",
     notice_not_found_html: "Nou pa jwenn avi <code>{id}</code> nan Done Ouvè City Record la — li ka twò resan, oswa ID a ka make mal.",
     back_browse: "← Retounen nan CityScroll",
+    back_previous_view: "← Retounen nan paj anvan an",
+    vendor_name_too_short: "“{name}” twò kout pou idantifye yon founisè.",
     try_city_record: "eseye chèche l nan City Record la",
     notice_email_btn: "Imèl",
     notice_print_btn: "Enprime",

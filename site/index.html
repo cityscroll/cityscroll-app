@@ -3854,7 +3854,7 @@ function careerCardHTML(exam){
     ${careerOutcomeHTML(exam)}
     <div class="actions">${apply}${notice}
       <button class="act" type="button" data-career-copy="${exam.exam_number}">${t("copy_link_btn")}</button>
-      ${careerSelected===exam.exam_number?`<button class="act" type="button" data-career-all>${t("career_back_all")}</button>`:""}
+      ${careerSelected===exam.exam_number?routeBackHTML("#people?view=guide",t("career_back_all"),"act"):""}
     </div>
   </article>`;
 }
@@ -3891,9 +3891,6 @@ function renderCareerGuide(){
     const link=CrolStaffing.examUrl(button.dataset.careerCopy,location.origin+location.pathname);
     copyText(link,button);
   }));
-  $("#career-results").querySelector("[data-career-all]")?.addEventListener("click",()=>{
-    careerSelected=null; careerLimit=16; history.replaceState(null,"","#people"); renderCareerGuide();
-  });
   $("#career-more")?.addEventListener("click",()=>{ careerLimit+=24; renderCareerGuide(); });
 }
 function applyCareerRouteFilters(){
@@ -4349,7 +4346,9 @@ async function landSelect(i, el){
   if(landMap){ try{landMap.remove();}catch(e){} landMap=null; landMarker=null; }
   const ZAPACT_KEY={ZM:"zapact_zm",ZR:"zapact_zr",ZA:"zapact_za",ZC:"zapact_zc",ZS:"zapact_zs",HA:"zapact_ha",PC:"zapact_pc",PQ:"zapact_pc",HG:"zapact_hg"};
   const actList=(r.actions||"").split(/[;,]/).map(a=>ZAPACT_KEY[a.trim()]?t(ZAPACT_KEY[a.trim()]):(a.trim()||null)).filter(Boolean);
-  let html=`<h2 class="rolename" lang="en" dir="ltr">${r.project_name||t("unnamed")}</h2>
+  let html=(location.hash.startsWith("#land/")
+    ? `<p style="margin:4px 0 12px">${routeBackHTML("#land")}</p>`
+    : "")+`<h2 class="rolename" lang="en" dir="ltr">${r.project_name||t("unnamed")}</h2>
     <div class="badges">
       <span class="tag ${r.project_status==='Active'?'open':'closed'}">${r.public_status||r.project_status||t("status_na")}</span>
       ${mihOn(r.mih_flag)?`<span class="tag soon">${t("mih_tag")}</span>`:''}
@@ -4415,7 +4414,7 @@ function renderLandEntryNotFound(id){
   if(landMap){ try{landMap.remove();}catch(e){} landMap=null; landMarker=null; }
   const safeId=String(id||"").replace(/[<>&]/g,"");
   const suffix=safeId?`: <code>${safeId}</code>`:"";
-  const html=`<div class="empty">${t("no_zap")}${suffix}.<br><br><a href="#land">${t("back_browse")}</a></div>`;
+  const html=`<div class="empty">${t("no_zap")}${suffix}.<br><br>${routeBackHTML("#land")}</div>`;
   $("#llist").innerHTML=html;
   $("#ldetail").innerHTML=html;
   $("#lrescount").textContent="0";
@@ -7434,7 +7433,7 @@ async function showAgency(name, initialTab){
     workerFetch("/agency?name=" + encodeURIComponent(nm), null, 8000).then(r => r.ok ? r.json() : null).catch(() => null)
   ]);
   if(!(stats && +stats.n) && !sections.length){
-    box.innerHTML = `<div class="empty">No City Record notices found for agency “${safe}”. <a href="#money">← Browse CityScroll</a></div>`;
+    box.innerHTML = `<div class="empty">No City Record notices found for agency “${safe}”. ${routeBackHTML("#money")}</div>`;
     return;
   }
   const link = location.origin + location.pathname + agencyHref(nm);
@@ -7457,7 +7456,7 @@ async function showAgency(name, initialTab){
   const hasForecasts = forecasts.length > 0;
 
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
-    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CityScroll</a></p>
+    <p style="margin:4px 0 12px">${routeBackHTML("#money")}</p>
     <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
       <div class="ftype" style="margin-bottom:6px">Agency profile · City Record on record</div>
       <h2 class="rolename" lang="en" dir="ltr">${agencyWho(nm)}</h2>
@@ -7648,7 +7647,7 @@ function vendorProfileHTML(profile, details, hydrating){
       </div>` : "";
 
   return `<div style="max-width:880px;margin:0 auto">
-    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CityScroll</a></p>
+    <p style="margin:4px 0 12px">${routeBackHTML("#money")}</p>
     <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
       ${vendorProfileHeaderHTML(profile)}
 
@@ -7768,7 +7767,7 @@ async function showVendor(name, initialTab){
   const box = $("#entityview");
   delete box.dataset.vendorStem;
   const stem = vendorStem(name), safe = cleanText(name).replace(/[<>&]/g,"");
-  if(stem.length < 3){ box.innerHTML = `<div class="empty">“${safe}” is too short to resolve to a vendor. <a href="#money">← Browse</a></div>`; return; }
+  if(stem.length < 3){ box.innerHTML = `<div class="empty">${t("vendor_name_too_short",{name:safe})} ${routeBackHTML("#money")}</div>`; return; }
   box.innerHTML = `<div style="max-width:880px;margin:0 auto"><div class="panel" style="padding:22px 24px"><h2 class="rolename" lang="en" dir="ltr">${safe}</h2><div class="agencybar" aria-hidden="true"><div><div class="big">—</div></div><div><div class="big">—</div></div><div><div class="big">—</div></div></div></div></div>`;
   const profile = await loadVendorProfileRecord(name);
   if(!profile) return showVendorLive(name, initialTab, box);
@@ -7944,7 +7943,7 @@ async function showInvestigation(){
   const box = $("#entityview");
   delete box.dataset.vendorStem;
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
-    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("back_browse")}</a></p>
+    <p style="margin:4px 0 12px">${routeBackHTML("#money")}</p>
     <div class="panel" style="padding:22px 24px">
       <div class="ftype" style="margin-bottom:6px">${t("inv_ws_heading")}</div>
       <h2 style="margin:0"><input type="text" id="invname" aria-label="${t("inv_name_aria")}" data-i18n-aria="inv_name_aria" value="${inv.name.replace(/"/g,"&quot;")}" style="font:800 22px/1.2 var(--font-display);border:none;background:transparent;padding:0;width:100%"></h2>
@@ -7997,9 +7996,9 @@ async function showSharedInv(id){
   box.innerHTML = `<div class="empty"><span class="loading"></span> ${t("inv_fetching_shared")}</div>`;
   let j=null;
   try{ const r=await workerFetch("/inv/"+encodeURIComponent(id), null, 12000); if(r.ok) j=await r.json(); }catch(e){}
-  if(!j || !j.items){ box.innerHTML=`<div class="empty">${t("inv_shared_missing_html")} <a href="#money">${t("back_browse")}</a></div>`; return; }
+  if(!j || !j.items){ box.innerHTML=`<div class="empty">${t("inv_shared_missing_html")} ${routeBackHTML("#investigation")}</div>`; return; }
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
-    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("back_browse")}</a></p>
+    <p style="margin:4px 0 12px">${routeBackHTML("#investigation")}</p>
     <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
       <div class="ftype" style="margin-bottom:6px">${t("inv_shared_heading",{date:j.sharedAt||"—"})}</div>
       <h2 class="rolename">${String(j.name||t("untitled_name")).replace(/[<>&]/g,"")}</h2>
@@ -8042,7 +8041,7 @@ async function showMatter(pin){
     }catch(e){}
   }
   if(!rows.length){
-    box.innerHTML = `<div class="empty">No City Record notices carry PIN <code>${safe}</code>. <a href="#money">← Browse CityScroll</a></div>`;
+    box.innerHTML = `<div class="empty">No City Record notices carry PIN <code>${safe}</code>. ${routeBackHTML("#money")}</div>`;
     return;
   }
   rows.sort((a,b)=>(a.start_date||"").localeCompare(b.start_date||"") ||
@@ -8103,7 +8102,7 @@ async function showMatter(pin){
   }
   const link = location.origin + location.pathname + "#matter/" + encodeURIComponent(pin);
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
-    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CityScroll</a></p>
+    <p style="margin:4px 0 12px">${routeBackHTML("#money")}</p>
     <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
       <div class="ftype" style="margin-bottom:6px">Matter timeline · PIN <code>${safe}</code></div>
       <h2 class="rolename" lang="en" dir="ltr">${agency?pivotA(agencyHref(agency), agencyWho(agency)):""}${vendor?` × ${pivotA(vendorHref(vendor), cleanText(vendor))}`:""}</h2>
@@ -8382,6 +8381,113 @@ function bareCollectionHash(raw){
   }[route]||null;
 }
 
+// Item routes are a same-document SPA navigation, so their visible Back control should traverse
+// the entry that opened them instead of guessing a global landing. The URL remains canonical and
+// shareable; this small history-state sidecar carries only the prior hash and viewport position.
+function safeHistoryHash(value){
+  if(typeof value!=="string" || value.length<2 || value.length>3000 || value[0]!=="#") return null;
+  return /[\u0000-\u001f\u007f#]/.test(value.slice(1))?null:value;
+}
+function normalizeHistoryPoint(value){
+  const number=Number(value);
+  return Number.isFinite(number)?Math.max(0,Math.round(number)):0;
+}
+function itemRouteFallbackHash(hash){
+  const safe=safeHistoryHash(hash);
+  if(!safe) return null;
+  const raw=safe.slice(1), path=raw.split("?",1)[0];
+  if(/^notice\/[^/]+$/.test(path)) return "#money";
+  if(/^exam\/[^/]+$/.test(path)) return "#people?view=guide";
+  if(/^land\/[^/]+$/.test(path)) return "#land";
+  if(/^(?:vendor|agency|matter)\/[^/]+$/.test(path)) return "#money";
+  if(/^investigation\/shared\/[^/]+$/.test(path)) return "#investigation";
+  if(path==="investigation") return "#money";
+  if(/^task\/can-i-bid\/[^/]+$/.test(path)) return "#task/can-i-bid";
+  if(/^task\/what-will-change\/[^/]+$/.test(path)) return "#task/what-will-change";
+  if(path==="task/can-i-bid") return "#money";
+  if(path==="task/what-will-change") return "#land";
+  return null;
+}
+function routeHistoryEntry(state){
+  const entry=state&&state.cityscrollRoute&&state.cityscrollRoute.entry;
+  const hash=entry&&safeHistoryHash(entry.hash);
+  return hash?{hash,x:normalizeHistoryPoint(entry.x),y:normalizeHistoryPoint(entry.y)}:null;
+}
+function routeReturnContext(state){
+  const back=state&&state.cityscrollRoute&&state.cityscrollRoute.back;
+  const hash=back&&safeHistoryHash(back.hash);
+  return hash?{hash,x:normalizeHistoryPoint(back.x),y:normalizeHistoryPoint(back.y)}:null;
+}
+function routeHistoryState(patch){
+  const current=history.state&&typeof history.state==="object"&&!Array.isArray(history.state)?history.state:{};
+  const prior=current.cityscrollRoute&&typeof current.cityscrollRoute==="object"?current.cityscrollRoute:{};
+  return {...current,cityscrollRoute:{...prior,...patch}};
+}
+function currentRouteSnapshot(){
+  const hasActiveLens=!!document.querySelector(".tabbtn.active");
+  const currentHash=safeHistoryHash(location.hash);
+  const hash=(currentHash&&itemRouteFallbackHash(currentHash)?currentHash:
+    safeHistoryHash(hasActiveLens?serializeState():currentHash))||"#money";
+  const entry={hash,x:normalizeHistoryPoint(scrollX),y:normalizeHistoryPoint(scrollY)};
+  history.replaceState(routeHistoryState({entry}),"",hash);
+  return entry;
+}
+function routeBackHTML(fallbackHash,fallbackLabel,className){
+  const context=routeReturnContext(history.state);
+  const href=context?context.hash:(safeHistoryHash(fallbackHash)||"#money");
+  const label=context?t("back_previous_view"):(fallbackLabel||t("back_browse"));
+  const classAttr=className?' class="'+escUiHtml(className)+'"':"";
+  const styleAttr=className?"":' style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none"';
+  return '<a'+classAttr+styleAttr+' href="'+escUiHtml(href)+'" data-route-back="'+(context?"history":"fallback")+'">'+label+'</a>';
+}
+
+let pendingItemRouteContext=null;
+let pendingHistoryRouteScroll=null;
+function rememberItemRouteContext(event){
+  if(event.defaultPrevented || event.button!==0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  const target=event.target instanceof Element?event.target.closest("a[href]"):null;
+  if(!target || (target.target&&target.target!=="_self") || target.hasAttribute("download")) return;
+  let destination;
+  try{ destination=new URL(target.href,location.href); }catch(e){ return; }
+  if(destination.origin!==location.origin || destination.pathname!==location.pathname || destination.search!==location.search) return;
+
+  if(target.dataset.routeBack==="history"){
+    const context=routeReturnContext(history.state);
+    if(!context) return;
+    event.preventDefault();
+    pendingItemRouteContext=null;
+    currentRouteSnapshot();
+    history.back();
+    return;
+  }
+
+  if(!itemRouteFallbackHash(destination.hash) || destination.hash===location.hash) return;
+  pendingItemRouteContext={destination:destination.hash,back:currentRouteSnapshot()};
+  setTimeout(()=>{
+    if(pendingItemRouteContext&&pendingItemRouteContext.destination===destination.hash&&location.hash!==destination.hash) pendingItemRouteContext=null;
+  },0);
+}
+function commitPendingItemRouteContext(){
+  const pending=pendingItemRouteContext;
+  pendingItemRouteContext=null;
+  if(!pending || pending.destination!==location.hash) return;
+  history.replaceState(routeHistoryState({back:pending.back}),"",location.href);
+}
+function prepareHistoryRouteScroll(state){ pendingHistoryRouteScroll=routeHistoryEntry(state); }
+function restoreHistoryRouteScroll(){
+  const entry=pendingHistoryRouteScroll;
+  pendingHistoryRouteScroll=null;
+  if(!entry || (safeHistoryHash(location.hash)||"#money")!==entry.hash) return;
+  let attempts=0;
+  const restore=()=>{
+    if((safeHistoryHash(location.hash)||"#money")!==entry.hash) return;
+    scrollTo(entry.x,entry.y);
+    attempts++;
+    if(Math.abs(scrollY-entry.y)>2&&attempts<20) setTimeout(restore,50);
+  };
+  requestAnimationFrame(restore);
+}
+
 /* ===================== TASK-FIRST ENTRY (bounded examples) =====================
    Precomputed data/task_first_examples.json — five procurement + five ZAP records.
    Routes are additive (#task/…); existing lenses stay intact. See task_first.js. */
@@ -8507,7 +8613,8 @@ async function showTaskFirst(task, id){
   box.innerHTML = `<div class="empty"><span class="loading"></span> ${t("task_loading")}</div>`;
   const bundle = await loadTaskFirstBundle();
   if(!bundle || !bundle.tasks || !bundle.tasks[task]){
-    box.innerHTML = `<div class="empty">${t("task_bundle_missing")}<br><br><a href="#money">${t("back_browse")}</a></div>`;
+    const fallback=task==="what-will-change"?"#land":"#money";
+    box.innerHTML = `<div class="empty">${t("task_bundle_missing")}<br><br>${routeBackHTML(fallback)}</div>`;
     return;
   }
   const group = bundle.tasks[task];
@@ -8522,7 +8629,7 @@ async function showTaskFirst(task, id){
     }
     const presentation = TaskFirst.presentExample(example);
     box.innerHTML = `<div class="task-first">
-      <p style="margin:4px 0 12px"><a href="${TaskFirst.taskCollectionHash(task)}" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("task_back_examples")}</a>
+      <p style="margin:4px 0 12px">${routeBackHTML(TaskFirst.taskCollectionHash(task),t("task_back_examples"))}
       · <a href="${backHref}" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("back_browse")}</a></p>
       <header class="task-first-head">
         <p class="task-first-kicker">${t("task_entry_kicker")}</p>
@@ -8536,7 +8643,7 @@ async function showTaskFirst(task, id){
   }
   const cards = (group.examples || []).map(ex => taskCardHTML(TaskFirst.presentExample(ex), false)).join("");
   box.innerHTML = `<div class="task-first">
-    <p style="margin:4px 0 12px"><a href="${backHref}" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("back_browse")}</a></p>
+    <p style="margin:4px 0 12px">${routeBackHTML(backHref)}</p>
     <header class="task-first-head">
       <p class="task-first-kicker">${t("task_entry_kicker")}</p>
       <h2>${t(titleKey)}</h2>
@@ -8695,7 +8802,7 @@ async function showNotice(id, watch){
     r = rows[0];
   }catch(e){}
   if(!r){
-    box.innerHTML = `<div class="empty">${t("notice_not_found_html",{id:safeId})} <br><br><a href="#money">${t("back_browse")}</a> · <a href="${REQ_URL(id)}" ${EXT_ATTRS}>${t("try_city_record")}${extSR()}</a></div>`;
+    box.innerHTML = `<div class="empty">${t("notice_not_found_html",{id:safeId})} <br><br>${routeBackHTML("#money")} · <a href="${REQ_URL(id)}" ${EXT_ATTRS}>${t("try_city_record")}${extSR()}</a></div>`;
     return;
   }
   const link = noticeLink(r.request_id);
@@ -8707,7 +8814,7 @@ async function showNotice(id, watch){
     : title;
   const watchChips = watch ? watchChipsFor(watch.lens, watch.filter) : [];
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
-    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("back_browse")}</a></p>
+    <p style="margin:4px 0 12px">${routeBackHTML("#money")}</p>
     <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
       <div class="ftype" style="margin-bottom:6px">${r.type_of_notice_description||t("notice_fallback")}${r.section_name?" · "+tSection(r.section_name):""}${r.agency_name?" · "+pivotA(agencyHref(r.agency_name), r.agency_name):""}</div>
       <h2 class="rolename" lang="en" dir="ltr">${titleInner}</h2>
@@ -9056,7 +9163,13 @@ $("#propertyboro").addEventListener("change",()=>{ renderPropExplorer(); updateH
 $("#propertyneighborhood").addEventListener("keydown",event=>{ if(event.key==="Enter"){ renderPropExplorer(); updateHash(); renderSearchComponents("property"); } });
 $("#propertyneighborhood").addEventListener("input",debounce(()=>{ renderPropExplorer(); updateHash(); renderSearchComponents("property"); },500));
 loadAgencies();
-window.addEventListener("hashchange", ()=>{ if(!hashLock && !applyHash()) showTab("money"); }); // empty/unknown hash (e.g. Back to the first entry) → default view
+document.addEventListener("click",rememberItemRouteContext);
+window.addEventListener("popstate",event=>prepareHistoryRouteScroll(event.state));
+window.addEventListener("hashchange", ()=>{
+  commitPendingItemRouteContext();
+  if(!hashLock && !applyHash()) showTab("money");
+  restoreHistoryRouteScroll();
+}); // empty/unknown hash (e.g. Back to the first entry) → default view
 if(!applyHash()) search(); // an incoming permalink wins over the default Money load
 // skipQuizSync=true: a fresh load must not make the quiz LOOK like a topic was already picked
 // just because #awatch's mandatory default ("bigaward") happens to match one of its chips —
