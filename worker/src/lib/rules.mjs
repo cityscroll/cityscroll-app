@@ -378,3 +378,516 @@ export function joinRulesToNotices(rules, notices, now = new Date()) {
 
   return { matched, unmatchedNotices, unmatchedRules };
 }
+
+// ---------------------------------------------------------------------------
+// Multi-notice rulemaking stitch (proposal / hearing / adoption siblings)
+//
+// Same pattern as property disposition / PIN siblings: group City Record
+// notices that confidently belong to one rulemaking, stamp a shared
+// rulemaking_subject_ref + related_notices[], never merge notice identities.
+// Speculative merges are worse than splits — high confidence only.
+// ---------------------------------------------------------------------------
+
+/** Lifecycle window for title+agency sibling joins (proposal → adoption can span months). */
+export const RULEMAKING_SIBLING_WINDOW_DAYS = 540;
+
+/** Minimum title-core overlap to stitch without a shared publisher rules id. */
+export const RULEMAKING_TITLE_OVERLAP_MIN = 0.55;
+
+/** Minimum significant tokens in a title core before title-only join is allowed. */
+const RULEMAKING_MIN_CORE_TOKENS = 2;
+
+const LIFECYCLE_TITLE_NOISE = [
+  /\bnotice of (?:proposed )?adoption(?: of)?\b/gi,
+  /\bnotice of proposed rule(?:making|s)?\b/gi,
+  /\bnotice of public hearing\b/gi,
+  /\bpublic hearing (?:on|regarding|for|concerning)\b/gi,
+  /\bpublic hearing\b/gi,
+  /\bproposed (?:rule|rules|rulemaking|amendment|amendments)\b/gi,
+  /\bnotice of (?:proposed )?(?:rule|rules|rulemaking)\b/gi,
+  /\badoption of (?:a |the )?(?:rule|rules|amendment|amendments)\b/gi,
+  /\badopted (?:rule|rules)\b/gi,
+  /\bregarding\b/gi,
+  /\bconcerning\b/gi,
+  /\bamendment(?:s)? (?:of|to)\b/gi,
+];
+
+/**
+ * Strip lifecycle boilerplate so proposal / hearing / adoption titles for the
+ * same rulemaking collapse onto a comparable core.
+ */
+export function rulemakingTitleCore(title) {
+  let s = String(title || "");
+  for (const re of LIFECYCLE_TITLE_NOISE) s = s.replace(re, " ");
+  s = s.replace(/\s+/g, " ").trim();
+  return s;
+}
+
+/**
+ * Reference tokens that can anchor a rulemaking across notices when shared
+ * (RCNY cites, section/chapter numbers). Normalized lowercase.
+ */
+export function extractRulemakingRefTokens(text) {
+  const raw = String(text || "");
+  const found = new Set();
+  for (const m of raw.matchAll(/\b\d+(?:-\d+)?\s*rcny\b/gi)) {
+    found.add(m[0].toLowerCase().replace(/\s+/g, ""));
+  }
+  for (const m of raw.matchAll(/\b(?:chapter|section|§)\s*[\d.a-z-]+\b/gi)) {
+    found.add(m[0].toLowerCase().replace(/\s+/g, " ").trim());
+  }
+  for (const m of raw.matchAll(/\btitle\s+\d+\b/gi)) {
+    found.add(m[0].toLowerCase().replace(/\s+/g, " ").trim());
+  }
+  return [...found].sort();
+}
+
+function recordAgencyAbbr(record) {
+  return (
+    record?.nyc_rules?.agency_abbr
+    || agencyAbbr(record?.agency)
+    || agencyAbbr(record?.city_record?.agency)
+    || agencyAbbr(record?.city_record?.agency_name)
+    || agencyAbbr(record?.agency_name)
+    || null
+  );
+}
+
+function recordTitle(record) {
+  return (
+    record?.title
+    || record?.city_record?.title
+    || record?.city_record?.short_title
+    || record?.nyc_rules?.title
+    || record?.short_title
+    || ""
+  );
+}
+
+function recordRequestId(record) {
+  return String(
+    record?.request_id
+    || record?.city_record?.request_id
+    || record?.city_record?.id
+    || "",
+  ).replace(/\s+/g, " ").trim() || null;
+}
+
+function recordNoticeDateMs(record) {
+  const raw =
+    record?.notice_date
+    || record?.city_record?.notice_date
+    || record?.city_record?.start_date
+    || record?.start_date
+    || record?.nyc_rules?.pub_date
+    || null;
+  if (!raw) return null;
+  const ms = Date.parse(raw);
+  return Number.isFinite(ms) ? ms : null;
+}
+
+function recordRulesNativeId(record) {
+  if (record?.nyc_rules) return rulesNativeIdLocal(record.nyc_rules);
+  return null;
+}
+
+/** Local copy of rules native id (guid preferred) — avoids circular import. */
+function rulesNativeIdLocal(nycRules = {}) {
+  const guid = String(nycRules?.guid || nycRules?.Guid || nycRules?.GUID || "")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (guid && !/\s/.test(guid)) return guid;
+  const url = String(nycRules?.url || nycRules?.link || nycRules?.Link || "")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (url && !/\s/.test(url)) return url;
+  return null;
+}
+
+function recordBodyBlob(record) {
+  return [
+    recordTitle(record),
+    record?.city_record?.additional_description_1,
+    record?.city_record?.additional_description_2,
+    record?.city_record?.additional_description_3,
+    record?.nyc_rules?.summary,
+    record?.nyc_rules?.title,
+  ]
+    .filter(Boolean)
+    .join(" ");
+}
+
+/**
+ * Classify a rules materialization / City Record row into a rulemaking role.
+ * Returns proposal | hearing | adoption | notice.
+ */
+export function classifyRulemakingRole(record) {
+  const title = recordTitle(record);
+  const type = String(
+    record?.city_record?.notice_type
+    || record?.city_record?.type_of_notice_description
+    || record?.type_of_notice_description
+    || record?.nyc_rules?.notice_type
+    || "",
+  );
+  const stage = String(record?.stage || "");
+  const hay = `${title} ${type} ${stage}`;
+
+  if (
+    /\badoption\b|\badopted\b/i.test(hay)
+    || record?.nyc_rules?.adoption_published_at
+    || stage === "adopted"
+    || stage === "effective"
+    || record?.nyc_rules?.rule_status === "1"
+    || record?.nyc_rules?.notice_type === "adoption"
+  ) {
+    return "adoption";
+  }
+  if (
+    /\bpublic hearing\b|\bhearing\b/i.test(title)
+    || stage === "hearing"
+    || /\bpublic hearings?\b/i.test(type)
+  ) {
+    return "hearing";
+  }
+  if (
+    /\bproposed\b|\bproposal\b/i.test(hay)
+    || stage === "proposed"
+    || stage === "comment-open"
+    || stage === "comment-closed"
+    || record?.nyc_rules?.notice_type === "proposed"
+  ) {
+    return "proposal";
+  }
+  return "notice";
+}
+
+/**
+ * Confident sibling match only. Ambiguous pairs return matched:false —
+ * separate subjects are the correct fallback.
+ *
+ * High confidence when:
+ *   1) same agency + shared NYC Rules guid/url, or
+ *   2) same agency + shared reference token (RCNY / section) + date window, or
+ *   3) same agency + high title-core overlap (≥ 0.55, ≥2 tokens) + date window.
+ */
+export function matchRulemakingSiblings(a, b) {
+  const idA = recordRequestId(a);
+  const idB = recordRequestId(b);
+  if (!idA || !idB || idA === idB) {
+    return { matched: false, confidence: "none", basis: "missing or identical request_id" };
+  }
+
+  const agencyA = recordAgencyAbbr(a);
+  const agencyB = recordAgencyAbbr(b);
+  if (!agencyA || !agencyB || agencyA !== agencyB) {
+    return { matched: false, confidence: "none", basis: "agency mismatch" };
+  }
+
+  const rulesA = recordRulesNativeId(a);
+  const rulesB = recordRulesNativeId(b);
+  if (rulesA && rulesB && rulesA === rulesB) {
+    return {
+      matched: true,
+      confidence: "high",
+      basis: `shared rules id (${rulesA}) + agency ${agencyA}`,
+      method: "shared_rules_id",
+      agency: agencyA,
+    };
+  }
+
+  const msA = recordNoticeDateMs(a);
+  const msB = recordNoticeDateMs(b);
+  let daysApart = null;
+  if (msA != null && msB != null) {
+    daysApart = Math.abs(msA - msB) / 86_400_000;
+  }
+  const inWindow = daysApart != null && daysApart <= RULEMAKING_SIBLING_WINDOW_DAYS;
+
+  const refsA = new Set(extractRulemakingRefTokens(recordBodyBlob(a)));
+  const refsB = new Set(extractRulemakingRefTokens(recordBodyBlob(b)));
+  const sharedRefs = [...refsA].filter((r) => refsB.has(r));
+  if (sharedRefs.length && inWindow) {
+    return {
+      matched: true,
+      confidence: "high",
+      basis: `agency ${agencyA} + shared ref (${sharedRefs[0]}) + date (${Math.round(daysApart)}d)`,
+      method: "shared_reference",
+      agency: agencyA,
+      shared_refs: sharedRefs,
+      days_apart: Math.round(daysApart),
+    };
+  }
+
+  const coreA = rulemakingTitleCore(recordTitle(a));
+  const coreB = rulemakingTitleCore(recordTitle(b));
+  const tokA = tokens(coreA);
+  const tokB = tokens(coreB);
+  if (tokA.size < RULEMAKING_MIN_CORE_TOKENS || tokB.size < RULEMAKING_MIN_CORE_TOKENS) {
+    return {
+      matched: false,
+      confidence: "low",
+      basis: "title core too thin for confident stitch",
+    };
+  }
+  const overlap = titleOverlap(coreA, coreB);
+  if (inWindow && overlap >= RULEMAKING_TITLE_OVERLAP_MIN) {
+    return {
+      matched: true,
+      confidence: "high",
+      basis: `agency ${agencyA} + title-core overlap (${Math.round(overlap * 100)}%) + date (${Math.round(daysApart)}d)`,
+      method: "title_agency_window",
+      agency: agencyA,
+      title_overlap: overlap,
+      days_apart: Math.round(daysApart),
+    };
+  }
+
+  if (!inWindow && daysApart != null) {
+    return {
+      matched: false,
+      confidence: "low",
+      basis: `outside lifecycle window (${Math.round(daysApart)}d > ${RULEMAKING_SIBLING_WINDOW_DAYS}d)`,
+    };
+  }
+  return {
+    matched: false,
+    confidence: "low",
+    basis: `title-core overlap too low (${Math.round(overlap * 100)}%) or missing dates`,
+  };
+}
+
+function slugRulemakingToken(s) {
+  return String(s || "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 80);
+}
+
+/**
+ * Stable process subject for a sibling group. Prefer shared publisher rules id
+ * when every rules-bearing member agrees; else agency + title-core slug; else
+ * earliest request_id. Spine-local — does not rewrite notice: identities.
+ */
+export function rulemakingSubjectRef(records = [], pairEvidence = null) {
+  const rows = (records || []).filter((r) => recordRequestId(r));
+  if (!rows.length) return null;
+  const agency = recordAgencyAbbr(rows[0]) || "agency";
+  const agencySlug = slugRulemakingToken(agency) || "agency";
+
+  const rulesIds = [...new Set(rows.map(recordRulesNativeId).filter(Boolean))];
+  if (rulesIds.length === 1) {
+    // Shared publisher id is the strongest real-world subject.
+    return `rulemaking:${agencySlug}:rules:${slugRulemakingToken(rulesIds[0]) || "id"}`;
+  }
+
+  if (pairEvidence?.method === "shared_reference" && pairEvidence.shared_refs?.[0]) {
+    return `rulemaking:${agencySlug}:ref:${slugRulemakingToken(pairEvidence.shared_refs[0])}`;
+  }
+
+  // Prefer the longest title core among members (more specific than short stubs).
+  let bestCore = "";
+  for (const row of rows) {
+    const core = rulemakingTitleCore(recordTitle(row));
+    if (core.length > bestCore.length) bestCore = core;
+  }
+  const coreSlug = slugRulemakingToken(
+    [...tokens(bestCore)].sort().join("-"),
+  );
+  if (coreSlug && [...tokens(bestCore)].length >= RULEMAKING_MIN_CORE_TOKENS) {
+    return `rulemaking:${agencySlug}:${coreSlug}`;
+  }
+
+  const ids = rows.map(recordRequestId).filter(Boolean).sort();
+  return `rulemaking:${agencySlug}:notice:${ids[0]}`;
+}
+
+/**
+ * Union-find group City Record rules records into rulemaking sibling sets.
+ * Only high-confidence pairs unite. Records without request_id are excluded
+ * from multi-notice groups (RSS-only rows stay alone).
+ *
+ * @returns {Array<{ subject_ref: string, notices: object[], join: object }>}
+ */
+export function groupRulemakingSiblings(records = []) {
+  const rows = (records || []).filter((r) => recordRequestId(r));
+  if (!rows.length) return [];
+
+  const byId = new Map();
+  for (const row of rows) byId.set(recordRequestId(row), row);
+
+  const parent = new Map();
+  const find = (id) => {
+    let p = parent.get(id) || id;
+    while (p !== (parent.get(p) || p)) p = parent.get(p);
+    parent.set(id, p);
+    return p;
+  };
+  const unite = (a, b) => {
+    const ra = find(a);
+    const rb = find(b);
+    if (ra !== rb) parent.set(ra, rb);
+  };
+
+  const ids = [...byId.keys()];
+  for (const id of ids) parent.set(id, id);
+
+  /** Best pair evidence per root (for subject_ref construction). */
+  const pairMeta = new Map();
+
+  for (let i = 0; i < ids.length; i++) {
+    for (let j = i + 1; j < ids.length; j++) {
+      const a = byId.get(ids[i]);
+      const b = byId.get(ids[j]);
+      const result = matchRulemakingSiblings(a, b);
+      if (!result.matched || result.confidence !== "high") continue;
+      unite(ids[i], ids[j]);
+      const root = find(ids[i]);
+      const prev = pairMeta.get(root);
+      // Prefer shared_rules_id > shared_reference > title for subject construction.
+      const rank = { shared_rules_id: 3, shared_reference: 2, title_agency_window: 1 };
+      if (!prev || (rank[result.method] || 0) > (rank[prev.method] || 0)) {
+        pairMeta.set(root, result);
+      }
+    }
+  }
+
+  const groups = new Map();
+  for (const id of ids) {
+    const root = find(id);
+    const list = groups.get(root) || [];
+    list.push(byId.get(id));
+    groups.set(root, list);
+  }
+
+  const out = [];
+  for (const [root, notices] of groups) {
+    notices.sort((a, b) => {
+      const da = recordNoticeDateMs(a) ?? 0;
+      const db = recordNoticeDateMs(b) ?? 0;
+      return da - db || String(recordRequestId(a)).localeCompare(String(recordRequestId(b)));
+    });
+    const evidence = pairMeta.get(root) || (notices.length > 1 ? { method: "title_agency_window" } : { method: "single_notice" });
+    const multi = notices.length > 1;
+    out.push({
+      subject_ref: rulemakingSubjectRef(notices, multi ? evidence : null),
+      notices,
+      join: {
+        matched: multi,
+        method: multi ? (evidence.method || "title_agency_window") : "single_notice",
+        confidence: multi ? "high" : "singleton",
+        notice_count: notices.length,
+        agency: recordAgencyAbbr(notices[0]) || null,
+        request_ids: notices.map(recordRequestId),
+        basis: multi
+          ? (evidence.basis || "high-confidence sibling stitch")
+          : "single City Record notice (no confident siblings)",
+      },
+    });
+  }
+
+  out.sort((a, b) => {
+    const da = recordNoticeDateMs(a.notices[0]) ?? 0;
+    const db = recordNoticeDateMs(b.notices[0]) ?? 0;
+    return da - db || String(a.subject_ref).localeCompare(String(b.subject_ref));
+  });
+  return out;
+}
+
+function relatedNoticeEntry(record, pairResult = null) {
+  const requestId = recordRequestId(record);
+  return {
+    request_id: requestId,
+    role: classifyRulemakingRole(record),
+    title: recordTitle(record) || null,
+    notice_date: record?.notice_date || record?.city_record?.notice_date || record?.city_record?.start_date || null,
+    stage: record?.stage || null,
+    agency: record?.agency || record?.city_record?.agency || null,
+    ...(pairResult
+      ? {
+          join: {
+            matched: pairResult.matched,
+            confidence: pairResult.confidence,
+            basis: pairResult.basis,
+            method: pairResult.method || null,
+          },
+        }
+      : {}),
+  };
+}
+
+/**
+ * Stamp each rules materialization record with:
+ *   - rulemaking_subject_ref (shared across confident siblings)
+ *   - related_notices[] (other City Record notices in the same rulemaking)
+ *   - rulemaking_join (provenance for the stitch)
+ *
+ * Does not rewrite request_id / notice identity. Pure — returns a new array.
+ * Records without request_id pass through unchanged (no stitch).
+ */
+export function attachRulemakingSiblings(records = []) {
+  const list = Array.isArray(records) ? records : [];
+  if (!list.length) return [];
+
+  const groups = groupRulemakingSiblings(list);
+  const byRequestId = new Map();
+  for (const group of groups) {
+    for (const notice of group.notices) {
+      byRequestId.set(recordRequestId(notice), group);
+    }
+  }
+
+  return list.map((record) => {
+    const rid = recordRequestId(record);
+    if (!rid) {
+      // RSS-only unmatched rules rows: no City Record sibling chain.
+      return {
+        ...record,
+        rulemaking_subject_ref: null,
+        related_notices: [],
+        rulemaking_join: {
+          matched: false,
+          method: "no_city_record_notice",
+          confidence: "none",
+          notice_count: 0,
+          basis: "no request_id — cannot stitch City Record siblings",
+        },
+      };
+    }
+
+    const group = byRequestId.get(rid);
+    if (!group) {
+      return {
+        ...record,
+        rulemaking_subject_ref: `rulemaking:notice:${rid}`,
+        related_notices: [],
+        rulemaking_join: {
+          matched: false,
+          method: "single_notice",
+          confidence: "singleton",
+          notice_count: 1,
+          request_ids: [rid],
+          basis: "single City Record notice (no confident siblings)",
+        },
+      };
+    }
+
+    const siblings = group.notices.filter((n) => recordRequestId(n) !== rid);
+    const related = siblings.map((sib) => {
+      const pair = matchRulemakingSiblings(record, sib);
+      return relatedNoticeEntry(sib, pair);
+    });
+
+    return {
+      ...record,
+      rulemaking_subject_ref: group.subject_ref,
+      related_notices: related,
+      rulemaking_join: {
+        ...group.join,
+        // Per-record view of the group join.
+        role: classifyRulemakingRole(record),
+      },
+    };
+  });
+}

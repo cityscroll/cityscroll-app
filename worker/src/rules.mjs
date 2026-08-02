@@ -4,6 +4,7 @@
 // authoritative discovery layer; NYC Rules provides lifecycle enrichment.
 
 import {
+  attachRulemakingSiblings,
   classifyStage,
   deriveRuleEvents,
   joinRulesToNotices,
@@ -90,17 +91,11 @@ export async function buildRuleView(fetchImpl = fetch, now = new Date()) {
     byStage[u.stage] = (byStage[u.stage] || 0) + 1;
   }
 
-  const stampRuleSubjects = (record) => {
-    const subjects = linksFromRuleRecord(record);
-    return {
-      ...record,
-      subject_refs: subjects.subject_refs,
-      subject_links: subjects.subject_links,
-    };
-  };
-
-  const records = [
-    ...matched.map((m) => stampRuleSubjects({
+  // Build rows first, then stitch multi-notice rulemaking siblings (proposal /
+  // hearing / adoption), then stamp subject registry so same_rulemaking edges
+  // see related_notices. Notice identities stay distinct (link-not-merge).
+  const rawRecords = [
+    ...matched.map((m) => ({
       request_id: m.city_record.request_id,
       agency: m.city_record.agency_name,
       title: m.city_record.short_title || m.rule.title,
@@ -136,7 +131,7 @@ export async function buildRuleView(fetchImpl = fetch, now = new Date()) {
         basis: m.join.basis,
       },
     })),
-    ...unmatchedNotices.map((notice) => stampRuleSubjects({
+    ...unmatchedNotices.map((notice) => ({
       request_id: notice.request_id,
       agency: notice.agency_name,
       title: notice.short_title,
@@ -156,7 +151,7 @@ export async function buildRuleView(fetchImpl = fetch, now = new Date()) {
         reason: "No NYC Rules entry found for this agency and notice",
       },
     })),
-    ...unmatchedRules.map(({ rule, stage }) => stampRuleSubjects({
+    ...unmatchedRules.map(({ rule, stage }) => ({
       request_id: null,
       agency: rule.agency_name || rule.agency_full || rule.agency_abbr,
       title: rule.title,
@@ -187,12 +182,30 @@ export async function buildRuleView(fetchImpl = fetch, now = new Date()) {
     })),
   ];
 
+  const stitched = attachRulemakingSiblings(rawRecords);
+  const records = stitched.map((record) => {
+    const subjects = linksFromRuleRecord(record);
+    return {
+      ...record,
+      subject_refs: subjects.subject_refs,
+      subject_links: subjects.subject_links,
+    };
+  });
+
+  const multiNoticeRulemakings = new Set(
+    records
+      .filter((r) => r.rulemaking_join?.matched && (r.rulemaking_join?.notice_count || 0) > 1)
+      .map((r) => r.rulemaking_subject_ref)
+      .filter(Boolean),
+  );
+
   const counts = {
     total: records.length,
     matched: matched.length,
     unmatched_notices: unmatchedNotices.length,
     unmatched_rules: unmatchedRules.length,
     by_stage: byStage,
+    multi_notice_rulemakings: multiNoticeRulemakings.size,
   };
 
   return {
