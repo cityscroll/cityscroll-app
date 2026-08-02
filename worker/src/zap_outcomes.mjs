@@ -37,11 +37,16 @@ export {
 
 const SODA = "https://data.cityofnewyork.us/resource";
 const CITY_RECORD_DATASET = "dg92-zbpx";
+// Body + contact + venue fields so the land action rail can extract testimony /
+// join / venue steps without a second City Record fetch.
 const CITY_RECORD_SELECT = [
   "request_id", "start_date", "event_date", "section_name", "agency_name",
-  "type_of_notice_description", "short_title", "additional_description_1",
-  "additional_description_2", "additional_description_3", "other_info_1",
-  "other_info_2", "other_info_3", "printout_1", "printout_2", "printout_3",
+  "type_of_notice_description", "short_title",
+  "building_name", "street_address_1", "street_address_2", "city", "state", "zip_code",
+  "email", "contact_name", "contact_phone",
+  "additional_description_1", "additional_description_2", "additional_description_3",
+  "other_info_1", "other_info_2", "other_info_3",
+  "printout_1", "printout_2", "printout_3",
 ].join(",");
 
 // Sell-facing land universe for daily write-ahead prewarm. Order is priority:
@@ -528,11 +533,46 @@ export async function buildZapOutcomeRecord(projectId, { fetchBbl = true } = {})
   );
   return {
     ...withDob,
+    // Slim public notice rows for land-detail action rail (participation extraction).
+    // Same SODA fields already used for the ULURP spine join — not a new publisher.
+    city_record_notices: slimCityRecordNoticesForActionRail(cityRecordNotices),
     spine: buildLandEventSpine(withDob, {
       cityRecordNotices,
       noticeLookupStatus: candidateResult.status,
     }),
   };
+}
+
+/** Cap notice payload size while keeping body + venue fields for participation steps. */
+export function slimCityRecordNoticesForActionRail(notices, limit = 12) {
+  return (Array.isArray(notices) ? notices : []).slice(0, limit).map((row) => ({
+    request_id: row.request_id || null,
+    start_date: row.start_date || null,
+    event_date: row.event_date || null,
+    section_name: row.section_name || null,
+    agency_name: row.agency_name || null,
+    type_of_notice_description: row.type_of_notice_description || null,
+    short_title: row.short_title || null,
+    building_name: row.building_name || null,
+    street_address_1: row.street_address_1 || null,
+    street_address_2: row.street_address_2 || null,
+    city: row.city || null,
+    state: row.state || null,
+    zip_code: row.zip_code || null,
+    email: row.email || null,
+    contact_name: row.contact_name || null,
+    contact_phone: row.contact_phone || null,
+    additional_description_1: row.additional_description_1 || null,
+    additional_description_2: row.additional_description_2 || null,
+    additional_description_3: row.additional_description_3 || null,
+    other_info_1: row.other_info_1 || null,
+    other_info_2: row.other_info_2 || null,
+    other_info_3: row.other_info_3 || null,
+    printout_1: row.printout_1 || null,
+    printout_2: row.printout_2 || null,
+    printout_3: row.printout_3 || null,
+    join: row.join || null,
+  }));
 }
 
 export async function handleZapOutcomes(request, env, ctx) {
