@@ -15,7 +15,10 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - Required checks always report a conclusion (never stay missing). Fast paths:
   `changelog_only` (bot-owned changelog files) and `docs_only` (`tools/docs-only-path-guard.sh`)
   skip the full unit suite; non-frontend PRs skip browser a11y / reading-level
-  heavy work while still posting SUCCESS. Performance budgets run only when `frontend` changes.
+  heavy work while still posting SUCCESS. Performance budgets (20-sample p95) use a
+  narrower `perf` path filter (site HTML/CSS/JS/media + budget harness) — not all of
+  `site/**` — so data-only / worker-only diffs report SUCCESS without the long measure.
+  Performance is not a merge-queue required check (`tools/merge_queue_policy.json`).
 - Stray-English: **Unit static lint only** (`test/standards/stray_english.py`). The runtime
   multi-locale walk (`test/functional/13_stray_english.py`) is **not** a CI job or required
   check — optional locally via that script or `run_stray_english_shards.sh`. Required merge
