@@ -1,0 +1,64 @@
+{
+  "phase": "WH-03",
+  "measured_at": "2026-08-02T05:02:27.242Z",
+  "replaced_fetch": {
+    "function": "fetchOcpAwardRows",
+    "file": "worker/src/checkbook_lifecycle.mjs",
+    "soda_dataset": "qyyg-4tf5",
+    "product": "OCP award side-car on GET /contract-lifecycle"
+  },
+  "warehouse_duckdb_build_path": {
+    "samples_ms": [
+      57.52,
+      56.68,
+      57.27,
+      57.57,
+      56.63
+    ],
+    "p50_ms": 57.27,
+    "mean_ms": 57.13,
+    "n": 5,
+    "path": "warehouse",
+    "rows": 1,
+    "notice_request_id": "FIX001",
+    "note": "Python DuckDB CLI spawn per query — build/ops only, not Worker request path"
+  },
+  "materialized_index_edge_path": {
+    "samples_ms": [
+      0.0009,
+      0.0005,
+      0.0004,
+      0.0004,
+      0.0004
+    ],
+    "p50_ms": 0.0001,
+    "mean_ms": 0.0002,
+    "n": 200,
+    "path": "materialized_index",
+    "rows": 1,
+    "notice_request_id": "20260723031",
+    "note": "Worker hot path after warehouse materialization import"
+  },
+  "soda_live_previous_path": {
+    "samples_ms": [
+      285.14,
+      211.27,
+      124.03
+    ],
+    "p50_ms": 211.27,
+    "mean_ms": 206.81,
+    "n": 3,
+    "path": "soda_live",
+    "rows": 1,
+    "url_class": "socrata_qyyg-4tf5_request_id",
+    "notice_request_id": "20260723031",
+    "note": "Previous live path in fetchOcpAwardRows"
+  },
+  "speedup": {
+    "soda_p50_ms": 211.27,
+    "warehouse_materialized_p50_ms": 0.0001,
+    "ratio_vs_0_01ms_floor": 21127,
+    "summary": "OCP side-car lookup p50: live SODA 211.27ms → warehouse materialization 0.0001ms (sub-ms; removes a SODA RTT)",
+    "note": "Edge path is the materialized index; DuckDB spawn is build-time only"
+  }
+}

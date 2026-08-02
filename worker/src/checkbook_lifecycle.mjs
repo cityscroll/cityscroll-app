@@ -35,6 +35,7 @@ import {
   attachOcpAward,
   OCP_DATASET_ID,
 } from "./lib/ocp_awards.mjs";
+import { lookupOcpFromWarehouseMaterialization } from "./lib/ocp_warehouse_lookup.mjs";
 import { attachMoneyCivicEvents } from "./lib/civic_time.mjs";
 
 const CHECKBOOK = "https://www.checkbooknyc.com/api";
@@ -180,9 +181,19 @@ export async function fetchNoticeRow(env, requestId) {
 // OCP Recent Contract Awards (qyyg-4tf5) side-car fetch
 // ---------------------------------------------------------------------------
 
-// Fetch OCP award rows for a notice: request_id first, then PIN. Bounded, fail-soft.
+// Fetch OCP award rows for a notice: warehouse materialization first (WH-03),
+// then live SODA on miss. Bounded, fail-soft.
+// Returns { ok, rows, lookup_path?: "warehouse"|"soda" }.
 export async function fetchOcpAwardRows(noticeRow) {
   const r = noticeRow || {};
+
+  // WH-03: instant hit from warehouse materialization index (no network).
+  const wh = lookupOcpFromWarehouseMaterialization(r);
+  if (wh.hit) {
+    return { ok: true, rows: wh.rows, lookup_path: "warehouse" };
+  }
+
+  // Live SODA fallback when the materialization lacks this request_id/pin.
   const rows = [];
   const seen = new Set();
 
@@ -207,7 +218,7 @@ export async function fetchOcpAwardRows(noticeRow) {
   if (r.request_id) {
     const byId = await pull(`request_id='${sq(r.request_id)}'`, 5);
     if (byId.ok) anyOk = true;
-    else return { ok: false, rows: [] };
+    else return { ok: false, rows: [], lookup_path: "soda" };
     for (const row of byId.rows) {
       const key = row.request_id || JSON.stringify(row);
       if (!seen.has(key)) { seen.add(key); rows.push(row); }
@@ -217,16 +228,20 @@ export async function fetchOcpAwardRows(noticeRow) {
   if (!rows.length && r.pin) {
     const byPin = await pull(`pin='${sq(r.pin)}'`, OCP_PIN_LIMIT);
     if (byPin.ok) anyOk = true;
-    else return { ok: false, rows: [] };
+    else return { ok: false, rows: [], lookup_path: "soda" };
     for (const row of byPin.rows) {
       const key = row.request_id || JSON.stringify(row);
       if (!seen.has(key)) { seen.add(key); rows.push(row); }
     }
   } else if (!r.request_id && !r.pin) {
-    return { ok: true, rows: [] };
+    return { ok: true, rows: [], lookup_path: "warehouse" };
   }
 
-  return { ok: anyOk || (!r.request_id && !r.pin), rows };
+  return {
+    ok: anyOk || (!r.request_id && !r.pin),
+    rows,
+    lookup_path: "soda",
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -306,6 +321,7 @@ export async function computeLifecycle(env, requestId, noticeRow) {
     const ocpAward = joinOcpAward(r, ocpFetch.rows, {
       lookupStatus: ocpFetch.ok ? "ok" : "error",
     });
+    if (ocpFetch.lookup_path) ocpAward.lookup_path = ocpFetch.lookup_path;
     let noPinLifecycle = attachOcpAward(
       assembleLifecycle(r, [], [], [], {
         pinStrategy: "none",
@@ -406,9 +422,11 @@ export async function computeLifecycle(env, requestId, noticeRow) {
   }
 
   // OCP Recent Contract Awards side-car (date/amount corroboration).
+  // WH-03: warehouse materialization first; live SODA only on miss.
   const ocpAward = joinOcpAward(r, ocpFetch.rows, {
     lookupStatus: ocpFetch.ok ? "ok" : "error",
   });
+  if (ocpFetch.lookup_path) ocpAward.lookup_path = ocpFetch.lookup_path;
   lifecycle = attachOcpAward(lifecycle, ocpAward);
 
   // Money civic-time events: map matched lifecycle stages into the shared envelope

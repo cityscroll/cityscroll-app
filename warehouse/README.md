@@ -1,4 +1,4 @@
-# CityScroll data warehouse (WH-01 scaffold + WH-02 first bulk pack)
+# CityScroll data warehouse (WH-01 scaffold + WH-02 bulk + WH-03 OCP serve)
 
 DuckDB + parquet lake **inside this repo**, for offline ownership of NYC bulk
 sources and batch joins. Public browser routes stay **precompute-first** — the
@@ -136,15 +136,47 @@ the MacBook.
 - Full `rows.csv?accessType=DOWNLOAD` is the WH-02 path (`--bulk --ack-large`).
   Dated re-exports / `$where` cursors for deltas remain follow-up work.
 
-## Query seam (app later)
+## Query seam
 
 - **Python:** `warehouse/scripts/query.py`
 - **Node:** `warehouse/lib/query.mjs` → `queryWarehouse(sql)` / `exampleOcpAwardCount()`
+- **OCP lookup:** `warehouse/lib/ocp_lookup.mjs` → `lookupOcpAwardRowsFromWarehouse`
 - **SQL examples:** `warehouse/sql/examples/`
 
 This is **not** edge ad-hoc SQL. Worker routes keep serving precomputed read
-models; warehouse SQL feeds batch jobs (ZAP prewarm WH-03, ER WH-04, lifecycle
-export).
+models; warehouse SQL feeds materialization jobs and batch ER.
+
+## WH-03: serve OCP awards from the warehouse (own-the-data payoff)
+
+**Replaced live fetch:** `fetchOcpAwardRows` in
+`worker/src/checkbook_lifecycle.mjs` — previously every cold
+`/contract-lifecycle` compute hit SODA `qyyg-4tf5` by `request_id` / `pin`.
+
+**Path now:**
+
+1. **Build/ops** queries DuckDB (or fixture seed) → materializes
+   `site/data/ocp_awards_warehouse_lookup.json` + twin under
+   `worker/src/data/` (imported by the Worker).
+2. **Edge** looks up the materialization **first** (in-process, sub-ms).
+3. **Live SODA** only when the materialization lacks that row.
+
+```bash
+# Offline / CI (fixture catalog + product_seed demos)
+node tools/build_ocp_warehouse_lookup.mjs --fixture --bench
+
+# After WH-02 bulk is local (full corpus snapshot; still no download here)
+node tools/build_ocp_warehouse_lookup.mjs --bench
+
+# Drift gate
+node tools/build_ocp_warehouse_lookup.mjs --fixture --check
+```
+
+Speed receipt (measured locally): `warehouse/receipts/proof/wh03_ocp_lookup_speed.json`.
+Product seed demos (public field cases):
+`warehouse/fixtures/ocp-recent-contract-awards/product_seed.csv`.
+
+**Not in this card:** ZAP outcomes prewarm (needs `zap-projects` bulk next in
+the WH-02 queue). That remains a follow-on once ZAP lands in the lake.
 
 ## entity_resolution/
 
@@ -158,14 +190,16 @@ ids aligned with `source_contracts.json`).
 | Card | Scope |
 |---|---|
 | **WH-01** | Scaffold, CPU-capped skeleton, tiny OCP proof |
-| **WH-02** (this pack) | First bulk export(s) via capped runner — OCP first; ZAP / City Record sequential next |
-| **WH-03** | ZAP outcomes prewarm → Worker read-model cache (kill 12s cold path) |
+| **WH-02** | First bulk export(s) via capped runner — OCP first; ZAP / City Record sequential next |
+| **WH-03** (this serve) | Materialize warehouse OCP → replace live SODA in `fetchOcpAwardRows` (+ live miss fallback) |
+| **WH-03b** (follow-on) | ZAP outcomes prewarm once `zap-projects` bulk is loaded |
 | **WH-04** | Batch ER over warehouse → `entity_link` parquet |
 
 ## Characterization
 
 ```bash
-node --test test/warehouse_scaffold.test.mjs test/warehouse_bulk.test.mjs
+node --test test/warehouse_scaffold.test.mjs test/warehouse_bulk.test.mjs \
+  test/warehouse_ocp_lookup.test.mjs worker/test/ocp_warehouse_lookup.test.mjs
 ```
 
 Optional: re-run the fixture ingest before the query assertions if the local
