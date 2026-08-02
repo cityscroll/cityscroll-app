@@ -113,8 +113,10 @@ const sandbox = new Function(
   extractFn("subsidyLifecycleHTML") + "\n" +
   extractFn("isMeetingOutcomesEligible") + "\n" +
   extractFn("isCityCouncilNotice") + "\n" +
-  extractFn("meetingVoteStageHTML") + "\n" +
-  extractFn("meetingVoteSpineHTML") + "\n" +
+  extractFn("meetingOutcomeBucket") + "\n" +
+  extractFn("meetingMatterShortTitle") + "\n" +
+  extractFn("collapseMeetingAgenda") + "\n" +
+  extractFn("meetingVotesHTML") + "\n" +
   extractFn("meetingOutcomesHTML") + "\n" +
   extractFn("priorCycleHTML") + "\n" +
   extractFn("priorCycleNoneHTML") + "\n" +
@@ -187,8 +189,10 @@ try {
     extractFn("subsidyLifecycleHTML") +
     extractFn("isMeetingOutcomesEligible") +
     extractFn("isCityCouncilNotice") +
-    extractFn("meetingVoteStageHTML") +
-    extractFn("meetingVoteSpineHTML") +
+    extractFn("meetingOutcomeBucket") +
+    extractFn("meetingMatterShortTitle") +
+    extractFn("collapseMeetingAgenda") +
+    extractFn("meetingVotesHTML") +
     extractFn("meetingOutcomesHTML") +
     `
     return {
@@ -424,7 +428,7 @@ test("meeting outcomes eligible: hearing notices qualify", () => {
   }), false);
 });
 
-test("meeting outcomes: matched chain shows matter and vote counts", () => {
+test("meeting outcomes: matter-centric agenda shows badge, summary, and vote counts", () => {
   const model = buildMeetingOutcomes(
     meetingFixture.notices,
     meetingFixture.events,
@@ -434,22 +438,19 @@ test("meeting outcomes: matched chain shows matter and vote counts", () => {
   );
   const record = model.records[0];
   assert.equal(record.join.matched, true);
-  assert.equal(record.spines.length, 1);
-  assert.equal(record.spines[0].full, true);
   const html = meetingOutcomesHTML(record);
   assert.match(html, /Council meeting outcomes/);
+  // One scan row per matter (not one four-stage chain per Legistar action).
+  assert.equal((html.match(/data-meeting-matter/g) || []).length, 1);
   assert.equal((html.match(/data-meeting-spine/g) || []).length, 1);
-  // Five-stage spine: agenda → matter → action → vote → attachment.
-  assert.match(html, /Agenda item[\s\S]*Council matter[\s\S]*Action[\s\S]*Vote[\s\S]*Attachments/);
-  assert.match(html, /data-spine-stage="agenda"/);
-  assert.match(html, /data-spine-stage="matter"/);
-  assert.match(html, /data-spine-stage="action"/);
-  assert.match(html, /data-spine-stage="vote"/);
-  assert.match(html, /data-spine-stage="attachment"/);
+  assert.match(html, /meeting-badge--approved|Approved/i);
+  assert.match(html, /meeting-summary|approved/i);
   assert.match(html, /aye|nay|6|Approved/i);
   assert.match(html, /Staff report/);
   assert.match(html, /Agenda/);
   assert.match(html, /Minutes/);
+  // Event docs once at the meeting level — not a 4-stage chain dump.
+  assert.doesNotMatch(html, /Agenda item[\s\S]*Council matter[\s\S]*Outcome[\s\S]*Attachments/);
 });
 
 test("meeting outcomes: unmatched renders the specific join reason", () => {
