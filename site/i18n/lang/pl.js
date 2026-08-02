@@ -829,7 +829,7 @@
     subsidy_phase_not_yet_reached_html: "Not yet reached: {stages}.",
     subsidy_phase_action_application: "Review the application filing and linked City Record notice.",
     subsidy_phase_action_hearing: "Attend or track the public hearing — testimony steps are on this notice when published.",
-    subsidy_phase_action_board: "Watch for the board decision on Build NYC / NYCIDA project documents.",
+    subsidy_phase_action_board: "Watch for the board decision on Build NYC and NYC Industrial Development Agency project documents.",
     subsidy_phase_action_closing: "Watch for closing documents on the Build NYC project record.",
     subsidy_phase_action_compliance: "Watch for post-closing compliance filings on the Build NYC project record.",
     meeting_outcomes_heading: "Wyniki posiedzeń Rady",
