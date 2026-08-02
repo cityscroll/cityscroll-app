@@ -3,8 +3,10 @@
  * Refresh offline domain observation snapshots for entity intelligence.
  *
  * Pulls capped City Record SODA rows (Agency Rules + Public Hearings) and
- * writes site/data/{rules,meetings}_domain_observations.json. Does not call
- * Legistar or invent person-level votes. Rebuild entity intelligence after:
+ * writes site/data/{rules,meetings}_domain_observations.json. Also extracts
+ * person-level Legistar votes (by_person) from meeting-outcomes for the people
+ * domain twin (site/data/people_domain_observations.json) — never invents
+ * officials from tallies. Rebuild entity intelligence after:
  *
  *   node tools/build_rules_meetings_domain_observations.mjs
  *   node tools/build_entity_intelligence.mjs
@@ -13,17 +15,28 @@
  *   --check     require committed snapshots exist and have rows
  *   --limit N   cap each domain (default 100 rules / 120 meetings)
  *   --window D  look-back days (default 180)
+ *   --skip-people  do not refresh people snapshot (rules/meetings only)
  */
 
 import { writeFileSync, readFileSync, existsSync, mkdirSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { extractMeetingLandRefs } from "../entity_resolution/cross_domain/index.mjs";
+import {
+  extractMeetingLandRefs,
+  observationsFromPeopleMaterialization,
+} from "../entity_resolution/cross_domain/index.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT_RULES = path.join(ROOT, "site/data/rules_domain_observations.json");
 const OUT_MEETINGS = path.join(ROOT, "site/data/meetings_domain_observations.json");
+const OUT_PEOPLE = path.join(ROOT, "site/data/people_domain_observations.json");
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
+/** Product API used only for by_person extract (already-materialized votes). */
+const MEETING_OUTCOMES_API =
+  process.env.MEETING_OUTCOMES_API
+  || "https://api.cityscroll.org/meeting-outcomes";
+/** Known Council notice with live roll call (field case). */
+const PEOPLE_SEED_NOTICE_IDS = Object.freeze(["20260706036"]);
 // Body fields are fetched only to extract ULURP / ZAP project keys for reverse
 // land joins — raw body text is NOT written into the committed snapshot
 // (emails / phones / testimony contacts must not land on the public PR surface).
@@ -33,10 +46,17 @@ const SELECT =
   + "other_info_1,printout_1";
 
 function parseArgs(argv) {
-  const out = { check: false, rulesLimit: 100, meetingsLimit: 120, windowDays: 180 };
+  const out = {
+    check: false,
+    rulesLimit: 100,
+    meetingsLimit: 120,
+    windowDays: 180,
+    skipPeople: false,
+  };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === "--check") out.check = true;
+    else if (a === "--skip-people") out.skipPeople = true;
     else if (a === "--limit" && argv[i + 1]) {
       const n = Number.parseInt(argv[++i], 10);
       if (Number.isFinite(n) && n > 0) {
@@ -118,11 +138,64 @@ function cleanHearing(row) {
   return out;
 }
 
+/**
+ * Pull person-level votes from meeting-outcomes for known Council demos and any
+ * meetings snapshot row that already carries an event_id join.
+ * @param {object[]} meetingRows
+ * @returns {Promise<object[]>}
+ */
+async function fetchPeopleRows(meetingRows = []) {
+  const noticeIds = new Set(PEOPLE_SEED_NOTICE_IDS);
+  for (const row of meetingRows) {
+    if (row?.event_id && row?.request_id) noticeIds.add(String(row.request_id));
+  }
+  const rows = [];
+  const seen = new Set();
+  for (const id of noticeIds) {
+    try {
+      const res = await fetch(`${MEETING_OUTCOMES_API}?id=${encodeURIComponent(id)}`);
+      if (!res.ok) {
+        console.warn(`meeting-outcomes HTTP ${res.status} for ${id} — skip people extract`);
+        continue;
+      }
+      const body = await res.json();
+      const record = body?.record || body;
+      if (!record) continue;
+      const obsList = observationsFromPeopleMaterialization(record, {
+        sourceSystem: "legistar",
+        limit: 200,
+      });
+      for (const obs of obsList) {
+        if (seen.has(obs.source_record_id)) continue;
+        seen.add(obs.source_record_id);
+        // Persist a compact publisher-shaped row (not the full obs envelope).
+        rows.push({
+          person_id: obs.person_id,
+          person_name: obs.person_name,
+          vote: obs.vote,
+          vote_bucket: obs.vote_bucket,
+          matter_id: obs.matter_id,
+          matter_file: obs.matter_file,
+          matter_title: obs.matter_title,
+          event_id: obs.event_id,
+          request_id: obs.request_id,
+          agency_name: obs.agency_name || "City Council",
+          event_date: obs.when,
+          source_system: "legistar",
+        });
+      }
+    } catch (err) {
+      console.warn(`meeting-outcomes fetch failed for ${id}:`, err?.message || err);
+    }
+  }
+  return rows;
+}
+
 async function main() {
   const args = parseArgs(process.argv.slice(2));
 
   if (args.check) {
-    for (const p of [OUT_RULES, OUT_MEETINGS]) {
+    for (const p of [OUT_RULES, OUT_MEETINGS, OUT_PEOPLE]) {
       if (!existsSync(p)) {
         console.error(`missing ${path.relative(ROOT, p)}`);
         process.exit(1);
@@ -134,7 +207,7 @@ async function main() {
         process.exit(1);
       }
     }
-    console.log("rules/meetings domain observations ok");
+    console.log("rules/meetings/people domain observations ok");
     return;
   }
 
@@ -180,7 +253,7 @@ async function main() {
     domain: "meetings",
     title: "Meetings domain observations for entity intelligence",
     description:
-      "City Record Public Hearings and Meetings rows (and Agency Rules public hearings with event_date) for offline entity-intelligence materialization. Mirrors meeting-outcomes / hearings discovery notices. Person-level votes are not included (production by_person retention is empty).",
+      "City Record Public Hearings and Meetings rows (and Agency Rules public hearings with event_date) for offline entity-intelligence materialization. Mirrors meeting-outcomes / hearings discovery notices. Person-level votes live in the people domain snapshot (by_person from meeting-outcomes), not here.",
     retrieved_at: retrievedAt,
     window_days: args.windowDays,
     source: {
@@ -203,6 +276,31 @@ async function main() {
   console.log(
     `wrote ${path.relative(ROOT, OUT_MEETINGS)} rows=${meetingsDoc.row_count} agencies=${meetingsDoc.agency_count}`,
   );
+
+  if (!args.skipPeople) {
+    const peopleRows = await fetchPeopleRows(meetings);
+    const peopleDoc = {
+      schema_version: 1,
+      domain: "people",
+      title: "People domain observations for entity intelligence",
+      description:
+        "Person-level Legistar votes retained on meeting-outcomes (by_person). Only rows with person_id + person_name — never tallies alone. Field case: notice 20260706036 / event 22526 / official 7801 Christopher Marte.",
+      retrieved_at: retrievedAt,
+      source: {
+        system: "legistar",
+        read_model: "meeting-outcomes:materialized:v2",
+        via: "by_person",
+        seed_notices: [...PEOPLE_SEED_NOTICE_IDS],
+      },
+      row_count: peopleRows.length,
+      person_count: new Set(peopleRows.map((r) => r.person_id)).size,
+      rows: peopleRows,
+    };
+    writeFileSync(OUT_PEOPLE, `${JSON.stringify(peopleDoc, null, 2)}\n`);
+    console.log(
+      `wrote ${path.relative(ROOT, OUT_PEOPLE)} rows=${peopleDoc.row_count} people=${peopleDoc.person_count}`,
+    );
+  }
 }
 
 main().catch((err) => {

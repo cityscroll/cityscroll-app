@@ -196,3 +196,16 @@ test("source_coverage documents legistar-votes person retention and dual-write",
     "person_retention should note retention on meeting outcomes and/or source_records",
   );
 });
+
+test("people domain observations snapshot retains Marte field case", () => {
+  const peoplePath = join(root, "../site/data/people_domain_observations.json");
+  const people = JSON.parse(readFileSync(peoplePath, "utf8"));
+  assert.equal(people.domain, "people");
+  assert.ok(Array.isArray(people.rows) && people.rows.length >= 1);
+  const marte = people.rows.find((r) => String(r.person_id) === "7801");
+  assert.ok(marte, "expected Christopher Marte person_id 7801");
+  assert.match(String(marte.person_name || ""), /Marte/i);
+  assert.equal(String(marte.event_id), "22526");
+  assert.equal(String(marte.request_id), "20260706036");
+  assert.ok(marte.agency_name);
+});

@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "domain": "people",
+  "title": "People domain fixture (Council roll call)",
+  "description": "Characterization fixture from live event 22526 matter 79193.",
+  "source": {
+    "system": "legistar",
+    "read_model": "meeting-outcomes:materialized:v2",
+    "via": "by_person"
+  },
+  "row_count": 7,
+  "person_count": 7,
+  "rows": [
+    {
+      "person_id": "7801",
+      "person_name": "Christopher Marte",
+      "vote": "Affirmative",
+      "vote_bucket": "aye",
+      "matter_id": "79193",
+      "matter_file": "LU 0112-2026",
+      "matter_title": "Landmarks, East Harlem/El Barrio Article XI Amendment, Manhattan (G 260005 XAM).",
+      "event_id": "22526",
+      "request_id": "20260706036",
+      "agency_name": "City Council",
+      "event_date": "2026-07-14",
+      "source_system": "legistar"
+    },
+    {
+      "person_id": "7825",
+      "person_name": "Alexa Avil\u00e9s",
+      "vote": "Affirmative",
+      "vote_bucket": "aye",
+      "matter_id": "79193",
+      "matter_file": "LU 0112-2026",
+      "matter_title": "Landmarks, East Harlem/El Barrio Article XI Amendment, Manhattan (G 260005 XAM).",
+      "event_id": "22526",
+      "request_id": "20260706036",
+      "agency_name": "City Council",
+      "event_date": "2026-07-14",
+      "source_system": "legistar"
+    },
+    {
+      "person_id": "7798",
+      "person_name": "Oswald J. Feliz",
+      "vote": "Absent",
+      "vote_bucket": "abstain",
+      "matter_id": "79193",
+      "matter_file": "LU 0112-2026",
+      "matter_title": "Landmarks, East Harlem/El Barrio Article XI Amendment, Manhattan (G 260005 XAM).",
+      "event_id": "22526",
+      "request_id": "20260706036",
+      "agency_name": "City Council",
+      "event_date": "2026-07-14",
+      "source_system": "legistar"
+    },
+    {
+      "person_id": "7832",
+      "person_name": "Kamillah Hanks",
+      "vote": "Affirmative",
+      "vote_bucket": "aye",
+      "matter_id": "79193",
+      "matter_file": "LU 0112-2026",
+      "matter_title": "Landmarks, East Harlem/El Barrio Article XI Amendment, Manhattan (G 260005 XAM).",
+      "event_id": "22526",
+      "request_id": "20260706036",
+      "agency_name": "City Council",
+      "event_date": "2026-07-14",
+      "source_system": "legistar"
+    },
+    {
+      "person_id": "7824",
+      "person_name": "Sandy Nurse",
+      "vote": "Affirmative",
+      "vote_bucket": "aye",
+      "matter_id": "79193",
+      "matter_file": "LU 0112-2026",
+      "matter_title": "Landmarks, East Harlem/El Barrio Article XI Amendment, Manhattan (G 260005 XAM).",
+      "event_id": "22526",
+      "request_id": "20260706036",
+      "agency_name": "City Council",
+      "event_date": "2026-07-14",
+      "source_system": "legistar"
+    },
+    {
+      "person_id": "7823",
+      "person_name": "Chi A. Oss\u00e9",
+      "vote": "Affirmative",
+      "vote_bucket": "aye",
+      "matter_id": "79193",
+      "matter_file": "LU 0112-2026",
+      "matter_title": "Landmarks, East Harlem/El Barrio Article XI Amendment, Manhattan (G 260005 XAM).",
+      "event_id": "22526",
+      "request_id": "20260706036",
+      "agency_name": "City Council",
+      "event_date": "2026-07-14",
+      "source_system": "legistar"
+    },
+    {
+      "person_id": "7898",
+      "person_name": "Shanel Thomas-Henry",
+      "vote": "Affirmative",
+      "vote_bucket": "aye",
+      "matter_id": "79193",
+      "matter_file": "LU 0112-2026",
+      "matter_title": "Landmarks, East Harlem/El Barrio Article XI Amendment, Manhattan (G 260005 XAM).",
+      "event_id": "22526",
+      "request_id": "20260706036",
+      "agency_name": "City Council",
+      "event_date": "2026-07-14",
+      "source_system": "legistar"
+    }
+  ]
+}
