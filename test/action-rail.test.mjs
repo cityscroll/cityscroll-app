@@ -1,7 +1,12 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { compileActionRail, solicitationHandoff, validateAction } from "../worker/src/lib/action_registry.mjs";
+import { createRequire } from "node:module";
+import { compileActionRail, solicitationHandoff, hearingHandoff, validateAction } from "../worker/src/lib/action_registry.mjs";
+
+const require = createRequire(import.meta.url);
+const { normalizeHearingRow } = require("../site/hearing_location.js");
+const EXAMPLE_EMAIL = ["example", "example.com"].join("@");
 
 const fixture = JSON.parse(readFileSync(new URL("./fixtures/wave4/action-fixtures.json", import.meta.url)));
 
@@ -192,13 +197,143 @@ test("open rule comments and upcoming hearings use their joined deadlines and ha
     participation_url: "https://www.nyc.gov/site/mocs/opportunities/franchises-concessions.page",
   }, {today: "2026-08-01"});
   assert.deepEqual(hearing.map(action => action.type), ["attend", "calendar", "watch"]);
+  // Non-join agenda URL stays an honest participation link + guide, not "Join online".
+  assert.equal(hearing[0].label_key, "participation_link");
+  assert.equal(hearing[0].guide?.system, "hearing_extracted");
 });
 
 test("missing hearing participation stays visible without inventing a destination", () => {
-  const actions = compileActionRail({kind: "hearing", deadline: "2026-08-10"}, {today: "2026-08-01"});
+  // No venue, testimony, contact, or URL — only then may we show the participation missing state.
+  const actions = compileActionRail({kind: "hearing"}, {today: "2026-08-01"});
   assert.equal(actions[0].delivery, "unavailable");
   assert.equal(actions[0].label_key, "next_action_participation_missing");
   assert.equal(actions[0].destination, undefined);
+});
+
+test("hearing with only a date/venue still gets a guide instead of an online-link punt", () => {
+  const actions = compileActionRail({
+    kind: "hearing",
+    deadline: "2026-08-10T14:30:00.000",
+    venue: {mode: "in-person", building: null, address: "22 Reade Street, New York, NY, 10007"},
+  }, {today: "2026-08-01"});
+  assert.equal(actions[0].delivery, "local");
+  assert.equal(actions[0].type, "bid_checklist");
+  assert.equal(actions[0].label_key, "next_action_hearing_guide");
+  assert.equal(actions[0].guide.system, "hearing_extracted");
+  assert.equal(actions[0].guide.venue_address, "22 Reade Street, New York, NY, 10007");
+  assert.ok(!actions[0].destination);
+});
+
+test("FCRC-style hearing extracts venue, written testimony, and contact steps", () => {
+  const row = {
+    request_id: "20260716022",
+    agency_name: "Parks and Recreation",
+    type_of_notice_description: "Public Hearings",
+    section_name: "Public Hearings and Meetings",
+    short_title: "Notice of Joint Public Hearing: outdoor cafe concession",
+    event_date: "2026-08-10T14:30:00.000",
+    street_address_1: "255 Greenwich Street",
+    street_address_2: "9th Floor",
+    city: "New York",
+    state: "NY",
+    zip_code: "10007",
+    additional_description_1: [
+      "NOTICE OF A JOINT PUBLIC HEARING of the Franchise and Concession Review Committee",
+      "to be held on 8/10/2026, at 255 Greenwich Street, 8th Floor, in Manhattan commencing at 2:30 p.m.",
+      "Written testimony may be submitted in advance of the hearing electronically to " + EXAMPLE_EMAIL + ".",
+      "All written testimony can be submitted up until the close of the public hearing and will be distributed to the FCRC after the hearing.",
+      "A draft copy of the agreement may be obtained by email to " + EXAMPLE_EMAIL + ".",
+      "The agenda and related documentation for the hearing will be posted on the MOCS website at",
+      "https://www.nyc.gov/site/mocs/opportunities/franchises-concessions.page",
+      "For accessibility requests contact " + EXAMPLE_EMAIL + ".",
+    ].join(" "),
+  };
+  const hearing = normalizeHearingRow(row);
+  const matter = {
+    kind: "hearing",
+    deadline: row.event_date,
+    event_date: row.event_date,
+    notice_text: row.additional_description_1,
+    participation_url: hearing.participation?.links?.[0]?.url || null,
+    venue: hearing.venue,
+    participation: hearing.participation,
+    street_address_1: row.street_address_1,
+    street_address_2: row.street_address_2,
+    city: row.city,
+    state: row.state,
+    zip_code: row.zip_code,
+  };
+  const handoff = hearingHandoff(matter);
+  assert.equal(handoff.system, "hearing_extracted");
+  assert.equal(handoff.has_fields, true);
+  assert.equal(handoff.testimony_email, EXAMPLE_EMAIL);
+  assert.equal(handoff.testimony_until?.kind, "hearing_close");
+  assert.match(handoff.venue_address || "", /255 Greenwich/i);
+  assert.ok(handoff.participation_url);
+  assert.equal(handoff.join_kind, "link"); // agenda page, not Zoom
+  assert.ok(handoff.emails.includes(EXAMPLE_EMAIL));
+
+  const [action] = compileActionRail(matter, {today: "2026-08-01"});
+  assert.notEqual(action.label_key, "next_action_participation_missing");
+  assert.equal(action.guide?.testimony_email, EXAMPLE_EMAIL);
+  assert.equal(action.guide?.system, "hearing_extracted");
+});
+
+test("second FCRC-style hearing also yields testimony + venue without a punt", () => {
+  const row = {
+    request_id: "20260709028",
+    agency_name: "Police Department",
+    type_of_notice_description: "Public Hearings",
+    section_name: "Public Hearings and Meetings",
+    short_title: "Concession for Operation and Maintenance of Cafeteria",
+    event_date: "2026-08-10T14:30:00.000",
+    street_address_1: "255 Greenwich Street",
+    street_address_2: "9th Floor",
+    city: "New York",
+    state: "NY",
+    zip_code: "10007",
+    additional_description_1: [
+      "NOTICE OF A JOINT PUBLIC HEARING of the Franchise and Concession Review Committee",
+      "to be held on 8/10/2026, at 255 Greenwich Street, 8th Floor, New York, NY 10007 commencing at 2:30 pm.",
+      "Written testimony may be submitted in advance of the hearing electronically to " + EXAMPLE_EMAIL + ".",
+      "All written testimony can be submitted up until the close of the public hearing.",
+      "A draft copy may be obtained at " + EXAMPLE_EMAIL + ".",
+      "Agenda at https://www.nyc.gov/site/mocs/opportunities/franchises-concessions.page",
+      "Accessibility: " + EXAMPLE_EMAIL + ".",
+    ].join(" "),
+  };
+  const hearing = normalizeHearingRow(row);
+  const matter = {
+    kind: "hearing",
+    deadline: row.event_date,
+    notice_text: row.additional_description_1,
+    participation_url: hearing.participation?.links?.[0]?.url || null,
+    venue: hearing.venue,
+    participation: hearing.participation,
+    street_address_1: row.street_address_1,
+    city: row.city,
+    state: row.state,
+    zip_code: row.zip_code,
+  };
+  const handoff = hearingHandoff(matter);
+  assert.equal(handoff.testimony_email, EXAMPLE_EMAIL);
+  assert.match(handoff.venue_address || "", /255 Greenwich/i);
+  const actions = compileActionRail(matter, {today: "2026-08-01"});
+  assert.notEqual(actions[0].label_key, "next_action_participation_missing");
+  assert.ok(actions[0].guide);
+});
+
+test("Zoom-style join URLs still label as Join online with a hearing guide", () => {
+  const [action] = compileActionRail({
+    kind: "hearing",
+    deadline: "2026-08-20T10:00:00.000",
+    participation_url: "https://zoom.us/j/123456789",
+    notice_text: "Join the hearing at https://zoom.us/j/123456789. Written testimony may be submitted electronically to " + EXAMPLE_EMAIL + ".",
+  }, {today: "2026-08-01"});
+  assert.equal(action.label_key, "join_online");
+  assert.equal(action.destination, "https://zoom.us/j/123456789");
+  assert.equal(action.guide?.join_kind, "join");
+  assert.equal(action.guide?.testimony_email, EXAMPLE_EMAIL);
 });
 
 test("exam action windows reuse the official OASys handoff", () => {
