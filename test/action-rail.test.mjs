@@ -5,6 +5,7 @@ import { createRequire } from "node:module";
 import {
   compileActionRail,
   solicitationHandoff,
+  awardHandoff,
   hearingHandoff,
   ruleHandoff,
   validateAction,
@@ -502,4 +503,161 @@ test("property award/conveyance with BBL opens ZoLa as primary parcel action", (
   assert.equal(actions[0].label_key, "property_action_lookup_zola");
   assert.equal(actions[0].guide.owner_name, "Make it Zesty LLC");
   actions.forEach(validateAction);
+});
+
+// --- Award / selection next-action rail (Money lens: stop the watch-only punt) ---
+
+test("registered Award notice leads with Checkbook registration, not watch or bid", () => {
+  const matter = {
+    kind: "award",
+    type_of_notice_description: "Award",
+    vendor_name: "ACME CORP",
+    contract_amount: 1500000,
+    pin: "08250R0001001",
+    official_notice_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20231222103",
+    registration: {
+      status: "matched",
+      date: "2025-04-01",
+      detail: {
+        contract_id: "CT123456",
+        vendor: "ACME CORP",
+        registration_date: "2025-04-01",
+        current_amount: 1500000,
+        spent_to_date: 750000,
+      },
+    },
+    payment: {
+      status: "matched",
+      detail: { total_spent: 750000, payment_state: "paid", total_payments: 2 },
+    },
+  };
+  const handoff = awardHandoff(matter);
+  assert.equal(handoff.system, "award_lifecycle");
+  assert.equal(handoff.mode, "registered");
+  assert.equal(handoff.vendor, "ACME CORP");
+  assert.equal(handoff.amount, "$1,500,000");
+  assert.equal(handoff.spent, "$750,000");
+  assert.equal(handoff.registered, true);
+  assert.match(handoff.destination, /checkbooknyc\.com/);
+  assert.doesNotMatch(handoff.label_key, /bid/i);
+
+  const actions = compileActionRail(matter, {today: "2026-08-01"});
+  actions.forEach(validateAction);
+  assert.equal(actions[0].delivery, "official_handoff");
+  assert.equal(actions[0].label_key, "next_action_award_registered");
+  assert.equal(actions[0].guide.system, "award_lifecycle");
+  assert.equal(actions[0].type, "document");
+  assert.doesNotMatch(actions[0].label_key, /bid|passport|response/i);
+  assert.equal(actions[0].type === "official_application", false);
+  // Primary is not watch — watch may still be secondary.
+  assert.notEqual(actions[0].type, "watch");
+  assert.ok(actions.some((a) => a.type === "watch"));
+});
+
+test("Award with vendor and amount but no Checkbook join is guide-first, not watch-only", () => {
+  const matter = {
+    kind: "award",
+    type_of_notice_description: "Award",
+    vendor_name: "HNTB New York Engineering and Architecture P.C.",
+    contract_amount: 4020000,
+    pin: "84124P0003001",
+    official_notice_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20240723114",
+  };
+  const handoff = awardHandoff(matter);
+  assert.equal(handoff.mode, "award");
+  assert.equal(handoff.has_fields, true);
+  assert.equal(handoff.vendor, "HNTB New York Engineering and Architecture P.C.");
+  assert.match(handoff.amount, /\$4[,.]?020[,.]?000|\$4,020,000/);
+
+  const [action] = compileActionRail(matter, {today: "2026-08-01"});
+  // PIN yields a Checkbook search destination when present.
+  assert.ok(action.guide);
+  assert.equal(action.guide.system, "award_lifecycle");
+  assert.equal(action.label_key, "next_action_award_to");
+  assert.equal(action.label_vars.vendor, "HNTB New York Engineering and Architecture P.C.");
+  assert.doesNotMatch(action.label_key, /bid|watch/i);
+  assert.doesNotMatch(String(action.label || ""), /bid|Watch this notice/i);
+});
+
+test("Intent to Award is a selection-phase guide, never a solicitation bid CTA", () => {
+  const matter = {
+    kind: "award",
+    type_of_notice_description: "Intent to Award",
+    vendor_name: "BETA LLC",
+    contract_amount: 2000000,
+    pin: "82626B0001",
+    official_notice_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20260601001",
+  };
+  const handoff = awardHandoff(matter);
+  assert.equal(handoff.mode, "selection");
+  assert.equal(handoff.selection_phase, "intent_to_award");
+  assert.equal(handoff.destination, null, "selection without registration stays guide-first");
+  assert.equal(handoff.vendor, "BETA LLC");
+
+  const actions = compileActionRail(matter, {today: "2026-08-01"});
+  actions.forEach(validateAction);
+  assert.equal(actions[0].type, "bid_checklist");
+  assert.equal(actions[0].delivery, "local");
+  assert.equal(actions[0].guide.mode, "selection");
+  assert.equal(actions[0].guide.selection_phase, "intent_to_award");
+  assert.equal(actions[0].label_key, "next_action_award_to");
+  // Never a PASSPort / iSupplier / open-bid primary.
+  assert.doesNotMatch(actions[0].label_key, /passport|isupplier|bid_closed|response_guide|open_rfp/i);
+  assert.equal(actions.some((a) => a.type === "official_application"), false);
+});
+
+test("Intent to Negotiate is selection-phase, not a submit-a-bid rail", () => {
+  const actions = compileActionRail({
+    type_of_notice_description: "Intent to Negotiate",
+    pin: "8502026HP0099",
+    agency_name: "Parks and Recreation",
+    title: "Intent to Negotiate — park maintenance",
+    official_notice_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20260701099",
+  }, {today: "2026-08-01"});
+  actions.forEach(validateAction);
+  assert.equal(actions[0].guide?.system, "award_lifecycle");
+  assert.equal(actions[0].guide?.mode, "selection");
+  assert.equal(actions[0].guide?.selection_phase, "intent_to_negotiate");
+  assert.equal(actions[0].label_key, "next_action_intent_to_negotiate");
+  assert.equal(actions[0].type === "official_application", false);
+  assert.doesNotMatch(actions[0].label_key, /passport|isupplier|open_rfp|response/i);
+});
+
+test("Vendor List is selection-phase on the award rail", () => {
+  const handoff = awardHandoff({
+    type_of_notice_description: "Vendor List",
+    pin: "12345",
+  });
+  assert.equal(handoff.mode, "selection");
+  assert.equal(handoff.selection_phase, "vendor_list");
+  assert.equal(handoff.label_key, "next_action_vendor_list");
+});
+
+test("Award without vendor, amount, or lifecycle degrades to notice + watch", () => {
+  const actions = compileActionRail({
+    kind: "award",
+    type_of_notice_description: "Award",
+    official_notice_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20260101001",
+  }, {today: "2026-08-01"});
+  actions.forEach(validateAction);
+  assert.deepEqual(actions.map((a) => a.type), ["document", "watch"]);
+  assert.equal(actions[0].label_key, "read_official_notice");
+  assert.equal(actions[0].guide, undefined);
+});
+
+test("pending Checkbook registration surfaces pending CTA on Award", () => {
+  const handoff = awardHandoff({
+    kind: "award",
+    type_of_notice_description: "Award",
+    vendor_name: "GAMMA INC",
+    pin: "07112R0001001",
+    pending: {
+      status: "matched",
+      detail: { contract_id: "CT999", vendor: "GAMMA INC", amount: 3000000 },
+    },
+  });
+  assert.equal(handoff.mode, "pending");
+  assert.equal(handoff.pending_registration, true);
+  assert.equal(handoff.label_key, "next_action_award_pending");
+  assert.match(handoff.destination, /checkbooknyc\.com/);
 });
