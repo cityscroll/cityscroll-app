@@ -161,7 +161,7 @@ export async function computeLifecycle(env, requestId, noticeRow) {
   const { projects, ok } = await fetchSubsidyProjects();
   // assembleSubsidyLifecycle derives a City Record hearing project for IDA notices when
   // the Build NYC feed is empty or blocked — that is a real public join, not "unavailable".
-  const [lifecycle] = assembleSubsidyLifecycle([notice], ok ? projects : []);
+  let [lifecycle] = assembleSubsidyLifecycle([notice], ok ? projects : []);
   if (!lifecycle) return { lifecycle: null, ok: false, sourceUnavailable: !ok };
   if (!ok && !lifecycle.join?.matched) {
     // Feed down and no notice-derived hearing row → honest operational unavailable.
