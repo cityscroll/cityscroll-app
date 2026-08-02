@@ -140,9 +140,11 @@ test("edge read model materializes the strict City Record join into record.spine
   }
 });
 
-test("public Land detail renders the structured spine and captured evidence is pinned", () => {
+test("public Land detail renders the phase-grouped spine and captured evidence is pinned", () => {
   const index = readFileSync(join(ROOT, "site/index.html"), "utf8");
   assert.match(index, /function landSpineHTML/);
+  assert.match(index, /land_phase_spine\.mjs|buildLandPhaseView/);
+  assert.match(index, /land-phase-stepper|land-spine-lead/);
   assert.match(index, /land-spine-event/);
   assert.match(index, /record\.spine/);
 
