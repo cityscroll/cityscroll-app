@@ -248,7 +248,9 @@ export function collectCrossDomainObservations(root, opts = {}) {
   // --- People: person-level Legistar votes retained on meeting-outcomes ---
   // Prefer the people domain snapshot (built from live by_person). Fallback walks
   // meeting-outcomes fixtures that carry by_person. Never invents officials.
-  const peopleLimit = Number.isFinite(opts.people_limit) ? opts.people_limit : 200;
+  // Densified people snapshot can hold hundreds of person×matter×event vote rows
+  // across multiple roll-call notices (distinct officials still dedupe on EI).
+  const peopleLimit = Number.isFinite(opts.people_limit) ? opts.people_limit : 500;
   const peopleSnapshots = [
     path.join(root, "site/data/people_domain_observations.json"),
     path.join(root, "worker/test/fixtures/entity-intelligence/people_domain_observations.json"),

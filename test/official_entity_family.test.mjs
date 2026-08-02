@@ -209,3 +209,40 @@ test("people domain observations snapshot retains Marte field case", () => {
   assert.equal(String(marte.request_id), "20260706036");
   assert.ok(marte.agency_name);
 });
+
+test("people domain densifies beyond a single seed notice from roll_call only", () => {
+  const peoplePath = join(root, "../site/data/people_domain_observations.json");
+  const people = JSON.parse(readFileSync(peoplePath, "utf8"));
+  assert.equal(people.domain, "people");
+  assert.ok(people.schema_version >= 2, "schema_version bumped for densify materialization");
+  const seeds = people.source?.seed_notices || [];
+  assert.ok(
+    seeds.length >= 2,
+    `expected densified seed_notices (≥2 notices with by_person), got ${seeds.length}: ${seeds.join(",")}`,
+  );
+  assert.ok(
+    seeds.includes("20260706036"),
+    "demo field-case notice remains in seed_notices",
+  );
+  assert.ok(
+    Number(people.person_count) > 7,
+    `expected person_count > 7 after multi-notice densify, got ${people.person_count}`,
+  );
+  assert.ok(
+    Number(people.notice_count || seeds.length) >= 2,
+    "notice_count reflects multi-notice densify",
+  );
+  const noticeIds = new Set(
+    (people.rows || []).map((r) => String(r.request_id || "")).filter(Boolean),
+  );
+  const eventIds = new Set(
+    (people.rows || []).map((r) => String(r.event_id || "")).filter(Boolean),
+  );
+  assert.ok(noticeIds.size >= 2, `expected rows from ≥2 notices, got ${noticeIds.size}`);
+  assert.ok(eventIds.size >= 2, `expected rows from ≥2 events, got ${eventIds.size}`);
+  // Honest limits: every row is a real named official (never tally-only invent).
+  for (const row of people.rows || []) {
+    assert.ok(row.person_id && row.person_name, "person_id + person_name required");
+    assert.ok(row.request_id, "request_id ties the vote to a meeting-outcomes notice");
+  }
+});

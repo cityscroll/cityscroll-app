@@ -16,6 +16,7 @@
  *   --limit N   cap each domain (default 100 rules / 120 meetings)
  *   --window D  look-back days (default 180)
  *   --skip-people  do not refresh people snapshot (rules/meetings only)
+ *   --people-only  refresh only people (from meeting-outcomes roll_call densify)
  */
 
 import { writeFileSync, readFileSync, existsSync, mkdirSync } from "node:fs";
@@ -35,8 +36,17 @@ const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const MEETING_OUTCOMES_API =
   process.env.MEETING_OUTCOMES_API
   || "https://api.cityscroll.org/meeting-outcomes";
-/** Known Council notice with live roll call (field case). */
-const PEOPLE_SEED_NOTICE_IDS = Object.freeze(["20260706036"]);
+/**
+ * Always-try Council demos when the list materialization is empty or misses
+ * them. Primary densify walks EVERY meeting-outcomes record that already
+ * carries roll-call by_person — not just these seeds.
+ */
+const PEOPLE_DEMO_NOTICE_IDS = Object.freeze(["20260706036"]);
+/** Cap person-vote rows committed to the people domain snapshot. */
+const PEOPLE_EXTRACT_LIMIT = 600;
+/** Safety cap on list pagination (matched roll-call records are few). */
+const MEETING_OUTCOMES_PAGE_LIMIT = 100;
+const MEETING_OUTCOMES_MAX_OFFSET = 2000;
 // Body fields are fetched only to extract ULURP / ZAP project keys for reverse
 // land joins — raw body text is NOT written into the committed snapshot
 // (emails / phones / testimony contacts must not land on the public PR surface).
@@ -52,11 +62,13 @@ function parseArgs(argv) {
     meetingsLimit: 120,
     windowDays: 180,
     skipPeople: false,
+    peopleOnly: false,
   };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === "--check") out.check = true;
     else if (a === "--skip-people") out.skipPeople = true;
+    else if (a === "--people-only") out.peopleOnly = true;
     else if (a === "--limit" && argv[i + 1]) {
       const n = Number.parseInt(argv[++i], 10);
       if (Number.isFinite(n) && n > 0) {
@@ -68,7 +80,48 @@ function parseArgs(argv) {
       if (Number.isFinite(n) && n > 0) out.windowDays = n;
     }
   }
+  if (out.peopleOnly) out.skipPeople = false;
   return out;
+}
+
+/**
+ * Write the people domain snapshot document.
+ * @param {object[]} peopleRows
+ * @param {string[]} seedNotices
+ * @param {string} retrievedAt
+ */
+function writePeopleDoc(peopleRows, seedNotices, retrievedAt) {
+  const eventIds = [
+    ...new Set(peopleRows.map((r) => r.event_id).filter(Boolean).map(String)),
+  ].sort();
+  const peopleDoc = {
+    schema_version: 2,
+    domain: "people",
+    title: "People domain observations for entity intelligence",
+    description:
+      "Person-level Legistar votes retained on meeting-outcomes (by_person). Densified from every list record that already carries roll-call names — never tallies alone, never fabricated officials. Field case: notice 20260706036 / event 22526 / official 7801 Christopher Marte.",
+    retrieved_at: retrievedAt,
+    source: {
+      system: "legistar",
+      read_model: "meeting-outcomes:materialized:v2",
+      via: "by_person",
+      densify: "meeting_outcomes_list_roll_call",
+      seed_notices: seedNotices,
+      event_ids: eventIds,
+      demo_notices: [...PEOPLE_DEMO_NOTICE_IDS],
+    },
+    row_count: peopleRows.length,
+    person_count: new Set(peopleRows.map((r) => String(r.person_id))).size,
+    notice_count: seedNotices.length,
+    event_count: eventIds.length,
+    rows: peopleRows,
+  };
+  mkdirSync(path.dirname(OUT_PEOPLE), { recursive: true });
+  writeFileSync(OUT_PEOPLE, `${JSON.stringify(peopleDoc, null, 2)}\n`);
+  console.log(
+    `wrote ${path.relative(ROOT, OUT_PEOPLE)} rows=${peopleDoc.row_count} people=${peopleDoc.person_count} notices=${peopleDoc.notice_count} events=${peopleDoc.event_count}`,
+  );
+  return peopleDoc;
 }
 
 async function sodaFetch(where, limit) {
@@ -139,19 +192,118 @@ function cleanHearing(row) {
 }
 
 /**
- * Pull person-level votes from meeting-outcomes for known Council demos and any
- * meetings snapshot row that already carries an event_id join.
- * @param {object[]} meetingRows
+ * Compact publisher-shaped people row (not the full obs envelope).
+ * @param {object} obs
+ * @returns {object}
+ */
+function compactPeopleRow(obs) {
+  return {
+    person_id: obs.person_id,
+    person_name: obs.person_name,
+    vote: obs.vote,
+    vote_bucket: obs.vote_bucket,
+    matter_id: obs.matter_id,
+    matter_file: obs.matter_file,
+    matter_title: obs.matter_title,
+    event_id: obs.event_id,
+    request_id: obs.request_id,
+    agency_name: obs.agency_name || "City Council",
+    event_date: obs.when,
+    source_system: "legistar",
+  };
+}
+
+/**
+ * Append observationsFromPeopleMaterialization output into the densify bags.
+ * Honest limits: only roll_call rows with person_id + person_name (library skips
+ * tally_only / empty by_person). Never fabricates officials.
+ * @param {object|object[]} viewOrRecord
+ * @param {{ rows: object[], seen: Set<string>, seedNotices: Set<string> }} bags
+ * @param {number} limit
+ */
+function absorbPeopleObservations(viewOrRecord, bags, limit) {
+  if (!viewOrRecord || bags.rows.length >= limit) return;
+  const remaining = limit - bags.rows.length;
+  const obsList = observationsFromPeopleMaterialization(viewOrRecord, {
+    sourceSystem: "legistar",
+    limit: remaining,
+  });
+  for (const obs of obsList) {
+    if (bags.rows.length >= limit) break;
+    if (!obs?.person_id || !obs?.person_name) continue;
+    if (bags.seen.has(obs.source_record_id)) continue;
+    bags.seen.add(obs.source_record_id);
+    if (obs.request_id) bags.seedNotices.add(String(obs.request_id));
+    bags.rows.push(compactPeopleRow(obs));
+  }
+}
+
+/**
+ * Page the public meeting-outcomes list (already materializes roll-call
+ * by_person on matched Council records). Free densify — no new Legistar work.
  * @returns {Promise<object[]>}
  */
-async function fetchPeopleRows(meetingRows = []) {
-  const noticeIds = new Set(PEOPLE_SEED_NOTICE_IDS);
-  for (const row of meetingRows) {
-    if (row?.event_id && row?.request_id) noticeIds.add(String(row.request_id));
+async function fetchMeetingOutcomesRecords() {
+  const all = [];
+  let offset = 0;
+  while (offset <= MEETING_OUTCOMES_MAX_OFFSET) {
+    const url = `${MEETING_OUTCOMES_API}?offset=${offset}`;
+    const res = await fetch(url);
+    if (!res.ok) {
+      throw new Error(`meeting-outcomes list HTTP ${res.status} at offset=${offset}`);
+    }
+    const body = await res.json();
+    const records = Array.isArray(body?.records) ? body.records : [];
+    if (!records.length) break;
+    all.push(...records);
+    const total = Number(body?.pagination?.total);
+    offset += records.length;
+    if (Number.isFinite(total) && offset >= total) break;
+    if (records.length < MEETING_OUTCOMES_PAGE_LIMIT) break;
   }
-  const rows = [];
-  const seen = new Set();
-  for (const id of noticeIds) {
+  return all;
+}
+
+/**
+ * Pull person-level votes from meeting-outcomes.
+ *
+ * Primary: walk the list materialization for ALL records that already carry
+ * roll-call by_person (densify beyond the single demo seed).
+ * Fallback: known demo notice ids + any meetings snapshot row with event_id
+ * (individual ?id= fetch) when the list path misses them.
+ *
+ * @param {object[]} meetingRows
+ * @returns {Promise<{ rows: object[], seedNotices: string[] }>}
+ */
+async function fetchPeopleRows(meetingRows = []) {
+  const bags = {
+    rows: [],
+    seen: new Set(),
+    seedNotices: new Set(),
+  };
+
+  // --- Primary densify: every list record with retained by_person ---
+  try {
+    const records = await fetchMeetingOutcomesRecords();
+    absorbPeopleObservations({ records }, bags, PEOPLE_EXTRACT_LIMIT);
+    console.log(
+      `people densify from list: records=${records.length} person_votes=${bags.rows.length} notices=${bags.seedNotices.size}`,
+    );
+  } catch (err) {
+    console.warn(
+      "meeting-outcomes list densify failed — falling back to demo seeds:",
+      err?.message || err,
+    );
+  }
+
+  // --- Fallback seeds: demos + meetings with event_id not already absorbed ---
+  const fallbackIds = new Set(PEOPLE_DEMO_NOTICE_IDS);
+  for (const row of meetingRows) {
+    if (row?.event_id && row?.request_id) fallbackIds.add(String(row.request_id));
+  }
+  for (const id of fallbackIds) {
+    if (bags.seedNotices.has(id)) continue;
+    if (bags.rows.length >= PEOPLE_EXTRACT_LIMIT) break;
     try {
       const res = await fetch(`${MEETING_OUTCOMES_API}?id=${encodeURIComponent(id)}`);
       if (!res.ok) {
@@ -161,34 +313,22 @@ async function fetchPeopleRows(meetingRows = []) {
       const body = await res.json();
       const record = body?.record || body;
       if (!record) continue;
-      const obsList = observationsFromPeopleMaterialization(record, {
-        sourceSystem: "legistar",
-        limit: 200,
-      });
-      for (const obs of obsList) {
-        if (seen.has(obs.source_record_id)) continue;
-        seen.add(obs.source_record_id);
-        // Persist a compact publisher-shaped row (not the full obs envelope).
-        rows.push({
-          person_id: obs.person_id,
-          person_name: obs.person_name,
-          vote: obs.vote,
-          vote_bucket: obs.vote_bucket,
-          matter_id: obs.matter_id,
-          matter_file: obs.matter_file,
-          matter_title: obs.matter_title,
-          event_id: obs.event_id,
-          request_id: obs.request_id,
-          agency_name: obs.agency_name || "City Council",
-          event_date: obs.when,
-          source_system: "legistar",
-        });
-      }
+      absorbPeopleObservations(record, bags, PEOPLE_EXTRACT_LIMIT);
     } catch (err) {
       console.warn(`meeting-outcomes fetch failed for ${id}:`, err?.message || err);
     }
   }
-  return rows;
+
+  const seedNotices = [...bags.seedNotices].sort();
+  // Always surface the demo field-case id in metadata when present in rows, even
+  // if densify found a superset (stable documentation anchor).
+  for (const id of PEOPLE_DEMO_NOTICE_IDS) {
+    if (bags.rows.some((r) => String(r.request_id) === id) && !seedNotices.includes(id)) {
+      seedNotices.push(id);
+      seedNotices.sort();
+    }
+  }
+  return { rows: bags.rows, seedNotices };
 }
 
 async function main() {
@@ -211,10 +351,27 @@ async function main() {
     return;
   }
 
+  const retrievedAt = new Date().toISOString();
+
+  if (args.peopleOnly) {
+    // Prefer meetings snapshot event_id joins as fallback seeds only.
+    let meetingRows = [];
+    if (existsSync(OUT_MEETINGS)) {
+      try {
+        const doc = JSON.parse(readFileSync(OUT_MEETINGS, "utf8"));
+        meetingRows = Array.isArray(doc.rows) ? doc.rows : [];
+      } catch {
+        meetingRows = [];
+      }
+    }
+    const { rows: peopleRows, seedNotices } = await fetchPeopleRows(meetingRows);
+    writePeopleDoc(peopleRows, seedNotices, retrievedAt);
+    return;
+  }
+
   const since = new Date(Date.now() - args.windowDays * 24 * 60 * 60 * 1000)
     .toISOString()
     .slice(0, 10);
-  const retrievedAt = new Date().toISOString();
 
   const rulesRaw = await sodaFetch(
     `section_name='Agency Rules' AND start_date >= '${since}T00:00:00'`,
@@ -278,28 +435,8 @@ async function main() {
   );
 
   if (!args.skipPeople) {
-    const peopleRows = await fetchPeopleRows(meetings);
-    const peopleDoc = {
-      schema_version: 1,
-      domain: "people",
-      title: "People domain observations for entity intelligence",
-      description:
-        "Person-level Legistar votes retained on meeting-outcomes (by_person). Only rows with person_id + person_name — never tallies alone. Field case: notice 20260706036 / event 22526 / official 7801 Christopher Marte.",
-      retrieved_at: retrievedAt,
-      source: {
-        system: "legistar",
-        read_model: "meeting-outcomes:materialized:v2",
-        via: "by_person",
-        seed_notices: [...PEOPLE_SEED_NOTICE_IDS],
-      },
-      row_count: peopleRows.length,
-      person_count: new Set(peopleRows.map((r) => r.person_id)).size,
-      rows: peopleRows,
-    };
-    writeFileSync(OUT_PEOPLE, `${JSON.stringify(peopleDoc, null, 2)}\n`);
-    console.log(
-      `wrote ${path.relative(ROOT, OUT_PEOPLE)} rows=${peopleDoc.row_count} people=${peopleDoc.person_count}`,
-    );
+    const { rows: peopleRows, seedNotices } = await fetchPeopleRows(meetings);
+    writePeopleDoc(peopleRows, seedNotices, retrievedAt);
   }
 }
 
