@@ -320,6 +320,13 @@ test("buildRuleView joins RSS items to City Record notices and preserves officia
   assert.equal(view.counts.matched, 1);
   assert.equal(view.counts.unmatched_notices, 1);
   assert.equal(view.counts.unmatched_rules, 1);
+  assert.equal(view.counts.multi_notice_rulemakings, 0);
+  // Every City Record row carries rulemaking stitch fields (singleton when alone).
+  for (const row of view.rules.filter((r) => r.request_id)) {
+    assert.ok(row.rulemaking_subject_ref);
+    assert.ok(Array.isArray(row.related_notices));
+    assert.ok(row.rulemaking_join);
+  }
 
   const matched = view.rules.find((r) => r.join.matched);
   assert.ok(matched);
@@ -358,6 +365,59 @@ test("buildRuleView joins RSS items to City Record notices and preserves officia
   assert.equal(unmatchedRule.subject_refs.notice, undefined);
   assert.equal(unmatchedRule.subject_refs.rules, "rules:https://rules.cityofnewyork.us/rule/energy-code/");
   assert.equal(unmatchedRule.subject_links.length, 0);
+});
+
+test("buildRuleView stitches proposal/hearing/adoption City Record siblings into one rulemaking subject", async () => {
+  // Empty RSS so City Record rows stay unmatched to NYC Rules — sibling stitch
+  // still runs on agency + title-core + date window alone.
+  const rss = rssFeed([]);
+  const crRows = [
+    cityRecordNotice({
+      request_id: "20260301011",
+      agency_name: "Housing Preservation and Development",
+      short_title: "Proposed Rule — Natural Gas Detectors in Dwelling Units",
+      start_date: "2026-03-01T00:00:00.000",
+    }),
+    cityRecordNotice({
+      request_id: "20260415011",
+      agency_name: "Housing Preservation and Development",
+      short_title: "Public Hearing on Natural Gas Detectors in Dwelling Units",
+      start_date: "2026-04-15T00:00:00.000",
+      type: "Public Hearings",
+    }),
+    cityRecordNotice({
+      request_id: "20260701011",
+      agency_name: "Housing Preservation and Development",
+      short_title: "Notice of Adoption — Natural Gas Detectors in Dwelling Units",
+      start_date: "2026-07-01T00:00:00.000",
+    }),
+    cityRecordNotice({
+      request_id: "20260320099",
+      agency_name: "Housing Preservation and Development",
+      short_title: "Proposed Rule — Lead-Based Paint Inspection Fees",
+      start_date: "2026-03-20T00:00:00.000",
+    }),
+  ];
+
+  const view = await buildRuleView(multiSourceFetch(rss, crRows), NOW);
+  assert.equal(view.counts.multi_notice_rulemakings, 1);
+
+  const byId = Object.fromEntries(view.rules.map((r) => [r.request_id, r]));
+  const subject = byId["20260301011"].rulemaking_subject_ref;
+  assert.ok(subject);
+  assert.equal(byId["20260415011"].rulemaking_subject_ref, subject);
+  assert.equal(byId["20260701011"].rulemaking_subject_ref, subject);
+  assert.notEqual(byId["20260320099"].rulemaking_subject_ref, subject);
+  assert.equal(byId["20260301011"].related_notices.length, 2);
+  assert.equal(byId["20260320099"].related_notices.length, 0);
+
+  // Subject registry same_rulemaking edges connect sibling notices (link-not-merge).
+  const siblingLinks = byId["20260301011"].subject_links.filter((l) => l.type === "same_rulemaking");
+  assert.ok(siblingLinks.length >= 1);
+  assert.ok(siblingLinks.every((l) => l.from.startsWith("notice:") && l.to.startsWith("notice:")));
+  // Notice identities stay distinct.
+  assert.equal(byId["20260301011"].subject_refs.notice, "notice:20260301011");
+  assert.equal(byId["20260701011"].subject_refs.notice, "notice:20260701011");
 });
 
 // ---------------------------------------------------------------------------

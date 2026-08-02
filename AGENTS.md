@@ -720,12 +720,16 @@ without silently rewriting `notice:` into `contract:`. Pure lib:
 `assembleLifecycle` stamps notice↔contract; `linksFromRuleRecord` /
 `linksFromMeetingRecord` stamp rules materialization (`rules:materialized:v2`) and
 meeting-outcomes (`meeting-outcomes:materialized:v2`) with notice↔`rules` /
-notice↔`legistar-event` only when the join matched (no speculative stamps). Metrics:
+notice↔`legistar-event` only when the join matched (no speculative stamps).
+Rules multi-notice stitch also emits notice↔notice `same_rulemaking` edges when
+proposal/hearing/adoption City Record siblings share a high-confidence join
+(`related_notices` + `rulemaking_subject_ref` on the materialization row). Metrics:
 `cross_subject_link_rate` on PIN-bearing awards
 (`worker/test/fixtures/subject-registry/pin_bearing_awards.json`);
 `rules_meetings_subject_link_rate` on matched rules/meetings records. ADR:
 `docs/adr/subject-registry.md`. Verify:
-`node --test worker/test/subject_registry.test.mjs worker/test/nyc_rules.test.mjs worker/test/legistar.test.mjs`.
+`node --test worker/test/subject_registry.test.mjs worker/test/nyc_rules.test.mjs
+worker/test/rulemaking_siblings.test.mjs worker/test/legistar.test.mjs`.
 
 ## Ops contract (desk ↔ worker)
 
@@ -1105,6 +1109,19 @@ processing time. The `/rules` read model is `rules:materialized:v2`, and Agency 
 notice detail owns the public spine (same `.chain` pattern as the Money contract
 timeline). Public demo: `#notice/20260714029` (`rules-lifecycle-spine` in
 `site/demo/demo-links.json`).
+
+**Multi-notice rulemaking stitch (backend):** one rulemaking often spans multiple
+City Record rows (proposal / hearing / adoption). `attachRulemakingSiblings` in
+`worker/src/lib/rules.mjs` groups high-confidence siblings (shared NYC Rules id,
+shared RCNY/section ref, or agency + title-core overlap ≥ 0.55 within a 540-day
+window) and stamps `rulemaking_subject_ref`, `related_notices[]`, and
+`rulemaking_join` on `buildRuleView` rows. Ambiguous pairs stay separate subjects.
+Subject registry adds `same_rulemaking` notice↔notice links — never merges
+`notice:` identities. UI presentation of the stitched subject is a follow-up
+(phase-group rules spine); do not invent render hooks in `site/index.html` from
+this path alone. Verify:
+`node --test worker/test/rulemaking_siblings.test.mjs worker/test/nyc_rules.test.mjs
+worker/test/subject_registry.test.mjs`.
 
 **RSS egress (hard):** `worker/src/rules.mjs` must send `RULES_RSS_HEADERS`
 (`User-Agent` + RSS Accept) on `https://rules.cityofnewyork.us/feed/`. An empty or
