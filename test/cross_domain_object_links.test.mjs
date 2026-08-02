@@ -21,8 +21,10 @@ import {
   observationFromLandRow,
   observationFromRulesRow,
   observationFromMeetingsRow,
+  observationFromPeopleRow,
   observationsFromRulesMaterialization,
   observationsFromMeetingsMaterialization,
+  observationsFromPeopleMaterialization,
   linkObservation,
   joinKeyLinksForObservation,
   buildEntityIntelligence,
@@ -197,9 +199,86 @@ describe("observation → links with provenance", () => {
       ],
     );
     assert.equal(view.ok, true);
-    assert.equal(view.domains.people.status, "not_yet_ingested");
+    // People is a live domain — empty for this entity means empty_in_corpus, not
+    // a permanent not_yet_ingested product gap.
+    assert.equal(view.domains.people.status, "empty");
     assert.equal(view.domains.people.count, 0);
-    assert.match(view.domains.people.note, /Legistar/i);
+  });
+
+  it("links person-level votes to City Council as people objects", () => {
+    const obs = observationFromPeopleRow({
+      person_id: "7801",
+      person_name: "Christopher Marte",
+      vote: "Affirmative",
+      vote_bucket: "aye",
+      matter_id: "79193",
+      matter_file: "LU 0112-2026",
+      event_id: "22526",
+      request_id: "20260706036",
+      agency_name: "City Council",
+      event_date: "2026-07-14",
+      source_system: "legistar",
+    });
+    assert.ok(obs);
+    assert.equal(obs.domain, "people");
+    assert.equal(obs.subject_ref, "entity:official:7801");
+    const { objects, links } = linkObservation(obs);
+    assert.equal(objects.length, 1);
+    assert.equal(objects[0].link_type, "votes_as_official");
+    assert.equal(objects[0].root_ref, "agency:id:city-council");
+    assert.match(objects[0].href || "", /#official\/7801/);
+    assert.equal(links[0].type, "votes_as_official");
+    assert.equal(links[0].to, "agency:id:city-council");
+
+    const view = buildEntityIntelligence(
+      { kind: "agency", name: "City Council" },
+      [obs],
+    );
+    assert.equal(view.ok, true);
+    assert.equal(view.domains.people.status, "matched");
+    assert.equal(view.domains.people.count, 1);
+    assert.equal(view.domains.people.objects[0].subject_ref, "entity:official:7801");
+  });
+
+  it("observationsFromPeopleMaterialization walks by_person and skips tally_only", () => {
+    const rows = observationsFromPeopleMaterialization({
+      request_id: "20260706036",
+      notice: { agency: "City Council" },
+      council_event: { event_id: "22526", event_date: "2026-07-14" },
+      agenda_items: [
+        {
+          matters: [
+            {
+              matter_id: "1",
+              matter_file: "LU 1",
+              title: "Demo",
+              votes: [
+                {
+                  vote_identity: "roll_call",
+                  by_person: [
+                    {
+                      person_id: "7801",
+                      person_name: "Christopher Marte",
+                      vote_value: "Affirmative",
+                      vote_bucket: "aye",
+                      official: { id: "official:7801", display_name: "Christopher Marte" },
+                    },
+                  ],
+                },
+                {
+                  vote_identity: "tally_only",
+                  counts: { aye: 5, nay: 0 },
+                  by_person: [],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    assert.equal(rows.length, 1);
+    assert.equal(rows[0].person_id, "7801");
+    assert.equal(rows[0].agency_name, "City Council");
   });
 
   it("fails closed without provenance", () => {
@@ -256,7 +335,8 @@ describe("entity intelligence view — Parks multi-domain", () => {
     assert.equal(view.domains.land.status, "matched");
     assert.equal(view.domains.rules.status, "matched");
     assert.equal(view.domains.meetings.status, "matched");
-    assert.equal(view.domains.people.status, "not_yet_ingested");
+    // No person rows in this unit fixture — people is empty (not permanent theater).
+    assert.equal(view.domains.people.status, "empty");
     // property is empty in this fixture set (no disposition rows) — 4 of 6 domains
     assert.equal(view.domains.property.status, "empty");
     assert.equal(view.metrics.domains_matched, 4);
@@ -266,25 +346,31 @@ describe("entity intelligence view — Parks multi-domain", () => {
     for (const d of CROSS_DOMAIN_DOMAINS) assert.ok(view.domains[d]);
   });
 
-  it("materialization corpus includes Parks as multi-domain demo", () => {
+  it("materialization corpus includes live people observations and Council people matched", () => {
     const observations = collectCrossDomainObservations(ROOT);
     assert.ok(observations.length > 10, "expected warehouse + seed observations");
     const payments = observations.filter((o) => o.object_kind === "payment");
     assert.ok(payments.length >= 1, "expected checkbook payment fixtures");
     const rulesObs = observations.filter((o) => o.domain === "rules");
     const meetingsObs = observations.filter((o) => o.domain === "meetings");
+    const peopleObs = observations.filter((o) => o.domain === "people");
     // Live domain snapshots replace seed-thin 3+4 rows
     assert.ok(rulesObs.length >= 20, `expected dense live rules observations, got ${rulesObs.length}`);
     assert.ok(meetingsObs.length >= 20, `expected dense live meetings observations, got ${meetingsObs.length}`);
     assert.ok(rulesObs.every((o) => o.source_record_id && o.agency_name));
     assert.ok(meetingsObs.every((o) => o.source_record_id && o.agency_name));
-    // People stay empty without production by_person rows
-    assert.equal(observations.filter((o) => o.domain === "people").length, 0);
+    // People densified from by_person snapshot (field case Marte / event 22526)
+    assert.ok(peopleObs.length >= 1, `expected people observations, got ${peopleObs.length}`);
+    assert.ok(peopleObs.every((o) => o.person_id && o.person_name && o.subject_ref));
+    assert.ok(peopleObs.some((o) => o.person_id === "7801" || /Marte/i.test(o.person_name || "")));
 
     const doc = buildEntityIntelligenceDoc(ROOT);
     assert.ok(doc.multi_domain_count >= 1);
-    assert.equal(doc.verified_demo?.ref, "agency:id:parks-and-recreation");
-    assert.ok(doc.verified_demo.domains_matched >= 3);
+    // Demo prefers an entity with people matched when available (City Council).
+    assert.ok(doc.verified_demo?.ref);
+    const demoView = lookupEntityIntelligence(doc, { ref: doc.verified_demo.ref });
+    assert.equal(demoView.domains.people.status, "matched");
+    assert.ok(demoView.domains.people.count >= 1);
     assert.ok(
       (doc.provenance?.sources || []).some((s) => String(s).includes("rules_domain_observations")),
       "provenance lists rules domain snapshot",
@@ -293,6 +379,17 @@ describe("entity intelligence view — Parks multi-domain", () => {
       (doc.provenance?.sources || []).some((s) => String(s).includes("meetings_domain_observations")),
       "provenance lists meetings domain snapshot",
     );
+    assert.ok(
+      (doc.provenance?.sources || []).some((s) => String(s).includes("people_domain_observations")),
+      "provenance lists people domain snapshot",
+    );
+
+    const council = lookupEntityIntelligence(doc, {
+      kind: "agency",
+      name: "City Council",
+    });
+    assert.equal(council.domains.people.status, "matched");
+    assert.ok(council.domains.people.count >= 1);
 
     const hit = lookupEntityIntelligence(doc, {
       kind: "agency",

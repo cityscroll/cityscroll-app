@@ -3,10 +3,10 @@
   "phase": "cross-domain-object-links",
   "title": "Entity intelligence — cross-domain object links",
   "version": "cross_domain_object_link_v2",
-  "generated_at": "2026-08-02T13:38:56.363Z",
-  "observation_count": 532,
+  "generated_at": "2026-08-02T18:11:32.747Z",
+  "observation_count": 574,
   "entity_count": 40,
-  "multi_domain_count": 20,
+  "multi_domain_count": 21,
   "domains": [
     "money",
     "land",
@@ -23,34 +23,34 @@
     "agency:id:health-and-mental-hygiene"
   ],
   "verified_demo": {
-    "ref": "agency:id:parks-and-recreation",
-    "display_name": "Parks and Recreation",
-    "domains_matched": 5,
-    "total_linked_objects": 13,
+    "ref": "agency:id:city-council",
+    "display_name": "City Council",
+    "domains_matched": 2,
+    "total_linked_objects": 12,
     "domain_status": {
       "money": {
-        "status": "matched",
-        "count": 1
+        "status": "empty",
+        "count": 0
       },
       "land": {
-        "status": "matched",
-        "count": 6
+        "status": "empty",
+        "count": 0
       },
       "property": {
-        "status": "matched",
-        "count": 1
+        "status": "empty",
+        "count": 0
       },
       "rules": {
-        "status": "matched",
-        "count": 4
+        "status": "empty",
+        "count": 0
       },
       "meetings": {
         "status": "matched",
-        "count": 1
+        "count": 6
       },
       "people": {
-        "status": "not_yet_ingested",
-        "count": 0
+        "status": "matched",
+        "count": 6
       }
     }
   },
@@ -541,9 +541,9 @@
           "count": 1
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -981,8 +981,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 5,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 0,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 1,
         "total_linked_objects": 13,
         "link_count": 19,
         "join_key_link_count": 3,
@@ -1496,9 +1496,9 @@
           "count": 3
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -2081,8 +2081,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 4,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 1,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 2,
         "total_linked_objects": 13,
         "link_count": 25,
         "join_key_link_count": 12,
@@ -2538,9 +2538,9 @@
           "count": 6
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -2895,8 +2895,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 3,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 2,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 3,
         "total_linked_objects": 12,
         "link_count": 16,
         "join_key_link_count": 1,
@@ -3288,9 +3288,9 @@
           "count": 6
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -3739,8 +3739,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 3,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 2,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 3,
         "total_linked_objects": 10,
         "link_count": 17,
         "join_key_link_count": 6,
@@ -4097,9 +4097,9 @@
           "count": 2
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -4387,8 +4387,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 3,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 2,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 3,
         "total_linked_objects": 9,
         "link_count": 12,
         "join_key_link_count": 3,
@@ -4579,9 +4579,9 @@
           "count": 2
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -4671,12 +4671,741 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 3,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 2,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 3,
         "total_linked_objects": 4,
         "link_count": 4,
         "join_key_link_count": 0,
         "coverage_rate": 0.5
+      }
+    },
+    "agency:id:city-council": {
+      "ok": true,
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
+      "root": {
+        "kind": "agency",
+        "ref": "agency:id:city-council",
+        "id": "id:city-council",
+        "canonical_id": "city-council",
+        "canonical_name": "City Council",
+        "display_name": "City Council"
+      },
+      "domains": {
+        "money": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No money objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "land": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No land objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "rules": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No rules objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "meetings": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "notice:20260707022",
+              "domain": "meetings",
+              "object_kind": "hearing",
+              "label": "7-22-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
+              "when": "2026-07-22T11:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260707022",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:city-council",
+              "root_kind": "agency",
+              "href": "#notice/20260707022",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260707022",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "meetings_agency_name",
+                "observed_at": "2026-07-22T11:00:00.000",
+                "input_value": "City Council"
+              },
+              "link_type": "hosts_meeting",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20260707021",
+              "domain": "meetings",
+              "object_kind": "hearing",
+              "label": "7-21-26 Subcommittee on Zoning and Franchises meeting",
+              "when": "2026-07-21T11:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260707021",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:city-council",
+              "root_kind": "agency",
+              "href": "#notice/20260707021",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260707021",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "meetings_agency_name",
+                "observed_at": "2026-07-21T11:00:00.000",
+                "input_value": "City Council"
+              },
+              "link_type": "hosts_meeting",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20260706036",
+              "domain": "meetings",
+              "object_kind": "hearing",
+              "label": "Correction: 7-14-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
+              "when": "2026-07-14T10:30:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260706036",
+              "event_id": "22526",
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:city-council",
+              "root_kind": "agency",
+              "href": "#notice/20260706036",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260706036",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "meetings_agency_name",
+                "observed_at": "2026-07-14T10:30:00.000",
+                "input_value": "City Council"
+              },
+              "link_type": "hosts_meeting",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20260625040",
+              "domain": "meetings",
+              "object_kind": "hearing",
+              "label": "7-9-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
+              "when": "2026-07-09T11:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260625040",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:city-council",
+              "root_kind": "agency",
+              "href": "#notice/20260625040",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260625040",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "meetings_agency_name",
+                "observed_at": "2026-07-09T11:00:00.000",
+                "input_value": "City Council"
+              },
+              "link_type": "hosts_meeting",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20260617039",
+              "domain": "meetings",
+              "object_kind": "hearing",
+              "label": "7-1-26 Subcommittee on Zoning and Franchises meeting",
+              "when": "2026-07-01T11:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260617039",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:city-council",
+              "root_kind": "agency",
+              "href": "#notice/20260617039",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260617039",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "meetings_agency_name",
+                "observed_at": "2026-07-01T11:00:00.000",
+                "input_value": "City Council"
+              },
+              "link_type": "hosts_meeting",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20260603052",
+              "domain": "meetings",
+              "object_kind": "hearing",
+              "label": "6-17-26 Subcommittee on Zoning and Franchises meeting",
+              "when": "2026-06-17T11:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260603052",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:city-council",
+              "root_kind": "agency",
+              "href": "#notice/20260603052",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260603052",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "meetings_agency_name",
+                "observed_at": "2026-06-17T11:00:00.000",
+                "input_value": "City Council"
+              },
+              "link_type": "hosts_meeting",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            }
+          ],
+          "count": 6
+        },
+        "people": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "entity:official:7801",
+              "domain": "people",
+              "object_kind": "vote",
+              "label": "Christopher Marte · Affirmative · LU 0112-2026",
+              "when": "2026-07-14",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260706036",
+              "event_id": "22526",
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:city-council",
+              "root_kind": "agency",
+              "href": "#official/7801?event=22526&notice=20260706036",
+              "provenance": {
+                "source_system": "legistar",
+                "source_record_id": "legistar:person:7801:matter:79193:event:22526",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "people_agency_name",
+                "observed_at": "2026-07-14",
+                "input_value": "City Council"
+              },
+              "link_type": "votes_as_official",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "entity:official:7825",
+              "domain": "people",
+              "object_kind": "vote",
+              "label": "Alexa Avilés · Affirmative · LU 0112-2026",
+              "when": "2026-07-14",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260706036",
+              "event_id": "22526",
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:city-council",
+              "root_kind": "agency",
+              "href": "#official/7825?event=22526&notice=20260706036",
+              "provenance": {
+                "source_system": "legistar",
+                "source_record_id": "legistar:person:7825:matter:79193:event:22526",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "people_agency_name",
+                "observed_at": "2026-07-14",
+                "input_value": "City Council"
+              },
+              "link_type": "votes_as_official",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "entity:official:7798",
+              "domain": "people",
+              "object_kind": "vote",
+              "label": "Oswald J. Feliz · Absent · LU 0112-2026",
+              "when": "2026-07-14",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260706036",
+              "event_id": "22526",
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:city-council",
+              "root_kind": "agency",
+              "href": "#official/7798?event=22526&notice=20260706036",
+              "provenance": {
+                "source_system": "legistar",
+                "source_record_id": "legistar:person:7798:matter:79193:event:22526",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "people_agency_name",
+                "observed_at": "2026-07-14",
+                "input_value": "City Council"
+              },
+              "link_type": "votes_as_official",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "entity:official:7832",
+              "domain": "people",
+              "object_kind": "vote",
+              "label": "Kamillah Hanks · Affirmative · LU 0112-2026",
+              "when": "2026-07-14",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260706036",
+              "event_id": "22526",
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:city-council",
+              "root_kind": "agency",
+              "href": "#official/7832?event=22526&notice=20260706036",
+              "provenance": {
+                "source_system": "legistar",
+                "source_record_id": "legistar:person:7832:matter:79193:event:22526",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "people_agency_name",
+                "observed_at": "2026-07-14",
+                "input_value": "City Council"
+              },
+              "link_type": "votes_as_official",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "entity:official:7824",
+              "domain": "people",
+              "object_kind": "vote",
+              "label": "Sandy Nurse · Affirmative · LU 0112-2026",
+              "when": "2026-07-14",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260706036",
+              "event_id": "22526",
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:city-council",
+              "root_kind": "agency",
+              "href": "#official/7824?event=22526&notice=20260706036",
+              "provenance": {
+                "source_system": "legistar",
+                "source_record_id": "legistar:person:7824:matter:79193:event:22526",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "people_agency_name",
+                "observed_at": "2026-07-14",
+                "input_value": "City Council"
+              },
+              "link_type": "votes_as_official",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "entity:official:7823",
+              "domain": "people",
+              "object_kind": "vote",
+              "label": "Chi A. Ossé · Affirmative · LU 0112-2026",
+              "when": "2026-07-14",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "contract_id": null,
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260706036",
+              "event_id": "22526",
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "agency:id:city-council",
+              "root_kind": "agency",
+              "href": "#official/7823?event=22526&notice=20260706036",
+              "provenance": {
+                "source_system": "legistar",
+                "source_record_id": "legistar:person:7823:matter:79193:event:22526",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "people_agency_name",
+                "observed_at": "2026-07-14",
+                "input_value": "City Council"
+              },
+              "link_type": "votes_as_official",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            }
+          ],
+          "count": 6
+        }
+      },
+      "links": [
+        {
+          "type": "votes_as_official",
+          "from": "entity:official:7798",
+          "to": "agency:id:city-council",
+          "domain": "people",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "legistar",
+            "source_record_id": "legistar:person:7798:matter:79193:event:22526",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "people_agency_name",
+            "observed_at": "2026-07-14",
+            "input_value": "City Council"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "votes_as_official",
+          "from": "entity:official:7801",
+          "to": "agency:id:city-council",
+          "domain": "people",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "legistar",
+            "source_record_id": "legistar:person:7801:matter:79193:event:22526",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "people_agency_name",
+            "observed_at": "2026-07-14",
+            "input_value": "City Council"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "votes_as_official",
+          "from": "entity:official:7823",
+          "to": "agency:id:city-council",
+          "domain": "people",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "legistar",
+            "source_record_id": "legistar:person:7823:matter:79193:event:22526",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "people_agency_name",
+            "observed_at": "2026-07-14",
+            "input_value": "City Council"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "votes_as_official",
+          "from": "entity:official:7824",
+          "to": "agency:id:city-council",
+          "domain": "people",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "legistar",
+            "source_record_id": "legistar:person:7824:matter:79193:event:22526",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "people_agency_name",
+            "observed_at": "2026-07-14",
+            "input_value": "City Council"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "votes_as_official",
+          "from": "entity:official:7825",
+          "to": "agency:id:city-council",
+          "domain": "people",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "legistar",
+            "source_record_id": "legistar:person:7825:matter:79193:event:22526",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "people_agency_name",
+            "observed_at": "2026-07-14",
+            "input_value": "City Council"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "votes_as_official",
+          "from": "entity:official:7832",
+          "to": "agency:id:city-council",
+          "domain": "people",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "legistar",
+            "source_record_id": "legistar:person:7832:matter:79193:event:22526",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "people_agency_name",
+            "observed_at": "2026-07-14",
+            "input_value": "City Council"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "votes_as_official",
+          "from": "entity:official:7898",
+          "to": "agency:id:city-council",
+          "domain": "people",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "legistar",
+            "source_record_id": "legistar:person:7898:matter:79193:event:22526",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "people_agency_name",
+            "observed_at": "2026-07-14",
+            "input_value": "City Council"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "hosts_meeting",
+          "from": "notice:20260603052",
+          "to": "agency:id:city-council",
+          "domain": "meetings",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260603052",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "meetings_agency_name",
+            "observed_at": "2026-06-17T11:00:00.000",
+            "input_value": "City Council"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "hosts_meeting",
+          "from": "notice:20260617039",
+          "to": "agency:id:city-council",
+          "domain": "meetings",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260617039",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "meetings_agency_name",
+            "observed_at": "2026-07-01T11:00:00.000",
+            "input_value": "City Council"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "hosts_meeting",
+          "from": "notice:20260625040",
+          "to": "agency:id:city-council",
+          "domain": "meetings",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260625040",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "meetings_agency_name",
+            "observed_at": "2026-07-09T11:00:00.000",
+            "input_value": "City Council"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "hosts_meeting",
+          "from": "notice:20260706036",
+          "to": "agency:id:city-council",
+          "domain": "meetings",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260706036",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "meetings_agency_name",
+            "observed_at": "2026-07-14T10:30:00.000",
+            "input_value": "City Council"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "hosts_meeting",
+          "from": "notice:20260707021",
+          "to": "agency:id:city-council",
+          "domain": "meetings",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260707021",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "meetings_agency_name",
+            "observed_at": "2026-07-21T11:00:00.000",
+            "input_value": "City Council"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "hosts_meeting",
+          "from": "notice:20260707022",
+          "to": "agency:id:city-council",
+          "domain": "meetings",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260707022",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "meetings_agency_name",
+            "observed_at": "2026-07-22T11:00:00.000",
+            "input_value": "City Council"
+          },
+          "layer": "cross_domain_object_link_v2"
+        }
+      ],
+      "metrics": {
+        "metric": "cross_domain_object_link_coverage",
+        "domains_total": 6,
+        "domains_matched": 2,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 4,
+        "total_linked_objects": 12,
+        "link_count": 13,
+        "join_key_link_count": 0,
+        "coverage_rate": 0.3333333333333333
       }
     },
     "agency:id:consumer-and-worker-protection": {
@@ -5094,9 +5823,9 @@
           "count": 5
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -5587,8 +6316,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 2,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 4,
         "total_linked_objects": 11,
         "link_count": 24,
         "join_key_link_count": 0,
@@ -5911,9 +6640,9 @@
           "count": 6
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -6084,8 +6813,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 2,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 4,
         "total_linked_objects": 8,
         "link_count": 8,
         "join_key_link_count": 0,
@@ -6408,9 +7137,9 @@
           "count": 2
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -6701,8 +7430,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 2,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 4,
         "total_linked_objects": 8,
         "link_count": 14,
         "join_key_link_count": 0,
@@ -7025,9 +7754,9 @@
           "count": 2
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -7218,8 +7947,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 2,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 4,
         "total_linked_objects": 8,
         "link_count": 9,
         "join_key_link_count": 0,
@@ -7509,9 +8238,9 @@
           "count": 1
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -7702,8 +8431,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 2,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 4,
         "total_linked_objects": 7,
         "link_count": 9,
         "join_key_link_count": 0,
@@ -7993,9 +8722,9 @@
           "count": 6
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -8146,8 +8875,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 2,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 4,
         "total_linked_objects": 7,
         "link_count": 7,
         "join_key_link_count": 0,
@@ -8437,9 +9166,9 @@
           "count": 5
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -8590,8 +9319,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 2,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 4,
         "total_linked_objects": 7,
         "link_count": 7,
         "join_key_link_count": 0,
@@ -8815,9 +9544,9 @@
           "count": 4
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -8928,8 +9657,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 2,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 4,
         "total_linked_objects": 5,
         "link_count": 5,
         "join_key_link_count": 0,
@@ -9122,9 +9851,9 @@
           "count": 0
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -9227,8 +9956,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 2,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 4,
         "total_linked_objects": 4,
         "link_count": 4,
         "join_key_link_count": 0,
@@ -9386,9 +10115,9 @@
           "count": 2
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -9459,8 +10188,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 2,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 4,
         "total_linked_objects": 3,
         "link_count": 3,
         "join_key_link_count": 0,
@@ -9618,9 +10347,9 @@
           "count": 1
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -9691,8 +10420,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 2,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 4,
         "total_linked_objects": 3,
         "link_count": 3,
         "join_key_link_count": 0,
@@ -9850,9 +10579,9 @@
           "count": 1
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -9923,8 +10652,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 2,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 4,
         "total_linked_objects": 3,
         "link_count": 3,
         "join_key_link_count": 0,
@@ -10083,9 +10812,9 @@
           "count": 0
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -10285,8 +11014,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 2,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 4,
         "total_linked_objects": 3,
         "link_count": 7,
         "join_key_link_count": 5,
@@ -10411,9 +11140,9 @@
           "count": 1
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -10464,8 +11193,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 2,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 4,
         "total_linked_objects": 2,
         "link_count": 2,
         "join_key_link_count": 0,
@@ -10721,9 +11450,9 @@
           "count": 6
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -10914,8 +11643,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 1,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 4,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 5,
         "total_linked_objects": 6,
         "link_count": 9,
         "join_key_link_count": 0,
@@ -11171,9 +11900,9 @@
           "count": 6
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -11324,400 +12053,10 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 1,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 4,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 5,
         "total_linked_objects": 6,
         "link_count": 7,
-        "join_key_link_count": 0,
-        "coverage_rate": 0.16666666666666666
-      }
-    },
-    "agency:id:city-council": {
-      "ok": true,
-      "version": "cross_domain_object_link_v2",
-      "method": "cross_domain_identity_v2",
-      "method_version": "2.0.0",
-      "root": {
-        "kind": "agency",
-        "ref": "agency:id:city-council",
-        "id": "id:city-council",
-        "canonical_id": "city-council",
-        "canonical_name": "City Council",
-        "display_name": "City Council"
-      },
-      "domains": {
-        "money": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No money objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "land": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No land objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "property": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No property objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "rules": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No rules objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "meetings": {
-          "status": "matched",
-          "gap_class": null,
-          "note": null,
-          "objects": [
-            {
-              "subject_ref": "notice:20260707022",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "7-22-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
-              "when": "2026-07-22T11:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260707022",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:city-council",
-              "root_kind": "agency",
-              "href": "#notice/20260707022",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260707022",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-07-22T11:00:00.000",
-                "input_value": "City Council"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:20260707021",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "7-21-26 Subcommittee on Zoning and Franchises meeting",
-              "when": "2026-07-21T11:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260707021",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:city-council",
-              "root_kind": "agency",
-              "href": "#notice/20260707021",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260707021",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-07-21T11:00:00.000",
-                "input_value": "City Council"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:20260706036",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "Correction: 7-14-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
-              "when": "2026-07-14T10:30:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260706036",
-              "event_id": "22526",
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:city-council",
-              "root_kind": "agency",
-              "href": "#notice/20260706036",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260706036",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-07-14T10:30:00.000",
-                "input_value": "City Council"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:20260625040",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "7-9-26 Subcommittee on Landmarks, Public Sitings, Resiliency, and Dispositions meeting",
-              "when": "2026-07-09T11:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260625040",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:city-council",
-              "root_kind": "agency",
-              "href": "#notice/20260625040",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260625040",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-07-09T11:00:00.000",
-                "input_value": "City Council"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:20260617039",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "7-1-26 Subcommittee on Zoning and Franchises meeting",
-              "when": "2026-07-01T11:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260617039",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:city-council",
-              "root_kind": "agency",
-              "href": "#notice/20260617039",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260617039",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-07-01T11:00:00.000",
-                "input_value": "City Council"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:20260603052",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "6-17-26 Subcommittee on Zoning and Franchises meeting",
-              "when": "2026-06-17T11:00:00.000",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "contract_id": null,
-              "document_id": null,
-              "project_id": null,
-              "request_id": "20260603052",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "agency:id:city-council",
-              "root_kind": "agency",
-              "href": "#notice/20260603052",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260603052",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-06-17T11:00:00.000",
-                "input_value": "City Council"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            }
-          ],
-          "count": 6
-        },
-        "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
-          "objects": [],
-          "count": 0
-        }
-      },
-      "links": [
-        {
-          "type": "hosts_meeting",
-          "from": "notice:20260603052",
-          "to": "agency:id:city-council",
-          "domain": "meetings",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260603052",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "meetings_agency_name",
-            "observed_at": "2026-06-17T11:00:00.000",
-            "input_value": "City Council"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "hosts_meeting",
-          "from": "notice:20260617039",
-          "to": "agency:id:city-council",
-          "domain": "meetings",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260617039",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "meetings_agency_name",
-            "observed_at": "2026-07-01T11:00:00.000",
-            "input_value": "City Council"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "hosts_meeting",
-          "from": "notice:20260625040",
-          "to": "agency:id:city-council",
-          "domain": "meetings",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260625040",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "meetings_agency_name",
-            "observed_at": "2026-07-09T11:00:00.000",
-            "input_value": "City Council"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "hosts_meeting",
-          "from": "notice:20260706036",
-          "to": "agency:id:city-council",
-          "domain": "meetings",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260706036",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "meetings_agency_name",
-            "observed_at": "2026-07-14T10:30:00.000",
-            "input_value": "City Council"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "hosts_meeting",
-          "from": "notice:20260707021",
-          "to": "agency:id:city-council",
-          "domain": "meetings",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260707021",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "meetings_agency_name",
-            "observed_at": "2026-07-21T11:00:00.000",
-            "input_value": "City Council"
-          },
-          "layer": "cross_domain_object_link_v2"
-        },
-        {
-          "type": "hosts_meeting",
-          "from": "notice:20260707022",
-          "to": "agency:id:city-council",
-          "domain": "meetings",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260707022",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "meetings_agency_name",
-            "observed_at": "2026-07-22T11:00:00.000",
-            "input_value": "City Council"
-          },
-          "layer": "cross_domain_object_link_v2"
-        }
-      ],
-      "metrics": {
-        "metric": "cross_domain_object_link_coverage",
-        "domains_total": 6,
-        "domains_matched": 1,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 4,
-        "total_linked_objects": 6,
-        "link_count": 6,
         "join_key_link_count": 0,
         "coverage_rate": 0.16666666666666666
       }
@@ -11938,9 +12277,9 @@
           "count": 5
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -12073,8 +12412,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 1,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 4,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 5,
         "total_linked_objects": 5,
         "link_count": 6,
         "join_key_link_count": 1,
@@ -12288,9 +12627,9 @@
           "count": 0
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -12880,8 +13219,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 1,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 4,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 5,
         "total_linked_objects": 4,
         "link_count": 29,
         "join_key_link_count": 25,
@@ -13038,9 +13377,9 @@
           "count": 3
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -13111,8 +13450,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 1,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 4,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 5,
         "total_linked_objects": 3,
         "link_count": 3,
         "join_key_link_count": 0,
@@ -13269,9 +13608,9 @@
           "count": 3
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -13342,8 +13681,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 1,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 4,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 5,
         "total_linked_objects": 3,
         "link_count": 3,
         "join_key_link_count": 0,
@@ -13499,9 +13838,9 @@
           "count": 0
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -13571,8 +13910,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 1,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 4,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 5,
         "total_linked_objects": 3,
         "link_count": 3,
         "join_key_link_count": 0,
@@ -13729,9 +14068,9 @@
           "count": 0
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -13802,8 +14141,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 1,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 4,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 5,
         "total_linked_objects": 3,
         "link_count": 3,
         "join_key_link_count": 0,
@@ -13960,9 +14299,9 @@
           "count": 3
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -14033,8 +14372,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 1,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 4,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 5,
         "total_linked_objects": 3,
         "link_count": 3,
         "join_key_link_count": 0,
@@ -14191,9 +14530,9 @@
           "count": 3
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -14264,8 +14603,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 1,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 4,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 5,
         "total_linked_objects": 3,
         "link_count": 3,
         "join_key_link_count": 0,
@@ -14422,9 +14761,9 @@
           "count": 0
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -14495,8 +14834,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 1,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 4,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 5,
         "total_linked_objects": 3,
         "link_count": 3,
         "join_key_link_count": 0,
@@ -14620,9 +14959,9 @@
           "count": 2
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -14717,8 +15056,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 1,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 4,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 5,
         "total_linked_objects": 2,
         "link_count": 4,
         "join_key_link_count": 2,
@@ -14842,9 +15181,9 @@
           "count": 2
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -14983,8 +15322,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 1,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 4,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 5,
         "total_linked_objects": 2,
         "link_count": 6,
         "join_key_link_count": 4,
@@ -15108,9 +15447,9 @@
           "count": 0
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -15161,8 +15500,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 1,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 4,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 5,
         "total_linked_objects": 2,
         "link_count": 2,
         "join_key_link_count": 0,
@@ -15285,9 +15624,9 @@
           "count": 0
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -15337,8 +15676,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 1,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 4,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 5,
         "total_linked_objects": 2,
         "link_count": 2,
         "join_key_link_count": 0,
@@ -15466,9 +15805,9 @@
           "count": 0
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -15543,8 +15882,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 1,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 4,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 5,
         "total_linked_objects": 2,
         "link_count": 2,
         "join_key_link_count": 0,
@@ -15668,9 +16007,9 @@
           "count": 2
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -15721,8 +16060,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 1,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 4,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 5,
         "total_linked_objects": 2,
         "link_count": 2,
         "join_key_link_count": 0,
@@ -15846,9 +16185,9 @@
           "count": 0
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -15899,8 +16238,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 1,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 4,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 5,
         "total_linked_objects": 2,
         "link_count": 2,
         "join_key_link_count": 0,
@@ -16024,9 +16363,9 @@
           "count": 2
         },
         "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No people objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         }
@@ -16077,8 +16416,8 @@
         "metric": "cross_domain_object_link_coverage",
         "domains_total": 6,
         "domains_matched": 1,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 4,
+        "domains_not_yet_ingested": 0,
+        "domains_empty": 5,
         "total_linked_objects": 2,
         "link_count": 2,
         "join_key_link_count": 0,
@@ -16134,6 +16473,14 @@
       "domains_matched": 3,
       "total_linked_objects": 4,
       "coverage_rate": 0.5
+    },
+    {
+      "ref": "agency:id:city-council",
+      "kind": "agency",
+      "display_name": "City Council",
+      "domains_matched": 2,
+      "total_linked_objects": 12,
+      "coverage_rate": 0.3333333333333333
     },
     {
       "ref": "agency:id:consumer-and-worker-protection",
@@ -16259,14 +16606,6 @@
       "ref": "agency:id:charter-revision-commission",
       "kind": "agency",
       "display_name": "Charter Revision Commission",
-      "domains_matched": 1,
-      "total_linked_objects": 6,
-      "coverage_rate": 0.16666666666666666
-    },
-    {
-      "ref": "agency:id:city-council",
-      "kind": "agency",
-      "display_name": "City Council",
       "domains_matched": 1,
       "total_linked_objects": 6,
       "coverage_rate": 0.16666666666666666
@@ -16420,6 +16759,7 @@
       "site/data/land_default_ulurp.json",
       "site/data/rules_domain_observations.json",
       "site/data/meetings_domain_observations.json",
+      "site/data/people_domain_observations.json",
       "worker/test/fixtures/entity-intelligence/domain_observations.json",
       "worker/test/fixtures/property-cross-domain/corpus.json",
       "test/fixtures/property_disposition/multi_notice_bbl.json"
@@ -16436,9 +16776,10 @@
       "disposition_owner_label_v1",
       "rules_agency_issued_v1",
       "meetings_agency_hosts_v1",
+      "people_votes_as_official_v1",
       "exact_ulurp_token_v1",
       "zap_project_ref_v1"
     ],
-    "note": "Links only when identity normalizers or join keys resolve. Identity: agency/vendor across money/land/property/rules/meetings. Join keys: PIN (shares_authority_key), contract_id (references_contract / payment_on_contract), BBL (sited_on_parcel / property exact BBL), payee (paid_to_vendor), meeting body ULURP/ZAP → decides_land_project when the land project is in corpus. Rules and meetings densify from City Record domain snapshots (Agency Rules + Public Hearings), not invented contract/vendor joins. Property attaches via City Record agency_name and labeled disposition owners. Empty domains are explicit; people defaults to not_yet_ingested without by_person rows."
+    "note": "Links only when identity normalizers or join keys resolve. Identity: agency/vendor across money/land/property/rules/meetings/people. Join keys: PIN (shares_authority_key), contract_id (references_contract / payment_on_contract), BBL (sited_on_parcel / property exact BBL), payee (paid_to_vendor), meeting body ULURP/ZAP → decides_land_project when the land project is in corpus. Rules and meetings densify from City Record domain snapshots; people densify from Legistar by_person retained on meeting-outcomes (never invented tallies). Property attaches via City Record agency_name and labeled disposition owners. Empty domains are explicit per entity."
   }
 }

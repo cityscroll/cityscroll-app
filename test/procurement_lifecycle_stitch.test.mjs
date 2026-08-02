@@ -133,6 +133,10 @@ const sandbox = new Function(
   extractFn("meetingOutcomeBucket") + "\n" +
   extractFn("meetingMatterShortTitle") + "\n" +
   extractFn("collapseMeetingAgenda") + "\n" +
+  extractFn("officialIdFromPerson") + "\n" +
+  extractFn("officialHref") + "\n" +
+  extractFn("collectRollCallPeople") + "\n" +
+  extractFn("meetingRollCallChipHTML") + "\n" +
   extractFn("meetingVotesHTML") + "\n" +
   extractFn("meetingOutcomesHTML") + "\n" +
   extractFn("priorCycleHTML") + "\n" +
@@ -229,6 +233,10 @@ try {
     extractFn("meetingOutcomeBucket") +
     extractFn("meetingMatterShortTitle") +
     extractFn("collapseMeetingAgenda") +
+    extractFn("officialIdFromPerson") +
+    extractFn("officialHref") +
+    extractFn("collectRollCallPeople") +
+    extractFn("meetingRollCallChipHTML") +
     extractFn("meetingVotesHTML") +
     extractFn("meetingOutcomesHTML") +
     `

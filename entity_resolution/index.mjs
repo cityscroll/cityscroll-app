@@ -123,6 +123,7 @@ export {
   observationsFromRulesMaterialization,
   observationsFromMeetingsMaterialization,
   observationFromPeopleRow,
+  observationsFromPeopleMaterialization,
   linkObservation,
   buildEntityIntelligence,
   buildIntelligenceCorpus,
