@@ -876,6 +876,27 @@ City Record Online; never invent auction/award events. Metric:
 `property_disposition_spine_completeness_rate`. Verify:
 `node --test test/property_disposition_spine.test.mjs worker/test/property.test.mjs`.
 
+
+## Franchise / concession review spine (FCRC)
+
+Multi-notice lifecycle for one franchise or concession matter: **solicitation →
+public_hearing → committee_meeting → award**. Pure builder:
+`worker/src/lib/franchise_concession_spine.mjs` (`groupFranchiseConcessionSpines` /
+`buildFranchiseConcessionSpine`). Join keys are strict **counterparty vendorStem**,
+**annual plan year** (`plan:fyYYYY`), or **FCRC rules** subject — never bare monthly
+calendar keys that would merge unrelated agenda items. Materialized on
+`GET /franchise-concessions` as `franchise_spines` + per-row stage/subject via
+`attachFranchiseConcessionSpines` in `worker/src/franchise_concession.mjs`. Notice
+detail mounts `franchiseConcessionSpineHTML` / `loadFranchiseConcessionSpine`
+(`#nfranchise`).
+
+**Wrong universe:** City Council "Subcommittee on Zoning and Franchises" is land use —
+not FCRC. Empty stages use class-(a) `not_yet_ingested` naming City Record Online;
+never re-label as class-(b) "city does not publish". Metric:
+`franchise_concession_spine_completeness_rate`. Civic-time kinds:
+`franchise.solicitation` / `public_hearing` / `committee_meeting` / `award`. Verify:
+`node --test test/franchise_concession_spine.test.mjs`.
+
 ## Structured notice-body facts
 
 Pure parser: `worker/src/lib/notice_facts.mjs`. It extracts only explicitly labeled
