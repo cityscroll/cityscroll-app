@@ -188,7 +188,7 @@ test("subsidyGapKind: aged hearing is not_published for later stages", () => {
   assert.ok(lagWeeksForStage("board_decision") >= 8);
 });
 
-test("aged IDA backtest: 2022–2024 hearings join City Record hearing; later stages not_published", () => {
+test("aged IDA backtest: 2022–2024 hearings join City Record; later stages not_yet_ingested", () => {
   const aged = [
     {
       request_id: "20231004016",
@@ -234,11 +234,17 @@ test("aged IDA backtest: 2022–2024 hearings join City Record hearing; later st
     assert.equal(hearing.status, "matched");
     const board = lc.timeline.find((e) => e.stage === "board_decision");
     assert.notEqual(board.status, "matched");
-    // gap_kind uses wall clock; for 2022–2024 anchors it must be not_published as of 2026
+    // Pure helper with feedJoined (default): aged → not_published after a real feed join.
     assert.equal(
       subsidyGapKind({ stage: "board_decision", anchorDate: String(row.event_date).slice(0, 10), asOf: new Date("2026-07-30") }),
       "not_published",
-      `${row.request_id} board should be aged not_published`,
+      `${row.request_id} pure gap helper aged + feedJoined → not_published`,
+    );
+    // Assembled City Record–only join: feed never joined → not_yet_ingested (not false withhold).
+    assert.equal(
+      board.gap_kind,
+      "not_yet_ingested",
+      `${row.request_id} assembled city-record board must not claim city-withholds`,
     );
   }
   // Demo capability: 20220525018 must surface a non-null parsed cost (not a false null seam).
@@ -281,8 +287,9 @@ test("feed unavailable: aged later stages remap not_published → not_yet_ingest
   const [raw] = assembleSubsidyLifecycle([aged], []);
   assert.equal(raw.join.matched, true);
   assert.equal(raw.join.method, "city-record-hearing");
+  // City Record–only join: aged empties are already not_yet_ingested (feed never joined).
   const boardBefore = raw.timeline.find((e) => e.stage === "board_decision");
-  assert.equal(boardBefore.gap_kind, "not_published");
+  assert.equal(boardBefore.gap_kind, "not_yet_ingested");
 
   const stamped = stampSubsidyFeedUnavailable(raw);
   assert.equal(stamped.join.feed_status, "unavailable");
