@@ -105,7 +105,6 @@ type_of_notice_description='Solicitation'
 ">Follow this vendor</button> <button class="act" type="button" id="ecopy">Copy link</button>
 ">Follow: anything new from them</button> <button class="act" type="button" id="ecopy">Copy link</button>
 ">Search notices mentioning them →</a></div>
->Latest notice in City Record
 (agency median
 (see notice)
 (untitled)
@@ -124,9 +123,7 @@ type_of_notice_description='Solicitation'
 <div class="chain-h">Top vendors by awarded $ (click to pivot)</div><div class="ladder">
 <div class="chain-h">Upcoming hearings &amp; events</div><div class="timeline">
 <div class="emailmock"> <div class="ehead"><div class="efrom">CityScroll &lt;alerts@crol-list.org&gt; →
-<div class="empty"><span class="loading"></span> assembling the matter: PIN
 <div class="empty"><span class="loading"></span> building profile:
-<div class="empty">No City Record notices carry PIN <code>
 <div class="empty">No City Record notices found for agency “
 <div class="empty">No awards on record for “
 Due:
@@ -148,7 +145,6 @@ property clerk
 public auction
 request for proposal
 residential property
-responses due
 text/calendar;charset=utf-8
 the a an of in on for to and or with show me find list all near over under within new nyc city our your their about that this
 the procurement officer
