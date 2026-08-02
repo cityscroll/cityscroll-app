@@ -442,6 +442,20 @@ when present. Characterization: `test/subsidy_lifecycle.test.mjs`,
 `test/procurement_lifecycle_stitch.test.mjs`. Aged demo ids: `20220525018`
 (non-null parsed cost), `20231004016`, `20240617012`.
 
+## Intermediate City Record procurement stages (money chain)
+
+Money lifecycle stages include City Record intermediates between solicitation and
+award: `intent_to_negotiate` → `vendor_list` → `intent_to_award` (plus
+solicitation / award). Intent to Award is **not** collapsed into solicitation.
+Matched-only: intermediates appear when the focal notice or a PIN-sibling
+related notice carries that `type_of_notice_description`. Worker
+`fetchRelatedProcurementNotices` gathers PIN-siblings (D1 → SODA); pure pick
+`pickCityRecordStageNotices` / `assembleLifecycle({ relatedNotices })`.
+Succession order: `LIFECYCLE_STAGE_ORDER` in `site/index.html` (keep single-line
+for extractConst). Verify:
+`node --test test/contract/procurement_lifecycle.test.mjs
+test/lifecycle_render.test.mjs worker/test/checkbook_lifecycle.test.mjs`.
+
 ## Checkbook Contracts row identity
 
 Checkbook's Contracts domain returns **multiple rows per `prime_contract_id`** (one Prime Vendor row with amounts, plus Sub Vendor / expense-category slices with $0 on prime fields). Lifecycle assembly collapses rows with `aggregateContractsById` before `classifyStage` — one distinct id = matched; ≥2 distinct ids = ambiguous. Field case: notice `20231222103` / `CT107120248803393`. Do not count raw Contracts rows as separate contracts. Spending rows stay uncollapsed (many payments per contract is normal). Pure lib: `worker/src/lib/checkbook_lifecycle.mjs`.

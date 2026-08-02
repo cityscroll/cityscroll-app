@@ -176,6 +176,71 @@ export async function fetchNoticeRow(env, requestId) {
   }
 }
 
+// City Record procurement notice types that map onto the money-chain stages
+// (solicitation → intermediates → award). Used when gathering PIN-siblings.
+const PROCUREMENT_NOTICE_TYPES = [
+  "Solicitation",
+  "Intent to Negotiate",
+  "Vendor List",
+  "Intent to Award",
+  "Award",
+];
+
+const RELATED_NOTICE_SELECT =
+  "request_id,start_date,agency_name,type_of_notice_description,short_title,pin,contract_amount,vendor_name";
+const RELATED_NOTICE_LIMIT = 25;
+
+/**
+ * Fetch City Record notices that share this notice's PIN so intermediate stages
+ * (Intent to Award, Vendor List, Intent to Negotiate) can reconstruct on the
+ * money chain. Fail-soft: empty array on miss / error (timeline still uses the
+ * focal notice alone).
+ *
+ * @returns {Promise<object[]>}
+ */
+export async function fetchRelatedProcurementNotices(env, noticeRow) {
+  const r = noticeRow || {};
+  const pin = String(r.pin || "").trim();
+  if (!usablePin(pin)) return [];
+  const focalId = r.request_id != null ? String(r.request_id) : null;
+  const typeList = PROCUREMENT_NOTICE_TYPES.map((t) => `'${sq(t)}'`).join(",");
+
+  // D1 mirror first (same path as fetchNoticeRow).
+  if (env?.DB) {
+    try {
+      const rows = await env.DB.prepare(
+        `SELECT request_id, start_date, agency AS agency_name, type_of_notice AS type_of_notice_description,
+                short_title, pin, contract_amount, vendor_name
+           FROM notices
+          WHERE pin = ?
+            AND type_of_notice IN (${PROCUREMENT_NOTICE_TYPES.map(() => "?").join(",")})
+          ORDER BY start_date ASC
+          LIMIT ?`,
+      ).bind(pin, ...PROCUREMENT_NOTICE_TYPES, RELATED_NOTICE_LIMIT).all();
+      const list = (rows && rows.results) || rows || [];
+      if (Array.isArray(list) && list.length) {
+        return list.filter((row) => !focalId || String(row.request_id) !== focalId);
+      }
+    } catch { /* fall through to SODA */ }
+  }
+
+  try {
+    const params = new URLSearchParams({
+      $select: RELATED_NOTICE_SELECT,
+      $where: `pin='${sq(pin)}' AND type_of_notice_description IN (${typeList})`,
+      $order: "start_date",
+      $limit: String(RELATED_NOTICE_LIMIT),
+    });
+    const res = await fetch(`${SODA_NYC}?${params}`);
+    if (!res.ok) return [];
+    const rows = await res.json();
+    if (!Array.isArray(rows)) return [];
+    return rows.filter((row) => !focalId || String(row.request_id) !== focalId);
+  } catch {
+    return [];
+  }
+}
+
 
 // ---------------------------------------------------------------------------
 // OCP Recent Contract Awards (qyyg-4tf5) side-car fetch
@@ -308,16 +373,21 @@ export async function computeLifecycle(env, requestId, noticeRow) {
   const r = noticeRow === undefined ? await fetchNoticeRow(env, requestId) : noticeRow;
   if (!r) return { lifecycle: null, ok: false };
 
-  // Kick off Open Data enrichments in parallel with Checkbook work.
+  // Kick off Open Data enrichments + PIN-sibling City Record notices in parallel
+  // with Checkbook work. Related notices fill intermediate stages (Intent to Award…).
   const csPromise = fetchCurrentSolicitationRows(r);
   const ocpPromise = fetchOcpAwardRows(r);
+  const relatedPromise = fetchRelatedProcurementNotices(env, r);
 
   const { pins, strategy } = pinMatchStrategy(r.pin);
   if (pins.length === 0) {
     // No PIN → not a transient Checkbook failure. Stages are not_applicable; the
     // renderer collapses them into the single class-(b) no-PIN note.
     // Current Solicitations / OCP may still join by request_id.
-    const [currentSolicitation, ocpFetch] = await Promise.all([csPromise, ocpPromise]);
+    // No PIN → no related PIN-siblings (relatedPromise still resolves empty).
+    const [currentSolicitation, ocpFetch, relatedNotices] = await Promise.all([
+      csPromise, ocpPromise, relatedPromise,
+    ]);
     const ocpAward = joinOcpAward(r, ocpFetch.rows, {
       lookupStatus: ocpFetch.ok ? "ok" : "error",
     });
@@ -327,6 +397,7 @@ export async function computeLifecycle(env, requestId, noticeRow) {
         pinStrategy: "none",
         lookupStatus: { pending: "skip", registered: "skip", spending: "skip" },
         currentSolicitation,
+        relatedNotices,
       }),
       ocpAward,
     );
@@ -401,11 +472,14 @@ export async function computeLifecycle(env, requestId, noticeRow) {
     await dualWriteCheckbookSpendingObservations(env, spending.records, observedAt);
   }
 
-  const [currentSolicitation, ocpFetch] = await Promise.all([csPromise, ocpPromise]);
+  const [currentSolicitation, ocpFetch, relatedNotices] = await Promise.all([
+    csPromise, ocpPromise, relatedPromise,
+  ]);
   let lifecycle = assembleLifecycle(r, pending.records, registered.records, spending.records, {
     pinStrategy: pinStrategyUsed,
     lookupStatus,
     currentSolicitation,
+    relatedNotices,
   });
 
   // PASSPort Public edge materialization: fill pending/registered gaps and enrich RFx.

@@ -6568,7 +6568,7 @@ function isContractLifecycleEligible(r){
   if(section==="Agency Rules") return false;
   if(section==="Property Disposition") return false;
   if(section==="Changes in Personnel") return false;
-  return /^(Solicitation|Award|Intent to Award)$/.test(r.type_of_notice_description||"");
+  return /^(Solicitation|Award|Intent to Award|Intent to Negotiate|Vendor List)$/.test(r.type_of_notice_description||"");
 }
 const CHECKBOOK_SEARCH_URL = "https://www.checkbooknyc.com/contract_search";
 const CHECKBOOK_SPENDING_URL = "https://www.checkbooknyc.com/spending_search";
@@ -6587,6 +6587,9 @@ function checkbookSearchUrl(opts){
 
 function lifecycleStageLabel(stage){
   if(stage === "solicitation") return t("lifecycle_stage_solicitation");
+  if(stage === "intent_to_negotiate") return t("lifecycle_stage_intent_to_negotiate");
+  if(stage === "vendor_list") return t("lifecycle_stage_vendor_list");
+  if(stage === "intent_to_award") return t("lifecycle_stage_intent_to_award");
   if(stage === "award") return t("lifecycle_stage_award");
   if(stage === "pending") return t("lifecycle_stage_pending");
   if(stage === "registered") return t("lifecycle_stage_registered");
@@ -6607,7 +6610,7 @@ function lifecycleMoney(v){
 function lifecycleAmount(entry){
   const d = entry.detail;
   if(!d) return null;
-  if(entry.stage === "award") return d.amount != null ? d.amount : null;
+  if(entry.stage === "award" || entry.stage === "intent_to_award") return d.amount != null ? d.amount : null;
   if(entry.stage === "pending") return d.amount != null ? d.amount : null;
   if(entry.stage === "registered") return d.current_amount != null ? d.current_amount : null;
   if(entry.stage === "payment") return d.total_spent != null ? d.total_spent : null;
@@ -6714,7 +6717,9 @@ function lifecycleSourceLink(entry, ctx){
 }
 
 // Stage order for succession: when a later stage is matched, earlier gaps are "passed".
-const LIFECYCLE_STAGE_ORDER = {solicitation:0, award:1, pending:2, registered:3, payment:4};
+// Intermediate City Record stages sit between solicitation and award (PIN-sibling join).
+// Keep single-line: test extractConst("LIFECYCLE_STAGE_ORDER") scrapes this declaration.
+const LIFECYCLE_STAGE_ORDER = {solicitation:0,intent_to_negotiate:1,vendor_list:2,intent_to_award:3,award:4,pending:5,registered:6,payment:7};
 
 function lifecycleHasLaterMatched(timeline, stage){
   const order = LIFECYCLE_STAGE_ORDER[stage];
@@ -7294,7 +7299,7 @@ async function loadLifecycle(r, el, dollarsEl, actionsEl){
   if(dollarsEl && !document.contains(dollarsEl)) return;
   if(!data){
     // No PIN → explicit class-(b) gap on the lifecycle slot for procurement notices.
-    if(el && /^(Solicitation|Award|Intent to Award)$/.test(r.type_of_notice_description||"") && !usablePin(r.pin)){
+    if(el && /^(Solicitation|Award|Intent to Award|Intent to Negotiate|Vendor List)$/.test(r.type_of_notice_description||"") && !usablePin(r.pin)){
       el.innerHTML = `<div class="chain-h">${t("lifecycle_heading")}</div><div class="note">${t("lifecycle_no_pin_note_html")}</div>`;
     }
     // Network / total failure: say nothing — never "Could not reach" as a data gap.
@@ -7308,7 +7313,7 @@ async function loadLifecycle(r, el, dollarsEl, actionsEl){
   if(el && Array.isArray(data.timeline) && data.timeline.length){
     el.innerHTML = lifecycleTimelineHTML(data, r);
   }
-  if(dollarsEl && /^(Award|Intent to Award)$/.test(r.type_of_notice_description||"")){
+  if(dollarsEl && /^(Award|Intent to Award|Intent to Negotiate|Vendor List)$/.test(r.type_of_notice_description||"")){
     dollarsEl.innerHTML = lifecycleDollarsHTML(data, r);
   }
   // Honor #notice/<id>?focus=follow-the-dollars after the panel is in the DOM.
