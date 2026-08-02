@@ -41,6 +41,8 @@ const {
   meetingOutcomeBucket,
   collapseMeetingAgenda,
   meetingOutcomesHTML,
+  matterDetailUrl,
+  nonCouncilWhereHTML,
 } = new Function(
   "t", "fdate", "escUiHtml",
   `
@@ -49,11 +51,14 @@ const {
   ` +
   extractFn("meetingOutcomeBucket") +
   extractFn("meetingMatterShortTitle") +
+  extractFn("matterDetailUrl") +
+  extractFn("nonCouncilBodyLinks") +
+  extractFn("nonCouncilWhereHTML") +
   extractFn("collapseMeetingAgenda") +
   extractFn("meetingVotesHTML") +
   extractFn("isCityCouncilNotice") +
   extractFn("meetingOutcomesHTML") +
-  `return { meetingOutcomeBucket, collapseMeetingAgenda, meetingOutcomesHTML };`,
+  `return { meetingOutcomeBucket, collapseMeetingAgenda, meetingOutcomesHTML, matterDetailUrl, nonCouncilWhereHTML };`,
 )(t, fdate, escUiHtml);
 
 test("outcome bucket maps approve / hold / refer", () => {
@@ -172,4 +177,27 @@ test("multi-matter multi-action meeting collapses and suppresses empty tallies",
   assert.equal((html.match(/example\.test\/m\.pdf/g) || []).length, 1);
   // Empty aye/nay tallies suppressed
   assert.doesNotMatch(html, /aye 0 · nay 0/);
+  // Numeric Legistar MatterIds deep-link via Gateway M=L (not plain text)
+  assert.match(html, /Gateway\.aspx\?M=L&amp;ID=79062|Gateway\.aspx\?M=L&ID=79062/);
+  assert.match(html, /meeting-matter-link/);
+  assert.match(html, /LU 0091-2026/);
+});
+
+test("matterDetailUrl only accepts numeric Legistar MatterIds", () => {
+  assert.match(matterDetailUrl("79062"), /Gateway\.aspx\?M=L&ID=79062/);
+  assert.equal(matterDetailUrl("mat-001"), null);
+  assert.equal(matterDetailUrl(""), null);
+  assert.equal(matterDetailUrl(null), null);
+});
+
+test("non-Council unmatched outcomes render real HTTPS landings", () => {
+  const html = meetingOutcomesHTML(
+    { join: { matched: false } },
+    { agency_name: "Manhattan Borough President", section_name: "Public Hearings and Meetings" },
+  );
+  assert.match(html, /manhattanbp\.nyc\.gov/);
+  assert.match(html, /community-boards/);
+  assert.match(html, /href="https:\/\//);
+  // No longer a bare text-only "where" with zero outbound
+  assert.doesNotMatch(html, /where: t\("meeting_outcomes_non_council_where"\)/);
 });

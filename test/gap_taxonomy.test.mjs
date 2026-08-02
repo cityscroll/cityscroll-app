@@ -103,6 +103,9 @@ const helpers = new Function(
   extractFn("subsidyStageHTML") +
   extractFn("subsidyLifecycleHTML") +
   extractFn("isCityCouncilNotice") +
+  extractFn("matterDetailUrl") +
+  extractFn("nonCouncilBodyLinks") +
+  extractFn("nonCouncilWhereHTML") +
   extractFn("meetingOutcomeBucket") +
   extractFn("meetingMatterShortTitle") +
   extractFn("collapseMeetingAgenda") +
@@ -274,6 +277,9 @@ test("class b: unmatched non-Council hearings use not-published register with BP
   }, { agency_name: "Community Boards", request_id: "20260701001" });
   assert.match(html, CLASS_B_PREFIX);
   assert.match(html, /borough president|community board/i);
+  // Outbound HTTPS landings (not text-only "where")
+  assert.match(html, /href="https:\/\/[^"]+"/);
+  assert.match(html, /community-boards|bronxboropres/i);
   assert.doesNotMatch(html, CLASS_A_PREFIX);
   assert.doesNotMatch(html, /Not yet shown here — Council outcomes/);
 });
@@ -368,7 +374,7 @@ test("meeting-community-board-votes class (b) names borough president and commun
   assert.match(gap.evidence, /40\/40|non-Council/i);
 });
 
-test("unmatched package-documents sub-slot uses not-published register with GetFile pointer", () => {
+test("unmatched package-documents sub-slot uses not-published register with RequestDetail deep link", () => {
   const html = lifecycleTimelineHTML({
     ok: true,
     pin: "81026B0003",
@@ -393,7 +399,9 @@ test("unmatched package-documents sub-slot uses not-published register with GetF
   }, { request_id: "20260707026", pin: "81026B0003" });
   assert.match(html, CLASS_B_PREFIX);
   assert.match(html, /package documents|does not publish/i);
-  assert.match(html, /a856-cityrecord\.nyc\.gov\/Search\/GetFile/);
+  // With request_id known, deep-link the City Record notice — not bare GetFile search
+  assert.match(html, /a856-cityrecord\.nyc\.gov\/RequestDetail\/20260707026/);
+  assert.doesNotMatch(html, /a856-cityrecord\.nyc\.gov\/Search\/GetFile"/);
   assert.doesNotMatch(html, /Not yet shown here — solicitation package/);
 });
 
