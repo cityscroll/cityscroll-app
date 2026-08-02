@@ -88,8 +88,8 @@ meetings / people without merging publisher subjects. Identity reuses
 (`site/data/rules_domain_observations.json`,
 `site/data/meetings_domain_observations.json`; refresh via
 `tools/build_rules_meetings_domain_observations.mjs`) — agency `issued_rule` /
-`hosts_meeting` only; no invented rule→contract joins; people stay empty without
-production `by_person`. Serve: `GET /entity-intelligence` (`demo=1`, `kind`+`name`,
+`hosts_meeting` only; no invented rule→contract joins; people densify from Legistar
+`by_person` on meeting-outcomes (`site/data/people_domain_observations.json`). Serve: `GET /entity-intelligence` (`demo=1`, `kind`+`name`,
 `list=1`). ADR: `docs/adr/cross-domain-object-links.md`. Verify:
 `node --test test/cross_domain_object_links.test.mjs worker/test/entity_intelligence.test.mjs`.
 

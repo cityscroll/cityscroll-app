@@ -124,6 +124,10 @@ const helpers = new Function(
   extractFn("meetingOutcomeBucket") +
   extractFn("meetingMatterShortTitle") +
   extractFn("collapseMeetingAgenda") +
+  extractFn("officialIdFromPerson") +
+  extractFn("officialHref") +
+  extractFn("collectRollCallPeople") +
+  extractFn("meetingRollCallChipHTML") +
   extractFn("meetingVotesHTML") +
   extractFn("meetingOutcomesHTML") +
   `

@@ -405,6 +405,17 @@
   .meeting-actions li{margin:2px 0}
   .meeting-matter-docs{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:4px}
   .meeting-roll-call{margin-top:4px}
+  .meeting-roll-call-person a,.meeting-roll-call a.meeting-official-link{color:var(--oxblood);text-decoration:underline;text-underline-offset:2px}
+  .meeting-roll-call-person a:hover,.meeting-roll-call a.meeting-official-link:hover{color:var(--ink)}
+  /* One-line roll-call chip on the matter card (not only inside collapsed Decision). */
+  .meeting-roll-call-chip{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;margin:6px 0 0;padding:6px 10px;border:1px solid var(--rule);border-radius:6px;background:var(--paper-2,#f7f1e4);font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft)}
+  .meeting-roll-call-chip .meeting-roll-call-chip-lbl{font:700 10px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .meeting-roll-call-chip .meeting-roll-call-names{min-width:0;overflow-wrap:anywhere}
+  .official-vote-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+  .official-vote-list li{padding:10px 12px;border:1px solid var(--rule);border-radius:6px;background:var(--paper-2,#f7f1e4)}
+  .official-vote-file{font:700 13px/1.3 ui-sans-serif,system-ui,sans-serif}
+  .official-vote-title{margin:4px 0 0;font:13px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--ink-soft)}
+  .official-vote-bucket{display:inline-block;margin-top:6px;font:700 11px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--oxblood)}
   /* Council matter phase-group (agenda → matter → decision → record) over server spines[].
      Same lead → stepper → panels shape as rules/land; future chips solid muted for axe. */
   .meeting-matter-phase{margin-top:10px}
@@ -10311,17 +10322,93 @@ function collapseMeetingAgenda(items){
   return { matters: Array.from(byKey.values()), procedural, actionRows };
 }
 
+/** Normalize official id from by_person row (official:7801 or bare 7801). */
+function officialIdFromPerson(p){
+  if(!p || typeof p !== "object") return "";
+  const raw = (p.official && p.official.id) || p.person_id || "";
+  const s = String(raw || "").trim();
+  if(!s) return "";
+  return s.startsWith("official:") ? s.slice("official:".length) : s;
+}
+
+/** Deep link to event-scoped official skim (never invent when id missing). */
+function officialHref(personId, ctx){
+  const id = String(personId || "").trim();
+  if(!id) return "";
+  const q = new URLSearchParams();
+  if(ctx && ctx.eventId) q.set("event", String(ctx.eventId));
+  if(ctx && ctx.noticeId) q.set("notice", String(ctx.noticeId));
+  const qs = q.toString();
+  return `#official/${encodeURIComponent(id)}${qs ? `?${qs}` : ""}`;
+}
+
+/** Collect by_person rows from finalVotes / vote payloads (roll_call only). */
+function collectRollCallPeople(votes){
+  if(!Array.isArray(votes) || !votes.length) return [];
+  const out = [];
+  const seen = new Set();
+  for(const v of votes){
+    if(!v || v.vote_identity === "tally_only") continue;
+    const people = Array.isArray(v.by_person) ? v.by_person : [];
+    for(const p of people){
+      const id = officialIdFromPerson(p);
+      const name = (p.official && p.official.display_name) || p.person_name || "";
+      if(!id || !name) continue;
+      const key = id + "\0" + (p.vote_bucket || p.vote_value || "");
+      if(seen.has(key)) continue;
+      seen.add(key);
+      out.push(p);
+    }
+  }
+  return out;
+}
+
+/**
+ * One-line roll-call chip on the matter card when by_person is non-empty.
+ * Not only buried under collapsed Decision / Earlier phases.
+ */
+function meetingRollCallChipHTML(votes, ctx){
+  const people = collectRollCallPeople(votes);
+  if(!people.length) return "";
+  const n = people.length;
+  // Compact: up to 4 named links, then "+N more"
+  const show = people.slice(0, 4);
+  const more = n - show.length;
+  const names = show.map(p => {
+    const id = officialIdFromPerson(p);
+    const name = (p.official && p.official.display_name) || p.person_name || id;
+    // officialLink is an in-app hash route (#official/…) — own navigation, not EXT_ATTRS.
+    const officialLink = officialHref(id, ctx);
+    const label = escUiHtml(name);
+    return officialLink
+      ? `<a class="meeting-official-link" href="${escUiHtml(officialLink)}" data-official-id="${escUiHtml(id)}" lang="en" dir="ltr">${label}</a>`
+      : `<span lang="en" dir="ltr" data-official-id="${escUiHtml(id)}">${label}</span>`;
+  }).join(", ");
+  const moreHTML = more > 0
+    ? ` <span class="meeting-roll-call-more">${t("meeting_outcomes_roll_call_more",{n:String(more)})}</span>`
+    : "";
+  return `<div class="meeting-roll-call-chip" data-official-votes data-official-count="${n}" data-vote-identity="roll_call">
+    <span class="meeting-roll-call-chip-lbl">${t("meeting_outcomes_roll_call_lbl")}</span>
+    <span class="meeting-roll-call-names">${t("meeting_outcomes_roll_call_chip_html",{
+      n: String(n),
+      names: names + moreHTML
+    })}</span>
+  </div>`;
+}
+
 /** Vote tallies only when aye/nay are non-zero or a person roll call exists.
  * Person-level roll call only when production retained officials. When tallies
  * exist but by_person is empty, use class-(a) not-yet-shown — never imply
  * person-level "who voted" is live when the payload has none. */
-function meetingVotesHTML(votes){
+function meetingVotesHTML(votes, ctx){
   if(!Array.isArray(votes) || !votes.length) return "";
   return votes.map(v => {
     const c = v.counts || {};
     const aye = Number(c.aye) || 0;
     const nay = Number(c.nay) || 0;
-    const people = Array.isArray(v.by_person) ? v.by_person : [];
+    const people = (v && v.vote_identity === "tally_only")
+      ? []
+      : (Array.isArray(v.by_person) ? v.by_person : []);
     const meaningful = people.length > 0 || aye > 0 || nay > 0;
     let html = "";
     if(meaningful){
@@ -10333,10 +10420,16 @@ function meetingVotesHTML(votes){
     }
     if(people.length){
       html += `<div class="lc-pct meeting-roll-call" data-official-votes data-official-count="${people.length}">${t("meeting_outcomes_roll_call_lbl")}: ${people.map(p => {
+        const id = officialIdFromPerson(p);
         const name = (p.official && p.official.display_name) || p.person_name || p.person_id || "—";
         const vote = p.vote_bucket || p.vote_value || "—";
-        return `<span class="meeting-roll-call-person" lang="en" dir="ltr" data-official-id="${escUiHtml((p.official && p.official.id) || "")}">${t("meeting_outcomes_vote_person_html",{
-          name: escUiHtml(name),
+        // In-app #official/… skim — own href expression for link_targets.
+        const officialLink = officialHref(id, ctx);
+        const nameHTML = officialLink
+          ? `<a class="meeting-official-link" href="${escUiHtml(officialLink)}" data-official-id="${escUiHtml(id)}">${escUiHtml(name)}</a>`
+          : escUiHtml(name);
+        return `<span class="meeting-roll-call-person" lang="en" dir="ltr" data-official-id="${escUiHtml(id)}">${t("meeting_outcomes_vote_person_html",{
+          name: nameHTML,
           vote: escUiHtml(String(vote))
         })}</span>`;
       }).join(" · ")}</div>`;
@@ -10390,7 +10483,7 @@ function meetingPhaseGapHTML(phase){
   return "";
 }
 
-function meetingPhasePanelHTML(phase, view){
+function meetingPhasePanelHTML(phase, view, voteCtx){
   if(!phase) return "";
   const open=phase.state==="current"?" open":"";
   const stateWord=phase.state==="current"?t("meeting_phase_current")
@@ -10436,7 +10529,7 @@ function meetingPhasePanelHTML(phase, view){
         : (phase.counts||phase.vote_result
           ? [{result:phase.vote_result,counts:phase.counts,by_person:phase.by_person||[]}]
           : []);
-      const voteHTML=meetingVotesHTML(votes);
+      const voteHTML=meetingVotesHTML(votes, voteCtx);
       if(voteHTML) body+=voteHTML;
     }
     if(!body && phase.gap_class) body=meetingPhaseGapHTML(phase);
@@ -10520,16 +10613,16 @@ function meetingPhaseLeadHTML(view){
 }
 
 /** Phase-grouped matter timeline for one collapsed matter (uses server spines[]). */
-function meetingMatterPhaseHTML(view){
+function meetingMatterPhaseHTML(view, voteCtx){
   if(!view || view.empty) return "";
   const lead=meetingPhaseLeadHTML(view);
   const stepper=meetingPhaseStepperHTML(view);
   const currentPanel=(view.phases||[]).filter(p=>p.state==="current")
-    .map(p=>meetingPhasePanelHTML(p, view)).join("");
+    .map(p=>meetingPhasePanelHTML(p, view, voteCtx)).join("");
   const historyPanels=(view.phases||[]).filter(p=>p.state==="passed")
-    .map(p=>meetingPhasePanelHTML(p, view)).filter(Boolean).join("");
+    .map(p=>meetingPhasePanelHTML(p, view, voteCtx)).filter(Boolean).join("");
   const futurePanels=(view.phases||[]).filter(p=>p.state==="future"&&p.matched)
-    .map(p=>meetingPhasePanelHTML(p, view)).join("");
+    .map(p=>meetingPhasePanelHTML(p, view, voteCtx)).join("");
   const historyWrap=historyPanels
     ? `<details class="lc-phase-history"><summary>${t("meeting_phase_show_history")}</summary>${historyPanels}</details>`
     : "";
@@ -10581,6 +10674,11 @@ function meetingOutcomesHTML(record, notice, phaseTools){
   const collapsed = collapseMeetingAgenda(items);
   const matters = collapsed.matters;
   const usePhase = phaseTools && typeof phaseTools.buildPhaseViewForMatter === "function";
+  // Deep-link context for roll-call names → event-scoped official skim.
+  const voteCtx = {
+    eventId: event.event_id || null,
+    noticeId: record.request_id || (notice && notice.request_id) || null,
+  };
 
   let approved = 0, held = 0, referred = 0, other = 0;
   for(const entry of matters){
@@ -10633,11 +10731,11 @@ function meetingOutcomesHTML(record, notice, phaseTools){
     let phaseHTML = "";
     if(usePhase){
       const view = phaseTools.buildPhaseViewForMatter(entry, record);
-      phaseHTML = meetingMatterPhaseHTML(view);
+      phaseHTML = meetingMatterPhaseHTML(view, voteCtx);
     }
 
     // Detail disclosure keeps full action history + tallies (and is the flat fallback).
-    let voteHTML = meetingVotesHTML(entry.finalVotes);
+    let voteHTML = meetingVotesHTML(entry.finalVotes, voteCtx);
     if(!voteHTML){
       if(finalLabel){
         voteHTML = `<div class="lc-pct">${t("meeting_outcomes_outcome_html",{
@@ -10649,6 +10747,10 @@ function meetingOutcomesHTML(record, notice, phaseTools){
         })}</div>`;
       }
     }
+
+    // Surface roll call on the matter card when by_person is live — not only
+    // inside collapsed Decision under "Earlier phases" when current=Record.
+    const rollCallChip = meetingRollCallChipHTML(entry.finalVotes, voteCtx);
 
     const history = entry.actions.length
       ? `<dt>${t("meeting_outcomes_action_history_lbl")}</dt>
@@ -10674,6 +10776,7 @@ function meetingOutcomesHTML(record, notice, phaseTools){
           ${fileHTML}
           <p class="meeting-title" lang="en" dir="ltr">${escUiHtml(shortTitle)}</p>
           ${subBits.length ? `<p class="meeting-sub" lang="en" dir="ltr">${escUiHtml(subBits.join(" · "))}</p>` : ""}
+          ${rollCallChip}
         </div>
         <span class="meeting-badge meeting-badge--${bucket}">${t(badgeKey)}</span>
       </div>
@@ -10753,6 +10856,135 @@ async function loadMeetingOutcomes(r, el){
    nightly clustered alias table can replace it without changing this page. */
 const agencyHref = (name, tab) => "#agency/" + encodeURIComponent(String(name||"").trim()) + (tab ? "?tab="+tab : "");
 const vendorHref = (name, tab) => "#vendor/" + encodeURIComponent(cleanText(name)) + (tab ? "?tab="+tab : "");
+
+/**
+ * Event-scoped official skim: how this member voted on this hearing's matters.
+ * Cross-event career history waits for multi-event materialization.
+ * Loads meeting-outcomes for noticeId when provided; never invents votes.
+ */
+async function showOfficial(personId, opts){
+  showTab("entity");
+  const box = $("#entityview");
+  delete box.dataset.vendorStem;
+  const id = String(personId || "").replace(/^official:/, "").trim();
+  const noticeId = opts && opts.noticeId ? String(opts.noticeId).trim() : "";
+  const eventId = opts && opts.eventId ? String(opts.eventId).trim() : "";
+  const safeId = escUiHtml(id || "—");
+  if(!id){
+    box.innerHTML = `<div class="empty">${t("official_missing_id_html")} ${routeBackHTML("#money")}</div>`;
+    applyActiveHistoryRouteScroll();
+    return;
+  }
+  box.innerHTML = `<div class="empty"><span class="loading"></span> ${t("official_loading")}</div>`;
+
+  let record = null;
+  let loadError = false;
+  if(noticeId){
+    try{
+      const resp = await workerFetch("/meeting-outcomes?id=" + encodeURIComponent(noticeId), null, 8000);
+      if(resp && resp.ok){
+        const data = await resp.json();
+        if(data && data.ok !== false && data.record) record = data.record;
+      } else {
+        loadError = true;
+      }
+    }catch(e){
+      loadError = true;
+    }
+  }
+  if(!document.contains(box)) return;
+
+  // Walk agenda matters for this person's by_person rows only.
+  const votes = [];
+  let displayName = "";
+  if(record && Array.isArray(record.agenda_items)){
+    for(const item of record.agenda_items){
+      for(const matter of (item.matters || [])){
+        for(const vote of (matter.votes || [])){
+          if(vote && vote.vote_identity === "tally_only") continue;
+          for(const p of (vote.by_person || [])){
+            const pid = officialIdFromPerson(p);
+            if(pid !== id) continue;
+            if(!displayName){
+              displayName = (p.official && p.official.display_name) || p.person_name || "";
+            }
+            votes.push({
+              matter_id: matter.matter_id || null,
+              matter_file: matter.matter_file || null,
+              matter_title: matter.title || null,
+              matter_url: matter.matter_url || matterDetailUrl(matter.matter_id) || "",
+              vote_value: p.vote_value || p.vote || null,
+              vote_bucket: p.vote_bucket || null,
+              result: vote.result || null,
+            });
+          }
+        }
+      }
+    }
+  }
+
+  const name = displayName || id;
+  const event = (record && record.council_event) || {};
+  const resolvedEventId = eventId || event.event_id || "";
+  const backHref = noticeId ? `#notice/${encodeURIComponent(noticeId)}` : "#money";
+  const noticeLink = noticeId
+    ? `<a class="view" href="#notice/${encodeURIComponent(noticeId)}">${t("official_open_hearing")}</a>`
+    : "";
+  const eventLine = resolvedEventId || (event.title || event.body_name)
+    ? `<p class="ei-lead" lang="en" dir="ltr">${t("official_event_line_html",{
+        event: escUiHtml(event.title || event.body_name || t("official_event_fallback")),
+        id: escUiHtml(String(resolvedEventId || "—")),
+        date: event.start_time ? fdate(String(event.start_time).slice(0,10)) : (event.event_date ? fdate(String(event.event_date).slice(0,10)) : "—")
+      })}</p>`
+    : (noticeId
+      ? `<p class="ei-lead">${t("official_event_scoped_note")}</p>`
+      : `<p class="ei-lead">${t("official_need_notice_html")}</p>`);
+
+  let body = "";
+  if(!noticeId){
+    body = `<div class="note">${t("official_need_notice_html")}</div>`;
+  } else if(loadError && !record){
+    body = `<div class="note">${t("official_load_error_html")}</div>`;
+  } else if(!votes.length){
+    body = `<div class="note" data-person-votes-gap="empty">${t("official_no_votes_html",{
+      name: escUiHtml(name)
+    })}</div>`;
+  } else {
+    const items = votes.map(v => {
+      const file = v.matter_file || v.matter_id || "—";
+      const fileHTML = v.matter_url
+        ? `<a class="official-vote-file" href="${escUiHtml(v.matter_url)}" ${EXT_ATTRS} lang="en" dir="ltr">${escUiHtml(file)}${extSR()}</a>`
+        : `<span class="official-vote-file" lang="en" dir="ltr">${escUiHtml(file)}</span>`;
+      const title = v.matter_title
+        ? `<p class="official-vote-title" lang="en" dir="ltr">${escUiHtml(v.matter_title)}</p>`
+        : "";
+      const bucket = v.vote_bucket || v.vote_value || "—";
+      return `<li data-matter-id="${escUiHtml(v.matter_id || "")}">
+        ${fileHTML}
+        ${title}
+        <span class="official-vote-bucket" lang="en" dir="ltr">${escUiHtml(String(bucket))}${v.vote_value && v.vote_bucket && v.vote_value !== v.vote_bucket ? ` · ${escUiHtml(String(v.vote_value))}` : ""}</span>
+      </li>`;
+    }).join("");
+    body = `<ol class="official-vote-list" data-official-vote-count="${votes.length}">${items}</ol>`;
+  }
+
+  box.innerHTML = `<div style="max-width:880px;margin:0 auto">
+    <p style="margin:4px 0 12px">${routeBackHTML(backHref)}</p>
+    <div class="panel route-item" tabindex="-1" style="padding:22px 24px" id="official-skim" data-official-id="${safeId}" data-event-id="${escUiHtml(String(resolvedEventId || ""))}" data-notice-id="${escUiHtml(noticeId || "")}">
+      <div class="ftype" style="margin-bottom:6px">${t("official_skim_kicker")}</div>
+      <h2 class="rolename" lang="en" dir="ltr">${escUiHtml(name)}</h2>
+      ${eventLine}
+      <div class="chain-h">${t("official_votes_heading")}</div>
+      ${body}
+      <div class="actions" style="margin-top:16px;display:flex;flex-wrap:wrap;gap:10px">
+        ${noticeLink}
+        <a class="view" href="${agencyHref("City Council")}">${t("official_city_council_profile")}</a>
+      </div>
+      <p class="aidprov" style="margin-top:14px">${t("official_provenance_html")}</p>
+    </div>
+  </div>`;
+  applyActiveHistoryRouteScroll();
+}
 const escUiHtml = (s) => String(s == null ? "" : s).replace(/[<>&'"]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;", "'": "&#39;", "\"": "&quot;" }[c]));
 // Escape the label once: cleanText now decodes entities to plain Unicode, so an unescaped
 // pivot label would re-open injection for any notice field carrying &lt;…&gt;.
@@ -12777,6 +13009,14 @@ function applyHash(){
   const splitEntityTab = rest => { const qi = rest.indexOf("?"); return qi < 0 ? [decodeURIComponent(rest), null] : [decodeURIComponent(rest.slice(0,qi)), new URLSearchParams(rest.slice(qi+1)).get("tab")]; };
   if(raw.startsWith("vendor/")){ const [nm, tab] = splitEntityTab(raw.slice(7)); showVendor(nm, tab); return true; }
   if(raw.startsWith("agency/")){ const [nm, tab] = splitEntityTab(raw.slice(7)); showAgency(nm, tab); return true; }
+  if(raw.startsWith("official/")){
+    const rest = raw.slice("official/".length);
+    const qi = rest.indexOf("?");
+    const id = decodeURIComponent(qi < 0 ? rest : rest.slice(0, qi));
+    const q = new URLSearchParams(qi < 0 ? "" : rest.slice(qi + 1));
+    showOfficial(id, { noticeId: q.get("notice"), eventId: q.get("event") });
+    return true;
+  }
   if(raw.startsWith("matter/")){ showMatter(decodeURIComponent(raw.slice(7))); return true; }
   if(raw.startsWith("investigation/shared/")){ showSharedInv(decodeURIComponent(raw.slice(21))); return true; }
   if(raw.startsWith("task/") || raw === "task"){
