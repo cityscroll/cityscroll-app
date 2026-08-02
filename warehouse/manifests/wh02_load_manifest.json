@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "phase": "WH-02",
+  "title": "First bulk pack into the warehouse (CPU-capped, incremental)",
+  "updated_at": "2026-08-02T03:16:30Z",
+  "strategy": "smallest_or_most_valuable_first_sequential",
+  "first_pick": "ocp-recent-contract-awards",
+  "first_pick_rationale": "Named on the WH-02 card, already WH-01 fixture-proven, ~53k rows \u2014 real bulk volume without City Record's ~1.1M row surface. Money-spine value high.",
+  "cpu_discipline": {
+    "runner": "warehouse/scripts/ingest.py --bulk --ack-large",
+    "single_job_lock": true,
+    "headroom_gate": true,
+    "taskpolicy_or_nice_wrap": true,
+    "duckdb_threads": 1,
+    "sequential": true,
+    "no_parallel_downloads": true
+  },
+  "git_policy": {
+    "commit_raw_bulk": false,
+    "commit_parquet_bulk": false,
+    "commit_duckdb_catalog": false,
+    "commit_proof_receipts": true,
+    "commit_manifest_checksums": true,
+    "commit_small_samples": false,
+    "note": "Bulk lives under warehouse/raw|parquet|duckdb (gitignored) or CITYSCROLL_WAREHOUSE_ROOT; bulk_sample.csv is local-only"
+  },
+  "headroom_evidence_line": "headroom OK (post-pack; see proof receipt)",
+  "loaded": [
+    {
+      "dataset_id": "ocp-recent-contract-awards",
+      "socrata_dataset_id": "qyyg-4tf5",
+      "table_name": "ocp_recent_contract_awards",
+      "snapshot_date": "2026-08-02",
+      "observed_at": "2026-08-02T03:11:59Z",
+      "mode": "soda_bulk",
+      "row_count": 53216,
+      "raw_bytes": 36544334,
+      "raw_sha256": "142d94b67d37575afcaa68a183c1715800a54290d04a98c23c4b717181097c8b",
+      "parquet_bytes": 5854115,
+      "parquet_row_count": 53216,
+      "headroom": {
+        "note": "Headroom stayed OK for download, convert, and post-ingest (see manifest headroom_evidence_line).",
+        "post_ingest": {
+          "status": "ok"
+        },
+        "pre_convert": {
+          "status": "ok"
+        },
+        "status": "ok"
+      },
+      "proof_receipt": "warehouse/receipts/proof/ocp-recent-contract-awards_bulk_latest.json",
+      "verify_sql": "warehouse/sql/examples/ocp_bulk_verify.sql",
+      "row_count_source": "DuckDB COUNT(*) after bulk convert of Socrata qyyg-4tf5 rows.csv"
+    }
+  ],
+  "remaining_primary_queue": [
+    "zap-projects",
+    "zap-bbl",
+    "city-record"
+  ],
+  "optional_later": [
+    "doing-business-entities"
+  ],
+  "next_dataset": "zap-projects",
+  "next_dataset_notes": "zap-projects (hgx4-8ukb, ~33k rows) for WH-03 prewarm \u2014 only when headroom stays green",
+  "how_to_reproduce": [
+    "python3 \"$HEADROOM_BIN\"  # estate headroom.py; must not be CONSTRAINED",
+    "python3 -m venv warehouse/.venv && warehouse/.venv/bin/pip install -r warehouse/requirements.txt",
+    "warehouse/.venv/bin/python warehouse/scripts/ingest.py --dataset ocp-recent-contract-awards --bulk --ack-large --write-sample 25",
+    "warehouse/.venv/bin/python warehouse/scripts/query.py --sql-file warehouse/sql/examples/ocp_bulk_verify.sql",
+    "warehouse/.venv/bin/python warehouse/scripts/write_load_manifest.py"
+  ],
+  "data_provenance": {
+    "source": "NYC Open Data Socrata dataset qyyg-4tf5 (Recent Contract Awards)",
+    "export_url": "https://data.cityofnewyork.us/api/views/qyyg-4tf5/rows.csv?accessType=DOWNLOAD",
+    "row_count_basis": "DuckDB COUNT(*) on warehouse parquet after bulk convert (measured 2026-08-02)",
+    "raw_sha256_basis": "sha256 of full rows.csv download"
+  }
+}

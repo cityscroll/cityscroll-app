@@ -151,8 +151,8 @@ def enforce_row_cap(limit: int, defaults: dict, *, ack_large: bool) -> int:
     if limit > hard and not ack_large:
         raise SystemExit(
             f"--limit {limit} exceeds hard cap {hard}. "
-            "WH-01 is scaffold-only; full bulk is WH-02 with CPU caps. "
-            "Pass --ack-large only when deliberately running a larger (still single) batch."
+            "For full Socrata export use --bulk --ack-large (WH-02, still single-job + headroom). "
+            "Or pass --ack-large for a larger SODA $limit batch."
         )
     if limit > require_ack and not ack_large:
         raise SystemExit(
@@ -160,3 +160,15 @@ def enforce_row_cap(limit: int, defaults: dict, *, ack_large: bool) -> int:
             "(still one job, still taskpolicy-wrapped)."
         )
     return limit
+
+
+def require_bulk_ack(*, bulk: bool, ack_large: bool) -> None:
+    """Full rows.csv export is opt-in and always needs an explicit large-job ack."""
+    if not bulk:
+        return
+    if not ack_large:
+        raise SystemExit(
+            "--bulk requires --ack-large (full rows.csv export; still one job, headroom-gated, "
+            "taskpolicy-wrapped convert)."
+        )
+
