@@ -510,15 +510,109 @@ export function mergeBblsOntoLandObservations(observations, bblRows = []) {
 }
 
 /**
+ * Flatten a rules:materialized:v2 record (or City Record / domain-snapshot row)
+ * into the fields observationFromRulesRow expects. Does not invent joins.
+ * @param {object} record
+ */
+export function flattenRulesMaterializationRecord(record) {
+  if (!record || typeof record !== "object") return null;
+  // Nested city_record / nyc_rules from rules:materialized:v2
+  const cr = record.city_record && typeof record.city_record === "object" ? record.city_record : null;
+  const nr = record.nyc_rules && typeof record.nyc_rules === "object" ? record.nyc_rules : null;
+  const requestId = clean(
+    record.request_id
+      || cr?.request_id
+      || record.id
+      || record.rules_id
+      || nr?.guid
+      || nr?.url,
+  );
+  const agencyName = clean(
+    record.agency_name
+      || record.agency
+      || cr?.agency
+      || cr?.agency_name
+      || nr?.agency_name
+      || nr?.agency_full
+      || nr?.agency_abbr,
+  );
+  if (!requestId || !agencyName) return null;
+  return {
+    request_id: requestId,
+    agency_name: agencyName,
+    short_title: clean(record.short_title || record.title || cr?.title || nr?.title) || null,
+    start_date: clean(
+      record.start_date
+        || record.notice_date
+        || cr?.notice_date
+        || nr?.pub_date
+        || record.pub_date,
+    ) || null,
+    comment_close: clean(record.comment_close || nr?.comment_by_date) || null,
+    source_system: clean(record.source_system) || "city_record",
+  };
+}
+
+/**
+ * Flatten a meeting-outcomes:materialized:v2 record (or hearing / domain-snapshot
+ * row) into the fields observationFromMeetingsRow expects.
+ * @param {object} record
+ */
+export function flattenMeetingsMaterializationRecord(record) {
+  if (!record || typeof record !== "object") return null;
+  const notice = record.notice && typeof record.notice === "object" ? record.notice : null;
+  const council = record.council_event && typeof record.council_event === "object"
+    ? record.council_event
+    : null;
+  const requestId = clean(record.request_id || notice?.request_id || record.id);
+  const eventId = clean(
+    record.event_id
+      || record.legistar_event_id
+      || council?.event_id
+      || council?.EventId,
+  );
+  const agencyName = clean(
+    record.agency_name
+      || record.agency
+      || notice?.agency
+      || notice?.agency_name
+      || council?.body_name,
+  );
+  if ((!requestId && !eventId) || !agencyName) return null;
+  return {
+    request_id: requestId || null,
+    event_id: eventId || null,
+    agency_name: agencyName,
+    short_title: clean(
+      record.short_title
+        || record.title
+        || notice?.title
+        || council?.title
+        || record.event_name,
+    ) || null,
+    event_date: clean(
+      record.event_date
+        || notice?.event_date
+        || council?.event_date
+        || council?.start_time,
+    ) || null,
+    start_date: clean(record.start_date || notice?.start_date) || null,
+    source_system: clean(record.source_system) || "city_record",
+  };
+}
+
+/**
  * Shape a rules-domain observation (Agency Rules notice or NYC Rules item).
+ * Accepts raw City Record rows, domain-snapshot rows, or rules:materialized:v2 records.
  * @param {object} row
  * @param {{ sourceSystem?: string }} [opts]
  */
 export function observationFromRulesRow(row, opts = {}) {
   if (!row || typeof row !== "object") return null;
-  const sourceSystem = clean(opts.sourceSystem || row.source_system || "city_record");
-  const requestId = clean(row.request_id || row.id || row.rules_id);
-  const agencyName = clean(row.agency_name);
+  const flat = flattenRulesMaterializationRecord(row) || row;
+  const sourceSystem = clean(opts.sourceSystem || flat.source_system || row.source_system || "city_record");
+  const requestId = clean(flat.request_id || flat.id || flat.rules_id);
+  const agencyName = clean(flat.agency_name);
   if (!requestId || !agencyName) return null;
 
   return {
@@ -529,8 +623,8 @@ export function observationFromRulesRow(row, opts = {}) {
     native_key: requestId,
     request_id: requestId,
     agency_name: agencyName,
-    label: clean(row.short_title || row.title) || requestId,
-    when: clean(row.start_date || row.pub_date || row.comment_close) || null,
+    label: clean(flat.short_title || flat.title || row.short_title || row.title) || requestId,
+    when: clean(flat.start_date || flat.pub_date || flat.comment_close) || null,
     subject_ref: formatSubjectRef("notice", requestId)
       || formatSubjectRef("rules", requestId),
   };
@@ -538,15 +632,17 @@ export function observationFromRulesRow(row, opts = {}) {
 
 /**
  * Shape a meetings-domain observation (hearing notice or Legistar event).
+ * Accepts raw City Record rows, domain-snapshot rows, or meeting-outcomes records.
  * @param {object} row
  * @param {{ sourceSystem?: string }} [opts]
  */
 export function observationFromMeetingsRow(row, opts = {}) {
   if (!row || typeof row !== "object") return null;
-  const sourceSystem = clean(opts.sourceSystem || row.source_system || "city_record");
-  const requestId = clean(row.request_id || row.id);
-  const eventId = clean(row.event_id || row.legistar_event_id);
-  const agencyName = clean(row.agency_name);
+  const flat = flattenMeetingsMaterializationRecord(row) || row;
+  const sourceSystem = clean(opts.sourceSystem || flat.source_system || row.source_system || "city_record");
+  const requestId = clean(flat.request_id || flat.id);
+  const eventId = clean(flat.event_id || flat.legistar_event_id);
+  const agencyName = clean(flat.agency_name);
   const nativeKey = requestId || eventId;
   if (!nativeKey || !agencyName) return null;
 
@@ -563,10 +659,77 @@ export function observationFromMeetingsRow(row, opts = {}) {
     request_id: requestId || null,
     event_id: eventId || null,
     agency_name: agencyName,
-    label: clean(row.short_title || row.title || row.event_name) || nativeKey,
-    when: clean(row.event_date || row.start_date) || null,
+    label: clean(flat.short_title || flat.title || flat.event_name || row.short_title || row.title) || nativeKey,
+    when: clean(flat.event_date || flat.start_date) || null,
     subject_ref,
   };
+}
+
+/**
+ * Emit rules observations from a rules:materialized:v2 view, a domain snapshot
+ * ({ rows }), or a bare array of City Record / record objects.
+ * @param {object|object[]} viewOrRows
+ * @param {{ sourceSystem?: string, limit?: number }} [opts]
+ * @returns {object[]}
+ */
+export function observationsFromRulesMaterialization(viewOrRows, opts = {}) {
+  const limit = Number.isFinite(opts.limit) ? Math.max(0, opts.limit) : 500;
+  const rows = Array.isArray(viewOrRows)
+    ? viewOrRows
+    : Array.isArray(viewOrRows?.rules)
+      ? viewOrRows.rules
+      : Array.isArray(viewOrRows?.rows)
+        ? viewOrRows.rows
+        : Array.isArray(viewOrRows?.records)
+          ? viewOrRows.records
+          : [];
+  const sourceSystem = clean(
+    opts.sourceSystem
+      || viewOrRows?.source?.system
+      || viewOrRows?.source_system
+      || "city_record",
+  );
+  const out = [];
+  for (const row of rows) {
+    if (out.length >= limit) break;
+    const obs = observationFromRulesRow(row, { sourceSystem });
+    if (obs) out.push(obs);
+  }
+  return out;
+}
+
+/**
+ * Emit meetings observations from a meeting-outcomes:materialized:v2 view, a
+ * hearings materialization, a domain snapshot ({ rows }), or a bare array.
+ * Does not invent person-level votes.
+ * @param {object|object[]} viewOrRows
+ * @param {{ sourceSystem?: string, limit?: number }} [opts]
+ * @returns {object[]}
+ */
+export function observationsFromMeetingsMaterialization(viewOrRows, opts = {}) {
+  const limit = Number.isFinite(opts.limit) ? Math.max(0, opts.limit) : 500;
+  const rows = Array.isArray(viewOrRows)
+    ? viewOrRows
+    : Array.isArray(viewOrRows?.records)
+      ? viewOrRows.records
+      : Array.isArray(viewOrRows?.rows)
+        ? viewOrRows.rows
+        : Array.isArray(viewOrRows?.hearings)
+          ? viewOrRows.hearings
+          : [];
+  const sourceSystem = clean(
+    opts.sourceSystem
+      || viewOrRows?.source?.system
+      || viewOrRows?.source_system
+      || "city_record",
+  );
+  const out = [];
+  for (const row of rows) {
+    if (out.length >= limit) break;
+    const obs = observationFromMeetingsRow(row, { sourceSystem });
+    if (obs) out.push(obs);
+  }
+  return out;
 }
 
 /**

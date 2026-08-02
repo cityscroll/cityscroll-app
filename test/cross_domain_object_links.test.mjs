@@ -21,6 +21,8 @@ import {
   observationFromLandRow,
   observationFromRulesRow,
   observationFromMeetingsRow,
+  observationsFromRulesMaterialization,
+  observationsFromMeetingsMaterialization,
   linkObservation,
   joinKeyLinksForObservation,
   buildEntityIntelligence,
@@ -263,10 +265,28 @@ describe("entity intelligence view — Parks multi-domain", () => {
     assert.ok(observations.length > 10, "expected warehouse + seed observations");
     const payments = observations.filter((o) => o.object_kind === "payment");
     assert.ok(payments.length >= 1, "expected checkbook payment fixtures");
+    const rulesObs = observations.filter((o) => o.domain === "rules");
+    const meetingsObs = observations.filter((o) => o.domain === "meetings");
+    // Live domain snapshots replace seed-thin 3+4 rows
+    assert.ok(rulesObs.length >= 20, `expected dense live rules observations, got ${rulesObs.length}`);
+    assert.ok(meetingsObs.length >= 20, `expected dense live meetings observations, got ${meetingsObs.length}`);
+    assert.ok(rulesObs.every((o) => o.source_record_id && o.agency_name));
+    assert.ok(meetingsObs.every((o) => o.source_record_id && o.agency_name));
+    // People stay empty without production by_person rows
+    assert.equal(observations.filter((o) => o.domain === "people").length, 0);
+
     const doc = buildEntityIntelligenceDoc(ROOT);
     assert.ok(doc.multi_domain_count >= 1);
     assert.equal(doc.verified_demo?.ref, "agency:id:parks-and-recreation");
     assert.ok(doc.verified_demo.domains_matched >= 3);
+    assert.ok(
+      (doc.provenance?.sources || []).some((s) => String(s).includes("rules_domain_observations")),
+      "provenance lists rules domain snapshot",
+    );
+    assert.ok(
+      (doc.provenance?.sources || []).some((s) => String(s).includes("meetings_domain_observations")),
+      "provenance lists meetings domain snapshot",
+    );
 
     const hit = lookupEntityIntelligence(doc, {
       kind: "agency",
@@ -275,6 +295,18 @@ describe("entity intelligence view — Parks multi-domain", () => {
     assert.equal(hit.ok, true);
     assert.equal(hit.root.ref, "agency:id:parks-and-recreation");
     assert.ok(hit.domains.money.count + hit.domains.land.count >= 2);
+    assert.equal(hit.domains.rules.status, "matched");
+    assert.equal(hit.domains.meetings.status, "matched");
+    assert.ok(hit.domains.rules.count >= 1);
+    assert.ok(hit.domains.meetings.count >= 1);
+    assert.ok(
+      (hit.links || []).some((l) => l.type === "issued_rule" && l.provenance?.source_record_id),
+      "Parks issued_rule edges carry provenance",
+    );
+    assert.ok(
+      (hit.links || []).some((l) => l.type === "hosts_meeting" && l.provenance?.source_record_id),
+      "Parks hosts_meeting edges carry provenance",
+    );
     // Join-key edges present on multi-domain demo when fixtures carry PIN/BBL
     const joinTypes = new Set([
       "sited_on_parcel",
@@ -295,6 +327,37 @@ describe("entity intelligence view — Parks multi-domain", () => {
     assert.equal(miss.ok, true);
     assert.equal(miss.serve, "materialization_miss");
     assert.equal(miss.metrics.total_linked_objects, 0);
+  });
+
+  it("extracts observations from rules + meeting-outcomes materialization shapes", () => {
+    const rulesView = JSON.parse(
+      readFileSync(
+        join(ROOT, "worker/test/fixtures/entity-intelligence/rules_materialized_v2.json"),
+        "utf8",
+      ),
+    );
+    const meetingsView = JSON.parse(
+      readFileSync(
+        join(ROOT, "worker/test/fixtures/entity-intelligence/meeting_outcomes_materialized_v2.json"),
+        "utf8",
+      ),
+    );
+    const rulesObs = observationsFromRulesMaterialization(rulesView);
+    assert.ok(rulesObs.length >= 2);
+    assert.ok(rulesObs.every((o) => o.domain === "rules" && o.agency_name && o.source_record_id));
+    // Nested city_record.agency field is accepted
+    assert.ok(rulesObs.some((o) => /parks/i.test(o.agency_name)));
+
+    const meetingsObs = observationsFromMeetingsMaterialization(meetingsView);
+    assert.ok(meetingsObs.length >= 2);
+    assert.ok(meetingsObs.every((o) => o.domain === "meetings" && o.agency_name));
+    const council = meetingsObs.find((o) => o.request_id === "20260706036");
+    assert.ok(council);
+    assert.equal(council.event_id, "22526");
+    // Nested notice.agency + council_event accepted with provenance-ready keys
+    const { links } = linkObservation(council);
+    assert.ok(links.some((l) => l.type === "hosts_meeting"));
+    assert.ok(links.every((l) => l.provenance?.source_system && l.provenance?.source_record_id));
   });
 
   it("warehouse entity-intelligence index powers root lookup without re-scan", () => {
@@ -345,7 +408,19 @@ describe("entity intelligence view — Parks multi-domain", () => {
     const parks = doc.by_ref["agency:id:parks-and-recreation"];
     assert.equal(parks.domains.money.status, "matched");
     assert.equal(parks.domains.land.status, "matched");
+    assert.equal(parks.domains.rules.status, "matched");
+    assert.equal(parks.domains.meetings.status, "matched");
     assert.ok(parks.links[0].provenance.source_record_id);
+
+    // Domain snapshots densify beyond the old 3 rules + 4 meetings seeds
+    const rulesSnap = join(ROOT, "site/data/rules_domain_observations.json");
+    const meetingsSnap = join(ROOT, "site/data/meetings_domain_observations.json");
+    assert.ok(existsSync(rulesSnap), "rules domain snapshot committed");
+    assert.ok(existsSync(meetingsSnap), "meetings domain snapshot committed");
+    const rDoc = JSON.parse(readFileSync(rulesSnap, "utf8"));
+    const mDoc = JSON.parse(readFileSync(meetingsSnap, "utf8"));
+    assert.ok((rDoc.rows || []).length >= 20);
+    assert.ok((mDoc.rows || []).length >= 20);
   });
 });
 

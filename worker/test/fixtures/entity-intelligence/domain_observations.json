@@ -1,59 +1,7 @@
 {
-  "description": "Cross-domain seed observations for entity intelligence materialization. Money/land also come from warehouse fixtures; these rows fill rules + meetings with the same agency surfaces so multi-domain links are real, not invented.",
-  "rules": [
-    {
-      "request_id": "20260715001",
-      "agency_name": "Department of Parks and Recreation",
-      "short_title": "Amendment of Parks rules governing special event permits",
-      "start_date": "2026-07-15",
-      "source_system": "city_record"
-    },
-    {
-      "request_id": "20260714029",
-      "agency_name": "Department of Transportation",
-      "short_title": "Proposed rule: street design and curb management",
-      "start_date": "2026-07-14",
-      "source_system": "city_record"
-    },
-    {
-      "request_id": "20260601010",
-      "agency_name": "Citywide Administrative Services",
-      "short_title": "Proposed amendment: citywide procurement procedures",
-      "start_date": "2026-06-01",
-      "source_system": "city_record"
-    }
-  ],
-  "meetings": [
-    {
-      "request_id": "20260720055",
-      "agency_name": "Department of Parks and Recreation",
-      "short_title": "Parks public hearing on concession renewals",
-      "event_date": "2026-08-12",
-      "source_system": "city_record"
-    },
-    {
-      "request_id": "20260706036",
-      "agency_name": "City Council",
-      "short_title": "City Council hearing (demo meeting-outcomes path)",
-      "event_date": "2026-07-06",
-      "event_id": "22526",
-      "source_system": "city_record"
-    },
-    {
-      "request_id": "20260718022",
-      "agency_name": "Department of Transportation",
-      "short_title": "DOT hearing on street improvement project",
-      "event_date": "2026-08-05",
-      "source_system": "city_record"
-    },
-    {
-      "request_id": "20260722011",
-      "agency_name": "Housing Preservation and Development",
-      "short_title": "HPD public hearing on disposition",
-      "event_date": "2026-08-20",
-      "source_system": "city_record"
-    }
-  ],
+  "description": "Cross-domain seed observations for entity intelligence. Rules and meetings are densified from live City Record domain snapshots (site/data/*_domain_observations.json); seed rules/meetings below are fallback only when those snapshots are absent. People stays empty until production by_person retention > 0. Property rows anchor multi-domain demos.",
+  "rules": [],
+  "meetings": [],
   "people": [],
   "money": [],
   "land": [],
