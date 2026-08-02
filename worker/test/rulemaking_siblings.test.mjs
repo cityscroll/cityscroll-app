@@ -12,7 +12,9 @@ import {
   classifyRulemakingRole,
   extractRulemakingRefTokens,
   groupRulemakingSiblings,
+  isExactRulemakingRef,
   matchRulemakingSiblings,
+  measureRulemakingSiblingFalseMerge,
   rulemakingSubjectRef,
   rulemakingTitleCore,
 } from "../src/lib/rules.mjs";
@@ -78,12 +80,36 @@ test("rulemakingTitleCore strips DCWP NOH/NOA and rules-relating house style", (
   assert.ok(!/\brelating\b/i.test(a));
 });
 
-test("extractRulemakingRefTokens finds RCNY and section cites", () => {
+test("extractRulemakingRefTokens finds specific RCNY section cites", () => {
   const cites = extractRulemakingRefTokens(
     "Amends 28 RCNY Chapter 12 and Section 12-01 regarding detectors",
   );
-  assert.ok(cites.some((t) => /28rcny/i.test(t) || /28\s*rcny/i.test(t)));
-  assert.ok(cites.some((t) => /chapter\s*12/i.test(t)));
+  assert.ok(cites.some((t) => /28rcny/i.test(t) && /section\s*12-01/i.test(t)));
+  assert.ok(cites.some((t) => t === "section 12-01"));
+  assert.ok(cites.some((t) => isExactRulemakingRef(t)), `expected exact compound in ${cites.join("|")}`);
+  assert.equal(isExactRulemakingRef("section 12-01"), false, "bare section is not exact alone");
+});
+
+test("extractRulemakingRefTokens drops bare title N, non-numeric sections, chapter-alone", () => {
+  const boilerplate = extractRulemakingRefTokens(
+    "Pursuant to Title 1 of the Rules of the City of New York (RCNY) "
+    + "and Title 28 of the RCNY, these sections authorize the agency "
+    + "under Chapter 11 without amending a numbered section.",
+  );
+  assert.equal(boilerplate.length, 0, `expected no generic tokens, got ${JSON.stringify(boilerplate)}`);
+
+  const pluralSections = extractRulemakingRefTokens(
+    "This proposed rule would amend sections 4-01 and 4-08 of Chapter 4 of Title 34 of the Rules of the City of New York",
+  );
+  assert.ok(pluralSections.some((t) => t === "section 4-01"), pluralSections.join("|"));
+  assert.ok(pluralSections.some((t) => t === "section 4-08"), pluralSections.join("|"));
+  // Title-scoped compounds are exact.
+  assert.ok(
+    pluralSections.some((t) => isExactRulemakingRef(t) && /34rcny/.test(t) && /4-01/.test(t)),
+    pluralSections.join("|"),
+  );
+  assert.ok(!pluralSections.some((t) => /^sections?$/i.test(t) || /^title\s+\d+$/i.test(t)));
+  assert.ok(!pluralSections.some((t) => /^chapter\s+\d+$/i.test(t)));
 });
 
 test("classifyRulemakingRole maps proposal / hearing / adoption", () => {
@@ -268,6 +294,247 @@ test("matchRulemakingSiblings: outside lifecycle window does not stitch on title
   });
   const result = matchRulemakingSiblings(early, late);
   assert.equal(result.matched, false);
+});
+
+test("matchRulemakingSiblings: bare title 1 RCNY boilerplate does not merge", () => {
+  // DOB field case: elevators vs energy code both cite Title 1 of the RCNY.
+  const elevators = ruleNotice({
+    request_id: "DOB-ELEV",
+    agency: "Department of Buildings",
+    agency_abbr: "DOB",
+    title: "Proposed Rule Amendment of Rules Relating to Elevators, Escalators, Personnel Hoists and Moving Walks",
+    notice_date: "2026-02-25T00:00:00.000",
+    body:
+      "Chapter 11 of Title 1 of the Rules of the City of New York. "
+      + "These sections of Title 1 RCNY have not been updated in decades.",
+  });
+  const energy = ruleNotice({
+    request_id: "DOB-ENERGY",
+    agency: "Department of Buildings",
+    agency_abbr: "DOB",
+    title: "Amendments Related to the NYC Energy Conservation Code",
+    notice_date: "2026-07-23T00:00:00.000",
+    body:
+      "amend Sections RCNY 5000-01 and 101-07 of Title 1 Of the Rules of the City of New York "
+      + "to conform to changes in the New York City Energy Conservation Code.",
+  });
+  const capa = ruleNotice({
+    request_id: "DOB-CAPA",
+    agency: "Department of Buildings",
+    agency_abbr: "DOB",
+    title: "DOB Regulatory Agenda Fiscal Year 2027",
+    notice_date: "2026-04-01T00:00:00.000",
+    body: "Pursuant to Title 1 of the RCNY the Department publishes its annual regulatory agenda.",
+  });
+  assert.equal(matchRulemakingSiblings(elevators, energy).matched, false);
+  assert.equal(matchRulemakingSiblings(elevators, capa).matched, false);
+  assert.equal(matchRulemakingSiblings(energy, capa).matched, false);
+
+  const groups = groupRulemakingSiblings([elevators, energy, capa]);
+  const multi = groups.filter((g) => g.join.notice_count > 1);
+  assert.equal(multi.length, 0, "Title 1 boilerplate must not union-find chain-merge DOB matters");
+});
+
+test("matchRulemakingSiblings: specific section cite + title-core merges; exact section alone does not", () => {
+  const proposal = ruleNotice({
+    request_id: "HPD-GAS-P",
+    agency: "Housing Preservation and Development",
+    agency_abbr: "HPD",
+    title: "Proposed Rule — Natural Gas Detectors in Dwelling Units",
+    notice_date: "2026-03-01T00:00:00.000",
+    body: "Amends 28 RCNY Chapter 12 Section 12-01 regarding natural gas detectors.",
+  });
+  const adoption = ruleNotice({
+    request_id: "HPD-GAS-A",
+    agency: "Housing Preservation and Development",
+    agency_abbr: "HPD",
+    title: "Notice of Adoption — Natural Gas Detectors in Dwelling Units",
+    notice_date: "2026-07-01T00:00:00.000",
+    stage: "adopted",
+    body: "Adopts amendments to 28 RCNY Chapter 12 Section 12-01 on natural gas detectors.",
+  });
+  const gas = matchRulemakingSiblings(proposal, adoption);
+  assert.equal(gas.matched, true);
+  assert.equal(gas.confidence, "high");
+  assert.ok(
+    gas.method === "shared_reference" || gas.method === "title_agency_window",
+    `expected shared_reference or title path, got ${gas.method}`,
+  );
+
+  // Same exact 34 RCNY §4-01, unrelated topics — must NOT high-confidence stitch.
+  const fhv = ruleNotice({
+    request_id: "DOT-FHV",
+    agency: "Department of Transportation",
+    agency_abbr: "DOT",
+    title: "FHV and Taxi Parking at Commercial Meters",
+    notice_date: "2026-07-14T00:00:00.000",
+    body: "Amends sections 4-01 and 4-08 of Chapter 4 of Title 34 of the RCNY for FHV parking.",
+  });
+  const racks = ruleNotice({
+    request_id: "DOT-BIKE",
+    agency: "Department of Transportation",
+    agency_abbr: "DOT",
+    title: "City-Owned Bicycle Racks",
+    notice_date: "2026-07-06T00:00:00.000",
+    body: "Amends sections 4-01 and 4-12 of Chapter 4 of Title 34 of the RCNY for bicycle racks.",
+  });
+  const cross = matchRulemakingSiblings(fhv, racks);
+  assert.equal(cross.matched, false, "exact section without title-core must not merge");
+});
+
+test("field case 20260714029: FHV commercial-meter parking does not absorb bicycle racks / truck routes / agenda", () => {
+  // Documented demo rules-lifecycle-spine. Live over-stitch produced
+  // rulemaking:dot:ref:sections with bicycle racks, truck routes, FY agenda.
+  const fhv = ruleNotice({
+    request_id: "20260714029",
+    agency: "Department of Transportation",
+    agency_abbr: "DOT",
+    title: "Notice of Public Hearing and Opportunity to Comment-  FHV and Taxi Parking at Commercial Meters and Commercial Vehicle Markings",
+    notice_date: "2026-07-22T00:00:00.000",
+    stage: "hearing",
+    body:
+      "This proposed rule would amend sections 4-01 and 4-08 of Chapter 4 of Title 34 "
+      + "of the Rules of the City of New York (\"RCNY\") to update provisions relating to "
+      + "commercial vehicle markings and to allow for-hire vehicles to park in commercial parking meter areas.",
+  });
+  // Genuine sibling — same commercial-meter / FHV parking rulemaking.
+  const fhvSibling = ruleNotice({
+    request_id: "20260714030",
+    agency: "Department of Transportation",
+    agency_abbr: "DOT",
+    title: "Notice of Proposed Rule — FHV and Taxi Parking at Commercial Meters and Commercial Vehicle Markings",
+    notice_date: "2026-07-14T00:00:00.000",
+    stage: "comment-open",
+    body:
+      "DOT proposes to amend sections 4-01 and 4-08 of Chapter 4 of Title 34 of the RCNY "
+      + "regarding FHV and taxi parking at commercial meters.",
+  });
+  const bikeProposal = ruleNotice({
+    request_id: "20260317026",
+    agency: "Department of Transportation",
+    agency_abbr: "DOT",
+    title: "DOT Proposed Rules Relating to City-Owned Bicycle Racks",
+    notice_date: "2026-03-25T00:00:00.000",
+    body:
+      "The proposed rule would amend sections of Chapter 4 of Title 34 of the Rules of the City of New York "
+      + "regarding city-owned bicycle racks.",
+  });
+  const bikeAdoption = ruleNotice({
+    request_id: "20260706041",
+    agency: "Department of Transportation",
+    agency_abbr: "DOT",
+    title: "Notice of Adoption: City-Owned Bicycle Racks",
+    notice_date: "2026-07-14T00:00:00.000",
+    stage: "adopted",
+    body:
+      "DOT adopts rules relating to city-owned bicycle racks under Title 34 of the RCNY. "
+      + "These sections govern placement of city-owned bicycle racks.",
+  });
+  const trucks = ruleNotice({
+    request_id: "20260417003",
+    agency: "Department of Transportation",
+    agency_abbr: "DOT",
+    title: "Proposed Amendment of Citywide Truck Routes",
+    notice_date: "2026-05-04T00:00:00.000",
+    body:
+      "Amendments to Title 34 of the Rules of the City of New York regarding citywide truck routes. "
+      + "These sections of the RCNY establish truck route designations.",
+  });
+  const agenda = ruleNotice({
+    request_id: "20260401099",
+    agency: "Department of Transportation",
+    agency_abbr: "DOT",
+    title: "DOT Regulatory Agenda for Fiscal Year 2027",
+    notice_date: "2026-04-15T00:00:00.000",
+    body:
+      "Pursuant to Title 34 of the Rules of the City of New York the Department publishes its regulatory agenda. "
+      + "These sections outline planned rulemakings for the fiscal year.",
+  });
+
+  assert.equal(matchRulemakingSiblings(fhv, fhvSibling).matched, true, "genuine FHV siblings must still stitch");
+  assert.equal(matchRulemakingSiblings(fhv, bikeProposal).matched, false);
+  assert.equal(matchRulemakingSiblings(fhv, bikeAdoption).matched, false);
+  assert.equal(matchRulemakingSiblings(fhv, trucks).matched, false);
+  assert.equal(matchRulemakingSiblings(fhv, agenda).matched, false);
+
+  const stamped = attachRulemakingSiblings([
+    fhv, fhvSibling, bikeProposal, bikeAdoption, trucks, agenda,
+  ]);
+  const byId = Object.fromEntries(stamped.map((r) => [r.request_id, r]));
+  const fhvSubject = byId["20260714029"].rulemaking_subject_ref;
+  assert.ok(fhvSubject);
+  assert.equal(byId["20260714030"].rulemaking_subject_ref, fhvSubject);
+  // Must not be the generic ref:sections subject from the live bug.
+  assert.ok(!/ref:sections\b/i.test(fhvSubject), fhvSubject);
+  for (const id of ["20260317026", "20260706041", "20260417003", "20260401099"]) {
+    assert.notEqual(
+      byId[id].rulemaking_subject_ref,
+      fhvSubject,
+      `${id} must not share FHV commercial-meter subject`,
+    );
+  }
+  const fhvRelated = new Set(byId["20260714029"].related_notices.map((n) => n.request_id));
+  assert.deepEqual([...fhvRelated].sort(), ["20260714030"]);
+  assert.ok(!fhvRelated.has("20260317026"));
+  assert.ok(!fhvRelated.has("20260706041"));
+  assert.ok(!fhvRelated.has("20260417003"));
+  assert.ok(!fhvRelated.has("20260401099"));
+});
+
+test("measureRulemakingSiblingFalseMerge flags shared_reference low-cohesion groups", () => {
+  // Simulate the old failure mode: unrelated titles forced into one group.
+  // The proxy must catch this even when method is shared_reference.
+  const a = ruleNotice({
+    request_id: "FM1",
+    agency: "Department of Transportation",
+    agency_abbr: "DOT",
+    title: "FHV and Taxi Parking at Commercial Meters",
+    notice_date: "2026-07-01T00:00:00.000",
+  });
+  const b = ruleNotice({
+    request_id: "FM2",
+    agency: "Department of Transportation",
+    agency_abbr: "DOT",
+    title: "City-Owned Bicycle Racks",
+    notice_date: "2026-07-02T00:00:00.000",
+  });
+  const c = ruleNotice({
+    request_id: "FM3",
+    agency: "Department of Transportation",
+    agency_abbr: "DOT",
+    title: "Citywide Truck Routes Amendment",
+    notice_date: "2026-07-03T00:00:00.000",
+  });
+  // Genuine multi group should not flag.
+  const g1 = ruleNotice({
+    request_id: "OK1",
+    title: "Proposed Rule — Natural Gas Detectors in Dwelling Units",
+    notice_date: "2026-03-01T00:00:00.000",
+  });
+  const g2 = ruleNotice({
+    request_id: "OK2",
+    title: "Notice of Adoption — Natural Gas Detectors in Dwelling Units",
+    notice_date: "2026-07-01T00:00:00.000",
+  });
+  const groups = [
+    {
+      subject_ref: "rulemaking:dot:ref:sections",
+      notices: [a, b, c],
+      join: { method: "shared_reference", notice_count: 3 },
+    },
+    {
+      subject_ref: "rulemaking:hpd:gas-detectors",
+      notices: [g1, g2],
+      join: { method: "title_agency_window", notice_count: 2 },
+    },
+  ];
+  const m = measureRulemakingSiblingFalseMerge(groups);
+  assert.equal(m.multi_groups, 2);
+  assert.equal(m.flagged_groups, 1);
+  assert.ok(m.false_merge_rate > 0);
+  const bad = m.audits.find((x) => x.subject_ref === "rulemaking:dot:ref:sections");
+  assert.equal(bad.flagged_false_merge_risk, true);
+  assert.ok(bad.flag_reasons.includes("low_title_core_overlap"));
 });
 
 // ---------------------------------------------------------------------------
