@@ -36,3 +36,14 @@ test("solicitation rail hydrates from lifecycle evidence and renders a copyable 
   assert.doesNotMatch(html, /href="\$\{PASSPORT\}"/);
   assert.doesNotMatch(html, /official_application_url:kind==="solicitation"\?PASSPORT/);
 });
+
+test("hearing action matter passes venue, participation, and full body for step extraction", () => {
+  assert.match(html, /venue:hearing&&hearing\.venue\|\|null/);
+  assert.match(html, /participation:hearing&&hearing\.participation\|\|null/);
+  assert.match(html, /additional_description_1,r\.additional_description_2,r\.additional_description_3/);
+  assert.match(html, /printout_1,r\.printout_2,r\.printout_3/);
+  assert.match(html, /guide\.system==="hearing_extracted"/);
+  assert.match(html, /hearing_guide_heading/);
+  assert.match(html, /hearing_guide_attend_step/);
+  assert.match(html, /hearing_guide_testimony/);
+});

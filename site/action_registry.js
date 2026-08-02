@@ -221,6 +221,162 @@
     };
   }
 
+  function uniqueStrings(values) {
+    const out = [];
+    const seen = new Set();
+    for (const raw of values || []) {
+      const value = String(raw || "").trim();
+      if (!value) continue;
+      const key = value.toLowerCase();
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push(value);
+    }
+    return out;
+  }
+
+  function extractEmails(text) {
+    return uniqueStrings(Array.from(String(text || "").matchAll(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi))
+      .map((match) => match[0]));
+  }
+
+  function extractPhones(text) {
+    return uniqueStrings(Array.from(String(text || "").matchAll(/(?:\+?1[-.\s]?)?\(?\d{3}\)?[-.\s]\d{3}[-.\s]\d{4}/g))
+      .map((match) => match[0]));
+  }
+
+  // Prefer the email the notice names for written testimony / comment submission.
+  function extractTestimonyEmail(body) {
+    const text = String(body || "");
+    if (!text) return null;
+    const patterns = [
+      /written\s+testimony[\s\S]{0,160}?\b(?:electronically\s+)?(?:to|at)\s+([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})\b/i,
+      /(?:submit|send)\s+(?:all\s+)?(?:written\s+)?(?:testimony|comments?)[\s\S]{0,120}?\b(?:to|at)\s+([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})\b/i,
+      /([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})\b[\s\S]{0,100}?written\s+testimony/i,
+    ];
+    for (const pattern of patterns) {
+      const match = pattern.exec(text);
+      if (match) return match[1];
+    }
+    return null;
+  }
+
+  // Honest testimony deadline: explicit clock if published, else "until hearing ends" language.
+  function extractTestimonyUntil(body) {
+    const text = String(body || "");
+    if (!text) return null;
+    if (/written\s+testimony[\s\S]{0,200}?(?:up\s+until|until)\s+the\s+close\s+of\s+the\s+(?:public\s+)?hearing/i.test(text)
+      || /(?:up\s+until|until)\s+the\s+close\s+of\s+the\s+(?:public\s+)?hearing[\s\S]{0,120}?written\s+testimony/i.test(text)) {
+      return {kind: "hearing_close", label: null};
+    }
+    const longDate = "(?:(?:Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday),?\\s+)?(?:January|February|March|April|May|June|July|August|September|October|November|December)\\s+\\d{1,2}(?:st|nd|rd|th)?,?\\s+\\d{4}";
+    const time = "\\d{1,2}(?::\\d{2})?\\s*(?:a\\.?m\\.?|p\\.?m\\.?)";
+    const byDate = new RegExp(
+      `written\\s+testimony[\\s\\S]{0,160}?\\b(?:received\\s+by|by|before)\\s+(${time})\\s+on\\s+(${longDate})`,
+      "i",
+    ).exec(text);
+    if (byDate) return {kind: "datetime", label: `${byDate[1]} on ${byDate[2]}`.replace(/\s+/g, " ").trim()};
+    return null;
+  }
+
+  function isJoinPlatformUrl(url) {
+    return /\b(?:zoom|webex|teams|meet\.google)\b/i.test(String(url || ""));
+  }
+
+  function venueFromMatter(matter) {
+    const venue = matter && matter.venue ? matter.venue : {};
+    const address = String(venue.address || "").trim()
+      || uniqueStrings([
+        matter && matter.street_address_1,
+        matter && matter.street_address_2,
+        matter && matter.city,
+        matter && matter.state,
+        matter && matter.zip_code,
+      ]).join(", ")
+      || null;
+    const building = String(venue.building || (matter && matter.building_name) || "").trim() || null;
+    const mode = String(venue.mode || "").trim() || null;
+    return {address: address || null, building, mode};
+  }
+
+  // Hearing handoff: extract attend / testify / contact steps from City Record fields + body.
+  // Never invent online join when absent — but do not punt when venue or testimony IS published.
+  function hearingHandoff(matter) {
+    const body = String((matter && matter.notice_text) || "");
+    const venue = venueFromMatter(matter || {});
+    const participation = (matter && matter.participation) || {};
+    const linkUrl = httpsUrl(matter && matter.participation_url)
+      || httpsUrl(((participation.links || [])[0] || {}).url);
+    const joinKind = linkUrl ? (isJoinPlatformUrl(linkUrl) ? "join" : "link") : null;
+    const testimonyEmail = extractTestimonyEmail(body);
+    const testimonyUntil = extractTestimonyUntil(body);
+    const bodyEmails = extractEmails(body);
+    const bodyPhones = extractPhones(body);
+    const emails = uniqueStrings([
+      matter && matter.email,
+      ...(participation.emails || []),
+      ...bodyEmails,
+    ]);
+    const phones = uniqueStrings([
+      matter && matter.contact_phone,
+      ...(participation.phones || []),
+      ...bodyPhones,
+    ]);
+    const contactName = String((matter && matter.contact_name) || "").trim() || null;
+    // Prefer a non-testimony email for the general contact line when both exist.
+    const contactEmail = uniqueStrings(emails.filter((email) => {
+      if (!testimonyEmail) return true;
+      return email.toLowerCase() !== String(testimonyEmail).toLowerCase();
+    }))[0] || testimonyEmail || null;
+    const contactPhone = phones[0] || null;
+    const hasFields = !!(
+      linkUrl
+      || venue.address
+      || venue.building
+      || testimonyEmail
+      || contactName
+      || contactEmail
+      || contactPhone
+      || (matter && matter.deadline)
+      || (matter && matter.event_date)
+    );
+
+    let labelKey = "next_action_participation_missing";
+    let label = "No online participation link is published in this notice.";
+    if (joinKind === "join") {
+      labelKey = "join_online";
+      label = "Join online";
+    } else if (joinKind === "link") {
+      labelKey = "participation_link";
+      label = "Participation link";
+    } else if (hasFields) {
+      labelKey = "next_action_hearing_guide";
+      label = "Follow the participation steps below";
+    }
+
+    return {
+      system: "hearing_extracted",
+      mode: "notice_fields",
+      destination: linkUrl,
+      label_key: labelKey,
+      label,
+      join_kind: joinKind,
+      participation_url: linkUrl,
+      venue_address: venue.address,
+      venue_building: venue.building,
+      venue_mode: venue.mode,
+      event_date: (matter && (matter.deadline || matter.event_date)) || null,
+      testimony_email: testimonyEmail,
+      testimony_until: testimonyUntil,
+      contact_name: contactName,
+      email: contactEmail,
+      contact_phone: contactPhone,
+      emails,
+      phones,
+      has_fields: hasFields,
+    };
+  }
+
   // A solicitation handoff is an evidence record, not a guessed deep link. Matched PASSPort
   // RFx rows carry rfp_id → the same process_manage_extranet deep link PASSPort Public uses.
   // Without rfp_id the handoff stays a public browse search recipe (EPIN/name guide). Agency
@@ -397,13 +553,31 @@
         : [unavailable("comment", "next_action_comment_closed", "Public comment is not open now.", deadline), notice(), watch];
     } else if (kind === "hearing") {
       const past = stage === "past" || isPast(deadline, today);
-      actions = past
-        ? [unavailable("attend", "next_action_event_passed", "This event has passed.", deadline), notice(), watch]
-        : [matter.participation_url
-          ? official("attend", "join_online", "Join online", matter.participation_url, deadline)
-          : unavailable("attend", "next_action_participation_missing", "No online participation link is published in this notice.", deadline)];
-      if (!past && deadline) actions.push(calendar);
-      if (!past) actions.push(watch);
+      if (past) {
+        actions = [unavailable("attend", "next_action_event_passed", "This event has passed.", deadline), notice(), watch];
+      } else {
+        const handoff = hearingHandoff(matter);
+        if (handoff.destination) {
+          // Join platforms stay "Join online"; agenda/materials pages keep an honest label.
+          actions = [official("attend", handoff.label_key, handoff.label, handoff.destination, deadline, {guide: handoff})];
+        } else if (handoff.has_fields) {
+          // Venue / testimony / contact from the ingested body — never punt when those exist.
+          actions = [validateAction({
+            type: "bid_checklist",
+            label_key: handoff.label_key || "next_action_hearing_guide",
+            label: handoff.label || "Follow the participation steps below",
+            delivery: "local",
+            destination: null,
+            deadline,
+            confirmation_required: false,
+            guide: handoff,
+          })];
+        } else {
+          actions = [unavailable("attend", "next_action_participation_missing", "No online participation link is published in this notice.", deadline)];
+        }
+        if (deadline) actions.push(calendar);
+        actions.push(watch);
+      }
     } else if (kind === "zoning") {
       const active = !stage || ["active", "public-review", "hearing"].includes(stage);
       actions = active
@@ -448,6 +622,7 @@
     examApplyUrl,
     compileActionRail,
     solicitationHandoff,
+    hearingHandoff,
     validateAction,
     outcomeEvent,
   };
