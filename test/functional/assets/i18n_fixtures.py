@@ -186,6 +186,25 @@ PROPERTY_ROWS = [
      "type_of_notice_description": "Notice", "short_title": "OWNERS ARE WANTED FOR PROPERTY IN THE CUSTODY OF THE PROPERTY CLERK",
      "additional_description_1": "Property in the custody of the property clerk division."},
 ]
+# Production-stable Agency Rules notice used by the rules-lifecycle-spine demo.
+# Matches the live City Record id that joins to NYC Rules commercial-meter parking.
+RULES_LIFECYCLE_NOTICE = {
+    "request_id": "20260714029",
+    "start_date": "2026-07-22T00:00:00.000",
+    "agency_name": "Transportation",
+    "type_of_notice_description": "Public Hearings",
+    "section_name": "Agency Rules",
+    "short_title": (
+        "Notice of Public Hearing and Opportunity to Comment-  FHV and Taxi Parking "
+        "at Commercial Meters and Commercial Vehicle Markings"
+    ),
+    "event_date": "2026-09-01T10:00:00.000",
+    "additional_description_1": (
+        "The Department of Transportation proposes to amend rules governing FHV and "
+        "taxi parking at commercial meters. The public may submit comments through NYC Rules."
+    ),
+}
+
 RULES_ROWS = [
     {"request_id": "20260701009", "start_date": _iso(-1), "agency_name": "Buildings",
      "type_of_notice_description": "Notice of Adoption",
@@ -200,7 +219,90 @@ RULES_ROWS = [
          "The hearing will be held at 255 Greenwich Street in Manhattan. "
          "IN THE MATTER OF proposed curb management rules in the Borough of the Bronx."
      )},
+    dict(RULES_LIFECYCLE_NOTICE),
 ]
+
+# Precomputed /rules read model for the lifecycle-spine notice (proposal → hearing → comment).
+RULES_VIEW = {
+    "schema_version": 2,
+    "generated_at": _iso(0),
+    "source": {
+        "primary": {
+            "name": "City Record Online",
+            "dataset": "dg92-zbpx",
+            "url": "https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx",
+        },
+        "enrichment": {
+            "name": "NYC Rules",
+            "feed": "https://rules.cityofnewyork.us/feed/",
+            "status": "ok",
+        },
+    },
+    "counts": {
+        "total": 1,
+        "matched": 1,
+        "unmatched_notices": 0,
+        "unmatched_rules": 0,
+        "by_stage": {"comment-open": 1},
+    },
+    "rules": [{
+        "request_id": RULES_LIFECYCLE_NOTICE["request_id"],
+        "agency": RULES_LIFECYCLE_NOTICE["agency_name"],
+        "title": RULES_LIFECYCLE_NOTICE["short_title"],
+        "notice_date": RULES_LIFECYCLE_NOTICE["start_date"],
+        "stage": "comment-open",
+        "city_record": {
+            "request_id": RULES_LIFECYCLE_NOTICE["request_id"],
+            "agency": RULES_LIFECYCLE_NOTICE["agency_name"],
+            "title": RULES_LIFECYCLE_NOTICE["short_title"],
+            "notice_date": RULES_LIFECYCLE_NOTICE["start_date"],
+            "notice_type": RULES_LIFECYCLE_NOTICE["type_of_notice_description"],
+        },
+        "nyc_rules": {
+            "url": "https://rules.cityofnewyork.us/rule/fhv-and-taxi-parking-at-commercial-meters-and-commercial-vehicle-markings/",
+            "comment_url": "https://rules.cityofnewyork.us/rule/fhv-and-taxi-parking-at-commercial-meters-and-commercial-vehicle-markings/",
+            "pub_date": "2026-07-23T16:18:07.000Z",
+            "title": "FHV and Taxi Parking at Commercial Meters and Commercial Vehicle Markings",
+            "agency_abbr": "DOT",
+            "agency_name": "DOT",
+            "adoption_published_at": None,
+            "effective_date": None,
+            "comment_by_date": "2026-09-01",
+            "hearing_date": "2026-09-01",
+            "comment_count": 0,
+            "summary": "Amend parking rules for for-hire vehicles at commercial meters.",
+        },
+        "events": [
+            {
+                "event_type": "proposal_published",
+                "valid_at": "2026-07-23T16:18:07.000Z",
+                "valid_at_precision": "instant",
+                "valid_timezone": "UTC",
+                "status": "occurred",
+            },
+            {
+                "event_type": "public_hearing",
+                "valid_at": "2026-09-01",
+                "valid_at_precision": "day",
+                "valid_timezone": "America/New_York",
+                "status": "scheduled",
+            },
+            {
+                "event_type": "comment_close",
+                "valid_at": "2026-09-01",
+                "valid_at_precision": "day",
+                "valid_timezone": "America/New_York",
+                "status": "scheduled",
+                "alert": {"eligible": True, "trigger_field": "valid_at", "lead_days": [14, 3, 1, 0]},
+            },
+        ],
+        "join": {
+            "matched": True,
+            "confidence": "high",
+            "basis": "agency + date + title overlap",
+        },
+    }],
+}
 MEETINGS_ROWS = [dict(HEARING_ROW)]
 
 EDITION_RANGE = [{"a": "2003-09-17T00:00:00.000", "b": _iso(0)}]
@@ -319,7 +421,7 @@ def _soda_response(url):
     if "request_id='" in where:
         m = re.search(r"request_id='([^']*)'", where)
         rid = m.group(1) if m else None
-        for row in (RFP_OPEN, RFP_OPEN_2, AWARD_ROW, NOTICE_PERMALINK_ROW):
+        for row in (RFP_OPEN, RFP_OPEN_2, AWARD_ROW, NOTICE_PERMALINK_ROW, RULES_LIFECYCLE_NOTICE):
             if row.get("request_id") == rid:
                 return [row]
         return []
@@ -376,9 +478,13 @@ def install_routes(page):
     # ...and /externalaward (awards published elsewhere) — a fuzzy ABO response so the agency
     # profile's external-awards panel renders and stays guard-covered.
     page.route("https://api.cityscroll.org/externalaward*", fixed(EXTERNAL_AWARD))
+    # ...and /rules (Agency Rules lifecycle spine). Without a matched record the notice
+    # detail fail-softs and never mounts #nrules — the public demo needs a joined spine.
+    page.route("https://api.cityscroll.org/rules*", fixed(RULES_VIEW))
     page.route("https://crol-worker.crol-worker.workers.dev/**", lambda r: r.abort())
     page.route("https://crol-worker.crol-worker.workers.dev/priorcycle/**", fixed(PRIOR_CYCLE_MATCHES))
     page.route("https://crol-worker.crol-worker.workers.dev/externalaward*", fixed(EXTERNAL_AWARD))
+    page.route("https://crol-worker.crol-worker.workers.dev/rules*", fixed(RULES_VIEW))
     page.route("https://challenges.cloudflare.com/**", lambda r: r.abort())
     page.route("https://static.cloudflareinsights.com/**", lambda r: r.abort())
     page.route("https://unpkg.com/**", lambda r: r.abort())

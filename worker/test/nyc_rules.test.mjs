@@ -10,6 +10,7 @@ import {
   RULES_RSS_UA,
   RULES_RSS_URL,
   refreshRules,
+  rulesViewNeedsRefresh,
 } from "../src/rules.mjs";
 import {
   agencyAbbr,
@@ -437,6 +438,21 @@ test("buildRuleView falls back to City Record only when RSS is unreachable", asy
 // KV round-trip + serve
 // ---------------------------------------------------------------------------
 
+test("rulesViewNeedsRefresh retries young views whose RSS enrichment is still stale", () => {
+  const nowMs = Date.parse("2026-08-01T18:00:00.000Z");
+  assert.equal(rulesViewNeedsRefresh(null, nowMs), true);
+  assert.equal(rulesViewNeedsRefresh({ generated_at: "2026-08-01T17:00:00.000Z", source: { enrichment: { status: "ok" } } }, nowMs), false);
+  assert.equal(rulesViewNeedsRefresh({
+    generated_at: "2026-08-01T17:00:00.000Z",
+    source: { enrichment: { status: "stale", error: "NYC Rules RSS 403" } },
+  }, nowMs), true);
+  // Older than MAX_AGE_MS (~36h) even when enrichment is ok.
+  assert.equal(rulesViewNeedsRefresh({
+    generated_at: "2026-07-30T17:00:00.000Z",
+    source: { enrichment: { status: "ok" } },
+  }, nowMs), true);
+});
+
 test("refresh writes the view to KV and the read route serves it", async () => {
   const rss = rssFeed([rssItem({
     title: "Test Rule", agency_name: "DOT", comment_by_date: "20260901",
@@ -448,8 +464,9 @@ test("refresh writes the view to KV and the read route serves it", async () => {
   })];
   const kv = memoryKV();
 
-  // handleRules live-refreshes when generated_at is older than MAX_AGE_MS (~36h).
-  // Use wall-clock "now" so the route serves the fixture write, not a live upstream pull.
+  // handleRules live-refreshes when generated_at is older than MAX_AGE_MS (~36h)
+  // or enrichment is still stale. Use wall-clock "now" and an ok enrichment write
+  // so the route serves the fixture write, not a live upstream pull.
   const result = await refreshRules({ ALERT_STATE: kv }, multiSourceFetch(rss, crRows), new Date());
   assert.equal(result.status, "success");
   assert.ok(kv.values.has(RULES_KV_KEY));
@@ -463,6 +480,7 @@ test("refresh writes the view to KV and the read route serves it", async () => {
   assert.equal(response.headers.get("cache-control"), "public, max-age=1800");
   const body = await response.json();
   assert.ok(body.rules.length > 0);
+  assert.equal(body.source.enrichment.status, "ok");
 });
 
 test("refreshRules returns skipped when no KV binding is configured", async () => {
