@@ -60,11 +60,10 @@ def main(argv: list[str] | None = None) -> int:
                 "parquet_row_count": pq.get("row_count"),
                 "headroom": r.get("headroom"),
                 "proof_receipt": f"warehouse/receipts/proof/{ds_id}_bulk_latest.json",
-                "verify_sql": (
-                    "warehouse/sql/examples/ocp_bulk_verify.sql"
-                    if ds_id == "ocp-recent-contract-awards"
-                    else None
-                ),
+                "verify_sql": {
+                    "ocp-recent-contract-awards": "warehouse/sql/examples/ocp_bulk_verify.sql",
+                    "zap-projects": "warehouse/sql/examples/zap_bulk_verify.sql",
+                }.get(ds_id),
             }
         )
 
@@ -108,16 +107,23 @@ def main(argv: list[str] | None = None) -> int:
         "optional_later": optional,
         "next_dataset": remaining[0] if remaining else None,
         "next_dataset_notes": (
-            "zap-projects (hgx4-8ukb, ~33k rows) for WH-03 prewarm — only when headroom stays green"
-            if remaining and remaining[0] == "zap-projects"
-            else pack.get("deferred_notes")
+            "zap-bbl (2iga-a6mk) BBL companion after zap-projects — only when headroom stays green"
+            if remaining and remaining[0] == "zap-bbl"
+            else (
+                "city-record (dg92-zbpx, largest) last — Mini overnight preferred"
+                if remaining and remaining[0] == "city-record"
+                else pack.get("deferred_notes")
+            )
         ),
         "how_to_reproduce": [
             "python3 \"$HEADROOM_BIN\"  # estate headroom.py; must not be CONSTRAINED",
             "python3 -m venv warehouse/.venv && warehouse/.venv/bin/pip install -r warehouse/requirements.txt",
             "warehouse/.venv/bin/python warehouse/scripts/ingest.py --dataset ocp-recent-contract-awards --bulk --ack-large --write-sample 25",
             "warehouse/.venv/bin/python warehouse/scripts/query.py --sql-file warehouse/sql/examples/ocp_bulk_verify.sql",
+            "warehouse/.venv/bin/python warehouse/scripts/ingest.py --dataset zap-projects --bulk --ack-large --write-sample 25",
+            "warehouse/.venv/bin/python warehouse/scripts/query.py --sql-file warehouse/sql/examples/zap_bulk_verify.sql",
             "warehouse/.venv/bin/python warehouse/scripts/write_load_manifest.py",
+            "node tools/build_zap_warehouse_lookup.mjs --fixture --bench",
         ],
     }
 

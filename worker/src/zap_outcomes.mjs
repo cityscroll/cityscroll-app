@@ -17,6 +17,7 @@ import {
   outcomeIsFilled,
 } from "./lib/zap_outcomes.mjs";
 import { extractUlurpKeys } from "./lib/ulurp_recommendations_join.mjs";
+import { lookupZapFromWarehouseMaterialization } from "./lib/zap_warehouse_lookup.mjs";
 // Do not static-import admin.mjs here: it pulls alerts.mjs → @jimdc/sendcap, and
 // test/land_event_spine.test.mjs imports buildZapOutcomeRecord from this module
 // during site unit tests (before worker npm ci). Auth is loaded only on the admin path.
@@ -333,14 +334,33 @@ async function fetchJson(url, timeoutMs = 12000) {
   }
 }
 
-async function fetchOpenDataRow(projectId) {
-  const where = `project_id='${String(projectId).replace(/'/g, "''")}'`;
+/**
+ * ZAP Open Data project row: warehouse materialization first (WH-05), then live SODA.
+ * Returns the SODA-shaped row (always includes project_id). Attaches lookup_path when known.
+ */
+export async function fetchOpenDataRow(projectId) {
+  const id = String(projectId || "").trim();
+  // WH-05: instant hit from warehouse materialization index (no network).
+  const wh = lookupZapFromWarehouseMaterialization(id);
+  if (wh.hit && wh.row) {
+    return { ...wh.row, lookup_path: "warehouse" };
+  }
+
+  // Live SODA fallback when the materialization lacks this project_id.
+  const where = `project_id='${id.replace(/'/g, "''")}'`;
   const url =
     `${SODA}/hgx4-8ukb.json?$select=project_id,project_name,public_status,project_status,`
     + `approval_date,completed_date,ulurp_numbers,borough,community_district,actions,current_milestone,current_milestone_date`
     + `&$where=${encodeURIComponent(where)}&$limit=1`;
-  const rows = await fetchJson(url);
-  return Array.isArray(rows) && rows[0] ? rows[0] : { project_id: projectId };
+  try {
+    const rows = await fetchJson(url);
+    if (Array.isArray(rows) && rows[0]) {
+      return { ...rows[0], lookup_path: "soda" };
+    }
+  } catch {
+    // Fail-soft: empty shell so spine/join can still proceed with project_id.
+  }
+  return { project_id: id, lookup_path: "soda" };
 }
 
 async function fetchCityRecordCandidates(openData, projectName) {

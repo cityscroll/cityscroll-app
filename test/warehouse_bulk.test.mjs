@@ -53,11 +53,17 @@ describe("WH-02 registry + pack plan", () => {
     assert.ok(ids.includes("doing-business-entities"));
   });
 
-  it("ships verify SQL and bulk sample slot for OCP", () => {
+  it("ships verify SQL and bulk sample slot for OCP + ZAP", () => {
     assert.ok(
       existsSync(join(WAREHOUSE_DIR, "sql", "examples", "ocp_bulk_verify.sql"))
     );
+    assert.ok(
+      existsSync(join(WAREHOUSE_DIR, "sql", "examples", "zap_bulk_verify.sql"))
+    );
     assert.ok(existsSync(join(WAREHOUSE_DIR, "scripts", "write_load_manifest.py")));
+    assert.ok(
+      existsSync(join(WAREHOUSE_DIR, "fixtures", "zap-projects", "sample.csv"))
+    );
   });
 });
 
@@ -137,12 +143,26 @@ describe("WH-02 load manifest shape (when present)", () => {
     assert.equal(m.git_policy.commit_parquet_bulk, false);
     assert.ok(Array.isArray(m.loaded));
     assert.ok(Array.isArray(m.remaining_primary_queue));
-    assert.ok(m.next_dataset);
+    assert.ok(m.next_dataset || m.remaining_primary_queue.length === 0);
     if (m.loaded.length) {
       const first = m.loaded[0];
       assert.ok(first.raw_sha256);
       assert.ok(Number(first.row_count) > 1000);
       assert.ok(first.proof_receipt.includes("bulk_latest"));
+    }
+    // WH-05: zap-projects is second bulk pack when proof receipt is present.
+    const zapProof = join(
+      WAREHOUSE_DIR,
+      "receipts",
+      "proof",
+      "zap-projects_bulk_latest.json"
+    );
+    if (existsSync(zapProof)) {
+      const zap = m.loaded.find((x) => x.dataset_id === "zap-projects");
+      assert.ok(zap, "manifest should list zap-projects after bulk proof exists");
+      assert.equal(zap.socrata_dataset_id, "hgx4-8ukb");
+      assert.ok(Number(zap.row_count) > 1000);
+      assert.ok(!m.remaining_primary_queue.includes("zap-projects"));
     }
   });
 });

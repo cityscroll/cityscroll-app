@@ -1,11 +1,11 @@
-# CityScroll data warehouse (WH-01…WH-04)
+# CityScroll data warehouse (WH-01…WH-05)
 
 DuckDB + parquet lake **inside this repo**, for offline ownership of NYC bulk
 sources and batch joins. Public browser routes stay **precompute-first** — the
 warehouse is the factory; the Worker is the shop window.
 
 Design authority: estate vision report
-`cityscroll-data-warehouse-vision` (cards WH-01…WH-04). Captain constraints:
+`cityscroll-data-warehouse-vision` (cards WH-01…WH-05). Captain constraints:
 
 1. **Inside crol-list** — `warehouse/` (not a sibling repo).
 2. **Incremental** — WH-01 scaffold; WH-02 packs **one** full Socrata export at
@@ -108,7 +108,7 @@ and the load manifest (sha256 + row counts + remaining queue). Re-run the
 commands above on Mini or a green MacBook to materialize bulk data.
 
 **Do not** start the next dataset until headroom is still green after the
-previous pack. Next after OCP: `zap-projects` (WH-03 prewarm input).
+previous pack. Loaded: OCP + `zap-projects`. Next: `zap-bbl` → `city-record`.
 
 ## CPU discipline (baked into the runner)
 
@@ -141,6 +141,7 @@ the MacBook.
 - **Python:** `warehouse/scripts/query.py`
 - **Node:** `warehouse/lib/query.mjs` → `queryWarehouse(sql)` / `exampleOcpAwardCount()`
 - **OCP lookup:** `warehouse/lib/ocp_lookup.mjs` → `lookupOcpAwardRowsFromWarehouse`
+- **ZAP lookup:** `warehouse/lib/zap_lookup.mjs` → `lookupZapProjectFromWarehouse`
 - **SQL examples:** `warehouse/sql/examples/`
 
 This is **not** edge ad-hoc SQL. Worker routes keep serving precomputed read
@@ -175,8 +176,39 @@ Speed receipt (measured locally): `warehouse/receipts/proof/wh03_ocp_lookup_spee
 Product seed demos (public field cases):
 `warehouse/fixtures/ocp-recent-contract-awards/product_seed.csv`.
 
-**Not in this card:** ZAP outcomes prewarm (needs `zap-projects` bulk next in
-the WH-02 queue). That remains a follow-on once ZAP lands in the lake.
+## WH-05: second bulk + serve ZAP Open Data (own-the-data momentum)
+
+**Bulk pack:** `zap-projects` (`hgx4-8ukb`, ~33k rows) via the same capped
+runner (`--bulk --ack-large`). Proof + checksums:
+`warehouse/receipts/proof/zap-projects_bulk_latest.json` and
+`warehouse/manifests/wh02_load_manifest.json`.
+
+**Replaced live fetch:** `fetchOpenDataRow` in `worker/src/zap_outcomes.mjs` —
+every cold `/zap-outcomes` build previously hit SODA `hgx4-8ukb` by
+`project_id`.
+
+**Path now:** same WH-03 shape:
+
+1. **Build/ops** queries DuckDB sell-facing slice (+ demos) → materializes
+   `site/data/zap_projects_warehouse_lookup.json` + Worker twin.
+2. **Edge** looks up the materialization **first** (in-process, sub-ms).
+3. **Live SODA** only on miss.
+
+```bash
+python3 "$HEADROOM_BIN"   # CONSTRAINED → defer
+warehouse/.venv/bin/python warehouse/scripts/ingest.py \
+  --dataset zap-projects --bulk --ack-large --write-sample 25
+warehouse/.venv/bin/python warehouse/scripts/query.py \
+  --sql-file warehouse/sql/examples/zap_bulk_verify.sql
+warehouse/.venv/bin/python warehouse/scripts/write_load_manifest.py
+
+# Materialize edge lookup (sell-facing + demos; not full 33k in git)
+node tools/build_zap_warehouse_lookup.mjs --bench
+node tools/build_zap_warehouse_lookup.mjs --fixture --check
+```
+
+Speed receipt: `warehouse/receipts/proof/wh05_zap_lookup_speed.json`.
+Product seed: `warehouse/fixtures/zap-projects/product_seed.csv`.
 
 ## entity_resolution/ (WH-04 batch)
 
@@ -232,14 +264,16 @@ reimplemented in SQL.
 | **WH-01** | Scaffold, CPU-capped skeleton, tiny OCP proof |
 | **WH-02** | First bulk export(s) via capped runner — OCP first; ZAP / City Record sequential next |
 | **WH-03** | Materialize warehouse OCP → replace live SODA in `fetchOcpAwardRows` (+ live miss fallback) |
-| **WH-03b** (follow-on) | ZAP outcomes prewarm once `zap-projects` bulk is loaded |
-| **WH-04** (this pack) | Batch ER over warehouse → `er_entity_link` parquet + SQL views |
+| **WH-04** | Batch ER over warehouse → `er_entity_link` parquet + SQL views |
+| **WH-05** (this) | Second bulk `zap-projects` + materialize sell-facing → replace live SODA in `fetchOpenDataRow` |
+| **Next** | `zap-bbl` bulk; optional City Record last; fuller ZAP prewarm id list from warehouse |
 
 ## Characterization
 
 ```bash
 node --test test/warehouse_scaffold.test.mjs test/warehouse_bulk.test.mjs \
-  test/warehouse_ocp_lookup.test.mjs worker/test/ocp_warehouse_lookup.test.mjs \
+  test/warehouse_ocp_lookup.test.mjs test/warehouse_zap_lookup.test.mjs \
+  worker/test/ocp_warehouse_lookup.test.mjs worker/test/zap_warehouse_lookup.test.mjs \
   test/warehouse_er_batch.test.mjs
 ```
 
