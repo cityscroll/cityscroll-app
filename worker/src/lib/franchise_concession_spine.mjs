@@ -235,7 +235,6 @@ export function extractCounterparties(row) {
   const LEGAL = String.raw`(?:LLC|L\.L\.C\.|Inc\.?|Corp\.?|LP|L\.P\.|LLP|Company|Co\.|PC|P\.C\.)`;
   // Do NOT allow '.' inside name parts — otherwise "LLC." is swallowed as a name
   // part and "X LLC. Y LLC" becomes one false party.
-  // (Avoid a bare TOKEN= assignment shape that trips placeholder-env scanners.)
   const namePart = String.raw`[A-Z\u00C0-\u024F][A-Za-z\u00C0-\u024F0-9'’&/-]*`;
   const CONNECTOR = String.raw`(?:of|and|the|for|d\/?b\/?a\.?)`;
   // Prefer legal suffix as the terminator (not a mid-name word).
