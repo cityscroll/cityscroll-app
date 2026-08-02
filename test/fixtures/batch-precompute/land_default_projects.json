@@ -1,0 +1,40 @@
+[
+  {
+    "project_id": "2024Q0135",
+    "project_name": "Willets Point Phase II Mapping Actions",
+    "project_brief": "An amendment to the City Map, in conjunction with related actions (record number 2023Q0251), to facilitate a new 25,000 seat soccer-specific stadium, four predominantly residential buildings and a hotel is being sought by EDC, New York City Football Club, Related, and Sterling Equities for a site located in Willets Point, Community District 7, Queens.",
+    "primary_applicant": "EDC - Economic Development Corporation for NYC",
+    "public_status": "Completed",
+    "project_status": "Active",
+    "borough": "Queens",
+    "community_district": "Q07",
+    "actions": "MM",
+    "mih_flag": "false",
+    "current_milestone": "MM - Final Letter Sent",
+    "ulurp_numbers": "240058MMQ"
+  },
+  {
+    "project_id": "2020M0385",
+    "project_name": "1325 Ave of the Americas-Text Amendment/Cert",
+    "project_brief": "The applicant, Le Grande Boucherie, seeks a zoning text amendment, a modification to a previously approved CPC Certification (M 880194 B ZCM), and a Chairperson's certification pursuant to ZR 81-231(b). These actions will facilitate private cafe use within the Through Block Galleria (POPS) at 1325 Avenue of The Americas.",
+    "primary_applicant": "Neil Weisbard",
+    "public_status": "Completed",
+    "project_status": "Active",
+    "borough": "Manhattan",
+    "community_district": "M05",
+    "actions": "ZR; ZC; LD; ZC",
+    "mih_flag": "false",
+    "current_milestone": "EAS - Final Letter Sent"
+  },
+  {
+    "project_id": "P2012X0048",
+    "project_name": "GRANT PARK MAPPING",
+    "project_brief": "DEMAP A PORTION OF GRANT AVE BETWEEN E169TH ST & E170TH ST TO ESTABLISH A PARK.",
+    "primary_applicant": "Antonios Michelakis",
+    "public_status": "Completed",
+    "project_status": "Active",
+    "borough": "Bronx",
+    "community_district": "X04",
+    "ulurp_numbers": "C090189MMX"
+  }
+]

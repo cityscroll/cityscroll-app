@@ -43,6 +43,21 @@ fixed sleep) and **fails if a skeleton is still visible** (`.today-skeleton`, `.
 section counts and chart bars (sections paint last; "Counting 1M…" / "Loading…" are not ready).
 Re-run: `python3 tools/capture_readme_screens.py`. Eyeball PNGs before commit.
 
+## Batch-precompute first paint (perceived speed wave 2)
+
+BATCHABLE / hybrid-default surfaces paint from prebuilt payloads; parameterized search stays live.
+
+| Surface | Replaces | Payload / path | Hybrid |
+|---|---|---|---|
+| Data page charts | 5 live SODA aggregates on `data.html` | `site/data/data_page_charts.json` | Snapshot first, then live SODA refresh |
+| Land default list | SODA `hgx4-8ukb` Active ULURP 40 on `#land` open | `site/data/land_default_ulurp.json` | Snapshot first; filter/keyword/geo still SODA; live refresh without re-autoSelect |
+| Property first paint | Full 1.2MB `/property-locations` body dumps | Slim list default; `?full=1` keeps complete KV view | Already daily edge materialization |
+
+Rebuild snapshots: `node tools/build_batch_precompute_snapshots.mjs` (pure lib:
+`tools/lib/batch_precompute_snapshots.mjs`). Property slim: `worker/src/lib/property_list.mjs`.
+Verify: `node --test test/batch_precompute_snapshots.test.mjs worker/test/property.test.mjs`.
+Do **not** batch GENUINELY-LIVE paths (session/pins, NL, arbitrary money filters, geocode).
+
 ## PASSPort Public machine path
 
 PASSPort Public has **no Socrata dataset** for contracts/RFx. Stable machine dumps:

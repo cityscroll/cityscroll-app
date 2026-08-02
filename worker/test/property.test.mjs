@@ -82,4 +82,37 @@ test("Property refresh writes the materialized view and its route serves it", as
   assert.equal(response.headers.get("access-control-allow-origin"), "*");
   const body = await response.json();
   assert.equal(body.properties[0].request_id, "property-address");
+  // Default GET is the slim list projection (first-paint); full body dumps are omitted.
+  assert.equal(body.view, "list");
+  assert.equal(body.properties[0].additional_description_1.includes("35 Beebe"), true);
+  assert.equal(body.properties[0].printout_1, undefined);
+});
+
+test("Property full view remains available via ?full=1", async () => {
+  const kv = memoryKV();
+  const now = new Date();
+  await refreshProperties({ ALERT_STATE: kv }, fetchFixture([]), now);
+  const fullRow = {
+    ...sourceRows[0],
+    printout_1: "FULL-PRINTOUT",
+    additional_description_2: "extra body",
+  };
+  const stored = JSON.parse(kv.values.get(PROPERTY_KV_KEY));
+  stored.properties[0] = { ...stored.properties[0], ...fullRow };
+  kv.values.set(PROPERTY_KV_KEY, JSON.stringify(stored));
+
+  const slim = await handleProperties(
+    new Request("https://api.cityscroll.org/property-locations"),
+    { ALERT_STATE: kv },
+  ).then((r) => r.json());
+  assert.equal(slim.view, "list");
+  assert.equal(slim.properties[0].printout_1, undefined);
+
+  const full = await handleProperties(
+    new Request("https://api.cityscroll.org/property-locations?full=1"),
+    { ALERT_STATE: kv },
+  ).then((r) => r.json());
+  assert.notEqual(full.view, "list");
+  assert.equal(full.properties[0].printout_1, "FULL-PRINTOUT");
+  assert.equal(full.properties[0].additional_description_2, "extra body");
 });

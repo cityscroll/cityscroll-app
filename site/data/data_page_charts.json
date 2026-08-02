@@ -1,0 +1,236 @@
+{
+  "schema_version": 1,
+  "delivery_tier": "inline-at-build",
+  "generated_at": "2026-08-02T03:00:33.927Z",
+  "year_ago": "2025-08-02",
+  "source": {
+    "name": "City Record Online",
+    "dataset": "dg92-zbpx",
+    "url": "https://data.cityofnewyork.us/d/dg92-zbpx"
+  },
+  "query": {
+    "sections": {
+      "$select": "section_name,count(request_id) AS n",
+      "$group": "section_name",
+      "$order": "n DESC"
+    },
+    "volume": {
+      "$select": "date_trunc_ym(start_date) AS m,count(request_id) AS n",
+      "$where": "start_date >= '2025-08-02T00:00:00'",
+      "$group": "m",
+      "$order": "m ASC"
+    },
+    "procmix": {
+      "$select": "type_of_notice_description AS t,count(request_id) AS n",
+      "$where": "section_name='Procurement' AND start_date >= '2025-08-02T00:00:00'",
+      "$group": "t",
+      "$order": "n DESC"
+    },
+    "agencies": {
+      "$select": "agency_name,sum(contract_amount) AS total",
+      "$where": "type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < 10000000000 AND start_date >= '2025-08-02T00:00:00'",
+      "$group": "agency_name",
+      "$order": "total DESC",
+      "$limit": "10"
+    },
+    "vendors": {
+      "$select": "vendor_name,sum(contract_amount) AS total",
+      "$where": "type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < 10000000000 AND start_date >= '2025-08-02T00:00:00' AND vendor_name IS NOT NULL",
+      "$group": "vendor_name",
+      "$order": "total DESC",
+      "$limit": "10"
+    }
+  },
+  "charts": {
+    "sections": [
+      {
+        "section_name": "Changes in Personnel",
+        "n": 961586
+      },
+      {
+        "section_name": "Procurement",
+        "n": 105119
+      },
+      {
+        "section_name": "Contract Award Hearings",
+        "n": 10506
+      },
+      {
+        "section_name": "Public Hearings and Meetings",
+        "n": 8936
+      },
+      {
+        "section_name": "Special Materials",
+        "n": 8145
+      },
+      {
+        "section_name": "Agency Rules",
+        "n": 3061
+      },
+      {
+        "section_name": "Public Comment on Contract Awards",
+        "n": 947
+      },
+      {
+        "section_name": "Property Disposition",
+        "n": 243
+      },
+      {
+        "section_name": "Court Notices",
+        "n": 155
+      }
+    ],
+    "volume": [
+      {
+        "m": "2025-08",
+        "n": 4921
+      },
+      {
+        "m": "2025-09",
+        "n": 7117
+      },
+      {
+        "m": "2025-10",
+        "n": 5931
+      },
+      {
+        "m": "2025-11",
+        "n": 4589
+      },
+      {
+        "m": "2025-12",
+        "n": 4339
+      },
+      {
+        "m": "2026-01",
+        "n": 7525
+      },
+      {
+        "m": "2026-02",
+        "n": 4522
+      },
+      {
+        "m": "2026-03",
+        "n": 8261
+      },
+      {
+        "m": "2026-04",
+        "n": 3644
+      },
+      {
+        "m": "2026-05",
+        "n": 4423
+      },
+      {
+        "m": "2026-06",
+        "n": 1114
+      },
+      {
+        "m": "2026-07",
+        "n": 732
+      }
+    ],
+    "procmix": [
+      {
+        "t": "Award",
+        "n": 3218
+      },
+      {
+        "t": "Solicitation",
+        "n": 919
+      },
+      {
+        "t": "Intent to Award",
+        "n": 492
+      },
+      {
+        "t": "Vendor List",
+        "n": 13
+      }
+    ],
+    "agencies": [
+      {
+        "agency_name": "Homeless Services",
+        "total": 6400956041
+      },
+      {
+        "agency_name": "Administration for Children's Services",
+        "total": 4241148282
+      },
+      {
+        "agency_name": "Citywide Administrative Services",
+        "total": 3359129076.65
+      },
+      {
+        "agency_name": "Small Business Services",
+        "total": 2624559074.75
+      },
+      {
+        "agency_name": "Transportation",
+        "total": 1752934892
+      },
+      {
+        "agency_name": "Health and Mental Hygiene",
+        "total": 1533657873
+      },
+      {
+        "agency_name": "Environmental Protection",
+        "total": 1215337141
+      },
+      {
+        "agency_name": "Information Technology and Telecommunications",
+        "total": 1193479029
+      },
+      {
+        "agency_name": "Youth and Community Development",
+        "total": 1097541813
+      },
+      {
+        "agency_name": "Design and Construction",
+        "total": 1070962747
+      }
+    ],
+    "vendors": [
+      {
+        "vendor_name": "New York City Economic Development Corporation",
+        "total": 2134863648
+      },
+      {
+        "vendor_name": "HANYC Foundation Inc.",
+        "total": 1864916717
+      },
+      {
+        "vendor_name": "Common Ground Management Corp",
+        "total": 1049680629
+      },
+      {
+        "vendor_name": "American Traffic Solutions, Inc.",
+        "total": 998468155
+      },
+      {
+        "vendor_name": "Group Health Incorporated",
+        "total": 950000000
+      },
+      {
+        "vendor_name": "Universal Protection Service LLC",
+        "total": 948271375
+      },
+      {
+        "vendor_name": "Dell Marketing L.P.",
+        "total": 573752890
+      },
+      {
+        "vendor_name": "SCO Family of Services",
+        "total": 448851533
+      },
+      {
+        "vendor_name": "Aron Security Inc",
+        "total": 428805858
+      },
+      {
+        "vendor_name": "Inter-Con Security Systems Incorporated",
+        "total": 399671340
+      }
+    ]
+  }
+}

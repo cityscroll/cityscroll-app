@@ -221,39 +221,79 @@ aren't real.</p>
   function renderCharts() {
     Object.keys(charts).forEach(renderChart);
   }
-  soda({ "$select": "section_name,count(request_id) AS n", "$group": "section_name", "$order": "n DESC" })
-    .then(function (rows) {
-      rememberChart("sections", rows.filter(function (r) { return r.section_name; }), "section_name", "n", fmtN, "composition", function (source) {
-        return source.map(function (r) {
-          return { section_name: (window.tSection ? tSection(r.section_name) : r.section_name), n: r.n };
-        });
+
+  // Precompute-first: paint from the commit-time snapshot (no multi-SODA spinner),
+  // then hybrid-refresh live Open Data in the background when the page is open.
+  var SNAPSHOT_URL = "data/data_page_charts.json";
+  var sectionTransform = function (source) {
+    return source.map(function (r) {
+      return { section_name: (window.tSection ? tSection(r.section_name) : r.section_name), n: r.n };
+    });
+  };
+  function applyChartBundle(bundle, opts) {
+    opts = opts || {};
+    var c = (bundle && bundle.charts) || {};
+    if (c.sections && c.sections.length) {
+      rememberChart("sections", c.sections, "section_name", "n", fmtN, "composition", sectionTransform);
+    } else if (opts.failMissing) {
+      fail(document.getElementById("sections"));
+    }
+    if (c.volume && c.volume.length) rememberChart("volume", c.volume, "m", "n", fmtN, "ranking");
+    else if (opts.failMissing) fail(document.getElementById("volume"));
+    if (c.procmix && c.procmix.length) rememberChart("procmix", c.procmix, "t", "n", fmtN, "composition");
+    else if (opts.failMissing) fail(document.getElementById("procmix"));
+    if (c.agencies && c.agencies.length) rememberChart("agencies", c.agencies, "agency_name", "total", fmtMoney, "ranking");
+    else if (opts.failMissing) fail(document.getElementById("agencies"));
+    if (c.vendors && c.vendors.length) rememberChart("vendors", c.vendors, "vendor_name", "total", fmtMoney, "ranking");
+    else if (opts.failMissing) fail(document.getElementById("vendors"));
+  }
+  function loadLiveCharts() {
+    var CLEAN = "type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < 10000000000 AND start_date >= '" + yearAgo + "T00:00:00'";
+    return Promise.all([
+      soda({ "$select": "section_name,count(request_id) AS n", "$group": "section_name", "$order": "n DESC" })
+        .then(function (rows) { return rows.filter(function (r) { return r.section_name; }); }),
+      soda({ "$select": "date_trunc_ym(start_date) AS m,count(request_id) AS n", "$where": "start_date >= '" + yearAgo + "T00:00:00'", "$group": "m", "$order": "m ASC" })
+        .then(function (rows) {
+          return rows.filter(function (r) { return r.m; }).map(function (r) { return { m: String(r.m).slice(0, 7), n: r.n }; });
+        }),
+      soda({ "$select": "type_of_notice_description AS t,count(request_id) AS n", "$where": "section_name='Procurement' AND start_date >= '" + yearAgo + "T00:00:00'", "$group": "t", "$order": "n DESC" })
+        .then(function (rows) { return rows.filter(function (r) { return r.t; }); }),
+      soda({ "$select": "agency_name,sum(contract_amount) AS total", "$where": CLEAN, "$group": "agency_name", "$order": "total DESC", "$limit": "10" })
+        .then(function (rows) { return rows.filter(function (r) { return r.agency_name; }); }),
+      soda({ "$select": "vendor_name,sum(contract_amount) AS total", "$where": CLEAN + " AND vendor_name IS NOT NULL", "$group": "vendor_name", "$order": "total DESC", "$limit": "10" }),
+    ]).then(function (parts) {
+      applyChartBundle({
+        charts: {
+          sections: parts[0],
+          volume: parts[1],
+          procmix: parts[2],
+          agencies: parts[3],
+          vendors: parts[4],
+        },
+      });
+    });
+  }
+
+  fetch(SNAPSHOT_URL)
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (snap) {
+      var painted = !!(snap && snap.charts && snap.charts.sections && snap.charts.sections.length);
+      if (painted) applyChartBundle(snap);
+      return loadLiveCharts().catch(function () {
+        if (!painted) {
+          ["sections", "volume", "procmix", "agencies", "vendors"].forEach(function (id) {
+            fail(document.getElementById(id));
+          });
+        }
       });
     })
-    .catch(function () { fail(document.getElementById("sections")); });
-
-  // Volume by month, last 12 months.
-  soda({ "$select": "date_trunc_ym(start_date) AS m,count(request_id) AS n", "$where": "start_date >= '" + yearAgo + "T00:00:00'", "$group": "m", "$order": "m ASC" })
-    .then(function (rows) {
-      rows = rows.filter(function (r) { return r.m; }).map(function (r) { return { m: String(r.m).slice(0, 7), n: r.n }; });
-      rememberChart("volume", rows, "m", "n", fmtN, "ranking");
-    })
-    .catch(function () { fail(document.getElementById("volume")); });
-
-  // Procurement mix, last 12 months.
-  soda({ "$select": "type_of_notice_description AS t,count(request_id) AS n", "$where": "section_name='Procurement' AND start_date >= '" + yearAgo + "T00:00:00'", "$group": "t", "$order": "n DESC" })
-    .then(function (rows) { rememberChart("procmix", rows.filter(function (r) { return r.t; }), "t", "n", fmtN, "composition"); })
-    .catch(function () { fail(document.getElementById("procmix")); });
-
-  // Awarded $ filters: Award notices, positive, below the $10B error line.
-  var CLEAN = "type_of_notice_description='Award' AND contract_amount > 0 AND contract_amount < 10000000000 AND start_date >= '" + yearAgo + "T00:00:00'";
-
-  soda({ "$select": "agency_name,sum(contract_amount) AS total", "$where": CLEAN, "$group": "agency_name", "$order": "total DESC", "$limit": "10" })
-    .then(function (rows) { rememberChart("agencies", rows.filter(function (r) { return r.agency_name; }), "agency_name", "total", fmtMoney, "ranking"); })
-    .catch(function () { fail(document.getElementById("agencies")); });
-
-  soda({ "$select": "vendor_name,sum(contract_amount) AS total", "$where": CLEAN + " AND vendor_name IS NOT NULL", "$group": "vendor_name", "$order": "total DESC", "$limit": "10" })
-    .then(function (rows) { rememberChart("vendors", rows, "vendor_name", "total", fmtMoney, "ranking"); })
-    .catch(function () { fail(document.getElementById("vendors")); });
+    .catch(function () {
+      return loadLiveCharts().catch(function () {
+        ["sections", "volume", "procmix", "agencies", "vendors"].forEach(function (id) {
+          fail(document.getElementById(id));
+        });
+      });
+    });
 
   initSubpageLangSwitcher(renderCharts);
 })();

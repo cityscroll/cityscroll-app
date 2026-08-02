@@ -1,10 +1,13 @@
 // Daily materialized Property view. City Record remains authoritative; this projection
 // extracts property-site evidence and resolves one representative site address per notice.
+// Default GET serves a slim list view (drops body-dump fields) for first-paint speed;
+// ?full=1 returns the complete materialization.
 
 import {
   applyPropertyGeocodes,
   propertyLocationFromRow,
 } from "../../site/property_location.mjs";
+import { slimPropertyListView } from "./lib/property_list.mjs";
 
 export const PROPERTY_KV_KEY = "property:location:v1";
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
@@ -133,6 +136,8 @@ export async function handleProperties(request, env, ctx) {
   if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders() });
   if (request.method !== "GET") return response(JSON.stringify({ ok: false, reason: "method" }), 405);
   if (!env.ALERT_STATE) return response(JSON.stringify({ ok: false, reason: "not-configured" }), 503);
+  const url = new URL(request.url);
+  const wantFull = url.searchParams.get("full") === "1" || url.searchParams.get("view") === "full";
   let raw = await env.ALERT_STATE.get(PROPERTY_KV_KEY);
   let parsed = null;
   try { parsed = raw ? JSON.parse(raw) : null; } catch { parsed = null; }
@@ -141,6 +146,7 @@ export async function handleProperties(request, env, ctx) {
     try {
       const view = await buildPropertyView(fetch, new Date());
       raw = JSON.stringify(view);
+      parsed = view;
       const write = env.ALERT_STATE.put(PROPERTY_KV_KEY, raw, { expirationTtl: 3 * 24 * 60 * 60 });
       if (ctx?.waitUntil) ctx.waitUntil(write); else await write;
     } catch (error) {
@@ -150,5 +156,10 @@ export async function handleProperties(request, env, ctx) {
       raw = JSON.stringify(parsed);
     }
   }
-  return response(raw);
+  if (wantFull) return response(typeof raw === "string" ? raw : JSON.stringify(parsed));
+  // First-paint list: drop body-dump fields (printouts / extra description slots) while keeping
+  // additional_description_1 for asset badges and list excerpts.
+  const full = parsed || (() => { try { return JSON.parse(raw); } catch { return null; } })();
+  if (!full) return response(JSON.stringify({ ok: false, reason: "empty" }), 502);
+  return response(JSON.stringify(slimPropertyListView(full)));
 }

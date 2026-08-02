@@ -1,0 +1,76 @@
+{
+  "sections": [
+    {
+      "section_name": "Changes in Personnel",
+      "n": "961586"
+    },
+    {
+      "section_name": "Procurement",
+      "n": "105119"
+    },
+    {
+      "section_name": "Contract Award Hearings",
+      "n": "10506"
+    }
+  ],
+  "volume": [
+    {
+      "m": "2025-08-01T00:00:00.000",
+      "n": "4921"
+    },
+    {
+      "m": "2025-09-01T00:00:00.000",
+      "n": "7117"
+    },
+    {
+      "m": "2025-10-01T00:00:00.000",
+      "n": "5931"
+    }
+  ],
+  "procmix": [
+    {
+      "t": "Award",
+      "n": "3218"
+    },
+    {
+      "t": "Solicitation",
+      "n": "919"
+    },
+    {
+      "t": "Intent to Award",
+      "n": "492"
+    },
+    {
+      "t": "Vendor List",
+      "n": "13"
+    }
+  ],
+  "agencies": [
+    {
+      "agency_name": "Homeless Services",
+      "total": "6400956041"
+    },
+    {
+      "agency_name": "Administration for Children's Services",
+      "total": "4241148282"
+    },
+    {
+      "agency_name": "Citywide Administrative Services",
+      "total": "3359129076.65"
+    }
+  ],
+  "vendors": [
+    {
+      "vendor_name": "New York City Economic Development Corporation",
+      "total": "2134863648"
+    },
+    {
+      "vendor_name": "HANYC Foundation Inc.",
+      "total": "1864916717"
+    },
+    {
+      "vendor_name": "Common Ground Management Corp",
+      "total": "1049680629"
+    }
+  ]
+}
