@@ -613,6 +613,7 @@
       "id": "alerts-rollup-prefs",
       "url": "#alerts?view=rollup",
       "feature": "alerts-rollup-prefs",
+      "localOnly": true,
       "description": "Show multi-watch digest rollup grouped by topic plus the preference-center manage path.",
       "expectations": {
         "visible": [

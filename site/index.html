@@ -1354,7 +1354,7 @@
     <!-- Multi-watch digest rollup + preference center path (breadth: alerts_digests).
          Delivery is already account-level in worker/src/alerts.mjs; this panel demonstrates
          how related watches consolidate into one email and where prefs are edited. -->
-    <div class="panel" id="alerts-rollup-prefs" style="margin-top:18px;padding:16px 18px 18px">
+    <div class="panel route-item" id="alerts-rollup-prefs" tabindex="-1" style="margin-top:18px;padding:16px 18px 18px">
       <h2 style="border:0;padding:0 0 4px" data-i18n="alerts_rollup_heading">How multi-watch digests arrive</h2>
       <p class="rollup-lead" data-i18n="alerts_rollup_lead">When one email has more than one active watch, CityScroll sends a single daily digest with a section per watch — not a separate email for each. Group the demo watches below by topic, agency, or geography to see how related alerts cluster.</p>
       <div class="afield" style="margin-top:4px">
@@ -6490,10 +6490,11 @@ function initAlertsRollupPrefs(){
 function focusAlertsRollupPanel(){
   const panel = document.getElementById("alerts-rollup-prefs");
   if(!panel) return;
+  // Deep-link contract (demo id alerts-rollup-prefs) and other item routes put
+  // programmatic focus on the route target itself (tabindex="-1" route-item),
+  // not an inner chip — matches career/notice/entity focus patterns.
   try{ panel.scrollIntoView({ behavior: "smooth", block: "start" }); }catch(e){ panel.scrollIntoView(true); }
-  // Prefer focusing the group control, not the panel itself (panels aren't focusable).
-  const firstChip = document.querySelector("#rollupgroupby .chip");
-  if(firstChip){ try{ firstChip.focus({ preventScroll: true }); }catch(e){ firstChip.focus(); } }
+  try{ panel.focus({ preventScroll: true }); }catch(e){ try{ panel.focus(); }catch(_e){} }
 }
 
 // Map the alert builder to a real content-lens query the worker re-sanitizes + the cron replays.
