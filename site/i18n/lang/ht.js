@@ -970,6 +970,7 @@
     subsidy_feed_unavailable_html: "Nou pa t kapab rive jwenn {source} pou dosye konplè pwojè sibvansyon an — detay odyans anba a soti nan avi City Record la.",
     subsidy_money_matched_html: "{field}: <b>{amount}</b>.",
     subsidy_money_matched_city_record_html: "{field}: <b>{amount}</b> (soti nan avi odyans City Record la).",
+    subsidy_place_matched_html: "Kote: <b>{address}</b>.",
     subsidy_money_requested_lbl: "avantaj mande",
     subsidy_money_estimated_lbl: "pri piblik estime",
     subsidy_money_total_project_cost_lbl: "pri total pwojè",

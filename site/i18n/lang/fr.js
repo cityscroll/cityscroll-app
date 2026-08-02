@@ -1053,6 +1053,7 @@
     subsidy_feed_unavailable_html: "Impossible d'atteindre {source} pour le dossier complet du projet de subvention — les détails d'audience ci-dessous proviennent de l'avis City Record.",
     subsidy_money_matched_html: "{field} : <b>{amount}</b>.",
     subsidy_money_matched_city_record_html: "{field} : <b>{amount}</b> (d'après l'avis d'audience City Record).",
+    subsidy_place_matched_html: "Lieu : <b>{address}</b>.",
     subsidy_money_requested_lbl: "avantage demandé",
     subsidy_money_estimated_lbl: "coût public estimé",
     subsidy_money_total_project_cost_lbl: "coût total du projet",
