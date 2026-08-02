@@ -106,6 +106,14 @@ const helpers = new Function(
   extractFn("subsidyGapKindClient") +
   extractFn("subsidyAnchorFromNotice") +
   extractFn("subsidyStageHTML") +
+  extractFn("subsidyPhaseLabel") +
+  extractFn("subsidyPhaseActionHTML") +
+  extractFn("subsidyPhaseStepperHTML") +
+  extractFn("subsidyPhaseNotYetHTML") +
+  extractFn("subsidyPhasePanelHTML") +
+  extractFn("subsidyPhaseTimelineHTML") +
+  extractFn("subsidyLifecycleHTMLFlat") +
+  extractFn("subsidyJoinAndFieldChrome") +
   extractFn("subsidyLifecycleHTML") +
   extractFn("isCityCouncilNotice") +
   extractFn("matterDetailUrl") +
@@ -342,6 +350,7 @@ test("class b: matched subsidy stage with unknown outcome uses not-published reg
 
   assert.match(html, CLASS_B_PREFIX);
   assert.match(html, /does not publish this outcome/);
+  // Company/place field gaps stay in substance (disclosure) but keep class-(b) copy.
   assert.match(html, /does not publish a company name/);
   assert.match(html, /does not publish a project address or BBL/);
 });

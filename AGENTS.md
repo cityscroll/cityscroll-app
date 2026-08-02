@@ -29,9 +29,9 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 
 ## Cross-domain entity intelligence
 
-Object-link layer across money / land / rules / meetings / people for one agency or
-vendor (`entity_resolution/cross_domain/`). Reuses subject registry kinds + ER
-normalizers + warehouse OCP/ZAP/ZAP-BBL fixtures — does not reinvent matchers.
+Object-link layer across money / land / **property** / rules / meetings / people for
+one agency or vendor (`entity_resolution/cross_domain/`). Reuses subject registry
+kinds + ER normalizers + warehouse OCP/ZAP/ZAP-BBL fixtures — does not reinvent matchers.
 Land projects gain `sited_on_parcel` edges when BBL join keys exist. Money awards
 also emit join-key edges when present: PIN → `shares_authority_key`, contract_id →
 `references_contract` (+ `contract_published_by_agency`), Checkbook spending →
@@ -44,8 +44,11 @@ node tools/build_entity_intelligence.mjs
 node tools/build_entity_intelligence.mjs --check
 node warehouse/lib/entity_intelligence_index.mjs --from-fixture --limit 400
 node warehouse/lib/entity_intelligence_index.mjs --check
+node tools/build_property_cross_domain.mjs
+node tools/build_property_cross_domain.mjs --check
 node --test test/cross_domain_object_links.test.mjs \
   test/warehouse_entity_intelligence_index.test.mjs \
+  test/property_cross_domain.test.mjs test/property_phase_spine.test.mjs \
   worker/test/entity_intelligence.test.mjs
 ```
 
@@ -55,6 +58,14 @@ stays class-(a) `not_yet_ingested` until person-level Legistar retention > 0.
 ADR: `docs/adr/cross-domain-object-links.md`. Warehouse SQL shape:
 `warehouse/sql/examples/entity_intelligence_index.sql`; proof receipt:
 `warehouse/receipts/proof/wh_entity_intelligence_index_latest.json`.
+
+**Property / BBL joins (parity catchup):** pure
+`entity_resolution/cross_domain/property_links.mjs` +
+`site/data/property_cross_domain_lookup.json`. BBL → ZAP is **exact** tax-lot only
+(`zap-bbl`); owner → contracts is labeled winning-bidder / sold-to → `vendorStem`
+only; no fuzzy invent. Notice detail phase-groups disposition spine
+(`site/property_phase_spine.mjs`) and action rail surfaces ZoLa parcel lookup.
+Demo BBLs: `1006440001`, `3025180036`.
 
 ## DuckDB + parquet warehouse (WH-01…WH-06)
 
@@ -117,6 +128,17 @@ node tools/build_zap_warehouse_lookup.mjs --fixture --bench
 # receipt: warehouse/receipts/proof/wh05_zap_lookup_speed.json
 ```
 
+**WH-05 Doing Business serve:** materialize Doing Business Search Entities into
+`site/data/doing_business_warehouse_lookup.json` (+ Worker twin). Replaces live
+multi-page SODA in `attachDoingBusiness` for materialization hits; live SODA
+remains the miss / partial-snapshot gap-fill:
+
+```bash
+node tools/build_doing_business_warehouse_lookup.mjs --fixture --bench
+# receipt: warehouse/receipts/proof/wh05_doing_business_lookup_speed.json
+node --test test/warehouse_wh05_lookups.test.mjs worker/test/wh05_warehouse_lookups.test.mjs
+```
+
 **WH-06 ZAP BBL serve:** materialize project→BBL groups (+ demo `2022M0258`)
 into `site/data/zap_bbl_warehouse_lookup.json` (+ Worker twin). Replaces live
 SODA in `fetchBbls` (`/zap-outcomes` DOB tax-lot side-car) for materialization
@@ -130,9 +152,9 @@ node tools/build_entity_intelligence.mjs
 ```
 
 **Remaining bulk (sequential, only if headroom green):** `city-record`
-(`dg92-zbpx`). Optional later: `doing-business-entities`. Query seam:
-`warehouse/lib/query.mjs` / `warehouse/scripts/query.py`. Details:
-`warehouse/README.md`.
+(`dg92-zbpx`). Optional later: full `doing-business-entities` bulk (~11k; enables
+zero-SODA vendor attach). Query seam: `warehouse/lib/query.mjs` /
+`warehouse/scripts/query.py`. Details: `warehouse/README.md`.
 
 ## Warehouse batch ER (WH-04)
 
@@ -518,6 +540,9 @@ ingestion remains a follow-up (bot-blocked host). Fixture:
 `subsidyGapKind` → `too_soon` | `not_published` | (worker stamp)
 `not_yet_ingested` | `unavailable`. Lag table `SUBSIDY_STAGE_EXPECT_LAG_DAYS`
 (board ~60d, closing ~180d, project_record ~90d).
+
+
+**Phase-group presentation (Money-collapse):** empty future stages collapse into a compact “not yet reached” indicator + stepper. Lead with current stage + action; detail cards only for material stages. Pure model: `site/subsidy_phase_spine.mjs`. Verify: `node --test test/subsidy_phase_spine.test.mjs test/procurement_lifecycle_stitch.test.mjs`.
 
 **Feed-down partial join (hard rule):** when `join.method=city-record-hearing` and
 `join.feed_status=unavailable`, later unmatched stages (board / closing /

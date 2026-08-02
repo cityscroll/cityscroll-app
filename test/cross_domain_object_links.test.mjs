@@ -249,10 +249,12 @@ describe("entity intelligence view — Parks multi-domain", () => {
     assert.equal(view.domains.rules.status, "matched");
     assert.equal(view.domains.meetings.status, "matched");
     assert.equal(view.domains.people.status, "not_yet_ingested");
+    // property is empty in this fixture set (no disposition rows) — 4 of 6 domains
+    assert.equal(view.domains.property.status, "empty");
     assert.equal(view.metrics.domains_matched, 4);
-    assert.ok(view.metrics.coverage_rate >= 0.8);
+    assert.ok(view.metrics.coverage_rate >= 4 / CROSS_DOMAIN_DOMAINS.length);
     assert.ok(view.links.every((l) => l.provenance?.source_system && l.provenance?.source_record_id));
-    // All five domain keys present
+    // All domain keys present (money, land, property, rules, meetings, people)
     for (const d of CROSS_DOMAIN_DOMAINS) assert.ok(view.domains[d]);
   });
 

@@ -39,3 +39,19 @@ export {
   buildIntelligenceCorpus,
   lookupEntityIntelligence,
 } from "./object_links.mjs";
+
+// Property-domain helpers (normalizeBbl / observationFromZapBblRow live on object_links
+// to avoid duplicate package exports; property_links keeps local copies for its joins).
+export {
+  PROPERTY_CROSS_DOMAIN_VERSION,
+  BBL_JOIN_METHOD,
+  observationFromPropertyRow,
+  extractDispositionOwner,
+  bblSubjectRef,
+  bblsFromPropertyRow,
+  linkPropertyObservation,
+  joinPropertyToZapByBbl,
+  joinPropertyOwnerToContracts,
+  buildParcelIntelligence,
+  buildPropertyCrossDomainDoc,
+} from "./property_links.mjs";
