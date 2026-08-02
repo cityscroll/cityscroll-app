@@ -1,0 +1,6 @@
+request_id,start_date,agency_name,type_of_notice_description,pin,contract_amount,vendor_name,short_title
+ER001,2024-08-01T00:00:00.000,Department of Citywide Administrative Services,Award,PIN-ER-ACME-1,1000.00,ACME WIDGETS INC,ER fixture ACME Inc
+ER002,2024-08-02T00:00:00.000,Department of Citywide Administrative Services,Award,PIN-ER-ACME-2,2000.00,Acme Widgets Incorporated,ER fixture ACME Incorporated (same stem)
+ER003,2024-08-03T00:00:00.000,Dept of Transportation,Award,PIN-ER-SIN-1,1500.00,SINERGIA INC,ER fixture Sinergia
+ER004,2024-08-04T00:00:00.000,Department of Transportation,Award,PIN-ER-SIN-2,1600.00,Sinergia Incorporated,ER fixture Sinergia Inc variant
+ER005,2024-08-05T00:00:00.000,Office of Technology and Innovation,Award,PIN-ER-OTI-1,900.00,NORTH STAR ANALYTICS LLC,ER fixture agency alias + vendor LLC
