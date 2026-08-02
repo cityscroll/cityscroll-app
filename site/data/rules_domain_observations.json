@@ -1,0 +1,919 @@
+{
+  "schema_version": 1,
+  "domain": "rules",
+  "title": "Rules domain observations for entity intelligence",
+  "description": "City Record Agency Rules rows (dg92-zbpx) for offline entity-intelligence materialization. Mirrors the city_record side of rules:materialized:v2; no invented contract/vendor joins.",
+  "retrieved_at": "2026-08-02T13:11:10.699006Z",
+  "window_days": 180,
+  "source": {
+    "system": "city_record",
+    "dataset_id": "dg92-zbpx",
+    "section_name": "Agency Rules",
+    "url": "https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx",
+    "read_model": "rules:materialized:v2"
+  },
+  "row_count": 100,
+  "agency_count": 33,
+  "rows": [
+    {
+      "request_id": "20260715005",
+      "agency_name": "Rent Guidelines Board",
+      "short_title": "2026 RGB Orders and Explanatory Statements and Findings",
+      "start_date": "2026-07-24T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260715041",
+      "agency_name": "Buildings",
+      "short_title": "Amendments to Rules Relating to the Energy Conservation Code",
+      "start_date": "2026-07-23T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260715045",
+      "agency_name": "Consumer and Worker Protection",
+      "short_title": "Notice of Change of Effective Date for SHIELD rules",
+      "start_date": "2026-07-22T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260714029",
+      "agency_name": "Transportation",
+      "short_title": "Notice of Public Hearing and Opportunity to Comment-  FHV and Taxi Parking at Commercial Meters and Commercial Vehicle Markings",
+      "start_date": "2026-07-22T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260714024",
+      "agency_name": "Finance",
+      "short_title": "Notice of Adoption of Amendment of Rules Relating to Utility Company Properties",
+      "start_date": "2026-07-22T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260713006",
+      "agency_name": "Consumer and Worker Protection",
+      "short_title": "DCWP NOH Rules Relating to Waitlist for GV Licenses",
+      "start_date": "2026-07-20T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260714002",
+      "agency_name": "City Planning Commission",
+      "short_title": "CPC and DCP Proposed Rules: Expedited Land Use Review Procedure and Affordable Housing Appeals Board",
+      "start_date": "2026-07-20T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260708002",
+      "agency_name": "Sanitation",
+      "short_title": "DSNY Proposed Implementation Dates Regarding Brooklyn East, Manhattan Northeast, Queens West, and Manhattan West CWZs",
+      "start_date": "2026-07-15T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260708018",
+      "agency_name": "Board of Correction",
+      "short_title": "NOTICE OF REOPENING OF PUBLIC COMMENT PERIOD ON PROPOSED RULES",
+      "start_date": "2026-07-15T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260707025",
+      "agency_name": "Buildings",
+      "short_title": "Final Rule - Amendment of Rules relating to Sidewalk Sheds",
+      "start_date": "2026-07-14T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260706041",
+      "agency_name": "Transportation",
+      "short_title": "Notice of Adoption: City-Owned Bicycle Racks",
+      "start_date": "2026-07-14T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260710033",
+      "agency_name": "Finance",
+      "short_title": "Notice of Adoption of Rule for Surcharge on Property That Does Not Serve as a Primary Residence",
+      "start_date": "2026-07-14T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260706044",
+      "agency_name": "Taxi and Limousine Commission",
+      "short_title": "Driver Relief Penalty Reduction and Medallion Relief Program Rule Proposal.",
+      "start_date": "2026-07-13T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260701025",
+      "agency_name": "Finance",
+      "short_title": "Notice of Adoption of Rules Relating to PACE Financing Program",
+      "start_date": "2026-07-09T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260626036",
+      "agency_name": "Consumer and Worker Protection",
+      "short_title": "DCWP NOH Junk Fees",
+      "start_date": "2026-07-08T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260626035",
+      "agency_name": "Consumer and Worker Protection",
+      "short_title": "DCWP NOA Cancellation of Subscriptions",
+      "start_date": "2026-07-08T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260626034",
+      "agency_name": "Consumer and Worker Protection",
+      "short_title": "DCWP NOH Requirements for HVFHV Services and Protections for Drivers",
+      "start_date": "2026-07-06T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260624032",
+      "agency_name": "Sanitation",
+      "short_title": "Notice of Adoption of Rule Relating to Containerization Requirements for Buildings Containing 10 or More Dwelling Units",
+      "start_date": "2026-07-01T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260624035",
+      "agency_name": "Comptroller",
+      "short_title": "Office of the Comptroller Affordable Neighborhoods for New Yorkers Construction Wage Regulations - Adoption of Final 485-x Rules",
+      "start_date": "2026-06-30T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260622072",
+      "agency_name": "Consumer and Worker Protection",
+      "short_title": "DCWP NOA Debt Collector Penalty Schedule",
+      "start_date": "2026-06-29T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260618036",
+      "agency_name": "Housing Preservation and Development",
+      "short_title": "Proposed Amendment to 421-a(16) Workbook Rules",
+      "start_date": "2026-06-26T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260617037",
+      "agency_name": "Taxi and Limousine Commission",
+      "short_title": "Taxi and Limousine Commission Regulatory Agenda",
+      "start_date": "2026-06-25T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260618004",
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "FY2027 DOHMH Regulatory Agenda",
+      "start_date": "2026-06-25T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260612002",
+      "agency_name": "Consumer and Worker Protection",
+      "short_title": "DCWP NOA Protected Time Off Under the Earned Safe and Sick Time Act",
+      "start_date": "2026-06-23T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260612037",
+      "agency_name": "Aging",
+      "short_title": "NYC Aging FY 2027 Regulatory Agenda",
+      "start_date": "2026-06-22T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260609003",
+      "agency_name": "Consumer and Worker Protection",
+      "short_title": "DCWP NOH Recordkeeping Requirements for Third-Party Food Delivery Services",
+      "start_date": "2026-06-16T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260605008",
+      "agency_name": "Sanitation",
+      "short_title": "DSNY Final Rule re Implementation Dates for the Brooklyn North and Upper Manhattan Commercial Waste Zones",
+      "start_date": "2026-06-11T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260602045",
+      "agency_name": "Small Business Services",
+      "short_title": "NOTICE OF ADOPTION OF FINAL RULE REGARDING PETITIONS FOR AGENCY RULEMAKING",
+      "start_date": "2026-06-09T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260605058",
+      "agency_name": "Finance",
+      "short_title": "Proposed Rule for Surcharge on Property That Does Not Serve as a Primary Residence",
+      "start_date": "2026-06-09T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260602003",
+      "agency_name": "Consumer and Worker Protection",
+      "short_title": "DCWP NOH Unclaimed Restitution Fund",
+      "start_date": "2026-06-09T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260601006",
+      "agency_name": "Loft Board",
+      "short_title": "The New York City Loft Board hereby gives notice\u001apursuant to the authority granted by Multiple Dwelling Law \u00a7 282 and New York City Charter \u00a7 1043\u001aof the adoption of amendments to its rules in Title 29 of the Rules of the City of New York.",
+      "start_date": "2026-06-08T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260521021",
+      "agency_name": "Parks and Recreation",
+      "short_title": "Update to Parks List of Qualifying Documents for Disability Membership Fee",
+      "start_date": "2026-06-01T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260522007",
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Further Amendment of Rules Relating to Vital Records",
+      "start_date": "2026-05-29T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260521002",
+      "agency_name": "Environmental Protection",
+      "short_title": "FY 27 Regulatory Agenda",
+      "start_date": "2026-05-29T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260522008",
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Amendment of Rules Relating to Lead Dust",
+      "start_date": "2026-05-29T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260522005",
+      "agency_name": "Fire Department",
+      "short_title": "Adoption of Amendments to Fire Department Rule 3 RCNY 8400-02",
+      "start_date": "2026-05-29T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260519037",
+      "agency_name": "City Planning",
+      "short_title": "DCP FY2027 Regulatory Agenda",
+      "start_date": "2026-05-27T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260519048",
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Amendment of Rules Regarding Termination of Pregnancy",
+      "start_date": "2026-05-27T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260519043",
+      "agency_name": "Finance",
+      "short_title": "Proposed Amendment of Rules Relating to PACE Financing Program",
+      "start_date": "2026-05-22T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260519042",
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Resolution of the Board of Health",
+      "start_date": "2026-05-21T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260515003",
+      "agency_name": "Mayor's Office of Contract Services",
+      "short_title": "MOCS FY27 Regulatory Agenda",
+      "start_date": "2026-05-20T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260515002",
+      "agency_name": "Procurement Policy Board",
+      "short_title": "PPB FY27 Regulatory Agenda",
+      "start_date": "2026-05-20T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260513026",
+      "agency_name": "Consumer and Worker Protection",
+      "short_title": "DCWP NOA Home Improvement Contractor Disclosures",
+      "start_date": "2026-05-20T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260512047",
+      "agency_name": "Office of the Mayor",
+      "short_title": "Notice of Adoption of Centralized Construction Mentor Program Rules",
+      "start_date": "2026-05-19T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260512030",
+      "agency_name": "Information Technology and Telecommunications",
+      "short_title": "OTI FY 2027 Regulatory Agenda - per the New York City Administrative Procedure Act (CAPA)",
+      "start_date": "2026-05-19T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260512003",
+      "agency_name": "Small Business Services",
+      "short_title": "SBS Regulatory Agenda FY 2027",
+      "start_date": "2026-05-18T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260514002",
+      "agency_name": "Parks and Recreation",
+      "short_title": "DPR Proposed Amendment of Rules Relating to Special Event Permits",
+      "start_date": "2026-05-18T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260512040",
+      "agency_name": "Commission on Human Rights",
+      "short_title": "FY 2027 CCHR Regulatory Agenda",
+      "start_date": "2026-05-18T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260512015",
+      "agency_name": "Board of Standards and Appeals",
+      "short_title": "Notice of Adoption: BSA adopts amendments to its Rules of Practice and Procedures, 2 R.C.N.Y., to implement Charter secs. 666-a and 668(d-1), and to make other conforming changes, pursuant to Charter secs.1043(a), 666, and 666-a.",
+      "start_date": "2026-05-18T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260512035",
+      "agency_name": "Sanitation",
+      "short_title": "DSNY Proposed Rule Relating to Containerization Requirements for Buildings Containing 10 or More Dwelling Units",
+      "start_date": "2026-05-15T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260506027",
+      "agency_name": "Finance",
+      "short_title": "Notice of Adoption of Rules Relating to Speed Cameras and the Weigh-in-Motion Violation Monitoring System",
+      "start_date": "2026-05-14T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260508032",
+      "agency_name": "Rent Guidelines Board",
+      "short_title": "Proposed Rules for rent guidelines for October 1, 2026 through September 30, 2027",
+      "start_date": "2026-05-14T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260507003",
+      "agency_name": "Consumer and Worker Protection",
+      "short_title": "DCWP FY 2027 Regulatory Agenda",
+      "start_date": "2026-05-14T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260506005",
+      "agency_name": "Landmarks Preservation Commission",
+      "short_title": "LPC FY 2027 Regulatory Agenda",
+      "start_date": "2026-05-13T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260506019",
+      "agency_name": "Buildings",
+      "short_title": "Amendment of Rules relating to Elevators, Escalators, Personnel Hoists and Moving Walks",
+      "start_date": "2026-05-12T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260506007",
+      "agency_name": "Housing Preservation and Development",
+      "short_title": "Proposed Amendment of Rules Relating to Applications Pursuant to RPTL \u00a7485-x",
+      "start_date": "2026-05-12T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260504027",
+      "agency_name": "Buildings",
+      "short_title": "Final Rule - Amendment of Rules regarding Gas Piping Inspection Entities",
+      "start_date": "2026-05-11T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260430025",
+      "agency_name": "Finance",
+      "short_title": "Notice of Adoption of Rules Relating to Enforcement of Parking Requirements",
+      "start_date": "2026-05-08T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260430008",
+      "agency_name": "Housing Preservation and Development",
+      "short_title": "HPD FY2027 Regulatory Agenda",
+      "start_date": "2026-05-06T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260417003",
+      "agency_name": "Transportation",
+      "short_title": "Proposed Amendment of Citywide Truck Routes",
+      "start_date": "2026-05-04T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260428027",
+      "agency_name": "Buildings",
+      "short_title": "CAPA Agenda FY'27",
+      "start_date": "2026-05-04T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260423016",
+      "agency_name": "Environmental Protection",
+      "short_title": "Construction Noise Monitoring Penalty Rule",
+      "start_date": "2026-05-01T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260428036",
+      "agency_name": "Comptroller",
+      "short_title": "Real Property Tax Law Section 485-x (Affordable Neighborhoods for New Yorkers Tax Incentive Program) Rules Comment Deadline Extended",
+      "start_date": "2026-05-01T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260324022",
+      "agency_name": "Sanitation",
+      "short_title": "DSNY Fiscal Year 2027 Regulatory Agenda",
+      "start_date": "2026-05-01T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260424028",
+      "agency_name": "Campaign Finance Board",
+      "short_title": "REGULATORY AGENDA FY2027",
+      "start_date": "2026-05-01T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260323029",
+      "agency_name": "Transportation",
+      "short_title": "FY 2027 Regulatory Agenda",
+      "start_date": "2026-05-01T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260422018",
+      "agency_name": "Consumer and Worker Protection",
+      "short_title": "DCWP NOH Debt Collector Penalty Schedule",
+      "start_date": "2026-04-30T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260427026",
+      "agency_name": "Parks and Recreation",
+      "short_title": "DPR - Regulatory Agenda FY 2027",
+      "start_date": "2026-04-30T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260421022",
+      "agency_name": "Conflicts of Interest Board",
+      "short_title": "Regulatory Agenda",
+      "start_date": "2026-04-29T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260421036",
+      "agency_name": "Finance",
+      "short_title": "New York Department of Finance  FY-2027 Regulatory Agenda",
+      "start_date": "2026-04-28T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260421020",
+      "agency_name": "City Clerk",
+      "short_title": "LOCAL LAW 43 OF 2026 OF THE CITY OF NEW YORK IN RELATION TO THE ESTABLISHMENT OF THE CONEY ISLAND BUSINESS IMPROVEMENT DISTRICT",
+      "start_date": "2026-04-28T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260421004",
+      "agency_name": "Business Integrity Commission",
+      "short_title": "CAPA REGULATORY AGENDA FY 2027 BUSINESS INTEGRITY COMMISSION",
+      "start_date": "2026-04-27T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260415033",
+      "agency_name": "Conflicts of Interest Board",
+      "short_title": "Extension of Public Comment Period and Second Public Hearing on Proposed Rules Regarding Donations and Gifts to the City",
+      "start_date": "2026-04-22T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260414010",
+      "agency_name": "City Planning Commission",
+      "short_title": "Notice of Adoption of Affordable Housing Fast Track Methodology Rules",
+      "start_date": "2026-04-20T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260331049",
+      "agency_name": "Civilian Complaint Review Board",
+      "short_title": "Civilian Complaint Review Board FY 2027 Regulatory Agenda",
+      "start_date": "2026-04-17T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260410006",
+      "agency_name": "Consumer and Worker Protection",
+      "short_title": "DCWP NOH Self Storage Facilities and Storage Warehouses",
+      "start_date": "2026-04-17T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260409035",
+      "agency_name": "Administrative Trials and Hearings",
+      "short_title": "Office of Administrative Trials and Hearings FY 2027 Regulatory Agenda",
+      "start_date": "2026-04-16T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260409002",
+      "agency_name": "Fire Department",
+      "short_title": "Proposed Amendment of Rules Relating to Fees for Ambulance Treatment and Transport Services",
+      "start_date": "2026-04-15T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260407013",
+      "agency_name": "Buildings",
+      "short_title": "Final Rule - Rules relating to Safety Standards for Refrigeration",
+      "start_date": "2026-04-15T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260327026",
+      "agency_name": "Consumer and Worker Protection",
+      "short_title": "DCWP NOH Cancellation of Subscriptions",
+      "start_date": "2026-04-08T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260406002",
+      "agency_name": "Health and Mental Hygiene",
+      "short_title": "Amendment of Rules Relating to Reporting Requirements for Cooling Towers",
+      "start_date": "2026-04-08T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260331027",
+      "agency_name": "Mayor's Office of Environmental Coordination",
+      "short_title": "Regulatory Agenda FY 2027",
+      "start_date": "2026-04-07T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260402006",
+      "agency_name": "Sanitation",
+      "short_title": "DSNY Proposed Implementation Dates for the Brooklyn North and Upper Manhattan Commercial Waste Zones",
+      "start_date": "2026-04-07T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260327005",
+      "agency_name": "Fire Department",
+      "short_title": "Fire Department Regulatory Agenda FY 2027",
+      "start_date": "2026-04-06T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260327013",
+      "agency_name": "Sanitation",
+      "short_title": "DSNY Final Rule Related to the Implementation of the 8th and 9th Commercial Waste Zones and Infrequent Waste Generators",
+      "start_date": "2026-04-03T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260327020",
+      "agency_name": "Consumer and Worker Protection",
+      "short_title": "DCWP NOH Licensing Laws",
+      "start_date": "2026-04-03T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260326020",
+      "agency_name": "Consumer and Worker Protection",
+      "short_title": "DCWP NOA Change of EHASD Expiration Date",
+      "start_date": "2026-04-02T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260325028",
+      "agency_name": "Parks and Recreation",
+      "short_title": "Emergency Rule Regarding 2026 Summer Event Permit Applications",
+      "start_date": "2026-03-31T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260323027",
+      "agency_name": "Office of the Mayor",
+      "short_title": "Centralized Construction Mentor Program",
+      "start_date": "2026-03-30T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260320022",
+      "agency_name": "Buildings",
+      "short_title": "Proposed Rules - Amendment of Rules relating to Sidewalk Sheds",
+      "start_date": "2026-03-27T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260317026",
+      "agency_name": "Transportation",
+      "short_title": "DOT Proposed Rules Relating to City-Owned Bicycle Racks",
+      "start_date": "2026-03-25T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260313007",
+      "agency_name": "Consumer and Worker Protection",
+      "short_title": "DCWP NOH Rules Relating to Adjudicatory Proceedings",
+      "start_date": "2026-03-24T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260311018",
+      "agency_name": "Consumer and Worker Protection",
+      "short_title": "DCWP NOH Rules Relating to Home Improvement Contractor Disclosures",
+      "start_date": "2026-03-23T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260310018",
+      "agency_name": "Consumer and Worker Protection",
+      "short_title": "DCWP NOA Rules Relating to Restaurant Surcharges",
+      "start_date": "2026-03-20T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260313020",
+      "agency_name": "Finance",
+      "short_title": "Notice of Adoption of Rules Relating to Stipulated Fine and Commercial Abatement Fine Programs",
+      "start_date": "2026-03-20T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260313023",
+      "agency_name": "Buildings",
+      "short_title": "Proposed Rule - Amendment of Rules regarding Gas Piping Inspection Entities",
+      "start_date": "2026-03-20T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260312013",
+      "agency_name": "Small Business Services",
+      "short_title": "Notice of Hearing- Petitions for Agency Rulemaking",
+      "start_date": "2026-03-19T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260302022",
+      "agency_name": "Finance",
+      "short_title": "Notice of Adoption of Rules for Amendment of Rules Relating to Childcare Center Tax Abatement",
+      "start_date": "2026-03-12T00:00:00.000",
+      "type_of_notice_description": "Notice",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260303021",
+      "agency_name": "Finance",
+      "short_title": "DOF Proposed Amendment of Rules Relating to Utility Company Properties",
+      "start_date": "2026-03-11T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    },
+    {
+      "request_id": "20260302018",
+      "agency_name": "Finance",
+      "short_title": "Proposed Amendment of Rules Relating to Speed Cameras and the Weigh-in-Motion Violation Monitoring System",
+      "start_date": "2026-03-10T00:00:00.000",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Agency Rules",
+      "source_system": "city_record"
+    }
+  ]
+}

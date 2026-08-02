@@ -1,0 +1,55 @@
+{
+  "schema_version": 2,
+  "description": "Minimal meeting-outcomes:materialized:v2-shaped fixture for extractor characterization (not the production density snapshot). No by_person rows — person-level votes stay gated.",
+  "generated_at": "2026-08-02T00:00:00.000Z",
+  "source": {
+    "primary": {
+      "name": "City Record Online",
+      "dataset": "dg92-zbpx"
+    },
+    "system": "city_record"
+  },
+  "records": [
+    {
+      "request_id": "20260706036",
+      "join": { "matched": true, "method": "exact_date_body_tokens", "reason": null },
+      "notice": {
+        "request_id": "20260706036",
+        "agency": "City Council",
+        "title": "City Council hearing (demo meeting-outcomes path)",
+        "section_name": "Public Hearings and Meetings",
+        "notice_type": "Public Hearing",
+        "start_date": "2026-07-06T00:00:00.000",
+        "event_date": "2026-07-06"
+      },
+      "council_event": {
+        "event_id": "22526",
+        "title": "Subcommittee hearing",
+        "body_name": "City Council",
+        "event_date": "2026-07-06"
+      },
+      "agenda_items": [],
+      "spines": []
+    },
+    {
+      "request_id": "20260716022",
+      "join": {
+        "matched": false,
+        "method": null,
+        "reason": "No Council event matched this City Record notice on the strict date + body join."
+      },
+      "notice": {
+        "request_id": "20260716022",
+        "agency": "Parks and Recreation",
+        "title": "Notice of Joint Public Hearing: WNYC Transmitter Park outdoor café",
+        "section_name": "Public Hearings and Meetings",
+        "notice_type": "Public Hearings",
+        "start_date": "2026-07-24T00:00:00.000",
+        "event_date": "2026-08-10"
+      },
+      "council_event": null,
+      "agenda_items": [],
+      "spines": []
+    }
+  ]
+}

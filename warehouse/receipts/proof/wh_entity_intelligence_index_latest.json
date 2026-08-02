@@ -2,17 +2,16 @@
   "schema_version": 1,
   "version": "wh_entity_intelligence_index_v1",
   "object_link_version": "cross_domain_object_link_v2",
-  "generated_at": "2026-08-02T12:12:57.271Z",
-  "observation_count": 309,
+  "generated_at": "2026-08-02T13:15:47.802Z",
+  "observation_count": 400,
   "root_count": 200,
-  "edge_count": 394,
+  "edge_count": 485,
   "join_key_edge_count": 131,
-  "multi_domain_count": 4,
+  "multi_domain_count": 5,
   "link_type_counts": {
-    "hosts_meeting": 4,
+    "issued_rule": 98,
     "applicant_agency": 32,
     "contract_published_by_agency": 10,
-    "issued_rule": 3,
     "published_by_agency": 8,
     "references_contract": 10,
     "shares_authority_key": 16,
@@ -25,34 +24,51 @@
   "metrics": {
     "metric": "warehouse_entity_intelligence_index",
     "roots_indexed": 200,
-    "edges_indexed": 394,
+    "edges_indexed": 485,
     "join_key_edge_count": 131,
-    "multi_domain_count": 4,
-    "coverage_hint": 0.1
+    "multi_domain_count": 5,
+    "coverage_hint": 0.125
   },
   "demo_refs": [
     "agency:id:parks-and-recreation",
+    "agency:id:health-and-mental-hygiene",
     "agency:id:transportation",
-    "agency:id:citywide-administrative-services",
-    "agency:id:housing-preservation-and-development"
+    "agency:id:housing-preservation-and-development",
+    "agency:id:city-planning"
   ],
   "roots": [
     {
       "root_ref": "agency:id:parks-and-recreation",
       "root_kind": "agency",
-      "object_count": 12,
-      "link_count": 15,
-      "domains_matched": 4,
+      "object_count": 14,
+      "link_count": 17,
+      "domains_matched": 3,
       "domains": [
         "land",
-        "meetings",
         "money",
         "rules"
       ],
       "link_types": [
         "applicant_agency",
         "contract_published_by_agency",
-        "hosts_meeting",
+        "issued_rule",
+        "published_by_agency",
+        "references_contract",
+        "shares_authority_key"
+      ]
+    },
+    {
+      "root_ref": "agency:id:health-and-mental-hygiene",
+      "root_kind": "agency",
+      "object_count": 7,
+      "link_count": 10,
+      "domains_matched": 2,
+      "domains": [
+        "money",
+        "rules"
+      ],
+      "link_types": [
+        "contract_published_by_agency",
         "issued_rule",
         "published_by_agency",
         "references_contract",
@@ -62,53 +78,100 @@
     {
       "root_ref": "agency:id:transportation",
       "root_kind": "agency",
-      "object_count": 3,
-      "link_count": 4,
-      "domains_matched": 3,
-      "domains": [
-        "meetings",
-        "money",
-        "rules"
-      ],
-      "link_types": [
-        "hosts_meeting",
-        "issued_rule",
-        "published_by_agency",
-        "shares_authority_key"
-      ]
-    },
-    {
-      "root_ref": "agency:id:citywide-administrative-services",
-      "root_kind": "agency",
-      "object_count": 3,
-      "link_count": 9,
+      "object_count": 6,
+      "link_count": 7,
       "domains_matched": 2,
       "domains": [
         "money",
         "rules"
       ],
       "link_types": [
-        "contract_published_by_agency",
         "issued_rule",
         "published_by_agency",
-        "references_contract",
         "shares_authority_key"
       ]
     },
     {
       "root_ref": "agency:id:housing-preservation-and-development",
       "root_kind": "agency",
-      "object_count": 3,
-      "link_count": 15,
+      "object_count": 5,
+      "link_count": 17,
       "domains_matched": 2,
       "domains": [
         "land",
-        "meetings"
+        "rules"
       ],
       "link_types": [
         "applicant_agency",
-        "hosts_meeting",
+        "issued_rule",
         "sited_on_parcel"
+      ]
+    },
+    {
+      "root_ref": "agency:id:city-planning",
+      "root_kind": "agency",
+      "object_count": 2,
+      "link_count": 2,
+      "domains_matched": 2,
+      "domains": [
+        "land",
+        "rules"
+      ],
+      "link_types": [
+        "applicant_agency",
+        "issued_rule"
+      ]
+    },
+    {
+      "root_ref": "agency:id:consumer-and-worker-protection",
+      "root_kind": "agency",
+      "object_count": 19,
+      "link_count": 19,
+      "domains_matched": 1,
+      "domains": [
+        "rules"
+      ],
+      "link_types": [
+        "issued_rule"
+      ]
+    },
+    {
+      "root_ref": "agency:id:finance",
+      "root_kind": "agency",
+      "object_count": 10,
+      "link_count": 10,
+      "domains_matched": 1,
+      "domains": [
+        "rules"
+      ],
+      "link_types": [
+        "issued_rule"
+      ]
+    },
+    {
+      "root_ref": "agency:id:buildings",
+      "root_kind": "agency",
+      "object_count": 8,
+      "link_count": 8,
+      "domains_matched": 1,
+      "domains": [
+        "rules"
+      ],
+      "link_types": [
+        "issued_rule"
+      ]
+    },
+    {
+      "root_ref": "agency:id:sanitation",
+      "root_kind": "agency",
+      "object_count": 7,
+      "link_count": 7,
+      "domains_matched": 1,
+      "domains": [
+        "rules"
+      ],
+      "link_types": [
+        "issued_rule"
       ]
     },
     {
@@ -139,6 +202,19 @@
       ]
     },
     {
+      "root_ref": "agency:id:fire-department",
+      "root_kind": "agency",
+      "object_count": 3,
+      "link_count": 3,
+      "domains_matched": 1,
+      "domains": [
+        "rules"
+      ],
+      "link_types": [
+        "issued_rule"
+      ]
+    },
+    {
       "root_ref": "agency:id:lpc-nyc-landmarks-preservation-commission",
       "root_kind": "agency",
       "object_count": 3,
@@ -152,6 +228,74 @@
       ]
     },
     {
+      "root_ref": "agency:id:small-business-services",
+      "root_kind": "agency",
+      "object_count": 3,
+      "link_count": 3,
+      "domains_matched": 1,
+      "domains": [
+        "rules"
+      ],
+      "link_types": [
+        "issued_rule"
+      ]
+    },
+    {
+      "root_ref": "agency:id:city-planning-commission",
+      "root_kind": "agency",
+      "object_count": 2,
+      "link_count": 2,
+      "domains_matched": 1,
+      "domains": [
+        "rules"
+      ],
+      "link_types": [
+        "issued_rule"
+      ]
+    },
+    {
+      "root_ref": "agency:id:citywide-administrative-services",
+      "root_kind": "agency",
+      "object_count": 2,
+      "link_count": 8,
+      "domains_matched": 1,
+      "domains": [
+        "money"
+      ],
+      "link_types": [
+        "contract_published_by_agency",
+        "published_by_agency",
+        "references_contract",
+        "shares_authority_key"
+      ]
+    },
+    {
+      "root_ref": "agency:id:comptroller",
+      "root_kind": "agency",
+      "object_count": 2,
+      "link_count": 2,
+      "domains_matched": 1,
+      "domains": [
+        "rules"
+      ],
+      "link_types": [
+        "issued_rule"
+      ]
+    },
+    {
+      "root_ref": "agency:id:conflicts-of-interest-board",
+      "root_kind": "agency",
+      "object_count": 2,
+      "link_count": 2,
+      "domains_matched": 1,
+      "domains": [
+        "rules"
+      ],
+      "link_types": [
+        "issued_rule"
+      ]
+    },
+    {
       "root_ref": "agency:id:dot-nyc-dept-of-transportation",
       "root_kind": "agency",
       "object_count": 2,
@@ -162,6 +306,19 @@
       ],
       "link_types": [
         "applicant_agency"
+      ]
+    },
+    {
+      "root_ref": "agency:id:environmental-protection",
+      "root_kind": "agency",
+      "object_count": 2,
+      "link_count": 2,
+      "domains_matched": 1,
+      "domains": [
+        "rules"
+      ],
+      "link_types": [
+        "issued_rule"
       ]
     },
     {
@@ -188,6 +345,45 @@
       ],
       "link_types": [
         "applicant_agency"
+      ]
+    },
+    {
+      "root_ref": "agency:id:office-of-the-mayor",
+      "root_kind": "agency",
+      "object_count": 2,
+      "link_count": 2,
+      "domains_matched": 1,
+      "domains": [
+        "rules"
+      ],
+      "link_types": [
+        "issued_rule"
+      ]
+    },
+    {
+      "root_ref": "agency:id:rent-guidelines-board",
+      "root_kind": "agency",
+      "object_count": 2,
+      "link_count": 2,
+      "domains_matched": 1,
+      "domains": [
+        "rules"
+      ],
+      "link_types": [
+        "issued_rule"
+      ]
+    },
+    {
+      "root_ref": "agency:id:taxi-and-limousine-commission",
+      "root_kind": "agency",
+      "object_count": 2,
+      "link_count": 2,
+      "domains_matched": 1,
+      "domains": [
+        "rules"
+      ],
+      "link_types": [
+        "issued_rule"
       ]
     },
     {
@@ -349,281 +545,343 @@
       ]
     },
     {
-      "root_ref": "agency:id:city-council",
+      "root_ref": "agency:id:administrative-trials-and-hearings",
       "root_kind": "agency",
       "object_count": 1,
       "link_count": 1,
       "domains_matched": 1,
       "domains": [
-        "meetings"
+        "rules"
       ],
       "link_types": [
-        "hosts_meeting"
+        "issued_rule"
       ]
     },
     {
-      "root_ref": "agency:id:city-planning",
+      "root_ref": "agency:id:aging",
       "root_kind": "agency",
       "object_count": 1,
       "link_count": 1,
       "domains_matched": 1,
       "domains": [
-        "land"
+        "rules"
       ],
       "link_types": [
-        "applicant_agency"
+        "issued_rule"
       ]
     },
     {
-      "root_ref": "agency:id:dcas-nyc-department-of-citywide-administrative-services",
+      "root_ref": "agency:id:board-of-correction",
       "root_kind": "agency",
       "object_count": 1,
       "link_count": 1,
       "domains_matched": 1,
       "domains": [
-        "land"
+        "rules"
       ],
       "link_types": [
-        "applicant_agency"
+        "issued_rule"
       ]
     },
     {
-      "root_ref": "agency:id:dep-new-york-city-department-of-environmental-protection",
+      "root_ref": "agency:id:board-of-standards-and-appeals",
       "root_kind": "agency",
       "object_count": 1,
       "link_count": 1,
       "domains_matched": 1,
       "domains": [
-        "land"
+        "rules"
       ],
       "link_types": [
-        "applicant_agency"
-      ]
-    },
-    {
-      "root_ref": "agency:id:department-of-education",
-      "root_kind": "agency",
-      "object_count": 1,
-      "link_count": 2,
-      "domains_matched": 1,
-      "domains": [
-        "money"
-      ],
-      "link_types": [
-        "published_by_agency",
-        "shares_authority_key"
-      ]
-    },
-    {
-      "root_ref": "agency:id:department-of-environmental-protection",
-      "root_kind": "agency",
-      "object_count": 1,
-      "link_count": 2,
-      "domains_matched": 1,
-      "domains": [
-        "money"
-      ],
-      "link_types": [
-        "published_by_agency",
-        "shares_authority_key"
-      ]
-    },
-    {
-      "root_ref": "agency:id:fdny-fire-department-of-nyc",
-      "root_kind": "agency",
-      "object_count": 1,
-      "link_count": 1,
-      "domains_matched": 1,
-      "domains": [
-        "land"
-      ],
-      "link_types": [
-        "applicant_agency"
-      ]
-    },
-    {
-      "root_ref": "agency:id:health-and-mental-hygiene",
-      "root_kind": "agency",
-      "object_count": 1,
-      "link_count": 4,
-      "domains_matched": 1,
-      "domains": [
-        "money"
-      ],
-      "link_types": [
-        "contract_published_by_agency",
-        "published_by_agency",
-        "references_contract",
-        "shares_authority_key"
-      ]
-    },
-    {
-      "root_ref": "agency:id:mayors-office-of-criminal-justice",
-      "root_kind": "agency",
-      "object_count": 1,
-      "link_count": 1,
-      "domains_matched": 1,
-      "domains": [
-        "land"
-      ],
-      "link_types": [
-        "applicant_agency"
-      ]
-    },
-    {
-      "root_ref": "agency:id:new-york-state-department-of-transportation",
-      "root_kind": "agency",
-      "object_count": 1,
-      "link_count": 1,
-      "domains_matched": 1,
-      "domains": [
-        "land"
-      ],
-      "link_types": [
-        "applicant_agency"
-      ]
-    },
-    {
-      "root_ref": "agency:id:ny-state-department-of-transporation",
-      "root_kind": "agency",
-      "object_count": 1,
-      "link_count": 1,
-      "domains_matched": 1,
-      "domains": [
-        "land"
-      ],
-      "link_types": [
-        "applicant_agency"
-      ]
-    },
-    {
-      "root_ref": "agency:id:nyc-dot-new-york-city-dept-of-transportation-bridges",
-      "root_kind": "agency",
-      "object_count": 1,
-      "link_count": 1,
-      "domains_matched": 1,
-      "domains": [
-        "land"
-      ],
-      "link_types": [
-        "applicant_agency"
-      ]
-    },
-    {
-      "root_ref": "agency:id:sca-new-york-city-school-construction-authority",
-      "root_kind": "agency",
-      "object_count": 1,
-      "link_count": 1,
-      "domains_matched": 1,
-      "domains": [
-        "land"
-      ],
-      "link_types": [
-        "applicant_agency"
-      ]
-    },
-    {
-      "root_ref": "agency:id:youth-and-community-development",
-      "root_kind": "agency",
-      "object_count": 1,
-      "link_count": 4,
-      "domains_matched": 1,
-      "domains": [
-        "money"
-      ],
-      "link_types": [
-        "contract_published_by_agency",
-        "published_by_agency",
-        "references_contract",
-        "shares_authority_key"
-      ]
-    },
-    {
-      "root_ref": "vendor:stem:100%20QUEENS%20BLVD",
-      "root_kind": "vendor",
-      "object_count": 1,
-      "link_count": 1,
-      "domains_matched": 1,
-      "domains": [
-        "land"
-      ],
-      "link_types": [
-        "applicant_vendor"
-      ]
-    },
-    {
-      "root_ref": "vendor:stem:100%20WALL%20REALTY",
-      "root_kind": "vendor",
-      "object_count": 1,
-      "link_count": 1,
-      "domains_matched": 1,
-      "domains": [
-        "land"
-      ],
-      "link_types": [
-        "applicant_vendor"
-      ]
-    },
-    {
-      "root_ref": "vendor:stem:108%20DUNKIRK%20STREET",
-      "root_kind": "vendor",
-      "object_count": 1,
-      "link_count": 1,
-      "domains_matched": 1,
-      "domains": [
-        "land"
-      ],
-      "link_types": [
-        "applicant_vendor"
-      ]
-    },
-    {
-      "root_ref": "vendor:stem:108%20REALTY%20GROUP",
-      "root_kind": "vendor",
-      "object_count": 1,
-      "link_count": 1,
-      "domains_matched": 1,
-      "domains": [
-        "land"
-      ],
-      "link_types": [
-        "applicant_vendor"
-      ]
-    },
-    {
-      "root_ref": "vendor:stem:108%20ST",
-      "root_kind": "vendor",
-      "object_count": 1,
-      "link_count": 3,
-      "domains_matched": 1,
-      "domains": [
-        "land"
-      ],
-      "link_types": [
-        "applicant_vendor",
-        "sited_on_parcel"
+        "issued_rule"
       ]
     }
   ],
   "edges_sample": [
     {
-      "root_ref": "agency:id:city-council",
+      "root_ref": "agency:id:administrative-trials-and-hearings",
       "root_kind": "agency",
-      "link_type": "hosts_meeting",
-      "from_ref": "notice:20260706036",
-      "to_ref": "agency:id:city-council",
-      "domain": "meetings",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260409035",
+      "to_ref": "agency:id:administrative-trials-and-hearings",
+      "domain": "rules",
       "confidence": "strong",
       "method": "agency_canonical_v1",
       "method_version": "1",
       "source_system": "city_record",
-      "source_record_id": "city_record:20260706036",
+      "source_record_id": "city_record:20260409035",
       "source_fields": [
         "agency_name"
       ],
-      "basis": "meetings_agency_name",
-      "input_value": "City Council",
-      "observed_at": "2026-07-06"
+      "basis": "rules_agency_name",
+      "input_value": "Administrative Trials and Hearings",
+      "observed_at": "2026-04-16T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:aging",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260612037",
+      "to_ref": "agency:id:aging",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260612037",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Aging",
+      "observed_at": "2026-06-22T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:board-of-correction",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260708018",
+      "to_ref": "agency:id:board-of-correction",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260708018",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Board of Correction",
+      "observed_at": "2026-07-15T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:board-of-standards-and-appeals",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260512015",
+      "to_ref": "agency:id:board-of-standards-and-appeals",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260512015",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Board of Standards and Appeals",
+      "observed_at": "2026-05-18T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:buildings",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260313023",
+      "to_ref": "agency:id:buildings",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260313023",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Buildings",
+      "observed_at": "2026-03-20T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:buildings",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260320022",
+      "to_ref": "agency:id:buildings",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260320022",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Buildings",
+      "observed_at": "2026-03-27T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:buildings",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260407013",
+      "to_ref": "agency:id:buildings",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260407013",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Buildings",
+      "observed_at": "2026-04-15T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:buildings",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260428027",
+      "to_ref": "agency:id:buildings",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260428027",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Buildings",
+      "observed_at": "2026-05-04T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:buildings",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260504027",
+      "to_ref": "agency:id:buildings",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260504027",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Buildings",
+      "observed_at": "2026-05-11T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:buildings",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260506019",
+      "to_ref": "agency:id:buildings",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260506019",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Buildings",
+      "observed_at": "2026-05-12T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:buildings",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260707025",
+      "to_ref": "agency:id:buildings",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260707025",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Buildings",
+      "observed_at": "2026-07-14T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:buildings",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260715041",
+      "to_ref": "agency:id:buildings",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260715041",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Buildings",
+      "observed_at": "2026-07-23T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:business-integrity-commission",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260421004",
+      "to_ref": "agency:id:business-integrity-commission",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260421004",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Business Integrity Commission",
+      "observed_at": "2026-04-27T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:campaign-finance-board",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260424028",
+      "to_ref": "agency:id:campaign-finance-board",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260424028",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Campaign Finance Board",
+      "observed_at": "2026-05-01T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:city-clerk",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260421020",
+      "to_ref": "agency:id:city-clerk",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260421020",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "City Clerk",
+      "observed_at": "2026-04-28T00:00:00.000"
     },
     {
       "root_ref": "agency:id:city-planning",
@@ -643,6 +901,63 @@
       "basis": "land_primary_applicant",
       "input_value": "DCP Department of City Planning",
       "observed_at": null
+    },
+    {
+      "root_ref": "agency:id:city-planning",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260519037",
+      "to_ref": "agency:id:city-planning",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260519037",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "City Planning",
+      "observed_at": "2026-05-27T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:city-planning-commission",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260414010",
+      "to_ref": "agency:id:city-planning-commission",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260414010",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "City Planning Commission",
+      "observed_at": "2026-04-20T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:city-planning-commission",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260714002",
+      "to_ref": "agency:id:city-planning-commission",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260714002",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "City Planning Commission",
+      "observed_at": "2026-07-20T00:00:00.000"
     },
     {
       "root_ref": "agency:id:citywide-administrative-services",
@@ -683,25 +998,6 @@
       "basis": "money_contract_agency",
       "input_value": "Citywide Administrative Services",
       "observed_at": "2026-07-30T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:citywide-administrative-services",
-      "root_kind": "agency",
-      "link_type": "issued_rule",
-      "from_ref": "notice:20260601010",
-      "to_ref": "agency:id:citywide-administrative-services",
-      "domain": "rules",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "city_record",
-      "source_record_id": "city_record:20260601010",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "rules_agency_name",
-      "input_value": "Citywide Administrative Services",
-      "observed_at": "2026-06-01"
     },
     {
       "root_ref": "agency:id:citywide-administrative-services",
@@ -816,6 +1112,481 @@
       "basis": "money_pin",
       "input_value": "PIN-FIXTURE-1",
       "observed_at": "2024-07-01T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:civilian-complaint-review-board",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260331049",
+      "to_ref": "agency:id:civilian-complaint-review-board",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260331049",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Civilian Complaint Review Board",
+      "observed_at": "2026-04-17T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:commission-on-human-rights",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260512040",
+      "to_ref": "agency:id:commission-on-human-rights",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260512040",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Commission on Human Rights",
+      "observed_at": "2026-05-18T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:comptroller",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260428036",
+      "to_ref": "agency:id:comptroller",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260428036",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Comptroller",
+      "observed_at": "2026-05-01T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:comptroller",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260624035",
+      "to_ref": "agency:id:comptroller",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260624035",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Comptroller",
+      "observed_at": "2026-06-30T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:conflicts-of-interest-board",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260415033",
+      "to_ref": "agency:id:conflicts-of-interest-board",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260415033",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Conflicts of Interest Board",
+      "observed_at": "2026-04-22T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:conflicts-of-interest-board",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260421022",
+      "to_ref": "agency:id:conflicts-of-interest-board",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260421022",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Conflicts of Interest Board",
+      "observed_at": "2026-04-29T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:consumer-and-worker-protection",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260310018",
+      "to_ref": "agency:id:consumer-and-worker-protection",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260310018",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Consumer and Worker Protection",
+      "observed_at": "2026-03-20T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:consumer-and-worker-protection",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260311018",
+      "to_ref": "agency:id:consumer-and-worker-protection",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260311018",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Consumer and Worker Protection",
+      "observed_at": "2026-03-23T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:consumer-and-worker-protection",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260313007",
+      "to_ref": "agency:id:consumer-and-worker-protection",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260313007",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Consumer and Worker Protection",
+      "observed_at": "2026-03-24T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:consumer-and-worker-protection",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260326020",
+      "to_ref": "agency:id:consumer-and-worker-protection",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260326020",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Consumer and Worker Protection",
+      "observed_at": "2026-04-02T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:consumer-and-worker-protection",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260327020",
+      "to_ref": "agency:id:consumer-and-worker-protection",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260327020",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Consumer and Worker Protection",
+      "observed_at": "2026-04-03T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:consumer-and-worker-protection",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260327026",
+      "to_ref": "agency:id:consumer-and-worker-protection",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260327026",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Consumer and Worker Protection",
+      "observed_at": "2026-04-08T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:consumer-and-worker-protection",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260410006",
+      "to_ref": "agency:id:consumer-and-worker-protection",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260410006",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Consumer and Worker Protection",
+      "observed_at": "2026-04-17T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:consumer-and-worker-protection",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260422018",
+      "to_ref": "agency:id:consumer-and-worker-protection",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260422018",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Consumer and Worker Protection",
+      "observed_at": "2026-04-30T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:consumer-and-worker-protection",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260507003",
+      "to_ref": "agency:id:consumer-and-worker-protection",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260507003",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Consumer and Worker Protection",
+      "observed_at": "2026-05-14T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:consumer-and-worker-protection",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260513026",
+      "to_ref": "agency:id:consumer-and-worker-protection",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260513026",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Consumer and Worker Protection",
+      "observed_at": "2026-05-20T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:consumer-and-worker-protection",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260602003",
+      "to_ref": "agency:id:consumer-and-worker-protection",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260602003",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Consumer and Worker Protection",
+      "observed_at": "2026-06-09T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:consumer-and-worker-protection",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260609003",
+      "to_ref": "agency:id:consumer-and-worker-protection",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260609003",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Consumer and Worker Protection",
+      "observed_at": "2026-06-16T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:consumer-and-worker-protection",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260612002",
+      "to_ref": "agency:id:consumer-and-worker-protection",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260612002",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Consumer and Worker Protection",
+      "observed_at": "2026-06-23T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:consumer-and-worker-protection",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260622072",
+      "to_ref": "agency:id:consumer-and-worker-protection",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260622072",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Consumer and Worker Protection",
+      "observed_at": "2026-06-29T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:consumer-and-worker-protection",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260626034",
+      "to_ref": "agency:id:consumer-and-worker-protection",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260626034",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Consumer and Worker Protection",
+      "observed_at": "2026-07-06T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:consumer-and-worker-protection",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260626035",
+      "to_ref": "agency:id:consumer-and-worker-protection",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260626035",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Consumer and Worker Protection",
+      "observed_at": "2026-07-08T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:consumer-and-worker-protection",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260626036",
+      "to_ref": "agency:id:consumer-and-worker-protection",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260626036",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Consumer and Worker Protection",
+      "observed_at": "2026-07-08T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:consumer-and-worker-protection",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260713006",
+      "to_ref": "agency:id:consumer-and-worker-protection",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260713006",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Consumer and Worker Protection",
+      "observed_at": "2026-07-20T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:consumer-and-worker-protection",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260715045",
+      "to_ref": "agency:id:consumer-and-worker-protection",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260715045",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Consumer and Worker Protection",
+      "observed_at": "2026-07-22T00:00:00.000"
     },
     {
       "root_ref": "agency:id:dcas-nyc-department-of-citywide-administrative-services",
@@ -1027,6 +1798,44 @@
       "observed_at": "2026-03-19"
     },
     {
+      "root_ref": "agency:id:environmental-protection",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260423016",
+      "to_ref": "agency:id:environmental-protection",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260423016",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Environmental Protection",
+      "observed_at": "2026-05-01T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:environmental-protection",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260521002",
+      "to_ref": "agency:id:environmental-protection",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260521002",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Environmental Protection",
+      "observed_at": "2026-05-29T00:00:00.000"
+    },
+    {
       "root_ref": "agency:id:fdny-fire-department-of-nyc",
       "root_kind": "agency",
       "link_type": "applicant_agency",
@@ -1044,6 +1853,253 @@
       "basis": "land_primary_applicant",
       "input_value": "FDNY - Fire Department of NYC",
       "observed_at": "2026-04-16T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:finance",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260302022",
+      "to_ref": "agency:id:finance",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260302022",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Finance",
+      "observed_at": "2026-03-12T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:finance",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260313020",
+      "to_ref": "agency:id:finance",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260313020",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Finance",
+      "observed_at": "2026-03-20T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:finance",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260421036",
+      "to_ref": "agency:id:finance",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260421036",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Finance",
+      "observed_at": "2026-04-28T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:finance",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260430025",
+      "to_ref": "agency:id:finance",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260430025",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Finance",
+      "observed_at": "2026-05-08T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:finance",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260506027",
+      "to_ref": "agency:id:finance",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260506027",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Finance",
+      "observed_at": "2026-05-14T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:finance",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260519043",
+      "to_ref": "agency:id:finance",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260519043",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Finance",
+      "observed_at": "2026-05-22T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:finance",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260605058",
+      "to_ref": "agency:id:finance",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260605058",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Finance",
+      "observed_at": "2026-06-09T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:finance",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260701025",
+      "to_ref": "agency:id:finance",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260701025",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Finance",
+      "observed_at": "2026-07-09T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:finance",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260710033",
+      "to_ref": "agency:id:finance",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260710033",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Finance",
+      "observed_at": "2026-07-14T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:finance",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260714024",
+      "to_ref": "agency:id:finance",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260714024",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Finance",
+      "observed_at": "2026-07-22T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:fire-department",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260327005",
+      "to_ref": "agency:id:fire-department",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260327005",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Fire Department",
+      "observed_at": "2026-04-06T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:fire-department",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260409002",
+      "to_ref": "agency:id:fire-department",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260409002",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Fire Department",
+      "observed_at": "2026-04-15T00:00:00.000"
+    },
+    {
+      "root_ref": "agency:id:fire-department",
+      "root_kind": "agency",
+      "link_type": "issued_rule",
+      "from_ref": "notice:20260522005",
+      "to_ref": "agency:id:fire-department",
+      "domain": "rules",
+      "confidence": "strong",
+      "method": "agency_canonical_v1",
+      "method_version": "1",
+      "source_system": "city_record",
+      "source_record_id": "city_record:20260522005",
+      "source_fields": [
+        "agency_name"
+      ],
+      "basis": "rules_agency_name",
+      "input_value": "Fire Department",
+      "observed_at": "2026-05-29T00:00:00.000"
     },
     {
       "root_ref": "agency:id:health-and-mental-hygiene",
@@ -1064,1084 +2120,6 @@
       "basis": "money_contract_agency",
       "input_value": "Health and Mental Hygiene",
       "observed_at": "2026-07-30T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:health-and-mental-hygiene",
-      "root_kind": "agency",
-      "link_type": "published_by_agency",
-      "from_ref": "notice:20260723031",
-      "to_ref": "agency:id:health-and-mental-hygiene",
-      "domain": "money",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "ocp-recent-contract-awards",
-      "source_record_id": "ocp-recent-contract-awards:20260723031",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "money_agency_name",
-      "input_value": "Health and Mental Hygiene",
-      "observed_at": "2026-07-30T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:health-and-mental-hygiene",
-      "root_kind": "agency",
-      "link_type": "references_contract",
-      "from_ref": "notice:20260723031",
-      "to_ref": "contract:CT81626W0043001",
-      "domain": "money",
-      "confidence": "strong",
-      "method": "contract_id_join_v1",
-      "method_version": "1",
-      "source_system": "ocp-recent-contract-awards",
-      "source_record_id": "ocp-recent-contract-awards:20260723031",
-      "source_fields": [
-        "contract_id"
-      ],
-      "basis": "money_contract_id",
-      "input_value": "CT81626W0043001",
-      "observed_at": "2026-07-30T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:health-and-mental-hygiene",
-      "root_kind": "agency",
-      "link_type": "shares_authority_key",
-      "from_ref": "notice:20260723031",
-      "to_ref": "pin:81626W0043001",
-      "domain": "money",
-      "confidence": "strong",
-      "method": "pin_authority_key_v1",
-      "method_version": "1",
-      "source_system": "ocp-recent-contract-awards",
-      "source_record_id": "ocp-recent-contract-awards:20260723031",
-      "source_fields": [
-        "pin"
-      ],
-      "basis": "money_pin",
-      "input_value": "81626W0043001",
-      "observed_at": "2026-07-30T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "link_type": "applicant_agency",
-      "from_ref": "project:2022M0258",
-      "to_ref": "agency:id:housing-preservation-and-development",
-      "domain": "land",
-      "confidence": "tentative",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "zap-projects",
-      "source_record_id": "zap-projects:2022M0258",
-      "source_fields": [
-        "primary_applicant"
-      ],
-      "basis": "land_primary_applicant",
-      "input_value": "HPD - NYC Dept of Housing Preservation & Development",
-      "observed_at": "2024-03-13T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "link_type": "applicant_agency",
-      "from_ref": "project:2026X0362",
-      "to_ref": "agency:id:housing-preservation-and-development",
-      "domain": "land",
-      "confidence": "tentative",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "zap-projects",
-      "source_record_id": "zap-projects:2026X0362",
-      "source_fields": [
-        "primary_applicant"
-      ],
-      "basis": "land_primary_applicant",
-      "input_value": "HPD - NYC Dept of Housing Preservation & Development",
-      "observed_at": "2026-04-22T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "link_type": "hosts_meeting",
-      "from_ref": "notice:20260722011",
-      "to_ref": "agency:id:housing-preservation-and-development",
-      "domain": "meetings",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "city_record",
-      "source_record_id": "city_record:20260722011",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "meetings_agency_name",
-      "input_value": "Housing Preservation and Development",
-      "observed_at": "2026-08-20"
-    },
-    {
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "link_type": "sited_on_parcel",
-      "from_ref": "project:2022M0258",
-      "to_ref": "parcel:1017670001",
-      "domain": "land",
-      "confidence": "strong",
-      "method": "zap_bbl_project_id_v1",
-      "method_version": "1",
-      "source_system": "zap-projects",
-      "source_record_id": "zap-projects:2022M0258:1017670001",
-      "source_fields": [
-        "bbl",
-        "project_id"
-      ],
-      "basis": "land_project_bbl",
-      "input_value": "1017670001",
-      "observed_at": "2024-03-13T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "link_type": "sited_on_parcel",
-      "from_ref": "project:2022M0258",
-      "to_ref": "parcel:1017670002",
-      "domain": "land",
-      "confidence": "strong",
-      "method": "zap_bbl_project_id_v1",
-      "method_version": "1",
-      "source_system": "zap-projects",
-      "source_record_id": "zap-projects:2022M0258:1017670002",
-      "source_fields": [
-        "bbl",
-        "project_id"
-      ],
-      "basis": "land_project_bbl",
-      "input_value": "1017670002",
-      "observed_at": "2024-03-13T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "link_type": "sited_on_parcel",
-      "from_ref": "project:2022M0258",
-      "to_ref": "parcel:1017670003",
-      "domain": "land",
-      "confidence": "strong",
-      "method": "zap_bbl_project_id_v1",
-      "method_version": "1",
-      "source_system": "zap-projects",
-      "source_record_id": "zap-projects:2022M0258:1017670003",
-      "source_fields": [
-        "bbl",
-        "project_id"
-      ],
-      "basis": "land_project_bbl",
-      "input_value": "1017670003",
-      "observed_at": "2024-03-13T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "link_type": "sited_on_parcel",
-      "from_ref": "project:2022M0258",
-      "to_ref": "parcel:1017670004",
-      "domain": "land",
-      "confidence": "strong",
-      "method": "zap_bbl_project_id_v1",
-      "method_version": "1",
-      "source_system": "zap-projects",
-      "source_record_id": "zap-projects:2022M0258:1017670004",
-      "source_fields": [
-        "bbl",
-        "project_id"
-      ],
-      "basis": "land_project_bbl",
-      "input_value": "1017670004",
-      "observed_at": "2024-03-13T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "link_type": "sited_on_parcel",
-      "from_ref": "project:2022M0258",
-      "to_ref": "parcel:1017670067",
-      "domain": "land",
-      "confidence": "strong",
-      "method": "zap_bbl_project_id_v1",
-      "method_version": "1",
-      "source_system": "zap-projects",
-      "source_record_id": "zap-projects:2022M0258:1017670067",
-      "source_fields": [
-        "bbl",
-        "project_id"
-      ],
-      "basis": "land_project_bbl",
-      "input_value": "1017670067",
-      "observed_at": "2024-03-13T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "link_type": "sited_on_parcel",
-      "from_ref": "project:2022M0258",
-      "to_ref": "parcel:1017670068",
-      "domain": "land",
-      "confidence": "strong",
-      "method": "zap_bbl_project_id_v1",
-      "method_version": "1",
-      "source_system": "zap-projects",
-      "source_record_id": "zap-projects:2022M0258:1017670068",
-      "source_fields": [
-        "bbl",
-        "project_id"
-      ],
-      "basis": "land_project_bbl",
-      "input_value": "1017670068",
-      "observed_at": "2024-03-13T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "link_type": "sited_on_parcel",
-      "from_ref": "project:2022M0258",
-      "to_ref": "parcel:1017670069",
-      "domain": "land",
-      "confidence": "strong",
-      "method": "zap_bbl_project_id_v1",
-      "method_version": "1",
-      "source_system": "zap-projects",
-      "source_record_id": "zap-projects:2022M0258:1017670069",
-      "source_fields": [
-        "bbl",
-        "project_id"
-      ],
-      "basis": "land_project_bbl",
-      "input_value": "1017670069",
-      "observed_at": "2024-03-13T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "link_type": "sited_on_parcel",
-      "from_ref": "project:2022M0258",
-      "to_ref": "parcel:1017670071",
-      "domain": "land",
-      "confidence": "strong",
-      "method": "zap_bbl_project_id_v1",
-      "method_version": "1",
-      "source_system": "zap-projects",
-      "source_record_id": "zap-projects:2022M0258:1017670071",
-      "source_fields": [
-        "bbl",
-        "project_id"
-      ],
-      "basis": "land_project_bbl",
-      "input_value": "1017670071",
-      "observed_at": "2024-03-13T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "link_type": "sited_on_parcel",
-      "from_ref": "project:2022M0258",
-      "to_ref": "parcel:1017670072",
-      "domain": "land",
-      "confidence": "strong",
-      "method": "zap_bbl_project_id_v1",
-      "method_version": "1",
-      "source_system": "zap-projects",
-      "source_record_id": "zap-projects:2022M0258:1017670072",
-      "source_fields": [
-        "bbl",
-        "project_id"
-      ],
-      "basis": "land_project_bbl",
-      "input_value": "1017670072",
-      "observed_at": "2024-03-13T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "link_type": "sited_on_parcel",
-      "from_ref": "project:2022M0258",
-      "to_ref": "parcel:1017670168",
-      "domain": "land",
-      "confidence": "strong",
-      "method": "zap_bbl_project_id_v1",
-      "method_version": "1",
-      "source_system": "zap-projects",
-      "source_record_id": "zap-projects:2022M0258:1017670168",
-      "source_fields": [
-        "bbl",
-        "project_id"
-      ],
-      "basis": "land_project_bbl",
-      "input_value": "1017670168",
-      "observed_at": "2024-03-13T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "link_type": "sited_on_parcel",
-      "from_ref": "project:2022M0258",
-      "to_ref": "parcel:1017670169",
-      "domain": "land",
-      "confidence": "strong",
-      "method": "zap_bbl_project_id_v1",
-      "method_version": "1",
-      "source_system": "zap-projects",
-      "source_record_id": "zap-projects:2022M0258:1017670169",
-      "source_fields": [
-        "bbl",
-        "project_id"
-      ],
-      "basis": "land_project_bbl",
-      "input_value": "1017670169",
-      "observed_at": "2024-03-13T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:housing-preservation-and-development",
-      "root_kind": "agency",
-      "link_type": "sited_on_parcel",
-      "from_ref": "project:2026X0362",
-      "to_ref": "parcel:2025710001",
-      "domain": "land",
-      "confidence": "strong",
-      "method": "zap_bbl_project_id_v1",
-      "method_version": "1",
-      "source_system": "zap-projects",
-      "source_record_id": "zap-projects:2026X0362:2025710001",
-      "source_fields": [
-        "bbl",
-        "project_id"
-      ],
-      "basis": "land_project_bbl",
-      "input_value": "2025710001",
-      "observed_at": "2026-04-22T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:lpc-nyc-landmarks-preservation-commission",
-      "root_kind": "agency",
-      "link_type": "applicant_agency",
-      "from_ref": "project:2026K0443",
-      "to_ref": "agency:id:lpc-nyc-landmarks-preservation-commission",
-      "domain": "land",
-      "confidence": "tentative",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "warehouse",
-      "source_record_id": "warehouse:2026K0443",
-      "source_fields": [
-        "primary_applicant"
-      ],
-      "basis": "land_primary_applicant",
-      "input_value": "LPC - NYC Landmarks Preservation Commission",
-      "observed_at": "2026-04-20"
-    },
-    {
-      "root_ref": "agency:id:lpc-nyc-landmarks-preservation-commission",
-      "root_kind": "agency",
-      "link_type": "applicant_agency",
-      "from_ref": "project:2026M0444",
-      "to_ref": "agency:id:lpc-nyc-landmarks-preservation-commission",
-      "domain": "land",
-      "confidence": "tentative",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "warehouse",
-      "source_record_id": "warehouse:2026M0444",
-      "source_fields": [
-        "primary_applicant"
-      ],
-      "basis": "land_primary_applicant",
-      "input_value": "LPC - NYC Landmarks Preservation Commission",
-      "observed_at": "2026-04-17"
-    },
-    {
-      "root_ref": "agency:id:lpc-nyc-landmarks-preservation-commission",
-      "root_kind": "agency",
-      "link_type": "applicant_agency",
-      "from_ref": "project:2026M0445",
-      "to_ref": "agency:id:lpc-nyc-landmarks-preservation-commission",
-      "domain": "land",
-      "confidence": "tentative",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "warehouse",
-      "source_record_id": "warehouse:2026M0445",
-      "source_fields": [
-        "primary_applicant"
-      ],
-      "basis": "land_primary_applicant",
-      "input_value": "LPC - NYC Landmarks Preservation Commission",
-      "observed_at": "2026-04-17"
-    },
-    {
-      "root_ref": "agency:id:mayors-office-of-criminal-justice",
-      "root_kind": "agency",
-      "link_type": "applicant_agency",
-      "from_ref": "project:2025R0137",
-      "to_ref": "agency:id:mayors-office-of-criminal-justice",
-      "domain": "land",
-      "confidence": "tentative",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "warehouse",
-      "source_record_id": "warehouse:2025R0137",
-      "source_fields": [
-        "primary_applicant"
-      ],
-      "basis": "land_primary_applicant",
-      "input_value": "Mayor's Office of Criminal Justice",
-      "observed_at": "2026-04-09"
-    },
-    {
-      "root_ref": "agency:id:new-york-city-department-of-city-planning",
-      "root_kind": "agency",
-      "link_type": "applicant_agency",
-      "from_ref": "project:2025Y0279",
-      "to_ref": "agency:id:new-york-city-department-of-city-planning",
-      "domain": "land",
-      "confidence": "tentative",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "warehouse",
-      "source_record_id": "warehouse:2025Y0279",
-      "source_fields": [
-        "primary_applicant"
-      ],
-      "basis": "land_primary_applicant",
-      "input_value": "New York City Department of City Planning",
-      "observed_at": "2025-01-15"
-    },
-    {
-      "root_ref": "agency:id:new-york-city-department-of-city-planning",
-      "root_kind": "agency",
-      "link_type": "applicant_agency",
-      "from_ref": "project:2026Q0210",
-      "to_ref": "agency:id:new-york-city-department-of-city-planning",
-      "domain": "land",
-      "confidence": "tentative",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "warehouse",
-      "source_record_id": "warehouse:2026Q0210",
-      "source_fields": [
-        "primary_applicant"
-      ],
-      "basis": "land_primary_applicant",
-      "input_value": "New York City Department of City Planning",
-      "observed_at": "2026-02-26"
-    },
-    {
-      "root_ref": "agency:id:new-york-state-department-of-transportation",
-      "root_kind": "agency",
-      "link_type": "applicant_agency",
-      "from_ref": "project:P2016Q0288",
-      "to_ref": "agency:id:new-york-state-department-of-transportation",
-      "domain": "land",
-      "confidence": "tentative",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "warehouse",
-      "source_record_id": "warehouse:P2016Q0288",
-      "source_fields": [
-        "primary_applicant"
-      ],
-      "basis": "land_primary_applicant",
-      "input_value": "NEW YORK STATE DEPARTMENT OF TRANSPORTATION",
-      "observed_at": "2021-11-08"
-    },
-    {
-      "root_ref": "agency:id:ny-state-department-of-transporation",
-      "root_kind": "agency",
-      "link_type": "applicant_agency",
-      "from_ref": "project:P2016K0287",
-      "to_ref": "agency:id:ny-state-department-of-transporation",
-      "domain": "land",
-      "confidence": "tentative",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "warehouse",
-      "source_record_id": "warehouse:P2016K0287",
-      "source_fields": [
-        "primary_applicant"
-      ],
-      "basis": "land_primary_applicant",
-      "input_value": "NY STATE DEPARTMENT OF TRANSPORATION",
-      "observed_at": "2021-11-08"
-    },
-    {
-      "root_ref": "agency:id:nyc-dot-department-of-transportation",
-      "root_kind": "agency",
-      "link_type": "applicant_agency",
-      "from_ref": "project:2023Q0424",
-      "to_ref": "agency:id:nyc-dot-department-of-transportation",
-      "domain": "land",
-      "confidence": "tentative",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "warehouse",
-      "source_record_id": "warehouse:2023Q0424",
-      "source_fields": [
-        "primary_applicant"
-      ],
-      "basis": "land_primary_applicant",
-      "input_value": "NYC DOT Department of Transportation",
-      "observed_at": "2025-12-04"
-    },
-    {
-      "root_ref": "agency:id:nyc-dot-department-of-transportation",
-      "root_kind": "agency",
-      "link_type": "applicant_agency",
-      "from_ref": "project:2025M0252",
-      "to_ref": "agency:id:nyc-dot-department-of-transportation",
-      "domain": "land",
-      "confidence": "tentative",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "Zoning Application Portal projects (Open Data)",
-      "source_record_id": "Zoning Application Portal projects (Open Data):2025M0252",
-      "source_fields": [
-        "primary_applicant"
-      ],
-      "basis": "land_primary_applicant",
-      "input_value": "NYC DOT Department of Transportation",
-      "observed_at": "2026-04-14T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:nyc-dot-new-york-city-dept-of-transportation-bridges",
-      "root_kind": "agency",
-      "link_type": "applicant_agency",
-      "from_ref": "project:2023R0199",
-      "to_ref": "agency:id:nyc-dot-new-york-city-dept-of-transportation-bridges",
-      "domain": "land",
-      "confidence": "tentative",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "Zoning Application Portal projects (Open Data)",
-      "source_record_id": "Zoning Application Portal projects (Open Data):2023R0199",
-      "source_fields": [
-        "primary_applicant"
-      ],
-      "basis": "land_primary_applicant",
-      "input_value": "NYC DOT New York City Dept. of Transportation - Bridges",
-      "observed_at": "2026-04-15T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:parks-and-recreation",
-      "root_kind": "agency",
-      "link_type": "applicant_agency",
-      "from_ref": "project:2022X0150",
-      "to_ref": "agency:id:parks-and-recreation",
-      "domain": "land",
-      "confidence": "tentative",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "warehouse",
-      "source_record_id": "warehouse:2022X0150",
-      "source_fields": [
-        "primary_applicant"
-      ],
-      "basis": "land_primary_applicant",
-      "input_value": "DPR - Department of Parks & Recreation NYC",
-      "observed_at": "2025-07-03"
-    },
-    {
-      "root_ref": "agency:id:parks-and-recreation",
-      "root_kind": "agency",
-      "link_type": "applicant_agency",
-      "from_ref": "project:2023M0452",
-      "to_ref": "agency:id:parks-and-recreation",
-      "domain": "land",
-      "confidence": "tentative",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "Zoning Application Portal projects (Open Data)",
-      "source_record_id": "Zoning Application Portal projects (Open Data):2023M0452",
-      "source_fields": [
-        "primary_applicant"
-      ],
-      "basis": "land_primary_applicant",
-      "input_value": "DPR - Department of Parks & Recreation NYC",
-      "observed_at": null
-    },
-    {
-      "root_ref": "agency:id:parks-and-recreation",
-      "root_kind": "agency",
-      "link_type": "applicant_agency",
-      "from_ref": "project:2025K0318",
-      "to_ref": "agency:id:parks-and-recreation",
-      "domain": "land",
-      "confidence": "tentative",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "warehouse",
-      "source_record_id": "warehouse:2025K0318",
-      "source_fields": [
-        "primary_applicant"
-      ],
-      "basis": "land_primary_applicant",
-      "input_value": "DPR - Department of Parks & Recreation NYC",
-      "observed_at": "2025-10-20"
-    },
-    {
-      "root_ref": "agency:id:parks-and-recreation",
-      "root_kind": "agency",
-      "link_type": "applicant_agency",
-      "from_ref": "project:2025Q0314",
-      "to_ref": "agency:id:parks-and-recreation",
-      "domain": "land",
-      "confidence": "tentative",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "warehouse",
-      "source_record_id": "warehouse:2025Q0314",
-      "source_fields": [
-        "primary_applicant"
-      ],
-      "basis": "land_primary_applicant",
-      "input_value": "DPR - Department of Parks & Recreation NYC",
-      "observed_at": "2025-03-06"
-    },
-    {
-      "root_ref": "agency:id:parks-and-recreation",
-      "root_kind": "agency",
-      "link_type": "applicant_agency",
-      "from_ref": "project:2025Q0316",
-      "to_ref": "agency:id:parks-and-recreation",
-      "domain": "land",
-      "confidence": "tentative",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "Zoning Application Portal projects (Open Data)",
-      "source_record_id": "Zoning Application Portal projects (Open Data):2025Q0316",
-      "source_fields": [
-        "primary_applicant"
-      ],
-      "basis": "land_primary_applicant",
-      "input_value": "DPR - Department of Parks & Recreation NYC",
-      "observed_at": "2026-04-14T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:parks-and-recreation",
-      "root_kind": "agency",
-      "link_type": "applicant_agency",
-      "from_ref": "project:2025R0257",
-      "to_ref": "agency:id:parks-and-recreation",
-      "domain": "land",
-      "confidence": "tentative",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "warehouse",
-      "source_record_id": "warehouse:2025R0257",
-      "source_fields": [
-        "primary_applicant"
-      ],
-      "basis": "land_primary_applicant",
-      "input_value": "DPR - Department of Parks & Recreation NYC",
-      "observed_at": "2026-03-11"
-    },
-    {
-      "root_ref": "agency:id:parks-and-recreation",
-      "root_kind": "agency",
-      "link_type": "applicant_agency",
-      "from_ref": "project:2026R0186",
-      "to_ref": "agency:id:parks-and-recreation",
-      "domain": "land",
-      "confidence": "tentative",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "warehouse",
-      "source_record_id": "warehouse:2026R0186",
-      "source_fields": [
-        "primary_applicant"
-      ],
-      "basis": "land_primary_applicant",
-      "input_value": "DPR - Department of Parks & Recreation NYC",
-      "observed_at": "2026-03-25"
-    },
-    {
-      "root_ref": "agency:id:parks-and-recreation",
-      "root_kind": "agency",
-      "link_type": "applicant_agency",
-      "from_ref": "project:P2009M0029",
-      "to_ref": "agency:id:parks-and-recreation",
-      "domain": "land",
-      "confidence": "tentative",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "warehouse",
-      "source_record_id": "warehouse:P2009M0029",
-      "source_fields": [
-        "primary_applicant"
-      ],
-      "basis": "land_primary_applicant",
-      "input_value": "DPR - Department of Parks & Recreation NYC",
-      "observed_at": "2008-08-11"
-    },
-    {
-      "root_ref": "agency:id:parks-and-recreation",
-      "root_kind": "agency",
-      "link_type": "applicant_agency",
-      "from_ref": "project:P2012R0043",
-      "to_ref": "agency:id:parks-and-recreation",
-      "domain": "land",
-      "confidence": "tentative",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "warehouse",
-      "source_record_id": "warehouse:P2012R0043",
-      "source_fields": [
-        "primary_applicant"
-      ],
-      "basis": "land_primary_applicant",
-      "input_value": "DPR - Department of Parks & Recreation NYC",
-      "observed_at": null
-    },
-    {
-      "root_ref": "agency:id:parks-and-recreation",
-      "root_kind": "agency",
-      "link_type": "contract_published_by_agency",
-      "from_ref": "contract:CT-PARKS-FIX005",
-      "to_ref": "agency:id:parks-and-recreation",
-      "domain": "money",
-      "confidence": "strong",
-      "method": "contract_id_join_v1",
-      "method_version": "1",
-      "source_system": "ocp-recent-contract-awards",
-      "source_record_id": "ocp-recent-contract-awards:FIX005",
-      "source_fields": [
-        "agency_name",
-        "contract_id"
-      ],
-      "basis": "money_contract_agency",
-      "input_value": "Department of Parks and Recreation",
-      "observed_at": "2024-07-05T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:parks-and-recreation",
-      "root_kind": "agency",
-      "link_type": "hosts_meeting",
-      "from_ref": "notice:20260720055",
-      "to_ref": "agency:id:parks-and-recreation",
-      "domain": "meetings",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "city_record",
-      "source_record_id": "city_record:20260720055",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "meetings_agency_name",
-      "input_value": "Department of Parks and Recreation",
-      "observed_at": "2026-08-12"
-    },
-    {
-      "root_ref": "agency:id:parks-and-recreation",
-      "root_kind": "agency",
-      "link_type": "issued_rule",
-      "from_ref": "notice:20260715001",
-      "to_ref": "agency:id:parks-and-recreation",
-      "domain": "rules",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "city_record",
-      "source_record_id": "city_record:20260715001",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "rules_agency_name",
-      "input_value": "Department of Parks and Recreation",
-      "observed_at": "2026-07-15"
-    },
-    {
-      "root_ref": "agency:id:parks-and-recreation",
-      "root_kind": "agency",
-      "link_type": "published_by_agency",
-      "from_ref": "notice:FIX005",
-      "to_ref": "agency:id:parks-and-recreation",
-      "domain": "money",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "ocp-recent-contract-awards",
-      "source_record_id": "ocp-recent-contract-awards:FIX005",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "money_agency_name",
-      "input_value": "Department of Parks and Recreation",
-      "observed_at": "2024-07-05T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:parks-and-recreation",
-      "root_kind": "agency",
-      "link_type": "references_contract",
-      "from_ref": "notice:FIX005",
-      "to_ref": "contract:CT-PARKS-FIX005",
-      "domain": "money",
-      "confidence": "strong",
-      "method": "contract_id_join_v1",
-      "method_version": "1",
-      "source_system": "ocp-recent-contract-awards",
-      "source_record_id": "ocp-recent-contract-awards:FIX005",
-      "source_fields": [
-        "contract_id"
-      ],
-      "basis": "money_contract_id",
-      "input_value": "CT-PARKS-FIX005",
-      "observed_at": "2024-07-05T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:parks-and-recreation",
-      "root_kind": "agency",
-      "link_type": "shares_authority_key",
-      "from_ref": "notice:FIX005",
-      "to_ref": "pin:PIN-FIXTURE-5",
-      "domain": "money",
-      "confidence": "strong",
-      "method": "pin_authority_key_v1",
-      "method_version": "1",
-      "source_system": "ocp-recent-contract-awards",
-      "source_record_id": "ocp-recent-contract-awards:FIX005",
-      "source_fields": [
-        "pin"
-      ],
-      "basis": "money_pin",
-      "input_value": "PIN-FIXTURE-5",
-      "observed_at": "2024-07-05T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:sca-new-york-city-school-construction-authority",
-      "root_kind": "agency",
-      "link_type": "applicant_agency",
-      "from_ref": "project:2022R0134",
-      "to_ref": "agency:id:sca-new-york-city-school-construction-authority",
-      "domain": "land",
-      "confidence": "tentative",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "warehouse",
-      "source_record_id": "warehouse:2022R0134",
-      "source_fields": [
-        "primary_applicant"
-      ],
-      "basis": "land_primary_applicant",
-      "input_value": "SCA - New York City School Construction Authority",
-      "observed_at": null
-    },
-    {
-      "root_ref": "agency:id:transportation",
-      "root_kind": "agency",
-      "link_type": "hosts_meeting",
-      "from_ref": "notice:20260718022",
-      "to_ref": "agency:id:transportation",
-      "domain": "meetings",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "city_record",
-      "source_record_id": "city_record:20260718022",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "meetings_agency_name",
-      "input_value": "Department of Transportation",
-      "observed_at": "2026-08-05"
-    },
-    {
-      "root_ref": "agency:id:transportation",
-      "root_kind": "agency",
-      "link_type": "issued_rule",
-      "from_ref": "notice:20260714029",
-      "to_ref": "agency:id:transportation",
-      "domain": "rules",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "city_record",
-      "source_record_id": "city_record:20260714029",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "rules_agency_name",
-      "input_value": "Department of Transportation",
-      "observed_at": "2026-07-14"
-    },
-    {
-      "root_ref": "agency:id:transportation",
-      "root_kind": "agency",
-      "link_type": "published_by_agency",
-      "from_ref": "notice:FIX002",
-      "to_ref": "agency:id:transportation",
-      "domain": "money",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "ocp-recent-contract-awards",
-      "source_record_id": "ocp-recent-contract-awards:FIX002",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "money_agency_name",
-      "input_value": "Department of Transportation",
-      "observed_at": "2024-07-02T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:transportation",
-      "root_kind": "agency",
-      "link_type": "shares_authority_key",
-      "from_ref": "notice:FIX002",
-      "to_ref": "pin:PIN-FIXTURE-2",
-      "domain": "money",
-      "confidence": "strong",
-      "method": "pin_authority_key_v1",
-      "method_version": "1",
-      "source_system": "ocp-recent-contract-awards",
-      "source_record_id": "ocp-recent-contract-awards:FIX002",
-      "source_fields": [
-        "pin"
-      ],
-      "basis": "money_pin",
-      "input_value": "PIN-FIXTURE-2",
-      "observed_at": "2024-07-02T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:youth-and-community-development",
-      "root_kind": "agency",
-      "link_type": "contract_published_by_agency",
-      "from_ref": "contract:CT26026N0011014",
-      "to_ref": "agency:id:youth-and-community-development",
-      "domain": "money",
-      "confidence": "strong",
-      "method": "contract_id_join_v1",
-      "method_version": "1",
-      "source_system": "ocp-recent-contract-awards",
-      "source_record_id": "ocp-recent-contract-awards:20260724015",
-      "source_fields": [
-        "agency_name",
-        "contract_id"
-      ],
-      "basis": "money_contract_agency",
-      "input_value": "Youth and Community Development",
-      "observed_at": "2026-07-30T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:youth-and-community-development",
-      "root_kind": "agency",
-      "link_type": "published_by_agency",
-      "from_ref": "notice:20260724015",
-      "to_ref": "agency:id:youth-and-community-development",
-      "domain": "money",
-      "confidence": "strong",
-      "method": "agency_canonical_v1",
-      "method_version": "1",
-      "source_system": "ocp-recent-contract-awards",
-      "source_record_id": "ocp-recent-contract-awards:20260724015",
-      "source_fields": [
-        "agency_name"
-      ],
-      "basis": "money_agency_name",
-      "input_value": "Youth and Community Development",
-      "observed_at": "2026-07-30T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:youth-and-community-development",
-      "root_kind": "agency",
-      "link_type": "references_contract",
-      "from_ref": "notice:20260724015",
-      "to_ref": "contract:CT26026N0011014",
-      "domain": "money",
-      "confidence": "strong",
-      "method": "contract_id_join_v1",
-      "method_version": "1",
-      "source_system": "ocp-recent-contract-awards",
-      "source_record_id": "ocp-recent-contract-awards:20260724015",
-      "source_fields": [
-        "contract_id"
-      ],
-      "basis": "money_contract_id",
-      "input_value": "CT26026N0011014",
-      "observed_at": "2026-07-30T00:00:00.000"
-    },
-    {
-      "root_ref": "agency:id:youth-and-community-development",
-      "root_kind": "agency",
-      "link_type": "shares_authority_key",
-      "from_ref": "notice:20260724015",
-      "to_ref": "pin:26026N0011014",
-      "domain": "money",
-      "confidence": "strong",
-      "method": "pin_authority_key_v1",
-      "method_version": "1",
-      "source_system": "ocp-recent-contract-awards",
-      "source_record_id": "ocp-recent-contract-awards:20260724015",
-      "source_fields": [
-        "pin"
-      ],
-      "basis": "money_pin",
-      "input_value": "26026N0011014",
-      "observed_at": "2026-07-30T00:00:00.000"
-    },
-    {
-      "root_ref": "vendor:stem:100%20QUEENS%20BLVD",
-      "root_kind": "vendor",
-      "link_type": "applicant_vendor",
-      "from_ref": "project:2023Q0450",
-      "to_ref": "vendor:stem:100%20QUEENS%20BLVD",
-      "domain": "land",
-      "confidence": "tentative",
-      "method": "vendor_stem_v1",
-      "method_version": "1",
-      "source_system": "warehouse",
-      "source_record_id": "warehouse:2023Q0450",
-      "source_fields": [
-        "primary_applicant"
-      ],
-      "basis": "land_primary_applicant",
-      "input_value": "100 Queens Blvd Co. LLC",
-      "observed_at": "2026-01-08"
-    },
-    {
-      "root_ref": "vendor:stem:100%20WALL%20REALTY",
-      "root_kind": "vendor",
-      "link_type": "applicant_vendor",
-      "from_ref": "project:2026M0120",
-      "to_ref": "vendor:stem:100%20WALL%20REALTY",
-      "domain": "land",
-      "confidence": "tentative",
-      "method": "vendor_stem_v1",
-      "method_version": "1",
-      "source_system": "warehouse",
-      "source_record_id": "warehouse:2026M0120",
-      "source_fields": [
-        "primary_applicant"
-      ],
-      "basis": "land_primary_applicant",
-      "input_value": "100 Wall Realty LLC",
-      "observed_at": "2026-03-19"
-    },
-    {
-      "root_ref": "vendor:stem:108%20DUNKIRK%20STREET",
-      "root_kind": "vendor",
-      "link_type": "applicant_vendor",
-      "from_ref": "project:2020Q0240",
-      "to_ref": "vendor:stem:108%20DUNKIRK%20STREET",
-      "domain": "land",
-      "confidence": "tentative",
-      "method": "vendor_stem_v1",
-      "method_version": "1",
-      "source_system": "warehouse",
-      "source_record_id": "warehouse:2020Q0240",
-      "source_fields": [
-        "primary_applicant"
-      ],
-      "basis": "land_primary_applicant",
-      "input_value": "108 Dunkirk Street LLC",
-      "observed_at": "2020-06-19"
     }
   ],
   "provenance": {

@@ -13,6 +13,8 @@ import {
   observationFromRulesRow,
   observationFromMeetingsRow,
   observationFromPeopleRow,
+  observationsFromRulesMaterialization,
+  observationsFromMeetingsMaterialization,
   mergeBblsOntoLandObservations,
   observationFromPropertyRow,
   buildIntelligenceCorpus,
@@ -197,20 +199,72 @@ export function collectCrossDomainObservations(root, opts = {}) {
     }
   }
 
-  // --- Rules / meetings / people: committed seed observations (honest, small) ---
+  // --- Rules: live City Record Agency Rules snapshot (rules:materialized:v2-compatible) ---
+  // Cap keeps materialization CPU-light; provenance stays on each row.
+  const rulesLimit = Number.isFinite(opts.rules_limit) ? opts.rules_limit : 200;
+  const rulesSnapshots = [
+    path.join(root, "site/data/rules_domain_observations.json"),
+    path.join(root, "worker/test/fixtures/entity-intelligence/rules_materialized_v2.json"),
+  ];
+  for (const p of rulesSnapshots) {
+    const doc = loadJsonIfExists(p);
+    if (!doc) continue;
+    const sourceSystem = cleanSourceSystem(
+      doc.source?.system || doc.source_system,
+      "city_record",
+    );
+    for (const obs of observationsFromRulesMaterialization(doc, {
+      sourceSystem,
+      limit: rulesLimit,
+    })) {
+      observations.push(obs);
+    }
+  }
+
+  // --- Meetings: live City Record hearings snapshot (meeting-outcomes-compatible) ---
+  // Person-level votes are not loaded here — production by_person retention is empty.
+  const meetingsLimit = Number.isFinite(opts.meetings_limit) ? opts.meetings_limit : 250;
+  const meetingsSnapshots = [
+    path.join(root, "site/data/meetings_domain_observations.json"),
+    path.join(root, "worker/test/fixtures/entity-intelligence/meeting_outcomes_materialized_v2.json"),
+  ];
+  for (const p of meetingsSnapshots) {
+    const doc = loadJsonIfExists(p);
+    if (!doc) continue;
+    const sourceSystem = cleanSourceSystem(
+      doc.source?.system || doc.source_system,
+      "city_record",
+    );
+    for (const obs of observationsFromMeetingsMaterialization(doc, {
+      sourceSystem,
+      limit: meetingsLimit,
+    })) {
+      observations.push(obs);
+    }
+  }
+
+  // --- Seed: property multi-domain demos + optional people (only when person_id present) ---
+  // Rules/meetings seeds are no longer the primary materialization (live snapshots above).
+  // Seed rules/meetings rows remain as fallback anchors when snapshots are missing.
   const seedPath = path.join(
     root,
     "worker/test/fixtures/entity-intelligence/domain_observations.json",
   );
   const seed = loadJsonIfExists(seedPath);
   if (seed) {
-    for (const row of seed.rules || []) {
-      const obs = observationFromRulesRow(row);
-      if (obs) observations.push(obs);
+    const haveLiveRules = observations.some((o) => o.domain === "rules");
+    const haveLiveMeetings = observations.some((o) => o.domain === "meetings");
+    if (!haveLiveRules) {
+      for (const row of seed.rules || []) {
+        const obs = observationFromRulesRow(row);
+        if (obs) observations.push(obs);
+      }
     }
-    for (const row of seed.meetings || []) {
-      const obs = observationFromMeetingsRow(row);
-      if (obs) observations.push(obs);
+    if (!haveLiveMeetings) {
+      for (const row of seed.meetings || []) {
+        const obs = observationFromMeetingsRow(row);
+        if (obs) observations.push(obs);
+      }
     }
     for (const row of seed.people || []) {
       const obs = observationFromPeopleRow(row);
@@ -323,6 +377,8 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
         "site/data/zap_projects_warehouse_lookup.json",
         "site/data/zap_bbl_warehouse_lookup.json",
         "site/data/land_default_ulurp.json",
+        "site/data/rules_domain_observations.json",
+        "site/data/meetings_domain_observations.json",
         "worker/test/fixtures/entity-intelligence/domain_observations.json",
         "worker/test/fixtures/property-cross-domain/corpus.json",
         "test/fixtures/property_disposition/multi_notice_bbl.json",
@@ -337,9 +393,11 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
         "checkbook_payment_v1",
         "exact_bbl_v1",
         "disposition_owner_label_v1",
+        "rules_agency_issued_v1",
+        "meetings_agency_hosts_v1",
       ],
       note:
-        "Links only when identity normalizers or join keys resolve. Identity: agency/vendor across money/land/property/rules/meetings. Join keys: PIN (shares_authority_key), contract_id (references_contract / payment_on_contract), BBL (sited_on_parcel / property exact BBL), payee (paid_to_vendor). Property attaches via City Record agency_name and labeled disposition owners. Empty domains are explicit; people defaults to not_yet_ingested without by_person rows.",
+        "Links only when identity normalizers or join keys resolve. Identity: agency/vendor across money/land/property/rules/meetings. Join keys: PIN (shares_authority_key), contract_id (references_contract / payment_on_contract), BBL (sited_on_parcel / property exact BBL), payee (paid_to_vendor). Rules and meetings densify from City Record domain snapshots (Agency Rules + Public Hearings), not invented contract/vendor joins. Property attaches via City Record agency_name and labeled disposition owners. Empty domains are explicit; people defaults to not_yet_ingested without by_person rows.",
     },
   };
 }
