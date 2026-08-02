@@ -7,6 +7,12 @@
     "single_job_lock": true,
     "taskpolicy_or_nice_wrap": true
   },
+  "data_provenance": {
+    "source": "NYC Open Data Socrata dataset qyyg-4tf5 (Recent Contract Awards)",
+    "export_url": "https://data.cityofnewyork.us/api/views/qyyg-4tf5/rows.csv?accessType=DOWNLOAD",
+    "row_count_basis": "DuckDB COUNT(*) on warehouse parquet after bulk convert (measured 2026-08-02)",
+    "raw_sha256_basis": "sha256 of full rows.csv download"
+  },
   "dataset_id": "ocp-recent-contract-awards",
   "headroom": {
     "note": "Headroom stayed OK for download, convert, and post-ingest (see manifest headroom_evidence_line).",

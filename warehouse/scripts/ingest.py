@@ -351,16 +351,69 @@ def main(argv: list[str] | None = None) -> int:
 
 
 def _write_bulk_sample(csv_path: Path, dataset_id: str, n: int) -> Path:
+    """Write a small public-safe sample (no contact email/phone/name columns)."""
+    import csv
+
     dest = WAREHOUSE_DIR / "fixtures" / dataset_id / "bulk_sample.csv"
     dest.parent.mkdir(parents=True, exist_ok=True)
-    with csv_path.open("r", encoding="utf-8", errors="replace") as src:
-        header = src.readline()
-        lines = []
-        for i, line in enumerate(src):
+    # Prefer product-aligned warehouse columns; bulk CSV may still be PascalCase.
+    prefer = [
+        "request_id",
+        "start_date",
+        "agency_name",
+        "type_of_notice_description",
+        "pin",
+        "contract_amount",
+        "vendor_name",
+        "short_title",
+        "section_name",
+    ]
+    pascal = {
+        "request_id": "RequestID",
+        "start_date": "StartDate",
+        "agency_name": "AgencyName",
+        "type_of_notice_description": "TypeOfNoticeDescription",
+        "pin": "PIN",
+        "contract_amount": "ContractAmount",
+        "vendor_name": "VendorName",
+        "short_title": "ShortTitle",
+        "section_name": "SectionName",
+    }
+    with csv_path.open("r", encoding="utf-8", errors="replace", newline="") as src:
+        reader = csv.DictReader(src)
+        fieldnames = reader.fieldnames or []
+        # Resolve which header form is present
+        colmap: dict[str, str] = {}
+        for snake in prefer:
+            if snake in fieldnames:
+                colmap[snake] = snake
+            elif pascal[snake] in fieldnames:
+                colmap[snake] = pascal[snake]
+        if not colmap:
+            # Fallback: first few non-contact columns
+            blocked = {"email", "contact_email", "contact_phone", "contact_name", "contactphone", "contactname"}
+            for h in fieldnames:
+                key = h.lower().replace(" ", "_")
+                if key in blocked or "email" in key or "phone" in key or "fax" in key:
+                    continue
+                colmap[h] = h
+                if len(colmap) >= 8:
+                    break
+        out_fields = list(colmap.keys())
+        rows = []
+        for i, row in enumerate(reader):
             if i >= n:
                 break
-            lines.append(line if line.endswith("\n") else line + "\n")
-    dest.write_text(header + "".join(lines), encoding="utf-8")
+            rows.append(
+                {
+                    out: (row.get(src_h) or "").replace("\n", " ").replace("\r", " ").strip()
+                    for out, src_h in colmap.items()
+                }
+            )
+    with dest.open("w", encoding="utf-8", newline="") as outf:
+        writer = csv.DictWriter(outf, fieldnames=out_fields)
+        writer.writeheader()
+        writer.writerows(rows)
     return dest
 
 

@@ -113,7 +113,7 @@ def main(argv: list[str] | None = None) -> int:
             else pack.get("deferred_notes")
         ),
         "how_to_reproduce": [
-            "python3 ~/dev/agentic-engineering-principles/bin/headroom.py  # must not be CONSTRAINED",
+            "python3 \"$HEADROOM_BIN\"  # estate headroom.py; must not be CONSTRAINED",
             "python3 -m venv warehouse/.venv && warehouse/.venv/bin/pip install -r warehouse/requirements.txt",
             "warehouse/.venv/bin/python warehouse/scripts/ingest.py --dataset ocp-recent-contract-awards --bulk --ack-large --write-sample 25",
             "warehouse/.venv/bin/python warehouse/scripts/query.py --sql-file warehouse/sql/examples/ocp_bulk_verify.sql",

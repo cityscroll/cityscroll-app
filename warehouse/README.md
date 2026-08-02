@@ -88,7 +88,7 @@ card sources): OCP awards `qyyg-4tf5` → ZAP projects `hgx4-8ukb` → ZAP BBL
 `warehouse/manifests/wh02_load_manifest.json`.
 
 ```bash
-python3 ~/dev/agentic-engineering-principles/bin/headroom.py   # CONSTRAINED → defer
+python3 "$HEADROOM_BIN"   # CONSTRAINED → defer
 
 warehouse/.venv/bin/python warehouse/scripts/ingest.py \
   --dataset ocp-recent-contract-awards \
@@ -99,7 +99,7 @@ warehouse/.venv/bin/python warehouse/scripts/query.py \
   --sql-file warehouse/sql/examples/ocp_bulk_verify.sql
 
 warehouse/.venv/bin/python warehouse/scripts/write_load_manifest.py \
-  --headroom-line "$(python3 ~/dev/agentic-engineering-principles/bin/headroom.py 2>&1 | tail -1)"
+  --headroom-line "$(python3 \"$HEADROOM_BIN\" 2>&1 | tail -1)"
 ```
 
 Raw CSV / parquet / DuckDB stay **gitignored**. Git gets: registry, runner,
@@ -120,7 +120,7 @@ previous pack. Next after OCP: `zap-projects` (WH-03 prewarm input).
 | **Bulk export** | `--bulk --ack-large` → full `rows.csv?accessType=DOWNLOAD` (still one job + headroom + wrap) |
 | **taskpolicy / nice** | Live/bulk convert path runs under `headroom.py wrap` → `taskpolicy -b` |
 | **DuckDB threads** | `PRAGMA threads=1` on convert + catalog |
-| **One dataset per invocation** | No fan-out multi-source hoover in this CLI |
+| **One dataset per invocation** | No fan-out multi-source bulk download in this CLI |
 
 Heavy work should prefer the **Mac Mini** overnight, or a capped local batch when
 headroom is OK. Never launch parallel full City Record + payroll downloads on

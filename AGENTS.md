@@ -45,7 +45,7 @@ runner. Manifest + checksums (no multi-MB bulk in git):
 `warehouse/manifests/wh02_load_manifest.json`. Reproduce bulk:
 
 ```bash
-python3 ~/dev/agentic-engineering-principles/bin/headroom.py   # CONSTRAINED → defer
+python3 "$HEADROOM_BIN"   # estate headroom.py; CONSTRAINED → defer
 warehouse/.venv/bin/python warehouse/scripts/ingest.py \
   --dataset ocp-recent-contract-awards --bulk --ack-large --write-sample 25
 warehouse/.venv/bin/python warehouse/scripts/query.py \

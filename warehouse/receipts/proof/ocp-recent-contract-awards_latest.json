@@ -16,7 +16,7 @@
     "status": "ok"
   },
   "limit": 5,
-  "observed_at": "2026-08-02T03:12:06Z",
+  "observed_at": "2026-08-02T03:14:56Z",
   "parquet": {
     "bytes": 2089,
     "column_map_applied": false,
