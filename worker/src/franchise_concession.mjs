@@ -1,5 +1,5 @@
 // Daily materialized Franchise / Concession Review (FCRC) view.
-// City Record remains authoritative; this projection stamps multi-notice
+// City Record remains authoritative; this materialization stamps multi-notice
 // process spines (solicitation → public hearing → committee meeting → award)
 // joined by counterparty stem, annual plan year, or FCRC rules subject.
 
