@@ -29,6 +29,10 @@ jobs:
       pull-requests: read
     outputs:
       frontend: ${{ steps.filter.outputs.frontend }}
+      # Browser performance contract only (home + contracts keyword). Narrower than
+      # frontend: site/data receipts, worker-only, and docs do not trigger the
+      # 20-sample p95 job. Real chrome/asset changes still do.
+      perf: ${{ steps.filter.outputs.perf }}
       worker: ${{ steps.filter.outputs.worker }}
       docs: ${{ steps.filter.outputs.docs }}
       # true only when every changed path is one the changelog bot owns
@@ -61,6 +65,27 @@ jobs:
               - '.github/workflows/deploy-pages.yml'
               - '.github/workflows/deploy-beta-preview.yml'
               - '.github/workflows/promote-beta.yml'
+            # Subset of frontend that can move the static 20-sample budget.
+            # Excludes site/data/** (receipts, join JSON), pure Markdown under site/,
+            # and deploy workflow metadata that a11y still wants as frontend.
+            perf:
+              - 'site/**/*.html'
+              - 'site/**/*.css'
+              - 'site/**/*.js'
+              - 'site/**/*.mjs'
+              - 'site/**/*.svg'
+              - 'site/**/*.png'
+              - 'site/**/*.jpg'
+              - 'site/**/*.jpeg'
+              - 'site/**/*.webp'
+              - 'site/**/*.woff'
+              - 'site/**/*.woff2'
+              - 'site/assets/**'
+              - 'site/media/**'
+              - 'site/i18n/**'
+              - 'performance-budgets.json'
+              - 'test/performance/**'
+              - '.github/actions/setup-playwright/**'
             worker:
               - 'worker/**'
             docs:
@@ -240,20 +265,37 @@ jobs:
 
   performance:
     name: Performance budgets (20-sample p95)
-    # Not required by merge rules. Frontend-only: worker/docs PRs skip the 8-minute
-    # browser budget (measured long pole, non-blocking but burns Actions minutes).
+    # Not required by merge rules (see tools/merge_queue_policy.json). Always reports
+    # a conclusion so the check name never stays missing; the 20-sample measure runs
+    # only when `perf` paths change (site chrome/assets + budget harness). Data-only
+    # under site/data, worker-only, and docs take the success fast path (~seconds).
     needs: [changes, unit]
-    if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.frontend == 'true' && needs.unit.result == 'success'
+    if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
+      - name: Non-perf path set or unit-failed — report success
+        if: needs.changes.outputs.unit_full != 'true' || needs.changes.outputs.perf != 'true' || needs.unit.result != 'success'
+        run: |
+          if [ "${{ needs.unit.result }}" != "success" ] && \
+             [ "${{ needs.changes.outputs.unit_full }}" = "true" ] && \
+             [ "${{ needs.changes.outputs.perf }}" = "true" ]; then
+            echo "Skipping 20-sample performance budget because unit failed — re-run after unit is green."
+          else
+            echo "Skipping 20-sample performance budget (unit_full=${{ needs.changes.outputs.unit_full }}, perf=${{ needs.changes.outputs.perf }}, frontend=${{ needs.changes.outputs.frontend }})."
+          fi
+          echo "Reporting success for 'Performance budgets (20-sample p95)' without measuring."
+
       - uses: actions/checkout@v4
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success'
         with:
           persist-credentials: false
       - uses: ./.github/actions/setup-playwright
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success'
         with:
           playwright-version: "1.58.0"
       - name: Run deterministic performance contract
+        if: needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success'
         run: |
           python3 test/performance/verify.py \
             --budgets performance-budgets.json \
@@ -261,7 +303,7 @@ jobs:
             --site-root site \
             --samples 20
       - name: Preserve raw performance samples
-        if: always()
+        if: always() && needs.changes.outputs.unit_full == 'true' && needs.changes.outputs.perf == 'true' && needs.unit.result == 'success'
         uses: actions/upload-artifact@v4
         with:
           name: performance-samples
