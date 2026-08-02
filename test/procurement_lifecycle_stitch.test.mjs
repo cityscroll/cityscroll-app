@@ -100,6 +100,7 @@ const sandbox = new Function(
   extractFn("lifecycleStepperHTML") + "\n" +
   extractFn("lifecycleStageHTML") + "\n" +
   extractFn("lifecycleOcpAwardHTML") + "\n" +
+  extractFn("lifecycleTimelineHTMLFlat") +
   extractFn("lifecycleTimelineHTML") + "\n" +
   extractFn("lifecycleDollarsHTML") + "\n" +
   extractConst("VENDOR_SUFFIX") + "\n" +
@@ -187,7 +188,8 @@ try {
     extractFn("lifecycleStepperHTML") +
     extractFn("lifecycleStageHTML") +
     extractFn("lifecycleOcpAwardHTML") +
-    extractFn("lifecycleTimelineHTML") +
+    extractFn("lifecycleTimelineHTMLFlat") +
+  extractFn("lifecycleTimelineHTML") +
     extractFn("lifecycleDollarsHTML") +
     extractConst("VENDOR_SUFFIX") +
     extractFn("vendorStem") +
