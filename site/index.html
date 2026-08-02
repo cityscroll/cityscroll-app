@@ -3670,9 +3670,14 @@ async function loadStaffingFeed(){
 }
 function careerToday(){ return new Date().toISOString().slice(0,10); }
 function careerDate(value){ return value ? fdt(value+"T12:00:00Z") : t("career_date_unknown"); }
-function careerMoney(value){
+function careerMoney(value, gapClass){
   if(value === 0) return "$0";
-  return value == null ? t("career_not_published") : "$"+Number(value).toLocaleString("en-US");
+  if(value != null) return "$"+Number(value).toLocaleString("en-US");
+  // Schedule-only / never-ingested NOE → class (a). True omit on a linked NOE → class (b).
+  if(gapClass === "not_published") return t("career_not_published");
+  return t("career_fee_salary_not_yet_ingested_html",{
+    source:t("career_noe_source_name")
+  });
 }
 function careerStatusLabel(status){
   return t({
@@ -3788,22 +3793,25 @@ function careerCardHTML(exam){
   const title=escUiHtml(exam.title);
   const selected=careerSelected===exam.exam_number;
   const countdown=careerCountdownText(exam,status);
+  const feeSalary=CrolStaffing.examFeeSalaryView(exam);
   const notice=exam.notice_url
     ? `<a class="act" href="${escUiHtml(exam.notice_url)}" ${EXT_ATTRS}>${t("career_read_noe")}${extSR()}</a>`
     : `<a class="act" href="${escUiHtml(CrolStaffing.DCAS_OPEN_COMPETITIVE_URL)}" ${EXT_ATTRS}>${t("career_official_schedule")}${extSR()}</a>`;
   const apply=status==="open" && exam.notice_url
     ? `<a class="act primary" href="${escUiHtml(CrolStaffing.OASY_APPLY_URL)}" ${EXT_ATTRS}>${t("career_apply_oasys")}${extSR()}</a>`:"";
-  const details=exam.notice_url ? `
-    <div class="career-metrics">
-      <div class="career-metric"><b>${careerMoney(exam.fee)}</b><span>${t("career_application_fee")}</span></div>
-      <div class="career-metric"><b>${careerMoney(exam.salary_min)}</b><span>${t("career_starting_salary")}</span></div>
+  const hasNoeDetail=!!(exam.notice_url || feeSalary.kind==="joined" || exam.qualifications || exam.test_method);
+  const gapClass=feeSalary.class || (feeSalary.kind==="not_published"?"not_published":"not_yet_ingested");
+  const details=hasNoeDetail ? `
+    <div class="career-metrics" data-fee-salary="${feeSalary.kind}">
+      <div class="career-metric"><b>${careerMoney(feeSalary.fee ?? exam.fee, gapClass)}</b><span>${t("career_application_fee")}</span></div>
+      <div class="career-metric"><b>${careerMoney(feeSalary.salary_min ?? exam.salary_min, gapClass)}</b><span>${t("career_starting_salary")}</span></div>
     </div>
     <p class="career-detail-line"><b>${t("career_qualifications")}</b> <span lang="en" dir="ltr">${escUiHtml(exam.qualifications||"")}</span></p>
     <p class="career-detail-line"><b>${t("career_test_method")}</b> <span lang="en" dir="ltr">${escUiHtml(exam.test_method||"")}</span></p>
     <p class="career-detail-line"><b>${t("career_fee_waiver")}</b> <span lang="en" dir="ltr">${escUiHtml(exam.fee_waiver||"")}</span></p>
     ${exam.amendment?`<p class="note warn" lang="en" dir="ltr">${escUiHtml(exam.amendment)}</p>`:""}
     <p class="career-english-note">${t("career_official_english_note")}</p>`
-    : `<p class="note">${t("career_noe_pending")}</p>`;
+    : `<p class="note" data-fee-salary="not_yet_ingested">${t("career_noe_pending")}</p>`;
   return `<article class="career-card${selected?" selected route-item":""}" data-status="${status}" id="career-exam-${exam.exam_number}"${selected?' tabindex="-1"':""}>
     <div class="career-deadline-lead">
       <span class="tag ${careerStatusClass(status)}">${careerStatusLabel(status)}</span>

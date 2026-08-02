@@ -164,7 +164,8 @@
         "published_on": "2026-07-22"
       },
       "outcome_gap": null,
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": null
     },
     {
       "exam_number": "6126",
@@ -192,7 +193,8 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": null
     },
     {
       "exam_number": "7006",
@@ -227,7 +229,8 @@
         "published_on": "2026-07-22"
       },
       "outcome_gap": null,
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": null
     },
     {
       "exam_number": "7007",
@@ -246,7 +249,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7013",
@@ -276,7 +291,8 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": null
     },
     {
       "exam_number": "7016",
@@ -305,7 +321,8 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": null
     },
     {
       "exam_number": "7018",
@@ -334,7 +351,8 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": null
     },
     {
       "exam_number": "7514",
@@ -353,7 +371,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7524",
@@ -372,7 +402,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7311",
@@ -391,7 +433,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7323",
@@ -420,7 +474,8 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": null
     },
     {
       "exam_number": "7331",
@@ -449,7 +504,8 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": null
     },
     {
       "exam_number": "7312",
@@ -468,7 +524,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7508",
@@ -487,7 +555,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7509",
@@ -506,7 +586,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7023",
@@ -525,7 +617,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7028",
@@ -544,7 +648,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7029",
@@ -563,7 +679,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7033",
@@ -582,7 +710,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7522",
@@ -601,7 +741,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7056",
@@ -620,7 +772,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7527",
@@ -639,7 +803,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7070",
@@ -658,7 +834,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7313",
@@ -677,7 +865,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7002",
@@ -696,7 +896,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7501",
@@ -715,7 +927,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7003",
@@ -734,7 +958,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7502",
@@ -753,7 +989,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7507",
@@ -772,7 +1020,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7302",
@@ -791,7 +1051,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7034",
@@ -810,7 +1082,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7035",
@@ -829,7 +1113,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7036",
@@ -848,7 +1144,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7041",
@@ -867,7 +1175,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7307",
@@ -886,7 +1206,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7065",
@@ -905,7 +1237,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7327",
@@ -924,7 +1268,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7329",
@@ -943,7 +1299,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7539",
@@ -962,7 +1330,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7314",
@@ -981,7 +1361,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7010",
@@ -1000,7 +1392,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7011",
@@ -1019,7 +1423,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7012",
@@ -1038,7 +1454,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7512",
@@ -1057,7 +1485,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7513",
@@ -1076,7 +1516,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7024",
@@ -1095,7 +1547,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7027",
@@ -1114,7 +1578,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7031",
@@ -1133,7 +1609,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7032",
@@ -1152,7 +1640,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7047",
@@ -1171,7 +1671,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7052",
@@ -1190,7 +1702,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7054",
@@ -1209,7 +1733,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7324",
@@ -1228,7 +1764,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7533",
@@ -1247,7 +1795,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7315",
@@ -1266,7 +1826,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7000",
@@ -1285,7 +1857,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7001",
@@ -1304,7 +1888,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7500",
@@ -1323,7 +1919,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7009",
@@ -1342,7 +1950,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7015",
@@ -1361,7 +1981,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7017",
@@ -1380,7 +2012,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7030",
@@ -1399,7 +2043,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7040",
@@ -1418,7 +2074,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7050",
@@ -1437,7 +2105,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7525",
@@ -1456,7 +2136,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7058",
@@ -1475,7 +2167,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7332",
@@ -1494,7 +2198,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7074",
@@ -1513,7 +2229,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7316",
@@ -1532,7 +2260,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7019",
@@ -1551,7 +2291,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7020",
@@ -1570,7 +2322,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7515",
@@ -1589,7 +2353,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7305",
@@ -1608,7 +2384,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7038",
@@ -1627,7 +2415,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7039",
@@ -1646,7 +2446,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7308",
@@ -1665,7 +2477,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7528",
@@ -1684,7 +2508,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7061",
@@ -1703,7 +2539,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7068",
@@ -1722,7 +2570,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7538",
@@ -1741,7 +2601,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7069",
@@ -1760,7 +2632,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7317",
@@ -1779,7 +2663,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7021",
@@ -1798,7 +2694,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7516",
@@ -1817,7 +2725,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7303",
@@ -1836,7 +2756,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7026",
@@ -1855,7 +2787,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7057",
@@ -1874,7 +2818,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7530",
@@ -1893,7 +2849,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7059",
@@ -1912,7 +2880,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7063",
@@ -1931,7 +2911,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7532",
@@ -1950,7 +2942,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7064",
@@ -1969,7 +2973,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7325",
@@ -1988,7 +3004,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7540",
@@ -2007,7 +3035,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7318",
@@ -2026,7 +3066,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7008",
@@ -2045,7 +3097,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7073",
@@ -2064,7 +3128,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7517",
@@ -2083,7 +3159,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7042",
@@ -2102,7 +3190,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7043",
@@ -2121,7 +3221,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7523",
@@ -2140,7 +3252,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7048",
@@ -2159,7 +3283,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7049",
@@ -2178,7 +3314,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7053",
@@ -2197,7 +3345,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7536",
@@ -2216,7 +3376,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7333",
@@ -2235,7 +3407,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7319",
@@ -2254,7 +3438,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7005",
@@ -2273,7 +3469,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7504",
@@ -2292,7 +3500,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7506",
@@ -2311,7 +3531,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7510",
@@ -2330,7 +3562,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7045",
@@ -2349,7 +3593,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7046",
@@ -2368,7 +3624,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7051",
@@ -2387,7 +3655,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7309",
@@ -2406,7 +3686,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7062",
@@ -2425,7 +3717,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7328",
@@ -2444,7 +3748,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7330",
@@ -2463,7 +3779,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7320",
@@ -2482,7 +3810,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7004",
@@ -2501,7 +3841,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7503",
@@ -2520,7 +3872,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7072",
@@ -2539,7 +3903,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7014",
@@ -2558,7 +3934,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7304",
@@ -2577,7 +3965,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7306",
@@ -2596,7 +3996,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7037",
@@ -2615,7 +4027,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7518",
@@ -2634,7 +4058,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7044",
@@ -2653,7 +4089,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7521",
@@ -2672,7 +4120,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7326",
@@ -2691,7 +4151,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7534",
@@ -2710,7 +4182,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7321",
@@ -2729,7 +4213,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7505",
@@ -2748,7 +4244,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7301",
@@ -2767,7 +4275,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7022",
@@ -2786,7 +4306,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7025",
@@ -2805,7 +4337,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7520",
@@ -2824,7 +4368,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7535",
@@ -2843,7 +4399,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7334",
@@ -2862,7 +4430,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7322",
@@ -2881,7 +4461,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7071",
@@ -2900,7 +4492,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7541",
@@ -2919,7 +4523,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7511",
@@ -2938,7 +4554,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7526",
@@ -2957,7 +4585,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7310",
@@ -2976,7 +4616,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7529",
@@ -2995,7 +4647,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7060",
@@ -3014,7 +4678,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7531",
@@ -3033,7 +4709,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7066",
@@ -3052,7 +4740,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7067",
@@ -3071,7 +4771,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     },
     {
       "exam_number": "7537",
@@ -3090,7 +4802,19 @@
         "class": "not_published",
         "pending_stage": "list_establishment"
       },
-      "list_aggregate": null
+      "list_aggregate": null,
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
     }
   ]
 }

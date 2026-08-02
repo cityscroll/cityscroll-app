@@ -1341,6 +1341,8 @@
     career_area_other: "Otros trabajos de la ciudad",
     career_date_unknown: "Fecha no publicada",
     career_not_published: "No publicado — aparecería en el Aviso de Examen si se publicara",
+    career_fee_salary_not_yet_ingested_html: "Aún no se muestra aquí — la tarifa y el salario están en {source}.",
+    career_noe_source_name: "el Aviso de Examen de DCAS",
     career_status_open: "Abierto ahora",
     career_status_upcoming: "Próximo",
     career_status_closed: "Cerrado",
