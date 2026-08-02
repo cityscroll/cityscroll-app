@@ -417,6 +417,22 @@ Closed exams that leave the current FY annual snapshot stay joinable through
 `not_yet_ingested` (`career_outcomes_not_yet_ingested_html`) — never class-(b)
 city-withhold for aggregates. Individual scores remain class-(b).
 
+## Exam process spine (application → list → appointment)
+
+Multi-stage lifecycle for one `exam_number`: **application → list_establishment
+→ certification → appointment**. Pure builder:
+`site/exam_process_spine.mjs` (re-exported as `worker/src/lib/exam_process_spine.mjs`).
+Joins the DCAS schedule / NOE application window, Civil Service List aggregates,
+and DCAS annual outcome counts — never invents post-cycle events. Empty stages
+use class-(a) `not_yet_ingested` naming the public source; never re-label
+aggregates as class-(b) "city does not publish". Static career-guide steps remain
+teaching copy only. UI: `examProcessSpineHTML` on exam detail cards (`#exam/{n}`);
+metrics grid stays for joined counts. Civic-time kinds (library-only):
+`staffing.application_window` / `list_established` / `certification` /
+`appointment` via `mapExamProcessSpineToCivic`. Metric:
+`exam_process_spine_completeness_rate`. Verify:
+`node --test test/exam_process_spine.test.mjs`.
+
 ## Exam fee / salary (NOE path)
 
 Fee and starting salary come **only** from the open-competitive Notice of

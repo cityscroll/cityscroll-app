@@ -631,6 +631,22 @@ const STRINGS = {
     career_outcomes_not_published_html: "The city does not publish post-cycle outcomes for this exam yet — they would appear in {source} after {stage}.",
     career_outcomes_not_yet_ingested_html: "Not yet shown here — post-cycle aggregates live in {source} (and Civil Service List open data) after {stage}.",
 
+    // Exam process spine (application → list → certification → appointment — not the static guide steps)
+    exam_spine_heading: "Exam hiring timeline",
+    exam_stage_application: "Application window",
+    exam_stage_list_establishment: "Eligible list",
+    exam_stage_certification: "Agency certification",
+    exam_stage_appointment: "Appointment",
+    exam_stage_on_list_count: "{n} on list",
+    exam_stage_certified_count: "{n} certified",
+    exam_stage_hired_count: "{n} hired",
+    exam_stage_not_yet_ingested_html: "Not yet shown here — this stage's public aggregates live in {source}.",
+    exam_spine_join_html: "Process chain for exam {number} ({title}).",
+    exam_spine_provenance_html: "Timeline joins the DCAS exam schedule / Notice of Examination, Civil Service List open data, and the DCAS annual outcomes publication by exam number. Empty stages mean those aggregates are not yet in the precomputed guide — not that the city withheld a public source. Individual scores stay private.",
+    exam_source_schedule: "the DCAS exam schedule / Notice of Examination",
+    exam_source_list: "the Civil Service List open data feed",
+    exam_source_outcomes: "the DCAS annual civil-service exam outcomes publication",
+
     // Land panel
     recent_rezonings_heading: "Recent rezonings",
     pick_rezoning_empty: "Pick a rezoning to see it in plain English -- applicant, what's being built, affordable units, status -- and on a map. Try \"79 Rivington\" or \"Gowanus\".",

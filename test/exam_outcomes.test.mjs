@@ -185,7 +185,8 @@ test("join helpers prefer the latest published_on when exam_number collides acro
 });
 
 test("exam cards and detail render joined, list_joined, or class-(a) not-yet-ingested", () => {
-  assert.match(html, /function careerOutcomeHTML\(exam\)/);
+  assert.match(html, /function careerOutcomeHTML\(exam/);
+  assert.match(html, /function examProcessSpineHTML/);
   assert.match(html, /career-outcomes/);
   assert.match(html, /data-outcome="joined"/);
   assert.match(html, /data-outcome="list_joined"/);
@@ -194,10 +195,11 @@ test("exam cards and detail render joined, list_joined, or class-(a) not-yet-ing
   assert.match(html, /career_outcome_list_established/);
   assert.match(html, /career_outcome_hiring_pool/);
   assert.match(html, /CrolStaffing\.examOutcomeView/);
-  // Outcome block is inside the card template (list + detail share careerCardHTML).
+  // Outcome block + process spine are inside the card template (list + detail share careerCardHTML).
   const cardFnStart = html.indexOf("function careerCardHTML(exam)");
-  const cardFn = html.slice(cardFnStart, cardFnStart + 4500);
-  assert.ok(cardFn.includes("careerOutcomeHTML(exam)"));
+  const cardFn = html.slice(cardFnStart, cardFnStart + 5500);
+  assert.ok(cardFn.includes("careerOutcomeHTML(exam"));
+  assert.ok(cardFn.includes("examProcessSpineHTML"));
   assert.match(i18n, /career_outcomes_not_yet_ingested_html:/);
   assert.match(i18n, /Not yet shown here — post-cycle aggregates/);
   // Must not render the false class-(b) city-withhold register for aggregate gaps.

@@ -1416,6 +1416,21 @@
     career_outcome_stage_appointment: "임명",
     career_outcomes_not_published_html: "시는 아직 이 시험의 주기 후 결과를 공개하지 않습니다 — {stage} 이후 {source}에 나타납니다.",
     career_outcomes_not_yet_ingested_html: "아직 여기에 표시되지 않음 — 주기 후 집계는 {stage} 이후 {source}(및 Civil Service List 공개 데이터)에 있습니다.",
+
+    exam_spine_heading: "Exam hiring timeline",
+    exam_stage_application: "Application window",
+    exam_stage_list_establishment: "Eligible list",
+    exam_stage_certification: "Agency certification",
+    exam_stage_appointment: "Appointment",
+    exam_stage_on_list_count: "{n} on list",
+    exam_stage_certified_count: "{n} certified",
+    exam_stage_hired_count: "{n} hired",
+    exam_stage_not_yet_ingested_html: "Not yet shown here — this stage's public aggregates live in {source}.",
+    exam_spine_join_html: "Process chain for exam {number} ({title}).",
+    exam_spine_provenance_html: "Timeline joins the DCAS exam schedule / Notice of Examination, Civil Service List open data, and the DCAS annual outcomes publication by exam number. Empty stages mean those aggregates are not yet in the precomputed guide — not that the city withheld a public source. Individual scores stay private.",
+    exam_source_schedule: "the DCAS exam schedule / Notice of Examination",
+    exam_source_list: "the Civil Service List open data feed",
+    exam_source_outcomes: "the DCAS annual civil-service exam outcomes publication",
     // END GENERATED CAREER GUIDE TRANSLATIONS
   });
   W.SECTION_I18N = W.SECTION_I18N || {};
