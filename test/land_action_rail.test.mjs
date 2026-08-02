@@ -13,7 +13,7 @@ import {
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const index = readFileSync(join(ROOT, "site/index.html"), "utf8");
-const EXAMPLE_EMAIL = "testify@cb1brooklyn.org";
+const EXAMPLE_EMAIL = "testify@example.com";
 
 const HEARING = {
   request_id: "20260801001",
