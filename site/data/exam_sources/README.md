@@ -28,6 +28,12 @@ Sources and refresh rules:
   Notices of Examination (NOEs). Check daily while applications are open because
   an amended NOE can extend or cancel a window before the structured dataset
   catches up.
+- `noe_fee_salary_densify.json` — body-parsed APPLICATION FEE / minimum salary from
+  public NOE PDFs for exams the open-competitive snapshot does not yet cover
+  (including multi-exam NOEs such as Police Officer 7311–7322). Never invents
+  amounts; annual-schedule-only rows without a densify hit stay class-(a)
+  not_yet_ingested. Receipt:
+  `verification_receipts/noe_fee_salary_densify_latest.json`.
 - `active_list_summary.json` — aggregate-only counts from the daily DCAS active
   civil-service-list dataset `vx8i-nprf`. Candidate names are never copied into
   this repository.

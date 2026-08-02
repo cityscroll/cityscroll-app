@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "source": {
+    "id": "dcas-noe-fee-salary-densify",
+    "name": "DCAS Notice of Examination fee/salary densify",
+    "role": "Body-parsed APPLICATION FEE and minimum salary from public NOE PDFs, merged when the open-competitive snapshot lacks structured amounts. Annual schedule has no fee columns.",
+    "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page",
+    "fetched_at": "2026-08-02",
+    "verified_at": "2026-08-02",
+    "stale_after_days": 45,
+    "freshness_required": false
+  },
+  "densify_policy": {
+    "source": "public_noe_pdf_only",
+    "never_fabricate": true,
+    "multi_exam_noe": "One NOE may list many Exam No. values; fee/salary apply to each listed number when the body labels match."
+  },
+  "records": [
+    {
+      "exam_number": "7007",
+      "title": "Assistant Electrical Engineer",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277007000.pdf",
+      "fee": 82,
+      "salary_min": 66330,
+      "salary_max": null,
+      "salary_note": "Current minimum annual salary",
+      "densify_method": "noe_pdf_body",
+      "multi_exam_source": null
+    },
+    {
+      "exam_number": "7311",
+      "title": "Police Officer",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "fee": 0,
+      "salary_min": 55942,
+      "salary_max": 109352,
+      "salary_note": "Current minimum annual salary",
+      "densify_method": "noe_pdf_body_multi_exam",
+      "multi_exam_source": "7311"
+    },
+    {
+      "exam_number": "7312",
+      "title": "Police Officer",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "fee": 0,
+      "salary_min": 55942,
+      "salary_max": 109352,
+      "salary_note": "Current minimum annual salary",
+      "densify_method": "noe_pdf_body_multi_exam",
+      "multi_exam_source": "7311"
+    },
+    {
+      "exam_number": "7313",
+      "title": "Police Officer",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "fee": 0,
+      "salary_min": 55942,
+      "salary_max": 109352,
+      "salary_note": "Current minimum annual salary",
+      "densify_method": "noe_pdf_body_multi_exam",
+      "multi_exam_source": "7311"
+    },
+    {
+      "exam_number": "7314",
+      "title": "Police Officer",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "fee": 0,
+      "salary_min": 55942,
+      "salary_max": 109352,
+      "salary_note": "Current minimum annual salary",
+      "densify_method": "noe_pdf_body_multi_exam",
+      "multi_exam_source": "7311"
+    },
+    {
+      "exam_number": "7315",
+      "title": "Police Officer",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "fee": 0,
+      "salary_min": 55942,
+      "salary_max": 109352,
+      "salary_note": "Current minimum annual salary",
+      "densify_method": "noe_pdf_body_multi_exam",
+      "multi_exam_source": "7311"
+    },
+    {
+      "exam_number": "7316",
+      "title": "Police Officer",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "fee": 0,
+      "salary_min": 55942,
+      "salary_max": 109352,
+      "salary_note": "Current minimum annual salary",
+      "densify_method": "noe_pdf_body_multi_exam",
+      "multi_exam_source": "7311"
+    },
+    {
+      "exam_number": "7317",
+      "title": "Police Officer",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "fee": 0,
+      "salary_min": 55942,
+      "salary_max": 109352,
+      "salary_note": "Current minimum annual salary",
+      "densify_method": "noe_pdf_body_multi_exam",
+      "multi_exam_source": "7311"
+    },
+    {
+      "exam_number": "7318",
+      "title": "Police Officer",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "fee": 0,
+      "salary_min": 55942,
+      "salary_max": 109352,
+      "salary_note": "Current minimum annual salary",
+      "densify_method": "noe_pdf_body_multi_exam",
+      "multi_exam_source": "7311"
+    },
+    {
+      "exam_number": "7319",
+      "title": "Police Officer",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "fee": 0,
+      "salary_min": 55942,
+      "salary_max": 109352,
+      "salary_note": "Current minimum annual salary",
+      "densify_method": "noe_pdf_body_multi_exam",
+      "multi_exam_source": "7311"
+    },
+    {
+      "exam_number": "7320",
+      "title": "Police Officer",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "fee": 0,
+      "salary_min": 55942,
+      "salary_max": 109352,
+      "salary_note": "Current minimum annual salary",
+      "densify_method": "noe_pdf_body_multi_exam",
+      "multi_exam_source": "7311"
+    },
+    {
+      "exam_number": "7321",
+      "title": "Police Officer",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "fee": 0,
+      "salary_min": 55942,
+      "salary_max": 109352,
+      "salary_note": "Current minimum annual salary",
+      "densify_method": "noe_pdf_body_multi_exam",
+      "multi_exam_source": "7311"
+    },
+    {
+      "exam_number": "7322",
+      "title": "Police Officer",
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "fee": 0,
+      "salary_min": 55942,
+      "salary_max": 109352,
+      "salary_note": "Current minimum annual salary",
+      "densify_method": "noe_pdf_body_multi_exam",
+      "multi_exam_source": "7311"
+    }
+  ]
+}

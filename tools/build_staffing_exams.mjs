@@ -12,14 +12,19 @@ import { applyNoeFeeSalaryFromBody } from "../worker/src/lib/noe_fee_salary.mjs"
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SOURCE_DIR = path.join(ROOT, "site", "data", "exam_sources");
 const OUTPUT = path.join(ROOT, "site", "data", "staffing_exams.json");
+const DENSIFY_RECEIPT_DIR = path.join(SOURCE_DIR, "verification_receipts");
 const ANNUAL_ID = "4ptz-hmtc";
 const OUTCOMES_ID = "dcas-annual-exam-outcomes";
 const ACTIVE_LIST_ID = "vx8i-nprf";
 const CITY_RECORD_ID = "dg92-zbpx";
 const CURRENT_ID = "dcas-open-competitive";
 const NOE_ID = "dcas-noe";
+const NOE_DENSIFY_ID = "dcas-noe-fee-salary-densify";
 const LIST_AGGREGATES_FILE = "civil_service_list_aggregates.json";
 const LIST_DEPTH_CLOSED_FILE = "list_depth_closed_exams.json";
+const NOE_DENSIFY_FILE = "noe_fee_salary_densify.json";
+/** Bump when densify merge / fee-salary materialization shape changes (version-guard). */
+export const STAFFING_EXAMS_SCHEMA_VERSION = 2;
 
 /** Fields that only come from the Notice of Examination / open-competitive path. */
 export const NOE_DETAIL_FIELDS = [
@@ -36,7 +41,75 @@ export const NOE_DETAIL_FIELDS = [
 ];
 
 // Re-export body densify so build callers and tests share one entry.
-export { applyNoeFeeSalaryFromBody, parseNoeFeeSalaryFromBody, toMoneyAmount } from "../worker/src/lib/noe_fee_salary.mjs";
+export {
+  applyNoeFeeSalaryFromBody,
+  parseNoeFeeSalaryFromBody,
+  toMoneyAmount,
+  extractNoeExamNumbers,
+} from "../worker/src/lib/noe_fee_salary.mjs";
+
+/**
+ * Merge NOE body densify records onto exams missing structured fee/salary.
+ * Never overwrites a non-null fee (incl. 0) or salary_min from open-competitive / prior.
+ * @param {object} exam
+ * @param {object|null|undefined} densifyRow
+ * @returns {object}
+ */
+export function applyNoeDensifyRecord(exam, densifyRow) {
+  if (!exam || !densifyRow) return exam;
+  const out = { ...exam };
+  let changed = false;
+  if (out.fee == null && densifyRow.fee != null) {
+    out.fee = densifyRow.fee;
+    changed = true;
+  }
+  if (
+    (out.salary_min == null || out.salary_min === "")
+    && densifyRow.salary_min != null
+    && densifyRow.salary_min !== ""
+  ) {
+    out.salary_min = densifyRow.salary_min;
+    changed = true;
+  }
+  if (
+    (out.salary_max == null || out.salary_max === "")
+    && densifyRow.salary_max != null
+    && densifyRow.salary_max !== ""
+  ) {
+    out.salary_max = densifyRow.salary_max;
+    changed = true;
+  }
+  if (!out.salary_note && densifyRow.salary_note) {
+    out.salary_note = densifyRow.salary_note;
+    changed = true;
+  }
+  if (!out.notice_url && densifyRow.notice_url) {
+    out.notice_url = densifyRow.notice_url;
+    changed = true;
+  }
+  if (!changed) return exam;
+  const sources = [...new Set([...(out.sources || []), NOE_ID, NOE_DENSIFY_ID])];
+  out.sources = sources;
+  if (densifyRow.densify_method) out.fee_salary_densify = densifyRow.densify_method;
+  return out;
+}
+
+/**
+ * Count exams with both fee and salary_min present (fee 0 counts).
+ * @param {Array<object>} exams
+ * @returns {{ total: number, both: number, rate: number }}
+ */
+export function feeSalaryNonNullStats(exams = []) {
+  const total = exams.length;
+  const both = exams.filter(
+    (e) => e && e.fee != null && e.salary_min != null && e.salary_min !== "",
+  ).length;
+  return {
+    total,
+    both,
+    rate: total ? both / total : 0,
+  };
+}
 
 const INTEREST_RULES = [
   ["public-safety", /\b(police|correction|safety|special officer|fire|probation)\b/i],
@@ -429,6 +502,7 @@ export function buildArtifact({
   outcomes,
   listAggregates,
   listDepthClosed,
+  noeDensify,
   priorArtifact,
   today,
 }) {
@@ -443,6 +517,8 @@ export function buildArtifact({
     outcomes.source.data_publication_date,
     listAggregates?.source?.fetched_at,
     listDepthClosed?.source?.fetched_at,
+    noeDensify?.source?.fetched_at,
+    noeDensify?.source?.verified_at,
   ]
     .filter(Boolean).sort().at(-1);
 
@@ -498,6 +574,43 @@ export function buildArtifact({
     if (priorRow) exams.set(examNumber, retainNoeDetailFields(exam, priorRow));
   }
 
+  // Body densify cache: NOE PDF-parsed fee/salary for exams the open-competitive
+  // snapshot does not already cover. Map first so a prior artifact's retained
+  // densify amounts can be stripped for an honest before-rate.
+  const densifyByNumber = new Map(
+    (noeDensify?.records || []).map((row) => [String(row.exam_number).padStart(4, "0"), row]),
+  );
+
+  // Strip densify-only amounts retained from a prior artifact so the before rate
+  // measures open-competitive/hand-structured NOE only (not a previous densify pass).
+  // retainNoeDetailFields keeps fee/salary but may drop fee_salary_densify / densify
+  // source ids — key off densify cache membership + no CURRENT_ID instead.
+  for (const [examNumber, exam] of exams.entries()) {
+    const sources = exam.sources || [];
+    if (!densifyByNumber.has(examNumber)) continue;
+    if (sources.includes(CURRENT_ID)) continue; // open-competitive path owns structured amounts
+    const { fee: _f, salary_min: _s, salary_max: _x, salary_note: _n, fee_salary_densify: _d, ...rest } = exam;
+    exams.set(examNumber, {
+      ...rest,
+      fee: null,
+      salary_min: null,
+      salary_max: null,
+      salary_note: null,
+      notice_url: null,
+      sources: sources.filter((s) => s !== NOE_DENSIFY_ID && s !== NOE_ID),
+    });
+  }
+
+  // Pre-densify fee/salary non-null rate (open-competitive + retained only).
+  const beforeDensifyStats = feeSalaryNonNullStats([...exams.values()]);
+
+  let densifyApplied = 0;
+  for (const [examNumber, exam] of exams.entries()) {
+    const densified = applyNoeDensifyRecord(exam, densifyByNumber.get(examNumber));
+    if (densified !== exam) densifyApplied += 1;
+    exams.set(examNumber, densified);
+  }
+
   const outcomeMap = outcomesByExamNumber(outcomes.records);
   const listIndex = buildListAggregateIndex(listAggregates?.records || []);
   const records = [...exams.values()]
@@ -510,17 +623,21 @@ export function buildArtifact({
 
   normalizeOutcomeSourceOutdatedCheck(outcomes.source);
 
+  const afterDensifyStats = feeSalaryNonNullStats(records);
   const listSource = listAggregates?.source || activeList.source;
   const listJoinedCount = records.filter((e) => e.list_aggregate && Number(e.list_aggregate.list_count) > 0).length;
+  const sources = [current.source, annual.source, activeList.source, cityRecord.source, outcomes.source];
+  if (noeDensify?.source) sources.push(noeDensify.source);
+
   return {
-    schema_version: 1,
+    schema_version: STAFFING_EXAMS_SCHEMA_VERSION,
     generated_at: latestSourceAt,
     data_current_as_of: annual.source.data_current_as_of,
     interest_areas: [
       "public-safety", "health-care", "engineering-construction", "technology-science",
       "community-social-services", "administration-finance", "trades-operations", "other",
     ],
-    sources: [current.source, annual.source, activeList.source, cityRecord.source, outcomes.source],
+    sources,
     source_checks: {
       active_list: activeList.summary,
       city_record: cityRecord.summary,
@@ -530,6 +647,12 @@ export function buildArtifact({
       list_depth_closed: {
         count: (listDepthClosed?.records || []).length,
         list_joined: listJoinedCount,
+      },
+      noe_fee_salary_densify: {
+        densify_records: densifyByNumber.size,
+        densify_applied: densifyApplied,
+        fee_salary_non_null_before: beforeDensifyStats,
+        fee_salary_non_null_after: afterDensifyStats,
       },
     },
     outcomes: buildOutcomes({ outcomes }),
@@ -676,10 +799,35 @@ function validateSources(today, sources) {
   }
 }
 
+async function writeDensifyReceipt(artifact) {
+  const stats = artifact?.source_checks?.noe_fee_salary_densify;
+  if (!stats) return null;
+  const receipt = {
+    schema_version: 1,
+    source_contract_id: NOE_DENSIFY_ID,
+    verified_at: new Date().toISOString().slice(0, 10),
+    verified_at_utc: new Date().toISOString(),
+    fee_salary_non_null_before: stats.fee_salary_non_null_before,
+    fee_salary_non_null_after: stats.fee_salary_non_null_after,
+    densify_records: stats.densify_records,
+    densify_applied: stats.densify_applied,
+    policy: {
+      public_noe_path_only: true,
+      annual_schedule_has_no_fee_columns: true,
+      never_fabricate: true,
+    },
+    note: "Before = after open-competitive merge + retainNoeDetailFields; after = plus NOE body densify cache.",
+  };
+  await mkdir(DENSIFY_RECEIPT_DIR, { recursive: true });
+  const outPath = path.join(DENSIFY_RECEIPT_DIR, "noe_fee_salary_densify_latest.json");
+  await writeFile(outPath, stableJson(receipt));
+  return outPath;
+}
+
 async function main() {
   const check = process.argv.includes("--check");
   if (process.argv.includes("--refresh")) await refreshSnapshots();
-  const [annual, current, activeList, cityRecord, outcomes, listAggregates, listDepthClosed, priorArtifact] = await Promise.all([
+  const [annual, current, activeList, cityRecord, outcomes, listAggregates, listDepthClosed, noeDensify, priorArtifact] = await Promise.all([
     readJson("annual_schedule.json"),
     readJson("dcas_open_competitive.json"),
     readJson("active_list_summary.json"),
@@ -687,6 +835,7 @@ async function main() {
     readJson("dcas_exam_outcomes.json"),
     readJsonOptional(LIST_AGGREGATES_FILE),
     readJsonOptional(LIST_DEPTH_CLOSED_FILE),
+    readJsonOptional(NOE_DENSIFY_FILE),
     (async () => {
       try {
         return JSON.parse(await readFile(OUTPUT, "utf8"));
@@ -717,7 +866,14 @@ async function main() {
       stale_after_days: listDepthClosed.source.stale_after_days ?? annual.source.stale_after_days ?? 95,
     }, today);
   }
-  const rendered = stableJson(buildArtifact({
+  // Densify cache is optional offline evidence — skip freshness hard-fail when absent or flagged.
+  if (noeDensify?.source && noeDensify.source.freshness_required !== false) {
+    assertSourceFresh({
+      ...noeDensify.source,
+      stale_after_days: noeDensify.source.stale_after_days ?? 45,
+    }, today);
+  }
+  const artifact = buildArtifact({
     annual,
     current,
     activeList,
@@ -725,15 +881,27 @@ async function main() {
     outcomes,
     listAggregates,
     listDepthClosed,
+    noeDensify,
     priorArtifact,
     today,
-  }));
+  });
+  const rendered = stableJson(artifact);
   if (check) {
     assert.equal(await readFile(OUTPUT, "utf8"), rendered, "data/staffing_exams.json is stale; rebuild it");
     console.log("staffing exam artifact is current");
   } else {
     await writeFile(OUTPUT, rendered);
+    const receiptPath = await writeDensifyReceipt(artifact);
+    const densify = artifact.source_checks?.noe_fee_salary_densify;
     console.log(`wrote ${path.relative(ROOT, OUTPUT)}`);
+    if (densify) {
+      console.log(
+        `fee/salary non-null: ${densify.fee_salary_non_null_before.both}/${densify.fee_salary_non_null_before.total}`
+        + ` → ${densify.fee_salary_non_null_after.both}/${densify.fee_salary_non_null_after.total}`
+        + ` (applied ${densify.densify_applied})`,
+      );
+    }
+    if (receiptPath) console.log(`wrote ${path.relative(ROOT, receiptPath)}`);
   }
 }
 
