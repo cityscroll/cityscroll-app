@@ -15,8 +15,9 @@ import {
 import { linksFromRuleRecord } from "./lib/subject_registry.mjs";
 
 export const RULES_KV_KEY = "rules:materialized:v2";
-/** Bump when rulemaking stitch / multi-notice fields change so young-but-stale KV rebuilds. */
-export const RULES_VIEW_VERSION = 3;
+/** Bump when rulemaking stitch / multi-notice fields change so young-but-stale KV rebuilds.
+ *  v4: City Record Agency Rules lookback widened so multi-notice siblings co-appear. */
+export const RULES_VIEW_VERSION = 4;
 export const RULES_RSS_URL = "https://rules.cityofnewyork.us/feed/";
 /** Identifying UA — Cloudflare on rules.cityofnewyork.us returns HTTP 403
  *  "Just a moment…" when the request has an empty or missing User-Agent
@@ -28,8 +29,21 @@ export const RULES_RSS_HEADERS = Object.freeze({
 });
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const MAX_AGE_MS = 36 * 60 * 60 * 1000;
-const RSS_MAX_AGE_DAYS = 14;
-const RULE_LIMIT = 500;
+/**
+ * City Record Agency Rules materialization lookback (days).
+ *
+ * Sibling rulemakings (proposal → hearing → adoption) span months; a 14-day
+ * slice almost never co-located them, so multi_notice_rulemakings stayed 0.
+ * Align with RULEMAKING_SIBLING_WINDOW_DAYS (540) so genuine siblings can
+ * appear together. Bound the pull with CITY_RECORD_RULES_LIMIT (single SODA
+ * page — do not page unboundedly).
+ */
+export const CITY_RECORD_RULES_LOOKBACK_DAYS = 540;
+/** Hard cap on City Record Agency Rules rows per materialization (one SODA page). */
+export const CITY_RECORD_RULES_LIMIT = 500;
+/** @deprecated Use CITY_RECORD_RULES_LOOKBACK_DAYS — name was misleading (not RSS). */
+export const RSS_MAX_AGE_DAYS = CITY_RECORD_RULES_LOOKBACK_DAYS;
+const RULE_LIMIT = CITY_RECORD_RULES_LIMIT;
 
 // event_date is required so Public Hearings under Agency Rules can supply the
 // rules spine `public_hearing` event (Meetings lens already has this column).
@@ -59,7 +73,7 @@ async function fetchRulesRss(fetchImpl) {
 }
 
 async function fetchCityRecordRules(fetchImpl, now) {
-  const since = new Date(now.getTime() - RSS_MAX_AGE_DAYS * 86_400_000)
+  const since = new Date(now.getTime() - CITY_RECORD_RULES_LOOKBACK_DAYS * 86_400_000)
     .toISOString().slice(0, 10);
   const params = new URLSearchParams({
     $select: CR_SELECT,
@@ -208,6 +222,10 @@ export async function buildRuleView(fetchImpl = fetch, now = new Date()) {
       .filter(Boolean),
   );
 
+  const multiNoticeNoticeCount = records.filter(
+    (r) => r.rulemaking_join?.matched && (r.rulemaking_join?.notice_count || 0) > 1,
+  ).length;
+
   const counts = {
     total: records.length,
     matched: matched.length,
@@ -215,6 +233,10 @@ export async function buildRuleView(fetchImpl = fetch, now = new Date()) {
     unmatched_rules: unmatchedRules.length,
     by_stage: byStage,
     multi_notice_rulemakings: multiNoticeRulemakings.size,
+    /** City Record rows in the lookback window (before RSS-only unmatched rules). */
+    city_record_notices: notices.length,
+    /** Notices that participate in a multi-notice rulemaking group. */
+    multi_notice_notices: multiNoticeNoticeCount,
   };
 
   return {
@@ -225,6 +247,8 @@ export async function buildRuleView(fetchImpl = fetch, now = new Date()) {
         name: "City Record Online",
         dataset: "dg92-zbpx",
         url: "https://data.cityofnewyork.us/City-Government/City-Record-Online/dg92-zbpx",
+        lookback_days: CITY_RECORD_RULES_LOOKBACK_DAYS,
+        limit: RULE_LIMIT,
       },
       enrichment: {
         name: "NYC Rules",
