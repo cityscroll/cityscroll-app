@@ -32,6 +32,13 @@ import {
 } from "../../worker/src/lib/subject_registry.mjs";
 // Reuse land-side strict ULURP token extractor (same as joinCityRecordLandNotices).
 import { extractUlurpKeys } from "../../worker/src/lib/ulurp_recommendations_join.mjs";
+// Franchise/concession party + eligibility (pure; only depends on vendorStem).
+import {
+  extractCounterparties as extractFranchiseCounterparties,
+  franchiseConcessionJoinKeys,
+  isFranchiseConcessionEligible,
+  classifyFranchiseConcessionStage,
+} from "../../worker/src/lib/franchise_concession_spine.mjs";
 
 export const CROSS_DOMAIN_OBJECT_LINK_VERSION = "cross_domain_object_link_v2";
 export const CROSS_DOMAIN_METHOD = "cross_domain_identity_v2";
@@ -59,6 +66,7 @@ export const CROSS_DOMAIN_DOMAINS = Object.freeze([
   "rules",
   "meetings",
   "people",
+  "franchise",
 ]);
 
 /**
@@ -151,6 +159,18 @@ export const CROSS_DOMAIN_LINK_TYPES = Object.freeze({
   contract_published_by_agency: {
     description: "Registered contract subject is published by an agency (award join)",
     domains: Object.freeze(["money"]),
+    registry: false,
+  },
+  // --- franchise / concession review (FCRC) ---
+  named_franchisee: {
+    description:
+      "Franchise or concession notice names a firm counterparty (franchisee / concessionaire / licensee)",
+    domains: Object.freeze(["franchise"]),
+    registry: false,
+  },
+  reviews_franchise: {
+    description: "Agency hosts or publishes a franchise/concession review notice",
+    domains: Object.freeze(["franchise"]),
     registry: false,
   },
 });
@@ -1155,6 +1175,171 @@ export function observationsFromMeetingsMaterialization(viewOrRows, opts = {}) {
  * @param {object} row
  * @param {{ sourceSystem?: string }} [opts]
  */
+/**
+ * Shape a franchise/concession-domain observation (FCRC notice or joint hearing).
+ * Emits only when the row is franchise-eligible and a confident party firm name
+ * or subject key resolves — never invents counterparties. Firm-name parties
+ * produce named_franchisee vendor edges via rootsForObservation.
+ *
+ * Accepts raw City Record rows, stamped franchise materialization rows
+ * (`franchise_join_keys` / `franchise_subject_ref`), or densify fixtures.
+ *
+ * @param {object} row
+ * @param {{ sourceSystem?: string, counterparties?: string[] }} [opts]
+ * @returns {object|null}
+ */
+export function observationFromFranchise(row, opts = {}) {
+  if (!row || typeof row !== "object") return null;
+  const sourceSystem = clean(
+    opts.sourceSystem || row.source_system || "city_record",
+  );
+  const requestId = clean(row.request_id || row.id || row.notice_id);
+  if (!requestId) return null;
+
+  // Prefer already-stamped materialization fields when present.
+  const stampedKeys = Array.isArray(row.franchise_join_keys)
+    ? row.franchise_join_keys.map(clean).filter(Boolean)
+    : [];
+  const stampedStage = clean(row.franchise_stage) || null;
+  const stampedSubject = clean(row.franchise_subject_ref) || null;
+
+  const eligible =
+    isFranchiseConcessionEligible(row)
+    || stampedKeys.length > 0
+    || Boolean(stampedSubject)
+    || Boolean(stampedStage);
+  if (!eligible) return null;
+
+  let parties = [];
+  if (Array.isArray(opts.counterparties) && opts.counterparties.length) {
+    parties = opts.counterparties.map(clean).filter(Boolean);
+  } else if (Array.isArray(row.counterparties) && row.counterparties.length) {
+    parties = row.counterparties.map(clean).filter(Boolean);
+  } else {
+    parties = extractFranchiseCounterparties(row) || [];
+  }
+  if (!parties.length && clean(row.vendor_name)) {
+    parties = [clean(row.vendor_name)];
+  }
+
+  const firmParties = parties.filter((p) => p && resolveVendorSubject(p));
+  const joinKeys =
+    stampedKeys.length > 0 ? stampedKeys : franchiseConcessionJoinKeys(row);
+  const partyKeys = joinKeys.filter((k) => k.startsWith("party:"));
+
+  // Calendar FCRC meetings without parties/keys stay out of EI (no fabricated edges).
+  if (!firmParties.length && !partyKeys.length && !joinKeys.length && !stampedSubject) {
+    return null;
+  }
+
+  // Prefer a firm display name for the vendor root.
+  const vendorName =
+    firmParties[0]
+    || clean(row.vendor_name)
+    || (partyKeys[0] ? partyKeys[0].slice("party:").replace(/-/g, " ") : null);
+
+  const stage =
+    stampedStage
+    || classifyFranchiseConcessionStage(row)
+    || clean(row.stage)
+    || null;
+
+  const agencyName = clean(row.agency_name) || null;
+  // EI object subject is always a registry-known notice: ref (franchise:… product
+  // subjects are spine-only and fail parseSubjectRef). Keep franchise_subject_ref
+  // as provenance metadata for the densified multi-notice chain.
+  const subject_ref = formatSubjectRef("notice", requestId);
+  if (!subject_ref) return null;
+
+  const franchise_subject_ref =
+    stampedSubject
+    || (partyKeys[0] ? `franchise:${partyKeys[0]}` : null)
+    || (joinKeys.find((k) => k.startsWith("concession:"))
+      ? `franchise:${joinKeys.find((k) => k.startsWith("concession:"))}`
+      : null)
+    || (joinKeys.find((k) => k.startsWith("plan:"))
+      ? `franchise:${joinKeys.find((k) => k.startsWith("plan:"))}`
+      : null)
+    || (joinKeys.find((k) => k.startsWith("rules:"))
+      ? `franchise:${joinKeys.find((k) => k.startsWith("rules:"))}`
+      : null)
+    || null;
+
+  // Need a resolvable firm party (vendor edge) and/or agency + join key (agency edge).
+  if (!vendorName && !agencyName) return null;
+  if (!vendorName && !joinKeys.length && !stampedKeys.length) return null;
+
+  const label =
+    clean(row.short_title || row.title || row.label)
+    || (vendorName ? `Franchise/concession — ${vendorName}` : `Franchise notice ${requestId}`);
+
+  return {
+    domain: "franchise",
+    object_kind: stage || "franchise_notice",
+    source_system: sourceSystem,
+    source_record_id: `${sourceSystem}:franchise:${requestId}`,
+    native_key: requestId,
+    request_id: requestId,
+    agency_name: agencyName,
+    vendor_name: vendorName || null,
+    counterparties: firmParties.length ? firmParties : parties,
+    franchise_join_keys: joinKeys.length ? joinKeys : stampedKeys,
+    franchise_subject_ref,
+    franchise_stage: stage,
+    label,
+    when: clean(row.event_date || row.start_date) || null,
+    subject_ref,
+  };
+}
+
+/** Alias for EI wiring / docs that prefer the *Row suffix. */
+export function observationFromFranchiseRow(row, opts = {}) {
+  return observationFromFranchise(row, opts);
+}
+
+/**
+ * Emit franchise observations from a franchise materialization view
+ * (`{ notices, franchise_spines }`), a domain snapshot (`{ rows }`), or a bare
+ * array of City Record / densify fixture rows. Skips calendar-only notices
+ * without party or plan/rules/concession keys.
+ *
+ * @param {object|object[]} viewOrRows
+ * @param {{ sourceSystem?: string, limit?: number }} [opts]
+ * @returns {object[]}
+ */
+export function observationsFromFranchiseMaterialization(viewOrRows, opts = {}) {
+  const limit = Number.isFinite(opts.limit) ? Math.max(0, opts.limit) : 400;
+  if (!viewOrRows) return [];
+
+  const rows = Array.isArray(viewOrRows)
+    ? viewOrRows
+    : Array.isArray(viewOrRows?.notices)
+      ? viewOrRows.notices
+      : Array.isArray(viewOrRows?.rows)
+        ? viewOrRows.rows
+        : Array.isArray(viewOrRows?.franchise_rows)
+          ? viewOrRows.franchise_rows
+          : [];
+
+  const sourceSystem = clean(
+    opts.sourceSystem
+      || viewOrRows?.source?.system
+      || viewOrRows?.source_system
+      || "city_record",
+  );
+  const out = [];
+  const seen = new Set();
+  for (const row of rows) {
+    if (out.length >= limit) break;
+    const obs = observationFromFranchise(row, { sourceSystem });
+    if (!obs) continue;
+    if (seen.has(obs.source_record_id)) continue;
+    seen.add(obs.source_record_id);
+    out.push(obs);
+  }
+  return out;
+}
+
 export function observationFromPeopleRow(row, opts = {}) {
   if (!row || typeof row !== "object") return null;
   const sourceSystem = clean(opts.sourceSystem || row.source_system || "legistar");
@@ -1447,9 +1632,28 @@ export function rootsForObservation(obs) {
     const agency = resolveAgencySubject(obs.agency_name);
     if (agency) roots.push({ kind: "agency", subject: agency, field: "agency_name" });
   }
-  if (obs.vendor_name && (obs.domain === "money" || obs.domain === "land" || obs.domain === "property")) {
+  if (
+    obs.vendor_name
+    && (obs.domain === "money"
+      || obs.domain === "land"
+      || obs.domain === "property"
+      || obs.domain === "franchise")
+  ) {
     const vendor = resolveVendorSubject(obs.vendor_name);
     if (vendor) roots.push({ kind: "vendor", subject: vendor, field: "vendor_name" });
+  }
+  // Franchise counterparties: when vendor_name was not set but counterparties[]
+  // carries a firm name, still attach a vendor root (first resolvable firm only —
+  // no multi-vendor invent from one notice).
+  if (obs.domain === "franchise" && !roots.some((r) => r.kind === "vendor")) {
+    const list = Array.isArray(obs.counterparties) ? obs.counterparties : [];
+    for (const name of list) {
+      const vendor = resolveVendorSubject(name);
+      if (vendor) {
+        roots.push({ kind: "vendor", subject: vendor, field: "vendor_name" });
+        break;
+      }
+    }
   }
   return roots;
 }
@@ -1500,6 +1704,8 @@ function linkTypeFor(domain, rootKind, field, objectKind = null) {
   if (domain === "rules" && rootKind === "agency") return "issued_rule";
   if (domain === "meetings" && rootKind === "agency") return "hosts_meeting";
   if (domain === "people") return "votes_as_official";
+  if (domain === "franchise" && rootKind === "agency") return "reviews_franchise";
+  if (domain === "franchise" && rootKind === "vendor") return "named_franchisee";
   return null;
 }
 
@@ -1511,6 +1717,13 @@ function confidenceFor(rootKind, field, obs) {
   if (rootKind === "vendor" && field === "vendor_name") {
     // Disposition owners are label-extracted from body language — not a publisher column.
     if (obs.domain === "property") return "tentative";
+    // Franchisee names are body/title-extracted; firm legal cues → strong, else tentative.
+    if (obs.domain === "franchise") {
+      const name = clean(obs.vendor_name);
+      return /(?:LLC|L\.L\.C\.|Inc\.?|Corp\.?|LP|Company)\b/i.test(name)
+        ? "strong"
+        : "tentative";
+    }
     return "strong";
   }
   if (rootKind === "vendor" && field === "payee_name") return "strong";

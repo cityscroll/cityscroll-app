@@ -29,13 +29,15 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 
 ## Cross-domain entity intelligence
 
-Object-link layer across money / land / **property** / rules / meetings / people for
-one agency or vendor (`entity_resolution/cross_domain/`). Reuses subject registry
-kinds + ER normalizers + warehouse OCP/ZAP/ZAP-BBL fixtures — does not reinvent matchers.
-Land projects gain `sited_on_parcel` edges when BBL join keys exist. Money awards
-also emit join-key edges when present: PIN → `shares_authority_key`, contract_id →
-`references_contract` (+ `contract_published_by_agency`), Checkbook spending →
-`paid_to_vendor` / `payment_on_contract`. Every link carries provenance.
+Object-link layer across money / land / **property** / rules / meetings / people /
+**franchise** for one agency or vendor (`entity_resolution/cross_domain/`). Reuses
+subject registry kinds + ER normalizers + warehouse OCP/ZAP/ZAP-BBL fixtures — does
+not reinvent matchers. Land projects gain `sited_on_parcel` edges when BBL join keys
+exist. Money awards also emit join-key edges when present: PIN →
+`shares_authority_key`, contract_id → `references_contract` (+
+`contract_published_by_agency`), Checkbook spending → `paid_to_vendor` /
+`payment_on_contract`. Franchise/concession notices with a firm counterparty emit
+`named_franchisee` (franchise → vendor stem). Every link carries provenance.
 
 Instant materialization + warehouse edge index (CPU-light, fixture path).
 Rules/meetings densify from live City Record domain snapshots
@@ -1088,20 +1090,27 @@ City Record Online; never invent auction/award events. Metric:
 Multi-notice lifecycle for one franchise or concession matter: **solicitation →
 public_hearing → committee_meeting → award**. Pure builder:
 `worker/src/lib/franchise_concession_spine.mjs` (`groupFranchiseConcessionSpines` /
-`buildFranchiseConcessionSpine`). Join keys are strict **counterparty vendorStem**,
-**annual plan year** (`plan:fyYYYY`), or **FCRC rules** subject — never bare monthly
-calendar keys that would merge unrelated agenda items. Materialized on
-`GET /franchise-concessions` as `franchise_spines` + per-row stage/subject via
-`attachFranchiseConcessionSpines` in `worker/src/franchise_concession.mjs`. Notice
-detail mounts `franchiseConcessionSpineHTML` / `loadFranchiseConcessionSpine`
-(`#nfranchise`).
+`buildFranchiseConcessionSpine`). Join keys are strict **counterparty vendorStem**
+(intent-to-award / between-City / whereby / sold-to firm names), **annual plan year**
+(`plan:fyYYYY`), **concession id** / Parks solicitation #, or **FCRC rules** subject —
+never bare monthly calendar keys. SODA universe is FCRC agency + title patterns
+(joint public hearing / franchise agreement); bare MOCS is excluded so LL63 notices
+do not crowd the 300-row window. Client eligibility also drops Board Meetings
+rosters that merely list FCRC. Materialized on `GET /franchise-concessions` as
+`franchise_spines` + per-row stage/subject via `attachFranchiseConcessionSpines`
+in `worker/src/franchise_concession.mjs`. Notice detail mounts
+`franchiseConcessionSpineHTML` / `loadFranchiseConcessionSpine` (`#nfranchise`).
+
+**EI cross-link:** `observationFromFranchise` → domain `franchise` with
+`named_franchisee` vendor edges when a firm party resolves (OneChronos, Flushing GC
+field cases). Calendar-only FCRC meetings without parties stay out of EI.
 
 **Wrong universe:** City Council "Subcommittee on Zoning and Franchises" is land use —
 not FCRC. Empty stages use class-(a) `not_yet_ingested` naming City Record Online;
 never re-label as class-(b) "city does not publish". Metric:
 `franchise_concession_spine_completeness_rate`. Civic-time kinds:
 `franchise.solicitation` / `public_hearing` / `committee_meeting` / `award`. Verify:
-`node --test test/franchise_concession_spine.test.mjs`.
+`node --test test/franchise_concession_spine.test.mjs test/cross_domain_object_links.test.mjs`.
 
 ## Structured notice-body facts
 
