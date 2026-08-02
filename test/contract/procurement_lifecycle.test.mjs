@@ -286,8 +286,17 @@ test("classification: 0 records → unmatched, 1 → matched, 2+ → ambiguous",
 // 8. STAGE COMPLETENESS: every stage in STAGES appears in the timeline
 // ---------------------------------------------------------------------------
 
-test("stage completeness: STAGES constant lists all five procurement stages", () => {
-  assert.deepEqual(STAGES, ["solicitation", "award", "pending", "registered", "payment"]);
+test("stage completeness: STAGES constant lists money-chain order incl. intermediate City Record stages", () => {
+  assert.deepEqual(STAGES, [
+    "solicitation",
+    "intent_to_negotiate",
+    "vendor_list",
+    "intent_to_award",
+    "award",
+    "pending",
+    "registered",
+    "payment",
+  ]);
 });
 
 test("stage completeness: a solicitation notice omits 'award'; an award notice omits 'solicitation'", () => {
@@ -299,6 +308,8 @@ test("stage completeness: a solicitation notice omits 'award'; an award notice o
   );
   assert.ok(!sol.timeline.find((t) => t.stage === "award"), "solicitation notice has no award stage");
   assert.ok(sol.timeline.find((t) => t.stage === "solicitation"));
+  assert.ok(!sol.timeline.find((t) => t.stage === "intent_to_award"),
+    "solicitation alone does not invent an empty intent-to-award stage");
 
   const awd = assembleLifecycle(
     { ...base, type_of_notice_description: "Award", vendor_name: "V", contract_amount: "100" }, [], [], [],
@@ -306,6 +317,116 @@ test("stage completeness: a solicitation notice omits 'award'; an award notice o
   );
   assert.ok(!awd.timeline.find((t) => t.stage === "solicitation"), "award notice has no solicitation stage");
   assert.ok(awd.timeline.find((t) => t.stage === "award"));
+});
+
+test("intermediate stages: Intent to Award notice is its own stage, not solicitation", () => {
+  const notice = {
+    request_id: "20250120001",
+    agency_name: "DoITT",
+    type_of_notice_description: "Intent to Award",
+    start_date: "2025-02-15",
+    short_title: "Network services",
+    pin: "85825R0001001",
+    vendor_name: "ACME CORP",
+    contract_amount: "250000",
+  };
+  const result = assembleLifecycle(notice, [], [], [], {
+    lookupStatus: { pending: "ok", registered: "ok", spending: "ok" },
+  });
+  const stages = result.timeline.map((t) => t.stage);
+  assert.ok(stages.includes("intent_to_award"), "Intent to Award is a first-class stage");
+  assert.ok(!stages.includes("solicitation"), "must not collapse Intent to Award into solicitation");
+  assert.ok(!stages.includes("award"), "Intent to Award is not the award stage");
+  const intent = result.timeline.find((t) => t.stage === "intent_to_award");
+  assert.equal(intent.status, "matched");
+  assert.equal(intent.source, "city-record");
+  assert.equal(intent.detail.vendor, "ACME CORP");
+  assert.equal(intent.detail.amount, 250000);
+  assert.equal(intent.date, "2025-02-15");
+});
+
+test("intermediate stages: PIN with Solicitation + Intent to Award + Award shows distinct matched stages in order", () => {
+  const solicitation = {
+    request_id: "20250110001",
+    agency_name: "Sanitation",
+    type_of_notice_description: "Solicitation",
+    start_date: "2025-01-10",
+    short_title: "Collection Services",
+    pin: "08250R0001001",
+  };
+  const intent = {
+    request_id: "20250215001",
+    agency_name: "Sanitation",
+    type_of_notice_description: "Intent to Award",
+    start_date: "2025-02-15",
+    short_title: "Collection Services",
+    pin: "08250R0001001",
+    vendor_name: "ACME CORP",
+    contract_amount: "5000000",
+  };
+  const award = {
+    request_id: "20250301001",
+    agency_name: "Sanitation",
+    type_of_notice_description: "Award",
+    start_date: "2025-03-01",
+    short_title: "Collection Services",
+    pin: "08250R0001001",
+    vendor_name: "ACME CORP",
+    contract_amount: "5000000",
+  };
+  // Viewing the award notice with PIN-siblings reconstructs the intermediate chain.
+  const result = assembleLifecycle(award, [], [], [], {
+    lookupStatus: { pending: "ok", registered: "ok", spending: "ok" },
+    relatedNotices: [solicitation, intent],
+  });
+  const cityStages = result.timeline
+    .filter((t) => t.source === "city-record" && t.status === "matched")
+    .map((t) => t.stage);
+  assert.deepEqual(cityStages, ["solicitation", "intent_to_award", "award"]);
+  // Full timeline order: City Record stages then Checkbook.
+  const stages = result.timeline.map((t) => t.stage);
+  assert.deepEqual(stages.slice(0, 3), ["solicitation", "intent_to_award", "award"]);
+  assert.ok(stages.indexOf("intent_to_award") < stages.indexOf("award"));
+  assert.ok(stages.indexOf("solicitation") < stages.indexOf("intent_to_award"));
+});
+
+test("intermediate stages: Vendor List and Intent to Negotiate appear when related notices exist", () => {
+  const award = {
+    request_id: "A1",
+    agency_name: "A",
+    type_of_notice_description: "Award",
+    start_date: "2025-06-01",
+    short_title: "S",
+    pin: "P1",
+    vendor_name: "V",
+    contract_amount: "10",
+  };
+  const related = [
+    {
+      request_id: "S1", agency_name: "A", type_of_notice_description: "Solicitation",
+      start_date: "2025-01-01", short_title: "S", pin: "P1",
+    },
+    {
+      request_id: "N1", agency_name: "A", type_of_notice_description: "Intent to Negotiate",
+      start_date: "2025-02-01", short_title: "S", pin: "P1",
+    },
+    {
+      request_id: "V1", agency_name: "A", type_of_notice_description: "Vendor List",
+      start_date: "2025-03-01", short_title: "S", pin: "P1",
+    },
+    {
+      request_id: "I1", agency_name: "A", type_of_notice_description: "Intent to Award",
+      start_date: "2025-04-01", short_title: "S", pin: "P1", vendor_name: "V", contract_amount: "10",
+    },
+  ];
+  const result = assembleLifecycle(award, [], [], [], {
+    lookupStatus: { pending: "ok", registered: "ok", spending: "ok" },
+    relatedNotices: related,
+  });
+  assert.deepEqual(
+    result.timeline.filter((t) => t.source === "city-record").map((t) => t.stage),
+    ["solicitation", "intent_to_negotiate", "vendor_list", "intent_to_award", "award"],
+  );
 });
 
 // ---------------------------------------------------------------------------

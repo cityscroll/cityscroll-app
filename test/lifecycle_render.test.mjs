@@ -451,6 +451,9 @@ test("lifecyclePaymentSummaryHTML: notice-scoped dollars link", () => {
 
 test("lifecycleStageLabel: maps each stage to a human-readable label", () => {
   assert.equal(lifecycleStageLabel("solicitation"), "Solicitation");
+  assert.equal(lifecycleStageLabel("intent_to_negotiate"), "Intent to negotiate");
+  assert.equal(lifecycleStageLabel("vendor_list"), "Vendor list");
+  assert.equal(lifecycleStageLabel("intent_to_award"), "Intent to award");
   assert.equal(lifecycleStageLabel("award"), "Award");
   assert.equal(lifecycleStageLabel("pending"), "Pending contract");
   assert.equal(lifecycleStageLabel("registered"), "Registered contract");
@@ -490,6 +493,41 @@ test("lifecycle: award notice renders Award stage with vendor and amount", () =>
   assert.match(html, /\$5\.00M/);
   assert.match(html, /class="box matched/);
   // Future Checkbook stages stay grey chips — no not-yet-shown paragraphs
+  assert.doesNotMatch(html, /Not yet shown here/);
+});
+
+test("lifecycle: intermediate City Record stages render as distinct stepper chips in order", () => {
+  const intermediateLifecycle = {
+    pin: "08250R0001001", pin_strategy: "exact", ok: true, amendments: [],
+    timeline: [
+      {
+        stage: "solicitation", status: "matched", source: "city-record",
+        date: "2025-01-10",
+        detail: { request_id: "S1", agency: "Sanitation", title: "Collection", pin: "08250R0001001" },
+      },
+      {
+        stage: "intent_to_award", status: "matched", source: "city-record",
+        date: "2025-02-01",
+        detail: { request_id: "I1", agency: "Sanitation", title: "Collection", pin: "08250R0001001", vendor: "ACME CORP", amount: 5000000 },
+      },
+      {
+        stage: "award", status: "matched", source: "city-record",
+        date: "2025-02-15",
+        detail: { request_id: "A1", agency: "Sanitation", title: "Collection", pin: "08250R0001001", vendor: "ACME CORP", amount: 5000000 },
+      },
+      { stage: "pending", status: "unmatched", source: "checkbook-contracts", date: null, detail: null },
+      { stage: "registered", status: "unmatched", source: "checkbook-contracts", date: null, detail: null },
+      { stage: "payment", status: "unmatched", source: "checkbook-spending", date: null, detail: null },
+    ],
+  };
+  const html = lifecycleTimelineHTML(intermediateLifecycle, notice);
+  // Stepper carries all three City Record stages as distinct labels.
+  assert.match(html, /lc-stepper/);
+  assert.match(html, /Intent to award/);
+  assert.match(html, /Solicitation/);
+  assert.match(html, /Award/);
+  // Intent detail card shows vendor (matched intermediate is not a grey-only chip).
+  assert.match(html, /ACME CORP/);
   assert.doesNotMatch(html, /Not yet shown here/);
 });
 
