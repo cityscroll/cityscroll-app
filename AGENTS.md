@@ -47,14 +47,24 @@ PASSPort Public has **no Socrata dataset** for contracts/RFx. Stable machine dum
 - `https://a0333-passportpublic.nyc.gov/dataJs/contractData.js` (`public_ctr_data`)
 - `https://a0333-passportpublic.nyc.gov/dataJs/rfxData.js` (`public_rfx_data`)
 
-Edge materialization: `worker/src/passport.mjs` → D1 `passport_contracts` / `passport_rfx`.
+Edge materialization: `worker/src/passport.mjs` → D1 `passport_contracts` / `passport_rfx`
+(+ dual-write `source_records` when `PASSPORT_SOURCE_RECORD_DUAL_WRITE=true`).
 Strict EPIN↔PIN join: `worker/src/lib/passport_join.mjs`. Measured rates live in
 `site/data/source_contracts.json` (`join_measurement`) and
 `site/data/passport_sources/verification_receipts/`.
 Deploy applies D1 migrations before worker code (`deploy-worker.yml`); `ensurePassportSchema`
 is the runtime safety net. `lookup_status` is three-state: `ok` / `error` / `skipped` —
 error must never render as a confident empty miss. Characterization:
-`node --test worker/test/passport_lookup.test.mjs`.
+`node --test worker/test/passport_lookup.test.mjs worker/test/er_source_coverage.test.mjs`.
+
+**Freshness / dual-write (load-bearing):** daily cron runs `ingestPassportPublic` with a
+browser-like User-Agent (empty UA → portal HTTP 403). Failed attempts stamp
+`passport_ingest_meta` (`last_attempt_at`, `last_error`, `last_ok`) without wiping the last
+good `ingested_at`. On fetch failure, dual-write **backfills** from existing product
+payloads so observation coverage is not stuck at zero. Staleness helper:
+`passportIngestIsStale` (default 48h). Operator force: `POST /admin/passport-ingest`
+(`ADMIN_KEY`). Host-side full reseed when edge cannot reach dataJs:
+`node tools/passport_remote_reseed.mjs` (optional `--dual-write-only`).
 
 Solicitation response handoffs are evidence records, not generic bid links:
 `site/action_registry.js` → `solicitationHandoff`. Notice-named agency systems take
