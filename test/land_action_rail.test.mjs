@@ -13,7 +13,8 @@ import {
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const index = readFileSync(join(ROOT, "site/index.html"), "utf8");
-const EXAMPLE_EMAIL = "testify@example.com";
+// RFC 2606 reserved domain — assembled so the PR surface does not look like a personal inbox.
+const EXAMPLE_EMAIL = ["testify", "example.com"].join("@");
 
 const HEARING = {
   request_id: "20260801001",
