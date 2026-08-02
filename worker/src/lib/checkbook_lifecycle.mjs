@@ -21,7 +21,15 @@ import {
   applySolicitationDetail,
   documentsStatusFor,
 } from "./current_solicitations.mjs";
-import { attachLifecycleCoherence } from "./lifecycle_coherence.mjs";
+import {
+  attachLifecycleCoherence,
+  DATE_BASIS_PUBLICATION,
+  DATE_BASIS_REGISTRATION,
+  DATE_BASIS_RECEIVED,
+  DATE_BASIS_PAYMENT,
+  DATE_BASIS_EVENT,
+  SOLICITATION_RECOVERY_SOURCES,
+} from "./lifecycle_coherence.mjs";
 import { linksFromLifecycle } from "./subject_registry.mjs";
 
 export { usablePin, pinBase };
@@ -270,6 +278,7 @@ function cityRecordStageEntry(stage, row, extra = {}) {
   return stageEntry(stage, "matched", "city-record", {
     date: r.start_date || null,
     source_timestamp: r.start_date || null,
+    date_basis: DATE_BASIS_PUBLICATION,
     detail,
     ...rest,
   });
@@ -442,6 +451,7 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
     timeline.push(stageEntry(STAGE_SOLICITATION, "matched", "city-record", {
       date: solRow.start_date || null,
       source_timestamp: solRow.start_date || null,
+      date_basis: DATE_BASIS_PUBLICATION,
       documents_status: docsStatus,
       detail,
     }));
@@ -457,6 +467,7 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
     timeline.push(stageEntry(STAGE_SOLICITATION, "matched", CURRENT_SOLICITATIONS_SOURCE, {
       date: m.start_date || null,
       source_timestamp: m.start_date || null,
+      date_basis: DATE_BASIS_EVENT,
       documents_status: docsStatus,
       detail,
     }));
@@ -499,6 +510,14 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
     const subjects = linksFromLifecycle(partial, r);
     partial.subject_refs = subjects.subject_refs;
     partial.subject_links = subjects.subject_links;
+    // Solicitation recovery side-car (sources checked even when unmatched).
+    partial.solicitation_recovery = {
+      status: timeline.some((e) => e.stage === STAGE_SOLICITATION && e.status === "matched")
+        ? "matched"
+        : "unmatched",
+      source: (timeline.find((e) => e.stage === STAGE_SOLICITATION && e.status === "matched") || {}).source || null,
+      sources_checked: SOLICITATION_RECOVERY_SOURCES.slice(),
+    };
     // Orphan / amount / date coherence counters (metric + side-car).
     return attachLifecycleCoherence(partial);
   }
@@ -515,6 +534,7 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
   const pendingEntry = stageEntry(STAGE_PENDING, pendingStatus, "checkbook-contracts", {
     date: pendingStatus === "matched" ? (pendingRows[0].received || pendingRows[0].start || null) : null,
     source_timestamp: pendingStatus === "matched" ? (pendingRows[0].received || pendingRows[0].start || null) : null,
+    date_basis: DATE_BASIS_RECEIVED,
     detail: pendingStatus === "matched" ? {
       contract_id: pendingRows[0].id,
       vendor: pendingRows[0].vendor,
@@ -552,6 +572,7 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
   const regEntry = stageEntry(STAGE_REGISTERED, regStatus, "checkbook-contracts", {
     date: regStatus === "matched" ? (registeredRows[0].registered || null) : null,
     source_timestamp: regStatus === "matched" ? (registeredRows[0].registered || null) : null,
+    date_basis: DATE_BASIS_REGISTRATION,
     detail: regDetail,
   });
 
@@ -634,6 +655,7 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
   const payEntry = stageEntry(STAGE_PAYMENT, spendStatus, "checkbook-spending", {
     date: spendStatus === "matched" ? payDate : null,
     source_timestamp: spendStatus === "matched" ? payDate : null,
+    date_basis: DATE_BASIS_PAYMENT,
     detail: payDetail,
   });
 
@@ -678,8 +700,15 @@ export function assembleLifecycle(noticeRow, pending, registered, spending, opts
   out.subject_links = subjects.subject_links;
   // OCP side-car is optional on pure assemble; worker attach always sets it after fetch.
   if (opts.ocpAward) out.ocp_award = opts.ocpAward;
+  // Solicitation recovery: which honest source filled the stage (CR / OCP / later RFx).
+  const solMatched = timeline.find((e) => e.stage === STAGE_SOLICITATION && e.status === "matched");
+  out.solicitation_recovery = {
+    status: solMatched ? "matched" : "unmatched",
+    source: solMatched?.source || null,
+    sources_checked: SOLICITATION_RECOVERY_SOURCES.slice(),
+  };
   // Coherence side-car: orphaned award, payment > commitment, out-of-order dates.
-  // Named metric: procurement_lifecycle_coherence_rate (see lifecycle_coherence.mjs).
+  // Named metrics: procurement_lifecycle_coherence_rate, award_solicitation_recovery_rate.
   return attachLifecycleCoherence(out);
 }
 

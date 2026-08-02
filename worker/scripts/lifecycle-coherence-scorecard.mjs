@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /**
- * Scorecard CLI for procurement_lifecycle_coherence_rate.
+ * Scorecard CLI for procurement_lifecycle_coherence_rate and
+ * award_solicitation_recovery_rate.
  *
  * Usage:
  *   node worker/scripts/lifecycle-coherence-scorecard.mjs
@@ -11,7 +12,10 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { measureProcurementLifecycleCoherenceRate } from "../src/lib/lifecycle_coherence.mjs";
+import {
+  measureAwardSolicitationRecoveryRate,
+  measureProcurementLifecycleCoherenceRate,
+} from "../src/lib/lifecycle_coherence.mjs";
 import { buildProcurementCoherenceCases } from "../test/fixtures/lifecycle-coherence/build_cases.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "../..");
@@ -22,6 +26,7 @@ function round4(n) {
 
 function scorecardFromCases(cases) {
   const measured = measureProcurementLifecycleCoherenceRate(cases);
+  const recovery = measureAwardSolicitationRecoveryRate(cases);
   return {
     metric: measured.metric,
     version: measured.version,
@@ -29,6 +34,12 @@ function scorecardFromCases(cases) {
     coherent: measured.coherent,
     procurement_lifecycle_coherence_rate: round4(measured.rate),
     issue_counts: measured.issue_counts,
+    award_solicitation_recovery_rate: round4(recovery.rate),
+    award_solicitation_recovery: {
+      eligible: recovery.eligible,
+      recovered: recovery.recovered,
+      by_source: recovery.by_source,
+    },
     cases: measured.cases.map((c) => ({
       id: c.id,
       eligible: c.eligible,
@@ -105,8 +116,16 @@ function main() {
       process.exitCode = 1;
       return;
     }
+    if (!(scorecard.award_solicitation_recovery_rate > 0
+      && scorecard.award_solicitation_recovery_rate < 1)) {
+      process.stderr.write(
+        "lifecycle-coherence-scorecard --check FAILED: expected recovery rate in (0,1)\n",
+      );
+      process.exitCode = 1;
+      return;
+    }
     process.stdout.write(
-      `lifecycle-coherence-scorecard --check OK procurement_lifecycle_coherence_rate=${scorecard.procurement_lifecycle_coherence_rate} eligible=${scorecard.eligible} coherent=${scorecard.coherent}\n`,
+      `lifecycle-coherence-scorecard --check OK procurement_lifecycle_coherence_rate=${scorecard.procurement_lifecycle_coherence_rate} award_solicitation_recovery_rate=${scorecard.award_solicitation_recovery_rate} eligible=${scorecard.eligible} coherent=${scorecard.coherent}\n`,
     );
     return;
   }

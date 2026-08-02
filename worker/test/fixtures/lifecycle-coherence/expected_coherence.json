@@ -1,13 +1,24 @@
 {
   "metric": "procurement_lifecycle_coherence_rate",
-  "version": "lifecycle_coherence_v1",
-  "eligible": 5,
-  "coherent": 2,
-  "procurement_lifecycle_coherence_rate": 0.4,
+  "version": "lifecycle_coherence_v2",
+  "eligible": 6,
+  "coherent": 3,
+  "procurement_lifecycle_coherence_rate": 0.5,
   "issue_counts": {
     "orphaned_award": 1,
     "payment_exceeds_commitment": 1,
-    "out_of_order_dates": 2
+    "out_of_order_dates": 1
+  },
+  "award_solicitation_recovery_rate": 0.8,
+  "award_solicitation_recovery": {
+    "eligible": 5,
+    "recovered": 4,
+    "by_source": {
+      "city-record": 0,
+      "ocp-current-solicitations": 3,
+      "passport-public-rfx": 1,
+      "other": 0
+    }
   },
   "cases": [
     {
@@ -21,8 +32,7 @@
       "eligible": true,
       "coherent": false,
       "issue_kinds": [
-        "orphaned_award",
-        "out_of_order_dates"
+        "orphaned_award"
       ]
     },
     {
@@ -34,7 +44,7 @@
       ]
     },
     {
-      "id": "out-of-order-registered-before-award",
+      "id": "out-of-order-solicitation-after-award",
       "eligible": true,
       "coherent": false,
       "issue_kinds": [
@@ -43,6 +53,12 @@
     },
     {
       "id": "coherent-award-with-solicitation-package",
+      "eligible": true,
+      "coherent": true,
+      "issue_kinds": []
+    },
+    {
+      "id": "award-rfx-solicitation-recovery",
       "eligible": true,
       "coherent": true,
       "issue_kinds": []

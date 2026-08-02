@@ -473,13 +473,19 @@ Precompute-first on the notice page: never live Checkbook proxy; never render `l
 
 Detect orphaned/contradictory Money stages on assembled lifecycles and measure them:
 
-- **Issue kinds:** `orphaned_award` (matched award, no solicitation stage),
+- **Issue kinds:** `orphaned_award` (matched award, no solicitation from any honest
+  source — class-(a) with named sources: City Record, PASSPort RFx, OCP Current
+  Solicitations; never a silent gap),
   `payment_exceeds_commitment` (paid-to-date > award/registered commitment),
-  `out_of_order_dates` (matched stage dates violate solicitation→…→payment order)
-- **Side-car:** `assembleLifecycle` / `recoverPaymentFromRegisteredJoin` stamp
-  `lifecycle.coherence` (`version`, `coherent`, `findings`, `issue_kinds`)
-- **Named metric:** `procurement_lifecycle_coherence_rate` =
-  coherent / eligible (eligible = non-empty timeline with ≥1 matched stage)
+  `out_of_order_dates` (matched stage dates violate order on a **comparable
+  event-time basis** — CR publication vs Checkbook registration is exempt)
+- **Solicitation recovery:** CR sibling → OCP Current Solicitations → PASSPort RFx
+  (injects matched solicitation when unique). EPIN prefix min length 8.
+- **Side-car:** `assembleLifecycle` / passport enrich / payment recovery stamp
+  `lifecycle.coherence` + `lifecycle.solicitation_recovery`
+- **Named metrics:** `procurement_lifecycle_coherence_rate` =
+  coherent / eligible; `award_solicitation_recovery_rate` = PIN-bearing awards
+  with matched solicitation / PIN-bearing awards
 - Pure lib: `worker/src/lib/lifecycle_coherence.mjs`
 - Fixtures: `worker/test/fixtures/lifecycle-coherence/`
 - Verify:
