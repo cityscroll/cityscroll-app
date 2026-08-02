@@ -139,3 +139,19 @@ export function meetingDetailUrl(meeting) {
   }
   return null;
 }
+
+/**
+ * Deep-link a Council matter (legislation) from a numeric Legistar MatterId.
+ *
+ * LegislationDetail.aspx requires both ID and GUID ("Invalid parameters!" without
+ * GUID). Gateway M=L resolves MatterId → the full InSite detail URL (302). Only
+ * numeric API MatterIds are accepted — fixture strings like "mat-001" return null
+ * so we never emit a fake destination.
+ *
+ * Verified 2026-08-02: MatterId 79062 → LU 0091-2026 LegislationDetail.
+ */
+export function matterDetailUrl(matterId) {
+  const id = String(matterId == null ? "" : matterId).trim();
+  if (!/^\d+$/.test(id)) return null;
+  return `https://nyc.legistar.com/Gateway.aspx?M=L&ID=${encodeURIComponent(id)}`;
+}

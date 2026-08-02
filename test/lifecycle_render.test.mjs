@@ -585,11 +585,15 @@ test("lifecycle: solicitation without package documents uses short not-published
     request_id: "20260709023", agency_name: "Citywide Administrative Services", pin: "85726B0067",
   });
   assert.match(html, /The city does not publish package documents as an open feed/);
-  assert.match(html, /a856-cityrecord\.nyc\.gov\/Search\/GetFile/);
-  assert.match(html, /City Record file attachments/);
+  // With request_id known, deep-link RequestDetail (not bare GetFile search)
+  assert.match(html, /a856-cityrecord\.nyc\.gov\/RequestDetail\/20260709023/);
+  assert.match(html, /City Record/);
+  assert.doesNotMatch(html, /a856-cityrecord\.nyc\.gov\/Search\/GetFile/);
   assert.doesNotMatch(html, /Not yet shown here — solicitation package/);
-  // Single GetFile pointer — not a multi-link hedge
-  assert.equal((html.match(/GetFile/g) || []).length, 1);
+  // RequestDetail deep-link present; bare GetFile hunt page absent when request_id known
+  // (solicitation stage may also emit RequestDetail as its source link — not a multi-GetFile hedge)
+  assert.ok((html.match(/RequestDetail\/20260709023/g) || []).length >= 1);
+  assert.equal((html.match(/GetFile/g) || []).length, 0);
 });
 
 // ---------------------------------------------------------------------------

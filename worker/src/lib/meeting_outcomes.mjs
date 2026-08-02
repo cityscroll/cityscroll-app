@@ -13,6 +13,7 @@ import {
   buildMeetingDateIndex,
   joinNoticeToCouncilMeeting,
   meetingDetailUrl,
+  matterDetailUrl,
 } from "./legistar_join.mjs";
 import {
   fetchLegistarEvents,
@@ -247,6 +248,9 @@ export function buildMeetingVoteSpine({
       matched: matterMatched,
       matter_id: matter?.matter_id ?? null,
       matter_file: matter?.matter_file ?? null,
+      // Prefer stamped matter_url; fall back to pure builder so spines stay linkable
+      // even when a caller builds a spine without assembleAgenda.
+      matter_url: matter?.matter_url || matterDetailUrl(matter?.matter_id) || null,
       title: matter?.title ?? null,
       status: matter?.status ?? null,
     },
@@ -389,6 +393,8 @@ function assembleAgenda(items, voteByMatter, docsByItem = new Map()) {
       matters.push({
         matter_id: item.matter_id,
         matter_file: item.matter_file,
+        // Deep outbound when MatterId is numeric (Gateway M=L); null for non-numeric ids.
+        matter_url: matterDetailUrl(item.matter_id),
         title: item.matter_name || item.title,
         body_text: item.body_text || item.action_text,
         status: item.matter_status,

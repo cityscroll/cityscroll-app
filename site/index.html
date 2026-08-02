@@ -6528,9 +6528,14 @@ function lifecycleDocumentsHTML(entry){
   if(docsStatus === "ambiguous"){
     return `<div class="lc-norecord lc-docs-gap">${t("lifecycle_ambiguous_html")}</div>`;
   }
-  // unmatched — class (b) not-published. One short line + one GetFile pointer (never a
-  // multi-clause hedge with two outbound links).
-  const where = `<a class="view" href="${CITY_RECORD_GETFILE_URL}" ${EXT_ATTRS}><span lang="en" dir="ltr">${t("lifecycle_source_city_record_getfile")}</span>${extSR()}</a>`;
+  // unmatched — class (b) not-published. One short line + one outbound pointer
+  // (never a multi-clause hedge with two outbound links). When the notice request_id
+  // is known, deep-link City Record RequestDetail (the notice that would carry GetFile
+  // attachments). Bare GetFile without DocumentID is a hunt page — only when no request_id.
+  const rid = d.request_id || (entry.detail && entry.detail.request_id) || null;
+  const where = rid
+    ? `<a class="view" href="${REQ_URL(rid)}" ${EXT_ATTRS}><span lang="en" dir="ltr">${t("lifecycle_source_city_record")}</span>${extSR()}</a>`
+    : `<a class="view" href="${CITY_RECORD_GETFILE_URL}" ${EXT_ATTRS}><span lang="en" dir="ltr">${t("lifecycle_source_city_record_getfile")}</span>${extSR()}</a>`;
   return `<div class="lc-docs-caveat lc-docs-gap">${t("lifecycle_documents_not_published_html",{where})}</div>`;
 }
 
@@ -7441,6 +7446,54 @@ function isCityCouncilNotice(r){
   return /\bcity council\b/i.test(agency);
 }
 
+/**
+ * Deep-link a Council matter from a numeric Legistar MatterId.
+ * Gateway M=L resolves MatterId → LegislationDetail (ID+GUID). Non-numeric ids
+ * return null so we never invent a destination.
+ */
+function matterDetailUrl(matterId){
+  const id = String(matterId == null ? "" : matterId).trim();
+  if(!/^\d+$/.test(id)) return null;
+  return "https://nyc.legistar.com/Gateway.aspx?M=L&ID=" + encodeURIComponent(id);
+}
+
+/** Map a non-Council hearing agency to ≥1 outbound HTTPS landing (never invent votes).
+ * Constants live inside the function so extractFn hermetic suites stay self-contained. */
+function nonCouncilBodyLinks(notice){
+  const CB_URL = "https://www.nyc.gov/site/cau/community-boards/community-boards.page";
+  // Prefer an agency-mapped borough president site when the notice names one.
+  const BP_LINKS = [
+    { re: /\bmanhattan\b/i, url: "https://www.manhattanbp.nyc.gov/", label: "Manhattan Borough President" },
+    { re: /\bbrooklyn\b/i, url: "https://www.brooklynbp.nyc.gov/", label: "Brooklyn Borough President" },
+    { re: /\bbronx\b/i, url: "https://bronxboropres.nyc.gov/", label: "Bronx Borough President" },
+    { re: /\bqueens\b/i, url: "https://queensbp.nyc.gov/", label: "Queens Borough President" },
+    { re: /\bstaten island\b|\brichmond\b/i, url: "https://www.statenislandusa.com/", label: "Staten Island Borough President" },
+  ];
+  const agency = String(notice && notice.agency_name || "").trim();
+  const links = [];
+  for(const row of BP_LINKS){
+    if(row.re.test(agency)){
+      links.push({ url: row.url, label: row.label });
+      break;
+    }
+  }
+  // Community boards and unmapped agencies still get the official CB directory.
+  links.push({ url: CB_URL, label: "NYC community boards" });
+  // When no borough BP mapped, include one verified BP home so "borough president
+  // websites" is not a text-only claim with zero outbound.
+  if(links.length === 1){
+    links.unshift({ url: "https://bronxboropres.nyc.gov/", label: "Borough president websites" });
+  }
+  return links;
+}
+
+/** HTML for the class-(b) non-Council "where" slot — real HTTPS links, not bare text. */
+function nonCouncilWhereHTML(notice){
+  return nonCouncilBodyLinks(notice).map(l =>
+    `<a class="view" href="${escUiHtml(l.url)}" ${EXT_ATTRS}><span lang="en" dir="ltr">${escUiHtml(l.label)}</span>${extSR()}</a>`
+  ).join(" · ");
+}
+
 /** Map a Legistar action/outcome string to a scan badge bucket. */
 function meetingOutcomeBucket(text){
   const s = String(text || "").toLowerCase();
@@ -7493,6 +7546,7 @@ function collapseMeetingAgenda(items){
         entry = {
           matter_id: matter.matter_id,
           matter_file: matter.matter_file || "",
+          matter_url: matter.matter_url || matterDetailUrl(matter.matter_id) || "",
           title: matter.title || "",
           agendaTitle,
           agendaNumber,
@@ -7509,6 +7563,9 @@ function collapseMeetingAgenda(items){
       if(agendaNumber && !entry.agendaNumber) entry.agendaNumber = agendaNumber;
       if(matter.title) entry.title = matter.title;
       if(matter.status) entry.status = matter.status;
+      if(!entry.matter_url){
+        entry.matter_url = matter.matter_url || matterDetailUrl(matter.matter_id) || "";
+      }
       const outcome = matter.outcome || matter.passed || matter.status || "";
       if(outcome) entry.actions.push(outcome);
       if(matter.outcome) entry.finalOutcome = matter.outcome;
@@ -7564,10 +7621,12 @@ function meetingOutcomesHTML(record, notice){
   if(!join.matched){
     // Non-Council hearings: no public joinable vote feed — class (b), not a missing ingest.
     // Keep this branch self-contained so characterization extractFn suites stay hermetic.
+    // Outbound "where" is real HTTPS landings (agency-mapped BP when known + CB directory),
+    // never a text-only "look somewhere" line.
     if(notice && !isCityCouncilNotice(notice)){
       return `<div class="chain-h">${t("meeting_outcomes_heading_non_council")}</div>
         <div class="note">${t("meeting_outcomes_non_council_not_published_html",{
-          where: t("meeting_outcomes_non_council_where")
+          where: nonCouncilWhereHTML(notice)
         })}</div>`;
     }
     return `<div class="chain-h">${t("meeting_outcomes_heading")}</div>
@@ -7618,6 +7677,12 @@ function meetingOutcomesHTML(record, notice){
       : "meeting_outcomes_badge_other";
     const shortTitle = meetingMatterShortTitle(entry);
     const fileLine = entry.matter_file || entry.matter_id || "—";
+    const matterHref = entry.matter_url || matterDetailUrl(entry.matter_id) || "";
+    // Outbound Legistar legislation when MatterId is numeric; plain text otherwise
+    // (never invent a link for non-numeric / missing ids).
+    const fileHTML = matterHref
+      ? `<a class="meeting-file meeting-matter-link" lang="en" dir="ltr" href="${escUiHtml(matterHref)}" ${EXT_ATTRS} data-matter-id="${escUiHtml(entry.matter_id || "")}">${escUiHtml(fileLine)}${extSR()}</a>`
+      : `<div class="meeting-file" lang="en" dir="ltr">${escUiHtml(fileLine)}</div>`;
     const subBits = [];
     if(entry.agendaNumber) subBits.push("#" + entry.agendaNumber);
     if(entry.title && entry.title !== shortTitle) subBits.push(entry.title);
@@ -7653,7 +7718,7 @@ function meetingOutcomesHTML(record, notice){
     listHTML += `<li class="meeting-matter" data-meeting-spine data-meeting-matter data-outcome-bucket="${bucket}">
       <div class="meeting-matter-main">
         <div>
-          <div class="meeting-file" lang="en" dir="ltr">${escUiHtml(fileLine)}</div>
+          ${fileHTML}
           <p class="meeting-title" lang="en" dir="ltr">${escUiHtml(shortTitle)}</p>
           ${subBits.length ? `<p class="meeting-sub" lang="en" dir="ltr">${escUiHtml(subBits.join(" · "))}</p>` : ""}
         </div>

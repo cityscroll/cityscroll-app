@@ -15,6 +15,7 @@ import {
   distinctiveTokens,
   joinNoticeToCouncilMeeting,
   meetingDetailUrl,
+  matterDetailUrl,
 } from "../worker/src/lib/legistar_join.mjs";
 import { loadSourceContracts } from "../tools/source_contracts.mjs";
 
@@ -132,6 +133,20 @@ test("field-case fixtures match the accepted/rejected strategy table", () => {
 test("meetingDetailUrl prefers publisher url object and falls back to LEGID", () => {
   assert.match(meetingDetailUrl({ event_id: "99" }), /LEGID=99/);
   assert.match(meetingDetailUrl({ EventId: 22526 }), /LEGID=22526/);
+});
+
+test("matterDetailUrl builds Gateway M=L for numeric MatterIds only", () => {
+  assert.equal(
+    matterDetailUrl(79062),
+    "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79062",
+  );
+  assert.equal(
+    matterDetailUrl("79193"),
+    "https://nyc.legistar.com/Gateway.aspx?M=L&ID=79193",
+  );
+  assert.equal(matterDetailUrl("mat-001"), null);
+  assert.equal(matterDetailUrl(""), null);
+  assert.equal(matterDetailUrl(null), null);
 });
 
 test("verification receipt records authenticated modern 100% join", () => {
