@@ -11,6 +11,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import * as procurementPhaseSpine from "../site/procurement_phase_spine.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const src = readFileSync(join(ROOT, "site", "index.html"), "utf8");
@@ -76,6 +77,13 @@ const sandbox = new Function(
   extractFn("lifecycleStepperHTML") +
   extractFn("lifecycleStageHTML") +
   extractFn("lifecycleOcpAwardHTML") +
+  extractFn("lifecyclePhaseLabel") +
+  extractFn("lifecyclePhaseActionHTML") +
+  extractFn("lifecyclePhaseAggregateHTML") +
+  extractFn("lifecyclePhasePanelHTML") +
+  extractFn("lifecyclePhaseStepperHTML") +
+  extractFn("lifecyclePhaseTimelineHTML") +
+  extractFn("lifecycleTimelineHTMLFlat") +
   extractFn("lifecycleTimelineHTML") +
   "return { lifecycleStageLabel, lifecycleAmount, lifecycleSourceLink, lifecycleStageHTML, lifecycleOcpAwardHTML, lifecycleTimelineHTML, lifecycleMoney, checkbookSearchUrl, lifecycleDollarsFocusHref, lifecyclePaymentSummaryHTML, lifecyclePaymentState };"
 );
@@ -92,6 +100,12 @@ const {
   lifecycleDollarsFocusHref,
   lifecyclePaymentSummaryHTML,
 } = sandbox(t, tn, windowStub);
+
+/** Production path: phase-group tools always available in characterization tests. */
+const phaseTools = procurementPhaseSpine;
+function renderLifecycle(data, notice) {
+  return lifecycleTimelineHTML(data, notice, phaseTools);
+}
 
 // ---------------------------------------------------------------------------
 // Fixtures: mirrors the lifecycle data model from worker/src/lib/checkbook_lifecycle.mjs
@@ -230,12 +244,13 @@ const notice = { request_id: "20250110001", agency_name: "Sanitation", pin: "082
 // ---------------------------------------------------------------------------
 
 test("lifecycle: full lifecycle renders all stages with dates, amounts, and source links", () => {
-  const html = lifecycleTimelineHTML(FULL_LIFECYCLE, notice);
+  const html = renderLifecycle(FULL_LIFECYCLE, notice);
   assert.match(html, /class="chain-h"/);
   assert.match(html, /Contract lifecycle/);
   assert.match(html, /class="chain"/);
 
-  // Stage labels
+  // Phase lead + stage labels (history keeps earlier stage names)
+  assert.match(html, /lc-phase-lead/);
   assert.match(html, /Solicitation/);
   assert.match(html, /Pending contract/);
   assert.match(html, /Registered contract/);
@@ -251,35 +266,38 @@ test("lifecycle: full lifecycle renders all stages with dates, amounts, and sour
   assert.match(html, /\$5\.00M/);
   assert.match(html, /\$750K/);
 
-  // One actionable source link on the current stage (payments → Checkbook)
+  // One actionable source link on the current phase (payments → Checkbook)
   assert.match(html, /checkbooknyc\.com/);
   // City Record is named in methodology; outbound link only when that stage is current
   assert.match(html, /City Record/);
 });
 
 test("lifecycle: matched stages have green box class", () => {
-  const html = lifecycleTimelineHTML(FULL_LIFECYCLE, notice);
+  const html = renderLifecycle(FULL_LIFECYCLE, notice);
   assert.match(html, /class="box matched"/);
 });
 
-test("lifecycle: connectors between expanded matched stages", () => {
-  const html = lifecycleTimelineHTML(FULL_LIFECYCLE, notice);
-  const connectors = (html.match(/class="connector"/g) || []).length;
-  assert.equal(connectors, 3, "4 matched detail cards = 3 connectors");
-  // Compact stepper also lists every stage
-  assert.match(html, /class="lc-stepper"/);
+test("lifecycle: phase stepper groups stages; connectors only within a phase", () => {
+  const html = renderLifecycle(FULL_LIFECYCLE, notice);
+  // Phase stepper: Solicitation → Selection → Award → Payments (4 chips)
+  assert.match(html, /class="lc-stepper lc-phase-stepper"/);
   assert.equal((html.match(/class="lc-step /g) || []).length, 4);
+  // Current phase is payments (open panel); earlier phases under history disclosure
+  assert.match(html, /data-lc-phase-panel="payments"/);
+  assert.match(html, /lc-phase-history/);
+  // Within award_registration phase, pending + registered share a connector
+  assert.ok((html.match(/class="connector"/g) || []).length >= 1);
 });
 
 test("lifecycle: registered stage owns registration amount, not a second paid bar", () => {
-  const html = lifecycleTimelineHTML(FULL_LIFECYCLE, notice);
+  const html = renderLifecycle(FULL_LIFECYCLE, notice);
   // Committed amount still on the registered card; paid-to-date is payments + dollars
   assert.match(html, /\$5\.00M/);
   assert.doesNotMatch(html, /\$1\.50M \/ \$5\.00M \(30%\)/);
 });
 
 test("lifecycle: payment stage shows payment count, summary, and dollars link", () => {
-  const html = lifecycleTimelineHTML(FULL_LIFECYCLE, notice);
+  const html = renderLifecycle(FULL_LIFECYCLE, notice);
   assert.match(html, /3 payments/);
   assert.match(html, /Latest:/);
   assert.match(html, /\$250K/);
@@ -288,10 +306,13 @@ test("lifecycle: payment stage shows payment count, summary, and dollars link", 
   // Notice-scoped deep link — bare #follow-the-dollars ejects applyHash to money tab
   assert.match(html, /href="#notice\/20250110001\?focus=follow-the-dollars"/);
   assert.doesNotMatch(html, /href="#follow-the-dollars"/);
+  // Action-focused lead also points at Follow the dollars
+  assert.match(html, /lc-phase-action/);
+  assert.match(html, /Follow the dollars/);
 });
 
 test("lifecycle: provenance note names City Record, Checkbook, PASSPort, and the PIN", () => {
-  const html = lifecycleTimelineHTML(FULL_LIFECYCLE, notice);
+  const html = renderLifecycle(FULL_LIFECYCLE, notice);
   // Methodology is demoted to a disclosure — names sources without duplicating outbound links
   assert.match(html, /How this timeline works/);
   assert.match(html, /This timeline joins/);
@@ -311,13 +332,11 @@ test("lifecycle: provenance note names City Record, Checkbook, PASSPort, and the
 // ---------------------------------------------------------------------------
 
 test("lifecycle: unmatched future stages are greyed stepper chips, not gap paragraphs", () => {
-  const html = lifecycleTimelineHTML(UNMATCHED_LIFECYCLE, notice);
-  // Compact stepper still names every stage
-  assert.match(html, /class="lc-stepper"/);
-  assert.match(html, /Solicitation/);
-  assert.match(html, /Pending contract/);
-  assert.match(html, /Registered contract/);
-  assert.match(html, /Payments/);
+  const html = renderLifecycle(UNMATCHED_LIFECYCLE, notice);
+  // Phase stepper names the four procurement phases
+  assert.match(html, /class="lc-stepper lc-phase-stepper"/);
+  assert.match(html, /Solicit/);
+  assert.match(html, /data-lc-phase="payments"/);
   // Future unmatched: grey chips only — no class-(a) paragraphs or unmatched boxes
   assert.doesNotMatch(html, /class="box unmatched"/);
   assert.doesNotMatch(html, /Not yet shown here/);
@@ -336,13 +355,15 @@ test("lifecycle: unmatched future stages are greyed stepper chips, not gap parag
 // ---------------------------------------------------------------------------
 
 test("lifecycle: unknown stages map to collapsed future steps (never transient-error register)", () => {
-  const html = lifecycleTimelineHTML(UNKNOWN_LIFECYCLE, notice);
+  const html = renderLifecycle(UNKNOWN_LIFECYCLE, notice);
   // Public UI coerces unknown → unmatched (collapsed), never "Could not reach"
   assert.doesNotMatch(html, /Could not reach/);
   assert.doesNotMatch(html, /class="box unmatched"/);
   assert.doesNotMatch(html, /Not yet shown here/);
-  assert.match(html, /class="lc-stepper"/);
+  assert.match(html, /class="lc-stepper/);
   assert.match(html, /class="box matched/);
+  // Unknown Checkbook stages stay chips only — no empty future phase panels
+  assert.doesNotMatch(html, /data-lc-phase-panel="payments"/);
 });
 
 // ---------------------------------------------------------------------------
@@ -350,7 +371,7 @@ test("lifecycle: unknown stages map to collapsed future steps (never transient-e
 // ---------------------------------------------------------------------------
 
 test("lifecycle: ambiguous stage lists candidates", () => {
-  const html = lifecycleTimelineHTML(AMBIGUOUS_LIFECYCLE, notice);
+  const html = renderLifecycle(AMBIGUOUS_LIFECYCLE, notice);
   assert.match(html, /class="box ambiguous/);
   assert.match(html, /Multiple contracts found/);
   assert.match(html, /class="lc-candidates"/);
@@ -365,7 +386,7 @@ test("lifecycle: ambiguous stage lists candidates", () => {
 // ---------------------------------------------------------------------------
 
 test("lifecycle: amendment renders a budget-change note", () => {
-  const html = lifecycleTimelineHTML(AMENDED_LIFECYCLE, notice);
+  const html = renderLifecycle(AMENDED_LIFECYCLE, notice);
   assert.match(html, /Budget changed/);
   assert.match(html, /\$5\.00M/);
   assert.match(html, /\$7\.50M/);
@@ -373,7 +394,7 @@ test("lifecycle: amendment renders a budget-change note", () => {
 });
 
 test("lifecycle: amended registered stage shows 'amended from' inside the box", () => {
-  const html = lifecycleTimelineHTML(AMENDED_LIFECYCLE, notice);
+  const html = renderLifecycle(AMENDED_LIFECYCLE, notice);
   assert.match(html, /class="lc-amend"/);
   assert.match(html, /amended from/);
 });
@@ -500,7 +521,7 @@ test("lifecycle: award notice renders Award stage with vendor and amount", () =>
       { stage: "payment", status: "unmatched", source: "checkbook-spending", date: null, detail: null },
     ],
   };
-  const html = lifecycleTimelineHTML(awardLifecycle, notice);
+  const html = renderLifecycle(awardLifecycle, notice);
   assert.match(html, /Award/);
   assert.match(html, /ACME CORP/);
   assert.match(html, /\$5\.00M/);
@@ -509,7 +530,7 @@ test("lifecycle: award notice renders Award stage with vendor and amount", () =>
   assert.doesNotMatch(html, /Not yet shown here/);
 });
 
-test("lifecycle: intermediate City Record stages render as distinct stepper chips in order", () => {
+test("lifecycle: intermediate City Record stages group under Selection phase", () => {
   const intermediateLifecycle = {
     pin: "08250R0001001", pin_strategy: "exact", ok: true, amendments: [],
     timeline: [
@@ -533,9 +554,10 @@ test("lifecycle: intermediate City Record stages render as distinct stepper chip
       { stage: "payment", status: "unmatched", source: "checkbook-spending", date: null, detail: null },
     ],
   };
-  const html = lifecycleTimelineHTML(intermediateLifecycle, notice);
-  // Stepper carries all three City Record stages as distinct labels.
+  const html = renderLifecycle(intermediateLifecycle, notice);
+  // Phase stepper: four phases; intermediate milestone is under Selection (history).
   assert.match(html, /lc-stepper/);
+  assert.match(html, /data-lc-phase="selection"/);
   assert.match(html, /Intent to award/);
   assert.match(html, /Solicitation/);
   assert.match(html, /Award/);
@@ -562,7 +584,7 @@ test("lifecycle: no PIN renders the no-pin note instead of the provenance note",
       { stage: "payment", status: "unknown", source: "checkbook-spending", date: null, detail: null },
     ],
   };
-  const html = lifecycleTimelineHTML(noPinLifecycle, { request_id: "X", agency_name: "A", pin: null });
+  const html = renderLifecycle(noPinLifecycle, { request_id: "X", agency_name: "A", pin: null });
   assert.match(html, /does not publish a Procurement ID \(PIN\)/);
   assert.match(html, /would appear in Checkbook NYC if released with a PIN/);
   assert.doesNotMatch(html, /matched by PIN/);
@@ -601,7 +623,7 @@ test("lifecycle: solicitation with joined package documents renders real links",
       { stage: "payment", status: "unmatched", source: "checkbook-spending", date: null, detail: null },
     ],
   };
-  const html = lifecycleTimelineHTML(docsLifecycle, {
+  const html = renderLifecycle(docsLifecycle, {
     request_id: "20240816113", agency_name: "Citywide Administrative Services", pin: "85725P0001",
   });
   assert.match(html, /package document/);
@@ -632,7 +654,7 @@ test("lifecycle: solicitation without package documents uses short not-published
       { stage: "payment", status: "unmatched", source: "checkbook-spending", date: null, detail: null },
     ],
   };
-  const html = lifecycleTimelineHTML(gapLifecycle, {
+  const html = renderLifecycle(gapLifecycle, {
     request_id: "20260709023", agency_name: "Citywide Administrative Services", pin: "85726B0067",
   });
   assert.match(html, /The city does not publish package documents as an open feed/);
@@ -662,7 +684,7 @@ test("lifecycle OCP: unmatched collapses (no empty OCP gap paragraph)", () => {
       corroboration: null,
     },
   };
-  const html = lifecycleTimelineHTML(data, notice);
+  const html = renderLifecycle(data, notice);
   assert.doesNotMatch(html, /OCP award record/);
   assert.doesNotMatch(html, /Not yet shown here — recent OCP awards/);
   assert.doesNotMatch(html, /qyyg-4tf5/);
