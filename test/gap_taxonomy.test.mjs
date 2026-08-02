@@ -106,6 +106,8 @@ const helpers = new Function(
   extractFn("matterDetailUrl") +
   extractFn("nonCouncilBodyLinks") +
   extractFn("nonCouncilWhereHTML") +
+  extractFn("nonCouncilStageLabel") +
+  extractFn("nonCouncilHearingOutcomesHTML") +
   extractFn("meetingOutcomeBucket") +
   extractFn("meetingMatterShortTitle") +
   extractFn("collapseMeetingAgenda") +
@@ -274,13 +276,21 @@ test("class b: unmatched non-Council hearings use not-published register with BP
     join: { matched: false, reason: "No Council event matched." },
     council_event: null,
     agenda_items: [],
-  }, { agency_name: "Community Boards", request_id: "20260701001" });
+  }, {
+    agency_name: "Community Boards",
+    request_id: "20260701001",
+    start_date: "2026-06-20",
+    event_date: "2026-07-01",
+    short_title: "Community Board public hearing",
+  });
   assert.match(html, CLASS_B_PREFIX);
   assert.match(html, /borough president|community board/i);
   // Outbound HTTPS landings (not text-only "where")
   assert.match(html, /href="https:\/\/[^"]+"/);
   assert.match(html, /community-boards|bronxboropres/i);
-  assert.doesNotMatch(html, CLASS_A_PREFIX);
+  // Spine presents class-(b) on outcome + minutes stages (not a single bare note)
+  assert.match(html, /data-non-council-spine="1"/);
+  assert.match(html, /data-gap-class="not_published"/);
   assert.doesNotMatch(html, /Not yet shown here — Council outcomes/);
 });
 

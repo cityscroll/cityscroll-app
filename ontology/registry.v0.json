@@ -634,6 +634,24 @@
       ]
     },
     {
+      "id": "meetings.non_council_notice",
+      "status": "registered",
+      "lens": "meetings",
+      "backing": [
+        "civic_time",
+        "non_council_hearing_spine"
+      ]
+    },
+    {
+      "id": "meetings.non_council_hearing",
+      "status": "registered",
+      "lens": "meetings",
+      "backing": [
+        "civic_time",
+        "non_council_hearing_spine"
+      ]
+    },
+    {
       "id": "staffing.application_window",
       "status": "registered",
       "lens": "people",

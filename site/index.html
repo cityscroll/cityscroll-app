@@ -7636,6 +7636,66 @@ function nonCouncilWhereHTML(notice){
   ).join(" · ");
 }
 
+/** Stage labels for the non-Council hearing process spine. */
+function nonCouncilStageLabel(kind){
+  if(kind==="notice_published") return t("non_council_stage_notice_published");
+  if(kind==="hearing") return t("non_council_stage_hearing");
+  if(kind==="outcome") return t("non_council_stage_outcome");
+  if(kind==="minutes") return t("non_council_stage_minutes");
+  return kind || "—";
+}
+
+/**
+ * Non-Council hearing outcomes as a process spine (notice → hearing → outcome → minutes).
+ * Fills notice/hearing from City Record fields; outcome and minutes stay class-(b)
+ * with real HTTPS landings — never invent votes. Self-contained for extractFn suites.
+ */
+function nonCouncilHearingOutcomesHTML(notice){
+  const pub = notice && notice.start_date ? String(notice.start_date).slice(0,10) : "";
+  const hearing = notice && notice.event_date ? String(notice.event_date).slice(0,10) : "";
+  const title = cleanText(notice && notice.short_title) || (notice && notice.request_id) || "—";
+  const where = nonCouncilWhereHTML(notice);
+  const stages = [
+    { kind: "notice_published", matched: Boolean(pub), when: pub, title },
+    { kind: "hearing", matched: Boolean(hearing), when: hearing, title },
+    { kind: "outcome", matched: false, gap: "not_published" },
+    { kind: "minutes", matched: false, gap: "not_published" },
+  ];
+  let chain = "";
+  stages.forEach((stage, idx) => {
+    if(stage.matched){
+      chain += `<div class="stage"><div class="box matched">
+        <div class="stage-name">${nonCouncilStageLabel(stage.kind)}</div>
+        <div class="when">${escUiHtml(stage.when ? fdate(stage.when) : "—")}</div>
+        ${stage.title?`<div class="lc-pct" lang="en" dir="ltr">${escUiHtml(stage.title)}</div>`:""}
+      </div></div>`;
+    } else if(stage.gap === "not_published"){
+      // Class-(b): no citywide machine feed for votes/minutes; name where with HTTPS links.
+      chain += `<div class="stage"><div class="box">
+        <div class="stage-name">${nonCouncilStageLabel(stage.kind)}</div>
+        <div class="lc-norecord" data-gap-class="not_published">${t("meeting_outcomes_non_council_not_published_html",{ where })}</div>
+      </div></div>`;
+    } else {
+      chain += `<div class="stage"><div class="box">
+        <div class="stage-name">${nonCouncilStageLabel(stage.kind)}</div>
+        <div class="lc-norecord" data-gap-class="not_yet_ingested">${t("non_council_stage_not_yet_ingested_html",{
+          source:`<span lang="en" dir="ltr">${t("non_council_source_city_record")}</span>`
+        })}</div>
+      </div></div>`;
+    }
+    if(idx < stages.length - 1) chain += '<div class="connector" aria-hidden="true">→</div>';
+  });
+  return `<section class="non-council-spine" data-non-council-spine="1" aria-label="${escUiHtml(t("meeting_outcomes_heading_non_council"))}">
+    <div class="chain-h">${t("meeting_outcomes_heading_non_council")}</div>
+    <div class="note">${t("non_council_spine_join_html",{
+      title: escUiHtml(title),
+      agency: escUiHtml(cleanText(notice && notice.agency_name) || "—")
+    })}</div>
+    <div class="chain">${chain}</div>
+    <div class="note">${t("non_council_spine_provenance_html")}</div>
+  </section>`;
+}
+
 /** Map a Legistar action/outcome string to a scan badge bucket. */
 function meetingOutcomeBucket(text){
   const s = String(text || "").toLowerCase();
@@ -7761,15 +7821,11 @@ function meetingOutcomesHTML(record, notice){
   if(!record) return "";
   const join = record.join || {};
   if(!join.matched){
-    // Non-Council hearings: no public joinable vote feed — class (b), not a missing ingest.
-    // Keep this branch self-contained so characterization extractFn suites stay hermetic.
-    // Outbound "where" is real HTTPS landings (agency-mapped BP when known + CB directory),
-    // never a text-only "look somewhere" line.
+    // Non-Council hearings: reconstruct notice → hearing → outcome → minutes as a
+    // process spine. Outcome/minutes stay class-(b) with real HTTPS landings — never
+    // invent votes. Keep this branch self-contained for extractFn hermetic suites.
     if(notice && !isCityCouncilNotice(notice)){
-      return `<div class="chain-h">${t("meeting_outcomes_heading_non_council")}</div>
-        <div class="note">${t("meeting_outcomes_non_council_not_published_html",{
-          where: nonCouncilWhereHTML(notice)
-        })}</div>`;
+      return nonCouncilHearingOutcomesHTML(notice);
     }
     return `<div class="chain-h">${t("meeting_outcomes_heading")}</div>
       <div class="note">${t("meeting_outcomes_unmatched_html",{
