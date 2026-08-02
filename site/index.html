@@ -552,6 +552,12 @@
   .box .lc-candidates{font:11px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:4px}
   .box .lc-candidates > div{padding:2px 0}
   .box.current-stage{box-shadow:0 0 0 1px var(--oxblood)}
+  /* Rules event spine phase-group (proposal → public process → adoption → effective).
+     Reuses shared .lc-phase-* chrome; future chips solid muted for axe contrast. */
+  .rule-phase-stepper .lc-step{cursor:pointer;font-family:inherit}
+  .rule-phase-stepper .lc-step.future{opacity:1;color:#5c564c;background:#f3eee3;border-style:dashed;border-color:#a39a88}
+  .rule-chain.rule-phase-cards{margin-top:4px}
+  .rule-spine-lead .lc-phase-action .act{margin-inline-end:6px}
   .zap-action-chip{display:inline-block;padding:3px 7px;border:1px solid var(--rule);border-radius:999px;background:var(--paper-2,#f7f1e4);font:700 11px/1 ui-monospace,SFMono-Regular,monospace;color:var(--ink);margin-inline-end:4px}
   .zap-docs-list{display:flex;flex-wrap:wrap;gap:0 8px}
   .zap-docs-list .view{margin-top:0!important}
@@ -6965,12 +6971,38 @@ const RULE_EVENT_CFG={
   "effective":{label:"rule_event_effective",dateLabel:"rule_event_starts_on_html"},
 };
 
-function ruleEventCardHTML(type, event, rec){
+/* Rules phase spine (proposal → public process → adoption → effective). Pure model:
+   site/rules_phase_spine.mjs — same lead → stepper → panels shape as land/procurement. */
+let rulesPhaseSpineToolsPromise=null;
+function ensureRulesPhaseSpineTools(){
+  if(!rulesPhaseSpineToolsPromise){
+    rulesPhaseSpineToolsPromise=import("./rules_phase_spine.mjs").catch(()=>null);
+  }
+  return rulesPhaseSpineToolsPromise;
+}
+
+function rulePhaseLabel(phase){
+  if(!phase) return "—";
+  if(phase.label_key) return t(phase.label_key);
+  if(typeof phase==="string"){
+    const meta={
+      proposal:"rule_phase_proposal",
+      public_process:"rule_phase_public_process",
+      adoption:"rule_phase_adoption",
+      effective:"rule_phase_effective"
+    };
+    return meta[phase]?t(meta[phase]):phase;
+  }
+  return phase.short || "—";
+}
+
+function ruleEventCardHTML(type, event, rec, opts){
   const cfg=RULE_EVENT_CFG[type];
   if(!cfg) return "";
+  opts=opts||{};
   const nr=rec&&rec.nyc_rules;
   if(!event){
-    const linked=!!nr;
+    const linked=!!nr || opts.joined;
     const gap=linked
       ? t("rule_event_not_published_html",{event:t(cfg.label)})
       : t("rule_event_not_yet_ingested_html",{event:t(cfg.label),source:`<span lang="en" dir="ltr">${t("rule_source_nyc_rules")}</span>`});
@@ -6982,28 +7014,187 @@ function ruleEventCardHTML(type, event, rec){
   const eventDate=event.valid_at||event.published_at;
   const scheduled=event.status==="scheduled";
   const boxClass=scheduled?"matched":"passed";
-  const official=nr&&(type==="comment_close"?(nr.comment_url||nr.url):nr.url);
-  const sourceLink=official
+  // One outbound source family per phase: only the designated phase link renders.
+  // Hrefs use ${escUiHtml(official)} / ${escUiHtml(href)} so link_targets classifies them external.
+  const showSource=opts.showSourceLink!==false;
+  const fromNr=nr?(type==="comment_close"?(nr.comment_url||nr.url):nr.url):null;
+  const official=fromNr||opts.phaseSourceUrl||null;
+  const sourceLink=showSource&&official
     ? `<a class="view" href="${escUiHtml(official)}" ${EXT_ATTRS}>${t("rule_event_official_source")}${extSR()}</a>`
     : "";
-  const commentAction=type==="comment_close"&&scheduled&&official
-    ? `<a class="act primary" href="${escUiHtml(official)}" ${EXT_ATTRS}>${t("rule_comment_btn",{date:ruleDateLabel(event.valid_at)})}${extSR()}</a>`
+  const href=nr?(nr.comment_url||nr.url):official;
+  const commentAction=type==="comment_close"&&scheduled&&href
+    ? `<a class="act primary" href="${escUiHtml(href)}" ${EXT_ATTRS}>${t("rule_comment_btn",{date:ruleDateLabel(event.valid_at)})}${extSR()}</a>`
     : "";
   const calendarAction=type==="comment_close"
     ? `<button class="act" type="button" data-rule-event="comment_close">${t("add_date_btn",{date:ruleDateLabel(event.valid_at)})}</button>`
     : "";
   return `<div class="stage"><div class="box ${boxClass}">
     <div class="stage-name">${t(cfg.label)}</div>
-    <div class="when">${t(cfg.dateLabel,{date:ruleDateLabel(eventDate)})}</div>
+    <div class="when">${eventDate?t(cfg.dateLabel,{date:ruleDateLabel(eventDate)}):"—"}</div>
     ${sourceLink}
     ${commentAction||calendarAction?`<div class="actions" style="margin:6px 0 0">${commentAction}${calendarAction}</div>`:""}
   </div></div>`;
 }
 
-function ruleEventSpineHTML(rec){
+function rulePhaseAggregateHTML(agg){
+  if(!agg || agg.count<=1) return "";
+  const title=agg.label_key?t(agg.label_key):escUiHtml(agg.title||"—");
+  const range=agg.first&&agg.last&&agg.first!==agg.last
+    ? t("rule_phase_aggregate_range",{first:ruleDateLabel(agg.first),last:ruleDateLabel(agg.last)})
+    : (agg.first?ruleDateLabel(agg.first):"");
+  return `<div class="lc-phase-agg">
+    <div class="lc-phase-agg-title">${title}<span class="lc-phase-count">×${agg.count}</span></div>
+    <div class="lc-phase-agg-meta">${range||"—"}</div>
+  </div>`;
+}
+
+function rulePhasePanelHTML(phase, rec, view){
+  if(!phase) return "";
+  // Future empty phases: stepper chips only (no gap-card clutter).
+  if(phase.state==="future" && !phase.event_count) return "";
+  // Passed empty: omit (later stages already mark progress).
+  if(phase.state==="passed" && !phase.event_count) return "";
+
+  const open=phase.state==="current"?" open":"";
+  const stateWord=phase.state==="current"
+    ? t("rule_phase_current")
+    : phase.state==="passed"
+      ? t("rule_phase_done")
+      : t("rule_phase_future");
+  let summary="";
+  if(phase.event_count){
+    const parts=[
+      t("rule_phase_milestones_count",{n:String(phase.event_count)}),
+      phase.first&&phase.last&&phase.first!==phase.last
+        ? t("rule_phase_aggregate_range",{first:ruleDateLabel(phase.first),last:ruleDateLabel(phase.last)})
+        : (phase.first?ruleDateLabel(phase.first):""),
+    ].filter(Boolean);
+    summary=parts.join(" · ");
+  }else{
+    summary=t("rule_phase_empty");
+  }
+
+  let body="";
+  const multiAggs=(phase.aggregates||[]).filter(a=>a.count>=2);
+  if(multiAggs.length) body+=multiAggs.map(rulePhaseAggregateHTML).join("");
+
+  // Material events as stage cards; one source link on the whole phase (deduped).
+  const material=phase.events||[];
+  let stages="";
+  material.forEach((event, idx)=>{
+    const isLink=phase.state==="current" && idx===material.length-1;
+    const html=ruleEventCardHTML(event.event_type, event, rec, {
+      showSourceLink:isLink,
+      phaseSourceUrl:phase.source_url||view.official_url,
+      joined:view.joined
+    });
+    if(html){
+      stages+=html;
+      if(idx<material.length-1) stages+='<div class="connector">→</div>';
+    }
+  });
+  // Current phase with missing event types: show class-(a)/(b) gap slots so readers
+  // still see which official dates have not been published (not invented stages).
+  if(phase.state==="current" && (phase.missing_types||[]).length){
+    (phase.missing_types||[]).forEach(type=>{
+      const gap=ruleEventCardHTML(type, null, rec, {joined:view.joined, showSourceLink:false});
+      if(gap){
+        if(stages) stages+='<div class="connector">→</div>';
+        stages+=gap;
+      }
+    });
+  }
+  if(stages) body+=`<div class="lc-stage-detail"><div class="chain rule-chain rule-phase-cards">${stages}</div></div>`;
+  if(!body) body=`<div class="lc-phase-summary">${t("rule_phase_empty")}</div>`;
+
+  return `<details class="lc-phase${phase.state==="current"?" current-phase":""}"${open} id="rule-phase-${escUiHtml(phase.id)}" data-rule-phase-panel="${escUiHtml(phase.id)}">
+    <summary>
+      <span class="lc-phase-name">${escUiHtml(rulePhaseLabel(phase))}</span>
+      <span class="lc-phase-state">${escUiHtml(stateWord)}</span>
+      <span class="lc-phase-summary">${escUiHtml(summary)}</span>
+    </summary>
+    <div class="lc-phase-body">${body}</div>
+  </details>`;
+}
+
+function rulePhaseStepperHTML(view){
+  if(!view || !view.phases || !view.phases.length) return "";
+  const items=view.phases.map((p,i)=>{
+    const cls=p.state==="current"?"current":p.state==="passed"?"passed":"future";
+    const aria=p.state==="current"?` aria-current="step"`:"";
+    const arrow=i<view.phases.length-1
+      ? `<span class="lc-step-arrow" aria-hidden="true">→</span>`
+      : "";
+    return `<li><button type="button" class="lc-step ${cls}" data-rule-phase="${escUiHtml(p.id)}"${aria} title="${escUiHtml(rulePhaseLabel(p))}">${escUiHtml(p.short||rulePhaseLabel(p))}</button>${arrow}</li>`;
+  }).join("");
+  return `<ol class="lc-stepper lc-phase-stepper rule-phase-stepper" aria-label="${escUiHtml(t("rule_lifecycle_heading"))}">${items}</ol>`;
+}
+
+function rulePhaseLeadHTML(view, rec){
+  if(!view || !view.current) return "";
+  const cur=view.current;
+  const phaseName=rulePhaseLabel({label_key:cur.label_key});
+  const milestone=cur.milestone_label_key?t(cur.milestone_label_key):(cur.milestone_event_type||"—");
+  let actionHTML="";
+  const nr=rec&&rec.nyc_rules;
+  if(cur.lead_action==="comment" && (view.comment_url||nr?.comment_url||nr?.url)){
+    const href=view.comment_url||nr.comment_url||nr.url;
+    const date=cur.since||nr?.comment_by_date;
+    actionHTML=`<a class="act primary" href="${escUiHtml(href)}" ${EXT_ATTRS}>${t("rule_comment_btn",{date:ruleDateLabel(date)})}${extSR()}</a>`
+      + (date?` <button class="act" type="button" data-rule-event="comment_close">${t("add_date_btn",{date:ruleDateLabel(date)})}</button>`:"");
+  }else if(cur.lead_action==="hearing" && (view.official_url||nr?.url)){
+    const official=view.official_url||nr.url;
+    actionHTML=`<a class="act" href="${escUiHtml(official)}" ${EXT_ATTRS}>${t("rule_phase_action_attend_hearing")}${extSR()}</a>`;
+  }else if(view.official_url||nr?.url){
+    const official=view.official_url||nr.url;
+    actionHTML=`<a class="act" href="${escUiHtml(official)}" ${EXT_ATTRS}>${t("rule_event_official_source")}${extSR()}</a>`;
+  }else{
+    actionHTML=t(cur.action_key||"rule_phase_action_proposal");
+  }
+  return `<div class="lc-phase-lead rule-spine-lead">
+    <div class="lc-phase-now-label">${t("rule_phase_now_label")}</div>
+    <p class="lc-phase-now-phase">${escUiHtml(phaseName)}</p>
+    <p class="lc-phase-now-detail">${escUiHtml(milestone)}${cur.since?` · ${t("rule_phase_since",{date:ruleDateLabel(cur.since)})}`:""}</p>
+    ${actionHTML?`<p class="lc-phase-action">${actionHTML}</p>`:""}
+    ${view.next?`<p class="lc-phase-next">${t("rule_phase_next_html",{phase:escUiHtml(rulePhaseLabel(view.next))})}</p>`:""}
+  </div>`;
+}
+
+function ruleEventSpineHTMLPhase(view, rec){
+  if(!view) return "";
+  const lead=rulePhaseLeadHTML(view, rec);
+  const stepper=rulePhaseStepperHTML(view);
+  const currentPanel=(view.phases||[]).filter(p=>p.state==="current")
+    .map(p=>rulePhasePanelHTML(p, rec, view)).join("");
+  const historyPanels=(view.phases||[]).filter(p=>p.state==="passed")
+    .map(p=>rulePhasePanelHTML(p, rec, view)).filter(Boolean).join("");
+  const futurePanels=(view.phases||[]).filter(p=>p.state==="future"&&p.event_count)
+    .map(p=>rulePhasePanelHTML(p, rec, view)).join("");
+  const historyWrap=historyPanels
+    ? `<details class="lc-phase-history"><summary>${t("rule_phase_show_history")}</summary>${historyPanels}</details>`
+    : "";
+  const joined=view.joined;
+  const official=joined?(view.official_url||RULES_PUBLIC_URL):RULES_PUBLIC_URL;
+  const provenance=joined
+    ? t("rule_event_provenance_html",{source:`<a href="${escUiHtml(official)}" ${EXT_ATTRS}><span lang="en" dir="ltr">${t("rule_source_nyc_rules")}</span>${extSR()}</a>`})
+    : t("rule_event_join_gap_html",{source:`<a href="${RULES_PUBLIC_URL}" ${EXT_ATTRS}><span lang="en" dir="ltr">${t("rule_source_nyc_rules")}</span>${extSR()}</a>`});
+  const how=`<details class="inline-disclose lc-how"><summary>${t("rule_phase_how_summary")}</summary><div class="inline-disclose-body">${t("rule_phase_how_html")}</div></details>`;
+  return `<div class="chain-h">${t("rule_lifecycle_heading")}</div>
+    ${lead}
+    ${stepper}
+    ${currentPanel}
+    ${futurePanels}
+    ${historyWrap}
+    ${how}
+    <div class="note">${provenance}</div>`;
+}
+
+/** Flat fallback if the phase module fails to load — still renders all five event cards. */
+function ruleEventSpineHTMLFlat(rec){
   const events=new Map((rec&&Array.isArray(rec.events)?rec.events:[]).map(event=>[event.event_type,event]));
   const types=Object.keys(RULE_EVENT_CFG);
-  const cards=types.map(type=>ruleEventCardHTML(type,events.get(type)||null,rec));
+  const cards=types.map(type=>ruleEventCardHTML(type,events.get(type)||null,rec,{showSourceLink:true,joined:!!(rec&&rec.nyc_rules)}));
   const joined=!!(rec&&rec.nyc_rules);
   const official=joined?(rec.nyc_rules.url||RULES_PUBLIC_URL):RULES_PUBLIC_URL;
   const provenance=joined
@@ -7012,6 +7203,32 @@ function ruleEventSpineHTML(rec){
   return `<div class="chain-h">${t("rule_lifecycle_heading")}</div>
     <div class="chain rule-chain">${cards.join('<div class="connector">→</div>')}</div>
     <div class="note">${provenance}</div>`;
+}
+
+function ruleEventSpineHTML(rec, phaseTools){
+  if(phaseTools && typeof phaseTools.buildRulesPhaseView==="function"){
+    const view=phaseTools.buildRulesPhaseView(rec||{});
+    return ruleEventSpineHTMLPhase(view, rec);
+  }
+  return ruleEventSpineHTMLFlat(rec);
+}
+
+function bindRulesPhaseUI(root){
+  if(!root || root.dataset.rulePhaseBound==="1") return;
+  root.dataset.rulePhaseBound="1";
+  root.addEventListener("click",(ev)=>{
+    const step=ev.target.closest?.("[data-rule-phase]");
+    if(step && root.contains(step)){
+      const id=step.getAttribute("data-rule-phase");
+      const panel=root.querySelector(`[data-rule-phase-panel="${CSS.escape(id)}"]`);
+      if(panel){
+        const hist=panel.closest?.(".lc-phase-history");
+        if(hist) hist.open=true;
+        panel.open=true;
+        try{ panel.scrollIntoView({behavior:"smooth",block:"nearest"}); }catch(_e){}
+      }
+    }
+  });
 }
 
 function ruleEventICS(r,event){
@@ -7048,7 +7265,10 @@ async function loadRuleLifecycle(r,el){
     if(!view) return;
     rec={request_id:r.request_id,stage:"unknown",nyc_rules:null,events:[],join:{matched:false}};
   }
-  el.innerHTML=ruleEventSpineHTML(rec);
+  const phaseTools=await ensureRulesPhaseSpineTools();
+  if(!document.contains(el)) return;
+  el.innerHTML=ruleEventSpineHTML(rec, phaseTools);
+  bindRulesPhaseUI(el);
   const commentEvent=(rec.events||[]).find(event=>event.event_type==="comment_close");
   el.querySelectorAll("[data-rule-event]").forEach(button=>button.addEventListener("click",()=>downloadRuleEventICS(r,commentEvent)));
 }
