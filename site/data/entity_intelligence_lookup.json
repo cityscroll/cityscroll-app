@@ -3,8 +3,8 @@
   "phase": "cross-domain-object-links",
   "title": "Entity intelligence — cross-domain object links",
   "version": "cross_domain_object_link_v2",
-  "generated_at": "2026-08-02T19:27:42.561Z",
-  "observation_count": 715,
+  "generated_at": "2026-08-02T20:54:19.010Z",
+  "observation_count": 867,
   "entity_count": 40,
   "multi_domain_count": 24,
   "domains": [
@@ -9079,29 +9079,29 @@
               "subject_ref": "entity:official:7825",
               "domain": "people",
               "object_kind": "vote",
-              "label": "Alexa Avilés · Affirmative · LU 0112-2026",
-              "when": "2026-07-14",
+              "label": "Alexa Avilés · Affirmative · LU 0091-2026",
+              "when": "2026-07-09",
               "amount": null,
               "public_status": null,
               "pin": null,
               "contract_id": null,
               "document_id": null,
               "project_id": null,
-              "request_id": "20260706036",
-              "event_id": "22526",
+              "request_id": "20260625040",
+              "event_id": "22567",
               "ulurp_numbers": null,
               "bbls": null,
               "root_ref": "agency:id:city-council",
               "root_kind": "agency",
-              "href": "#official/7825?event=22526&notice=20260706036",
+              "href": "#official/7825?event=22567&notice=20260625040",
               "provenance": {
                 "source_system": "legistar",
-                "source_record_id": "legistar:person:7825:matter:79193:event:22526",
+                "source_record_id": "legistar:person:7825:matter:79062:event:22567",
                 "source_fields": [
                   "agency_name"
                 ],
                 "basis": "people_agency_name",
-                "observed_at": "2026-07-14",
+                "observed_at": "2026-07-09",
                 "input_value": "City Council"
               },
               "link_type": "votes_as_official",
@@ -9109,32 +9109,32 @@
               "method": "agency_canonical_v1"
             },
             {
-              "subject_ref": "entity:official:7798",
+              "subject_ref": "entity:official:7785",
               "domain": "people",
               "object_kind": "vote",
-              "label": "Oswald J. Feliz · Absent · LU 0112-2026",
-              "when": "2026-07-14",
+              "label": "Farah N. Louis · Affirmative · LU 0056-2026",
+              "when": "2026-05-19",
               "amount": null,
               "public_status": null,
               "pin": null,
               "contract_id": null,
               "document_id": null,
               "project_id": null,
-              "request_id": "20260706036",
-              "event_id": "22526",
+              "request_id": "20260428021",
+              "event_id": "22375",
               "ulurp_numbers": null,
               "bbls": null,
               "root_ref": "agency:id:city-council",
               "root_kind": "agency",
-              "href": "#official/7798?event=22526&notice=20260706036",
+              "href": "#official/7785?event=22375&notice=20260428021",
               "provenance": {
                 "source_system": "legistar",
-                "source_record_id": "legistar:person:7798:matter:79193:event:22526",
+                "source_record_id": "legistar:person:7785:matter:78605:event:22375",
                 "source_fields": [
                   "agency_name"
                 ],
                 "basis": "people_agency_name",
-                "observed_at": "2026-07-14",
+                "observed_at": "2026-05-19",
                 "input_value": "City Council"
               },
               "link_type": "votes_as_official",
@@ -9142,32 +9142,32 @@
               "method": "agency_canonical_v1"
             },
             {
-              "subject_ref": "entity:official:7832",
+              "subject_ref": "entity:official:7833",
               "domain": "people",
               "object_kind": "vote",
-              "label": "Kamillah Hanks · Affirmative · LU 0112-2026",
-              "when": "2026-07-14",
+              "label": "David M. Carr · Affirmative · LU 0058-2026",
+              "when": "2026-04-22",
               "amount": null,
               "public_status": null,
               "pin": null,
               "contract_id": null,
               "document_id": null,
               "project_id": null,
-              "request_id": "20260706036",
-              "event_id": "22526",
+              "request_id": "20260408025",
+              "event_id": "22342",
               "ulurp_numbers": null,
               "bbls": null,
               "root_ref": "agency:id:city-council",
               "root_kind": "agency",
-              "href": "#official/7832?event=22526&notice=20260706036",
+              "href": "#official/7833?event=22342&notice=20260408025",
               "provenance": {
                 "source_system": "legistar",
-                "source_record_id": "legistar:person:7832:matter:79193:event:22526",
+                "source_record_id": "legistar:person:7833:matter:78682:event:22342",
                 "source_fields": [
                   "agency_name"
                 ],
                 "basis": "people_agency_name",
-                "observed_at": "2026-07-14",
+                "observed_at": "2026-04-22",
                 "input_value": "City Council"
               },
               "link_type": "votes_as_official",
@@ -9175,32 +9175,32 @@
               "method": "agency_canonical_v1"
             },
             {
-              "subject_ref": "entity:official:7824",
+              "subject_ref": "entity:official:7895",
               "domain": "people",
               "object_kind": "vote",
-              "label": "Sandy Nurse · Affirmative · LU 0112-2026",
-              "when": "2026-07-14",
+              "label": "Elsie Encarnación · Affirmative · LU 0049-2026",
+              "when": "2026-04-14",
               "amount": null,
               "public_status": null,
               "pin": null,
               "contract_id": null,
               "document_id": null,
               "project_id": null,
-              "request_id": "20260706036",
-              "event_id": "22526",
+              "request_id": "20260331028",
+              "event_id": "22365",
               "ulurp_numbers": null,
               "bbls": null,
               "root_ref": "agency:id:city-council",
               "root_kind": "agency",
-              "href": "#official/7824?event=22526&notice=20260706036",
+              "href": "#official/7895?event=22365&notice=20260331028",
               "provenance": {
                 "source_system": "legistar",
-                "source_record_id": "legistar:person:7824:matter:79193:event:22526",
+                "source_record_id": "legistar:person:7895:matter:78537:event:22365",
                 "source_fields": [
                   "agency_name"
                 ],
                 "basis": "people_agency_name",
-                "observed_at": "2026-07-14",
+                "observed_at": "2026-04-14",
                 "input_value": "City Council"
               },
               "link_type": "votes_as_official",
@@ -9208,32 +9208,32 @@
               "method": "agency_canonical_v1"
             },
             {
-              "subject_ref": "entity:official:7823",
+              "subject_ref": "entity:official:7810",
               "domain": "people",
               "object_kind": "vote",
-              "label": "Chi A. Ossé · Affirmative · LU 0112-2026",
-              "when": "2026-07-14",
+              "label": "Amanda C. Farías · Affirmative · LU 0045-2026",
+              "when": "2026-03-18",
               "amount": null,
               "public_status": null,
               "pin": null,
               "contract_id": null,
               "document_id": null,
               "project_id": null,
-              "request_id": "20260706036",
-              "event_id": "22526",
+              "request_id": "20260304007",
+              "event_id": "22300",
               "ulurp_numbers": null,
               "bbls": null,
               "root_ref": "agency:id:city-council",
               "root_kind": "agency",
-              "href": "#official/7823?event=22526&notice=20260706036",
+              "href": "#official/7810?event=22300&notice=20260304007",
               "provenance": {
                 "source_system": "legistar",
-                "source_record_id": "legistar:person:7823:matter:79193:event:22526",
+                "source_record_id": "legistar:person:7810:matter:78409:event:22300",
                 "source_fields": [
                   "agency_name"
                 ],
                 "basis": "people_agency_name",
-                "observed_at": "2026-07-14",
+                "observed_at": "2026-03-18",
                 "input_value": "City Council"
               },
               "link_type": "votes_as_official",
@@ -9252,6 +9252,46 @@
         }
       },
       "links": [
+        {
+          "type": "votes_as_official",
+          "from": "entity:official:5289",
+          "to": "agency:id:city-council",
+          "domain": "people",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "legistar",
+            "source_record_id": "legistar:person:5289:matter:78605:event:22375",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "people_agency_name",
+            "observed_at": "2026-05-19",
+            "input_value": "City Council"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "votes_as_official",
+          "from": "entity:official:7785",
+          "to": "agency:id:city-council",
+          "domain": "people",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "legistar",
+            "source_record_id": "legistar:person:7785:matter:78605:event:22375",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "people_agency_name",
+            "observed_at": "2026-05-19",
+            "input_value": "City Council"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
         {
           "type": "votes_as_official",
           "from": "entity:official:7798",
@@ -9288,6 +9328,46 @@
             ],
             "basis": "people_agency_name",
             "observed_at": "2026-07-14",
+            "input_value": "City Council"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "votes_as_official",
+          "from": "entity:official:7810",
+          "to": "agency:id:city-council",
+          "domain": "people",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "legistar",
+            "source_record_id": "legistar:person:7810:matter:78605:event:22375",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "people_agency_name",
+            "observed_at": "2026-05-19",
+            "input_value": "City Council"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "votes_as_official",
+          "from": "entity:official:7818",
+          "to": "agency:id:city-council",
+          "domain": "people",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "legistar",
+            "source_record_id": "legistar:person:7818:matter:78605:event:22375",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "people_agency_name",
+            "observed_at": "2026-05-19",
             "input_value": "City Council"
           },
           "layer": "cross_domain_object_link_v2"
@@ -9368,6 +9448,86 @@
             ],
             "basis": "people_agency_name",
             "observed_at": "2026-07-14",
+            "input_value": "City Council"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "votes_as_official",
+          "from": "entity:official:7833",
+          "to": "agency:id:city-council",
+          "domain": "people",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "legistar",
+            "source_record_id": "legistar:person:7833:matter:78605:event:22375",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "people_agency_name",
+            "observed_at": "2026-05-19",
+            "input_value": "City Council"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "votes_as_official",
+          "from": "entity:official:7866",
+          "to": "agency:id:city-council",
+          "domain": "people",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "legistar",
+            "source_record_id": "legistar:person:7866:matter:78605:event:22375",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "people_agency_name",
+            "observed_at": "2026-05-19",
+            "input_value": "City Council"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "votes_as_official",
+          "from": "entity:official:7895",
+          "to": "agency:id:city-council",
+          "domain": "people",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "legistar",
+            "source_record_id": "legistar:person:7895:matter:78605:event:22375",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "people_agency_name",
+            "observed_at": "2026-05-19",
+            "input_value": "City Council"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "votes_as_official",
+          "from": "entity:official:7897",
+          "to": "agency:id:city-council",
+          "domain": "people",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "legistar",
+            "source_record_id": "legistar:person:7897:matter:78605:event:22375",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "people_agency_name",
+            "observed_at": "2026-05-19",
             "input_value": "City Council"
           },
           "layer": "cross_domain_object_link_v2"
@@ -9520,7 +9680,7 @@
         "domains_not_yet_ingested": 0,
         "domains_empty": 5,
         "total_linked_objects": 12,
-        "link_count": 13,
+        "link_count": 21,
         "join_key_link_count": 0,
         "coverage_rate": 0.2857142857142857
       }
