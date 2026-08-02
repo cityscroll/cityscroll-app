@@ -119,6 +119,9 @@ const sandbox = new Function(
   extractFn("subsidyPhaseStepperHTML") + "\n" +
   extractFn("subsidyPhaseNotYetHTML") + "\n" +
   extractFn("subsidyPhasePanelHTML") + "\n" +
+  extractFn("subsidyPlaceDisplay") + "\n" +
+  extractFn("subsidyPreferredCostSlot") + "\n" +
+  extractFn("subsidyMatchedFactsHTML") + "\n" +
   extractFn("subsidyPhaseTimelineHTML") + "\n" +
   extractFn("subsidyLifecycleHTMLFlat") + "\n" +
   extractFn("subsidyJoinAndFieldChrome") + "\n" +
@@ -219,6 +222,9 @@ try {
     extractFn("subsidyPhaseStepperHTML") +
     extractFn("subsidyPhaseNotYetHTML") +
     extractFn("subsidyPhasePanelHTML") +
+    extractFn("subsidyPlaceDisplay") +
+    extractFn("subsidyPreferredCostSlot") +
+    extractFn("subsidyMatchedFactsHTML") +
     extractFn("subsidyPhaseTimelineHTML") +
     extractFn("subsidyLifecycleHTMLFlat") +
     extractFn("subsidyJoinAndFieldChrome") +
@@ -484,6 +490,8 @@ test("subsidy detail: feed_status=unavailable never uses city-does-not-publish f
   assert.doesNotMatch(html, /The city does not publish this Board decision/i);
   assert.doesNotMatch(html, /The city does not publish this Closing/i);
   assert.doesNotMatch(html, /The city does not publish this Compliance/i);
+  // Feed-down is secondary context, not the lead headline.
+  assert.match(html, /data-subsidy-feed-secondary="1"/);
   assert.match(html, /Could not reach/i);
 });
 

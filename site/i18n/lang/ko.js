@@ -971,6 +971,7 @@
     subsidy_feed_unavailable_html: "전체 보조금 프로젝트 기록을 위해 {source}에 연결할 수 없음 — 아래 청문 세부사항은 City Record 공고에서 가져왔습니다.",
     subsidy_money_matched_html: "{field}: <b>{amount}</b>.",
     subsidy_money_matched_city_record_html: "{field}: <b>{amount}</b> (City Record 청문 공고에서).",
+    subsidy_place_matched_html: "장소: <b>{address}</b>.",
     subsidy_money_requested_lbl: "요청 혜택",
     subsidy_money_estimated_lbl: "추정 공공 비용",
     subsidy_money_total_project_cost_lbl: "총 프로젝트 비용",

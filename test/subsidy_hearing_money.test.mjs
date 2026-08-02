@@ -83,6 +83,9 @@ const { subsidyLifecycleHTML, lifecycleMoney } = new Function(
   extractFn("subsidyPhaseStepperHTML") +
   extractFn("subsidyPhaseNotYetHTML") +
   extractFn("subsidyPhasePanelHTML") +
+  extractFn("subsidyPlaceDisplay") +
+  extractFn("subsidyPreferredCostSlot") +
+  extractFn("subsidyMatchedFactsHTML") +
   extractFn("subsidyPhaseTimelineHTML") +
   extractFn("subsidyLifecycleHTMLFlat") +
   extractFn("subsidyJoinAndFieldChrome") +
@@ -233,6 +236,30 @@ test("UI: city-record-hearing with parsed cost shows amount, never false not-pub
   assert.match(html, /Could not reach/i);
   assert.doesNotMatch(html, /does not publish this .* on the Build NYC record/i);
   assert.doesNotMatch(html, /does not publish this estimated public cost/i);
+
+  // Kinetic facts in the lead (first-paint) — not only under a closed fields disclosure.
+  assert.match(html, /data-subsidy-matched-facts="1"/);
+  assert.match(html, /data-subsidy-matched-money="1"/);
+  assert.match(html, /data-subsidy-matched-place="1"/);
+  assert.match(html, /1st Avenue|Brooklyn/i);
+  const leadMatch = html.match(
+    /data-subsidy-phase-lead="1"[\s\S]*?data-subsidy-matched-money="1"[\s\S]*?(\$10\.67M|\$10,667,606|\$10667606)/i,
+  );
+  assert.ok(leadMatch, "matched money must appear inside the phase lead");
+  // Feed-down is secondary chrome after the timeline, not the headline join note.
+  assert.match(html, /data-subsidy-feed-secondary="1"/);
+  const feedIdx = html.indexOf("data-subsidy-feed-secondary");
+  const moneyIdx = html.indexOf("data-subsidy-matched-money");
+  assert.ok(moneyIdx >= 0 && feedIdx > moneyIdx, "matched money must appear before feed-down note");
+  const joinNote = (html.match(/data-subsidy-join-note="1"[^>]*>([\s\S]*?)<\/div>/) || [])[1] || "";
+  assert.doesNotMatch(joinNote, /Could not reach/i);
+  // Matched cost must not live only inside the optional fields disclosure.
+  const fieldsDisc = html.match(
+    /data-subsidy-field-gaps="1"[\s\S]*?<\/details>/,
+  );
+  if (fieldsDisc) {
+    assert.doesNotMatch(fieldsDisc[0], /data-subsidy-matched-money/);
+  }
 });
 
 test("UI: city-record-hearing without body cost uses not-yet-ingested, not withheld", () => {

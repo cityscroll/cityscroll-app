@@ -111,6 +111,9 @@ const helpers = new Function(
   extractFn("subsidyPhaseStepperHTML") +
   extractFn("subsidyPhaseNotYetHTML") +
   extractFn("subsidyPhasePanelHTML") +
+  extractFn("subsidyPlaceDisplay") +
+  extractFn("subsidyPreferredCostSlot") +
+  extractFn("subsidyMatchedFactsHTML") +
   extractFn("subsidyPhaseTimelineHTML") +
   extractFn("subsidyLifecycleHTMLFlat") +
   extractFn("subsidyJoinAndFieldChrome") +

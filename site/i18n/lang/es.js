@@ -971,6 +971,7 @@
     subsidy_feed_unavailable_html: "No se pudo alcanzar {source} para el registro completo del proyecto de subsidio — los detalles de la audiencia abajo provienen del aviso del City Record.",
     subsidy_money_matched_html: "{field}: <b>{amount}</b>.",
     subsidy_money_matched_city_record_html: "{field}: <b>{amount}</b> (del aviso de audiencia del City Record).",
+    subsidy_place_matched_html: "Lugar: <b>{address}</b>.",
     subsidy_money_requested_lbl: "beneficio solicitado",
     subsidy_money_estimated_lbl: "costo público estimado",
     subsidy_money_total_project_cost_lbl: "costo total del proyecto",

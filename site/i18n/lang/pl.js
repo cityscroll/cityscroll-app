@@ -989,6 +989,7 @@
     subsidy_feed_unavailable_html: "Nie udało się połączyć z {source} w sprawie pełnego rekordu projektu dotacyjnego — szczegóły przesłuchania poniżej pochodzą z ogłoszenia City Record.",
     subsidy_money_matched_html: "{field}: <b>{amount}</b>.",
     subsidy_money_matched_city_record_html: "{field}: <b>{amount}</b> (z ogłoszenia o przesłuchaniu City Record).",
+    subsidy_place_matched_html: "Miejsce: <b>{address}</b>.",
     subsidy_money_requested_lbl: "wnioskowana korzyść",
     subsidy_money_estimated_lbl: "szacowany koszt publiczny",
     subsidy_money_total_project_cost_lbl: "całkowity koszt projektu",

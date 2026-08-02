@@ -13,6 +13,9 @@ import {
   publicStatus,
   currentStageKey,
   buildSubsidyPhaseView,
+  shortPlaceFromSubsidy,
+  matchedSubsidyFacts,
+  preferredMatchedCost,
 } from "../site/subsidy_phase_spine.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -141,4 +144,56 @@ test("public Land/Money surface files exist for subsidy phase module", () => {
   const index = readFileSync(join(ROOT, "site/index.html"), "utf8");
   assert.match(index, /subsidy_phase_spine|buildSubsidyPhaseView|subsidyPhaseTimelineHTML/);
   assert.match(index, /subsidy_phase_not_yet_reached|future_empty/);
+  assert.match(index, /subsidyMatchedFactsHTML|data-subsidy-matched-facts/);
+});
+
+test("shortPlaceFromSubsidy: matched short address only", () => {
+  assert.equal(shortPlaceFromSubsidy(null), null);
+  assert.equal(shortPlaceFromSubsidy({ status: "unknown" }), null);
+  assert.match(
+    shortPlaceFromSubsidy({
+      status: "matched",
+      address:
+        "4425-4429 1st Avenue, Brooklyn, New York to be used as a warehouse and distribution center",
+    }) || "",
+    /4425-4429 1st Avenue/i,
+  );
+  assert.doesNotMatch(
+    shortPlaceFromSubsidy({
+      status: "matched",
+      address: "SUPPLEMENTAL NOTICE of public hearing will hold a public hearing at City Hall",
+    }) || "x",
+    /SUPPLEMENTAL|will hold/i,
+  );
+});
+
+test("matchedSubsidyFacts + view: surface kinetic money and place", () => {
+  const data = {
+    ...HEARING_CURRENT,
+    join: { matched: true, method: "city-record-hearing", feed_status: "unavailable" },
+    money: {
+      // Structured slot with field stamp (same shape the worker assembles).
+      cost_slot: {
+        status: "matched",
+        value: 10667606,
+        field: "total_project_cost",
+        source: "city-record-hearing",
+      },
+      total_project_cost: 10667606,
+    },
+    place: {
+      status: "matched",
+      address: "4425-4429 1st Avenue, Brooklyn, New York",
+      boroughs: ["Brooklyn"],
+      addresses: [],
+      bbls: [],
+    },
+  };
+  assert.equal(preferredMatchedCost(data.money)?.value, 10667606);
+  const facts = matchedSubsidyFacts(data);
+  assert.equal(facts.project_cost?.value, 10667606);
+  assert.match(facts.place_address || "", /1st Avenue|Brooklyn/i);
+  const view = buildSubsidyPhaseView(data);
+  assert.equal(view.matched_facts?.project_cost?.value, 10667606);
+  assert.match(view.matched_facts?.place_address || "", /1st Avenue/i);
 });

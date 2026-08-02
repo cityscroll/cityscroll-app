@@ -981,6 +981,7 @@
     subsidy_feed_unavailable_html: "Не удалось связаться с {source} для полной записи субсидируемого проекта — сведения о слушании ниже из извещения City Record.",
     subsidy_money_matched_html: "{field}: <b>{amount}</b>.",
     subsidy_money_matched_city_record_html: "{field}: <b>{amount}</b> (из извещения о слушании City Record).",
+    subsidy_place_matched_html: "Место: <b>{address}</b>.",
     subsidy_money_requested_lbl: "запрашиваемая льгота",
     subsidy_money_estimated_lbl: "оценочная публичная стоимость",
     subsidy_money_total_project_cost_lbl: "общая стоимость проекта",
