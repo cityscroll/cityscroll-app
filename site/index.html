@@ -275,6 +275,7 @@
   .next-action-list .act.primary{background:var(--oxblood);border-color:var(--oxblood);color:#fff}
   .next-action-list .act-official{display:block;margin-top:4px;font:500 10px/1.2 ui-monospace,SFMono-Regular,monospace;opacity:.78;overflow-wrap:anywhere}
   .next-action-unavailable{flex:1 1 220px;padding:9px 11px;border:1px dashed var(--rule-strong);border-radius:7px;color:var(--muted);font:600 13px/1.35 ui-sans-serif,system-ui,sans-serif;background:var(--paper-2)}
+  .next-action-guide-lead{flex:1 1 220px;padding:9px 11px;border:1px solid var(--rule-strong);border-radius:7px;color:var(--ink);font:700 13px/1.35 ui-sans-serif,system-ui,sans-serif;background:var(--paper-2);min-height:44px;display:flex;align-items:center}
   .bid-guide{margin-top:12px;border-top:1px solid var(--rule);padding-top:10px}
   .bid-guide summary{cursor:pointer;font:700 13px/1.35 ui-sans-serif,system-ui,sans-serif;color:var(--ink)}
   .bid-guide-facts{display:grid;grid-template-columns:auto minmax(0,1fr);gap:5px 10px;margin:10px 0;font:12px/1.4 ui-sans-serif,system-ui,sans-serif}
@@ -4431,7 +4432,7 @@ function renderLandEntryNotFound(id){
   if(landMap){ try{landMap.remove();}catch(e){} landMap=null; landMarker=null; }
   const safeId=String(id||"").replace(/[<>&]/g,"");
   const suffix=safeId?`: <code>${safeId}</code>`:"";
-  const html=`<div class="empty">${t("no_zap")}${suffix}.<br><br><a href="#land">${t("back_to_land")}</a></div>`;
+  const html=`<div class="empty">${t("no_zap")}${suffix}.<br><br><a href="#land">${t("back_browse")}</a></div>`;
   $("#llist").innerHTML=html;
   $("#ldetail").innerHTML=html;
   $("#lrescount").textContent="0";
@@ -4915,6 +4916,13 @@ function noticeActionMatter(r, ruleRecord, lifecycleData){
     pin:r.pin,
     title:cleanText(r.short_title),
     notice_text:[r.additional_description_1,r.other_info_1].filter(Boolean).join(" "),
+    // Structured response fields from the City Record row — used to build concrete steps
+    // instead of deferring to “read the official notice.”
+    email:r.email||null,
+    contact_name:r.contact_name||null,
+    contact_phone:r.contact_phone||null,
+    address_to_request:r.address_to_request||null,
+    selection_method:r.selection_method_description||null,
     rfx_detail:lifecycleData&&lifecycleData.rfx_detail,
     comment_url:rule&&(rule.comment_url||rule.url),
     participation_url:participation,
@@ -4929,11 +4937,21 @@ function actionRailGuideHTML(actions){
   const guide=action&&action.guide;
   if(!guide) return "";
   const copyFact=(label,value)=>value?`<dt>${label}</dt><dd><code>${escUiHtml(value)}</code><button type="button" class="bid-guide-copy" data-copy-value="${escUiHtml(value)}">${t("copy_value")}</button></dd>`:"";
+  const plainFact=(label,value)=>value?`<dt>${label}</dt><dd>${value}</dd>`:"";
   const facts=[
     copyFact(t("bid_guide_id_label"),guide.identifier),
     copyFact(t("bid_guide_name_label"),guide.procurement_name),
     guide.status?`<dt>${t("bid_guide_status_label")}</dt><dd><b>${escUiHtml(guide.status)}</b></dd>`:"",
     action.deadline?`<dt>${t("bid_guide_due_label")}</dt><dd>${fdt(action.deadline)}</dd>`:"",
+    guide.selection_method?plainFact(t("apply_method_lbl"),escUiHtml(guide.selection_method)):"",
+    (()=>{
+      const bits=[];
+      if(guide.contact_name) bits.push(escUiHtml(guide.contact_name));
+      if(guide.email) bits.push(`<a href="mailto:${escUiHtml(guide.email)}">${escUiHtml(guide.email)}</a>`);
+      if(guide.contact_phone) bits.push(escUiHtml(guide.contact_phone));
+      return bits.length?`<dt>${t("apply_contact_lbl")}</dt><dd>${bits.join(" · ")}</dd>`:"";
+    })(),
+    guide.address_to_request?plainFact(t("apply_submit_lbl"),escUiHtml(guide.address_to_request)):"",
   ].join("");
   let steps=[];
   if(guide.system==="nycha_isupplier"){
@@ -4945,6 +4963,28 @@ function actionRailGuideHTML(actions){
       t("bid_guide_named_portal_search_step"),
       t("bid_guide_named_portal_submit_step"),
     ];
+  }else if(guide.system==="notice_extracted"){
+    // Concrete steps extracted from this notice's fields and body — never "see the official notice."
+    if(action.deadline) steps.push(t("bid_guide_notice_due_step",{date:fdt(action.deadline)}));
+    if(guide.package_url){
+      steps.push(t("bid_guide_notice_package_step_html",{
+        url:escUiHtml(guide.package_url),
+        host:escUiHtml((()=>{ try{ return new URL(guide.package_url).hostname; }catch(e){ return guide.package_url; } })())
+      }));
+    }
+    if(guide.email || guide.contact_name || guide.contact_phone){
+      const who=[guide.contact_name, guide.email, guide.contact_phone].filter(Boolean).map(escUiHtml).join(" · ");
+      steps.push(t("bid_guide_notice_contact_step_html",{who}));
+    }
+    if(guide.address_to_request){
+      steps.push(t("bid_guide_notice_submit_step",{where:escUiHtml(guide.address_to_request)}));
+    }
+    if(guide.selection_method){
+      steps.push(t("bid_guide_notice_method_step",{method:escUiHtml(guide.selection_method)}));
+    }
+    if(!steps.length){
+      steps.push(t("bid_guide_notice_fallback_step"));
+    }
   }else{
     steps=[t("bid_guide_passport_search_step")];
     if(guide.mode==="matched"){
@@ -4961,6 +5001,10 @@ function actionRailHTML(actions){
   const items=actions.map(action=>{
     const label=actionRailLabel(action);
     if(action.delivery==="unavailable") return `<div class="next-action-unavailable" role="status">${label}</div>`;
+    if(action.type==="bid_checklist"){
+      // Guide lead — steps render below; do not dump the reader into watch alerts.
+      return `<div class="next-action-guide-lead" role="status">${label}</div>`;
+    }
     if(action.delivery==="official_handoff"){
       const primary=primaryUsed?"":" primary"; primaryUsed=true;
       return `<a class="act${primary}" href="${escUiHtml(action.destination)}" ${EXT_ATTRS}>`+
@@ -7486,7 +7530,7 @@ async function showAgency(name, initialTab){
     workerFetch("/agency?name=" + encodeURIComponent(nm), null, 8000).then(r => r.ok ? r.json() : null).catch(() => null)
   ]);
   if(!(stats && +stats.n) && !sections.length){
-    box.innerHTML = `<div class="empty">No City Record notices found for agency “${safe}”. <a href="#money">${t("back_browse")}</a></div>`;
+    box.innerHTML = `<div class="empty">No City Record notices found for agency “${safe}”. <a href="#money">← Browse CityScroll</a></div>`;
     return;
   }
   const link = location.origin + location.pathname + agencyHref(nm);
@@ -7509,7 +7553,7 @@ async function showAgency(name, initialTab){
   const hasForecasts = forecasts.length > 0;
 
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
-    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("back_browse")}</a></p>
+    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CityScroll</a></p>
     <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
       <div class="ftype" style="margin-bottom:6px">Agency profile · City Record on record</div>
       <h2 class="rolename" lang="en" dir="ltr">${agencyWho(nm)}</h2>
@@ -7700,7 +7744,7 @@ function vendorProfileHTML(profile, details, hydrating){
       </div>` : "";
 
   return `<div style="max-width:880px;margin:0 auto">
-    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("back_browse")}</a></p>
+    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CityScroll</a></p>
     <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
       ${vendorProfileHeaderHTML(profile)}
 
@@ -8094,7 +8138,7 @@ async function showMatter(pin){
     }catch(e){}
   }
   if(!rows.length){
-    box.innerHTML = `<div class="empty">No City Record notices carry PIN <code>${safe}</code>. <a href="#money">${t("back_browse")}</a></div>`;
+    box.innerHTML = `<div class="empty">No City Record notices carry PIN <code>${safe}</code>. <a href="#money">← Browse CityScroll</a></div>`;
     return;
   }
   rows.sort((a,b)=>(a.start_date||"").localeCompare(b.start_date||"") ||
@@ -8155,7 +8199,7 @@ async function showMatter(pin){
   }
   const link = location.origin + location.pathname + "#matter/" + encodeURIComponent(pin);
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
-    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("back_browse")}</a></p>
+    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CityScroll</a></p>
     <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
       <div class="ftype" style="margin-bottom:6px">Matter timeline · PIN <code>${safe}</code></div>
       <h2 class="rolename" lang="en" dir="ltr">${agency?pivotA(agencyHref(agency), agencyWho(agency)):""}${vendor?` × ${pivotA(vendorHref(vendor), cleanText(vendor))}`:""}</h2>
@@ -8566,7 +8610,6 @@ async function showTaskFirst(task, id){
   const titleKey = task === "can-i-bid" ? "task_can_i_bid_title" : "task_what_will_change_title";
   const deckKey = task === "can-i-bid" ? "task_can_i_bid_deck" : "task_what_will_change_deck";
   const backHref = task === "can-i-bid" ? "#money" : "#land";
-  const backLabel = task === "can-i-bid" ? t("back_browse") : t("back_to_land");
   if(id){
     const example = TaskFirst.findExample(bundle, task, id);
     if(!example){
@@ -8576,7 +8619,7 @@ async function showTaskFirst(task, id){
     const presentation = TaskFirst.presentExample(example);
     box.innerHTML = `<div class="task-first">
       <p style="margin:4px 0 12px"><a href="${TaskFirst.taskCollectionHash(task)}" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("task_back_examples")}</a>
-      · <a href="${backHref}" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${backLabel}</a></p>
+      · <a href="${backHref}" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("back_browse")}</a></p>
       <header class="task-first-head">
         <p class="task-first-kicker">${t("task_entry_kicker")}</p>
         <h2>${t(titleKey)}</h2>
@@ -8589,7 +8632,7 @@ async function showTaskFirst(task, id){
   }
   const cards = (group.examples || []).map(ex => taskCardHTML(TaskFirst.presentExample(ex), false)).join("");
   box.innerHTML = `<div class="task-first">
-    <p style="margin:4px 0 12px"><a href="${backHref}" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${backLabel}</a></p>
+    <p style="margin:4px 0 12px"><a href="${backHref}" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("back_browse")}</a></p>
     <header class="task-first-head">
       <p class="task-first-kicker">${t("task_entry_kicker")}</p>
       <h2>${t(titleKey)}</h2>
