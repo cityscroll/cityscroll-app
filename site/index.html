@@ -709,6 +709,23 @@
   .digitem .dev,.row .dev,.fcard .dev,.panel .dev{font:12px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted);font-style:italic;margin-top:3px} /* the "why this matched" line — text itself carries the meaning, not just the mark's color; .panel covers showNotice()'s deep-linked permalink view (w12-12) */
   .savedalert{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#faf6ee;border:1px solid var(--rule);border-radius:7px;padding:9px 12px;margin-top:8px;font-size:13px}
   .savedalert button{font:600 11px/1 ui-sans-serif,system-ui,sans-serif;padding:5px 9px;background:#fff;color:var(--rose);border:1px solid var(--rule);border-radius:6px;cursor:pointer}
+  /* Multi-watch digest rollup + preference surface (#alerts?view=rollup) */
+  #alerts-rollup-prefs{margin-top:18px}
+  #alerts-rollup-prefs .rollup-lead{font:14px/1.55 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:0 0 12px;max-width:62ch}
+  #alerts-rollup-prefs .rollup-groups{display:grid;gap:10px;margin:12px 0 16px}
+  #alerts-rollup-prefs .rollup-group{border:1px solid var(--rule);border-radius:8px;padding:10px 12px;background:var(--paper)}
+  #alerts-rollup-prefs .rollup-group h3{margin:0 0 6px;font:700 13px/1.3 ui-sans-serif,system-ui,sans-serif}
+  #alerts-rollup-prefs .rollup-group ul{margin:0;padding:0;list-style:none}
+  #alerts-rollup-prefs .rollup-group li{font:13px/1.45 ui-sans-serif,system-ui,sans-serif;padding:4px 0;border-top:1px solid var(--rule)}
+  #alerts-rollup-prefs .rollup-group li:first-child{border-top:0;padding-top:0}
+  #alerts-rollup-prefs .rollup-group .freq{color:var(--muted);font-size:12px}
+  #alerts-rollup-prefs .rollup-prefs-box{margin-top:14px;padding:12px 14px;border:1px solid var(--rule);border-radius:8px;background:#faf6ee}
+  #alerts-rollup-prefs .rollup-prefs-box p{margin:0 0 8px;font:13px/1.5 ui-sans-serif,system-ui,sans-serif}
+  #alerts-rollup-prefs .rollup-prefs-box p:last-child{margin-bottom:0}
+  #alerts-rollup-emailmock .rollup-sec{margin:0 0 14px;padding-bottom:12px;border-bottom:1px solid var(--rule)}
+  #alerts-rollup-emailmock .rollup-sec:last-child{border-bottom:0;margin-bottom:0;padding-bottom:0}
+  #alerts-rollup-emailmock .rollup-sec h3{margin:0 0 6px;font:700 14px/1.3 ui-sans-serif,system-ui,sans-serif}
+  #alerts-rollup-emailmock .rollup-quiet{color:var(--muted);font-style:italic;margin:0}
 
   .loading{display:inline-block;width:14px;height:14px;border:2px solid var(--rule);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;vertical-align:-2px}
   @keyframes spin{to{transform:rotate(360deg)}}
@@ -1331,6 +1348,30 @@
       <div class="panel">
         <h2 data-i18n="preview_panel_heading">Preview</h2>
         <div class="detail" id="apreviewbox" translate="no"><div class="empty" data-i18n="empty_preview">Build an alert and hit Preview to see the digest, populated with today's real notices.</div></div>
+      </div>
+    </div>
+
+    <!-- Multi-watch digest rollup + preference center path (breadth: alerts_digests).
+         Delivery is already account-level in worker/src/alerts.mjs; this panel demonstrates
+         how related watches consolidate into one email and where prefs are edited. -->
+    <div class="panel" id="alerts-rollup-prefs" style="margin-top:18px;padding:16px 18px 18px">
+      <h2 style="border:0;padding:0 0 4px" data-i18n="alerts_rollup_heading">How multi-watch digests arrive</h2>
+      <p class="rollup-lead" data-i18n="alerts_rollup_lead">When one email has more than one active watch, CityScroll sends a single daily digest with a section per watch — not a separate email for each. Group the demo watches below by topic, agency, or geography to see how related alerts cluster.</p>
+      <div class="afield" style="margin-top:4px">
+        <label id="rollupgrouplbl"><span data-i18n="alerts_rollup_group_label">Group related watches by</span></label>
+        <div class="chiprow" id="rollupgroupby" role="group" aria-labelledby="rollupgrouplbl" style="margin-top:6px">
+          <button type="button" class="chip on" data-g="topic" aria-pressed="true" data-i18n="alerts_rollup_group_topic">Topic</button>
+          <button type="button" class="chip" data-g="agency" aria-pressed="false" data-i18n="alerts_rollup_group_agency">Agency</button>
+          <button type="button" class="chip" data-g="geography" aria-pressed="false" data-i18n="alerts_rollup_group_geography">Geography</button>
+        </div>
+      </div>
+      <div id="alerts-rollup-groups" class="rollup-groups" aria-live="polite"></div>
+      <h3 style="margin:8px 0 8px;font:700 14px/1.3 ui-sans-serif,system-ui,sans-serif" data-i18n="alerts_rollup_email_heading">Consolidated digest (demo)</h3>
+      <div class="detail" id="alerts-rollup-emailmock" translate="no"></div>
+      <div class="rollup-prefs-box" id="alerts-rollup-prefs-box">
+        <p data-i18n="alerts_rollup_prefs_lead">Change frequency, pause a watch, or unsubscribe from the preference center linked in every digest footer.</p>
+        <p><a id="alertsPrefsManage" class="act" href="https://api.cityscroll.org/prefs" data-i18n="alerts_rollup_manage_btn">Manage watches</a></p>
+        <p class="muted" style="font-size:12.5px" data-i18n="alerts_rollup_cutover">Preference changes take effect on the next daily digest run (~9am Eastern).</p>
       </div>
     </div>
   </div>
@@ -6337,6 +6378,116 @@ function aSave(){
   const l=aStore(); l.push({desc:aDescribe(), dest}); aSet(l); aRenderSaved();
 }
 
+/* ===================== ALERTS ROLLUP + PREFS (multi-watch digest surface) =====================
+   Account delivery consolidates >1 active watch into one email (worker rollup). This panel is
+   the public #alerts demonstration: group related watches by topic/agency/geography, show a
+   fixture-backed consolidated digest mock, and surface the preference-center cutover path.
+   Demo deep link: #alerts?view=rollup */
+let alertsRollupToolsPromise = null;
+let alertsRollupGroupBy = "topic";
+function loadAlertsRollupTools(){
+  if(!alertsRollupToolsPromise) alertsRollupToolsPromise = import("./alerts_rollup_prefs.mjs").catch(()=>null);
+  return alertsRollupToolsPromise;
+}
+function usdRollup(n){
+  if(n==null || n==="") return "";
+  const v = Number(n);
+  return Number.isFinite(v) ? "$" + v.toLocaleString("en-US") : "";
+}
+function alertsRollupSectionHTML(sec){
+  const label = escUiHtml(sec.label || sec.lens || t("alerts_rollup_watch_fallback"));
+  if(sec.quiet || !(sec.rows && sec.rows.length)){
+    return `<div class="rollup-sec"><h3>${label}</h3><p class="rollup-quiet">${t("alerts_rollup_section_quiet")}</p></div>`;
+  }
+  const items = sec.rows.map((r)=>{
+    if(r.project_name || r.project_id){
+      const meta = [r.borough, r.public_status].filter(Boolean).map(escUiHtml).join(" · ");
+      return `<div class="digitem"><div class="dt">${escUiHtml(r.project_name || r.project_id)}</div><div class="dm">${meta}</div></div>`;
+    }
+    const meta = [r.agency_name, usdRollup(r.contract_amount)].filter(Boolean).map(escUiHtml).join(" · ");
+    return `<div class="digitem"><div class="dt">${escUiHtml(r.short_title || r.request_id || "Notice")}</div><div class="dm">${meta}</div></div>`;
+  }).join("");
+  return `<div class="rollup-sec"><h3>${label}</h3>${items}</div>`;
+}
+function alertsRollupGroupsHTML(groups){
+  if(!groups || !groups.length){
+    return `<div class="empty">${t("alerts_rollup_no_groups")}</div>`;
+  }
+  return groups.map((g)=>{
+    const items = (g.watches || []).map((w)=>{
+      const freq = w.freq === "weekly" ? t("afreq_weekly_opt") : t("afreq_daily_opt");
+      return `<li><span>${escUiHtml(w.query || w.lens || "")}</span> <span class="freq">· ${escUiHtml(freq)}</span></li>`;
+    }).join("");
+    return `<div class="rollup-group"><h3>${escUiHtml(g.label)} <span class="freq">(${(g.watches||[]).length})</span></h3><ul>${items}</ul></div>`;
+  }).join("");
+}
+function alertsRollupEmailMockHTML(model){
+  if(!model) return `<div class="empty">${t("empty_preview")}</div>`;
+  const dest = escUiHtml(model.dest || "you@example.com");
+  const body = (model.sections || []).map(alertsRollupSectionHTML).join("");
+  const summary = escUiHtml(model.summaryLine || "");
+  const footer = t("alerts_rollup_digest_footer");
+  return `<div class="emailmock">
+    <div class="ehead"><div class="efrom">CityScroll &lt;alerts@crol-list.org&gt; → ${dest}</div>
+    <div class="esubj">${escUiHtml(model.subject || "")}</div></div>
+    <div class="ebody">
+      <p style="margin:0 0 12px;font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted)">${summary}</p>
+      ${body}
+      <div style="margin-top:12px;font:12px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted)">${footer}</div>
+    </div></div>`;
+}
+function syncAlertsPrefsManageLink(){
+  const manage = document.getElementById("alertsPrefsManage");
+  if(!manage) return;
+  const banner = document.getElementById("sessionBanner");
+  const fromSession = banner && banner.dataset.open === "true" ? (banner.dataset.prefsUrl || "") : "";
+  manage.href = fromSession || ((API || "https://api.cityscroll.org").replace(/\/+$/, "") + "/prefs");
+}
+async function renderAlertsRollupPrefs(){
+  const groupsEl = document.getElementById("alerts-rollup-groups");
+  const mockEl = document.getElementById("alerts-rollup-emailmock");
+  if(!groupsEl || !mockEl) return;
+  const tools = await loadAlertsRollupTools();
+  if(!tools || typeof tools.demoRollupPreviewModel !== "function"){
+    groupsEl.innerHTML = "";
+    mockEl.innerHTML = `<div class="empty">${t("could_not_reach")}</div>`;
+    return;
+  }
+  const model = tools.demoRollupPreviewModel({ groupBy: alertsRollupGroupBy });
+  groupsEl.innerHTML = alertsRollupGroupsHTML(model.groups);
+  mockEl.innerHTML = alertsRollupEmailMockHTML(model);
+  syncAlertsPrefsManageLink();
+  const chips = document.getElementById("rollupgroupby");
+  if(chips){
+    chips.querySelectorAll(".chip").forEach((x)=>{
+      const on = x.dataset.g === alertsRollupGroupBy;
+      x.classList.toggle("on", on);
+      x.setAttribute("aria-pressed", String(on));
+    });
+  }
+}
+function initAlertsRollupPrefs(){
+  const chips = document.getElementById("rollupgroupby");
+  if(chips){
+    chips.querySelectorAll(".chip").forEach((b)=>{
+      b.addEventListener("click", ()=>{
+        alertsRollupGroupBy = b.dataset.g || "topic";
+        renderAlertsRollupPrefs();
+        announce(t("alerts_rollup_group_announce", { dim: b.textContent.trim() }));
+      });
+    });
+  }
+  renderAlertsRollupPrefs();
+}
+function focusAlertsRollupPanel(){
+  const panel = document.getElementById("alerts-rollup-prefs");
+  if(!panel) return;
+  try{ panel.scrollIntoView({ behavior: "smooth", block: "start" }); }catch(e){ panel.scrollIntoView(true); }
+  // Prefer focusing the group control, not the panel itself (panels aren't focusable).
+  const firstChip = document.querySelector("#rollupgroupby .chip");
+  if(firstChip){ try{ firstChip.focus({ preventScroll: true }); }catch(e){ firstChip.focus(); } }
+}
+
 // Map the alert builder to a real content-lens query the worker re-sanitizes + the cron replays.
 function aLensFilter(){
   const w=$("#awatch").value, p=$("#aparam").value.trim().toLowerCase();
@@ -9423,6 +9574,10 @@ function applyHash(){
         try{ filter = JSON.parse(q.get("filter") || "{}"); }catch(e){ filter = {}; }
         prefillAlertFromLink(lens, filter, q.get("freq"));
       }
+      // #alerts?view=rollup — multi-watch digest rollup + prefs surface (demo fixture).
+      if(q.get("view") === "rollup"){
+        renderAlertsRollupPrefs().then(()=>focusAlertsRollupPanel());
+      }
     } else {
       showTab(tab);
     }
@@ -9824,6 +9979,7 @@ if(!applyHash()) search(); // an incoming permalink wins over the default Money 
 aWatchChange(true);
 updateAWhen();
 aRenderSaved();
+initAlertsRollupPrefs();
 
 // Language switch must also repaint DYNAMICALLY-BUILT surfaces (2026-07-13 hotfix): applyStrings()
 // only covers data-i18n chrome, so lists, dropdowns and detail panels kept their old language.
@@ -9840,7 +9996,7 @@ function rerenderForLang(){
   const nav = document.querySelector(".tabs"); if(nav) nav.setAttribute("aria-label", t("tablist_label"));
   paintEditionSpan();
   loadAgencies();
-  aWatchChange(true); updateAWhen(); aRenderSaved(); renderLandingShareActions(); renderNLQPresets(); // same skipQuizSync reasoning as the page-init call above
+  aWatchChange(true); updateAWhen(); aRenderSaved(); renderAlertsRollupPrefs(); renderLandingShareActions(); renderNLQPresets(); // same skipQuizSync reasoning as the page-init call above
   // #notice/#vendor/#agency/#matter permalink views have no .tabbtn (comment above
   // syncTabAria()'s role wiring), so the .tabbtn.active lookup below finds nothing for them
   // and their chrome — built once via t() when the view was first shown — silently kept
@@ -9887,6 +10043,8 @@ function sessionShowBanner(session){
       manage.href = session.prefsUrl || ((API || "https://api.cityscroll.org").replace(/\/+$/, "") + "/prefs");
       if(window.t) manage.textContent = t("session_manage_watches");
     }
+    // Keep the Alerts-tab manage link in lockstep with the session banner prefs URL.
+    syncAlertsPrefsManageLink();
     const ny = document.getElementById("sessionNotYou");
     if(ny && window.t) ny.textContent = t("session_not_you");
     const di = document.getElementById("sessionDismiss");
