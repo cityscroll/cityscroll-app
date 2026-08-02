@@ -56,7 +56,7 @@ def register_table(table_name: str, parquet_glob: str, *, catalog: Path | None =
 
 
 def _split_sql(sql: str) -> list[str]:
-    parts = []
+    parts = []  # code structure (not a sourced data table)
     for chunk in sql.split(";"):
         # strip comment-only lines
         lines = [

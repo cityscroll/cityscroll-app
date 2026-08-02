@@ -98,12 +98,12 @@ def check_headroom(*, force: bool = False) -> dict:
     except (OSError, subprocess.TimeoutExpired) as e:
         return {"status": "unknown", "note": f"headroom probe failed: {e}"}
 
-    payload: dict = {}
+    payload: dict = {}  # code structure (not a sourced data table)
     if proc.stdout.strip():
         try:
             payload = json.loads(proc.stdout)
         except json.JSONDecodeError:
-            payload = {"raw": proc.stdout.strip()}
+            payload = {"raw": proc.stdout.strip()}  # code structure (not a sourced data table)
 
     # headroom.py --json: {ok: bool, problems: [], ...}; exit 0 ok / 1 constrained
     ok = payload.get("ok")

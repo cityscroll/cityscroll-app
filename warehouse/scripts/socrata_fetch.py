@@ -17,7 +17,7 @@ USER_AGENT = "CityScrollWarehouse/0.1 (+https://cityscroll.org; WH-01 scaffold)"
 
 def soda_csv_url(domain: str, dataset_id: str, *, limit: int, order: str | None = None) -> str:
     base = domain.rstrip("/")
-    params = {"$limit": str(limit)}
+    params = {"$limit": str(limit)}  # SODA query args (not a data table)
     if order:
         params["$order"] = order
     q = urllib.parse.urlencode(params)
@@ -36,7 +36,8 @@ def fetch_to_file(url: str, dest: Path, *, timeout: int = 60) -> dict:
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept": "text/csv,*/*"})
     try:
         with urllib.request.urlopen(req, timeout=timeout) as resp:
-            headers = {k.lower(): v for k, v in resp.headers.items()}
+            # HTTP response headers map (not a sourced data table)
+            headers = {k.lower(): v for k, v in resp.headers.items()}  # source: HTTP response
             with partial.open("wb") as out:
                 while True:
                     chunk = resp.read(64 * 1024)
