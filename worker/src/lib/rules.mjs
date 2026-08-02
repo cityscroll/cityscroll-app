@@ -288,6 +288,13 @@ const STOP_WORDS = new Set([
   "is", "are", "or", "be", "with", "from", "as", "this", "that", "will",
   "rule", "rules", "amendment", "amendments", "section", "sections",
   "chapter", "title", "city", "new", "york", "rcny", "proposed", "regarding",
+  // Lifecycle / agency boilerplate left after title-core strip — shared across
+  // unrelated rulemakings (especially DCWP "NOH Rules Relating to …") and must
+  // not drive title-only sibling joins. "article"/"code" also bridge distinct
+  // Health Code sections (Art. 141 vs 203) via thin emergency-rule titles.
+  "relating", "related", "concerning", "notice", "noh", "noa", "nop", "nor",
+  "opportunity", "comment", "comments", "hearing", "hearings", "public",
+  "adoption", "adopted", "final", "article", "code",
 ]);
 
 function tokens(s) {
@@ -433,6 +440,16 @@ const LIFECYCLE_TITLE_NOISE = [
   /\bregarding\b/gi,
   /\bconcerning\b/gi,
   /\bamendment(?:s)? (?:of|to)\b/gi,
+  // City Record Agency Rules house style (esp. DCWP): "DCWP NOH: …" / "NOA …"
+  // / "Rules Relating to …". Without stripping, shared boilerplate chains
+  // unrelated rulemakings across a multi-month window (false merge).
+  /\bnotice of (?:opportunity to comment on|change of effective date(?: for)?)\b/gi,
+  /\bopportunity to comment on\b/gi,
+  /\b(?:dcwp|dohmh|dep|dot|dob|hpd|tlc|dsny|dof|ppb|sbs|dcas|fdny|nypd|doe)\s+(?:noh|noa|nop|nor)\b[:\s-]*/gi,
+  /\b(?:noh|noa|nop|nor)\b[:\s-]*/gi,
+  /\brules?\s+relating\s+to\b/gi,
+  /\brules?\s+related\s+to\b/gi,
+  /\bproposed amendment of rules?\s+(?:relating to|regarding)?\b/gi,
 ];
 
 /**
@@ -442,6 +459,11 @@ const LIFECYCLE_TITLE_NOISE = [
 export function rulemakingTitleCore(title) {
   let s = String(title || "");
   for (const re of LIFECYCLE_TITLE_NOISE) s = s.replace(re, " ");
+  // Agency abbr repeated in CR short titles (agency already matched separately).
+  s = s.replace(
+    /\b(?:dcwp|dohmh|dep|dot|dob|hpd|tlc|dsny|dof|ppb|sbs|dcas|fdny|nypd|doe)\b[\s:-]*/gi,
+    " ",
+  );
   s = s.replace(/\s+/g, " ").trim();
   return s;
 }
