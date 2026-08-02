@@ -3787,7 +3787,82 @@ function careerSourceHTML(){
 function careerCount(value){
   return Number.isFinite(Number(value)) ? fmtNumber(Number(value)) : t("career_not_published");
 }
-function careerOutcomeHTML(exam){
+/* ===== Exam process spine (application → list → certification → appointment).
+   Distinct from the static career-guide teaching steps and from the metrics grid
+   below — this is the multi-stage process chain for one exam_number. ===== */
+let examProcessSpineToolsPromise=null;
+function ensureExamProcessSpineTools(){
+  if(!examProcessSpineToolsPromise){
+    examProcessSpineToolsPromise=import("./exam_process_spine.mjs").catch(()=>null);
+  }
+  return examProcessSpineToolsPromise;
+}
+function examStageLabel(kind){
+  if(kind==="application") return t("exam_stage_application");
+  if(kind==="list_establishment") return t("exam_stage_list_establishment");
+  if(kind==="certification") return t("exam_stage_certification");
+  if(kind==="appointment") return t("exam_stage_appointment");
+  return kind || "—";
+}
+function examStageSourceLabel(kind){
+  if(kind==="application") return t("exam_source_schedule");
+  if(kind==="list_establishment") return t("exam_source_list");
+  return t("exam_source_outcomes");
+}
+function examStageCountHTML(stage){
+  if(!stage || !stage.matched || stage.count==null) return "";
+  if(stage.kind==="list_establishment") return t("exam_stage_on_list_count",{n:fmtNumber(stage.count)});
+  if(stage.kind==="certification") return t("exam_stage_certified_count",{n:fmtNumber(stage.count)});
+  if(stage.kind==="appointment") return t("exam_stage_hired_count",{n:fmtNumber(stage.count)});
+  return "";
+}
+function examProcessSpineHTML(spine, exam){
+  if(!spine) return "";
+  const stages=Array.isArray(spine.stages)?spine.stages:[];
+  let chain="";
+  stages.forEach((stage, idx)=>{
+    const matched=stage && stage.matched;
+    const primary=(Array.isArray(stage.events)&&stage.events[0])||null;
+    let when="—";
+    if(primary?.time?.value && primary.time.value_to){
+      when=`${fdate(primary.time.value)} – ${fdate(primary.time.value_to)}`;
+    } else if(primary?.time?.value){
+      when=fdate(primary.time.value);
+    } else if(stage.kind==="application" && exam){
+      const a=exam.application_start?fdate(exam.application_start):"";
+      const b=exam.application_end?fdate(exam.application_end):"";
+      if(a && b) when=`${a} – ${b}`;
+      else when=a||b||"—";
+    }
+    const countLine=examStageCountHTML(stage);
+    if(matched){
+      chain+=`<div class="stage"><div class="box matched">
+        <div class="stage-name">${examStageLabel(stage.kind)}</div>
+        <div class="when">${escUiHtml(when)}</div>
+        ${countLine?`<div class="lc-pct">${escUiHtml(countLine)}</div>`:""}
+      </div></div>`;
+    } else {
+      chain+=`<div class="stage"><div class="box">
+        <div class="stage-name">${examStageLabel(stage.kind)}</div>
+        <div class="lc-norecord">${t("exam_stage_not_yet_ingested_html",{
+          source:`<span lang="en" dir="ltr">${examStageSourceLabel(stage.kind)}</span>`
+        })}</div>
+      </div></div>`;
+    }
+    if(idx < stages.length - 1) chain+='<div class="connector">→</div>';
+  });
+  const joinNote=t("exam_spine_join_html",{
+    number:escUiHtml(spine.exam_number||exam?.exam_number||"—"),
+    title:escUiHtml(cleanText(spine.title||exam?.title)||"—")
+  });
+  return `<section class="career-exam-spine" data-exam-spine="1" aria-label="${escUiHtml(t("exam_spine_heading"))}">
+    <div class="chain-h">${t("exam_spine_heading")}</div>
+    <div class="note">${joinNote}</div>
+    <div class="chain">${chain}</div>
+    <div class="note">${t("exam_spine_provenance_html")}</div>
+  </section>`;
+}
+function careerOutcomeHTML(exam, options={}){
   const view=CrolStaffing.examOutcomeView(exam);
   if(view.kind==="joined"){
     return `<section class="career-outcomes" data-outcome="joined" aria-label="${escUiHtml(t("career_outcomes_heading"))}">
@@ -3818,6 +3893,9 @@ function careerOutcomeHTML(exam){
   }
   // Class-(a): public annual + Civil Service List sources exist; empty slot is incomplete
   // join or cycle pending — never a false class-(b) "city does not publish" for aggregates.
+  // When the process spine is mounted above, skip the redundant single-line gap — the
+  // spine already names each empty stage with class-(a) source copy.
+  if(options.spineMounted) return "";
   const stageKey={
     list_establishment:"career_outcome_stage_list",
     certification:"career_outcome_stage_certification",
@@ -3868,7 +3946,13 @@ function careerCardHTML(exam){
     </div>
     ${exam.summary?`<p class="career-summary" lang="en" dir="ltr">${escUiHtml(exam.summary)}</p>`:""}
     ${details}
-    ${careerOutcomeHTML(exam)}
+    ${(()=>{
+      const tools=window.CrolExamProcessSpine;
+      const spine=tools&&typeof tools.buildExamProcessSpine==="function"
+        ? tools.buildExamProcessSpine(exam)
+        : (exam.process_spine||null);
+      return examProcessSpineHTML(spine, exam)+careerOutcomeHTML(exam,{spineMounted:!!spine});
+    })()}
     <div class="actions">${apply}${notice}
       <button class="act" type="button" data-career-copy="${exam.exam_number}">${t("copy_link_btn")}</button>
       ${careerSelected===exam.exam_number?routeBackHTML("#people?view=guide",t("career_back_all"),"act"):""}
@@ -3941,12 +4025,19 @@ function populateCareerInterests(){
   applyCareerRouteFilters();
 }
 async function loadCareerGuide(){
-  if(careerData){ populateCareerInterests(); renderCareerGuide(); return careerData; }
+  if(careerData){
+    await ensureExamProcessSpineTools().then(mod=>{ if(mod) window.CrolExamProcessSpine=mod; });
+    populateCareerInterests(); renderCareerGuide(); return careerData;
+  }
   if(careerLoadPromise) return careerLoadPromise;
-  careerLoadPromise=fetch("data/staffing_exams.json").then(response=>{
-    if(!response.ok) throw new Error(t("career_load_failed"));
-    return response.json();
-  }).then(data=>{
+  careerLoadPromise=Promise.all([
+    fetch("data/staffing_exams.json").then(response=>{
+      if(!response.ok) throw new Error(t("career_load_failed"));
+      return response.json();
+    }),
+    ensureExamProcessSpineTools(),
+  ]).then(([data, spineMod])=>{
+    if(spineMod) window.CrolExamProcessSpine=spineMod;
     careerData=data; populateCareerInterests(); renderCareerGuide(); return data;
   }).catch(()=>{
     $("#career-source").classList.add("stale");
