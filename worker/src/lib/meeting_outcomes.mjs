@@ -31,9 +31,23 @@ import {
 import { dualWriteLegistarObservations } from "./legistar_source_records.mjs";
 import { linksFromMeetingRecord } from "./subject_registry.mjs";
 
-export const MEETING_OUTCOMES_VIEW_VERSION = 2;
+/** Bump when vote/person mapping or spine assembly changes so young-but-stale KV rebuilds. */
+export const MEETING_OUTCOMES_VIEW_VERSION = 3;
 export const MEETING_OUTCOMES_KV_KEY = "meeting-outcomes:materialized:v2";
 export const MAX_AGE_MS = 36 * 60 * 60 * 1000;
+
+/**
+ * Whether the cached meeting-outcomes view should be rebuilt before serving.
+ * Age alone is not enough: a young KV snapshot written under an older code path
+ * (e.g. pre–person-level vote mapping) would otherwise stick until MAX_AGE.
+ */
+export function meetingOutcomesViewNeedsRefresh(parsed, nowMs = Date.now()) {
+  if (!parsed || !parsed.generated_at) return true;
+  const age = nowMs - new Date(parsed.generated_at).getTime();
+  if (!Number.isFinite(age) || age > MAX_AGE_MS) return true;
+  if (parsed.schema_version !== MEETING_OUTCOMES_VIEW_VERSION) return true;
+  return false;
+}
 export const NOTICE_LIMIT = 500;
 export const API_RECORD_LIMIT = 100;
 

@@ -15,6 +15,13 @@ const CITY_RECORD_NOTICE_SODA = "https://data.cityofnewyork.us/resource/dg92-zbp
 const SUBSIDY_SOURCE = "https://edc.nyc/about-nycedc/financial-public-documents-recordings";
 const PREWARM_MAX = 40;
 
+/**
+ * Bump when hearing-money / place / gap-kind parse logic changes so D1 rows
+ * assembled under the old parser recompute instead of serving forever.
+ * Missing or mismatched parser_version on a cached row is a cache miss.
+ */
+export const SUBSIDY_PARSER_VERSION = 2;
+
 function sq(s) {
   return String(s || "").replace(/'/g, "''");
 }
@@ -124,6 +131,17 @@ export async function fetchNoticeRow(env, requestId) {
   }
 }
 
+/** True when a cached lifecycle was assembled by the current parser. */
+export function subsidyCacheIsCurrent(lifecycle, parserVersion = SUBSIDY_PARSER_VERSION) {
+  if (!lifecycle || !Array.isArray(lifecycle.timeline)) return false;
+  // Never serve a permanently cached feed-unavailable row — recompute so City Record
+  // derivation or a recovered feed can replace the operational error.
+  if (lifecycle.source_status === "unavailable") return false;
+  // Pre-version rows (and any older parser) must recompute after parse logic ships.
+  if (lifecycle.parser_version !== parserVersion) return false;
+  return true;
+}
+
 async function cacheGet(env, requestId) {
   if (!env.DB) return null;
   try {
@@ -133,10 +151,7 @@ async function cacheGet(env, requestId) {
     ).bind(requestId).first();
     if (row && row.lifecycle) {
       const lifecycle = JSON.parse(row.lifecycle);
-      // Never serve a permanently cached feed-unavailable row — recompute so City Record
-      // derivation or a recovered feed can replace the operational error.
-      if (lifecycle && lifecycle.source_status === "unavailable") return null;
-      if (lifecycle && Array.isArray(lifecycle.timeline)) return lifecycle;
+      if (subsidyCacheIsCurrent(lifecycle)) return lifecycle;
     }
   } catch { /* miss */ }
   return null;
@@ -148,10 +163,11 @@ async function cachePut(env, requestId, agency, lifecycle) {
   if (lifecycle.source_status === "unavailable") return;
   try {
     await ensureSubsidySchema(env);
+    const stamped = { ...lifecycle, parser_version: SUBSIDY_PARSER_VERSION };
     await env.DB.prepare(
       `INSERT OR REPLACE INTO subsidy_lifecycle (request_id, agency, lifecycle, computed_at)
          VALUES (?, ?, ?, ?)`,
-    ).bind(requestId, agency || null, JSON.stringify(lifecycle), new Date().toISOString()).run();
+    ).bind(requestId, agency || null, JSON.stringify(stamped), new Date().toISOString()).run();
   } catch { /* do not block */ }
 }
 

@@ -6,6 +6,8 @@ import {
   applyApiLimits,
   buildMeetingOutcomes,
   MEETING_OUTCOMES_KV_KEY,
+  MEETING_OUTCOMES_VIEW_VERSION,
+  meetingOutcomesViewNeedsRefresh,
 } from "../src/lib/meeting_outcomes.mjs";
 import {
   handleMeetingOutcomes,
@@ -134,12 +136,33 @@ test("API limit cap is enforced regardless of requested limit", () => {
   assert.equal(limited.total, 250);
 });
 
+test("meetingOutcomesViewNeedsRefresh rebuilds young KV under an older schema_version", () => {
+  const nowMs = Date.parse("2026-08-02T18:00:00.000Z");
+  assert.equal(meetingOutcomesViewNeedsRefresh(null, nowMs), true);
+  // Pre–person-vote materialization (schema 2) must not stick while still young.
+  assert.equal(meetingOutcomesViewNeedsRefresh({
+    schema_version: 2,
+    generated_at: "2026-08-02T17:00:00.000Z",
+  }, nowMs), true);
+  assert.equal(meetingOutcomesViewNeedsRefresh({
+    schema_version: MEETING_OUTCOMES_VIEW_VERSION,
+    generated_at: "2026-08-02T17:00:00.000Z",
+  }, nowMs), false);
+  // Older than MAX_AGE_MS (~36h) even when schema matches.
+  assert.equal(meetingOutcomesViewNeedsRefresh({
+    schema_version: MEETING_OUTCOMES_VIEW_VERSION,
+    generated_at: "2026-07-30T17:00:00.000Z",
+  }, nowMs), true);
+});
+
 test("GET /meeting-outcomes serves capped JSON records", async () => {
   const kv = memoryKV();
   const payload = modelFromFixture();
-  // Handler re-fetches live when generated_at is older than MAX_AGE_MS (~36h).
-  // Seed a fresh timestamp so this test stays hermetic against wall-clock drift.
+  // Handler re-fetches live when generated_at is older than MAX_AGE_MS (~36h)
+  // or schema_version is behind. Seed a fresh current-version snapshot so this
+  // test stays hermetic against wall-clock drift and version bumps.
   payload.generated_at = new Date().toISOString();
+  payload.schema_version = MEETING_OUTCOMES_VIEW_VERSION;
   payload.records = Array.from({ length: 140 }, (_, i) => ({
     ...payload.records[0],
     request_id: `CR-${i + 10}`,

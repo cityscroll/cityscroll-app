@@ -8,7 +8,7 @@ const worker = await readFile(new URL("../worker/src/rules.mjs", import.meta.url
 test("rules materialization carries the distinct event spine to the public read model", () => {
   assert.match(worker, /events:\s*deriveRuleEvents\(m\.rule, now\)/);
   assert.match(worker, /effective_date:\s*m\.rule\.effective_date/);
-  assert.match(worker, /schema_version:\s*2/);
+  assert.match(worker, /schema_version:\s*RULES_VIEW_VERSION/);
 });
 
 test("Agency Rules notice detail mounts and renders the event spine", () => {

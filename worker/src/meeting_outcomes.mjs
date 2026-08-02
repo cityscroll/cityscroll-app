@@ -1,7 +1,20 @@
-import { applyApiLimits, buildMeetingOutcomesView, MAX_AGE_MS, MEETING_OUTCOMES_KV_KEY, refreshMeetingOutcomes } from "./lib/meeting_outcomes.mjs";
+import {
+  applyApiLimits,
+  buildMeetingOutcomesView,
+  MAX_AGE_MS,
+  MEETING_OUTCOMES_KV_KEY,
+  MEETING_OUTCOMES_VIEW_VERSION,
+  meetingOutcomesViewNeedsRefresh,
+  refreshMeetingOutcomes,
+} from "./lib/meeting_outcomes.mjs";
 import { checkAdminKey } from "./admin.mjs";
 
-export { refreshMeetingOutcomes };
+export {
+  refreshMeetingOutcomes,
+  meetingOutcomesViewNeedsRefresh,
+  MEETING_OUTCOMES_VIEW_VERSION,
+  MAX_AGE_MS,
+};
 
 function corsHeaders() {
   return {
@@ -57,9 +70,8 @@ export async function handleMeetingOutcomes(request, env, ctx) {
   let raw = await env.ALERT_STATE.get(MEETING_OUTCOMES_KV_KEY);
   let parsed = null;
   try { parsed = raw ? JSON.parse(raw) : null; } catch { parsed = null; }
-  const stale = !parsed || (Date.now() - new Date(parsed.generated_at).getTime()) > MAX_AGE_MS;
 
-  if (!parsed || stale) {
+  if (meetingOutcomesViewNeedsRefresh(parsed)) {
     try {
       const token = env?.LEGISTAR_API_TOKEN || null;
       const view = await buildMeetingOutcomesView({ token, fetchImpl: fetch, now: new Date(), env });
