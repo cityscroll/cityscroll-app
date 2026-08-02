@@ -157,11 +157,15 @@ Read model: `worker/src/lib/meeting_outcomes.mjs` → KV `meeting-outcomes:mater
 Open Data `m48u-yjt8` remains a **disabled** freeze through 2024-12-19 (0% modern).
 Receipts: `site/data/legistar_sources/`. Demo: notice `20260706036` → event `22526`.
 
+**Meeting outcomes UI:** matter-centric scan list (summary chips + short title +
+outcome badge + progressive disclosure), not one four-stage lifecycle chain per
+Legistar action row. Render: `meetingOutcomesHTML` in `site/index.html`.
+Characterization: `node --test test/meeting_view_readability.test.mjs`.
+
 **Meeting vote spine (matter path as one object):** each matched notice record
 carries `spines[]` — one object per matter for the connected path
 **agenda → matter → action → vote → attachment** (`buildMeetingVoteSpine` /
-`buildMeetingVoteSpines` in `meeting_outcomes.mjs`). UI renders five stages
-(`data-meeting-spine`, `data-spine-stage=*`). Named metric:
+`buildMeetingVoteSpines` in `meeting_outcomes.mjs`). Named metric:
 `meeting_vote_spine_completeness_rate` (mean stage fill over matter spines;
 also `full_spine_rate` + per-stage rates on the view `metrics` block).
 Verify: `node --test test/meeting_vote_spine.test.mjs
