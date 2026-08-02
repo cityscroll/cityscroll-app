@@ -206,6 +206,15 @@ outcome badge + progressive disclosure), not one four-stage lifecycle chain per
 Legistar action row. Render: `meetingOutcomesHTML` in `site/index.html`.
 Characterization: `node --test test/meeting_view_readability.test.mjs`.
 
+**Matter deep links:** numeric Legistar `MatterId` →
+`https://nyc.legistar.com/Gateway.aspx?M=L&ID={id}` (resolves to
+LegislationDetail with GUID). `LegislationDetail.aspx?ID=` alone returns
+"Invalid parameters!". Non-numeric ids (fixtures) get no link. Helper:
+`matterDetailUrl` in `worker/src/lib/legistar_join.mjs` (stamped as `matter_url`
+on assembled matters / spine). Non-Council unmatched outcomes link real BP/CB
+HTTPS landings via `nonCouncilWhereHTML` — never text-only "where". Package-doc
+class-(b) gaps deep-link `RequestDetail/{request_id}` when known, not bare GetFile.
+
 **Meeting vote spine (matter path as one object):** each matched notice record
 carries `spines[]` — one object per matter for the connected path
 **agenda → matter → action → vote → attachment** (`buildMeetingVoteSpine` /
