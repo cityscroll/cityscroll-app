@@ -185,7 +185,8 @@ function eventDocuments(event) {
 /**
  * Project a vote summary (counts + retained persons) onto the agenda matter card.
  * Person-level rows and votes_on edges are first-class when the publisher
- * retained PersonId/PersonName; aggregate tallies always remain.
+ * retained VotePersonId/VotePersonName (or PersonId/PersonName); aggregate
+ * tallies always remain. vote_identity is roll_call vs tally_only.
  */
 function projectVoteSummary(voteSummary, item) {
   if (!voteSummary || !voteSummary.counts) return [];
@@ -201,6 +202,8 @@ function projectVoteSummary(voteSummary, item) {
     votes_on: votesOn,
     person_vote_retention_rate: voteSummary.person_vote_retention_rate ?? null,
     official_votes_on_edge_rate: voteSummary.official_votes_on_edge_rate ?? null,
+    vote_identity: voteSummary.vote_identity
+      || (byPerson.length ? "roll_call" : "tally_only"),
     source_url: null,
     kind: "vote",
   }];
