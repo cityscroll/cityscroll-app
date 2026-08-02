@@ -2,7 +2,7 @@
   "schema_version": 2,
   "measurement": {
     "unit": "identity-bearing importer streams",
-    "observed_at": "2026-08-01",
+    "observed_at": "2026-08-02",
     "stale_after_days": 2,
     "before": {
       "covered": 5,
@@ -11,22 +11,22 @@
       "basis": "historical adapter-ready (dual_write.before === complete)"
     },
     "after": {
-      "covered": 2,
+      "covered": 7,
       "total": 13,
-      "rate": 0.1538,
+      "rate": 0.5385,
       "basis": "live source_records: dual_write.after === complete requires row_count > 0"
     },
     "by_status": {
-      "complete": 2,
+      "complete": 7,
       "partial": 1,
       "stale": 0,
-      "empty-declared-live": 6,
+      "empty-declared-live": 1,
       "gap": 4
     },
     "populated": {
-      "covered": 3,
+      "covered": 8,
       "total": 13,
-      "rate": 0.2308
+      "rate": 0.6154
     },
     "adapter_ready": {
       "before": 5,
@@ -34,7 +34,7 @@
       "total": 13,
       "rate_after": 0.6923
     },
-    "basis": "Live completeness is derived from production D1 source_records counts and recency (measured 2026-08-01). Adapter readiness (flag + fixture + schema) is reported separately under adapter_ready and must not be quoted as production coverage. Named metric source_coverage = after.covered/after.total where covered means dual_write.after === complete with row_count > 0. Empty dual-write streams (passport, legistar) are empty-declared-live, not complete. City Record dual-write is partial (incremental only). NYCHA, ABO, doing-business, and NYCIDA remain gaps."
+    "basis": "Live completeness is derived from production D1 source_records counts and recency (remeasured 2026-08-02). Adapter readiness (flag + fixture + schema) is reported separately under adapter_ready and must not be quoted as production coverage. Named metric source_coverage = after.covered/after.total where covered means dual_write.after === complete with row_count > 0. PASSPort contracts/RFx and Legistar events/items/votes dual-write now populate source_records. Legistar attachments remain empty-declared-live (nested Attachments bag empty). City Record dual-write is partial (incremental only). NYCHA, ABO, doing-business, and NYCIDA remain gaps."
   },
   "sources": [
     {
@@ -55,8 +55,8 @@
       "live_observation": {
         "status": "partial",
         "row_count": 32,
-        "latest_ingested_at": "2026-07-31T00:00:00.000Z",
-        "measured_at": "2026-08-01T00:00:00.000Z",
+        "latest_ingested_at": "2026-08-01T13:00:56.644Z",
+        "measured_at": "2026-08-02T17:02:36.000Z",
         "thinness": "partial",
         "note": "Incremental dual-write only; 32 observations vs ~1516 D1 notices (~2.1%)."
       },
@@ -74,21 +74,21 @@
       "dual_write": {
         "flag": "PASSPORT_SOURCE_RECORD_DUAL_WRITE",
         "before": "complete",
-        "after": "empty-declared-live",
+        "after": "complete",
         "adapter": "ready",
         "default": "off",
         "fail_soft": true
       },
       "live_observation": {
-        "status": "empty-declared-live",
-        "row_count": 0,
-        "latest_ingested_at": null,
-        "measured_at": "2026-08-01T00:00:00.000Z",
-        "note": "Production flag on; passport_contracts product table has rows but source_records has 0 for this system."
+        "status": "complete",
+        "row_count": 61451,
+        "latest_ingested_at": "2026-08-02T13:00:35.582Z",
+        "measured_at": "2026-08-02T17:02:36.000Z",
+        "note": "Daily ingest dual-write + product-table backfill; product passport_contracts has rows."
       },
       "fixture": "worker/test/er_source_coverage.test.mjs",
       "replay_test": "worker/test/er_source_coverage.test.mjs",
-      "known_gap": "Dual-write adapter exists and production flag is on, but source_records has 0 rows for passport_public_contracts (measured 2026-08-01)."
+      "known_gap": null
     },
     {
       "id": "passport-public-rfx",
@@ -100,21 +100,21 @@
       "dual_write": {
         "flag": "PASSPORT_SOURCE_RECORD_DUAL_WRITE",
         "before": "complete",
-        "after": "empty-declared-live",
+        "after": "complete",
         "adapter": "ready",
         "default": "off",
         "fail_soft": true
       },
       "live_observation": {
-        "status": "empty-declared-live",
-        "row_count": 0,
-        "latest_ingested_at": null,
-        "measured_at": "2026-08-01T00:00:00.000Z",
-        "note": "Production flag on; passport_rfx product table has rows but source_records has 0 for this system."
+        "status": "complete",
+        "row_count": 11996,
+        "latest_ingested_at": "2026-08-02T13:00:35.582Z",
+        "measured_at": "2026-08-02T17:02:36.000Z",
+        "note": "Daily ingest dual-write + product-table backfill; product passport_rfx has rows."
       },
       "fixture": "worker/test/er_source_coverage.test.mjs",
       "replay_test": "worker/test/er_source_coverage.test.mjs",
-      "known_gap": "Dual-write adapter exists and production flag is on, but source_records has 0 rows for passport_public_rfx (measured 2026-08-01)."
+      "known_gap": null
     },
     {
       "id": "checkbook-contracts",
@@ -133,9 +133,9 @@
       },
       "live_observation": {
         "status": "complete",
-        "row_count": 91,
-        "latest_ingested_at": "2026-08-01T00:00:00.000Z",
-        "measured_at": "2026-08-01T00:00:00.000Z",
+        "row_count": 121,
+        "latest_ingested_at": "2026-08-02T02:12:11.135Z",
+        "measured_at": "2026-08-02T17:02:36.000Z",
         "note": "Demand-driven dual-write on lifecycle requests; sparse but non-zero and fresh."
       },
       "fixture": "worker/test/checkbook_source_records.test.mjs",
@@ -159,9 +159,9 @@
       },
       "live_observation": {
         "status": "complete",
-        "row_count": 228,
-        "latest_ingested_at": "2026-08-01T00:00:00.000Z",
-        "measured_at": "2026-08-01T00:00:00.000Z",
+        "row_count": 344,
+        "latest_ingested_at": "2026-08-02T02:12:11.135Z",
+        "measured_at": "2026-08-02T17:02:36.000Z",
         "note": "Demand-driven dual-write on lifecycle requests; sparse but non-zero and fresh."
       },
       "fixture": "worker/test/checkbook_source_records.test.mjs",
@@ -187,7 +187,7 @@
         "status": "gap",
         "row_count": 0,
         "latest_ingested_at": null,
-        "measured_at": "2026-08-01T00:00:00.000Z"
+        "measured_at": "2026-08-02T17:02:36.000Z"
       },
       "fixture": "test/external_awards.test.mjs",
       "replay_test": null,
@@ -203,21 +203,21 @@
       "dual_write": {
         "flag": "LEGISTAR_SOURCE_RECORD_DUAL_WRITE",
         "before": "gap",
-        "after": "empty-declared-live",
+        "after": "complete",
         "adapter": "ready",
         "default": "off",
         "fail_soft": true
       },
       "live_observation": {
-        "status": "empty-declared-live",
-        "row_count": 0,
-        "latest_ingested_at": null,
-        "measured_at": "2026-08-01T00:00:00.000Z",
-        "note": "Meeting-outcomes product path is live; source_records has 0 rows for nyc_legistar_events."
+        "status": "complete",
+        "row_count": 435,
+        "latest_ingested_at": "2026-08-01T23:51:10.760Z",
+        "measured_at": "2026-08-02T17:02:36.000Z",
+        "note": "Meeting-outcomes refresh dual-write of raw Events into source_records."
       },
       "fixture": "worker/test/legistar_source_records.test.mjs",
       "replay_test": "worker/test/legistar_source_records.test.mjs",
-      "known_gap": "Dual-write adapter exists and production flag is on, but source_records has 0 rows for nyc_legistar_events (measured 2026-08-01)."
+      "known_gap": null
     },
     {
       "id": "legistar-event-items",
@@ -229,21 +229,21 @@
       "dual_write": {
         "flag": "LEGISTAR_SOURCE_RECORD_DUAL_WRITE",
         "before": "gap",
-        "after": "empty-declared-live",
+        "after": "complete",
         "adapter": "ready",
         "default": "off",
         "fail_soft": true
       },
       "live_observation": {
-        "status": "empty-declared-live",
-        "row_count": 0,
-        "latest_ingested_at": null,
-        "measured_at": "2026-08-01T00:00:00.000Z",
-        "note": "Meeting-outcomes product path is live; source_records has 0 rows for nyc_legistar_event_items."
+        "status": "complete",
+        "row_count": 211,
+        "latest_ingested_at": "2026-08-01T23:51:10.760Z",
+        "measured_at": "2026-08-02T17:02:36.000Z",
+        "note": "Meeting-outcomes refresh dual-write of raw EventItems into source_records."
       },
       "fixture": "worker/test/legistar_source_records.test.mjs",
       "replay_test": "worker/test/legistar_source_records.test.mjs",
-      "known_gap": "Dual-write adapter exists and production flag is on, but source_records has 0 rows for nyc_legistar_event_items (measured 2026-08-01)."
+      "known_gap": null
     },
     {
       "id": "legistar-votes",
@@ -255,24 +255,24 @@
       "dual_write": {
         "flag": "LEGISTAR_SOURCE_RECORD_DUAL_WRITE",
         "before": "gap",
-        "after": "empty-declared-live",
+        "after": "complete",
         "adapter": "ready",
         "default": "off",
         "fail_soft": true
       },
       "live_observation": {
-        "status": "empty-declared-live",
-        "row_count": 0,
-        "latest_ingested_at": null,
-        "measured_at": "2026-08-01T00:00:00.000Z",
-        "note": "Person-level votes retained on meeting-outcomes path via VotePersonId/VotePersonName; source_records has 0 rows for nyc_legistar_votes."
+        "status": "complete",
+        "row_count": 114,
+        "latest_ingested_at": "2026-08-01T23:51:10.760Z",
+        "measured_at": "2026-08-02T17:02:36.000Z",
+        "note": "Meeting-outcomes refresh dual-write of raw Votes into source_records."
       },
       "fixture": "worker/test/legistar_source_records.test.mjs",
       "replay_test": "worker/test/legistar_source_records.test.mjs",
-      "known_gap": "Dual-write adapter exists and production flag is on, but source_records has 0 rows for nyc_legistar_votes (measured 2026-08-01).",
+      "known_gap": null,
       "person_retention": {
         "metric": "person_vote_retention_rate",
-        "status": "retained_on_meeting_outcomes after VotePerson* field mapping (live audit 2026-08-02 rate=1 on event 22526); source_records dual-write empty-declared-live; public KV needs re-materialization",
+        "status": "retained_on_meeting_outcomes after VotePerson* field mapping (live audit 2026-08-02 rate=1 on event 22526); source_records dual-write complete (114 vote observations); public KV needs re-materialization for by_person readers",
         "receipt": "site/data/legistar_sources/verification_receipts/official_person_vote_retention_2026-08-02.json",
         "official_link_type": "votes_on",
         "primary_key_pattern": "official:{person_id}"
@@ -297,12 +297,12 @@
         "status": "empty-declared-live",
         "row_count": 0,
         "latest_ingested_at": null,
-        "measured_at": "2026-08-01T00:00:00.000Z",
-        "note": "Agenda documents present on meeting-outcomes product path; source_records has 0 rows for nyc_legistar_attachments."
+        "measured_at": "2026-08-02T17:02:36.000Z",
+        "note": "Dual-write path ran with Events/EventItems/Votes populated; nested Attachments bag was empty (product Agenda/Minutes live on Events)."
       },
       "fixture": "worker/test/legistar_source_records.test.mjs",
       "replay_test": "worker/test/legistar_source_records.test.mjs",
-      "known_gap": "Dual-write adapter exists and production flag is on, but source_records has 0 rows for nyc_legistar_attachments (measured 2026-08-01)."
+      "known_gap": "Adapter + flag on; Events/Items/Votes dual-write populated (measured 2026-08-02). Nested Attachments still 0 rows — product documents are often Event Agenda/Minutes, not EventItems/*/Attachments."
     },
     {
       "id": "abo-external-awards",
@@ -323,7 +323,7 @@
         "status": "gap",
         "row_count": 0,
         "latest_ingested_at": null,
-        "measured_at": "2026-08-01T00:00:00.000Z"
+        "measured_at": "2026-08-02T17:02:36.000Z"
       },
       "fixture": "test/external_awards.test.mjs",
       "replay_test": null,
@@ -348,7 +348,7 @@
         "status": "gap",
         "row_count": 0,
         "latest_ingested_at": null,
-        "measured_at": "2026-08-01T00:00:00.000Z"
+        "measured_at": "2026-08-02T17:02:36.000Z"
       },
       "fixture": "test/doing_business_join.test.mjs",
       "replay_test": null,
@@ -373,7 +373,7 @@
         "status": "gap",
         "row_count": 0,
         "latest_ingested_at": null,
-        "measured_at": "2026-08-01T00:00:00.000Z"
+        "measured_at": "2026-08-02T17:02:36.000Z"
       },
       "fixture": "test/subsidy_lifecycle.test.mjs",
       "replay_test": null,

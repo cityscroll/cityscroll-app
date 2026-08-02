@@ -190,11 +190,24 @@ test("committed matrix has no complete-with-zero-rows and checker exits 0", () =
   }
   const result = validateSourceCoverageMatrix(matrix);
   assert.equal(result.ok, true, result.errors.join("; "));
-  assert.equal(result.measurement.after.covered, 2);
-  assert.equal(result.measurement.by_status["empty-declared-live"], 6);
+  // Remeasured 2026-08-02: PASSPort contracts/RFx + Legistar events/items/votes
+  // dual-write populate source_records (complete 7/13). Attachments stay empty.
+  assert.equal(result.measurement.after.covered, 7);
+  assert.equal(result.measurement.by_status["empty-declared-live"], 1);
   assert.equal(result.measurement.by_status.partial, 1);
-  assert.equal(result.measurement.by_status.complete, 2);
+  assert.equal(result.measurement.by_status.complete, 7);
   assert.equal(result.measurement.by_status.gap, 4);
+  for (const id of [
+    "passport-public-contracts",
+    "passport-public-rfx",
+    "legistar-events",
+    "legistar-event-items",
+    "legistar-votes",
+  ]) {
+    const row = matrix.sources.find((s) => s.id === id);
+    assert.equal(row?.dual_write?.after, "complete", id);
+    assert.ok(Number(row?.live_observation?.row_count) > 0, id);
+  }
 
   const check = spawnSync(
     process.execPath,
@@ -202,8 +215,8 @@ test("committed matrix has no complete-with-zero-rows and checker exits 0", () =
     { cwd: ROOT, encoding: "utf8" },
   );
   assert.equal(check.status, 0, check.stderr || check.stdout);
-  assert.match(check.stdout, /live 2\/13 complete/);
-  assert.match(check.stdout, /empty-declared-live=6/);
+  assert.match(check.stdout, /live 7\/13 complete/);
+  assert.match(check.stdout, /empty-declared-live=1/);
 });
 
 test("measureLiveCoverage never counts zero-row streams as complete", () => {
@@ -236,9 +249,11 @@ test("emitCoverageHonestyCards auto-emits bugs for empty-declared-live streams",
   const matrix = loadMatrix();
   const cards = emitCoverageHonestyCards(matrix);
   const emptyCards = cards.filter((c) => c.evidence?.kind === "empty-declared-live");
-  assert.ok(emptyCards.length >= 6, `expected ≥6 empty-declared-live cards, got ${emptyCards.length}`);
-  assert.ok(emptyCards.some((c) => c.id.includes("passport-public-contracts")));
-  assert.ok(emptyCards.some((c) => c.id.includes("legistar-events")));
+  // After PASSPort + Legistar dual-write fill, only nested Attachments remain empty-declared-live.
+  assert.ok(emptyCards.length >= 1, `expected ≥1 empty-declared-live cards, got ${emptyCards.length}`);
+  assert.ok(emptyCards.some((c) => c.id.includes("legistar-attachments")));
+  assert.ok(!emptyCards.some((c) => c.id.includes("passport-public-contracts")));
+  assert.ok(!emptyCards.some((c) => c.id.includes("legistar-events")));
   for (const card of emptyCards) {
     assert.equal(card.dimension, "coverage");
     assert.ok(card.verify);
@@ -275,12 +290,90 @@ test("checker fails when matrix claims complete with zero rows", () => {
   passport.live_observation.status = "complete";
   passport.live_observation.row_count = 0;
   passport.known_gap = null;
-  // Recompute would still show covered=2 for the other complete streams only if we leave measurement —
-  // leave measurement as-is so either honesty or drift fails.
+  // Leave measurement as-is so either honesty or drift fails.
   const result = validateSourceCoverageMatrix(poisoned);
   assert.equal(result.ok, false);
   assert.ok(
     result.errors.some((e) => /passport-public-contracts/.test(e) && /row_count|complete/i.test(e)),
     result.errors.join("; "),
   );
+});
+
+test("dual-write row_count > 0 raises source_coverage complete for passport and legistar streams", () => {
+  // Characterization: when ingest/refresh dual-write leaves observations, the
+  // named metric treats those streams as complete (not empty-declared-live).
+  const emptyPassport = adapterReadyRow({
+    id: "passport-public-contracts",
+    source_system: "passport_public_contracts",
+    dual_write: {
+      flag: "PASSPORT_SOURCE_RECORD_DUAL_WRITE",
+      before: "complete",
+      after: "empty-declared-live",
+      adapter: "ready",
+      default: "off",
+      fail_soft: true,
+    },
+    live_observation: {
+      status: "empty-declared-live",
+      row_count: 0,
+      latest_ingested_at: null,
+      measured_at: "2026-08-01T00:00:00.000Z",
+      note: "Flag on, zero rows.",
+    },
+    known_gap: "Adapter ready but empty.",
+  });
+  const emptyLegistar = adapterReadyRow({
+    id: "legistar-events",
+    source_system: "nyc_legistar_events",
+    dual_write: {
+      flag: "LEGISTAR_SOURCE_RECORD_DUAL_WRITE",
+      before: "gap",
+      after: "empty-declared-live",
+      adapter: "ready",
+      default: "off",
+      fail_soft: true,
+    },
+    live_observation: {
+      status: "empty-declared-live",
+      row_count: 0,
+      latest_ingested_at: null,
+      measured_at: "2026-08-01T00:00:00.000Z",
+      note: "Flag on, zero rows.",
+    },
+    known_gap: "Adapter ready but empty.",
+  });
+  const before = measureLiveCoverage([emptyPassport, emptyLegistar]);
+  assert.equal(before.covered, 0);
+  assert.equal(before.by_status["empty-declared-live"], 2);
+
+  // Simulate post-ingest dual-write: product path wrote immutable observations.
+  const filledPassport = {
+    ...emptyPassport,
+    dual_write: { ...emptyPassport.dual_write, after: "complete" },
+    live_observation: {
+      status: "complete",
+      row_count: 61451,
+      latest_ingested_at: "2026-08-02T13:00:35.582Z",
+      measured_at: "2026-08-02T17:02:36.000Z",
+    },
+    known_gap: null,
+  };
+  const filledLegistar = {
+    ...emptyLegistar,
+    dual_write: { ...emptyLegistar.dual_write, after: "complete" },
+    live_observation: {
+      status: "complete",
+      row_count: 435,
+      latest_ingested_at: "2026-08-01T23:51:10.760Z",
+      measured_at: "2026-08-02T17:02:36.000Z",
+    },
+    known_gap: null,
+  };
+  const after = measureLiveCoverage([filledPassport, filledLegistar], {
+    now: "2026-08-02T23:59:59.000Z",
+  });
+  assert.equal(after.covered, 2);
+  assert.ok(after.covered > before.covered);
+  assert.equal(after.by_status.complete, 2);
+  assert.equal(after.by_status["empty-declared-live"], 0);
 });
