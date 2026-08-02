@@ -324,8 +324,12 @@ export function collectCrossDomainObservations(root, opts = {}) {
     }
   }
 
-  // --- Property: disposition fixtures + property cross-domain corpus ---
+  // --- Property: live domain observations (BBL densify) + fixture demos ---
+  // site/data/property_domain_observations.json is the CPU-light snapshot of
+  // /property-locations rows that already expose BBLs (~320 unique). Fixtures
+  // keep hand-labelled owner / ZAP demo lots that may sit outside the live window.
   const propPaths = [
+    path.join(root, "site/data/property_domain_observations.json"),
     path.join(root, "worker/test/fixtures/property-cross-domain/corpus.json"),
     path.join(root, "test/fixtures/property_disposition/multi_notice_bbl.json"),
   ];
@@ -414,6 +418,7 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
         "site/data/rules_domain_observations.json",
         "site/data/meetings_domain_observations.json",
         "site/data/people_domain_observations.json",
+        "site/data/property_domain_observations.json",
         "worker/test/fixtures/entity-intelligence/domain_observations.json",
         "worker/test/fixtures/property-cross-domain/corpus.json",
         "test/fixtures/property_disposition/multi_notice_bbl.json",
