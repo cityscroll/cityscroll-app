@@ -1,4 +1,4 @@
-// Wave-2 batch-precompute pure builders + property list slim projection.
+// Wave-2 batch-precompute pure builders + property list slim view.
 // Run: node --test test/batch_precompute_snapshots.test.mjs worker/test/property.test.mjs
 
 import assert from "node:assert/strict";

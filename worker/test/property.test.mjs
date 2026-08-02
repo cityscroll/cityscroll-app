@@ -82,7 +82,7 @@ test("Property refresh writes the materialized view and its route serves it", as
   assert.equal(response.headers.get("access-control-allow-origin"), "*");
   const body = await response.json();
   assert.equal(body.properties[0].request_id, "property-address");
-  // Default GET is the slim list projection (first-paint); full body dumps are omitted.
+  // Default GET is the slim list view (first-paint); full body dumps are omitted.
   assert.equal(body.view, "list");
   assert.equal(body.properties[0].additional_description_1.includes("35 Beebe"), true);
   assert.equal(body.properties[0].printout_1, undefined);

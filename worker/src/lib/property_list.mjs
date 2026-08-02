@@ -1,4 +1,4 @@
-// Slim list projection for Property first paint.
+// Slim list view for Property first paint.
 // Full materialization stays in KV; GET /property-locations defaults to this shape.
 
 /** Body-dump fields not needed for list cards / asset badges (keep additional_description_1). */
