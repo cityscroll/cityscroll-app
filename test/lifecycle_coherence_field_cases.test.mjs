@@ -81,6 +81,7 @@ const sandbox = new Function(
   extractFn("lifecycleStepperHTML") +
   extractFn("lifecycleStageHTML") +
   extractFn("lifecycleOcpAwardHTML") +
+  extractFn("lifecycleTimelineHTMLFlat") +
   extractFn("lifecycleTimelineHTML") +
   extractFn("lifecycleDollarsHTML") +
   extractFn("isContractLifecycleEligible") +
