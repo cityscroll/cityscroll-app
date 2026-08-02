@@ -15,7 +15,9 @@ import { dirname, join } from "node:path";
 import {
   assembleSubsidyLifecycle,
   parseHearingMoneyFromBody,
+  placeHintFromIdaBody,
   projectFromIdaNotice,
+  stampSubsidyFeedUnavailable,
 } from "../worker/src/lib/subsidy_lifecycle.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -103,6 +105,19 @@ test("parseHearingMoneyFromBody: Total Project Cost and Total Development Cost",
   assert.equal(parsed.costs.length, 2);
 });
 
+test("parseHearingMoneyFromBody: spaced thousands separators (live City Record form)", () => {
+  // Live IDA bodies often insert a space after each comma: "$10, 667, 606".
+  // Regression: old [\d,]+ capture stopped at the space and toAmount saw "10," → 10.
+  const text = "Type of Benefits : PILOT. Total Project Cost : $10, 667, 606. Jobs : 8. "
+    + "Total Development Cost: $2, 900, 000. Jobs: 57.";
+  const parsed = parseHearingMoneyFromBody(text);
+  assert.equal(parsed.total_project_cost, 10667606, "spaced project cost must not parse as 10");
+  assert.equal(parsed.total_development_cost, 2900000, "spaced development cost must not parse as 2");
+  assert.equal(parsed.estimated_cost.status, "matched");
+  assert.equal(parsed.estimated_cost.value, 10667606);
+  assert.notEqual(parsed.total_project_cost, 10);
+});
+
 test("parseHearingMoneyFromBody: development-only falls back as the money cost field", () => {
   const parsed = parseHearingMoneyFromBody("Total Development Cost: $1,250,000.");
   assert.equal(parsed.total_project_cost, null);
@@ -130,6 +145,48 @@ test("demo 20220525018: projectFromIdaNotice parses non-null total project cost"
   assert.match(derived.company, /Global Wood/i);
 });
 
+test("demo 20220525018: place is a short address/borough, not a body dump", () => {
+  const derived = projectFromIdaNotice(DEMO);
+  assert.ok(derived);
+  // Body dump was ~400 chars of "SUPPLEMENTAL NOTICE…"; place must stay short.
+  assert.ok(derived.project_address, "project_address should be filled from body");
+  assert.ok(derived.project_address.length <= 120, `address too long: ${derived.project_address}`);
+  assert.ok(derived.location_text.length <= 120, `location_text too long: ${derived.location_text}`);
+  assert.doesNotMatch(derived.project_address, /SUPPLEMENTAL NOTICE|will hold a public hearing/i);
+  assert.doesNotMatch(derived.location_text, /SUPPLEMENTAL NOTICE|will hold a public hearing/i);
+  // Demo body: "warehouse and distribution center at 4425-4429 1st Avenue, Brooklyn"
+  assert.match(derived.project_address, /1st Avenue|Brooklyn/i);
+
+  const [lc] = assembleSubsidyLifecycle([DEMO], []);
+  assert.ok(lc.place.address, "assembled place.address");
+  assert.ok(String(lc.place.address).length <= 160, `place.address dump: ${lc.place.address}`);
+  assert.doesNotMatch(String(lc.place.address), /SUPPLEMENTAL NOTICE|will hold a public hearing/i);
+  assert.ok(
+    (lc.place.boroughs || []).includes("Brooklyn") || /Brooklyn|1st Avenue/i.test(lc.place.address),
+    "place should surface Brooklyn / facility street",
+  );
+});
+
+test("placeHintFromIdaBody: facility street and borough-only fallbacks", () => {
+  const street = placeHintFromIdaBody(
+    "Project Description: warehouse at 4425-4429 1st Avenue, Brooklyn. Type of Benefits: PILOT.",
+  );
+  assert.match(street.address, /4425-4429 1st Avenue/i);
+  assert.ok(street.address.length < 80);
+
+  const located = placeHintFromIdaBody(
+    "a 25,000 square foot parcel of land at 69 Hinsdale Street, Brooklyn, New York (the Facility).",
+  );
+  assert.match(located.address, /69 Hinsdale Street/i);
+  assert.doesNotMatch(located.address, /Facility|square foot/i);
+
+  const boroughOnly = placeHintFromIdaBody(
+    "The Agency will consider a project in Queens for industrial use. No street line.",
+  );
+  assert.match(boroughOnly.address, /Queens/i);
+  assert.ok(boroughOnly.address.length < 40);
+});
+
 test("demo 20220525018: assembleSubsidyLifecycle money is matched (not null seam)", () => {
   const [lc] = assembleSubsidyLifecycle([DEMO], []);
   assert.equal(lc.join.matched, true);
@@ -138,6 +195,31 @@ test("demo 20220525018: assembleSubsidyLifecycle money is matched (not null seam
   assert.equal(lc.money.estimated_cost.value, 10667606);
   assert.equal(lc.money.total_project_cost, 10667606);
   assert.equal(lc.money.total_development_cost, 2900000);
+});
+
+test("city-record-hearing / feed-down: aged later stages are not_yet_ingested", () => {
+  // City Record–only join never touched the Build NYC feed — do not label aged
+  // board/closing/compliance as class-(b) "city does not publish".
+  const [raw] = assembleSubsidyLifecycle([DEMO], []);
+  assert.equal(raw.join.method, "city-record-hearing");
+  for (const stage of ["board_decision", "closing", "compliance"]) {
+    const entry = raw.timeline.find((e) => e.stage === stage);
+    assert.equal(entry.status, "unknown");
+    assert.equal(
+      entry.gap_kind,
+      "not_yet_ingested",
+      `${stage} must be not_yet_ingested when feed never joined`,
+    );
+  }
+
+  const stamped = stampSubsidyFeedUnavailable(raw);
+  assert.equal(stamped.join.feed_status, "unavailable");
+  for (const stage of ["board_decision", "closing", "compliance"]) {
+    const entry = stamped.timeline.find((e) => e.stage === stage);
+    assert.equal(entry.gap_kind, "not_yet_ingested");
+  }
+  // Hearing stays matched.
+  assert.equal(stamped.timeline.find((e) => e.stage === "hearing").status, "matched");
 });
 
 test("UI: city-record-hearing with parsed cost shows amount, never false not-published money label", () => {
