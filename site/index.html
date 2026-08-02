@@ -393,10 +393,23 @@
   .meeting-spines{display:flex;flex-direction:column;gap:12px}
   .meeting-spine-docs{display:flex;flex-direction:column;align-items:flex-start;gap:2px}
 
-  /* Lifecycle timeline (PROC-001): compact horizontal stages with status-aware styling.
-     Reuses the .chain/.stage/.box/.connector grid above; the modifiers below set the
-     status accent (solid green = confirmed, dashed amber = nothing found, dashed muted =
-     could not verify, solid amber = multiple records). */
+  /* Lifecycle timeline (PROC-001): compact stepper for the whole path + detail cards only
+     for populated / attention stages. Future unmatched steps stay grey chips — never a
+     paragraph of "Not yet shown here" per empty stage. */
+  .lc-stepper{display:flex;flex-wrap:wrap;align-items:center;gap:4px 2px;list-style:none;margin:0 0 12px;padding:0}
+  .lc-stepper > li{display:flex;align-items:center;gap:2px;min-width:0}
+  .lc-step{font:700 10px/1.2 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;padding:7px 10px;border-radius:999px;border:1px solid var(--rule);background:var(--paper-2,#f7f1e4);color:var(--muted);white-space:nowrap}
+  .lc-step.matched{border-color:#9bb39a;background:#e8f0e6;color:var(--green)}
+  .lc-step.current{box-shadow:0 0 0 2px var(--oxblood);border-color:var(--oxblood);background:#fff;color:var(--ink)}
+  .lc-step.passed{border-color:#9bb39a;background:#f0f4ef;color:var(--muted)}
+  .lc-step.future,.lc-step.unmatched{opacity:.55;border-style:dashed}
+  .lc-step.ambiguous{border-color:var(--amber);background:#f5efd8;color:var(--amber)}
+  .lc-step-arrow{color:var(--muted);font-size:13px;padding:0 2px;user-select:none}
+  .lc-stage-detail{margin:0 0 8px}
+  .lc-stage-detail .chain{gap:0}
+  .lc-docs-caveat{font:12px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:6px}
+  .lc-how{display:block;margin-top:10px}
+  .lc-how>summary{font:600 12px/1.4 ui-sans-serif,system-ui,sans-serif}
   .box.matched{border-top-color:var(--green)}
   .box.matched .stage-name{color:var(--green)}
   .box.passed{border-top-color:var(--green);opacity:.88}
@@ -413,6 +426,7 @@
   .box .lc-amend{font:11px/1 ui-sans-serif,system-ui,sans-serif;color:var(--amber)}
   .box .lc-candidates{font:11px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:4px}
   .box .lc-candidates > div{padding:2px 0}
+  .box.current-stage{box-shadow:0 0 0 1px var(--oxblood)}
   .zap-action-chip{display:inline-block;padding:3px 7px;border:1px solid var(--rule);border-radius:999px;background:var(--paper-2,#f7f1e4);font:700 11px/1 ui-monospace,SFMono-Regular,monospace;color:var(--ink);margin-inline-end:4px}
   .zap-docs-list{display:flex;flex-wrap:wrap;gap:0 8px}
   .zap-docs-list .view{margin-top:0!important}
@@ -2682,10 +2696,12 @@ function renderDetail(r, chain, stats){
     <button class="act export-control" type="button" id="dprint">${t("print_save_pdf")}</button>
     ${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}
   </div>`;
-  html += `<div id="dcontext"></div><div id="dactions"></div><div id="drules"></div><div id="dlifecycle"></div><div id="ddollars"></div><div id="dsubsidy"></div><div id="dmeet"></div>`;
-  // Solicitations get the richer how-to-respond panel below; everything else gets the glance box.
-  if(r.type_of_notice_description !== "Solicitation") html += glanceFor(r);
+  html += `<div id="dcontext"></div><div id="dactions"></div>`;
+  // Lead with the response path for solicitations (deadline / contact) before lifecycle
+  // context; primary CTAs stay on the action rail. Awards keep the glance strip first.
   if(r.type_of_notice_description === "Solicitation") html += buildApply(r,false);
+  else html += glanceFor(r);
+  html += `<div id="drules"></div><div id="dlifecycle"></div><div id="ddollars"></div><div id="dsubsidy"></div><div id="dmeet"></div>`;
 
   html += pending
     ? `<div class="chain-h">${t("paper_trail_heading")}</div>${listSkeleton(2)}`
@@ -4415,7 +4431,7 @@ function renderLandEntryNotFound(id){
   if(landMap){ try{landMap.remove();}catch(e){} landMap=null; landMarker=null; }
   const safeId=String(id||"").replace(/[<>&]/g,"");
   const suffix=safeId?`: <code>${safeId}</code>`:"";
-  const html=`<div class="empty">${t("no_zap")}${suffix}.<br><br><a href="#land">${t("back_browse")}</a></div>`;
+  const html=`<div class="empty">${t("no_zap")}${suffix}.<br><br><a href="#land">${t("back_to_land")}</a></div>`;
   $("#llist").innerHTML=html;
   $("#ldetail").innerHTML=html;
   $("#lrescount").textContent="0";
@@ -6128,9 +6144,10 @@ function lifecycleDocumentsHTML(entry){
   if(docsStatus === "ambiguous"){
     return `<div class="lc-norecord lc-docs-gap">${t("lifecycle_ambiguous_html")}</div>`;
   }
-  // unmatched — class (b) not-published; pointer at City Record GetFile
+  // unmatched — class (b) not-published. One short line + one GetFile pointer (never a
+  // multi-clause hedge with two outbound links).
   const where = `<a class="view" href="${CITY_RECORD_GETFILE_URL}" ${EXT_ATTRS}><span lang="en" dir="ltr">${t("lifecycle_source_city_record_getfile")}</span>${extSR()}</a>`;
-  return `<div class="lc-norecord lc-docs-gap">${t("lifecycle_documents_not_published_html",{where})}</div>`;
+  return `<div class="lc-docs-caveat lc-docs-gap">${t("lifecycle_documents_not_published_html",{where})}</div>`;
 }
 
 // ctx: optional {contractId, pin, vendor} when the stage detail lacks a join key but the
@@ -6305,12 +6322,57 @@ function lifecyclePaymentSummaryHTML(paid, committed, opts){
   return html;
 }
 
-function lifecycleStageHTML(entry, timeline, notice){
+// Last matched stage (or first ambiguous needing attention) is the reader's "current" step.
+function lifecycleCurrentStageKey(timeline){
+  const raw = timeline || [];
+  for(const e of raw){
+    if(lifecyclePublicStatus(e, raw) === "ambiguous") return e.stage;
+  }
+  let lastMatched = null;
+  for(const e of raw){
+    if(lifecyclePublicStatus(e, raw) === "matched") lastMatched = e.stage;
+    // Payment with a registered join is treated as matched for display.
+    if(e && e.stage === "payment" && lifecycleMatchedRegisteredDetail(raw)) lastMatched = "payment";
+  }
+  return lastMatched;
+}
+
+// Compact progress chips for every stage. Future/unmatched steps are greyed — no prose.
+function lifecycleStepperHTML(entries, timeline, currentKey){
+  if(!entries || !entries.length) return "";
+  const items = entries.map((entry, idx) => {
+    let status = lifecyclePublicStatus(entry, timeline);
+    if(entry.stage === "payment" && lifecycleMatchedRegisteredDetail(timeline) && status === "unmatched"){
+      status = "matched";
+    }
+    const isCurrent = entry.stage === currentKey;
+    let cls = "future";
+    if(status === "matched") cls = isCurrent ? "matched current" : "matched";
+    else if(status === "passed") cls = "passed";
+    else if(status === "ambiguous") cls = isCurrent ? "ambiguous current" : "ambiguous";
+    else if(status === "unmatched" || status === "unknown") cls = "future";
+    const aria = isCurrent ? ` aria-current="step"` : "";
+    const arrow = idx < entries.length - 1 ? `<span class="lc-step-arrow" aria-hidden="true">→</span>` : "";
+    return `<li><span class="lc-step ${cls}"${aria}>${lifecycleStageLabel(entry.stage)}</span>${arrow}</li>`;
+  }).join("");
+  return `<ol class="lc-stepper" aria-label="${escUiHtml(t("lifecycle_heading"))}">${items}</ol>`;
+}
+
+// Detail cards only for stages that carry data or need a human decision.
+// Unmatched future stages collapse into the stepper (no "Not yet shown here" paragraph).
+// opts.showSourceLink: only the current stage may emit an outbound source link (dedupe).
+function lifecycleStageHTML(entry, timeline, notice, opts){
+  opts = opts || {};
   let publicStatus = lifecyclePublicStatus(entry, timeline);
   if(publicStatus === "not_applicable") return "";
 
+  // Future empty stages: stepper only.
+  if(publicStatus === "unmatched" || publicStatus === "unknown") return "";
+
   const label = lifecycleStageLabel(entry.stage);
-  const dateHTML = entry.date ? `<div class="when">${fdate(entry.date)}</div>` : `<div class="when">—</div>`;
+  const isCurrent = !!opts.isCurrent || entry.stage === opts.currentKey;
+  const showLink = opts.showSourceLink !== false && isCurrent && publicStatus !== "passed";
+  const dateHTML = entry.date ? `<div class="when">${fdate(entry.date)}</div>` : (publicStatus === "passed" ? "" : `<div class="when">—</div>`);
   let detailHTML = "";
   const regDetail = lifecycleMatchedRegisteredDetail(timeline);
   const sourceCtx = {
@@ -6348,8 +6410,9 @@ function lifecycleStageHTML(entry, timeline, notice){
       ? `<div class="amt muted">—</div>`
       : `<div class="amt">${lifecycleMoney(paid)}</div>`;
     detailHTML = amtHTML + extraHTML;
-    const link = lifecycleSourceLink(entry, sourceCtx);
-    return `<div class="stage"><div class="box matched">
+    const link = showLink ? lifecycleSourceLink(entry, sourceCtx) : "";
+    const curCls = isCurrent ? " current-stage" : "";
+    return `<div class="stage"><div class="box matched${curCls}">
       <div class="stage-name">${label}</div>
       ${dateHTML}
       ${detailHTML}
@@ -6405,24 +6468,6 @@ function lifecycleStageHTML(entry, timeline, notice){
     let note = t(specificKey);
     if(note === specificKey) note = t("lifecycle_passed_generic_html");
     detailHTML = `<div class="lc-norecord">${note}</div>`;
-  } else if(publicStatus === "unmatched"){
-    // Prefer naming both Checkbook and PASSPort when the edge join recorded both gap
-    // sources; otherwise use the stage-specific Checkbook dataset (or PASSPort) label.
-    let srcName;
-    if(Array.isArray(entry.gap_sources) && entry.gap_sources.length > 1){
-      srcName = entry.gap_sources.map(lifecycleSourceName).filter((v, i, a) => a.indexOf(v) === i).join(" · ");
-    } else {
-      srcName = lifecycleGapSourceName(entry);
-    }
-    const src = `<span lang="en" dir="ltr">${srcName}</span>`;
-    const specificKey = "lifecycle_unmatched_" + entry.stage + "_html";
-    let note = t(specificKey, {source: src});
-    if(note === specificKey) note = t("lifecycle_unmatched_generic_html", {source: src});
-    detailHTML = `<div class="lc-norecord">${note}</div>`;
-    if(entry.stage === "solicitation") detailHTML += lifecycleDocumentsHTML(entry);
-  } else if(publicStatus === "unknown"){
-    const srcName = lifecycleSourceName(entry.source);
-    detailHTML = `<div class="lc-norecord">${t("lifecycle_unknown_html",{source:`<span lang="en" dir="ltr">${srcName}</span>`})}</div>`;
   } else if(publicStatus === "ambiguous"){
     detailHTML = `<div class="lc-norecord">${t("lifecycle_ambiguous_html")}</div>`;
     if(entry.detail && Array.isArray(entry.detail.candidates)){
@@ -6435,8 +6480,9 @@ function lifecycleStageHTML(entry, timeline, notice){
     }
   }
 
-  const link = publicStatus === "passed" ? "" : lifecycleSourceLink(entry, sourceCtx);
-  return `<div class="stage"><div class="box ${publicStatus}">
+  const link = (showLink && publicStatus !== "passed") ? lifecycleSourceLink(entry, sourceCtx) : "";
+  const curCls = isCurrent && publicStatus !== "passed" ? " current-stage" : "";
+  return `<div class="stage"><div class="box ${publicStatus}${curCls}">
     <div class="stage-name">${label}</div>
     ${dateHTML}
     ${detailHTML}
@@ -6454,12 +6500,9 @@ function lifecycleOcpAwardHTML(data){
   const srcName = `<span lang="en" dir="ltr">${t("lifecycle_source_ocp")}</span>`;
   const cityName = `<span lang="en" dir="ltr">${t("lifecycle_source_city_record")}</span>`;
 
-  if(ocp.status === "unmatched"){
-    return `<div class="note" style="margin-top:10px"><b>${t("lifecycle_ocp_heading")}</b> ${t("lifecycle_ocp_unmatched_html",{source:srcLink})}</div>`;
-  }
-  if(ocp.status === "unknown"){
-    return `<div class="note" style="margin-top:10px"><b>${t("lifecycle_ocp_heading")}</b> ${t("lifecycle_ocp_unknown_html",{source:srcName})}</div>`;
-  }
+  // Unmatched / unknown OCP rows collapse into the stepper era — no empty "not yet shown"
+  // paragraph on a fresh solicitation. Only matched or ambiguous OCP data surfaces.
+  if(ocp.status === "unmatched" || ocp.status === "unknown") return "";
   if(ocp.status === "ambiguous"){
     let cands = "";
     if(Array.isArray(ocp.candidates) && ocp.candidates.length){
@@ -6534,11 +6577,22 @@ function lifecycleTimelineHTML(data, notice){
     ? raw.filter(e => e.source === "city-record" || e.stage === "solicitation" || e.stage === "award")
     : raw.filter(e => lifecyclePublicStatus(e, raw) !== "not_applicable");
 
+  const currentKey = lifecycleCurrentStageKey(raw);
+  const stepper = noPin ? "" : lifecycleStepperHTML(tl, raw, currentKey);
+
   let stages = "";
-  const visible = tl.map(e => ({entry: e, html: lifecycleStageHTML(e, raw, notice)})).filter(x => x.html);
-  visible.forEach((x, idx) => {
+  const expanded = tl.map(e => ({
+    entry: e,
+    html: lifecycleStageHTML(e, raw, notice, {
+      currentKey,
+      isCurrent: e.stage === currentKey,
+      // One outbound source link on the current stage only — never one per empty step.
+      showSourceLink: e.stage === currentKey,
+    }),
+  })).filter(x => x.html);
+  expanded.forEach((x, idx) => {
     stages += x.html;
-    if(idx < visible.length - 1) stages += '<div class="connector">→</div>';
+    if(idx < expanded.length - 1) stages += '<div class="connector">→</div>';
   });
 
   let amendmentsHTML = "";
@@ -6552,27 +6606,28 @@ function lifecycleTimelineHTML(data, notice){
     ).join("");
   }
 
-  const regForLink = lifecycleMatchedRegisteredDetail(raw);
-  const checkbookHref = checkbookSearchUrl({
-    contractId: regForLink && regForLink.contract_id,
-    pin: data.pin || (notice && notice.pin),
-    vendor: (regForLink && regForLink.vendor) || (notice && notice.vendor_name),
-  });
-  const pinNote = noPin
+  // Methodology demoted to a disclosure. Source *names* only (no outbound links) so the
+  // current-stage card keeps the single actionable link without 3× City Record / Checkbook
+  // duplicates in the join-logic note.
+  const howBody = noPin
     ? t("lifecycle_no_pin_note_html")
     : t("lifecycle_provenance_note_html",{
-        city_record:`<a href="${REQ_URL(notice.request_id)}" ${EXT_ATTRS}>${t("lifecycle_source_city_record")}${extSR()}</a>`,
-        checkbook:`<a href="${checkbookHref}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`,
-        passport:`<a href="${PASSPORT_CONTRACTS_URL}" ${EXT_ATTRS}>${t("lifecycle_source_passport")}${extSR()}</a>`,
+        city_record:`<span lang="en" dir="ltr">${t("lifecycle_source_city_record")}</span>`,
+        checkbook:`<span lang="en" dir="ltr">${t("lifecycle_source_checkbook")}</span>`,
+        passport:`<span lang="en" dir="ltr">${t("lifecycle_source_passport")}</span>`,
         pin:`<code>${escUiHtml(data.pin)}</code>`
       });
+  const howHTML = noPin
+    ? `<div class="note">${howBody}</div>`
+    : `<details class="inline-disclose lc-how"><summary>${t("lifecycle_how_summary")}</summary><div class="inline-disclose-body">${howBody}</div></details>`;
 
   // No-PIN with no City Record stage in the timeline: still show the heading + single note.
   if(noPin && !stages){
     return `<div class="chain-h">${t("lifecycle_heading")}</div>
-      <div class="note">${pinNote}</div>`;
+      <div class="note">${howBody}</div>`;
   }
 
+  // Matched RFx only — unmatched PASSPort RFx is a grey future step, not a gap paragraph.
   let rfxHTML = "";
   const rfx = data.rfx_detail;
   if(rfx && rfx.status === "matched" && rfx.detail){
@@ -6584,20 +6639,17 @@ function lifecycleTimelineHTML(data, notice){
       ${d.procurement_method ? ` · ${t("lifecycle_rfx_method_html",{method:escUiHtml(d.procurement_method)})}` : ""}
       · <a class="view" href="${rfx.portal || PASSPORT_RFX_URL}" ${EXT_ATTRS}>${t("lifecycle_source_passport")}${extSR()}</a>
     </div>`;
-  } else if(rfx && rfx.status === "unmatched"){
-    rfxHTML = `<div class="note" style="margin-top:8px">${t("lifecycle_rfx_unmatched_html",{
-      source:`<span lang="en" dir="ltr">${t("lifecycle_source_passport")}</span>`
-    })} · <a class="view" href="${PASSPORT_RFX_URL}" ${EXT_ATTRS}>${t("lifecycle_source_passport")}${extSR()}</a></div>`;
   }
 
   const ocpHTML = lifecycleOcpAwardHTML(data);
 
   return `<div class="chain-h">${t("lifecycle_heading")}</div>
-    ${stages ? `<div class="chain">${stages}</div>` : ""}
+    ${stepper}
+    ${stages ? `<div class="lc-stage-detail"><div class="chain">${stages}</div></div>` : ""}
     ${amendmentsHTML}
     ${rfxHTML}
     ${ocpHTML}
-    <div class="note">${pinNote}</div>`;
+    ${howHTML}`;
 }
 
 // Registration / payment detail drawn from the same precomputed lifecycle timeline — no
@@ -7434,7 +7486,7 @@ async function showAgency(name, initialTab){
     workerFetch("/agency?name=" + encodeURIComponent(nm), null, 8000).then(r => r.ok ? r.json() : null).catch(() => null)
   ]);
   if(!(stats && +stats.n) && !sections.length){
-    box.innerHTML = `<div class="empty">No City Record notices found for agency “${safe}”. <a href="#money">← Browse CityScroll</a></div>`;
+    box.innerHTML = `<div class="empty">No City Record notices found for agency “${safe}”. <a href="#money">${t("back_browse")}</a></div>`;
     return;
   }
   const link = location.origin + location.pathname + agencyHref(nm);
@@ -7457,7 +7509,7 @@ async function showAgency(name, initialTab){
   const hasForecasts = forecasts.length > 0;
 
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
-    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CityScroll</a></p>
+    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("back_browse")}</a></p>
     <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
       <div class="ftype" style="margin-bottom:6px">Agency profile · City Record on record</div>
       <h2 class="rolename" lang="en" dir="ltr">${agencyWho(nm)}</h2>
@@ -7648,7 +7700,7 @@ function vendorProfileHTML(profile, details, hydrating){
       </div>` : "";
 
   return `<div style="max-width:880px;margin:0 auto">
-    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CityScroll</a></p>
+    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("back_browse")}</a></p>
     <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
       ${vendorProfileHeaderHTML(profile)}
 
@@ -8042,7 +8094,7 @@ async function showMatter(pin){
     }catch(e){}
   }
   if(!rows.length){
-    box.innerHTML = `<div class="empty">No City Record notices carry PIN <code>${safe}</code>. <a href="#money">← Browse CityScroll</a></div>`;
+    box.innerHTML = `<div class="empty">No City Record notices carry PIN <code>${safe}</code>. <a href="#money">${t("back_browse")}</a></div>`;
     return;
   }
   rows.sort((a,b)=>(a.start_date||"").localeCompare(b.start_date||"") ||
@@ -8103,7 +8155,7 @@ async function showMatter(pin){
   }
   const link = location.origin + location.pathname + "#matter/" + encodeURIComponent(pin);
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
-    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">← Browse CityScroll</a></p>
+    <p style="margin:4px 0 12px"><a href="#money" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("back_browse")}</a></p>
     <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
       <div class="ftype" style="margin-bottom:6px">Matter timeline · PIN <code>${safe}</code></div>
       <h2 class="rolename" lang="en" dir="ltr">${agency?pivotA(agencyHref(agency), agencyWho(agency)):""}${vendor?` × ${pivotA(vendorHref(vendor), cleanText(vendor))}`:""}</h2>
@@ -8514,6 +8566,7 @@ async function showTaskFirst(task, id){
   const titleKey = task === "can-i-bid" ? "task_can_i_bid_title" : "task_what_will_change_title";
   const deckKey = task === "can-i-bid" ? "task_can_i_bid_deck" : "task_what_will_change_deck";
   const backHref = task === "can-i-bid" ? "#money" : "#land";
+  const backLabel = task === "can-i-bid" ? t("back_browse") : t("back_to_land");
   if(id){
     const example = TaskFirst.findExample(bundle, task, id);
     if(!example){
@@ -8523,7 +8576,7 @@ async function showTaskFirst(task, id){
     const presentation = TaskFirst.presentExample(example);
     box.innerHTML = `<div class="task-first">
       <p style="margin:4px 0 12px"><a href="${TaskFirst.taskCollectionHash(task)}" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("task_back_examples")}</a>
-      · <a href="${backHref}" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("back_browse")}</a></p>
+      · <a href="${backHref}" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${backLabel}</a></p>
       <header class="task-first-head">
         <p class="task-first-kicker">${t("task_entry_kicker")}</p>
         <h2>${t(titleKey)}</h2>
@@ -8536,7 +8589,7 @@ async function showTaskFirst(task, id){
   }
   const cards = (group.examples || []).map(ex => taskCardHTML(TaskFirst.presentExample(ex), false)).join("");
   box.innerHTML = `<div class="task-first">
-    <p style="margin:4px 0 12px"><a href="${backHref}" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${t("back_browse")}</a></p>
+    <p style="margin:4px 0 12px"><a href="${backHref}" style="font:600 13px/1 ui-sans-serif,system-ui,sans-serif;text-decoration:none">${backLabel}</a></p>
     <header class="task-first-head">
       <p class="task-first-kicker">${t("task_entry_kicker")}</p>
       <h2>${t(titleKey)}</h2>
@@ -8714,6 +8767,7 @@ async function showNotice(id, watch){
       ${digEvidenceHTML(ev)}
       ${watchChips.length ? `<div class="nlunderstood" role="status">${t("deeplink_watch_context_label")} ${watchChips.join(" ")}</div>` : ""}
       <div id="ncontext"></div><div id="nactions"></div>
+      ${r.type_of_notice_description==="Solicitation"?buildApply(r,false):""}
       ${glanceFor(r)}
       <div id="naddr"></div><div id="nrules"></div><div id="nlifecycle"></div><div id="ndollars"></div><div id="nsubsidy"></div><div id="nmeet"></div><div id="nexternal"></div>
       <div class="actions" style="margin-top:14px">
@@ -8725,7 +8779,6 @@ async function showNotice(id, watch){
         ${pinBtn("notice", r.request_id, cleanText(r.short_title)||r.request_id, [r.type_of_notice_description, r.agency_name, fdate(r.start_date)].filter(Boolean).join(" · "))}
         <a class="act" href="${REQ_URL(r.request_id)}" ${EXT_ATTRS}>${t("view_in_city_record")}${extSR()}</a>
       </div>
-      ${r.type_of_notice_description==="Solicitation"?buildApply(r,false):""}
       ${scope?`<details class="fulltext"${scope.length<=600?" open":""}><summary>${t("read_full_notice")}</summary><div class="scope" lang="en" dir="ltr" style="margin-top:10px">${scope.slice(0,6000)}${scope.length>6000?"…":""}</div></details>`:""}
       <div class="xlate" id="nxlate"></div>
       <div id="nprior"></div>

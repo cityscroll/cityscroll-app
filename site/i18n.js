@@ -989,7 +989,8 @@ const STRINGS = {
     lifecycle_source_current_solicitations: "Current Solicitations (Open Data)",
     lifecycle_source_city_record_getfile: "City Record file attachments",
     lifecycle_unmatched_documents_html: "Not yet shown here — solicitation package details live in {source}.",
-    lifecycle_documents_not_published_html: "The city does not publish package documents as an open feed for this notice — they would appear in {where} if released.",
+    // Short honest class-(b) caveat — one line, one GetFile pointer (not a multi-clause hedge).
+    lifecycle_documents_not_published_html: "The city does not publish package documents as an open feed — see {where}.",
     lifecycle_unmatched_solicitation_html: "Not yet shown here — the solicitation package lives in {source}.",
     lifecycle_documents_count_one: "{n} package document",
     lifecycle_documents_count_other: "{n} package documents",
@@ -1006,6 +1007,7 @@ const STRINGS = {
     lifecycle_ocp_unmatched_html: "Not yet shown here — recent OCP awards live in {source}.",
     lifecycle_ocp_unknown_html: "Could not reach {source} to check this award.",
     lifecycle_ocp_ambiguous_html: "Multiple OCP award rows matched — cannot auto-pick one.",
+    lifecycle_how_summary: "How this timeline works",
     lifecycle_provenance_note_html: "This timeline joins {city_record} notices to {checkbook} registrations and payments, and to {passport} pending contracts and RFx when EPIN joins the PIN {pin}.",
     lifecycle_no_pin_note_html: "The city does not publish a Procurement ID (PIN) on this notice — registration and payments would appear in Checkbook NYC if released with a PIN.",
     lifecycle_rfx_heading: "PASSPort solicitation (RFx)",
@@ -1294,7 +1296,9 @@ const STRINGS = {
     // Notice permalink shell (showNotice)
     fetching_notice_id: "fetching notice {id}…",
     notice_not_found_html: "Notice <code>{id}</code> wasn't found in the City Record Open Data — it may be very new, or the ID may be mistyped.",
-    back_browse: "← Browse CityScroll",
+    // Back links must name the destination lens (not a generic "browse CityScroll").
+    back_browse: "← Back to contracts",
+    back_to_land: "← Back to land",
     try_city_record: "try it in the City Record",
     notice_email_btn: "Email",
     notice_print_btn: "Print",
