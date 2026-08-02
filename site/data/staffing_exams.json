@@ -160,6 +160,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -184,6 +196,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -208,6 +232,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -232,6 +268,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -256,6 +304,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -280,6 +340,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -304,6 +376,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -328,6 +412,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -352,6 +448,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -376,6 +484,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -400,6 +520,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -424,6 +556,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -448,6 +592,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -472,6 +628,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -496,6 +664,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -520,6 +700,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -544,6 +736,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -568,6 +772,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -592,6 +808,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -616,6 +844,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -640,6 +880,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -664,6 +916,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -688,6 +952,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -712,6 +988,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -736,6 +1024,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -760,6 +1060,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -784,6 +1096,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -808,6 +1132,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -832,6 +1168,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -856,6 +1204,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -880,6 +1240,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -904,6 +1276,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -928,6 +1312,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -952,6 +1348,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -976,6 +1384,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1000,6 +1420,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1024,6 +1456,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1048,6 +1492,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1072,6 +1528,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1096,6 +1564,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1120,6 +1600,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1144,6 +1636,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1168,6 +1672,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1192,6 +1708,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1216,6 +1744,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1240,6 +1780,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1264,6 +1816,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1288,6 +1852,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1312,6 +1888,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1336,6 +1924,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1360,6 +1960,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1384,6 +1996,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1408,6 +2032,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1432,6 +2068,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1456,6 +2104,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1480,6 +2140,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1504,6 +2176,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1528,6 +2212,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1552,6 +2248,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1576,6 +2284,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1600,6 +2320,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1624,6 +2356,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1648,6 +2392,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1672,6 +2428,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1696,6 +2464,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1720,6 +2500,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1744,6 +2536,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1768,6 +2572,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1792,6 +2608,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1816,6 +2644,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1840,6 +2680,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1864,6 +2716,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1888,6 +2752,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1912,6 +2788,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1936,6 +2824,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1960,6 +2860,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
@@ -1984,6 +2896,18 @@
         "extension_date": null,
         "title_count": 1,
         "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
       }
     },
     {
