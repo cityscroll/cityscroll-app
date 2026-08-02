@@ -1203,6 +1203,124 @@
     };
   }
 
+  /**
+   * Franchise / FCRC stage-tied handoff. Uses process stage (solicitation →
+   * public_hearing → committee_meeting → award) plus fields already on the
+   * notice — never invents hearings or bid CTAs on awards. Hearing stages
+   * reuse testimony/venue extraction; solicitation reuses package/contact.
+   */
+  function franchiseHandoff(matter) {
+    const m = matter || {};
+    const stage = String(m.franchise_stage || m.lifecycle_stage || "").toLowerCase().trim();
+    const fields = noticeFieldGuidance(m);
+
+    if (stage === "solicitation") {
+      const sol = solicitationHandoff(m);
+      return {
+        system: sol.destination ? sol.system : "franchise_extracted",
+        mode: "solicitation",
+        stage: "solicitation",
+        destination: sol.destination || fields.package_url || null,
+        label_key: sol.destination
+          ? sol.label_key
+          : (fields.package_url ? "open_rfp_package" : "franchise_phase_action_solicitation"),
+        label: sol.destination
+          ? sol.label
+          : (fields.package_url ? "Get the RFP package" : "Review the franchise solicitation steps"),
+        primary_type: sol.destination || fields.package_url ? "official_application" : "bid_checklist",
+        package_url: fields.package_url || sol.package_url || null,
+        email: fields.email || sol.email || null,
+        contact_name: fields.contact_name || sol.contact_name || null,
+        contact_phone: fields.contact_phone || sol.contact_phone || null,
+        address_to_request: fields.address_to_request || sol.address_to_request || null,
+        selection_method: fields.selection_method || sol.selection_method || null,
+        identifier: sol.identifier || null,
+        identifier_url: sol.identifier_url || null,
+        has_fields: !!(sol.destination || fields.has_fields || fields.package_url),
+        guide_system: sol.destination ? sol.system : "notice_extracted",
+        ...fields,
+      };
+    }
+
+    if (stage === "public_hearing" || stage === "committee_meeting") {
+      const h = hearingHandoff(m);
+      const isMeeting = stage === "committee_meeting";
+      return {
+        system: "franchise_extracted",
+        mode: stage,
+        stage,
+        destination: h.destination,
+        label_key: h.destination
+          ? h.label_key
+          : (isMeeting ? "franchise_phase_action_committee_meeting" : "franchise_phase_action_public_hearing"),
+        label: h.destination
+          ? h.label
+          : (isMeeting
+            ? "Prepare for the FCRC committee meeting"
+            : "Prepare for the FCRC public hearing"),
+        primary_type: h.destination ? (h.join_kind === "join" ? "attend" : "attend") : "bid_checklist",
+        join_kind: h.join_kind,
+        participation_url: h.participation_url,
+        venue_address: h.venue_address,
+        venue_building: h.venue_building,
+        venue_mode: h.venue_mode,
+        event_date: h.event_date || m.event_date || m.deadline || null,
+        testimony_email: h.testimony_email,
+        testimony_until: h.testimony_until,
+        contact_name: h.contact_name,
+        email: h.email,
+        contact_phone: h.contact_phone,
+        emails: h.emails,
+        phones: h.phones,
+        has_fields: h.has_fields,
+        // Guide HTML reuses the hearing step list for venue / testimony / join.
+        guide_system: "hearing_extracted",
+      };
+    }
+
+    if (stage === "award") {
+      return {
+        system: "franchise_extracted",
+        mode: "award",
+        stage: "award",
+        destination: httpsUrl(m.official_notice_url),
+        label_key: "franchise_phase_action_award",
+        label: "Review the franchise or concession award",
+        primary_type: "document",
+        has_fields: !!httpsUrl(m.official_notice_url),
+        guide_system: null,
+      };
+    }
+
+    // Unknown stage: fall back to hearing fields when present, else notice pointer.
+    const h = hearingHandoff(m);
+    if (h.has_fields) {
+      return {
+        system: "franchise_extracted",
+        mode: "unknown",
+        stage: stage || null,
+        destination: h.destination,
+        label_key: h.label_key || "franchise_phase_action_public_hearing",
+        label: h.label || "Follow the franchise participation steps below",
+        primary_type: h.destination ? "attend" : "bid_checklist",
+        ...h,
+        has_fields: true,
+        guide_system: "hearing_extracted",
+      };
+    }
+    return {
+      system: "franchise_extracted",
+      mode: "unknown",
+      stage: stage || null,
+      destination: httpsUrl(m.official_notice_url),
+      label_key: "read_official_notice",
+      label: "Read the official notice",
+      primary_type: "document",
+      has_fields: !!httpsUrl(m.official_notice_url),
+      guide_system: null,
+    };
+  }
+
   function compileActionRail(matter, options) {
     const opts = options || {};
     const today = String(opts.today || new Date().toISOString().slice(0, 10)).slice(0, 10);
@@ -1214,7 +1332,60 @@
     const notice = () => official("document", "read_official_notice", "Read the official notice", matter.official_notice_url, deadline);
     let actions;
 
-    if (kind === "solicitation") {
+    if (kind === "franchise") {
+      // Stage-tied FCRC rail: solicitation / hearing / meeting / award from spine stage.
+      const handoff = franchiseHandoff(matter);
+      const actionDeadline = handoff.event_date || deadline || null;
+      const past = isPast(actionDeadline, today);
+      const francStage = String(handoff.stage || matter.franchise_stage || stage || "").toLowerCase();
+
+      if (francStage === "award") {
+        actions = handoff.destination
+          ? [official("document", handoff.label_key, handoff.label, handoff.destination, null, { guide: handoff })]
+          : [notice()];
+        actions.push(watch);
+      } else if (past && (francStage === "public_hearing" || francStage === "committee_meeting")) {
+        actions = [
+          unavailable("attend", "next_action_event_passed", "This event has passed.", actionDeadline),
+          notice(),
+          watch,
+        ];
+      } else if (handoff.destination) {
+        const type = handoff.primary_type === "official_application"
+          ? "official_application"
+          : handoff.primary_type === "document"
+            ? "document"
+            : "attend";
+        // Prefer hearing_extracted / notice_extracted guide shape for step lists.
+        const guidePayload = handoff.guide_system
+          ? { ...handoff, system: handoff.guide_system }
+          : handoff;
+        actions = [
+          official(type, handoff.label_key, handoff.label, handoff.destination, actionDeadline, { guide: guidePayload }),
+        ];
+        if (actionDeadline && !past) actions.push(calendar);
+        actions.push(watch);
+      } else if (handoff.has_fields) {
+        const guidePayload = handoff.guide_system
+          ? { ...handoff, system: handoff.guide_system }
+          : handoff;
+        actions = [validateAction({
+          type: "bid_checklist",
+          label_key: handoff.label_key || "franchise_phase_action_public_hearing",
+          label: handoff.label || "Follow the franchise steps below",
+          delivery: "local",
+          destination: null,
+          deadline: actionDeadline,
+          confirmation_required: false,
+          guide: guidePayload,
+        })];
+        if (actionDeadline && !past) actions.push(calendar);
+        actions.push(watch);
+      } else {
+        // Honest pointer when no stage-specific fields are published.
+        actions = [notice(), watch];
+      }
+    } else if (kind === "solicitation") {
       const closed = stage === "closed" || (!matter.rolling_deadline && isPast(deadline, today));
       const handoff = solicitationHandoff(matter);
       if (closed) {
@@ -1483,6 +1654,7 @@
     hearingHandoff,
     ruleHandoff,
     zoningHandoff,
+    franchiseHandoff,
     zoningStage,
     landHearingBody,
     parcelLookupActions,

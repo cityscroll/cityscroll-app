@@ -8,6 +8,7 @@ export const {
   hearingHandoff,
   ruleHandoff,
   zoningHandoff,
+  franchiseHandoff,
   zoningStage,
   landHearingBody,
   validateAction,

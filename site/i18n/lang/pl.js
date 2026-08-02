@@ -1181,6 +1181,12 @@
     franchise_source_city_record: 'City Record Online',
     franchise_provenance_html: 'Timeline joins Franchise and Concession Review Committee (FCRC) notices that share a counterparty, annual concession plan year, or FCRC rules subject. Empty stages mean no matching City Record notice is in the current window — not that the city withheld a public source.',
 
+    franchise_phase_action_solicitation: "Review the solicitation and response steps",
+    franchise_phase_action_public_hearing: "Prepare for the FCRC public hearing",
+    franchise_phase_action_committee_meeting: "Prepare for the FCRC committee meeting",
+    franchise_phase_action_award: "Review the franchise or concession award",
+    franchise_phase_now_html: 'Now: <b>{phase}</b> — {action}',
+    franchise_phase_next_html: "Next: {phase}",
     alerts_rollup_heading: "Jak docierają przeglądy z wieloma obserwacjami",
     alerts_rollup_lead: "Gdy jeden adres e-mail ma więcej niż jedną aktywną obserwację, CityScroll wysyła jeden codzienny przegląd z sekcją na każdą obserwację — nie osobnego maila na każdą. Pogrupuj poniżej demonstracyjne obserwacje według tematu, agencji lub geografii, aby zobaczyć, jak powiązane alerty się grupują.",
     alerts_rollup_group_label: "Grupuj powiązane obserwacje według",
