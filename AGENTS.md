@@ -1144,21 +1144,31 @@ timeline). Public demo: `#notice/20260714029` (`rules-lifecycle-spine` in
 **Multi-notice rulemaking stitch:** one rulemaking often spans multiple
 City Record rows (proposal / hearing / adoption). `attachRulemakingSiblings` in
 `worker/src/lib/rules.mjs` groups high-confidence siblings (shared NYC Rules id,
-shared RCNY/section ref, or agency + title-core overlap ≥ 0.55 within a 540-day
-window) and stamps `rulemaking_subject_ref`, `related_notices[]`, and
-`rulemaking_join` on `buildRuleView` rows (served on `/rules` + counts
-`multi_notice_rulemakings`). Ambiguous pairs stay separate subjects.
-Subject registry adds `same_rulemaking` notice↔notice links — never merges
-`notice:` identities.
+shared *specific* RCNY section ref **plus** title-core floor, or agency +
+title-core overlap ≥ 0.55 within a 540-day window) and stamps
+`rulemaking_subject_ref`, `related_notices[]`, and `rulemaking_join` on
+`buildRuleView` rows (served on `/rules` + counts `multi_notice_rulemakings`).
+Ambiguous pairs stay separate subjects. Subject registry adds `same_rulemaking`
+notice↔notice links — never merges `notice:` identities.
+
+**Generic-ref ban (load-bearing):** `extractRulemakingRefTokens` drops bare
+`title N`, bare title-level `N RCNY`, non-numeric "sections", and chapter-alone.
+`shared_reference` always requires the title-core floor — the same 34 RCNY §4-01
+can be amended by unrelated DOT matters (FHV parking vs bicycle racks). Field
+case: demo `#notice/20260714029` must not list bicycle racks / truck routes /
+FY agenda as siblings. False-merge proxy
+`measureRulemakingSiblingFalseMerge` scores **all** multi-notice methods
+(including `shared_reference`).
 
 **City Record lookback (load-bearing for multi-notice):** materialization pulls
 Agency Rules with `CITY_RECORD_RULES_LOOKBACK_DAYS = 540` (aligned with the sibling
 window) and a hard `CITY_RECORD_RULES_LIMIT = 500` (single SODA page — ~355 rows at
 540d). A 14-day window left `multi_notice_rulemakings=0` because siblings almost
 never co-appeared. `RULES_VIEW_VERSION` bumps force young KV rebuild after the
-widen. Title-core noise strips DCWP-style `NOH`/`NOA` / "Rules Relating to" so
-widening does not chain-merge unrelated house-style titles; confidence thresholds
-stay strict (false merge worse than split). Join measurement receipt:
+widen (v5 = generic-ref false-merge hotfix). Title-core noise strips DCWP-style
+`NOH`/`NOA` / "Rules Relating to" so widening does not chain-merge unrelated
+house-style titles; confidence thresholds stay strict (false merge worse than
+split). Join measurement receipt:
 `site/data/rules_sources/verification_receipts/rulemaking_sibling_stitch_2026-08-02.json`.
 
 **Public rules lens:** `stitchRulemakingRecord` /
