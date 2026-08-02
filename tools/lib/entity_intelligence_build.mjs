@@ -12,6 +12,7 @@ import {
   observationFromRulesRow,
   observationFromMeetingsRow,
   observationFromPeopleRow,
+  mergeBblsOntoLandObservations,
   buildIntelligenceCorpus,
   CROSS_DOMAIN_OBJECT_LINK_VERSION,
 } from "../../entity_resolution/cross_domain/index.mjs";
@@ -153,6 +154,33 @@ export function collectCrossDomainObservations(root, opts = {}) {
     }
   }
 
+  // --- Land tax lots (WH-06): ZAP BBL fixtures + warehouse materialization ---
+  const bblJoinRows = [];
+  const bblPaths = [
+    path.join(root, "warehouse/fixtures/zap-bbl/product_seed.csv"),
+    path.join(root, "warehouse/fixtures/zap-bbl/sample.csv"),
+  ];
+  for (const p of bblPaths) {
+    for (const row of loadCsvIfExists(p)) {
+      if (row?.project_id && row?.bbl) bblJoinRows.push(row);
+    }
+  }
+  const bblLookup = loadJsonIfExists(
+    path.join(root, "site/data/zap_bbl_warehouse_lookup.json"),
+  );
+  if (bblLookup && Array.isArray(bblLookup.rows)) {
+    for (const entry of bblLookup.rows.slice(0, 500)) {
+      if (entry?.project_id && Array.isArray(entry.bbls)) {
+        bblJoinRows.push({ project_id: entry.project_id, bbls: entry.bbls });
+      }
+    }
+  }
+  if (bblJoinRows.length) {
+    const merged = mergeBblsOntoLandObservations(observations, bblJoinRows);
+    observations.length = 0;
+    observations.push(...merged);
+  }
+
   // --- Rules / meetings / people: committed seed observations (honest, small) ---
   const seedPath = path.join(
     root,
@@ -246,8 +274,10 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
       sources: [
         "warehouse/fixtures/ocp-recent-contract-awards",
         "warehouse/fixtures/zap-projects",
+        "warehouse/fixtures/zap-bbl",
         "site/data/ocp_awards_warehouse_lookup.json",
         "site/data/zap_projects_warehouse_lookup.json",
+        "site/data/zap_bbl_warehouse_lookup.json",
         "site/data/land_default_ulurp.json",
         "worker/test/fixtures/entity-intelligence/domain_observations.json",
       ],
@@ -255,9 +285,10 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
         "agency_canonical_v1",
         "vendor_stem_v1",
         "cross_domain_identity_v1",
+        "zap_bbl_project_id_v1",
       ],
       note:
-        "Links only when identity normalizers resolve the same root. Empty domains are explicit; people defaults to not_yet_ingested without by_person rows.",
+        "Links only when identity normalizers resolve the same root. Land projects gain sited_on_parcel edges when ZAP BBL join keys exist. Empty domains are explicit; people defaults to not_yet_ingested without by_person rows.",
     },
   };
 }

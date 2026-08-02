@@ -18,6 +18,7 @@ import {
 } from "./lib/zap_outcomes.mjs";
 import { extractUlurpKeys } from "./lib/ulurp_recommendations_join.mjs";
 import { lookupZapFromWarehouseMaterialization } from "./lib/zap_warehouse_lookup.mjs";
+import { lookupZapBblsFromWarehouseMaterialization } from "./lib/zap_bbl_warehouse_lookup.mjs";
 // Do not static-import admin.mjs here: it pulls alerts.mjs → @jimdc/sendcap, and
 // test/land_event_spine.test.mjs imports buildZapOutcomeRecord from this module
 // during site unit tests (before worker npm ci). Auth is loaded only on the admin path.
@@ -400,15 +401,39 @@ async function fetchCityRecordCandidates(openData, projectName) {
   return { rows, status: successful ? "ok" : "unavailable" };
 }
 
-async function fetchBbls(projectId) {
-  const where = `project_id='${String(projectId).replace(/'/g, "''")}'`;
+/**
+ * ZAP BBL tax lots: warehouse materialization first (WH-06), then live SODA.
+ * Returns BBL strings (max 25). Attaches lookup_path via array property when useful
+ * for tests — callers that only need ids can ignore it.
+ */
+export async function fetchBbls(projectId) {
+  const id = String(projectId || "").trim();
+  // WH-06: instant hit from warehouse materialization index (no network).
+  const wh = lookupZapBblsFromWarehouseMaterialization(id);
+  if (wh.hit) {
+    // Hit with empty list is still a warehouse answer (project known, no lots).
+    const bbls = (wh.bbls || []).slice(0, 25);
+    bbls.lookup_path = "warehouse";
+    return bbls;
+  }
+
+  // Live SODA fallback when the materialization lacks this project_id.
+  const where = `project_id='${id.replace(/'/g, "''")}'`;
   const url =
     `${SODA}/${ZAP_SODA_BBL}.json?$select=bbl&$where=${encodeURIComponent(where)}&$limit=40`;
   try {
     const rows = await fetchJson(url, 8000);
-    return [...new Set((rows || []).map((r) => r.bbl).filter(Boolean))].slice(0, 25);
+    const bbls = [...new Set((rows || []).map((r) => {
+      let s = String(r?.bbl ?? "").trim().replace(/\.0$/, "");
+      if (s && /^\d+$/.test(s) && s.length < 10) s = s.padStart(10, "0");
+      return /^\d{10}$/.test(s) ? s : null;
+    }).filter(Boolean))].slice(0, 25);
+    bbls.lookup_path = "soda";
+    return bbls;
   } catch {
-    return [];
+    const empty = [];
+    empty.lookup_path = "soda";
+    return empty;
   }
 }
 

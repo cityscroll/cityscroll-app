@@ -23,6 +23,7 @@ export const SUBJECT_KINDS = Object.freeze({
   notice: { description: "City Record notice (request_id)" },
   contract: { description: "Checkbook / PASSPort contract id" },
   project: { description: "ZAP land-use project" },
+  parcel: { description: "NYC tax lot (10-digit BBL)" },
   pin: { description: "NYC procurement PIN/EPIN authority value" },
   vendor: { description: "Vendor identity handle" },
   agency: { description: "Agency identity handle" },

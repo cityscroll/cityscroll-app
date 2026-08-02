@@ -1,0 +1,69 @@
+{
+  "bulk": false,
+  "cpu_discipline": {
+    "duckdb_threads": 1,
+    "headroom_gated": true,
+    "sequential_one_dataset": true,
+    "single_job_lock": true,
+    "taskpolicy_or_nice_wrap": true
+  },
+  "dataset_id": "zap-bbl",
+  "headroom": {
+    "constrained": false,
+    "ok": true,
+    "problems": [],
+    "returncode": 0,
+    "status": "ok"
+  },
+  "limit": 20,
+  "observed_at": "2026-08-02T11:45:54Z",
+  "parquet": {
+    "bytes": 1500,
+    "column_map_applied": false,
+    "column_map_size": 0,
+    "columns": [
+      "project_id",
+      "bbl",
+      "validated_borough",
+      "validated_block",
+      "validated_lot",
+      "validated",
+      "validated_date",
+      "snapshot_date"
+    ],
+    "parquet_path": "warehouse/parquet/zap-bbl/snapshot_date=fixture/part-000.parquet",
+    "row_count": 8,
+    "threads": 1
+  },
+  "phase": "WH-01",
+  "raw": {
+    "bytes": 615,
+    "mode": "fixture",
+    "path": "warehouse/raw/zap-bbl/snapshot_date=fixture/sample.csv",
+    "row_count": 8,
+    "sha256": "73e9100e30a03d0d00dc011ecb631c51bd7718c6c236cbe16491aa927280f902",
+    "source": "warehouse/fixtures/zap-bbl/sample.csv"
+  },
+  "register": {
+    "catalog": "warehouse/duckdb/cityscroll.duckdb",
+    "columns": [
+      "project_id",
+      "bbl",
+      "validated_borough",
+      "validated_block",
+      "validated_lot",
+      "validated",
+      "validated_date",
+      "snapshot_date"
+    ],
+    "parquet_glob": "warehouse/parquet/zap-bbl/snapshot_date=fixture/*.parquet",
+    "row_count": 8,
+    "table": "zap_bbl"
+  },
+  "schema_version": 1,
+  "snapshot_date": "fixture",
+  "socrata_dataset_id": "2iga-a6mk",
+  "source_contract_id": "zap-bbl",
+  "table_name": "zap_bbl",
+  "warehouse_root": "warehouse"
+}

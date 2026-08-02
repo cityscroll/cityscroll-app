@@ -63,6 +63,7 @@ def main(argv: list[str] | None = None) -> int:
                 "verify_sql": {
                     "ocp-recent-contract-awards": "warehouse/sql/examples/ocp_bulk_verify.sql",
                     "zap-projects": "warehouse/sql/examples/zap_bulk_verify.sql",
+                    "zap-bbl": "warehouse/sql/examples/zap_bbl_bulk_verify.sql",
                 }.get(ds_id),
             }
         )
@@ -107,11 +108,11 @@ def main(argv: list[str] | None = None) -> int:
         "optional_later": optional,
         "next_dataset": remaining[0] if remaining else None,
         "next_dataset_notes": (
-            "zap-bbl (2iga-a6mk) BBL companion after zap-projects — only when headroom stays green"
-            if remaining and remaining[0] == "zap-bbl"
+            "city-record (dg92-zbpx, largest) last — Mini overnight preferred"
+            if remaining and remaining[0] == "city-record"
             else (
-                "city-record (dg92-zbpx, largest) last — Mini overnight preferred"
-                if remaining and remaining[0] == "city-record"
+                "zap-bbl (2iga-a6mk) BBL companion after zap-projects — only when headroom stays green"
+                if remaining and remaining[0] == "zap-bbl"
                 else pack.get("deferred_notes")
             )
         ),
@@ -122,8 +123,11 @@ def main(argv: list[str] | None = None) -> int:
             "warehouse/.venv/bin/python warehouse/scripts/query.py --sql-file warehouse/sql/examples/ocp_bulk_verify.sql",
             "warehouse/.venv/bin/python warehouse/scripts/ingest.py --dataset zap-projects --bulk --ack-large --write-sample 25",
             "warehouse/.venv/bin/python warehouse/scripts/query.py --sql-file warehouse/sql/examples/zap_bulk_verify.sql",
+            "warehouse/.venv/bin/python warehouse/scripts/ingest.py --dataset zap-bbl --bulk --ack-large --write-sample 25",
+            "warehouse/.venv/bin/python warehouse/scripts/query.py --sql-file warehouse/sql/examples/zap_bbl_bulk_verify.sql",
             "warehouse/.venv/bin/python warehouse/scripts/write_load_manifest.py",
             "node tools/build_zap_warehouse_lookup.mjs --fixture --bench",
+            "node tools/build_zap_bbl_warehouse_lookup.mjs --fixture --bench",
         ],
     }
 
