@@ -28,16 +28,22 @@ const SELECT = [
   "other_info_3",
 ].join(",");
 
-// Socrata SoQL: FCRC agency rows + titles that name the committee / FCRC.
-// Client-side isFranchiseConcessionEligible still excludes Council zoning-franchises.
+// Socrata SoQL: FCRC agency rows + titles that name the committee / FCRC /
+// joint concession hearings. Do NOT include bare MOCS agency — that floods the
+// 300-row window with LL63 annual-contracting notices and crowds out real FCRC
+// multi-notice chains. Client-side isFranchiseConcessionEligible still excludes
+// Council zoning-franchises and board-meeting calendars.
 // SoQL escapes a single quote inside a string by doubling it (''), not with \'.
 // A backslash escape is query.compiler.malformed and zeros the whole OR query.
 export const SODA_WHERE = [
   "agency_name='Franchise and Concession Review Committee'",
-  "agency_name='Mayor''s Office of Contract Services'",
   "upper(short_title) like '%FCRC%'",
   "upper(short_title) like '%FRANCHISE AND CONCESSION%'",
   "upper(short_title) like '%PROPOSED FRANCHISE%'",
+  "upper(short_title) like '%JOINT PUBLIC HEARING%'",
+  "upper(short_title) like '%FRANCHISE AGREEMENT%'",
+  "upper(short_title) like '%CONCESSION AGREEMENT%'",
+  "upper(short_title) like '%INTENT TO AWARD%CONCESSION%'",
 ].join(" OR ");
 
 async function fetchRows(fetchImpl) {

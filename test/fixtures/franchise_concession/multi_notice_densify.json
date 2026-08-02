@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "labeling": "Densify sample: sibling FCRC / joint concession notices for one franchise subject (Flushing GC pitch-and-putt + United Federal Data assignment). Party keys only when the firm name is explicit.",
+  "notices": [
+    {
+      "request_id": "20251211004",
+      "start_date": "2025-12-23T00:00:00.000",
+      "event_date": "2026-01-12T14:30:00.000",
+      "agency_name": "Parks and Recreation",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "Notice of Joint Public Hearing, January 12, 2026: Intent to Award a Concession Agreement to Flushing GC LLC for the renovation, operation, and maintenance of the Pitch and Putt Golf Facility at Flushing Meadows Corona Park, Queens",
+      "additional_description_1": "<p>NOTICE OF A JOINT PUBLIC HEARING of the Franchise and Concession Review Committee and the New York City Department of Parks &amp; Recreation (NYC Parks) to be held on January 12, 2026, at 255 Greenwich Street, 8th Floor, New York, NY 10007 commencing at 2:30 p.m. relative to: INTENT TO AWARD as a concession a License Agreement (License) to Flushing GC LLC for the Renovation, Operation, and Maintenance of the Pitch and Putt Golf Facility in Flushing Meadows Corona Park, Queens.</p>"
+    },
+    {
+      "request_id": "20251231024",
+      "start_date": "2026-01-08T00:00:00.000",
+      "event_date": "2026-01-12T14:30:00.000",
+      "agency_name": "Parks and Recreation",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "CANCELLED: Notice of Joint Public Hearing, January 12, 2026: Intent to Award a Concession Agreement to Flushing GC LLC for the renovation, operation, and maintenance of the Pitch and Putt Golf Facility at Flushing Meadows Corona Park, Queens",
+      "additional_description_1": "<p>PLEASE BE ADVISED THE PUBLIC HEARING HAS BEEN CANCELLED. THIS ITEM HAS BEEN HELD OVER TO THE FEBRUARY 9th 2026 PUBLIC HEARING. NOTICE OF A JOINT PUBLIC HEARING of the Franchise and Concession Review Committee and the New York City Department of Parks &amp; Recreation (NYC Parks) to be held on January 12, 2026 relative to: INTENT TO AWARD as a concession a License Agreement (License) to Flushing GC LLC for the Renovation, Operation, and Maintenance of the Pitch and Putt Golf Facility in Flushing Meadows Corona Park, Queens.</p>"
+    },
+    {
+      "request_id": "20260116002",
+      "start_date": "2026-01-23T00:00:00.000",
+      "event_date": "2026-02-09T14:30:00.000",
+      "agency_name": "Parks and Recreation",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "Notice of Joint Public Hearing, February 9, 2026: Intent to Award a Concession Agreement to Flushing GC LLC for the renovation, operation, and maintenance of the Pitch and Putt Golf Facility at Flushing Meadows Corona Park, Queens",
+      "additional_description_1": "<p>This notice supersedes the notice previously published on December 23, 2025. NOTICE OF A JOINT PUBLIC HEARING of the Franchise and Concession Review Committee and the New York City Department of Parks &amp; Recreation (NYC Parks) to be held on February 9, 2026, at 255 Greenwich Street, 8th Floor, New York, NY 10007 commencing at 2:30 p.m. relative to: INTENT TO AWARD as a concession a License Agreement (License) to Flushing GC LLC for the Renovation, Operation, and Maintenance of the Pitch and Putt Golf Facility in Flushing Meadows Corona Park, Queens.</p>"
+    },
+    {
+      "request_id": "20241220018",
+      "start_date": "2024-12-24T00:00:00.000",
+      "event_date": "2025-01-13T14:30:00.000",
+      "agency_name": "Information Technology and Telecommunications",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "NOTICE OF A FRANCHISE AND CONCESSION REVIEW COMMITTEE (FCRC) PUBLIC HEARING to be held on January 13, 2025",
+      "additional_description_1": "<p>NOTICE OF A FRANCHISE AND CONCESSION REVIEW COMMITTEE (FCRC) PUBLIC HEARING to be held on January 13, 2025, at 2:30 p.m. at 22 Reade Street, Spector Hall, New York, NY 10007 relative to the following: A proposed transaction whereby United Federal Data of New York, LLC, holder of an information services franchise agreement with the City of New York, would be sold in its entirety to Cablevision Lightpath, LLC.</p>"
+    },
+    {
+      "request_id": "20250109036",
+      "start_date": "2025-01-17T00:00:00.000",
+      "event_date": "2025-02-10T14:30:00.000",
+      "agency_name": "Information Technology and Telecommunications",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "NOTICE OF A FRANCHISE AND CONCESSION REVIEW COMMITTEE (FCRC) PUBLIC HEARING",
+      "additional_description_1": "<p>NOTICE OF A FRANCHISE AND CONCESSION REVIEW COMMITTEE (FCRC) PUBLIC HEARING to be held on February 10, 2025, at 2:30 p.m. at 2 Lafayette Street, 14th Floor, New York, NY 10007 relative to the following: A proposed transaction whereby United Federal Data of New York, LLC, holder of an information services franchise agreement with the City of New York, would be sold in its entirety to Cablevision Lightpath, LLC. The New York City Office of Technology and Innovation (OTI) has reviewed the proposed transaction.</p>"
+    },
+    {
+      "request_id": "20260709028",
+      "start_date": "2026-07-16T00:00:00.000",
+      "event_date": "2026-08-10T14:30:00.000",
+      "agency_name": "Police Department",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "Concession for Operation and Maintenance of Cafeteria at the NYPD Police Academy",
+      "additional_description_1": "<p>NOTICE OF A JOINT PUBLIC HEARING of the Franchise and Concession Review Committee and the New York City Police Department (NYPD) to be held on 8/10/2026, at 255 Greenwich Street, 8th Floor, New York, NY 10007 commencing at 2:30 pm relative to: INTENT TO AWARD as a concession a License Agreement (License) to Staten Island Bagel Café, Inc. (Concessionaire) for the operation and maintenance of the cafeteria at the NYPD Police Academy in College Point, Queens.</p>"
+    },
+    {
+      "request_id": "calendar-only-no-party",
+      "start_date": "2026-07-24T00:00:00.000",
+      "event_date": "2026-08-12T14:30:00.000",
+      "agency_name": "Franchise and Concession Review Committee",
+      "type_of_notice_description": "Meeting",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "FCRC AUGUST PUBLIC MEETING",
+      "additional_description_1": "<p>PUBLIC NOTICE IS HEREBY GIVEN that the Franchise and Concession Review Committee, will hold a public meeting, on Wednesday, August 12, 2026, at 2:30 P.M., at 255 Greenwich Street, 8th Floor, New York, NY 10007.</p>"
+    },
+    {
+      "request_id": "board-meetings-roster",
+      "start_date": "2026-07-27T00:00:00.000",
+      "event_date": null,
+      "agency_name": "Board Meetings",
+      "type_of_notice_description": "Meeting",
+      "section_name": "Public Hearings and Meetings",
+      "short_title": "BOARD MEETINGS",
+      "additional_description_1": "<p>City Planning Commission Meets… City Council Meets… Contract Awards Public Hearing Meets… Franchise and Concession Review Committee Meets in Spector Hall…</p>"
+    }
+  ]
+}

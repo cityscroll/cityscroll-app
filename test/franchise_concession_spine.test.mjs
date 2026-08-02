@@ -45,31 +45,35 @@ function soqlClauseEscapesApostrophe(clause, valueWithApostrophe) {
   return clause.includes(literal) && !clause.includes(`\\'`);
 }
 
-test("SODA_WHERE escapes MOCS apostrophe with SoQL doubling (not backslash)", () => {
-  // Regression: unescaped / backslash-escaped ' in Mayor's broke the entire OR query
-  // (SODA query.compiler.malformed → empty franchise spine on the public surface).
-  assert.match(SODA_WHERE, /agency_name='Mayor''s Office of Contract Services'/);
-  assert.equal(SODA_WHERE.includes("\\'"), false, "SoQL does not use backslash escapes");
-  assert.equal(
-    soqlClauseEscapesApostrophe(SODA_WHERE, "Mayor's Office of Contract Services"),
-    true,
-  );
-  // Keep the MOCS clause — do not drop it to "fix" the query.
-  assert.match(SODA_WHERE, /Mayor''s Office of Contract Services/);
+test("SODA_WHERE densifies FCRC universe without bare MOCS flood", () => {
+  // Bare MOCS agency flooded the 300-row window with LL63 contracting notices and
+  // crowded out multi-notice FCRC / joint concession chains. Keep FCRC agency +
+  // title patterns that name the committee / joint hearings / franchise agreements.
   assert.match(SODA_WHERE, /Franchise and Concession Review Committee/);
   assert.match(SODA_WHERE, /%FCRC%/);
+  assert.match(SODA_WHERE, /%JOINT PUBLIC HEARING%/);
+  assert.match(SODA_WHERE, /%FRANCHISE AGREEMENT%/);
+  assert.match(SODA_WHERE, /%CONCESSION AGREEMENT%/);
+  assert.equal(
+    SODA_WHERE.includes("Mayor''s Office of Contract Services")
+      || SODA_WHERE.includes("Mayor's Office of Contract Services"),
+    false,
+    "do not include bare MOCS agency (LL63 flood)",
+  );
+  assert.equal(SODA_WHERE.includes("\\'"), false, "SoQL does not use backslash escapes");
+  // If a future MOCS clause returns, it must use SoQL doubling not backslash.
+  const hypothetical = "agency_name='Mayor''s Office of Contract Services'";
+  assert.equal(soqlClauseEscapesApostrophe(hypothetical, "Mayor's Office of Contract Services"), true);
 });
 
-test("broken SoQL apostrophe escape is distinguishable from the fixed clause", () => {
+test("broken SoQL apostrophe escape is distinguishable from a correct clause", () => {
   const broken = "agency_name='Mayor\\'s Office of Contract Services'";
   const fixed = "agency_name='Mayor''s Office of Contract Services'";
-  // The historical bug: JS produced Mayor\'s (backslash + quote) in the $where string.
   assert.equal(broken.includes("\\'"), true);
   assert.equal(broken.includes("Mayor''s"), false);
   assert.equal(fixed.includes("Mayor''s"), true);
   assert.equal(fixed.includes("\\'"), false);
-  // Product query must match the fixed shape, not the broken one.
-  assert.ok(SODA_WHERE.includes(fixed));
+  // Product query must not reintroduce the broken backslash shape.
   assert.ok(!SODA_WHERE.includes(broken));
 });
 
@@ -290,4 +294,116 @@ test("mapFranchiseConcessionSpineToCivic emits registered franchise kinds", asyn
   assert.ok(civic.some((ev) => ev.event_kind === "franchise.public_hearing"));
   assert.ok(civic.some((ev) => ev.event_kind === "franchise.committee_meeting"));
   assert.ok(civic.some((ev) => ev.event_kind === "franchise.award"));
+});
+
+const densify = JSON.parse(
+  readFileSync(join(ROOT, "test/fixtures/franchise_concession/multi_notice_densify.json"), "utf8"),
+);
+
+test("densify: Flushing GC sibling joint hearings stitch to one franchise subject", () => {
+  const siblings = densify.notices.filter((n) =>
+    ["20251211004", "20251231024", "20260116002"].includes(n.request_id),
+  );
+  for (const n of siblings) {
+    assert.equal(isFranchiseConcessionEligible(n), true, n.request_id);
+    const parties = extractCounterparties(n);
+    assert.ok(
+      parties.some((p) => /flushing\s+gc/i.test(p)),
+      `expected Flushing GC party on ${n.request_id}, got ${JSON.stringify(parties)}`,
+    );
+    const keys = franchiseConcessionJoinKeys(n);
+    assert.ok(
+      keys.some((k) => k.startsWith("party:") && k.includes("flushing")),
+      `expected party key on ${n.request_id}, got ${JSON.stringify(keys)}`,
+    );
+  }
+
+  const spines = groupFranchiseConcessionSpines(siblings);
+  assert.equal(spines.length, 1, "three Flushing GC notices → one subject");
+  assert.equal(spines[0].join.notice_count, 3);
+  assert.equal(spines[0].join.method, "exact_party");
+  assert.match(spines[0].subject_ref, /^franchise:party:flushing/);
+  assert.ok(spines[0].stages.find((s) => s.kind === STAGE_PUBLIC_HEARING)?.matched);
+});
+
+test("densify: United Federal Data assignment hearings share one party subject", () => {
+  const siblings = densify.notices.filter((n) =>
+    ["20241220018", "20250109036"].includes(n.request_id),
+  );
+  const spines = groupFranchiseConcessionSpines(siblings);
+  assert.equal(spines.length, 1);
+  assert.equal(spines[0].join.notice_count, 2);
+  assert.match(spines[0].subject_ref, /united|federal|cablevision|lightpath/i);
+  // whereby + sold-to both contribute firm keys; at least one party key required.
+  assert.ok(spines[0].join.keys.some((k) => k.startsWith("party:")));
+});
+
+test("densify: firm-name party on NYPD cafeteria concession extracts for EI", () => {
+  const row = densify.notices.find((n) => n.request_id === "20260709028");
+  const parties = extractCounterparties(row);
+  assert.ok(parties.some((p) => /staten island bagel/i.test(p)));
+  const keys = franchiseConcessionJoinKeys(row);
+  assert.ok(keys.some((k) => k.startsWith("party:") && k.includes("staten")));
+});
+
+test("densify: board-meeting roster and bare calendar stay honest (no false party stitch)", () => {
+  const roster = densify.notices.find((n) => n.request_id === "board-meetings-roster");
+  const calendar = densify.notices.find((n) => n.request_id === "calendar-only-no-party");
+  assert.equal(isFranchiseConcessionEligible(roster), false);
+  assert.equal(isFranchiseConcessionEligible(calendar), true);
+  assert.deepEqual(franchiseConcessionJoinKeys(calendar), []);
+  assert.deepEqual(extractCounterparties(calendar), []);
+
+  const spines = groupFranchiseConcessionSpines(densify.notices);
+  // Measured multi-notice rate on this named sample: ≥2 multi-notice spines
+  // (Flushing GC + United Federal Data), calendar stays singleton, roster excluded.
+  const multi = spines.filter((s) => (s.join?.notice_count || 0) > 1);
+  assert.ok(multi.length >= 2, `expected ≥2 multi-notice spines, got ${multi.length}`);
+  assert.equal(spineForNotice(spines, "board-meetings-roster"), null);
+  const cal = spineForNotice(spines, "calendar-only-no-party");
+  assert.ok(cal);
+  assert.equal(cal.join.method, "single_notice");
+});
+
+test("observationFromFranchise: firm-name party produces franchise↔vendor EI edge", async () => {
+  const {
+    observationFromFranchise,
+    linkObservation,
+    buildEntityIntelligence,
+  } = await import("../entity_resolution/cross_domain/object_links.mjs");
+
+  const row = densify.notices.find((n) => n.request_id === "20260116002");
+  const obs = observationFromFranchise(row);
+  assert.ok(obs);
+  assert.equal(obs.domain, "franchise");
+  assert.ok(obs.vendor_name && /flushing/i.test(obs.vendor_name));
+  assert.match(obs.subject_ref, /^notice:20260116002$/);
+
+  const { links } = linkObservation(obs);
+  assert.ok(
+    links.some((l) => l.type === "named_franchisee" && l.domain === "franchise"),
+    `expected named_franchisee edge, got ${JSON.stringify(links.map((l) => l.type))}`,
+  );
+  assert.ok(links.some((l) => l.to && l.to.startsWith("vendor:")));
+
+  // Vendor lens includes franchise activity.
+  const view = buildEntityIntelligence(
+    { kind: "vendor", name: "Flushing GC LLC" },
+    [obs],
+  );
+  assert.equal(view.ok, true);
+  assert.equal(view.domains.franchise.status, "matched");
+  assert.ok(view.domains.franchise.count >= 1);
+  assert.ok(view.links.some((l) => l.type === "named_franchisee"));
+});
+
+test("observationFromFranchise: calendar-only without party does not invent vendor edge", async () => {
+  const { observationFromFranchise, linkObservation } = await import(
+    "../entity_resolution/cross_domain/object_links.mjs"
+  );
+  const row = densify.notices.find((n) => n.request_id === "calendar-only-no-party");
+  const obs = observationFromFranchise(row);
+  // Eligible for the spine universe, but no confident party → no EI observation.
+  assert.equal(obs, null);
+  assert.deepEqual(linkObservation(obs).links, []);
 });
