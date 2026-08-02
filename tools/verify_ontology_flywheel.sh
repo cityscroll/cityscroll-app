@@ -5,7 +5,7 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
 echo "== ontology registry + flywheel characterization =="
-node --test test/ontology_registry.test.mjs test/intelligence_flywheel.test.mjs
+node --test test/ontology_registry.test.mjs test/intelligence_flywheel.test.mjs test/actionability_sample.test.mjs
 
 echo "== cross-spine fixture suite =="
 node tools/cross_spine_validate.mjs

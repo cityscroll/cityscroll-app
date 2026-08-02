@@ -41,7 +41,9 @@ test("buildIntelligenceReceipt is deterministic for fixed inputs", () => {
     gap_taxonomy,
     registry_sync,
     cross_spine: { checked: 3, contradictions: 0 },
-    actionability: { sample_size: 11, actionable: 11, rate: 1 },
+    // Deliberate all-deep stand-in for hash stability only — production paths
+    // measure destination class via ontology/actionability_sample.mjs.
+    actionability: { sample_size: 4, actionable: 4, rate: 1 },
   });
   const b = buildIntelligenceReceipt({
     mode: "fixture",
@@ -50,7 +52,7 @@ test("buildIntelligenceReceipt is deterministic for fixed inputs", () => {
     gap_taxonomy,
     registry_sync,
     cross_spine: { checked: 3, contradictions: 0 },
-    actionability: { sample_size: 11, actionable: 11, rate: 1 },
+    actionability: { sample_size: 4, actionable: 4, rate: 1 },
   });
   assert.equal(a.schema, INTELLIGENCE_RECEIPT_SCHEMA);
   assert.equal(a.window.policy_version, FLYWHEEL_POLICY_VERSION);

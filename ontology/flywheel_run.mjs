@@ -20,8 +20,15 @@ import {
 import { extractRecurringLessons, mergeLessonsIntoMarkdown, defaultLessonsHeader } from "./engineering_lessons.mjs";
 import { checkOntologyRegistrySync } from "./sync.mjs";
 import { validateCrossSpineFixtures } from "./cross_spine.mjs";
+import {
+  actionabilityInputFromSample,
+  measureActionabilitySample,
+} from "./actionability_sample.mjs";
+import { createRequire } from "node:module";
 
 export { QUEUE_SCHEMA, MULTI_FLYWHEEL_POLICY_VERSION };
+
+const require = createRequire(import.meta.url);
 
 /**
  * Load default fixture inventories from a repo root.
@@ -64,6 +71,27 @@ export function loadDefaultInputs(root, { mode = "fixture" } = {}) {
     cross_spine = { checked: report.checked, contradictions: report.contradictions };
   }
 
+  const actionSample = readJson("ontology/fixtures/dimensions/actionability_sample.json") || {
+    matters: [],
+    static_handoffs: [],
+    today: "2026-08-01",
+  };
+  let compileActionRail = null;
+  try {
+    const actionRegistry = require(join(root, "site/action_registry.js"));
+    compileActionRail = actionRegistry.compileActionRail;
+  } catch {
+    compileActionRail = null;
+  }
+  const actionability = actionabilityInputFromSample(
+    measureActionabilitySample({
+      matters: actionSample.matters || [],
+      static_handoffs: actionSample.static_handoffs || [],
+      today: actionSample.today || "2026-08-01",
+      compileActionRail,
+    }),
+  );
+
   return {
     mode,
     features: features?.features || features || [],
@@ -76,7 +104,7 @@ export function loadDefaultInputs(root, { mode = "fixture" } = {}) {
     registry_sync,
     cross_spine,
     cross_spine_bundles,
-    actionability: { sample_size: 1, actionable: 1, rate: 1 },
+    actionability,
   };
 }
 

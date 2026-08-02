@@ -32,6 +32,7 @@ export function evaluateOntologyEnrichment(input = {}) {
     gap_taxonomy: input.gap_taxonomy,
     registry_sync: input.registry_sync,
     cross_spine: input.cross_spine,
+    actionability: input.actionability,
   });
 
   const cards = planned.map((card) => makeDimensionCard({
@@ -78,7 +79,7 @@ function demoWinForLegacyClass(cardClass, card) {
     case "er_quality":
       return "Gold false-split count is zero on the hard ER cases.";
     case "actionability":
-      return "Notices expose a usable official handoff instead of an unavailable placeholder.";
+      return "Primary kinetic handoffs deep-link to the specific official item instead of a search page, landing, or unavailable placeholder.";
     default:
       return "Ontology enrichment metric improves and the card’s verify gate passes.";
   }

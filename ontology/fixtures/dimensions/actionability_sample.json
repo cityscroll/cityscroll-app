@@ -1,0 +1,135 @@
+{
+  "schema": "cityscroll.actionability_sample.v0",
+  "today": "2026-08-01",
+  "note": "Committed destination-class sample for the intelligence flywheel. Includes known deep, search-page, landing, and unavailable handoffs so rate cannot silently stay at 1.0 from ACTION_TYPES length.",
+  "matters": [
+    {
+      "sample_id": "passport-matched-rfx",
+      "kind": "solicitation",
+      "pin": "81026B0003",
+      "title": "Records Remediation Project",
+      "deadline": "2026-08-18T13:00:00.000",
+      "official_notice_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260718010",
+      "rfx_detail": {
+        "status": "matched",
+        "portal": "https://a0333-passportpublic.nyc.gov/rfx.html",
+        "detail": {
+          "epin": "81026B0003",
+          "procurement_name": "81026B0003-Records remediation project",
+          "rfx_status": "Released"
+        }
+      }
+    },
+    {
+      "sample_id": "passport-search-only",
+      "kind": "solicitation",
+      "pin": "85726B0060",
+      "title": "Tub Grinder - Parks",
+      "deadline": "2026-08-05T10:00:00.000",
+      "rfx_detail": { "status": "unmatched", "reason": "no_epin_pin_join" }
+    },
+    {
+      "sample_id": "notice-named-opengov",
+      "kind": "solicitation",
+      "pin": "ABC-42",
+      "title": "Bridge inspection services",
+      "deadline": "2026-09-01",
+      "notice_text": "Submit your proposal in OpenGov at https://procurement.opengov.com/portal/example/projects/42 before the deadline."
+    },
+    {
+      "sample_id": "nycha-isupplier",
+      "kind": "solicitation",
+      "agency_name": "Housing Authority",
+      "pin": "517992",
+      "title": "SMD_A&CM_RFQ #517992 - Elevator Rehabilitation at Gun Hill Houses",
+      "deadline": "2026-08-05T11:00:00.000",
+      "notice_text": "Vendors shall electronically upload all components of the bid into iSupplier. Instructions for registering for iSupplier can be found at nyc.gov/site/nycha/business/isupplier-vendor-registration.page. Approval typically takes 24 to 72 hours.",
+      "official_notice_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260617050",
+      "rfx_detail": { "status": "unmatched", "reason": "no_epin_pin_join" }
+    },
+    {
+      "sample_id": "unknown-submission-system",
+      "kind": "solicitation",
+      "pin": "8502026HP0099",
+      "title": "Rehabilitation of public restrooms",
+      "deadline": "2026-09-01",
+      "official_notice_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260701099"
+    },
+    {
+      "sample_id": "rule-comment-open",
+      "kind": "rule",
+      "lifecycle_stage": "comment-open",
+      "deadline": "2026-08-12",
+      "comment_url": "https://rules.cityofnewyork.us/rule/example/",
+      "official_notice_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260712001"
+    },
+    {
+      "sample_id": "hearing-join-link",
+      "kind": "hearing",
+      "deadline": "2026-08-10T14:30:00.000",
+      "participation_url": "https://zoom.us/j/123456789"
+    },
+    {
+      "sample_id": "hearing-missing-participation",
+      "kind": "hearing",
+      "deadline": "2026-08-10"
+    },
+    {
+      "sample_id": "exam-oasys-landing",
+      "kind": "exam",
+      "lifecycle_stage": "open",
+      "deadline": "2026-08-20",
+      "official_application_url": "https://www.nyc.gov/examsforjobs",
+      "official_notice_url": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+    },
+    {
+      "sample_id": "zoning-zap-project",
+      "kind": "zoning",
+      "lifecycle_stage": "public-review",
+      "project_url": "https://zap.planning.nyc.gov/projects/2021K0123",
+      "deadline": "2026-09-01"
+    },
+    {
+      "sample_id": "generic-notice-requestdetail",
+      "kind": "notice",
+      "official_notice_url": "https://a856-cityrecord.nyc.gov/RequestDetail/20241112003"
+    }
+  ],
+  "static_handoffs": [
+    {
+      "id": "checkbook-smart-search-ct",
+      "label": "Checkbook citywide smart_search with contract term",
+      "url": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT107120248803393"
+    },
+    {
+      "id": "checkbook-bare-contract-search",
+      "label": "Checkbook bare contract search",
+      "url": "https://www.checkbooknyc.com/contract_search"
+    },
+    {
+      "id": "checkbook-nycha-detail",
+      "label": "Checkbook NYCHA contract detail",
+      "url": "https://www.checkbooknyc.com/nycha_contract_details/contract/12345"
+    },
+    {
+      "id": "passport-contracts-list",
+      "label": "PASSPort Public contracts browse",
+      "url": "https://a0333-passportpublic.nyc.gov/contracts.html"
+    },
+    {
+      "id": "cityrecord-getfile-bare",
+      "label": "City Record GetFile without ids",
+      "url": "https://a856-cityrecord.nyc.gov/Search/GetFile"
+    },
+    {
+      "id": "cityrecord-getfile-document",
+      "label": "City Record GetFile with RequestID and DocumentID",
+      "url": "https://a856-cityrecord.nyc.gov/Search/GetFile?RequestID=20240101001&DocumentID=1"
+    },
+    {
+      "id": "rules-public-root",
+      "label": "NYC Rules public root",
+      "url": "https://rules.cityofnewyork.us/"
+    }
+  ]
+}
