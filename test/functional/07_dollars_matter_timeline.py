@@ -42,14 +42,19 @@ with sync_playwright() as pw:
     has_tl = page.evaluate("!!document.querySelector('a[href=\"#matter/'+encodeURIComponent('%s')+'\"]')" % PIN)
     step("OK" if has_tl else "WARN", "N8 timeline link on paper trail", "(needs chain to have rendered)")
 
-    # ---------- N8: matter timeline ----------
+    # ---------- N8: matter timeline (phase-grouped procurement spine) ----------
     p2 = ctx.new_page()
     p2.goto(BASE + "#matter/" + PIN, timeout=30000)
     p2.wait_for_function("document.querySelector('#entityview .timeline') !== null", timeout=45000)
     t = p2.locator("#entityview").inner_text()
-    checks = {"award": "Award" in t, "registered": "Contract registered" in t, "paid": "Paid to date" in t,
+    # lifecycle_stage_registered i18n is "Registered contract" (not "Contract registered").
+    checks = {"award": "Award" in t,
+              "registered": ("Registered contract" in t or "Contract registered" in t),
+              "paid": "Paid to date" in t,
               "vendor_pivot": p2.locator('#entityview a[href^="#vendor/"]').count() > 0,
-              "agency_pivot": p2.locator('#entityview a[href^="#agency/"]').count() > 0}
+              "agency_pivot": p2.locator('#entityview a[href^="#agency/"]').count() > 0,
+              "phase_ui": p2.locator("#entityview .matter-phase-lead, #entityview .matter-phase-stepper").count() > 0
+                          or "Payments" in t}
     step("OK" if all(checks.values()) else "FAIL", "N8 matter timeline: CROL + Checkbook events on one spine", json.dumps(checks))
     p2.screenshot(path=SHOT + "matter.png", full_page=True)
     # probe: bogus pin
