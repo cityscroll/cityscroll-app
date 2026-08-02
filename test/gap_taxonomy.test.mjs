@@ -74,6 +74,7 @@ const helpers = new Function(
   };
   const OCP_AWARDS_URL = 'https://data.cityofnewyork.us/d/qyyg-4tf5';
   ` +
+  extractFn("checkbookDocumentCode") +
   extractFn("checkbookSearchUrl") +
   extractFn("lifecycleStageLabel") +
   extractFn("lifecycleAmount") +

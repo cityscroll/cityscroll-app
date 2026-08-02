@@ -51,6 +51,33 @@ export const CONTRACT_DATA_URL = "https://a0333-passportpublic.nyc.gov/dataJs/co
 export const RFX_DATA_URL = "https://a0333-passportpublic.nyc.gov/dataJs/rfxData.js";
 export const CONTRACTS_PORTAL = "https://a0333-passportpublic.nyc.gov/contracts.html";
 export const RFX_PORTAL = "https://a0333-passportpublic.nyc.gov/rfx.html";
+// Same authenticated extranet path the PASSPort Public RFx table uses for procurement names.
+// Scripted GETs land on login with ReturnUrl to this path; after login the vendor opens that RFx.
+export const PASSPORT_RFX_EXTRANET_BASE =
+  "https://passport.cityofnewyork.us/page.aspx/en/bpm/process_manage_extranet";
+
+/**
+ * Normalize a PASSPort Public rfp_id (strip BOM/whitespace). Numeric ids only.
+ * @param {unknown} value
+ * @returns {string|null}
+ */
+export function cleanPassportRfpId(value) {
+  const id = String(value ?? "").replace(/^\uFEFF/, "").trim();
+  return /^\d{3,}$/.test(id) ? id : null;
+}
+
+/**
+ * Deep RFx handoff URL when rfp_id is known (publisher pattern from public rfx.js).
+ * Falls back to the public browse list when no id is available.
+ * @param {unknown} rfpId
+ * @param {string} [browseFallback]
+ * @returns {string}
+ */
+export function passportRfxHandoffUrl(rfpId, browseFallback = RFX_PORTAL) {
+  const id = cleanPassportRfpId(rfpId);
+  if (id) return `${PASSPORT_RFX_EXTRANET_BASE}/${encodeURIComponent(id)}`;
+  return browseFallback || RFX_PORTAL;
+}
 
 function cleanCell(value) {
   return String(value ?? "").replace(/^\uFEFF/, "").trim();

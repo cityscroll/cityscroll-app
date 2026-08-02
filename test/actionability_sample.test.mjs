@@ -51,7 +51,7 @@ test("classifyDestinationUrl: City Record RequestDetail is deep", () => {
   );
 });
 
-test("classifyDestinationUrl: PASSPort RFx browse is search_page", () => {
+test("classifyDestinationUrl: PASSPort RFx browse is search_page; extranet item is deep", () => {
   assert.equal(
     classifyDestinationUrl("https://a0333-passportpublic.nyc.gov/rfx.html"),
     "search_page",
@@ -60,9 +60,15 @@ test("classifyDestinationUrl: PASSPort RFx browse is search_page", () => {
     classifyDestinationUrl("https://a0333-passportpublic.nyc.gov/contracts.html"),
     "search_page",
   );
+  assert.equal(
+    classifyDestinationUrl(
+      "https://passport.cityofnewyork.us/page.aspx/en/bpm/process_manage_extranet/36426",
+    ),
+    "deep",
+  );
 });
 
-test("classifyDestinationUrl: Checkbook smart_search is scoped_search; bare search is search_page", () => {
+test("classifyDestinationUrl: Checkbook smart_search is scoped_search; agid detail is deep", () => {
   assert.equal(
     classifyDestinationUrl(
       "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT107120248803393",
@@ -72,6 +78,12 @@ test("classifyDestinationUrl: Checkbook smart_search is scoped_search; bare sear
   assert.equal(
     classifyDestinationUrl("https://www.checkbooknyc.com/contract_search"),
     "search_page",
+  );
+  assert.equal(
+    classifyDestinationUrl(
+      "https://www.checkbooknyc.com/contract_details/agid/6032530/doctype/CT1",
+    ),
+    "deep",
   );
 });
 
@@ -147,7 +159,7 @@ test("committed sample is not the vacuous ACTION_TYPES rate=1", () => {
   assert.match(sample.basis, /ACTION_TYPES enum length is not a valid/i);
 });
 
-test("measureActionabilitySample scores PASSPort matched rail as search_page not deep", () => {
+test("measureActionabilitySample scores PASSPort matched without rfp_id as search_page", () => {
   const sample = measureActionabilitySample({
     matters: [{
       sample_id: "passport-only",
@@ -168,6 +180,29 @@ test("measureActionabilitySample scores PASSPort matched rail as search_page not
   assert.equal(sample.sample_size, 1);
   assert.equal(sample.rate, 0);
   assert.equal(sample.rows[0].class, "search_page");
+});
+
+test("measureActionabilitySample scores PASSPort matched with rfp_id as deep", () => {
+  const sample = measureActionabilitySample({
+    matters: [{
+      sample_id: "passport-deep",
+      kind: "solicitation",
+      pin: "81026B0003",
+      title: "Records Remediation Project",
+      deadline: "2026-08-18T13:00:00.000",
+      rfx_detail: {
+        status: "matched",
+        portal: "https://a0333-passportpublic.nyc.gov/rfx.html",
+        detail: { epin: "81026B0003", rfx_status: "Released", rfp_id: "36426" },
+      },
+    }],
+    static_handoffs: [],
+    today: "2026-08-01",
+    compileActionRail: actions.compileActionRail,
+  });
+  assert.equal(sample.sample_size, 1);
+  assert.equal(sample.rate, 1);
+  assert.equal(sample.rows[0].class, "deep");
 });
 
 test("all-deep sample yields rate 1; mixed sample yields honest fraction", () => {
