@@ -5524,6 +5524,12 @@ function noticeActionMatter(r, ruleRecord, lifecycleData){
     :isMeetingOutcomesEligible(r)?"hearing"
     :r.type_of_notice_description==="Solicitation"?"solicitation"
     :/Award/.test(r.type_of_notice_description||"")?"award":"notice";
+  // Full ingested body for hearing participation steps (testimony, contact, venue prose).
+  const noticeBody=[
+    r.additional_description_1,r.additional_description_2,r.additional_description_3,
+    r.other_info_1,r.other_info_2,r.other_info_3,
+    r.printout_1,r.printout_2,r.printout_3,
+  ].filter(Boolean).join(" ");
   return {
     kind,
     section_name:r.section_name,
@@ -5533,12 +5539,13 @@ function noticeActionMatter(r, ruleRecord, lifecycleData){
     deadline:kind==="rule"?(rule&&rule.comment_by_date||null)
       :kind==="hearing"?r.event_date
       :rolling?null:r.due_date||null,
+    event_date:r.event_date||null,
     rolling_deadline:rolling,
     official_notice_url:kind==="rule"?(rule&&rule.url||REQ_URL(r.request_id)):REQ_URL(r.request_id),
     agency_name:r.agency_name,
     pin:r.pin,
     title:cleanText(r.short_title),
-    notice_text:[r.additional_description_1,r.other_info_1].filter(Boolean).join(" "),
+    notice_text:noticeBody||[r.additional_description_1,r.other_info_1].filter(Boolean).join(" "),
     // Structured response fields from the City Record row — used to build concrete steps
     // instead of deferring to “read the official notice.”
     email:r.email||null,
@@ -5549,6 +5556,15 @@ function noticeActionMatter(r, ruleRecord, lifecycleData){
     rfx_detail:lifecycleData&&lifecycleData.rfx_detail,
     comment_url:rule&&(rule.comment_url||rule.url),
     participation_url:participation,
+    // Hearing venue + participation (from hearing_location.js) for step extraction.
+    venue:hearing&&hearing.venue||null,
+    participation:hearing&&hearing.participation||null,
+    building_name:r.building_name||null,
+    street_address_1:r.street_address_1||null,
+    street_address_2:r.street_address_2||null,
+    city:r.city||null,
+    state:r.state||null,
+    zip_code:r.zip_code||null,
     project_url:zapParticipation?participation:null,
   };
 }
@@ -5561,68 +5577,117 @@ function actionRailGuideHTML(actions){
   if(!guide) return "";
   const copyFact=(label,value)=>value?`<dt>${label}</dt><dd><code>${escUiHtml(value)}</code><button type="button" class="bid-guide-copy" data-copy-value="${escUiHtml(value)}">${t("copy_value")}</button></dd>`:"";
   const plainFact=(label,value)=>value?`<dt>${label}</dt><dd>${value}</dd>`:"";
+  const hostOf=url=>{ try{ return new URL(url).hostname; }catch(e){ return url; } };
   // When an identifier has an outbound URL (City Record notice, public RFx browse, …),
   // wrap the code value — copy button still works on the raw id.
   const idValue=guide.identifier?(guide.identifier_url
     ?`<a href="${escUiHtml(guide.identifier_url)}" ${EXT_ATTRS}><code>${escUiHtml(guide.identifier)}</code>${extSR()}</a>`
     :`<code>${escUiHtml(guide.identifier)}</code>`):"";
-  const facts=[
-    guide.identifier?`<dt>${t("bid_guide_id_label")}</dt><dd>${idValue}<button type="button" class="bid-guide-copy" data-copy-value="${escUiHtml(guide.identifier)}">${t("copy_value")}</button></dd>`:"",
-    copyFact(t("bid_guide_name_label"),guide.procurement_name),
-    guide.status?`<dt>${t("bid_guide_status_label")}</dt><dd><b>${escUiHtml(guide.status)}</b></dd>`:"",
-    action.deadline?`<dt>${t("bid_guide_due_label")}</dt><dd>${fdt(action.deadline)}</dd>`:"",
-    guide.selection_method?plainFact(t("apply_method_lbl"),escUiHtml(guide.selection_method)):"",
-    (()=>{
-      const bits=[];
-      if(guide.contact_name) bits.push(escUiHtml(guide.contact_name));
-      if(guide.email) bits.push(`<a href="mailto:${escUiHtml(guide.email)}">${escUiHtml(guide.email)}</a>`);
-      if(guide.contact_phone) bits.push(escUiHtml(guide.contact_phone));
-      return bits.length?`<dt>${t("apply_contact_lbl")}</dt><dd>${bits.join(" · ")}</dd>`:"";
-    })(),
-    guide.address_to_request?plainFact(t("apply_submit_lbl"),escUiHtml(guide.address_to_request)):"",
-  ].join("");
+  let facts="";
   let steps=[];
-  if(guide.system==="nycha_isupplier"){
-    steps=[t("bid_guide_nycha_register_step"),t("bid_guide_nycha_search_step"),t("bid_guide_nycha_submit_step")];
-    if(guide.approval_delay) steps.splice(1,0,t("bid_guide_nycha_delay_step"));
-  }else if(guide.system==="notice_portal"){
-    steps=[
-      t("bid_guide_named_portal_open_step",{system:escUiHtml(guide.system_name||"")}),
-      t("bid_guide_named_portal_search_step"),
-      t("bid_guide_named_portal_submit_step"),
-    ];
-  }else if(guide.system==="notice_extracted"){
-    // Concrete steps extracted from this notice's fields and body — never "see the official notice."
-    if(action.deadline) steps.push(t("bid_guide_notice_due_step",{date:fdt(action.deadline)}));
-    if(guide.package_url){
-      steps.push(t("bid_guide_notice_package_step_html",{
-        url:escUiHtml(guide.package_url),
-        host:escUiHtml((()=>{ try{ return new URL(guide.package_url).hostname; }catch(e){ return guide.package_url; } })())
-      }));
+  let headingKey="bid_guide_heading";
+  if(guide.system==="hearing_extracted"){
+    // Attend / testify / contact — fields only when the notice published them.
+    headingKey="hearing_guide_heading";
+    const when=guide.event_date||action.deadline;
+    const whereBits=[guide.venue_building,guide.venue_address].filter(Boolean);
+    const where=whereBits.map(escUiHtml).join(" · ");
+    facts=[
+      when?`<dt>${t("hearing_guide_when_label")}</dt><dd>${fdt(when)}</dd>`:"",
+      where?`<dt>${t("venue_label")}</dt><dd>${where}</dd>`:"",
+      guide.testimony_email?`<dt>${t("hearing_guide_testimony_label")}</dt><dd><a href="mailto:${escUiHtml(guide.testimony_email)}">${escUiHtml(guide.testimony_email)}</a></dd>`:"",
+      (()=>{
+        const bits=[];
+        if(guide.contact_name) bits.push(escUiHtml(guide.contact_name));
+        if(guide.email && (!guide.testimony_email || String(guide.email).toLowerCase()!==String(guide.testimony_email).toLowerCase())){
+          bits.push(`<a href="mailto:${escUiHtml(guide.email)}">${escUiHtml(guide.email)}</a>`);
+        }
+        if(guide.contact_phone) bits.push(escUiHtml(guide.contact_phone));
+        return bits.length?`<dt>${t("apply_contact_lbl")}</dt><dd>${bits.join(" · ")}</dd>`:"";
+      })(),
+    ].join("");
+    if(when && where) steps.push(t("hearing_guide_attend_step",{date:fdt(when),where}));
+    else if(when) steps.push(t("hearing_guide_attend_date_step",{date:fdt(when)}));
+    else if(where) steps.push(t("hearing_guide_attend_where_step",{where}));
+    if(guide.participation_url){
+      const host=escUiHtml(hostOf(guide.participation_url));
+      steps.push(guide.join_kind==="join"
+        ? t("hearing_guide_join_step_html",{url:escUiHtml(guide.participation_url),host})
+        : t("hearing_guide_materials_step_html",{url:escUiHtml(guide.participation_url),host}));
     }
-    if(guide.email || guide.contact_name || guide.contact_phone){
+    if(guide.testimony_email){
+      const email=escUiHtml(guide.testimony_email);
+      if(guide.testimony_until&&guide.testimony_until.kind==="datetime"&&guide.testimony_until.label){
+        steps.push(t("hearing_guide_testimony_until_date_step_html",{email,date:escUiHtml(guide.testimony_until.label)}));
+      }else if(guide.testimony_until&&guide.testimony_until.kind==="hearing_close"){
+        steps.push(t("hearing_guide_testimony_until_close_step_html",{email}));
+      }else{
+        steps.push(t("hearing_guide_testimony_step_html",{email}));
+      }
+    }
+    if(guide.contact_name || guide.email || guide.contact_phone){
       const who=[guide.contact_name, guide.email, guide.contact_phone].filter(Boolean).map(escUiHtml).join(" · ");
-      steps.push(t("bid_guide_notice_contact_step_html",{who}));
+      steps.push(t("hearing_guide_contact_step_html",{who}));
     }
-    if(guide.address_to_request){
-      steps.push(t("bid_guide_notice_submit_step",{where:escUiHtml(guide.address_to_request)}));
-    }
-    if(guide.selection_method){
-      steps.push(t("bid_guide_notice_method_step",{method:escUiHtml(guide.selection_method)}));
-    }
-    if(!steps.length){
-      steps.push(t("bid_guide_notice_fallback_step"));
-    }
+    if(!steps.length) steps.push(t("hearing_guide_fallback_step"));
   }else{
-    steps=[t("bid_guide_passport_search_step")];
-    if(guide.mode==="matched"){
-      steps.push(String(guide.status||"").toLowerCase()==="released"
-        ? t("bid_guide_passport_released_step")
-        : `<span class="guide-warning">${t("bid_guide_passport_not_released_step",{status:escUiHtml(guide.status||"—")})}</span>`);
-      steps.push(t("bid_guide_passport_submit_step"));
-    }else steps.push(t("bid_guide_passport_unmatched_step"),t("bid_guide_passport_submit_step"));
+    facts=[
+      guide.identifier?`<dt>${t("bid_guide_id_label")}</dt><dd>${idValue}<button type="button" class="bid-guide-copy" data-copy-value="${escUiHtml(guide.identifier)}">${t("copy_value")}</button></dd>`:"",
+      copyFact(t("bid_guide_name_label"),guide.procurement_name),
+      guide.status?`<dt>${t("bid_guide_status_label")}</dt><dd><b>${escUiHtml(guide.status)}</b></dd>`:"",
+      action.deadline?`<dt>${t("bid_guide_due_label")}</dt><dd>${fdt(action.deadline)}</dd>`:"",
+      guide.selection_method?plainFact(t("apply_method_lbl"),escUiHtml(guide.selection_method)):"",
+      (()=>{
+        const bits=[];
+        if(guide.contact_name) bits.push(escUiHtml(guide.contact_name));
+        if(guide.email) bits.push(`<a href="mailto:${escUiHtml(guide.email)}">${escUiHtml(guide.email)}</a>`);
+        if(guide.contact_phone) bits.push(escUiHtml(guide.contact_phone));
+        return bits.length?`<dt>${t("apply_contact_lbl")}</dt><dd>${bits.join(" · ")}</dd>`:"";
+      })(),
+      guide.address_to_request?plainFact(t("apply_submit_lbl"),escUiHtml(guide.address_to_request)):"",
+    ].join("");
+    if(guide.system==="nycha_isupplier"){
+      steps=[t("bid_guide_nycha_register_step"),t("bid_guide_nycha_search_step"),t("bid_guide_nycha_submit_step")];
+      if(guide.approval_delay) steps.splice(1,0,t("bid_guide_nycha_delay_step"));
+    }else if(guide.system==="notice_portal"){
+      steps=[
+        t("bid_guide_named_portal_open_step",{system:escUiHtml(guide.system_name||"")}),
+        t("bid_guide_named_portal_search_step"),
+        t("bid_guide_named_portal_submit_step"),
+      ];
+    }else if(guide.system==="notice_extracted"){
+      // Concrete steps extracted from this notice's fields and body — never "see the official notice."
+      if(action.deadline) steps.push(t("bid_guide_notice_due_step",{date:fdt(action.deadline)}));
+      if(guide.package_url){
+        steps.push(t("bid_guide_notice_package_step_html",{
+          url:escUiHtml(guide.package_url),
+          host:escUiHtml(hostOf(guide.package_url))
+        }));
+      }
+      if(guide.email || guide.contact_name || guide.contact_phone){
+        const who=[guide.contact_name, guide.email, guide.contact_phone].filter(Boolean).map(escUiHtml).join(" · ");
+        steps.push(t("bid_guide_notice_contact_step_html",{who}));
+      }
+      if(guide.address_to_request){
+        steps.push(t("bid_guide_notice_submit_step",{where:escUiHtml(guide.address_to_request)}));
+      }
+      if(guide.selection_method){
+        steps.push(t("bid_guide_notice_method_step",{method:escUiHtml(guide.selection_method)}));
+      }
+      if(!steps.length){
+        steps.push(t("bid_guide_notice_fallback_step"));
+      }
+    }else{
+      steps=[t("bid_guide_passport_search_step")];
+      if(guide.mode==="matched"){
+        steps.push(String(guide.status||"").toLowerCase()==="released"
+          ? t("bid_guide_passport_released_step")
+          : `<span class="guide-warning">${t("bid_guide_passport_not_released_step",{status:escUiHtml(guide.status||"—")})}</span>`);
+        steps.push(t("bid_guide_passport_submit_step"));
+      }else steps.push(t("bid_guide_passport_unmatched_step"),t("bid_guide_passport_submit_step"));
+    }
   }
-  return `<details class="bid-guide" open><summary>${t("bid_guide_heading")}</summary>${facts?`<dl class="bid-guide-facts">${facts}</dl>`:""}<ol>${steps.map(step=>`<li>${step}</li>`).join("")}</ol></details>`;
+  return `<details class="bid-guide" open><summary>${t(headingKey)}</summary>${facts?`<dl class="bid-guide-facts">${facts}</dl>`:""}<ol>${steps.map(step=>`<li>${step}</li>`).join("")}</ol></details>`;
 }
 function actionRailHTML(actions){
   let primaryUsed=false;
