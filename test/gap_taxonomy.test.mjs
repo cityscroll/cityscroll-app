@@ -68,7 +68,10 @@ const helpers = new Function(
   const PASSPORT_RFX_URL = 'https://a0333-passportpublic.nyc.gov/rfx.html';
   const CURRENT_SOLICITATIONS_URL = 'https://data.cityofnewyork.us/d/3khw-qi8f';
   const CITY_RECORD_GETFILE_URL = 'https://a856-cityrecord.nyc.gov/Search/GetFile';
-  const LIFECYCLE_STAGE_ORDER = {solicitation:0, award:1, pending:2, registered:3, payment:4};
+  const LIFECYCLE_STAGE_ORDER = {
+    solicitation:0, intent_to_negotiate:1, vendor_list:2, intent_to_award:3,
+    award:4, pending:5, registered:6, payment:7,
+  };
   const OCP_AWARDS_URL = 'https://data.cityofnewyork.us/d/qyyg-4tf5';
   ` +
   extractFn("checkbookSearchUrl") +

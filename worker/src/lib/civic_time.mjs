@@ -1100,7 +1100,8 @@ export function mapPassportRfxToCivic(lifecycle, noticeRow = null, meta = {}) {
  * civic-time envelopes for Money event-kinds.
  *
  * Stage → kind:
- *   solicitation | award (matched) → procurement.notice_published
+ *   solicitation | intent_to_negotiate | vendor_list | intent_to_award | award
+ *                                  (matched) → procurement.notice_published
  *   registered (matched)           → procurement.award_registered
  *   payment (matched, honest state)→ procurement.payment
  *   matched PASSPort RFx detail    → solicitation_opened / addenda / due
@@ -1137,7 +1138,14 @@ export function mapMoneyLifecycleToCivic(lifecycle, noticeRow = null, meta = {})
     if (!entry || entry.status !== "matched") continue;
     const stage = entry.stage;
 
-    if (stage === "solicitation" || stage === "award") {
+    // All City Record money-chain notice stages (incl. Intent to Award peers).
+    if (
+      stage === "solicitation"
+      || stage === "intent_to_negotiate"
+      || stage === "vendor_list"
+      || stage === "intent_to_award"
+      || stage === "award"
+    ) {
       const rid = entry.detail?.request_id || noticeId;
       if (!rid) continue;
       const pubDate = dayStamp(entry.date || entry.source_timestamp || notice.start_date);
