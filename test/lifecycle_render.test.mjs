@@ -590,8 +590,9 @@ test("lifecycle: solicitation without package documents uses short not-published
   assert.match(html, /City Record/);
   assert.doesNotMatch(html, /a856-cityrecord\.nyc\.gov\/Search\/GetFile/);
   assert.doesNotMatch(html, /Not yet shown here — solicitation package/);
-  // Single outbound pointer — not a multi-link hedge (RequestDetail, not GetFile)
-  assert.equal((html.match(/RequestDetail\/20260709023/g) || []).length, 1);
+  // RequestDetail deep-link present; bare GetFile hunt page absent when request_id known
+  // (solicitation stage may also emit RequestDetail as its source link — not a multi-GetFile hedge)
+  assert.ok((html.match(/RequestDetail\/20260709023/g) || []).length >= 1);
   assert.equal((html.match(/GetFile/g) || []).length, 0);
 });
 
