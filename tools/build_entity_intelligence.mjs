@@ -7,8 +7,9 @@
  *   node tools/build_entity_intelligence.mjs --check
  *   node tools/build_entity_intelligence.mjs --print-demo
  *
- * Reads warehouse fixtures + existing site warehouse lookups + domain seed
- * observations. Does not download bulk data. CPU-light pure JS.
+ * Reads warehouse fixtures + site warehouse lookups + live rules/meetings
+ * domain observation snapshots (City Record Agency Rules + hearings). Does not
+ * download bulk data at build time. CPU-light pure JS.
  */
 
 import { writeFileSync, mkdirSync, readFileSync, existsSync } from "node:fs";

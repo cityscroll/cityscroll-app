@@ -37,9 +37,17 @@ also emit join-key edges when present: PIN → `shares_authority_key`, contract_
 `references_contract` (+ `contract_published_by_agency`), Checkbook spending →
 `paid_to_vendor` / `payment_on_contract`. Every link carries provenance.
 
-Instant materialization + warehouse edge index (CPU-light, fixture path):
+Instant materialization + warehouse edge index (CPU-light, fixture path).
+Rules/meetings densify from live City Record domain snapshots
+(`site/data/rules_domain_observations.json`,
+`site/data/meetings_domain_observations.json`) — agency → `issued_rule` /
+`hosts_meeting` only; no invented contract/vendor joins; people stay
+`not_yet_ingested` until production `by_person` retention > 0. Refresh
+snapshots: `node tools/build_rules_meetings_domain_observations.mjs` then
+rebuild entity intelligence.
 
 ```bash
+node tools/build_rules_meetings_domain_observations.mjs --check
 node tools/build_entity_intelligence.mjs
 node tools/build_entity_intelligence.mjs --check
 node warehouse/lib/entity_intelligence_index.mjs --from-fixture --limit 400
