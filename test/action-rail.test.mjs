@@ -90,7 +90,8 @@ test("a notice-named agency portal is used only with matching system and approve
     pin: "ABC-42",
     notice_text: "Learn more at https://example.com/procurement and submit as instructed in the notice.",
   });
-  assert.equal(unrelated.mode, "notice_only");
+  // Unrelated host without download/submit language near a named portal does not invent a handoff.
+  assert.equal(unrelated.system, "notice_extracted");
   assert.equal(unrelated.destination, null);
 });
 
@@ -102,9 +103,43 @@ test("an unknown submission system does not duplicate the page's City Record act
     deadline: "2026-09-01",
     official_notice_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20260701099",
   }, {today: "2026-08-01"});
-  assert.deepEqual(actions.map(action => action.type), ["official_application", "calendar", "watch"]);
-  assert.equal(actions[0].delivery, "unavailable");
+  // Guide-first (bid_checklist) when no portal — never a second "read City Record" CTA
+  assert.deepEqual(actions.map(action => action.type), ["bid_checklist", "calendar", "watch"]);
+  assert.equal(actions[0].delivery, "local");
+  assert.ok(actions[0].guide);
+  assert.equal(actions[0].guide.system, "notice_extracted");
   assert.equal(actions.some(action => action.type === "document"), false);
+  assert.doesNotMatch(actions[0].label_key, /response_instructions/);
+});
+
+test("EDC-style notice extracts package URL, contact, and due date into a concrete guide", () => {
+  const matter = {
+    kind: "solicitation",
+    agency_name: "Economic Development Corporation",
+    pin: "2926",
+    title: "Retainer Audit Services RFP",
+    deadline: "2026-08-03T16:00:00.000",
+    email: "rfprequest@edc.nyc",
+    contact_name: "Hugo Job",
+    contact_phone: "(212) 618-5462",
+    address_to_request: "1 Liberty Plaza, 12th Floor, New York, NY 10006",
+    selection_method: "Request for Proposals",
+    notice_text: "Detailed submission guidelines are outlined in the RFP. To download a copy of the solicitation documents, please visit https://edc.nyc/rfps. RESPONSES ARE DUE NO LATER THAN 4PM ON Monday, August 3, 2026. Please click the link in the Deadlines section of this project's web page (which can be found on https://edc.nyc/rfps) to electronically upload a proposal.",
+    official_notice_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20260625058",
+  };
+  const handoff = solicitationHandoff(matter);
+  assert.equal(handoff.system, "notice_extracted");
+  assert.equal(handoff.destination, "https://edc.nyc/rfps");
+  assert.equal(handoff.email, "rfprequest@edc.nyc");
+  assert.equal(handoff.contact_name, "Hugo Job");
+  assert.equal(handoff.package_url, "https://edc.nyc/rfps");
+
+  const [action] = compileActionRail(matter, {today: "2026-08-01"});
+  assert.equal(action.delivery, "official_handoff");
+  assert.equal(action.label_key, "open_rfp_package");
+  assert.equal(action.destination, "https://edc.nyc/rfps");
+  assert.equal(action.guide.system, "notice_extracted");
+  assert.doesNotMatch(action.label || "", /Use the response instructions/i);
 });
 
 test("closed solicitations replace the bid handoff with an honest unavailable state", () => {

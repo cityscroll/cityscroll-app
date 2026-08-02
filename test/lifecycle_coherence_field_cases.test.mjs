@@ -76,6 +76,8 @@ const sandbox = new Function(
   extractFn("lifecyclePaymentSummaryHTML") +
   extractFn("lifecycleSourceLink") +
   extractFn("lifecycleDocumentsHTML") +
+  extractFn("lifecycleCurrentStageKey") +
+  extractFn("lifecycleStepperHTML") +
   extractFn("lifecycleStageHTML") +
   extractFn("lifecycleOcpAwardHTML") +
   extractFn("lifecycleTimelineHTML") +
@@ -749,8 +751,9 @@ test("checkbookSearchUrl constructs scoped Checkbook URLs", () => {
 // 5. Source coherence: unmatched pending names the distinct pending dataset
 // ---------------------------------------------------------------------------
 
-test("source coherence: unmatched pending names pending contracts dataset, not bare Checkbook when needed", () => {
-  // Only when pending is the current gap (no later matched stage)
+test("source coherence: unmatched future stages collapse; i18n still names distinct Checkbook datasets", () => {
+  // Presentation collapses empty future stages into the stepper (no class-a paragraphs).
+  // Per-dataset labels remain in the English dictionary for other surfaces / when precompute fills.
   const html = lifecycleTimelineHTML({
     pin: "84124P0003001",
     pin_strategy: "exact",
@@ -767,10 +770,14 @@ test("source coherence: unmatched pending names pending contracts dataset, not b
     ],
   }, HNTB_NOTICE);
 
-  assert.match(html, CLASS_A);
-  // Distinct dataset wording (pending contracts / registered contracts / spending)
-  assert.match(html, /pending contracts/i);
-  assert.match(html, /registered contracts/i);
-  assert.match(html, /payments|spending/i);
+  assert.doesNotMatch(html, CLASS_A);
   assert.doesNotMatch(html, TRANSIENT);
+  assert.match(html, /class="lc-stepper"/);
+  assert.match(html, /Pending contract/);
+  assert.match(html, /Registered contract/);
+  assert.match(html, /Payments/);
+  // Dictionary still carries distinct dataset wording (for gaps inventory / other surfaces)
+  assert.match(t("lifecycle_source_checkbook_pending"), /pending contracts/i);
+  assert.match(t("lifecycle_source_checkbook_registered"), /registered contracts/i);
+  assert.match(t("lifecycle_source_checkbook_spending"), /spending/i);
 });

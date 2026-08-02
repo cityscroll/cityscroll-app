@@ -1,0 +1,31 @@
+{
+  "before_fresh_solicitation": {
+    "id": "20260625058",
+    "linkCount": 9,
+    "checkbookCount": 4,
+    "gapParagraphs": 4
+  },
+  "after": [
+    {
+      "id": "20260625058",
+      "label": "fresh-solicitation",
+      "linkCount": 2,
+      "checkbookCount": 0,
+      "gapCount": 0
+    },
+    {
+      "id": "20240723114",
+      "label": "registered-with-payments",
+      "linkCount": 2,
+      "checkbookCount": 1,
+      "gapCount": 0
+    },
+    {
+      "id": "20260623008",
+      "label": "registered-zero-paid",
+      "linkCount": 3,
+      "checkbookCount": 1,
+      "gapCount": 0
+    }
+  ]
+}
