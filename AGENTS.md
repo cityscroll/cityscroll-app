@@ -890,6 +890,13 @@ unit: `node --test test/contract/property_location_golden.test.mjs
 test/contract/property_location.test.mjs`. Feed cards deep-link
 `#notice/{id}` (title + Open notice), same pattern as Money dig items.
 
+**Notice-detail BBL parcel fallback:** `fillAddressLinks` geocodes
+`street_address_1` first; when that is missing or unresolvable on Property
+Disposition, it uses `primaryPropertyBbl` + `parcelLinksFromBbl` from the same
+extractor so ZoLa / ACRIS / Who Owns What still open from body tax-lot text.
+Provenance distinguishes GeoSearch vs notice tax-lot (i18n keys
+`parcel_via_*`). Demo: `property-bbl-fallback` → `#notice/20241112003`.
+
 ## Property disposition process spine
 
 Multi-notice lifecycle for one parcel/asset: **hearing → auction_or_rfp →
