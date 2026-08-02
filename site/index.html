@@ -4259,6 +4259,15 @@ function careerMoney(value, gapClass){
     source:t("career_noe_source_name")
   });
 }
+/** Structured salary: min only, or min–max range when NOE densify captured an upper bound. */
+function careerSalaryHTML(feeSalary, exam, gapClass){
+  const min=feeSalary.salary_min ?? exam.salary_min;
+  const max=feeSalary.salary_max ?? exam.salary_max;
+  if(min != null && max != null && Number(max) > Number(min)){
+    return `${careerMoney(min, gapClass)} – ${careerMoney(max, gapClass)}`;
+  }
+  return careerMoney(min, gapClass);
+}
 function careerStatusLabel(status){
   return t({
     open:"career_status_open", upcoming:"career_status_upcoming", closed:"career_status_closed",
@@ -4327,13 +4336,21 @@ function careerCount(value){
 }
 /* ===== Exam process spine (application → list → certification → appointment).
    Distinct from the static career-guide teaching steps and from the metrics grid
-   below — this is the multi-stage process chain for one exam_number. ===== */
+   below — this is the multi-stage process chain for one exam_number.
+   Phase-grouped with compact stepper (same shape as franchise / property / land). ===== */
 let examProcessSpineToolsPromise=null;
 function ensureExamProcessSpineTools(){
   if(!examProcessSpineToolsPromise){
     examProcessSpineToolsPromise=import("./exam_process_spine.mjs").catch(()=>null);
   }
   return examProcessSpineToolsPromise;
+}
+let examPhaseSpineToolsPromise=null;
+function ensureExamPhaseSpineTools(){
+  if(!examPhaseSpineToolsPromise){
+    examPhaseSpineToolsPromise=import("./exam_phase_spine.mjs").catch(()=>null);
+  }
+  return examPhaseSpineToolsPromise;
 }
 function examStageLabel(kind){
   if(kind==="application") return t("exam_stage_application");
@@ -4347,15 +4364,85 @@ function examStageSourceLabel(kind){
   if(kind==="list_establishment") return t("exam_source_list");
   return t("exam_source_outcomes");
 }
-function examStageCountHTML(stage){
-  if(!stage || !stage.matched || stage.count==null) return "";
-  if(stage.kind==="list_establishment") return t("exam_stage_on_list_count",{n:fmtNumber(stage.count)});
-  if(stage.kind==="certification") return t("exam_stage_certified_count",{n:fmtNumber(stage.count)});
-  if(stage.kind==="appointment") return t("exam_stage_hired_count",{n:fmtNumber(stage.count)});
+function examStageCountHTML(stageOrPhase){
+  if(!stageOrPhase) return "";
+  const kind=stageOrPhase.kind||stageOrPhase.id;
+  const count=stageOrPhase.count;
+  if(count==null) return "";
+  if(kind==="list_establishment") return t("exam_stage_on_list_count",{n:fmtNumber(count)});
+  if(kind==="certification") return t("exam_stage_certified_count",{n:fmtNumber(count)});
+  if(kind==="appointment") return t("exam_stage_hired_count",{n:fmtNumber(count)});
   return "";
 }
-function examProcessSpineHTML(spine, exam){
+function examPhaseWhenHTML(phase, exam){
+  if(phase?.primary?.when && phase.primary.when_to){
+    return `${fdate(phase.primary.when)} – ${fdate(phase.primary.when_to)}`;
+  }
+  if(phase?.primary?.when) return fdate(phase.primary.when);
+  if(phase?.id==="application" && exam){
+    const a=exam.application_start?fdate(exam.application_start):"";
+    const b=exam.application_end?fdate(exam.application_end):"";
+    if(a && b) return `${a} – ${b}`;
+    return a||b||"—";
+  }
+  return "—";
+}
+function examProcessSpineHTML(spine, exam, phaseView){
   if(!spine) return "";
+  const joinNote=t("exam_spine_join_html",{
+    number:escUiHtml(spine.exam_number||exam?.exam_number||"—"),
+    title:escUiHtml(cleanText(spine.title||exam?.title)||"—")
+  });
+
+  // Phase-grouped compact stepper when the pure module loads.
+  if(phaseView && Array.isArray(phaseView.phases) && phaseView.phases.length){
+    const cur=phaseView.current;
+    const actionLead=cur?`<p class="land-spine-status exam-phase-lead">${t("exam_phase_now_html",{
+      phase:escUiHtml(examStageLabel(cur.id)),
+      action:escUiHtml(t(cur.action_key||"exam_phase_action_application"))
+    })}${phaseView.next?` · ${t("exam_phase_next_html",{phase:escUiHtml(examStageLabel(phaseView.next.id))})}`:""}</p>`:"";
+    const stepper=`<ol class="lc-stepper exam-phase-stepper" aria-label="${escUiHtml(t("exam_spine_heading"))}">${
+      phaseView.phases.map((p,i)=>{
+        const cls=p.matched?(cur&&p.id===cur.id?"current":"done"):"todo";
+        const aria=cur&&p.id===cur.id?` aria-current="step"`:"";
+        const arrow=i<phaseView.phases.length-1?`<span class="lc-step-arrow" aria-hidden="true">→</span>`:"";
+        return `<li><span class="lc-step ${cls}"${aria} title="${escUiHtml(examStageLabel(p.id))}">${escUiHtml(p.short||examStageLabel(p.id))}</span>${arrow}</li>`;
+      }).join("")
+    }</ol>`;
+    // Detail only for matched phases + current (collapse pure-future empties to stepper chips).
+    const cards=phaseView.phases.filter(p=>p.matched||(cur&&p.id===cur.id)).map(p=>{
+      if(!p.matched){
+        return `<div class="stage"><div class="box">
+          <div class="stage-name">${examStageLabel(p.id)}</div>
+          <div class="lc-norecord">${t("exam_stage_not_yet_ingested_html",{
+            source:`<span lang="en" dir="ltr">${examStageSourceLabel(p.id)}</span>`
+          })}</div>
+        </div></div>`;
+      }
+      const when=examPhaseWhenHTML(p, exam);
+      const countLine=examStageCountHTML(p);
+      // One outbound source family per phase (deduped).
+      const sourceLink=p.source_url
+        ?`<div class="lc-pct"><a href="${escUiHtml(p.source_url)}" ${EXT_ATTRS}>${p.id==="application"?t("career_read_noe"):t("exam_phase_source_link")}${extSR()}</a></div>`
+        :"";
+      return `<div class="stage"><div class="box matched">
+        <div class="stage-name">${examStageLabel(p.id)}</div>
+        <div class="when">${escUiHtml(when)}</div>
+        ${countLine?`<div class="lc-pct">${escUiHtml(countLine)}</div>`:""}
+        ${sourceLink}
+      </div></div>`;
+    }).join('<div class="connector" aria-hidden="true">→</div>');
+    return `<section class="career-exam-spine" data-exam-spine="1" data-exam-phase="1" aria-label="${escUiHtml(t("exam_spine_heading"))}">
+      <div class="chain-h">${t("exam_spine_heading")}</div>
+      <div class="note">${joinNote}</div>
+      ${actionLead}
+      ${stepper}
+      <div class="chain exam-phase-cards">${cards}</div>
+      <div class="note">${t("exam_spine_provenance_html")}</div>
+    </section>`;
+  }
+
+  // Flat fallback when the phase module is unavailable.
   const stages=Array.isArray(spine.stages)?spine.stages:[];
   let chain="";
   stages.forEach((stage, idx)=>{
@@ -4387,11 +4474,7 @@ function examProcessSpineHTML(spine, exam){
         })}</div>
       </div></div>`;
     }
-    if(idx < stages.length - 1) chain+='<div class="connector">→</div>';
-  });
-  const joinNote=t("exam_spine_join_html",{
-    number:escUiHtml(spine.exam_number||exam?.exam_number||"—"),
-    title:escUiHtml(cleanText(spine.title||exam?.title)||"—")
+    if(idx < stages.length - 1) chain+='<div class="connector" aria-hidden="true">→</div>';
   });
   return `<section class="career-exam-spine" data-exam-spine="1" aria-label="${escUiHtml(t("exam_spine_heading"))}">
     <div class="chain-h">${t("exam_spine_heading")}</div>
@@ -4469,7 +4552,7 @@ function careerCardHTML(exam){
   const details=hasNoeDetail ? `
     <div class="career-metrics" data-fee-salary="${feeSalary.kind}">
       <div class="career-metric"><b>${careerMoney(feeSalary.fee ?? exam.fee, gapClass)}</b><span>${t("career_application_fee")}</span></div>
-      <div class="career-metric"><b>${careerMoney(feeSalary.salary_min ?? exam.salary_min, gapClass)}</b><span>${t("career_starting_salary")}</span></div>
+      <div class="career-metric"><b>${careerSalaryHTML(feeSalary, exam, gapClass)}</b><span>${t("career_starting_salary")}</span></div>
     </div>
     <p class="career-detail-line"><b>${t("career_qualifications")}</b> <span lang="en" dir="ltr">${escUiHtml(exam.qualifications||"")}</span></p>
     <p class="career-detail-line"><b>${t("career_test_method")}</b> <span lang="en" dir="ltr">${escUiHtml(exam.test_method||"")}</span></p>
@@ -4495,7 +4578,11 @@ function careerCardHTML(exam){
       const spine=tools&&typeof tools.buildExamProcessSpine==="function"
         ? tools.buildExamProcessSpine(exam)
         : (exam.process_spine||null);
-      return examProcessSpineHTML(spine, exam)+careerOutcomeHTML(exam,{spineMounted:!!spine});
+      const phaseTools=window.CrolExamPhaseSpine;
+      const phaseView=phaseTools&&typeof phaseTools.buildExamPhaseView==="function"&&spine
+        ? phaseTools.buildExamPhaseView(spine)
+        : null;
+      return examProcessSpineHTML(spine, exam, phaseView)+careerOutcomeHTML(exam,{spineMounted:!!spine});
     })()}
     <div class="actions">${apply}${notice}
       <button class="act" type="button" data-career-copy="${exam.exam_number}">${t("copy_link_btn")}</button>
@@ -4570,7 +4657,10 @@ function populateCareerInterests(){
 }
 async function loadCareerGuide(){
   if(careerData){
-    await ensureExamProcessSpineTools().then(mod=>{ if(mod) window.CrolExamProcessSpine=mod; });
+    await Promise.all([
+      ensureExamProcessSpineTools().then(mod=>{ if(mod) window.CrolExamProcessSpine=mod; }),
+      ensureExamPhaseSpineTools().then(mod=>{ if(mod) window.CrolExamPhaseSpine=mod; }),
+    ]);
     populateCareerInterests(); renderCareerGuide(); return careerData;
   }
   if(careerLoadPromise) return careerLoadPromise;
@@ -4580,8 +4670,10 @@ async function loadCareerGuide(){
       return response.json();
     }),
     ensureExamProcessSpineTools(),
-  ]).then(([data, spineMod])=>{
+    ensureExamPhaseSpineTools(),
+  ]).then(([data, spineMod, phaseMod])=>{
     if(spineMod) window.CrolExamProcessSpine=spineMod;
+    if(phaseMod) window.CrolExamPhaseSpine=phaseMod;
     careerData=data; populateCareerInterests(); renderCareerGuide(); return data;
   }).catch(()=>{
     $("#career-source").classList.add("stale");
