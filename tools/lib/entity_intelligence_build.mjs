@@ -8,6 +8,7 @@ import path from "node:path";
 
 import {
   observationFromMoneyRow,
+  observationFromPaymentRow,
   observationFromLandRow,
   observationFromRulesRow,
   observationFromMeetingsRow,
@@ -181,6 +182,20 @@ export function collectCrossDomainObservations(root, opts = {}) {
     observations.push(...merged);
   }
 
+  // --- Money payments: Checkbook spending fixtures (vendor ↔ awards ↔ payments) ---
+  const paymentPaths = [
+    path.join(root, "warehouse/fixtures/checkbook-spending/product_seed.csv"),
+    path.join(root, "warehouse/fixtures/checkbook-spending/sample.csv"),
+  ];
+  for (const p of paymentPaths) {
+    for (const row of loadCsvIfExists(p)) {
+      const obs = observationFromPaymentRow(row, {
+        sourceSystem: "checkbook-spending",
+      });
+      if (obs) observations.push(obs);
+    }
+  }
+
   // --- Rules / meetings / people: committed seed observations (honest, small) ---
   const seedPath = path.join(
     root,
@@ -200,9 +215,13 @@ export function collectCrossDomainObservations(root, opts = {}) {
       const obs = observationFromPeopleRow(row);
       if (obs) observations.push(obs);
     }
-    // Optional extra money/land rows for multi-domain demos
+    // Optional extra money/land/payment rows for multi-domain demos
     for (const row of seed.money || []) {
       const obs = observationFromMoneyRow(row);
+      if (obs) observations.push(obs);
+    }
+    for (const row of seed.payments || []) {
+      const obs = observationFromPaymentRow(row);
       if (obs) observations.push(obs);
     }
     for (const row of seed.land || []) {
@@ -273,6 +292,7 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
     provenance: {
       sources: [
         "warehouse/fixtures/ocp-recent-contract-awards",
+        "warehouse/fixtures/checkbook-spending",
         "warehouse/fixtures/zap-projects",
         "warehouse/fixtures/zap-bbl",
         "site/data/ocp_awards_warehouse_lookup.json",
@@ -284,11 +304,14 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
       methods: [
         "agency_canonical_v1",
         "vendor_stem_v1",
-        "cross_domain_identity_v1",
+        "cross_domain_identity_v2",
         "zap_bbl_project_id_v1",
+        "pin_authority_key_v1",
+        "contract_id_join_v1",
+        "checkbook_payment_v1",
       ],
       note:
-        "Links only when identity normalizers resolve the same root. Land projects gain sited_on_parcel edges when ZAP BBL join keys exist. Empty domains are explicit; people defaults to not_yet_ingested without by_person rows.",
+        "Links only when identity normalizers or join keys resolve. Identity: agency/vendor across money/land/rules/meetings. Join keys: PIN (shares_authority_key), contract_id (references_contract / payment_on_contract), BBL (sited_on_parcel), payee (paid_to_vendor). Empty domains are explicit; people defaults to not_yet_ingested without by_person rows.",
     },
   };
 }

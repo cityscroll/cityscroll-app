@@ -2,9 +2,9 @@
   "schema_version": 1,
   "phase": "cross-domain-object-links",
   "title": "Entity intelligence — cross-domain object links",
-  "version": "cross_domain_object_link_v1",
-  "generated_at": "2026-08-02T11:47:22.167Z",
-  "observation_count": 306,
+  "version": "cross_domain_object_link_v2",
+  "generated_at": "2026-08-02T12:12:33.736Z",
+  "observation_count": 309,
   "entity_count": 40,
   "multi_domain_count": 4,
   "domains": [
@@ -51,9 +51,9 @@
   "by_ref": {
     "agency:id:parks-and-recreation": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "agency",
         "ref": "agency:id:parks-and-recreation",
@@ -77,6 +77,8 @@
               "amount": 500,
               "public_status": null,
               "pin": "PIN-FIXTURE-5",
+              "contract_id": "CT-PARKS-FIX005",
+              "document_id": null,
               "project_id": null,
               "request_id": "FIX005",
               "event_id": null,
@@ -116,6 +118,8 @@
               "amount": null,
               "public_status": "In Public Review",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2025Q0316",
               "request_id": null,
               "event_id": null,
@@ -147,6 +151,8 @@
               "amount": null,
               "public_status": "In Public Review",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2026R0186",
               "request_id": null,
               "event_id": null,
@@ -178,6 +184,8 @@
               "amount": null,
               "public_status": "In Public Review",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2025R0257",
               "request_id": null,
               "event_id": null,
@@ -209,6 +217,8 @@
               "amount": null,
               "public_status": "Noticed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2025K0318",
               "request_id": null,
               "event_id": null,
@@ -240,6 +250,8 @@
               "amount": null,
               "public_status": "Filed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2022X0150",
               "request_id": null,
               "event_id": null,
@@ -271,6 +283,8 @@
               "amount": null,
               "public_status": "Noticed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2025Q0314",
               "request_id": null,
               "event_id": null,
@@ -310,6 +324,8 @@
               "amount": null,
               "public_status": null,
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": null,
               "request_id": "20260715001",
               "event_id": null,
@@ -349,6 +365,8 @@
               "amount": null,
               "public_status": null,
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": null,
               "request_id": "20260720055",
               "event_id": null,
@@ -384,6 +402,27 @@
       },
       "links": [
         {
+          "type": "contract_published_by_agency",
+          "from": "contract:CT-PARKS-FIX005",
+          "to": "agency:id:parks-and-recreation",
+          "domain": "money",
+          "confidence": "strong",
+          "method": "contract_id_join_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:FIX005",
+            "source_fields": [
+              "agency_name",
+              "contract_id"
+            ],
+            "basis": "money_contract_agency",
+            "observed_at": "2024-07-05T00:00:00.000",
+            "input_value": "Department of Parks and Recreation"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
           "type": "issued_rule",
           "from": "notice:20260715001",
           "to": "agency:id:parks-and-recreation",
@@ -401,7 +440,7 @@
             "observed_at": "2026-07-15",
             "input_value": "Department of Parks and Recreation"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "hosts_meeting",
@@ -421,7 +460,7 @@
             "observed_at": "2026-08-12",
             "input_value": "Department of Parks and Recreation"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "published_by_agency",
@@ -453,7 +492,71 @@
             "observed_at": "2024-07-05T00:00:00.000",
             "input_value": "Department of Parks and Recreation"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "references_contract",
+          "from": "notice:FIX005",
+          "to": "contract:CT-PARKS-FIX005",
+          "method": "contract_id_join_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:FIX005",
+            "source_fields": [
+              "contract_id"
+            ],
+            "basis": "money_contract_id",
+            "observed_at": "2024-07-05T00:00:00.000",
+            "input_value": "CT-PARKS-FIX005",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:FIX005",
+            "source_fields": [
+              "contract_id"
+            ],
+            "basis": "money_contract_id",
+            "observed_at": "2024-07-05T00:00:00.000",
+            "input_value": "CT-PARKS-FIX005"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "notice:FIX005",
+          "to": "pin:PIN-FIXTURE-5",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:FIX005",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2024-07-05T00:00:00.000",
+            "input_value": "PIN-FIXTURE-5",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:FIX005",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2024-07-05T00:00:00.000",
+            "input_value": "PIN-FIXTURE-5"
+          },
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "applicant_agency",
@@ -473,7 +576,7 @@
             "observed_at": "2025-07-03",
             "input_value": "DPR - Department of Parks & Recreation NYC"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "applicant_agency",
@@ -492,7 +595,7 @@
             "basis": "land_primary_applicant",
             "input_value": "DPR - Department of Parks & Recreation NYC"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "applicant_agency",
@@ -512,7 +615,7 @@
             "observed_at": "2025-10-20",
             "input_value": "DPR - Department of Parks & Recreation NYC"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "applicant_agency",
@@ -532,7 +635,7 @@
             "observed_at": "2025-03-06",
             "input_value": "DPR - Department of Parks & Recreation NYC"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "applicant_agency",
@@ -552,7 +655,7 @@
             "observed_at": "2026-04-14T00:00:00.000",
             "input_value": "DPR - Department of Parks & Recreation NYC"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "applicant_agency",
@@ -572,7 +675,7 @@
             "observed_at": "2026-03-11",
             "input_value": "DPR - Department of Parks & Recreation NYC"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "applicant_agency",
@@ -592,7 +695,7 @@
             "observed_at": "2026-03-25",
             "input_value": "DPR - Department of Parks & Recreation NYC"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "applicant_agency",
@@ -612,7 +715,7 @@
             "observed_at": "2008-08-11",
             "input_value": "DPR - Department of Parks & Recreation NYC"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "applicant_agency",
@@ -631,7 +734,7 @@
             "basis": "land_primary_applicant",
             "input_value": "DPR - Department of Parks & Recreation NYC"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -641,15 +744,16 @@
         "domains_not_yet_ingested": 1,
         "domains_empty": 0,
         "total_linked_objects": 9,
-        "link_count": 12,
+        "link_count": 15,
+        "join_key_link_count": 3,
         "coverage_rate": 0.8
       }
     },
     "agency:id:transportation": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "agency",
         "ref": "agency:id:transportation",
@@ -673,6 +777,8 @@
               "amount": 200,
               "public_status": null,
               "pin": "PIN-FIXTURE-2",
+              "contract_id": null,
+              "document_id": null,
               "project_id": null,
               "request_id": "FIX002",
               "event_id": null,
@@ -719,6 +825,8 @@
               "amount": null,
               "public_status": null,
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": null,
               "request_id": "20260714029",
               "event_id": null,
@@ -758,6 +866,8 @@
               "amount": null,
               "public_status": null,
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": null,
               "request_id": "20260718022",
               "event_id": null,
@@ -810,7 +920,7 @@
             "observed_at": "2026-07-14",
             "input_value": "Department of Transportation"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "hosts_meeting",
@@ -830,7 +940,7 @@
             "observed_at": "2026-08-05",
             "input_value": "Department of Transportation"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "published_by_agency",
@@ -862,7 +972,39 @@
             "observed_at": "2024-07-02T00:00:00.000",
             "input_value": "Department of Transportation"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "notice:FIX002",
+          "to": "pin:PIN-FIXTURE-2",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:FIX002",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2024-07-02T00:00:00.000",
+            "input_value": "PIN-FIXTURE-2",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:FIX002",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2024-07-02T00:00:00.000",
+            "input_value": "PIN-FIXTURE-2"
+          },
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -872,15 +1014,16 @@
         "domains_not_yet_ingested": 1,
         "domains_empty": 1,
         "total_linked_objects": 3,
-        "link_count": 3,
+        "link_count": 4,
+        "join_key_link_count": 1,
         "coverage_rate": 0.6
       }
     },
     "agency:id:citywide-administrative-services": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "agency",
         "ref": "agency:id:citywide-administrative-services",
@@ -904,6 +1047,8 @@
               "amount": 7977500,
               "public_status": null,
               "pin": "85726B0027001",
+              "contract_id": "CT85726B0027001",
+              "document_id": null,
               "project_id": null,
               "request_id": "20260724010",
               "event_id": null,
@@ -935,6 +1080,8 @@
               "amount": 100,
               "public_status": null,
               "pin": "PIN-FIXTURE-1",
+              "contract_id": "CT-DCAS-FIX001",
+              "document_id": null,
               "project_id": null,
               "request_id": "FIX001",
               "event_id": null,
@@ -981,6 +1128,8 @@
               "amount": null,
               "public_status": null,
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": null,
               "request_id": "20260601010",
               "event_id": null,
@@ -1023,6 +1172,48 @@
       },
       "links": [
         {
+          "type": "contract_published_by_agency",
+          "from": "contract:CT-DCAS-FIX001",
+          "to": "agency:id:citywide-administrative-services",
+          "domain": "money",
+          "confidence": "strong",
+          "method": "contract_id_join_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:FIX001",
+            "source_fields": [
+              "agency_name",
+              "contract_id"
+            ],
+            "basis": "money_contract_agency",
+            "observed_at": "2024-07-01T00:00:00.000",
+            "input_value": "Department of Citywide Administrative Services"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "contract_published_by_agency",
+          "from": "contract:CT85726B0027001",
+          "to": "agency:id:citywide-administrative-services",
+          "domain": "money",
+          "confidence": "strong",
+          "method": "contract_id_join_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260724010",
+            "source_fields": [
+              "agency_name",
+              "contract_id"
+            ],
+            "basis": "money_contract_agency",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "Citywide Administrative Services"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
           "type": "issued_rule",
           "from": "notice:20260601010",
           "to": "agency:id:citywide-administrative-services",
@@ -1040,7 +1231,7 @@
             "observed_at": "2026-06-01",
             "input_value": "Citywide Administrative Services"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "published_by_agency",
@@ -1072,7 +1263,71 @@
             "observed_at": "2026-07-30T00:00:00.000",
             "input_value": "Citywide Administrative Services"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "references_contract",
+          "from": "notice:20260724010",
+          "to": "contract:CT85726B0027001",
+          "method": "contract_id_join_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260724010",
+            "source_fields": [
+              "contract_id"
+            ],
+            "basis": "money_contract_id",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "CT85726B0027001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260724010",
+            "source_fields": [
+              "contract_id"
+            ],
+            "basis": "money_contract_id",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "CT85726B0027001"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "notice:20260724010",
+          "to": "pin:85726B0027001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260724010",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "85726B0027001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260724010",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "85726B0027001"
+          },
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "published_by_agency",
@@ -1104,7 +1359,71 @@
             "observed_at": "2024-07-01T00:00:00.000",
             "input_value": "Department of Citywide Administrative Services"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "references_contract",
+          "from": "notice:FIX001",
+          "to": "contract:CT-DCAS-FIX001",
+          "method": "contract_id_join_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:FIX001",
+            "source_fields": [
+              "contract_id"
+            ],
+            "basis": "money_contract_id",
+            "observed_at": "2024-07-01T00:00:00.000",
+            "input_value": "CT-DCAS-FIX001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:FIX001",
+            "source_fields": [
+              "contract_id"
+            ],
+            "basis": "money_contract_id",
+            "observed_at": "2024-07-01T00:00:00.000",
+            "input_value": "CT-DCAS-FIX001"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "notice:FIX001",
+          "to": "pin:PIN-FIXTURE-1",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:FIX001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2024-07-01T00:00:00.000",
+            "input_value": "PIN-FIXTURE-1",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:FIX001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2024-07-01T00:00:00.000",
+            "input_value": "PIN-FIXTURE-1"
+          },
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -1114,15 +1433,16 @@
         "domains_not_yet_ingested": 1,
         "domains_empty": 2,
         "total_linked_objects": 3,
-        "link_count": 3,
+        "link_count": 9,
+        "join_key_link_count": 6,
         "coverage_rate": 0.4
       }
     },
     "agency:id:housing-preservation-and-development": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "agency",
         "ref": "agency:id:housing-preservation-and-development",
@@ -1153,6 +1473,8 @@
               "amount": null,
               "public_status": "In Public Review",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2026X0362",
               "request_id": null,
               "event_id": null,
@@ -1186,6 +1508,8 @@
               "amount": null,
               "public_status": "Completed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2022M0258",
               "request_id": null,
               "event_id": null,
@@ -1244,6 +1568,8 @@
               "amount": null,
               "public_status": null,
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": null,
               "request_id": "20260722011",
               "event_id": null,
@@ -1296,7 +1622,7 @@
             "observed_at": "2026-08-20",
             "input_value": "Housing Preservation and Development"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "applicant_agency",
@@ -1316,7 +1642,7 @@
             "observed_at": "2024-03-13T00:00:00.000",
             "input_value": "HPD - NYC Dept of Housing Preservation & Development"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -1337,7 +1663,7 @@
             "observed_at": "2024-03-13T00:00:00.000",
             "input_value": "1017670001"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -1358,7 +1684,7 @@
             "observed_at": "2024-03-13T00:00:00.000",
             "input_value": "1017670002"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -1379,7 +1705,7 @@
             "observed_at": "2024-03-13T00:00:00.000",
             "input_value": "1017670003"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -1400,7 +1726,7 @@
             "observed_at": "2024-03-13T00:00:00.000",
             "input_value": "1017670004"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -1421,7 +1747,7 @@
             "observed_at": "2024-03-13T00:00:00.000",
             "input_value": "1017670067"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -1442,7 +1768,7 @@
             "observed_at": "2024-03-13T00:00:00.000",
             "input_value": "1017670068"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -1463,7 +1789,7 @@
             "observed_at": "2024-03-13T00:00:00.000",
             "input_value": "1017670069"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -1484,7 +1810,7 @@
             "observed_at": "2024-03-13T00:00:00.000",
             "input_value": "1017670071"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -1505,7 +1831,7 @@
             "observed_at": "2024-03-13T00:00:00.000",
             "input_value": "1017670072"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -1526,7 +1852,7 @@
             "observed_at": "2024-03-13T00:00:00.000",
             "input_value": "1017670168"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -1547,7 +1873,7 @@
             "observed_at": "2024-03-13T00:00:00.000",
             "input_value": "1017670169"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "applicant_agency",
@@ -1567,7 +1893,7 @@
             "observed_at": "2026-04-22T00:00:00.000",
             "input_value": "HPD - NYC Dept of Housing Preservation & Development"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -1588,7 +1914,7 @@
             "observed_at": "2026-04-22T00:00:00.000",
             "input_value": "2025710001"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -1599,14 +1925,15 @@
         "domains_empty": 2,
         "total_linked_objects": 3,
         "link_count": 15,
+        "join_key_link_count": 12,
         "coverage_rate": 0.4
       }
     },
     "vendor:stem:EXTELL%20DEVELOPMENT": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "vendor",
         "ref": "vendor:stem:EXTELL%20DEVELOPMENT",
@@ -1636,6 +1963,8 @@
               "amount": null,
               "public_status": "In Public Review",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2025M0350",
               "request_id": null,
               "event_id": null,
@@ -1667,6 +1996,8 @@
               "amount": null,
               "public_status": "Filed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2025M0376",
               "request_id": null,
               "event_id": null,
@@ -1698,6 +2029,8 @@
               "amount": null,
               "public_status": "Filed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2025M0265",
               "request_id": null,
               "event_id": null,
@@ -1729,6 +2062,8 @@
               "amount": null,
               "public_status": "Filed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2020M0429",
               "request_id": null,
               "event_id": null,
@@ -1819,7 +2154,7 @@
             "basis": "land_primary_applicant",
             "input_value": "Extell Development"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -1839,7 +2174,7 @@
             "basis": "land_project_bbl",
             "input_value": "1012620009"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -1859,7 +2194,7 @@
             "basis": "land_project_bbl",
             "input_value": "1012620017"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -1879,7 +2214,7 @@
             "basis": "land_project_bbl",
             "input_value": "1012620018"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -1899,7 +2234,7 @@
             "basis": "land_project_bbl",
             "input_value": "1012620019"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -1919,7 +2254,7 @@
             "basis": "land_project_bbl",
             "input_value": "1012620020"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -1939,7 +2274,7 @@
             "basis": "land_project_bbl",
             "input_value": "1012620021"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -1959,7 +2294,7 @@
             "basis": "land_project_bbl",
             "input_value": "1012620023"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -1979,7 +2314,7 @@
             "basis": "land_project_bbl",
             "input_value": "1012620024"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -1999,7 +2334,7 @@
             "basis": "land_project_bbl",
             "input_value": "1012620029"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -2019,7 +2354,7 @@
             "basis": "land_project_bbl",
             "input_value": "1012620030"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -2039,7 +2374,7 @@
             "basis": "land_project_bbl",
             "input_value": "1012620031"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -2059,7 +2394,7 @@
             "basis": "land_project_bbl",
             "input_value": "1012620032"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -2079,7 +2414,7 @@
             "basis": "land_project_bbl",
             "input_value": "1012620033"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -2099,7 +2434,7 @@
             "basis": "land_project_bbl",
             "input_value": "1012620034"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -2119,7 +2454,7 @@
             "basis": "land_project_bbl",
             "input_value": "1012620035"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -2139,7 +2474,7 @@
             "basis": "land_project_bbl",
             "input_value": "1012620037"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -2159,7 +2494,7 @@
             "basis": "land_project_bbl",
             "input_value": "1012620038"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -2179,7 +2514,7 @@
             "basis": "land_project_bbl",
             "input_value": "1012620039"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -2199,7 +2534,7 @@
             "basis": "land_project_bbl",
             "input_value": "1012620042"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -2219,7 +2554,7 @@
             "basis": "land_project_bbl",
             "input_value": "1012620045"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -2239,7 +2574,7 @@
             "basis": "land_project_bbl",
             "input_value": "1012620048"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -2259,7 +2594,7 @@
             "basis": "land_project_bbl",
             "input_value": "1012620052"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -2279,7 +2614,7 @@
             "basis": "land_project_bbl",
             "input_value": "1012620053"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -2299,7 +2634,7 @@
             "basis": "land_project_bbl",
             "input_value": "1012620054"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -2319,7 +2654,7 @@
             "basis": "land_project_bbl",
             "input_value": "1012620056"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "applicant_vendor",
@@ -2339,7 +2674,7 @@
             "observed_at": "2026-01-14",
             "input_value": "Extell Development"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "applicant_vendor",
@@ -2359,7 +2694,7 @@
             "observed_at": "2026-04-09",
             "input_value": "Extell Development"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "applicant_vendor",
@@ -2379,7 +2714,7 @@
             "observed_at": "2026-03-17",
             "input_value": "Extell Development"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -2390,14 +2725,15 @@
         "domains_empty": 3,
         "total_linked_objects": 4,
         "link_count": 29,
+        "join_key_link_count": 25,
         "coverage_rate": 0.2
       }
     },
     "agency:id:edc-economic-development-corporation-for-nyc": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "agency",
         "ref": "agency:id:edc-economic-development-corporation-for-nyc",
@@ -2428,6 +2764,8 @@
               "amount": null,
               "public_status": "Filed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2025R0309",
               "request_id": null,
               "event_id": null,
@@ -2459,6 +2797,8 @@
               "amount": null,
               "public_status": "Filed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2020M0487",
               "request_id": null,
               "event_id": null,
@@ -2490,6 +2830,8 @@
               "amount": null,
               "public_status": "Completed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2024Q0135",
               "request_id": null,
               "event_id": null,
@@ -2555,7 +2897,7 @@
             "observed_at": "2020-09-11",
             "input_value": "EDC - Economic Development Corporation for NYC"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "applicant_agency",
@@ -2574,7 +2916,7 @@
             "basis": "land_primary_applicant",
             "input_value": "EDC - Economic Development Corporation for NYC"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "applicant_agency",
@@ -2594,7 +2936,7 @@
             "observed_at": "2026-03-19",
             "input_value": "EDC - Economic Development Corporation for NYC"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -2605,14 +2947,15 @@
         "domains_empty": 3,
         "total_linked_objects": 3,
         "link_count": 3,
+        "join_key_link_count": 0,
         "coverage_rate": 0.2
       }
     },
     "agency:id:lpc-nyc-landmarks-preservation-commission": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "agency",
         "ref": "agency:id:lpc-nyc-landmarks-preservation-commission",
@@ -2643,6 +2986,8 @@
               "amount": null,
               "public_status": "Filed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2026K0443",
               "request_id": null,
               "event_id": null,
@@ -2674,6 +3019,8 @@
               "amount": null,
               "public_status": "Filed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2026M0444",
               "request_id": null,
               "event_id": null,
@@ -2705,6 +3052,8 @@
               "amount": null,
               "public_status": "Filed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2026M0445",
               "request_id": null,
               "event_id": null,
@@ -2771,7 +3120,7 @@
             "observed_at": "2026-04-20",
             "input_value": "LPC - NYC Landmarks Preservation Commission"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "applicant_agency",
@@ -2791,7 +3140,7 @@
             "observed_at": "2026-04-17",
             "input_value": "LPC - NYC Landmarks Preservation Commission"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "applicant_agency",
@@ -2811,7 +3160,7 @@
             "observed_at": "2026-04-17",
             "input_value": "LPC - NYC Landmarks Preservation Commission"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -2822,14 +3171,15 @@
         "domains_empty": 3,
         "total_linked_objects": 3,
         "link_count": 3,
+        "join_key_link_count": 0,
         "coverage_rate": 0.2
       }
     },
     "agency:id:dot-nyc-dept-of-transportation": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "agency",
         "ref": "agency:id:dot-nyc-dept-of-transportation",
@@ -2860,6 +3210,8 @@
               "amount": null,
               "public_status": "Filed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "P2018X0328",
               "request_id": null,
               "event_id": null,
@@ -2891,6 +3243,8 @@
               "amount": null,
               "public_status": "Filed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "P2014R0345",
               "request_id": null,
               "event_id": null,
@@ -2955,7 +3309,7 @@
             "basis": "land_primary_applicant",
             "input_value": "DOT - NYC Dept of Transportation"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "applicant_agency",
@@ -2975,7 +3329,7 @@
             "observed_at": "2020-08-19",
             "input_value": "DOT - NYC Dept of Transportation"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -2986,14 +3340,15 @@
         "domains_empty": 3,
         "total_linked_objects": 2,
         "link_count": 2,
+        "join_key_link_count": 0,
         "coverage_rate": 0.2
       }
     },
     "agency:id:new-york-city-department-of-city-planning": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "agency",
         "ref": "agency:id:new-york-city-department-of-city-planning",
@@ -3024,6 +3379,8 @@
               "amount": null,
               "public_status": "In Public Review",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2026Q0210",
               "request_id": null,
               "event_id": null,
@@ -3055,6 +3412,8 @@
               "amount": null,
               "public_status": "Filed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2025Y0279",
               "request_id": null,
               "event_id": null,
@@ -3121,7 +3480,7 @@
             "observed_at": "2025-01-15",
             "input_value": "New York City Department of City Planning"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "applicant_agency",
@@ -3141,7 +3500,7 @@
             "observed_at": "2026-02-26",
             "input_value": "New York City Department of City Planning"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -3152,14 +3511,15 @@
         "domains_empty": 3,
         "total_linked_objects": 2,
         "link_count": 2,
+        "join_key_link_count": 0,
         "coverage_rate": 0.2
       }
     },
     "agency:id:nyc-dot-department-of-transportation": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "agency",
         "ref": "agency:id:nyc-dot-department-of-transportation",
@@ -3190,6 +3550,8 @@
               "amount": null,
               "public_status": "In Public Review",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2025M0252",
               "request_id": null,
               "event_id": null,
@@ -3221,6 +3583,8 @@
               "amount": null,
               "public_status": "Noticed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2023Q0424",
               "request_id": null,
               "event_id": null,
@@ -3287,7 +3651,7 @@
             "observed_at": "2025-12-04",
             "input_value": "NYC DOT Department of Transportation"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "applicant_agency",
@@ -3307,7 +3671,7 @@
             "observed_at": "2026-04-14T00:00:00.000",
             "input_value": "NYC DOT Department of Transportation"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -3318,14 +3682,15 @@
         "domains_empty": 3,
         "total_linked_objects": 2,
         "link_count": 2,
+        "join_key_link_count": 0,
         "coverage_rate": 0.2
       }
     },
     "vendor:stem:BP%20347%20MADISON%20ASSOCIATES": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "vendor",
         "ref": "vendor:stem:BP%20347%20MADISON%20ASSOCIATES",
@@ -3355,6 +3720,8 @@
               "amount": null,
               "public_status": "Filed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2026M0211",
               "request_id": null,
               "event_id": null,
@@ -3386,6 +3753,8 @@
               "amount": null,
               "public_status": "Completed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2026M0218",
               "request_id": null,
               "event_id": null,
@@ -3451,7 +3820,7 @@
             "observed_at": "2025-10-06",
             "input_value": "BP 347 Madison Associates, LLC ."
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "applicant_vendor",
@@ -3470,7 +3839,7 @@
             "basis": "land_primary_applicant",
             "input_value": "BP 347 Madison Associates, LLC ."
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -3481,14 +3850,15 @@
         "domains_empty": 3,
         "total_linked_objects": 2,
         "link_count": 2,
+        "join_key_link_count": 0,
         "coverage_rate": 0.2
       }
     },
     "vendor:stem:ERIC%20PALATNIK": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "vendor",
         "ref": "vendor:stem:ERIC%20PALATNIK",
@@ -3518,6 +3888,8 @@
               "amount": null,
               "public_status": "In Public Review",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2024R0300",
               "request_id": null,
               "event_id": null,
@@ -3549,6 +3921,8 @@
               "amount": null,
               "public_status": "Filed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2023K0368",
               "request_id": null,
               "event_id": null,
@@ -3615,7 +3989,7 @@
             "observed_at": "2026-04-07",
             "input_value": "Eric Palatnik"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "applicant_vendor",
@@ -3635,7 +4009,7 @@
             "observed_at": "2026-04-15T00:00:00.000",
             "input_value": "Eric Palatnik"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -3646,14 +4020,589 @@
         "domains_empty": 3,
         "total_linked_objects": 2,
         "link_count": 2,
+        "join_key_link_count": 0,
+        "coverage_rate": 0.2
+      }
+    },
+    "vendor:stem:FIXTURE%20VENDOR%20A": {
+      "ok": true,
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
+      "root": {
+        "kind": "vendor",
+        "ref": "vendor:stem:FIXTURE%20VENDOR%20A",
+        "id": "stem:FIXTURE%20VENDOR%20A",
+        "stem": "FIXTURE VENDOR A",
+        "display_name": "FIXTURE VENDOR A"
+      },
+      "domains": {
+        "money": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "entity:spending:CHK-DCAS-001",
+              "domain": "money",
+              "object_kind": "payment",
+              "label": "DCAS fixture partial payment",
+              "when": "2024-09-01T00:00:00.000",
+              "amount": 50,
+              "public_status": null,
+              "pin": "PIN-FIXTURE-1",
+              "contract_id": "CT-DCAS-FIX001",
+              "document_id": "CHK-DCAS-001",
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:FIXTURE%20VENDOR%20A",
+              "root_kind": "vendor",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-spending",
+                "source_record_id": "checkbook-spending:CHK-DCAS-001",
+                "source_fields": [
+                  "payee_name"
+                ],
+                "basis": "money_payee_name",
+                "observed_at": "2024-09-01T00:00:00.000",
+                "input_value": "FIXTURE VENDOR A"
+              },
+              "link_type": "paid_to_vendor",
+              "confidence": "strong",
+              "method": "checkbook_payment_v1"
+            },
+            {
+              "subject_ref": "notice:FIX001",
+              "domain": "money",
+              "object_kind": "award",
+              "label": "Synthetic fixture row one",
+              "when": "2024-07-01T00:00:00.000",
+              "amount": 100,
+              "public_status": null,
+              "pin": "PIN-FIXTURE-1",
+              "contract_id": "CT-DCAS-FIX001",
+              "document_id": null,
+              "project_id": null,
+              "request_id": "FIX001",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:FIXTURE%20VENDOR%20A",
+              "root_kind": "vendor",
+              "href": "#notice/FIX001",
+              "provenance": {
+                "source_system": "ocp-recent-contract-awards",
+                "source_record_id": "ocp-recent-contract-awards:FIX001",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "money_vendor_name",
+                "observed_at": "2024-07-01T00:00:00.000",
+                "input_value": "FIXTURE VENDOR A"
+              },
+              "link_type": "named_vendor",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            }
+          ],
+          "count": 2
+        },
+        "land": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No land objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "rules": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No rules objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "meetings": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No meetings objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "people": {
+          "status": "not_yet_ingested",
+          "gap_class": "not_yet_ingested",
+          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "objects": [],
+          "count": 0
+        }
+      },
+      "links": [
+        {
+          "type": "contract_published_by_agency",
+          "from": "contract:CT-DCAS-FIX001",
+          "to": "agency:id:citywide-administrative-services",
+          "domain": "money",
+          "confidence": "strong",
+          "method": "contract_id_join_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:FIX001",
+            "source_fields": [
+              "agency_name",
+              "contract_id"
+            ],
+            "basis": "money_contract_agency",
+            "observed_at": "2024-07-01T00:00:00.000",
+            "input_value": "Department of Citywide Administrative Services"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "paid_to_vendor",
+          "from": "entity:spending:CHK-DCAS-001",
+          "to": "vendor:stem:FIXTURE%20VENDOR%20A",
+          "domain": "money",
+          "confidence": "strong",
+          "method": "checkbook_payment_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "checkbook-spending",
+            "source_record_id": "checkbook-spending:CHK-DCAS-001",
+            "source_fields": [
+              "payee_name"
+            ],
+            "basis": "money_payee_name",
+            "observed_at": "2024-09-01T00:00:00.000",
+            "input_value": "FIXTURE VENDOR A"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "payment_on_contract",
+          "from": "entity:spending:CHK-DCAS-001",
+          "to": "contract:CT-DCAS-FIX001",
+          "domain": "money",
+          "confidence": "strong",
+          "method": "checkbook_payment_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "checkbook-spending",
+            "source_record_id": "checkbook-spending:CHK-DCAS-001",
+            "source_fields": [
+              "contract_id"
+            ],
+            "basis": "money_payment_contract",
+            "observed_at": "2024-09-01T00:00:00.000",
+            "input_value": "CT-DCAS-FIX001"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "named_vendor",
+          "from": "notice:FIX001",
+          "to": "vendor:stem:FIXTURE%20VENDOR%20A",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:FIX001",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "2024-07-01T00:00:00.000",
+            "input_value": "FIXTURE VENDOR A",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:FIX001",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "2024-07-01T00:00:00.000",
+            "input_value": "FIXTURE VENDOR A"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "references_contract",
+          "from": "notice:FIX001",
+          "to": "contract:CT-DCAS-FIX001",
+          "method": "contract_id_join_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:FIX001",
+            "source_fields": [
+              "contract_id"
+            ],
+            "basis": "money_contract_id",
+            "observed_at": "2024-07-01T00:00:00.000",
+            "input_value": "CT-DCAS-FIX001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:FIX001",
+            "source_fields": [
+              "contract_id"
+            ],
+            "basis": "money_contract_id",
+            "observed_at": "2024-07-01T00:00:00.000",
+            "input_value": "CT-DCAS-FIX001"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "notice:FIX001",
+          "to": "pin:PIN-FIXTURE-1",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:FIX001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2024-07-01T00:00:00.000",
+            "input_value": "PIN-FIXTURE-1",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:FIX001",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2024-07-01T00:00:00.000",
+            "input_value": "PIN-FIXTURE-1"
+          },
+          "layer": "cross_domain_object_link_v2"
+        }
+      ],
+      "metrics": {
+        "metric": "cross_domain_object_link_coverage",
+        "domains_total": 5,
+        "domains_matched": 1,
+        "domains_not_yet_ingested": 1,
+        "domains_empty": 3,
+        "total_linked_objects": 2,
+        "link_count": 6,
+        "join_key_link_count": 5,
+        "coverage_rate": 0.2
+      }
+    },
+    "vendor:stem:FIXTURE%20VENDOR%20E": {
+      "ok": true,
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
+      "root": {
+        "kind": "vendor",
+        "ref": "vendor:stem:FIXTURE%20VENDOR%20E",
+        "id": "stem:FIXTURE%20VENDOR%20E",
+        "stem": "FIXTURE VENDOR E",
+        "display_name": "FIXTURE VENDOR E"
+      },
+      "domains": {
+        "money": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "entity:spending:CHK-PARKS-001",
+              "domain": "money",
+              "object_kind": "payment",
+              "label": "Parks fixture payment on award FIX005",
+              "when": "2024-08-15T00:00:00.000",
+              "amount": 250,
+              "public_status": null,
+              "pin": "PIN-FIXTURE-5",
+              "contract_id": "CT-PARKS-FIX005",
+              "document_id": "CHK-PARKS-001",
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:FIXTURE%20VENDOR%20E",
+              "root_kind": "vendor",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-spending",
+                "source_record_id": "checkbook-spending:CHK-PARKS-001",
+                "source_fields": [
+                  "payee_name"
+                ],
+                "basis": "money_payee_name",
+                "observed_at": "2024-08-15T00:00:00.000",
+                "input_value": "FIXTURE VENDOR E"
+              },
+              "link_type": "paid_to_vendor",
+              "confidence": "strong",
+              "method": "checkbook_payment_v1"
+            },
+            {
+              "subject_ref": "notice:FIX005",
+              "domain": "money",
+              "object_kind": "award",
+              "label": "Synthetic fixture row five",
+              "when": "2024-07-05T00:00:00.000",
+              "amount": 500,
+              "public_status": null,
+              "pin": "PIN-FIXTURE-5",
+              "contract_id": "CT-PARKS-FIX005",
+              "document_id": null,
+              "project_id": null,
+              "request_id": "FIX005",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:FIXTURE%20VENDOR%20E",
+              "root_kind": "vendor",
+              "href": "#notice/FIX005",
+              "provenance": {
+                "source_system": "ocp-recent-contract-awards",
+                "source_record_id": "ocp-recent-contract-awards:FIX005",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "money_vendor_name",
+                "observed_at": "2024-07-05T00:00:00.000",
+                "input_value": "FIXTURE VENDOR E"
+              },
+              "link_type": "named_vendor",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            }
+          ],
+          "count": 2
+        },
+        "land": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No land objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "rules": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No rules objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "meetings": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No meetings objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "people": {
+          "status": "not_yet_ingested",
+          "gap_class": "not_yet_ingested",
+          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "objects": [],
+          "count": 0
+        }
+      },
+      "links": [
+        {
+          "type": "contract_published_by_agency",
+          "from": "contract:CT-PARKS-FIX005",
+          "to": "agency:id:parks-and-recreation",
+          "domain": "money",
+          "confidence": "strong",
+          "method": "contract_id_join_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:FIX005",
+            "source_fields": [
+              "agency_name",
+              "contract_id"
+            ],
+            "basis": "money_contract_agency",
+            "observed_at": "2024-07-05T00:00:00.000",
+            "input_value": "Department of Parks and Recreation"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "paid_to_vendor",
+          "from": "entity:spending:CHK-PARKS-001",
+          "to": "vendor:stem:FIXTURE%20VENDOR%20E",
+          "domain": "money",
+          "confidence": "strong",
+          "method": "checkbook_payment_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "checkbook-spending",
+            "source_record_id": "checkbook-spending:CHK-PARKS-001",
+            "source_fields": [
+              "payee_name"
+            ],
+            "basis": "money_payee_name",
+            "observed_at": "2024-08-15T00:00:00.000",
+            "input_value": "FIXTURE VENDOR E"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "payment_on_contract",
+          "from": "entity:spending:CHK-PARKS-001",
+          "to": "contract:CT-PARKS-FIX005",
+          "domain": "money",
+          "confidence": "strong",
+          "method": "checkbook_payment_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "checkbook-spending",
+            "source_record_id": "checkbook-spending:CHK-PARKS-001",
+            "source_fields": [
+              "contract_id"
+            ],
+            "basis": "money_payment_contract",
+            "observed_at": "2024-08-15T00:00:00.000",
+            "input_value": "CT-PARKS-FIX005"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "named_vendor",
+          "from": "notice:FIX005",
+          "to": "vendor:stem:FIXTURE%20VENDOR%20E",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:FIX005",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "2024-07-05T00:00:00.000",
+            "input_value": "FIXTURE VENDOR E",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:FIX005",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "2024-07-05T00:00:00.000",
+            "input_value": "FIXTURE VENDOR E"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "references_contract",
+          "from": "notice:FIX005",
+          "to": "contract:CT-PARKS-FIX005",
+          "method": "contract_id_join_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:FIX005",
+            "source_fields": [
+              "contract_id"
+            ],
+            "basis": "money_contract_id",
+            "observed_at": "2024-07-05T00:00:00.000",
+            "input_value": "CT-PARKS-FIX005",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:FIX005",
+            "source_fields": [
+              "contract_id"
+            ],
+            "basis": "money_contract_id",
+            "observed_at": "2024-07-05T00:00:00.000",
+            "input_value": "CT-PARKS-FIX005"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "notice:FIX005",
+          "to": "pin:PIN-FIXTURE-5",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:FIX005",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2024-07-05T00:00:00.000",
+            "input_value": "PIN-FIXTURE-5",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:FIX005",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2024-07-05T00:00:00.000",
+            "input_value": "PIN-FIXTURE-5"
+          },
+          "layer": "cross_domain_object_link_v2"
+        }
+      ],
+      "metrics": {
+        "metric": "cross_domain_object_link_coverage",
+        "domains_total": 5,
+        "domains_matched": 1,
+        "domains_not_yet_ingested": 1,
+        "domains_empty": 3,
+        "total_linked_objects": 2,
+        "link_count": 6,
+        "join_key_link_count": 5,
         "coverage_rate": 0.2
       }
     },
     "vendor:stem:GO%20QUAY": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "vendor",
         "ref": "vendor:stem:GO%20QUAY",
@@ -3683,6 +4632,8 @@
               "amount": null,
               "public_status": "In Public Review",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2024K0358",
               "request_id": null,
               "event_id": null,
@@ -3714,6 +4665,8 @@
               "amount": null,
               "public_status": "In Public Review",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2025K0287",
               "request_id": null,
               "event_id": null,
@@ -3780,7 +4733,7 @@
             "observed_at": "2026-03-19",
             "input_value": "GO Quay LLC"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "applicant_vendor",
@@ -3800,7 +4753,7 @@
             "observed_at": "2026-03-19",
             "input_value": "GO Quay LLC"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -3811,14 +4764,302 @@
         "domains_empty": 3,
         "total_linked_objects": 2,
         "link_count": 2,
+        "join_key_link_count": 0,
+        "coverage_rate": 0.2
+      }
+    },
+    "vendor:stem:MAKE%20IT%20ZESTY": {
+      "ok": true,
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
+      "root": {
+        "kind": "vendor",
+        "ref": "vendor:stem:MAKE%20IT%20ZESTY",
+        "id": "stem:MAKE%20IT%20ZESTY",
+        "stem": "MAKE IT ZESTY",
+        "display_name": "Make it Zesty LLC"
+      },
+      "domains": {
+        "money": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "entity:spending:CHK-Zesty-001",
+              "domain": "money",
+              "object_kind": "payment",
+              "label": "Catering draw on OCP award",
+              "when": "2026-08-01T00:00:00.000",
+              "amount": 12000,
+              "public_status": null,
+              "pin": "81626W0043001",
+              "contract_id": "CT81626W0043001",
+              "document_id": "CHK-Zesty-001",
+              "project_id": null,
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:MAKE%20IT%20ZESTY",
+              "root_kind": "vendor",
+              "href": null,
+              "provenance": {
+                "source_system": "checkbook-spending",
+                "source_record_id": "checkbook-spending:CHK-Zesty-001",
+                "source_fields": [
+                  "payee_name"
+                ],
+                "basis": "money_payee_name",
+                "observed_at": "2026-08-01T00:00:00.000",
+                "input_value": "Make it Zesty LLC"
+              },
+              "link_type": "paid_to_vendor",
+              "confidence": "strong",
+              "method": "checkbook_payment_v1"
+            },
+            {
+              "subject_ref": "notice:20260723031",
+              "domain": "money",
+              "object_kind": "award",
+              "label": "Catering Services",
+              "when": "2026-07-30T00:00:00.000",
+              "amount": 250000,
+              "public_status": null,
+              "pin": "81626W0043001",
+              "contract_id": "CT81626W0043001",
+              "document_id": null,
+              "project_id": null,
+              "request_id": "20260723031",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "bbls": null,
+              "root_ref": "vendor:stem:MAKE%20IT%20ZESTY",
+              "root_kind": "vendor",
+              "href": "#notice/20260723031",
+              "provenance": {
+                "source_system": "ocp-recent-contract-awards",
+                "source_record_id": "ocp-recent-contract-awards:20260723031",
+                "source_fields": [
+                  "vendor_name"
+                ],
+                "basis": "money_vendor_name",
+                "observed_at": "2026-07-30T00:00:00.000",
+                "input_value": "Make it Zesty LLC"
+              },
+              "link_type": "named_vendor",
+              "confidence": "strong",
+              "method": "vendor_stem_v1"
+            }
+          ],
+          "count": 2
+        },
+        "land": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No land objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "rules": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No rules objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "meetings": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No meetings objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "people": {
+          "status": "not_yet_ingested",
+          "gap_class": "not_yet_ingested",
+          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "objects": [],
+          "count": 0
+        }
+      },
+      "links": [
+        {
+          "type": "contract_published_by_agency",
+          "from": "contract:CT81626W0043001",
+          "to": "agency:id:health-and-mental-hygiene",
+          "domain": "money",
+          "confidence": "strong",
+          "method": "contract_id_join_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260723031",
+            "source_fields": [
+              "agency_name",
+              "contract_id"
+            ],
+            "basis": "money_contract_agency",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "Health and Mental Hygiene"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "paid_to_vendor",
+          "from": "entity:spending:CHK-Zesty-001",
+          "to": "vendor:stem:MAKE%20IT%20ZESTY",
+          "domain": "money",
+          "confidence": "strong",
+          "method": "checkbook_payment_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "checkbook-spending",
+            "source_record_id": "checkbook-spending:CHK-Zesty-001",
+            "source_fields": [
+              "payee_name"
+            ],
+            "basis": "money_payee_name",
+            "observed_at": "2026-08-01T00:00:00.000",
+            "input_value": "Make it Zesty LLC"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "payment_on_contract",
+          "from": "entity:spending:CHK-Zesty-001",
+          "to": "contract:CT81626W0043001",
+          "domain": "money",
+          "confidence": "strong",
+          "method": "checkbook_payment_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "checkbook-spending",
+            "source_record_id": "checkbook-spending:CHK-Zesty-001",
+            "source_fields": [
+              "contract_id"
+            ],
+            "basis": "money_payment_contract",
+            "observed_at": "2026-08-01T00:00:00.000",
+            "input_value": "CT81626W0043001"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "named_vendor",
+          "from": "notice:20260723031",
+          "to": "vendor:stem:MAKE%20IT%20ZESTY",
+          "method": "vendor_stem_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260723031",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "Make it Zesty LLC",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260723031",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "money_vendor_name",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "Make it Zesty LLC"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "references_contract",
+          "from": "notice:20260723031",
+          "to": "contract:CT81626W0043001",
+          "method": "contract_id_join_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260723031",
+            "source_fields": [
+              "contract_id"
+            ],
+            "basis": "money_contract_id",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "CT81626W0043001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260723031",
+            "source_fields": [
+              "contract_id"
+            ],
+            "basis": "money_contract_id",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "CT81626W0043001"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "notice:20260723031",
+          "to": "pin:81626W0043001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260723031",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "81626W0043001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260723031",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "81626W0043001"
+          },
+          "layer": "cross_domain_object_link_v2"
+        }
+      ],
+      "metrics": {
+        "metric": "cross_domain_object_link_coverage",
+        "domains_total": 5,
+        "domains_matched": 1,
+        "domains_not_yet_ingested": 1,
+        "domains_empty": 3,
+        "total_linked_objects": 2,
+        "link_count": 6,
+        "join_key_link_count": 5,
         "coverage_rate": 0.2
       }
     },
     "vendor:stem:PHIPPS%20HOUSES": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "vendor",
         "ref": "vendor:stem:PHIPPS%20HOUSES",
@@ -3848,6 +5089,8 @@
               "amount": null,
               "public_status": "Noticed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2023X0149",
               "request_id": null,
               "event_id": null,
@@ -3879,6 +5122,8 @@
               "amount": null,
               "public_status": "Noticed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2022X0393",
               "request_id": null,
               "event_id": null,
@@ -3945,7 +5190,7 @@
             "observed_at": "2026-04-17T00:00:00.000",
             "input_value": "Phipps Houses"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "applicant_vendor",
@@ -3965,7 +5210,7 @@
             "observed_at": "2026-04-20T00:00:00.000",
             "input_value": "Phipps Houses"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -3976,14 +5221,15 @@
         "domains_empty": 3,
         "total_linked_objects": 2,
         "link_count": 2,
+        "join_key_link_count": 0,
         "coverage_rate": 0.2
       }
     },
     "vendor:stem:PRINCE%20ST%20606": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "vendor",
         "ref": "vendor:stem:PRINCE%20ST%20606",
@@ -4013,6 +5259,8 @@
               "amount": null,
               "public_status": "In Public Review",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2024Q0419",
               "request_id": null,
               "event_id": null,
@@ -4044,6 +5292,8 @@
               "amount": null,
               "public_status": "In Public Review",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2021Q0168",
               "request_id": null,
               "event_id": null,
@@ -4110,7 +5360,7 @@
             "observed_at": "2023-07-17",
             "input_value": "PRINCE ST 606 LLC"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "applicant_vendor",
@@ -4130,7 +5380,7 @@
             "observed_at": "2026-03-25",
             "input_value": "PRINCE ST 606 LLC"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -4141,14 +5391,15 @@
         "domains_empty": 3,
         "total_linked_objects": 2,
         "link_count": 2,
+        "join_key_link_count": 0,
         "coverage_rate": 0.2
       }
     },
     "vendor:stem:SILVERSTEIN%20MB": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "vendor",
         "ref": "vendor:stem:SILVERSTEIN%20MB",
@@ -4178,6 +5429,8 @@
               "amount": null,
               "public_status": "Filed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2020M0325",
               "request_id": null,
               "event_id": null,
@@ -4209,6 +5462,8 @@
               "amount": null,
               "public_status": "Filed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "P2014M0309",
               "request_id": null,
               "event_id": null,
@@ -4275,7 +5530,7 @@
             "observed_at": "2022-12-05",
             "input_value": "SILVERSTEIN MB LLC"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "applicant_vendor",
@@ -4295,7 +5550,7 @@
             "observed_at": "2022-12-05",
             "input_value": "SILVERSTEIN MB LLC"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -4306,14 +5561,15 @@
         "domains_empty": 3,
         "total_linked_objects": 2,
         "link_count": 2,
+        "join_key_link_count": 0,
         "coverage_rate": 0.2
       }
     },
     "vendor:stem:THE%20DURST%20ORGANIZATION": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "vendor",
         "ref": "vendor:stem:THE%20DURST%20ORGANIZATION",
@@ -4343,6 +5599,8 @@
               "amount": null,
               "public_status": "In Public Review",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2019M0453",
               "request_id": null,
               "event_id": null,
@@ -4374,6 +5632,8 @@
               "amount": null,
               "public_status": "In Public Review",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2019M0455",
               "request_id": null,
               "event_id": null,
@@ -4440,7 +5700,7 @@
             "observed_at": "2019-10-19",
             "input_value": "The Durst Organization"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "applicant_vendor",
@@ -4460,7 +5720,7 @@
             "observed_at": "2019-10-19",
             "input_value": "The Durst Organization"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -4471,14 +5731,15 @@
         "domains_empty": 3,
         "total_linked_objects": 2,
         "link_count": 2,
+        "join_key_link_count": 0,
         "coverage_rate": 0.2
       }
     },
     "vendor:stem:WATERSHORE%20VIEWS": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "vendor",
         "ref": "vendor:stem:WATERSHORE%20VIEWS",
@@ -4508,6 +5769,8 @@
               "amount": null,
               "public_status": "Filed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2024K0444",
               "request_id": null,
               "event_id": null,
@@ -4539,6 +5802,8 @@
               "amount": null,
               "public_status": "Filed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2025K0305",
               "request_id": null,
               "event_id": null,
@@ -4605,7 +5870,7 @@
             "observed_at": "2026-03-18",
             "input_value": "Watershore Views LLC"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "applicant_vendor",
@@ -4625,7 +5890,7 @@
             "observed_at": "2026-01-07",
             "input_value": "Watershore Views LLC"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -4636,14 +5901,15 @@
         "domains_empty": 3,
         "total_linked_objects": 2,
         "link_count": 2,
+        "join_key_link_count": 0,
         "coverage_rate": 0.2
       }
     },
     "agency:id:city-council": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "agency",
         "ref": "agency:id:city-council",
@@ -4688,6 +5954,8 @@
               "amount": null,
               "public_status": null,
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": null,
               "request_id": "20260706036",
               "event_id": "22526",
@@ -4740,7 +6008,7 @@
             "observed_at": "2026-07-06",
             "input_value": "City Council"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -4751,14 +6019,15 @@
         "domains_empty": 3,
         "total_linked_objects": 1,
         "link_count": 1,
+        "join_key_link_count": 0,
         "coverage_rate": 0.2
       }
     },
     "agency:id:city-planning": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "agency",
         "ref": "agency:id:city-planning",
@@ -4789,6 +6058,8 @@
               "amount": null,
               "public_status": "In Public Review",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2026Y0360",
               "request_id": null,
               "event_id": null,
@@ -4853,7 +6124,7 @@
             "basis": "land_primary_applicant",
             "input_value": "DCP Department of City Planning"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -4864,14 +6135,15 @@
         "domains_empty": 3,
         "total_linked_objects": 1,
         "link_count": 1,
+        "join_key_link_count": 0,
         "coverage_rate": 0.2
       }
     },
     "agency:id:dcas-nyc-department-of-citywide-administrative-services": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "agency",
         "ref": "agency:id:dcas-nyc-department-of-citywide-administrative-services",
@@ -4902,6 +6174,8 @@
               "amount": null,
               "public_status": "Noticed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2025K0497",
               "request_id": null,
               "event_id": null,
@@ -4968,7 +6242,7 @@
             "observed_at": "2026-04-06",
             "input_value": "DCAS - NYC Department of Citywide Administrative Services"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -4979,14 +6253,15 @@
         "domains_empty": 3,
         "total_linked_objects": 1,
         "link_count": 1,
+        "join_key_link_count": 0,
         "coverage_rate": 0.2
       }
     },
     "agency:id:dep-new-york-city-department-of-environmental-protection": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "agency",
         "ref": "agency:id:dep-new-york-city-department-of-environmental-protection",
@@ -5017,6 +6292,8 @@
               "amount": null,
               "public_status": "Filed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2019R0267",
               "request_id": null,
               "event_id": null,
@@ -5083,7 +6360,7 @@
             "observed_at": "2020-11-27",
             "input_value": "DEP - New York City Department of Environmental Protection"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -5094,14 +6371,15 @@
         "domains_empty": 3,
         "total_linked_objects": 1,
         "link_count": 1,
+        "join_key_link_count": 0,
         "coverage_rate": 0.2
       }
     },
     "agency:id:department-of-education": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "agency",
         "ref": "agency:id:department-of-education",
@@ -5125,6 +6403,8 @@
               "amount": 400,
               "public_status": null,
               "pin": "PIN-FIXTURE-4",
+              "contract_id": null,
+              "document_id": null,
               "project_id": null,
               "request_id": "FIX004",
               "event_id": null,
@@ -5210,7 +6490,39 @@
             "observed_at": "2024-07-04T00:00:00.000",
             "input_value": "Department of Education"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "notice:FIX004",
+          "to": "pin:PIN-FIXTURE-4",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:FIX004",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2024-07-04T00:00:00.000",
+            "input_value": "PIN-FIXTURE-4",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:FIX004",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2024-07-04T00:00:00.000",
+            "input_value": "PIN-FIXTURE-4"
+          },
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -5220,15 +6532,16 @@
         "domains_not_yet_ingested": 1,
         "domains_empty": 3,
         "total_linked_objects": 1,
-        "link_count": 1,
+        "link_count": 2,
+        "join_key_link_count": 1,
         "coverage_rate": 0.2
       }
     },
     "agency:id:department-of-environmental-protection": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "agency",
         "ref": "agency:id:department-of-environmental-protection",
@@ -5252,6 +6565,8 @@
               "amount": 300,
               "public_status": null,
               "pin": "PIN-FIXTURE-3",
+              "contract_id": null,
+              "document_id": null,
               "project_id": null,
               "request_id": "FIX003",
               "event_id": null,
@@ -5337,7 +6652,39 @@
             "observed_at": "2024-07-03T00:00:00.000",
             "input_value": "Department of Environmental Protection"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "notice:FIX003",
+          "to": "pin:PIN-FIXTURE-3",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:FIX003",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2024-07-03T00:00:00.000",
+            "input_value": "PIN-FIXTURE-3",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:FIX003",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2024-07-03T00:00:00.000",
+            "input_value": "PIN-FIXTURE-3"
+          },
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -5347,15 +6694,16 @@
         "domains_not_yet_ingested": 1,
         "domains_empty": 3,
         "total_linked_objects": 1,
-        "link_count": 1,
+        "link_count": 2,
+        "join_key_link_count": 1,
         "coverage_rate": 0.2
       }
     },
     "agency:id:fdny-fire-department-of-nyc": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "agency",
         "ref": "agency:id:fdny-fire-department-of-nyc",
@@ -5386,6 +6734,8 @@
               "amount": null,
               "public_status": "Noticed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2026R0127",
               "request_id": null,
               "event_id": null,
@@ -5452,7 +6802,7 @@
             "observed_at": "2026-04-16T00:00:00.000",
             "input_value": "FDNY - Fire Department of NYC"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -5463,14 +6813,15 @@
         "domains_empty": 3,
         "total_linked_objects": 1,
         "link_count": 1,
+        "join_key_link_count": 0,
         "coverage_rate": 0.2
       }
     },
     "agency:id:health-and-mental-hygiene": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "agency",
         "ref": "agency:id:health-and-mental-hygiene",
@@ -5494,6 +6845,8 @@
               "amount": 250000,
               "public_status": null,
               "pin": "81626W0043001",
+              "contract_id": "CT81626W0043001",
+              "document_id": null,
               "project_id": null,
               "request_id": "20260723031",
               "event_id": null,
@@ -5550,6 +6903,27 @@
       },
       "links": [
         {
+          "type": "contract_published_by_agency",
+          "from": "contract:CT81626W0043001",
+          "to": "agency:id:health-and-mental-hygiene",
+          "domain": "money",
+          "confidence": "strong",
+          "method": "contract_id_join_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260723031",
+            "source_fields": [
+              "agency_name",
+              "contract_id"
+            ],
+            "basis": "money_contract_agency",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "Health and Mental Hygiene"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
           "type": "published_by_agency",
           "from": "notice:20260723031",
           "to": "agency:id:health-and-mental-hygiene",
@@ -5579,7 +6953,71 @@
             "observed_at": "2026-07-30T00:00:00.000",
             "input_value": "Health and Mental Hygiene"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "references_contract",
+          "from": "notice:20260723031",
+          "to": "contract:CT81626W0043001",
+          "method": "contract_id_join_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260723031",
+            "source_fields": [
+              "contract_id"
+            ],
+            "basis": "money_contract_id",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "CT81626W0043001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260723031",
+            "source_fields": [
+              "contract_id"
+            ],
+            "basis": "money_contract_id",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "CT81626W0043001"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "notice:20260723031",
+          "to": "pin:81626W0043001",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260723031",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "81626W0043001",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260723031",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "81626W0043001"
+          },
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -5589,15 +7027,16 @@
         "domains_not_yet_ingested": 1,
         "domains_empty": 3,
         "total_linked_objects": 1,
-        "link_count": 1,
+        "link_count": 4,
+        "join_key_link_count": 3,
         "coverage_rate": 0.2
       }
     },
     "agency:id:mayors-office-of-criminal-justice": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "agency",
         "ref": "agency:id:mayors-office-of-criminal-justice",
@@ -5628,6 +7067,8 @@
               "amount": null,
               "public_status": "In Public Review",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2025R0137",
               "request_id": null,
               "event_id": null,
@@ -5694,7 +7135,7 @@
             "observed_at": "2026-04-09",
             "input_value": "Mayor's Office of Criminal Justice"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -5705,14 +7146,15 @@
         "domains_empty": 3,
         "total_linked_objects": 1,
         "link_count": 1,
+        "join_key_link_count": 0,
         "coverage_rate": 0.2
       }
     },
     "agency:id:new-york-state-department-of-transportation": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "agency",
         "ref": "agency:id:new-york-state-department-of-transportation",
@@ -5743,6 +7185,8 @@
               "amount": null,
               "public_status": "Filed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "P2016Q0288",
               "request_id": null,
               "event_id": null,
@@ -5809,7 +7253,7 @@
             "observed_at": "2021-11-08",
             "input_value": "NEW YORK STATE DEPARTMENT OF TRANSPORTATION"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -5820,14 +7264,15 @@
         "domains_empty": 3,
         "total_linked_objects": 1,
         "link_count": 1,
+        "join_key_link_count": 0,
         "coverage_rate": 0.2
       }
     },
     "agency:id:ny-state-department-of-transporation": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "agency",
         "ref": "agency:id:ny-state-department-of-transporation",
@@ -5858,6 +7303,8 @@
               "amount": null,
               "public_status": "Filed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "P2016K0287",
               "request_id": null,
               "event_id": null,
@@ -5924,7 +7371,7 @@
             "observed_at": "2021-11-08",
             "input_value": "NY STATE DEPARTMENT OF TRANSPORATION"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -5935,14 +7382,15 @@
         "domains_empty": 3,
         "total_linked_objects": 1,
         "link_count": 1,
+        "join_key_link_count": 0,
         "coverage_rate": 0.2
       }
     },
     "agency:id:nyc-dot-new-york-city-dept-of-transportation-bridges": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "agency",
         "ref": "agency:id:nyc-dot-new-york-city-dept-of-transportation-bridges",
@@ -5973,6 +7421,8 @@
               "amount": null,
               "public_status": "Noticed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2023R0199",
               "request_id": null,
               "event_id": null,
@@ -6039,7 +7489,7 @@
             "observed_at": "2026-04-15T00:00:00.000",
             "input_value": "NYC DOT New York City Dept. of Transportation - Bridges"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -6050,14 +7500,15 @@
         "domains_empty": 3,
         "total_linked_objects": 1,
         "link_count": 1,
+        "join_key_link_count": 0,
         "coverage_rate": 0.2
       }
     },
     "agency:id:sca-new-york-city-school-construction-authority": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "agency",
         "ref": "agency:id:sca-new-york-city-school-construction-authority",
@@ -6088,6 +7539,8 @@
               "amount": null,
               "public_status": "Filed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2022R0134",
               "request_id": null,
               "event_id": null,
@@ -6152,7 +7605,7 @@
             "basis": "land_primary_applicant",
             "input_value": "SCA - New York City School Construction Authority"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -6163,14 +7616,15 @@
         "domains_empty": 3,
         "total_linked_objects": 1,
         "link_count": 1,
+        "join_key_link_count": 0,
         "coverage_rate": 0.2
       }
     },
     "agency:id:youth-and-community-development": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "agency",
         "ref": "agency:id:youth-and-community-development",
@@ -6194,6 +7648,8 @@
               "amount": 2540261,
               "public_status": null,
               "pin": "26026N0011014",
+              "contract_id": "CT26026N0011014",
+              "document_id": null,
               "project_id": null,
               "request_id": "20260724015",
               "event_id": null,
@@ -6250,6 +7706,27 @@
       },
       "links": [
         {
+          "type": "contract_published_by_agency",
+          "from": "contract:CT26026N0011014",
+          "to": "agency:id:youth-and-community-development",
+          "domain": "money",
+          "confidence": "strong",
+          "method": "contract_id_join_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260724015",
+            "source_fields": [
+              "agency_name",
+              "contract_id"
+            ],
+            "basis": "money_contract_agency",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "Youth and Community Development"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
           "type": "published_by_agency",
           "from": "notice:20260724015",
           "to": "agency:id:youth-and-community-development",
@@ -6279,7 +7756,71 @@
             "observed_at": "2026-07-30T00:00:00.000",
             "input_value": "Youth and Community Development"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "references_contract",
+          "from": "notice:20260724015",
+          "to": "contract:CT26026N0011014",
+          "method": "contract_id_join_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260724015",
+            "source_fields": [
+              "contract_id"
+            ],
+            "basis": "money_contract_id",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "CT26026N0011014",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260724015",
+            "source_fields": [
+              "contract_id"
+            ],
+            "basis": "money_contract_id",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "CT26026N0011014"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "shares_authority_key",
+          "from": "notice:20260724015",
+          "to": "pin:26026N0011014",
+          "method": "pin_authority_key_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260724015",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "26026N0011014",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260724015",
+            "source_fields": [
+              "pin"
+            ],
+            "basis": "money_pin",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "26026N0011014"
+          },
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -6289,15 +7830,16 @@
         "domains_not_yet_ingested": 1,
         "domains_empty": 3,
         "total_linked_objects": 1,
-        "link_count": 1,
+        "link_count": 4,
+        "join_key_link_count": 3,
         "coverage_rate": 0.2
       }
     },
     "vendor:stem:100%20QUEENS%20BLVD": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "vendor",
         "ref": "vendor:stem:100%20QUEENS%20BLVD",
@@ -6327,6 +7869,8 @@
               "amount": null,
               "public_status": "Noticed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2023Q0450",
               "request_id": null,
               "event_id": null,
@@ -6393,7 +7937,7 @@
             "observed_at": "2026-01-08",
             "input_value": "100 Queens Blvd Co. LLC"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -6404,14 +7948,15 @@
         "domains_empty": 3,
         "total_linked_objects": 1,
         "link_count": 1,
+        "join_key_link_count": 0,
         "coverage_rate": 0.2
       }
     },
     "vendor:stem:100%20WALL%20REALTY": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "vendor",
         "ref": "vendor:stem:100%20WALL%20REALTY",
@@ -6441,6 +7986,8 @@
               "amount": null,
               "public_status": "Filed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2026M0120",
               "request_id": null,
               "event_id": null,
@@ -6507,7 +8054,7 @@
             "observed_at": "2026-03-19",
             "input_value": "100 Wall Realty LLC"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -6518,14 +8065,15 @@
         "domains_empty": 3,
         "total_linked_objects": 1,
         "link_count": 1,
+        "join_key_link_count": 0,
         "coverage_rate": 0.2
       }
     },
     "vendor:stem:108%20DUNKIRK%20STREET": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "vendor",
         "ref": "vendor:stem:108%20DUNKIRK%20STREET",
@@ -6555,6 +8103,8 @@
               "amount": null,
               "public_status": "Filed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2020Q0240",
               "request_id": null,
               "event_id": null,
@@ -6621,7 +8171,7 @@
             "observed_at": "2020-06-19",
             "input_value": "108 Dunkirk Street LLC"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -6632,14 +8182,15 @@
         "domains_empty": 3,
         "total_linked_objects": 1,
         "link_count": 1,
+        "join_key_link_count": 0,
         "coverage_rate": 0.2
       }
     },
     "vendor:stem:108%20REALTY%20GROUP": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "vendor",
         "ref": "vendor:stem:108%20REALTY%20GROUP",
@@ -6669,6 +8220,8 @@
               "amount": null,
               "public_status": "In Public Review",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2025Q0142",
               "request_id": null,
               "event_id": null,
@@ -6735,7 +8288,7 @@
             "observed_at": "2026-04-14T00:00:00.000",
             "input_value": "108 Realty Group Inc."
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -6746,14 +8299,15 @@
         "domains_empty": 3,
         "total_linked_objects": 1,
         "link_count": 1,
+        "join_key_link_count": 0,
         "coverage_rate": 0.2
       }
     },
     "vendor:stem:108%20ST": {
       "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
+      "version": "cross_domain_object_link_v2",
+      "method": "cross_domain_identity_v2",
+      "method_version": "2.0.0",
       "root": {
         "kind": "vendor",
         "ref": "vendor:stem:108%20ST",
@@ -6783,6 +8337,8 @@
               "amount": null,
               "public_status": "Noticed",
               "pin": null,
+              "contract_id": null,
+              "document_id": null,
               "project_id": "2025Q0247",
               "request_id": null,
               "event_id": null,
@@ -6852,7 +8408,7 @@
             "observed_at": "2026-04-21T00:00:00.000",
             "input_value": "108 ST ., LLC"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -6873,7 +8429,7 @@
             "observed_at": "2026-04-21T00:00:00.000",
             "input_value": "4022210001"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         },
         {
           "type": "sited_on_parcel",
@@ -6894,7 +8450,7 @@
             "observed_at": "2026-04-21T00:00:00.000",
             "input_value": "4022210006"
           },
-          "layer": "cross_domain_object_link_v1"
+          "layer": "cross_domain_object_link_v2"
         }
       ],
       "metrics": {
@@ -6905,613 +8461,7 @@
         "domains_empty": 3,
         "total_linked_objects": 1,
         "link_count": 3,
-        "coverage_rate": 0.2
-      }
-    },
-    "vendor:stem:1130%20TIFFANY%20STREET": {
-      "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
-      "root": {
-        "kind": "vendor",
-        "ref": "vendor:stem:1130%20TIFFANY%20STREET",
-        "id": "stem:1130%20TIFFANY%20STREET",
-        "stem": "1130 TIFFANY STREET",
-        "display_name": "1130 Tiffany Street LLC"
-      },
-      "domains": {
-        "money": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No money objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "land": {
-          "status": "matched",
-          "gap_class": null,
-          "note": null,
-          "objects": [
-            {
-              "subject_ref": "project:2024X0210",
-              "domain": "land",
-              "object_kind": "project",
-              "label": "893-895 East 167th Street Rezoning",
-              "when": "2026-04-07",
-              "amount": null,
-              "public_status": "Filed",
-              "pin": null,
-              "project_id": "2024X0210",
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "vendor:stem:1130%20TIFFANY%20STREET",
-              "root_kind": "vendor",
-              "href": "#land?project=2024X0210",
-              "provenance": {
-                "source_system": "warehouse",
-                "source_record_id": "warehouse:2024X0210",
-                "source_fields": [
-                  "primary_applicant"
-                ],
-                "basis": "land_primary_applicant",
-                "observed_at": "2026-04-07",
-                "input_value": "1130 Tiffany Street LLC"
-              },
-              "link_type": "applicant_vendor",
-              "confidence": "tentative",
-              "method": "vendor_stem_v1"
-            }
-          ],
-          "count": 1
-        },
-        "rules": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No rules objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "meetings": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No meetings objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
-          "objects": [],
-          "count": 0
-        }
-      },
-      "links": [
-        {
-          "type": "applicant_vendor",
-          "from": "project:2024X0210",
-          "to": "vendor:stem:1130%20TIFFANY%20STREET",
-          "domain": "land",
-          "confidence": "tentative",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "warehouse",
-            "source_record_id": "warehouse:2024X0210",
-            "source_fields": [
-              "primary_applicant"
-            ],
-            "basis": "land_primary_applicant",
-            "observed_at": "2026-04-07",
-            "input_value": "1130 Tiffany Street LLC"
-          },
-          "layer": "cross_domain_object_link_v1"
-        }
-      ],
-      "metrics": {
-        "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
-        "domains_matched": 1,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
-        "total_linked_objects": 1,
-        "link_count": 1,
-        "coverage_rate": 0.2
-      }
-    },
-    "vendor:stem:135%20SAPPHIRE": {
-      "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
-      "root": {
-        "kind": "vendor",
-        "ref": "vendor:stem:135%20SAPPHIRE",
-        "id": "stem:135%20SAPPHIRE",
-        "stem": "135 SAPPHIRE",
-        "display_name": "135 Sapphire LLC"
-      },
-      "domains": {
-        "money": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No money objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "land": {
-          "status": "matched",
-          "gap_class": null,
-          "note": null,
-          "objects": [
-            {
-              "subject_ref": "project:2024Q0219",
-              "domain": "land",
-              "object_kind": "project",
-              "label": "135-27 Sapphire Street Rezoning",
-              "when": "2026-04-22T00:00:00.000",
-              "amount": null,
-              "public_status": "Noticed",
-              "pin": null,
-              "project_id": "2024Q0219",
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": "250329ZMQ; N250330ZRQ",
-              "bbls": [
-                "4113840015",
-                "4113840024",
-                "4113840028",
-                "4113840029",
-                "4113840032",
-                "4113840034",
-                "4113840037",
-                "4113840038",
-                "4113840039",
-                "4113840040",
-                "4113840042",
-                "4113840045"
-              ],
-              "root_ref": "vendor:stem:135%20SAPPHIRE",
-              "root_kind": "vendor",
-              "href": "#land?project=2024Q0219",
-              "provenance": {
-                "source_system": "zap-projects",
-                "source_record_id": "zap-projects:2024Q0219",
-                "source_fields": [
-                  "primary_applicant"
-                ],
-                "basis": "land_primary_applicant",
-                "observed_at": "2026-04-22T00:00:00.000",
-                "input_value": "135 Sapphire LLC"
-              },
-              "link_type": "applicant_vendor",
-              "confidence": "tentative",
-              "method": "vendor_stem_v1"
-            }
-          ],
-          "count": 1
-        },
-        "rules": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No rules objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "meetings": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No meetings objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
-          "objects": [],
-          "count": 0
-        }
-      },
-      "links": [
-        {
-          "type": "applicant_vendor",
-          "from": "project:2024Q0219",
-          "to": "vendor:stem:135%20SAPPHIRE",
-          "domain": "land",
-          "confidence": "tentative",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "zap-projects",
-            "source_record_id": "zap-projects:2024Q0219",
-            "source_fields": [
-              "primary_applicant"
-            ],
-            "basis": "land_primary_applicant",
-            "observed_at": "2026-04-22T00:00:00.000",
-            "input_value": "135 Sapphire LLC"
-          },
-          "layer": "cross_domain_object_link_v1"
-        },
-        {
-          "type": "sited_on_parcel",
-          "from": "project:2024Q0219",
-          "to": "parcel:4113840015",
-          "domain": "land",
-          "confidence": "strong",
-          "method": "zap_bbl_project_id_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "zap-projects",
-            "source_record_id": "zap-projects:2024Q0219:4113840015",
-            "source_fields": [
-              "bbl",
-              "project_id"
-            ],
-            "basis": "land_project_bbl",
-            "observed_at": "2026-04-22T00:00:00.000",
-            "input_value": "4113840015"
-          },
-          "layer": "cross_domain_object_link_v1"
-        },
-        {
-          "type": "sited_on_parcel",
-          "from": "project:2024Q0219",
-          "to": "parcel:4113840024",
-          "domain": "land",
-          "confidence": "strong",
-          "method": "zap_bbl_project_id_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "zap-projects",
-            "source_record_id": "zap-projects:2024Q0219:4113840024",
-            "source_fields": [
-              "bbl",
-              "project_id"
-            ],
-            "basis": "land_project_bbl",
-            "observed_at": "2026-04-22T00:00:00.000",
-            "input_value": "4113840024"
-          },
-          "layer": "cross_domain_object_link_v1"
-        },
-        {
-          "type": "sited_on_parcel",
-          "from": "project:2024Q0219",
-          "to": "parcel:4113840028",
-          "domain": "land",
-          "confidence": "strong",
-          "method": "zap_bbl_project_id_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "zap-projects",
-            "source_record_id": "zap-projects:2024Q0219:4113840028",
-            "source_fields": [
-              "bbl",
-              "project_id"
-            ],
-            "basis": "land_project_bbl",
-            "observed_at": "2026-04-22T00:00:00.000",
-            "input_value": "4113840028"
-          },
-          "layer": "cross_domain_object_link_v1"
-        },
-        {
-          "type": "sited_on_parcel",
-          "from": "project:2024Q0219",
-          "to": "parcel:4113840029",
-          "domain": "land",
-          "confidence": "strong",
-          "method": "zap_bbl_project_id_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "zap-projects",
-            "source_record_id": "zap-projects:2024Q0219:4113840029",
-            "source_fields": [
-              "bbl",
-              "project_id"
-            ],
-            "basis": "land_project_bbl",
-            "observed_at": "2026-04-22T00:00:00.000",
-            "input_value": "4113840029"
-          },
-          "layer": "cross_domain_object_link_v1"
-        },
-        {
-          "type": "sited_on_parcel",
-          "from": "project:2024Q0219",
-          "to": "parcel:4113840032",
-          "domain": "land",
-          "confidence": "strong",
-          "method": "zap_bbl_project_id_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "zap-projects",
-            "source_record_id": "zap-projects:2024Q0219:4113840032",
-            "source_fields": [
-              "bbl",
-              "project_id"
-            ],
-            "basis": "land_project_bbl",
-            "observed_at": "2026-04-22T00:00:00.000",
-            "input_value": "4113840032"
-          },
-          "layer": "cross_domain_object_link_v1"
-        },
-        {
-          "type": "sited_on_parcel",
-          "from": "project:2024Q0219",
-          "to": "parcel:4113840034",
-          "domain": "land",
-          "confidence": "strong",
-          "method": "zap_bbl_project_id_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "zap-projects",
-            "source_record_id": "zap-projects:2024Q0219:4113840034",
-            "source_fields": [
-              "bbl",
-              "project_id"
-            ],
-            "basis": "land_project_bbl",
-            "observed_at": "2026-04-22T00:00:00.000",
-            "input_value": "4113840034"
-          },
-          "layer": "cross_domain_object_link_v1"
-        },
-        {
-          "type": "sited_on_parcel",
-          "from": "project:2024Q0219",
-          "to": "parcel:4113840037",
-          "domain": "land",
-          "confidence": "strong",
-          "method": "zap_bbl_project_id_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "zap-projects",
-            "source_record_id": "zap-projects:2024Q0219:4113840037",
-            "source_fields": [
-              "bbl",
-              "project_id"
-            ],
-            "basis": "land_project_bbl",
-            "observed_at": "2026-04-22T00:00:00.000",
-            "input_value": "4113840037"
-          },
-          "layer": "cross_domain_object_link_v1"
-        },
-        {
-          "type": "sited_on_parcel",
-          "from": "project:2024Q0219",
-          "to": "parcel:4113840038",
-          "domain": "land",
-          "confidence": "strong",
-          "method": "zap_bbl_project_id_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "zap-projects",
-            "source_record_id": "zap-projects:2024Q0219:4113840038",
-            "source_fields": [
-              "bbl",
-              "project_id"
-            ],
-            "basis": "land_project_bbl",
-            "observed_at": "2026-04-22T00:00:00.000",
-            "input_value": "4113840038"
-          },
-          "layer": "cross_domain_object_link_v1"
-        },
-        {
-          "type": "sited_on_parcel",
-          "from": "project:2024Q0219",
-          "to": "parcel:4113840039",
-          "domain": "land",
-          "confidence": "strong",
-          "method": "zap_bbl_project_id_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "zap-projects",
-            "source_record_id": "zap-projects:2024Q0219:4113840039",
-            "source_fields": [
-              "bbl",
-              "project_id"
-            ],
-            "basis": "land_project_bbl",
-            "observed_at": "2026-04-22T00:00:00.000",
-            "input_value": "4113840039"
-          },
-          "layer": "cross_domain_object_link_v1"
-        },
-        {
-          "type": "sited_on_parcel",
-          "from": "project:2024Q0219",
-          "to": "parcel:4113840040",
-          "domain": "land",
-          "confidence": "strong",
-          "method": "zap_bbl_project_id_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "zap-projects",
-            "source_record_id": "zap-projects:2024Q0219:4113840040",
-            "source_fields": [
-              "bbl",
-              "project_id"
-            ],
-            "basis": "land_project_bbl",
-            "observed_at": "2026-04-22T00:00:00.000",
-            "input_value": "4113840040"
-          },
-          "layer": "cross_domain_object_link_v1"
-        },
-        {
-          "type": "sited_on_parcel",
-          "from": "project:2024Q0219",
-          "to": "parcel:4113840042",
-          "domain": "land",
-          "confidence": "strong",
-          "method": "zap_bbl_project_id_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "zap-projects",
-            "source_record_id": "zap-projects:2024Q0219:4113840042",
-            "source_fields": [
-              "bbl",
-              "project_id"
-            ],
-            "basis": "land_project_bbl",
-            "observed_at": "2026-04-22T00:00:00.000",
-            "input_value": "4113840042"
-          },
-          "layer": "cross_domain_object_link_v1"
-        },
-        {
-          "type": "sited_on_parcel",
-          "from": "project:2024Q0219",
-          "to": "parcel:4113840045",
-          "domain": "land",
-          "confidence": "strong",
-          "method": "zap_bbl_project_id_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "zap-projects",
-            "source_record_id": "zap-projects:2024Q0219:4113840045",
-            "source_fields": [
-              "bbl",
-              "project_id"
-            ],
-            "basis": "land_project_bbl",
-            "observed_at": "2026-04-22T00:00:00.000",
-            "input_value": "4113840045"
-          },
-          "layer": "cross_domain_object_link_v1"
-        }
-      ],
-      "metrics": {
-        "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
-        "domains_matched": 1,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
-        "total_linked_objects": 1,
-        "link_count": 13,
-        "coverage_rate": 0.2
-      }
-    },
-    "vendor:stem:165-25%20UNION%20TURNPIKE": {
-      "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
-      "root": {
-        "kind": "vendor",
-        "ref": "vendor:stem:165-25%20UNION%20TURNPIKE",
-        "id": "stem:165-25%20UNION%20TURNPIKE",
-        "stem": "165-25 UNION TURNPIKE",
-        "display_name": "165-25 Union Turnpike LLC"
-      },
-      "domains": {
-        "money": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No money objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "land": {
-          "status": "matched",
-          "gap_class": null,
-          "note": null,
-          "objects": [
-            {
-              "subject_ref": "project:2023Q0303",
-              "domain": "land",
-              "object_kind": "project",
-              "label": "165-25 Union Turnpike Rezoning",
-              "when": "2025-12-02",
-              "amount": null,
-              "public_status": "Noticed",
-              "pin": null,
-              "project_id": "2023Q0303",
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "bbls": null,
-              "root_ref": "vendor:stem:165-25%20UNION%20TURNPIKE",
-              "root_kind": "vendor",
-              "href": "#land?project=2023Q0303",
-              "provenance": {
-                "source_system": "warehouse",
-                "source_record_id": "warehouse:2023Q0303",
-                "source_fields": [
-                  "primary_applicant"
-                ],
-                "basis": "land_primary_applicant",
-                "observed_at": "2025-12-02",
-                "input_value": "165-25 Union Turnpike LLC"
-              },
-              "link_type": "applicant_vendor",
-              "confidence": "tentative",
-              "method": "vendor_stem_v1"
-            }
-          ],
-          "count": 1
-        },
-        "rules": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No rules objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "meetings": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No meetings objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
-          "objects": [],
-          "count": 0
-        }
-      },
-      "links": [
-        {
-          "type": "applicant_vendor",
-          "from": "project:2023Q0303",
-          "to": "vendor:stem:165-25%20UNION%20TURNPIKE",
-          "domain": "land",
-          "confidence": "tentative",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "warehouse",
-            "source_record_id": "warehouse:2023Q0303",
-            "source_fields": [
-              "primary_applicant"
-            ],
-            "basis": "land_primary_applicant",
-            "observed_at": "2025-12-02",
-            "input_value": "165-25 Union Turnpike LLC"
-          },
-          "layer": "cross_domain_object_link_v1"
-        }
-      ],
-      "metrics": {
-        "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
-        "domains_matched": 1,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
-        "total_linked_objects": 1,
-        "link_count": 1,
+        "join_key_link_count": 2,
         "coverage_rate": 0.2
       }
     }
@@ -7614,9 +8564,33 @@
       "coverage_rate": 0.2
     },
     {
+      "ref": "vendor:stem:FIXTURE%20VENDOR%20A",
+      "kind": "vendor",
+      "display_name": "FIXTURE VENDOR A",
+      "domains_matched": 1,
+      "total_linked_objects": 2,
+      "coverage_rate": 0.2
+    },
+    {
+      "ref": "vendor:stem:FIXTURE%20VENDOR%20E",
+      "kind": "vendor",
+      "display_name": "FIXTURE VENDOR E",
+      "domains_matched": 1,
+      "total_linked_objects": 2,
+      "coverage_rate": 0.2
+    },
+    {
       "ref": "vendor:stem:GO%20QUAY",
       "kind": "vendor",
       "display_name": "GO Quay LLC",
+      "domains_matched": 1,
+      "total_linked_objects": 2,
+      "coverage_rate": 0.2
+    },
+    {
+      "ref": "vendor:stem:MAKE%20IT%20ZESTY",
+      "kind": "vendor",
+      "display_name": "Make it Zesty LLC",
       "domains_matched": 1,
       "total_linked_objects": 2,
       "coverage_rate": 0.2
@@ -7812,35 +8786,12 @@
       "domains_matched": 1,
       "total_linked_objects": 1,
       "coverage_rate": 0.2
-    },
-    {
-      "ref": "vendor:stem:1130%20TIFFANY%20STREET",
-      "kind": "vendor",
-      "display_name": "1130 Tiffany Street LLC",
-      "domains_matched": 1,
-      "total_linked_objects": 1,
-      "coverage_rate": 0.2
-    },
-    {
-      "ref": "vendor:stem:135%20SAPPHIRE",
-      "kind": "vendor",
-      "display_name": "135 Sapphire LLC",
-      "domains_matched": 1,
-      "total_linked_objects": 1,
-      "coverage_rate": 0.2
-    },
-    {
-      "ref": "vendor:stem:165-25%20UNION%20TURNPIKE",
-      "kind": "vendor",
-      "display_name": "165-25 Union Turnpike LLC",
-      "domains_matched": 1,
-      "total_linked_objects": 1,
-      "coverage_rate": 0.2
     }
   ],
   "provenance": {
     "sources": [
       "warehouse/fixtures/ocp-recent-contract-awards",
+      "warehouse/fixtures/checkbook-spending",
       "warehouse/fixtures/zap-projects",
       "warehouse/fixtures/zap-bbl",
       "site/data/ocp_awards_warehouse_lookup.json",
@@ -7852,9 +8803,12 @@
     "methods": [
       "agency_canonical_v1",
       "vendor_stem_v1",
-      "cross_domain_identity_v1",
-      "zap_bbl_project_id_v1"
+      "cross_domain_identity_v2",
+      "zap_bbl_project_id_v1",
+      "pin_authority_key_v1",
+      "contract_id_join_v1",
+      "checkbook_payment_v1"
     ],
-    "note": "Links only when identity normalizers resolve the same root. Land projects gain sited_on_parcel edges when ZAP BBL join keys exist. Empty domains are explicit; people defaults to not_yet_ingested without by_person rows."
+    "note": "Links only when identity normalizers or join keys resolve. Identity: agency/vendor across money/land/rules/meetings. Join keys: PIN (shares_authority_key), contract_id (references_contract / payment_on_contract), BBL (sited_on_parcel), payee (paid_to_vendor). Empty domains are explicit; people defaults to not_yet_ingested without by_person rows."
   }
 }

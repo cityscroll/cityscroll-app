@@ -1,0 +1,4 @@
+document_id,issue_date,payee_name,contract_id,check_amount,agency_name,pin,short_title
+CHK-PARKS-001,2024-08-15T00:00:00.000,FIXTURE VENDOR E,CT-PARKS-FIX005,250.00,Department of Parks and Recreation,PIN-FIXTURE-5,Parks fixture payment on award FIX005
+CHK-Zesty-001,2026-08-01T00:00:00.000,Make it Zesty LLC,CT81626W0043001,12000.00,Health and Mental Hygiene,81626W0043001,Catering draw on OCP award
+CHK-DCAS-001,2024-09-01T00:00:00.000,FIXTURE VENDOR A,CT-DCAS-FIX001,50.00,Department of Citywide Administrative Services,PIN-FIXTURE-1,DCAS fixture partial payment
