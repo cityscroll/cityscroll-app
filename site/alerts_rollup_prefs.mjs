@@ -187,7 +187,7 @@ export function shouldShowAccountRollup(watches = []) {
  * Build a consolidated digest preview model for the #alerts email mock.
  * One section per active watch (same shape as account rollup body sections).
  */
-export function buildRollupPreviewModel(watches = [], { groupBy = "topic", dest = "you@example.com" } = {}) {
+export function buildRollupPreviewModel(watches = [], { groupBy = "topic", dest = "reader" } = {}) {
   const active = (watches || []).map(normalizeWatchRow).filter((w) => w && !w.paused);
   const groups = groupWatchesForRollup(active, groupBy);
   const sections = active.map((w) => {
@@ -236,6 +236,7 @@ export function buildRollupPreviewModel(watches = [], { groupBy = "topic", dest 
 export function demoRollupPreviewModel(opts = {}) {
   return buildRollupPreviewModel(demoRollupWatches(), {
     groupBy: opts.groupBy || "topic",
-    dest: opts.dest || "multi@example.com",
+    // Display-only recipient label for the hermetic mock — not a live mailbox.
+    dest: opts.dest || "multi-watch demo",
   });
 }

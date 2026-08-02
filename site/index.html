@@ -6423,12 +6423,20 @@ function alertsRollupGroupsHTML(groups){
 }
 function alertsRollupEmailMockHTML(model){
   if(!model) return `<div class="empty">${t("empty_preview")}</div>`;
-  const dest = escUiHtml(model.dest || "you@example.com");
+  // Recipient is a display label for the mock (not a live address). Product digests
+  // still use the real From identity on the worker send path.
+  const dest = escUiHtml(model.dest || t("email_placeholder") || "reader");
   const body = (model.sections || []).map(alertsRollupSectionHTML).join("");
   const summary = escUiHtml(model.summaryLine || "");
   const footer = t("alerts_rollup_digest_footer");
+  // Reuse the single-watch preview's From chrome when present so this surface does not
+  // re-state the product sender string (keeps one source of truth with aPreview).
+  const liveFrom = document.querySelector("#apreviewbox .efrom");
+  const fromHtml = liveFrom && liveFrom.innerHTML
+    ? liveFrom.innerHTML.replace(/→[\s\S]*$/, "→ " + dest)
+    : `CityScroll → ${dest}`;
   return `<div class="emailmock">
-    <div class="ehead"><div class="efrom">CityScroll &lt;alerts@crol-list.org&gt; → ${dest}</div>
+    <div class="ehead"><div class="efrom">${fromHtml}</div>
     <div class="esubj">${escUiHtml(model.subject || "")}</div></div>
     <div class="ebody">
       <p style="margin:0 0 12px;font:13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted)">${summary}</p>
