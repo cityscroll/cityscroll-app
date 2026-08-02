@@ -191,7 +191,7 @@
       },
       "fixture": "test/external_awards.test.mjs",
       "replay_test": null,
-      "known_gap": "Bounded NYCHA prewarm caches joined output without immutable publisher observations."
+      "known_gap": "Exact temporal PIN join measured below usefulness (0% modern product window, 2026-08-01); source contract disabled for dense materialization. On-demand path remains; empty cache TTL avoids sticky empties. No immutable publisher observations dual-write."
     },
     {
       "id": "legistar-events",

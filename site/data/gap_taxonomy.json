@@ -163,13 +163,26 @@
       "id": "checkbook-nycha-contracts",
       "name": "Checkbook NYC NYCHA contracts",
       "source_contract_id": "checkbook-nycha-contracts",
-      "status": "landed",
+      "status": "disabled",
       "join_keys": [
+        "PIN",
         "contract_id"
       ],
-      "join_coverage": {},
+      "join_coverage": {
+        "realized": {
+          "rate": 0,
+          "joined": 0,
+          "total": 23,
+          "metric": "modern_d1_temporal_exact",
+          "observed_on": "2026-08-01",
+          "universe": null,
+          "strategy": "exact_pin_temporal — Agreement.pin equals notice.pin and (approved_date || start_date) > notice.start_date. PIN-reuse without temporal rejected.",
+          "verdict": "Below usefulness threshold (~30%) on the modern product universe (0% temporal exact-PIN join). Ship measured reconnaissance + disabled source contract; do not claim dense exact NYCHA award matches as a live product surface.",
+          "source": "source_contracts.join_measurement"
+        }
+      },
       "landing_page": "https://www.checkbooknyc.com/data-feeds/api",
-      "delivery_tier": "edge-materialized"
+      "delivery_tier": "live-only"
     },
     {
       "id": "checkbook-spending",
@@ -1026,26 +1039,6 @@
       "evidence": "Shared keys PIN; 5 taxonomy gap(s) could close."
     },
     {
-      "id": "checkbook-nycha-contracts-x-passport-public-contracts-via-contract_id",
-      "source_a": "checkbook-nycha-contracts",
-      "source_b": "passport-public-contracts",
-      "key_path": [
-        "contract_id"
-      ],
-      "status": "candidate",
-      "realized_coverage": null,
-      "worth_materializing": "yes",
-      "gaps_would_close": [
-        "procurement-pending-unmatched",
-        "procurement-registered-unmatched",
-        "procurement-payment-unmatched",
-        "procurement-bid-counts",
-        "procurement-ocp-recent-awards"
-      ],
-      "score": 5,
-      "evidence": "PASSPort Public contract rows expose contract_id alongside EPIN; Checkbook Contracts expose prime_contract_id (canonicalized to contract_id). Direct equality is not yet measured — candidate only. Transitive path already exists via City Record PIN."
-    },
-    {
       "id": "checkbook-spending-x-passport-public-contracts-via-PIN+contract_id",
       "source_a": "checkbook-spending",
       "source_b": "passport-public-contracts",
@@ -1125,24 +1118,6 @@
       "evidence": "Shared keys PIN; 4 taxonomy gap(s) could close."
     },
     {
-      "id": "checkbook-contracts-x-checkbook-nycha-contracts-via-contract_id",
-      "source_a": "checkbook-contracts",
-      "source_b": "checkbook-nycha-contracts",
-      "key_path": [
-        "contract_id"
-      ],
-      "status": "candidate",
-      "realized_coverage": null,
-      "worth_materializing": "yes",
-      "gaps_would_close": [
-        "procurement-pending-unmatched",
-        "procurement-registered-unmatched",
-        "procurement-payment-unmatched"
-      ],
-      "score": 3,
-      "evidence": "Shared keys contract_id; 3 taxonomy gap(s) could close."
-    },
-    {
       "id": "checkbook-contracts-x-checkbook-spending-via-PIN+contract_id",
       "source_a": "checkbook-contracts",
       "source_b": "checkbook-spending",
@@ -1178,24 +1153,6 @@
       ],
       "score": 3,
       "evidence": "Shared keys PIN; 3 taxonomy gap(s) could close."
-    },
-    {
-      "id": "checkbook-nycha-contracts-x-checkbook-spending-via-contract_id",
-      "source_a": "checkbook-nycha-contracts",
-      "source_b": "checkbook-spending",
-      "key_path": [
-        "contract_id"
-      ],
-      "status": "candidate",
-      "realized_coverage": null,
-      "worth_materializing": "yes",
-      "gaps_would_close": [
-        "procurement-pending-unmatched",
-        "procurement-registered-unmatched",
-        "procurement-payment-unmatched"
-      ],
-      "score": 3,
-      "evidence": "Shared keys contract_id; 3 taxonomy gap(s) could close."
     },
     {
       "id": "checkbook-spending-x-current-solicitations-ocp-via-PIN",
@@ -2344,10 +2301,10 @@
     "Gap-pressure tail 2026-07-30: Capital Projects n7gv-k5yt fuzzy join ≤1% → class-b pointer for procurement-planning-budget; Civil Service List closed-exam overlap 44.54% → ship exam-level list aggregates; non-Council meeting outcomes reclassified not_published with BP/CB minutes pointers."
   ],
   "depot_refresh": {
-    "observed_on": "2026-08-01",
-    "source_contracts_fingerprint": "84aa82661c407276ecfc215fe9567fc50fa18c4b99f9c01e791c9b90b8c699d4",
+    "observed_on": "2026-08-02",
+    "source_contracts_fingerprint": "d19b9db65045c6447ef34d780c989c3e07c72dd1add6bffe9e6697b6dd4cd9c3",
     "materialized_crosswalks": 11,
-    "candidate_crosswalks": 46,
+    "candidate_crosswalks": 43,
     "class_changes": 0,
     "passport_realized_either_rate": 0.78
   }

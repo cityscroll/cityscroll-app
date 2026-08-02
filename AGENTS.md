@@ -95,6 +95,17 @@ PIN↔`bid_number` join is **0%** on Procurement notices since 2025-01-01 and **
 receipts: `worker/src/lib/bid_tabulations_join.mjs`,
 `site/data/bid_tabulation_sources/`.
 
+## Checkbook NYCHA awards (`Contracts_NYCHA`)
+
+Ranked exact-PIN solicitation→award join. **Measured below usefulness** (2026-08-01):
+temporal exact-PIN rate **0%** on the modern product notice window (23 PIN-bearing Housing
+Authority solicitations; 0 non-empty `external_award_matches`). City Record RFQ-style pins
+and Checkbook pin values largely do not share a joinable key; PIN reuse is correctly
+rejected by the temporal filter. Source contract `checkbook-nycha-contracts` is
+**disabled** for dense materialization. On-demand lookup may still run; empty cache TTL is
+3 days (do not permanently sticky-cache empties). Strategies and receipts:
+`worker/src/lib/nycha_awards_join.mjs`, `site/data/nycha_award_sources/`.
+
 ## Doing Business Search Entities (`72mk-a8z7`)
 
 Vendor identity enrichment (listing, ownership structure, phone, start date). **Measured

@@ -1,0 +1,64 @@
+{
+  "cases": [
+    {
+      "id": "true-positive-control",
+      "expect": "matched",
+      "notice": {
+        "request_id": "20250110001",
+        "start_date": "2025-01-10",
+        "pin": "337474"
+      },
+      "agreements": [
+        {
+          "id": "C1",
+          "recordType": "Agreement",
+          "pin": "337474",
+          "vendor": "NELLIGAN WHITE ARCHITECTS PLLC",
+          "amount": 7310000,
+          "approved": "2025-03-01",
+          "start": "2025-02-15"
+        }
+      ]
+    },
+    {
+      "id": "pin-reuse-340881",
+      "expect": "reuse_only",
+      "notice": {
+        "request_id": "20260610071",
+        "start_date": "2026-06-30",
+        "pin": "340881"
+      },
+      "agreements": [
+        {
+          "id": "PO1125076",
+          "recordType": "Agreement",
+          "pin": "340881",
+          "vendor": "TAVARES RESTAURANT #2",
+          "amount": 488,
+          "approved": "2011-10-28",
+          "start": "2011-10-28"
+        }
+      ]
+    },
+    {
+      "id": "modern-rfq-miss",
+      "expect": "no_agreement",
+      "notice": {
+        "request_id": "20260724027",
+        "start_date": "2026-07-31",
+        "pin": "525302"
+      },
+      "agreements": []
+    },
+    {
+      "id": "ineligible-no-pin",
+      "expect": "ineligible",
+      "notice": {
+        "request_id": "20260603042",
+        "start_date": "2026-06-10",
+        "pin": ""
+      },
+      "agreements": []
+    }
+  ]
+}
