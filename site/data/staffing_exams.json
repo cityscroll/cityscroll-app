@@ -1,6 +1,6 @@
 {
-  "schema_version": 1,
-  "generated_at": "2026-08-01",
+  "schema_version": 2,
+  "generated_at": "2026-08-02",
   "data_current_as_of": "2026-07-22",
   "interest_areas": [
     "public-safety",
@@ -62,6 +62,16 @@
       "data_publication_date": "2026-07-28",
       "refresh_cadence": "Annual outcomes publication with rolling corrections during each fiscal-year outcomes cycle.",
       "stale_after_days": 365
+    },
+    {
+      "id": "dcas-noe-fee-salary-densify",
+      "name": "DCAS Notice of Examination fee/salary densify",
+      "role": "Body-parsed APPLICATION FEE and minimum salary from public NOE PDFs, merged when the open-competitive snapshot lacks structured amounts. Annual schedule has no fee columns.",
+      "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page",
+      "fetched_at": "2026-08-02",
+      "verified_at": "2026-08-02",
+      "stale_after_days": 45,
+      "freshness_required": false
     }
   ],
   "source_checks": {
@@ -84,6 +94,20 @@
     "list_depth_closed": {
       "count": 77,
       "list_joined": 77
+    },
+    "noe_fee_salary_densify": {
+      "densify_records": 13,
+      "densify_applied": 13,
+      "fee_salary_non_null_before": {
+        "total": 228,
+        "both": 8,
+        "rate": 0.03508771929824561
+      },
+      "fee_salary_non_null_after": {
+        "total": 228,
+        "both": 21,
+        "rate": 0.09210526315789473
+      }
     }
   },
   "outcomes": {
@@ -3023,8 +3047,16 @@
       "schedule_status": "scheduled",
       "interest_area": "engineering-construction",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-noe",
+        "dcas-noe-fee-salary-densify"
       ],
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277007000.pdf",
+      "fee": 82,
+      "salary_min": 66330,
+      "salary_max": null,
+      "salary_note": "Current minimum annual salary",
+      "fee_salary_densify": "noe_pdf_body",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -3035,18 +3067,7 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      }
+      "fee_salary_gap": null
     },
     {
       "exam_number": "7013",
@@ -3231,8 +3252,16 @@
       "schedule_status": "scheduled",
       "interest_area": "public-safety",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-noe",
+        "dcas-noe-fee-salary-densify"
       ],
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "fee": 0,
+      "salary_min": 55942,
+      "salary_max": 109352,
+      "salary_note": "Current minimum annual salary",
+      "fee_salary_densify": "noe_pdf_body_multi_exam",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -3243,18 +3272,7 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      }
+      "fee_salary_gap": null
     },
     {
       "exam_number": "7323",
@@ -3334,8 +3352,16 @@
       "schedule_status": "scheduled",
       "interest_area": "public-safety",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-noe",
+        "dcas-noe-fee-salary-densify"
       ],
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "fee": 0,
+      "salary_min": 55942,
+      "salary_max": 109352,
+      "salary_note": "Current minimum annual salary",
+      "fee_salary_densify": "noe_pdf_body_multi_exam",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -3346,18 +3372,7 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      }
+      "fee_salary_gap": null
     },
     {
       "exam_number": "7508",
@@ -3719,8 +3734,16 @@
       "schedule_status": "scheduled",
       "interest_area": "public-safety",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-noe",
+        "dcas-noe-fee-salary-densify"
       ],
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "fee": 0,
+      "salary_min": 55942,
+      "salary_max": 109352,
+      "salary_note": "Current minimum annual salary",
+      "fee_salary_densify": "noe_pdf_body_multi_exam",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -3731,18 +3754,7 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      }
+      "fee_salary_gap": null
     },
     {
       "exam_number": "7002",
@@ -4279,8 +4291,16 @@
       "schedule_status": "scheduled",
       "interest_area": "public-safety",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-noe",
+        "dcas-noe-fee-salary-densify"
       ],
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "fee": 0,
+      "salary_min": 55942,
+      "salary_max": 109352,
+      "salary_note": "Current minimum annual salary",
+      "fee_salary_densify": "noe_pdf_body_multi_exam",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -4291,18 +4311,7 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      }
+      "fee_salary_gap": null
     },
     {
       "exam_number": "7010",
@@ -4804,8 +4813,16 @@
       "schedule_status": "scheduled",
       "interest_area": "public-safety",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-noe",
+        "dcas-noe-fee-salary-densify"
       ],
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "fee": 0,
+      "salary_min": 55942,
+      "salary_max": 109352,
+      "salary_note": "Current minimum annual salary",
+      "fee_salary_densify": "noe_pdf_body_multi_exam",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -4816,18 +4833,7 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      }
+      "fee_salary_gap": null
     },
     {
       "exam_number": "7000",
@@ -5294,8 +5300,16 @@
       "schedule_status": "scheduled",
       "interest_area": "public-safety",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-noe",
+        "dcas-noe-fee-salary-densify"
       ],
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "fee": 0,
+      "salary_min": 55942,
+      "salary_max": 109352,
+      "salary_note": "Current minimum annual salary",
+      "fee_salary_densify": "noe_pdf_body_multi_exam",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -5306,18 +5320,7 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      }
+      "fee_salary_gap": null
     },
     {
       "exam_number": "7019",
@@ -5749,8 +5752,16 @@
       "schedule_status": "scheduled",
       "interest_area": "public-safety",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-noe",
+        "dcas-noe-fee-salary-densify"
       ],
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "fee": 0,
+      "salary_min": 55942,
+      "salary_max": 109352,
+      "salary_note": "Current minimum annual salary",
+      "fee_salary_densify": "noe_pdf_body_multi_exam",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -5761,18 +5772,7 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      }
+      "fee_salary_gap": null
     },
     {
       "exam_number": "7021",
@@ -6204,8 +6204,16 @@
       "schedule_status": "scheduled",
       "interest_area": "public-safety",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-noe",
+        "dcas-noe-fee-salary-densify"
       ],
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "fee": 0,
+      "salary_min": 55942,
+      "salary_max": 109352,
+      "salary_note": "Current minimum annual salary",
+      "fee_salary_densify": "noe_pdf_body_multi_exam",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -6216,18 +6224,7 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      }
+      "fee_salary_gap": null
     },
     {
       "exam_number": "7008",
@@ -6624,8 +6621,16 @@
       "schedule_status": "scheduled",
       "interest_area": "public-safety",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-noe",
+        "dcas-noe-fee-salary-densify"
       ],
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "fee": 0,
+      "salary_min": 55942,
+      "salary_max": 109352,
+      "salary_note": "Current minimum annual salary",
+      "fee_salary_densify": "noe_pdf_body_multi_exam",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -6636,18 +6641,7 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      }
+      "fee_salary_gap": null
     },
     {
       "exam_number": "7005",
@@ -7044,8 +7038,16 @@
       "schedule_status": "scheduled",
       "interest_area": "public-safety",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-noe",
+        "dcas-noe-fee-salary-densify"
       ],
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "fee": 0,
+      "salary_min": 55942,
+      "salary_max": 109352,
+      "salary_note": "Current minimum annual salary",
+      "fee_salary_densify": "noe_pdf_body_multi_exam",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -7056,18 +7058,7 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      }
+      "fee_salary_gap": null
     },
     {
       "exam_number": "7004",
@@ -7499,8 +7490,16 @@
       "schedule_status": "scheduled",
       "interest_area": "public-safety",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-noe",
+        "dcas-noe-fee-salary-densify"
       ],
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "fee": 0,
+      "salary_min": 55942,
+      "salary_max": 109352,
+      "salary_note": "Current minimum annual salary",
+      "fee_salary_densify": "noe_pdf_body_multi_exam",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -7511,18 +7510,7 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      }
+      "fee_salary_gap": null
     },
     {
       "exam_number": "7505",
@@ -7779,8 +7767,16 @@
       "schedule_status": "scheduled",
       "interest_area": "public-safety",
       "sources": [
-        "dcas-annual-schedule"
+        "dcas-annual-schedule",
+        "dcas-noe",
+        "dcas-noe-fee-salary-densify"
       ],
+      "notice_url": "https://www.nyc.gov/assets/dcas/downloads/pdf/noes/20277311000.pdf",
+      "fee": 0,
+      "salary_min": 55942,
+      "salary_max": 109352,
+      "salary_note": "Current minimum annual salary",
+      "fee_salary_densify": "noe_pdf_body_multi_exam",
       "outcome": null,
       "outcome_gap": {
         "class": "not_yet_ingested",
@@ -7791,18 +7787,7 @@
         ]
       },
       "list_aggregate": null,
-      "fee_salary_gap": {
-        "class": "not_yet_ingested",
-        "missing": [
-          "fee",
-          "salary_min"
-        ],
-        "public_source": {
-          "name": "DCAS open-competitive exam schedule and Notices of Examination",
-          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
-          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
-        }
-      }
+      "fee_salary_gap": null
     },
     {
       "exam_number": "7071",

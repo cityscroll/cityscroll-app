@@ -6,6 +6,8 @@
  *   The current minimum salary is $48,206 per annum.
  * PDF extraction sometimes inserts spaces after thousands separators
  * ("$48, 206") — same class of quirk as City Record subsidy hearing money.
+ * Multi-exam NOEs list several Exam No. values under one fee/salary block
+ * (e.g. Police Officer 7311–7322).
  *
  * Pure: no fetch. Never fabricates amounts when labels are absent.
  */
@@ -39,6 +41,26 @@ function plainText(value) {
     .replace(/\u00a0/g, " ")
     .replace(/\s+/g, " ")
     .trim();
+}
+
+/**
+ * Extract 4-digit exam numbers from a multi-exam NOE header line.
+ * Example: "Exam No. 7311, 7312, 7313, …, and 7322" → ["7311", …, "7322"].
+ * @param {string} bodyText
+ * @returns {string[]}
+ */
+export function extractNoeExamNumbers(bodyText) {
+  const text = plainText(bodyText);
+  if (!text) return [];
+  const header = text.match(
+    /Exam\s+No\.?\s*((?:\d{4}(?:\s*,\s*|\s+and\s+|\s+)+)*\d{4})/i,
+  );
+  if (!header) {
+    const single = text.match(/Exam\s+No\.?\s*(\d{4})\b/i);
+    return single ? [single[1]] : [];
+  }
+  const nums = [...header[1].matchAll(/\b(\d{4})\b/g)].map((m) => m[1]);
+  return [...new Set(nums)];
 }
 
 /**
@@ -97,8 +119,9 @@ export function parseNoeFeeSalaryFromBody(bodyText) {
   let salaryExcerpt = null;
 
   // Primary: "The current minimum salary is $48,206 per annum."
+  // Also: "for which the current minimum salary is $48,719 per annum" (assignment-level).
   const minRe = new RegExp(
-    `(?:the\\s+)?current\\s+minimum\\s+salary\\s+is\\s+${MONEY_CAPTURE}(?:\\s+per\\s+annum)?`,
+    `(?:(?:for\\s+which|to\\s+which)\\s+)?(?:the\\s+)?current\\s+minimum\\s+salary\\s+is\\s+${MONEY_CAPTURE}(?:\\s+per\\s+annum)?`,
     "i",
   );
   const minMatch = text.match(minRe);
@@ -107,10 +130,10 @@ export function parseNoeFeeSalaryFromBody(bodyText) {
     salaryExcerpt = minMatch[0].trim();
     salaryNote = "Current minimum annual salary";
   } else {
-    // "minimum salary: $48,206" / "starting salary is $48,206"
+    // "minimum salary: $48,206" / "starting salary is $48,206" / "annual salary of $48,206"
     const altMin = text.match(
       new RegExp(
-        `(?:minimum|starting)\\s+salary\\s*(?:is|:)?\\s*${MONEY_CAPTURE}`,
+        `(?:minimum|starting|annual)\\s+salary\\s*(?:is|of|:)?\\s*${MONEY_CAPTURE}`,
         "i",
       ),
     );

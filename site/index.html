@@ -4207,12 +4207,17 @@ function staffingExamCardHTML(item){
 }
 function syncStaffingModeUI(){
   const isExam=staffingFilters.type==="exam";
+  const examDetail=!!careerSelected;
   const upcoming=$(".staffing-upcoming");
   const guide=$("#career-guide");
+  const feed=$("#staffing-feed");
   const feedMetaHeading=$("#staffing-feed-meta-heading");
-  if(upcoming) upcoming.hidden=isExam;
+  // Deep-linked #exam/<id>: hide the staffing list so first paint is the detail card,
+  // not a "civil-service exams list only" surface above the fold.
+  if(feed) feed.hidden=examDetail;
+  if(upcoming) upcoming.hidden=isExam || examDetail;
   if(feedMetaHeading) feedMetaHeading.textContent=isExam?t("staffing_exam_guide_heading"):t("staffing_appointments_heading");
-  if(isExam){
+  if(isExam || examDetail){
     if(guide){
       guide.hidden=false;
       prepareCareerHow();
@@ -4700,16 +4705,51 @@ async function loadCareerGuide(){
   });
   return careerLoadPromise;
 }
+function paintExamDetailShell(examNumber){
+  const guide=$("#career-guide");
+  if(guide) guide.hidden=false;
+  prepareCareerHow();
+  syncStaffingModeUI();
+  document.querySelectorAll("[data-staffing-type]").forEach(button=>{
+    button.setAttribute("aria-pressed",String(button.dataset.staffingType==="exam"));
+  });
+  // If the artifact is already warm, paint the full card (fee/salary/spine) synchronously.
+  if(careerData){
+    renderCareerGuide();
+    return;
+  }
+  const results=$("#career-results");
+  if(!results) return;
+  const safe=escUiHtml(examNumber);
+  results.innerHTML=`<article class="career-card selected route-item" data-status="loading" id="career-exam-${safe}" tabindex="-1" data-exam-loading="1" aria-busy="true">
+    <div class="career-card-head">
+      <p class="career-card-title">${t("career_exam_number",{number:safe})}</p>
+    </div>
+    <p class="career-empty"><span class="loading" aria-hidden="true"></span> ${t("career_loading")}</p>
+  </article>`;
+  const openEl=$("#career-open-count");
+  const upcomingEl=$("#career-upcoming-count");
+  if(openEl && openEl.textContent==="—"){ /* keep placeholder until load */ }
+  if(upcomingEl && upcomingEl.textContent==="—"){ /* keep placeholder until load */ }
+}
 function showExam(examNumber){
-  careerSelected=examNumber; careerLimit=16;
+  const id=String(examNumber||"").trim();
+  careerSelected=id; careerLimit=16;
   staffingFilters.type="exam";
   staffingFilters.query=""; staffingFilters.role=""; staffingFilters.agency="";
   showTab("people");
-  $("#career-guide").hidden=false;
-  prepareCareerHow();
+  // First paint must mount the exam DETAIL shell (not the staffing list). Do this
+  // before the async fetch so #exam/7016 never looks like "list only" on a cold load.
+  paintExamDetailShell(id);
+  requestAnimationFrame(()=>{
+    const shell=$("#career-exam-"+CSS.escape(id))||$("#career-guide");
+    if(shell) shell.scrollIntoView({block:"start"});
+  });
   loadCareerGuide().then(()=>{
+    if(careerSelected!==id) return; // user navigated away
     renderCareerGuide();
-    focusItemRouteTarget($("#career-exam-"+CSS.escape(examNumber)));
+    syncStaffingModeUI();
+    focusItemRouteTarget($("#career-exam-"+CSS.escape(id)));
     applyActiveHistoryRouteScroll();
   });
 }
@@ -12518,6 +12558,11 @@ function forceAmountSelect(value){
 function serializeState(){
   const tab = document.querySelector(".tabbtn.active")?.dataset.tab;
   if(!tab) return location.hash || "#money"; // notice view keeps its own hash
+  // Preserve #exam/<id> while a deep-linked exam detail is selected. Rewriting to
+  // #people?view=guide would re-enter applyHash and clear careerSelected (list-only race).
+  if(tab === "people" && careerSelected && /^\d{4}$/.test(String(careerSelected))){
+    return "#exam/"+encodeURIComponent(String(careerSelected));
+  }
   const q = new URLSearchParams();
   if(tab === "money"){
     if($("#mode").value !== "open") q.set("mode", $("#mode").value);
@@ -13328,6 +13373,9 @@ $("#staffing-query").addEventListener("input",debounce(()=>{
 document.querySelectorAll("[data-staffing-type]").forEach(button=>button.addEventListener("click",()=>{
   staffingFilters.type=button.dataset.staffingType;
   staffingFilters.role=""; staffingFilters.agency="";
+  // Leaving a deep-linked exam detail for the exam list / hire feed.
+  careerSelected=null;
+  syncStaffingModeUI();
   renderStaffingFeed(); updateHash();
   if(staffingFilters.type==="exam") loadCareerGuide().then(()=>{
     renderStaffingFeed();
@@ -13339,10 +13387,10 @@ $("#pkw").addEventListener("keydown", e=>{ if(e.key==="Enter") pSearch(); });
 $("#pkw").addEventListener("input", debounce(pSearch, 500));
 $("#pmode").addEventListener("change", ()=>{ $("#pkwlabel").textContent = $("#pmode").value==="role"?t("title_keyword_label"):t("person_name_label"); $("#pkw").placeholder = $("#pmode").value==="role"?t("kw_placeholder_people_role"):t("kw_placeholder_people_person"); });
 ["#career-interest","#career-eligibility","#career-window"].forEach(selector=>$(selector).addEventListener("change",()=>{
-  careerSelected=null; careerLimit=16; renderCareerGuide(); updateHash();
+  careerSelected=null; careerLimit=16; syncStaffingModeUI(); renderCareerGuide(); updateHash();
 }));
 $("#career-query").addEventListener("input",debounce(()=>{
-  careerSelected=null; careerLimit=16; renderCareerGuide();
+  careerSelected=null; careerLimit=16; syncStaffingModeUI(); renderCareerGuide();
 },200));
 
 $("#awatch").addEventListener("change", ()=>{
