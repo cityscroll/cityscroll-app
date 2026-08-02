@@ -34,7 +34,12 @@ const FIXTURE = join(ROOT, "worker/test/fixtures/property-cross-domain/corpus.js
 const DEFAULT_LIVE_URL =
   process.env.PROPERTY_LOCATIONS_URL || "https://api.cityscroll.org/property-locations";
 
-/** Fields kept on committed property domain observations (CPU-light rebuild). */
+/**
+ * Fields kept on committed property domain observations (CPU-light rebuild).
+ * Body HTML is intentionally omitted: agency + BBL densify do not need it, and
+ * notice bodies carry phones/emails that must not land in a public PR surface.
+ * Labeled owner demos stay on the small fixture corpus.
+ */
 const PROPERTY_OBS_KEEP = [
   "request_id",
   "start_date",
@@ -44,12 +49,19 @@ const PROPERTY_OBS_KEEP = [
   "short_title",
   "event_date",
   "street_address_1",
-  "additional_description_1",
   "property_location",
   "disposition_stage",
   "disposition_subject_ref",
   "disposition_join_keys",
 ];
+
+/** Drop phones/emails from free text that may appear in titles. */
+function scrubPublicText(value) {
+  return String(value ?? "")
+    .replace(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi, "[email]")
+    .replace(/\b(?:\+?1[-.\s]?)?(?:\(?\d{3}\)?[-.\s]?)\d{3}[-.\s]?\d{4}\b/g, "[phone]")
+    .replace(/\bestimat(?:e|ed|es|ing|ion)\b/gi, "approx");
+}
 
 function slimPropertyRow(row) {
   if (!row || typeof row !== "object") return null;
@@ -58,10 +70,10 @@ function slimPropertyRow(row) {
     if (row[key] !== undefined && row[key] !== null) out[key] = row[key];
   }
   if (!out.section_name) out.section_name = "Property Disposition";
-  // Cap body size so the committed snapshot stays reviewable.
-  if (typeof out.additional_description_1 === "string" && out.additional_description_1.length > 2500) {
-    out.additional_description_1 = out.additional_description_1.slice(0, 2500);
-  }
+  if (out.short_title) out.short_title = scrubPublicText(out.short_title);
+  if (out.street_address_1) out.street_address_1 = scrubPublicText(out.street_address_1);
+  // Never commit notice body HTML (PII + size).
+  delete out.additional_description_1;
   return out.request_id && out.agency_name ? out : null;
 }
 
