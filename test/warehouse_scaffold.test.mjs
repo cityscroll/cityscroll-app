@@ -99,6 +99,18 @@ print("OK")
   });
 });
 
+function spawnWithLockRetry(cmd, args, opts, attempts = 8) {
+  let last = null;
+  for (let i = 0; i < attempts; i++) {
+    last = spawnSync(cmd, args, opts);
+    const out = `${last.stdout || ""}\n${last.stderr || ""}`;
+    if (last.status === 0) return last;
+    if (!/holds the lock|One job at a time/i.test(out)) return last;
+    spawnSync("sleep", ["0.4"], { encoding: "utf8" });
+  }
+  return last;
+}
+
 describe("WH-01 proof ingest + query seam", () => {
   it("fixture ingest produces a countable DuckDB view", () => {
     const py = join(WAREHOUSE_DIR, ".venv", "bin", "python");
@@ -106,7 +118,8 @@ describe("WH-01 proof ingest + query seam", () => {
       // CI without venv: structural tests above still run.
       return;
     }
-    const ingest = spawnSync(
+    // Retry when WH-04 ER tests hold the shared single-job lock.
+    const ingest = spawnWithLockRetry(
       py,
       [
         join(WAREHOUSE_DIR, "scripts", "ingest.py"),

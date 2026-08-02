@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "phase": "WH-04",
+  "title": "Batch entity-resolution over warehouse tables",
+  "er_batch_version": "wh04_er_batch_v1",
+  "mode": "fixture",
+  "snapshot_date": "fixture",
+  "observed_at": "2026-08-02T05:12:46.405Z",
+  "limit": 25,
+  "metrics": {
+    "er_batch_version": "wh04_er_batch_v1",
+    "ocp_rows_in": 10,
+    "ocp_observations": 10,
+    "doing_business_observations": 3,
+    "vendor_observations": 13,
+    "vendor_stem_links": 13,
+    "agency_links": 10,
+    "pair_candidates": 16,
+    "pair_same": 6,
+    "pair_unresolved": 10,
+    "pair_different": 0,
+    "entity_link_rows": 23,
+    "canonical_entities": 16,
+    "unique_vendor_entities": 9,
+    "unique_agency_entities": 7,
+    "cross_source_stem_hits": 2,
+    "blocker": "token_v0_v0",
+    "vendor_method": "vendor_stem_v1",
+    "vendor_matcher_version": "1",
+    "agency_method": "agency_canonical_v1",
+    "matchers_version": "conventional_v1"
+  },
+  "resolution_run_id": "run_8383d3c7_85",
+  "stage_dir": "warehouse/raw/er-batch/snapshot_date=fixture",
+  "materialize": {
+    "catalog": "warehouse/duckdb/cityscroll.duckdb",
+    "snapshot_date": "fixture",
+    "tables": [
+      {
+        "view": "er_entity_link",
+        "parquet": "warehouse/parquet/er_entity_link/snapshot_date=fixture/part-000.parquet",
+        "row_count": 23
+      },
+      {
+        "view": "er_canonical_entity",
+        "parquet": "warehouse/parquet/er_canonical_entity/snapshot_date=fixture/part-000.parquet",
+        "row_count": 16
+      },
+      {
+        "view": "er_resolution_run",
+        "parquet": "warehouse/parquet/er_resolution_run/snapshot_date=fixture/part-000.parquet",
+        "row_count": 1
+      },
+      {
+        "view": "er_pair_receipt",
+        "parquet": "warehouse/parquet/er_pair_receipt/snapshot_date=fixture/part-000.parquet",
+        "row_count": 16
+      },
+      {
+        "view": "er_ocp_vendor_resolved",
+        "join": true
+      }
+    ]
+  },
+  "verify_sql": "warehouse/sql/examples/er_entity_links_verify.sql",
+  "verify_sql_inline": "SELECT\n  a.request_id,\n  a.vendor_name,\n  l.canonical_entity_id,\n  e.display_name AS entity_display_name,\n  l.method,\n  l.confidence,\n  l.decision\nFROM ocp_recent_contract_awards a\nJOIN er_entity_link l\n  ON l.source_record_id = 'ocp-recent-contract-awards:' || CAST(a.request_id AS VARCHAR)\n AND l.entity_type = 'vendor'\n AND l.decision = 'auto_link'\nLEFT JOIN er_canonical_entity e\n  ON e.id = l.canonical_entity_id\nORDER BY l.canonical_entity_id, a.request_id\nLIMIT 20",
+  "cpu_discipline": {
+    "single_job_lock": true,
+    "headroom_gate": true,
+    "taskpolicy_or_nice_wrap": true,
+    "duckdb_threads": 1,
+    "default_limit": 200,
+    "incremental": true
+  },
+  "reuse": {
+    "entity_resolution": [
+      "vendorStem / VENDOR_STEM_METHOD",
+      "generateCandidates (token_v0)",
+      "scorePair (conventional_v1)",
+      "canonicalAgency"
+    ],
+    "worker_entity_link": [
+      "buildExactStemAutoCase",
+      "canonicalVendorIdForStem"
+    ]
+  },
+  "runner": {
+    "phase": "WH-04",
+    "entrypoint": "er_batch_run.py",
+    "started_at": "2026-08-02T05:12:46Z",
+    "finished_at": "2026-08-02T05:12:46Z",
+    "from_fixture": true,
+    "limit": 25,
+    "headroom": {
+      "status": "ok",
+      "constrained": false
+    },
+    "cpu_discipline": {
+      "single_job_lock": true,
+      "headroom_gate": true,
+      "taskpolicy_or_nice_wrap": false
+    }
+  },
+  "headroom_evidence_line": "headroom OK (pre-run; fixture proof; see runner.headroom)",
+  "what_resolved": {
+    "vendor_entities": 9,
+    "agency_entities": 7,
+    "entity_link_rows": 23,
+    "pair_candidates": 16,
+    "pair_same": 6,
+    "multi_source_stems": {
+      "ACME WIDGETS": "OCP Inc + OCP Incorporated + Doing Business sample",
+      "SINERGIA": "OCP Inc + OCP Incorporated + Doing Business sample"
+    },
+    "cross_source_stem_hits": 2
+  },
+  "next_step": "Pack doing-business-entities (and/or city-record) via WH-02 capped bulk when headroom green; re-run er_batch_run.py --limit 200 over warehouse OCP (no --from-fixture) for a real slice; optional dual-write metrics report for false-split desk."
+}
