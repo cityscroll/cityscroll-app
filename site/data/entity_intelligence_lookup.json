@@ -3,7 +3,7 @@
   "phase": "cross-domain-object-links",
   "title": "Entity intelligence — cross-domain object links",
   "version": "cross_domain_object_link_v2",
-  "generated_at": "2026-08-02T13:15:47.743Z",
+  "generated_at": "2026-08-02T13:38:56.363Z",
   "observation_count": 532,
   "entity_count": 40,
   "multi_domain_count": 20,
@@ -11987,6 +11987,28 @@
           "layer": "cross_domain_object_link_v2"
         },
         {
+          "type": "decides_land_project",
+          "from": "notice:20260603044",
+          "to": "project:2023X0149",
+          "domain": "meetings",
+          "confidence": "strong",
+          "method": "exact_ulurp_token_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260603044",
+            "source_fields": [
+              "body",
+              "ulurp_numbers"
+            ],
+            "basis": "meeting_body_ulurp_token",
+            "observed_at": "2026-06-09T18:30:00.000",
+            "source_url": "https://zap.planning.nyc.gov/projects/2023X0149",
+            "input_value": "240206ZMX;240207ZRX;N240207ZRX"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
           "type": "hosts_meeting",
           "from": "notice:20260603044",
           "to": "agency:id:community-boards",
@@ -12054,8 +12076,8 @@
         "domains_not_yet_ingested": 1,
         "domains_empty": 4,
         "total_linked_objects": 5,
-        "link_count": 5,
-        "join_key_link_count": 0,
+        "link_count": 6,
+        "join_key_link_count": 1,
         "coverage_rate": 0.16666666666666666
       }
     },
@@ -14607,6 +14629,28 @@
       },
       "links": [
         {
+          "type": "decides_land_project",
+          "from": "notice:20260518025",
+          "to": "project:2021X0247",
+          "domain": "meetings",
+          "confidence": "strong",
+          "method": "exact_ulurp_token_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260518025",
+            "source_fields": [
+              "body",
+              "ulurp_numbers"
+            ],
+            "basis": "meeting_body_ulurp_token",
+            "observed_at": "2026-06-02T10:00:00.000",
+            "source_url": "https://zap.planning.nyc.gov/projects/2021X0247",
+            "input_value": "2021X0247;240161ZMX"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
           "type": "hosts_meeting",
           "from": "notice:20260518025",
           "to": "agency:id:borough-president-bronx",
@@ -14623,6 +14667,28 @@
             "basis": "meetings_agency_name",
             "observed_at": "2026-06-02T10:00:00.000",
             "input_value": "Borough President - Bronx"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "decides_land_project",
+          "from": "notice:20260608005",
+          "to": "project:2023X0149",
+          "domain": "meetings",
+          "confidence": "strong",
+          "method": "exact_ulurp_token_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260608005",
+            "source_fields": [
+              "body",
+              "ulurp_numbers"
+            ],
+            "basis": "meeting_body_ulurp_token",
+            "observed_at": "2026-06-15T12:00:00.000",
+            "source_url": "https://zap.planning.nyc.gov/projects/2023X0149",
+            "input_value": "2023X0149;240206ZMX;240207ZRX;N240207ZRX"
           },
           "layer": "cross_domain_object_link_v2"
         },
@@ -14654,8 +14720,8 @@
         "domains_not_yet_ingested": 1,
         "domains_empty": 4,
         "total_linked_objects": 2,
-        "link_count": 2,
-        "join_key_link_count": 0,
+        "link_count": 4,
+        "join_key_link_count": 2,
         "coverage_rate": 0.16666666666666666
       }
     },
@@ -14785,6 +14851,50 @@
       },
       "links": [
         {
+          "type": "decides_land_project",
+          "from": "notice:20260528018",
+          "to": "project:2024Q0219",
+          "domain": "meetings",
+          "confidence": "strong",
+          "method": "exact_ulurp_token_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260528018",
+            "source_fields": [
+              "body",
+              "ulurp_numbers"
+            ],
+            "basis": "meeting_body_ulurp_token",
+            "observed_at": "2026-06-11T09:30:00.000",
+            "source_url": "https://zap.planning.nyc.gov/projects/2024Q0219",
+            "input_value": "250330ZRQ;N250330ZRQ"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "decides_land_project",
+          "from": "notice:20260528018",
+          "to": "project:2025Q0247",
+          "domain": "meetings",
+          "confidence": "strong",
+          "method": "exact_ulurp_token_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260528018",
+            "source_fields": [
+              "body",
+              "ulurp_numbers"
+            ],
+            "basis": "meeting_body_ulurp_token",
+            "observed_at": "2026-06-11T09:30:00.000",
+            "source_url": "https://zap.planning.nyc.gov/projects/2025Q0247",
+            "input_value": "260186ZMQ;260187ZRQ"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
           "type": "hosts_meeting",
           "from": "notice:20260528018",
           "to": "agency:id:borough-president-queens",
@@ -14801,6 +14911,50 @@
             "basis": "meetings_agency_name",
             "observed_at": "2026-06-11T09:30:00.000",
             "input_value": "Borough President - Queens"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "decides_land_project",
+          "from": "notice:20260618037",
+          "to": "project:2023Q0450",
+          "domain": "meetings",
+          "confidence": "strong",
+          "method": "exact_ulurp_token_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260618037",
+            "source_fields": [
+              "body",
+              "ulurp_numbers"
+            ],
+            "basis": "meeting_body_ulurp_token",
+            "observed_at": "2026-07-02T09:30:00.000",
+            "source_url": "https://zap.planning.nyc.gov/projects/2023Q0450",
+            "input_value": "260184ZMQ;260185ZRQ"
+          },
+          "layer": "cross_domain_object_link_v2"
+        },
+        {
+          "type": "decides_land_project",
+          "from": "notice:20260618037",
+          "to": "project:2024Q0292",
+          "domain": "meetings",
+          "confidence": "strong",
+          "method": "exact_ulurp_token_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260618037",
+            "source_fields": [
+              "body",
+              "ulurp_numbers"
+            ],
+            "basis": "meeting_body_ulurp_token",
+            "observed_at": "2026-07-02T09:30:00.000",
+            "source_url": "https://zap.planning.nyc.gov/projects/2024Q0292",
+            "input_value": "260234ZMQ;260235ZRQ"
           },
           "layer": "cross_domain_object_link_v2"
         },
@@ -14832,8 +14986,8 @@
         "domains_not_yet_ingested": 1,
         "domains_empty": 4,
         "total_linked_objects": 2,
-        "link_count": 2,
-        "join_key_link_count": 0,
+        "link_count": 6,
+        "join_key_link_count": 4,
         "coverage_rate": 0.16666666666666666
       }
     },
@@ -16281,8 +16435,10 @@
       "exact_bbl_v1",
       "disposition_owner_label_v1",
       "rules_agency_issued_v1",
-      "meetings_agency_hosts_v1"
+      "meetings_agency_hosts_v1",
+      "exact_ulurp_token_v1",
+      "zap_project_ref_v1"
     ],
-    "note": "Links only when identity normalizers or join keys resolve. Identity: agency/vendor across money/land/property/rules/meetings. Join keys: PIN (shares_authority_key), contract_id (references_contract / payment_on_contract), BBL (sited_on_parcel / property exact BBL), payee (paid_to_vendor). Rules and meetings densify from City Record domain snapshots (Agency Rules + Public Hearings), not invented contract/vendor joins. Property attaches via City Record agency_name and labeled disposition owners. Empty domains are explicit; people defaults to not_yet_ingested without by_person rows."
+    "note": "Links only when identity normalizers or join keys resolve. Identity: agency/vendor across money/land/property/rules/meetings. Join keys: PIN (shares_authority_key), contract_id (references_contract / payment_on_contract), BBL (sited_on_parcel / property exact BBL), payee (paid_to_vendor), meeting body ULURP/ZAP → decides_land_project when the land project is in corpus. Rules and meetings densify from City Record domain snapshots (Agency Rules + Public Hearings), not invented contract/vendor joins. Property attaches via City Record agency_name and labeled disposition owners. Empty domains are explicit; people defaults to not_yet_ingested without by_person rows."
   }
 }

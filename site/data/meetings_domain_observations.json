@@ -3,7 +3,7 @@
   "domain": "meetings",
   "title": "Meetings domain observations for entity intelligence",
   "description": "City Record Public Hearings and Meetings rows (and Agency Rules public hearings with event_date) for offline entity-intelligence materialization. Mirrors meeting-outcomes / hearings discovery notices. Person-level votes are not included (production by_person retention is empty).",
-  "retrieved_at": "2026-08-02T13:11:10.699006Z",
+  "retrieved_at": "2026-08-02T13:38:55.781Z",
   "window_days": 180,
   "source": {
     "system": "city_record",
@@ -77,7 +77,7 @@
     {
       "request_id": "20260716022",
       "agency_name": "Parks and Recreation",
-      "short_title": "Notice of Joint Public Hearing: 8/10/2026; for the Development, Operation and Maintenance of an Outdoor Caf\u00e9 and Other Amenities in WNYC Transmitter Park, Brooklyn (Solicitation # B385-SB-2025)",
+      "short_title": "Notice of Joint Public Hearing: 8/10/2026; for the Development, Operation and Maintenance of an Outdoor Café and Other Amenities in WNYC Transmitter Park, Brooklyn (Solicitation # B385-SB-2025)",
       "start_date": "2026-07-24T00:00:00.000",
       "event_date": "2026-08-10T14:30:00.000",
       "type_of_notice_description": "Public Hearings",
@@ -92,7 +92,11 @@
       "event_date": "2026-09-09T10:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "ulurp_keys": [
+        "210221PCR",
+        "C210221PCR"
+      ]
     },
     {
       "request_id": "20260715041",
@@ -122,7 +126,10 @@
       "event_date": "2026-08-06T11:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "ulurp_keys": [
+        "302621MEET"
+      ]
     },
     {
       "request_id": "20260714001",
@@ -444,7 +451,10 @@
       "event_date": "2026-07-16T11:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "ulurp_keys": [
+        "302621MEET"
+      ]
     },
     {
       "request_id": "20260623060",
@@ -494,7 +504,11 @@
       "event_date": "2026-08-12T10:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "ulurp_keys": [
+        "240232PQX",
+        "C240232PQX"
+      ]
     },
     {
       "request_id": "20260618037",
@@ -504,7 +518,15 @@
       "event_date": "2026-07-02T09:30:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "ulurp_keys": [
+        "260184ZMQ",
+        "260185ZRQ",
+        "260234ZMQ",
+        "260235ZRQ",
+        "N260185ZRQ",
+        "N260235ZRQ"
+      ]
     },
     {
       "request_id": "20260618036",
@@ -524,7 +546,10 @@
       "event_date": "2026-07-08T18:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "ulurp_keys": [
+        "502498BDA"
+      ]
     },
     {
       "request_id": "20260617039",
@@ -564,7 +589,16 @@
       "event_date": "2026-06-25T18:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "ulurp_keys": [
+        "260190ZSX",
+        "260191ZCX",
+        "260192LDX",
+        "260193HAX",
+        "260194ZAX",
+        "260195ZAX",
+        "260336ZAX"
+      ]
     },
     {
       "request_id": "20260612028",
@@ -674,7 +708,11 @@
       "event_date": "2026-06-17T19:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "ulurp_keys": [
+        "978928INTE",
+        "978928PHON"
+      ]
     },
     {
       "request_id": "20260213013",
@@ -694,7 +732,11 @@
       "event_date": "2026-06-24T10:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "ulurp_keys": [
+        "000611PXQ",
+        "N000611PXQ"
+      ]
     },
     {
       "request_id": "20260604005",
@@ -714,7 +756,11 @@
       "event_date": "2026-07-02T11:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "ulurp_keys": [
+        "302621MEET",
+        "302621TO"
+      ]
     },
     {
       "request_id": "20260603002",
@@ -734,7 +780,11 @@
       "event_date": "2026-06-25T11:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "ulurp_keys": [
+        "302621MEET",
+        "302621TO"
+      ]
     },
     {
       "request_id": "20260608005",
@@ -744,7 +794,16 @@
       "event_date": "2026-06-15T12:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "ulurp_keys": [
+        "240206ZMX",
+        "240207ZRX",
+        "C240206ZMX",
+        "N240207ZRX"
+      ],
+      "zap_project_ids": [
+        "2023X0149"
+      ]
     },
     {
       "request_id": "20260603052",
@@ -794,7 +853,12 @@
       "event_date": "2026-06-15T19:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "ulurp_keys": [
+        "260115ZMK",
+        "260116ZRK",
+        "D260116ZRK"
+      ]
     },
     {
       "request_id": "20260605058",
@@ -814,7 +878,12 @@
       "event_date": "2026-06-09T18:30:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "ulurp_keys": [
+        "240206ZMX",
+        "240207ZRX",
+        "N240207ZRX"
+      ]
     },
     {
       "request_id": "20260601042",
@@ -824,7 +893,11 @@
       "event_date": "2026-06-10T18:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "ulurp_keys": [
+        "449510C",
+        "914623BB"
+      ]
     },
     {
       "request_id": "20260213012",
@@ -864,7 +937,15 @@
       "event_date": "2026-06-11T09:30:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "ulurp_keys": [
+        "250330ZRQ",
+        "250392ZMQ",
+        "260186ZMQ",
+        "260187ZRQ",
+        "N250330ZRQ",
+        "N260187ZRQ"
+      ]
     },
     {
       "request_id": "20260513035",
@@ -964,7 +1045,11 @@
       "event_date": "2026-06-18T11:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "ulurp_keys": [
+        "302621MEET",
+        "302621TO"
+      ]
     },
     {
       "request_id": "20260522008",
@@ -1074,7 +1159,14 @@
       "event_date": "2026-06-02T10:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "ulurp_keys": [
+        "240161ZMX",
+        "C240161ZMX"
+      ],
+      "zap_project_ids": [
+        "2021X0247"
+      ]
     },
     {
       "request_id": "20260429031",
@@ -1164,7 +1256,10 @@
       "event_date": "2026-06-03T00:30:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "ulurp_keys": [
+        "367046PHON"
+      ]
     },
     {
       "request_id": "20260513032",
@@ -1184,7 +1279,11 @@
       "event_date": "2026-06-11T11:00:00.000",
       "type_of_notice_description": "Public Hearings",
       "section_name": "Public Hearings and Meetings",
-      "source_system": "city_record"
+      "source_system": "city_record",
+      "ulurp_keys": [
+        "302621MEET",
+        "302621TO"
+      ]
     },
     {
       "request_id": "20260512008",
