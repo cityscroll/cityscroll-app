@@ -68,7 +68,7 @@ INCLUSIVE_DENYLIST = [
 # Acronyms/brand terms exempt from the all-caps rule (mirrors stray_english.py's list).
 ALL_CAPS_ALLOW = {
     "RFP", "RFPS", "RFX", "EPIN", "PIN", "ZAP", "API", "RSS", "JSON", "CSV", "ICS", "DOB", "HPD",
-    "DCAS", "NYC", "MOCS", "ULURP", "MIH", "FY", "CD", "OK", "US", "ZIP", "MCP",
+    "DCAS", "NYC", "MOCS", "FCRC", "ULURP", "MIH", "FY", "CD", "OK", "US", "ZIP", "MCP",
     "AI", "CROL", "LIST", "GET", "POST", "PDF", "HTML", "URL", "IT", "HTTP",
     "SODA", "NYPA", "CAPTCHA", "WCAG", "CAPS", "TTL", "SQL", "XML", "MISSION",
     "SECURITY", "CONTRIBUTING",
