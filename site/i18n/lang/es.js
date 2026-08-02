@@ -785,7 +785,7 @@
     land_spine_lag_aligned_html: "NYC Open Data ({open_date}) está al menos tan actualizado como el hito del portal ZAP en vivo ({portal_date}).",
     land_spine_lag_unknown: "No se puede medir el retraso del portal porque una de las dos fechas de hito no está publicada.",
     land_spine_gap_not_yet_ingested_html: "Aún no se muestra aquí — los hitos fechados están en {source}.",
-    land_spine_gap_not_published_html: "La ciudad no publica un aviso del City Record que incluya los números ULURP de este proyecto. Aparecería en {source} si se publicara.",
+    land_spine_gap_not_published_html: "Todavía no se ha publicado un aviso del City Record que coincida con los números ULURP de este proyecto. Si se publica uno, aparecerá en {source}.",
     land_spine_gap_unavailable_html: "No se pudo acceder a {source} para comprobar los avisos de uso del suelo.",
     land_spine_planned: "previsto",
     land_outcomes_loading: "Cargando documentos de decisión y resultados…",

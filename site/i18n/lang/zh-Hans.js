@@ -785,7 +785,7 @@
     land_spine_lag_aligned_html: "NYC Open Data（{open_date}）至少与实时 ZAP 门户里程碑（{portal_date}）同样新。",
     land_spine_lag_unknown: "由于两个里程碑日期之一未发布，无法衡量门户延迟。",
     land_spine_gap_not_yet_ingested_html: "此处尚未显示 — 带日期的里程碑见 {source}。",
-    land_spine_gap_not_published_html: "市政府未发布带有该项目 ULURP 编号的 City Record 公告；如有发布，会出现在 {source}。",
+    land_spine_gap_not_published_html: "尚未找到与该项目 ULURP 编号匹配的 City Record 公告。如有发布，将出现在 {source}。",
     land_spine_gap_unavailable_html: "无法访问 {source} 以检查土地用途公告。",
     land_spine_planned: "计划",
     land_outcomes_loading: "正在加载决定文件与结果…",
