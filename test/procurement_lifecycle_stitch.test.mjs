@@ -114,6 +114,14 @@ const sandbox = new Function(
   extractFn("subsidyGapKindClient") + "\n" +
   extractFn("subsidyAnchorFromNotice") + "\n" +
   extractFn("subsidyStageHTML") + "\n" +
+  extractFn("subsidyPhaseLabel") + "\n" +
+  extractFn("subsidyPhaseActionHTML") + "\n" +
+  extractFn("subsidyPhaseStepperHTML") + "\n" +
+  extractFn("subsidyPhaseNotYetHTML") + "\n" +
+  extractFn("subsidyPhasePanelHTML") + "\n" +
+  extractFn("subsidyPhaseTimelineHTML") + "\n" +
+  extractFn("subsidyLifecycleHTMLFlat") + "\n" +
+  extractFn("subsidyJoinAndFieldChrome") + "\n" +
   extractFn("subsidyLifecycleHTML") + "\n" +
   extractFn("isMeetingOutcomesEligible") + "\n" +
   extractFn("isCityCouncilNotice") + "\n" +
@@ -202,6 +210,14 @@ try {
     extractFn("subsidyGapKindClient") +
     extractFn("subsidyAnchorFromNotice") +
     extractFn("subsidyStageHTML") +
+    extractFn("subsidyPhaseLabel") +
+    extractFn("subsidyPhaseActionHTML") +
+    extractFn("subsidyPhaseStepperHTML") +
+    extractFn("subsidyPhaseNotYetHTML") +
+    extractFn("subsidyPhasePanelHTML") +
+    extractFn("subsidyPhaseTimelineHTML") +
+    extractFn("subsidyLifecycleHTMLFlat") +
+    extractFn("subsidyJoinAndFieldChrome") +
     extractFn("subsidyLifecycleHTML") +
     extractFn("isMeetingOutcomesEligible") +
     extractFn("isCityCouncilNotice") +
@@ -399,6 +415,9 @@ test("subsidy detail: matched project renders stage, action, and outcome", () =>
   assert.match(html, /Apex Urban Builders/);
   assert.match(html, /Application|Hearing|Board decision|Closing|Compliance/);
   assert.match(html, /Official action|Outcome/i);
+  // Money-collapse: lead + stepper, not N future gap cards as primary chrome
+  assert.match(html, /data-subsidy-phase-lead|lc-phase-lead/);
+  assert.match(html, /lc-stepper|subsidy-phase-stepper/);
 });
 
 test("subsidy detail: unmatched non-IDA notice renders specific gap, never generic unknown", () => {
@@ -449,12 +468,31 @@ test("subsidy detail: feed_status=unavailable never uses city-does-not-publish f
     event_date: "2022-06-09T10:00:00.000",
   });
   assert.match(html, /Subsidy lifecycle/);
-  assert.match(html, /Not yet shown here/);
+  // Primary chrome: compact not-yet-reached (not N gap cards). Class-(a) substance
+  // remains under the future-gaps disclosure when feed is down.
+  assert.match(html, /data-subsidy-not-yet|Not yet reached/i);
+  assert.match(html, /data-subsidy-future-gaps|Not yet shown here/);
   assert.match(html, /data-subsidy-gap="not_yet_ingested"/);
   assert.doesNotMatch(html, /The city does not publish this Board decision/i);
   assert.doesNotMatch(html, /The city does not publish this Closing/i);
   assert.doesNotMatch(html, /The city does not publish this Compliance/i);
   assert.match(html, /Could not reach/i);
+});
+
+test("subsidy detail: empty future stages collapse into one not-yet-reached indicator", () => {
+  const html = subsidyLifecycleHTML(youngIdaSubsidy, {
+    request_id: "20260617040",
+    short_title: "NEW YORK CITY INDUSTRIAL DEVELOPMENT AGENCY - NOTICE OF PUBLIC HEARING - July 16th, 2026",
+    event_date: "2026-07-16T10:00:00.000",
+  });
+  assert.match(html, /data-subsidy-not-yet=/);
+  assert.match(html, /Not yet reached/i);
+  // Matched stages still render detail (application/hearing).
+  assert.match(html, /Hearing|Application/i);
+  // Primary path must not emit a chain of N lc-norecord gap cards for every future stage.
+  const primary = html.split('data-subsidy-future-gaps')[0];
+  const gapCards = (primary.match(/data-subsidy-gap=/g) || []).length;
+  assert.ok(gapCards === 0, `expected 0 primary gap cards, got ${gapCards}`);
 });
 
 // ---------------------------------------------------------------------------

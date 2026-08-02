@@ -47,6 +47,7 @@ export const PAYMENT_METHOD_VERSION = "1";
 export const CROSS_DOMAIN_DOMAINS = Object.freeze([
   "money",
   "land",
+  "property",
   "rules",
   "meetings",
   "people",
@@ -58,13 +59,28 @@ export const CROSS_DOMAIN_DOMAINS = Object.freeze([
  */
 export const CROSS_DOMAIN_LINK_TYPES = Object.freeze({
   published_by_agency: {
-    description: "Procurement / rules / hearing notice published by an agency",
-    domains: Object.freeze(["money", "rules", "meetings"]),
+    description: "Procurement / property / rules / hearing notice published by an agency",
+    domains: Object.freeze(["money", "property", "rules", "meetings"]),
     registry: true,
   },
   named_vendor: {
     description: "Procurement notice names a vendor",
     domains: Object.freeze(["money"]),
+    registry: true,
+  },
+  named_owner: {
+    description: "Property disposition notice names a winning bidder / grantee",
+    domains: Object.freeze(["property"]),
+    registry: true,
+  },
+  sits_on_parcel: {
+    description: "Property notice or land project sits on an exact BBL",
+    domains: Object.freeze(["property", "land"]),
+    registry: true,
+  },
+  parcel_links_project: {
+    description: "Property disposition notice shares an exact BBL with a ZAP project",
+    domains: Object.freeze(["property"]),
     registry: true,
   },
   applicant_agency: {
@@ -362,8 +378,17 @@ export function observationFromPaymentRow(row, opts = {}) {
 export function normalizeBbl(value) {
   let s = clean(value).replace(/\.0$/, "");
   if (!s) return null;
+  // Pure digits: pad short borough-block-lot fragments to 10.
   if (/^\d+$/.test(s) && s.length < 10) s = s.padStart(10, "0");
-  return /^\d{10}$/.test(s) ? s : null;
+  if (/^\d{10}$/.test(s)) return s;
+  // Formatted BBLs (1-00644-0001 / commas): keep digits only.
+  const digits = s.replace(/\D/g, "");
+  if (/^\d{10}$/.test(digits)) return digits;
+  if (/^\d+$/.test(digits) && digits.length < 10) {
+    const padded = digits.padStart(10, "0");
+    return /^\d{10}$/.test(padded) ? padded : null;
+  }
+  return null;
 }
 
 /**
@@ -633,7 +658,7 @@ export function rootsForObservation(obs) {
     const agency = resolveAgencySubject(obs.agency_name);
     if (agency) roots.push({ kind: "agency", subject: agency, field: "agency_name" });
   }
-  if (obs.vendor_name && (obs.domain === "money" || obs.domain === "land")) {
+  if (obs.vendor_name && (obs.domain === "money" || obs.domain === "land" || obs.domain === "property")) {
     const vendor = resolveVendorSubject(obs.vendor_name);
     if (vendor) roots.push({ kind: "vendor", subject: vendor, field: "vendor_name" });
   }
@@ -679,6 +704,8 @@ function linkTypeFor(domain, rootKind, field, objectKind = null) {
     return "paid_to_vendor";
   }
   if (domain === "money" && rootKind === "vendor") return "named_vendor";
+  if (domain === "property" && rootKind === "agency") return "published_by_agency";
+  if (domain === "property" && rootKind === "vendor") return "named_owner";
   if (domain === "land" && rootKind === "agency") return "applicant_agency";
   if (domain === "land" && rootKind === "vendor") return "applicant_vendor";
   if (domain === "rules" && rootKind === "agency") return "issued_rule";
@@ -692,7 +719,11 @@ function linkTypeFor(domain, rootKind, field, objectKind = null) {
  */
 function confidenceFor(rootKind, field, obs) {
   if (rootKind === "agency" && field === "agency_name") return "strong";
-  if (rootKind === "vendor" && field === "vendor_name") return "strong";
+  if (rootKind === "vendor" && field === "vendor_name") {
+    // Disposition owners are label-extracted from body language — not a publisher column.
+    if (obs.domain === "property") return "tentative";
+    return "strong";
+  }
   if (rootKind === "vendor" && field === "payee_name") return "strong";
   if (rootKind === "agency" && field === "primary_applicant") {
     // Applicant strings are noisier than City Record agency_name columns.
@@ -998,8 +1029,12 @@ function hrefForObject(obs) {
   if (obs.request_id) return `#notice/${encodeURIComponent(obs.request_id)}`;
   if (obs.project_id) return `#land?project=${encodeURIComponent(obs.project_id)}`;
   if (obs.event_id) return `#notice/`; // meetings often via notice; leave soft
+  if (obs.primary_bbl || (obs.bbls && obs.bbls[0])) {
+    return `#property?bbl=${encodeURIComponent(obs.primary_bbl || obs.bbls[0])}`;
+  }
   return null;
 }
+
 
 /**
  * Index observations into a cross-domain graph keyed by root entity ref.

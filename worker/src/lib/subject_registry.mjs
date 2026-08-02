@@ -27,6 +27,7 @@ export const SUBJECT_KINDS = Object.freeze({
   pin: { description: "NYC procurement PIN/EPIN authority value" },
   vendor: { description: "Vendor identity handle" },
   agency: { description: "Agency identity handle" },
+  bbl: { description: "NYC borough-block-lot tax parcel (10-digit BBL)" },
   "legistar-event": { description: "Legistar council calendar event" },
   rules: { description: "NYC Rules item" },
   "entity-pair": { description: "Desk review pair object" },
@@ -67,6 +68,21 @@ export const SUBJECT_LINK_TYPES = Object.freeze({
   named_vendor: {
     description: "Procurement subject names a vendor subject",
     from_kinds: Object.freeze(["notice", "contract"]),
+    to_kinds: Object.freeze(["vendor"]),
+  },
+  sits_on_parcel: {
+    description: "Notice or land project sits on an exact BBL tax parcel",
+    from_kinds: Object.freeze(["notice", "project"]),
+    to_kinds: Object.freeze(["bbl"]),
+  },
+  parcel_links_project: {
+    description: "Property disposition notice shares an exact BBL with a ZAP project",
+    from_kinds: Object.freeze(["notice"]),
+    to_kinds: Object.freeze(["project"]),
+  },
+  named_owner: {
+    description: "Disposition notice names a winning bidder / grantee as owner vendor",
+    from_kinds: Object.freeze(["notice"]),
     to_kinds: Object.freeze(["vendor"]),
   },
 });

@@ -56,5 +56,24 @@
   ],
   "people": [],
   "money": [],
-  "land": []
+  "land": [],
+  "property": [
+    {
+      "request_id": "20250301001",
+      "agency_name": "Department of Parks and Recreation",
+      "section_name": "Property Disposition",
+      "short_title": "Parks surplus parcel hearing",
+      "start_date": "2025-03-01",
+      "event_date": "2025-03-20",
+      "type_of_notice_description": "Public Hearings",
+      "additional_description_1": "Public hearing for disposition of City-owned Parks property, Borough of Brooklyn, Block 2518 Lot 36.",
+      "property_location": {
+        "scope": "local",
+        "boroughs": ["Brooklyn"],
+        "bbls": ["3025180036"],
+        "tax_lots": [{ "block": "2518", "lots": ["36"] }]
+      },
+      "source_system": "city_record"
+    }
+  ]
 }

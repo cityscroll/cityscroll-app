@@ -4,7 +4,7 @@
 | --- | --- |
 | Status | Accepted |
 | Date | 2026-08-02 |
-| Scope | Entity intelligence across money / land / rules / meetings / people |
+| Scope | Entity intelligence across money / land / property / rules / meetings / people |
 | Supersedes | — |
 | Builds on | Subject registry, entity_resolution normalizers, warehouse ER (WH-04) |
 
@@ -16,8 +16,9 @@ Entity resolution links source records to vendor/agency canonicals. Warehouse ER
 published canonical entity ids (`not_yet_public` for name-shaped keys).
 
 What was still shallow: **one real-world agency or vendor spanning domains** —
-contracts (money), rezonings (land), rules, hearings, and person-level votes —
-with **typed edges and provenance** on a single intelligence surface.
+contracts (money), rezonings (land), property dispositions, rules, hearings, and
+person-level votes — with **typed edges and provenance** on a single intelligence
+surface.
 
 ## Decision
 
@@ -53,9 +54,23 @@ with **typed edges and provenance** on a single intelligence surface.
 
 ### Metric
 
-`cross_domain_object_link_coverage` = domains_matched / 5 on a view.
+`cross_domain_object_link_coverage` = domains_matched / 6 on a view
+(money, land, property, rules, meetings, people).
 Verified demo: **Parks and Recreation** (`agency:id:parks-and-recreation`) with
-money + land + rules + meetings matched; people not_yet_ingested.
+money + land + property + rules + meetings matched; people not_yet_ingested.
+
+### Property / BBL joins (catchup parity)
+
+Pure layer `entity_resolution/cross_domain/property_links.mjs` + materialization
+`site/data/property_cross_domain_lookup.json`:
+
+- **BBL → ZAP**: exact `zap-bbl` tax-lot match only (no address fuzzy invent)
+- **Owner → contracts**: labeled winning-bidder / sold-to body language →
+  `vendorStem` join to money awards
+- **Agency**: Property Disposition `agency_name` → `published_by_agency` on the
+  property domain
+
+Parcel intelligence is also stamped per demo BBL for notice detail UI.
 
 ## Non-goals
 
@@ -69,9 +84,11 @@ money + land + rules + meetings matched; people not_yet_ingested.
 ```bash
 node --test test/cross_domain_object_links.test.mjs \
   test/warehouse_entity_intelligence_index.test.mjs \
+  test/property_cross_domain.test.mjs test/property_phase_spine.test.mjs \
   worker/test/entity_intelligence.test.mjs
 node tools/build_entity_intelligence.mjs --check
 node warehouse/lib/entity_intelligence_index.mjs --check
+node tools/build_property_cross_domain.mjs --check
 node entity_resolution/eval/run_metrics.mjs --gold entity_resolution/eval/gold_v0.jsonl --blocker token_v0
 ```
 

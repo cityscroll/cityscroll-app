@@ -15,6 +15,7 @@ import {
   doingBusinessProfilePayload,
   joinVendorToDoingBusiness,
 } from "./lib/doing_business_join.mjs";
+import { attachDoingBusinessFromWarehouse } from "./lib/doing_business_warehouse_lookup.mjs";
 
 const SODA = "https://data.cityofnewyork.us/resource/dg92-zbpx.json";
 const MONEY_HONESTY_CAP = 10_000_000_000;
@@ -258,10 +259,37 @@ async function attachForecasts(profiles, kv) {
 
 /**
  * Fetch Doing Business Search Entities and attach a strict stem join to each profile.
+ * WH-05: warehouse materialization first (no network). Live multi-page SODA when:
+ *   - materialization is empty/missing, or
+ *   - materialization is a partial/fixture snapshot and some profiles are still unmatched
+ *     (full bulk pack skips SODA entirely).
  * Failure is non-fatal: profiles keep doingBusiness=null so the cron still publishes.
  */
 async function attachDoingBusiness(profiles, fetchImpl) {
-  for (const profile of Object.values(profiles)) profile.doingBusiness = null;
+  const profileList = Object.values(profiles || {});
+  // Warehouse materialization path — instant stem index, zero SODA catalog pages when complete.
+  const fromWh = attachDoingBusinessFromWarehouse(profiles);
+  const allMatched =
+    fromWh.used &&
+    profileList.length > 0 &&
+    profileList.every((p) => p.doingBusiness);
+  // ~11k entities on Open Data; ≥5k rows ⇒ treat as full-catalog materialization.
+  const fullCatalog = fromWh.used && fromWh.rows >= 5000;
+  if (fromWh.used && (fullCatalog || allMatched)) {
+    return {
+      requests: 0,
+      rows: fromWh.rows,
+      matched: fromWh.matched,
+      indexSize: fromWh.indexSize,
+      lookup_path: "warehouse",
+    };
+  }
+
+  // Live SODA for empty materialization, or to fill gaps left by a partial snapshot.
+  // Preserve any warehouse hits already attached above.
+  if (!fromWh.used) {
+    for (const profile of profileList) profile.doingBusiness = null;
+  }
   const rows = [];
   let requests = 0;
   for (let page = 0; page < MAX_PAGES; page++) {
@@ -282,8 +310,9 @@ async function attachDoingBusiness(profiles, fetchImpl) {
   }
 
   const index = buildDoingBusinessIndex(rows);
-  let matched = 0;
-  for (const profile of Object.values(profiles)) {
+  let matched = fromWh.used ? fromWh.matched : 0;
+  for (const profile of profileList) {
+    if (profile.doingBusiness) continue; // keep warehouse hit
     const hit = joinVendorToDoingBusiness(profile.display || profile.stem, index)
       || joinVendorToDoingBusiness(profile.stem, index);
     if (!hit) continue;
@@ -299,7 +328,13 @@ async function attachDoingBusiness(profiles, fetchImpl) {
     profile.doingBusiness = doingBusinessProfilePayload(best);
     matched++;
   }
-  return { requests, rows: rows.length, matched, indexSize: index.size };
+  return {
+    requests,
+    rows: fromWh.used ? Math.max(fromWh.rows, rows.length) : rows.length,
+    matched,
+    indexSize: fromWh.used ? Math.max(fromWh.indexSize, index.size) : index.size,
+    lookup_path: fromWh.used ? "warehouse+soda" : "soda",
+  };
 }
 
 function withoutTail(profile) {

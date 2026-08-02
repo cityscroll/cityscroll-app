@@ -1,0 +1,109 @@
+{
+  "description": "Property cross-domain join corpus. BBLs and notices are real City Record / tax-lot shapes; zap-bbl pairs are fixture-stamped exact joins for characterization (not a production warehouse bulk claim).",
+  "property_rows": [
+    {
+      "request_id": "20150421106",
+      "start_date": "2015-05-01",
+      "event_date": "2015-06-10",
+      "agency_name": "Housing Preservation and Development",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Property Disposition",
+      "short_title": "Excelsior II",
+      "additional_description_1": "Pursuant to Section 695(2)(b) of the General Municipal Law, notice is hereby given of a public hearing for the disposition of City-owned property in the Borough of Brooklyn, Block 2518 Lot 36.",
+      "property_location": {
+        "scope": "local",
+        "boroughs": ["Brooklyn"],
+        "bbls": ["3025180036"],
+        "tax_lots": [{ "block": "2518", "lots": ["36"] }]
+      },
+      "disposition_stage": "hearing"
+    },
+    {
+      "request_id": "20220504006",
+      "start_date": "2022-05-04",
+      "agency_name": "Economic Development Corporation",
+      "type_of_notice_description": "Sale",
+      "section_name": "Property Disposition",
+      "short_title": "REQUEST FOR PROPOSALS - INDUSTRY ROAD",
+      "additional_description_1": "NYCEDC Request for Proposals (RFP) for the sale of property at Industry Road, Brooklyn, Block 4444 Lot 1.",
+      "property_location": {
+        "scope": "local",
+        "boroughs": ["Brooklyn"],
+        "bbls": ["3044440001"],
+        "tax_lots": [{ "block": "4444", "lots": ["1"] }]
+      },
+      "disposition_stage": "auction_or_rfp"
+    },
+    {
+      "request_id": "20241112003",
+      "start_date": "2024-11-12",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Notice",
+      "section_name": "Property Disposition",
+      "short_title": "Notice of tentative winning bidders — Manhattan Block 644 Lot 1",
+      "additional_description_1": "The property has been sold to Make it Zesty LLC for $275,000. Tentative winning bidder is Make it Zesty LLC. Borough of Manhattan Block 644 Lot 1.",
+      "property_location": {
+        "scope": "local",
+        "boroughs": ["Manhattan"],
+        "bbls": ["1006440001"],
+        "tax_lots": [{ "block": "644", "lots": ["1"] }]
+      },
+      "disposition_stage": "award_or_conveyance"
+    },
+    {
+      "request_id": "20250301001",
+      "start_date": "2025-03-01",
+      "agency_name": "Department of Parks and Recreation",
+      "type_of_notice_description": "Public Hearings",
+      "section_name": "Property Disposition",
+      "short_title": "Parks surplus parcel hearing — Brooklyn Block 2518 Lot 36",
+      "additional_description_1": "Public hearing for disposition of City-owned Parks property, Borough of Brooklyn, Block 2518 Lot 36 (BBL 3025180036).",
+      "property_location": {
+        "scope": "local",
+        "boroughs": ["Brooklyn"],
+        "bbls": ["3025180036"],
+        "tax_lots": [{ "block": "2518", "lots": ["36"] }]
+      },
+      "disposition_stage": "hearing"
+    }
+  ],
+  "zap_bbl_rows": [
+    {
+      "project_id": "2022M0258",
+      "bbl": "1006440001",
+      "source_system": "zap-bbl"
+    },
+    {
+      "project_id": "FIXZAP001",
+      "bbl": "3025180036",
+      "source_system": "zap-bbl"
+    }
+  ],
+  "zap_projects": [
+    {
+      "project_id": "2022M0258",
+      "project_name": "Timbale Terrace",
+      "public_status": "Completed",
+      "primary_applicant": "HPD - NYC Dept of Housing Preservation & Development"
+    },
+    {
+      "project_id": "FIXZAP001",
+      "project_name": "Fixture ULURP Project One",
+      "public_status": "Active",
+      "primary_applicant": "FIXTURE APPLICANT A"
+    }
+  ],
+  "money_rows": [
+    {
+      "request_id": "FIXZESTY1",
+      "agency_name": "Department of Parks and Recreation",
+      "vendor_name": "Make it Zesty LLC",
+      "short_title": "Fixture parks catering award",
+      "pin": "PIN-ZESTY",
+      "contract_amount": "50000",
+      "start_date": "2024-07-05",
+      "type_of_notice_description": "Award",
+      "source_system": "ocp-recent-contract-awards"
+    }
+  ]
+}
