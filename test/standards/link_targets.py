@@ -127,6 +127,8 @@ EXTERNAL_HREF_EXPRS = (
     "${escUiHtml(l.url)}",            # non-Council outcomes: borough president / CB minutes HTTPS
     "${escUiHtml(url)}",              # solicitation package document from Current Solicitations join
     "${escUiHtml(record.portal_url)}",  # land outcomes: official ZAP project portal
+    "${escUiHtml(view.portal_url)}",    # land phase spine: single Full project on ZAP link
+    "${escUiHtml(portalUrl)}",          # land phase spine flat fallback: project portal link
     "${escUiHtml(sourceURL)}",          # land event spine: City Record or ZAP source event
     "${escUiHtml(href)}",         # rule-lifecycle chip + comment action: NYC Rules comment/adoption page
     "${escUiHtml(action.destination)}",  # compiled next-action rail: validated HTTPS handoff
