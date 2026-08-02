@@ -156,8 +156,17 @@ Strategies and receipts: `worker/src/lib/ulurp_recommendations_join.mjs`,
 milestones/dispositions with City Record notices by strict ULURP token. Each event carries
 `time` (value/precision/basis/certainty) and a named source URL; `gaps` preserves class-(a),
 class-(b), and operational-unavailable states, while `lag.open_data_vs_portal` compares the
-two published milestone dates without treating Open Data as live. Pure characterization:
-`node --test test/land_event_spine.test.mjs`. UI capture:
+two published milestone dates without treating Open Data as live.
+
+**Write-ahead prewarm (load-bearing for Land detail speed):** cold multi-source
+materialization is ~12s; warm KV is sub-second. Daily cron runs
+`refreshZapOutcomes` (sell-facing statuses In Public Review → Noticed → Active →
+Filed, capped, plus demo `2022M0258`). Operator force:
+`POST /admin/zap-outcomes-refresh` (`ADMIN_KEY`). Client session-prefetches the
+first screenful of list project ids after land list paint. Unlisted ids still
+compute-on-miss. Verify:
+`node --test test/zap_outcomes.test.mjs worker/test/zap_outcomes_prewarm.test.mjs
+test/land_event_spine.test.mjs`. UI capture:
 `python3 tools/capture_land_event_spine.py`.
 
 ## Legistar agenda/vote depth

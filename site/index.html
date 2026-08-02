@@ -4326,6 +4326,9 @@ function landRenderList(kw, kwIsTextMatch, boro, autoSelect){
   const contextTerms = boro ? [boro] : [];
   $("#llist").innerHTML=head+methodology+lRows.map((r,i)=>landRowHTML(r,i,terms,contextTerms)).join("");
   document.querySelectorAll("#llist .row").forEach(el=>el.addEventListener("click",()=>landSelect(+el.dataset.i, el)));
+  // Warm outcomes for the visible list (edge KV prewarm + session cache) so the first
+  // select paints decision docs without the cold multi-second spinner.
+  prefetchZapOutcomesForList(lRows);
   if(autoSelect !== false) document.querySelector("#llist .row")?.click();
 }
 
@@ -4657,13 +4660,69 @@ function landOutcomesHTML(record){
     <div class="note">${t("land_outcomes_provenance_html")}</div>`;
 }
 
+/* Session cache + list prefetch for zap-outcomes. Daily edge prewarm keeps the Worker KV
+   warm (~50–200ms), but a same-tab revisit or list→detail click should not re-pay even that
+   when the payload is already in memory. Prefetch runs after the land list paints so the
+   first selected row (and neighbors) can render without the multi-second cold spinner. */
+const ZAP_OUTCOMES_MEM = new Map(), ZAP_OUTCOMES_MEM_TTL = 300000;
+function zapOutcomesMemGet(projectId){
+  const hit = ZAP_OUTCOMES_MEM.get(projectId);
+  if(!hit) return null;
+  if(hit.p) return hit;
+  if(Date.now() - hit.at < ZAP_OUTCOMES_MEM_TTL) return hit;
+  ZAP_OUTCOMES_MEM.delete(projectId);
+  return null;
+}
+function fetchZapOutcomesPayload(projectId){
+  const id = String(projectId || "").trim();
+  if(!id) return Promise.resolve(null);
+  const existing = zapOutcomesMemGet(id);
+  if(existing?.p) return existing.p;
+  if(existing?.data) return Promise.resolve(existing.data);
+  const p = (async ()=>{
+    try{
+      const resp = await workerFetch("/zap-outcomes?id=" + encodeURIComponent(id), null, 12000);
+      if(!resp || !resp.ok) return null;
+      return await resp.json();
+    }catch(e){ return null; }
+  })();
+  ZAP_OUTCOMES_MEM.set(id, {p});
+  return p.then(data=>{
+    if(data && data.ok !== false && data.record){
+      ZAP_OUTCOMES_MEM.set(id, {data, at: Date.now()});
+    }else{
+      ZAP_OUTCOMES_MEM.delete(id);
+    }
+    return data;
+  }).catch(()=>{ ZAP_OUTCOMES_MEM.delete(id); return null; });
+}
+function prefetchZapOutcomesForList(rows){
+  if(!Array.isArray(rows) || !rows.length) return;
+  // Cap so a 40-row list does not fan out unbounded; demo + first screenful first.
+  const ids = [];
+  const seen = new Set();
+  for(const r of rows){
+    const id = r && r.project_id;
+    if(!id || seen.has(id)) continue;
+    seen.add(id);
+    ids.push(id);
+    if(ids.length >= 12) break;
+  }
+  for(const id of ids){
+    if(zapOutcomesMemGet(id)) continue;
+    fetchZapOutcomesPayload(id);
+  }
+}
 async function loadZapOutcomes(r, el, selection){
   if(!el || !r || !r.project_id) return;
-  let data = null;
-  try{
-    const resp = await workerFetch("/zap-outcomes?id=" + encodeURIComponent(r.project_id), null, 12000);
-    if(resp && resp.ok) data = await resp.json();
-  }catch(e){}
+  const warm = zapOutcomesMemGet(r.project_id);
+  if(warm?.data?.ok !== false && warm?.data?.record){
+    if(selection !== undefined && selection !== landSelectionSeq) return;
+    if(!document.contains(el)) return;
+    el.innerHTML = landOutcomesHTML(warm.data.record);
+    return;
+  }
+  const data = await fetchZapOutcomesPayload(r.project_id);
   if(selection !== undefined && selection !== landSelectionSeq) return;
   if(!document.contains(el)) return;
   if(!data || data.ok === false || !data.record){

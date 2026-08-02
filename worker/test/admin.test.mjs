@@ -8,6 +8,7 @@ import { checkAdminKey, checkOperatorProbeKey, handleAdminDigestSendTest } from 
 import { handleAdminSuggestRefresh } from "../src/suggest.mjs";
 import { SUGGESTIONS_KV_KEY } from "../src/suggest.mjs";
 import { handleAdminMeetingOutcomesRefresh } from "../src/meeting_outcomes.mjs";
+import { handleAdminZapOutcomesRefresh } from "../src/zap_outcomes.mjs";
 
 function kv(map = {}) {
   return {
@@ -173,6 +174,42 @@ test("handleAdminMeetingOutcomesRefresh: 405 on non-POST", async () => {
 test("handleAdminMeetingOutcomesRefresh: success returns refresh summary plus timestamp", async () => {
   const r = await handleAdminMeetingOutcomesRefresh(
     meetingRefreshPost("https://w/admin/meeting-outcomes-refresh?key=s3cr3t"),
+    { ADMIN_KEY: "s3cr3t" },
+  );
+  assert.equal(r.status, 200);
+  const body = await r.json();
+  // Without ALERT_STATE the refresh is a documented no-op (same as cron path).
+  assert.equal(body.status, "skipped");
+  assert.equal(body.reason, "no-kv");
+  assert.ok(body.triggeredAt);
+});
+
+// ---- POST /admin/zap-outcomes-refresh ---------------------------------------------------
+
+const zapRefreshPost = (url = "https://w/admin/zap-outcomes-refresh", headers = {}) =>
+  new Request(url, { method: "POST", headers });
+
+test("handleAdminZapOutcomesRefresh: 404 without ADMIN_KEY configured", async () => {
+  const r = await handleAdminZapOutcomesRefresh(zapRefreshPost(), {});
+  assert.equal(r.status, 404);
+});
+
+test("handleAdminZapOutcomesRefresh: 401 without the correct key", async () => {
+  const r = await handleAdminZapOutcomesRefresh(zapRefreshPost(), { ADMIN_KEY: "s3cr3t" });
+  assert.equal(r.status, 401);
+});
+
+test("handleAdminZapOutcomesRefresh: 405 on non-POST", async () => {
+  const r = await handleAdminZapOutcomesRefresh(
+    new Request("https://w/admin/zap-outcomes-refresh?key=s3cr3t", { method: "GET" }),
+    { ADMIN_KEY: "s3cr3t", ALERT_STATE: kv() },
+  );
+  assert.equal(r.status, 405);
+});
+
+test("handleAdminZapOutcomesRefresh: success returns refresh summary plus timestamp", async () => {
+  const r = await handleAdminZapOutcomesRefresh(
+    zapRefreshPost("https://w/admin/zap-outcomes-refresh?key=s3cr3t"),
     { ADMIN_KEY: "s3cr3t" },
   );
   assert.equal(r.status, 200);

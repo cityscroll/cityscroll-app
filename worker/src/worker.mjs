@@ -54,7 +54,11 @@ import { handleSourceVault } from "./source_vault.mjs";
 import { handleContractLifecycle, prewarmContractLifecycle } from "./checkbook_lifecycle.mjs";
 import { handleSubsidyLifecycle, prewarmSubsidyLifecycle } from "./subsidy_lifecycle.mjs";
 import { ingestPassportPublic } from "./passport.mjs";
-import { handleZapOutcomes } from "./zap_outcomes.mjs";
+import {
+  handleZapOutcomes,
+  handleAdminZapOutcomesRefresh,
+  refreshZapOutcomes,
+} from "./zap_outcomes.mjs";
 import { handleTranslate } from "./translate.mjs";
 import { handleEntityDossier } from "./entity_dossier.mjs";
 import { handlePublicRelationshipGraph } from "./public_relationship_graph.mjs";
@@ -113,6 +117,7 @@ export default {
     if (pathname === "/admin/digest-send-test") return handleAdminDigestSendTest(request, env);
     if (pathname === "/admin/suggest-refresh") return handleAdminSuggestRefresh(request, env);
     if (pathname === "/admin/meeting-outcomes-refresh") return handleAdminMeetingOutcomesRefresh(request, env);
+    if (pathname === "/admin/zap-outcomes-refresh") return handleAdminZapOutcomesRefresh(request, env);
     if (pathname === "/admin/digest-catchup") return handleAdminDigestCatchUp(request, env);
     if (pathname === "/admin/passport-ingest") return handleAdminPassportIngest(request, env);
     if (pathname === "/" || pathname === "/health") {
@@ -226,6 +231,15 @@ export default {
       console.log("meeting outcomes:", JSON.stringify(r));
     } catch (e) {
       console.error("meeting outcomes refresh failed (digest continues):", String(e?.message || e));
+    }
+    // Land ZAP outcomes: write-ahead prewarm for sell-facing project_ids (In Public Review,
+    // Noticed, Active, Filed — capped). Cold GET /zap-outcomes fans out to ZAP API + SODA and
+    // takes ~12s; warm KV hits are sub-second. Fail-soft; un-warmed ids still compute-on-miss.
+    try {
+      const r = await refreshZapOutcomes(env);
+      console.log("zap outcomes prewarm:", JSON.stringify(r));
+    } catch (e) {
+      console.error("zap outcomes prewarm failed (digest continues):", String(e?.message || e));
     }
     // NYC Rules: daily materialized join of City Record Agency Rules notices to NYC Rules
     // RSS lifecycle records. RSS enrichment is fail-soft — a stale or unreachable feed
