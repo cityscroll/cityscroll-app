@@ -27,10 +27,21 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - Merge-queue parameters: `tools/merge_queue_policy.json` + `node tools/apply_merge_queue_policy.mjs`
   (short train wait). Concurrent merge-when-ready seating for this repo is capped outside this tree.
 
-## Maintaining this file
+## DuckDB + parquet warehouse (WH-01 scaffold)
 
-- Keep this file for durable project-intrinsic facts that should outlive any one pull request.
-- Prefer pointers to authoritative commands/files over duplicating implementation details.
+Local lake under `warehouse/` (bulk raw/parquet/duckdb gitignored). CPU-capped
+ingest skeleton: single-job lock, headroom gate, `taskpolicy`/nice wrap, tiny
+row defaults. Setup + proof:
+
+```bash
+python3 -m venv warehouse/.venv && warehouse/.venv/bin/pip install -r warehouse/requirements.txt
+warehouse/.venv/bin/python warehouse/scripts/ingest.py --dataset ocp-recent-contract-awards --from-fixture --limit 5
+node --test test/warehouse_scaffold.test.mjs
+```
+
+Full bulk pack is **WH-02** (still capped; Mini-first). Query seam:
+`warehouse/lib/query.mjs` / `warehouse/scripts/query.py`. Details:
+`warehouse/README.md`.
 
 
 ## README live screenshots

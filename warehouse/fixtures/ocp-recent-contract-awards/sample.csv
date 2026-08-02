@@ -1,0 +1,6 @@
+request_id,start_date,agency_name,type_of_notice_description,pin,contract_amount,vendor_name,short_title
+FIX001,2024-07-01T00:00:00.000,Department of Citywide Administrative Services,Award,PIN-FIXTURE-1,100.00,FIXTURE VENDOR A,Synthetic fixture row one
+FIX002,2024-07-02T00:00:00.000,Department of Transportation,Award,PIN-FIXTURE-2,200.00,FIXTURE VENDOR B,Synthetic fixture row two
+FIX003,2024-07-03T00:00:00.000,Department of Environmental Protection,Award,PIN-FIXTURE-3,300.00,FIXTURE VENDOR C,Synthetic fixture row three
+FIX004,2024-07-04T00:00:00.000,Department of Education,Award,PIN-FIXTURE-4,400.00,FIXTURE VENDOR D,Synthetic fixture row four
+FIX005,2024-07-05T00:00:00.000,Department of Parks and Recreation,Award,PIN-FIXTURE-5,500.00,FIXTURE VENDOR E,Synthetic fixture row five

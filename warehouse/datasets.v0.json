@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "description": "CityScroll warehouse dataset registry (WH-01 scaffold). Full bulk land is WH-02.",
+  "defaults": {
+    "max_rows_default": 50,
+    "max_rows_hard_cap": 10000,
+    "require_ack_above": 1000,
+    "one_job_at_a_time": true,
+    "cpu_wrap": true,
+    "headroom_gate": true
+  },
+  "datasets": {
+    "ocp-recent-contract-awards": {
+      "id": "ocp-recent-contract-awards",
+      "source_contract_id": "ocp-recent-contract-awards",
+      "name": "Recent Contract Awards (OCP)",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "qyyg-4tf5",
+      "table_name": "ocp_recent_contract_awards",
+      "bulk_class": "BULK",
+      "default_limit": 50,
+      "wh02_full_export": true,
+      "required_fields": [
+        "request_id",
+        "start_date",
+        "agency_name",
+        "type_of_notice_description",
+        "pin",
+        "contract_amount",
+        "vendor_name"
+      ],
+      "notes": "WH-01 proof dataset. Tiny SODA $limit path only; full rows.csv is WH-02 under CPU caps."
+    },
+    "city-record": {
+      "id": "city-record",
+      "source_contract_id": "city-record",
+      "name": "City Record Online",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "dg92-zbpx",
+      "table_name": "city_record",
+      "bulk_class": "BULK",
+      "default_limit": 50,
+      "wh02_full_export": true,
+      "required_fields": [
+        "request_id",
+        "start_date",
+        "agency_name",
+        "type_of_notice_description",
+        "section_name"
+      ],
+      "notes": "Registered for WH-02 bulk pack. Do not full-export in WH-01."
+    },
+    "doing-business-entities": {
+      "id": "doing-business-entities",
+      "source_contract_id": "doing-business-entities",
+      "name": "Doing Business Search Entities",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "72mk-a8z7",
+      "table_name": "doing_business_entities",
+      "bulk_class": "BULK",
+      "default_limit": 50,
+      "wh02_full_export": true,
+      "required_fields": [
+        "organization_name"
+      ],
+      "notes": "ER batch (WH-04) target. Scaffold only in WH-01."
+    }
+  }
+}
