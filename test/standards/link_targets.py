@@ -136,6 +136,11 @@ EXTERNAL_HREF_EXPRS = (
     "${taskEsc(lag.source_url)}",
 )
 
+# i18n HTML templates use replacement-field syntax rather than JS template syntax. This slot
+# is populated only from noticeFieldGuidance.package_url after httpsUrl() validation, so it is
+# an external handoff even though the static template contains no literal scheme or host.
+EXTERNAL_I18N_HREFS = {"{url}"}
+
 A_TAG_RE = re.compile(r"<a\b([^>]*)>(.*?)</a>", re.DOTALL)
 HREF_RE = re.compile(r'href\s*=\s*"([^"]*)"')
 WANTS_NEW_TAB_RE = re.compile(r'target\s*=\s*"_blank"|\$\{EXT_ATTRS\}')
@@ -148,6 +153,8 @@ def classify(href):
     """Return "own", "external", or None (an unrecognized JS-templated href)."""
     if not href or href.startswith(("#", "mailto:", "tel:", "javascript:")):
         return "own"  # not a real cross-origin page navigation
+    if href in EXTERNAL_I18N_HREFS:
+        return "external"
     if href.startswith("${"):
         if any(href.startswith(p) for p in EXTERNAL_HREF_EXPRS):
             return "external"
