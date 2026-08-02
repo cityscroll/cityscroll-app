@@ -406,6 +406,36 @@
   .lc-step.future,.lc-step.unmatched{opacity:.55;border-style:dashed}
   .lc-step.ambiguous{border-color:var(--amber);background:#f5efd8;color:var(--amber)}
   .lc-step-arrow{color:var(--muted);font-size:13px;padding:0 2px;user-select:none}
+  /* Matter PIN timeline phase grouping (same shape as land / procurement phase spines) */
+  .matter-phase-lead{margin:0 0 12px;padding:12px 14px;border:1px solid var(--rule);border-radius:10px;background:#fffdf8}
+  .matter-phase-now-label{font:700 10px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 4px}
+  .matter-phase-now-phase{font:800 18px/1.2 var(--font-display);margin:0 0 4px;color:var(--ink)}
+  .matter-phase-now-detail{font:13px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:0}
+  .matter-phase-action{font:600 13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--ink);margin:8px 0 0}
+  .matter-phase-next{font:13px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:6px 0 0}
+  .matter-phase-stepper .lc-step{cursor:pointer}
+  .matter-phase{border:1px solid var(--rule);border-radius:10px;margin:0 0 8px;background:#fffdf8;overflow:hidden}
+  .matter-phase[open]{background:#fff}
+  .matter-phase.current-phase{border-color:color-mix(in srgb,var(--oxblood) 45%,var(--rule));box-shadow:0 0 0 1px color-mix(in srgb,var(--oxblood) 22%,transparent)}
+  .matter-phase > summary{list-style:none;cursor:pointer;padding:10px 12px;display:grid;grid-template-columns:1fr auto;gap:3px 12px;align-items:baseline}
+  .matter-phase > summary::-webkit-details-marker{display:none}
+  .matter-phase-name{font:700 13px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--ink)}
+  .matter-phase-state{font:700 10px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .matter-phase.current-phase .matter-phase-state{color:var(--oxblood)}
+  .matter-phase-summary{grid-column:1 / -1;font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+  .matter-phase-body{padding:0 12px 12px;border-top:1px solid var(--rule)}
+  .matter-phase-row,.matter-phase-agg{padding:8px 0;border-bottom:1px solid color-mix(in srgb,var(--rule) 70%,transparent)}
+  .matter-phase-row:last-child,.matter-phase-agg:last-child{border-bottom:0}
+  .matter-phase-row-title,.matter-phase-agg-title{font:700 13px/1.35 ui-sans-serif,system-ui,sans-serif;color:var(--ink);overflow-wrap:anywhere}
+  .matter-phase-row-meta,.matter-phase-agg-meta{font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);overflow-wrap:anywhere}
+  .matter-phase-count{display:inline-block;font:700 11px/1 ui-monospace,SFMono-Regular,monospace;background:var(--paper-2,#f7f1e4);border:1px solid var(--rule);border-radius:999px;padding:3px 7px;margin-inline-start:6px;vertical-align:middle}
+  .matter-phase-dates{margin:6px 0 0;padding:0;list-style:none;display:none;font:12px/1.55 ui-monospace,SFMono-Regular,monospace;color:var(--muted)}
+  .matter-phase-dates.show{display:block}
+  .matter-phase-toggle{margin-top:6px;font:600 12px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--oxblood);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+  .matter-phase-history{display:block;margin:8px 0}
+  .matter-phase-history > summary{font:600 12px/1.4 ui-sans-serif,system-ui,sans-serif;cursor:pointer;color:var(--muted)}
+  .matter-phase-chrono{max-height:280px;overflow:auto;margin-top:8px}
+  .matter-phase-chrono .tl{margin-bottom:6px}
   .lc-stage-detail{margin:0 0 8px}
   .lc-stage-detail .chain{gap:0}
   .lc-docs-caveat{font:12px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:6px}
@@ -8947,63 +8977,249 @@ async function showSharedInv(id){
 }
 
 /* ===================== MATTER TIMELINE (#matter/<pin>) =====================
-   One procurement matter as a chronology: every City Record stage sharing the PIN, then the
-   Checkbook events (registration, paid-to-date) stitched onto the same spine. Cross-section
-   stitching (hearings) isn't in the data — only ~8 of 10.5K hearing rows carry a PIN. */
-async function showMatter(pin){
-  showTab("entity");
-  const box = $("#entityview"), safe = String(pin).replace(/[<>&]/g,"");
-  delete box.dataset.vendorStem;
-  box.innerHTML = `<div class="empty"><span class="loading"></span> assembling the matter: PIN ${safe}…</div>`;
-  let rows = [];
-  try{
-    rows = await soda({"$select":SELECT,"$where":`pin='${String(pin).replace(/'/g,"''")}'`,"$order":"start_date ASC","$limit":"60"}, 15000);
-  }catch(e){}
-  // Whichever renewal-suffixed PIN a link used to reach this page, widen to the same base+agency
-  // prefix match loadChain() uses, so the matter page shows the same combined history regardless
-  // of which specific suffix (…R001, …R002, …) got the reader here.
-  const matterBase = pinBase(pin);
-  if(matterBase && rows.length){
-    const matterAgency = rows[0].agency_name;
-    try{
-      const more = await soda({"$select":SELECT,
-        "$where":`pin LIKE '${matterBase.replace(/'/g,"''")}%' AND agency_name='${matterAgency.replace(/'/g,"''")}'`,
-        "$order":"start_date ASC","$limit":"60"}, 15000);
-      const seen = new Set(rows.map(x=>x.request_id));
-      more.forEach(x=>{ if(!seen.has(x.request_id)){ rows.push(x); seen.add(x.request_id); } });
-    }catch(e){}
+   One procurement matter as a phase-grouped chronology: City Record notices sharing the
+   PIN plus Checkbook registration/paid-to-date. Phase grouping reuses the same
+   procurement ontology as the notice lifecycle (solicitation → selection → award/
+   registration → payments) and the land/ZAP phase-spine presentation shape (#326).
+   Cross-section stitching (hearings) isn't in the data — only ~8 of 10.5K hearing rows
+   carry a PIN. Pure model: site/matter_phase_spine.mjs. */
+let matterPhaseSpineToolsPromise = null;
+function ensureMatterPhaseSpineTools(){
+  if(!matterPhaseSpineToolsPromise){
+    matterPhaseSpineToolsPromise = import("./matter_phase_spine.mjs").catch(() => null);
   }
-  if(!rows.length){
-    box.innerHTML = `<div class="empty">No City Record notices carry PIN <code>${safe}</code>. ${routeBackHTML("#money")}</div>`;
-    return;
+  return matterPhaseSpineToolsPromise;
+}
+
+function matterPhaseLabel(phase){
+  if(!phase) return "—";
+  if(phase.label_key) return t(phase.label_key);
+  if(typeof phase === "string"){
+    const meta = {
+      solicitation: "matter_phase_solicitation",
+      selection: "matter_phase_selection",
+      award_registration: "matter_phase_award_registration",
+      payments: "matter_phase_payments",
+    };
+    return meta[phase] ? t(meta[phase]) : phase;
   }
-  rows.sort((a,b)=>(a.start_date||"").localeCompare(b.start_date||"") ||
-    (STAGE_RANK[a.type_of_notice_description]??9)-(STAGE_RANK[b.type_of_notice_description]??9));
-  const agency = rows[rows.length-1].agency_name || rows[0].agency_name || "";
-  const vendor = rows.map(r=>r.vendor_name).filter(Boolean).pop() || "";
-  // Precompute-first: pull registration/payment from the edge-materialized lifecycle for
-  // the newest notice on this PIN, not a live Checkbook proxy call from the browser.
-  let lifecycle = null;
-  try{
-    const latestId = rows[rows.length-1].request_id;
-    const resp = await workerFetch("/contract-lifecycle?id=" + encodeURIComponent(latestId), null, 8000);
-    if(resp && resp.ok) lifecycle = await resp.json();
-  }catch(e){}
-  const reg = lifecycle && Array.isArray(lifecycle.timeline)
-    ? lifecycle.timeline.find(e => e.stage === "registered" && e.status === "matched")
-    : null;
-  const pay = lifecycle && Array.isArray(lifecycle.timeline)
-    ? lifecycle.timeline.find(e => e.stage === "payment")
-    : null;
-  const regDetail = reg && reg.detail ? reg.detail : null;
-  const items = rows.map(r=>({
+  return phase.short || "—";
+}
+
+function matterMilestoneTitle(m){
+  if(!m) return "—";
+  if(m.kind === "payment" || m.stage === "payment"){
+    const spent = m.spent_to_date != null ? m.spent_to_date : 0;
+    const current = m.current_amount != null ? m.current_amount : null;
+    return `${t("lifecycle_dollars_paid_lbl")}: ${money(spent) || "$0"}${current != null ? ` ${t("matter_phase_of")} ${money(current) || "—"}` : ""}`;
+  }
+  if(m.kind === "registered" || m.stage === "registered"){
+    if(m.status === "unmatched") return t("lifecycle_stage_registered");
+    return `${t("lifecycle_stage_registered")}${m.contract_id ? ` — ${m.contract_id}` : ""}`;
+  }
+  const type = m.notice_type || m.stage || "Notice";
+  const title = m.title && m.title !== type ? m.title : "";
+  return title ? `${type} — ${title}` : type;
+}
+
+function matterMilestoneMeta(m){
+  if(!m) return "";
+  if(m.kind === "payment"){
+    const term = (m.start_date || m.end_date)
+      ? `${fdate(m.start_date) || "—"} → ${fdate(m.end_date) || "—"}`
+      : "";
+    return term;
+  }
+  if(m.kind === "registered"){
+    if(m.status === "unmatched"){
+      return t("lifecycle_unmatched_registered_html",{source:t("lifecycle_source_checkbook")});
+    }
+    return `${t("lifecycle_dollars_committed_lbl")} ${money(m.current_amount) || "—"}`;
+  }
+  const bits = [];
+  if(m.renewal_linked && m.pin) bits.push(t("matter_renewal_linked",{pin:escUiHtml(m.pin)}));
+  if(m.contract_amount != null) bits.push(money(m.contract_amount) || "");
+  if(m.vendor_name) bits.push("→ " + cleanText(m.vendor_name));
+  if(m.due_date){
+    bits.push(isRollingDeadline(m.due_date) ? t("rolling_deadline_tag") : t("matter_responses_due",{date:fdate(m.due_date)}));
+  }
+  return bits.filter(Boolean).join(" · ");
+}
+
+function matterPhaseAggregateHTML(agg, phaseId, idx){
+  if(!agg) return "";
+  if(agg.count === 1){
+    const m = agg.members[0] || {};
+    const title = matterMilestoneTitle(m);
+    const meta = matterMilestoneMeta(m);
+    const noticeLink = m.request_id
+      ? pivotA("#notice/" + encodeURIComponent(m.request_id), cleanText(m.title) || m.request_id)
+      : "";
+    return `<div class="matter-phase-row">
+      <div class="matter-phase-row-title" lang="en" dir="ltr">${m.request_id && m.kind === "notice"
+        ? `<b>${escUiHtml(m.notice_type || "Notice")}</b> — ${noticeLink}`
+        : escUiHtml(title)}</div>
+      <div class="matter-phase-row-meta">${agg.first ? fdate(agg.first) : (m.kind === "payment" ? t("matter_today") : "—")}${meta ? ` · ${meta}` : ""}</div>
+    </div>`;
+  }
+  const listId = `matter-agg-${phaseId}-${idx}`;
+  return `<div class="matter-phase-agg">
+    <div class="matter-phase-agg-title" lang="en" dir="ltr">${escUiHtml(agg.title)}<span class="matter-phase-count">×${agg.count}</span></div>
+    <div class="matter-phase-agg-meta">${agg.first && agg.last
+      ? t("matter_phase_aggregate_range",{first:fdate(agg.first),last:fdate(agg.last)})
+      : (agg.first ? fdate(agg.first) : "—")}</div>
+    <button type="button" class="matter-phase-toggle" data-matter-dates="${listId}" aria-expanded="false">${t("matter_phase_show_dates",{n:String(agg.count)})}</button>
+    <ul class="matter-phase-dates" id="${listId}">
+      ${(agg.members || []).map(m => {
+        const link = m.request_id
+          ? pivotA("#notice/" + encodeURIComponent(m.request_id), fdate(m.date) || m.request_id)
+          : (m.date ? fdate(m.date) : "—");
+        return `<li>${link}${m.vendor_name ? ` · ${escUiHtml(cleanText(m.vendor_name))}` : ""}</li>`;
+      }).join("")}
+    </ul>
+  </div>`;
+}
+
+function matterPhasePanelHTML(phase){
+  if(!phase) return "";
+  if(phase.state === "future" && !phase.event_count) return "";
+  if(phase.state === "passed" && !phase.event_count) return "";
+  const open = phase.state === "current" ? " open" : "";
+  const stateWord = phase.state === "current"
+    ? t("matter_phase_current")
+    : phase.state === "passed"
+      ? t("matter_phase_done")
+      : t("matter_phase_future");
+  let summary = "";
+  if(phase.event_count){
+    const parts = [
+      t("matter_phase_milestones_count",{n:String(phase.event_count)}),
+      phase.first && phase.last && phase.first !== phase.last
+        ? t("matter_phase_aggregate_range",{first:fdate(phase.first),last:fdate(phase.last)})
+        : (phase.first ? fdate(phase.first) : ""),
+    ].filter(Boolean);
+    summary = parts.join(" · ");
+  } else {
+    summary = t("matter_phase_empty");
+  }
+  const body = (phase.aggregates || []).map((a, idx) => matterPhaseAggregateHTML(a, phase.id, idx)).join("")
+    || `<div class="matter-phase-row"><div class="matter-phase-row-meta">${t("matter_phase_empty")}</div></div>`;
+  return `<details class="matter-phase${phase.state === "current" ? " current-phase" : ""}"${open} id="matter-phase-${escUiHtml(phase.id)}" data-matter-phase-panel="${escUiHtml(phase.id)}">
+    <summary>
+      <span class="matter-phase-name">${escUiHtml(matterPhaseLabel(phase))}</span>
+      <span class="matter-phase-state">${escUiHtml(stateWord)}</span>
+      <span class="matter-phase-summary">${escUiHtml(summary)}</span>
+    </summary>
+    <div class="matter-phase-body">${body}</div>
+  </details>`;
+}
+
+function matterPhaseStepperHTML(view){
+  if(!view || !view.phases || !view.phases.length) return "";
+  const items = view.phases.map((p, i) => {
+    const cls = p.state === "current" ? "current" : p.state === "passed" ? "passed" : "future";
+    const aria = p.state === "current" ? ` aria-current="step"` : "";
+    const arrow = i < view.phases.length - 1
+      ? `<span class="lc-step-arrow" aria-hidden="true">→</span>`
+      : "";
+    return `<li><button type="button" class="lc-step ${cls}" data-matter-phase="${escUiHtml(p.id)}"${aria} title="${escUiHtml(matterPhaseLabel(p))}">${escUiHtml(p.short || matterPhaseLabel(p))}</button>${arrow}</li>`;
+  }).join("");
+  return `<ol class="lc-stepper matter-phase-stepper" aria-label="${escUiHtml(t("matter_phase_heading"))}">${items}</ol>`;
+}
+
+function matterPhaseActionHTML(view){
+  const cur = view && view.current;
+  if(!cur) return "";
+  const key = cur.action_key || "matter_phase_action_respond";
+  if(key === "matter_phase_action_follow_money" && view.checkbook){
+    const href = checkbookSearchUrl(view.checkbook);
+    return t("matter_phase_action_follow_money",{
+      href: escUiHtml(href),
+      link: `<a href="${escUiHtml(href)}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`
+    });
+  }
+  if(key === "matter_phase_action_respond" && view.action_notice_id){
+    return t("matter_phase_action_respond_html",{
+      href: "#notice/" + encodeURIComponent(view.action_notice_id)
+    });
+  }
+  if(key === "matter_phase_action_track_award" && view.latest_notice_id){
+    return t("matter_phase_action_track_award_html",{
+      href: "#notice/" + encodeURIComponent(view.latest_notice_id)
+    });
+  }
+  return t(key);
+}
+
+function matterChronoRowHTML(m){
+  const date = m.date ? fdate(m.date) : t("matter_today");
+  let label = "";
+  if(m.kind === "notice" && m.request_id){
+    label = `<b>${escUiHtml(m.notice_type || "Notice")}</b> — ${pivotA("#notice/"+encodeURIComponent(m.request_id), cleanText(m.title)||"(untitled)")}`;
+  } else {
+    label = `<b>${escUiHtml(matterMilestoneTitle(m))}</b>`;
+  }
+  const extra = matterMilestoneMeta(m);
+  return `<div class="tl"><span class="tldate">${date}</span>
+    <span class="tlreason" style="font-weight:400">${label}</span>
+    ${extra ? `<span class="rmeta" style="margin:0">${extra}</span>` : ""}</div>`;
+}
+
+function matterPhaseTimelineHTML(view){
+  if(!view) return "";
+  const cur = view.current || {};
+  const phaseName = matterPhaseLabel({label_key: cur.label_key});
+  let detail = cur.milestone_label || "";
+  if(cur.milestone_label === "paid_to_date") detail = t("lifecycle_dollars_paid_lbl");
+  else if(cur.milestone_label === "registered") detail = t("lifecycle_stage_registered");
+  // Always-visible status bits so Award / Registered / Paid scan without opening history.
+  const chrono = view.chronological || [];
+  const statusBits = [];
+  if(chrono.some(m => m.stage === "award" || m.notice_type === "Award")) statusBits.push(t("lifecycle_stage_award"));
+  if(view.has_registration || chrono.some(m => m.stage === "registered" && m.status !== "unmatched")){
+    statusBits.push(t("lifecycle_stage_registered"));
+  }
+  if(chrono.some(m => m.stage === "payment")) statusBits.push(t("lifecycle_dollars_paid_lbl"));
+  const statusLine = statusBits.length
+    ? `<p class="matter-phase-now-detail" lang="en" dir="ltr">${statusBits.map(s => escUiHtml(s)).join(" · ")}</p>`
+    : "";
+  const actionHTML = matterPhaseActionHTML(view);
+  const lead = `<div class="matter-phase-lead">
+    <div class="matter-phase-now-label">${t("matter_phase_now_label")}</div>
+    <p class="matter-phase-now-phase">${escUiHtml(phaseName)}</p>
+    <p class="matter-phase-now-detail" lang="en" dir="ltr">${escUiHtml(detail || "—")}${cur.since ? ` · ${t("matter_phase_since",{date:fdate(cur.since)})}` : ""}</p>
+    ${statusLine}
+    ${actionHTML ? `<p class="matter-phase-action">${actionHTML}</p>` : ""}
+    ${view.next ? `<p class="matter-phase-next">${t("matter_phase_next_html",{phase:escUiHtml(matterPhaseLabel(view.next))})}</p>` : ""}
+  </div>`;
+  const stepper = matterPhaseStepperHTML(view);
+  const currentPanel = (view.phases || []).filter(p => p.state === "current")
+    .map(matterPhasePanelHTML).join("");
+  const historyPanels = (view.phases || []).filter(p => p.state === "passed")
+    .map(matterPhasePanelHTML).filter(Boolean).join("");
+  const historyWrap = historyPanels
+    ? `<details class="matter-phase-history"><summary>${t("matter_phase_show_history")}</summary>${historyPanels}</details>`
+    : "";
+  const chronoRows = (view.chronological || []).map(matterChronoRowHTML).join("");
+  const how = `<details class="inline-disclose lc-how">
+    <summary>${t("matter_phase_show_all")}</summary>
+    <div class="timeline matter-phase-chrono">${chronoRows}</div>
+  </details>
+  <details class="inline-disclose lc-how">
+    <summary>${t("matter_phase_how_summary")}</summary>
+    <div class="inline-disclose-body">${t("matter_phase_how_html")}</div>
+  </details>`;
+  return `${lead}${stepper}${currentPanel}${historyWrap}${how}`;
+}
+
+/** Flat fallback if phase module fails to load — still one Checkbook link when known. */
+function matterTimelineHTMLFlat(rows, pin, regDetail, lifecycle){
+  const items = rows.map(r => ({
     date: r.start_date,
     label: `<b>${r.type_of_notice_description||"Notice"}</b> — ${pivotA("#notice/"+encodeURIComponent(r.request_id), cleanText(r.short_title)||"(untitled)")}`,
-    // r.pin differing from the requested pin means this row was pulled in by the renewal-suffix
-    // base-prefix widening above, not an exact match on the PIN the reader followed here.
-    extra: [r.pin && r.pin !== pin ? `PIN ${r.pin} (renewal-linked)` : null,
+    extra: [r.pin && r.pin !== pin ? t("matter_renewal_linked",{pin:escUiHtml(r.pin)}) : null,
             money(r.contract_amount), r.vendor_name?"→ "+pivotA(vendorHref(r.vendor_name), cleanText(r.vendor_name)):null,
-            r.due_date?(isRollingDeadline(r.due_date)?t("rolling_deadline_tag"):"responses due "+fdate(r.due_date)):null].filter(Boolean).join(" · ")
+            r.due_date?(isRollingDeadline(r.due_date)?t("rolling_deadline_tag"):t("matter_responses_due",{date:fdate(r.due_date)})):null].filter(Boolean).join(" · ")
   }));
   if(regDetail && regDetail.registration_date){
     items.push({
@@ -9023,43 +9239,135 @@ async function showMatter(pin){
   }
   items.sort((a,b)=>(a.date||"9999").localeCompare(b.date||"9999"));
   if(regDetail){
-    // Matter spine: paid-to-date is a joined Checkbook fact — never gap copy in parallel.
     const spent = regDetail.spent_to_date != null ? regDetail.spent_to_date : 0;
     const current = regDetail.current_amount != null ? regDetail.current_amount : 0;
-    const payExtra = `term ${fdate(regDetail.start_date)||"—"} → ${fdate(regDetail.end_date)||"—"} · <a href="${checkbookSearchUrl({
-      contractId:regDetail.contract_id,
-      agid:regDetail.agid || regDetail.checkbook_agid,
-      documentCode:regDetail.document_code || regDetail.doctype,
-      detailUrl:regDetail.checkbook_detail_url,
-    })}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`;
     items.push({
       date: null,
       label: `<b>${t("lifecycle_dollars_paid_lbl")}: ${money(spent)||"$0"}</b> of ${money(current)||"—"}`,
-      extra: payExtra
+      extra: `${fdate(regDetail.start_date)||"—"} → ${fdate(regDetail.end_date)||"—"}`
     });
   }
+  return `<div class="timeline" style="margin-top:14px">
+    ${items.map(it=>`<div class="tl"><span class="tldate">${it.date?fdate(it.date):t("matter_today")}</span>
+      <span class="tlreason" style="font-weight:400">${it.label}</span>
+      ${it.extra?`<span class="rmeta" style="margin:0">${it.extra}</span>`:""}</div>`).join("")}
+  </div>`;
+}
+
+function bindMatterPhaseUI(root){
+  if(!root || root.dataset.matterPhaseBound === "1") return;
+  root.dataset.matterPhaseBound = "1";
+  root.addEventListener("click", (ev) => {
+    const step = ev.target.closest?.("[data-matter-phase]");
+    if(step && root.contains(step)){
+      const id = step.getAttribute("data-matter-phase");
+      const panel = root.querySelector(`[data-matter-phase-panel="${CSS.escape(id)}"]`);
+      if(panel){
+        const hist = panel.closest?.(".matter-phase-history");
+        if(hist) hist.open = true;
+        panel.open = true;
+        try{ panel.scrollIntoView({block:"nearest", behavior:"smooth"}); }catch(_){}
+      }
+      return;
+    }
+    const tog = ev.target.closest?.("[data-matter-dates]");
+    if(tog && root.contains(tog)){
+      const listId = tog.getAttribute("data-matter-dates");
+      const list = listId ? root.querySelector("#" + CSS.escape(listId)) : null;
+      if(list){
+        const open = list.classList.toggle("show");
+        tog.setAttribute("aria-expanded", open ? "true" : "false");
+        tog.textContent = open
+          ? t("matter_phase_hide_dates")
+          : t("matter_phase_show_dates",{n:String(list.children.length)});
+      }
+    }
+  });
+}
+
+async function showMatter(pin){
+  showTab("entity");
+  const box = $("#entityview"), safe = String(pin).replace(/[<>&]/g,"");
+  delete box.dataset.vendorStem;
+  box.innerHTML = `<div class="empty"><span class="loading"></span> ${t("matter_loading",{pin:safe})}</div>`;
+  const phaseToolsP = ensureMatterPhaseSpineTools();
+  let rows = [];
+  try{
+    rows = await soda({"$select":SELECT,"$where":`pin='${String(pin).replace(/'/g,"''")}'`,"$order":"start_date ASC","$limit":"60"}, 15000);
+  }catch(e){}
+  // Whichever renewal-suffixed PIN a link used to reach this page, widen to the same base+agency
+  // prefix match loadChain() uses, so the matter page shows the same combined history regardless
+  // of which specific suffix (…R001, …R002, …) got the reader here.
+  const matterBase = pinBase(pin);
+  if(matterBase && rows.length){
+    const matterAgency = rows[0].agency_name;
+    try{
+      const more = await soda({"$select":SELECT,
+        "$where":`pin LIKE '${matterBase.replace(/'/g,"''")}%' AND agency_name='${matterAgency.replace(/'/g,"''")}'`,
+        "$order":"start_date ASC","$limit":"60"}, 15000);
+      const seen = new Set(rows.map(x=>x.request_id));
+      more.forEach(x=>{ if(!seen.has(x.request_id)){ rows.push(x); seen.add(x.request_id); } });
+    }catch(e){}
+  }
+  if(!rows.length){
+    box.innerHTML = `<div class="empty">${t("matter_empty",{pin:safe})} ${routeBackHTML("#money")}</div>`;
+    return;
+  }
+  rows.sort((a,b)=>(a.start_date||"").localeCompare(b.start_date||"") ||
+    (STAGE_RANK[a.type_of_notice_description]??9)-(STAGE_RANK[b.type_of_notice_description]??9));
+  const agency = rows[rows.length-1].agency_name || rows[0].agency_name || "";
+  const vendor = rows.map(r=>r.vendor_name).filter(Boolean).pop() || "";
+  // Precompute-first: pull registration/payment from the edge-materialized lifecycle for
+  // the newest notice on this PIN, not a live Checkbook proxy call from the browser.
+  let lifecycle = null;
+  try{
+    const latestId = rows[rows.length-1].request_id;
+    const resp = await workerFetch("/contract-lifecycle?id=" + encodeURIComponent(latestId), null, 8000);
+    if(resp && resp.ok) lifecycle = await resp.json();
+  }catch(e){}
+  const reg = lifecycle && Array.isArray(lifecycle.timeline)
+    ? lifecycle.timeline.find(e => e.stage === "registered" && e.status === "matched")
+    : null;
+  const regDetail = reg && reg.detail ? reg.detail : null;
+  const phaseTools = await phaseToolsP;
+  let view = null;
+  if(phaseTools && typeof phaseTools.buildMatterPhaseView === "function"){
+    view = phaseTools.buildMatterPhaseView(rows, { pin, regDetail, lifecycle });
+  }
+  const bodyHTML = view
+    ? `<div class="timeline matter-phase-timeline" style="margin-top:14px">${matterPhaseTimelineHTML(view)}</div>`
+    : matterTimelineHTMLFlat(rows, pin, regDetail, lifecycle);
+  const checkbookHref = view && view.checkbook
+    ? checkbookSearchUrl(view.checkbook)
+    : (regDetail ? checkbookSearchUrl({
+        contractId: regDetail.contract_id,
+        pin,
+        agid: regDetail.agid || regDetail.checkbook_agid,
+        documentCode: regDetail.document_code || regDetail.doctype,
+        detailUrl: regDetail.checkbook_detail_url,
+      }) : null);
+  const latestNoticeId = (view && view.latest_notice_id) || rows[rows.length-1].request_id;
+  const eventCount = view ? view.event_count : rows.length + (regDetail ? 2 : 0);
   const link = location.origin + location.pathname + "#matter/" + encodeURIComponent(pin);
   box.innerHTML = `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px">${routeBackHTML("#money")}</p>
     <div class="panel route-item" tabindex="-1" style="padding:22px 24px">
-      <div class="ftype" style="margin-bottom:6px">Matter timeline · PIN <code>${safe}</code></div>
+      <div class="ftype" style="margin-bottom:6px">${t("matter_heading_html",{pin:`<code>${safe}</code>`})}</div>
       <h2 class="rolename" lang="en" dir="ltr">${agency?pivotA(agencyHref(agency), agencyWho(agency)):""}${vendor?` × ${pivotA(vendorHref(vendor), cleanText(vendor))}`:""}</h2>
-      <div class="timeline" style="margin-top:14px">
-        ${items.map(it=>`<div class="tl"><span class="tldate">${it.date?fdate(it.date):"today"}</span>
-          <span class="tlreason" style="font-weight:400">${it.label}</span>
-          ${it.extra?`<span class="rmeta" style="margin:0">${it.extra}</span>`:""}</div>`).join("")}
-      </div>
+      ${bodyHTML}
       <div class="actions" style="margin-top:16px">
-        <button class="act primary" type="button" id="ecopy">Copy link</button>
+        <button class="act primary" type="button" id="ecopy">${t("copy_link_btn")}</button>
         ${qrButtonHTML("eqr","act")}
         ${pinBtn("matter", pin, t("meta_matter",{pin:safe}), [agency, vendor?cleanText(vendor):null].filter(Boolean).join(" × "))}
-        <a class="act" href="${REQ_URL(rows[rows.length-1].request_id)}" ${EXT_ATTRS}>Latest notice in City Record${extSR()}</a>
+        <a class="act" href="${REQ_URL(latestNoticeId)}" ${EXT_ATTRS}>${t("matter_latest_city_record")}${extSR()}</a>
+        ${checkbookHref ? `<a class="act" href="${escUiHtml(checkbookHref)}" ${EXT_ATTRS}>${t("matter_open_checkbook")}${extSR()}</a>` : ""}
       </div>
       <div class="note">${t("matter_spine_note")}</div>
     </div></div>`;
   $("#ecopy").addEventListener("click", ()=>copyText(link, $("#ecopy")));
   bindQRShare($("#eqr"), link);
-  announce(t("meta_matter_timeline_announce",{n:items.length}));
+  bindMatterPhaseUI(box.querySelector(".matter-phase-timeline") || box);
+  announce(t("meta_matter_timeline_announce",{n:eventCount}));
   focusItemRouteTarget(box.querySelector(".route-item"));
 }
 
