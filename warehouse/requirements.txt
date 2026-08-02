@@ -1,0 +1,4 @@
+# Local warehouse ETL (WH-01). Install into warehouse/.venv — never system Python.
+#   python3 -m venv warehouse/.venv
+#   warehouse/.venv/bin/pip install -r warehouse/requirements.txt
+duckdb>=1.0,<2

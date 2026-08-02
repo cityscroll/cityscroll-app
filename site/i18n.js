@@ -760,7 +760,10 @@ const STRINGS = {
     open_nycha_isupplier: "Open the iSupplier guide",
     search_passport_rfx: "Find this RFx in PASSPort",
     open_notice_submission_portal: "Open the submission portal",
-    next_action_response_instructions: "Use the response instructions in the official notice.",
+    // Legacy key kept for older fixtures; rail no longer uses this as a public punt.
+    next_action_response_instructions: "Follow the response steps below",
+    next_action_response_guide: "Follow the response steps below",
+    open_rfp_package: "Get the RFP package",
     bid_guide_heading: "How to respond",
     bid_guide_id_label: "Search ID",
     bid_guide_name_label: "Procurement name",
@@ -778,7 +781,14 @@ const STRINGS = {
     bid_guide_nycha_submit_step: "Upload the complete bid in iSupplier before the deadline. The notice says the housing authority will not accept it by email, fax, mail, or hard copy.",
     bid_guide_named_portal_open_step: "Open {system} using the link published in this notice.",
     bid_guide_named_portal_search_step: "Search the ID or procurement name shown above and confirm that the title matches.",
-    bid_guide_named_portal_submit_step: "Follow the official notice's instructions in that system and complete the response before the deadline.",
+    bid_guide_named_portal_submit_step: "Complete the response in that system before the deadline.",
+    // Steps extracted from this notice's own fields/body (never "see the official notice").
+    bid_guide_notice_due_step: "Respond by {date}.",
+    bid_guide_notice_package_step_html: "Get the solicitation package at <a href=\"{url}\" target=\"_blank\" rel=\"noopener noreferrer\">{host}<span class=\"sr-only\"> (opens in new tab)</span></a>.",
+    bid_guide_notice_contact_step_html: "Questions and package requests go to {who}.",
+    bid_guide_notice_submit_step: "Submit or request materials at: {where}.",
+    bid_guide_notice_method_step: "Selection method: {method}.",
+    bid_guide_notice_fallback_step: "Use the contact and deadline on this page to request the package and submit before the due date.",
     how_to_respond_heading: "How to respond to this RFP",
 
     // Alerts / feeds area
@@ -989,7 +999,8 @@ const STRINGS = {
     lifecycle_source_current_solicitations: "Current Solicitations (Open Data)",
     lifecycle_source_city_record_getfile: "City Record file attachments",
     lifecycle_unmatched_documents_html: "Not yet shown here — solicitation package details live in {source}.",
-    lifecycle_documents_not_published_html: "The city does not publish package documents as an open feed for this notice — they would appear in {where} if released.",
+    // Short honest class-(b) caveat — one line, one GetFile pointer (not a multi-clause hedge).
+    lifecycle_documents_not_published_html: "The city does not publish package documents as an open feed — see {where}.",
     lifecycle_unmatched_solicitation_html: "Not yet shown here — the solicitation package lives in {source}.",
     lifecycle_documents_count_one: "{n} package document",
     lifecycle_documents_count_other: "{n} package documents",
@@ -1006,6 +1017,7 @@ const STRINGS = {
     lifecycle_ocp_unmatched_html: "Not yet shown here — recent OCP awards live in {source}.",
     lifecycle_ocp_unknown_html: "Could not reach {source} to check this award.",
     lifecycle_ocp_ambiguous_html: "Multiple OCP award rows matched — cannot auto-pick one.",
+    lifecycle_how_summary: "How this timeline works",
     lifecycle_provenance_note_html: "This timeline joins {city_record} notices to {checkbook} registrations and payments, and to {passport} pending contracts and RFx when EPIN joins the PIN {pin}.",
     lifecycle_no_pin_note_html: "The city does not publish a Procurement ID (PIN) on this notice — registration and payments would appear in Checkbook NYC if released with a PIN.",
     lifecycle_rfx_heading: "PASSPort solicitation (RFx)",
@@ -1135,6 +1147,19 @@ const STRINGS = {
     land_outcomes_dob_gap_html: "Not yet shown here — DOB NOW job filings on these tax lots live in NYC Open Data. {reason}",
     land_outcomes_portal_link: "Open full ZAP project",
     land_outcomes_provenance_html: "Outcomes join Open Data project rows to the public ZAP project API (exact project_id) and optional DOB NOW filings (exact BBL). The browser only reads a worker cache.",
+
+    // Property disposition process spine (multi-notice by parcel — not the list filter rail)
+    disposition_spine_heading: "Disposition timeline",
+    disposition_stage_hearing: "Hearing",
+    disposition_stage_auction_or_rfp: "Auction / RFP",
+    disposition_stage_award_or_conveyance: "Award / conveyance",
+    disposition_stage_notice_count: "{n} notices",
+    disposition_stage_not_yet_ingested_html: "Not yet shown here — later disposition notices live in {source}.",
+    disposition_join_matched_html: "Joined {n} City Record notice(s) for {subject} ({method}).",
+    disposition_join_singleton_html: "Single notice chain for {title} — no second City Record notice shares this parcel yet.",
+    disposition_spine_unavailable_html: "Not yet shown here — multi-notice disposition chains are built from {source} Property Disposition notices.",
+    disposition_source_city_record: "City Record Online",
+    disposition_provenance_html: "Timeline joins Property Disposition notices that share an exact BBL or borough + block/lot and the same agency. Empty stages mean no matching City Record notice is in the current window — not that a filter chip is missing.",
 
     // Screen-reader announcements
     matching_roles_announce: "{n} matching roles",
@@ -1295,6 +1320,8 @@ const STRINGS = {
     fetching_notice_id: "fetching notice {id}…",
     notice_not_found_html: "Notice <code>{id}</code> wasn't found in the City Record Open Data — it may be very new, or the ID may be mistyped.",
     back_browse: "← Browse CityScroll",
+    back_previous_view: "← Back to previous view",
+    vendor_name_too_short: "“{name}” is too short to resolve to a vendor.",
     try_city_record: "try it in the City Record",
     notice_email_btn: "Email",
     notice_print_btn: "Print",

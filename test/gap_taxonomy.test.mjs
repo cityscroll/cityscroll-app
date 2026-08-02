@@ -89,6 +89,8 @@ const helpers = new Function(
   extractFn("lifecyclePaymentSummaryHTML") +
   extractFn("lifecycleSourceLink") +
   extractFn("lifecycleDocumentsHTML") +
+  extractFn("lifecycleCurrentStageKey") +
+  extractFn("lifecycleStepperHTML") +
   extractFn("lifecycleStageHTML") +
   extractFn("lifecycleOcpAwardHTML") +
   extractFn("lifecycleTimelineHTML") +
@@ -163,7 +165,10 @@ test("gap taxonomy report is present and names both registers", () => {
 // Class (a) — real procurement field case: unmatched pending/registered/payment
 // ---------------------------------------------------------------------------
 
-test("class a: unmatched Checkbook stages use not-yet-ingested register with per-stage specificity", () => {
+test("class a: unmatched Checkbook stages collapse in UI; dictionary keeps not-yet-ingested register", () => {
+  // Notice-detail presentation collapses empty future stages into the stepper so a fresh
+  // award does not paint three "Not yet shown here" paragraphs. The class-(a) strings stay
+  // in the English dictionary (and gap inventory) for other surfaces / precompute fill-in.
   const html = lifecycleTimelineHTML({
     pin: "84124P0003001",
     pin_strategy: "exact",
@@ -180,14 +185,18 @@ test("class a: unmatched Checkbook stages use not-yet-ingested register with per
     ],
   }, { request_id: "20260623008", agency_name: "Transportation", pin: "84124P0003001" });
 
-  assert.match(html, CLASS_A_PREFIX);
-  assert.match(html, /pending contracts live in/);
-  assert.match(html, /registered contracts live in/);
-  assert.match(html, /payments live in/);
-  assert.match(html, /Checkbook NYC/);
+  assert.doesNotMatch(html, CLASS_A_PREFIX);
+  assert.match(html, /class="lc-stepper"/);
+  assert.match(html, /Pending contract/);
+  assert.match(html, /Registered contract/);
+  assert.match(html, /Payments/);
   assert.doesNotMatch(html, CLASS_B_PREFIX);
-  // No page-level disclaimer shape
   assert.doesNotMatch(html, /Disclaimer|This page does not/i);
+  // Inventory / i18n still pin the class-(a) register with per-stage specificity
+  assert.match(t("lifecycle_unmatched_pending_html", { source: "Checkbook NYC pending contracts" }), CLASS_A_PREFIX);
+  assert.match(t("lifecycle_unmatched_pending_html", { source: "x" }), /pending contracts live in/);
+  assert.match(t("lifecycle_unmatched_registered_html", { source: "x" }), /registered contracts live in/);
+  assert.match(t("lifecycle_unmatched_payment_html", { source: "x" }), /payments live in/);
 });
 
 // ---------------------------------------------------------------------------

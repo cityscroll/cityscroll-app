@@ -27,10 +27,45 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 - Merge-queue parameters: `tools/merge_queue_policy.json` + `node tools/apply_merge_queue_policy.mjs`
   (short train wait). Concurrent merge-when-ready seating for this repo is capped outside this tree.
 
-## Maintaining this file
+## DuckDB + parquet warehouse (WH-01 + WH-02 first bulk)
 
-- Keep this file for durable project-intrinsic facts that should outlive any one pull request.
-- Prefer pointers to authoritative commands/files over duplicating implementation details.
+Local lake under `warehouse/` (bulk raw/parquet/duckdb gitignored). CPU-capped
+ingest: single-job lock, headroom gate, `taskpolicy`/nice wrap, tiny row
+defaults; full Socrata export only via `--bulk --ack-large` (one dataset at a
+time). Setup + fixture proof:
+
+```bash
+python3 -m venv warehouse/.venv && warehouse/.venv/bin/pip install -r warehouse/requirements.txt
+warehouse/.venv/bin/python warehouse/scripts/ingest.py --dataset ocp-recent-contract-awards --from-fixture --limit 5
+node --test test/warehouse_scaffold.test.mjs test/warehouse_bulk.test.mjs
+```
+
+**WH-02 first pack:** OCP awards `qyyg-4tf5` full `rows.csv` through the capped
+runner. Manifest + checksums (no multi-MB bulk in git):
+`warehouse/manifests/wh02_load_manifest.json`. Reproduce bulk:
+
+```bash
+python3 "$HEADROOM_BIN"   # estate headroom.py; CONSTRAINED → defer
+warehouse/.venv/bin/python warehouse/scripts/ingest.py \
+  --dataset ocp-recent-contract-awards --bulk --ack-large --write-sample 25
+warehouse/.venv/bin/python warehouse/scripts/query.py \
+  --sql-file warehouse/sql/examples/ocp_bulk_verify.sql
+```
+
+**Remaining (sequential, only if headroom green):** `zap-projects` (`hgx4-8ukb`)
+→ `zap-bbl` (`2iga-a6mk`) → `city-record` (`dg92-zbpx`). Optional later:
+`doing-business-entities`. Query seam: `warehouse/lib/query.mjs` /
+`warehouse/scripts/query.py`. Details: `warehouse/README.md`.
+
+## Global item-route navigation
+
+Detail-route Back controls use the session-history sidecar in `site/index.html`
+(`rememberItemRouteContext` / `routeBackHTML`) so returning to a lens restores its
+serialized filters and scroll position. New item-route chrome must use
+`routeBackHTML` with an explicit cold-entry fallback; keep fallback routing in
+`itemRouteFallbackHash`. Verify:
+`node --test test/navigation_history.test.mjs` and
+`python3 test/functional/20_navigation_history.py` with `site/` served locally.
 
 
 ## README live screenshots
@@ -150,8 +185,17 @@ Strategies and receipts: `worker/src/lib/ulurp_recommendations_join.mjs`,
 milestones/dispositions with City Record notices by strict ULURP token. Each event carries
 `time` (value/precision/basis/certainty) and a named source URL; `gaps` preserves class-(a),
 class-(b), and operational-unavailable states, while `lag.open_data_vs_portal` compares the
-two published milestone dates without treating Open Data as live. Pure characterization:
-`node --test test/land_event_spine.test.mjs`. UI capture:
+two published milestone dates without treating Open Data as live.
+
+**Write-ahead prewarm (load-bearing for Land detail speed):** cold multi-source
+materialization is ~12s; warm KV is sub-second. Daily cron runs
+`refreshZapOutcomes` (sell-facing statuses In Public Review → Noticed → Active →
+Filed, capped, plus demo `2022M0258`). Operator force:
+`POST /admin/zap-outcomes-refresh` (`ADMIN_KEY`). Client session-prefetches the
+first screenful of list project ids after land list paint. Unlisted ids still
+compute-on-miss. Verify:
+`node --test test/zap_outcomes.test.mjs worker/test/zap_outcomes_prewarm.test.mjs
+test/land_event_spine.test.mjs`. UI capture:
 `python3 tools/capture_land_event_spine.py`.
 
 ## Legistar agenda/vote depth
@@ -265,6 +309,10 @@ When adding a new lifecycle empty state: pick class a or b with evidence, add or
 ### Lifecycle rendering coherence (notice detail)
 
 Precompute-first on the notice page: never live Checkbook proxy; never render `lifecycle_unknown_html` (“Could not reach…”) as a public data gap. Coerce `unknown` → taxonomy unmatched, or **passed** when a later stage is matched. No-PIN collapses Checkbook stages into the single class-(b) note. Format zero amounts with `lifecycleMoney` (`$0` / `—`), never literal `null`.
+
+**Compact template (cognitive load):** contract lifecycle is a stepper (`.lc-stepper`) plus detail cards only for populated / attention stages. Future unmatched steps stay grey chips — do **not** emit a per-stage “Not yet shown here — lives in {source}” paragraph or a repeated Checkbook URL. Unmatched OCP / RFx side-cars also collapse until matched. Methodology lives in a “How this timeline works” disclosure (source *names*, no extra outbound links). One actionable source link on the current stage only. Solicitations lead with the action rail + how-to-respond (`buildApply`) before lifecycle. Class-(a)/(b) strings remain in i18n and the gap inventory for other surfaces and when precompute later fills a stage. Characterization: `node --test test/lifecycle_render.test.mjs test/lifecycle_coherence_field_cases.test.mjs`. Evidence: `docs/screenshots/notice-template-rethink/`.
+
+**Notice action rail (no punt):** “What can I do now?” must extract concrete response steps from the notice itself — package/submit URL from the body when present, plus contact, deadline, method, and submit-to address from City Record fields. Never ship “Use the response instructions in the official notice” as the primary CTA. Logic: `site/action_registry.js` (`solicitationHandoff` / `notice_extracted`); render: `actionRailGuideHTML` in `site/index.html`. Verify: `node --test test/action-rail.test.mjs test/notice_action_rail.test.mjs`.
 
 **One owner per fact (lifecycle vs detail):** when the Checkbook registration join exists, the payments card **summarizes** (`$X paid of $Y committed`, zero-lag note when $0-fresh) and anchor-links to `#follow-the-dollars`; it never emits class-(a) gap copy in parallel. Follow-the-Dollars owns paid-to-date detail and must not re-emit the payments gap. Gap register for payments only when the join is genuinely absent (no PIN / no registered record). Same ownership rule for subsidy: project-level unmatched is one note, not stacked per-stage gaps. Characterization: `node --test test/lifecycle_coherence_field_cases.test.mjs` (symptom: *joined payments rendered as not-shown, duplicated*). Captures: `python3 tools/capture_lifecycle_coherence.py`.
 
@@ -773,6 +821,24 @@ false-negative: notice `20241112003` (Manhattan Block 644 Lot 1). Golden +
 unit: `node --test test/contract/property_location_golden.test.mjs
 test/contract/property_location.test.mjs`. Feed cards deep-link
 `#notice/{id}` (title + Open notice), same pattern as Money dig items.
+
+## Property disposition process spine
+
+Multi-notice lifecycle for one parcel/asset: **hearing → auction_or_rfp →
+award_or_conveyance**. Pure builder: `worker/src/lib/property_disposition_spine.mjs`
+(`groupDispositionSpines` / `buildPropertyDispositionSpine`). Join keys are
+strict **BBL** or **borough + block/lot** (never bare block alone); same
+`agency_name` required. Materialized on `/property-locations` as
+`disposition_spines` + per-row `disposition_stage` / `disposition_subject_ref`
+via `attachDispositionSpines` in `buildPropertyView`. Notice detail mounts
+`propertyDispositionSpineHTML` / `loadPropertyDispositionSpine` (`#ndisposition`).
+
+**Not the list filter rail:** `propStage` / `PROP_STAGES` remain temporal
+feed filters (proposed / soon / upcoming / past) — do not re-label those chips
+as process stages. Empty spine stages use class-(a) `not_yet_ingested` naming
+City Record Online; never invent auction/award events. Metric:
+`property_disposition_spine_completeness_rate`. Verify:
+`node --test test/property_disposition_spine.test.mjs worker/test/property.test.mjs`.
 
 ## Structured notice-body facts
 

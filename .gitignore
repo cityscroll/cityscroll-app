@@ -18,3 +18,23 @@ PAPERCUTS.md
 .agents/
 # Local browser performance results
 test/performance/artifacts/
+
+# CityScroll warehouse bulk data (WH-01) — code/fixtures stay tracked; bulk never in git
+warehouse/raw/**
+!warehouse/raw/.gitkeep
+warehouse/parquet/**
+!warehouse/parquet/.gitkeep
+warehouse/duckdb/**
+!warehouse/duckdb/.gitkeep
+warehouse/receipts/**
+!warehouse/receipts/.gitkeep
+!warehouse/receipts/proof/
+!warehouse/receipts/proof/**
+warehouse/.venv/
+warehouse/.ingest.lock
+warehouse/**/__pycache__/
+*.duckdb
+*.duckdb.wal
+
+# Generated WH-02 bulk samples (may contain public notice fields; not committed)
+warehouse/fixtures/**/bulk_sample.csv

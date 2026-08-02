@@ -1,5 +1,7 @@
 // Daily materialized Property view. City Record remains authoritative; this projection
 // extracts property-site evidence and resolves one representative site address per notice.
+// Also stamps multi-notice disposition process spines (hearing → auction/RFP → award)
+// joined by BBL or borough+block/lot — separate from the list filter "lifecycle rail".
 // Default GET serves a slim list view (drops body-dump fields) for first-paint speed;
 // ?full=1 returns the complete materialization.
 
@@ -7,6 +9,7 @@ import {
   applyPropertyGeocodes,
   propertyLocationFromRow,
 } from "../../site/property_location.mjs";
+import { attachDispositionSpines } from "./lib/property_disposition_spine.mjs";
 import { slimPropertyListView } from "./lib/property_list.mjs";
 
 export const PROPERTY_KV_KEY = "property:location:v1";
@@ -86,7 +89,7 @@ export async function buildPropertyView(fetchImpl = fetch, now = new Date()) {
     ...row,
     property_location: applyPropertyGeocodes(row.property_location, geocodes),
   }));
-  return {
+  const view = {
     schema_version: 1,
     generated_at: now.toISOString(),
     source: {
@@ -102,6 +105,7 @@ export async function buildPropertyView(fetchImpl = fetch, now = new Date()) {
     },
     properties,
   };
+  return attachDispositionSpines(view);
 }
 
 export async function refreshProperties(env, fetchImpl = fetch, now = new Date()) {

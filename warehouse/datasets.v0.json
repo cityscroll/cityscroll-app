@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "description": "CityScroll warehouse dataset registry. WH-01 scaffold + WH-02 bulk pack entries.",
+  "defaults": {
+    "max_rows_default": 50,
+    "max_rows_hard_cap": 10000,
+    "require_ack_above": 1000,
+    "one_job_at_a_time": true,
+    "cpu_wrap": true,
+    "headroom_gate": true,
+    "bulk_fetch_timeout_s": 3600,
+    "bulk_heartbeat_s": 180
+  },
+  "wh02_pack": {
+    "card": "WH-02",
+    "strategy": "smallest_or_most_valuable_first_sequential",
+    "first_pick": "ocp-recent-contract-awards",
+    "first_pick_rationale": "Named on the WH-02 card, already WH-01 fixture-proven, ~53k rows — real bulk volume without City Record's ~1.1M row surface. Money-spine value high.",
+    "queue": [
+      "ocp-recent-contract-awards",
+      "zap-projects",
+      "zap-bbl",
+      "city-record"
+    ],
+    "deferred_notes": "Add next only when headroom stays green after the previous pack. City Record last (largest)."
+  },
+  "datasets": {
+    "ocp-recent-contract-awards": {
+      "id": "ocp-recent-contract-awards",
+      "source_contract_id": "ocp-recent-contract-awards",
+      "name": "Recent Contract Awards (OCP)",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "qyyg-4tf5",
+      "table_name": "ocp_recent_contract_awards",
+      "bulk_class": "BULK",
+      "default_limit": 50,
+      "wh02_full_export": true,
+      "soda_order": "start_date DESC",
+      "required_fields": [
+        "request_id",
+        "start_date",
+        "agency_name",
+        "type_of_notice_description",
+        "pin",
+        "contract_amount",
+        "vendor_name"
+      ],
+      "notes": "WH-02 first bulk pick. Full rows.csv under --bulk --ack-large."
+    },
+    "city-record": {
+      "id": "city-record",
+      "source_contract_id": "city-record",
+      "name": "City Record Online",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "dg92-zbpx",
+      "table_name": "city_record",
+      "bulk_class": "BULK",
+      "default_limit": 50,
+      "wh02_full_export": true,
+      "soda_order": "start_date DESC",
+      "required_fields": [
+        "request_id",
+        "start_date",
+        "agency_name",
+        "type_of_notice_description",
+        "section_name"
+      ],
+      "notes": "Largest Socrata surface (~1.1M rows). WH-02 queue last; prefer Mini overnight."
+    },
+    "zap-projects": {
+      "id": "zap-projects",
+      "source_contract_id": "zap-projects",
+      "name": "ZAP Project Data",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "hgx4-8ukb",
+      "table_name": "zap_projects",
+      "bulk_class": "BULK",
+      "default_limit": 50,
+      "wh02_full_export": true,
+      "required_fields": [
+        "project_id"
+      ],
+      "notes": "WH-03 prewarm input. Next after OCP when headroom green."
+    },
+    "zap-bbl": {
+      "id": "zap-bbl",
+      "source_contract_id": "zap-bbl",
+      "name": "ZAP BBL",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "2iga-a6mk",
+      "table_name": "zap_bbl",
+      "bulk_class": "BULK",
+      "default_limit": 50,
+      "wh02_full_export": true,
+      "required_fields": [
+        "project_id"
+      ],
+      "notes": "BBL join companion to zap-projects. Pack after projects."
+    },
+    "doing-business-entities": {
+      "id": "doing-business-entities",
+      "source_contract_id": "doing-business-entities",
+      "name": "Doing Business Search Entities",
+      "kind": "socrata",
+      "domain": "https://data.cityofnewyork.us",
+      "dataset_id": "72mk-a8z7",
+      "table_name": "doing_business_entities",
+      "bulk_class": "BULK",
+      "default_limit": 50,
+      "wh02_full_export": true,
+      "required_fields": [
+        "organization_name"
+      ],
+      "notes": "ER batch (WH-04) target. Small (~11k); optional pack after primary queue."
+    }
+  }
+}

@@ -15,7 +15,11 @@ test("notice detail keeps utility controls separate from the single action rail"
   const showNotice = html.slice(html.indexOf("async function showNotice"), html.indexOf("/* ===================== INIT"));
   assert.doesNotMatch(showNotice, /id="nics"/);
   assert.doesNotMatch(showNotice, /noticeParticipation/);
+  // How-to-respond leads (after the action rail) without a second set of primary CTAs
   assert.match(showNotice, /buildApply\(r,false\)/);
+  const applyAt = showNotice.indexOf("buildApply(r,false)");
+  const lifecycleAt = showNotice.indexOf('id="nlifecycle"');
+  assert.ok(applyAt > 0 && lifecycleAt > applyAt, "response path appears before contract lifecycle");
 });
 
 test("the rail exposes official domains and unavailable actions as status text", () => {

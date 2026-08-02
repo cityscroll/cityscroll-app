@@ -285,6 +285,12 @@ export const ADMIN_ROUTES = Object.freeze([
     description: "On-demand Council meeting-outcomes materialization and Legistar source_records dual-write (cron pipeline).",
   },
   {
+    path: "/admin/zap-outcomes-refresh",
+    methods: ["POST"],
+    auth: "ADMIN_KEY",
+    description: "On-demand Land ZAP outcomes prewarm for sell-facing project_ids (cron pipeline).",
+  },
+  {
     path: "/admin/passport-ingest",
     methods: ["POST"],
     auth: "ADMIN_KEY",
