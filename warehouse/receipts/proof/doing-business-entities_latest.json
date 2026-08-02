@@ -16,9 +16,9 @@
     "status": "ok"
   },
   "limit": 5,
-  "observed_at": "2026-08-02T10:34:26Z",
+  "observed_at": "2026-08-02T10:35:17Z",
   "parquet": {
-    "bytes": 1009,
+    "bytes": 1006,
     "column_map_applied": false,
     "column_map_size": 0,
     "columns": [
@@ -28,21 +28,21 @@
       "doing_business_start_date",
       "snapshot_date"
     ],
-    "parquet_path": "/Users/james/.treehouse/crol-list-0b522b/8/crol-list/warehouse/parquet/doing-business-entities/snapshot_date=fixture/part-000.parquet",
+    "parquet_path": "warehouse/parquet/doing-business-entities/snapshot_date=fixture/part-000.parquet",
     "row_count": 3,
     "threads": 1
   },
   "phase": "WH-01",
   "raw": {
-    "bytes": 220,
+    "bytes": 211,
     "mode": "fixture",
-    "path": "/Users/james/.treehouse/crol-list-0b522b/8/crol-list/warehouse/raw/doing-business-entities/snapshot_date=fixture/sample.csv",
+    "path": "warehouse/raw/doing-business-entities/snapshot_date=fixture/sample.csv",
     "row_count": 3,
-    "sha256": "89c35f0122b6c720ce262965e454155e62e361faddf39e5f51dbd21d447d9572",
-    "source": "/Users/james/.treehouse/crol-list-0b522b/8/crol-list/warehouse/fixtures/doing-business-entities/sample.csv"
+    "sha256": "c2d859dee48273001b284cc9a4c511258d55af31b53da637a171aef179fa7bac",
+    "source": "warehouse/fixtures/doing-business-entities/sample.csv"
   },
   "register": {
-    "catalog": "/Users/james/.treehouse/crol-list-0b522b/8/crol-list/warehouse/duckdb/cityscroll.duckdb",
+    "catalog": "warehouse/duckdb/cityscroll.duckdb",
     "columns": [
       "organization_name",
       "ownership_structure_code",
@@ -50,7 +50,7 @@
       "doing_business_start_date",
       "snapshot_date"
     ],
-    "parquet_glob": "/Users/james/.treehouse/crol-list-0b522b/8/crol-list/warehouse/parquet/doing-business-entities/snapshot_date=fixture/*.parquet",
+    "parquet_glob": "warehouse/parquet/doing-business-entities/snapshot_date=fixture/*.parquet",
     "row_count": 3,
     "table": "doing_business_entities"
   },
@@ -59,5 +59,5 @@
   "socrata_dataset_id": "72mk-a8z7",
   "source_contract_id": "doing-business-entities",
   "table_name": "doing_business_entities",
-  "warehouse_root": "/Users/james/.treehouse/crol-list-0b522b/8/crol-list/warehouse"
+  "warehouse_root": "warehouse"
 }

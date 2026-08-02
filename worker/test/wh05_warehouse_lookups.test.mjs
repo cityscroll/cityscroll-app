@@ -32,7 +32,7 @@ test("Doing Business warehouse hit for CAMBA without network", () => {
   assert.equal(hit.hit, true);
   assert.equal(hit.path, "warehouse");
   assert.equal(hit.payload.organization_name, "CAMBA  INC");
-  assert.equal(hit.payload.organization_phone, "555-010-0001");
+  assert.equal(hit.payload.organization_phone, "5550100");
 });
 
 test("Doing Business warehouse miss leaves SODA fallback room", () => {

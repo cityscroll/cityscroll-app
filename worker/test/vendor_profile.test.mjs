@@ -101,7 +101,7 @@ const CAMBA_DOING_BUSINESS = [
   {
     organization_name: "CAMBA  INC",
     ownership_structure_code: "COR",
-    organization_phone: "5550100001",
+    organization_phone: "5550100",
     doing_business_start_date: "0009-05-16T00:00:00.000",
   },
 ];
@@ -151,7 +151,7 @@ test("cron refresh writes versioned buckets before publishing the manifest", asy
   assert.deepEqual(bucket.profiles.CAMBA.forecasts, forecast);
   assert.equal(bucket.profiles.CAMBA.doingBusiness.organization_name, "CAMBA  INC");
   // Warehouse product seed uses fictional 555 phone (scrim L081); SODA path keeps live shape.
-  assert.equal(bucket.profiles.CAMBA.doingBusiness.organization_phone, "555-010-0001");
+  assert.equal(bucket.profiles.CAMBA.doingBusiness.organization_phone, "5550100");
   assert.equal(bucket.profiles.CAMBA.doingBusiness.doing_business_start_date, "2009-05-16");
   const manifest = JSON.parse(store.values.get("vp:manifest:v1"));
   assert.equal(manifest.schema, 2);

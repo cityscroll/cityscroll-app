@@ -1,6 +1,6 @@
 {
   "phase": "WH-05",
-  "measured_at": "2026-08-02T10:34:26.889Z",
+  "measured_at": "2026-08-02T10:35:17.308Z",
   "replaces_live_fetch": {
     "function": "attachDoingBusiness",
     "soda_dataset": "72mk-a8z7",
@@ -12,14 +12,14 @@
   },
   "edge_materialization_lookup": {
     "samples_ms": [
-      0.0136,
+      0.0131,
       0.0024,
-      0.0033,
+      0.0032,
       0.0015,
-      0.0014
+      0.0012
     ],
     "p50_ms": 0.0005,
-    "mean_ms": 0.0046,
+    "mean_ms": 0.0045,
     "n": 50,
     "note": "Worker hot path after warehouse materialization import (stem index)"
   },
