@@ -455,6 +455,40 @@
   .matter-phase-history > summary{font:600 12px/1.4 ui-sans-serif,system-ui,sans-serif;cursor:pointer;color:var(--muted)}
   .matter-phase-chrono{max-height:280px;overflow:auto;margin-top:8px}
   .matter-phase-chrono .tl{margin-bottom:6px}
+  /* Vendor profile “On the record” — same phase chrome as matter (award → registration → payments) */
+  .vendor-phase-lead{margin:0 0 12px;padding:12px 14px;border:1px solid var(--rule);border-radius:10px;background:#fffdf8}
+  .vendor-phase-now-label{font:700 10px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 4px}
+  .vendor-phase-now-phase{font:800 18px/1.2 var(--font-display);margin:0 0 4px;color:var(--ink)}
+  .vendor-phase-now-detail{font:13px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:0}
+  .vendor-phase-action{font:600 13px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--ink);margin:8px 0 0}
+  .vendor-phase-action a{font-weight:700}
+  .vendor-phase-next{font:13px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:6px 0 0}
+  .vendor-phase-stepper .lc-step{cursor:pointer}
+  /* Future chips: no opacity fade (axe color-contrast). Dashed border still signals not-started. */
+  .vendor-phase-stepper .lc-step.future{opacity:1;color:#5c564c;background:#f3eee3;border-style:dashed;border-color:#a39a88}
+  .vendor-phase{border:1px solid var(--rule);border-radius:10px;margin:0 0 8px;background:#fffdf8;overflow:hidden}
+  .vendor-phase[open]{background:#fff}
+  .vendor-phase.current-phase{border-color:color-mix(in srgb,var(--oxblood) 45%,var(--rule));box-shadow:0 0 0 1px color-mix(in srgb,var(--oxblood) 22%,transparent)}
+  .vendor-phase > summary{list-style:none;cursor:pointer;padding:10px 12px;display:grid;grid-template-columns:1fr auto;gap:3px 12px;align-items:baseline}
+  .vendor-phase > summary::-webkit-details-marker{display:none}
+  .vendor-phase-name{font:700 13px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--ink)}
+  .vendor-phase-state{font:700 10px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .vendor-phase.current-phase .vendor-phase-state{color:var(--oxblood)}
+  .vendor-phase-summary{grid-column:1 / -1;font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+  .vendor-phase-body{padding:0 12px 12px;border-top:1px solid var(--rule)}
+  .vendor-phase-row,.vendor-phase-agg{padding:8px 0;border-bottom:1px solid color-mix(in srgb,var(--rule) 70%,transparent)}
+  .vendor-phase-row:last-child,.vendor-phase-agg:last-child{border-bottom:0}
+  .vendor-phase-row-title,.vendor-phase-agg-title{font:700 13px/1.35 ui-sans-serif,system-ui,sans-serif;color:var(--ink);overflow-wrap:anywhere}
+  .vendor-phase-row-meta,.vendor-phase-agg-meta{font:12px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);overflow-wrap:anywhere}
+  .vendor-phase-count{display:inline-block;font:700 11px/1 ui-monospace,SFMono-Regular,monospace;background:var(--paper-2,#f7f1e4);border:1px solid var(--rule);border-radius:999px;padding:3px 7px;margin-inline-start:6px;vertical-align:middle}
+  .vendor-phase-dates{margin:6px 0 0;padding:0;list-style:none;display:none;font:12px/1.55 ui-monospace,SFMono-Regular,monospace;color:var(--muted)}
+  .vendor-phase-dates.show{display:block}
+  .vendor-phase-toggle{margin-top:6px;font:600 12px/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--oxblood);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+  .vendor-phase-history{display:block;margin:8px 0}
+  .vendor-phase-history > summary{font:600 12px/1.4 ui-sans-serif,system-ui,sans-serif;cursor:pointer;color:var(--muted)}
+  .vendor-phase-chrono{max-height:280px;overflow:auto;margin-top:8px}
+  .vendor-phase-chrono .tl{margin-bottom:6px}
+  .vendor-phase-gap{font:12px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin:8px 0 0}
   .lc-stage-detail{margin:0 0 8px}
   .lc-stage-detail .chain{gap:0}
   .lc-docs-caveat{font:12px/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:6px}
@@ -10147,6 +10181,277 @@ function vendorMentionItemsHTML(mentions){
       <span class="rmeta" style="margin:0">${tSection(r.section_name)||r.type_of_notice_description||""}</span></div>`).join("");
 }
 
+/* ===================== VENDOR PHASE SPINE (award → registration → payments) =========
+   Pure model: site/vendor_phase_spine.mjs (same shape as matter / procurement phase spines).
+   Flat chronological dump is the fallback when the module fails to load. */
+let vendorPhaseSpineToolsPromise = null;
+function ensureVendorPhaseSpineTools(){
+  if(!vendorPhaseSpineToolsPromise){
+    vendorPhaseSpineToolsPromise = import("./vendor_phase_spine.mjs").catch(() => null);
+  }
+  return vendorPhaseSpineToolsPromise;
+}
+
+function vendorTimelineFlatHTML(rows){
+  return (rows || []).map(r=>`<div class="tl"><span class="tldate">${fdate(r.start_date)}</span>
+      <span class="tlreason">${pivotA("#notice/"+encodeURIComponent(r.request_id), cleanText(r.short_title)||"(untitled)")}</span>
+      <span class="rmeta" style="margin:0">${escUiHtml(r.type_of_notice_description||"")} · ${pivotA(agencyHref(r.agency_name), r.agency_name||"")}</span>
+      ${money(r.contract_amount)?`<span class="tlsal">${money(r.contract_amount)}</span>`:""}</div>`).join("");
+}
+
+function vendorPhaseLabel(phase){
+  if(!phase) return "—";
+  if(phase.label_key) return t(phase.label_key);
+  if(typeof phase === "string"){
+    const meta = {
+      award: "vendor_phase_award",
+      registration: "vendor_phase_registration",
+      payments: "vendor_phase_payments",
+    };
+    return meta[phase] ? t(meta[phase]) : phase;
+  }
+  return phase.short || "—";
+}
+
+function vendorPhaseYearAggHTML(agg, phaseId, idx){
+  if(!agg) return "";
+  if(agg.count === 1){
+    const m = agg.members[0] || {};
+    const noticeLink = m.request_id
+      ? pivotA("#notice/" + encodeURIComponent(m.request_id), cleanText(m.title) || m.request_id)
+      : escUiHtml(cleanText(m.title) || "—");
+    const meta = [
+      m.date ? fdate(m.date) : "",
+      m.agency_name ? pivotA(agencyHref(m.agency_name), m.agency_name) : "",
+      m.contract_amount != null ? money(m.contract_amount) : "",
+    ].filter(Boolean).join(" · ");
+    return `<div class="vendor-phase-row">
+      <div class="vendor-phase-row-title" lang="en" dir="ltr"><b>${escUiHtml(m.notice_type || t("lifecycle_stage_award"))}</b> — ${noticeLink}</div>
+      <div class="vendor-phase-row-meta">${meta}</div>
+    </div>`;
+  }
+  const listId = `vendor-agg-${phaseId}-${idx}`;
+  const yearLabel = agg.year
+    ? t("vendor_phase_year_cycle",{year:escUiHtml(agg.year),n:String(agg.count)})
+    : t("vendor_phase_milestones_count",{n:String(agg.count)});
+  const range = agg.first && agg.last && agg.first !== agg.last
+    ? t("vendor_phase_aggregate_range",{first:fdate(agg.first),last:fdate(agg.last)})
+    : (agg.first ? fdate(agg.first) : "");
+  const amt = agg.amount_sum != null ? money(agg.amount_sum) : "";
+  return `<div class="vendor-phase-agg">
+    <div class="vendor-phase-agg-title" lang="en" dir="ltr">${yearLabel}<span class="vendor-phase-count">×${agg.count}</span></div>
+    <div class="vendor-phase-agg-meta">${[range, amt].filter(Boolean).join(" · ")}</div>
+    <button type="button" class="vendor-phase-toggle" data-vendor-dates="${listId}" aria-expanded="false">${t("vendor_phase_show_dates",{n:String(agg.count)})}</button>
+    <ul class="vendor-phase-dates" id="${listId}">
+      ${(agg.members || []).map(m => {
+        const link = m.request_id
+          ? pivotA("#notice/" + encodeURIComponent(m.request_id), fdate(m.date) || m.request_id)
+          : (m.date ? fdate(m.date) : "—");
+        const bits = [
+          link,
+          m.agency_name ? escUiHtml(cleanText(m.agency_name)) : "",
+          m.contract_amount != null ? money(m.contract_amount) : "",
+          m.title ? `<span lang="en" dir="ltr">${escUiHtml(cleanText(m.title))}</span>` : "",
+        ].filter(Boolean).join(" · ");
+        return `<li>${bits}</li>`;
+      }).join("")}
+    </ul>
+  </div>`;
+}
+
+function vendorPhasePanelHTML(phase){
+  if(!phase) return "";
+  if(phase.state === "future" && !phase.event_count) return "";
+  if(phase.state === "passed" && !phase.event_count) return "";
+  // Substance behind disclosure — current phase summary only until opened.
+  const open = "";
+  const stateWord = phase.state === "current"
+    ? t("vendor_phase_current")
+    : phase.state === "passed"
+      ? t("vendor_phase_done")
+      : t("vendor_phase_future");
+  let summary = "";
+  if(phase.event_count){
+    const parts = [
+      t("vendor_phase_milestones_count",{n:String(phase.event_count)}),
+      phase.first && phase.last && phase.first !== phase.last
+        ? t("vendor_phase_aggregate_range",{first:fdate(phase.first),last:fdate(phase.last)})
+        : (phase.first ? fdate(phase.first) : ""),
+    ].filter(Boolean);
+    summary = parts.join(" · ");
+  } else {
+    summary = t("vendor_phase_empty");
+  }
+  let body = "";
+  if(phase.id === "award" && (phase.year_aggregates || []).length){
+    body = (phase.year_aggregates || []).map((a, idx) => vendorPhaseYearAggHTML(a, phase.id, idx)).join("");
+  } else if((phase.milestones || []).length){
+    body = (phase.milestones || []).map((m, idx) => vendorPhaseYearAggHTML({
+      count: 1, members: [m], year: m.year, first: m.date, last: m.date, amount_sum: m.contract_amount,
+    }, phase.id, idx)).join("");
+  } else {
+    body = `<div class="vendor-phase-row"><div class="vendor-phase-row-meta">${t("vendor_phase_empty")}</div></div>`;
+  }
+  return `<details class="vendor-phase${phase.state === "current" ? " current-phase" : ""}"${open} id="vendor-phase-${escUiHtml(phase.id)}" data-vendor-phase-panel="${escUiHtml(phase.id)}">
+    <summary>
+      <span class="vendor-phase-name">${escUiHtml(vendorPhaseLabel(phase))}</span>
+      <span class="vendor-phase-state">${escUiHtml(stateWord)}</span>
+      <span class="vendor-phase-summary">${escUiHtml(summary)}</span>
+    </summary>
+    <div class="vendor-phase-body">${body}</div>
+  </details>`;
+}
+
+function vendorPhaseStepperHTML(view){
+  if(!view || !view.phases || !view.phases.length) return "";
+  const items = view.phases.map((p, i) => {
+    const cls = p.state === "current" ? "current" : p.state === "passed" ? "passed" : "future";
+    const aria = p.state === "current" ? ` aria-current="step"` : "";
+    const arrow = i < view.phases.length - 1
+      ? `<span class="lc-step-arrow" aria-hidden="true">→</span>`
+      : "";
+    return `<li><button type="button" class="lc-step ${cls}" data-vendor-phase="${escUiHtml(p.id)}"${aria} title="${escUiHtml(vendorPhaseLabel(p))}">${escUiHtml(p.short || vendorPhaseLabel(p))}</button>${arrow}</li>`;
+  }).join("");
+  return `<ol class="lc-stepper vendor-phase-stepper" aria-label="${escUiHtml(t("vendor_phase_heading"))}">${items}</ol>`;
+}
+
+function vendorPhaseActionHTML(view){
+  const cur = view && view.current;
+  if(!cur) return "";
+  const key = cur.action_key || "vendor_phase_action_review_awards";
+  if(key === "vendor_phase_action_follow_money" && view.checkbook){
+    const href = checkbookSearchUrl(view.checkbook);
+    return t("vendor_phase_action_follow_money",{
+      href: escUiHtml(href),
+      link: `<a href="${escUiHtml(href)}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`
+    });
+  }
+  if(key === "vendor_phase_action_track_registration" && view.checkbook){
+    const href = checkbookSearchUrl(view.checkbook);
+    return t("vendor_phase_action_track_registration",{
+      href: escUiHtml(href),
+      link: `<a href="${escUiHtml(href)}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`
+    });
+  }
+  if(key === "vendor_phase_action_review_awards" && view.action_notice_id){
+    const parts = [
+      t("vendor_phase_action_review_awards_html",{
+        href: "#notice/" + encodeURIComponent(view.action_notice_id)
+      }),
+    ];
+    // One Checkbook handoff for registration/payments — never N per award row.
+    if(view.checkbook){
+      const href = checkbookSearchUrl(view.checkbook);
+      parts.push(t("vendor_phase_action_checkbook_once",{
+        link: `<a href="${escUiHtml(href)}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`
+      }));
+    }
+    return parts.join(" ");
+  }
+  return t(key);
+}
+
+function vendorChronoRowHTML(m){
+  const date = m.date ? fdate(m.date) : "—";
+  let label = "";
+  if(m.kind === "notice" && m.request_id){
+    label = `<b>${escUiHtml(m.notice_type || t("lifecycle_stage_award"))}</b> — ${pivotA("#notice/"+encodeURIComponent(m.request_id), cleanText(m.title)||"(untitled)")}`;
+  } else {
+    label = `<b>${escUiHtml(m.title || m.stage || "—")}</b>`;
+  }
+  const extra = [
+    m.agency_name ? pivotA(agencyHref(m.agency_name), m.agency_name) : "",
+    m.contract_amount != null ? money(m.contract_amount) : "",
+  ].filter(Boolean).join(" · ");
+  return `<div class="tl"><span class="tldate">${date}</span>
+    <span class="tlreason" style="font-weight:400">${label}</span>
+    ${extra ? `<span class="rmeta" style="margin:0">${extra}</span>` : ""}</div>`;
+}
+
+function vendorPhaseTimelineHTML(view){
+  if(!view) return "";
+  const cur = view.current || {};
+  const phaseName = vendorPhaseLabel({label_key: cur.label_key});
+  const countBit = cur.award_count
+    ? t("vendor_phase_lead_awards",{n:String(cur.award_count)})
+    : (cur.milestone_label || "—");
+  const sinceBit = cur.since ? t("vendor_phase_since",{date:fdate(cur.since)}) : "";
+  const actionHTML = vendorPhaseActionHTML(view);
+  const lead = `<div class="vendor-phase-lead">
+    <div class="vendor-phase-now-label">${t("vendor_phase_now_label")}</div>
+    <p class="vendor-phase-now-phase">${escUiHtml(phaseName)}</p>
+    <p class="vendor-phase-now-detail" lang="en" dir="ltr">${escUiHtml(countBit)}${sinceBit ? ` · ${sinceBit}` : ""}</p>
+    ${actionHTML ? `<p class="vendor-phase-action">${actionHTML}</p>` : ""}
+    ${view.next ? `<p class="vendor-phase-next">${t("vendor_phase_next_html",{phase:escUiHtml(vendorPhaseLabel(view.next))})}</p>` : ""}
+  </div>`;
+  const stepper = vendorPhaseStepperHTML(view);
+  // All substance behind disclosure (current panel closed until opened).
+  const currentPanel = (view.phases || []).filter(p => p.state === "current")
+    .map(vendorPhasePanelHTML).join("");
+  const historyPanels = (view.phases || []).filter(p => p.state === "passed")
+    .map(vendorPhasePanelHTML).filter(Boolean).join("");
+  const historyWrap = historyPanels
+    ? `<details class="vendor-phase-history"><summary>${t("vendor_phase_show_history")}</summary>${historyPanels}</details>`
+    : "";
+  const futureNote = (view.phases || []).some(p => p.state === "future" && !p.event_count)
+    ? `<p class="vendor-phase-gap">${t("vendor_phase_future_gap_html")}</p>`
+    : "";
+  const chronoRows = (view.chronological || []).map(vendorChronoRowHTML).join("");
+  const how = `<details class="inline-disclose lc-how">
+    <summary>${t("vendor_phase_show_all")}</summary>
+    <div class="timeline vendor-phase-chrono">${chronoRows}</div>
+  </details>
+  <details class="inline-disclose lc-how">
+    <summary>${t("vendor_phase_how_summary")}</summary>
+    <div class="inline-disclose-body">${t("vendor_phase_how_html")}</div>
+  </details>`;
+  return `${lead}${stepper}${currentPanel}${historyWrap}${futureNote}${how}`;
+}
+
+function bindVendorPhaseTimeline(root){
+  if(!root) return;
+  root.addEventListener("click", (ev) => {
+    const step = ev.target.closest?.("[data-vendor-phase]");
+    if(step){
+      const id = step.getAttribute("data-vendor-phase");
+      const panel = root.querySelector(`[data-vendor-phase-panel="${CSS.escape(id)}"]`);
+      if(panel){
+        panel.open = true;
+        panel.scrollIntoView({block:"nearest", behavior:"smooth"});
+      }
+      return;
+    }
+    const toggle = ev.target.closest?.("[data-vendor-dates]");
+    if(toggle){
+      const listId = toggle.getAttribute("data-vendor-dates");
+      const list = root.querySelector("#" + CSS.escape(listId));
+      if(!list) return;
+      const open = list.classList.toggle("show");
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      toggle.textContent = open
+        ? t("vendor_phase_hide_dates")
+        : t("vendor_phase_show_dates",{n:String(list.children.length)});
+    }
+  });
+}
+
+async function paintVendorPhaseTimeline(box, profile, rows){
+  const host = box && box.querySelector("#vendor-on-the-record");
+  if(!host || !rows || !rows.length) return;
+  const tools = await ensureVendorPhaseSpineTools();
+  if(box.dataset.vendorStem !== profile.stem) return;
+  if(!tools || typeof tools.buildVendorPhaseView !== "function"){
+    host.innerHTML = `<div class="timeline">${vendorTimelineFlatHTML(rows)}</div>`;
+    return;
+  }
+  const view = tools.buildVendorPhaseView(rows, {
+    vendorName: cleanText(profile.display),
+    stem: profile.stem,
+  });
+  host.innerHTML = vendorPhaseTimelineHTML(view);
+  bindVendorPhaseTimeline(host);
+}
+
 function vendorProfileHTML(profile, details, hydrating){
   const display = cleanText(profile.display);
   const agencies = details?.agencies || profile.topAgencies || [];
@@ -10159,20 +10464,25 @@ function vendorProfileHTML(profile, details, hydrating){
     const name = a.name||a.agency_name||"";
     return `<a class="chip" style="text-decoration:none" href="${agencyHref(name)}">${escUiHtml(cleanText(name))}<span class="ct">${money(a.total??a.t)||a.n}</span></a>`;
   }).join("");
-  const rowItems = rows.map(r=>`<div class="tl"><span class="tldate">${fdate(r.start_date)}</span>
-      <span class="tlreason">${pivotA("#notice/"+encodeURIComponent(r.request_id), cleanText(r.short_title)||"(untitled)")}</span>
-      <span class="rmeta" style="margin:0">${r.type_of_notice_description||""} · ${pivotA(agencyHref(r.agency_name), r.agency_name||"")}</span>
-      ${money(r.contract_amount)?`<span class="tlsal">${money(r.contract_amount)}</span>`:""}</div>`).join("");
+  // Flat fallback inside the host; paintVendorPhaseTimeline upgrades to phase UI.
+  const onTheRecord = rows.length
+    ? `<div class="chain-h">${t("vendor_on_the_record")}</div>
+        <div id="vendor-on-the-record" class="vendor-phase-timeline" style="margin-top:8px">
+          <div class="timeline">${vendorTimelineFlatHTML(rows)}</div>
+        </div>`
+    : "";
   const mentionItems = vendorMentionItemsHTML(mentions);
   const lazyMentions = !hydrating && !mentionsProvided ? `<details id="vendor-mentions-lazy" style="margin-top:18px">
-        <summary class="chain-h" style="cursor:pointer">Mentioned in other notices (text match)</summary>
+        <summary class="chain-h" style="cursor:pointer">${t("vendor_mentions_heading")}</summary>
         <div id="vendor-mentions-results"></div>
       </details>` : "";
   const loadingSections = hydrating ? `<div id="vendor-live" aria-busy="true">
-        <div class="chain-h">On the record — notices naming this vendor</div><div class="empty" style="padding:12px"><span class="loading"></span></div>
-        <div class="chain-h">Mentioned in other notices (text match)</div><div class="empty" style="padding:12px"><span class="loading"></span></div>
+        <div class="chain-h">${t("vendor_on_the_record")}</div><div class="empty" style="padding:12px"><span class="loading"></span></div>
+        <div class="chain-h">${t("vendor_mentions_heading")}</div><div class="empty" style="padding:12px"><span class="loading"></span></div>
         <div class="chain-h">${t("forecast_section_heading")}</div><div class="empty" style="padding:12px"><span class="loading"></span></div>
       </div>` : "";
+  const checkbookHref = checkbookSearchUrl({ vendor: display });
+  const checkbookLink = `<a href="${escUiHtml(checkbookHref)}" ${EXT_ATTRS}>${t("lifecycle_source_checkbook")}${extSR()}</a>`;
 
   return `<div style="max-width:880px;margin:0 auto">
     <p style="margin:4px 0 12px">${routeBackHTML("#money")}</p>
@@ -10185,9 +10495,9 @@ function vendorProfileHTML(profile, details, hydrating){
       </div>` : ""}
 
       <div id="overview-content">
-        ${agencies.length?`<div class="chain-h">Agencies they win from (click to pivot)</div><div class="chiprow" style="margin-top:6px">${agChips}</div>`:""}
-        ${rows.length?`<div class="chain-h">On the record — notices naming this vendor</div><div class="timeline">${rowItems}</div>`:""}
-        ${mentions.length?`<div class="chain-h">Mentioned in other notices (text match)</div><div class="timeline">${mentionItems}</div>`:""}
+        ${agencies.length?`<div class="chain-h">${t("vendor_agencies_heading")}</div><div class="chiprow" style="margin-top:6px">${agChips}</div>`:""}
+        ${onTheRecord}
+        ${mentions.length?`<div class="chain-h">${t("vendor_mentions_heading")}</div><div class="timeline">${mentionItems}</div>`:""}
         ${loadingSections}
         ${lazyMentions}
       </div>
@@ -10196,13 +10506,13 @@ function vendorProfileHTML(profile, details, hydrating){
 
       ${profile.asOf?`<div class="rmeta" style="margin-top:12px">${t("external_awards_updated",{date:fdate(profile.asOf)})}</div>`:""}
       <div class="actions" style="margin-top:16px">
-        <button class="act primary" type="button" data-follow="vendor" data-name="${display.replace(/"/g,"&quot;")}">Follow this vendor</button>
-        <button class="act" type="button" id="ecopy">Copy link</button>
+        <button class="act primary" type="button" data-follow="vendor" data-name="${display.replace(/"/g,"&quot;")}">${t("vendor_follow_btn")}</button>
+        <button class="act" type="button" id="ecopy">${t("copy_link")}</button>
         ${qrButtonHTML("eqr","act")}
         ${pinBtn("vendor", display, display, t("meta_vendor_profile"))}
         ${API?`<a class="act" href="${API.replace(/\/+$/,"")}/feed.xml?lens=entity&kind=vendor&name=${encodeURIComponent(display)}">RSS</a>`:""}
       </div>
-      <div class="note">Identity is resolved by name normalization (case, punctuation, legal suffixes) — variants listed above; distinct companies sharing a name stem would be merged, so treat totals as <b>“published under this name,”</b> not a legal entity. Awards as published in the City Record; actual payments differ (Checkbook join coming).</div>
+      <div class="note">${t("vendor_identity_note_html",{link: checkbookLink})}</div>
     </div></div>`;
 }
 
@@ -10213,6 +10523,8 @@ function renderVendorProfile(box, profile, details, initialTab, hydrating){
   box.innerHTML = vendorProfileHTML(profile, details, hydrating);
   $("#ecopy").addEventListener("click", ()=>copyText(link, $("#ecopy")));
   bindQRShare($("#eqr"), link);
+  const rows = details?.rows || [];
+  if(rows.length && !hydrating) paintVendorPhaseTimeline(box, profile, rows);
   const lazyMentions = $("#vendor-mentions-lazy");
   if(lazyMentions) lazyMentions.addEventListener("toggle", ()=>{
     if(!lazyMentions.open || lazyMentions.dataset.loaded) return;
