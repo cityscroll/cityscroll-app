@@ -1,6 +1,6 @@
 {
   "phase": "WH-05",
-  "measured_at": "2026-08-02T10:32:30.722Z",
+  "measured_at": "2026-08-02T10:34:11.040Z",
   "replaces_live_fetch": {
     "function": "fetchOpenDataRow",
     "soda_dataset": "hgx4-8ukb",
@@ -12,38 +12,38 @@
   },
   "edge_materialization_lookup": {
     "samples_ms": [
-      0.013,
-      0.0008,
+      0.0215,
+      0.0009,
       0.0005,
-      0.0005,
-      0.0007
+      0.0004,
+      0.0008
     ],
     "p50_ms": 0.0002,
-    "mean_ms": 0.0005,
+    "mean_ms": 0.0007,
     "n": 50,
     "note": "Worker hot path after warehouse materialization import"
   },
   "warehouse_duckdb_lookup": {
     "samples_ms": [
-      64.254,
-      62.977,
-      63.483,
-      63.175,
-      63.812
+      59.064,
+      59.55,
+      58.49,
+      58.176,
+      59.345
     ],
-    "p50_ms": 63.483,
-    "mean_ms": 63.54,
+    "p50_ms": 59.064,
+    "mean_ms": 58.925,
     "n": 5
   },
   "prior_live_soda": {
     "samples_ms": [
-      187.45,
-      120.53,
-      141.82
+      318.72,
+      167.4,
+      147.15
     ],
-    "p50_ms": 141.82,
-    "mean_ms": 149.93,
+    "p50_ms": 167.4,
+    "mean_ms": 211.09,
     "n": 3
   },
-  "summary": "ZAP open_data lookup p50: live SODA 141.82ms → warehouse materialization 0.0002ms (sub-ms; removes a SODA RTT)"
+  "summary": "ZAP open_data lookup p50: live SODA 167.4ms → warehouse materialization 0.0002ms (sub-ms; removes a SODA RTT)"
 }

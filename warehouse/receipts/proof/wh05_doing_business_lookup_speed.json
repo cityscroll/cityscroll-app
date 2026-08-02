@@ -1,6 +1,6 @@
 {
   "phase": "WH-05",
-  "measured_at": "2026-08-02T10:32:29.856Z",
+  "measured_at": "2026-08-02T10:34:26.889Z",
   "replaces_live_fetch": {
     "function": "attachDoingBusiness",
     "soda_dataset": "72mk-a8z7",
@@ -12,22 +12,23 @@
   },
   "edge_materialization_lookup": {
     "samples_ms": [
-      0.014,
-      0.0025,
+      0.0136,
+      0.0024,
       0.0033,
       0.0015,
-      0.0013
+      0.0014
     ],
     "p50_ms": 0.0005,
-    "mean_ms": 0.0064,
+    "mean_ms": 0.0046,
     "n": 50,
     "note": "Worker hot path after warehouse materialization import (stem index)"
   },
-  "prior_live_soda_estimate": {
+  "prior_live_soda_catalog": {
     "page_size": 5000,
     "pages": 3,
-    "estimated_p50_ms": 540,
-    "note": "Multi-page catalog fetch before stem join; not a single keyed SODA"
+    "p50_ms_floor": 540,
+    "provenance": "derived",
+    "note": "Derived floor from page count × 180ms RTT; multi-page catalog fetch before stem join"
   },
-  "summary": "Doing Business attach p50: live multi-page SODA ~540ms → warehouse materialization 0.0005ms (sub-ms; removes catalog SODA RTTs)"
+  "summary": "Doing Business attach p50: live multi-page SODA floor 540ms → warehouse materialization 0.0005ms (sub-ms; removes catalog SODA RTTs)"
 }

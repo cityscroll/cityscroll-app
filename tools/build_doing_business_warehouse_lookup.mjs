@@ -187,11 +187,11 @@ async function bench(rows) {
   }
   const indexMs = statsMs(samples, 4);
 
-  // Approximate prior multi-page SODA cost (3 pages × measured RTT floor).
-  // Real cron often pulls 3 pages (~11k entities / 5000 page size).
-  const sodaPageEstimateMs = 180;
+  // Prior multi-page SODA cost model for the receipt (not a measured network sample):
+  // Open Data publishes ~11k entities; page size 5000 ⇒ 3 pages × 180ms RTT floor.
+  const sodaPageMsFloor = 180;
   const sodaPages = Math.max(1, Math.ceil(Math.max(rows.length, 11000) / 5000));
-  const sodaEstimateMs = sodaPageEstimateMs * sodaPages;
+  const sodaCatalogMsFloor = sodaPageMsFloor * sodaPages;
 
   const receipt = {
     phase: "WH-05",
@@ -209,14 +209,15 @@ async function bench(rows) {
       ...indexMs,
       note: "Worker hot path after warehouse materialization import (stem index)",
     },
-    prior_live_soda_estimate: {
+    prior_live_soda_catalog: {
       page_size: 5000,
       pages: sodaPages,
-      estimated_p50_ms: sodaEstimateMs,
-      note: "Multi-page catalog fetch before stem join; not a single keyed SODA",
+      p50_ms_floor: sodaCatalogMsFloor,
+      provenance: "derived",
+      note: "Derived floor from page count × 180ms RTT; multi-page catalog fetch before stem join",
     },
     summary:
-      `Doing Business attach p50: live multi-page SODA ~${sodaEstimateMs}ms → ` +
+      `Doing Business attach p50: live multi-page SODA floor ${sodaCatalogMsFloor}ms → ` +
       `warehouse materialization ${indexMs.p50_ms}ms (sub-ms; removes catalog SODA RTTs)`,
   };
   mkdirSync(path.dirname(BENCH_RECEIPT), { recursive: true });

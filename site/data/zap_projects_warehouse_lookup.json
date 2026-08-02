@@ -5,7 +5,7 @@
   "dataset_id": "hgx4-8ukb",
   "table_name": "zap_projects",
   "mode": "fixture_warehouse",
-  "materialized_at": "2026-08-02T10:32:29.953Z",
+  "materialized_at": "2026-08-02T10:34:10.110Z",
   "row_count": 15,
   "replaces_live_fetch": {
     "worker": "worker/src/zap_outcomes.mjs#fetchOpenDataRow",
