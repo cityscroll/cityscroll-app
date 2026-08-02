@@ -1,5 +1,5 @@
 /**
- * Re-export Land ULURP phase projection for worker/tests.
+ * Re-export Land ULURP phase grouping for worker/tests.
  * Source of truth: site/land_phase_spine.mjs
  */
 export {

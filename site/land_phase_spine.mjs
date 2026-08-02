@@ -1,5 +1,5 @@
 /**
- * Land / ZAP project timeline — ULURP phase projection.
+ * Land / ZAP project timeline — ULURP phase grouping.
  *
  * Pure view model over record.spine events: group by canonical ULURP phases,
  * aggregate verbatim-repeated milestone titles, derive current status + next.

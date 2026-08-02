@@ -1,5 +1,5 @@
 /**
- * Characterization: Land/ZAP timeline ULURP phase projection.
+ * Characterization: Land/ZAP timeline ULURP phase grouping.
  * Field cases: long pre-cert thrash (2019K0147); mid-public-review (2022M0258).
  */
 import assert from "node:assert/strict";
