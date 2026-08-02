@@ -2610,7 +2610,7 @@ function agencyIdentityHTML(resp){
     </div>`;
 }
 
-const CROSS_DOMAIN_ORDER = ["money","land","rules","meetings","people"];
+const CROSS_DOMAIN_ORDER = ["money","land","property","rules","meetings","people"];
 
 /** Cross-domain entity intelligence panel (materialized object links + provenance). */
 function entityIntelligenceHTML(resp){
@@ -2660,7 +2660,7 @@ function entityIntelligenceHTML(resp){
   const cov = resp.metrics && resp.metrics.domains_matched != null
     ? t("entity_intel_coverage", {
         matched: String(resp.metrics.domains_matched),
-        total: String(resp.metrics.domains_total || 5),
+        total: String(resp.metrics.domains_total || 6),
       })
     : "";
   const rootName = escUiHtml(resp.root.display_name || resp.root.ref || "");
@@ -5519,26 +5519,32 @@ function noticeActionMatter(r, ruleRecord, lifecycleData){
   const zapParticipation=participation&&/^https:\/\/zap\.planning\.nyc\.gov\//i.test(participation);
   const rule=ruleRecord&&ruleRecord.nyc_rules;
   const rolling=!!(r.due_date&&isRollingDeadline(r.due_date));
+  const isProperty=r.section_name==="Property Disposition";
   let kind=r.section_name==="Agency Rules"?"rule"
+    :isProperty?"property"
     :zapParticipation?"zoning"
     :isMeetingOutcomesEligible(r)?"hearing"
     :r.type_of_notice_description==="Solicitation"?"solicitation"
     :/Award/.test(r.type_of_notice_description||"")?"award":"notice";
+  const propBbl=isProperty?(r._property_bbl||r.primary_bbl||null):null;
   return {
     kind,
     section_name:r.section_name,
     type_of_notice_description:r.type_of_notice_description,
     lifecycle_stage:kind==="rule"?(ruleDisplayStage(ruleRecord)||"proposed")
-      :kind==="hearing"&&(r.event_date&&String(r.event_date).slice(0,10)<todayISO())?"past":null,
+      :kind==="hearing"&&(r.event_date&&String(r.event_date).slice(0,10)<todayISO())?"past"
+      :kind==="property"?(r.disposition_stage||null):null,
+    disposition_stage:kind==="property"?(r.disposition_stage||null):null,
     deadline:kind==="rule"?(rule&&rule.comment_by_date||null)
       :kind==="hearing"?r.event_date
+      :kind==="property"?r.event_date||null
       :rolling?null:r.due_date||null,
     rolling_deadline:rolling,
     official_notice_url:kind==="rule"?(rule&&rule.url||REQ_URL(r.request_id)):REQ_URL(r.request_id),
     agency_name:r.agency_name,
     pin:r.pin,
     title:cleanText(r.short_title),
-    notice_text:[r.additional_description_1,r.other_info_1].filter(Boolean).join(" "),
+    notice_text:[r.additional_description_1,r.other_info_1,r.additional_description_2].filter(Boolean).join(" "),
     // Structured response fields from the City Record row — used to build concrete steps
     // instead of deferring to “read the official notice.”
     email:r.email||null,
@@ -5550,6 +5556,8 @@ function noticeActionMatter(r, ruleRecord, lifecycleData){
     comment_url:rule&&(rule.comment_url||rule.url),
     participation_url:participation,
     project_url:zapParticipation?participation:null,
+    bbl:propBbl,
+    owner_name:r._property_owner||null,
   };
 }
 function actionRailLabel(action){
@@ -5613,6 +5621,17 @@ function actionRailGuideHTML(actions){
     if(!steps.length){
       steps.push(t("bid_guide_notice_fallback_step"));
     }
+  }else if(guide.system==="parcel_lookup"){
+    if(guide.bbl) steps.push(t("property_guide_bbl_step",{bbl:escUiHtml(guide.bbl)}));
+    if(guide.zola_url) steps.push(t("property_guide_zola_step_html",{url:escUiHtml(guide.zola_url)}));
+    if(guide.acris_url) steps.push(t("property_guide_acris_step_html",{url:escUiHtml(guide.acris_url)}));
+    if(guide.who_owns_what_url) steps.push(t("property_guide_wow_step_html",{url:escUiHtml(guide.who_owns_what_url)}));
+    if(guide.owner_name) steps.push(t("property_guide_owner_step",{name:escUiHtml(guide.owner_name)}));
+    if(guide.email || guide.contact_name || guide.contact_phone){
+      const who=[guide.contact_name, guide.email, guide.contact_phone].filter(Boolean).map(escUiHtml).join(" · ");
+      steps.push(t("bid_guide_notice_contact_step_html",{who}));
+    }
+    if(!steps.length) steps.push(t("property_guide_fallback_step"));
   }else{
     steps=[t("bid_guide_passport_search_step")];
     if(guide.mode==="matched"){
@@ -5938,9 +5957,75 @@ function dispositionStageLabel(kind){
   if(kind==="award_or_conveyance") return t("disposition_stage_award_or_conveyance");
   return kind || "—";
 }
-function propertyDispositionSpineHTML(spine, notice){
+let propertyPhaseSpineToolsPromise=null;
+function propertyPhaseSpineTools(){
+  if(!propertyPhaseSpineToolsPromise){
+    propertyPhaseSpineToolsPromise=import("./property_phase_spine.mjs").catch(()=>null);
+  }
+  return propertyPhaseSpineToolsPromise;
+}
+function propertyDispositionSpineHTML(spine, notice, phaseView){
   if(!spine) return "";
   const join = spine.join || {};
+  const keyNote = (join.keys && join.keys.length)
+    ? t("disposition_join_matched_html",{
+        method: escUiHtml(join.method || "—"),
+        n: String(join.notice_count || 0),
+        subject: escUiHtml(spine.subject_ref || "—")
+      })
+    : t("disposition_join_singleton_html",{
+        title: escUiHtml(cleanText(notice && notice.short_title) || (notice && notice.request_id) || "—")
+      });
+
+  // Phase-grouped compact stepper (same pattern as land / money) when the pure module loads.
+  if(phaseView && Array.isArray(phaseView.phases) && phaseView.phases.length){
+    const cur=phaseView.current;
+    const actionLead=cur?`<p class="land-spine-status disposition-phase-lead">${t("disposition_phase_now_html",{
+      phase:escUiHtml(dispositionStageLabel(cur.id)),
+      action:escUiHtml(t(cur.action_key||"disposition_phase_action_attend"))
+    })}${phaseView.next?` · ${t("disposition_phase_next_html",{phase:escUiHtml(dispositionStageLabel(phaseView.next.id))})}`:""}</p>`:"";
+    const stepper=`<ol class="lc-stepper disposition-phase-stepper" aria-label="${escUiHtml(t("disposition_spine_heading"))}">${
+      phaseView.phases.map((p,i)=>{
+        const cls=p.matched?(cur&&p.id===cur.id?"current":"done"):"todo";
+        const aria=cur&&p.id===cur.id?` aria-current="step"`:"";
+        const arrow=i<phaseView.phases.length-1?`<span class="lc-step-arrow" aria-hidden="true">→</span>`:"";
+        return `<li><span class="lc-step ${cls}"${aria} title="${escUiHtml(dispositionStageLabel(p.id))}">${escUiHtml(p.short||dispositionStageLabel(p.id))}</span>${arrow}</li>`;
+      }).join("")
+    }</ol>`;
+    // Detail only for matched phases + current (collapse pure-future empties to stepper chips).
+    const cards=phaseView.phases.filter(p=>p.matched||(cur&&p.id===cur.id)).map(p=>{
+      if(!p.matched){
+        return `<div class="stage"><div class="box">
+          <div class="stage-name">${dispositionStageLabel(p.id)}</div>
+          <div class="lc-norecord">${t("disposition_stage_not_yet_ingested_html",{
+            source:`<span lang="en" dir="ltr">${t("disposition_source_city_record")}</span>`
+          })}</div>
+        </div></div>`;
+      }
+      const when=p.primary?.when?fdate(p.primary.when):"—";
+      const title=p.primary?.title?cleanText(p.primary.title):"";
+      const more=p.notice_count>1
+        ?` · ${t("disposition_stage_notice_count",{n:String(p.notice_count)})}`
+        :"";
+      const noticeLink=p.primary?.request_id
+        ?`<div class="lc-pct"><a href="#notice/${escUiHtml(p.primary.request_id)}">${escUiHtml(p.primary.request_id)}</a>${more}</div>`
+        :(more?`<div class="lc-pct">${more}</div>`:"");
+      return `<div class="stage"><div class="box matched">
+        <div class="stage-name">${dispositionStageLabel(p.id)}</div>
+        <div class="when">${escUiHtml(when)}</div>
+        ${title?`<div class="lc-pct" lang="en" dir="ltr">${escUiHtml(title)}</div>`:""}
+        ${noticeLink}
+      </div></div>`;
+    }).join('<div class="connector">→</div>');
+    return `<div class="chain-h">${t("disposition_spine_heading")}</div>
+      <div class="note">${keyNote}</div>
+      ${actionLead}
+      ${stepper}
+      <div class="chain disposition-phase-cards">${cards}</div>
+      <div class="note">${t("disposition_provenance_html")}</div>`;
+  }
+
+  // Flat fallback when the phase module is unavailable.
   const stages = Array.isArray(spine.stages) ? spine.stages : [];
   let chain = "";
   stages.forEach((stage, idx) => {
@@ -5972,15 +6057,6 @@ function propertyDispositionSpineHTML(spine, notice){
     }
     if(idx < stages.length - 1) chain += '<div class="connector">→</div>';
   });
-  const keyNote = (join.keys && join.keys.length)
-    ? t("disposition_join_matched_html",{
-        method: escUiHtml(join.method || "—"),
-        n: String(join.notice_count || 0),
-        subject: escUiHtml(spine.subject_ref || "—")
-      })
-    : t("disposition_join_singleton_html",{
-        title: escUiHtml(cleanText(notice && notice.short_title) || (notice && notice.request_id) || "—")
-      });
   return `<div class="chain-h">${t("disposition_spine_heading")}</div>
     <div class="note">${keyNote}</div>
     <div class="chain">${chain}</div>
@@ -5989,6 +6065,7 @@ function propertyDispositionSpineHTML(spine, notice){
 async function loadPropertyDispositionSpine(r, el){
   if(!el || !r || !isPropertyDispositionEligible(r)) return;
   let spine = null;
+  let propRow = null;
   try{
     const response = await workerFetch("/property-locations", {}, 12000);
     if(response && response.ok){
@@ -5999,40 +6076,45 @@ async function loadPropertyDispositionSpine(r, el){
         (Array.isArray(s.events) && s.events.some(e => e && e.request_id === id))
         || (Array.isArray(s.stages) && s.stages.some(st => Array.isArray(st.request_ids) && st.request_ids.includes(id)))
       ) || null;
-      // Fallback: build a singleton from this notice if the cached view is stale/missing.
-      if(!spine && Array.isArray(payload.properties)){
-        const row = payload.properties.find(p => p && p.request_id === id);
-        if(row){
-          const stageOrder = ["hearing","auction_or_rfp","award_or_conveyance"];
-          const subject = row.disposition_subject_ref || id;
-          spine = {
-            schema_version: 1,
-            subject_ref: subject,
-            join: {
-              matched: Array.isArray(row.disposition_join_keys) && row.disposition_join_keys.length > 0,
-              method: (row.disposition_join_keys && row.disposition_join_keys.length) ? "exact_bbl" : "single_notice",
-              keys: row.disposition_join_keys || [],
-              notice_count: 1
-            },
-            stages: stageOrder.map(kind => {
-              const matched = row.disposition_stage === kind;
-              const whenRaw = row.event_date || row.start_date || "";
-              return {
-                kind,
-                matched,
-                notice_count: matched ? 1 : 0,
-                request_ids: matched ? [id] : [],
-                events: matched ? [{
-                  request_id: id,
-                  title: cleanText(row.short_title) || id,
-                  time: { value: String(whenRaw).slice(0,10) || null }
-                }] : []
-              };
-            }),
-            events: [],
-            gaps: []
-          };
+      if(Array.isArray(payload.properties)){
+        propRow = payload.properties.find(p => p && p.request_id === id) || null;
+        if(propRow){
+          r.disposition_stage = propRow.disposition_stage || r.disposition_stage || null;
+          r.disposition_join_keys = propRow.disposition_join_keys || null;
+          r.disposition_subject_ref = propRow.disposition_subject_ref || null;
         }
+      }
+      // Fallback: build a singleton from this notice if the cached view is stale/missing.
+      if(!spine && propRow){
+        const stageOrder = ["hearing","auction_or_rfp","award_or_conveyance"];
+        const subject = propRow.disposition_subject_ref || id;
+        spine = {
+          schema_version: 1,
+          subject_ref: subject,
+          join: {
+            matched: Array.isArray(propRow.disposition_join_keys) && propRow.disposition_join_keys.length > 0,
+            method: (propRow.disposition_join_keys && propRow.disposition_join_keys.length) ? "exact_bbl" : "single_notice",
+            keys: propRow.disposition_join_keys || [],
+            notice_count: 1
+          },
+          stages: stageOrder.map(kind => {
+            const matched = propRow.disposition_stage === kind;
+            const whenRaw = propRow.event_date || propRow.start_date || "";
+            return {
+              kind,
+              matched,
+              notice_count: matched ? 1 : 0,
+              request_ids: matched ? [id] : [],
+              events: matched ? [{
+                request_id: id,
+                title: cleanText(propRow.short_title) || id,
+                time: { value: String(whenRaw).slice(0,10) || null }
+              }] : []
+            };
+          }),
+          events: [],
+          gaps: []
+        };
       }
     }
   }catch(e){}
@@ -6045,7 +6127,115 @@ async function loadPropertyDispositionSpine(r, el){
       })}</div>`;
     return;
   }
-  el.innerHTML = propertyDispositionSpineHTML(spine, r);
+  const phaseTools = await propertyPhaseSpineTools();
+  const phaseView = phaseTools && phaseTools.buildPropertyPhaseView
+    ? phaseTools.buildPropertyPhaseView(spine)
+    : null;
+  el.innerHTML = propertyDispositionSpineHTML(spine, r, phaseView);
+  // Stamp BBL for action rail re-render when location tools resolve it.
+  try{
+    const tools = await propertyLocationTools();
+    const location = (propRow && propRow.property_location) || tools.propertyLocationFromRow(r);
+    const bbl = tools.primaryPropertyBbl(location);
+    if(bbl) r._property_bbl = bbl;
+  }catch(_e){}
+}
+
+/**
+ * Cross-domain property panel: BBL → ZAP land projects, labeled owner → money awards.
+ * Materialized lookup only (no live multi-source fan-out). Honest empty when no join.
+ */
+async function loadPropertyCrossDomain(r, el){
+  if(!el || !r || !isPropertyDispositionEligible(r)) return;
+  let bbl = r._property_bbl || null;
+  if(!bbl){
+    try{
+      const tools = await propertyLocationTools();
+      bbl = tools.primaryPropertyBbl(tools.propertyLocationFromRow(r));
+      if(bbl) r._property_bbl = bbl;
+    }catch(_e){}
+  }
+  if(!bbl || !/^\d{10}$/.test(String(bbl))){
+    el.innerHTML = `<div class="chain-h">${t("property_xd_heading")}</div>
+      <div class="note">${t("property_xd_no_bbl_html")}</div>`;
+    return;
+  }
+  let demo = null;
+  try{
+    const res = await fetch(`data/property_cross_domain_lookup.json`, {cache:"force-cache"});
+    if(res && res.ok){
+      const doc = await res.json();
+      demo = (doc.demos && doc.demos[bbl]) || null;
+      if(!demo && doc.by_bbl && doc.by_bbl[bbl]){
+        const bucket = doc.by_bbl[bbl];
+        demo = {
+          ok: true,
+          bbl,
+          land: {
+            status: (bucket.land_projects||[]).length ? "matched" : "empty",
+            projects: bucket.land_projects || [],
+            count: (bucket.land_projects||[]).length,
+            note: (bucket.land_projects||[]).length ? null : t("property_xd_land_empty"),
+          },
+          owners: { status: "empty", items: [], count: 0 },
+          property: { status: "matched", notices: bucket.property_notices||[], count: (bucket.property_notices||[]).length },
+        };
+      }
+    }
+  }catch(_e){}
+  if(!document.contains(el)) return;
+  if(!demo || !demo.ok){
+    el.innerHTML = `<div class="chain-h">${t("property_xd_heading")}</div>
+      <div class="note">${t("property_xd_not_in_corpus_html",{bbl:escUiHtml(bbl)})}</div>
+      <div class="note">${t("property_xd_provenance_html")}</div>`;
+    return;
+  }
+  const land = demo.land || {};
+  const owners = demo.owners || {};
+  let landHtml = "";
+  if(land.status === "matched" && (land.projects||[]).length){
+    landHtml = `<ul class="ei-list">${(land.projects||[]).map(p=>{
+      const href = (p.href && String(p.href).startsWith("#"))
+        ? p.href
+        : (p.project_id ? "#land?project="+encodeURIComponent(p.project_id) : null);
+      const label = escUiHtml(p.label||p.project_id||"—");
+      const link = href ? pivotA(href, label) : label;
+      return `<li><span class="ei-obj-main">${link}</span>
+        <span class="muted">${escUiHtml(p.public_status||"")}</span>
+        <span class="muted"> · ${t("property_xd_via_bbl",{bbl:escUiHtml(bbl)})}</span></li>`;
+    }).join("")}</ul>`;
+  } else {
+    landHtml = `<div class="note">${escUiHtml(land.note||t("property_xd_land_empty"))}</div>`;
+  }
+  let ownerHtml = "";
+  if(owners.status === "matched" && (owners.items||[]).length){
+    ownerHtml = (owners.items||[]).map(o=>{
+      const contracts = (o.contracts||[]).length
+        ? `<ul class="ei-list">${o.contracts.map(c=>{
+            const label = escUiHtml(c.label||c.request_id||"—");
+            const link = (c.href && String(c.href).startsWith("#")) ? pivotA(c.href, label) : label;
+            return `<li><span class="ei-obj-main">${link}</span>
+              ${c.pin?`<span class="muted"> · PIN ${escUiHtml(c.pin)}</span>`:""}</li>`;
+          }).join("")}</ul>`
+        : `<div class="note">${t("property_xd_owner_no_contracts")}</div>`;
+      r._property_owner = r._property_owner || o.name;
+      return `<div class="property-xd-owner"><div class="lc-pct" lang="en" dir="ltr"><strong>${escUiHtml(o.name)}</strong>
+        <span class="muted"> · ${escUiHtml(o.basis||"owner")}</span></div>${contracts}</div>`;
+    }).join("");
+  } else {
+    ownerHtml = `<div class="note">${t("property_xd_owner_empty")}</div>`;
+  }
+  el.innerHTML = `<div class="chain-h">${t("property_xd_heading")}</div>
+    <div class="note">${t("property_xd_bbl_label",{bbl:escUiHtml(bbl)})}</div>
+    <section class="property-xd-land" data-status="${escUiHtml(land.status||"")}">
+      <h3 class="ei-domain-h">${t("property_xd_land_heading")}</h3>
+      ${landHtml}
+    </section>
+    <section class="property-xd-owners" data-status="${escUiHtml(owners.status||"")}">
+      <h3 class="ei-domain-h">${t("property_xd_owner_heading")}</h3>
+      ${ownerHtml}
+    </section>
+    <div class="note">${t("property_xd_provenance_html")}</div>`;
 }
 
 /* ===== Property explorer: asset-type tabs + lifecycle rail (design: property-ux report §2–3).
@@ -10643,7 +10833,7 @@ async function showNotice(id, watch){
       <div id="ncontext"></div><div id="nactions"></div>
       ${r.type_of_notice_description==="Solicitation"?buildApply(r,false):""}
       ${glanceFor(r)}
-      <div id="naddr"></div><div id="nrules"></div><div id="nlifecycle"></div><div id="ndollars"></div><div id="nsubsidy"></div><div id="ndisposition"></div><div id="nfranchise"></div><div id="nmeet"></div><div id="nexternal"></div>
+      <div id="naddr"></div><div id="nrules"></div><div id="nlifecycle"></div><div id="ndollars"></div><div id="nsubsidy"></div><div id="ndisposition"></div><div id="npropertyxd"></div><div id="nfranchise"></div><div id="nmeet"></div><div id="nexternal"></div>
       <div class="actions" style="margin-top:14px">
         <button class="act primary" type="button" id="ncopy">${t("copy_link")}</button>
         ${qrButtonHTML("nqr","act")}
@@ -10669,11 +10859,17 @@ async function showNotice(id, watch){
   loadRuleLifecycle(r, $("#nrules"));
   loadLifecycle(r, $("#nlifecycle"), $("#ndollars"), $("#nactions"));
   loadSubsidyLifecycle(r, $("#nsubsidy"));
-  loadPropertyDispositionSpine(r, $("#ndisposition"));
+  Promise.all([
+    loadPropertyDispositionSpine(r, $("#ndisposition")),
+    fillAddressLinks(r, $("#naddr")),
+    loadPropertyCrossDomain(r, $("#npropertyxd")),
+  ]).then(()=>{
+    // Re-mount action rail once BBL / disposition stage are stamped (property affordances).
+    if(isPropertyDispositionEligible(r) && $("#nactions")) mountNoticeActionRail($("#nactions"), r);
+  }).catch(()=>{});
   loadFranchiseConcessionSpine(r, $("#nfranchise"));
   loadMeetingOutcomes(r, $("#nmeet"));
   externalAwardForNotice(r, $("#nexternal"));
-  fillAddressLinks(r, $("#naddr"));
   priorCycleAwards(r, $("#nprior"));
   agencyForecastTeaser(r, $("#nforecast"));
   mountUnofficialTranslation($("#nxlate"), r);

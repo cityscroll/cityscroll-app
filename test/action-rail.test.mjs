@@ -232,3 +232,53 @@ test("all compiled rails stay at three actions or fewer and validate", () => {
   assert.ok(actions.length <= 3);
   actions.forEach(validateAction);
 });
+
+test("property hearing with BBL leads with attend/prepare and ZoLa parcel lookup", () => {
+  const actions = compileActionRail({
+    kind: "property",
+    disposition_stage: "hearing",
+    section_name: "Property Disposition",
+    type_of_notice_description: "Public Hearings",
+    deadline: "2026-09-15T10:00:00.000",
+    bbl: "1006440001",
+    official_notice_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20241112003",
+    title: "Disposition hearing Manhattan Block 644 Lot 1",
+  }, {today: "2026-08-01"});
+  assert.ok(actions.length <= 3);
+  actions.forEach(validateAction);
+  assert.ok(actions.some((a) => a.type === "attend" || a.type === "calendar"));
+  const zola = actions.find((a) => a.label_key === "property_action_lookup_zola");
+  assert.ok(zola, "expected ZoLa parcel action when BBL is known");
+  assert.match(zola.destination, /zola\.planning\.nyc\.gov/);
+  assert.equal(zola.guide?.system, "parcel_lookup");
+  assert.equal(zola.guide?.bbl, "1006440001");
+});
+
+test("property auction without package URL still surfaces parcel lookup — never a bare notice punt alone", () => {
+  const actions = compileActionRail({
+    kind: "property",
+    disposition_stage: "auction_or_rfp",
+    section_name: "Property Disposition",
+    type_of_notice_description: "Sale",
+    bbl: "3044440001",
+    official_notice_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20220504006",
+    title: "REQUEST FOR PROPOSALS - INDUSTRY ROAD",
+    notice_text: "NYCEDC is pleased to release this Request for Proposals for Industry Road.",
+  }, {today: "2026-08-01"});
+  actions.forEach(validateAction);
+  assert.ok(actions.some((a) => a.label_key === "property_action_lookup_zola"));
+  assert.ok(actions.every((a) => a.delivery !== "unavailable" || a.type === "attend"));
+});
+
+test("property award/conveyance with BBL opens ZoLa as primary parcel action", () => {
+  const actions = compileActionRail({
+    kind: "property",
+    disposition_stage: "award_or_conveyance",
+    bbl: "1006440001",
+    official_notice_url: "https://a856-cityrecord.nyc.gov/RequestDetail/20241112003",
+    owner_name: "Make it Zesty LLC",
+  }, {today: "2026-08-01"});
+  assert.equal(actions[0].label_key, "property_action_lookup_zola");
+  assert.equal(actions[0].guide.owner_name, "Make it Zesty LLC");
+  actions.forEach(validateAction);
+});

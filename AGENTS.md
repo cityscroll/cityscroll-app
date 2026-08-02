@@ -29,21 +29,32 @@ This file is the project's committed home for project-intrinsic agent knowledge:
 
 ## Cross-domain entity intelligence
 
-Object-link layer across money / land / rules / meetings / people for one agency or
-vendor (`entity_resolution/cross_domain/`). Reuses subject registry kinds + ER
-normalizers + warehouse OCP/ZAP fixtures — does not reinvent matchers. Every link
-carries provenance. Instant materialization:
+Object-link layer across money / land / **property** / rules / meetings / people for
+one agency or vendor (`entity_resolution/cross_domain/`). Reuses subject registry
+kinds + ER normalizers + warehouse OCP/ZAP fixtures — does not reinvent matchers.
+Every link carries provenance. Instant materialization:
 
 ```bash
 node tools/build_entity_intelligence.mjs
 node tools/build_entity_intelligence.mjs --check
-node --test test/cross_domain_object_links.test.mjs worker/test/entity_intelligence.test.mjs
+node tools/build_property_cross_domain.mjs
+node tools/build_property_cross_domain.mjs --check
+node --test test/cross_domain_object_links.test.mjs test/property_cross_domain.test.mjs \
+  test/property_phase_spine.test.mjs worker/test/entity_intelligence.test.mjs
 ```
 
 Serve: `GET /entity-intelligence?demo=1` (Parks multi-domain) or
 `?kind=agency&name=…`. Agency profile UI mounts `#entity-intelligence`. People
 stays class-(a) `not_yet_ingested` until person-level Legistar retention > 0.
-ADR: `docs/adr/cross-domain-object-links.md`.
+
+**Property / BBL joins (parity catchup):** pure
+`entity_resolution/cross_domain/property_links.mjs` +
+`site/data/property_cross_domain_lookup.json`. BBL → ZAP is **exact** tax-lot only
+(`zap-bbl`); owner → contracts is labeled winning-bidder / sold-to → `vendorStem`
+only; no fuzzy invent. Notice detail phase-groups disposition spine
+(`site/property_phase_spine.mjs`) and action rail surfaces ZoLa parcel lookup.
+Demo BBLs: `1006440001`, `3025180036`. ADR:
+`docs/adr/cross-domain-object-links.md`.
 
 ## DuckDB + parquet warehouse (WH-01…WH-05)
 

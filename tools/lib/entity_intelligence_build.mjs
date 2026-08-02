@@ -12,6 +12,7 @@ import {
   observationFromRulesRow,
   observationFromMeetingsRow,
   observationFromPeopleRow,
+  observationFromPropertyRow,
   buildIntelligenceCorpus,
   CROSS_DOMAIN_OBJECT_LINK_VERSION,
 } from "../../entity_resolution/cross_domain/index.mjs";
@@ -181,6 +182,29 @@ export function collectCrossDomainObservations(root, opts = {}) {
       const obs = observationFromLandRow(row);
       if (obs) observations.push(obs);
     }
+    for (const row of seed.property || []) {
+      const obs = observationFromPropertyRow(row);
+      if (obs) observations.push(obs);
+    }
+  }
+
+  // --- Property: disposition fixtures + property cross-domain corpus ---
+  const propPaths = [
+    path.join(root, "worker/test/fixtures/property-cross-domain/corpus.json"),
+    path.join(root, "test/fixtures/property_disposition/multi_notice_bbl.json"),
+  ];
+  for (const p of propPaths) {
+    const doc = loadJsonIfExists(p);
+    if (!doc) continue;
+    const rows = doc.property_rows || doc.notices || [];
+    for (const row of rows) {
+      const obs = observationFromPropertyRow({
+        ...row,
+        section_name: row.section_name || "Property Disposition",
+        source_system: row.source_system || "city_record",
+      });
+      if (obs) observations.push(obs);
+    }
   }
 
   // Dedupe by source_record_id + domain
@@ -250,14 +274,18 @@ export function buildEntityIntelligenceDoc(root, opts = {}) {
         "site/data/zap_projects_warehouse_lookup.json",
         "site/data/land_default_ulurp.json",
         "worker/test/fixtures/entity-intelligence/domain_observations.json",
+        "worker/test/fixtures/property-cross-domain/corpus.json",
+        "test/fixtures/property_disposition/multi_notice_bbl.json",
       ],
       methods: [
         "agency_canonical_v1",
         "vendor_stem_v1",
         "cross_domain_identity_v1",
+        "exact_bbl_v1",
+        "disposition_owner_label_v1",
       ],
       note:
-        "Links only when identity normalizers resolve the same root. Empty domains are explicit; people defaults to not_yet_ingested without by_person rows.",
+        "Links only when identity normalizers resolve the same root. Property attaches via City Record agency_name and labeled disposition owners. Empty domains are explicit; people defaults to not_yet_ingested without by_person rows.",
     },
   };
 }

@@ -124,10 +124,39 @@
     const section = String(matter.section_name || "");
     const type = String(matter.type_of_notice_description || "");
     if (section === "Agency Rules") return "rule";
+    if (section === "Property Disposition") return "property";
     if (section === "Public Hearings and Meetings" || /hearing|meeting/i.test(type)) return "hearing";
     if (type === "Solicitation") return "solicitation";
     if (/Award/.test(type)) return "award";
     return "notice";
+  }
+
+  /** Parcel deep-links when a 10-digit BBL is known (ZoLa / ACRIS / Who Owns What). */
+  function parcelLookupActions(matter, deadline) {
+    const bbl = String(matter.bbl || "").replace(/\D/g, "");
+    if (!/^\d{10}$/.test(bbl)) return [];
+    const boro = bbl[0];
+    const block = String(parseInt(bbl.slice(1, 6), 10));
+    const lot = String(parseInt(bbl.slice(6, 10), 10));
+    const zola = `https://zola.planning.nyc.gov/l/lot/${boro}/${block}/${lot}`;
+    // Prefer ZoLa as the primary “look up this lot” action; ACRIS/WOW live on the parcel row.
+    return [
+      official("document", "property_action_lookup_zola", "Look up this lot on ZoLa", zola, deadline, {
+        guide: {
+          system: "parcel_lookup",
+          mode: "bbl",
+          identifier: bbl,
+          bbl,
+          zola_url: zola,
+          acris_url: `https://a836-acris.nyc.gov/bblsearch/bblsearch.asp?borough=${boro}&block=${block}&lot=${lot}`,
+          who_owns_what_url: `https://whoownswhat.justfix.org/bbl/${bbl}`,
+          contact_name: matter.contact_name || null,
+          contact_phone: matter.contact_phone || null,
+          email: matter.email || null,
+          owner_name: matter.owner_name || null,
+        },
+      }),
+    ];
   }
 
   function isPast(date, today) {
@@ -423,6 +452,56 @@
             },
           }), calendar, notice()]
         : [unavailable("official_application", stage === "closed" ? "next_action_exam_closed" : "next_action_exam_not_open", stage === "closed" ? "The application window has closed." : "Applications are not open yet.", deadline), notice()];
+    } else if (kind === "property") {
+      // Disposition process next-step from stage + real parcel affordances (no punt).
+      const disp = String(matter.disposition_stage || stage || "").toLowerCase();
+      const fields = noticeFieldGuidance(matter);
+      const parcelActs = parcelLookupActions(matter, deadline);
+      const past = isPast(deadline, today);
+      if (disp === "hearing" || (!disp && /hearing|meeting/i.test(String(matter.type_of_notice_description || "")))) {
+        actions = past
+          ? [unavailable("attend", "next_action_event_passed", "This event has passed.", deadline)]
+          : matter.participation_url
+            ? [official("attend", "join_online", "Join online", matter.participation_url, deadline)]
+            : [local("attend", "disposition_phase_action_attend", "Prepare for the disposition hearing", null, deadline)];
+        if (!past && deadline) actions.push(calendar);
+        if (parcelActs.length) actions.push(parcelActs[0]);
+        else actions.push(notice());
+        if (!past) actions.push(watch);
+      } else if (disp === "auction_or_rfp" || /sale/i.test(String(matter.type_of_notice_description || ""))) {
+        if (fields.package_url) {
+          actions = [official("official_application", "property_action_open_rfp", "Open the sale / RFP package", fields.package_url, deadline, { guide: { system: "notice_extracted", mode: "notice_fields", ...fields, bbl: matter.bbl || null } })];
+        } else if (parcelActs.length) {
+          actions = [...parcelActs];
+        } else if (fields.has_fields) {
+          actions = [validateAction({
+            type: "bid_checklist",
+            label_key: "disposition_phase_action_bid",
+            label: "Follow the sale response steps below",
+            delivery: "local",
+            destination: null,
+            deadline,
+            confirmation_required: false,
+            guide: { system: "notice_extracted", mode: "notice_fields", ...fields, bbl: matter.bbl || null },
+          })];
+        } else {
+          actions = [notice()];
+        }
+        if (deadline && !past) actions.push(calendar);
+        if (parcelActs.length && actions[0] && actions[0].label_key !== "property_action_lookup_zola") {
+          actions.push(parcelActs[0]);
+        }
+        actions.push(watch);
+      } else if (disp === "award_or_conveyance") {
+        actions = parcelActs.length
+          ? [...parcelActs, notice(), watch]
+          : [notice(), watch];
+      } else {
+        // Generic disposition notice: parcel lookup first when BBL is known.
+        actions = parcelActs.length
+          ? [...parcelActs, notice(), watch]
+          : [notice(), watch];
+      }
     } else {
       actions = [notice(), watch];
     }
@@ -448,6 +527,7 @@
     examApplyUrl,
     compileActionRail,
     solicitationHandoff,
+    parcelLookupActions,
     validateAction,
     outcomeEvent,
   };

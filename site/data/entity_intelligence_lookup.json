@@ -3,28 +3,30 @@
   "phase": "cross-domain-object-links",
   "title": "Entity intelligence — cross-domain object links",
   "version": "cross_domain_object_link_v1",
-  "generated_at": "2026-08-02T11:04:50.835Z",
-  "observation_count": 306,
+  "generated_at": "2026-08-02T11:52:13.243Z",
+  "observation_count": 317,
   "entity_count": 40,
-  "multi_domain_count": 4,
+  "multi_domain_count": 5,
   "domains": [
     "money",
     "land",
+    "property",
     "rules",
     "meetings",
     "people"
   ],
   "demo_refs": [
     "agency:id:parks-and-recreation",
-    "agency:id:transportation",
+    "agency:id:housing-preservation-and-development",
     "agency:id:citywide-administrative-services",
-    "agency:id:housing-preservation-and-development"
+    "agency:id:transportation",
+    "vendor:stem:MAKE%20IT%20ZESTY"
   ],
   "verified_demo": {
     "ref": "agency:id:parks-and-recreation",
     "display_name": "Parks and Recreation",
-    "domains_matched": 4,
-    "total_linked_objects": 9,
+    "domains_matched": 5,
+    "total_linked_objects": 10,
     "domain_status": {
       "money": {
         "status": "matched",
@@ -33,6 +35,10 @@
       "land": {
         "status": "matched",
         "count": 6
+      },
+      "property": {
+        "status": "matched",
+        "count": 1
       },
       "rules": {
         "status": "matched",
@@ -289,6 +295,44 @@
           ],
           "count": 6
         },
+        "property": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "notice:20250301001",
+              "domain": "property",
+              "object_kind": "disposition",
+              "label": "Parks surplus parcel hearing",
+              "when": "2025-03-20",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "project_id": null,
+              "request_id": "20250301001",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "root_ref": "agency:id:parks-and-recreation",
+              "root_kind": "agency",
+              "href": "#notice/20250301001",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20250301001",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "property_agency_name",
+                "observed_at": "2025-03-20",
+                "input_value": "Department of Parks and Recreation"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            }
+          ],
+          "count": 1
+        },
         "rules": {
           "status": "matched",
           "gap_class": null,
@@ -374,6 +418,38 @@
         }
       },
       "links": [
+        {
+          "type": "published_by_agency",
+          "from": "notice:20250301001",
+          "to": "agency:id:parks-and-recreation",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20250301001",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "property_agency_name",
+            "observed_at": "2025-03-20",
+            "input_value": "Department of Parks and Recreation",
+            "domain": "property",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "property",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20250301001",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "property_agency_name",
+            "observed_at": "2025-03-20",
+            "input_value": "Department of Parks and Recreation"
+          },
+          "layer": "cross_domain_object_link_v1"
+        },
         {
           "type": "issued_rule",
           "from": "notice:20260715001",
@@ -627,13 +703,917 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
-        "domains_matched": 4,
+        "domains_total": 6,
+        "domains_matched": 5,
         "domains_not_yet_ingested": 1,
         "domains_empty": 0,
-        "total_linked_objects": 9,
-        "link_count": 12,
-        "coverage_rate": 0.8
+        "total_linked_objects": 10,
+        "link_count": 13,
+        "coverage_rate": 0.8333333333333334
+      }
+    },
+    "agency:id:housing-preservation-and-development": {
+      "ok": true,
+      "version": "cross_domain_object_link_v1",
+      "method": "cross_domain_identity_v1",
+      "method_version": "1.0.0",
+      "root": {
+        "kind": "agency",
+        "ref": "agency:id:housing-preservation-and-development",
+        "id": "id:housing-preservation-and-development",
+        "canonical_id": "housing-preservation-and-development",
+        "canonical_name": "Housing Preservation and Development",
+        "display_name": "Housing Preservation and Development"
+      },
+      "domains": {
+        "money": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No money objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "land": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "project:2026X0362",
+              "domain": "land",
+              "object_kind": "project",
+              "label": "351 Powers Avenue (HPD ELURP)",
+              "when": "2026-04-22T00:00:00.000",
+              "amount": null,
+              "public_status": "In Public Review",
+              "pin": null,
+              "project_id": "2026X0362",
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": null,
+              "root_ref": "agency:id:housing-preservation-and-development",
+              "root_kind": "agency",
+              "href": "#land?project=2026X0362",
+              "provenance": {
+                "source_system": "zap-projects",
+                "source_record_id": "zap-projects:2026X0362",
+                "source_fields": [
+                  "primary_applicant"
+                ],
+                "basis": "land_primary_applicant",
+                "observed_at": "2026-04-22T00:00:00.000",
+                "input_value": "HPD - NYC Dept of Housing Preservation & Development"
+              },
+              "link_type": "applicant_agency",
+              "confidence": "tentative",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "project:2022M0258",
+              "domain": "land",
+              "object_kind": "project",
+              "label": "Timbale Terrace",
+              "when": "2024-03-13T00:00:00.000",
+              "amount": null,
+              "public_status": "Completed",
+              "pin": null,
+              "project_id": "2022M0258",
+              "request_id": null,
+              "event_id": null,
+              "ulurp_numbers": "240046HAM; 240047PQM",
+              "root_ref": "agency:id:housing-preservation-and-development",
+              "root_kind": "agency",
+              "href": "#land?project=2022M0258",
+              "provenance": {
+                "source_system": "zap-projects",
+                "source_record_id": "zap-projects:2022M0258",
+                "source_fields": [
+                  "primary_applicant"
+                ],
+                "basis": "land_primary_applicant",
+                "observed_at": "2024-03-13T00:00:00.000",
+                "input_value": "HPD - NYC Dept of Housing Preservation & Development"
+              },
+              "link_type": "applicant_agency",
+              "confidence": "tentative",
+              "method": "agency_canonical_v1"
+            }
+          ],
+          "count": 2
+        },
+        "property": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "notice:full-chain-award",
+              "domain": "property",
+              "object_kind": "disposition",
+              "label": "Notice of tentative winning bidders",
+              "when": "2021-05-20T00:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "project_id": null,
+              "request_id": "full-chain-award",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "root_ref": "agency:id:housing-preservation-and-development",
+              "root_kind": "agency",
+              "href": "#notice/full-chain-award",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:full-chain-award",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "property_agency_name",
+                "observed_at": "2021-05-20T00:00:00.000",
+                "input_value": "Housing Preservation and Development"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:full-chain-auction",
+              "domain": "property",
+              "object_kind": "disposition",
+              "label": "Notice of Public Sale of Residential Property located at 35 Beebe Street, Staten Island",
+              "when": "2021-04-01T16:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "project_id": null,
+              "request_id": "full-chain-auction",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "root_ref": "agency:id:housing-preservation-and-development",
+              "root_kind": "agency",
+              "href": "#notice/full-chain-auction",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:full-chain-auction",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "property_agency_name",
+                "observed_at": "2021-04-01T16:00:00.000",
+                "input_value": "Housing Preservation and Development"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:full-chain-hearing",
+              "domain": "property",
+              "object_kind": "disposition",
+              "label": "Disposition hearing — 35 Beebe Street",
+              "when": "2021-02-01T10:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "project_id": null,
+              "request_id": "full-chain-hearing",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "root_ref": "agency:id:housing-preservation-and-development",
+              "root_kind": "agency",
+              "href": "#notice/full-chain-hearing",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:full-chain-hearing",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "property_agency_name",
+                "observed_at": "2021-02-01T10:00:00.000",
+                "input_value": "Housing Preservation and Development"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20150609105",
+              "domain": "property",
+              "object_kind": "disposition",
+              "label": "Excelsior II",
+              "when": "2015-07-15T01:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "project_id": null,
+              "request_id": "20150609105",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "root_ref": "agency:id:housing-preservation-and-development",
+              "root_kind": "agency",
+              "href": "#notice/20150609105",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20150609105",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "property_agency_name",
+                "observed_at": "2015-07-15T01:00:00.000",
+                "input_value": "Housing Preservation and Development"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20150421106",
+              "domain": "property",
+              "object_kind": "disposition",
+              "label": "Excelsior II",
+              "when": "2015-06-10",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "project_id": null,
+              "request_id": "20150421106",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "root_ref": "agency:id:housing-preservation-and-development",
+              "root_kind": "agency",
+              "href": "#notice/20150421106",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20150421106",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "property_agency_name",
+                "observed_at": "2015-06-10",
+                "input_value": "Housing Preservation and Development"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            }
+          ],
+          "count": 5
+        },
+        "rules": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No rules objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "meetings": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "notice:20260722011",
+              "domain": "meetings",
+              "object_kind": "hearing",
+              "label": "HPD public hearing on disposition",
+              "when": "2026-08-20",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "project_id": null,
+              "request_id": "20260722011",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "root_ref": "agency:id:housing-preservation-and-development",
+              "root_kind": "agency",
+              "href": "#notice/20260722011",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260722011",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "meetings_agency_name",
+                "observed_at": "2026-08-20",
+                "input_value": "Housing Preservation and Development"
+              },
+              "link_type": "hosts_meeting",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            }
+          ],
+          "count": 1
+        },
+        "people": {
+          "status": "not_yet_ingested",
+          "gap_class": "not_yet_ingested",
+          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "objects": [],
+          "count": 0
+        }
+      },
+      "links": [
+        {
+          "type": "published_by_agency",
+          "from": "notice:20150421106",
+          "to": "agency:id:housing-preservation-and-development",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20150421106",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "property_agency_name",
+            "observed_at": "2015-06-10",
+            "input_value": "Housing Preservation and Development",
+            "domain": "property",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "property",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20150421106",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "property_agency_name",
+            "observed_at": "2015-06-10",
+            "input_value": "Housing Preservation and Development"
+          },
+          "layer": "cross_domain_object_link_v1"
+        },
+        {
+          "type": "published_by_agency",
+          "from": "notice:20150609105",
+          "to": "agency:id:housing-preservation-and-development",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20150609105",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "property_agency_name",
+            "observed_at": "2015-07-15T01:00:00.000",
+            "input_value": "Housing Preservation and Development",
+            "domain": "property",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "property",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20150609105",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "property_agency_name",
+            "observed_at": "2015-07-15T01:00:00.000",
+            "input_value": "Housing Preservation and Development"
+          },
+          "layer": "cross_domain_object_link_v1"
+        },
+        {
+          "type": "hosts_meeting",
+          "from": "notice:20260722011",
+          "to": "agency:id:housing-preservation-and-development",
+          "domain": "meetings",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260722011",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "meetings_agency_name",
+            "observed_at": "2026-08-20",
+            "input_value": "Housing Preservation and Development"
+          },
+          "layer": "cross_domain_object_link_v1"
+        },
+        {
+          "type": "published_by_agency",
+          "from": "notice:full-chain-auction",
+          "to": "agency:id:housing-preservation-and-development",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:full-chain-auction",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "property_agency_name",
+            "observed_at": "2021-04-01T16:00:00.000",
+            "input_value": "Housing Preservation and Development",
+            "domain": "property",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "property",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:full-chain-auction",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "property_agency_name",
+            "observed_at": "2021-04-01T16:00:00.000",
+            "input_value": "Housing Preservation and Development"
+          },
+          "layer": "cross_domain_object_link_v1"
+        },
+        {
+          "type": "published_by_agency",
+          "from": "notice:full-chain-award",
+          "to": "agency:id:housing-preservation-and-development",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:full-chain-award",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "property_agency_name",
+            "observed_at": "2021-05-20T00:00:00.000",
+            "input_value": "Housing Preservation and Development",
+            "domain": "property",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "property",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:full-chain-award",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "property_agency_name",
+            "observed_at": "2021-05-20T00:00:00.000",
+            "input_value": "Housing Preservation and Development"
+          },
+          "layer": "cross_domain_object_link_v1"
+        },
+        {
+          "type": "published_by_agency",
+          "from": "notice:full-chain-hearing",
+          "to": "agency:id:housing-preservation-and-development",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:full-chain-hearing",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "property_agency_name",
+            "observed_at": "2021-02-01T10:00:00.000",
+            "input_value": "Housing Preservation and Development",
+            "domain": "property",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "property",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:full-chain-hearing",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "property_agency_name",
+            "observed_at": "2021-02-01T10:00:00.000",
+            "input_value": "Housing Preservation and Development"
+          },
+          "layer": "cross_domain_object_link_v1"
+        },
+        {
+          "type": "applicant_agency",
+          "from": "project:2022M0258",
+          "to": "agency:id:housing-preservation-and-development",
+          "domain": "land",
+          "confidence": "tentative",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "zap-projects",
+            "source_record_id": "zap-projects:2022M0258",
+            "source_fields": [
+              "primary_applicant"
+            ],
+            "basis": "land_primary_applicant",
+            "observed_at": "2024-03-13T00:00:00.000",
+            "input_value": "HPD - NYC Dept of Housing Preservation & Development"
+          },
+          "layer": "cross_domain_object_link_v1"
+        },
+        {
+          "type": "applicant_agency",
+          "from": "project:2026X0362",
+          "to": "agency:id:housing-preservation-and-development",
+          "domain": "land",
+          "confidence": "tentative",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "zap-projects",
+            "source_record_id": "zap-projects:2026X0362",
+            "source_fields": [
+              "primary_applicant"
+            ],
+            "basis": "land_primary_applicant",
+            "observed_at": "2026-04-22T00:00:00.000",
+            "input_value": "HPD - NYC Dept of Housing Preservation & Development"
+          },
+          "layer": "cross_domain_object_link_v1"
+        }
+      ],
+      "metrics": {
+        "metric": "cross_domain_object_link_coverage",
+        "domains_total": 6,
+        "domains_matched": 3,
+        "domains_not_yet_ingested": 1,
+        "domains_empty": 2,
+        "total_linked_objects": 8,
+        "link_count": 8,
+        "coverage_rate": 0.5
+      }
+    },
+    "agency:id:citywide-administrative-services": {
+      "ok": true,
+      "version": "cross_domain_object_link_v1",
+      "method": "cross_domain_identity_v1",
+      "method_version": "1.0.0",
+      "root": {
+        "kind": "agency",
+        "ref": "agency:id:citywide-administrative-services",
+        "id": "id:citywide-administrative-services",
+        "canonical_id": "citywide-administrative-services",
+        "canonical_name": "Citywide Administrative Services",
+        "display_name": "Citywide Administrative Services"
+      },
+      "domains": {
+        "money": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "notice:20260724010",
+              "domain": "money",
+              "object_kind": "award",
+              "label": "Heat Pump Water Heaters",
+              "when": "2026-07-30T00:00:00.000",
+              "amount": 7977500,
+              "public_status": null,
+              "pin": "85726B0027001",
+              "project_id": null,
+              "request_id": "20260724010",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "root_ref": "agency:id:citywide-administrative-services",
+              "root_kind": "agency",
+              "href": "#notice/20260724010",
+              "provenance": {
+                "source_system": "ocp-recent-contract-awards",
+                "source_record_id": "ocp-recent-contract-awards:20260724010",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "money_agency_name",
+                "observed_at": "2026-07-30T00:00:00.000",
+                "input_value": "Citywide Administrative Services"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:FIX001",
+              "domain": "money",
+              "object_kind": "award",
+              "label": "Synthetic fixture row one",
+              "when": "2024-07-01T00:00:00.000",
+              "amount": 100,
+              "public_status": null,
+              "pin": "PIN-FIXTURE-1",
+              "project_id": null,
+              "request_id": "FIX001",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "root_ref": "agency:id:citywide-administrative-services",
+              "root_kind": "agency",
+              "href": "#notice/FIX001",
+              "provenance": {
+                "source_system": "ocp-recent-contract-awards",
+                "source_record_id": "ocp-recent-contract-awards:FIX001",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "money_agency_name",
+                "observed_at": "2024-07-01T00:00:00.000",
+                "input_value": "Department of Citywide Administrative Services"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            }
+          ],
+          "count": 2
+        },
+        "land": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No land objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "property": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "notice:20241112003",
+              "domain": "property",
+              "object_kind": "disposition",
+              "label": "Notice of tentative winning bidders — Manhattan Block 644 Lot 1",
+              "when": "2024-11-12",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "project_id": null,
+              "request_id": "20241112003",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "root_ref": "agency:id:citywide-administrative-services",
+              "root_kind": "agency",
+              "href": "#notice/20241112003",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20241112003",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "property_agency_name",
+                "observed_at": "2024-11-12",
+                "input_value": "Citywide Administrative Services"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:singleton-unlocated",
+              "domain": "property",
+              "object_kind": "disposition",
+              "label": "AUTO AUCTION",
+              "when": "2022-07-01T00:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "project_id": null,
+              "request_id": "singleton-unlocated",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "root_ref": "agency:id:citywide-administrative-services",
+              "root_kind": "agency",
+              "href": "#notice/singleton-unlocated",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:singleton-unlocated",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "property_agency_name",
+                "observed_at": "2022-07-01T00:00:00.000",
+                "input_value": "Citywide Administrative Services"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            }
+          ],
+          "count": 2
+        },
+        "rules": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "notice:20260601010",
+              "domain": "rules",
+              "object_kind": "rule",
+              "label": "Proposed amendment: citywide procurement procedures",
+              "when": "2026-06-01",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "project_id": null,
+              "request_id": "20260601010",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "root_ref": "agency:id:citywide-administrative-services",
+              "root_kind": "agency",
+              "href": "#notice/20260601010",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20260601010",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "rules_agency_name",
+                "observed_at": "2026-06-01",
+                "input_value": "Citywide Administrative Services"
+              },
+              "link_type": "issued_rule",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            }
+          ],
+          "count": 1
+        },
+        "meetings": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No meetings objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "people": {
+          "status": "not_yet_ingested",
+          "gap_class": "not_yet_ingested",
+          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "objects": [],
+          "count": 0
+        }
+      },
+      "links": [
+        {
+          "type": "published_by_agency",
+          "from": "notice:20241112003",
+          "to": "agency:id:citywide-administrative-services",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20241112003",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "property_agency_name",
+            "observed_at": "2024-11-12",
+            "input_value": "Citywide Administrative Services",
+            "domain": "property",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "property",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20241112003",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "property_agency_name",
+            "observed_at": "2024-11-12",
+            "input_value": "Citywide Administrative Services"
+          },
+          "layer": "cross_domain_object_link_v1"
+        },
+        {
+          "type": "issued_rule",
+          "from": "notice:20260601010",
+          "to": "agency:id:citywide-administrative-services",
+          "domain": "rules",
+          "confidence": "strong",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20260601010",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "rules_agency_name",
+            "observed_at": "2026-06-01",
+            "input_value": "Citywide Administrative Services"
+          },
+          "layer": "cross_domain_object_link_v1"
+        },
+        {
+          "type": "published_by_agency",
+          "from": "notice:20260724010",
+          "to": "agency:id:citywide-administrative-services",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260724010",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "Citywide Administrative Services",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:20260724010",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2026-07-30T00:00:00.000",
+            "input_value": "Citywide Administrative Services"
+          },
+          "layer": "cross_domain_object_link_v1"
+        },
+        {
+          "type": "published_by_agency",
+          "from": "notice:FIX001",
+          "to": "agency:id:citywide-administrative-services",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:FIX001",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2024-07-01T00:00:00.000",
+            "input_value": "Department of Citywide Administrative Services",
+            "domain": "money",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "money",
+          "provenance": {
+            "source_system": "ocp-recent-contract-awards",
+            "source_record_id": "ocp-recent-contract-awards:FIX001",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "money_agency_name",
+            "observed_at": "2024-07-01T00:00:00.000",
+            "input_value": "Department of Citywide Administrative Services"
+          },
+          "layer": "cross_domain_object_link_v1"
+        },
+        {
+          "type": "published_by_agency",
+          "from": "notice:singleton-unlocated",
+          "to": "agency:id:citywide-administrative-services",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:singleton-unlocated",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "property_agency_name",
+            "observed_at": "2022-07-01T00:00:00.000",
+            "input_value": "Citywide Administrative Services",
+            "domain": "property",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "property",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:singleton-unlocated",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "property_agency_name",
+            "observed_at": "2022-07-01T00:00:00.000",
+            "input_value": "Citywide Administrative Services"
+          },
+          "layer": "cross_domain_object_link_v1"
+        }
+      ],
+      "metrics": {
+        "metric": "cross_domain_object_link_coverage",
+        "domains_total": 6,
+        "domains_matched": 3,
+        "domains_not_yet_ingested": 1,
+        "domains_empty": 2,
+        "total_linked_objects": 5,
+        "link_count": 5,
+        "coverage_rate": 0.5
       }
     },
     "agency:id:transportation": {
@@ -692,6 +1672,13 @@
           "status": "empty",
           "gap_class": "empty_in_corpus",
           "note": "No land objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         },
@@ -855,27 +1842,26 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 3,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 1,
+        "domains_empty": 2,
         "total_linked_objects": 3,
         "link_count": 3,
-        "coverage_rate": 0.6
+        "coverage_rate": 0.5
       }
     },
-    "agency:id:citywide-administrative-services": {
+    "vendor:stem:MAKE%20IT%20ZESTY": {
       "ok": true,
       "version": "cross_domain_object_link_v1",
       "method": "cross_domain_identity_v1",
       "method_version": "1.0.0",
       "root": {
-        "kind": "agency",
-        "ref": "agency:id:citywide-administrative-services",
-        "id": "id:citywide-administrative-services",
-        "canonical_id": "citywide-administrative-services",
-        "canonical_name": "Citywide Administrative Services",
-        "display_name": "Citywide Administrative Services"
+        "kind": "vendor",
+        "ref": "vendor:stem:MAKE%20IT%20ZESTY",
+        "id": "stem:MAKE%20IT%20ZESTY",
+        "stem": "MAKE IT ZESTY",
+        "display_name": "Make it Zesty LLC"
       },
       "domains": {
         "money": {
@@ -884,67 +1870,37 @@
           "note": null,
           "objects": [
             {
-              "subject_ref": "notice:20260724010",
+              "subject_ref": "notice:20260723031",
               "domain": "money",
               "object_kind": "award",
-              "label": "Heat Pump Water Heaters",
+              "label": "Catering Services",
               "when": "2026-07-30T00:00:00.000",
-              "amount": 7977500,
+              "amount": 250000,
               "public_status": null,
-              "pin": "85726B0027001",
+              "pin": "81626W0043001",
               "project_id": null,
-              "request_id": "20260724010",
+              "request_id": "20260723031",
               "event_id": null,
               "ulurp_numbers": null,
-              "root_ref": "agency:id:citywide-administrative-services",
-              "root_kind": "agency",
-              "href": "#notice/20260724010",
+              "root_ref": "vendor:stem:MAKE%20IT%20ZESTY",
+              "root_kind": "vendor",
+              "href": "#notice/20260723031",
               "provenance": {
                 "source_system": "ocp-recent-contract-awards",
-                "source_record_id": "ocp-recent-contract-awards:20260724010",
+                "source_record_id": "ocp-recent-contract-awards:20260723031",
                 "source_fields": [
-                  "agency_name"
+                  "vendor_name"
                 ],
-                "basis": "money_agency_name",
+                "basis": "money_vendor_name",
                 "observed_at": "2026-07-30T00:00:00.000",
-                "input_value": "Citywide Administrative Services"
+                "input_value": "Make it Zesty LLC"
               },
-              "link_type": "published_by_agency",
+              "link_type": "named_vendor",
               "confidence": "strong",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "notice:FIX001",
-              "domain": "money",
-              "object_kind": "award",
-              "label": "Synthetic fixture row one",
-              "when": "2024-07-01T00:00:00.000",
-              "amount": 100,
-              "public_status": null,
-              "pin": "PIN-FIXTURE-1",
-              "project_id": null,
-              "request_id": "FIX001",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "root_ref": "agency:id:citywide-administrative-services",
-              "root_kind": "agency",
-              "href": "#notice/FIX001",
-              "provenance": {
-                "source_system": "ocp-recent-contract-awards",
-                "source_record_id": "ocp-recent-contract-awards:FIX001",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "money_agency_name",
-                "observed_at": "2024-07-01T00:00:00.000",
-                "input_value": "Department of Citywide Administrative Services"
-              },
-              "link_type": "published_by_agency",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
+              "method": "vendor_stem_v1"
             }
           ],
-          "count": 2
+          "count": 1
         },
         "land": {
           "status": "empty",
@@ -953,43 +1909,50 @@
           "objects": [],
           "count": 0
         },
-        "rules": {
+        "property": {
           "status": "matched",
           "gap_class": null,
           "note": null,
           "objects": [
             {
-              "subject_ref": "notice:20260601010",
-              "domain": "rules",
-              "object_kind": "rule",
-              "label": "Proposed amendment: citywide procurement procedures",
-              "when": "2026-06-01",
+              "subject_ref": "notice:20241112003",
+              "domain": "property",
+              "object_kind": "disposition",
+              "label": "Notice of tentative winning bidders — Manhattan Block 644 Lot 1",
+              "when": "2024-11-12",
               "amount": null,
               "public_status": null,
               "pin": null,
               "project_id": null,
-              "request_id": "20260601010",
+              "request_id": "20241112003",
               "event_id": null,
               "ulurp_numbers": null,
-              "root_ref": "agency:id:citywide-administrative-services",
-              "root_kind": "agency",
-              "href": "#notice/20260601010",
+              "root_ref": "vendor:stem:MAKE%20IT%20ZESTY",
+              "root_kind": "vendor",
+              "href": "#notice/20241112003",
               "provenance": {
                 "source_system": "city_record",
-                "source_record_id": "city_record:20260601010",
+                "source_record_id": "city_record:20241112003",
                 "source_fields": [
-                  "agency_name"
+                  "vendor_name"
                 ],
-                "basis": "rules_agency_name",
-                "observed_at": "2026-06-01",
-                "input_value": "Citywide Administrative Services"
+                "basis": "property_vendor_name",
+                "observed_at": "2024-11-12",
+                "input_value": "Make it Zesty LLC"
               },
-              "link_type": "issued_rule",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
+              "link_type": "named_owner",
+              "confidence": "tentative",
+              "method": "vendor_stem_v1"
             }
           ],
           "count": 1
+        },
+        "rules": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No rules objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
         },
         "meetings": {
           "status": "empty",
@@ -1008,40 +1971,52 @@
       },
       "links": [
         {
-          "type": "issued_rule",
-          "from": "notice:20260601010",
-          "to": "agency:id:citywide-administrative-services",
-          "domain": "rules",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
+          "type": "named_owner",
+          "from": "notice:20241112003",
+          "to": "vendor:stem:MAKE%20IT%20ZESTY",
+          "method": "vendor_stem_v1",
           "method_version": "1",
+          "evidence": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20241112003",
+            "source_fields": [
+              "vendor_name"
+            ],
+            "basis": "property_vendor_name",
+            "observed_at": "2024-11-12",
+            "input_value": "Make it Zesty LLC",
+            "domain": "property",
+            "cross_domain": true
+          },
+          "confidence": "tentative",
+          "domain": "property",
           "provenance": {
             "source_system": "city_record",
-            "source_record_id": "city_record:20260601010",
+            "source_record_id": "city_record:20241112003",
             "source_fields": [
-              "agency_name"
+              "vendor_name"
             ],
-            "basis": "rules_agency_name",
-            "observed_at": "2026-06-01",
-            "input_value": "Citywide Administrative Services"
+            "basis": "property_vendor_name",
+            "observed_at": "2024-11-12",
+            "input_value": "Make it Zesty LLC"
           },
           "layer": "cross_domain_object_link_v1"
         },
         {
-          "type": "published_by_agency",
-          "from": "notice:20260724010",
-          "to": "agency:id:citywide-administrative-services",
-          "method": "agency_canonical_v1",
+          "type": "named_vendor",
+          "from": "notice:20260723031",
+          "to": "vendor:stem:MAKE%20IT%20ZESTY",
+          "method": "vendor_stem_v1",
           "method_version": "1",
           "evidence": {
             "source_system": "ocp-recent-contract-awards",
-            "source_record_id": "ocp-recent-contract-awards:20260724010",
+            "source_record_id": "ocp-recent-contract-awards:20260723031",
             "source_fields": [
-              "agency_name"
+              "vendor_name"
             ],
-            "basis": "money_agency_name",
+            "basis": "money_vendor_name",
             "observed_at": "2026-07-30T00:00:00.000",
-            "input_value": "Citywide Administrative Services",
+            "input_value": "Make it Zesty LLC",
             "domain": "money",
             "cross_domain": true
           },
@@ -1049,273 +2024,26 @@
           "domain": "money",
           "provenance": {
             "source_system": "ocp-recent-contract-awards",
-            "source_record_id": "ocp-recent-contract-awards:20260724010",
+            "source_record_id": "ocp-recent-contract-awards:20260723031",
             "source_fields": [
-              "agency_name"
+              "vendor_name"
             ],
-            "basis": "money_agency_name",
+            "basis": "money_vendor_name",
             "observed_at": "2026-07-30T00:00:00.000",
-            "input_value": "Citywide Administrative Services"
-          },
-          "layer": "cross_domain_object_link_v1"
-        },
-        {
-          "type": "published_by_agency",
-          "from": "notice:FIX001",
-          "to": "agency:id:citywide-administrative-services",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "evidence": {
-            "source_system": "ocp-recent-contract-awards",
-            "source_record_id": "ocp-recent-contract-awards:FIX001",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2024-07-01T00:00:00.000",
-            "input_value": "Department of Citywide Administrative Services",
-            "domain": "money",
-            "cross_domain": true
-          },
-          "confidence": "strong",
-          "domain": "money",
-          "provenance": {
-            "source_system": "ocp-recent-contract-awards",
-            "source_record_id": "ocp-recent-contract-awards:FIX001",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "money_agency_name",
-            "observed_at": "2024-07-01T00:00:00.000",
-            "input_value": "Department of Citywide Administrative Services"
+            "input_value": "Make it Zesty LLC"
           },
           "layer": "cross_domain_object_link_v1"
         }
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 2,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 2,
-        "total_linked_objects": 3,
-        "link_count": 3,
-        "coverage_rate": 0.4
-      }
-    },
-    "agency:id:housing-preservation-and-development": {
-      "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
-      "root": {
-        "kind": "agency",
-        "ref": "agency:id:housing-preservation-and-development",
-        "id": "id:housing-preservation-and-development",
-        "canonical_id": "housing-preservation-and-development",
-        "canonical_name": "Housing Preservation and Development",
-        "display_name": "Housing Preservation and Development"
-      },
-      "domains": {
-        "money": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No money objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "land": {
-          "status": "matched",
-          "gap_class": null,
-          "note": null,
-          "objects": [
-            {
-              "subject_ref": "project:2026X0362",
-              "domain": "land",
-              "object_kind": "project",
-              "label": "351 Powers Avenue (HPD ELURP)",
-              "when": "2026-04-22T00:00:00.000",
-              "amount": null,
-              "public_status": "In Public Review",
-              "pin": null,
-              "project_id": "2026X0362",
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "root_ref": "agency:id:housing-preservation-and-development",
-              "root_kind": "agency",
-              "href": "#land?project=2026X0362",
-              "provenance": {
-                "source_system": "zap-projects",
-                "source_record_id": "zap-projects:2026X0362",
-                "source_fields": [
-                  "primary_applicant"
-                ],
-                "basis": "land_primary_applicant",
-                "observed_at": "2026-04-22T00:00:00.000",
-                "input_value": "HPD - NYC Dept of Housing Preservation & Development"
-              },
-              "link_type": "applicant_agency",
-              "confidence": "tentative",
-              "method": "agency_canonical_v1"
-            },
-            {
-              "subject_ref": "project:2022M0258",
-              "domain": "land",
-              "object_kind": "project",
-              "label": "Timbale Terrace",
-              "when": "2024-03-13T00:00:00.000",
-              "amount": null,
-              "public_status": "Completed",
-              "pin": null,
-              "project_id": "2022M0258",
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": "240046HAM; 240047PQM",
-              "root_ref": "agency:id:housing-preservation-and-development",
-              "root_kind": "agency",
-              "href": "#land?project=2022M0258",
-              "provenance": {
-                "source_system": "zap-projects",
-                "source_record_id": "zap-projects:2022M0258",
-                "source_fields": [
-                  "primary_applicant"
-                ],
-                "basis": "land_primary_applicant",
-                "observed_at": "2024-03-13T00:00:00.000",
-                "input_value": "HPD - NYC Dept of Housing Preservation & Development"
-              },
-              "link_type": "applicant_agency",
-              "confidence": "tentative",
-              "method": "agency_canonical_v1"
-            }
-          ],
-          "count": 2
-        },
-        "rules": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No rules objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "meetings": {
-          "status": "matched",
-          "gap_class": null,
-          "note": null,
-          "objects": [
-            {
-              "subject_ref": "notice:20260722011",
-              "domain": "meetings",
-              "object_kind": "hearing",
-              "label": "HPD public hearing on disposition",
-              "when": "2026-08-20",
-              "amount": null,
-              "public_status": null,
-              "pin": null,
-              "project_id": null,
-              "request_id": "20260722011",
-              "event_id": null,
-              "ulurp_numbers": null,
-              "root_ref": "agency:id:housing-preservation-and-development",
-              "root_kind": "agency",
-              "href": "#notice/20260722011",
-              "provenance": {
-                "source_system": "city_record",
-                "source_record_id": "city_record:20260722011",
-                "source_fields": [
-                  "agency_name"
-                ],
-                "basis": "meetings_agency_name",
-                "observed_at": "2026-08-20",
-                "input_value": "Housing Preservation and Development"
-              },
-              "link_type": "hosts_meeting",
-              "confidence": "strong",
-              "method": "agency_canonical_v1"
-            }
-          ],
-          "count": 1
-        },
-        "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
-          "objects": [],
-          "count": 0
-        }
-      },
-      "links": [
-        {
-          "type": "hosts_meeting",
-          "from": "notice:20260722011",
-          "to": "agency:id:housing-preservation-and-development",
-          "domain": "meetings",
-          "confidence": "strong",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "city_record",
-            "source_record_id": "city_record:20260722011",
-            "source_fields": [
-              "agency_name"
-            ],
-            "basis": "meetings_agency_name",
-            "observed_at": "2026-08-20",
-            "input_value": "Housing Preservation and Development"
-          },
-          "layer": "cross_domain_object_link_v1"
-        },
-        {
-          "type": "applicant_agency",
-          "from": "project:2022M0258",
-          "to": "agency:id:housing-preservation-and-development",
-          "domain": "land",
-          "confidence": "tentative",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "zap-projects",
-            "source_record_id": "zap-projects:2022M0258",
-            "source_fields": [
-              "primary_applicant"
-            ],
-            "basis": "land_primary_applicant",
-            "observed_at": "2024-03-13T00:00:00.000",
-            "input_value": "HPD - NYC Dept of Housing Preservation & Development"
-          },
-          "layer": "cross_domain_object_link_v1"
-        },
-        {
-          "type": "applicant_agency",
-          "from": "project:2026X0362",
-          "to": "agency:id:housing-preservation-and-development",
-          "domain": "land",
-          "confidence": "tentative",
-          "method": "agency_canonical_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "zap-projects",
-            "source_record_id": "zap-projects:2026X0362",
-            "source_fields": [
-              "primary_applicant"
-            ],
-            "basis": "land_primary_applicant",
-            "observed_at": "2026-04-22T00:00:00.000",
-            "input_value": "HPD - NYC Dept of Housing Preservation & Development"
-          },
-          "layer": "cross_domain_object_link_v1"
-        }
-      ],
-      "metrics": {
-        "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
-        "domains_matched": 2,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 2,
-        "total_linked_objects": 3,
-        "link_count": 3,
-        "coverage_rate": 0.4
+        "domains_empty": 3,
+        "total_linked_objects": 2,
+        "link_count": 2,
+        "coverage_rate": 0.3333333333333333
       }
     },
     "vendor:stem:EXTELL%20DEVELOPMENT": {
@@ -1465,6 +2193,13 @@
           ],
           "count": 4
         },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
         "rules": {
           "status": "empty",
           "gap_class": "empty_in_corpus",
@@ -1570,13 +2305,13 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 4,
         "link_count": 4,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
       }
     },
     "agency:id:edc-economic-development-corporation-for-nyc": {
@@ -1697,6 +2432,13 @@
           ],
           "count": 3
         },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
         "rules": {
           "status": "empty",
           "gap_class": "empty_in_corpus",
@@ -1782,13 +2524,13 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 3,
         "link_count": 3,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
       }
     },
     "agency:id:lpc-nyc-landmarks-preservation-commission": {
@@ -1910,6 +2652,13 @@
           ],
           "count": 3
         },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
         "rules": {
           "status": "empty",
           "gap_class": "empty_in_corpus",
@@ -1996,13 +2745,13 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 3,
         "link_count": 3,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
       }
     },
     "agency:id:dot-nyc-dept-of-transportation": {
@@ -2093,6 +2842,13 @@
           ],
           "count": 2
         },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
         "rules": {
           "status": "empty",
           "gap_class": "empty_in_corpus",
@@ -2158,13 +2914,208 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 2,
         "link_count": 2,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
+      }
+    },
+    "agency:id:economic-development-corporation": {
+      "ok": true,
+      "version": "cross_domain_object_link_v1",
+      "method": "cross_domain_identity_v1",
+      "method_version": "1.0.0",
+      "root": {
+        "kind": "agency",
+        "ref": "agency:id:economic-development-corporation",
+        "id": "id:economic-development-corporation",
+        "canonical_id": "economic-development-corporation",
+        "canonical_name": "Economic Development Corporation",
+        "display_name": "Economic Development Corporation"
+      },
+      "domains": {
+        "money": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No money objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "land": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No land objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "property": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "notice:20220504006",
+              "domain": "property",
+              "object_kind": "disposition",
+              "label": "REQUEST FOR PROPOSALS - INDUSTRY ROAD",
+              "when": "2022-05-04",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "project_id": null,
+              "request_id": "20220504006",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "root_ref": "agency:id:economic-development-corporation",
+              "root_kind": "agency",
+              "href": "#notice/20220504006",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20220504006",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "property_agency_name",
+                "observed_at": "2022-05-04",
+                "input_value": "Economic Development Corporation"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            },
+            {
+              "subject_ref": "notice:20220425010",
+              "domain": "property",
+              "object_kind": "disposition",
+              "label": "Request for Proposals - Industry Road",
+              "when": "2022-04-25T00:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "project_id": null,
+              "request_id": "20220425010",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "root_ref": "agency:id:economic-development-corporation",
+              "root_kind": "agency",
+              "href": "#notice/20220425010",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:20220425010",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "property_agency_name",
+                "observed_at": "2022-04-25T00:00:00.000",
+                "input_value": "Economic Development Corporation"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            }
+          ],
+          "count": 2
+        },
+        "rules": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No rules objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "meetings": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No meetings objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "people": {
+          "status": "not_yet_ingested",
+          "gap_class": "not_yet_ingested",
+          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "objects": [],
+          "count": 0
+        }
+      },
+      "links": [
+        {
+          "type": "published_by_agency",
+          "from": "notice:20220425010",
+          "to": "agency:id:economic-development-corporation",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20220425010",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "property_agency_name",
+            "observed_at": "2022-04-25T00:00:00.000",
+            "input_value": "Economic Development Corporation",
+            "domain": "property",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "property",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20220425010",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "property_agency_name",
+            "observed_at": "2022-04-25T00:00:00.000",
+            "input_value": "Economic Development Corporation"
+          },
+          "layer": "cross_domain_object_link_v1"
+        },
+        {
+          "type": "published_by_agency",
+          "from": "notice:20220504006",
+          "to": "agency:id:economic-development-corporation",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20220504006",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "property_agency_name",
+            "observed_at": "2022-05-04",
+            "input_value": "Economic Development Corporation",
+            "domain": "property",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "property",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:20220504006",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "property_agency_name",
+            "observed_at": "2022-05-04",
+            "input_value": "Economic Development Corporation"
+          },
+          "layer": "cross_domain_object_link_v1"
+        }
+      ],
+      "metrics": {
+        "metric": "cross_domain_object_link_coverage",
+        "domains_total": 6,
+        "domains_matched": 1,
+        "domains_not_yet_ingested": 1,
+        "domains_empty": 4,
+        "total_linked_objects": 2,
+        "link_count": 2,
+        "coverage_rate": 0.16666666666666666
       }
     },
     "agency:id:new-york-city-department-of-city-planning": {
@@ -2256,6 +3207,13 @@
           ],
           "count": 2
         },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
         "rules": {
           "status": "empty",
           "gap_class": "empty_in_corpus",
@@ -2322,13 +3280,13 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 2,
         "link_count": 2,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
       }
     },
     "agency:id:nyc-dot-department-of-transportation": {
@@ -2420,6 +3378,13 @@
           ],
           "count": 2
         },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
         "rules": {
           "status": "empty",
           "gap_class": "empty_in_corpus",
@@ -2486,13 +3451,13 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 2,
         "link_count": 2,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
       }
     },
     "vendor:stem:BP%20347%20MADISON%20ASSOCIATES": {
@@ -2582,6 +3547,13 @@
           ],
           "count": 2
         },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
         "rules": {
           "status": "empty",
           "gap_class": "empty_in_corpus",
@@ -2647,13 +3619,13 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 2,
         "link_count": 2,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
       }
     },
     "vendor:stem:ERIC%20PALATNIK": {
@@ -2744,6 +3716,13 @@
           ],
           "count": 2
         },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
         "rules": {
           "status": "empty",
           "gap_class": "empty_in_corpus",
@@ -2810,13 +3789,13 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 2,
         "link_count": 2,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
       }
     },
     "vendor:stem:GO%20QUAY": {
@@ -2907,6 +3886,13 @@
           ],
           "count": 2
         },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
         "rules": {
           "status": "empty",
           "gap_class": "empty_in_corpus",
@@ -2973,13 +3959,13 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 2,
         "link_count": 2,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
       }
     },
     "vendor:stem:PHIPPS%20HOUSES": {
@@ -3070,6 +4056,13 @@
           ],
           "count": 2
         },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
         "rules": {
           "status": "empty",
           "gap_class": "empty_in_corpus",
@@ -3136,13 +4129,13 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 2,
         "link_count": 2,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
       }
     },
     "vendor:stem:PRINCE%20ST%20606": {
@@ -3233,6 +4226,13 @@
           ],
           "count": 2
         },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
         "rules": {
           "status": "empty",
           "gap_class": "empty_in_corpus",
@@ -3299,13 +4299,13 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 2,
         "link_count": 2,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
       }
     },
     "vendor:stem:SILVERSTEIN%20MB": {
@@ -3396,6 +4396,13 @@
           ],
           "count": 2
         },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
         "rules": {
           "status": "empty",
           "gap_class": "empty_in_corpus",
@@ -3462,13 +4469,13 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 2,
         "link_count": 2,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
       }
     },
     "vendor:stem:THE%20DURST%20ORGANIZATION": {
@@ -3559,6 +4566,13 @@
           ],
           "count": 2
         },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
         "rules": {
           "status": "empty",
           "gap_class": "empty_in_corpus",
@@ -3625,13 +4639,13 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 2,
         "link_count": 2,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
       }
     },
     "vendor:stem:WATERSHORE%20VIEWS": {
@@ -3722,6 +4736,13 @@
           ],
           "count": 2
         },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
         "rules": {
           "status": "empty",
           "gap_class": "empty_in_corpus",
@@ -3788,13 +4809,13 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 2,
         "link_count": 2,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
       }
     },
     "agency:id:city-council": {
@@ -3822,6 +4843,13 @@
           "status": "empty",
           "gap_class": "empty_in_corpus",
           "note": "No land objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
           "objects": [],
           "count": 0
         },
@@ -3902,13 +4930,13 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 1,
         "link_count": 1,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
       }
     },
     "agency:id:city-planning": {
@@ -3969,6 +4997,13 @@
           ],
           "count": 1
         },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
         "rules": {
           "status": "empty",
           "gap_class": "empty_in_corpus",
@@ -4014,13 +5049,13 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 1,
         "link_count": 1,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
       }
     },
     "agency:id:dcas-nyc-department-of-citywide-administrative-services": {
@@ -4082,6 +5117,13 @@
           ],
           "count": 1
         },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
         "rules": {
           "status": "empty",
           "gap_class": "empty_in_corpus",
@@ -4128,13 +5170,13 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 1,
         "link_count": 1,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
       }
     },
     "agency:id:dep-new-york-city-department-of-environmental-protection": {
@@ -4196,6 +5238,13 @@
           ],
           "count": 1
         },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
         "rules": {
           "status": "empty",
           "gap_class": "empty_in_corpus",
@@ -4242,13 +5291,13 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 1,
         "link_count": 1,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
       }
     },
     "agency:id:department-of-education": {
@@ -4310,6 +5359,13 @@
           "objects": [],
           "count": 0
         },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
         "rules": {
           "status": "empty",
           "gap_class": "empty_in_corpus",
@@ -4368,13 +5424,13 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 1,
         "link_count": 1,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
       }
     },
     "agency:id:department-of-environmental-protection": {
@@ -4436,6 +5492,13 @@
           "objects": [],
           "count": 0
         },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
         "rules": {
           "status": "empty",
           "gap_class": "empty_in_corpus",
@@ -4494,13 +5557,13 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 1,
         "link_count": 1,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
       }
     },
     "agency:id:fdny-fire-department-of-nyc": {
@@ -4562,6 +5625,13 @@
           ],
           "count": 1
         },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
         "rules": {
           "status": "empty",
           "gap_class": "empty_in_corpus",
@@ -4608,13 +5678,13 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 1,
         "link_count": 1,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
       }
     },
     "agency:id:health-and-mental-hygiene": {
@@ -4676,6 +5746,13 @@
           "objects": [],
           "count": 0
         },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
         "rules": {
           "status": "empty",
           "gap_class": "empty_in_corpus",
@@ -4734,13 +5811,13 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 1,
         "link_count": 1,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
       }
     },
     "agency:id:mayors-office-of-criminal-justice": {
@@ -4802,6 +5879,13 @@
           ],
           "count": 1
         },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
         "rules": {
           "status": "empty",
           "gap_class": "empty_in_corpus",
@@ -4848,13 +5932,13 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 1,
         "link_count": 1,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
       }
     },
     "agency:id:new-york-state-department-of-transportation": {
@@ -4916,6 +6000,13 @@
           ],
           "count": 1
         },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
         "rules": {
           "status": "empty",
           "gap_class": "empty_in_corpus",
@@ -4962,13 +6053,13 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 1,
         "link_count": 1,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
       }
     },
     "agency:id:ny-state-department-of-transporation": {
@@ -5030,6 +6121,13 @@
           ],
           "count": 1
         },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
         "rules": {
           "status": "empty",
           "gap_class": "empty_in_corpus",
@@ -5076,13 +6174,13 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 1,
         "link_count": 1,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
       }
     },
     "agency:id:nyc-dot-new-york-city-dept-of-transportation-bridges": {
@@ -5144,6 +6242,13 @@
           ],
           "count": 1
         },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
         "rules": {
           "status": "empty",
           "gap_class": "empty_in_corpus",
@@ -5190,13 +6295,13 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 1,
         "link_count": 1,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
       }
     },
     "agency:id:sca-new-york-city-school-construction-authority": {
@@ -5257,6 +6362,13 @@
           ],
           "count": 1
         },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
         "rules": {
           "status": "empty",
           "gap_class": "empty_in_corpus",
@@ -5302,13 +6414,146 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 1,
         "link_count": 1,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
+      }
+    },
+    "agency:id:small-business-services": {
+      "ok": true,
+      "version": "cross_domain_object_link_v1",
+      "method": "cross_domain_identity_v1",
+      "method_version": "1.0.0",
+      "root": {
+        "kind": "agency",
+        "ref": "agency:id:small-business-services",
+        "id": "id:small-business-services",
+        "canonical_id": "small-business-services",
+        "canonical_name": "Small Business Services",
+        "display_name": "Small Business Services"
+      },
+      "domains": {
+        "money": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No money objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "land": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No land objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "property": {
+          "status": "matched",
+          "gap_class": null,
+          "note": null,
+          "objects": [
+            {
+              "subject_ref": "notice:cross-agency-same-lot",
+              "domain": "property",
+              "object_kind": "disposition",
+              "label": "Unrelated hearing on same tax lot different agency",
+              "when": "2018-02-01T10:00:00.000",
+              "amount": null,
+              "public_status": null,
+              "pin": null,
+              "project_id": null,
+              "request_id": "cross-agency-same-lot",
+              "event_id": null,
+              "ulurp_numbers": null,
+              "root_ref": "agency:id:small-business-services",
+              "root_kind": "agency",
+              "href": "#notice/cross-agency-same-lot",
+              "provenance": {
+                "source_system": "city_record",
+                "source_record_id": "city_record:cross-agency-same-lot",
+                "source_fields": [
+                  "agency_name"
+                ],
+                "basis": "property_agency_name",
+                "observed_at": "2018-02-01T10:00:00.000",
+                "input_value": "Small Business Services"
+              },
+              "link_type": "published_by_agency",
+              "confidence": "strong",
+              "method": "agency_canonical_v1"
+            }
+          ],
+          "count": 1
+        },
+        "rules": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No rules objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "meetings": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No meetings objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
+        "people": {
+          "status": "not_yet_ingested",
+          "gap_class": "not_yet_ingested",
+          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
+          "objects": [],
+          "count": 0
+        }
+      },
+      "links": [
+        {
+          "type": "published_by_agency",
+          "from": "notice:cross-agency-same-lot",
+          "to": "agency:id:small-business-services",
+          "method": "agency_canonical_v1",
+          "method_version": "1",
+          "evidence": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:cross-agency-same-lot",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "property_agency_name",
+            "observed_at": "2018-02-01T10:00:00.000",
+            "input_value": "Small Business Services",
+            "domain": "property",
+            "cross_domain": true
+          },
+          "confidence": "strong",
+          "domain": "property",
+          "provenance": {
+            "source_system": "city_record",
+            "source_record_id": "city_record:cross-agency-same-lot",
+            "source_fields": [
+              "agency_name"
+            ],
+            "basis": "property_agency_name",
+            "observed_at": "2018-02-01T10:00:00.000",
+            "input_value": "Small Business Services"
+          },
+          "layer": "cross_domain_object_link_v1"
+        }
+      ],
+      "metrics": {
+        "metric": "cross_domain_object_link_coverage",
+        "domains_total": 6,
+        "domains_matched": 1,
+        "domains_not_yet_ingested": 1,
+        "domains_empty": 4,
+        "total_linked_objects": 1,
+        "link_count": 1,
+        "coverage_rate": 0.16666666666666666
       }
     },
     "agency:id:youth-and-community-development": {
@@ -5370,6 +6615,13 @@
           "objects": [],
           "count": 0
         },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
         "rules": {
           "status": "empty",
           "gap_class": "empty_in_corpus",
@@ -5428,13 +6680,13 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 1,
         "link_count": 1,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
       }
     },
     "vendor:stem:100%20QUEENS%20BLVD": {
@@ -5495,6 +6747,13 @@
           ],
           "count": 1
         },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
         "rules": {
           "status": "empty",
           "gap_class": "empty_in_corpus",
@@ -5541,13 +6800,13 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 1,
         "link_count": 1,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
       }
     },
     "vendor:stem:100%20WALL%20REALTY": {
@@ -5608,6 +6867,13 @@
           ],
           "count": 1
         },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
         "rules": {
           "status": "empty",
           "gap_class": "empty_in_corpus",
@@ -5654,13 +6920,13 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 1,
         "link_count": 1,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
       }
     },
     "vendor:stem:108%20DUNKIRK%20STREET": {
@@ -5721,6 +6987,13 @@
           ],
           "count": 1
         },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
         "rules": {
           "status": "empty",
           "gap_class": "empty_in_corpus",
@@ -5767,13 +7040,13 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 1,
         "link_count": 1,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
       }
     },
     "vendor:stem:108%20REALTY%20GROUP": {
@@ -5834,6 +7107,13 @@
           ],
           "count": 1
         },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
         "rules": {
           "status": "empty",
           "gap_class": "empty_in_corpus",
@@ -5880,13 +7160,13 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 1,
         "link_count": 1,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
       }
     },
     "vendor:stem:108%20ST": {
@@ -5947,6 +7227,13 @@
           ],
           "count": 1
         },
+        "property": {
+          "status": "empty",
+          "gap_class": "empty_in_corpus",
+          "note": "No property objects in the linked corpus resolved to this entity.",
+          "objects": [],
+          "count": 0
+        },
         "rules": {
           "status": "empty",
           "gap_class": "empty_in_corpus",
@@ -5993,352 +7280,13 @@
       ],
       "metrics": {
         "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
+        "domains_total": 6,
         "domains_matched": 1,
         "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
+        "domains_empty": 4,
         "total_linked_objects": 1,
         "link_count": 1,
-        "coverage_rate": 0.2
-      }
-    },
-    "vendor:stem:1130%20TIFFANY%20STREET": {
-      "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
-      "root": {
-        "kind": "vendor",
-        "ref": "vendor:stem:1130%20TIFFANY%20STREET",
-        "id": "stem:1130%20TIFFANY%20STREET",
-        "stem": "1130 TIFFANY STREET",
-        "display_name": "1130 Tiffany Street LLC"
-      },
-      "domains": {
-        "money": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No money objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "land": {
-          "status": "matched",
-          "gap_class": null,
-          "note": null,
-          "objects": [
-            {
-              "subject_ref": "project:2024X0210",
-              "domain": "land",
-              "object_kind": "project",
-              "label": "893-895 East 167th Street Rezoning",
-              "when": "2026-04-07",
-              "amount": null,
-              "public_status": "Filed",
-              "pin": null,
-              "project_id": "2024X0210",
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "root_ref": "vendor:stem:1130%20TIFFANY%20STREET",
-              "root_kind": "vendor",
-              "href": "#land?project=2024X0210",
-              "provenance": {
-                "source_system": "warehouse",
-                "source_record_id": "warehouse:2024X0210",
-                "source_fields": [
-                  "primary_applicant"
-                ],
-                "basis": "land_primary_applicant",
-                "observed_at": "2026-04-07",
-                "input_value": "1130 Tiffany Street LLC"
-              },
-              "link_type": "applicant_vendor",
-              "confidence": "tentative",
-              "method": "vendor_stem_v1"
-            }
-          ],
-          "count": 1
-        },
-        "rules": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No rules objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "meetings": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No meetings objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
-          "objects": [],
-          "count": 0
-        }
-      },
-      "links": [
-        {
-          "type": "applicant_vendor",
-          "from": "project:2024X0210",
-          "to": "vendor:stem:1130%20TIFFANY%20STREET",
-          "domain": "land",
-          "confidence": "tentative",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "warehouse",
-            "source_record_id": "warehouse:2024X0210",
-            "source_fields": [
-              "primary_applicant"
-            ],
-            "basis": "land_primary_applicant",
-            "observed_at": "2026-04-07",
-            "input_value": "1130 Tiffany Street LLC"
-          },
-          "layer": "cross_domain_object_link_v1"
-        }
-      ],
-      "metrics": {
-        "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
-        "domains_matched": 1,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
-        "total_linked_objects": 1,
-        "link_count": 1,
-        "coverage_rate": 0.2
-      }
-    },
-    "vendor:stem:135%20SAPPHIRE": {
-      "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
-      "root": {
-        "kind": "vendor",
-        "ref": "vendor:stem:135%20SAPPHIRE",
-        "id": "stem:135%20SAPPHIRE",
-        "stem": "135 SAPPHIRE",
-        "display_name": "135 Sapphire LLC"
-      },
-      "domains": {
-        "money": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No money objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "land": {
-          "status": "matched",
-          "gap_class": null,
-          "note": null,
-          "objects": [
-            {
-              "subject_ref": "project:2024Q0219",
-              "domain": "land",
-              "object_kind": "project",
-              "label": "135-27 Sapphire Street Rezoning",
-              "when": "2026-04-22T00:00:00.000",
-              "amount": null,
-              "public_status": "Noticed",
-              "pin": null,
-              "project_id": "2024Q0219",
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": "250329ZMQ; N250330ZRQ",
-              "root_ref": "vendor:stem:135%20SAPPHIRE",
-              "root_kind": "vendor",
-              "href": "#land?project=2024Q0219",
-              "provenance": {
-                "source_system": "zap-projects",
-                "source_record_id": "zap-projects:2024Q0219",
-                "source_fields": [
-                  "primary_applicant"
-                ],
-                "basis": "land_primary_applicant",
-                "observed_at": "2026-04-22T00:00:00.000",
-                "input_value": "135 Sapphire LLC"
-              },
-              "link_type": "applicant_vendor",
-              "confidence": "tentative",
-              "method": "vendor_stem_v1"
-            }
-          ],
-          "count": 1
-        },
-        "rules": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No rules objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "meetings": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No meetings objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
-          "objects": [],
-          "count": 0
-        }
-      },
-      "links": [
-        {
-          "type": "applicant_vendor",
-          "from": "project:2024Q0219",
-          "to": "vendor:stem:135%20SAPPHIRE",
-          "domain": "land",
-          "confidence": "tentative",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "zap-projects",
-            "source_record_id": "zap-projects:2024Q0219",
-            "source_fields": [
-              "primary_applicant"
-            ],
-            "basis": "land_primary_applicant",
-            "observed_at": "2026-04-22T00:00:00.000",
-            "input_value": "135 Sapphire LLC"
-          },
-          "layer": "cross_domain_object_link_v1"
-        }
-      ],
-      "metrics": {
-        "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
-        "domains_matched": 1,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
-        "total_linked_objects": 1,
-        "link_count": 1,
-        "coverage_rate": 0.2
-      }
-    },
-    "vendor:stem:165-25%20UNION%20TURNPIKE": {
-      "ok": true,
-      "version": "cross_domain_object_link_v1",
-      "method": "cross_domain_identity_v1",
-      "method_version": "1.0.0",
-      "root": {
-        "kind": "vendor",
-        "ref": "vendor:stem:165-25%20UNION%20TURNPIKE",
-        "id": "stem:165-25%20UNION%20TURNPIKE",
-        "stem": "165-25 UNION TURNPIKE",
-        "display_name": "165-25 Union Turnpike LLC"
-      },
-      "domains": {
-        "money": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No money objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "land": {
-          "status": "matched",
-          "gap_class": null,
-          "note": null,
-          "objects": [
-            {
-              "subject_ref": "project:2023Q0303",
-              "domain": "land",
-              "object_kind": "project",
-              "label": "165-25 Union Turnpike Rezoning",
-              "when": "2025-12-02",
-              "amount": null,
-              "public_status": "Noticed",
-              "pin": null,
-              "project_id": "2023Q0303",
-              "request_id": null,
-              "event_id": null,
-              "ulurp_numbers": null,
-              "root_ref": "vendor:stem:165-25%20UNION%20TURNPIKE",
-              "root_kind": "vendor",
-              "href": "#land?project=2023Q0303",
-              "provenance": {
-                "source_system": "warehouse",
-                "source_record_id": "warehouse:2023Q0303",
-                "source_fields": [
-                  "primary_applicant"
-                ],
-                "basis": "land_primary_applicant",
-                "observed_at": "2025-12-02",
-                "input_value": "165-25 Union Turnpike LLC"
-              },
-              "link_type": "applicant_vendor",
-              "confidence": "tentative",
-              "method": "vendor_stem_v1"
-            }
-          ],
-          "count": 1
-        },
-        "rules": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No rules objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "meetings": {
-          "status": "empty",
-          "gap_class": "empty_in_corpus",
-          "note": "No meetings objects in the linked corpus resolved to this entity.",
-          "objects": [],
-          "count": 0
-        },
-        "people": {
-          "status": "not_yet_ingested",
-          "gap_class": "not_yet_ingested",
-          "note": "Not yet shown here — person-level votes live in Legistar when the meeting-outcomes read model retains by_person rows.",
-          "objects": [],
-          "count": 0
-        }
-      },
-      "links": [
-        {
-          "type": "applicant_vendor",
-          "from": "project:2023Q0303",
-          "to": "vendor:stem:165-25%20UNION%20TURNPIKE",
-          "domain": "land",
-          "confidence": "tentative",
-          "method": "vendor_stem_v1",
-          "method_version": "1",
-          "provenance": {
-            "source_system": "warehouse",
-            "source_record_id": "warehouse:2023Q0303",
-            "source_fields": [
-              "primary_applicant"
-            ],
-            "basis": "land_primary_applicant",
-            "observed_at": "2025-12-02",
-            "input_value": "165-25 Union Turnpike LLC"
-          },
-          "layer": "cross_domain_object_link_v1"
-        }
-      ],
-      "metrics": {
-        "metric": "cross_domain_object_link_coverage",
-        "domains_total": 5,
-        "domains_matched": 1,
-        "domains_not_yet_ingested": 1,
-        "domains_empty": 3,
-        "total_linked_objects": 1,
-        "link_count": 1,
-        "coverage_rate": 0.2
+        "coverage_rate": 0.16666666666666666
       }
     }
   },
@@ -6347,9 +7295,25 @@
       "ref": "agency:id:parks-and-recreation",
       "kind": "agency",
       "display_name": "Parks and Recreation",
-      "domains_matched": 4,
-      "total_linked_objects": 9,
-      "coverage_rate": 0.8
+      "domains_matched": 5,
+      "total_linked_objects": 10,
+      "coverage_rate": 0.8333333333333334
+    },
+    {
+      "ref": "agency:id:housing-preservation-and-development",
+      "kind": "agency",
+      "display_name": "Housing Preservation and Development",
+      "domains_matched": 3,
+      "total_linked_objects": 8,
+      "coverage_rate": 0.5
+    },
+    {
+      "ref": "agency:id:citywide-administrative-services",
+      "kind": "agency",
+      "display_name": "Citywide Administrative Services",
+      "domains_matched": 3,
+      "total_linked_objects": 5,
+      "coverage_rate": 0.5
     },
     {
       "ref": "agency:id:transportation",
@@ -6357,23 +7321,15 @@
       "display_name": "Transportation",
       "domains_matched": 3,
       "total_linked_objects": 3,
-      "coverage_rate": 0.6
+      "coverage_rate": 0.5
     },
     {
-      "ref": "agency:id:citywide-administrative-services",
-      "kind": "agency",
-      "display_name": "Citywide Administrative Services",
+      "ref": "vendor:stem:MAKE%20IT%20ZESTY",
+      "kind": "vendor",
+      "display_name": "Make it Zesty LLC",
       "domains_matched": 2,
-      "total_linked_objects": 3,
-      "coverage_rate": 0.4
-    },
-    {
-      "ref": "agency:id:housing-preservation-and-development",
-      "kind": "agency",
-      "display_name": "Housing Preservation and Development",
-      "domains_matched": 2,
-      "total_linked_objects": 3,
-      "coverage_rate": 0.4
+      "total_linked_objects": 2,
+      "coverage_rate": 0.3333333333333333
     },
     {
       "ref": "vendor:stem:EXTELL%20DEVELOPMENT",
@@ -6381,7 +7337,7 @@
       "display_name": "Extell Development",
       "domains_matched": 1,
       "total_linked_objects": 4,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
     },
     {
       "ref": "agency:id:edc-economic-development-corporation-for-nyc",
@@ -6389,7 +7345,7 @@
       "display_name": "EDC - Economic Development Corporation for NYC",
       "domains_matched": 1,
       "total_linked_objects": 3,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
     },
     {
       "ref": "agency:id:lpc-nyc-landmarks-preservation-commission",
@@ -6397,7 +7353,7 @@
       "display_name": "LPC - NYC Landmarks Preservation Commission",
       "domains_matched": 1,
       "total_linked_objects": 3,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
     },
     {
       "ref": "agency:id:dot-nyc-dept-of-transportation",
@@ -6405,7 +7361,15 @@
       "display_name": "DOT - NYC Dept of Transportation",
       "domains_matched": 1,
       "total_linked_objects": 2,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
+    },
+    {
+      "ref": "agency:id:economic-development-corporation",
+      "kind": "agency",
+      "display_name": "Economic Development Corporation",
+      "domains_matched": 1,
+      "total_linked_objects": 2,
+      "coverage_rate": 0.16666666666666666
     },
     {
       "ref": "agency:id:new-york-city-department-of-city-planning",
@@ -6413,7 +7377,7 @@
       "display_name": "New York City Department of City Planning",
       "domains_matched": 1,
       "total_linked_objects": 2,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
     },
     {
       "ref": "agency:id:nyc-dot-department-of-transportation",
@@ -6421,7 +7385,7 @@
       "display_name": "NYC DOT Department of Transportation",
       "domains_matched": 1,
       "total_linked_objects": 2,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
     },
     {
       "ref": "vendor:stem:BP%20347%20MADISON%20ASSOCIATES",
@@ -6429,7 +7393,7 @@
       "display_name": "BP 347 Madison Associates, LLC .",
       "domains_matched": 1,
       "total_linked_objects": 2,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
     },
     {
       "ref": "vendor:stem:ERIC%20PALATNIK",
@@ -6437,7 +7401,7 @@
       "display_name": "Eric Palatnik",
       "domains_matched": 1,
       "total_linked_objects": 2,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
     },
     {
       "ref": "vendor:stem:GO%20QUAY",
@@ -6445,7 +7409,7 @@
       "display_name": "GO Quay LLC",
       "domains_matched": 1,
       "total_linked_objects": 2,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
     },
     {
       "ref": "vendor:stem:PHIPPS%20HOUSES",
@@ -6453,7 +7417,7 @@
       "display_name": "Phipps Houses",
       "domains_matched": 1,
       "total_linked_objects": 2,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
     },
     {
       "ref": "vendor:stem:PRINCE%20ST%20606",
@@ -6461,7 +7425,7 @@
       "display_name": "PRINCE ST 606 LLC",
       "domains_matched": 1,
       "total_linked_objects": 2,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
     },
     {
       "ref": "vendor:stem:SILVERSTEIN%20MB",
@@ -6469,7 +7433,7 @@
       "display_name": "SILVERSTEIN MB LLC",
       "domains_matched": 1,
       "total_linked_objects": 2,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
     },
     {
       "ref": "vendor:stem:THE%20DURST%20ORGANIZATION",
@@ -6477,7 +7441,7 @@
       "display_name": "The Durst Organization",
       "domains_matched": 1,
       "total_linked_objects": 2,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
     },
     {
       "ref": "vendor:stem:WATERSHORE%20VIEWS",
@@ -6485,7 +7449,7 @@
       "display_name": "Watershore Views LLC",
       "domains_matched": 1,
       "total_linked_objects": 2,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
     },
     {
       "ref": "agency:id:city-council",
@@ -6493,7 +7457,7 @@
       "display_name": "City Council",
       "domains_matched": 1,
       "total_linked_objects": 1,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
     },
     {
       "ref": "agency:id:city-planning",
@@ -6501,7 +7465,7 @@
       "display_name": "City Planning",
       "domains_matched": 1,
       "total_linked_objects": 1,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
     },
     {
       "ref": "agency:id:dcas-nyc-department-of-citywide-administrative-services",
@@ -6509,7 +7473,7 @@
       "display_name": "DCAS - NYC Department of Citywide Administrative Services",
       "domains_matched": 1,
       "total_linked_objects": 1,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
     },
     {
       "ref": "agency:id:dep-new-york-city-department-of-environmental-protection",
@@ -6517,7 +7481,7 @@
       "display_name": "DEP - New York City Department of Environmental Protection",
       "domains_matched": 1,
       "total_linked_objects": 1,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
     },
     {
       "ref": "agency:id:department-of-education",
@@ -6525,7 +7489,7 @@
       "display_name": "Department of Education",
       "domains_matched": 1,
       "total_linked_objects": 1,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
     },
     {
       "ref": "agency:id:department-of-environmental-protection",
@@ -6533,7 +7497,7 @@
       "display_name": "Department of Environmental Protection",
       "domains_matched": 1,
       "total_linked_objects": 1,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
     },
     {
       "ref": "agency:id:fdny-fire-department-of-nyc",
@@ -6541,7 +7505,7 @@
       "display_name": "FDNY - Fire Department of NYC",
       "domains_matched": 1,
       "total_linked_objects": 1,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
     },
     {
       "ref": "agency:id:health-and-mental-hygiene",
@@ -6549,7 +7513,7 @@
       "display_name": "Health and Mental Hygiene",
       "domains_matched": 1,
       "total_linked_objects": 1,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
     },
     {
       "ref": "agency:id:mayors-office-of-criminal-justice",
@@ -6557,7 +7521,7 @@
       "display_name": "Mayor's Office of Criminal Justice",
       "domains_matched": 1,
       "total_linked_objects": 1,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
     },
     {
       "ref": "agency:id:new-york-state-department-of-transportation",
@@ -6565,7 +7529,7 @@
       "display_name": "New York State Department Of Transportation",
       "domains_matched": 1,
       "total_linked_objects": 1,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
     },
     {
       "ref": "agency:id:ny-state-department-of-transporation",
@@ -6573,7 +7537,7 @@
       "display_name": "Ny State Department Of Transporation",
       "domains_matched": 1,
       "total_linked_objects": 1,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
     },
     {
       "ref": "agency:id:nyc-dot-new-york-city-dept-of-transportation-bridges",
@@ -6581,7 +7545,7 @@
       "display_name": "NYC DOT New York City Dept. of Transportation - Bridges",
       "domains_matched": 1,
       "total_linked_objects": 1,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
     },
     {
       "ref": "agency:id:sca-new-york-city-school-construction-authority",
@@ -6589,7 +7553,15 @@
       "display_name": "SCA - New York City School Construction Authority",
       "domains_matched": 1,
       "total_linked_objects": 1,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
+    },
+    {
+      "ref": "agency:id:small-business-services",
+      "kind": "agency",
+      "display_name": "Small Business Services",
+      "domains_matched": 1,
+      "total_linked_objects": 1,
+      "coverage_rate": 0.16666666666666666
     },
     {
       "ref": "agency:id:youth-and-community-development",
@@ -6597,7 +7569,7 @@
       "display_name": "Youth and Community Development",
       "domains_matched": 1,
       "total_linked_objects": 1,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
     },
     {
       "ref": "vendor:stem:100%20QUEENS%20BLVD",
@@ -6605,7 +7577,7 @@
       "display_name": "100 Queens Blvd Co. LLC",
       "domains_matched": 1,
       "total_linked_objects": 1,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
     },
     {
       "ref": "vendor:stem:100%20WALL%20REALTY",
@@ -6613,7 +7585,7 @@
       "display_name": "100 Wall Realty LLC",
       "domains_matched": 1,
       "total_linked_objects": 1,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
     },
     {
       "ref": "vendor:stem:108%20DUNKIRK%20STREET",
@@ -6621,7 +7593,7 @@
       "display_name": "108 Dunkirk Street LLC",
       "domains_matched": 1,
       "total_linked_objects": 1,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
     },
     {
       "ref": "vendor:stem:108%20REALTY%20GROUP",
@@ -6629,7 +7601,7 @@
       "display_name": "108 Realty Group Inc.",
       "domains_matched": 1,
       "total_linked_objects": 1,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
     },
     {
       "ref": "vendor:stem:108%20ST",
@@ -6637,31 +7609,7 @@
       "display_name": "108 ST ., LLC",
       "domains_matched": 1,
       "total_linked_objects": 1,
-      "coverage_rate": 0.2
-    },
-    {
-      "ref": "vendor:stem:1130%20TIFFANY%20STREET",
-      "kind": "vendor",
-      "display_name": "1130 Tiffany Street LLC",
-      "domains_matched": 1,
-      "total_linked_objects": 1,
-      "coverage_rate": 0.2
-    },
-    {
-      "ref": "vendor:stem:135%20SAPPHIRE",
-      "kind": "vendor",
-      "display_name": "135 Sapphire LLC",
-      "domains_matched": 1,
-      "total_linked_objects": 1,
-      "coverage_rate": 0.2
-    },
-    {
-      "ref": "vendor:stem:165-25%20UNION%20TURNPIKE",
-      "kind": "vendor",
-      "display_name": "165-25 Union Turnpike LLC",
-      "domains_matched": 1,
-      "total_linked_objects": 1,
-      "coverage_rate": 0.2
+      "coverage_rate": 0.16666666666666666
     }
   ],
   "provenance": {
@@ -6671,13 +7619,17 @@
       "site/data/ocp_awards_warehouse_lookup.json",
       "site/data/zap_projects_warehouse_lookup.json",
       "site/data/land_default_ulurp.json",
-      "worker/test/fixtures/entity-intelligence/domain_observations.json"
+      "worker/test/fixtures/entity-intelligence/domain_observations.json",
+      "worker/test/fixtures/property-cross-domain/corpus.json",
+      "test/fixtures/property_disposition/multi_notice_bbl.json"
     ],
     "methods": [
       "agency_canonical_v1",
       "vendor_stem_v1",
-      "cross_domain_identity_v1"
+      "cross_domain_identity_v1",
+      "exact_bbl_v1",
+      "disposition_owner_label_v1"
     ],
-    "note": "Links only when identity normalizers resolve the same root. Empty domains are explicit; people defaults to not_yet_ingested without by_person rows."
+    "note": "Links only when identity normalizers resolve the same root. Property attaches via City Record agency_name and labeled disposition owners. Empty domains are explicit; people defaults to not_yet_ingested without by_person rows."
   }
 }
