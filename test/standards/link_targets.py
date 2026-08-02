@@ -93,6 +93,8 @@ OWN_HREF_EXPRS = (
     "${taskEsc(landHref)}",
     "${TaskFirst.taskCollectionHash(",
     "${backHref}",
+    # Official event-scoped skim (#official/{id}?notice=&event=) from roll-call names.
+    "${escUiHtml(officialLink)}",
 )
 # JS-templated hrefs known to resolve to an external host — must carry ${EXT_ATTRS}/${extSR()}.
 EXTERNAL_HREF_EXPRS = (
@@ -126,6 +128,7 @@ EXTERNAL_HREF_EXPRS = (
     "${escUiHtml(d.url)}",            # council meeting outcomes: Legistar supporting document
     "${escUiHtml(event.event_url)}",  # council meeting outcomes: Legistar MeetingDetail page
     "${escUiHtml(matterHref)}",       # council matter deep-link: Legistar Gateway M=L / matter_url
+    "${escUiHtml(v.matter_url)}",     # official skim: Legistar legislation for one matter vote
     "${escUiHtml(view.official_url)}",  # council matter phase lead: Legistar legislation URL
     "${escUiHtml(l.url)}",            # non-Council outcomes: borough president / CB minutes HTTPS
     "${escUiHtml(url)}",              # solicitation package document from Current Solicitations join

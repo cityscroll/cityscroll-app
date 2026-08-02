@@ -10377,10 +10377,11 @@ function meetingRollCallChipHTML(votes, ctx){
   const names = show.map(p => {
     const id = officialIdFromPerson(p);
     const name = (p.official && p.official.display_name) || p.person_name || id;
-    const href = officialHref(id, ctx);
+    // officialLink is an in-app hash route (#official/…) — own navigation, not EXT_ATTRS.
+    const officialLink = officialHref(id, ctx);
     const label = escUiHtml(name);
-    return href
-      ? `<a class="meeting-official-link" href="${escUiHtml(href)}" data-official-id="${escUiHtml(id)}" lang="en" dir="ltr">${label}</a>`
+    return officialLink
+      ? `<a class="meeting-official-link" href="${escUiHtml(officialLink)}" data-official-id="${escUiHtml(id)}" lang="en" dir="ltr">${label}</a>`
       : `<span lang="en" dir="ltr" data-official-id="${escUiHtml(id)}">${label}</span>`;
   }).join(", ");
   const moreHTML = more > 0
@@ -10422,9 +10423,10 @@ function meetingVotesHTML(votes, ctx){
         const id = officialIdFromPerson(p);
         const name = (p.official && p.official.display_name) || p.person_name || p.person_id || "—";
         const vote = p.vote_bucket || p.vote_value || "—";
-        const href = officialHref(id, ctx);
-        const nameHTML = href
-          ? `<a class="meeting-official-link" href="${escUiHtml(href)}" data-official-id="${escUiHtml(id)}">${escUiHtml(name)}</a>`
+        // In-app #official/… skim — own href expression for link_targets.
+        const officialLink = officialHref(id, ctx);
+        const nameHTML = officialLink
+          ? `<a class="meeting-official-link" href="${escUiHtml(officialLink)}" data-official-id="${escUiHtml(id)}">${escUiHtml(name)}</a>`
           : escUiHtml(name);
         return `<span class="meeting-roll-call-person" lang="en" dir="ltr" data-official-id="${escUiHtml(id)}">${t("meeting_outcomes_vote_person_html",{
           name: nameHTML,
