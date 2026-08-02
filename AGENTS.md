@@ -68,6 +68,26 @@ node tools/build_ocp_warehouse_lookup.mjs --fixture --bench
 later: `doing-business-entities`. Query seam: `warehouse/lib/query.mjs` /
 `warehouse/scripts/query.py`. Details: `warehouse/README.md`.
 
+## Warehouse batch ER (WH-04)
+
+Reuse `entity_resolution/` (vendorStem, token_v0, scorePair, canonicalAgency) —
+do **not** reimplement matchers in SQL. Capped runner (same lock + headroom +
+taskpolicy wrap as ingest):
+
+```bash
+python3 "$HEADROOM_BIN"   # CONSTRAINED → defer
+warehouse/.venv/bin/python warehouse/scripts/er_batch_run.py --from-fixture --limit 25 --force-headroom
+warehouse/.venv/bin/python warehouse/scripts/er_batch_run.py --limit 200   # warehouse OCP slice
+warehouse/.venv/bin/python warehouse/scripts/query.py \
+  --sql-file warehouse/sql/examples/er_entity_links_verify.sql
+```
+
+Materialized views: `er_entity_link`, `er_canonical_entity`, `er_resolution_run`,
+`er_pair_receipt`, `er_ocp_vendor_resolved`. Pure lib:
+`warehouse/lib/er_batch.mjs`. Proof:
+`warehouse/receipts/proof/wh04_er_batch_latest.json`. Verify:
+`node --test test/warehouse_er_batch.test.mjs`.
+
 ## Global item-route navigation
 
 Detail-route Back controls use the session-history sidecar in `site/index.html`

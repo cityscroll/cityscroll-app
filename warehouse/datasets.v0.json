@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "description": "CityScroll warehouse dataset registry. WH-01 scaffold + WH-02 bulk pack entries.",
+  "description": "CityScroll warehouse dataset registry. WH-01 scaffold + WH-02 bulk pack + WH-04 ER batch inputs.",
   "defaults": {
     "max_rows_default": 50,
     "max_rows_hard_cap": 10000,
