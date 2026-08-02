@@ -11,6 +11,11 @@
  *   adoption       → adoption
  *   effective      → effective
  *
+ * Multi-notice stitch (scout Target 6): when the /rules materialization stamps
+ * high-confidence related_notices + rulemaking_subject_ref, merge sibling City
+ * Record notices into one lifecycle for the public lens. Ambiguous joins stay
+ * separate — never invent siblings.
+ *
  * Same presentation shape as site/land_phase_spine.mjs and
  * site/procurement_phase_spine.mjs: lead → stepper → phase panels → disclosure.
  * Does not invent CAPA/rulemaking stages absent from the read model.
@@ -259,25 +264,338 @@ function eventIsOccurred(event) {
   return event && (event.status === "occurred" || (!eventIsScheduled(event) && eventIsMaterial(event)));
 }
 
+/** Stage progression for multi-notice “best stage” pick (later wins). */
+const STAGE_RANK = Object.freeze({
+  unknown: 0,
+  proposed: 1,
+  "comment-open": 2,
+  hearing: 3,
+  "comment-closed": 4,
+  adopted: 5,
+  effective: 6,
+});
+
+const ROLE_TO_EVENT = Object.freeze({
+  proposal: "proposal_published",
+  hearing: "public_hearing",
+  adoption: "adoption",
+});
+
+const ROLE_LABEL_KEY = Object.freeze({
+  proposal: "rule_sibling_role_proposal",
+  hearing: "rule_sibling_role_hearing",
+  adoption: "rule_sibling_role_adoption",
+  notice: "rule_sibling_role_notice",
+});
+
+/**
+ * True when the materialization join is a high-confidence multi-notice stitch.
+ * Ambiguous / singleton / no-request_id rows must not pull siblings.
+ * @param {object|null|undefined} rec
+ */
+export function isConfidentMultiNoticeRulemaking(rec) {
+  const j = rec?.rulemaking_join;
+  if (!j || j.matched !== true) return false;
+  if (j.confidence !== "high") return false;
+  return (j.notice_count || 0) > 1;
+}
+
+/**
+ * True when a related_notices entry may be shown / merged.
+ * Requires high-confidence pair join when present; otherwise falls back to a
+ * high-confidence multi-notice parent join (backend always stamps pair join
+ * when matched, so the fallback is defensive).
+ * @param {object|null|undefined} rel
+ * @param {object|null|undefined} parentJoin
+ */
+export function isConfidentRelatedNotice(rel, parentJoin = null) {
+  if (!rel || !clean(rel.request_id)) return false;
+  const j = rel.join;
+  if (j && typeof j === "object") {
+    return j.matched === true && j.confidence === "high";
+  }
+  return (
+    parentJoin?.matched === true
+    && parentJoin.confidence === "high"
+    && (parentJoin.notice_count || 0) > 1
+  );
+}
+
+function cityRecordNoticeUrl(requestId) {
+  const id = clean(requestId);
+  if (!id) return null;
+  return `https://a856-cityrecord.nyc.gov/RequestDetail/${encodeURIComponent(id)}`;
+}
+
+function statusForDate(iso, nowIso) {
+  const d = isoDate(iso);
+  if (!d) return "occurred";
+  const now = isoDate(nowIso) || new Date().toISOString().slice(0, 10);
+  return d > now ? "scheduled" : "occurred";
+}
+
+/**
+ * Build a minimal spine event from a related_notices role + date when the
+ * sibling’s full materialization row is missing or event-empty.
+ * @param {object} rel - related_notices entry
+ * @param {object} [opts]
+ */
+export function eventFromRelatedNotice(rel, opts = {}) {
+  if (!rel) return null;
+  const role = clean(rel.role) || "notice";
+  const type = ROLE_TO_EVENT[role];
+  if (!type) return null;
+  const dateRaw =
+    type === "public_hearing"
+      ? (rel.event_date || rel.notice_date)
+      : rel.notice_date;
+  const day = isoDate(dateRaw);
+  if (!day && type !== "adoption") return null;
+  const now = opts.now || null;
+  const sourceUrl = cityRecordNoticeUrl(rel.request_id);
+  const status = statusForDate(day, now);
+  const event = {
+    event_type: type,
+    valid_at: type === "adoption" ? null : (day || null),
+    published_at: type === "adoption" ? (day || null) : null,
+    source_url: sourceUrl,
+    source_field: type === "public_hearing" && rel.event_date
+      ? "city_record.event_date"
+      : "city_record.notice_date",
+    source_system: "city_record",
+    status: type === "adoption" ? "occurred" : status,
+    request_id: clean(rel.request_id) || null,
+    title: clean(rel.title) || null,
+    from_related_notice: true,
+  };
+  if (type === "adoption" && day) {
+    // Prefer a calendar day for phase dating when we only have notice_date.
+    event.valid_at = day;
+  }
+  return event;
+}
+
+/**
+ * Dedupe-key for spine events (type + calendar day + source).
+ * @param {object} event
+ */
+export function eventMergeKey(event) {
+  const type = clean(event?.event_type) || "";
+  const day = eventDate(event) || "";
+  const src = normalizeSourceUrl(event?.source_url || event?.source?.url) || "";
+  return `${type}::${day}::${src}`;
+}
+
+/**
+ * Merge event lists: first wins per type+date+source; prefers richer status.
+ * @param {...object[]} lists
+ */
+export function mergeRulemakingEvents(...lists) {
+  const map = new Map();
+  for (const list of lists) {
+    for (const event of list || []) {
+      if (!event || !clean(event.event_type)) continue;
+      const key = eventMergeKey(event);
+      if (!map.has(key)) {
+        map.set(key, event);
+        continue;
+      }
+      // Prefer scheduled when same key collides (actionable); else keep first.
+      const prev = map.get(key);
+      if (prev.status !== "scheduled" && event.status === "scheduled") {
+        map.set(key, event);
+      }
+    }
+  }
+  const out = [...map.values()];
+  out.sort((a, b) => {
+    const oa = EVENT_ORDER[a.event_type] ?? 99;
+    const ob = EVENT_ORDER[b.event_type] ?? 99;
+    if (oa !== ob) return oa - ob;
+    return String(eventDate(a) || "").localeCompare(String(eventDate(b) || ""));
+  });
+  return out;
+}
+
+function pickRicherNycRules(a, b) {
+  if (!a) return b || null;
+  if (!b) return a;
+  const score = (nr) => {
+    if (!nr) return 0;
+    let n = 0;
+    for (const k of [
+      "url", "comment_url", "comment_by_date", "hearing_date",
+      "adoption_published_at", "effective_date", "guid", "summary",
+    ]) {
+      if (nr[k]) n += 1;
+    }
+    return n;
+  };
+  return score(b) > score(a) ? b : a;
+}
+
+function pickLaterStage(a, b) {
+  const ra = STAGE_RANK[clean(a) || ""] ?? 0;
+  const rb = STAGE_RANK[clean(b) || ""] ?? 0;
+  return rb > ra ? b : a;
+}
+
+/**
+ * Sibling notice chip for the public rules lens (self + confident related).
+ * @param {object} entry
+ * @param {boolean} isSelf
+ */
+function siblingChip(entry, isSelf) {
+  const role = clean(entry?.role) || "notice";
+  return {
+    request_id: clean(entry?.request_id) || null,
+    role,
+    role_label_key: ROLE_LABEL_KEY[role] || ROLE_LABEL_KEY.notice,
+    title: clean(entry?.title) || null,
+    notice_date: isoDate(entry?.notice_date) || null,
+    event_date: isoDate(entry?.event_date) || null,
+    stage: clean(entry?.stage) || null,
+    is_self: !!isSelf,
+  };
+}
+
+/**
+ * Merge high-confidence multi-notice rulemaking siblings into one lifecycle
+ * record for the public rules lens. Ambiguous notices pass through unchanged.
+ *
+ * @param {object|null|undefined} rec - focal /rules row
+ * @param {Map<string, object>|object|null} [recordsById] - request_id → full row
+ * @param {object} [opts]
+ * @param {string|null} [opts.now] - ISO date for scheduled vs occurred
+ * @returns {object|null}
+ */
+export function stitchRulemakingRecord(rec, recordsById = null, opts = {}) {
+  if (!rec || typeof rec !== "object") return rec || null;
+
+  const map = recordsById instanceof Map
+    ? recordsById
+    : recordsById && typeof recordsById === "object"
+      ? new Map(Object.entries(recordsById))
+      : new Map();
+
+  if (!isConfidentMultiNoticeRulemaking(rec)) {
+    return {
+      ...rec,
+      events: Array.isArray(rec.events) ? rec.events.slice() : [],
+      multi_notice: false,
+      sibling_notices: [],
+      stitched: false,
+    };
+  }
+
+  const parentJoin = rec.rulemaking_join || null;
+  const related = (Array.isArray(rec.related_notices) ? rec.related_notices : [])
+    .filter((rel) => isConfidentRelatedNotice(rel, parentJoin));
+
+  const selfId = clean(rec.request_id);
+  const eventLists = [Array.isArray(rec.events) ? rec.events : []];
+  let nycRules = rec.nyc_rules || null;
+  let stage = rec.stage || null;
+  let joinMatched = !!(rec.join?.matched || nycRules);
+  const siblingChips = [];
+
+  // Self chip first.
+  siblingChips.push(siblingChip({
+    request_id: selfId,
+    role: parentJoin?.role || "notice",
+    title: rec.title || rec.city_record?.title || rec.city_record?.short_title,
+    notice_date: rec.notice_date || rec.city_record?.notice_date,
+    event_date: rec.city_record?.event_date || null,
+    stage: rec.stage,
+  }, true));
+
+  for (const rel of related) {
+    const rid = clean(rel.request_id);
+    if (!rid || rid === selfId) continue;
+    siblingChips.push(siblingChip(rel, false));
+
+    const full = map.get(rid) || null;
+    if (full && Array.isArray(full.events) && full.events.length) {
+      eventLists.push(full.events);
+    } else {
+      const synthesized = eventFromRelatedNotice(rel, opts);
+      if (synthesized) eventLists.push([synthesized]);
+    }
+    if (full) {
+      nycRules = pickRicherNycRules(nycRules, full.nyc_rules);
+      stage = pickLaterStage(stage, full.stage);
+      if (full.join?.matched || full.nyc_rules) joinMatched = true;
+    }
+  }
+
+  let merged = mergeRulemakingEvents(...eventLists);
+
+  // Fill role-dated gaps from self + related_notices when a sibling contributes
+  // later stages but an earlier City Record notice still has no spine event
+  // (common when proposal/adoption rows never joined NYC Rules RSS).
+  const roleSources = [
+    {
+      request_id: selfId,
+      role: parentJoin?.role || "notice",
+      title: rec.title || rec.city_record?.title || rec.city_record?.short_title,
+      notice_date: rec.notice_date || rec.city_record?.notice_date || rec.city_record?.start_date,
+      event_date: rec.city_record?.event_date || rec.event_date || null,
+    },
+    ...related,
+  ];
+  for (const src of roleSources) {
+    const type = ROLE_TO_EVENT[clean(src.role) || ""];
+    if (!type) continue;
+    if (merged.some((e) => clean(e.event_type) === type)) continue;
+    const synth = eventFromRelatedNotice(src, opts);
+    if (synth) merged = mergeRulemakingEvents(merged, [synth]);
+  }
+
+  return {
+    ...rec,
+    events: merged,
+    nyc_rules: nycRules,
+    stage: stage || rec.stage,
+    join: {
+      ...(rec.join || {}),
+      // Preserve original NYC Rules join; surface multi-notice stitch separately.
+      multi_notice_stitched: true,
+      matched: joinMatched || !!(rec.join?.matched),
+    },
+    rulemaking_subject_ref: rec.rulemaking_subject_ref || null,
+    related_notices: related,
+    multi_notice: true,
+    sibling_notices: siblingChips,
+    stitched: true,
+    notice_count: parentJoin?.notice_count || siblingChips.length,
+  };
+}
+
 /**
  * Build phase-grouped rules event spine view model.
  *
  * @param {object|null|undefined} rec - rules materialization row for one notice
- *   (events[], nyc_rules, stage, join, request_id)
+ *   (events[], nyc_rules, stage, join, request_id, related_notices?)
  * @param {object} [opts]
  * @param {string|null} [opts.now] - ISO date override for tests (YYYY-MM-DD)
+ * @param {Map|object|null} [opts.recordsById] - optional sibling lookup for stitch
+ * @param {boolean} [opts.skipStitch] - when true, use rec.events as-is
  */
 export function buildRulesPhaseView(rec, opts = {}) {
-  const events = Array.isArray(rec?.events) ? rec.events.slice() : [];
-  const nr = rec?.nyc_rules || null;
-  const joined = !!(nr || rec?.join?.matched);
+  const stitched = opts.skipStitch
+    ? rec
+    : stitchRulemakingRecord(rec, opts.recordsById || null, opts);
+  const base = stitched || rec || {};
+  const events = Array.isArray(base?.events) ? base.events.slice() : [];
+  const nr = base?.nyc_rules || null;
+  const joined = !!(nr || base?.join?.matched);
   const officialUrl =
     clean(nr?.url) ||
     clean(nr?.comment_url) ||
     clean(events.find((e) => e?.source_url)?.source_url) ||
     null;
   const commentUrl = clean(nr?.comment_url) || officialUrl;
-  const requestId = clean(rec?.request_id) || null;
+  const requestId = clean(base?.request_id) || null;
 
   // Index material events by type (first wins; multi-notice stitch keeps all in phase arrays).
   const byType = Object.fromEntries(RULE_EVENT_TYPES.map((t) => [t, []]));
@@ -318,7 +636,7 @@ export function buildRulesPhaseView(rec, opts = {}) {
   }
 
   // Optional stage hint from list-view classifier when it points at a later phase.
-  const stageHint = clean(rec?.stage);
+  const stageHint = clean(base?.stage);
   if (stageHint) {
     const stageToPhase = {
       proposed: "proposal",
@@ -434,6 +752,11 @@ export function buildRulesPhaseView(rec, opts = {}) {
     .filter(Boolean);
   const allSourceUnique = new Set(allSourceCandidates.map(normalizeSourceUrl).filter(Boolean));
 
+  const siblingNotices = Array.isArray(base?.sibling_notices)
+    ? base.sibling_notices
+    : [];
+  const multiNotice = !!base?.multi_notice && siblingNotices.length > 1;
+
   return {
     schema_version: RULES_PHASE_SPINE_SCHEMA_VERSION,
     request_id: requestId,
@@ -469,5 +792,14 @@ export function buildRulesPhaseView(rec, opts = {}) {
     source_link_unique: allSourceUnique.size,
     stage: stageHint || null,
     nyc_rules: nr,
+    // Multi-notice public surface (only when join confidently holds).
+    multi_notice: multiNotice,
+    rulemaking_subject_ref: clean(base?.rulemaking_subject_ref) || null,
+    related_notices: Array.isArray(base?.related_notices) ? base.related_notices : [],
+    sibling_notices: siblingNotices,
+    notice_count: multiNotice
+      ? (base?.notice_count || siblingNotices.length)
+      : 1,
+    stitched: !!base?.stitched && multiNotice,
   };
 }
