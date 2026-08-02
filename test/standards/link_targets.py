@@ -121,6 +121,8 @@ EXTERNAL_HREF_EXPRS = (
     "${escUiHtml(entry.source.url)}", # subsidy lifecycle: official Build NYC / NYCIDA document
     "${escUiHtml(d.url)}",            # council meeting outcomes: Legistar supporting document
     "${escUiHtml(event.event_url)}",  # council meeting outcomes: Legistar MeetingDetail page
+    "${escUiHtml(matterHref)}",       # council matter deep-link: Legistar Gateway M=L / matter_url
+    "${escUiHtml(l.url)}",            # non-Council outcomes: borough president / CB minutes HTTPS
     "${escUiHtml(url)}",              # solicitation package document from Current Solicitations join
     "${escUiHtml(record.portal_url)}",  # land outcomes: official ZAP project portal
     "${escUiHtml(sourceURL)}",          # land event spine: City Record or ZAP source event
