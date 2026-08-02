@@ -26,6 +26,15 @@ export {
 } from "./flywheel.mjs";
 
 export {
+  DESTINATION_CLASSES,
+  KINETIC_ACTION_TYPES,
+  classifyDestinationUrl,
+  classifyActionDestination,
+  measureActionabilitySample,
+  actionabilityInputFromSample,
+} from "./actionability_sample.mjs";
+
+export {
   validateCrossSpineBundle,
   CROSS_SPINE_SCHEMA,
 } from "./cross_spine.mjs";

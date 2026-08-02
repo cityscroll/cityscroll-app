@@ -32,7 +32,9 @@ function stableHash(parts) {
  * @param {object} [input.er_metrics] — precision/recall/… from run_metrics
  * @param {object} [input.shadow_monitor] — shadow receipt rates
  * @param {object} [input.cross_spine] — { contradictions, checked }
- * @param {object} [input.actionability] — { sample_size, actionable, rate }
+ * @param {object} [input.actionability] — destination-class sample:
+ *   { sample_size, actionable (deep count), rate (deep/sample), by_class?, basis?, non_deep? }
+ *   Must NOT be derived from ACTION_TYPES enum length (always rate=1 when non-empty).
  * @param {object} [input.registry_sync] — checkOntologyRegistrySync result
  * @param {string} [input.mode] — fixture|live
  * @param {string} [input.generated_at]
@@ -143,6 +145,7 @@ export function planEnrichmentCards({
   gap_taxonomy,
   registry_sync,
   cross_spine,
+  actionability,
 } = {}) {
   const cards = [];
   const sources = Array.isArray(source_coverage?.sources) ? source_coverage.sources : [];
@@ -254,21 +257,33 @@ export function planEnrichmentCards({
     }));
   }
 
-  // Actionability sample weak
+  // Actionability: deep-link rate over destination-class sample (not ACTION_TYPES count)
   const actionRate = receipt?.metrics?.actionability_rate_sample;
+  const actionSample = actionability || {};
   if (Number.isFinite(actionRate) && actionRate < 0.5) {
+    const byClass = actionSample.by_class || {};
     cards.push(makeCard({
       class: "actionability",
       id_slug: "actionability-low",
-      title: "Raise notice actionability (non-unavailable official handoffs)",
+      title: "Raise deep-link actionability (search-page / landing / unavailable handoffs)",
       rank_score: 55,
       evidence: {
         actionability_rate_sample: actionRate,
         sample_size: receipt.metrics.actionability_sample_size,
+        deep: actionSample.deep ?? actionSample.actionable ?? null,
+        by_class: byClass,
+        non_deep_sample: Array.isArray(actionSample.non_deep)
+          ? actionSample.non_deep.slice(0, 12)
+          : null,
+        basis: actionSample.basis || null,
       },
-      verify: "node --test test/action-rail.test.mjs test/notice_action_rail.test.mjs",
+      verify: "node --test test/actionability_sample.test.mjs test/action-rail.test.mjs test/intelligence_flywheel.test.mjs",
       needs_human: null,
-      context: ["site/action_registry.js"],
+      context: [
+        "ontology/actionability_sample.mjs",
+        "ontology/fixtures/dimensions/actionability_sample.json",
+        "site/action_registry.js",
+      ],
     }));
   }
 
