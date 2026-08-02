@@ -18,7 +18,10 @@ test("precomputed staffing artifact is reproducible from committed source snapsh
 
 test("every exam has a unique shareable identity and official provenance", () => {
   assert.equal(artifact.schema_version, 1);
-  assert.equal(artifact.exams.length, 151);
+  // Current FY schedule (~151) plus closed list-depth exams with Civil Service List joins.
+  assert.ok(artifact.exams.length >= 151, `expected full schedule, got ${artifact.exams.length}`);
+  const listDepth = artifact.exams.filter((exam) => exam.list_depth || exam.sources?.includes("dcas-annual-closed-list-depth"));
+  assert.ok(listDepth.length >= 10, "closed list-depth exams keep post-list joins after FY roll-forward");
   assert.equal(new Set(artifact.exams.map(exam => exam.exam_number)).size, artifact.exams.length);
   for (const exam of artifact.exams) {
     assert.match(exam.exam_number, /^\d{4}$/);

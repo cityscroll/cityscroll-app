@@ -729,6 +729,7 @@
     meeting_outcomes_vote_person_html: "{name} ({vote})",
     meeting_outcomes_outcome_html: "Resultado: {outcome}",
     meeting_outcomes_no_votes_html: "Aún no se muestra aquí — los votos nominales del asunto “{matter}” están en NYC Council Legistar.",
+    meeting_outcomes_no_person_votes_html: "Aún no se muestra aquí — los votos nominales por persona están en NYC Council Legistar.",
     meeting_outcomes_no_matters_html: "Aún no se muestra aquí — los puntos del orden del día y los asuntos están en NYC Council Legistar.",
     meeting_outcomes_no_action_html: "Aún no se muestra aquí — la acción del comité sobre este asunto está en NYC Council Legistar.",
     meeting_outcomes_no_attachments_html: "Aún no se muestra aquí — los archivos adjuntos de apoyo están en NYC Council Legistar.",
@@ -1406,6 +1407,7 @@
     career_outcome_stage_certification: "la certificación a la agencia",
     career_outcome_stage_appointment: "el nombramiento",
     career_outcomes_not_published_html: "La ciudad aún no publica resultados posteriores al ciclo para este examen: aparecerían en {source} después de {stage}.",
+    career_outcomes_not_yet_ingested_html: "Aún no se muestra aquí: los agregados posteriores al ciclo están en {source} (y en los datos abiertos de la Lista de Servicio Civil) después de {stage}.",
     // END GENERATED CAREER GUIDE TRANSLATIONS
   });
   W.SECTION_I18N = W.SECTION_I18N || {};

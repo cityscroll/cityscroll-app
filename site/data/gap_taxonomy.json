@@ -2061,7 +2061,7 @@
     {
       "id": "exam-outcome-aggregate",
       "surface": "staffing exam cards · post-cycle outcomes",
-      "i18n_key": null,
+      "i18n_key": "career_outcomes_not_yet_ingested_html",
       "class": "not_yet_ingested",
       "public_source": {
         "name": "DCAS annual civil-service exam outcome aggregates + Civil Service List (Active) exam-level counts",
@@ -2073,8 +2073,8 @@
           "exam_no"
         ]
       },
-      "notices_affected_estimate": "Closed exams with list presence get list-size depth; full hire/certification counts still depend on the annual outcomes publication.",
-      "evidence": "Source contract dcas-annual-exam-outcomes is build-time live for full post-cycle counts. Civil Service List closed-exam exam_no overlap measured 2026-07-30 at 44.54% (494/1,109) — above ~30%; open-exam overlap 0%. Build joins privacy-safe list aggregates (list_count, established_date) onto exam cards as post-list depth when annual outcomes are absent. Per-applicant rows never ship. Receipt: site/data/exam_sources/verification_receipts/civil_service_list_closed_exams_2026-07-30.json."
+      "notices_affected_estimate": "Closed exams with list presence get list-size depth via list_depth_closed_exams.json + civil_service_list_aggregates.json; full hire/certification counts still depend on the annual outcomes publication. Open current-FY exams without a list row use class-(a) not-yet-ingested copy — never class-(b) city-withhold for aggregates.",
+      "evidence": "Source contract dcas-annual-exam-outcomes is build-time live for full post-cycle counts. Civil Service List closed-exam exam_no overlap measured 2026-07-30 at 44.54% (494/1,109) — above ~30%; open-exam overlap 0%. Build joins privacy-safe list aggregates (list_count, established_date) onto exam cards as post-list depth when annual outcomes are absent, including closed FY exams retained in list_depth_closed_exams.json after the current-year annual snapshot rolls forward. Empty aggregate slots use career_outcomes_not_yet_ingested_html. Per-applicant rows never ship. Receipt: site/data/exam_sources/verification_receipts/civil_service_list_closed_exams_2026-07-30.json."
     },
     {
       "id": "exam-outcome-individual",

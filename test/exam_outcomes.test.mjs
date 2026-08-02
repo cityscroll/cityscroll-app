@@ -75,7 +75,7 @@ const JOINED_FIELD_CASES = {
 
 const PENDING_FIELD_CASES = ["7013", "7016", "7331"];
 
-test("every exam carries a build-time outcome join or an explicit not-published gap", () => {
+test("every exam carries a build-time outcome join, list depth, or an explicit class-(a) gap", () => {
   assert.ok(artifact.exams.length > 0);
   for (const exam of artifact.exams) {
     if (exam.outcome) {
@@ -88,9 +88,14 @@ test("every exam carries a build-time outcome join or an explicit not-published 
         false,
         "joined outcome must stay aggregate-only",
       );
+    } else if (exam.list_aggregate && Number(exam.list_aggregate.list_count) > 0) {
+      assert.equal(exam.outcome, null);
+      assert.equal(exam.outcome_gap, null, exam.exam_number);
+      assert.equal(typeof exam.list_aggregate.list_count, "number");
     } else {
       assert.equal(exam.outcome, null);
-      assert.equal(exam.outcome_gap?.class, "not_published", exam.exam_number);
+      // Public annual + list sources exist — never class-(b) for aggregate depth.
+      assert.equal(exam.outcome_gap?.class, "not_yet_ingested", exam.exam_number);
       assert.equal(exam.outcome_gap?.pending_stage, "list_establishment", exam.exam_number);
     }
   }
@@ -112,17 +117,37 @@ test("characterization: acceptance exams join real outcomes by exam_number", () 
   }
 });
 
-test("characterization: open exams without a published row use not-published pending stage", () => {
+test("characterization: open exams without annual or list rows use class-(a) not-yet-ingested", () => {
   for (const examNumber of PENDING_FIELD_CASES) {
     const exam = artifact.exams.find((row) => row.exam_number === examNumber);
     assert.ok(exam, `missing exam ${examNumber}`);
     assert.equal(exam.outcome, null);
-    assert.equal(exam.outcome_gap.class, "not_published");
+    assert.equal(exam.list_aggregate, null);
+    assert.equal(exam.outcome_gap.class, "not_yet_ingested");
     assert.equal(exam.outcome_gap.pending_stage, "list_establishment");
     const view = Staffing.examOutcomeView(exam);
-    assert.equal(view.kind, "not_published");
+    assert.equal(view.kind, "not_yet_ingested");
     assert.equal(view.pending_stage, "list_establishment");
   }
+});
+
+test("characterization: closed exam has non-null list_aggregate from Civil Service List", () => {
+  const withList = artifact.exams.filter(
+    (row) => row.list_aggregate && Number(row.list_aggregate.list_count) > 0,
+  );
+  assert.ok(withList.length >= 1, "at least one exam must join list aggregates");
+  // Field case: Auto Body Worker (6024) — closed FY26 exam with measured list presence.
+  const exam = artifact.exams.find((row) => row.exam_number === "6024") || withList[0];
+  assert.ok(exam.list_aggregate.list_count > 0);
+  assert.equal(exam.outcome_gap, null);
+  const view = Staffing.examOutcomeView(exam);
+  assert.equal(view.kind, "list_joined");
+  assert.equal(view.list_count, exam.list_aggregate.list_count);
+  assert.equal(
+    Object.keys(exam.list_aggregate).some((key) => /name|person|rank/i.test(key)),
+    false,
+    "list aggregate must stay privacy-safe",
+  );
 });
 
 test("join helpers prefer the latest published_on when exam_number collides across cycles", () => {
@@ -155,15 +180,17 @@ test("join helpers prefer the latest published_on when exam_number collides acro
   assert.equal(joined.outcome_gap, null);
   const missing = joinOutcomeOntoExam({ exam_number: "9999", title: "Open" }, map);
   assert.equal(missing.outcome, null);
-  assert.equal(missing.outcome_gap.class, "not_published");
+  // Standalone annual miss is provisional class-(a); full path uses list join first.
+  assert.equal(missing.outcome_gap.class, "not_yet_ingested");
 });
 
-test("exam cards and detail render joined outcomes or the not-published register", () => {
+test("exam cards and detail render joined, list_joined, or class-(a) not-yet-ingested", () => {
   assert.match(html, /function careerOutcomeHTML\(exam\)/);
   assert.match(html, /career-outcomes/);
   assert.match(html, /data-outcome="joined"/);
-  assert.match(html, /data-outcome="not_published"/);
-  assert.match(html, /career_outcomes_not_published_html/);
+  assert.match(html, /data-outcome="list_joined"/);
+  assert.match(html, /data-outcome="not_yet_ingested"/);
+  assert.match(html, /career_outcomes_not_yet_ingested_html/);
   assert.match(html, /career_outcome_list_established/);
   assert.match(html, /career_outcome_hiring_pool/);
   assert.match(html, /CrolStaffing\.examOutcomeView/);
@@ -171,8 +198,10 @@ test("exam cards and detail render joined outcomes or the not-published register
   const cardFnStart = html.indexOf("function careerCardHTML(exam)");
   const cardFn = html.slice(cardFnStart, cardFnStart + 4500);
   assert.ok(cardFn.includes("careerOutcomeHTML(exam)"));
-  assert.match(i18n, /career_outcomes_not_published_html:/);
-  assert.match(i18n, /The city does not publish post-cycle outcomes/);
+  assert.match(i18n, /career_outcomes_not_yet_ingested_html:/);
+  assert.match(i18n, /Not yet shown here — post-cycle aggregates/);
+  // Must not render the false class-(b) city-withhold register for aggregate gaps.
+  assert.doesNotMatch(html, /data-outcome="not_published"/);
 });
 
 test("source contract documents the exam_number join and card surfaces", () => {

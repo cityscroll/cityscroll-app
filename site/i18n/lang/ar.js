@@ -736,6 +736,7 @@
     meeting_outcomes_vote_person_html: "{name} ({vote})",
     meeting_outcomes_outcome_html: "النتيجة: {outcome}",
     meeting_outcomes_no_votes_html: "لم يُعرض بعد هنا — أصوات النداء الاسمي للموضوع “{matter}” موجودة في NYC Council Legistar.",
+    meeting_outcomes_no_person_votes_html: "لم يُعرض هنا بعد — أصوات النداء الاسمي على مستوى الأشخاص موجودة في NYC Council Legistar.",
     meeting_outcomes_no_matters_html: "لم يُعرض هنا بعد — بنود جدول الأعمال والمسائل موجودة في NYC Council Legistar.",
     meeting_outcomes_no_action_html: "لم يُعرض بعد هنا — إجراء اللجنة لهذا الموضوع موجود في NYC Council Legistar.",
     meeting_outcomes_no_attachments_html: "لم تُعرض هنا بعد — المرفقات الداعمة موجودة في NYC Council Legistar.",
@@ -1408,6 +1409,7 @@
     career_outcome_stage_certification: "التصديق لدى الجهة",
     career_outcome_stage_appointment: "التعيين",
     career_outcomes_not_published_html: "المدينة لا تنشر بعد نتائج ما بعد الدورة لهذا الامتحان — ستظهر في {source} بعد {stage}.",
+    career_outcomes_not_yet_ingested_html: "لم يُعرض هنا بعد — مجاميع ما بعد الدورة موجودة في {source} (وفي بيانات Civil Service List المفتوحة) بعد {stage}.",
     // END GENERATED CAREER GUIDE TRANSLATIONS
   });
   W.SECTION_I18N = W.SECTION_I18N || {};
