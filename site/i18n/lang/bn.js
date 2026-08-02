@@ -346,7 +346,7 @@
     rule_sibling_role_hearing: "Public hearing",
     rule_sibling_role_adoption: "Adoption",
     rule_sibling_role_notice: "Notice",
-    rule_phase_how_multi_html: "When several City Record notices confidently belong to one rulemaking (proposal, hearing, adoption), this timeline stitches them into one path. Only high-confidence joins appear here — ambiguous notices stay separate. Dates still come from NYC Rules when joined; CityScroll does not invent stages.",
+    rule_phase_how_multi_html: "When several City Record notices confidently belong to one rulemaking (proposal, hearing, adoption), this timeline stitches them into one path. Only high-confidence joins appear here — ambiguous notices stay separate. Dates still come from NYC Rules when joined. CityScroll does not invent stages.",
     read_official_notice: "সরকারি বিজ্ঞপ্তি পড়ুন",
     next_action_heading: "আমি এখন কী করতে পারি?",
     next_action_watch: "এই বিজ্ঞপ্তি অনুসরণ করুন",
