@@ -9,14 +9,16 @@
     "official_votes_on_edge_rate": 0,
     "basis": "fetchLegistarItemVotes folded PersonId/PersonName into aye/nay/abstain tallies only; no official objects or votes_on edges."
   },
-  "after": {
+  "after_fixture": {
     "person_vote_retention_rate": 1.0,
     "official_votes_on_edge_rate": 1.0,
-    "basis": "Identified fixture rows retain official:{person_id} and votes_on edges to matter:{id}. Characterization: node --test test/official_entity_family.test.mjs test/legistar_client.test.mjs test/contract/meeting_outcomes.test.mjs"
+    "basis": "Identified fixture rows retain official:{person_id} and votes_on edges to matter:{id}. Characterization: node --test test/official_entity_family.test.mjs test/legistar_client.test.mjs test/contract/meeting_outcomes.test.mjs. Fixture rate is NOT a production measurement."
   },
-  "delta": {
-    "person_vote_retention_rate_pp": 100,
-    "official_votes_on_edge_rate_pp": 100
+  "production_probe_2026_08_01": {
+    "person_vote_retention_rate": 0,
+    "official_votes_on_edge_rate": 0,
+    "sample": "0/15 recent matched City Council hearings non-empty by_person; demo event 22526 (notice 20260706036) vote keys counts/result/source_url/kind only",
+    "basis": "Live GET /meeting-outcomes on production KV read model. Do not claim person-level who-voted until production retention > 0 after re-materialization."
   },
   "entity_family": "official",
   "primary_key_pattern": "official:{person_id}",
@@ -26,6 +28,7 @@
     "worker/src/lib/meeting_outcomes.mjs",
     "site/index.html#meetingOutcomesHTML"
   ],
-  "remaining_gap": "Vote dual-write is live (nyc_legistar_votes source_records populated under LEGISTAR_SOURCE_RECORD_DUAL_WRITE). Nested EventItems/Attachments may still be empty when product documents are only event Agenda/Minutes files on Events; those fields are retained on nyc_legistar_events snapshots."
+  "reader_facing_empty_register": "meeting_outcomes_no_person_votes_html (class a not_yet_ingested) when tallies present and by_person empty",
+  "remaining_gap": "Vote dual-write is live under LEGISTAR_SOURCE_RECORD_DUAL_WRITE; production meeting-outcomes KV still often lacks by_person (tallies only). Nested EventItems/Attachments may be empty when product documents are only event Agenda/Minutes on Events. Re-measure person retention before marketing who-voted."
 }
 

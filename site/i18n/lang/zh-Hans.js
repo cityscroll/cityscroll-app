@@ -729,6 +729,7 @@
     meeting_outcomes_vote_person_html: "{name}（{vote}）",
     meeting_outcomes_outcome_html: "结果：{outcome}",
     meeting_outcomes_no_votes_html: "此处尚未显示 — 事项“{matter}”的唱名表决结果在 NYC Council Legistar。",
+    meeting_outcomes_no_person_votes_html: "此处尚未显示 — 个人唱名表决结果在 NYC Council Legistar。",
     meeting_outcomes_no_matters_html: "此处尚未显示 — 议程项目与事项在 NYC Council Legistar。",
     meeting_outcomes_no_action_html: "此处尚未显示 — 该事项的委员会行动记录在 NYC Council Legistar。",
     meeting_outcomes_no_attachments_html: "此处尚未显示 — 相关附件在 NYC Council Legistar。",
@@ -1406,6 +1407,7 @@
     career_outcome_stage_certification: "向机构认证",
     career_outcome_stage_appointment: "任命",
     career_outcomes_not_published_html: "市政府尚未公布本考试的周期后结果——在{stage}之后，它们会出现在{source}中。",
+    career_outcomes_not_yet_ingested_html: "此处尚未显示——周期后汇总结果可在{stage}之后于{source}（及公务员名单开放数据）查看。",
     // END GENERATED CAREER GUIDE TRANSLATIONS
   });
   W.SECTION_I18N = W.SECTION_I18N || {};

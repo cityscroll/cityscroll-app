@@ -739,6 +739,7 @@
     meeting_outcomes_vote_person_html: "{name} ({vote})",
     meeting_outcomes_outcome_html: "Итог: {outcome}",
     meeting_outcomes_no_votes_html: "Пока не показано здесь — поименные голоса по вопросу «{matter}» есть в NYC Council Legistar.",
+    meeting_outcomes_no_person_votes_html: "Пока не показано здесь — поимённые голоса по людям есть в NYC Council Legistar.",
     meeting_outcomes_no_matters_html: "Пока не показано здесь — пункты повестки и дела есть в NYC Council Legistar.",
     meeting_outcomes_no_action_html: "Пока не показано здесь — действие комитета по этому вопросу есть в NYC Council Legistar.",
     meeting_outcomes_no_attachments_html: "Пока не показано здесь — сопроводительные вложения есть в NYC Council Legistar.",
@@ -1426,6 +1427,7 @@
     career_outcome_stage_certification: "сертификации в ведомство",
     career_outcome_stage_appointment: "назначения",
     career_outcomes_not_published_html: "Город пока не публикует итоги после цикла для этого экзамена — они появятся в {source} после {stage}.",
+    career_outcomes_not_yet_ingested_html: "Пока не показано здесь — итоговые агрегаты после цикла есть в {source} (и в открытых данных Civil Service List) после {stage}.",
     // END GENERATED CAREER GUIDE TRANSLATIONS
   });
   W.SECTION_I18N = W.SECTION_I18N || {};

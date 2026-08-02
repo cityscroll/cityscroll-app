@@ -80,6 +80,10 @@
     "list_aggregates": {
       "distinct_exams": 853,
       "total_list_rows_sum": 408068
+    },
+    "list_depth_closed": {
+      "count": 77,
+      "list_joined": 77
     }
   },
   "outcomes": {
@@ -129,10 +133,2783 @@
     },
     "summary": {
       "distinct_exams": 853,
-      "total_list_rows_sum": 408068
+      "total_list_rows_sum": 408068,
+      "exams_with_list_aggregate": 77
     }
   },
   "exams": [
+    {
+      "exam_number": "6311",
+      "title_code": null,
+      "title": "Police Officer",
+      "application_start": "2025-07-01",
+      "application_end": "2025-07-14",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 1983,
+        "established_date": "2025-12-03",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6028",
+      "title_code": null,
+      "title": "Automotive Service Worker",
+      "application_start": "2025-07-02",
+      "application_end": "2025-07-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 93,
+        "established_date": "2025-12-24",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6029",
+      "title_code": null,
+      "title": "Call Center Representative",
+      "application_start": "2025-07-02",
+      "application_end": "2025-08-26",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 981,
+        "established_date": null,
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6532",
+      "title_code": null,
+      "title": "Housing Manager (Prom)",
+      "application_start": "2025-07-02",
+      "application_end": "2025-07-22",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "community-social-services",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 31,
+        "established_date": "2026-06-10",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6066",
+      "title_code": null,
+      "title": "Landscape Architect",
+      "application_start": "2025-07-02",
+      "application_end": "2025-07-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 16,
+        "established_date": "2025-12-31",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6533",
+      "title_code": null,
+      "title": "Landscape Architect (Prom)",
+      "application_start": "2025-07-02",
+      "application_end": "2025-07-22",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 2,
+        "established_date": "2025-11-26",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6073",
+      "title_code": null,
+      "title": "Mason's Helper",
+      "application_start": "2025-07-02",
+      "application_end": "2025-07-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 257,
+        "established_date": "2025-11-12",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6074",
+      "title_code": null,
+      "title": "Mechanical Engineer",
+      "application_start": "2025-07-02",
+      "application_end": "2025-07-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 22,
+        "established_date": "2025-11-19",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6537",
+      "title_code": null,
+      "title": "Mechanical Engineer (Prom)",
+      "application_start": "2025-07-02",
+      "application_end": "2025-07-22",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 2,
+        "established_date": "2025-11-05",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6306",
+      "title_code": null,
+      "title": "Motor Vehicle Operator",
+      "application_start": "2025-07-02",
+      "application_end": "2025-07-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "trades-operations",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 148,
+        "established_date": "2026-05-20",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6089",
+      "title_code": null,
+      "title": "Program Evaluator (ACS)",
+      "application_start": "2025-07-02",
+      "application_end": "2025-07-22",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 364,
+        "established_date": "2025-11-19",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6330",
+      "title_code": "71651",
+      "title": "Traffic Enforcement Agent",
+      "application_start": "2025-07-02",
+      "application_end": "2025-07-29",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 201,
+        "established_date": "2026-04-01",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6312",
+      "title_code": null,
+      "title": "Police Officer",
+      "application_start": "2025-08-01",
+      "application_end": "2025-08-14",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 1527,
+        "established_date": "2025-12-31",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6002",
+      "title_code": null,
+      "title": "Administrative Community Relations Specialist",
+      "application_start": "2025-08-06",
+      "application_end": "2025-08-26",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "community-social-services",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 2551,
+        "established_date": "2025-12-24",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6512",
+      "title_code": null,
+      "title": "Associate Inspector (Housing) (Prom)",
+      "application_start": "2025-08-06",
+      "application_end": "2025-08-26",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 15,
+        "established_date": "2026-07-15",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6022",
+      "title_code": null,
+      "title": "Associate Public Information Specialist",
+      "application_start": "2025-08-06",
+      "application_end": "2025-08-26",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 201,
+        "established_date": "2026-03-25",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6530",
+      "title_code": null,
+      "title": "General Superintendent (Sanitation)(Prom)",
+      "application_start": "2025-08-06",
+      "application_end": "2025-08-26",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 189,
+        "established_date": "2026-06-24",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6101",
+      "title_code": null,
+      "title": "Stationary Engineer",
+      "application_start": "2025-08-06",
+      "application_end": "2025-08-26",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 369,
+        "established_date": "2025-12-10",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6549",
+      "title_code": "91644",
+      "title": "Stationary Engineer (Prom)",
+      "application_start": "2025-08-06",
+      "application_end": "2025-08-26",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 32,
+        "established_date": "2025-12-10",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6550",
+      "title_code": "51193",
+      "title": "Supervising Public Health Adviser (Prom)",
+      "application_start": "2025-08-06",
+      "application_end": "2025-08-26",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "health-care",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 63,
+        "established_date": "2026-05-20",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6551",
+      "title_code": "92271",
+      "title": "Supervisor Bricklayer (Prom)",
+      "application_start": "2025-08-06",
+      "application_end": "2025-08-26",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 46,
+        "established_date": "2025-11-26",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6313",
+      "title_code": null,
+      "title": "Police Officer",
+      "application_start": "2025-09-02",
+      "application_end": "2025-09-15",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 1828,
+        "established_date": "2026-02-11",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6001",
+      "title_code": null,
+      "title": "Administrative Architect",
+      "application_start": "2025-09-03",
+      "application_end": "2025-09-23",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 100,
+        "established_date": "2025-12-10",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6501",
+      "title_code": null,
+      "title": "Administrative Architect (Prom)",
+      "application_start": "2025-09-03",
+      "application_end": "2025-09-23",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 31,
+        "established_date": "2025-12-10",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6011",
+      "title_code": null,
+      "title": "Air Pollution Inspector",
+      "application_start": "2025-09-03",
+      "application_end": "2025-09-23",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 133,
+        "established_date": null,
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6018",
+      "title_code": null,
+      "title": "Associate Correctional Counselor",
+      "application_start": "2025-09-03",
+      "application_end": "2025-09-23",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "community-social-services",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 178,
+        "established_date": "2026-03-11",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6301",
+      "title_code": null,
+      "title": "Correction Officer",
+      "application_start": "2025-09-03",
+      "application_end": "2025-10-29",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 678,
+        "established_date": "2026-04-08",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6043",
+      "title_code": null,
+      "title": "Customer Information Representative",
+      "application_start": "2025-09-03",
+      "application_end": "2025-09-23",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 438,
+        "established_date": null,
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6058",
+      "title_code": null,
+      "title": "Heating Plant Technician (Housing Authority)",
+      "application_start": "2025-09-03",
+      "application_end": "2025-09-23",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "community-social-services",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 26,
+        "established_date": "2026-06-24",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6531",
+      "title_code": null,
+      "title": "Heating Plant Technician (Housing Authority) (Prom)",
+      "application_start": "2025-09-03",
+      "application_end": "2025-09-23",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "community-social-services",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 44,
+        "established_date": "2026-06-24",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6086",
+      "title_code": null,
+      "title": "Printing Press Operator",
+      "application_start": "2025-09-03",
+      "application_end": "2025-09-23",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "trades-operations",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 59,
+        "established_date": "2026-01-28",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6324",
+      "title_code": null,
+      "title": "School Safety Agent",
+      "application_start": "2025-09-03",
+      "application_end": "2025-09-30",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 411,
+        "established_date": "2026-05-06",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6113",
+      "title_code": "31715",
+      "title": "Traffic Control Inspector",
+      "application_start": "2025-09-03",
+      "application_end": "2025-09-23",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 380,
+        "established_date": null,
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6015",
+      "title_code": null,
+      "title": "Assistant Mechanical Engineer",
+      "application_start": "2025-10-01",
+      "application_end": "2025-10-21",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 148,
+        "established_date": "2026-03-18",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6053",
+      "title_code": null,
+      "title": "Emergency Medical Specialist - EMT",
+      "application_start": "2025-10-01",
+      "application_end": "2025-11-25",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "health-care",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 720,
+        "established_date": "2026-03-25",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6054",
+      "title_code": null,
+      "title": "Emergency Medical Specialist Trainee",
+      "application_start": "2025-10-01",
+      "application_end": "2025-11-25",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "health-care",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 2075,
+        "established_date": "2026-04-01",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6079",
+      "title_code": null,
+      "title": "Occupational Therapist (DOE)",
+      "application_start": "2025-10-01",
+      "application_end": "2025-10-21",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 110,
+        "established_date": "2026-01-28",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6081",
+      "title_code": null,
+      "title": "Physical Therapist (DOE)",
+      "application_start": "2025-10-01",
+      "application_end": "2025-10-21",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 24,
+        "established_date": "2026-01-28",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6314",
+      "title_code": null,
+      "title": "Police Officer",
+      "application_start": "2025-10-01",
+      "application_end": "2025-10-14",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 570,
+        "established_date": "2026-03-04",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6090",
+      "title_code": null,
+      "title": "Program Officer (Department For The Aging)",
+      "application_start": "2025-10-01",
+      "application_end": "2025-10-21",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 167,
+        "established_date": "2026-05-06",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6092",
+      "title_code": null,
+      "title": "Public Health Nurse",
+      "application_start": "2025-10-01",
+      "application_end": "2025-10-21",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "health-care",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 60,
+        "established_date": "2026-03-18",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6315",
+      "title_code": null,
+      "title": "Police Officer",
+      "application_start": "2025-11-03",
+      "application_end": "2025-11-17",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 918,
+        "established_date": "2026-03-25",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6012",
+      "title_code": null,
+      "title": "Architect",
+      "application_start": "2025-11-05",
+      "application_end": "2025-11-25",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 54,
+        "established_date": "2026-01-28",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6037",
+      "title_code": null,
+      "title": "Computer Associate (Operations)",
+      "application_start": "2025-11-05",
+      "application_end": "2025-11-25",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "technology-science",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 878,
+        "established_date": "2026-04-15",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6519",
+      "title_code": null,
+      "title": "Computer Associate (Operations) (Prom)",
+      "application_start": "2025-11-05",
+      "application_end": "2025-11-25",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "technology-science",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 6,
+        "established_date": "2026-02-04",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6076",
+      "title_code": null,
+      "title": "Media Services Technician",
+      "application_start": "2025-11-05",
+      "application_end": "2025-11-25",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 132,
+        "established_date": "2026-04-01",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6088",
+      "title_code": null,
+      "title": "Procurement Analyst",
+      "application_start": "2025-11-05",
+      "application_end": "2025-11-25",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 787,
+        "established_date": null,
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6091",
+      "title_code": null,
+      "title": "Project Manager Intern",
+      "application_start": "2025-11-05",
+      "application_end": "2025-11-25",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 403,
+        "established_date": "2026-05-06",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6105",
+      "title_code": "12200",
+      "title": "Stock Worker",
+      "application_start": "2025-11-05",
+      "application_end": "2025-11-25",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 245,
+        "established_date": "2026-06-17",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6310",
+      "title_code": "71651",
+      "title": "Traffic Enforcement Agent",
+      "application_start": "2025-11-05",
+      "application_end": "2025-12-02",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 262,
+        "established_date": "2026-05-13",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6316",
+      "title_code": null,
+      "title": "Police Officer",
+      "application_start": "2025-12-01",
+      "application_end": "2025-12-15",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 959,
+        "established_date": "2026-05-13",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6014",
+      "title_code": null,
+      "title": "Assistant Environmental Engineer",
+      "application_start": "2025-12-03",
+      "application_end": "2025-12-23",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 160,
+        "established_date": "2026-05-06",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6023",
+      "title_code": null,
+      "title": "Associate Public Records Officer",
+      "application_start": "2025-12-03",
+      "application_end": "2025-12-23",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "administration-finance",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 88,
+        "established_date": "2026-05-06",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6304",
+      "title_code": null,
+      "title": "Environmental Police Officer",
+      "application_start": "2025-12-03",
+      "application_end": "2025-12-23",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 196,
+        "established_date": "2026-06-24",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6064",
+      "title_code": null,
+      "title": "Industrial Hygienist",
+      "application_start": "2025-12-03",
+      "application_end": "2025-12-23",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 94,
+        "established_date": null,
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6094",
+      "title_code": null,
+      "title": "Reporter/Stenographer (Da)",
+      "application_start": "2025-12-03",
+      "application_end": "2025-12-23",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 82,
+        "established_date": null,
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6323",
+      "title_code": null,
+      "title": "Police Officer",
+      "application_start": "2026-01-02",
+      "application_end": "2026-01-15",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 893,
+        "established_date": "2026-06-03",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6021",
+      "title_code": null,
+      "title": "Associate Inspector (Housing Construction)",
+      "application_start": "2026-01-07",
+      "application_end": "2026-01-27",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 103,
+        "established_date": null,
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6046",
+      "title_code": null,
+      "title": "Electrical Engineer",
+      "application_start": "2026-01-07",
+      "application_end": "2026-01-27",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 23,
+        "established_date": "2026-04-29",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6522",
+      "title_code": null,
+      "title": "Electrical Engineer (Prom)",
+      "application_start": "2026-01-07",
+      "application_end": "2026-01-27",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 2,
+        "established_date": "2026-04-08",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6063",
+      "title_code": null,
+      "title": "Housing Exterminator",
+      "application_start": "2026-01-07",
+      "application_end": "2026-01-27",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "community-social-services",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 33,
+        "established_date": null,
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6068",
+      "title_code": null,
+      "title": "Legal Coordinator",
+      "application_start": "2026-01-07",
+      "application_end": "2026-01-27",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 93,
+        "established_date": "2026-07-01",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6078",
+      "title_code": null,
+      "title": "Nutrition Consultant",
+      "application_start": "2026-01-07",
+      "application_end": "2026-01-27",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 55,
+        "established_date": "2026-06-03",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6325",
+      "title_code": "60817",
+      "title": "School Safety Agent",
+      "application_start": "2026-01-07",
+      "application_end": "2026-02-17",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 592,
+        "established_date": "2026-07-22",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6115",
+      "title_code": "91011",
+      "title": "Watershed Maintainer",
+      "application_start": "2026-01-07",
+      "application_end": "2026-01-27",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 87,
+        "established_date": "2026-04-22",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6539",
+      "title_code": "70210",
+      "title": "Police Officer (Prom)",
+      "application_start": "2026-01-26",
+      "application_end": "2026-02-06",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 154,
+        "established_date": "2026-06-24",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6318",
+      "title_code": null,
+      "title": "Police Officer",
+      "application_start": "2026-02-02",
+      "application_end": "2026-02-17",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "public-safety",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 1334,
+        "established_date": "2026-07-01",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6034",
+      "title_code": null,
+      "title": "Chief Marine Engineer",
+      "application_start": "2026-02-04",
+      "application_end": "2026-02-24",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 14,
+        "established_date": "2026-05-06",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6517",
+      "title_code": null,
+      "title": "Chief Marine Engineer (Prom)",
+      "application_start": "2026-02-04",
+      "application_end": "2026-02-24",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 3,
+        "established_date": "2026-05-06",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6035",
+      "title_code": null,
+      "title": "Child and Family Specialist",
+      "application_start": "2026-02-04",
+      "application_end": "2026-02-24",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 161,
+        "established_date": null,
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6080",
+      "title_code": null,
+      "title": "Occupational Therapist (DOE)",
+      "application_start": "2026-02-04",
+      "application_end": "2026-02-24",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 57,
+        "established_date": "2026-04-22",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6082",
+      "title_code": null,
+      "title": "Physical Therapist (DOE)",
+      "application_start": "2026-02-04",
+      "application_end": "2026-02-24",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 21,
+        "established_date": "2026-04-22",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6502",
+      "title_code": null,
+      "title": "Administrative Education Officer (Prom)",
+      "application_start": "2026-03-04",
+      "application_end": "2026-03-24",
+      "eligibility": "promotion",
+      "schedule_status": "scheduled",
+      "interest_area": "administration-finance",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 82,
+        "established_date": "2026-06-10",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6013",
+      "title_code": null,
+      "title": "Asbestos Handler",
+      "application_start": "2026-03-04",
+      "application_end": "2026-03-24",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 53,
+        "established_date": "2026-07-22",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6016",
+      "title_code": null,
+      "title": "Assistant Plan Examiner (Buildings)",
+      "application_start": "2026-03-04",
+      "application_end": "2026-03-24",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "engineering-construction",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 118,
+        "established_date": null,
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6067",
+      "title_code": null,
+      "title": "Lead Abatement Worker",
+      "application_start": "2026-03-04",
+      "application_end": "2026-03-24",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 38,
+        "established_date": "2026-05-13",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
+    {
+      "exam_number": "6024",
+      "title_code": null,
+      "title": "Auto Body Worker",
+      "application_start": "2026-04-01",
+      "application_end": "2026-04-21",
+      "eligibility": "open_competitive",
+      "schedule_status": "scheduled",
+      "interest_area": "other",
+      "sources": [
+        "dcas-annual-closed-list-depth",
+        "dcas-active-civil-service-list"
+      ],
+      "list_depth": true,
+      "outcome": null,
+      "outcome_gap": null,
+      "list_aggregate": {
+        "list_count": 14,
+        "established_date": "2026-07-22",
+        "extension_date": null,
+        "title_count": 1,
+        "source_id": "dcas-active-civil-service-list"
+      },
+      "fee_salary_gap": {
+        "class": "not_yet_ingested",
+        "missing": [
+          "fee",
+          "salary_min"
+        ],
+        "public_source": {
+          "name": "DCAS open-competitive exam schedule and Notices of Examination",
+          "access": "Open-competitive schedule page + linked Notice of Examination PDFs",
+          "landing_page": "https://www.nyc.gov/site/dcas/employment/exam-schedules-open-competitive-exams.page"
+        }
+      }
+    },
     {
       "exam_number": "6125",
       "title_code": "53053",
@@ -190,8 +2967,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": null
@@ -246,8 +3027,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -288,8 +3073,12 @@
       "amendment": "The July 15 amended NOE extended the application deadline to August 25.",
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": null
@@ -318,8 +3107,12 @@
       "test_method": "Education and experience exam",
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": null
@@ -348,8 +3141,12 @@
       "test_method": "Education and experience exam",
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": null
@@ -368,8 +3165,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -399,8 +3200,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -430,8 +3235,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -471,8 +3280,12 @@
       "test_method": "Multiple-choice testing is expected to begin October 20, 2026",
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": null
@@ -501,8 +3314,12 @@
       "test_method": "Multiple-choice testing is expected to begin October 22, 2026",
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": null
@@ -521,8 +3338,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -552,8 +3373,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -583,8 +3408,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -614,8 +3443,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -645,8 +3478,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -676,8 +3513,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -707,8 +3548,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -738,8 +3583,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -769,8 +3618,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -800,8 +3653,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -831,8 +3688,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -862,8 +3723,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -893,8 +3758,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -924,8 +3793,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -955,8 +3828,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -986,8 +3863,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -1017,8 +3898,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -1048,8 +3933,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -1079,8 +3968,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -1110,8 +4003,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -1141,8 +4038,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -1172,8 +4073,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -1203,8 +4108,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -1234,8 +4143,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -1265,8 +4178,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -1296,8 +4213,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -1327,8 +4248,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -1358,8 +4283,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -1389,8 +4318,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -1420,8 +4353,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -1451,8 +4388,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -1482,8 +4423,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -1513,8 +4458,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -1544,8 +4493,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -1575,8 +4528,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -1606,8 +4563,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -1637,8 +4598,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -1668,8 +4633,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -1699,8 +4668,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -1730,8 +4703,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -1761,8 +4738,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -1792,8 +4773,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -1823,8 +4808,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -1854,8 +4843,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -1885,8 +4878,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -1916,8 +4913,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -1947,8 +4948,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -1978,8 +4983,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -2009,8 +5018,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -2040,8 +5053,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -2071,8 +5088,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -2102,8 +5123,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -2133,8 +5158,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -2164,8 +5193,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -2195,8 +5228,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -2226,8 +5263,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -2257,8 +5298,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -2288,8 +5333,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -2319,8 +5368,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -2350,8 +5403,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -2381,8 +5438,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -2412,8 +5473,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -2443,8 +5508,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -2474,8 +5543,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -2505,8 +5578,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -2536,8 +5613,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -2567,8 +5648,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -2598,8 +5683,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -2629,8 +5718,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -2660,8 +5753,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -2691,8 +5788,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -2722,8 +5823,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -2753,8 +5858,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -2784,8 +5893,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -2815,8 +5928,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -2846,8 +5963,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -2877,8 +5998,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -2908,8 +6033,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -2939,8 +6068,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -2970,8 +6103,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3001,8 +6138,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3032,8 +6173,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3063,8 +6208,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3094,8 +6243,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3125,8 +6278,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3156,8 +6313,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3187,8 +6348,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3218,8 +6383,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3249,8 +6418,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3280,8 +6453,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3311,8 +6488,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3342,8 +6523,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3373,8 +6558,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3404,8 +6593,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3435,8 +6628,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3466,8 +6663,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3497,8 +6698,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3528,8 +6733,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3559,8 +6768,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3590,8 +6803,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3621,8 +6838,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3652,8 +6873,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3683,8 +6908,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3714,8 +6943,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3745,8 +6978,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3776,8 +7013,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3807,8 +7048,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3838,8 +7083,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3869,8 +7118,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3900,8 +7153,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3931,8 +7188,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3962,8 +7223,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -3993,8 +7258,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -4024,8 +7293,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -4055,8 +7328,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -4086,8 +7363,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -4117,8 +7398,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -4148,8 +7433,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -4179,8 +7468,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -4210,8 +7503,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -4241,8 +7538,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -4272,8 +7573,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -4303,8 +7608,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -4334,8 +7643,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -4365,8 +7678,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -4396,8 +7713,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -4427,8 +7748,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -4458,8 +7783,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -4489,8 +7818,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -4520,8 +7853,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -4551,8 +7888,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -4582,8 +7923,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -4613,8 +7958,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -4644,8 +7993,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -4675,8 +8028,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -4706,8 +8063,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -4737,8 +8098,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -4768,8 +8133,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {
@@ -4799,8 +8168,12 @@
       ],
       "outcome": null,
       "outcome_gap": {
-        "class": "not_published",
-        "pending_stage": "list_establishment"
+        "class": "not_yet_ingested",
+        "pending_stage": "list_establishment",
+        "public_sources": [
+          "dcas-annual-exam-outcomes",
+          "dcas-active-civil-service-list"
+        ]
       },
       "list_aggregate": null,
       "fee_salary_gap": {

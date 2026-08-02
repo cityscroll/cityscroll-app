@@ -406,6 +406,36 @@ test("subsidy detail: young IDA hearing joins City Record hearing; later stages 
   assert.doesNotMatch(html, /Could not reach/i);
 });
 
+test("subsidy detail: feed_status=unavailable never uses city-does-not-publish for later stages", () => {
+  // Production shape for aged City Record hearing joins when Build NYC feed is down.
+  const feedDown = {
+    ...youngIdaSubsidy,
+    join: {
+      ...youngIdaSubsidy.join,
+      feed_status: "unavailable",
+      feed_note: "Build NYC document feed unreachable; hearing stage from City Record notice.",
+    },
+    timeline: (youngIdaSubsidy.timeline || []).map((entry) => {
+      if (!entry || entry.status === "matched") return entry;
+      // Force aged class-(b) that production used to emit; UI must remap.
+      return { ...entry, gap_kind: "not_published" };
+    }),
+  };
+  // Anchor as aged so client gap helper would also prefer not_published without the feed gate.
+  const html = subsidyLifecycleHTML(feedDown, {
+    request_id: "20220525018",
+    short_title: "NYCIDA SUPPLEMENTAL NOTICE OF PUBLIC HEARING",
+    event_date: "2022-06-09T10:00:00.000",
+  });
+  assert.match(html, /Subsidy lifecycle/);
+  assert.match(html, /Not yet shown here/);
+  assert.match(html, /data-subsidy-gap="not_yet_ingested"/);
+  assert.doesNotMatch(html, /The city does not publish this Board decision/i);
+  assert.doesNotMatch(html, /The city does not publish this Closing/i);
+  assert.doesNotMatch(html, /The city does not publish this Compliance/i);
+  assert.match(html, /Could not reach/i);
+});
+
 // ---------------------------------------------------------------------------
 // Council meeting outcomes: matched + unmatched
 // ---------------------------------------------------------------------------
@@ -451,6 +481,46 @@ test("meeting outcomes: matter-centric agenda shows badge, summary, and vote cou
   assert.match(html, /Minutes/);
   // Event docs once at the meeting level — not a 4-stage chain dump.
   assert.doesNotMatch(html, /Agenda item[\s\S]*Council matter[\s\S]*Outcome[\s\S]*Attachments/);
+});
+
+test("meeting outcomes: tallies without by_person use not-yet-shown person register", () => {
+  // Production shape for notice 20260706036 / event 22526: counts only, no person rows.
+  const html = meetingOutcomesHTML({
+    request_id: "20260706036",
+    join: { matched: true, method: "exact_date_body_tokens", reason: null },
+    council_event: {
+      event_id: "22526",
+      name: "Subcommittee on Landmarks, Public Sitings and Maritime Uses",
+      date: "2026-07-06",
+      documents: [],
+    },
+    agenda_items: [{
+      agenda_item_id: "1",
+      title: "Landmarks item",
+      matters: [{
+        matter_id: "M1",
+        matter_file: "T2026-0001",
+        title: "Landmark designation",
+        outcome: "Pass",
+        votes: [{
+          result: "Pass",
+          counts: { aye: 4, nay: 0, abstain: 0 },
+          kind: "vote",
+          source_url: "https://nyc.legistar.com/example",
+          // deliberately omit by_person — production KV shape
+        }],
+        documents: [],
+      }],
+    }],
+  }, {
+    agency_name: "City Council",
+    section_name: "Public Hearings and Meetings",
+  });
+  assert.match(html, /Vote: Pass \(aye 4 · nay 0\)/);
+  assert.match(html, /data-person-votes-gap="not_yet_ingested"/);
+  assert.match(html, /Not yet shown here — person-level roll-call votes live in NYC Council Legistar/);
+  assert.doesNotMatch(html, /data-official-votes/);
+  assert.doesNotMatch(html, /meeting-roll-call-person/);
 });
 
 test("meeting outcomes: unmatched renders the specific join reason", () => {

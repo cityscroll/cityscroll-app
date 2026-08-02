@@ -391,10 +391,11 @@ export function lagWeeksForStage(stage) {
   return Math.max(1, Math.round(days / 7));
 }
 
-// Three honest gap states for subsidy slots (when not matched):
-//   too_soon      — typical publication lag has not elapsed
-//   not_published — lag elapsed; treat as class-(b) absence
-//   unavailable   — feed/fetch failure (set by the worker path, not here)
+// Four honest gap states for subsidy slots (when not matched):
+//   too_soon          — typical publication lag has not elapsed
+//   not_published     — lag elapsed after a real project-feed join; class-(b) absence
+//   not_yet_ingested  — project feed never joined (or unreachable); class-(a) incomplete ingest
+//   unavailable       — whole-feed operational failure with no City Record fallback
 export function subsidyGapKind({ stage = "project_record", anchorDate = null, asOf = new Date(), matched = false } = {}) {
   if (matched) return null;
   const days = daysSinceIso(anchorDate, asOf);
@@ -402,6 +403,39 @@ export function subsidyGapKind({ stage = "project_record", anchorDate = null, as
   const lag = SUBSIDY_STAGE_EXPECT_LAG_DAYS[stage] ?? SUBSIDY_STAGE_EXPECT_LAG_DAYS.project_record;
   if (days < lag) return "too_soon";
   return "not_published";
+}
+
+/**
+ * When the Build NYC project feed is unreachable but a City Record hearing join
+ * still succeeds, remapped unmatched later stages must not claim the city withholds
+ * the record. Age-aware not_published only applies after a real project-feed match.
+ *
+ * @param {object|null} lifecycle
+ * @param {{ feedNote?: string }} [opts]
+ * @returns {object|null}
+ */
+export function stampSubsidyFeedUnavailable(lifecycle, opts = {}) {
+  if (!lifecycle || typeof lifecycle !== "object") return lifecycle;
+  const feedNote = opts.feedNote
+    || "Build NYC document feed unreachable; hearing stage from City Record notice.";
+  const timeline = Array.isArray(lifecycle.timeline)
+    ? lifecycle.timeline.map((entry) => {
+      if (!entry || entry.status === "matched") return entry;
+      // Keep temporal too_soon; rewrite aged class-(b) to not-yet-ingested.
+      if (entry.gap_kind === "too_soon") return entry;
+      return { ...entry, gap_kind: "not_yet_ingested" };
+    })
+    : lifecycle.timeline;
+  return {
+    ...lifecycle,
+    source_status: lifecycle.source_status || "ok",
+    join: {
+      ...(lifecycle.join || {}),
+      feed_status: "unavailable",
+      feed_note: feedNote,
+    },
+    timeline,
+  };
 }
 
 export function subsidyAnchorDate(notice = {}, lifecycle = null) {
