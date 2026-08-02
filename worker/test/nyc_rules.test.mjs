@@ -315,7 +315,7 @@ test("buildRuleView joins RSS items to City Record notices and preserves officia
 
   const view = await buildRuleView(multiSourceFetch(rss, crRows), NOW);
 
-  assert.equal(view.schema_version, 2);
+  assert.equal(view.schema_version, 3);
   assert.equal(view.source.enrichment.status, "ok");
   assert.equal(view.counts.total, 3);
   assert.equal(view.counts.matched, 1);
@@ -637,14 +637,40 @@ test("buildRuleView falls back to City Record only when RSS is unreachable", asy
 test("rulesViewNeedsRefresh retries young views whose RSS enrichment is still stale", () => {
   const nowMs = Date.parse("2026-08-01T18:00:00.000Z");
   assert.equal(rulesViewNeedsRefresh(null, nowMs), true);
-  assert.equal(rulesViewNeedsRefresh({ generated_at: "2026-08-01T17:00:00.000Z", source: { enrichment: { status: "ok" } } }, nowMs), false);
   assert.equal(rulesViewNeedsRefresh({
+    schema_version: 3,
+    generated_at: "2026-08-01T17:00:00.000Z",
+    source: { enrichment: { status: "ok" } },
+  }, nowMs), false);
+  assert.equal(rulesViewNeedsRefresh({
+    schema_version: 3,
     generated_at: "2026-08-01T17:00:00.000Z",
     source: { enrichment: { status: "stale", error: "NYC Rules RSS 403" } },
   }, nowMs), true);
   // Older than MAX_AGE_MS (~36h) even when enrichment is ok.
   assert.equal(rulesViewNeedsRefresh({
+    schema_version: 3,
     generated_at: "2026-07-30T17:00:00.000Z",
+    source: { enrichment: { status: "ok" } },
+  }, nowMs), true);
+});
+
+test("rulesViewNeedsRefresh rebuilds young KV written under an older schema_version", () => {
+  const nowMs = Date.parse("2026-08-02T18:00:00.000Z");
+  // Pre-multi-notice materialization (schema 2) must not stick while still young.
+  assert.equal(rulesViewNeedsRefresh({
+    schema_version: 2,
+    generated_at: "2026-08-02T17:00:00.000Z",
+    source: { enrichment: { status: "ok" } },
+  }, nowMs), true);
+  assert.equal(rulesViewNeedsRefresh({
+    schema_version: 3,
+    generated_at: "2026-08-02T17:00:00.000Z",
+    source: { enrichment: { status: "ok" } },
+  }, nowMs), false);
+  // Missing schema_version (legacy snapshot) is also a rebuild.
+  assert.equal(rulesViewNeedsRefresh({
+    generated_at: "2026-08-02T17:00:00.000Z",
     source: { enrichment: { status: "ok" } },
   }, nowMs), true);
 });
