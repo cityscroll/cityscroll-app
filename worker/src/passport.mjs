@@ -11,7 +11,7 @@ import {
   parseContractsDump,
   parseRfxDump,
 } from "./lib/passport_parse.mjs";
-import { joinPinToEpin, normId, stripOneSuffix } from "./lib/passport_join.mjs";
+import { joinPinToEpin, normId, stripOneSuffix, EPIN_PREFIX_MIN_LEN, restOkForPrefixJoin } from "./lib/passport_join.mjs";
 import {
   computeSourceRecordHash,
   SOURCE_RECORD_INSERT_SQL,
@@ -521,7 +521,7 @@ function payloadsFrom(rows) {
 
 /**
  * SQL-backed EPIN lookup for one PIN. Tries exact → strip-suffix → pin-prefix-of-epin
- * → epin-prefix-of-pin (len ≥ 10, remainder digits or letter+digits) without loading
+ * → epin-prefix-of-pin (len ≥ EPIN_PREFIX_MIN_LEN, remainder task/line tails) without loading
  * the full EPIN corpus into memory.
  */
 async function resolveTableForPin(env, table, pin) {
@@ -560,7 +560,7 @@ async function resolveTableForPin(env, table, pin) {
   }
 
   // 3) PIN is prefix of EPIN (short notice PIN → longer PASSPort EPIN)
-  if (p.length >= 10) {
+  if (p.length >= EPIN_PREFIX_MIN_LEN) {
     res = await env.DB.prepare(
       `SELECT payload, epin_norm FROM ${table}
         WHERE epin_norm LIKE ? AND length(epin_norm) > ?
@@ -568,7 +568,7 @@ async function resolveTableForPin(env, table, pin) {
     ).bind(`${p}%`, p.length).all();
     const filtered = (res.results || []).filter((row) => {
       const rest = String(row.epin_norm).slice(p.length);
-      return !rest || /^\d+$/.test(rest) || /^[A-Z]\d{2,4}$/.test(rest);
+      return restOkForPrefixJoin(rest);
     });
     if (filtered.length) {
       return {
@@ -578,11 +578,11 @@ async function resolveTableForPin(env, table, pin) {
     }
   }
 
-  // 4) EPIN is prefix of PIN — candidate EPINs are prefixes of p with len ≥ 10
+  // 4) EPIN is prefix of PIN — candidate EPINs are prefixes of p with len ≥ min
   const prefixCandidates = [];
-  for (let L = Math.min(p.length - 1, 20); L >= 10; L--) {
+  for (let L = Math.min(p.length - 1, 20); L >= EPIN_PREFIX_MIN_LEN; L--) {
     const rest = p.slice(L);
-    if (/^\d+$/.test(rest) || /^[A-Z]\d{2,4}$/.test(rest)) {
+    if (restOkForPrefixJoin(rest)) {
       prefixCandidates.push(p.slice(0, L));
     }
   }

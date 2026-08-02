@@ -5,13 +5,19 @@
 //   exact                  — alnum-normalized PIN equals EPIN
 //   pin_strip_suffix       — strip one trailing letter+3–4 digits (A001, R001) from PIN
 //   pin_prefix_of_epin     — PIN is a proper prefix of EPIN; remainder is digits or letter+digits
-//   epin_prefix_of_pin     — EPIN (len ≥ 10) is a proper prefix of PIN; remainder is digits or letter+digits
+//   epin_prefix_of_pin     — EPIN (len ≥ 8) is a proper prefix of PIN; remainder is digits or letter+digits
 //
 // Weak shared-prefix joins (same first N chars, different body) are intentionally rejected —
 // they produced false matches such as 26026N0011014 → 26026N0011098.
+//
+// Min EPIN prefix length was lowered from 10 → 8 so award PINs that carry a short
+// solicitation EPIN stem (common task-order / line suffixes) still recover RFx.
 
 const SUFFIX_RE = /^(.+?)([A-Z]\d{3,4})$/;
-const REST_OK_RE = /^(?:\d+|[A-Z]\d{2,4})$/;
+/** Remainder after a proper prefix: digits, letter+digits, or multi-segment task tails. */
+const REST_OK_RE = /^(?:\d+|[A-Z]\d{2,6}|[A-Z]{1,2}\d{2,6})+$/;
+/** Minimum EPIN length for prefix strategies (was 10; 8 recovers short stems). */
+export const EPIN_PREFIX_MIN_LEN = 8;
 
 /** Alphanumeric uppercase form used as the join key. */
 export function normId(value) {
@@ -37,13 +43,22 @@ export function buildEpinIndex(epins) {
     if (!e) continue;
     exact.add(e);
     // Index longer EPINs under shorter prefix keys for reverse prefix lookup.
-    for (let L = Math.min(e.length - 1, 20); L >= 10; L--) {
+    for (let L = Math.min(e.length - 1, 20); L >= EPIN_PREFIX_MIN_LEN; L--) {
       const pref = e.slice(0, L);
       if (!byPrefix.has(pref)) byPrefix.set(pref, []);
       byPrefix.get(pref).push(e);
     }
   }
   return { exact, byPrefix };
+}
+
+/**
+ * Whether a remainder after a proper EPIN/PIN prefix is an honest task/line tail.
+ * Rejects body collisions (different mid-serial with shared first N chars).
+ */
+export function restOkForPrefixJoin(rest) {
+  if (rest == null || rest === "") return true;
+  return REST_OK_RE.test(String(rest));
 }
 
 /**
@@ -69,25 +84,25 @@ export function joinPinToEpin(pin, index) {
   }
 
   // EPIN is a proper prefix of PIN (solicitation EPIN + task/line suffix on the notice).
-  for (let L = Math.min(p.length - 1, 20); L >= 10; L--) {
+  for (let L = Math.min(p.length - 1, 20); L >= EPIN_PREFIX_MIN_LEN; L--) {
     const cand = p.slice(0, L);
     if (!index.exact.has(cand)) continue;
     const rest = p.slice(L);
-    if (REST_OK_RE.test(rest)) return { method: "epin_prefix_of_pin", epin: cand };
+    if (restOkForPrefixJoin(rest)) return { method: "epin_prefix_of_pin", epin: cand };
   }
 
   // PIN is a proper prefix of some EPIN (short notice PIN, longer PASSPort EPIN).
-  if (p.length >= 10 && index.byPrefix?.has(p)) {
+  if (p.length >= EPIN_PREFIX_MIN_LEN && index.byPrefix?.has(p)) {
     for (const e of index.byPrefix.get(p)) {
       const rest = e.slice(p.length);
-      if (!rest || REST_OK_RE.test(rest)) return { method: "pin_prefix_of_epin", epin: e };
+      if (restOkForPrefixJoin(rest)) return { method: "pin_prefix_of_epin", epin: e };
     }
   }
   // Also try stripped PIN as prefix of EPIN.
-  if (stripped && stripped.length >= 10 && index.byPrefix?.has(stripped)) {
+  if (stripped && stripped.length >= EPIN_PREFIX_MIN_LEN && index.byPrefix?.has(stripped)) {
     for (const e of index.byPrefix.get(stripped)) {
       const rest = e.slice(stripped.length);
-      if (!rest || REST_OK_RE.test(rest)) return { method: "pin_prefix_of_epin", epin: e };
+      if (restOkForPrefixJoin(rest)) return { method: "pin_prefix_of_epin", epin: e };
     }
   }
 

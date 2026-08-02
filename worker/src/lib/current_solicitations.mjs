@@ -5,6 +5,9 @@
 // fields that live in that public set. No fetch/env — tests exercise the join
 // with real field cases.
 
+import { stripOneSuffix, normId } from "./passport_join.mjs";
+import { pinBase } from "./lineage.mjs";
+
 export const CURRENT_SOLICITATIONS_DATASET = "3khw-qi8f";
 export const CURRENT_SOLICITATIONS_SOURCE = "ocp-current-solicitations";
 export const CURRENT_SOLICITATIONS_LANDING =
@@ -59,6 +62,41 @@ export function normalizeSolicitationRow(row) {
   };
 }
 
+
+/** PIN keys to try when joining OCP Current Solicitations (exact then stem). */
+export function solicitationPinKeys(pin) {
+  const exact = String(pin || "").trim();
+  const keys = [];
+  const seen = new Set();
+  function add(v) {
+    const k = normKey(v);
+    if (!k || seen.has(k)) return;
+    if (k.length < 8 && k !== normKey(exact)) return;
+    seen.add(k);
+    keys.push(k);
+  }
+  add(exact);
+  const base = pinBase(exact);
+  if (base) add(base);
+  let n = normId(exact);
+  for (let i = 0; i < 2; i += 1) {
+    const stripped = stripOneSuffix(n);
+    if (!stripped || stripped === n) break;
+    add(stripped);
+    n = stripped;
+  }
+  // Numeric task-order tail (…001) so award PINs join shorter solicitation packages.
+  n = normId(exact);
+  for (let i = 0; i < 2; i += 1) {
+    const m = n.match(/^(.+[A-Z].*?)(\d{3})$/);
+    if (!m || m[1].length < 8) break;
+    if (m[1] === n) break;
+    add(m[1]);
+    n = m[1];
+  }
+  return keys;
+}
+
 // Join a City Record notice to candidate Current Solicitations rows.
 // Priority: exact request_id → pin + agency_name → pin alone (only when unique).
 //
@@ -88,8 +126,18 @@ export function joinSolicitationEnrichment(notice, candidates) {
   }
 
   if (usablePin(noticePin)) {
-    const pinKey = normKey(noticePin);
-    const byPin = rows.filter((r) => r.pin && normKey(r.pin) === pinKey);
+    // Try exact PIN then stem forms so award PINs join solicitation packages on shorter EPINs.
+    const pinKeys = solicitationPinKeys(noticePin);
+    let byPin = [];
+    let basis = "pin";
+    for (const pinKey of pinKeys) {
+      const hit = rows.filter((r) => r.pin && normKey(r.pin) === pinKey);
+      if (hit.length) {
+        byPin = hit;
+        basis = pinKey === normKey(noticePin) ? "pin" : "pin_stem";
+        break;
+      }
+    }
     if (byPin.length === 0) {
       return { status: "unmatched", match: null, candidates: [], basis: "pin" };
     }
@@ -97,16 +145,16 @@ export function joinSolicitationEnrichment(notice, candidates) {
       const agencyKey = normKey(noticeAgency);
       const byAgency = byPin.filter((r) => normKey(r.agency_name) === agencyKey);
       if (byAgency.length === 1) {
-        return { status: "matched", match: byAgency[0], candidates: byAgency, basis: "pin+agency" };
+        return { status: "matched", match: byAgency[0], candidates: byAgency, basis: basis === "pin" ? "pin+agency" : "pin_stem+agency" };
       }
       if (byAgency.length > 1) {
-        return { status: "ambiguous", match: null, candidates: byAgency, basis: "pin+agency" };
+        return { status: "ambiguous", match: null, candidates: byAgency, basis: basis === "pin" ? "pin+agency" : "pin_stem+agency" };
       }
     }
     if (byPin.length === 1) {
-      return { status: "matched", match: byPin[0], candidates: byPin, basis: "pin" };
+      return { status: "matched", match: byPin[0], candidates: byPin, basis };
     }
-    return { status: "ambiguous", match: null, candidates: byPin, basis: "pin" };
+    return { status: "ambiguous", match: null, candidates: byPin, basis };
   }
 
   return { status: "unmatched", match: null, candidates: [], basis: noticeId ? "request_id" : "none" };

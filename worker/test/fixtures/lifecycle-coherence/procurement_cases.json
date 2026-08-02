@@ -1,7 +1,8 @@
 {
-  "description": "Field cases for procurement_lifecycle_coherence_rate. Mixed coherent and issue-bearing lifecycles so the metric is measurable and moves when detectors fire.",
+  "description": "Field cases for procurement_lifecycle_coherence_rate and award_solicitation_recovery_rate. Mixed coherent, recovery, and issue-bearing lifecycles so metrics are measurable and move.",
   "metric": "procurement_lifecycle_coherence_rate",
-  "version": "lifecycle_coherence_v1",
+  "recovery_metric": "award_solicitation_recovery_rate",
+  "version": "lifecycle_coherence_v2",
   "cases": [
     {
       "id": "coherent-solicitation-path",
@@ -13,7 +14,7 @@
       "id": "orphaned-award-no-solicitation",
       "expect_coherent": false,
       "expect_kinds": ["orphaned_award"],
-      "notes": "Award notice with no Current Solicitations join leaves solicitation stage absent."
+      "notes": "Award notice with no City Record / OCP / RFx solicitation recovery — honest class-(a) named sources."
     },
     {
       "id": "payment-exceeds-award",
@@ -22,16 +23,22 @@
       "notes": "Spending total exceeds award and registered current_amount."
     },
     {
-      "id": "out-of-order-registered-before-award",
+      "id": "out-of-order-solicitation-after-award",
       "expect_coherent": false,
       "expect_kinds": ["out_of_order_dates"],
-      "notes": "Registration date earlier than City Record award date."
+      "notes": "True disorder: City Record award publication precedes solicitation publication on the same clock."
     },
     {
       "id": "coherent-award-with-solicitation-package",
       "expect_coherent": true,
       "expect_kinds": [],
-      "notes": "Award with matched Current Solicitations package prepends solicitation; amounts and dates clean."
+      "notes": "Award with matched Current Solicitations package prepends solicitation; amounts and dates clean. Registration before CR award publication is not out_of_order."
+    },
+    {
+      "id": "award-rfx-solicitation-recovery",
+      "expect_coherent": true,
+      "expect_kinds": [],
+      "notes": "Award with no CR/OCP package but PASSPort RFx recovers solicitation stage; orphaned_award drops."
     }
   ]
 }
